@@ -95,12 +95,13 @@ public class LanguageFilterTracker {
 					ResourceBundleLoader.class, resourceBundleLoader,
 					properties));
 
-			ServiceTracker<ResourceBundleLoader, ResourceBundleLoader>
-				serviceTracker = ServiceTrackerFactory.open(
-					_bundleContext, _filterString);
+			ServiceTrackerResourceBundleLoader
+				serviceTrackerResourceBundleLoader =
+					new ServiceTrackerResourceBundleLoader(
+						_bundleContext, _filterString);
 
 			Filter filter = new LanguageFilter(
-				new ServiceTrackerResourceBundleLoader(serviceTracker));
+				serviceTrackerResourceBundleLoader);
 
 			Dictionary<String, Object> filterProperties = new Hashtable<>();
 
@@ -127,7 +128,7 @@ public class LanguageFilterTracker {
 					Filter.class, filter, filterProperties));
 
 			return new TrackedServletContextHelper(
-				serviceTracker, serviceRegistrations);
+				serviceTrackerResourceBundleLoader, serviceRegistrations);
 		}
 
 		@Override
@@ -214,10 +215,10 @@ public class LanguageFilterTracker {
 		}
 
 		private ServiceTrackerResourceBundleLoader(
-			ServiceTracker<ResourceBundleLoader, ResourceBundleLoader>
-				serviceTracker) {
+			BundleContext bundleContext, String filterString) {
 
-			_serviceTracker = serviceTracker;
+			_serviceTracker = ServiceTrackerFactory.open(
+				bundleContext, filterString);
 		}
 
 		private final ServiceTracker<ResourceBundleLoader, ResourceBundleLoader>
@@ -280,7 +281,7 @@ public class LanguageFilterTracker {
 	private static class TrackedServletContextHelper {
 
 		public void clean() {
-			_serviceTracker.close();
+			_serviceTrackerResourceBundleLoader._serviceTracker.close();
 
 			for (ServiceRegistration<?> serviceRegistration :
 					_serviceRegistrations) {
@@ -290,15 +291,18 @@ public class LanguageFilterTracker {
 		}
 
 		private TrackedServletContextHelper(
-			ServiceTracker<?, ?> serviceTracker,
+			ServiceTrackerResourceBundleLoader
+				serviceTrackerResourceBundleLoader,
 			List<ServiceRegistration<?>> serviceRegistrations) {
 
-			_serviceTracker = serviceTracker;
+			_serviceTrackerResourceBundleLoader =
+				serviceTrackerResourceBundleLoader;
 			_serviceRegistrations = serviceRegistrations;
 		}
 
 		private final List<ServiceRegistration<?>> _serviceRegistrations;
-		private ServiceTracker<?, ?> _serviceTracker;
+		private final ServiceTrackerResourceBundleLoader
+			_serviceTrackerResourceBundleLoader;
 
 	}
 
