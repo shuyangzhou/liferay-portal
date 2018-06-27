@@ -131,33 +131,17 @@ public class LanguageFilterTracker {
 
 			Bundle bundle = serviceReference.getBundle();
 
-			StringBundler filterSB = new StringBundler(8);
-
 			Object contextName = serviceReference.getProperty(
 				HttpWhiteboardConstants.HTTP_WHITEBOARD_CONTEXT_NAME);
 
-			filterSB.append("(&(resource.bundle.base.name=*)");
-			filterSB.append("(|(bundle.symbolic.name=");
-			filterSB.append(bundle.getSymbolicName());
-			filterSB.append(")(&(servlet.context.name=");
-			filterSB.append(contextName);
-			filterSB.append(")(service.bundleid=0)))(objectClass=");
-			filterSB.append(ResourceBundleLoader.class.getName());
-			filterSB.append("))");
-
-			Map<String, Object> properties = new HashMap<>();
-
-			properties.put("service.ranking", Integer.MIN_VALUE);
-
-			properties.put("servlet.context.name", contextName);
-
 			return ServiceTrackerFactory.open(
-				bundle.getBundleContext(), StringBundler.concat(
+				bundle.getBundleContext(),
+				StringBundler.concat(
 					"(&(resource.bundle.base.name=*)(bundle.symbolic.name=",
 					bundle.getSymbolicName(), ")(objectClass=",
 					ResourceBundleLoader.class.getName(), "))"),
 				new ResourceBundleLoaderServiceTrackerCustomizer(
-					properties, filterSB.toString(), contextName));
+					bundle.getSymbolicName(), contextName));
 		}
 
 		@Override
@@ -186,11 +170,21 @@ public class LanguageFilterTracker {
 					<ResourceBundleLoader, TrackedServletContextHelper> {
 
 			public ResourceBundleLoaderServiceTrackerCustomizer(
-				Map<String, Object> properties, String filterString,
-				Object contextName) {
+				String symbolicName, Object contextName) {
 
-				_properties = properties;
-				_filterString = filterString;
+				_properties = new HashMap<>();
+
+				_properties.put("service.ranking", Integer.MIN_VALUE);
+
+				_properties.put("servlet.context.name", contextName);
+
+				_filterString = StringBundler.concat(
+					"(&(resource.bundle.base.name=*)(|(bundle.symbolic.name=",
+					symbolicName, ")(&(servlet.context.name=",
+					String.valueOf(contextName),
+					")(service.bundleid=0)))(objectClass=",
+					ResourceBundleLoader.class.getName(), "))");
+
 				_contextName = contextName;
 			}
 
