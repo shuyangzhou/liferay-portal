@@ -125,7 +125,7 @@ public class ReturnPoshiElement extends PoshiElement {
 				return false;
 			}
 
-			if (isMacroReturnVar(poshiScript)) {
+			if (isVarAssignedToMacroInvocation(poshiScript)) {
 				return true;
 			}
 

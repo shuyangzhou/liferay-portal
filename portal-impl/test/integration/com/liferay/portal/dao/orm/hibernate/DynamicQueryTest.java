@@ -14,14 +14,22 @@
 
 package com.liferay.portal.dao.orm.hibernate;
 
+import com.liferay.portal.kernel.configuration.Filter;
+import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBManagerUtil;
+import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.OrderFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.util.ArrayList;
@@ -29,6 +37,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -67,6 +76,72 @@ public class DynamicQueryTest {
 
 		Assert.assertEquals(classNames.toString(), 1, classNames.size());
 		Assert.assertEquals(className, classNames.get(0));
+	}
+
+	@Test
+	public void testInRestrictionCriterion() {
+		DynamicQuery dynamicQuery = ClassNameLocalServiceUtil.dynamicQuery();
+
+		List<Long> values = new ArrayList<>(2);
+
+		ClassName className1 = _allClassNames.get(1);
+		ClassName className2 = _allClassNames.get(2);
+
+		values.add(className1.getClassNameId());
+		values.add(className2.getClassNameId());
+
+		dynamicQuery.add(RestrictionsFactoryUtil.in("classNameId", values));
+
+		List<ClassName> classNames = ClassNameLocalServiceUtil.dynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(classNames.toString(), 2, classNames.size());
+		Assert.assertTrue(
+			classNames.toString(), classNames.contains(className1));
+		Assert.assertTrue(
+			classNames.toString(), classNames.contains(className2));
+	}
+
+	@Test
+	public void testInRestrictionCriterionWithMoreThanDatabaseInMaxParametersValue() {
+		DB db = DBManagerUtil.getDB();
+
+		DBType dbType = db.getDBType();
+
+		int databaseInMaxParameters = GetterUtil.getInteger(
+			PropsUtil.get(
+				PropsKeys.DATABASE_IN_MAX_PARAMETERS,
+				new Filter(dbType.getName())));
+
+		Assume.assumeTrue(databaseInMaxParameters > 0);
+
+		DynamicQuery dynamicQuery = ClassNameLocalServiceUtil.dynamicQuery();
+
+		List<Long> values = new ArrayList<>(databaseInMaxParameters + 1);
+
+		ClassName className1 = _allClassNames.get(1);
+		ClassName className2 = _allClassNames.get(2);
+
+		values.add(className1.getClassNameId());
+
+		for (long i = 1; i < databaseInMaxParameters; i++) {
+			values.add(-i);
+		}
+
+		values.add(className2.getClassNameId());
+
+		Assert.assertEquals(databaseInMaxParameters + 1, values.size());
+
+		dynamicQuery.add(RestrictionsFactoryUtil.in("classNameId", values));
+
+		List<ClassName> classNames = ClassNameLocalServiceUtil.dynamicQuery(
+			dynamicQuery);
+
+		Assert.assertEquals(classNames.toString(), 2, classNames.size());
+		Assert.assertTrue(
+			classNames.toString(), classNames.contains(className1));
+		Assert.assertTrue(
+			classNames.toString(), classNames.contains(className2));
 	}
 
 	@Test

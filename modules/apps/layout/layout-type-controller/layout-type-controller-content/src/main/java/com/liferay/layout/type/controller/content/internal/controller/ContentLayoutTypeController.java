@@ -136,8 +136,6 @@ public class ContentLayoutTypeController extends BaseLayoutTypeControllerImpl {
 		request.setAttribute(
 			WebKeys.LAYOUT_CONTENT, unsyncStringWriter.getStringBundler());
 
-		request.setAttribute(WebKeys.PORTLET_DECORATE, Boolean.FALSE);
-
 		return false;
 	}
 
