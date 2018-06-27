@@ -17,6 +17,8 @@ package com.liferay.portal.cluster.multiple.internal.io;
 import com.liferay.petra.lang.ClassLoaderPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ClassLoaderUtil;
 
 import java.util.Collections;
@@ -31,6 +33,46 @@ import org.osgi.framework.Version;
  * @author Lance Ji
  */
 public class ClusterClassLoaderPool {
+
+	public static ClassLoader getClassLoader(String contextName) {
+		ClassLoader classLoader = null;
+
+		if ((contextName != null) && !contextName.equals("null")) {
+			classLoader = _classLoaders.get(contextName);
+
+			if (classLoader == null) {
+				String[] bundleInfo = _parseContextName(contextName);
+
+				List<VersionedClassLoader> classLoadersInOrder =
+					_fallbackClassLoaders.get(bundleInfo[0]);
+
+				if (classLoadersInOrder != null) {
+					VersionedClassLoader latestVersionClassLoader =
+						classLoadersInOrder.get(0);
+
+					classLoader = latestVersionClassLoader.getClassLoader();
+
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							StringBundler.concat(
+								"Unable to find ClassLoader for ", contextName,
+								", ClassLoader ", bundleInfo[0],
+								StringPool.UNDERLINE,
+								latestVersionClassLoader.getVersion(),
+								" is provided instead"));
+					}
+				}
+			}
+		}
+
+		if (classLoader == null) {
+			Thread currentThread = Thread.currentThread();
+
+			classLoader = currentThread.getContextClassLoader();
+		}
+
+		return classLoader;
+	}
 
 	public static void register(
 		String symbolicName, Version version, ClassLoader classLoader) {
@@ -120,6 +162,9 @@ public class ClusterClassLoaderPool {
 	}
 
 	private static final String _PORTAL_SERVLETCONTEXTNAME = StringPool.BLANK;
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		ClusterClassLoaderPool.class);
 
 	private static final Map<String, ClassLoader> _classLoaders =
 		new ConcurrentHashMap<>();
