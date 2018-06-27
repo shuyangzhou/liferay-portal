@@ -136,36 +136,23 @@ public class LanguageFilterTracker {
 			Object contextName = serviceReference.getProperty(
 				HttpWhiteboardConstants.HTTP_WHITEBOARD_CONTEXT_NAME);
 
-			if (contextName == null) {
-				filterSB.append("(&");
-				filterSB.append("(bundle.symbolic.name=");
-				filterSB.append(bundle.getSymbolicName());
-				filterSB.append(")");
-				filterSB.append("(objectClass=");
-				filterSB.append(ResourceBundleLoader.class.getName());
-				filterSB.append(")");
-				filterSB.append("(resource.bundle.base.name=*)");
-				filterSB.append(")");
-			}
-			else {
-				filterSB.append("(&");
-				filterSB.append("(|");
-				filterSB.append("(bundle.symbolic.name=");
-				filterSB.append(bundle.getSymbolicName());
-				filterSB.append(")");
-				filterSB.append("(&");
-				filterSB.append("(servlet.context.name=");
-				filterSB.append(contextName);
-				filterSB.append(")");
-				filterSB.append("(service.bundleid=0)");
-				filterSB.append(")");
-				filterSB.append(")");
-				filterSB.append("(objectClass=");
-				filterSB.append(ResourceBundleLoader.class.getName());
-				filterSB.append(")");
-				filterSB.append("(resource.bundle.base.name=*)");
-				filterSB.append(")");
-			}
+			filterSB.append("(&");
+			filterSB.append("(|");
+			filterSB.append("(bundle.symbolic.name=");
+			filterSB.append(bundle.getSymbolicName());
+			filterSB.append(")");
+			filterSB.append("(&");
+			filterSB.append("(servlet.context.name=");
+			filterSB.append(contextName);
+			filterSB.append(")");
+			filterSB.append("(service.bundleid=0)");
+			filterSB.append(")");
+			filterSB.append(")");
+			filterSB.append("(objectClass=");
+			filterSB.append(ResourceBundleLoader.class.getName());
+			filterSB.append(")");
+			filterSB.append("(resource.bundle.base.name=*)");
+			filterSB.append(")");
 
 			Map<String, Object> properties = new HashMap<>();
 
