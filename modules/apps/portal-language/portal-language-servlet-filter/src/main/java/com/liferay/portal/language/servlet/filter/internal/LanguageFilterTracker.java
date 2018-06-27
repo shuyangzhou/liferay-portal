@@ -131,28 +131,18 @@ public class LanguageFilterTracker {
 
 			Bundle bundle = serviceReference.getBundle();
 
-			StringBundler filterSB = new StringBundler(17);
+			StringBundler filterSB = new StringBundler(7);
 
 			Object contextName = serviceReference.getProperty(
 				HttpWhiteboardConstants.HTTP_WHITEBOARD_CONTEXT_NAME);
 
-			filterSB.append("(&");
-			filterSB.append("(|");
-			filterSB.append("(bundle.symbolic.name=");
+			filterSB.append("(&(|(bundle.symbolic.name=");
 			filterSB.append(bundle.getSymbolicName());
-			filterSB.append(")");
-			filterSB.append("(&");
-			filterSB.append("(servlet.context.name=");
+			filterSB.append(")(&(servlet.context.name=");
 			filterSB.append(contextName);
-			filterSB.append(")");
-			filterSB.append("(service.bundleid=0)");
-			filterSB.append(")");
-			filterSB.append(")");
-			filterSB.append("(objectClass=");
+			filterSB.append(")(service.bundleid=0)))(objectClass=");
 			filterSB.append(ResourceBundleLoader.class.getName());
-			filterSB.append(")");
-			filterSB.append("(resource.bundle.base.name=*)");
-			filterSB.append(")");
+			filterSB.append(")(resource.bundle.base.name=*))");
 
 			Map<String, Object> properties = new HashMap<>();
 
