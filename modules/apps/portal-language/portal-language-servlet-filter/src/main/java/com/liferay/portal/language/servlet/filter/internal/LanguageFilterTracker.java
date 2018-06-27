@@ -131,18 +131,19 @@ public class LanguageFilterTracker {
 
 			Bundle bundle = serviceReference.getBundle();
 
-			StringBundler filterSB = new StringBundler(7);
+			StringBundler filterSB = new StringBundler(8);
 
 			Object contextName = serviceReference.getProperty(
 				HttpWhiteboardConstants.HTTP_WHITEBOARD_CONTEXT_NAME);
 
-			filterSB.append("(&(|(bundle.symbolic.name=");
+			filterSB.append("(&(resource.bundle.base.name=*)");
+			filterSB.append("(|(bundle.symbolic.name=");
 			filterSB.append(bundle.getSymbolicName());
 			filterSB.append(")(&(servlet.context.name=");
 			filterSB.append(contextName);
 			filterSB.append(")(service.bundleid=0)))(objectClass=");
 			filterSB.append(ResourceBundleLoader.class.getName());
-			filterSB.append(")(resource.bundle.base.name=*))");
+			filterSB.append("))");
 
 			Map<String, Object> properties = new HashMap<>();
 
@@ -152,9 +153,9 @@ public class LanguageFilterTracker {
 
 			return ServiceTrackerFactory.open(
 				bundle.getBundleContext(), StringBundler.concat(
-					"(&(bundle.symbolic.name=", bundle.getSymbolicName(),
-					")(objectClass=", ResourceBundleLoader.class.getName(),
-					")(resource.bundle.base.name=*))"),
+					"(&(resource.bundle.base.name=*)(bundle.symbolic.name=",
+					bundle.getSymbolicName(), ")(objectClass=",
+					ResourceBundleLoader.class.getName(), "))"),
 				new ResourceBundleLoaderServiceTrackerCustomizer(
 					properties, filterSB.toString(), contextName));
 		}
