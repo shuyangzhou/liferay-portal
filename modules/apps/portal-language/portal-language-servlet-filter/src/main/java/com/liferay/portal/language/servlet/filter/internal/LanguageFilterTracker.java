@@ -114,7 +114,7 @@ public class LanguageFilterTracker {
 
 	}
 
-	private class ServletContextHelperServiceTrackerCustomizer
+	private static class ServletContextHelperServiceTrackerCustomizer
 		implements
 			ServiceTrackerCustomizer
 				<ServletContextHelper, ServiceTracker<?, ?>> {
@@ -141,7 +141,7 @@ public class LanguageFilterTracker {
 					bundle.getSymbolicName(), ")(objectClass=",
 					ResourceBundleLoader.class.getName(), "))"),
 				new ResourceBundleLoaderServiceTrackerCustomizer(
-					bundle.getSymbolicName(), contextName));
+					_bundleContext, bundle.getSymbolicName(), contextName));
 		}
 
 		@Override
@@ -164,13 +164,16 @@ public class LanguageFilterTracker {
 
 		private final BundleContext _bundleContext;
 
-		private class ResourceBundleLoaderServiceTrackerCustomizer
+		private static class ResourceBundleLoaderServiceTrackerCustomizer
 			implements
 				ServiceTrackerCustomizer
 					<ResourceBundleLoader, TrackedServletContextHelper> {
 
 			public ResourceBundleLoaderServiceTrackerCustomizer(
-				String symbolicName, Object contextName) {
+				BundleContext bundleContext, String symbolicName,
+				Object contextName) {
+
+				_bundleContext = bundleContext;
 
 				_properties = new HashMap<>();
 
@@ -265,6 +268,7 @@ public class LanguageFilterTracker {
 				trackedServletContextHelper.clean();
 			}
 
+			private final BundleContext _bundleContext;
 			private final Object _contextName;
 			private final String _filterString;
 			private final Map<String, Object> _properties;
@@ -273,7 +277,7 @@ public class LanguageFilterTracker {
 
 	}
 
-	private class TrackedServletContextHelper {
+	private static class TrackedServletContextHelper {
 
 		public TrackedServletContextHelper(
 			ServiceTracker<?, ?> serviceTracker,
