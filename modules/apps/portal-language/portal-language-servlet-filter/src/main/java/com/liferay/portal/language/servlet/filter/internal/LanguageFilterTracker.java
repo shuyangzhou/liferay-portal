@@ -183,10 +183,21 @@ public class LanguageFilterTracker {
 	private static class ServiceTrackerResourceBundleLoader
 		implements ResourceBundleLoader {
 
+		public void close() {
+			_closed = true;
+
+			synchronized (this) {
+				if (_serviceTracker != null) {
+					_serviceTracker.close();
+
+					_serviceTracker = null;
+				}
+			}
+		}
+
 		@Override
 		public ResourceBundle loadResourceBundle(Locale locale) {
-			ResourceBundleLoader resourceBundleLoader =
-				_serviceTracker.getService();
+			ResourceBundleLoader resourceBundleLoader = _getResourceBundle();
 
 			ResourceBundleLoader portalResourceBundleLoader =
 				ResourceBundleLoaderUtil.getPortalResourceBundleLoader();
@@ -217,12 +228,36 @@ public class LanguageFilterTracker {
 		private ServiceTrackerResourceBundleLoader(
 			BundleContext bundleContext, String filterString) {
 
-			_serviceTracker = ServiceTrackerFactory.open(
-				bundleContext, filterString);
+			_bundleContext = bundleContext;
+			_filterString = filterString;
 		}
 
-		private final ServiceTracker<ResourceBundleLoader, ResourceBundleLoader>
-			_serviceTracker;
+		private ResourceBundleLoader _getResourceBundle() {
+			if (_closed) {
+				return null;
+			}
+
+			if (_serviceTracker == null) {
+				synchronized (this) {
+					if (_closed) {
+						return null;
+					}
+
+					if (_serviceTracker == null) {
+						_serviceTracker = ServiceTrackerFactory.open(
+							_bundleContext, _filterString);
+					}
+				}
+			}
+
+			return _serviceTracker.getService();
+		}
+
+		private final BundleContext _bundleContext;
+		private boolean _closed;
+		private final String _filterString;
+		private volatile ServiceTracker
+			<ResourceBundleLoader, ResourceBundleLoader> _serviceTracker;
 
 	}
 
@@ -281,13 +316,13 @@ public class LanguageFilterTracker {
 	private static class TrackedServletContextHelper {
 
 		public void clean() {
-			_serviceTrackerResourceBundleLoader._serviceTracker.close();
-
 			for (ServiceRegistration<?> serviceRegistration :
 					_serviceRegistrations) {
 
 				serviceRegistration.unregister();
 			}
+
+			_serviceTrackerResourceBundleLoader.close();
 		}
 
 		private TrackedServletContextHelper(
