@@ -23,11 +23,9 @@ import com.liferay.portal.kernel.util.StringBundler;
 
 import java.util.ArrayList;
 import java.util.Dictionary;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.servlet.DispatcherType;
@@ -52,7 +50,7 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 public class LanguageFilterTracker {
 
 	@Activate
-	protected void activate(final BundleContext bundleContext) {
+	protected void activate(BundleContext bundleContext) {
 		_serviceTracker = new ServiceTracker<>(
 			bundleContext, ServletContextHelper.class,
 			new ServletContextHelperServiceTrackerCustomizer(bundleContext));
@@ -77,11 +75,14 @@ public class LanguageFilterTracker {
 		public TrackedServletContextHelper addingService(
 			ServiceReference<ResourceBundleLoader> serviceReference) {
 
-			List<ServiceRegistration<?>> serviceRegistrations =
-				new ArrayList<>();
+			List<ServiceRegistration<?>> serviceRegistrations = new ArrayList<>(
+				2);
 
-			Dictionary<String, Object> properties = new Hashtable<>(
-				_properties);
+			Dictionary<String, Object> properties = new Hashtable<>();
+
+			properties.put("service.ranking", Integer.MIN_VALUE);
+
+			properties.put("servlet.context.name", _contextName);
 
 			properties.put(
 				"resource.bundle.base.name",
@@ -156,12 +157,7 @@ public class LanguageFilterTracker {
 			Object contextName) {
 
 			_bundleContext = bundleContext;
-
-			_properties = new HashMap<>();
-
-			_properties.put("service.ranking", Integer.MIN_VALUE);
-
-			_properties.put("servlet.context.name", contextName);
+			_contextName = contextName;
 
 			_filterString = StringBundler.concat(
 				"(&(resource.bundle.base.name=*)(|(bundle.symbolic.name=",
@@ -169,14 +165,11 @@ public class LanguageFilterTracker {
 				String.valueOf(contextName),
 				")(service.bundleid=0)))(objectClass=",
 				ResourceBundleLoader.class.getName(), "))");
-
-			_contextName = contextName;
 		}
 
 		private final BundleContext _bundleContext;
 		private final Object _contextName;
 		private final String _filterString;
-		private final Map<String, Object> _properties;
 
 	}
 
