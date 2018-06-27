@@ -161,7 +161,10 @@ public class LanguageFilterTracker {
 			properties.put("servlet.context.name", contextName);
 
 			return ServiceTrackerFactory.open(
-				bundle.getBundleContext(), filterSB.toString(),
+				bundle.getBundleContext(), StringBundler.concat(
+					"(&(bundle.symbolic.name=", bundle.getSymbolicName(),
+					")(objectClass=", ResourceBundleLoader.class.getName(),
+					")(resource.bundle.base.name=*))"),
 				new ResourceBundleLoaderServiceTrackerCustomizer(
 					properties, filterSB.toString(), contextName));
 		}
