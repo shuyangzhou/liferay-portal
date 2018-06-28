@@ -74,6 +74,28 @@ public class ClusterClassLoaderPool {
 		return classLoader;
 	}
 
+	public static String getContextName(ClassLoader classLoader) {
+		if (classLoader == null) {
+			return "null";
+		}
+
+		String contextName = _contextNames.get(classLoader);
+
+		if (contextName == null) {
+			contextName = "null";
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					StringBundler.concat(
+						"Unable to find contextName for ",
+						classLoader.toString(),
+						" , send 'null' as contextName instead"));
+			}
+		}
+
+		return contextName;
+	}
+
 	public static void register(
 		String symbolicName, Version version, ClassLoader classLoader) {
 
