@@ -14,7 +14,6 @@
 
 package com.liferay.poshi.runner.elements;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.dom4j.Attribute;
@@ -48,14 +47,10 @@ public class ThenPoshiElement extends PoshiElement {
 
 	@Override
 	public void parsePoshiScript(String poshiScript) {
-		for (String poshiScriptSnippet : getPoshiScriptSnippets(poshiScript)) {
-			if (isPoshiScriptComment(poshiScriptSnippet)) {
-				add(PoshiNodeFactory.newPoshiNode(this, poshiScriptSnippet));
+		String blockContent = getBlockContent(poshiScript);
 
-				continue;
-			}
-
-			add(PoshiNodeFactory.newPoshiNode(this, poshiScriptSnippet));
+		for (String poshiScriptSnippet : getPoshiScriptSnippets(blockContent)) {
+			add(PoshiNodeFactory.newPoshiNode(this, poshiScriptSnippet.trim()));
 		}
 	}
 
@@ -97,42 +92,19 @@ public class ThenPoshiElement extends PoshiElement {
 		return "then";
 	}
 
-	protected List<String> getPoshiScriptSnippets(String poshiScript) {
-		StringBuilder sb = new StringBuilder();
-
-		List<String> poshiScriptSnippets = new ArrayList<>();
-
-		for (String line : poshiScript.split("\n")) {
-			String trimmedLine = line.trim();
-
-			String poshiScriptSnippet = sb.toString();
-
-			if (trimmedLine.endsWith("{") && poshiScriptSnippets.isEmpty()) {
-				continue;
-			}
-
-			if (!trimmedLine.startsWith("else {")) {
-				poshiScriptSnippet = poshiScriptSnippet.trim();
-
-				if (isValidPoshiScriptSnippet(poshiScriptSnippet)) {
-					poshiScriptSnippets.add(poshiScriptSnippet);
-
-					sb.setLength(0);
-				}
-			}
-
-			sb.append(line);
-			sb.append("\n");
-		}
-
-		return poshiScriptSnippets;
-	}
-
 	private boolean _isElementType(
 		PoshiElement parentPoshiElement, String poshiScript) {
 
-		if ((parentPoshiElement instanceof IfPoshiElement) &&
-			poshiScript.startsWith("{")) {
+		if (!(parentPoshiElement instanceof IfPoshiElement)) {
+			return false;
+		}
+
+		if (isValidPoshiScriptBlock(
+				ElseIfPoshiElement.blockNamePattern, poshiScript) ||
+			isValidPoshiScriptBlock(
+				IfPoshiElement.blockNamePattern, poshiScript) ||
+			isValidPoshiScriptBlock(
+				WhilePoshiElement.blockNamePattern, poshiScript)) {
 
 			return true;
 		}

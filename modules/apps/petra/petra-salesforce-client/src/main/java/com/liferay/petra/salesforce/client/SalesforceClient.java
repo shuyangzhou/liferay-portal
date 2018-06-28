@@ -14,12 +14,16 @@
 
 package com.liferay.petra.salesforce.client;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.sforce.ws.ConnectorConfig;
 
 /**
  * @author Brian Wing Shun Chan
  * @author Peter Shin
+ * @author Rachael Koestartyo
  */
+@ProviderType
 public interface SalesforceClient {
 
 	public String getAuthEndpoint();
@@ -31,6 +35,10 @@ public interface SalesforceClient {
 	public String getPassword();
 
 	public int getReadTimeout();
+
+	public String getServiceEndpoint();
+
+	public String getSessionId();
 
 	public String getUserName();
 
@@ -45,6 +53,10 @@ public interface SalesforceClient {
 	public void setPassword(String password);
 
 	public void setReadTimeout(int readTimeout);
+
+	public void setServiceEndpoint(String serviceEndpoint);
+
+	public void setSessionId(String sessionId);
 
 	public void setUserName(String userName);
 

@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +64,7 @@ public class ApioResourceCollection extends ApioSingleModel {
 	}
 
 	/**
-	 * Parses the actual jsonNode (Resource Collection) e.g people,
+	 * Parses the actual jsonNode (resource collection) e.g people,
 	 * blog-postings and looks for the members array node.
 	 *
 	 * @return <code>JsonNode</code> The ArrayNode which contains the resource
@@ -117,7 +118,8 @@ public class ApioResourceCollection extends ApioSingleModel {
 			return jsonNode.asText();
 		}
 
-		return null;
+		throw new NoSuchElementException(
+			"Unable to determine the type of the resource collection");
 	}
 
 	/**

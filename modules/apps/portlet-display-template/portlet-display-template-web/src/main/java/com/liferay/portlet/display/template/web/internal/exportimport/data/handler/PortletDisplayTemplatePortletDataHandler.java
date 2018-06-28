@@ -99,6 +99,7 @@ public class PortletDisplayTemplatePortletDataHandler
 		setExportControls(
 			new PortletDataHandlerBoolean(
 				NAMESPACE, "application-display-templates", true, true));
+		setStagingControls(getExportControls());
 	}
 
 	@Override
@@ -151,16 +152,8 @@ public class PortletDisplayTemplatePortletDataHandler
 		if (ExportImportDateUtil.isRangeFromLastPublishDate(
 				portletDataContext)) {
 
-			StagedModelType[] stagedModelTypes = getStagedModelTypes();
-
-			String[] classNames = new String[stagedModelTypes.length];
-
-			for (int i = 0; i < stagedModelTypes.length; i++) {
-				classNames[i] = stagedModelTypes[i].getClassName();
-			}
-
 			_staging.populateLastPublishDateCounts(
-				portletDataContext, classNames);
+				portletDataContext, getStagedModelTypes());
 
 			return;
 		}

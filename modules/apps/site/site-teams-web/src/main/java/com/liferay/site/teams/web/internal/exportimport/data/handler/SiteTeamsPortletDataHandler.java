@@ -20,6 +20,7 @@ import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.PortletDataHandler;
 import com.liferay.exportimport.kernel.lar.PortletDataHandlerBoolean;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
+import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.exportimport.kernel.staging.Staging;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.Team;
@@ -62,6 +63,7 @@ public class SiteTeamsPortletDataHandler extends BasePortletDataHandler {
 				Team.class.getName()));
 		setPublishToLiveByDefault(true);
 		setRank(80);
+		setStagingControls(getExportControls());
 	}
 
 	@Override
@@ -130,7 +132,10 @@ public class SiteTeamsPortletDataHandler extends BasePortletDataHandler {
 				portletDataContext)) {
 
 			_staging.populateLastPublishDateCounts(
-				portletDataContext, new String[] {Team.class.getName()});
+				portletDataContext,
+				new StagedModelType[] {
+					new StagedModelType(Team.class.getName())
+				});
 
 			return;
 		}

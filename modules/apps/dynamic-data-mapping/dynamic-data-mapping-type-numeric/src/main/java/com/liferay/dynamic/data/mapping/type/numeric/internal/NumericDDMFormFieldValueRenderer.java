@@ -17,9 +17,12 @@ package com.liferay.dynamic.data.mapping.type.numeric.internal;
 import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldValueRenderer;
 import com.liferay.dynamic.data.mapping.model.Value;
 import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
-import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.dynamic.data.mapping.type.numeric.internal.util.NumericDDMFormFieldUtil;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.text.NumberFormat;
+import java.text.ParseException;
 
 import java.util.Locale;
 
@@ -34,20 +37,37 @@ public class NumericDDMFormFieldValueRenderer
 
 	@Override
 	public String render(DDMFormFieldValue ddmFormFieldValue, Locale locale) {
-		NumberFormat numberFormat = NumberFormat.getNumberInstance(locale);
+		Number number = getNumber(ddmFormFieldValue);
 
-		numberFormat.setGroupingUsed(false);
-		numberFormat.setMaximumFractionDigits(Integer.MAX_VALUE);
+		if (number != null) {
+			NumberFormat numberFormat = NumericDDMFormFieldUtil.getNumberFormat(
+				locale);
 
-		Number number = getNumber(ddmFormFieldValue.getValue(), locale);
+			return numberFormat.format(number);
+		}
 
-		return numberFormat.format(number);
+		return StringPool.BLANK;
 	}
 
-	protected Number getNumber(Value value, Locale locale) {
+	protected Number getNumber(DDMFormFieldValue ddmFormFieldValue) {
+		Value value = ddmFormFieldValue.getValue();
+
+		Locale locale = value.getDefaultLocale();
+
 		String valueString = value.getString(locale);
 
-		return GetterUtil.getNumber(valueString);
+		if (Validator.isNotNull(valueString)) {
+			try {
+				NumberFormat formatter =
+					NumericDDMFormFieldUtil.getNumberFormat(locale);
+
+				return formatter.parse(valueString);
+			}
+			catch (ParseException pe) {
+			}
+		}
+
+		return null;
 	}
 
 }

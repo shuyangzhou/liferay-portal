@@ -142,7 +142,7 @@ public class BlogPostingNestedCollectionResource
 		).addString(
 			"headline", BlogsEntry::getTitle
 		).addStringList(
-			"keywords", this::_getBlogsEntryTags
+			"keywords", this::_getBlogsEntryAssetTags
 		).build();
 	}
 
@@ -168,11 +168,11 @@ public class BlogPostingNestedCollectionResource
 			imageSelector, null, serviceContext);
 	}
 
-	private List<String> _getBlogsEntryTags(BlogsEntry blogsEntry) {
-		List<AssetTag> tags = _assetTagLocalService.getTags(
+	private List<String> _getBlogsEntryAssetTags(BlogsEntry blogsEntry) {
+		List<AssetTag> assetTags = _assetTagLocalService.getTags(
 			BlogsEntry.class.getName(), blogsEntry.getEntryId());
 
-		return ListUtil.toList(tags, AssetTagModel::getName);
+		return ListUtil.toList(assetTags, AssetTagModel::getName);
 	}
 
 	private PageItems<BlogsEntry> _getPageItems(

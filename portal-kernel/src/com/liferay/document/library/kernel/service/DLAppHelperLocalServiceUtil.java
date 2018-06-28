@@ -59,6 +59,11 @@ public class DLAppHelperLocalServiceUtil {
 			destinationFileVersion, draftFileVersion, serviceContext);
 	}
 
+	public static void cancelCheckOuts(long groupId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().cancelCheckOuts(groupId);
+	}
+
 	public static void checkAssetEntry(long userId,
 		com.liferay.portal.kernel.repository.model.FileEntry fileEntry,
 		com.liferay.portal.kernel.repository.model.FileVersion fileVersion)
@@ -81,6 +86,11 @@ public class DLAppHelperLocalServiceUtil {
 	public static void deleteRepositoryFileEntries(long repositoryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deleteRepositoryFileEntries(repositoryId);
+	}
+
+	public static long getCheckedOutFileEntriesCount(long groupId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getCheckedOutFileEntriesCount(groupId);
 	}
 
 	public static void getFileAsStream(long userId,
@@ -120,7 +130,7 @@ public class DLAppHelperLocalServiceUtil {
 	}
 
 	/**
-	* @deprecated As of 7.0.0, replaced by {@link
+	* @deprecated As of Wilberforce, replaced by {@link
 	#moveDependentsToTrash(DLFolder)}
 	*/
 	@Deprecated
@@ -211,7 +221,7 @@ public class DLAppHelperLocalServiceUtil {
 	}
 
 	/**
-	* @deprecated As of 7.0.0, replaced by {@link
+	* @deprecated As of Wilberforce, replaced by {@link
 	#restoreDependentsFromTrash(DLFolder)}
 	*/
 	@Deprecated
@@ -222,7 +232,7 @@ public class DLAppHelperLocalServiceUtil {
 	}
 
 	/**
-	* @deprecated As of 7.0.0, replaced by {@link
+	* @deprecated As of Wilberforce, replaced by {@link
 	#restoreDependentsFromTrash(List)}
 	*/
 	@Deprecated

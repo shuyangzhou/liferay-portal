@@ -181,12 +181,13 @@
 			<var name="portlet" value="Pages" />
 		</execute>
 
-		<execute macro="Portlet#gotoPortletOptions">
-			<var name="portletOption" value="Configure" />
+		<execute macro="SitePages#gotoPageMenuItem">
+			<var name="menuItem" value="Configure" />
+			<var name="pageName" value="${pageName}" />
 		</execute>
 
-		<execute macro="Panel#expandPanel">
-			<var name="panel" value="Logo" />
+		<execute macro="Navigator#gotoNavTab">
+			<var name="navTab" value="Advanced" />
 		</execute>
 
 		<execute macro="Page#uploadFileForLogo">
@@ -437,8 +438,9 @@
 	</command>
 
 	<command name="manageDeviceFamilyActions">
-		<execute macro="LexiconEntry#gotoEllipsisMenuItem">
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
 			<var name="menuItem" value="Manage Actions" />
+			<var name="rowEntry" value="${deviceFamilyName}" />
 		</execute>
 
 		<execute function="SelectFrame" locator1="IFrame#DIALOG" />
@@ -623,7 +625,7 @@
 	</command>
 
 	<command name="viewChildPageDropdown">
-		<execute function="ClickNoError" locator1="Home#${viewChildPageDropdown}" />
+		<execute function="ClickNoError#clickNoMouseOver" locator1="Home#${viewChildPageDropdown}" />
 
 		<if>
 			<isset var="javaScriptPage" />

@@ -20,6 +20,7 @@ dependencies {
 	compileInclude group: "org.eclipse.jetty", name: "jetty-util", version: "7.4.4.v20110707"
 	compileInclude group: "org.slf4j", name: "slf4j-api", version: "1.7.2"
 
+	compileOnly group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.1.0"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
 }
 

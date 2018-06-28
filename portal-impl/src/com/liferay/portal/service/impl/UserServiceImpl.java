@@ -760,7 +760,6 @@ public class UserServiceImpl extends UserServiceBaseImpl {
 	 * @param  obc the comparator to order the users by (optionally
 	 *         <code>null</code>)
 	 * @return the matching users
-	 * @return the users who belong to a group
 	 */
 	@Override
 	public List<User> getGroupUsers(
@@ -852,7 +851,6 @@ public class UserServiceImpl extends UserServiceBaseImpl {
 	 * @param  obc the comparator to order the users by (optionally
 	 *         <code>null</code>)
 	 * @return the matching users
-	 * @return the users who belong to a group
 	 */
 	@Override
 	public List<User> getOrganizationUsers(
@@ -962,6 +960,24 @@ public class UserServiceImpl extends UserServiceBaseImpl {
 			getPermissionChecker(), userGroupId, ActionKeys.VIEW_MEMBERS);
 
 		return userGroupPersistence.getUsers(userGroupId);
+	}
+
+	/**
+	 * Returns the users belonging to the user group with the status.
+	 *
+	 * @param  userGroupId the primary key of the user group
+	 * @param  start the lower bound of the range of users
+	 * @param  end the upper bound of the range of users (not inclusive)
+	 * @return the matching users
+	 */
+	@Override
+	public List<User> getUserGroupUsers(long userGroupId, int start, int end)
+		throws PortalException {
+
+		UserGroupPermissionUtil.check(
+			getPermissionChecker(), userGroupId, ActionKeys.VIEW_MEMBERS);
+
+		return userLocalService.getUserGroupUsers(userGroupId, start, end);
 	}
 
 	/**
@@ -1701,8 +1717,8 @@ public class UserServiceImpl extends UserServiceBaseImpl {
 	 * @param      userId the primary key of the user
 	 * @param      status the user's new workflow status
 	 * @return     the user
-	 * @deprecated As of 7.0.0, replaced by {@link #updateStatus(long, int,
-	 *             ServiceContext)}
+	 * @deprecated As of Wilberforce, replaced by {@link #updateStatus(long,
+	 *             int, ServiceContext)}
 	 */
 	@Deprecated
 	@Override
@@ -2151,13 +2167,13 @@ public class UserServiceImpl extends UserServiceBaseImpl {
 	 *             <code>uuid</code> attribute), asset category IDs, asset tag
 	 *             names, and expando bridge attributes for the user.
 	 * @return     the user
-	 * @deprecated As of 7.0.0, replaced by {@link #updateUser(long, String,
-	 *             String, String, boolean, String, String, String, String,
-	 *             long, String, boolean, byte[], String, String, String,
-	 *             String, String, String, String, long, long, boolean, int,
-	 *             int, int, String, String, String, String, String, String,
-	 *             long[], long[], long[], List, long[], List, List, List, List,
-	 *             List, ServiceContext)}
+	 * @deprecated As of Wilberforce, replaced by {@link #updateUser(long,
+	 *             String, String, String, boolean, String, String, String,
+	 *             String, long, String, boolean, byte[], String, String,
+	 *             String, String, String, String, String, long, long, boolean,
+	 *             int, int, int, String, String, String, String, String,
+	 *             String, long[], long[], long[], List, long[], List, List,
+	 *             List, List, List, ServiceContext)}
 	 */
 	@Deprecated
 	@Override

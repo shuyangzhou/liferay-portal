@@ -92,7 +92,7 @@ public class ConditionPoshiElement extends ExecutePoshiElement {
 		}
 
 		if (poshiScript.contains(" && ") || poshiScript.contains(" || ") ||
-			poshiScript.startsWith("!") ||
+			poshiScript.startsWith("!") || poshiScript.startsWith("contains") ||
 			poshiScript.startsWith("else if (")) {
 
 			return false;

@@ -22,7 +22,10 @@ import org.osgi.service.cm.Configuration;
 
 /**
  * @author Drew Brokke
+ * @deprecated As of Judson, replaced by {@link
+ *            PrefsPropsToConfigurationUpgradeHelper}
  */
+@Deprecated
 public interface PrefsPropsToConfigurationUpgrade {
 
 	public void upgradePrefsPropsToConfiguration(

@@ -25,7 +25,7 @@
 
 				<execute function="Click" locator1="Icon#INFO" />
 
-				<execute function="AssertClick" locator1="Link#FEED" value1="Feed" />
+				<execute function="AssertClick#assertPartialTextClickAt" locator1="Link#FEED" value1="Feed" />
 
 				<execute function="Pause" locator1="3000" />
 			</then>
@@ -187,7 +187,7 @@
 
 		<execute macro="Alert#viewRequestFailedToComplete" />
 
-		<execute function="AssertTextEquals" locator1="Message#ERROR_1" value1="Please enter a valid title." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="Message#ERROR_ENTER_A_VALID_TITLE" value1="Please enter a valid title." />
 	</command>
 
 	<command name="addFrontPageCP">
