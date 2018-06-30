@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ClassLoaderUtil;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -119,7 +118,7 @@ public class ClusterClassLoaderPool {
 			new VersionedClassLoader(classLoader, version));
 
 		if (versionedClassLoaders.size() > 1) {
-			Collections.sort(versionedClassLoaders);
+			versionedClassLoaders.sort((o1, o2) -> o2.compareTo(o1));
 		}
 	}
 
@@ -157,9 +156,7 @@ public class ClusterClassLoaderPool {
 
 		@Override
 		public int compareTo(VersionedClassLoader versionedClassLoader) {
-			Version comparedVersion = versionedClassLoader.getVersion();
-
-			return comparedVersion.compareTo(getVersion());
+			return _version.compareTo(versionedClassLoader._version);
 		}
 
 		public ClassLoader getClassLoader() {
