@@ -98,12 +98,8 @@ public class ClusterClassLoaderPool {
 	public static void register(
 		String symbolicName, Version version, ClassLoader classLoader) {
 
-		String contextName = symbolicName;
-
-		if (version != null) {
-			contextName = StringBundler.concat(
-				contextName, StringPool.UNDERLINE, version.toString());
-		}
+		String contextName = StringBundler.concat(
+			symbolicName, StringPool.UNDERLINE, version.toString());
 
 		_classLoaders.put(contextName, classLoader);
 		_contextNames.put(classLoader, contextName);
@@ -139,10 +135,6 @@ public class ClusterClassLoaderPool {
 
 	private static void _registerFallback(
 		String symbolicName, Version version, ClassLoader classLoader) {
-
-		if (version == null) {
-			return;
-		}
 
 		List<VersionedClassLoader> versionedClassLoaders =
 			_fallbackClassLoaders.get(symbolicName);
