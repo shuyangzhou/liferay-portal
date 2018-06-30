@@ -38,7 +38,17 @@ public class ClusterClassLoaderPool {
 		ClassLoader classLoader = null;
 
 		if ((contextName != null) && !contextName.equals("null")) {
-			classLoader = _classLoaders.get(contextName);
+			ClassLoader contextClassLoader =
+				ClassLoaderUtil.getContextClassLoader();
+
+			try {
+				ClassLoaderUtil.setContextClassLoader(null);
+
+				classLoader = ClassLoaderPool.getClassLoader(contextName);
+			}
+			finally {
+				ClassLoaderUtil.setContextClassLoader(contextClassLoader);
+			}
 
 			if (classLoader == null) {
 				String[] bundleInfo = _parseContextName(contextName);
@@ -75,15 +85,9 @@ public class ClusterClassLoaderPool {
 	}
 
 	public static String getContextName(ClassLoader classLoader) {
-		if (classLoader == null) {
-			return "null";
-		}
+		String contextName = ClassLoaderPool.getContextName(classLoader);
 
-		String contextName = _contextNames.get(classLoader);
-
-		if (contextName == null) {
-			contextName = "null";
-
+		if (contextName.equals("null")) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					StringBundler.concat(
@@ -98,25 +102,10 @@ public class ClusterClassLoaderPool {
 	public static void register(
 		String symbolicName, Version version, ClassLoader classLoader) {
 
-		String contextName = StringBundler.concat(
-			symbolicName, StringPool.UNDERLINE, version.toString());
-
-		_classLoaders.put(contextName, classLoader);
-		_contextNames.put(classLoader, contextName);
-
 		_registerFallback(symbolicName, version, classLoader);
 	}
 
 	public static void unregister(String symbolicName, Version version) {
-		String contextName = StringBundler.concat(
-			symbolicName, StringPool.UNDERLINE, version.toString());
-
-		ClassLoader classLoader = _classLoaders.remove(contextName);
-
-		if (classLoader != null) {
-			_contextNames.remove(classLoader);
-		}
-
 		_unregisterFallback(symbolicName, version);
 	}
 
@@ -182,25 +171,11 @@ public class ClusterClassLoaderPool {
 		}
 	}
 
-	private static final String _PORTAL_SERVLETCONTEXTNAME = StringPool.BLANK;
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		ClusterClassLoaderPool.class);
 
-	private static final Map<String, ClassLoader> _classLoaders =
-		new ConcurrentHashMap<>();
-	private static final Map<ClassLoader, String> _contextNames =
-		new ConcurrentHashMap<>();
 	private static final Map<String, List<VersionedClassLoader>>
 		_fallbackClassLoaders = new ConcurrentHashMap<>();
-
-	static {
-		register(
-			"GlobalClassLoader", null, ClassLoaderPool.class.getClassLoader());
-		register(
-			_PORTAL_SERVLETCONTEXTNAME, null,
-			ClassLoaderUtil.getPortalClassLoader());
-	}
 
 	private static class VersionedClassLoader
 		implements Comparable<VersionedClassLoader> {
