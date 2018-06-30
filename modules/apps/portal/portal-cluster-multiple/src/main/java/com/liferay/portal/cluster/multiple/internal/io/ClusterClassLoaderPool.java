@@ -168,6 +168,10 @@ public class ClusterClassLoaderPool {
 		List<VersionedClassLoader> classLoadersInOrder =
 			_fallbackClassLoaders.get(bundleInfo[0]);
 
+		if (classLoadersInOrder == null) {
+			return;
+		}
+
 		for (VersionedClassLoader versionedClassLoader : classLoadersInOrder) {
 			Version targetVersion = versionedClassLoader.getVersion();
 
