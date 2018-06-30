@@ -106,16 +106,6 @@ public class ClusterClassLoaderPool {
 	public static void register(
 		String symbolicName, Version version, ClassLoader classLoader) {
 
-		_registerFallback(symbolicName, version, classLoader);
-	}
-
-	public static void unregister(String symbolicName, Version version) {
-		_unregisterFallback(symbolicName, version);
-	}
-
-	private static void _registerFallback(
-		String symbolicName, Version version, ClassLoader classLoader) {
-
 		List<VersionedClassLoader> versionedClassLoaders =
 			_fallbackClassLoaders.get(symbolicName);
 
@@ -133,9 +123,7 @@ public class ClusterClassLoaderPool {
 		}
 	}
 
-	private static void _unregisterFallback(
-		String symbolicName, Version version) {
-
+	public static void unregister(String symbolicName, Version version) {
 		List<VersionedClassLoader> classLoadersInOrder =
 			_fallbackClassLoaders.get(symbolicName);
 
