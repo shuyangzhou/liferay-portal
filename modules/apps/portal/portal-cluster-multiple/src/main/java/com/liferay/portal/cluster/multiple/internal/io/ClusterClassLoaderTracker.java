@@ -50,7 +50,8 @@ public class ClusterClassLoaderTracker implements BundleActivator {
 				Bundle bundle, BundleEvent bundleEvent,
 				ClassLoader classLoader) {
 
-				ClusterClassLoaderPool.unregister(classLoader);
+				ClusterClassLoaderPool.unregister(
+					bundle.getSymbolicName(), bundle.getVersion());
 			}
 
 		};

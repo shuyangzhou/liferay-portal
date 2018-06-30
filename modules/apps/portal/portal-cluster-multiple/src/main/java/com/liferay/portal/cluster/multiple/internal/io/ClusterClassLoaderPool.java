@@ -107,13 +107,17 @@ public class ClusterClassLoaderPool {
 		_registerFallback(symbolicName, version, classLoader);
 	}
 
-	public static void unregister(ClassLoader classLoader) {
-		String contextName = _contextNames.remove(classLoader);
+	public static void unregister(String symbolicName, Version version) {
+		String contextName = StringBundler.concat(
+			symbolicName, StringPool.UNDERLINE, version.toString());
 
-		if (contextName != null) {
-			_classLoaders.remove(contextName);
-			_unregisterFallback(contextName);
+		ClassLoader classLoader = _classLoaders.remove(contextName);
+
+		if (classLoader != null) {
+			_contextNames.remove(classLoader);
 		}
+
+		_unregisterFallback(symbolicName, version);
 	}
 
 	private static String[] _parseContextName(String contextName) {
@@ -153,11 +157,11 @@ public class ClusterClassLoaderPool {
 		}
 	}
 
-	private static void _unregisterFallback(String contextName) {
-		String[] bundleInfo = _parseContextName(contextName);
+	private static void _unregisterFallback(
+		String symbolicName, Version version) {
 
 		List<VersionedClassLoader> classLoadersInOrder =
-			_fallbackClassLoaders.get(bundleInfo[0]);
+			_fallbackClassLoaders.get(symbolicName);
 
 		if (classLoadersInOrder == null) {
 			return;
@@ -166,11 +170,11 @@ public class ClusterClassLoaderPool {
 		for (VersionedClassLoader versionedClassLoader : classLoadersInOrder) {
 			Version targetVersion = versionedClassLoader.getVersion();
 
-			if (bundleInfo[1].equals(targetVersion.toString())) {
+			if (version.equals(targetVersion)) {
 				classLoadersInOrder.remove(versionedClassLoader);
 
 				if (classLoadersInOrder.isEmpty()) {
-					_fallbackClassLoaders.remove(bundleInfo[0]);
+					_fallbackClassLoaders.remove(symbolicName);
 				}
 
 				break;
