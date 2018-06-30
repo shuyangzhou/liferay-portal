@@ -51,25 +51,29 @@ public class ClusterClassLoaderPool {
 			}
 
 			if (classLoader == null) {
-				String[] bundleInfo = _parseContextName(contextName);
+				int pos = contextName.indexOf(StringPool.UNDERLINE);
 
-				List<VersionedClassLoader> classLoadersInOrder =
-					_fallbackClassLoaders.get(bundleInfo[0]);
+				if (pos > 0) {
+					String symbolicName = contextName.substring(0, pos);
 
-				if (classLoadersInOrder != null) {
-					VersionedClassLoader latestVersionClassLoader =
-						classLoadersInOrder.get(0);
+					List<VersionedClassLoader> classLoadersInOrder =
+						_fallbackClassLoaders.get(symbolicName);
 
-					classLoader = latestVersionClassLoader.getClassLoader();
+					if (classLoadersInOrder != null) {
+						VersionedClassLoader latestVersionClassLoader =
+							classLoadersInOrder.get(0);
 
-					if (_log.isWarnEnabled()) {
-						_log.warn(
-							StringBundler.concat(
-								"Unable to find ClassLoader for ", contextName,
-								", ClassLoader ", bundleInfo[0],
-								StringPool.UNDERLINE,
-								latestVersionClassLoader.getVersion(),
-								" is provided instead"));
+						classLoader = latestVersionClassLoader.getClassLoader();
+
+						if (_log.isWarnEnabled()) {
+							_log.warn(
+								StringBundler.concat(
+									"Unable to find ClassLoader for ",
+									contextName, ", ClassLoader ", symbolicName,
+									StringPool.UNDERLINE,
+									latestVersionClassLoader.getVersion(),
+									" is provided instead"));
+						}
 					}
 				}
 			}
@@ -107,23 +111,6 @@ public class ClusterClassLoaderPool {
 
 	public static void unregister(String symbolicName, Version version) {
 		_unregisterFallback(symbolicName, version);
-	}
-
-	private static String[] _parseContextName(String contextName) {
-		String[] bundleInfo = new String[2];
-
-		int pos = contextName.indexOf(StringPool.UNDERLINE);
-
-		if (pos < 0) {
-			bundleInfo[0] = contextName;
-			bundleInfo[1] = null;
-		}
-		else {
-			bundleInfo[0] = contextName.substring(0, pos);
-			bundleInfo[1] = contextName.substring(pos + 1);
-		}
-
-		return bundleInfo;
 	}
 
 	private static void _registerFallback(
