@@ -150,6 +150,8 @@ public class ClusterClassLoaderPool {
 
 		if (versionedClassLoaders == null) {
 			versionedClassLoaders = new CopyOnWriteArrayList<>();
+
+			_fallbackClassLoaders.put(symbolicName, versionedClassLoaders);
 		}
 
 		versionedClassLoaders.add(
@@ -158,8 +160,6 @@ public class ClusterClassLoaderPool {
 		if (versionedClassLoaders.size() > 1) {
 			Collections.sort(versionedClassLoaders);
 		}
-
-		_fallbackClassLoaders.put(symbolicName, versionedClassLoaders);
 	}
 
 	private static void _unregisterFallback(String contextName) {
