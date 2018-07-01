@@ -58,7 +58,7 @@ public class JGroupsReceiver extends ReceiverAdapter {
 		ByteBuffer byteBuffer = ByteBuffer.wrap(
 			rawBuffer, message.getOffset(), message.getLength());
 
-		ClusterDeserializer deserializer = new ClusterDeserializer(
+		ClusterDeserializer clusterDeserializer = new ClusterDeserializer(
 			byteBuffer.slice());
 
 		Thread currentThread = Thread.currentThread();
@@ -73,7 +73,8 @@ public class JGroupsReceiver extends ReceiverAdapter {
 
 		try {
 			_clusterReceiver.receive(
-				deserializer.readObject(), new AddressImpl(message.getSrc()));
+				clusterDeserializer.readObject(),
+				new AddressImpl(message.getSrc()));
 		}
 		catch (ClassNotFoundException cnfe) {
 			if (_log.isWarnEnabled()) {

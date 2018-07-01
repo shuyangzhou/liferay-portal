@@ -155,11 +155,11 @@ public class JGroupsClusterChannel implements ClusterChannel {
 			return;
 		}
 
-		ClusterSerializer serializer = new ClusterSerializer();
+		ClusterSerializer clusterSerializer = new ClusterSerializer();
 
-		serializer.writeObject(message);
+		clusterSerializer.writeObject(message);
 
-		ByteBuffer byteBuffer = serializer.toByteBuffer();
+		ByteBuffer byteBuffer = clusterSerializer.toByteBuffer();
 
 		try {
 			_jChannel.send(
