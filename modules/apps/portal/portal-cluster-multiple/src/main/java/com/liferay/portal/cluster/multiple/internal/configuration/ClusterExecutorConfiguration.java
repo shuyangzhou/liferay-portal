@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.cluster.multiple.configuration;
+package com.liferay.portal.cluster.multiple.internal.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
@@ -23,7 +23,7 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
  */
 @ExtendedObjectClassDefinition(category = "infrastructure")
 @Meta.OCD(
-	id = "com.liferay.portal.cluster.multiple.configuration.ClusterExecutorConfiguration",
+	id = "com.liferay.portal.cluster.multiple.internal.configuration.ClusterExecutorConfiguration",
 	localization = "content/Language",
 	name = "cluster-executor-configuration-name"
 )
