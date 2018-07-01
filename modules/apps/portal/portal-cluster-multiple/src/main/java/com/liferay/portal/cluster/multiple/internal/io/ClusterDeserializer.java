@@ -40,12 +40,16 @@ public class ClusterDeserializer extends Deserializer {
 	public <T extends Serializable> T readObject()
 		throws ClassNotFoundException {
 
-		byte tcByte = buffer[index++];
+		byte tcByte = buffer[index];
 
 		if (tcByte == SerializationConstants.TC_CLASS) {
+			index++;
+
 			return (T)_getClass(readString(), readString());
 		}
 		else if (tcByte == SerializationConstants.TC_OBJECT) {
+			index++;
+
 			try {
 				ObjectInputStream objectInputStream =
 					new ClusterProtectedAnnotatedObjectInputStream(
