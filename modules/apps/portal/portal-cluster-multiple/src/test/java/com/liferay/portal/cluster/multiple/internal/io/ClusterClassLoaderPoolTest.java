@@ -12,9 +12,8 @@
  * details.
  */
 
-package com.liferay.portal.cluster.multiple.internal;
+package com.liferay.portal.cluster.multiple.internal.io;
 
-import com.liferay.portal.cluster.multiple.internal.io.ClusterClassLoaderPool;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 
