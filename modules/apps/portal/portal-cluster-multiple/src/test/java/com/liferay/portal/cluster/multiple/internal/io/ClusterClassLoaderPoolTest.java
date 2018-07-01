@@ -14,17 +14,25 @@
 
 package com.liferay.portal.cluster.multiple.internal.io;
 
+import com.liferay.petra.lang.ClassLoaderPool;
+import com.liferay.portal.kernel.test.CaptureHandler;
+import com.liferay.portal.kernel.test.JDKLoggerTestUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
-import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
+import com.liferay.portal.kernel.util.ClassLoaderUtil;
 
 import java.net.URL;
 import java.net.URLClassLoader;
 
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 
 import org.osgi.framework.Version;
@@ -34,85 +42,241 @@ import org.osgi.framework.Version;
  */
 public class ClusterClassLoaderPoolTest {
 
+	@ClassRule
+	public static final CodeCoverageAssertor codeCoverageAssertor =
+		CodeCoverageAssertor.INSTANCE;
+
 	@Before
 	public void setUp() {
-		Thread currentThread = Thread.currentThread();
-
-		ClassLoader currentClassLoader = currentThread.getContextClassLoader();
-
-		PortalClassLoaderUtil.setClassLoader(currentClassLoader);
-
 		_classLoaders = ReflectionTestUtil.getFieldValue(
-			ClusterClassLoaderPool.class, "_classLoaders");
-
-		_classLoaders.clear();
-
+			ClassLoaderPool.class, "_classLoaders");
 		_contextNames = ReflectionTestUtil.getFieldValue(
-			ClusterClassLoaderPool.class, "_contextNames");
-
-		_contextNames.clear();
+			ClassLoaderPool.class, "_contextNames");
 
 		_fallbackClassLoaders = ReflectionTestUtil.getFieldValue(
 			ClusterClassLoaderPool.class, "_fallbackClassLoaders");
+	}
 
+	@After
+	public void tearDown() {
+		_classLoaders.clear();
+		_contextNames.clear();
 		_fallbackClassLoaders.clear();
 	}
 
 	@Test
-	public void testGetFallbackClassLoader() {
-		ClassLoader oldClassLoader = new URLClassLoader(new URL[0]);
-		ClassLoader newClassLoader = new URLClassLoader(new URL[0]);
-
-		ClusterClassLoaderPool.register(
-			_CONTEXT_NAME, new Version("1.0.0"), oldClassLoader);
-		ClusterClassLoaderPool.register(
-			_CONTEXT_NAME, new Version("2.0.0"), newClassLoader);
-
-		Assert.assertSame(
-			newClassLoader,
-			ClusterClassLoaderPool.getClassLoader(
-				_CONTEXT_NAME.concat("_3.0.0")));
+	public void testConstructor() {
+		new ClusterClassLoaderPool();
 	}
 
 	@Test
-	public void testRegisterFallbackClassLoader() {
-		ClassLoader oldClassLoader = new URLClassLoader(new URL[0]);
-		ClassLoader newClassLoader = new URLClassLoader(new URL[0]);
+	public void testGetClassLoader() {
+		ClassLoader classLoader1 = new URLClassLoader(new URL[0]);
+		ClassLoader classLoader2 = new URLClassLoader(new URL[0]);
 
+		ClassLoaderPool.register(_CONTEXT_NAME_1, classLoader1);
+		ClassLoaderPool.register(_CONTEXT_NAME_2, classLoader2);
 		ClusterClassLoaderPool.register(
-			_CONTEXT_NAME, new Version("1.0.0"), oldClassLoader);
+			_SYMBOLIC_NAME, new Version("1.0.0"), classLoader1);
 		ClusterClassLoaderPool.register(
-			_CONTEXT_NAME, new Version("2.0.0"), newClassLoader);
+			_SYMBOLIC_NAME, new Version("2.0.0"), classLoader2);
+
+		Assert.assertSame(
+			classLoader1,
+			ClusterClassLoaderPool.getClassLoader(_CONTEXT_NAME_1));
+		Assert.assertSame(
+			classLoader2,
+			ClusterClassLoaderPool.getClassLoader(_CONTEXT_NAME_2));
+		Assert.assertSame(
+			classLoader2,
+			ClusterClassLoaderPool.getClassLoader(_CONTEXT_NAME_3));
+		Assert.assertSame(
+			ClassLoaderUtil.getContextClassLoader(),
+			ClusterClassLoaderPool.getClassLoader(_SYMBOLIC_NAME));
+		Assert.assertSame(
+			ClassLoaderUtil.getContextClassLoader(),
+			ClusterClassLoaderPool.getClassLoader(null));
+		Assert.assertSame(
+			ClassLoaderUtil.getContextClassLoader(),
+			ClusterClassLoaderPool.getClassLoader("null"));
+
+		try (CaptureHandler captureHandler =
+				JDKLoggerTestUtil.configureJDKLogger(
+					ClusterClassLoaderPool.class.getName(), Level.WARNING)) {
+
+			// Test 1, log level is WARNING
+
+			List<LogRecord> logRecords = captureHandler.getLogRecords();
+
+			Assert.assertSame(
+				classLoader2,
+				ClusterClassLoaderPool.getClassLoader(_CONTEXT_NAME_3));
+
+			Assert.assertEquals(logRecords.toString(), 1, logRecords.size());
+
+			LogRecord logRecord = logRecords.get(0);
+
+			Assert.assertEquals(
+				"Unable to find ClassLoader for " + _CONTEXT_NAME_3 +
+					", ClassLoader " + _CONTEXT_NAME_2 + " is provided instead",
+				logRecord.getMessage());
+
+			// Test 2, log level is OFF
+
+			logRecords = captureHandler.resetLogLevel(Level.OFF);
+
+			Assert.assertSame(
+				classLoader2,
+				ClusterClassLoaderPool.getClassLoader(_CONTEXT_NAME_3));
+
+			Assert.assertEquals(logRecords.toString(), 0, logRecords.size());
+		}
+	}
+
+	@Test
+	public void testGetClassLoaderDebug() {
+		try (CaptureHandler captureHandler =
+				JDKLoggerTestUtil.configureJDKLogger(
+					ClusterClassLoaderPool.class.getName(), Level.INFO)) {
+
+			// Test 1, log level is INFO
+
+			List<LogRecord> logRecords = captureHandler.getLogRecords();
+
+			Assert.assertSame(
+				ClassLoaderUtil.getContextClassLoader(),
+				ClusterClassLoaderPool.getClassLoader(_CONTEXT_NAME_1));
+
+			Assert.assertEquals(logRecords.toString(), 0, logRecords.size());
+
+			// Test 2, log level is FINE
+
+			logRecords = captureHandler.resetLogLevel(Level.FINE);
+
+			Assert.assertSame(
+				ClassLoaderUtil.getContextClassLoader(),
+				ClusterClassLoaderPool.getClassLoader(_CONTEXT_NAME_1));
+
+			Assert.assertEquals(logRecords.toString(), 1, logRecords.size());
+
+			LogRecord logRecord = logRecords.get(0);
+
+			Assert.assertEquals(
+				"Unable to find ClassLoader for " + _CONTEXT_NAME_1 +
+					", fall back to current thread's context classLoader",
+				logRecord.getMessage());
+		}
+	}
+
+	@Test
+	public void testGetContextName() {
+		ClassLoader classLoader = new URLClassLoader(new URL[0]);
+
+		ClassLoaderPool.register(_CONTEXT_NAME_1, classLoader);
+		ClusterClassLoaderPool.register(
+			_SYMBOLIC_NAME, new Version("1.0.0"), classLoader);
 
 		Assert.assertEquals(
-			_fallbackClassLoaders.toString(), 1, _fallbackClassLoaders.size());
+			"null", ClusterClassLoaderPool.getContextName(null));
+		Assert.assertEquals(
+			_CONTEXT_NAME_1,
+			ClusterClassLoaderPool.getContextName(classLoader));
+		Assert.assertEquals(
+			"null",
+			ClusterClassLoaderPool.getContextName(
+				new URLClassLoader(new URL[0])));
+	}
+
+	@Test
+	public void testGetContextNameDebug() {
+		ClassLoader classLoader = new URLClassLoader(new URL[0]);
+
+		try (CaptureHandler captureHandler =
+				JDKLoggerTestUtil.configureJDKLogger(
+					ClusterClassLoaderPool.class.getName(), Level.INFO)) {
+
+			// Test 1, log level is INFO
+
+			List<LogRecord> logRecords = captureHandler.getLogRecords();
+
+			Assert.assertEquals(
+				"null", ClusterClassLoaderPool.getContextName(classLoader));
+
+			Assert.assertEquals(logRecords.toString(), 0, logRecords.size());
+
+			// Test 2, log level is FINE
+
+			logRecords = captureHandler.resetLogLevel(Level.FINE);
+
+			Assert.assertEquals(
+				"null", ClusterClassLoaderPool.getContextName(classLoader));
+
+			Assert.assertEquals(logRecords.toString(), 1, logRecords.size());
+
+			LogRecord logRecord = logRecords.get(0);
+
+			Assert.assertEquals(
+				"Unable to find contextName for " + classLoader +
+					", send 'null' as contextName instead",
+				logRecord.getMessage());
+		}
 	}
 
 	@Test
 	public void testUnregisterFallbackClassLoader() {
-		ClassLoader classLoader1 = new URLClassLoader(new URL[0]);
-		ClassLoader classLoader2 = new URLClassLoader(new URL[0]);
-
 		ClusterClassLoaderPool.register(
-			_CONTEXT_NAME, new Version("1.0.0"), classLoader1);
+			_SYMBOLIC_NAME, new Version("1.0.0"),
+			new URLClassLoader(new URL[0]));
+		ClusterClassLoaderPool.register(
+			_SYMBOLIC_NAME, new Version("2.0.0"),
+			new URLClassLoader(new URL[0]));
+		ClusterClassLoaderPool.register(
+			_SYMBOLIC_NAME, new Version("3.0.0"),
+			new URLClassLoader(new URL[0]));
 
-		ClusterClassLoaderPool.unregister(classLoader1);
-		ClusterClassLoaderPool.unregister(classLoader2);
+		ClusterClassLoaderPool.unregister(
+			"WRONG_SYMBOLIC_NAME", new Version("1.0.0"));
 
-		_assertEmptyMaps();
-	}
+		Assert.assertEquals(
+			_fallbackClassLoaders.toString(), 1, _fallbackClassLoaders.size());
 
-	private void _assertEmptyMaps() {
-		Assert.assertTrue(_contextNames.toString(), _contextNames.isEmpty());
-		Assert.assertTrue(_classLoaders.toString(), _classLoaders.isEmpty());
+		ClusterClassLoaderPool.unregister(_SYMBOLIC_NAME, new Version("4.0.0"));
+
+		Assert.assertEquals(
+			_fallbackClassLoaders.toString(), 1, _fallbackClassLoaders.size());
+
+		ClusterClassLoaderPool.unregister(_SYMBOLIC_NAME, new Version("2.0.0"));
+
+		Assert.assertEquals(
+			_fallbackClassLoaders.toString(), 1, _fallbackClassLoaders.size());
+
+		ClusterClassLoaderPool.unregister(_SYMBOLIC_NAME, new Version("1.0.0"));
+
+		Assert.assertEquals(
+			_fallbackClassLoaders.toString(), 1, _fallbackClassLoaders.size());
+
+		ClusterClassLoaderPool.unregister(_SYMBOLIC_NAME, new Version("3.0.0"));
+
 		Assert.assertTrue(
 			_fallbackClassLoaders.toString(), _fallbackClassLoaders.isEmpty());
 	}
 
-	private static final String _CONTEXT_NAME = "contextName";
+	private static final String _CONTEXT_NAME_1 =
+		ClusterClassLoaderPoolTest._SYMBOLIC_NAME + "_1.0.0";
 
-	private static Map<String, ClassLoader> _classLoaders;
-	private static Map<ClassLoader, String> _contextNames;
-	private static Map<String, List> _fallbackClassLoaders;
+	private static final String _CONTEXT_NAME_2 =
+		ClusterClassLoaderPoolTest._SYMBOLIC_NAME + "_2.0.0";
+
+	private static final String _CONTEXT_NAME_3 =
+		ClusterClassLoaderPoolTest._SYMBOLIC_NAME + "_3.0.0";
+
+	private static final String _CONTEXT_NAME_4 =
+		ClusterClassLoaderPoolTest._SYMBOLIC_NAME + "_4.0.0";
+
+	private static final String _SYMBOLIC_NAME = "symbolic.name";
+
+	private Map<String, ClassLoader> _classLoaders;
+	private Map<ClassLoader, String> _contextNames;
+	private Map<String, List> _fallbackClassLoaders;
 
 }
