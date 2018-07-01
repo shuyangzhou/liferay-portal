@@ -29,36 +29,22 @@ public class ClusterSerializer extends Serializer {
 
 	@Override
 	public void writeObject(Serializable serializable) {
-		if (serializable == null) {
-			writeByte(SerializationConstants.TC_NULL);
+		if ((serializable == null) || (serializable instanceof Long) ||
+			(serializable instanceof String) ||
+			(serializable instanceof Integer) ||
+			(serializable instanceof Boolean) ||
+			(serializable instanceof Short) ||
+			(serializable instanceof Character) ||
+			(serializable instanceof Byte) ||
+			(serializable instanceof Double) ||
+			(serializable instanceof Float)) {
+
+			super.writeObject(serializable);
 
 			return;
 		}
-		else if (serializable instanceof Long) {
-			writeByte(SerializationConstants.TC_LONG);
-			writeLong((Long)serializable);
 
-			return;
-		}
-		else if (serializable instanceof String) {
-			writeByte(SerializationConstants.TC_STRING);
-			writeString((String)serializable);
-
-			return;
-		}
-		else if (serializable instanceof Integer) {
-			writeByte(SerializationConstants.TC_INTEGER);
-			writeInt((Integer)serializable);
-
-			return;
-		}
-		else if (serializable instanceof Boolean) {
-			writeByte(SerializationConstants.TC_BOOLEAN);
-			writeBoolean((Boolean)serializable);
-
-			return;
-		}
-		else if (serializable instanceof Class) {
+		if (serializable instanceof Class) {
 			Class<?> clazz = (Class<?>)serializable;
 
 			writeByte(SerializationConstants.TC_CLASS);
@@ -67,39 +53,8 @@ public class ClusterSerializer extends Serializer {
 
 			return;
 		}
-		else if (serializable instanceof Short) {
-			writeByte(SerializationConstants.TC_SHORT);
-			writeShort((Short)serializable);
 
-			return;
-		}
-		else if (serializable instanceof Character) {
-			writeByte(SerializationConstants.TC_CHARACTER);
-			writeChar((Character)serializable);
-
-			return;
-		}
-		else if (serializable instanceof Byte) {
-			writeByte(SerializationConstants.TC_BYTE);
-			writeByte((Byte)serializable);
-
-			return;
-		}
-		else if (serializable instanceof Double) {
-			writeByte(SerializationConstants.TC_DOUBLE);
-			writeDouble((Double)serializable);
-
-			return;
-		}
-		else if (serializable instanceof Float) {
-			writeByte(SerializationConstants.TC_FLOAT);
-			writeFloat((Float)serializable);
-
-			return;
-		}
-		else {
-			writeByte(SerializationConstants.TC_OBJECT);
-		}
+		writeByte(SerializationConstants.TC_OBJECT);
 
 		try {
 			ObjectOutputStream objectOutputStream =
