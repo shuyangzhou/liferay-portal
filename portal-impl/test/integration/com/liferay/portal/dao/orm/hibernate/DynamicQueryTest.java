@@ -37,7 +37,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.junit.Assert;
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -112,8 +111,6 @@ public class DynamicQueryTest {
 			PropsUtil.get(
 				PropsKeys.DATABASE_IN_MAX_PARAMETERS,
 				new Filter(dbType.getName())));
-
-		Assume.assumeTrue(databaseInMaxParameters > 0);
 
 		DynamicQuery dynamicQuery = ClassNameLocalServiceUtil.dynamicQuery();
 

@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -57,8 +56,6 @@ public class RestrictionsFactoryTest {
 			PropsUtil.get(
 				PropsKeys.DATABASE_IN_MAX_PARAMETERS,
 				new Filter(dbType.getName())));
-
-		Assume.assumeTrue(_databaseInMaxParameters > 0);
 	}
 
 	@Test
