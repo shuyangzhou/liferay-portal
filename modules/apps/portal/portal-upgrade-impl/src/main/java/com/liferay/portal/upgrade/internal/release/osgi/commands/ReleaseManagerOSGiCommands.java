@@ -21,6 +21,7 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapListener;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.events.StartupHelperUtil;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
@@ -534,23 +535,30 @@ public class ReleaseManagerOSGiCommands {
 			try {
 				_updateReleaseState(_STATE_IN_PROGRESS);
 
+				boolean dBNew = StartupHelperUtil.isDBNew();
+
 				for (UpgradeInfo upgradeInfo : _upgradeInfos) {
 					UpgradeStep upgradeStep = upgradeInfo.getUpgradeStep();
 
-					upgradeStep.upgrade(
-						new DBProcessContext() {
+					if (!dBNew ||
+						"Initial Database Creation".equals(
+							upgradeStep.toString())) {
 
-							@Override
-							public DBContext getDBContext() {
-								return new DBContext();
-							}
+						upgradeStep.upgrade(
+							new DBProcessContext() {
 
-							@Override
-							public OutputStream getOutputStream() {
-								return _outputStream;
-							}
+								@Override
+								public DBContext getDBContext() {
+									return new DBContext();
+								}
 
-						});
+								@Override
+								public OutputStream getOutputStream() {
+									return _outputStream;
+								}
+
+							});
+					}
 
 					_releaseLocalService.updateRelease(
 						_bundleSymbolicName,
