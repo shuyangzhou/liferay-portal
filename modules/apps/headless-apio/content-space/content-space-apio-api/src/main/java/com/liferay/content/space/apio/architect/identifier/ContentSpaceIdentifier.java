@@ -1,4 +1,3 @@
-<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -12,15 +11,17 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
---%>
 
-<%@ include file="/init.jsp" %>
+package com.liferay.content.space.apio.architect.identifier;
 
-<clay:management-toolbar
-	creationMenu="<%= stagingProcessesWebPublishTemplatesToolbarDisplayContext.getCreationMenu() %>"
-	searchActionURL="<%= stagingProcessesWebPublishTemplatesToolbarDisplayContext.getSearchActionURL() %>"
-	searchFormName="searchFm"
-	selectable="<%= false %>"
-	showCreationMenu="<%= true %>"
-	showSearch="<%= true %>"
-/>
+import com.liferay.apio.architect.identifier.Identifier;
+
+/**
+ * Holds information about a ContentSpace identifier. It's identified by the
+ * internal {@code Group#getGroupId()}.
+ *
+ * @author Javier Gamarra
+ * @review
+ */
+public interface ContentSpaceIdentifier extends Identifier<Long> {
+}

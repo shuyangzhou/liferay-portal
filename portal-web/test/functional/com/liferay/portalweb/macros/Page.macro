@@ -134,9 +134,19 @@
 	</command>
 
 	<command name="changeCurrentTheme">
-		<execute macro="Portlet#gotoPortletOptions">
-			<var name="portletOption" value="Configure" />
+		<execute function="Click#waitForMenuToggleJSClick" locator1="SitePages#LIST_GROUP_ITEM_ELLIPSIS_ICON">
+			<var name="key_pageName" value="${pageName}" />
 		</execute>
+
+		<execute function="Click" locator1="MenuItem#ANY_MENU_ITEM" value1="Configure">
+			<var name="key_menuItem" value="Configure" />
+		</execute>
+
+		<execute macro="Navigator#gotoNavTab">
+			<var name="navTab" value="Look and Feel" />
+		</execute>
+
+		<execute function="Click" locator1="SitePagesEditPage#REGULAR_UNIQUE_LOOK_AND_FEEL" />
 
 		<execute function="Click" locator1="SitePagesEditPage#CHANGE_CURRENT_THEME_BUTTON" />
 
@@ -662,8 +672,12 @@
 			<var name="portlet" value="Pages" />
 		</execute>
 
-		<execute macro="Portlet#gotoPortletOptions">
-			<var name="portletOption" value="Configure" />
+		<execute function="Click#waitForMenuToggleJSClick" locator1="SitePages#LIST_GROUP_ITEM_ELLIPSIS_ICON">
+			<var name="key_pageName" value="${pageName}" />
+		</execute>
+
+		<execute function="Click" locator1="MenuItem#ANY_MENU_ITEM" value1="Configure">
+			<var name="key_menuItem" value="Configure" />
 		</execute>
 
 		<execute function="AssertTextPresent" locator1="SitePagesEditPage#VIEW_THEME" value1="${themeName}" />
@@ -1093,15 +1107,17 @@
 
 		<execute function="AssertLocation" value1="${sitePageURL}" />
 
-		<execute function="AssertTextEquals#assertPartialText" locator1="Home#PORTAL_LOCALIZATION_MESSAGE_INFO" value1="${pageLocalizationMessage}" />
-		<execute function="AssertTextEquals" locator1="Home#PORTAL_LOCALIZATION_PREFERRED_MESSAGE" value1="${pageLocalizationPreferredLanguage}" />
+		<execute macro="Alert#viewLocalizationMessage">
+			<var name="defaultLanguageLocalizationMessage" value="${pageLocalizationMessage}" />
+			<var name="preferredLanguageLocalizationMessage" value="${pageLocalizationPreferredLanguage}" />
+		</execute>
 	</command>
 
 	<command name="viewURLLocale">
 		<if>
 			<isset var="localizationOption" />
 			<then>
-				<execute function="AssertClick" locator1="Message#INFO_4" value1="${localizationOption}" />
+				<execute function="AssertClick" locator1="Home#PORTAL_LOCALIZATION_DEFAULT_LANGUAGE_MESSAGE" value1="${localizationOption}" />
 			</then>
 		</if>
 

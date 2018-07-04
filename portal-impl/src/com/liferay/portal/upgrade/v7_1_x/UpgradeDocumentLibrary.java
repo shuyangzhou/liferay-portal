@@ -1,4 +1,3 @@
-<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -12,11 +11,27 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
---%>
 
-<%@ include file="/init.jsp" %>
+package com.liferay.portal.upgrade.v7_1_x;
 
-<clay:navigation-bar
-	inverted="<%= true %>"
-	navigationItems="<%= publishTemplatesDisplayContext.getNavigationItems() %>"
-/>
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.upgrade.v7_1_x.util.DLFileEntryTypeTable;
+
+/**
+ * @author Jose Maria Munoz
+ */
+public class UpgradeDocumentLibrary extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+		if (!hasColumnType(
+				DLFileEntryTypeTable.class, "fileEntryTypeKey",
+				"VARCHAR(75) null")) {
+
+			alter(
+				DLFileEntryTypeTable.class,
+				new AlterColumnType("fileEntryTypeKey", "VARCHAR(75) null"));
+		}
+	}
+
+}
