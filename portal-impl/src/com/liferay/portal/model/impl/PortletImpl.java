@@ -859,7 +859,11 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public String getDisplayName() {
-		return _displayName;
+		if (Validator.isNull(_displayName)) {
+			return "";
+		} else {
+			return _displayName;
+		}
 	}
 
 	/**
@@ -876,7 +880,7 @@ public class PortletImpl extends PortletBaseImpl {
 	 * Returns the Facebook integration method of the portlet.
 	 *
 	 * @return     the Facebook integration method of the portlet
-	 * @deprecated As of Judson, with no direct replacement
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -3164,7 +3168,7 @@ public class PortletImpl extends PortletBaseImpl {
 	 *
 	 * @param      facebookIntegration the Facebook integration method of the
 	 *             portlet
-	 * @deprecated As of Judson, with no direct replacement
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -4435,7 +4439,7 @@ public class PortletImpl extends PortletBaseImpl {
 	/**
 	 * The Facebook integration method of the portlet.
 	 *
-	 * @deprecated As of Judson, with no direct replacement
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
 	 */
 	@Deprecated
 	private String _facebookIntegration =

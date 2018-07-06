@@ -789,7 +789,7 @@
 			<finder-column name="friendlyURL" />
 		</finder>
 		<finder name="P_L" return-type="Collection" unique="true">
-			<finder-column arrayable-operator="OR" name="plid" />
+			<finder-column arrayable-operator="OR" arrayable-pagination="true" name="plid" />
 			<finder-column name="languageId" />
 		</finder>
 		<finder name="G_P_F" return-type="Collection">
@@ -901,6 +901,9 @@
 		</finder>
 		<finder name="Plid" return-type="Collection">
 			<finder-column name="plid" />
+		</finder>
+		<finder name="Status" return-type="Collection">
+			<finder-column name="status" />
 		</finder>
 		<finder name="L_H" return-type="Collection">
 			<finder-column name="layoutSetBranchId" />

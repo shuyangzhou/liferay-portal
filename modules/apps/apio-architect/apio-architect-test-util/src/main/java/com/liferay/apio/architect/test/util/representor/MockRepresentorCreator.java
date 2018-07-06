@@ -73,6 +73,18 @@ public class MockRepresentorCreator {
 		).addLocalizedStringByLanguage(
 			"localizedString",
 			(firstEmbeddedModel, acceptLanguage) -> "Translated"
+		).addNestedList(
+			"nestedList",
+			__ -> asList((SecondEmbeddedModel)() -> "id 1", () -> "id 2"),
+			nestedListBuilder -> nestedListBuilder.types(
+				"Type 7"
+			).addNumber(
+				"number1", __ -> 2018
+			).addString(
+				"string1", SecondEmbeddedModel::getId
+			).addString(
+				"string2", __ -> "string3"
+			).build()
 		).addNumber(
 			"number", __ -> 42
 		).addNumberList(
@@ -102,6 +114,8 @@ public class MockRepresentorCreator {
 			"Type 1", "Type 2"
 		).identifier(
 			RootModel::getId
+		).addApplicationRelativeURL(
+			"applicationRelativeURL1", __ -> "/first"
 		).addBinary(
 			"binary1", __ -> null
 		).addBinary(
@@ -134,6 +148,18 @@ public class MockRepresentorCreator {
 			"localizedString1", (model, acceptLanguage) -> "Translated 1"
 		).addLocalizedStringByLanguage(
 			"localizedString2", (model, acceptLanguage) -> "Translated 2"
+		).addNestedList(
+			"nestedList",
+			__ -> asList((FirstEmbeddedModel)() -> "id 1", () -> "id 2"),
+			nestedListBuilder -> nestedListBuilder.types(
+				"Type 6"
+			).addNumber(
+				"number1", __ -> 2017
+			).addString(
+				"string1", FirstEmbeddedModel::getId
+			).addString(
+				"string2", __ -> "string2"
+			).build()
 		).addNumber(
 			"number1", __ -> 2017
 		).addNumber(
