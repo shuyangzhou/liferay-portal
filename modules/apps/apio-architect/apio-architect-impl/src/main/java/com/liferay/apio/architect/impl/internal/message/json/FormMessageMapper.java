@@ -26,9 +26,9 @@ import com.liferay.apio.architect.form.FormField;
  * enable this, each method receives a {@link JSONObjectBuilder}.
  *
  * <p>
- * The methods {@link #onStart} and {@link #onFinish} are called when the writer
- * starts and finishes the single model item, respectively. Otherwise, the
- * message mapper's methods aren't called in a particular order.
+ * The method {@link #onFinish} is called when the writer finishes writing the
+ * form. Otherwise, the form message mapper's methods aren't called in a
+ * particular order.
  * </p>
  *
  * @author Alejandro Hernández

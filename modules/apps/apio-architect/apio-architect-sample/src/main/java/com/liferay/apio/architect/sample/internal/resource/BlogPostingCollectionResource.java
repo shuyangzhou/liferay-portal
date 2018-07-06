@@ -29,6 +29,8 @@ import com.liferay.apio.architect.sample.internal.identifier.BlogPostingCommentI
 import com.liferay.apio.architect.sample.internal.identifier.BlogPostingIdentifier;
 import com.liferay.apio.architect.sample.internal.identifier.PersonIdentifier;
 import com.liferay.apio.architect.sample.internal.model.BlogPostingModel;
+import com.liferay.apio.architect.sample.internal.model.RatingModel;
+import com.liferay.apio.architect.sample.internal.model.ReviewModel;
 
 import java.util.List;
 import java.util.Optional;
@@ -98,6 +100,26 @@ public class BlogPostingCollectionResource
 			"dateModified", BlogPostingModel::getModifiedDate
 		).addLinkedModel(
 			"creator", PersonIdentifier.class, BlogPostingModel::getCreatorId
+		).addNestedList(
+			"review", BlogPostingModel::getReviewModels,
+			reviewBuilder -> reviewBuilder.types(
+				"Review"
+			).addString(
+				"reviewBody", ReviewModel::getBody
+			).addNested(
+				"reviewRating", ReviewModel::getRatingModel,
+				ratingBuilder -> ratingBuilder.types(
+					"Rating"
+				).addLinkedModel(
+					"author", PersonIdentifier.class, RatingModel::getAuthorId
+				).addNumber(
+					"bestRating", __ -> 5
+				).addNumber(
+					"ratingValue", RatingModel::getValue
+				).addNumber(
+					"worstRating", __ -> 0
+				).build()
+			).build()
 		).addRelatedCollection(
 			"comment", BlogPostingCommentIdentifier.class
 		).addString(

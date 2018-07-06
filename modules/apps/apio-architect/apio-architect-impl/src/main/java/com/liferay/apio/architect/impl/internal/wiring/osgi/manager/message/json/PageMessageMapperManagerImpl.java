@@ -14,10 +14,9 @@
 
 package com.liferay.apio.architect.impl.internal.wiring.osgi.manager.message.json;
 
-import static com.liferay.apio.architect.impl.internal.wiring.osgi.manager.cache.ManagerCache.INSTANCE;
-
 import com.liferay.apio.architect.impl.internal.message.json.PageMessageMapper;
 import com.liferay.apio.architect.impl.internal.wiring.osgi.manager.base.MessageMapperBaseManager;
+import com.liferay.apio.architect.impl.internal.wiring.osgi.manager.cache.ManagerCache;
 
 import java.util.Optional;
 
@@ -34,14 +33,16 @@ public class PageMessageMapperManagerImpl
 	implements PageMessageMapperManager {
 
 	public PageMessageMapperManagerImpl() {
-		super(PageMessageMapper.class, INSTANCE::putPageMessageMapper);
+		super(
+			PageMessageMapper.class,
+			ManagerCache.INSTANCE::putPageMessageMapper);
 	}
 
 	@Override
 	public <T> Optional<PageMessageMapper<T>> getPageMessageMapperOptional(
 		Request request) {
 
-		return INSTANCE.getPageMessageMapperOptional(
+		return ManagerCache.INSTANCE.getPageMessageMapperOptional(
 			request, this::computeMessageMappers);
 	}
 

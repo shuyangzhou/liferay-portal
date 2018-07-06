@@ -14,10 +14,9 @@
 
 package com.liferay.apio.architect.impl.internal.wiring.osgi.manager.message.json;
 
-import static com.liferay.apio.architect.impl.internal.wiring.osgi.manager.cache.ManagerCache.INSTANCE;
-
 import com.liferay.apio.architect.impl.internal.message.json.ErrorMessageMapper;
 import com.liferay.apio.architect.impl.internal.wiring.osgi.manager.base.MessageMapperBaseManager;
+import com.liferay.apio.architect.impl.internal.wiring.osgi.manager.cache.ManagerCache;
 
 import java.util.Optional;
 
@@ -34,14 +33,16 @@ public class ErrorMessageMapperManagerImpl
 	implements ErrorMessageMapperManager {
 
 	public ErrorMessageMapperManagerImpl() {
-		super(ErrorMessageMapper.class, INSTANCE::putErrorMessageMapper);
+		super(
+			ErrorMessageMapper.class,
+			ManagerCache.INSTANCE::putErrorMessageMapper);
 	}
 
 	@Override
 	public Optional<ErrorMessageMapper> getErrorMessageMapperOptional(
 		Request request) {
 
-		return INSTANCE.getErrorMessageMapperOptional(
+		return ManagerCache.INSTANCE.getErrorMessageMapperOptional(
 			request, this::computeMessageMappers);
 	}
 
