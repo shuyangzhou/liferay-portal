@@ -1651,7 +1651,7 @@ logExceptionsOnly=B&quot;false&quot;</echo>
 				<sequential>
 					<if>
 						<not>
-							<available file="${app.server.portal.dir}/lib/ext/${petra.jar.file}" />
+							<available file="${app.server.lib.global.dir}/@{petra.jar.file}" />
 						</not>
 						<then>
 							<local name="regex" />
@@ -3271,13 +3271,25 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 	<macrodef name="setup-testable-tomcat-osgi-modules">
 		<sequential>
-			<copy
-				todir="${liferay.home}/osgi/modules"
-			>
-				<fileset
-					dir="${liferay.home}/osgi/test"
-				/>
-			</copy>
+			<condition else="${env.TEST_BATCH_NAME}" property="test.batch.name" value="${test.batch.name}">
+				<isset property="test.batch.name" />
+			</condition>
+
+			<if>
+				<or>
+					<contains string="${test.batch.name}" substring="integration" />
+					<contains string="${test.batch.name}" substring="unit" />
+				</or>
+				<then>
+					<copy
+						todir="${liferay.home}/osgi/modules"
+					>
+						<fileset
+							dir="${liferay.home}/osgi/test"
+						/>
+					</copy>
+				</then>
+			</if>
 		</sequential>
 	</macrodef>
 
@@ -3724,13 +3736,23 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 							</then>
 						</elseif>
 						<else>
+							<if>
+								<isset property="env.HOSTNAME" />
+								<then>
+									<property name="server.host" value="${env.HOSTNAME}" />
+								</then>
+								<else>
+									<property name="server.host" value="localhost" />
+								</else>
+							</if>
+
 							<waitfor maxwait="5" maxwaitunit="minute" timeoutproperty="app.server.stopping.timeout">
 								<and>
 									<not>
-										<http url="http://localhost:${test.app.server.leading.port.number}080/web/guest" />
+										<socket port="${test.app.server.leading.port.number}080" server="localhost" />
 									</not>
 									<not>
-										<http url="http://localhost:${test.app.server.leading.port.number}099" />
+										<socket port="${test.app.server.leading.port.number}099" server="${server.host}" />
 									</not>
 								</and>
 							</waitfor>
@@ -6157,6 +6179,15 @@ osb.lcs.portlet.oauth.consumer.secret=${osb.lcs.portlet.oauth.consumer.secret}</
 		<priority value="ERROR" />
 	</category>
 </log4j:configuration>]]></echo>
+
+		<echo file="${liferay.home}/osgi/log4j/org.apache.aries.jax.rs.whiteboard-log4j-ext.xml"><![CDATA[<?xml version="1.0"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<category name="org.apache.cxf.rs.security.oauth2.services.AbstractOAuthService">
+		<priority value="ERROR" />
+	</category>
+</log4j:configuration>]]></echo>
 	</target>
 
 	<target name="prepare-mobile-device">
@@ -8274,6 +8305,8 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 						<equals arg1="${app.server.type}" arg2="tcserver" />
 						<then>
 							<ant antfile="build-dist.xml" inheritAll="false" target="unzip-tcserver" />
+
+							<ant antfile="build.xml" inheritAll="false" target="deploy-additional-jars" />
 						</then>
 					</elseif>
 					<elseif>
@@ -8317,8 +8350,6 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 				/>
 
 				<delete dir="dist" />
-
-				<prepare-jboss-module-configuration />
 
 				<ant antfile="build.xml" inheritAll="false" target="update-app-server-scripts" />
 
@@ -8375,7 +8406,59 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 				</unzip>
 
 				<delete file="liferay-portal-tools.zip" />
+
+				<prepare-jboss-module-configuration />
 			</else>
+		</if>
+
+		<if>
+			<or>
+				<matches pattern="https?://" string="${test.build.bundle.zip.url}" />
+				<matches pattern="https?://" string="${test.build.portal.osgi.zip.url}" />
+			</or>
+			<then>
+				<local name="bundle.zip.url" />
+
+				<if>
+					<matches pattern="https?://" string="${test.build.bundle.zip.url}" />
+					<then>
+						<property name="bundle.zip.url" value="${test.build.bundle.zip.url}" />
+					</then>
+					<elseif>
+						<matches pattern="https?://" string="${test.build.portal.osgi.zip.url}" />
+						<then>
+							<propertyregex
+								input="${test.build.portal.osgi.zip.url}"
+								override="true"
+								property="bundle.zip.url"
+								regexp="osgi"
+								replace="tomcat"
+							/>
+						</then>
+					</elseif>
+				</if>
+
+				<mirrors-get
+					dest="liferay-portal-bundle.zip"
+					src="${bundle.zip.url}"
+				/>
+
+				<unzip
+					dest="${project.dir}/sql/"
+					src="liferay-portal-bundle.zip"
+				>
+					<patternset
+						includes="liferay-*/data/hypersonic/*"
+					/>
+					<mapper
+						from="liferay-[^/]+/data/hypersonic/([^/]+)"
+						to="\1"
+						type="regexp"
+					/>
+				</unzip>
+
+				<delete file="liferay-portal-bundle.zip" />
+			</then>
 		</if>
 
 		<if>
@@ -10170,6 +10253,16 @@ portal.dir=standalone/deployments/ROOT.war
 server.detector.server.id=jboss</echo>
 			</then>
 			<elseif>
+				<equals arg1="${app.server.type}" arg2="tcserver" />
+				<then>
+					<echo file="${liferay.home}/tools/portal-tools-db-upgrade-client/app-server.properties">dir=${app.server.dir}
+extra.lib.dirs=runtimes/tomcat-9.0.6.B.RELEASE/lib
+global.lib.dir=instances/liferay/lib
+portal.dir=instances/liferay/webapps/ROOT
+server.detector.server.id=tomcat</echo>
+				</then>
+			</elseif>
+			<elseif>
 				<equals arg1="${app.server.type}" arg2="tomcat" />
 				<then>
 					<echo file="${liferay.home}/tools/portal-tools-db-upgrade-client/app-server.properties">dir=${app.server.dir}
@@ -10177,6 +10270,16 @@ extra.lib.dirs=bin
 global.lib.dir=lib
 portal.dir=webapps/ROOT
 server.detector.server.id=tomcat</echo>
+				</then>
+			</elseif>
+			<elseif>
+				<equals arg1="${app.server.type}" arg2="weblogic" />
+				<then>
+					<echo file="${liferay.home}/tools/portal-tools-db-upgrade-client/app-server.properties">dir=${app.server.dir}
+extra.lib.dirs=domains/liferay/bin,wlserver/server/lib,domains/liferay/autodeploy/ROOT/WEB-INF/lib
+global.lib.dir=domains/liferay/lib
+portal.dir=domains/liferay/autodeploy/ROOT
+server.detector.server.id=weblogic</echo>
 				</then>
 			</elseif>
 			<elseif>

@@ -26,7 +26,6 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Request;
@@ -62,8 +61,7 @@ public class FailureFilter implements ContainerResponseFilter {
 		).map(
 			Failure::getException
 		).map(
-			exception -> _errorUtil.getErrorResponse(
-				exception, _request, _httpHeaders)
+			exception -> _errorUtil.getErrorResponse(exception, _request)
 		).ifSuccess(
 			response -> _updateContext(containerResponseContext, response)
 		);
@@ -90,9 +88,6 @@ public class FailureFilter implements ContainerResponseFilter {
 
 	@Reference
 	private ErrorUtil _errorUtil;
-
-	@Context
-	private HttpHeaders _httpHeaders;
 
 	@Context
 	private Request _request;

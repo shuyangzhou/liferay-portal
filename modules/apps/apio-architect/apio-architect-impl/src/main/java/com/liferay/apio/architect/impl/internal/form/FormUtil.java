@@ -15,6 +15,7 @@
 package com.liferay.apio.architect.impl.internal.form;
 
 import static com.liferay.apio.architect.impl.internal.date.DateTransformer.asDate;
+import static com.liferay.apio.architect.impl.internal.url.URLCreator.getPath;
 
 import com.liferay.apio.architect.alias.IdentifierFunction;
 import com.liferay.apio.architect.file.BinaryFile;
@@ -24,7 +25,6 @@ import com.liferay.apio.architect.form.FormField;
 import com.liferay.apio.architect.functional.Try;
 import com.liferay.apio.architect.impl.internal.alias.form.FieldFormBiConsumer;
 import com.liferay.apio.architect.impl.internal.date.DateTransformer;
-import com.liferay.apio.architect.impl.internal.url.URLCreator;
 import com.liferay.apio.architect.uri.Path;
 
 import java.text.NumberFormat;
@@ -631,7 +631,7 @@ public class FormUtil {
 		if (optional.isPresent()) {
 			String url = optional.get();
 
-			Path path = URLCreator.getPath(url);
+			Path path = getPath(url);
 
 			Object object = identifierFunction.apply(path);
 
