@@ -1,4 +1,3 @@
-<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -12,11 +11,22 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
---%>
 
-<%@ include file="/init.jsp" %>
+package com.liferay.blogs.internal.upgrade.v1_1_1;
 
-<clay:navigation-bar
-	inverted="<%= true %>"
-	navigationItems="<%= publishTemplatesDisplayContext.getNavigationItems() %>"
-/>
+import com.liferay.blogs.internal.upgrade.v1_1_1.util.BlogsEntryTable;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+/**
+ * @author Jürgen Kappler
+ */
+public class UpgradeUrlTitle extends UpgradeProcess {
+
+	@Override
+	protected void doUpgrade() throws Exception {
+		alter(
+			BlogsEntryTable.class,
+			new AlterColumnType("urlTitle", "VARCHAR(255) null"));
+	}
+
+}
