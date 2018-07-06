@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.impl.internal.provider;
 
+import static com.liferay.apio.architect.impl.internal.provider.util.URLProviderUtil.getServerURL;
+
 import com.liferay.apio.architect.impl.internal.url.ServerURL;
 import com.liferay.apio.architect.provider.Provider;
 
@@ -32,37 +34,7 @@ public class ServerURLProvider implements Provider<ServerURL> {
 
 	@Override
 	public ServerURL createContext(HttpServletRequest httpServletRequest) {
-		return () -> {
-			StringBuilder sb = new StringBuilder();
-
-			String forwardedProto = httpServletRequest.getHeader(
-				"X-Forwarded-Proto");
-
-			if (forwardedProto != null) {
-				sb.append(forwardedProto);
-			}
-			else {
-				sb.append(httpServletRequest.getScheme());
-			}
-
-			sb.append("://");
-
-			String forwardedHost = httpServletRequest.getHeader(
-				"X-Forwarded-Host");
-
-			if (forwardedHost == null) {
-				sb.append(httpServletRequest.getServerName());
-				sb.append(":");
-				sb.append(httpServletRequest.getServerPort());
-			}
-			else {
-				sb.append(forwardedHost);
-			}
-
-			sb.append(httpServletRequest.getContextPath());
-
-			return sb.toString();
-		};
+		return () -> getServerURL(httpServletRequest);
 	}
 
 }

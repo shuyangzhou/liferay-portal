@@ -60,7 +60,7 @@ import java.util.stream.Stream;
  * <pre>
  * {@code
  * jsonObjectBuilder
- *      .nestedField("object", "inner","another")
+ *      .nestedField("object", "inner", "another")
  *      .value("Hello World!");
  * }
  * </pre><pre>
@@ -415,9 +415,9 @@ public class JSONObjectBuilder {
 		}
 
 		/**
-		 * Adds a new boolean value to the JSON array.
+		 * Adds a new boolean value to the JSON object.
 		 *
-		 * @param value the boolean value to add to the JSON array
+		 * @param value the boolean value to add to the JSON object
 		 */
 		public void booleanValue(Boolean value) {
 			_jsonObject.addProperty(_name, value);
@@ -572,18 +572,31 @@ public class JSONObjectBuilder {
 		}
 
 		/**
-		 * Adds a new number to the JSON array.
+		 * Adds a new number to the JSON object.
 		 *
-		 * @param value the number to add to the JSON array
+		 * @param value the number to add to the JSON object
 		 */
 		public void numberValue(Number value) {
 			_jsonObject.addProperty(_name, value);
 		}
 
 		/**
-		 * Adds a new string to the JSON array.
+		 * Adds the JSON object created by another {@link JSONObjectBuilder}.
 		 *
-		 * @param value the string to add to the JSON array
+		 * @param  jsonObjectBuilder the {@link JSONObjectBuilder} whose JSON
+		 *         object is going to be added
+		 * @review
+		 */
+		public void objectValue(JSONObjectBuilder jsonObjectBuilder) {
+			JsonObject jsonObject = jsonObjectBuilder._jsonObject;
+
+			_jsonObject.add(_name, jsonObject);
+		}
+
+		/**
+		 * Adds a new string to the JSON object.
+		 *
+		 * @param value the string to add to the JSON object
 		 */
 		public void stringValue(String value) {
 			_jsonObject.addProperty(_name, value);

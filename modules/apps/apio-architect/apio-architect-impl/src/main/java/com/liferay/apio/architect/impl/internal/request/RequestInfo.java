@@ -16,14 +16,13 @@ package com.liferay.apio.architect.impl.internal.request;
 
 import com.liferay.apio.architect.impl.internal.response.control.Embedded;
 import com.liferay.apio.architect.impl.internal.response.control.Fields;
+import com.liferay.apio.architect.impl.internal.url.ApplicationURL;
 import com.liferay.apio.architect.impl.internal.url.ServerURL;
 import com.liferay.apio.architect.language.AcceptLanguage;
 
 import java.util.function.Function;
 
 import javax.servlet.http.HttpServletRequest;
-
-import javax.ws.rs.core.HttpHeaders;
 
 /**
  * Represents the information the server has about a request.
@@ -53,6 +52,15 @@ public class RequestInfo {
 	}
 
 	/**
+	 * Returns the application server URL.
+	 *
+	 * @return the application server URL
+	 */
+	public ApplicationURL getApplicationURL() {
+		return _applicationURL;
+	}
+
+	/**
 	 * Returns the information about embedded resources.
 	 *
 	 * @return the information about embedded resources
@@ -68,15 +76,6 @@ public class RequestInfo {
 	 */
 	public Fields getFields() {
 		return _fields;
-	}
-
-	/**
-	 * Returns the HTTP headers.
-	 *
-	 * @return the HTTP headers
-	 */
-	public HttpHeaders getHttpHeaders() {
-		return _httpHeaders;
 	}
 
 	public HttpServletRequest getHttpServletRequest() {
@@ -98,15 +97,34 @@ public class RequestInfo {
 	public static class Builder {
 
 		/**
-		 * Adds information about the HTTP headers to the builder.
+		 * Adds information about the HTTP request to the builder.
 		 *
-		 * @param  httpHeaders the request's HTTP headers
+		 * @param  httpServletRequest the HTTP request
 		 * @return the builder's following step
 		 */
-		public HttpServletRequestStep httpHeaders(HttpHeaders httpHeaders) {
-			_httpHeaders = httpHeaders;
+		public ServerURLStep httpServletRequest(
+			HttpServletRequest httpServletRequest) {
 
-			return new HttpServletRequestStep();
+			_httpServletRequest = httpServletRequest;
+
+			return new ServerURLStep();
+		}
+
+		public class ApplicationURLStep {
+
+			/**
+			 * Add information about the application server URL to the builder.
+			 *
+			 * @param  applicationURL the application server URL
+			 * @return the builder's next step
+			 * @review
+			 */
+			public EmbeddedStep applicationURL(ApplicationURL applicationURL) {
+				_applicationURL = applicationURL;
+
+				return new EmbeddedStep();
+			}
+
 		}
 
 		public class BuildStep {
@@ -155,24 +173,6 @@ public class RequestInfo {
 
 		}
 
-		public class HttpServletRequestStep {
-
-			/**
-			 * Adds information about the HTTP request to the builder.
-			 *
-			 * @param  httpServletRequest the HTTP request
-			 * @return the builder's following step
-			 */
-			public ServerURLStep httpServletRequest(
-				HttpServletRequest httpServletRequest) {
-
-				_httpServletRequest = httpServletRequest;
-
-				return new ServerURLStep();
-			}
-
-		}
-
 		public class LanguageStep {
 
 			/**
@@ -197,18 +197,18 @@ public class RequestInfo {
 			 * @param  serverURL the server URL
 			 * @return the builder's next step
 			 */
-			public EmbeddedStep serverURL(ServerURL serverURL) {
+			public ApplicationURLStep serverURL(ServerURL serverURL) {
 				_serverURL = serverURL;
 
-				return new EmbeddedStep();
+				return new ApplicationURLStep();
 			}
 
 		}
 
 		private AcceptLanguage _acceptLanguage;
+		private ApplicationURL _applicationURL;
 		private Embedded _embedded;
 		private Fields _fields;
-		private HttpHeaders _httpHeaders;
 		private HttpServletRequest _httpServletRequest;
 		private ServerURL _serverURL;
 
@@ -217,16 +217,16 @@ public class RequestInfo {
 	private RequestInfo(Builder builder) {
 		_acceptLanguage = builder._acceptLanguage;
 		_fields = builder._fields;
-		_httpHeaders = builder._httpHeaders;
 		_serverURL = builder._serverURL;
+		_applicationURL = builder._applicationURL;
 		_embedded = builder._embedded;
 		_httpServletRequest = builder._httpServletRequest;
 	}
 
 	private final AcceptLanguage _acceptLanguage;
+	private final ApplicationURL _applicationURL;
 	private final Embedded _embedded;
 	private final Fields _fields;
-	private final HttpHeaders _httpHeaders;
 	private final HttpServletRequest _httpServletRequest;
 	private final ServerURL _serverURL;
 
