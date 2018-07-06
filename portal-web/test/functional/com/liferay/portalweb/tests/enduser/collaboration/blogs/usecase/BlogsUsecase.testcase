@@ -122,7 +122,7 @@
 			<var name="uploadFileName" value="Document_1.jpg" />
 		</execute>
 
-		<execute function="Pause" locator1="1000" />
+		<execute function="Pause" locator1="3000" />
 
 		<execute macro="PortletEntry#publish" />
 
@@ -1365,6 +1365,8 @@
 
 		<execute function="Pause" locator1="180000" />
 
+		<execute function="Refresh" />
+
 		<execute macro="BlogsEntry#viewEntry">
 			<var name="entryContent" value="Blogs Entry Content" />
 			<var name="entryTitle" value="Blogs Entry Title" />
@@ -2384,6 +2386,8 @@
 		<execute function="Pause" locator1="3000" />
 
 		<execute macro="ImageEditor#applyChangesAndSaveFile" />
+
+		<execute function="Pause" locator1="3000" />
 
 		<execute function="SelectFrameTop" value1="relative=top" />
 

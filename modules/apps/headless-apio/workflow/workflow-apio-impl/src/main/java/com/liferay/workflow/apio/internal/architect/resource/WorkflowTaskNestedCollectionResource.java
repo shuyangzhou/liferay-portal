@@ -137,7 +137,6 @@ public class WorkflowTaskNestedCollectionResource
 				company.getCompanyId(), userId, null,
 				pagination.getStartPosition(), pagination.getEndPosition(),
 				null);
-
 		int count = _workflowTaskManager.getWorkflowTaskCountByUser(
 			company.getCompanyId(), userId, null);
 

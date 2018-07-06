@@ -15,12 +15,14 @@
 package com.liferay.portal.spring.context;
 
 import com.liferay.portal.bean.BeanLocatorImpl;
+import com.liferay.portal.internal.spring.context.LiferayBeanFactory;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.io.FileNotFoundException;
 
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.XmlWebApplicationContext;
@@ -40,6 +42,11 @@ public class TunnelApplicationContext extends XmlWebApplicationContext {
 		}
 
 		super.setParent(applicationContext);
+	}
+
+	@Override
+	protected DefaultListableBeanFactory createBeanFactory() {
+		return new LiferayBeanFactory(getInternalParentBeanFactory());
 	}
 
 	@Override

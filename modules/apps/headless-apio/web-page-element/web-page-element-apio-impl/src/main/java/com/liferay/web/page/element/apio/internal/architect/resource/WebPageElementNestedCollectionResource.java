@@ -17,17 +17,25 @@ package com.liferay.web.page.element.apio.internal.architect.resource;
 import static com.liferay.portal.apio.idempotent.Idempotent.idempotent;
 
 import com.liferay.aggregate.rating.apio.architect.identifier.AggregateRatingIdentifier;
+import com.liferay.apio.architect.functional.Try;
 import com.liferay.apio.architect.pagination.PageItems;
 import com.liferay.apio.architect.pagination.Pagination;
 import com.liferay.apio.architect.representor.Representor;
 import com.liferay.apio.architect.resource.NestedCollectionResource;
 import com.liferay.apio.architect.routes.ItemRoutes;
 import com.liferay.apio.architect.routes.NestedCollectionRoutes;
+import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.model.AssetRenderer;
+import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.model.AssetTag;
 import com.liferay.asset.kernel.model.AssetTagModel;
+import com.liferay.asset.kernel.model.DDMFormValuesReader;
 import com.liferay.asset.kernel.service.AssetTagLocalService;
 import com.liferay.category.apio.architect.identifier.CategoryIdentifier;
 import com.liferay.comment.apio.architect.identifier.CommentIdentifier;
+import com.liferay.content.space.apio.architect.identifier.ContentSpaceIdentifier;
+import com.liferay.dynamic.data.mapping.kernel.DDMFormFieldValue;
+import com.liferay.dynamic.data.mapping.kernel.DDMFormValues;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleDisplay;
 import com.liferay.journal.service.JournalArticleService;
@@ -39,7 +47,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.site.apio.architect.identifier.WebSiteIdentifier;
 import com.liferay.web.page.element.apio.architect.identifier.WebPageElementIdentifier;
 import com.liferay.web.page.element.apio.internal.architect.form.WebPageElementCreatorForm;
 import com.liferay.web.page.element.apio.internal.architect.form.WebPageElementUpdaterForm;
@@ -65,7 +72,7 @@ import org.osgi.service.component.annotations.Reference;
 public class WebPageElementNestedCollectionResource
 	implements
 		NestedCollectionResource<JournalArticleWrapper, Long,
-			WebPageElementIdentifier, Long, WebSiteIdentifier> {
+			WebPageElementIdentifier, Long, ContentSpaceIdentifier> {
 
 	@Override
 	public NestedCollectionRoutes<JournalArticleWrapper, Long, Long>
@@ -77,7 +84,7 @@ public class WebPageElementNestedCollectionResource
 			this::_getPageItems, ThemeDisplay.class
 		).addCreator(
 			this::_addJournalArticle, ThemeDisplay.class,
-			_hasPermission.forAddingIn(WebSiteIdentifier.class),
+			_hasPermission.forAddingIn(ContentSpaceIdentifier.class),
 			WebPageElementCreatorForm::buildForm
 		).build();
 	}
@@ -110,7 +117,7 @@ public class WebPageElementNestedCollectionResource
 		).identifier(
 			JournalArticle::getId
 		).addBidirectionalModel(
-			"webSite", "webPageElements", WebSiteIdentifier.class,
+			"contentSpace", "webPageElements", ContentSpaceIdentifier.class,
 			JournalArticle::getGroupId
 		).addDate(
 			"dateCreated", JournalArticle::getCreateDate
@@ -120,6 +127,15 @@ public class WebPageElementNestedCollectionResource
 			"datePublished", JournalArticle::getDisplayDate
 		).addDate(
 			"lastReviewed", JournalArticle::getReviewDate
+		).addNestedList(
+			"fields", this::_getJournalArticleDDMFormFieldValues,
+			fieldValuesBuilder -> fieldValuesBuilder.types(
+				"ContentFieldValue"
+			).addLocalizedStringByLocale(
+				"value", this::_getLocalizedString
+			).addString(
+				"name", DDMFormFieldValue::getName
+			).build()
 		).addLinkedModel(
 			"aggregateRating", AggregateRatingIdentifier.class,
 			this::_createClassNameClassPK
@@ -145,17 +161,18 @@ public class WebPageElementNestedCollectionResource
 	}
 
 	private JournalArticleWrapper _addJournalArticle(
-			long webSiteId, WebPageElementCreatorForm webPageElementCreatorForm,
+			long contentSpaceId,
+			WebPageElementCreatorForm webPageElementCreatorForm,
 			ThemeDisplay themeDisplay)
 		throws PortalException {
 
 		Locale locale = themeDisplay.getLocale();
 
 		ServiceContext serviceContext =
-			webPageElementCreatorForm.getServiceContext(webSiteId);
+			webPageElementCreatorForm.getServiceContext(contentSpaceId);
 
 		JournalArticle journalArticle = _journalArticleService.addArticle(
-			webSiteId, 0, 0, 0, null, true,
+			contentSpaceId, 0, 0, 0, null, true,
 			webPageElementCreatorForm.getTitleMap(locale),
 			webPageElementCreatorForm.getDescriptionMap(locale),
 			webPageElementCreatorForm.getText(),
@@ -200,6 +217,28 @@ public class WebPageElementNestedCollectionResource
 		return ListUtil.toList(assetTags, AssetTagModel::getName);
 	}
 
+	private List<DDMFormFieldValue> _getJournalArticleDDMFormFieldValues(
+		JournalArticleWrapper journalArticleWrapper) {
+
+		return Try.fromFallible(
+			() ->
+				AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClass(
+					JournalArticle.class)
+		).map(
+			assetRendererFactory -> assetRendererFactory.getAssetRenderer(
+				journalArticleWrapper,
+				AssetRendererFactory.TYPE_LATEST_APPROVED)
+		).map(
+			AssetRenderer::getDDMFormValuesReader
+		).map(
+			DDMFormValuesReader::getDDMFormValues
+		).map(
+			DDMFormValues::getDDMFormFieldValues
+		).orElse(
+			null
+		);
+	}
+
 	private String _getJournalArticleHtml(
 		JournalArticleWrapper journalArticleWrapper, Locale locale) {
 
@@ -228,12 +267,24 @@ public class WebPageElementNestedCollectionResource
 		return new JournalArticleWrapper(journalArticle, themeDisplay);
 	}
 
+	private String _getLocalizedString(
+		DDMFormFieldValue ddmFormFieldValue, Locale locale) {
+
+		return Try.fromFallible(
+			ddmFormFieldValue::getValue
+		).map(
+			value -> value.getString(locale)
+		).orElse(
+			null
+		);
+	}
+
 	private PageItems<JournalArticleWrapper> _getPageItems(
-		Pagination pagination, long webSiteId, ThemeDisplay themeDisplay) {
+		Pagination pagination, long contentSpaceId, ThemeDisplay themeDisplay) {
 
 		List<JournalArticleWrapper> journalArticleWrappers = Stream.of(
 			_journalArticleService.getArticles(
-				webSiteId, 0, pagination.getStartPosition(),
+				contentSpaceId, 0, pagination.getStartPosition(),
 				pagination.getEndPosition(), null)
 		).flatMap(
 			List::stream
@@ -243,7 +294,7 @@ public class WebPageElementNestedCollectionResource
 		).collect(
 			Collectors.toList()
 		);
-		int count = _journalArticleService.getArticlesCount(webSiteId, 0);
+		int count = _journalArticleService.getArticlesCount(contentSpaceId, 0);
 
 		return new PageItems<>(journalArticleWrappers, count);
 	}

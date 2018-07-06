@@ -1,4 +1,3 @@
-<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -12,15 +11,14 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
---%>
 
-<%@ include file="/init.jsp" %>
+package com.liferay.portal.workflow.definition.link.update.handler;
 
-<clay:management-toolbar
-	creationMenu="<%= stagingProcessesWebPublishTemplatesToolbarDisplayContext.getCreationMenu() %>"
-	searchActionURL="<%= stagingProcessesWebPublishTemplatesToolbarDisplayContext.getSearchActionURL() %>"
-	searchFormName="searchFm"
-	selectable="<%= false %>"
-	showCreationMenu="<%= true %>"
-	showSearch="<%= true %>"
-/>
+/**
+ * @author Mate Thurzo
+ */
+public interface WorkflowDefinitionLinkUpdateHandler {
+
+	public void updatedWorkflowDefinitionLink(String workflowDefinition);
+
+}
