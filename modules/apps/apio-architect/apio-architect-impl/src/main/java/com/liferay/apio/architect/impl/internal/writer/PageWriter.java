@@ -16,14 +16,12 @@ package com.liferay.apio.architect.impl.internal.writer;
 
 import static com.liferay.apio.architect.impl.internal.url.URLCreator.createCollectionPageURL;
 import static com.liferay.apio.architect.impl.internal.url.URLCreator.createCollectionURL;
-import static com.liferay.apio.architect.impl.internal.url.URLCreator.createFormURL;
 import static com.liferay.apio.architect.impl.internal.url.URLCreator.createNestedCollectionURL;
 import static com.liferay.apio.architect.impl.internal.writer.util.WriterUtil.getFieldsWriter;
 import static com.liferay.apio.architect.impl.internal.writer.util.WriterUtil.getPathOptional;
 
 import com.google.gson.JsonObject;
 
-import com.liferay.apio.architect.form.Form;
 import com.liferay.apio.architect.impl.internal.alias.BaseRepresentorFunction;
 import com.liferay.apio.architect.impl.internal.alias.PathFunction;
 import com.liferay.apio.architect.impl.internal.alias.RepresentorFunction;
@@ -93,11 +91,7 @@ public class PageWriter<T> {
 	 *         Representor} and {@code Path} exist for the model; returns {@code
 	 *         Optional#empty()} otherwise
 	 */
-	@SuppressWarnings("Duplicates")
 	public String write() {
-		_pageMessageMapper.onStart(
-			_jsonObjectBuilder, _page, _requestInfo.getHttpHeaders());
-
 		_pageMessageMapper.mapItemTotalCount(
 			_jsonObjectBuilder, _page.getTotalCount());
 
@@ -120,33 +114,12 @@ public class PageWriter<T> {
 
 		List<Operation> operations = _page.getOperations();
 
-		operations.forEach(
-			operation -> {
-				JSONObjectBuilder operationJSONObjectBuilder =
-					new JSONObjectBuilder();
+		OperationWriter operationWriter = new OperationWriter(
+			_pageMessageMapper, _requestInfo, _jsonObjectBuilder);
 
-				_pageMessageMapper.onStartOperation(
-					_jsonObjectBuilder, operationJSONObjectBuilder, operation);
+		operations.forEach(operationWriter::write);
 
-				Optional<Form> formOptional = operation.getFormOptional();
-
-				formOptional.map(
-					form -> createFormURL(_requestInfo.getServerURL(), form)
-				).ifPresent(
-					formURL -> _pageMessageMapper.mapOperationFormURL(
-						_jsonObjectBuilder, operationJSONObjectBuilder, formURL)
-				);
-
-				_pageMessageMapper.mapOperationMethod(
-					_jsonObjectBuilder, operationJSONObjectBuilder,
-					operation.getHttpMethod());
-
-				_pageMessageMapper.onFinishOperation(
-					_jsonObjectBuilder, operationJSONObjectBuilder, operation);
-			});
-
-		_pageMessageMapper.onFinish(
-			_jsonObjectBuilder, _page, _requestInfo.getHttpHeaders());
+		_pageMessageMapper.onFinish(_jsonObjectBuilder, _page);
 
 		JsonObject jsonObject = _jsonObjectBuilder.build();
 
@@ -322,11 +295,119 @@ public class PageWriter<T> {
 
 		return optional.map(
 			path -> createNestedCollectionURL(
-				_requestInfo.getServerURL(), path, _page.getResourceName())
+				_requestInfo.getApplicationURL(), path, _page.getResourceName())
 		).orElseGet(
 			() -> createCollectionURL(
-				_requestInfo.getServerURL(), _page.getResourceName())
+				_requestInfo.getApplicationURL(), _page.getResourceName())
 		);
+	}
+
+	private void _writeBasicFields(
+		FieldsWriter<?> fieldsWriter, JSONObjectBuilder jsonObjectBuilder) {
+
+		fieldsWriter.writeApplicationRelativeURLFields(
+			(field, value) -> _pageMessageMapper.mapItemStringField(
+				_jsonObjectBuilder, jsonObjectBuilder, field, value));
+
+		fieldsWriter.writeBooleanFields(
+			(field, value) -> _pageMessageMapper.mapItemBooleanField(
+				_jsonObjectBuilder, jsonObjectBuilder, field, value));
+
+		fieldsWriter.writeBooleanListFields(
+			(field, value) -> _pageMessageMapper.mapItemBooleanListField(
+				_jsonObjectBuilder, jsonObjectBuilder, field, value));
+
+		fieldsWriter.writeLocalizedStringFields(
+			(field, value) -> _pageMessageMapper.mapItemStringField(
+				_jsonObjectBuilder, jsonObjectBuilder, field, value));
+
+		fieldsWriter.writeNumberFields(
+			(field, value) -> _pageMessageMapper.mapItemNumberField(
+				_jsonObjectBuilder, jsonObjectBuilder, field, value));
+
+		fieldsWriter.writeNumberListFields(
+			(field, value) -> _pageMessageMapper.mapItemNumberListField(
+				_jsonObjectBuilder, jsonObjectBuilder, field, value));
+
+		fieldsWriter.writeRelativeURLFields(
+			(field, value) -> _pageMessageMapper.mapItemStringField(
+				_jsonObjectBuilder, jsonObjectBuilder, field, value));
+
+		fieldsWriter.writeStringFields(
+			(field, value) -> _pageMessageMapper.mapItemStringField(
+				_jsonObjectBuilder, jsonObjectBuilder, field, value));
+
+		fieldsWriter.writeStringListFields(
+			(field, value) -> _pageMessageMapper.mapItemStringListField(
+				_jsonObjectBuilder, jsonObjectBuilder, field, value));
+
+		fieldsWriter.writeLinks(
+			(fieldName, link) -> _pageMessageMapper.mapItemLink(
+				_jsonObjectBuilder, jsonObjectBuilder, fieldName, link));
+
+		fieldsWriter.writeTypes(
+			types -> _pageMessageMapper.mapItemTypes(
+				_jsonObjectBuilder, jsonObjectBuilder, types));
+
+		fieldsWriter.writeBinaries(
+			(field, value) -> _pageMessageMapper.mapItemLink(
+				_jsonObjectBuilder, jsonObjectBuilder, field, value));
+	}
+
+	private <U> void _writeItem(
+		JSONObjectBuilder collectionJSONObjectBuilder,
+		SingleModel<U> singleModel, FunctionalList<String> embeddedPathElements,
+		BaseRepresentorFunction baseRepresentorFunction,
+		SingleModel<?> rootSingleModel) {
+
+		Optional<Path> pathOptional = getPathOptional(
+			singleModel, _pathFunction, baseRepresentorFunction,
+			_representorFunction, rootSingleModel);
+
+		if (!pathOptional.isPresent()) {
+			return;
+		}
+
+		Optional<FieldsWriter<U>> fieldsWriterOptional = getFieldsWriter(
+			singleModel, embeddedPathElements, _requestInfo,
+			baseRepresentorFunction, _singleModelFunction, pathOptional.get());
+
+		if (!fieldsWriterOptional.isPresent()) {
+			return;
+		}
+
+		FieldsWriter<U> fieldsWriter = fieldsWriterOptional.get();
+
+		JSONObjectBuilder itemJsonObjectBuilder = new JSONObjectBuilder();
+
+		_writeBasicFields(fieldsWriter, itemJsonObjectBuilder);
+
+		fieldsWriter.writeRelatedModels(
+			embeddedSingleModel -> getPathOptional(
+				embeddedSingleModel, _pathFunction,
+				_representorFunction::apply),
+			(embeddedSingleModel, embeddedPathElements1) ->
+				_writeItemEmbeddedModelFields(
+					embeddedSingleModel, embeddedPathElements1,
+					itemJsonObjectBuilder, baseRepresentorFunction,
+					singleModel),
+			(resourceURL, embeddedPathElements1) ->
+				_pageMessageMapper.mapItemLinkedResourceURL(
+					_jsonObjectBuilder, itemJsonObjectBuilder,
+					embeddedPathElements1, resourceURL),
+			(resourceURL, embeddedPathElements1) ->
+				_pageMessageMapper.mapItemEmbeddedResourceURL(
+					_jsonObjectBuilder, itemJsonObjectBuilder,
+					embeddedPathElements1, resourceURL));
+
+		_writePageNestedResources(
+			baseRepresentorFunction, singleModel, itemJsonObjectBuilder);
+
+		_writeNestedLists(
+			baseRepresentorFunction, singleModel, itemJsonObjectBuilder, null);
+
+		_pageMessageMapper.onFinishNestedCollectionItem(
+			collectionJSONObjectBuilder, itemJsonObjectBuilder, singleModel);
 	}
 
 	private void _writeItem(SingleModel<T> singleModel) {
@@ -349,53 +430,7 @@ public class PageWriter<T> {
 
 		JSONObjectBuilder itemJsonObjectBuilder = new JSONObjectBuilder();
 
-		_pageMessageMapper.onStartItem(
-			_jsonObjectBuilder, itemJsonObjectBuilder, singleModel,
-			_requestInfo.getHttpHeaders());
-
-		fieldsWriter.writeBooleanFields(
-			(field, value) -> _pageMessageMapper.mapItemBooleanField(
-				_jsonObjectBuilder, itemJsonObjectBuilder, field, value));
-
-		fieldsWriter.writeBooleanListFields(
-			(field, value) -> _pageMessageMapper.mapItemBooleanListField(
-				_jsonObjectBuilder, itemJsonObjectBuilder, field, value));
-
-		fieldsWriter.writeLocalizedStringFields(
-			(field, value) -> _pageMessageMapper.mapItemStringField(
-				_jsonObjectBuilder, itemJsonObjectBuilder, field, value));
-
-		fieldsWriter.writeNumberFields(
-			(field, value) -> _pageMessageMapper.mapItemNumberField(
-				_jsonObjectBuilder, itemJsonObjectBuilder, field, value));
-
-		fieldsWriter.writeNumberListFields(
-			(field, value) -> _pageMessageMapper.mapItemNumberListField(
-				_jsonObjectBuilder, itemJsonObjectBuilder, field, value));
-
-		fieldsWriter.writeRelativeURLFields(
-			(field, value) -> _pageMessageMapper.mapItemStringField(
-				_jsonObjectBuilder, itemJsonObjectBuilder, field, value));
-
-		fieldsWriter.writeStringFields(
-			(field, value) -> _pageMessageMapper.mapItemStringField(
-				_jsonObjectBuilder, itemJsonObjectBuilder, field, value));
-
-		fieldsWriter.writeStringListFields(
-			(field, value) -> _pageMessageMapper.mapItemStringListField(
-				_jsonObjectBuilder, itemJsonObjectBuilder, field, value));
-
-		fieldsWriter.writeLinks(
-			(fieldName, link) -> _pageMessageMapper.mapItemLink(
-				_jsonObjectBuilder, itemJsonObjectBuilder, fieldName, link));
-
-		fieldsWriter.writeTypes(
-			types -> _pageMessageMapper.mapItemTypes(
-				_jsonObjectBuilder, itemJsonObjectBuilder, types));
-
-		fieldsWriter.writeBinaries(
-			(field, value) -> _pageMessageMapper.mapItemLink(
-				_jsonObjectBuilder, itemJsonObjectBuilder, field, value));
+		_writeBasicFields(fieldsWriter, itemJsonObjectBuilder);
 
 		fieldsWriter.writeSingleURL(
 			url -> _pageMessageMapper.mapItemSelfURL(
@@ -429,9 +464,12 @@ public class PageWriter<T> {
 			_representorFunction::apply, singleModel, itemJsonObjectBuilder,
 			singleModel, null);
 
+		_writeNestedLists(
+			_representorFunction::apply, singleModel, itemJsonObjectBuilder,
+			null);
+
 		_pageMessageMapper.onFinishItem(
-			_jsonObjectBuilder, itemJsonObjectBuilder, singleModel,
-			_requestInfo.getHttpHeaders());
+			_jsonObjectBuilder, itemJsonObjectBuilder, singleModel);
 	}
 
 	private <S> void _writeItemEmbeddedModelFields(
@@ -467,6 +505,12 @@ public class PageWriter<T> {
 
 		FieldsWriter<S> fieldsWriter = fieldsWriterOptional.get();
 
+		fieldsWriter.writeApplicationRelativeURLFields(
+			(field, value) ->
+				_pageMessageMapper.mapItemEmbeddedResourceStringField(
+					_jsonObjectBuilder, itemJsonObjectBuilder,
+					embeddedPathElements, field, value));
+
 		fieldsWriter.writeBooleanFields(
 			(field, value) ->
 				_pageMessageMapper.mapItemEmbeddedResourceBooleanField(
@@ -498,6 +542,12 @@ public class PageWriter<T> {
 					embeddedPathElements, field, value));
 
 		fieldsWriter.writeRelativeURLFields(
+			(field, value) ->
+				_pageMessageMapper.mapItemEmbeddedResourceStringField(
+					_jsonObjectBuilder, itemJsonObjectBuilder,
+					embeddedPathElements, field, value));
+
+		fieldsWriter.writeApplicationRelativeURLFields(
 			(field, value) ->
 				_pageMessageMapper.mapItemEmbeddedResourceStringField(
 					_jsonObjectBuilder, itemJsonObjectBuilder,
@@ -554,9 +604,73 @@ public class PageWriter<T> {
 					_jsonObjectBuilder, itemJsonObjectBuilder,
 					resourceEmbeddedPathElements, url));
 
+		_writeNestedLists(
+			baseRepresentorFunction, singleModel, itemJsonObjectBuilder,
+			embeddedPathElements);
+
 		_writeNestedResources(
 			baseRepresentorFunction, singleModel, itemJsonObjectBuilder,
 			rootSingleModel, embeddedPathElements);
+	}
+
+	private <U> void _writeNestedList(
+		String fieldName, List<U> list, JSONObjectBuilder jsonObjectBuilder,
+		FunctionalList<String> embeddedPathElements,
+		BaseRepresentorFunction baseRepresentorFunction,
+		SingleModel singleModel) {
+
+		JSONObjectBuilder pageJSONObjectBuilder = new JSONObjectBuilder();
+
+		_pageMessageMapper.mapNestedPageItemTotalCount(
+			pageJSONObjectBuilder, list.size());
+
+		list.forEach(
+			model -> _writeItem(
+				pageJSONObjectBuilder,
+				new SingleModelImpl<>(model, "", Collections.emptyList()),
+				embeddedPathElements, baseRepresentorFunction, singleModel));
+
+		_pageMessageMapper.onFinishNestedCollection(
+			jsonObjectBuilder, pageJSONObjectBuilder, fieldName, list,
+			embeddedPathElements);
+	}
+
+	private <S> void _writeNestedLists(
+		BaseRepresentorFunction baseRepresentorFunction,
+		SingleModel<S> singleModel, JSONObjectBuilder jsonObjectBuilder,
+		FunctionalList<String> embeddedPathElements) {
+
+		baseRepresentorFunction.apply(
+			singleModel.getResourceName()
+		).<BaseRepresentor<S>>map(
+			Unsafe::unsafeCast
+		).map(
+			BaseRepresentor::getNestedListFieldFunctions
+		).map(
+			List::stream
+		).orElseGet(
+			Stream::empty
+		).forEach(
+			nestedListFieldFunction -> {
+				List<?> list = nestedListFieldFunction.apply(
+					singleModel.getModel());
+
+				if (list == null) {
+					return;
+				}
+
+				FunctionalList<String> embeddedNestedPathElements =
+					new FunctionalList<>(
+						embeddedPathElements, nestedListFieldFunction.getKey());
+
+				_writeNestedList(
+					nestedListFieldFunction.getKey(), list, jsonObjectBuilder,
+					embeddedNestedPathElements,
+					__ -> Optional.of(
+						nestedListFieldFunction.getNestedRepresentor()),
+					singleModel);
+			}
+		);
 	}
 
 	private <S, U> void _writeNestedResources(
@@ -591,6 +705,43 @@ public class PageWriter<T> {
 					__ -> Optional.of(
 						nestedFieldFunction.getNestedRepresentor()),
 					rootSingleModel);
+			}
+		);
+	}
+
+	private <U> void _writePageNestedResources(
+		BaseRepresentorFunction baseRepresentorFunction,
+		SingleModel<U> singleModel, JSONObjectBuilder itemJsonObjectBuilder) {
+
+		baseRepresentorFunction.apply(
+			singleModel.getResourceName()
+		).<BaseRepresentor<U>>map(
+			Unsafe::unsafeCast
+		).map(
+			BaseRepresentor::getNestedFieldFunctions
+		).map(
+			List::stream
+		).orElseGet(
+			Stream::empty
+		).forEach(
+			nestedFieldFunction -> {
+				Object mappedModel = nestedFieldFunction.apply(
+					singleModel.getModel());
+
+				if (mappedModel == null) {
+					return;
+				}
+
+				FunctionalList<String> embeddedNestedPathElements =
+					new FunctionalList<>(null, nestedFieldFunction.getKey());
+
+				_writeItemEmbeddedModelFields(
+					new SingleModelImpl<>(
+						mappedModel, "", Collections.emptyList()),
+					embeddedNestedPathElements, itemJsonObjectBuilder,
+					__ -> Optional.of(
+						nestedFieldFunction.getNestedRepresentor()),
+					singleModel);
 			}
 		);
 	}

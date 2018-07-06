@@ -19,12 +19,11 @@ import static org.hamcrest.core.Is.is;
 
 import com.liferay.apio.architect.impl.internal.response.control.Embedded;
 import com.liferay.apio.architect.impl.internal.response.control.Fields;
+import com.liferay.apio.architect.impl.internal.url.ApplicationURL;
 import com.liferay.apio.architect.impl.internal.url.ServerURL;
 import com.liferay.apio.architect.language.AcceptLanguage;
 
 import javax.servlet.http.HttpServletRequest;
-
-import javax.ws.rs.core.HttpHeaders;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,9 +37,9 @@ public class RequestInfoTest {
 
 	@Before
 	public void setUp() {
-		_httpHeaders = Mockito.mock(HttpHeaders.class);
 		_httpServletRequest = Mockito.mock(HttpServletRequest.class);
 		_serverURL = Mockito.mock(ServerURL.class);
+		_applicationURL = Mockito.mock(ApplicationURL.class);
 		_embedded = Mockito.mock(Embedded.class);
 		_fields = Mockito.mock(Fields.class);
 		_acceptLanguage = Mockito.mock(AcceptLanguage.class);
@@ -49,12 +48,12 @@ public class RequestInfoTest {
 	@Test
 	public void testBuildingRequestInfoCreatesValidRequestInfo() {
 		RequestInfo requestInfo = RequestInfo.create(
-			builder -> builder.httpHeaders(
-				_httpHeaders
-			).httpServletRequest(
+			builder -> builder.httpServletRequest(
 				_httpServletRequest
 			).serverURL(
 				_serverURL
+			).applicationURL(
+				_applicationURL
 			).embedded(
 				_embedded
 			).fields(
@@ -65,17 +64,17 @@ public class RequestInfoTest {
 
 		assertThat(requestInfo.getEmbedded(), is(_embedded));
 		assertThat(requestInfo.getFields(), is(_fields));
-		assertThat(requestInfo.getHttpHeaders(), is(_httpHeaders));
 		assertThat(
 			requestInfo.getHttpServletRequest(), is(_httpServletRequest));
 		assertThat(requestInfo.getAcceptLanguage(), is(_acceptLanguage));
 		assertThat(requestInfo.getServerURL(), is(_serverURL));
+		assertThat(requestInfo.getApplicationURL(), is(_applicationURL));
 	}
 
 	private AcceptLanguage _acceptLanguage;
+	private ApplicationURL _applicationURL;
 	private Embedded _embedded;
 	private Fields _fields;
-	private HttpHeaders _httpHeaders;
 	private HttpServletRequest _httpServletRequest;
 	private ServerURL _serverURL;
 

@@ -14,10 +14,9 @@
 
 package com.liferay.apio.architect.impl.internal.wiring.osgi.manager.message.json;
 
-import static com.liferay.apio.architect.impl.internal.wiring.osgi.manager.cache.ManagerCache.INSTANCE;
-
 import com.liferay.apio.architect.impl.internal.message.json.FormMessageMapper;
 import com.liferay.apio.architect.impl.internal.wiring.osgi.manager.base.MessageMapperBaseManager;
+import com.liferay.apio.architect.impl.internal.wiring.osgi.manager.cache.ManagerCache;
 
 import java.util.Optional;
 
@@ -34,14 +33,16 @@ public class FormMessageMapperManagerImpl
 	implements FormMessageMapperManager {
 
 	public FormMessageMapperManagerImpl() {
-		super(FormMessageMapper.class, INSTANCE::putFormMessageMapper);
+		super(
+			FormMessageMapper.class,
+			ManagerCache.INSTANCE::putFormMessageMapper);
 	}
 
 	@Override
 	public Optional<FormMessageMapper> getFormMessageMapperOptional(
 		Request request) {
 
-		return INSTANCE.getFormMessageMapperOptional(
+		return ManagerCache.INSTANCE.getFormMessageMapperOptional(
 			request, this::computeMessageMappers);
 	}
 
