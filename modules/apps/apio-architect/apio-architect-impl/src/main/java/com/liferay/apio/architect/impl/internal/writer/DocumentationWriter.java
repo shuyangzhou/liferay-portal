@@ -25,7 +25,6 @@ import com.liferay.apio.architect.alias.representor.FieldFunction;
 import com.liferay.apio.architect.alias.representor.NestedFieldFunction;
 import com.liferay.apio.architect.consumer.TriConsumer;
 import com.liferay.apio.architect.form.Form;
-import com.liferay.apio.architect.form.FormField;
 import com.liferay.apio.architect.impl.internal.documentation.Documentation;
 import com.liferay.apio.architect.impl.internal.message.json.DocumentationMessageMapper;
 import com.liferay.apio.architect.impl.internal.message.json.JSONObjectBuilder;
@@ -87,9 +86,6 @@ public class DocumentationWriter {
 	public String write() {
 		JSONObjectBuilder jsonObjectBuilder = new JSONObjectBuilder();
 
-		_documentationMessageMapper.onStart(
-			jsonObjectBuilder, _documentation, _requestInfo.getHttpHeaders());
-
 		_writeDocumentationMetadata(jsonObjectBuilder);
 
 		Map<String, Representor> representors =
@@ -135,8 +131,7 @@ public class DocumentationWriter {
 				__ -> {
 				}));
 
-		_documentationMessageMapper.onFinish(
-			jsonObjectBuilder, _documentation, _requestInfo.getHttpHeaders());
+		_documentationMessageMapper.onFinish(jsonObjectBuilder, _documentation);
 
 		JsonObject jsonObject = jsonObjectBuilder.build();
 
@@ -224,6 +219,7 @@ public class DocumentationWriter {
 
 		List<FieldFunction> fieldFunctions = new ArrayList<>();
 
+		fieldFunctions.addAll(representor.getApplicationRelativeURLFunctions());
 		fieldFunctions.addAll(representor.getBinaryFunctions());
 		fieldFunctions.addAll(representor.getBooleanFunctions());
 		fieldFunctions.addAll(representor.getBooleanListFunctions());
@@ -232,6 +228,7 @@ public class DocumentationWriter {
 		fieldFunctions.addAll(representor.getNestedFieldFunctions());
 		fieldFunctions.addAll(representor.getNumberFunctions());
 		fieldFunctions.addAll(representor.getNumberListFunctions());
+		fieldFunctions.addAll(representor.getRelativeURLFunctions());
 		fieldFunctions.addAll(representor.getStringFunctions());
 		fieldFunctions.addAll(representor.getStringListFunctions());
 
@@ -266,22 +263,6 @@ public class DocumentationWriter {
 		);
 
 		return Stream.concat(fieldNamesStream, nestedFieldNamesStream);
-	}
-
-	private Optional<FormField> _getFormField(
-		String fieldName, Form<FormField> formFieldForm) {
-
-		List<FormField> formFields = formFieldForm.getFormFields();
-
-		Stream<FormField> stream = formFields.stream();
-
-		return stream.filter(
-			formField -> {
-				String name = formField.getName();
-
-				return name.equals(fieldName);
-			}
-		).findFirst();
 	}
 
 	private Optional<String> _getNestedCollectionRouteOptional(
@@ -363,9 +344,6 @@ public class DocumentationWriter {
 
 		JSONObjectBuilder jsonObjectBuilder = new JSONObjectBuilder();
 
-		_documentationMessageMapper.onStartProperty(
-			resourceJsonObjectBuilder, jsonObjectBuilder, fieldName);
-
 		_documentationMessageMapper.mapProperty(jsonObjectBuilder, fieldName);
 
 		_documentationMessageMapper.onFinishProperty(
@@ -414,9 +392,6 @@ public class DocumentationWriter {
 
 		JSONObjectBuilder operationJsonObjectBuilder = new JSONObjectBuilder();
 
-		_documentationMessageMapper.onStartOperation(
-			jsonObjectBuilder, operationJsonObjectBuilder, operation);
-
 		_documentationMessageMapper.mapOperation(
 			operationJsonObjectBuilder, resourceName, type, operation);
 
@@ -464,9 +439,6 @@ public class DocumentationWriter {
 			type -> {
 				JSONObjectBuilder resourceJsonObjectBuilder =
 					new JSONObjectBuilder();
-
-				_documentationMessageMapper.onStartResource(
-					jsonObjectBuilder, resourceJsonObjectBuilder, type);
 
 				writeResourceBiConsumer.accept(resourceJsonObjectBuilder, type);
 

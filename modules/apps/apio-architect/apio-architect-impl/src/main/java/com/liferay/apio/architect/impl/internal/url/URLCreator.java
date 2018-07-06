@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.impl.internal.url;
 
+import static java.lang.String.join;
+
 import com.liferay.apio.architect.form.Form;
 import com.liferay.apio.architect.impl.internal.pagination.PageType;
 import com.liferay.apio.architect.pagination.Page;
@@ -33,6 +35,30 @@ import javax.ws.rs.core.UriBuilder;
  * @author Alejandro Hernández
  */
 public final class URLCreator {
+
+	/**
+	 * Returns the absolute version of an application relative URL
+	 *
+	 * @param  applicationURL the application URL
+	 * @param  relativeURL the relative URL
+	 * @return the absolute URL
+	 * @review
+	 */
+	public static String createAbsoluteURL(
+		ApplicationURL applicationURL, String relativeURL) {
+
+		if ((relativeURL == null) || relativeURL.isEmpty()) {
+			return null;
+		}
+
+		URI uri = UriBuilder.fromUri(
+			applicationURL.get()
+		).path(
+			relativeURL
+		).build();
+
+		return uri.toString();
+	}
 
 	/**
 	 * Returns the absolute version of a relative URL
@@ -61,15 +87,16 @@ public final class URLCreator {
 	/**
 	 * Returns the URL for a binary resource.
 	 *
-	 * @param  serverURL the server URL
+	 * @param  applicationURL the application URL
 	 * @param  binaryId the binary resource's ID
 	 * @param  path the resource's {@code com.liferay.apio.architect.uri.Path}
 	 * @return the URL for a binary resource
 	 */
 	public static String createBinaryURL(
-		ServerURL serverURL, String binaryId, Path path) {
+		ApplicationURL applicationURL, String binaryId, Path path) {
 
-		return String.join("/", serverURL.get(), "b", path.asURI(), binaryId);
+		return createAbsoluteURL(
+			applicationURL, join("/", "b", path.asURI(), binaryId));
 	}
 
 	/**
@@ -95,49 +122,56 @@ public final class URLCreator {
 	/**
 	 * Returns the URL for a collection.
 	 *
-	 * @param  serverURL the server URL
+	 * @param  applicationURL the application URL
 	 * @param  name the resource's name
 	 * @return the collection URL
 	 */
-	public static String createCollectionURL(ServerURL serverURL, String name) {
-		return serverURL.get() + "/p/" + name;
+	public static String createCollectionURL(
+		ApplicationURL applicationURL, String name) {
+
+		return createAbsoluteURL(applicationURL, "/p/" + name);
 	}
 
 	/**
 	 * Returns the URL for a {@code Form}.
 	 *
-	 * @param  serverURL the server URL
+	 * @param  applicationURL the application URL
 	 * @param  form the form
 	 * @return the URL for a {@code Form}
 	 */
-	public static String createFormURL(ServerURL serverURL, Form form) {
-		return String.join("/", serverURL.get(), "f", form.getId());
+	public static String createFormURL(
+		ApplicationURL applicationURL, Form form) {
+
+		return createAbsoluteURL(applicationURL, join("/", "f", form.getId()));
 	}
 
 	/**
 	 * Returns the URL for a nested collection.
 	 *
-	 * @param  serverURL the server URL
+	 * @param  applicationURL the application URL
 	 * @param  path the single resource's {@link Path}
 	 * @param  name the nested resource's name
 	 * @return the collection URL
 	 */
 	public static String createNestedCollectionURL(
-		ServerURL serverURL, Path path, String name) {
+		ApplicationURL applicationURL, Path path, String name) {
 
-		return String.join("/", serverURL.get(), "p", path.asURI(), name);
+		return createAbsoluteURL(
+			applicationURL, join("/", "p", path.asURI(), name));
 	}
 
 	/**
 	 * Returns the URL of a model's resource.
 	 *
-	 * @param  serverURL the server URL
+	 * @param  applicationURL the application URL
 	 * @param  path the resource's {@link Path}
 	 * @return the URL for the {@link
 	 *         com.liferay.apio.architect.resource.CollectionResource}
 	 */
-	public static String createSingleURL(ServerURL serverURL, Path path) {
-		return serverURL.get() + "/p/" + path.asURI();
+	public static String createSingleURL(
+		ApplicationURL applicationURL, Path path) {
+
+		return createAbsoluteURL(applicationURL, "/p/" + path.asURI());
 	}
 
 	/**

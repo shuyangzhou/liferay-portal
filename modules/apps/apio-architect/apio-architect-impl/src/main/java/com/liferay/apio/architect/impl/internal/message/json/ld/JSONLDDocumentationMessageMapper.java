@@ -43,8 +43,6 @@ import com.liferay.apio.architect.operation.Operation;
 
 import java.util.stream.Stream;
 
-import javax.ws.rs.core.HttpHeaders;
-
 import org.osgi.service.component.annotations.Component;
 
 /**
@@ -190,9 +188,6 @@ public class JSONLDDocumentationMessageMapper
 				JSONObjectBuilder propertyJsonObjectBuilder =
 					new JSONObjectBuilder();
 
-				onStartProperty(
-					jsonObjectBuilder, propertyJsonObjectBuilder, fieldName);
-
 				mapProperty(propertyJsonObjectBuilder, fieldName);
 
 				onFinishProperty(
@@ -211,48 +206,8 @@ public class JSONLDDocumentationMessageMapper
 	}
 
 	@Override
-	public void onFinishOperation(
-		JSONObjectBuilder documentationJsonObjectBuilder,
-		JSONObjectBuilder operationJsonObjectBuilder, Operation operation) {
-
-		documentationJsonObjectBuilder.field(
-			"supportedOperation"
-		).arrayValue(
-		).add(
-			operationJsonObjectBuilder
-		);
-	}
-
-	@Override
-	public void onFinishProperty(
-		JSONObjectBuilder documentationJsonObjectBuilder,
-		JSONObjectBuilder propertyJsonObjectBuilder, String formField) {
-
-		documentationJsonObjectBuilder.field(
-			"supportedProperty"
-		).arrayValue(
-		).add(
-			propertyJsonObjectBuilder
-		);
-	}
-
-	@Override
-	public void onFinishResource(
-		JSONObjectBuilder documentationJsonObjectBuilder,
-		JSONObjectBuilder resourceJsonObjectBuilder, String type) {
-
-		documentationJsonObjectBuilder.field(
-			"supportedClass"
-		).arrayValue(
-		).add(
-			resourceJsonObjectBuilder
-		);
-	}
-
-	@Override
-	public void onStart(
-		JSONObjectBuilder jsonObjectBuilder, Documentation documentation,
-		HttpHeaders httpHeaders) {
+	public void onFinish(
+		JSONObjectBuilder jsonObjectBuilder, Documentation documentation) {
 
 		jsonObjectBuilder.field(
 			FIELD_NAME_CONTEXT
@@ -307,6 +262,45 @@ public class JSONLDDocumentationMessageMapper
 			FIELD_NAME_TYPE
 		).stringValue(
 			TYPE_API_DOCUMENTATION
+		);
+	}
+
+	@Override
+	public void onFinishOperation(
+		JSONObjectBuilder documentationJsonObjectBuilder,
+		JSONObjectBuilder operationJsonObjectBuilder, Operation operation) {
+
+		documentationJsonObjectBuilder.field(
+			"supportedOperation"
+		).arrayValue(
+		).add(
+			operationJsonObjectBuilder
+		);
+	}
+
+	@Override
+	public void onFinishProperty(
+		JSONObjectBuilder documentationJsonObjectBuilder,
+		JSONObjectBuilder propertyJsonObjectBuilder, String formField) {
+
+		documentationJsonObjectBuilder.field(
+			"supportedProperty"
+		).arrayValue(
+		).add(
+			propertyJsonObjectBuilder
+		);
+	}
+
+	@Override
+	public void onFinishResource(
+		JSONObjectBuilder documentationJsonObjectBuilder,
+		JSONObjectBuilder resourceJsonObjectBuilder, String type) {
+
+		documentationJsonObjectBuilder.field(
+			"supportedClass"
+		).arrayValue(
+		).add(
+			resourceJsonObjectBuilder
 		);
 	}
 
