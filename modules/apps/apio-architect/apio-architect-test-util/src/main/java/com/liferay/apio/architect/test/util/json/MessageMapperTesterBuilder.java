@@ -47,8 +47,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import javax.ws.rs.core.HttpHeaders;
-
 import org.json.JSONException;
 
 /**
@@ -69,30 +67,8 @@ public class MessageMapperTesterBuilder {
 	 * @return the next step of the builder
 	 * @review
 	 */
-	public static HttpHeadersStep path(Path path) {
-		return new HttpHeadersStep(path);
-	}
-
-	public static class HttpHeadersStep {
-
-		/**
-		 * Provides information about the HTTP headers. This object can be real
-		 * or created with mock frameworks.
-		 *
-		 * @param  httpHeaders the request HTTP headers.
-		 * @return the next step of the builder
-		 * @review
-		 */
-		public MediaTypeStep httpHeaders(HttpHeaders httpHeaders) {
-			return new MediaTypeStep(_path, httpHeaders);
-		}
-
-		private HttpHeadersStep(Path path) {
-			_path = path;
-		}
-
-		private final Path _path;
-
+	public static MediaTypeStep path(Path path) {
+		return new MediaTypeStep(path);
 	}
 
 	public static class MediaTypeStep {
@@ -105,15 +81,13 @@ public class MessageMapperTesterBuilder {
 		 * @review
 		 */
 		public MessageMapperStep mediaType(String mediaType) {
-			return new MessageMapperStep(_path, _httpHeaders, mediaType);
+			return new MessageMapperStep(_path, mediaType);
 		}
 
-		private MediaTypeStep(Path path, HttpHeaders httpHeaders) {
+		private MediaTypeStep(Path path) {
 			_path = path;
-			_httpHeaders = httpHeaders;
 		}
 
-		private final HttpHeaders _httpHeaders;
 		private final Path _path;
 
 	}
@@ -134,7 +108,7 @@ public class MessageMapperTesterBuilder {
 			DocumentationMessageMapper documentationMessageMapper) {
 
 			JsonObject jsonObject = MockDocumentationWriter.write(
-				_httpHeaders, documentationMessageMapper);
+				documentationMessageMapper);
 
 			_createFile(jsonObject.toString(), "documentation");
 
@@ -154,7 +128,7 @@ public class MessageMapperTesterBuilder {
 			ErrorMessageMapper errorMessageMapper) {
 
 			String actual = ErrorWriter.writeError(
-				errorMessageMapper, _MOCK_API_ERROR, _httpHeaders);
+				errorMessageMapper, _MOCK_API_ERROR);
 
 			_createFile(actual, "error");
 
@@ -173,8 +147,7 @@ public class MessageMapperTesterBuilder {
 		public MessageMapperStep createFormFile(
 			FormMessageMapper formMessageMapper) {
 
-			JsonObject jsonObject = MockFormWriter.write(
-				_httpHeaders, formMessageMapper);
+			JsonObject jsonObject = MockFormWriter.write(formMessageMapper);
 
 			_createFile(jsonObject.toString(), "form");
 
@@ -193,8 +166,7 @@ public class MessageMapperTesterBuilder {
 		public MessageMapperStep createPageFile(
 			PageMessageMapper<RootModel> pageMessageMapper) {
 
-			JsonObject jsonObject = MockPageWriter.write(
-				_httpHeaders, pageMessageMapper);
+			JsonObject jsonObject = MockPageWriter.write(pageMessageMapper);
 
 			_createFile(jsonObject.toString(), "page");
 
@@ -214,7 +186,7 @@ public class MessageMapperTesterBuilder {
 			SingleModelMessageMapper<RootModel> singleModelMessageMapper) {
 
 			JsonObject jsonObject = MockSingleModelWriter.write(
-				_httpHeaders, singleModelMessageMapper);
+				singleModelMessageMapper);
 
 			_createFile(jsonObject.toString(), "single_model");
 
@@ -234,7 +206,7 @@ public class MessageMapperTesterBuilder {
 			DocumentationMessageMapper documentationMessageMapper) {
 
 			JsonObject jsonObject = MockDocumentationWriter.write(
-				_httpHeaders, documentationMessageMapper);
+				documentationMessageMapper);
 
 			_validateMessageMapper(
 				documentationMessageMapper, jsonObject.toString(),
@@ -256,7 +228,7 @@ public class MessageMapperTesterBuilder {
 			ErrorMessageMapper errorMessageMapper) {
 
 			String actual = ErrorWriter.writeError(
-				errorMessageMapper, _MOCK_API_ERROR, _httpHeaders);
+				errorMessageMapper, _MOCK_API_ERROR);
 
 			_validateMessageMapper(errorMessageMapper, actual, "error");
 
@@ -275,8 +247,7 @@ public class MessageMapperTesterBuilder {
 		public MessageMapperStep validateFormMessageMapper(
 			FormMessageMapper formMessageMapper) {
 
-			JsonObject jsonObject = MockFormWriter.write(
-				_httpHeaders, formMessageMapper);
+			JsonObject jsonObject = MockFormWriter.write(formMessageMapper);
 
 			_validateMessageMapper(
 				formMessageMapper, jsonObject.toString(), "form");
@@ -296,8 +267,7 @@ public class MessageMapperTesterBuilder {
 		public MessageMapperStep validatePageMessageMapper(
 			PageMessageMapper<RootModel> pageMessageMapper) {
 
-			JsonObject jsonObject = MockPageWriter.write(
-				_httpHeaders, pageMessageMapper);
+			JsonObject jsonObject = MockPageWriter.write(pageMessageMapper);
 
 			_validateMessageMapper(
 				pageMessageMapper, jsonObject.toString(), "page");
@@ -318,7 +288,7 @@ public class MessageMapperTesterBuilder {
 			SingleModelMessageMapper<RootModel> singleModelMessageMapper) {
 
 			JsonObject jsonObject = MockSingleModelWriter.write(
-				_httpHeaders, singleModelMessageMapper);
+				singleModelMessageMapper);
 
 			_validateMessageMapper(
 				singleModelMessageMapper, jsonObject.toString(),
@@ -327,11 +297,8 @@ public class MessageMapperTesterBuilder {
 			return this;
 		}
 
-		private MessageMapperStep(
-			Path path, HttpHeaders httpHeaders, String mediaType) {
-
+		private MessageMapperStep(Path path, String mediaType) {
 			_path = path;
-			_httpHeaders = httpHeaders;
 			_mediaType = mediaType;
 		}
 
@@ -403,7 +370,6 @@ public class MessageMapperTesterBuilder {
 			new IllegalArgumentException(), "A title", "A description",
 			"A type", 404);
 
-		private final HttpHeaders _httpHeaders;
 		private final String _mediaType;
 		private final Path _path;
 
