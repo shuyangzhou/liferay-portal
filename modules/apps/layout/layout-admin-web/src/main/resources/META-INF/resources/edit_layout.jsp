@@ -98,7 +98,6 @@ renderResponse.setTitle(selLayout.getName(locale));
 			<aui:button id="enableLayoutButton" name="enableLayout" value='<%= LanguageUtil.format(request, "enable-in-x", HtmlUtil.escape(layoutSetBranchName), false) %>' />
 
 			<portlet:actionURL name="/layout/enable_layout" var="enableLayoutURL">
-				<portlet:param name="mvcRenderCommandName" value="/layout/view" />
 				<portlet:param name="redirect" value="<%= redirectURL.toString() %>" />
 				<portlet:param name="incompleteLayoutRevisionId" value="<%= String.valueOf(layoutRevision.getLayoutRevisionId()) %>" />
 			</portlet:actionURL>
@@ -115,7 +114,6 @@ renderResponse.setTitle(selLayout.getName(locale));
 			<aui:button cssClass="remove-layout" id="deleteLayoutButton" name="deleteLayout" value="delete-in-all-pages-variations" />
 
 			<portlet:actionURL name="/layout/delete_layout" var="deleteLayoutURL">
-				<portlet:param name="mvcRenderCommandName" value="/layout/view" />
 				<portlet:param name="redirect" value='<%= HttpUtil.addParameter(redirectURL.toString(), liferayPortletResponse.getNamespace() + "selPlid", selLayout.getParentPlid()) %>' />
 				<portlet:param name="selPlid" value="<%= String.valueOf(layoutsAdminDisplayContext.getSelPlid()) %>" />
 				<portlet:param name="layoutSetBranchId" value="0" />
@@ -156,7 +154,7 @@ renderResponse.setTitle(selLayout.getName(locale));
 			<aui:input name="<%= PortletDataHandlerKeys.SELECTED_LAYOUTS %>" type="hidden" />
 
 			<liferay-frontend:edit-form-body>
-				<liferay-ui:success key='<%= portletDisplay.getPortletName() + "layoutAdded" %>' message="the-page-was-created-succesfully" />
+				<liferay-ui:success key="layoutAdded" message="the-page-was-created-succesfully" />
 
 				<liferay-ui:error exception="<%= LayoutTypeException.class %>">
 

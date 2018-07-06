@@ -36,8 +36,6 @@ import com.liferay.apio.architect.test.util.writer.MockWriterUtil;
 
 import java.util.Optional;
 
-import javax.ws.rs.core.HttpHeaders;
-
 /**
  * Provides methods that test {@code SingleModelMessageMapper} objects.
  *
@@ -53,15 +51,13 @@ public class MockSingleModelWriter {
 	 * Writes a {@link RootModel}, with the hierarchy of embedded models and
 	 * multiple fields.
 	 *
-	 * @param httpHeaders the request's {@code HttpHeaders}
 	 * @param singleModelMessageMapper the {@link SingleModelMessageMapper} to
 	 *        use for writing the JSON object
 	 */
 	public static JsonObject write(
-		HttpHeaders httpHeaders,
 		SingleModelMessageMapper<RootModel> singleModelMessageMapper) {
 
-		RequestInfo requestInfo = getRequestInfo(httpHeaders);
+		RequestInfo requestInfo = getRequestInfo();
 
 		Operation deleteOperation = new OperationImpl(
 			DELETE, "delete-operation");

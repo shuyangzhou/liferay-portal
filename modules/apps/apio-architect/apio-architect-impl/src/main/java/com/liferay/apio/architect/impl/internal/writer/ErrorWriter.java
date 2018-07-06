@@ -22,8 +22,6 @@ import com.liferay.apio.architect.impl.internal.message.json.JSONObjectBuilder;
 
 import java.util.Optional;
 
-import javax.ws.rs.core.HttpHeaders;
-
 /**
  * Writes an {@link APIError} by using an {@link ErrorMessageMapper}.
  *
@@ -38,19 +36,14 @@ public final class ErrorWriter {
 	/**
 	 * Writes an {@link APIError} to a JSON object.
 	 *
-	 * @param  errorMessageMapper the {@link ErrorMessageMapper} that matches
-	 *         the {@code apiError} and {@code httpHeaders} parameters
+	 * @param  errorMessageMapper the {@link ErrorMessageMapper}
 	 * @param  apiError the API error
-	 * @param  httpHeaders the current request's HTTP headers
 	 * @return the API error, as a JSON string
 	 */
 	public static String writeError(
-		ErrorMessageMapper errorMessageMapper, APIError apiError,
-		HttpHeaders httpHeaders) {
+		ErrorMessageMapper errorMessageMapper, APIError apiError) {
 
 		JSONObjectBuilder jsonObjectBuilder = new JSONObjectBuilder();
-
-		errorMessageMapper.onStart(jsonObjectBuilder, apiError, httpHeaders);
 
 		Optional<String> optional = apiError.getDescription();
 
@@ -62,7 +55,7 @@ public final class ErrorWriter {
 			jsonObjectBuilder, apiError.getStatusCode());
 		errorMessageMapper.mapTitle(jsonObjectBuilder, apiError.getTitle());
 		errorMessageMapper.mapType(jsonObjectBuilder, apiError.getType());
-		errorMessageMapper.onFinish(jsonObjectBuilder, apiError, httpHeaders);
+		errorMessageMapper.onFinish(jsonObjectBuilder, apiError);
 
 		JsonObject jsonObject = jsonObjectBuilder.build();
 
