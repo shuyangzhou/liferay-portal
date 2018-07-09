@@ -24,8 +24,8 @@ import com.liferay.apio.architect.error.APIError;
  * this, each method receives a {@link JSONObjectBuilder}.
  *
  * <p>
- * Besides {@link #onStart} and {@link #onFinish}, which are respectively called
- * when the writer starts and finishes the error, the methods aren't called in a
+ * The method {@link #onFinish} is called when the writer finishes writing the
+ * error. Otherwise, the error message mapper's methods aren't called in a
  * particular order.
  * </p>
  *

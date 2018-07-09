@@ -14,19 +14,15 @@
 
 package com.liferay.apio.architect.impl.internal.url;
 
+import java.util.function.Supplier;
+
 /**
- * Provides the final URL based on the HTTP servlet request. The implementation
+ * Provides the server URL based on the HTTP servlet request. The implementation
  * depends on any proxy configuration, SSO, and so on.
  *
  * @author Javier Gamarra
+ * @review
  */
-public interface ServerURL {
-
-	/**
-	 * Returns the HTTP servlet request's original URL.
-	 *
-	 * @return a string URL constructed from the HTTP servlet request
-	 */
-	public String get();
-
+@FunctionalInterface
+public interface ServerURL extends Supplier<String> {
 }

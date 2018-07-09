@@ -24,8 +24,6 @@ import com.liferay.apio.architect.impl.internal.request.RequestInfo;
 import com.liferay.apio.architect.impl.internal.writer.FormWriter;
 import com.liferay.apio.architect.test.util.form.MockFormCreator;
 
-import javax.ws.rs.core.HttpHeaders;
-
 /**
  * Provides methods that test {@link FormMessageMapper} objects.
  *
@@ -40,14 +38,11 @@ public class MockFormWriter {
 	/**
 	 * Writes a {@link com.liferay.apio.architect.form.Form} object.
 	 *
-	 * @param httpHeaders the request's HTTP headers
 	 * @param formMessageMapper the {@code FormMessageMapper} to use for writing
 	 *        the JSON object
 	 */
-	public static JsonObject write(
-		HttpHeaders httpHeaders, FormMessageMapper formMessageMapper) {
-
-		RequestInfo requestInfo = getRequestInfo(httpHeaders);
+	public static JsonObject write(FormMessageMapper formMessageMapper) {
+		RequestInfo requestInfo = getRequestInfo();
 
 		FormWriter formWriter = FormWriter.create(
 			builder -> builder.form(
