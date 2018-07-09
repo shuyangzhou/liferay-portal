@@ -29,7 +29,7 @@ public class TermsFilterTest extends BaseTermsFilterTestCase {
 	@Override
 	protected IndexingFixture createIndexingFixture() throws Exception {
 		ElasticsearchFixture elasticsearchFixture = new ElasticsearchFixture(
-			TermsFilterTest.class.getSimpleName());
+			getClass());
 
 		return new ElasticsearchIndexingFixture(
 			elasticsearchFixture, BaseIndexingTestCase.COMPANY_ID,

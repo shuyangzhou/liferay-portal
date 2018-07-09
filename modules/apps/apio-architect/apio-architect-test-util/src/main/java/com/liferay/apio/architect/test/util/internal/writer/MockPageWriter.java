@@ -41,8 +41,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import javax.ws.rs.core.HttpHeaders;
-
 /**
  * Provides methods that test {@code PageMessageMapper} objects.
  *
@@ -58,15 +56,13 @@ public class MockPageWriter {
 	 * Writes a Collection of {@link RootModel}, with the hierarchy of embedded
 	 * models and multiple fields.
 	 *
-	 * @param httpHeaders the request's {@code HttpHeaders}
 	 * @param pageMessageMapper the {@link PageMessageMapper} to use for writing
 	 *        the JSON object
 	 */
 	public static JsonObject write(
-		HttpHeaders httpHeaders,
 		PageMessageMapper<RootModel> pageMessageMapper) {
 
-		RequestInfo requestInfo = getRequestInfo(httpHeaders);
+		RequestInfo requestInfo = getRequestInfo();
 
 		Collection<RootModel> items = Arrays.asList(
 			() -> "1", () -> "2", () -> "3");
