@@ -21,11 +21,14 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.osgi.framework.Version;
 
@@ -57,24 +60,34 @@ public class ClusterClassLoaderPool {
 				if (pos > 0) {
 					String symbolicName = contextName.substring(0, pos);
 
-					List<VersionedClassLoader> versionedClassLoaderList =
-						_fallbackClassLoaders.get(symbolicName);
+					Lock readLock = _readWriteLock.readLock();
 
-					if (versionedClassLoaderList != null) {
-						VersionedClassLoader latestVersionClassLoader =
-							versionedClassLoaderList.get(0);
+					readLock.lock();
 
-						classLoader = latestVersionClassLoader.getClassLoader();
+					try {
+						List<VersionedClassLoader> versionedClassLoaderList =
+							_fallbackClassLoaders.get(symbolicName);
 
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								StringBundler.concat(
-									"Unable to find ClassLoader for ",
-									contextName, ", ClassLoader ", symbolicName,
-									StringPool.UNDERLINE,
-									latestVersionClassLoader.getVersion(),
-									" is provided instead"));
+						if (versionedClassLoaderList != null) {
+							VersionedClassLoader latestVersionClassLoader =
+								versionedClassLoaderList.get(0);
+
+							classLoader =
+								latestVersionClassLoader.getClassLoader();
+
+							if (_log.isWarnEnabled()) {
+								_log.warn(
+									StringBundler.concat(
+										"Unable to find ClassLoader for ",
+										contextName, ", ClassLoader ",
+										symbolicName, StringPool.UNDERLINE,
+										latestVersionClassLoader.getVersion(),
+										" is provided instead"));
+							}
 						}
+					}
+					finally {
+						readLock.unlock();
 					}
 				}
 			}
@@ -116,40 +129,60 @@ public class ClusterClassLoaderPool {
 		VersionedClassLoader versionedClassLoader = new VersionedClassLoader(
 			classLoader, version);
 
-		List<VersionedClassLoader> versionedClassLoaderList =
-			_fallbackClassLoaders.get(symbolicName);
+		Lock writeLock = _readWriteLock.writeLock();
 
-		if (versionedClassLoaderList == null) {
-			versionedClassLoaderList = new CopyOnWriteArrayList<>();
+		writeLock.lock();
 
-			_fallbackClassLoaders.put(symbolicName, versionedClassLoaderList);
+		try {
+			List<VersionedClassLoader> versionedClassLoaderList =
+				_fallbackClassLoaders.get(symbolicName);
+
+			if (versionedClassLoaderList == null) {
+				versionedClassLoaderList = new ArrayList<>();
+
+				_fallbackClassLoaders.put(
+					symbolicName, versionedClassLoaderList);
+			}
+
+			versionedClassLoaderList.add(versionedClassLoader);
+
+			Collections.sort(
+				versionedClassLoaderList, Collections.reverseOrder());
 		}
-
-		versionedClassLoaderList.add(versionedClassLoader);
-
-		Collections.sort(versionedClassLoaderList, Collections.reverseOrder());
+		finally {
+			writeLock.unlock();
+		}
 	}
 
 	public static void unregisterFallback(
 		String symbolicName, Version version) {
 
-		List<VersionedClassLoader> versionedClassLoaderList =
-			_fallbackClassLoaders.get(symbolicName);
+		Lock writeLock = _readWriteLock.writeLock();
 
-		if (versionedClassLoaderList == null) {
-			return;
-		}
+		writeLock.lock();
 
-		for (VersionedClassLoader versionedClassLoader :
-				versionedClassLoaderList) {
+		try {
+			List<VersionedClassLoader> versionedClassLoaderList =
+				_fallbackClassLoaders.get(symbolicName);
 
-			if (version.equals(versionedClassLoader.getVersion())) {
-				versionedClassLoaderList.remove(versionedClassLoader);
+			if (versionedClassLoaderList == null) {
+				return;
+			}
 
-				if (versionedClassLoaderList.isEmpty()) {
-					_fallbackClassLoaders.remove(symbolicName);
+			for (VersionedClassLoader versionedClassLoader :
+					versionedClassLoaderList) {
+
+				if (version.equals(versionedClassLoader.getVersion())) {
+					versionedClassLoaderList.remove(versionedClassLoader);
+
+					if (versionedClassLoaderList.isEmpty()) {
+						_fallbackClassLoaders.remove(symbolicName);
+					}
 				}
 			}
+		}
+		finally {
+			writeLock.unlock();
 		}
 	}
 
@@ -157,7 +190,9 @@ public class ClusterClassLoaderPool {
 		ClusterClassLoaderPool.class);
 
 	private static final Map<String, List<VersionedClassLoader>>
-		_fallbackClassLoaders = new ConcurrentHashMap<>();
+		_fallbackClassLoaders = new HashMap<>();
+	private static final ReadWriteLock _readWriteLock =
+		new ReentrantReadWriteLock();
 
 	private static class VersionedClassLoader
 		implements Comparable<VersionedClassLoader> {
