@@ -178,6 +178,8 @@ public class ClusterClassLoaderPool {
 					if (versionedClassLoaderList.isEmpty()) {
 						_fallbackClassLoaders.remove(symbolicName);
 					}
+
+					break;
 				}
 			}
 		}
