@@ -22,7 +22,7 @@ import com.liferay.apio.architect.documentation.APIDescription;
 import com.liferay.apio.architect.documentation.APITitle;
 import com.liferay.apio.architect.functional.Try;
 import com.liferay.apio.architect.impl.internal.documentation.Documentation;
-import com.liferay.apio.architect.impl.internal.url.ServerURL;
+import com.liferay.apio.architect.impl.internal.url.ApplicationURL;
 import com.liferay.apio.architect.impl.internal.wiring.osgi.manager.provider.ProviderManager;
 import com.liferay.apio.architect.impl.internal.wiring.osgi.manager.representable.IdentifierClassManager;
 import com.liferay.apio.architect.impl.internal.wiring.osgi.manager.representable.RepresentableManager;
@@ -91,14 +91,14 @@ public class RootEndpointImpl implements RootEndpoint {
 		List<String> resourceNames =
 			_collectionRouterManager.getResourceNames();
 
-		ServerURL serverURL = _providerManager.provideMandatory(
-			_httpServletRequest, ServerURL.class);
+		ApplicationURL applicationURL = _providerManager.provideMandatory(
+			_httpServletRequest, ApplicationURL.class);
 
 		JsonObject resourcesJsonObject = new JsonObject();
 
 		resourceNames.forEach(
 			name -> {
-				String url = serverURL.get() + "/p/" + name;
+				String url = applicationURL.get() + "/p/" + name;
 
 				JsonObject jsonObject = new JsonObject();
 

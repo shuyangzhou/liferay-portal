@@ -147,9 +147,17 @@
 	</command>
 
 	<command name="addPrivatePage">
-		<execute macro="LexiconEntry#gotoAddMenuItem">
-			<var name="menuItem" value="Private Page" />
-		</execute>
+		<if>
+			<equals arg1="${siteTemplate}" arg2="true" />
+			<then>
+				<execute macro="LexiconEntry#gotoAdd" />
+			</then>
+			<else>
+				<execute macro="LexiconEntry#gotoAddMenuItem">
+					<var name="menuItem" value="Private Page" />
+				</execute>
+			</else>
+		</if>
 
 		<execute macro="SitePages#_addPage">
 			<var name="hideFromNavMenu" value="${hideFromNavMenu}" />
@@ -185,6 +193,30 @@
 			<var name="pageTypeURL" value="${pageTypeURL}" />
 			<var name="sitePageType" value="${sitePageType}" />
 		</execute>
+	</command>
+
+	<command name="configureChildPage">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Build" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Pages" />
+		</execute>
+
+		<execute macro="SitePages#gotoPageMenuItem">
+			<var name="menuItem" value="Configure" />
+			<var name="pageName" value="${pageName}" />
+		</execute>
+
+		<execute macro="SitePages#_configurePage">
+			<var name="columnName" value="${columnName}" />
+			<var name="componentName" value="${componentName}" />
+			<var name="layoutPageTemplateName" value="${layoutPageTemplateName}" />
+			<var name="pageTypeURL" value="${pageTypeURL}" />
+			<var name="portlet" value="${portlet}" />
+			<var name="sitePageType" value="${sitePageType}" />
+		</execute>
+
+		<execute macro="PortletEntry#save" />
 	</command>
 
 	<command name="configurePage">
