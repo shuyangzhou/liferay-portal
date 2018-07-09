@@ -36,8 +36,6 @@ import com.liferay.apio.architect.form.FormField;
 import com.liferay.apio.architect.impl.internal.message.json.FormMessageMapper;
 import com.liferay.apio.architect.impl.internal.message.json.JSONObjectBuilder;
 
-import javax.ws.rs.core.HttpHeaders;
-
 import org.osgi.service.component.annotations.Component;
 
 /**
@@ -132,10 +130,7 @@ public class JSONLDFormMessageMapper implements FormMessageMapper {
 	}
 
 	@Override
-	public void onFinish(
-		JSONObjectBuilder jsonObjectBuilder, Form form,
-		HttpHeaders httpHeaders) {
-
+	public void onFinish(JSONObjectBuilder jsonObjectBuilder, Form form) {
 		jsonObjectBuilder.field(
 			FIELD_NAME_TYPE
 		).stringValue(

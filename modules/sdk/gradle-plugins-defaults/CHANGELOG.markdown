@@ -3965,8 +3965,60 @@ version 1.3.0.
 ### Added
 - [LPS-83104]: Set `liferay.releng.` default property values.
 
+### Changed
+- [LPS-83067]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.62.
+
 ### Fixed
 - [LPS-83104]: Fix publishing from sub-repositories.
+
+## 5.4.64 - 2018-07-02
+
+### Added
+- [LPS-82976]: Set the system property `build.profile` to `portal-all` to only
+include projects containing one of the following marker files:
+	- `.lfrbuild-portal`
+	- `.lfrbuild-portal-all`
+	- `.lfrbuild-portal-all-private` when on private branches, or
+	`.lfrbuild-portal-all-public` when on public branches
+	- `.lfrbuild-portal-private` when on private branches, or
+	`.lfrbuild-portal-public` when on public branches
+
+### Changed
+- [LPS-82828]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.63.
+
+## 5.4.65 - 2018-07-02
+
+### Changed
+- [LPS-83067]: Update the [Liferay Gradle Plugins Baseline] dependency to
+version 1.3.1.
+- [LPS-83067]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.64.
+
+## 5.4.66 - 2018-07-03
+
+### Changed
+- [LPS-82828]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.65.
+
+## 5.4.67 - 2018-07-03
+
+### Changed
+- [LPS-77359]: Update the [Liferay Gradle Plugins Poshi Runner] dependency to
+version 2.2.5.
+
+## 5.4.68 - 2018-07-04
+
+### Changed
+- [LPS-82828]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.66.
+
+## 5.4.69 - 2018-07-05
+
+### Changed
+- [LPS-83220]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.67.
 
 [Find Security Bugs]: https://github.com/liferay/liferay-portal/tree/master/modules/third-party/com-h3xstream-findsecbugs
 [Gradle License Report]: https://github.com/jk1/Gradle-License-Report
@@ -4403,8 +4455,10 @@ version 1.3.0.
 [LPS-82828]: https://issues.liferay.com/browse/LPS-82828
 [LPS-82857]: https://issues.liferay.com/browse/LPS-82857
 [LPS-82960]: https://issues.liferay.com/browse/LPS-82960
+[LPS-82976]: https://issues.liferay.com/browse/LPS-82976
 [LPS-83067]: https://issues.liferay.com/browse/LPS-83067
 [LPS-83104]: https://issues.liferay.com/browse/LPS-83104
+[LPS-83220]: https://issues.liferay.com/browse/LPS-83220
 [LRDOCS-2594]: https://issues.liferay.com/browse/LRDOCS-2594
 [LRDOCS-2841]: https://issues.liferay.com/browse/LRDOCS-2841
 [LRDOCS-2981]: https://issues.liferay.com/browse/LRDOCS-2981

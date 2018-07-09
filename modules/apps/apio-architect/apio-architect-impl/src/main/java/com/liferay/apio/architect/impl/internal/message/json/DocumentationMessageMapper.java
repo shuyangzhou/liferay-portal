@@ -26,9 +26,9 @@ import com.liferay.apio.architect.operation.Operation;
  * object. To enable this, each method receives a {@link JSONObjectBuilder}.
  *
  * <p>
- * The methods {@link #onStart} and {@link #onFinish} are called when the writer
- * starts and finishes the page, respectively. Otherwise, the page message
- * mapper's methods aren't called in a particular order.
+ * The method {@link #onFinish} is called when the writer finishes writing the
+ * documentation. Otherwise, the documentation message mapper's methods aren't
+ * called in a particular order.
  * </p>
  *
  * @author Alejandro Hernández
@@ -84,21 +84,6 @@ public interface DocumentationMessageMapper
 	}
 
 	public default void onFinishResource(
-		JSONObjectBuilder documentationJsonObjectBuilder,
-		JSONObjectBuilder resourceJsonObjectBuilder, String type) {
-	}
-
-	public default void onStartOperation(
-		JSONObjectBuilder documentationJsonObjectBuilder,
-		JSONObjectBuilder operationJsonObjectBuilder, Operation operation) {
-	}
-
-	public default void onStartProperty(
-		JSONObjectBuilder documentationJsonObjectBuilder,
-		JSONObjectBuilder propertyJsonObjectBuilder, String formField) {
-	}
-
-	public default void onStartResource(
 		JSONObjectBuilder documentationJsonObjectBuilder,
 		JSONObjectBuilder resourceJsonObjectBuilder, String type) {
 	}

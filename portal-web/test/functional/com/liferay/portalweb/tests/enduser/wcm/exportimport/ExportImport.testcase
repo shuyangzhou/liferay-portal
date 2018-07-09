@@ -425,7 +425,7 @@
 	</command>
 
 	<command name="ExportImportPrivatePage" priority="5">
-		<property name="portal.acceptance" value="false" />
+		<property name="portal.acceptance" value="true" />
 		<property name="testray.component.names" value="Training" />
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -486,7 +486,7 @@
 	</command>
 
 	<command name="ExportImportSampleLARPortlet" priority="5">
-		<property name="portal.acceptance" value="quarantine" />
+		<property name="portal.acceptance" value="true" />
 		<property name="portlet.plugins.includes" value="sample-lar-portlet" />
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -565,7 +565,7 @@
 	</command>
 
 	<command name="ExportImportSmoke" priority="5">
-		<property name="portal.acceptance" value="false" />
+		<property name="portal.acceptance" value="true" />
 		<property name="testray.component.names" value="Training" />
 
 		<execute macro="User#firstLoginPG" />
@@ -624,6 +624,7 @@
 		</execute>
 
 		<execute macro="Page#changeCurrentTheme">
+			<var name="pageName" value="Test Page" />
 			<var name="themeName" value="Fjord" />
 		</execute>
 
@@ -834,7 +835,7 @@
 	</command>
 
 	<command name="ImportCorruptedFile" priority="5">
-		<property name="portal.acceptance" value="quarantine" />
+		<property name="portal.acceptance" value="true" />
 		<property name="portal.release" value="false" />
 
 		<execute macro="Navigator#openURL" />
