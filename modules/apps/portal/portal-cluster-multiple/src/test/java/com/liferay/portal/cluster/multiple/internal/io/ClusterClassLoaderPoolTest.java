@@ -15,6 +15,7 @@
 package com.liferay.portal.cluster.multiple.internal.io;
 
 import com.liferay.petra.lang.ClassLoaderPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.test.CaptureHandler;
 import com.liferay.portal.kernel.test.JDKLoggerTestUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
@@ -24,8 +25,13 @@ import com.liferay.portal.kernel.util.ClassLoaderUtil;
 import java.net.URL;
 import java.net.URLClassLoader;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
@@ -55,6 +61,9 @@ public class ClusterClassLoaderPoolTest {
 
 		_fallbackClassLoaders = ReflectionTestUtil.getFieldValue(
 			ClusterClassLoaderPool.class, "_fallbackClassLoaders");
+
+		_readWriteLock = ReflectionTestUtil.getFieldValue(
+			ClusterClassLoaderPool.class, "_readWriteLock");
 	}
 
 	@After
@@ -62,6 +71,93 @@ public class ClusterClassLoaderPoolTest {
 		_classLoaders.clear();
 		_contextNames.clear();
 		_fallbackClassLoaders.clear();
+	}
+
+	@Test
+	public void testConcurrentRegister() throws InterruptedException {
+		ClassLoader classLoader = new URLClassLoader(new URL[0]);
+
+		FutureTask<Void> futureTask = new FutureTask<>(
+			new Callable<Void>() {
+
+				@Override
+				public Void call() {
+					Assert.assertSame(
+						classLoader,
+						ClusterClassLoaderPool.getClassLoader(_CONTEXT_NAME_1));
+
+					return null;
+				}
+
+			});
+
+		Thread thread = new Thread(futureTask);
+
+		Lock writeLock = _readWriteLock.writeLock();
+
+		writeLock.lock();
+
+		try {
+			thread.start();
+
+			_waitForBlock(thread);
+
+			ClusterClassLoaderPool.registerFallback(
+				_SYMBOLIC_NAME, new Version("1.0.0"), classLoader);
+		}
+		finally {
+			writeLock.unlock();
+		}
+
+		thread.join();
+	}
+
+	@Test
+	public void testConcurrentUnregister() throws InterruptedException {
+		ClassLoader classLoader1 = new URLClassLoader(new URL[0]);
+		ClassLoader classLoader2 = new URLClassLoader(new URL[0]);
+
+		ClusterClassLoaderPool.registerFallback(
+			_SYMBOLIC_NAME, new Version("1.0.0"), classLoader1);
+		ClusterClassLoaderPool.registerFallback(
+			_SYMBOLIC_NAME, new Version("2.0.0"), classLoader2);
+
+		FutureTask<Void> futureTask = new FutureTask<>(
+			new Callable<Void>() {
+
+				@Override
+				public Void call() {
+					Assert.assertSame(
+						classLoader1,
+						ClusterClassLoaderPool.getClassLoader(_CONTEXT_NAME_1));
+					Assert.assertSame(
+						classLoader1,
+						ClusterClassLoaderPool.getClassLoader(_CONTEXT_NAME_2));
+
+					return null;
+				}
+
+			});
+
+		Thread thread = new Thread(futureTask);
+
+		Lock writeLock = _readWriteLock.writeLock();
+
+		writeLock.lock();
+
+		try {
+			thread.start();
+
+			_waitForBlock(thread);
+
+			ClusterClassLoaderPool.unregisterFallback(
+				_SYMBOLIC_NAME, new Version("2.0.0"));
+		}
+		finally {
+			writeLock.unlock();
+		}
+
+		thread.join();
 	}
 
 	@Test
@@ -267,6 +363,19 @@ public class ClusterClassLoaderPoolTest {
 			_fallbackClassLoaders.toString(), _fallbackClassLoaders.isEmpty());
 	}
 
+	private void _waitForBlock(Thread thread) {
+		Object sync = ReflectionTestUtil.getFieldValue(_readWriteLock, "sync");
+
+		while (true) {
+			Collection<Thread> waitingThreads = ReflectionTestUtil.invoke(
+				sync, "getQueuedThreads", new Class<?>[0]);
+
+			if (waitingThreads.contains(thread)) {
+				return;
+			}
+		}
+	}
+
 	private static final String _CONTEXT_NAME_1 =
 		ClusterClassLoaderPoolTest._SYMBOLIC_NAME + "_1.0.0";
 
@@ -284,5 +393,6 @@ public class ClusterClassLoaderPoolTest {
 	private Map<String, ClassLoader> _classLoaders;
 	private Map<ClassLoader, String> _contextNames;
 	private Map<String, List> _fallbackClassLoaders;
+	private ReadWriteLock _readWriteLock;
 
 }
