@@ -49,6 +49,7 @@ import com.liferay.subscription.service.SubscriptionLocalService;
 
 import java.io.Serializable;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -213,21 +214,32 @@ public class MicroblogsEntryLocalServiceImpl
 			MicroblogsEntry microblogsEntry)
 		throws PortalException {
 
-		// Microblogs entry
+		List<MicroblogsEntry> microblogsEntries = new ArrayList<>();
 
-		microblogsEntryPersistence.remove(microblogsEntry);
+		microblogsEntries.add(microblogsEntry);
 
-		// Asset
+		microblogsEntries.addAll(
+			_getAllRelatedMicroblogsEntries(
+				microblogsEntry.getMicroblogsEntryId()));
 
-		assetEntryLocalService.deleteEntry(
-			MicroblogsEntry.class.getName(),
-			microblogsEntry.getMicroblogsEntryId());
+		for (MicroblogsEntry curMicroblogsEntry : microblogsEntries) {
 
-		// Social
+			// Microblogs entry
 
-		socialActivityLocalService.deleteActivities(
-			MicroblogsEntry.class.getName(),
-			microblogsEntry.getMicroblogsEntryId());
+			microblogsEntryPersistence.remove(curMicroblogsEntry);
+
+			// Asset
+
+			assetEntryLocalService.deleteEntry(
+				MicroblogsEntry.class.getName(),
+				curMicroblogsEntry.getMicroblogsEntryId());
+
+			// Social
+
+			socialActivityLocalService.deleteActivities(
+				MicroblogsEntry.class.getName(),
+				curMicroblogsEntry.getMicroblogsEntryId());
+		}
 
 		return microblogsEntry;
 	}
@@ -258,7 +270,7 @@ public class MicroblogsEntryLocalServiceImpl
 	}
 
 	/**
-	 * @deprecated As of Judson
+	 * @deprecated As of Judson (7.1.x)
 	 */
 	@Deprecated
 	@Override
@@ -271,7 +283,7 @@ public class MicroblogsEntryLocalServiceImpl
 	}
 
 	/**
-	 * @deprecated As of Judson
+	 * @deprecated As of Judson (7.1.x)
 	 */
 	@Deprecated
 	@Override
@@ -283,7 +295,7 @@ public class MicroblogsEntryLocalServiceImpl
 	}
 
 	/**
-	 * @deprecated As of Judson
+	 * @deprecated As of Judson (7.1.x)
 	 */
 	@Deprecated
 	@Override
@@ -333,7 +345,7 @@ public class MicroblogsEntryLocalServiceImpl
 	}
 
 	/**
-	 * @deprecated As of Judson
+	 * @deprecated As of Judson (7.1.x)
 	 */
 	@Deprecated
 	@Override
@@ -356,7 +368,7 @@ public class MicroblogsEntryLocalServiceImpl
 	}
 
 	/**
-	 * @deprecated As of Judson
+	 * @deprecated As of Judson (7.1.x)
 	 */
 	@Deprecated
 	@Override
@@ -368,7 +380,7 @@ public class MicroblogsEntryLocalServiceImpl
 	}
 
 	/**
-	 * @deprecated As of Judson
+	 * @deprecated As of Judson (7.1.x)
 	 */
 	@Deprecated
 	@Override
@@ -380,7 +392,7 @@ public class MicroblogsEntryLocalServiceImpl
 	}
 
 	/**
-	 * @deprecated As of Judson
+	 * @deprecated As of Judson (7.1.x)
 	 */
 	@Deprecated
 	@Override
@@ -427,7 +439,7 @@ public class MicroblogsEntryLocalServiceImpl
 	}
 
 	/**
-	 * @deprecated As of Judson
+	 * @deprecated As of Judson (7.1.x)
 	 */
 	@Deprecated
 	@Override
@@ -440,7 +452,7 @@ public class MicroblogsEntryLocalServiceImpl
 	}
 
 	/**
-	 * @deprecated As of Judson
+	 * @deprecated As of Judson (7.1.x)
 	 */
 	@Deprecated
 	@Override
@@ -682,6 +694,30 @@ public class MicroblogsEntryLocalServiceImpl
 
 	@ServiceReference(type = SubscriptionLocalService.class)
 	protected SubscriptionLocalService subscriptionLocalService;
+
+	private List<MicroblogsEntry> _getAllRelatedMicroblogsEntries(
+		long microblogsEntryId) {
+
+		List<MicroblogsEntry> microblogsEntries = new ArrayList<>();
+
+		microblogsEntries.addAll(
+			microblogsEntryPersistence.findByT_P(
+				MicroblogsEntryConstants.TYPE_REPLY, microblogsEntryId));
+
+		List<MicroblogsEntry> repostMicroblogsEntries =
+			microblogsEntryPersistence.findByT_P(
+				MicroblogsEntryConstants.TYPE_REPOST, microblogsEntryId);
+
+		for (MicroblogsEntry microblogsEntry : repostMicroblogsEntries) {
+			microblogsEntries.add(microblogsEntry);
+
+			microblogsEntries.addAll(
+				_getAllRelatedMicroblogsEntries(
+					microblogsEntry.getMicroblogsEntryId()));
+		}
+
+		return microblogsEntries;
+	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		MicroblogsEntryLocalServiceImpl.class);
