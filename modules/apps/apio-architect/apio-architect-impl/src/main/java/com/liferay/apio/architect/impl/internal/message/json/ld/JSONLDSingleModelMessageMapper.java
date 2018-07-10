@@ -17,11 +17,14 @@ package com.liferay.apio.architect.impl.internal.message.json.ld;
 import static com.liferay.apio.architect.impl.internal.message.json.ld.JSONLDConstants.FIELD_NAME_CONTEXT;
 import static com.liferay.apio.architect.impl.internal.message.json.ld.JSONLDConstants.FIELD_NAME_EXPECTS;
 import static com.liferay.apio.architect.impl.internal.message.json.ld.JSONLDConstants.FIELD_NAME_ID;
+import static com.liferay.apio.architect.impl.internal.message.json.ld.JSONLDConstants.FIELD_NAME_MEMBER;
 import static com.liferay.apio.architect.impl.internal.message.json.ld.JSONLDConstants.FIELD_NAME_METHOD;
 import static com.liferay.apio.architect.impl.internal.message.json.ld.JSONLDConstants.FIELD_NAME_OPERATION;
+import static com.liferay.apio.architect.impl.internal.message.json.ld.JSONLDConstants.FIELD_NAME_TOTAL_ITEMS;
 import static com.liferay.apio.architect.impl.internal.message.json.ld.JSONLDConstants.FIELD_NAME_TYPE;
 import static com.liferay.apio.architect.impl.internal.message.json.ld.JSONLDConstants.FIELD_NAME_VOCAB;
 import static com.liferay.apio.architect.impl.internal.message.json.ld.JSONLDConstants.MEDIA_TYPE;
+import static com.liferay.apio.architect.impl.internal.message.json.ld.JSONLDConstants.TYPE_COLLECTION;
 import static com.liferay.apio.architect.impl.internal.message.json.ld.JSONLDConstants.TYPE_OPERATION;
 import static com.liferay.apio.architect.impl.internal.message.json.ld.JSONLDConstants.URL_HYDRA_PROFILE;
 import static com.liferay.apio.architect.impl.internal.message.json.ld.JSONLDConstants.URL_SCHEMA_ORG;
@@ -36,8 +39,6 @@ import com.liferay.apio.architect.single.model.SingleModel;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-
-import javax.ws.rs.core.HttpHeaders;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -118,10 +119,8 @@ public class JSONLDSingleModelMessageMapper<T>
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		Boolean value) {
 
-		Stream<String> tailStream = embeddedPathElements.tailStream();
-
 		jsonObjectBuilder.nestedField(
-			embeddedPathElements.head(), tailStream.toArray(String[]::new)
+			embeddedPathElements.head(), _getTail(embeddedPathElements)
 		).field(
 			fieldName
 		).booleanValue(
@@ -135,10 +134,8 @@ public class JSONLDSingleModelMessageMapper<T>
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		List<Boolean> value) {
 
-		Stream<String> tailStream = embeddedPathElements.tailStream();
-
 		jsonObjectBuilder.nestedField(
-			embeddedPathElements.head(), tailStream.toArray(String[]::new)
+			embeddedPathElements.head(), _getTail(embeddedPathElements)
 		).field(
 			fieldName
 		).arrayValue(
@@ -153,10 +150,8 @@ public class JSONLDSingleModelMessageMapper<T>
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		String url) {
 
-		Stream<String> tailStream = embeddedPathElements.tailStream();
-
 		jsonObjectBuilder.nestedField(
-			embeddedPathElements.head(), tailStream.toArray(String[]::new)
+			embeddedPathElements.head(), _getTail(embeddedPathElements)
 		).field(
 			fieldName
 		).stringValue(
@@ -170,10 +165,8 @@ public class JSONLDSingleModelMessageMapper<T>
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		Number value) {
 
-		Stream<String> tailStream = embeddedPathElements.tailStream();
-
 		jsonObjectBuilder.nestedField(
-			embeddedPathElements.head(), tailStream.toArray(String[]::new)
+			embeddedPathElements.head(), _getTail(embeddedPathElements)
 		).field(
 			fieldName
 		).numberValue(
@@ -187,10 +180,8 @@ public class JSONLDSingleModelMessageMapper<T>
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		List<Number> value) {
 
-		Stream<String> tailStream = embeddedPathElements.tailStream();
-
 		jsonObjectBuilder.nestedField(
-			embeddedPathElements.head(), tailStream.toArray(String[]::new)
+			embeddedPathElements.head(), _getTail(embeddedPathElements)
 		).field(
 			fieldName
 		).arrayValue(
@@ -205,10 +196,8 @@ public class JSONLDSingleModelMessageMapper<T>
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		String value) {
 
-		Stream<String> tailStream = embeddedPathElements.tailStream();
-
 		jsonObjectBuilder.nestedField(
-			embeddedPathElements.head(), tailStream.toArray(String[]::new)
+			embeddedPathElements.head(), _getTail(embeddedPathElements)
 		).field(
 			fieldName
 		).stringValue(
@@ -222,10 +211,8 @@ public class JSONLDSingleModelMessageMapper<T>
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		List<String> value) {
 
-		Stream<String> tailStream = embeddedPathElements.tailStream();
-
 		jsonObjectBuilder.nestedField(
-			embeddedPathElements.head(), tailStream.toArray(String[]::new)
+			embeddedPathElements.head(), _getTail(embeddedPathElements)
 		).field(
 			fieldName
 		).arrayValue(
@@ -239,10 +226,8 @@ public class JSONLDSingleModelMessageMapper<T>
 		JSONObjectBuilder jsonObjectBuilder,
 		FunctionalList<String> embeddedPathElements, List<String> types) {
 
-		Stream<String> tailStream = embeddedPathElements.tailStream();
-
 		jsonObjectBuilder.nestedField(
-			embeddedPathElements.head(), tailStream.toArray(String[]::new)
+			embeddedPathElements.head(), _getTail(embeddedPathElements)
 		).field(
 			FIELD_NAME_TYPE
 		).arrayValue(
@@ -256,14 +241,32 @@ public class JSONLDSingleModelMessageMapper<T>
 		JSONObjectBuilder jsonObjectBuilder,
 		FunctionalList<String> embeddedPathElements, String url) {
 
-		Stream<String> tailStream = embeddedPathElements.tailStream();
-
 		jsonObjectBuilder.nestedField(
-			embeddedPathElements.head(), tailStream.toArray(String[]::new)
+			embeddedPathElements.head(), _getTail(embeddedPathElements)
 		).field(
 			FIELD_NAME_ID
 		).stringValue(
 			url
+		);
+	}
+
+	@Override
+	public void mapFormURL(JSONObjectBuilder jsonObjectBuilder, String url) {
+		jsonObjectBuilder.field(
+			FIELD_NAME_EXPECTS
+		).stringValue(
+			url
+		);
+	}
+
+	@Override
+	public void mapHTTPMethod(
+		JSONObjectBuilder jsonObjectBuilder, HTTPMethod httpMethod) {
+
+		jsonObjectBuilder.field(
+			FIELD_NAME_METHOD
+		).stringValue(
+			httpMethod.name()
 		);
 	}
 
@@ -285,52 +288,43 @@ public class JSONLDSingleModelMessageMapper<T>
 
 		String head = embeddedPathElements.head();
 
-		Stream<String> tailStream = embeddedPathElements.tailStream();
-
-		String[] tail = tailStream.toArray(String[]::new);
-
 		jsonObjectBuilder.nestedField(
-			head, tail
+			head, _getTail(embeddedPathElements)
 		).stringValue(
 			url
 		);
 
-		Stream<String> middleStream = embeddedPathElements.middleStream();
-
-		String[] middle = middleStream.toArray(String[]::new);
-
 		Optional<String> optional = embeddedPathElements.lastOptional();
 
-		if (optional.isPresent()) {
-			jsonObjectBuilder.nestedField(
-				head, middle
+		jsonObjectBuilder.ifElseCondition(
+			optional.isPresent(),
+			builder -> builder.nestedField(
+				head, _getMiddle(embeddedPathElements)
 			).field(
 				FIELD_NAME_CONTEXT
-			).arrayValue(
-			).add(
-				builder -> builder.field(
-					optional.get()
-				).field(
-					FIELD_NAME_TYPE
-				).stringValue(
-					FIELD_NAME_ID
-				)
-			);
-		}
-		else {
-			jsonObjectBuilder.field(
-				FIELD_NAME_CONTEXT
-			).arrayValue(
-			).add(
-				builder -> builder.field(
-					head
-				).field(
-					FIELD_NAME_TYPE
-				).stringValue(
-					FIELD_NAME_ID
-				)
-			);
-		}
+			),
+			builder -> builder.field(FIELD_NAME_CONTEXT)
+		).arrayValue(
+		).add(
+			builder -> builder.field(
+				optional.orElse(head)
+			).field(
+				FIELD_NAME_TYPE
+			).stringValue(
+				FIELD_NAME_ID
+			)
+		);
+	}
+
+	@Override
+	public void mapNestedPageItemTotalCount(
+		JSONObjectBuilder jsonObjectBuilder, int totalCount) {
+
+		jsonObjectBuilder.field(
+			FIELD_NAME_TOTAL_ITEMS
+		).numberValue(
+			totalCount
+		);
 	}
 
 	@Override
@@ -354,30 +348,6 @@ public class JSONLDSingleModelMessageMapper<T>
 		).arrayValue(
 		).addAllNumbers(
 			value
-		);
-	}
-
-	@Override
-	public void mapOperationFormURL(
-		JSONObjectBuilder singleModelJSONObjectBuilder,
-		JSONObjectBuilder operationJSONObjectBuilder, String url) {
-
-		operationJSONObjectBuilder.field(
-			FIELD_NAME_EXPECTS
-		).stringValue(
-			url
-		);
-	}
-
-	@Override
-	public void mapOperationMethod(
-		JSONObjectBuilder singleModelJSONObjectBuilder,
-		JSONObjectBuilder operationJSONObjectBuilder, HTTPMethod httpMethod) {
-
-		operationJSONObjectBuilder.field(
-			FIELD_NAME_METHOD
-		).stringValue(
-			httpMethod.name()
 		);
 	}
 
@@ -428,8 +398,32 @@ public class JSONLDSingleModelMessageMapper<T>
 
 	@Override
 	public void onFinish(
-		JSONObjectBuilder jsonObjectBuilder, SingleModel<T> singleModel,
-		HttpHeaders httpHeaders) {
+		JSONObjectBuilder resourceJSONObjectBuilder,
+		JSONObjectBuilder operationJSONObjectBuilder, Operation operation) {
+
+		operationJSONObjectBuilder.field(
+			FIELD_NAME_ID
+		).stringValue(
+			"_:" + operation.getName()
+		);
+
+		operationJSONObjectBuilder.field(
+			FIELD_NAME_TYPE
+		).stringValue(
+			TYPE_OPERATION
+		);
+
+		resourceJSONObjectBuilder.field(
+			FIELD_NAME_OPERATION
+		).arrayValue(
+		).add(
+			operationJSONObjectBuilder
+		);
+	}
+
+	@Override
+	public void onFinish(
+		JSONObjectBuilder jsonObjectBuilder, SingleModel<T> singleModel) {
 
 		jsonObjectBuilder.field(
 			FIELD_NAME_CONTEXT
@@ -450,10 +444,8 @@ public class JSONLDSingleModelMessageMapper<T>
 		JSONObjectBuilder operationJSONObjectBuilder,
 		FunctionalList<String> embeddedPathElements, Operation operation) {
 
-		Stream<String> tailStream = embeddedPathElements.tailStream();
-
 		String head = embeddedPathElements.head();
-		String[] tail = tailStream.toArray(String[]::new);
+		String[] tail = _getTail(embeddedPathElements);
 
 		operationJSONObjectBuilder.field(
 			FIELD_NAME_ID
@@ -478,28 +470,48 @@ public class JSONLDSingleModelMessageMapper<T>
 	}
 
 	@Override
-	public void onFinishOperation(
+	public void onFinishNestedCollection(
 		JSONObjectBuilder singleModelJSONObjectBuilder,
-		JSONObjectBuilder operationJSONObjectBuilder, Operation operation) {
+		JSONObjectBuilder collectionJsonObjectBuilder, String fieldName,
+		List<?> list, FunctionalList<String> embeddedPathElements) {
 
-		operationJSONObjectBuilder.field(
-			FIELD_NAME_ID
-		).stringValue(
-			"_:" + operation.getName()
-		);
-
-		operationJSONObjectBuilder.field(
+		collectionJsonObjectBuilder.field(
 			FIELD_NAME_TYPE
-		).stringValue(
-			TYPE_OPERATION
+		).arrayValue(
+		).addString(
+			TYPE_COLLECTION
 		);
 
-		singleModelJSONObjectBuilder.field(
-			FIELD_NAME_OPERATION
+		singleModelJSONObjectBuilder.nestedField(
+			embeddedPathElements.head(), _getTail(embeddedPathElements)
+		).objectValue(
+			collectionJsonObjectBuilder
+		);
+	}
+
+	@Override
+	public void onFinishNestedCollectionItem(
+		JSONObjectBuilder collectionJsonObjectBuilder,
+		JSONObjectBuilder itemJSONObjectBuilder, SingleModel<?> singleModel) {
+
+		collectionJsonObjectBuilder.field(
+			FIELD_NAME_MEMBER
 		).arrayValue(
 		).add(
-			operationJSONObjectBuilder
+			itemJSONObjectBuilder
 		);
+	}
+
+	private String[] _getMiddle(FunctionalList<String> embeddedPathElements) {
+		Stream<String> stream = embeddedPathElements.middleStream();
+
+		return stream.toArray(String[]::new);
+	}
+
+	private String[] _getTail(FunctionalList<String> embeddedPathElements) {
+		Stream<String> stream = embeddedPathElements.tailStream();
+
+		return stream.toArray(String[]::new);
 	}
 
 }

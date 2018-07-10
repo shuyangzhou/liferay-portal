@@ -664,7 +664,7 @@ public class LocalizationImpl implements Localization {
 	}
 
 	/**
-	 * @deprecated As of Wilberforce
+	 * @deprecated As of Wilberforce (7.0.x)
 	 */
 	@Deprecated
 	@Override
@@ -1077,7 +1077,26 @@ public class LocalizationImpl implements Localization {
 		Map<Locale, String> localizationMap, String xml, String key,
 		String defaultLanguageId) {
 
-		for (Locale locale : LanguageUtil.getAvailableLocales()) {
+		Set<Locale> availableLocales = LanguageUtil.getAvailableLocales();
+
+		if (Validator.isBlank(xml)) {
+			Map<String, String> map = new HashMap<>();
+
+			for (Map.Entry<Locale, String> entry : localizationMap.entrySet()) {
+				Locale locale = entry.getKey();
+				String value = entry.getValue();
+
+				if (availableLocales.contains(locale) &&
+					Validator.isNotNull(value)) {
+
+					map.put(LocaleUtil.toLanguageId(locale), value);
+				}
+			}
+
+			return getXml(map, key, defaultLanguageId);
+		}
+
+		for (Locale locale : availableLocales) {
 			String value = localizationMap.get(locale);
 
 			String languageId = LocaleUtil.toLanguageId(locale);
