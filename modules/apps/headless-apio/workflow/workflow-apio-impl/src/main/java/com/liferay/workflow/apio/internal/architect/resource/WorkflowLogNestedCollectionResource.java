@@ -113,7 +113,6 @@ public class WorkflowLogNestedCollectionResource
 				company.getCompanyId(), workflowTaskId, null,
 				pagination.getStartPosition(), pagination.getEndPosition(),
 				null);
-
 		int count = _workflowLogManager.getWorkflowLogCountByWorkflowTask(
 			company.getCompanyId(), workflowTaskId, null);
 

@@ -37,8 +37,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.ws.rs.core.HttpHeaders;
-
 /**
  * Provides methods that test {@link DocumentationMessageMapper} objects.
  *
@@ -53,15 +51,13 @@ public class MockDocumentationWriter {
 	/**
 	 * Writes a {@link Documentation} object.
 	 *
-	 * @param httpHeaders the request's HTTP headers
 	 * @param documentationMessageMapper the {@code DocumentationMessageMapper}
 	 *        to use for writing the JSON object
 	 */
 	public static JsonObject write(
-		HttpHeaders httpHeaders,
 		DocumentationMessageMapper documentationMessageMapper) {
 
-		RequestInfo requestInfo = getRequestInfo(httpHeaders);
+		RequestInfo requestInfo = getRequestInfo();
 
 		CollectionRoutes.Builder<String, Object> collectionBuilder =
 			new CollectionRoutesImpl.BuilderImpl<>(
