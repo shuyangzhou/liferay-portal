@@ -15,12 +15,13 @@
 package com.liferay.apio.architect.impl.internal.wiring.osgi.manager.router;
 
 import static com.liferay.apio.architect.impl.internal.alias.ProvideFunction.curry;
-import static com.liferay.apio.architect.impl.internal.wiring.osgi.manager.cache.ManagerCache.INSTANCE;
 
 import com.liferay.apio.architect.credentials.Credentials;
 import com.liferay.apio.architect.impl.internal.routes.CollectionRoutesImpl.BuilderImpl;
+import com.liferay.apio.architect.impl.internal.url.ApplicationURL;
 import com.liferay.apio.architect.impl.internal.url.ServerURL;
 import com.liferay.apio.architect.impl.internal.wiring.osgi.manager.base.ClassNameBaseManager;
+import com.liferay.apio.architect.impl.internal.wiring.osgi.manager.cache.ManagerCache;
 import com.liferay.apio.architect.impl.internal.wiring.osgi.manager.provider.ProviderManager;
 import com.liferay.apio.architect.impl.internal.wiring.osgi.manager.representable.NameManager;
 import com.liferay.apio.architect.impl.internal.wiring.osgi.manager.uri.mapper.PathIdentifierMapperManager;
@@ -54,20 +55,22 @@ public class CollectionRouterManagerImpl
 
 	@Override
 	public Map<String, CollectionRoutes> getCollectionRoutes() {
-		return INSTANCE.getCollectionRoutes(this::_computeCollectionRoutes);
+		return ManagerCache.INSTANCE.getCollectionRoutes(
+			this::_computeCollectionRoutes);
 	}
 
 	@Override
 	public <T, S> Optional<CollectionRoutes<T, S>> getCollectionRoutesOptional(
 		String name) {
 
-		return INSTANCE.getCollectionRoutesOptional(
+		return ManagerCache.INSTANCE.getCollectionRoutesOptional(
 			name, this::_computeCollectionRoutes);
 	}
 
 	@Override
 	public List<String> getResourceNames() {
-		return INSTANCE.getRootResourceNames(this::_computeCollectionRoutes);
+		return ManagerCache.INSTANCE.getRootResourceNames(
+			this::_computeCollectionRoutes);
 	}
 
 	private void _computeCollectionRoutes() {
@@ -128,14 +131,15 @@ public class CollectionRouterManagerImpl
 					return;
 				}
 
-				INSTANCE.putRootResourceName(name);
-				INSTANCE.putCollectionRoutes(name, collectionRoutes);
+				ManagerCache.INSTANCE.putRootResourceName(name);
+				ManagerCache.INSTANCE.putCollectionRoutes(
+					name, collectionRoutes);
 			});
 	}
 
 	private static final List<String> _mandatoryClassNames = Arrays.asList(
-		Credentials.class.getName(), ServerURL.class.getName(),
-		Pagination.class.getName());
+		ApplicationURL.class.getName(), Credentials.class.getName(),
+		Pagination.class.getName(), ServerURL.class.getName());
 
 	@Reference
 	private ItemRouterManager _itemRouterManager;

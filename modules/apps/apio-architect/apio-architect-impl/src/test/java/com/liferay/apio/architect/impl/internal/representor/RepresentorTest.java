@@ -72,6 +72,8 @@ public class RepresentorTest {
 			"Type 1", "Type 2", "Type 3"
 		).identifier(
 			dummy -> dummy.id
+		).addApplicationRelativeURL(
+			"nullApplicationRelativeURL", __ -> null
 		).addBinary(
 			"binary1", dummy -> dummy.binaryFile1
 		).addBinary(

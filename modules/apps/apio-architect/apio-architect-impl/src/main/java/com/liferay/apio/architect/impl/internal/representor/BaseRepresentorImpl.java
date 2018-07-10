@@ -19,6 +19,7 @@ import static com.liferay.apio.architect.impl.internal.date.DateTransformer.asSt
 import com.liferay.apio.architect.alias.BinaryFunction;
 import com.liferay.apio.architect.alias.representor.FieldFunction;
 import com.liferay.apio.architect.alias.representor.NestedFieldFunction;
+import com.liferay.apio.architect.alias.representor.NestedListFieldFunction;
 import com.liferay.apio.architect.file.BinaryFile;
 import com.liferay.apio.architect.identifier.Identifier;
 import com.liferay.apio.architect.impl.internal.related.RelatedModelImpl;
@@ -43,6 +44,17 @@ import java.util.function.Function;
  * @author Alejandro Hernández
  */
 public abstract class BaseRepresentorImpl<T> implements BaseRepresentor<T> {
+
+	@Override
+	public List<FieldFunction<T, String>> getApplicationRelativeURLFunctions() {
+		return Optional.ofNullable(
+			fieldFunctions.get("APPLICATION_RELATIVE_URL")
+		).<List<FieldFunction<T, String>>>map(
+			Unsafe::unsafeCast
+		).orElseGet(
+			Collections::emptyList
+		);
+	}
 
 	@Override
 	public Optional<BinaryFunction<T>> getBinaryFunction(String binaryId) {
@@ -109,6 +121,11 @@ public abstract class BaseRepresentorImpl<T> implements BaseRepresentor<T> {
 	@Override
 	public List<NestedFieldFunction<T, ?>> getNestedFieldFunctions() {
 		return nestedFieldFunctions;
+	}
+
+	@Override
+	public List<NestedListFieldFunction<T, ?>> getNestedListFieldFunctions() {
+		return nestedListFieldFunctions;
 	}
 
 	@Override
@@ -180,8 +197,22 @@ public abstract class BaseRepresentorImpl<T> implements BaseRepresentor<T> {
 		binaryFunctions = new LinkedHashMap<>();
 		fieldFunctions = new LinkedHashMap<>();
 		nestedFieldFunctions = new ArrayList<>();
+		nestedListFieldFunctions = new ArrayList<>();
 		relatedModels = new ArrayList<>();
 		types = new ArrayList<>();
+	}
+
+	/**
+	 * Adds a relative URL function to the {@code Representor}.
+	 *
+	 * @param  key the field's name
+	 * @param  function the function used to get the URL
+	 * @review
+	 */
+	protected void addApplicationRelativeURLFunction(
+		String key, Function<T, String> function) {
+
+		_addFieldFunction(key, function, "APPLICATION_RELATIVE_URL");
 	}
 
 	/**
@@ -289,6 +320,46 @@ public abstract class BaseRepresentorImpl<T> implements BaseRepresentor<T> {
 	}
 
 	/**
+	 * Adds a nested list field to the {@code Representor}.
+	 *
+	 * @param  key the field's name
+	 * @param  transformFunction the function that transforms the model into the
+	 *         list whose models are used inside the nested representor
+	 * @param  function the function that creates the nested representor for
+	 *         each model
+	 * @review
+	 */
+	protected <S> void addNestedListField(
+		String key, Function<T, List<S>> transformFunction,
+		Function<NestedRepresentor.Builder<S>, NestedRepresentor<S>> function) {
+
+		NestedListFieldFunction<T, S> nestedFieldFunction = function.andThen(
+			nestedRepresentor -> new NestedListFieldFunction<T, S>() {
+
+				@Override
+				public List<S> apply(T t) {
+					return transformFunction.apply(t);
+				}
+
+				@Override
+				public String getKey() {
+					return key;
+				}
+
+				@Override
+				public NestedRepresentor<S> getNestedRepresentor() {
+					return nestedRepresentor;
+				}
+
+			}
+		).apply(
+			new NestedRepresentorImpl.BuilderImpl<>()
+		);
+
+		nestedListFieldFunctions.add(nestedFieldFunction);
+	}
+
+	/**
 	 * Adds a number function to the {@code Representor}.
 	 *
 	 * @param  key the field's name
@@ -383,6 +454,8 @@ public abstract class BaseRepresentorImpl<T> implements BaseRepresentor<T> {
 	protected final Map<String, BinaryFunction<T>> binaryFunctions;
 	protected final Map<String, List<FieldFunction<T, ?>>> fieldFunctions;
 	protected final List<NestedFieldFunction<T, ?>> nestedFieldFunctions;
+	protected final List<NestedListFieldFunction<T, ?>>
+		nestedListFieldFunctions;
 	protected final List<RelatedModel<T, ?>> relatedModels;
 	protected final List<String> types;
 
@@ -392,6 +465,16 @@ public abstract class BaseRepresentorImpl<T> implements BaseRepresentor<T> {
 		public abstract class BaseFirstStepImpl
 			<U extends BaseRepresentor<T>, V extends BaseFirstStep<T, U, V>>
 				implements BaseFirstStep<T, U, V> {
+
+			@Override
+			public V addApplicationRelativeURL(
+				String key, Function<T, String> function) {
+
+				baseRepresentor.addApplicationRelativeURLFunction(
+					key, function);
+
+				return _this;
+			}
 
 			@Override
 			public V addBinary(String key, BinaryFunction<T> binaryFunction) {
@@ -480,6 +563,18 @@ public abstract class BaseRepresentorImpl<T> implements BaseRepresentor<T> {
 					function) {
 
 				baseRepresentor.addNestedField(
+					key, transformFunction, function);
+
+				return _this;
+			}
+
+			@Override
+			public <W> V addNestedList(
+				String key, Function<T, List<W>> transformFunction,
+				Function<NestedRepresentor.Builder<W>, NestedRepresentor<W>>
+					function) {
+
+				baseRepresentor.addNestedListField(
 					key, transformFunction, function);
 
 				return _this;

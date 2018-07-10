@@ -5,7 +5,7 @@
 		},
 		"https://www.w3.org/ns/hydra/core#"
 	],
-	"@id": "localhost/f/f/s",
+	"@id": "localhost/o/api/f/f/s",
 	"@type": "Class",
 	"description": "description",
 	"supportedProperty": [
