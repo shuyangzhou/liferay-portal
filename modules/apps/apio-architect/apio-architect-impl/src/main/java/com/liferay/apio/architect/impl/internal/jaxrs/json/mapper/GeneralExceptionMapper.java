@@ -17,7 +17,6 @@ package com.liferay.apio.architect.impl.internal.jaxrs.json.mapper;
 import com.liferay.apio.architect.impl.internal.jaxrs.json.util.ErrorUtil;
 
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
@@ -40,14 +39,11 @@ public class GeneralExceptionMapper implements ExceptionMapper<Exception> {
 
 	@Override
 	public Response toResponse(Exception exception) {
-		return _errorUtil.getErrorResponse(exception, _request, _httpHeaders);
+		return _errorUtil.getErrorResponse(exception, _request);
 	}
 
 	@Reference
 	private ErrorUtil _errorUtil;
-
-	@Context
-	private HttpHeaders _httpHeaders;
 
 	@Context
 	private Request _request;
