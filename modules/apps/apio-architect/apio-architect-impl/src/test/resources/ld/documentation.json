@@ -47,6 +47,10 @@
 			"supportedProperty": [
 				{
 					"@type": "SupportedProperty",
+					"property": "applicationRelativeURL1"
+				},
+				{
+					"@type": "SupportedProperty",
 					"property": "binary1"
 				},
 				{
@@ -108,6 +112,18 @@
 				{
 					"@type": "SupportedProperty",
 					"property": "numberList2"
+				},
+				{
+					"@type": "SupportedProperty",
+					"property": "relativeURL1"
+				},
+				{
+					"@type": "SupportedProperty",
+					"property": "relativeURL2"
+				},
+				{
+					"@type": "SupportedProperty",
+					"property": "relativeURL3"
 				},
 				{
 					"@type": "SupportedProperty",
@@ -194,6 +210,10 @@
 			"supportedProperty": [
 				{
 					"@type": "SupportedProperty",
+					"property": "applicationRelativeURL1"
+				},
+				{
+					"@type": "SupportedProperty",
 					"property": "binary1"
 				},
 				{
@@ -255,6 +275,18 @@
 				{
 					"@type": "SupportedProperty",
 					"property": "numberList2"
+				},
+				{
+					"@type": "SupportedProperty",
+					"property": "relativeURL1"
+				},
+				{
+					"@type": "SupportedProperty",
+					"property": "relativeURL2"
+				},
+				{
+					"@type": "SupportedProperty",
+					"property": "relativeURL3"
 				},
 				{
 					"@type": "SupportedProperty",
