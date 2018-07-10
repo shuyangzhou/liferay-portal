@@ -163,7 +163,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, replaced by {@link
+	 * @deprecated As of Judson (7.1.x), replaced by {@link
 	 *             com.liferay.exportimport.kernel.lar.BaseStagedModelDataHandler#exportAssetCategories(
 	 *             PortletDataContext, StagedModel)}
 	 */
@@ -181,7 +181,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson
+	 * @deprecated As of Judson (7.1.x)
 	 */
 	@Deprecated
 	public void addAssetLinks(Class<?> clazz, long classPK) {
@@ -189,7 +189,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, replaced by {@link
+	 * @deprecated As of Judson (7.1.x), replaced by {@link
 	 *             BaseStagedModelDataHandler#exportAssetTags(
 	 *             PortletDataContext, StagedModel)}
 	 */
@@ -255,11 +255,17 @@ public class PortletDataContextImpl implements PortletDataContext {
 			_references.add(getReferenceKey(classedModel));
 		}
 
+		if (classedModel instanceof AuditedModel) {
+			AuditedModel auditedModel = (AuditedModel)classedModel;
+
+			_addUserUuid(element, auditedModel.getUserUuid());
+		}
+
 		addZipEntry(path, classedModel);
 	}
 
 	/**
-	 * @deprecated As of Judson, replaced by {@link
+	 * @deprecated As of Judson (7.1.x), replaced by {@link
 	 *             com.liferay.exportimport.kernel.lar.BaseStagedModelDataHandler#exportComments(
 	 *             PortletDataContext, StagedModel)}
 	 */
@@ -269,7 +275,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, replaced by {@link
+	 * @deprecated As of Judson (7.1.x), replaced by {@link
 	 *             com.liferay.exportimport.kernel.lar.BaseStagedModelDataHandler#exportComments(
 	 *             PortletDataContext, StagedModel)}
 	 */
@@ -328,8 +334,8 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, replaced by {@link #addPermissions(Class,
-	 *             Serializable)}
+	 * @deprecated As of Judson (7.1.x), replaced by {@link
+	 *             #addPermissions(Class, Serializable)}
 	 */
 	@Deprecated
 	@Override
@@ -439,7 +445,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, replaced by {@link
+	 * @deprecated As of Judson (7.1.x), replaced by {@link
 	 *             com.liferay.exportimport.kernel.lar.BaseStagedModelDataHandler#exportRatings(
 	 *             PortletDataContext, StagedModel)}
 	 */
@@ -449,7 +455,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, replaced by {@link
+	 * @deprecated As of Judson (7.1.x), replaced by {@link
 	 *             com.liferay.exportimport.kernel.lar.BaseStagedModelDataHandler#exportRatings(
 	 *             PortletDataContext, StagedModel)}
 	 */
@@ -460,7 +466,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, with no direct replacement
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -698,8 +704,8 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, replaced by {@link #getAssetCategoryIds(Class,
-	 *             Serializable)}
+	 * @deprecated As of Judson (7.1.x), replaced by {@link
+	 *             #getAssetCategoryIds(Class, Serializable)}
 	 */
 	@Deprecated
 	@Override
@@ -720,7 +726,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, with no direct replacement
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -729,7 +735,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, with no direct replacement
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -743,7 +749,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, replaced by {@link #getAssetLinkIds()}
+	 * @deprecated As of Judson (7.1.x), replaced by {@link #getAssetLinkIds()}
 	 */
 	@Deprecated
 	@Override
@@ -752,8 +758,8 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, replaced by {@link #getAssetTagNames(Class,
-	 *             Serializable)}
+	 * @deprecated As of Judson (7.1.x), replaced by {@link
+	 *             #getAssetTagNames(Class, Serializable)}
 	 */
 	@Deprecated
 	@Override
@@ -767,8 +773,8 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, replaced by {@link #getAssetTagNames(String,
-	 *             Serializable)}
+	 * @deprecated As of Judson (7.1.x), replaced by {@link
+	 *             #getAssetTagNames(String, Serializable)}
 	 */
 	@Deprecated
 	@Override
@@ -818,7 +824,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, with no direct replacement
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -891,7 +897,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, replaced by {@link
+	 * @deprecated As of Judson (7.1.x), replaced by {@link
 	 *             #getExportDataElement(ClassedModel, String)}
 	 */
 	@Deprecated
@@ -1062,7 +1068,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, replaced by {@link
+	 * @deprecated As of Judson (7.1.x), replaced by {@link
 	 *             #getNewPrimaryKeysMap(String)}
 	 */
 	@Deprecated
@@ -1095,7 +1101,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, with no direct replacement
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -1129,7 +1135,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, with no direct replacement
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -1193,7 +1199,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, with no direct replacement
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -1231,8 +1237,8 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, replaced by {@link #getReferenceElement(Class,
-	 *             Serializable)}
+	 * @deprecated As of Judson (7.1.x), replaced by {@link
+	 *             #getReferenceElement(Class, Serializable)}
 	 */
 	@Deprecated
 	@Override
@@ -1261,7 +1267,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, replaced by {@link
+	 * @deprecated As of Judson (7.1.x), replaced by {@link
 	 *             #getReferenceElement(StagedModel, Class, Serializable)}
 	 */
 	@Deprecated
@@ -1281,7 +1287,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, replaced by {@link
+	 * @deprecated As of Judson (7.1.x), replaced by {@link
 	 *             #getReferenceElement(StagedModel, String, Serializable)}
 	 */
 	@Deprecated
@@ -1308,8 +1314,8 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, replaced by {@link #getReferenceElement(String,
-	 *             Serializable)}
+	 * @deprecated As of Judson (7.1.x), replaced by {@link
+	 *             #getReferenceElement(String, Serializable)}
 	 */
 	@Deprecated
 	@Override
@@ -1345,7 +1351,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, with no direct replacement
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -1414,7 +1420,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, with no direct replacement
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -1472,7 +1478,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, with no direct replacement
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -1581,7 +1587,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, replaced by {@link
+	 * @deprecated As of Judson (7.1.x), replaced by {@link
 	 *             com.liferay.exportimport.kernel.lar.BaseStagedModelDataHandler#importComments(
 	 *             PortletDataContext, StagedModel)}
 	 */
@@ -1617,8 +1623,8 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, replaced by {@link #importPermissions(Class,
-	 *             Serializable, Serializable)}
+	 * @deprecated As of Judson (7.1.x), replaced by {@link
+	 *             #importPermissions(Class, Serializable, Serializable)}
 	 */
 	@Deprecated
 	@Override
@@ -1739,7 +1745,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, replaced by {@link
+	 * @deprecated As of Judson (7.1.x), replaced by {@link
 	 *             com.liferay.exportimport.kernel.lar.BaseStagedModelDataHandler#importRatings(
 	 *             PortletDataContext, StagedModel)}
 	 */
@@ -1850,8 +1856,8 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, replaced by {@link #isModelCounted(String,
-	 *             Serializable)}
+	 * @deprecated As of Judson (7.1.x), replaced by {@link
+	 *             #isModelCounted(String, Serializable)}
 	 */
 	@Deprecated
 	@Override
@@ -1873,7 +1879,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, with no direct replacement
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -2020,7 +2026,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson, with no direct replacement
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -2118,7 +2124,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson
+	 * @deprecated As of Judson (7.1.x)
 	 */
 	@Deprecated
 	protected void addAssetLinks(Class<?> clazz, Serializable classPK) {
@@ -2138,7 +2144,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson
+	 * @deprecated As of Judson (7.1.x)
 	 */
 	@Deprecated
 	protected void addAssetPriority(
@@ -2148,7 +2154,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson
+	 * @deprecated As of Judson (7.1.x)
 	 */
 	@Deprecated
 	protected void addAssetPriority(
@@ -2524,7 +2530,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson
+	 * @deprecated As of Judson (7.1.x)
 	 */
 	@Deprecated
 	protected String getPrimaryKeyString(Class<?> clazz, long primaryKey) {
@@ -2538,7 +2544,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson
+	 * @deprecated As of Judson (7.1.x)
 	 */
 	@Deprecated
 	protected String getPrimaryKeyString(Class<?> clazz, String primaryKey) {
@@ -2546,7 +2552,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson
+	 * @deprecated As of Judson (7.1.x)
 	 */
 	@Deprecated
 	protected String getPrimaryKeyString(String className, long primaryKey) {
@@ -2561,7 +2567,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson
+	 * @deprecated As of Judson (7.1.x)
 	 */
 	@Deprecated
 	protected String getPrimaryKeyString(String className, String primaryKey) {
@@ -2618,7 +2624,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson
+	 * @deprecated As of Judson (7.1.x)
 	 */
 	@Deprecated
 	protected List<Element> getReferenceElements(
@@ -2681,7 +2687,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	}
 
 	/**
-	 * @deprecated As of Judson
+	 * @deprecated As of Judson (7.1.x)
 	 */
 	@Deprecated
 	protected List<Element> getReferenceElements(
@@ -2878,6 +2884,10 @@ public class PortletDataContextImpl implements PortletDataContext {
 
 		element.addAttribute(
 			"asset-entry-priority", String.valueOf(assetEntryPriority));
+	}
+
+	private void _addUserUuid(Element element, String userUuid) {
+		element.addAttribute("user-uuid", userUuid);
 	}
 
 	private static final Class<?>[] _XSTREAM_DEFAULT_ALLOWED_TYPES = {
