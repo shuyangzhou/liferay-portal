@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.model.PortletApp;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
@@ -40,9 +41,12 @@ import java.lang.reflect.Constructor;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.portlet.ActionURL;
@@ -200,6 +204,14 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 
 	@Override
 	public <T extends PortletURL & ActionURL> T createActionURL() {
+		Portlet portlet = getPortlet();
+
+		PortletApp portletApp = portlet.getPortletApp();
+
+		if (portletApp.getSpecMajorVersion() == 3) {
+			return (T)createActionURL(portletName, MimeResponse.Copy.PUBLIC);
+		}
+
 		return (T)createActionURL(portletName);
 	}
 
@@ -311,6 +323,14 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 
 	@Override
 	public <T extends PortletURL & RenderURL> T createRenderURL() {
+		Portlet portlet = getPortlet();
+
+		PortletApp portletApp = portlet.getPortletApp();
+
+		if (portletApp.getSpecMajorVersion() == 3) {
+			return (T)createRenderURL(portletName, MimeResponse.Copy.PUBLIC);
+		}
+
 		return (T)createRenderURL(portletName);
 	}
 
@@ -429,17 +449,63 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 
 	@Override
 	public String getProperty(String key) {
-		throw new UnsupportedOperationException();
+		Object value = _headers.get(key);
+
+		if (value == null) {
+			return null;
+		}
+
+		if (value instanceof Object[]) {
+			Object[] values = (Object[])value;
+
+			value = ArrayUtil.getValue(values, 0);
+		}
+
+		if (value == null) {
+			return null;
+		}
+
+		return value.toString();
 	}
 
 	@Override
 	public Collection<String> getPropertyNames() {
-		throw new UnsupportedOperationException();
+		Set<String> keySet = _headers.keySet();
+
+		if (keySet == null) {
+			return Collections.emptySet();
+		}
+
+		return new LinkedHashSet<>(keySet);
 	}
 
 	@Override
 	public Collection<String> getPropertyValues(String key) {
-		throw new UnsupportedOperationException();
+		Object value = _headers.get(key);
+
+		if (value == null) {
+			return Collections.emptySet();
+		}
+
+		List<String> values = new ArrayList<>();
+
+		if (value instanceof Object[]) {
+			Object[] valueArray = (Object[])value;
+
+			for (Object curValue : valueArray) {
+				if (curValue == null) {
+					values.add(null);
+				}
+				else {
+					values.add(curValue.toString());
+				}
+			}
+		}
+		else {
+			values.add(value.toString());
+		}
+
+		return values;
 	}
 
 	public URLEncoder getUrlEncoder() {

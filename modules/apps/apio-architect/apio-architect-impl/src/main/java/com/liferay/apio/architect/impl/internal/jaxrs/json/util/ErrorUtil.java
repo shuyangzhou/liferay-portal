@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.impl.internal.jaxrs.json.util;
 
+import static com.liferay.apio.architect.impl.internal.writer.ErrorWriter.writeError;
+
 import static org.osgi.service.component.annotations.ReferenceCardinality.OPTIONAL;
 import static org.osgi.service.component.annotations.ReferencePolicyOption.GREEDY;
 
@@ -21,13 +23,11 @@ import com.liferay.apio.architect.error.APIError;
 import com.liferay.apio.architect.impl.internal.message.json.ErrorMessageMapper;
 import com.liferay.apio.architect.impl.internal.wiring.osgi.manager.exception.mapper.ExceptionMapperManager;
 import com.liferay.apio.architect.impl.internal.wiring.osgi.manager.message.json.ErrorMessageMapperManager;
-import com.liferay.apio.architect.impl.internal.writer.ErrorWriter;
 import com.liferay.apio.architect.logger.ApioLogger;
 
 import java.util.Optional;
 
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 
@@ -47,12 +47,9 @@ public class ErrorUtil {
 	 *
 	 * @param  exception the exception
 	 * @param  request the current request
-	 * @param  httpHeaders the current HTTP headers
 	 * @return the response
 	 */
-	public Response getErrorResponse(
-		Exception exception, Request request, HttpHeaders httpHeaders) {
-
+	public Response getErrorResponse(Exception exception, Request request) {
 		Optional<APIError> apiErrorOptional = _exceptionMapperManager.map(
 			exception);
 
@@ -88,18 +85,13 @@ public class ErrorUtil {
 			_errorMessageMapperManager.getErrorMessageMapperOptional(request);
 
 		return errorMessageMapperOptional.map(
-			errorMessageMapper -> {
-				String result = ErrorWriter.writeError(
-					errorMessageMapper, apiError, httpHeaders);
-
-				return Response.status(
-					statusCode
-				).type(
-					errorMessageMapper.getMediaType()
-				).entity(
-					result
-				).build();
-			}
+			errorMessageMapper -> Response.status(
+				statusCode
+			).type(
+				errorMessageMapper.getMediaType()
+			).entity(
+				writeError(errorMessageMapper, apiError)
+			).build()
 		).orElseGet(
 			() -> Response.status(
 				statusCode
