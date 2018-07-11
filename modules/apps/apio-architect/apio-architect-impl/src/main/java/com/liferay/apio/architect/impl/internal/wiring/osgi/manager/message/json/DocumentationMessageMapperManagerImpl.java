@@ -14,10 +14,9 @@
 
 package com.liferay.apio.architect.impl.internal.wiring.osgi.manager.message.json;
 
-import static com.liferay.apio.architect.impl.internal.wiring.osgi.manager.cache.ManagerCache.INSTANCE;
-
 import com.liferay.apio.architect.impl.internal.message.json.DocumentationMessageMapper;
 import com.liferay.apio.architect.impl.internal.wiring.osgi.manager.base.MessageMapperBaseManager;
+import com.liferay.apio.architect.impl.internal.wiring.osgi.manager.cache.ManagerCache;
 
 import java.util.Optional;
 
@@ -36,14 +35,14 @@ public class DocumentationMessageMapperManagerImpl
 	public DocumentationMessageMapperManagerImpl() {
 		super(
 			DocumentationMessageMapper.class,
-			INSTANCE::putDocumentationMessageMapper);
+			ManagerCache.INSTANCE::putDocumentationMessageMapper);
 	}
 
 	@Override
 	public Optional<DocumentationMessageMapper>
 		getDocumentationMessageMapperOptional(Request request) {
 
-		return INSTANCE.getDocumentationMessageMapperOptional(
+		return ManagerCache.INSTANCE.getDocumentationMessageMapperOptional(
 			request, this::computeMessageMappers);
 	}
 
