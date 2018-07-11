@@ -25,6 +25,7 @@ import com.liferay.apio.architect.impl.internal.request.RequestInfo;
 import com.liferay.apio.architect.impl.internal.response.control.Embedded;
 import com.liferay.apio.architect.impl.internal.response.control.Fields;
 import com.liferay.apio.architect.impl.internal.unsafe.Unsafe;
+import com.liferay.apio.architect.impl.internal.url.ApplicationURL;
 import com.liferay.apio.architect.impl.internal.url.ServerURL;
 import com.liferay.apio.architect.impl.internal.wiring.osgi.manager.provider.ProviderManager;
 import com.liferay.apio.architect.impl.internal.wiring.osgi.manager.representable.NameManager;
@@ -51,7 +52,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.NotSupportedException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Request;
@@ -124,13 +124,14 @@ public abstract class BaseMessageBodyWriter<T, S extends MessageMapper>
 		S s = optional.orElseThrow(NotSupportedException::new);
 
 		RequestInfo requestInfo = RequestInfo.create(
-			builder -> builder.httpHeaders(
-				_httpHeaders
-			).httpServletRequest(
+			builder -> builder.httpServletRequest(
 				_httpServletRequest
 			).serverURL(
 				providerManager.provideMandatory(
 					_httpServletRequest, ServerURL.class)
+			).applicationURL(
+				providerManager.provideMandatory(
+					_httpServletRequest, ApplicationURL.class)
 			).embedded(
 				providerManager.provideOptional(
 					_httpServletRequest, Embedded.class
@@ -214,9 +215,6 @@ public abstract class BaseMessageBodyWriter<T, S extends MessageMapper>
 
 	@Reference
 	protected ProviderManager providerManager;
-
-	@Context
-	private HttpHeaders _httpHeaders;
 
 	@Context
 	private HttpServletRequest _httpServletRequest;

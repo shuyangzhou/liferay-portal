@@ -134,7 +134,7 @@ public abstract class Try<T> {
 		Objects.requireNonNull(throwableSupplier);
 		Objects.requireNonNull(supplier);
 
-		return Try.fromFallible(
+		return fromFallible(
 			throwableSupplier
 		).map(
 			Optional::get

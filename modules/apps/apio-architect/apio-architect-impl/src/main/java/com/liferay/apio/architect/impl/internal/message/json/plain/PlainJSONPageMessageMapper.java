@@ -21,8 +21,6 @@ import com.liferay.apio.architect.single.model.SingleModel;
 
 import java.util.Optional;
 
-import javax.ws.rs.core.HttpHeaders;
-
 import org.osgi.service.component.annotations.Component;
 
 /**
@@ -132,8 +130,7 @@ public class PlainJSONPageMessageMapper<T> implements PageMessageMapper<T> {
 	@Override
 	public void onFinishItem(
 		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder, SingleModel<T> singleModel,
-		HttpHeaders httpHeaders) {
+		JSONObjectBuilder itemJSONObjectBuilder, SingleModel<T> singleModel) {
 
 		pageJSONObjectBuilder.field(
 			"elements"
