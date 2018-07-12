@@ -2628,6 +2628,16 @@ app.server.type=@{app.server.type}]]></echo>
 	<target name="compile-jsp-jdk8">
 		<run-batch-test>
 			<test-action>
+				<delete dir="${project.dir}/portal-web/docroot/html" />
+
+				<copy
+					todir="${project.dir}/portal-web/docroot/html"
+				>
+					<fileset
+						dir="${app.server.tomcat.dir}/webapps/ROOT/html"
+					/>
+				</copy>
+
 				<ant dir="portal-web" target="compile-tomcat" />
 
 				<gradle-execute dir="modules" task="compileJSP" />
@@ -3254,6 +3264,10 @@ app.server.type=@{app.server.type}]]></echo>
 
 	<target name="functional-upgrade-tomcat80-sybase160-jdk8">
 		<run-functional-test app.server.type="tomcat" database.type="sybase" />
+	</target>
+
+	<target name="functional-upgrade-tomcat90-db2105-jdk8">
+		<run-functional-test app.server.type="tomcat" database.type="db2" />
 	</target>
 
 	<target name="functional-upgrade-tomcat90-mariadb100-jdk8">
@@ -4914,7 +4928,7 @@ information. Make sure to commit in all build services results.
 		<echo file="create-header.sql">use master
 dump transaction master with no_log
 go
-disk resize name="master", size="500m"
+disk resize name="master", size="750m"
 go
 drop database lportal
 go
@@ -4922,7 +4936,7 @@ exec sp_configure 'lock scheme', 0, datarows
 go
 exec sp_configure 'procedure cache size', 28000
 go
-create database lportal on master = "500m"
+create database lportal on master = "750m"
 go
 exec sp_dboption 'lportal', 'allow nulls by default' , true
 go

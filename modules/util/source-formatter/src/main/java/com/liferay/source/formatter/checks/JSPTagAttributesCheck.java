@@ -32,10 +32,12 @@ import com.liferay.source.formatter.parser.JavaMethod;
 import com.liferay.source.formatter.parser.JavaParameter;
 import com.liferay.source.formatter.parser.JavaSignature;
 import com.liferay.source.formatter.parser.JavaTerm;
+import com.liferay.source.formatter.parser.ParseException;
 import com.liferay.source.formatter.util.FileUtil;
 import com.liferay.source.formatter.util.SourceFormatterUtil;
 
 import java.io.File;
+import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -387,7 +389,7 @@ public class JSPTagAttributesCheck extends TagAttributesCheck {
 
 	private Map<String, String> _getSetMethodsMap(
 			String tagFileName, String utilTaglibSrcDirName)
-		throws Exception {
+		throws IOException, ParseException {
 
 		if (_classSetMethodsMap.containsKey(tagFileName)) {
 			return _classSetMethodsMap.get(tagFileName);
@@ -464,7 +466,7 @@ public class JSPTagAttributesCheck extends TagAttributesCheck {
 		}
 	}
 
-	private List<String> _getTLDFileNames() throws Exception {
+	private List<String> _getTLDFileNames() throws IOException {
 		String[] excludes =
 			{"**/dependencies/**", "**/util-taglib/**", "**/portal-web/**"};
 

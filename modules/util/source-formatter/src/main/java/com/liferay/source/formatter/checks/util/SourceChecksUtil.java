@@ -37,6 +37,7 @@ import com.liferay.source.formatter.util.DebugUtil;
 import com.liferay.source.formatter.util.SourceFormatterUtil;
 
 import java.io.File;
+import java.io.IOException;
 
 import java.lang.reflect.Constructor;
 
@@ -113,19 +114,8 @@ public class SourceChecksUtil {
 			}
 			else if (sourceCheck instanceof GradleFileCheck) {
 				if (gradleFile == null) {
-					try {
-						gradleFile = GradleFileParser.parse(
-							fileName, sourceChecksResult.getContent());
-					}
-					catch (ParseException pe) {
-						sourceChecksResult.addSourceFormatterMessage(
-							new SourceFormatterMessage(
-								fileName, pe.getMessage(),
-								CheckType.SOURCE_CHECK, clazz.getSimpleName(),
-								null, -1));
-
-						continue;
-					}
+					gradleFile = GradleFileParser.parse(
+						fileName, sourceChecksResult.getContent());
 				}
 
 				sourceChecksResult = _processGradleFileCheck(
@@ -313,7 +303,7 @@ public class SourceChecksUtil {
 			SourceChecksResult sourceChecksResult,
 			GradleFileCheck gradleFileCheck, GradleFile gradleFile,
 			String fileName, String absolutePath)
-		throws Exception {
+		throws IOException {
 
 		String content = gradleFileCheck.process(
 			fileName, absolutePath, gradleFile,

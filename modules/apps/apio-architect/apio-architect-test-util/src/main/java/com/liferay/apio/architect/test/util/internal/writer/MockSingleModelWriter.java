@@ -21,22 +21,16 @@ import static com.liferay.apio.architect.test.util.writer.MockWriterUtil.getRequ
 
 import static java.util.Arrays.asList;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
-import com.liferay.apio.architect.impl.internal.message.json.SingleModelMessageMapper;
-import com.liferay.apio.architect.impl.internal.operation.OperationImpl;
-import com.liferay.apio.architect.impl.internal.request.RequestInfo;
-import com.liferay.apio.architect.impl.internal.single.model.SingleModelImpl;
-import com.liferay.apio.architect.impl.internal.writer.SingleModelWriter;
+import com.liferay.apio.architect.impl.message.json.SingleModelMessageMapper;
+import com.liferay.apio.architect.impl.operation.OperationImpl;
+import com.liferay.apio.architect.impl.single.model.SingleModelImpl;
+import com.liferay.apio.architect.impl.writer.SingleModelWriter;
 import com.liferay.apio.architect.operation.Operation;
 import com.liferay.apio.architect.single.model.SingleModel;
 import com.liferay.apio.architect.test.util.model.RootModel;
 import com.liferay.apio.architect.test.util.writer.MockWriterUtil;
 
 import java.util.Optional;
-
-import javax.ws.rs.core.HttpHeaders;
 
 /**
  * Provides methods that test {@code SingleModelMessageMapper} objects.
@@ -53,15 +47,13 @@ public class MockSingleModelWriter {
 	 * Writes a {@link RootModel}, with the hierarchy of embedded models and
 	 * multiple fields.
 	 *
-	 * @param httpHeaders the request's {@code HttpHeaders}
-	 * @param singleModelMessageMapper the {@link SingleModelMessageMapper} to
-	 *        use for writing the JSON object
+	 * @param  singleModelMessageMapper the {@link SingleModelMessageMapper} to
+	 *         use for writing the JSON object
+	 * @return the {@code String} containing the JSON Object.
+	 * @review
 	 */
-	public static JsonObject write(
-		HttpHeaders httpHeaders,
+	public static String write(
 		SingleModelMessageMapper<RootModel> singleModelMessageMapper) {
-
-		RequestInfo requestInfo = getRequestInfo(httpHeaders);
 
 		Operation deleteOperation = new OperationImpl(
 			DELETE, "delete-operation");
@@ -84,18 +76,15 @@ public class MockSingleModelWriter {
 				).representorFunction(
 					MockWriterUtil::getRepresentorOptional
 				).requestInfo(
-					requestInfo
+					getRequestInfo()
 				).singleModelFunction(
 					MockWriterUtil::getSingleModel
 				).build());
 
 		Optional<String> optional = singleModelWriter.write();
 
-		if (!optional.isPresent()) {
-			throw new AssertionError("Writer failed to write");
-		}
-
-		return new Gson().fromJson(optional.get(), JsonObject.class);
+		return optional.orElseThrow(
+			() -> new AssertionError("Writer failed to write"));
 	}
 
 	private MockSingleModelWriter() {

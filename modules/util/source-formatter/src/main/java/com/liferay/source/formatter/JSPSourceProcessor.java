@@ -25,9 +25,11 @@ import com.liferay.source.formatter.checkstyle.util.AlloyMVCCheckstyleUtil;
 import com.liferay.source.formatter.checkstyle.util.CheckstyleUtil;
 import com.liferay.source.formatter.util.SourceFormatterUtil;
 
+import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
 
 import java.io.File;
+import java.io.IOException;
 
 import java.nio.file.Files;
 
@@ -128,7 +130,7 @@ public class JSPSourceProcessor extends BaseSourceProcessor {
 	}
 
 	@Override
-	protected void postFormat() throws Exception {
+	protected void postFormat() throws CheckstyleException, IOException {
 		_processCheckstyle();
 
 		for (SourceFormatterMessage sourceFormatterMessage :
@@ -143,7 +145,7 @@ public class JSPSourceProcessor extends BaseSourceProcessor {
 	}
 
 	@Override
-	protected void preFormat() throws Exception {
+	protected void preFormat() throws CheckstyleException {
 		SourceFormatterArgs sourceFormatterArgs = getSourceFormatterArgs();
 
 		_checkstyleLogger = new AlloyMVCCheckstyleLogger(
@@ -216,7 +218,7 @@ public class JSPSourceProcessor extends BaseSourceProcessor {
 		return contentsMap;
 	}
 
-	private void _processCheckstyle() throws Exception {
+	private void _processCheckstyle() throws CheckstyleException, IOException {
 		if (_ungeneratedFiles.isEmpty()) {
 			return;
 		}
@@ -235,7 +237,7 @@ public class JSPSourceProcessor extends BaseSourceProcessor {
 
 	private synchronized void _processCheckstyle(
 			String absolutePath, String content)
-		throws Exception {
+		throws CheckstyleException, IOException {
 
 		File file = AlloyMVCCheckstyleUtil.getJavaFile(absolutePath, content);
 
