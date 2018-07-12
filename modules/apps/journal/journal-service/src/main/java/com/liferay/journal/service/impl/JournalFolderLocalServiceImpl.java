@@ -53,7 +53,9 @@ import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.SetUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.util.PropsValues;
@@ -531,13 +533,35 @@ public class JournalFolderLocalServiceImpl
 	}
 
 	/**
-	 * @deprecated As of Judson, with no direct replacement
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
 	 */
 	@Deprecated
 	public com.liferay.portal.kernel.service.SubscriptionLocalService
 		getSubscriptionLocalService() {
 
 		return subscriptionLocalService;
+	}
+
+	@Override
+	public String getUniqueFolderName(
+		String uuid, long groupId, long parentFolderId, String name,
+		int count) {
+
+		JournalFolder folder = journalFolderLocalService.fetchFolder(
+			groupId, parentFolderId, name);
+
+		if (folder == null) {
+			return name;
+		}
+
+		if (Validator.isNotNull(uuid) && uuid.equals(folder.getUuid())) {
+			return name;
+		}
+
+		name = StringUtil.appendParentheticalSuffix(name, count);
+
+		return getUniqueFolderName(
+			uuid, groupId, parentFolderId, name, ++count);
 	}
 
 	@Indexable(type = IndexableType.REINDEX)
@@ -734,7 +758,12 @@ public class JournalFolderLocalServiceImpl
 				RestoreEntryException.INVALID_STATUS);
 		}
 
-		folder.setName(_trashHelper.getOriginalTitle(folder.getName()));
+		String originalName = _trashHelper.getOriginalTitle(folder.getName());
+
+		folder.setName(
+			journalFolderLocalService.getUniqueFolderName(
+				folder.getUuid(), folder.getGroupId(),
+				folder.getParentFolderId(), originalName, 2));
 
 		journalFolderPersistence.update(folder);
 
@@ -801,7 +830,7 @@ public class JournalFolderLocalServiceImpl
 	}
 
 	/**
-	 * @deprecated As of Judson, with no direct replacement
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
 	 */
 	@Deprecated
 	public void setSubscriptionLocalService(
@@ -1465,7 +1494,7 @@ public class JournalFolderLocalServiceImpl
 	protected JournalValidator journalValidator;
 
 	/**
-	 * @deprecated As of Judson, with no direct replacement
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
 	 */
 	@Deprecated
 	@ServiceReference(
