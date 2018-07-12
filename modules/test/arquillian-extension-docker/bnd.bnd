@@ -1,0 +1,3 @@
+Bundle-Name: Liferay Arquillian Extension Docker
+Bundle-SymbolicName: com.liferay.arquillian.extension.docker
+Bundle-Version: 1.0.0
