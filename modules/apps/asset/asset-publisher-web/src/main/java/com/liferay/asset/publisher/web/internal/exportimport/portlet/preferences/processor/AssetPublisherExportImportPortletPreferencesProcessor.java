@@ -131,11 +131,15 @@ public class AssetPublisherExportImportPortletPreferencesProcessor
 		throws PortletDataException {
 
 		try {
-			if (MapUtil.getBoolean(
-					portletDataContext.getParameterMap(),
-					PortletDataHandlerKeys.PORTLET_DATA) &&
-				!MergeLayoutPrototypesThreadLocal.isInProgress()) {
+			if (MergeLayoutPrototypesThreadLocal.isInProgress()) {
+				if (MapUtil.getBoolean(
+						portletDataContext.getParameterMap(),
+						PortletDataHandlerKeys.PORTLET_DATA)) {
 
+					exportAssetObjects(portletDataContext, portletPreferences);
+				}
+			}
+			else {
 				exportAssetObjects(portletDataContext, portletPreferences);
 			}
 
@@ -434,8 +438,8 @@ public class AssetPublisherExportImportPortletPreferencesProcessor
 		}
 		else if (className.equals(DDMStructure.class.getName())) {
 			DDMStructure ddmStructure =
-				_ddmStructureLocalService.fetchDDMStructureByUuidAndGroupId(
-					uuid, groupId);
+				_ddmStructureLocalService.fetchStructureByUuidAndGroupId(
+					uuid, groupId, true);
 
 			if (ddmStructure == null) {
 				Map<String, String> structureUuids =

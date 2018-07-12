@@ -970,7 +970,7 @@
 			<isset var="recycleBinDisabled" />
 			<then>
 				<execute macro="LexiconEntry#delete">
-					<var name="rowEntry" value="${dmDocumenTitle}" />
+					<var name="rowEntry" value="${dmDocumentTitle}" />
 				</execute>
 			</then>
 			<else>
@@ -2521,7 +2521,7 @@
 		<execute function="AssertTextEquals" locator1="DocumentsAndMediaDocument#DOCUMENT_DETAILS_WORKFLOW" value1="${workflow}" />
 		<execute function="AssertTextEquals" locator1="DocumentsAndMediaDocument#DOCUMENT_DETAILS_DOWNLOAD" value1="Download" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="DocumentsAndMediaDocument#DOCUMENT_DETAILS_WEBDAV_URL" value1="WebDAV URL" />
-		<execute function="AssertTextEquals" locator1="DocumentsAndMediaDocument#DOCUMENT_DETAILS_URL" value1="URL" />
+		<execute function="AssertTextEquals" locator1="DocumentsAndMediaDocument#DOCUMENT_DETAILS_URL" value1="Latest Version URL" />
 	</command>
 
 	<command name="viewPGMetadata">
@@ -2618,7 +2618,7 @@
 		<if>
 			<isset var="dmRepositoryName" />
 			<then>
-				<execute function="AssertClick" locator1="DocumentsAndMedia#SEARCH_REPOSITORY_TAB" value1="${dmRepositoryName}" />
+				<execute function="AssertClick#assertTextClickAtAndPause" locator1="DocumentsAndMedia#SEARCH_REPOSITORY_TAB" value1="repository ${dmRepositoryName}" />
 			</then>
 		</if>
 
@@ -2700,10 +2700,23 @@
 
 		<execute function="Check" locator1="DocumentsAndMedia#DESCRIPTIVE_LIST_DOCUMENT_CHECKBOX" />
 
-		<execute function="AssertVisible" locator1="Toolbar#MANAGEMENT_BAR_LOCK_ICON_BUTTON" />
-		<execute function="AssertVisible" locator1="Toolbar#MANAGEMENT_BAR_UNLOCK_ICON_BUTTON" />
-		<execute function="AssertVisible" locator1="Button#MOVE" />
-		<execute function="AssertVisible" locator1="Button#RECYCLE_BIN" />
+		<execute function="Click" locator1="Icon#TOOLBAR_ELLIPSIS" />
+
+		<execute function="AssertVisible" locator1="MenuItem#ANY_MENU_ITEM" value1="Checkout">
+			<var name="key_menuItem" value="Checkout" />
+		</execute>
+
+		<execute function="AssertVisible" locator1="MenuItem#ANY_MENU_ITEM" value1="Checkin">
+			<var name="key_menuItem" value="Checkin" />
+		</execute>
+
+		<execute function="AssertVisible" locator1="MenuItem#ANY_MENU_ITEM" value1="Move">
+			<var name="key_menuItem" value="Move" />
+		</execute>
+
+		<execute function="AssertVisible" locator1="MenuItem#ANY_MENU_ITEM" value1="Move to Recycle Bin">
+			<var name="key_menuItem" value="Move to Recycle Bin" />
+		</execute>
 
 		<execute macro="Navigator#gotoSitePage">
 			<var name="pageName" value="Staging Test Page" />
@@ -2724,7 +2737,7 @@
 
 		<execute function="Click" locator1="DocumentsAndMedia#DESCRIPTIVE_LIST_DOCUMENT_CHECKBOX" />
 
-		<execute function="AssertVisible" locator1="Button#RECYCLE_BIN" />
+		<execute function="AssertVisible" locator1="Icon#DELETE" />
 	</command>
 
 	<command name="viewTag">
