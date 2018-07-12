@@ -14,22 +14,12 @@
 
 package com.liferay.portal.search.test.util.filter;
 
-import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.Field;
-import com.liferay.portal.kernel.search.Hits;
-import com.liferay.portal.kernel.search.Query;
-import com.liferay.portal.kernel.search.SearchContext;
-import com.liferay.portal.kernel.search.filter.BooleanFilter;
-import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.search.filter.TermsFilter;
-import com.liferay.portal.search.test.util.DocumentsAssert;
-import com.liferay.portal.search.test.util.IdempotentRetryAssert;
 import com.liferay.portal.search.test.util.indexing.BaseIndexingTestCase;
 import com.liferay.portal.search.test.util.indexing.DocumentCreationHelpers;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 
@@ -39,52 +29,60 @@ import org.junit.Test;
 public abstract class BaseTermsFilterTestCase extends BaseIndexingTestCase {
 
 	@Test
-	public void testKeywordField() throws Exception {
-		String fieldName = Field.FOLDER_ID;
+	public void testBasicSearch() throws Exception {
+		index("One");
+		index("Two");
+		index("Three");
 
-		addDocuments(
-			value -> DocumentCreationHelpers.singleKeyword(fieldName, value),
-			Arrays.asList("One", "Two", "Three"));
-
-		TermsFilter termsFilter = new TermsFilter(fieldName);
-
-		termsFilter.addValues("Two", "Three");
-
-		assertSearch(termsFilter, fieldName, Arrays.asList("Two", "Three"));
+		assertTermsFilter(new String[] {"Two", "Three"});
 	}
 
-	protected void assertSearch(
-			Filter filter, String fieldName, List<String> expectedValues)
-		throws Exception {
+	@Test
+	public void testLuceneSpecialCharacters() throws Exception {
+		index("One\\+-!():^[]\"{}~*?|&/Two");
+		index("Three");
 
-		IdempotentRetryAssert.retryAssert(
-			10, TimeUnit.SECONDS,
-			() -> doAssertSearch(filter, fieldName, expectedValues));
+		assertTermsFilter(
+			new String[] {"One\\+-!():^[]\"{}~*?|&/Two", "Three"});
 	}
 
-	protected Void doAssertSearch(
-			Filter filter, String fieldName, List<String> expectedValues)
-		throws Exception {
+	@Test
+	public void testSolrSpecialCharacters() throws Exception {
+		index("One\\+-!():^[]\"{}~*?|&/; Two");
+		index("Three");
 
-		SearchContext searchContext = createSearchContext();
-
-		Hits hits = search(
-			searchContext,
-			booleanQuery -> setPreBooleanFilter(filter, booleanQuery));
-
-		DocumentsAssert.assertValues(
-			(String)searchContext.getAttribute("queryString"), hits.getDocs(),
-			fieldName, expectedValues);
-
-		return null;
+		assertTermsFilter(
+			new String[] {"One\\+-!():^[]\"{}~*?|&/; Two", "Three"});
 	}
 
-	protected void setPreBooleanFilter(Filter filter, Query query) {
-		BooleanFilter booleanFilter = new BooleanFilter();
+	@Test
+	public void testSpaces() throws Exception {
+		index("One Two");
+		index("Three");
 
-		booleanFilter.add(filter, BooleanClauseOccur.MUST);
-
-		query.setPreBooleanFilter(booleanFilter);
+		assertTermsFilter(new String[] {"One Two", "Three"});
 	}
+
+	protected void assertTermsFilter(String[] values) throws Exception {
+		assertSearch(
+			indexingTestHelper -> {
+				indexingTestHelper.setFilter(
+					new TermsFilter(_FIELD) {
+						{
+							addValues(values);
+						}
+					});
+
+				indexingTestHelper.search();
+
+				indexingTestHelper.assertValues(_FIELD, Arrays.asList(values));
+			});
+	}
+
+	protected void index(String value) throws Exception {
+		addDocument(DocumentCreationHelpers.singleKeyword(_FIELD, value));
+	}
+
+	private static final String _FIELD = Field.FOLDER_ID;
 
 }

@@ -6,9 +6,18 @@ definition{
 			'http://www.google.com'
 		);
 
-		HttpRequester.assertResponseStatus(
-			expectedStatus = "200",
-			response = "${response}");
+		HttpRequester.getResponse(response = "${response}");
+	}
+
+	macro getResponse {
+		var status = HttpRequestUtil.getStatusCode('${response}');
+
+		var body = HttpRequestUtil.getResponseBody('${response}');
+		var errorMessage = HttpRequestUtil.getResponseErrorMessage('${response}');
+
+		echo("Response Code: ${status}");
+		echo("Response: ${body}");
+		echo("Error: ${errorMessage}");
 	}
 
 	macro assertResponseStatus {

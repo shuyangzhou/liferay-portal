@@ -242,17 +242,17 @@ public class LDAPAuth implements Authenticator {
 			Attribute userPassword = attributes.get("userPassword");
 
 			if (userPassword != null) {
+				String encryptedPassword = password;
 				String ldapPassword = new String((byte[])userPassword.get());
 
-				String encryptedPassword = removeEncryptionAlgorithm(
-					ldapPassword);
+				if (Validator.isNotNull(
+						ldapAuthConfiguration.passwordEncryptionAlgorithm())) {
 
-				String algorithm =
-					ldapAuthConfiguration.passwordEncryptionAlgorithm();
+					ldapPassword = removeEncryptionAlgorithm(ldapPassword);
 
-				if (Validator.isNotNull(algorithm)) {
 					encryptedPassword = _passwordEncryptor.encrypt(
-						algorithm, password, ldapPassword);
+						ldapAuthConfiguration.passwordEncryptionAlgorithm(),
+						password, ldapPassword);
 				}
 
 				if (ldapPassword.equals(encryptedPassword)) {
@@ -687,13 +687,13 @@ public class LDAPAuth implements Authenticator {
 			return ldapPassword;
 		}
 
-		int y = ldapPassword.indexOf(StringPool.CLOSE_CURLY_BRACE);
+		int y = ldapPassword.indexOf(StringPool.CLOSE_CURLY_BRACE, x);
 
 		if (y == -1) {
 			return ldapPassword;
 		}
 
-		return ldapPassword.substring(x, y + 1);
+		return ldapPassword.substring(y + 1);
 	}
 
 	@Reference(

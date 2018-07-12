@@ -2,6 +2,7 @@
 	<property name="portal.release" value="true" />
 	<property name="portal.upstream" value="true" />
 	<property name="custom.properties" value="default.layout.template.id=1_column" />
+	<property name="testray.component.names" value="Comment,Documents Management,Mentions" />
 	<property name="testray.main.component.name" value="Mentions" />
 
 	<set-up>

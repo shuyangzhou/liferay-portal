@@ -106,7 +106,7 @@ public class PersonCollectionResource
 			).addString(
 				"streetAddress", PostalAddressModel::getStreetAddress
 			).build()
-		).addRelativeURL(
+		).addApplicationRelativeURL(
 			"image", PersonModel::getAvatarRelativeURL
 		).addString(
 			"email", PersonModel::getEmail

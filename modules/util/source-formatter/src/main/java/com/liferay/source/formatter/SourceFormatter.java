@@ -39,6 +39,7 @@ import com.liferay.source.formatter.util.SourceFormatterUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,6 +59,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import org.dom4j.DocumentException;
 
 /**
  * @author Hugo Huijser
@@ -170,6 +173,13 @@ public class SourceFormatter {
 			boolean includeSubrepositories = ArgumentsUtil.getBoolean(
 				arguments, "include.subrepositories",
 				SourceFormatterArgs.INCLUDE_SUBREPOSITORIES);
+
+			List<String> recentChangesFileNames =
+				sourceFormatterArgs.getRecentChangesFileNames();
+
+			if (recentChangesFileNames != null) {
+				includeSubrepositories = true;
+			}
 
 			sourceFormatterArgs.setIncludeSubrepositories(
 				includeSubrepositories);
@@ -441,7 +451,7 @@ public class SourceFormatter {
 		_sourceFormatterArgs.addRecentChangesFileNames(dependentFileNames);
 	}
 
-	private void _excludeWorkingDirCheckoutPrivateApps() throws Exception {
+	private void _excludeWorkingDirCheckoutPrivateApps() throws IOException {
 		if (!_isPortalSource()) {
 			return;
 		}
@@ -514,9 +524,7 @@ public class SourceFormatter {
 		return excludeSyntaxPatterns;
 	}
 
-	private List<String> _getPluginsInsideModulesDirectoryNames()
-		throws Exception {
-
+	private List<String> _getPluginsInsideModulesDirectoryNames() {
 		List<String> pluginsInsideModulesDirectoryNames = new ArrayList<>();
 
 		List<String> pluginBuildFileNames = SourceFormatterUtil.filterFileNames(
@@ -561,7 +569,7 @@ public class SourceFormatter {
 		return portalImplDir.getParentFile();
 	}
 
-	private String _getProjectPathPrefix() throws Exception {
+	private String _getProjectPathPrefix() throws IOException {
 		if (!_subrepository) {
 			return null;
 		}
@@ -588,7 +596,7 @@ public class SourceFormatter {
 		return null;
 	}
 
-	private Properties _getProperties(File file) throws Exception {
+	private Properties _getProperties(File file) throws IOException {
 		Properties properties = new Properties();
 
 		if (file.exists()) {
@@ -598,7 +606,7 @@ public class SourceFormatter {
 		return properties;
 	}
 
-	private void _init() throws Exception {
+	private void _init() throws DocumentException, IOException {
 		_sourceFormatterExcludes = new SourceFormatterExcludes(
 			SetUtil.fromArray(DEFAULT_EXCLUDE_SYNTAX_PATTERNS));
 
@@ -673,7 +681,7 @@ public class SourceFormatter {
 		return false;
 	}
 
-	private boolean _isSubrepository() throws Exception {
+	private boolean _isSubrepository() throws IOException {
 		if (_isPortalSource()) {
 			return false;
 		}
@@ -717,7 +725,7 @@ public class SourceFormatter {
 		System.out.print(message + "\r");
 	}
 
-	private void _readProperties(File propertiesFile) throws Exception {
+	private void _readProperties(File propertiesFile) throws IOException {
 		Properties properties = _getProperties(propertiesFile);
 
 		if (properties.isEmpty()) {

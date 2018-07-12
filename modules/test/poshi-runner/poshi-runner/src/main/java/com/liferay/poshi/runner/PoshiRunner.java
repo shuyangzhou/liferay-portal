@@ -24,7 +24,11 @@ import com.liferay.poshi.runner.util.PropsValues;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import org.dom4j.Element;
 
@@ -55,12 +59,19 @@ public class PoshiRunner {
 
 	@Parameters(name = "{0}")
 	public static List<String> getList() throws Exception {
-		PoshiRunnerContext.readFiles();
-
 		List<String> namespacedClassCommandNames = new ArrayList<>();
 
 		List<String> testNames = Arrays.asList(
 			PropsValues.TEST_NAME.split("\\s*,\\s*"));
+
+		String[] poshiTestFileIncludes = ArrayUtils.addAll(
+			PoshiRunnerContext.POSHI_SUPPORT_FILE_INCLUDES,
+			_getTestClassFileIncludes(testNames));
+
+		PoshiRunnerContext.readFiles(
+			poshiTestFileIncludes,
+			PoshiRunnerGetterUtil.getCanonicalPath(
+				PropsValues.TEST_BASE_DIR_NAME));
 
 		for (String testName : testNames) {
 			PoshiRunnerValidation.validate(testName);
@@ -144,10 +155,6 @@ public class PoshiRunner {
 
 			e.printStackTrace();
 
-			if (PropsValues.TEST_PAUSE_ON_FAILURE) {
-				LoggerUtil.pauseFailedTest();
-			}
-
 			throw e;
 		}
 	}
@@ -167,10 +174,6 @@ public class PoshiRunner {
 			PoshiRunnerStackTraceUtil.printStackTrace(e.getMessage());
 
 			PoshiRunnerStackTraceUtil.emptyStackTrace();
-
-			if (PropsValues.TEST_PAUSE_ON_FAILURE) {
-				LoggerUtil.pauseFailedTest();
-			}
 		}
 		finally {
 			LoggerUtil.stopLogger();
@@ -195,16 +198,28 @@ public class PoshiRunner {
 
 			e.printStackTrace();
 
-			if (PropsValues.TEST_PAUSE_ON_FAILURE) {
-				LoggerUtil.pauseFailedTest();
-			}
-
 			throw e;
 		}
 	}
 
 	@Rule
 	public RetryTestRule retryTestRule = new RetryTestRule();
+
+	private static String[] _getTestClassFileIncludes(List<String> testNames) {
+		Set<String> testClassFileGlobsSet = new HashSet<>();
+
+		for (String testName : testNames) {
+			String testClassName =
+				PoshiRunnerGetterUtil.
+					getClassNameFromNamespacedClassCommandName(testName);
+
+			testClassFileGlobsSet.add("**/" + testClassName + ".prose");
+			testClassFileGlobsSet.add("**/" + testClassName + ".testcase");
+		}
+
+		return testClassFileGlobsSet.toArray(
+			new String[testClassFileGlobsSet.size()]);
+	}
 
 	private void _runCommand() throws Exception {
 		CommandLoggerHandler.logNamespacedClassCommandName(
