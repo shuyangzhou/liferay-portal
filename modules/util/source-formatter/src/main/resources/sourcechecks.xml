@@ -5,6 +5,9 @@
 		<check name="CDNCheck" />
 		<check name="IncorrectFileLocationCheck" />
 		<check name="ReturnCharacterCheck" />
+		<check name="SlantedQuotesCheck">
+			<property name="enabled" value="false" />
+		</check>
 	</source-processor>
 	<source-processor name="BNDSourceProcessor">
 		<check name="BNDBundleCheck" />
@@ -74,6 +77,7 @@
 		<check name="GradleBodyCheck" />
 		<check name="GradleDependenciesCheck" />
 		<check name="GradleDependencyConfigurationCheck" />
+		<check name="GradleDependencyVersionCheck" />
 		<check name="GradleExportedPackageDependenciesCheck" />
 		<check name="GradleImportsCheck" />
 		<check name="GradleIndentationCheck" />
@@ -231,6 +235,7 @@
 		<check name="JavaUpgradeConnectionCheck">
 			<property name="enabled" value="false" />
 		</check>
+		<check name="JavaUpgradeVersionCheck" />
 		<check name="JavaVariableTypeCheck">
 			<property name="immutableFieldTypes" value="boolean,byte,char,double,float,int,long,short,Boolean,Byte,Character,Class,Double,Float,Int,Long,Number,Short,String" />
 		</check>
@@ -334,6 +339,7 @@
 		<check name="PropertiesLiferayPluginPackageFileCheck" />
 		<check name="PropertiesLiferayPluginPackageLiferayVersionsCheck" />
 		<check name="PropertiesLongLinesCheck" />
+		<check name="PropertiesModulesFileCheck" />
 		<check name="PropertiesPortalFileCheck" />
 		<check name="PropertiesPortletFileCheck" />
 		<check name="PropertiesSourceFormatterContentCheck" />
