@@ -23,8 +23,6 @@ import com.liferay.apio.architect.single.model.SingleModel;
 import java.util.List;
 import java.util.Optional;
 
-import javax.ws.rs.core.HttpHeaders;
-
 /**
  * Maps {@link Page} data to its representation in a JSON object. Instances of
  * this interface work like events. The {@code
@@ -34,13 +32,8 @@ import javax.ws.rs.core.HttpHeaders;
  * enable this, each method receives a {@link JSONObjectBuilder}.
  *
  * <p>
- * The methods {@link #onStart(JSONObjectBuilder, Object, HttpHeaders)} and
- * {@link #onFinish(JSONObjectBuilder, Object, HttpHeaders)} are called when the
- * writer starts and finishes the page, respectively. The methods {@link
- * #onStartItem(JSONObjectBuilder, JSONObjectBuilder, SingleModel, HttpHeaders)}
- * and {@link #onFinishItem(JSONObjectBuilder, JSONObjectBuilder, SingleModel,
- * HttpHeaders)} are called when the writer starts and finishes an item,
- * respectively. Otherwise, the page message mapper's methods aren't called in a
+ * The method {@link #onFinish} is called when the writer finishes writing the
+ * page. Otherwise, the page message mapper's methods aren't called in a
  * particular order.
  * </p>
  *
@@ -55,7 +48,8 @@ import javax.ws.rs.core.HttpHeaders;
  * @author Jorge Ferrer
  * @param  <T> the model's type
  */
-public interface PageMessageMapper<T> extends MessageMapper<Page<T>> {
+public interface PageMessageMapper<T>
+	extends MessageMapper<Page<T>>, OperationMapper {
 
 	/**
 	 * Returns the {@link SingleModelMessageMapper} used by the item methods.
@@ -96,6 +90,42 @@ public interface PageMessageMapper<T> extends MessageMapper<Page<T>> {
 	 */
 	public default void mapFirstPageURL(
 		JSONObjectBuilder jsonObjectBuilder, String url) {
+	}
+
+	/**
+	 * Maps a resource operation form's URL to its JSON object representation.
+	 *
+	 * @param jsonObjectBuilder the JSON object builder for the operation
+	 * @param url the operation form's URL
+	 */
+	@Override
+	public default void mapFormURL(
+		JSONObjectBuilder jsonObjectBuilder, String url) {
+
+		Optional<SingleModelMessageMapper<T>> optional =
+			getSingleModelMessageMapperOptional();
+
+		optional.ifPresent(
+			singleModelMessageMapper -> singleModelMessageMapper.mapFormURL(
+				jsonObjectBuilder, url));
+	}
+
+	/**
+	 * Maps a resource operation's method to its JSON object representation.
+	 *
+	 * @param jsonObjectBuilder the JSON object builder for the operation
+	 * @param httpMethod the operation's method
+	 */
+	@Override
+	public default void mapHTTPMethod(
+		JSONObjectBuilder jsonObjectBuilder, HTTPMethod httpMethod) {
+
+		Optional<SingleModelMessageMapper<T>> optional =
+			getSingleModelMessageMapperOptional();
+
+		optional.ifPresent(
+			singleModelMessageMapper -> singleModelMessageMapper.mapHTTPMethod(
+				jsonObjectBuilder, httpMethod));
 	}
 
 	/**
@@ -553,6 +583,18 @@ public interface PageMessageMapper<T> extends MessageMapper<Page<T>> {
 	}
 
 	/**
+	 * Maps the total number of elements in a nested collection to its JSON
+	 * object representation.
+	 *
+	 * @param jsonObjectBuilder the JSON object builder for the nested
+	 *        collection
+	 * @param totalCount the total number of elements in the collection
+	 */
+	public default void mapNestedPageItemTotalCount(
+		JSONObjectBuilder jsonObjectBuilder, int totalCount) {
+	}
+
+	/**
 	 * Maps the next page's URL to its JSON object representation.
 	 *
 	 * @param jsonObjectBuilder the JSON object builder for the page
@@ -560,49 +602,6 @@ public interface PageMessageMapper<T> extends MessageMapper<Page<T>> {
 	 */
 	public default void mapNextPageURL(
 		JSONObjectBuilder jsonObjectBuilder, String url) {
-	}
-
-	/**
-	 * Maps a resource operation form's URL to its JSON object representation.
-	 *
-	 * @param pageJSONObjectBuilder the JSON object builder for the page
-	 * @param operationJSONObjectBuilder the JSON object builder for the
-	 *        operation
-	 * @param url the operation form's URL
-	 */
-	public default void mapOperationFormURL(
-		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder operationJSONObjectBuilder, String url) {
-
-		Optional<SingleModelMessageMapper<T>> optional =
-			getSingleModelMessageMapperOptional();
-
-		optional.ifPresent(
-			singleModelMessageMapper ->
-				singleModelMessageMapper.mapOperationFormURL(
-					pageJSONObjectBuilder, operationJSONObjectBuilder, url));
-	}
-
-	/**
-	 * Maps a resource operation's method to its JSON object representation.
-	 *
-	 * @param pageJSONObjectBuilder the JSON object builder for the page
-	 * @param operationJSONObjectBuilder the JSON object builder for the
-	 *        operation
-	 * @param httpMethod the operation's method
-	 */
-	public default void mapOperationMethod(
-		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder operationJSONObjectBuilder, HTTPMethod httpMethod) {
-
-		Optional<SingleModelMessageMapper<T>> optional =
-			getSingleModelMessageMapperOptional();
-
-		optional.ifPresent(
-			singleModelMessageMapper ->
-				singleModelMessageMapper.mapOperationMethod(
-					pageJSONObjectBuilder, operationJSONObjectBuilder,
-					httpMethod));
 	}
 
 	/**
@@ -626,79 +625,71 @@ public interface PageMessageMapper<T> extends MessageMapper<Page<T>> {
 	}
 
 	/**
+	 * Finishes the operation. This is the final operation-mapper method the
+	 * writer calls.
+	 *
+	 * @param resourceJSONObjectBuilder the JSON object builder for the page
+	 * @param operationJSONObjectBuilder the JSON object builder for the
+	 *        operation
+	 * @param operation the operation
+	 */
+	@Override
+	public default void onFinish(
+		JSONObjectBuilder resourceJSONObjectBuilder,
+		JSONObjectBuilder operationJSONObjectBuilder, Operation operation) {
+
+		Optional<SingleModelMessageMapper<T>> optional =
+			getSingleModelMessageMapperOptional();
+
+		optional.ifPresent(
+			singleModelMessageMapper -> singleModelMessageMapper.onFinish(
+				resourceJSONObjectBuilder, operationJSONObjectBuilder,
+				operation));
+	}
+
+	/**
 	 * Finishes the item. This is the final page message mapper method the
 	 * writer calls for the item.
 	 *
 	 * @param pageJSONObjectBuilder the JSON object builder for the page
 	 * @param itemJSONObjectBuilder the JSON object builder for the item
 	 * @param singleModel the single model
-	 * @param httpHeaders the current request's HTTP headers
 	 */
 	public default void onFinishItem(
 		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder, SingleModel<T> singleModel,
-		HttpHeaders httpHeaders) {
+		JSONObjectBuilder itemJSONObjectBuilder, SingleModel<T> singleModel) {
 	}
 
 	/**
-	 * Finishes the operation. This is the final operation-mapper method the
-	 * writer calls.
+	 * Finishes a nested collection. This is the final nested-collection-mapper
+	 * method the writer calls.
 	 *
-	 * @param pageJSONObjectBuilder the JSON object builder for the page
-	 * @param operationJSONObjectBuilder the JSON object builder for the
-	 *        operation
-	 * @param operation the operation
+	 * @param singleModelJSONObjectBuilder the JSON object builder for the root
+	 *        model
+	 * @param collectionJsonObjectBuilder the JSON object builder for the
+	 *        collection
+	 * @param fieldName the collection's field name
+	 * @param list the collection
+	 * @param embeddedPathElements the current resource's embedded path elements
 	 */
-	public default void onFinishOperation(
-		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder operationJSONObjectBuilder, Operation operation) {
-
-		Optional<SingleModelMessageMapper<T>> optional =
-			getSingleModelMessageMapperOptional();
-
-		optional.ifPresent(
-			singleModelMessageMapper ->
-				singleModelMessageMapper.onFinishOperation(
-					pageJSONObjectBuilder, operationJSONObjectBuilder,
-					operation));
+	public default void onFinishNestedCollection(
+		JSONObjectBuilder singleModelJSONObjectBuilder,
+		JSONObjectBuilder collectionJsonObjectBuilder, String fieldName,
+		List<?> list, FunctionalList<String> embeddedPathElements) {
 	}
 
 	/**
-	 * Starts the item. This is the first page message mapper method the writer
-	 * calls for the item.
+	 * Finishes a nested collection item. This is the final
+	 * nested-collection-item-mapper method the writer calls.
 	 *
-	 * @param pageJSONObjectBuilder the JSON object builder for the page
+	 * @param collectionJsonObjectBuilder the JSON object builder for the
+	 *        collection
 	 * @param itemJSONObjectBuilder the JSON object builder for the item
 	 * @param singleModel the single model
-	 * @param httpHeaders the current request's HTTP headers
 	 */
-	public default void onStartItem(
-		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder, SingleModel<T> singleModel,
-		HttpHeaders httpHeaders) {
-	}
-
-	/**
-	 * Starts an operation. This is the first operation-mapper method the writer
-	 * calls.
-	 *
-	 * @param pageJSONObjectBuilder the JSON object builder for the page
-	 * @param operationJSONObjectBuilder the JSON object builder for the
-	 *        operation
-	 * @param operation the operation
-	 */
-	public default void onStartOperation(
-		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder operationJSONObjectBuilder, Operation operation) {
-
-		Optional<SingleModelMessageMapper<T>> optional =
-			getSingleModelMessageMapperOptional();
-
-		optional.ifPresent(
-			singleModelMessageMapper ->
-				singleModelMessageMapper.onStartOperation(
-					pageJSONObjectBuilder, operationJSONObjectBuilder,
-					operation));
+	public default void onFinishNestedCollectionItem(
+		JSONObjectBuilder collectionJsonObjectBuilder,
+		JSONObjectBuilder itemJSONObjectBuilder, SingleModel<?> singleModel) {
 	}
 
 }

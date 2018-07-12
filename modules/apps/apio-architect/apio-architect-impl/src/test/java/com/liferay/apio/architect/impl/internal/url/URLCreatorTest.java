@@ -14,6 +14,14 @@
 
 package com.liferay.apio.architect.impl.internal.url;
 
+import static com.liferay.apio.architect.impl.internal.url.URLCreator.createAbsoluteURL;
+import static com.liferay.apio.architect.impl.internal.url.URLCreator.createBinaryURL;
+import static com.liferay.apio.architect.impl.internal.url.URLCreator.createCollectionPageURL;
+import static com.liferay.apio.architect.impl.internal.url.URLCreator.createCollectionURL;
+import static com.liferay.apio.architect.impl.internal.url.URLCreator.createNestedCollectionURL;
+import static com.liferay.apio.architect.impl.internal.url.URLCreator.createSingleURL;
+import static com.liferay.apio.architect.impl.internal.url.URLCreator.getPath;
+
 import static java.util.Collections.emptyList;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -57,14 +65,14 @@ public class URLCreatorTest {
 
 	@Test
 	public void testCreateAbsoluteURL() {
-		String url = URLCreator.createAbsoluteURL(_serverURL, "/relative/url");
+		String url = createAbsoluteURL(_applicationURL, "/relative/url");
 
 		assertThat(url, is("www.liferay.com/relative/url"));
 	}
 
 	@Test
 	public void testCreateAbsoluteURLWithNullReturnsNull() {
-		String url = URLCreator.createAbsoluteURL(_serverURL, null);
+		String url = createAbsoluteURL(_applicationURL, null);
 
 		assertThat(url, is(nullValue()));
 	}
@@ -73,7 +81,7 @@ public class URLCreatorTest {
 	public void testCreateBinaryURL() {
 		String binaryId = "binary";
 
-		String url = URLCreator.createBinaryURL(_serverURL, binaryId, _path);
+		String url = createBinaryURL(_applicationURL, binaryId, _path);
 
 		assertThat(url, is("www.liferay.com/b/name/id/binary"));
 	}
@@ -98,7 +106,7 @@ public class URLCreatorTest {
 
 		Page page = new PageImpl<>("", pageItems, pagination, null);
 
-		String firstPageURL = URLCreator.createCollectionPageURL(
+		String firstPageURL = createCollectionPageURL(
 			"www.liferay.com", page, PageType.FIRST);
 
 		assertThat(firstPageURL, is("www.liferay.com?page=1&per_page=30"));
@@ -106,36 +114,36 @@ public class URLCreatorTest {
 
 	@Test
 	public void testCreateCollectionURL() {
-		String url = URLCreator.createCollectionURL(_serverURL, "resource");
+		String url = createCollectionURL(_applicationURL, "resource");
 
 		assertThat(url, is("www.liferay.com/p/resource"));
 	}
 
 	@Test
 	public void testCreateNestedCollectionURL() {
-		String url = URLCreator.createNestedCollectionURL(
-			_serverURL, _path, "related");
+		String url = createNestedCollectionURL(
+			_applicationURL, _path, "related");
 
 		assertThat(url, is("www.liferay.com/p/name/id/related"));
 	}
 
 	@Test
 	public void testCreateSingleURL() {
-		String url = URLCreator.createSingleURL(_serverURL, _path);
+		String url = createSingleURL(_applicationURL, _path);
 
 		assertThat(url, is("www.liferay.com/p/name/id"));
 	}
 
 	@Test
 	public void testExtractsPathFromSingleURL() {
-		Path path = URLCreator.getPath("www.liferay.com/p/name/id");
+		Path path = getPath("www.liferay.com/p/name/id");
 
 		assertThat(path, is(notNullValue()));
 		assertThat(path.getName(), is("name"));
 		assertThat(path.getId(), is("id"));
 	}
 
+	private final ApplicationURL _applicationURL = () -> "www.liferay.com";
 	private final Path _path = new Path("name", "id");
-	private final ServerURL _serverURL = () -> "www.liferay.com";
 
 }
