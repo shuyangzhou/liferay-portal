@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Source Formatter
 Bundle-SymbolicName: com.liferay.source.formatter
-Bundle-Version: 1.0.674
+Bundle-Version: 1.0.676
 Import-Package:\
 	!javax.portlet,\
 	\
@@ -13,6 +13,7 @@ Import-Package:\
 Main-Class: com.liferay.source.formatter.SourceFormatter
 -includeresource:\
 	@biz.aQute.bndlib-[0-9]*.jar!/aQute/bnd/osgi/Constants.class,\
+	@biz.aQute.bndlib-[0-9]*.jar!/aQute/bnd/version/Version.class,\
 	@com.liferay.petra.concurrent-[0-9]*.jar!/com/liferay/petra/concurrent/ConcurrentMapperHashMap.class,\
 	@com.liferay.petra.concurrent-[0-9]*.jar!/com/liferay/petra/concurrent/ConcurrentReferenceKeyHashMap.class,\
 	@com.liferay.petra.concurrent-[0-9]*.jar!/com/liferay/petra/concurrent/ConcurrentReferenceKeyHashMap$*.class,\
