@@ -27,13 +27,11 @@ import java.net.UnknownHostException;
 
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.jar.Manifest;
 
 import javax.management.MBeanServerConnection;
 import javax.management.openmbean.CompositeData;
-import javax.management.openmbean.TabularData;
 
 import org.jboss.arquillian.container.spi.client.container.DeploymentException;
 import org.jboss.arquillian.container.spi.client.protocol.metadata.HTTPContext;

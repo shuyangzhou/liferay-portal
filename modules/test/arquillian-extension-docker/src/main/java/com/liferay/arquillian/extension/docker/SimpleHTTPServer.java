@@ -90,6 +90,7 @@ public class SimpleHTTPServer {
 	 */
 	public void shutdown() {
 		_running = false;
+
 		try {
 			_serverSocket.close();
 		}
