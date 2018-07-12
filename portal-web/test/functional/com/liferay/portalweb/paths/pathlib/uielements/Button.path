@@ -164,11 +164,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>BROWSE</td>
-	<td>//fieldset[contains(@class,'fieldset')]</td>
-	<td></td>
-</tr>
-<tr>
 	<td>BROWSE_IMAGE</td>
 	<td>//button[contains(@class,'browse-image')]</td>
 	<td></td>
@@ -566,11 +561,6 @@
 <tr>
 	<td>PUBLISH_LOCALIZED</td>
 	<td>//button[contains(@id,'publishButton')]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>RECYCLE_BIN</td>
-	<td>//a[@data-qa-id='recycle-binButton']</td>
 	<td></td>
 </tr>
 <tr>
