@@ -81,7 +81,7 @@ public class SimpleHTTPServer {
 		}
 		catch (MalformedURLException murle) {
 			throw new IllegalStateException(
-				"HTTP url could not be parsed.", murle);
+				"HTTP url could not be parsed", murle);
 		}
 	}
 
