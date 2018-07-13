@@ -335,7 +335,7 @@ svn://svn.liferay.com/repos/public/alloy/trunk/sandbox/taglibs.
 
 		<gradle-execute dir="../modules" task="buildService">
 			<arg value="-DbuildService.skipReadOnly=${build.services.skip.read.only}" />
-			<arg value="-Pcom.liferay.portal.tools.service.builder.ignore.local=true" />
+			<arg value="-Pcom.liferay.portal.tools.service.builder.ignore.local=false" />
 		</gradle-execute>
 	</target>
 
@@ -777,7 +777,7 @@ This target does not format .es.js files. Please run the following command from 
 
 	<target name="format-source-bnd">
 		<antcall target="format-source-all">
-			<param name="source.file.extensions" value="bnd,gradle" />
+			<param name="source.file.extensions" value="bnd,gradle,properties" />
 		</antcall>
 	</target>
 

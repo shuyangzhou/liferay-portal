@@ -14,6 +14,8 @@
 
 package com.liferay.source.formatter;
 
+import java.io.IOException;
+
 import java.util.List;
 
 /**
@@ -22,31 +24,36 @@ import java.util.List;
 public class PropertiesSourceProcessor extends BaseSourceProcessor {
 
 	@Override
-	protected List<String> doGetFileNames() throws Exception {
+	protected List<String> doGetFileNames() throws IOException {
 		return getFileNames(new String[] {"**/docroot/dtd/**"}, getIncludes());
 	}
 
 	@Override
 	protected String[] doGetIncludes() {
-		if (isPortalSource() || isSubrepository()) {
+		if (isPortalSource()) {
+			return new String[] {"**/*.properties"};
+		}
+		else if (isSubrepository()) {
 			return new String[] {
 				"**/app-server.properties", "**/build.properties",
 				"**/ci.properties", "**/lib/*/dependencies.properties",
 				"**/framework.properties", "**/gradle-wrapper.properties",
 				"**/imported-files.properties",
 				"**/content/Language*.properties",
-				"**/liferay-plugin-package*.properties", "**/portal.properties",
+				"**/liferay-plugin-package*.properties",
+				"**/modules/modules.properties", "**/portal.properties",
 				"**/portal-ext.properties", "**/portal-legacy-*.properties",
 				"**/portlet.properties", "**/service.properties",
 				"**/source-formatter.properties", "**/test.properties"
 			};
 		}
-
-		return new String[] {
-			"**/liferay-plugin-package.properties", "**/portal.properties",
-			"**/portal-ext.properties", "**/portlet.properties",
-			"**/service.properties", "**/source-formatter.properties"
-		};
+		else {
+			return new String[] {
+				"**/liferay-plugin-package.properties", "**/portal.properties",
+				"**/portal-ext.properties", "**/portlet.properties",
+				"**/service.properties", "**/source-formatter.properties"
+			};
+		}
 	}
 
 }
