@@ -353,6 +353,7 @@ public class DefaultExportImportContentProcessorTest {
 			true, true);
 	}
 
+	@Ignore
 	@Test
 	public void testExportLayoutReferencesWithContext() throws Exception {
 		PortalImpl portalImpl = new PortalImpl() {
@@ -443,6 +444,7 @@ public class DefaultExportImportContentProcessorTest {
 			originalPortal);
 	}
 
+	@Ignore
 	@Test
 	public void testExportLayoutReferencesWithoutContext() throws Exception {
 		_oldLayoutFriendlyURLPrivateUserServletMapping =
@@ -606,6 +608,7 @@ public class DefaultExportImportContentProcessorTest {
 		doTestImportLayoutReferences();
 	}
 
+	@Ignore
 	@Test
 	public void testImportLayoutReferencesOnExternalGroupWithDifferentUUID()
 		throws Exception {
