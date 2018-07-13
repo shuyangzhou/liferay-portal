@@ -1,17 +1,18 @@
 {
 	"@context": [
-		{"embedded2": {"@type": "@id"}},
-		{"linked1": {"@type": "@id"}},
-		{"linked2": {"@type": "@id"}},
-		{"relatedCollection1": {"@type": "@id"}},
-		{"relatedCollection2": {"@type": "@id"}},
-		{"@vocab": "http://schema.org/"},
+		{ "embedded2": { "@type": "@id" } },
+		{ "linked1": { "@type": "@id" } },
+		{ "linked2": { "@type": "@id" } },
+		{ "relatedCollection1": { "@type": "@id" } },
+		{ "relatedCollection2": { "@type": "@id" } },
+		{ "@vocab": "http://schema.org/" },
 		"https://www.w3.org/ns/hydra/core#"
 	],
-	"@id": "localhost/p/model/first",
+	"@id": "localhost/o/api/p/model/first",
 	"@type": ["Type 1", "Type 2"],
-	"binary1": "localhost/b/model/first/binary1",
-	"binary2": "localhost/b/model/first/binary2",
+	"applicationRelativeURL1": "localhost/o/api/first",
+	"binary1": "localhost/o/api/b/model/first/binary1",
+	"binary2": "localhost/o/api/b/model/first/binary2",
 	"boolean1": true,
 	"boolean2": false,
 	"booleanList1": [true, true, false, false],
@@ -20,37 +21,57 @@
 	"date2": "2017-04-03T18:36Z",
 	"embedded1": {
 		"@context": [
-			{"linked": {"@type": "@id"}},
-			{"relatedCollection": {"@type": "@id"}}
+			{ "linked": { "@type": "@id" } },
+			{ "relatedCollection": { "@type": "@id" } }
 		],
-		"@id": "localhost/p/first-inner-model/first",
+		"@id": "localhost/o/api/p/first-inner-model/first",
 		"@type": ["Type"],
-		"binary": "localhost/b/first-inner-model/first/binary",
+		"binary": "localhost/o/api/b/first-inner-model/first/binary",
 		"boolean": true,
 		"booleanList": [true, false],
 		"embedded": {
 			"@context": [
-				{"embedded": {"@type": "@id"}},
-				{"linked": {"@type": "@id"}},
-				{"relatedCollection": {"@type": "@id"}}
+				{ "embedded": { "@type": "@id" } },
+				{ "linked": { "@type": "@id" } },
+				{ "relatedCollection": { "@type": "@id" } }
 			],
-			"@id": "localhost/p/second-inner-model/first",
+			"@id": "localhost/o/api/p/second-inner-model/first",
 			"@type": ["Type"],
-			"binary": "localhost/b/second-inner-model/first/binary",
+			"binary": "localhost/o/api/b/second-inner-model/first/binary",
 			"boolean": false,
 			"booleanList": [true],
-			"embedded": "localhost/p/third-inner-model/first",
+			"embedded": "localhost/o/api/p/third-inner-model/first",
 			"link": "community.liferay.com",
-			"linked": "localhost/p/third-inner-model/second",
+			"linked": "localhost/o/api/p/third-inner-model/second",
 			"number": 2017,
 			"numberList": [1],
-			"relatedCollection": "localhost/p/second-inner-model/first/models",
+			"relatedCollection": "localhost/o/api/p/second-inner-model/first/models",
 			"string": "A string",
 			"stringList": ["a"]
 		},
 		"link": "www.liferay.com",
-		"linked": "localhost/p/second-inner-model/second",
+		"linked": "localhost/o/api/p/second-inner-model/second",
 		"localizedString": "Translated",
+		"nestedList": {
+			"@type": [
+				"Collection"
+			],
+			"member": [
+				{
+					"@type": ["Type 7"],
+					"number1": 2018,
+					"string1": "id 1",
+					"string2": "string3"
+				},
+				{
+					"@type": ["Type 7"],
+					"number1": 2018,
+					"string1": "id 2",
+					"string2": "string3"
+				}
+			],
+			"totalItems": 2
+		},
 		"number": 42,
 		"numberList": [1, 2],
 		"operation": [
@@ -60,15 +81,15 @@
 				"method": "DELETE"
 			}
 		],
-		"relatedCollection": "localhost/p/first-inner-model/first/models",
+		"relatedCollection": "localhost/o/api/p/first-inner-model/first/models",
 		"string": "A string",
 		"stringList": ["a", "b"]
 	},
-	"embedded2": "localhost/p/first-inner-model/second",
+	"embedded2": "localhost/o/api/p/first-inner-model/second",
 	"link1": "www.liferay.com",
 	"link2": "community.liferay.com",
-	"linked1": "localhost/p/first-inner-model/third",
-	"linked2": "localhost/p/first-inner-model/fourth",
+	"linked1": "localhost/o/api/p/first-inner-model/third",
+	"linked2": "localhost/o/api/p/first-inner-model/fourth",
 	"localizedString1": "Translated 1",
 	"localizedString2": "Translated 2",
 	"nested1": {
@@ -78,15 +99,35 @@
 		"string2": "string2"
 	},
 	"nested2": {
-		"@context": [{"linked3": {"@type": "@id"}}],
+		"@context": [ { "linked3": { "@type": "@id" } } ],
 		"@type": ["Type 4"],
-		"linked3": "localhost/p/third-inner-model/fifth",
+		"linked3": "localhost/o/api/p/third-inner-model/fifth",
 		"nested3": {
 			"@type": ["Type 5"],
 			"string1": "id 3"
 		},
 		"number1": 42,
 		"string1": "first"
+	},
+	"nestedList": {
+		"@type": [
+			"Collection"
+		],
+		"member": [
+			{
+				"@type": ["Type 6"],
+				"number1": 2017,
+				"string1": "id 1",
+				"string2": "string2"
+			},
+			{
+				"@type": ["Type 6"],
+				"number1": 2017,
+				"string1": "id 2",
+				"string2": "string2"
+			}
+		],
+		"totalItems": 2
 	},
 	"number1": 2017,
 	"number2": 42,
@@ -101,12 +142,12 @@
 		{
 			"@id": "_:update-operation",
 			"@type": "Operation",
-			"expects": "localhost/f/u/r",
+			"expects": "localhost/o/api/f/u/r",
 			"method": "PUT"
 		}
 	],
-	"relatedCollection1": "localhost/p/model/first/models",
-	"relatedCollection2": "localhost/p/model/first/models",
+	"relatedCollection1": "localhost/o/api/p/model/first/models",
+	"relatedCollection2": "localhost/o/api/p/model/first/models",
 	"relativeURL1": "localhost/first",
 	"relativeURL2": "localhost/second",
 	"string1": "Live long and prosper",

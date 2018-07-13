@@ -36,7 +36,7 @@ describe(
 					() => {
 						expect.assertions(1);
 
-						return register().catch(
+						return register().catch (
 							err => {
 								expect(err.message).toEqual('Invalid portlet ID');
 							}
@@ -396,7 +396,7 @@ describe(
 						const element = document.createElement('form');
 						const parameters = {};
 
-						return hubA.action(parameters, element, 'param3').catch(
+						return hubA.action(parameters, element, 'param3').catch (
 							err => {
 								expect(err.name).toEqual('TypeError');
 								expect(err.message).toEqual('Invalid argument type. Argument 3 is of type [object String]');
@@ -408,7 +408,7 @@ describe(
 				it(
 					'throws a TypeError if a single argument is null',
 					() => {
-						return hubA.action(null).catch(
+						return hubA.action(null).catch (
 							err => {
 								expect(err.name).toEqual('TypeError');
 								expect(err.message).toEqual('Invalid argument type. Argument 1 is of type [object Null]');
@@ -422,7 +422,7 @@ describe(
 					() => {
 						const parameters = {};
 
-						hubA.action(parameters, null).catch(
+						hubA.action(parameters, null).catch (
 							err => {
 								expect(err.name).toEqual('TypeError');
 								expect(err.message).toEqual('Invalid argument type. Argument 2 is of type [object Null]');
@@ -436,7 +436,7 @@ describe(
 					() => {
 						const element = document.createElement('form');
 
-						hubA.action(null, element).catch(
+						hubA.action(null, element).catch (
 							err => {
 								expect(err.name).toEqual('TypeError');
 								expect(err.message).toEqual('Invalid argument type. Argument 1 is of type [object Null]');
@@ -453,7 +453,7 @@ describe(
 							a: 'value'
 						};
 
-						hubA.action(parameters, element).catch(
+						hubA.action(parameters, element).catch (
 							err => {
 								expect(err.name).toEqual('TypeError');
 								expect(err.message).toEqual('a parameter is not an array');
@@ -468,7 +468,7 @@ describe(
 						const element = document.createElement('form');
 						const parameters = {};
 
-						hubA.action(parameters, 'Invalid').catch(
+						hubA.action(parameters, 'Invalid').catch (
 							err => {
 								expect(err.name).toEqual('TypeError');
 								expect(err.message).toEqual('Invalid argument type. Argument 2 is of type [object String]');
@@ -483,7 +483,7 @@ describe(
 						const element = document.createElement('form');
 						const parameters = {};
 
-						return hubA.action(element, element).catch(
+						return hubA.action(element, element).catch (
 							err => {
 								expect(err.name).toEqual('TypeError');
 								expect(err.message).toEqual('Too many [object HTMLFormElement] arguments: [object HTMLFormElement], [object HTMLFormElement]');
@@ -497,7 +497,7 @@ describe(
 					() => {
 						const parameters = {};
 
-						return hubA.action(parameters, parameters).catch(
+						return hubA.action(parameters, parameters).catch (
 							err => {
 								expect(err.name).toEqual('TypeError');
 								expect(err.message).toEqual('Too many parameters arguments');
@@ -538,7 +538,7 @@ describe(
 								hubA.action(parameters, element),
 								hubA.action(parameters, element)
 							]
-						).catch(
+						).catch (
 							err => {
 								expect(err.name).toEqual('AccessDeniedException');
 								expect(err.message).toEqual('Operation is already in progress');
@@ -557,7 +557,7 @@ describe(
 							param1: ['paramValue1']
 						};
 
-						return hubB.action(parameters, element).catch(
+						return hubB.action(parameters, element).catch (
 							err => {
 								global.fetch.mockRestore();
 
@@ -687,7 +687,7 @@ describe(
 
 						const fnA = () => hubA.action(parameters, element);
 
-						const fnB = () => hubB.action(parameters, element).catch(err => err);
+						const fnB = () => hubB.action(parameters, element).catch (err => err);
 
 						return Promise.all([fnA(), fnB()]).then(
 							values => {

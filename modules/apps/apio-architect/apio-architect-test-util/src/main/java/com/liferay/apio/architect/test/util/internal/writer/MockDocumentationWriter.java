@@ -16,16 +16,12 @@ package com.liferay.apio.architect.test.util.internal.writer;
 
 import static com.liferay.apio.architect.test.util.writer.MockWriterUtil.getRequestInfo;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
-import com.liferay.apio.architect.impl.internal.documentation.Documentation;
-import com.liferay.apio.architect.impl.internal.message.json.DocumentationMessageMapper;
-import com.liferay.apio.architect.impl.internal.request.RequestInfo;
-import com.liferay.apio.architect.impl.internal.routes.CollectionRoutesImpl;
-import com.liferay.apio.architect.impl.internal.routes.ItemRoutesImpl;
-import com.liferay.apio.architect.impl.internal.routes.NestedCollectionRoutesImpl;
-import com.liferay.apio.architect.impl.internal.writer.DocumentationWriter;
+import com.liferay.apio.architect.impl.documentation.Documentation;
+import com.liferay.apio.architect.impl.message.json.DocumentationMessageMapper;
+import com.liferay.apio.architect.impl.routes.CollectionRoutesImpl;
+import com.liferay.apio.architect.impl.routes.ItemRoutesImpl;
+import com.liferay.apio.architect.impl.routes.NestedCollectionRoutesImpl;
+import com.liferay.apio.architect.impl.writer.DocumentationWriter;
 import com.liferay.apio.architect.representor.Representor;
 import com.liferay.apio.architect.routes.CollectionRoutes;
 import com.liferay.apio.architect.routes.ItemRoutes;
@@ -36,8 +32,6 @@ import com.liferay.apio.architect.test.util.representor.MockRepresentorCreator;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
-
-import javax.ws.rs.core.HttpHeaders;
 
 /**
  * Provides methods that test {@link DocumentationMessageMapper} objects.
@@ -53,15 +47,13 @@ public class MockDocumentationWriter {
 	/**
 	 * Writes a {@link Documentation} object.
 	 *
-	 * @param httpHeaders the request's HTTP headers
-	 * @param documentationMessageMapper the {@code DocumentationMessageMapper}
-	 *        to use for writing the JSON object
+	 * @param  documentationMessageMapper the {@code DocumentationMessageMapper}
+	 *         to use for writing the JSON object
+	 * @return the {@code String} containing the JSON Object.
+	 * @review
 	 */
-	public static JsonObject write(
-		HttpHeaders httpHeaders,
+	public static String write(
 		DocumentationMessageMapper documentationMessageMapper) {
-
-		RequestInfo requestInfo = getRequestInfo(httpHeaders);
 
 		CollectionRoutes.Builder<String, Object> collectionBuilder =
 			new CollectionRoutesImpl.BuilderImpl<>(
@@ -109,11 +101,10 @@ public class MockDocumentationWriter {
 			).documentationMessageMapper(
 				documentationMessageMapper
 			).requestInfo(
-				requestInfo
+				getRequestInfo()
 			).build());
 
-		return new Gson().fromJson(
-			documentationWriter.write(), JsonObject.class);
+		return documentationWriter.write();
 	}
 
 	private MockDocumentationWriter() {

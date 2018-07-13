@@ -16,11 +16,26 @@ package com.liferay.journal.web.internal.portlet.action;
 
 import com.liferay.exportimport.changeset.Changeset;
 import com.liferay.exportimport.changeset.portlet.action.ExportImportChangesetMVCActionCommand;
+import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
+import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerRegistryUtil;
 import com.liferay.journal.constants.JournalPortletKeys;
+import com.liferay.journal.model.JournalArticle;
+import com.liferay.journal.model.JournalFolder;
+import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.service.JournalFolderLocalService;
+import com.liferay.journal.web.util.JournalUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.StagedModel;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -54,17 +69,104 @@ public class PublishFolderMVCActionCommand extends BaseMVCActionCommand {
 			() -> _journalFolderLocalService.fetchJournalFolder(folderId)
 		).addStagedModelHierarchy(
 			() -> _journalFolderLocalService.fetchJournalFolder(folderId),
-			folder -> _journalFolderLocalService.getFoldersAndArticles(
-				folder.getGroupId(), folder.getFolderId())
+			journalFolder -> _getFoldersAndArticles(journalFolder)
 		).build();
 
 		_exportImportChangesetMVCActionCommand.processPublishAction(
 			actionRequest, actionResponse, changeset);
 	}
 
+	private List<StagedModel> _getFoldersAndArticles(
+		JournalFolder journalFolder) {
+
+		if (journalFolder == null) {
+			return Collections.emptyList();
+		}
+
+		List<StagedModel> stagedModels = new ArrayList<>();
+
+		try {
+			List<Object> childObjects =
+				_journalFolderLocalService.getFoldersAndArticles(
+					journalFolder.getGroupId(), journalFolder.getFolderId());
+
+			for (Object childObject : childObjects) {
+				if (childObject instanceof JournalFolder) {
+					JournalFolder childJournalFolder =
+						(JournalFolder)childObject;
+
+					stagedModels.add(childJournalFolder);
+
+					stagedModels.addAll(
+						_getFoldersAndArticles(childJournalFolder));
+				}
+				else if (childObject instanceof JournalArticle) {
+					JournalArticle journalArticle = (JournalArticle)childObject;
+
+					boolean includeVersionHistory =
+						JournalUtil.isIncludeVersionHistory();
+
+					StagedModelDataHandler<JournalArticle>
+						stagedModelDataHandler = _getStagedModelDataHandler();
+
+					List<JournalArticle> journalArticles = new ArrayList<>();
+
+					if (includeVersionHistory) {
+						journalArticles.addAll(
+							_journalArticleLocalService.getArticles(
+								journalArticle.getGroupId(),
+								journalArticle.getArticleId()));
+					}
+					else {
+						journalArticles.add(
+							_journalArticleLocalService.getArticle(
+								journalArticle.getGroupId(),
+								journalArticle.getArticleId()));
+					}
+
+					for (JournalArticle curJournalArticle : journalArticles) {
+						if (ArrayUtil.contains(
+								stagedModelDataHandler.getExportableStatuses(),
+								curJournalArticle.getStatus())) {
+
+							stagedModels.add(curJournalArticle);
+						}
+					}
+				}
+				else {
+					stagedModels.add((StagedModel)childObject);
+				}
+			}
+		}
+		catch (PortalException pe) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Unable to get folders and articles for folder " +
+						journalFolder.getFolderId(),
+					pe);
+			}
+		}
+
+		return stagedModels;
+	}
+
+	private StagedModelDataHandler<JournalArticle>
+		_getStagedModelDataHandler() {
+
+		return (StagedModelDataHandler<JournalArticle>)
+			StagedModelDataHandlerRegistryUtil.getStagedModelDataHandler(
+				JournalArticle.class.getName());
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		PublishFolderMVCActionCommand.class);
+
 	@Reference
 	private ExportImportChangesetMVCActionCommand
 		_exportImportChangesetMVCActionCommand;
+
+	@Reference
+	private JournalArticleLocalService _journalArticleLocalService;
 
 	@Reference
 	private JournalFolderLocalService _journalFolderLocalService;
