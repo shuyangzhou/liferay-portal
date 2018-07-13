@@ -473,11 +473,18 @@ public class JournalFolderLocalServiceUtil {
 	}
 
 	/**
-	* @deprecated As of Judson, with no direct replacement
+	* @deprecated As of Judson (7.1.x), with no direct replacement
 	*/
 	@Deprecated
 	public static com.liferay.portal.kernel.service.SubscriptionLocalService getSubscriptionLocalService() {
 		return getService().getSubscriptionLocalService();
+	}
+
+	public static String getUniqueFolderName(String uuid, long groupId,
+		long parentFolderId, String name, int count) {
+		return getService()
+				   .getUniqueFolderName(uuid, groupId, parentFolderId, name,
+			count);
 	}
 
 	public static com.liferay.journal.model.JournalFolder moveFolder(
@@ -530,7 +537,7 @@ public class JournalFolderLocalServiceUtil {
 	}
 
 	/**
-	* @deprecated As of Judson, with no direct replacement
+	* @deprecated As of Judson (7.1.x), with no direct replacement
 	*/
 	@Deprecated
 	public static void setSubscriptionLocalService(

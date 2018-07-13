@@ -686,7 +686,7 @@ public class MBMessageLocalServiceWrapper implements MBMessageLocalService,
 	}
 
 	/**
-	* @deprecated As of Judson, with no direct replacement
+	* @deprecated As of Judson (7.1.x), with no direct replacement
 	*/
 	@Deprecated
 	@Override
@@ -718,12 +718,45 @@ public class MBMessageLocalServiceWrapper implements MBMessageLocalService,
 	}
 
 	@Override
+	public java.util.List<com.liferay.message.boards.model.MBMessage> getRootDiscussionMessages(
+		String className, long classPK, int status)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _mbMessageLocalService.getRootDiscussionMessages(className,
+			classPK, status);
+	}
+
+	@Override
+	public java.util.List<com.liferay.message.boards.model.MBMessage> getRootDiscussionMessages(
+		String className, long classPK, int status, int start, int end)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _mbMessageLocalService.getRootDiscussionMessages(className,
+			classPK, status, start, end);
+	}
+
+	@Override
+	public int getRootDiscussionMessagesCount(String className, long classPK,
+		int status) {
+		return _mbMessageLocalService.getRootDiscussionMessagesCount(className,
+			classPK, status);
+	}
+
+	/**
+	* @deprecated As of Judson (7.1.x), replaced by {@link #getRootDiscussionMessages(
+	String, long, int)}
+	*/
+	@Deprecated
+	@Override
 	public java.util.List<com.liferay.message.boards.model.MBMessage> getRootMessages(
 		String className, long classPK, int status)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _mbMessageLocalService.getRootMessages(className, classPK, status);
 	}
 
+	/**
+	* @deprecated As of Judson (7.1.x), replaced by {@link #getRootDiscussionMessages(
+	String, long, int, int, int)}
+	*/
+	@Deprecated
 	@Override
 	public java.util.List<com.liferay.message.boards.model.MBMessage> getRootMessages(
 		String className, long classPK, int status, int start, int end)
@@ -732,6 +765,11 @@ public class MBMessageLocalServiceWrapper implements MBMessageLocalService,
 			status, start, end);
 	}
 
+	/**
+	* @deprecated As of Judson (7.1.x), replaced by {@link
+	#getRootDiscussionMessagesCount(String, long, int)}
+	*/
+	@Deprecated
 	@Override
 	public int getRootMessagesCount(String className, long classPK, int status) {
 		return _mbMessageLocalService.getRootMessagesCount(className, classPK,
@@ -941,8 +979,8 @@ public class MBMessageLocalServiceWrapper implements MBMessageLocalService,
 	}
 
 	/**
-	* @deprecated As of Judson, replaced by {@link #updateMessage(long, long,
-	String, String, List, double, boolean, ServiceContext)}
+	* @deprecated As of Judson (7.1.x), replaced by {@link #updateMessage(long,
+	long, String, String, List, double, boolean, ServiceContext)}
 	*/
 	@Deprecated
 	@Override

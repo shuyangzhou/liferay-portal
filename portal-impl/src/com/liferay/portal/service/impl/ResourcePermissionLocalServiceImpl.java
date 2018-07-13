@@ -430,7 +430,7 @@ public class ResourcePermissionLocalServiceImpl
 	}
 
 	/**
-	 * @deprecated As of Wilberforce, replaced by {@link
+	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
 	 *             #getAvailableResourcePermissionActionIds(long, String, int,
 	 *             String, Collection)}
 	 */
@@ -840,8 +840,8 @@ public class ResourcePermissionLocalServiceImpl
 	}
 
 	/**
-	 * @deprecated As of Wilberforce, replaced by {@link #getRoles(long, String,
-	 *             int, String, String}
+	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link #getRoles(long,
+	 *             String, int, String, String}
 	 */
 	@Deprecated
 	@Override
@@ -1222,8 +1222,7 @@ public class ResourcePermissionLocalServiceImpl
 		}
 
 		if (resourcePermission == null) {
-			if (((operator == ResourcePermissionConstants.OPERATOR_ADD) ||
-				 (operator == ResourcePermissionConstants.OPERATOR_SET)) &&
+			if ((operator == ResourcePermissionConstants.OPERATOR_ADD) &&
 				(actionIds.length == 0)) {
 
 				return;
