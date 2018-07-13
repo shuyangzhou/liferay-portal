@@ -875,7 +875,8 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 					group.getGroupId());
 			}
 
-			if (groupPersistence.countByC_P_S(
+			if (!CompanyThreadLocal.isDeleteInProcess() &&
+				groupPersistence.countByC_P_S(
 					group.getCompanyId(), group.getGroupId(), true) > 0) {
 
 				throw new RequiredGroupException.MustNotDeleteGroupThatHasChild(
