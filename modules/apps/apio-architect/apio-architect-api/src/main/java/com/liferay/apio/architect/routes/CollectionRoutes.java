@@ -90,7 +90,7 @@ public interface CollectionRoutes<T, S> {
 		/**
 		 * Adds a route to a creator function that has one extra parameter.
 		 *
-		 * @param  throwableBiFunction the creator function
+		 * @param  creatorThrowableBiFunction the creator function
 		 * @param  aClass the class of the creator function's second parameter
 		 * @param  hasAddingPermissionFunction the permission function for this
 		 *         route
@@ -99,14 +99,15 @@ public interface CollectionRoutes<T, S> {
 		 * @return the updated builder
 		 */
 		public <A, R> Builder<T, S> addCreator(
-			ThrowableBiFunction<R, A, T> throwableBiFunction, Class<A> aClass,
+			ThrowableBiFunction<R, A, T> creatorThrowableBiFunction,
+			Class<A> aClass,
 			HasAddingPermissionFunction hasAddingPermissionFunction,
 			FormBuilderFunction<R> formBuilderFunction);
 
 		/**
 		 * Adds a route to a creator function that has no extra parameters.
 		 *
-		 * @param  throwableFunction the creator function
+		 * @param  creatorThrowableFunction the creator function
 		 * @param  hasAddingPermissionFunction the permission function for this
 		 *         route
 		 * @param  formBuilderFunction the function that creates the form for
@@ -114,14 +115,14 @@ public interface CollectionRoutes<T, S> {
 		 * @return the updated builder
 		 */
 		public <R> Builder<T, S> addCreator(
-			ThrowableFunction<R, T> throwableFunction,
+			ThrowableFunction<R, T> creatorThrowableFunction,
 			HasAddingPermissionFunction hasAddingPermissionFunction,
 			FormBuilderFunction<R> formBuilderFunction);
 
 		/**
 		 * Adds a route to a creator function that has four extra parameters.
 		 *
-		 * @param  throwablePentaFunction the creator function
+		 * @param  creatorThrowablePentaFunction the creator function
 		 * @param  aClass the class of the creator function's second parameter
 		 * @param  bClass the class of the creator function's third parameter
 		 * @param  cClass the class of the creator function's fourth parameter
@@ -133,7 +134,8 @@ public interface CollectionRoutes<T, S> {
 		 * @return the updated builder
 		 */
 		public <A, B, C, D, R> Builder<T, S> addCreator(
-			ThrowablePentaFunction<R, A, B, C, D, T> throwablePentaFunction,
+			ThrowablePentaFunction<R, A, B, C, D, T>
+				creatorThrowablePentaFunction,
 			Class<A> aClass, Class<B> bClass, Class<C> cClass, Class<D> dClass,
 			HasAddingPermissionFunction hasAddingPermissionFunction,
 			FormBuilderFunction<R> formBuilderFunction);
@@ -141,7 +143,7 @@ public interface CollectionRoutes<T, S> {
 		/**
 		 * Adds a route to a creator function that has three extra parameters.
 		 *
-		 * @param  throwableTetraFunction the creator function
+		 * @param  creatorThrowableTetraFunction the creator function
 		 * @param  aClass the class of the creator function's second parameter
 		 * @param  bClass the class of the creator function's third parameter
 		 * @param  cClass the class of the creator function's fourth parameter
@@ -152,7 +154,7 @@ public interface CollectionRoutes<T, S> {
 		 * @return the updated builder
 		 */
 		public <A, B, C, R> Builder<T, S> addCreator(
-			ThrowableTetraFunction<R, A, B, C, T> throwableTetraFunction,
+			ThrowableTetraFunction<R, A, B, C, T> creatorThrowableTetraFunction,
 			Class<A> aClass, Class<B> bClass, Class<C> cClass,
 			HasAddingPermissionFunction hasAddingPermissionFunction,
 			FormBuilderFunction<R> formBuilderFunction);
@@ -160,7 +162,7 @@ public interface CollectionRoutes<T, S> {
 		/**
 		 * Adds a route to a creator function that has two extra parameters.
 		 *
-		 * @param  throwableTriFunction the creator function
+		 * @param  creatorThrowableTriFunction the creator function
 		 * @param  aClass the class of the creator function's second parameter
 		 * @param  bClass the class of the creator function's third parameter
 		 * @param  hasAddingPermissionFunction the permission function for this
@@ -170,7 +172,7 @@ public interface CollectionRoutes<T, S> {
 		 * @return the updated builder
 		 */
 		public <A, B, R> Builder<T, S> addCreator(
-			ThrowableTriFunction<R, A, B, T> throwableTriFunction,
+			ThrowableTriFunction<R, A, B, T> creatorThrowableTriFunction,
 			Class<A> aClass, Class<B> bClass,
 			HasAddingPermissionFunction hasAddingPermissionFunction,
 			FormBuilderFunction<R> formBuilderFunction);
@@ -178,30 +180,33 @@ public interface CollectionRoutes<T, S> {
 		/**
 		 * Adds a route to a collection page function with one extra parameter.
 		 *
-		 * @param  throwableBiFunction the function that calculates the page
+		 * @param  getterThrowableBiFunction the function that calculates the
+		 *         page
 		 * @param  aClass the class of the page function's third parameter
 		 * @return the updated builder
 		 */
 		public <A> Builder<T, S> addGetter(
 			ThrowableBiFunction<Pagination, A, PageItems<T>>
-				throwableBiFunction,
+				getterThrowableBiFunction,
 			Class<A> aClass);
 
 		/**
 		 * Adds a route to a collection page function with none extra
 		 * parameters.
 		 *
-		 * @param  throwableFunction the function that calculates the page
+		 * @param  getterThrowableFunction the function that calculates the page
 		 * @return the updated builder
 		 */
 		public Builder<T, S> addGetter(
-			ThrowableFunction<Pagination, PageItems<T>> throwableFunction);
+			ThrowableFunction<Pagination, PageItems<T>>
+				getterThrowableFunction);
 
 		/**
 		 * Adds a route to a collection page function with four extra
 		 * parameters.
 		 *
-		 * @param  throwablePentaFunction the function that calculates the page
+		 * @param  getterThrowablePentaFunction the function that calculates the
+		 *         page
 		 * @param  aClass the class of the page function's second parameter
 		 * @param  bClass the class of the page function's third parameter
 		 * @param  cClass the class of the page function's fourth parameter
@@ -210,14 +215,15 @@ public interface CollectionRoutes<T, S> {
 		 */
 		public <A, B, C, D> Builder<T, S> addGetter(
 			ThrowablePentaFunction<Pagination, A, B, C, D, PageItems<T>>
-				throwablePentaFunction,
+				getterThrowablePentaFunction,
 			Class<A> aClass, Class<B> bClass, Class<C> cClass, Class<D> dClass);
 
 		/**
 		 * Adds a route to a collection page function with three extra
 		 * parameters.
 		 *
-		 * @param  throwableTetraFunction the function that calculates the page
+		 * @param  getterThrowableTetraFunction the function that calculates the
+		 *         page
 		 * @param  aClass the class of the page function's second parameter
 		 * @param  bClass the class of the page function's third parameter
 		 * @param  cClass the class of the page function's fourth parameter
@@ -225,20 +231,21 @@ public interface CollectionRoutes<T, S> {
 		 */
 		public <A, B, C> Builder<T, S> addGetter(
 			ThrowableTetraFunction<Pagination, A, B, C, PageItems<T>>
-				throwableTetraFunction,
+				getterThrowableTetraFunction,
 			Class<A> aClass, Class<B> bClass, Class<C> cClass);
 
 		/**
 		 * Adds a route to a collection page function with two extra parameters.
 		 *
-		 * @param  throwableTriFunction the function that calculates the page
+		 * @param  getterThrowableTriFunction the function that calculates the
+		 *         page
 		 * @param  aClass the class of the page function's second parameter
 		 * @param  bClass the class of the page function's third parameter
 		 * @return the updated builder
 		 */
 		public <A, B> Builder<T, S> addGetter(
 			ThrowableTriFunction<Pagination, A, B, PageItems<T>>
-				throwableTriFunction,
+				getterThrowableTriFunction,
 			Class<A> aClass, Class<B> bClass);
 
 		/**
