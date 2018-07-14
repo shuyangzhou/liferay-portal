@@ -21,7 +21,6 @@ import com.liferay.arquillian.extension.junit.bridge.deployment.NoOpArchiveAppli
 import com.liferay.arquillian.extension.junit.bridge.observer.JUnitBridgeObserver;
 import com.liferay.arquillian.extension.junit.bridge.remote.bundleclasspath.BundleClassPathAuxiliaryAppender;
 import com.liferay.arquillian.extension.junit.bridge.remote.commandservice.CommandServiceAuxiliaryAppender;
-import com.liferay.arquillian.extension.junit.bridge.remote.instanceproducer.OSGiAllInBundleInstanceProducer;
 import com.liferay.arquillian.extension.junit.bridge.remote.processor.OSGiAllInProcessor;
 
 import java.net.URL;
@@ -70,7 +69,6 @@ public class LiferayArquillianJUnitBridgeExtension
 			extensionBuilder.service(
 				AuxiliaryArchiveAppender.class,
 				CommandServiceAuxiliaryAppender.class);
-			extensionBuilder.observer(OSGiAllInBundleInstanceProducer.class);
 			extensionBuilder.service(
 				CommandService.class, JMXCommandService.class);
 		}
