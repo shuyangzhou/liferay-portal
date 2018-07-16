@@ -172,18 +172,20 @@ public class ResourcePermissionLocalServiceImpl
 			String[] ownerPermissions = ownerActionIds.toArray(
 				new String[ownerActionIds.size()]);
 
-			setOwnerResourcePermissions(
+			doUpdateResourcePermission(
 				companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey,
-				ownerRole.getRoleId(), userId, ownerPermissions);
+				userId, ownerRole.getRoleId(), ownerPermissions,
+				ResourcePermissionConstants.OPERATOR_SET, true);
 
 			if (modelPermissions != null) {
 				for (String roleName : modelPermissions.getRoleNames()) {
 					Role role = getRole(companyId, groupId, roleName);
 
-					setResourcePermissions(
+					doUpdateResourcePermission(
 						companyId, name, ResourceConstants.SCOPE_INDIVIDUAL,
-						primKey, role.getRoleId(),
-						modelPermissions.getActionIds(roleName));
+						primKey, 0, role.getRoleId(),
+						modelPermissions.getActionIds(roleName),
+						ResourcePermissionConstants.OPERATOR_SET, true);
 				}
 			}
 		}
