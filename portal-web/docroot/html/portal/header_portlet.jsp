@@ -19,23 +19,7 @@
 <%
 Portlet portlet = (Portlet)request.getAttribute(WebKeys.RENDER_PORTLET);
 
-InvokerPortlet invokerPortlet = null;
-
-try {
-	if (portlet.isReady()) {
-		invokerPortlet = PortletInstanceFactoryUtil.create(portlet, application);
-	}
-}
-catch (PortletException pe) {
-	pe.printStackTrace();
-}
-catch (RuntimeException re) {
-	re.printStackTrace();
-}
-
-if ((invokerPortlet == null) || !invokerPortlet.isHeaderPortlet()) {
-	return;
-}
+InvokerPortlet invokerPortlet = (InvokerPortlet)request.getAttribute(WebKeys.HEADER_INVOKER_PORTLET);
 
 String portletId = portlet.getPortletId();
 String rootPortletId = portlet.getRootPortletId();
