@@ -65,6 +65,23 @@ import java.rmi.RemoteException;
  */
 @ProviderType
 public class DDMFormInstanceRecordVersionServiceSoap {
+	public static com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecordVersionSoap fetchLatestFormInstanceRecordVersion(
+		long userId, long formInstanceId, String formInstanceVersion, int status)
+		throws RemoteException {
+		try {
+			com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecordVersion returnValue =
+				DDMFormInstanceRecordVersionServiceUtil.fetchLatestFormInstanceRecordVersion(userId,
+					formInstanceId, formInstanceVersion, status);
+
+			return com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecordVersionSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
 	public static com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecordVersionSoap getFormInstanceRecordVersion(
 		long ddmFormInstanceRecordVersionId) throws RemoteException {
 		try {

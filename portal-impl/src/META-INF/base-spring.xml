@@ -50,8 +50,11 @@
 		<property name="methodInterceptor" ref="serviceAdvice" />
 	</bean>
 	<bean class="com.liferay.portal.spring.aop.DynamicProxyCreator" factory-method="getDynamicProxyCreator" />
-	<bean class="com.liferay.portal.spring.aop.RetryAdvice" id="retryAdvice">
+	<bean class="com.liferay.portal.spring.aop.MethodReturnedObjectSynchronizerManager" factory-method="getMethodReturnedObjectSynchronizerAdvice" id="methodReturnedObjectAdvice">
 		<property name="nextMethodInterceptor" ref="transactionAdvice" />
+	</bean>
+	<bean class="com.liferay.portal.spring.aop.RetryAdvice" id="retryAdvice">
+		<property name="nextMethodInterceptor" ref="methodReturnedObjectAdvice" />
 	</bean>
 	<bean class="com.liferay.portal.spring.aop.ServiceBeanAutoProxyCreator">
 		<property name="beanMatcher">

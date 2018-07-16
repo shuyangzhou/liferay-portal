@@ -8,6 +8,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd"
 >
+	<bean class="com.liferay.portal.dao.orm.hibernate.MVCCReturnedObjectSynchronizer" id="mvccUpdatedSynchronizer" />
+	<bean class="com.liferay.portal.dao.orm.hibernate.MVCCReturnedOneLevelWrapperSynchronizer" id="mvccUpdatedOneLevelWrapperSynchronizer" />
 	<bean class="com.liferay.portal.dao.orm.hibernate.SessionFactoryImpl" id="counterSessionFactory">
 		<property name="sessionFactoryClassLoader" value="#{T(com.liferay.portal.kernel.util.PortalClassLoaderUtil).classLoader}" />
 		<property name="sessionFactoryImplementor" ref="counterHibernateSessionFactory" />
