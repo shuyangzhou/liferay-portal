@@ -18,7 +18,6 @@ import aQute.bnd.osgi.Jar;
 
 import com.liferay.arquillian.extension.junit.bridge.remote.activator.ArquillianBundleActivator;
 import com.liferay.arquillian.extension.junit.bridge.remote.processor.service.BundleActivatorsManager;
-import com.liferay.arquillian.extension.junit.bridge.remote.processor.service.ManifestManager;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -89,9 +88,7 @@ public class OSGiAllInProcessor implements ApplicationArchiveProcessor {
 
 			_cleanRepeatedImports(javaArchive, auxiliaryArchives);
 
-			ManifestManager manifestManager = _manifestManagerInstance.get();
-
-			Manifest manifest = manifestManager.getManifest(javaArchive);
+			Manifest manifest = _getManifest(javaArchive);
 
 			Attributes mainAttributes = manifest.getMainAttributes();
 
@@ -105,7 +102,7 @@ public class OSGiAllInProcessor implements ApplicationArchiveProcessor {
 				bundleActivatorName,
 				ArquillianBundleActivator.class.getCanonicalName());
 
-			manifestManager.replaceManifest(javaArchive, manifest);
+			_replaceManifest(javaArchive, manifest);
 
 			javaArchive.addClass(ArquillianBundleActivator.class);
 
@@ -150,13 +147,10 @@ public class OSGiAllInProcessor implements ApplicationArchiveProcessor {
 			"org.osgi.service.startlevel", "org.osgi.util.tracker"
 		};
 
-		ManifestManager manifestManager = _manifestManagerInstance.get();
+		Manifest manifest = _putAttributeValue(
+			_getManifest(javaArchive), "Import-Package", extensionsImports);
 
-		Manifest manifest = manifestManager.putAttributeValue(
-			manifestManager.getManifest(javaArchive), "Import-Package",
-			extensionsImports);
-
-		manifestManager.replaceManifest(javaArchive, manifest);
+		_replaceManifest(javaArchive, manifest);
 	}
 
 	private void _addTestClass(JavaArchive javaArchive, TestClass testClass)
@@ -351,18 +345,15 @@ public class OSGiAllInProcessor implements ApplicationArchiveProcessor {
 
 			javaArchive.addAsResource(byteArrayAsset, path);
 
-			ManifestManager manifestManager = _manifestManagerInstance.get();
+			Manifest manifest = _putAttributeValue(
+				_getManifest(javaArchive), "Bundle-ClassPath", ".", path);
 
-			Manifest manifest = manifestManager.putAttributeValue(
-				manifestManager.getManifest(javaArchive), "Bundle-ClassPath",
-				".", path);
-
-			manifestManager.replaceManifest(javaArchive, manifest);
+			_replaceManifest(javaArchive, manifest);
 
 			try {
 				_validateBundleArchive(auxiliaryArchive);
 
-				Manifest auxiliaryArchiveManifest = manifestManager.getManifest(
+				Manifest auxiliaryArchiveManifest = _getManifest(
 					(JavaArchive)auxiliaryArchive);
 
 				Attributes mainAttributes =
@@ -373,10 +364,10 @@ public class OSGiAllInProcessor implements ApplicationArchiveProcessor {
 				if (value != null) {
 					String[] importValues = value.split(",");
 
-					manifest = manifestManager.putAttributeValue(
+					manifest = _putAttributeValue(
 						manifest, "Import-Package", importValues);
 
-					manifestManager.replaceManifest(javaArchive, manifest);
+					_replaceManifest(javaArchive, manifest);
 				}
 
 				String bundleActivatorValue = mainAttributes.getValue(
@@ -532,9 +523,6 @@ public class OSGiAllInProcessor implements ApplicationArchiveProcessor {
 
 	@Inject
 	private Instance<BundleActivatorsManager> _bundleActivatorsManagerInstance;
-
-	@Inject
-	private Instance<ManifestManager> _manifestManagerInstance;
 
 	@Inject
 	private Instance<ServiceLoader> _serviceLoaderInstance;

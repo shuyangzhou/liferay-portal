@@ -25,8 +25,6 @@ import com.liferay.arquillian.extension.junit.bridge.remote.instanceproducer.OSG
 import com.liferay.arquillian.extension.junit.bridge.remote.processor.OSGiAllInProcessor;
 import com.liferay.arquillian.extension.junit.bridge.remote.processor.service.BundleActivatorsManager;
 import com.liferay.arquillian.extension.junit.bridge.remote.processor.service.BundleActivatorsManagerImpl;
-import com.liferay.arquillian.extension.junit.bridge.remote.processor.service.ManifestManager;
-import com.liferay.arquillian.extension.junit.bridge.remote.processor.service.ManifestManagerImpl;
 
 import java.net.URL;
 
@@ -74,8 +72,6 @@ public class LiferayArquillianJUnitBridgeExtension
 			extensionBuilder.service(
 				AuxiliaryArchiveAppender.class,
 				CommandServiceAuxiliaryAppender.class);
-			extensionBuilder.service(
-				ManifestManager.class, ManifestManagerImpl.class);
 			extensionBuilder.service(
 				BundleActivatorsManager.class,
 				BundleActivatorsManagerImpl.class);

@@ -15,7 +15,6 @@
 package com.liferay.arquillian.extension.junit.bridge.remote.instanceproducer;
 
 import com.liferay.arquillian.extension.junit.bridge.remote.processor.service.BundleActivatorsManager;
-import com.liferay.arquillian.extension.junit.bridge.remote.processor.service.ManifestManager;
 
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.core.api.Instance;
@@ -35,9 +34,6 @@ public class OSGiAllInBundleInstanceProducer {
 
 		ServiceLoader serviceLoader = _serviceLoaderInstance.get();
 
-		_manifestManagerInstanceProducer.set(
-			serviceLoader.onlyOne(ManifestManager.class));
-
 		_bundleActivatorsManagerInstanceProducer.set(
 			serviceLoader.onlyOne(BundleActivatorsManager.class));
 	}
@@ -46,10 +42,6 @@ public class OSGiAllInBundleInstanceProducer {
 	@Inject
 	private InstanceProducer<BundleActivatorsManager>
 		_bundleActivatorsManagerInstanceProducer;
-
-	@ApplicationScoped
-	@Inject
-	private InstanceProducer<ManifestManager> _manifestManagerInstanceProducer;
 
 	@Inject
 	private Instance<ServiceLoader> _serviceLoaderInstance;
