@@ -23,8 +23,6 @@ import com.liferay.arquillian.extension.junit.bridge.remote.bundleclasspath.Bund
 import com.liferay.arquillian.extension.junit.bridge.remote.commandservice.CommandServiceAuxiliaryAppender;
 import com.liferay.arquillian.extension.junit.bridge.remote.instanceproducer.OSGiAllInBundleInstanceProducer;
 import com.liferay.arquillian.extension.junit.bridge.remote.processor.OSGiAllInProcessor;
-import com.liferay.arquillian.extension.junit.bridge.remote.processor.service.BundleActivatorsManager;
-import com.liferay.arquillian.extension.junit.bridge.remote.processor.service.BundleActivatorsManagerImpl;
 
 import java.net.URL;
 
@@ -72,9 +70,6 @@ public class LiferayArquillianJUnitBridgeExtension
 			extensionBuilder.service(
 				AuxiliaryArchiveAppender.class,
 				CommandServiceAuxiliaryAppender.class);
-			extensionBuilder.service(
-				BundleActivatorsManager.class,
-				BundleActivatorsManagerImpl.class);
 			extensionBuilder.observer(OSGiAllInBundleInstanceProducer.class);
 			extensionBuilder.service(
 				CommandService.class, JMXCommandService.class);

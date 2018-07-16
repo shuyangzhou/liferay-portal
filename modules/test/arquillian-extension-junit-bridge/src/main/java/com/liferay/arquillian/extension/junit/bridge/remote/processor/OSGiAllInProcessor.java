@@ -17,11 +17,12 @@ package com.liferay.arquillian.extension.junit.bridge.remote.processor;
 import aQute.bnd.osgi.Jar;
 
 import com.liferay.arquillian.extension.junit.bridge.remote.activator.ArquillianBundleActivator;
-import com.liferay.arquillian.extension.junit.bridge.remote.processor.service.BundleActivatorsManager;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -127,16 +128,12 @@ public class OSGiAllInProcessor implements ApplicationArchiveProcessor {
 			JavaArchive javaArchive, String bundleActivatorValue)
 		throws IOException {
 
-		BundleActivatorsManager bundleActivatorsManager =
-			_bundleActivatorsManagerInstance.get();
-
-		List<String> bundleActivators =
-			bundleActivatorsManager.getBundleActivators(
-				javaArchive, _ACTIVATORS_FILE);
+		List<String> bundleActivators = _getBundleActivators(
+			javaArchive, _ACTIVATORS_FILE);
 
 		bundleActivators.add(bundleActivatorValue);
 
-		bundleActivatorsManager.replaceBundleActivatorsFile(
+		_replaceBundleActivatorsFile(
 			javaArchive, _ACTIVATORS_FILE, bundleActivators);
 	}
 
@@ -294,6 +291,62 @@ public class OSGiAllInProcessor implements ApplicationArchiveProcessor {
 		return packages;
 	}
 
+	private ByteArrayOutputStream _getBundleActivatorAsOutputStream(
+			List<String> bundleActivators)
+		throws IOException {
+
+		StringBuilder sb = new StringBuilder();
+
+		for (String bundleActivator : bundleActivators) {
+			sb.append(bundleActivator);
+			sb.append("\n");
+		}
+
+		if (!bundleActivators.isEmpty()) {
+			sb.setLength(sb.length() - 1);
+		}
+
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+		outputStream.write(sb.toString().getBytes());
+
+		return outputStream;
+	}
+
+	private List<String> _getBundleActivators(Archive archive, String fileName)
+		throws IOException {
+
+		Node node = archive.get(fileName);
+
+		List<String> bundleActivators = new ArrayList<>();
+
+		if (node != null) {
+			Asset asset = node.getAsset();
+
+			bundleActivators.addAll(_getBundleActivators(asset.openStream()));
+		}
+
+		return bundleActivators;
+	}
+
+	private List<String> _getBundleActivators(InputStream is)
+		throws IOException {
+
+		List<String> bundleActivators = new ArrayList<>();
+
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+
+		String line = null;
+
+		while ((line = reader.readLine()) != null) {
+			bundleActivators.add(line);
+		}
+
+		reader.close();
+
+		return bundleActivators;
+	}
+
 	private Manifest _getManifest(JavaArchive javaArchive) throws IOException {
 		Node manifestNode = javaArchive.get(JarFile.MANIFEST_NAME);
 
@@ -445,6 +498,21 @@ public class OSGiAllInProcessor implements ApplicationArchiveProcessor {
 		return manifest;
 	}
 
+	private void _replaceBundleActivatorsFile(
+			Archive archive, String fileName, List<String> bundleActivators)
+		throws IOException {
+
+		ByteArrayOutputStream bundleActivatorAsOutputStream =
+			_getBundleActivatorAsOutputStream(bundleActivators);
+
+		ByteArrayAsset byteArrayAsset = new ByteArrayAsset(
+			bundleActivatorAsOutputStream.toByteArray());
+
+		archive.delete(fileName);
+
+		archive.add(byteArrayAsset, fileName);
+	}
+
 	private void _replaceManifest(Archive archive, Manifest manifest)
 		throws IOException {
 
@@ -520,9 +588,6 @@ public class OSGiAllInProcessor implements ApplicationArchiveProcessor {
 
 	private static final Logger _logger = LoggerFactory.getLogger(
 		ApplicationArchiveProcessor.class);
-
-	@Inject
-	private Instance<BundleActivatorsManager> _bundleActivatorsManagerInstance;
 
 	@Inject
 	private Instance<ServiceLoader> _serviceLoaderInstance;
