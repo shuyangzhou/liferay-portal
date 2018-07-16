@@ -1,6 +1,7 @@
 <definition component-name="portal-workflow">
 	<property name="portal.release" value="true" />
 	<property name="portal.upstream" value="true" />
+	<property name="testray.component.names" value="Comment,Workflow" />
 	<property name="testray.main.component.name" value="Workflow" />
 
 	<var name="portletName" value="Page Comments" />

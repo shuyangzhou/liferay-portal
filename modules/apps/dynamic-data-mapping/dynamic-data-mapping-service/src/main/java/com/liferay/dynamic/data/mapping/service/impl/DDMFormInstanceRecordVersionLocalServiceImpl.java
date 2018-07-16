@@ -35,12 +35,11 @@ public class DDMFormInstanceRecordVersionLocalServiceImpl
 
 	@Override
 	public DDMFormInstanceRecordVersion fetchLatestFormInstanceRecordVersion(
-		long userId, long ddmFormInstanceRecordId,
-		String ddmFormInstanceRecordVersion, int status) {
+		long userId, long formInstanceId, String formInstanceVersion,
+		int status) {
 
 		return ddmFormInstanceRecordVersionPersistence.fetchByU_F_F_S_Last(
-			userId, ddmFormInstanceRecordId, ddmFormInstanceRecordVersion,
-			status, null);
+			userId, formInstanceId, formInstanceVersion, status, null);
 	}
 
 	@Override

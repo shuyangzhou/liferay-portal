@@ -664,7 +664,7 @@ public class LocalizationImpl implements Localization {
 	}
 
 	/**
-	 * @deprecated As of Wilberforce
+	 * @deprecated As of Wilberforce (7.0.x)
 	 */
 	@Deprecated
 	@Override
@@ -850,11 +850,20 @@ public class LocalizationImpl implements Localization {
 
 		UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();
 
-		XMLOutputFactory xmlOutputFactory = XMLOutputFactory.newInstance();
-
 		XMLStreamWriter xmlStreamWriter = null;
 
+		ClassLoader portalClassLoader = ClassLoaderUtil.getPortalClassLoader();
+
+		ClassLoader contextClassLoader =
+			ClassLoaderUtil.getContextClassLoader();
+
 		try {
+			if (contextClassLoader != portalClassLoader) {
+				ClassLoaderUtil.setContextClassLoader(portalClassLoader);
+			}
+
+			XMLOutputFactory xmlOutputFactory = XMLOutputFactory.newInstance();
+
 			xmlStreamWriter = xmlOutputFactory.createXMLStreamWriter(
 				unsyncStringWriter);
 
@@ -862,8 +871,18 @@ public class LocalizationImpl implements Localization {
 
 			xmlStreamWriter.writeStartElement(_ROOT);
 
-			xmlStreamWriter.writeAttribute(
-				_AVAILABLE_LOCALES, StringUtil.merge(map.keySet()));
+			StringBundler sb = new StringBundler(2 * map.size() - 1);
+
+			sb.append(defaultLanguageId);
+
+			for (String languageId : map.keySet()) {
+				if (!defaultLanguageId.equals(languageId)) {
+					sb.append(StringPool.COMMA);
+					sb.append(languageId);
+				}
+			}
+
+			xmlStreamWriter.writeAttribute(_AVAILABLE_LOCALES, sb.toString());
 			xmlStreamWriter.writeAttribute(_DEFAULT_LOCALE, defaultLanguageId);
 
 			for (Map.Entry<String, String> entry : map.entrySet()) {
@@ -889,6 +908,10 @@ public class LocalizationImpl implements Localization {
 			_log.error(ioe, ioe);
 		}
 		finally {
+			if (contextClassLoader != portalClassLoader) {
+				ClassLoaderUtil.setContextClassLoader(contextClassLoader);
+			}
+
 			if (xmlStreamWriter != null) {
 				try {
 					xmlStreamWriter.close();
@@ -1077,7 +1100,30 @@ public class LocalizationImpl implements Localization {
 		Map<Locale, String> localizationMap, String xml, String key,
 		String defaultLanguageId) {
 
-		for (Locale locale : LanguageUtil.getAvailableLocales()) {
+		Set<Locale> availableLocales = LanguageUtil.getAvailableLocales();
+
+		if (Validator.isBlank(xml)) {
+			Map<String, String> map = new HashMap<>();
+
+			for (Map.Entry<Locale, String> entry : localizationMap.entrySet()) {
+				Locale locale = entry.getKey();
+				String value = entry.getValue();
+
+				if (availableLocales.contains(locale) &&
+					Validator.isNotNull(value)) {
+
+					map.put(LocaleUtil.toLanguageId(locale), value);
+				}
+			}
+
+			if (map.isEmpty()) {
+				return StringPool.BLANK;
+			}
+
+			return getXml(map, defaultLanguageId, key);
+		}
+
+		for (Locale locale : availableLocales) {
 			String value = localizationMap.get(locale);
 
 			String languageId = LocaleUtil.toLanguageId(locale);
