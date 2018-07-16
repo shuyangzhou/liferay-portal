@@ -14,20 +14,27 @@
 
 package com.liferay.arquillian.extension.junit.bridge.remote.processor;
 
+import aQute.bnd.osgi.Jar;
+
 import com.liferay.arquillian.extension.junit.bridge.remote.activator.ArquillianBundleActivator;
 import com.liferay.arquillian.extension.junit.bridge.remote.processor.service.BundleActivatorsManager;
-import com.liferay.arquillian.extension.junit.bridge.remote.processor.service.ImportPackageManager;
 import com.liferay.arquillian.extension.junit.bridge.remote.processor.service.ManifestManager;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
@@ -46,6 +53,7 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ArchivePath;
 import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.Node;
+import org.jboss.shrinkwrap.api.asset.Asset;
 import org.jboss.shrinkwrap.api.asset.ByteArrayAsset;
 import org.jboss.shrinkwrap.api.container.ClassContainer;
 import org.jboss.shrinkwrap.api.exporter.ZipExporter;
@@ -207,30 +215,97 @@ public class OSGiAllInProcessor implements ApplicationArchiveProcessor {
 			}
 		}
 
-		ManifestManager manifestManager = _manifestManagerInstance.get();
-
-		Manifest manifest = manifestManager.putAttributeValue(
-			manifestManager.getManifest(javaArchive), "Export-Package",
+		Manifest manifest = _putAttributeValue(
+			_getManifest(javaArchive), "Export-Package",
 			javaClass.getPackage().getName());
 
-		manifestManager.replaceManifest(javaArchive, manifest);
+		_replaceManifest(javaArchive, manifest);
 	}
 
 	private void _cleanRepeatedImports(
 			JavaArchive javaArchive, Collection<Archive<?>> auxiliaryArchives)
 		throws IOException {
 
-		ImportPackageManager importPackageManager =
-			_importPackageManagerInstance.get();
+		Manifest manifest = _getManifest(javaArchive);
 
-		ManifestManager manifestManager = _manifestManagerInstance.get();
+		manifest = _cleanRepeatedImports(manifest, auxiliaryArchives);
 
-		Manifest manifest = manifestManager.getManifest(javaArchive);
+		_replaceManifest(javaArchive, manifest);
+	}
 
-		manifest = importPackageManager.cleanRepeatedImports(
-			manifest, auxiliaryArchives);
+	private Manifest _cleanRepeatedImports(
+			Manifest manifest, Collection<Archive<?>> auxiliaryArchives)
+		throws IOException {
 
-		manifestManager.replaceManifest(javaArchive, manifest);
+		List<String> auxiliaryArchivesPackages = _getAuxiliaryArchivesPackages(
+			auxiliaryArchives);
+
+		Attributes mainAttributes = manifest.getMainAttributes();
+
+		String importPackages = mainAttributes.getValue(_IMPORT_PACKAGE);
+
+		mainAttributes.remove(new Attributes.Name(_IMPORT_PACKAGE));
+
+		Map<String, Set<String>> importsWithDirectivesMap =
+			_toImportsWithDirectivesMap(importPackages);
+
+		List<String> resultImports = new ArrayList<>();
+
+		for (Entry<String, Set<String>> entry :
+				importsWithDirectivesMap.entrySet()) {
+
+			String importValue = entry.getKey();
+
+			if (auxiliaryArchivesPackages.contains(importValue)) {
+				continue;
+			}
+
+			StringBuilder sb = new StringBuilder();
+
+			sb.append(importValue);
+
+			for (String directive : entry.getValue()) {
+				sb.append(";");
+				sb.append(directive);
+			}
+
+			resultImports.add(sb.toString());
+		}
+
+		manifest = _putAttributeValue(
+			manifest, _IMPORT_PACKAGE,
+			resultImports.toArray(new String[resultImports.size()]));
+
+		return manifest;
+	}
+
+	private List<String> _getAuxiliaryArchivesPackages(
+			Collection<Archive<?>> auxiliaryArchives)
+		throws IOException {
+
+		List<String> packages = new ArrayList<>();
+
+		for (Archive auxiliaryArchive : auxiliaryArchives) {
+			ZipExporter zipExporter = auxiliaryArchive.as(ZipExporter.class);
+
+			InputStream auxiliaryArchiveInputStream =
+				zipExporter.exportAsInputStream();
+
+			Jar jar = new Jar(
+				auxiliaryArchive.getName(), auxiliaryArchiveInputStream);
+
+			packages.addAll(jar.getPackages());
+		}
+
+		return packages;
+	}
+
+	private Manifest _getManifest(JavaArchive javaArchive) throws IOException {
+		Node manifestNode = javaArchive.get(JarFile.MANIFEST_NAME);
+
+		Asset manifestAsset = manifestNode.getAsset();
+
+		return new Manifest(manifestAsset.openStream());
 	}
 
 	private void _handleAuxiliaryArchives(
@@ -345,6 +420,85 @@ public class OSGiAllInProcessor implements ApplicationArchiveProcessor {
 		return archives;
 	}
 
+	private Manifest _putAttributeValue(
+			Manifest manifest, String attributeName, String... attributeValue)
+		throws IOException {
+
+		Attributes mainAttributes = manifest.getMainAttributes();
+
+		String attributeValues = mainAttributes.getValue(attributeName);
+
+		Set<String> attributeValueSet = new HashSet<>();
+
+		if (attributeValues != null) {
+			Collections.addAll(attributeValueSet, attributeValues.split(","));
+		}
+
+		Collections.addAll(attributeValueSet, attributeValue);
+
+		StringBuilder sb = new StringBuilder();
+
+		for (String value : attributeValueSet) {
+			sb.append(value);
+			sb.append(",");
+		}
+
+		if (!attributeValueSet.isEmpty()) {
+			sb.setLength(sb.length() - 1);
+		}
+
+		attributeValues = sb.toString();
+
+		mainAttributes.putValue(attributeName, attributeValues);
+
+		return manifest;
+	}
+
+	private void _replaceManifest(Archive archive, Manifest manifest)
+		throws IOException {
+
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+		manifest.write(baos);
+
+		ByteArrayAsset byteArrayAsset = new ByteArrayAsset(baos.toByteArray());
+
+		archive.delete(JarFile.MANIFEST_NAME);
+
+		archive.add(byteArrayAsset, JarFile.MANIFEST_NAME);
+	}
+
+	private Map<String, Set<String>> _toImportsWithDirectivesMap(
+		String importsInManifest) {
+
+		List<String> packageNamesWithDirectives = Arrays.asList(
+			importsInManifest.split(","));
+
+		Map<String, Set<String>> packagesNameToDirectives = new HashMap<>();
+
+		for (String packageNameWithDirectives : packageNamesWithDirectives) {
+			LinkedList<String> packageNameAndDirectives = new LinkedList<>();
+
+			Collections.addAll(
+				packageNameAndDirectives, packageNameWithDirectives.split(";"));
+
+			String packageName = packageNameAndDirectives.pop();
+
+			Set<String> currentDirectives = packagesNameToDirectives.get(
+				packageName);
+
+			if (currentDirectives == null) {
+				currentDirectives = new HashSet<>();
+			}
+
+			currentDirectives.addAll(packageNameAndDirectives);
+
+			packagesNameToDirectives.put(packageName, currentDirectives);
+		}
+
+		return packagesNameToDirectives;
+	}
+
 	private void _validateBundleArchive(Archive<?> archive)
 		throws BundleException, IOException {
 
@@ -367,6 +521,8 @@ public class OSGiAllInProcessor implements ApplicationArchiveProcessor {
 	private static final String _ACTIVATORS_FILE =
 		"/META-INF/services/" + BundleActivator.class.getCanonicalName();
 
+	private static final String _IMPORT_PACKAGE = "Import-Package";
+
 	private static final String _REMOTE_LOADABLE_EXTENSION_FILE =
 		"/META-INF/services/" +
 			RemoteLoadableExtension.class.getCanonicalName();
@@ -376,9 +532,6 @@ public class OSGiAllInProcessor implements ApplicationArchiveProcessor {
 
 	@Inject
 	private Instance<BundleActivatorsManager> _bundleActivatorsManagerInstance;
-
-	@Inject
-	private Instance<ImportPackageManager> _importPackageManagerInstance;
 
 	@Inject
 	private Instance<ManifestManager> _manifestManagerInstance;
