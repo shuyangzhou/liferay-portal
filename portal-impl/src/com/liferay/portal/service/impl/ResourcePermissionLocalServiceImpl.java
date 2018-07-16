@@ -175,7 +175,7 @@ public class ResourcePermissionLocalServiceImpl
 			doUpdateResourcePermission(
 				companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey,
 				userId, ownerRole.getRoleId(), ownerPermissions,
-				ResourcePermissionConstants.OPERATOR_SET, true);
+				ResourcePermissionConstants.OPERATOR_SET, false);
 
 			if (modelPermissions != null) {
 				for (String roleName : modelPermissions.getRoleNames()) {
@@ -185,7 +185,8 @@ public class ResourcePermissionLocalServiceImpl
 						companyId, name, ResourceConstants.SCOPE_INDIVIDUAL,
 						primKey, 0, role.getRoleId(),
 						modelPermissions.getActionIds(roleName),
-						ResourcePermissionConstants.OPERATOR_SET, true);
+						ResourcePermissionConstants.OPERATOR_SET,
+						ownerRole.equals(role));
 				}
 			}
 		}
