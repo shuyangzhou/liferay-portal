@@ -56,6 +56,11 @@ public interface DDMFormInstanceRecordVersionService extends BaseService {
 	 * Never modify or reference this interface directly. Always use {@link DDMFormInstanceRecordVersionServiceUtil} to access the ddm form instance record version remote service. Add custom service methods to {@link com.liferay.dynamic.data.mapping.service.impl.DDMFormInstanceRecordVersionServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DDMFormInstanceRecordVersion fetchLatestFormInstanceRecordVersion(
+		long userId, long formInstanceId, String formInstanceVersion, int status)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DDMFormInstanceRecordVersion getFormInstanceRecordVersion(
 		long ddmFormInstanceRecordVersionId) throws PortalException;
 
