@@ -1,0 +1,7 @@
+{
+	"resources": {
+		"type1": { "href": "localhost/o/api/p/type1" },
+		"type2": { "href": "localhost/o/api/p/type2" },
+		"type3": { "href": "localhost/o/api/p/type3" }
+	}
+}

@@ -13,6 +13,10 @@
     </a>
 </div>
 
+<div align="center">
+    <img src="./images/logo.png"/>
+</div>
+
 # Apio Architect
 
 Apio Architect is part of the [Apio project](#the-apio-project), which aims to promote the creation of APIs designed to evolve over time. The project also provides a set of guidelines for API providers and consumers that can be implemented in any technology, and Apio Consumer, a library to facilitate the creation of consumers of any hypermedia API.

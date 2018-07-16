@@ -106,6 +106,13 @@
 			<var name="site" value="Site Template Site Name" />
 		</execute>
 
+		<if>
+			<condition function="IsElementNotPresent" locator1="Portlet#PORTLET_CONTENT" />
+			<then>
+				<execute function="Refresh" />
+			</then>
+		</if>
+
 		<execute macro="Portlet#viewPG">
 			<var name="portletName" value="Hello World" />
 		</execute>
@@ -391,7 +398,7 @@
 
 		<execute macro="SiteTemplates#viewDefaultDataLocalizedCP">
 			<var name="siteTemplateDescriptionList" value="Sitio con foro y wiki,Sitio con documentos y noticias" />
-			<var name="siteTemplateNameList" value="Sitio de la Comunidad,Sitio de intranet" />
+			<var name="siteTemplateNameList" value="Sitio de comunidad,Sitio de intranet" />
 		</execute>
 
 		<execute macro="Navigator#openURL" />
@@ -571,12 +578,6 @@
 		</execute>
 
 		<execute macro="Portlet#dragAndDropPortletToColumnPG">
-			<var name="columnNumberFrom" value="2" />
-			<var name="columnNumberTo" value="1" />
-			<var name="portletName" value="User Statistics" />
-		</execute>
-
-		<execute macro="Portlet#dragAndDropPortletToColumnPG">
 			<var name="columnNumberFrom" value="1" />
 			<var name="columnNumberTo" value="2" />
 			<var name="portletName" value="Message Boards" />
@@ -584,12 +585,6 @@
 
 		<execute macro="ProductMenu#gotoSiteViaLink">
 			<var name="site" value="Community Site" />
-		</execute>
-
-		<execute macro="Portlet#dragAndDropPortletToColumnPG">
-			<var name="columnNumberFrom" value="1" />
-			<var name="columnNumberTo" value="2" />
-			<var name="portletName" value="User Statistics" />
 		</execute>
 
 		<execute macro="Portlet#dragAndDropPortletToColumnPG">
@@ -613,9 +608,9 @@
 		</execute>
 
 		<execute macro="Portlet#dragAndDropPortletToColumnPG">
-			<var name="columnNumberFrom" value="2" />
-			<var name="columnNumberTo" value="1" />
-			<var name="portletName" value="User Statistics" />
+			<var name="columnNumberFrom" value="1" />
+			<var name="columnNumberTo" value="2" />
+			<var name="portletName" value="Message Boards" />
 		</execute>
 
 		<execute macro="Navigator#openSiteURL">
@@ -623,8 +618,8 @@
 		</execute>
 
 		<execute macro="SiteTemplates#resetPageChanges">
-			<var name="columnNumberTo" value="1" />
-			<var name="portletName" value="User Statistics" />
+			<var name="columnNumberTo" value="2" />
+			<var name="portletName" value="Message Boards" />
 		</execute>
 
 		<execute macro="Navigator#openSiteURL">
@@ -632,8 +627,8 @@
 		</execute>
 
 		<execute macro="SiteTemplates#viewResetPageChanges">
-			<var name="columnNumberFrom" value="2" />
-			<var name="portletName" value="User Statistics" />
+			<var name="columnNumberFrom" value="1" />
+			<var name="portletName" value="Message Boards" />
 		</execute>
 	</command>
 

@@ -3247,7 +3247,7 @@
 			<var name="parentPageName" value="Welcome" />
 		</execute>
 
-		<execute macro="SitePages#configurePage">
+		<execute macro="SitePages#configureChildPage">
 			<var name="columnName" value="1 Column" />
 			<var name="pageName" value="Knowledge Base Display Page" />
 			<var name="privacy" value="Public Pages" />
