@@ -17,7 +17,6 @@ package com.liferay.arquillian.extension.junit.bridge;
 import com.liferay.arquillian.extension.junit.bridge.container.remote.LiferayRemoteDeployableContainer;
 import com.liferay.arquillian.extension.junit.bridge.deployment.BndDeploymentScenarioGenerator;
 import com.liferay.arquillian.extension.junit.bridge.deployment.JUnitBridgeAuxiliaryArchiveAppender;
-import com.liferay.arquillian.extension.junit.bridge.deployment.NoOpArchiveApplicationProcessor;
 import com.liferay.arquillian.extension.junit.bridge.observer.JUnitBridgeObserver;
 import com.liferay.arquillian.extension.junit.bridge.remote.bundleclasspath.BundleClassPathAuxiliaryAppender;
 import com.liferay.arquillian.extension.junit.bridge.remote.commandservice.CommandServiceAuxiliaryAppender;
@@ -51,7 +50,7 @@ public class LiferayArquillianJUnitBridgeExtension
 			extensionBuilder.override(
 				ApplicationArchiveProcessor.class,
 				OSGiApplicationArchiveProcessor.class,
-				NoOpArchiveApplicationProcessor.class);
+				OSGiAllInProcessor.class);
 			extensionBuilder.override(
 				AuxiliaryArchiveAppender.class, JUnitDeploymentAppender.class,
 				JUnitBridgeAuxiliaryArchiveAppender.class);
@@ -61,8 +60,6 @@ public class LiferayArquillianJUnitBridgeExtension
 			extensionBuilder.service(
 				DeploymentScenarioGenerator.class,
 				BndDeploymentScenarioGenerator.class);
-			extensionBuilder.service(
-				ApplicationArchiveProcessor.class, OSGiAllInProcessor.class);
 			extensionBuilder.service(
 				AuxiliaryArchiveAppender.class,
 				BundleClassPathAuxiliaryAppender.class);
