@@ -188,10 +188,9 @@ public class DDMFormInstanceRecordVersionLocalServiceWrapper
 
 	@Override
 	public com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecordVersion fetchLatestFormInstanceRecordVersion(
-		long userId, long ddmFormInstanceRecordId,
-		String ddmFormInstanceRecordVersion, int status) {
+		long userId, long formInstanceId, String formInstanceVersion, int status) {
 		return _ddmFormInstanceRecordVersionLocalService.fetchLatestFormInstanceRecordVersion(userId,
-			ddmFormInstanceRecordId, ddmFormInstanceRecordVersion, status);
+			formInstanceId, formInstanceVersion, status);
 	}
 
 	@Override

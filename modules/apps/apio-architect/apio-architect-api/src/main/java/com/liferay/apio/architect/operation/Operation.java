@@ -40,16 +40,26 @@ public interface Operation {
 	/**
 	 * Returns the operation's method.
 	 *
-	 * @review the operation's method
+	 * @return the operation's method
+	 * @review
 	 */
 	public HTTPMethod getHttpMethod();
 
 	/**
 	 * Returns the operation's name.
 	 *
-	 * @review the operation's name
+	 * @return the operation's name
+	 * @review
 	 */
 	public String getName();
+
+	/**
+	 * Returns the operation's uri.
+	 *
+	 * @return the operation's uri
+	 * @review
+	 */
+	public Optional<String> getURIOptional();
 
 	/**
 	 * Return {@code true} if this is a collection's operation

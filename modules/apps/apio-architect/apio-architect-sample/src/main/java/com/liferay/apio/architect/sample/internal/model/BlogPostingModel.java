@@ -23,6 +23,7 @@ import com.github.javafaker.Lorem;
 import com.github.javafaker.service.RandomService;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -64,9 +66,23 @@ public class BlogPostingModel {
 
 			Date date = dateAndTime.past(400, DAYS);
 
+			int reviewNumber = randomService.nextInt(5);
+
+			List<ReviewModel> reviewModels = IntStream.range(
+				0, reviewNumber
+			).mapToObj(
+				__ -> randomService.nextInt(PersonModel.getCount())
+			).map(
+				authorId -> new RatingModel(authorId, randomService.nextInt(6))
+			).map(
+				ratingModel -> new ReviewModel(lorem.sentence(), ratingModel)
+			).collect(
+				Collectors.toList()
+			);
+
 			BlogPostingModel blogPostingModel = new BlogPostingModel(
 				_count.get(), lorem.paragraph(), date, creatorId, date,
-				lorem.sentence(), book.title());
+				reviewModels, lorem.sentence(), book.title());
 
 			_blogPostings.put(_count.getAndIncrement(), blogPostingModel);
 		}
@@ -222,6 +238,15 @@ public class BlogPostingModel {
 	}
 
 	/**
+	 * Returns the current blog posting's reviews.
+	 *
+	 * @return the current blog posting's reviews
+	 */
+	public List<ReviewModel> getReviewModels() {
+		return _reviewModels;
+	}
+
+	/**
 	 * Returns the current blog posting's subtitle.
 	 *
 	 * @return the current blog posting's subtitle
@@ -241,15 +266,26 @@ public class BlogPostingModel {
 
 	private BlogPostingModel(
 		long id, String content, Date createDate, long creatorId,
-		Date modifiedDate, String subtitle, String title) {
+		Date modifiedDate, List<ReviewModel> reviewModels, String subtitle,
+		String title) {
 
 		_id = id;
 		_content = content;
 		_createDate = createDate;
 		_creatorId = creatorId;
 		_modifiedDate = modifiedDate;
+		_reviewModels = reviewModels;
 		_subtitle = subtitle;
 		_title = title;
+	}
+
+	private BlogPostingModel(
+		long id, String content, Date createDate, long creatorId,
+		Date modifiedDate, String subtitle, String title) {
+
+		this(
+			id, content, createDate, creatorId, modifiedDate,
+			Collections.emptyList(), subtitle, title);
 	}
 
 	private static final Map<Long, BlogPostingModel> _blogPostings =
@@ -261,6 +297,7 @@ public class BlogPostingModel {
 	private final long _creatorId;
 	private final long _id;
 	private final Date _modifiedDate;
+	private final List<ReviewModel> _reviewModels;
 	private final String _subtitle;
 	private final String _title;
 

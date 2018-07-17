@@ -35,6 +35,14 @@ public class DDMFormInstanceRecordVersionServiceWrapper
 	}
 
 	@Override
+	public com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecordVersion fetchLatestFormInstanceRecordVersion(
+		long userId, long formInstanceId, String formInstanceVersion, int status)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ddmFormInstanceRecordVersionService.fetchLatestFormInstanceRecordVersion(userId,
+			formInstanceId, formInstanceVersion, status);
+	}
+
+	@Override
 	public com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecordVersion getFormInstanceRecordVersion(
 		long ddmFormInstanceRecordVersionId)
 		throws com.liferay.portal.kernel.exception.PortalException {

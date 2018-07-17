@@ -16,9 +16,6 @@ package com.liferay.source.formatter.checks;
 
 import com.liferay.portal.kernel.util.StringUtil;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * @author Peter Shin
  */
@@ -26,37 +23,27 @@ public class CDNCheck extends BaseFileCheck {
 
 	@Override
 	protected String doProcess(
-			String fileName, String absolutePath, String content)
-		throws Exception {
+		String fileName, String absolutePath, String content) {
 
 		return _fixCDNURL(content);
 	}
 
 	private String _fixCDNURL(String content) {
-		Matcher matcher = _cdnPattern.matcher(content);
-
-		while (matcher.find()) {
-			String match = matcher.group();
-
-			String s = matcher.group(2);
-
-			if (!StringUtil.equalsIgnoreCase(s, "releases") &&
-				!StringUtil.equalsIgnoreCase(s, "repository")) {
-
-				continue;
-			}
-
-			String newSub = StringUtil.toLowerCase(s) + "-cdn.liferay.com";
-
-			newSub = StringUtil.replace(match, matcher.group(1), newSub);
-
-			content = StringUtil.replaceFirst(content, match, newSub);
-		}
-
-		return content;
+		return StringUtil.replace(
+			content,
+			new String[] {
+				"cdn.lfrs.sl/releases.liferay.com",
+				"cdn.lfrs.sl/repository.liferay.com",
+				"repository.liferay.com/nexus/content/repositories/",
+				"repository.liferay.com/nexus/service/local/repo_groups" +
+					"/private/content/"
+			},
+			new String[] {
+				"releases-cdn.liferay.com", "repository-cdn.liferay.com",
+				"repository-cdn.liferay.com/nexus/content/repositories/",
+				"repository-cdn.liferay.com/nexus/service/local/repo_groups" +
+					"/private/content/"
+			});
 	}
-
-	private final Pattern _cdnPattern = Pattern.compile(
-		"\\S*(cdn\\.lfrs\\.sl\\/(\\w+)\\.liferay\\.com)\\S*");
 
 }
