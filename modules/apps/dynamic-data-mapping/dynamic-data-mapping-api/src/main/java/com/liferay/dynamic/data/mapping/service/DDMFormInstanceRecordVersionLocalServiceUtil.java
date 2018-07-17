@@ -187,11 +187,10 @@ public class DDMFormInstanceRecordVersionLocalServiceUtil {
 	}
 
 	public static com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecordVersion fetchLatestFormInstanceRecordVersion(
-		long userId, long ddmFormInstanceRecordId,
-		String ddmFormInstanceRecordVersion, int status) {
+		long userId, long formInstanceId, String formInstanceVersion, int status) {
 		return getService()
 				   .fetchLatestFormInstanceRecordVersion(userId,
-			ddmFormInstanceRecordId, ddmFormInstanceRecordVersion, status);
+			formInstanceId, formInstanceVersion, status);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {

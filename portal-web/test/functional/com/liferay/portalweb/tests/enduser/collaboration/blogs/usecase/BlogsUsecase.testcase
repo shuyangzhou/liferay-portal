@@ -122,7 +122,7 @@
 			<var name="uploadFileName" value="Document_1.jpg" />
 		</execute>
 
-		<execute function="Pause" locator1="1000" />
+		<execute function="Pause" locator1="3000" />
 
 		<execute macro="PortletEntry#publish" />
 
@@ -213,7 +213,7 @@
 			<var name="portletOption" value="Configuration" />
 		</execute>
 
-		<execute macro="BlogsConfiguration#selectConfigurationIFrame" />
+		<execute macro="Button#clickSave" />
 
 		<execute macro="BlogsConfiguration#selectMaximumItemstoDisplay">
 			<var name="maximumItemsToDisplay" value="75" />
@@ -222,7 +222,7 @@
 		<execute macro="BlogsConfiguration#uncheckComments" />
 		<execute macro="BlogsConfiguration#uncheckRelatedAssets" />
 
-		<execute macro="BlogsConfiguration#saveConfigurationIFrame" />
+		<execute macro="Button#clickSave" />
 
 		<execute macro="Navigator#openSiteURL">
 			<var name="siteName" value="Site Name" />
@@ -244,7 +244,7 @@
 
 		<execute macro="BlogsConfiguration#uncheckRSSSubscriptionCheckbox" />
 
-		<execute macro="BlogsConfiguration#saveConfigurationIFrame" />
+		<execute macro="Button#clickSave" />
 
 		<execute macro="Navigator#gotoSitePage">
 			<var name="pageName" value="Site Page 2" />
@@ -330,7 +330,7 @@
 		<execute macro="BlogsNavigator#gotoBrowseImage" />
 
 		<execute macro="ItemSelector#searchDMImages">
-			<var name="imageFileName" value="Document_1.jpg" />
+			<var name="imageFileName" value="Document_1" />
 		</execute>
 
 		<execute function="SelectFrame" locator1="ItemSelector#ITEM_SELECTOR_IFRAME" />
@@ -844,8 +844,6 @@
 	</command>
 
 	<command name="RestoreBlogsEntry" priority="5">
-		<property name="portal.acceptance" value="quarantine" />
-
 		<execute macro="Navigator#openURL" />
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -1364,6 +1362,8 @@
 		<execute macro="Blogs#viewNoEntryCP" />
 
 		<execute function="Pause" locator1="180000" />
+
+		<execute function="Refresh" />
 
 		<execute macro="BlogsEntry#viewEntry">
 			<var name="entryContent" value="Blogs Entry Content" />
@@ -2384,6 +2384,8 @@
 		<execute function="Pause" locator1="3000" />
 
 		<execute macro="ImageEditor#applyChangesAndSaveFile" />
+
+		<execute function="Pause" locator1="3000" />
 
 		<execute function="SelectFrameTop" value1="relative=top" />
 

@@ -14,16 +14,15 @@
 
 package com.liferay.apio.architect.test.util.writer;
 
-import static com.liferay.apio.architect.operation.HTTPMethod.DELETE;
 import static com.liferay.apio.architect.test.util.representor.MockRepresentorCreator.createFirstEmbeddedModelRepresentor;
 import static com.liferay.apio.architect.test.util.representor.MockRepresentorCreator.createRootModelRepresentor;
 import static com.liferay.apio.architect.test.util.representor.MockRepresentorCreator.createSecondEmbeddedModelRepresentor;
 import static com.liferay.apio.architect.test.util.representor.MockRepresentorCreator.createThirdEmbeddedModelRepresentor;
 
 import com.liferay.apio.architect.identifier.Identifier;
-import com.liferay.apio.architect.impl.internal.operation.OperationImpl;
-import com.liferay.apio.architect.impl.internal.request.RequestInfo;
-import com.liferay.apio.architect.impl.internal.single.model.SingleModelImpl;
+import com.liferay.apio.architect.impl.operation.DeleteOperation;
+import com.liferay.apio.architect.impl.request.RequestInfo;
+import com.liferay.apio.architect.impl.single.model.SingleModelImpl;
 import com.liferay.apio.architect.operation.Operation;
 import com.liferay.apio.architect.representor.Representor;
 import com.liferay.apio.architect.single.model.SingleModel;
@@ -41,8 +40,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.function.Function;
-
-import javax.ws.rs.core.HttpHeaders;
 
 /**
  * Provides utility functions for mock writers.
@@ -79,22 +76,21 @@ public class MockWriterUtil {
 	}
 
 	/**
-	 * Returns a {@link RequestInfo} with the provided {@code HttpHeaders}, a
-	 * mock {@code ServerURL}, a mock {@code Embedded} request, and a mock
-	 * {@link com.liferay.apio.architect.language.AcceptLanguage} with {@code
+	 * Returns a {@link RequestInfo} with a mock {@code ServerURL}, {@code
+	 * Embedded} request, and {@link
+	 * com.liferay.apio.architect.language.AcceptLanguage} with {@code
 	 * Locale#getDefault()}.
 	 *
-	 * @param  httpHeaders the {@code HttpHeaders}
 	 * @return the {@code RequestInfo}
 	 */
-	public static RequestInfo getRequestInfo(HttpHeaders httpHeaders) {
+	public static RequestInfo getRequestInfo() {
 		return RequestInfo.create(
-			builder -> builder.httpHeaders(
-				httpHeaders
-			).httpServletRequest(
+			builder -> builder.httpServletRequest(
 				null
 			).serverURL(
 				() -> "localhost"
+			).applicationURL(
+				() -> "localhost/o/api"
 			).embedded(
 				Arrays.asList("embedded1", "embedded1.embedded")::contains
 			).fields(
@@ -121,7 +117,7 @@ public class MockWriterUtil {
 
 		if (identifierClass.equals(FirstEmbeddedId.class)) {
 			List<Operation> operations = Collections.singletonList(
-				new OperationImpl(DELETE, "delete-operation"));
+				new DeleteOperation("resource"));
 
 			return Optional.of(
 				new SingleModelImpl<>(
