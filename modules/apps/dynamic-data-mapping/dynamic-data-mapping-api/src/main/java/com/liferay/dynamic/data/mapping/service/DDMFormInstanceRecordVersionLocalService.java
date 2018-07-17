@@ -174,8 +174,7 @@ public interface DDMFormInstanceRecordVersionLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DDMFormInstanceRecordVersion fetchLatestFormInstanceRecordVersion(
-		long userId, long ddmFormInstanceRecordId,
-		String ddmFormInstanceRecordVersion, int status);
+		long userId, long formInstanceId, String formInstanceVersion, int status);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();

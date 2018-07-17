@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.portlet.configuration.icon.PortletConfigurationIconMenu;
 import com.liferay.portal.kernel.portlet.toolbar.PortletToolbar;
-import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -366,7 +365,7 @@ public class PortletDisplay implements Cloneable, Serializable {
 	}
 
 	/**
-	 * @deprecated As of Wilberforce, with no direct replacement
+	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement
 	 */
 	@Deprecated
 	public boolean isAccess() {
@@ -573,7 +572,7 @@ public class PortletDisplay implements Cloneable, Serializable {
 	}
 
 	/**
-	 * @deprecated As of Wilberforce, with no direct replacement
+	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement
 	 */
 	@Deprecated
 	public void setAccess(boolean access) {
@@ -609,8 +608,6 @@ public class PortletDisplay implements Cloneable, Serializable {
 	}
 
 	public void setDescription(String description) {
-		description = HtmlUtil.escape(description);
-
 		_description = description;
 	}
 

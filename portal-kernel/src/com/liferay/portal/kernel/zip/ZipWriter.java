@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.zip;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,6 +24,7 @@ import java.io.InputStream;
  * @author Brian Wing Shun Chan
  * @author Raymond Augé
  */
+@ProviderType
 public interface ZipWriter {
 
 	public void addEntry(String name, byte[] bytes) throws IOException;
@@ -38,5 +41,11 @@ public interface ZipWriter {
 	public File getFile();
 
 	public String getPath();
+
+	/**
+	 * Silently unmounts the file entry attached to this Zip writer. If the
+	 * operation fails, a message is logged with a warning level.
+	 */
+	public void umount();
 
 }

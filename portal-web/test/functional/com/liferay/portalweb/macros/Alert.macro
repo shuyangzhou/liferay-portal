@@ -33,7 +33,7 @@
 	</command>
 
 	<command name="viewErrorMessage">
-		<execute function="AssertTextEquals" locator1="Message#ERROR" value1="Error:${errorMessage}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="Message#ERROR" value1="${errorMessage}" />
 	</command>
 
 	<command name="viewExpireContentFailedMessage">
@@ -42,6 +42,15 @@
 
 	<command name="viewInfoMessage">
 		<execute function="AssertTextEquals" locator1="Message#INFO" value1="${infoMessage}" />
+	</command>
+
+	<command name="viewLocalizationMessage">
+		<execute function="AssertTextEquals#assertPartialText" locator1="Home#PORTAL_LOCALIZATION_TRANSLATION_LANGUAGE_MESSAGE" value1="${translationLanguageLocalizationMessage}" />
+		<execute function="AssertTextEquals" locator1="Home#PORTAL_LOCALIZATION_DEFAULT_LANGUAGE_MESSAGE" value1="${defaultLanguageLocalizationMessage}">
+			<var name="key_pageLocale" value="${defaultLanguageLocalizationMessage}" />
+		</execute>
+
+		<execute function="AssertTextEquals" locator1="Home#PORTAL_LOCALIZATION_PREFERRED_LANGUAGE_MESSAGE" value1="${preferredLanguageLocalizationMessage}" />
 	</command>
 
 	<command name="viewRequestFailedToComplete">
@@ -67,7 +76,7 @@
 
 	<command name="viewSuccessMessageText">
 		<execute function="AssertVisible" locator1="Message#SUCCESS" />
-		<execute function="AssertTextEquals" locator1="Message#SUCCESS" value1="${successMessage}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="${successMessage}" />
 	</command>
 
 	<command name="waitForSuccessMessageHide">

@@ -55,13 +55,47 @@ import com.liferay.portal.kernel.util.MethodKey;
  */
 @ProviderType
 public class DDMFormInstanceRecordVersionServiceHttp {
+	public static com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecordVersion fetchLatestFormInstanceRecordVersion(
+		HttpPrincipal httpPrincipal, long userId, long formInstanceId,
+		String formInstanceVersion, int status)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		try {
+			MethodKey methodKey = new MethodKey(DDMFormInstanceRecordVersionServiceUtil.class,
+					"fetchLatestFormInstanceRecordVersion",
+					_fetchLatestFormInstanceRecordVersionParameterTypes0);
+
+			MethodHandler methodHandler = new MethodHandler(methodKey, userId,
+					formInstanceId, formInstanceVersion, status);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			}
+
+			return (com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecordVersion)returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
+
+			throw se;
+		}
+	}
+
 	public static com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecordVersion getFormInstanceRecordVersion(
 		HttpPrincipal httpPrincipal, long ddmFormInstanceRecordVersionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(DDMFormInstanceRecordVersionServiceUtil.class,
 					"getFormInstanceRecordVersion",
-					_getFormInstanceRecordVersionParameterTypes0);
+					_getFormInstanceRecordVersionParameterTypes1);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					ddmFormInstanceRecordVersionId);
@@ -95,7 +129,7 @@ public class DDMFormInstanceRecordVersionServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(DDMFormInstanceRecordVersionServiceUtil.class,
 					"getFormInstanceRecordVersion",
-					_getFormInstanceRecordVersionParameterTypes1);
+					_getFormInstanceRecordVersionParameterTypes2);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					ddmFormInstanceRecordId, version);
@@ -128,7 +162,7 @@ public class DDMFormInstanceRecordVersionServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(DDMFormInstanceRecordVersionServiceUtil.class,
 					"getFormInstanceRecordVersions",
-					_getFormInstanceRecordVersionsParameterTypes2);
+					_getFormInstanceRecordVersionsParameterTypes3);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					ddmFormInstanceRecordId);
@@ -163,7 +197,7 @@ public class DDMFormInstanceRecordVersionServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(DDMFormInstanceRecordVersionServiceUtil.class,
 					"getFormInstanceRecordVersions",
-					_getFormInstanceRecordVersionsParameterTypes3);
+					_getFormInstanceRecordVersionsParameterTypes4);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					ddmFormInstanceRecordId, start, end, orderByComparator);
@@ -196,7 +230,7 @@ public class DDMFormInstanceRecordVersionServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(DDMFormInstanceRecordVersionServiceUtil.class,
 					"getFormInstanceRecordVersionsCount",
-					_getFormInstanceRecordVersionsCountParameterTypes4);
+					_getFormInstanceRecordVersionsCountParameterTypes5);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					ddmFormInstanceRecordId);
@@ -224,17 +258,19 @@ public class DDMFormInstanceRecordVersionServiceHttp {
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(DDMFormInstanceRecordVersionServiceHttp.class);
-	private static final Class<?>[] _getFormInstanceRecordVersionParameterTypes0 =
-		new Class[] { long.class };
+	private static final Class<?>[] _fetchLatestFormInstanceRecordVersionParameterTypes0 =
+		new Class[] { long.class, long.class, String.class, int.class };
 	private static final Class<?>[] _getFormInstanceRecordVersionParameterTypes1 =
-		new Class[] { long.class, String.class };
-	private static final Class<?>[] _getFormInstanceRecordVersionsParameterTypes2 =
 		new Class[] { long.class };
+	private static final Class<?>[] _getFormInstanceRecordVersionParameterTypes2 =
+		new Class[] { long.class, String.class };
 	private static final Class<?>[] _getFormInstanceRecordVersionsParameterTypes3 =
+		new Class[] { long.class };
+	private static final Class<?>[] _getFormInstanceRecordVersionsParameterTypes4 =
 		new Class[] {
 			long.class, int.class, int.class,
 			com.liferay.portal.kernel.util.OrderByComparator.class
 		};
-	private static final Class<?>[] _getFormInstanceRecordVersionsCountParameterTypes4 =
+	private static final Class<?>[] _getFormInstanceRecordVersionsCountParameterTypes5 =
 		new Class[] { long.class };
 }
