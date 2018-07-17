@@ -18,10 +18,12 @@ import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.dynamic.data.mapping.exception.FormInstanceRecordGroupIdException;
 import com.liferay.dynamic.data.mapping.exception.NoSuchFormInstanceRecordException;
 import com.liferay.dynamic.data.mapping.exception.StorageException;
+import com.liferay.dynamic.data.mapping.internal.notification.DDMFormEmailNotificationSender;
 import com.liferay.dynamic.data.mapping.internal.storage.StorageEngineAccessor;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstance;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecord;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecordVersion;
+import com.liferay.dynamic.data.mapping.model.DDMFormInstanceSettings;
 import com.liferay.dynamic.data.mapping.service.base.DDMFormInstanceRecordLocalServiceBaseImpl;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.storage.StorageEngine;
@@ -49,7 +51,8 @@ import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.ResourceBundleUtil;
+import com.liferay.portal.kernel.util.ResourceBundleLoader;
+import com.liferay.portal.kernel.util.ResourceBundleLoaderUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
@@ -140,6 +143,11 @@ public class DDMFormInstanceRecordLocalServiceImpl
 				DDMFormInstanceRecord.class.getName(),
 				ddmFormInstanceRecordVersion.getFormInstanceRecordVersionId(),
 				ddmFormInstanceRecordVersion, serviceContext);
+		}
+
+		if (isEmailNotificationEnabled(ddmFormInstance)) {
+			ddmFormEmailNotificationSender.sendEmailNotification(
+				serviceContext, ddmFormInstanceRecord);
 		}
 
 		return ddmFormInstanceRecord;
@@ -357,10 +365,10 @@ public class DDMFormInstanceRecordLocalServiceImpl
 		DDMFormInstanceRecordVersion ddmFormInstanceRecordVersion =
 			ddmFormInstanceRecord.getLatestFormInstanceRecordVersion();
 
-		if (ddmFormInstanceRecordVersion.isApproved()) {
-			DDMFormInstance ddmFormInstance =
-				ddmFormInstanceRecord.getFormInstance();
+		DDMFormInstance ddmFormInstance =
+			ddmFormInstanceRecord.getFormInstance();
 
+		if (ddmFormInstanceRecordVersion.isApproved()) {
 			long ddmStorageId = storageEngine.create(
 				ddmFormInstance.getCompanyId(),
 				ddmFormInstance.getStructureId(), ddmFormValues,
@@ -408,6 +416,11 @@ public class DDMFormInstanceRecordLocalServiceImpl
 				DDMFormInstanceRecord.class.getName(),
 				ddmFormInstanceRecordVersion.getFormInstanceRecordVersionId(),
 				ddmFormInstanceRecordVersion, serviceContext);
+		}
+
+		if (isEmailNotificationEnabled(ddmFormInstance)) {
+			ddmFormEmailNotificationSender.sendEmailNotification(
+				serviceContext, ddmFormInstanceRecord);
 		}
 
 		return ddmFormInstanceRecord;
@@ -601,11 +614,21 @@ public class DDMFormInstanceRecordLocalServiceImpl
 		return versionParts[0] + StringPool.PERIOD + versionParts[1];
 	}
 
-	protected ResourceBundle getResourceBundle(Locale locale) {
-		Class<?> clazz = getClass();
+	protected ResourceBundle getResourceBundle(Locale defaultLocale) {
+		ResourceBundleLoader portalResourceBundleLoader =
+			ResourceBundleLoaderUtil.getPortalResourceBundleLoader();
 
-		return ResourceBundleUtil.getBundle(
-			"content.Language", locale, clazz.getClassLoader());
+		return portalResourceBundleLoader.loadResourceBundle(defaultLocale);
+	}
+
+	protected boolean isEmailNotificationEnabled(
+			DDMFormInstance ddmFormInstance)
+		throws PortalException {
+
+		DDMFormInstanceSettings formInstanceSettings =
+			ddmFormInstance.getSettingsModel();
+
+		return formInstanceSettings.sendEmailNotification();
 	}
 
 	protected boolean isKeepFormInstanceRecordVersionLabel(
@@ -743,6 +766,9 @@ public class DDMFormInstanceRecordLocalServiceImpl
 					"ID");
 		}
 	}
+
+	@ServiceReference(type = DDMFormEmailNotificationSender.class)
+	protected DDMFormEmailNotificationSender ddmFormEmailNotificationSender;
 
 	@ServiceReference(type = IndexerRegistry.class)
 	protected IndexerRegistry indexerRegistry;

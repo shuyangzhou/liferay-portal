@@ -14,9 +14,8 @@
 
 package com.liferay.poshi.runner.util;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 import java.net.HttpURLConnection;
@@ -24,6 +23,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -94,6 +94,10 @@ public class HttpRequestUtil {
 
 	public static String getResponseBody(HttpResponse httpResponse) {
 		return httpResponse.getResponseBody();
+	}
+
+	public static String getResponseErrorMessage(HttpResponse httpResponse) {
+		return httpResponse.getResponseErrorMessage();
 	}
 
 	public static String getStatusCode(HttpResponse httpResponse) {
@@ -190,34 +194,26 @@ public class HttpRequestUtil {
 					urlConnection.setReadTimeout(timeout);
 				}
 
-				StringBuilder sb = new StringBuilder();
+				int responseCode = httpURLConnection.getResponseCode();
 
-				int bytes = 0;
-				String line = null;
+				if ((responseCode >= 200) && (responseCode <= 399)) {
+					try (InputStream inputStream =
+							httpURLConnection.getInputStream()) {
 
-				try (BufferedReader bufferedReader = new BufferedReader(
-						new InputStreamReader(
-							httpURLConnection.getInputStream()))) {
+						String body = _readInputStream(inputStream, false);
 
-					while ((line = bufferedReader.readLine()) != null) {
-						byte[] lineBytes = line.getBytes();
-
-						bytes += lineBytes.length;
-
-						if (bytes > (30 * 1024 * 1024)) {
-							sb.append(
-								"Response for was truncated due to its size.");
-
-							break;
-						}
-
-						sb.append(line);
-						sb.append("\n");
+						return new HttpResponse(body, null, responseCode);
 					}
 				}
 
-				return new HttpResponse(
-					sb.toString(), httpURLConnection.getResponseCode());
+				try (InputStream errorInputStream =
+						httpURLConnection.getErrorStream()) {
+
+					String errorMessage = _readInputStream(
+						errorInputStream, false);
+
+					return new HttpResponse(null, errorMessage, responseCode);
+				}
 			}
 			catch (IOException ioe) {
 				retryCount++;
@@ -290,8 +286,9 @@ public class HttpRequestUtil {
 
 	public static class HttpResponse {
 
-		public HttpResponse(String body, int statusCode) {
+		public HttpResponse(String body, String errorMessage, int statusCode) {
 			this.body = body;
+			this.errorMessage = errorMessage;
 			this.statusCode = String.valueOf(statusCode);
 		}
 
@@ -299,11 +296,16 @@ public class HttpRequestUtil {
 			return body;
 		}
 
+		public String getResponseErrorMessage() {
+			return errorMessage;
+		}
+
 		public String getStatusCode() {
 			return statusCode;
 		}
 
 		protected String body;
+		protected String errorMessage;
 		protected String statusCode;
 
 	}
@@ -334,6 +336,41 @@ public class HttpRequestUtil {
 		url = url.replace("]", "%5D");
 
 		return url;
+	}
+
+	private static String _readInputStream(
+			InputStream inputStream, boolean resetAfterReading)
+		throws IOException {
+
+		if (resetAfterReading && !inputStream.markSupported()) {
+			Class<?> inputStreamClass = inputStream.getClass();
+
+			System.out.println(
+				"Unable to reset after reading input stream " +
+					inputStreamClass.getName());
+		}
+
+		if (resetAfterReading && inputStream.markSupported()) {
+			inputStream.mark(Integer.MAX_VALUE);
+		}
+
+		StringBuffer sb = new StringBuffer();
+
+		byte[] bytes = new byte[1024];
+
+		int size = inputStream.read(bytes);
+
+		while (size > 0) {
+			sb.append(new String(Arrays.copyOf(bytes, size)));
+
+			size = inputStream.read(bytes);
+		}
+
+		if (resetAfterReading && inputStream.markSupported()) {
+			inputStream.reset();
+		}
+
+		return sb.toString();
 	}
 
 	private static final Integer _MAX_RETRIES_DEFAULT = 3;

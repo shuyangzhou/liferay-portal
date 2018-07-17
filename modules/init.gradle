@@ -6,7 +6,7 @@ import org.gradle.internal.hash.HashValue
 if (System.properties["http.proxyHost"] == "squid.lax.liferay.com") {
 	logger.lifecycle "Using proxy {}:{}.", System.properties["http.proxyHost"], System.properties["http.proxyPort"]
 
-	System.setProperty "repository.url", "http://repository.liferay.com/nexus/content/groups/public"
+	System.setProperty "repository.url", "http://repository-cdn.liferay.com/nexus/content/groups/public"
 }
 
 gradle.buildFinished {

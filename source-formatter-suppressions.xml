@@ -64,6 +64,7 @@
 		<suppress checks="VariableNameCheck" files="modules/private/.*" />
 	</checkstyle>
 	<source-check>
+		<suppress checks="CDNCheck" files="test\.properties" />
 		<suppress checks="JavaCleanUpMethodVariablesCheck" files="util-taglib/src/com/liferay/taglib/util/IncludeTag\.java" />
 		<suppress checks="JavaDeserializationSecurityCheck" files="portal-impl/src/com/liferay/portal/bean/BeanPropertiesImpl\.java" />
 		<suppress checks="JavaDeserializationSecurityCheck" files="portal-kernel/src/com/liferay/portal/kernel/io/AnnotatedObjectInputStream\.java" />
@@ -107,8 +108,11 @@
 		<suppress checks="JSPStylingCheck" files="portal-web/docroot/html/portal/api/jsonws/action\.jsp" />
 		<suppress checks="MethodCallsOrderCheck" files="portal-impl/src/com/liferay/portal/util/PortalImpl\.java" />
 		<suppress checks="PropertiesEmptyLinesCheck" files="build\.properties" />
+		<suppress checks="PropertiesLongLinesCheck" files="portal-impl/src/portal_ja\.properties" />
+		<suppress checks="PropertiesLongLinesCheck" files="portal-impl/src/system\.properties" />
 		<suppress checks="PropertiesSourceFormatterFileCheck" files="source-formatter\.properties" />
 		<suppress checks="PropertiesWhitespaceCheck" files="build\.properties" />
+		<suppress checks="PropertiesWhitespaceCheck" files="sql/lportal\.properties" />
 		<suppress checks="ResourceBundleCheck" files="portal-kernel/src/com/liferay/portal/kernel/util/ResourceBundleUtil\.java" />
 		<suppress checks="StringUtilCheck" files="portal-kernel/test/unit/com/liferay/portal/kernel/util/StringUtilTest\.java" />
 		<suppress checks="XMLIndentationCheck" files="portal-web/test/functional/com/liferay/portalweb/macros/Calendar\.macro" />
@@ -118,6 +122,11 @@
 		<suppress checks="XMLServiceEntityNameCheck" files="portal-impl/src/com/liferay/portal/service\.xml" />
 		<suppress checks="XMLServiceEntityNameCheck" files="portal-impl/src/com/liferay/portlet/exportimport/service\.xml" />
 
+		<!-- Temporary suppressions for portal -->
+
+		<suppress checks="GradleDependencyVersionCheck" files="modules/sdk/.*" />
+		<suppress checks="GradleDependencyVersionCheck" files="modules/util/.*" />
+
 		<!-- Temporary suppressions for private repos and subrepos -->
 
 		<suppress checks="BNDBundleCheck" files="modules/private/.*" />
@@ -126,6 +135,7 @@
 		<suppress checks="JavaAPISignatureCheck" files="modules/private/apps/commerce/.*" />
 		<suppress checks="JavaConfigurationCategoryCheck" files="modules/private/.*" />
 		<suppress checks="JavaDeprecatedKernelClassesCheck" files="modules/private/.*" />
+		<suppress checks="XMLLookAndFeelCompatibilityVersionCheck" files="modules/private/commerce/.*" />
 		<suppress checks="XMLServiceReferenceCheck" files="modules/private/.*" />
 	</source-check>
 </suppressions>

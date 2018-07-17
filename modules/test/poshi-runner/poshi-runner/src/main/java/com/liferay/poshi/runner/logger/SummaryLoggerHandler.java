@@ -566,7 +566,7 @@ public final class SummaryLoggerHandler {
 
 		if (summary != null) {
 			summary = HtmlUtil.escape(
-				(String)PoshiRunnerVariablesUtil.replaceCommandVars(summary));
+				PoshiRunnerVariablesUtil.getReplacedCommandVarsString(summary));
 
 			return _replaceExecuteVars(summary, element);
 		}
