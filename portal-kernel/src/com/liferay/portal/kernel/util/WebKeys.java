@@ -191,6 +191,8 @@ public interface WebKeys {
 
 	public static final String GROUP = "GROUP";
 
+	public static final String HEADER_INVOKER_PORTLET = "HEADER_INVOKER_PORTLET";
+
 	public static final String HTTPS_INITIAL = "HTTPS_INITIAL";
 
 	public static final String I18N_LANGUAGE_CODE = "I18N_LANGUAGE_CODE";
