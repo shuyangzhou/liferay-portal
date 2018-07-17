@@ -14,21 +14,21 @@
 
 package com.liferay.arquillian.extension.junit.bridge;
 
-import com.liferay.arquillian.container.osgi.remote.bundleclasspath.BundleClassPathAuxiliaryAppender;
-import com.liferay.arquillian.container.osgi.remote.commandservice.CommandServiceAuxiliaryAppender;
-import com.liferay.arquillian.container.osgi.remote.instanceproducer.OSGiAllInBundleInstanceProducer;
-import com.liferay.arquillian.container.osgi.remote.processor.OSGiAllInProcessor;
-import com.liferay.arquillian.container.osgi.remote.processor.service.BundleActivatorsManager;
-import com.liferay.arquillian.container.osgi.remote.processor.service.BundleActivatorsManagerImpl;
-import com.liferay.arquillian.container.osgi.remote.processor.service.ImportPackageManager;
-import com.liferay.arquillian.container.osgi.remote.processor.service.ImportPackageManagerImpl;
-import com.liferay.arquillian.container.osgi.remote.processor.service.ManifestManager;
-import com.liferay.arquillian.container.osgi.remote.processor.service.ManifestManagerImpl;
 import com.liferay.arquillian.extension.junit.bridge.container.remote.LiferayRemoteDeployableContainer;
 import com.liferay.arquillian.extension.junit.bridge.deployment.BndDeploymentScenarioGenerator;
 import com.liferay.arquillian.extension.junit.bridge.deployment.JUnitBridgeAuxiliaryArchiveAppender;
 import com.liferay.arquillian.extension.junit.bridge.deployment.NoOpArchiveApplicationProcessor;
 import com.liferay.arquillian.extension.junit.bridge.observer.JUnitBridgeObserver;
+import com.liferay.arquillian.extension.junit.bridge.remote.bundleclasspath.BundleClassPathAuxiliaryAppender;
+import com.liferay.arquillian.extension.junit.bridge.remote.commandservice.CommandServiceAuxiliaryAppender;
+import com.liferay.arquillian.extension.junit.bridge.remote.instanceproducer.OSGiAllInBundleInstanceProducer;
+import com.liferay.arquillian.extension.junit.bridge.remote.processor.OSGiAllInProcessor;
+import com.liferay.arquillian.extension.junit.bridge.remote.processor.service.BundleActivatorsManager;
+import com.liferay.arquillian.extension.junit.bridge.remote.processor.service.BundleActivatorsManagerImpl;
+import com.liferay.arquillian.extension.junit.bridge.remote.processor.service.ImportPackageManager;
+import com.liferay.arquillian.extension.junit.bridge.remote.processor.service.ImportPackageManagerImpl;
+import com.liferay.arquillian.extension.junit.bridge.remote.processor.service.ManifestManager;
+import com.liferay.arquillian.extension.junit.bridge.remote.processor.service.ManifestManagerImpl;
 
 import java.net.URL;
 
