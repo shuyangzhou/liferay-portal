@@ -20,35 +20,7 @@
 	<label>
 		<input class="custom-control-input" data-qa-id="<%= name %>" id="<%= HtmlUtil.escape(domId) %>" <%= disabledString %> <%= checkedString %> type="checkbox" name="<%= HtmlUtil.escape(domName) %>">
 		<span class="custom-control-label">
-			<span class="custom-control-label-text">
-				<%= HtmlUtil.escape(label) %><%= separator %>
-
-				<liferay-staging:popover
-					id="<%= popoverName %>"
-					text="<%= popoverText %>"
-					title="<%= label %>"
-				/>
-
-				<c:if test="<%= items > 0 %>">
-					<span class="staging-taglib-checkbox-items"><%= items + StringPool.SPACE + LanguageUtil.get(request, "items") %></span>
-				</c:if>
-
-				<c:if test="<%= deletions > 0 %>">
-					<span class="deletions staging-taglib-checkbox-deletions"><%= deletions + StringPool.SPACE + LanguageUtil.get(request, "deletions") %></span>
-				</c:if>
-
-				<c:if test="<%= Validator.isNotNull(description) %>">
-					<span class="staging-taglib-checkbox-description"><%= HtmlUtil.escape(description) %></span>
-				</c:if>
-
-				<c:if test="<%= Validator.isNotNull(warning) %>">
-					<span class="staging-taglib-checkbox-warning"><%= HtmlUtil.escape(warning) %></span>
-				</c:if>
-
-				<c:if test="<%= Validator.isNotNull(suggestion) %>">
-					<span class="staging-taglib-checkbox-suggestion"><%= HtmlUtil.escape(suggestion) %></span>
-				</c:if>
-			</span>
+			<%@ include file="/checkbox/extended_label.jspf" %>
 		</span>
 	</label>
 </div>

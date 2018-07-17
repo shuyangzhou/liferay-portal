@@ -395,11 +395,15 @@ public interface JournalFolderLocalService extends BaseLocalService,
 		long folderId);
 
 	/**
-	* @deprecated As of Judson, with no direct replacement
+	* @deprecated As of Judson (7.1.x), with no direct replacement
 	*/
 	@Deprecated
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.portal.kernel.service.SubscriptionLocalService getSubscriptionLocalService();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public String getUniqueFolderName(String uuid, long groupId,
+		long parentFolderId, String name, int count);
 
 	@Indexable(type = IndexableType.REINDEX)
 	public JournalFolder moveFolder(long folderId, long parentFolderId,
@@ -428,7 +432,7 @@ public interface JournalFolderLocalService extends BaseLocalService,
 		throws PortalException;
 
 	/**
-	* @deprecated As of Judson, with no direct replacement
+	* @deprecated As of Judson (7.1.x), with no direct replacement
 	*/
 	@Deprecated
 	public void setSubscriptionLocalService(
