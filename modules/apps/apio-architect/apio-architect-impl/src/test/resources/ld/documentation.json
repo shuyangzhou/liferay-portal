@@ -27,24 +27,28 @@
 			"supportedOperation": [
 				{
 					"@id": "_:root/retrieve",
-					"@type": "Operation",
+					"@type": ["Operation"],
 					"method": "GET",
 					"returns": "Type 1"
 				},
 				{
 					"@id": "_:root/update",
-					"@type": "Operation",
+					"@type": ["ReplaceAction", "Operation"],
 					"method": "PUT",
 					"returns": "Type 1"
 				},
 				{
 					"@id": "_:root/delete",
-					"@type": "Operation",
+					"@type": ["DeleteAction", "Operation"],
 					"method": "DELETE",
 					"returns": "http://www.w3.org/2002/07/owl#Nothing"
 				}
 			],
 			"supportedProperty": [
+				{
+					"@type": "SupportedProperty",
+					"property": "applicationRelativeURL1"
+				},
 				{
 					"@type": "SupportedProperty",
 					"property": "binary1"
@@ -108,6 +112,18 @@
 				{
 					"@type": "SupportedProperty",
 					"property": "numberList2"
+				},
+				{
+					"@type": "SupportedProperty",
+					"property": "relativeURL1"
+				},
+				{
+					"@type": "SupportedProperty",
+					"property": "relativeURL2"
+				},
+				{
+					"@type": "SupportedProperty",
+					"property": "relativeURL3"
 				},
 				{
 					"@type": "SupportedProperty",
@@ -174,24 +190,28 @@
 			"supportedOperation": [
 				{
 					"@id": "_:root/retrieve",
-					"@type": "Operation",
+					"@type": ["Operation"],
 					"method": "GET",
 					"returns": "Type 2"
 				},
 				{
 					"@id": "_:root/update",
-					"@type": "Operation",
+					"@type": ["ReplaceAction", "Operation"],
 					"method": "PUT",
 					"returns": "Type 2"
 				},
 				{
 					"@id": "_:root/delete",
-					"@type": "Operation",
+					"@type": ["DeleteAction", "Operation"],
 					"method": "DELETE",
 					"returns": "http://www.w3.org/2002/07/owl#Nothing"
 				}
 			],
 			"supportedProperty": [
+				{
+					"@type": "SupportedProperty",
+					"property": "applicationRelativeURL1"
+				},
 				{
 					"@type": "SupportedProperty",
 					"property": "binary1"
@@ -255,6 +275,18 @@
 				{
 					"@type": "SupportedProperty",
 					"property": "numberList2"
+				},
+				{
+					"@type": "SupportedProperty",
+					"property": "relativeURL1"
+				},
+				{
+					"@type": "SupportedProperty",
+					"property": "relativeURL2"
+				},
+				{
+					"@type": "SupportedProperty",
+					"property": "relativeURL3"
 				},
 				{
 					"@type": "SupportedProperty",
@@ -322,14 +354,14 @@
 			"subClassOf": "Collection",
 			"supportedOperation": [
 				{
-					"@id": "_:root",
-					"@type": "Operation",
+					"@id": "_:root/retrieve",
+					"@type": ["Operation"],
 					"method": "GET",
 					"returns": "Collection"
 				},
 				{
 					"@id": "_:root/create",
-					"@type": "Operation",
+					"@type": ["CreateAction", "Operation"],
 					"method": "POST",
 					"returns": "Type 1"
 				}
@@ -357,14 +389,14 @@
 			"subClassOf": "Collection",
 			"supportedOperation": [
 				{
-					"@id": "_:root",
-					"@type": "Operation",
+					"@id": "_:root/retrieve",
+					"@type": ["Operation"],
 					"method": "GET",
 					"returns": "Collection"
 				},
 				{
 					"@id": "_:root/create",
-					"@type": "Operation",
+					"@type": ["CreateAction", "Operation"],
 					"method": "POST",
 					"returns": "Type 2"
 				}

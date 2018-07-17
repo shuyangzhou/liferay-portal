@@ -430,13 +430,15 @@
 		<execute function="Click" locator1="Categories#CATEGORY_ENTRY_LINK" />
 
 		<execute macro="SiteAdmin#viewPortletTitle">
-			<var name="portletTitle" value="${categoryName}" />
+			<var name="portletTitle" value="Categories" />
 		</execute>
 
-		<execute function="Click" locator1="Icon#BACK" />
+		<execute function="AssertClick" locator1="Breadcrumb#BREADCRUMB_ENTRY_LINK" value1="${vocabularyName}">
+			<var name="key_breadcrumbName" value="${vocabularyName}" />
+		</execute>
 
 		<execute macro="SiteAdmin#viewPortletTitle">
-			<var name="portletTitle" value="${vocabularyName}" />
+			<var name="portletTitle" value="Categories" />
 		</execute>
 	</command>
 

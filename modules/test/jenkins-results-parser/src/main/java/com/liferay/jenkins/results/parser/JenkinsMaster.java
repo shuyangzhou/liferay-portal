@@ -192,7 +192,7 @@ public class JenkinsMaster implements Comparable<JenkinsMaster> {
 				}
 
 				if (itemJSONObject.has("why")) {
-					String why = itemJSONObject.getString("why");
+					String why = itemJSONObject.optString("why");
 
 					if (why.endsWith("is offline")) {
 						continue;

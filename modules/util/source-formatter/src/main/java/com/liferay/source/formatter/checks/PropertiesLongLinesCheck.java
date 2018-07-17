@@ -19,6 +19,8 @@ import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.util.StringUtil;
 
+import java.io.IOException;
+
 /**
  * @author Hugo Huijser
  */
@@ -27,7 +29,14 @@ public class PropertiesLongLinesCheck extends BaseFileCheck {
 	@Override
 	protected String doProcess(
 			String fileName, String absolutePath, String content)
-		throws Exception {
+		throws IOException {
+
+		if (absolutePath.endsWith("-portal.properties") ||
+			absolutePath.matches(
+				".*\\/portal-impl\\/src\\/portal[\\w-]+\\.properties")) {
+
+			return content;
+		}
 
 		try (UnsyncBufferedReader unsyncBufferedReader =
 				new UnsyncBufferedReader(new UnsyncStringReader(content))) {

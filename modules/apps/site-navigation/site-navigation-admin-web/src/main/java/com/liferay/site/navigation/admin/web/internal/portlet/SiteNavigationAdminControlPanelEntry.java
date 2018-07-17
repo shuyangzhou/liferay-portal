@@ -43,6 +43,10 @@ public class SiteNavigationAdminControlPanelEntry
 			return true;
 		}
 
+		if (group.isLayout()) {
+			return true;
+		}
+
 		return super.hasAccessPermissionDenied(
 			permissionChecker, group, portlet);
 	}
