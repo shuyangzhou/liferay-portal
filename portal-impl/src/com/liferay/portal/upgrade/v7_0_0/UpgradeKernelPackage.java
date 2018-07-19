@@ -135,7 +135,7 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 			updateSB.append(columnName);
 			updateSB.append(" = ? where ");
 			updateSB.append(columnName);
-			updateSB.append(" = ?");
+			updateSB.append(" like ?");
 
 			String updateSQL = updateSB.toString();
 
