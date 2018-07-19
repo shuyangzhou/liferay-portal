@@ -55,8 +55,8 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 				"ResourcePermission", "name", getClassNames(),
 				WildcardMode.SURROUND);
 			upgradeLongTextTable(
-				"UserNotificationEvent", "payload", getClassNames(),
-				WildcardMode.SURROUND);
+				"UserNotificationEvent", "payload", "userNotificationEventId",
+				getClassNames(), WildcardMode.SURROUND);
 
 			upgradeTable(
 				"ListType", "type_", getClassNames(), WildcardMode.TRAILING);
@@ -70,8 +70,8 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 				"ResourcePermission", "name", getResourceNames(),
 				WildcardMode.LEADING);
 			upgradeLongTextTable(
-				"UserNotificationEvent", "payload", getResourceNames(),
-				WildcardMode.LEADING);
+				"UserNotificationEvent", "payload", "userNotificationEventId",
+				getResourceNames(), WildcardMode.LEADING);
 		}
 		catch (Exception e) {
 			throw new UpgradeException(e);
@@ -87,8 +87,8 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 	}
 
 	protected void upgradeLongTextTable(
-			String columnName, String selectSQL, String updateSQL,
-			String[] name)
+			String columnName, String primaryKeyColumnName, String selectSQL,
+			String updateSQL, String[] name)
 		throws SQLException {
 
 		try (PreparedStatement ps1 = connection.prepareStatement(selectSQL);
@@ -104,7 +104,7 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 
 				ps2.setString(1, newValue);
 
-				ps2.setString(2, oldValue);
+				ps2.setLong(2, rs.getLong(primaryKeyColumnName));
 
 				ps2.addBatch();
 			}
@@ -114,8 +114,8 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 	}
 
 	protected void upgradeLongTextTable(
-			String tableName, String columnName, String[][] names,
-			WildcardMode wildcardMode)
+			String tableName, String columnName, String primaryKeyColumnName,
+			String[][] names, WildcardMode wildcardMode)
 		throws Exception {
 
 		DB db = DBManagerUtil.getDB();
@@ -134,15 +134,17 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 			updateSB.append(" set ");
 			updateSB.append(columnName);
 			updateSB.append(" = ? where ");
-			updateSB.append(columnName);
+			updateSB.append(primaryKeyColumnName);
 			updateSB.append(" = ?");
 
 			String updateSQL = updateSB.toString();
 
-			StringBundler selectPrefixSB = new StringBundler(8);
+			StringBundler selectPrefixSB = new StringBundler(10);
 
 			selectPrefixSB.append("select ");
 			selectPrefixSB.append(columnName);
+			selectPrefixSB.append(", ");
+			selectPrefixSB.append(primaryKeyColumnName);
 			selectPrefixSB.append(" from ");
 			selectPrefixSB.append(tableName);
 			selectPrefixSB.append(" where ");
@@ -159,7 +161,9 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 				String selectSQL = selectPrefix.concat(name[0]).concat(
 					selectPostfix);
 
-				upgradeLongTextTable(columnName, selectSQL, updateSQL, name);
+				upgradeLongTextTable(
+					columnName, primaryKeyColumnName, selectSQL, updateSQL,
+					name);
 			}
 		}
 	}
