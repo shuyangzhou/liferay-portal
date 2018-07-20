@@ -60,6 +60,7 @@ import org.osgi.framework.BundleEvent;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.util.tracker.BundleTracker;
 import org.osgi.util.tracker.BundleTrackerCustomizer;
@@ -282,6 +283,11 @@ public class CustomSQLImpl implements CustomSQL {
 		}
 
 		return sql.concat(criteria);
+	}
+
+	@Deactivate
+	public void deactivate() {
+		_bundleTracker.close();
 	}
 
 	@Override
