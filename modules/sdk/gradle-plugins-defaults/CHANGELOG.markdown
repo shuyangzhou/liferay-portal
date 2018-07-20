@@ -3975,8 +3975,8 @@ version 1.3.0.
 ## 5.4.64 - 2018-07-02
 
 ### Added
-- [LPS-82976]: Set the system property `build.profile` to `portal-all` to only
-include projects containing one of the following marker files:
+- [LPS-82976]: Set the system property `build.profile` to `portal-all` so only
+projects containing one of the following marker files are included:
 	- `.lfrbuild-portal`
 	- `.lfrbuild-portal-all`
 	- `.lfrbuild-portal-all-private` when on private branches, or
@@ -4023,7 +4023,7 @@ version 2.2.5.
 ## 5.4.70 - 2018-07-09
 
 ### Fixed
-- [LPS-83300]: The system property `junit.code.coverage` was not being read.
+- [LPS-83300]: Ensure the system property `junit.code.coverage` is being read.
 
 ## 5.4.71 - 2018-07-10
 
@@ -4040,7 +4040,7 @@ to add new ticket ID prefixes for the `buildChangeLog` task.
 ## 5.4.72 - 2018-07-10
 
 ### Fixed
-- [LPS-82960]: Load `ci.properties` file to read `jira.project.keys`.
+- [LPS-82960]: Load the `ci.properties` file to read `jira.project.keys`.
 
 ## 5.4.73 - 2018-07-11
 
@@ -4123,6 +4123,30 @@ the `buildChangeLog` task.
 ### Changed
 - [LPS-83520]: Update the [Liferay Gradle Plugins] dependency to version
 3.12.80.
+
+## 5.4.86 - 2018-07-18
+
+### Changed
+- [LPS-83576]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.81.
+
+## 5.4.87 - 2018-07-18
+
+### Changed
+- [LPS-83483]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.82.
+
+## 5.4.88 - 2018-07-18
+
+### Changed
+- [LPS-74544]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.83.
+
+## 5.4.89 - 2018-07-19
+
+### Changed
+- [LPS-74544]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.84.
 
 [Find Security Bugs]: https://github.com/liferay/liferay-portal/tree/master/modules/third-party/com-h3xstream-findsecbugs
 [Gradle License Report]: https://github.com/jk1/Gradle-License-Report
@@ -4564,7 +4588,9 @@ the `buildChangeLog` task.
 [LPS-83104]: https://issues.liferay.com/browse/LPS-83104
 [LPS-83220]: https://issues.liferay.com/browse/LPS-83220
 [LPS-83300]: https://issues.liferay.com/browse/LPS-83300
+[LPS-83483]: https://issues.liferay.com/browse/LPS-83483
 [LPS-83520]: https://issues.liferay.com/browse/LPS-83520
+[LPS-83576]: https://issues.liferay.com/browse/LPS-83576
 [LRDOCS-2594]: https://issues.liferay.com/browse/LRDOCS-2594
 [LRDOCS-2841]: https://issues.liferay.com/browse/LRDOCS-2841
 [LRDOCS-2981]: https://issues.liferay.com/browse/LRDOCS-2981
