@@ -42,6 +42,8 @@ import com.liferay.portal.kernel.xml.UnsecureSAXReaderUtil;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.net.URL;
+
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
@@ -56,10 +58,11 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
 import org.osgi.framework.FrameworkUtil;
-import org.osgi.framework.SynchronousBundleListener;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.util.tracker.BundleTracker;
+import org.osgi.util.tracker.BundleTrackerCustomizer;
 
 /**
  * @author Brian Wing Shun Chan
@@ -207,19 +210,47 @@ public class CustomSQLImpl implements CustomSQL {
 
 		BundleContext bundleContext = bundle.getBundleContext();
 
-		bundleContext.addBundleListener(
-			new SynchronousBundleListener() {
+		_bundleTracker = new BundleTracker<>(
+			bundleContext, Bundle.ACTIVE,
+			new BundleTrackerCustomizer<Bundle>() {
 
 				@Override
-				public void bundleChanged(BundleEvent bundleEvent) {
+				public Bundle addingBundle(
+					Bundle bundle, BundleEvent bundleEvent) {
+
+					if (_validateSQLSource(bundle, _CUSTOM_SQL_SOURCE) ||
+						_validateSQLSource(
+							bundle, _META_INF0_CUSTOM_SQL_SOURCE)) {
+
+						return bundle;
+					}
+
+					return null;
+				}
+
+				@Override
+				public void modifiedBundle(
+					Bundle bundle, BundleEvent bundleEvent,
+					Bundle trackedBundle) {
+
 					if ((bundleEvent.getType() == BundleEvent.UNINSTALLED) ||
 						(bundleEvent.getType() == BundleEvent.UPDATED)) {
 
-						_sqlPool.remove(bundleEvent.getBundle());
+						_sqlPool.remove(trackedBundle);
 					}
 				}
 
+				@Override
+				public void removedBundle(
+					Bundle bundle, BundleEvent bundleEvent,
+					Bundle trackedBundle) {
+
+					modifiedBundle(bundle, bundleEvent, trackedBundle);
+				}
+
 			});
+
+		_bundleTracker.open();
 	}
 
 	@Override
@@ -869,8 +900,8 @@ public class CustomSQLImpl implements CustomSQL {
 		try {
 			ClassLoader classLoader = clazz.getClassLoader();
 
-			_read(classLoader, "custom-sql/default.xml", sqls);
-			_read(classLoader, "META-INF/custom-sql/default.xml", sqls);
+			_read(classLoader, _CUSTOM_SQL_SOURCE, sqls);
+			_read(classLoader, _META_INF0_CUSTOM_SQL_SOURCE, sqls);
 
 			_sqlPool.put(FrameworkUtil.getBundle(clazz), sqls);
 		}
@@ -916,11 +947,26 @@ public class CustomSQLImpl implements CustomSQL {
 		}
 	}
 
+	private boolean _validateSQLSource(Bundle bundle, String source) {
+		URL url = bundle.getResource(source);
+
+		if (url == null) {
+			return false;
+		}
+
+		return true;
+	}
+
 	private static final boolean _CUSTOM_SQL_AUTO_ESCAPE_WILDCARDS_ENABLED =
 		GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.CUSTOM_SQL_AUTO_ESCAPE_WILDCARDS_ENABLED));
 
+	private static final String _CUSTOM_SQL_SOURCE = "custom-sql/default.xml";
+
 	private static final String _GROUP_BY_CLAUSE = " GROUP BY ";
+
+	private static final String _META_INF0_CUSTOM_SQL_SOURCE =
+		"META-INF/custom-sql/default.xml";
 
 	private static final String _ORDER_BY_CLAUSE = " ORDER BY ";
 
@@ -942,6 +988,7 @@ public class CustomSQLImpl implements CustomSQL {
 
 	private static final Log _log = LogFactoryUtil.getLog(CustomSQLImpl.class);
 
+	private BundleTracker<Bundle> _bundleTracker;
 	private String _functionIsNotNull;
 	private String _functionIsNull;
 
