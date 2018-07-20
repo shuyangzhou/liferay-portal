@@ -12,22 +12,24 @@
  * details.
  */
 
-package com.liferay.document.library.kernel.util;
+package com.liferay.person.apio.internal.query;
 
-import com.liferay.document.library.kernel.model.DLFileVersion;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.service.ServiceContext;
+import java.util.Optional;
 
 /**
- * @author Adolfo Pérez
- * @deprecated As of Judson (7.1.x), with no direct replacement
+ * Instances of this interface represent a query for retrieving persons by name.
+ *
+ * @author Alejandro Hernández
+ * @review
  */
-@Deprecated
-public interface DLFileVersionPolicy {
+public interface FullNameQuery {
 
-	public boolean isKeepFileVersionLabel(
-			DLFileVersion lastDLFileVersion, DLFileVersion latestDLFileVersion,
-			boolean majorVersion, ServiceContext serviceContext)
-		throws PortalException;
+	/**
+	 * Returns the user's name to search for.
+	 *
+	 * @return the user's name
+	 * @review
+	 */
+	public Optional<String> getFullNameOptional();
 
 }
