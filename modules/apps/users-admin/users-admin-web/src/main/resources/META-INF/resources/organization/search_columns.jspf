@@ -55,11 +55,11 @@
 		%>
 
 		<liferay-ui:search-container-column-text>
-			<liferay-frontend:icon-vertical-card
+			<liferay-frontend:vertical-card
 				actionJsp="/organization_action.jsp"
 				actionJspServletContext="<%= application %>"
 				cssClass="entry-display-style"
-				icon="users"
+				imageUrl='<%= themeDisplay.getPathImage() + "/organization_logo?img_id=" + organization.getLogoId() + "&t=" + WebServerServletTokenUtil.getToken(organization.getLogoId()) %>'
 				resultRow="<%= row %>"
 				rowChecker="<%= organizationSearchContainer.getRowChecker() %>"
 				subtitle="<%= LanguageUtil.get(request, organization.getType()) %>"
