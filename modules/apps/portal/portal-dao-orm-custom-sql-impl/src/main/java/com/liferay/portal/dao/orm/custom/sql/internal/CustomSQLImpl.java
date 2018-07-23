@@ -230,23 +230,11 @@ public class CustomSQLImpl implements CustomSQL {
 				}
 
 				@Override
-				public void modifiedBundle(
-					Bundle bundle, BundleEvent bundleEvent,
-					Bundle trackedBundle) {
-
-					if ((bundleEvent.getType() == BundleEvent.UNINSTALLED) ||
-						(bundleEvent.getType() == BundleEvent.UPDATED)) {
-
-						_sqlPool.remove(trackedBundle);
-					}
-				}
-
-				@Override
 				public void removedBundle(
 					Bundle bundle, BundleEvent bundleEvent,
 					Bundle trackedBundle) {
 
-					modifiedBundle(bundle, bundleEvent, trackedBundle);
+					_sqlPool.remove(trackedBundle);
 				}
 
 			});
