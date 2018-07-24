@@ -262,7 +262,7 @@ public final class XMLLoggerHandler {
 							_getFunctionExecuteLoggerElement(childElement));
 					}
 					else if (childElement.attributeValue("groovy-script") !=
-								null) {
+								 null) {
 
 						loggerElement.addChildLoggerElement(
 							_getGroovyScriptLoggerElement(childElement));
@@ -273,7 +273,8 @@ public final class XMLLoggerHandler {
 								childElement, "macro"));
 					}
 					else if (Validator.isNotNull(
-								childElement.attributeValue("macro-desktop")) &&
+								 childElement.attributeValue(
+									 "macro-desktop")) &&
 							 !PropsValues.MOBILE_BROWSER) {
 
 						loggerElement.addChildLoggerElement(
@@ -281,7 +282,7 @@ public final class XMLLoggerHandler {
 								childElement, "macro-desktop"));
 					}
 					else if (Validator.isNotNull(
-								childElement.attributeValue("macro-mobile")) &&
+								 childElement.attributeValue("macro-mobile")) &&
 							 PropsValues.MOBILE_BROWSER) {
 
 						loggerElement.addChildLoggerElement(
