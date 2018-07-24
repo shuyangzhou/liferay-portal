@@ -174,13 +174,13 @@ public class PoshiRunnerExecutor {
 					runMacroExecuteElement(childElement, "macro");
 				}
 				else if ((childElement.attributeValue("macro-desktop") !=
-							null) &&
+							 null) &&
 						 !PropsValues.MOBILE_BROWSER) {
 
 					runMacroExecuteElement(childElement, "macro-desktop");
 				}
 				else if ((childElement.attributeValue("macro-mobile") !=
-							null) &&
+							 null) &&
 						 PropsValues.MOBILE_BROWSER) {
 
 					runMacroExecuteElement(childElement, "macro-mobile");
@@ -871,7 +871,14 @@ public class PoshiRunnerExecutor {
 
 		String varName = element.attributeValue("name");
 
-		PoshiRunnerVariablesUtil.putIntoExecuteMap(varName, varValue);
+		if (PoshiRunnerVariablesUtil.containsKeyInCommandMap(varName)) {
+			PoshiRunnerVariablesUtil.putIntoExecuteMap(
+				varName,
+				PoshiRunnerVariablesUtil.getStringFromCommandMap(varName));
+		}
+		else {
+			PoshiRunnerVariablesUtil.putIntoExecuteMap(varName, varValue);
+		}
 
 		String currentFilePath = PoshiRunnerStackTraceUtil.getCurrentFilePath();
 
