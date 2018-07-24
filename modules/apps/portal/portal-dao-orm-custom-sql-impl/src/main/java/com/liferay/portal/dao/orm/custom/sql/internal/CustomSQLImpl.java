@@ -55,7 +55,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
-import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.wiring.BundleWiring;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -95,7 +94,7 @@ public class CustomSQLImpl implements CustomSQL {
 		"CONVERT(VARCHAR,?) IS NULL";
 
 	@Activate
-	public void activate() throws SQLException {
+	public void activate(BundleContext bundleContext) throws SQLException {
 		_portal.initCustomSQL();
 
 		Connection con = DataAccess.getConnection();
@@ -204,10 +203,6 @@ public class CustomSQLImpl implements CustomSQL {
 		finally {
 			DataAccess.cleanUp(con);
 		}
-
-		Bundle bundle = FrameworkUtil.getBundle(getClass());
-
-		BundleContext bundleContext = bundle.getBundleContext();
 
 		_bundleTracker = new BundleTracker<ClassLoader>(
 			bundleContext, Bundle.ACTIVE, null) {
