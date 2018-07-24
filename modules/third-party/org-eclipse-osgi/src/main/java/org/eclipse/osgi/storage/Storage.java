@@ -12,6 +12,8 @@ package org.eclipse.osgi.storage;
 
 import java.io.*;
 import java.net.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -164,6 +166,21 @@ public class Storage {
 				}
 			}
 		}
+
+		EquinoxConfiguration equinoxConfiguration =
+			container.getConfiguration();
+
+		String osgiHomeProperty =
+			EquinoxConfiguration.PROP_OSGI_HOME + "=" +
+			equinoxConfiguration.getConfiguration(
+				EquinoxConfiguration.PROP_OSGI_HOME);
+
+		URL osgiLocationURL = osgiLocation.getURL();
+
+		Files.write(
+			Paths.get(
+				osgiLocationURL.getPath(), EquinoxConfiguration.PROP_OSGI_HOME),
+			osgiHomeProperty.getBytes());
 	}
 
 	private int getBundleFileLimit(EquinoxConfiguration configuration) {

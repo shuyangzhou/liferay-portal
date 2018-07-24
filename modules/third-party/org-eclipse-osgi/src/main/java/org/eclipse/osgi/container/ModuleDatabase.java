@@ -13,6 +13,8 @@ package org.eclipse.osgi.container;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.*;
@@ -26,6 +28,7 @@ import org.eclipse.osgi.framework.util.ObjectPool;
 import org.eclipse.osgi.internal.container.Capabilities;
 import org.eclipse.osgi.internal.container.ComputeNodeOrder;
 import org.eclipse.osgi.internal.framework.EquinoxConfiguration;
+import org.eclipse.osgi.internal.framework.EquinoxContainer;
 import org.osgi.framework.Constants;
 import org.osgi.framework.Version;
 import org.osgi.framework.namespace.PackageNamespace;
@@ -1011,8 +1014,43 @@ public class ModuleDatabase {
 			int numModules = in.readInt();
 
 			Map<Integer, Object> objectTable = new HashMap<Integer, Object>();
+
+			ModuleContainerAdaptor moduleContainerAdaptor =
+				moduleDatabase.adaptor;
+
+			String storageDir = moduleContainerAdaptor.getProperty(
+				Constants.FRAMEWORK_STORAGE);
+
+			Path path = Paths.get(
+				storageDir, EquinoxContainer.NAME,
+				EquinoxConfiguration.PROP_OSGI_HOME);
+
+			File file = path.toFile();
+
+			String oldOsgiHome = null;
+
+			if (file.exists()) {
+				InputStream inputStream = null;
+
+				Properties properties = new Properties();
+
+				try {
+					inputStream = new FileInputStream(file);
+
+					properties.load(inputStream);
+				}
+				finally {
+					if (inputStream != null) {
+						inputStream.close();
+					}
+				}
+
+				oldOsgiHome = properties.getProperty(
+					EquinoxConfiguration.PROP_OSGI_HOME);
+			}
+
 			for (int i = 0; i < numModules; i++) {
-				readModule(moduleDatabase, in, objectTable);
+				readModule(moduleDatabase, in, objectTable, oldOsgiHome);
 			}
 
 			moduleDatabase.revisionsTimeStamp.set(revisionsTimeStamp);
@@ -1091,10 +1129,21 @@ public class ModuleDatabase {
 			out.writeLong(module.getLastModified());
 		}
 
-		private static void readModule(ModuleDatabase moduleDatabase, DataInputStream in, Map<Integer, Object> objectTable) throws IOException {
+		private static void readModule(ModuleDatabase moduleDatabase, DataInputStream in, Map<Integer, Object> objectTable, String oldOsgiHome) throws IOException {
 			ModuleRevisionBuilder builder = new ModuleRevisionBuilder();
 			int moduleIndex = in.readInt();
 			String location = readString(in);
+
+			ModuleContainerAdaptor moduleContainerAdaptor =
+				moduleDatabase.adaptor;
+
+			String newOsgiHome = moduleContainerAdaptor.getProperty(
+				EquinoxConfiguration.PROP_OSGI_HOME);
+
+			if (!oldOsgiHome.equals(newOsgiHome)) {
+				location = location.replace(oldOsgiHome, newOsgiHome);
+			}
+
 			long id = in.readLong();
 			builder.setSymbolicName(readString(in));
 			builder.setVersion(readVersion(in));
