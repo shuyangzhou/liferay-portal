@@ -225,7 +225,21 @@ public class CustomSQLImpl implements CustomSQL {
 
 				BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
 
-				return bundleWiring.getClassLoader();
+				ClassLoader classLoader = bundleWiring.getClassLoader();
+
+				Map<String, String> sqls = new HashMap<>();
+
+				try {
+					_read(classLoader, _CUSTOM_SQL_SOURCE, sqls);
+					_read(classLoader, _META_INF0_CUSTOM_SQL_SOURCE, sqls);
+				}
+				catch (Exception e) {
+					_log.error(e, e);
+				}
+
+				_sqlPool.put(classLoader, sqls);
+
+				return classLoader;
 			}
 
 			@Override
@@ -282,7 +296,8 @@ public class CustomSQLImpl implements CustomSQL {
 		Map<String, String> sqls = _sqlPool.get(clazz.getClassLoader());
 
 		if (sqls == null) {
-			sqls = _loadCustomSQL(clazz);
+			throw new IllegalArgumentException(
+				"Unable to find custom sql for " + clazz.getName());
 		}
 
 		return sqls.get(id);
@@ -885,24 +900,6 @@ public class CustomSQLImpl implements CustomSQL {
 		}
 
 		return sb.toString();
-	}
-
-	private Map<String, String> _loadCustomSQL(Class<?> clazz) {
-		Map<String, String> sqls = new HashMap<>();
-
-		try {
-			ClassLoader classLoader = clazz.getClassLoader();
-
-			_read(classLoader, _CUSTOM_SQL_SOURCE, sqls);
-			_read(classLoader, _META_INF0_CUSTOM_SQL_SOURCE, sqls);
-
-			_sqlPool.put(classLoader, sqls);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-
-		return sqls;
 	}
 
 	private void _read(
