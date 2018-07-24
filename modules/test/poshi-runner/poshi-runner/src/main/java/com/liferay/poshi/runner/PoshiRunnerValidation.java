@@ -742,7 +742,7 @@ public class PoshiRunnerValidation {
 								":" + element.attributeValue("line-number")));
 				}
 				else if (!PoshiRunnerContext.isPathLocator(
-							locator, namespace) &&
+							 locator, namespace) &&
 						 !PoshiRunnerContext.isPathLocator(
 							 locator, defaultNamespace)) {
 
