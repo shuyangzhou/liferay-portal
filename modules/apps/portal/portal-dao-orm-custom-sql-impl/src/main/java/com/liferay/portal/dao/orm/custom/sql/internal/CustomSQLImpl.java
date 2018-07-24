@@ -56,6 +56,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
 import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.wiring.BundleWiring;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -208,11 +209,13 @@ public class CustomSQLImpl implements CustomSQL {
 
 		BundleContext bundleContext = bundle.getBundleContext();
 
-		_bundleTracker = new BundleTracker<Bundle>(
+		_bundleTracker = new BundleTracker<ClassLoader>(
 			bundleContext, Bundle.ACTIVE, null) {
 
 			@Override
-			public Bundle addingBundle(Bundle bundle, BundleEvent bundleEvent) {
+			public ClassLoader addingBundle(
+				Bundle bundle, BundleEvent bundleEvent) {
+
 				if ((bundle.getResource(_CUSTOM_SQL_SOURCE) == null) &&
 					(bundle.getResource(_META_INF0_CUSTOM_SQL_SOURCE) ==
 						null)) {
@@ -220,14 +223,17 @@ public class CustomSQLImpl implements CustomSQL {
 					return null;
 				}
 
-				return bundle;
+				BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
+
+				return bundleWiring.getClassLoader();
 			}
 
 			@Override
 			public void removedBundle(
-				Bundle bundle, BundleEvent bundleEvent, Bundle trackedBundle) {
+				Bundle bundle, BundleEvent bundleEvent,
+				ClassLoader classLoader) {
 
-				_sqlPool.remove(trackedBundle);
+				_sqlPool.remove(classLoader);
 			}
 
 		};
@@ -273,7 +279,7 @@ public class CustomSQLImpl implements CustomSQL {
 
 	@Override
 	public String get(Class<?> clazz, String id) {
-		Map<String, String> sqls = _sqlPool.get(FrameworkUtil.getBundle(clazz));
+		Map<String, String> sqls = _sqlPool.get(clazz.getClassLoader());
 
 		if (sqls == null) {
 			sqls = _loadCustomSQL(clazz);
@@ -890,7 +896,7 @@ public class CustomSQLImpl implements CustomSQL {
 			_read(classLoader, _CUSTOM_SQL_SOURCE, sqls);
 			_read(classLoader, _META_INF0_CUSTOM_SQL_SOURCE, sqls);
 
-			_sqlPool.put(FrameworkUtil.getBundle(clazz), sqls);
+			_sqlPool.put(classLoader, sqls);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -965,7 +971,7 @@ public class CustomSQLImpl implements CustomSQL {
 
 	private static final Log _log = LogFactoryUtil.getLog(CustomSQLImpl.class);
 
-	private BundleTracker<Bundle> _bundleTracker;
+	private BundleTracker<ClassLoader> _bundleTracker;
 	private String _functionIsNotNull;
 	private String _functionIsNull;
 
@@ -975,7 +981,7 @@ public class CustomSQLImpl implements CustomSQL {
 	@Reference
 	private Portal _portal;
 
-	private final Map<Bundle, Map<String, String>> _sqlPool =
+	private final Map<ClassLoader, Map<String, String>> _sqlPool =
 		new ConcurrentHashMap<>();
 	private boolean _vendorDB2;
 	private boolean _vendorHSQL;
