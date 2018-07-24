@@ -63,7 +63,6 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.util.tracker.BundleTracker;
-import org.osgi.util.tracker.BundleTrackerCustomizer;
 
 /**
  * @author Brian Wing Shun Chan
@@ -211,33 +210,28 @@ public class CustomSQLImpl implements CustomSQL {
 
 		BundleContext bundleContext = bundle.getBundleContext();
 
-		_bundleTracker = new BundleTracker<>(
-			bundleContext, Bundle.ACTIVE,
-			new BundleTrackerCustomizer<Bundle>() {
+		_bundleTracker = new BundleTracker<Bundle>(
+			bundleContext, Bundle.ACTIVE, null) {
 
-				@Override
-				public Bundle addingBundle(
-					Bundle bundle, BundleEvent bundleEvent) {
+			@Override
+			public Bundle addingBundle(Bundle bundle, BundleEvent bundleEvent) {
+				if (_validateSQLSource(bundle, _CUSTOM_SQL_SOURCE) ||
+					_validateSQLSource(bundle, _META_INF0_CUSTOM_SQL_SOURCE)) {
 
-					if (_validateSQLSource(bundle, _CUSTOM_SQL_SOURCE) ||
-						_validateSQLSource(
-							bundle, _META_INF0_CUSTOM_SQL_SOURCE)) {
-
-						return bundle;
-					}
-
-					return null;
+					return bundle;
 				}
 
-				@Override
-				public void removedBundle(
-					Bundle bundle, BundleEvent bundleEvent,
-					Bundle trackedBundle) {
+				return null;
+			}
 
-					_sqlPool.remove(trackedBundle);
-				}
+			@Override
+			public void removedBundle(
+				Bundle bundle, BundleEvent bundleEvent, Bundle trackedBundle) {
 
-			});
+				_sqlPool.remove(trackedBundle);
+			}
+
+		};
 
 		_bundleTracker.open();
 	}
