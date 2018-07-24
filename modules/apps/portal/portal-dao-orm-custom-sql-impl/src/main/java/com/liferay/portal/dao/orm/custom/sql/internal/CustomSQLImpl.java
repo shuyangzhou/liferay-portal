@@ -55,11 +55,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.framework.SynchronousBundleListener;
+import org.osgi.framework.wiring.BundleWiring;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.util.tracker.BundleTracker;
 
 /**
  * @author Brian Wing Shun Chan
@@ -93,7 +94,7 @@ public class CustomSQLImpl implements CustomSQL {
 		"CONVERT(VARCHAR,?) IS NULL";
 
 	@Activate
-	public void activate() throws SQLException {
+	public void activate(BundleContext bundleContext) throws SQLException {
 		_portal.initCustomSQL();
 
 		Connection con = DataAccess.getConnection();
@@ -203,23 +204,51 @@ public class CustomSQLImpl implements CustomSQL {
 			DataAccess.cleanUp(con);
 		}
 
-		Bundle bundle = FrameworkUtil.getBundle(getClass());
+		_bundleTracker = new BundleTracker<>(
+			bundleContext, Bundle.ACTIVE, null) {
 
-		BundleContext bundleContext = bundle.getBundleContext();
+			@Override
+			public ClassLoader addingBundle(
+				Bundle bundle, BundleEvent bundleEvent) {
 
-		bundleContext.addBundleListener(
-			new SynchronousBundleListener() {
+				BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
 
-				@Override
-				public void bundleChanged(BundleEvent bundleEvent) {
-					if ((bundleEvent.getType() == BundleEvent.UNINSTALLED) ||
-						(bundleEvent.getType() == BundleEvent.UPDATED)) {
+				ClassLoader classLoader = bundleWiring.getClassLoader();
 
-						_sqlPool.remove(bundleEvent.getBundle());
-					}
+				if ((classLoader.getResource("custom-sql/default.xml") ==
+						null) ||
+					(classLoader.getResource(
+						"META-INF/custom-sql/default.xml") == null)) {
+
+					return null;
 				}
 
-			});
+				Map<String, String> sqls = new HashMap<>();
+
+				try {
+					_read(classLoader, "custom-sql/default.xml", sqls);
+					_read(classLoader, "META-INF/custom-sql/default.xml", sqls);
+				}
+				catch (Exception e) {
+					_log.error(e, e);
+				}
+
+				_sqlPool.put(classLoader, sqls);
+
+				return classLoader;
+			}
+
+			@Override
+			public void removedBundle(
+				Bundle bundle, BundleEvent bundleEvent,
+				ClassLoader classLoader) {
+
+				_sqlPool.remove(classLoader);
+			}
+
+		};
+
+		_bundleTracker.open();
 	}
 
 	@Override
@@ -253,12 +282,18 @@ public class CustomSQLImpl implements CustomSQL {
 		return sql.concat(criteria);
 	}
 
+	@Deactivate
+	public void deactivate() {
+		_bundleTracker.close();
+	}
+
 	@Override
 	public String get(Class<?> clazz, String id) {
-		Map<String, String> sqls = _sqlPool.get(FrameworkUtil.getBundle(clazz));
+		Map<String, String> sqls = _sqlPool.get(clazz.getClassLoader());
 
 		if (sqls == null) {
-			sqls = _loadCustomSQL(clazz);
+			throw new IllegalArgumentException(
+				"Unable to find custom sql for " + clazz.getName());
 		}
 
 		return sqls.get(id);
@@ -863,24 +898,6 @@ public class CustomSQLImpl implements CustomSQL {
 		return sb.toString();
 	}
 
-	private Map<String, String> _loadCustomSQL(Class<?> clazz) {
-		Map<String, String> sqls = new HashMap<>();
-
-		try {
-			ClassLoader classLoader = clazz.getClassLoader();
-
-			_read(classLoader, "custom-sql/default.xml", sqls);
-			_read(classLoader, "META-INF/custom-sql/default.xml", sqls);
-
-			_sqlPool.put(FrameworkUtil.getBundle(clazz), sqls);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-
-		return sqls;
-	}
-
 	private void _read(
 			ClassLoader classLoader, String source, Map<String, String> sqls)
 		throws Exception {
@@ -942,6 +959,7 @@ public class CustomSQLImpl implements CustomSQL {
 
 	private static final Log _log = LogFactoryUtil.getLog(CustomSQLImpl.class);
 
+	private BundleTracker<ClassLoader> _bundleTracker;
 	private String _functionIsNotNull;
 	private String _functionIsNull;
 
@@ -951,7 +969,7 @@ public class CustomSQLImpl implements CustomSQL {
 	@Reference
 	private Portal _portal;
 
-	private final Map<Bundle, Map<String, String>> _sqlPool =
+	private final Map<ClassLoader, Map<String, String>> _sqlPool =
 		new ConcurrentHashMap<>();
 	private boolean _vendorDB2;
 	private boolean _vendorHSQL;
