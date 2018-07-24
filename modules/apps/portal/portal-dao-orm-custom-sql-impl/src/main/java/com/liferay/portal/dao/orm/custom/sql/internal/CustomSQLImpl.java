@@ -42,8 +42,6 @@ import com.liferay.portal.kernel.xml.UnsecureSAXReaderUtil;
 import java.io.IOException;
 import java.io.InputStream;
 
-import java.net.URL;
-
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
@@ -215,13 +213,14 @@ public class CustomSQLImpl implements CustomSQL {
 
 			@Override
 			public Bundle addingBundle(Bundle bundle, BundleEvent bundleEvent) {
-				if (_validateSQLSource(bundle, _CUSTOM_SQL_SOURCE) ||
-					_validateSQLSource(bundle, _META_INF0_CUSTOM_SQL_SOURCE)) {
+				if ((bundle.getResource(_CUSTOM_SQL_SOURCE) == null) ||
+					(bundle.getResource(_META_INF0_CUSTOM_SQL_SOURCE) ==
+						null)) {
 
-					return bundle;
+					return null;
 				}
 
-				return null;
+				return bundle;
 			}
 
 			@Override
@@ -933,16 +932,6 @@ public class CustomSQLImpl implements CustomSQL {
 				}
 			}
 		}
-	}
-
-	private boolean _validateSQLSource(Bundle bundle, String source) {
-		URL url = bundle.getResource(source);
-
-		if (url == null) {
-			return false;
-		}
-
-		return true;
 	}
 
 	private static final boolean _CUSTOM_SQL_AUTO_ESCAPE_WILDCARDS_ENABLED =
