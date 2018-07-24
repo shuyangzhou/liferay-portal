@@ -171,12 +171,6 @@
 				token="lp.version=${lp.version[@{from.branch.name}]}"
 				value="lp.version=${lp.version[@{to.branch.name}]}"
 			/>
-			<replace
-				failOnNoReplacements="true"
-				file="release.properties"
-				token="lp.version.dtd=${lp.version.dtd[@{from.branch.name}]}"
-				value="lp.version.dtd=${lp.version.dtd[@{to.branch.name}]}"
-			/>
 
 			<!-- test.properties -->
 
