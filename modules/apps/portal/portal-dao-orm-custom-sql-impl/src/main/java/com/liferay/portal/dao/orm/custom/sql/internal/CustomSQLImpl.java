@@ -211,16 +211,16 @@ public class CustomSQLImpl implements CustomSQL {
 			public ClassLoader addingBundle(
 				Bundle bundle, BundleEvent bundleEvent) {
 
-				if ((bundle.getResource(_CUSTOM_SQL_SOURCE) == null) &&
-					(bundle.getResource(_META_INF0_CUSTOM_SQL_SOURCE) ==
+				BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
+
+				ClassLoader classLoader = bundleWiring.getClassLoader();
+
+				if ((classLoader.getResource(_CUSTOM_SQL_SOURCE) == null) &&
+					(classLoader.getResource(_META_INF0_CUSTOM_SQL_SOURCE) ==
 						null)) {
 
 					return null;
 				}
-
-				BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
-
-				ClassLoader classLoader = bundleWiring.getClassLoader();
 
 				Map<String, String> sqls = new HashMap<>();
 
