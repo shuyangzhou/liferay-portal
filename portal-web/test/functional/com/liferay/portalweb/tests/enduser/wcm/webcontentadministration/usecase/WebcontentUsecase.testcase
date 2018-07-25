@@ -2808,7 +2808,7 @@
 		</execute>
 
 		<execute macro="GogoShell#getModuleID">
-			<return from="moduleID" name="moduleID" />
+			<return name="moduleID" />
 			<var name="moduleName" value="com.liferay.journal.content.web" />
 		</execute>
 
@@ -2856,6 +2856,7 @@
 	</command>
 
 	<command name="UseStructureAndTemplateFromParentSiteHierarchy" priority="4">
+		<property name="test.name.skip.portal.instance" value="WebcontentUsecase#UseStructureAndtemplateFromParentSiteHierarchy" />
 		<property name="testray.component.names" value="Web Content Administration" />
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -3694,7 +3695,7 @@
 		<property name="testray.component.names" value="Related Assets,Web Content Administration" />
 
 		<execute macro="TestCase#getSiteName">
-			<return from="siteName" name="siteName" />
+			<return name="siteName" />
 			<var name="siteName" value="${siteName}" />
 		</execute>
 

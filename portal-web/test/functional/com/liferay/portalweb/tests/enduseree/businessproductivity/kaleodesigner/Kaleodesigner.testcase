@@ -522,7 +522,7 @@
 		<description message="This is a use case for LPS-37209." />
 
 		<execute macro="TestCase#getFileContent">
-			<return from="fileContent" name="fileContent" />
+			<return name="fileContent" />
 			<var name="fileName" value="workflow_definition_task_timers.xml" />
 		</execute>
 
@@ -658,6 +658,7 @@
 
 	<command name="DeleteConnectors" priority="5">
 		<property name="portal.acceptance" value="true" />
+		<property name="test.name.skip.portal.instance" value="Kaleodesigner#DeleteConnectors" />
 		<property name="testray.component.names" value="Training" />
 
 		<execute macro="ProductMenu#gotoPortlet">

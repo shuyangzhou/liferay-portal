@@ -2785,7 +2785,8 @@ persisted.scheduler.org.quartz.threadPool.threadCount=1]]></echo>
 
 	<macrodef name="set-portal-impl-system-ext-properties">
 		<sequential>
-			<echo file="portal-impl/test/system-ext.properties">log.sanitizer.enabled=false</echo>
+			<echo file="portal-impl/test/system-ext.properties">com.liferay.portal.kernel.util.ServiceProxyFactory.timeout=600000
+log.sanitizer.enabled=false</echo>
 		</sequential>
 	</macrodef>
 
@@ -6231,7 +6232,7 @@ osb.lcs.portlet.oauth.consumer.secret=${osb.lcs.portlet.oauth.consumer.secret}</
 
 		<if>
 			<not>
-				<contains string="${testray.main.component.name}" substring="Elastic Search Impl" />
+				<contains string="${testray.main.component.name}" substring="Elasticsearch Impl" />
 			</not>
 			<then>
 				<prepare-elasticsearch-configuration />
@@ -6315,6 +6316,8 @@ index.on.startup=true
 setup.wizard.enabled=false
 
 mail.session.jndi.name=
+
+module.framework.properties.initial.system.check.enabled=true
 
 sprite.root.dir=/tmp/sprite
 
@@ -8074,7 +8077,8 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 	</target>
 
 	<target name="prepare-system-ext-properties">
-		<echo file="${app.server.classes.portal.dir}/system-ext.properties">liferay.mode=test
+		<echo file="${app.server.classes.portal.dir}/system-ext.properties">com.liferay.portal.kernel.util.ServiceProxyFactory.timeout=600000
+liferay.mode=test
 log.sanitizer.enabled=false</echo>
 
 	</target>
