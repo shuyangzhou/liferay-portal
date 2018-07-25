@@ -180,7 +180,7 @@ public class PoshiRunnerVariablesUtil {
 		Matcher matcher = _pattern.matcher(token);
 
 		if (matcher.matches() && _executeMap.containsKey(matcher.group(1))) {
-			return getValueFromCommandMap(matcher.group(1));
+			return getValueFromExecuteMap(matcher.group(1));
 		}
 
 		matcher.reset();
