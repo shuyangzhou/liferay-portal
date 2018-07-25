@@ -3,7 +3,7 @@
 	<property name="portal.suite.search.engine" value="elasticsearch6" />
 	<property name="portal.upstream" value="true" />
 	<property name="test.run.environment" value="EE" />
-	<property name="testray.main.component.name" value="Elastic Search Impl" />
+	<property name="testray.main.component.name" value="Elasticsearch Impl" />
 
 	<set-up>
 		<execute macro="TestCase#setUpPortalInstance" />
@@ -85,32 +85,32 @@
 
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="SearchPortlet#searchPG">
+		<execute macro="SearchPortlets#searchEmbedded">
 			<var name="searchTerm" value="Apple" />
 		</execute>
 
-		<execute macro="SearchPortlet#viewSearchResultsPG">
+		<execute macro="SearchResultPortlet#viewSearchResults">
 			<var name="searchAssetTitle" value="Apple" />
 			<var name="searchAssetType" value="Document" />
 		</execute>
 
-		<execute macro="SearchPortlet#viewSearchResultsPG">
+		<execute macro="SearchResultPortlet#viewSearchResults">
 			<var name="searchAssetTitle" value="Apple" />
 			<var name="searchAssetType" value="Message Boards Message" />
 		</execute>
 
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="SearchPortlet#searchPG">
+		<execute macro="SearchPortlets#searchEmbedded">
 			<var name="searchTerm" value="Orange" />
 		</execute>
 
-		<execute macro="SearchPortlet#viewSearchResultsPG">
+		<execute macro="SearchResultPortlet#viewSearchResults">
 			<var name="searchAssetTitle" value="Apple" />
 			<var name="searchAssetType" value="Document" />
 		</execute>
 
-		<execute macro="SearchPortlet#viewSearchResultsPG">
+		<execute macro="SearchResultPortlet#viewSearchResults">
 			<var name="searchAssetTitle" value="Apple" />
 			<var name="searchAssetType" value="Message Boards Message" />
 		</execute>
@@ -133,32 +133,32 @@
 
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="SearchPortlet#searchPG">
+		<execute macro="SearchPortlets#searchEmbedded">
 			<var name="searchTerm" value="Apple" />
 		</execute>
 
-		<execute macro="SearchPortlet#viewSearchResultsPG">
+		<execute macro="SearchResultPortlet#viewSearchResults">
 			<var name="searchAssetTitle" value="Apple" />
 			<var name="searchAssetType" value="Document" />
 		</execute>
 
-		<execute macro="SearchPortlet#viewSearchResultsPG">
+		<execute macro="SearchResultPortlet#viewSearchResults">
 			<var name="searchAssetTitle" value="Apple" />
 			<var name="searchAssetType" value="Message Boards Message" />
 		</execute>
 
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="SearchPortlet#searchPG">
+		<execute macro="SearchPortlets#searchEmbedded">
 			<var name="searchTerm" value="Orange" />
 		</execute>
 
-		<execute macro="SearchPortlet#viewSearchResultsPG">
+		<execute macro="SearchResultPortlet#viewSearchResults">
 			<var name="searchAssetTitle" value="Apple" />
 			<var name="searchAssetType" value="Document" />
 		</execute>
 
-		<execute macro="SearchPortlet#viewSearchResultsPG">
+		<execute macro="SearchResultPortlet#viewSearchResults">
 			<var name="searchAssetTitle" value="Apple" />
 			<var name="searchAssetType" value="Message Boards Message" />
 		</execute>
@@ -203,32 +203,32 @@
 
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="SearchPortlet#searchPG">
+		<execute macro="SearchPortlets#searchEmbedded">
 			<var name="searchTerm" value="Apple" />
 		</execute>
 
-		<execute macro="SearchPortlet#viewSearchResultsPG">
+		<execute macro="SearchResultPortlet#viewSearchResults">
 			<var name="searchAssetTitle" value="Apple" />
 			<var name="searchAssetType" value="Document" />
 		</execute>
 
-		<execute macro="SearchPortlet#viewSearchResultsPG">
+		<execute macro="SearchResultPortlet#viewSearchResults">
 			<var name="searchAssetTitle" value="Apple" />
 			<var name="searchAssetType" value="Message Boards Message" />
 		</execute>
 
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="SearchPortlet#searchPG">
+		<execute macro="SearchPortlets#searchEmbedded">
 			<var name="searchTerm" value="Orange" />
 		</execute>
 
-		<execute macro="SearchPortlet#viewSearchResultsPG">
+		<execute macro="SearchResultPortlet#viewSearchResults">
 			<var name="searchAssetTitle" value="Apple" />
 			<var name="searchAssetType" value="Document" />
 		</execute>
 
-		<execute macro="SearchPortlet#viewSearchResultsPG">
+		<execute macro="SearchResultPortlet#viewSearchResults">
 			<var name="searchAssetTitle" value="Apple" />
 			<var name="searchAssetType" value="Message Boards Message" />
 		</execute>
@@ -248,16 +248,16 @@
 			<var name="nodePort" value="8" />
 		</execute>
 
-		<execute macro="SearchPortlet#searchPG">
+		<execute macro="SearchPortlets#searchEmbedded">
 			<var name="searchTerm" value="Apple" />
 		</execute>
 
-		<execute macro="SearchPortlet#viewSearchResultsPG">
+		<execute macro="SearchResultPortlet#viewSearchResults">
 			<var name="searchAssetTitle" value="Apple" />
 			<var name="searchAssetType" value="Document" />
 		</execute>
 
-		<execute macro="SearchPortlet#viewSearchResultsPG">
+		<execute macro="SearchResultPortlet#viewSearchResults">
 			<var name="searchAssetTitle" value="Apple" />
 			<var name="searchAssetType" value="Message Boards Message" />
 		</execute>
@@ -266,16 +266,16 @@
 			<var name="url" value="http://localhost:9080" />
 		</execute>
 
-		<execute macro="SearchPortlet#searchPG">
+		<execute macro="SearchPortlets#searchEmbedded">
 			<var name="searchTerm" value="Orange" />
 		</execute>
 
-		<execute macro="SearchPortlet#viewSearchResultsPG">
+		<execute macro="SearchResultPortlet#viewSearchResults">
 			<var name="searchAssetTitle" value="Apple" />
 			<var name="searchAssetType" value="Document" />
 		</execute>
 
-		<execute macro="SearchPortlet#viewSearchResultsPG">
+		<execute macro="SearchResultPortlet#viewSearchResults">
 			<var name="searchAssetTitle" value="Apple" />
 			<var name="searchAssetType" value="Message Boards Message" />
 		</execute>

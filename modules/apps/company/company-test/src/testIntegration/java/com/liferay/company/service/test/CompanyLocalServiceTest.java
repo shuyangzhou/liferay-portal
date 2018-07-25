@@ -91,6 +91,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -161,6 +162,51 @@ public class CompanyLocalServiceTest {
 		}
 	}
 
+	@Test
+	public void testAddAndDeleteCompanyWithChildOrganizationSite()
+		throws Exception {
+
+		Company company = addCompany();
+
+		long companyId = company.getCompanyId();
+
+		long userId = UserLocalServiceUtil.getDefaultUserId(companyId);
+
+		Organization companyOrganzation =
+			OrganizationLocalServiceUtil.addOrganization(
+				userId, OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID,
+				RandomTestUtil.randomString(), true);
+
+		Group companyOrganizationGroup = companyOrganzation.getGroup();
+
+		Group group = GroupTestUtil.addGroup(
+			companyId, userId, companyOrganizationGroup.getGroupId());
+
+		CompanyLocalServiceUtil.deleteCompany(company);
+
+		companyOrganzation = OrganizationLocalServiceUtil.fetchOrganization(
+			companyOrganzation.getOrganizationId());
+
+		Assert.assertNull(
+			"The company organization should delete with the company",
+			companyOrganzation);
+
+		companyOrganizationGroup = GroupLocalServiceUtil.fetchGroup(
+			companyOrganizationGroup.getGroupId());
+
+		Assert.assertNull(
+			"The company organization group should delete with the company",
+			companyOrganizationGroup);
+
+		group = GroupLocalServiceUtil.fetchGroup(group.getGroupId());
+
+		Assert.assertNull(
+			"The company organization child group should delete with the " +
+				"company",
+			group);
+	}
+
+	@Ignore
 	@Test
 	public void testAddAndDeleteCompanyWithCompanyGroupStaging()
 		throws Exception {
