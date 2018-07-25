@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.security.permission.resource.PortletResourcePer
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
@@ -794,18 +795,16 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 	 * @param  groupId the primary key of the web content article's group
 	 * @param  folderId the primary key of the web content article folder
 	 * @return the matching web content articles
+	 *
+	 * @deprecated As of Judson (7.1.x), replaced by {@link
+	 * 			   #getArticles(long groupId, long folderId, Locale locale)}
 	 */
+	@Deprecated
 	@Override
 	public List<JournalArticle> getArticles(long groupId, long folderId) {
-		QueryDefinition<JournalArticle> queryDefinition = new QueryDefinition<>(
-			WorkflowConstants.STATUS_ANY);
+		Locale locale = LocaleUtil.getMostRelevantLocale();
 
-		List<Long> folderIds = new ArrayList<>();
-
-		folderIds.add(folderId);
-
-		return journalArticleFinder.filterFindByG_F(
-			groupId, folderIds, queryDefinition);
+		return getArticles(groupId, folderId, locale);
 	}
 
 	/**
@@ -830,21 +829,50 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 	 *         return (not inclusive)
 	 * @param  obc the comparator to order the web content articles
 	 * @return the matching web content articles
+	 *
+	 * @deprecated As of Judson (7.1.x), replaced by {@link
+	 * 			   #getArticles(long groupId, long folderId, Locale locale,
+	 * 			   int start, int end, OrderByComparator obc)}
 	 */
+	@Deprecated
 	@Override
 	public List<JournalArticle> getArticles(
 		long groupId, long folderId, int start, int end,
 		OrderByComparator<JournalArticle> obc) {
 
-		QueryDefinition<JournalArticle> queryDefinition = new QueryDefinition<>(
-			WorkflowConstants.STATUS_ANY, start, end, obc);
+		Locale locale = LocaleUtil.getMostRelevantLocale();
+
+		return getArticles(groupId, folderId, locale, start, end, obc);
+	}
+
+	public List<JournalArticle> getArticles(
+		long groupId, long folderId, Locale locale) {
 
 		List<Long> folderIds = new ArrayList<>();
 
 		folderIds.add(folderId);
 
-		return journalArticleFinder.filterFindByG_F(
-			groupId, folderIds, queryDefinition);
+		QueryDefinition<JournalArticle> queryDefinition = new QueryDefinition<>(
+			WorkflowConstants.STATUS_ANY);
+
+		return journalArticleFinder.filterFindByG_F_L(
+			groupId, folderIds, locale, queryDefinition);
+	}
+
+	@Override
+	public List<JournalArticle> getArticles(
+		long groupId, long folderId, Locale locale, int start, int end,
+		OrderByComparator<JournalArticle> obc) {
+
+		List<Long> folderIds = new ArrayList<>();
+
+		folderIds.add(folderId);
+
+		QueryDefinition<JournalArticle> queryDefinition = new QueryDefinition<>(
+			WorkflowConstants.STATUS_ANY, start, end, obc);
+
+		return journalArticleFinder.filterFindByG_F_L(
+			groupId, folderIds, locale, queryDefinition);
 	}
 
 	/**
@@ -1039,12 +1067,12 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 	 */
 	@Override
 	public int getArticlesCount(long groupId, long folderId, int status) {
-		QueryDefinition<JournalArticle> queryDefinition = new QueryDefinition<>(
-			status);
-
 		List<Long> folderIds = new ArrayList<>();
 
 		folderIds.add(folderId);
+
+		QueryDefinition<JournalArticle> queryDefinition = new QueryDefinition<>(
+			status);
 
 		return journalArticleFinder.filterCountByG_F(
 			groupId, folderIds, queryDefinition);
