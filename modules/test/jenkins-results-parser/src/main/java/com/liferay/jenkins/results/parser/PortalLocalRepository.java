@@ -14,10 +14,28 @@
 
 package com.liferay.jenkins.results.parser;
 
+import java.util.Properties;
+
 /**
  * @author Michael Hashimoto
  */
 public class PortalLocalRepository extends LocalRepository {
+
+	public void setAppServerProperties(Properties properties) {
+		setProperties(_FILE_PATH_APP_SERVER_PROPERTIES, properties);
+	}
+
+	public void setBuildProperties(Properties properties) {
+		setProperties(_FILE_PATH_BUILD_PROPERTIES, properties);
+	}
+
+	public void setSQLProperties(Properties properties) {
+		setProperties(_FILE_PATH_SQL_PROPERTIES, properties);
+	}
+
+	public void setTestProperties(Properties properties) {
+		setProperties(_FILE_PATH_TEST_PROPERTIES, properties);
+	}
 
 	protected PortalLocalRepository(String name, String upstreamBranchName) {
 		super(name, upstreamBranchName);
@@ -33,6 +51,9 @@ public class PortalLocalRepository extends LocalRepository {
 						upstreamBranchName, ". Use ", name, "-ee."));
 			}
 		}
+
+		_setBaseAppServerProperties();
+		_setBaseBuildProperties();
 	}
 
 	@Override
@@ -45,6 +66,45 @@ public class PortalLocalRepository extends LocalRepository {
 
 		return JenkinsResultsParserUtil.combine(
 			name.replace("-ee", ""), "-", upstreamBranchName);
+	}
+
+	private void _setBaseAppServerProperties() {
+		Properties properties = new Properties();
+
+		properties.put("app.server.parent.dir", getDirectory() + "/bundles");
+
+		setAppServerProperties(properties);
+	}
+
+	private void _setBaseBuildProperties() {
+		Properties properties = new Properties();
+
+		properties.put("jsp.precompile", "off");
+		properties.put("jsp.precompile.parallel", "off");
+		properties.put("liferay.home", getDirectory() + "/bundles");
+
+		setBuildProperties(properties);
+	}
+
+	private static final String _FILE_PATH_APP_SERVER_PROPERTIES;
+
+	private static final String _FILE_PATH_BUILD_PROPERTIES;
+
+	private static final String _FILE_PATH_SQL_PROPERTIES;
+
+	private static final String _FILE_PATH_TEST_PROPERTIES;
+
+	static {
+		String hostname = System.getenv("HOSTNAME");
+
+		_FILE_PATH_APP_SERVER_PROPERTIES = JenkinsResultsParserUtil.combine(
+			"app.server.", hostname, ".properties");
+		_FILE_PATH_BUILD_PROPERTIES = JenkinsResultsParserUtil.combine(
+			"build.", hostname, ".properties");
+		_FILE_PATH_TEST_PROPERTIES = JenkinsResultsParserUtil.combine(
+			"test.", hostname, ".properties");
+		_FILE_PATH_SQL_PROPERTIES = JenkinsResultsParserUtil.combine(
+			"sql/sql.", hostname, ".properties");
 	}
 
 }

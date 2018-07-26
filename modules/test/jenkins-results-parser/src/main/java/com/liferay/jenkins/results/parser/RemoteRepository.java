@@ -14,6 +14,8 @@
 
 package com.liferay.jenkins.results.parser;
 
+import com.liferay.jenkins.results.parser.GitWorkingDirectory.Remote;
+
 /**
  * @author Peter Yoo
  */
@@ -32,7 +34,7 @@ public class RemoteRepository extends BaseRepository {
 		return username;
 	}
 
-	protected RemoteRepository(GitWorkingDirectory.Remote remote) {
+	protected RemoteRepository(Remote remote) {
 		this(
 			remote.getHostname(), remote.getRepositoryName(),
 			remote.getUsername());
@@ -42,6 +44,14 @@ public class RemoteRepository extends BaseRepository {
 		String hostname, String repositoryName, String username) {
 
 		super(repositoryName);
+
+		if ((hostname == null) || hostname.isEmpty()) {
+			throw new IllegalArgumentException("Hostname is null");
+		}
+
+		if ((username == null) || username.isEmpty()) {
+			throw new IllegalArgumentException("Username is null");
+		}
 
 		this.hostname = hostname;
 		this.username = username;

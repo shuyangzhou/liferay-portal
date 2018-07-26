@@ -1,0 +1,285 @@
+<definition component-name="portal-security">
+	<property name="portal.release" value="true" />
+	<property name="portal.upstream" value="true" />
+	<property name="testray.main.component.name" value="LDAP" />
+
+	<set-up>
+		<execute macro="TestCase#setUpPortalInstance" />
+
+		<execute macro="User#firstLoginPG" />
+	</set-up>
+
+	<tear-down>
+		<var method="TestPropsUtil#get('test.portal.instance')" name="testPortalInstance" />
+
+		<if>
+			<equals arg1="${testPortalInstance}" arg2="true" />
+			<then>
+				<execute macro="PortalInstances#tearDownCP" />
+			</then>
+			<else>
+				<execute macro="PortalSettings#tearDownAuthenticationCP" />
+
+				<execute macro="Page#tearDownCP" />
+			</else>
+		</if>
+	</tear-down>
+
+	<command name="ImportLDAPUserWithBlankPassword" priority="5">
+		<description message="This is a use case for LPS-65498." />
+
+		<property name="apacheds.blank.user.password.enabled" value="true" />
+		<property name="apacheds.enabled" value="true" />
+		<property name="portal.acceptance" value="true" />
+		<property name="test.name.skip.portal.instance" value="LDAP#ImportLDAPUserWithBlankPassword" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Configuration" />
+			<var name="panel" value="Control Panel" />
+			<var name="portlet" value="Instance Settings" />
+		</execute>
+
+		<execute macro="PortalSettings#addLDAPServer">
+			<var name="LDAPServerName" value="ApacheDS Server" />
+		</execute>
+
+		<execute macro="PortalSettings#editLDAPServer">
+			<var name="LDAPServerName" value="ApacheDS Server" />
+		</execute>
+
+		<execute macro="PortalSettings#testLDAPConnection" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Configuration" />
+			<var name="panel" value="Control Panel" />
+			<var name="portlet" value="Instance Settings" />
+		</execute>
+
+		<var name="enableSettingList" value="enabled,ldapImportEnabled,importOnStartup" />
+
+		<execute macro="PortalSettings#configureLDAPSetting">
+			<var name="enableSettingList" value="${enableSettingList}" />
+		</execute>
+
+		<!-- LPS-71630 -->
+		<execute macro="PortalSettings#configureLDAPSetting">
+			<var name="enableSettingList" value="${enableSettingList}" />
+		</execute>
+
+		<execute macro="PortalSettings#viewEnabledLDAPSetting">
+			<var name="enableSettingList" value="${enableSettingList}" />
+		</execute>
+
+		<execute macro="Portlet#shutdownServer" />
+
+		<execute macro="Portlet#startServer">
+			<var name="deleteLiferayHome" value="false" />
+		</execute>
+
+		<execute macro="User#firstLoginPG" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Users" />
+			<var name="panel" value="Control Panel" />
+			<var name="portlet" value="Users and Organizations" />
+		</execute>
+
+		<execute macro="User#viewCP">
+			<var name="userEmailAddress" value="ldapuseremail@liferay.com" />
+			<var name="userFirstName" value="ldapusergivenname" />
+			<var name="userLastName" value="ldapusersn" />
+			<var name="userScreenName" value="ldapusercn" />
+		</execute>
+
+		<execute function="AssertConsoleTextNotPresent" value1="Unable to encrypt blank password" />
+	</command>
+
+	<command name="ResetFieldsValueForImportedLDAPUser" priority="4">
+		<description message="This is a use case for LPS-30529 and LPS-77948." />
+
+		<property name="apacheds.enabled" value="true" />
+		<property name="test.name.skip.portal.instance" value="LDAP#ResetFieldsValueForImportedLDAPUser" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Configuration" />
+			<var name="panel" value="Control Panel" />
+			<var name="portlet" value="Instance Settings" />
+		</execute>
+
+		<execute macro="PortalSettings#addLDAPServer">
+			<var name="LDAPServerName" value="ApacheDS Server" />
+		</execute>
+
+		<execute macro="PortalSettings#editLDAPServer">
+			<var name="LDAPServerName" value="ApacheDS Server" />
+		</execute>
+
+		<execute macro="PortalSettings#testLDAPConnection" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Configuration" />
+			<var name="panel" value="Control Panel" />
+			<var name="portlet" value="Instance Settings" />
+		</execute>
+
+		<var name="enableSettingList" value="enabled,ldapExportEnabled,ldapImportEnabled,importOnStartup" />
+
+		<execute macro="PortalSettings#configureLDAPSetting">
+			<var name="enableSettingList" value="${enableSettingList}" />
+		</execute>
+
+		<!-- LPS-71630 -->
+		<execute macro="PortalSettings#configureLDAPSetting">
+			<var name="enableSettingList" value="${enableSettingList}" />
+		</execute>
+
+		<execute macro="PortalSettings#viewEnabledLDAPSetting">
+			<var name="enableSettingList" value="${enableSettingList}" />
+		</execute>
+
+		<execute macro="Portlet#shutdownServer" />
+
+		<execute macro="Portlet#startServer">
+			<var name="deleteLiferayHome" value="false" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Users" />
+			<var name="panel" value="Control Panel" />
+			<var name="portlet" value="Users and Organizations" />
+		</execute>
+
+		<execute macro="User#viewCP">
+			<var name="userEmailAddress" value="ldapuseremail@liferay.com" />
+			<var name="userFirstName" value="ldapusergivenname" />
+			<var name="userLastName" value="ldapusersn" />
+			<var name="userScreenName" value="ldapusercn" />
+		</execute>
+
+		<execute macro="Navigator#gotoBack" />
+
+		<execute macro="User#editUserGenderCP">
+			<var name="userGender" value="Female" />
+			<var name="userName" value="ldapusergivenname ldapusersn" />
+		</execute>
+
+		<execute macro="Navigator#gotoBack" />
+
+		<execute macro="User#editUserJobTitleCP">
+			<var name="userJobTitle" value="QA" />
+			<var name="userName" value="ldapusergivenname ldapusersn" />
+		</execute>
+
+		<execute macro="Navigator#gotoBack" />
+
+		<execute macro="User#editUserSuffixCP">
+			<var name="userName" value="ldapusergivenname ldapusersn" />
+			<var name="userSuffix" value="Phd" />
+		</execute>
+
+		<execute macro="Navigator#gotoBack" />
+
+		<execute macro="User#editPasswordCP">
+			<var name="userEmailAddress" value="ldapuseremail@liferay.com" />
+			<var name="userScreenName" value="ldapusercn" />
+		</execute>
+
+		<execute macro="User#logoutAndLoginPG">
+			<var name="userLoginEmailAddress" value="ldapuseremail@liferay.com" />
+			<var name="userLoginFullName" value="ldapusergivenname ldapusersn" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="My Account" />
+			<var name="panel" value="User" />
+			<var name="portlet" value="Account Settings" />
+		</execute>
+
+		<!-- LPS-77948 -->
+
+		<!-- <execute function="AssertElementPresent" locator1="UsersAndOrganizationsEditUser#DETAILS_GENDER_SELECTED" value1="Female">
+			<var name="key_userGender" value="Female" />
+		</execute> -->
+
+		<execute function="AssertTextEquals" locator1="UsersAndOrganizationsEditUser#DETAILS_JOB_TITLE_FIELD" value1="QA" />
+
+		<!-- LPS-77948 -->
+
+		<!-- <execute function="AssertElementPresent" locator1="UsersAndOrganizationsEditUser#DETAILS_SUFFIX_SELECTED" value1="Phd">
+			<var name="key_userSuffix" value="Phd" />
+		</execute> -->
+	</command>
+
+	<command ignore="true" name="ViewHiddenSecurityCredential" priority="4">
+		<description message="This is a use case for LPS-73381." />
+
+		<property name="test.name.skip.portal.instance" value="LDAP#ViewHiddenSecurityCredential" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Configuration" />
+			<var name="panel" value="Control Panel" />
+			<var name="portlet" value="System Settings" />
+		</execute>
+
+		<execute macro="SystemSettings#gotoConfiguration">
+			<var name="configurationCategory" value="LDAP" />
+			<var name="configurationName" value="Servers" />
+			<var name="configurationScope" value="Virtual Instance Scope" />
+		</execute>
+
+		<execute macro="SystemSettings#editSecurityCredential">
+			<var name="securityCredential" value="123456" />
+		</execute>
+	</command>
+
+	<command name="ViewInstanceSettingsEnableLDAPAuthNotAffectSystemSetting" priority="3">
+		<property name="test.name.skip.portal.instance" value="LDAP#ViewInstanceSettingsEnableLDAPAuthNotAffectSystemSetting" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Configuration" />
+			<var name="panel" value="Control Panel" />
+			<var name="portlet" value="System Settings" />
+		</execute>
+
+		<execute macro="SystemSettings#gotoConfiguration">
+			<var name="configurationCategory" value="LDAP" />
+			<var name="configurationName" value="Authentication" />
+			<var name="configurationScope" value="Virtual Instance Scope" />
+		</execute>
+
+		<execute macro="FormFields#viewCheckboxNotChecked">
+			<var name="fieldName" value="enabled" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Configuration" />
+			<var name="panel" value="Control Panel" />
+			<var name="portlet" value="Instance Settings" />
+		</execute>
+
+		<execute macro="PortalSettings#configureLDAPSetting">
+			<var name="enableSettingList" value="enabled" />
+		</execute>
+
+		<!-- LPS-71630 -->
+		<execute macro="PortalSettings#configureLDAPSetting">
+			<var name="enableSettingList" value="enabled" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Configuration" />
+			<var name="panel" value="Control Panel" />
+			<var name="portlet" value="System Settings" />
+		</execute>
+
+		<execute macro="SystemSettings#gotoConfiguration">
+			<var name="configurationCategory" value="LDAP" />
+			<var name="configurationName" value="Authentication" />
+			<var name="configurationScope" value="Virtual Instance Scope" />
+		</execute>
+
+		<execute macro="FormFields#viewCheckboxNotChecked">
+			<var name="fieldName" value="enabled" />
+		</execute>
+	</command>
+</definition>

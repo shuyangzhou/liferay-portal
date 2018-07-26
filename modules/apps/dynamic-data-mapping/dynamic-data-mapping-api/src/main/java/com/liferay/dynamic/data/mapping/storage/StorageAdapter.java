@@ -21,7 +21,9 @@ import com.liferay.portal.kernel.service.ServiceContext;
  * @author Eduardo Lundgren
  * @author Brian Wing Shun Chan
  * @author Marcellus Tavares
+ * @deprecated As of Judson (7.1.x), replaced by {@link DDMStorageAdapter}
  */
+@Deprecated
 public interface StorageAdapter {
 
 	public long create(
