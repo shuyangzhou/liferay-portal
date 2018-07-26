@@ -14,6 +14,7 @@
 
 package com.liferay.jenkins.results.parser.test.clazz.group;
 
+import com.liferay.jenkins.results.parser.GitWorkingDirectoryFactory;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.PluginsGitWorkingDirectory;
 import com.liferay.jenkins.results.parser.PortalTestClassJob;
@@ -64,29 +65,26 @@ public class PluginsBatchTestClassGroup extends BatchTestClassGroup {
 					portalGitWorkingDirectory.getWorkingDirectory(),
 					"release.properties"));
 
-		try {
-			_pluginsGitWorkingDirectory = new PluginsGitWorkingDirectory(
-				portalGitWorkingDirectory.getUpstreamBranchName(),
-				JenkinsResultsParserUtil.getProperty(
-					portalReleaseProperties, "lp.plugins.dir"));
+		_pluginsGitWorkingDirectory =
+			(PluginsGitWorkingDirectory)GitWorkingDirectoryFactory.
+				newGitWorkingDirectory(
+					portalGitWorkingDirectory.getUpstreamBranchName(),
+					JenkinsResultsParserUtil.getProperty(
+						portalReleaseProperties, "lp.plugins.dir"));
 
-			excludesPathMatchers.addAll(
-				getPathMatchers(
-					getFirstPropertyValue("test.batch.plugin.names.excludes"),
-					_pluginsGitWorkingDirectory.getWorkingDirectory()));
+		excludesPathMatchers.addAll(
+			getPathMatchers(
+				getFirstPropertyValue("test.batch.plugin.names.excludes"),
+				_pluginsGitWorkingDirectory.getWorkingDirectory()));
 
-			includesPathMatchers.addAll(
-				getPathMatchers(
-					getFirstPropertyValue("test.batch.plugin.names.includes"),
-					_pluginsGitWorkingDirectory.getWorkingDirectory()));
+		includesPathMatchers.addAll(
+			getPathMatchers(
+				getFirstPropertyValue("test.batch.plugin.names.includes"),
+				_pluginsGitWorkingDirectory.getWorkingDirectory()));
 
-			setTestClasses();
+		setTestClasses();
 
-			setAxisTestClassGroups();
-		}
-		catch (IOException ioe) {
-			throw new RuntimeException(ioe);
-		}
+		setAxisTestClassGroups();
 	}
 
 	protected void setTestClasses() {

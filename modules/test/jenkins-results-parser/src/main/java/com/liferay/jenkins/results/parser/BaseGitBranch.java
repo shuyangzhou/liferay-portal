@@ -15,22 +15,32 @@
 package com.liferay.jenkins.results.parser;
 
 /**
- * @author Peter Yoo
+ * @author Michael Hashimoto
  */
-public class BaseRepository {
+public abstract class BaseGitBranch {
 
-	public BaseRepository(String name) {
+	public String getName() {
+		return _name;
+	}
+
+	public String getSHA() {
+		return _sha;
+	}
+
+	protected BaseGitBranch(String name, String sha) {
 		if ((name == null) || name.isEmpty()) {
 			throw new IllegalArgumentException("Name is null");
 		}
 
-		this.name = name;
+		if ((sha == null) || sha.isEmpty()) {
+			throw new IllegalArgumentException("SHA is null");
+		}
+
+		_name = name;
+		_sha = sha;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	protected final String name;
+	private final String _name;
+	private final String _sha;
 
 }
