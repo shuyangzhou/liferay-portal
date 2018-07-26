@@ -138,6 +138,25 @@
 	${dataFactory.toInsertSQL(dataFactory.newLayoutFriendlyURLModel(_layoutModel))}
 </#macro>
 
+<#macro inserContentLayout
+	_layoutModel
+	_fragmentEntryModels
+>
+	${dataFactory.toInsertSQL(_layoutModel)}
+
+	${dataFactory.toInsertSQL(dataFactory.newLayoutFriendlyURLModel(_layoutModel))}
+
+	<#local fragmentEntryLinkModels = dataFactory.newFragmentEntryLinkModels(_layoutModel, _fragmentEntryModels)>
+
+	<#list fragmentEntryLinkModels as fragmentEntryLinkModel>
+		${dataFactory.toInsertSQL(fragmentEntryLinkModel)}
+
+		<#if fragmentEntryLinkModel.getHtml()?contains("lfr-widget-web-content")>
+			${dataFactory.toInserSQL(dataFactory.newJournalContentPortletPreferencesModel(fragmentEntryLinkModel), true)}
+		</#if>
+	</#list>
+</#macro>
+
 <#macro insertMBDiscussion
 	_classNameId
 	_classPK

@@ -41,13 +41,22 @@
 		_parentDLFolderId=0
 	/>
 
-	<#assign publicLayoutModels = dataFactory.newPublicLayoutModels(groupId) />
+	<#assign fragmentEntryModels = dataFactory.newFragmentEntryModels(groupId) />
 
-	<#list publicLayoutModels as publicLayoutModel>
-		<@insertLayout _layoutModel=publicLayoutModel />
+	<list fragmentEntryModels?keys as fragmentEntryModelName>
+		${dataFactory.toInsertSQL(fragmentEntryModels.get(fragmentEntryModelName))}
+	</list>
+
+	<#assign contentLayoutModels = dataFactory.newContentLayoutModels(groupId) />
+
+	<#list contentLayoutModels as contentLayoutModel>
+		<@insertContentLayout
+			_fragmentEntryModels=fragmentEntryModels
+			_layoutModel=contentLayoutModel
+		/>
 	</#list>
 
-	<#assign publicPageCount = publicLayoutModels?size + dataFactory.maxDDLRecordSetCount + dataFactory.maxJournalArticleCount />
+	<#assign publicPageCount = contentLayoutModels?size + dataFactory.maxDDLRecordSetCount + dataFactory.maxJournalArticleCount />
 
 	<@insertGroup
 		_groupModel=groupModel
