@@ -178,14 +178,14 @@ public class EhcachePortalCacheManager<K extends Serializable, V>
 	protected void doDestroy() {
 		_cacheManager.shutdown();
 
-		if (_managementService != null) {
-			_managementService.dispose();
+		if (_mBeanServerServiceTracker != null) {
+			_mBeanServerServiceTracker.close();
 		}
 
-		if (_serviceTracker != null) {
-			_serviceTracker.close();
+		if (_configuratorSettingsServiceTracker != null) {
+			_configuratorSettingsServiceTracker.close();
 
-			_serviceTracker = null;
+			_configuratorSettingsServiceTracker = null;
 		}
 	}
 
@@ -201,18 +201,15 @@ public class EhcachePortalCacheManager<K extends Serializable, V>
 		return _portalCacheManagerConfiguration;
 	}
 
-	protected void initPortalCacheConfiguratorSettingsServiceTracker(
-		BundleContext bundleContext) {
-
+	protected void initPortalCacheConfiguratorSettingsServiceTracker() {
 		String filterString = StringBundler.concat(
 			"(&(objectClass=", PortalCacheConfiguratorSettings.class.getName(),
 			")(", PortalCacheManager.PORTAL_CACHE_MANAGER_NAME, "=",
 			getPortalCacheManagerName(), "))");
 
-		_serviceTracker = ServiceTrackerFactory.open(
+		_configuratorSettingsServiceTracker = ServiceTrackerFactory.open(
 			bundleContext, filterString,
-			new PortalCacheConfiguratorSettingsServiceTrackerCustomizer(
-				bundleContext));
+			new PortalCacheConfiguratorSettingsServiceTrackerCustomizer());
 	}
 
 	@Override
@@ -282,12 +279,42 @@ public class EhcachePortalCacheManager<K extends Serializable, V>
 				props.get(
 					PropsKeys.EHCACHE_PORTAL_CACHE_MANAGER_JMX_ENABLED))) {
 
-			_managementService = new ManagementService(
-				_cacheManager, mBeanServer, _registerCacheManager,
-				_registerCaches, _registerCacheConfigurations,
-				_registerCacheStatistics);
+			_mBeanServerServiceTracker =
+				new ServiceTracker<MBeanServer, ManagementService>(
+					bundleContext, MBeanServer.class, null) {
 
-			_managementService.init();
+					@Override
+					public ManagementService addingService(
+						ServiceReference<MBeanServer> serviceReference) {
+
+						MBeanServer mBeanServer = bundleContext.getService(
+							serviceReference);
+
+						ManagementService managementService =
+							new ManagementService(
+								_cacheManager, mBeanServer,
+								_registerCacheManager, _registerCaches,
+								_registerCacheConfigurations,
+								_registerCacheStatistics);
+
+						managementService.init();
+
+						return managementService;
+					}
+
+					@Override
+					public void removedService(
+						ServiceReference<MBeanServer> serviceReference,
+						ManagementService managementService) {
+
+						managementService.dispose();
+
+						bundleContext.ungetService(serviceReference);
+					}
+
+				};
+
+			_mBeanServerServiceTracker.open();
 		}
 	}
 
@@ -397,7 +424,7 @@ public class EhcachePortalCacheManager<K extends Serializable, V>
 
 	protected BaseEhcachePortalCacheManagerConfigurator
 		baseEhcachePortalCacheManagerConfigurator;
-	protected MBeanServer mBeanServer;
+	protected BundleContext bundleContext;
 	protected volatile Props props;
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -405,14 +432,15 @@ public class EhcachePortalCacheManager<K extends Serializable, V>
 
 	private CacheManager _cacheManager;
 	private String _configFile;
+	private ServiceTracker<?, ?> _configuratorSettingsServiceTracker;
 	private String _defaultConfigFile;
-	private ManagementService _managementService;
+	private ServiceTracker<MBeanServer, ManagementService>
+		_mBeanServerServiceTracker;
 	private PortalCacheManagerConfiguration _portalCacheManagerConfiguration;
 	private boolean _registerCacheConfigurations = true;
 	private boolean _registerCacheManager = true;
 	private boolean _registerCaches = true;
 	private boolean _registerCacheStatistics = true;
-	private ServiceTracker _serviceTracker;
 	private boolean _stopCacheManagerTimer = true;
 	private boolean _usingDefault;
 
@@ -426,7 +454,7 @@ public class EhcachePortalCacheManager<K extends Serializable, V>
 				serviceReference) {
 
 			PortalCacheConfiguratorSettings portalCacheConfiguratorSettings =
-				_bundleContext.getService(serviceReference);
+				bundleContext.getService(serviceReference);
 
 			reconfigure(portalCacheConfiguratorSettings);
 
@@ -444,16 +472,8 @@ public class EhcachePortalCacheManager<K extends Serializable, V>
 			ServiceReference<PortalCacheConfiguratorSettings> serviceReference,
 			PortalCacheConfiguratorSettings portalCacheConfiguratorSettings) {
 
-			_bundleContext.ungetService(serviceReference);
+			bundleContext.ungetService(serviceReference);
 		}
-
-		private PortalCacheConfiguratorSettingsServiceTrackerCustomizer(
-			BundleContext bundleContext) {
-
-			_bundleContext = bundleContext;
-		}
-
-		private final BundleContext _bundleContext;
 
 	}
 
