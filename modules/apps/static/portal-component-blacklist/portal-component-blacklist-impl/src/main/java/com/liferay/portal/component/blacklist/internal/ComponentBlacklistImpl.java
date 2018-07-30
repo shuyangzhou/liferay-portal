@@ -65,9 +65,9 @@ public class ComponentBlacklistImpl implements ComponentBlacklist {
 
 		_bundleListener = new ComponentDisablingBundleListener();
 
-		_bundleContext.addBundleListener(_bundleListener);
-
 		modified(properties);
+
+		_bundleContext.addBundleListener(_bundleListener);
 	}
 
 	@Deactivate
