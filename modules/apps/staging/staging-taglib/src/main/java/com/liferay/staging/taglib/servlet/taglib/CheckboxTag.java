@@ -30,6 +30,10 @@ import javax.servlet.jsp.PageContext;
 @ProviderType
 public class CheckboxTag extends BaseCssTag {
 
+	/**
+	 * @deprecated As of Judson (7.1.x)
+	 */
+	@Deprecated
 	@Override
 	public int doEndTag() throws JspException {
 		return super.doEndTag();
