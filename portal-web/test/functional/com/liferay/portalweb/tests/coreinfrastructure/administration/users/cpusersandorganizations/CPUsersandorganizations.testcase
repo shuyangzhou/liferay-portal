@@ -417,7 +417,7 @@
 	</command>
 
 	<command name="AddOrganizationTeam" priority="5">
-		<property name="portal.acceptance" value="false" />
+		<property name="portal.acceptance" value="true" />
 		<property name="test.name.skip.portal.instance" value="CPUsersandorganizations#AddOrganizationTeam" />
 		<property name="testray.component.names" value="Training" />
 
@@ -1520,7 +1520,7 @@
 	</command>
 
 	<command name="EditUserSite" priority="5">
-		<property name="portal.acceptance" value="quarantine" />
+		<property name="portal.acceptance" value="true" />
 
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Users" />
@@ -1988,7 +1988,7 @@
 	</command>
 
 	<command name="ViewLoginForActivatedUser" priority="5">
-		<property name="portal.acceptance" value="false" />
+		<property name="portal.acceptance" value="true" />
 		<property name="testray.component.names" value="Training" />
 
 		<execute macro="ProductMenu#gotoPortlet">

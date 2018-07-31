@@ -231,7 +231,7 @@
 	</command>
 
 	<command name="DeleteSiteTemplateAssociatedWithASite" priority="4">
-		<property name="portal.acceptance" value="quarantine" />
+		<property name="portal.acceptance" value="true" />
 
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Sites" />
@@ -318,7 +318,7 @@
 	</command>
 
 	<command name="EditSiteTemplateStatus" priority="5">
-		<property name="portal.acceptance" value="quarantine" />
+		<property name="portal.acceptance" value="true" />
 
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Sites" />
