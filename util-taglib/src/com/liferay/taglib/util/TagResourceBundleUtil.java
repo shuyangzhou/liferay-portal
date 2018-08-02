@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.ResourceBundleLoaderUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.Collections;
@@ -30,7 +29,6 @@ import java.util.ResourceBundle;
 
 import javax.portlet.PortletConfig;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 
@@ -97,18 +95,14 @@ public class TagResourceBundleUtil {
 				WebKeys.RESOURCE_BUNDLE_LOADER);
 
 		if (resourceBundleLoader == null) {
-			ServletContext servletContext = request.getServletContext();
+			PortletConfig portletConfig = (PortletConfig)request.getAttribute(
+				JavaConstants.JAVAX_PORTLET_CONFIG);
 
-			String servletContextName = servletContext.getServletContextName();
-
-			if (Validator.isNull(servletContextName)) {
-				return null;
+			if (portletConfig != null) {
+				resourceBundleLoader = locale -> {
+					return portletConfig.getResourceBundle(locale);
+				};
 			}
-
-			resourceBundleLoader =
-				ResourceBundleLoaderUtil.
-					getResourceBundleLoaderByServletContextName(
-						servletContextName);
 		}
 
 		if (resourceBundleLoader == null) {
