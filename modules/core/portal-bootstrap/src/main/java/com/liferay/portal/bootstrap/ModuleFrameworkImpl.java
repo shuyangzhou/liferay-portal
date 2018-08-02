@@ -1405,6 +1405,12 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		final DefaultNoticeableFuture<FrameworkEvent> defaultNoticeableFuture =
 			new DefaultNoticeableFuture<>();
 
+		for (Bundle bundle : bundles.values()) {
+			if (!_isFragmentBundle(bundle)) {
+				bundle.stop();
+			}
+		}
+
 		frameworkStartLevel.setStartLevel(
 			PropsValues.MODULE_FRAMEWORK_BEGINNING_START_LEVEL,
 			new FrameworkListener() {
