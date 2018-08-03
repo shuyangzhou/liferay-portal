@@ -1,0 +1,39 @@
+{
+	"@context": [
+		{"@vocab": "http://schema.org/"},
+		"https://www.w3.org/ns/hydra/core#"
+	],
+	"@id": "_:batch/root",
+	"@type": ["Collection"],
+	"member": [
+		{
+			"@id": "localhost/o/api/p/model/1",
+			"@type": ["Type 1", "Type 2"]
+		},
+		{
+			"@id": "localhost/o/api/p/model/2",
+			"@type": ["Type 1", "Type 2"]
+		},
+		{
+			"@id": "localhost/o/api/p/model/3",
+			"@type": ["Type 1", "Type 2"]
+		},
+		{
+			"@id": "localhost/o/api/p/model/4",
+			"@type": ["Type 1", "Type 2"]
+		},
+		{
+			"@id": "localhost/o/api/p/model/5",
+			"@type": ["Type 1", "Type 2"]
+		},
+		{
+			"@id": "localhost/o/api/p/model/6",
+			"@type": ["Type 1", "Type 2"]
+		},
+		{
+			"@id": "localhost/o/api/p/model/7",
+			"@type": ["Type 1", "Type 2"]
+		}
+	],
+	"totalItems": 7
+}

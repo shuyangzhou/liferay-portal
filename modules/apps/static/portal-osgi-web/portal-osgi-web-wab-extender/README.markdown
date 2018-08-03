@@ -1,3 +1,5 @@
+Pulls to patch org.eclipse.equinox.http.servlet:
+
 LPS-72500 https://github.com/rotty3000/rt.equinox.bundles/pull/19
 LPS-74806 https://github.com/rotty3000/rt.equinox.bundles/pull/20
 LPS-76513 https://github.com/rotty3000/rt.equinox.bundles/pull/21

@@ -15,11 +15,13 @@
 package com.liferay.apio.architect.impl.routes;
 
 import static com.liferay.apio.architect.impl.routes.RoutesTestUtil.FORM_BUILDER_FUNCTION;
+import static com.liferay.apio.architect.impl.routes.RoutesTestUtil.IDENTIFIER_FUNCTION;
 import static com.liferay.apio.architect.impl.routes.RoutesTestUtil.IDENTIFIER_TO_PATH_FUNCTION;
 import static com.liferay.apio.architect.impl.routes.RoutesTestUtil.PAGINATION;
 import static com.liferay.apio.architect.impl.routes.RoutesTestUtil.REQUEST_PROVIDE_FUNCTION;
 import static com.liferay.apio.architect.impl.routes.RoutesTestUtil.hasNestedAddingPermissionFunction;
 import static com.liferay.apio.architect.impl.routes.RoutesTestUtil.keyValueFrom;
+import static com.liferay.apio.architect.impl.unsafe.Unsafe.unsafeCast;
 import static com.liferay.apio.architect.operation.HTTPMethod.POST;
 
 import static com.spotify.hamcrest.optional.OptionalMatchers.emptyOptional;
@@ -27,16 +29,21 @@ import static com.spotify.hamcrest.optional.OptionalMatchers.optionalWithValue;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
 
+import com.liferay.apio.architect.alias.routes.NestedBatchCreateItemFunction;
 import com.liferay.apio.architect.alias.routes.NestedCreateItemFunction;
 import com.liferay.apio.architect.alias.routes.NestedGetPageFunction;
+import com.liferay.apio.architect.batch.BatchResult;
 import com.liferay.apio.architect.form.Body;
 import com.liferay.apio.architect.form.Form;
 import com.liferay.apio.architect.functional.Try;
+import com.liferay.apio.architect.impl.operation.BatchCreateOperation;
+import com.liferay.apio.architect.impl.operation.CreateOperation;
 import com.liferay.apio.architect.impl.routes.NestedCollectionRoutesImpl.BuilderImpl;
 import com.liferay.apio.architect.operation.Operation;
 import com.liferay.apio.architect.pagination.Page;
@@ -47,6 +54,7 @@ import com.liferay.apio.architect.routes.NestedCollectionRoutes.Builder;
 import com.liferay.apio.architect.single.model.SingleModel;
 import com.liferay.apio.architect.uri.Path;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +75,7 @@ public class NestedCollectionRoutesImplTest {
 			"name", "nested", REQUEST_PROVIDE_FUNCTION,
 			__ -> {
 			},
-			__ -> null, IDENTIFIER_TO_PATH_FUNCTION);
+			__ -> null, IDENTIFIER_TO_PATH_FUNCTION, IDENTIFIER_FUNCTION);
 
 		NestedCollectionRoutes<String, Long, Long> nestedCollectionRoutes =
 			builder.build();
@@ -84,12 +92,38 @@ public class NestedCollectionRoutesImplTest {
 	}
 
 	@Test
+	public void testFiveParameterBatchCreatorCreatesValidRoutes() {
+		Set<String> neededProviders = new TreeSet<>();
+
+		Builder<String, Long, Long> builder = new BuilderImpl<>(
+			"name", "nested", REQUEST_PROVIDE_FUNCTION, neededProviders::add,
+			__ -> null, IDENTIFIER_TO_PATH_FUNCTION, IDENTIFIER_FUNCTION);
+
+		NestedCollectionRoutes<String, Long, Long> nestedCollectionRoutes =
+			builder.addCreator(
+				this::_testAndReturnFourParameterCreatorRoute,
+				this::_testAndReturnFourParameterBatchCreatorRoute,
+				String.class, Long.class, Boolean.class, Integer.class,
+				hasNestedAddingPermissionFunction(), FORM_BUILDER_FUNCTION
+			).build();
+
+		assertThat(
+			neededProviders,
+			contains(
+				Boolean.class.getName(), Integer.class.getName(),
+				Long.class.getName(), String.class.getName()));
+
+		_testNestedCollectionRoutesCreator(nestedCollectionRoutes);
+		_testNestedCollectionRoutesBatchCreator(nestedCollectionRoutes);
+	}
+
+	@Test
 	public void testFiveParameterBuilderMethodsCreatesValidRoutes() {
 		Set<String> neededProviders = new TreeSet<>();
 
 		Builder<String, Long, Long> builder = new BuilderImpl<>(
 			"name", "nested", REQUEST_PROVIDE_FUNCTION, neededProviders::add,
-			__ -> null, IDENTIFIER_TO_PATH_FUNCTION);
+			__ -> null, IDENTIFIER_TO_PATH_FUNCTION, IDENTIFIER_FUNCTION);
 
 		NestedCollectionRoutes<String, Long, Long> nestedCollectionRoutes =
 			builder.addCreator(
@@ -111,12 +145,38 @@ public class NestedCollectionRoutesImplTest {
 	}
 
 	@Test
+	public void testFourParameterBatchCreatorCreatesValidRoutes() {
+		Set<String> neededProviders = new TreeSet<>();
+
+		Builder<String, Long, Long> builder = new BuilderImpl<>(
+			"name", "nested", REQUEST_PROVIDE_FUNCTION, neededProviders::add,
+			__ -> null, IDENTIFIER_TO_PATH_FUNCTION, IDENTIFIER_FUNCTION);
+
+		NestedCollectionRoutes<String, Long, Long> nestedCollectionRoutes =
+			builder.addCreator(
+				this::_testAndReturnThreeParameterCreatorRoute,
+				this::_testAndReturnThreeParameterBatchCreatorRoute,
+				String.class, Long.class, Boolean.class,
+				hasNestedAddingPermissionFunction(), FORM_BUILDER_FUNCTION
+			).build();
+
+		assertThat(
+			neededProviders,
+			contains(
+				Boolean.class.getName(), Long.class.getName(),
+				String.class.getName()));
+
+		_testNestedCollectionRoutesCreator(nestedCollectionRoutes);
+		_testNestedCollectionRoutesBatchCreator(nestedCollectionRoutes);
+	}
+
+	@Test
 	public void testFourParameterBuilderMethodsCreatesValidRoutes() {
 		Set<String> neededProviders = new TreeSet<>();
 
 		Builder<String, Long, Long> builder = new BuilderImpl<>(
 			"name", "nested", REQUEST_PROVIDE_FUNCTION, neededProviders::add,
-			__ -> null, IDENTIFIER_TO_PATH_FUNCTION);
+			__ -> null, IDENTIFIER_TO_PATH_FUNCTION, IDENTIFIER_FUNCTION);
 
 		NestedCollectionRoutes<String, Long, Long> nestedCollectionRoutes =
 			builder.addCreator(
@@ -138,12 +198,33 @@ public class NestedCollectionRoutesImplTest {
 	}
 
 	@Test
+	public void testOneParameterBatchCreatorCreatesValidRoutes() {
+		Set<String> neededProviders = new TreeSet<>();
+
+		Builder<String, Long, Long> builder = new BuilderImpl<>(
+			"name", "nested", REQUEST_PROVIDE_FUNCTION, neededProviders::add,
+			__ -> null, IDENTIFIER_TO_PATH_FUNCTION, IDENTIFIER_FUNCTION);
+
+		NestedCollectionRoutes<String, Long, Long> nestedCollectionRoutes =
+			builder.addCreator(
+				this::_testAndReturnNoParameterCreatorRoute,
+				this::_testAndReturnNoParameterBatchCreatorRoute,
+				hasNestedAddingPermissionFunction(), FORM_BUILDER_FUNCTION
+			).build();
+
+		assertThat(neededProviders.size(), is(0));
+
+		_testNestedCollectionRoutesCreator(nestedCollectionRoutes);
+		_testNestedCollectionRoutesBatchCreator(nestedCollectionRoutes);
+	}
+
+	@Test
 	public void testOneParameterBuilderMethodsCreatesValidRoutes() {
 		Set<String> neededProviders = new TreeSet<>();
 
 		Builder<String, Long, Long> builder = new BuilderImpl<>(
 			"name", "nested", REQUEST_PROVIDE_FUNCTION, neededProviders::add,
-			__ -> null, IDENTIFIER_TO_PATH_FUNCTION);
+			__ -> null, IDENTIFIER_TO_PATH_FUNCTION, IDENTIFIER_FUNCTION);
 
 		NestedCollectionRoutes<String, Long, Long> nestedCollectionRoutes =
 			builder.addCreator(
@@ -159,12 +240,36 @@ public class NestedCollectionRoutesImplTest {
 	}
 
 	@Test
+	public void testThreeParameterBatchCreatorCreatesValidRoutes() {
+		Set<String> neededProviders = new TreeSet<>();
+
+		Builder<String, Long, Long> builder = new BuilderImpl<>(
+			"name", "nested", REQUEST_PROVIDE_FUNCTION, neededProviders::add,
+			__ -> null, IDENTIFIER_TO_PATH_FUNCTION, IDENTIFIER_FUNCTION);
+
+		NestedCollectionRoutes<String, Long, Long> nestedCollectionRoutes =
+			builder.addCreator(
+				this::_testAndReturnTwoParameterCreatorRoute,
+				this::_testAndReturnTwoParameterBatchCreatorRoute, String.class,
+				Long.class, hasNestedAddingPermissionFunction(),
+				FORM_BUILDER_FUNCTION
+			).build();
+
+		assertThat(
+			neededProviders,
+			contains(Long.class.getName(), String.class.getName()));
+
+		_testNestedCollectionRoutesCreator(nestedCollectionRoutes);
+		_testNestedCollectionRoutesBatchCreator(nestedCollectionRoutes);
+	}
+
+	@Test
 	public void testThreeParameterBuilderMethodsCreatesValidRoutes() {
 		Set<String> neededProviders = new TreeSet<>();
 
 		Builder<String, Long, Long> builder = new BuilderImpl<>(
 			"name", "nested", REQUEST_PROVIDE_FUNCTION, neededProviders::add,
-			__ -> null, IDENTIFIER_TO_PATH_FUNCTION);
+			__ -> null, IDENTIFIER_TO_PATH_FUNCTION, IDENTIFIER_FUNCTION);
 
 		NestedCollectionRoutes<String, Long, Long> nestedCollectionRoutes =
 			builder.addCreator(
@@ -184,12 +289,33 @@ public class NestedCollectionRoutesImplTest {
 	}
 
 	@Test
+	public void testTwoParameterBatchCreatorCreatesValidRoutes() {
+		Set<String> neededProviders = new TreeSet<>();
+
+		Builder<String, Long, Long> builder = new BuilderImpl<>(
+			"name", "nested", REQUEST_PROVIDE_FUNCTION, neededProviders::add,
+			__ -> null, IDENTIFIER_TO_PATH_FUNCTION, IDENTIFIER_FUNCTION);
+
+		NestedCollectionRoutes<String, Long, Long> nestedCollectionRoutes =
+			builder.addCreator(
+				this::_testAndReturnOneParameterCreatorRoute,
+				this::_testAndReturnOneParameterBatchCreatorRoute, String.class,
+				hasNestedAddingPermissionFunction(), FORM_BUILDER_FUNCTION
+			).build();
+
+		assertThat(neededProviders, contains(String.class.getName()));
+
+		_testNestedCollectionRoutesCreator(nestedCollectionRoutes);
+		_testNestedCollectionRoutesBatchCreator(nestedCollectionRoutes);
+	}
+
+	@Test
 	public void testTwoParameterBuilderMethodsCreatesValidRoutes() {
 		Set<String> neededProviders = new TreeSet<>();
 
 		Builder<String, Long, Long> builder = new BuilderImpl<>(
 			"name", "nested", REQUEST_PROVIDE_FUNCTION, neededProviders::add,
-			__ -> null, IDENTIFIER_TO_PATH_FUNCTION);
+			__ -> null, IDENTIFIER_TO_PATH_FUNCTION, IDENTIFIER_FUNCTION);
 
 		NestedCollectionRoutes<String, Long, Long> nestedCollectionRoutes =
 			builder.addCreator(
@@ -202,6 +328,16 @@ public class NestedCollectionRoutesImplTest {
 		assertThat(neededProviders, contains(String.class.getName()));
 
 		_testNestedCollectionRoutes(nestedCollectionRoutes);
+	}
+
+	private List<Long> _testAndReturnFourParameterBatchCreatorRoute(
+		Long identifier, List<Map<String, Object>> bodies, String string,
+		Long aLong, Boolean aBoolean, Integer integer) {
+
+		assertThat(integer, is(2017));
+
+		return _testAndReturnThreeParameterBatchCreatorRoute(
+			identifier, bodies, string, aLong, aBoolean);
 	}
 
 	private String _testAndReturnFourParameterCreatorRoute(
@@ -224,6 +360,17 @@ public class NestedCollectionRoutesImplTest {
 			pagination, identifier, string, aLong, aBoolean);
 	}
 
+	private List<Long> _testAndReturnNoParameterBatchCreatorRoute(
+		Long identifier, List<Map<String, Object>> bodies) {
+
+		assertThat(identifier, is(42L));
+
+		assertThat(bodies.get(0).get("key"), is(keyValueFrom(_singleBody)));
+		assertThat(bodies.get(1).get("key"), is(keyValueFrom(_singleBody)));
+
+		return Arrays.asList(42L, 42L);
+	}
+
 	private String _testAndReturnNoParameterCreatorRoute(
 		Long identifier, Map<String, Object> body) {
 
@@ -243,6 +390,14 @@ public class NestedCollectionRoutesImplTest {
 		return new PageItems<>(Collections.singletonList("Apio"), 1);
 	}
 
+	private List<Long> _testAndReturnOneParameterBatchCreatorRoute(
+		Long identifier, List<Map<String, Object>> bodies, String string) {
+
+		assertThat(string, is("Apio"));
+
+		return _testAndReturnNoParameterBatchCreatorRoute(identifier, bodies);
+	}
+
 	private String _testAndReturnOneParameterCreatorRoute(
 		Long identifier, Map<String, Object> body, String string) {
 
@@ -257,6 +412,16 @@ public class NestedCollectionRoutesImplTest {
 		assertThat(string, is("Apio"));
 
 		return _testAndReturnNoParameterGetterRoute(pagination, identifier);
+	}
+
+	private List<Long> _testAndReturnThreeParameterBatchCreatorRoute(
+		Long identifier, List<Map<String, Object>> bodies, String string,
+		Long aLong, Boolean aBoolean) {
+
+		assertThat(aBoolean, is(true));
+
+		return _testAndReturnTwoParameterBatchCreatorRoute(
+			identifier, bodies, string, aLong);
 	}
 
 	private String _testAndReturnThreeParameterCreatorRoute(
@@ -277,6 +442,16 @@ public class NestedCollectionRoutesImplTest {
 
 		return _testAndReturnTwoParameterGetterRoute(
 			pagination, identifier, string, aLong);
+	}
+
+	private List<Long> _testAndReturnTwoParameterBatchCreatorRoute(
+		Long identifier, List<Map<String, Object>> bodies, String string,
+		Long aLong) {
+
+		assertThat(aLong, is(42L));
+
+		return _testAndReturnOneParameterBatchCreatorRoute(
+			identifier, bodies, string);
 	}
 
 	private String _testAndReturnTwoParameterCreatorRoute(
@@ -301,7 +476,60 @@ public class NestedCollectionRoutesImplTest {
 
 		_testNestedCollectionRoutesCreator(nestedCollectionRoutes);
 
+		_testNestedCollectionRoutesBatchCreator(nestedCollectionRoutes);
+
 		_testNestedCollectionRoutesGetter(nestedCollectionRoutes);
+	}
+
+	private void _testNestedCollectionRoutesBatchCreator(
+		NestedCollectionRoutes<String, Long, Long> nestedCollectionRoutes) {
+
+		Optional<Form> formOptional = nestedCollectionRoutes.getFormOptional();
+
+		if (!formOptional.isPresent()) {
+			throw new AssertionError("Batch Nested Create Form not present");
+		}
+
+		Form form = formOptional.get();
+
+		assertThat(form.getId(), is("c/name/nested"));
+
+		List<Map> list = unsafeCast(form.getList(_batchBody));
+
+		assertThat(list, hasSize(2));
+
+		assertThat(list.get(0).get("key"), is(keyValueFrom(_singleBody)));
+		assertThat(list.get(1).get("key"), is(keyValueFrom(_singleBody)));
+
+		Optional<NestedBatchCreateItemFunction<Long, Long>>
+			batchCreateItemFunctionOptional =
+				nestedCollectionRoutes.
+					getNestedBatchCreateItemFunctionOptional();
+
+		if (!batchCreateItemFunctionOptional.isPresent()) {
+			throw new AssertionError(
+				"NestedBatchCreateItemFunction not present");
+		}
+
+		NestedBatchCreateItemFunction<Long, Long>
+			nestedBatchCreateItemFunction =
+				batchCreateItemFunctionOptional.get();
+
+		BatchResult<Long> batchResult = nestedBatchCreateItemFunction.apply(
+			null
+		).apply(
+			_batchBody
+		).apply(
+			42L
+		).getUnchecked();
+
+		assertThat(batchResult.resourceName, is("nested"));
+
+		List<Long> identifiers = batchResult.getIdentifiers();
+
+		assertThat(identifiers, hasSize(2));
+		assertThat(identifiers.get(0), is(42L));
+		assertThat(identifiers.get(1), is(42L));
 	}
 
 	private void _testNestedCollectionRoutesCreator(
@@ -378,18 +606,39 @@ public class NestedCollectionRoutesImplTest {
 
 		List<Operation> operations = page.getOperations();
 
-		assertThat(operations, hasSize(1));
+		assertThat(operations, hasSize(2));
 
-		Operation operation = operations.get(0);
+		Operation createOperation = operations.get(0);
 
-		assertThat(operation.getFormOptional(), is(optionalWithValue()));
-		assertThat(operation.getHttpMethod(), is(POST));
-		assertThat(operation.getName(), is("name/nested/create"));
+		assertThat(createOperation, is(instanceOf(CreateOperation.class)));
+		assertThat(createOperation.getFormOptional(), is(optionalWithValue()));
+		assertThat(createOperation.getHttpMethod(), is(POST));
+		assertThat(createOperation.getName(), is("name/nested/create"));
 		assertThat(
-			operation.getURIOptional(),
+			createOperation.getURIOptional(),
+			is(optionalWithValue(equalTo("name/id/nested"))));
+
+		Operation batchCreateOperation = operations.get(1);
+
+		assertThat(
+			batchCreateOperation, is(instanceOf(BatchCreateOperation.class)));
+		assertThat(
+			batchCreateOperation.getFormOptional(), is(optionalWithValue()));
+		assertThat(batchCreateOperation.getHttpMethod(), is(POST));
+		assertThat(
+			batchCreateOperation.getName(), is("name/nested/batch-create"));
+		assertThat(
+			batchCreateOperation.getURIOptional(),
 			is(optionalWithValue(equalTo("name/id/nested"))));
 	}
 
-	private static final Body _singleBody = __ -> Optional.of("Apio");
+	private static final Body _batchBody;
+	private static final Body _singleBody;
+
+	static {
+		_singleBody = __ -> Optional.of("Apio");
+
+		_batchBody = Body.create(Arrays.asList(_singleBody, _singleBody));
+	}
 
 }

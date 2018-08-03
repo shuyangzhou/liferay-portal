@@ -37,7 +37,7 @@ public class RepresentorImpl<T>
 
 	@Override
 	public Object getIdentifier(T model) {
-		return _identifierFunction.apply(model);
+		return _modelToIdentifierFunction.apply(model);
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public class RepresentorImpl<T>
 			public <U> FirstStep<T> addBidirectionalModel(
 				String key, String relatedKey,
 				Class<? extends Identifier<U>> identifierClass,
-				Function<T, U> identifierFunction) {
+				Function<T, U> modelToIdentifierFunction) {
 
 				RelatedCollection<?> relatedCollection =
 					new RelatedCollectionImpl<>(relatedKey, _identifierClass);
@@ -104,7 +104,7 @@ public class RepresentorImpl<T>
 				_biConsumer.accept(identifierClass, relatedCollection);
 
 				baseRepresentor.addRelatedModel(
-					key, identifierClass, identifierFunction);
+					key, identifierClass, modelToIdentifierFunction);
 
 				return this;
 			}
@@ -128,8 +128,11 @@ public class RepresentorImpl<T>
 		public class IdentifierStepImpl implements IdentifierStep<T, S> {
 
 			@Override
-			public FirstStep<T> identifier(Function<T, S> identifierFunction) {
-				baseRepresentor._setIdentifierFunction(identifierFunction);
+			public FirstStep<T> identifier(
+				Function<T, S> modelToIdentifierFunction) {
+
+				baseRepresentor._setIdentifierFunction(
+					modelToIdentifierFunction);
 
 				return new FirstStepImpl();
 			}
@@ -159,11 +162,13 @@ public class RepresentorImpl<T>
 		_relatedCollections.add(relatedCollection);
 	}
 
-	private void _setIdentifierFunction(Function<T, ?> identifierFunction) {
-		_identifierFunction = identifierFunction;
+	private void _setIdentifierFunction(
+		Function<T, ?> modelToIdentifierFunction) {
+
+		_modelToIdentifierFunction = modelToIdentifierFunction;
 	}
 
-	private Function<T, ?> _identifierFunction;
+	private Function<T, ?> _modelToIdentifierFunction;
 	private final List<RelatedCollection<?>> _relatedCollections;
 	private final Supplier<List<RelatedCollection<?>>> _supplier;
 

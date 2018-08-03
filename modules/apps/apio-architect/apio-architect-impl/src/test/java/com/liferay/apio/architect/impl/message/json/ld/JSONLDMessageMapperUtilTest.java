@@ -19,6 +19,7 @@ import static com.liferay.apio.architect.impl.message.json.ld.JSONLDMessageMappe
 import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
 import static org.hamcrest.junit.MatcherAssert.assertThat;
 
+import com.liferay.apio.architect.impl.operation.BatchCreateOperation;
 import com.liferay.apio.architect.impl.operation.CreateOperation;
 import com.liferay.apio.architect.impl.operation.DeleteOperation;
 import com.liferay.apio.architect.impl.operation.RetrieveOperation;
@@ -51,6 +52,15 @@ public class JSONLDMessageMapperUtilTest {
 		catch (InvocationTargetException ite) {
 			throw ite.getTargetException();
 		}
+	}
+
+	@Test
+	public void testGetOperationTypesOnBatchCreateOperationReturnValidTypes() {
+		Operation operation = new BatchCreateOperation(null, "", "");
+
+		List<String> operationTypes = getOperationTypes(operation);
+
+		assertThat(operationTypes, contains("BatchCreateAction", "Operation"));
 	}
 
 	@Test

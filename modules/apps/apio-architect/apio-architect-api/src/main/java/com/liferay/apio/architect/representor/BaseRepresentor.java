@@ -273,13 +273,13 @@ public interface BaseRepresentor<T> {
 		 *
 		 * @param  key the relation's name
 		 * @param  identifierClass the related resource identifier's class
-		 * @param  identifierFunction the function used to get the related
-		 *         resource's identifier
+		 * @param  modelToIdentifierFunction the function used to get the
+		 *         related resource's identifier
 		 * @return the builder's step
 		 */
 		public <V> U addLinkedModel(
 			String key, Class<? extends Identifier<V>> identifierClass,
-			Function<T, V> identifierFunction);
+			Function<T, V> modelToIdentifierFunction);
 
 		/**
 		 * Provides information about a resource localized string field.

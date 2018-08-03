@@ -81,7 +81,7 @@ public class MockSingleModelWriter {
 		Optional<String> optional = singleModelWriter.write();
 
 		return optional.orElseThrow(
-			() -> new AssertionError("Writer failed to write"));
+			() -> new AssertionError("Unable to write"));
 	}
 
 	private MockSingleModelWriter() {

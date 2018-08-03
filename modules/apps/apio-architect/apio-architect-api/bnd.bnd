@@ -7,6 +7,7 @@ Export-Package:\
 	com.liferay.apio.architect.alias.representor,\
 	com.liferay.apio.architect.alias.routes,\
 	com.liferay.apio.architect.alias.routes.permission,\
+	com.liferay.apio.architect.batch,\
 	com.liferay.apio.architect.consumer,\
 	com.liferay.apio.architect.consumer.throwable,\
 	com.liferay.apio.architect.credentials,\
