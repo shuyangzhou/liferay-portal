@@ -87,14 +87,14 @@ public interface Representor<T> extends BaseRepresentor<T> {
 		 * @param  key the relation's name in the resource
 		 * @param  relatedKey the relation's name in the related resource
 		 * @param  identifierClass the related resource identifier's class
-		 * @param  identifierFunction the function used to get the related
-		 *         resource's identifier
+		 * @param  modelToIdentifierFunction the function used to get the
+		 *         related resource's identifier
 		 * @return the builder's step
 		 */
 		public <S> FirstStep<T> addBidirectionalModel(
 			String key, String relatedKey,
 			Class<? extends Identifier<S>> identifierClass,
-			Function<T, S> identifierFunction);
+			Function<T, S> modelToIdentifierFunction);
 
 		/**
 		 * Adds information about a related collection.
@@ -116,11 +116,12 @@ public interface Representor<T> extends BaseRepresentor<T> {
 		 * Provides a lambda function that can be used to obtain a model's
 		 * identifier.
 		 *
-		 * @param  identifierFunction lambda function used to obtain a model's
-		 *         identifier
+		 * @param  modelToIdentifierFunction lambda function used to obtain a
+		 *         model's identifier
 		 * @return the builder's next step
 		 */
-		public FirstStep<T> identifier(Function<T, U> identifierFunction);
+		public FirstStep<T> identifier(
+			Function<T, U> modelToIdentifierFunction);
 
 	}
 

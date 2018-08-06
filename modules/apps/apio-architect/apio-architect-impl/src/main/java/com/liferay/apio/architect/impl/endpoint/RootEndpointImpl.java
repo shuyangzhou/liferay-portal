@@ -64,6 +64,23 @@ public class RootEndpointImpl implements RootEndpoint {
 	}
 
 	@Override
+	public BatchEndpoint batchEndpoint(String name) {
+		return BatchEndpointBuilder.name(
+			name
+		).httpServletRequest(
+			_httpServletRequest
+		).singleModelFunction(
+			id -> _getSingleModelTry(name, id)
+		).representorSupplier(
+			() -> _getRepresentorOrFail(name)
+		).collectionRoutesSupplier(
+			() -> _getCollectionRoutesOrFail(name)
+		).nestedCollectionRoutesFunction(
+			nestedName -> _getNestedCollectionRoutesOrFail(name, nestedName)
+		).build();
+	}
+
+	@Override
 	public BinaryEndpoint binaryEndpoint() {
 		return new BinaryEndpoint(
 			this::_getRepresentorOrFail, this::_getSingleModelTry);

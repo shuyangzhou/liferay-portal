@@ -17,6 +17,7 @@ package com.liferay.apio.architect.impl.message.json.ld;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 
+import com.liferay.apio.architect.impl.operation.BatchCreateOperation;
 import com.liferay.apio.architect.impl.operation.CreateOperation;
 import com.liferay.apio.architect.impl.operation.DeleteOperation;
 import com.liferay.apio.architect.impl.operation.UpdateOperation;
@@ -43,6 +44,10 @@ public class JSONLDMessageMapperUtil {
 	 * @review
 	 */
 	public static List<String> getOperationTypes(Operation operation) {
+		if (operation instanceof BatchCreateOperation) {
+			return asList("BatchCreateAction", "Operation");
+		}
+
 		if (operation instanceof CreateOperation) {
 			return asList("CreateAction", "Operation");
 		}

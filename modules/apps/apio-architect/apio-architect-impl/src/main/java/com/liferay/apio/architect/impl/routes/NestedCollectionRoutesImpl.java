@@ -18,12 +18,15 @@ import static com.liferay.apio.architect.impl.routes.RoutesBuilderUtil.provide;
 
 import com.liferay.apio.architect.alias.IdentifierFunction;
 import com.liferay.apio.architect.alias.form.FormBuilderFunction;
+import com.liferay.apio.architect.alias.routes.NestedBatchCreateItemFunction;
 import com.liferay.apio.architect.alias.routes.NestedCreateItemFunction;
 import com.liferay.apio.architect.alias.routes.NestedGetPageFunction;
 import com.liferay.apio.architect.alias.routes.permission.HasNestedAddingPermissionFunction;
+import com.liferay.apio.architect.batch.BatchResult;
 import com.liferay.apio.architect.credentials.Credentials;
 import com.liferay.apio.architect.form.Form;
 import com.liferay.apio.architect.function.throwable.ThrowableBiFunction;
+import com.liferay.apio.architect.function.throwable.ThrowableFunction;
 import com.liferay.apio.architect.function.throwable.ThrowableHexaFunction;
 import com.liferay.apio.architect.function.throwable.ThrowablePentaFunction;
 import com.liferay.apio.architect.function.throwable.ThrowableTetraFunction;
@@ -31,6 +34,7 @@ import com.liferay.apio.architect.function.throwable.ThrowableTriFunction;
 import com.liferay.apio.architect.functional.Try;
 import com.liferay.apio.architect.impl.alias.ProvideFunction;
 import com.liferay.apio.architect.impl.form.FormImpl;
+import com.liferay.apio.architect.impl.operation.BatchCreateOperation;
 import com.liferay.apio.architect.impl.operation.CreateOperation;
 import com.liferay.apio.architect.impl.pagination.PageImpl;
 import com.liferay.apio.architect.impl.single.model.SingleModelImpl;
@@ -40,6 +44,7 @@ import com.liferay.apio.architect.pagination.Pagination;
 import com.liferay.apio.architect.routes.NestedCollectionRoutes;
 import com.liferay.apio.architect.uri.Path;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -56,12 +61,21 @@ public class NestedCollectionRoutesImpl<T, S, U>
 	public NestedCollectionRoutesImpl(BuilderImpl<T, S, U> builderImpl) {
 		_form = builderImpl._form;
 		_nestedCreateItemFunction = builderImpl._nestedCreateItemFunction;
+		_nestedBatchCreateItemFunction =
+			builderImpl._nestedBatchCreateItemFunction;
 		_nestedGetPageFunction = builderImpl._nestedGetPageFunction;
 	}
 
 	@Override
 	public Optional<Form> getFormOptional() {
 		return Optional.ofNullable(_form);
+	}
+
+	@Override
+	public Optional<NestedBatchCreateItemFunction<S, U>>
+		getNestedBatchCreateItemFunctionOptional() {
+
+		return Optional.ofNullable(_nestedBatchCreateItemFunction);
 	}
 
 	@Override
@@ -84,7 +98,8 @@ public class NestedCollectionRoutesImpl<T, S, U>
 			String name, String nestedName, ProvideFunction provideFunction,
 			Consumer<String> neededProviderConsumer,
 			Function<Path, ?> pathToIdentifierFunction,
-			Function<U, Optional<Path>> identifierToPathFunction) {
+			Function<U, Optional<Path>> identifierToPathFunction,
+			Function<T, S> modelToIdentifierFunction) {
 
 			_name = name;
 			_nestedName = nestedName;
@@ -92,12 +107,33 @@ public class NestedCollectionRoutesImpl<T, S, U>
 			_neededProviderConsumer = neededProviderConsumer;
 
 			_pathToIdentifierFunction = pathToIdentifierFunction::apply;
+
 			_identifierToPathFunction = identifierToPathFunction;
+			_modelToIdentifierFunction = modelToIdentifierFunction;
 		}
 
 		@Override
 		public <R> Builder<T, S, U> addCreator(
 			ThrowableBiFunction<U, R, T> creatorThrowableBiFunction,
+			HasNestedAddingPermissionFunction<U>
+				hasNestedAddingPermissionFunction,
+			FormBuilderFunction<R> formBuilderFunction) {
+
+			ThrowableBiFunction<U, List<R>, List<S>>
+				batchCreatorThrowableBiFunction = (u, formList) ->
+					_transformList(
+						formList, r -> creatorThrowableBiFunction.apply(u, r));
+
+			return addCreator(
+				creatorThrowableBiFunction, batchCreatorThrowableBiFunction,
+				hasNestedAddingPermissionFunction, formBuilderFunction);
+		}
+
+		@Override
+		public <R> Builder<T, S, U> addCreator(
+			ThrowableBiFunction<U, R, T> creatorThrowableBiFunction,
+			ThrowableBiFunction<U, List<R>, List<S>>
+				batchCreatorThrowableBiFunction,
 			HasNestedAddingPermissionFunction<U>
 				hasNestedAddingPermissionFunction,
 			FormBuilderFunction<R> formBuilderFunction) {
@@ -121,6 +157,14 @@ public class NestedCollectionRoutesImpl<T, S, U>
 						identifier, form.get(body)
 					));
 
+			_nestedBatchCreateItemFunction =
+				httpServletRequest -> body -> identifier -> Try.fromFallible(
+					() -> batchCreatorThrowableBiFunction.andThen(
+						t -> new BatchResult<>(t, _nestedName)
+					).apply(
+						identifier, form.getList(body)
+					));
+
 			return this;
 		}
 
@@ -128,6 +172,30 @@ public class NestedCollectionRoutesImpl<T, S, U>
 		public <A, B, C, D, R> Builder<T, S, U> addCreator(
 			ThrowableHexaFunction<U, R, A, B, C, D, T>
 				creatorThrowableHexaFunction,
+			Class<A> aClass, Class<B> bClass, Class<C> cClass, Class<D> dClass,
+			HasNestedAddingPermissionFunction<U>
+				hasNestedAddingPermissionFunction,
+			FormBuilderFunction<R> formBuilderFunction) {
+
+			ThrowableHexaFunction<U, List<R>, A, B, C, D, List<S>>
+				batchCreatorThrowableHexaFunction = (u, formList, a, b, c, d) ->
+					_transformList(
+						formList,
+						r -> creatorThrowableHexaFunction.apply(
+							u, r, a, b, c, d));
+
+			return addCreator(
+				creatorThrowableHexaFunction, batchCreatorThrowableHexaFunction,
+				aClass, bClass, cClass, dClass,
+				hasNestedAddingPermissionFunction, formBuilderFunction);
+		}
+
+		@Override
+		public <A, B, C, D, R> Builder<T, S, U> addCreator(
+			ThrowableHexaFunction<U, R, A, B, C, D, T>
+				creatorThrowableHexaFunction,
+			ThrowableHexaFunction<U, List<R>, A, B, C, D, List<S>>
+				batchCreatorThrowableHexaFunction,
 			Class<A> aClass, Class<B> bClass, Class<C> cClass, Class<D> dClass,
 			HasNestedAddingPermissionFunction<U>
 				hasNestedAddingPermissionFunction,
@@ -159,6 +227,16 @@ public class NestedCollectionRoutesImpl<T, S, U>
 						identifier, form.get(body), a, b, c, d
 					));
 
+			_nestedBatchCreateItemFunction =
+				httpServletRequest -> body -> identifier -> provide(
+					_provideFunction.apply(httpServletRequest), aClass, bClass,
+					cClass, dClass,
+					(a, b, c, d) -> batchCreatorThrowableHexaFunction.andThen(
+						t -> new BatchResult<>(t, _nestedName)
+					).apply(
+						identifier, form.getList(body), a, b, c, d
+					));
+
 			return this;
 		}
 
@@ -166,6 +244,30 @@ public class NestedCollectionRoutesImpl<T, S, U>
 		public <A, B, C, R> Builder<T, S, U> addCreator(
 			ThrowablePentaFunction<U, R, A, B, C, T>
 				creatorThrowablePentaFunction,
+			Class<A> aClass, Class<B> bClass, Class<C> cClass,
+			HasNestedAddingPermissionFunction<U>
+				hasNestedAddingPermissionFunction,
+			FormBuilderFunction<R> formBuilderFunction) {
+
+			ThrowablePentaFunction<U, List<R>, A, B, C, List<S>>
+				batchCreatorThrowablePentaFunction = (u, formList, a, b, c) ->
+					_transformList(
+						formList,
+						r -> creatorThrowablePentaFunction.apply(
+							u, r, a, b, c));
+
+			return addCreator(
+				creatorThrowablePentaFunction,
+				batchCreatorThrowablePentaFunction, aClass, bClass, cClass,
+				hasNestedAddingPermissionFunction, formBuilderFunction);
+		}
+
+		@Override
+		public <A, B, C, R> Builder<T, S, U> addCreator(
+			ThrowablePentaFunction<U, R, A, B, C, T>
+				creatorThrowablePentaFunction,
+			ThrowablePentaFunction<U, List<R>, A, B, C, List<S>>
+				batchCreatorThrowablePentaFunction,
 			Class<A> aClass, Class<B> bClass, Class<C> cClass,
 			HasNestedAddingPermissionFunction<U>
 				hasNestedAddingPermissionFunction,
@@ -196,12 +298,44 @@ public class NestedCollectionRoutesImpl<T, S, U>
 						identifier, form.get(body), a, b, c
 					));
 
+			_nestedBatchCreateItemFunction =
+				httpServletRequest -> body -> identifier -> provide(
+					_provideFunction.apply(httpServletRequest), aClass, bClass,
+					cClass,
+					(a, b, c) -> batchCreatorThrowablePentaFunction.andThen(
+						t -> new BatchResult<>(t, _nestedName)
+					).apply(
+						identifier, form.getList(body), a, b, c
+					));
+
 			return this;
 		}
 
 		@Override
 		public <A, B, R> Builder<T, S, U> addCreator(
 			ThrowableTetraFunction<U, R, A, B, T> creatorThrowableTetraFunction,
+			Class<A> aClass, Class<B> bClass,
+			HasNestedAddingPermissionFunction<U>
+				hasNestedAddingPermissionFunction,
+			FormBuilderFunction<R> formBuilderFunction) {
+
+			ThrowableTetraFunction<U, List<R>, A, B, List<S>>
+				batchCreatorThrowableTetraFunction = (u, formList, a, b) ->
+					_transformList(
+						formList,
+						r -> creatorThrowableTetraFunction.apply(u, r, a, b));
+
+			return addCreator(
+				creatorThrowableTetraFunction,
+				batchCreatorThrowableTetraFunction, aClass, bClass,
+				hasNestedAddingPermissionFunction, formBuilderFunction);
+		}
+
+		@Override
+		public <A, B, R> Builder<T, S, U> addCreator(
+			ThrowableTetraFunction<U, R, A, B, T> creatorThrowableTetraFunction,
+			ThrowableTetraFunction<U, List<R>, A, B, List<S>>
+				batchCreatorThrowableTetraFunction,
 			Class<A> aClass, Class<B> bClass,
 			HasNestedAddingPermissionFunction<U>
 				hasNestedAddingPermissionFunction,
@@ -230,12 +364,42 @@ public class NestedCollectionRoutesImpl<T, S, U>
 						identifier, form.get(body), a, b
 					));
 
+			_nestedBatchCreateItemFunction =
+				httpServletRequest -> body -> identifier -> provide(
+					_provideFunction.apply(httpServletRequest), aClass, bClass,
+					(a, b) -> batchCreatorThrowableTetraFunction.andThen(
+						t -> new BatchResult<>(t, _nestedName)
+					).apply(
+						identifier, form.getList(body), a, b
+					));
+
 			return this;
 		}
 
 		@Override
 		public <A, R> Builder<T, S, U> addCreator(
 			ThrowableTriFunction<U, R, A, T> creatorThrowableTriFunction,
+			Class<A> aClass,
+			HasNestedAddingPermissionFunction<U>
+				hasNestedAddingPermissionFunction,
+			FormBuilderFunction<R> formBuilderFunction) {
+
+			ThrowableTriFunction<U, List<R>, A, List<S>>
+				batchCreatorThrowableTriFunction = (u, formList, a) ->
+					_transformList(
+						formList,
+						r -> creatorThrowableTriFunction.apply(u, r, a));
+
+			return addCreator(
+				creatorThrowableTriFunction, batchCreatorThrowableTriFunction,
+				aClass, hasNestedAddingPermissionFunction, formBuilderFunction);
+		}
+
+		@Override
+		public <A, R> Builder<T, S, U> addCreator(
+			ThrowableTriFunction<U, R, A, T> creatorThrowableTriFunction,
+			ThrowableTriFunction<U, List<R>, A, List<S>>
+				batchCreatorThrowableTriFunction,
 			Class<A> aClass,
 			HasNestedAddingPermissionFunction<U>
 				hasNestedAddingPermissionFunction,
@@ -261,6 +425,15 @@ public class NestedCollectionRoutesImpl<T, S, U>
 							t, _nestedName, Collections.emptyList())
 					).apply(
 						identifier, form.get(body), a
+					));
+
+			_nestedBatchCreateItemFunction =
+				httpServletRequest -> body -> identifier -> provide(
+					_provideFunction.apply(httpServletRequest), aClass,
+					a -> batchCreatorThrowableTriFunction.andThen(
+						t -> new BatchResult<>(t, _nestedName)
+					).apply(
+						identifier, form.getList(body), a
 					));
 
 			return this;
@@ -423,15 +596,43 @@ public class NestedCollectionRoutesImpl<T, S, U>
 				_form, _name + "/" + _nestedName,
 				path.asURI() + "/" + _nestedName);
 
-			return Collections.singletonList(createOperation);
+			BatchCreateOperation batchCreateOperation =
+				new BatchCreateOperation(
+					_form, _name + "/" + _nestedName,
+					path.asURI() + "/" + _nestedName);
+
+			return Arrays.asList(createOperation, batchCreateOperation);
+		}
+
+		private <V> List<S> _transformList(
+				List<V> list,
+				ThrowableFunction<V, T> transformThrowableFunction)
+			throws Exception {
+
+			List<S> newList = new ArrayList<>();
+
+			for (V v : list) {
+				S s = transformThrowableFunction.andThen(
+					_modelToIdentifierFunction::apply
+				).apply(
+					v
+				);
+
+				newList.add(s);
+			}
+
+			return newList;
 		}
 
 		private Form _form;
 		private ThrowableBiFunction<Credentials, U, Boolean>
 			_hasNestedAddingPermissionFunction;
 		private final Function<U, Optional<Path>> _identifierToPathFunction;
+		private final Function<T, S> _modelToIdentifierFunction;
 		private final String _name;
 		private final Consumer<String> _neededProviderConsumer;
+		private NestedBatchCreateItemFunction<S, U>
+			_nestedBatchCreateItemFunction;
 		private NestedCreateItemFunction<T, U> _nestedCreateItemFunction;
 		private NestedGetPageFunction<T, U> _nestedGetPageFunction;
 		private final String _nestedName;
@@ -441,6 +642,8 @@ public class NestedCollectionRoutesImpl<T, S, U>
 	}
 
 	private final Form _form;
+	private final NestedBatchCreateItemFunction<S, U>
+		_nestedBatchCreateItemFunction;
 	private final NestedCreateItemFunction<T, U> _nestedCreateItemFunction;
 	private final NestedGetPageFunction<T, U> _nestedGetPageFunction;
 

@@ -17,6 +17,7 @@ package com.liferay.apio.architect.impl.wiring.osgi.manager.cache;
 import static javax.ws.rs.core.Variant.VariantListBuilder.newInstance;
 
 import com.liferay.apio.architect.identifier.Identifier;
+import com.liferay.apio.architect.impl.message.json.BatchResultMessageMapper;
 import com.liferay.apio.architect.impl.message.json.DocumentationMessageMapper;
 import com.liferay.apio.architect.impl.message.json.EntryPointMessageMapper;
 import com.liferay.apio.architect.impl.message.json.ErrorMessageMapper;
@@ -75,9 +76,35 @@ public class ManagerCache {
 		_names = null;
 		_nestedCollectionRoutes = null;
 		_pageMessageMappers = null;
+		_batchResultMessageMappers = null;
 		_representors = null;
 		_rootResourceNames = null;
 		_singleModelMessageMappers = null;
+	}
+
+	/**
+	 * Returns the batch result message mapper, if present, for the current
+	 * request; {@code Optional#empty()} otherwise.
+	 *
+	 * @param  request the current request
+	 * @param  computeEmptyFunction the function that can be called to compute
+	 *         the data
+	 * @return the batch result message mapper, if present; {@code
+	 *         Optional#empty()} otherwise
+	 * @review
+	 */
+	public <T> Optional<BatchResultMessageMapper<T>>
+		getBatchResultMessageMapperOptional(
+			Request request, EmptyFunction computeEmptyFunction) {
+
+		if (_batchResultMessageMappers == null) {
+			computeEmptyFunction.invoke();
+		}
+
+		Optional<BatchResultMessageMapper> optional = _getMessageMapperOptional(
+			request, _batchResultMessageMappers);
+
+		return optional.map(Unsafe::unsafeCast);
 	}
 
 	public Map<String, CollectionRoutes> getCollectionRoutes(
@@ -441,6 +468,24 @@ public class ManagerCache {
 	}
 
 	/**
+	 * Adds a batch result message mapper.
+	 *
+	 * @param  mediaType the media type
+	 * @param  batchResultMessageMapper the batch result message mapper
+	 * @review
+	 */
+	public void putBatchResultMessageMapper(
+		MediaType mediaType,
+		BatchResultMessageMapper batchResultMessageMapper) {
+
+		if (_batchResultMessageMappers == null) {
+			_batchResultMessageMappers = new HashMap<>();
+		}
+
+		_batchResultMessageMappers.put(mediaType, batchResultMessageMapper);
+	}
+
+	/**
 	 * Adds collection routes.
 	 *
 	 * @param key the key
@@ -692,6 +737,7 @@ public class ManagerCache {
 	private static final MediaType _MEDIA_TYPE = MediaType.valueOf(
 		"application/ld+json");
 
+	private Map<MediaType, BatchResultMessageMapper> _batchResultMessageMappers;
 	private Map<String, CollectionRoutes> _collectionRoutes;
 	private Map<MediaType, DocumentationMessageMapper>
 		_documentationMessageMappers;

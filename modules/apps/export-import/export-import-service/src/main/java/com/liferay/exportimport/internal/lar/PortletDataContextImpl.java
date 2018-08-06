@@ -23,6 +23,7 @@ import com.liferay.asset.kernel.service.AssetLinkLocalServiceUtil;
 import com.liferay.asset.kernel.service.AssetTagLocalServiceUtil;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.model.ExpandoColumn;
+import com.liferay.expando.kernel.model.adapter.StagedExpandoColumn;
 import com.liferay.expando.kernel.service.ExpandoColumnLocalServiceUtil;
 import com.liferay.exportimport.internal.util.ExportImportPermissionUtil;
 import com.liferay.exportimport.internal.xstream.ConverterAdapter;
@@ -45,6 +46,7 @@ import com.liferay.exportimport.kernel.xstream.XStreamAlias;
 import com.liferay.exportimport.kernel.xstream.XStreamConverter;
 import com.liferay.exportimport.kernel.xstream.XStreamType;
 import com.liferay.message.boards.kernel.model.MBMessage;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanPropertiesUtil;
 import com.liferay.portal.kernel.dao.orm.Conjunction;
@@ -98,7 +100,6 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -2202,6 +2203,17 @@ public class PortletDataContextImpl implements PortletDataContext {
 			}
 
 			_expandoColumnsMap.put(className, expandoColumns);
+
+			for (ExpandoColumn expandoColumn : expandoColumns) {
+				StagedExpandoColumn stagedExpandoColumn =
+					ModelAdapterUtil.adapt(
+						expandoColumn, ExpandoColumn.class,
+						StagedExpandoColumn.class);
+
+				addReferenceElement(
+					classedModel, element, stagedExpandoColumn,
+					REFERENCE_TYPE_DEPENDENCY, true);
+			}
 		}
 
 		ExpandoBridge expandoBridge = classedModel.getExpandoBridge();

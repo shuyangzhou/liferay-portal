@@ -74,6 +74,14 @@ public class RoutesTestUtil {
 		HAS_UPDATE_PERMISSION_FUNCTION = (credentials, aLong) -> true;
 
 	/**
+	 * An identifier function that provides identifiers for models of type
+	 * {@code String}.
+	 *
+	 * @review
+	 */
+	public static final Function<String, Long> IDENTIFIER_FUNCTION = __ -> 42L;
+
+	/**
 	 * An identifier to {@link Path} function that returns an {@link Optional}
 	 * containing a {@code Path("name", "id")}.
 	 */

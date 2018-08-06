@@ -92,34 +92,34 @@ public class MediaObjectNestedCollectionResource
 		Representor.Builder<FileEntry, Long> builder) {
 
 		return builder.types(
-			"MediaObject"
+			"Liferay:Document", "MediaObject"
 		).identifier(
 			FileEntry::getFileEntryId
 		).addBidirectionalModel(
-			"folder", "mediaObjects", FolderIdentifier.class,
+			"folder", "documents", FolderIdentifier.class,
 			FileEntry::getFolderId
 		).addRelativeURL(
-			"contentStream", this::_getFileEntryPreviewURL
+			"contentUrl", this::_getFileEntryPreviewURL
 		).addDate(
 			"dateCreated", FileEntry::getCreateDate
 		).addDate(
 			"dateModified", FileEntry::getModifiedDate
-		).addDate(
-			"datePublished", FileEntry::getLastPublishDate
 		).addLinkedModel(
 			"creator", PersonIdentifier.class, FileEntry::getUserId
 		).addNumber(
-			"contentSize", FileEntry::getSize
+			"sizeInBytes", FileEntry::getSize
 		).addRelatedCollection(
-			"categories", CategoryIdentifier.class
+			"category", CategoryIdentifier.class
+		).addString(
+			"contentSize", fileEntry -> String.valueOf(fileEntry.getSize())
+		).addString(
+			"description", FileEntry::getDescription
 		).addString(
 			"fileFormat", FileEntry::getMimeType
 		).addString(
 			"headline", FileEntry::getTitle
 		).addString(
 			"name", FileEntry::getFileName
-		).addString(
-			"text", FileEntry::getDescription
 		).addStringList(
 			"keywords", this::_getMediaObjectAssetTags
 		).build();

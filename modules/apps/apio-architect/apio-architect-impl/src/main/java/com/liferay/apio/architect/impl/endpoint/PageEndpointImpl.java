@@ -57,7 +57,7 @@ public class PageEndpointImpl<T, S> implements PageEndpoint<T> {
 		ThrowableSupplier<ItemRoutes<T, S>> itemRoutesSupplier,
 		ThrowableFunction<String, NestedCollectionRoutes<T, S, Object>>
 			nestedCollectionRoutesFunction,
-		IdentifierFunction<S> identifierFunction) {
+		IdentifierFunction<S> pathToIdentifierFunction) {
 
 		_name = name;
 		_httpServletRequest = httpServletRequest;
@@ -66,7 +66,7 @@ public class PageEndpointImpl<T, S> implements PageEndpoint<T> {
 		_representorSupplier = representorSupplier;
 		_itemRoutesSupplier = itemRoutesSupplier;
 		_nestedCollectionRoutesFunction = nestedCollectionRoutesFunction;
-		_pathToIdentifierFunction = identifierFunction;
+		_pathToIdentifierFunction = pathToIdentifierFunction;
 	}
 
 	@Override

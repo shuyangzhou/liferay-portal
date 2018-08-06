@@ -28,7 +28,9 @@ import com.liferay.apio.architect.impl.routes.NestedCollectionRoutesImpl.Builder
 import com.liferay.apio.architect.impl.wiring.osgi.manager.base.ClassNameBaseManager;
 import com.liferay.apio.architect.impl.wiring.osgi.manager.provider.ProviderManager;
 import com.liferay.apio.architect.impl.wiring.osgi.manager.representable.NameManager;
+import com.liferay.apio.architect.impl.wiring.osgi.manager.representable.RepresentableManager;
 import com.liferay.apio.architect.impl.wiring.osgi.manager.uri.mapper.PathIdentifierMapperManager;
+import com.liferay.apio.architect.representor.Representor;
 import com.liferay.apio.architect.router.NestedCollectionRouter;
 import com.liferay.apio.architect.routes.ItemRoutes;
 import com.liferay.apio.architect.routes.NestedCollectionRoutes;
@@ -151,6 +153,19 @@ public class NestedCollectionRouterManagerImpl
 
 				String nestedName = nestedNameOptional.get();
 
+				Optional<Representor<Object>> representorOptional =
+					_representableManager.getRepresentorOptional(nestedName);
+
+				if (!representorOptional.isPresent()) {
+					_logger.warn(
+						"Unable to find a Representable for nested class " +
+							"name " + nestedClassName);
+
+					return;
+				}
+
+				Representor<Object> representor = representorOptional.get();
+
 				Optional<ItemRoutes<Object, Object>> nestedItemRoutes =
 					_itemRouterManager.getItemRoutesOptional(nestedName);
 
@@ -179,7 +194,8 @@ public class NestedCollectionRouterManagerImpl
 					neededProviders::add,
 					_pathIdentifierMapperManager::mapToIdentifierOrFail,
 					identifier -> _pathIdentifierMapperManager.mapToPath(
-						name, identifier));
+						name, identifier),
+					representor::getIdentifier);
 
 				@SuppressWarnings("unchecked")
 				NestedCollectionRoutes nestedCollectionRoutes =
@@ -213,5 +229,8 @@ public class NestedCollectionRouterManagerImpl
 
 	@Reference
 	private ProviderManager _providerManager;
+
+	@Reference
+	private RepresentableManager _representableManager;
 
 }

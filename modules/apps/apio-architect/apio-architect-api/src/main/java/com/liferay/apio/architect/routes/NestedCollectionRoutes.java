@@ -17,6 +17,7 @@ package com.liferay.apio.architect.routes;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.apio.architect.alias.form.FormBuilderFunction;
+import com.liferay.apio.architect.alias.routes.NestedBatchCreateItemFunction;
 import com.liferay.apio.architect.alias.routes.NestedCreateItemFunction;
 import com.liferay.apio.architect.alias.routes.NestedGetPageFunction;
 import com.liferay.apio.architect.alias.routes.permission.HasNestedAddingPermissionFunction;
@@ -29,6 +30,7 @@ import com.liferay.apio.architect.function.throwable.ThrowableTriFunction;
 import com.liferay.apio.architect.pagination.PageItems;
 import com.liferay.apio.architect.pagination.Pagination;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -61,6 +63,19 @@ public interface NestedCollectionRoutes<T, S, U> {
 	 *         Optional#empty()} otherwise
 	 */
 	public Optional<Form> getFormOptional();
+
+	/**
+	 * Returns the function that is used to create multiple collection items, if
+	 * the endpoint was added through the {@link NestedCollectionRoutes.Builder}
+	 * and the function therefore exists. Returns {@code Optional#empty()}
+	 * otherwise.
+	 *
+	 * @return the function used to create multiple collection items, if the
+	 *         function exists; {@code Optional#empty()} otherwise
+	 * @review
+	 */
+	public Optional<NestedBatchCreateItemFunction<S, U>>
+		getNestedBatchCreateItemFunctionOptional();
 
 	/**
 	 * Returns the function that is used to create a collection item, if the
@@ -116,6 +131,27 @@ public interface NestedCollectionRoutes<T, S, U> {
 			FormBuilderFunction<R> formBuilderFunction);
 
 		/**
+		 * Adds a route to a creator function that has no extra parameters.
+		 *
+		 * @param  creatorThrowableBiFunction the creator function that adds the
+		 *         collection item
+		 * @param  batchCreatorThrowableBiFunction the batch creator function
+		 * @param  hasNestedAddingPermissionFunction the permission function for
+		 *         this route
+		 * @param  formBuilderFunction the function that creates the form for
+		 *         this operation
+		 * @return the updated builder
+		 * @review
+		 */
+		public <R> Builder<T, S, U> addCreator(
+			ThrowableBiFunction<U, R, T> creatorThrowableBiFunction,
+			ThrowableBiFunction<U, List<R>, List<S>>
+				batchCreatorThrowableBiFunction,
+			HasNestedAddingPermissionFunction<U>
+				hasNestedAddingPermissionFunction,
+			FormBuilderFunction<R> formBuilderFunction);
+
+		/**
 		 * Adds a route to a creator function that has four extra parameters.
 		 *
 		 * @param  creatorThrowableHexaFunction the creator function that adds
@@ -133,6 +169,33 @@ public interface NestedCollectionRoutes<T, S, U> {
 		public <A, B, C, D, R> Builder<T, S, U> addCreator(
 			ThrowableHexaFunction<U, R, A, B, C, D, T>
 				creatorThrowableHexaFunction,
+			Class<A> aClass, Class<B> bClass, Class<C> cClass, Class<D> dClass,
+			HasNestedAddingPermissionFunction<U>
+				hasNestedAddingPermissionFunction,
+			FormBuilderFunction<R> formBuilderFunction);
+
+		/**
+		 * Adds a route to a creator function that has four extra parameters.
+		 *
+		 * @param  creatorThrowableHexaFunction the creator function that adds
+		 *         the collection item
+		 * @param  batchCreatorThrowableHexaFunction the batch creator function
+		 * @param  aClass the class of the creator function's third parameter
+		 * @param  bClass the class of the creator function's fourth parameter
+		 * @param  cClass the class of the creator function's fifth parameter
+		 * @param  dClass the class of the creator function's sixth parameter
+		 * @param  hasNestedAddingPermissionFunction the permission function for
+		 *         this route
+		 * @param  formBuilderFunction the function that creates the form for
+		 *         this operation
+		 * @return the updated builder
+		 * @review
+		 */
+		public <A, B, C, D, R> Builder<T, S, U> addCreator(
+			ThrowableHexaFunction<U, R, A, B, C, D, T>
+				creatorThrowableHexaFunction,
+			ThrowableHexaFunction<U, List<R>, A, B, C, D, List<S>>
+				batchCreatorThrowableHexaFunction,
 			Class<A> aClass, Class<B> bClass, Class<C> cClass, Class<D> dClass,
 			HasNestedAddingPermissionFunction<U>
 				hasNestedAddingPermissionFunction,
@@ -161,6 +224,32 @@ public interface NestedCollectionRoutes<T, S, U> {
 			FormBuilderFunction<R> formBuilderFunction);
 
 		/**
+		 * Adds a route to a creator function that has three extra parameters.
+		 *
+		 * @param  creatorThrowablePentaFunction the creator function that adds
+		 *         the collection item
+		 * @param  batchCreatorThrowablePentaFunction the batch creator function
+		 * @param  aClass the class of the creator function's third parameter
+		 * @param  bClass the class of the creator function's fourth parameter
+		 * @param  cClass the class of the creator function's fifth parameter
+		 * @param  hasNestedAddingPermissionFunction the permission function for
+		 *         this route
+		 * @param  formBuilderFunction the function that creates the form for
+		 *         this operation
+		 * @return the updated builder
+		 * @review
+		 */
+		public <A, B, C, R> Builder<T, S, U> addCreator(
+			ThrowablePentaFunction<U, R, A, B, C, T>
+				creatorThrowablePentaFunction,
+			ThrowablePentaFunction<U, List<R>, A, B, C, List<S>>
+				batchCreatorThrowablePentaFunction,
+			Class<A> aClass, Class<B> bClass, Class<C> cClass,
+			HasNestedAddingPermissionFunction<U>
+				hasNestedAddingPermissionFunction,
+			FormBuilderFunction<R> formBuilderFunction);
+
+		/**
 		 * Adds a route to a creator function that has two extra parameters.
 		 *
 		 * @param  creatorThrowableTetraFunction the creator function that adds
@@ -181,6 +270,30 @@ public interface NestedCollectionRoutes<T, S, U> {
 			FormBuilderFunction<R> formBuilderFunction);
 
 		/**
+		 * Adds a route to a creator function that has two extra parameters.
+		 *
+		 * @param  creatorThrowableTetraFunction the creator function that adds
+		 *         the collection item
+		 * @param  batchCreatorThrowableTetraFunction the batch creator function
+		 * @param  aClass the class of the creator function's third parameter
+		 * @param  bClass the class of the creator function's fourth parameter
+		 * @param  hasNestedAddingPermissionFunction the permission function for
+		 *         this route
+		 * @param  formBuilderFunction the function that creates the form for
+		 *         this operation
+		 * @return the updated builder
+		 * @review
+		 */
+		public <A, B, R> Builder<T, S, U> addCreator(
+			ThrowableTetraFunction<U, R, A, B, T> creatorThrowableTetraFunction,
+			ThrowableTetraFunction<U, List<R>, A, B, List<S>>
+				batchCreatorThrowableTetraFunction,
+			Class<A> aClass, Class<B> bClass,
+			HasNestedAddingPermissionFunction<U>
+				hasNestedAddingPermissionFunction,
+			FormBuilderFunction<R> formBuilderFunction);
+
+		/**
 		 * Adds a route to a creator function that has one extra parameter.
 		 *
 		 * @param  creatorThrowableTriFunction the creator function that adds
@@ -194,6 +307,29 @@ public interface NestedCollectionRoutes<T, S, U> {
 		 */
 		public <A, R> Builder<T, S, U> addCreator(
 			ThrowableTriFunction<U, R, A, T> creatorThrowableTriFunction,
+			Class<A> aClass,
+			HasNestedAddingPermissionFunction<U>
+				hasNestedAddingPermissionFunction,
+			FormBuilderFunction<R> formBuilderFunction);
+
+		/**
+		 * Adds a route to a creator function that has one extra parameter.
+		 *
+		 * @param  creatorThrowableTriFunction the creator function that adds
+		 *         the collection item
+		 * @param  batchCreatorThrowableTriFunction the batch creator function
+		 * @param  aClass the class of the creator function's third parameter
+		 * @param  hasNestedAddingPermissionFunction the permission function for
+		 *         this route
+		 * @param  formBuilderFunction the function that creates the form for
+		 *         this operation
+		 * @return the updated builder
+		 * @review
+		 */
+		public <A, R> Builder<T, S, U> addCreator(
+			ThrowableTriFunction<U, R, A, T> creatorThrowableTriFunction,
+			ThrowableTriFunction<U, List<R>, A, List<S>>
+				batchCreatorThrowableTriFunction,
 			Class<A> aClass,
 			HasNestedAddingPermissionFunction<U>
 				hasNestedAddingPermissionFunction,

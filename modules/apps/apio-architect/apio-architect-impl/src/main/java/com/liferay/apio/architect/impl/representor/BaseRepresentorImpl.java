@@ -533,10 +533,10 @@ public abstract class BaseRepresentorImpl<T> implements BaseRepresentor<T> {
 			@Override
 			public <W> V addLinkedModel(
 				String key, Class<? extends Identifier<W>> identifierClass,
-				Function<T, W> identifierFunction) {
+				Function<T, W> modelToIdentifierFunction) {
 
 				baseRepresentor.addRelatedModel(
-					key, identifierClass, identifierFunction);
+					key, identifierClass, modelToIdentifierFunction);
 
 				return _this;
 			}

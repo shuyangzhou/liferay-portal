@@ -63,7 +63,6 @@ import com.liferay.apio.architect.form.Form;
 import com.liferay.apio.architect.form.FormField;
 import com.liferay.apio.architect.identifier.Identifier;
 import com.liferay.apio.architect.language.AcceptLanguage;
-import com.liferay.apio.architect.uri.Path;
 
 import java.util.Collections;
 import java.util.Date;
@@ -94,7 +93,7 @@ public class FormImpl<T> implements Form<T> {
 		_optionalDoubles.forEach(getOptionalDouble(body, t));
 		_optionalFiles.forEach(getOptionalFile(body, t));
 		_optionalLinkedModel.forEach(
-			getOptionalLinkedModel(body, t, _identifierFunction));
+			getOptionalLinkedModel(body, t, _pathToIdentifierFunction));
 		_optionalLongs.forEach(getOptionalLong(body, t));
 		_optionalStrings.forEach(getOptionalString(body, t));
 		_requiredBooleans.forEach(getRequiredBoolean(body, t));
@@ -102,7 +101,7 @@ public class FormImpl<T> implements Form<T> {
 		_requiredDoubles.forEach(getRequiredDouble(body, t));
 		_requiredFiles.forEach(getRequiredFile(body, t));
 		_requiredLinkedModel.forEach(
-			getRequiredLinkedModel(body, t, _identifierFunction));
+			getRequiredLinkedModel(body, t, _pathToIdentifierFunction));
 		_requiredLongs.forEach(getRequiredLong(body, t));
 		_requiredStrings.forEach(getRequiredString(body, t));
 		_optionalBooleanLists.forEach(getOptionalBooleanList(body, t));
@@ -202,9 +201,10 @@ public class FormImpl<T> implements Form<T> {
 		}
 
 		public BuilderImpl(
-			List<String> paths, Function<Path, ?> identifierFunction) {
+			List<String> paths,
+			IdentifierFunction<?> pathToIdentifierFunction) {
 
-			_form = new FormImpl<>(paths, identifierFunction::apply);
+			_form = new FormImpl<>(paths, pathToIdentifierFunction);
 		}
 
 		@Override
@@ -504,15 +504,14 @@ public class FormImpl<T> implements Form<T> {
 	}
 
 	private FormImpl(
-		List<String> paths, IdentifierFunction<?> identifierFunction) {
+		List<String> paths, IdentifierFunction<?> pathToIdentifierFunction) {
 
 		_id = String.join("/", paths);
-		_identifierFunction = identifierFunction;
+		_pathToIdentifierFunction = pathToIdentifierFunction;
 	}
 
 	private Function<AcceptLanguage, String> _descriptionFunction;
 	private final String _id;
-	private final IdentifierFunction<?> _identifierFunction;
 	private final Map<String, Function<T, Consumer<List<Boolean>>>>
 		_optionalBooleanLists = new HashMap<>();
 	private final Map<String, Function<T, Consumer<Boolean>>>
@@ -539,6 +538,7 @@ public class FormImpl<T> implements Form<T> {
 		_optionalStringLists = new HashMap<>();
 	private final Map<String, Function<T, Consumer<String>>> _optionalStrings =
 		new HashMap<>();
+	private final IdentifierFunction<?> _pathToIdentifierFunction;
 	private final Map<String, Function<T, Consumer<List<Boolean>>>>
 		_requiredBooleanLists = new HashMap<>();
 	private final Map<String, Function<T, Consumer<Boolean>>>

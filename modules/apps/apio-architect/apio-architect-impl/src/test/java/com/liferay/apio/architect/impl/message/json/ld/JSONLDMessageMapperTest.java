@@ -32,6 +32,8 @@ public class JSONLDMessageMapperTest {
 			Paths.get("src", "test", "resources", "ld")
 		).mediaType(
 			"application/ld+json"
+		).validateBatchResultMessageMapper(
+			new JSONLDBatchResultMessageMapper<>()
 		).validateDocumentationMessageMapper(
 			new JSONLDDocumentationMessageMapper()
 		).validateEntryPointMessageMapper(

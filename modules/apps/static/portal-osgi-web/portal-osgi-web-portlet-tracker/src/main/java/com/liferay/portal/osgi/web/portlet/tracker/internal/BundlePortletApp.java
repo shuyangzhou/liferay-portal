@@ -22,10 +22,13 @@ import com.liferay.portal.kernel.model.PortletFilter;
 import com.liferay.portal.kernel.model.PortletURLListener;
 import com.liferay.portal.kernel.model.PublicRenderParameter;
 import com.liferay.portal.kernel.model.SpriteImage;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.QName;
 import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperRegistration;
 
+import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -70,7 +73,9 @@ public class BundlePortletApp implements PortletApp {
 
 	@Override
 	public void addPortletURLListener(PortletURLListener portletURLListener) {
-		_portletApp.addPortletURLListener(portletURLListener);
+		_portletURLListeners.add(portletURLListener);
+		_portletURLListenersMap.put(
+			portletURLListener.getListenerClass(), portletURLListener);
 	}
 
 	@Override
@@ -142,12 +147,12 @@ public class BundlePortletApp implements PortletApp {
 
 	@Override
 	public PortletURLListener getPortletURLListener(String listenerClass) {
-		return _portletApp.getPortletURLListener(listenerClass);
+		return _portletURLListenersMap.get(listenerClass);
 	}
 
 	@Override
 	public Set<PortletURLListener> getPortletURLListeners() {
-		return _portletApp.getPortletURLListeners();
+		return _portletURLListeners;
 	}
 
 	@Override
@@ -182,16 +187,16 @@ public class BundlePortletApp implements PortletApp {
 	}
 
 	public int getSpecMajorVersion() {
-		return _portletApp.getSpecMajorVersion();
+		return _specMajorVersion;
 	}
 
 	public int getSpecMinorVersion() {
-		return _portletApp.getSpecMinorVersion();
+		return _specMinorVersion;
 	}
 
 	@Override
 	public SpriteImage getSpriteImage(String fileName) {
-		return _portletApp.getSpriteImage(fileName);
+		return _spriteImagesMap.get(fileName);
 	}
 
 	@Override
@@ -225,16 +230,30 @@ public class BundlePortletApp implements PortletApp {
 	}
 
 	public void setSpecMajorVersion(int specMajorVersion) {
-		_portletApp.setSpecMajorVersion(specMajorVersion);
+		_specMajorVersion = specMajorVersion;
 	}
 
 	public void setSpecMinorVersion(int specMinorVersion) {
-		_portletApp.setSpecMinorVersion(specMinorVersion);
+		_specMinorVersion = specMinorVersion;
 	}
 
 	@Override
 	public void setSpriteImages(String spriteFileName, Properties properties) {
-		_portletApp.setSpriteImages(spriteFileName, properties);
+		for (Map.Entry<Object, Object> entry : properties.entrySet()) {
+			String key = (String)entry.getKey();
+			String value = (String)entry.getValue();
+
+			int[] values = StringUtil.split(value, 0);
+
+			int offset = values[0];
+			int height = values[1];
+			int width = values[2];
+
+			SpriteImage spriteImage = new SpriteImage(
+				spriteFileName, key, offset, height, width);
+
+			_spriteImagesMap.put(key, spriteImage);
+		}
 	}
 
 	@Override
@@ -246,7 +265,14 @@ public class BundlePortletApp implements PortletApp {
 	private final BundlePluginPackage _pluginPackage;
 	private final Portlet _portalPortletModel;
 	private final PortletApp _portletApp;
+	private final Set<PortletURLListener> _portletURLListeners =
+		new LinkedHashSet<>();
+	private final Map<String, PortletURLListener> _portletURLListenersMap =
+		new HashMap<>();
 	private final ServiceTracker
 		<ServletContextHelperRegistration, ServletContext> _serviceTracker;
+	private int _specMajorVersion = 2;
+	private int _specMinorVersion;
+	private final Map<String, SpriteImage> _spriteImagesMap = new HashMap<>();
 
 }
