@@ -30,10 +30,6 @@ import java.io.Reader;
 
 import java.lang.reflect.Field;
 
-import java.security.AccessController;
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
-
 import java.util.List;
 
 import org.apache.commons.collections.ExtendedProperties;
@@ -82,28 +78,44 @@ public class LiferayResourceManager extends ResourceManagerImpl {
 
 	@Override
 	public Resource getResource(
-			final String resourceName, final int resourceType,
-			final String encoding)
+			String resourceName, int resourceType, String encoding)
 		throws Exception, ParseErrorException, ResourceNotFoundException {
 
-		for (String macroTemplateId : _macroTemplateIds) {
-			if (resourceName.equals(macroTemplateId)) {
-
-				// This resource is provided by the portal, so invoke it from an
-				// access controller
-
-				try {
-					return AccessController.doPrivileged(
-						new ResourcePrivilegedExceptionAction(
-							resourceName, resourceType, encoding));
-				}
-				catch (PrivilegedActionException pae) {
-					throw pae.getException();
-				}
-			}
+		if (resourceType != ResourceManager.RESOURCE_TEMPLATE) {
+			return super.getResource(resourceName, resourceType, encoding);
 		}
 
-		return _getResource(resourceName, resourceType, encoding);
+		TemplateResource templateResource = null;
+
+		if (resourceName.startsWith(
+				TemplateConstants.TEMPLATE_RESOURCE_UUID_PREFIX)) {
+
+			templateResource = TemplateResourceThreadLocal.getTemplateResource(
+				TemplateConstants.LANG_TYPE_VM);
+		}
+		else {
+			templateResource = _templateResourceLoader.getTemplateResource(
+				resourceName);
+		}
+
+		if (templateResource == null) {
+			throw new ResourceNotFoundException(
+				"Unable to find Velocity template with ID " + resourceName);
+		}
+
+		Object object = _portalCache.get(templateResource);
+
+		if ((object != null) && (object instanceof Template)) {
+			return (Template)object;
+		}
+
+		Template template = _createTemplate(templateResource);
+
+		if (_resourceModificationCheckInterval != 0) {
+			_portalCache.put(templateResource, template);
+		}
+
+		return template;
 	}
 
 	@Override
@@ -148,48 +160,6 @@ public class LiferayResourceManager extends ResourceManagerImpl {
 		return template;
 	}
 
-	private Resource _getResource(
-			final String resourceName, final int resourceType,
-			final String encoding)
-		throws Exception, ParseErrorException, ResourceNotFoundException {
-
-		if (resourceType != ResourceManager.RESOURCE_TEMPLATE) {
-			return super.getResource(resourceName, resourceType, encoding);
-		}
-
-		TemplateResource templateResource = null;
-
-		if (resourceName.startsWith(
-				TemplateConstants.TEMPLATE_RESOURCE_UUID_PREFIX)) {
-
-			templateResource = TemplateResourceThreadLocal.getTemplateResource(
-				TemplateConstants.LANG_TYPE_VM);
-		}
-		else {
-			templateResource = _templateResourceLoader.getTemplateResource(
-				resourceName);
-		}
-
-		if (templateResource == null) {
-			throw new ResourceNotFoundException(
-				"Unable to find Velocity template with ID " + resourceName);
-		}
-
-		Object object = _portalCache.get(templateResource);
-
-		if ((object != null) && (object instanceof Template)) {
-			return (Template)object;
-		}
-
-		Template template = _createTemplate(templateResource);
-
-		if (_resourceModificationCheckInterval != 0) {
-			_portalCache.put(templateResource, template);
-		}
-
-		return template;
-	}
-
 	private List<String> _macroTemplateIds;
 	private final PortalCache<TemplateResource, Object> _portalCache;
 	private int _resourceModificationCheckInterval = 60;
@@ -223,28 +193,6 @@ public class LiferayResourceManager extends ResourceManagerImpl {
 		}
 
 		private final TemplateResource _templateResource;
-
-	}
-
-	private class ResourcePrivilegedExceptionAction
-		implements PrivilegedExceptionAction<Resource> {
-
-		public ResourcePrivilegedExceptionAction(
-			String resourceName, int resourceType, String encoding) {
-
-			_resourceName = resourceName;
-			_resourceType = resourceType;
-			_encoding = encoding;
-		}
-
-		@Override
-		public Resource run() throws Exception {
-			return _getResource(_resourceName, _resourceType, _encoding);
-		}
-
-		private final String _encoding;
-		private final String _resourceName;
-		private final int _resourceType;
 
 	}
 
