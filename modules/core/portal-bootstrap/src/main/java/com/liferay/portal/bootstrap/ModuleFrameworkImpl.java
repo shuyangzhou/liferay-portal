@@ -86,8 +86,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 import java.util.jar.Attributes;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
@@ -100,7 +103,6 @@ import javax.servlet.ServletContext;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleEvent;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.Constants;
 import org.osgi.framework.FrameworkEvent;
@@ -112,7 +114,6 @@ import org.osgi.framework.startlevel.BundleStartLevel;
 import org.osgi.framework.startlevel.FrameworkStartLevel;
 import org.osgi.framework.wiring.BundleRevision;
 import org.osgi.framework.wiring.FrameworkWiring;
-import org.osgi.util.tracker.BundleTracker;
 
 import org.springframework.beans.factory.BeanIsAbstractException;
 import org.springframework.context.ApplicationContext;
@@ -1091,16 +1092,6 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 			bundleStartLevel.setStartLevel(
 				PropsValues.MODULE_FRAMEWORK_BEGINNING_START_LEVEL);
 
-			if (_log.isDebugEnabled()) {
-				_log.debug("Starting initial bundle " + bundle);
-			}
-
-			bundle.start();
-
-			if (_log.isDebugEnabled()) {
-				_log.debug("Started bundle " + bundle);
-			}
-
 			return bundle;
 		}
 		catch (Exception e) {
@@ -1410,44 +1401,68 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		FrameworkStartLevel frameworkStartLevel = _framework.adapt(
 			FrameworkStartLevel.class);
 
-		frameworkStartLevel.setStartLevel(
-			PropsValues.MODULE_FRAMEWORK_BEGINNING_START_LEVEL);
-
-		final Set<Bundle> bundlesSet = new HashSet<>();
+		final DefaultNoticeableFuture<FrameworkEvent> defaultNoticeableFuture =
+			new DefaultNoticeableFuture<>();
 
 		for (Bundle bundle : bundles.values()) {
 			if (!_isFragmentBundle(bundle)) {
-				bundlesSet.add(bundle);
+				bundle.stop();
 			}
 		}
 
-		if (!bundlesSet.isEmpty()) {
-			final CountDownLatch countDownLatch = new CountDownLatch(1);
-
-			BundleTracker<Void> bundleTracker = new BundleTracker<Void>(
-				_framework.getBundleContext(), Bundle.ACTIVE, null) {
+		frameworkStartLevel.setStartLevel(
+			PropsValues.MODULE_FRAMEWORK_BEGINNING_START_LEVEL,
+			new FrameworkListener() {
 
 				@Override
-				public Void addingBundle(
-					Bundle trackedBundle, BundleEvent bundleEvent) {
-
-					if (bundlesSet.remove(trackedBundle)) {
-						if (bundlesSet.isEmpty()) {
-							countDownLatch.countDown();
-
-							close();
-						}
-					}
-
-					return null;
+				public void frameworkEvent(FrameworkEvent frameworkEvent) {
+					defaultNoticeableFuture.set(frameworkEvent);
 				}
 
-			};
+			});
 
-			bundleTracker.open();
+		FrameworkEvent frameworkEvent = defaultNoticeableFuture.get();
 
-			countDownLatch.await();
+		if (frameworkEvent.getType() != FrameworkEvent.STARTLEVEL_CHANGED) {
+			ReflectionUtil.throwException(frameworkEvent.getThrowable());
 		}
+
+		ExecutorService executorService = Executors.newWorkStealingPool();
+
+		List<FutureTask<Void>> futureTasks = new ArrayList<>();
+
+		FrameworkWiring frameworkWiring = _framework.adapt(
+			FrameworkWiring.class);
+
+		frameworkWiring.resolveBundles(bundles.values());
+
+		for (final Bundle bundle : bundles.values()) {
+			if (!_isFragmentBundle(bundle)) {
+				FutureTask<Void> futureTask = new FutureTask<>(
+					new Callable() {
+
+						@Override
+						public Object call() throws Exception {
+							bundle.start();
+
+							return null;
+						}
+
+					});
+
+				executorService.submit(futureTask);
+
+				futureTasks.add(futureTask);
+			}
+		}
+
+		if (!futureTasks.isEmpty()) {
+			for (FutureTask<Void> futureTask : futureTasks) {
+				futureTask.get();
+			}
+		}
+
+		executorService.shutdown();
 
 		throwableCollector.rethrow();
 
@@ -1465,8 +1480,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 			}
 		}
 
-		FrameworkWiring frameworkWiring = _framework.adapt(
-			FrameworkWiring.class);
+		frameworkWiring = _framework.adapt(FrameworkWiring.class);
 
 		frameworkWiring.resolveBundles(fragmentBundles);
 
