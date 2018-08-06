@@ -16,9 +16,12 @@ package com.liferay.portal.kernel.util;
 
 import com.liferay.portal.kernel.exception.SystemException;
 
+import java.io.IOException;
+
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.net.URL;
 import java.net.UnknownHostException;
 
 import java.util.Enumeration;
@@ -60,6 +63,22 @@ public class InetAddressUtil {
 		throws UnknownHostException {
 
 		return InetAddress.getByName("127.0.0.1");
+	}
+
+	public static boolean isLocalNetwork(String url) throws IOException {
+		URL urlObject = new URL(url);
+
+		InetAddress inetAddress = InetAddress.getByName(urlObject.getHost());
+
+		if (inetAddress.isAnyLocalAddress() ||
+			inetAddress.isLinkLocalAddress() ||
+			inetAddress.isLoopbackAddress() ||
+			inetAddress.isSiteLocalAddress()) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	private static class LocalHostNameHolder {
