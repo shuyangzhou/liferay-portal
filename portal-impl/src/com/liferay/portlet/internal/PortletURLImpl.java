@@ -152,6 +152,10 @@ public class PortletURLImpl
 	}
 
 	public MutableActionParameters getActionParameters() {
+		if (_portletSpecMajorVersion == 2) {
+			throw new UnsupportedOperationException("Requires 3.0 opt-in");
+		}
+
 		return _mutableActionParameters;
 	}
 
@@ -290,6 +294,10 @@ public class PortletURLImpl
 
 	@Override
 	public MutableRenderParameters getRenderParameters() {
+		if (_portletSpecMajorVersion == 2) {
+			throw new UnsupportedOperationException("Requires 3.0 opt-in");
+		}
+
 		return _mutableRenderParameters;
 	}
 
@@ -300,6 +308,10 @@ public class PortletURLImpl
 
 	@Override
 	public MutableResourceParameters getResourceParameters() {
+		if (_portletSpecMajorVersion == 2) {
+			throw new UnsupportedOperationException("Requires 3.0 opt-in");
+		}
+
 		return _mutableResourceParameters;
 	}
 
@@ -387,6 +399,10 @@ public class PortletURLImpl
 
 	@Override
 	public void setBeanParameter(PortletSerializable portletSerializable) {
+		if (_portletSpecMajorVersion == 2) {
+			throw new UnsupportedOperationException("Requires 3.0 opt-in");
+		}
+
 		if (portletSerializable == null) {
 			throw new IllegalArgumentException();
 		}
@@ -463,6 +479,12 @@ public class PortletURLImpl
 	@Override
 	public void setCopyCurrentRenderParameters(
 		boolean copyCurrentRenderParameters) {
+
+		if (_portletSpecMajorVersion == 2) {
+			_copyCurrentRenderParameters = copyCurrentRenderParameters;
+
+			return;
+		}
 
 		boolean changed = false;
 
@@ -547,6 +569,20 @@ public class PortletURLImpl
 			throw new IllegalArgumentException();
 		}
 
+		if (_portletSpecMajorVersion == 2) {
+			if (value == null) {
+				if (_portletURLParameterMap.containsKey(name)) {
+					_portletURLParameterMap.remove(name);
+				}
+
+				return;
+			}
+
+			setParameter(name, new String[] {value}, append);
+
+			return;
+		}
+
 		LiferayMutablePortletParameters liferayMutablePortletParameters =
 			_getMutablePortletParameters(name);
 
@@ -568,26 +604,30 @@ public class PortletURLImpl
 	@Deprecated
 	@Override
 	public void setParameter(String name, String[] values, boolean append) {
-		PortletApp portletApp = _portlet.getPortletApp();
-
 		if ((name == null) ||
-			((values == null) && (portletApp.getSpecMajorVersion() == 2))) {
+			((values == null) && (_portletSpecMajorVersion == 2))) {
 
 			throw new IllegalArgumentException();
 		}
 
-		LiferayMutablePortletParameters liferayMutablePortletParameters =
-			_getMutablePortletParameters(name);
+		LiferayMutablePortletParameters liferayMutablePortletParameters = null;
 
-		if (name.startsWith(PortletQName.PRIVATE_RENDER_PARAMETER_NAMESPACE)) {
-			name = name.substring(
-				PortletQName.PRIVATE_RENDER_PARAMETER_NAMESPACE.length());
-		}
+		if (_portletSpecMajorVersion == 3) {
+			liferayMutablePortletParameters = _getMutablePortletParameters(
+				name);
 
-		if (values == null) {
-			liferayMutablePortletParameters.removeParameter(name);
+			if (name.startsWith(
+					PortletQName.PRIVATE_RENDER_PARAMETER_NAMESPACE)) {
 
-			return;
+				name = name.substring(
+					PortletQName.PRIVATE_RENDER_PARAMETER_NAMESPACE.length());
+			}
+
+			if (values == null) {
+				liferayMutablePortletParameters.removeParameter(name);
+
+				return;
+			}
 		}
 
 		for (String value : values) {
@@ -596,7 +636,29 @@ public class PortletURLImpl
 			}
 		}
 
-		liferayMutablePortletParameters.setValues(name, values, append);
+		if (_portletSpecMajorVersion == 3) {
+			liferayMutablePortletParameters.setValues(name, values, append);
+
+			return;
+		}
+
+		if (!append) {
+			_portletURLParameterMap.put(name, values);
+		}
+		else {
+			String[] oldValues = _portletURLParameterMap.get(name);
+
+			if (oldValues == null) {
+				_portletURLParameterMap.put(name, values);
+			}
+			else {
+				String[] newValues = ArrayUtil.append(oldValues, values);
+
+				_portletURLParameterMap.put(name, newValues);
+			}
+		}
+
+		clearCache();
 	}
 
 	/**
@@ -632,18 +694,23 @@ public class PortletURLImpl
 				}
 			}
 
-			_mutableRenderParameters.clear();
+			if (_portletSpecMajorVersion == 3) {
+				_mutableRenderParameters.clear();
 
-			if (_mutableActionParameters != null) {
-				_mutableActionParameters.clear();
+				if (_mutableActionParameters != null) {
+					_mutableActionParameters.clear();
+				}
+
+				if (_mutableResourceParameters != null) {
+					_mutableResourceParameters.clear();
+				}
+
+				for (Map.Entry<String, String[]> entry : newParams.entrySet()) {
+					setParameter(entry.getKey(), entry.getValue());
+				}
 			}
-
-			if (_mutableResourceParameters != null) {
-				_mutableResourceParameters.clear();
-			}
-
-			for (Map.Entry<String, String[]> entry : newParams.entrySet()) {
-				setParameter(entry.getKey(), entry.getValue());
+			else {
+				_portletURLParameterMap = newParams;
 			}
 		}
 
@@ -760,19 +827,26 @@ public class PortletURLImpl
 
 	@Override
 	public String toString() {
-		LiferayMutablePortletParameters mutableActionParameters =
-			(LiferayMutablePortletParameters)_mutableActionParameters;
+		if (_portletSpecMajorVersion == 2) {
+			if (_toString != null) {
+				return _toString;
+			}
+		}
+		else {
+			LiferayMutablePortletParameters mutableActionParameters =
+				(LiferayMutablePortletParameters)_mutableActionParameters;
 
-		LiferayMutablePortletParameters mutableResourceParameters =
-			(LiferayMutablePortletParameters)_mutableResourceParameters;
+			LiferayMutablePortletParameters mutableResourceParameters =
+				(LiferayMutablePortletParameters)_mutableResourceParameters;
 
-		if (!_mutableRenderParameters.isMutated() &&
-			(mutableActionParameters != null) &&
-			!mutableActionParameters.isMutated() &&
-			(mutableResourceParameters != null) &&
-			!mutableResourceParameters.isMutated() && (_toString != null)) {
+			if (!_mutableRenderParameters.isMutated() &&
+				(mutableActionParameters != null) &&
+				!mutableActionParameters.isMutated() &&
+				(mutableResourceParameters != null) &&
+				!mutableResourceParameters.isMutated() && (_toString != null)) {
 
-			return _toString;
+				return _toString;
+			}
 		}
 
 		_callPortletURLGenerationListener();
@@ -1003,6 +1077,96 @@ public class PortletURLImpl
 			}
 		}
 
+		Map<String, String[]> portletURLParams = _portletURLParameterMap;
+
+		if (_portletSpecMajorVersion == 3) {
+			portletURLParams = getPortletURLParamsV3();
+		}
+
+		for (Map.Entry<String, String[]> entry : portletURLParams.entrySet()) {
+			String name = entry.getKey();
+
+			if (!_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
+				String publicRenderParameterName = getPublicRenderParameterName(
+					name);
+
+				if (Validator.isNotNull(publicRenderParameterName)) {
+					name = publicRenderParameterName;
+				}
+			}
+
+			if (name.startsWith(_ACTION_PARAMETER_NAMESPACE)) {
+				name = name.substring(_ACTION_PARAMETER_NAMESPACE.length());
+			}
+			else if (name.startsWith(_RESOURCE_PARAMETER_NAMESPACE)) {
+				name = name.substring(_RESOURCE_PARAMETER_NAMESPACE.length());
+			}
+
+			if (isParameterIncludedInPath(name)) {
+				continue;
+			}
+
+			for (String value : entry.getValue()) {
+				_appendNamespaceAndEncode(sb, name);
+
+				sb.append(StringPool.EQUAL);
+
+				if (value != null) {
+					sb.append(processValue(key, value));
+				}
+
+				sb.append(StringPool.AMPERSAND);
+			}
+		}
+
+		if (_encrypt) {
+			sb.append(WebKeys.ENCRYPT);
+			sb.append("=1");
+		}
+		else {
+			sb.setIndex(sb.index() - 1);
+		}
+
+		String result = sb.toString();
+
+		if (!CookieKeys.hasSessionId(_request)) {
+			HttpSession session = _request.getSession();
+
+			result = PortalUtil.getURLWithSessionId(result, session.getId());
+		}
+
+		if (!_escapeXml) {
+			result = HttpUtil.shortenURL(result);
+		}
+
+		if (PropsValues.PORTLET_URL_ANCHOR_ENABLE) {
+			if (_anchor && (_windowStateString != null) &&
+				!_windowStateString.equals(WindowState.MAXIMIZED.toString()) &&
+				!_windowStateString.equals(
+					LiferayWindowState.EXCLUSIVE.toString()) &&
+				!_windowStateString.equals(
+					LiferayWindowState.POP_UP.toString())) {
+
+				sb.setIndex(0);
+
+				sb.append(result);
+				sb.append("#p_");
+				sb.append(URLCodec.encodeURL(_portlet.getPortletId()));
+
+				result = sb.toString();
+			}
+		}
+
+		if (_escapeXml) {
+			result = HtmlUtil.escape(result);
+
+			result = HttpUtil.shortenURL(result);
+		}
+
+		return result;
+	}
+
+	protected Map<String, String[]> getPortletURLParamsV3() {
 		Map<String, String[]> portletURLParams = new LinkedHashMap<>();
 
 		Set<String> actionParameterNames = Collections.emptySet();
@@ -1118,87 +1282,7 @@ public class PortletURLImpl
 			}
 		}
 
-		for (Map.Entry<String, String[]> entry : portletURLParams.entrySet()) {
-			String name = entry.getKey();
-
-			if (!_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
-				String publicRenderParameterName = getPublicRenderParameterName(
-					name);
-
-				if (Validator.isNotNull(publicRenderParameterName)) {
-					name = publicRenderParameterName;
-				}
-			}
-
-			if (name.startsWith(_ACTION_PARAMETER_NAMESPACE)) {
-				name = name.substring(_ACTION_PARAMETER_NAMESPACE.length());
-			}
-			else if (name.startsWith(_RESOURCE_PARAMETER_NAMESPACE)) {
-				name = name.substring(_RESOURCE_PARAMETER_NAMESPACE.length());
-			}
-
-			if (isParameterIncludedInPath(name)) {
-				continue;
-			}
-
-			for (String value : entry.getValue()) {
-				_appendNamespaceAndEncode(sb, name);
-
-				sb.append(StringPool.EQUAL);
-
-				if (value != null) {
-					sb.append(processValue(key, value));
-				}
-
-				sb.append(StringPool.AMPERSAND);
-			}
-		}
-
-		if (_encrypt) {
-			sb.append(WebKeys.ENCRYPT);
-			sb.append("=1");
-		}
-		else {
-			sb.setIndex(sb.index() - 1);
-		}
-
-		String result = sb.toString();
-
-		if (!CookieKeys.hasSessionId(_request)) {
-			HttpSession session = _request.getSession();
-
-			result = PortalUtil.getURLWithSessionId(result, session.getId());
-		}
-
-		if (!_escapeXml) {
-			result = HttpUtil.shortenURL(result);
-		}
-
-		if (PropsValues.PORTLET_URL_ANCHOR_ENABLE) {
-			if (_anchor && (_windowStateString != null) &&
-				!_windowStateString.equals(WindowState.MAXIMIZED.toString()) &&
-				!_windowStateString.equals(
-					LiferayWindowState.EXCLUSIVE.toString()) &&
-				!_windowStateString.equals(
-					LiferayWindowState.POP_UP.toString())) {
-
-				sb.setIndex(0);
-
-				sb.append(result);
-				sb.append("#p_");
-				sb.append(URLCodec.encodeURL(_portlet.getPortletId()));
-
-				result = sb.toString();
-			}
-		}
-
-		if (_escapeXml) {
-			result = HtmlUtil.escape(result);
-
-			result = HttpUtil.shortenURL(result);
-		}
-
-		return result;
+		return portletURLParams;
 	}
 
 	protected String getPublicRenderParameterName(String name) {
@@ -1252,21 +1336,34 @@ public class PortletURLImpl
 		_lifecycle = lifecycle;
 		_copy = copy;
 		_parametersIncludedInPath = Collections.emptySet();
-		_portletURLParameterMap = new PortletURLParameterMap();
+
+		PortletApp portletApp = portlet.getPortletApp();
+
+		_portletSpecMajorVersion = portletApp.getSpecMajorVersion();
+
+		if (_portletSpecMajorVersion == 2) {
+			_portletURLParameterMap = new LinkedHashMap<>();
+		}
+		else {
+			_portletURLParameterMap = new PortletURLParameterMap();
+		}
+
 		_removePublicRenderParameters = new LinkedHashSet<>();
 		_secure = PortalUtil.isSecure(request);
 
-		if (lifecycle.equals(PortletRequest.ACTION_PHASE)) {
-			_mutableActionParameters = new MutableActionParametersImpl(
-				new LinkedHashMap<>());
-		}
-		else if (lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
-			_copyCurrentRenderParameters = true;
-			_mutableResourceParameters = new MutableResourceParametersImpl(
-				new LinkedHashMap<>());
-		}
+		if (_portletSpecMajorVersion == 3) {
+			if (lifecycle.equals(PortletRequest.ACTION_PHASE)) {
+				_mutableActionParameters = new MutableActionParametersImpl(
+					new LinkedHashMap<>());
+			}
+			else if (lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
+				_copyCurrentRenderParameters = true;
+				_mutableResourceParameters = new MutableResourceParametersImpl(
+					new LinkedHashMap<>());
+			}
 
-		_initMutableRenderParameters();
+			_initMutableRenderParameters();
+		}
 
 		if (!portlet.isUndeployedPortlet()) {
 			Set<String> autopropagatedParameters =
@@ -1283,8 +1380,6 @@ public class PortletURLImpl
 					setParameter(autopropagatedParameter, value);
 				}
 			}
-
-			PortletApp portletApp = portlet.getPortletApp();
 
 			_escapeXml = MapUtil.getBoolean(
 				portletApp.getContainerRuntimeOptions(),
@@ -1470,7 +1565,8 @@ public class PortletURLImpl
 	private Portlet _portlet;
 	private String _portletModeString;
 	private final PortletRequest _portletRequest;
-	private PortletURLParameterMap _portletURLParameterMap;
+	private final int _portletSpecMajorVersion;
+	private Map<String, String[]> _portletURLParameterMap;
 	private long _refererGroupId;
 	private long _refererPlid;
 	private Set<String> _removedParameterNames;
