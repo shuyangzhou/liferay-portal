@@ -1431,7 +1431,22 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		Runtime runtime = Runtime.getRuntime();
 
 		ExecutorService executorService = Executors.newFixedThreadPool(
-			runtime.availableProcessors());
+			runtime.availableProcessors(),
+			new ThreadFactory() {
+
+				@Override
+				public Thread newThread(Runnable runnable) {
+					Thread thread = new Thread(
+						runnable, "ModuleFrameworkImpl-Static-" + _counter++);
+
+					thread.setDaemon(true);
+
+					return thread;
+				}
+
+				private int _counter;
+
+			});
 
 		List<FutureTask<Void>> futureTasks = new ArrayList<>();
 
