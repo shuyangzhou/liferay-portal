@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
+import com.liferay.portal.kernel.util.NamedThreadFactory;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -91,7 +92,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
-import java.util.concurrent.ThreadFactory;
 import java.util.jar.Attributes;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
@@ -1432,21 +1432,9 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 		ExecutorService executorService = Executors.newFixedThreadPool(
 			runtime.availableProcessors(),
-			new ThreadFactory() {
-
-				@Override
-				public Thread newThread(Runnable runnable) {
-					Thread thread = new Thread(
-						runnable, "ModuleFrameworkImpl-Static-" + _counter++);
-
-					thread.setDaemon(true);
-
-					return thread;
-				}
-
-				private int _counter;
-
-			});
+			new NamedThreadFactory(
+				"ModuleFramework-Static-Bundles", Thread.NORM_PRIORITY,
+				ModuleFrameworkImpl.class.getClassLoader()));
 
 		List<FutureTask<Void>> futureTasks = new ArrayList<>();
 
