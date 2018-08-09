@@ -1460,11 +1460,11 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 			}
 		}
 
+		executorService.shutdown();
+
 		for (Future<Void> future : futures) {
 			future.get();
 		}
-
-		executorService.shutdown();
 
 		throwableCollector.rethrow();
 
