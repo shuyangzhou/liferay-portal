@@ -1,0 +1,9 @@
+Bundle-Description: Creates a Liferay CDI bean portlet as a WAR project.
+Bundle-Name: Liferay Project Templates CDI Bean Portlet
+Bundle-SymbolicName: com.liferay.project.templates.war.cdi.bean.portlet
+Bundle-Version: 1.0.0
+Liferay-Versions: [7.1,8)
+-removeheaders:\
+	Import-Package,\
+	Private-Package,\
+	Require-Capability
