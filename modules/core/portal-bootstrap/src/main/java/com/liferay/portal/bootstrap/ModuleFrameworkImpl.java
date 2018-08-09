@@ -1446,10 +1446,10 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		for (final Bundle bundle : bundles.values()) {
 			if (!_isFragmentBundle(bundle)) {
 				FutureTask<Void> futureTask = new FutureTask<>(
-					new Callable() {
+					new Callable<Void>() {
 
 						@Override
-						public Object call() throws Exception {
+						public Void call() throws Exception {
 							bundle.start();
 
 							return null;
