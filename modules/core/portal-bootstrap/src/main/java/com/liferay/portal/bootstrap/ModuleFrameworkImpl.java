@@ -1449,7 +1449,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 					new Callable<Void>() {
 
 						@Override
-						public Void call() throws Exception {
+						public Void call() throws BundleException {
 							bundle.start();
 
 							return null;
