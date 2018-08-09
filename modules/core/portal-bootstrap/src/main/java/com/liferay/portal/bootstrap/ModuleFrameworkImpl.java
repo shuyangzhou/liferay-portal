@@ -91,7 +91,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
+import java.util.concurrent.Future;
 import java.util.jar.Attributes;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
@@ -1436,7 +1436,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 				"ModuleFramework-Static-Bundles", Thread.NORM_PRIORITY,
 				ModuleFrameworkImpl.class.getClassLoader()));
 
-		List<FutureTask<Void>> futureTasks = new ArrayList<>();
+		List<Future<Void>> futures = new ArrayList<>();
 
 		FrameworkWiring frameworkWiring = _framework.adapt(
 			FrameworkWiring.class);
@@ -1445,28 +1445,23 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 		for (final Bundle bundle : bundles.values()) {
 			if (!_isFragmentBundle(bundle)) {
-				FutureTask<Void> futureTask = new FutureTask<>(
-					new Callable<Void>() {
+				futures.add(
+					executorService.submit(
+						new Callable<Void>() {
 
-						@Override
-						public Void call() throws BundleException {
-							bundle.start();
+							@Override
+							public Void call() throws BundleException {
+								bundle.start();
 
-							return null;
-						}
+								return null;
+							}
 
-					});
-
-				executorService.submit(futureTask);
-
-				futureTasks.add(futureTask);
+						}));
 			}
 		}
 
-		if (!futureTasks.isEmpty()) {
-			for (FutureTask<Void> futureTask : futureTasks) {
-				futureTask.get();
-			}
+		for (Future<Void> future : futures) {
+			future.get();
 		}
 
 		executorService.shutdown();
