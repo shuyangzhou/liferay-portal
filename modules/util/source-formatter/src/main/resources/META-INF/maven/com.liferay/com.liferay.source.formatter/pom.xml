@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.liferay</groupId>
 	<artifactId>com.liferay.source.formatter</artifactId>
-	<version>1.0.705</version>
+	<version>1.0.706</version>
 	<dependencies>
 		<dependency>
 			<groupId>com.googlecode.java-diff-utils</groupId>

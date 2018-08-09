@@ -1005,13 +1005,13 @@ release was successful.</echo>
 		</if>
 	</target>
 
-	<target name="generate-hypersonic-data">
-		<property location="dist/hypersonic.tmp" name="tmp.hypersonic.dir" />
-
-		<property location="${tmp.hypersonic.dir}/tomcat-${app.server.tomcat.version}/bin" name="tmp.app.server.tomcat.bin.dir" />
+	<target name="generate-startup-files">
+		<tstamp>
+			<format pattern="yyyyMMddkkmmssSSS" property="tstamp.value" />
+		</tstamp>
 
 		<copy
-			todir="${tmp.hypersonic.dir}"
+			todir="${tstamp.value}"
 		>
 			<fileset
 				dir="${liferay.home}"
@@ -1022,13 +1022,13 @@ release was successful.</echo>
 			perm="744"
 		>
 			<fileset
-				dir="${tmp.app.server.tomcat.bin.dir}"
+				dir="${tstamp.value}/tomcat-${app.server.tomcat.version}/bin"
 				includes="*.sh"
 			/>
 		</chmod>
 
 		<parallel>
-			<exec dir="${tmp.app.server.tomcat.bin.dir}" executable="sh">
+			<exec dir="${tstamp.value}/tomcat-${app.server.tomcat.version}/bin" executable="sh">
 				<arg value="catalina.sh" />
 				<arg value="run" />
 			</exec>
@@ -1040,21 +1040,22 @@ release was successful.</echo>
 
 				<sleep seconds="5" />
 
-				<exec dir="${tmp.app.server.tomcat.bin.dir}" executable="sh">
+				<exec dir="${tstamp.value}/tomcat-${app.server.tomcat.version}/bin" executable="sh">
 					<arg value="shutdown.sh" />
 				</exec>
 			</sequential>
 		</parallel>
 
 		<copy
-			todir="dist/hypersonic"
+			todir="dist/startup"
 		>
 			<fileset
-				dir="${tmp.hypersonic.dir}/data/hypersonic"
+				dir="${tstamp.value}"
+				includes="data/hypersonic/**,osgi/state/**"
 			/>
 		</copy>
 
-		<delete dir="${tmp.hypersonic.dir}" />
+		<delete dir="${tstamp.value}" />
 	</target>
 
 	<target name="prepare-generated-files">
@@ -3614,15 +3615,15 @@ plugins.includes=</echo>
 		</if>
 
 		<if>
-			<available file="dist/hypersonic" />
+			<available file="dist/startup" />
 			<then>
 				<zip
 					destfile="dist/${zip.executable.file}-${lp.version}.zip"
 					update="true"
 				>
 					<zipfileset
-						dir="dist/hypersonic"
-						prefix="liferay-portal-${lp.version}/${zip.executable.dir.name}/data"
+						dir="dist/startup"
+						prefix="liferay-portal-${lp.version}/${zip.executable.dir.name}"
 					/>
 				</zip>
 			</then>
