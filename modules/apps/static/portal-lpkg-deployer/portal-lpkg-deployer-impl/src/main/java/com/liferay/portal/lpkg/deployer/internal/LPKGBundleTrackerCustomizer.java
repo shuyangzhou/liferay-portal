@@ -398,7 +398,7 @@ public class LPKGBundleTrackerCustomizer
 		Matcher matcher = _pattern.matcher(path);
 
 		if (matcher.matches()) {
-			path = matcher.group(1) + matcher.group(4);
+			path = matcher.group(1) + matcher.group(3);
 		}
 
 		path = StringUtil.toLowerCase(path);
@@ -741,7 +741,7 @@ public class LPKGBundleTrackerCustomizer
 		LPKGBundleTrackerCustomizer.class);
 
 	private static final Pattern _pattern = Pattern.compile(
-		"/(.*?)(-\\d+\\.\\d+\\.\\d+)(\\..+)?(\\.[jw]ar)");
+		"/(.*?)-\\d+\\.\\d+\\.\\d+(\\..+)?(\\.[jw]ar)");
 	private static final List<String> _staticLPKGBundleSymbolicNames =
 		StaticLPKGResolver.getStaticLPKGBundleSymbolicNames();
 
