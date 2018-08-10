@@ -31,15 +31,9 @@ import org.gradle.api.tasks.Exec;
 import org.gradle.util.GUtil;
 
 /**
- * @author Eddie Olson
+ * @author Andrea Di Giorgi
  */
-public class WeDeployMessageQueuePlugin implements Plugin<Project> {
-
-	public static final String DELETE_WEDEPLOY_MESSAGE_QUEUE_TASK_NAME =
-		"deleteWeDeployMessageQueue";
-
-	public static final String DEPLOY_WEDEPLOY_MESSAGE_QUEUE_TASK_NAME =
-		"deployWeDeployMessageQueue";
+public abstract class BaseWeDeployPlugin implements Plugin<Project> {
 
 	@Override
 	public void apply(Project project) {
@@ -55,19 +49,26 @@ public class WeDeployMessageQueuePlugin implements Plugin<Project> {
 
 		String wedeployService = (String)wedeployJsonMap.get("id");
 
-		_addTaskDeleteWeDeployMessageQueue(
+		_addTaskDeleteWeDeploy(
 			project, wedeployProject, wedeployRemote, wedeployService);
 
-		_addTaskDeployWeDeployMessageQueue(
-			project, wedeployProject, wedeployRemote);
+		_addTaskDeployWeDeploy(project, wedeployProject, wedeployRemote);
 	}
 
-	private Exec _addTaskDeleteWeDeployMessageQueue(
+	protected abstract String getDeleteWeDeployTaskDescription(Project project);
+
+	protected abstract String getDeleteWeDeployTaskName();
+
+	protected abstract String getDeployWeDeployTaskDescription(Project project);
+
+	protected abstract String getDeployWeDeployTaskName();
+
+	private Exec _addTaskDeleteWeDeploy(
 		Project project, String wedeployProject, String wedeployRemote,
 		Object wedeployService) {
 
 		Exec exec = GradleUtil.addTask(
-			project, DELETE_WEDEPLOY_MESSAGE_QUEUE_TASK_NAME, Exec.class);
+			project, getDeleteWeDeployTaskName(), Exec.class);
 
 		exec.args("delete", "--force");
 
@@ -83,18 +84,17 @@ public class WeDeployMessageQueuePlugin implements Plugin<Project> {
 
 		exec.setExecutable("we");
 
-		exec.setDescription(
-			"Deletes the message queue " + project + " from WeDeploy.");
+		exec.setDescription(getDeleteWeDeployTaskDescription(project));
 		exec.setGroup(BasePlugin.UPLOAD_GROUP);
 
 		return exec;
 	}
 
-	private Exec _addTaskDeployWeDeployMessageQueue(
+	private Exec _addTaskDeployWeDeploy(
 		Project project, String wedeployProject, String wedeployRemote) {
 
 		Exec exec = GradleUtil.addTask(
-			project, DEPLOY_WEDEPLOY_MESSAGE_QUEUE_TASK_NAME, Exec.class);
+			project, getDeployWeDeployTaskName(), Exec.class);
 
 		exec.args("deploy");
 
@@ -108,8 +108,7 @@ public class WeDeployMessageQueuePlugin implements Plugin<Project> {
 
 		exec.setExecutable("we");
 
-		exec.setDescription(
-			"Deploys the message queue " + project + " to WeDeploy.");
+		exec.setDescription(getDeployWeDeployTaskDescription(project));
 		exec.setGroup(BasePlugin.UPLOAD_GROUP);
 
 		return exec;
