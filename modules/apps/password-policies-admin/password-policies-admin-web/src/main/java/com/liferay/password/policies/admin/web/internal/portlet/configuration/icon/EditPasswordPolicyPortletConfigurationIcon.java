@@ -17,7 +17,9 @@ package com.liferay.password.policies.admin.web.internal.portlet.configuration.i
 import com.liferay.password.policies.admin.constants.PasswordPoliciesAdminPortletKeys;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.PortletURLFactory;
 import com.liferay.portal.kernel.portlet.configuration.icon.BasePortletConfigurationIcon;
 import com.liferay.portal.kernel.portlet.configuration.icon.PortletConfigurationIcon;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
@@ -27,6 +29,7 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 
+import javax.portlet.MutableRenderParameters;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.portlet.PortletURL;
@@ -61,21 +64,29 @@ public class EditPasswordPolicyPortletConfigurationIcon
 		PortletRequest portletRequest, PortletResponse portletResponse) {
 
 		try {
-			PortletURL portletURL = PortletURLFactoryUtil.create(
+			PortletURL portletURL = _portletURLFactory.create(
 				portletRequest,
 				PasswordPoliciesAdminPortletKeys.PASSWORD_POLICIES_ADMIN,
 				PortletRequest.RENDER_PHASE);
 
-			portletURL.setParameter("mvcPath", "/edit_password_policy.jsp");
-			portletURL.setParameter(
+			MutableRenderParameters mutableRenderParameters =
+				portletURL.getRenderParameters();
+
+			mutableRenderParameters.setValue(
+				"mvcPath", "/edit_password_policy.jsp");
+			mutableRenderParameters.setValue(
 				"redirect", _portal.getCurrentURL(portletRequest));
-			portletURL.setParameter(
+			mutableRenderParameters.setValue(
 				"passwordPolicyId",
 				String.valueOf(_getPasswordPolicyId(portletRequest)));
+			mutableRenderParameters.setValue("tabs1", "details");
 
 			return portletURL.toString();
 		}
 		catch (Exception e) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(e, e);
+			}
 		}
 
 		return StringPool.BLANK;
@@ -101,6 +112,9 @@ public class EditPasswordPolicyPortletConfigurationIcon
 			}
 		}
 		catch (Exception e) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(e, e);
+			}
 		}
 
 		return false;
@@ -113,7 +127,13 @@ public class EditPasswordPolicyPortletConfigurationIcon
 		return ParamUtil.getLong(request, "passwordPolicyId");
 	}
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		EditPasswordPolicyPortletConfigurationIcon.class);
+
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private PortletURLFactory _portletURLFactory;
 
 }

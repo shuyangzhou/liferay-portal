@@ -168,7 +168,7 @@ public class VarPoshiElement extends PoshiElement {
 	public String toPoshiScript() {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("\n\t");
+		sb.append("\n\n\t");
 
 		String staticAttribute = attributeValue("static");
 
@@ -236,10 +236,6 @@ public class VarPoshiElement extends PoshiElement {
 			}
 			else {
 				value = StringEscapeUtils.escapeXml10(value);
-
-				if (parentElement instanceof ExecutePoshiElement) {
-					value = value.replace("\\", "\\\\");
-				}
 
 				value = quoteContent(value);
 			}
