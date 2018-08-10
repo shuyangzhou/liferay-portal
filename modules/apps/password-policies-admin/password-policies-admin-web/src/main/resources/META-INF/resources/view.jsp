@@ -95,11 +95,23 @@ PortletURL portletURL = viewPasswordPoliciesManagementToolbarDisplayContext.getP
 				keyProperty="passwordPolicyId"
 				modelVar="passwordPolicy"
 			>
-				<portlet:renderURL var="rowURL">
-					<portlet:param name="mvcPath" value="/edit_password_policy.jsp" />
-					<portlet:param name="redirect" value="<%= passwordPolicySearchContainer.getIteratorURL().toString() %>" />
-					<portlet:param name="passwordPolicyId" value="<%= String.valueOf(passwordPolicy.getPasswordPolicyId()) %>" />
-				</portlet:renderURL>
+
+				<%
+				String rowHREF = null;
+
+				if (passwordPolicyDisplayContext.hasPermission(ActionKeys.UPDATE, passwordPolicy.getPasswordPolicyId())) {
+					PortletURL rowURL = renderResponse.createRenderURL();
+
+					rowURL.setParameter("mvcPath", "/edit_password_policy.jsp");
+
+					PortletURL redirectURL = passwordPolicySearchContainer.getIteratorURL();
+
+					rowURL.setParameter("redirect", redirectURL.toString());
+					rowURL.setParameter("passwordPolicyId", String.valueOf(passwordPolicy.getPasswordPolicyId()));
+
+					rowHREF = rowURL.toString();
+				}
+				%>
 
 				<%@ include file="/search_columns.jspf" %>
 			</liferay-ui:search-container-row>
@@ -121,16 +133,16 @@ PortletURL portletURL = viewPasswordPoliciesManagementToolbarDisplayContext.getP
 			if (form) {
 				form.setAttribute('method', 'post');
 
-				var passwordPolicyIds = form.querySelector('#<portlet:namespace />passwordPolicyIds');
+				var passwordPolicyIdsInput = form.querySelector('#<portlet:namespace />passwordPolicyIds');
 
-				if (passwordPolicyIds) {
-					passwordPolicyIds.setAttribute('value', Liferay.Util.listCheckedExcept(form, '<portlet:namespace />allRowIds'));
+				if (passwordPolicyIdsInput) {
+					passwordPolicyIdsInput.setAttribute('value', Liferay.Util.listCheckedExcept(form, '<portlet:namespace />allRowIds'));
 				}
 
-				var lifecycle = form.querySelector('#p_p_lifecycle');
+				var lifecycleInput = form.querySelector('#p_p_lifecycle');
 
-				if (lifecycle) {
-					lifecycle.setAttribute('value', '1');
+				if (lifecycleInput) {
+					lifecycleInput.setAttribute('value', '1');
 				}
 
 				submitForm(form, '<portlet:actionURL name="deletePasswordPolicies" />');

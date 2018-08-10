@@ -348,7 +348,7 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 		LPKGIndexValidatorThreadLocal.setEnabled(false);
 
 		try {
-			_instalLPKGs(bundleContext, lpkgFiles);
+			_installLPKGs(bundleContext, lpkgFiles);
 
 			_installOverrideJars(bundleContext, jarFiles);
 
@@ -460,7 +460,7 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 		}
 	}
 
-	private void _instalLPKGs(
+	private void _installLPKGs(
 		BundleContext bundleContext, List<File> lpkgFiles) {
 
 		for (File lpkgFile : lpkgFiles) {
@@ -702,7 +702,7 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 		DefaultLPKGDeployer.class);
 
 	private static final Pattern _pattern = Pattern.compile(
-		"/?(.*?)(-\\d+\\.\\d+\\.\\d+)(\\..+)?(\\.[jw]ar)");
+		".*?(-\\d+\\.\\d+\\.\\d+)\\..+?\\.[jw]ar");
 
 	private Path _deploymentDirPath;
 	private BundleTracker<List<Bundle>> _lpkgBundleTracker;

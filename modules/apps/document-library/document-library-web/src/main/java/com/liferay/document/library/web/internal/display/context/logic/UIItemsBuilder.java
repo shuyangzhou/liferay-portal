@@ -369,6 +369,14 @@ public class UIItemsBuilder {
 			return;
 		}
 
+		StringBundler sb = new StringBundler(5);
+
+		sb.append("if (confirm('");
+		sb.append(
+			UnicodeLanguageUtil.get(
+				_resourceBundle, "are-you-sure-you-want-to-delete-this"));
+		sb.append("')) {");
+
 		LiferayPortletResponse liferayPortletResponse =
 			_getLiferayPortletResponse();
 
@@ -387,15 +395,9 @@ public class UIItemsBuilder {
 
 		portletURL.setParameter("folderId", String.valueOf(folderId));
 
-		StringBundler sb = new StringBundler(5);
-
-		sb.append("if (confirm('");
-		sb.append(
-			UnicodeLanguageUtil.get(
-				_resourceBundle, "are-you-sure-you-want-to-delete-this"));
-		sb.append("')) {");
 		sb.append(
 			getSubmitFormJavaScript(Constants.DELETE, portletURL.toString()));
+
 		sb.append("}");
 
 		_addJavaScriptUIItem(
@@ -825,6 +827,15 @@ public class UIItemsBuilder {
 			return;
 		}
 
+		StringBundler sb = new StringBundler(5);
+
+		sb.append("javascript:if (confirm('");
+		sb.append(
+			UnicodeLanguageUtil.get(
+				_resourceBundle,
+				"are-you-sure-you-want-to-publish-the-selected-document"));
+		sb.append("')){location.href = '");
+
 		PortletURL portletURL = null;
 
 		if (_fileShortcut == null) {
@@ -845,9 +856,13 @@ public class UIItemsBuilder {
 		portletURL.setParameter("redirect", StringPool.BLANK);
 		portletURL.setParameter("backURL", _getCurrentURL());
 
+		sb.append(portletURL);
+
+		sb.append("';}");
+
 		_addURLUIItem(
 			new URLMenuItem(), menuItems, DLUIItemKeys.PUBLISH,
-			"publish-to-live", portletURL.toString());
+			"publish-to-live", sb.toString());
 	}
 
 	public void addRevertToVersionMenuItem(List<MenuItem> menuItems)
