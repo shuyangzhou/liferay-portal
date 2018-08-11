@@ -4306,6 +4306,31 @@ directory when it has a dependency with version `default`.
 - [LPS-84055]: The `printDependentArtifact` task should print the project
 directory when it has a `compile*` dependency with the version `default`.
 
+## 5.5.8 - 2018-08-07
+
+### Changed
+- [LPS-84119]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.103.
+
+## 5.5.9 - 2018-08-08
+
+### Changed
+- [LPS-84119]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.104.
+
+## 5.5.10 - 2018-08-08
+
+### Fixed
+- [LPS-84055]: The `writeArtifactPublishCommands` task should not be skipped if
+it has `test` dependency with the version `default`.
+
+## 5.5.11 - 2017-08-09
+
+### Changed
+- [LPS-84313]: The `com.liferay.spring.boot.defaults` plugin now automatically
+applies the `com.liferay.test.integration.base` plugin. Configure the
+`check` task to depend on the `testIntegration` task.
+
 [Find Security Bugs]: https://github.com/liferay/liferay-portal/tree/master/modules/third-party/com-h3xstream-findsecbugs
 [Gradle Dependency Management]: https://github.com/spring-gradle-plugins/dependency-management-plugin
 [Gradle License Report]: https://github.com/jk1/Gradle-License-Report
@@ -4762,6 +4787,7 @@ directory when it has a `compile*` dependency with the version `default`.
 [LPS-84055]: https://issues.liferay.com/browse/LPS-84055
 [LPS-84119]: https://issues.liferay.com/browse/LPS-84119
 [LPS-84213]: https://issues.liferay.com/browse/LPS-84213
+[LPS-84313]: https://issues.liferay.com/browse/LPS-84313
 [LRDOCS-2594]: https://issues.liferay.com/browse/LRDOCS-2594
 [LRDOCS-2841]: https://issues.liferay.com/browse/LRDOCS-2841
 [LRDOCS-2981]: https://issues.liferay.com/browse/LRDOCS-2981

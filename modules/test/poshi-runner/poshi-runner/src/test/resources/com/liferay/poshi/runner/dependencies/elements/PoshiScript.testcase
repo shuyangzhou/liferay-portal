@@ -4,10 +4,12 @@ definition {
 	property portal.release = "true";
 	property portal.upstream = "true";
 	property testray.main.component.name = "Smoke";
+
 	// This is a comment
 
 	/*This is a multiline
 		comment.*/
+
 	static var userPassword = "password";
 	var userScreenName = "joeblogs";
 
@@ -29,6 +31,7 @@ definition {
 
 		/*This is a multiline
 			comment.*/
+
 		property portal.release = "false";
 		var specialCharacters = "&quot;\&quot;";
 		var userEmailAddress = "userea@liferay.com";
@@ -40,9 +43,7 @@ definition {
 			fieldValue = ",-+!@#$%^*()=_.?/;:{}[]\|"
 		);
 
-		ProductMenu.gotoControlPanelUsers(
-			portlet = "Users and Organizations"
-		);
+		ProductMenu.gotoControlPanelUsers(portlet = "Users and Organizations");
 
 		echo("This is a message.");
 
@@ -51,10 +52,16 @@ definition {
 			var breadcrumbNameUppercase = StringUtil.upperCase('${breadcrumbName}');
 			var historyVersion = selenium.getText('Staging#HISTORY_VERSION');
 
-			AssertTextEquals(locator1 = "Breadcrumb#BREADCRUMB_ENTRY", value1 = "${breadcrumbNameUppercase}");
+			AssertTextEquals(
+				locator1 = "Breadcrumb#BREADCRUMB_ENTRY",
+				value1 = "${breadcrumbNameUppercase}"
+			);
 
 			for (var breadcrumbName : list "${breadcrumbListVisible}") {
-				AssertTextEquals(locator1 = "Breadcrumb#BREADCRUMB_ENTRY", value1 = "${breadcrumbNameUppercase}");
+				AssertTextEquals(
+					locator1 = "Breadcrumb#BREADCRUMB_ENTRY",
+					value1 = "${breadcrumbNameUppercase}"
+				);
 			}
 
 			if (isSet(duplicate)) {
@@ -63,6 +70,7 @@ definition {
 				);
 
 				echo("Please enter a unique ID.");
+
 				// This is a comment
 			}
 			else if (isSet(duplicate)) {
@@ -70,13 +78,18 @@ definition {
 			}
 			else {
 				Alert.viewSuccessMessage();
+
 				// This is a comment
 			}
+
 			// This is a comment
 		}
 
 		for (var breadcrumbName : list "Breadcrumb: 1, Breadcrumb: 2") {
-			AssertTextEquals(locator1 = "Breadcrumb#BREADCRUMB_ENTRY", value1 = "${breadcrumbNameUppercase}");
+			AssertTextEquals(
+				locator1 = "Breadcrumb#BREADCRUMB_ENTRY",
+				value1 = "${breadcrumbNameUppercase}"
+			);
 		}
 
 		User.addCP(
@@ -163,9 +176,7 @@ definition {
 			echo("String contains substring");
 		}
 
-		var siteName = TestCase.getSiteName(
-			siteName = "${siteName}"
-		);
+		var siteName = TestCase.getSiteName(siteName = "${siteName}");
 
 		var testCDATA = ''''alert(0)'"alert(0)"><img src=x onerror=alert(0)><script>alert(0)</script>''';
 
@@ -220,7 +231,10 @@ definition {
 
 		Type(value1 = "Welcome");
 
-		AssertElementPresent.assertElementPresent(locator1 = "Home#PAGE", value1 = "Welcome");
+		AssertElementPresent.assertElementPresent(
+			locator1 = "Home#PAGE",
+			value1 = "Welcome"
+		);
 
 		com.liferay.poshi.runner.util.JSONCurlUtil.delete('${curl}');
 	}

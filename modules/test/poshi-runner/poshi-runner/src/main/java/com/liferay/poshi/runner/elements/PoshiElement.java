@@ -22,6 +22,7 @@ import com.liferay.poshi.runner.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -79,7 +80,7 @@ public abstract class PoshiElement
 		for (PoshiElementAttribute poshiElementAttribute :
 				toPoshiElementAttributes(attributes())) {
 
-			if (poshiElementAttribute.getAttribute() == attribute) {
+			if (poshiElementAttribute == attribute) {
 				return super.remove(poshiElementAttribute);
 			}
 		}
@@ -160,12 +161,23 @@ public abstract class PoshiElement
 		sb.append(getBlockName());
 		sb.append(" {");
 
-		for (int i = 0; i < poshiNodes.size(); i++) {
-			PoshiNode poshiNode = poshiNodes.get(i);
+		PoshiNode previousPoshiNode = null;
+
+		for (Iterator<PoshiNode> iterator =
+				 poshiNodes.iterator(); iterator.hasNext();) {
+
+			PoshiNode poshiNode = iterator.next();
+
+			if (poshiNode instanceof DescriptionPoshiElement) {
+				continue;
+			}
 
 			String poshiScriptSnippet = poshiNode.toPoshiScript();
 
-			if (i == 0) {
+			if ((previousPoshiNode == null) ||
+				((previousPoshiNode instanceof VarPoshiElement) &&
+				 (poshiNode instanceof VarPoshiElement))) {
+
 				if (poshiScriptSnippet.startsWith("\n\n")) {
 					poshiScriptSnippet = poshiScriptSnippet.replaceFirst(
 						"\n\n", "\n");
@@ -173,6 +185,8 @@ public abstract class PoshiElement
 			}
 
 			sb.append(padPoshiScriptSnippet(poshiScriptSnippet));
+
+			previousPoshiNode = poshiNode;
 		}
 
 		sb.append("\n");
