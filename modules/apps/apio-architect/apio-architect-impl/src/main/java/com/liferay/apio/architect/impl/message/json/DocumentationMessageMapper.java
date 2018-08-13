@@ -46,6 +46,10 @@ public interface DocumentationMessageMapper
 		JSONObjectBuilder jsonObjectBuilder, String description) {
 	}
 
+	public default void mapEntryPoint(
+		JSONObjectBuilder jsonObjectBuilder, String entryPoint) {
+	}
+
 	public default void mapOperation(
 		JSONObjectBuilder jsonObjectBuilder, String resourceName, String type,
 		Operation operation) {

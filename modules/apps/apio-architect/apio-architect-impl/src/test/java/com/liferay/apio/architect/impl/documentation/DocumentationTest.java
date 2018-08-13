@@ -40,8 +40,8 @@ public class DocumentationTest {
 	@Test
 	public void testDocumentationWithEmptyValuesReturnEmpty() {
 		Documentation documentation = new Documentation(
-			Optional::empty, Optional::empty, Collections::emptyMap,
-			Collections::emptyMap, Collections::emptyMap,
+			Optional::empty, Optional::empty, Optional::empty,
+			Collections::emptyMap, Collections::emptyMap, Collections::emptyMap,
 			Collections::emptyMap);
 
 		Optional<String> optionalTitle = documentation.getAPITitleOptional();
@@ -62,6 +62,7 @@ public class DocumentationTest {
 	public void testDocumentationWithNonemptyValuesReturnThem() {
 		Documentation documentation = new Documentation(
 			() -> Optional.of(() -> "A"), () -> Optional.of(() -> "B"),
+			() -> Optional.of(() -> "C"),
 			() -> Collections.singletonMap("r", null),
 			() -> Collections.singletonMap("c", null),
 			() -> Collections.singletonMap("i", null),
@@ -72,8 +73,12 @@ public class DocumentationTest {
 		Optional<String> optionalDescription =
 			documentation.getAPIDescriptionOptional();
 
+		Optional<String> optionalApplicationURL =
+			documentation.getEntryPointOptional();
+
 		assertThat(optionalTitle, is(optionalWithValue(equalTo("A"))));
 		assertThat(optionalDescription, is(optionalWithValue(equalTo("B"))));
+		assertThat(optionalApplicationURL, is(optionalWithValue(equalTo("C"))));
 		assertThat(documentation.getRepresentors(), _HAS_SIZE_ONE);
 		assertThat(documentation.getRepresentors(), hasKey("r"));
 		assertThat(documentation.getCollectionRoutes(), _HAS_SIZE_ONE);

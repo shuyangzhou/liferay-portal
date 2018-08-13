@@ -20,6 +20,7 @@
 	"@id": "/doc",
 	"@type": "ApiDocumentation",
 	"description": "Description",
+	"entrypoint": "Entrypoint",
 	"supportedClass": [
 		{
 			"@id": "Type 1",

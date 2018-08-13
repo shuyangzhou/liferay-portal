@@ -15,7 +15,6 @@
 package com.liferay.poshi.runner.elements;
 
 import com.liferay.poshi.runner.util.RegexUtil;
-import com.liferay.poshi.runner.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -146,68 +145,24 @@ public class ExecutePoshiElement extends PoshiElement {
 
 	@Override
 	public String toPoshiScript() {
-		StringBuilder sb = new StringBuilder();
+		List<String> assignments = new ArrayList<>();
 
-		if (attributeValue("class") != null) {
-			String pad = getPad();
+		for (PoshiElementAttribute poshiElementAttribute :
+				toPoshiElementAttributes(attributes())) {
 
-			sb.append("\n\n");
-			sb.append(pad);
-			sb.append(attributeValue("class"));
-			sb.append(".");
-			sb.append(attributeValue("method"));
-			sb.append("(");
+			String poshiElementAttributeName = poshiElementAttribute.getName();
 
-			for (PoshiElement poshiElement : toPoshiElements(elements())) {
-				String poshiScript = poshiElement.toPoshiScript();
+			if (poshiElementAttributeName.equals("class") ||
+				poshiElementAttributeName.equals("function") ||
+				poshiElementAttributeName.equals("macro") ||
+				poshiElementAttributeName.equals("method")) {
 
-				if (poshiElement instanceof ArgPoshiElement) {
-					sb.append(poshiScript.trim());
-					sb.append(", ");
-
-					continue;
-				}
+				continue;
 			}
 
-			if (sb.length() > 2) {
-				sb.setLength(sb.length() - 2);
-			}
+			String poshiScript = poshiElementAttribute.toPoshiScript();
 
-			sb.append(");");
-
-			return sb.toString();
-		}
-
-		if (attributeValue("function") != null) {
-			for (PoshiElementAttribute poshiElementAttribute :
-					toPoshiElementAttributes(attributeList())) {
-
-				String name = poshiElementAttribute.getName();
-
-				if (name.equals("function")) {
-					continue;
-				}
-
-				sb.append(poshiElementAttribute.toPoshiScript());
-				sb.append(", ");
-			}
-
-			for (PoshiElement poshiElement : toPoshiElements(elements())) {
-				String poshiScript = poshiElement.toPoshiScript();
-
-				if (poshiElement instanceof VarPoshiElement) {
-					sb.append(poshiScript.trim());
-					sb.append(", ");
-
-					continue;
-				}
-			}
-
-			if (sb.length() > 2) {
-				sb.setLength(sb.length() - 2);
-			}
-
-			return createFunctionPoshiScriptSnippet(sb.toString());
+			assignments.add(poshiScript.trim());
 		}
 
 		ReturnPoshiElement returnPoshiElement = null;
@@ -219,11 +174,12 @@ public class ExecutePoshiElement extends PoshiElement {
 				continue;
 			}
 
-			sb.append(poshiElement.toPoshiScript());
+			String poshiScript = poshiElement.toPoshiScript();
+
+			assignments.add(poshiScript.trim());
 		}
 
-		String poshiScriptSnippet = createMacroPoshiScriptSnippet(
-			sb.toString());
+		String poshiScriptSnippet = createPoshiScriptSnippet(assignments);
 
 		if (returnPoshiElement == null) {
 			return poshiScriptSnippet;
@@ -267,7 +223,7 @@ public class ExecutePoshiElement extends PoshiElement {
 		super(name, parentPoshiElement, poshiScript);
 	}
 
-	protected String createFunctionPoshiScriptSnippet(String content) {
+	protected String createPoshiScriptSnippet(List<String> assignments) {
 		StringBuilder sb = new StringBuilder();
 
 		String blockName = getBlockName();
@@ -278,56 +234,43 @@ public class ExecutePoshiElement extends PoshiElement {
 		sb.append(blockName.replace("#", "."));
 		sb.append("(");
 
-		if (!content.equals("")) {
-			if (content.contains("\n")) {
-				content = content.replaceAll("\n", ",\n" + pad);
-				content = content.replaceFirst(",", "");
-				content = content + "\n" + pad;
+		boolean multilineSnippet = false;
+
+		String assignmentsString = assignments.toString();
+
+		int invocationStringLength =
+			blockName.length() + assignmentsString.length();
+
+		if ((invocationStringLength > 80) &&
+			!isConditionValidInParent((PoshiElement)getParent())) {
+
+			multilineSnippet = true;
+		}
+
+		for (String assignment : assignments) {
+			if (multilineSnippet) {
+				sb.append("\n\t");
+				sb.append(pad);
+			}
+
+			sb.append(assignment);
+			sb.append(",");
+
+			if (!multilineSnippet) {
+				sb.append(" ");
 			}
 		}
 
-		sb.append(content);
+		if (!assignments.isEmpty()) {
+			sb.setLength(sb.length() - 1);
 
-		sb.append(");");
-
-		return sb.toString();
-	}
-
-	protected String createMacroPoshiScriptSnippet(String content) {
-		StringBuilder sb = new StringBuilder();
-
-		String blockName = getBlockName();
-		String pad = getPad();
-
-		sb.append("\n\n");
-		sb.append(pad);
-		sb.append(blockName.replace("#", "."));
-		sb.append("(");
-
-		Matcher matcher = nestedVarAssignmentPattern.matcher(content);
-
-		StringBuffer formattedContent = new StringBuffer();
-
-		while (matcher.find()) {
-			String replacementString = StringUtil.combine(
-				pad, matcher.group(1), ",", matcher.group(2));
-
-			replacementString = replacementString.replace("$", "\\$");
-
-			matcher.appendReplacement(formattedContent, replacementString);
+			if (!multilineSnippet) {
+				sb.setLength(sb.length() - 1);
+			}
 		}
 
-		if (formattedContent.length() > 1) {
-			formattedContent.setLength(formattedContent.length() - 1);
-		}
-
-		sb.append(formattedContent.toString());
-
-		String trimmedContent = content.trim();
-
-		if (!trimmedContent.equals("")) {
+		if (multilineSnippet) {
 			sb.append("\n");
-
 			sb.append(pad);
 		}
 
@@ -338,6 +281,10 @@ public class ExecutePoshiElement extends PoshiElement {
 
 	@Override
 	protected String getBlockName() {
+		if (attributeValue("class") != null) {
+			return attributeValue("class") + "." + attributeValue("method");
+		}
+
 		if (attributeValue("function") != null) {
 			return attributeValue("function");
 		}

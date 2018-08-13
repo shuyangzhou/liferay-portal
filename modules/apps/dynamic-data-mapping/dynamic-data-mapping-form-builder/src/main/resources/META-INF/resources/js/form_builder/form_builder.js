@@ -233,7 +233,7 @@ AUI.add(
 
 						var contains = false;
 
-						instance.eachFields(
+						instance.eachFormBuilderField(
 							function(currentField) {
 								if (currentField === field) {
 									contains = true;
@@ -419,13 +419,15 @@ AUI.add(
 						layoutColumn.get('value').get('fields')[0].get('container').append(instance._getFieldActionsLayout());
 
 						instance._destroySortable(instance.sortable1);
+
 						instance._traverseFormPages();
+
 						instance._applyDragAndDrop();
 
 						activeLayout.normalizeColsHeight(new A.NodeList(newRow));
 					},
 
-					eachFields: function(callback) {
+					eachFormBuilderField: function(callback) {
 						var instance = this;
 
 						var visitor = instance.get('visitor');
@@ -779,7 +781,7 @@ AUI.add(
 					_afterEditingLanguageIdChange: function(event) {
 						var instance = this;
 
-						instance.eachFields(
+						instance.eachFormBuilderField(
 							function(field) {
 								field.set('locale', event.newVal);
 
@@ -793,19 +795,39 @@ AUI.add(
 
 						var container = instance.get('container');
 
-						var controlTrigger = container.one('.form-builder-page-header .form-builder-controls-trigger');
+						var controlTriggers = container.all('.form-builder-controls-trigger');
 
-						var controlTriggerButton = controlTrigger.one('.dropdown-toggle');
+						var controlTriggerButtons = controlTriggers.all('.dropdown-toggle');
 
 						if (instance.isEditMode()) {
 							instance._destroySortable(instance.sortable1);
 							container.addClass('edit-mode');
-							controlTrigger.addClass('disabled');
-							controlTriggerButton.addClass('disabled');
+							controlTriggers.each(
+								function(item) {
+									item.addClass('disabled');
+								}
+							);
+							controlTriggerButtons.each(
+								function(item) {
+									item.addClass('disabled');
+								}
+							);
 						}
 						else {
 							instance._applyDragAndDrop();
+
 							container.removeClass('edit-mode');
+
+							controlTriggers.each(
+								function(item) {
+									item.removeClass('disabled');
+								}
+							);
+							controlTriggerButtons.each(
+								function(item) {
+									item.removeClass('disabled');
+								}
+							);
 						}
 					},
 
@@ -898,7 +920,7 @@ AUI.add(
 					_createFieldActions: function() {
 						var instance = this;
 
-						instance.eachFields(
+						instance.eachFormBuilderField(
 							function(field) {
 								field.get('container').append(instance._getFieldActionsLayout());
 							}
@@ -1285,7 +1307,7 @@ AUI.add(
 
 						visitor.set('pages', instance.get('layouts'));
 
-						instance.eachFields(
+						instance.eachFormBuilderField(
 							function(field) {
 								var fieldVisible = boundingBox.contains(field.get('container'));
 
@@ -1376,7 +1398,7 @@ AUI.add(
 
 						visitor.set('pages', instance.get('layouts'));
 
-						instance.eachFields(
+						instance.eachFormBuilderField(
 							function(field) {
 								var fieldVisible = boundingBox.contains(field.get('container'));
 

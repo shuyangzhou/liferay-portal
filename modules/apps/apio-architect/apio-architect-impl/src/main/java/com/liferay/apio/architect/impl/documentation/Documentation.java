@@ -16,6 +16,7 @@ package com.liferay.apio.architect.impl.documentation;
 
 import com.liferay.apio.architect.documentation.APIDescription;
 import com.liferay.apio.architect.documentation.APITitle;
+import com.liferay.apio.architect.impl.url.ApplicationURL;
 import com.liferay.apio.architect.representor.Representor;
 import com.liferay.apio.architect.routes.CollectionRoutes;
 import com.liferay.apio.architect.routes.ItemRoutes;
@@ -35,6 +36,7 @@ public class Documentation {
 	public Documentation(
 		Supplier<Optional<APITitle>> apiTitleSupplier,
 		Supplier<Optional<APIDescription>> apiDescriptionSupplier,
+		Supplier<Optional<ApplicationURL>> entryPointSupplier,
 		Supplier<Map<String, Representor>> representorMapSupplier,
 		Supplier<Map<String, CollectionRoutes>> collectionRoutesMapSupplier,
 		Supplier<Map<String, ItemRoutes>> itemRoutesMapSupplier,
@@ -43,6 +45,7 @@ public class Documentation {
 
 		_apiTitleSupplier = apiTitleSupplier;
 		_apiDescriptionSupplier = apiDescriptionSupplier;
+		_entryPointSupplier = entryPointSupplier;
 		_representorMapSupplier = representorMapSupplier;
 		_routesMapSupplier = collectionRoutesMapSupplier;
 		_itemRoutesMapSupplier = itemRoutesMapSupplier;
@@ -87,6 +90,12 @@ public class Documentation {
 		return _routesMapSupplier.get();
 	}
 
+	public Optional<String> getEntryPointOptional() {
+		Optional<ApplicationURL> optional = _entryPointSupplier.get();
+
+		return optional.map(ApplicationURL::get);
+	}
+
 	/**
 	 * Returns a map containing the resources names as keys, and their {@link
 	 * ItemRoutes} as values.
@@ -122,6 +131,7 @@ public class Documentation {
 
 	private final Supplier<Optional<APIDescription>> _apiDescriptionSupplier;
 	private final Supplier<Optional<APITitle>> _apiTitleSupplier;
+	private final Supplier<Optional<ApplicationURL>> _entryPointSupplier;
 	private final Supplier<Map<String, ItemRoutes>> _itemRoutesMapSupplier;
 	private final Supplier<Map<String, NestedCollectionRoutes>>
 		_nestedCollectionRoutesMapSupplier;

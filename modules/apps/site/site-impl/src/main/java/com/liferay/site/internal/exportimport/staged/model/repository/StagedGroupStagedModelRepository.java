@@ -129,11 +129,13 @@ public class StagedGroupStagedModelRepository
 
 		Group liveGroup = _groupLocalService.fetchGroup(liveGroupId);
 
-		if (liveGroup != null) {
+		if ((liveGroup != null) &&
+			(liveGroup.getCompanyId() == portletDataContext.getCompanyId())) {
+
 			return liveGroup;
 		}
 
-		long existingGroupId = portletDataContext.getScopeGroupId();
+		long existingGroupId = 0;
 
 		if (groupId == portletDataContext.getSourceCompanyGroupId()) {
 			existingGroupId = portletDataContext.getCompanyGroupId();
@@ -146,7 +148,16 @@ public class StagedGroupStagedModelRepository
 		// group is properly staged. During local staging, valid mappings are
 		// found when the references do not change between staging and live.
 
-		return _groupLocalService.fetchGroup(existingGroupId);
+		Group group = _groupLocalService.fetchGroup(existingGroupId);
+
+		if ((group != null) &&
+			(group.getCompanyId() == portletDataContext.getCompanyId())) {
+
+			return group;
+		}
+
+		return _groupLocalService.fetchGroup(
+			portletDataContext.getScopeGroupId());
 	}
 
 	@Override

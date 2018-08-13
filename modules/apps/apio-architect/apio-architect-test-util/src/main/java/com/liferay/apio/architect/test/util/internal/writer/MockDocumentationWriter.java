@@ -90,7 +90,8 @@ public class MockDocumentationWriter {
 
 		Documentation documentation = new Documentation(
 			() -> Optional.of(() -> "Title"),
-			() -> Optional.of(() -> "Description"), () -> root,
+			() -> Optional.of(() -> "Description"),
+			() -> Optional.of(() -> "Entrypoint"), () -> root,
 			() -> Collections.singletonMap("root", collectionRoutes),
 			() -> Collections.singletonMap("root", itemRoutes),
 			() -> Collections.singletonMap("root", nestedCollectionRoutes));

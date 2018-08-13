@@ -61,6 +61,17 @@ public class JSONLDDocumentationMessageMapper
 	}
 
 	@Override
+	public void mapEntryPoint(
+		JSONObjectBuilder jsonObjectBuilder, String entryPoint) {
+
+		jsonObjectBuilder.field(
+			"entrypoint"
+		).stringValue(
+			entryPoint
+		);
+	}
+
+	@Override
 	public void mapOperation(
 		JSONObjectBuilder jsonObjectBuilder, String resourceName, String type,
 		Operation operation) {

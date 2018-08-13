@@ -312,6 +312,14 @@ public class DocumentationWriter {
 		apiDescriptionOptional.ifPresent(
 			description -> _documentationMessageMapper.mapDescription(
 				jsonObjectBuilder, description));
+
+		Optional<String> entryPointOptional =
+			_documentation.getEntryPointOptional();
+
+		entryPointOptional.ifPresent(
+			entryPoint -> _documentationMessageMapper.mapEntryPoint(
+				jsonObjectBuilder, entryPoint)
+		);
 	}
 
 	private void _writeFields(
