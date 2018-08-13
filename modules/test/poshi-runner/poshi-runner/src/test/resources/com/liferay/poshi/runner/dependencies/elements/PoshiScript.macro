@@ -8,7 +8,10 @@ definition {
 		var key_breadcrumbName = "${breadcrumbName}";
 		static var breadcrumbNameUppercase = StringUtil.upperCase('${breadcrumbName}');
 
-		AssertTextEquals(locator1 = "Breadcrumb#BREADCRUMB_ENTRY", value1 = "${breadcrumbNameUppercase}");
+		AssertTextEquals(
+			locator1 = "Breadcrumb#BREADCRUMB_ENTRY",
+			value1 = "${breadcrumbNameUppercase}"
+		);
 
 		return "${breadcrumbNameUppercase}";
 	}
@@ -23,13 +26,11 @@ definition {
 				v1 = "${row.hash('status')}"
 			);
 		}
+
 		var RawTable rawTable = new RawTable("${table}");
 
 		for (var row : table "${rawTable}") {
-			TableEcho.echoTwoVars(
-				v0 = "${row[0]}",
-				v1 = "${row[1]}"
-			);
+			TableEcho.echoTwoVars(v0 = "${row[0]}", v1 = "${row[1]}");
 		}
 	}
 }

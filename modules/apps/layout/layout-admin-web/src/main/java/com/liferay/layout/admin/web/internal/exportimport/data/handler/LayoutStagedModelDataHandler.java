@@ -1539,11 +1539,21 @@ public class LayoutStagedModelDataHandler
 			return;
 		}
 
+		long scopeGroupId = portletDataContext.getScopeGroupId();
+		boolean privateLayout = portletDataContext.isPrivateLayout();
+
+		Layout existingLayout = _layoutLocalService.fetchLayout(
+			linkedToLayoutUuid, scopeGroupId, privateLayout);
+
+		if (existingLayout != null) {
+			typeSettingsProperties.setProperty(
+				"linkToLayoutId", String.valueOf(existingLayout.getLayoutId()));
+		}
+
 		_exportImportProcessCallbackRegistry.registerCallback(
 			portletDataContext.getExportImportProcessId(),
 			new ImportLinkedLayoutCallable(
-				portletDataContext.getScopeGroupId(),
-				portletDataContext.isPrivateLayout(), importedLayout.getUuid(),
+				scopeGroupId, privateLayout, importedLayout.getUuid(),
 				linkedToLayoutUuid));
 	}
 
