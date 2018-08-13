@@ -65,7 +65,7 @@ public class InlinePoshiComment extends PoshiComment {
 	public String toPoshiScript() {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("\n\t//");
+		sb.append("\n\n\t//");
 		sb.append(StringUtil.trimTrailing(getText()));
 
 		return sb.toString();

@@ -332,6 +332,10 @@ public class GitWorkingDirectory {
 	}
 
 	public void deleteLocalGitBranch(LocalGitBranch localGitBranch) {
+		if (localGitBranch == null) {
+			return;
+		}
+
 		deleteLocalGitBranches(Arrays.asList(localGitBranch));
 	}
 
@@ -340,16 +344,20 @@ public class GitWorkingDirectory {
 	}
 
 	public void deleteLocalGitBranches(List<LocalGitBranch> localGitBranches) {
-		List<String> localGitBranchNames = new ArrayList<>();
+		if (localGitBranches.isEmpty()) {
+			return;
+		}
+
+		Set<String> localGitBranchNames = new HashSet<>();
 
 		for (LocalGitBranch localGitBranch : localGitBranches) {
 			localGitBranchNames.add(localGitBranch.getName());
 		}
 
-		for (List<String> branchNames :
-				Lists.partition(
-					localGitBranchNames, _DELETE_BRANCHES_BATCH_SIZE)) {
+		List<List<String>> branchNamesList = Lists.partition(
+			new ArrayList<>(localGitBranchNames), _DELETE_BRANCHES_BATCH_SIZE);
 
+		for (List<String> branchNames : branchNamesList) {
 			_deleteLocalGitBranches(
 				branchNames.toArray(new String[branchNames.size()]));
 		}
@@ -376,7 +384,7 @@ public class GitWorkingDirectory {
 	public void deleteRemoteGitBranches(
 		List<RemoteGitBranch> remoteGitBranches) {
 
-		Map<String, List<String>> remoteURLGitBranchNameMap = new HashMap<>();
+		Map<String, Set<String>> remoteURLGitBranchNameMap = new HashMap<>();
 
 		for (RemoteGitBranch remoteGitBranch : remoteGitBranches) {
 			RemoteRepository remoteRepository =
@@ -385,11 +393,10 @@ public class GitWorkingDirectory {
 			String remoteURL = remoteRepository.getRemoteURL();
 
 			if (!remoteURLGitBranchNameMap.containsKey(remoteURL)) {
-				remoteURLGitBranchNameMap.put(
-					remoteURL, new ArrayList<String>());
+				remoteURLGitBranchNameMap.put(remoteURL, new HashSet<String>());
 			}
 
-			List<String> remoteGitBranchNames = remoteURLGitBranchNameMap.get(
+			Set<String> remoteGitBranchNames = remoteURLGitBranchNameMap.get(
 				remoteURL);
 
 			remoteGitBranchNames.add(remoteGitBranch.getName());
@@ -397,15 +404,16 @@ public class GitWorkingDirectory {
 			remoteURLGitBranchNameMap.put(remoteURL, remoteGitBranchNames);
 		}
 
-		for (Map.Entry<String, List<String>> remoteURLBranchNamesEntry :
+		for (Map.Entry<String, Set<String>> remoteURLBranchNamesEntry :
 				remoteURLGitBranchNameMap.entrySet()) {
 
 			String remoteURL = remoteURLBranchNamesEntry.getKey();
 
 			for (List<String> branchNames :
 					Lists.partition(
-						remoteURLBranchNamesEntry.getValue(),
-						_DELETE_BRANCHES_BATCH_SIZE)) {
+						new ArrayList<String>(
+							remoteURLBranchNamesEntry.getValue()),
+							_DELETE_BRANCHES_BATCH_SIZE)) {
 
 				_deleteRemoteGitBranches(
 					remoteURL,
@@ -778,9 +786,18 @@ public class GitWorkingDirectory {
 	public LocalGitBranch getLocalGitBranch(
 		String branchName, boolean required) {
 
-		List<LocalGitBranch> localGitBranches = getLocalGitBranches(branchName);
+		if ((branchName != null) && !branchName.isEmpty()) {
+			List<LocalGitBranch> localGitBranches = getLocalGitBranches(
+				branchName);
 
-		for (LocalGitBranch localGitBranch : localGitBranches) {
+			if (localGitBranches.isEmpty()) {
+				return null;
+			}
+
+			return localGitBranches.get(0);
+		}
+
+		for (LocalGitBranch localGitBranch : getLocalGitBranches(null)) {
 			if (branchName.equals(localGitBranch.getName())) {
 				return localGitBranch;
 			}
@@ -811,15 +828,6 @@ public class GitWorkingDirectory {
 					GitBranchFactory.newLocalGitBranch(
 						localRepository, branchName,
 						getLocalGitBranchSHA(branchName)));
-			}
-			else {
-				LocalGitBranch currentLocalGitBranch =
-					getCurrentLocalGitBranch();
-
-				localGitBranches.add(
-					GitBranchFactory.newLocalGitBranch(
-						localRepository, branchName,
-						currentLocalGitBranch.getSHA()));
 			}
 
 			return localGitBranches;

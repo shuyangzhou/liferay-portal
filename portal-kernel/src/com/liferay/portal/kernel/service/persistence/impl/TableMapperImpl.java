@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.dao.jdbc.ParamSetter;
 import com.liferay.portal.kernel.dao.jdbc.RowMapper;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdate;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdateFactoryUtil;
-import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.ModelListener;
@@ -37,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.sql.DataSource;
 
@@ -438,14 +438,22 @@ public class TableMapperImpl<L extends BaseModel<L>, R extends BaseModel<R>>
 
 		List<T> slaveBaseModels = new ArrayList<>(slavePrimaryKeys.length);
 
-		try {
-			for (long slavePrimaryKey : slavePrimaryKeys) {
-				slaveBaseModels.add(
-					slaveBasePersistence.findByPrimaryKey(slavePrimaryKey));
+		boolean outOfDate = false;
+
+		for (long slavePrimaryKey : slavePrimaryKeys) {
+			T primaryKey = slaveBasePersistence.fetchByPrimaryKey(
+				slavePrimaryKey);
+
+			if (primaryKey != null) {
+				slaveBaseModels.add(primaryKey);
+			}
+			else {
+				outOfDate = true;
 			}
 		}
-		catch (NoSuchModelException nsme) {
-			throw new SystemException(nsme);
+
+		if (outOfDate) {
+			_setPrimaryKeys(portalCache, masterPrimaryKey, slaveBaseModels);
 		}
 
 		if (obc != null) {
@@ -517,6 +525,19 @@ public class TableMapperImpl<L extends BaseModel<L>, R extends BaseModel<R>>
 	protected BasePersistence<R> rightBasePersistence;
 	protected String rightColumnName;
 	protected PortalCache<Long, long[]> rightToLeftPortalCache;
+
+	private static <T extends BaseModel<T>> void _setPrimaryKeys(
+		PortalCache<Long, long[]> portalCache, long masterPrimaryKey,
+		List<T> slaveModels) {
+
+		Stream<T> slaveModelsStream = slaveModels.stream();
+
+		long[] primaryKeys = slaveModelsStream.mapToLong(
+			model -> (long)model.getPrimaryKeyObj()).toArray();
+
+		PortalCacheHelperUtil.putWithoutReplicator(
+			portalCache, masterPrimaryKey, primaryKeys);
+	}
 
 	private void _addTableMapping(
 		long companyId, long leftPrimaryKey, long rightPrimaryKey) {
