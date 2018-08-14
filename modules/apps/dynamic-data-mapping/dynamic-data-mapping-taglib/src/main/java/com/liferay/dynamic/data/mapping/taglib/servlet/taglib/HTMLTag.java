@@ -155,6 +155,14 @@ public class HTMLTag extends BaseHTMLTag {
 		return null;
 	}
 
+	/**
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
+	 */
+	@Deprecated
+	protected String getRandomNamespace() {
+		return PortalUtil.generateRandomKey(request, "taglib_ddm_init-ext");
+	}
+
 	@Override
 	protected int processEndTag() throws Exception {
 		JspWriter jspWriter = pageContext.getOut();
@@ -173,6 +181,8 @@ public class HTMLTag extends BaseHTMLTag {
 			request, "ddmFormValuesInputName", getDDMFormValuesInputName());
 		setNamespacedAttribute(request, "fields", getFields());
 		setNamespacedAttribute(request, "mode", getMode());
+		setNamespacedAttribute(
+			request, "randomNamespace", getRandomNamespace());
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(HTMLTag.class);
