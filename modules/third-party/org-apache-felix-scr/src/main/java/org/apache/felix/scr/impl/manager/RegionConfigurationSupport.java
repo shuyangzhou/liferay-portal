@@ -19,6 +19,7 @@
 package org.apache.felix.scr.impl.manager;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Dictionary;
@@ -668,8 +669,17 @@ public abstract class RegionConfigurationSupport implements ConfigurationListene
 
 		int index = 0;
 
-		for (int i = 0; i < value.length(); i++) {
-			char c = value.charAt(i);
+		char[] chars;
+
+		try {
+			chars = (char[])_valueField.get(value);
+		}
+		catch (ReflectiveOperationException roe) {
+			throw new RuntimeException(roe);
+		}
+
+		for (int i = 0; i < chars.length; i++) {
+			char c = chars[i];
 
 			switch (c) {
 				case '\\':
@@ -705,6 +715,19 @@ public abstract class RegionConfigurationSupport implements ConfigurationListene
     {
         return bundleContext.getService( caReference );
     }
+
+	private static final Field _valueField;
+
+	static {
+		try {
+			_valueField = String.class.getDeclaredField("value");
+		}
+		catch (ReflectiveOperationException roe) {
+			throw new ExceptionInInitializerError(roe);
+		}
+
+		_valueField.setAccessible(true);
+	}
 
 }
 /* @generated */
