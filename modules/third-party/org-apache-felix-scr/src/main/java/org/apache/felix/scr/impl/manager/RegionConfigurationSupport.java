@@ -664,7 +664,41 @@ public abstract class RegionConfigurationSupport implements ConfigurationListene
      */
     static final String escape(String value)
     {
-        return value.replaceAll( "([\\\\\\*\\(\\)])", "\\\\$1" );
+		StringBuilder sb = null;
+
+		int index = 0;
+
+		for (int i = 0; i < value.length(); i++) {
+			char c = value.charAt(i);
+
+			switch (c) {
+				case '\\':
+				case '*':
+				case '(':
+				case ')':
+					if (sb == null) {
+						sb = new StringBuilder();
+					}
+
+					sb.append(value, index, i);
+					sb.append('\\');
+					sb.append(c);
+
+					index = i + 1;
+
+					break;
+			}
+		}
+
+		if (sb == null) {
+			return value;
+		}
+
+		if (index < value.length()) {
+			sb.append(value, index, value.length());
+		}
+
+		return sb.toString();
     }
 
     private ConfigurationAdmin getConfigAdmin(BundleContext bundleContext)
