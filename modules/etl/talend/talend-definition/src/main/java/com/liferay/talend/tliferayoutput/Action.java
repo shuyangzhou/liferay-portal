@@ -14,12 +14,20 @@
 
 package com.liferay.talend.tliferayoutput;
 
+import java.util.Arrays;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
+
 /**
  * @author Zoltán Takács
  */
 public enum Action {
 
-	Delete("DELETE"), Update("PUT"), Upsert("POST");
+	Delete("DELETE"), Unavailable("NOOP"), Update("PUT"), Upsert("POST");
+
+	public static Stream<Action> getActionsStream() {
+		return _actionsStreamSupplier.get();
+	}
 
 	public String getMethodName() {
 		return _method;
@@ -28,6 +36,9 @@ public enum Action {
 	private Action(String method) {
 		_method = method;
 	}
+
+	private static final Supplier<Stream<Action>> _actionsStreamSupplier =
+		() -> Arrays.stream(values());
 
 	private final String _method;
 
