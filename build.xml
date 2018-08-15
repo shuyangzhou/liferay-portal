@@ -913,89 +913,13 @@ message.
 	</target>
 
 	<target name="nightly">
-		<antelope:stringutil property="nightly.bundle.file.beginindex" string="${nightly.bundle.url}">
-			<antelope:lastindexof string="/" />
-		</antelope:stringutil>
+		<fail>
+.
 
-		<antelope:math
-			datatype="int"
-			operand1="${nightly.bundle.file.beginindex}"
-			operand2="1"
-			operation="+"
-			result="nightly.bundle.file.beginindex"
-		/>
+This target has been renamed to "snapshot-bundle". Please call "snapshot-bundle" instead.
+		</fail>
 
-		<antelope:stringutil property="nightly.bundle.file" string="${nightly.bundle.url}">
-			<antelope:substring beginindex="${nightly.bundle.file.beginindex}" />
-		</antelope:stringutil>
-
-		<property name="nightly.bundle.sha256.original" value="${project.dir}/tmp/${nightly.bundle.file}.nightly.bundle.sha256.original" />
-		<property name="nightly.bundle.sha256.new" value="${project.dir}/tmp/${nightly.bundle.file}.nightly.bundle.sha256.new" />
-
-		<mirrors-get
-			dest="${nightly.bundle.sha256.original}"
-			force="false"
-			skipChecksum="true"
-			src="${nightly.bundle.url}.sha256"
-		/>
-
-		<mirrors-get
-			dest="${nightly.bundle.sha256.new}"
-			force="true"
-			skipChecksum="true"
-			src="${nightly.bundle.url}.sha256"
-		/>
-
-		<condition else="true" property="nightly.bundle.force" value="false">
-			<filesmatch file1="${nightly.bundle.sha256.original}" file2="${nightly.bundle.sha256.new}" />
-		</condition>
-
-		<mirrors-get
-			dest="${project.dir}/tmp/${nightly.bundle.file}"
-			force="${nightly.bundle.force}"
-			skipChecksum="true"
-			src="${nightly.bundle.url}"
-		/>
-
-		<clean-liferay-home />
-
-		<unzip
-			dest="${liferay.home}"
-			src="${project.dir}/tmp/${nightly.bundle.file}"
-		>
-			<mapper>
-				<globmapper
-					from="liferay-portal-${git.working.branch.name}/*"
-					to="*"
-				/>
-			</mapper>
-			<patternset
-				excludes="${nightly.bundle.excludes}"
-			/>
-		</unzip>
-
-		<deploy-properties />
-
-		<if>
-			<os family="unix" />
-			<then>
-				<chmod
-					file="${app.server.tomcat.bin.dir}/*.sh"
-					perm="a+x"
-				/>
-			</then>
-		</if>
-
-		<if>
-			<available file="${liferay.home}/work" />
-			<then>
-				<touch>
-					<fileset
-						dir="${liferay.home}/work"
-					/>
-				</touch>
-			</then>
-		</if>
+		<antcall target="snapshot-bundle" />
 	</target>
 
 	<target name="prepare-generated-files">
@@ -1151,6 +1075,92 @@ message.
 
 	<target name="setup-sdk">
 		<setup-sdk />
+	</target>
+
+	<target name="snapshot-bundle">
+		<antelope:stringutil property="snapshot.bundle.file.beginindex" string="${snapshot.bundle.url}">
+			<antelope:lastindexof string="/" />
+		</antelope:stringutil>
+
+		<antelope:math
+			datatype="int"
+			operand1="${snapshot.bundle.file.beginindex}"
+			operand2="1"
+			operation="+"
+			result="snapshot.bundle.file.beginindex"
+		/>
+
+		<antelope:stringutil property="snapshot.bundle.file" string="${snapshot.bundle.url}">
+			<antelope:substring beginindex="${snapshot.bundle.file.beginindex}" />
+		</antelope:stringutil>
+
+		<property name="snapshot.bundle.sha256.original" value="${project.dir}/tmp/${snapshot.bundle.file}.snapshot.bundle.sha256.original" />
+		<property name="snapshot.bundle.sha256.new" value="${project.dir}/tmp/${snapshot.bundle.file}.snapshot.bundle.sha256.new" />
+
+		<mirrors-get
+			dest="${snapshot.bundle.sha256.original}"
+			force="false"
+			skipChecksum="true"
+			src="${snapshot.bundle.url}.sha256"
+		/>
+
+		<mirrors-get
+			dest="${snapshot.bundle.sha256.new}"
+			force="true"
+			skipChecksum="true"
+			src="${snapshot.bundle.url}.sha256"
+		/>
+
+		<condition else="true" property="snapshot.bundle.force" value="false">
+			<filesmatch file1="${snapshot.bundle.sha256.original}" file2="${snapshot.bundle.sha256.new}" />
+		</condition>
+
+		<mirrors-get
+			dest="${project.dir}/tmp/${snapshot.bundle.file}"
+			force="${snapshot.bundle.force}"
+			skipChecksum="true"
+			src="${snapshot.bundle.url}"
+		/>
+
+		<clean-liferay-home />
+
+		<unzip
+			dest="${liferay.home}"
+			src="${project.dir}/tmp/${snapshot.bundle.file}"
+		>
+			<mapper>
+				<globmapper
+					from="liferay-portal-${git.working.branch.name}/*"
+					to="*"
+				/>
+			</mapper>
+			<patternset
+				excludes="${snapshot.bundle.excludes}"
+			/>
+		</unzip>
+
+		<deploy-properties />
+
+		<if>
+			<os family="unix" />
+			<then>
+				<chmod
+					file="${app.server.tomcat.bin.dir}/*.sh"
+					perm="a+x"
+				/>
+			</then>
+		</if>
+
+		<if>
+			<available file="${liferay.home}/work" />
+			<then>
+				<touch>
+					<fileset
+						dir="${liferay.home}/work"
+					/>
+				</touch>
+			</then>
+		</if>
 	</target>
 
 	<target name="start">
