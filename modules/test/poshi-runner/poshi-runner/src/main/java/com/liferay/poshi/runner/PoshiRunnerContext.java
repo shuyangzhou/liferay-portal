@@ -291,6 +291,7 @@ public class PoshiRunnerContext {
 	public static void readFiles(String[] includes, String... baseDirNames)
 		throws Exception {
 
+		_readPoshiFilesFromClassPath(includes, "testFunctional");
 		_readPoshiFiles(includes, baseDirNames);
 		_readSeleniumFiles();
 	}
