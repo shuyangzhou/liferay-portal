@@ -1563,6 +1563,8 @@ public interface PropsKeys {
 
 	public static final String MODULE_FRAMEWORK_PORTAL_DIR = "module.framework.portal.dir";
 
+	public static final String MODULE_FRAMEWORK_PORTAL_STARTUP_START_LEVEL = "module.framework.portal.startup.start.level";
+
 	public static final String MODULE_FRAMEWORK_PROPERTIES = "module.framework.properties.";
 
 	/**
