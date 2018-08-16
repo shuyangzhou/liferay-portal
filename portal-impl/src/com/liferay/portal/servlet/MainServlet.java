@@ -76,6 +76,7 @@ import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.DocumentException;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.UnsecureSAXReaderUtil;
+import com.liferay.portal.module.framework.ModuleFrameworkUtilAdapter;
 import com.liferay.portal.plugin.PluginPackageUtil;
 import com.liferay.portal.service.impl.LayoutTemplateLocalServiceImpl;
 import com.liferay.portal.servlet.filters.absoluteredirects.AbsoluteRedirectsResponse;
@@ -576,6 +577,18 @@ public class MainServlet extends ActionServlet {
 			}
 
 			processServicePost(request, response);
+		}
+
+		if (!_startLevelSet) {
+			try {
+				ModuleFrameworkUtilAdapter.setFrameworkStartLevel(
+					PropsValues.MODULE_FRAMEWORK_PORTAL_STARTUP_START_LEVEL);
+
+				_startLevelSet = true;
+			}
+			catch (PortalException pe) {
+				_log.error(pe, pe);
+			}
 		}
 	}
 
@@ -1404,6 +1417,7 @@ public class MainServlet extends ActionServlet {
 		_portalInitializedModuleServiceLifecycleServiceRegistration;
 	private ServiceRegistration<ServletContext>
 		_servletContextServiceRegistration;
+	private boolean _startLevelSet;
 	private ServiceRegistration<ModuleServiceLifecycle>
 		_systemCheckModuleServiceLifecycleServiceRegistration;
 
