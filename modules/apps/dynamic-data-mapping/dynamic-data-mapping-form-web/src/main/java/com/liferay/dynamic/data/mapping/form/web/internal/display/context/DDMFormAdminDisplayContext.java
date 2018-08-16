@@ -76,6 +76,7 @@ import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -115,7 +116,7 @@ public class DDMFormAdminDisplayContext {
 		DDMFormValuesMerger formValuesMerger,
 		DDMStructureLocalService structureLocalService,
 		DDMStructureService structureService, JSONFactory jsonFactory,
-		NPMResolver npmResolver) {
+		NPMResolver npmResolver, ResourceBundleLoader resourceBundleLoader) {
 
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
@@ -137,6 +138,7 @@ public class DDMFormAdminDisplayContext {
 		_ddmStructureService = structureService;
 		_jsonFactory = jsonFactory;
 		_npmResolver = npmResolver;
+		_resourceBundleLoader = resourceBundleLoader;
 
 		formAdminRequestHelper = new DDMFormAdminRequestHelper(renderRequest);
 
@@ -498,7 +500,7 @@ public class DDMFormAdminDisplayContext {
 			PortalUtil.getHttpServletResponse(_renderResponse),
 			_ddmFormInstanceRecordLocalService,
 			_ddmFormInstanceVersionLocalService, _ddmFormRenderer,
-			_ddmFormValuesFactory, _ddmFormValuesMerger);
+			_ddmFormValuesFactory, _ddmFormValuesMerger, _resourceBundleLoader);
 	}
 
 	public DDMFormViewFormInstanceRecordsDisplayContext
@@ -1146,5 +1148,6 @@ public class DDMFormAdminDisplayContext {
 	private final NPMResolver _npmResolver;
 	private final RenderRequest _renderRequest;
 	private final RenderResponse _renderResponse;
+	private final ResourceBundleLoader _resourceBundleLoader;
 
 }
