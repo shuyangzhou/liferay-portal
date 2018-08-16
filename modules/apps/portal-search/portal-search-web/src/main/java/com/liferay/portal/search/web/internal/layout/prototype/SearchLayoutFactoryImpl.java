@@ -74,7 +74,7 @@ public class SearchLayoutFactoryImpl implements SearchLayoutFactory {
 
 		try {
 			createSearchLayoutPrototype(
-				companyId, userLocalService.getDefaultUserId(companyId),
+				companyId, _userLocalService.getDefaultUserId(companyId),
 				getSearchTitleLocalizationMap(),
 				getSearchDescriptionLocalizationMap());
 		}
@@ -116,7 +116,7 @@ public class SearchLayoutFactoryImpl implements SearchLayoutFactory {
 
 		serviceContext.setUserId(group.getCreatorUserId());
 
-		layoutLocalService.addLayout(
+		_layoutLocalService.addLayout(
 			group.getCreatorUserId(), group.getGroupId(), false,
 			LayoutConstants.DEFAULT_PARENT_LAYOUT_ID,
 			layoutPrototype.getNameMap(), baseLayout.getTitleMap(),
@@ -138,11 +138,11 @@ public class SearchLayoutFactoryImpl implements SearchLayoutFactory {
 		String layoutTemplateId = getLayoutTemplateId();
 
 		List<LayoutPrototype> layoutPrototypes =
-			layoutPrototypeLocalService.search(
+			_layoutPrototypeLocalService.search(
 				companyId, null, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 
 		Layout layout = LayoutPrototypeHelperUtil.addLayoutPrototype(
-			layoutPrototypeLocalService, companyId, defaultUserId, nameMap,
+			_layoutPrototypeLocalService, companyId, defaultUserId, nameMap,
 			descriptionMap, layoutTemplateId, layoutPrototypes);
 
 		if (layout == null) {
@@ -157,8 +157,8 @@ public class SearchLayoutFactoryImpl implements SearchLayoutFactory {
 	}
 
 	protected void customize(Layout layout) throws Exception {
-		if (searchLayoutPrototypeCustomizer != null) {
-			searchLayoutPrototypeCustomizer.customize(layout);
+		if (_searchLayoutPrototypeCustomizer != null) {
+			_searchLayoutPrototypeCustomizer.customize(layout);
 		}
 		else {
 			_defaultSearchLayoutPrototypeCustomizer.customize(layout);
@@ -172,7 +172,7 @@ public class SearchLayoutFactoryImpl implements SearchLayoutFactory {
 			getSearchTitleLocalizationMap();
 
 		List<LayoutPrototype> layoutPrototypes =
-			layoutPrototypeLocalService.getLayoutPrototypes(
+			_layoutPrototypeLocalService.getLayoutPrototypes(
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 		Stream<LayoutPrototype> stream1 = layoutPrototypes.stream();
@@ -189,15 +189,16 @@ public class SearchLayoutFactoryImpl implements SearchLayoutFactory {
 	}
 
 	protected String getLayoutTemplateId() {
-		if (searchLayoutPrototypeCustomizer != null) {
-			return searchLayoutPrototypeCustomizer.getLayoutTemplateId();
+		if (_searchLayoutPrototypeCustomizer != null) {
+			return _searchLayoutPrototypeCustomizer.getLayoutTemplateId();
 		}
 
 		return _defaultSearchLayoutPrototypeCustomizer.getLayoutTemplateId();
 	}
 
 	protected Map<Locale, String> getLocalizationMap(String key) {
-		return ResourceBundleUtil.getLocalizationMap(resourceBundleLoader, key);
+		return ResourceBundleUtil.getLocalizationMap(
+			_resourceBundleLoader, key);
 	}
 
 	protected Map<Locale, String> getLocalizationMap(
@@ -215,7 +216,7 @@ public class SearchLayoutFactoryImpl implements SearchLayoutFactory {
 	}
 
 	protected boolean hasSearchLayout(Group group) {
-		Layout layout = layoutLocalService.fetchLayoutByFriendlyURL(
+		Layout layout = _layoutLocalService.fetchLayoutByFriendlyURL(
 			group.getGroupId(), false, "/search");
 
 		if (layout != null) {
@@ -253,41 +254,43 @@ public class SearchLayoutFactoryImpl implements SearchLayoutFactory {
 
 		group.setTypeSettingsProperties(properties);
 
-		groupLocalService.updateGroup(group);
+		_groupLocalService.updateGroup(group);
 
 		return true;
 	}
 
-	@Reference
-	protected GroupLocalService groupLocalService;
-
-	@Reference
-	protected LayoutLocalService layoutLocalService;
-
-	@Reference
-	protected LayoutPrototypeLocalService layoutPrototypeLocalService;
-
-	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(bundle.symbolic.name=com.liferay.portal.search.web)"
-	)
-	protected volatile ResourceBundleLoader resourceBundleLoader;
-
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected volatile SearchLayoutPrototypeCustomizer
-		searchLayoutPrototypeCustomizer;
-
-	@Reference protected UserLocalService userLocalService;
 	private static final Log _log = LogFactoryUtil.getLog(
 		SearchLayoutFactoryImpl.class);
 
 	private final SearchLayoutPrototypeCustomizer
 		_defaultSearchLayoutPrototypeCustomizer =
 			new DefaultSearchLayoutPrototypeCustomizer();
+
+	@Reference
+	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private LayoutLocalService _layoutLocalService;
+
+	@Reference
+	private LayoutPrototypeLocalService _layoutPrototypeLocalService;
+
+	@Reference(
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY,
+		target = "(bundle.symbolic.name=com.liferay.portal.search.web)"
+	)
+	private volatile ResourceBundleLoader _resourceBundleLoader;
+
+	@Reference(
+		cardinality = ReferenceCardinality.OPTIONAL,
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY
+	)
+	private volatile SearchLayoutPrototypeCustomizer
+		_searchLayoutPrototypeCustomizer;
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 }
