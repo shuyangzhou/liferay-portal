@@ -357,6 +357,14 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		bundleStartLevel.setStartLevel(startLevel);
 	}
 
+	@Override
+	public void setFrameworkStartLevel(int startLevel) throws PortalException {
+		FrameworkStartLevel frameworkStartLevel = _framework.adapt(
+			FrameworkStartLevel.class);
+
+		frameworkStartLevel.setStartLevel(startLevel);
+	}
+
 	public void startBundle(
 			Bundle bundle, int options, boolean checkPermissions)
 		throws PortalException {

@@ -44,6 +44,8 @@ public interface ModuleFramework {
 	public void setBundleStartLevel(long bundleId, int startLevel)
 		throws PortalException;
 
+	public void setFrameworkStartLevel(int startLevel) throws PortalException;
+
 	public void startBundle(long bundleId) throws PortalException;
 
 	public void startBundle(long bundleId, int options) throws PortalException;
