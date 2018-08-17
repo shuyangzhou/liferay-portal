@@ -30,7 +30,6 @@ import com.liferay.portlet.PublicRenderParametersPool;
 import java.io.Serializable;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -153,39 +152,29 @@ public abstract class StateAwareResponseImpl
 		// it is necessary to populate the render parameter map with the render
 		// parameters found in the request
 
-		Portlet portlet = portletRequestImpl.getPortlet();
+		Set<String> publicRenderParameterNames = new LinkedHashSet<>();
 
-		PortletApp portletApp = portlet.getPortletApp();
+		RenderParameters renderParameters =
+			portletRequestImpl.getRenderParameters();
 
-		if (portletApp.getSpecMajorVersion() < 3) {
-			_mutableRenderParameters = new MutableRenderParametersImpl(
-				_params, Collections.emptySet());
-		}
-		else {
-			Set<String> publicRenderParameterNames = new LinkedHashSet<>();
+		LiferayRenderParameters liferayRenderParameters =
+			(LiferayRenderParameters)renderParameters;
 
-			RenderParameters renderParameters =
-				portletRequestImpl.getRenderParameters();
+		Map<String, String[]> liferayRenderParametersMap =
+			liferayRenderParameters.getParameterMap();
 
-			LiferayRenderParameters liferayRenderParameters =
-				(LiferayRenderParameters)renderParameters;
+		for (Map.Entry<String, String[]> entry :
+				liferayRenderParametersMap.entrySet()) {
 
-			Map<String, String[]> liferayRenderParametersMap =
-				liferayRenderParameters.getParameterMap();
-
-			for (Map.Entry<String, String[]> entry :
-					liferayRenderParametersMap.entrySet()) {
-
-				if (liferayRenderParameters.isPublic(entry.getKey())) {
-					publicRenderParameterNames.add(entry.getKey());
-				}
-
-				_params.put(entry.getKey(), entry.getValue());
+			if (liferayRenderParameters.isPublic(entry.getKey())) {
+				publicRenderParameterNames.add(entry.getKey());
 			}
 
-			_mutableRenderParameters = new MutableRenderParametersImpl(
-				_params, publicRenderParameterNames);
+			_params.put(entry.getKey(), entry.getValue());
 		}
+
+		_mutableRenderParameters = new MutableRenderParametersImpl(
+			_params, publicRenderParameterNames);
 	}
 
 	@Override

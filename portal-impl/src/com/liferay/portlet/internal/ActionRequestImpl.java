@@ -37,10 +37,6 @@ public class ActionRequestImpl
 
 	@Override
 	public ActionParameters getActionParameters() {
-		if (getPortletSpecMajorVersion() < 3) {
-			throw new UnsupportedOperationException("Requires 3.0 opt-in");
-		}
-
 		return _actionParameters;
 	}
 
@@ -63,11 +59,9 @@ public class ActionRequestImpl
 		String portletNamespace = PortalUtil.getPortletNamespace(
 			getPortletName());
 
-		if (getPortletSpecMajorVersion() == 3) {
-			_actionParameters = new ActionParametersImpl(
-				getPortletParameterMap(request, portletNamespace),
-				portletNamespace);
-		}
+		_actionParameters = new ActionParametersImpl(
+			getPortletParameterMap(request, portletNamespace),
+			portletNamespace);
 	}
 
 	private ActionParameters _actionParameters;
