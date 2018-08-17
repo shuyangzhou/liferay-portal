@@ -14,7 +14,6 @@
 
 package com.liferay.portal.spring.context;
 
-import com.liferay.petra.executor.PortalExecutorManager;
 import com.liferay.petra.lang.ClassLoaderPool;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.CharPool;
@@ -34,11 +33,8 @@ import com.liferay.portal.kernel.deploy.hot.HotDeployUtil;
 import com.liferay.portal.kernel.exception.LoggedExceptionInInitializerError;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.messaging.MessageBus;
-import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSenderFactory;
 import com.liferay.portal.kernel.portlet.PortletBagPool;
 import com.liferay.portal.kernel.process.ClassPathUtil;
-import com.liferay.portal.kernel.scheduler.SchedulerEngineHelper;
 import com.liferay.portal.kernel.servlet.DirectServletRegistryUtil;
 import com.liferay.portal.kernel.servlet.PortletSessionListenerManager;
 import com.liferay.portal.kernel.servlet.SerializableSessionAttributeListener;
@@ -65,8 +61,6 @@ import com.liferay.portal.util.PortalClassPathUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.util.WebAppPool;
 import com.liferay.portlet.PortletContextBagPool;
-import com.liferay.registry.dependency.ServiceDependencyListener;
-import com.liferay.registry.dependency.ServiceDependencyManager;
 
 import java.beans.PropertyDescriptor;
 
@@ -110,9 +104,7 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
 		ThreadLocalCacheManager.destroy();
 
-		if (_serviceWrapperRegistry != null) {
-			_serviceWrapperRegistry.close();
-		}
+		_serviceWrapperRegistry.close();
 
 		try {
 			ClearThreadLocalUtil.clearThreadLocal();
@@ -244,31 +236,11 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 			throw new RuntimeException(e);
 		}
 
+		_serviceWrapperRegistry = new ServiceWrapperRegistry();
+
 		ClassLoader portalClassLoader = ClassLoaderUtil.getPortalClassLoader();
 
 		ClassLoaderPool.register(_portalServletContextName, portalClassLoader);
-
-		ServiceDependencyManager serviceDependencyManager =
-			new ServiceDependencyManager();
-
-		serviceDependencyManager.addServiceDependencyListener(
-			new ServiceDependencyListener() {
-
-				@Override
-				public void dependenciesFulfilled() {
-					_serviceWrapperRegistry = new ServiceWrapperRegistry();
-				}
-
-				@Override
-				public void destroy() {
-				}
-
-			});
-
-		serviceDependencyManager.registerDependencies(
-			MessageBus.class, PortalExecutorManager.class,
-			SchedulerEngineHelper.class,
-			SingleDestinationMessageSenderFactory.class);
 
 		FutureTask<Void> springInitTask = new FutureTask<>(
 			() -> {
