@@ -507,10 +507,6 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 
 	@Override
 	public RenderParameters getRenderParameters() {
-		if (_portletSpecMajorVersion < 3) {
-			throw new UnsupportedOperationException("Requires 3.0 opt-in");
-		}
-
 		return _renderParameters;
 	}
 
@@ -861,10 +857,6 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 
 		_locale = themeDisplay.getLocale();
 		_plid = plid;
-
-		if (_portletSpecMajorVersion < 3) {
-			return;
-		}
 
 		Set<String> publicRenderParameterNames = new HashSet<>();
 

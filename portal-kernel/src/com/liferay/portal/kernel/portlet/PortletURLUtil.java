@@ -17,7 +17,6 @@ package com.liferay.portal.kernel.portlet;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.LayoutTypePortlet;
 import com.liferay.portal.kernel.model.Portlet;
-import com.liferay.portal.kernel.model.PortletApp;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -134,20 +133,8 @@ public class PortletURLUtil {
 			return portletURL;
 		}
 
-		Portlet portlet = liferayPortletRequest.getPortlet();
-
-		PortletApp portletApp = portlet.getPortletApp();
-
-		int portletSpecMajorVersion = portletApp.getSpecMajorVersion();
-
-		if (portletSpecMajorVersion < 3) {
-			portletURL = _getCurrentV2(
-				liferayPortletRequest, liferayPortletResponse);
-		}
-		else {
-			portletURL = _getCurrentV3(
-				liferayPortletRequest, liferayPortletResponse);
-		}
+		portletURL = _getCurrentV3(
+			liferayPortletRequest, liferayPortletResponse);
 
 		liferayPortletRequest.setAttribute(
 			WebKeys.CURRENT_PORTLET_URL, portletURL);
