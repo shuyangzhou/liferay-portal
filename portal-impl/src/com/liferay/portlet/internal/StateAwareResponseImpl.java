@@ -30,7 +30,6 @@ import com.liferay.portlet.PublicRenderParametersPool;
 import java.io.Serializable;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -96,15 +95,16 @@ public abstract class StateAwareResponseImpl
 	public Map<String, String[]> getRenderParameterMap() {
 		Map<String, String[]> renderParameterMap = new LinkedHashMap<>();
 
-		Set<String> parameterNames = _mutableRenderParameters.getNames();
+		Map<String, String[]> mutableRenderParametersMap =
+			_mutableRenderParameters.getParameterMap();
 
-		for (String parameterName : parameterNames) {
-			if (!_mutableRenderParameters.isPublic(parameterName) ||
-				_mutableRenderParameters.isMutated(parameterName)) {
+		for (Map.Entry<String, String[]> entry :
+				mutableRenderParametersMap.entrySet()) {
 
-				renderParameterMap.put(
-					parameterName,
-					_mutableRenderParameters.getValues(parameterName));
+			if (!_mutableRenderParameters.isPublic(entry.getKey()) ||
+				_mutableRenderParameters.isMutated(entry.getKey())) {
+
+				renderParameterMap.put(entry.getKey(), entry.getValue());
 			}
 		}
 
@@ -152,35 +152,29 @@ public abstract class StateAwareResponseImpl
 		// it is necessary to populate the render parameter map with the render
 		// parameters found in the request
 
-		Portlet portlet = portletRequestImpl.getPortlet();
+		Set<String> publicRenderParameterNames = new LinkedHashSet<>();
 
-		PortletApp portletApp = portlet.getPortletApp();
+		RenderParameters renderParameters =
+			portletRequestImpl.getRenderParameters();
 
-		if (portletApp.getSpecMajorVersion() < 3) {
-			_mutableRenderParameters = new MutableRenderParametersImpl(
-				_params, Collections.emptySet());
-		}
-		else {
-			Set<String> publicRenderParameterNames = new LinkedHashSet<>();
+		LiferayRenderParameters liferayRenderParameters =
+			(LiferayRenderParameters)renderParameters;
 
-			RenderParameters renderParameters =
-				portletRequestImpl.getRenderParameters();
+		Map<String, String[]> liferayRenderParametersMap =
+			liferayRenderParameters.getParameterMap();
 
-			Set<String> renderParametersNames = renderParameters.getNames();
+		for (Map.Entry<String, String[]> entry :
+				liferayRenderParametersMap.entrySet()) {
 
-			for (String renderParameterName : renderParametersNames) {
-				if (renderParameters.isPublic(renderParameterName)) {
-					publicRenderParameterNames.add(renderParameterName);
-				}
-
-				_params.put(
-					renderParameterName,
-					renderParameters.getValues(renderParameterName));
+			if (liferayRenderParameters.isPublic(entry.getKey())) {
+				publicRenderParameterNames.add(entry.getKey());
 			}
 
-			_mutableRenderParameters = new MutableRenderParametersImpl(
-				_params, publicRenderParameterNames);
+			_params.put(entry.getKey(), entry.getValue());
 		}
+
+		_mutableRenderParameters = new MutableRenderParametersImpl(
+			_params, publicRenderParameterNames);
 	}
 
 	@Override
