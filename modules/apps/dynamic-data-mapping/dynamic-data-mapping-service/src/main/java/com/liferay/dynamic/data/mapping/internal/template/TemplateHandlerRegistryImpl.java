@@ -17,7 +17,6 @@ package com.liferay.dynamic.data.mapping.internal.template;
 import com.liferay.dynamic.data.mapping.internal.util.ResourceBundleLoaderProvider;
 import com.liferay.dynamic.data.mapping.kernel.DDMTemplate;
 import com.liferay.dynamic.data.mapping.kernel.DDMTemplateManager;
-import com.liferay.portal.instance.lifecycle.BasePortalInstanceLifecycleListener;
 import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Company;
@@ -232,7 +231,7 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 	private UserLocalService _userLocalService;
 
 	private class TemplateHandlerPortalInstanceLifecycleListener
-		extends BasePortalInstanceLifecycleListener {
+		implements PortalInstanceLifecycleListener {
 
 		@Override
 		public void portalInstanceRegistered(Company company) throws Exception {

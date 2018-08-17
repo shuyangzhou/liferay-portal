@@ -14,7 +14,6 @@
 
 package com.liferay.portal.security.ldap.internal.instance.lifecycle;
 
-import com.liferay.portal.instance.lifecycle.BasePortalInstanceLifecycleListener;
 import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -30,9 +29,9 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 /**
  * @author Michael C. Han
  */
-@Component(immediate = true, service = PortalInstanceLifecycleListener.class)
+@Component(immediate = true)
 public class LDAPPortalInstanceLifecycleListener
-	extends BasePortalInstanceLifecycleListener {
+	implements PortalInstanceLifecycleListener {
 
 	@Override
 	public void portalInstanceRegistered(Company company) throws Exception {
