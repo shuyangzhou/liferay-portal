@@ -72,6 +72,12 @@ public class ModuleFrameworkUtil {
 		getModuleFramework().setBundleStartLevel(bundleId, startLevel);
 	}
 
+	public static void setFrameworkStartLevel(int startLevel)
+		throws PortalException {
+
+		getModuleFramework().setFrameworkStartLevel(startLevel);
+	}
+
 	public static void setModuleFramework(ModuleFramework moduleFramework) {
 		_moduleFramework = moduleFramework;
 	}

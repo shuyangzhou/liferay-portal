@@ -77,6 +77,12 @@ public class ModuleFrameworkUtilAdapter {
 		_moduleFramework.setBundleStartLevel(bundleId, startLevel);
 	}
 
+	public static void setFrameworkStartLevel(int startLevel)
+		throws PortalException {
+
+		_moduleFramework.setFrameworkStartLevel(startLevel);
+	}
+
 	public static void setModuleFramework(ModuleFramework moduleFramework) {
 		_moduleFramework = moduleFramework;
 

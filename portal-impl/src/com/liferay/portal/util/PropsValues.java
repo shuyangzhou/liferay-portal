@@ -1101,6 +1101,8 @@ public class PropsValues {
 
 	public static final String MODULE_FRAMEWORK_PORTAL_DIR = PropsUtil.get(PropsKeys.MODULE_FRAMEWORK_PORTAL_DIR);
 
+	public static final int MODULE_FRAMEWORK_PORTAL_STARTUP_START_LEVEL = GetterUtil.getInteger(PropsUtil.get(PropsKeys.MODULE_FRAMEWORK_PORTAL_STARTUP_START_LEVEL));
+
 	/**
 	 * @deprecated As of Judson (7.1.x), with no direct replacement
 	 */
