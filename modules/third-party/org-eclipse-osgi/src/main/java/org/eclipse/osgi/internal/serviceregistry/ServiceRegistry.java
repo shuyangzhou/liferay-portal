@@ -991,6 +991,10 @@ public class ServiceRegistry {
 	 * @return List<ServiceRegistrationImpl>
 	 */
 	private List<ServiceRegistrationImpl<?>> lookupServiceRegistrations(String clazz, Filter filter) {
+		if (clazz == null) {
+			clazz = ObjectClassUtil.getRequiredObjectClass(filter);
+		}
+
 		List<ServiceRegistrationImpl<?>> result;
 		synchronized (this) {
 			if (clazz == null) { /* all services */
@@ -1400,3 +1404,4 @@ public class ServiceRegistry {
 		return container;
 	}
 }
+/* @generated */
