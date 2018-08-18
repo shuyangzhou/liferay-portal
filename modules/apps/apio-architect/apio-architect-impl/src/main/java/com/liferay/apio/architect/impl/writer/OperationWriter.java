@@ -26,10 +26,10 @@ import com.liferay.apio.architect.operation.Operation;
 import java.util.Optional;
 
 /**
- * Writes the operations identified by the methods of a {@link OperationMapper}.
+ * Writes the operations identified by the methods of an {@link
+ * OperationMapper}.
  *
  * @author Javier Gamarra
- * @review
  */
 public class OperationWriter {
 

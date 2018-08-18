@@ -48,13 +48,12 @@ import java.util.Optional;
 public class MockPageWriter {
 
 	/**
-	 * Writes a Collection of {@link RootModel}, with the hierarchy of embedded
+	 * Writes a {@link RootModel} collection with the hierarchy of embedded
 	 * models and multiple fields.
 	 *
-	 * @param  pageMessageMapper the {@link PageMessageMapper} to use for
+	 * @param  pageMessageMapper the {@code PageMessageMapper} to use for
 	 *         writing the JSON object
-	 * @return the {@code String} containing the JSON Object.
-	 * @review
+	 * @return the string containing the JSON object
 	 */
 	public static String write(PageMessageMapper<RootModel> pageMessageMapper) {
 		Collection<RootModel> items = Arrays.asList(

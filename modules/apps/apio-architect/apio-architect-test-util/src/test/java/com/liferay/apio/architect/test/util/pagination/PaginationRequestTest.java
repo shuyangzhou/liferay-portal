@@ -12,25 +12,28 @@
  * details.
  */
 
-package com.liferay.apio.architect.alias.representor;
+package com.liferay.apio.architect.test.util.pagination;
 
-import com.liferay.apio.architect.representor.NestedRepresentor;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
-import java.util.List;
+import com.liferay.apio.architect.pagination.Pagination;
+
+import org.junit.Test;
 
 /**
- * Represents a representor's nested list field.
- *
  * @author Alejandro Hernández
  */
-public interface NestedListFieldFunction<T, S>
-	extends FieldFunction<T, List<S>> {
+public class PaginationRequestTest {
 
-	/**
-	 * Returns the field's {@link NestedRepresentor}.
-	 *
-	 * @return the field's {@code NestedRepresentor}
-	 */
-	public NestedRepresentor<S> getNestedRepresentor();
+	@Test
+	public void testPaginationRequestOfCreatesValidPaginationInstance() {
+		Pagination pagination = PaginationRequest.of(30, 2);
+
+		assertThat(pagination.getEndPosition(), is(60));
+		assertThat(pagination.getItemsPerPage(), is(30));
+		assertThat(pagination.getPageNumber(), is(2));
+		assertThat(pagination.getStartPosition(), is(30));
+	}
 
 }

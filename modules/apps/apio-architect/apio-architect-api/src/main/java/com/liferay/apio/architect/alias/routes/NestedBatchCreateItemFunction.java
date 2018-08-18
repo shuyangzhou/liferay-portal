@@ -30,7 +30,6 @@ import java.util.function.Function;
  *         String}, etc.)
  * @param  <S> the type of the parent model's identifier (e.g., {@code Long},
  *         {@code String}, etc.)
- * @review
  */
 @FunctionalInterface
 public interface NestedBatchCreateItemFunction<T, S>

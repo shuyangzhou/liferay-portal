@@ -52,22 +52,20 @@ import java.nio.file.Paths;
 import org.json.JSONException;
 
 /**
- * Utility class that can be used to test different message mappers of the same
- * media type using the "snapshot testing" technique.
+ * Tests message mappers of the same media type by using the snapshot testing
+ * technique.
  *
  * @author Alejandro Hernández
- * @review
  */
 public class MessageMapperTesterBuilder {
 
 	/**
-	 * Provides information about the path where the test files live. The
-	 * utility will try to use this path to get the files and use the {@link
-	 * ClassLoader#getResource(String)} as fallback.
+	 * Provides information about the test files' path. This class uses this
+	 * path to get the files, and uses the {@link
+	 * ClassLoader#getResource(String)} as a fallback.
 	 *
-	 * @param  path the path where the test files are
-	 * @return the next step of the builder
-	 * @review
+	 * @param  path the path
+	 * @return the builder's next step
 	 */
 	public static MediaTypeStep path(Path path) {
 		return new MediaTypeStep(path);
@@ -76,11 +74,10 @@ public class MessageMapperTesterBuilder {
 	public static class MediaTypeStep {
 
 		/**
-		 * Sets the media type that the different message mappers should have
+		 * Sets the media type that the message mappers should have.
 		 *
-		 * @param  mediaType the media type of the tested message mappers
-		 * @return the next step of the builder
-		 * @review
+		 * @param  mediaType the media type
+		 * @return the builder's next step
 		 */
 		public MessageMapperStep mediaType(String mediaType) {
 			return new MessageMapperStep(_path, mediaType);
@@ -99,12 +96,12 @@ public class MessageMapperTesterBuilder {
 
 		/**
 		 * Creates a {@code batch.json.auto} file inside the {@code
-		 * src/test/resources} directory in the provided path. The file will
-		 * contain the representation created by the message mapper.
+		 * src/test/resources} directory in the provided path. The file contains
+		 * the representation created by the provided {@code
+		 * BatchResultMessageMapper}.
 		 *
-		 * @param  batchResultMessageMapper the message mapper
-		 * @return the next step of the builder
-		 * @review
+		 * @param  batchResultMessageMapper the {@code BatchResultMessageMapper}
+		 * @return the builder's next step
 		 */
 		public MessageMapperStep createBatchResultFile(
 			BatchResultMessageMapper<String> batchResultMessageMapper) {
@@ -119,12 +116,13 @@ public class MessageMapperTesterBuilder {
 
 		/**
 		 * Creates a {@code documentation.json.auto} file inside the {@code
-		 * src/test/resources} directory in the provided path. The file will
-		 * contain the representation created by the message mapper.
+		 * src/test/resources} directory in the provided path. The file contains
+		 * the representation created by the provided {@code
+		 * DocumentationMessageMapper}.
 		 *
-		 * @param  documentationMessageMapper the message mapper
-		 * @return the next step of the builder
-		 * @review
+		 * @param  documentationMessageMapper the {@code
+		 *         DocumentationMessageMapper}
+		 * @return the builder's next step
 		 */
 		public MessageMapperStep createDocumentationFile(
 			DocumentationMessageMapper documentationMessageMapper) {
@@ -139,12 +137,12 @@ public class MessageMapperTesterBuilder {
 
 		/**
 		 * Creates a {@code error.json.auto} file inside the {@code
-		 * src/test/resources} directory in the provided path. The file will
-		 * contain the representation created by the message mapper.
+		 * src/test/resources} directory in the provided path. The file contains
+		 * the representation created by the provided {@code
+		 * ErrorMessageMapper}.
 		 *
-		 * @param  errorMessageMapper the message mapper
-		 * @return the next step of the builder
-		 * @review
+		 * @param  errorMessageMapper the {@code ErrorMessageMapper}
+		 * @return the builder's next step
 		 */
 		public MessageMapperStep createErrorFile(
 			ErrorMessageMapper errorMessageMapper) {
@@ -159,12 +157,11 @@ public class MessageMapperTesterBuilder {
 
 		/**
 		 * Creates a {@code form.json.auto} file inside the {@code
-		 * src/test/resources} directory in the provided path. The file will
-		 * contain the representation created by the message mapper.
+		 * src/test/resources} directory in the provided path. The file contains
+		 * the representation created by the provided {@code FormMessageMapper}.
 		 *
-		 * @param  formMessageMapper the message mapper
-		 * @return the next step of the builder
-		 * @review
+		 * @param  formMessageMapper the {@code FormMessageMapper}
+		 * @return the builder's next step
 		 */
 		public MessageMapperStep createFormFile(
 			FormMessageMapper formMessageMapper) {
@@ -178,12 +175,11 @@ public class MessageMapperTesterBuilder {
 
 		/**
 		 * Creates a {@code page.json.auto} file inside the {@code
-		 * src/test/resources} directory in the provided path. The file will
-		 * contain the representation created by the message mapper.
+		 * src/test/resources} directory in the provided path. The file contains
+		 * the representation created by the provided {@code PageMessageMapper}.
 		 *
-		 * @param  pageMessageMapper the message mapper
-		 * @return the next step of the builder
-		 * @review
+		 * @param  pageMessageMapper the {@code PageMessageMapper}
+		 * @return the builder's next step
 		 */
 		public MessageMapperStep createPageFile(
 			PageMessageMapper<RootModel> pageMessageMapper) {
@@ -197,12 +193,12 @@ public class MessageMapperTesterBuilder {
 
 		/**
 		 * Creates a {@code single_model.json.auto} file inside the {@code
-		 * src/test/resources} directory in the provided path. The file will
-		 * contain the representation created by the message mapper.
+		 * src/test/resources} directory in the provided path. The file contains
+		 * the representation created by the provided {@code
+		 * SingleModelMessageMapper}.
 		 *
-		 * @param  singleModelMessageMapper the message mapper
-		 * @return the next step of the builder
-		 * @review
+		 * @param  singleModelMessageMapper the {@code SingleModelMessageMapper}
+		 * @return the builder's next step
 		 */
 		public MessageMapperStep createSingleModelFile(
 			SingleModelMessageMapper<RootModel> singleModelMessageMapper) {
@@ -216,13 +212,12 @@ public class MessageMapperTesterBuilder {
 		}
 
 		/**
-		 * Validates that the output created by the provided message mapper
-		 * matches the content of the {@code /src/test/resources/batch.json}
-		 * file.
+		 * Validates that the output of the provided {@code
+		 * BatchResultMessageMapper} matches the content of {@code
+		 * /src/test/resources/batch.json}.
 		 *
-		 * @param  batchResultMessageMapper the message mapper
-		 * @return the next step of the builder
-		 * @review
+		 * @param  batchResultMessageMapper the {@code BatchResultMessageMapper}
+		 * @return the builder's next step
 		 */
 		public MessageMapperStep validateBatchResultMessageMapper(
 			BatchResultMessageMapper<String> batchResultMessageMapper) {
@@ -236,13 +231,13 @@ public class MessageMapperTesterBuilder {
 		}
 
 		/**
-		 * Validates that the output created by the provided message mapper
-		 * matches the content of the {@code
-		 * /src/test/resources/documentation.json} file.
+		 * Validates that the output of the provided {@code
+		 * DocumentationMessageMapper} matches the content of {@code
+		 * /src/test/resources/documentation.json}.
 		 *
-		 * @param  documentationMessageMapper the message mapper
-		 * @return the next step of the builder
-		 * @review
+		 * @param  documentationMessageMapper the {@code
+		 *         DocumentationMessageMapper}
+		 * @return the builder's next step
 		 */
 		public MessageMapperStep validateDocumentationMessageMapper(
 			DocumentationMessageMapper documentationMessageMapper) {
@@ -257,13 +252,12 @@ public class MessageMapperTesterBuilder {
 		}
 
 		/**
-		 * Validates that the output created by the provided message mapper
-		 * matches the content of the {@code
-		 * /src/test/resources/entrypoint.json} file.
+		 * Validates that the output of the provided {@code
+		 * EntryPointMessageMapper} matches the content of {@code
+		 * /src/test/resources/entrypoint.json}.
 		 *
-		 * @param  entryPointMessageMapper the message mapper
-		 * @return the next step of the builder
-		 * @review
+		 * @param  entryPointMessageMapper the {@code EntryPointMessageMapper}
+		 * @return the builder's next step
 		 */
 		public MessageMapperStep validateEntryPointMessageMapper(
 			EntryPointMessageMapper entryPointMessageMapper) {
@@ -277,13 +271,11 @@ public class MessageMapperTesterBuilder {
 		}
 
 		/**
-		 * Validates that the output created by the provided message mapper
-		 * matches the content of the {@code /src/test/resources/error.json}
-		 * file.
+		 * Validates that the output of the provided {@code ErrorMessageMapper}
+		 * matches the content of {@code /src/test/resources/error.json}.
 		 *
-		 * @param  errorMessageMapper the message mapper
-		 * @return the next step of the builder
-		 * @review
+		 * @param  errorMessageMapper the {@code ErrorMessageMapper}
+		 * @return the builder's next step
 		 */
 		public MessageMapperStep validateErrorMessageMapper(
 			ErrorMessageMapper errorMessageMapper) {
@@ -297,13 +289,11 @@ public class MessageMapperTesterBuilder {
 		}
 
 		/**
-		 * Validates that the output created by the provided message mapper
-		 * matches the content of the {@code /src/test/resources/form.json}
-		 * file.
+		 * Validates that the output of the provided {@code FormMessageMapper}
+		 * matches the content of {@code /src/test/resources/form.json}.
 		 *
-		 * @param  formMessageMapper the message mapper
-		 * @return the next step of the builder
-		 * @review
+		 * @param  formMessageMapper the {@code FormMessageMapper}
+		 * @return the builder's next step
 		 */
 		public MessageMapperStep validateFormMessageMapper(
 			FormMessageMapper formMessageMapper) {
@@ -316,13 +306,11 @@ public class MessageMapperTesterBuilder {
 		}
 
 		/**
-		 * Validates that the output created by the provided message mapper
-		 * matches the content of the {@code /src/test/resources/page.json}
-		 * file.
+		 * Validates that the output of the provided {@code PageMessageMapper}
+		 * matches the content of {@code /src/test/resources/page.json}.
 		 *
-		 * @param  pageMessageMapper the message mapper
-		 * @return the next step of the builder
-		 * @review
+		 * @param  pageMessageMapper the {@code PageMessageMapper}
+		 * @return the builder's next step
 		 */
 		public MessageMapperStep validatePageMessageMapper(
 			PageMessageMapper<RootModel> pageMessageMapper) {
@@ -335,13 +323,12 @@ public class MessageMapperTesterBuilder {
 		}
 
 		/**
-		 * Validates that the output created by the provided message mapper
-		 * matches the content of the {@code
-		 * /src/test/resources/single_model.json} file.
+		 * Validates that the output of the provided {@code
+		 * SingleModelMessageMapper} matches the content of {@code
+		 * /src/test/resources/single_model.json}.
 		 *
-		 * @param  singleModelMessageMapper the message mapper
-		 * @return the next step of the builder
-		 * @review
+		 * @param  singleModelMessageMapper the {@code SingleModelMessageMapper}
+		 * @return the builder's next step
 		 */
 		public MessageMapperStep validateSingleModelMessageMapper(
 			SingleModelMessageMapper<RootModel> singleModelMessageMapper) {
