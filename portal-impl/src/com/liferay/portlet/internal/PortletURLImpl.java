@@ -574,24 +574,18 @@ public class PortletURLImpl
 			throw new IllegalArgumentException();
 		}
 
-		LiferayMutablePortletParameters liferayMutablePortletParameters = null;
+		LiferayMutablePortletParameters liferayMutablePortletParameters =
+			_getMutablePortletParameters(name);
 
-		if (_portletSpecMajorVersion == 3) {
-			liferayMutablePortletParameters = _getMutablePortletParameters(
-				name);
+		if (name.startsWith(PortletQName.PRIVATE_RENDER_PARAMETER_NAMESPACE)) {
+			name = name.substring(
+				PortletQName.PRIVATE_RENDER_PARAMETER_NAMESPACE.length());
+		}
 
-			if (name.startsWith(
-					PortletQName.PRIVATE_RENDER_PARAMETER_NAMESPACE)) {
+		if (values == null) {
+			liferayMutablePortletParameters.removeParameter(name);
 
-				name = name.substring(
-					PortletQName.PRIVATE_RENDER_PARAMETER_NAMESPACE.length());
-			}
-
-			if (values == null) {
-				liferayMutablePortletParameters.removeParameter(name);
-
-				return;
-			}
+			return;
 		}
 
 		for (String value : values) {
