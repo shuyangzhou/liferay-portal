@@ -12,25 +12,22 @@
  * details.
  */
 
-package com.liferay.apio.architect.alias.representor;
+package com.liferay.portlet.internal;
 
-import com.liferay.apio.architect.representor.NestedRepresentor;
+import java.util.Map;
 
-import java.util.List;
+import javax.portlet.PortletParameters;
 
 /**
- * Represents a representor's nested list field.
- *
- * @author Alejandro Hernández
+ * @author Neil Griffin
  */
-public interface NestedListFieldFunction<T, S>
-	extends FieldFunction<T, List<S>> {
+public interface LiferayPortletParameters extends PortletParameters {
 
 	/**
-	 * Returns the field's {@link NestedRepresentor}.
+	 * Returns the underlying {@link Map} of parameter values.
 	 *
-	 * @return the field's {@code NestedRepresentor}
+	 * @return The underlying {@link Map} of parameter values
 	 */
-	public NestedRepresentor<S> getNestedRepresentor();
+	public Map<String, String[]> getParameterMap();
 
 }

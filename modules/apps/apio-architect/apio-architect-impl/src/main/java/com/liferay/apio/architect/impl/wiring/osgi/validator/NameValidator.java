@@ -15,10 +15,9 @@
 package com.liferay.apio.architect.impl.wiring.osgi.validator;
 
 /**
- * Check if a resource name is valid.
+ * Checks if a resource name is valid.
  *
  * @author Víctor Galán
- * @review
  */
 public interface NameValidator {
 
@@ -26,16 +25,14 @@ public interface NameValidator {
 	 * Returns the validation error.
 	 *
 	 * @return the validation error.
-	 * @review
 	 */
 	public String getValidationError();
 
 	/**
-	 * Validates the name passed
+	 * Whether a resource name is valid.
 	 *
-	 * @param  name the name to validate.
-	 * @return the result of the validation.
-	 * @review
+	 * @param  name the name
+	 * @return {@code true} if the name is valid; {@code false} otherwise
 	 */
 	public boolean validate(String name);
 

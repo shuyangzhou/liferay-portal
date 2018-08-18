@@ -52,23 +52,20 @@ import java.util.function.Function;
 public interface BaseRepresentor<T> {
 
 	/**
-	 * Returns the list containing the application relative URL field names and
-	 * the functions to get those fields.
+	 * Returns the list that contains the application relative URL field names
+	 * and the functions to get those fields.
 	 *
-	 * @return the list containing the application relative URL field names and
-	 *         functions
-	 * @review
+	 * @return the list
 	 */
 	public List<FieldFunction<T, String>> getApplicationRelativeURLFunctions();
 
 	/**
-	 * Returns a binary resource linked to a model, if present. Returns {@code
+	 * Returns a binary resource linked to a model, if present; returns {@code
 	 * Optional#empty} otherwise.
 	 *
 	 * @param  binaryId the ID of the binary resource
-	 * @return a binary resource linked to a model if present; {@code
-	 *         Optional#empty()} otherwise
-	 * @review
+	 * @return the binary resource, if present; {@code Optional#empty()}
+	 *         otherwise
 	 */
 	public Optional<BinaryFunction<T>> getBinaryFunction(String binaryId);
 
@@ -116,16 +113,14 @@ public interface BaseRepresentor<T> {
 	/**
 	 * Returns the list of nested field functions.
 	 *
-	 * @return the list of nested field functions.
-	 * @review
+	 * @return the list
 	 */
 	public List<NestedFieldFunction<T, ?>> getNestedFieldFunctions();
 
 	/**
 	 * Returns the list of nested list field functions.
 	 *
-	 * @return the list of nested list field functions.
-	 * @review
+	 * @return the list
 	 */
 	public List<NestedListFieldFunction<T, ?>> getNestedListFieldFunctions();
 
@@ -191,12 +186,10 @@ public interface BaseRepresentor<T> {
 	public List<String> getTypes();
 
 	/**
-	 * Returns {@code true} if this {@code Representor} is a {@link
-	 * NestedRepresentor}. Returns {@code false} otherwise.
+	 * Whether this representor is a {@link NestedRepresentor}.
 	 *
-	 * @return {@code true} if this {@code Representor} is a {@link
-	 *         NestedRepresentor}; {@code false} otherwise
-	 * @review
+	 * @return {@code true} if this this representor is a nested representor;
+	 *         {@code false} otherwise
 	 */
 	public boolean isNested();
 
@@ -210,14 +203,13 @@ public interface BaseRepresentor<T> {
 		 * prefixing it with the application URL.
 		 *
 		 * <p>
-		 * URLs returned by this function should be already encoded (to check
+		 * URLs returned by this function should already be encoded (to check
 		 * for potential security holes).
 		 * </p>
 		 *
 		 * @param  key the field's name
-		 * @param  function the function used to get the relative url
+		 * @param  function the function used to get the relative URL
 		 * @return the builder's step
-		 * @review
 		 */
 		public U addApplicationRelativeURL(
 			String key, Function<T, String> function);
@@ -316,14 +308,13 @@ public interface BaseRepresentor<T> {
 				function);
 
 		/**
-		 * Adds a nested list field to the {@code Representor}.
+		 * Adds a nested list field to the representor.
 		 *
-		 * @param  key the field's name
-		 * @param  transformFunction the function that transforms the model into
-		 *         the list whose models are used inside the nested representor
-		 * @param  function the function that creates the nested representor for
-		 *         each model
-		 * @review
+		 * @param key the field's name
+		 * @param transformFunction the function that transforms the model into
+		 *        the list whose models are used inside the nested representor
+		 * @param function the function that creates the nested representor for
+		 *        each model
 		 */
 		public <V> U addNestedList(
 			String key, Function<T, List<V>> transformFunction,
@@ -354,14 +345,13 @@ public interface BaseRepresentor<T> {
 		 * the server URL.
 		 *
 		 * <p>
-		 * URLs returned by this function should be already encoded (to check
+		 * URLs returned by this function should already be encoded (to check
 		 * for potential security holes).
 		 * </p>
 		 *
 		 * @param  key the field's name
-		 * @param  function the function used to get the relative url
+		 * @param  function the function used to get the relative URL
 		 * @return the builder's step
-		 * @review
 		 */
 		public U addRelativeURL(String key, Function<T, String> function);
 

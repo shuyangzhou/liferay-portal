@@ -112,12 +112,11 @@ public class FieldsWriter<T> {
 	}
 
 	/**
-	 * Writes the model's application relative URL fields. This method uses a
-	 * consumer so each {@code javax.ws.rs.ext.MessageBodyWriter} can write each
-	 * field differently.
+	 * Writes the relative URL fields for the model's application. This method
+	 * uses a consumer so each {@code javax.ws.rs.ext.MessageBodyWriter} can
+	 * write each field differently.
 	 *
-	 * @param  biConsumer the consumer that writes each field
-	 * @review
+	 * @param biConsumer the consumer that writes each field
 	 */
 	public void writeApplicationRelativeURLFields(
 		BiConsumer<String, String> biConsumer) {

@@ -17,15 +17,14 @@ package com.liferay.apio.architect.alias.representor;
 import com.liferay.apio.architect.representor.NestedRepresentor;
 
 /**
- * Instances of this class represent a {@code Representor} nested field.
+ * Represents a representor's nested field.
  *
  * @author Alejandro Hernández
- * @review
  */
 public interface NestedFieldFunction<T, S> extends FieldFunction<T, S> {
 
 	/**
-	 * Returns the field's {@code NestedRepresentor}.
+	 * Returns the field's {@link NestedRepresentor}.
 	 *
 	 * @return the field's {@code NestedRepresentor}
 	 */

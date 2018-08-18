@@ -12,25 +12,27 @@
  * details.
  */
 
-package com.liferay.apio.architect.alias.representor;
+package com.liferay.apio.architect.test.util.pagination;
 
-import com.liferay.apio.architect.representor.NestedRepresentor;
-
-import java.util.List;
+import com.liferay.apio.architect.impl.pagination.PaginationImpl;
+import com.liferay.apio.architect.pagination.Pagination;
 
 /**
- * Represents a representor's nested list field.
+ * Creates {@link Pagination} instances.
  *
- * @author Alejandro Hernández
+ * @author Julio Camarero
  */
-public interface NestedListFieldFunction<T, S>
-	extends FieldFunction<T, List<S>> {
+public class PaginationRequest {
 
 	/**
-	 * Returns the field's {@link NestedRepresentor}.
+	 * Creates a new {@code Pagination} instance.
 	 *
-	 * @return the field's {@code NestedRepresentor}
+	 * @param  itemsPerPage the number of items per page
+	 * @param  pageNumber the page number
+	 * @return the {@code Pagination} instance
 	 */
-	public NestedRepresentor<S> getNestedRepresentor();
+	public static Pagination of(int itemsPerPage, int pageNumber) {
+		return new PaginationImpl(itemsPerPage, pageNumber);
+	}
 
 }

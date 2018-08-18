@@ -20,7 +20,6 @@ import java.io.InputStream;
 
 /**
  * @author Javier Gamarra
- * @review
  */
 @ConsumerType
 public class BinaryFile {
