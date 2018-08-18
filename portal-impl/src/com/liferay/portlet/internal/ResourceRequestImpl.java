@@ -110,10 +110,6 @@ public class ResourceRequestImpl
 
 	@Override
 	public ResourceParameters getResourceParameters() {
-		if (getPortletSpecMajorVersion() < 3) {
-			throw new UnsupportedOperationException("Requires 3.0 opt-in");
-		}
-
 		return _resourceParameters;
 	}
 
@@ -148,11 +144,9 @@ public class ResourceRequestImpl
 		String portletNamespace = PortalUtil.getPortletNamespace(
 			getPortletName());
 
-		if (getPortletSpecMajorVersion() == 3) {
-			_resourceParameters = new ResourceParametersImpl(
-				getPortletParameterMap(request, portletNamespace),
-				portletNamespace);
-		}
+		_resourceParameters = new ResourceParametersImpl(
+			getPortletParameterMap(request, portletNamespace),
+			portletNamespace);
 	}
 
 	@Override
