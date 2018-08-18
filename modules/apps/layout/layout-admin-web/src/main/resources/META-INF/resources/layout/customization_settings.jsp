@@ -1,4 +1,4 @@
-<%--
+s<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -17,27 +17,19 @@
 <%@ include file="/init.jsp" %>
 
 <%
+boolean curFreeformLayout = false;
+Group group = null;
+String langType = null;
+boolean prototypeGroup = false;
+String templateContent = null;
+String templateId = null;
+
 Layout selLayout = layoutsAdminDisplayContext.getSelLayout();
 
-boolean curFreeformLayout = false;
-boolean prototypeGroup = false;
-
-String velocityTemplateId = null;
-
-String velocityTemplateContent = null;
-
-Group group = null;
-
 if (selLayout != null) {
-	group = selLayout.getGroup();
+	LayoutTypePortlet selLayoutTypePortlet = (LayoutTypePortlet)selLayout.getLayoutType();
 
-	Theme curTheme = selLayout.getTheme();
-
-	String themeId = curTheme.getThemeId();
-
-	LayoutTypePortlet curLayoutTypePortlet = (LayoutTypePortlet)selLayout.getLayoutType();
-
-	String layoutTemplateId = curLayoutTypePortlet.getLayoutTemplateId();
+	String layoutTemplateId = selLayoutTypePortlet.getLayoutTemplateId();
 
 	if (Validator.isNull(layoutTemplateId)) {
 		layoutTemplateId = PropsValues.DEFAULT_LAYOUT_TEMPLATE_ID;
@@ -45,21 +37,25 @@ if (selLayout != null) {
 
 	curFreeformLayout = layoutTemplateId.equals("freeform");
 
+	group = selLayout.getGroup();
+
 	if (group.isLayoutPrototype() || group.isLayoutSetPrototype()) {
 		prototypeGroup = true;
 	}
 
+	Theme selLayoutTheme = selLayout.getTheme();
+
 	if (!curFreeformLayout && !prototypeGroup) {
-		LayoutTemplate layoutTemplate = LayoutTemplateLocalServiceUtil.getLayoutTemplate(layoutTemplateId, false, themeId);
+		LayoutTemplate layoutTemplate = LayoutTemplateLocalServiceUtil.getLayoutTemplate(layoutTemplateId, false, selLayoutTheme.getThemeId());
 
 		if (layoutTemplate != null) {
-			themeId = layoutTemplate.getThemeId();
+			templateId = layoutTemplate.getThemeId() + LayoutTemplateConstants.CUSTOM_SEPARATOR + selLayoutTypePortlet.getLayoutTemplateId();
 
-			velocityTemplateId = themeId + LayoutTemplateConstants.CUSTOM_SEPARATOR + curLayoutTypePortlet.getLayoutTemplateId();
-
-			velocityTemplateContent = LayoutTemplateLocalServiceUtil.getContent(curLayoutTypePortlet.getLayoutTemplateId(), false, themeId);
+			templateContent = LayoutTemplateLocalServiceUtil.getContent(selLayoutTypePortlet.getLayoutTemplateId(), false, layoutTemplate.getThemeId());
 		}
 	}
+
+	langType = LayoutTemplateLocalServiceUtil.getLangType(layoutTemplateId, false, selLayoutTheme.getThemeId());
 }
 %>
 
@@ -87,8 +83,8 @@ if (selLayout != null) {
 		<div class="customization-settings" id="<portlet:namespace />customizationSettingsOptions">
 
 			<%
-			if (Validator.isNotNull(velocityTemplateId) && Validator.isNotNull(velocityTemplateContent)) {
-				RuntimePageUtil.processCustomizationSettings(request, response, new StringTemplateResource(velocityTemplateId, velocityTemplateContent));
+			if (Validator.isNotNull(templateId) && Validator.isNotNull(templateContent)) {
+				RuntimePageUtil.processCustomizationSettings(request, response, new StringTemplateResource(templateId, templateContent), langType);
 			}
 			%>
 

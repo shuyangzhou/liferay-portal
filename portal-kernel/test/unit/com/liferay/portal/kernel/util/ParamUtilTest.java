@@ -17,9 +17,12 @@ package com.liferay.portal.kernel.util;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 
+import java.lang.reflect.Method;
+
 import org.apache.struts.mock.MockHttpServletRequest;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import org.springframework.mock.web.portlet.MockPortletRequest;
@@ -29,18 +32,37 @@ import org.springframework.mock.web.portlet.MockPortletRequest;
  */
 public class ParamUtilTest {
 
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+		final Method getMethod = Props.class.getMethod("get", String.class);
+
+		Props props = (Props)ProxyUtil.newProxyInstance(
+			Props.class.getClassLoader(), new Class<?>[] {Props.class},
+			(proxy, method, args) -> {
+				if (getMethod.equals(method) &&
+					args[0].equals(PropsKeys.UNICODE_TEXT_NORMALIZER_FORM)) {
+
+					return "NFC";
+				}
+
+				throw new UnsupportedOperationException();
+			});
+
+		PropsUtil.setProps(props);
+	}
+
 	@Test
 	public void testGetHttpServletRequest() {
 		MockHttpServletRequest mockHttpServletRequest =
 			new MockHttpServletRequest();
 
 		mockHttpServletRequest.addParameter(
-			"key", " \t\n\r\u3000value \t\n\r\u3000");
+			"key1", " \t\n\r\u3000value \t\n\r\u3000");
 
 		String defaultString = RandomTestUtil.randomString();
 
 		String value = ParamUtil.get(
-			mockHttpServletRequest, "key", defaultString);
+			mockHttpServletRequest, "key1", defaultString);
 
 		Assert.assertEquals("value", value);
 
@@ -50,15 +72,29 @@ public class ParamUtilTest {
 	}
 
 	@Test
+	public void testGetNormalizedString() {
+		MockHttpServletRequest mockHttpServletRequest =
+			new MockHttpServletRequest();
+
+		mockHttpServletRequest.addParameter("key1", "\u1004\u103A\u1037");
+		mockHttpServletRequest.addParameter("key2", "\u1004\u1037\u103A");
+
+		String value = ParamUtil.getString(mockHttpServletRequest, "key1", "");
+		String value2 = ParamUtil.getString(mockHttpServletRequest, "key2", "");
+
+		Assert.assertEquals(value, value2);
+	}
+
+	@Test
 	public void testGetPortletRequest() {
 		MockPortletRequest mockPortletRequest = new MockPortletRequest();
 
 		mockPortletRequest.setParameter(
-			"key", " \t\n\r\u3000value \t\n\r\u3000");
+			"key1", " \t\n\r\u3000value \t\n\r\u3000");
 
 		String defaultString = RandomTestUtil.randomString();
 
-		String value = ParamUtil.get(mockPortletRequest, "key", defaultString);
+		String value = ParamUtil.get(mockPortletRequest, "key1", defaultString);
 
 		Assert.assertEquals("value", value);
 
@@ -71,11 +107,11 @@ public class ParamUtilTest {
 	public void testGetServiceContext() {
 		ServiceContext serviceContext = new ServiceContext();
 
-		serviceContext.setAttribute("key", " \t\n\r\u3000value \t\n\r\u3000");
+		serviceContext.setAttribute("key1", " \t\n\r\u3000value \t\n\r\u3000");
 
 		String defaultString = RandomTestUtil.randomString();
 
-		String value = ParamUtil.get(serviceContext, "key", defaultString);
+		String value = ParamUtil.get(serviceContext, "key1", defaultString);
 
 		Assert.assertEquals("value", value);
 
