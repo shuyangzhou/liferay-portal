@@ -32,8 +32,8 @@ public class ServiceTrackerUtil {
 		if (filterString != null) {
 			if (clazz != null) {
 				filterString =
-					"(&" + filterString + "(objectClass=" + clazz.getName() +
-						"))";
+					"(&(objectClass=" + clazz.getName() + ')' + filterString +
+						')';
 			}
 
 			try {
