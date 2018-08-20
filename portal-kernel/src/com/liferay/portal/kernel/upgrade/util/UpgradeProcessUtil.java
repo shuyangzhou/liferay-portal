@@ -16,7 +16,8 @@ package com.liferay.portal.kernel.upgrade.util;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.cache.MultiVMPoolUtil;
+import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
+import com.liferay.portal.kernel.cache.PortalCacheManagerNames;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -152,7 +153,8 @@ public class UpgradeProcessUtil {
 			IndexWriterHelperUtil.setIndexReadOnly(tempIndexReadOnly);
 
 			if (ranUpgradeProcess) {
-				MultiVMPoolUtil.clear();
+				PortalCacheHelperUtil.clearPortalCaches(
+					PortalCacheManagerNames.MULTI_VM);
 			}
 		}
 
