@@ -39,13 +39,12 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 public class PortalInstanceLifecycleListenerManagerImpl
 	implements PortalInstanceLifecycleManager {
 
+	/**
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public void preregisterCompany(long companyId) {
-		for (PortalInstanceLifecycleListener portalInstanceLifecycleListener :
-				_portalInstanceLifecycleListeners) {
-
-			preregisterCompany(portalInstanceLifecycleListener, companyId);
-		}
 	}
 
 	@Override
@@ -87,23 +86,6 @@ public class PortalInstanceLifecycleListenerManagerImpl
 		for (Company company : _companies) {
 			registerCompany(portalInstanceLifecycleListener, company);
 		}
-	}
-
-	protected void preregisterCompany(
-		PortalInstanceLifecycleListener portalInstanceLifecycleListener,
-		long companyId) {
-
-		if (!(portalInstanceLifecycleListener instanceof Clusterable) &&
-			!clusterMasterExecutor.isMaster()) {
-
-			if (_log.isDebugEnabled()) {
-				_log.debug("Skipping " + portalInstanceLifecycleListener);
-			}
-
-			return;
-		}
-
-		portalInstanceLifecycleListener.portalInstancePreregistered(companyId);
 	}
 
 	protected void registerCompany(
