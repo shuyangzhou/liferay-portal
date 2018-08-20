@@ -17,11 +17,10 @@ package com.liferay.apio.architect.alias.representor;
 import java.util.function.Function;
 
 /**
- * Instances of this class represent the key which represents a model's field
- * and the function to calculate that field.
+ * Represents the key that represents a model's field and the function to
+ * calculate that field.
  *
  * @author Alejandro Hernández
- * @review
  */
 public interface FieldFunction<T, S> extends Function<T, S> {
 
@@ -29,7 +28,6 @@ public interface FieldFunction<T, S> extends Function<T, S> {
 	 * Returns the field key.
 	 *
 	 * @return the field key
-	 * @review
 	 */
 	public String getKey();
 

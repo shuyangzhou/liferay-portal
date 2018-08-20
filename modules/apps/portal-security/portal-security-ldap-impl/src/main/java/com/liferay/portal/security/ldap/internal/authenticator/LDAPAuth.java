@@ -304,7 +304,9 @@ public class LDAPAuth implements Authenticator {
 			//  Process LDAP auth search filter
 
 			String filter = _ldapSettings.getAuthSearchFilter(
-				ldapServerId, companyId, emailAddress, screenName,
+				ldapServerId, companyId,
+				_portalLDAP.encodeFilterAttribute(emailAddress, false),
+				_portalLDAP.encodeFilterAttribute(screenName, false),
 				String.valueOf(userId));
 
 			Properties userMappings = _ldapSettings.getUserMappings(

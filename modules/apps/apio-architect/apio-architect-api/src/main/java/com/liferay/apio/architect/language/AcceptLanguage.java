@@ -23,6 +23,7 @@ import java.util.stream.Stream;
  * Represents information about the requested languages.
  *
  * @author Alejandro Hernández
+ * @since  1.0.0, replaced {@link Language}
  */
 @ConsumerType
 @FunctionalInterface

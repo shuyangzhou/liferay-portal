@@ -25,7 +25,6 @@ import org.osgi.service.component.annotations.Component;
  * Converts any {@code Exception} to its {@link APIError} representation.
  *
  * @author Javier Gamarra
- * @review
  */
 @Component
 public class FallbackExceptionMapper implements ExceptionMapper<Exception> {
