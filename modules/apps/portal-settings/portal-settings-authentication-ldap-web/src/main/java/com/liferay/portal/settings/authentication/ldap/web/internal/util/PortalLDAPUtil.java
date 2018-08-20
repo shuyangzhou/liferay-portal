@@ -35,6 +35,12 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 @Component(immediate = true)
 public class PortalLDAPUtil {
 
+	public static String encodeFilterAttribute(
+		String attribute, boolean rdnEscape) {
+
+		return getInstance().encodeFilterAttribute(attribute, rdnEscape);
+	}
+
 	public static LdapContext getContext(long ldapServerId, long companyId)
 		throws Exception {
 

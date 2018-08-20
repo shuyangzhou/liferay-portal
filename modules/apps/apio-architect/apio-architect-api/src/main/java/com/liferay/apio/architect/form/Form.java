@@ -299,11 +299,10 @@ public interface Form<T> {
 			 * </p>
 			 *
 			 * @param  key the field's key
-			 * @param  aClass the identifier class to extract the class ID and
-			 *         return it
+			 * @param  aClass the identifier class to extract and return the
+			 *         class ID
 			 * @param  biConsumer the consumer to call
 			 * @return the updated builder
-			 * @review
 			 */
 			public <C> FieldStep<T> addOptionalLinkedModel(
 				String key, Class<? extends Identifier<C>> aClass,
@@ -322,11 +321,10 @@ public interface Form<T> {
 			 * </p>
 			 *
 			 * @param  key the field's key
-			 * @param  aClass the identifier class to extract the class ID and
-			 *         return it
+			 * @param  aClass the identifier class to extract and return the
+			 *         class ID
 			 * @param  biConsumer the consumer to call
 			 * @return the updated builder
-			 * @review
 			 */
 			public <C> FieldStep<T> addOptionalLinkedModelList(
 				String key, Class<? extends Identifier<C>> aClass,
@@ -552,11 +550,10 @@ public interface Form<T> {
 			 * </p>
 			 *
 			 * @param  key the field's key
-			 * @param  aClass the identifier class to extract the class ID and
-			 *         return it
+			 * @param  aClass the identifier class to extract and return the
+			 *         class ID
 			 * @param  biConsumer the consumer to call
 			 * @return the updated builder
-			 * @review
 			 */
 			public <C> FieldStep<T> addRequiredLinkedModel(
 				String key, Class<? extends Identifier<C>> aClass,
@@ -575,11 +572,10 @@ public interface Form<T> {
 			 * </p>
 			 *
 			 * @param  key the field's key
-			 * @param  aClass the identifier class to extract the class ID and
-			 *         return it
+			 * @param  aClass the identifier class to extract and return the
+			 *         class ID
 			 * @param  biConsumer the consumer to call
 			 * @return the updated builder
-			 * @review
 			 */
 			public <C> FieldStep<T> addRequiredLinkedModelList(
 				String key, Class<? extends Identifier<C>> aClass,

@@ -18,7 +18,6 @@ package com.liferay.apio.architect.sample.internal.model;
  * Represents a rating. This is a mock class for sample purposes only.
  *
  * @author Alejandro Hernández
- * @review
  */
 public class RatingModel {
 
@@ -28,20 +27,18 @@ public class RatingModel {
 	}
 
 	/**
-	 * Returns the ID of the rating author.
+	 * Returns the ID of the rating's author.
 	 *
-	 * @return the ID of the rating author
-	 * @review
+	 * @return the ID of the rating's author
 	 */
 	public long getAuthorId() {
 		return _authorId;
 	}
 
 	/**
-	 * Returns the rating value
+	 * Returns the rating's value.
 	 *
-	 * @return the rating value
-	 * @review
+	 * @return the rating's value
 	 */
 	public long getValue() {
 		return _value;

@@ -60,34 +60,30 @@ import javax.ws.rs.ext.MessageBodyWriter;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * Base {@code MessageBodyWriter} for those who write using a {@link
+ * Defines the base {@code MessageBodyWriter} for those who write using a {@link
  * MessageMapper}.
  *
  * @author Alejandro Hernández
- * @review
  */
 public abstract class BaseMessageBodyWriter<T, S extends MessageMapper>
 	implements MessageBodyWriter<T> {
 
 	/**
-	 * Returns {@code true} if the current {@code MessageBodyWriter} can write
-	 * the actual class.
+	 * Whether the current {@code MessageBodyWriter} can write the actual class.
 	 *
 	 * @param  clazz the class of the element being written
 	 * @param  genericType the generic type of the element being written
 	 * @return {@code true} if the type is supported; {@code false} otherwise
-	 * @review
 	 */
 	public abstract boolean canWrite(Class<?> clazz, Type genericType);
 
 	/**
-	 * Returns the message mapper used to write the actual element, if present.
-	 * Returns {@code Optional#empty()} otherwise.
+	 * Returns the message mapper used to write the actual element, if present;
+	 * returns {@code Optional#empty()} otherwise.
 	 *
 	 * @param  request the current request
 	 * @return the message mapper, if present; {@code Optional#empty()}
 	 *         otherwise
-	 * @review
 	 */
 	public abstract Optional<S> getMessageMapperOptional(Request request);
 
@@ -162,14 +158,13 @@ public abstract class BaseMessageBodyWriter<T, S extends MessageMapper>
 	}
 
 	/**
-	 * Returns a {@code SingleModel} identified by the supplied identifier, if
-	 * present. Returns {@code Optional#empty()} otherwise.
+	 * Returns a {@link SingleModel} identified by the supplied identifier, if
+	 * present; returns {@code Optional#empty()} otherwise.
 	 *
 	 * @param  identifier the single model identifier
 	 * @param  identifierClass the resource identifier class
 	 * @return the {@code SingleModel}, if present; {@code Optional#empty()}
 	 *         otherwise
-	 * @review
 	 */
 	protected Optional<SingleModel> getSingleModelOptional(
 		Object identifier, Class<? extends Identifier> identifierClass) {
@@ -196,14 +191,13 @@ public abstract class BaseMessageBodyWriter<T, S extends MessageMapper>
 	}
 
 	/**
-	 * Writes the element into a {@code String} using the supplied message
-	 * mapper and the current {@code RequestInfo}.
+	 * Writes the element to a {@code String} by using the supplied message
+	 * mapper and the current {@link RequestInfo}.
 	 *
 	 * @param  t the element being written
 	 * @param  s the message mapper
 	 * @param  requestInfo the current request info
-	 * @return a {@code String} containing the representation of the element
-	 * @review
+	 * @return the {@code String} containing the element's representation
 	 */
 	protected abstract String write(T t, S s, RequestInfo requestInfo);
 

@@ -31,14 +31,13 @@ import java.util.function.Function;
  *
  * @author Alejandro Hernández
  * @author Zoltán Takács
- * @review
  */
 public class EntryPointWriter {
 
 	/**
 	 * Writes the handled {@link EntryPoint} to a string.
 	 *
-	 * @return the representation of the {@code EntryPoint}
+	 * @return the entry point's representation
 	 */
 	public String write() {
 		ApplicationURL applicationURL = _requestInfo.getApplicationURL();
