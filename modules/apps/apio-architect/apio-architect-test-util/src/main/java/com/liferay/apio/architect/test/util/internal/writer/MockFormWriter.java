@@ -21,7 +21,7 @@ import com.liferay.apio.architect.impl.writer.FormWriter;
 import com.liferay.apio.architect.test.util.form.MockFormCreator;
 
 /**
- * Provides methods that test {@link FormMessageMapper} objects.
+ * Provides methods that test {@code FormMessageMapper} objects.
  *
  * <p>
  * This class shouldn't be instantiated.
@@ -32,12 +32,11 @@ import com.liferay.apio.architect.test.util.form.MockFormCreator;
 public class MockFormWriter {
 
 	/**
-	 * Writes a {@link com.liferay.apio.architect.form.Form} object.
+	 * Writes a {@code com.liferay.apio.architect.form.Form} object.
 	 *
 	 * @param  formMessageMapper the {@code FormMessageMapper} to use for
 	 *         writing the JSON object
-	 * @return the {@code String} containing the JSON Object.
-	 * @review
+	 * @return the string containing the JSON object
 	 */
 	public static String write(FormMessageMapper formMessageMapper) {
 		FormWriter formWriter = FormWriter.create(

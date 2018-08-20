@@ -32,18 +32,16 @@ import javax.ws.rs.PathParam;
  * @author Zoltán Takács
  * @param  <T> the type of the model's identifier (e.g., {@code Long}, {@code
  *         String}, etc.)
- * @review
  */
 public interface BatchEndpoint<T> {
 
 	/**
 	 * Adds multiple {@link com.liferay.apio.architect.single.model.SingleModel}
-	 * to the resource specified by {@code name}. This occurs via a POST request
-	 * to the resource.
+	 * instances to the resource specified by {@code name}. This occurs via a
+	 * POST request to the resource.
 	 *
 	 * @param  body the request's body
 	 * @return the batch result operation, or an exception if an error occurred
-	 * @review
 	 */
 	@Consumes(APPLICATION_JSON)
 	@Path("/")
@@ -52,14 +50,13 @@ public interface BatchEndpoint<T> {
 
 	/**
 	 * Adds a new {@link com.liferay.apio.architect.single.model.SingleModel} to
-	 * the nested resource specified. This occurs via a POST request to the
+	 * the specified nested resource. This occurs via a POST request to the
 	 * nested resource.
 	 *
 	 * @param  id the parent resource's ID
 	 * @param  nestedName the nested resource's name, extracted from the URL
 	 * @param  body the request's body
 	 * @return the new single model, or an exception if an error occurred
-	 * @review
 	 */
 	@Consumes(APPLICATION_JSON)
 	@Path("{id}/{nestedName}")

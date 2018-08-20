@@ -35,7 +35,6 @@ public interface RootEndpoint {
 	 * Returns the endpoint for batch operations.
 	 *
 	 * @return the endpoint
-	 * @review
 	 */
 	@Path("/batch/{name}")
 	public BatchEndpoint batchEndpoint(@PathParam("name") String name);
