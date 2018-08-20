@@ -80,28 +80,6 @@ public class CommentsSubscriptionTest {
 	}
 
 	@Test
-	public void testCanSubscribeToCommentsWithViewPermissions()
-		throws Exception {
-
-		ServiceContext serviceContext =
-			ServiceContextTestUtil.getServiceContext(
-				_group.getGroupId(), _creatorUser.getUserId());
-
-		BlogsEntry blogsEntry = BlogsEntryLocalServiceUtil.addEntry(
-			_creatorUser.getUserId(), RandomTestUtil.randomString(),
-			RandomTestUtil.randomString(), serviceContext);
-
-		DiscussionPermission discussionPermission =
-			_commentManager.getDiscussionPermission(
-				PermissionCheckerFactoryUtil.create(_user));
-
-		Assert.assertTrue(
-			discussionPermission.hasSubscribePermission(
-				_group.getCompanyId(), _group.getGroupId(),
-				BlogsEntry.class.getName(), blogsEntry.getEntryId()));
-	}
-
-	@Test
 	public void testCannotSubscribeToCommentsWithoutViewPermissions()
 		throws Exception {
 
@@ -127,6 +105,28 @@ public class CommentsSubscriptionTest {
 		Assert.assertFalse(
 			discussionPermission.hasSubscribePermission(
 				TestPropsValues.getCompanyId(), _group.getGroupId(),
+				BlogsEntry.class.getName(), blogsEntry.getEntryId()));
+	}
+
+	@Test
+	public void testCanSubscribeToCommentsWithViewPermissions()
+		throws Exception {
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(
+				_group.getGroupId(), _creatorUser.getUserId());
+
+		BlogsEntry blogsEntry = BlogsEntryLocalServiceUtil.addEntry(
+			_creatorUser.getUserId(), RandomTestUtil.randomString(),
+			RandomTestUtil.randomString(), serviceContext);
+
+		DiscussionPermission discussionPermission =
+			_commentManager.getDiscussionPermission(
+				PermissionCheckerFactoryUtil.create(_user));
+
+		Assert.assertTrue(
+			discussionPermission.hasSubscribePermission(
+				_group.getCompanyId(), _group.getGroupId(),
 				BlogsEntry.class.getName(), blogsEntry.getEntryId()));
 	}
 

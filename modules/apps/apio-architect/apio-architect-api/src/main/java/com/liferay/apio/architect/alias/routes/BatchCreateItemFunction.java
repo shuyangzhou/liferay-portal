@@ -23,12 +23,11 @@ import java.util.function.Function;
 
 /**
  * Defines a type alias for a function that can be used to create multiple
- * collection item.
+ * collection items.
  *
  * @author Alejandro Hernández
  * @author Zoltán Takács
  * @param  <T> the model's type
- * @review
  */
 @FunctionalInterface
 public interface BatchCreateItemFunction<T>

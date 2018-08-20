@@ -160,7 +160,7 @@ class KeyValue extends Component {
 	}
 
 	getGeneratedKey(str) {
-		let key = str.replace(
+		const key = str.replace(
 			/\s(.)/g,
 			x => {
 				return x.toUpperCase();
