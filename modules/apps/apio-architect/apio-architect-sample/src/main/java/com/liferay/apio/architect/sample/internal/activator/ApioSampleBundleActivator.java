@@ -24,11 +24,10 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 /**
- * Initiates the in-memory databases by calling the different {@code compute}
- * methods in each model class asynchronously.
+ * Initiates the in-memory databases by asynchronously calling the different
+ * {@code compute} methods in each model class.
  *
  * @author Alejandro Hernández
- * @review
  */
 public class ApioSampleBundleActivator implements BundleActivator {
 

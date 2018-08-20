@@ -101,7 +101,6 @@ import javax.naming.directory.Attributes;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.LdapContext;
-import javax.naming.ldap.Rdn;
 
 import org.apache.commons.lang.time.StopWatch;
 
@@ -171,7 +170,8 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 				_ldapServerConfigurationProvider.getConfiguration(
 					companyId, ldapServerId);
 
-			String baseDN = ldapServerConfiguration.baseDN();
+			String baseDN = LDAPUtil.escapeCharacters(
+				ldapServerConfiguration.baseDN());
 
 			ldapContext = _portalLDAP.getContext(ldapServerId, companyId);
 
@@ -193,7 +193,9 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 					"@company_id@", "@email_address@", "@screen_name@"
 				},
 				new String[] {
-					String.valueOf(companyId), emailAddress, screenName
+					String.valueOf(companyId),
+					_portalLDAP.encodeFilterAttribute(emailAddress, false),
+					_portalLDAP.encodeFilterAttribute(screenName, false)
 				});
 
 			_ldapFilterValidator.validate(filter);
@@ -720,7 +722,7 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 		sb.append(StringPool.OPEN_PARENTHESIS);
 		sb.append(groupMappings.getProperty("groupName"));
 		sb.append("=");
-		sb.append(Rdn.escapeValue(userGroup.getName()));
+		sb.append(_portalLDAP.encodeFilterAttribute(userGroup.getName(), true));
 		sb.append("))");
 
 		return _portalLDAP.getMultivaluedAttribute(
@@ -970,7 +972,9 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 
 			String fullUserDN = binding.getNameInNamespace();
 
-			sb.append(escapeLDAPName(fullUserDN));
+			sb.append(
+				_portalLDAP.encodeFilterAttribute(
+					escapeLDAPName(fullUserDN), false));
 
 			sb.append(StringPool.CLOSE_PARENTHESIS);
 			sb.append(StringPool.CLOSE_PARENTHESIS);

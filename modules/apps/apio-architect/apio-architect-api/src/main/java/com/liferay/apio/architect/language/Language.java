@@ -23,8 +23,7 @@ import java.util.stream.Stream;
  * Represents information about the requested languages.
  *
  * @author     Alejandro Hernández
- * @deprecated As of 1.0.0, should use {@code AcceptLanguage}
- * @review
+ * @deprecated As of 1.0.0, replaced by {@link AcceptLanguage}
  */
 @ConsumerType
 @Deprecated

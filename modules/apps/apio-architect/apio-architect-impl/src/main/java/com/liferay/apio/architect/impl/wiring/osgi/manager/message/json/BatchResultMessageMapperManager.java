@@ -25,7 +25,6 @@ import javax.ws.rs.core.Request;
  * to the current request.
  *
  * @author Alejandro Hernández
- * @review
  */
 public interface BatchResultMessageMapperManager {
 
@@ -36,7 +35,6 @@ public interface BatchResultMessageMapperManager {
 	 * @param  request the current request
 	 * @return the {@code BatchResultMessageMapper}, if present; {@code
 	 *         Optional#empty()} otherwise
-	 * @review
 	 */
 	public <T> Optional<BatchResultMessageMapper<T>>
 		getBatchResultMessageMapperOptional(Request request);

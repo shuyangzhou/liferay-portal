@@ -132,7 +132,7 @@ public class JaxRsServiceRuntimeOSGiCommands {
 		for (ResourceMethodInfoDTO resourceMethodInfoDTO :
 				applicationDTO.resourceMethods) {
 
-			printResourceMethodInfoDTO("    ", resourceMethodInfoDTO);
+			_printResourceMethodInfoDTO("    ", resourceMethodInfoDTO);
 		}
 
 		if (ArrayUtil.isNotEmpty(applicationDTO.extensionDTOs)) {
@@ -161,7 +161,7 @@ public class JaxRsServiceRuntimeOSGiCommands {
 			for (ResourceMethodInfoDTO resourceMethodInfoDTO :
 					resourceDTO.resourceMethods) {
 
-				printResourceMethodInfoDTO(
+				_printResourceMethodInfoDTO(
 					"            ", resourceMethodInfoDTO);
 			}
 		}
@@ -348,7 +348,7 @@ public class JaxRsServiceRuntimeOSGiCommands {
 		System.out.println(sb.toString());
 	}
 
-	protected void printResourceMethodInfoDTO(
+	private void _printResourceMethodInfoDTO(
 		String prefix, ResourceMethodInfoDTO resourceMethodInfoDTO) {
 
 		System.out.println(

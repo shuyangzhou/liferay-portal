@@ -15,10 +15,9 @@
 package com.liferay.apio.architect.sample.internal.model;
 
 /**
- * Instances of this class represent the information of a postal address.
+ * Represents a postal address.
  *
  * @author Alejandro Hernández
- * @review
  */
 public class PostalAddressModel {
 
@@ -34,50 +33,45 @@ public class PostalAddressModel {
 	}
 
 	/**
-	 * Returns the postal address's city
+	 * Returns the address's city.
 	 *
-	 * @return the postal address's city
-	 * @review
+	 * @return the city
 	 */
 	public String getCity() {
 		return _city;
 	}
 
 	/**
-	 * Returns the postal address's country code
+	 * Returns the address's country code.
 	 *
-	 * @return the postal address's country code
-	 * @review
+	 * @return the country code
 	 */
 	public String getCountryCode() {
 		return _countryCode;
 	}
 
 	/**
-	 * Returns the postal address's city
+	 * Returns the address's state.
 	 *
-	 * @return the postal address's city
-	 * @review
+	 * @return the state
 	 */
 	public String getState() {
 		return _state;
 	}
 
 	/**
-	 * Returns the postal address's city
+	 * Returns the address's street address.
 	 *
-	 * @return the postal address's city
-	 * @review
+	 * @return the street address
 	 */
 	public String getStreetAddress() {
 		return _streetAddress;
 	}
 
 	/**
-	 * Returns the postal address's city
+	 * Returns the address's ZIP code.
 	 *
-	 * @return the postal address's city
-	 * @review
+	 * @return the ZIP code
 	 */
 	public String getZipCode() {
 		return _zipCode;

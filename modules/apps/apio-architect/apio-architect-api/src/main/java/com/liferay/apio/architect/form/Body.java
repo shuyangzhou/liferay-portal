@@ -87,12 +87,11 @@ public interface Body {
 	}
 
 	/**
-	 * Creates and returns a new {@code Body} with other bodies as members. This
-	 * kind of body is used for example, in batch operations.
+	 * Creates and returns a new body with other bodies as members. This kind of
+	 * body is used, for example, in batch operations.
 	 *
 	 * @param  bodies the list of bodies
 	 * @return the body
-	 * @review
 	 */
 	public static Body create(List<Body> bodies) {
 		return new Body() {

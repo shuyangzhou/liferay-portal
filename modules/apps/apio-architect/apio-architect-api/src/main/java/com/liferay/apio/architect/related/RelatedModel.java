@@ -48,7 +48,6 @@ public interface RelatedModel<T, S> {
 	 *             identifier
 	 * @deprecated As of 1.1.1, replaced by {@link
 	 *             #getModelToIdentifierFunction()}
-	 * @review
 	 */
 	@Deprecated
 	public Function<T, S> getIdentifierFunction();
