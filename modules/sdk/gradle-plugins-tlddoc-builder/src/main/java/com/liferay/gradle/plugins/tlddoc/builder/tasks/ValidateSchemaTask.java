@@ -37,6 +37,28 @@ import org.gradle.api.tasks.TaskAction;
  */
 public class ValidateSchemaTask extends SourceTask {
 
+	public ValidateSchemaTask dtd(String key, String value) {
+		_dtds.put(key, value);
+
+		return this;
+	}
+
+	public ValidateSchemaTask dtds(Map<String, String> dtds) {
+		_dtds.putAll(dtds);
+
+		return this;
+	}
+
+	@Input
+	public Map<String, String> getDTDs() {
+		return _dtds;
+	}
+
+	@Input
+	public Map<String, String> getSchemas() {
+		return _schemas;
+	}
+
 	@Input
 	@Optional
 	public String getXMLParserClassName() {
@@ -64,8 +86,26 @@ public class ValidateSchemaTask extends SourceTask {
 		return _lenient;
 	}
 
+	public ValidateSchemaTask schema(String key, String value) {
+		_schemas.put(key, value);
+
+		return this;
+	}
+
+	public ValidateSchemaTask schemas(Map<String, String> schemas) {
+		_schemas.putAll(schemas);
+
+		return this;
+	}
+
 	public void setDTDDisabled(boolean dtdDisabled) {
 		_dtdDisabled = dtdDisabled;
+	}
+
+	public void setDTDs(Map<String, String> dtds) {
+		_dtds.clear();
+
+		dtds(dtds);
 	}
 
 	public void setFullChecking(boolean fullChecking) {
@@ -74,6 +114,12 @@ public class ValidateSchemaTask extends SourceTask {
 
 	public void setLenient(boolean lenient) {
 		_lenient = lenient;
+	}
+
+	public void setSchemas(Map<String, String> schemas) {
+		_schemas.clear();
+
+		schemas(schemas);
 	}
 
 	public void setXMLParserClassName(Object xmlParserClassName) {
@@ -116,6 +162,24 @@ public class ValidateSchemaTask extends SourceTask {
 
 				fileTree.addToAntBuilder(
 					antBuilder, "fileset", FileCollection.AntType.FileSet);
+
+				for (Map.Entry<String, String> entry : _dtds.entrySet()) {
+					Map<String, Object> args = new HashMap<>();
+
+					args.put("location", entry.getValue());
+					args.put("publicId", entry.getKey());
+
+					antBuilder.invokeMethod("dtd", args);
+				}
+
+				for (Map.Entry<String, String> entry : _schemas.entrySet()) {
+					Map<String, Object> args = new HashMap<>();
+
+					args.put("file", entry.getValue());
+					args.put("namespace", entry.getKey());
+
+					antBuilder.invokeMethod("schema", args);
+				}
 			}
 
 		};
@@ -124,8 +188,10 @@ public class ValidateSchemaTask extends SourceTask {
 	}
 
 	private boolean _dtdDisabled;
+	private final Map<String, String> _dtds = new HashMap<>();
 	private boolean _fullChecking = true;
 	private boolean _lenient;
+	private final Map<String, String> _schemas = new HashMap<>();
 	private Object _xmlParserClassName;
 	private FileCollection _xmlParserClasspath;
 
