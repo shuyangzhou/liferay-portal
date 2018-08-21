@@ -1,3 +1,9 @@
+import com.liferay.gradle.util.FileUtil
+
+task downloadSchemas
+
+File schemasDir = file("src/main/resources/schemas")
+
 dependencies {
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.util.taglib", version: "default"
@@ -6,4 +12,26 @@ dependencies {
 	compileOnly group: "org.osgi", name: "org.osgi.core", version: "6.0.0"
 	compileOnly project(":apps:adaptive-media:adaptive-media-image-api")
 	compileOnly project(":core:petra:petra-string")
+}
+
+downloadSchemas {
+	doLast {
+		FileUtil.get(project, "http://java.sun.com/xml/ns/javaee/javaee_5.xsd", new File(schemasDir, "javaee_5.xsd"))
+		FileUtil.get(project, "http://java.sun.com/xml/ns/javaee/javaee_web_services_client_1_2.xsd", new File(schemasDir, "javaee_web_services_client_1_2.xsd"))
+		FileUtil.get(project, "http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd", new File(schemasDir, "web-jsptaglibrary_2_1.xsd"))
+		FileUtil.get(project, "http://www.w3.org/2001/xml.xsd", new File(schemasDir, "xml.xsd"))
+	}
+
+	onlyIf {
+		!schemasDir.exists()
+	}
+}
+
+validateTLD {
+	dependsOn downloadSchemas
+
+	schemas = [
+		"http://java.sun.com/xml/ns/javaee": new File(schemasDir, "web-jsptaglibrary_2_1.xsd"),
+		"http://www.w3.org/XML/1998/namespace": new File(schemasDir, "xml.xsd")
+	]
 }
