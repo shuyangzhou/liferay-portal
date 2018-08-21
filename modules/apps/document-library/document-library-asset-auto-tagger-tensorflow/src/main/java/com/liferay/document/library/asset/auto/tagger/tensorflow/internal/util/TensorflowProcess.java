@@ -14,8 +14,10 @@
 
 package com.liferay.document.library.asset.auto.tagger.tensorflow.internal.util;
 
-import com.liferay.document.library.asset.auto.tagger.tensorflow.internal.petra.process.GetLabelProbabilitiesProcessCallable;
+import com.liferay.document.library.asset.auto.tagger.tensorflow.internal.configuration.TensorFlowImageAssetAutoTagProviderProcessConfiguration;
+import com.liferay.document.library.asset.auto.tagger.tensorflow.internal.osgi.commands.TensorflowAssetAutoTagProviderOSGiCommands;
 import com.liferay.document.library.asset.auto.tagger.tensorflow.internal.petra.process.TensorFlowDaemonProcessCallable;
+import com.liferay.petra.process.ProcessCallable;
 import com.liferay.petra.process.ProcessChannel;
 import com.liferay.petra.process.ProcessConfig;
 import com.liferay.petra.process.ProcessConfig.Builder;
@@ -25,6 +27,8 @@ import com.liferay.petra.process.ProcessLog.Level;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
@@ -34,6 +38,7 @@ import com.liferay.portal.util.PortalClassPathUtil;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 
 import java.net.URL;
 
@@ -45,12 +50,9 @@ import java.nio.file.StandardCopyOption;
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
 
-import java.util.ArrayList;
 import java.util.Dictionary;
-import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Future;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -58,36 +60,59 @@ import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * See the <a
- * href="https://github.com/tensorflow/tensorflow/blob/master/tensorflow/java/src/main/java/org/tensorflow/examples/LabelImage.java">org.tensorflow.examples.LabelImage</a>
- * class for more information.
- *
  * @author Alejandro Tardín
  */
-@Component(service = InceptionImageLabeler.class)
-public class InceptionImageLabeler {
+@Component(
+	configurationPid = "com.liferay.document.library.asset.auto.tagger.tensorflow.internal.configuration.TensorFlowImageAssetAutoTagProviderProcessConfiguration",
+	service = TensorflowProcess.class
+)
+public class TensorflowProcess {
 
-	public List<String> label(byte[] imageBytes, float confidenceThreshold) {
-		float[] labelProbabilities = _getLabelProbabilities(imageBytes);
+	public void resetCounter() {
+		_processStarts = 0;
+	}
 
-		Stream<Integer> stream = _getBestIndexesStream(
-			labelProbabilities, confidenceThreshold);
+	public <T extends Serializable> T run(ProcessCallable<T> processCallable) {
+		ProcessChannel<String> processChannel = _processChannel;
 
-		return stream.map(
-			i -> _labels[i]
-		).collect(
-			Collectors.toList()
-		);
+		if (processChannel == null) {
+			synchronized (this) {
+				processChannel = _startProcess();
+			}
+		}
+
+		Future<T> future = processChannel.write(processCallable);
+
+		try {
+			return future.get();
+		}
+		catch (Exception e) {
+			stop();
+
+			return ReflectionUtil.throwException(e);
+		}
+	}
+
+	public synchronized void stop() {
+		if (_processChannel != null) {
+			Future<?> future = _processChannel.getProcessNoticeableFuture();
+
+			future.cancel(true);
+
+			_processChannel = null;
+		}
 	}
 
 	@Activate
-	protected void activate(BundleContext bundleContext) throws IOException {
-		Bundle bundle = bundleContext.getBundle();
+	protected void activate(
+			BundleContext bundleContext, Map<String, Object> properties)
+		throws IOException {
 
-		_initializeLabels(bundle);
+		Bundle bundle = bundleContext.getBundle();
 
 		_tensorflowWorkDir = bundle.getDataFile("tensorflow-workdir");
 
@@ -95,13 +120,23 @@ public class InceptionImageLabeler {
 
 		_processConfig = _createProcessConfig(
 			bundle, _tensorflowWorkDir.toPath());
+
+		modified(properties);
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		_stopProcess();
+		stop();
 
 		FileUtil.deltree(_tensorflowWorkDir);
+	}
+
+	@Modified
+	protected void modified(Map<String, Object> properties) throws IOException {
+		_tensorFlowImageAssetAutoTagProviderProcessConfiguration =
+			ConfigurableUtil.createConfigurable(
+				TensorFlowImageAssetAutoTagProviderProcessConfiguration.class,
+				properties);
 	}
 
 	private static String _createClassPath(Bundle bundle, Path tempPath)
@@ -137,7 +172,7 @@ public class InceptionImageLabeler {
 		}
 
 		ProtectionDomain protectionDomain =
-			InceptionImageLabeler.class.getProtectionDomain();
+			TensorflowProcess.class.getProtectionDomain();
 
 		CodeSource codeSource = protectionDomain.getCodeSource();
 
@@ -190,99 +225,72 @@ public class InceptionImageLabeler {
 						processLog.getMessage(), processLog.getThrowable());
 				}
 			});
-		builder.setReactClassLoader(
-			InceptionImageLabeler.class.getClassLoader());
+		builder.setReactClassLoader(TensorflowProcess.class.getClassLoader());
 		builder.setRuntimeClassPath(classPath);
 
 		return builder.build();
 	}
 
-	private Stream<Integer> _getBestIndexesStream(
-		float[] probabilities, float confidenceThreshold) {
+	private ProcessChannel<String> _startProcess() {
+		ProcessChannel<String> processChannel;
 
-		List<Integer> bestIndexes = new ArrayList<>();
+		if (_processChannel == null) {
+			try {
+				int maximumNumberOfRelaunches =
+					_tensorFlowImageAssetAutoTagProviderProcessConfiguration.
+						maximumNumberOfRelaunches();
 
-		for (int i = 0; i < probabilities.length; i++) {
-			if ((probabilities[i] >= confidenceThreshold) &&
-				(i < _labels.length)) {
+				long maximumNumberOfRelaunchesTimeoutMillis =
+					_tensorFlowImageAssetAutoTagProviderProcessConfiguration.
+						maximumNumberOfRelaunchesTimeout() * 1000;
 
-				bestIndexes.add(i);
-			}
-		}
+				if ((System.currentTimeMillis() - _lastProcessStartMillis) >
+						maximumNumberOfRelaunchesTimeoutMillis) {
 
-		return bestIndexes.stream();
-	}
-
-	private InputStream _getInputStream(Bundle bundle, String path)
-		throws IOException {
-
-		URL url = bundle.getResource(path);
-
-		return url.openStream();
-	}
-
-	private float[] _getLabelProbabilities(byte[] imageBytes) {
-		ProcessChannel<String> processChannel = _processChannel;
-
-		if (processChannel == null) {
-			synchronized (this) {
-				if (_processChannel == null) {
-					try {
-						_processChannel = _processExecutor.execute(
-							_processConfig,
-							new TensorFlowDaemonProcessCallable());
-					}
-					catch (ProcessException pe) {
-						ReflectionUtil.throwException(pe);
-					}
+					_processStarts = 0;
 				}
 
-				processChannel = _processChannel;
+				if (_processStarts++ > maximumNumberOfRelaunches) {
+					throw new SystemException(
+						StringBundler.concat(
+							"The tensorflow process has crashed more than ",
+							maximumNumberOfRelaunches,
+							" times. It is now disabled. To enable it again ",
+							"please open the Gogo shell and run ",
+							TensorflowAssetAutoTagProviderOSGiCommands.SCOPE,
+							StringPool.COLON,
+							TensorflowAssetAutoTagProviderOSGiCommands.
+								RESET_PROCESS_COUNTER));
+				}
+
+				_processChannel = _processExecutor.execute(
+					_processConfig, new TensorFlowDaemonProcessCallable());
+
+				_lastProcessStartMillis = System.currentTimeMillis();
+			}
+			catch (ProcessException pe) {
+				ReflectionUtil.throwException(pe);
 			}
 		}
 
-		Future<float[]> future = processChannel.write(
-			new GetLabelProbabilitiesProcessCallable(imageBytes));
+		processChannel = _processChannel;
 
-		try {
-			return future.get();
-		}
-		catch (Exception e) {
-			_stopProcess();
-
-			return ReflectionUtil.throwException(e);
-		}
-	}
-
-	private void _initializeLabels(Bundle bundle) throws IOException {
-		_labels = StringUtil.splitLines(
-			StringUtil.read(
-				_getInputStream(
-					bundle,
-					"META-INF/tensorflow" +
-						"/imagenet_comp_graph_label_strings.txt")));
-	}
-
-	private synchronized void _stopProcess() {
-		if (_processChannel != null) {
-			Future<?> future = _processChannel.getProcessNoticeableFuture();
-
-			future.cancel(true);
-
-			_processChannel = null;
-		}
+		return processChannel;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		InceptionImageLabeler.class);
+		TensorflowProcess.class);
 
-	private String[] _labels;
+	private long _lastProcessStartMillis;
 	private volatile ProcessChannel<String> _processChannel;
 	private ProcessConfig _processConfig;
 
 	@Reference
 	private ProcessExecutor _processExecutor;
 
+	private int _processStarts;
+	private volatile TensorFlowImageAssetAutoTagProviderProcessConfiguration
+		_tensorFlowImageAssetAutoTagProviderProcessConfiguration;
 	private File _tensorflowWorkDir;
 
 }
