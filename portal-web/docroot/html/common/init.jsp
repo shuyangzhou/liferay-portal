@@ -28,7 +28,9 @@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
 <%@ page contentType="text/html; charset=UTF-8" %>
 
-<%@ page import="com.liferay.exportimport.kernel.staging.LayoutStagingUtil" %><%@
+<%@ page import="com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil" %><%@
+page import="com.liferay.asset.kernel.model.AssetRendererFactory" %><%@
+page import="com.liferay.exportimport.kernel.staging.LayoutStagingUtil" %><%@
 page import="com.liferay.exportimport.kernel.staging.StagingUtil" %><%@
 page import="com.liferay.petra.string.CharPool" %><%@
 page import="com.liferay.petra.string.StringPool" %><%@
@@ -63,6 +65,8 @@ page import="com.liferay.portal.kernel.portlet.InvokerPortlet" %><%@
 page import="com.liferay.portal.kernel.portlet.LiferayHeaderRequest" %><%@
 page import="com.liferay.portal.kernel.portlet.LiferayHeaderResponse" %><%@
 page import="com.liferay.portal.kernel.portlet.LiferayPortletMode" %><%@
+page import="com.liferay.portal.kernel.portlet.LiferayPortletRequest" %><%@
+page import="com.liferay.portal.kernel.portlet.LiferayPortletResponse" %><%@
 page import="com.liferay.portal.kernel.portlet.LiferayPortletURL" %><%@
 page import="com.liferay.portal.kernel.portlet.LiferayRenderRequest" %><%@
 page import="com.liferay.portal.kernel.portlet.LiferayRenderResponse" %><%@
@@ -167,6 +171,7 @@ page import="com.liferay.portlet.LiferayPortletUtil" %><%@
 page import="com.liferay.portlet.RenderParametersPool" %><%@
 page import="com.liferay.portlet.RenderRequestFactory" %><%@
 page import="com.liferay.portlet.RenderResponseFactory" %><%@
+page import="com.liferay.portlet.asset.util.AssetUtil" %><%@
 page import="com.liferay.portlet.configuration.kernel.util.PortletConfigurationUtil" %><%@
 page import="com.liferay.portlet.usergroupsadmin.search.UserGroupDisplayTerms" %><%@
 page import="com.liferay.portlet.usersadmin.search.OrganizationDisplayTerms" %><%@
@@ -199,6 +204,7 @@ page import="java.util.Collections" %><%@
 page import="java.util.Date" %><%@
 page import="java.util.HashMap" %><%@
 page import="java.util.HashSet" %><%@
+page import="java.util.Iterator" %><%@
 page import="java.util.LinkedHashMap" %><%@
 page import="java.util.LinkedHashSet" %><%@
 page import="java.util.List" %><%@
