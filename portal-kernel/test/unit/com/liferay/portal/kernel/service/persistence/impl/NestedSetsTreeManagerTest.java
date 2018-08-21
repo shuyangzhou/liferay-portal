@@ -343,7 +343,7 @@ public class NestedSetsTreeManagerTest {
 		SimpleNestedSetsTreeNode... ancestorSimpleNestedSetsTreeNodes) {
 
 		List<SimpleNestedSetsTreeNode> simpleNestedSetsTreeNodes =
-			new ArrayList<>(Arrays.asList(ancestorSimpleNestedSetsTreeNodes));
+			Arrays.asList(ancestorSimpleNestedSetsTreeNodes);
 
 		simpleNestedSetsTreeNodes.add(simpleNestedSetsTreeNode);
 
@@ -359,7 +359,7 @@ public class NestedSetsTreeManagerTest {
 		SimpleNestedSetsTreeNode... childSimpleNestedSetsTreeNodes) {
 
 		List<SimpleNestedSetsTreeNode> simpleNestedSetsTreeNodes =
-			new ArrayList<>(Arrays.asList(childSimpleNestedSetsTreeNodes));
+			Arrays.asList(childSimpleNestedSetsTreeNodes);
 
 		simpleNestedSetsTreeNodes.add(simpleNestedSetsTreeNode);
 

@@ -71,7 +71,6 @@ import java.io.OutputStream;
 
 import java.nio.charset.StandardCharsets;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -1107,8 +1106,7 @@ public class LiferayOSGiPlugin implements Plugin<Project> {
 
 		@Override
 		public JarBuilder withClasspath(Object files) {
-			List<File> filesList = new ArrayList<>(
-				Arrays.asList((File[])files));
+			List<File> filesList = Arrays.asList((File[])files);
 
 			Iterator<File> iterator = filesList.iterator();
 
@@ -1146,8 +1144,7 @@ public class LiferayOSGiPlugin implements Plugin<Project> {
 
 		@Override
 		public JarBuilder withResources(Object files) {
-			List<File> filesList = new ArrayList<>(
-				Arrays.asList((File[])files));
+			List<File> filesList = Arrays.asList((File[])files);
 
 			Iterator<File> iterator = filesList.iterator();
 

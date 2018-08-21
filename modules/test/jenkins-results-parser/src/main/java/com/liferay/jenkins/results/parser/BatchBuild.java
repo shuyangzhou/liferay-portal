@@ -397,11 +397,9 @@ public class BatchBuild extends BaseBuild {
 			throw new RuntimeException("Unable to get build properties", ioe);
 		}
 
-		List<String> environmentOptions = new ArrayList<>(
-			Arrays.asList(
-				StringUtils.split(
-					buildProperties.getProperty(environmentType + ".types"),
-					",")));
+		List<String> environmentOptions = Arrays.asList(
+			StringUtils.split(
+				buildProperties.getProperty(environmentType + ".types"), ","));
 
 		String batchName = getJobVariant();
 

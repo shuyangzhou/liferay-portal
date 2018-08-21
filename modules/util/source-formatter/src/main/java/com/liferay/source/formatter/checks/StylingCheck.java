@@ -14,6 +14,8 @@
 
 package com.liferay.source.formatter.checks;
 
+import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.tools.ToolsUtil;
@@ -52,6 +54,8 @@ public abstract class StylingCheck extends BaseFileCheck {
 
 		content = _fixBooleanStatement(content);
 
+		content = _fixRedundantArrayInitialization(content);
+
 		return content;
 	}
 
@@ -88,6 +92,63 @@ public abstract class StylingCheck extends BaseFileCheck {
 
 			return StringUtil.replaceFirst(
 				content, matcher.group(), "(!" + matcher.group(2) + ")");
+		}
+
+		return content;
+	}
+
+	private String _fixRedundantArrayInitialization(String content) {
+		content = _fixRedundantArrayInitialization(content, "Arrays", "asList");
+		content = _fixRedundantArrayInitialization(
+			content, "StringBundler", "concat");
+
+		Matcher matcher = _newArrayListPattern.matcher(content);
+
+		if (!matcher.find()) {
+			return content;
+		}
+
+		int x = matcher.start();
+
+		int y = _getMatchingClosingChar(content, x, CharPool.CLOSE_PARENTHESIS);
+
+		content = StringUtil.replaceFirst(
+			content, StringPool.CLOSE_PARENTHESIS, StringPool.BLANK, y);
+
+		content = StringUtil.replaceFirst(
+			content, "new ArrayList<>(", StringPool.BLANK, x);
+
+		return content;
+	}
+
+	private String _fixRedundantArrayInitialization(
+		String content, String className, String methodName) {
+
+		Pattern pattern = Pattern.compile(
+			StringBundler.concat(
+				"\\W", className, "\\.", methodName,
+				"\\(\\s*(new \\w+\\[\\] \\{)"));
+
+		Matcher matcher = pattern.matcher(content);
+
+		while (matcher.find()) {
+			List<String> parameterList = JavaSourceUtil.getParameterList(
+				content.substring(matcher.start()));
+
+			if (parameterList.size() > 1) {
+				continue;
+			}
+
+			int x = _getMatchingClosingChar(
+				content, matcher.end() - 1, CharPool.CLOSE_CURLY_BRACE);
+
+			content = StringUtil.replaceFirst(
+				content, StringPool.CLOSE_CURLY_BRACE, StringPool.BLANK, x);
+
+			content = StringUtil.replaceFirst(
+				content, matcher.group(1), StringPool.BLANK, matcher.start());
+
+			return content;
 		}
 
 		return content;
@@ -144,7 +205,25 @@ public abstract class StylingCheck extends BaseFileCheck {
 		return content;
 	}
 
+	private int _getMatchingClosingChar(
+		String content, int start, char closingChar) {
+
+		int x = start;
+
+		while (true) {
+			x = content.indexOf(closingChar, x + 1);
+
+			String s = content.substring(start, x + 1);
+
+			if ((getLevel(s, "(", ")") == 0) && (getLevel(s, "{", "}") == 0)) {
+				return x;
+			}
+		}
+	}
+
 	private final Pattern _booleanPattern = Pattern.compile(
 		"\\((\\!)?(\\w+)\\s+(==|!=)\\s+(false|true)\\)");
+	private final Pattern _newArrayListPattern = Pattern.compile(
+		"new ArrayList<>\\(\\s*Arrays\\.asList\\(");
 
 }

@@ -153,7 +153,7 @@ public class ListUtil {
 			return new ArrayList<>();
 		}
 
-		return new ArrayList<>(Arrays.asList(array));
+		return Arrays.asList(array);
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -404,7 +404,7 @@ public class ListUtil {
 			return new ArrayList<>();
 		}
 
-		return new ArrayList<>(Arrays.asList(array));
+		return Arrays.asList(array);
 	}
 
 	public static List<Float> toList(float[] array) {

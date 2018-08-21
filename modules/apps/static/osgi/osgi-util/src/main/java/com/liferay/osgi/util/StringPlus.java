@@ -31,7 +31,7 @@ public class StringPlus {
 			return new ArrayList<>(Collections.singletonList((String)object));
 		}
 		else if (object instanceof String[]) {
-			return new ArrayList<>(Arrays.asList((String[])object));
+			return Arrays.asList((String[])object);
 		}
 		else if (object instanceof Collection) {
 			Collection<?> collection = (Collection<?>)object;

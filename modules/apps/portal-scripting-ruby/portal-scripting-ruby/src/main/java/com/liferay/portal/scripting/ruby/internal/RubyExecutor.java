@@ -35,7 +35,6 @@ import java.io.FileNotFoundException;
 
 import java.lang.reflect.Field;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -263,8 +262,7 @@ public class RubyExecutor extends BaseScriptingExecutor {
 			_rubyScriptingConfiguration.compileThreshold());
 		rubyInstanceConfig.setLoader(getClassLoader());
 
-		_loadPaths = new ArrayList<>(
-			Arrays.asList(_rubyScriptingConfiguration.loadPaths()));
+		_loadPaths = Arrays.asList(_rubyScriptingConfiguration.loadPaths());
 
 		rubyInstanceConfig.setLoadPaths(_loadPaths);
 

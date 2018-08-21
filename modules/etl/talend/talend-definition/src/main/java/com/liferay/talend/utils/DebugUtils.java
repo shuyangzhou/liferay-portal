@@ -14,7 +14,6 @@
 
 package com.liferay.talend.utils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,8 +30,8 @@ public class DebugUtils {
 		if (logger.isDebugEnabled()) {
 			Throwable throwable = new Throwable();
 
-			List<StackTraceElement> stackTraceElements = new ArrayList<>(
-				Arrays.asList(throwable.getStackTrace()));
+			List<StackTraceElement> stackTraceElements = Arrays.asList(
+				throwable.getStackTrace());
 
 			Stream<StackTraceElement> stream = stackTraceElements.stream();
 
