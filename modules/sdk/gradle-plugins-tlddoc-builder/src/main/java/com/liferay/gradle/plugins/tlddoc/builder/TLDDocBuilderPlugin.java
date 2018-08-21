@@ -61,7 +61,7 @@ public class TLDDocBuilderPlugin implements Plugin<Project> {
 			project);
 
 		ValidateSchemaTask validateTLDTask = _addTaskValidateTLD(
-			project, "org.xmlresolver.tools.ResolvingXMLReader",
+			project, "com.liferay.xml.local.resolver.XMLLocalResolver",
 			xmlParserConfiguration);
 
 		Copy copyTLDDocResourcesTask = _addTaskCopyTLDDocResources(project);
@@ -101,8 +101,8 @@ public class TLDDocBuilderPlugin implements Plugin<Project> {
 
 	private static void _addDependenciesXMLParser(Project project) {
 		GradleUtil.addDependency(
-			project, XML_PARSER_CONFIGURATION_NAME, "org.xmlresolver",
-			"xmlresolver", "0.12.5");
+			project, XML_PARSER_CONFIGURATION_NAME, "com.liferay",
+			"com.liferay.xml.local.resolver", "latest.release");
 	}
 
 	private Configuration _addConfigurationXMLParser(final Project project) {
