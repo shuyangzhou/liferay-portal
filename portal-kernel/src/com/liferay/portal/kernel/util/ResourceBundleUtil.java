@@ -18,6 +18,8 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.language.UTF8Control;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
 
 import java.text.MessageFormat;
 
@@ -61,8 +63,7 @@ public class ResourceBundleUtil {
 	public static ResourceBundle getBundle(
 		String baseName, ClassLoader classLoader) {
 
-		return ResourceBundle.getBundle(
-			baseName, Locale.getDefault(), classLoader, UTF8Control.INSTANCE);
+		return getBundle(baseName, Locale.getDefault(), classLoader);
 	}
 
 	public static ResourceBundle getBundle(
@@ -74,8 +75,24 @@ public class ResourceBundleUtil {
 	public static ResourceBundle getBundle(
 		String baseName, Locale locale, ClassLoader classLoader) {
 
-		return ResourceBundle.getBundle(
-			baseName, locale, classLoader, UTF8Control.INSTANCE);
+		ResourceBundleLoader resourceBundleLoader = null;
+
+		Registry registry = RegistryUtil.getRegistry();
+
+		String symbolicName = registry.getSymbolicName(classLoader);
+
+		if (symbolicName != null) {
+			resourceBundleLoader =
+				ResourceBundleLoaderUtil.
+					getResourceBundleLoaderByBundleSymbolicName(symbolicName);
+		}
+
+		if (resourceBundleLoader == null) {
+			return ResourceBundle.getBundle(
+				baseName, locale, classLoader, UTF8Control.INSTANCE);
+		}
+
+		return resourceBundleLoader.loadResourceBundle(locale);
 	}
 
 	public static Map<Locale, String> getLocalizationMap(
