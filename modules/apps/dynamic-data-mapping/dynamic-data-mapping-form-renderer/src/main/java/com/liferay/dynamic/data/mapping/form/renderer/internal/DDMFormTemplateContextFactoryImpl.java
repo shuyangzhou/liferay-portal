@@ -33,18 +33,15 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.util.AggregateResourceBundle;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
-import com.liferay.portal.kernel.util.ResourceBundleUtil;
+import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.template.soy.utils.SoyHTMLSanitizer;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -63,6 +60,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Marcellus Tavares
@@ -95,21 +94,6 @@ public class DDMFormTemplateContextFactoryImpl
 		return doCreate(
 			ddmForm, _ddm.getDefaultDDMFormLayout(ddmForm),
 			ddmFormRenderingContext);
-	}
-
-	protected void collectResourceBundles(
-		Class<?> clazz, List<ResourceBundle> resourceBundles, Locale locale) {
-
-		for (Class<?> interfaceClass : clazz.getInterfaces()) {
-			collectResourceBundles(interfaceClass, resourceBundles, locale);
-		}
-
-		ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
-			"content.Language", locale, clazz.getClassLoader());
-
-		if (resourceBundle != null) {
-			resourceBundles.add(resourceBundle);
-		}
 	}
 
 	protected Map<String, Object> doCreate(
@@ -167,7 +151,8 @@ public class DDMFormTemplateContextFactoryImpl
 			locale = LocaleThreadLocal.getSiteDefaultLocale();
 		}
 
-		ResourceBundle resourceBundle = getResourceBundle(locale);
+		ResourceBundle resourceBundle =
+			_resourceBundleLoader.loadResourceBundle(locale);
 
 		templateContext.put(
 			"requiredFieldsWarningMessageHTML",
@@ -266,22 +251,6 @@ public class DDMFormTemplateContextFactoryImpl
 		sb.append("/lexicon/icons.svg#asterisk\" /></svg>");
 
 		return sb.toString();
-	}
-
-	protected ResourceBundle getResourceBundle(Locale locale) {
-		List<ResourceBundle> resourceBundles = new ArrayList<>();
-
-		ResourceBundle portalResourceBundle = ResourceBundleUtil.getBundle(
-			"content.Language", locale, PortalClassLoaderUtil.getClassLoader());
-
-		resourceBundles.add(portalResourceBundle);
-
-		collectResourceBundles(getClass(), resourceBundles, locale);
-
-		ResourceBundle[] resourceBundlesArray = resourceBundles.toArray(
-			new ResourceBundle[resourceBundles.size()]);
-
-		return new AggregateResourceBundle(resourceBundlesArray);
 	}
 
 	protected String getServletContextPath() {
@@ -388,6 +357,13 @@ public class DDMFormTemplateContextFactoryImpl
 
 	@Reference
 	private Portal _portal;
+
+	@Reference(
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY,
+		target = "(bundle.symbolic.name=com.liferay.dynamic.data.mapping.form.renderer)"
+	)
+	private volatile ResourceBundleLoader _resourceBundleLoader;
 
 	@Reference
 	private SoyHTMLSanitizer _soyHTMLSanitizer;
