@@ -19,7 +19,6 @@ import com.liferay.portal.fabric.ReturnProcessCallable;
 import com.liferay.portal.fabric.agent.FabricAgent;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -54,7 +53,7 @@ public class ProcessCallableAssignmentFabricAgentSelectorTest
 			Collections.<String, String>emptyMap());
 
 		Collection<FabricAgent> fabricAgents = fabricAgentSelector.select(
-			new ArrayList<>(Arrays.asList(fabricAgent1, fabricAgent2)),
+			Arrays.asList(fabricAgent1, fabricAgent2),
 			new ReturnProcessCallable<>(null));
 
 		Assert.assertEquals(fabricAgents.toString(), 1, fabricAgents.size());
@@ -64,8 +63,7 @@ public class ProcessCallableAssignmentFabricAgentSelectorTest
 		Assert.assertSame(fabricAgent1, iterator.next());
 
 		fabricAgents = fabricAgentSelector.select(
-			new ArrayList<>(Arrays.asList(fabricAgent1)),
-			new ExceptionProcessCallable(null));
+			Arrays.asList(fabricAgent1), new ExceptionProcessCallable(null));
 
 		Assert.assertTrue(fabricAgents.toString(), fabricAgents.isEmpty());
 	}

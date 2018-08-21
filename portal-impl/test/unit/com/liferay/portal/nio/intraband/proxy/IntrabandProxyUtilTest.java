@@ -192,9 +192,8 @@ public class IntrabandProxyUtilTest {
 
 	@Test
 	public void testCreateProxyMethodNode() {
-		List<Method> methods = new ArrayList<>(
-			Arrays.asList(
-				TestProxyMethodsInterface.class.getDeclaredMethods()));
+		List<Method> methods = Arrays.asList(
+			TestProxyMethodsInterface.class.getDeclaredMethods());
 
 		Collections.addAll(
 			methods, TestProxyMethodsClass.class.getDeclaredMethods());

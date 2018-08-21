@@ -239,7 +239,7 @@ public class SalesforcePartnerClientImpl
 			return new ArrayList<>();
 		}
 
-		return new ArrayList<>(Arrays.asList(array));
+		return Arrays.asList(array);
 	}
 
 }

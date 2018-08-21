@@ -173,7 +173,7 @@ public class OrderUtil {
 
 		_postSort(webXMLDefinitionsArray);
 
-		return new ArrayList<>(Arrays.asList(webXMLDefinitionsArray));
+		return Arrays.asList(webXMLDefinitionsArray);
 	}
 
 	private static List<WebXMLDefinition> _getOrderedWebXMLDefinitions(

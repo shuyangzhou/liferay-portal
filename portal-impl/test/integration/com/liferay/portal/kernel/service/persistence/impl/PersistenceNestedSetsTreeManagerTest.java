@@ -620,8 +620,8 @@ public class PersistenceNestedSetsTreeManagerTest {
 	protected void assertGetAncestors(
 		AssetCategory assetCategory, AssetCategory... ancestorAssetCategories) {
 
-		List<AssetCategory> expectedAssetCategories = new ArrayList<>(
-			Arrays.asList(ancestorAssetCategories));
+		List<AssetCategory> expectedAssetCategories = Arrays.asList(
+			ancestorAssetCategories);
 
 		expectedAssetCategories.add(assetCategory);
 
@@ -638,8 +638,8 @@ public class PersistenceNestedSetsTreeManagerTest {
 	protected void assertGetDescendants(
 		AssetCategory assetCategory, AssetCategory... childAssetCategories) {
 
-		List<AssetCategory> expectedAssetCategories = new ArrayList<>(
-			Arrays.asList(childAssetCategories));
+		List<AssetCategory> expectedAssetCategories = Arrays.asList(
+			childAssetCategories);
 
 		expectedAssetCategories.add(assetCategory);
 

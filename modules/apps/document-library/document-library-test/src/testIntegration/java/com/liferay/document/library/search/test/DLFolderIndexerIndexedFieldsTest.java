@@ -33,7 +33,6 @@ import com.liferay.portal.search.test.util.FieldValuesAssert;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerTestRule;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -172,9 +171,8 @@ public class DLFolderIndexerIndexedFieldsTest extends BaseDLIndexerTestCase {
 	protected void populateTreePath(
 		DLFolder dlFolder, Map<String, String> map) {
 
-		List<String> treePathValues = new ArrayList<>(
-			Arrays.asList(
-				StringUtil.split(dlFolder.getTreePath(), CharPool.SLASH)));
+		List<String> treePathValues = Arrays.asList(
+			StringUtil.split(dlFolder.getTreePath(), CharPool.SLASH));
 
 		if (treePathValues.size() == 1) {
 			map.put(Field.TREE_PATH, treePathValues.get(0));
