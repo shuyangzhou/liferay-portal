@@ -738,30 +738,16 @@ public class PortletPreferencesFactoryImpl
 		Portlet portlet = PortletLocalServiceUtil.getPortletById(
 			companyId, portletId);
 
-		boolean uniquePerLayout = false;
-		boolean uniquePerGroup = false;
+		boolean uniquePerCompany = portlet.isPreferencesCompanyWide();
+		boolean uniquePerGroup = portlet.isPreferencesOwnedByGroup();
+		boolean uniquePerLayout = portlet.isPreferencesUniquePerLayout();
 
-		if (portlet.isPreferencesCompanyWide()) {
+		if (uniquePerCompany || (uniquePerGroup && !uniquePerLayout)) {
 			portletId = PortletIdCodec.decodePortletName(portletId);
-		}
-		else {
-			if (portlet.isPreferencesUniquePerLayout()) {
-				uniquePerLayout = true;
-
-				if (portlet.isPreferencesOwnedByGroup()) {
-					uniquePerGroup = true;
-				}
-			}
-			else {
-				if (portlet.isPreferencesOwnedByGroup()) {
-					uniquePerGroup = true;
-					portletId = PortletIdCodec.decodePortletName(portletId);
-				}
-			}
 		}
 
 		long ownerId = PortletKeys.PREFS_OWNER_ID_DEFAULT;
-		int ownerType = PortletKeys.PREFS_OWNER_TYPE_LAYOUT;
+		int ownerType = 0;
 
 		Group group = GroupLocalServiceUtil.fetchGroup(siteGroupId);
 
@@ -773,23 +759,28 @@ public class PortletPreferencesFactoryImpl
 			ownerId = PortletIdCodec.decodeUserId(originalPortletId);
 			ownerType = PortletKeys.PREFS_OWNER_TYPE_USER;
 		}
-		else if (!uniquePerLayout) {
+		else if (uniquePerLayout) {
+			ownerType = PortletKeys.PREFS_OWNER_TYPE_LAYOUT;
+		}
+		else if (uniquePerGroup) {
 			plid = PortletKeys.PREFS_PLID_SHARED;
 
-			if (uniquePerGroup) {
-				if (siteGroupId > LayoutConstants.DEFAULT_PLID) {
-					ownerId = siteGroupId;
-				}
-				else {
-					ownerId = layoutGroupId;
-				}
-
-				ownerType = PortletKeys.PREFS_OWNER_TYPE_GROUP;
+			if (siteGroupId > LayoutConstants.DEFAULT_PLID) {
+				ownerId = siteGroupId;
 			}
 			else {
-				ownerId = companyId;
-				ownerType = PortletKeys.PREFS_OWNER_TYPE_COMPANY;
+				ownerId = layoutGroupId;
 			}
+		}
+		else if (uniquePerCompany) {
+			plid = PortletKeys.PREFS_PLID_SHARED;
+
+			ownerId = companyId;
+			ownerType = PortletKeys.PREFS_OWNER_TYPE_COMPANY;
+		}
+
+		if ((ownerType == 0) || ((ownerId == 0) && (plid == 0))) {
+			return null;
 		}
 
 		if (strictMode) {
