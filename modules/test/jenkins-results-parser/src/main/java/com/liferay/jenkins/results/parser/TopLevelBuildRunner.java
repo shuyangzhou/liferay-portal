@@ -1,4 +1,3 @@
-<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -12,6 +11,25 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
---%>
 
-<%-- Do not modify this file. This is used by the portal-web-compat module. --%>
+package com.liferay.jenkins.results.parser;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author Michael Hashimoto
+ */
+public abstract class TopLevelBuildRunner extends BaseBuildRunner {
+
+	public List<String> getBatchNames() {
+		return _batchNames;
+	}
+
+	protected TopLevelBuildRunner(Job job) {
+		super(job);
+	}
+
+	private final List<String> _batchNames = new ArrayList<>();
+
+}
