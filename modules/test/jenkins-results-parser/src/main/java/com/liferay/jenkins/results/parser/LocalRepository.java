@@ -41,19 +41,7 @@ public class LocalRepository extends BaseRepository {
 		GitWorkingDirectory gitWorkingDirectory = getGitWorkingDirectory();
 
 		return RepositoryFactory.getRemoteRepository(
-			gitWorkingDirectory.getRemote("upstream"));
-	}
-
-	public void setup() {
-		System.out.println("##");
-		System.out.println("## " + getDirectory());
-		System.out.println("##");
-
-		GitWorkingDirectory gitWorkingDirectory = getGitWorkingDirectory();
-
-		gitWorkingDirectory.reset("--hard HEAD");
-
-		gitWorkingDirectory.clean();
+			gitWorkingDirectory.getGitRemote("upstream"));
 	}
 
 	public void writeRepositoryPropertiesFiles() {
