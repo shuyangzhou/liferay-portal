@@ -4367,6 +4367,19 @@ applies the `com.liferay.test.integration.base` plugin. Configure the
 - [LPS-83790]: Update the [Liferay Gradle Plugins] dependency to version
 3.12.110.
 
+## 5.5.18 - 2018-08-20
+
+### Changed
+- [LPS-84621]: Disable the `validateSchema` task for CI.
+
+## 5.5.19 - 2018-08-21
+
+### Changed
+- [LPS-84615]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.111.
+- [LPS-84624]: The `com.liferay.spring.boot.defaults` plugin configures the
+`test` and `testIntegration` tasks with sensible defaults.
+
 [Find Security Bugs]: https://github.com/liferay/liferay-portal/tree/master/modules/third-party/com-h3xstream-findsecbugs
 [Gradle Dependency Management]: https://github.com/spring-gradle-plugins/dependency-management-plugin
 [Gradle License Report]: https://github.com/jk1/Gradle-License-Report
@@ -4827,6 +4840,9 @@ applies the `com.liferay.test.integration.base` plugin. Configure the
 [LPS-84307]: https://issues.liferay.com/browse/LPS-84307
 [LPS-84313]: https://issues.liferay.com/browse/LPS-84313
 [LPS-84473]: https://issues.liferay.com/browse/LPS-84473
+[LPS-84615]: https://issues.liferay.com/browse/LPS-84615
+[LPS-84621]: https://issues.liferay.com/browse/LPS-84621
+[LPS-84624]: https://issues.liferay.com/browse/LPS-84624
 [LRDOCS-2594]: https://issues.liferay.com/browse/LRDOCS-2594
 [LRDOCS-2841]: https://issues.liferay.com/browse/LRDOCS-2841
 [LRDOCS-2981]: https://issues.liferay.com/browse/LRDOCS-2981
