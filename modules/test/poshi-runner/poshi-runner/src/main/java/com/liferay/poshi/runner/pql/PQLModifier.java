@@ -14,6 +14,7 @@
 
 package com.liferay.poshi.runner.pql;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -45,11 +46,8 @@ public abstract class PQLModifier {
 	public abstract Object getPQLResult(Object pqlResultObject)
 		throws Exception;
 
-	private static final Set<String> _availableModifiers = new HashSet<>();
-
-	static {
-		_availableModifiers.add("NOT");
-	}
+	private static final Set<String> _availableModifiers = new HashSet<>(
+		Arrays.asList("NOT"));
 
 	private final String _modifier;
 

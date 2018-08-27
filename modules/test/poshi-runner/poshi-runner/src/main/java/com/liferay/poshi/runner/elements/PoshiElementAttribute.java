@@ -41,7 +41,21 @@ public class PoshiElementAttribute
 	}
 
 	@Override
+	public String getPoshiScript() {
+		if (_poshiScript == null) {
+			return toPoshiScript();
+		}
+
+		return _poshiScript;
+	}
+
+	@Override
 	public void parsePoshiScript(String poshiScript) {
+	}
+
+	@Override
+	public void setPoshiScript(String poshiScript) {
+		_poshiScript = poshiScript;
 	}
 
 	public String toPoshiScript() {
@@ -60,5 +74,7 @@ public class PoshiElementAttribute
 
 		return sb.toString();
 	}
+
+	private String _poshiScript;
 
 }
