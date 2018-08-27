@@ -339,8 +339,7 @@ public class DDMStructureLayoutLocalServiceUtil {
 	}
 
 	public static com.liferay.dynamic.data.mapping.model.DDMFormLayout getStructureLayoutDDMFormLayout(
-		com.liferay.dynamic.data.mapping.model.DDMStructureLayout structureLayout)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		com.liferay.dynamic.data.mapping.model.DDMStructureLayout structureLayout) {
 		return getService().getStructureLayoutDDMFormLayout(structureLayout);
 	}
 

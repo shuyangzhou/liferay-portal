@@ -14,6 +14,11 @@
 
 package com.liferay.poshi.runner.elements;
 
+import com.liferay.poshi.runner.util.StringUtil;
+
+import java.util.Iterator;
+import java.util.List;
+
 import org.dom4j.Node;
 
 /**
@@ -26,7 +31,67 @@ public interface PoshiNode<A extends Node, B extends PoshiNode<A, B>>
 
 	public B clone(String poshiScript);
 
+	public String getPoshiScript();
+
+	public default int getPoshiScriptLineNumber() {
+		PoshiElement parentPoshiElement = (PoshiElement)getParent();
+
+		if (parentPoshiElement == null) {
+			return 1;
+		}
+
+		int line = 0;
+
+		List<PoshiNode> poshiNodes = parentPoshiElement.getPoshiNodes();
+
+		PoshiNode previousPoshiNode = null;
+
+		for (Iterator<PoshiNode> iterator = poshiNodes.iterator();
+				iterator.hasNext();) {
+
+			PoshiNode poshiNode = iterator.next();
+
+			if (poshiNode instanceof DescriptionPoshiElement) {
+				continue;
+			}
+
+			if (poshiNode.equals(this)) {
+				if (previousPoshiNode == null) {
+					break;
+				}
+
+				String previousPoshiScript = previousPoshiNode.getPoshiScript();
+
+				String poshiScript = poshiNode.getPoshiScript();
+
+				return line + previousPoshiNode.getPoshiScriptLineNumber() -
+					StringUtil.countStartingNewLines(previousPoshiScript) +
+						StringUtil.countStartingNewLines(poshiScript) +
+							StringUtil.count(previousPoshiScript, "\n");
+			}
+
+			previousPoshiNode = poshiNode;
+		}
+
+		line = parentPoshiElement.getPoshiScriptLineNumber();
+
+		String parentPoshiScript = parentPoshiElement.getPoshiScript();
+
+		if (parentPoshiElement.isValidPoshiScriptBlock(
+				PoshiElement.poshiScriptBlockNamePattern, parentPoshiScript)) {
+
+			String blockName = parentPoshiElement.getBlockName(
+				parentPoshiScript);
+
+			line = line + StringUtil.count(blockName, "\n");
+		}
+
+		return line + 1;
+	}
+
 	public void parsePoshiScript(String poshiScript);
+
+	public void setPoshiScript(String poshiScript);
 
 	public String toPoshiScript();
 

@@ -16,8 +16,9 @@ package com.liferay.dynamic.data.mapping.form.values.factory;
 
 import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldValueRequestParameterRetriever;
 import com.liferay.dynamic.data.mapping.form.values.factory.internal.DDMFormValuesFactoryImpl;
-import com.liferay.dynamic.data.mapping.io.DDMFormValuesJSONSerializer;
-import com.liferay.dynamic.data.mapping.io.internal.DDMFormValuesJSONSerializerImpl;
+import com.liferay.dynamic.data.mapping.io.DDMFormValuesSerializerSerializeRequest;
+import com.liferay.dynamic.data.mapping.io.DDMFormValuesSerializerSerializeResponse;
+import com.liferay.dynamic.data.mapping.io.internal.DDMFormValuesJSONSerializer;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.LocalizedValue;
@@ -37,6 +38,8 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.util.PropsImpl;
 
 import java.lang.reflect.Field;
 
@@ -49,6 +52,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -69,6 +73,11 @@ import org.springframework.mock.web.MockHttpServletRequest;
 @PrepareForTest(LocaleUtil.class)
 @RunWith(PowerMockRunner.class)
 public class DDMFormValuesFactoryTest extends PowerMockito {
+
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+		PropsUtil.setProps(new PropsImpl());
+	}
 
 	@Before
 	public void setUp() throws Exception {
@@ -861,11 +870,10 @@ public class DDMFormValuesFactoryTest extends PowerMockito {
 			DDMFormValues actualDDMFormValues)
 		throws Exception {
 
-		String serializedExpectedDDMFormValues =
-			_ddmFormValuesJSONSerializer.serialize(expectedDDMFormValues);
+		String serializedExpectedDDMFormValues = serialize(
+			expectedDDMFormValues);
 
-		String serializedActualDDMFormValues =
-			_ddmFormValuesJSONSerializer.serialize(actualDDMFormValues);
+		String serializedActualDDMFormValues = serialize(actualDDMFormValues);
 
 		JSONAssert.assertEquals(
 			serializedExpectedDDMFormValues, serializedActualDDMFormValues,
@@ -954,6 +962,18 @@ public class DDMFormValuesFactoryTest extends PowerMockito {
 		return avaiablesLocaleArray;
 	}
 
+	protected String serialize(DDMFormValues ddmFormValues) {
+		DDMFormValuesSerializerSerializeRequest.Builder builder =
+			DDMFormValuesSerializerSerializeRequest.Builder.newBuilder(
+				ddmFormValues);
+
+		DDMFormValuesSerializerSerializeResponse
+			ddmFormValuesSerializerSerializeResponse =
+				_ddmFormValuesJSONSerializer.serialize(builder.build());
+
+		return ddmFormValuesSerializerSerializeResponse.getContent();
+	}
+
 	protected void setUpDDMFormValuesFactoryServiceTrackerMap()
 		throws Exception {
 
@@ -973,7 +993,7 @@ public class DDMFormValuesFactoryTest extends PowerMockito {
 
 	protected void setUpDDMFormValuesJSONSerializer() throws Exception {
 		field(
-			DDMFormValuesJSONSerializerImpl.class, "_jsonFactory"
+			DDMFormValuesJSONSerializer.class, "_jsonFactory"
 		).set(
 			_ddmFormValuesJSONSerializer, new JSONFactoryImpl()
 		);
@@ -1040,7 +1060,7 @@ public class DDMFormValuesFactoryTest extends PowerMockito {
 	private final DDMFormValuesFactory _ddmFormValuesFactory =
 		new DDMFormValuesFactoryImpl();
 	private final DDMFormValuesJSONSerializer _ddmFormValuesJSONSerializer =
-		new DDMFormValuesJSONSerializerImpl();
+		new DDMFormValuesJSONSerializer();
 
 	@Mock
 	private Language _language;
