@@ -31,6 +31,14 @@
 		<suppress checks="MethodNameCheck" files="portal-kernel/src/com/liferay/portal/kernel/util/Http\.java" />
 		<suppress checks="MethodNameCheck" files="portal-kernel/src/com/liferay/portal/kernel/util/HttpUtil\.java" />
 		<suppress checks="MethodNameCheck" files="portal-kernel/test/unit/com/liferay/portal/kernel/annotation/AnnotationLocatorTest\.java" />
+		<suppress checks="MethodNamingCheck" files="portal-impl/src/com/liferay/portal/template/TemplateContextHelper\.java" />
+		<suppress checks="MethodNamingCheck" files="portal-impl/src/com/liferay/portal/util/HttpImpl\.java" />
+		<suppress checks="MethodNamingCheck" files="portal-impl/src/com/liferay/portlet/documentlibrary/util/LiferayConverter\.java" />
+		<suppress checks="MethodNamingCheck" files="portal-impl/test/unit/com/liferay/portal/nio/intraband/proxy/IntrabandProxyUtilTest\.java" />
+		<suppress checks="MethodNamingCheck" files="portal-kernel/src/com/liferay/portal/kernel/cal/Duration\.java" />
+		<suppress checks="MethodNamingCheck" files="portal-kernel/src/com/liferay/portal/kernel/servlet/filters/invoker/InvokerFilter\.java" />
+		<suppress checks="MethodNamingCheck" files="portal-kernel/src/com/liferay/portal/kernel/util/Http\.java" />
+		<suppress checks="MethodNamingCheck" files="portal-kernel/src/com/liferay/portal/kernel/util/HttpUtil\.java" />
 		<suppress checks="MissingModifierCheck" files="portal-impl/test/unit/com/liferay/portal/fabric/status/JMXProxyUtilTest\.java" />
 		<suppress checks="MissingModifierCheck" files="portal-impl/test/unit/com/liferay/portal/kernel/spring/osgi/OSGiBeanPropertiesTest\.java" />
 		<suppress checks="MissingModifierCheck" files="portal-impl/test/unit/com/liferay/portal/nio/intraband/proxy/IntrabandProxyUtilTest\.java" />
@@ -41,6 +49,7 @@
 		<suppress checks="PersistenceCallCheck" files="modules/apps/portal/portal-upgrade-test/src/testIntegration/java/com/liferay/portal/upgrade/test/BaseBuildAutoUpgradeTestCase\.java" />
 		<suppress checks="PlusStatementCheck" files="portal-kernel/src/com/liferay/portal/kernel/io/BigEndianCodec\.java" />
 		<suppress checks="ReferenceAnnotationCheck" files="portal-impl/test/integration/.*" />
+		<suppress checks="StaticCollectionCheck" files="portal-impl/src/com/liferay/portal/metadata/BaseRawMetadataProcessor\.java" />
 		<suppress checks="StaticVariableNameCheck" files="portal-impl/src/com/liferay/portal/language/LanguageResources\.java" />
 		<suppress checks="StaticVariableNameCheck" files="portal-impl/src/com/liferay/portal/util/PropsValues\.java" />
 		<suppress checks="StaticVariableNameCheck" files="portal-impl/test/integration/com/liferay/portal/security/pwd/bundle/pwdtoolkitutil/TestToolkit\.java" />
@@ -115,6 +124,7 @@
 		<suppress checks="PropertiesSourceFormatterFileCheck" files="source-formatter\.properties" />
 		<suppress checks="PropertiesWhitespaceCheck" files="build\.properties" />
 		<suppress checks="PropertiesWhitespaceCheck" files="sql/lportal\.properties" />
+		<suppress checks="ResourceBundleCheck" files="portal-kernel/src/com/liferay/portal/kernel/util/ClassResourceBundleLoader\.java" />
 		<suppress checks="ResourceBundleCheck" files="portal-kernel/src/com/liferay/portal/kernel/util/ResourceBundleUtil\.java" />
 		<suppress checks="StringUtilCheck" files="portal-kernel/test/unit/com/liferay/portal/kernel/util/StringUtilTest\.java" />
 		<suppress checks="XMLIndentationCheck" files="portal-web/test/functional/com/liferay/portalweb/macros/Calendar\.macro" />

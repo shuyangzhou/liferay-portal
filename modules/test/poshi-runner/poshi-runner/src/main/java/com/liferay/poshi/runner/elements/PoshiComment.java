@@ -27,7 +27,21 @@ public abstract class PoshiComment
 		super(null);
 	}
 
+	@Override
+	public String getPoshiScript() {
+		if (_poshiScript == null) {
+			return toPoshiScript();
+		}
+
+		return _poshiScript;
+	}
+
 	public abstract boolean isPoshiScriptComment(String poshiScript);
+
+	@Override
+	public void setPoshiScript(String poshiScript) {
+		_poshiScript = poshiScript;
+	}
 
 	protected PoshiComment(Comment comment) {
 		super(comment.getText());
@@ -36,7 +50,11 @@ public abstract class PoshiComment
 	protected PoshiComment(String poshiScript) {
 		this();
 
-		parsePoshiScript(poshiScript);
+		setPoshiScript(poshiScript);
+
+		parsePoshiScript(poshiScript.trim());
 	}
+
+	private String _poshiScript;
 
 }

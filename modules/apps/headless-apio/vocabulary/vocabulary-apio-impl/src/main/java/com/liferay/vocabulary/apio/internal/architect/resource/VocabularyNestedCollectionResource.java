@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.vocabulary.apio.architect.identifier.VocabularyIdentifier;
 import com.liferay.vocabulary.apio.internal.architect.form.VocabularyForm;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -52,8 +53,9 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true)
 public class VocabularyNestedCollectionResource
-	implements NestedCollectionResource<AssetVocabulary, Long,
-		VocabularyIdentifier, Long, ContentSpaceIdentifier> {
+	implements NestedCollectionResource
+		<AssetVocabulary, Long, VocabularyIdentifier, Long,
+			ContentSpaceIdentifier> {
 
 	@Override
 	public NestedCollectionRoutes<AssetVocabulary, Long, Long> collectionRoutes(
@@ -109,6 +111,9 @@ public class VocabularyNestedCollectionResource
 			"description", AssetVocabulary::getDescription
 		).addLocalizedStringByLocale(
 			"name", AssetVocabulary::getTitle
+		).addStringList(
+			"availableLanguages",
+			vocabulary -> Arrays.asList(vocabulary.getAvailableLanguageIds())
 		).build();
 	}
 

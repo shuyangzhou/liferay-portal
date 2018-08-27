@@ -50,11 +50,10 @@ import net.sf.ehcache.event.NotificationScope;
  */
 public abstract class BaseEhcachePortalCacheManagerConfigurator {
 
-	public ObjectValuePair
-		<Configuration, PortalCacheManagerConfiguration>
-			getConfigurationObjectValuePair(
-				String portalCacheManagerName, URL configurationURL,
-				boolean usingDefault) {
+	public ObjectValuePair<Configuration, PortalCacheManagerConfiguration>
+		getConfigurationObjectValuePair(
+			String portalCacheManagerName, URL configurationURL,
+			boolean usingDefault) {
 
 		if (configurationURL == null) {
 			throw new NullPointerException("Configuration path is null");
@@ -300,15 +299,20 @@ public abstract class BaseEhcachePortalCacheManagerConfigurator {
 	protected Props props;
 
 	private static final Map<NotificationScope, PortalCacheListenerScope>
-		_portalCacheListenerScopes = new EnumMap<>(NotificationScope.class);
+		_portalCacheListenerScopes =
+			new EnumMap<NotificationScope, PortalCacheListenerScope>(
+				NotificationScope.class) {
 
-	static {
-		_portalCacheListenerScopes.put(
-			NotificationScope.ALL, PortalCacheListenerScope.ALL);
-		_portalCacheListenerScopes.put(
-			NotificationScope.LOCAL, PortalCacheListenerScope.LOCAL);
-		_portalCacheListenerScopes.put(
-			NotificationScope.REMOTE, PortalCacheListenerScope.REMOTE);
-	}
+				{
+					put(NotificationScope.ALL, PortalCacheListenerScope.ALL);
+					put(
+						NotificationScope.LOCAL,
+						PortalCacheListenerScope.LOCAL);
+					put(
+						NotificationScope.REMOTE,
+						PortalCacheListenerScope.REMOTE);
+				}
+
+			};
 
 }
