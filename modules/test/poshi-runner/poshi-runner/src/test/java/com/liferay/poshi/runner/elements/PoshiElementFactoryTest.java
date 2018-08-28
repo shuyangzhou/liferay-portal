@@ -20,8 +20,10 @@ import com.liferay.poshi.runner.util.FileUtil;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
+import org.dom4j.Node;
 import org.dom4j.util.NodeComparator;
 
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -39,6 +41,34 @@ public class PoshiElementFactoryTest {
 				"/testFunctional/functions";
 
 		PoshiRunnerContext.readFiles(poshiFileNames, poshiFileDir);
+	}
+
+	@Test
+	public void testPoshiScriptLineNumbers() throws Exception {
+		PoshiElement rootPoshiElement = _getPoshiElement("PoshiScript.macro");
+
+		int[] expectedLineNumbers = {3, 8, 9, 11, 16, 21, 23, 30, 32};
+
+		int i = 0;
+
+		for (Node node : Dom4JUtil.toNodeList(rootPoshiElement.content())) {
+			if (node instanceof PoshiElement) {
+				PoshiElement poshiElement = (PoshiElement)node;
+
+				for (Node childNode :
+						Dom4JUtil.toNodeList(poshiElement.content())) {
+
+					PoshiNode childPoshiNode = (PoshiNode)childNode;
+
+					Assert.assertEquals(
+						"The the expected line number does not match.",
+						expectedLineNumbers[i],
+						childPoshiNode.getPoshiScriptLineNumber());
+
+					i++;
+				}
+			}
+		}
 	}
 
 	@Test

@@ -15,11 +15,11 @@
 package com.liferay.portal.language.servlet.filter.internal;
 
 import com.liferay.osgi.util.ServiceTrackerFactory;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.util.AggregateResourceBundle;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.ResourceBundleLoaderUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 
 import java.util.ArrayList;
 import java.util.Dictionary;
@@ -115,9 +115,8 @@ public class LanguageFilterTracker {
 	}
 
 	private class ServletContextHelperServiceTrackerCustomizer
-		implements
-			ServiceTrackerCustomizer
-				<ServletContextHelper, ServiceTracker<?, ?>> {
+		implements ServiceTrackerCustomizer
+			<ServletContextHelper, ServiceTracker<?, ?>> {
 
 		public ServletContextHelperServiceTrackerCustomizer(
 			BundleContext bundleContext) {
@@ -200,9 +199,8 @@ public class LanguageFilterTracker {
 		private final BundleContext _bundleContext;
 
 		private class ResourceBundleLoaderServiceTrackerCustomizer
-			implements
-				ServiceTrackerCustomizer
-					<ResourceBundleLoader, TrackedServletContextHelper> {
+			implements ServiceTrackerCustomizer
+				<ResourceBundleLoader, TrackedServletContextHelper> {
 
 			public ResourceBundleLoaderServiceTrackerCustomizer(
 				Map<String, Object> properties, String filterString,

@@ -118,7 +118,7 @@ public class TLiferayInputProperties
 				try {
 					Schema runtimeSchema =
 						liferaySourceOrSinkRuntime.getResourceSchemaByType(
-							resource.resource.getValue());
+							resource.resourceName.getValue());
 
 					resource.main.schema.setValue(runtimeSchema);
 				}
@@ -132,7 +132,7 @@ public class TLiferayInputProperties
 	}
 
 	public transient PresentationItem guessSchema = new PresentationItem(
-		"guessSchema", "Guess Schema");
+		"guessSchema");
 
 	@Override
 	protected Set<PropertyPathConnector> getAllSchemaPropertiesConnectors(

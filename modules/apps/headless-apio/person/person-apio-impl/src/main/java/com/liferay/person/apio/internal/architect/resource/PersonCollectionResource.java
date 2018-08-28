@@ -106,7 +106,7 @@ public class PersonCollectionResource
 
 	@Override
 	public String getName() {
-		return "person";
+		return "user-account";
 	}
 
 	@Override
@@ -142,11 +142,15 @@ public class PersonCollectionResource
 			contactBuilder -> contactBuilder.types(
 				"ContactInformation"
 			).addString(
-				"facebookSn", ContactModel::getSmsSn
+				"facebook", ContactModel::getFacebookSn
 			).addString(
-				"skypeSn", ContactModel::getSmsSn
+				"jabber", ContactModel::getJabberSn
 			).addString(
-				"twitterSn", ContactModel::getSmsSn
+				"skype", ContactModel::getSkypeSn
+			).addString(
+				"sms", ContactModel::getSmsSn
+			).addString(
+				"twitter", ContactModel::getTwitterSn
 			).build()
 		).addRelatedCollection(
 			"roles", RoleIdentifier.class

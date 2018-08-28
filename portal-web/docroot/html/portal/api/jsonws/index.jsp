@@ -16,42 +16,44 @@
 
 <%@ include file="/html/portal/api/jsonws/init.jsp" %>
 
-<style>
-	<%@ include file="/html/portal/api/jsonws/css.jspf" %>
-</style>
+<c:if test="<%= PropsValues.JSONWS_WEB_SERVICE_API_DISCOVERABLE %>">
+	<style>
+		<%@ include file="/html/portal/api/jsonws/css.jspf" %>
+	</style>
 
-<div id="wrapper">
-	<header id="banner" role="banner">
-		<div id="heading">
-			<h1 class="site-title">
-				<a class="logo" href="<%= HtmlUtil.escapeAttribute(jsonWSContextPath) %>" title="JSONWS API">
-					<img alt="<%= HtmlUtil.escapeAttribute("JSONWS API") %>" height="<%= themeDisplay.getCompanyLogoHeight() %>" src="<%= HtmlUtil.escape(themeDisplay.getCompanyLogo()) %>" width="<%= themeDisplay.getCompanyLogoWidth() %>" />
-				</a>
+	<div id="wrapper">
+		<header id="banner" role="banner">
+			<div id="heading">
+				<h1 class="site-title">
+					<a class="logo" href="<%= HtmlUtil.escapeAttribute(jsonWSContextPath) %>" title="JSONWS API">
+						<img alt="<%= HtmlUtil.escapeAttribute("JSONWS API") %>" height="<%= themeDisplay.getCompanyLogoHeight() %>" src="<%= HtmlUtil.escape(themeDisplay.getCompanyLogo()) %>" width="<%= themeDisplay.getCompanyLogoWidth() %>" />
+					</a>
 
-				<span class="site-name">
-					JSONWS API
-				</span>
-			</h1>
+					<span class="site-name">
+						JSONWS API
+					</span>
+				</h1>
+			</div>
+		</header>
+
+		<div id="content">
+			<div id="main-content">
+				<aui:row>
+					<aui:col cssClass="lfr-api-navigation" width="<%= 25 %>">
+						<liferay-util:include page="/html/portal/api/jsonws/actions.jsp" />
+					</aui:col>
+
+					<aui:col cssClass="lfr-api-details" width="<%= 75 %>">
+						<liferay-util:include page="/html/portal/api/jsonws/action.jsp" />
+					</aui:col>
+				</aui:row>
+			</div>
 		</div>
-	</header>
 
-	<div id="content">
-		<div id="main-content">
-			<aui:row>
-				<aui:col cssClass="lfr-api-navigation" width="<%= 25 %>">
-					<liferay-util:include page="/html/portal/api/jsonws/actions.jsp" />
-				</aui:col>
-
-				<aui:col cssClass="lfr-api-details" width="<%= 75 %>">
-					<liferay-util:include page="/html/portal/api/jsonws/action.jsp" />
-				</aui:col>
-			</aui:row>
-		</div>
+		<footer id="footer" role="contentinfo">
+			<p class="powered-by">
+				<liferay-ui:message key="powered-by" /> <a href="http://www.liferay.com" rel="external">Liferay</a>
+			</p>
+		</footer>
 	</div>
-
-	<footer id="footer" role="contentinfo">
-		<p class="powered-by">
-			<liferay-ui:message key="powered-by" /> <a href="http://www.liferay.com" rel="external">Liferay</a>
-		</p>
-	</footer>
-</div>
+</c:if>

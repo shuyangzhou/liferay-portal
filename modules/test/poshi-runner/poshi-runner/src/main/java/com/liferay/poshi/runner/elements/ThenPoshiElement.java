@@ -50,7 +50,7 @@ public class ThenPoshiElement extends PoshiElement {
 		String blockContent = getBlockContent(poshiScript);
 
 		for (String poshiScriptSnippet : getPoshiScriptSnippets(blockContent)) {
-			add(PoshiNodeFactory.newPoshiNode(this, poshiScriptSnippet.trim()));
+			add(PoshiNodeFactory.newPoshiNode(this, poshiScriptSnippet));
 		}
 	}
 
