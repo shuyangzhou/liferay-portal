@@ -318,7 +318,7 @@ public class TLiferayOutputProperties
 	}
 
 	public transient PresentationItem calculateSchema = new PresentationItem(
-		"calculateSchema", "Calculate Schema");
+		"calculateSchema");
 	public Property<Boolean> dieOnError = PropertyFactory.newBoolean(
 		"dieOnError");
 	public Property<Action> operations = PropertyFactory.newEnum(
@@ -380,7 +380,7 @@ public class TLiferayOutputProperties
 								getResourceCollectionType(
 									resourceURI.toString());
 
-						resource.setValue(resourceCollectionType);
+						resourceName.setValue(resourceCollectionType);
 
 						supportedOperations.addAll(
 							liferaySourceOrSinkRuntime.
@@ -408,7 +408,7 @@ public class TLiferayOutputProperties
 			if (validationResultMutable.getStatus() ==
 					ValidationResult.Result.ERROR) {
 
-				resource.setValue("");
+				resourceName.setValue("");
 				resourceURL.setValue("");
 				operations.setValue(null);
 
@@ -421,6 +421,7 @@ public class TLiferayOutputProperties
 				Operation::getMethod
 			).map(
 				this::_toAction
+			).distinct(
 			).collect(
 				Collectors.toList()
 			);

@@ -1,0 +1,455 @@
+{namespace PageRenderer}
+
+{template .render}
+	{@param spritemap: string}
+	{@param? _handlePageDescriptionChanged: any}
+	{@param? _handlePageTitleChanged: any}
+	{@param? _handleDeleteButtonClicked: any}
+	{@param? _handleDuplicateButtonClicked: any}
+	{@param? _handleFieldChanged: any}
+	{@param? _handleOnClickResize: any}
+	{@param? _handleSelectFieldFocused: any}
+	{@param? activePage: number}
+	{@param? contentRenderer: string}
+	{@param? descriptionPlaceholder: string}
+	{@param? editable: bool}
+	{@param? empty: bool}
+	{@param? page: ?}
+	{@param? pageId: int}
+	{@param? titlePlaceholder: string}
+
+	{delcall PageRenderer.container variant="$contentRenderer"}
+		{param _handlePageDescriptionChanged: $_handlePageDescriptionChanged /}
+		{param _handlePageTitleChanged: $_handlePageTitleChanged /}
+		{param _handleDeleteButtonClicked: $_handleDeleteButtonClicked /}
+		{param _handleDuplicateButtonClicked: $_handleDuplicateButtonClicked /}
+		{param _handleFieldChanged: $_handleFieldChanged /}
+		{param _handleOnClickResize: $_handleOnClickResize /}
+		{param _handleSelectFieldFocused: $_handleSelectFieldFocused /}
+		{param activePage: $activePage /}
+		{param contentRenderer: $contentRenderer /}
+		{param descriptionPlaceholder: $descriptionPlaceholder /}
+		{param editable: $editable /}
+		{param empty: $empty /}
+		{param page: $page /}
+		{param pageId: $pageId /}
+		{param spritemap: $spritemap /}
+		{param titlePlaceholder: $titlePlaceholder /}
+	{/delcall}
+{/template}
+
+{deltemplate PageRenderer.container variant="'grid'"}
+	{@param spritemap: string}
+	{@param? _handlePageDescriptionChanged: any}
+	{@param? _handlePageTitleChanged: any}
+	{@param? _handleDeleteButtonClicked: any}
+	{@param? _handleDuplicateButtonClicked: any}
+	{@param? _handleFieldChanged: any}
+	{@param? _handleOnClickResize: any}
+	{@param? _handleSelectFieldFocused: any}
+	{@param? activePage: number}
+	{@param? contentRenderer: string}
+	{@param? descriptionPlaceholder: string}
+	{@param? editable: bool}
+	{@param? empty: bool}
+	{@param? page: ?}
+	{@param? pageId: int}
+	{@param? titlePlaceholder: string}
+
+	<div class="ddm-page-container-layout">
+		{if $activePage == $pageId}
+			<div class="ddm-form-page pl-3 pr-3">
+				{call .form}
+					{param _handlePageDescriptionChanged: $_handlePageDescriptionChanged /}
+					{param _handlePageTitleChanged: $_handlePageTitleChanged /}
+					{param contentRenderer: $contentRenderer /}
+					{param descriptionPlaceholder: $descriptionPlaceholder /}
+					{param editable: $editable /}
+					{param page: $page /}
+					{param pageId: $pageId /}
+					{param titlePlaceholder: $titlePlaceholder /}
+				{/call}
+
+				<div class="form-builder-layout">
+					{delcall PageRenderer.page variant="$contentRenderer"}
+						{param _handleDeleteButtonClicked: $_handleDeleteButtonClicked /}
+						{param _handleDuplicateButtonClicked: $_handleDuplicateButtonClicked /}
+						{param _handleFieldChanged: $_handleFieldChanged /}
+						{param _handleOnClickResize: $_handleOnClickResize /}
+						{param _handleSelectFieldFocused: $_handleSelectFieldFocused /}
+						{param contentRenderer: $contentRenderer /}
+						{param editable: $editable /}
+						{param empty: $empty /}
+						{param page: $page /}
+						{param pageId: $pageId /}
+						{param spritemap: $spritemap /}
+					{/delcall}
+				</div>
+			</div>
+		{/if}
+	</div>
+{/deltemplate}
+
+{deltemplate PageRenderer.container variant="'list'"}
+	{@param spritemap: string}
+	{@param? activePage: number}
+	{@param? contentRenderer: string}
+	{@param? editable: bool}
+	{@param? page: ?}
+	{@param? pageId: int}
+
+	{let $classes kind="text"}
+		fade tab-pane
+		{if $activePage == $pageId}
+			{sp}active show
+		{/if}
+	{/let}
+
+	<div aria-labelledby="sidebarLightFormsFieldTab" class="{$classes}" id="sidebarLightDetails" role="tabpanel">
+		{delcall PageRenderer.page variant="$contentRenderer"}
+			{param contentRenderer: $contentRenderer /}
+			{param editable: $editable /}
+			{param page: $page /}
+			{param pageId: $pageId /}
+			{param spritemap: $spritemap /}
+		{/delcall}
+	</div>
+{/deltemplate}
+
+{template .form}
+	{@param? _handlePageDescriptionChanged: any}
+	{@param? _handlePageTitleChanged: any}
+	{@param? descriptionPlaceholder: string}
+	{@param? page: ?}
+	{@param? pageId: int}
+	{@param? titlePlaceholder: string}
+
+	{let $pageTitleAttributes kind="attributes"}
+		class="form-builder-page-header-title form-control"
+		data-onkeyup="{$_handlePageTitleChanged}"
+		data-page-id="{$pageId}"
+		maxlength="120"
+		placeholder="{$titlePlaceholder}"
+		value="{$page.title}"
+	{/let}
+
+	{let $pageDescriptionAttributes kind="attributes"}
+		class="form-builder-page-header-description form-control"
+		data-onkeyup="{$_handlePageDescriptionChanged}"
+		data-page-id="{$pageId}"
+		maxlength="120"
+		placeholder="{$descriptionPlaceholder}"
+		value="{$page.description}"
+	{/let}
+
+	<textarea {$pageTitleAttributes}></textarea>
+	<textarea {$pageDescriptionAttributes}></textarea>
+{/template}
+
+{deltemplate PageRenderer.page variant="'list'"}
+	{@param spritemap: string}
+	{@param? _handleDeleteButtonClicked: any}
+	{@param? _handleDuplicateButtonClicked: any}
+	{@param? _handleFieldChanged: any}
+	{@param? _handleOnClickResize: any}
+	{@param? _handleSelectFieldFocused: any}
+	{@param? contentRenderer: string}
+	{@param? editable: bool}
+	{@param? page: ?}
+	{@param? pageId: number}
+
+	{for $row in $page.rows}
+		{delcall PageRenderer.row variant="'grid'"}
+			{param _handleDeleteButtonClicked: $_handleDeleteButtonClicked /}
+			{param _handleDuplicateButtonClicked: $_handleDuplicateButtonClicked /}
+			{param _handleFieldChanged: $_handleFieldChanged /}
+			{param _handleOnClickResize: $_handleOnClickResize /}
+			{param _handleSelectFieldFocused: $_handleSelectFieldFocused /}
+			{param contentRenderer: $contentRenderer /}
+			{param editable: $editable /}
+			{param pageId: $pageId /}
+			{param row: $row /}
+			{param rowIndex: index($row) /}
+			{param spritemap: $spritemap /}
+		{/delcall}
+	{/for}
+{/deltemplate}
+
+{deltemplate PageRenderer.page variant="'grid'"}
+	{@param spritemap: string}
+	{@param? _handleDeleteButtonClicked: any}
+	{@param? _handleDuplicateButtonClicked: any}
+	{@param? _handleFieldChanged: any}
+	{@param? _handleOnClickResize: any}
+	{@param? _handleSelectFieldFocused: any}
+	{@param? contentRenderer: string}
+	{@param? editable: bool}
+	{@param? empty: bool}
+	{@param? page: ?}
+	{@param? pageId: number}
+
+	<div class="layout-page">
+		{if $empty}
+			<div class="col col-empty col-md-12 last-col lfr-initial-col">
+				<div id="lfr-initial-col-message">{msg desc=""}drag-from-sidebar-and-drop-here{/msg}</div>
+			</div>
+		{else}
+			{for $row in $page.rows}
+				{if isFirst($row) and $editable}
+					{call .fieldEmpty}
+						{param isRow: true /}
+						{param pageId: $pageId /}
+						{param row: 0 /}
+						{param size: 12 /}
+					{/call}
+				{/if}
+
+				{delcall PageRenderer.row variant="$contentRenderer"}
+					{param _handleDeleteButtonClicked: $_handleDeleteButtonClicked /}
+					{param _handleDuplicateButtonClicked: $_handleDuplicateButtonClicked /}
+					{param _handleFieldChanged: $_handleFieldChanged /}
+					{param _handleOnClickResize: $_handleOnClickResize /}
+					{param _handleSelectFieldFocused: $_handleSelectFieldFocused /}
+					{param contentRenderer: $contentRenderer /}
+					{param editable: $editable /}
+					{param pageId: $pageId /}
+					{param row: $row /}
+					{param rowIndex: index($row) /}
+					{param spritemap: $spritemap /}
+				{/delcall}
+
+				{if $editable}
+					{call .fieldEmpty}
+						{param isRow: true /}
+						{param pageId: $pageId /}
+						{param row: index($row) + 1 /}
+						{param size: 12 /}
+					{/call}
+				{/if}
+			{/for}
+		{/if}
+	</div>
+{/deltemplate}
+
+{deltemplate PageRenderer.row variant="'grid'"}
+	{@param spritemap: string}
+	{@param? _handleDeleteButtonClicked: any}
+	{@param? _handleDuplicateButtonClicked: any}
+	{@param? _handleFieldChanged: any}
+	{@param? _handleOnClickResize: any}
+	{@param? _handleSelectFieldFocused: any}
+	{@param? contentRenderer: string}
+	{@param? editable: bool}
+	{@param? pageId: number}
+	{@param? row: ?}
+	{@param? rowIndex: number}
+
+	<div class="row">
+		{for $column in $row.columns}
+			{delcall PageRenderer.column variant="$contentRenderer"}
+				{param _handleDeleteButtonClicked: $_handleDeleteButtonClicked /}
+				{param _handleDuplicateButtonClicked: $_handleDuplicateButtonClicked /}
+				{param _handleFieldChanged: $_handleFieldChanged /}
+				{param _handleOnClickResize: $_handleOnClickResize /}
+				{param _handleSelectFieldFocused: $_handleSelectFieldFocused /}
+				{param column: $column /}
+				{param columnIndex: index($column) /}
+				{param editable: $editable /}
+				{param pageId: $pageId /}
+				{param rowIndex: $rowIndex /}
+				{param spritemap: $spritemap /}
+			{/delcall}
+		{/for}
+	</div>
+{/deltemplate}
+
+{deltemplate PageRenderer.column variant="'list'"}
+	{@param spritemap: string}
+	{@param? _handleFieldChanged: any}
+	{@param? column: ?}
+	{@param? columnIndex: number}
+	{@param? editable: bool}
+	{@param? pageId: number}
+	{@param? rowIndex: number}
+
+	{if length($column.fields) != 0}
+		{let $attributes kind="attributes"}
+			class="col-md-{$column.size}"
+		{/let}
+
+		<div {$attributes}>
+			{for $field in $column.fields}
+				{let $fieldType: $field.type ?: 'empty' /}
+
+				{delcall PageRenderer.RegisterFieldType variant="$fieldType" data="$field" allowemptydefault="true"}
+					{param editable: $editable /}
+					{param events: [
+							'fieldEdited': $_handleFieldChanged
+					] /}
+					{param spritemap: $spritemap /}
+				{/delcall}
+			{/for}
+		</div>
+	{/if}
+{/deltemplate}
+
+{deltemplate PageRenderer.column variant="'grid'"}
+	{@param spritemap: string}
+	{@param? _handleDeleteButtonClicked: any}
+	{@param? _handleDuplicateButtonClicked: any}
+	{@param? _handleFieldChanged: any}
+	{@param? _handleOnClickResize: any}
+	{@param? _handleSelectFieldFocused: any}
+	{@param? column: ?}
+	{@param? columnIndex: number}
+	{@param? editable: bool}
+	{@param? pageId: number}
+	{@param? rowIndex: number}
+
+	{if length($column.fields) != 0}
+		{let $attributes kind="attributes"}
+			class="col-md-{$column.size} col-ddm"
+
+			{if $rowIndex != 'undefined'}
+				data-ddm-field-row="{$rowIndex}"
+			{/if}
+
+			{if $pageId != 'undefined'}
+				data-ddm-field-page="{$pageId}"
+			{/if}
+
+			{if $columnIndex != 'undefined'}
+				data-ddm-field-column="{$columnIndex}"
+			{/if}
+		{/let}
+
+		<div {$attributes}>
+			{let $content kind="html"}
+				{for $field in $column.fields}
+					{let $fieldType: $field.type /}
+
+					{delcall PageRenderer.RegisterFieldType variant="$fieldType" data="$field" allowemptydefault="true"}
+						{param editable: $editable /}
+						{param events: [
+							'fieldEdited': $_handleFieldChanged
+						] /}
+						{param ref: 'field' /}
+						{param spritemap: $spritemap /}
+					{/delcall}
+				{/for}
+			{/let}
+
+			{if $editable}
+				<div class="ddm-field-container">
+					<div class="ddm-resize-handle-left" data-onclick="{$_handleOnClickResize}"></div>
+
+					{let $attributesDrag kind="attributes"}
+						class="ddm-drag"
+
+						data-onclick="{$_handleSelectFieldFocused}"
+					{/let}
+
+					<div {$attributesDrag}>
+						{$content}
+					</div>
+
+					{call .fieldActions}
+						{param _handleDeleteButtonClicked: $_handleDeleteButtonClicked /}
+						{param _handleDuplicateButtonClicked: $_handleDuplicateButtonClicked /}
+						{param spritemap: $spritemap /}
+					{/call}
+
+					<div class="ddm-resize-handle-right" data-onclick="{$_handleOnClickResize}"></div>
+				</div>
+			{else}
+				{$content}
+			{/if}
+		</div>
+	{elseif $editable}
+		{call .fieldEmpty}
+			{param column: $columnIndex /}
+			{param pageId: $pageId /}
+			{param row: $rowIndex /}
+			{param size: $column.size /}
+		{/call}
+	{/if}
+{/deltemplate}
+
+{template .fieldActions}
+	{@param spritemap: string}
+	{@param? _handleDeleteButtonClicked: any}
+	{@param? _handleDuplicateButtonClicked: any}
+
+	<div class="ddm-field-actions-container">
+		{call ClayButton.render}
+			{param events: [
+				'click': $_handleDuplicateButtonClicked
+			] /}
+			{param icon: 'paste' /}
+			{param monospaced: true /}
+			{param size: 'sm' /}
+			{param spritemap: $spritemap /}
+			{param style: 'secondary' /}
+		{/call}
+
+		{call ClayButton.render}
+			{param events: [
+				'click': $_handleDeleteButtonClicked
+			] /}
+			{param icon: 'trash' /}
+			{param monospaced: true /}
+			{param size: 'sm' /}
+			{param spritemap: $spritemap /}
+			{param style: 'secondary' /}
+		{/call}
+	</div>
+{/template}
+
+{template .fieldEmpty}
+	{@param size: number}
+	{@param? column: number}
+	{@param? isRow: bool}
+	{@param? pageId: number}
+	{@param? row: number}
+
+	{let $attributes kind="attributes"}
+		class="col-md-{$size}"
+
+		{if $row != 'undefined'}
+			data-ddm-field-row="{$row}"
+		{/if}
+
+		{if $pageId != 'undefined'}
+			data-ddm-field-page="{$pageId}"
+		{/if}
+
+		{if $column != 'undefined'}
+			data-ddm-field-column="{$column}"
+		{/if}
+	{/let}
+
+	{let $content kind="html"}
+		<div {$attributes}>
+			<div class="col-empty ddm-target"></div>
+		</div>
+	{/let}
+
+	{if $isRow}
+		<div class="row">
+			{$content}
+		</div>
+	{else}
+		{$content}
+	{/if}
+{/template}
+
+{deltemplate PageRenderer.RegisterFieldType}
+	{@param? editable: bool}
+	{@param? field: ?}
+
+	{if $editable}
+		<div class="ddm-field-not-found">
+			Field doesn't exist.
+		</div>
+	{/if}
+{/deltemplate}

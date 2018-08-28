@@ -601,7 +601,7 @@ public class JenkinsResultsParserUtil {
 		return "";
 	}
 
-	public static File getBaseRepositoryDir() {
+	public static File getBaseGitRepositoryDir() {
 		Properties buildProperties = null;
 
 		try {
@@ -665,11 +665,11 @@ public class JenkinsResultsParserUtil {
 	}
 
 	public static String getGitHubApiUrl(
-		String repositoryName, String username, String path) {
+		String gitRepositoryName, String username, String path) {
 
 		return combine(
-			"https://api.github.com/repos/", username, "/", repositoryName, "/",
-			path.replaceFirst("^/*", ""));
+			"https://api.github.com/repos/", username, "/", gitRepositoryName,
+			"/", path.replaceFirst("^/*", ""));
 	}
 
 	public static String getHostName(String defaultHostName) {
@@ -753,10 +753,11 @@ public class JenkinsResultsParserUtil {
 	}
 
 	public static GitWorkingDirectory getJenkinsGitWorkingDirectory() {
-		LocalRepository localRepository = RepositoryFactory.getLocalRepository(
-			"liferay-jenkins-ee", "master");
+		LocalGitRepository localGitRepository =
+			GitRepositoryFactory.getLocalGitRepository(
+				"liferay-jenkins-ee", "master");
 
-		return localRepository.getGitWorkingDirectory();
+		return localGitRepository.getGitWorkingDirectory();
 	}
 
 	public static List<JenkinsMaster> getJenkinsMasters(
@@ -970,17 +971,18 @@ public class JenkinsResultsParserUtil {
 	public static PortalGitWorkingDirectory getPortalGitWorkingDirectory(
 		String portalBranchName) {
 
-		String portalRepositoryName = "liferay-portal";
+		String portalGitRepositoryName = "liferay-portal";
 
 		if (!portalBranchName.equals("master")) {
-			portalRepositoryName += "-ee";
+			portalGitRepositoryName += "-ee";
 		}
 
-		LocalRepository localRepository = RepositoryFactory.getLocalRepository(
-			portalRepositoryName, portalBranchName);
+		LocalGitRepository localGitRepository =
+			GitRepositoryFactory.getLocalGitRepository(
+				portalGitRepositoryName, portalBranchName);
 
 		GitWorkingDirectory gitWorkingDirectory =
-			localRepository.getGitWorkingDirectory();
+			localGitRepository.getGitWorkingDirectory();
 
 		return (PortalGitWorkingDirectory)gitWorkingDirectory;
 	}

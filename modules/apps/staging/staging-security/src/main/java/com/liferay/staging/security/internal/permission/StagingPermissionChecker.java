@@ -16,9 +16,12 @@ package com.liferay.staging.security.internal.permission;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.document.library.kernel.model.DLFolder;
+import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.UserBag;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
@@ -26,6 +29,7 @@ import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Tomas Polesovsky
@@ -130,6 +134,10 @@ public class StagingPermissionChecker implements PermissionChecker {
 			}
 		}
 
+		if (_isStagingFolder(name, actionId)) {
+			return true;
+		}
+
 		return _permissionChecker.hasPermission(
 			liveGroup, name, primKey, actionId);
 	}
@@ -144,6 +152,10 @@ public class StagingPermissionChecker implements PermissionChecker {
 			if (primKey.equals(String.valueOf(group.getGroupId()))) {
 				primKey = String.valueOf(liveGroup.getGroupId());
 			}
+		}
+
+		if (_isStagingFolder(name, actionId)) {
+			return true;
 		}
 
 		return _permissionChecker.hasPermission(
@@ -232,6 +244,19 @@ public class StagingPermissionChecker implements PermissionChecker {
 	@Override
 	public boolean isSignedIn() {
 		return _permissionChecker.isSignedIn();
+	}
+
+	private boolean _isStagingFolder(String name, String actionId) {
+		if (ExportImportThreadLocal.isStagingInProcessOnRemoteLive() &&
+			actionId.equals("VIEW") &&
+			(name.equals(Folder.class.getName()) ||
+			 name.equals(DLFolder.class.getName()) ||
+			 Objects.equals("com.liferay.document.library", name))) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	private final PermissionChecker _permissionChecker;

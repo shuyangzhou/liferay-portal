@@ -521,9 +521,12 @@ public class JavaLineBreakCheck extends LineBreakCheck {
 
 		matcher = _incorrectLineBreakPattern3.matcher(content);
 
-		if (matcher.find()) {
-			return StringUtil.replaceFirst(
-				content, "{", "{\n" + matcher.group(1) + "\t", matcher.start());
+		while (matcher.find()) {
+			if (getLevel(matcher.group(), "{", "}") > 0) {
+				return StringUtil.replaceFirst(
+					content, "{", "{\n" + matcher.group(1) + "\t",
+					matcher.start());
+			}
 		}
 
 		matcher = _incorrectLineBreakPattern4.matcher(content);
@@ -810,6 +813,32 @@ public class JavaLineBreakCheck extends LineBreakCheck {
 				x = newLine.lastIndexOf(", ", x - 1);
 
 				if (x == -1) {
+					Matcher matcher = _incorrectExtendImplementPattern1.matcher(
+						classLine);
+
+					if (matcher.find()) {
+						String replacement = StringBundler.concat(
+							"\n", matcher.group(2), matcher.group(1),
+							StringPool.SPACE);
+
+						return StringUtil.replaceFirst(
+							classLine, matcher.group(), replacement);
+					}
+
+					matcher = _incorrectExtendImplementPattern2.matcher(
+						classLine);
+
+					if (matcher.find()) {
+						String replacement = StringBundler.concat(
+							matcher.group(2), matcher.group(3),
+							StringPool.SPACE, matcher.group(4));
+
+						if (getLineLength(replacement) <= getMaxLineLength()) {
+							return StringUtil.replaceFirst(
+								classLine, matcher.group(1), replacement);
+						}
+					}
+
 					return null;
 				}
 
@@ -906,9 +935,13 @@ public class JavaLineBreakCheck extends LineBreakCheck {
 	private final Pattern _catchStatemementPattern = Pattern.compile(
 		"\n((\t*)catch \\((.*[^{|\\s])?\n[^}]*?\\) \\{)\n");
 	private final Pattern _classOrEnumPattern = Pattern.compile(
-		"(\n(\t*)(private|protected|public) ((abstract|static) )*" +
+		"(\n(\t*)(private|protected|public) ((abstract|final|static) )*" +
 			"(class|enum|interface) ([\\s\\S]*?)\\{)((.*)\\})?" +
 				"([ \t]*(\\Z|\n)(\\s*)(\\S))");
+	private final Pattern _incorrectExtendImplementPattern1 = Pattern.compile(
+		" (extends|implements)\n(\t+)");
+	private final Pattern _incorrectExtendImplementPattern2 = Pattern.compile(
+		"\n((\t+)(extends|implements)\n\t+(\\w+))\n");
 	private final Pattern _incorrectLineBreakInsideChainPattern1 =
 		Pattern.compile("\n(\t*)\\).*?\\((.+)");
 	private final Pattern _incorrectLineBreakInsideChainPattern2 =

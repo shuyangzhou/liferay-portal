@@ -19,7 +19,6 @@ import com.liferay.talend.connection.LiferayConnectionProperties;
 import com.liferay.talend.connection.LiferayConnectionPropertiesProvider;
 import com.liferay.talend.exception.ExceptionUtils;
 import com.liferay.talend.runtime.LiferaySourceOrSinkRuntime;
-import com.liferay.talend.utils.PropertiesUtils;
 import com.liferay.talend.utils.URIUtils;
 
 import java.io.IOException;
@@ -100,7 +99,7 @@ public class LiferayResourceProperties
 						liferaySourceOrSinkRuntime.getResourceCollectionType(
 							resourceURI.toString());
 
-					resource.setValue(resourceCollectionType);
+					resourceName.setValue(resourceCollectionType);
 
 					Schema schema =
 						liferaySourceOrSinkRuntime.getResourceSchemaByType(
@@ -129,78 +128,7 @@ public class LiferayResourceProperties
 		if (validationResultMutable.getStatus() ==
 				ValidationResult.Result.ERROR) {
 
-			resource.setValue("");
-			resourceURL.setValue("");
-		}
-
-		refreshLayout(getForm(Form.MAIN));
-		refreshLayout(getForm(Form.REFERENCE));
-
-		return validationResultMutable;
-	}
-
-	public void afterSiteFilter() {
-		resource.setValue("");
-		resourceURL.setValue("");
-
-		refreshLayout(getForm(Form.MAIN));
-		refreshLayout(getForm(Form.REFERENCE));
-	}
-
-	public ValidationResult afterWebSiteURL() {
-		resource.setValue("");
-		resourceURL.setValue("");
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Website URL: " + webSiteURL.getValue());
-		}
-
-		ValidationResultMutable validationResultMutable =
-			new ValidationResultMutable();
-
-		validationResultMutable.setStatus(Result.OK);
-
-		try (SandboxedInstance sandboxedInstance =
-				LiferayBaseComponentDefinition.getSandboxedInstance(
-					LiferayBaseComponentDefinition.
-						RUNTIME_SOURCE_OR_SINK_CLASS_NAME)) {
-
-			LiferaySourceOrSinkRuntime liferaySourceOrSinkRuntime =
-				(LiferaySourceOrSinkRuntime)sandboxedInstance.getInstance();
-
-			liferaySourceOrSinkRuntime.initialize(
-				null, getEffectiveLiferayConnectionProperties());
-
-			ValidationResult validationResult =
-				liferaySourceOrSinkRuntime.validate(null);
-
-			validationResultMutable.setMessage(validationResult.getMessage());
-			validationResultMutable.setStatus(validationResult.getStatus());
-
-			if (validationResultMutable.getStatus() ==
-					ValidationResult.Result.OK) {
-
-				try {
-					webSite.setValue(
-						liferaySourceOrSinkRuntime.getActualWebSiteName(
-							webSiteURL.getValue()));
-				}
-				catch (IOException ioe) {
-					validationResult =
-						ExceptionUtils.exceptionToValidationResult(ioe);
-
-					validationResultMutable.setMessage(
-						validationResult.getMessage());
-					validationResultMutable.setStatus(
-						validationResult.getStatus());
-				}
-			}
-		}
-
-		if (validationResultMutable.getStatus() ==
-				ValidationResult.Result.ERROR) {
-
-			resource.setValue("");
+			resourceName.setValue("");
 			resourceURL.setValue("");
 		}
 
@@ -230,14 +158,18 @@ public class LiferayResourceProperties
 
 			validationResultMutable.setStatus(validationResult.getStatus());
 
+			LiferayConnectionProperties liferayConnectionProperties =
+				getEffectiveLiferayConnectionProperties();
+
 			if (validationResultMutable.getStatus() == Result.OK) {
 				try {
 					List<NamedThing> resourceNames = null;
 
-					if (siteFilter.getValue()) {
+					if (liferayConnectionProperties.siteFilter.getValue()) {
 						resourceNames =
 							liferaySourceOrSinkRuntime.getResourceList(
-								webSiteURL.getValue());
+								liferayConnectionProperties.webSiteProperty.
+									getWebSiteURL());
 					}
 					else {
 						resourceNames =
@@ -262,49 +194,6 @@ public class LiferayResourceProperties
 		}
 	}
 
-	public ValidationResult beforeWebSiteURL() {
-		try (SandboxedInstance sandboxedInstance =
-				LiferayBaseComponentDefinition.getSandboxedInstance(
-					LiferayBaseComponentDefinition.
-						RUNTIME_SOURCE_OR_SINK_CLASS_NAME)) {
-
-			LiferaySourceOrSinkRuntime liferaySourceOrSinkRuntime =
-				(LiferaySourceOrSinkRuntime)sandboxedInstance.getInstance();
-
-			liferaySourceOrSinkRuntime.initialize(
-				null, getEffectiveLiferayConnectionProperties());
-
-			ValidationResultMutable validationResultMutable =
-				new ValidationResultMutable();
-
-			ValidationResult validationResult =
-				liferaySourceOrSinkRuntime.validate(null);
-
-			validationResultMutable.setStatus(validationResult.getStatus());
-
-			if (validationResultMutable.getStatus() == Result.OK) {
-				try {
-					List<NamedThing> webSites =
-						liferaySourceOrSinkRuntime.getAvailableWebSites();
-
-					if (webSites.isEmpty()) {
-						validationResultMutable.setMessage(
-							i18nMessages.getMessage(
-								"error.validation.websites"));
-						validationResultMutable.setStatus(Result.ERROR);
-					}
-
-					webSiteURL.setPossibleNamedThingValues(webSites);
-				}
-				catch (Exception e) {
-					return ExceptionUtils.exceptionToValidationResult(e);
-				}
-			}
-
-			return validationResultMutable;
-		}
-	}
-
 	@Override
 	public LiferayConnectionProperties getLiferayConnectionProperties() {
 		return connection;
@@ -313,13 +202,6 @@ public class LiferayResourceProperties
 	@Override
 	public void refreshLayout(Form form) {
 		super.refreshLayout(form);
-
-		String formName = form.getName();
-
-		if (formName.equals(Form.MAIN) || formName.equals(Form.REFERENCE)) {
-			PropertiesUtils.setHidden(form, webSite, !siteFilter.getValue());
-			PropertiesUtils.setHidden(form, webSiteURL, !siteFilter.getValue());
-		}
 	}
 
 	public void setSchemaListener(ISchemaListener schemaListener) {
@@ -345,11 +227,8 @@ public class LiferayResourceProperties
 		super.setupProperties();
 
 		condition.setValue("");
-		resource.setValue("");
+		resourceName.setValue("");
 		resourceURL.setValue("");
-		siteFilter.setValue(false);
-		webSite.setValue("");
-		webSiteURL.setValue("");
 	}
 
 	public ValidationResult validateValidateCondition() {
@@ -358,7 +237,10 @@ public class LiferayResourceProperties
 
 		validationResultMutable.setStatus(Result.OK);
 
-		String endpointUrl = connection.endpoint.getValue();
+		LiferayConnectionProperties liferayConnectionProperties =
+			getEffectiveLiferayConnectionProperties();
+
+		String endpointUrl = liferayConnectionProperties.endpoint.getValue();
 
 		try {
 			URIUtils.addQueryConditionToURL(endpointUrl, condition.getValue());
@@ -384,17 +266,13 @@ public class LiferayResourceProperties
 
 	};
 
-	public Property<String> resource = PropertyFactory.newString(
-		"resource").setRequired();
+	public Property<String> resourceName = PropertyFactory.newString(
+		"resourceName").setRequired();
 	public StringProperty resourceURL = PropertyFactory.newString(
 		"resourceURL");
 	public ISchemaListener schemaListener;
-	public Property<Boolean> siteFilter = PropertyFactory.newBoolean(
-		"siteFilter");
 	public transient PresentationItem validateCondition = new PresentationItem(
-		"validateCondition", "Validate Condition");
-	public Property<String> webSite = PropertyFactory.newString("webSite");
-	public StringProperty webSiteURL = PropertyFactory.newString("webSiteURL");
+		"validateCondition");
 
 	protected LiferayConnectionProperties
 		getEffectiveLiferayConnectionProperties() {
@@ -448,21 +326,6 @@ public class LiferayResourceProperties
 	private void _setupMainForm() {
 		Form resourceSelectionForm = Form.create(this, Form.MAIN);
 
-		resourceSelectionForm.addRow(siteFilter);
-
-		Widget webSiteURLWidget = Widget.widget(webSiteURL);
-
-		webSiteURLWidget.setCallAfter(true);
-		webSiteURLWidget.setWidgetType(Widget.NAME_SELECTION_AREA_WIDGET_TYPE);
-
-		resourceSelectionForm.addRow(webSiteURLWidget);
-
-		Widget webSiteWidget = Widget.widget(webSite);
-
-		webSiteWidget.setReadonly(true);
-
-		resourceSelectionForm.addColumn(webSiteWidget);
-
 		Widget resourceURLWidget = Widget.widget(resourceURL);
 
 		resourceURLWidget.setCallAfter(true);
@@ -470,11 +333,11 @@ public class LiferayResourceProperties
 
 		resourceSelectionForm.addRow(resourceURLWidget);
 
-		Widget resourceWidget = Widget.widget(resource);
+		Widget resourceNameWidget = Widget.widget(resourceName);
 
-		resourceWidget.setReadonly(true);
+		resourceNameWidget.setReadonly(true);
 
-		resourceSelectionForm.addColumn(resourceWidget);
+		resourceSelectionForm.addColumn(resourceNameWidget);
 
 		resourceSelectionForm.addRow(condition);
 
@@ -491,23 +354,6 @@ public class LiferayResourceProperties
 	private void _setupReferenceForm() {
 		Form referenceForm = Form.create(this, Form.REFERENCE);
 
-		referenceForm.addRow(siteFilter);
-
-		Widget webSiteURLReferenceWidget = Widget.widget(webSiteURL);
-
-		webSiteURLReferenceWidget.setCallAfter(true);
-		webSiteURLReferenceWidget.setLongRunning(true);
-		webSiteURLReferenceWidget.setWidgetType(
-			Widget.NAME_SELECTION_REFERENCE_WIDGET_TYPE);
-
-		referenceForm.addRow(webSiteURLReferenceWidget);
-
-		Widget webSiteReferenceWidget = Widget.widget(webSite);
-
-		webSiteReferenceWidget.setReadonly(true);
-
-		referenceForm.addColumn(webSiteReferenceWidget);
-
 		Widget resourceURLReferenceWidget = Widget.widget(resourceURL);
 
 		resourceURLReferenceWidget.setCallAfter(true);
@@ -517,11 +363,11 @@ public class LiferayResourceProperties
 
 		referenceForm.addRow(resourceURLReferenceWidget);
 
-		Widget resourceReferenceWidget = Widget.widget(resource);
+		Widget resourceNameReferenceWidget = Widget.widget(resourceName);
 
-		resourceReferenceWidget.setReadonly(true);
+		resourceNameReferenceWidget.setReadonly(true);
 
-		referenceForm.addColumn(resourceReferenceWidget);
+		referenceForm.addColumn(resourceNameReferenceWidget);
 
 		referenceForm.addRow(condition);
 

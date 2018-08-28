@@ -301,7 +301,7 @@ public interface DDMStructureLayoutLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DDMFormLayout getStructureLayoutDDMFormLayout(
-		DDMStructureLayout structureLayout) throws PortalException;
+		DDMStructureLayout structureLayout);
 
 	/**
 	* Updates the ddm structure layout in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

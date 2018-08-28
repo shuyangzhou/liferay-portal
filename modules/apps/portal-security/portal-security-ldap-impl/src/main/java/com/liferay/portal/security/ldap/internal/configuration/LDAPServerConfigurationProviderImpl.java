@@ -354,9 +354,13 @@ public class LDAPServerConfigurationProviderImpl
 			Long ldapServerId = _pidServerConfigurations.remove(pid);
 
 			Map<Long, ObjectValuePair<Configuration, LDAPServerConfiguration>>
-				objectValuePairs = _configurations.get(companyId);
+				objectValuePairs = null;
 
-			if (!MapUtil.isEmpty(objectValuePairs)) {
+			if (companyId != null) {
+				objectValuePairs = _configurations.get(companyId);
+			}
+
+			if ((ldapServerId != null) && !MapUtil.isEmpty(objectValuePairs)) {
 				objectValuePairs.remove(ldapServerId);
 			}
 		}
@@ -414,9 +418,10 @@ public class LDAPServerConfigurationProviderImpl
 		super.configurationAdmin = configurationAdmin;
 	}
 
-	private final Map<Long,
-		Map<Long, ObjectValuePair<Configuration, LDAPServerConfiguration>>>
-			_configurations = new ConcurrentHashMap<>();
+	private final Map
+		<Long,
+			Map<Long, ObjectValuePair<Configuration, LDAPServerConfiguration>>>
+				_configurations = new ConcurrentHashMap<>();
 	private final LDAPServerConfiguration _defaultLDAPServerConfiguration =
 		ConfigurableUtil.createConfigurable(
 			LDAPServerConfiguration.class, Collections.emptyMap());
