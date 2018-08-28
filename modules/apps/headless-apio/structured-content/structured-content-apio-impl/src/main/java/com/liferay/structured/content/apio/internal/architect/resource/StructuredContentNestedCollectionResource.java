@@ -64,6 +64,7 @@ import com.liferay.structured.content.apio.internal.architect.form.StructuredCon
 import com.liferay.structured.content.apio.internal.model.JournalArticleWrapper;
 import com.liferay.structured.content.apio.internal.model.RenderedJournalArticle;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -81,9 +82,9 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true)
 public class StructuredContentNestedCollectionResource
-	implements
-		NestedCollectionResource<JournalArticleWrapper, Long,
-			StructuredContentIdentifier, Long, ContentSpaceIdentifier> {
+	implements NestedCollectionResource
+		<JournalArticleWrapper, Long, StructuredContentIdentifier, Long,
+			ContentSpaceIdentifier> {
 
 	@Override
 	public NestedCollectionRoutes<JournalArticleWrapper, Long, Long>
@@ -198,6 +199,10 @@ public class StructuredContentNestedCollectionResource
 			"category", CategoryIdentifier.class
 		).addRelatedCollection(
 			"comment", CommentIdentifier.class
+		).addStringList(
+			"availableLanguages",
+			journalArticle -> Arrays.asList(
+				journalArticle.getAvailableLanguageIds())
 		).addStringList(
 			"keywords", this::_getJournalArticleAssetTags
 		).build();

@@ -1,6 +1,9 @@
 import com.liferay.gradle.util.GradleUtil
 import com.liferay.gradle.util.copy.RenameDependencyClosure
 
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
+
 buildCSS {
 	ext {
 		autoClean = false

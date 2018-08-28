@@ -22,6 +22,12 @@ import aQute.bnd.annotation.ProviderType;
 @ProviderType
 public interface IndexRequestExecutor {
 
+	public AnalyzeIndexResponse executeIndexRequest(
+		AnalyzeIndexRequest analyzeIndexRequest);
+
+	public FlushIndexResponse executeIndexRequest(
+		FlushIndexRequest flushIndexRequest);
+
 	public GetFieldMappingIndexResponse executeIndexRequest(
 		GetFieldMappingIndexRequest getFieldMappingIndexRequest);
 
@@ -30,5 +36,8 @@ public interface IndexRequestExecutor {
 
 	public PutMappingIndexResponse executeIndexRequest(
 		PutMappingIndexRequest putMappingIndexRequest);
+
+	public RefreshIndexResponse executeIndexRequest(
+		RefreshIndexRequest refreshIndexRequest);
 
 }

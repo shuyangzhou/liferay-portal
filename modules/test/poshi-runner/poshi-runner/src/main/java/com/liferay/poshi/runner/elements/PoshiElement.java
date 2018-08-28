@@ -65,6 +65,15 @@ public abstract class PoshiElement
 		return clone(null, poshiScript);
 	}
 
+	@Override
+	public String getPoshiScript() {
+		if (_poshiScript == null) {
+			return toPoshiScript();
+		}
+
+		return _poshiScript;
+	}
+
 	public boolean isPoshiScriptComment(String poshiScript) {
 		Matcher matcher = _poshiScriptCommentPattern.matcher(poshiScript);
 
@@ -86,6 +95,11 @@ public abstract class PoshiElement
 		}
 
 		return false;
+	}
+
+	@Override
+	public void setPoshiScript(String poshiScript) {
+		_poshiScript = poshiScript;
 	}
 
 	@Override
@@ -146,7 +160,9 @@ public abstract class PoshiElement
 
 		setParent(parentPoshiElement);
 
-		parsePoshiScript(poshiScript);
+		setPoshiScript(poshiScript);
+
+		parsePoshiScript(poshiScript.trim());
 
 		detach();
 	}
@@ -365,9 +381,14 @@ public abstract class PoshiElement
 
 			if (trimmedPoshiScriptSnippet.startsWith("//")) {
 				if (c == '\n') {
+					poshiScriptSnippet = poshiScriptSnippet.substring(
+						0, poshiScriptSnippet.length() - 1);
+
 					poshiScriptSnippets.add(poshiScriptSnippet);
 
 					sb.setLength(0);
+
+					sb.append(c);
 				}
 
 				continue;
@@ -770,6 +791,8 @@ public abstract class PoshiElement
 		Pattern.DOTALL);
 	protected static final Pattern poshiScriptAnnotationPattern =
 		Pattern.compile("@[\\w-]*[\\s]*?=[\\s]\".*?\"", Pattern.DOTALL);
+	protected static final Pattern poshiScriptBlockNamePattern =
+		Pattern.compile("[\\s\\S]*");
 
 	private void _addAttributes(Element element) {
 		for (Attribute attribute :
@@ -797,7 +820,14 @@ public abstract class PoshiElement
 	}
 
 	private static final Map<Character, Character> _codeBoundariesMap =
-		new HashMap<>();
+		new HashMap<Character, Character>() {
+			{
+				put('\"', '\"');
+				put('(', ')');
+				put('{', '}');
+				put('[', ']');
+			}
+		};
 	private static final Pattern _namespacedfunctionFileNamePattern =
 		Pattern.compile(".*?\\.(.*?)\\.function");
 	private static final Pattern _poshiScriptBlockPattern = Pattern.compile(
@@ -807,12 +837,6 @@ public abstract class PoshiElement
 	private static final Pattern _varInvocationAssignmentStatementPattern;
 
 	static {
-		_codeBoundariesMap.put('\'', '\'');
-		_codeBoundariesMap.put('\"', '\"');
-		_codeBoundariesMap.put('(', ')');
-		_codeBoundariesMap.put('{', '}');
-		_codeBoundariesMap.put('[', ']');
-
 		INVOCATION_REGEX = "[\\s]*[\\w\\.]*" + PARAMETER_REGEX;
 
 		_varInvocationAssignmentStatementPattern = Pattern.compile(
@@ -831,5 +855,7 @@ public abstract class PoshiElement
 			}
 		}
 	}
+
+	private String _poshiScript;
 
 }

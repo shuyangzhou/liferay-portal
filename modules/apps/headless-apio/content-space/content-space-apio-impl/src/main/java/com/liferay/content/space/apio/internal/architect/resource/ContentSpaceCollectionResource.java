@@ -32,7 +32,9 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
+import com.liferay.site.apio.architect.identifier.WebSiteIdentifier;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
@@ -86,10 +88,15 @@ public class ContentSpaceCollectionResource
 			"creator", PersonIdentifier.class, Group::getCreatorUserId
 		).addLinkedModel(
 			"documentsRepository", RootFolderIdentifier.class, Group::getGroupId
+		).addLinkedModel(
+			"webSite", WebSiteIdentifier.class, Group::getGroupId
 		).addLocalizedStringByLocale(
 			"description", Group::getDescription
 		).addLocalizedStringByLocale(
 			"name", ContentSpaceUtil::getName
+		).addStringList(
+			"availableLanguages",
+			group -> Arrays.asList(group.getAvailableLanguageIds())
 		).build();
 	}
 

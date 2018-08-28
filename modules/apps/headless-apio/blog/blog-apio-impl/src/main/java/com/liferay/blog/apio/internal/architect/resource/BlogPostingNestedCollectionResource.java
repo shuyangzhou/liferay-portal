@@ -44,7 +44,6 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.vocabulary.apio.architect.identifier.VocabularyIdentifier;
 
 import java.util.List;
 
@@ -62,8 +61,9 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true)
 public class BlogPostingNestedCollectionResource
-	implements NestedCollectionResource<BlogsEntry, Long, BlogPostingIdentifier,
-		Long, ContentSpaceIdentifier> {
+	implements NestedCollectionResource
+		<BlogsEntry, Long, BlogPostingIdentifier, Long,
+			ContentSpaceIdentifier> {
 
 	@Override
 	public NestedCollectionRoutes<BlogsEntry, Long, Long> collectionRoutes(
@@ -112,11 +112,9 @@ public class BlogPostingNestedCollectionResource
 		).addDate(
 			"dateCreated", BlogsEntry::getCreateDate
 		).addDate(
-			"dateDisplayed", BlogsEntry::getDisplayDate
-		).addDate(
 			"dateModified", BlogsEntry::getModifiedDate
 		).addDate(
-			"datePublished", BlogsEntry::getLastPublishDate
+			"datePublished", BlogsEntry::getDisplayDate
 		).addLinkedModel(
 			"aggregateRating", AggregateRatingIdentifier.class,
 			ClassNameClassPK::create
@@ -129,8 +127,6 @@ public class BlogPostingNestedCollectionResource
 			"category", CategoryIdentifier.class
 		).addRelatedCollection(
 			"comment", CommentIdentifier.class
-		).addRelatedCollection(
-			"vocabularyAssignment", VocabularyIdentifier.class
 		).addString(
 			"alternativeHeadline", BlogsEntry::getSubtitle
 		).addString(

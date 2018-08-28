@@ -14,53 +14,35 @@
 
 package com.liferay.jenkins.results.parser;
 
-import java.util.Properties;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * @author Michael Hashimoto
  */
-public abstract class BaseBuildRunner {
+public abstract class BaseBuildRunner implements BuildRunner {
 
-	public Job getJob() {
-		return job;
+	@Override
+	public void setup() {
+		setupWorkspace();
 	}
 
-	public void setup() {
-		primaryLocalRepository.setup();
+	@Override
+	public void setupWorkspace() {
+		if (workspace == null) {
+			throw new RuntimeException("Workspace is null");
+		}
+
+		workspace.setupWorkspace();
 	}
 
 	protected BaseBuildRunner(Job job) {
-		this.job = job;
+		_job = job;
 	}
 
-	protected Properties getPortalJobBuildProperties() {
-		Properties properties = new Properties();
-
-		Properties jobProperties = job.getJobProperties();
-
-		for (String jobPropertyName : jobProperties.stringPropertyNames()) {
-			Matcher matcher = _pattern.matcher(jobPropertyName);
-
-			if (matcher.find()) {
-				String portalBuildPropertyName = matcher.group(
-					"portalBuildPropertyName");
-
-				properties.put(
-					portalBuildPropertyName,
-					JenkinsResultsParserUtil.getProperty(
-						jobProperties, jobPropertyName));
-			}
-		}
-
-		return properties;
+	protected Job getJob() {
+		return _job;
 	}
 
-	protected final Job job;
-	protected LocalRepository primaryLocalRepository;
+	protected Workspace workspace;
 
-	private static final Pattern _pattern = Pattern.compile(
-		"portal.build.properties\\[(?<portalBuildPropertyName>[^\\]]+)\\]");
+	private final Job _job;
 
 }
