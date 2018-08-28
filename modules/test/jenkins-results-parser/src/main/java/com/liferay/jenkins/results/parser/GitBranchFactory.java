@@ -20,15 +20,27 @@ package com.liferay.jenkins.results.parser;
 public class GitBranchFactory {
 
 	public static LocalGitBranch newLocalGitBranch(
-		LocalRepository localRepository, String name, String sha) {
+		LocalGitRepository localGitRepository, String name, String sha) {
 
-		return new LocalGitBranch(localRepository, name, sha);
+		if (localGitRepository instanceof PluginsLocalGitRepository) {
+			return new PluginsLocalGitBranch(localGitRepository, name, sha);
+		}
+		else if (localGitRepository instanceof PortalLocalGitRepository) {
+			return new PortalLocalGitBranch(localGitRepository, name, sha);
+		}
+
+		return new LocalGitBranch(localGitRepository, name, sha);
 	}
 
-	public static RemoteGitBranch newRemoteGitBranch(
-		RemoteRepository remoteRepository, String name, String sha) {
+	public static RemoteGitRef newRemoteGitRef(
+		RemoteGitRepository remoteGitRepository, String name, String sha,
+		String type) {
 
-		return new RemoteGitBranch(remoteRepository, name, sha);
+		if (type.equals("heads")) {
+			return new RemoteGitBranch(remoteGitRepository, name, sha);
+		}
+
+		return new RemoteGitRef(remoteGitRepository, name, sha);
 	}
 
 }

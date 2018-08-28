@@ -86,6 +86,8 @@ public class IsSetPoshiElement extends PoshiElement {
 			return false;
 		}
 
+		poshiScript = poshiScript.trim();
+
 		if (poshiScript.startsWith("!") ||
 			poshiScript.startsWith("else if (")) {
 

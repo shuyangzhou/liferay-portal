@@ -37,6 +37,7 @@ import com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecord;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecordVersion;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstanceSettings;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.dynamic.data.mapping.model.DDMStructureVersion;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceRecordLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceService;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceVersionLocalService;
@@ -146,7 +147,6 @@ public class DDMFormAdminDisplayContext {
 
 	public List<DropdownItem> getActionItemsDropdownItems() {
 		return new DropdownItemList() {
-
 			{
 				add(
 					dropdownItem -> {
@@ -158,7 +158,6 @@ public class DDMFormAdminDisplayContext {
 						dropdownItem.setQuickAction(true);
 					});
 			}
-
 		};
 	}
 
@@ -515,6 +514,19 @@ public class DDMFormAdminDisplayContext {
 		return _jsonFactory;
 	}
 
+	public long getLatestDDMStructureVersionId() throws PortalException {
+		DDMStructure structure = getDDMStructure();
+
+		if (structure == null) {
+			return 0;
+		}
+
+		DDMStructureVersion latestDDMStructureVersion =
+			structure.getLatestStructureVersion();
+
+		return latestDDMStructureVersion.getStructureVersionId();
+	}
+
 	public String getLexiconIconsPath() {
 		ThemeDisplay themeDisplay = formAdminRequestHelper.getThemeDisplay();
 
@@ -771,7 +783,6 @@ public class DDMFormAdminDisplayContext {
 			getPortletURL(), _renderResponse);
 
 		return new ViewTypeItemList(portletURL, getDisplayStyle()) {
-
 			{
 				String[] viewTypes = getDisplayViews();
 
@@ -784,7 +795,6 @@ public class DDMFormAdminDisplayContext {
 					}
 				}
 			}
-
 		};
 	}
 

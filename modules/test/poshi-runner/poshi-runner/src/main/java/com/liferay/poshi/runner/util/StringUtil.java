@@ -140,6 +140,24 @@ public class StringUtil {
 		return count;
 	}
 
+	public static int countStartingNewLines(String s) {
+		char[] chars = s.toCharArray();
+
+		int i = 0;
+
+		for (char c : chars) {
+			if (c == '\n') {
+				i++;
+
+				continue;
+			}
+
+			break;
+		}
+
+		return i;
+	}
+
 	public static boolean endsWith(String s, String end) {
 		if ((s == null) || (end == null)) {
 			return false;

@@ -90,11 +90,11 @@ public class MergeCentralSubrepositoryUtil {
 					centralSubrepository.getSubrepositoryUpstreamCommit());
 
 				if (centralSubrepository.isCentralPullRequestCandidate()) {
-					GitWorkingDirectory.Remote upstreamRemote =
-						centralGitWorkingDirectory.getRemote("upstream");
+					GitRemote upstreamGitRemote =
+						centralGitWorkingDirectory.getGitRemote("upstream");
 
 					if (!centralGitWorkingDirectory.remoteGitBranchExists(
-							mergeBranchName, upstreamRemote)) {
+							mergeBranchName, upstreamGitRemote)) {
 
 						LocalGitBranch topLevelLocalGitBranch =
 							centralGitWorkingDirectory.getLocalGitBranch(
@@ -269,13 +269,13 @@ public class MergeCentralSubrepositoryUtil {
 			CentralSubrepository centralSubrepository, String mergeBranchName)
 		throws IOException {
 
-		GitWorkingDirectory.Remote upstreamRemote =
-			centralGitWorkingDirectory.getRemote("upstream");
+		GitRemote upstreamGitRemote = centralGitWorkingDirectory.getGitRemote(
+			"upstream");
 
 		if (_upstreamRemoteGitBranchNames == null) {
 			_upstreamRemoteGitBranchNames =
 				centralGitWorkingDirectory.getRemoteGitBranchNames(
-					upstreamRemote);
+					upstreamGitRemote);
 		}
 
 		String mergeBranchNamePrefix = mergeBranchName.substring(
@@ -297,7 +297,7 @@ public class MergeCentralSubrepositoryUtil {
 			}
 
 			centralGitWorkingDirectory.deleteRemoteGitBranch(
-				upstreamRemoteGitBranchName, upstreamRemote);
+				upstreamRemoteGitBranchName, upstreamGitRemote);
 		}
 	}
 
@@ -314,7 +314,7 @@ public class MergeCentralSubrepositoryUtil {
 
 			while (page < 10) {
 				String url = JenkinsResultsParserUtil.getGitHubApiUrl(
-					centralGitWorkingDirectory.getRepositoryName(),
+					centralGitWorkingDirectory.getGitRepositoryName(),
 					receiverUserName, "pulls?page=" + String.valueOf(page));
 
 				JSONArray jsonArray = JenkinsResultsParserUtil.toJSONArray(url);
@@ -421,23 +421,22 @@ public class MergeCentralSubrepositoryUtil {
 		LocalGitBranch mergeLocalGitBranch, String receiverUserName) {
 
 		String centralRepositoryName =
-			centralGitWorkingDirectory.getRepositoryName();
+			centralGitWorkingDirectory.getGitRepositoryName();
 
 		String originRemoteURL = JenkinsResultsParserUtil.combine(
 			"git@github.com:", receiverUserName, "/", centralRepositoryName,
 			".git");
 
-		GitWorkingDirectory.Remote originRemote =
-			centralGitWorkingDirectory.addRemote(
-				true, "tempRemote", originRemoteURL);
+		GitRemote originGitRemote = centralGitWorkingDirectory.addGitRemote(
+			true, "tempRemote", originRemoteURL);
 
 		try {
-			centralGitWorkingDirectory.pushToRemote(
+			centralGitWorkingDirectory.pushToRemoteGitRepository(
 				false, mergeLocalGitBranch, mergeLocalGitBranch.getName(),
-				originRemote);
+				originGitRemote);
 		}
 		finally {
-			centralGitWorkingDirectory.removeRemote(originRemote);
+			centralGitWorkingDirectory.removeGitRemote(originGitRemote);
 		}
 	}
 
