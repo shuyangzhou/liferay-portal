@@ -28,6 +28,7 @@ import com.liferay.exportimport.kernel.lar.PortletDataHandlerControl;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.exportimport.kernel.staging.Staging;
+import com.liferay.friendly.url.model.FriendlyURLEntry;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.util.PropsValues;
@@ -53,9 +54,16 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class BlogsAdminPortletDataHandler extends BasePortletDataHandler {
 
+	public static final String[] CLASS_NAMES = {BlogsEntry.class.getName()};
+
 	public static final String NAMESPACE = "blogs";
 
 	public static final String SCHEMA_VERSION = "1.0.0";
+
+	@Override
+	public String[] getClassNames() {
+		return CLASS_NAMES;
+	}
 
 	@Override
 	public String getNamespace() {
@@ -156,6 +164,20 @@ public class BlogsAdminPortletDataHandler extends BasePortletDataHandler {
 		for (Element entryElement : entryElements) {
 			StagedModelDataHandlerUtil.importStagedModel(
 				portletDataContext, entryElement);
+		}
+
+		// Friendly URLs
+
+		Element friendlyURLEntriesElement =
+			portletDataContext.getImportDataGroupElement(
+				FriendlyURLEntry.class);
+
+		List<Element> friendlyURLEntryElements =
+			friendlyURLEntriesElement.elements();
+
+		for (Element friendlyURLEntryElement : friendlyURLEntryElements) {
+			StagedModelDataHandlerUtil.importStagedModel(
+				portletDataContext, friendlyURLEntryElement);
 		}
 
 		return null;

@@ -68,8 +68,8 @@ public class SearchSearchRequest
 	}
 
 	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
 	 * @return
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
 	 */
 	@Deprecated
 	public QueryConfig getQueryConfig() {

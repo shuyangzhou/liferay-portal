@@ -14,7 +14,7 @@
 
 package com.liferay.portal.osgi.debug.spring.extender.internal;
 
-import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.petra.string.StringBundler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -100,8 +100,7 @@ public class UnavailableComponentUtil {
 					sb.append("dependencies:\n\t\t");
 
 					for (ComponentDependencyDeclaration
-							componentDependencyDeclaration :
-								entry.getValue()) {
+							componentDependencyDeclaration : entry.getValue()) {
 
 						sb.append(componentDependencyDeclaration);
 						sb.append("\n\t\t");

@@ -34,6 +34,7 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.exportimport.kernel.staging.Staging;
 import com.liferay.exportimport.kernel.staging.StagingConstants;
+import com.liferay.friendly.url.model.FriendlyURLEntry;
 import com.liferay.journal.configuration.JournalServiceConfiguration;
 import com.liferay.journal.constants.JournalConstants;
 import com.liferay.journal.constants.JournalPortletKeys;
@@ -114,9 +115,17 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class JournalPortletDataHandler extends BasePortletDataHandler {
 
+	public static final String[] CLASS_NAMES =
+		{JournalArticle.class.getName(), JournalFolder.class.getName()};
+
 	public static final String NAMESPACE = "journal";
 
 	public static final String SCHEMA_VERSION = "1.1.0";
+
+	@Override
+	public String[] getClassNames() {
+		return CLASS_NAMES;
+	}
 
 	@Override
 	public String getNamespace() {
@@ -376,6 +385,20 @@ public class JournalPortletDataHandler extends BasePortletDataHandler {
 			}
 
 			_journalContent.clearCache();
+
+			// Friendy URLs
+
+			Element friendlyURLEntriesElement =
+				portletDataContext.getImportDataGroupElement(
+					FriendlyURLEntry.class);
+
+			List<Element> friendlyURLEntryElements =
+				friendlyURLEntriesElement.elements();
+
+			for (Element friendlyURLEntryElement : friendlyURLEntryElements) {
+				StagedModelDataHandlerUtil.importStagedModel(
+					portletDataContext, friendlyURLEntryElement);
+			}
 		}
 
 		return portletPreferences;
