@@ -16,7 +16,6 @@ package com.liferay.person.apio.internal.architect.resource;
 
 import static com.liferay.portal.apio.idempotent.Idempotent.idempotent;
 
-import com.liferay.address.apio.architect.identifier.AddressIdentifier;
 import com.liferay.apio.architect.credentials.Credentials;
 import com.liferay.apio.architect.file.BinaryFile;
 import com.liferay.apio.architect.functional.Try;
@@ -26,20 +25,17 @@ import com.liferay.apio.architect.representor.Representor;
 import com.liferay.apio.architect.resource.CollectionResource;
 import com.liferay.apio.architect.routes.CollectionRoutes;
 import com.liferay.apio.architect.routes.ItemRoutes;
-import com.liferay.email.apio.architect.identifier.EmailIdentifier;
+import com.liferay.organization.apio.architect.identifier.OrganizationIdentifier;
 import com.liferay.person.apio.architect.identifier.PersonIdentifier;
 import com.liferay.person.apio.internal.architect.form.PersonCreatorForm;
 import com.liferay.person.apio.internal.architect.form.PersonUpdaterForm;
 import com.liferay.person.apio.internal.model.UserWrapper;
 import com.liferay.person.apio.internal.query.FullNameQuery;
+import com.liferay.person.apio.internal.util.UserAccountRepresentorBuilderHelper;
 import com.liferay.petra.string.StringPool;
-import com.liferay.phone.apio.architect.identifier.PhoneIdentifier;
 import com.liferay.portal.apio.permission.HasPermission;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Contact;
-import com.liferay.portal.kernel.model.ContactModel;
-import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.ListTypeConstants;
 import com.liferay.portal.kernel.model.ListTypeModel;
 import com.liferay.portal.kernel.model.User;
@@ -57,8 +53,7 @@ import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.comparator.UserLastNameComparator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.role.apio.identifier.RoleIdentifier;
-import com.liferay.web.url.apio.architect.identifier.WebUrlIdentifier;
+import com.liferay.site.apio.architect.identifier.WebSiteIdentifier;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -66,10 +61,7 @@ import java.io.InputStream;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -106,7 +98,7 @@ public class PersonCollectionResource
 
 	@Override
 	public String getName() {
-		return "person";
+		return "user-account";
 	}
 
 	@Override
@@ -127,78 +119,16 @@ public class PersonCollectionResource
 	public Representor<UserWrapper> representor(
 		Representor.Builder<UserWrapper, Long> builder) {
 
-		return builder.types(
-			"Liferay:UserAccount", "Person"
-		).identifier(
-			User::getUserId
-		).addDate(
-			"birthDate", PersonCollectionResource::_getBirthday
-		).addLocalizedStringByLocale(
-			"honorificPrefix", _getContactField(Contact::getPrefixId)
-		).addLocalizedStringByLocale(
-			"honorificSuffix", _getContactField(Contact::getSuffixId)
-		).addNested(
-			"contactInformation", this::_getContact,
-			contactBuilder -> contactBuilder.types(
-				"ContactInformation"
-			).addString(
-				"facebookSn", ContactModel::getSmsSn
-			).addString(
-				"skypeSn", ContactModel::getSmsSn
-			).addString(
-				"twitterSn", ContactModel::getSmsSn
-			).build()
-		).addRelatedCollection(
-			"roles", RoleIdentifier.class
-		).addRelatedCollection(
-			"addresses", AddressIdentifier.class
-		).addRelatedCollection(
-			"emails", EmailIdentifier.class
-		).addRelatedCollection(
-			"phones", PhoneIdentifier.class
-		).addRelatedCollection(
-			"webUrls", WebUrlIdentifier.class
-		).addRelativeURL(
-			"image", UserWrapper::getPortraitURL
-		).addString(
-			"additionalName", User::getMiddleName
-		).addString(
-			"alternateName", User::getScreenName
-		).addString(
-			"dashboardURL", UserWrapper::getDashboardURL
-		).addString(
-			"email", User::getEmailAddress
-		).addString(
-			"familyName", User::getLastName
-		).addString(
-			"gender", PersonCollectionResource::_getGender
-		).addString(
-			"givenName", User::getFirstName
-		).addString(
-			"jobTitle", User::getJobTitle
-		).addString(
-			"name", User::getFullName
-		).addString(
-			"profileURL", UserWrapper::getProfileURL
-		).build();
-	}
+		Representor.FirstStep<UserWrapper> userWrapperFirstStep =
+			_userAccountRepresentorBuilderHelper.buildUserWrapperFirstStep(
+				builder);
 
-	private static Date _getBirthday(User user) {
-		return Try.fromFallible(
-			user::getBirthday
-		).orElse(
-			null
-		);
-	}
+		userWrapperFirstStep.addRelatedCollection(
+			"organizations", OrganizationIdentifier.class);
+		userWrapperFirstStep.addRelatedCollection(
+			"websites", WebSiteIdentifier.class);
 
-	private static String _getGender(User user) {
-		return Try.fromFallible(
-			user::isMale
-		).map(
-			male -> male ? "male" : "female"
-		).orElse(
-			null
-		);
+		return userWrapperFirstStep.build();
 	}
 
 	private UserWrapper _addUser(
@@ -251,32 +181,6 @@ public class PersonCollectionResource
 		}
 
 		return personUpdaterForm.getAlternateName();
-	}
-
-	private Contact _getContact(UserWrapper userWrapper) {
-		return Try.fromFallible(
-			userWrapper::getContact
-		).orElse(
-			null
-		);
-	}
-
-	private BiFunction<UserWrapper, Locale, String> _getContactField(
-		Function<Contact, Long> function) {
-
-		return (user, locale) -> Try.fromFallible(
-			user::getContact
-		).map(
-			function::apply
-		).map(
-			_listTypeService::getListType
-		).map(
-			ListType::getName
-		).map(
-			name -> LanguageUtil.get(locale, name)
-		).orElse(
-			null
-		);
 	}
 
 	private Integer _getDefaultValue(
@@ -466,6 +370,10 @@ public class PersonCollectionResource
 	private final TransactionConfig _transactionConfig =
 		TransactionConfig.Factory.create(
 			Propagation.REQUIRED, new Class<?>[] {Exception.class});
+
+	@Reference
+	private UserAccountRepresentorBuilderHelper
+		_userAccountRepresentorBuilderHelper;
 
 	@Reference
 	private UserLocalService _userLocalService;

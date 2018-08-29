@@ -25,6 +25,7 @@
 		<column name="toUserId" type="long" />
 		<column name="classNameId" type="long" />
 		<column name="classPK" type="long" />
+		<column name="shareable" type="boolean" />
 		<column name="actionIds" type="long" />
 
 		<!-- Finder methods -->
@@ -43,6 +44,11 @@
 			<finder-column name="classNameId" />
 		</finder>
 		<finder name="C_C" return-type="Collection">
+			<finder-column name="classNameId" />
+			<finder-column name="classPK" />
+		</finder>
+		<finder name="FU_C_C" return-type="Collection">
+			<finder-column name="fromUserId" />
 			<finder-column name="classNameId" />
 			<finder-column name="classPK" />
 		</finder>

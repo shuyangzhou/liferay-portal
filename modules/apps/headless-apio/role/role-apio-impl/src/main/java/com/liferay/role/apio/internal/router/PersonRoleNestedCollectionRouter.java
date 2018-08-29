@@ -14,20 +14,13 @@
 
 package com.liferay.role.apio.internal.router;
 
-import com.liferay.apio.architect.pagination.PageItems;
-import com.liferay.apio.architect.pagination.Pagination;
 import com.liferay.apio.architect.router.NestedCollectionRouter;
-import com.liferay.apio.architect.routes.NestedCollectionRoutes;
 import com.liferay.person.apio.architect.identifier.PersonIdentifier;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Role;
-import com.liferay.portal.kernel.service.RoleService;
 import com.liferay.role.apio.identifier.RoleIdentifier;
-
-import java.util.List;
+import com.liferay.role.apio.internal.router.base.BaseUserAccountRoleNestedCollectionRouter;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * Provides the information necessary to expose the Role resources contained
@@ -38,28 +31,8 @@ import org.osgi.service.component.annotations.Reference;
  * @review
  */
 @Component(immediate = true)
-public class PersonRoleNestedCollectionRouter implements
-	NestedCollectionRouter<Role, Long, RoleIdentifier, Long,
-		PersonIdentifier> {
-
-	@Override
-	public NestedCollectionRoutes<Role, Long, Long> collectionRoutes(
-		NestedCollectionRoutes.Builder<Role, Long, Long> builder) {
-
-		return builder.addGetter(
-			this::_getPageItems
-		).build();
-	}
-
-	private PageItems<Role> _getPageItems(Pagination pagination, long userId)
-		throws PortalException {
-
-		List<Role> roles = _roleService.getUserRoles(userId);
-
-		return new PageItems<>(roles, roles.size());
-	}
-
-	@Reference
-	private RoleService _roleService;
-
+public class PersonRoleNestedCollectionRouter
+	extends BaseUserAccountRoleNestedCollectionRouter<PersonIdentifier>
+	implements NestedCollectionRouter
+		<Role, Long, RoleIdentifier, Long, PersonIdentifier> {
 }

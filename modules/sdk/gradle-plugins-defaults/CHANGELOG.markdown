@@ -4269,7 +4269,7 @@ to Maven.
 3.12.97.
 
 ### Fixed
-- [LPS-84055]: The `printDependentArtifact` task should print the project
+- [LPS-84055]: Fix the `printDependentArtifact` task so it prints the project
 directory when it has a dependency with version `default`.
 
 ## 5.5.3 - 2018-08-05
@@ -4303,7 +4303,7 @@ directory when it has a dependency with version `default`.
 3.12.102.
 
 ### Fixed
-- [LPS-84055]: The `printDependentArtifact` task should print the project
+- [LPS-84055]: Fix the `printDependentArtifact` task so it prints the project
 directory when it has a `compile*` dependency with the version `default`.
 
 ## 5.5.8 - 2018-08-07
@@ -4321,8 +4321,8 @@ directory when it has a `compile*` dependency with the version `default`.
 ## 5.5.10 - 2018-08-09
 
 ### Fixed
-- [LPS-84055]: The `writeArtifactPublishCommands` task should not be skipped if
-it has `test` dependency with the version `default`.
+- [LPS-84055]: Fix the `writeArtifactPublishCommands` task so it's not skipped
+when the `test` dependency is version `default`.
 
 ## 5.5.11 - 2018-08-09
 
@@ -4333,9 +4333,9 @@ it has `test` dependency with the version `default`.
 ## 5.5.12 - 2018-08-09
 
 ### Changed
-- [LPS-84313]: The `com.liferay.spring.boot.defaults` plugin now automatically
-applies the `com.liferay.test.integration.base` plugin. Configure the
-`check` task to depend on the `testIntegration` task.
+- [LPS-84313]: Update the `com.liferay.spring.boot.defaults` plugin to
+automatically apply the `com.liferay.test.integration.base` plugin. Configure
+the `check` task to depend on the `testIntegration` task.
 
 ## 5.5.13 - 2018-08-10
 
@@ -4366,6 +4366,56 @@ applies the `com.liferay.test.integration.base` plugin. Configure the
 ### Changed
 - [LPS-83790]: Update the [Liferay Gradle Plugins] dependency to version
 3.12.110.
+
+## 5.5.18 - 2018-08-20
+
+### Changed
+- [LPS-84621]: Disable the `validateSchema` task for CI.
+
+## 5.5.19 - 2018-08-21
+
+### Changed
+- [LPS-84615]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.111.
+- [LPS-84624]: Update the `com.liferay.spring.boot.defaults` plugin to configure
+the `test` and `testIntegration` tasks with sensible defaults.
+
+## 5.5.20 - 2018-08-22
+
+### Changed
+- [LPS-84218]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.112.
+
+## 5.5.21 - 2018-08-23
+
+### Changed
+- [LPS-84119]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.113.
+
+## 5.5.22 - 2018-08-23
+
+### Added
+- [LPS-83929]: Add the ability to exclude certain projects from executing the
+`printDependentArtifact` task by setting the property
+`printDependentArtifact.ignore.project.regex`.
+
+### Changed
+- [LPS-83067]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.114.
+- [LPS-83067]: Update the [Liferay Gradle Plugins Baseline] dependency to
+version 1.3.2.
+
+## 5.5.23 - 2018-08-27
+
+### Changed
+- [LPS-84119]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.115.
+
+## 5.5.24 - 2018-08-27
+
+### Changed
+- [LPS-84119]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.116.
 
 [Find Security Bugs]: https://github.com/liferay/liferay-portal/tree/master/modules/third-party/com-h3xstream-findsecbugs
 [Gradle Dependency Management]: https://github.com/spring-gradle-plugins/dependency-management-plugin
@@ -4824,9 +4874,13 @@ applies the `com.liferay.test.integration.base` plugin. Configure the
 [LPS-84055]: https://issues.liferay.com/browse/LPS-84055
 [LPS-84119]: https://issues.liferay.com/browse/LPS-84119
 [LPS-84213]: https://issues.liferay.com/browse/LPS-84213
+[LPS-84218]: https://issues.liferay.com/browse/LPS-84218
 [LPS-84307]: https://issues.liferay.com/browse/LPS-84307
 [LPS-84313]: https://issues.liferay.com/browse/LPS-84313
 [LPS-84473]: https://issues.liferay.com/browse/LPS-84473
+[LPS-84615]: https://issues.liferay.com/browse/LPS-84615
+[LPS-84621]: https://issues.liferay.com/browse/LPS-84621
+[LPS-84624]: https://issues.liferay.com/browse/LPS-84624
 [LRDOCS-2594]: https://issues.liferay.com/browse/LRDOCS-2594
 [LRDOCS-2841]: https://issues.liferay.com/browse/LRDOCS-2841
 [LRDOCS-2981]: https://issues.liferay.com/browse/LRDOCS-2981

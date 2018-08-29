@@ -8,9 +8,7 @@
 	</command>
 
 	<command name="checkPageName">
-		<execute function="Click" locator1="PagesConfiguration#PAGES_ALL_PUBLIC_PAGES_CHECKBOX" />
-
-		<execute function="Click" locator1="PagesConfiguration#PAGES_ALL_PUBLIC_PAGES_CHECKBOX" />
+		<execute macro="ContentConfiguration#uncheckPages" />
 
 		<for list="${checkPageName}" param="pageName">
 			<var name="key_pageName" value="${pageName}" />
@@ -140,6 +138,12 @@
 		<execute function="Click" locator1="PagesConfiguration#PAGES_LOGO_CHECKBOX" />
 	</command>
 
+	<command name="uncheckPages">
+		<execute function="Click" locator1="PagesConfiguration#PAGES_ALL_PUBLIC_PAGES_CHECKBOX" />
+
+		<execute function="Click" locator1="PagesConfiguration#PAGES_ALL_PUBLIC_PAGES_CHECKBOX" />
+	</command>
+
 	<command name="uncheckSitePagesSettings">
 		<execute function="Click" locator1="PagesConfiguration#PAGES_SITE_PAGES_SETTINGS_CHECKBOX" />
 	</command>
@@ -149,8 +153,6 @@
 	</command>
 
 	<command name="uncheckSubContent">
-		<execute function="SelectFrame" value1="IFrame#PUBLISH_LATEST_CHANGES_DIALOG" />
-
 		<var name="key_contentName" value="${mainContent}" />
 
 		<execute function="Click" locator1="ExportImport#CONTENT_CHOOSE_CONTENT_CONTENT_CHANGE_LINK" />

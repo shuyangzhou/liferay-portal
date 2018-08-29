@@ -25,7 +25,9 @@ import com.liferay.dynamic.data.mapping.data.provider.web.internal.security.perm
 import com.liferay.dynamic.data.mapping.data.provider.web.internal.util.DDMDataProviderPortletUtil;
 import com.liferay.dynamic.data.mapping.form.renderer.DDMFormRenderer;
 import com.liferay.dynamic.data.mapping.form.renderer.DDMFormRenderingContext;
-import com.liferay.dynamic.data.mapping.io.DDMFormValuesJSONDeserializer;
+import com.liferay.dynamic.data.mapping.io.DDMFormValuesDeserializer;
+import com.liferay.dynamic.data.mapping.io.DDMFormValuesDeserializerDeserializeRequest;
+import com.liferay.dynamic.data.mapping.io.DDMFormValuesDeserializerDeserializeResponse;
 import com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormLayout;
@@ -85,7 +87,7 @@ public class DDMDataProviderDisplayContext {
 		DDMDataProviderInstanceService ddmDataProviderInstanceService,
 		DDMDataProviderTracker ddmDataProviderTracker,
 		DDMFormRenderer ddmFormRenderer,
-		DDMFormValuesJSONDeserializer ddmFormValuesJSONDeserializer,
+		DDMFormValuesDeserializer ddmFormValuesDeserializer,
 		UserLocalService userLocalService) {
 
 		_renderRequest = renderRequest;
@@ -93,7 +95,7 @@ public class DDMDataProviderDisplayContext {
 		_ddmDataProviderInstanceService = ddmDataProviderInstanceService;
 		_ddmDataProviderTracker = ddmDataProviderTracker;
 		_ddmFormRenderer = ddmFormRenderer;
-		_ddmFormValuesJSONDeserializer = ddmFormValuesJSONDeserializer;
+		_ddmFormValuesDeserializer = ddmFormValuesDeserializer;
 		_userLocalService = userLocalService;
 
 		_ddmDataProviderRequestHelper = new DDMDataProviderRequestHelper(
@@ -119,7 +121,6 @@ public class DDMDataProviderDisplayContext {
 
 	public List<DropdownItem> getActionItemsDropdownItems() {
 		return new DropdownItemList() {
-
 			{
 				add(
 					dropdownItem -> {
@@ -133,7 +134,6 @@ public class DDMDataProviderDisplayContext {
 						dropdownItem.setQuickAction(true);
 					});
 			}
-
 		};
 	}
 
@@ -152,14 +152,12 @@ public class DDMDataProviderDisplayContext {
 		}
 
 		return new CreationMenu() {
-
 			{
 				for (String ddmDataProviderType : getDDMDataProviderTypes()) {
 					addPrimaryDropdownItem(
 						getCreationMenuDropdownItem(ddmDataProviderType));
 				}
 			}
-
 		};
 	}
 
@@ -181,9 +179,8 @@ public class DDMDataProviderDisplayContext {
 			createDDMFormRenderingContext();
 
 		if (_ddmDataProviderInstance != null) {
-			DDMFormValues ddmFormValues =
-				_ddmFormValuesJSONDeserializer.deserialize(
-					ddmForm, _ddmDataProviderInstance.getDefinition());
+			DDMFormValues ddmFormValues = deserialize(
+				ddmDataProviderInstance.getDefinition(), ddmForm);
 
 			Set<String> passwordDDMFormFieldNames =
 				DDMDataProviderPortletUtil.getDDMFormFieldNamesByType(
@@ -393,7 +390,6 @@ public class DDMDataProviderDisplayContext {
 
 	public List<ViewTypeItem> getViewTypesItems() {
 		return new ViewTypeItemList(getPortletURL(), getDisplayStyle()) {
-
 			{
 				String[] viewTypes = getDisplayViews();
 
@@ -406,7 +402,6 @@ public class DDMDataProviderDisplayContext {
 					}
 				}
 			}
-
 		};
 	}
 
@@ -460,6 +455,18 @@ public class DDMDataProviderDisplayContext {
 		ddmFormRenderingContext.setShowRequiredFieldsWarning(false);
 
 		return ddmFormRenderingContext;
+	}
+
+	protected DDMFormValues deserialize(String content, DDMForm ddmForm) {
+		DDMFormValuesDeserializerDeserializeRequest.Builder builder =
+			DDMFormValuesDeserializerDeserializeRequest.Builder.newBuilder(
+				content, ddmForm);
+
+		DDMFormValuesDeserializerDeserializeResponse
+			ddmFormValuesDeserializerDeserializeResponse =
+				_ddmFormValuesDeserializer.deserialize(builder.build());
+
+		return ddmFormValuesDeserializerDeserializeResponse.getDDMFormValues();
 	}
 
 	protected Consumer<DropdownItem> getCreationMenuDropdownItem(
@@ -520,7 +527,6 @@ public class DDMDataProviderDisplayContext {
 
 	protected List<DropdownItem> getFilterNavigationDropdownItems() {
 		return new DropdownItemList() {
-
 			{
 				add(
 					dropdownItem -> {
@@ -535,7 +541,6 @@ public class DDMDataProviderDisplayContext {
 								"all"));
 					});
 			}
-
 		};
 	}
 
@@ -555,12 +560,10 @@ public class DDMDataProviderDisplayContext {
 
 	protected List<DropdownItem> getOrderByDropdownItems() {
 		return new DropdownItemList() {
-
 			{
 				add(getOrderByDropdownItem("modified-date"));
 				add(getOrderByDropdownItem("name"));
 			}
-
 		};
 	}
 
@@ -647,7 +650,7 @@ public class DDMDataProviderDisplayContext {
 	private final DDMDataProviderRequestHelper _ddmDataProviderRequestHelper;
 	private final DDMDataProviderTracker _ddmDataProviderTracker;
 	private final DDMFormRenderer _ddmFormRenderer;
-	private final DDMFormValuesJSONDeserializer _ddmFormValuesJSONDeserializer;
+	private final DDMFormValuesDeserializer _ddmFormValuesDeserializer;
 	private String _displayStyle;
 	private final RenderRequest _renderRequest;
 	private final RenderResponse _renderResponse;

@@ -20,7 +20,9 @@ import com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.exception.RequiredTemplateException;
 import com.liferay.dynamic.data.mapping.exception.StorageFieldRequiredException;
 import com.liferay.dynamic.data.mapping.exception.StructureDefinitionException;
-import com.liferay.dynamic.data.mapping.io.DDMFormXSDDeserializer;
+import com.liferay.dynamic.data.mapping.io.DDMFormDeserializer;
+import com.liferay.dynamic.data.mapping.io.DDMFormDeserializerDeserializeRequest;
+import com.liferay.dynamic.data.mapping.io.DDMFormDeserializerDeserializeResponse;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
@@ -62,8 +64,6 @@ import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.spring.aop.ServiceBeanAopProxy;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.registry.Registry;
-import com.liferay.registry.RegistryUtil;
 
 import java.io.InputStream;
 
@@ -104,8 +104,6 @@ public class JournalArticleServiceTest {
 
 	@Before
 	public void setUp() throws Exception {
-		setUpDDMFormXSDDeserializer();
-
 		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
 
 		ServiceContext serviceContext =
@@ -513,6 +511,41 @@ public class JournalArticleServiceTest {
 	}
 
 	@Test
+	public void testGetLatestArticlesByStatus() throws Exception {
+		List<JournalArticle> articles = addArticles(
+			1, RandomTestUtil.randomString());
+
+		articles.add(0, _article);
+
+		int count = JournalArticleServiceUtil.getLatestArticlesCount(
+			_group.getGroupId(), WorkflowConstants.STATUS_APPROVED);
+
+		Assert.assertEquals(2, count);
+
+		List<JournalArticle> latestArticles =
+			JournalArticleServiceUtil.getLatestArticles(
+				_group.getGroupId(), WorkflowConstants.STATUS_APPROVED,
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+
+		Assert.assertEquals(latestArticles, articles);
+
+		_article = updateArticleStatus(
+			_article, WorkflowConstants.STATUS_DRAFT);
+
+		int draftCount = JournalArticleServiceUtil.getLatestArticlesCount(
+			_group.getGroupId(), WorkflowConstants.STATUS_DRAFT);
+
+		Assert.assertEquals(1, draftCount);
+
+		List<JournalArticle> draftArticles =
+			JournalArticleServiceUtil.getLatestArticles(
+				_group.getGroupId(), WorkflowConstants.STATUS_DRAFT,
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+
+		Assert.assertEquals(_article, draftArticles.get(0));
+	}
+
+	@Test
 	public void testSearchArticlesByKeyword() throws Exception {
 		List<JournalArticle> expectedArticles = createArticlesWithKeyword(2);
 
@@ -673,13 +706,6 @@ public class JournalArticleServiceTest {
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
-	protected void setUpDDMFormXSDDeserializer() {
-		Registry registry = RegistryUtil.getRegistry();
-
-		_ddmFormXSDDeserializer = registry.getService(
-			DDMFormXSDDeserializer.class);
-	}
-
 	protected void testAddArticleRequiredFields(
 			String ddmStructureDefinition, String journalArticleContent,
 			Map<String, String> requiredFields)
@@ -687,7 +713,15 @@ public class JournalArticleServiceTest {
 
 		String definition = readText(ddmStructureDefinition);
 
-		DDMForm ddmForm = _ddmFormXSDDeserializer.deserialize(definition);
+		DDMFormDeserializerDeserializeRequest.Builder builder =
+			DDMFormDeserializerDeserializeRequest.Builder.newBuilder(
+				definition);
+
+		DDMFormDeserializerDeserializeResponse
+			ddmFormDeserializerDeserializeResponse =
+				_ddmFormDeserializer.deserialize(builder.build());
+
+		DDMForm ddmForm = ddmFormDeserializerDeserializeResponse.getDDMForm();
 
 		DDMStructure ddmStructure = DDMStructureTestUtil.addStructure(
 			_group.getGroupId(), JournalArticle.class.getName(), ddmForm);
@@ -754,7 +788,9 @@ public class JournalArticleServiceTest {
 	private static Object _journalArticleLocalServiceImplInstance;
 
 	private JournalArticle _article;
-	private DDMFormXSDDeserializer _ddmFormXSDDeserializer;
+
+	@Inject(filter = "ddm.form.deserializer.type=xsd")
+	private DDMFormDeserializer _ddmFormDeserializer;
 
 	@DeleteAfterTestRun
 	private Group _group;
