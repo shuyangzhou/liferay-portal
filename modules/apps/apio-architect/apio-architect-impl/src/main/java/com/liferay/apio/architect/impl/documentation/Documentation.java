@@ -16,6 +16,7 @@ package com.liferay.apio.architect.impl.documentation;
 
 import com.liferay.apio.architect.documentation.APIDescription;
 import com.liferay.apio.architect.documentation.APITitle;
+import com.liferay.apio.architect.documentation.contributor.CustomDocumentation;
 import com.liferay.apio.architect.impl.url.ApplicationURL;
 import com.liferay.apio.architect.representor.Representor;
 import com.liferay.apio.architect.routes.CollectionRoutes;
@@ -41,7 +42,8 @@ public class Documentation {
 		Supplier<Map<String, CollectionRoutes>> collectionRoutesMapSupplier,
 		Supplier<Map<String, ItemRoutes>> itemRoutesMapSupplier,
 		Supplier<Map<String, NestedCollectionRoutes>>
-			nestedCollectionRoutesMapSupplier) {
+			nestedCollectionRoutesMapSupplier,
+		Supplier<CustomDocumentation> customDocumentationSupplier) {
 
 		_apiTitleSupplier = apiTitleSupplier;
 		_apiDescriptionSupplier = apiDescriptionSupplier;
@@ -50,6 +52,7 @@ public class Documentation {
 		_routesMapSupplier = collectionRoutesMapSupplier;
 		_itemRoutesMapSupplier = itemRoutesMapSupplier;
 		_nestedCollectionRoutesMapSupplier = nestedCollectionRoutesMapSupplier;
+		_customDocumentationSupplier = customDocumentationSupplier;
 	}
 
 	/**
@@ -85,6 +88,10 @@ public class Documentation {
 	 */
 	public Map<String, CollectionRoutes> getCollectionRoutes() {
 		return _routesMapSupplier.get();
+	}
+
+	public CustomDocumentation getCustomDocumentation() {
+		return _customDocumentationSupplier.get();
 	}
 
 	public Optional<String> getEntryPointOptional() {
@@ -125,6 +132,7 @@ public class Documentation {
 
 	private final Supplier<Optional<APIDescription>> _apiDescriptionSupplier;
 	private final Supplier<Optional<APITitle>> _apiTitleSupplier;
+	private final Supplier<CustomDocumentation> _customDocumentationSupplier;
 	private final Supplier<Optional<ApplicationURL>> _entryPointSupplier;
 	private final Supplier<Map<String, ItemRoutes>> _itemRoutesMapSupplier;
 	private final Supplier<Map<String, NestedCollectionRoutes>>

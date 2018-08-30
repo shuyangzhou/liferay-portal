@@ -832,8 +832,8 @@ public class FormUtilTest {
 	}
 
 	private <T> void _validateOptionalListMethod(
-		BiFunction<Body, List<T>,
-			FieldFormBiConsumer<List<T>, List<T>>> biFunction) {
+		BiFunction
+			<Body, List<T>, FieldFormBiConsumer<List<T>, List<T>>> biFunction) {
 
 		List<T> list = new ArrayList<>();
 

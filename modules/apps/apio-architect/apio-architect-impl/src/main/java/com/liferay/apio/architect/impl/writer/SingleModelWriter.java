@@ -612,7 +612,7 @@ public class SingleModelWriter<T> {
 		fieldsWriter.writeNestedLists(
 			baseRepresentorFunction, singleModel,
 			(nestedListFieldFunction, list) -> _writeNestedList(
-				nestedListFieldFunction, list, _jsonObjectBuilder, null));
+				nestedListFieldFunction, list, itemJsonObjectBuilder, null));
 
 		_singleModelMessageMapper.onFinishNestedCollectionItem(
 			collectionJSONObjectBuilder, itemJsonObjectBuilder, singleModel);

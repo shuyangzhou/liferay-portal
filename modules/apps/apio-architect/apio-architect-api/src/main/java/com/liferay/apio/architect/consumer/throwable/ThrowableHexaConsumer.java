@@ -78,8 +78,8 @@ public interface ThrowableHexaConsumer<A, B, C, D, E, F> {
 	 */
 	public default ThrowableHexaConsumer<A, B, C, D, E, F> andThen(
 		ThrowableHexaConsumer
-			<? super A, ? super B, ? super C, ? super D, ? super E,
-				? super F> after) {
+			<? super A, ? super B, ? super C, ? super D, ? super E, ? super F>
+				after) {
 
 		Objects.requireNonNull(after);
 
