@@ -20,9 +20,6 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.util.PropsUtil;
-import com.liferay.registry.collections.ServiceTrackerMap;
-import com.liferay.registry.collections.ServiceTrackerMapFactory;
-import com.liferay.registry.collections.ServiceTrackerMapFactoryUtil;
 
 import java.util.Collections;
 import java.util.Set;
@@ -33,21 +30,10 @@ import java.util.concurrent.CopyOnWriteArraySet;
  */
 public class LiferayJSONDeserializationWhitelist {
 
-	public LiferayJSONDeserializationWhitelist() {
-		ServiceTrackerMapFactory serviceTrackerMapFactory =
-			ServiceTrackerMapFactoryUtil.getServiceTrackerMapFactory();
-
-		_osgiAllowedClassNames = serviceTrackerMapFactory.openSingleValueMap(
-			null, PropsKeys.JSON_DESERIALIZATION_WHITELIST_CLASS_NAMES);
-	}
-
 	public boolean isWhitelisted(String className) {
 		boolean whitelisted = false;
 
 		if (_registeredClassNames.contains(className)) {
-			whitelisted = true;
-		}
-		else if (_osgiAllowedClassNames.containsKey(className)) {
 			whitelisted = true;
 		}
 		else if (ArrayUtil.contains(
@@ -87,7 +73,6 @@ public class LiferayJSONDeserializationWhitelist {
 	private static final Log _log = LogFactoryUtil.getLog(
 		LiferayJSONDeserializationWhitelist.class);
 
-	private final ServiceTrackerMap<String, ?> _osgiAllowedClassNames;
 	private final Set<String> _registeredClassNames =
 		new CopyOnWriteArraySet<>();
 

@@ -16,6 +16,7 @@ package com.liferay.portal.scheduler.quartz.internal;
 
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.json.jabsorb.serializer.LiferayJSONDeserializationWhitelist;
 import com.liferay.portal.kernel.cluster.ClusterExecutor;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -41,7 +42,6 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.scheduler.quartz.internal.job.MessageSenderJob;
-import com.liferay.portal.scheduler.quartz.internal.json.jabsorb.serializer.QuartzLiferayJSONDeserializationWhitelist;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -558,6 +558,8 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 
 	@Activate
 	protected void activate() {
+		_liferayJSONDeserializationWhitelist.register(Message.class);
+
 		_schedulerEngineEnabled = GetterUtil.getBoolean(
 			_props.get(PropsKeys.SCHEDULER_ENABLED));
 
@@ -1006,6 +1008,10 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 	@Reference
 	private JSONFactory _jsonFactory;
 
+	@Reference
+	private LiferayJSONDeserializationWhitelist
+		_liferayJSONDeserializationWhitelist;
+
 	private Scheduler _memoryScheduler;
 
 	@Reference
@@ -1013,11 +1019,6 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 
 	private Scheduler _persistedScheduler;
 	private Props _props;
-
-	@Reference
-	private QuartzLiferayJSONDeserializationWhitelist
-		_quartzLiferayJSONDeserializationWhitelist;
-
 	private volatile boolean _schedulerEngineEnabled;
 
 	@Reference(

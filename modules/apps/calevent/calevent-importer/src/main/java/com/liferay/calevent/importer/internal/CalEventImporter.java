@@ -35,7 +35,6 @@ import com.liferay.calendar.recurrence.RecurrenceSerializer;
 import com.liferay.calendar.recurrence.Weekday;
 import com.liferay.calendar.service.CalendarBookingLocalService;
 import com.liferay.calendar.service.CalendarResourceLocalService;
-import com.liferay.calevent.importer.internal.json.jabsorb.serializer.CalEventImporterLiferayJSONDeserializationWhitelist;
 import com.liferay.counter.kernel.service.CounterLocalService;
 import com.liferay.expando.kernel.model.ExpandoRow;
 import com.liferay.expando.kernel.model.ExpandoTable;
@@ -51,7 +50,9 @@ import com.liferay.message.boards.service.MBDiscussionLocalService;
 import com.liferay.message.boards.service.MBMessageLocalService;
 import com.liferay.message.boards.service.MBThreadLocalService;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.json.jabsorb.serializer.LiferayJSONDeserializationWhitelist;
 import com.liferay.portal.kernel.cal.DayAndPosition;
+import com.liferay.portal.kernel.cal.Duration;
 import com.liferay.portal.kernel.cal.TZSRecurrence;
 import com.liferay.portal.kernel.dao.db.DBInspector;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
@@ -102,6 +103,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -121,6 +123,10 @@ public class CalEventImporter {
 
 	@Activate
 	protected void activate() throws Exception {
+		_liferayJSONDeserializationWhitelist.register(
+			DayAndPosition.class, Duration.class, TZSRecurrence.class,
+			GregorianCalendar.class);
+
 		initJSONSerializer();
 
 		long start = System.currentTimeMillis();
@@ -1511,11 +1517,6 @@ public class CalEventImporter {
 	private AssetVocabularyLocalService _assetVocabularyLocalService;
 	private CalendarBookingLocalService _calendarBookingLocalService;
 	private CalendarResourceLocalService _calendarResourceLocalService;
-
-	@Reference
-	private CalEventImporterLiferayJSONDeserializationWhitelist
-		_calEventImporterLiferayJSONDeserializationWhitelist;
-
 	private ClassNameLocalService _classNameLocalService;
 	private CounterLocalService _counterLocalService;
 
@@ -1530,6 +1531,11 @@ public class CalEventImporter {
 
 	private GroupLocalService _groupLocalService;
 	private JSONSerializer _jsonSerializer;
+
+	@Reference
+	private LiferayJSONDeserializationWhitelist
+		_liferayJSONDeserializationWhitelist;
+
 	private MBDiscussionLocalService _mbDiscussionLocalService;
 	private MBMessageLocalService _mbMessageLocalService;
 	private MBThreadLocalService _mbThreadLocalService;
