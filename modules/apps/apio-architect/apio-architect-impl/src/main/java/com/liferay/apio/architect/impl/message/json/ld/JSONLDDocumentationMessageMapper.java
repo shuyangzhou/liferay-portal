@@ -74,7 +74,7 @@ public class JSONLDDocumentationMessageMapper
 	@Override
 	public void mapOperation(
 		JSONObjectBuilder jsonObjectBuilder, String resourceName, String type,
-		Operation operation) {
+		Operation operation, String description) {
 
 		jsonObjectBuilder.field(
 			"@id"
@@ -89,10 +89,12 @@ public class JSONLDDocumentationMessageMapper
 			getOperationTypes(operation)
 		);
 
+		HTTPMethod httpMethod = operation.getHttpMethod();
+
 		jsonObjectBuilder.field(
 			"method"
 		).stringValue(
-			operation.getHttpMethod().toString()
+			httpMethod.toString()
 		);
 
 		jsonObjectBuilder.field(
@@ -100,11 +102,14 @@ public class JSONLDDocumentationMessageMapper
 		).stringValue(
 			_getReturnValue(type, operation)
 		);
+
+		_addDescription(jsonObjectBuilder, description);
 	}
 
 	@Override
 	public void mapProperty(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName) {
+		JSONObjectBuilder jsonObjectBuilder, String fieldName,
+		String description) {
 
 		jsonObjectBuilder.field(
 			"@type"
@@ -117,11 +122,14 @@ public class JSONLDDocumentationMessageMapper
 		).stringValue(
 			fieldName
 		);
+
+		_addDescription(jsonObjectBuilder, description);
 	}
 
 	@Override
 	public void mapResource(
-		JSONObjectBuilder jsonObjectBuilder, String resourceType) {
+		JSONObjectBuilder jsonObjectBuilder, String resourceType,
+		String description) {
 
 		jsonObjectBuilder.field(
 			"@id"
@@ -140,11 +148,14 @@ public class JSONLDDocumentationMessageMapper
 		).stringValue(
 			resourceType
 		);
+
+		_addDescription(jsonObjectBuilder, description);
 	}
 
 	@Override
 	public void mapResourceCollection(
-		JSONObjectBuilder jsonObjectBuilder, String resourceType) {
+		JSONObjectBuilder jsonObjectBuilder, String resourceType,
+		String description) {
 
 		jsonObjectBuilder.field(
 			"@id"
@@ -183,12 +194,14 @@ public class JSONLDDocumentationMessageMapper
 				JSONObjectBuilder propertyJsonObjectBuilder =
 					new JSONObjectBuilder();
 
-				mapProperty(propertyJsonObjectBuilder, fieldName);
+				mapProperty(propertyJsonObjectBuilder, fieldName, description);
 
 				onFinishProperty(
 					jsonObjectBuilder, propertyJsonObjectBuilder, fieldName);
 			}
 		);
+
+		_addDescription(jsonObjectBuilder, description);
 	}
 
 	@Override
@@ -298,6 +311,18 @@ public class JSONLDDocumentationMessageMapper
 		).add(
 			resourceJsonObjectBuilder
 		);
+	}
+
+	private void _addDescription(
+		JSONObjectBuilder documentationJsonObjectBuilder, String description) {
+
+		if (description != null) {
+			documentationJsonObjectBuilder.field(
+				"comment"
+			).stringValue(
+				description
+			);
+		}
 	}
 
 	private String _getReturnValue(String type, Operation operation) {

@@ -50,7 +50,7 @@ public class ApiDocumentationFilter implements ContainerResponseFilter {
 		if ("/".equals(uriInfo.getPath())) {
 			StringBuilder linkValueStringBuilder = new StringBuilder();
 
-			linkValueStringBuilder.append("Link: <");
+			linkValueStringBuilder.append("<");
 			linkValueStringBuilder.append(uriInfo.getBaseUri());
 			linkValueStringBuilder.append("doc>; rel=");
 			linkValueStringBuilder.append(_HYDRA_DOCUMENTATION_REF);
