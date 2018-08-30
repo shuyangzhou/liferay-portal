@@ -16,7 +16,9 @@ package com.liferay.apio.architect.test.util.internal.writer;
 
 import static com.liferay.apio.architect.test.util.writer.MockWriterUtil.getRequestInfo;
 
+import com.liferay.apio.architect.documentation.contributor.CustomDocumentation;
 import com.liferay.apio.architect.impl.documentation.Documentation;
+import com.liferay.apio.architect.impl.documentation.contributor.CustomDocumentationImpl;
 import com.liferay.apio.architect.impl.message.json.DocumentationMessageMapper;
 import com.liferay.apio.architect.impl.routes.CollectionRoutesImpl;
 import com.liferay.apio.architect.impl.routes.ItemRoutesImpl;
@@ -61,6 +63,14 @@ public class MockDocumentationWriter {
 				},
 				__ -> null, __ -> null);
 
+		CustomDocumentation.Builder customDocumentationBuilder =
+			new CustomDocumentationImpl.BuilderImpl();
+
+		customDocumentationBuilder.addLocalizedDescription(
+			"root/retrieve", __ -> "retrieve description");
+		customDocumentationBuilder.addDescription(
+			"binary1", "binary description");
+
 		ItemRoutes.Builder itemBuilder = new ItemRoutesImpl.BuilderImpl<>(
 			"name", null,
 			__ -> {
@@ -83,6 +93,9 @@ public class MockDocumentationWriter {
 		CollectionRoutes<String, Object> collectionRoutes =
 			collectionBuilder.build();
 
+		CustomDocumentation customDocumentation =
+			customDocumentationBuilder.build();
+
 		ItemRoutes itemRoutes = itemBuilder.build();
 
 		NestedCollectionRoutes nestedCollectionRoutes = nestedBuilder.build();
@@ -93,7 +106,8 @@ public class MockDocumentationWriter {
 			() -> Optional.of(() -> "Entrypoint"), () -> root,
 			() -> Collections.singletonMap("root", collectionRoutes),
 			() -> Collections.singletonMap("root", itemRoutes),
-			() -> Collections.singletonMap("root", nestedCollectionRoutes));
+			() -> Collections.singletonMap("root", nestedCollectionRoutes),
+			() -> customDocumentation);
 
 		DocumentationWriter documentationWriter = DocumentationWriter.create(
 			builder -> builder.documentation(

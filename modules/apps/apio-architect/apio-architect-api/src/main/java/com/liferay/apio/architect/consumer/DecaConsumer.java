@@ -82,8 +82,9 @@ public interface DecaConsumer<A, B, C, D, E, F, G, H, I, J> {
 	 *         {@code accept} method, as well as that of {@code after}
 	 */
 	public default DecaConsumer<A, B, C, D, E, F, G, H, I, J> andThen(
-		DecaConsumer<? super A, ? super B, ? super C, ? super D, ? super E,
-			? super F, ? super G, ? super H, ? super I, ? super J> after) {
+		DecaConsumer
+			<? super A, ? super B, ? super C, ? super D, ? super E, ? super F,
+				? super G, ? super H, ? super I, ? super J> after) {
 
 		Objects.requireNonNull(after);
 
