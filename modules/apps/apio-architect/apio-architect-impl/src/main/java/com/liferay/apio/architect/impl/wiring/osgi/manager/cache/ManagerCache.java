@@ -16,6 +16,7 @@ package com.liferay.apio.architect.impl.wiring.osgi.manager.cache;
 
 import static javax.ws.rs.core.Variant.VariantListBuilder.newInstance;
 
+import com.liferay.apio.architect.documentation.contributor.CustomDocumentation;
 import com.liferay.apio.architect.identifier.Identifier;
 import com.liferay.apio.architect.impl.message.json.BatchResultMessageMapper;
 import com.liferay.apio.architect.impl.message.json.DocumentationMessageMapper;
@@ -138,6 +139,16 @@ public class ManagerCache {
 		).map(
 			Unsafe::unsafeCast
 		);
+	}
+
+	public CustomDocumentation getDocumentationContribution(
+		EmptyFunction computeEmptyFunction) {
+
+		if (_customDocumentation == null) {
+			computeEmptyFunction.invoke();
+		}
+
+		return _customDocumentation;
 	}
 
 	/**
@@ -499,6 +510,12 @@ public class ManagerCache {
 		_collectionRoutes.put(key, collectionRoutes);
 	}
 
+	public void putDocumentationContribution(
+		CustomDocumentation customDocumentation) {
+
+		_customDocumentation = customDocumentation;
+	}
+
 	/**
 	 * Adds a documentation message mapper.
 	 *
@@ -737,6 +754,7 @@ public class ManagerCache {
 
 	private Map<MediaType, BatchResultMessageMapper> _batchResultMessageMappers;
 	private Map<String, CollectionRoutes> _collectionRoutes;
+	private CustomDocumentation _customDocumentation;
 	private Map<MediaType, DocumentationMessageMapper>
 		_documentationMessageMappers;
 	private Map<MediaType, EntryPointMessageMapper> _entryPointMessageMappers;

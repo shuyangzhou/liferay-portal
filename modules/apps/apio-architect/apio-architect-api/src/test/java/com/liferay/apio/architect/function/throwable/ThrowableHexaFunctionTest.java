@@ -28,10 +28,12 @@ public class ThrowableHexaFunctionTest {
 	public void testOnInvokingAndThenShouldExecuteBothFunctions()
 		throws Exception {
 
-		ThrowableHexaFunction<String, String, String, String, String, String,
-			String> throwableHexaFunction =
-				(string1, string2, string3, string4, string5, string6) ->
-					string1 + string2 + string3 + string4 + string5 + string6;
+		ThrowableHexaFunction
+			<String, String, String, String, String, String, String>
+				throwableHexaFunction = (
+					string1, string2, string3, string4, string5, string6) ->
+						string1 + string2 + string3 + string4 + string5 +
+							string6;
 
 		ThrowableFunction<String, String> throwableFunction =
 			string -> string + "prosper";
@@ -47,10 +49,12 @@ public class ThrowableHexaFunctionTest {
 
 	@Test(expected = NullPointerException.class)
 	public void testOnInvokingAndThenWithNullAfterFunctionThrowsException() {
-		ThrowableHexaFunction<String, String, String, String, String, String,
-			String> throwableHexaFunction = (
-				string1, string2, string3, string4, string5, string6) ->
-					string1 + string2 + string3 + string4 + string5 + string6;
+		ThrowableHexaFunction
+			<String, String, String, String, String, String, String>
+				throwableHexaFunction = (
+					string1, string2, string3, string4, string5, string6) ->
+						string1 + string2 + string3 + string4 + string5 +
+							string6;
 
 		throwableHexaFunction.andThen(null);
 	}
