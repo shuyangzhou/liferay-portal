@@ -17,7 +17,15 @@ package com.liferay.portal.template.freemarker.internal;
 import com.liferay.petra.concurrent.ConcurrentReferenceKeyHashMap;
 import com.liferay.petra.memory.FinalizeManager;
 import com.liferay.petra.reflect.ReflectionUtil;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.templateparser.TemplateNode;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.template.freemarker.configuration.FreeMarkerEngineConfiguration;
 
 import freemarker.ext.beans.BeansWrapper;
 import freemarker.ext.beans.EnumerationModel;
@@ -36,11 +44,14 @@ import freemarker.template.TemplateModelException;
 
 import java.lang.reflect.Field;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.w3c.dom.Node;
 
@@ -83,6 +94,58 @@ public class LiferayObjectWrapper extends DefaultObjectWrapper {
 		}
 	}
 
+	public void setFreeMarkerEngineConfiguration(
+		FreeMarkerEngineConfiguration freeMarkerEngineConfiguration) {
+
+		String[] allowedClassNames = GetterUtil.getStringValues(
+			freeMarkerEngineConfiguration.allowedClasses());
+
+		_allowedClassNames = new ArrayList(allowedClassNames.length);
+
+		for (String allowedClassName : allowedClassNames) {
+			allowedClassName = StringUtil.trim(allowedClassName);
+
+			if (Validator.isBlank(allowedClassName)) {
+				continue;
+			}
+
+			_allowedClassNames.add(allowedClassName);
+		}
+
+		_allowAllClasses = _allowedClassNames.contains(StringPool.STAR);
+
+		_restrictedPackageNames = new ArrayList<>();
+
+		String[] restrictedClassNames = GetterUtil.getStringValues(
+			freeMarkerEngineConfiguration.restrictedClasses());
+
+		_restrictedClasses = new ArrayList<>(restrictedClassNames.length);
+
+		for (String restrictedClassName : restrictedClassNames) {
+			restrictedClassName = StringUtil.trim(restrictedClassName);
+
+			if (Validator.isBlank(restrictedClassName)) {
+				continue;
+			}
+
+			try {
+				_restrictedClasses.add(Class.forName(restrictedClassName));
+			}
+			catch (ClassNotFoundException cnfe) {
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						StringBundler.concat(
+							"Unable to find restricted class ",
+							restrictedClassName,
+							". Registering as package name"),
+						cnfe);
+				}
+
+				_restrictedPackageNames.add(restrictedClassName);
+			}
+		}
+	}
+
 	@Override
 	public TemplateModel wrap(Object object) throws TemplateModelException {
 		if (object == null) {
@@ -96,6 +159,10 @@ public class LiferayObjectWrapper extends DefaultObjectWrapper {
 		Class<?> clazz = object.getClass();
 
 		String className = clazz.getName();
+
+		if (!_allowAllClasses) {
+			_checkClassIsRestricted(clazz);
+		}
 
 		if (className.startsWith("com.liferay.")) {
 			if (object instanceof TemplateNode) {
@@ -142,6 +209,59 @@ public class LiferayObjectWrapper extends DefaultObjectWrapper {
 		_modelFactories.put(object.getClass(), modelFactory);
 
 		return modelFactory.create(object, this);
+	}
+
+	private void _checkClassIsRestricted(Class<?> clazz)
+		throws TemplateModelException {
+
+		String className = clazz.getName();
+
+		ClassRestrictionInformation classRestrictionInformation =
+			_classRestrictionInformations.computeIfAbsent(
+				className,
+				a -> {
+					if (_allowedClassNames.contains(className)) {
+						return new ClassRestrictionInformation(false, null);
+					}
+
+					for (Class<?> restrictedClass : _restrictedClasses) {
+						if (restrictedClass.isAssignableFrom(clazz)) {
+							return new ClassRestrictionInformation(
+								true,
+								StringBundler.concat(
+									"Denied to resolve class ", className,
+									" due to security reasons, restricted by ",
+									restrictedClass.getName()));
+						}
+					}
+
+					Package clazzPackage = clazz.getPackage();
+
+					if (clazzPackage != null) {
+						String packageName =
+							clazzPackage.getName() + StringPool.PERIOD;
+
+						for (String restrictedPackageName :
+								_restrictedPackageNames) {
+
+							if (packageName.startsWith(restrictedPackageName)) {
+								return new ClassRestrictionInformation(
+									true,
+									StringBundler.concat(
+										"Denied to resolve class ", className,
+										" due to security reasons, restricted ",
+										"by ", restrictedPackageName));
+							}
+						}
+					}
+
+					return new ClassRestrictionInformation(false, null);
+				});
+
+		if (classRestrictionInformation.isRestricted()) {
+			throw new TemplateModelException(
+				classRestrictionInformation.getDescription());
+		}
 	}
 
 	private static final ModelFactory _ENUMERATION_MODEL_FACTORY =
@@ -193,6 +313,9 @@ public class LiferayObjectWrapper extends DefaultObjectWrapper {
 
 		};
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		LiferayObjectWrapper.class);
+
 	private static final Field _cacheClassNamesField;
 	private static final Field _classIntrospectorField;
 	private static final Map<Class<?>, ModelFactory> _modelFactories =
@@ -214,6 +337,35 @@ public class LiferayObjectWrapper extends DefaultObjectWrapper {
 		catch (Exception e) {
 			throw new ExceptionInInitializerError(e);
 		}
+	}
+
+	private boolean _allowAllClasses;
+	private List<String> _allowedClassNames;
+	private Map<String, ClassRestrictionInformation>
+		_classRestrictionInformations = new ConcurrentHashMap<>();
+	private List<Class<?>> _restrictedClasses;
+	private List<String> _restrictedPackageNames;
+
+	private class ClassRestrictionInformation {
+
+		public ClassRestrictionInformation(
+			boolean restricted, String description) {
+
+			_restricted = restricted;
+			_description = description;
+		}
+
+		public String getDescription() {
+			return _description;
+		}
+
+		public boolean isRestricted() {
+			return _restricted;
+		}
+
+		private final String _description;
+		private final boolean _restricted;
+
 	}
 
 }
