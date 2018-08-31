@@ -50,7 +50,7 @@ public class TokenCompanyTest extends BaseClientTestCase {
 			"invalid_grant",
 			getToken(
 				"oauthTestApplicationDefault", "myhostdefaultuser.xyz",
-				this::getClientCredentials, this::parseError));
+				this::getClientCredentialsResponse, this::parseError));
 	}
 
 	public static class AnnotatedApplicationTestPreparatorBundleActivator

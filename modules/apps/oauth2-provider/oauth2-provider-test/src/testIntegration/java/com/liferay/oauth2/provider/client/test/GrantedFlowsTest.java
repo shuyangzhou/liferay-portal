@@ -47,55 +47,57 @@ public class GrantedFlowsTest extends BaseClientTestCase {
 	@Test
 	public void test() throws Exception {
 		String errorString = getToken(
-			"oauthTestApplicationPassword", null, this::getClientCredentials,
-			this::parseError);
+			"oauthTestApplicationPassword", null,
+			this::getClientCredentialsResponse, this::parseError);
 
 		Assert.assertEquals("unauthorized_client", errorString);
 
 		String tokenString = getToken(
 			"oauthTestApplicationPassword", null,
-			getResourceOwnerPassword("test@liferay.com", "test"),
+			getResourceOwnerPasswordBiFunction("test@liferay.com", "test"),
 			this::parseTokenString);
 
 		Assert.assertNotNull(tokenString);
 
 		errorString = getToken(
 			"oauthTestApplicationClient", null,
-			getResourceOwnerPassword("test@liferay.com", "test"),
+			getResourceOwnerPasswordBiFunction("test@liferay.com", "test"),
 			this::parseError);
 
 		Assert.assertEquals("unauthorized_client", errorString);
 
 		tokenString = getToken(
-			"oauthTestApplicationClient", null, this::getClientCredentials,
-			this::parseTokenString);
+			"oauthTestApplicationClient", null,
+			this::getClientCredentialsResponse, this::parseTokenString);
 
 		Assert.assertNotNull(tokenString);
 
 		errorString = getToken(
 			"oauthTestApplicationCode", null,
-			getAuthorizationCodePKCE("test@liferay.com", "test", null),
+			getAuthorizationCodePKCEBiFunction(
+				"test@liferay.com", "test", null),
 			this::parseError);
 
 		Assert.assertEquals("invalid_client", errorString);
 
 		tokenString = getToken(
 			"oauthTestApplicationCode", null,
-			getAuthorizationCode("test@liferay.com", "test", null),
+			getAuthorizationCodeBiFunction("test@liferay.com", "test", null),
 			this::parseTokenString);
 
 		Assert.assertNotNull(tokenString);
 
 		errorString = getToken(
 			"oauthTestApplicationCodePKCE", null,
-			getAuthorizationCode("test@liferay.com", "test", null),
+			getAuthorizationCodeBiFunction("test@liferay.com", "test", null),
 			this::parseError);
 
 		Assert.assertEquals("invalid_client", errorString);
 
 		tokenString = getToken(
 			"oauthTestApplicationCodePKCE", null,
-			getAuthorizationCodePKCE("test@liferay.com", "test", null),
+			getAuthorizationCodePKCEBiFunction(
+				"test@liferay.com", "test", null),
 			this::parseTokenString);
 
 		Assert.assertNotNull(tokenString);
@@ -118,7 +120,8 @@ public class GrantedFlowsTest extends BaseClientTestCase {
 			createOAuth2Application(
 				defaultCompanyId, user, "oauthTestApplicationCodePKCE", null,
 				Collections.singletonList(GrantType.AUTHORIZATION_CODE_PKCE),
-				Collections.singletonList("everything"));
+				Collections.singletonList("everything"),
+				Collections.singletonList("http://redirecturi:8080"));
 
 			createOAuth2Application(
 				defaultCompanyId, user, "oauthTestApplicationClient",

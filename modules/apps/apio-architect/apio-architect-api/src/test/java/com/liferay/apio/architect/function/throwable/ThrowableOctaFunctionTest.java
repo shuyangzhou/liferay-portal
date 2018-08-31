@@ -28,12 +28,13 @@ public class ThrowableOctaFunctionTest {
 	public void testOnInvokingAndThenShouldExecuteBothFunctions()
 		throws Exception {
 
-		ThrowableOctaFunction<String, String, String, String, String, String,
-			String, String, String> throwableOctaFunction = (
-				string1, string2, string3, string4, string5, string6, string7,
-				string8) ->
-					string1 + string2 + string3 + string4 + string5 + string6 +
-						string7 + string8;
+		ThrowableOctaFunction
+			<String, String, String, String, String, String, String, String,
+				String> throwableOctaFunction = (
+					string1, string2, string3, string4, string5, string6,
+					string7, string8) ->
+						string1 + string2 + string3 + string4 + string5 +
+							string6 + string7 + string8;
 
 		ThrowableFunction<String, String> throwableFunction =
 			string -> string + "prosper";
@@ -49,12 +50,13 @@ public class ThrowableOctaFunctionTest {
 
 	@Test(expected = NullPointerException.class)
 	public void testOnInvokingAndThenWithNullAfterFunctionThrowsException() {
-		ThrowableOctaFunction<String, String, String, String, String, String,
-			String, String, String> throwableOctaFunction = (
-				string1, string2, string3, string4, string5, string6, string7,
-				string8) ->
-					string1 + string2 + string3 + string4 + string5 + string6 +
-						string7 + string8;
+		ThrowableOctaFunction
+			<String, String, String, String, String, String, String, String,
+				String> throwableOctaFunction = (
+					string1, string2, string3, string4, string5, string6,
+					string7, string8) ->
+						string1 + string2 + string3 + string4 + string5 +
+							string6 + string7 + string8;
 
 		throwableOctaFunction.andThen(null);
 	}

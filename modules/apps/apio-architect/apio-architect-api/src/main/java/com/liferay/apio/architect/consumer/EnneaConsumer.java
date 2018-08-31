@@ -81,8 +81,9 @@ public interface EnneaConsumer<A, B, C, D, E, F, G, H, I> {
 	 *         {@code accept} method, as well as that of {@code after}
 	 */
 	public default EnneaConsumer<A, B, C, D, E, F, G, H, I> andThen(
-		EnneaConsumer<? super A, ? super B, ? super C, ? super D, ? super E,
-			? super F, ? super G, ? super H, ? super I> after) {
+		EnneaConsumer
+			<? super A, ? super B, ? super C, ? super D, ? super E, ? super F,
+				? super G, ? super H, ? super I> after) {
 
 		Objects.requireNonNull(after);
 
