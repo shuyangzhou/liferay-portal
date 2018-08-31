@@ -56,8 +56,8 @@ import org.osgi.service.component.annotations.Reference;
 	service = MessageBodyWriter.class
 )
 @Provider
-public class SingleModelMessageBodyWriter<T> extends
-	BaseMessageBodyWriter
+public class SingleModelMessageBodyWriter<T>
+	extends BaseMessageBodyWriter
 		<Success<SingleModel<T>>, SingleModelMessageMapper<T>> {
 
 	@Override

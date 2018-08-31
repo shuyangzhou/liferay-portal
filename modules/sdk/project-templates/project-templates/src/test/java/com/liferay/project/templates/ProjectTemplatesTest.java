@@ -17,7 +17,7 @@ package com.liferay.project.templates;
 import aQute.bnd.main.bnd;
 
 import com.liferay.maven.executor.MavenExecutor;
-import com.liferay.project.templates.internal.Archetyper;
+import com.liferay.project.templates.internal.ProjectGenerator;
 import com.liferay.project.templates.internal.util.FileUtil;
 import com.liferay.project.templates.internal.util.Validator;
 import com.liferay.project.templates.util.DirectoryComparator;
@@ -3972,7 +3972,15 @@ public class ProjectTemplatesTest {
 			}
 		}
 
-		File archetypesDir = FileUtil.getJarFile(ProjectTemplatesTest.class);
+		ProjectGenerator projectGenerator = new ProjectGenerator();
+
+		ProjectTemplatesArgs projectTemplatesArgs = new ProjectTemplatesArgs();
+
+		projectTemplatesArgs.setArchetypesDirs(
+			Arrays.asList(FileUtil.getJarFile(ProjectTemplatesTest.class)));
+		projectTemplatesArgs.setAuthor(author);
+		projectTemplatesArgs.setClassName(className);
+		projectTemplatesArgs.setContributorType(contributorType);
 
 		File archetyperDestinationDir = null;
 
@@ -3993,16 +4001,8 @@ public class ProjectTemplatesTest {
 			archetyperDestinationDir = archetyperDestinationPath.toFile();
 		}
 
-		ProjectTemplatesArgs projectTemplatesArgs = new ProjectTemplatesArgs();
-
-		List<File> archetypesDirs = Arrays.asList(archetypesDir);
-
-		projectTemplatesArgs.setArchetypesDirs(archetypesDirs);
-
-		projectTemplatesArgs.setAuthor(author);
-		projectTemplatesArgs.setClassName(className);
-		projectTemplatesArgs.setContributorType(contributorType);
 		projectTemplatesArgs.setDestinationDir(archetyperDestinationDir);
+
 		projectTemplatesArgs.setGradle(false);
 		projectTemplatesArgs.setGroupId(groupId);
 		projectTemplatesArgs.setHostBundleSymbolicName(hostBundleSymbolicName);
@@ -4014,9 +4014,7 @@ public class ProjectTemplatesTest {
 		projectTemplatesArgs.setService(service);
 		projectTemplatesArgs.setTemplate(template);
 
-		Archetyper archetyper = new Archetyper();
-
-		archetyper.generateProject(
+		projectGenerator.generateProject(
 			projectTemplatesArgs, archetyperDestinationDir);
 
 		File archetyperProjectDir = new File(archetyperDestinationDir, name);

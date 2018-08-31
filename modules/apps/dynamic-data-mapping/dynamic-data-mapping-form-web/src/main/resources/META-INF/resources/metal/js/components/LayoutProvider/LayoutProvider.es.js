@@ -1,7 +1,8 @@
 import {Config} from 'metal-state';
 import {FormSupport} from '../Form/index.es';
-import Component from 'metal-jsx';
 import {pageStructure} from '../../util/config.es';
+import {sub} from '../../util/strings.es';
+import Component from 'metal-jsx';
 
 /**
  * LayoutProvider listens to your children's events to
@@ -32,6 +33,7 @@ class LayoutProvider extends Component {
 	};
 
 	static STATE = {
+
 		/**
 		 * @instance
 		 * @memberof FormPage
@@ -194,6 +196,10 @@ class LayoutProvider extends Component {
 
 		const duplicatedField = {
 			...field,
+			label: sub(
+				Liferay.Language.get('copy-of-x'),
+				[field.label]
+			),
 			name: FormSupport.generateFieldName(field)
 		};
 
@@ -367,11 +373,7 @@ class LayoutProvider extends Component {
 		const {children, spritemap} = this.props;
 		const {focusedField, mode, pages} = this.state;
 
-		let child;
-
 		if (children.length) {
-			const Child = children[0];
-
 			const events = {
 				deleteField: this._handleDeleteField.bind(this),
 				duplicateField: this._handleDuplicatedField.bind(this),
@@ -382,22 +384,24 @@ class LayoutProvider extends Component {
 				pagesUpdated: this._handlePagesUpdated.bind(this)
 			};
 
-			Object.assign(
-				Child.props,
-				{
-					...this.otherProps(),
-					events,
-					focusedField,
-					mode,
-					pages,
-					spritemap
-				}
-			);
+			for (let index = 0; index < children.length; index++) {
+				const child = children[index];
 
-			child = Child;
+				Object.assign(
+					child.props,
+					{
+						...this.otherProps(),
+						events,
+						focusedField,
+						mode,
+						pages,
+						spritemap
+					}
+				);
+			}
 		}
 
-		return child;
+		return children;
 	}
 }
 
