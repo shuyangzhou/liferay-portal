@@ -51,8 +51,8 @@ public class GrantClientKillSwitchTest extends BaseClientTestCase {
 		Assert.assertEquals(
 			"unauthorized_client",
 			getToken(
-				"oauthTestApplication", null, this::getClientCredentials,
-				this::parseError));
+				"oauthTestApplication", null,
+				this::getClientCredentialsResponse, this::parseError));
 	}
 
 	public static class

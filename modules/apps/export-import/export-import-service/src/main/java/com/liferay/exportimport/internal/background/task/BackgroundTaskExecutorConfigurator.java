@@ -14,18 +14,24 @@
 
 package com.liferay.exportimport.internal.background.task;
 
+import com.liferay.portal.json.jabsorb.serializer.LiferayJSONDeserializationWhitelist;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskExecutor;
+import com.liferay.portal.kernel.security.auth.HttpPrincipal;
 import com.liferay.portal.kernel.util.HashMapDictionary;
+import com.liferay.portal.kernel.util.LongWrapper;
 
 import java.util.Dictionary;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
+import java.util.TimeZone;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Michael C. Han
@@ -35,6 +41,13 @@ public class BackgroundTaskExecutorConfigurator {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
+		_liferayJSONDeserializationWhitelist.register(
+			HttpPrincipal.class, LongWrapper.class, Locale.class,
+			TimeZone.class);
+
+		_liferayJSONDeserializationWhitelist.register(
+			"sun.util.calendar.ZoneInfo");
+
 		BackgroundTaskExecutor layoutExportBackgroundTaskExecutor =
 			new LayoutExportBackgroundTaskExecutor();
 
@@ -110,6 +123,10 @@ public class BackgroundTaskExecutorConfigurator {
 
 		_serviceRegistrations.add(serviceRegistration);
 	}
+
+	@Reference
+	private LiferayJSONDeserializationWhitelist
+		_liferayJSONDeserializationWhitelist;
 
 	private final Set<ServiceRegistration<BackgroundTaskExecutor>>
 		_serviceRegistrations = new HashSet<>();

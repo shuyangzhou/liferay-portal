@@ -72,8 +72,9 @@ public interface HexaConsumer<A, B, C, D, E, F> {
 	 *         {@code accept} method, as well as that of {@code after}
 	 */
 	public default HexaConsumer<A, B, C, D, E, F> andThen(
-		HexaConsumer<? super A, ? super B, ? super C, ? super D, ? super E,
-			? super F> after) {
+		HexaConsumer
+			<? super A, ? super B, ? super C, ? super D, ? super E, ? super F>
+				after) {
 
 		Objects.requireNonNull(after);
 

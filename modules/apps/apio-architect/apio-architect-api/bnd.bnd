@@ -12,6 +12,7 @@ Export-Package:\
 	com.liferay.apio.architect.consumer.throwable,\
 	com.liferay.apio.architect.credentials,\
 	com.liferay.apio.architect.documentation,\
+	com.liferay.apio.architect.documentation.contributor,\
 	com.liferay.apio.architect.error,\
 	com.liferay.apio.architect.exception,\
 	com.liferay.apio.architect.exception.mapper,\

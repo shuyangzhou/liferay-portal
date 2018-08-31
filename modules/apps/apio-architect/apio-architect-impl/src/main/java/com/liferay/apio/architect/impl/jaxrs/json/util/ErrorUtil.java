@@ -65,12 +65,19 @@ public class ErrorUtil {
 				return webApplicationException.getResponse();
 			}
 
-			return Response.serverError().build();
+			Response.ResponseBuilder responseBuilder = Response.serverError();
+
+			return responseBuilder.build();
 		}
 
 		APIError apiError = apiErrorOptional.get();
 
-		_logger.error(apiError.getMessage(), apiError.getException());
+		if (_logger.isDebugEnabled()) {
+			_logger.debug(apiError.getMessage(), apiError.getException());
+		}
+		else {
+			_logger.error(apiError.getMessage());
+		}
 
 		int statusCode = apiError.getStatusCode();
 

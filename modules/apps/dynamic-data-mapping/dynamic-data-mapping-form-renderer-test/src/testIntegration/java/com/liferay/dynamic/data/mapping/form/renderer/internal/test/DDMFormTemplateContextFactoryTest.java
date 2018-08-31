@@ -62,13 +62,18 @@ public class DDMFormTemplateContextFactoryTest {
 		_request = new MockHttpServletRequest();
 
 		_originalSiteDefaultLocale = LocaleThreadLocal.getSiteDefaultLocale();
+		_originalThemeDisplayDefaultLocale =
+			LocaleThreadLocal.getThemeDisplayLocale();
 
 		LocaleThreadLocal.setSiteDefaultLocale(LocaleUtil.US);
+		LocaleThreadLocal.setThemeDisplayLocale(LocaleUtil.US);
 	}
 
 	@After
 	public void tearDown() {
 		LocaleThreadLocal.setSiteDefaultLocale(_originalSiteDefaultLocale);
+		LocaleThreadLocal.setThemeDisplayLocale(
+			_originalThemeDisplayDefaultLocale);
 	}
 
 	@Test
@@ -371,6 +376,7 @@ public class DDMFormTemplateContextFactoryTest {
 	private static DDMFormTemplateContextFactory _ddmFormTemplateContextFactory;
 
 	private Locale _originalSiteDefaultLocale;
+	private Locale _originalThemeDisplayDefaultLocale;
 	private HttpServletRequest _request;
 
 }
