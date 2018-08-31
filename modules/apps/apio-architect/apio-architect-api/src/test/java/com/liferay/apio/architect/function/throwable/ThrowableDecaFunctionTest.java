@@ -28,12 +28,14 @@ public class ThrowableDecaFunctionTest {
 	public void testOnInvokingAndThenShouldExecuteBothFunctions()
 		throws Exception {
 
-		ThrowableDecaFunction<String, String, String, String, String, String,
-			String, String, String, String, String> throwableDecaFunction = (
-				string1, string2, string3, string4, string5, string6, string7,
-				string8, string9, string10) ->
-					string1 + string2 + string3 + string4 + string5 + string6 +
-						string7 + string8 + string9 + string10;
+		ThrowableDecaFunction
+			<String, String, String, String, String, String,
+				String, String, String, String, String> throwableDecaFunction =
+					(
+						string1, string2, string3, string4, string5, string6,
+						string7, string8, string9, string10) ->
+						string1 + string2 + string3 + string4 + string5 +
+							string6 + string7 + string8 + string9 + string10;
 
 		ThrowableFunction<String, String> throwableFunction =
 			string -> string + "prosper";
@@ -49,12 +51,14 @@ public class ThrowableDecaFunctionTest {
 
 	@Test(expected = NullPointerException.class)
 	public void testOnInvokingAndThenWithNullAfterFunctionThrowsException() {
-		ThrowableDecaFunction<String, String, String, String, String, String,
-			String, String, String, String, String> throwableDecaFunction = (
-				string1, string2, string3, string4, string5, string6, string7,
-				string8, string9, string10) ->
-					string1 + string2 + string3 + string4 + string5 + string6 +
-						string7 + string8 + string9 + string10;
+		ThrowableDecaFunction
+			<String, String, String, String, String, String,
+				String, String, String, String, String> throwableDecaFunction =
+					(
+						string1, string2, string3, string4, string5, string6,
+						string7, string8, string9, string10) ->
+						string1 + string2 + string3 + string4 + string5 +
+							string6 + string7 + string8 + string9 + string10;
 
 		throwableDecaFunction.andThen(null);
 	}

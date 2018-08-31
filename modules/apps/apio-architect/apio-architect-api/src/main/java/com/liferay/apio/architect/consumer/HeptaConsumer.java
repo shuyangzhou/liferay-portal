@@ -77,8 +77,9 @@ public interface HeptaConsumer<A, B, C, D, E, F, G> {
 	 *         {@code accept} method, as well as that of {@code after}
 	 */
 	public default HeptaConsumer<A, B, C, D, E, F, G> andThen(
-		HeptaConsumer<? super A, ? super B, ? super C, ? super D, ? super E,
-			? super F, ? super G> after) {
+		HeptaConsumer
+			<? super A, ? super B, ? super C, ? super D, ? super E, ? super F,
+				? super G> after) {
 
 		Objects.requireNonNull(after);
 

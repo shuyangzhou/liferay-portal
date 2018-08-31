@@ -23,6 +23,7 @@ import java.util.function.BiFunction;
 /**
  * @author Alejandro Hernández
  */
-public interface SingleModelFunction extends
-	BiFunction<Object, Class<? extends Identifier>, Optional<SingleModel>> {
+public interface SingleModelFunction
+	extends BiFunction
+		<Object, Class<? extends Identifier>, Optional<SingleModel>> {
 }

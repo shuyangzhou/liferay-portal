@@ -24,21 +24,21 @@ public class URLGenerationListener {
 	public URLGenerationListener() {
 	}
 
-	public URLGenerationListener(int ordinal, String listenerClass) {
+	public URLGenerationListener(int ordinal, String listenerClassName) {
 		_ordinal = ordinal;
-		_listenerClass = listenerClass;
+		_listenerClassName = listenerClassName;
 	}
 
-	public String getListenerClass() {
-		return _listenerClass;
+	public String getListenerClassName() {
+		return _listenerClassName;
 	}
 
 	public int getOrdinal() {
 		return _ordinal;
 	}
 
-	public void setListenerClass(String listenerClass) {
-		_listenerClass = listenerClass;
+	public void setListenerClassName(String listenerClassName) {
+		_listenerClassName = listenerClassName;
 	}
 
 	public void setOrdinal(int ordinal) {
@@ -47,15 +47,15 @@ public class URLGenerationListener {
 
 	@Override
 	public String toString() {
-		if (_listenerClass == null) {
+		if (_listenerClassName == null) {
 			return null;
 		}
 
-		return _listenerClass.concat(
+		return _listenerClassName.concat(
 			StringPool.SEMICOLON).concat(String.valueOf(_ordinal));
 	}
 
-	private String _listenerClass;
+	private String _listenerClassName;
 	private int _ordinal;
 
 }
