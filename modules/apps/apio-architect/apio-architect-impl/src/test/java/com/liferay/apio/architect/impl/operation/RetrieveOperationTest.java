@@ -31,23 +31,23 @@ public class RetrieveOperationTest {
 	@Test
 	public void testCollectionRetrieveOperation() {
 		RetrieveOperation retrieveOperation = new RetrieveOperation(
-			"name", false);
-
-		assertThat(retrieveOperation.getFormOptional(), is(emptyOptional()));
-		assertThat(retrieveOperation.getHttpMethod(), is(GET));
-		assertThat(retrieveOperation.getName(), is("name/retrieve"));
-		assertThat(retrieveOperation.isCollection(), is(false));
-	}
-
-	@Test
-	public void testNonCollectionRetrieveOperation() {
-		RetrieveOperation retrieveOperation = new RetrieveOperation(
 			"name", true);
 
 		assertThat(retrieveOperation.getFormOptional(), is(emptyOptional()));
 		assertThat(retrieveOperation.getHttpMethod(), is(GET));
 		assertThat(retrieveOperation.getName(), is("name/retrieve"));
 		assertThat(retrieveOperation.isCollection(), is(true));
+	}
+
+	@Test
+	public void testSingleRetrieveOperation() {
+		RetrieveOperation retrieveOperation = new RetrieveOperation(
+			"name", false);
+
+		assertThat(retrieveOperation.getFormOptional(), is(emptyOptional()));
+		assertThat(retrieveOperation.getHttpMethod(), is(GET));
+		assertThat(retrieveOperation.getName(), is("name/retrieve"));
+		assertThat(retrieveOperation.isCollection(), is(false));
 	}
 
 }

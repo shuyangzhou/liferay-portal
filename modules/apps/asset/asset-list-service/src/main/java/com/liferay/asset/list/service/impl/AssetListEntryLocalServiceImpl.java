@@ -15,10 +15,12 @@
 package com.liferay.asset.list.service.impl;
 
 import com.liferay.asset.list.exception.AssetListEntryTitleException;
+import com.liferay.asset.list.exception.DuplicateAssetListEntryTitleException;
 import com.liferay.asset.list.exception.NoSuchEntryException;
 import com.liferay.asset.list.model.AssetListEntry;
 import com.liferay.asset.list.service.base.AssetListEntryLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -26,6 +28,7 @@ import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author Jürgen Kappler
@@ -39,7 +42,9 @@ public class AssetListEntryLocalServiceImpl
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		_validate(title);
+		_validateTitle(groupId, title);
+
+		// Asset List entry
 
 		User user = userLocalService.getUser(userId);
 
@@ -58,7 +63,13 @@ public class AssetListEntryLocalServiceImpl
 		assetListEntry.setTitle(title);
 		assetListEntry.setType(type);
 
-		return assetListEntryPersistence.update(assetListEntry);
+		assetListEntryPersistence.update(assetListEntry);
+
+		// Resources
+
+		resourceLocalService.addModelResources(assetListEntry, serviceContext);
+
+		return assetListEntry;
 	}
 
 	@Override
@@ -83,6 +94,11 @@ public class AssetListEntryLocalServiceImpl
 			throw new NoSuchEntryException();
 		}
 
+		// Resources
+
+		resourceLocalService.deleteResource(
+			assetListEntry, ResourceConstants.SCOPE_INDIVIDUAL);
+
 		return assetListEntryPersistence.remove(assetListEntryId);
 	}
 
@@ -91,10 +107,14 @@ public class AssetListEntryLocalServiceImpl
 			long assetListEntryId, String title)
 		throws PortalException {
 
-		_validate(title);
-
 		AssetListEntry assetListEntry =
 			assetListEntryPersistence.findByPrimaryKey(assetListEntryId);
+
+		if (Objects.equals(assetListEntry.getTitle(), title)) {
+			return assetListEntry;
+		}
+
+		_validateTitle(assetListEntry.getGroupId(), title);
 
 		assetListEntry.setModifiedDate(new Date());
 		assetListEntry.setTitle(title);
@@ -102,9 +122,18 @@ public class AssetListEntryLocalServiceImpl
 		return assetListEntryPersistence.update(assetListEntry);
 	}
 
-	private void _validate(String title) throws PortalException {
+	private void _validateTitle(long groupId, String title)
+		throws PortalException {
+
 		if (Validator.isNull(title)) {
-			throw new AssetListEntryTitleException();
+			throw new AssetListEntryTitleException("Title is null");
+		}
+
+		AssetListEntry assetListEntry = assetListEntryPersistence.fetchByG_T(
+			groupId, title);
+
+		if (assetListEntry != null) {
+			throw new DuplicateAssetListEntryTitleException();
 		}
 	}
 

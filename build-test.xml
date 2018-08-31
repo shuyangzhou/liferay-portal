@@ -1058,6 +1058,43 @@ war.path=${app.server.portal.dir}/</echo>
 					</execute>
 				</else>
 			</if>
+
+			<delete file="@{patching.tool.dir}/logs/patching-tool.log" />
+
+			<execute dir="@{patching.tool.dir}">
+				patching-tool${file.suffix.bat} info
+			</execute>
+
+			<for param="patch.file.path">
+				<fileset
+					dir="@{patching.tool.dir}/patches"
+					erroronmissingdir="false"
+					id="fileset.id"
+				>
+					<include name="*.zip" />
+				</fileset>
+				<sequential>
+					<local name="patch.name" />
+
+					<propertyregex
+						input="@{patch.file.path}"
+						property="patch.name"
+						regexp=".*liferay-(fix-pack-)?(.*-\d{4})(-build\d*)?(-src)?.zip"
+						replace="\2"
+					/>
+
+					<fail message="${patch.name} was not installed.">
+						<condition>
+							<not>
+								<resourcecontains
+									resource="@{patching.tool.dir}/logs/patching-tool.log"
+									substring="[*I] ${patch.name} :: Installed"
+								/>
+							</not>
+						</condition>
+					</fail>
+				</sequential>
+			</for>
 		</sequential>
 	</macrodef>
 
@@ -2989,6 +3026,7 @@ go</echo>
 
 			<var name="app.server.tomcat.dir" value="${app.server.parent.dir}/tomcat-${app.server.tomcat.version}" />
 			<var name="app.server.tomcat.bin.dir" value="${app.server.parent.dir}/tomcat-${app.server.tomcat.version}/bin" />
+			<var name="app.server.tomcat.classes.portal.dir" value="${app.server.parent.dir}/tomcat-${app.server.tomcat.version}/webapps/ROOT/WEB-INF/classes" />
 			<var name="app.server.tomcat.lib.global.dir" value="${app.server.parent.dir}/tomcat-${app.server.tomcat.version}/lib/ext" />
 			<var name="app.server.tomcat.lib.portal.dir" value="${app.server.parent.dir}/tomcat-${app.server.tomcat.version}/webapps/ROOT/WEB-INF/lib" />
 			<var name="app.server.tomcat.zip.name" value="apache-tomcat-${app.server.tomcat.version}.zip" />
@@ -2997,6 +3035,7 @@ go</echo>
 			<echo append="true" file="app.server.${user.name}.properties">
 				app.server.tomcat.dir=${app.server.tomcat.dir}
 				app.server.tomcat.bin.dir=${app.server.tomcat.bin.dir}
+				app.server.tomcat.classes.portal.dir=${app.server.tomcat.classes.portal.dir}
 				app.server.tomcat.lib.global.dir=${app.server.tomcat.lib.global.dir}
 				app.server.tomcat.lib.portal.dir=${app.server.tomcat.lib.portal.dir}
 				app.server.tomcat.version=${app.server.tomcat.version}
@@ -4045,6 +4084,43 @@ war.path=${app.server.weblogic.portal.dir}/</echo>
 					</execute>
 				</else>
 			</if>
+
+			<delete file="@{patching.tool.dir}/logs/patching-tool.log" />
+
+			<execute dir="@{patching.tool.dir}" failonerror="true">
+				patching-tool${file.suffix.bat} info
+			</execute>
+
+			<for param="patch.file.path">
+				<fileset
+					dir="@{patching.tool.dir}/patches"
+					erroronmissingdir="false"
+					id="fileset.id"
+				>
+					<include name="*.zip" />
+				</fileset>
+				<sequential>
+					<local name="patch.file.base.name" />
+
+					<propertyregex
+						input="@{patch.file.path}"
+						property="patch.name"
+						regexp=".*liferay-(fix-pack-)?(.*).zip"
+						replace="\2"
+					/>
+
+					<fail message="${patch.name} was not reverted.">
+						<condition>
+							<not>
+								<resourcecontains
+									resource="@{patching.tool.dir}/logs/patching-tool.log"
+									substring="[ I] ${patch.name} :: Currently not installed"
+								/>
+							</not>
+						</condition>
+					</fail>
+				</sequential>
+			</for>
 
 			<delete dir="@{patching.tool.dir}/patches" />
 
