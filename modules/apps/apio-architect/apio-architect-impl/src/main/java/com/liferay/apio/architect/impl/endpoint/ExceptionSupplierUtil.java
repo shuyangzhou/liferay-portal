@@ -51,7 +51,9 @@ public class ExceptionSupplierUtil {
 			httpMethod.name() + " method is not allowed for path " +
 				String.join("/", path);
 
-		Response response = Response.status(METHOD_NOT_ALLOWED).build();
+		Response response = Response.status(
+			METHOD_NOT_ALLOWED
+		).build();
 
 		return () -> new NotAllowedException(message, response);
 	}

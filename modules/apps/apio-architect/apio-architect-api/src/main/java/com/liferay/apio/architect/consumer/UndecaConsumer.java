@@ -86,9 +86,9 @@ public interface UndecaConsumer<A, B, C, D, E, F, G, H, I, J, K> {
 	 *         {@code accept} method, as well as that of {@code after}
 	 */
 	public default UndecaConsumer<A, B, C, D, E, F, G, H, I, J, K> andThen(
-		UndecaConsumer<? super A, ? super B, ? super C, ? super D, ? super E,
-			? super F, ? super G, ? super H, ? super I, ? super J, ? super K>
-				after) {
+		UndecaConsumer
+			<? super A, ? super B, ? super C, ? super D, ? super E, ? super F,
+				? super G, ? super H, ? super I, ? super J, ? super K> after) {
 
 		Objects.requireNonNull(after);
 
