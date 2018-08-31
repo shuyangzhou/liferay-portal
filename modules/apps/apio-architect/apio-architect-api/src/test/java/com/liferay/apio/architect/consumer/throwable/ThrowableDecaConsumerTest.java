@@ -33,21 +33,23 @@ public class ThrowableDecaConsumerTest {
 
 		List<String> list = new ArrayList<>();
 
-		ThrowableDecaConsumer<String, String, String, String, String, String,
-			String, String, String, String> decaConsumer = (
-				string1, string2, string3, string4, string5, string6, string7,
-				string8, string9, string10) -> {
-					list.add(string1);
-					list.add(string2);
-					list.add(string3);
-					list.add(string4);
-					list.add(string5);
-					list.add(string6);
-					list.add(string7);
-					list.add(string8);
-					list.add(string9);
-					list.add(string10);
-				};
+		ThrowableDecaConsumer
+			<String, String, String, String, String, String,
+				String, String, String, String> decaConsumer = (
+					string1, string2, string3, string4, string5, string6,
+					string7,
+					string8, string9, string10) -> {
+						list.add(string1);
+						list.add(string2);
+						list.add(string3);
+						list.add(string4);
+						list.add(string5);
+						list.add(string6);
+						list.add(string7);
+						list.add(string8);
+						list.add(string9);
+						list.add(string10);
+					};
 
 		decaConsumer.andThen(
 			decaConsumer

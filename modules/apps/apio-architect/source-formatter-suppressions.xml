@@ -11,6 +11,7 @@
 		<suppress checks="JavaDeprecatedJavadocCheck" files=".*" />
 		<suppress checks="JavaIllegalImportsCheck" files="apio-architect-impl/src/main/java/com/liferay/apio/architect/impl/.*" />
 		<suppress checks="JavaModuleInternalImportsCheck" files="apio-architect-impl/src/main/java/com/liferay/apio/architect/impl/wiring/osgi/manager/base/BaseManager\.java" />
+		<suppress checks="JavaModuleInternalImportsCheck" files="apio-architect-impl/src/main/java/com/liferay/apio/architect/impl/wiring/osgi/manager/documentation/contributor/CustomDocumentationManagerImpl\.java" />
 		<suppress checks="JavaStaticImportsCheck" files=".*" />
 	</source-check>
 </suppressions>

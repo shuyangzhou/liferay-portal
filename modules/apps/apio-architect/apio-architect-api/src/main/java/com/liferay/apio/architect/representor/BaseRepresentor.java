@@ -318,8 +318,8 @@ public interface BaseRepresentor<T> {
 		 */
 		public <V> U addNestedList(
 			String key, Function<T, List<V>> transformFunction,
-			Function<NestedRepresentor.Builder<V>,
-				NestedRepresentor<V>> function);
+			Function
+				<NestedRepresentor.Builder<V>, NestedRepresentor<V>> function);
 
 		/**
 		 * Adds information about a resource's number field.
