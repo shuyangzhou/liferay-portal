@@ -323,8 +323,9 @@ public class FieldsWriter<T> {
 	public <S, U> void writeNestedResources(
 		BaseRepresentorFunction baseRepresentorFunction,
 		SingleModel<U> singleModel, FunctionalList<String> embeddedPathElements,
-		TriConsumer<SingleModel<S>, FunctionalList<String>,
-			BaseRepresentorFunction> triConsumer) {
+		TriConsumer
+			<SingleModel<S>, FunctionalList<String>, BaseRepresentorFunction>
+				triConsumer) {
 
 		baseRepresentorFunction.apply(
 			singleModel.getResourceName()

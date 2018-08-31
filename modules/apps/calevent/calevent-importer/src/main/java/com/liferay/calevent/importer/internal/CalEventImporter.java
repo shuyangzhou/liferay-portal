@@ -50,7 +50,9 @@ import com.liferay.message.boards.service.MBDiscussionLocalService;
 import com.liferay.message.boards.service.MBMessageLocalService;
 import com.liferay.message.boards.service.MBThreadLocalService;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.json.jabsorb.serializer.LiferayJSONDeserializationWhitelist;
 import com.liferay.portal.kernel.cal.DayAndPosition;
+import com.liferay.portal.kernel.cal.Duration;
 import com.liferay.portal.kernel.cal.TZSRecurrence;
 import com.liferay.portal.kernel.dao.db.DBInspector;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
@@ -101,6 +103,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -120,6 +123,10 @@ public class CalEventImporter {
 
 	@Activate
 	protected void activate() throws Exception {
+		_liferayJSONDeserializationWhitelist.register(
+			DayAndPosition.class, Duration.class, TZSRecurrence.class,
+			GregorianCalendar.class);
+
 		initJSONSerializer();
 
 		long start = System.currentTimeMillis();
@@ -1524,6 +1531,11 @@ public class CalEventImporter {
 
 	private GroupLocalService _groupLocalService;
 	private JSONSerializer _jsonSerializer;
+
+	@Reference
+	private LiferayJSONDeserializationWhitelist
+		_liferayJSONDeserializationWhitelist;
+
 	private MBDiscussionLocalService _mbDiscussionLocalService;
 	private MBMessageLocalService _mbMessageLocalService;
 	private MBThreadLocalService _mbThreadLocalService;

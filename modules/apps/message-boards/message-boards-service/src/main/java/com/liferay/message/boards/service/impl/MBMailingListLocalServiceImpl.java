@@ -24,6 +24,7 @@ import com.liferay.message.boards.internal.messaging.MailingListRequest;
 import com.liferay.message.boards.model.MBMailingList;
 import com.liferay.message.boards.service.base.MBMailingListLocalServiceBaseImpl;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.json.jabsorb.serializer.LiferayJSONDeserializationWhitelist;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.model.User;
@@ -103,6 +104,13 @@ public class MBMailingListLocalServiceImpl
 		}
 
 		return mailingList;
+	}
+
+	@Override
+	public void afterPropertiesSet() {
+		super.afterPropertiesSet();
+
+		_liferayJSONDeserializationWhitelist.register(MailingListRequest.class);
 	}
 
 	@Override
@@ -278,6 +286,10 @@ public class MBMailingListLocalServiceImpl
 			}
 		}
 	}
+
+	@ServiceReference(type = LiferayJSONDeserializationWhitelist.class)
+	private LiferayJSONDeserializationWhitelist
+		_liferayJSONDeserializationWhitelist;
 
 	@ServiceReference(type = UserLocalService.class)
 	private UserLocalService _userLocalService;

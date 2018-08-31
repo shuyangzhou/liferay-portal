@@ -28,12 +28,13 @@ public class HeptaFunctionTest {
 
 	@Test
 	public void testOnInvokingAndThenShouldExecuteBothFunctions() {
-		HeptaFunction<String, String, String, String, String, String, String,
-			String> firstFunction = (
-				string1, string2, string3, string4, string5, string6,
-				string7) ->
-					string1 + string2 + string3 + string4 + string5 + string6 +
-						string7;
+		HeptaFunction
+			<String, String, String, String, String, String, String, String>
+				firstFunction = (
+					string1, string2, string3, string4, string5, string6,
+					string7) ->
+						string1 + string2 + string3 + string4 + string5 +
+							string6 + string7;
 
 		Function<String, String> secondFunction = string -> string + "prosper";
 
@@ -48,12 +49,13 @@ public class HeptaFunctionTest {
 
 	@Test(expected = NullPointerException.class)
 	public void testOnInvokingAndThenWithNullAfterFunctionThrowsException() {
-		HeptaFunction<String, String, String, String, String, String, String,
-			String> firstFunction = (
-				string1, string2, string3, string4, string5, string6,
-				string7) ->
-					string1 + string2 + string3 + string4 + string5 + string6 +
-						string7;
+		HeptaFunction
+			<String, String, String, String, String, String, String, String>
+				firstFunction = (
+					string1, string2, string3, string4, string5,
+					string6, string7) ->
+						string1 + string2 + string3 + string4 + string5 +
+							string6 + string7;
 
 		firstFunction.andThen(null);
 	}

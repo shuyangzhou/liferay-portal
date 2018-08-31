@@ -122,7 +122,8 @@ public class CollectionRoutesImpl<T, S> implements CollectionRoutes<T, S> {
 		public <A, R> Builder<T, S> addCreator(
 			ThrowableBiFunction<R, A, T> creatorThrowableBiFunction,
 			ThrowableBiFunction<List<R>, A, List<S>>
-				batchCreatorThrowableBiFunction, Class<A> aClass,
+				batchCreatorThrowableBiFunction,
+			Class<A> aClass,
 			HasAddingPermissionFunction hasAddingPermissionFunction,
 			FormBuilderFunction<R> formBuilderFunction) {
 
@@ -231,8 +232,8 @@ public class CollectionRoutesImpl<T, S> implements CollectionRoutes<T, S> {
 			ThrowablePentaFunction<R, A, B, C, D, T>
 				creatorThrowablePentaFunction,
 			ThrowablePentaFunction<List<R>, A, B, C, D, List<S>>
-				batchCreatorThrowablePentaFunction, Class<A> aClass,
-			Class<B> bClass, Class<C> cClass, Class<D> dClass,
+				batchCreatorThrowablePentaFunction,
+			Class<A> aClass, Class<B> bClass, Class<C> cClass, Class<D> dClass,
 			HasAddingPermissionFunction hasAddingPermissionFunction,
 			FormBuilderFunction<R> formBuilderFunction) {
 
@@ -294,8 +295,8 @@ public class CollectionRoutesImpl<T, S> implements CollectionRoutes<T, S> {
 		public <A, B, C, R> Builder<T, S> addCreator(
 			ThrowableTetraFunction<R, A, B, C, T> creatorThrowableTetraFunction,
 			ThrowableTetraFunction<List<R>, A, B, C, List<S>>
-				batchCreatorThrowableTetraFunction, Class<A> aClass,
-			Class<B> bClass, Class<C> cClass,
+				batchCreatorThrowableTetraFunction,
+			Class<A> aClass, Class<B> bClass, Class<C> cClass,
 			HasAddingPermissionFunction hasAddingPermissionFunction,
 			FormBuilderFunction<R> formBuilderFunction) {
 
@@ -356,8 +357,8 @@ public class CollectionRoutesImpl<T, S> implements CollectionRoutes<T, S> {
 		public <A, B, R> Builder<T, S> addCreator(
 			ThrowableTriFunction<R, A, B, T> creatorThrowableTriFunction,
 			ThrowableTriFunction<List<R>, A, B, List<S>>
-				batchCreatorThrowableTriFunction, Class<A> aClass,
-			Class<B> bClass,
+				batchCreatorThrowableTriFunction,
+			Class<A> aClass, Class<B> bClass,
 			HasAddingPermissionFunction hasAddingPermissionFunction,
 			FormBuilderFunction<R> formBuilderFunction) {
 
