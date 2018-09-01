@@ -83,11 +83,11 @@ public class OptimizeImagesPortletConfigurationIcon
 
 	@Override
 	public ResourceBundle getResourceBundle(Locale locale) {
-		ResourceBundle bundleResourceBundle = ResourceBundleUtil.getBundle(
+		ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
 			"content.Language", locale, getClass());
 
 		return new AggregateResourceBundle(
-			bundleResourceBundle, super.getResourceBundle(locale));
+			resourceBundle, super.getResourceBundle(locale));
 	}
 
 	@Override

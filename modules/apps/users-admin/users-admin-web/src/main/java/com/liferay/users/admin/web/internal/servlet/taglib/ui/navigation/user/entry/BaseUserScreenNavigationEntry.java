@@ -81,11 +81,11 @@ public abstract class BaseUserScreenNavigationEntry
 	}
 
 	protected ResourceBundle getResourceBundle(Locale locale) {
-		ResourceBundle bundleResourceBundle = ResourceBundleUtil.getBundle(
+		ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
 			"content.Language", locale, getClass());
 
 		return new AggregateResourceBundle(
-			bundleResourceBundle, PortalUtil.getResourceBundle(locale));
+			resourceBundle, PortalUtil.getResourceBundle(locale));
 	}
 
 	@Reference

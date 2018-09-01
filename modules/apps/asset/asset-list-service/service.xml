@@ -20,6 +20,7 @@
 		<column name="userName" type="String" />
 		<column name="createDate" type="Date" />
 		<column name="modifiedDate" type="Date" />
+		<column name="typeSettings" type="String" />
 
 		<!-- Other fields -->
 
@@ -42,9 +43,11 @@
 
 		<!-- References -->
 
+		<reference entity="Resource" package-path="com.liferay.portal" />
 		<reference entity="User" package-path="com.liferay.portal" />
 	</entity>
 	<exceptions>
 		<exception>AssetListEntryTitle</exception>
+		<exception>DuplicateAssetListEntryTitle</exception>
 	</exceptions>
 </service-builder>

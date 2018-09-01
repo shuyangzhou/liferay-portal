@@ -582,6 +582,16 @@ public class LayoutLocalServiceStagingAdvice implements BeanFactoryAware {
 				}
 			}
 		}
+		else if (returnValue instanceof Map<?, ?>) {
+			Map<Object, Object> map = (Map<Object, Object>)returnValue;
+
+			if (map.isEmpty()) {
+				return returnValue;
+			}
+
+			map.replaceAll(
+				(key, value) -> wrapReturnValue(value, showIncomplete));
+		}
 
 		return returnValue;
 	}

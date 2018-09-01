@@ -65,6 +65,7 @@ public class AssetListEntryWrapper implements AssetListEntry,
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
+		attributes.put("typeSettings", getTypeSettings());
 		attributes.put("title", getTitle());
 		attributes.put("type", getType());
 
@@ -115,6 +116,12 @@ public class AssetListEntryWrapper implements AssetListEntry,
 			setModifiedDate(modifiedDate);
 		}
 
+		String typeSettings = (String)attributes.get("typeSettings");
+
+		if (typeSettings != null) {
+			setTypeSettings(typeSettings);
+		}
+
 		String title = (String)attributes.get("title");
 
 		if (title != null) {
@@ -136,6 +143,16 @@ public class AssetListEntryWrapper implements AssetListEntry,
 	@Override
 	public int compareTo(AssetListEntry assetListEntry) {
 		return _assetListEntry.compareTo(assetListEntry);
+	}
+
+	@Override
+	public java.util.List<com.liferay.asset.kernel.model.AssetEntry> getAssetEntries() {
+		return _assetListEntry.getAssetEntries();
+	}
+
+	@Override
+	public com.liferay.asset.kernel.service.persistence.AssetEntryQuery getAssetEntryQuery() {
+		return _assetListEntry.getAssetEntryQuery();
 	}
 
 	/**
@@ -226,6 +243,21 @@ public class AssetListEntryWrapper implements AssetListEntry,
 	@Override
 	public int getType() {
 		return _assetListEntry.getType();
+	}
+
+	@Override
+	public String getTypeLabel() {
+		return _assetListEntry.getTypeLabel();
+	}
+
+	/**
+	* Returns the type settings of this asset list entry.
+	*
+	* @return the type settings of this asset list entry
+	*/
+	@Override
+	public String getTypeSettings() {
+		return _assetListEntry.getTypeSettings();
 	}
 
 	/**
@@ -392,6 +424,16 @@ public class AssetListEntryWrapper implements AssetListEntry,
 	@Override
 	public void setType(int type) {
 		_assetListEntry.setType(type);
+	}
+
+	/**
+	* Sets the type settings of this asset list entry.
+	*
+	* @param typeSettings the type settings of this asset list entry
+	*/
+	@Override
+	public void setTypeSettings(String typeSettings) {
+		_assetListEntry.setTypeSettings(typeSettings);
 	}
 
 	/**

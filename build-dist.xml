@@ -2054,10 +2054,19 @@ org.apache.catalina.startup.ClassLoaderFactory.level=SEVERE]]>
 			<replacevalue><![CDATA[redirectPort="8443" URIEncoding="UTF-8" />]]></replacevalue>
 		</replace>
 
-		<!--<replace file="${app.server.tomcat.dir}/conf/server.xml">
-			<replacetoken><![CDATA[xmlValidation="false" xmlNamespaceAware="false">]]></replacetoken>
-			<replacevalue><![CDATA[xmlValidation="false" deployXML="false" xmlNamespaceAware="false">]]></replacevalue>
-		</replace>-->
+		<replace
+			file="${app.server.tomcat.dir}/conf/server.xml"
+		>
+			<replacetoken><![CDATA[<Valve className="org.apache.catalina.valves.AccessLogValve"]]></replacetoken>
+			<replacevalue><![CDATA[<!-- <Valve className="org.apache.catalina.valves.AccessLogValve"]]></replacevalue>
+		</replace>
+
+		<replace
+			file="${app.server.tomcat.dir}/conf/server.xml"
+		>
+			<replacetoken><![CDATA[pattern="%h %l %u %t &quot;%r&quot; %s %b" />]]></replacetoken>
+			<replacevalue><![CDATA[pattern="%h %l %u %t &quot;%r&quot; %s %b" /> -->]]></replacevalue>
+		</replace>
 
 		<replace
 			file="${app.server.tomcat.dir}/conf/web.xml"

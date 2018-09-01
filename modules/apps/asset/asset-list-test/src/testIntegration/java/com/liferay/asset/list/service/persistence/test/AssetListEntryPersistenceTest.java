@@ -136,6 +136,8 @@ public class AssetListEntryPersistenceTest {
 
 		newAssetListEntry.setModifiedDate(RandomTestUtil.nextDate());
 
+		newAssetListEntry.setTypeSettings(RandomTestUtil.randomString());
+
 		newAssetListEntry.setTitle(RandomTestUtil.randomString());
 
 		newAssetListEntry.setType(RandomTestUtil.nextInt());
@@ -160,6 +162,8 @@ public class AssetListEntryPersistenceTest {
 		Assert.assertEquals(Time.getShortTimestamp(
 				existingAssetListEntry.getModifiedDate()),
 			Time.getShortTimestamp(newAssetListEntry.getModifiedDate()));
+		Assert.assertEquals(existingAssetListEntry.getTypeSettings(),
+			newAssetListEntry.getTypeSettings());
 		Assert.assertEquals(existingAssetListEntry.getTitle(),
 			newAssetListEntry.getTitle());
 		Assert.assertEquals(existingAssetListEntry.getType(),
@@ -210,6 +214,12 @@ public class AssetListEntryPersistenceTest {
 	public void testFindAll() throws Exception {
 		_persistence.findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 			getOrderByComparator());
+	}
+
+	@Test
+	public void testFilterFindByGroupId() throws Exception {
+		_persistence.filterFindByGroupId(0, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, getOrderByComparator());
 	}
 
 	protected OrderByComparator<AssetListEntry> getOrderByComparator() {
@@ -445,6 +455,8 @@ public class AssetListEntryPersistenceTest {
 		assetListEntry.setCreateDate(RandomTestUtil.nextDate());
 
 		assetListEntry.setModifiedDate(RandomTestUtil.nextDate());
+
+		assetListEntry.setTypeSettings(RandomTestUtil.randomString());
 
 		assetListEntry.setTitle(RandomTestUtil.randomString());
 

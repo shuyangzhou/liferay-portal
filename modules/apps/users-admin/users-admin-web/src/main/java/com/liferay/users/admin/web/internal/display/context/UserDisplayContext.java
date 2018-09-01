@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.service.UserGroupGroupRoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserGroupRoleLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.JavaConstants;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -50,8 +51,8 @@ import com.liferay.users.admin.kernel.util.UsersAdminUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.portlet.RenderResponse;
 
@@ -86,7 +87,6 @@ public class UserDisplayContext {
 
 		allGroups.addAll(getGroups());
 		allGroups.addAll(getInheritedSites());
-		allGroups.addAll(_getOrganizationRelatedGroups());
 		allGroups.addAll(
 			GroupLocalServiceUtil.getOrganizationsGroups(getOrganizations()));
 		allGroups.addAll(
@@ -131,16 +131,13 @@ public class UserDisplayContext {
 	}
 
 	public List<Group> getInheritedSites() throws PortalException {
-		List<Group> inheritedSites =
-			GroupLocalServiceUtil.getUserGroupsRelatedGroups(getUserGroups());
+		SortedSet<Group> inheritedSitesSet = new TreeSet<>();
 
-		for (Group group : _getOrganizationRelatedGroups()) {
-			if (!inheritedSites.contains(group)) {
-				inheritedSites.add(group);
-			}
-		}
+		inheritedSitesSet.addAll(
+			GroupLocalServiceUtil.getUserGroupsRelatedGroups(getUserGroups()));
+		inheritedSitesSet.addAll(_getOrganizationRelatedGroups());
 
-		return inheritedSites;
+		return ListUtil.fromCollection(inheritedSitesSet);
 	}
 
 	public List<NavigationItem> getNavigationItems(final String label) {
@@ -158,13 +155,7 @@ public class UserDisplayContext {
 	}
 
 	public List<UserGroupRole> getOrganizationRoles() throws PortalException {
-		List<UserGroupRole> userGroupRoles = getUserGroupRoles();
-
-		Stream<UserGroupRole> stream = userGroupRoles.stream();
-
-		stream = stream.filter(this::_isOrganizationRole);
-
-		return stream.collect(Collectors.toList());
+		return ListUtil.filter(getUserGroupRoles(), this::_isOrganizationRole);
 	}
 
 	public List<Organization> getOrganizations() throws PortalException {
@@ -204,14 +195,9 @@ public class UserDisplayContext {
 	}
 
 	public List<Group> getRoleGroups() throws PortalException {
-		List<Group> allGroups = getAllGroups();
-
-		Stream<Group> stream = allGroups.stream();
-
-		stream = stream.filter(
+		return ListUtil.filter(
+			getAllGroups(),
 			group -> RoleLocalServiceUtil.hasGroupRoles(group.getGroupId()));
-
-		return stream.collect(Collectors.toList());
 	}
 
 	public List<Role> getRoles() throws PortalException {
@@ -233,13 +219,7 @@ public class UserDisplayContext {
 	}
 
 	public List<UserGroupRole> getSiteRoles() throws PortalException {
-		List<UserGroupRole> userGroupRoles = getUserGroupRoles();
-
-		Stream<UserGroupRole> stream = userGroupRoles.stream();
-
-		stream = stream.filter(this::_isSiteRole);
-
-		return stream.collect(Collectors.toList());
+		return ListUtil.filter(getUserGroupRoles(), this::_isSiteRole);
 	}
 
 	public List<UserGroupRole> getUserGroupRoles() throws PortalException {
