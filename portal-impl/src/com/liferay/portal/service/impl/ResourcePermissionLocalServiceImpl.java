@@ -568,9 +568,6 @@ public class ResourcePermissionLocalServiceImpl
 				companyId, name, ResourceConstants.SCOPE_INDIVIDUAL,
 				String.valueOf(oldPrimKey));
 
-		Map<Long, ResourcePermission> resourcePermissionsMap =
-			ResourcePermissionsThreadLocal.getResourcePermissions();
-
 		for (ResourcePermission oldResourcePermission :
 				oldResourcePermissions) {
 
@@ -594,11 +591,6 @@ public class ResourcePermissionLocalServiceImpl
 			resourcePermission.setNew(true);
 
 			resourcePermissionPersistence.update(resourcePermission);
-
-			if (resourcePermissionsMap != null) {
-				resourcePermissionsMap.put(
-					oldResourcePermission.getRoleId(), resourcePermission);
-			}
 		}
 	}
 
