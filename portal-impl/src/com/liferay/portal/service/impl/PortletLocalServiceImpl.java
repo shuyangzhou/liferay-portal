@@ -1256,36 +1256,38 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 		Role guestRole = roleLocalService.getRole(
 			portlet.getCompanyId(), RoleConstants.GUEST);
-		List<String> guestActions =
+		List<String> guestPortletActions =
 			ResourceActionsUtil.getPortletResourceGuestDefaultActions(
 				portlet.getRootPortletId());
 
 		resourcePermissionLocalService.setResourcePermissions(
 			portlet.getCompanyId(), portlet.getRootPortletId(),
 			ResourceConstants.SCOPE_INDIVIDUAL, portlet.getRootPortletId(),
-			guestRole.getRoleId(), guestActions.toArray(new String[0]));
+			guestRole.getRoleId(), guestPortletActions.toArray(new String[0]));
 
 		Role ownerRole = roleLocalService.getRole(
 			portlet.getCompanyId(), RoleConstants.OWNER);
-		List<String> ownerActionIds =
+		List<String> ownerPortletActionIds =
 			ResourceActionsUtil.getPortletResourceActions(
 				portlet.getRootPortletId());
 
 		resourcePermissionLocalService.setOwnerResourcePermissions(
 			portlet.getCompanyId(), portlet.getRootPortletId(),
 			ResourceConstants.SCOPE_INDIVIDUAL, portlet.getRootPortletId(),
-			ownerRole.getRoleId(), 0, ownerActionIds.toArray(new String[0]));
+			ownerRole.getRoleId(), 0,
+			ownerPortletActionIds.toArray(new String[0]));
 
 		Role siteMemberRole = roleLocalService.getRole(
 			portlet.getCompanyId(), RoleConstants.SITE_MEMBER);
-		List<String> groupActionIds =
+		List<String> groupPortletActionIds =
 			ResourceActionsUtil.getPortletResourceGroupDefaultActions(
 				portlet.getRootPortletId());
 
 		resourcePermissionLocalService.setResourcePermissions(
 			portlet.getCompanyId(), portlet.getRootPortletId(),
 			ResourceConstants.SCOPE_INDIVIDUAL, portlet.getRootPortletId(),
-			siteMemberRole.getRoleId(), groupActionIds.toArray(new String[0]));
+			siteMemberRole.getRoleId(),
+			groupPortletActionIds.toArray(new String[0]));
 	}
 
 	protected void initPortletModelDefaultPermissions(Portlet portlet)
@@ -1324,35 +1326,37 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 		Role guestRole = roleLocalService.getRole(
 			portlet.getCompanyId(), RoleConstants.GUEST);
-		List<String> guestActionIds =
+		List<String> guestModelActionIds =
 			ResourceActionsUtil.getModelResourceGuestDefaultActions(
 				rootModelResource);
 
 		resourcePermissionLocalService.setResourcePermissions(
 			portlet.getCompanyId(), rootModelResource,
 			ResourceConstants.SCOPE_INDIVIDUAL, rootModelResource,
-			guestRole.getRoleId(), guestActionIds.toArray(new String[0]));
+			guestRole.getRoleId(), guestModelActionIds.toArray(new String[0]));
 
 		Role ownerRole = roleLocalService.getRole(
 			portlet.getCompanyId(), RoleConstants.OWNER);
-		List<String> ownerActionIds =
+		List<String> ownerModelActionIds =
 			ResourceActionsUtil.getModelResourceActions(rootModelResource);
 
 		resourcePermissionLocalService.setOwnerResourcePermissions(
 			portlet.getCompanyId(), rootModelResource,
 			ResourceConstants.SCOPE_INDIVIDUAL, rootModelResource,
-			ownerRole.getRoleId(), 0, ownerActionIds.toArray(new String[0]));
+			ownerRole.getRoleId(), 0,
+			ownerModelActionIds.toArray(new String[0]));
 
 		Role siteMemberRole = roleLocalService.getRole(
 			portlet.getCompanyId(), RoleConstants.SITE_MEMBER);
-		List<String> groupActionIds =
+		List<String> groupModelActionIds =
 			ResourceActionsUtil.getModelResourceGroupDefaultActions(
 				rootModelResource);
 
 		resourcePermissionLocalService.setResourcePermissions(
 			portlet.getCompanyId(), rootModelResource,
 			ResourceConstants.SCOPE_INDIVIDUAL, rootModelResource,
-			siteMemberRole.getRoleId(), groupActionIds.toArray(new String[0]));
+			siteMemberRole.getRoleId(),
+			groupModelActionIds.toArray(new String[0]));
 	}
 
 	protected void readLiferayDisplay(
