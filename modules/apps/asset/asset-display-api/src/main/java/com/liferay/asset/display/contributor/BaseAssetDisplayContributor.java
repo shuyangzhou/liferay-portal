@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
+import com.liferay.portal.kernel.util.ResourceBundleLoaderUtil;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -30,6 +31,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Jürgen Kappler
@@ -141,11 +145,31 @@ public abstract class BaseAssetDisplayContributor<T>
 		T assetEntryObject, String field, Locale locale);
 
 	protected ResourceBundleLoader getResourceBundleLoader() {
+		if (resourceBundleLoader == null) {
+			Bundle bundle = FrameworkUtil.getBundle(getClass());
+
+			if (bundle == null) {
+				return ResourceBundleLoaderUtil.getPortalResourceBundleLoader();
+			}
+
+			return ResourceBundleLoaderUtil.
+				getResourceBundleLoaderByBundleSymbolicName(
+					bundle.getSymbolicName());
+		}
+
 		return resourceBundleLoader;
 	}
 
-	protected abstract void setResourceBundleLoader(
-		ResourceBundleLoader resourceBundleLoader);
+	/**
+	 * @deprecated As of Judson (7.1.x), replaced with {@link
+	 *             #getResourceBundleLoader()}
+	 */
+	@Deprecated
+	protected void setResourceBundleLoader(
+		ResourceBundleLoader resourceBundleLoader) {
+
+		this.resourceBundleLoader = resourceBundleLoader;
+	}
 
 	protected ResourceBundleLoader resourceBundleLoader;
 

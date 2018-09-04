@@ -127,13 +127,6 @@ public class JournalArticleAssetDisplayContributor
 				"com.liferay.journal.lang");
 	}
 
-	@Override
-	protected void setResourceBundleLoader(
-		ResourceBundleLoader resourceBundleLoader) {
-
-		this.resourceBundleLoader = resourceBundleLoader;
-	}
-
 	private String _transformFileEntryURL(String data) {
 		try {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(data);
