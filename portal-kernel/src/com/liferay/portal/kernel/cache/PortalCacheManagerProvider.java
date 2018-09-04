@@ -16,6 +16,7 @@ package com.liferay.portal.kernel.cache;
 
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceRankingUtil;
 import com.liferay.registry.ServiceReference;
 import com.liferay.registry.ServiceTracker;
 import com.liferay.registry.ServiceTrackerCustomizer;
@@ -25,6 +26,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -35,18 +37,30 @@ public class PortalCacheManagerProvider {
 	public static PortalCacheManager<? extends Serializable, ?>
 		getPortalCacheManager(String portalCacheManagerName) {
 
-		return _instance._getPortalCacheManager(portalCacheManagerName);
+		return _dynamicPortalCacheManagers.computeIfAbsent(
+			portalCacheManagerName,
+			key -> new DynamicPortalCacheManager<>(key));
 	}
 
 	public static Collection<PortalCacheManager<? extends Serializable, ?>>
 		getPortalCacheManagers() {
 
-		return _instance._getPortalCacheManagers();
+		return Collections.unmodifiableCollection(
+			_dynamicPortalCacheManagers.values());
 	}
 
-	private PortalCacheManagerProvider() {
-		_portalCacheManagers = new ConcurrentHashMap<>();
+	private static final Map
+		<String, DynamicPortalCacheManager<? extends Serializable, ?>>
+			_dynamicPortalCacheManagers = new ConcurrentHashMap<>();
+	private static final ServiceTracker
+		<PortalCacheManager<? extends Serializable, ?>,
+			PortalCacheManager<? extends Serializable, ?>> _serviceTracker;
+	private static final Map
+		<ServiceReference<PortalCacheManager<? extends Serializable, ?>>,
+			PortalCacheManager<? extends Serializable, ?>>
+				_trackedServices = new ConcurrentHashMap<>();
 
+	static {
 		Registry registry = RegistryUtil.getRegistry();
 
 		_serviceTracker = registry.trackServices(
@@ -57,31 +71,7 @@ public class PortalCacheManagerProvider {
 		_serviceTracker.open();
 	}
 
-	private PortalCacheManager<? extends Serializable, ?>
-		_getPortalCacheManager(String portalCacheManagerName) {
-
-		return _portalCacheManagers.get(portalCacheManagerName);
-	}
-
-	private Collection<PortalCacheManager<? extends Serializable, ?>>
-		_getPortalCacheManagers() {
-
-		return Collections.unmodifiableCollection(
-			_portalCacheManagers.values());
-	}
-
-	private static final PortalCacheManagerProvider _instance =
-		new PortalCacheManagerProvider();
-
-	private final
-		Map<String, PortalCacheManager<? extends Serializable, ?>>
-			_portalCacheManagers;
-	private final
-		ServiceTracker
-			<PortalCacheManager<? extends Serializable, ?>,
-				PortalCacheManager<? extends Serializable, ?>> _serviceTracker;
-
-	private class PortalCacheProviderServiceTrackerCustomizer
+	private static class PortalCacheProviderServiceTrackerCustomizer
 		implements ServiceTrackerCustomizer
 			<PortalCacheManager<? extends Serializable, ?>,
 				PortalCacheManager<? extends Serializable, ?>> {
@@ -93,12 +83,13 @@ public class PortalCacheManagerProvider {
 
 			Registry registry = RegistryUtil.getRegistry();
 
-			PortalCacheManager<?, ?> portalCacheManager = registry.getService(
-				serviceReference);
+			PortalCacheManager<? extends Serializable, ?> portalCacheManager =
+				registry.getService(serviceReference);
 
-			_portalCacheManagers.put(
-				portalCacheManager.getPortalCacheManagerName(),
-				portalCacheManager);
+			_trackedServices.put(serviceReference, portalCacheManager);
+
+			_updateDynamicPortalCacheManager(
+				portalCacheManager.getPortalCacheManagerName());
 
 			return portalCacheManager;
 		}
@@ -108,6 +99,9 @@ public class PortalCacheManagerProvider {
 			ServiceReference<PortalCacheManager<? extends Serializable, ?>>
 				serviceReference,
 			PortalCacheManager<? extends Serializable, ?> portalCacheManager) {
+
+			_updateDynamicPortalCacheManager(
+				portalCacheManager.getPortalCacheManagerName());
 		}
 
 		@Override
@@ -116,8 +110,39 @@ public class PortalCacheManagerProvider {
 				serviceReference,
 			PortalCacheManager<? extends Serializable, ?> portalCacheManager) {
 
-			_portalCacheManagers.remove(
-				portalCacheManager.getPortalCacheManagerName());
+			Registry registry = RegistryUtil.getRegistry();
+
+			registry.ungetService(serviceReference);
+
+			if (_trackedServices.remove(serviceReference, portalCacheManager)) {
+				_updateDynamicPortalCacheManager(
+					portalCacheManager.getPortalCacheManagerName());
+			}
+		}
+
+		private void _updateDynamicPortalCacheManager(
+			String portalCacheManagerName) {
+
+			Optional
+				<Map.Entry
+					<ServiceReference
+						<PortalCacheManager<? extends Serializable, ?>>,
+							PortalCacheManager<? extends Serializable, ?>>>
+								optionalEntry =
+									ServiceRankingUtil.getHighestRankingEntry(
+										_trackedServices);
+
+			Optional<PortalCacheManager<? extends Serializable, ?>>
+				optionalService = optionalEntry.map(Map.Entry::getValue);
+
+			DynamicPortalCacheManager<? extends Serializable, ?>
+				dynamicPortalCacheManager =
+					_dynamicPortalCacheManagers.computeIfAbsent(
+						portalCacheManagerName,
+						key -> new DynamicPortalCacheManager<>(key));
+
+			dynamicPortalCacheManager.setPortalCacheManager(
+				optionalService.orElse(null));
 		}
 
 	}
