@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.AuditedModel;
 import com.liferay.portal.kernel.model.GroupedModel;
+import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.Resource;
 import com.liferay.portal.kernel.model.ResourceAction;
 import com.liferay.portal.kernel.model.ResourceConstants;
@@ -55,6 +56,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.impl.ResourceImpl;
 import com.liferay.portal.security.permission.PermissionCacheUtil;
 import com.liferay.portal.service.base.ResourcePermissionLocalServiceBaseImpl;
@@ -1203,6 +1205,101 @@ public class ResourcePermissionLocalServiceImpl
 		}
 
 		return false;
+	}
+
+	@Override
+	public void initPortletDefaultPermissions(Portlet portlet)
+		throws PortalException {
+
+		Role guestRole = roleLocalService.getRole(
+			portlet.getCompanyId(), RoleConstants.GUEST);
+		Role ownerRole = roleLocalService.getRole(
+			portlet.getCompanyId(), RoleConstants.OWNER);
+		Role siteMemberRole = roleLocalService.getRole(
+			portlet.getCompanyId(), RoleConstants.SITE_MEMBER);
+
+		List<String> guestPortletActions =
+			ResourceActionsUtil.getPortletResourceGuestDefaultActions(
+				portlet.getRootPortletId());
+
+		setResourcePermissions(
+			portlet.getCompanyId(), portlet.getRootPortletId(),
+			ResourceConstants.SCOPE_INDIVIDUAL, portlet.getRootPortletId(),
+			guestRole.getRoleId(), guestPortletActions.toArray(new String[0]));
+
+		List<String> ownerPortletActionIds =
+			ResourceActionsUtil.getPortletResourceActions(
+				portlet.getRootPortletId());
+
+		setOwnerResourcePermissions(
+			portlet.getCompanyId(), portlet.getRootPortletId(),
+			ResourceConstants.SCOPE_INDIVIDUAL, portlet.getRootPortletId(),
+			ownerRole.getRoleId(), 0,
+			ownerPortletActionIds.toArray(new String[0]));
+
+		List<String> groupPortletActionIds =
+			ResourceActionsUtil.getPortletResourceGroupDefaultActions(
+				portlet.getRootPortletId());
+
+		setResourcePermissions(
+			portlet.getCompanyId(), portlet.getRootPortletId(),
+			ResourceConstants.SCOPE_INDIVIDUAL, portlet.getRootPortletId(),
+			siteMemberRole.getRoleId(),
+			groupPortletActionIds.toArray(new String[0]));
+
+		String rootModelResource =
+			ResourceActionsUtil.getPortletRootModelResource(
+				portlet.getRootPortletId());
+
+		if (!Validator.isBlank(rootModelResource)) {
+			List<String> guestModelActionIds =
+				ResourceActionsUtil.getModelResourceGuestDefaultActions(
+					rootModelResource);
+
+			setResourcePermissions(
+				portlet.getCompanyId(), rootModelResource,
+				ResourceConstants.SCOPE_INDIVIDUAL, rootModelResource,
+				guestRole.getRoleId(),
+				guestModelActionIds.toArray(new String[0]));
+
+			List<String> ownerModelActionIds =
+				ResourceActionsUtil.getModelResourceActions(rootModelResource);
+
+			setOwnerResourcePermissions(
+				portlet.getCompanyId(), rootModelResource,
+				ResourceConstants.SCOPE_INDIVIDUAL, rootModelResource,
+				ownerRole.getRoleId(), 0,
+				ownerModelActionIds.toArray(new String[0]));
+
+			List<String> groupModelActionIds =
+				ResourceActionsUtil.getModelResourceGroupDefaultActions(
+					rootModelResource);
+
+			setResourcePermissions(
+				portlet.getCompanyId(), rootModelResource,
+				ResourceConstants.SCOPE_INDIVIDUAL, rootModelResource,
+				siteMemberRole.getRoleId(),
+				groupModelActionIds.toArray(new String[0]));
+		}
+
+		List<String> modelResources = new ArrayList<>();
+
+		modelResources.add(
+			ResourceActionsUtil.getPortletRootModelResource(
+				portlet.getRootPortletId()));
+		modelResources.addAll(
+			ResourceActionsUtil.getPortletModelResources(
+				portlet.getRootPortletId()));
+
+		for (String modelResource : modelResources) {
+			if (Validator.isBlank(modelResource)) {
+				continue;
+			}
+
+			addResourcePermissions(
+				portlet.getCompanyId(), 0, 0, modelResource, modelResource,
+				false, false, true);
+		}
 	}
 
 	/**
