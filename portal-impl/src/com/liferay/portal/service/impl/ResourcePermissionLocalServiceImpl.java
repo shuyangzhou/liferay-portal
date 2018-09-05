@@ -1222,30 +1222,32 @@ public class ResourcePermissionLocalServiceImpl
 			ResourceActionsUtil.getPortletResourceGuestDefaultActions(
 				portlet.getRootPortletId());
 
-		setResourcePermissions(
+		_updateResourcePermission(
 			portlet.getCompanyId(), portlet.getRootPortletId(),
-			ResourceConstants.SCOPE_INDIVIDUAL, portlet.getRootPortletId(),
-			guestRole.getRoleId(), guestPortletActions.toArray(new String[0]));
+			ResourceConstants.SCOPE_INDIVIDUAL, portlet.getRootPortletId(), 0,
+			guestRole.getRoleId(), guestPortletActions.toArray(new String[0]),
+			ResourcePermissionConstants.OPERATOR_SET, true, null);
 
 		List<String> ownerPortletActionIds =
 			ResourceActionsUtil.getPortletResourceActions(
 				portlet.getRootPortletId());
 
-		setOwnerResourcePermissions(
+		_updateResourcePermission(
 			portlet.getCompanyId(), portlet.getRootPortletId(),
-			ResourceConstants.SCOPE_INDIVIDUAL, portlet.getRootPortletId(),
-			ownerRole.getRoleId(), 0,
-			ownerPortletActionIds.toArray(new String[0]));
+			ResourceConstants.SCOPE_INDIVIDUAL, portlet.getRootPortletId(), 0,
+			ownerRole.getRoleId(), ownerPortletActionIds.toArray(new String[0]),
+			ResourcePermissionConstants.OPERATOR_SET, true, null);
 
 		List<String> groupPortletActionIds =
 			ResourceActionsUtil.getPortletResourceGroupDefaultActions(
 				portlet.getRootPortletId());
 
-		setResourcePermissions(
+		_updateResourcePermission(
 			portlet.getCompanyId(), portlet.getRootPortletId(),
-			ResourceConstants.SCOPE_INDIVIDUAL, portlet.getRootPortletId(),
+			ResourceConstants.SCOPE_INDIVIDUAL, portlet.getRootPortletId(), 0,
 			siteMemberRole.getRoleId(),
-			groupPortletActionIds.toArray(new String[0]));
+			groupPortletActionIds.toArray(new String[0]),
+			ResourcePermissionConstants.OPERATOR_SET, true, null);
 
 		String rootModelResource =
 			ResourceActionsUtil.getPortletRootModelResource(
@@ -1256,30 +1258,33 @@ public class ResourcePermissionLocalServiceImpl
 				ResourceActionsUtil.getModelResourceGuestDefaultActions(
 					rootModelResource);
 
-			setResourcePermissions(
+			_updateResourcePermission(
 				portlet.getCompanyId(), rootModelResource,
-				ResourceConstants.SCOPE_INDIVIDUAL, rootModelResource,
+				ResourceConstants.SCOPE_INDIVIDUAL, rootModelResource, 0,
 				guestRole.getRoleId(),
-				guestModelActionIds.toArray(new String[0]));
+				guestModelActionIds.toArray(new String[0]),
+				ResourcePermissionConstants.OPERATOR_SET, true, null);
 
 			List<String> ownerModelActionIds =
 				ResourceActionsUtil.getModelResourceActions(rootModelResource);
 
-			setOwnerResourcePermissions(
+			_updateResourcePermission(
 				portlet.getCompanyId(), rootModelResource,
-				ResourceConstants.SCOPE_INDIVIDUAL, rootModelResource,
-				ownerRole.getRoleId(), 0,
-				ownerModelActionIds.toArray(new String[0]));
+				ResourceConstants.SCOPE_INDIVIDUAL, rootModelResource, 0,
+				ownerRole.getRoleId(),
+				ownerModelActionIds.toArray(new String[0]),
+				ResourcePermissionConstants.OPERATOR_SET, true, null);
 
 			List<String> groupModelActionIds =
 				ResourceActionsUtil.getModelResourceGroupDefaultActions(
 					rootModelResource);
 
-			setResourcePermissions(
+			_updateResourcePermission(
 				portlet.getCompanyId(), rootModelResource,
-				ResourceConstants.SCOPE_INDIVIDUAL, rootModelResource,
+				ResourceConstants.SCOPE_INDIVIDUAL, rootModelResource, 0,
 				siteMemberRole.getRoleId(),
-				groupModelActionIds.toArray(new String[0]));
+				groupModelActionIds.toArray(new String[0]),
+				ResourcePermissionConstants.OPERATOR_SET, true, null);
 		}
 
 		List<String> modelResources = new ArrayList<>();
