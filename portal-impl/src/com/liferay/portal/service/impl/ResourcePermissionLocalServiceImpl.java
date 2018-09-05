@@ -1266,10 +1266,6 @@ public class ResourcePermissionLocalServiceImpl
 				groupModelActionIds);
 		}
 
-		if (!PermissionThreadLocal.isAddResource()) {
-			return;
-		}
-
 		List<String> modelResources = new ArrayList<>();
 
 		modelResources.add(
