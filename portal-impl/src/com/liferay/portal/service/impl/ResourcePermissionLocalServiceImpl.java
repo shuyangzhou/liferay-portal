@@ -1282,69 +1282,18 @@ public class ResourcePermissionLocalServiceImpl
 
 			validate(modelResource, false);
 
-			boolean flushResourcePermissionEnabled =
-				PermissionThreadLocal.isFlushResourcePermissionEnabled(
-					modelResource, modelResource);
+			List<String> ownerModelActionIds =
+				ResourceActionsUtil.getModelResourceActions(modelResource);
 
-			PermissionThreadLocal.setFlushResourcePermissionEnabled(
-				modelResource, modelResource, false);
+			filterOwnerActions(modelResource, ownerModelActionIds);
 
-			List<ResourcePermission> resourcePermissions =
-				resourcePermissionPersistence.findByC_N_S_P(
-					portlet.getCompanyId(), modelResource,
-					ResourceConstants.SCOPE_INDIVIDUAL, modelResource);
+			List<String> guestModelActionIds =
+				ResourceActionsUtil.getModelResourceGuestDefaultActions(
+					modelResource);
 
-			Map<Long, ResourcePermission> resourcePermissionsMap =
-				_getResourcePermissionsMap(resourcePermissions);
-
-			boolean modified = false;
-
-			try {
-				List<String> actionIds =
-					ResourceActionsUtil.getModelResourceActions(modelResource);
-
-				filterOwnerActions(modelResource, actionIds);
-
-				if (_updateResourcePermission(
-						portlet.getCompanyId(), modelResource,
-						ResourceConstants.SCOPE_INDIVIDUAL, modelResource, 0,
-						ownerRole.getRoleId(),
-						actionIds.toArray(new String[actionIds.size()]),
-						ResourcePermissionConstants.OPERATOR_SET, true,
-						resourcePermissionsMap)) {
-
-					modified = true;
-				}
-
-				List<String> actions =
-					ResourceActionsUtil.getModelResourceGuestDefaultActions(
-						modelResource);
-
-				if (_updateResourcePermission(
-						portlet.getCompanyId(), modelResource,
-						ResourceConstants.SCOPE_INDIVIDUAL, modelResource, 0,
-						guestRole.getRoleId(),
-						actions.toArray(new String[actions.size()]),
-						ResourcePermissionConstants.OPERATOR_SET, true,
-						resourcePermissionsMap)) {
-
-					modified = true;
-				}
-			}
-			finally {
-				PermissionThreadLocal.setFlushResourcePermissionEnabled(
-					modelResource, modelResource,
-					flushResourcePermissionEnabled);
-
-				if (modified) {
-					PermissionCacheUtil.clearResourcePermissionCache(
-						ResourceConstants.SCOPE_INDIVIDUAL, modelResource,
-						modelResource);
-
-					IndexWriterHelperUtil.updatePermissionFields(
-						modelResource, modelResource);
-				}
-			}
+			_initPortletDefaultPermissions(
+				portlet.getCompanyId(), modelResource, guestRole, ownerRole,
+				null, guestModelActionIds, ownerModelActionIds, null);
 		}
 	}
 
@@ -2029,7 +1978,8 @@ public class ResourcePermissionLocalServiceImpl
 				modified = true;
 			}
 
-			if (_updateResourcePermission(
+			if ((groupActionIds != null) &&
+				_updateResourcePermission(
 					companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, name,
 					0, siteMemberRole.getRoleId(),
 					groupActionIds.toArray(new String[groupActionIds.size()]),
