@@ -351,12 +351,8 @@ public class ResourcePermissionLocalServiceImpl
 			resourcePermissionPersistence.findByC_N_S_P(
 				companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey);
 
-		Map<Long, ResourcePermission> resourcePermissionsMap = new HashMap<>();
-
-		for (ResourcePermission resourcePermission : resourcePermissions) {
-			resourcePermissionsMap.put(
-				resourcePermission.getRoleId(), resourcePermission);
-		}
+		Map<Long, ResourcePermission> resourcePermissionsMap =
+			_getResourcePermissionsMap(resourcePermissions);
 
 		try {
 			List<String> actionIds = null;
@@ -1218,6 +1214,14 @@ public class ResourcePermissionLocalServiceImpl
 		Role siteMemberRole = roleLocalService.getRole(
 			portlet.getCompanyId(), RoleConstants.SITE_MEMBER);
 
+		List<ResourcePermission> resourcePermissions =
+			resourcePermissionPersistence.findByC_N_S_P(
+				portlet.getCompanyId(), portlet.getRootPortletId(),
+				ResourceConstants.SCOPE_INDIVIDUAL, portlet.getRootPortletId());
+
+		Map<Long, ResourcePermission> resourcePermissionsMap =
+			_getResourcePermissionsMap(resourcePermissions);
+
 		List<String> guestPortletActions =
 			ResourceActionsUtil.getPortletResourceGuestDefaultActions(
 				portlet.getRootPortletId());
@@ -1226,7 +1230,8 @@ public class ResourcePermissionLocalServiceImpl
 			portlet.getCompanyId(), portlet.getRootPortletId(),
 			ResourceConstants.SCOPE_INDIVIDUAL, portlet.getRootPortletId(), 0,
 			guestRole.getRoleId(), guestPortletActions.toArray(new String[0]),
-			ResourcePermissionConstants.OPERATOR_SET, true, null);
+			ResourcePermissionConstants.OPERATOR_SET, true,
+			resourcePermissionsMap);
 
 		List<String> ownerPortletActionIds =
 			ResourceActionsUtil.getPortletResourceActions(
@@ -1236,7 +1241,8 @@ public class ResourcePermissionLocalServiceImpl
 			portlet.getCompanyId(), portlet.getRootPortletId(),
 			ResourceConstants.SCOPE_INDIVIDUAL, portlet.getRootPortletId(), 0,
 			ownerRole.getRoleId(), ownerPortletActionIds.toArray(new String[0]),
-			ResourcePermissionConstants.OPERATOR_SET, true, null);
+			ResourcePermissionConstants.OPERATOR_SET, true,
+			resourcePermissionsMap);
 
 		List<String> groupPortletActionIds =
 			ResourceActionsUtil.getPortletResourceGroupDefaultActions(
@@ -1247,13 +1253,21 @@ public class ResourcePermissionLocalServiceImpl
 			ResourceConstants.SCOPE_INDIVIDUAL, portlet.getRootPortletId(), 0,
 			siteMemberRole.getRoleId(),
 			groupPortletActionIds.toArray(new String[0]),
-			ResourcePermissionConstants.OPERATOR_SET, true, null);
+			ResourcePermissionConstants.OPERATOR_SET, true,
+			resourcePermissionsMap);
 
 		String rootModelResource =
 			ResourceActionsUtil.getPortletRootModelResource(
 				portlet.getRootPortletId());
 
 		if (!Validator.isBlank(rootModelResource)) {
+			resourcePermissions = resourcePermissionPersistence.findByC_N_S_P(
+				portlet.getCompanyId(), rootModelResource,
+				ResourceConstants.SCOPE_INDIVIDUAL, rootModelResource);
+
+			resourcePermissionsMap = _getResourcePermissionsMap(
+				resourcePermissions);
+
 			List<String> guestModelActionIds =
 				ResourceActionsUtil.getModelResourceGuestDefaultActions(
 					rootModelResource);
@@ -1263,7 +1277,8 @@ public class ResourcePermissionLocalServiceImpl
 				ResourceConstants.SCOPE_INDIVIDUAL, rootModelResource, 0,
 				guestRole.getRoleId(),
 				guestModelActionIds.toArray(new String[0]),
-				ResourcePermissionConstants.OPERATOR_SET, true, null);
+				ResourcePermissionConstants.OPERATOR_SET, true,
+				resourcePermissionsMap);
 
 			List<String> ownerModelActionIds =
 				ResourceActionsUtil.getModelResourceActions(rootModelResource);
@@ -1273,7 +1288,8 @@ public class ResourcePermissionLocalServiceImpl
 				ResourceConstants.SCOPE_INDIVIDUAL, rootModelResource, 0,
 				ownerRole.getRoleId(),
 				ownerModelActionIds.toArray(new String[0]),
-				ResourcePermissionConstants.OPERATOR_SET, true, null);
+				ResourcePermissionConstants.OPERATOR_SET, true,
+				resourcePermissionsMap);
 
 			List<String> groupModelActionIds =
 				ResourceActionsUtil.getModelResourceGroupDefaultActions(
@@ -1284,7 +1300,8 @@ public class ResourcePermissionLocalServiceImpl
 				ResourceConstants.SCOPE_INDIVIDUAL, rootModelResource, 0,
 				siteMemberRole.getRoleId(),
 				groupModelActionIds.toArray(new String[0]),
-				ResourcePermissionConstants.OPERATOR_SET, true, null);
+				ResourcePermissionConstants.OPERATOR_SET, true,
+				resourcePermissionsMap);
 		}
 
 		List<String> modelResources = new ArrayList<>();
@@ -1931,6 +1948,19 @@ public class ResourcePermissionLocalServiceImpl
 						name);
 			}
 		}
+	}
+
+	private Map<Long, ResourcePermission> _getResourcePermissionsMap(
+		List<ResourcePermission> resourcePermissions) {
+
+		Map<Long, ResourcePermission> resourcePermissionsMap = new HashMap<>();
+
+		for (ResourcePermission resourcePermission : resourcePermissions) {
+			resourcePermissionsMap.put(
+				resourcePermission.getRoleId(), resourcePermission);
+		}
+
+		return resourcePermissionsMap;
 	}
 
 	private void _updateResourcePermission(
