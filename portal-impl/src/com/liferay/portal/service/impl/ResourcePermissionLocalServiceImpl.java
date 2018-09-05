@@ -1266,14 +1266,9 @@ public class ResourcePermissionLocalServiceImpl
 				groupModelActionIds);
 		}
 
-		List<String> modelResources = new ArrayList<>();
-
-		modelResources.add(
-			ResourceActionsUtil.getPortletRootModelResource(
-				portlet.getRootPortletId()));
-		modelResources.addAll(
+		List<String> modelResources =
 			ResourceActionsUtil.getPortletModelResources(
-				portlet.getRootPortletId()));
+				portlet.getRootPortletId());
 
 		for (String modelResource : modelResources) {
 			if (Validator.isBlank(modelResource)) {
