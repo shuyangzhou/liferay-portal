@@ -1214,94 +1214,43 @@ public class ResourcePermissionLocalServiceImpl
 		Role siteMemberRole = roleLocalService.getRole(
 			portlet.getCompanyId(), RoleConstants.SITE_MEMBER);
 
-		List<ResourcePermission> resourcePermissions =
-			resourcePermissionPersistence.findByC_N_S_P(
-				portlet.getCompanyId(), portlet.getRootPortletId(),
-				ResourceConstants.SCOPE_INDIVIDUAL, portlet.getRootPortletId());
-
-		Map<Long, ResourcePermission> resourcePermissionsMap =
-			_getResourcePermissionsMap(resourcePermissions);
-
 		List<String> guestPortletActions =
 			ResourceActionsUtil.getPortletResourceGuestDefaultActions(
 				portlet.getRootPortletId());
-
-		_updateResourcePermission(
-			portlet.getCompanyId(), portlet.getRootPortletId(),
-			ResourceConstants.SCOPE_INDIVIDUAL, portlet.getRootPortletId(), 0,
-			guestRole.getRoleId(), guestPortletActions.toArray(new String[0]),
-			ResourcePermissionConstants.OPERATOR_SET, true,
-			resourcePermissionsMap);
 
 		List<String> ownerPortletActionIds =
 			ResourceActionsUtil.getPortletResourceActions(
 				portlet.getRootPortletId());
 
-		_updateResourcePermission(
-			portlet.getCompanyId(), portlet.getRootPortletId(),
-			ResourceConstants.SCOPE_INDIVIDUAL, portlet.getRootPortletId(), 0,
-			ownerRole.getRoleId(), ownerPortletActionIds.toArray(new String[0]),
-			ResourcePermissionConstants.OPERATOR_SET, true,
-			resourcePermissionsMap);
-
 		List<String> groupPortletActionIds =
 			ResourceActionsUtil.getPortletResourceGroupDefaultActions(
 				portlet.getRootPortletId());
 
-		_updateResourcePermission(
-			portlet.getCompanyId(), portlet.getRootPortletId(),
-			ResourceConstants.SCOPE_INDIVIDUAL, portlet.getRootPortletId(), 0,
-			siteMemberRole.getRoleId(),
-			groupPortletActionIds.toArray(new String[0]),
-			ResourcePermissionConstants.OPERATOR_SET, true,
-			resourcePermissionsMap);
+		_initPortletDefaultPermissions(
+			portlet.getCompanyId(), portlet.getRootPortletId(), guestRole,
+			ownerRole, siteMemberRole, guestPortletActions,
+			ownerPortletActionIds, groupPortletActionIds);
 
 		String rootModelResource =
 			ResourceActionsUtil.getPortletRootModelResource(
 				portlet.getRootPortletId());
 
 		if (!Validator.isBlank(rootModelResource)) {
-			resourcePermissions = resourcePermissionPersistence.findByC_N_S_P(
-				portlet.getCompanyId(), rootModelResource,
-				ResourceConstants.SCOPE_INDIVIDUAL, rootModelResource);
-
-			resourcePermissionsMap = _getResourcePermissionsMap(
-				resourcePermissions);
-
 			List<String> guestModelActionIds =
 				ResourceActionsUtil.getModelResourceGuestDefaultActions(
 					rootModelResource);
 
-			_updateResourcePermission(
-				portlet.getCompanyId(), rootModelResource,
-				ResourceConstants.SCOPE_INDIVIDUAL, rootModelResource, 0,
-				guestRole.getRoleId(),
-				guestModelActionIds.toArray(new String[0]),
-				ResourcePermissionConstants.OPERATOR_SET, true,
-				resourcePermissionsMap);
-
 			List<String> ownerModelActionIds =
 				ResourceActionsUtil.getModelResourceActions(rootModelResource);
-
-			_updateResourcePermission(
-				portlet.getCompanyId(), rootModelResource,
-				ResourceConstants.SCOPE_INDIVIDUAL, rootModelResource, 0,
-				ownerRole.getRoleId(),
-				ownerModelActionIds.toArray(new String[0]),
-				ResourcePermissionConstants.OPERATOR_SET, true,
-				resourcePermissionsMap);
 
 			List<String> groupModelActionIds =
 				ResourceActionsUtil.getModelResourceGroupDefaultActions(
 					rootModelResource);
 
-			_updateResourcePermission(
-				portlet.getCompanyId(), rootModelResource,
-				ResourceConstants.SCOPE_INDIVIDUAL, rootModelResource, 0,
-				siteMemberRole.getRoleId(),
-				groupModelActionIds.toArray(new String[0]),
-				ResourcePermissionConstants.OPERATOR_SET, true,
-				resourcePermissionsMap);
+			_initPortletDefaultPermissions(
+				portlet.getCompanyId(), rootModelResource, guestRole, ownerRole,
+				siteMemberRole, guestModelActionIds, ownerModelActionIds,
+				groupModelActionIds);
 		}
 
 		List<String> modelResources = new ArrayList<>();
@@ -1961,6 +1910,38 @@ public class ResourcePermissionLocalServiceImpl
 		}
 
 		return resourcePermissionsMap;
+	}
+
+	private void _initPortletDefaultPermissions(
+			long companyId, String name, Role guestRole, Role ownerRole,
+			Role siteMemberRole, List<String> guestActionIds,
+			List<String> ownerActionIds, List<String> groupActionIds)
+		throws PortalException {
+
+		List<ResourcePermission> resourcePermissions =
+			resourcePermissionPersistence.findByC_N_S_P(
+				companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, name);
+
+		Map<Long, ResourcePermission> resourcePermissionsMap =
+			_getResourcePermissionsMap(resourcePermissions);
+
+		_updateResourcePermission(
+			companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, name, 0,
+			guestRole.getRoleId(), guestActionIds.toArray(new String[0]),
+			ResourcePermissionConstants.OPERATOR_SET, true,
+			resourcePermissionsMap);
+
+		_updateResourcePermission(
+			companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, name, 0,
+			ownerRole.getRoleId(), ownerActionIds.toArray(new String[0]),
+			ResourcePermissionConstants.OPERATOR_SET, true,
+			resourcePermissionsMap);
+
+		_updateResourcePermission(
+			companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, name, 0,
+			siteMemberRole.getRoleId(), groupActionIds.toArray(new String[0]),
+			ResourcePermissionConstants.OPERATOR_SET, true,
+			resourcePermissionsMap);
 	}
 
 	private void _updateResourcePermission(
