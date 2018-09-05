@@ -354,6 +354,8 @@ public class ResourcePermissionLocalServiceImpl
 		Map<Long, ResourcePermission> resourcePermissionsMap =
 			_getResourcePermissionsMap(resourcePermissions);
 
+		boolean modified = false;
+
 		try {
 			List<String> actionIds = null;
 
@@ -369,12 +371,15 @@ public class ResourcePermissionLocalServiceImpl
 			Role role = roleLocalService.getRole(
 				companyId, RoleConstants.OWNER);
 
-			_updateResourcePermission(
-				companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey,
-				userId, role.getRoleId(),
-				actionIds.toArray(new String[actionIds.size()]),
-				ResourcePermissionConstants.OPERATOR_SET, true,
-				resourcePermissionsMap);
+			if (_updateResourcePermission(
+					companyId, name, ResourceConstants.SCOPE_INDIVIDUAL,
+					primKey, userId, role.getRoleId(),
+					actionIds.toArray(new String[actionIds.size()]),
+					ResourcePermissionConstants.OPERATOR_SET, true,
+					resourcePermissionsMap)) {
+
+				modified = true;
+			}
 
 			// Group permissions
 
@@ -394,12 +399,15 @@ public class ResourcePermissionLocalServiceImpl
 
 				Role groupRole = roleLocalService.getDefaultGroupRole(groupId);
 
-				_updateResourcePermission(
-					companyId, name, ResourceConstants.SCOPE_INDIVIDUAL,
-					primKey, 0, groupRole.getRoleId(),
-					actions.toArray(new String[actions.size()]),
-					ResourcePermissionConstants.OPERATOR_SET, true,
-					resourcePermissionsMap);
+				if (_updateResourcePermission(
+						companyId, name, ResourceConstants.SCOPE_INDIVIDUAL,
+						primKey, 0, groupRole.getRoleId(),
+						actions.toArray(new String[actions.size()]),
+						ResourcePermissionConstants.OPERATOR_SET, true,
+						resourcePermissionsMap)) {
+
+					modified = true;
+				}
 			}
 
 			// Guest permissions
@@ -425,22 +433,27 @@ public class ResourcePermissionLocalServiceImpl
 				Role guestRole = roleLocalService.getRole(
 					companyId, RoleConstants.GUEST);
 
-				_updateResourcePermission(
-					companyId, name, ResourceConstants.SCOPE_INDIVIDUAL,
-					primKey, 0, guestRole.getRoleId(),
-					actions.toArray(new String[actions.size()]),
-					ResourcePermissionConstants.OPERATOR_SET, true,
-					resourcePermissionsMap);
+				if (_updateResourcePermission(
+						companyId, name, ResourceConstants.SCOPE_INDIVIDUAL,
+						primKey, 0, guestRole.getRoleId(),
+						actions.toArray(new String[actions.size()]),
+						ResourcePermissionConstants.OPERATOR_SET, true,
+						resourcePermissionsMap)) {
+
+					modified = true;
+				}
 			}
 		}
 		finally {
 			PermissionThreadLocal.setFlushResourcePermissionEnabled(
 				name, primKey, flushResourcePermissionEnabled);
 
-			PermissionCacheUtil.clearResourcePermissionCache(
-				ResourceConstants.SCOPE_INDIVIDUAL, name, primKey);
+			if (modified) {
+				PermissionCacheUtil.clearResourcePermissionCache(
+					ResourceConstants.SCOPE_INDIVIDUAL, name, primKey);
 
-			IndexWriterHelperUtil.updatePermissionFields(name, primKey);
+				IndexWriterHelperUtil.updatePermissionFields(name, primKey);
+			}
 		}
 	}
 
@@ -1288,43 +1301,53 @@ public class ResourcePermissionLocalServiceImpl
 			Map<Long, ResourcePermission> resourcePermissionsMap =
 				_getResourcePermissionsMap(resourcePermissions);
 
+			boolean modified = false;
+
 			try {
 				List<String> actionIds =
 					ResourceActionsUtil.getModelResourceActions(modelResource);
 
 				filterOwnerActions(modelResource, actionIds);
 
-				_updateResourcePermission(
-					portlet.getCompanyId(), modelResource,
-					ResourceConstants.SCOPE_INDIVIDUAL, modelResource, 0,
-					ownerRole.getRoleId(),
-					actionIds.toArray(new String[actionIds.size()]),
-					ResourcePermissionConstants.OPERATOR_SET, true,
-					resourcePermissionsMap);
+				if (_updateResourcePermission(
+						portlet.getCompanyId(), modelResource,
+						ResourceConstants.SCOPE_INDIVIDUAL, modelResource, 0,
+						ownerRole.getRoleId(),
+						actionIds.toArray(new String[actionIds.size()]),
+						ResourcePermissionConstants.OPERATOR_SET, true,
+						resourcePermissionsMap)) {
+
+					modified = true;
+				}
 
 				List<String> actions =
 					ResourceActionsUtil.getModelResourceGuestDefaultActions(
 						modelResource);
 
-				_updateResourcePermission(
-					portlet.getCompanyId(), modelResource,
-					ResourceConstants.SCOPE_INDIVIDUAL, modelResource, 0,
-					guestRole.getRoleId(),
-					actions.toArray(new String[actions.size()]),
-					ResourcePermissionConstants.OPERATOR_SET, true,
-					resourcePermissionsMap);
+				if (_updateResourcePermission(
+						portlet.getCompanyId(), modelResource,
+						ResourceConstants.SCOPE_INDIVIDUAL, modelResource, 0,
+						guestRole.getRoleId(),
+						actions.toArray(new String[actions.size()]),
+						ResourcePermissionConstants.OPERATOR_SET, true,
+						resourcePermissionsMap)) {
+
+					modified = true;
+				}
 			}
 			finally {
 				PermissionThreadLocal.setFlushResourcePermissionEnabled(
 					modelResource, modelResource,
 					flushResourcePermissionEnabled);
 
-				PermissionCacheUtil.clearResourcePermissionCache(
-					ResourceConstants.SCOPE_INDIVIDUAL, modelResource,
-					modelResource);
+				if (modified) {
+					PermissionCacheUtil.clearResourcePermissionCache(
+						ResourceConstants.SCOPE_INDIVIDUAL, modelResource,
+						modelResource);
 
-				IndexWriterHelperUtil.updatePermissionFields(
-					modelResource, modelResource);
+					IndexWriterHelperUtil.updatePermissionFields(
+						modelResource, modelResource);
+				}
 			}
 		}
 	}
@@ -1981,29 +2004,59 @@ public class ResourcePermissionLocalServiceImpl
 		Map<Long, ResourcePermission> resourcePermissionsMap =
 			_getResourcePermissionsMap(resourcePermissions);
 
-		_updateResourcePermission(
-			companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, name, 0,
-			guestRole.getRoleId(),
-			guestActionIds.toArray(new String[guestActionIds.size()]),
-			ResourcePermissionConstants.OPERATOR_SET, true,
-			resourcePermissionsMap);
+		boolean flushResourcePermissionEnabled =
+			PermissionThreadLocal.isFlushResourcePermissionEnabled(name, name);
 
-		_updateResourcePermission(
-			companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, name, 0,
-			ownerRole.getRoleId(),
-			ownerActionIds.toArray(new String[ownerActionIds.size()]),
-			ResourcePermissionConstants.OPERATOR_SET, true,
-			resourcePermissionsMap);
+		PermissionThreadLocal.setFlushResourcePermissionEnabled(
+			name, name, false);
 
-		_updateResourcePermission(
-			companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, name, 0,
-			siteMemberRole.getRoleId(),
-			groupActionIds.toArray(new String[groupActionIds.size()]),
-			ResourcePermissionConstants.OPERATOR_SET, true,
-			resourcePermissionsMap);
+		boolean modified = false;
+
+		try {
+			if (_updateResourcePermission(
+					companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, name,
+					0, guestRole.getRoleId(),
+					guestActionIds.toArray(new String[guestActionIds.size()]),
+					ResourcePermissionConstants.OPERATOR_SET, true,
+					resourcePermissionsMap)) {
+
+				modified = true;
+			}
+
+			if (_updateResourcePermission(
+					companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, name,
+					0, ownerRole.getRoleId(),
+					ownerActionIds.toArray(new String[ownerActionIds.size()]),
+					ResourcePermissionConstants.OPERATOR_SET, true,
+					resourcePermissionsMap)) {
+
+				modified = true;
+			}
+
+			if (_updateResourcePermission(
+					companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, name,
+					0, siteMemberRole.getRoleId(),
+					groupActionIds.toArray(new String[groupActionIds.size()]),
+					ResourcePermissionConstants.OPERATOR_SET, true,
+					resourcePermissionsMap)) {
+
+				modified = true;
+			}
+		}
+		finally {
+			PermissionThreadLocal.setFlushResourcePermissionEnabled(
+				name, name, flushResourcePermissionEnabled);
+
+			if (modified) {
+				PermissionCacheUtil.clearResourcePermissionCache(
+					ResourceConstants.SCOPE_INDIVIDUAL, name, name);
+
+				IndexWriterHelperUtil.updatePermissionFields(name, name);
+			}
+		}
 	}
 
-	private void _updateResourcePermission(
+	private boolean _updateResourcePermission(
 			long companyId, String name, int scope, String primKey,
 			long ownerId, long roleId, String[] actionIds, int operator,
 			boolean fetch, Map<Long, ResourcePermission> resourcePermissionsMap)
@@ -2023,11 +2076,11 @@ public class ResourcePermissionLocalServiceImpl
 			if ((operator == ResourcePermissionConstants.OPERATOR_ADD) &&
 				(actionIds.length == 0)) {
 
-				return;
+				return false;
 			}
 
 			if (operator == ResourcePermissionConstants.OPERATOR_REMOVE) {
-				return;
+				return false;
 			}
 
 			long resourcePermissionId = counterLocalService.increment(
@@ -2103,7 +2156,11 @@ public class ResourcePermissionLocalServiceImpl
 			}
 
 			IndexWriterHelperUtil.updatePermissionFields(name, primKey);
+
+			return true;
 		}
+
+		return false;
 	}
 
 	private static final String _FIND_MISSING_RESOURCE_PERMISSIONS =
