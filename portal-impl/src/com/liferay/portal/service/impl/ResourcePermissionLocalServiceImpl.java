@@ -1253,6 +1253,10 @@ public class ResourcePermissionLocalServiceImpl
 				groupModelActionIds);
 		}
 
+		if (!PermissionThreadLocal.isAddResource()) {
+			return;
+		}
+
 		List<String> modelResources = new ArrayList<>();
 
 		modelResources.add(
@@ -1267,9 +1271,61 @@ public class ResourcePermissionLocalServiceImpl
 				continue;
 			}
 
-			addResourcePermissions(
-				portlet.getCompanyId(), 0, 0, modelResource, modelResource,
-				false, false, true);
+			validate(modelResource, false);
+
+			boolean flushResourcePermissionEnabled =
+				PermissionThreadLocal.isFlushResourcePermissionEnabled(
+					modelResource, modelResource);
+
+			PermissionThreadLocal.setFlushResourcePermissionEnabled(
+				modelResource, modelResource, false);
+
+			List<ResourcePermission> resourcePermissions =
+				resourcePermissionPersistence.findByC_N_S_P(
+					portlet.getCompanyId(), modelResource,
+					ResourceConstants.SCOPE_INDIVIDUAL, modelResource);
+
+			Map<Long, ResourcePermission> resourcePermissionsMap =
+				_getResourcePermissionsMap(resourcePermissions);
+
+			try {
+				List<String> actionIds =
+					ResourceActionsUtil.getModelResourceActions(modelResource);
+
+				filterOwnerActions(modelResource, actionIds);
+
+				_updateResourcePermission(
+					portlet.getCompanyId(), modelResource,
+					ResourceConstants.SCOPE_INDIVIDUAL, modelResource, 0,
+					ownerRole.getRoleId(),
+					actionIds.toArray(new String[actionIds.size()]),
+					ResourcePermissionConstants.OPERATOR_SET, true,
+					resourcePermissionsMap);
+
+				List<String> actions =
+					ResourceActionsUtil.getModelResourceGuestDefaultActions(
+						modelResource);
+
+				_updateResourcePermission(
+					portlet.getCompanyId(), modelResource,
+					ResourceConstants.SCOPE_INDIVIDUAL, modelResource, 0,
+					guestRole.getRoleId(),
+					actions.toArray(new String[actions.size()]),
+					ResourcePermissionConstants.OPERATOR_SET, true,
+					resourcePermissionsMap);
+			}
+			finally {
+				PermissionThreadLocal.setFlushResourcePermissionEnabled(
+					modelResource, modelResource,
+					flushResourcePermissionEnabled);
+
+				PermissionCacheUtil.clearResourcePermissionCache(
+					ResourceConstants.SCOPE_INDIVIDUAL, modelResource,
+					modelResource);
+
+				IndexWriterHelperUtil.updatePermissionFields(
+					modelResource, modelResource);
+			}
 		}
 	}
 
