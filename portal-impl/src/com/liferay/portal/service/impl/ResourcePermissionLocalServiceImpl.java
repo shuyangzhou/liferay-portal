@@ -1927,19 +1927,22 @@ public class ResourcePermissionLocalServiceImpl
 
 		_updateResourcePermission(
 			companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, name, 0,
-			guestRole.getRoleId(), guestActionIds.toArray(new String[0]),
+			guestRole.getRoleId(),
+			guestActionIds.toArray(new String[guestActionIds.size()]),
 			ResourcePermissionConstants.OPERATOR_SET, true,
 			resourcePermissionsMap);
 
 		_updateResourcePermission(
 			companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, name, 0,
-			ownerRole.getRoleId(), ownerActionIds.toArray(new String[0]),
+			ownerRole.getRoleId(),
+			ownerActionIds.toArray(new String[ownerActionIds.size()]),
 			ResourcePermissionConstants.OPERATOR_SET, true,
 			resourcePermissionsMap);
 
 		_updateResourcePermission(
 			companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, name, 0,
-			siteMemberRole.getRoleId(), groupActionIds.toArray(new String[0]),
+			siteMemberRole.getRoleId(),
+			groupActionIds.toArray(new String[groupActionIds.size()]),
 			ResourcePermissionConstants.OPERATOR_SET, true,
 			resourcePermissionsMap);
 	}
