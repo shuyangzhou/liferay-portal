@@ -1249,16 +1249,16 @@ public class ResourcePermissionLocalServiceImpl
 				portlet.getRootPortletId());
 
 		if (!Validator.isBlank(rootModelResource)) {
+			List<String> groupModelActionIds =
+				ResourceActionsUtil.getModelResourceGroupDefaultActions(
+					rootModelResource);
+
 			List<String> guestModelActionIds =
 				ResourceActionsUtil.getModelResourceGuestDefaultActions(
 					rootModelResource);
 
 			List<String> ownerModelActionIds =
 				ResourceActionsUtil.getModelResourceActions(rootModelResource);
-
-			List<String> groupModelActionIds =
-				ResourceActionsUtil.getModelResourceGroupDefaultActions(
-					rootModelResource);
 
 			_initPortletDefaultPermissions(
 				portlet.getCompanyId(), rootModelResource, guestRole, ownerRole,
@@ -1282,14 +1282,14 @@ public class ResourcePermissionLocalServiceImpl
 
 			validate(modelResource, false);
 
+			List<String> guestModelActionIds =
+				ResourceActionsUtil.getModelResourceGuestDefaultActions(
+					modelResource);
+
 			List<String> ownerModelActionIds =
 				ResourceActionsUtil.getModelResourceActions(modelResource);
 
 			filterOwnerActions(modelResource, ownerModelActionIds);
-
-			List<String> guestModelActionIds =
-				ResourceActionsUtil.getModelResourceGuestDefaultActions(
-					modelResource);
 
 			_initPortletDefaultPermissions(
 				portlet.getCompanyId(), modelResource, guestRole, ownerRole,
