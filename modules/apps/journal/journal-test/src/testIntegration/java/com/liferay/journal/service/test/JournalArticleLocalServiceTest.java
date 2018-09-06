@@ -76,6 +76,58 @@ public class JournalArticleLocalServiceTest {
 		_group = GroupTestUtil.addGroup();
 	}
 
+	@Test
+	public void testCopyArticle() throws Exception {
+		JournalArticle oldArticle = JournalTestUtil.addArticle(
+			_group.getGroupId(),
+			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID);
+
+		JournalArticle newArticle = JournalArticleLocalServiceUtil.copyArticle(
+			oldArticle.getUserId(), oldArticle.getGroupId(),
+			oldArticle.getArticleId(), null, true, oldArticle.getVersion());
+
+		Assert.assertNotEquals(oldArticle, newArticle);
+
+		List<ResourcePermission> oldResourcePermissions =
+			ResourcePermissionLocalServiceUtil.getResourcePermissions(
+				oldArticle.getCompanyId(), JournalArticle.class.getName(),
+				ResourceConstants.SCOPE_INDIVIDUAL,
+				String.valueOf(oldArticle.getResourcePrimKey()));
+
+		List<ResourcePermission> newResourcePermissions =
+			ResourcePermissionLocalServiceUtil.getResourcePermissions(
+				newArticle.getCompanyId(), JournalArticle.class.getName(),
+				ResourceConstants.SCOPE_INDIVIDUAL,
+				String.valueOf(newArticle.getResourcePrimKey()));
+
+		Assert.assertEquals(
+			newResourcePermissions.toString(), oldResourcePermissions.size(),
+			newResourcePermissions.size());
+
+		for (int i = 0; i < oldResourcePermissions.size(); i++) {
+			ResourcePermission oldResourcePermission =
+				oldResourcePermissions.get(i);
+			ResourcePermission newResourcePermission =
+				newResourcePermissions.get(i);
+
+			Assert.assertNotEquals(
+				oldResourcePermission, newResourcePermission);
+
+			Assert.assertEquals(
+				oldResourcePermission.getRoleId(),
+				newResourcePermission.getRoleId());
+			Assert.assertEquals(
+				oldResourcePermission.getOwnerId(),
+				newResourcePermission.getOwnerId());
+			Assert.assertEquals(
+				oldResourcePermission.getActionIds(),
+				newResourcePermission.getActionIds());
+			Assert.assertEquals(
+				oldResourcePermission.isViewActionId(),
+				newResourcePermission.isViewActionId());
+		}
+	}
+
 	@Test(expected = DuplicateArticleIdException.class)
 	public void testDuplicatedArticleId() throws Exception {
 		JournalArticle article = JournalTestUtil.addArticle(
