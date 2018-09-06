@@ -14,19 +14,39 @@
 
 package com.liferay.bean.portlet.cdi.extension.internal;
 
-import javax.portlet.annotations.PortletLifecycleFilter;
+import java.util.Collection;
+import java.util.Hashtable;
 
 /**
  * @author Neil Griffin
  */
-public class BeanFilterFactory {
+public class PortletDictionary extends Hashtable<String, Object> {
 
-	public static BeanFilter create(
-		Class<?> filterClass, PortletLifecycleFilter portletLifecycleFilter) {
+	public void put(String name, String value, String defaultValue) {
+		if (value != null) {
+			put(name, value);
+		}
+		else {
+			put(name, defaultValue);
+		}
+	}
 
-		// TODO
+	public void putIfNotEmpty(String name, Collection<?> collection) {
+		if ((collection != null) && !collection.isEmpty()) {
+			put(name, collection);
+		}
+	}
 
-		return null;
+	public void putIfNotEmpty(String name, String value) {
+		if ((value != null) && (value.length() > 0)) {
+			put(name, value);
+		}
+	}
+
+	public void putIfNotNull(String name, String value) {
+		if (value != null) {
+			put(name, value);
+		}
 	}
 
 }

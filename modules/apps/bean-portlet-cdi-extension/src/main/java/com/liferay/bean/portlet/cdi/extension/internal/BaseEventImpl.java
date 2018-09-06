@@ -14,30 +14,23 @@
 
 package com.liferay.bean.portlet.cdi.extension.internal;
 
-import java.lang.annotation.Annotation;
-
-import javax.enterprise.context.spi.Contextual;
-import javax.enterprise.context.spi.CreationalContext;
-
-import javax.portlet.annotations.PortletRequestScoped;
+import javax.xml.namespace.QName;
 
 /**
  * @author Neil Griffin
  */
-public class PortletRequestBeanContext extends BaseContextImpl {
+public abstract class BaseEventImpl implements Event {
 
 	@Override
-	public <T> T get(
-		Contextual<T> contextual, CreationalContext<T> creationalContext) {
-
-		// TODO
-
-		return null;
+	public QName getQName() {
+		return _qName;
 	}
 
 	@Override
-	public Class<? extends Annotation> getScope() {
-		return PortletRequestScoped.class;
+	public void setQName(QName qName) {
+		_qName = qName;
 	}
+
+	private QName _qName;
 
 }

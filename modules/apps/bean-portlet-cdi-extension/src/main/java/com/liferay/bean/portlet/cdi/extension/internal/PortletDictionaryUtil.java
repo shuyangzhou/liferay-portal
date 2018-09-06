@@ -14,23 +14,20 @@
 
 package com.liferay.bean.portlet.cdi.extension.internal;
 
-import javax.xml.namespace.QName;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
 /**
  * @author Neil Griffin
  */
-public abstract class BaseEventDefinitionImpl implements EventDefinition {
+public class PortletDictionaryUtil {
 
-	@Override
-	public QName getQName() {
-		return _qName;
+	public static String formatNameValuePair(String name, String value) {
+		if (Validator.isNull(value)) {
+			return name;
+		}
+
+		return name.concat(StringPool.SEMICOLON).concat(value);
 	}
-
-	@Override
-	public void setQName(QName qName) {
-		_qName = qName;
-	}
-
-	private QName _qName;
 
 }
