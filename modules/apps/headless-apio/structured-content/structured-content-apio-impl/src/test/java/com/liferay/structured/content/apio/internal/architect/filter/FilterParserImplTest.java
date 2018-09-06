@@ -61,7 +61,7 @@ public class FilterParserImplTest {
 			InvalidFilterException.class
 		);
 
-		exception.hasMessage("Filter is empty");
+		exception.hasMessage("Filter is null");
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class FilterParserImplTest {
 			InvalidFilterException.class
 		);
 
-		exception.hasMessage("Filter is empty");
+		exception.hasMessage("Filter is null");
 	}
 
 	@Test

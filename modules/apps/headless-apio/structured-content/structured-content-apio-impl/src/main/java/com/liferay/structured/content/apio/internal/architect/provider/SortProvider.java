@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.internal.provider;
+package com.liferay.structured.content.apio.internal.architect.provider;
 
 import com.liferay.apio.architect.provider.Provider;
 import com.liferay.portal.kernel.util.Validator;

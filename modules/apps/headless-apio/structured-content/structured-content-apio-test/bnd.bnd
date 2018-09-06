@@ -12,4 +12,4 @@ Import-Package:\
 	*
 -includeresource:\
 	test-classes/integration,\
-	@lib/cxf-*.jar
+	@lib/cxf-rt-frontend-jaxrs.jar
