@@ -409,6 +409,13 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 		_startDynamicBundles(initialBundles);
 
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				"Navigate to group/control_panel/manage?p_p_id=" +
+					"com_liferay_gogo_shell_web_internal_portlet_" +
+						"GogoShellPortlet and enter \"lb\" to see all bundles");
+		}
+
 		if (_log.isDebugEnabled()) {
 			_log.debug("Started the OSGi framework");
 		}
