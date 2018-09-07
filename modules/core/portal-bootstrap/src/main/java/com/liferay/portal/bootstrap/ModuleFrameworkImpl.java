@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.util.ServiceLoader;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.module.framework.ModuleFramework;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.registry.Registry;
@@ -502,6 +503,10 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		RegistryUtil.setRegistry(null);
 
 		ServiceTrackerMapFactoryUtil.setServiceTrackerMapFactory(null);
+
+		if (Boolean.parseBoolean(System.getenv("CLEAN_OSGI_STATE"))) {
+			_cleanOSGiStateFolder();
+		}
 	}
 
 	@Override
@@ -800,11 +805,88 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		}
 	}
 
+	private void _cleanOSGiStateFolder() throws IOException {
+		Files.walkFileTree(
+			Paths.get(PropsValues.MODULE_FRAMEWORK_STATE_DIR),
+			new SimpleFileVisitor<Path>() {
+
+				@Override
+				public FileVisitResult preVisitDirectory(
+						Path path, BasicFileAttributes basicFileAttributes)
+					throws IOException {
+
+					File file = path.toFile();
+
+					String name = file.getName();
+
+					if (name.equals(".cp")) {
+						FileUtil.deltree(file);
+
+						return FileVisitResult.SKIP_SUBTREE;
+					}
+
+					return FileVisitResult.CONTINUE;
+				}
+
+				@Override
+				public FileVisitResult visitFile(
+						Path path, BasicFileAttributes basicFileAttributes)
+					throws IOException {
+
+					File file = path.toFile();
+
+					String name = file.getName();
+
+					if (!name.equals("bundleFile")) {
+						return FileVisitResult.CONTINUE;
+					}
+
+					try (ZipFile zipFile = new ZipFile(file)) {
+						if ((zipFile.getEntry(
+								"liferay-marketplace.properties") != null) ||
+							(zipFile.getEntry(
+								"WEB-INF/liferay-plugin-package.properties") !=
+									null)) {
+
+							return FileVisitResult.CONTINUE;
+						}
+
+						Properties properties = new Properties();
+
+						try (InputStream inputStream = zipFile.getInputStream(
+								zipFile.getEntry("META-INF/MANIFEST.MF"))) {
+
+							properties.load(inputStream);
+						}
+
+						if (properties.getProperty("Liferay-WAB-LPKG-URL") !=
+								null) {
+
+							return FileVisitResult.CONTINUE;
+						}
+					}
+
+					Files.delete(path);
+
+					return FileVisitResult.CONTINUE;
+				}
+
+			});
+	}
+
 	private Map<String, Bundle> _deployStaticBundlesFromFile(
 			File file, Set<String> overrideStaticFileNames)
 		throws IOException {
 
 		Map<String, Bundle> bundles = new HashMap<>();
+
+		URI uri = file.toURI();
+
+		URL url = uri.toURL();
+
+		String path = url.getPath();
+
+		path = URLCodec.decodeURL(path);
 
 		try (ZipFile zipFile = new ZipFile(file)) {
 			Enumeration<? extends ZipEntry> enumeration = zipFile.entries();
@@ -865,7 +947,8 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 				String zipEntryName = zipEntry.getName();
 
 				String location =
-					"file:/" + zipEntryName + "?protocol=lpkg&static=true";
+					zipEntryName + "?protocol=lpkg&static=true&lpkgPath=" +
+						path;
 
 				try (InputStream inputStream = zipFile.getInputStream(
 						zipEntry)) {
