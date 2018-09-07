@@ -409,6 +409,13 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 		_startDynamicBundles(initialBundles);
 
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				"Navigate to group/control_panel/manage?p_p_id=" +
+					"com_liferay_gogo_shell_web_internal_portlet_" +
+						"GogoShellPortlet and enter \"lb\" to see all bundles");
+		}
+
 		if (_log.isDebugEnabled()) {
 			_log.debug("Started the OSGi framework");
 		}
@@ -1225,8 +1232,8 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 	}
 
 	private Set<Bundle> _setUpInitialBundles() throws Exception {
-		if (_log.isDebugEnabled()) {
-			_log.debug("Starting initial bundles");
+		if (_log.isInfoEnabled()) {
+			_log.info("Starting initial bundles");
 		}
 
 		BundleContext bundleContext = _framework.getBundleContext();
@@ -1492,6 +1499,10 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 		frameworkWiring.resolveBundles(fragmentBundles);
 
+		if (_log.isInfoEnabled()) {
+			_log.info("Finished starting initial bundles");
+		}
+
 		return new HashSet<>(Arrays.asList(initialBundles));
 	}
 
@@ -1522,6 +1533,10 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 	private void _startDynamicBundles(Set<Bundle> installedBundles)
 		throws Exception {
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Starting dynamic bundles");
+		}
 
 		Bundle fileInstallBundle = null;
 
@@ -1606,6 +1621,10 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 		if (fileInstallBundle != null) {
 			fileInstallBundle.start(Bundle.START_TRANSIENT);
+		}
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Finished starting dynamic bundles");
 		}
 	}
 
