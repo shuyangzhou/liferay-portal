@@ -1225,8 +1225,8 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 	}
 
 	private Set<Bundle> _setUpInitialBundles() throws Exception {
-		if (_log.isDebugEnabled()) {
-			_log.debug("Starting initial bundles");
+		if (_log.isInfoEnabled()) {
+			_log.info("Starting initial bundles");
 		}
 
 		BundleContext bundleContext = _framework.getBundleContext();
@@ -1492,6 +1492,10 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 		frameworkWiring.resolveBundles(fragmentBundles);
 
+		if (_log.isInfoEnabled()) {
+			_log.info("Finished starting initial bundles");
+		}
+
 		return new HashSet<>(Arrays.asList(initialBundles));
 	}
 
@@ -1522,6 +1526,10 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 	private void _startDynamicBundles(Set<Bundle> installedBundles)
 		throws Exception {
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Starting dynamic bundles");
+		}
 
 		Bundle fileInstallBundle = null;
 
@@ -1606,6 +1614,10 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 		if (fileInstallBundle != null) {
 			fileInstallBundle.start(Bundle.START_TRANSIENT);
+		}
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Finished starting dynamic bundles");
 		}
 	}
 
