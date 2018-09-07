@@ -12,19 +12,22 @@
  * details.
  */
 
-package com.liferay.portal.convert.documentlibrary;
+package com.liferay.adaptive.media.image.internal.util;
 
-import com.liferay.portal.kernel.repository.model.FileEntry;
+import com.liferay.portal.kernel.repository.model.FileVersion;
 
 /**
- * @deprecated As of Judson (7.1.x), with no direct replacement
- *
- * @author Iván Zaera
+ * @author Roberto Díaz
  */
-@Deprecated
-public interface DLStoreConverter {
+public class AMStoreUtil {
 
-	public void migrateDLFileEntry(
-		long companyId, long repositoryId, FileEntry fileEntry);
+	public static String getFileVersionPath(
+		FileVersion fileVersion, String configurationUuid) {
+
+		return String.format(
+			"adaptive/%s/%d/%d/%d/%d/", configurationUuid,
+			fileVersion.getGroupId(), fileVersion.getRepositoryId(),
+			fileVersion.getFileEntryId(), fileVersion.getFileVersionId());
+	}
 
 }
