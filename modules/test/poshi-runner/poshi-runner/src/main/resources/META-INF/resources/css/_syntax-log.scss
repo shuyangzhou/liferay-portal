@@ -1,11 +1,11 @@
-/* ---------- XML log ---------- */
+/* ---------- Syntax log ---------- */
 
 .collapse, .header > .btn-container {
 	display: none;
 }
 
-.xml-log {
-	color: $xml-log-default-text-color;
+.syntax-log {
+	color: $syntax-log-default-text-color;
 	display: block;
 	position: relative;
 	transition: width 0.4s ease-out;
@@ -21,15 +21,15 @@
 	}
 }
 
-.command-logger .xml-log {
+.command-logger .syntax-log {
 	width: 70%;
 }
 
-.minimized-sidebar .xml-log {
+.minimized-sidebar .syntax-log {
 	width: 100%;
 }
 
-.xml-log-container {
+.syntax-log-container {
 	border-width: 0;
 	padding-left: 100px;
 }
@@ -41,7 +41,7 @@
 	z-index: 1;
 }
 
-.xml-log {
+.syntax-log {
 	.line-container {
 		-webkit-filter: blur(0);
 		-webkit-font-smoothing: subpixel-antialiased;
@@ -197,7 +197,7 @@
 /* ---------- Command-logger mode ---------- */
 
 .command-logger {
-	.xml-log {
+	.syntax-log {
 		.fail, .pass, .pending, .warning {
 			&:not(.current-scope) > .line-container {
 				box-shadow: $line-container-box-shadow;
