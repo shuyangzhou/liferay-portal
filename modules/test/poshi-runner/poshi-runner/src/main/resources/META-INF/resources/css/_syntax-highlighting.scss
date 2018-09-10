@@ -37,21 +37,21 @@
 	margin: 3px;
 }
 
-/* ---------- XML log ---------- */
+/* ---------- Syntax log ---------- */
 
-.xml-log .misc {
-	color: $xml-misc-color;
+.syntax-log .misc {
+	color: $syntax-misc-color;
 }
 
 .name {
-	color: $xml-name-color;
+	color: $syntax-name-color;
 	font-size: 13px;
 	font-weight: 300;
 	letter-spacing: 0.06em;
 }
 
 .tag-type {
-	color: $xml-tag-type-color;
+	color: $syntax-tag-type-color;
 }
 
 /* ---------- Current scope ---------- */
