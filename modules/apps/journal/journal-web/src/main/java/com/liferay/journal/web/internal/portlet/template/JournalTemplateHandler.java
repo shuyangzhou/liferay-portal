@@ -28,12 +28,11 @@ import com.liferay.journal.util.JournalContent;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.template.TemplateHandler;
 import com.liferay.portal.kernel.template.TemplateVariableCodeHandler;
 import com.liferay.portal.kernel.template.TemplateVariableGroup;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.ResourceBundleLoader;
+import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 
 import java.util.HashMap;
@@ -79,8 +78,8 @@ public class JournalTemplateHandler extends BaseDDMTemplateHandler {
 
 	@Override
 	public String getName(Locale locale) {
-		ResourceBundle resourceBundle =
-			_resourceBundleLoader.loadResourceBundle(locale);
+		ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
+			locale, JournalTemplateHandler.class);
 
 		String portletTitle = _portal.getPortletTitle(
 			JournalPortletKeys.JOURNAL, resourceBundle);
@@ -144,15 +143,6 @@ public class JournalTemplateHandler extends BaseDDMTemplateHandler {
 		_journalContent = journalContent;
 	}
 
-	@Reference(
-		target = "(bundle.symbolic.name=com.liferay.journal.web)", unbind = "-"
-	)
-	protected void setResourceBundleLoader(
-		ResourceBundleLoader resourceBundleLoader) {
-
-		_resourceBundleLoader = resourceBundleLoader;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		JournalTemplateHandler.class);
 
@@ -183,12 +173,6 @@ public class JournalTemplateHandler extends BaseDDMTemplateHandler {
 	@Reference
 	private Portal _portal;
 
-	@Reference(
-		target = "(&(release.bundle.symbolic.name=com.liferay.journal.service)(release.schema.version=1.1.5))"
-	)
-	private Release _release;
-
-	private ResourceBundleLoader _resourceBundleLoader;
 	private final TemplateVariableCodeHandler _templateVariableCodeHandler =
 		new DDMTemplateVariableCodeHandler(
 			JournalTemplateHandler.class.getClassLoader(),

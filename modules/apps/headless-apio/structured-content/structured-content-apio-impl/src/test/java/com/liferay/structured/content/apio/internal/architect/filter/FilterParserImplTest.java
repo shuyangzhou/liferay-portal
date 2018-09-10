@@ -14,6 +14,7 @@
 
 package com.liferay.structured.content.apio.internal.architect.filter;
 
+import com.liferay.structured.content.apio.architect.filter.InvalidFilterException;
 import com.liferay.structured.content.apio.architect.filter.expression.BinaryExpression;
 import com.liferay.structured.content.apio.architect.filter.expression.Expression;
 import com.liferay.structured.content.apio.architect.filter.expression.ExpressionVisitException;
@@ -65,7 +66,7 @@ public class FilterParserImplTest {
 	}
 
 	@Test
-	public void testParseWithNoSingleQuotes() {
+	public void testParseWithEqBinaryExpressionWithNoSingleQuotes() {
 		String filterString = "(title eq title1)";
 
 		AbstractThrowableAssert exception = Assertions.assertThatThrownBy(
@@ -81,18 +82,9 @@ public class FilterParserImplTest {
 	}
 
 	@Test
-	public void testParseWithNullExpression() {
-		AbstractThrowableAssert exception = Assertions.assertThatThrownBy(
-			() -> _filterParserImpl.parse(null)
-		).isInstanceOf(
-			InvalidFilterException.class
-		);
+	public void testParseWithEqBinaryExpressionWithSingleQuotes()
+		throws ExpressionVisitException {
 
-		exception.hasMessage("Filter is null");
-	}
-
-	@Test
-	public void testParseWithSingleQuotes() throws ExpressionVisitException {
 		Expression expression = _filterParserImpl.parse("title eq 'title1'");
 
 		Assert.assertNotNull(expression);
@@ -110,7 +102,7 @@ public class FilterParserImplTest {
 	}
 
 	@Test
-	public void testParseWithSingleQuotesAndParentheses()
+	public void testParseWithEqBinaryExpressionWithSingleQuotesAndParentheses()
 		throws ExpressionVisitException {
 
 		Expression expression = _filterParserImpl.parse("(title eq 'title1')");
@@ -127,6 +119,57 @@ public class FilterParserImplTest {
 		Assert.assertEquals(
 			"'title1'",
 			binaryExpression.getRightOperationExpression().toString());
+	}
+
+	@Test
+	public void testParseWithGeBinaryExpression()
+		throws ExpressionVisitException {
+
+		Expression expression = _filterParserImpl.parse("title ge 'title1'");
+
+		Assert.assertNotNull(expression);
+
+		BinaryExpression binaryExpression = (BinaryExpression)expression;
+
+		Assert.assertEquals(
+			BinaryExpression.Operation.GE, binaryExpression.getOperation());
+		Assert.assertEquals(
+			"[title]",
+			binaryExpression.getLeftOperationExpression().toString());
+		Assert.assertEquals(
+			"'title1'",
+			binaryExpression.getRightOperationExpression().toString());
+	}
+
+	@Test
+	public void testParseWithLeBinaryExpression()
+		throws ExpressionVisitException {
+
+		Expression expression = _filterParserImpl.parse("title le 'title1'");
+
+		Assert.assertNotNull(expression);
+
+		BinaryExpression binaryExpression = (BinaryExpression)expression;
+
+		Assert.assertEquals(
+			BinaryExpression.Operation.LE, binaryExpression.getOperation());
+		Assert.assertEquals(
+			"[title]",
+			binaryExpression.getLeftOperationExpression().toString());
+		Assert.assertEquals(
+			"'title1'",
+			binaryExpression.getRightOperationExpression().toString());
+	}
+
+	@Test
+	public void testParseWithNullExpression() {
+		AbstractThrowableAssert exception = Assertions.assertThatThrownBy(
+			() -> _filterParserImpl.parse(null)
+		).isInstanceOf(
+			InvalidFilterException.class
+		);
+
+		exception.hasMessage("Filter is null");
 	}
 
 	private FilterParserImpl _filterParserImpl;

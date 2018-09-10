@@ -1372,8 +1372,8 @@ public class TemplateContextHelper {
 				throw new IOException(
 					StringBundler.concat(
 						"Denied access to resource ", url.toString(),
-						". $httpUtil template variable supports only http and ",
-						"https protocols."));
+						". $httpUtil template variable supports only HTTP and ",
+						"HTTPS protocols."));
 			}
 
 			if (isLocationAccessDenied(url.toString())) {

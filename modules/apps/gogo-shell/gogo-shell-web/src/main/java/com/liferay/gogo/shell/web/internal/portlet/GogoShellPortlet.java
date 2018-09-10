@@ -27,7 +27,7 @@ import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.ResourceBundleLoader;
+import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -169,12 +169,11 @@ public class GogoShellPortlet extends MVCPortlet {
 	protected void checkCommand(String command, ThemeDisplay themeDisplay)
 		throws Exception {
 
-		Matcher matcher = _exitShutdownPattern.matcher(command);
+		Matcher matcher = _pattern.matcher(command);
 
 		if (matcher.find()) {
-			ResourceBundle resourceBundle =
-				_resourceBundleLoader.loadResourceBundle(
-					themeDisplay.getLocale());
+			ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
+				themeDisplay.getLocale(), GogoShellPortlet.class);
 
 			throw new Exception(
 				LanguageUtil.format(
@@ -250,16 +249,13 @@ public class GogoShellPortlet extends MVCPortlet {
 		return null;
 	}
 
-	private static final Pattern _exitShutdownPattern = Pattern.compile(
-		"(\\bexit\\b|\\bshutdown\\b)");
+	private static final Pattern _pattern = Pattern.compile(
+		"\\b(close|disconnect|exit|shutdown)\\b");
 
 	@Reference
 	private CommandProcessor _commandProcessor;
 
 	@Reference
 	private Portal _portal;
-
-	@Reference(target = "(bundle.symbolic.name=com.liferay.gogo.shell.web)")
-	private ResourceBundleLoader _resourceBundleLoader;
 
 }
