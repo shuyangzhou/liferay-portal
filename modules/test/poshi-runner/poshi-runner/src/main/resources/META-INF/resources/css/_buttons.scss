@@ -4,7 +4,7 @@
 	font-family: 'FontAwesome' !important;
 }
 
-.sidebar-btn-container, .sidebar-toolbar, .xml-log {
+.sidebar-btn-container, .sidebar-toolbar, .syntax-log {
 	.btn {
 		background-color: transparentize($off-white, 0.84);
 		border: 1px solid $button-border-color;
@@ -63,7 +63,7 @@
 	}
 }
 
-.xml-log {
+.syntax-log {
 	.btn-error, .btn-screenshot {
 		bottom: 0;
 		display: inline-block;
