@@ -1,3 +1,4 @@
+<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -11,26 +12,18 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
+--%>
 
-package com.liferay.structured.content.apio.internal.architect.filter;
+<%@ include file="/init.jsp" %>
 
-import javax.ws.rs.BadRequestException;
+<div class="container-fluid-1280 pt-3">
+	<liferay-portlet:runtime
+		defaultPreferences="<%= assetListDisplayContext.getViewContentPreferences() %>"
+		instanceId="assetListPreview"
+		portletName="<%= AssetPublisherPortletKeys.ASSET_PUBLISHER %>"
+	/>
+</div>
 
-/**
- * This exception is used to model errors when handling search {@link
- * com.liferay.structured.content.apio.architect.filter.Filter}s.
- *
- * @author David Arques
- * @review
- */
-public class InvalidFilterException extends BadRequestException {
-
-	public InvalidFilterException(String msg) {
-		super(msg);
-	}
-
-	public InvalidFilterException(String msg, Throwable cause) {
-		super(msg, cause);
-	}
-
-}
+<aui:button-row>
+	<aui:button type="cancel" value="close" />
+</aui:button-row>
