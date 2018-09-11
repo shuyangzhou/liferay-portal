@@ -129,7 +129,7 @@ var loggerInterface = YUI().use(
 			{
 				contentBox: '.poshi-logger',
 				sidebar: '.sidebar',
-				xmlLog: '.xml-log'
+				syntaxLog: '.syntax-log'
 			}
 		).render();
 

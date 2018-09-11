@@ -86,7 +86,23 @@ public class ElasticsearchEngineConfigurator
 
 	@Override
 	protected void initialize() {
-		_elasticsearchConnectionManager.connect();
+		Thread thread = new Thread(
+			() -> {
+				_elasticsearchConnectionManager.connect();
+			},
+			"Elasticsearch initialization thread");
+
+		thread.setDaemon(true);
+
+		thread.start();
+
+		try {
+			thread.join();
+		}
+		catch (InterruptedException ie) {
+			throw new RuntimeException(
+				"Unable to initialize Elasticsearch engine", ie);
+		}
 
 		super.initialize();
 	}

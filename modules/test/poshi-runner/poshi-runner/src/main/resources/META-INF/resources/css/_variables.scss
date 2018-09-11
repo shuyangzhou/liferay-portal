@@ -33,11 +33,11 @@ $warning-color: #FFB879;
 
 $current-scope-name-color: #000;
 
-// Xml-log
+// Syntax-log
 
-$xml-misc-color: #C1CFD7;
-$xml-name-color: #728EA0;
-$xml-tag-type-color: #A2B4BE;
+$syntax-misc-color: #C1CFD7;
+$syntax-name-color: #728EA0;
+$syntax-tag-type-color: #A2B4BE;
 
 // Sidebar
 
@@ -47,14 +47,14 @@ $param-value-color: #8B95A0;
 
 /* ---------- Styling ---------- */
 
-// Xml-log
+// Syntax-log
 
 $body-bg-color: $off-white;
 $body-font-size: 11px;
 $body-letter-spacing: 0.06em;
 $body-line-height: 2.2;
 
-$xml-log-default-text-color: $grey;
+$syntax-log-default-text-color: $grey;
 
 $child-container-left-border-color: $neutral-light;
 
