@@ -61,7 +61,7 @@ YUI.add(
 
 		var STR_TRANSITIONING = 'transitioning';
 
-		var STR_XML_LOG = 'xmlLog';
+		var STR_SYNTAX_LOG = 'syntaxLog';
 
 		var SELECTOR_FAIL = STR_DOT + CSS_FAIL;
 
@@ -96,9 +96,9 @@ YUI.add(
 						setter: function() {
 							var instance = this;
 
-							var xmlLog = instance.get(STR_XML_LOG);
+							var syntaxLog = instance.get(STR_SYNTAX_LOG);
 
-							return xmlLog.all(SELECTOR_FAIL + ', ' + SELECTOR_WARNING);
+							return syntaxLog.all(SELECTOR_FAIL + ', ' + SELECTOR_WARNING);
 						}
 					},
 
@@ -123,7 +123,7 @@ YUI.add(
 						value: null
 					},
 
-					xmlLog: {
+					syntaxLog: {
 						setter: A.one
 					}
 				},
@@ -145,7 +145,7 @@ YUI.add(
 						var instance = this;
 
 						instance._bindSidebar();
-						instance._bindXMLLog();
+						instance._bindSyntaxLog();
 					},
 
 					handleCommandCompleted: function(id) {
@@ -158,13 +158,13 @@ YUI.add(
 						var latestCommand = commandLog.one('.line-group:last-child');
 
 						if (latestCommand) {
-							var linkedFunction = instance.get(STR_XML_LOG).one('#' + id);
+							var linkedFunction = instance.get(STR_SYNTAX_LOG).one('#' + id);
 
 							instance._displayNode(linkedFunction);
-							instance._setXmlNodeClass(linkedFunction);
+							instance._setSyntaxNodeClass(linkedFunction);
 
 							if (latestCommand.hasClass(CSS_FAILED) || latestCommand.hasClass(CSS_WARNING)) {
-								instance._injectXmlError(latestCommand);
+								instance._injectSyntaxError(latestCommand);
 							}
 						}
 					},
@@ -183,9 +183,9 @@ YUI.add(
 
 							var functionLinkId = currentTargetAncestor.getData(ATTR_DATA_FUNCTION_LINK_ID);
 
-							var xmlLog = instance.get(STR_XML_LOG);
+							var syntaxLog = instance.get(STR_SYNTAX_LOG);
 
-							var linkedFunction = xmlLog.one('.line-group[data-functionLinkId="' + functionLinkId + '"]');
+							var linkedFunction = syntaxLog.one('.line-group[data-functionLinkId="' + functionLinkId + '"]');
 
 							instance._displayNode(linkedFunction, true);
 							instance._selectCurrentScope(linkedFunction);
@@ -214,11 +214,11 @@ YUI.add(
 
 						currentTarget.toggleClass(CSS_TOGGLE);
 
-						var xmlLog = instance.get(STR_XML_LOG);
+						var syntaxLog = instance.get(STR_SYNTAX_LOG);
 
 						var errorLinkId = currentTarget.getData(ATTR_DATA_ERROR_LINK_ID);
 
-						var errorPanel = xmlLog.one('.errorPanel[data-errorLinkId="' + errorLinkId + '"]');
+						var errorPanel = syntaxLog.one('.errorPanel[data-errorLinkId="' + errorLinkId + '"]');
 
 						if (errorPanel) {
 							errorPanel.toggleClass(CSS_TOGGLE);
@@ -283,9 +283,9 @@ YUI.add(
 					handleLineTrigger: function(id, starting) {
 						var instance = this;
 
-						var linkedLine = instance.get(STR_XML_LOG).one('#' + id);
+						var linkedLine = instance.get(STR_SYNTAX_LOG).one('#' + id);
 
-						instance._setXmlNodeClass(linkedLine);
+						instance._setSyntaxNodeClass(linkedLine);
 
 						var container = linkedLine.one('> .child-container');
 
@@ -325,7 +325,7 @@ YUI.add(
 						}
 
 						if (currentTarget) {
-							var lookUpScope = instance.get(STR_XML_LOG);
+							var lookUpScope = instance.get(STR_SYNTAX_LOG);
 
 							if (inSidebar) {
 								lookUpScope = instance.get(STR_SIDEBAR);
@@ -403,37 +403,37 @@ YUI.add(
 						}
 					},
 
-					_bindXMLLog: function() {
+					_bindSyntaxLog: function() {
 						var instance = this;
 
-						var xmlLog = instance.get(STR_XML_LOG);
+						var syntaxLog = instance.get(STR_SYNTAX_LOG);
 
-						xmlLog.delegate(
+						syntaxLog.delegate(
 							'click',
 							A.bind('handleCurrentScopeSelect', instance),
 							'.conditional-function > .line-container, .function > .line-container, .macro > .line-container, .test-group > .line-container'
 						);
 
-						xmlLog.delegate(
+						syntaxLog.delegate(
 							'click',
 							A.bind('handleFullScreenImageClick', instance),
 							'.fullscreen-image, .screenshot-container img'
 						);
 
-						xmlLog.delegate(
+						syntaxLog.delegate(
 							'click',
 							A.rbind('handleToggleCollapseBtn', instance, false),
 							'.btn-collapse, .btn-var, .current-scope > .line-container'
 						);
 
-						xmlLog.delegate(
+						syntaxLog.delegate(
 							'click',
 							A.bind('handleErrorBtns', instance),
 							'.btn-error, .btn-screenshot'
 						);
 					},
 
-					_clearXmlErrors: function(command) {
+					_clearSyntaxErrors: function(command) {
 						command.all('.errorPanel').remove();
 
 						var btnContainer = command.one('.btn-container');
@@ -597,7 +597,7 @@ YUI.add(
 						);
 					},
 
-					_injectXmlError: function(command) {
+					_injectSyntaxError: function(command) {
 						var instance = this;
 
 						var consoleLog = command.one('.console');
@@ -613,7 +613,7 @@ YUI.add(
 
 						var functionLinkIdSelector = '.line-group[data-functionLinkId="' + functionLinkId + '"]';
 
-						var failedFunction = instance.get(STR_XML_LOG).one(functionLinkIdSelector);
+						var failedFunction = instance.get(STR_SYNTAX_LOG).one(functionLinkIdSelector);
 
 						if (consoleLog && failedFunction) {
 							var buffer = [];
@@ -841,7 +841,7 @@ YUI.add(
 						instance._refreshEditMenu();
 					},
 
-					_setXmlNodeClass: function(node) {
+					_setSyntaxNodeClass: function(node) {
 						var instance = this;
 
 						var status = instance.get(STR_STATUS);
@@ -886,23 +886,23 @@ YUI.add(
 
 							var commandErrors = commandLog.all(SELECTOR_FAILED + ', ' + SELECTOR_WARNING);
 
-							commandErrors.each(instance._injectXmlError, instance);
+							commandErrors.each(instance._injectSyntaxError, instance);
 						}
 						else {
 							newLogId = null;
 
-							var errors = instance.get(STR_XML_LOG).all(SELECTOR_FAIL + ', ' + SELECTOR_WARNING);
+							var errors = instance.get(STR_SYNTAX_LOG).all(SELECTOR_FAIL + ', ' + SELECTOR_WARNING);
 
 							if (errors.size()) {
-								errors.each(instance._clearXmlErrors);
+								errors.each(instance._clearSyntaxErrors);
 							}
 						}
 
 						instance.set(STR_COMMAND_LOG_ID, newLogId);
 
-						instance._toggleXmlLogClasses(logId);
+						instance._toggleSyntaxLogClasses(logId);
 
-						var errorNodes = instance.get(STR_XML_LOG).all(SELECTOR_FAIL + ', ' + SELECTOR_WARNING);
+						var errorNodes = instance.get(STR_SYNTAX_LOG).all(SELECTOR_FAIL + ', ' + SELECTOR_WARNING);
 
 						instance.set(STR_ERRORS, errorNodes);
 
@@ -927,7 +927,7 @@ YUI.add(
 					_toggleContainer: function(collapsibleContainer, inSidebar) {
 						var instance = this;
 
-						var lookUpScope = instance.get(STR_XML_LOG);
+						var lookUpScope = instance.get(STR_SYNTAX_LOG);
 
 						if (inSidebar) {
 							lookUpScope = instance.get(STR_SIDEBAR);
@@ -965,7 +965,7 @@ YUI.add(
 						instance.set(STR_PAUSED, !instance.get(STR_PAUSED));
 					},
 
-					_toggleXmlLogClasses: function(logId) {
+					_toggleSyntaxLogClasses: function(logId) {
 						var instance = this;
 
 						var status = instance.get(STR_STATUS);

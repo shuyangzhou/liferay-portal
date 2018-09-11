@@ -49,7 +49,7 @@ public class NotificationsManagementToolbarDisplayContext {
 	}
 
 	public List<DropdownItem> getActionDropdownItems() {
-		final boolean actionRequired = ParamUtil.getBoolean(
+		boolean actionRequired = ParamUtil.getBoolean(
 			_request, "actionRequired");
 
 		return new DropdownItemList() {
@@ -96,15 +96,20 @@ public class NotificationsManagementToolbarDisplayContext {
 	public List<DropdownItem> getFilterDropdownItems() {
 		return new DropdownItemList() {
 			{
-				addGroup(
-					SafeConsumer.ignore(
-						dropdownGroupItem -> {
-							dropdownGroupItem.setDropdownItems(
-								_getFilterNavigationDropdownItems());
-							dropdownGroupItem.setLabel(
-								LanguageUtil.get(
-									_request, "filter-by-navigation"));
-						}));
+				boolean actionRequired = ParamUtil.getBoolean(
+					_request, "actionRequired");
+
+				if (!actionRequired) {
+					addGroup(
+						SafeConsumer.ignore(
+							dropdownGroupItem -> {
+								dropdownGroupItem.setDropdownItems(
+									_getFilterNavigationDropdownItems());
+								dropdownGroupItem.setLabel(
+									LanguageUtil.get(
+										_request, "filter-by-navigation"));
+							}));
+				}
 
 				addGroup(
 					dropdownGroupItem -> {
