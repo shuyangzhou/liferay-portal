@@ -27,6 +27,80 @@
 		</sequential>
 	</macrodef>
 
+	<macrodef name="exec-zip">
+		<attribute name="destfile" />
+		<attribute name="prefix" />
+		<attribute name="dir" />
+		<attribute default="" name="includes" />
+		<attribute default="no" name="update" />
+		<sequential>
+			<tstamp>
+				<format pattern="yyyyMMddkkmmssSSS" property="tstamp.value" />
+			</tstamp>
+
+			<mkdir dir="${tstamp.value}" />
+
+			<mkdir dir="${tstamp.value}/@{prefix}" />
+
+			<if>
+				<equals arg1="@{includes}" arg2="" />
+				<then>
+					<copy
+						preservelastmodified="true"
+						todir="${tstamp.value}/@{prefix}"
+					>
+						<fileset
+							dir="@{dir}"
+						/>
+					</copy>
+					<chmod
+						perm="744"
+					>
+						<fileset
+							dir="${tstamp.value}/@{prefix}"
+							includes="**/*.sh"
+						/>
+					</chmod>
+				</then>
+				<else>
+					<copy
+						preservelastmodified="true"
+						todir="${tstamp.value}/@{prefix}"
+					>
+						<fileset
+							dir="@{dir}"
+							includes="@{includes}"
+						/>
+					</copy>
+					<chmod
+						perm="744"
+					>
+						<fileset
+							dir="${tstamp.value}/@{prefix}"
+							includes="**/*.sh"
+						/>
+					</chmod>
+				</else>
+			</if>
+
+			<if>
+				<equals arg1="@{update}" arg2="no" />
+				<then>
+					<exec dir="${tstamp.value}" executable="zip">
+						<arg line="-r -q ${project.dir}/@{destfile} @{prefix}" />
+					</exec>
+				</then>
+				<else>
+					<exec dir="${tstamp.value}" executable="zip">
+						<arg line="-r -q -u ${project.dir}/@{destfile} @{prefix}" />
+					</exec>
+				</else>
+			</if>
+
+			<delete dir="${tstamp.value}" />
+		</sequential>
+	</macrodef>
+
 	<macrodef name="replace-multilines">
 		<attribute name="file" />
 		<element name="replace-elements" />
@@ -3435,67 +3509,69 @@ plugins.includes=</echo>
 		<if>
 			<available file="${zip.executable.dir}/../data" />
 			<then>
-				<zip
+				<exec-zip
 					destfile="dist/${zip.executable.file}-${lp.version}.zip"
-				>
-					<zipfileset
-						dir="${zip.executable.dir}"
-						excludes="**/*.sh"
-						prefix="liferay-portal-${lp.version}/${zip.executable.dir.name}"
-					/>
-					<zipfileset
-						dir="${zip.executable.dir}"
-						filemode="744"
-						includes="**/*.sh"
-						prefix="liferay-portal-${lp.version}/${zip.executable.dir.name}"
-					/>
-					<zipfileset
-						dir="${zip.executable.dir}"
-						includes=".githash"
-						prefix="liferay-portal-${lp.version}"
-					/>
-					<zipfileset
-						dir="${zip.executable.dir}/.."
-						includes=".liferay-home"
-						prefix="liferay-portal-${lp.version}"
-					/>
-					<zipfileset
-						dir="${zip.executable.dir}/../data"
-						prefix="liferay-portal-${lp.version}/data"
-					/>
-					<zipfileset
-						dir="tools/zip_tmpl"
-						prefix="liferay-portal-${lp.version}"
-					/>
-				</zip>
+					dir="${zip.executable.dir}"
+					prefix="liferay-portal-${lp.version}/${zip.executable.dir.name}"
+				/>
+				<exec-zip
+					destfile="dist/${zip.executable.file}-${lp.version}.zip"
+					dir="${zip.executable.dir}"
+					includes=".githash"
+					prefix="liferay-portal-${lp.version}"
+					update="true"
+				/>
+
+				<if>
+					<not>
+						<available file="${zip.executable.dir}/.liferay-home" />
+					</not>
+					<then>
+						<touch file="${zip.executable.dir}/.liferay-home" />
+					</then>
+				</if>
+
+				<exec-zip
+					destfile="dist/${zip.executable.file}-${lp.version}.zip"
+					dir="${zip.executable.dir}"
+					includes=".liferay-home"
+					prefix="liferay-portal-${lp.version}"
+					update="true"
+				/>
+				<exec-zip
+					destfile="dist/${zip.executable.file}-${lp.version}.zip"
+					dir="${zip.executable.dir}/../data"
+					prefix="liferay-portal-${lp.version}/data"
+					update="true"
+				/>
+				<exec-zip
+					destfile="dist/${zip.executable.file}-${lp.version}.zip"
+					dir="tools/zip_tmpl"
+					prefix="liferay-portal-${lp.version}"
+					update="true"
+				/>
 
 				<if>
 					<available file="${zip.executable.dir}/../deploy" />
 					<then>
-						<zip
+						<exec-zip
 							destfile="dist/${zip.executable.file}-${lp.version}.zip"
+							dir="${zip.executable.dir}/../deploy"
+							prefix="liferay-portal-${lp.version}/deploy"
 							update="true"
-						>
-							<zipfileset
-								dir="${zip.executable.dir}/../deploy"
-								prefix="liferay-portal-${lp.version}/deploy"
-							/>
-						</zip>
+						/>
 					</then>
 				</if>
 
 				<if>
 					<available file="${zip.executable.dir}/../osgi" />
 					<then>
-						<zip
+						<exec-zip
 							destfile="dist/${zip.executable.file}-${lp.version}.zip"
+							dir="${zip.executable.dir}/../osgi"
+							prefix="liferay-portal-${lp.version}/osgi"
 							update="true"
-						>
-							<zipfileset
-								dir="${zip.executable.dir}/../osgi"
-								prefix="liferay-portal-${lp.version}/osgi"
-							/>
-						</zip>
+						/>
 					</then>
 				</if>
 
@@ -3539,52 +3615,36 @@ plugins.includes=</echo>
 							value="../${zip.executable.dir.name}"
 						/>
 
-						<zip
+						<exec-zip
 							destfile="dist/${zip.executable.file}-${lp.version}.zip"
+							dir="${zip.executable.dir}/../patching-tool"
+							prefix="liferay-portal-${lp.version}/patching-tool"
 							update="yes"
-						>
-							<zipfileset
-								dir="${zip.executable.dir}/../patching-tool"
-								excludes="**/*.sh"
-								prefix="liferay-portal-${lp.version}/patching-tool"
-							/>
-							<zipfileset
-								dir="${zip.executable.dir}/../patching-tool"
-								filemode="744"
-								includes="**/*.sh"
-								prefix="liferay-portal-${lp.version}/patching-tool"
-							/>
-						</zip>
+						/>
 					</then>
 				</if>
 
 				<if>
 					<available file="${zip.executable.dir}/../tools" />
 					<then>
-						<zip
+						<exec-zip
 							destfile="dist/${zip.executable.file}-${lp.version}.zip"
+							dir="${zip.executable.dir}/../tools"
+							prefix="liferay-portal-${lp.version}/tools"
 							update="true"
-						>
-							<zipfileset
-								dir="${zip.executable.dir}/../tools"
-								prefix="liferay-portal-${lp.version}/tools"
-							/>
-						</zip>
+						/>
 					</then>
 				</if>
 
 				<if>
 					<available file="${zip.executable.dir}/../work" />
 					<then>
-						<zip
+						<exec-zip
 							destfile="dist/${zip.executable.file}-${lp.version}.zip"
+							dir="${zip.executable.dir}/../work"
+							prefix="liferay-portal-${lp.version}/work"
 							update="true"
-						>
-							<zipfileset
-								dir="${zip.executable.dir}/../work"
-								prefix="liferay-portal-${lp.version}/work"
-							/>
-						</zip>
+						/>
 					</then>
 				</if>
 			</then>
@@ -4037,6 +4097,10 @@ plugins.includes=</echo>
 				</delete>
 			</sequential>
 		</parallel>
+
+		<exec dir="${tstamp.value}" executable="zip">
+			<arg line="-r -q ${project.dir}/dist/liferay-portal-tomcat-${lp.version}-with-state.zip liferay-portal-${lp.version}" />
+		</exec>
 
 		<exec dir="${tstamp.value}" executable="tar">
 			<arg line="-czf ${project.dir}/dist/liferay-portal-tomcat-${lp.version}.tar.gz liferay-portal-${lp.version}" />
