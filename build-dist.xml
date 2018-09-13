@@ -3977,6 +3977,8 @@ plugins.includes=</echo>
 				excludes="
 					liferay-portal-${lp.version}/data/hypersonic/**,
 					liferay-portal-${lp.version}/osgi/state/**,
+					liferay-portal-${lp.version}/tomcat-${app.server.tomcat.version}/webapps/ROOT/html/**,
+					liferay-portal-${lp.version}/tomcat-${app.server.tomcat.version}/webapps/ROOT/WEB-INF/tld/**,
 					liferay-portal-${lp.version}/tomcat-${app.server.tomcat.version}/work/**"
 			/>
 		</unzip>
@@ -3989,6 +3991,24 @@ plugins.includes=</echo>
 		<ant dir="portal-web" target="compile-tomcat">
 			<property name="app.server.portal.dir" value="${tstamp.value}/liferay-portal-${lp.version}/tomcat/webapps/ROOT" />
 		</ant>
+
+		<copy
+			preservelastmodified="true"
+			todir="${tstamp.value}/liferay-portal-${lp.version}/tomcat/webapps/ROOT/html"
+		>
+			<fileset
+				dir="portal-web/docroot/html"
+			/>
+		</copy>
+
+		<copy
+			preservelastmodified="true"
+			todir="${tstamp.value}/liferay-portal-${lp.version}/tomcat/webapps/ROOT/WEB-INF/tld"
+		>
+			<fileset
+				dir="portal-web/docroot/WEB-INF/tld"
+			/>
+		</copy>
 
 		<copy
 			preservelastmodified="true"
@@ -4040,6 +4060,10 @@ plugins.includes=</echo>
 
 		<exec dir="${tstamp.value}" executable="tar">
 			<arg line="-czf ${project.dir}/dist/liferay-portal-tomcat-${lp.version}.tar.gz liferay-portal-${lp.version}" />
+		</exec>
+
+		<exec dir="${tstamp.value}" executable="zip">
+			<arg line="-r -q ${project.dir}/dist/liferay-portal-tomcat-${lp.version}-with-osgi-state.zip liferay-portal-${lp.version}" />
 		</exec>
 
 		<echo>Calling 7-Zip, this will take a few minutes...</echo>
