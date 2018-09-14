@@ -27,6 +27,60 @@
 		</sequential>
 	</macrodef>
 
+	<macrodef name="exec-7z">
+		<attribute name="destfile" />
+		<attribute name="dir" />
+		<attribute name="prefix" />
+		<attribute default="" name="includes" />
+		<sequential>
+			<tstamp>
+				<format pattern="yyyyMMddkkmmssSSS" property="tstamp.value" />
+			</tstamp>
+
+			<mkdir dir="${tstamp.value}/@{prefix}" />
+
+			<if>
+				<equals arg1="@{includes}" arg2="" />
+				<then>
+					<copy
+						preservelastmodified="true"
+						todir="${tstamp.value}/@{prefix}"
+					>
+						<fileset
+							dir="@{dir}"
+						/>
+					</copy>
+				</then>
+				<else>
+					<copy
+						preservelastmodified="true"
+						todir="${tstamp.value}/@{prefix}"
+					>
+						<fileset
+							dir="@{dir}"
+							includes="@{includes}"
+						/>
+					</copy>
+				</else>
+			</if>
+
+			<chmod
+				perm="744"
+			>
+				<fileset
+					dir="${tstamp.value}/@{prefix}"
+					includes="**/*.sh"
+				/>
+			</chmod>
+
+			<exec dir="${tstamp.value}" executable="7z">
+				<arg line="a ${project.dir}/@{destfile} @{prefix}" />
+			</exec>
+
+			<delete dir="${tstamp.value}" />
+		</sequential>
+	</macrodef>
+
 	<macrodef name="replace-multilines">
 		<attribute name="file" />
 		<element name="replace-elements" />
@@ -3435,67 +3489,63 @@ plugins.includes=</echo>
 		<if>
 			<available file="${zip.executable.dir}/../data" />
 			<then>
-				<zip
-					destfile="dist/${zip.executable.file}-${lp.version}.zip"
-				>
-					<zipfileset
-						dir="${zip.executable.dir}"
-						excludes="**/*.sh"
-						prefix="liferay-portal-${lp.version}/${zip.executable.dir.name}"
-					/>
-					<zipfileset
-						dir="${zip.executable.dir}"
-						filemode="744"
-						includes="**/*.sh"
-						prefix="liferay-portal-${lp.version}/${zip.executable.dir.name}"
-					/>
-					<zipfileset
-						dir="${zip.executable.dir}"
-						includes=".githash"
-						prefix="liferay-portal-${lp.version}"
-					/>
-					<zipfileset
-						dir="${zip.executable.dir}/.."
-						includes=".liferay-home"
-						prefix="liferay-portal-${lp.version}"
-					/>
-					<zipfileset
-						dir="${zip.executable.dir}/../data"
-						prefix="liferay-portal-${lp.version}/data"
-					/>
-					<zipfileset
-						dir="tools/zip_tmpl"
-						prefix="liferay-portal-${lp.version}"
-					/>
-				</zip>
+				<exec-7z
+					destfile="dist/${zip.executable.file}-${lp.version}.7z"
+					dir="${zip.executable.dir}"
+					prefix="liferay-portal-${lp.version}/${zip.executable.dir.name}"
+				/>
+				<exec-7z
+					destfile="dist/${zip.executable.file}-${lp.version}.7z"
+					dir="${zip.executable.dir}"
+					includes=".githash"
+					prefix="liferay-portal-${lp.version}"
+				/>
+
+				<if>
+					<not>
+						<available file="${zip.executable.dir}/.liferay-home" />
+					</not>
+					<then>
+						<touch file="${zip.executable.dir}/.liferay-home" />
+					</then>
+				</if>
+
+				<exec-7z
+					destfile="dist/${zip.executable.file}-${lp.version}.7z"
+					dir="${zip.executable.dir}"
+					includes=".liferay-home"
+					prefix="liferay-portal-${lp.version}"
+				/>
+				<exec-7z
+					destfile="dist/${zip.executable.file}-${lp.version}.7z"
+					dir="${zip.executable.dir}/../data"
+					prefix="liferay-portal-${lp.version}/data"
+				/>
+				<exec-7z
+					destfile="dist/${zip.executable.file}-${lp.version}.7z"
+					dir="tools/zip_tmpl"
+					prefix="liferay-portal-${lp.version}"
+				/>
 
 				<if>
 					<available file="${zip.executable.dir}/../deploy" />
 					<then>
-						<zip
-							destfile="dist/${zip.executable.file}-${lp.version}.zip"
-							update="true"
-						>
-							<zipfileset
-								dir="${zip.executable.dir}/../deploy"
-								prefix="liferay-portal-${lp.version}/deploy"
-							/>
-						</zip>
+						<exec-7z
+							destfile="dist/${zip.executable.file}-${lp.version}.7z"
+							dir="${zip.executable.dir}/../deploy"
+							prefix="liferay-portal-${lp.version}/deploy"
+						/>
 					</then>
 				</if>
 
 				<if>
 					<available file="${zip.executable.dir}/../osgi" />
 					<then>
-						<zip
-							destfile="dist/${zip.executable.file}-${lp.version}.zip"
-							update="true"
-						>
-							<zipfileset
-								dir="${zip.executable.dir}/../osgi"
-								prefix="liferay-portal-${lp.version}/osgi"
-							/>
-						</zip>
+						<exec-7z
+							destfile="dist/${zip.executable.file}-${lp.version}.7z"
+							dir="${zip.executable.dir}/../osgi"
+							prefix="liferay-portal-${lp.version}/osgi"
+						/>
 					</then>
 				</if>
 
@@ -3539,52 +3589,33 @@ plugins.includes=</echo>
 							value="../${zip.executable.dir.name}"
 						/>
 
-						<zip
-							destfile="dist/${zip.executable.file}-${lp.version}.zip"
-							update="yes"
-						>
-							<zipfileset
-								dir="${zip.executable.dir}/../patching-tool"
-								excludes="**/*.sh"
-								prefix="liferay-portal-${lp.version}/patching-tool"
-							/>
-							<zipfileset
-								dir="${zip.executable.dir}/../patching-tool"
-								filemode="744"
-								includes="**/*.sh"
-								prefix="liferay-portal-${lp.version}/patching-tool"
-							/>
-						</zip>
+						<exec-7z
+							destfile="dist/${zip.executable.file}-${lp.version}.7z"
+							dir="${zip.executable.dir}/../patching-tool"
+							prefix="liferay-portal-${lp.version}/patching-tool"
+						/>
 					</then>
 				</if>
 
 				<if>
 					<available file="${zip.executable.dir}/../tools" />
 					<then>
-						<zip
-							destfile="dist/${zip.executable.file}-${lp.version}.zip"
-							update="true"
-						>
-							<zipfileset
-								dir="${zip.executable.dir}/../tools"
-								prefix="liferay-portal-${lp.version}/tools"
-							/>
-						</zip>
+						<exec-7z
+							destfile="dist/${zip.executable.file}-${lp.version}.7z"
+							dir="${zip.executable.dir}/../tools"
+							prefix="liferay-portal-${lp.version}/tools"
+						/>
 					</then>
 				</if>
 
 				<if>
 					<available file="${zip.executable.dir}/../work" />
 					<then>
-						<zip
-							destfile="dist/${zip.executable.file}-${lp.version}.zip"
-							update="true"
-						>
-							<zipfileset
-								dir="${zip.executable.dir}/../work"
-								prefix="liferay-portal-${lp.version}/work"
-							/>
-						</zip>
+						<exec-7z
+							destfile="dist/${zip.executable.file}-${lp.version}.7z"
+							dir="${zip.executable.dir}/../work"
+							prefix="liferay-portal-${lp.version}/work"
+						/>
 					</then>
 				</if>
 			</then>
@@ -3969,17 +4000,15 @@ plugins.includes=</echo>
 			<format pattern="yyyyMMddkkmmssSSS" property="tstamp.value" />
 		</tstamp>
 
-		<unzip
-			dest="${tstamp.value}"
-			src="dist/liferay-portal-tomcat-${lp.version}.zip"
-		>
-			<patternset
-				excludes="
-					liferay-portal-${lp.version}/data/hypersonic/**,
-					liferay-portal-${lp.version}/osgi/state/**,
-					liferay-portal-${lp.version}/tomcat-${app.server.tomcat.version}/work/**"
-			/>
-		</unzip>
+		<mkdir dir="${tstamp.value}" />
+
+		<exec dir="${tstamp.value}" executable="7z">
+			<arg value="x" />
+			<arg value="-x!liferay-portal-${lp.version}/data/hypersonic/**" />
+			<arg value="-x!liferay-portal-${lp.version}/osgi/state/**" />
+			<arg value="-x!liferay-portal-${lp.version}/tomcat-${app.server.tomcat.version}/work/**" />
+			<arg value="../dist/liferay-portal-tomcat-${lp.version}.7z" />
+		</exec>
 
 		<move
 			file="${tstamp.value}/liferay-portal-${lp.version}/tomcat-${app.server.tomcat.version}"
@@ -4039,19 +4068,19 @@ plugins.includes=</echo>
 		</parallel>
 
 		<exec dir="${tstamp.value}" executable="tar">
-			<arg line="-czf ${project.dir}/dist/liferay-portal-tomcat-${lp.version}.tar.gz liferay-portal-${lp.version}" />
+			<arg line="-czf ${project.dir}/dist/liferay-portal-tomcat-${lp.version}-with-state.tar.gz liferay-portal-${lp.version}" />
 		</exec>
 
 		<echo>Calling 7-Zip, this will take a few minutes...</echo>
 
 		<exec dir="${tstamp.value}" executable="7z">
-			<arg line="a -md1024m ${project.dir}/dist/liferay-portal-tomcat-${lp.version}.7z liferay-portal-${lp.version}/osgi" />
+			<arg line="a -md1024m ${project.dir}/dist/liferay-portal-tomcat-${lp.version}-with-state.7z liferay-portal-${lp.version}/osgi" />
 		</exec>
 
 		<delete dir="${tstamp.value}/liferay-portal-${lp.version}/osgi" />
 
 		<exec dir="${tstamp.value}" executable="7z">
-			<arg line="a -md1024m ${project.dir}/dist/liferay-portal-tomcat-${lp.version}.7z liferay-portal-${lp.version}" />
+			<arg line="a -md1024m ${project.dir}/dist/liferay-portal-tomcat-${lp.version}-with-state.7z liferay-portal-${lp.version}" />
 		</exec>
 
 		<delete dir="${tstamp.value}" />
