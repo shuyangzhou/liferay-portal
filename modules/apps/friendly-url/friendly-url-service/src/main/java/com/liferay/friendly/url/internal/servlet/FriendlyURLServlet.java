@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.servlet.InactiveRequestHandler;
 import com.liferay.portal.kernel.servlet.PortalMessages;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.struts.LastPath;
@@ -185,10 +186,6 @@ public class FriendlyURLServlet extends HttpServlet {
 						requestContext);
 
 			Layout layout = layoutFriendlyURLSeparatorComposite.getLayout();
-
-			if (!group.isActive() && !layout.isTypeControlPanel()) {
-				throw new NoSuchLayoutException();
-			}
 
 			request.setAttribute(WebKeys.LAYOUT, layout);
 
@@ -524,6 +521,9 @@ public class FriendlyURLServlet extends HttpServlet {
 
 	@Reference
 	protected GroupLocalService groupLocalService;
+
+	@Reference
+	protected InactiveRequestHandler inactiveRequestHandler;
 
 	@Reference
 	protected LayoutFriendlyURLLocalService layoutFriendlyURLLocalService;
