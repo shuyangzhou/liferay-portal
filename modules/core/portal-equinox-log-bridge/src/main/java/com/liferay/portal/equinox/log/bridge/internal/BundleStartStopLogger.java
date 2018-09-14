@@ -14,7 +14,7 @@
 
 package com.liferay.portal.equinox.log.bridge.internal;
 
-import com.liferay.portal.events.StartupHelperUtil;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.osgi.framework.BundleEvent;
 import org.osgi.framework.SynchronousBundleListener;
@@ -27,12 +27,14 @@ import org.slf4j.LoggerFactory;
  */
 public class BundleStartStopLogger implements SynchronousBundleListener {
 
+	public BundleStartStopLogger(AtomicBoolean atomicBoolean) {
+		_portalStarted = atomicBoolean;
+	}
+
 	@Override
 	public void bundleChanged(BundleEvent bundleEvent) {
-		if ((StartupHelperUtil.getStartupHelper() == null) ||
-			!StartupHelperUtil.isStartupFinished()) {
-
-			if (_log.isInfoEnabled()) {
+		if (!_portalStarted.get()) {
+			if (_log.isDebugEnabled()) {
 				if (bundleEvent.getType() == BundleEvent.STARTED) {
 					_log.debug("STARTED {}", bundleEvent.getBundle());
 				}
@@ -41,9 +43,7 @@ public class BundleStartStopLogger implements SynchronousBundleListener {
 				}
 			}
 		}
-		else if ((StartupHelperUtil.getStartupHelper() != null) &&
-				 StartupHelperUtil.isStartupFinished()) {
-
+		else {
 			if (bundleEvent.getType() == BundleEvent.STARTED) {
 				_log.info("STARTED {}", bundleEvent.getBundle());
 			}
@@ -55,5 +55,7 @@ public class BundleStartStopLogger implements SynchronousBundleListener {
 
 	private static final Logger _log = LoggerFactory.getLogger(
 		BundleStartStopLogger.class);
+
+	private final AtomicBoolean _portalStarted;
 
 }
