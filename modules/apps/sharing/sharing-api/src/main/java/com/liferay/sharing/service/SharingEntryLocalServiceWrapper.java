@@ -438,6 +438,13 @@ public class SharingEntryLocalServiceWrapper implements SharingEntryLocalService
 
 	@Override
 	public java.util.List<com.liferay.sharing.model.SharingEntry> getToUserSharingEntries(
+		long toUserId, int start, int end) {
+		return _sharingEntryLocalService.getToUserSharingEntries(toUserId,
+			start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.sharing.model.SharingEntry> getToUserSharingEntries(
 		long toUserId, long classNameId) {
 		return _sharingEntryLocalService.getToUserSharingEntries(toUserId,
 			classNameId);
@@ -471,10 +478,11 @@ public class SharingEntryLocalServiceWrapper implements SharingEntryLocalService
 	public com.liferay.sharing.model.SharingEntry updateSharingEntry(
 		long sharingEntryId,
 		java.util.Collection<com.liferay.sharing.constants.SharingEntryActionKey> sharingEntryActionKeys,
-		boolean shareable, java.util.Date expirationDate)
+		boolean shareable, java.util.Date expirationDate,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _sharingEntryLocalService.updateSharingEntry(sharingEntryId,
-			sharingEntryActionKeys, shareable, expirationDate);
+			sharingEntryActionKeys, shareable, expirationDate, serviceContext);
 	}
 
 	/**
