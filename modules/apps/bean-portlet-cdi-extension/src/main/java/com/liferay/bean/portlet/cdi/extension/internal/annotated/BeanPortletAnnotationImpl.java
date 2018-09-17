@@ -18,14 +18,10 @@ import com.liferay.bean.portlet.LiferayPortletConfiguration;
 import com.liferay.bean.portlet.cdi.extension.internal.BaseBeanPortletImpl;
 import com.liferay.bean.portlet.cdi.extension.internal.BeanApp;
 import com.liferay.bean.portlet.cdi.extension.internal.PortletDependency;
-import com.liferay.bean.portlet.cdi.extension.internal.PublicRenderParameter;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.portlet.LiferayPortletMode;
 import com.liferay.portal.kernel.util.HashMapDictionary;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,19 +34,16 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import javax.portlet.PortletMode;
 import javax.portlet.annotations.Dependency;
 import javax.portlet.annotations.InitParameter;
 import javax.portlet.annotations.LocaleString;
+import javax.portlet.annotations.Multipart;
 import javax.portlet.annotations.PortletApplication;
 import javax.portlet.annotations.PortletConfiguration;
 import javax.portlet.annotations.Preference;
 import javax.portlet.annotations.RuntimeOption;
 import javax.portlet.annotations.SecurityRoleRef;
 import javax.portlet.annotations.Supports;
-
-import javax.xml.XMLConstants;
-import javax.xml.namespace.QName;
 
 /**
  * @author Neil Griffin
@@ -62,12 +55,15 @@ public class BeanPortletAnnotationImpl extends BaseBeanPortletImpl {
 		PortletApplication portletApplication,
 		PortletConfiguration portletConfiguration,
 		LiferayPortletConfiguration liferayPortletConfiguration,
-		String portletClassName) {
+		Map<String, String> liferayDescriptorConfiguration,
+		String portletClassName, String descriptorDisplayCategory) {
 
 		_beanApp = new BeanAppAnnotationImpl(portletApplication);
 
 		_portletConfiguration = portletConfiguration;
 		_portletClassName = portletClassName;
+
+		String displayCategory = descriptorDisplayCategory;
 
 		String[] propertyNames = null;
 
@@ -76,10 +72,10 @@ public class BeanPortletAnnotationImpl extends BaseBeanPortletImpl {
 		}
 
 		if ((propertyNames == null) || (propertyNames.length == 0)) {
-			_liferayPortletConfigurationProperties = Collections.emptyMap();
+			_liferayConfiguration = Collections.emptyMap();
 		}
 		else {
-			_liferayPortletConfigurationProperties = new HashMap<>();
+			_liferayConfiguration = new HashMap<>();
 
 			for (String propertyName : propertyNames) {
 				String propertyValue = null;
@@ -90,12 +86,24 @@ public class BeanPortletAnnotationImpl extends BaseBeanPortletImpl {
 					propertyName = propertyName.substring(0, equalsPos);
 
 					propertyValue = propertyName.substring(equalsPos + 1);
+
+					if (Validator.isNull(displayCategory) &&
+						propertyName.equals(
+							"com.liferay.portlet.display-category")) {
+
+						displayCategory = propertyValue;
+
+						continue;
+					}
 				}
 
-				_liferayPortletConfigurationProperties.put(
-					propertyName, propertyValue);
+				_liferayConfiguration.put(propertyName, propertyValue);
 			}
 		}
+
+		_liferayConfiguration.putAll(liferayDescriptorConfiguration);
+
+		_displayCategory = displayCategory;
 
 		for (Dependency dependency : portletConfiguration.dependencies()) {
 			addPortletDependency(
@@ -104,7 +112,7 @@ public class BeanPortletAnnotationImpl extends BaseBeanPortletImpl {
 					dependency.version()));
 		}
 
-		_portletModes = new HashSet<>(_liferayPortletModes);
+		_portletModes = new HashSet<>(liferayPortletModes);
 
 		_portletModes.addAll(_beanApp.getCustomPortletModes());
 	}
@@ -112,6 +120,16 @@ public class BeanPortletAnnotationImpl extends BaseBeanPortletImpl {
 	@Override
 	public BeanApp getBeanApp() {
 		return _beanApp;
+	}
+
+	@Override
+	public String getDisplayCategory() {
+		return _displayCategory;
+	}
+
+	@Override
+	public Map<String, String> getLiferayConfiguration() {
+		return _liferayConfiguration;
 	}
 
 	@Override
@@ -181,6 +199,25 @@ public class BeanPortletAnnotationImpl extends BaseBeanPortletImpl {
 		_putEnglishText(
 			dictionary, "javax.portlet.info.keywords",
 			_portletConfiguration.keywords());
+
+		Multipart multipart = _portletConfiguration.multipart();
+
+		if (multipart.supported()) {
+			dictionary.put(
+				"javax.portlet.multipart.file-size-threshold",
+				multipart.fileSizeThreshold());
+
+			dictionary.put(
+				"javax.portlet.multipart.location", multipart.location());
+
+			dictionary.put(
+				"javax.portlet.multipart.max-file-size",
+				multipart.maxFileSize());
+
+			dictionary.put(
+				"javax.portlet.multipart.max-request-size",
+				multipart.maxRequestSize());
+		}
 
 		_putEnglishText(
 			dictionary, "javax.portlet.info.short-title",
@@ -288,7 +325,7 @@ public class BeanPortletAnnotationImpl extends BaseBeanPortletImpl {
 			supportedPublicRenderParameters.add(
 				toNameValuePair(
 					identifier,
-					_getPublicRenderParameterNamespaceURI(
+					getPublicRenderParameterNamespaceURI(
 						_beanApp, identifier)));
 		}
 
@@ -325,37 +362,9 @@ public class BeanPortletAnnotationImpl extends BaseBeanPortletImpl {
 			dictionary.put("javax.portlet.window-state", supportedWindowStates);
 		}
 
-		dictionary.putAll(_liferayPortletConfigurationProperties);
+		dictionary.putAll(_liferayConfiguration);
 
 		return dictionary;
-	}
-
-	private static String _getPublicRenderParameterNamespaceURI(
-		BeanApp beanApp, String id) {
-
-		Map<String, PublicRenderParameter> publicRenderParameterMap =
-			beanApp.getPublicRenderParameterMap();
-
-		PublicRenderParameter publicRenderParameter =
-			publicRenderParameterMap.get(id);
-
-		if (publicRenderParameter == null) {
-			return XMLConstants.NULL_NS_URI;
-		}
-
-		QName qName = publicRenderParameter.getQName();
-
-		if (qName == null) {
-			return XMLConstants.NULL_NS_URI;
-		}
-
-		String namespaceURI = qName.getNamespaceURI();
-
-		if (namespaceURI == null) {
-			return XMLConstants.NULL_NS_URI;
-		}
-
-		return namespaceURI;
 	}
 
 	private static void _putEnglishText(
@@ -384,29 +393,9 @@ public class BeanPortletAnnotationImpl extends BaseBeanPortletImpl {
 
 	private static final String _ENGLISH_EN = Locale.ENGLISH.getLanguage();
 
-	private static final Set<String> _liferayPortletModes =
-		new HashSet<String>() {
-			{
-				try {
-					for (Field field : LiferayPortletMode.class.getFields()) {
-						if (Modifier.isStatic(field.getModifiers()) &&
-							(field.getType() == PortletMode.class)) {
-
-							PortletMode portletMode = (PortletMode)field.get(
-								null);
-
-							add(portletMode.toString());
-						}
-					}
-				}
-				catch (IllegalAccessException iae) {
-					throw new ExceptionInInitializerError(iae);
-				}
-			}
-		};
-
 	private final BeanApp _beanApp;
-	private final Map<String, String> _liferayPortletConfigurationProperties;
+	private final String _displayCategory;
+	private final Map<String, String> _liferayConfiguration;
 	private final String _portletClassName;
 	private final PortletConfiguration _portletConfiguration;
 	private final Set<String> _portletModes;

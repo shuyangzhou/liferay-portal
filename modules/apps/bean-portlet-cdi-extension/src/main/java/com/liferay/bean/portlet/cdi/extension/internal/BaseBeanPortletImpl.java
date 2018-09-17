@@ -15,24 +15,30 @@
 package com.liferay.bean.portlet.cdi.extension.internal;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.portlet.LiferayPortletMode;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.portlet.PortletMode;
 import javax.portlet.annotations.ActionMethod;
 import javax.portlet.annotations.EventMethod;
 import javax.portlet.annotations.PortletQName;
+
+import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
 
 /**
  * @author Neil Griffin
@@ -73,18 +79,6 @@ public abstract class BaseBeanPortletImpl implements BeanPortlet {
 	}
 
 	@Override
-	public void addLiferayConfiguration(
-		Map<String, String> liferayConfiguration) {
-
-		_liferayConfiguration.putAll(liferayConfiguration);
-	}
-
-	@Override
-	public void addLiferayConfiguration(String name, String value) {
-		_liferayConfiguration.put(name, value);
-	}
-
-	@Override
 	public void addPortletDependency(PortletDependency portletDependency) {
 		_resourceDependencies.add(portletDependency);
 	}
@@ -102,9 +96,50 @@ public abstract class BaseBeanPortletImpl implements BeanPortlet {
 		return name.concat(StringPool.SEMICOLON).concat(value);
 	}
 
+	protected String getPublicRenderParameterNamespaceURI(
+		BeanApp beanApp, String id) {
+
+		Map<String, PublicRenderParameter> publicRenderParameterMap =
+			beanApp.getPublicRenderParameterMap();
+
+		PublicRenderParameter publicRenderParameter =
+			publicRenderParameterMap.get(id);
+
+		if (publicRenderParameter == null) {
+			return XMLConstants.NULL_NS_URI;
+		}
+
+		QName qName = publicRenderParameter.getQName();
+
+		if (qName == null) {
+			return XMLConstants.NULL_NS_URI;
+		}
+
+		String namespaceURI = qName.getNamespaceURI();
+
+		if (namespaceURI == null) {
+			return XMLConstants.NULL_NS_URI;
+		}
+
+		return namespaceURI;
+	}
+
 	protected HashMapDictionary<String, Object> toDictionary(BeanApp beanApp) {
 		HashMapDictionary<String, Object> dictionary =
 			new HashMapDictionary<>();
+
+		String displayCategory = getDisplayCategory();
+
+		if (displayCategory != null) {
+			dictionary.put(
+				"com.liferay.portlet.display-category", displayCategory);
+		}
+
+		Map<String, String> liferayConfiguration = getLiferayConfiguration();
+
+		if (liferayConfiguration != null) {
+			dictionary.putAll(liferayConfiguration);
+		}
 
 		String defaultNamespace = beanApp.getDefaultNamespace();
 
@@ -214,14 +249,32 @@ public abstract class BaseBeanPortletImpl implements BeanPortlet {
 
 		dictionary.put("javax.portlet.version", beanApp.getSpecVersion());
 
-		dictionary.putAll(_liferayConfiguration);
-
 		return dictionary;
 	}
 
+	protected static final Set<String> liferayPortletModes =
+		new HashSet<String>() {
+			{
+				try {
+					for (Field field : LiferayPortletMode.class.getFields()) {
+						if (Modifier.isStatic(field.getModifiers()) &&
+							(field.getType() == PortletMode.class)) {
+
+							PortletMode portletMode = (PortletMode)field.get(
+								null);
+
+							add(portletMode.toString());
+						}
+					}
+				}
+				catch (IllegalAccessException iae) {
+					throw new ExceptionInInitializerError(iae);
+				}
+			}
+		};
+
 	private final EnumMap<MethodType, List<BeanMethod>> _beanMethods =
 		new EnumMap<>(MethodType.class);
-	private final Map<String, String> _liferayConfiguration = new HashMap<>();
 	private final List<PortletDependency> _resourceDependencies =
 		new ArrayList<>();
 
