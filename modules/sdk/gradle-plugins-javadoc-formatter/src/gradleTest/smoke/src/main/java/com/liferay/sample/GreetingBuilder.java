@@ -12,14 +12,33 @@
  * details.
  */
 
-package com.liferay.sharing.web.internal.constants;
+package com.liferay.sample;
 
 /**
- * @author Sergio González
+ * @author Brian Wing Shun Chan
  */
-public class SharingPortletKeys {
+public class GreetingBuilder {
 
-	public static final String SHARING =
-		"com_liferay_sharing_web_portlet_SharingPortlet";
+	public GreetingBuilder(String name) {
+		_name = name;
+	}
+
+	public String getGoodbye() {
+		return "Goodbye " + getName();
+	}
+
+	public String getHello() {
+		return "Hello " + getName();
+	}
+
+	public String getName() {
+		return _name;
+	}
+
+	public void setName(String name) {
+		_name = name;
+	}
+
+	private String _name;
 
 }
