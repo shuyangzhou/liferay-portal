@@ -14,10 +14,13 @@
 
 package com.liferay.structured.content.apio.internal.architect.filter;
 
+import com.liferay.structured.content.apio.architect.entity.EntityField;
+
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -51,16 +54,16 @@ public abstract class BaseSingleEntitySchemaBasedEdmProvider
 		addSchema(
 			_createCsdlSchema(
 				"HypermediaRestApis", getName(),
-				_createCsdlProperties(getEntityTypesMap())));
+				_createCsdlProperties(getEntityFieldsMap())));
 	}
 
 	/**
-	 * Returns the properties of the entity type used to create the EDM.
+	 * Returns a Map with all the entity fields used to create the EDM.
 	 *
-	 * @return the entity type properties
+	 * @return the entity field map
 	 * @review
 	 */
-	public abstract Map<String, EntityType> getEntityTypesMap();
+	public abstract Map<String, EntityField> getEntityFieldsMap();
 
 	/**
 	 * Returns the name of the single entity type used to create the EDM.
@@ -69,12 +72,6 @@ public abstract class BaseSingleEntitySchemaBasedEdmProvider
 	 * @review
 	 */
 	public abstract String getName();
-
-	public enum EntityType {
-
-		DATE, STRING
-
-	}
 
 	private CsdlEntityContainer _createCsdlEntityContainer(
 		String namespace, String name) {
@@ -111,35 +108,35 @@ public abstract class BaseSingleEntitySchemaBasedEdmProvider
 	}
 
 	private List<CsdlProperty> _createCsdlProperties(
-		Map<String, EntityType> entityTypesMap) {
+		Map<String, EntityField> entityFieldsMap) {
 
-		Set<Map.Entry<String, EntityType>> entries = entityTypesMap.entrySet();
+		Collection<EntityField> entityFields = entityFieldsMap.values();
 
-		Stream<Map.Entry<String, EntityType>> stream = entries.stream();
+		Stream<EntityField> stream = entityFields.stream();
 
 		return stream.map(
-			entry -> _createCsdlProperty(entry.getKey(), entry.getValue())
+			this::_createCsdlProperty
 		).collect(
 			Collectors.toList()
 		);
 	}
 
-	private CsdlProperty _createCsdlProperty(
-		String name, EntityType entityType) {
-
+	private CsdlProperty _createCsdlProperty(EntityField entityField) {
 		CsdlProperty csdlProperty = new CsdlProperty();
 
-		csdlProperty.setName(name);
+		csdlProperty.setName(entityField.getName());
 
 		FullQualifiedName fullQualifiedName = null;
 
-		if (entityType.equals(EntityType.STRING)) {
-			fullQualifiedName =
-				EdmPrimitiveTypeKind.String.getFullQualifiedName();
-		}
-		else if (entityType.equals(EntityType.DATE)) {
+		if (Objects.equals(entityField.getType(), EntityField.Type.DATE)) {
 			fullQualifiedName =
 				EdmPrimitiveTypeKind.Date.getFullQualifiedName();
+		}
+		else if (Objects.equals(
+					entityField.getType(), EntityField.Type.STRING)) {
+
+			fullQualifiedName =
+				EdmPrimitiveTypeKind.String.getFullQualifiedName();
 		}
 
 		csdlProperty.setType(fullQualifiedName);

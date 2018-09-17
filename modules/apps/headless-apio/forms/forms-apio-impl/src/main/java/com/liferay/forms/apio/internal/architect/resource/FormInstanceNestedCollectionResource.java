@@ -16,6 +16,10 @@ package com.liferay.forms.apio.internal.architect.resource;
 
 import static java.util.function.Function.identity;
 
+import com.liferay.apio.architect.credentials.Credentials;
+import com.liferay.apio.architect.custom.actions.GetRoute;
+import com.liferay.apio.architect.custom.actions.PostRoute;
+import com.liferay.apio.architect.functional.Try;
 import com.liferay.apio.architect.pagination.PageItems;
 import com.liferay.apio.architect.pagination.Pagination;
 import com.liferay.apio.architect.representor.NestedRepresentor;
@@ -25,14 +29,26 @@ import com.liferay.apio.architect.routes.ItemRoutes;
 import com.liferay.apio.architect.routes.NestedCollectionRoutes;
 import com.liferay.content.space.apio.architect.identifier.ContentSpaceIdentifier;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstance;
+import com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecord;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstanceSettings;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstanceVersion;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceService;
 import com.liferay.forms.apio.architect.identifier.FormInstanceIdentifier;
+import com.liferay.forms.apio.architect.identifier.FormInstanceRecordIdentifier;
 import com.liferay.forms.apio.architect.identifier.StructureIdentifier;
+import com.liferay.forms.apio.internal.architect.form.FetchLatestDraftForm;
+import com.liferay.forms.apio.internal.architect.form.MediaObjectCreatorForm;
+import com.liferay.forms.apio.internal.architect.route.FetchLatestDraftRoute;
+import com.liferay.forms.apio.internal.architect.route.UploadFileRoute;
+import com.liferay.forms.apio.internal.helper.FetchLatestRecordHelper;
+import com.liferay.forms.apio.internal.helper.UploadFileHelper;
 import com.liferay.forms.apio.internal.util.FormInstanceRepresentorUtil;
+import com.liferay.media.object.apio.architect.identifier.MediaObjectIdentifier;
 import com.liferay.person.apio.architect.identifier.PersonIdentifier;
+import com.liferay.portal.apio.permission.HasPermission;
+import com.liferay.portal.apio.user.CurrentUser;
 import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.repository.model.FileEntry;
 
 import java.util.List;
 
@@ -72,6 +88,14 @@ public class FormInstanceNestedCollectionResource
 
 		return builder.addGetter(
 			_ddmFormInstanceService::getFormInstance
+		).addCustomRoute(
+			new FetchLatestDraftRoute(), this::_fetchDDMFormInstanceRecord,
+			CurrentUser.class, FormInstanceRecordIdentifier.class,
+			this::_hasPermission, FetchLatestDraftForm::buildForm
+		).addCustomRoute(
+			new UploadFileRoute(), this::_uploadFile,
+			MediaObjectIdentifier.class, this::_hasPermission,
+			MediaObjectCreatorForm::buildForm
 		).build();
 	}
 
@@ -168,6 +192,21 @@ public class FormInstanceNestedCollectionResource
 		).build();
 	}
 
+	private DDMFormInstanceRecord _fetchDDMFormInstanceRecord(
+		Long ddmFormInstanceId, FetchLatestDraftForm fetchLatestDraftForm,
+		CurrentUser currentUser) {
+
+		return Try.fromFallible(
+			() -> _ddmFormInstanceService.getFormInstance(ddmFormInstanceId)
+		).map(
+			ddmFormInstance ->
+				_fetchLatestRecordVersionHelper.fetchLatestDraftRecord(
+					ddmFormInstance, currentUser)
+		).orElse(
+			null
+		);
+	}
+
 	private PageItems<DDMFormInstance> _getPageItems(
 		Pagination pagination, long groupId, Company company) {
 
@@ -181,7 +220,45 @@ public class FormInstanceNestedCollectionResource
 		return new PageItems<>(ddmFormInstances, count);
 	}
 
+	private Boolean _hasPermission(
+		Credentials credentials, Long formInstanceId) {
+
+		return Try.fromFallible(
+			() -> _hasPermission.forAddingIn(
+				FormInstanceRecordIdentifier.class
+			).apply(
+				credentials, formInstanceId
+			)
+		).orElse(
+			false
+		);
+	}
+
+	private FileEntry _uploadFile(
+		Long ddmFormInstanceId, MediaObjectCreatorForm mediaObjectCreatorForm) {
+
+		return Try.fromFallible(
+			() -> _ddmFormInstanceService.getFormInstance(ddmFormInstanceId)
+		).map(
+			ddmFormInstance -> _uploadFileHelper.uploadFile(
+				ddmFormInstance, mediaObjectCreatorForm)
+		).orElse(
+			null
+		);
+	}
+
 	@Reference
 	private DDMFormInstanceService _ddmFormInstanceService;
+
+	@Reference
+	private FetchLatestRecordHelper _fetchLatestRecordVersionHelper;
+
+	@Reference(
+		target = "(model.class.name=com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecord)"
+	)
+	private HasPermission<Long> _hasPermission;
+
+	@Reference
+	private UploadFileHelper _uploadFileHelper;
 
 }

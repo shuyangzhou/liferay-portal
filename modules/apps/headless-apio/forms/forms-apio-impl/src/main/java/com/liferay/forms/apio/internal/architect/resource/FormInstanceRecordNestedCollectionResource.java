@@ -78,7 +78,7 @@ public class FormInstanceRecordNestedCollectionResource
 		return builder.addGetter(
 			this::_getPageItems
 		).addCreator(
-			this::_addFormInstanceRecord, AcceptLocale.class,
+			this::_addDDMFormInstanceRecord, AcceptLocale.class,
 			ServiceContextWrapper.class,
 			_hasPermission.forAddingIn(FormInstanceRecordIdentifier.class),
 			FormInstanceRecordForm::buildForm
@@ -97,7 +97,7 @@ public class FormInstanceRecordNestedCollectionResource
 		return builder.addGetter(
 			_ddmFormInstanceRecordService::getFormInstanceRecord
 		).addUpdater(
-			this::_updateFormInstanceRecord, AcceptLocale.class,
+			this::_updateDDMFormInstanceRecord, AcceptLocale.class,
 			ServiceContextWrapper.class, _hasPermission::forUpdating,
 			FormInstanceRecordForm::buildForm
 		).build();
@@ -114,6 +114,8 @@ public class FormInstanceRecordNestedCollectionResource
 		).addBidirectionalModel(
 			"formInstance", "formInstanceRecords", FormInstanceIdentifier.class,
 			DDMFormInstanceRecord::getFormInstanceId
+		).addBoolean(
+			"draft", this::_isDraft
 		).addDate(
 			"dateCreated", DDMFormInstanceRecord::getCreateDate
 		).addDate(
@@ -133,7 +135,7 @@ public class FormInstanceRecordNestedCollectionResource
 				"name", DDMFormInstanceRecordVersion::getVersion
 			).build()
 		).addNestedList(
-			"fieldValues", this::_getFieldValues,
+			"fieldValues", this::_getDDMFormFieldValues,
 			fieldValuesBuilder -> fieldValuesBuilder.types(
 				"FormFieldValue"
 			).addLinkedModel(
@@ -156,7 +158,7 @@ public class FormInstanceRecordNestedCollectionResource
 		).build();
 	}
 
-	private DDMFormInstanceRecord _addFormInstanceRecord(
+	private DDMFormInstanceRecord _addDDMFormInstanceRecord(
 			long ddmFormInstanceId,
 			FormInstanceRecordForm formInstanceRecordForm,
 			AcceptLocale acceptLocale,
@@ -185,7 +187,7 @@ public class FormInstanceRecordNestedCollectionResource
 			ddmFormValues, serviceContext);
 	}
 
-	private List<DDMFormFieldValue> _getFieldValues(
+	private List<DDMFormFieldValue> _getDDMFormFieldValues(
 		DDMFormInstanceRecord ddmFormInstanceRecord) {
 
 		return Try.fromFallible(
@@ -212,7 +214,17 @@ public class FormInstanceRecordNestedCollectionResource
 		return new PageItems<>(ddmFormInstanceRecords, count);
 	}
 
-	private DDMFormInstanceRecord _updateFormInstanceRecord(
+	private Boolean _isDraft(DDMFormInstanceRecord ddmFormInstanceRecord) {
+		return Try.fromFallible(
+			ddmFormInstanceRecord::getStatus
+		).map(
+			status -> status == WorkflowConstants.STATUS_DRAFT
+		).orElse(
+			false
+		);
+	}
+
+	private DDMFormInstanceRecord _updateDDMFormInstanceRecord(
 			long formInstanceRecordId,
 			FormInstanceRecordForm formInstanceRecordForm,
 			AcceptLocale acceptLocale,

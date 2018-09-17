@@ -16,6 +16,7 @@ package com.liferay.gradle.plugins.patcher;
 
 import com.liferay.gradle.util.FileUtil;
 import com.liferay.gradle.util.GradleUtil;
+import com.liferay.gradle.util.OSDetector;
 import com.liferay.gradle.util.Validator;
 import com.liferay.gradle.util.copy.ReplaceLeadingPathAction;
 
@@ -261,6 +262,10 @@ public class PatchTask extends DefaultTask {
 					@Override
 					public void execute(ExecSpec execSpec) {
 						execSpec.args(getArgs());
+
+						if (OSDetector.isWindows()) {
+							execSpec.args("--binary");
+						}
 
 						execSpec.args(
 							"--input=" +
