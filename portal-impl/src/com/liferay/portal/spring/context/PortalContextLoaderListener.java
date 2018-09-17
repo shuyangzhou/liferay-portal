@@ -25,8 +25,8 @@ import com.liferay.portal.deploy.hot.CustomJspBagRegistryUtil;
 import com.liferay.portal.deploy.hot.ServiceWrapperRegistry;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
-import com.liferay.portal.kernel.cache.MultiVMPoolUtil;
-import com.liferay.portal.kernel.cache.SingleVMPoolUtil;
+import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
+import com.liferay.portal.kernel.cache.PortalCacheManagerNames;
 import com.liferay.portal.kernel.cache.thread.local.ThreadLocalCacheManager;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.deploy.DeployManagerUtil;
@@ -177,9 +177,12 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 
 	@Override
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
-		Thread currentThread = Thread.currentThread();
-
-		SystemProperties.load(currentThread.getContextClassLoader());
+		try {
+			Class.forName(SystemProperties.class.getName());
+		}
+		catch (ClassNotFoundException cnfe) {
+			throw new RuntimeException(cnfe);
+		}
 
 		DBManagerUtil.reset();
 		DeployManagerUtil.reset();
@@ -314,8 +317,10 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 
 			ServletContextPool.clear();
 
-			MultiVMPoolUtil.clear();
-			SingleVMPoolUtil.clear();
+			PortalCacheHelperUtil.clearPortalCaches(
+				PortalCacheManagerNames.MULTI_VM);
+			PortalCacheHelperUtil.clearPortalCaches(
+				PortalCacheManagerNames.SINGLE_VM);
 		}
 
 		ServletContextPool.put(_portalServletContextName, servletContext);

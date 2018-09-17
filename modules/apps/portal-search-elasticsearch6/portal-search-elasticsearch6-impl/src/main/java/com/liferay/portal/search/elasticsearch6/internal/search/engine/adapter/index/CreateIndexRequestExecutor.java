@@ -12,33 +12,16 @@
  * details.
  */
 
-package com.example.sample;
+package com.liferay.portal.search.elasticsearch6.internal.search.engine.adapter.index;
+
+import com.liferay.portal.search.engine.adapter.index.CreateIndexRequest;
+import com.liferay.portal.search.engine.adapter.index.CreateIndexResponse;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Michael C. Han
  */
-public class GreetingBuilder {
+public interface CreateIndexRequestExecutor {
 
-	public GreetingBuilder(String name) {
-		_name = name;
-	}
-
-	public String getGoodbye() {
-		return "Goodbye " + getName();
-	}
-
-	public String getHello() {
-		return "Hello " + getName();
-	}
-
-	public String getName() {
-		return _name;
-	}
-
-	public void setName(String name) {
-		_name = name;
-	}
-
-	private String _name;
+	public CreateIndexResponse execute(CreateIndexRequest createIndexRequest);
 
 }
