@@ -153,7 +153,7 @@ public class AssetPublisherDisplayContext {
 	/**
 	 * @deprecated As of Judson (7.1.x), replaced by {@link
 	 *             #AssetPublisherDisplayContext(AssetPublisherCustomizer,
-	 *             PortletRequest,PortletResponse, PortletPreferences)}
+	 *             PortletRequest, PortletResponse, PortletPreferences)}
 	 */
 	@Deprecated
 	public AssetPublisherDisplayContext(

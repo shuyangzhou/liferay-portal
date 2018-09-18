@@ -2000,7 +2000,10 @@ wrapper.java.additional.11="-Dfile.encoding=UTF-8"]]></replacevalue>
 
 		<echo append="true" file="${app.server.tomcat.dir}/conf/logging.properties">
 			<![CDATA[
-org.apache.catalina.startup.ClassLoaderFactory.level=SEVERE]]>
+org.apache.catalina.startup.Catalina.level=INFO
+org.apache.catalina.startup.ClassLoaderFactory.level=SEVERE
+org.apache.catalina.startup.VersionLoggerListener.level=INFO
+org.apache.level=WARNING]]>
 		</echo>
 
 		<replace
@@ -3404,7 +3407,7 @@ plugins.includes=</echo>
 	</target>
 
 	<target name="zip-executable">
-		<delete failonerror="false" file="dist/${zip.executable.file}-${lp.version}.zip" />
+		<delete failonerror="false" file="dist/${zip.executable.file}-${lp.version}.7z" />
 
 		<exec dir="${project.dir}" executable="git" outputproperty="githash.rev.parse">
 			<arg line="rev-parse HEAD" />
@@ -3413,6 +3416,14 @@ plugins.includes=</echo>
 		<echo>Recording ${zip.executable.dir}/.githash with ${githash.rev.parse}.</echo>
 
 		<echo file="${zip.executable.dir}/.githash">${githash.rev.parse}</echo>
+
+		<local name="tstamp.value" />
+
+		<tstamp>
+			<format pattern="yyyyMMddkkmmssSSS" property="tstamp.value" />
+		</tstamp>
+
+		<mkdir dir="dist/${tstamp.value}" />
 
 		<antelope:stringutil property="zip.executable.dir.beginindex" string="${zip.executable.dir}">
 			<lastindexof string="/" />
@@ -3430,72 +3441,69 @@ plugins.includes=</echo>
 			<substring beginindex="${zip.executable.dir.beginindex}" />
 		</antelope:stringutil>
 
-		<mkdir dir="dist" />
-
 		<if>
 			<available file="${zip.executable.dir}/../data" />
 			<then>
-				<zip
-					destfile="dist/${zip.executable.file}-${lp.version}.zip"
+				<copy
+					preservelastmodified="true"
+					todir="dist/${tstamp.value}/liferay-portal-${lp.version}/${zip.executable.dir.name}"
 				>
-					<zipfileset
+					<fileset
 						dir="${zip.executable.dir}"
-						excludes="**/*.sh"
-						prefix="liferay-portal-${lp.version}/${zip.executable.dir.name}"
 					/>
-					<zipfileset
-						dir="${zip.executable.dir}"
-						filemode="744"
-						includes="**/*.sh"
-						prefix="liferay-portal-${lp.version}/${zip.executable.dir.name}"
-					/>
-					<zipfileset
+				</copy>
+
+				<copy
+					preservelastmodified="true"
+					todir="dist/${tstamp.value}/liferay-portal-${lp.version}"
+				>
+					<fileset
 						dir="${zip.executable.dir}"
 						includes=".githash"
-						prefix="liferay-portal-${lp.version}"
 					/>
-					<zipfileset
+					<fileset
 						dir="${zip.executable.dir}/.."
 						includes=".liferay-home"
-						prefix="liferay-portal-${lp.version}"
 					/>
-					<zipfileset
-						dir="${zip.executable.dir}/../data"
-						prefix="liferay-portal-${lp.version}/data"
-					/>
-					<zipfileset
+					<fileset
 						dir="tools/zip_tmpl"
-						prefix="liferay-portal-${lp.version}"
 					/>
-				</zip>
+				</copy>
+
+				<copy
+					preservelastmodified="true"
+					todir="dist/${tstamp.value}/liferay-portal-${lp.version}/data"
+				>
+					<fileset
+						dir="${zip.executable.dir}/../data"
+					/>
+				</copy>
 
 				<if>
 					<available file="${zip.executable.dir}/../deploy" />
 					<then>
-						<zip
-							destfile="dist/${zip.executable.file}-${lp.version}.zip"
-							update="true"
+						<copy
+							preservelastmodified="true"
+							todir="dist/${tstamp.value}/liferay-portal-${lp.version}/deploy"
 						>
-							<zipfileset
+							<fileset
 								dir="${zip.executable.dir}/../deploy"
-								prefix="liferay-portal-${lp.version}/deploy"
 							/>
-						</zip>
+						</copy>
 					</then>
 				</if>
 
 				<if>
 					<available file="${zip.executable.dir}/../osgi" />
 					<then>
-						<zip
-							destfile="dist/${zip.executable.file}-${lp.version}.zip"
-							update="true"
+						<copy
+							preservelastmodified="true"
+							todir="dist/${tstamp.value}/liferay-portal-${lp.version}/osgi"
 						>
-							<zipfileset
+							<fileset
 								dir="${zip.executable.dir}/../osgi"
-								prefix="liferay-portal-${lp.version}/osgi"
 							/>
-						</zip>
+						</copy>
 					</then>
 				</if>
 
@@ -3539,54 +3547,100 @@ plugins.includes=</echo>
 							value="../${zip.executable.dir.name}"
 						/>
 
-						<zip
-							destfile="dist/${zip.executable.file}-${lp.version}.zip"
-							update="yes"
+						<copy
+							preservelastmodified="true"
+							todir="dist/${tstamp.value}/liferay-portal-${lp.version}/patching-tool"
 						>
-							<zipfileset
+							<fileset
 								dir="${zip.executable.dir}/../patching-tool"
-								excludes="**/*.sh"
-								prefix="liferay-portal-${lp.version}/patching-tool"
 							/>
-							<zipfileset
-								dir="${zip.executable.dir}/../patching-tool"
-								filemode="744"
-								includes="**/*.sh"
-								prefix="liferay-portal-${lp.version}/patching-tool"
-							/>
-						</zip>
+						</copy>
 					</then>
 				</if>
 
 				<if>
 					<available file="${zip.executable.dir}/../tools" />
 					<then>
-						<zip
-							destfile="dist/${zip.executable.file}-${lp.version}.zip"
-							update="true"
+						<copy
+							preservelastmodified="true"
+							todir="dist/${tstamp.value}/liferay-portal-${lp.version}/tools"
 						>
-							<zipfileset
+							<fileset
 								dir="${zip.executable.dir}/../tools"
-								prefix="liferay-portal-${lp.version}/tools"
 							/>
-						</zip>
+						</copy>
 					</then>
 				</if>
 
 				<if>
 					<available file="${zip.executable.dir}/../work" />
 					<then>
-						<zip
-							destfile="dist/${zip.executable.file}-${lp.version}.zip"
-							update="true"
+						<copy
+							preservelastmodified="true"
+							todir="dist/${tstamp.value}/liferay-portal-${lp.version}/work"
 						>
-							<zipfileset
+							<fileset
 								dir="${zip.executable.dir}/../work"
-								prefix="liferay-portal-${lp.version}/work"
 							/>
-						</zip>
+						</copy>
 					</then>
 				</if>
+
+				<chmod
+					perm="744"
+				>
+					<fileset
+						dir="dist/${tstamp.value}"
+						includes="**/*.sh"
+					/>
+				</chmod>
+
+				<if>
+					<equals arg1="${zip.executable.file}" arg2="liferay-portal-tomcat" />
+					<then>
+						<move
+							file="dist/${tstamp.value}/liferay-portal-${lp.version}/tomcat-${app.server.tomcat.version}"
+							preservelastmodified="true"
+							tofile="dist/${tstamp.value}/liferay-portal-${lp.version}/tomcat"
+						/>
+
+						<parallel>
+							<exec dir="dist/${tstamp.value}/liferay-portal-${lp.version}/tomcat/bin" executable="sh">
+								<arg value="catalina.sh" />
+								<arg value="run" />
+								<env key="LIFERAY_CLEAN_OSGI_STATE" value="true" />
+							</exec>
+
+							<sequential>
+								<waitfor>
+									<http url="http://localhost:8080" />
+								</waitfor>
+
+								<sleep seconds="5" />
+
+								<exec dir="dist/${tstamp.value}/liferay-portal-${lp.version}/tomcat/bin" executable="sh">
+									<arg value="shutdown.sh" />
+								</exec>
+
+								<sleep seconds="20" />
+
+								<delete dir="dist/${tstamp.value}/liferay-portal-${lp.version}">
+									<patternset
+										includes="**/logs/**"
+									/>
+								</delete>
+							</sequential>
+						</parallel>
+					</then>
+				</if>
+
+				<execute dir="dist/${tstamp.value}">
+					<![CDATA[
+						7z a -md1024m ${project.dir}/dist/${zip.executable.file}-${lp.version}.7z liferay-portal-${lp.version}
+					]]>
+				</execute>
+
+				<delete dir="dist/${tstamp.value}" />
 			</then>
 			<else>
 
@@ -3964,97 +4018,6 @@ plugins.includes=</echo>
 			<param name="zip.executable.file" value="liferay-portal-tomcat" />
 			<param name="zip.executable.dir" value="${app.server.tomcat.dir}" />
 		</antcall>
-
-		<tstamp>
-			<format pattern="yyyyMMddkkmmssSSS" property="tstamp.value" />
-		</tstamp>
-
-		<unzip
-			dest="${tstamp.value}"
-			src="dist/liferay-portal-tomcat-${lp.version}.zip"
-		>
-			<patternset
-				excludes="
-					liferay-portal-${lp.version}/data/hypersonic/**,
-					liferay-portal-${lp.version}/osgi/state/**,
-					liferay-portal-${lp.version}/tomcat-${app.server.tomcat.version}/work/**"
-			/>
-		</unzip>
-
-		<move
-			file="${tstamp.value}/liferay-portal-${lp.version}/tomcat-${app.server.tomcat.version}"
-			tofile="${tstamp.value}/liferay-portal-${lp.version}/tomcat"
-		/>
-
-		<ant dir="portal-web" target="compile-tomcat">
-			<property name="app.server.portal.dir" value="${tstamp.value}/liferay-portal-${lp.version}/tomcat/webapps/ROOT" />
-		</ant>
-
-		<copy
-			preservelastmodified="true"
-			todir="${tstamp.value}/liferay-portal-${lp.version}/tomcat/work/Catalina/localhost/ROOT"
-		>
-			<fileset
-				dir="portal-web/classes/${app.server.type}"
-			>
-				<exclude name="**/*.jspc_error" />
-			</fileset>
-		</copy>
-
-		<chmod
-			perm="744"
-		>
-			<fileset
-				dir="${tstamp.value}/liferay-portal-${lp.version}/tomcat/bin"
-				includes="*.sh"
-			/>
-		</chmod>
-
-		<parallel>
-			<exec dir="${tstamp.value}/liferay-portal-${lp.version}/tomcat/bin" executable="sh">
-				<arg value="catalina.sh" />
-				<arg value="run" />
-				<env key="LIFERAY_CLEAN_OSGI_STATE" value="true" />
-			</exec>
-
-			<sequential>
-				<waitfor>
-					<http url="http://localhost:8080" />
-				</waitfor>
-
-				<sleep seconds="5" />
-
-				<exec dir="${tstamp.value}/liferay-portal-${lp.version}/tomcat/bin" executable="sh">
-					<arg value="shutdown.sh" />
-				</exec>
-
-				<sleep seconds="20" />
-
-				<delete dir="${tstamp.value}/liferay-portal-${lp.version}">
-					<patternset
-						includes="**/logs/**"
-					/>
-				</delete>
-			</sequential>
-		</parallel>
-
-		<exec dir="${tstamp.value}" executable="tar">
-			<arg line="-czf ${project.dir}/dist/liferay-portal-tomcat-${lp.version}.tar.gz liferay-portal-${lp.version}" />
-		</exec>
-
-		<echo>Calling 7-Zip, this will take a few minutes...</echo>
-
-		<exec dir="${tstamp.value}" executable="7z">
-			<arg line="a -md1024m ${project.dir}/dist/liferay-portal-tomcat-${lp.version}.7z liferay-portal-${lp.version}/osgi" />
-		</exec>
-
-		<delete dir="${tstamp.value}/liferay-portal-${lp.version}/osgi" />
-
-		<exec dir="${tstamp.value}" executable="7z">
-			<arg line="a -md1024m ${project.dir}/dist/liferay-portal-tomcat-${lp.version}.7z liferay-portal-${lp.version}" />
-		</exec>
-
-		<delete dir="${tstamp.value}" />
 	</target>
 
 	<target name="zip-weblogic-custom">

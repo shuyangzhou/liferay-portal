@@ -590,7 +590,7 @@
 	</command>
 
 	<command name="ExportImportSampleLARPortlet" priority="5">
-		<property name="portal.acceptance" value="true" />
+		<property name="portal.acceptance" value="false" />
 		<property name="portlet.plugins.includes" value="sample-lar-portlet" />
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -669,7 +669,7 @@
 	</command>
 
 	<command name="ExportImportSmoke" priority="5">
-		<property name="portal.acceptance" value="true" />
+		<property name="portal.acceptance" value="false" />
 		<property name="testray.component.names" value="Training" />
 
 		<execute macro="User#firstLoginPG" />

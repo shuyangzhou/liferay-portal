@@ -35,7 +35,7 @@ public class FlushIndexRequestExecutorTest {
 	@Before
 	public void setUp() throws Exception {
 		_elasticsearchFixture = new ElasticsearchFixture(
-			PutMappingIndexRequestExecutorTest.class.getSimpleName());
+			FlushIndexRequestExecutorTest.class.getSimpleName());
 
 		_elasticsearchFixture.setUp();
 
