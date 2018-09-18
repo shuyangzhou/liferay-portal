@@ -44,23 +44,28 @@ public class WhenFormattingFromRequestTest {
 
 	@Test
 	public void testFormatWithOneArgument() {
-		LanguageImplTest.MockLanguageServletRequest mockLanguageServletRequest =
-			new LanguageImplTest.MockLanguageServletRequest(LocaleUtil.US);
+		LanguageImplTestHelper.MockLanguageServletRequest
+			mockLanguageServletRequest =
+				new LanguageImplTestHelper.MockLanguageServletRequest(
+					LocaleUtil.US);
 
 		String value = _languageImpl.format(
-			mockLanguageServletRequest.getRequest(), _LANG_KEY_WITH_ARGUMENT,
-			"31");
+			mockLanguageServletRequest.getRequest(),
+			LanguageImplTestHelper.LANG_KEY_WITH_ARGUMENT, "31");
 
 		Assert.assertEquals("31 Hours", value);
 	}
 
 	@Test
 	public void testFormatWithOneLanguageWrapper() {
-		LanguageImplTest.MockLanguageServletRequest mockLanguageServletRequest =
-			new LanguageImplTest.MockLanguageServletRequest(LocaleUtil.US);
+		LanguageImplTestHelper.MockLanguageServletRequest
+			mockLanguageServletRequest =
+				new LanguageImplTestHelper.MockLanguageServletRequest(
+					LocaleUtil.US);
 
 		String value = _languageImpl.format(
-			mockLanguageServletRequest.getRequest(), _LANG_KEY_WITH_ARGUMENT,
+			mockLanguageServletRequest.getRequest(),
+			LanguageImplTestHelper.LANG_KEY_WITH_ARGUMENT,
 			new LanguageWrapper("a", "31", "a"));
 
 		Assert.assertEquals("a31a Hours", value);
@@ -68,59 +73,72 @@ public class WhenFormattingFromRequestTest {
 
 	@Test
 	public void testFormatWithOneNontranslatableAmericanArgument() {
-		LanguageImplTest.MockLanguageServletRequest mockLanguageServletRequest =
-			new LanguageImplTest.MockLanguageServletRequest(LocaleUtil.US);
+		LanguageImplTestHelper.MockLanguageServletRequest
+			mockLanguageServletRequest =
+				new LanguageImplTestHelper.MockLanguageServletRequest(
+					LocaleUtil.US);
 
 		String value = _languageImpl.format(
-			mockLanguageServletRequest.getRequest(), _LANG_KEY_WITH_ARGUMENT,
-			_BIG_INTEGER, false);
+			mockLanguageServletRequest.getRequest(),
+			LanguageImplTestHelper.LANG_KEY_WITH_ARGUMENT,
+			LanguageImplTestHelper.BIG_INTEGER, false);
 
 		Assert.assertEquals("1,234,567,890 Hours", value);
 
 		value = _languageImpl.format(
-			mockLanguageServletRequest.getRequest(), _LANG_KEY_WITH_ARGUMENT,
-			_BIG_DOUBLE, false);
+			mockLanguageServletRequest.getRequest(),
+			LanguageImplTestHelper.LANG_KEY_WITH_ARGUMENT,
+			LanguageImplTestHelper.BIG_DOUBLE, false);
 
 		Assert.assertEquals("1,234,567,890.12 Hours", value);
 
 		value = _languageImpl.format(
-			mockLanguageServletRequest.getRequest(), _LANG_KEY_WITH_ARGUMENT,
-			_BIG_FLOAT, false);
+			mockLanguageServletRequest.getRequest(),
+			LanguageImplTestHelper.LANG_KEY_WITH_ARGUMENT,
+			LanguageImplTestHelper.BIG_FLOAT, false);
 
 		Assert.assertEquals("1,234,567.875 Hours", value);
 	}
 
 	@Test
 	public void testFormatWithOneNontranslatableSpanishArgument() {
-		LanguageImplTest.MockLanguageServletRequest mockLanguageServletRequest =
-			new LanguageImplTest.MockLanguageServletRequest(LocaleUtil.SPAIN);
+		LanguageImplTestHelper.MockLanguageServletRequest
+			mockLanguageServletRequest =
+				new LanguageImplTestHelper.MockLanguageServletRequest(
+					LocaleUtil.SPAIN);
 
 		String value = _languageImpl.format(
-			mockLanguageServletRequest.getRequest(), _LANG_KEY_WITH_ARGUMENT,
-			_BIG_INTEGER, false);
+			mockLanguageServletRequest.getRequest(),
+			LanguageImplTestHelper.LANG_KEY_WITH_ARGUMENT,
+			LanguageImplTestHelper.BIG_INTEGER, false);
 
 		Assert.assertEquals("1.234.567.890 horas", value);
 
 		value = _languageImpl.format(
-			mockLanguageServletRequest.getRequest(), _LANG_KEY_WITH_ARGUMENT,
-			_BIG_DOUBLE, false);
+			mockLanguageServletRequest.getRequest(),
+			LanguageImplTestHelper.LANG_KEY_WITH_ARGUMENT,
+			LanguageImplTestHelper.BIG_DOUBLE, false);
 
 		Assert.assertEquals("1.234.567.890,12 horas", value);
 
 		value = _languageImpl.format(
-			mockLanguageServletRequest.getRequest(), _LANG_KEY_WITH_ARGUMENT,
-			_BIG_FLOAT, false);
+			mockLanguageServletRequest.getRequest(),
+			LanguageImplTestHelper.LANG_KEY_WITH_ARGUMENT,
+			LanguageImplTestHelper.BIG_FLOAT, false);
 
 		Assert.assertEquals("1.234.567,875 horas", value);
 	}
 
 	@Test
 	public void testFormatWithTwoArguments() {
-		LanguageImplTest.MockLanguageServletRequest mockLanguageServletRequest =
-			new LanguageImplTest.MockLanguageServletRequest(LocaleUtil.US);
+		LanguageImplTestHelper.MockLanguageServletRequest
+			mockLanguageServletRequest =
+				new LanguageImplTestHelper.MockLanguageServletRequest(
+					LocaleUtil.US);
 
 		String value = _languageImpl.format(
-			mockLanguageServletRequest.getRequest(), _LANG_KEY_WITH_ARGUMENTS,
+			mockLanguageServletRequest.getRequest(),
+			LanguageImplTestHelper.LANG_KEY_WITH_ARGUMENTS,
 			new Object[] {"A", "B"});
 
 		Assert.assertEquals("A has invited you to join B.", value);
@@ -128,8 +146,10 @@ public class WhenFormattingFromRequestTest {
 
 	@Test
 	public void testFormatWithTwoLanguageWrappers() {
-		LanguageImplTest.MockLanguageServletRequest mockLanguageServletRequest =
-			new LanguageImplTest.MockLanguageServletRequest(LocaleUtil.US);
+		LanguageImplTestHelper.MockLanguageServletRequest
+			mockLanguageServletRequest =
+				new LanguageImplTestHelper.MockLanguageServletRequest(
+					LocaleUtil.US);
 
 		LanguageWrapper[] languageWrappers = new LanguageWrapper[2];
 
@@ -137,10 +157,12 @@ public class WhenFormattingFromRequestTest {
 		languageWrappers[1] = new LanguageWrapper("b", "B", "b");
 
 		String value = _languageImpl.format(
-			mockLanguageServletRequest.getRequest(), _LANG_KEY_WITH_ARGUMENTS,
-			languageWrappers);
+			mockLanguageServletRequest.getRequest(),
+			LanguageImplTestHelper.LANG_KEY_WITH_ARGUMENTS, languageWrappers);
 
 		Assert.assertEquals("aAa has invited you to join bBb.", value);
 	}
+
+	private static LanguageImpl _languageImpl;
 
 }
