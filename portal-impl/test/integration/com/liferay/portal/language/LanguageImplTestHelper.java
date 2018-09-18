@@ -28,7 +28,7 @@ import org.junit.runner.RunWith;
  * @author Manuel de la Peña
  */
 @RunWith(Enclosed.class)
-public class LanguageImplTest {
+public class LanguageImplTestHelper {
 
 	private static final Double _BIG_DOUBLE = 1234567890.12D;
 
