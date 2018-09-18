@@ -19,7 +19,6 @@ import com.liferay.document.library.kernel.exception.NoSuchFileException;
 import com.liferay.document.library.kernel.store.BaseStore;
 import com.liferay.document.library.kernel.store.Store;
 import com.liferay.document.library.kernel.util.DLUtil;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.convert.documentlibrary.FileSystemStoreRootDirException;
@@ -132,9 +131,8 @@ public class FileSystemStore extends BaseStore {
 		}
 
 		try {
-			toFileNameVersionFile.createNewFile();
-
-			FileUtil.copyFile(fromFileNameVersionFile, toFileNameVersionFile);
+			_fileSystemHelper.copy(
+				fromFileNameVersionFile, toFileNameVersionFile);
 		}
 		catch (IOException ioe) {
 			throw new SystemException(ioe);
@@ -380,14 +378,7 @@ public class FileSystemStore extends BaseStore {
 
 		File parentFile = fileNameDir.getParentFile();
 
-		boolean renamed = FileUtil.move(fileNameDir, newFileNameDir);
-
-		if (!renamed) {
-			throw new SystemException(
-				StringBundler.concat(
-					"File name directory was not renamed from ",
-					fileNameDir.getPath(), " to ", newFileNameDir.getPath()));
-		}
+		_fileSystemHelper.move(fileNameDir, newFileNameDir);
 
 		deleteEmptyAncestors(companyId, repositoryId, parentFile);
 	}
@@ -419,14 +410,7 @@ public class FileSystemStore extends BaseStore {
 
 		File parentFile = fileNameDir.getParentFile();
 
-		boolean renamed = FileUtil.move(fileNameDir, newFileNameDir);
-
-		if (!renamed) {
-			throw new SystemException(
-				StringBundler.concat(
-					"File name directory was not renamed from ",
-					fileNameDir.getPath(), " to ", newFileNameDir.getPath()));
-		}
+		_fileSystemHelper.move(fileNameDir, newFileNameDir);
 
 		deleteEmptyAncestors(companyId, repositoryId, parentFile);
 	}
@@ -475,16 +459,7 @@ public class FileSystemStore extends BaseStore {
 				companyId, repositoryId, fileName, toVersionLabel);
 		}
 
-		boolean renamed = FileUtil.move(
-			fromFileNameVersionFile, toFileNameVersionFile);
-
-		if (!renamed) {
-			throw new SystemException(
-				StringBundler.concat(
-					"File name version file was not renamed from ",
-					fromFileNameVersionFile.getPath(), " to ",
-					toFileNameVersionFile.getPath()));
-		}
+		_fileSystemHelper.move(fromFileNameVersionFile, toFileNameVersionFile);
 	}
 
 	@Activate
@@ -499,6 +474,11 @@ public class FileSystemStore extends BaseStore {
 		}
 
 		initializeRootDir();
+
+		if (_fileSystemStoreConfiguration.useHardLinks()) {
+			_fileSystemHelper = FileSystemHelper.createHardLinkFileSystemHelper(
+				getRootDir());
+		}
 	}
 
 	protected void deleteEmptyAncestors(File file) {
@@ -552,10 +532,7 @@ public class FileSystemStore extends BaseStore {
 
 		File repositoryDir = getRepositoryDir(companyId, repositoryId);
 
-		File fileNameDir = new File(
-			repositoryDir + StringPool.SLASH + fileName);
-
-		return fileNameDir;
+		return new File(repositoryDir + StringPool.SLASH + fileName);
 	}
 
 	protected void getFileNames(
@@ -589,10 +566,7 @@ public class FileSystemStore extends BaseStore {
 
 		File fileNameDir = getFileNameDir(companyId, repositoryId, fileName);
 
-		File fileNameVersionFile = new File(
-			fileNameDir + StringPool.SLASH + version);
-
-		return fileNameVersionFile;
+		return new File(fileNameDir + StringPool.SLASH + version);
 	}
 
 	protected String getHeadVersionLabel(
@@ -642,6 +616,10 @@ public class FileSystemStore extends BaseStore {
 		return repositoryDir;
 	}
 
+	protected File getRootDir() {
+		return _rootDir;
+	}
+
 	protected String getRootDirName() {
 		return _fileSystemStoreConfiguration.rootDir();
 	}
@@ -675,6 +653,8 @@ public class FileSystemStore extends BaseStore {
 	private static volatile FileSystemStoreConfiguration
 		_fileSystemStoreConfiguration;
 
+	private FileSystemHelper _fileSystemHelper =
+		FileSystemHelper.createBasicFileSystemHelper();
 	private final Map<RepositoryDirKey, File> _repositoryDirs =
 		new ConcurrentHashMap<>();
 	private File _rootDir;
@@ -704,8 +684,8 @@ public class FileSystemStore extends BaseStore {
 			return (int)(_companyId * 11 + _repositoryId);
 		}
 
-		private long _companyId;
-		private long _repositoryId;
+		private final long _companyId;
+		private final long _repositoryId;
 
 	}
 
