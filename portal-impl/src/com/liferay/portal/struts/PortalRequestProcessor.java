@@ -97,9 +97,13 @@ import org.apache.struts.Globals;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionServlet;
 import org.apache.struts.config.ActionConfig;
 import org.apache.struts.config.ForwardConfig;
+import org.apache.struts.config.ModuleConfig;
+import org.apache.struts.tiles.DefinitionsFactory;
 import org.apache.struts.tiles.TilesRequestProcessor;
+import org.apache.struts.tiles.TilesUtilImpl;
 import org.apache.struts.util.MessageResources;
 
 /**
@@ -143,6 +147,18 @@ public class PortalRequestProcessor extends TilesRequestProcessor {
 		_trackerIgnorePaths = new HashSet<>();
 
 		addPaths(_trackerIgnorePaths, PropsKeys.SESSION_TRACKER_IGNORE_PATHS);
+	}
+
+	@Override
+	public void init(ActionServlet actionServlet, ModuleConfig moduleConfig)
+		throws ServletException {
+
+		super.init(actionServlet, moduleConfig);
+
+		ServletContext servletContext = actionServlet.getServletContext();
+
+		definitionsFactory = (DefinitionsFactory)servletContext.getAttribute(
+			TilesUtilImpl.DEFINITIONS_FACTORY);
 	}
 
 	@Override
@@ -442,6 +458,10 @@ public class PortalRequestProcessor extends TilesRequestProcessor {
 		lastPathSB.append(parameters);
 
 		return lastPathSB.toString();
+	}
+
+	@Override
+	protected void initDefinitionsMapping() {
 	}
 
 	protected boolean isPortletPath(String path) {
