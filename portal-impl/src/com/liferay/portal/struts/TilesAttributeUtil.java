@@ -36,7 +36,14 @@ public class TilesAttributeUtil {
 			return null;
 		}
 
-		return componentContext.getAttribute(tilesAttributeName);
+		Object attribute = componentContext.getAttribute(tilesAttributeName);
+
+		if (attribute != null) {
+			throw new IllegalStateException(
+				tilesAttributeName + " has real value of " + attribute);
+		}
+
+		return null;
 	}
 
 	public static void removeComponentContext(PageContext pageContext) {
