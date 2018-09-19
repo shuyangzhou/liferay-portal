@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Shuyang Zhou
@@ -66,7 +67,7 @@ public class TransactionalPortalCacheHelper {
 							backupPortalCacheMaps.size() - 1));
 				}
 				else if (transactionStatus.isNewTransaction()) {
-					commit();
+					commit(transactionAttribute.isReadOnly());
 				}
 			}
 
@@ -135,20 +136,19 @@ public class TransactionalPortalCacheHelper {
 		portalCacheMaps.add(new PortalCacheMap());
 	}
 
+	/**
+	 * @deprecated As of Judson (7.1.x), replaced by {@link #commit(boolean)}
+	 */
+	@Deprecated
 	public static void commit() {
+		commit(false);
+	}
+
+	public static void commit(boolean readOnly) {
 		PortalCacheMap portalCacheMap = _popPortalCacheMap();
 
-		for (Map.Entry
-				<PortalCache<? extends Serializable, ?>, UncommittedBuffer>
-					portalCacheMapEntry : portalCacheMap.entrySet()) {
-
-			PortalCache<Serializable, Object> portalCache =
-				(PortalCache<Serializable, Object>)portalCacheMapEntry.getKey();
-
-			UncommittedBuffer uncommittedBuffer =
-				portalCacheMapEntry.getValue();
-
-			uncommittedBuffer.commitTo(portalCache);
+		for (UncommittedBuffer uncommittedBuffer : portalCacheMap.values()) {
+			uncommittedBuffer.commit(readOnly);
 		}
 
 		portalCacheMap.clear();
@@ -190,14 +190,21 @@ public class TransactionalPortalCacheHelper {
 	}
 
 	public static <K extends Serializable, V> void put(
-		PortalCache<K, V> portalCache, K key, V value, int ttl) {
+		PortalCache<K, V> portalCache, boolean mvcc, K key, V value, int ttl) {
 
 		PortalCacheMap portalCacheMap = _peekPortalCacheMap();
 
 		UncommittedBuffer uncommittedBuffer = portalCacheMap.get(portalCache);
 
 		if (uncommittedBuffer == null) {
-			uncommittedBuffer = new UncommittedBuffer();
+			if (mvcc) {
+				uncommittedBuffer = new UncommittedBuffer(
+					(PortalCache<Serializable, Object>)portalCache);
+			}
+			else {
+				uncommittedBuffer = new MVCCUncommittedBuffer(
+					(PortalCache<Serializable, Object>)portalCache);
+			}
 
 			portalCacheMap.put(portalCache, uncommittedBuffer);
 		}
@@ -207,15 +214,44 @@ public class TransactionalPortalCacheHelper {
 			new ValueEntry(value, ttl, SkipReplicationThreadLocal.isEnabled()));
 	}
 
+	/**
+	 * @deprecated As of Judson (7.1.x), replaced by {@link
+	 * 			#put(PortalCache, boolean, Serializable, Object, int)}
+	 */
+	@Deprecated
+	public static <K extends Serializable, V> void put(
+		PortalCache<K, V> portalCache, K key, V value, int ttl) {
+
+		put(portalCache, false, key, value, ttl);
+	}
+
+	/**
+	 * @deprecated As of Judson (7.1.x), replaced by {@link
+	 * 			#removeAll(PortalCache, boolean)}
+	 */
+	@Deprecated
 	public static <K extends Serializable, V> void removeAll(
 		PortalCache<K, V> portalCache) {
+
+		removeAll(portalCache, false);
+	}
+
+	public static <K extends Serializable, V> void removeAll(
+		PortalCache<K, V> portalCache, boolean mvcc) {
 
 		PortalCacheMap portalCacheMap = _peekPortalCacheMap();
 
 		UncommittedBuffer uncommittedBuffer = portalCacheMap.get(portalCache);
 
 		if (uncommittedBuffer == null) {
-			uncommittedBuffer = new UncommittedBuffer();
+			if (mvcc) {
+				uncommittedBuffer = new UncommittedBuffer(
+					(PortalCache<Serializable, Object>)portalCache);
+			}
+			else {
+				uncommittedBuffer = new MVCCUncommittedBuffer(
+					(PortalCache<Serializable, Object>)portalCache);
+			}
 
 			portalCacheMap.put(portalCache, uncommittedBuffer);
 		}
@@ -276,16 +312,56 @@ public class TransactionalPortalCacheHelper {
 				ArrayList::new, false);
 	private static volatile Boolean _transactionalCacheEnabled;
 
+	private static class MVCCUncommittedBuffer extends UncommittedBuffer {
+
+		@Override
+		public void commit(boolean readOnly) {
+			_portalCacheCounters.compute(
+				_portalCacheName,
+				(key, portalCacheCounter) -> {
+					if (portalCacheCounter != _portalCacheCounter) {
+						commitByRemove = true;
+					}
+
+					if (readOnly && commitByRemove) {
+						return portalCacheCounter;
+					}
+
+					super.commit(readOnly);
+
+					return portalCacheCounter + 1;
+				});
+		}
+
+		private MVCCUncommittedBuffer(
+			PortalCache<Serializable, Object> portalCache) {
+
+			super(portalCache);
+
+			_portalCacheName = portalCache.getPortalCacheName();
+
+			_portalCacheCounter = _portalCacheCounters.computeIfAbsent(
+				_portalCacheName, key -> Long.valueOf(0));
+		}
+
+		private static final Map<String, Long> _portalCacheCounters =
+			new ConcurrentHashMap<>();
+
+		private final long _portalCacheCounter;
+		private final String _portalCacheName;
+
+	}
+
 	private static class UncommittedBuffer {
 
-		public void commitTo(PortalCache<Serializable, Object> portalCache) {
-			if (_removeAll) {
+		public void commit(boolean readOnly) {
+			if (!readOnly && _removeAll) {
 				if (_skipReplicator) {
 					PortalCacheHelperUtil.removeAllWithoutReplicator(
-						portalCache);
+						_portalCache);
 				}
 				else {
-					portalCache.removeAll();
+					_portalCache.removeAll();
 				}
 			}
 
@@ -294,7 +370,16 @@ public class TransactionalPortalCacheHelper {
 
 				ValueEntry valueEntry = entry.getValue();
 
-				valueEntry.commitTo(portalCache, entry.getKey());
+				if (commitByRemove) {
+					valueEntry.commitToByRemove(_portalCache, entry.getKey());
+				}
+				else {
+					if (readOnly && valueEntry.isRemove()) {
+						continue;
+					}
+
+					valueEntry.commitTo(_portalCache, entry.getKey());
+				}
 			}
 		}
 
@@ -326,6 +411,15 @@ public class TransactionalPortalCacheHelper {
 			}
 		}
 
+		protected boolean commitByRemove;
+
+		private UncommittedBuffer(
+			PortalCache<Serializable, Object> portalCache) {
+
+			_portalCache = portalCache;
+		}
+
+		private final PortalCache<Serializable, Object> _portalCache;
 		private boolean _removeAll;
 		private boolean _skipReplicator = true;
 		private final Map<Serializable, ValueEntry> _uncommittedMap =
@@ -362,6 +456,25 @@ public class TransactionalPortalCacheHelper {
 					portalCache.put(key, _value, _ttl);
 				}
 			}
+		}
+
+		public void commitToByRemove(
+			PortalCache<Serializable, Object> portalCache, Serializable key) {
+
+			if (_skipReplicator) {
+				PortalCacheHelperUtil.removeWithoutReplicator(portalCache, key);
+			}
+			else {
+				portalCache.remove(key);
+			}
+		}
+
+		public boolean isRemove() {
+			if (_value == _NULL_HOLDER) {
+				return true;
+			}
+
+			return false;
 		}
 
 		public void merge(ValueEntry valueEntry) {
