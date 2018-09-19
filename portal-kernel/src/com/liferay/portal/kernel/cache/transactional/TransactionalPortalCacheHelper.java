@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Shuyang Zhou
@@ -269,6 +270,42 @@ public class TransactionalPortalCacheHelper {
 				ArrayList::new, false);
 	private static volatile Boolean _transactionalCacheEnabled;
 
+	private static class MVCCUncommittedBuffer extends UncommittedBuffer {
+
+		@Override
+		public void commit() {
+			_portalCacheCounters.compute(
+				_portalCacheName,
+				(key, portalCacheCounter) -> {
+					if (portalCacheCounter != _portalCacheCounter) {
+						commitByRemove = true;
+					}
+
+					super.commit();
+
+					return portalCacheCounter + 1;
+				});
+		}
+
+		private MVCCUncommittedBuffer(
+			PortalCache<Serializable, Object> portalCache) {
+
+			super(portalCache);
+
+			_portalCacheName = portalCache.getPortalCacheName();
+
+			_portalCacheCounter = _portalCacheCounters.computeIfAbsent(
+				_portalCacheName, key -> Long.valueOf(0));
+		}
+
+		private static final Map<String, Long> _portalCacheCounters =
+			new ConcurrentHashMap<>();
+
+		private final long _portalCacheCounter;
+		private final String _portalCacheName;
+
+	}
+
 	private static class UncommittedBuffer {
 
 		public void commit() {
@@ -287,7 +324,12 @@ public class TransactionalPortalCacheHelper {
 
 				ValueEntry valueEntry = entry.getValue();
 
-				valueEntry.commitTo(_portalCache, entry.getKey());
+				if (commitByRemove) {
+					valueEntry.commitToByRemove(_portalCache, entry.getKey());
+				}
+				else {
+					valueEntry.commitTo(_portalCache, entry.getKey());
+				}
 			}
 		}
 
@@ -318,6 +360,8 @@ public class TransactionalPortalCacheHelper {
 				_skipReplicator = skipReplicator;
 			}
 		}
+
+		protected boolean commitByRemove;
 
 		private UncommittedBuffer(
 			PortalCache<Serializable, Object> portalCache) {
@@ -361,6 +405,17 @@ public class TransactionalPortalCacheHelper {
 				else {
 					portalCache.put(key, _value, _ttl);
 				}
+			}
+		}
+
+		public void commitToByRemove(
+			PortalCache<Serializable, Object> portalCache, Serializable key) {
+
+			if (_skipReplicator) {
+				PortalCacheHelperUtil.removeWithoutReplicator(portalCache, key);
+			}
+			else {
+				portalCache.remove(key);
 			}
 		}
 
