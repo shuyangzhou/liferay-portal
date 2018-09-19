@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Shuyang Zhou
@@ -272,23 +273,35 @@ public class TransactionalPortalCacheHelper {
 	private static class UncommittedBuffer {
 
 		public void commit() {
-			if (_removeAll) {
-				if (_skipReplicator) {
-					PortalCacheHelperUtil.removeAllWithoutReplicator(
-						_portalCache);
-				}
-				else {
-					_portalCache.removeAll();
-				}
-			}
+			_portalCacheCounters.compute(
+				_portalCache.getPortalCacheName(),
+				(key, portalCacheCounter) -> {
+					if (_removeAll) {
+						if (_skipReplicator) {
+							PortalCacheHelperUtil.removeAllWithoutReplicator(
+								_portalCache);
+						}
+						else {
+							_portalCache.removeAll();
+						}
+					}
 
-			for (Map.Entry<? extends Serializable, ValueEntry> entry :
-					_uncommittedMap.entrySet()) {
+					for (Map.Entry<? extends Serializable, ValueEntry> entry :
+							_uncommittedMap.entrySet()) {
 
-				ValueEntry valueEntry = entry.getValue();
+						ValueEntry valueEntry = entry.getValue();
 
-				valueEntry.commitTo(_portalCache, entry.getKey());
-			}
+						if (_portalCacheCounter != portalCacheCounter) {
+							valueEntry.commitToByRemove(
+								_portalCache, entry.getKey());
+						}
+						else {
+							valueEntry.commitTo(_portalCache, entry.getKey());
+						}
+					}
+
+					return portalCacheCounter + 1;
+				});
 		}
 
 		public ValueEntry get(Serializable key) {
@@ -323,9 +336,16 @@ public class TransactionalPortalCacheHelper {
 			PortalCache<Serializable, Object> portalCache) {
 
 			_portalCache = portalCache;
+
+			_portalCacheCounter = _portalCacheCounters.computeIfAbsent(
+				_portalCache.getPortalCacheName(), key -> Long.valueOf(0));
 		}
 
+		private static final Map<String, Long> _portalCacheCounters =
+			new ConcurrentHashMap<>();
+
 		private final PortalCache<Serializable, Object> _portalCache;
+		private final long _portalCacheCounter;
 		private boolean _removeAll;
 		private boolean _skipReplicator = true;
 		private final Map<Serializable, ValueEntry> _uncommittedMap =
@@ -361,6 +381,17 @@ public class TransactionalPortalCacheHelper {
 				else {
 					portalCache.put(key, _value, _ttl);
 				}
+			}
+		}
+
+		public void commitToByRemove(
+			PortalCache<Serializable, Object> portalCache, Serializable key) {
+
+			if (_skipReplicator) {
+				PortalCacheHelperUtil.removeWithoutReplicator(portalCache, key);
+			}
+			else {
+				portalCache.remove(key);
 			}
 		}
 
