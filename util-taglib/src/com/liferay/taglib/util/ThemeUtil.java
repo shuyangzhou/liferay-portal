@@ -292,10 +292,6 @@ public class ThemeUtil {
 			HttpServletResponse response, String path, Theme theme)
 		throws Exception {
 
-		DynamicIncludeUtil.include(
-			request, response, ThemeUtil.class.getName() + "#doIncludeJSP",
-			true);
-
 		if (theme.isWARFile()) {
 			ServletContext themeServletContext = servletContext.getContext(
 				theme.getContextPath());
