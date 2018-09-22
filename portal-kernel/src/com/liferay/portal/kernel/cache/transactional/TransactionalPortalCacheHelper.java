@@ -67,7 +67,7 @@ public class TransactionalPortalCacheHelper {
 							backupPortalCacheMaps.size() - 1));
 				}
 				else if (transactionStatus.isNewTransaction()) {
-					commit();
+					commit(transactionAttribute.isReadOnly());
 				}
 			}
 
@@ -136,11 +136,19 @@ public class TransactionalPortalCacheHelper {
 		portalCacheMaps.add(new PortalCacheMap());
 	}
 
+	/**
+	 * @deprecated As of Judson (7.1.x), replaced by {@link #commit(boolean)}
+	 */
+	@Deprecated
 	public static void commit() {
+		commit(false);
+	}
+
+	public static void commit(boolean readOnly) {
 		PortalCacheMap portalCacheMap = _popPortalCacheMap();
 
 		for (UncommittedBuffer uncommittedBuffer : portalCacheMap.values()) {
-			uncommittedBuffer.commit();
+			uncommittedBuffer.commit(readOnly);
 		}
 
 		portalCacheMap.clear();
@@ -307,7 +315,7 @@ public class TransactionalPortalCacheHelper {
 	private static class MVCCUncommittedBuffer extends UncommittedBuffer {
 
 		@Override
-		public void commit() {
+		public void commit(boolean readOnly) {
 			_portalCacheCounters.compute(
 				_portalCacheName,
 				(key, portalCacheCounter) -> {
@@ -315,7 +323,11 @@ public class TransactionalPortalCacheHelper {
 						commitByRemove = true;
 					}
 
-					super.commit();
+					if (readOnly && commitByRemove) {
+						return portalCacheCounter;
+					}
+
+					super.commit(readOnly);
 
 					return portalCacheCounter + 1;
 				});
@@ -342,8 +354,8 @@ public class TransactionalPortalCacheHelper {
 
 	private static class UncommittedBuffer {
 
-		public void commit() {
-			if (_removeAll) {
+		public void commit(boolean readOnly) {
+			if (!readOnly && _removeAll) {
 				if (_skipReplicator) {
 					PortalCacheHelperUtil.removeAllWithoutReplicator(
 						_portalCache);
@@ -362,6 +374,10 @@ public class TransactionalPortalCacheHelper {
 					valueEntry.commitToByRemove(_portalCache, entry.getKey());
 				}
 				else {
+					if (readOnly && valueEntry.isRemove()) {
+						continue;
+					}
+
 					valueEntry.commitTo(_portalCache, entry.getKey());
 				}
 			}
@@ -451,6 +467,14 @@ public class TransactionalPortalCacheHelper {
 			else {
 				portalCache.remove(key);
 			}
+		}
+
+		public boolean isRemove() {
+			if (_value == _NULL_HOLDER) {
+				return true;
+			}
+
+			return false;
 		}
 
 		public void merge(ValueEntry valueEntry) {
