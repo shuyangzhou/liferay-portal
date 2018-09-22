@@ -12,31 +12,29 @@
  * details.
  */
 
-package com.liferay.bean.portlet.cdi.extension.internal.annotated;
+package com.liferay.bean.portlet.cdi.extension.internal.xml;
 
 import com.liferay.bean.portlet.cdi.extension.internal.BeanFilter;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 
-import java.util.Arrays;
 import java.util.Dictionary;
-import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
-
-import javax.portlet.annotations.InitParameter;
-import javax.portlet.annotations.PortletLifecycleFilter;
 
 /**
  * @author Neil Griffin
  */
-public class BeanFilterAnnotationImpl implements BeanFilter {
+public class BeanFilterDescriptorImpl implements BeanFilter {
 
-	public BeanFilterAnnotationImpl(Class<?> filterClass) {
+	public BeanFilterDescriptorImpl(
+		String filterName, Class<?> filterClass, int ordinal,
+		Set<String> portletNames, Map<String, String> initParams) {
+
+		_filterName = filterName;
 		_filterClass = filterClass;
-		_portletLifecycleFilter = filterClass.getAnnotation(
-			PortletLifecycleFilter.class);
-
-		_portletNames = new HashSet<>(
-			Arrays.asList(_portletLifecycleFilter.portletNames()));
+		_ordinal = ordinal;
+		_portletNames = portletNames;
+		_initParams = initParams;
 	}
 
 	@Override
@@ -46,7 +44,7 @@ public class BeanFilterAnnotationImpl implements BeanFilter {
 
 	@Override
 	public String getFilterName() {
-		return _portletLifecycleFilter.filterName();
+		return _filterName;
 	}
 
 	@Override
@@ -58,18 +56,16 @@ public class BeanFilterAnnotationImpl implements BeanFilter {
 	public Dictionary<String, Object> toDictionary() {
 		Dictionary<String, Object> dictionary = new HashMapDictionary<>();
 
-		dictionary.put(
-			"service.ranking:Integer", _portletLifecycleFilter.ordinal());
+		if (_ordinal != null) {
+			dictionary.put("service.ranking:Integer", _ordinal);
+		}
 
-		for (InitParameter initParameter :
-				_portletLifecycleFilter.initParams()) {
-
-			String value = initParameter.value();
+		for (Map.Entry<String, String> entry : _initParams.entrySet()) {
+			String value = entry.getValue();
 
 			if (value != null) {
 				dictionary.put(
-					"javax.portlet.init-param.".concat(initParameter.name()),
-					value);
+					"javax.portlet.init-param.".concat(entry.getKey()), value);
 			}
 		}
 
@@ -77,7 +73,9 @@ public class BeanFilterAnnotationImpl implements BeanFilter {
 	}
 
 	private final Class<?> _filterClass;
-	private final PortletLifecycleFilter _portletLifecycleFilter;
+	private final String _filterName;
+	private final Map<String, String> _initParams;
+	private final Integer _ordinal;
 	private final Set<String> _portletNames;
 
 }
