@@ -14,24 +14,27 @@
 
 package com.liferay.portal.struts;
 
-import javax.servlet.ServletContext;
-
-import org.apache.struts.tiles.DefinitionsFactoryException;
-import org.apache.struts.tiles.xmlDefinition.I18nFactorySet;
-import org.apache.struts.tiles.xmlDefinition.XmlDefinitionsSet;
+import java.util.Map;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Shuyang Zhou
  */
-public class PortalI18nFactorySet extends I18nFactorySet {
+public class Definition {
 
-	@Override
-	protected XmlDefinitionsSet parseXmlFiles(
-			ServletContext servletContext, String postfix,
-			XmlDefinitionsSet xmlDefinitionsSet)
-		throws DefinitionsFactoryException {
-
-		return super.parseXmlFiles(servletContext, postfix, xmlDefinitionsSet);
+	public Definition(String path, Map<String, String> attributes) {
+		_path = path;
+		_attributes = attributes;
 	}
+
+	public Map<String, String> getAttributes() {
+		return _attributes;
+	}
+
+	public String getPath() {
+		return _path;
+	}
+
+	private final Map<String, String> _attributes;
+	private final String _path;
 
 }
