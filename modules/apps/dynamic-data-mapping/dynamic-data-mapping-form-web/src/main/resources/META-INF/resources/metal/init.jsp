@@ -17,6 +17,7 @@
 <%@ include file="/admin/init.jsp" %>
 
 <%
+String functionsMetadata = ddmFormAdminDisplayContext.getFunctionsMetadata();
 String mainRequire = ddmFormAdminDisplayContext.getMainRequire();
 String serializedDDMFormRules = ddmFormAdminDisplayContext.getSerializedDDMFormRules();
 String serializedFormBuilderContext = ddmFormAdminDisplayContext.getSerializedFormBuilderContext();
