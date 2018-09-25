@@ -266,6 +266,16 @@ public class OrganizationPersistenceTest {
 	}
 
 	@Test
+	public void testCountByC_P_LikeN() throws Exception {
+		_persistence.countByC_P_LikeN(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong(), "");
+
+		_persistence.countByC_P_LikeN(0L, 0L, "null");
+
+		_persistence.countByC_P_LikeN(0L, 0L, (String)null);
+	}
+
+	@Test
 	public void testCountByC_ERC() throws Exception {
 		_persistence.countByC_ERC(RandomTestUtil.nextLong(), "");
 

@@ -12,31 +12,22 @@
  * details.
  */
 
-package com.liferay.sharing.exception;
-
-import aQute.bnd.annotation.ProviderType;
-
-import com.liferay.portal.kernel.exception.PortalException;
+package com.liferay.portal.language;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Manuel de la Peña
  */
-@ProviderType
-public class InvalidSharingEntryActionKeyException extends PortalException {
+public class LanguageImplTestConstants {
 
-	public InvalidSharingEntryActionKeyException() {
-	}
+	public static final Double BIG_DOUBLE = 1234567890.12D;
 
-	public InvalidSharingEntryActionKeyException(String msg) {
-		super(msg);
-	}
+	public static final Float BIG_FLOAT = 1234567.85F;
 
-	public InvalidSharingEntryActionKeyException(String msg, Throwable cause) {
-		super(msg, cause);
-	}
+	public static final Integer BIG_INTEGER = 1234567890;
 
-	public InvalidSharingEntryActionKeyException(Throwable cause) {
-		super(cause);
-	}
+	public static final String LANG_KEY_WITH_ARGUMENT = "x-hours";
+
+	public static final String LANG_KEY_WITH_ARGUMENTS =
+		"x-has-invited-you-to-join-x";
 
 }

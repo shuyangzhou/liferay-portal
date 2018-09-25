@@ -15,6 +15,7 @@
 package com.liferay.poshi.runner.elements;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.dom4j.Attribute;
 import org.dom4j.Element;
@@ -89,26 +90,20 @@ public class NotPoshiElement extends PoshiElement {
 		return "not";
 	}
 
+	@Override
+	protected Pattern getConditionPattern() {
+		return _conditionPattern;
+	}
+
 	private boolean _isElementType(
 		PoshiElement parentPoshiElement, String poshiScript) {
 
-		if (!isConditionValidInParent(parentPoshiElement)) {
-			return false;
-		}
-
-		poshiScript = poshiScript.trim();
-
-		if (poshiScript.startsWith("else if (")) {
-			return false;
-		}
-
-		if (poshiScript.startsWith("!")) {
-			return true;
-		}
-
-		return false;
+		return isConditionElementType(parentPoshiElement, poshiScript);
 	}
 
 	private static final String _ELEMENT_NAME = "not";
+
+	private static final Pattern _conditionPattern = Pattern.compile(
+		"![\\s\\S]*$");
 
 }

@@ -10,6 +10,17 @@
 
 		<execute function="AssertTextEquals" locator1="Breadcrumb#BREADCRUMB_ENTRY" value1="${breadcrumbNameUppercase}" />
 
+		<if>
+			<and>
+				<condition function="IsElementPresent" locator1="Blogs#ADD_BLOGS_ENTRY" />
+				<equals arg1="${check}" arg2="true" />
+				<isset var="duplicate" />
+			</and>
+			<then>
+				<execute macro="Alert#viewSuccessMessage" />
+			</then>
+		</if>
+
 		<return value="${breadcrumbNameUppercase}" />
 	</command>
 

@@ -1,6 +1,7 @@
 import Builder from '../Builder.es';
-import {dom as MetalTestUtil} from 'metal-dom';
+import dom from 'metal-dom';
 import Pages from './__mock__/mockPages.es';
+import SucessPageSettings from './__mock__/mockSuccessPage.es';
 
 const spritemap = 'icons.svg';
 
@@ -9,6 +10,7 @@ let basicInfo;
 let component;
 let pages;
 let translationManager;
+let successPageSettings;
 
 const mockFieldType = {
 	description: 'Single line or multiline text area.',
@@ -102,12 +104,13 @@ describe(
 		beforeEach(
 			() => {
 				pages = JSON.parse(JSON.stringify(Pages));
+				successPageSettings = JSON.parse(JSON.stringify(SucessPageSettings));
 
 				jest.useFakeTimers();
 
-				MetalTestUtil.enterDocument('<button id="addFieldButton"></button>');
-				MetalTestUtil.enterDocument('<div class="ddm-translation-manager"></div>');
-				MetalTestUtil.enterDocument('<div class="ddm-form-basic-info"></div>');
+				dom.enterDocument('<button id="addFieldButton"></button>');
+				dom.enterDocument('<div class="ddm-translation-manager"></div>');
+				dom.enterDocument('<div class="ddm-form-basic-info"></div>');
 
 				addButton = document.querySelector('#addFieldButton');
 				basicInfo = document.querySelector('.ddm-form-basic-info');
@@ -118,7 +121,8 @@ describe(
 						fieldTypes,
 						pages,
 						paginationMode: 'wizard',
-						spritemap
+						spritemap,
+						successPageSettings
 					}
 				);
 			}
@@ -126,9 +130,9 @@ describe(
 
 		afterEach(
 			() => {
-				MetalTestUtil.exitDocument(addButton);
-				MetalTestUtil.exitDocument(basicInfo);
-				MetalTestUtil.exitDocument(translationManager);
+				dom.exitDocument(addButton);
+				dom.exitDocument(basicInfo);
+				dom.exitDocument(translationManager);
 
 				if (component) {
 					component.dispose();
@@ -403,7 +407,8 @@ describe(
 						fieldTypes,
 						pages: componentPages,
 						paginationMode: 'wizard',
-						spritemap
+						spritemap,
+						successPageSettings
 					}
 				);
 				const data = {

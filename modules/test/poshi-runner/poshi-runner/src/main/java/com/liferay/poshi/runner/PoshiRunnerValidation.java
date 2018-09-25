@@ -730,7 +730,7 @@ public class PoshiRunnerValidation {
 							filePath));
 				}
 				else if (!PoshiRunnerContext.isPathLocator(
-							 locator, namespace) &&
+							locator, namespace) &&
 						 !PoshiRunnerContext.isPathLocator(
 							 locator, defaultNamespace)) {
 

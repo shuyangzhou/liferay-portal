@@ -367,11 +367,12 @@ public class JSONCurlUtil {
 			return optionValue;
 		}
 
-		private static Map<String, String> _customOptionsMap = new HashMap<>();
-
-		static {
-			_customOptionsMap.put("--json-data", "--data");
-		}
+		private static Map<String, String> _customOptionsMap =
+			new HashMap<String, String>() {
+				{
+					put("--json-data", "--data");
+				}
+			};
 
 		private final String _optionType;
 		private final String _optionValue;

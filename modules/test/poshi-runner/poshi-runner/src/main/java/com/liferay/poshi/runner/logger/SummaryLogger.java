@@ -19,6 +19,7 @@ import com.liferay.poshi.runner.PoshiRunnerGetterUtil;
 import com.liferay.poshi.runner.PoshiRunnerStackTraceUtil;
 import com.liferay.poshi.runner.PoshiRunnerVariablesUtil;
 import com.liferay.poshi.runner.exception.PoshiRunnerLoggerException;
+import com.liferay.poshi.runner.util.FileUtil;
 import com.liferay.poshi.runner.util.HtmlUtil;
 import com.liferay.poshi.runner.util.StringUtil;
 import com.liferay.poshi.runner.util.Validator;
@@ -38,30 +39,9 @@ import org.dom4j.Element;
 /**
  * @author Michael Hashimoto
  */
-public final class SummaryLoggerHandler {
+public final class SummaryLogger {
 
-	public static void failSummary(Element element, String message) {
-		if (_isCurrentMajorStep(element)) {
-			_causeBodyLoggerElement.setText(HtmlUtil.escape(message));
-
-			_failStepLoggerElement(_majorStepLoggerElement);
-
-			_summaryLogLoggerElement.addChildLoggerElement(
-				_getScreenshotsLoggerElement());
-
-			_stopMajorStep();
-		}
-
-		if (_isCurrentMinorStep(element)) {
-			_causeBodyLoggerElement.setText(HtmlUtil.escape(message));
-
-			_failStepLoggerElement(_minorStepLoggerElement);
-
-			_stopMinorStep();
-		}
-	}
-
-	public static String getSummary() throws Exception {
+	public static void createSummaryReport() throws Exception {
 		String summaryHTMLContent = _readResource(
 			"META-INF/resources/html/summary.html");
 
@@ -90,7 +70,40 @@ public final class SummaryLoggerHandler {
 			summaryHTMLContent, "<ul id=\"summaryTitleContainer\" />",
 			_summaryTitleContainerLoggerElement.toString());
 
-		return summaryHTMLContent;
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(PoshiRunnerGetterUtil.getCanonicalPath("."));
+		sb.append("/test-results/");
+		sb.append(
+			StringUtil.replace(
+				PoshiRunnerContext.getTestCaseNamespacedClassCommandName(), "#",
+				"_"));
+		sb.append("/summary.html");
+
+		FileUtil.write(sb.toString(), summaryHTMLContent);
+	}
+
+	public static void failSummary(
+		Element element, String message, int screenshotNumber) {
+
+		if (_isCurrentMajorStep(element)) {
+			_causeBodyLoggerElement.setText(HtmlUtil.escape(message));
+
+			_failStepLoggerElement(_majorStepLoggerElement);
+
+			_summaryLogLoggerElement.addChildLoggerElement(
+				_getScreenshotsLoggerElement(screenshotNumber));
+
+			_stopMajorStep();
+		}
+
+		if (_isCurrentMinorStep(element)) {
+			_causeBodyLoggerElement.setText(HtmlUtil.escape(message));
+
+			_failStepLoggerElement(_minorStepLoggerElement);
+
+			_stopMinorStep();
+		}
 	}
 
 	public static LoggerElement getSummarySnapshotLoggerElement() {
@@ -351,13 +364,15 @@ public final class SummaryLoggerHandler {
 		return loggerElement;
 	}
 
-	private static LoggerElement _getScreenshotsAfterLinkLoggerElement() {
+	private static LoggerElement _getScreenshotsAfterLinkLoggerElement(
+		int screenshotNumber) {
+
 		LoggerElement loggerElement = new LoggerElement();
 
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("screenshots/after");
-		sb.append(CommandLoggerHandler.getErrorLinkId());
+		sb.append(screenshotNumber);
 		sb.append(".jpg");
 
 		loggerElement.setAttribute("href", sb.toString());
@@ -366,12 +381,14 @@ public final class SummaryLoggerHandler {
 		loggerElement.setName("a");
 
 		loggerElement.addChildLoggerElement(
-			_getScreenshotsAfterThumbnailLoggerElement());
+			_getScreenshotsAfterThumbnailLoggerElement(screenshotNumber));
 
 		return loggerElement;
 	}
 
-	private static LoggerElement _getScreenshotsAfterThumbnailLoggerElement() {
+	private static LoggerElement _getScreenshotsAfterThumbnailLoggerElement(
+		int screenshotNumber) {
+
 		LoggerElement loggerElement = new LoggerElement();
 
 		loggerElement.setAttribute("alt", "After Failure");
@@ -379,7 +396,7 @@ public final class SummaryLoggerHandler {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("screenshots/after");
-		sb.append(CommandLoggerHandler.getErrorLinkId());
+		sb.append(screenshotNumber);
 		sb.append(".jpg");
 
 		loggerElement.setAttribute("src", sb.toString());
@@ -399,13 +416,15 @@ public final class SummaryLoggerHandler {
 		return loggerElement;
 	}
 
-	private static LoggerElement _getScreenshotsBeforeLinkLoggerElement() {
+	private static LoggerElement _getScreenshotsBeforeLinkLoggerElement(
+		int screenshotNumber) {
+
 		LoggerElement loggerElement = new LoggerElement();
 
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("screenshots/before");
-		sb.append(CommandLoggerHandler.getErrorLinkId());
+		sb.append(screenshotNumber);
 		sb.append(".jpg");
 
 		loggerElement.setAttribute("href", sb.toString());
@@ -414,12 +433,14 @@ public final class SummaryLoggerHandler {
 		loggerElement.setName("a");
 
 		loggerElement.addChildLoggerElement(
-			_getScreenshotsBeforeThumbnailLoggerElement());
+			_getScreenshotsBeforeThumbnailLoggerElement(screenshotNumber));
 
 		return loggerElement;
 	}
 
-	private static LoggerElement _getScreenshotsBeforeThumbnailLoggerElement() {
+	private static LoggerElement _getScreenshotsBeforeThumbnailLoggerElement(
+		int screenshotNumber) {
+
 		LoggerElement loggerElement = new LoggerElement();
 
 		loggerElement.setAttribute("alt", "Before Failure");
@@ -427,7 +448,7 @@ public final class SummaryLoggerHandler {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("screenshots/before");
-		sb.append(CommandLoggerHandler.getErrorLinkId());
+		sb.append(screenshotNumber);
 		sb.append(".jpg");
 
 		loggerElement.setAttribute("src", sb.toString());
@@ -448,7 +469,9 @@ public final class SummaryLoggerHandler {
 		return loggerElement;
 	}
 
-	private static LoggerElement _getScreenshotsLoggerElement() {
+	private static LoggerElement _getScreenshotsLoggerElement(
+		int screenshotNumber) {
+
 		LoggerElement loggerElement = new LoggerElement();
 
 		loggerElement.setClassName("screenshots");
@@ -459,12 +482,12 @@ public final class SummaryLoggerHandler {
 		loggerElement.addChildLoggerElement(
 			_getScreenshotsBeforeHeaderLoggerElement());
 		loggerElement.addChildLoggerElement(
-			_getScreenshotsBeforeLinkLoggerElement());
+			_getScreenshotsBeforeLinkLoggerElement(screenshotNumber));
 
 		loggerElement.addChildLoggerElement(
 			_getScreenshotsAfterHeaderLoggerElement());
 		loggerElement.addChildLoggerElement(
-			_getScreenshotsAfterLinkLoggerElement());
+			_getScreenshotsAfterLinkLoggerElement(screenshotNumber));
 
 		return loggerElement;
 	}
@@ -773,7 +796,7 @@ public final class SummaryLoggerHandler {
 	private static String _readResource(String path) throws Exception {
 		StringBuilder sb = new StringBuilder();
 
-		ClassLoader classLoader = SummaryLoggerHandler.class.getClassLoader();
+		ClassLoader classLoader = SummaryLogger.class.getClassLoader();
 
 		InputStream inputStream = classLoader.getResourceAsStream(path);
 

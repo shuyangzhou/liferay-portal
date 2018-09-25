@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.service.UserServiceUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
@@ -125,6 +126,61 @@ public class UserLocalServiceTest {
 	}
 
 	@Test
+	public void testGetOrganizationsAndUserGroupsUsersCount() throws Exception {
+		int iterations = 3;
+
+		int expectedCount = 0;
+
+		long[] commonUserIds = _addUsers(iterations);
+
+		expectedCount += commonUserIds.length;
+
+		long[] organizationIds = new long[iterations];
+
+		for (int i = 0; i < iterations; i++) {
+			long[] uniqueUserIds = _addUsers(iterations);
+
+			Organization organization = OrganizationTestUtil.addOrganization();
+
+			_organizations.add(organization);
+
+			UserServiceUtil.addOrganizationUsers(
+				organization.getOrganizationId(), commonUserIds);
+			UserServiceUtil.addOrganizationUsers(
+				organization.getOrganizationId(), uniqueUserIds);
+
+			organizationIds[i] = organization.getOrganizationId();
+
+			expectedCount += uniqueUserIds.length;
+		}
+
+		long[] userGroupIds = new long[iterations];
+
+		for (int i = 0; i < iterations; i++) {
+			long[] uniqueUserIds = _addUsers(iterations);
+
+			UserGroup userGroup = UserGroupTestUtil.addUserGroup();
+
+			_userGroups.add(userGroup);
+
+			UserServiceUtil.addUserGroupUsers(
+				userGroup.getUserGroupId(), commonUserIds);
+			UserServiceUtil.addUserGroupUsers(
+				userGroup.getUserGroupId(), uniqueUserIds);
+
+			userGroupIds[i] = userGroup.getUserGroupId();
+
+			expectedCount += uniqueUserIds.length;
+		}
+
+		int actualCount =
+			UserLocalServiceUtil.getOrganizationsAndUserGroupsUsersCount(
+				organizationIds, userGroupIds);
+
+		Assert.assertEquals(expectedCount, actualCount);
+	}
+
+	@Test
 	public void testGetOrganizationUsers() throws Exception {
 		Organization organization = OrganizationTestUtil.addOrganization();
 
@@ -181,14 +237,28 @@ public class UserLocalServiceTest {
 		Assert.assertTrue(_users.containsAll(userGroupUsers));
 	}
 
-	private void _addUsers(int numberOfUsers) throws Exception {
+	private long[] _addUsers(int numberOfUsers) throws Exception {
+		long[] userIds = new long[numberOfUsers];
+
 		for (int i = 0; i < numberOfUsers; i++) {
-			_users.add(UserTestUtil.addUser());
+			User user = UserTestUtil.addUser();
+
+			_users.add(user);
+
+			userIds[i] = user.getUserId();
 		}
+
+		return userIds;
 	}
 
 	@DeleteAfterTestRun
 	private Company _company;
+
+	@DeleteAfterTestRun
+	private final List<Organization> _organizations = new ArrayList<>();
+
+	@DeleteAfterTestRun
+	private final List<UserGroup> _userGroups = new ArrayList<>();
 
 	@DeleteAfterTestRun
 	private final List<User> _users = new ArrayList<>();

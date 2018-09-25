@@ -1,9 +1,11 @@
 import {Config} from 'metal-state';
+import {EventHandler} from 'metal-events';
 import {focusedFieldStructure, pageStructure} from '../../util/config.es';
 import {PagesVisitor} from '../../util/visitors.es';
 import autobind from 'autobind-decorator';
 import ClayModal from 'clay-modal';
 import Component from 'metal-jsx';
+import dom from 'metal-dom';
 import FormRenderer from '../../components/Form/index.es';
 import FormSupport from '../../components/Form/FormSupport.es';
 import Sidebar from '../../components/Sidebar/index.es';
@@ -61,7 +63,20 @@ class Builder extends Component {
 		 * @type {string}
 		 */
 
-		paginationMode: Config.string().required()
+		paginationMode: Config.string().required(),
+
+		/**
+		 * @instance
+		 * @memberof Builder
+		 * @type {object}
+		 */
+		successPageSettings: Config.shapeOf(
+			{
+				body: Config.object(),
+				enabled: Config.bool(),
+				title: Config.object()
+			}
+		)
 	};
 
 	/**
@@ -90,6 +105,7 @@ class Builder extends Component {
 
 	_handleModal() {
 		const {modal} = this.refs;
+
 		modal.show();
 	}
 
@@ -101,6 +117,12 @@ class Builder extends Component {
 		const {sidebar} = this.refs;
 
 		sidebar.refreshDragAndDrop();
+	}
+
+	disposeInternal() {
+		super.disposeInternal();
+
+		this._eventHandler.removeAllListeners();
 	}
 
 	/**
@@ -128,6 +150,7 @@ class Builder extends Component {
 						pages: visitor.mapFields(
 							field => {
 								const {fieldName} = field;
+
 								if (fieldName === 'name') {
 									field = {
 										...field,
@@ -244,7 +267,7 @@ class Builder extends Component {
 		let {activePage, pages} = this.props;
 		let openSidebar = false;
 
-		if (changes.activePage) {
+		if (changes.activePage && changes.activePage.newVal !== -1) {
 			activePage = changes.activePage.newVal;
 
 			if (!this._pageHasFields(pages, activePage)) {
@@ -272,6 +295,32 @@ class Builder extends Component {
 		const {sidebar} = this.refs;
 
 		sidebar.open();
+	}
+
+	syncVisible(visible) {
+		const addButton = document.querySelector('#addFieldButton');
+
+		super.syncVisible(visible);
+
+		if (visible) {
+			addButton.classList.remove('hide');
+
+			this._eventHandler.add(
+				dom.on('#addFieldButton', 'click', this._handleAddFieldButtonClicked.bind(this))
+			);
+		}
+		else {
+			this._eventHandler.removeAllListeners();
+		}
+	}
+
+	/**
+	 * Handles click on plus button. Button shows Sidebar when clicked.
+	 * @private
+	 */
+
+	_handleAddFieldButtonClicked() {
+		this.openSidebar();
 	}
 
 	_handlePageDeleted(pageIndex) {
@@ -320,6 +369,12 @@ class Builder extends Component {
 		this.emit('pagesUpdated', pages);
 	}
 
+	/**
+	 * Continues the propagation of event.
+	 * @param {Array} pages
+	 * @param {Number} pageIndex
+	 * @private
+	 */
 	_pageHasFields(pages, pageIndex) {
 		const visitor = new PagesVisitor([pages[pageIndex]]);
 
@@ -332,6 +387,19 @@ class Builder extends Component {
 		);
 
 		return hasFields;
+	}
+
+	created() {
+		this._eventHandler = new EventHandler();
+	}
+
+	/**
+	 * Continues the propagation of event.
+	 * @param {Object} successPageSettings
+	 * @private
+	 */
+	_handleSuccessPageChanged(successPageSettings) {
+		this.emit('successPageChanged', successPageSettings);
 	}
 
 	attached() {
@@ -357,7 +425,9 @@ class Builder extends Component {
 			focusedField,
 			pages,
 			paginationMode,
-			spritemap
+			spritemap,
+			successPageSettings,
+			visible
 		} = props;
 
 		const FormRendererEvents = {
@@ -370,7 +440,8 @@ class Builder extends Component {
 			pageDeleted: this._handlePageDeleted.bind(this),
 			pageReset: this._handlePageReset.bind(this),
 			pagesUpdated: this._handlePagesUpdated.bind(this),
-			paginationModeUpdated: this._handlePaginationModeUpdated.bind(this)
+			paginationModeUpdated: this._handlePaginationModeUpdated.bind(this),
+			successPageChanged: this._handleSuccessPageChanged.bind(this)
 		};
 
 		const sidebarEvents = {
@@ -391,6 +462,7 @@ class Builder extends Component {
 							paginationMode={paginationMode}
 							ref="FormRenderer"
 							spritemap={spritemap}
+							successPageSettings={successPageSettings}
 						/>
 						<ClayModal
 							body={Liferay.Language.get('are-you-sure-you-want-to-delete-this-field')}
@@ -424,6 +496,7 @@ class Builder extends Component {
 					focusedField={focusedField}
 					ref="sidebar"
 					spritemap={spritemap}
+					visible={visible}
 				/>
 			</div>
 		);

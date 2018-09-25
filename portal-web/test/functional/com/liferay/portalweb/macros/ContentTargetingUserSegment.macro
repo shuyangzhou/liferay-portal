@@ -414,7 +414,9 @@
 			<var name="navItem" value="Reports" />
 		</execute>
 
-		<execute function="AssertTextEquals" locator1="ContentRow#ENTRY_CONTENT_ENTRY_DESCRIPTION_TD3" value1="Displays the number of times that content has been viewed by a user who belongs to the current user segment." />
+		<execute function="AssertTextEquals" locator1="ContentRow#ENTRY_CONTENT_ENTRY_DESCRIPTION_TD3" value1="Displays the number of times that content has been viewed by a user who belongs to the current user segment.">
+			<var name="key_rowEntry" value="${userSegmentName}" />
+		</execute>
 
 		<execute macro="LexiconEntry#gotoEntry">
 			<var name="rowEntry" value="${reportName}" />
@@ -459,7 +461,9 @@
 			<var name="rowEntry" value="${userSegmentName}" />
 		</execute>
 
-		<execute function="AssertTextEquals" locator1="ContentRow#ENTRY_CONTENT_ENTRY_DESCRIPTION_TD3" value1="${userSegmentDescription}" />
+		<execute function="AssertTextEquals" locator1="ContentRow#ENTRY_CONTENT_ENTRY_DESCRIPTION_TD3" value1="${userSegmentDescription}">
+			<var name="key_rowEntry" value="${userSegmentName}" />
+		</execute>
 	</command>
 
 	<command name="viewNotPresentCP">

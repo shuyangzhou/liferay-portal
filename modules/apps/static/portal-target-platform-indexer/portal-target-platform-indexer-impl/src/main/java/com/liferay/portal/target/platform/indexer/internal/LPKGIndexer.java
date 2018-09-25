@@ -14,11 +14,11 @@
 
 package com.liferay.portal.target.platform.indexer.internal;
 
-import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.target.platform.indexer.Indexer;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 import java.nio.file.Files;
@@ -132,8 +132,11 @@ public class LPKGIndexer implements Indexer {
 			ZipEntry zipEntry = zipFile.getEntry("index.xml");
 
 			if (zipEntry != null) {
-				StreamUtil.transfer(
-					zipFile.getInputStream(zipEntry), outputStream, false);
+				try (InputStream inputStream =
+						zipFile.getInputStream(zipEntry)) {
+
+					_transfer(inputStream, outputStream);
+				}
 
 				return true;
 			}
@@ -150,6 +153,18 @@ public class LPKGIndexer implements Indexer {
 		}
 
 		return name.toLowerCase();
+	}
+
+	private void _transfer(InputStream inputStream, OutputStream outputStream)
+		throws IOException {
+
+		int value = -1;
+
+		byte[] bytes = new byte[8192];
+
+		while ((value = inputStream.read(bytes)) != -1) {
+			outputStream.write(bytes, 0, value);
+		}
 	}
 
 	private static final Pattern _pattern = Pattern.compile(
