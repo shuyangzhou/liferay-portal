@@ -24,27 +24,19 @@ import com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil;
 import com.liferay.asset.kernel.service.AssetTagLocalServiceUtil;
 import com.liferay.asset.kernel.service.persistence.AssetEntryQuery;
 import com.liferay.asset.list.constants.AssetListEntryTypeConstants;
-import com.liferay.petra.string.CharPool;
+import com.liferay.asset.list.model.AssetListEntryAssetEntryRel;
+import com.liferay.asset.list.service.AssetListEntryAssetEntryRelLocalServiceUtil;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
-import com.liferay.portal.kernel.xml.Document;
-import com.liferay.portal.kernel.xml.DocumentException;
-import com.liferay.portal.kernel.xml.Node;
-import com.liferay.portal.kernel.xml.SAXReaderUtil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -58,26 +50,20 @@ public class AssetListEntryImpl extends AssetListEntryBaseImpl {
 	}
 
 	public List<AssetEntry> getAssetEntries() {
-		UnicodeProperties properties = new UnicodeProperties(true);
-
-		properties.fastLoad(getTypeSettings());
-
-		List<String> assetEntryXmls = Arrays.asList(
-			StringUtil.split(
-				properties.getProperty("assetEntryXml"), CharPool.COMMA));
-
-		Stream<String> stream = assetEntryXmls.stream();
-
-		return stream.map(
-			assetEntryXml -> _getAssetEntry(assetEntryXml)
-		).filter(
-			assetEntry -> assetEntry != null
-		).collect(
-			Collectors.toList()
-		);
+		return getAssetEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	}
 
-	public AssetEntryQuery getAssetEntryQuery(long[] groupIds, Layout layout) {
+	public List<AssetEntry> getAssetEntries(int start, int end) {
+		if (Objects.equals(
+				getType(), AssetListEntryTypeConstants.TYPE_MANUAL)) {
+
+			return _getManualAssetEntries(start, end);
+		}
+
+		return _getDynamicAssetEntries(start, end);
+	}
+
+	public AssetEntryQuery getAssetEntryQuery() {
 		AssetEntryQuery assetEntryQuery = new AssetEntryQuery();
 
 		UnicodeProperties properties = new UnicodeProperties(true);
@@ -85,10 +71,10 @@ public class AssetListEntryImpl extends AssetListEntryBaseImpl {
 		properties.fastLoad(getTypeSettings());
 
 		_setCategoriesAndTags(
-			assetEntryQuery, properties, groupIds,
-			_getAssetCategoryIds(properties), _getAssetTagNames(properties));
+			assetEntryQuery, properties, _getAssetCategoryIds(properties),
+			_getAssetTagNames(properties));
 
-		assetEntryQuery.setGroupIds(groupIds);
+		assetEntryQuery.setGroupIds(new long[] {getGroupId()});
 
 		boolean anyAssetType = GetterUtil.getBoolean(
 			properties.getProperty("anyAssetType", null), true);
@@ -96,7 +82,7 @@ public class AssetListEntryImpl extends AssetListEntryBaseImpl {
 		if (!anyAssetType) {
 			long[] availableClassNameIds =
 				AssetRendererFactoryRegistryUtil.getClassNameIds(
-					layout.getCompanyId());
+					getCompanyId());
 
 			long[] classNameIds = _getClassNameIds(
 				properties, availableClassNameIds);
@@ -108,23 +94,6 @@ public class AssetListEntryImpl extends AssetListEntryBaseImpl {
 			StringUtil.split(properties.getProperty("classTypeIds", null)));
 
 		assetEntryQuery.setClassTypeIds(classTypeIds);
-
-		boolean enablePermissions = GetterUtil.getBoolean(
-			properties.getProperty("enablePermissions", null));
-
-		assetEntryQuery.setEnablePermissions(enablePermissions);
-
-		boolean excludeZeroViewCount = GetterUtil.getBoolean(
-			properties.getProperty("excludeZeroViewCount", null));
-
-		assetEntryQuery.setExcludeZeroViewCount(excludeZeroViewCount);
-
-		boolean showOnlyLayoutAssets = GetterUtil.getBoolean(
-			properties.getProperty("showOnlyLayoutAssets", null));
-
-		if (showOnlyLayoutAssets) {
-			assetEntryQuery.setLayout(layout);
-		}
 
 		String orderByColumn1 = GetterUtil.getString(
 			properties.getProperty("orderByColumn1", "modifiedDate"));
@@ -233,31 +202,6 @@ public class AssetListEntryImpl extends AssetListEntryBaseImpl {
 				new Long[assetCategoryIdsList.size()]));
 	}
 
-	private AssetEntry _getAssetEntry(String assetEntryXml) {
-		try {
-			Document document = SAXReaderUtil.read(assetEntryXml);
-
-			Node assetEntryUuidNode = document.selectSingleNode(
-				"//asset-entry-uuid");
-
-			Node assetEntryGroupIdNode = document.selectSingleNode(
-				"//asset-entry-group-id");
-
-			String assetEntryUuid = assetEntryUuidNode.getStringValue();
-
-			long groupId = GetterUtil.getLong(
-				assetEntryGroupIdNode.getStringValue());
-
-			return AssetEntryLocalServiceUtil.fetchEntry(
-				groupId, assetEntryUuid);
-		}
-		catch (DocumentException de) {
-			_log.error("Unable to parse asset entry XML");
-
-			return null;
-		}
-	}
-
 	private long[] _getClassNameIds(
 		UnicodeProperties properties, long[] availableClassNameIds) {
 
@@ -285,20 +229,36 @@ public class AssetListEntryImpl extends AssetListEntryBaseImpl {
 		return availableClassNameIds;
 	}
 
-	private long[] _getSiteGroupIds(long[] groupIds) {
-		Set<Long> siteGroupIds = new LinkedHashSet<>();
+	private List<AssetEntry> _getDynamicAssetEntries(int start, int end) {
+		AssetEntryQuery assetEntryQuery = getAssetEntryQuery();
 
-		for (long groupId : groupIds) {
-			siteGroupIds.add(PortalUtil.getSiteGroupId(groupId));
-		}
+		assetEntryQuery.setEnd(end);
+		assetEntryQuery.setStart(start);
 
-		return ArrayUtil.toLongArray(siteGroupIds);
+		return AssetEntryLocalServiceUtil.getEntries(assetEntryQuery);
+	}
+
+	private List<AssetEntry> _getManualAssetEntries(int start, int end) {
+		List<AssetListEntryAssetEntryRel> assetListEntryAssetEntryRels =
+			AssetListEntryAssetEntryRelLocalServiceUtil.
+				getAssetListEntryAssetEntryRels(
+					getAssetListEntryId(), start, end);
+
+		Stream<AssetListEntryAssetEntryRel> stream =
+			assetListEntryAssetEntryRels.stream();
+
+		return stream.map(
+			assetListEntryAssetEntryRel ->
+				AssetEntryLocalServiceUtil.fetchEntry(
+					assetListEntryAssetEntryRel.getAssetEntryId())
+		).collect(
+			Collectors.toList()
+		);
 	}
 
 	private void _setCategoriesAndTags(
 		AssetEntryQuery assetEntryQuery, UnicodeProperties properties,
-		long[] scopeGroupIds, long[] overrideAllAssetCategoryIds,
-		String[] overrideAllAssetTagNames) {
+		long[] overrideAllAssetCategoryIds, String[] overrideAllAssetTagNames) {
 
 		long[] allAssetCategoryIds = new long[0];
 		long[] anyAssetCategoryIds = new long[0];
@@ -370,11 +330,11 @@ public class AssetListEntryImpl extends AssetListEntryBaseImpl {
 			allAssetTagNames = overrideAllAssetTagNames;
 		}
 
-		long[] siteGroupIds = _getSiteGroupIds(scopeGroupIds);
+		long siteGroupId = PortalUtil.getSiteGroupId(getGroupId());
 
 		for (String assetTagName : allAssetTagNames) {
 			long[] allAssetTagIds = AssetTagLocalServiceUtil.getTagIds(
-				siteGroupIds, assetTagName);
+				new long[] {siteGroupId}, assetTagName);
 
 			assetEntryQuery.addAllTagIdsArray(allAssetTagIds);
 		}
@@ -382,7 +342,7 @@ public class AssetListEntryImpl extends AssetListEntryBaseImpl {
 		assetEntryQuery.setAnyCategoryIds(anyAssetCategoryIds);
 
 		long[] anyAssetTagIds = AssetTagLocalServiceUtil.getTagIds(
-			siteGroupIds, anyAssetTagNames);
+			siteGroupId, anyAssetTagNames);
 
 		assetEntryQuery.setAnyTagIds(anyAssetTagIds);
 
@@ -390,7 +350,7 @@ public class AssetListEntryImpl extends AssetListEntryBaseImpl {
 
 		for (String assetTagName : notAllAssetTagNames) {
 			long[] notAllAssetTagIds = AssetTagLocalServiceUtil.getTagIds(
-				siteGroupIds, assetTagName);
+				new long[] {siteGroupId}, assetTagName);
 
 			assetEntryQuery.addNotAllTagIdsArray(notAllAssetTagIds);
 		}
@@ -398,12 +358,9 @@ public class AssetListEntryImpl extends AssetListEntryBaseImpl {
 		assetEntryQuery.setNotAnyCategoryIds(notAnyAssetCategoryIds);
 
 		long[] notAnyAssetTagIds = AssetTagLocalServiceUtil.getTagIds(
-			siteGroupIds, notAnyAssetTagNames);
+			siteGroupId, notAnyAssetTagNames);
 
 		assetEntryQuery.setNotAnyTagIds(notAnyAssetTagIds);
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		AssetListEntryImpl.class);
 
 }

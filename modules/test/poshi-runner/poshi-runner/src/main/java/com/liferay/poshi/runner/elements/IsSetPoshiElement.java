@@ -15,6 +15,7 @@
 package com.liferay.poshi.runner.elements;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.dom4j.Attribute;
 import org.dom4j.Element;
@@ -76,31 +77,25 @@ public class IsSetPoshiElement extends PoshiElement {
 
 	@Override
 	protected String getBlockName() {
-		return "isSet";
+		return _POSHI_SCRIPT_KEYWORD;
+	}
+
+	@Override
+	protected Pattern getConditionPattern() {
+		return _conditionPattern;
 	}
 
 	private boolean _isElementType(
 		PoshiElement parentPoshiElement, String poshiScript) {
 
-		if (!isConditionValidInParent(parentPoshiElement)) {
-			return false;
-		}
-
-		poshiScript = poshiScript.trim();
-
-		if (poshiScript.startsWith("!") ||
-			poshiScript.startsWith("else if (")) {
-
-			return false;
-		}
-
-		if (poshiScript.startsWith("isSet(")) {
-			return true;
-		}
-
-		return false;
+		return isConditionElementType(parentPoshiElement, poshiScript);
 	}
 
 	private static final String _ELEMENT_NAME = "isset";
+
+	private static final String _POSHI_SCRIPT_KEYWORD = "isSet";
+
+	private static final Pattern _conditionPattern = Pattern.compile(
+		"^" + _POSHI_SCRIPT_KEYWORD + "\\([\\w]*\\)$");
 
 }

@@ -45,7 +45,7 @@ public interface PoshiNode<A extends Node, B extends PoshiNode<A, B>>
 		PoshiNode previousPoshiNode = null;
 
 		for (Iterator<PoshiNode> iterator = poshiNodes.iterator();
-				iterator.hasNext();) {
+			 iterator.hasNext();) {
 
 			PoshiNode poshiNode = iterator.next();
 

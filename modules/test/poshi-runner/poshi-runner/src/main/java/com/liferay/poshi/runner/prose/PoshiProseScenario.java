@@ -149,18 +149,19 @@ public class PoshiProseScenario extends BasePoshiProse {
 		return false;
 	}
 
+	private static final Pattern _scenarioPattern = Pattern.compile(
+		"(?s)Scenario:\\s*(?<name>\\w([ \\w]*\\w)?)\\s*" +
+			"(?<tags>(@.*?\".*?\"\\s*)+)*(?<content>[^\\s].*)");
+	private static final Pattern _setupPattern = Pattern.compile(
+		"(?s)Setup:\\s*(?<tags>(@.*?\".*?\"\\s*)+)*(?<content>[^\\s].*)");
+	private static final Pattern _teardownPattern = Pattern.compile(
+		"(?s)Teardown:\\s*(?<tags>(@.*?\".*?\"\\s*)+)*(?<content>[^\\s].*)");
+
 	private final List<PoshiProseStatement> _poshiProseStatements =
 		new ArrayList<>();
 	private final String _scenarioContent;
 	private final String _scenarioName;
-	private final Pattern _scenarioPattern = Pattern.compile(
-		"(?s)Scenario:\\s*(?<name>\\w([ \\w]*\\w)?)\\s*" +
-			"(?<tags>(@.*?\".*?\"\\s*)+)*(?<content>[^\\s].*)");
-	private final Pattern _setupPattern = Pattern.compile(
-		"(?s)Setup:\\s*(?<tags>(@.*?\".*?\"\\s*)+)*(?<content>[^\\s].*)");
 	private final Map<String, String> _tagMap = new LinkedHashMap<>();
-	private final Pattern _teardownPattern = Pattern.compile(
-		"(?s)Teardown:\\s*(?<tags>(@.*?\".*?\"\\s*)+)*(?<content>[^\\s].*)");
 	private final Type _type;
 
 }

@@ -79,7 +79,7 @@ public class PoshiElementFactoryTest {
 	public void testPoshiScriptLineNumbers() throws Exception {
 		PoshiElement rootPoshiElement = _getPoshiElement("PoshiScript.macro");
 
-		int[] expectedLineNumbers = {3, 8, 9, 11, 16, 21, 23, 30, 32};
+		int[] expectedLineNumbers = {3, 8, 9, 11, 16, 20, 25, 27, 34, 36};
 
 		int i = 0;
 

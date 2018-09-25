@@ -9,6 +9,7 @@ import Builder from './pages/builder/index.es';
 import ClayModal from 'clay-modal';
 import Component from 'metal-jsx';
 import dom from 'metal-dom';
+import core from 'metal';
 import LayoutProvider from './components/LayoutProvider/index.es';
 import loader from './components/FieldsLoader/index.es';
 import PublishButton from './components/PublishButton/PublishButton.es';
@@ -36,7 +37,8 @@ class Form extends Component {
 			{
 				pages: Config.arrayOf(pageStructure),
 				paginationMode: Config.string(),
-				rules: Config.array()
+				rules: Config.array(),
+				successPageSettings: Config.object()
 			}
 		).required().setter('_setContext'),
 
@@ -82,6 +84,16 @@ class Form extends Component {
 
 		/**
 		 * A map with all translated values available as the form name.
+		 * @default undefined
+		 * @instance
+		 * @memberof Form
+		 * @type {!array}
+		 */
+
+		functionsMetadata: Config.object().value({}),
+
+		/**
+		 * The context for rendering a layout that represents a form.
 		 * @default undefined
 		 * @instance
 		 * @memberof Form
@@ -219,7 +231,11 @@ class Form extends Component {
 	}
 
 	disposed() {
-		this._autoSave.dispose();
+		super.disposed();
+
+		if (this._autoSave) {
+			this._autoSave.dispose();
+		}
 
 		this._eventHandler.removeAllListeners();
 	}
@@ -266,7 +282,8 @@ class Form extends Component {
 						paginationMode,
 						settingsDDMForm: results[2],
 						translationManager
-					}
+					},
+					this.element
 				);
 
 				this._autoSave = new AutoSave(
@@ -276,7 +293,8 @@ class Form extends Component {
 						namespace,
 						stateSyncronizer: this._stateSyncronizer,
 						url: Liferay.DDM.FormSettings.autosaveURL
-					}
+					},
+					this.element
 				);
 
 				this._eventHandler.add(this._autoSave.on('autosaved', this._updateAutoSaveMessage.bind(this)));
@@ -285,8 +303,7 @@ class Form extends Component {
 
 		this._eventHandler.add(
 			dom.on('.back-url-link', 'click', this._handleBackButtonClicked.bind(this)),
-			dom.on('.forms-management-bar li', 'click', this._handleFormNavClicked.bind(this)),
-			dom.on('#addFieldButton', 'click', this._handleAddFieldButtonClicked.bind(this))
+			dom.on('.forms-management-bar li', 'click', this._handleFormNavClicked.bind(this))
 		);
 	}
 
@@ -426,10 +443,10 @@ class Form extends Component {
 			events: {
 				pagesChanged: this._handlePagesChanged.bind(this),
 				paginationModeChanged: this._handlePaginationModeChanded.bind(this)
-
 			},
 			initialPages: context.pages,
 			initialPaginationMode: context.paginationMode,
+			initialSuccessPageSettings: context.successPageSettings,
 			ref: 'layoutProvider'
 		};
 
@@ -438,12 +455,17 @@ class Form extends Component {
 		return (
 			<div class={'ddm-form-builder'}>
 				<LayoutProvider {...layoutProviderProps}>
-					{showRuleBuilder && (
-						<RuleBuilder pages={context.pages} rules={this.props.rules} spritemap={spritemap} />
-					)}
-					{!showRuleBuilder && (
-						<Builder namespace={this.props.namespace} ref="builder" />
-					)}
+					<RuleBuilder
+						functionsMetadata={this.props.functionsMetadata}
+						rules={this.props.rules}
+						spritemap={spritemap}
+						visible={showRuleBuilder}
+					/>
+					<Builder
+						namespace={this.props.namespace}
+						ref="builder"
+						visible={!showRuleBuilder}
+					/>
 				</LayoutProvider>
 
 				<div class="container-fluid-1280">
@@ -543,15 +565,6 @@ class Form extends Component {
 	}
 
 	/**
-	 * Handles click on plus button. Button shows Sidebar when clicked.
-	 * @private
-	 */
-
-	_handleAddFieldButtonClicked() {
-		this._openSidebar();
-	}
-
-	/**
 	 * @param newVal
 	 * Handles "paginationModeChanged" event. Updates the page mode to use it when form builder is saved.
 	 */
@@ -567,30 +580,40 @@ class Form extends Component {
 	_handleFormNavClicked(event) {
 		const {delegateTarget, target} = event;
 		const {navItemIndex} = delegateTarget.dataset;
-		const addButton = document.querySelector('#addFieldButton');
-		const formBuilderButtons = document.querySelector('.ddm-form-builder-buttons');
-		const publishIcon = document.querySelector('.publish-icon');
 
 		if (navItemIndex !== this.state.activeFormMode) {
+			const newActiveFormMode = parseInt(navItemIndex, 10);
+
 			this.setState(
 				{
-					activeFormMode: parseInt(navItemIndex, 10)
+					activeFormMode: newActiveFormMode
 				}
 			);
 
-			document.querySelector('.forms-management-bar li>a.active').classList.remove('active');
-
-			if (parseInt(this.state.activeFormMode, 10)) {
-				formBuilderButtons.classList.add('hide');
-				publishIcon.classList.add('hide');
-			}
-			else {
-				formBuilderButtons.classList.remove('hide');
-				addButton.classList.remove('hide');
-				publishIcon.classList.remove('hide');
-			}
-
+			document.querySelector('.forms-management-bar li > a.active').classList.remove('active');
 			target.classList.add('active');
+
+			this.syncActiveFormMode(newActiveFormMode);
+		}
+	}
+
+	syncActiveFormMode(activeFormMode) {
+		const formBasicInfo = document.querySelector('.ddm-form-basic-info');
+		const formBuilderButtons = document.querySelector('.ddm-form-builder-buttons');
+		const publishIcon = document.querySelector('.publish-icon');
+		const translationManager = document.querySelector('.ddm-translation-manager');
+
+		if (parseInt(activeFormMode, 10)) {
+			formBasicInfo.classList.add('hide');
+			formBuilderButtons.classList.add('hide');
+			publishIcon.classList.add('hide');
+			translationManager.classList.add('hide');
+		}
+		else {
+			formBasicInfo.classList.remove('hide');
+			formBuilderButtons.classList.remove('hide');
+			publishIcon.classList.remove('hide');
+			translationManager.classList.remove('hide');
 		}
 	}
 
@@ -659,6 +682,23 @@ class Form extends Component {
 	 */
 
 	_setContext(context) {
+		let {successPageSettings} = context;
+		const {successPage} = context;
+
+		if (!successPageSettings) {
+			successPageSettings = successPage;
+		}
+
+		if (core.isString(successPageSettings.title)) {
+			successPageSettings.title = {};
+			successPageSettings.title[themeDisplay.getLanguageId()] = '';
+		}
+
+		if (core.isString(successPageSettings.body)) {
+			successPageSettings.body = {};
+			successPageSettings.body[themeDisplay.getLanguageId()] = '';
+		}
+
 		if (!context.pages.length) {
 			context = {
 				...context,
@@ -684,7 +724,8 @@ class Form extends Component {
 						title: ''
 					}
 				],
-				paginationMode: 'wizard'
+				paginationMode: 'wizard',
+				successPageSettings
 			};
 		}
 

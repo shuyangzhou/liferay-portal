@@ -183,8 +183,8 @@ public abstract class PoshiElement
 
 		PoshiNode previousPoshiNode = null;
 
-		for (Iterator<PoshiNode> iterator =
-				 poshiNodes.iterator(); iterator.hasNext();) {
+		for (Iterator<PoshiNode> iterator = poshiNodes.iterator();
+			 iterator.hasNext();) {
 
 			PoshiNode poshiNode = iterator.next();
 
@@ -317,6 +317,10 @@ public abstract class PoshiElement
 		}
 
 		return classCommand;
+	}
+
+	protected Pattern getConditionPattern() {
+		return null;
 	}
 
 	protected String getFileType() {
@@ -530,6 +534,27 @@ public abstract class PoshiElement
 		}
 
 		return stack.isEmpty();
+	}
+
+	protected final boolean isConditionElementType(
+		PoshiElement parentPoshiElement, String poshiScript) {
+
+		if (!isConditionValidInParent(parentPoshiElement)) {
+			return false;
+		}
+
+		poshiScript = poshiScript.trim();
+
+		Pattern conditionPattern = getConditionPattern();
+
+		if (conditionPattern == null) {
+			throw new RuntimeException(
+				"Condition pattern has not been defined");
+		}
+
+		Matcher matcher = conditionPattern.matcher(poshiScript);
+
+		return matcher.find();
 	}
 
 	protected boolean isConditionValidInParent(
@@ -826,6 +851,7 @@ public abstract class PoshiElement
 	private static final Map<Character, Character> _codeBoundariesMap =
 		new HashMap<Character, Character>() {
 			{
+				put('\'', '\'');
 				put('\"', '\"');
 				put('(', ')');
 				put('{', '}');

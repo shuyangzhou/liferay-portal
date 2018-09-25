@@ -12,35 +12,31 @@
  * details.
  */
 
-package com.liferay.document.library.opener.uad.test;
+package com.liferay.sharing.exception;
 
-import com.liferay.document.library.opener.model.DLOpenerFileEntryReference;
+import aQute.bnd.annotation.ProviderType;
 
-import java.util.List;
-
-import org.junit.Assume;
-
-import org.osgi.service.component.annotations.Component;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * @author Brian Wing Shun Chan
  */
-@Component(
-	immediate = true, service = DLOpenerFileEntryReferenceUADTestHelper.class
-)
-public class DLOpenerFileEntryReferenceUADTestHelper {
+@ProviderType
+public class InvalidSharingEntryActionException extends PortalException {
 
-	public DLOpenerFileEntryReference addDLOpenerFileEntryReference(long userId)
-		throws Exception {
-
-		Assume.assumeTrue(false);
-
-		return null;
+	public InvalidSharingEntryActionException() {
 	}
 
-	public void cleanUpDependencies(
-			List<DLOpenerFileEntryReference> dlOpenerFileEntryReferences)
-		throws Exception {
+	public InvalidSharingEntryActionException(String msg) {
+		super(msg);
+	}
+
+	public InvalidSharingEntryActionException(String msg, Throwable cause) {
+		super(msg, cause);
+	}
+
+	public InvalidSharingEntryActionException(Throwable cause) {
+		super(cause);
 	}
 
 }

@@ -222,6 +222,9 @@ public class PropsValues {
 	public static final String TEST_CONSOLE_SHUT_DOWN_FILE_NAME = PropsUtil.get(
 		"test.console.shut.down.file.name");
 
+	public static final String[] TEST_CSV_REPORT_PROPERTY_NAMES =
+		StringUtil.split(PropsUtil.get("test.csv.report.property.names"));
+
 	public static final boolean TEST_DATABASE_MINIMAL = GetterUtil.getBoolean(
 		PropsUtil.get("test.database.minimal"));
 

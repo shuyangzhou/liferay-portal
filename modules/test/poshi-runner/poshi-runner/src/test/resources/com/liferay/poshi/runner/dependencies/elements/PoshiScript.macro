@@ -13,6 +13,10 @@ definition {
 			value1 = "${breadcrumbNameUppercase}"
 		);
 
+		if ((IsElementPresent(locator1 = "Blogs#ADD_BLOGS_ENTRY")) && ("${check}" == "true") && (isSet(duplicate))) {
+			Alert.viewSuccessMessage();
+		}
+
 		return "${breadcrumbNameUppercase}";
 	}
 
