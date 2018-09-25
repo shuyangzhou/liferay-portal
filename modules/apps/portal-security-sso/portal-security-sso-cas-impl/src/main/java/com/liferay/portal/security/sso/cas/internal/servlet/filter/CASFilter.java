@@ -214,11 +214,11 @@ public class CASFilter extends BaseFilter {
 
 			String serverName = casConfiguration.serverName();
 
-			String serviceUrl = casConfiguration.serviceURL();
+			String serviceURL = casConfiguration.serviceURL();
 
-			if (Validator.isNull(serviceUrl)) {
-				serviceUrl = CommonUtils.constructServiceUrl(
-					request, response, serviceUrl, serverName, "ticket", false);
+			if (Validator.isNull(serviceURL)) {
+				serviceURL = CommonUtils.constructServiceUrl(
+					request, response, serviceURL, serverName, "ticket", false);
 			}
 
 			String ticket = ParamUtil.getString(request, "ticket");
@@ -226,7 +226,7 @@ public class CASFilter extends BaseFilter {
 			if (Validator.isNull(ticket)) {
 				String loginUrl = casConfiguration.loginURL();
 
-				loginUrl = _http.addParameter(loginUrl, "service", serviceUrl);
+				loginUrl = _http.addParameter(loginUrl, "service", serviceURL);
 
 				response.sendRedirect(loginUrl);
 
@@ -235,7 +235,7 @@ public class CASFilter extends BaseFilter {
 
 			TicketValidator ticketValidator = getTicketValidator(companyId);
 
-			Assertion assertion = ticketValidator.validate(ticket, serviceUrl);
+			Assertion assertion = ticketValidator.validate(ticket, serviceURL);
 
 			if (assertion != null) {
 				AttributePrincipal attributePrincipal =

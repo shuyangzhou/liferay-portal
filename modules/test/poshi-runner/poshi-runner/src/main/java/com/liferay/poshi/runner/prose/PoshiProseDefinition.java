@@ -85,9 +85,10 @@ public class PoshiProseDefinition extends BasePoshiProse {
 		return definitionElement;
 	}
 
-	private final Pattern _definitionPattern = Pattern.compile(
+	private static final Pattern _definitionPattern = Pattern.compile(
 		"(?s)(?<tags>\\@.*?)?(?<feature>Feature:.*?)?" +
 			"(?<scenarios>(Setup|Teardown|Scenario).*)");
+
 	private final String _fileName;
 	private final List<PoshiProseScenario> _poshiProseScenarios =
 		new ArrayList<>();

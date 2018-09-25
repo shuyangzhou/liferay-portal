@@ -326,7 +326,7 @@ public class PoshiRunnerGetterUtil {
 			String namespace = matcher.group("namespace");
 
 			if (Validator.isNull(namespace)) {
-				namespace = PoshiRunnerContext.getDefaultNamespace();
+				namespace = PoshiRunnerStackTraceUtil.getCurrentNamespace();
 			}
 
 			String className = matcher.group("className");
@@ -348,7 +348,7 @@ public class PoshiRunnerGetterUtil {
 			String namespace = matcher.group("namespace");
 
 			if (Validator.isNull(namespace)) {
-				namespace = PoshiRunnerContext.getDefaultNamespace();
+				namespace = PoshiRunnerStackTraceUtil.getCurrentNamespace();
 			}
 
 			return namespace;
@@ -368,7 +368,7 @@ public class PoshiRunnerGetterUtil {
 			String namespace = matcher.group("namespace");
 
 			if (Validator.isNull(namespace)) {
-				namespace = PoshiRunnerContext.getDefaultNamespace();
+				namespace = PoshiRunnerStackTraceUtil.getCurrentNamespace();
 			}
 
 			return namespace;
@@ -596,27 +596,28 @@ public class PoshiRunnerGetterUtil {
 		"table", "take-screenshot", "task", "tbody", "td", "tear-down", "thead",
 		"then", "title", "tr", "var", "while");
 	private static final Pattern _tagPattern = Pattern.compile("<[a-z\\-]+");
-	private static final Map<String, String > _utilityClassMap =
-		new TreeMap<>();
+
+	private static final Map<String, String> _utilityClassMap =
+		new TreeMap<String, String>() {
+			{
+				try {
+					ClassPath classPath = ClassPath.from(
+						PropsUtil.class.getClassLoader());
+
+					for (ClassPath.ClassInfo classInfo :
+							classPath.getTopLevelClasses(
+								"com.liferay.poshi.runner.util")) {
+
+						put(classInfo.getSimpleName(), classInfo.getName());
+					}
+				}
+				catch (IOException ioe) {
+					throw new RuntimeException(ioe);
+				}
+			}
+		};
+
 	private static final Pattern _variablePattern = Pattern.compile(
 		"\\$\\{([^}]*)\\}");
-
-	static {
-		try {
-			ClassPath classPath = ClassPath.from(
-				PropsUtil.class.getClassLoader());
-
-			for (ClassPath.ClassInfo classInfo :
-					classPath.getTopLevelClasses(
-						"com.liferay.poshi.runner.util")) {
-
-				_utilityClassMap.put(
-					classInfo.getSimpleName(), classInfo.getName());
-			}
-		}
-		catch (IOException ioe) {
-			throw new RuntimeException(ioe);
-		}
-	}
 
 }

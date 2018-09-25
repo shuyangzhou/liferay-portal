@@ -18,6 +18,7 @@ class StateSyncronizer extends Component {
 
 	created() {
 		const {descriptionEditor, nameEditor} = this.props;
+
 		this._eventHandler = new EventHandler();
 
 		this._eventHandler.add(
@@ -27,6 +28,8 @@ class StateSyncronizer extends Component {
 	}
 
 	disposeInternal() {
+		super.disposeInternal();
+
 		this._eventHandler.removeAllListeners();
 	}
 
@@ -41,11 +44,7 @@ class StateSyncronizer extends Component {
 			pages: layoutProvider.state.pages,
 			paginationMode: layoutProvider.state.paginationMode,
 			rules: [],
-			successPageSettings: {
-				body: {},
-				enabled: false,
-				title: {}
-			}
+			successPageSettings: layoutProvider.state.successPageSettings
 		};
 	}
 

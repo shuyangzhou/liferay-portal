@@ -28,6 +28,9 @@ public interface UserFinder {
 	public int countByKeywords(long companyId, String keywords, int status,
 		java.util.LinkedHashMap<String, Object> params);
 
+	public int countByOrganizationsAndUserGroups(long[] organizationIds,
+		long[] userGroupIds);
+
 	public int countBySocialUsers(long companyId, long userId,
 		int socialRelationType, String socialRelationTypeComparator, int status);
 

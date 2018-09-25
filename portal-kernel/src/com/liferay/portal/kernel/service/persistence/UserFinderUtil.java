@@ -35,6 +35,13 @@ public class UserFinderUtil {
 		return getFinder().countByKeywords(companyId, keywords, status, params);
 	}
 
+	public static int countByOrganizationsAndUserGroups(
+		long[] organizationIds, long[] userGroupIds) {
+		return getFinder()
+				   .countByOrganizationsAndUserGroups(organizationIds,
+			userGroupIds);
+	}
+
 	public static int countBySocialUsers(long companyId, long userId,
 		int socialRelationType, String socialRelationTypeComparator, int status) {
 		return getFinder()
