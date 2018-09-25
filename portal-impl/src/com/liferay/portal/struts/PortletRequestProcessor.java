@@ -48,6 +48,7 @@ import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -62,7 +63,9 @@ import org.apache.struts.action.ActionServlet;
 import org.apache.struts.config.ActionConfig;
 import org.apache.struts.config.ForwardConfig;
 import org.apache.struts.config.ModuleConfig;
+import org.apache.struts.tiles.DefinitionsFactory;
 import org.apache.struts.tiles.TilesRequestProcessor;
+import org.apache.struts.tiles.TilesUtilImpl;
 import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.util.MessageResources;
 
@@ -102,6 +105,11 @@ public class PortletRequestProcessor extends TilesRequestProcessor {
 		throws ServletException {
 
 		init(actionServlet, moduleConfig);
+
+		ServletContext servletContext = actionServlet.getServletContext();
+
+		definitionsFactory = (DefinitionsFactory)servletContext.getAttribute(
+			TilesUtilImpl.DEFINITIONS_FACTORY);
 	}
 
 	public void process(
@@ -383,6 +391,10 @@ public class PortletRequestProcessor extends TilesRequestProcessor {
 				_log.error(cause, cause);
 			}
 		}
+	}
+
+	@Override
+	protected void initDefinitionsMapping() {
 	}
 
 	@Override
