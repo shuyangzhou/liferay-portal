@@ -794,12 +794,13 @@ public class PortletPreferencesFactoryImpl
 
 		if (ownerType == 0) {
 			throw new NoSuchPortletPreferencesException(
-				"ownerType cannot be 0");
+				"No PortletPreferences exists with the key {ownerType=0}");
 		}
 
 		if ((ownerId == 0) && (plid == 0)) {
 			throw new NoSuchPortletPreferencesException(
-				"OwnerId and plid cannot both be 0");
+				"No PortletPreferences exists with the key {ownerId=0, " +
+					"plid=0}");
 		}
 
 		if (strictMode) {
