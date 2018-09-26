@@ -25,6 +25,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  * @author Shuyang Zhou
@@ -35,6 +37,129 @@ public abstract class ConcurrentMapperHashMap<K, IK, V, IV>
 	@Override
 	public void clear() {
 		innerConcurrentMap.clear();
+	}
+
+	@Override
+	public V compute(
+		K key,
+		BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
+
+		if (key == null) {
+			throw new NullPointerException("Key is null");
+		}
+
+		if (remappingFunction == null) {
+			throw new NullPointerException("Remapping function is null");
+		}
+
+		IK innerKey = mapKey(key);
+
+		IV innerValue = innerConcurrentMap.compute(
+			innerKey,
+			(iKey, iValue) -> {
+				V value = null;
+
+				if (iValue == null) {
+					value = remappingFunction.apply(key, null);
+				}
+				else {
+					value = remappingFunction.apply(key, unmapValue(iValue));
+				}
+
+				if (value == null) {
+					return null;
+				}
+
+				if (iValue != null) {
+					unmapKey(innerKey);
+				}
+
+				return mapValue(key, value);
+			});
+
+		if (innerValue == null) {
+			unmapKey(innerKey);
+
+			return null;
+		}
+
+		return unmapValueForQuery(innerValue);
+	}
+
+	@Override
+	public V computeIfAbsent(
+		K key, Function<? super K, ? extends V> mappingFunction) {
+
+		if (key == null) {
+			throw new NullPointerException("Key is null");
+		}
+
+		if (mappingFunction == null) {
+			throw new NullPointerException("Mapping function is null");
+		}
+
+		IK innerKey = mapKey(key);
+
+		FunctionWrapper<? super K, ? extends V> functionWrapper =
+			new FunctionWrapper<>(mappingFunction);
+
+		IV innerValue = innerConcurrentMap.computeIfAbsent(
+			innerKey,
+			iKey -> {
+				V value = functionWrapper.apply(key);
+
+				if (value == null) {
+					return null;
+				}
+
+				return mapValue(key, value);
+			});
+
+		if (innerValue == null) {
+			unmapKey(innerKey);
+
+			return null;
+		}
+
+		if (!functionWrapper.invoked()) {
+			unmapKey(innerKey);
+		}
+
+		return unmapValueForQuery(innerValue);
+	}
+
+	@Override
+	public V computeIfPresent(
+		K key,
+		BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
+
+		if (key == null) {
+			throw new NullPointerException("Key is null");
+		}
+
+		if (remappingFunction == null) {
+			throw new NullPointerException("Remapping function is null");
+		}
+
+		IK innerKey = mapKeyForQuery(key);
+
+		IV innerValue = innerConcurrentMap.computeIfPresent(
+			innerKey,
+			(iKey, iValue) -> {
+				V value = remappingFunction.apply(key, unmapValue(iValue));
+
+				if (value == null) {
+					return null;
+				}
+
+				return mapValue(key, value);
+			});
+
+		if (innerValue == null) {
+			return null;
+		}
+
+		return unmapValueForQuery(innerValue);
 	}
 
 	@Override
@@ -300,6 +425,28 @@ public abstract class ConcurrentMapperHashMap<K, IK, V, IV>
 	protected transient Collection<V> values;
 
 	private static final long serialVersionUID = 1L;
+
+	private class FunctionWrapper<T, R> implements Function<T, R> {
+
+		@Override
+		public R apply(T t) {
+			_invoked = true;
+
+			return _function.apply(t);
+		}
+
+		public boolean invoked() {
+			return _invoked;
+		}
+
+		private FunctionWrapper(Function<T, R> function) {
+			_function = function;
+		}
+
+		private final Function<T, R> _function;
+		private boolean _invoked;
+
+	}
 
 	private class UnwrapEntry implements Map.Entry<K, V> {
 
