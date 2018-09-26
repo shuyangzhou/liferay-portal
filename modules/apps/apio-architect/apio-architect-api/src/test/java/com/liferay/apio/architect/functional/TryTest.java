@@ -206,8 +206,7 @@ public class TryTest {
 		integerTry.ifFailure(
 			exception -> {
 				assertThat(
-					exception.getClass(), is(IllegalArgumentException.class));
-
+					exception, instanceOf(IllegalArgumentException.class));
 				assertThat(exception.getMessage(), is("Apio"));
 			});
 	}
@@ -386,7 +385,7 @@ public class TryTest {
 		newStringTry1.ifFailure(
 			exception -> {
 				assertThat(
-					exception.getClass(), is(IllegalArgumentException.class));
+					exception, instanceOf(IllegalArgumentException.class));
 
 				assertThat(exception.getMessage(), is("Apio"));
 			});
@@ -398,7 +397,7 @@ public class TryTest {
 
 		newStringTry2.ifFailure(
 			exception -> assertThat(
-				exception.getClass(), is(NoSuchElementException.class)));
+				exception, instanceOf(NoSuchElementException.class)));
 	}
 
 	@Parameters(method = SUCCESS)

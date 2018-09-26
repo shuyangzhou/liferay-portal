@@ -19,11 +19,11 @@ import static com.liferay.apio.architect.test.util.writer.MockWriterUtil.getRequ
 
 import static java.util.Arrays.asList;
 
-import com.liferay.apio.architect.impl.message.json.SingleModelMessageMapper;
-import com.liferay.apio.architect.impl.operation.DeleteOperation;
-import com.liferay.apio.architect.impl.operation.UpdateOperation;
-import com.liferay.apio.architect.impl.single.model.SingleModelImpl;
-import com.liferay.apio.architect.impl.writer.SingleModelWriter;
+import com.liferay.apio.architect.internal.message.json.SingleModelMessageMapper;
+import com.liferay.apio.architect.internal.operation.DeleteOperation;
+import com.liferay.apio.architect.internal.operation.UpdateOperation;
+import com.liferay.apio.architect.internal.single.model.SingleModelImpl;
+import com.liferay.apio.architect.internal.writer.SingleModelWriter;
 import com.liferay.apio.architect.single.model.SingleModel;
 import com.liferay.apio.architect.test.util.model.RootModel;
 import com.liferay.apio.architect.test.util.writer.MockWriterUtil;

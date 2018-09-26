@@ -14,6 +14,15 @@
 
 package com.liferay.portal.lpkg.deployer.internal;
 
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.URLCodec;
+
+import java.io.File;
+
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+
 import org.osgi.framework.Bundle;
 
 /**
@@ -27,6 +36,23 @@ public class LPKGInnerBundleLocationUtil {
 		String location = path.concat("?lpkgPath=");
 
 		return location.concat(lpkgBundle.getLocation());
+	}
+
+	public static URL generateInnerBundleURL(File lpkgBundleFile, String path)
+		throws MalformedURLException {
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append("jar:");
+
+		URI uri = lpkgBundleFile.toURI();
+
+		sb.append(URLCodec.decodeURL(uri.toString()));
+
+		sb.append("!/");
+		sb.append(path);
+
+		return new URL(sb.toString());
 	}
 
 }

@@ -31,7 +31,7 @@ import org.osgi.service.component.annotations.Component;
  *
  * @author Alejandro Hernández
  */
-@Component
+@Component(service = Provider.class)
 public class CredentialsProvider implements Provider<Credentials> {
 
 	@Override

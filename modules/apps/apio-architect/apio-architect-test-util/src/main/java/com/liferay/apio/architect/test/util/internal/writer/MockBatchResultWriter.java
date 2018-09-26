@@ -14,14 +14,14 @@
 
 package com.liferay.apio.architect.test.util.internal.writer;
 
-import static com.liferay.apio.architect.impl.unsafe.Unsafe.unsafeCast;
+import static com.liferay.apio.architect.internal.unsafe.Unsafe.unsafeCast;
 import static com.liferay.apio.architect.test.util.representor.MockRepresentorCreator.createRootModelRepresentor;
 import static com.liferay.apio.architect.test.util.writer.MockWriterUtil.getRequestInfo;
 
 import com.liferay.apio.architect.batch.BatchResult;
-import com.liferay.apio.architect.impl.message.json.BatchResultMessageMapper;
-import com.liferay.apio.architect.impl.writer.BatchResultWriter;
-import com.liferay.apio.architect.impl.writer.BatchResultWriter.Builder;
+import com.liferay.apio.architect.internal.message.json.BatchResultMessageMapper;
+import com.liferay.apio.architect.internal.writer.BatchResultWriter;
+import com.liferay.apio.architect.internal.writer.BatchResultWriter.Builder;
 import com.liferay.apio.architect.test.util.writer.MockWriterUtil;
 
 import java.util.List;

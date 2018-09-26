@@ -26,7 +26,7 @@ dependencies {
 	compileOnly project(":apps:apio-architect:apio-architect-api")
 
 	testCompile group: "co.unruly", name: "java-8-matchers", version: "1.5"
-	testCompile group: "com.openpojo", name: "openpojo", version: "0.8.6"
+	testCompile group: "com.openpojo", name: "openpojo", version: "0.8.10"
 	testCompile group: "com.spotify", name: "hamcrest-optional", version: "1.1.0"
 	testCompile group: "nl.jqno.equalsverifier", name: "equalsverifier", version: "2.4"
 	testCompile group: "org.exparity", name: "hamcrest-date", version: "2.0.4"

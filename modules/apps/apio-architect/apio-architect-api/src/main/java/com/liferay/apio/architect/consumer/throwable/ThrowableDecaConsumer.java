@@ -88,7 +88,7 @@ public interface ThrowableDecaConsumer<A, B, C, D, E, F, G, H, I, J> {
 	public default ThrowableDecaConsumer<A, B, C, D, E, F, G, H, I, J> andThen(
 		ThrowableDecaConsumer
 			<? super A, ? super B, ? super C, ? super D, ? super E, ? super F,
-			? super G, ? super H, ? super I, ? super J> after) {
+			 ? super G, ? super H, ? super I, ? super J> after) {
 
 		Objects.requireNonNull(after);
 

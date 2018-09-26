@@ -14,6 +14,9 @@ dependencies {
 	compileOnly project(":apps:apio-architect:apio-architect-api")
 
 	testCompile group: "com.github.stefanbirkner", name: "system-rules", version: "1.17.0"
+	testCompile group: "com.openpojo", name: "openpojo", version: "0.8.10"
+	testCompile group: "org.exparity", name: "hamcrest-date", version: "2.0.4"
+	testCompile group: "org.glassfish.jersey.core", name: "jersey-common", version: "2.26"
 	testCompile group: "org.hamcrest", name: "java-hamcrest", version: "2.0.0.0"
 	testCompile project(":apps:apio-architect:apio-architect-impl")
 	testCompile project(":apps:apio-architect:apio-architect-test-util")

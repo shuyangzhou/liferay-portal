@@ -30,7 +30,7 @@ public class ThrowableOctaFunctionTest {
 
 		ThrowableOctaFunction
 			<String, String, String, String, String, String, String, String,
-			String> throwableOctaFunction = (
+			 String> throwableOctaFunction = (
 				string1, string2, string3, string4, string5, string6,
 				string7, string8) ->
 					string1 + string2 + string3 + string4 + string5 + string6 +
@@ -52,7 +52,7 @@ public class ThrowableOctaFunctionTest {
 	public void testOnInvokingAndThenWithNullAfterFunctionThrowsException() {
 		ThrowableOctaFunction
 			<String, String, String, String, String, String, String, String,
-			String> throwableOctaFunction = (
+			 String> throwableOctaFunction = (
 				string1, string2, string3, string4, string5, string6,
 				string7, string8) ->
 					string1 + string2 + string3 + string4 + string5 + string6 +

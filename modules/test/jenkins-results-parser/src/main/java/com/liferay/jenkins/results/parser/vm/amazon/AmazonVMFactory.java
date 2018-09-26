@@ -30,6 +30,11 @@ public class AmazonVMFactory {
 		String awsAccessKeyId, String awsSecretAccessKey, String instanceSize,
 		InstanceType instanceType, String keyName) {
 
+		if (instanceType == InstanceType.AMAZON_LINUX_2) {
+			return new AmazonLinux2AmazonVM(
+				awsAccessKeyId, awsSecretAccessKey, instanceSize, keyName);
+		}
+
 		if (instanceType == InstanceType.CENTOS_7) {
 			return new CentOS7AmazonVM(
 				awsAccessKeyId, awsSecretAccessKey, instanceSize, keyName);
@@ -40,7 +45,7 @@ public class AmazonVMFactory {
 
 	public static enum InstanceType {
 
-		CENTOS_7
+		AMAZON_LINUX_2, CENTOS_7
 
 	}
 

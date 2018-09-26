@@ -26,8 +26,6 @@ import com.liferay.portal.kernel.lpkg.StaticLPKGResolver;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.URLCodec;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.lpkg.deployer.internal.wrapper.bundle.URLStreamHandlerServiceServiceTrackerCustomizer;
 import com.liferay.portal.lpkg.deployer.internal.wrapper.bundle.WARBundleWrapperBundleActivator;
 import com.liferay.portal.util.PropsValues;
@@ -36,7 +34,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import java.net.URI;
 import java.net.URL;
 
 import java.nio.file.FileSystem;
@@ -44,7 +41,6 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -179,18 +175,8 @@ public class LPKGBundleTrackerCustomizer
 					LPKGInnerBundleLocationUtil.generateInnerBundleLocation(
 						bundle, name);
 
-				StringBundler sb = new StringBundler(4);
-
-				sb.append("jar:");
-
-				URI uri = file.toURI();
-
-				sb.append(URLCodec.decodeURL(uri.toString()));
-
-				sb.append("!/");
-				sb.append(name);
-
-				URL url = new URL(sb.toString());
+				URL url = LPKGInnerBundleLocationUtil.generateInnerBundleURL(
+					file, name);
 
 				if (_isOverridden(symbolicName, url, location)) {
 					continue;
@@ -481,87 +467,18 @@ public class LPKGBundleTrackerCustomizer
 		bundle.uninstall();
 	}
 
-	private String[] _readServletContextNameAndPortalProfileNames(URL url)
-		throws IOException {
-
-		String pathString = url.getPath();
-
-		String servletContextName = pathString.substring(
-			pathString.lastIndexOf('/') + 1, pathString.lastIndexOf(".war"));
-
-		int index = servletContextName.lastIndexOf('-');
-
-		if (index >= 0) {
-			servletContextName = servletContextName.substring(0, index);
-		}
-
-		String portalProfileNames = null;
-
-		Path tempFilePath = Files.createTempFile(null, null);
-
-		try (InputStream inputStream1 = url.openStream()) {
-			Files.copy(
-				inputStream1, tempFilePath,
-				StandardCopyOption.REPLACE_EXISTING);
-
-			try (ZipFile zipFile = new ZipFile(tempFilePath.toFile());
-				InputStream inputStream2 = zipFile.getInputStream(
-					new ZipEntry(
-						"WEB-INF/liferay-plugin-package.properties"))) {
-
-				if (inputStream2 != null) {
-					Properties properties = new Properties();
-
-					properties.load(inputStream2);
-
-					String configuredServletContextName =
-						properties.getProperty("servlet-context-name");
-
-					if (configuredServletContextName != null) {
-						servletContextName = configuredServletContextName;
-					}
-
-					portalProfileNames = properties.getProperty(
-						"liferay-portal-profile-names");
-				}
-			}
-		}
-		finally {
-			Files.delete(tempFilePath);
-		}
-
-		return new String[] {servletContextName, portalProfileNames};
-	}
-
 	private InputStream _toWARWrapperBundle(Bundle bundle, URL url)
 		throws IOException {
 
-		StringBundler sb = new StringBundler(10);
-
-		sb.append("lpkg:/");
-		sb.append(URLCodec.encodeURL(bundle.getSymbolicName()));
-		sb.append(StringPool.DASH);
-		sb.append(bundle.getVersion());
-		sb.append(StringPool.SLASH);
-
 		String[] servletContextNameAndPortalProfileNames =
-			_readServletContextNameAndPortalProfileNames(url);
-
-		String servletContextName = servletContextNameAndPortalProfileNames[0];
-
-		sb.append(servletContextName);
-
-		sb.append(".war");
+			LPKGInnerWarBundleUtil.readServletContextNameAndPortalProfileNames(
+				url);
 
 		String portalProfileNames = servletContextNameAndPortalProfileNames[1];
+		String servletContextName = servletContextNameAndPortalProfileNames[0];
 
-		if (Validator.isNotNull(portalProfileNames)) {
-			sb.append(StringPool.QUESTION);
-			sb.append("liferay-portal-profile-names=");
-			sb.append(portalProfileNames);
-		}
-
-		String lpkgURL = sb.toString();
+		String lpkgURL = LPKGInnerWarBundleUtil.generateLPKGURL(
+			bundle, servletContextName, portalProfileNames);
 
 		// The bundle URL changes after a reboot. To ensure we do not install
 		// the same bundle multiple times over reboots, we must map the ever

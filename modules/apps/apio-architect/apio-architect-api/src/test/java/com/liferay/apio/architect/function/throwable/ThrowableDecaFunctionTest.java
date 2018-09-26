@@ -30,7 +30,7 @@ public class ThrowableDecaFunctionTest {
 
 		ThrowableDecaFunction
 			<String, String, String, String, String, String,
-			String, String, String, String, String> throwableDecaFunction = (
+			 String, String, String, String, String> throwableDecaFunction = (
 				string1, string2, string3, string4, string5, string6,
 				string7, string8, string9, string10) ->
 					string1 + string2 + string3 + string4 + string5 + string6 +
@@ -52,7 +52,7 @@ public class ThrowableDecaFunctionTest {
 	public void testOnInvokingAndThenWithNullAfterFunctionThrowsException() {
 		ThrowableDecaFunction
 			<String, String, String, String, String, String,
-			String, String, String, String, String> throwableDecaFunction = (
+			 String, String, String, String, String> throwableDecaFunction = (
 				string1, string2, string3, string4, string5, string6,
 				string7, string8, string9, string10) ->
 					string1 + string2 + string3 + string4 + string5 + string6 +

@@ -33,7 +33,7 @@ public class EnneaConsumerTest {
 
 		EnneaConsumer
 			<String, String, String, String, String, String, String,
-			String, String> enneaConsumer = (
+			 String, String> enneaConsumer = (
 				string1, string2, string3, string4, string5, string6, string7,
 				string8, string9) -> {
 			list.add(string1);

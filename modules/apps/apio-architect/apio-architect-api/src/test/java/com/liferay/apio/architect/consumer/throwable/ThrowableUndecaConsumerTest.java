@@ -35,7 +35,7 @@ public class ThrowableUndecaConsumerTest {
 
 		ThrowableUndecaConsumer
 			<String, String, String, String, String, String,
-			String, String, String, String, String> undecaConsumer = (
+			 String, String, String, String, String> undecaConsumer = (
 				string1, string2, string3, string4, string5, string6, string7,
 				string8, string9, string10, string11) -> {
 			list.add(string1);

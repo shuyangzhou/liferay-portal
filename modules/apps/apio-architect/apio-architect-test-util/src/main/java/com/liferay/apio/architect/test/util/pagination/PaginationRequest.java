@@ -14,7 +14,7 @@
 
 package com.liferay.apio.architect.test.util.pagination;
 
-import com.liferay.apio.architect.impl.pagination.PaginationImpl;
+import com.liferay.apio.architect.internal.pagination.PaginationImpl;
 import com.liferay.apio.architect.pagination.Pagination;
 
 /**

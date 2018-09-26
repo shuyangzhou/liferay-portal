@@ -91,8 +91,8 @@ public interface ThrowableUndecaConsumer<A, B, C, D, E, F, G, H, I, J, K> {
 		andThen(
 			ThrowableUndecaConsumer
 				<? super A, ? super B, ? super C, ? super D, ? super E,
-				? super F, ? super G, ? super H, ? super I, ? super J,
-				? super K> after) {
+				 ? super F, ? super G, ? super H, ? super I, ? super J,
+				 ? super K> after) {
 
 		Objects.requireNonNull(after);
 

@@ -25,9 +25,16 @@ import java.io.InputStream;
 public class BinaryFile {
 
 	public BinaryFile(InputStream inputStream, Long size, String mimeType) {
+		this(inputStream, size, mimeType, null);
+	}
+
+	public BinaryFile(
+		InputStream inputStream, Long size, String mimeType, String name) {
+
 		_inputStream = inputStream;
 		_size = size;
 		_mimeType = mimeType;
+		_name = name;
 	}
 
 	public InputStream getInputStream() {
@@ -38,12 +45,17 @@ public class BinaryFile {
 		return _mimeType;
 	}
 
+	public String getName() {
+		return _name;
+	}
+
 	public long getSize() {
 		return _size;
 	}
 
 	private final InputStream _inputStream;
 	private final String _mimeType;
+	private final String _name;
 	private final long _size;
 
 }

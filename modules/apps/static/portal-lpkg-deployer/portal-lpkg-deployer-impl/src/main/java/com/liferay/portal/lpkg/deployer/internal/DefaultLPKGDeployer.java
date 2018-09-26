@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Dictionary;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -153,6 +154,8 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 			Bundle lpkgBundle = bundleContext.getBundle(location);
 
 			if (lpkgBundle != null) {
+				_addWarLPKGURLs(_urls, lpkgBundle);
+
 				return Collections.emptyList();
 			}
 
@@ -359,6 +362,44 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 		}
 		finally {
 			LPKGIndexValidatorThreadLocal.setEnabled(enabled);
+		}
+	}
+
+	private void _addWarLPKGURLs(Map<String, URL> urls, Bundle lpkgBundle) {
+		File file = new File(lpkgBundle.getLocation());
+
+		try (ZipFile zipFile = new ZipFile(file)) {
+			Enumeration<? extends ZipEntry> zipEntries = zipFile.entries();
+
+			while (zipEntries.hasMoreElements()) {
+				ZipEntry zipEntry = zipEntries.nextElement();
+
+				String name = zipEntry.getName();
+
+				if (!name.endsWith(".war")) {
+					continue;
+				}
+
+				URL url = LPKGInnerBundleLocationUtil.generateInnerBundleURL(
+					file, name);
+
+				String[] servletContextNameAndPortalProfileNames =
+					LPKGInnerWarBundleUtil.
+						readServletContextNameAndPortalProfileNames(url);
+
+				String portalProfileNames =
+					servletContextNameAndPortalProfileNames[1];
+				String servletContextName =
+					servletContextNameAndPortalProfileNames[0];
+
+				String lpkgURL = LPKGInnerWarBundleUtil.generateLPKGURL(
+					lpkgBundle, servletContextName, portalProfileNames);
+
+				urls.put(lpkgURL, url);
+			}
+		}
+		catch (Exception e) {
+			_log.error("Unable to check for LPKG URLs in " + lpkgBundle, e);
 		}
 	}
 

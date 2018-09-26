@@ -2,16 +2,17 @@
 
 <suppressions>
 	<checkstyle>
-		<suppress checks="ParsePrimitiveTypeCheck" files="apio-architect-uri-mapper-impl/src/main/java/com/liferay/apio/architect/uri/mapper/impl/PathLongIdentifierMapper\.java" />
+		<suppress checks="ConstantNameCheck" files="apio-architect-sample/src/test/java/com/liferay/apio/architect/sample/internal/converter/DemoDataUtil\.java" />
+		<suppress checks="ParsePrimitiveTypeCheck" files="apio-architect-uri-mapper-impl/src/main/java/com/liferay/apio/architect/uri/mapper/internal/PathLongIdentifierMapper\.java" />
 		<suppress checks="SelfReferenceCheck" files="apio-architect-api/src/main/java/com/liferay/apio/architect/functional/Try\.java" />
 		<suppress checks="VariableNameCheck" files="apio-architect-api/src/main/java/com/liferay/apio/architect/routes/.*" />
-		<suppress checks="VariableNameCheck" files="apio-architect-impl/src/main/java/com/liferay/apio/architect/impl/routes/.*" />
+		<suppress checks="VariableNameCheck" files="apio-architect-impl/src/main/java/com/liferay/apio/architect/internal/routes/.*" />
 	</checkstyle>
 	<source-check>
 		<suppress checks="JavaDeprecatedJavadocCheck" files=".*" />
-		<suppress checks="JavaIllegalImportsCheck" files="apio-architect-impl/src/main/java/com/liferay/apio/architect/impl/.*" />
-		<suppress checks="JavaModuleInternalImportsCheck" files="apio-architect-impl/src/main/java/com/liferay/apio/architect/impl/wiring/osgi/manager/base/BaseManager\.java" />
-		<suppress checks="JavaModuleInternalImportsCheck" files="apio-architect-impl/src/main/java/com/liferay/apio/architect/impl/wiring/osgi/manager/documentation/contributor/CustomDocumentationManagerImpl\.java" />
+		<suppress checks="JavaIllegalImportsCheck" files="apio-architect-impl/src/main/java/com/liferay/apio/architect/internal/.*" />
+		<suppress checks="JavaModuleInternalImportsCheck" files="apio-architect-impl/src/main/java/com/liferay/apio/architect/internal/wiring/osgi/manager/base/BaseManager\.java" />
+		<suppress checks="JavaModuleInternalImportsCheck" files="apio-architect-impl/src/main/java/com/liferay/apio/architect/internal/wiring/osgi/manager/documentation/contributor/CustomDocumentationManagerImpl\.java" />
 		<suppress checks="JavaStaticImportsCheck" files=".*" />
 	</source-check>
 </suppressions>
