@@ -20,26 +20,34 @@
 ResultRow row = (ResultRow)request.getAttribute(WebKeys.SEARCH_CONTAINER_RESULT_ROW);
 
 DDMDataProviderInstance ddmDataProviderInstance = (DDMDataProviderInstance)row.getObject();
-
-String href = (String)request.getAttribute(WebKeys.SEARCH_ENTRY_HREF);
 %>
 
-<liferay-ui:app-view-entry
-	actionJsp="/data_provider_action.jsp"
-	actionJspServletContext="<%= application %>"
-	author="<%= ddmDataProviderInstance.getUserName() %>"
-	createDate="<%= ddmDataProviderInstance.getCreateDate() %>"
-	description="<%= ddmDataProviderInstance.getDescription(locale) %>"
-	displayStyle="descriptive"
-	groupId="<%= ddmDataProviderInstance.getGroupId() %>"
-	markupView="lexicon"
-	modifiedDate="<%= ddmDataProviderInstance.getModifiedDate() %>"
-	rowCheckerId="<%= String.valueOf(ddmDataProviderInstance.getDataProviderInstanceId()) %>"
-	rowCheckerName="<%= DDMDataProviderInstance.class.getSimpleName() %>"
-	showCheckbox="<%= false %>"
-	thumbnailDivStyle="height: 146px; width: 146px;"
-	thumbnailSrc="<%= ddmDataProviderDisplayContext.getUserPortraitURL(ddmDataProviderInstance.getUserId()) %>"
-	thumbnailStyle="max-height: 128px; max-width: 128px;"
-	title="<%= ddmDataProviderInstance.getName(locale) %>"
-	url="<%= href %>"
-/>
+<div class="clamp-container">
+	<h4 class="truncate-text">
+		<aui:a href="<%= (String)request.getAttribute(WebKeys.SEARCH_ENTRY_HREF) %>">
+			<%= HtmlUtil.escape(ddmDataProviderInstance.getName(locale)) %>
+		</aui:a>
+	</h4>
+
+	<h5 class="text-default">
+		<div class="truncate-text">
+			<%= HtmlUtil.escape(ddmDataProviderInstance.getDescription(locale)) %>
+		</div>
+	</h5>
+
+	<h5 class="text-default">
+		<span class="data-provider-instance-id">
+			<liferay-ui:message key="id" />: <%= ddmDataProviderInstance.getDataProviderInstanceId() %>
+		</span>
+		<span class="data-provider-instance-modified-date">
+
+			<%
+			DateSearchEntry dateSearchEntry = new DateSearchEntry();
+
+			dateSearchEntry.setDate(ddmDataProviderInstance.getModifiedDate());
+			%>
+
+			<liferay-ui:message key="modified-date" />: <%= dateSearchEntry.getName(request) %>
+		</span>
+	</h5>
+</div>
