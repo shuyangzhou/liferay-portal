@@ -15,7 +15,8 @@
 package com.liferay.apio.architect.sample.internal.jaxrs;
 
 import com.liferay.apio.architect.functional.Try;
-import com.liferay.apio.architect.sample.internal.model.PersonModel;
+import com.liferay.apio.architect.sample.internal.dao.PersonModelService;
+import com.liferay.apio.architect.sample.internal.dto.PersonModel;
 
 import java.net.URL;
 
@@ -26,6 +27,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * Provides an example of a JAX-RS resource to show how to hook new resources to
@@ -58,7 +60,7 @@ public class AvatarResource {
 	@Path("{id}")
 	public Response getAvatar(@PathParam("id") long id) {
 		return Try.fromOptional(
-			() -> PersonModel.get(id), NotFoundException::new
+			() -> _personModelService.get(id), NotFoundException::new
 		).map(
 			PersonModel::getAvatar
 		).map(
@@ -75,5 +77,8 @@ public class AvatarResource {
 			NotFoundException::new
 		);
 	}
+
+	@Reference
+	private PersonModelService _personModelService;
 
 }

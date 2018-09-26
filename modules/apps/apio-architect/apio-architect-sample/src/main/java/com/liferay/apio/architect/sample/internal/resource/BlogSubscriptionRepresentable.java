@@ -14,56 +14,87 @@
 
 package com.liferay.apio.architect.sample.internal.resource;
 
+import com.liferay.apio.architect.form.Form;
+import com.liferay.apio.architect.identifier.Identifier;
 import com.liferay.apio.architect.representor.Representable;
 import com.liferay.apio.architect.representor.Representor;
-import com.liferay.apio.architect.sample.internal.identifier.BlogSubscriptionIdentifier;
-import com.liferay.apio.architect.sample.internal.model.BlogPostingModel;
-import com.liferay.apio.architect.sample.internal.model.BlogSubscriptionModel;
-import com.liferay.apio.architect.sample.internal.model.PersonModel;
+import com.liferay.apio.architect.sample.internal.resource.BlogPostingCollectionResource.BlogPostingIdentifier;
+import com.liferay.apio.architect.sample.internal.resource.PersonCollectionResource.PersonIdentifier;
+import com.liferay.apio.architect.sample.internal.type.BlogSubscription;
 
 import org.osgi.service.component.annotations.Component;
 
 /**
- * Provides all the information necessary to expose a BlogSubscription resource
- *
- * @author Javier Gamarra
+ * @author Alejandro Hernández
  */
-@Component
+@Component(service = Representable.class)
 public class BlogSubscriptionRepresentable
-	implements
-		Representable<BlogSubscriptionModel, Long, BlogSubscriptionIdentifier> {
+	implements Representable
+		<BlogSubscription, Long,
+		 BlogSubscriptionRepresentable.BlogSubscriptionIdentifier> {
 
-	@Override
-	public String getName() {
-		return "subscription";
-	}
+	public static Form<BlogSubscriptionForm> buildForm(
+		Form.Builder<BlogSubscriptionForm> formBuilder) {
 
-	@Override
-	public Representor<BlogSubscriptionModel> representor(
-		Representor.Builder<BlogSubscriptionModel, Long> builder) {
-
-		return builder.types(
-			"BlogSubscription"
-		).identifier(
-			BlogSubscriptionModel::getId
-		).addString(
-			"blog", this::_getTitle
-		).addString(
-			"person", this::_getFullName
+		return formBuilder.title(
+			__ -> "The blog subscription form"
+		).description(
+			__ ->
+				"This form can be used to create or update a blog subscription"
+		).constructor(
+			BlogSubscriptionForm::new
+		).addRequiredLinkedModel(
+			"person", PersonIdentifier.class, BlogSubscriptionForm::_setPersonId
 		).build();
 	}
 
-	private String _getFullName(BlogSubscriptionModel blogSubscriptionModel) {
-		PersonModel personModel = blogSubscriptionModel.getPersonModel();
-
-		return personModel.getFullName();
+	@Override
+	public String getName() {
+		return "blog-subscription-dsl";
 	}
 
-	private String _getTitle(BlogSubscriptionModel blogSubscriptionModel) {
-		BlogPostingModel blogPostingModel =
-			blogSubscriptionModel.getBlogPostingModel();
+	@Override
+	public Representor<BlogSubscription> representor(
+		Representor.Builder<BlogSubscription, Long> builder) {
 
-		return blogPostingModel.getTitle();
+		return builder.types(
+			"BlogSubscriptionDSL"
+		).identifier(
+			BlogSubscription::getId
+		).addLinkedModel(
+			"blog", BlogPostingIdentifier.class,
+			BlogSubscription::getBlogPostingId
+		).addLinkedModel(
+			"person", PersonIdentifier.class, BlogSubscription::getPersonId
+		).build();
+	}
+
+	public static class BlogSubscriptionForm implements BlogSubscription {
+
+		@Override
+		public Long getBlogPostingId() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Long getId() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Long getPersonId() {
+			return _personId;
+		}
+
+		private void _setPersonId(Long personId) {
+			_personId = personId;
+		}
+
+		private Long _personId;
+
+	}
+
+	public interface BlogSubscriptionIdentifier extends Identifier<Long> {
 	}
 
 }

@@ -80,7 +80,7 @@ public interface OctaConsumer<A, B, C, D, E, F, G, H> {
 	public default OctaConsumer<A, B, C, D, E, F, G, H> andThen(
 		OctaConsumer
 			<? super A, ? super B, ? super C, ? super D, ? super E, ? super F,
-			? super G, ? super H> after) {
+			 ? super G, ? super H> after) {
 
 		Objects.requireNonNull(after);
 

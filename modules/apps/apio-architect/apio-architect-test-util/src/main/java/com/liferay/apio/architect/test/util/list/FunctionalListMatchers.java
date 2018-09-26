@@ -14,7 +14,7 @@
 
 package com.liferay.apio.architect.test.util.list;
 
-import com.liferay.apio.architect.impl.list.FunctionalList;
+import com.liferay.apio.architect.internal.list.FunctionalList;
 import com.liferay.apio.architect.test.util.internal.list.IsAFunctionalList;
 
 import org.hamcrest.Matcher;

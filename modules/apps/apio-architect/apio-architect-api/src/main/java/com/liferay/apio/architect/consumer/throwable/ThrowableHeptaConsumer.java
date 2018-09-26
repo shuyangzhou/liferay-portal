@@ -81,7 +81,7 @@ public interface ThrowableHeptaConsumer<A, B, C, D, E, F, G> {
 	public default ThrowableHeptaConsumer<A, B, C, D, E, F, G> andThen(
 		ThrowableHeptaConsumer
 			<? super A, ? super B, ? super C, ? super D, ? super E, ? super F,
-			? super G> after) {
+			 ? super G> after) {
 
 		Objects.requireNonNull(after);
 

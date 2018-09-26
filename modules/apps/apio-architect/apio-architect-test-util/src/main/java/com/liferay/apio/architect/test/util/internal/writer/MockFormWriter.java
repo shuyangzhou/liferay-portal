@@ -16,8 +16,8 @@ package com.liferay.apio.architect.test.util.internal.writer;
 
 import static com.liferay.apio.architect.test.util.writer.MockWriterUtil.getRequestInfo;
 
-import com.liferay.apio.architect.impl.message.json.FormMessageMapper;
-import com.liferay.apio.architect.impl.writer.FormWriter;
+import com.liferay.apio.architect.internal.message.json.FormMessageMapper;
+import com.liferay.apio.architect.internal.writer.FormWriter;
 import com.liferay.apio.architect.test.util.form.MockFormCreator;
 
 /**

@@ -83,7 +83,7 @@ public interface ThrowableOctaConsumer<A, B, C, D, E, F, G, H> {
 	public default ThrowableOctaConsumer<A, B, C, D, E, F, G, H> andThen(
 		ThrowableOctaConsumer
 			<? super A, ? super B, ? super C, ? super D, ? super E, ? super F,
-			? super G, ? super H> after) {
+			 ? super G, ? super H> after) {
 
 		Objects.requireNonNull(after);
 

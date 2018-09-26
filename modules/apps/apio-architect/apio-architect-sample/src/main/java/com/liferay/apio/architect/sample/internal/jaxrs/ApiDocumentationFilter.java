@@ -35,7 +35,8 @@ import org.osgi.service.component.annotations.Component;
 	property = {
 		"osgi.jaxrs.application.select=(liferay.apio.architect.application=true)",
 		"osgi.jaxrs.extension=true"
-	}
+	},
+	service = ContainerResponseFilter.class
 )
 public class ApiDocumentationFilter implements ContainerResponseFilter {
 

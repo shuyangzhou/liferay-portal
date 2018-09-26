@@ -30,7 +30,7 @@ public class OctaFunctionTest {
 	public void testOnInvokingAndThenShouldExecuteBothFunctions() {
 		OctaFunction
 			<String, String, String, String, String, String, String,
-			String, String> firstFunction = (
+			 String, String> firstFunction = (
 				string1, string2, string3, string4, string5,
 				string6, string7, string8) ->
 					string1 + string2 + string3 + string4 + string5 + string6 +
@@ -51,7 +51,7 @@ public class OctaFunctionTest {
 	public void testOnInvokingAndThenWithNullAfterFunctionThrowsException() {
 		OctaFunction
 			<String, String, String, String, String, String, String, String,
-			String> firstFunction = (
+			 String> firstFunction = (
 				string1, string2, string3, string4, string5,
 				string6, string7, string8) ->
 					string1 + string2 + string3 + string4 + string5 + string6 +

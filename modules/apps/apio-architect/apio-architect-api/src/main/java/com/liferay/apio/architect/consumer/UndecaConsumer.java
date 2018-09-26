@@ -88,7 +88,7 @@ public interface UndecaConsumer<A, B, C, D, E, F, G, H, I, J, K> {
 	public default UndecaConsumer<A, B, C, D, E, F, G, H, I, J, K> andThen(
 		UndecaConsumer
 			<? super A, ? super B, ? super C, ? super D, ? super E, ? super F,
-			? super G, ? super H, ? super I, ? super J, ? super K> after) {
+			 ? super G, ? super H, ? super I, ? super J, ? super K> after) {
 
 		Objects.requireNonNull(after);
 

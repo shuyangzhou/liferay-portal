@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.apio.architect.form.Body;
-import com.liferay.apio.architect.impl.form.JSONBodyImpl;
+import com.liferay.apio.architect.internal.form.JSONBodyImpl;
 
 import java.io.IOException;
 

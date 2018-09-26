@@ -17,162 +17,298 @@ package com.liferay.apio.architect.sample.internal.resource;
 import static com.liferay.apio.architect.sample.internal.auth.PermissionChecker.hasPermission;
 
 import com.liferay.apio.architect.credentials.Credentials;
-import com.liferay.apio.architect.pagination.PageItems;
-import com.liferay.apio.architect.pagination.Pagination;
+import com.liferay.apio.architect.form.Form;
+import com.liferay.apio.architect.identifier.Identifier;
 import com.liferay.apio.architect.representor.Representor;
 import com.liferay.apio.architect.resource.CollectionResource;
 import com.liferay.apio.architect.routes.CollectionRoutes;
 import com.liferay.apio.architect.routes.ItemRoutes;
 import com.liferay.apio.architect.sample.internal.auth.PermissionChecker;
-import com.liferay.apio.architect.sample.internal.form.PersonForm;
-import com.liferay.apio.architect.sample.internal.identifier.PersonIdentifier;
-import com.liferay.apio.architect.sample.internal.model.PersonModel;
-import com.liferay.apio.architect.sample.internal.model.PostalAddressModel;
+import com.liferay.apio.architect.sample.internal.router.PersonActionRouter;
+import com.liferay.apio.architect.sample.internal.type.Person;
+import com.liferay.apio.architect.sample.internal.type.PostalAddress;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-
-import javax.ws.rs.ForbiddenException;
-import javax.ws.rs.NotFoundException;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
- * Provides all the information necessary to expose <a
- * href="http://schema.org/Person">Person</a> resources through a web API. The
- * resources are mapped from the internal {@link PersonModel} model.
- *
  * @author Alejandro Hernández
  */
-@Component
+@Component(service = CollectionResource.class)
 public class PersonCollectionResource
-	implements CollectionResource<PersonModel, Long, PersonIdentifier> {
+	implements CollectionResource
+		<Person, Long, PersonCollectionResource.PersonIdentifier> {
 
 	@Override
-	public CollectionRoutes<PersonModel, Long> collectionRoutes(
-		CollectionRoutes.Builder<PersonModel, Long> builder) {
+	public CollectionRoutes<Person, Long> collectionRoutes(
+		CollectionRoutes.Builder<Person, Long> builder) {
 
 		return builder.addGetter(
-			this::_getPageItems
+			_personActionRouter::retrieveCollection
 		).addCreator(
-			this::_addPerson, Credentials.class,
-			PermissionChecker::hasPermission, PersonForm::buildForm
+			_personActionRouter::create, Credentials.class,
+			PermissionChecker::hasPermission,
+			PersonCollectionResource::_buildPersonForm
 		).build();
 	}
 
 	@Override
 	public String getName() {
-		return "people";
+		return "people-dsl";
 	}
 
 	@Override
-	public ItemRoutes<PersonModel, Long> itemRoutes(
-		ItemRoutes.Builder<PersonModel, Long> builder) {
+	public ItemRoutes<Person, Long> itemRoutes(
+		ItemRoutes.Builder<Person, Long> builder) {
 
 		return builder.addGetter(
-			this::_getPerson
+			_personActionRouter::retrieve
 		).addRemover(
-			this::_deletePerson, Credentials.class,
+			_personActionRouter::remove, Credentials.class,
 			(credentials, id) -> hasPermission(credentials)
 		).addUpdater(
-			this::_updatePerson, Credentials.class,
+			_personActionRouter::replace, Credentials.class,
 			(credentials, id) -> hasPermission(credentials),
-			PersonForm::buildForm
+			PersonCollectionResource::_buildPersonForm
 		).build();
 	}
 
 	@Override
-	public Representor<PersonModel> representor(
-		Representor.Builder<PersonModel, Long> builder) {
+	public Representor<Person> representor(
+		Representor.Builder<Person, Long> builder) {
 
 		return builder.types(
-			"Person"
+			"PersonDSL"
 		).identifier(
-			PersonModel::getId
+			Person::getId
 		).addDate(
-			"birthDate", PersonModel::getBirthDate
+			"birthDate", Person::getBirthDate
 		).addNested(
-			"address", PersonModel::getPostalAddressModel,
+			"address", Person::getPostalAddress,
 			nestedBuilder -> nestedBuilder.types(
-				"PostalAddress"
+				"PostalAddressDSL"
 			).addString(
-				"addressCountry", PostalAddressModel::getCountryCode
+				"addressCountry", PostalAddress::getAddressCountry
 			).addString(
-				"addressLocality", PostalAddressModel::getCity
+				"addressLocality", PostalAddress::getAddressLocality
 			).addString(
-				"addressRegion", PostalAddressModel::getState
+				"addressRegion", PostalAddress::getAddressRegion
 			).addString(
-				"postalCode", PostalAddressModel::getZipCode
+				"postalCode", PostalAddress::getPostalCode
 			).addString(
-				"streetAddress", PostalAddressModel::getStreetAddress
+				"streetAddress", PostalAddress::getStreetAddress
 			).build()
 		).addApplicationRelativeURL(
-			"image", PersonModel::getAvatarRelativeURL
+			"image", Person::getImage
 		).addString(
-			"email", PersonModel::getEmail
+			"email", Person::getEmail
 		).addString(
-			"familyName", PersonModel::getLastName
+			"familyName", Person::getFamilyName
 		).addString(
-			"givenName", PersonModel::getFirstName
+			"givenName", Person::getGivenName
 		).addStringList(
-			"jobTitle", PersonModel::getJobTitles
+			"jobTitle", Person::getJobTitles
 		).addString(
-			"name", PersonModel::getFullName
+			"name", Person::getName
 		).build();
 	}
 
-	private PersonModel _addPerson(
-		PersonForm personForm, Credentials credentials) {
+	public interface PersonIdentifier extends Identifier<Long> {
+	}
 
-		if (!hasPermission(credentials)) {
-			throw new ForbiddenException();
+	private static Form<PersonForm> _buildPersonForm(
+		Form.Builder<PersonForm> formBuilder) {
+
+		return formBuilder.title(
+			__ -> "The person form"
+		).description(
+			__ -> "This form can be used to create or update a person"
+		).constructor(
+			PersonForm::new
+		).addRequiredDate(
+			"birthDate", PersonForm::_setBirthDate
+		).addOptionalStringList(
+			"jobTitle", PersonForm::_setJobTitle
+		).addRequiredNestedModel(
+			"postalAddress", PersonCollectionResource::_buildPostalAddressForm,
+			PersonForm::_setPostalAddress
+		).addRequiredString(
+			"givenName", PersonForm::_setGivenName
+		).addRequiredString(
+			"image", PersonForm::_setImage
+		).addRequiredString(
+			"email", PersonForm::_setEmail
+		).addRequiredString(
+			"familyName", PersonForm::_setFamilyName
+		).build();
+	}
+
+	private static Form<PostalAddressForm> _buildPostalAddressForm(
+		Form.Builder<PostalAddressForm> postalAddressFormBuilder) {
+
+		return postalAddressFormBuilder.title(
+			__ -> "The postal address form"
+		).description(
+			__ -> "This form can be used to create a postal address"
+		).constructor(
+			PostalAddressForm::new
+		).addRequiredString(
+			"addressCountry", PostalAddressForm::_setAddressCountry
+		).addRequiredString(
+			"addressLocality", PostalAddressForm::_setAddressLocality
+		).addRequiredString(
+			"addressRegion", PostalAddressForm::_setAddressRegion
+		).addRequiredString(
+			"postalCode", PostalAddressForm::_setPostalCode
+		).addRequiredString(
+			"streetAddress", PostalAddressForm::_setStreetAddress
+		).build();
+	}
+
+	@Reference
+	private PersonActionRouter _personActionRouter;
+
+	private static class PersonForm implements Person {
+
+		@Override
+		public Date getBirthDate() {
+			return _birthDate;
 		}
 
-		return PersonModel.create(
-			personForm.getPostalAddressModel(), personForm.getImage(),
-			personForm.getBirthDate(), personForm.getEmail(),
-			personForm.getGivenName(), personForm.getJobTitles(),
-			personForm.getFamilyName());
-	}
-
-	private void _deletePerson(long id, Credentials credentials) {
-		if (!hasPermission(credentials)) {
-			throw new ForbiddenException();
+		@Override
+		public String getEmail() {
+			return _email;
 		}
 
-		PersonModel.remove(id);
-	}
-
-	private PageItems<PersonModel> _getPageItems(Pagination pagination) {
-		List<PersonModel> personModels = PersonModel.getPage(
-			pagination.getStartPosition(), pagination.getEndPosition());
-		int count = PersonModel.getCount();
-
-		return new PageItems<>(personModels, count);
-	}
-
-	private PersonModel _getPerson(long id) {
-		Optional<PersonModel> optional = PersonModel.get(id);
-
-		return optional.orElseThrow(
-			() -> new NotFoundException("Unable to get person " + id));
-	}
-
-	private PersonModel _updatePerson(
-		long id, PersonForm personForm, Credentials credentials) {
-
-		if (!hasPermission(credentials)) {
-			throw new ForbiddenException();
+		@Override
+		public String getFamilyName() {
+			return _familyName;
 		}
 
-		Optional<PersonModel> optional = PersonModel.update(
-			personForm.getPostalAddressModel(), personForm.getImage(),
-			personForm.getBirthDate(), personForm.getEmail(),
-			personForm.getGivenName(), personForm.getJobTitles(),
-			personForm.getFamilyName(), id);
+		@Override
+		public String getGivenName() {
+			return _givenName;
+		}
 
-		return optional.orElseThrow(
-			() -> new NotFoundException("Unable to get person " + id));
+		@Override
+		public Long getId() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public String getImage() {
+			return _image;
+		}
+
+		@Override
+		public List<String> getJobTitles() {
+			return _jobTitle;
+		}
+
+		@Override
+		public String getName() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public PostalAddress getPostalAddress() {
+			return _postalAddress;
+		}
+
+		private void _setBirthDate(Date birthDate) {
+			_birthDate = birthDate;
+		}
+
+		private void _setEmail(String email) {
+			_email = email;
+		}
+
+		private void _setFamilyName(String familyName) {
+			_familyName = familyName;
+		}
+
+		private void _setGivenName(String givenName) {
+			_givenName = givenName;
+		}
+
+		private void _setImage(String image) {
+			_image = image;
+		}
+
+		private void _setJobTitle(List<String> jobTitle) {
+			_jobTitle = jobTitle;
+		}
+
+		private void _setPostalAddress(PostalAddress postalAddress) {
+			_postalAddress = postalAddress;
+		}
+
+		private Date _birthDate;
+		private String _email;
+		private String _familyName;
+		private String _givenName;
+		private String _image;
+		private List<String> _jobTitle;
+		private PostalAddress _postalAddress;
+
+	}
+
+	private static class PostalAddressForm implements PostalAddress {
+
+		@Override
+		public String getAddressCountry() {
+			return _addressCountry;
+		}
+
+		@Override
+		public String getAddressLocality() {
+			return _addressLocality;
+		}
+
+		@Override
+		public String getAddressRegion() {
+			return _addressRegion;
+		}
+
+		@Override
+		public String getPostalCode() {
+			return _postalCode;
+		}
+
+		@Override
+		public String getStreetAddress() {
+			return _streetAddress;
+		}
+
+		private void _setAddressCountry(String addressCountry) {
+			_addressCountry = addressCountry;
+		}
+
+		private void _setAddressLocality(String addressLocality) {
+			_addressLocality = addressLocality;
+		}
+
+		private void _setAddressRegion(String addressRegion) {
+			_addressRegion = addressRegion;
+		}
+
+		private void _setPostalCode(String postalCode) {
+			_postalCode = postalCode;
+		}
+
+		private void _setStreetAddress(String streetAddress) {
+			_streetAddress = streetAddress;
+		}
+
+		private String _addressCountry;
+		private String _addressLocality;
+		private String _addressRegion;
+		private String _postalCode;
+		private String _streetAddress;
+
 	}
 
 }

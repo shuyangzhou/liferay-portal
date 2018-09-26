@@ -86,7 +86,7 @@ public interface ThrowableEnneaConsumer<A, B, C, D, E, F, G, H, I> {
 	public default ThrowableEnneaConsumer<A, B, C, D, E, F, G, H, I> andThen(
 		ThrowableEnneaConsumer
 			<? super A, ? super B, ? super C, ? super D, ? super E, ? super F,
-			? super G, ? super H, ? super I> after) {
+			 ? super G, ? super H, ? super I> after) {
 
 		Objects.requireNonNull(after);
 
