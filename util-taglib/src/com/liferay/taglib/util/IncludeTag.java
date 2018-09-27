@@ -49,6 +49,8 @@ import java.util.Set;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletRequestWrapper;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
@@ -382,7 +384,20 @@ public class IncludeTag extends AttributesTagSupport {
 			DirectRequestDispatcherFactoryUtil.getRequestDispatcher(
 				servletContext, page);
 
-		requestDispatcher.include(request, response);
+		ServletRequest servletRequest = request;
+
+		if (servletContext == request.getAttribute(WebKeys.CTX)) {
+			while ((servletRequest.getServletContext() != servletContext) &&
+				   (servletRequest instanceof ServletRequestWrapper)) {
+
+				ServletRequestWrapper servletRequestWrapper =
+					(ServletRequestWrapper)servletRequest;
+
+				servletRequest = servletRequestWrapper.getRequest();
+			}
+		}
+
+		requestDispatcher.include(servletRequest, response);
 	}
 
 	protected boolean isCleanUpSetAttributes() {
