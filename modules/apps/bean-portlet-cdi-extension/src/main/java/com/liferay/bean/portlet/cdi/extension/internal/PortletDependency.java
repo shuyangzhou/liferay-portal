@@ -17,19 +17,39 @@ package com.liferay.bean.portlet.cdi.extension.internal;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 
+import java.util.Objects;
+
 /**
  * @author Neil Griffin
  */
 public class PortletDependency {
 
-	public PortletDependency() {
-		this(null, null, null);
-	}
-
 	public PortletDependency(String name, String scope, String version) {
 		_name = name;
 		_scope = scope;
 		_version = version;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if ((obj == null) || !(obj instanceof PortletDependency)) {
+			return false;
+		}
+
+		PortletDependency portletDependency = (PortletDependency)obj;
+
+		if (Objects.equals(_name, portletDependency.getName()) &&
+			Objects.equals(_scope, portletDependency.getScope()) &&
+			Objects.equals(_version, portletDependency.getVersion())) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	public String getName() {
@@ -44,16 +64,9 @@ public class PortletDependency {
 		return _version;
 	}
 
-	public void setName(String name) {
-		_name = name;
-	}
-
-	public void setScope(String scope) {
-		_scope = scope;
-	}
-
-	public void setVersion(String version) {
-		_version = version;
+	@Override
+	public int hashCode() {
+		return Objects.hash(_name, _scope, _version);
 	}
 
 	@Override
@@ -79,8 +92,8 @@ public class PortletDependency {
 		return sb.toString();
 	}
 
-	private String _name;
-	private String _scope;
-	private String _version;
+	private final String _name;
+	private final String _scope;
+	private final String _version;
 
 }
