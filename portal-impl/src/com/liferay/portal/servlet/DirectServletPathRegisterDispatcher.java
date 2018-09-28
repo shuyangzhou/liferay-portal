@@ -61,6 +61,9 @@ public class DirectServletPathRegisterDispatcher implements RequestDispatcher {
 		servletRequest.setAttribute(
 			RequestDispatcher.INCLUDE_SERVLET_PATH, _path);
 
+		String servletPath = (String)servletRequest.getAttribute(
+			WebKeys.SERVLET_PATH);
+
 		servletRequest.setAttribute(WebKeys.SERVLET_PATH, _path);
 
 		try {
@@ -71,6 +74,7 @@ public class DirectServletPathRegisterDispatcher implements RequestDispatcher {
 				RequestDispatcher.INCLUDE_PATH_INFO, includePathInfo);
 			servletRequest.setAttribute(
 				RequestDispatcher.INCLUDE_SERVLET_PATH, includeServletPath);
+			servletRequest.setAttribute(WebKeys.SERVLET_PATH, servletPath);
 		}
 	}
 
