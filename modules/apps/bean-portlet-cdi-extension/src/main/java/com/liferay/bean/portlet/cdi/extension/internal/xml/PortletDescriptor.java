@@ -12,15 +12,31 @@
  * details.
  */
 
-package com.liferay.bean.portlet.cdi.extension.internal;
+package com.liferay.bean.portlet.cdi.extension.internal.xml;
 
-import java.util.ArrayList;
+import com.liferay.bean.portlet.cdi.extension.internal.BeanApp;
+import com.liferay.bean.portlet.cdi.extension.internal.BeanFilter;
+import com.liferay.bean.portlet.cdi.extension.internal.BeanPortlet;
+
 import java.util.List;
 
 /**
  * @author Neil Griffin
  */
 public class PortletDescriptor {
+
+	public PortletDescriptor(
+		BeanApp beanApp, List<BeanFilter> beanFilters,
+		List<BeanPortlet> beanPortlets) {
+
+		_beanApp = beanApp;
+		_beanFilters = beanFilters;
+		_beanPortlets = beanPortlets;
+	}
+
+	public BeanApp getBeanApp() {
+		return _beanApp;
+	}
 
 	public List<BeanFilter> getBeanFilters() {
 		return _beanFilters;
@@ -30,7 +46,8 @@ public class PortletDescriptor {
 		return _beanPortlets;
 	}
 
-	private final List<BeanFilter> _beanFilters = new ArrayList<>();
-	private final List<BeanPortlet> _beanPortlets = new ArrayList<>();
+	private final BeanApp _beanApp;
+	private final List<BeanFilter> _beanFilters;
+	private final List<BeanPortlet> _beanPortlets;
 
 }

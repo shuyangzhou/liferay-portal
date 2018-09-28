@@ -12,37 +12,38 @@
  * details.
  */
 
-package com.liferay.bean.portlet.cdi.extension.internal.annotated;
+package com.liferay.bean.portlet.cdi.extension.internal.xml;
 
 import com.liferay.bean.portlet.cdi.extension.internal.BaseEventImpl;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.portlet.annotations.EventDefinition;
-import javax.portlet.annotations.PortletQName;
-
 import javax.xml.namespace.QName;
 
 /**
  * @author Neil Griffin
  */
-public class EventAnnotationImpl extends BaseEventImpl {
+public class EventDescriptorImpl extends BaseEventImpl {
 
-	public EventAnnotationImpl(EventDefinition eventDefinition) {
-		this(eventDefinition.qname(), eventDefinition.payloadType());
+	public EventDescriptorImpl(
+		com.liferay.portal.kernel.xml.QName qName, String valueType,
+		List<com.liferay.portal.kernel.xml.QName> aliasQNames) {
 
-		for (PortletQName portletQName : eventDefinition.alias()) {
+		super(
+			new QName(
+				qName.getNamespaceURI(), qName.getLocalPart(),
+				qName.getNamespacePrefix()),
+			valueType);
+
+		_aliasQNames = new ArrayList<>();
+
+		for (com.liferay.portal.kernel.xml.QName aliasQName : aliasQNames) {
 			_aliasQNames.add(
 				new QName(
-					portletQName.namespaceURI(), portletQName.localPart()));
+					aliasQName.getNamespaceURI(), aliasQName.getLocalPart(),
+					aliasQName.getNamespacePrefix()));
 		}
-	}
-
-	public EventAnnotationImpl(PortletQName portletQName, Class<?> valueType) {
-		super(
-			new QName(portletQName.namespaceURI(), portletQName.localPart()),
-			_getClassName(valueType));
 	}
 
 	@Override
@@ -50,14 +51,6 @@ public class EventAnnotationImpl extends BaseEventImpl {
 		return _aliasQNames;
 	}
 
-	private static String _getClassName(Class<?> valueType) {
-		if (valueType == null) {
-			return null;
-		}
-
-		return valueType.getName();
-	}
-
-	private final List<QName> _aliasQNames = new ArrayList<>();
+	private final List<QName> _aliasQNames;
 
 }

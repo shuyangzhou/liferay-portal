@@ -12,27 +12,26 @@
  * details.
  */
 
-package com.liferay.bean.portlet.cdi.extension.internal;
+package com.liferay.bean.portlet.cdi.extension.internal.xml;
 
-import java.io.IOException;
+import com.liferay.bean.portlet.cdi.extension.internal.BasePublicRenderParameterImpl;
 
-import java.net.URL;
-
-import javax.xml.stream.XMLStreamException;
-
-import org.xml.sax.SAXException;
+import javax.xml.namespace.QName;
 
 /**
  * @author Neil Griffin
  */
-public class LiferayDescriptorParser {
+public class PublicRenderParameterDescriptorImpl
+	extends BasePublicRenderParameterImpl {
 
-	public static LiferayDescriptor parse(URL liferayDescriptorURL)
-		throws IOException, SAXException, XMLStreamException {
+	public PublicRenderParameterDescriptorImpl(
+		String identifier, com.liferay.portal.kernel.xml.QName qName) {
 
-		// TODO
-
-		return null;
+		super(
+			identifier,
+			new QName(
+				qName.getNamespaceURI(), qName.getLocalPart(),
+				qName.getNamespacePrefix()));
 	}
 
 }
