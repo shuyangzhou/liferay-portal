@@ -12,27 +12,23 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.architect.sort;
+package com.liferay.structured.content.apio.internal.architect.filter;
 
-import java.util.List;
+import com.liferay.structured.content.apio.architect.entity.EntityModel;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
- * Models a Parser from String to Sort Fields.
- *
  * @author Cristina González
- * @deprecated As of Judson (7.1.x), with no direct replacement
- * @review
  */
-@Deprecated
-public interface SortParser {
+public class StructuredContentEntityModelTest {
 
-	/**
-	 * Returns a List of {@link SortField} obtained from a String.
-	 *
-	 * @param  sortString - String to be parsed
-	 * @return a List of  {@link SortField}
-	 * @review
-	 */
-	public List<SortField> parse(String sortString);
+	@Test
+	public void testGetName() {
+		EntityModel entityModel = new StructuredContentEntityModel();
+
+		Assert.assertEquals("StructuredContent", entityModel.getName());
+	}
 
 }

@@ -12,9 +12,10 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.internal.architect.filter;
+package com.liferay.structured.content.apio.internal.architect.provider;
 
 import com.liferay.structured.content.apio.architect.entity.EntityField;
+import com.liferay.structured.content.apio.architect.entity.EntityModel;
 import com.liferay.structured.content.apio.architect.filter.InvalidFilterException;
 import com.liferay.structured.content.apio.architect.filter.expression.BinaryExpression;
 import com.liferay.structured.content.apio.architect.filter.expression.Expression;
@@ -29,24 +30,12 @@ import org.assertj.core.api.AbstractThrowableAssert;
 import org.assertj.core.api.Assertions;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
  * @author David Arques
  */
-public class FilterParserImplTest {
-
-	@Before
-	public void setUp() {
-		_filterParserImpl = new FilterParserImpl();
-
-		_filterParserImpl.
-			setStructuredContentSingleEntitySchemaBasedEdmProvider(
-				_structuredContentSingleEntitySchemaBasedEdmProvider);
-
-		_filterParserImpl.activate();
-	}
+public class FilterProviderTest {
 
 	@Test
 	public void testParseNonexistingField() {
@@ -218,32 +207,28 @@ public class FilterParserImplTest {
 		exception.hasMessage("Filter is null");
 	}
 
-	private static final StructuredContentSingleEntitySchemaBasedEdmProvider
-		_structuredContentSingleEntitySchemaBasedEdmProvider =
-			new StructuredContentSingleEntitySchemaBasedEdmProvider() {
+	private static final FilterProvider _filterParserImpl = new FilterProvider(
+		new EntityModel() {
 
-				@Override
-				public Map<String, EntityField> getEntityFieldsMap() {
-					return Stream.of(
-						new EntityField(
-							"fieldExternal", EntityField.Type.STRING,
-							locale -> "fieldInternal"),
-						new EntityField(
-							"dateExternal", EntityField.Type.DATE,
-							locale -> "dateInternal")
-					).collect(
-						Collectors.toMap(
-							EntityField::getName, Function.identity())
-					);
-				}
+			@Override
+			public Map<String, EntityField> getEntityFieldsMap() {
+				return Stream.of(
+					new EntityField(
+						"fieldExternal", EntityField.Type.STRING,
+						locale -> "fieldInternal"),
+					new EntityField(
+						"dateExternal", EntityField.Type.DATE,
+						locale -> "dateInternal")
+				).collect(
+					Collectors.toMap(EntityField::getName, Function.identity())
+				);
+			}
 
-				@Override
-				public String getName() {
-					return "SomeEntityName";
-				}
+			@Override
+			public String getName() {
+				return "SomeEntityName";
+			}
 
-			};
-
-	private FilterParserImpl _filterParserImpl;
+		});
 
 }
