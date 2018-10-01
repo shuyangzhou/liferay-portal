@@ -9273,7 +9273,11 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 				role.setModifiedDate(now);
 			}
 			else {
-				role.setModifiedDate(serviceContext.getModifiedDate(now));
+				Date newModifiedDate = serviceContext.getModifiedDate(now);
+
+				if (!newModifiedDate.equals(role.getModifiedDate())) {
+					role.setModifiedDate(newModifiedDate);
+				}
 			}
 		}
 

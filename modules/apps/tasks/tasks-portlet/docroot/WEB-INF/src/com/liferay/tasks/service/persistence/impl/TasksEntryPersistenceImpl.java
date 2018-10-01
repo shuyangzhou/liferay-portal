@@ -10161,7 +10161,11 @@ public class TasksEntryPersistenceImpl extends BasePersistenceImpl<TasksEntry>
 				tasksEntry.setModifiedDate(now);
 			}
 			else {
-				tasksEntry.setModifiedDate(serviceContext.getModifiedDate(now));
+				Date newModifiedDate = serviceContext.getModifiedDate(now);
+
+				if (!newModifiedDate.equals(tasksEntry.getModifiedDate())) {
+					tasksEntry.setModifiedDate(newModifiedDate);
+				}
 			}
 		}
 

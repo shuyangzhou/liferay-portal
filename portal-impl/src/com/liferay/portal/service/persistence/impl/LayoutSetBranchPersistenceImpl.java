@@ -3452,8 +3452,11 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 				layoutSetBranch.setModifiedDate(now);
 			}
 			else {
-				layoutSetBranch.setModifiedDate(serviceContext.getModifiedDate(
-						now));
+				Date newModifiedDate = serviceContext.getModifiedDate(now);
+
+				if (!newModifiedDate.equals(layoutSetBranch.getModifiedDate())) {
+					layoutSetBranch.setModifiedDate(newModifiedDate);
+				}
 			}
 		}
 
