@@ -6285,8 +6285,11 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 				dlFileShortcut.setModifiedDate(now);
 			}
 			else {
-				dlFileShortcut.setModifiedDate(serviceContext.getModifiedDate(
-						now));
+				Date newModifiedDate = serviceContext.getModifiedDate(now);
+
+				if (!newModifiedDate.equals(dlFileShortcut.getModifiedDate())) {
+					dlFileShortcut.setModifiedDate(newModifiedDate);
+				}
 			}
 		}
 

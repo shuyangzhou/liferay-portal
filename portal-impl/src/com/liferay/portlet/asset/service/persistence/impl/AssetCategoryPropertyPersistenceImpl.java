@@ -2262,8 +2262,12 @@ public class AssetCategoryPropertyPersistenceImpl extends BasePersistenceImpl<As
 				assetCategoryProperty.setModifiedDate(now);
 			}
 			else {
-				assetCategoryProperty.setModifiedDate(serviceContext.getModifiedDate(
-						now));
+				Date newModifiedDate = serviceContext.getModifiedDate(now);
+
+				if (!newModifiedDate.equals(
+							assetCategoryProperty.getModifiedDate())) {
+					assetCategoryProperty.setModifiedDate(newModifiedDate);
+				}
 			}
 		}
 

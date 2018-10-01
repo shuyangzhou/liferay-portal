@@ -1977,8 +1977,11 @@ public class PowwowParticipantPersistenceImpl extends BasePersistenceImpl<Powwow
 				powwowParticipant.setModifiedDate(now);
 			}
 			else {
-				powwowParticipant.setModifiedDate(serviceContext.getModifiedDate(
-						now));
+				Date newModifiedDate = serviceContext.getModifiedDate(now);
+
+				if (!newModifiedDate.equals(powwowParticipant.getModifiedDate())) {
+					powwowParticipant.setModifiedDate(newModifiedDate);
+				}
 			}
 		}
 
