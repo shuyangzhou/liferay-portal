@@ -4,3 +4,7 @@ Bundle-Version: 4.0.0
 Export-Package:\
 	com.liferay.alloy.mvc,\
 	com.liferay.alloy.mvc.json.web.service
+Import-Package:\
+	com.liferay.portal.kernel.portlet;version="[7.3.0,8.2)",\
+	\
+	*
