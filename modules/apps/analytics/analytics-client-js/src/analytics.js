@@ -45,7 +45,8 @@ class Analytics {
 		const {dataSourceId, endpointUrl, flushInterval, uri} = config;
 
 		const lcsClient = new LCSClient(uri);
-		const asahClient = (dataSourceId && endpointUrl) && new AsahClient(endpointUrl);
+		const asahClient =
+			dataSourceId && endpointUrl && new AsahClient(endpointUrl);
 
 		instance.client = lcsClient;
 
@@ -59,7 +60,8 @@ class Analytics {
 
 		instance.config = config;
 
-		instance.asahIdentityEndpoint = (dataSourceId && endpointUrl) && `${endpointUrl}/identity`;
+		instance.asahIdentityEndpoint =
+			dataSourceId && endpointUrl && `${endpointUrl}/identity`;
 		instance.lcsIdentityEndpoint =
 			'https://analytics-gw.liferay.com/api/identitycontextgateway/send-identity-context';
 
