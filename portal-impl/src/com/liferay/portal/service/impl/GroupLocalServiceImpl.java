@@ -865,6 +865,8 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	public Group deleteGroup(Group group) throws PortalException {
 		boolean deleteInProcess = GroupThreadLocal.isDeleteInProcess();
 
+		long companyId = group.getCompanyId();
+
 		try {
 			GroupThreadLocal.setDeleteInProcess(true);
 
@@ -877,7 +879,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 			}
 
 			if (groupPersistence.countByC_P_S(
-					group.getCompanyId(), group.getGroupId(), true) > 0) {
+					companyId, group.getGroupId(), true) > 0) {
 
 				throw new RequiredGroupException.MustNotDeleteGroupThatHasChild(
 					group.getGroupId());
@@ -1026,7 +1028,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 
 			List<ResourcePermission> resourcePermissions =
 				resourcePermissionPersistence.findByC_S_P(
-					group.getCompanyId(), ResourceConstants.SCOPE_GROUP,
+					companyId, ResourceConstants.SCOPE_GROUP,
 					String.valueOf(group.getGroupId()));
 
 			for (ResourcePermission resourcePermission : resourcePermissions) {
@@ -1049,7 +1051,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 				WorkflowDefinitionLink workflowDefinitionLink =
 					workflowDefinitionLinkLocalService.
 						fetchWorkflowDefinitionLink(
-							group.getCompanyId(), group.getGroupId(),
+							companyId, group.getGroupId(),
 							scopeableWorkflowHandler.getClassName(), 0, 0,
 							true);
 
@@ -1099,7 +1101,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 
 				try {
 					resourceLocalService.deleteResource(
-						group.getCompanyId(), Group.class.getName(),
+						companyId, Group.class.getName(),
 						ResourceConstants.SCOPE_INDIVIDUAL, group.getGroupId());
 				}
 				catch (Exception e) {
@@ -1115,7 +1117,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 				if (ArrayUtil.isNotEmpty(userIds)) {
 					TransactionCommitCallbackUtil.registerCallback(
 						() -> {
-							reindex(group.getCompanyId(), userIds);
+							reindex(companyId, userIds);
 
 							return null;
 						});
@@ -3705,11 +3707,12 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		final Group group = groupPersistence.findByPrimaryKey(groupId);
+		Group group = groupPersistence.findByPrimaryKey(groupId);
 
 		String className = group.getClassName();
 		long classNameId = group.getClassNameId();
 		long classPK = group.getClassPK();
+		long companyId = group.getCompanyId();
 
 		String groupKey = group.getGroupKey();
 
@@ -3726,13 +3729,12 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 		}
 
 		friendlyURL = getFriendlyURL(
-			group.getCompanyId(), groupId, classNameId, classPK,
-			StringPool.BLANK, friendlyURL);
+			companyId, groupId, classNameId, classPK, StringPool.BLANK,
+			friendlyURL);
 
 		if ((classNameId <= 0) || className.equals(Group.class.getName())) {
 			validateGroupKey(
-				group.getGroupId(), group.getCompanyId(), groupKey,
-				group.isSite());
+				group.getGroupId(), companyId, groupKey, group.isSite());
 		}
 		else if (className.equals(Organization.class.getName())) {
 			Organization organization =
@@ -3754,7 +3756,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 		}
 
 		validateFriendlyURL(
-			group.getCompanyId(), group.getGroupId(), group.getClassNameId(),
+			companyId, group.getGroupId(), group.getClassNameId(),
 			group.getClassPK(), friendlyURL);
 
 		validateParentGroup(group.getGroupId(), parentGroupId);
@@ -3775,7 +3777,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 
 			TransactionCommitCallbackUtil.registerCallback(
 				() -> {
-					reindex(group.getCompanyId(), getUserPrimaryKeys(groupId));
+					reindex(companyId, getUserPrimaryKeys(groupId));
 
 					return null;
 				});
@@ -3813,7 +3815,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 		}
 
 		if (user == null) {
-			user = userLocalService.getDefaultUser(group.getCompanyId());
+			user = userLocalService.getDefaultUser(companyId);
 		}
 
 		updateAsset(
