@@ -126,7 +126,7 @@ public abstract class BaseSocialRequestInterpreter
 		for (SocialRequest curRequest : requests) {
 			curRequest.setStatus(newStatus);
 
-			curRequest = SocialRequestUtil.update(curRequest);
+			SocialRequestUtil.update(curRequest);
 		}
 	}
 
@@ -142,7 +142,7 @@ public abstract class BaseSocialRequestInterpreter
 		for (SocialRequest curRequest : requests) {
 			curRequest.setStatus(newStatus);
 
-			curRequest = SocialRequestUtil.update(curRequest);
+			SocialRequestUtil.update(curRequest);
 		}
 	}
 
