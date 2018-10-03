@@ -137,6 +137,11 @@ public class SegmentsEntryLocalServiceImpl
 		resourceLocalService.deleteResource(
 			segmentsEntry, ResourceConstants.SCOPE_INDIVIDUAL);
 
+		// Segment rels
+
+		segmentsEntryRelLocalService.deleteSegmentsEntryRels(
+			segmentsEntry.getSegmentsEntryId());
+
 		return segmentsEntry;
 	}
 

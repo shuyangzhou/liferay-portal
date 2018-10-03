@@ -421,7 +421,7 @@ public interface GroupLocalService extends BaseLocalService,
 	* Returns the number of active or inactive groups associated with the company.
 	*
 	* @param companyId the primary key of the company
-	* @param active whether to return only active groups, or only inactive
+	* @param active whether to count only active groups, or only inactive
 	groups
 	* @return the number of active or inactive groups associated with the company
 	* @review

@@ -131,6 +131,25 @@ public abstract class SegmentsEntryServiceBaseImpl extends BaseServiceImpl
 	}
 
 	/**
+	 * Returns the segments entry rel remote service.
+	 *
+	 * @return the segments entry rel remote service
+	 */
+	public com.liferay.segments.service.SegmentsEntryRelService getSegmentsEntryRelService() {
+		return segmentsEntryRelService;
+	}
+
+	/**
+	 * Sets the segments entry rel remote service.
+	 *
+	 * @param segmentsEntryRelService the segments entry rel remote service
+	 */
+	public void setSegmentsEntryRelService(
+		com.liferay.segments.service.SegmentsEntryRelService segmentsEntryRelService) {
+		this.segmentsEntryRelService = segmentsEntryRelService;
+	}
+
+	/**
 	 * Returns the segments entry rel persistence.
 	 *
 	 * @return the segments entry rel persistence
@@ -356,6 +375,8 @@ public abstract class SegmentsEntryServiceBaseImpl extends BaseServiceImpl
 	protected SegmentsEntryPersistence segmentsEntryPersistence;
 	@BeanReference(type = com.liferay.segments.service.SegmentsEntryRelLocalService.class)
 	protected com.liferay.segments.service.SegmentsEntryRelLocalService segmentsEntryRelLocalService;
+	@BeanReference(type = com.liferay.segments.service.SegmentsEntryRelService.class)
+	protected com.liferay.segments.service.SegmentsEntryRelService segmentsEntryRelService;
 	@BeanReference(type = SegmentsEntryRelPersistence.class)
 	protected SegmentsEntryRelPersistence segmentsEntryRelPersistence;
 	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
