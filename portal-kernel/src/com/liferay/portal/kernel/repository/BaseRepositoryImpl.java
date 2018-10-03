@@ -673,7 +673,7 @@ public abstract class BaseRepositoryImpl
 
 		repositoryEntry.setManualCheckInRequired(false);
 
-		RepositoryEntryUtil.update(repositoryEntry);
+		repositoryEntry = RepositoryEntryUtil.update(repositoryEntry);
 	}
 
 	protected RepositoryEntry getRepositoryEntry(String objectId)
@@ -700,7 +700,7 @@ public abstract class BaseRepositoryImpl
 
 		repositoryEntry.setManualCheckInRequired(manualCheckInRequired);
 
-		RepositoryEntryUtil.update(repositoryEntry);
+		repositoryEntry = RepositoryEntryUtil.update(repositoryEntry);
 	}
 
 	protected AssetEntryLocalService assetEntryLocalService;
