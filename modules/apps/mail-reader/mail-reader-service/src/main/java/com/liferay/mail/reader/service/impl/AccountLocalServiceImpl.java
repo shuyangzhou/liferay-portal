@@ -82,7 +82,7 @@ public class AccountLocalServiceImpl extends AccountLocalServiceBaseImpl {
 		account.setTrashFolderId(trashFolderId);
 		account.setDefaultSender(defaultSender);
 
-		accountPersistence.update(account);
+		account = accountPersistence.update(account);
 
 		return account;
 	}
@@ -161,7 +161,7 @@ public class AccountLocalServiceImpl extends AccountLocalServiceBaseImpl {
 		account.setFolderPrefix(folderPrefix);
 		account.setDefaultSender(defaultSender);
 
-		accountPersistence.update(account);
+		account = accountPersistence.update(account);
 
 		return account;
 	}
@@ -181,7 +181,7 @@ public class AccountLocalServiceImpl extends AccountLocalServiceBaseImpl {
 		account.setSentFolderId(sentFolderId);
 		account.setTrashFolderId(trashFolderId);
 
-		accountPersistence.update(account);
+		account = accountPersistence.update(account);
 
 		return account;
 	}

@@ -77,7 +77,7 @@ public class WebDAVPropsLocalServiceImpl
 			throw new WebDAVException("Problem trying to store WebDAVProps", e);
 		}
 
-		webDAVPropsPersistence.update(webDAVProps);
+		webDAVProps = webDAVPropsPersistence.update(webDAVProps);
 	}
 
 }

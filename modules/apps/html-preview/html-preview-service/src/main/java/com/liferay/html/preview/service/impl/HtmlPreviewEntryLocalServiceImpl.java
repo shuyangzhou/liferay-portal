@@ -70,7 +70,7 @@ public class HtmlPreviewEntryLocalServiceImpl
 			htmlPreviewEntry.setFileEntryId(fileEntry.getFileEntryId());
 		}
 
-		htmlPreviewEntryPersistence.update(htmlPreviewEntry);
+		htmlPreviewEntry = htmlPreviewEntryPersistence.update(htmlPreviewEntry);
 
 		return htmlPreviewEntry;
 	}
@@ -120,7 +120,7 @@ public class HtmlPreviewEntryLocalServiceImpl
 			htmlPreviewEntry.setFileEntryId(fileEntry.getFileEntryId());
 		}
 
-		htmlPreviewEntryPersistence.update(htmlPreviewEntry);
+		htmlPreviewEntry = htmlPreviewEntryPersistence.update(htmlPreviewEntry);
 
 		return htmlPreviewEntry;
 	}

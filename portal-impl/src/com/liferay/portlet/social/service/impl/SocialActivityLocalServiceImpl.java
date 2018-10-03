@@ -233,7 +233,7 @@ public class SocialActivityLocalServiceImpl
 
 			activity.setActivityId(activityId);
 
-			socialActivityPersistence.update(activity);
+			activity = socialActivityPersistence.update(activity);
 
 			if (mirrorActivity != null) {
 				long mirrorActivityId = counterLocalService.increment(
@@ -243,7 +243,7 @@ public class SocialActivityLocalServiceImpl
 
 				mirrorActivity.setMirrorActivityId(activity.getPrimaryKey());
 
-				socialActivityPersistence.update(mirrorActivity);
+				mirrorActivity = socialActivityPersistence.update(mirrorActivity);
 			}
 
 			socialActivityInterpreterLocalService.updateActivitySet(

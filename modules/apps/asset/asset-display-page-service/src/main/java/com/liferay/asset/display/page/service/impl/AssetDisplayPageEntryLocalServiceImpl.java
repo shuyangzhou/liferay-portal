@@ -61,7 +61,7 @@ public class AssetDisplayPageEntryLocalServiceImpl
 			layoutPageTemplateEntryId);
 		assetDisplayPageEntry.setType(type);
 
-		assetDisplayPageEntryPersistence.update(assetDisplayPageEntry);
+		assetDisplayPageEntry = assetDisplayPageEntryPersistence.update(assetDisplayPageEntry);
 
 		return assetDisplayPageEntry;
 	}
@@ -127,7 +127,7 @@ public class AssetDisplayPageEntryLocalServiceImpl
 			layoutPageTemplateEntryId);
 		assetDisplayPageEntry.setType(type);
 
-		assetDisplayPageEntryPersistence.update(assetDisplayPageEntry);
+		assetDisplayPageEntry = assetDisplayPageEntryPersistence.update(assetDisplayPageEntry);
 
 		return assetDisplayPageEntry;
 	}

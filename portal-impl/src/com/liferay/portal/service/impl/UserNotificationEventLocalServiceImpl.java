@@ -95,7 +95,7 @@ public class UserNotificationEventLocalServiceImpl
 		userNotificationEvent.setActionRequired(actionRequired);
 		userNotificationEvent.setArchived(archived);
 
-		userNotificationEventPersistence.update(userNotificationEvent);
+		userNotificationEvent = userNotificationEventPersistence.update(userNotificationEvent);
 
 		return userNotificationEvent;
 	}
@@ -518,7 +518,7 @@ public class UserNotificationEventLocalServiceImpl
 
 		userNotificationEvent.setArchived(archive);
 
-		userNotificationEventPersistence.update(userNotificationEvent);
+		userNotificationEvent = userNotificationEventPersistence.update(userNotificationEvent);
 
 		return userNotificationEvent;
 	}

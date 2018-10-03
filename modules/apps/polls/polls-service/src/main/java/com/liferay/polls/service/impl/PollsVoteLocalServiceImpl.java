@@ -63,7 +63,7 @@ public class PollsVoteLocalServiceImpl extends PollsVoteLocalServiceBaseImpl {
 
 		question.setLastVoteDate(serviceContext.getCreateDate(now));
 
-		pollsQuestionPersistence.update(question);
+		question = pollsQuestionPersistence.update(question);
 
 		// Vote
 
@@ -106,7 +106,7 @@ public class PollsVoteLocalServiceImpl extends PollsVoteLocalServiceBaseImpl {
 		vote.setChoiceId(choiceId);
 		vote.setVoteDate(serviceContext.getCreateDate(now));
 
-		pollsVotePersistence.update(vote);
+		vote = pollsVotePersistence.update(vote);
 
 		return vote;
 	}

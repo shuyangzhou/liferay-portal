@@ -51,7 +51,7 @@ public class AssetTagStatsLocalServiceImpl
 		tagStats.setClassNameId(classNameId);
 
 		try {
-			assetTagStatsPersistence.update(tagStats);
+			tagStats = assetTagStatsPersistence.update(tagStats);
 		}
 		catch (SystemException se) {
 			if (_log.isWarnEnabled()) {
@@ -196,7 +196,7 @@ public class AssetTagStatsLocalServiceImpl
 
 		tagStats.setAssetCount(assetCount);
 
-		assetTagStatsPersistence.update(tagStats);
+		tagStats = assetTagStatsPersistence.update(tagStats);
 
 		return tagStats;
 	}

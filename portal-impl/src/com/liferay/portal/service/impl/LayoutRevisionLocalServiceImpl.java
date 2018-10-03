@@ -101,7 +101,7 @@ public class LayoutRevisionLocalServiceImpl
 		layoutRevision.setStatus(WorkflowConstants.STATUS_DRAFT);
 		layoutRevision.setStatusDate(serviceContext.getModifiedDate(now));
 
-		layoutRevisionPersistence.update(layoutRevision);
+		layoutRevision = layoutRevisionPersistence.update(layoutRevision);
 
 		_layoutRevisionId.set(layoutRevision.getLayoutRevisionId());
 
@@ -159,7 +159,7 @@ public class LayoutRevisionLocalServiceImpl
 				curLayoutRevision.setParentLayoutRevisionId(
 					layoutRevision.getParentLayoutRevisionId());
 
-				layoutRevisionPersistence.update(curLayoutRevision);
+				curLayoutRevision = layoutRevisionPersistence.update(curLayoutRevision);
 			}
 		}
 
@@ -511,7 +511,7 @@ public class LayoutRevisionLocalServiceImpl
 			layoutRevision.setStatus(WorkflowConstants.STATUS_DRAFT);
 			layoutRevision.setStatusDate(serviceContext.getModifiedDate(now));
 
-			layoutRevisionPersistence.update(layoutRevision);
+			layoutRevision = layoutRevisionPersistence.update(layoutRevision);
 
 			_layoutRevisionId.set(layoutRevision.getLayoutRevisionId());
 
@@ -544,7 +544,7 @@ public class LayoutRevisionLocalServiceImpl
 			layoutRevision.setColorSchemeId(colorSchemeId);
 			layoutRevision.setCss(css);
 
-			layoutRevisionPersistence.update(layoutRevision);
+			layoutRevision = layoutRevisionPersistence.update(layoutRevision);
 
 			_layoutRevisionId.set(layoutRevision.getLayoutRevisionId());
 		}
@@ -599,7 +599,7 @@ public class LayoutRevisionLocalServiceImpl
 			layoutRevision.setMajor(false);
 		}
 
-		layoutRevisionPersistence.update(layoutRevision);
+		layoutRevision = layoutRevisionPersistence.update(layoutRevision);
 
 		if (status == WorkflowConstants.STATUS_APPROVED) {
 			List<LayoutRevision> layoutRevisions =
@@ -613,7 +613,7 @@ public class LayoutRevisionLocalServiceImpl
 
 					curLayoutRevision.setHead(false);
 
-					layoutRevisionPersistence.update(curLayoutRevision);
+					curLayoutRevision = layoutRevisionPersistence.update(curLayoutRevision);
 				}
 			}
 		}
@@ -631,7 +631,7 @@ public class LayoutRevisionLocalServiceImpl
 
 					curLayoutRevision.setHead(true);
 
-					layoutRevisionPersistence.update(curLayoutRevision);
+					curLayoutRevision = layoutRevisionPersistence.update(curLayoutRevision);
 
 					break;
 				}
@@ -727,7 +727,7 @@ public class LayoutRevisionLocalServiceImpl
 		layoutRevision.setParentLayoutRevisionId(parentLayoutRevisionId);
 		layoutRevision.setMajor(true);
 
-		layoutRevisionPersistence.update(layoutRevision);
+		layoutRevision = layoutRevisionPersistence.update(layoutRevision);
 
 		for (LayoutRevision parentLayoutRevision : parentLayoutRevisions) {
 			List<LayoutRevision> childrenLayoutRevisions =

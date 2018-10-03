@@ -454,7 +454,7 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 		entry.setModifiedDate(entry.getModifiedDate());
 		entry.setViewCount(entry.getViewCount() + increment);
 
-		assetEntryPersistence.update(entry);
+		entry = assetEntryPersistence.update(entry);
 	}
 
 	@Override
@@ -809,7 +809,7 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 		// Update entry after tags so that entry listeners have access to the
 		// saved categories and tags
 
-		assetEntryPersistence.update(entry);
+		entry = assetEntryPersistence.update(entry);
 
 		// Indexer
 
@@ -963,7 +963,7 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 
 		entry.setVisible(visible);
 
-		assetEntryPersistence.update(entry);
+		entry = assetEntryPersistence.update(entry);
 
 		List<AssetTag> tags = assetEntryPersistence.getAssetTags(
 			entry.getEntryId());

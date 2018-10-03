@@ -845,7 +845,7 @@ public abstract class LVEntryLocalServiceBaseImpl extends BaseLocalServiceImpl
 
 		draftLVEntry.populateVersionModel(lvEntryVersion);
 
-		lvEntryVersionPersistence.update(lvEntryVersion);
+		lvEntryVersion = lvEntryVersionPersistence.update(lvEntryVersion);
 
 		lvEntryVersion.populateVersionedModel(headLVEntry);
 
@@ -1012,7 +1012,7 @@ public abstract class LVEntryLocalServiceBaseImpl extends BaseLocalServiceImpl
 				draftLVEntryLocalization.setTitle(lvEntryLocalizationVersion.getTitle());
 				draftLVEntryLocalization.setContent(lvEntryLocalizationVersion.getContent());
 
-				lvEntryLocalizationPersistence.update(draftLVEntryLocalization);
+				draftLVEntryLocalization = lvEntryLocalizationPersistence.update(draftLVEntryLocalization);
 			}
 		}
 
@@ -1080,7 +1080,7 @@ public abstract class LVEntryLocalServiceBaseImpl extends BaseLocalServiceImpl
 					publishedLVEntryLocalization.setTitle(draftLVEntryLocalization.getTitle());
 					publishedLVEntryLocalization.setContent(draftLVEntryLocalization.getContent());
 
-					lvEntryLocalizationPersistence.update(publishedLVEntryLocalization);
+					publishedLVEntryLocalization = lvEntryLocalizationPersistence.update(publishedLVEntryLocalization);
 
 					_publishLVEntryLocalizationVersion(publishedLVEntryLocalization,
 						++lvEntryLocalizationVersionBatchCounter, version);
@@ -1101,7 +1101,7 @@ public abstract class LVEntryLocalServiceBaseImpl extends BaseLocalServiceImpl
 				lvEntryLocalization.setTitle(draftLVEntryLocalization.getTitle());
 				lvEntryLocalization.setContent(draftLVEntryLocalization.getContent());
 
-				lvEntryLocalizationPersistence.update(lvEntryLocalization);
+				lvEntryLocalization = lvEntryLocalizationPersistence.update(lvEntryLocalization);
 
 				_publishLVEntryLocalizationVersion(lvEntryLocalization,
 					++lvEntryLocalizationVersionBatchCounter, version);
@@ -1122,7 +1122,7 @@ public abstract class LVEntryLocalServiceBaseImpl extends BaseLocalServiceImpl
 
 			lvEntryLocalization.populateVersionModel(lvEntryLocalizationVersion);
 
-			lvEntryLocalizationVersionPersistence.update(lvEntryLocalizationVersion);
+			lvEntryLocalizationVersion = lvEntryLocalizationVersionPersistence.update(lvEntryLocalizationVersion);
 		}
 	}
 }

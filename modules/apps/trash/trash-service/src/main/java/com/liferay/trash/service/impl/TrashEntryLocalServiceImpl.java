@@ -124,7 +124,7 @@ public class TrashEntryLocalServiceImpl extends TrashEntryLocalServiceBaseImpl {
 
 		trashEntry.setStatus(status);
 
-		trashEntryPersistence.update(trashEntry);
+		trashEntry = trashEntryPersistence.update(trashEntry);
 
 		if (statusOVPs != null) {
 			for (ObjectValuePair<Long, Integer> statusOVP : statusOVPs) {
@@ -138,7 +138,7 @@ public class TrashEntryLocalServiceImpl extends TrashEntryLocalServiceBaseImpl {
 				trashVersion.setClassPK(statusOVP.getKey());
 				trashVersion.setStatus(statusOVP.getValue());
 
-				trashVersionPersistence.update(trashVersion);
+				trashVersion = trashVersionPersistence.update(trashVersion);
 			}
 		}
 

@@ -61,7 +61,7 @@ public class DLContentLocalServiceImpl extends DLContentLocalServiceBaseImpl {
 
 		dlContent.setSize(bytes.length);
 
-		dlContentPersistence.update(dlContent);
+		dlContent = dlContentPersistence.update(dlContent);
 
 		return dlContent;
 	}
@@ -89,7 +89,7 @@ public class DLContentLocalServiceImpl extends DLContentLocalServiceBaseImpl {
 
 			dlContent.setSize(size);
 
-			dlContentPersistence.update(dlContent);
+			dlContent = dlContentPersistence.update(dlContent);
 		}
 		catch (IOException ioe) {
 			if (_log.isWarnEnabled()) {
@@ -206,7 +206,7 @@ public class DLContentLocalServiceImpl extends DLContentLocalServiceBaseImpl {
 			dLContent.setRepositoryId(newRepositoryId);
 			dLContent.setPath(newPath);
 
-			dlContentPersistence.update(dLContent);
+			dLContent = dlContentPersistence.update(dLContent);
 		}
 	}
 

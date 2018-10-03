@@ -84,7 +84,7 @@ public class SyncDLFileVersionDiffLocalServiceImpl
 
 		syncDLFileVersionDiff.setExpirationDate(expirationDate);
 
-		syncDLFileVersionDiffPersistence.update(syncDLFileVersionDiff);
+		syncDLFileVersionDiff = syncDLFileVersionDiffPersistence.update(syncDLFileVersionDiff);
 
 		return syncDLFileVersionDiff;
 	}

@@ -236,7 +236,7 @@ public class CalendarBookingLocalServiceImpl
 		calendarBooking.setStatus(status);
 		calendarBooking.setStatusDate(serviceContext.getModifiedDate(now));
 
-		calendarBookingPersistence.update(calendarBooking);
+		calendarBooking = calendarBookingPersistence.update(calendarBooking);
 
 		addChildCalendarBookings(
 			calendarBooking, childCalendarIds, serviceContext);
@@ -1361,7 +1361,7 @@ public class CalendarBookingLocalServiceImpl
 
 		calendarBooking.setExpandoBridgeAttributes(serviceContext);
 
-		calendarBookingPersistence.update(calendarBooking);
+		calendarBooking = calendarBookingPersistence.update(calendarBooking);
 
 		addChildCalendarBookings(
 			calendarBooking, childCalendarIds, serviceContext);
@@ -1565,7 +1565,7 @@ public class CalendarBookingLocalServiceImpl
 		if (!recurrence.equals(lastInstanceCalendarBooking.getRecurrence())) {
 			lastInstanceCalendarBooking.setRecurrence(recurrence);
 
-			calendarBookingPersistence.update(lastInstanceCalendarBooking);
+			lastInstanceCalendarBooking = calendarBookingPersistence.update(lastInstanceCalendarBooking);
 		}
 	}
 
@@ -1620,7 +1620,7 @@ public class CalendarBookingLocalServiceImpl
 		calendarBooking.setStatusByUserName(user.getFullName());
 		calendarBooking.setStatusDate(serviceContext.getModifiedDate(now));
 
-		calendarBookingPersistence.update(calendarBooking);
+		calendarBooking = calendarBookingPersistence.update(calendarBooking);
 
 		// Child calendar bookings
 
@@ -2363,7 +2363,7 @@ public class CalendarBookingLocalServiceImpl
 			childCalendarBooking.setModifiedDate(modifiedDate);
 			childCalendarBooking.setRecurrence(recurrence);
 
-			calendarBookingPersistence.update(childCalendarBooking);
+			childCalendarBooking = calendarBookingPersistence.update(childCalendarBooking);
 		}
 	}
 

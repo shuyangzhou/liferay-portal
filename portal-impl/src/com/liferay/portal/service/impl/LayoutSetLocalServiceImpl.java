@@ -81,7 +81,7 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 
 		layoutSet = initLayoutSet(layoutSet);
 
-		layoutSetPersistence.update(layoutSet);
+		layoutSet = layoutSetPersistence.update(layoutSet);
 
 		return layoutSet;
 	}
@@ -129,7 +129,7 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 
 			layoutSet.setLogoId(layoutSet.getLogoId());
 
-			layoutSetPersistence.update(layoutSet);
+			layoutSet = layoutSetPersistence.update(layoutSet);
 		}
 		else {
 			layoutSetPersistence.removeByG_P(groupId, privateLayout);
@@ -249,7 +249,7 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 			layoutSet.setLayoutSetPrototypeLinkEnabled(
 				layoutSetPrototypeLinkEnabled);
 
-			layoutSetPersistence.update(layoutSet);
+			layoutSet = layoutSetPersistence.update(layoutSet);
 
 			return;
 		}
@@ -271,7 +271,7 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 		layoutSetBranch.setLayoutSetPrototypeLinkEnabled(
 			layoutSetPrototypeLinkEnabled);
 
-		layoutSetBranchPersistence.update(layoutSetBranch);
+		layoutSetBranch = layoutSetBranchPersistence.update(layoutSetBranch);
 	}
 
 	@Override
@@ -297,7 +297,7 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 		PortalUtil.updateImageId(
 			layoutSetBranch, logo, bytes, "logoId", 0, 0, 0);
 
-		layoutSetBranchPersistence.update(layoutSetBranch);
+		layoutSetBranch = layoutSetBranchPersistence.update(layoutSetBranch);
 
 		return layoutSet;
 	}
@@ -372,7 +372,7 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 			layoutSet.setColorSchemeId(colorSchemeId);
 			layoutSet.setCss(css);
 
-			layoutSetPersistence.update(layoutSet);
+			layoutSet = layoutSetPersistence.update(layoutSet);
 
 			if (PrefsPropsUtil.getBoolean(
 					PropsKeys.THEME_SYNC_ON_GROUP,
@@ -384,7 +384,7 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 				otherLayoutSet.setThemeId(themeId);
 				otherLayoutSet.setColorSchemeId(colorSchemeId);
 
-				layoutSetPersistence.update(otherLayoutSet);
+				otherLayoutSet = layoutSetPersistence.update(otherLayoutSet);
 			}
 
 			return layoutSet;
@@ -395,7 +395,7 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 		layoutSetBranch.setColorSchemeId(colorSchemeId);
 		layoutSetBranch.setCss(css);
 
-		layoutSetBranchPersistence.update(layoutSetBranch);
+		layoutSetBranch = layoutSetBranchPersistence.update(layoutSetBranch);
 
 		return layoutSet;
 	}
@@ -421,7 +421,7 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 		layoutSet.setModifiedDate(new Date());
 		layoutSet.setPageCount(pageCount);
 
-		layoutSetPersistence.update(layoutSet);
+		layoutSet = layoutSetPersistence.update(layoutSet);
 
 		return layoutSet;
 	}
@@ -448,7 +448,7 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 
 			layoutSet.setSettingsProperties(settingsProperties);
 
-			layoutSetPersistence.update(layoutSet);
+			layoutSet = layoutSetPersistence.update(layoutSet);
 
 			return layoutSet;
 		}
@@ -460,7 +460,7 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 
 		layoutSetBranch.setSettingsProperties(settingsProperties);
 
-		layoutSetBranchPersistence.update(layoutSetBranch);
+		layoutSetBranch = layoutSetBranchPersistence.update(layoutSetBranch);
 
 		return layoutSet;
 	}

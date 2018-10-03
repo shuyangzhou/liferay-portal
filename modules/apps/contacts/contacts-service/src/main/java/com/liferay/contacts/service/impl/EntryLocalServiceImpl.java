@@ -58,7 +58,7 @@ public class EntryLocalServiceImpl extends EntryLocalServiceBaseImpl {
 		entry.setEmailAddress(emailAddress);
 		entry.setComments(comments);
 
-		entryPersistence.update(entry);
+		entry = entryPersistence.update(entry);
 
 		return entry;
 	}
@@ -116,7 +116,7 @@ public class EntryLocalServiceImpl extends EntryLocalServiceBaseImpl {
 		entry.setEmailAddress(emailAddress);
 		entry.setComments(comments);
 
-		entryPersistence.update(entry);
+		entry = entryPersistence.update(entry);
 
 		return entry;
 	}

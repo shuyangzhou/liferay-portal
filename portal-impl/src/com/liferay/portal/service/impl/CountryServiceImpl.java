@@ -75,7 +75,7 @@ public class CountryServiceImpl extends CountryServiceBaseImpl {
 		country.setIdd(idd);
 		country.setActive(active);
 
-		countryPersistence.update(country);
+		country = countryPersistence.update(country);
 
 		return country;
 	}

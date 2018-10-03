@@ -70,7 +70,7 @@ public class KaleoTaskFormLocalServiceImpl
 		kaleoTaskForm.setFormId(taskFormReference.getFormId());
 		kaleoTaskForm.setFormUuid(taskFormReference.getFormUuid());
 
-		kaleoTaskFormPersistence.update(kaleoTaskForm);
+		kaleoTaskForm = kaleoTaskFormPersistence.update(kaleoTaskForm);
 
 		return kaleoTaskForm;
 	}

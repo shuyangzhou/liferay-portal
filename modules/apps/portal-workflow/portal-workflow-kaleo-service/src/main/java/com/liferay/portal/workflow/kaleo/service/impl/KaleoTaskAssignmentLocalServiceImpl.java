@@ -70,7 +70,7 @@ public class KaleoTaskAssignmentLocalServiceImpl
 
 		setAssignee(kaleoTaskAssignment, assignment, serviceContext);
 
-		kaleoTaskAssignmentPersistence.update(kaleoTaskAssignment);
+		kaleoTaskAssignment = kaleoTaskAssignmentPersistence.update(kaleoTaskAssignment);
 
 		return kaleoTaskAssignment;
 	}

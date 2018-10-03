@@ -130,7 +130,7 @@ public class DLFileEntryTypeLocalServiceImpl
 		dlFileEntryType.setNameMap(nameMap);
 		dlFileEntryType.setDescriptionMap(descriptionMap);
 
-		dlFileEntryTypePersistence.update(dlFileEntryType);
+		dlFileEntryType = dlFileEntryTypePersistence.update(dlFileEntryType);
 
 		addDDMStructureLinks(
 			fileEntryTypeId, SetUtil.fromArray(ddmStructureIds));
@@ -483,7 +483,7 @@ public class DLFileEntryTypeLocalServiceImpl
 		dlFileEntryType.setNameMap(nameMap);
 		dlFileEntryType.setDescriptionMap(descriptionMap);
 
-		dlFileEntryTypePersistence.update(dlFileEntryType);
+		dlFileEntryType = dlFileEntryTypePersistence.update(dlFileEntryType);
 
 		updateDDMStructureLinks(
 			fileEntryTypeId, SetUtil.fromArray(ddmStructureIds));
