@@ -56,7 +56,7 @@ public class PortletItemLocalServiceImpl
 		portletItem.setPortletId(portletId);
 		portletItem.setClassNameId(classNameId);
 
-		portletItemPersistence.update(portletItem);
+		portletItem = portletItemPersistence.update(portletItem);
 
 		return portletItem;
 	}
@@ -106,7 +106,7 @@ public class PortletItemLocalServiceImpl
 			portletItem.setUserId(userId);
 			portletItem.setUserName(user.getFullName());
 
-			portletItemPersistence.update(portletItem);
+			portletItem = portletItemPersistence.update(portletItem);
 		}
 		catch (NoSuchPortletItemException nspie) {
 

@@ -69,7 +69,7 @@ public class UserIdMapperLocalServiceImpl
 		userIdMapper.setDescription(description);
 		userIdMapper.setExternalUserId(externalUserId);
 
-		userIdMapperPersistence.update(userIdMapper);
+		userIdMapper = userIdMapperPersistence.update(userIdMapper);
 
 		return userIdMapper;
 	}

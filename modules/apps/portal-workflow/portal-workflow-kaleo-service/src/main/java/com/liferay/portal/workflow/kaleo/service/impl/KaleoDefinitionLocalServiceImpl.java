@@ -48,7 +48,7 @@ public class KaleoDefinitionLocalServiceImpl
 		kaleoDefinition.setModifiedDate(new Date());
 		kaleoDefinition.setActive(true);
 
-		kaleoDefinitionPersistence.update(kaleoDefinition);
+		kaleoDefinition = kaleoDefinitionPersistence.update(kaleoDefinition);
 
 		// Kaleo definition version
 
@@ -59,7 +59,7 @@ public class KaleoDefinitionLocalServiceImpl
 		kaleoDefinitionVersion.setModifiedDate(new Date());
 		kaleoDefinitionVersion.setStartKaleoNodeId(startKaleoNodeId);
 
-		kaleoDefinitionVersionPersistence.update(kaleoDefinitionVersion);
+		kaleoDefinitionVersion = kaleoDefinitionVersionPersistence.update(kaleoDefinitionVersion);
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class KaleoDefinitionLocalServiceImpl
 		kaleoDefinition.setModifiedDate(new Date());
 		kaleoDefinition.setActive(true);
 
-		kaleoDefinitionPersistence.update(kaleoDefinition);
+		kaleoDefinition = kaleoDefinitionPersistence.update(kaleoDefinition);
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class KaleoDefinitionLocalServiceImpl
 		kaleoDefinition.setModifiedDate(new Date());
 		kaleoDefinition.setActive(true);
 
-		kaleoDefinitionPersistence.update(kaleoDefinition);
+		kaleoDefinition = kaleoDefinitionPersistence.update(kaleoDefinition);
 	}
 
 	@Override
@@ -128,7 +128,7 @@ public class KaleoDefinitionLocalServiceImpl
 		kaleoDefinition.setVersion(version);
 		kaleoDefinition.setActive(false);
 
-		kaleoDefinitionPersistence.update(kaleoDefinition);
+		kaleoDefinition = kaleoDefinitionPersistence.update(kaleoDefinition);
 
 		// Kaleo definition version
 
@@ -151,7 +151,7 @@ public class KaleoDefinitionLocalServiceImpl
 		kaleoDefinition.setModifiedDate(new Date());
 		kaleoDefinition.setActive(false);
 
-		kaleoDefinitionPersistence.update(kaleoDefinition);
+		kaleoDefinition = kaleoDefinitionPersistence.update(kaleoDefinition);
 	}
 
 	@Override
@@ -311,7 +311,7 @@ public class KaleoDefinitionLocalServiceImpl
 
 		kaleoDefinition.setActive(false);
 
-		kaleoDefinitionPersistence.update(kaleoDefinition);
+		kaleoDefinition = kaleoDefinitionPersistence.update(kaleoDefinition);
 
 		// Kaleo definition version
 

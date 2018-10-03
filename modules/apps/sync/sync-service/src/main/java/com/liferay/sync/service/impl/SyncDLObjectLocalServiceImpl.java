@@ -119,7 +119,7 @@ public class SyncDLObjectLocalServiceImpl
 					approvedSyncDLObject.setLockUserId(lockUserId);
 					approvedSyncDLObject.setLockUserName(lockUserName);
 
-					syncDLObjectPersistence.update(approvedSyncDLObject);
+					approvedSyncDLObject = syncDLObjectPersistence.update(approvedSyncDLObject);
 				}
 			}
 		}
@@ -150,7 +150,7 @@ public class SyncDLObjectLocalServiceImpl
 				if (approvedSyncDLObject != null) {
 					approvedSyncDLObject.setEvent(event);
 
-					syncDLObjectPersistence.update(approvedSyncDLObject);
+					approvedSyncDLObject = syncDLObjectPersistence.update(approvedSyncDLObject);
 				}
 			}
 		}
@@ -210,7 +210,7 @@ public class SyncDLObjectLocalServiceImpl
 				parentFolderSyncDLObject.setExtraSettings(
 					extraSettingsJSONObject.toString());
 
-				syncDLObjectPersistence.update(parentFolderSyncDLObject);
+				parentFolderSyncDLObject = syncDLObjectPersistence.update(parentFolderSyncDLObject);
 			}
 		}
 
@@ -328,7 +328,7 @@ public class SyncDLObjectLocalServiceImpl
 					syncDLObject.setLastPermissionChangeDate(
 						parentSyncDLObject.getLastPermissionChangeDate());
 
-					syncDLObjectPersistence.update(syncDLObject);
+					syncDLObject = syncDLObjectPersistence.update(syncDLObject);
 				}
 
 			});
@@ -400,7 +400,7 @@ public class SyncDLObjectLocalServiceImpl
 								syncDLObject.getTypePK(), false));
 					}
 
-					syncDLObjectPersistence.update(syncDLObject);
+					syncDLObject = syncDLObjectPersistence.update(syncDLObject);
 				}
 
 			});
@@ -443,7 +443,7 @@ public class SyncDLObjectLocalServiceImpl
 					syncDLObject.setUserName(parentSyncDLObject.getUserName());
 					syncDLObject.setEvent(SyncDLObjectConstants.EVENT_TRASH);
 
-					syncDLObjectPersistence.update(syncDLObject);
+					syncDLObject = syncDLObjectPersistence.update(syncDLObject);
 				}
 
 			});

@@ -118,7 +118,7 @@ public class PasswordTrackerLocalServiceImpl
 			passwordTracker.setCreateDate(new Date());
 			passwordTracker.setPassword(encPassword);
 
-			passwordTrackerPersistence.update(passwordTracker);
+			passwordTracker = passwordTrackerPersistence.update(passwordTracker);
 		}
 	}
 

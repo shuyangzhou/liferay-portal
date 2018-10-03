@@ -419,7 +419,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 			group.setExpandoBridgeAttributes(serviceContext);
 		}
 
-		groupPersistence.update(group);
+		group = groupPersistence.update(group);
 
 		// Layout sets
 
@@ -1071,7 +1071,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 
 				group.setSite(false);
 
-				groupPersistence.update(group);
+				group = groupPersistence.update(group);
 
 				// Group roles
 
@@ -1330,7 +1330,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 				group.setTypeSettingsProperties(typeSettingsProperties);
 			}
 
-			groupPersistence.update(group);
+			group = groupPersistence.update(group);
 		}
 	}
 
@@ -1344,7 +1344,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 
 		group.setRemoteStagingGroupCount(stagingGroupCount);
 
-		groupPersistence.update(group);
+		group = groupPersistence.update(group);
 	}
 
 	/**
@@ -3645,7 +3645,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 
 		group.setFriendlyURL(friendlyURL);
 
-		groupPersistence.update(group);
+		group = groupPersistence.update(group);
 
 		return group;
 	}
@@ -3739,7 +3739,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 			group.setExpandoBridgeAttributes(serviceContext);
 		}
 
-		groupPersistence.update(group);
+		group = groupPersistence.update(group);
 
 		if (group.hasStagingGroup() && !group.isStagedRemotely()) {
 			Group stagingGroup = group.getStagingGroup();
@@ -3748,7 +3748,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 
 			stagingGroup.setTreePath(stagingGroup.buildTreePath());
 
-			groupPersistence.update(stagingGroup);
+			stagingGroup = groupPersistence.update(stagingGroup);
 		}
 
 		// Asset
@@ -3862,7 +3862,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 
 		group.setTypeSettings(typeSettings);
 
-		groupPersistence.update(group);
+		group = groupPersistence.update(group);
 
 		return group;
 	}
@@ -3885,7 +3885,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 
 		group.setSite(site);
 
-		groupPersistence.update(group);
+		group = groupPersistence.update(group);
 
 		return group;
 	}

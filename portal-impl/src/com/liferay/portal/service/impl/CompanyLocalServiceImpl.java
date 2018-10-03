@@ -177,7 +177,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		company.setMaxUsers(maxUsers);
 		company.setActive(active);
 
-		companyPersistence.update(company);
+		company = companyPersistence.update(company);
 
 		// Virtual host
 
@@ -336,7 +336,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 				if (!defaultUser.isAgreedToTermsOfUse()) {
 					defaultUser.setAgreedToTermsOfUse(true);
 
-					userPersistence.update(defaultUser);
+					defaultUser = userPersistence.update(defaultUser);
 				}
 			}
 			else {
@@ -376,7 +376,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 				defaultUser.setAgreedToTermsOfUse(true);
 				defaultUser.setStatus(WorkflowConstants.STATUS_APPROVED);
 
-				userPersistence.update(defaultUser);
+				defaultUser = userPersistence.update(defaultUser);
 
 				// Contact
 
@@ -398,7 +398,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 				defaultContact.setMale(true);
 				defaultContact.setBirthday(now);
 
-				contactPersistence.update(defaultContact);
+				defaultContact = contactPersistence.update(defaultContact);
 			}
 
 			// System roles
@@ -487,7 +487,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			throw new SystemException(ee);
 		}
 
-		companyPersistence.update(company);
+		company = companyPersistence.update(company);
 	}
 
 	@Override
@@ -850,7 +850,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		company.setMaxUsers(maxUsers);
 		company.setActive(active);
 
-		companyPersistence.update(company);
+		company = companyPersistence.update(company);
 
 		// Virtual host
 
@@ -916,7 +916,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		PortalUtil.updateImageId(company, logo, logoBytes, "logoId", 0, 0, 0);
 
-		companyPersistence.update(company);
+		company = companyPersistence.update(company);
 
 		// Account
 
@@ -993,7 +993,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		user.setLanguageId(languageId);
 		user.setTimeZoneId(timeZoneId);
 
-		userPersistence.update(user);
+		user = userPersistence.update(user);
 
 		updateDisplayGroupNames(companyId);
 	}
@@ -1574,7 +1574,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 			company.setAccountId(accountId);
 
-			companyPersistence.update(company);
+			company = companyPersistence.update(company);
 		}
 
 		account.setName(name);
@@ -1587,7 +1587,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		account.setType(type);
 		account.setSize(size);
 
-		accountPersistence.update(account);
+		account = accountPersistence.update(account);
 	}
 
 	protected Company updateVirtualHostname(

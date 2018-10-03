@@ -99,7 +99,7 @@ public class GadgetLocalServiceImpl extends GadgetLocalServiceBaseImpl {
 		gadget.setUrl(url);
 		gadget.setPortletCategoryNames(portletCategoryNames);
 
-		gadgetPersistence.update(gadget);
+		gadget = gadgetPersistence.update(gadget);
 
 		resourceLocalService.addResources(
 			companyId, 0, 0, Gadget.class.getName(), gadgetId, false,
@@ -268,7 +268,7 @@ public class GadgetLocalServiceImpl extends GadgetLocalServiceBaseImpl {
 
 		gadget.setPortletCategoryNames(portletCategoryNames);
 
-		gadgetPersistence.update(gadget);
+		gadget = gadgetPersistence.update(gadget);
 
 		gadgetLocalService.initGadget(
 			gadget.getUuid(), gadget.getCompanyId(), gadgetId, gadget.getName(),

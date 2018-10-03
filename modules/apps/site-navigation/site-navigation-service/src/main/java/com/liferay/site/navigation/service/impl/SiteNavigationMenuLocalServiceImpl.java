@@ -121,7 +121,7 @@ public class SiteNavigationMenuLocalServiceImpl
 		siteNavigationMenu.setType(type);
 		siteNavigationMenu.setAuto(auto);
 
-		siteNavigationMenuPersistence.update(siteNavigationMenu);
+		siteNavigationMenu = siteNavigationMenuPersistence.update(siteNavigationMenu);
 
 		// Resources
 
@@ -451,7 +451,7 @@ public class SiteNavigationMenuLocalServiceImpl
 		actualTypeSiteNavigationMenu.setType(
 			SiteNavigationConstants.TYPE_DEFAULT);
 
-		siteNavigationMenuPersistence.update(actualTypeSiteNavigationMenu);
+		actualTypeSiteNavigationMenu = siteNavigationMenuPersistence.update(actualTypeSiteNavigationMenu);
 	}
 
 	@ServiceReference(type = CustomSQL.class)

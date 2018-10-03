@@ -65,7 +65,7 @@ public class MDRRuleLocalServiceImpl extends MDRRuleLocalServiceBaseImpl {
 
 		ruleGroup.setModifiedDate(new Date());
 
-		mdrRuleGroupPersistence.update(ruleGroup);
+		ruleGroup = mdrRuleGroupPersistence.update(ruleGroup);
 
 		return rule;
 	}
@@ -129,7 +129,7 @@ public class MDRRuleLocalServiceImpl extends MDRRuleLocalServiceBaseImpl {
 		if (ruleGroup != null) {
 			ruleGroup.setModifiedDate(new Date());
 
-			mdrRuleGroupPersistence.update(ruleGroup);
+			ruleGroup = mdrRuleGroupPersistence.update(ruleGroup);
 		}
 	}
 
@@ -189,14 +189,14 @@ public class MDRRuleLocalServiceImpl extends MDRRuleLocalServiceBaseImpl {
 		rule.setType(type);
 		rule.setTypeSettings(typeSettings);
 
-		mdrRulePersistence.update(rule);
+		rule = mdrRulePersistence.update(rule);
 
 		MDRRuleGroup ruleGroup = mdrRuleGroupPersistence.findByPrimaryKey(
 			rule.getRuleGroupId());
 
 		ruleGroup.setModifiedDate(serviceContext.getModifiedDate(null));
 
-		mdrRuleGroupPersistence.update(ruleGroup);
+		ruleGroup = mdrRuleGroupPersistence.update(ruleGroup);
 
 		return rule;
 	}

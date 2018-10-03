@@ -53,7 +53,7 @@ public class PollsChoiceLocalServiceImpl
 		choice.setName(name);
 		choice.setDescription(description);
 
-		pollsChoicePersistence.update(choice);
+		choice = pollsChoicePersistence.update(choice);
 
 		return choice;
 	}
@@ -89,7 +89,7 @@ public class PollsChoiceLocalServiceImpl
 		choice.setName(name);
 		choice.setDescription(description);
 
-		pollsChoicePersistence.update(choice);
+		choice = pollsChoicePersistence.update(choice);
 
 		return choice;
 	}

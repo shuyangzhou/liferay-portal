@@ -39,7 +39,7 @@ public class AnnouncementsFlagLocalServiceImpl
 		flag.setEntryId(entryId);
 		flag.setValue(value);
 
-		announcementsFlagPersistence.update(flag);
+		flag = announcementsFlagPersistence.update(flag);
 
 		return flag;
 	}

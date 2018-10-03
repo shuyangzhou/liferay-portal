@@ -102,7 +102,7 @@ public class KaleoInstanceLocalServiceImpl
 		kaleoInstance.setWorkflowContext(
 			WorkflowContextUtil.convert(workflowContext));
 
-		kaleoInstancePersistence.update(kaleoInstance);
+		kaleoInstance = kaleoInstancePersistence.update(kaleoInstance);
 
 		return kaleoInstance;
 	}
@@ -117,7 +117,7 @@ public class KaleoInstanceLocalServiceImpl
 		kaleoInstance.setCompleted(true);
 		kaleoInstance.setCompletionDate(new Date());
 
-		kaleoInstancePersistence.update(kaleoInstance);
+		kaleoInstance = kaleoInstancePersistence.update(kaleoInstance);
 
 		return kaleoInstance;
 	}
@@ -324,7 +324,7 @@ public class KaleoInstanceLocalServiceImpl
 		kaleoInstance.setWorkflowContext(
 			WorkflowContextUtil.convert(workflowContext));
 
-		kaleoInstancePersistence.update(kaleoInstance);
+		kaleoInstance = kaleoInstancePersistence.update(kaleoInstance);
 
 		return kaleoInstance;
 	}

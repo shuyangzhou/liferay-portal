@@ -80,7 +80,7 @@ public class LayoutSetPrototypeLocalServiceImpl
 
 		layoutSetPrototype.setSettingsProperties(settingsProperties);
 
-		layoutSetPrototypePersistence.update(layoutSetPrototype);
+		layoutSetPrototype = layoutSetPrototypePersistence.update(layoutSetPrototype);
 
 		// Resources
 
@@ -276,7 +276,7 @@ public class LayoutSetPrototypeLocalServiceImpl
 
 		layoutSetPrototype.setSettingsProperties(settingsProperties);
 
-		layoutSetPrototypePersistence.update(layoutSetPrototype);
+		layoutSetPrototype = layoutSetPrototypePersistence.update(layoutSetPrototype);
 
 		return layoutSetPrototype;
 	}
@@ -317,7 +317,7 @@ public class LayoutSetPrototypeLocalServiceImpl
 		layoutSetPrototype.setModifiedDate(new Date());
 		layoutSetPrototype.setSettings(settings);
 
-		layoutSetPrototypePersistence.update(layoutSetPrototype);
+		layoutSetPrototype = layoutSetPrototypePersistence.update(layoutSetPrototype);
 
 		// Group
 
@@ -340,7 +340,7 @@ public class LayoutSetPrototypeLocalServiceImpl
 
 		group.setTypeSettings(typeSettingsProperties.toString());
 
-		groupPersistence.update(group);
+		group = groupPersistence.update(group);
 
 		return layoutSetPrototype;
 	}

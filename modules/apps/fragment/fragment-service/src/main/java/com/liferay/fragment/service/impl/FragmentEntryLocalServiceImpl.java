@@ -127,7 +127,7 @@ public class FragmentEntryLocalServiceImpl
 		fragmentEntry.setStatusByUserName(user.getFullName());
 		fragmentEntry.setStatusDate(new Date());
 
-		fragmentEntryPersistence.update(fragmentEntry);
+		fragmentEntry = fragmentEntryPersistence.update(fragmentEntry);
 
 		return fragmentEntry;
 	}
@@ -221,7 +221,7 @@ public class FragmentEntryLocalServiceImpl
 		fragmentEntry.setStatusByUserName(user.getFullName());
 		fragmentEntry.setStatusDate(new Date());
 
-		fragmentEntryPersistence.update(fragmentEntry);
+		fragmentEntry = fragmentEntryPersistence.update(fragmentEntry);
 
 		return fragmentEntry;
 	}
@@ -337,7 +337,7 @@ public class FragmentEntryLocalServiceImpl
 		fragmentEntry.setModifiedDate(new Date());
 		fragmentEntry.setPreviewFileEntryId(previewFileEntryId);
 
-		fragmentEntryPersistence.update(fragmentEntry);
+		fragmentEntry = fragmentEntryPersistence.update(fragmentEntry);
 
 		return fragmentEntry;
 	}
@@ -386,7 +386,7 @@ public class FragmentEntryLocalServiceImpl
 		fragmentEntry.setStatusByUserName(user.getFullName());
 		fragmentEntry.setStatusDate(new Date());
 
-		fragmentEntryPersistence.update(fragmentEntry);
+		fragmentEntry = fragmentEntryPersistence.update(fragmentEntry);
 
 		return fragmentEntry;
 	}

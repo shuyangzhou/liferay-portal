@@ -75,7 +75,7 @@ public class VirtualHostLocalServiceImpl
 
 		virtualHost.setHostname(hostname);
 
-		virtualHostPersistence.update(virtualHost);
+		virtualHost = virtualHostPersistence.update(virtualHost);
 
 		final Company company = companyPersistence.fetchByPrimaryKey(companyId);
 

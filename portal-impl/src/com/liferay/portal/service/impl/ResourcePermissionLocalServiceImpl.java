@@ -610,7 +610,7 @@ public class ResourcePermissionLocalServiceImpl
 			resourcePermission.setViewActionId(
 				oldResourcePermission.isViewActionId());
 
-			resourcePermissionPersistence.update(resourcePermission);
+			resourcePermission = resourcePermissionPersistence.update(resourcePermission);
 		}
 	}
 
@@ -1356,7 +1356,7 @@ public class ResourcePermissionLocalServiceImpl
 		for (ResourcePermission resourcePermission : resourcePermissions) {
 			resourcePermission.setRoleId(toRoleId);
 
-			resourcePermissionPersistence.update(resourcePermission);
+			resourcePermission = resourcePermissionPersistence.update(resourcePermission);
 		}
 
 		roleLocalService.deleteRole(fromRoleId);
@@ -1705,7 +1705,7 @@ public class ResourcePermissionLocalServiceImpl
 			resourcePermission.setPrimKey(newPrimKey);
 			resourcePermission.setPrimKeyId(GetterUtil.getLong(newPrimKey));
 
-			resourcePermissionPersistence.update(resourcePermission);
+			resourcePermission = resourcePermissionPersistence.update(resourcePermission);
 		}
 	}
 
@@ -2124,7 +2124,7 @@ public class ResourcePermissionLocalServiceImpl
 			resourcePermission.setActionIds(actionIdsLong);
 			resourcePermission.setViewActionId(actionIdsLong % 2 == 1);
 
-			resourcePermissionPersistence.update(resourcePermission);
+			resourcePermission = resourcePermissionPersistence.update(resourcePermission);
 
 			if (ArrayUtil.contains(actionIds, ActionKeys.MANAGE_SUBGROUPS)) {
 				PermissionCacheUtil.clearPrimaryKeyRoleCache();

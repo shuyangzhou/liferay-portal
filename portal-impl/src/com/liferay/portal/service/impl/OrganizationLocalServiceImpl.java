@@ -278,7 +278,7 @@ public class OrganizationLocalServiceImpl
 		organization.setComments(comments);
 		organization.setExpandoBridgeAttributes(serviceContext);
 
-		organizationPersistence.update(organization);
+		organization = organizationPersistence.update(organization);
 
 		// Group
 
@@ -474,7 +474,7 @@ public class OrganizationLocalServiceImpl
 		if (group.isSite()) {
 			group.setSite(false);
 
-			groupPersistence.update(group);
+			group = groupPersistence.update(group);
 		}
 
 		groupLocalService.deleteGroup(group);
@@ -1912,7 +1912,7 @@ public class OrganizationLocalServiceImpl
 
 		organization.setExpandoBridgeAttributes(serviceContext);
 
-		organizationPersistence.update(organization);
+		organization = organizationPersistence.update(organization);
 
 		// Group
 
@@ -2273,7 +2273,7 @@ public class OrganizationLocalServiceImpl
 
 			curOrganization.setTreePath(curOrganization.buildTreePath());
 
-			organizationPersistence.update(curOrganization);
+			curOrganization = organizationPersistence.update(curOrganization);
 
 			organizationIds[i] = curOrganization.getOrganizationId();
 		}

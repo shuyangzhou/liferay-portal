@@ -78,7 +78,7 @@ public class SiteNavigationMenuItemLocalServiceImpl
 		siteNavigationMenuItem.setTypeSettings(typeSettings);
 		siteNavigationMenuItem.setOrder(order);
 
-		siteNavigationMenuItemPersistence.update(siteNavigationMenuItem);
+		siteNavigationMenuItem = siteNavigationMenuItemPersistence.update(siteNavigationMenuItem);
 
 		return siteNavigationMenuItem;
 	}
@@ -215,7 +215,7 @@ public class SiteNavigationMenuItemLocalServiceImpl
 			parentSiteNavigationMenuItemId);
 		siteNavigationMenuItem.setOrder(order);
 
-		siteNavigationMenuItemPersistence.update(siteNavigationMenuItem);
+		siteNavigationMenuItem = siteNavigationMenuItemPersistence.update(siteNavigationMenuItem);
 
 		// Child site navigation menu item
 
@@ -238,7 +238,7 @@ public class SiteNavigationMenuItemLocalServiceImpl
 
 			child.setOrder(newOrder++);
 
-			siteNavigationMenuItemPersistence.update(child);
+			child = siteNavigationMenuItemPersistence.update(child);
 		}
 
 		if (parentSiteNavigationMenuItemId !=
@@ -256,7 +256,7 @@ public class SiteNavigationMenuItemLocalServiceImpl
 
 				oldChild.setOrder(oldChild.getOrder() - 1);
 
-				siteNavigationMenuItemPersistence.update(oldChild);
+				oldChild = siteNavigationMenuItemPersistence.update(oldChild);
 			}
 		}
 
@@ -318,7 +318,7 @@ public class SiteNavigationMenuItemLocalServiceImpl
 		siteNavigationMenuItem.setName(name);
 		siteNavigationMenuItem.setTypeSettings(typeSettings);
 
-		siteNavigationMenuItemPersistence.update(siteNavigationMenuItem);
+		siteNavigationMenuItem = siteNavigationMenuItemPersistence.update(siteNavigationMenuItem);
 
 		return siteNavigationMenuItem;
 	}

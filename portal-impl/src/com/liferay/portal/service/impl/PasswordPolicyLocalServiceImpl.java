@@ -101,7 +101,7 @@ public class PasswordPolicyLocalServiceImpl
 		passwordPolicy.setResetTicketMaxAge(resetTicketMaxAge);
 		passwordPolicy.setExpandoBridgeAttributes(serviceContext);
 
-		passwordPolicyPersistence.update(passwordPolicy);
+		passwordPolicy = passwordPolicyPersistence.update(passwordPolicy);
 
 		// Resources
 
@@ -381,7 +381,7 @@ public class PasswordPolicyLocalServiceImpl
 		passwordPolicy.setResetTicketMaxAge(resetTicketMaxAge);
 		passwordPolicy.setExpandoBridgeAttributes(serviceContext);
 
-		passwordPolicyPersistence.update(passwordPolicy);
+		passwordPolicy = passwordPolicyPersistence.update(passwordPolicy);
 
 		return passwordPolicy;
 	}

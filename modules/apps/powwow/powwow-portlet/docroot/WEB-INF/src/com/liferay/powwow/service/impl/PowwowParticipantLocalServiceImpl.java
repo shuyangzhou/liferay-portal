@@ -58,7 +58,7 @@ public class PowwowParticipantLocalServiceImpl
 		powwowParticipant.setType(type);
 		powwowParticipant.setStatus(status);
 
-		powwowParticipantPersistence.update(powwowParticipant);
+		powwowParticipant = powwowParticipantPersistence.update(powwowParticipant);
 
 		return powwowParticipant;
 	}
@@ -148,7 +148,7 @@ public class PowwowParticipantLocalServiceImpl
 
 		powwowParticipant.setStatus(status);
 
-		powwowParticipantPersistence.update(powwowParticipant);
+		powwowParticipant = powwowParticipantPersistence.update(powwowParticipant);
 
 		return powwowParticipant;
 	}

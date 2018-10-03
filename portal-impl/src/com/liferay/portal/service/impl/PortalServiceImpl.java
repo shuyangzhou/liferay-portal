@@ -217,7 +217,7 @@ public class PortalServiceImpl extends PortalServiceBaseImpl {
 
 		className.setValue(classNameValue);
 
-		classNamePersistence.update(className);
+		className = classNamePersistence.update(className);
 	}
 
 	protected void addTransactionPortletBar(
