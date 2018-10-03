@@ -323,6 +323,8 @@ public class TransactionalPortalCacheHelper {
 				return;
 			}
 
+			Object marker = new Object();
+
 			_markers.compute(
 				_portalCacheName,
 				(key, placeHolder) -> {
@@ -338,7 +340,7 @@ public class TransactionalPortalCacheHelper {
 						return placeHolder;
 					}
 
-					return new Object();
+					return marker;
 				});
 		}
 
@@ -349,8 +351,9 @@ public class TransactionalPortalCacheHelper {
 
 			_portalCacheName = portalCache.getPortalCacheName();
 
-			_marker = _markers.computeIfAbsent(
-				_portalCacheName, key -> new Object());
+			Object marker = new Object();
+
+			_marker = _markers.computeIfAbsent(_portalCacheName, key -> marker);
 		}
 
 		private static final Map<String, Object> _markers =
