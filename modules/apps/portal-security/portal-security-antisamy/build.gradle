@@ -92,6 +92,15 @@ processSanitizerConfiguration {
 				|			</attribute>
 				|		</tag>""".stripMargin()
 		}
+		else if (line.contains('<tag name="a" action="validate">')) {
+			line = """\
+				|		<tag name="a" action="validate">
+				|			<attribute name="target">
+				|				<regexp-list>
+				|					<regexp name="htmlId"/>
+				|				</regexp-list>
+				|			</attribute>""".stripMargin()
+		}
 		else if (line.contains('<tag name="img"')) {
 			line = """\
 				|${line}
