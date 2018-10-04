@@ -5709,12 +5709,12 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 			contact.setEmailAddress(user.getEmailAddress());
 
-			contact = contactPersistence.update(contact);
+			contactPersistence.update(contact);
 		}
 
 		user.setEmailAddressVerified(true);
 
-		user = userPersistence.update(user);
+		userPersistence.update(user);
 
 		ticketLocalService.deleteTicket(ticket);
 	}

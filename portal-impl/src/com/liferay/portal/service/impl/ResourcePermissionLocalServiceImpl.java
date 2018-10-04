@@ -2124,8 +2124,7 @@ public class ResourcePermissionLocalServiceImpl
 			resourcePermission.setActionIds(actionIdsLong);
 			resourcePermission.setViewActionId(actionIdsLong % 2 == 1);
 
-			resourcePermission = resourcePermissionPersistence.update(
-				resourcePermission);
+			resourcePermissionPersistence.update(resourcePermission);
 
 			if (ArrayUtil.contains(actionIds, ActionKeys.MANAGE_SUBGROUPS)) {
 				PermissionCacheUtil.clearPrimaryKeyRoleCache();
