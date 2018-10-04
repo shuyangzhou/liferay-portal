@@ -223,7 +223,7 @@ public class KBFolderLocalServiceImpl extends KBFolderLocalServiceBaseImpl {
 
 		kbFolder.setParentKBFolderId(parentKBFolderId);
 
-		kbFolder = kbFolderPersistence.update(kbFolder);
+		kbFolderPersistence.update(kbFolder);
 	}
 
 	/**

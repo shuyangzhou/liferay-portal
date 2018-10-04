@@ -191,7 +191,7 @@ public class SocialActivitySettingLocalServiceImpl
 
 		activitySetting.setValue(String.valueOf(enabled));
 
-		activitySetting = socialActivitySettingPersistence.update(activitySetting);
+		socialActivitySettingPersistence.update(activitySetting);
 	}
 
 	@Override
@@ -245,7 +245,7 @@ public class SocialActivitySettingLocalServiceImpl
 			activitySetting.setValue(toJSON(activityCounterDefinition));
 		}
 
-		activitySetting = socialActivitySettingPersistence.update(activitySetting);
+		socialActivitySettingPersistence.update(activitySetting);
 
 		String key = encodeKey(groupId, className, activityType);
 
@@ -284,7 +284,7 @@ public class SocialActivitySettingLocalServiceImpl
 
 		activitySetting.setValue(jsonObject.toString());
 
-		activitySetting = socialActivitySettingPersistence.update(activitySetting);
+		socialActivitySettingPersistence.update(activitySetting);
 	}
 
 	@Override

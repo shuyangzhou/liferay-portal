@@ -346,7 +346,7 @@ public class FragmentEntryLinkLocalServiceImpl
 				fragmentEntryLink.getClassNameId(),
 				fragmentEntryLink.getClassPK());
 
-			fragmentEntryLink = fragmentEntryLinkPersistence.update(fragmentEntryLink);
+			fragmentEntryLinkPersistence.update(fragmentEntryLink);
 		}
 	}
 

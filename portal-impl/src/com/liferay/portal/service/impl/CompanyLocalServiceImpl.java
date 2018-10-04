@@ -398,7 +398,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 				defaultContact.setMale(true);
 				defaultContact.setBirthday(now);
 
-				defaultContact = contactPersistence.update(defaultContact);
+				contactPersistence.update(defaultContact);
 			}
 
 			// System roles
@@ -487,7 +487,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			throw new SystemException(ee);
 		}
 
-		company = companyPersistence.update(company);
+		companyPersistence.update(company);
 	}
 
 	@Override
@@ -993,7 +993,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		user.setLanguageId(languageId);
 		user.setTimeZoneId(timeZoneId);
 
-		user = userPersistence.update(user);
+		userPersistence.update(user);
 
 		updateDisplayGroupNames(companyId);
 	}
@@ -1574,7 +1574,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 			company.setAccountId(accountId);
 
-			company = companyPersistence.update(company);
+			companyPersistence.update(company);
 		}
 
 		account.setName(name);
@@ -1587,7 +1587,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		account.setType(type);
 		account.setSize(size);
 
-		account = accountPersistence.update(account);
+		accountPersistence.update(account);
 	}
 
 	protected Company updateVirtualHostname(

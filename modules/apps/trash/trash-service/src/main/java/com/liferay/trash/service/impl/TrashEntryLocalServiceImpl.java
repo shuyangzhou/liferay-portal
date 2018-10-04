@@ -138,7 +138,7 @@ public class TrashEntryLocalServiceImpl extends TrashEntryLocalServiceBaseImpl {
 				trashVersion.setClassPK(statusOVP.getKey());
 				trashVersion.setStatus(statusOVP.getValue());
 
-				trashVersion = trashVersionPersistence.update(trashVersion);
+				trashVersionPersistence.update(trashVersion);
 			}
 		}
 

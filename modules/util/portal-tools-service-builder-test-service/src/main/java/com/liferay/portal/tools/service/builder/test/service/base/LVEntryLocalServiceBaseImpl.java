@@ -1012,7 +1012,7 @@ public abstract class LVEntryLocalServiceBaseImpl extends BaseLocalServiceImpl
 				draftLVEntryLocalization.setTitle(lvEntryLocalizationVersion.getTitle());
 				draftLVEntryLocalization.setContent(lvEntryLocalizationVersion.getContent());
 
-				draftLVEntryLocalization = lvEntryLocalizationPersistence.update(draftLVEntryLocalization);
+				lvEntryLocalizationPersistence.update(draftLVEntryLocalization);
 			}
 		}
 
@@ -1122,7 +1122,7 @@ public abstract class LVEntryLocalServiceBaseImpl extends BaseLocalServiceImpl
 
 			lvEntryLocalization.populateVersionModel(lvEntryLocalizationVersion);
 
-			lvEntryLocalizationVersion = lvEntryLocalizationVersionPersistence.update(lvEntryLocalizationVersion);
+			lvEntryLocalizationVersionPersistence.update(lvEntryLocalizationVersion);
 		}
 	}
 }

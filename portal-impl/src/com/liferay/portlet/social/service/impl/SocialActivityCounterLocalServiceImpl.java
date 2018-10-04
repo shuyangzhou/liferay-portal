@@ -124,7 +124,7 @@ public class SocialActivityCounterLocalServiceImpl
 					activityCounter.getStartPeriod() + periodLength - 1);
 			}
 
-			activityCounter = socialActivityCounterPersistence.update(activityCounter);
+			socialActivityCounterPersistence.update(activityCounter);
 		}
 
 		activityCounter = socialActivityCounterPersistence.fetchByG_C_C_N_O_E(
@@ -459,7 +459,7 @@ public class SocialActivityCounterLocalServiceImpl
 			if (activityCounter.isActive()) {
 				activityCounter.setActive(false);
 
-				activityCounter = socialActivityCounterPersistence.update(activityCounter);
+				socialActivityCounterPersistence.update(activityCounter);
 			}
 		}
 
@@ -520,7 +520,7 @@ public class SocialActivityCounterLocalServiceImpl
 			if (!activityCounter.isActive()) {
 				activityCounter.setActive(true);
 
-				activityCounter = socialActivityCounterPersistence.update(activityCounter);
+				socialActivityCounterPersistence.update(activityCounter);
 			}
 		}
 
@@ -981,7 +981,7 @@ public class SocialActivityCounterLocalServiceImpl
 			activityLimit.setCount(
 				activityCounterDefinition.getLimitPeriod(), count + 1);
 
-			activityLimit = socialActivityLimitPersistence.update(activityLimit);
+			socialActivityLimitPersistence.update(activityLimit);
 
 			return true;
 		}

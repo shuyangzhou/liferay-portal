@@ -206,7 +206,7 @@ public class DLFileVersionPolicyImpl implements DLFileVersionPolicy {
 
 				lastDLFileVersion.setChecksum(lastChecksum);
 
-				lastDLFileVersion = dlFileVersionPersistence.update(lastDLFileVersion);
+				dlFileVersionPersistence.update(lastDLFileVersion);
 			}
 
 			try (InputStream latestInputStream = DLStoreUtil.getFileAsStream(
@@ -224,7 +224,7 @@ public class DLFileVersionPolicyImpl implements DLFileVersionPolicy {
 				latestDLFileVersion.setChecksum(latestChecksum);
 			}
 
-			latestDLFileVersion = dlFileVersionPersistence.update(latestDLFileVersion);
+			dlFileVersionPersistence.update(latestDLFileVersion);
 		}
 		catch (Exception e) {
 			if (_log.isWarnEnabled()) {

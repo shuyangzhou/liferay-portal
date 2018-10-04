@@ -48,7 +48,7 @@ public class KaleoDefinitionLocalServiceImpl
 		kaleoDefinition.setModifiedDate(new Date());
 		kaleoDefinition.setActive(true);
 
-		kaleoDefinition = kaleoDefinitionPersistence.update(kaleoDefinition);
+		kaleoDefinitionPersistence.update(kaleoDefinition);
 
 		// Kaleo definition version
 
@@ -59,7 +59,7 @@ public class KaleoDefinitionLocalServiceImpl
 		kaleoDefinitionVersion.setModifiedDate(new Date());
 		kaleoDefinitionVersion.setStartKaleoNodeId(startKaleoNodeId);
 
-		kaleoDefinitionVersion = kaleoDefinitionVersionPersistence.update(kaleoDefinitionVersion);
+		kaleoDefinitionVersionPersistence.update(kaleoDefinitionVersion);
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class KaleoDefinitionLocalServiceImpl
 		kaleoDefinition.setModifiedDate(new Date());
 		kaleoDefinition.setActive(true);
 
-		kaleoDefinition = kaleoDefinitionPersistence.update(kaleoDefinition);
+		kaleoDefinitionPersistence.update(kaleoDefinition);
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class KaleoDefinitionLocalServiceImpl
 		kaleoDefinition.setModifiedDate(new Date());
 		kaleoDefinition.setActive(true);
 
-		kaleoDefinition = kaleoDefinitionPersistence.update(kaleoDefinition);
+		kaleoDefinitionPersistence.update(kaleoDefinition);
 	}
 
 	@Override
@@ -151,7 +151,7 @@ public class KaleoDefinitionLocalServiceImpl
 		kaleoDefinition.setModifiedDate(new Date());
 		kaleoDefinition.setActive(false);
 
-		kaleoDefinition = kaleoDefinitionPersistence.update(kaleoDefinition);
+		kaleoDefinitionPersistence.update(kaleoDefinition);
 	}
 
 	@Override

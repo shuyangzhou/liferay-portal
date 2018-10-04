@@ -149,7 +149,7 @@ public class MDRRuleGroupInstanceLocalServiceImpl
 			if (mdrRuleGroupInstance.getPriority() != i) {
 				mdrRuleGroupInstance.setPriority(i);
 
-				mdrRuleGroupInstance = mdrRuleGroupInstancePersistence.update(mdrRuleGroupInstance);
+				mdrRuleGroupInstancePersistence.update(mdrRuleGroupInstance);
 			}
 		}
 	}

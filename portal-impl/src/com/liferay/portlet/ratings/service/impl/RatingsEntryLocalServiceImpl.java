@@ -93,7 +93,7 @@ public class RatingsEntryLocalServiceImpl
 			stats.setTotalScore(totalScore);
 			stats.setAverageScore(averageScore);
 
-			stats = ratingsStatsPersistence.update(stats);
+			ratingsStatsPersistence.update(stats);
 		}
 
 		// Social
@@ -223,7 +223,7 @@ public class RatingsEntryLocalServiceImpl
 			stats.setAverageScore(
 				stats.getTotalScore() / stats.getTotalEntries());
 
-			stats = ratingsStatsPersistence.update(stats);
+			ratingsStatsPersistence.update(stats);
 		}
 		else {
 			User user = userPersistence.findByPrimaryKey(userId);
@@ -255,7 +255,7 @@ public class RatingsEntryLocalServiceImpl
 			stats.setAverageScore(
 				stats.getTotalScore() / stats.getTotalEntries());
 
-			stats = ratingsStatsPersistence.update(stats);
+			ratingsStatsPersistence.update(stats);
 		}
 
 		// Social

@@ -230,7 +230,7 @@ public class KaleoInstanceTokenLocalServiceImpl
 
 		kaleoInstance.setRootKaleoInstanceTokenId(rootKaleoInstanceTokenId);
 
-		kaleoInstance = kaleoInstancePersistence.update(kaleoInstance);
+		kaleoInstancePersistence.update(kaleoInstance);
 
 		return kaleoInstanceToken;
 	}

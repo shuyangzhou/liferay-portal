@@ -2467,7 +2467,7 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 
 			layout.setPriority(priority++);
 
-			layout = layoutPersistence.update(layout);
+			layoutPersistence.update(layout);
 		}
 
 		layoutSetLocalService.updatePageCount(groupId, privateLayout);
@@ -2817,7 +2817,7 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 			layoutPrototype.setName(
 				name, LocaleUtil.fromLanguageId(languageId));
 
-			layoutPrototype = layoutPrototypePersistence.update(layoutPrototype);
+			layoutPrototypePersistence.update(layoutPrototype);
 		}
 
 		return layout;
@@ -3002,7 +3002,7 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 
 			layout.setPriority(nextPriority);
 
-			layout = layoutPersistence.update(layout);
+			layoutPersistence.update(layout);
 		}
 	}
 

@@ -238,7 +238,7 @@ public class SiteNavigationMenuItemLocalServiceImpl
 
 			child.setOrder(newOrder++);
 
-			child = siteNavigationMenuItemPersistence.update(child);
+			siteNavigationMenuItemPersistence.update(child);
 		}
 
 		if (parentSiteNavigationMenuItemId !=
@@ -256,7 +256,7 @@ public class SiteNavigationMenuItemLocalServiceImpl
 
 				oldChild.setOrder(oldChild.getOrder() - 1);
 
-				oldChild = siteNavigationMenuItemPersistence.update(oldChild);
+				siteNavigationMenuItemPersistence.update(oldChild);
 			}
 		}
 

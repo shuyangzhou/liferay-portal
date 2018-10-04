@@ -241,7 +241,7 @@ public class RepositoryLocalServiceImpl extends RepositoryLocalServiceBaseImpl {
 		dlFolder.setName(name);
 		dlFolder.setDescription(description);
 
-		dlFolder = dlFolderPersistence.update(dlFolder);
+		dlFolderPersistence.update(dlFolder);
 	}
 
 	@Override
@@ -254,7 +254,7 @@ public class RepositoryLocalServiceImpl extends RepositoryLocalServiceBaseImpl {
 
 		repository.setTypeSettingsProperties(typeSettingsProperties);
 
-		repository = repositoryPersistence.update(repository);
+		repositoryPersistence.update(repository);
 	}
 
 	protected long getDLFolderId(

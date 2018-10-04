@@ -610,7 +610,7 @@ public class ResourcePermissionLocalServiceImpl
 			resourcePermission.setViewActionId(
 				oldResourcePermission.isViewActionId());
 
-			resourcePermission = resourcePermissionPersistence.update(resourcePermission);
+			resourcePermissionPersistence.update(resourcePermission);
 		}
 	}
 
@@ -1356,7 +1356,7 @@ public class ResourcePermissionLocalServiceImpl
 		for (ResourcePermission resourcePermission : resourcePermissions) {
 			resourcePermission.setRoleId(toRoleId);
 
-			resourcePermission = resourcePermissionPersistence.update(resourcePermission);
+			resourcePermissionPersistence.update(resourcePermission);
 		}
 
 		roleLocalService.deleteRole(fromRoleId);
@@ -1705,7 +1705,7 @@ public class ResourcePermissionLocalServiceImpl
 			resourcePermission.setPrimKey(newPrimKey);
 			resourcePermission.setPrimKeyId(GetterUtil.getLong(newPrimKey));
 
-			resourcePermission = resourcePermissionPersistence.update(resourcePermission);
+			resourcePermissionPersistence.update(resourcePermission);
 		}
 	}
 

@@ -1565,7 +1565,7 @@ public class CalendarBookingLocalServiceImpl
 		if (!recurrence.equals(lastInstanceCalendarBooking.getRecurrence())) {
 			lastInstanceCalendarBooking.setRecurrence(recurrence);
 
-			lastInstanceCalendarBooking = calendarBookingPersistence.update(lastInstanceCalendarBooking);
+			calendarBookingPersistence.update(lastInstanceCalendarBooking);
 		}
 	}
 
@@ -2363,7 +2363,7 @@ public class CalendarBookingLocalServiceImpl
 			childCalendarBooking.setModifiedDate(modifiedDate);
 			childCalendarBooking.setRecurrence(recurrence);
 
-			childCalendarBooking = calendarBookingPersistence.update(childCalendarBooking);
+			calendarBookingPersistence.update(childCalendarBooking);
 		}
 	}
 

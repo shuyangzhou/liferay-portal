@@ -1364,7 +1364,7 @@ public class DDLRecordLocalServiceImpl extends DDLRecordLocalServiceBaseImpl {
 		recordVersion.setStatusByUserName(user.getFullName());
 		recordVersion.setStatusDate(serviceContext.getModifiedDate(null));
 
-		recordVersion = ddlRecordVersionPersistence.update(recordVersion);
+		ddlRecordVersionPersistence.update(recordVersion);
 	}
 
 	protected void validate(long groupId, DDLRecordSet recordSet)

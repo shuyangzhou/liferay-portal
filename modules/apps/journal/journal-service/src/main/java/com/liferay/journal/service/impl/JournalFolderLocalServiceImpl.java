@@ -1389,7 +1389,7 @@ public class JournalFolderLocalServiceImpl
 
 					curArticle.setStatus(curArticleOldStatus);
 
-					curArticle = journalArticlePersistence.update(curArticle);
+					journalArticlePersistence.update(curArticle);
 
 					// Trash
 

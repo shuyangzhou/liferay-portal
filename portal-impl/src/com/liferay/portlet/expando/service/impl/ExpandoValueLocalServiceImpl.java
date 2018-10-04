@@ -721,7 +721,7 @@ public class ExpandoValueLocalServiceImpl
 			if (value.isNew() || !Objects.equals(value.getData(), dataString)) {
 				value.setData(dataString);
 
-				value = expandoValuePersistence.update(value);
+				expandoValuePersistence.update(value);
 
 				rowModified = true;
 			}
@@ -730,7 +730,7 @@ public class ExpandoValueLocalServiceImpl
 		if (rowModified) {
 			row.setModifiedDate(new Date());
 
-			row = expandoRowPersistence.update(row);
+			expandoRowPersistence.update(row);
 		}
 	}
 
@@ -1741,7 +1741,7 @@ public class ExpandoValueLocalServiceImpl
 
 			row.setModifiedDate(new Date());
 
-			row = expandoRowPersistence.update(row);
+			expandoRowPersistence.update(row);
 		}
 
 		return value;

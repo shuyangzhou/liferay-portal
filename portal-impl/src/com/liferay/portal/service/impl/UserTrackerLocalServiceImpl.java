@@ -60,7 +60,7 @@ public class UserTrackerLocalServiceImpl
 
 				userTrackerPath.setUserTrackerId(userTrackerId);
 
-				userTrackerPath = userTrackerPathPersistence.update(userTrackerPath);
+				userTrackerPathPersistence.update(userTrackerPath);
 			}
 
 			return userTracker;

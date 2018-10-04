@@ -988,7 +988,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 			curKBArticle.setKbFolderId(kbFolderId);
 			curKBArticle.setPriority(priority);
 
-			curKBArticle = kbArticlePersistence.update(curKBArticle);
+			kbArticlePersistence.update(curKBArticle);
 		}
 
 		if (kbArticle.getKbFolderId() != kbFolderId) {
@@ -1004,7 +1004,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 				for (KBArticle kbArticleVersion : kbArticleVersions) {
 					kbArticleVersion.setKbFolderId(kbFolderId);
 
-					kbArticleVersion = kbArticlePersistence.update(kbArticleVersion);
+					kbArticlePersistence.update(kbArticleVersion);
 				}
 			}
 		}
@@ -1164,7 +1164,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 		if (oldKBArticle.isApproved()) {
 			oldKBArticle.setLatest(false);
 
-			oldKBArticle = kbArticlePersistence.update(oldKBArticle);
+			kbArticlePersistence.update(oldKBArticle);
 		}
 
 		// Resources
@@ -1267,7 +1267,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 		for (KBArticle kbArticle : kbArticleVersions) {
 			kbArticle.setPriority(priority);
 
-			kbArticle = kbArticlePersistence.update(kbArticle);
+			kbArticlePersistence.update(kbArticle);
 		}
 	}
 
@@ -1313,7 +1313,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 
 			oldKBArticle.setMain(false);
 
-			oldKBArticle = kbArticlePersistence.update(oldKBArticle);
+			kbArticlePersistence.update(oldKBArticle);
 		}
 
 		// Asset
@@ -1400,7 +1400,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 		kbArticle.setModifiedDate(kbArticle.getModifiedDate());
 		kbArticle.setViewCount(viewCount);
 
-		kbArticle = kbArticlePersistence.update(kbArticle);
+		kbArticlePersistence.update(kbArticle);
 	}
 
 	protected void addKBArticleAttachment(
@@ -1916,7 +1916,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 			for (KBArticle kbArticle2 : kbArticles2) {
 				kbArticle2.setRootResourcePrimKey(rootResourcePrimKey);
 
-				kbArticle2 = kbArticlePersistence.update(kbArticle2);
+				kbArticlePersistence.update(kbArticle2);
 			}
 		}
 

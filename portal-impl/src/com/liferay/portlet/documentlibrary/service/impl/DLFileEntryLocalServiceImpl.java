@@ -1618,7 +1618,7 @@ public class DLFileEntryLocalServiceImpl
 		dlFileEntry.setModifiedDate(dlFileEntry.getModifiedDate());
 		dlFileEntry.setReadCount(dlFileEntry.getReadCount() + increment);
 
-		dlFileEntry = dlFileEntryPersistence.update(dlFileEntry);
+		dlFileEntryPersistence.update(dlFileEntry);
 	}
 
 	@Override
@@ -2535,7 +2535,7 @@ public class DLFileEntryLocalServiceImpl
 			dlFileVersion.setStatusByUserId(userId);
 			dlFileVersion.setStatusByUserName(user.getFullName());
 
-			dlFileVersion = dlFileVersionPersistence.update(dlFileVersion);
+			dlFileVersionPersistence.update(dlFileVersion);
 		}
 
 		// Folder

@@ -483,7 +483,7 @@ public class DLFileEntryTypeLocalServiceImpl
 		dlFileEntryType.setNameMap(nameMap);
 		dlFileEntryType.setDescriptionMap(descriptionMap);
 
-		dlFileEntryType = dlFileEntryTypePersistence.update(dlFileEntryType);
+		dlFileEntryTypePersistence.update(dlFileEntryType);
 
 		updateDDMStructureLinks(
 			fileEntryTypeId, SetUtil.fromArray(ddmStructureIds));

@@ -1134,7 +1134,7 @@ public class ResourceBlockLocalServiceImpl
 			existingResourceBlock.getReferenceCount() +
 				resourceBlock.getReferenceCount());
 
-		existingResourceBlock = resourceBlockPersistence.update(existingResourceBlock);
+		resourceBlockPersistence.update(existingResourceBlock);
 
 		deleteResourceBlock(resourceBlock);
 	}

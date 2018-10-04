@@ -863,7 +863,7 @@ public class JournalArticleLocalServiceImpl
 
 			article.setContent(content);
 
-			article = journalArticlePersistence.update(article);
+			journalArticlePersistence.update(article);
 		}
 	}
 
@@ -1506,7 +1506,7 @@ public class JournalArticleLocalServiceImpl
 		for (JournalArticle article : articles) {
 			article.setLayoutUuid(StringPool.BLANK);
 
-			article = journalArticlePersistence.update(article);
+			journalArticlePersistence.update(article);
 		}
 	}
 
@@ -3788,7 +3788,7 @@ public class JournalArticleLocalServiceImpl
 
 			article.setTreePath(treePath);
 
-			article = journalArticlePersistence.update(article);
+			journalArticlePersistence.update(article);
 		}
 
 		if (serviceContext != null) {
@@ -3947,12 +3947,12 @@ public class JournalArticleLocalServiceImpl
 			articleVersion.setArticleId(trashArticleId);
 			articleVersion.setStatus(WorkflowConstants.STATUS_IN_TRASH);
 
-			articleVersion = journalArticlePersistence.update(articleVersion);
+			journalArticlePersistence.update(articleVersion);
 		}
 
 		articleResource.setArticleId(trashArticleId);
 
-		articleResource = journalArticleResourcePersistence.update(articleResource);
+		journalArticleResourcePersistence.update(articleResource);
 
 		article.setArticleId(trashArticleId);
 
@@ -4084,7 +4084,7 @@ public class JournalArticleLocalServiceImpl
 			article.setContent(content);
 		}
 
-		article = journalArticlePersistence.update(article);
+		journalArticlePersistence.update(article);
 
 		return article;
 	}
@@ -4120,7 +4120,7 @@ public class JournalArticleLocalServiceImpl
 		for (JournalArticle articleVersion : articleVersions) {
 			articleVersion.setArticleId(trashArticleId);
 
-			articleVersion = journalArticlePersistence.update(articleVersion);
+			journalArticlePersistence.update(articleVersion);
 		}
 
 		article.setArticleId(trashArticleId);
@@ -4133,7 +4133,7 @@ public class JournalArticleLocalServiceImpl
 
 		articleResource.setArticleId(trashArticleId);
 
-		articleResource = journalArticleResourcePersistence.update(articleResource);
+		journalArticleResourcePersistence.update(articleResource);
 
 		TrashEntry trashEntry = trashEntryLocalService.getEntry(
 			JournalArticle.class.getName(), article.getResourcePrimKey());
@@ -4164,7 +4164,7 @@ public class JournalArticleLocalServiceImpl
 				visible = true;
 			}
 
-			trashArticleVersion = journalArticlePersistence.update(trashArticleVersion);
+			journalArticlePersistence.update(trashArticleVersion);
 		}
 
 		trashEntryLocalService.deleteEntry(
@@ -6343,7 +6343,7 @@ public class JournalArticleLocalServiceImpl
 		for (JournalArticle article : articles) {
 			article.setDDMTemplateKey(newDDMTemplateKey);
 
-			article = journalArticlePersistence.update(article);
+			journalArticlePersistence.update(article);
 		}
 	}
 
@@ -6933,7 +6933,7 @@ public class JournalArticleLocalServiceImpl
 						article.getExpirationDate());
 					currentArticle.setStatus(WorkflowConstants.STATUS_EXPIRED);
 
-					currentArticle = journalArticlePersistence.update(currentArticle);
+					journalArticlePersistence.update(currentArticle);
 				}
 			}
 			else {
@@ -8417,7 +8417,7 @@ public class JournalArticleLocalServiceImpl
 			if (!curArticleUrlTitle.equals(urlTitle)) {
 				article.setUrlTitle(urlTitle);
 
-				article = journalArticlePersistence.update(article);
+				journalArticlePersistence.update(article);
 			}
 		}
 	}

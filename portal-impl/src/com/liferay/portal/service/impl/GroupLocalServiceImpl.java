@@ -1330,7 +1330,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 				group.setTypeSettingsProperties(typeSettingsProperties);
 			}
 
-			group = groupPersistence.update(group);
+			groupPersistence.update(group);
 		}
 	}
 
@@ -1344,7 +1344,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 
 		group.setRemoteStagingGroupCount(stagingGroupCount);
 
-		group = groupPersistence.update(group);
+		groupPersistence.update(group);
 	}
 
 	/**
@@ -3794,7 +3794,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 
 			stagingGroup.setTreePath(stagingGroup.buildTreePath());
 
-			stagingGroup = groupPersistence.update(stagingGroup);
+			groupPersistence.update(stagingGroup);
 		}
 
 		// Asset

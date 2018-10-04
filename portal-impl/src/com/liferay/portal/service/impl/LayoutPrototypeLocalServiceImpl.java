@@ -307,7 +307,7 @@ public class LayoutPrototypeLocalServiceImpl
 
 		layout.setNameMap(nameMap);
 
-		layout = layoutPersistence.update(layout);
+		layoutPersistence.update(layout);
 
 		return layoutPrototype;
 	}

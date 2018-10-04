@@ -231,7 +231,7 @@ public class BlogsStatsUserLocalServiceImpl
 			statsUser.setLastPostDate(lastDisplayDate);
 		}
 
-		statsUser = blogsStatsUserPersistence.update(statsUser);
+		blogsStatsUserPersistence.update(statsUser);
 	}
 
 	@Override

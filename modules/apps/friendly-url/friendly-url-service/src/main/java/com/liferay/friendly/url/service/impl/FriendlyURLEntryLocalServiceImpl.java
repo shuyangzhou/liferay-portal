@@ -119,7 +119,7 @@ public class FriendlyURLEntryLocalServiceImpl
 
 		friendlyURLEntryMapping.setFriendlyURLEntryId(friendlyURLEntryId);
 
-		friendlyURLEntryMapping = friendlyURLEntryMappingPersistence.update(friendlyURLEntryMapping);
+		friendlyURLEntryMappingPersistence.update(friendlyURLEntryMapping);
 
 		friendlyURLEntryPersistence.update(friendlyURLEntry);
 
@@ -394,7 +394,7 @@ public class FriendlyURLEntryLocalServiceImpl
 		friendlyURLEntryMapping.setFriendlyURLEntryId(
 			friendlyURLEntry.getFriendlyURLEntryId());
 
-		friendlyURLEntryMapping = friendlyURLEntryMappingPersistence.update(friendlyURLEntryMapping);
+		friendlyURLEntryMappingPersistence.update(friendlyURLEntryMapping);
 	}
 
 	@Override

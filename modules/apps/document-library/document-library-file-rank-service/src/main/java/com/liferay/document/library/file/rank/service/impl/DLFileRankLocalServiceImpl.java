@@ -149,7 +149,7 @@ public class DLFileRankLocalServiceImpl extends DLFileRankLocalServiceBaseImpl {
 		for (DLFileRank dlFileRank : dlFileRanks) {
 			dlFileRank.setActive(false);
 
-			dlFileRank = dlFileRankPersistence.update(dlFileRank);
+			dlFileRankPersistence.update(dlFileRank);
 		}
 	}
 
@@ -170,7 +170,7 @@ public class DLFileRankLocalServiceImpl extends DLFileRankLocalServiceBaseImpl {
 		for (DLFileRank dlFileRank : dlFileRanks) {
 			dlFileRank.setActive(true);
 
-			dlFileRank = dlFileRankPersistence.update(dlFileRank);
+			dlFileRankPersistence.update(dlFileRank);
 		}
 	}
 
@@ -238,7 +238,7 @@ public class DLFileRankLocalServiceImpl extends DLFileRankLocalServiceBaseImpl {
 		for (DLFileRank dlFileRank : dlFileRanks) {
 			dlFileRank.setActive(active);
 
-			dlFileRank = dlFileRankPersistence.update(dlFileRank);
+			dlFileRankPersistence.update(dlFileRank);
 		}
 	}
 

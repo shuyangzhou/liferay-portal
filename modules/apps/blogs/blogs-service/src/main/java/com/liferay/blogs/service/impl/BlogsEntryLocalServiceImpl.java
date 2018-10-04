@@ -188,7 +188,7 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		entry.setCoverImageFileEntryId(coverImageFileEntryId);
 		entry.setCoverImageURL(coverImageURL);
 
-		entry = blogsEntryPersistence.update(entry);
+		blogsEntryPersistence.update(entry);
 	}
 
 	@Override
@@ -2208,7 +2208,7 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 
 			entry.setTrackbacks(newTrackbacks);
 
-			entry = blogsEntryPersistence.update(entry);
+			blogsEntryPersistence.update(entry);
 		}
 	}
 

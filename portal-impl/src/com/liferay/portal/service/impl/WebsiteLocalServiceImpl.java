@@ -140,7 +140,7 @@ public class WebsiteLocalServiceImpl extends WebsiteLocalServiceBaseImpl {
 				if ((websiteId <= 0) || (website.getWebsiteId() != websiteId)) {
 					website.setPrimary(false);
 
-					website = websitePersistence.update(website);
+					websitePersistence.update(website);
 				}
 			}
 		}
