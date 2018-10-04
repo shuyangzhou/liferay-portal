@@ -4170,12 +4170,34 @@ public class ServiceBuilder {
 
 		// Write file
 
+		String uadTestIntegrationOutputPath =
+			entity.getUADTestIntegrationOutputPath();
+
+		String name = entity.getName();
+
 		File file = new File(
 			StringBundler.concat(
-				entity.getUADTestIntegrationOutputPath(), "/uad/test/",
-				entity.getName(), "UADTestHelper.java"));
+				uadTestIntegrationOutputPath, "/uad/test/", name,
+				"UADTestHelper.java"));
 
-		if (!file.exists()) {
+		File utilFile = new File(
+			StringBundler.concat(
+				uadTestIntegrationOutputPath, "/uad/test/", name,
+				"UADTestUtil.java"));
+
+		Properties properties = new Properties();
+
+		try (InputStream is = ServiceBuilder.class.getResourceAsStream(
+			"dependencies/uad_test_helper.properties")) {
+
+			properties.load(is);
+		}
+
+		String helperSkipList = properties.getProperty("HelperSkipList");
+
+		if (!file.exists() && !utilFile.exists()
+			&& !helperSkipList.contains(name)) {
+
 			_write(file, content, _author, _jalopySettings, _modifiedFileNames);
 		}
 	}
