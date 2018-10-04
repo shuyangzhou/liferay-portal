@@ -178,7 +178,7 @@
 		</execute>
 	</command>
 
-	<command ignore="true" name="OpenIDSmoke" priority="4">
+	<command name="OpenIDSmoke" priority="4">
 		<property name="dummy.socket.proxy.disabled" value="true" />
 		<property name="osgi.module.configuration.file.names" value="com.liferay.captcha.configuration.CaptchaConfiguration.config" />
 		<property name="osgi.module.configurations" value="createAccountCaptchaEnabled=&quot;false&quot;" />
