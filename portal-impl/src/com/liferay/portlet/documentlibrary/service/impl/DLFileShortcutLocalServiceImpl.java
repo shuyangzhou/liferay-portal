@@ -81,7 +81,7 @@ public class DLFileShortcutLocalServiceImpl
 		fileShortcut.setStatusByUserName(user.getFullName());
 		fileShortcut.setStatusDate(new Date());
 
-		dlFileShortcutPersistence.update(fileShortcut);
+		fileShortcut = dlFileShortcutPersistence.update(fileShortcut);
 
 		// Resources
 
@@ -400,7 +400,7 @@ public class DLFileShortcutLocalServiceImpl
 		fileShortcut.setToFileEntryId(toFileEntryId);
 		fileShortcut.setTreePath(fileShortcut.buildTreePath());
 
-		dlFileShortcutPersistence.update(fileShortcut);
+		fileShortcut = dlFileShortcutPersistence.update(fileShortcut);
 
 		// Folder
 

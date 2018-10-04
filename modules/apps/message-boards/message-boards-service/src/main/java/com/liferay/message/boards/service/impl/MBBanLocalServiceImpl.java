@@ -67,7 +67,7 @@ public class MBBanLocalServiceImpl extends MBBanLocalServiceBaseImpl {
 			ban.setBanUserId(banUserId);
 		}
 
-		mbBanPersistence.update(ban);
+		ban = mbBanPersistence.update(ban);
 
 		return ban;
 	}

@@ -43,7 +43,7 @@ public class ListTypeLocalServiceImpl extends ListTypeLocalServiceBaseImpl {
 		listType.setName(name);
 		listType.setType(type);
 
-		listTypePersistence.update(listType);
+		listType = listTypePersistence.update(listType);
 
 		return listType;
 	}

@@ -165,7 +165,8 @@ public class SocialActivityCounterLocalServiceImpl
 			SocialActivityCounterConstants.END_PERIOD_UNDEFINED);
 		activityCounter.setActive(true);
 
-		socialActivityCounterPersistence.update(activityCounter);
+		activityCounter = socialActivityCounterPersistence.update(
+			activityCounter);
 
 		return activityCounter;
 	}
@@ -1042,7 +1043,8 @@ public class SocialActivityCounterLocalServiceImpl
 			activityCounter.getTotalValue() +
 				activityCounterDefinition.getIncrement());
 
-		socialActivityCounterPersistence.update(activityCounter);
+		activityCounter = socialActivityCounterPersistence.update(
+			activityCounter);
 
 		socialActivityCounterPersistence.clearCache(activityCounter);
 	}

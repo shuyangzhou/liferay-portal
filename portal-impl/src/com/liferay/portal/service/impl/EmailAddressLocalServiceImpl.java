@@ -62,7 +62,7 @@ public class EmailAddressLocalServiceImpl
 		emailAddress.setTypeId(typeId);
 		emailAddress.setPrimary(primary);
 
-		emailAddressPersistence.update(emailAddress);
+		emailAddress = emailAddressPersistence.update(emailAddress);
 
 		return emailAddress;
 	}
@@ -131,7 +131,7 @@ public class EmailAddressLocalServiceImpl
 		emailAddress.setTypeId(typeId);
 		emailAddress.setPrimary(primary);
 
-		emailAddressPersistence.update(emailAddress);
+		emailAddress = emailAddressPersistence.update(emailAddress);
 
 		return emailAddress;
 	}

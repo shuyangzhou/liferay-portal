@@ -54,7 +54,7 @@ public class RepositoryEntryLocalServiceImpl
 		repositoryEntry.setRepositoryId(repositoryId);
 		repositoryEntry.setMappedId(mappedId);
 
-		repositoryEntryPersistence.update(repositoryEntry);
+		repositoryEntry = repositoryEntryPersistence.update(repositoryEntry);
 
 		return repositoryEntry;
 	}
@@ -124,7 +124,7 @@ public class RepositoryEntryLocalServiceImpl
 
 		repositoryEntry.setMappedId(mappedId);
 
-		repositoryEntryPersistence.update(repositoryEntry);
+		repositoryEntry = repositoryEntryPersistence.update(repositoryEntry);
 
 		return repositoryEntry;
 	}

@@ -123,7 +123,7 @@ public class AssetCategoryLocalServiceImpl
 		category.setDescriptionMap(descriptionMap);
 		category.setVocabularyId(vocabularyId);
 
-		assetCategoryPersistence.update(category);
+		category = assetCategoryPersistence.update(category);
 
 		// Resources
 
@@ -551,7 +551,7 @@ public class AssetCategoryLocalServiceImpl
 
 		category.setParentCategoryId(parentCategoryId);
 
-		assetCategoryPersistence.update(category);
+		category = assetCategoryPersistence.update(category);
 
 		return category;
 	}
@@ -665,7 +665,7 @@ public class AssetCategoryLocalServiceImpl
 		category.setTitleMap(titleMap);
 		category.setDescriptionMap(descriptionMap);
 
-		assetCategoryPersistence.update(category);
+		category = assetCategoryPersistence.update(category);
 
 		return category;
 	}
@@ -741,7 +741,7 @@ public class AssetCategoryLocalServiceImpl
 			for (AssetCategory childCategory : childrenCategories) {
 				childCategory.setVocabularyId(vocabularyId);
 
-				assetCategoryPersistence.update(childCategory);
+				childCategory = assetCategoryPersistence.update(childCategory);
 
 				updateChildrenVocabularyId(childCategory, vocabularyId);
 			}

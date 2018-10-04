@@ -85,7 +85,7 @@ public class AssetListEntryLocalServiceImpl
 		assetListEntry.setTitle(title);
 		assetListEntry.setType(type);
 
-		assetListEntryPersistence.update(assetListEntry);
+		assetListEntry = assetListEntryPersistence.update(assetListEntry);
 
 		// Resources
 

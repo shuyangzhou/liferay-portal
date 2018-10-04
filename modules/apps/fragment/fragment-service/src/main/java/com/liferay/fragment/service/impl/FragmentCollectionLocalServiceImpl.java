@@ -91,7 +91,8 @@ public class FragmentCollectionLocalServiceImpl
 		fragmentCollection.setName(name);
 		fragmentCollection.setDescription(description);
 
-		fragmentCollectionPersistence.update(fragmentCollection);
+		fragmentCollection = fragmentCollectionPersistence.update(
+			fragmentCollection);
 
 		return fragmentCollection;
 	}
@@ -200,7 +201,8 @@ public class FragmentCollectionLocalServiceImpl
 		fragmentCollection.setName(name);
 		fragmentCollection.setDescription(description);
 
-		fragmentCollectionPersistence.update(fragmentCollection);
+		fragmentCollection = fragmentCollectionPersistence.update(
+			fragmentCollection);
 
 		return fragmentCollection;
 	}

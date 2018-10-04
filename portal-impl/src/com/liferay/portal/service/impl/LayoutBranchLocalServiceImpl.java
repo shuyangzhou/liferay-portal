@@ -69,7 +69,7 @@ public class LayoutBranchLocalServiceImpl
 		layoutBranch.setDescription(description);
 		layoutBranch.setMaster(master);
 
-		layoutBranchPersistence.update(layoutBranch);
+		layoutBranch = layoutBranchPersistence.update(layoutBranch);
 
 		// Resources
 
@@ -204,7 +204,7 @@ public class LayoutBranchLocalServiceImpl
 		layoutBranch.setName(name);
 		layoutBranch.setDescription(description);
 
-		layoutBranchPersistence.update(layoutBranch);
+		layoutBranch = layoutBranchPersistence.update(layoutBranch);
 
 		return layoutBranch;
 	}

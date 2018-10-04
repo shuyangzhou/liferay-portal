@@ -90,7 +90,7 @@ public class ContactLocalServiceImpl extends ContactLocalServiceBaseImpl {
 		contact.setTwitterSn(twitterSn);
 		contact.setJobTitle(jobTitle);
 
-		contactPersistence.update(contact);
+		contact = contactPersistence.update(contact);
 
 		return contact;
 	}
@@ -214,7 +214,7 @@ public class ContactLocalServiceImpl extends ContactLocalServiceBaseImpl {
 		contact.setTwitterSn(twitterSn);
 		contact.setJobTitle(jobTitle);
 
-		contactPersistence.update(contact);
+		contact = contactPersistence.update(contact);
 
 		return contact;
 	}

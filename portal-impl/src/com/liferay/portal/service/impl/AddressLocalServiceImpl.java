@@ -75,7 +75,7 @@ public class AddressLocalServiceImpl extends AddressLocalServiceBaseImpl {
 		address.setMailing(mailing);
 		address.setPrimary(primary);
 
-		addressPersistence.update(address);
+		address = addressPersistence.update(address);
 
 		return address;
 	}
@@ -150,7 +150,7 @@ public class AddressLocalServiceImpl extends AddressLocalServiceBaseImpl {
 		address.setMailing(mailing);
 		address.setPrimary(primary);
 
-		addressPersistence.update(address);
+		address = addressPersistence.update(address);
 
 		return address;
 	}
