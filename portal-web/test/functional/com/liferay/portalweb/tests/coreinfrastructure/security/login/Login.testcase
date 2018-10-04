@@ -160,10 +160,7 @@
 
 		<execute macro="PortalSettings#enableOpenIDConnectCP" />
 
-		<execute macro="OpenIDConnect#addProviderInSystemSettings">
-			<var name="openIDConnectClientID" value="${openIDConnectClientID}" />
-			<var name="openIDConnectClientSecret" value="${openIDConnectClientSecret}" />
-		</execute>
+		<execute macro="OpenIDConnect#addProviderInSystemSettings" />
 
 		<execute macro="User#logoutPG" />
 
