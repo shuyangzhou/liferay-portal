@@ -692,14 +692,14 @@ public class DLAppHelperLocalServiceImpl
 		dlFileEntry.setFileName(fileName);
 		dlFileEntry.setTitle(title);
 
-		dlFileEntry = dlFileEntryPersistence.update(dlFileEntry);
+		dlFileEntryPersistence.update(dlFileEntry);
 
 		DLFileVersion dlFileVersion = (DLFileVersion)fileVersion.getModel();
 
 		dlFileVersion.setFileName(fileName);
 		dlFileVersion.setTitle(title);
 
-		dlFileVersion = dlFileVersionPersistence.update(dlFileVersion);
+		dlFileVersionPersistence.update(dlFileVersion);
 
 		TrashEntry trashEntry = trashEntryLocalService.getEntry(
 			DLFileEntryConstants.getClassName(), fileEntry.getFileEntryId());
@@ -732,7 +732,7 @@ public class DLAppHelperLocalServiceImpl
 
 			trashDLFileVersion.setStatus(trashVersion.getStatus());
 
-			trashDLFileVersion = dlFileVersionPersistence.update(trashDLFileVersion);
+			dlFileVersionPersistence.update(trashDLFileVersion);
 		}
 
 		trashEntryLocalService.deleteEntry(trashEntry.getEntryId());
@@ -1297,7 +1297,7 @@ public class DLAppHelperLocalServiceImpl
 
 			dlFileVersion.setStatus(oldStatus);
 
-			dlFileVersion = dlFileVersionPersistence.update(dlFileVersion);
+			dlFileVersionPersistence.update(dlFileVersion);
 
 			// Trash
 
@@ -1402,7 +1402,7 @@ public class DLAppHelperLocalServiceImpl
 		for (DLFileVersion curDLFileVersion : dlFileVersions) {
 			curDLFileVersion.setStatus(WorkflowConstants.STATUS_IN_TRASH);
 
-			curDLFileVersion = dlFileVersionPersistence.update(curDLFileVersion);
+			dlFileVersionPersistence.update(curDLFileVersion);
 		}
 
 		DLFileEntry dlFileEntry = (DLFileEntry)fileEntry.getModel();
@@ -1808,7 +1808,7 @@ public class DLAppHelperLocalServiceImpl
 
 					dlFileVersion.setStatus(oldStatus);
 
-					dlFileVersion = dlFileVersionPersistence.update(dlFileVersion);
+					dlFileVersionPersistence.update(dlFileVersion);
 
 					// Trash
 
@@ -1870,7 +1870,7 @@ public class DLAppHelperLocalServiceImpl
 
 				dlFileShortcut.setStatus(oldStatus);
 
-				dlFileShortcut = dlFileShortcutPersistence.update(dlFileShortcut);
+				dlFileShortcutPersistence.update(dlFileShortcut);
 
 				if (trashVersion != null) {
 					trashVersionLocalService.deleteTrashVersion(trashVersion);

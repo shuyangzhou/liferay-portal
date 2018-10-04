@@ -1016,7 +1016,7 @@ public class MBCategoryLocalServiceImpl extends MBCategoryLocalServiceBaseImpl {
 		toCategory.setMessageCount(
 			fromCategory.getMessageCount() + toCategory.getMessageCount());
 
-		toCategory = mbCategoryPersistence.update(toCategory);
+		mbCategoryPersistence.update(toCategory);
 
 		mbCategoryLocalService.deleteCategory(fromCategory);
 	}
@@ -1198,7 +1198,7 @@ public class MBCategoryLocalServiceImpl extends MBCategoryLocalServiceBaseImpl {
 
 			curCategory.setDisplayStyle(displayStyle);
 
-			curCategory = mbCategoryPersistence.update(curCategory);
+			mbCategoryPersistence.update(curCategory);
 		}
 	}
 

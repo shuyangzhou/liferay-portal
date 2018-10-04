@@ -159,7 +159,7 @@ public class LayoutRevisionLocalServiceImpl
 				curLayoutRevision.setParentLayoutRevisionId(
 					layoutRevision.getParentLayoutRevisionId());
 
-				curLayoutRevision = layoutRevisionPersistence.update(curLayoutRevision);
+				layoutRevisionPersistence.update(curLayoutRevision);
 			}
 		}
 
@@ -613,7 +613,7 @@ public class LayoutRevisionLocalServiceImpl
 
 					curLayoutRevision.setHead(false);
 
-					curLayoutRevision = layoutRevisionPersistence.update(curLayoutRevision);
+					layoutRevisionPersistence.update(curLayoutRevision);
 				}
 			}
 		}
@@ -631,7 +631,7 @@ public class LayoutRevisionLocalServiceImpl
 
 					curLayoutRevision.setHead(true);
 
-					curLayoutRevision = layoutRevisionPersistence.update(curLayoutRevision);
+					layoutRevisionPersistence.update(curLayoutRevision);
 
 					break;
 				}

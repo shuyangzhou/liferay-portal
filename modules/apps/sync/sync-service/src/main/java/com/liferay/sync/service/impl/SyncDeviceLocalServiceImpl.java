@@ -89,7 +89,7 @@ public class SyncDeviceLocalServiceImpl extends SyncDeviceLocalServiceBaseImpl {
 
 		syncDevice.setStatus(status);
 
-		syncDevice = syncDevicePersistence.update(syncDevice);
+		syncDevicePersistence.update(syncDevice);
 	}
 
 	@Override

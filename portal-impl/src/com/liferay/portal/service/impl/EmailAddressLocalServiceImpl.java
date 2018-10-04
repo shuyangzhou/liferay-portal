@@ -155,7 +155,7 @@ public class EmailAddressLocalServiceImpl
 
 					emailAddress.setPrimary(false);
 
-					emailAddress = emailAddressPersistence.update(emailAddress);
+					emailAddressPersistence.update(emailAddress);
 				}
 			}
 		}

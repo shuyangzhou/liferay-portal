@@ -93,7 +93,7 @@ public class DDMFormInstanceLocalServiceImpl
 		ddmFormInstance.setSettings(serialize(settingsDDMFormValues));
 
 		DDMFormInstance updatedDDMFormInstance =
-			ddmFormInstance = ddmFormInstancePersistence.update(ddmFormInstance);
+			ddmFormInstancePersistence.update(ddmFormInstance);
 
 		updateWorkflowDefinitionLink(
 			ddmFormInstance, settingsDDMFormValues, serviceContext);
@@ -459,7 +459,7 @@ public class DDMFormInstanceLocalServiceImpl
 		ddmFormInstance.setSettings(serialize(settingsDDMFormValues));
 
 		DDMFormInstance updatedDDMFormInstance =
-			ddmFormInstance = ddmFormInstancePersistence.update(ddmFormInstance);
+			ddmFormInstancePersistence.update(ddmFormInstance);
 
 		updateWorkflowDefinitionLink(
 			ddmFormInstance, settingsDDMFormValues, serviceContext);
@@ -603,7 +603,7 @@ public class DDMFormInstanceLocalServiceImpl
 		ddmFormInstanceVersion.setStatusByUserName(user.getFullName());
 		ddmFormInstanceVersion.setStatusDate(ddmFormInstance.getModifiedDate());
 
-		ddmFormInstanceVersion = ddmFormInstanceVersionPersistence.update(ddmFormInstanceVersion);
+		ddmFormInstanceVersionPersistence.update(ddmFormInstanceVersion);
 	}
 
 	protected void updateWorkflowDefinitionLink(

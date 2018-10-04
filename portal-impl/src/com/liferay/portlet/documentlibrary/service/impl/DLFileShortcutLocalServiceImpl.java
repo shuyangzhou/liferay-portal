@@ -432,7 +432,7 @@ public class DLFileShortcutLocalServiceImpl
 		for (DLFileShortcut fileShortcut : fileShortcuts) {
 			fileShortcut.setToFileEntryId(newToFileEntryId);
 
-			fileShortcut = dlFileShortcutPersistence.update(fileShortcut);
+			dlFileShortcutPersistence.update(fileShortcut);
 		}
 	}
 
@@ -444,7 +444,7 @@ public class DLFileShortcutLocalServiceImpl
 		for (DLFileShortcut fileShortcut : fileShortcuts) {
 			fileShortcut.setActive(active);
 
-			fileShortcut = dlFileShortcutPersistence.update(fileShortcut);
+			dlFileShortcutPersistence.update(fileShortcut);
 		}
 	}
 

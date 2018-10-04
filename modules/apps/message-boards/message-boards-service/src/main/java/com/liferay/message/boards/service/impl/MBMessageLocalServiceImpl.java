@@ -723,7 +723,7 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 						repliesMessage.setRootMessageId(
 							childMessage.getMessageId());
 
-						repliesMessage = mbMessagePersistence.update(repliesMessage);
+						mbMessagePersistence.update(repliesMessage);
 					}
 
 					thread.setRootMessageId(childMessage.getMessageId());
@@ -747,7 +747,7 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 						childMessage.setParentMessageId(
 							message.getParentMessageId());
 
-						childMessage = mbMessagePersistence.update(childMessage);
+						mbMessagePersistence.update(childMessage);
 					}
 				}
 				else if (message.getStatus() ==
@@ -1909,7 +1909,7 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 		for (MBMessage message : messages) {
 			message.setUserName(userName);
 
-			message = mbMessagePersistence.update(message);
+			mbMessagePersistence.update(message);
 		}
 	}
 
@@ -2467,7 +2467,7 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 			if (message.getPriority() != priority) {
 				message.setPriority(priority);
 
-				message = mbMessagePersistence.update(message);
+				mbMessagePersistence.update(message);
 			}
 		}
 	}

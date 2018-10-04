@@ -340,7 +340,7 @@ public class LayoutSetPrototypeLocalServiceImpl
 
 		group.setTypeSettings(typeSettingsProperties.toString());
 
-		group = groupPersistence.update(group);
+		groupPersistence.update(group);
 
 		return layoutSetPrototype;
 	}

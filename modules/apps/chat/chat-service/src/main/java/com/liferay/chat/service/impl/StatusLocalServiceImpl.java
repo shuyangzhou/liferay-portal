@@ -127,7 +127,7 @@ public class StatusLocalServiceImpl extends StatusLocalServiceBaseImpl {
 				for (Entry entry : entries) {
 					entry.setFlag(EntryConstants.FLAG_READ);
 
-					entry = entryPersistence.update(entry);
+					entryPersistence.update(entry);
 				}
 			}
 			catch (JSONException jsone) {

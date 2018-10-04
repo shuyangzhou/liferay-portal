@@ -387,7 +387,7 @@ public class ReleaseLocalServiceImpl extends ReleaseLocalServiceBaseImpl {
 
 		release.setSchemaVersion(schemaVersion);
 
-		release = releasePersistence.update(release);
+		releasePersistence.update(release);
 	}
 
 	protected int addReleaseInfo() throws Exception {

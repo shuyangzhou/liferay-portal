@@ -170,7 +170,7 @@ public class AddressLocalServiceImpl extends AddressLocalServiceBaseImpl {
 				if ((addressId <= 0) || (address.getAddressId() != addressId)) {
 					address.setMailing(false);
 
-					address = addressPersistence.update(address);
+					addressPersistence.update(address);
 				}
 			}
 		}
@@ -186,7 +186,7 @@ public class AddressLocalServiceImpl extends AddressLocalServiceBaseImpl {
 				if ((addressId <= 0) || (address.getAddressId() != addressId)) {
 					address.setPrimary(false);
 
-					address = addressPersistence.update(address);
+					addressPersistence.update(address);
 				}
 			}
 		}

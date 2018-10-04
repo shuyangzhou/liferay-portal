@@ -58,7 +58,7 @@ public class SocialActivitySetLocalServiceImpl
 
 		activity.setActivitySetId(activitySetId);
 
-		activity = socialActivityPersistence.update(activity);
+		socialActivityPersistence.update(activity);
 
 		return activitySet;
 	}
@@ -82,7 +82,7 @@ public class SocialActivitySetLocalServiceImpl
 
 		activitySet.setActivityCount(activitySet.getActivityCount() - 1);
 
-		activitySet = socialActivitySetPersistence.update(activitySet);
+		socialActivitySetPersistence.update(activitySet);
 	}
 
 	@Override
@@ -237,13 +237,13 @@ public class SocialActivitySetLocalServiceImpl
 
 		activitySet.setActivityCount(activitySet.getActivityCount() + 1);
 
-		activitySet = socialActivitySetPersistence.update(activitySet);
+		socialActivitySetPersistence.update(activitySet);
 
 		// Activity
 
 		activity.setActivitySetId(activitySetId);
 
-		activity = socialActivityPersistence.update(activity);
+		socialActivityPersistence.update(activity);
 	}
 
 }
