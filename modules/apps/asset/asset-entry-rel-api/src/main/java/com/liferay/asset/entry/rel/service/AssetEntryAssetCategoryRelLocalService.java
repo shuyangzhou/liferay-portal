@@ -108,9 +108,6 @@ public interface AssetEntryAssetCategoryRelLocalService extends BaseLocalService
 	public AssetEntryAssetCategoryRel deleteAssetEntryAssetCategoryRel(
 		long assetEntryAssetCategoryRelId) throws PortalException;
 
-	public void deleteAssetEntryAssetCategoryRel(long assetEntryId,
-		long assetCategoryId);
-
 	public void deleteAssetEntryAssetCategoryRelByAssetCategoryId(
 		long assetCategoryId);
 
@@ -188,10 +185,6 @@ public interface AssetEntryAssetCategoryRelLocalService extends BaseLocalService
 		long assetEntryAssetCategoryRelId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AssetEntryAssetCategoryRel fetchAssetEntryAssetCategoryRel(
-		long assetEntryId, long assetCategoryId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
 	/**
@@ -235,9 +228,6 @@ public interface AssetEntryAssetCategoryRelLocalService extends BaseLocalService
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getAssetEntryAssetCategoryRelsCount();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getAssetEntryAssetCategoryRelsCount(long assetEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();

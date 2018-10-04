@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
-import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
@@ -155,14 +154,6 @@ public class AssetEntryAssetCategoryRelPersistenceTest {
 		_persistence.countByAssetCategoryId(RandomTestUtil.nextLong());
 
 		_persistence.countByAssetCategoryId(0L);
-	}
-
-	@Test
-	public void testCountByA_A() throws Exception {
-		_persistence.countByA_A(RandomTestUtil.nextLong(),
-			RandomTestUtil.nextLong());
-
-		_persistence.countByA_A(0L, 0L);
 	}
 
 	@Test
@@ -402,26 +393,6 @@ public class AssetEntryAssetCategoryRelPersistenceTest {
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
 		Assert.assertEquals(0, result.size());
-	}
-
-	@Test
-	public void testResetOriginalValues() throws Exception {
-		AssetEntryAssetCategoryRel newAssetEntryAssetCategoryRel = addAssetEntryAssetCategoryRel();
-
-		_persistence.clearCache();
-
-		AssetEntryAssetCategoryRel existingAssetEntryAssetCategoryRel = _persistence.findByPrimaryKey(newAssetEntryAssetCategoryRel.getPrimaryKey());
-
-		Assert.assertEquals(Long.valueOf(
-				existingAssetEntryAssetCategoryRel.getAssetEntryId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingAssetEntryAssetCategoryRel, "getOriginalAssetEntryId",
-				new Class<?>[0]));
-		Assert.assertEquals(Long.valueOf(
-				existingAssetEntryAssetCategoryRel.getAssetCategoryId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingAssetEntryAssetCategoryRel,
-				"getOriginalAssetCategoryId", new Class<?>[0]));
 	}
 
 	protected AssetEntryAssetCategoryRel addAssetEntryAssetCategoryRel()
