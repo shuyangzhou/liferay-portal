@@ -231,7 +231,7 @@ public class LayoutLocalServiceStagingAdvice implements BeanFactoryAware {
 
 		layout.setExpandoBridgeAttributes(serviceContext);
 
-		LayoutUtil.update(layout);
+		layout = LayoutUtil.update(layout);
 
 		LayoutFriendlyURLLocalServiceUtil.updateLayoutFriendlyURLs(
 			layout.getUserId(), layout.getCompanyId(), layout.getGroupId(),

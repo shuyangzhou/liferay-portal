@@ -208,7 +208,7 @@ public class RatingsEntryLocalServiceImpl
 
 			entry.setScore(score);
 
-			ratingsEntryPersistence.update(entry);
+			entry = ratingsEntryPersistence.update(entry);
 
 			// Stats
 
@@ -239,7 +239,7 @@ public class RatingsEntryLocalServiceImpl
 			entry.setClassPK(classPK);
 			entry.setScore(score);
 
-			ratingsEntryPersistence.update(entry);
+			entry = ratingsEntryPersistence.update(entry);
 
 			// Stats
 

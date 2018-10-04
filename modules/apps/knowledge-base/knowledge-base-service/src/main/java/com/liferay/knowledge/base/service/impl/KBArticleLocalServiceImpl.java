@@ -195,7 +195,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 		kbArticle.setStatus(WorkflowConstants.STATUS_DRAFT);
 		kbArticle.setExpandoBridgeAttributes(serviceContext);
 
-		kbArticlePersistence.update(kbArticle);
+		kbArticle = kbArticlePersistence.update(kbArticle);
 
 		// Resources
 
@@ -1159,7 +1159,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 		kbArticle.setSourceURL(sourceURL);
 		kbArticle.setExpandoBridgeAttributes(serviceContext);
 
-		kbArticlePersistence.update(kbArticle);
+		kbArticle = kbArticlePersistence.update(kbArticle);
 
 		if (oldKBArticle.isApproved()) {
 			oldKBArticle.setLatest(false);
@@ -1301,7 +1301,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 		kbArticle.setStatusByUserName(user.getFullName());
 		kbArticle.setStatusDate(serviceContext.getModifiedDate(now));
 
-		kbArticlePersistence.update(kbArticle);
+		kbArticle = kbArticlePersistence.update(kbArticle);
 
 		if (status != WorkflowConstants.STATUS_APPROVED) {
 			return kbArticle;
@@ -1388,7 +1388,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 		kbArticle.setModifiedDate(kbArticle.getModifiedDate());
 		kbArticle.setViewCount(viewCount);
 
-		kbArticlePersistence.update(kbArticle);
+		kbArticle = kbArticlePersistence.update(kbArticle);
 
 		if (kbArticle.isApproved() || kbArticle.isFirstVersion()) {
 			return;

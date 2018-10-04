@@ -283,7 +283,7 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 
 		layout.setExpandoBridgeAttributes(serviceContext);
 
-		layoutPersistence.update(layout);
+		layout = layoutPersistence.update(layout);
 
 		// Layout friendly URLs
 
@@ -2529,7 +2529,7 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 			layout.setFriendlyURL(friendlyURL);
 		}
 
-		layoutPersistence.update(layout);
+		layout = layoutPersistence.update(layout);
 
 		return layout;
 	}
@@ -2569,7 +2569,7 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 
 		PortalUtil.updateImageId(layout, true, bytes, "iconImageId", 0, 0, 0);
 
-		layoutPersistence.update(layout);
+		layout = layoutPersistence.update(layout);
 
 		return layout;
 	}
@@ -2696,7 +2696,7 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 
 		layout.setExpandoBridgeAttributes(serviceContext);
 
-		layoutPersistence.update(layout);
+		layout = layoutPersistence.update(layout);
 
 		// Layout friendly URLs
 
@@ -2746,7 +2746,7 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 		layout.setModifiedDate(now);
 		layout.setTypeSettings(typeSettingsProperties.toString());
 
-		layoutPersistence.update(layout);
+		layout = layoutPersistence.update(layout);
 
 		return layout;
 	}

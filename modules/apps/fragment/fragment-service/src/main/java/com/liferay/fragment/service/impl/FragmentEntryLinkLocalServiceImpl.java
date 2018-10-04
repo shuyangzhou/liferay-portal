@@ -96,7 +96,8 @@ public class FragmentEntryLinkLocalServiceImpl
 
 		_updateClassModel(classNameId, classPK);
 
-		fragmentEntryLinkPersistence.update(fragmentEntryLink);
+		fragmentEntryLink = fragmentEntryLinkPersistence.update(
+			fragmentEntryLink);
 
 		return fragmentEntryLink;
 	}
@@ -231,7 +232,8 @@ public class FragmentEntryLinkLocalServiceImpl
 		_updateClassModel(
 			fragmentEntryLink.getClassNameId(), fragmentEntryLink.getClassPK());
 
-		fragmentEntryLinkPersistence.update(fragmentEntryLink);
+		fragmentEntryLink = fragmentEntryLinkPersistence.update(
+			fragmentEntryLink);
 
 		return fragmentEntryLink;
 	}
@@ -264,7 +266,8 @@ public class FragmentEntryLinkLocalServiceImpl
 		fragmentEntryLink.setEditableValues(editableValues);
 		fragmentEntryLink.setPosition(position);
 
-		fragmentEntryLinkPersistence.update(fragmentEntryLink);
+		fragmentEntryLink = fragmentEntryLinkPersistence.update(
+			fragmentEntryLink);
 
 		return fragmentEntryLink;
 	}
@@ -282,7 +285,8 @@ public class FragmentEntryLinkLocalServiceImpl
 		_updateClassModel(
 			fragmentEntryLink.getClassNameId(), fragmentEntryLink.getClassPK());
 
-		fragmentEntryLinkPersistence.update(fragmentEntryLink);
+		fragmentEntryLink = fragmentEntryLinkPersistence.update(
+			fragmentEntryLink);
 
 		return fragmentEntryLink;
 	}

@@ -110,7 +110,8 @@ public class KaleoTaskInstanceTokenLocalServiceImpl
 		kaleoTaskInstanceToken.setWorkflowContext(
 			WorkflowContextUtil.convert(workflowContext));
 
-		kaleoTaskInstanceTokenPersistence.update(kaleoTaskInstanceToken);
+		kaleoTaskInstanceToken = kaleoTaskInstanceTokenPersistence.update(
+			kaleoTaskInstanceToken);
 
 		kaleoTaskAssignmentInstanceLocalService.addTaskAssignmentInstances(
 			kaleoTaskInstanceToken, kaleoTaskAssignments, workflowContext,
@@ -134,7 +135,8 @@ public class KaleoTaskInstanceTokenLocalServiceImpl
 		kaleoTaskInstanceToken.setWorkflowContext(
 			WorkflowContextUtil.convert(workflowContext));
 
-		kaleoTaskInstanceTokenPersistence.update(kaleoTaskInstanceToken);
+		kaleoTaskInstanceToken = kaleoTaskInstanceTokenPersistence.update(
+			kaleoTaskInstanceToken);
 
 		kaleoTaskAssignmentInstanceLocalService.
 			assignKaleoTaskAssignmentInstance(
@@ -159,7 +161,8 @@ public class KaleoTaskInstanceTokenLocalServiceImpl
 		kaleoTaskInstanceToken.setCompleted(true);
 		kaleoTaskInstanceToken.setCompletionDate(new Date());
 
-		kaleoTaskInstanceTokenPersistence.update(kaleoTaskInstanceToken);
+		kaleoTaskInstanceToken = kaleoTaskInstanceTokenPersistence.update(
+			kaleoTaskInstanceToken);
 
 		// Kaleo task assignment instance
 
@@ -622,7 +625,8 @@ public class KaleoTaskInstanceTokenLocalServiceImpl
 			kaleoTaskInstance.setDueDate(cal.getTime());
 		}
 
-		kaleoTaskInstanceTokenPersistence.update(kaleoTaskInstance);
+		kaleoTaskInstance = kaleoTaskInstanceTokenPersistence.update(
+			kaleoTaskInstance);
 
 		return kaleoTaskInstance;
 	}

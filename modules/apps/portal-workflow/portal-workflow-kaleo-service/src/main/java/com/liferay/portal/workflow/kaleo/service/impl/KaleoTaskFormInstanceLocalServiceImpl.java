@@ -95,7 +95,8 @@ public class KaleoTaskFormInstanceLocalServiceImpl
 			}
 		}
 
-		kaleoTaskFormInstancePersistence.update(kaleoTaskFormInstance);
+		kaleoTaskFormInstance = kaleoTaskFormInstancePersistence.update(
+			kaleoTaskFormInstance);
 
 		return kaleoTaskFormInstance;
 	}

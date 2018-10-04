@@ -592,7 +592,7 @@ public class DDLRecordSetLocalServiceImpl
 
 		recordSet.setMinDisplayRows(minDisplayRows);
 
-		ddlRecordSetPersistence.update(recordSet);
+		recordSet = ddlRecordSetPersistence.update(recordSet);
 
 		return recordSet;
 	}
@@ -719,7 +719,8 @@ public class DDLRecordSetLocalServiceImpl
 		recordSetVersion.setStatusByUserName(user.getFullName());
 		recordSetVersion.setStatusDate(recordSet.getModifiedDate());
 
-		ddlRecordSetVersionPersistence.update(recordSetVersion);
+		recordSetVersion = ddlRecordSetVersionPersistence.update(
+			recordSetVersion);
 
 		return recordSetVersion;
 	}
