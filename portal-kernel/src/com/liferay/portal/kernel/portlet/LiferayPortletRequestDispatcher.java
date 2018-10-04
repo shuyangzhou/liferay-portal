@@ -23,7 +23,9 @@ import javax.portlet.PortletResponse;
 
 /**
  * @author Raymond Augé
+ * @deprecated As of Wilberforce (7.0.x), with no direct replacement
  */
+@Deprecated
 public interface LiferayPortletRequestDispatcher
 	extends PortletRequestDispatcher {
 
