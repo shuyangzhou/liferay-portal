@@ -675,7 +675,7 @@ public abstract class VersionedEntryLocalServiceBaseImpl
 
 		draftVersionedEntry.populateVersionModel(versionedEntryVersion);
 
-		versionedEntryVersion = versionedEntryVersionPersistence.update(versionedEntryVersion);
+		versionedEntryVersionPersistence.update(versionedEntryVersion);
 
 		versionedEntryVersion.populateVersionedModel(headVersionedEntry);
 

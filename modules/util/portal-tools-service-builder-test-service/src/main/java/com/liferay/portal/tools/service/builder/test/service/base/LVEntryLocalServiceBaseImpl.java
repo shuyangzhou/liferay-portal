@@ -845,7 +845,7 @@ public abstract class LVEntryLocalServiceBaseImpl extends BaseLocalServiceImpl
 
 		draftLVEntry.populateVersionModel(lvEntryVersion);
 
-		lvEntryVersion = lvEntryVersionPersistence.update(lvEntryVersion);
+		lvEntryVersionPersistence.update(lvEntryVersion);
 
 		lvEntryVersion.populateVersionedModel(headLVEntry);
 
@@ -1080,7 +1080,7 @@ public abstract class LVEntryLocalServiceBaseImpl extends BaseLocalServiceImpl
 					publishedLVEntryLocalization.setTitle(draftLVEntryLocalization.getTitle());
 					publishedLVEntryLocalization.setContent(draftLVEntryLocalization.getContent());
 
-					publishedLVEntryLocalization = lvEntryLocalizationPersistence.update(publishedLVEntryLocalization);
+					lvEntryLocalizationPersistence.update(publishedLVEntryLocalization);
 
 					_publishLVEntryLocalizationVersion(publishedLVEntryLocalization,
 						++lvEntryLocalizationVersionBatchCounter, version);
@@ -1101,7 +1101,7 @@ public abstract class LVEntryLocalServiceBaseImpl extends BaseLocalServiceImpl
 				lvEntryLocalization.setTitle(draftLVEntryLocalization.getTitle());
 				lvEntryLocalization.setContent(draftLVEntryLocalization.getContent());
 
-				lvEntryLocalization = lvEntryLocalizationPersistence.update(lvEntryLocalization);
+				lvEntryLocalizationPersistence.update(lvEntryLocalization);
 
 				_publishLVEntryLocalizationVersion(lvEntryLocalization,
 					++lvEntryLocalizationVersionBatchCounter, version);
