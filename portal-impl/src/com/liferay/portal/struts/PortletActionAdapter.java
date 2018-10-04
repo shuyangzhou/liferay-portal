@@ -45,16 +45,8 @@ public class PortletActionAdapter extends PortletAction {
 			ActionResponse actionResponse)
 		throws Exception {
 
-		StrutsPortletAction originalStrutsPortletAction = null;
-
-		if (_originalPortletAction != null) {
-			originalStrutsPortletAction = new StrutsPortletActionAdapter(
-				_originalPortletAction, actionMapping, actionForm);
-		}
-
 		_strutsPortletAction.processAction(
-			originalStrutsPortletAction, portletConfig, actionRequest,
-			actionResponse);
+			null, portletConfig, actionRequest, actionResponse);
 	}
 
 	@Override
@@ -64,16 +56,8 @@ public class PortletActionAdapter extends PortletAction {
 			RenderResponse renderResponse)
 		throws Exception {
 
-		StrutsPortletAction originalStrutsPortletAction = null;
-
-		if (_originalPortletAction != null) {
-			originalStrutsPortletAction = new StrutsPortletActionAdapter(
-				_originalPortletAction, actionMapping, actionForm);
-		}
-
 		String forward = _strutsPortletAction.render(
-			originalStrutsPortletAction, portletConfig, renderRequest,
-			renderResponse);
+			null, portletConfig, renderRequest, renderResponse);
 
 		if (Validator.isNull(forward)) {
 			return null;
@@ -95,32 +79,15 @@ public class PortletActionAdapter extends PortletAction {
 			ResourceResponse resourceResponse)
 		throws Exception {
 
-		StrutsPortletAction originalStrutsPortletAction = null;
-
-		if (_originalPortletAction != null) {
-			originalStrutsPortletAction = new StrutsPortletActionAdapter(
-				_originalPortletAction, actionMapping, actionForm);
-		}
-
 		_strutsPortletAction.serveResource(
-			originalStrutsPortletAction, portletConfig, resourceRequest,
-			resourceResponse);
-	}
-
-	public void setOriginalPortletAction(PortletAction portletAction) {
-		_originalPortletAction = portletAction;
+			null, portletConfig, resourceRequest, resourceResponse);
 	}
 
 	@Override
 	protected boolean isCheckMethodOnProcessAction() {
-		if (_originalPortletAction != null) {
-			return _originalPortletAction.isCheckMethodOnProcessAction();
-		}
-
 		return _strutsPortletAction.isCheckMethodOnProcessAction();
 	}
 
-	private PortletAction _originalPortletAction;
 	private final StrutsPortletAction _strutsPortletAction;
 
 }
