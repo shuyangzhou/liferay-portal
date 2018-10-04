@@ -78,7 +78,8 @@ public class SiteNavigationMenuItemLocalServiceImpl
 		siteNavigationMenuItem.setTypeSettings(typeSettings);
 		siteNavigationMenuItem.setOrder(order);
 
-		siteNavigationMenuItem = siteNavigationMenuItemPersistence.update(siteNavigationMenuItem);
+		siteNavigationMenuItem = siteNavigationMenuItemPersistence.update(
+			siteNavigationMenuItem);
 
 		return siteNavigationMenuItem;
 	}
@@ -215,7 +216,8 @@ public class SiteNavigationMenuItemLocalServiceImpl
 			parentSiteNavigationMenuItemId);
 		siteNavigationMenuItem.setOrder(order);
 
-		siteNavigationMenuItem = siteNavigationMenuItemPersistence.update(siteNavigationMenuItem);
+		siteNavigationMenuItem = siteNavigationMenuItemPersistence.update(
+			siteNavigationMenuItem);
 
 		// Child site navigation menu item
 
@@ -318,7 +320,8 @@ public class SiteNavigationMenuItemLocalServiceImpl
 		siteNavigationMenuItem.setName(name);
 		siteNavigationMenuItem.setTypeSettings(typeSettings);
 
-		siteNavigationMenuItem = siteNavigationMenuItemPersistence.update(siteNavigationMenuItem);
+		siteNavigationMenuItem = siteNavigationMenuItemPersistence.update(
+			siteNavigationMenuItem);
 
 		return siteNavigationMenuItem;
 	}

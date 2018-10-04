@@ -453,7 +453,8 @@ public class ExportImportConfigurationLocalServiceImpl
 		exportImportConfiguration.setStatusByUserName(user.getScreenName());
 		exportImportConfiguration.setStatusDate(new Date());
 
-		exportImportConfiguration = exportImportConfigurationPersistence.update(exportImportConfiguration);
+		exportImportConfiguration = exportImportConfigurationPersistence.update(
+			exportImportConfiguration);
 
 		return exportImportConfiguration;
 	}

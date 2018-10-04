@@ -1766,7 +1766,8 @@ public class DLAppHelperLocalServiceImpl
 
 					dlFileVersion.setStatus(WorkflowConstants.STATUS_IN_TRASH);
 
-					dlFileVersion = dlFileVersionPersistence.update(dlFileVersion);
+					dlFileVersion = dlFileVersionPersistence.update(
+						dlFileVersion);
 
 					// Trash
 
@@ -1841,7 +1842,8 @@ public class DLAppHelperLocalServiceImpl
 
 				dlFileShortcut.setStatus(WorkflowConstants.STATUS_IN_TRASH);
 
-				dlFileShortcut = dlFileShortcutPersistence.update(dlFileShortcut);
+				dlFileShortcut = dlFileShortcutPersistence.update(
+					dlFileShortcut);
 
 				// Trash
 

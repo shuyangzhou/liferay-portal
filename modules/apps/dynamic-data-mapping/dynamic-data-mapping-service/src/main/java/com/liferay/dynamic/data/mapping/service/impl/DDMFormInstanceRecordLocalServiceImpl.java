@@ -127,7 +127,8 @@ public class DDMFormInstanceRecordLocalServiceImpl
 			ddmFormInstance.getVersion());
 		ddmFormInstanceRecord.setVersion(_VERSION_DEFAULT);
 
-		ddmFormInstanceRecord = ddmFormInstanceRecordPersistence.update(ddmFormInstanceRecord);
+		ddmFormInstanceRecord = ddmFormInstanceRecordPersistence.update(
+			ddmFormInstanceRecord);
 
 		int status = GetterUtil.getInteger(
 			serviceContext.getAttribute("status"),
@@ -492,7 +493,8 @@ public class DDMFormInstanceRecordLocalServiceImpl
 				formInstanceRecord.setVersion(
 					formInstanceRecordVersion.getVersion());
 
-				formInstanceRecord = ddmFormInstanceRecordPersistence.update(formInstanceRecord);
+				formInstanceRecord = ddmFormInstanceRecordPersistence.update(
+					formInstanceRecord);
 			}
 		}
 		else {
@@ -516,7 +518,8 @@ public class DDMFormInstanceRecordLocalServiceImpl
 
 				formInstanceRecord.setVersion(newVersion);
 
-				formInstanceRecord = ddmFormInstanceRecordPersistence.update(formInstanceRecord);
+				formInstanceRecord = ddmFormInstanceRecordPersistence.update(
+					formInstanceRecord);
 			}
 		}
 

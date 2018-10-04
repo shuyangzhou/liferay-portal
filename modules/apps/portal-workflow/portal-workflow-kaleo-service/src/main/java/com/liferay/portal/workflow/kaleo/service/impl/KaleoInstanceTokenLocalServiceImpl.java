@@ -92,7 +92,8 @@ public class KaleoInstanceTokenLocalServiceImpl
 
 		kaleoInstanceToken.setCompleted(false);
 
-		kaleoInstanceToken = kaleoInstanceTokenPersistence.update(kaleoInstanceToken);
+		kaleoInstanceToken = kaleoInstanceTokenPersistence.update(
+			kaleoInstanceToken);
 
 		return kaleoInstanceToken;
 	}
@@ -109,7 +110,8 @@ public class KaleoInstanceTokenLocalServiceImpl
 		kaleoInstanceToken.setCompleted(true);
 		kaleoInstanceToken.setCompletionDate(new Date());
 
-		kaleoInstanceToken = kaleoInstanceTokenPersistence.update(kaleoInstanceToken);
+		kaleoInstanceToken = kaleoInstanceTokenPersistence.update(
+			kaleoInstanceToken);
 
 		return kaleoInstanceToken;
 	}
@@ -224,7 +226,8 @@ public class KaleoInstanceTokenLocalServiceImpl
 						WorkflowConstants.CONTEXT_ENTRY_CLASS_PK)));
 		}
 
-		kaleoInstanceToken = kaleoInstanceTokenPersistence.update(kaleoInstanceToken);
+		kaleoInstanceToken = kaleoInstanceTokenPersistence.update(
+			kaleoInstanceToken);
 
 		// Kaleo instance
 
@@ -248,7 +251,8 @@ public class KaleoInstanceTokenLocalServiceImpl
 
 		setCurrentKaleoNode(kaleoInstanceToken, currentKaleoNodeId);
 
-		kaleoInstanceToken = kaleoInstanceTokenPersistence.update(kaleoInstanceToken);
+		kaleoInstanceToken = kaleoInstanceTokenPersistence.update(
+			kaleoInstanceToken);
 
 		return kaleoInstanceToken;
 	}

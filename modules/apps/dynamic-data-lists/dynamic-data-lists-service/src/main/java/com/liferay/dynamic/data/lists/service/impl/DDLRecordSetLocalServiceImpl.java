@@ -719,7 +719,8 @@ public class DDLRecordSetLocalServiceImpl
 		recordSetVersion.setStatusByUserName(user.getFullName());
 		recordSetVersion.setStatusDate(recordSet.getModifiedDate());
 
-		recordSetVersion = ddlRecordSetVersionPersistence.update(recordSetVersion);
+		recordSetVersion = ddlRecordSetVersionPersistence.update(
+			recordSetVersion);
 
 		return recordSetVersion;
 	}

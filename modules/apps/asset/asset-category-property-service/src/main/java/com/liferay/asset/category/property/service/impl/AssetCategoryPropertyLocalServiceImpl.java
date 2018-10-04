@@ -59,7 +59,8 @@ public class AssetCategoryPropertyLocalServiceImpl
 		categoryProperty.setKey(key);
 		categoryProperty.setValue(value);
 
-		categoryProperty = assetCategoryPropertyPersistence.update(categoryProperty);
+		categoryProperty = assetCategoryPropertyPersistence.update(
+			categoryProperty);
 
 		return categoryProperty;
 	}
@@ -160,7 +161,8 @@ public class AssetCategoryPropertyLocalServiceImpl
 		categoryProperty.setKey(key);
 		categoryProperty.setValue(value);
 
-		categoryProperty = assetCategoryPropertyPersistence.update(categoryProperty);
+		categoryProperty = assetCategoryPropertyPersistence.update(
+			categoryProperty);
 
 		return categoryProperty;
 	}
