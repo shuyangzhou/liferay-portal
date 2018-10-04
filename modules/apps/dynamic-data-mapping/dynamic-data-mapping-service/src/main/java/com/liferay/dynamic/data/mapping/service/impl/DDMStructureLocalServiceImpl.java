@@ -1593,7 +1593,8 @@ public class DDMStructureLocalServiceImpl
 		structureVersion.setStatusByUserName(user.getFullName());
 		structureVersion.setStatusDate(structure.getModifiedDate());
 
-		structureVersion = ddmStructureVersionPersistence.update(structureVersion);
+		structureVersion = ddmStructureVersionPersistence.update(
+			structureVersion);
 
 		return structureVersion;
 	}

@@ -367,7 +367,8 @@ public class DLFileEntryLocalServiceImpl
 
 		latestDLFileVersion.setChangeLog(changeLog);
 
-		latestDLFileVersion = dlFileVersionPersistence.update(latestDLFileVersion);
+		latestDLFileVersion = dlFileVersionPersistence.update(
+			latestDLFileVersion);
 
 		// Folder
 
@@ -900,7 +901,8 @@ public class DLFileEntryLocalServiceImpl
 					dlLatestFileVersion.setFileEntryTypeId(fileEntryTypeId);
 					dlLatestFileVersion.setStatusDate(new Date());
 
-					dlLatestFileVersion = dlFileVersionPersistence.update(dlLatestFileVersion);
+					dlLatestFileVersion = dlFileVersionPersistence.update(
+						dlLatestFileVersion);
 
 					dlFileEntry.setModifiedDate(new Date());
 					dlFileEntry.setFileName(dlLatestFileVersion.getFileName());

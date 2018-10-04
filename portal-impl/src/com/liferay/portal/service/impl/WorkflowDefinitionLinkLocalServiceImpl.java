@@ -70,7 +70,8 @@ public class WorkflowDefinitionLinkLocalServiceImpl
 		workflowDefinitionLink.setWorkflowDefinitionVersion(
 			workflowDefinitionVersion);
 
-		workflowDefinitionLink = workflowDefinitionLinkPersistence.update(workflowDefinitionLink);
+		workflowDefinitionLink = workflowDefinitionLinkPersistence.update(
+			workflowDefinitionLink);
 
 		return workflowDefinitionLink;
 	}
@@ -323,7 +324,8 @@ public class WorkflowDefinitionLinkLocalServiceImpl
 		workflowDefinitionLink.setWorkflowDefinitionVersion(
 			workflowDefinitionVersion);
 
-		workflowDefinitionLink = workflowDefinitionLinkPersistence.update(workflowDefinitionLink);
+		workflowDefinitionLink = workflowDefinitionLinkPersistence.update(
+			workflowDefinitionLink);
 
 		return workflowDefinitionLink;
 	}

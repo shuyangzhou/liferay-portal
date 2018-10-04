@@ -252,7 +252,8 @@ public class BackgroundTaskLocalServiceImpl
 				backgroundTask.setCompleted(true);
 				backgroundTask.setStatus(BackgroundTaskConstants.STATUS_FAILED);
 
-				backgroundTask = backgroundTaskPersistence.update(backgroundTask);
+				backgroundTask = backgroundTaskPersistence.update(
+					backgroundTask);
 			}
 
 			cleanUpBackgroundTask(
