@@ -18,7 +18,9 @@ import com.liferay.asset.kernel.exception.AssetCategoryException;
 import com.liferay.asset.kernel.exception.AssetTagException;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.TrashedModel;
+import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
+import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.sanitizer.SanitizerException;
@@ -33,7 +35,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.struts.StrutsActionPortletURL;
 import com.liferay.portlet.LiferayPortletUtil;
 import com.liferay.trash.TrashHelper;
 import com.liferay.trash.model.TrashEntry;
@@ -247,9 +248,14 @@ public class EditPageMVCActionCommand extends BaseMVCActionCommand {
 				((ActionResponseWrapper)actionResponse).getResponse();
 		}
 
-		LiferayPortletURL liferayPortletURL = new StrutsActionPortletURL(
-			LiferayPortletUtil.getLiferayPortletResponse(actionResponse),
-			themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
+		LiferayPortletResponse liferayPortletResponse =
+			LiferayPortletUtil.getLiferayPortletResponse(actionResponse);
+
+		LiferayPortletURL liferayPortletURL = PortletURLFactoryUtil.create(
+			actionRequest, liferayPortletResponse.getPortlet(), null,
+			PortletRequest.RENDER_PHASE);
+
+		liferayPortletURL.setPlid(themeDisplay.getPlid());
 
 		liferayPortletURL.setParameter(
 			"mvcRenderCommandName", "/wiki/edit_page");
