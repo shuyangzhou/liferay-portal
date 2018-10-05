@@ -14,9 +14,12 @@
 
 package com.liferay.portal.security.sso.openid.connect.constants;
 
+import aQute.bnd.annotation.ProviderType;
+
 /**
  * @author Thuong Dinh
  */
+@ProviderType
 public class OpenIdConnectWebKeys {
 
 	public static final String OPEN_ID_CONNECT_PROVIDER_NAME =
