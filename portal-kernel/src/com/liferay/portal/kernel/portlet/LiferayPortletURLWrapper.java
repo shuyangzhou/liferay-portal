@@ -22,7 +22,9 @@ import javax.portlet.filter.PortletURLWrapper;
 
 /**
  * @author Neil Griffin
+ * @deprecated As of Judson (7.1.x), with no direct replacement
  */
+@Deprecated
 public class LiferayPortletURLWrapper
 	extends PortletURLWrapper implements LiferayPortletURL {
 

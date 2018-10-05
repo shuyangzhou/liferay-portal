@@ -24,7 +24,9 @@ import javax.portlet.PortletResponse;
 
 /**
  * @author Brian Wing Shun Chan
+ * @deprecated As of Judson (7.1.x), with no direct replacement
  */
+@Deprecated
 public class PortletURLImplWrapper extends LiferayPortletURLWrapper {
 
 	public PortletURLImplWrapper(
