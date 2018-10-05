@@ -314,6 +314,14 @@
 		<execute function="MouseOver" locator1="Portlet#SPECIFIC_TITLE" />
 	</command>
 
+	<command name="saveAndCloseConfig">
+		<execute macro="Button#clickSave" />
+
+		<execute function="Click" locator1="Icon#CLOSE" />
+
+		<execute function="SelectFrameTop" />
+	</command>
+
 	<command name="selectApplicationDecorator">
 		<execute function="Select" locator1="Select#APPLICATION_DECORATORS" value1="${decorator}" />
 	</command>
@@ -335,7 +343,7 @@
 	<command name="shutdownSpecificServer">
 		<description message="This will shutdown the server at a specific bundle at ${base_branch}-bundles-${bundle_index}\tomcat." />
 
-		<var method="StringUtil#replace('${nodePort}', '080', '')" name="leadingPortNumber" />
+		<var method="StringUtil#replace('${nodePort}', '080','')" name="leadingPortNumber" />
 
 		<var method="MathUtil#difference('${leadingPortNumber}', '8')" name="bundleIndex" />
 
@@ -363,7 +371,7 @@
 	<command name="startSpecificServer">
 		<description message="This will start the server at a specific bundle at ${base_branch}-bundles-${bundle_index}\tomcat." />
 
-		<var method="StringUtil#replace('${nodePort}', '080', '')" name="leadingPortNumber" />
+		<var method="StringUtil#replace('${nodePort}', '080','')" name="leadingPortNumber" />
 
 		<var method="MathUtil#difference('${leadingPortNumber}', '8')" name="bundleIndex" />
 

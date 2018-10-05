@@ -63,7 +63,7 @@ public class SubscriptionLocalServiceImpl
 		throws PortalException {
 
 		throw new UnsupportedOperationException(
-			"This class is deprecate and replaced by " +
+			"This class is deprecated and replaced by " +
 				"com.liferay.subscription.service.impl." +
 					"SubscriptionLocalServiceImpl");
 	}
@@ -96,7 +96,7 @@ public class SubscriptionLocalServiceImpl
 		throws PortalException {
 
 		throw new UnsupportedOperationException(
-			"This class is deprecate and replaced by " +
+			"This class is deprecated and replaced by " +
 				"com.liferay.subscription.service.impl." +
 					"SubscriptionLocalServiceImpl");
 	}
@@ -113,7 +113,7 @@ public class SubscriptionLocalServiceImpl
 		throws PortalException {
 
 		throw new UnsupportedOperationException(
-			"This class is deprecate and replaced by " +
+			"This class is deprecated and replaced by " +
 				"com.liferay.subscription.service.impl." +
 					"SubscriptionLocalServiceImpl");
 	}
@@ -131,7 +131,7 @@ public class SubscriptionLocalServiceImpl
 		throws PortalException {
 
 		throw new UnsupportedOperationException(
-			"This class is deprecate and replaced by " +
+			"This class is deprecated and replaced by " +
 				"com.liferay.subscription.service.impl." +
 					"SubscriptionLocalServiceImpl");
 	}
@@ -148,7 +148,7 @@ public class SubscriptionLocalServiceImpl
 		throws PortalException {
 
 		throw new UnsupportedOperationException(
-			"This class is deprecate and replaced by " +
+			"This class is deprecated and replaced by " +
 				"com.liferay.subscription.service.impl." +
 					"SubscriptionLocalServiceImpl");
 	}
@@ -161,7 +161,7 @@ public class SubscriptionLocalServiceImpl
 	@Override
 	public void deleteSubscriptions(long userId) throws PortalException {
 		throw new UnsupportedOperationException(
-			"This class is deprecate and replaced by " +
+			"This class is deprecated and replaced by " +
 				"com.liferay.subscription.service.impl." +
 					"SubscriptionLocalServiceImpl");
 	}
@@ -171,7 +171,7 @@ public class SubscriptionLocalServiceImpl
 		throws PortalException {
 
 		throw new UnsupportedOperationException(
-			"This class is deprecate and replaced by " +
+			"This class is deprecated and replaced by " +
 				"com.liferay.subscription.service.impl." +
 					"SubscriptionLocalServiceImpl");
 	}
@@ -189,7 +189,7 @@ public class SubscriptionLocalServiceImpl
 		throws PortalException {
 
 		throw new UnsupportedOperationException(
-			"This class is deprecate and replaced by " +
+			"This class is deprecated and replaced by " +
 				"com.liferay.subscription.service.impl." +
 					"SubscriptionLocalServiceImpl");
 	}
@@ -199,7 +199,7 @@ public class SubscriptionLocalServiceImpl
 		long companyId, long userId, String className, long classPK) {
 
 		throw new UnsupportedOperationException(
-			"This class is deprecate and replaced by " +
+			"This class is deprecated and replaced by " +
 				"com.liferay.subscription.service.impl." +
 					"SubscriptionLocalServiceImpl");
 	}
@@ -219,7 +219,7 @@ public class SubscriptionLocalServiceImpl
 		throws PortalException {
 
 		throw new UnsupportedOperationException(
-			"This class is deprecate and replaced by " +
+			"This class is deprecated and replaced by " +
 				"com.liferay.subscription.service.impl." +
 					"SubscriptionLocalServiceImpl");
 	}
@@ -238,7 +238,7 @@ public class SubscriptionLocalServiceImpl
 		long companyId, long userId, String className, long[] classPKs) {
 
 		throw new UnsupportedOperationException(
-			"This class is deprecate and replaced by " +
+			"This class is deprecated and replaced by " +
 				"com.liferay.subscription.service.impl." +
 					"SubscriptionLocalServiceImpl");
 	}
@@ -256,7 +256,7 @@ public class SubscriptionLocalServiceImpl
 		long companyId, String className, long classPK) {
 
 		throw new UnsupportedOperationException(
-			"This class is deprecate and replaced by " +
+			"This class is deprecated and replaced by " +
 				"com.liferay.subscription.service.impl." +
 					"SubscriptionLocalServiceImpl");
 	}
@@ -276,7 +276,7 @@ public class SubscriptionLocalServiceImpl
 		OrderByComparator<Subscription> orderByComparator) {
 
 		throw new UnsupportedOperationException(
-			"This class is deprecate and replaced by " +
+			"This class is deprecated and replaced by " +
 				"com.liferay.subscription.service.impl." +
 					"SubscriptionLocalServiceImpl");
 	}
@@ -294,7 +294,7 @@ public class SubscriptionLocalServiceImpl
 		long userId, String className) {
 
 		throw new UnsupportedOperationException(
-			"This class is deprecate and replaced by " +
+			"This class is deprecated and replaced by " +
 				"com.liferay.subscription.service.impl." +
 					"SubscriptionLocalServiceImpl");
 	}
@@ -308,7 +308,7 @@ public class SubscriptionLocalServiceImpl
 	@Override
 	public int getUserSubscriptionsCount(long userId) {
 		throw new UnsupportedOperationException(
-			"This class is deprecate and replaced by " +
+			"This class is deprecated and replaced by " +
 				"com.liferay.subscription.service.impl." +
 					"SubscriptionLocalServiceImpl");
 	}
@@ -328,7 +328,7 @@ public class SubscriptionLocalServiceImpl
 		long companyId, long userId, String className, long classPK) {
 
 		throw new UnsupportedOperationException(
-			"This class is deprecate and replaced by " +
+			"This class is deprecated and replaced by " +
 				"com.liferay.subscription.service.impl." +
 					"SubscriptionLocalServiceImpl");
 	}
@@ -349,7 +349,7 @@ public class SubscriptionLocalServiceImpl
 		long companyId, long userId, String className, long[] classPKs) {
 
 		throw new UnsupportedOperationException(
-			"This class is deprecate and replaced by " +
+			"This class is deprecated and replaced by " +
 				"com.liferay.subscription.service.impl." +
 					"SubscriptionLocalServiceImpl");
 	}

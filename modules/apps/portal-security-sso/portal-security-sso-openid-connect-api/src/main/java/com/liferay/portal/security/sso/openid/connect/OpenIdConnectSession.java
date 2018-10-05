@@ -12,29 +12,33 @@
  * details.
  */
 
-package com.liferay.bean.portlet.cdi.extension.internal;
+package com.liferay.portal.security.sso.openid.connect;
 
-import java.io.IOException;
-
-import java.net.URL;
-
-import java.util.Map;
-
-import javax.xml.stream.XMLStreamException;
-
-import org.xml.sax.SAXException;
+import aQute.bnd.annotation.ProviderType;
 
 /**
- * @author Neil Griffin
+ * @author Jesse Rao
  */
-public class DisplayDescriptorParser {
+@ProviderType
+public interface OpenIdConnectSession {
 
-	public static Map<String, String> parse(URL displayDescriptorURL)
-		throws IOException, SAXException, XMLStreamException {
+	public String getAccessTokenValue();
 
-		// TODO
+	public long getLoginTime();
 
-		return null;
-	}
+	public long getLoginUserId();
+
+	public String getNonceValue();
+
+	public OpenIdConnectFlowState getOpenIdConnectFlowState();
+
+	public String getOpenIdProviderName();
+
+	public String getRefreshTokenValue();
+
+	public String getStateValue();
+
+	public void setOpenIdConnectFlowState(
+		OpenIdConnectFlowState openIdConnectFlowState);
 
 }

@@ -95,6 +95,13 @@ public class SegmentsEntryRelLocalServiceUtil {
 		return getService().deleteSegmentsEntryRel(segmentsEntryRelId);
 	}
 
+	public static void deleteSegmentsEntryRel(long segmentsEntryId,
+		long classNameId, long classPK)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService()
+			.deleteSegmentsEntryRel(segmentsEntryId, classNameId, classPK);
+	}
+
 	/**
 	* Deletes the segments entry rel from the database. Also notifies the appropriate model listeners.
 	*
@@ -271,6 +278,26 @@ public class SegmentsEntryRelLocalServiceUtil {
 	*/
 	public static int getSegmentsEntryRelsCount() {
 		return getService().getSegmentsEntryRelsCount();
+	}
+
+	public static int getSegmentsEntryRelsCount(long segmentsEntryId) {
+		return getService().getSegmentsEntryRelsCount(segmentsEntryId);
+	}
+
+	public static int getSegmentsEntryRelsCount(long classNameId, long classPK) {
+		return getService().getSegmentsEntryRelsCount(classNameId, classPK);
+	}
+
+	public static int getSegmentsEntryRelsCount(long groupId, long classNameId,
+		long classPK) {
+		return getService()
+				   .getSegmentsEntryRelsCount(groupId, classNameId, classPK);
+	}
+
+	public static boolean hasSegmentsEntryRel(long segmentsEntryId,
+		long classNameId, long classPK) {
+		return getService()
+				   .hasSegmentsEntryRel(segmentsEntryId, classNameId, classPK);
 	}
 
 	/**

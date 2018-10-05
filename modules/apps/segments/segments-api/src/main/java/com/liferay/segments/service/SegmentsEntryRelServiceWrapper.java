@@ -48,6 +48,14 @@ public class SegmentsEntryRelServiceWrapper implements SegmentsEntryRelService,
 		_segmentsEntryRelService.deleteSegmentsEntryRel(segmentsEntryRelId);
 	}
 
+	@Override
+	public void deleteSegmentsEntryRel(long segmentsEntryId, long classNameId,
+		long classPK)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_segmentsEntryRelService.deleteSegmentsEntryRel(segmentsEntryId,
+			classNameId, classPK);
+	}
+
 	/**
 	* Returns the OSGi service identifier.
 	*
@@ -70,6 +78,27 @@ public class SegmentsEntryRelServiceWrapper implements SegmentsEntryRelService,
 		long groupId, long classNameId, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _segmentsEntryRelService.getSegmentsEntryRels(groupId,
+			classNameId, classPK);
+	}
+
+	@Override
+	public int getSegmentsEntryRelsCount(long segmentsEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _segmentsEntryRelService.getSegmentsEntryRelsCount(segmentsEntryId);
+	}
+
+	@Override
+	public int getSegmentsEntryRelsCount(long groupId, long classNameId,
+		long classPK)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _segmentsEntryRelService.getSegmentsEntryRelsCount(groupId,
+			classNameId, classPK);
+	}
+
+	@Override
+	public boolean hasSegmentsEntryRel(long segmentsEntryId, long classNameId,
+		long classPK) {
+		return _segmentsEntryRelService.hasSegmentsEntryRel(segmentsEntryId,
 			classNameId, classPK);
 	}
 

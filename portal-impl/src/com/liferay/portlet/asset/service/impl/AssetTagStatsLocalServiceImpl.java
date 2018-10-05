@@ -42,7 +42,7 @@ public class AssetTagStatsLocalServiceImpl
 	@Override
 	public AssetTagStats addTagStats(long tagId, long classNameId) {
 		throw new UnsupportedOperationException(
-			"This class is deprecate and replaced by " +
+			"This class is deprecated and replaced by " +
 				"com.liferay.asset.tag.stats.service.impl." +
 					"AssetTagStatsLocalServiceImpl");
 	}
@@ -55,7 +55,7 @@ public class AssetTagStatsLocalServiceImpl
 	@Override
 	public void deleteTagStats(AssetTagStats tagStats) {
 		throw new UnsupportedOperationException(
-			"This class is deprecate and replaced by " +
+			"This class is deprecated and replaced by " +
 				"com.liferay.asset.tag.stats.service.impl." +
 					"AssetTagStatsLocalServiceImpl");
 	}
@@ -68,7 +68,7 @@ public class AssetTagStatsLocalServiceImpl
 	@Override
 	public void deleteTagStats(long tagStatsId) throws PortalException {
 		throw new UnsupportedOperationException(
-			"This class is deprecate and replaced by " +
+			"This class is deprecated and replaced by " +
 				"com.liferay.asset.tag.stats.service.impl." +
 					"AssetTagStatsLocalServiceImpl");
 	}
@@ -82,7 +82,7 @@ public class AssetTagStatsLocalServiceImpl
 	@Override
 	public void deleteTagStatsByClassNameId(long classNameId) {
 		throw new UnsupportedOperationException(
-			"This class is deprecate and replaced by " +
+			"This class is deprecated and replaced by " +
 				"com.liferay.asset.tag.stats.service.impl." +
 					"AssetTagStatsLocalServiceImpl");
 	}
@@ -95,7 +95,7 @@ public class AssetTagStatsLocalServiceImpl
 	@Override
 	public void deleteTagStatsByTagId(long tagId) {
 		throw new UnsupportedOperationException(
-			"This class is deprecate and replaced by " +
+			"This class is deprecated and replaced by " +
 				"com.liferay.asset.tag.stats.service.impl." +
 					"AssetTagStatsLocalServiceImpl");
 	}
@@ -125,7 +125,7 @@ public class AssetTagStatsLocalServiceImpl
 		long classNameId, int start, int end) {
 
 		throw new UnsupportedOperationException(
-			"This class is deprecate and replaced by " +
+			"This class is deprecated and replaced by " +
 				"com.liferay.asset.tag.stats.service.impl." +
 					"AssetTagStatsLocalServiceImpl");
 	}
@@ -142,7 +142,7 @@ public class AssetTagStatsLocalServiceImpl
 	@Override
 	public AssetTagStats getTagStats(long tagId, long classNameId) {
 		throw new UnsupportedOperationException(
-			"This class is deprecate and replaced by " +
+			"This class is deprecated and replaced by " +
 				"com.liferay.asset.tag.stats.service.impl." +
 					"AssetTagStatsLocalServiceImpl");
 	}
@@ -159,7 +159,7 @@ public class AssetTagStatsLocalServiceImpl
 		throws PortalException {
 
 		throw new UnsupportedOperationException(
-			"This class is deprecate and replaced by " +
+			"This class is deprecated and replaced by " +
 				"com.liferay.asset.tag.stats.service.impl." +
 					"AssetTagStatsLocalServiceImpl");
 	}

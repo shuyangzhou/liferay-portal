@@ -12,25 +12,20 @@
  * details.
  */
 
-package com.liferay.bean.portlet.cdi.extension.internal;
-
-import java.util.ArrayList;
-import java.util.List;
+package com.liferay.segments.web.internal.constants;
 
 /**
- * @author Neil Griffin
+ * @author Eduardo Garcia
  */
-public class PortletDescriptor {
+public class SegmentsWebKeys {
 
-	public List<BeanFilter> getBeanFilters() {
-		return _beanFilters;
-	}
+	public static final String EDIT_SEGMENTS_ENTRY_DISPLAY_CONTEXT =
+		"EDIT_SEGMENTS_ENTRY_DISPLAY_CONTEXT";
 
-	public List<BeanPortlet> getBeanPortlets() {
-		return _beanPortlets;
-	}
+	public static final String SEGMENTS_DISPLAY_CONTEXT =
+		"SEGMENTS_DISPLAY_CONTEXT";
 
-	private final List<BeanFilter> _beanFilters = new ArrayList<>();
-	private final List<BeanPortlet> _beanPortlets = new ArrayList<>();
+	public static final String SELECT_SEGMENTS_ENTRY_USERS_DISPLAY_CONTEXT =
+		"SELECT_SEGMENTS_ENTRY_USERS_DISPLAY_CONTEXT";
 
 }

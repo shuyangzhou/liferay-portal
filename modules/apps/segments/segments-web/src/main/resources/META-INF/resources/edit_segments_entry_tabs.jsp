@@ -1,3 +1,4 @@
+<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -11,28 +12,15 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
+--%>
 
-package com.liferay.bean.portlet.cdi.extension.internal;
+<%@ include file="/init.jsp" %>
 
-import java.io.IOException;
+<%
+EditSegmentsEntryDisplayContext editSegmentsEntryDisplayContext = (EditSegmentsEntryDisplayContext)request.getAttribute(SegmentsWebKeys.EDIT_SEGMENTS_ENTRY_DISPLAY_CONTEXT);
+%>
 
-import java.net.URL;
-
-import javax.xml.stream.XMLStreamException;
-
-import org.xml.sax.SAXException;
-
-/**
- * @author Neil Griffin
- */
-public class PortletDescriptorParser {
-
-	public static PortletDescriptor parse(URL portletDescriptorURL)
-		throws IOException, SAXException, XMLStreamException {
-
-		// TODO
-
-		return null;
-	}
-
-}
+<clay:navigation-bar
+	inverted="<%= true %>"
+	navigationItems="<%= editSegmentsEntryDisplayContext.getNavigationItems() %>"
+/>
