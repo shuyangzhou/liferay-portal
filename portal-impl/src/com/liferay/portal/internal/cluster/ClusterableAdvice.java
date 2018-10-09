@@ -27,7 +27,10 @@ import org.aopalliance.intercept.MethodInvocation;
 
 /**
  * @author Shuyang Zhou
+ * @deprecated As of Judson (7.1.x), replaced by {@link
+ *             ClusterableMethodInterceptorFactory}
  */
+@Deprecated
 public class ClusterableAdvice
 	extends AnnotationChainableMethodAdvice<Clusterable> {
 

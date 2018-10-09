@@ -40,7 +40,10 @@ import org.aopalliance.intercept.MethodInvocation;
 
 /**
  * @author Zsolt Berentey
+ * @deprecated As of Judson (7.1.x), replaced by {@link
+ *             SystemEventMethodInterceptorFactory}
  */
+@Deprecated
 public class SystemEventAdvice
 	extends AnnotationChainableMethodAdvice<SystemEvent> {
 

@@ -39,7 +39,10 @@ import org.aopalliance.intercept.MethodInvocation;
 /**
  * @author     Zsolt Berentey
  * @author     Shuyang Zhou
+ * @deprecated As of Judson (7.1.x), replaced by {@link
+ *             BufferedIncrementMethodInterceptorFactory}
  */
+@Deprecated
 public class BufferedIncrementAdvice
 	extends AnnotationChainableMethodAdvice<BufferedIncrement> {
 

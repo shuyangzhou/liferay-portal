@@ -32,7 +32,10 @@ import org.aopalliance.intercept.MethodInvocation;
 
 /**
  * @author Shuyang Zhou
+ * @deprecated As of Judson (7.1.x), replaced by {@link
+ *             SPIClusterableMethodInterceptorFactory}
  */
+@Deprecated
 public class SPIClusterableAdvice
 	extends AnnotationChainableMethodAdvice<Clusterable> {
 

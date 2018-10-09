@@ -32,7 +32,10 @@ import org.springframework.transaction.interceptor.TransactionAttributeSource;
 /**
  * @author Shuyang Zhou
  * @author László Csontos
+ * @deprecated As of Judson (7.1.x), replaced by {@link
+ *             DynamicDataSourceMethodInterceptorFactory}
  */
+@Deprecated
 public class DynamicDataSourceAdvice
 	extends AnnotationChainableMethodAdvice<MasterDataSource> {
 

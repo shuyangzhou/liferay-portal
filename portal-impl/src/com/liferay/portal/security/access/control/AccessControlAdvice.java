@@ -30,7 +30,10 @@ import org.aopalliance.intercept.MethodInvocation;
  * @author Michael C. Han
  * @author Raymond Augé
  * @author Shuyang Zhou
+ * @deprecated As of Judson (7.1.x), replaced by {@link
+ *             AccessControlMethodInterceptorFactory}
  */
+@Deprecated
 public class AccessControlAdvice
 	extends AnnotationChainableMethodAdvice<AccessControlled> {
 

@@ -14,53 +14,56 @@
 
 package com.liferay.portal.spring.aop;
 
+import com.liferay.portal.internal.spring.aop.MethodInvocationImpl;
 import com.liferay.portal.kernel.spring.aop.Skip;
-
-import java.lang.annotation.Annotation;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
 /**
  * @author Shuyang Zhou
- * @deprecated As of Judson (7.1.x), replaced by {@link SkipMethodInterceptorFactory}
+ * @author Preston Crary
  */
-@Deprecated
-public class SkipAdvice extends AnnotationChainableMethodAdvice<Skip> {
+public class SkipMethodInterceptorFactory implements MethodInterceptorFactory {
 
 	@Override
-	public Object before(MethodInvocation methodInvocation) throws Throwable {
-		Skip skip = findAnnotation(methodInvocation);
+	public MethodInterceptor create(
+		MethodInterceptorFactoryHelper methodInterceptorFactoryHelper) {
 
-		if (skip != _nullSkip) {
-			serviceBeanAopCacheManager.putMethodInterceptors(
-				methodInvocation, _emptyMethodInterceptors);
-
-			ServiceBeanMethodInvocation serviceBeanMethodInvocation =
-				(ServiceBeanMethodInvocation)methodInvocation;
-
-			serviceBeanMethodInvocation.setMethodInterceptors(
-				_emptyMethodInterceptors);
-		}
-
-		return null;
+		return new SkipMethodInterceptor();
 	}
 
 	@Override
-	public Skip getNullAnnotation() {
-		return _nullSkip;
+	public Class<Skip> getAnnotationClass() {
+		return Skip.class;
 	}
 
 	private static final MethodInterceptor[] _emptyMethodInterceptors =
 		new MethodInterceptor[0];
 
-	private static final Skip _nullSkip = new Skip() {
+	private static class SkipMethodInterceptor
+		extends AnnotatedMethodInterceptor<Skip> {
 
 		@Override
-		public Class<? extends Annotation> annotationType() {
-			return Skip.class;
+		public Object before(MethodInvocation methodInvocation)
+			throws Throwable {
+
+			Skip skip = findAnnotation(methodInvocation);
+
+			if (skip != null) {
+				methodInterceptorCache.setMethodInterceptors(
+					methodInvocation, _emptyMethodInterceptors);
+
+				MethodInvocationImpl methodInvocationImpl =
+					(MethodInvocationImpl)methodInvocation;
+
+				methodInvocationImpl.setMethodInterceptors(
+					_emptyMethodInterceptors);
+			}
+
+			return null;
 		}
 
-	};
+	}
 
 }

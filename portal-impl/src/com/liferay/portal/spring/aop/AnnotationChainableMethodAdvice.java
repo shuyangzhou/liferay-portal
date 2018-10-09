@@ -21,7 +21,9 @@ import org.aopalliance.intercept.MethodInvocation;
 /**
  * @author Shuyang Zhou
  * @author Brian Wing Shun Chan
+ * @deprecated As of Judson (7.1.x), replaced by {@link AnnotatedMethodInterceptor}
  */
+@Deprecated
 public abstract class AnnotationChainableMethodAdvice<T extends Annotation>
 	extends ChainableMethodAdvice {
 

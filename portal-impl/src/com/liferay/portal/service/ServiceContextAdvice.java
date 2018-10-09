@@ -24,7 +24,10 @@ import org.aopalliance.intercept.MethodInvocation;
 
 /**
  * @author Preston Crary
+ * @deprecated As of 7.1.x, replaced by {@link
+ *             ServiceContextMethodInterceptorFactory}
  */
+@Deprecated
 public class ServiceContextAdvice extends ChainableMethodAdvice {
 
 	@Override

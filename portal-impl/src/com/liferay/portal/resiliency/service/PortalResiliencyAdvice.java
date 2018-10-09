@@ -35,7 +35,10 @@ import org.aopalliance.intercept.MethodInvocation;
 
 /**
  * @author Shuyang Zhou
+ * @deprecated As of Judson (7.1.x), replaced by {@link
+ *             PortalResiliencyMethodInterceptorFactory}
  */
+@Deprecated
 public class PortalResiliencyAdvice
 	extends AnnotationChainableMethodAdvice<AccessControlled> {
 

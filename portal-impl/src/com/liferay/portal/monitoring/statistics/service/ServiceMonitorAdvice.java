@@ -32,7 +32,10 @@ import org.aopalliance.intercept.MethodInvocation;
 
 /**
  * @author Michael C. Han
+ * @deprecated As of Judson (7.1.x), replaced by {@link
+ *             ServiceMonitorMethodInterceptorFactory}
  */
+@Deprecated
 public class ServiceMonitorAdvice
 	extends ChainableMethodAdvice implements ServiceMonitoringControl {
 

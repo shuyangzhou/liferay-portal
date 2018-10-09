@@ -31,7 +31,9 @@ import org.aopalliance.intercept.MethodInvocation;
 
 /**
  * @author Matthew Tambara
+ * @deprecated As of Judson (7.1.x), replaced by {@link RetryMethodInterceptorFactory}
  */
+@Deprecated
 public class RetryAdvice extends AnnotationChainableMethodAdvice<Retry> {
 
 	@Override
