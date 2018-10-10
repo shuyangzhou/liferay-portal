@@ -87,7 +87,7 @@ public class FinderCacheImpl
 
 	@Override
 	public void clearLocalCache() {
-		if (_localCacheAvailable) {
+		if (_localCache != null) {
 			_localCache.remove();
 		}
 	}
@@ -119,7 +119,7 @@ public class FinderCacheImpl
 		Serializable localCacheKey = null;
 		Serializable primaryKey = null;
 
-		if (_localCacheAvailable) {
+		if (_localCache != null) {
 			localCache = _localCache.get();
 
 			localCacheKey = finderPath.encodeLocalCacheKey(encodedArguments);
@@ -135,7 +135,7 @@ public class FinderCacheImpl
 				finderPath.encodeCacheKey(encodedArguments));
 
 			if (primaryKey != null) {
-				if (_localCacheAvailable) {
+				if (localCache != null) {
 					localCache.put(localCacheKey, primaryKey);
 				}
 			}
@@ -197,7 +197,7 @@ public class FinderCacheImpl
 		Serializable cacheKey = finderPath.encodeCacheKey(encodedArguments);
 
 		if (primaryKey == null) {
-			if (_localCacheAvailable) {
+			if (_localCache != null) {
 				Map<Serializable, Serializable> localCache = _localCache.get();
 
 				localCache.remove(
@@ -213,7 +213,7 @@ public class FinderCacheImpl
 			}
 		}
 		else {
-			if (_localCacheAvailable) {
+			if (_localCache != null) {
 				Map<Serializable, Serializable> localCache = _localCache.get();
 
 				localCache.put(
@@ -251,7 +251,7 @@ public class FinderCacheImpl
 
 		String encodedArguments = finderPath.encodeArguments(args);
 
-		if (_localCacheAvailable) {
+		if (_localCache != null) {
 			Map<Serializable, Serializable> localCache = _localCache.get();
 
 			localCache.remove(finderPath.encodeLocalCacheKey(encodedArguments));
@@ -280,15 +280,11 @@ public class FinderCacheImpl
 				PropsKeys.VALUE_OBJECT_FINDER_THREAD_LOCAL_CACHE_MAX_SIZE));
 
 		if (localCacheMaxSize > 0) {
-			_localCacheAvailable = true;
-
 			_localCache = new CentralizedThreadLocal<>(
 				FinderCacheImpl.class + "._localCache",
 				() -> new LRUMap(localCacheMaxSize));
 		}
 		else {
-			_localCacheAvailable = false;
-
 			_localCache = null;
 		}
 
@@ -447,7 +443,6 @@ public class FinderCacheImpl
 
 	private EntityCache _entityCache;
 	private ThreadLocal<LRUMap> _localCache;
-	private boolean _localCacheAvailable;
 	private MultiVMPool _multiVMPool;
 	private final ConcurrentMap<String, PortalCache<Serializable, Serializable>>
 		_portalCaches = new ConcurrentHashMap<>();
