@@ -17,7 +17,8 @@ package com.liferay.portal.service;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
-import com.liferay.portal.spring.aop.ServiceBeanAopCacheManager;
+import com.liferay.portal.spring.aop.BaseMethodInterceptor;
+import com.liferay.portal.spring.aop.MethodInterceptorCache;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Method;
@@ -32,17 +33,22 @@ import org.junit.Test;
 /**
  * @author Preston Crary
  */
-public class ServiceContextAdviceTest {
+public class ServiceContextMethodInterceptorFactoryTest {
 
 	@Before
 	public void setUp() {
-		_testServiceBeanAopCacheManager = new TestServiceBeanAopCacheManager();
+		_testMethodInterceptorCache = new TestMethodInterceptorCache();
 
-		_serviceContextAdvice = new ServiceContextAdvice();
+		ServiceContextMethodInterceptorFactory
+			serviceContextMethodInterceptorFactory =
+				new ServiceContextMethodInterceptorFactory();
 
-		ReflectionTestUtil.setFieldValue(
-			_serviceContextAdvice, "serviceBeanAopCacheManager",
-			_testServiceBeanAopCacheManager);
+		_serviceContextMethodInterceptor =
+			(BaseMethodInterceptor)
+				serviceContextMethodInterceptorFactory.create(null);
+
+		_serviceContextMethodInterceptor.setMethodInterceptorCache(
+			_testMethodInterceptorCache);
 
 		_serviceContext = new ServiceContext();
 
@@ -55,10 +61,10 @@ public class ServiceContextAdviceTest {
 			new Object[] {new ServiceContext()},
 			new Class<?>[] {ServiceContext.class}, false);
 
-		_serviceContextAdvice.invoke(methodInvocation);
+		_serviceContextMethodInterceptor.invoke(methodInvocation);
 
 		Assert.assertFalse(
-			_testServiceBeanAopCacheManager.isRemovedMethodInterceptor());
+			_testMethodInterceptorCache._removedMethodInterceptor);
 	}
 
 	@Test
@@ -66,10 +72,10 @@ public class ServiceContextAdviceTest {
 		MethodInvocation methodInvocation = createMethodInvocation(
 			new Object[0], new Class<?>[0], true);
 
-		_serviceContextAdvice.invoke(methodInvocation);
+		_serviceContextMethodInterceptor.invoke(methodInvocation);
 
 		Assert.assertTrue(
-			_testServiceBeanAopCacheManager.isRemovedMethodInterceptor());
+			_testMethodInterceptorCache._removedMethodInterceptor);
 	}
 
 	@Test
@@ -77,10 +83,10 @@ public class ServiceContextAdviceTest {
 		MethodInvocation methodInvocation = createMethodInvocation(
 			new Object[] {null}, new Class<?>[] {Object.class}, true);
 
-		_serviceContextAdvice.invoke(methodInvocation);
+		_serviceContextMethodInterceptor.invoke(methodInvocation);
 
 		Assert.assertTrue(
-			_testServiceBeanAopCacheManager.isRemovedMethodInterceptor());
+			_testMethodInterceptorCache._removedMethodInterceptor);
 	}
 
 	@Test
@@ -89,10 +95,10 @@ public class ServiceContextAdviceTest {
 			new Object[] {new TestServiceContextWrapper()},
 			new Class<?>[] {TestServiceContextWrapper.class}, false);
 
-		_serviceContextAdvice.invoke(methodInvocation);
+		_serviceContextMethodInterceptor.invoke(methodInvocation);
 
 		Assert.assertFalse(
-			_testServiceBeanAopCacheManager.isRemovedMethodInterceptor());
+			_testMethodInterceptorCache._removedMethodInterceptor);
 	}
 
 	protected MethodInvocation createMethodInvocation(
@@ -141,8 +147,8 @@ public class ServiceContextAdviceTest {
 	}
 
 	private ServiceContext _serviceContext;
-	private ServiceContextAdvice _serviceContextAdvice;
-	private TestServiceBeanAopCacheManager _testServiceBeanAopCacheManager;
+	private BaseMethodInterceptor _serviceContextMethodInterceptor;
+	private TestMethodInterceptorCache _testMethodInterceptorCache;
 
 	private static class TestInterceptedClass {
 
@@ -164,11 +170,28 @@ public class ServiceContextAdviceTest {
 
 	}
 
-	private static class TestServiceBeanAopCacheManager
-		extends ServiceBeanAopCacheManager {
+	private static class TestServiceContextWrapper extends ServiceContext {
+	}
 
-		public boolean isRemovedMethodInterceptor() {
-			return _removedMethodInterceptor;
+	private class TestMethodInterceptorCache implements MethodInterceptorCache {
+
+		@Override
+		public void clear() {
+		}
+
+		@Override
+		public <T> T findAnnotation(
+			MethodInvocation methodInvocation, Class<T> annotationType,
+			T defaultValue) {
+
+			return null;
+		}
+
+		@Override
+		public MethodInterceptor[] getMethodInterceptors(
+			MethodInvocation methodInvocation) {
+
+			return new MethodInterceptor[] {_serviceContextMethodInterceptor};
 		}
 
 		@Override
@@ -176,18 +199,20 @@ public class ServiceContextAdviceTest {
 			MethodInvocation methodInvocation,
 			MethodInterceptor methodInterceptor) {
 
+			Assert.assertSame(
+				_serviceContextMethodInterceptor, methodInterceptor);
+
 			_removedMethodInterceptor = true;
 		}
 
-		private TestServiceBeanAopCacheManager() {
-			super(null);
+		@Override
+		public void setMethodInterceptors(
+			MethodInvocation methodInvocation,
+			MethodInterceptor[] methodInterceptors) {
 		}
 
 		private boolean _removedMethodInterceptor;
 
-	}
-
-	private static class TestServiceContextWrapper extends ServiceContext {
 	}
 
 }

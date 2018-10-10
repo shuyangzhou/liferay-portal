@@ -15,6 +15,8 @@
 package com.liferay.portlet;
 
 import com.liferay.petra.reflect.ReflectionUtil;
+import com.liferay.portal.dao.orm.hibernate.SessionFactoryImpl;
+import com.liferay.portal.dao.orm.hibernate.VerifySessionFactoryWrapper;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -31,10 +33,8 @@ import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.spring.hibernate.PortletTransactionManager;
 import com.liferay.portal.spring.transaction.DefaultTransactionExecutor;
-import com.liferay.portal.spring.transaction.TransactionAttributeAdapter;
-import com.liferay.portal.spring.transaction.TransactionInterceptor;
-import com.liferay.portal.spring.transaction.TransactionStatusAdapter;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.lang.reflect.InvocationHandler;
@@ -53,7 +53,10 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.orm.hibernate3.HibernateTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionException;
+import org.springframework.transaction.TransactionStatus;
 
 /**
  * @author Matthew Tambara
@@ -68,12 +71,16 @@ public class PortalPreferencesImplTest {
 
 	@BeforeClass
 	public static void setUpClass() throws NoSuchMethodException {
-		_transactionInterceptor =
-			(TransactionInterceptor)PortalBeanLocatorUtil.locate(
-				"transactionAdvice");
+		VerifySessionFactoryWrapper verifySessionFactoryWrapper =
+			(VerifySessionFactoryWrapper)PortalBeanLocatorUtil.locate(
+				"liferaySessionFactory");
 
-		_originalTransactionExecutor = ReflectionTestUtil.getFieldValue(
-			_transactionInterceptor, "transactionExecutor");
+		_sessionFactory = ReflectionTestUtil.getFieldValue(
+			verifySessionFactoryWrapper, "_sessionFactoryImpl");
+
+		_defaultTransactionExecutor =
+			(DefaultTransactionExecutor)PortalBeanLocatorUtil.locate(
+				"transactionExecutor");
 
 		_originalPortalPreferencesLocalService =
 			PortalPreferencesLocalServiceUtil.getService();
@@ -83,8 +90,8 @@ public class PortalPreferencesImplTest {
 				"updatePortalPreferences",
 				com.liferay.portal.kernel.model.PortalPreferences.class);
 
-		_platformTransactionManager = ReflectionTestUtil.getFieldValue(
-			_originalTransactionExecutor, "_platformTransactionManager");
+		_originalPlatformTransactionManager = ReflectionTestUtil.getFieldValue(
+			_defaultTransactionExecutor, "_platformTransactionManager");
 	}
 
 	@Before
@@ -416,17 +423,15 @@ public class PortalPreferencesImplTest {
 		FinderCacheUtil.clearLocalCache();
 	}
 
-	protected static class SynchronizedTransactionExecutor
-		extends DefaultTransactionExecutor {
+	protected static class SynchronizedPlatformTransactionManager
+		extends PortletTransactionManager {
 
 		@Override
-		public void commit(
-			TransactionAttributeAdapter transactionAttributeAdapter,
-			TransactionStatusAdapter transactionStatusAdapter) {
+		public void commit(TransactionStatus transactionStatus)
+			throws TransactionException {
 
 			if (!_synchronizeThreadLocal.get()) {
-				_originalTransactionExecutor.commit(
-					transactionAttributeAdapter, transactionStatusAdapter);
+				_originalPlatformTransactionManager.commit(transactionStatus);
 
 				return;
 			}
@@ -434,8 +439,7 @@ public class PortalPreferencesImplTest {
 			try {
 				_cyclicBarrier.await();
 
-				_originalTransactionExecutor.commit(
-					transactionAttributeAdapter, transactionStatusAdapter);
+				_originalPlatformTransactionManager.commit(transactionStatus);
 			}
 			catch (Throwable t) {
 				ReflectionUtil.throwException(t);
@@ -446,8 +450,26 @@ public class PortalPreferencesImplTest {
 			}
 		}
 
-		private SynchronizedTransactionExecutor(long testOwnerId) {
-			super(_platformTransactionManager);
+		@Override
+		public TransactionStatus getTransaction(
+				TransactionDefinition transactionDefinition)
+			throws TransactionException {
+
+			return _originalPlatformTransactionManager.getTransaction(
+				transactionDefinition);
+		}
+
+		@Override
+		public void rollback(TransactionStatus transactionStatus)
+			throws TransactionException {
+
+			_originalPlatformTransactionManager.rollback(transactionStatus);
+		}
+
+		private SynchronizedPlatformTransactionManager(long testOwnerId) {
+			super(
+				_originalPlatformTransactionManager,
+				_sessionFactory.getSessionFactoryImplementor());
 
 			_testOwnerId = testOwnerId;
 		}
@@ -458,8 +480,10 @@ public class PortalPreferencesImplTest {
 
 				@Override
 				public void run() {
-					_transactionInterceptor.setTransactionExecutor(
-						_originalTransactionExecutor);
+					ReflectionTestUtil.setFieldValue(
+						_defaultTransactionExecutor,
+						"_platformTransactionManager",
+						_originalPlatformTransactionManager);
 				}
 
 			});
@@ -491,8 +515,11 @@ public class PortalPreferencesImplTest {
 
 					@Override
 					public void run() {
-						_transactionInterceptor.setTransactionExecutor(
-							new SynchronizedTransactionExecutor(testOwnerId));
+						ReflectionTestUtil.setFieldValue(
+							_defaultTransactionExecutor,
+							"_platformTransactionManager",
+							new SynchronizedPlatformTransactionManager(
+								testOwnerId));
 
 						ReflectionTestUtil.setFieldValue(
 							PortalPreferencesLocalServiceUtil.class, "_service",
@@ -520,13 +547,14 @@ public class PortalPreferencesImplTest {
 
 	private static final String[] _VALUES_2 = {"values2"};
 
+	private static DefaultTransactionExecutor _defaultTransactionExecutor;
+	private static HibernateTransactionManager
+		_originalPlatformTransactionManager;
 	private static PortalPreferencesLocalService
 		_originalPortalPreferencesLocalService;
-	private static DefaultTransactionExecutor _originalTransactionExecutor;
-	private static PlatformTransactionManager _platformTransactionManager;
+	private static SessionFactoryImpl _sessionFactory;
 	private static final ThreadLocal<Boolean> _synchronizeThreadLocal =
 		new InheritableThreadLocal<>();
-	private static TransactionInterceptor _transactionInterceptor;
 	private static Method _updatePreferencesMethod;
 
 	private long _testOwnerId;
