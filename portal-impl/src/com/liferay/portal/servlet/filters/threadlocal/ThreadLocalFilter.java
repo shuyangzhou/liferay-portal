@@ -17,6 +17,7 @@ package com.liferay.portal.servlet.filters.threadlocal;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.cache.thread.local.Lifecycle;
 import com.liferay.portal.kernel.cache.thread.local.ThreadLocalCacheManager;
+import com.liferay.portal.kernel.dao.orm.ObjectValueLocalCacheThreadLocal;
 import com.liferay.portal.kernel.servlet.TryFinallyFilter;
 import com.liferay.portal.servlet.filters.BasePortalFilter;
 
@@ -42,6 +43,8 @@ public class ThreadLocalFilter
 	@Override
 	public Object doFilterTry(
 		HttpServletRequest request, HttpServletResponse response) {
+
+		ObjectValueLocalCacheThreadLocal.setLocalCacheEnabled(true);
 
 		return null;
 	}

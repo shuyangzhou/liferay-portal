@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.cache.PortalCacheManagerListener;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
+import com.liferay.portal.kernel.dao.orm.ObjectValueLocalCacheThreadLocal;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -87,7 +88,7 @@ public class FinderCacheImpl
 
 	@Override
 	public void clearLocalCache() {
-		if (_localCache != null) {
+		if (_isLocalCacheEnabled()) {
 			_localCache.remove();
 		}
 	}
@@ -119,7 +120,7 @@ public class FinderCacheImpl
 		Serializable localCacheKey = null;
 		Serializable primaryKey = null;
 
-		if (_localCache != null) {
+		if (_isLocalCacheEnabled()) {
 			localCache = _localCache.get();
 
 			localCacheKey = finderPath.encodeLocalCacheKey(encodedArguments);
@@ -197,7 +198,7 @@ public class FinderCacheImpl
 		Serializable cacheKey = finderPath.encodeCacheKey(encodedArguments);
 
 		if (primaryKey == null) {
-			if (_localCache != null) {
+			if (_isLocalCacheEnabled()) {
 				Map<Serializable, Serializable> localCache = _localCache.get();
 
 				localCache.remove(
@@ -213,7 +214,7 @@ public class FinderCacheImpl
 			}
 		}
 		else {
-			if (_localCache != null) {
+			if (_isLocalCacheEnabled()) {
 				Map<Serializable, Serializable> localCache = _localCache.get();
 
 				localCache.put(
@@ -251,7 +252,7 @@ public class FinderCacheImpl
 
 		String encodedArguments = finderPath.encodeArguments(args);
 
-		if (_localCache != null) {
+		if (_isLocalCacheEnabled()) {
 			Map<Serializable, Serializable> localCache = _localCache.get();
 
 			localCache.remove(finderPath.encodeLocalCacheKey(encodedArguments));
@@ -333,6 +334,14 @@ public class FinderCacheImpl
 		}
 
 		return portalCache;
+	}
+
+	private boolean _isLocalCacheEnabled() {
+		if (_localCache == null) {
+			return false;
+		}
+
+		return ObjectValueLocalCacheThreadLocal.isLocalCacheEnabled();
 	}
 
 	private Serializable _primaryKeyToResult(
