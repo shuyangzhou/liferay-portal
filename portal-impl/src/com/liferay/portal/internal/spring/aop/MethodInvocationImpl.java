@@ -12,20 +12,19 @@
  * details.
  */
 
-package com.liferay.portal.spring.aop;
+package com.liferay.portal.internal.spring.aop;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.spring.aop.AdvisedSupport;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.spring.aop.AdvisedSupportUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import java.util.List;
 import java.util.Objects;
 
 import org.aopalliance.intercept.MethodInterceptor;
@@ -33,25 +32,11 @@ import org.aopalliance.intercept.MethodInvocation;
 
 /**
  * @author Shuyang Zhou
- * @deprecated As of Judson (7.1.x), with no direct replacement
+ * @author Preston Crary
  */
-@Deprecated
-public class ServiceBeanMethodInvocation
-	implements MethodInvocation, Serializable {
+public class MethodInvocationImpl implements MethodInvocation, Serializable {
 
-	/**
-	 * @deprecated As of Judson (7.1.x), replaced by {@link
-	 *             #ServiceBeanMethodInvocation(Object, Method, Object[])}
-	 */
-	@Deprecated
-	public ServiceBeanMethodInvocation(
-		Object target, Class<?> targetClass, Method method,
-		Object[] arguments) {
-
-		this(target, method, arguments);
-	}
-
-	public ServiceBeanMethodInvocation(
+	public MethodInvocationImpl(
 		Object target, Method method, Object[] arguments) {
 
 		_target = target;
@@ -59,30 +44,21 @@ public class ServiceBeanMethodInvocation
 		_arguments = arguments;
 
 		_method.setAccessible(true);
-
-		if (_method.getDeclaringClass() == Object.class) {
-			String methodName = _method.getName();
-
-			if (methodName.equals("equals")) {
-				_equalsMethod = true;
-			}
-		}
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof ServiceBeanMethodInvocation)) {
+		if (!(object instanceof MethodInvocation)) {
 			return false;
 		}
 
-		ServiceBeanMethodInvocation serviceBeanMethodInvocation =
-			(ServiceBeanMethodInvocation)obj;
+		MethodInvocation methodInvocation = (MethodInvocation)object;
 
-		if (Objects.equals(_method, serviceBeanMethodInvocation._method)) {
+		if (Objects.equals(_method, methodInvocation.getMethod())) {
 			return true;
 		}
 
@@ -100,12 +76,8 @@ public class ServiceBeanMethodInvocation
 	}
 
 	@Override
-	public AccessibleObject getStaticPart() {
+	public Method getStaticPart() {
 		return _method;
-	}
-
-	public Class<?> getTargetClass() {
-		return _target.getClass();
 	}
 
 	@Override
@@ -132,7 +104,9 @@ public class ServiceBeanMethodInvocation
 			return _methodInterceptors[_index++].invoke(this);
 		}
 
-		if (_equalsMethod) {
+		if ((_method.getDeclaringClass() == Object.class) &&
+			Objects.equals("equals", _method.getName())) {
+
 			Object argument = _arguments[0];
 
 			if (argument == null) {
@@ -163,42 +137,12 @@ public class ServiceBeanMethodInvocation
 		_index = _markIndex;
 	}
 
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	public void setMethodInterceptors(
-		List<MethodInterceptor> methodInterceptors) {
-
-		setMethodInterceptors(
-			methodInterceptors.toArray(
-				new MethodInterceptor[methodInterceptors.size()]));
-	}
-
 	public void setMethodInterceptors(MethodInterceptor[] methodInterceptors) {
 		_methodInterceptors = methodInterceptors;
 	}
 
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	public ServiceBeanMethodInvocation toCacheKeyModel() {
-		ServiceBeanMethodInvocation serviceBeanMethodInvocation =
-			new ServiceBeanMethodInvocation(null, _method, null);
-
-		serviceBeanMethodInvocation._equalsMethod = _equalsMethod;
-		serviceBeanMethodInvocation._hashCode = _hashCode;
-
-		return serviceBeanMethodInvocation;
-	}
-
 	@Override
 	public String toString() {
-		if (_toString != null) {
-			return _toString;
-		}
-
 		Class<?>[] parameterTypes = _method.getParameterTypes();
 
 		StringBundler sb = new StringBundler(parameterTypes.length * 2 + 6);
@@ -229,19 +173,15 @@ public class ServiceBeanMethodInvocation
 
 		sb.append(targetClass.getName());
 
-		_toString = sb.toString();
-
-		return _toString;
+		return sb.toString();
 	}
 
 	private final Object[] _arguments;
-	private boolean _equalsMethod;
 	private int _hashCode;
 	private int _index;
 	private int _markIndex;
 	private final Method _method;
 	private MethodInterceptor[] _methodInterceptors;
 	private final Object _target;
-	private String _toString;
 
 }
