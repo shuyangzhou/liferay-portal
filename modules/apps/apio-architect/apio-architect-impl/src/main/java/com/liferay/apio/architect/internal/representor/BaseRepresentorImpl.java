@@ -22,6 +22,7 @@ import com.liferay.apio.architect.alias.representor.NestedFieldFunction;
 import com.liferay.apio.architect.alias.representor.NestedListFieldFunction;
 import com.liferay.apio.architect.file.BinaryFile;
 import com.liferay.apio.architect.identifier.Identifier;
+import com.liferay.apio.architect.internal.related.RelatedCollectionImpl;
 import com.liferay.apio.architect.internal.related.RelatedModelImpl;
 import com.liferay.apio.architect.internal.unsafe.Unsafe;
 import com.liferay.apio.architect.language.AcceptLanguage;
@@ -31,16 +32,19 @@ import com.liferay.apio.architect.representor.BaseRepresentor;
 import com.liferay.apio.architect.representor.NestedRepresentor;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 /**
  * @author Alejandro Hernández
@@ -158,6 +162,19 @@ public abstract class BaseRepresentorImpl<T> implements BaseRepresentor<T> {
 	}
 
 	@Override
+	public Stream<RelatedCollection<T, ? extends Identifier>>
+		getRelatedCollections() {
+
+		return Stream.of(
+			relatedCollections, supplier.get()
+		).filter(
+			Objects::nonNull
+		).flatMap(
+			Collection::stream
+		);
+	}
+
+	@Override
 	public List<RelatedModel<T, ?>> getRelatedModels() {
 		return relatedModels;
 	}
@@ -204,12 +221,6 @@ public abstract class BaseRepresentorImpl<T> implements BaseRepresentor<T> {
 		Function<Class<? extends Identifier<?>>, String> nameFunction,
 		Supplier<List<RelatedCollection<T, ?>>> supplier) {
 
-		binaryFunctions = new LinkedHashMap<>();
-		fieldFunctions = new LinkedHashMap<>();
-		nestedFieldFunctions = new ArrayList<>();
-		nestedListFieldFunctions = new ArrayList<>();
-		relatedModels = new ArrayList<>();
-		types = new ArrayList<>();
 		_nameFunction = nameFunction;
 		this.supplier = supplier;
 	}
@@ -395,6 +406,16 @@ public abstract class BaseRepresentorImpl<T> implements BaseRepresentor<T> {
 		_addFieldFunction(key, function, "NUMBER_LIST");
 	}
 
+	protected <S extends Identifier<?>> void addRelatedCollection(
+		String key, Class<S> itemIdentifierClass,
+		Function<T, ?> modelToIdentifierFunction) {
+
+		RelatedCollection<T, ?> relatedCollection = new RelatedCollectionImpl(
+			key, itemIdentifierClass, modelToIdentifierFunction);
+
+		relatedCollections.add(relatedCollection);
+	}
+
 	/**
 	 * Adds information about a related model.
 	 *
@@ -465,15 +486,20 @@ public abstract class BaseRepresentorImpl<T> implements BaseRepresentor<T> {
 		Collections.addAll(this.types, types);
 	}
 
-	protected final Map<String, BinaryFunction<T>> binaryFunctions;
-	protected final Map<String, List<FieldFunction<T, ?>>> fieldFunctions;
-	protected final List<NestedFieldFunction<T, ?>> nestedFieldFunctions;
+	protected final Map<String, BinaryFunction<T>> binaryFunctions =
+		new LinkedHashMap<>();
+	protected final Map<String, List<FieldFunction<T, ?>>> fieldFunctions =
+		new LinkedHashMap<>();
+	protected final List<NestedFieldFunction<T, ?>> nestedFieldFunctions =
+		new ArrayList<>();
 	protected final List<NestedListFieldFunction<T, ?>>
-		nestedListFieldFunctions;
+		nestedListFieldFunctions = new ArrayList<>();
 	protected String primaryType;
-	protected final List<RelatedModel<T, ?>> relatedModels;
+	protected final List<RelatedCollection<T, ?>> relatedCollections =
+		new ArrayList<>();
+	protected final List<RelatedModel<T, ?>> relatedModels = new ArrayList<>();
 	protected final Supplier<List<RelatedCollection<T, ?>>> supplier;
-	protected final List<String> types;
+	protected final List<String> types = new ArrayList<>();
 
 	protected abstract static class BaseBuilderImpl
 		<T, S extends BaseRepresentorImpl<T>> {
@@ -608,6 +634,17 @@ public abstract class BaseRepresentorImpl<T> implements BaseRepresentor<T> {
 				String key, Function<T, List<Number>> function) {
 
 				baseRepresentor.addNumberListFunction(key, function);
+
+				return _this;
+			}
+
+			@Override
+			public <W, S extends Identifier<?>> V addRelatedCollection(
+				String key, Class<S> itemIdentifierClass,
+				Function<T, W> modelToIdentifierFunction) {
+
+				baseRepresentor.addRelatedCollection(
+					key, itemIdentifierClass, modelToIdentifierFunction);
 
 				return _this;
 			}

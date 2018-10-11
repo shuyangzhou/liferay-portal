@@ -67,6 +67,7 @@ exports[`Builder should render the default markup 1`] = `
                       <div class="ddm-resize-handle-left"></div>
                       <div class="ddm-drag">
                         <div class="ddm-field-not-found">Field doesn't exist.</div>
+                        <div class="ddm-field-not-found">Field doesn't exist.</div>
                       </div>
                       <div class="ddm-field-actions-container">
                         <button class="btn btn-monospaced btn-sm btn-secondary" aria-label="paste" type="button">
@@ -200,7 +201,7 @@ exports[`Builder should render the default markup 1`] = `
             <li class="tbar-item">
               <a class="component-action" href="#1" ref="close" role="button">
                 <svg aria-hidden="true" class="lexicon-icon lexicon-icon-times">
-                  <use xlinkHref="icons.svg#times"></use>
+                  <use xlink:href="icons.svg#times"></use>
                 </svg>
               </a>
             </li>
@@ -211,7 +212,7 @@ exports[`Builder should render the default markup 1`] = `
         <a aria-controls="sidebarLightCollapse00" aria-expanded="false" aria-label="Toggle Navigation" class="collapsed navbar-toggler navbar-toggler-link" data-toggle="collapse" href="#sidebarLightCollapse00" role="button">
           <span class="navbar-text-truncate">Details</span>
           <svg aria-hidden="true" class="lexicon-icon lexicon-icon-caret-bottom">
-            <use xlinkHref="icons.svg#caret-bottom"></use>
+            <use xlink:href="icons.svg#caret-bottom"></use>
           </svg>
         </a>
         <div class="collapse navbar-collapse" id="sidebarLightCollapse00">
@@ -349,6 +350,7 @@ exports[`Builder should show modal when trash button gets clicked 1`] = `
                       <div class="ddm-resize-handle-left"></div>
                       <div class="ddm-drag">
                         <div class="ddm-field-not-found">Field doesn't exist.</div>
+                        <div class="ddm-field-not-found">Field doesn't exist.</div>
                       </div>
                       <div class="ddm-field-actions-container">
                         <button class="btn btn-monospaced btn-sm btn-secondary" aria-label="paste" type="button">
@@ -482,7 +484,7 @@ exports[`Builder should show modal when trash button gets clicked 1`] = `
             <li class="tbar-item">
               <a class="component-action" href="#1" ref="close" role="button">
                 <svg aria-hidden="true" class="lexicon-icon lexicon-icon-times">
-                  <use xlinkHref="icons.svg#times"></use>
+                  <use xlink:href="icons.svg#times"></use>
                 </svg>
               </a>
             </li>
@@ -493,7 +495,7 @@ exports[`Builder should show modal when trash button gets clicked 1`] = `
         <a aria-controls="sidebarLightCollapse00" aria-expanded="false" aria-label="Toggle Navigation" class="collapsed navbar-toggler navbar-toggler-link" data-toggle="collapse" href="#sidebarLightCollapse00" role="button">
           <span class="navbar-text-truncate">Details</span>
           <svg aria-hidden="true" class="lexicon-icon lexicon-icon-caret-bottom">
-            <use xlinkHref="icons.svg#caret-bottom"></use>
+            <use xlink:href="icons.svg#caret-bottom"></use>
           </svg>
         </a>
         <div class="collapse navbar-collapse" id="sidebarLightCollapse00">

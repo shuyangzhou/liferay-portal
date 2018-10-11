@@ -30,7 +30,7 @@
 </tr>
 <tr>
 	<td>TASK_ADD_DUE_DATE_LINK</td>
-	<td>//a[@id='toggleDueDate']</td>
+	<td>//a[contains(@id, 'toggleDueDate')]</td>
 	<td></td>
 </tr>
 <tr>

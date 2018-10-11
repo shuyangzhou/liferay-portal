@@ -38,7 +38,8 @@ renderResponse.setTitle(editSegmentsEntryDisplayContext.getSegmentsEntryName(loc
 <clay:management-toolbar
 	actionDropdownItems="<%= editSegmentsEntryDisplayContext.getActionDropdownItems() %>"
 	componentId="segmentsEntryUsersManagementToolbar"
-	itemsTotal="<%= editSegmentsEntryDisplayContext.getTotalItems() %>"
+	disabled="<%= editSegmentsEntryDisplayContext.getUserTotalItems() == 0 %>"
+	itemsTotal="<%= editSegmentsEntryDisplayContext.getUserTotalItems() %>"
 	searchContainerId="segmentsEntryUsers"
 	selectable="<%= true %>"
 	showCreationMenu="<%= true %>"
@@ -62,7 +63,6 @@ renderResponse.setTitle(editSegmentsEntryDisplayContext.getSegmentsEntryName(loc
 	<aui:input name="segmentsEntryId" type="hidden" value="<%= segmentsEntryId %>" />
 
 	<liferay-ui:search-container
-		id="segmentsEntryUsers"
 		searchContainer="<%= editSegmentsEntryDisplayContext.getUserSearchContainer() %>"
 	>
 		<liferay-ui:search-container-row

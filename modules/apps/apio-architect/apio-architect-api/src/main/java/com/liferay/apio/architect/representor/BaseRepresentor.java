@@ -350,6 +350,19 @@ public interface BaseRepresentor<T> {
 		public U addNumberList(String key, Function<T, List<Number>> function);
 
 		/**
+		 * Adds information about a related collection.
+		 *
+		 * @param  key the relation's name
+		 * @param  itemIdentifierClass the class of the collection items'
+		 *         identifier
+		 * @return the builder's step
+		 * @review
+		 */
+		public <V, S extends Identifier<?>> U addRelatedCollection(
+			String key, Class<S> itemIdentifierClass,
+			Function<T, V> modelToIdentifierFunction);
+
+		/**
 		 * Adds information about a resource's relative URL field. This field's
 		 * value will be represented as an absolute URI, by prefixing it with
 		 * the server URL.

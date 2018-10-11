@@ -11,35 +11,12 @@ buildscript {
 	}
 }
 
-task export(type: Export) {
-	description 'Exports the sample.bndrun into a runnable jar.'
+task export(type: Export)
+task resolve(type: Resolve)
+task run(type: JavaExec)
 
-	group 'sample'
-
-	bndrun 'sample.bndrun'
-
-	bundles configurations.compileOnly
-}
-
-task resolve(type: Resolve) {
-	description 'Updates the sample.bndrun "runBundles" section.'
-
-	group 'sample'
-
-	bndrun 'sample.bndrun'
-
-	bundles configurations.compileOnly
-}
-
-task run() {
-	dependsOn export
-
-	doLast {
-		javaexec {
-			main = "-jar"; args "build/distributions/executable/sample.jar"
-		}
-	}
-}
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
 
 dependencies {
 	compileInclude group: "com.github.javafaker", name: "javafaker", version: "0.13"
@@ -83,5 +60,30 @@ deploy {
 	enabled = false
 }
 
-sourceCompatibility = "1.8"
-targetCompatibility = "1.8"
+export {
+	description 'Exports the sample.bndrun into a runnable jar.'
+
+	group 'sample'
+
+	bndrun 'sample.bndrun'
+
+	bundles configurations.compileOnly
+}
+
+resolve {
+	description 'Updates the sample.bndrun "runBundles" section.'
+
+	group 'sample'
+
+	bndrun 'sample.bndrun'
+
+	bundles configurations.compileOnly
+}
+
+run {
+	dependsOn export
+
+	main = "-jar"
+
+	args 'build/distributions/executable/sample.jar'
+}

@@ -163,8 +163,6 @@ public class FileShortcutStagedModelDataHandler
 			PortletDataContext portletDataContext, FileShortcut fileShortcut)
 		throws Exception {
 
-		long userId = portletDataContext.getUserId(fileShortcut.getUserUuid());
-
 		Map<Long, Long> folderIds =
 			(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
 				Folder.class);
@@ -200,6 +198,8 @@ public class FileShortcutStagedModelDataHandler
 
 			return;
 		}
+
+		long userId = portletDataContext.getUserId(fileShortcut.getUserUuid());
 
 		ServiceContext serviceContext = portletDataContext.createServiceContext(
 			fileShortcut, DLFileShortcut.class);
