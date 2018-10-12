@@ -1072,7 +1072,6 @@ public class PortalImpl implements Portal {
 
 		Layout layout = null;
 		String layoutQueryStringCompositeFriendlyURL = friendlyURL;
-		String queryString = StringPool.BLANK;
 
 		if (Validator.isNull(friendlyURL)) {
 
@@ -1099,7 +1098,7 @@ public class PortalImpl implements Portal {
 		}
 
 		return new LayoutQueryStringComposite(
-			layout, layoutQueryStringCompositeFriendlyURL, queryString);
+			layout, layoutQueryStringCompositeFriendlyURL, StringPool.BLANK);
 	}
 
 	@Override
@@ -2674,7 +2673,8 @@ public class PortalImpl implements Portal {
 	public String getI18nPathLanguageId(
 		Locale locale, String defaultI18nPathLanguageId) {
 
-		String i18nPathLanguageId = defaultI18nPathLanguageId;
+		String i18nPathLanguageId = StringUtil.replaceFirst(
+			defaultI18nPathLanguageId, CharPool.UNDERLINE, CharPool.DASH);
 
 		if (!LanguageUtil.isDuplicateLanguageCode(locale.getLanguage())) {
 			i18nPathLanguageId = locale.getLanguage();

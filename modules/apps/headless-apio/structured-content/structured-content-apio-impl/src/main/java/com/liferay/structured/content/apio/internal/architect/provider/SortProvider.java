@@ -16,8 +16,8 @@ package com.liferay.structured.content.apio.internal.architect.provider;
 
 import com.liferay.apio.architect.provider.Provider;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.structured.content.apio.architect.sort.Sort;
-import com.liferay.structured.content.apio.architect.sort.SortParser;
+import com.liferay.portal.odata.sort.Sort;
+import com.liferay.portal.odata.sort.SortParser;
 import com.liferay.structured.content.apio.internal.architect.filter.StructuredContentEntityModel;
 
 import javax.servlet.http.HttpServletRequest;

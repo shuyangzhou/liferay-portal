@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -53,6 +54,10 @@ public class AssetListEntryLocalServiceImpl
 			throw new PortalException();
 		}
 
+		assetListEntry.setModifiedDate(new Date());
+
+		assetListEntryPersistence.update(assetListEntry);
+
 		assetListEntryAssetEntryRelLocalService.addAssetListEntryAssetEntryRel(
 			assetListEntryId, assetEntryId, serviceContext);
 	}
@@ -61,6 +66,16 @@ public class AssetListEntryLocalServiceImpl
 	public AssetListEntry addAssetListEntry(
 			long userId, long groupId, String title, int type,
 			ServiceContext serviceContext)
+		throws PortalException {
+
+		return addAssetListEntry(
+			userId, groupId, title, type, null, serviceContext);
+	}
+
+	@Override
+	public AssetListEntry addAssetListEntry(
+			long userId, long groupId, String title, int type,
+			String typeSettings, ServiceContext serviceContext)
 		throws PortalException {
 
 		_validateTitle(groupId, title);
@@ -84,6 +99,7 @@ public class AssetListEntryLocalServiceImpl
 			serviceContext.getModifiedDate(new Date()));
 		assetListEntry.setTitle(title);
 		assetListEntry.setType(type);
+		assetListEntry.setTypeSettings(typeSettings);
 
 		assetListEntryPersistence.update(assetListEntry);
 
@@ -145,6 +161,10 @@ public class AssetListEntryLocalServiceImpl
 			throw new PortalException();
 		}
 
+		assetListEntry.setModifiedDate(new Date());
+
+		assetListEntryPersistence.update(assetListEntry);
+
 		assetListEntryAssetEntryRelLocalService.
 			deleteAssetListEntryAssetEntryRel(assetListEntryId, position);
 	}
@@ -164,15 +184,27 @@ public class AssetListEntryLocalServiceImpl
 	public AssetListEntry deleteAssetListEntry(long assetListEntryId)
 		throws PortalException {
 
-		AssetListEntry assetListEntry =
-			assetListEntryPersistence.findByPrimaryKey(assetListEntryId);
+		// Asset list entry
+
+		AssetListEntry assetListEntry = assetListEntryPersistence.remove(
+			assetListEntryId);
 
 		// Resources
 
 		resourceLocalService.deleteResource(
 			assetListEntry, ResourceConstants.SCOPE_INDIVIDUAL);
 
-		return assetListEntryPersistence.remove(assetListEntryId);
+		// Asset list entry rels
+
+		assetListEntryAssetEntryRelPersistence.removeByAssetListEntryId(
+			assetListEntryId);
+
+		return assetListEntry;
+	}
+
+	@Override
+	public List<AssetListEntry> getAssetListEntries(long groupId) {
+		return assetListEntryPersistence.findByGroupId(groupId);
 	}
 
 	@Override
@@ -189,6 +221,10 @@ public class AssetListEntryLocalServiceImpl
 
 			throw new PortalException();
 		}
+
+		assetListEntry.setModifiedDate(new Date());
+
+		assetListEntryPersistence.update(assetListEntry);
 
 		assetListEntryAssetEntryRelLocalService.moveAssetListEntryAssetEntryRel(
 			assetListEntryId, position, newPosition);

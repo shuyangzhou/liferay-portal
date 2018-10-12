@@ -747,21 +747,19 @@ public class LayoutImportController implements ImportController {
 						portletDataContext.getCompanyId());
 
 			for (Layout layout : previousLayouts) {
-				String sourcePrototypeLayoutUuid =
-					layout.getSourcePrototypeLayoutUuid();
-
 				if (Validator.isNull(layout.getSourcePrototypeLayoutUuid())) {
 					continue;
 				}
 
 				if (SitesUtil.isLayoutModifiedSinceLastMerge(layout)) {
 					modifiedLayouts.add(layout);
+
 					continue;
 				}
 
 				Layout sourcePrototypeLayout =
 					_layoutLocalService.fetchLayoutByUuidAndGroupId(
-						sourcePrototypeLayoutUuid,
+						layout.getSourcePrototypeLayoutUuid(),
 						layoutSetPrototype.getGroupId(), true);
 
 				if (sourcePrototypeLayout == null) {
@@ -812,12 +810,7 @@ public class LayoutImportController implements ImportController {
 				Layout.class + ".layout");
 
 		for (Element portletElement : portletElements) {
-			String portletPath = portletElement.attributeValue("path");
 			String portletId = portletElement.attributeValue("portlet-id");
-			long layoutId = GetterUtil.getLong(
-				portletElement.attributeValue("layout-id"));
-			long oldPlid = GetterUtil.getLong(
-				portletElement.attributeValue("old-plid"));
 
 			Portlet portlet = _portletLocalService.getPortletById(
 				portletDataContext.getCompanyId(), portletId);
@@ -825,6 +818,9 @@ public class LayoutImportController implements ImportController {
 			if (!portlet.isActive() || portlet.isUndeployedPortlet()) {
 				continue;
 			}
+
+			long layoutId = GetterUtil.getLong(
+				portletElement.attributeValue("layout-id"));
 
 			Layout layout = layouts.get(layoutId);
 
@@ -839,13 +835,20 @@ public class LayoutImportController implements ImportController {
 			}
 
 			portletDataContext.setPlid(plid);
+
+			long oldPlid = GetterUtil.getLong(
+				portletElement.attributeValue("old-plid"));
+
 			portletDataContext.setOldPlid(oldPlid);
+
 			portletDataContext.setPortletId(portletId);
 
 			if (BackgroundTaskThreadLocal.hasBackgroundTask()) {
 				PortletDataHandlerStatusMessageSenderUtil.sendStatusMessage(
 					"portlet", portletId, manifestSummary);
 			}
+
+			String portletPath = portletElement.attributeValue("path");
 
 			Document portletDocument = SAXReaderUtil.read(
 				portletDataContext.getZipEntryAsString(portletPath));
@@ -1261,15 +1264,15 @@ public class LayoutImportController implements ImportController {
 				continue;
 			}
 
-			String schemaVersion = GetterUtil.getString(
-				portletElement.attributeValue("schema-version"));
-
 			PortletDataHandler portletDataHandler =
 				_portletDataHandlerProvider.provide(companyId, portletId);
 
 			if (portletDataHandler == null) {
 				continue;
 			}
+
+			String schemaVersion = GetterUtil.getString(
+				portletElement.attributeValue("schema-version"));
 
 			if (!portletDataHandler.validateSchemaVersion(schemaVersion)) {
 				throw new LayoutImportException(

@@ -6,9 +6,48 @@ export default [
 					{
 						fields: [
 							{
-								label: 'Radio',
+								fieldName: 'radio',
+								label: 'Radio Field',
+								options: [
+									{
+										label: 'Option 1',
+										value: 'option1'
+									},
+									{
+										label: 'Option 2',
+										value: 'option2'
+									}
+								],
 								settingsContext: {
-									pages: []
+									pages: [{
+										rows: [{
+											columns: [{
+												fields: [
+													{
+														fieldName: 'label',
+														localizable: true,
+														settingsContext: {
+															pages: [{
+																rows: [{
+																	columns: []
+																}]
+															}]
+														}
+													},
+													{
+														fieldName: 'name'
+													},
+													{
+														fieldName: 'required'
+													},
+													{
+														fieldName: 'type'
+													}
+												],
+												size: 12
+											}]
+										}]
+									}]
 								},
 								type: 'radio'
 							}
@@ -26,7 +65,17 @@ export default [
 					{
 						fields: [
 							{
-								label: 'Text',
+								fieldName: 'text1',
+								label: 'Text Field 1',
+								required: true,
+								settingsContext: {
+									pages: []
+								},
+								type: 'text'
+							},
+							{
+								fieldName: 'text2',
+								label: 'Text Field 2',
 								required: true,
 								settingsContext: {
 									pages: []
@@ -39,15 +88,18 @@ export default [
 					{
 						fields: [
 							{
-								items: [
+								fieldName: 'select',
+								label: 'Select Field',
+								options: [
 									{
-										name: 'Foo'
+										label: 'Option 1',
+										value: 'option1'
 									},
 									{
-										name: 'Bar'
+										label: 'Option 2',
+										value: 'option2'
 									}
 								],
-								label: 'Select',
 								required: true,
 								settingsContext: {
 									pages: []
@@ -68,12 +120,13 @@ export default [
 					{
 						fields: [
 							{
-								label: 'Second row',
+								fieldName: 'date',
+								label: 'Date Field',
 								required: true,
 								settingsContext: {
 									pages: []
 								},
-								type: 'text'
+								type: 'date'
 							}
 						],
 						size: 12

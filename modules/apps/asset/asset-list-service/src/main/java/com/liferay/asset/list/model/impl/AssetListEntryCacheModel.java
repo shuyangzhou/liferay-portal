@@ -84,12 +84,12 @@ public class AssetListEntryCacheModel implements CacheModel<AssetListEntry>,
 		sb.append(createDate);
 		sb.append(", modifiedDate=");
 		sb.append(modifiedDate);
-		sb.append(", typeSettings=");
-		sb.append(typeSettings);
 		sb.append(", title=");
 		sb.append(title);
 		sb.append(", type=");
 		sb.append(type);
+		sb.append(", typeSettings=");
+		sb.append(typeSettings);
 		sb.append(", lastPublishDate=");
 		sb.append(lastPublishDate);
 		sb.append("}");
@@ -134,13 +134,6 @@ public class AssetListEntryCacheModel implements CacheModel<AssetListEntry>,
 			assetListEntryImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
-		if (typeSettings == null) {
-			assetListEntryImpl.setTypeSettings("");
-		}
-		else {
-			assetListEntryImpl.setTypeSettings(typeSettings);
-		}
-
 		if (title == null) {
 			assetListEntryImpl.setTitle("");
 		}
@@ -149,6 +142,13 @@ public class AssetListEntryCacheModel implements CacheModel<AssetListEntry>,
 		}
 
 		assetListEntryImpl.setType(type);
+
+		if (typeSettings == null) {
+			assetListEntryImpl.setTypeSettings("");
+		}
+		else {
+			assetListEntryImpl.setTypeSettings(typeSettings);
+		}
 
 		if (lastPublishDate == Long.MIN_VALUE) {
 			assetListEntryImpl.setLastPublishDate(null);
@@ -176,10 +176,10 @@ public class AssetListEntryCacheModel implements CacheModel<AssetListEntry>,
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
-		typeSettings = objectInput.readUTF();
 		title = objectInput.readUTF();
 
 		type = objectInput.readInt();
+		typeSettings = objectInput.readUTF();
 		lastPublishDate = objectInput.readLong();
 	}
 
@@ -211,13 +211,6 @@ public class AssetListEntryCacheModel implements CacheModel<AssetListEntry>,
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
 
-		if (typeSettings == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(typeSettings);
-		}
-
 		if (title == null) {
 			objectOutput.writeUTF("");
 		}
@@ -226,6 +219,14 @@ public class AssetListEntryCacheModel implements CacheModel<AssetListEntry>,
 		}
 
 		objectOutput.writeInt(type);
+
+		if (typeSettings == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(typeSettings);
+		}
+
 		objectOutput.writeLong(lastPublishDate);
 	}
 
@@ -237,8 +238,8 @@ public class AssetListEntryCacheModel implements CacheModel<AssetListEntry>,
 	public String userName;
 	public long createDate;
 	public long modifiedDate;
-	public String typeSettings;
 	public String title;
 	public int type;
+	public String typeSettings;
 	public long lastPublishDate;
 }

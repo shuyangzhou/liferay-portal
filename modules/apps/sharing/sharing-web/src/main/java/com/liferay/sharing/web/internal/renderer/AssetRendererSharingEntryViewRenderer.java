@@ -15,9 +15,12 @@
 package com.liferay.sharing.web.internal.renderer;
 
 import com.liferay.asset.kernel.model.AssetRenderer;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.sharing.model.SharingEntry;
 import com.liferay.sharing.renderer.SharingEntryViewRenderer;
+import com.liferay.sharing.web.internal.util.AssetRendererSharingUtil;
 
 import java.io.IOException;
 
@@ -30,7 +33,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Alejandro Tardín
  */
 public class AssetRendererSharingEntryViewRenderer
-	implements SharingEntryViewRenderer<AssetRenderer> {
+	implements SharingEntryViewRenderer {
 
 	public AssetRendererSharingEntryViewRenderer(
 		ServletContext servletContext) {
@@ -40,12 +43,15 @@ public class AssetRendererSharingEntryViewRenderer
 
 	@Override
 	public void render(
-			AssetRenderer assetRenderer, HttpServletRequest request,
+			SharingEntry sharingEntry, HttpServletRequest request,
 			HttpServletResponse response)
-		throws IOException {
+		throws IOException, PortalException {
 
 		RequestDispatcher requestDispatcher =
 			_servletContext.getRequestDispatcher(_JSP_PATH);
+
+		AssetRenderer assetRenderer = AssetRendererSharingUtil.getAssetRenderer(
+			sharingEntry);
 
 		request.setAttribute(AssetRenderer.class.getName(), assetRenderer);
 

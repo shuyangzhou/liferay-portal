@@ -19,15 +19,11 @@ import com.liferay.apio.architect.internal.related.RelatedCollectionImpl;
 import com.liferay.apio.architect.related.RelatedCollection;
 import com.liferay.apio.architect.representor.Representor;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 /**
  * @author Alejandro Hernández
@@ -38,19 +34,6 @@ public class RepresentorImpl<T>
 	@Override
 	public Object getIdentifier(T model) {
 		return _modelToIdentifierFunction.apply(model);
-	}
-
-	@Override
-	public Stream<RelatedCollection<T, ? extends Identifier>>
-		getRelatedCollections() {
-
-		return Stream.of(
-			_relatedCollections, supplier.get()
-		).filter(
-			Objects::nonNull
-		).flatMap(
-			Collection::stream
-		);
 	}
 
 	@Override
@@ -117,7 +100,8 @@ public class RepresentorImpl<T>
 			public <U extends Identifier> FirstStep<T> addRelatedCollection(
 				String key, Class<U> itemIdentifierClass) {
 
-				baseRepresentor._addRelatedCollection(key, itemIdentifierClass);
+				baseRepresentor.addRelatedCollection(
+					key, itemIdentifierClass, null);
 
 				return this;
 			}
@@ -156,17 +140,6 @@ public class RepresentorImpl<T>
 		Supplier<List<RelatedCollection<T, ?>>> supplier) {
 
 		super(nameFunction, supplier);
-
-		_relatedCollections = new ArrayList<>();
-	}
-
-	private <S extends Identifier> void _addRelatedCollection(
-		String key, Class<S> itemIdentifierClass) {
-
-		RelatedCollection<T, ?> relatedCollection = new RelatedCollectionImpl<>(
-			key, itemIdentifierClass);
-
-		_relatedCollections.add(relatedCollection);
 	}
 
 	private void _setIdentifierFunction(
@@ -176,6 +149,5 @@ public class RepresentorImpl<T>
 	}
 
 	private Function<T, ?> _modelToIdentifierFunction;
-	private final List<RelatedCollection<T, ?>> _relatedCollections;
 
 }

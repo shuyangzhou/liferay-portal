@@ -137,9 +137,6 @@ public class WebFormPortlet extends MVCPortlet {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
 		String portletId = _portal.getPortletId(actionRequest);
 
 		PortletPreferences preferences =
@@ -148,16 +145,6 @@ public class WebFormPortlet extends MVCPortlet {
 
 		boolean requireCaptcha = GetterUtil.getBoolean(
 			preferences.getValue("requireCaptcha", StringPool.BLANK));
-		String successURL = GetterUtil.getString(
-			preferences.getValue("successURL", StringPool.BLANK));
-		boolean sendAsEmail = GetterUtil.getBoolean(
-			preferences.getValue("sendAsEmail", StringPool.BLANK));
-		boolean saveToDatabase = GetterUtil.getBoolean(
-			preferences.getValue("saveToDatabase", StringPool.BLANK));
-		String databaseTableName = GetterUtil.getString(
-			preferences.getValue("databaseTableName", StringPool.BLANK));
-		boolean saveToFile = GetterUtil.getBoolean(
-			preferences.getValue("saveToFile", StringPool.BLANK));
 
 		if (requireCaptcha) {
 			try {
@@ -184,12 +171,12 @@ public class WebFormPortlet extends MVCPortlet {
 			String fieldLabel = preferences.getValue(
 				"fieldLabel" + i, StringPool.BLANK);
 
-			String fieldType = preferences.getValue(
-				"fieldType" + i, StringPool.BLANK);
-
 			if (Validator.isNull(fieldLabel)) {
 				break;
 			}
+
+			String fieldType = preferences.getValue(
+				"fieldType" + i, StringPool.BLANK);
 
 			if (StringUtil.equalsIgnoreCase(fieldType, "paragraph")) {
 				continue;
@@ -199,6 +186,9 @@ public class WebFormPortlet extends MVCPortlet {
 		}
 
 		Set<String> validationErrors = null;
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
 
 		WebFormServiceConfiguration webFormServiceConfiguration =
 			getWebFormServiceConfiguration(themeDisplay.getCompanyId());
@@ -216,17 +206,30 @@ public class WebFormPortlet extends MVCPortlet {
 			return;
 		}
 
+		String successURL = GetterUtil.getString(
+			preferences.getValue("successURL", StringPool.BLANK));
+
 		if (validationErrors.isEmpty()) {
 			boolean emailSuccess = true;
 			boolean databaseSuccess = true;
 			boolean fileSuccess = true;
+
+			boolean sendAsEmail = GetterUtil.getBoolean(
+				preferences.getValue("sendAsEmail", StringPool.BLANK));
 
 			if (sendAsEmail) {
 				emailSuccess = sendEmail(
 					fieldsMap, preferences, webFormServiceConfiguration);
 			}
 
+			boolean saveToDatabase = GetterUtil.getBoolean(
+				preferences.getValue("saveToDatabase", StringPool.BLANK));
+
 			if (saveToDatabase) {
+				String databaseTableName = GetterUtil.getString(
+					preferences.getValue(
+						"databaseTableName", StringPool.BLANK));
+
 				if (Validator.isNull(databaseTableName)) {
 					databaseTableName = WebFormUtil.getNewDatabaseTableName(
 						portletId);
@@ -241,6 +244,9 @@ public class WebFormPortlet extends MVCPortlet {
 					themeDisplay.getCompanyId(), fieldsMap, preferences,
 					databaseTableName);
 			}
+
+			boolean saveToFile = GetterUtil.getBoolean(
+				preferences.getValue("saveToFile", StringPool.BLANK));
 
 			if (saveToFile) {
 				String fileName = WebFormUtil.getFileName(
@@ -359,16 +365,17 @@ public class WebFormPortlet extends MVCPortlet {
 			String fieldLabel = preferences.getValue(
 				"fieldLabel" + i, StringPool.BLANK);
 
-			String localizedfieldLabel = LocalizationUtil.getPreferencesValue(
-				preferences, "fieldLabel" + i, themeDisplay.getLanguageId());
-
 			if (Validator.isNull(fieldLabel)) {
 				break;
 			}
 
 			fieldLabels.add(fieldLabel);
 
+			String localizedfieldLabel = LocalizationUtil.getPreferencesValue(
+				preferences, "fieldLabel" + i, themeDisplay.getLanguageId());
+
 			sb.append(getCSVFormattedValue(localizedfieldLabel));
+
 			sb.append(csvSeparator);
 		}
 
@@ -593,6 +600,10 @@ public class WebFormPortlet extends MVCPortlet {
 			String fieldType = preferences.getValue(
 				"fieldType" + (i + 1), StringPool.BLANK);
 
+			if (Objects.equals(fieldType, "paragraph")) {
+				continue;
+			}
+
 			String fieldLabel = preferences.getValue(
 				"fieldLabel" + (i + 1), StringPool.BLANK);
 
@@ -601,10 +612,6 @@ public class WebFormPortlet extends MVCPortlet {
 			boolean fieldOptional = GetterUtil.getBoolean(
 				preferences.getValue(
 					"fieldOptional" + (i + 1), StringPool.BLANK));
-
-			if (Objects.equals(fieldType, "paragraph")) {
-				continue;
-			}
 
 			if (!fieldOptional && Validator.isNotNull(fieldLabel) &&
 				Validator.isNull(fieldValue)) {

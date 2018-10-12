@@ -4420,7 +4420,7 @@ version 1.3.2.
 ## 5.5.25 - 2018-08-28
 
 ### Changed
-- [LPS-84094]: Allow properties defined in `gradle-ext.properties` to be
+- [LPS-84094]: Allow properties defined in a `gradle.properties` file to be
 overridden by values defined in a `gradle-ext.properties` file.
 - [LPS-84094]: Update the [Liferay Gradle Plugins] dependency to version
 3.12.117.
@@ -4651,7 +4651,7 @@ version 1.3.4.
 ## 5.5.61 - 2018-09-27
 
 ### Fixed
-- [LPS-85771]: Set `test.outputs.upToDateWhen`to `false` to always run `test`
+- [LPS-85771]: Set `test.outputs.upToDateWhen` to `false` to always run `test`
 and `testIntegration` for OSGi modules.
 
 ## 5.5.62 - 2018-09-30
@@ -4665,7 +4665,7 @@ and `testIntegration` for OSGi modules.
 ### Changed
 - [LPS-85905]: When on Jenkins, fail the `testIntegration` task if any dependent
 projects defined in the `testIntegrationCompile` configuration do not have a
-`lfrbuild-ci`, `lfrbuild-ci-skip-test-integration-check`, or a
+`lfrbuild-ci`, `lfrbuild-ci-skip-test-integration-check`, or
 `.lfrbuild-portal` marker file.
 
 ## 5.5.64 - 2018-10-01
@@ -4706,6 +4706,80 @@ qualifier before the task runs and change it back after it completes.
 - [LPS-85987]: When running the `npmRunBuild` task on Jenkins, always check for
 an invalid `.hotfix-xxx-xxx` qualifier.
 
+## 5.5.69 - 2018-10-04
+
+### Changed
+- [LPS-84119]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.153.
+
+## 5.5.70 - 2018-10-05
+
+### Changed
+- [LPS-80388]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.154.
+- [LPS-80388]: Update the [Liferay Gradle Plugins Baseline] dependency to
+version 1.3.5.
+
+## 5.5.71 - 2018-10-07
+
+### Changed
+- [LPS-84119]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.155.
+
+## 5.5.72 - 2018-10-08
+
+### Added
+- [LPS-85987]: Do not use the `node_modules` cache when the
+`FIX_PACKS_RELEASE_ENVIRONMENT"` environment variable is set.
+
+## 5.5.73 - 2018-10-08
+
+### Changed
+- [LPS-84119]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.156.
+
+## 5.5.74 - 2018-10-09
+
+### Changed
+- [LPS-84119]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.157.
+
+## 5.5.75 - 2018-10-09
+
+### Fixed
+- [LPS-85987]: When running the `npmRunBuild` task on Jenkins, check the
+`.hotfix-xxx-xxx` qualifier in `bnd.bnd` files.
+
+## 5.5.76 - 2018-10-09
+
+### Changed
+- [LPS-74544]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.158.
+
+## 5.5.77 - 2018-10-09
+
+### Changed
+- [LPS-85959]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.159.
+- [LPS-85959]: Update the [Liferay Gradle Plugins JSDoc] dependency to version
+2.0.10.
+
+### Fixed
+- [LPS-85987]: When running the `npmRunBuild` task on Jenkins, change the
+`.hotfix-xxx-xxx` qualifier before running any tasks.
+
+## 5.5.78 - 2018-10-10
+
+### Changed
+- [LPS-86308]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.160.
+
+## 5.5.79 - 2018-10-10
+
+### Fixed
+- [LPS-85987]: When running any NPM task on Jenkins, check for an invalid
+`.hotfix-xxx-xxx` qualifier before running the task.
+
 [Find Security Bugs]: https://github.com/liferay/liferay-portal/tree/master/modules/third-party/com-h3xstream-findsecbugs
 [Gradle Dependency Management]: https://github.com/spring-gradle-plugins/dependency-management-plugin
 [Gradle License Report]: https://github.com/jk1/Gradle-License-Report
@@ -4722,6 +4796,7 @@ an invalid `.hotfix-xxx-xxx` qualifier.
 [Liferay Gradle Plugins Patcher]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins-patcher
 [Liferay Gradle Plugins Poshi Runner]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins-poshi-runner
 [Liferay Gradle Plugins Source Formatter]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins-source-formatter
+[Liferay Gradle Util]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-util
 [Liferay Source Formatter]: https://github.com/liferay/liferay-portal/tree/master/modules/util/source-formatter
 [LPS-52675]: https://issues.liferay.com/browse/LPS-52675
 [LPS-53392]: https://issues.liferay.com/browse/LPS-53392
@@ -5188,6 +5263,7 @@ an invalid `.hotfix-xxx-xxx` qualifier.
 [LPS-85905]: https://issues.liferay.com/browse/LPS-85905
 [LPS-85959]: https://issues.liferay.com/browse/LPS-85959
 [LPS-85987]: https://issues.liferay.com/browse/LPS-85987
+[LPS-86308]: https://issues.liferay.com/browse/LPS-86308
 [LRDOCS-2594]: https://issues.liferay.com/browse/LRDOCS-2594
 [LRDOCS-2841]: https://issues.liferay.com/browse/LRDOCS-2841
 [LRDOCS-2981]: https://issues.liferay.com/browse/LRDOCS-2981

@@ -17,30 +17,30 @@ package com.liferay.structured.content.apio.architect.sort;
 import javax.ws.rs.BadRequestException;
 
 /**
- * This exception is used to model errors when handling {@link Sort}.
+ * Models {@link Sort} errors.
  *
- * @author Cristina González
- * @review
+ * @author     Cristina González
+ * @deprecated As of Judson (7.1.x), replaced by {@link
+ *             com.liferay.portal.odata.sort.InvalidSortException}
  */
+@Deprecated
 public class InvalidSortException extends BadRequestException {
 
 	/**
-	 * Creates a new <code>InvalidSortException</code> with a message
+	 * Creates a new {@code InvalidSortException} with the provided message.
 	 *
-	 * @param  msg - message of the Exception
-	 * @review
+	 * @param msg the message
 	 */
 	public InvalidSortException(String msg) {
 		super(msg);
 	}
 
 	/**
-	 * Creates a new <code>InvalidSortException</code> with a message and a
-	 * cause
+	 * Creates a new {@code InvalidSortException} with the provided message and
+	 * cause.
 	 *
-	 * @param  msg - message of the Exception
-	 * @param  cause - cause of the Exception
-	 * @review
+	 * @param msg the message
+	 * @param cause the cause
 	 */
 	public InvalidSortException(String msg, Throwable cause) {
 		super(msg, cause);

@@ -8,7 +8,6 @@ exports[`KeyValue should be not edidable 1`] = `
     <label class="control-label key-value-label">Field Name:</label>
     <input class="key-value-input" type="text">
   </div>
-  <span class="form-text"></span>
 </div>
 `;
 
@@ -32,7 +31,6 @@ exports[`KeyValue should have a label 1`] = `
     <label class="control-label key-value-label">Field Name:</label>
     <input class="key-value-input" type="text">
   </div>
-  <span class="form-text"></span>
 </div>
 `;
 
@@ -44,7 +42,6 @@ exports[`KeyValue should have a predefined Value 1`] = `
     <label class="control-label key-value-label">Field Name:</label>
     <input class="key-value-input" type="text">
   </div>
-  <span class="form-text"></span>
 </div>
 `;
 
@@ -56,7 +53,6 @@ exports[`KeyValue should have a spritemap 1`] = `
     <label class="control-label key-value-label">Field Name:</label>
     <input class="key-value-input" type="text">
   </div>
-  <span class="form-text"></span>
 </div>
 `;
 
@@ -68,7 +64,6 @@ exports[`KeyValue should have a value 1`] = `
     <label class="control-label key-value-label">Field Name:</label>
     <input class="key-value-input" type="text">
   </div>
-  <span class="form-text"></span>
 </div>
 `;
 
@@ -80,7 +75,6 @@ exports[`KeyValue should have an id 1`] = `
     <label class="control-label key-value-label">Field Name:</label>
     <input class="key-value-input" type="text">
   </div>
-  <span class="form-text"></span>
 </div>
 `;
 
@@ -92,7 +86,6 @@ exports[`KeyValue should not be required 1`] = `
     <label class="control-label key-value-label">Field Name:</label>
     <input class="key-value-input" type="text">
   </div>
-  <span class="form-text"></span>
 </div>
 `;
 
@@ -104,7 +97,6 @@ exports[`KeyValue should render Label if showLabel is true 1`] = `
     <label class="control-label key-value-label">Field Name:</label>
     <input class="key-value-input" type="text">
   </div>
-  <span class="form-text"></span>
 </div>
 `;
 
@@ -116,6 +108,5 @@ exports[`KeyValue should render component with a key 1`] = `
     <label class="control-label key-value-label">Field Name:</label>
     <input class="key-value-input" type="text" value="key">
   </div>
-  <span class="form-text"></span>
 </div>
 `;

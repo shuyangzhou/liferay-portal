@@ -210,21 +210,6 @@ public interface AssetListEntryModel extends BaseModel<AssetListEntry>,
 	public void setModifiedDate(Date modifiedDate);
 
 	/**
-	 * Returns the type settings of this asset list entry.
-	 *
-	 * @return the type settings of this asset list entry
-	 */
-	@AutoEscape
-	public String getTypeSettings();
-
-	/**
-	 * Sets the type settings of this asset list entry.
-	 *
-	 * @param typeSettings the type settings of this asset list entry
-	 */
-	public void setTypeSettings(String typeSettings);
-
-	/**
 	 * Returns the title of this asset list entry.
 	 *
 	 * @return the title of this asset list entry
@@ -252,6 +237,21 @@ public interface AssetListEntryModel extends BaseModel<AssetListEntry>,
 	 * @param type the type of this asset list entry
 	 */
 	public void setType(int type);
+
+	/**
+	 * Returns the type settings of this asset list entry.
+	 *
+	 * @return the type settings of this asset list entry
+	 */
+	@AutoEscape
+	public String getTypeSettings();
+
+	/**
+	 * Sets the type settings of this asset list entry.
+	 *
+	 * @param typeSettings the type settings of this asset list entry
+	 */
+	public void setTypeSettings(String typeSettings);
 
 	/**
 	 * Returns the last publish date of this asset list entry.

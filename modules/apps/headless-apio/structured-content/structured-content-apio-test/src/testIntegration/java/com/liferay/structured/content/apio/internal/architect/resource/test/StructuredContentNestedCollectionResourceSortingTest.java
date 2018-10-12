@@ -29,12 +29,12 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.odata.filter.Filter;
+import com.liferay.portal.odata.sort.Sort;
+import com.liferay.portal.odata.sort.SortParser;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerTestRule;
-import com.liferay.structured.content.apio.architect.filter.Filter;
-import com.liferay.structured.content.apio.architect.sort.Sort;
-import com.liferay.structured.content.apio.architect.sort.SortParser;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -593,7 +593,7 @@ public class StructuredContentNestedCollectionResourceSortingTest
 	@DeleteAfterTestRun
 	private Group _group;
 
-	@Inject
+	@Inject(filter = "entity.model.name=StructuredContent")
 	private SortParser _sortParser;
 
 }

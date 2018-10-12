@@ -314,8 +314,6 @@ public class FolderStagedModelDataHandler
 			PortletDataContext portletDataContext, Folder folder)
 		throws Exception {
 
-		long userId = portletDataContext.getUserId(folder.getUserUuid());
-
 		Folder existingFolder = fetchStagedModelByUuidAndGroupId(
 			folder.getUuid(), portletDataContext.getScopeGroupId());
 
@@ -337,6 +335,8 @@ public class FolderStagedModelDataHandler
 			DLFolder.class.getName());
 
 		if (trashHandler.isRestorable(existingFolder.getFolderId())) {
+			long userId = portletDataContext.getUserId(folder.getUserUuid());
+
 			trashHandler.restoreTrashEntry(
 				userId, existingFolder.getFolderId());
 		}
@@ -414,8 +414,6 @@ public class FolderStagedModelDataHandler
 		for (Element referenceElement : referenceElements) {
 			long referenceDLFileEntryTypeId = GetterUtil.getLong(
 				referenceElement.attributeValue("class-pk"));
-			String referenceDLFileEntryTypeUuid =
-				referenceElement.attributeValue("uuid");
 
 			Map<Long, Long> dlFileEntryTypeIds =
 				(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
@@ -436,7 +434,9 @@ public class FolderStagedModelDataHandler
 			currentFolderFileEntryTypeIds.add(
 				existingDLFileEntryType.getFileEntryTypeId());
 
-			if (defaultFileEntryTypeUuid.equals(referenceDLFileEntryTypeUuid)) {
+			if (defaultFileEntryTypeUuid.equals(
+					referenceElement.attributeValue("uuid"))) {
+
 				defaultFileEntryTypeId =
 					existingDLFileEntryType.getFileEntryTypeId();
 			}

@@ -34,7 +34,9 @@ configure(subprojects.findAll {!it.childProjects}) {
 	}
 }
 
-task codeCoverageReport(type: JacocoReport) {
+task codeCoverageReport(type: JacocoReport)
+
+codeCoverageReport {
 	executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
 
 	subprojects.findAll { !it.childProjects }.each {
@@ -42,9 +44,9 @@ task codeCoverageReport(type: JacocoReport) {
 	}
 
 	reports {
-		xml.enabled true
-		xml.destination "${buildDir}/reports/jacoco/report.xml"
-		html.enabled false
 		csv.enabled false
+		html.enabled false
+		xml.destination "${buildDir}/reports/jacoco/report.xml"
+		xml.enabled true
 	}
 }

@@ -403,7 +403,6 @@ public class LayoutStagedModelDataHandler
 				Layout.class + ".layout");
 
 		Layout existingLayout = null;
-		Layout importedLayout = null;
 
 		String friendlyURL = layout.getFriendlyURL();
 
@@ -528,6 +527,8 @@ public class LayoutStagedModelDataHandler
 				_log.debug(sb.toString());
 			}
 		}
+
+		Layout importedLayout = null;
 
 		if (existingLayout == null) {
 			long plid = _counterLocalService.increment();
@@ -1336,15 +1337,6 @@ public class LayoutStagedModelDataHandler
 			return;
 		}
 
-		Map<String, String[]> parameterMap =
-			portletDataContext.getParameterMap();
-
-		boolean permissions = MapUtil.getBoolean(
-			parameterMap, PortletDataHandlerKeys.PERMISSIONS);
-
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
 		_permissionImporter.clearCache();
 
 		Element portletsElement = layoutElement.element("portlets");
@@ -1356,16 +1348,22 @@ public class LayoutStagedModelDataHandler
 			return;
 		}
 
+		Map<String, String[]> parameterMap =
+			portletDataContext.getParameterMap();
+
+		boolean permissions = MapUtil.getBoolean(
+			parameterMap, PortletDataHandlerKeys.PERMISSIONS);
+
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
 		List<FragmentEntryLink> fragmentEntryLinks =
 			_fragmentEntryLinkLocalService.getFragmentEntryLinks(
 				layout.getGroupId(), _portal.getClassNameId(Layout.class),
 				layout.getPlid());
 
 		for (Element portletElement : portletsElement.elements()) {
-			String portletPath = portletElement.attributeValue("path");
 			String portletId = portletElement.attributeValue("portlet-id");
-			long oldPlid = GetterUtil.getLong(
-				portletElement.attributeValue("old-plid"));
 
 			Portlet portlet = _portletLocalService.getPortletById(
 				portletDataContext.getCompanyId(), portletId);
@@ -1375,7 +1373,12 @@ public class LayoutStagedModelDataHandler
 			}
 
 			portletDataContext.setPlid(layout.getPlid());
+
+			long oldPlid = GetterUtil.getLong(
+				portletElement.attributeValue("old-plid"));
+
 			portletDataContext.setOldPlid(oldPlid);
+
 			portletDataContext.setPortletId(portletId);
 
 			if (BackgroundTaskThreadLocal.hasBackgroundTask()) {
@@ -1383,6 +1386,8 @@ public class LayoutStagedModelDataHandler
 					"portlet", portletId,
 					portletDataContext.getManifestSummary());
 			}
+
+			String portletPath = portletElement.attributeValue("path");
 
 			Document portletDocument = SAXReaderUtil.read(
 				portletDataContext.getZipEntryAsString(portletPath));

@@ -79,6 +79,8 @@ AUI.add(
 							srcNode = A.one('#' + srcNode);
 						}
 
+						editorConfig.pasteFilter = 'plain-text';
+
 						instance._alloyEditor = AlloyEditor.editable(srcNode.attr('id'), editorConfig);
 						instance._srcNode = srcNode;
 					},
@@ -343,9 +345,11 @@ AUI.add(
 						var instance = this;
 
 						if (instance._pendingData) {
-							instance.getNativeEditor().setData(instance._pendingData);
+							var pendingData = instance._pendingData;
 
 							instance._pendingData = null;
+
+							instance.getNativeEditor().setData(pendingData);
 						}
 						else {
 							instance._dataReady = true;

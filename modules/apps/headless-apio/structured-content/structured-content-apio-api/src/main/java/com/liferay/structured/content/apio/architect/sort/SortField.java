@@ -21,19 +21,20 @@ import java.io.Serializable;
 import java.util.Locale;
 
 /**
- * Models a Sort Field.
+ * Models a sort field.
  *
- * @author Cristina González
- * @review
+ * @author     Cristina González
+ * @deprecated As of Judson (7.1.x), replaced by {@link
+ *             com.liferay.portal.odata.sort.SortField}
  */
+@Deprecated
 public class SortField implements Serializable {
 
 	/**
 	 * Creates a new sort field.
 	 *
-	 * @param  entityField - the entity field
-	 * @param  asc - if the sort should be ascending
-	 * @review
+	 * @param entityField the entity field
+	 * @param asc whether the sort should be ascending
 	 */
 	public SortField(EntityField entityField, boolean asc) {
 		if (entityField == null) {
@@ -66,21 +67,20 @@ public class SortField implements Serializable {
 	}
 
 	/**
-	 * Returns the name of the field.
+	 * Returns the field's name.
 	 *
-	 * @param  locale - the locale
-	 * @return - the name of the field
-	 * @review
+	 * @param  locale the locale
+	 * @return the field's name
 	 */
 	public String getSortableFieldName(Locale locale) {
 		return _entityField.getSortableName(locale);
 	}
 
 	/**
-	 * Returns if the sort field is ascending or not.
+	 * Returns {@code true} if the sort field is ascending.
 	 *
-	 * @return - if the sort field is ascending or not
-	 * @review
+	 * @return {@code true} if the sort field is ascending; {@code false}
+	 *         otherwise
 	 */
 	public boolean isAscending() {
 		return _asc;

@@ -741,6 +741,13 @@ public class DDMFormAdminDisplayContext {
 			getFormLayoutURL(formAdminRequestHelper.getThemeDisplay(), true);
 	}
 
+	public String getRolesURL() throws PortalException {
+		DDMFormBuilderSettingsResponse ddmFormBuilderSettingsResponse =
+			getDDMFormBuilderSettingsResponse();
+
+		return ddmFormBuilderSettingsResponse.getRolesURL();
+	}
+
 	public long getScopeGroupId() {
 		return formAdminRequestHelper.getScopeGroupId();
 	}
@@ -803,8 +810,6 @@ public class DDMFormAdminDisplayContext {
 	}
 
 	public String getSerializedFormBuilderContext() throws PortalException {
-		ThemeDisplay themeDisplay = formAdminRequestHelper.getThemeDisplay();
-
 		String serializedFormBuilderContext = ParamUtil.getString(
 			_renderRequest, "serializedFormBuilderContext");
 
@@ -813,6 +818,8 @@ public class DDMFormAdminDisplayContext {
 		}
 
 		JSONSerializer jsonSerializer = _jsonFactory.createJSONSerializer();
+
+		ThemeDisplay themeDisplay = formAdminRequestHelper.getThemeDisplay();
 
 		DDMFormBuilderContextRequest ddmFormBuilderContextRequest =
 			DDMFormBuilderContextRequest.with(

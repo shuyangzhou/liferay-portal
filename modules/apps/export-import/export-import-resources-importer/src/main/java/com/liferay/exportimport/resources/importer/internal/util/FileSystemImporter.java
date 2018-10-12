@@ -297,16 +297,16 @@ public class FileSystemImporter extends BaseImporter {
 			String ddmStructureKey, String dirName, String fileName)
 		throws Exception {
 
-		DDMStructure ddmStructure = ddmStructureLocalService.getStructure(
-			groupId, portal.getClassNameId(DDLRecordSet.class),
-			ddmStructureKey);
-
 		File dir = new File(
 			_resourcesDir, dirName + StringPool.SLASH + fileName);
 
 		if (!dir.isDirectory() || !dir.canRead()) {
 			return;
 		}
+
+		DDMStructure ddmStructure = ddmStructureLocalService.getStructure(
+			groupId, portal.getClassNameId(DDLRecordSet.class),
+			ddmStructureKey);
 
 		File[] files = listFiles(dir);
 
@@ -328,16 +328,16 @@ public class FileSystemImporter extends BaseImporter {
 			String ddmStructureKey, String dirName, String fileName)
 		throws Exception {
 
-		DDMStructure ddmStructure = ddmStructureLocalService.getStructure(
-			groupId, portal.getClassNameId(DDLRecordSet.class),
-			ddmStructureKey);
-
 		File dir = new File(
 			_resourcesDir, dirName + StringPool.SLASH + fileName);
 
 		if (!dir.isDirectory() || !dir.canRead()) {
 			return;
 		}
+
+		DDMStructure ddmStructure = ddmStructureLocalService.getStructure(
+			groupId, portal.getClassNameId(DDLRecordSet.class),
+			ddmStructureKey);
 
 		File[] files = listFiles(dir);
 
@@ -676,8 +676,6 @@ public class FileSystemImporter extends BaseImporter {
 
 		String name = getName(fileName);
 
-		String script = StringUtil.read(inputStream);
-
 		setServiceContext(fileName);
 
 		DDMStructure ddmStructure = ddmStructureLocalService.getStructure(
@@ -704,6 +702,8 @@ public class FileSystemImporter extends BaseImporter {
 				ddmTemplateLocalService.deleteTemplate(ddmTemplate);
 			}
 		}
+
+		String script = StringUtil.read(inputStream);
 
 		try {
 			if (!updateModeEnabled || (ddmTemplate == null)) {
@@ -1296,11 +1296,6 @@ public class FileSystemImporter extends BaseImporter {
 
 		String name = nameMap.get(Locale.getDefault());
 
-		Map<Locale, String> descriptionMap = getMap(
-			layoutTemplateJSONObject, "description");
-
-		String uuid = layoutTemplateJSONObject.getString("uuid");
-
 		LayoutPrototype layoutPrototype = getLayoutPrototype(companyId, name);
 
 		if (layoutPrototype != null) {
@@ -1326,9 +1321,14 @@ public class FileSystemImporter extends BaseImporter {
 		serviceContext.setCompanyId(companyId);
 		serviceContext.setUserId(userId);
 
+		String uuid = layoutTemplateJSONObject.getString("uuid");
+
 		if (Validator.isNotNull(uuid)) {
 			serviceContext.setUuid(uuid);
 		}
+
+		Map<Locale, String> descriptionMap = getMap(
+			layoutTemplateJSONObject, "description");
 
 		try {
 			if (!updateModeEnabled || (layoutPrototype == null)) {
@@ -1555,13 +1555,13 @@ public class FileSystemImporter extends BaseImporter {
 	}
 
 	protected JSONObject getJSONObject(String fileName) throws Exception {
-		String json = null;
-
 		InputStream inputStream = getInputStream(fileName);
 
 		if (inputStream == null) {
 			return null;
 		}
+
+		String json = null;
 
 		try {
 			json = StringUtil.read(inputStream);
@@ -1634,8 +1634,6 @@ public class FileSystemImporter extends BaseImporter {
 
 			String className = primaryKeysEntry.getKey();
 
-			Set<Long> primaryKeys = primaryKeysEntry.getValue();
-
 			Indexer<?> indexer = indexerRegistry.getIndexer(className);
 
 			if (indexer == null) {
@@ -1650,7 +1648,7 @@ public class FileSystemImporter extends BaseImporter {
 				_log.debug("Indexing " + className);
 			}
 
-			for (long primaryKey : primaryKeys) {
+			for (long primaryKey : primaryKeysEntry.getValue()) {
 				try {
 					indexer.reindex(className, primaryKey);
 				}

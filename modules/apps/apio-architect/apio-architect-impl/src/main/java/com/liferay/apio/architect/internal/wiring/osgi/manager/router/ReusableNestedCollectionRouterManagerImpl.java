@@ -99,7 +99,7 @@ public class ReusableNestedCollectionRouterManagerImpl
 					path -> _pathIdentifierMapperManager.mapToIdentifierOrFail(
 						path),
 					identifier -> _pathIdentifierMapperManager.mapToPath(
-						name, identifier),
+						name, identifier, this),
 					representor::getIdentifier);
 
 				NestedCollectionRoutes nestedCollectionRoutes =

@@ -16,7 +16,6 @@ package com.liferay.gradle.plugins.defaults.internal;
 
 import com.liferay.gradle.plugins.cache.CachePlugin;
 import com.liferay.gradle.plugins.defaults.internal.util.GradleUtil;
-import com.liferay.gradle.plugins.node.NodePlugin;
 import com.liferay.gradle.plugins.node.tasks.DownloadNodeTask;
 import com.liferay.gradle.plugins.node.tasks.ExecuteNodeTask;
 import com.liferay.gradle.plugins.node.tasks.ExecuteNpmTask;
@@ -148,19 +147,10 @@ public class LiferayCIPlugin implements Plugin<Project> {
 	private void _configureTaskExecuteNpm(
 		ExecuteNpmTask executeNpmTask, String registry) {
 
-		executeNpmTask.setRegistry(registry);
-	}
-
-	private void _configureTaskNpmInstall(NpmInstallTask npmInstallTask) {
-		if (Validator.isNull(System.getenv("FIX_PACKS_RELEASE_ENVIRONMENT"))) {
-			npmInstallTask.setNodeModulesCacheDir(_NODE_MODULES_CACHE_DIR);
+		if (Validator.isNotNull(registry)) {
+			executeNpmTask.setRegistry(registry);
 		}
 
-		npmInstallTask.setRemoveShrinkwrappedUrls(Boolean.TRUE);
-		npmInstallTask.setUseNpmCI(Boolean.FALSE);
-	}
-
-	private void _configureTaskNpmRunBuild(ExecuteNpmTask executeNpmTask) {
 		executeNpmTask.doFirst(
 			new Action<Task>() {
 
@@ -210,8 +200,7 @@ public class LiferayCIPlugin implements Plugin<Project> {
 								StandardCharsets.UTF_8);
 
 							String newContent = content.replace(
-								"\"" + version + "\"",
-								"\"" + newVersion + "\"");
+								version, newVersion);
 
 							Files.write(
 								file.toPath(),
@@ -287,8 +276,7 @@ public class LiferayCIPlugin implements Plugin<Project> {
 								StandardCharsets.UTF_8);
 
 							String newContent = content.replace(
-								"\"" + version + "\"",
-								"\"" + newVersion + "\"");
+								version, newVersion);
 
 							Files.write(
 								file.toPath(),
@@ -314,6 +302,15 @@ public class LiferayCIPlugin implements Plugin<Project> {
 				}
 
 			});
+	}
+
+	private void _configureTaskNpmInstall(NpmInstallTask npmInstallTask) {
+		if (Validator.isNull(System.getenv("FIX_PACKS_RELEASE_ENVIRONMENT"))) {
+			npmInstallTask.setNodeModulesCacheDir(_NODE_MODULES_CACHE_DIR);
+		}
+
+		npmInstallTask.setRemoveShrinkwrappedUrls(Boolean.TRUE);
+		npmInstallTask.setUseNpmCI(Boolean.FALSE);
 	}
 
 	private void _configureTasksDownloadNode(Project project) {
@@ -358,15 +355,7 @@ public class LiferayCIPlugin implements Plugin<Project> {
 
 				@Override
 				public void execute(ExecuteNpmTask executeNpmTask) {
-					String name = executeNpmTask.getName();
-
-					if (name.equals(NodePlugin.NPM_RUN_BUILD_TASK_NAME)) {
-						_configureTaskNpmRunBuild(executeNpmTask);
-					}
-
-					if (Validator.isNotNull(ciRegistry)) {
-						_configureTaskExecuteNpm(executeNpmTask, ciRegistry);
-					}
+					_configureTaskExecuteNpm(executeNpmTask, ciRegistry);
 				}
 
 			});

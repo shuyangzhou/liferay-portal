@@ -375,8 +375,6 @@ public class PortalRequestProcessor {
 				request.getQueryString());
 		}
 
-		String namespace = PortalUtil.getPortletNamespace(portletId);
-
 		FriendlyURLMapper friendlyURLMapper =
 			portlet.getFriendlyURLMapperInstance();
 
@@ -384,6 +382,8 @@ public class PortalRequestProcessor {
 			return layoutFriendlyURL.concat(StringPool.QUESTION).concat(
 				request.getQueryString());
 		}
+
+		String namespace = PortalUtil.getPortletNamespace(portletId);
 
 		LiferayPortletURL portletURL = PortletURLFactoryUtil.create(
 			request, portlet, layout, PortletRequest.RENDER_PHASE);
@@ -484,6 +484,41 @@ public class PortalRequestProcessor {
 		lastPathSB.append(parameters);
 
 		return lastPathSB.toString();
+	}
+
+	private Action _getOriginalAction(
+		HttpServletResponse response, ActionMapping actionMapping) {
+
+		return _actions.computeIfAbsent(
+			actionMapping.getType(),
+			classNameKey -> {
+				try {
+					Action action = (Action)RequestUtils.applicationInstance(
+						classNameKey);
+
+					if (action.getServlet() == null) {
+						action.setServlet(_actionServlet);
+					}
+
+					return action;
+				}
+				catch (Exception e) {
+					MessageResources messageResources =
+						_actionServlet.getInternal();
+
+					try {
+						response.sendError(
+							HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+							messageResources.getMessage(
+								"actionCreate", actionMapping.getPath()));
+					}
+					catch (IOException ioe) {
+						ReflectionUtil.throwException(ioe);
+					}
+
+					return null;
+				}
+			});
 	}
 
 	private void _internalModuleRelativeForward(
@@ -621,37 +656,6 @@ public class PortalRequestProcessor {
 			HttpServletResponse response, ActionMapping actionMapping)
 		throws IOException {
 
-		Action originalAction = _actions.computeIfAbsent(
-			actionMapping.getType(),
-			classNameKey -> {
-				try {
-					Action action = (Action)RequestUtils.applicationInstance(
-						classNameKey);
-
-					if (action.getServlet() == null) {
-						action.setServlet(_actionServlet);
-					}
-
-					return action;
-				}
-				catch (Exception e) {
-					MessageResources messageResources =
-						_actionServlet.getInternal();
-
-					try {
-						response.sendError(
-							HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-							messageResources.getMessage(
-								"actionCreate", actionMapping.getPath()));
-					}
-					catch (IOException ioe) {
-						ReflectionUtil.throwException(ioe);
-					}
-
-					return null;
-				}
-			});
-
 		ActionAdapter actionAdapter =
 			(ActionAdapter)StrutsActionRegistryUtil.getAction(
 				actionMapping.getPath());
@@ -661,13 +665,14 @@ public class PortalRequestProcessor {
 				actionMapping.getPath());
 
 			if (actionConfig != null) {
-				actionAdapter.setOriginalAction(originalAction);
+				actionAdapter.setOriginalAction(
+					_getOriginalAction(response, actionMapping));
 			}
 
 			return actionAdapter;
 		}
 
-		return originalAction;
+		return _getOriginalAction(response, actionMapping);
 	}
 
 	private ActionForm _processActionForm(

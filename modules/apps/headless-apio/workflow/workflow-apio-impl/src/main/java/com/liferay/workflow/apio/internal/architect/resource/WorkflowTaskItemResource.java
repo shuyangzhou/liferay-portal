@@ -21,7 +21,6 @@ import com.liferay.apio.architect.routes.ItemRoutes;
 import com.liferay.blog.apio.architect.identifier.BlogPostingIdentifier;
 import com.liferay.comment.apio.architect.identifier.CommentIdentifier;
 import com.liferay.media.object.apio.architect.identifier.MediaObjectIdentifier;
-import com.liferay.person.apio.architect.identifier.MyUserAccountIdentifier;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
@@ -41,12 +40,11 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * Provides the information necessary to expose a WorkflowTask resource through
- * a web API. The resources are mapped from the internal model {@link
+ * Provides the information necessary to expose a {@code WorkflowTask} resource
+ * through a web API. The resources are mapped from the internal model {@code
  * WorkflowTask}.
  *
  * @author Sarai Díaz
- * @review
  */
 @Component(immediate = true, service = ItemResource.class)
 public class WorkflowTaskItemResource
@@ -74,9 +72,6 @@ public class WorkflowTaskItemResource
 			"WorkflowTask"
 		).identifier(
 			WorkflowTask::getWorkflowTaskId
-		).addBidirectionalModel(
-			"assignee", "tasks", MyUserAccountIdentifier.class,
-			WorkflowTask::getAssigneeUserId
 		).addBoolean(
 			"completed", WorkflowTask::isCompleted
 		).addDate(

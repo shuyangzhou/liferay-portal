@@ -150,18 +150,6 @@ public class RootEndpointImpl implements RootEndpoint {
 		return optional.orElseThrow(notFound(name));
 	}
 
-	private NestedCollectionRoutes _getNestedCollectionRoutes(
-		String name, String nestedName, String id) {
-
-		Optional<NestedCollectionRoutes> reusableCollectionRoutesOptional =
-			_reusableNestedCollectionRouterManager.
-				getReusableCollectionRoutesOptional(id);
-
-		return reusableCollectionRoutesOptional.orElseThrow(
-			notFound(name, "{id}", nestedName)
-		);
-	}
-
 	private NestedCollectionRoutes<Object, Object, Object>
 		_getNestedCollectionRoutesOrFail(
 			String name, String nestedName, String id) {
@@ -171,7 +159,7 @@ public class RootEndpointImpl implements RootEndpoint {
 				name, nestedName);
 
 		return optional.orElseGet(
-			() -> _getNestedCollectionRoutes(name, nestedName, id));
+			() -> _getReusableNestedCollectionRoutes(name, nestedName, id));
 	}
 
 	private Representor<Object> _getRepresentorOrFail(String name) {
@@ -179,6 +167,18 @@ public class RootEndpointImpl implements RootEndpoint {
 			_representableManager.getRepresentorOptional(name);
 
 		return optional.orElseThrow(notFound(name));
+	}
+
+	private NestedCollectionRoutes _getReusableNestedCollectionRoutes(
+		String name, String nestedName, String id) {
+
+		Optional<NestedCollectionRoutes> reusableCollectionRoutesOptional =
+			_reusableNestedCollectionRouterManager.
+				getReusableCollectionRoutesOptional(id);
+
+		return reusableCollectionRoutesOptional.orElseThrow(
+			notFound(name, "{id}", nestedName)
+		);
 	}
 
 	private Try<SingleModel<Object>> _getSingleModelTry(

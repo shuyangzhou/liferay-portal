@@ -11,41 +11,19 @@ buildscript {
 	}
 }
 
-task copyJacocoAgent(type: Copy) {
+task copyJacocoAgent(type: Copy)
+task resolve(type: Resolve)
+task testOSGi(type: TestOSGi)
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
+
+copyJacocoAgent {
 	from {
 		zipTree(configurations.jacocoAgent.singleFile)
 	}
 
 	into "build/jacoco"
-}
-
-task resolve(type: Resolve) {
-	description 'Checks if the test.bndrun "runBundles" section is up-to-date.'
-
-	group 'verification'
-
-	bndrun 'test.bndrun'
-
-	failOnChanges true
-
-	bundles configurations.compileOnly
-}
-
-task testOSGi(type: TestOSGi) {
-	description 'Runs the Apio Architect integration tests.'
-
-	group 'verification'
-
-	bndrun 'test.bndrun'
-
-	dependsOn copyJacocoAgent
-	dependsOn resolve
-
-	bundles configurations.compileOnly
-}
-
-testIntegration {
-	dependsOn testOSGi
 }
 
 dependencies {
@@ -79,5 +57,31 @@ deploy {
 	enabled = false
 }
 
-sourceCompatibility = "1.8"
-targetCompatibility = "1.8"
+resolve {
+	description 'Resolves the "test.bndrun" file and checks if the "runBundles" section is up-to-date.'
+
+	group 'verification'
+
+	bndrun 'test.bndrun'
+
+	failOnChanges true
+
+	bundles configurations.compileOnly
+}
+
+testIntegration {
+	dependsOn testOSGi
+}
+
+testOSGi {
+	description 'Runs the Apio Architect integration tests.'
+
+	group 'verification'
+
+	bndrun 'test.bndrun'
+
+	dependsOn copyJacocoAgent
+	dependsOn resolve
+
+	bundles configurations.compileOnly
+}

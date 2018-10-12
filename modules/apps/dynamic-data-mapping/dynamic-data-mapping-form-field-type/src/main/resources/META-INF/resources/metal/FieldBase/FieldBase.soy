@@ -6,13 +6,25 @@
 	{@param? tip: string}
 	{@param? label: string}
 	{@param? required: bool}
+	{@param? repeatable: bool}
 	{@param? showLabel: bool}
 	{@param? spritemap: string}
+	{@param? tooltip: string}
 
 	<div class="form-group">
+		{if $repeatable}
+			<div class="ddm-form-field-repeatable-add-button">
+				<a class="icon-plus-sign lfr-ddm-form-field-repeatable-add-button" href="javascript:;"></a>
+			</div>
+		{/if}
+
 		{let $attributesLabel kind="attributes"}
 			{if $id}
 				for="{$id}"
+			{/if}
+
+			{if not $showLabel and not $required}
+				class="ddm-empty"
 			{/if}
 		{/let}
 
@@ -28,10 +40,20 @@
 					{/call}
 				</span>
 			{/if}
+
+			{if $tooltip}
+				{call Tooltip.render}
+					{param icon: 'question-circle-full' /}
+					{param spritemap: $spritemap /}
+					{param text: $tooltip /}
+				{/call}
+			{/if}
 		</label>
 
 		{$contentRenderer}
 
-		<span class="form-text">{$tip}</span>
+		{if $tip}
+			<span class="form-text">{$tip}</span>
+		{/if}
 	</div>
 {/template}

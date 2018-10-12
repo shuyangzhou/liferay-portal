@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.PwdGenerator;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.sso.openid.connect.OpenIdConnectServiceException;
-import com.liferay.portal.security.sso.openid.connect.OpenIdConnectUserInfoProcessor;
 
 import com.nimbusds.openid.connect.sdk.claims.UserInfo;
 
@@ -48,9 +47,6 @@ public class OpenIdConnectUserInfoProcessorImpl
 	public long processUserInfo(UserInfo userInfo, long companyId)
 		throws PortalException {
 
-		String firstName = userInfo.getGivenName();
-		String lastName = userInfo.getFamilyName();
-
 		InternetAddress internetAddress = userInfo.getEmail();
 
 		String emailAddress = internetAddress.getAddress();
@@ -61,6 +57,9 @@ public class OpenIdConnectUserInfoProcessorImpl
 		if (user != null) {
 			return user.getUserId();
 		}
+
+		String firstName = userInfo.getGivenName();
+		String lastName = userInfo.getFamilyName();
 
 		if (Validator.isNull(firstName) || Validator.isNull(lastName) ||
 			Validator.isNull(emailAddress)) {

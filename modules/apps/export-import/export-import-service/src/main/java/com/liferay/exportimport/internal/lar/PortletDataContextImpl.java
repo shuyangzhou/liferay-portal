@@ -382,7 +382,6 @@ public class PortletDataContextImpl implements PortletDataContext {
 				roleIdsToActionIds.entrySet()) {
 
 			long roleId = entry.getKey();
-			Set<String> availableActionIds = entry.getValue();
 
 			Role role = RoleLocalServiceUtil.fetchRole(roleId);
 
@@ -403,7 +402,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 			}
 
 			KeyValuePair permission = new KeyValuePair(
-				roleName, StringUtil.merge(availableActionIds));
+				roleName, StringUtil.merge(entry.getValue()));
 
 			permissions.add(permission);
 		}
@@ -1695,8 +1694,6 @@ public class PortletDataContextImpl implements PortletDataContext {
 		for (KeyValuePair permission : permissions) {
 			String roleName = permission.getKey();
 
-			Role role = null;
-
 			Team team = null;
 
 			if (ExportImportPermissionUtil.isTeamRoleName(roleName)) {
@@ -1714,6 +1711,8 @@ public class PortletDataContextImpl implements PortletDataContext {
 					continue;
 				}
 			}
+
+			Role role = null;
 
 			try {
 				if (team != null) {

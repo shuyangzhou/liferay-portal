@@ -138,11 +138,11 @@ public class AssetListEntryPersistenceTest {
 
 		newAssetListEntry.setModifiedDate(RandomTestUtil.nextDate());
 
-		newAssetListEntry.setTypeSettings(RandomTestUtil.randomString());
-
 		newAssetListEntry.setTitle(RandomTestUtil.randomString());
 
 		newAssetListEntry.setType(RandomTestUtil.nextInt());
+
+		newAssetListEntry.setTypeSettings(RandomTestUtil.randomString());
 
 		newAssetListEntry.setLastPublishDate(RandomTestUtil.nextDate());
 
@@ -168,12 +168,12 @@ public class AssetListEntryPersistenceTest {
 		Assert.assertEquals(Time.getShortTimestamp(
 				existingAssetListEntry.getModifiedDate()),
 			Time.getShortTimestamp(newAssetListEntry.getModifiedDate()));
-		Assert.assertEquals(existingAssetListEntry.getTypeSettings(),
-			newAssetListEntry.getTypeSettings());
 		Assert.assertEquals(existingAssetListEntry.getTitle(),
 			newAssetListEntry.getTitle());
 		Assert.assertEquals(existingAssetListEntry.getType(),
 			newAssetListEntry.getType());
+		Assert.assertEquals(existingAssetListEntry.getTypeSettings(),
+			newAssetListEntry.getTypeSettings());
 		Assert.assertEquals(Time.getShortTimestamp(
 				existingAssetListEntry.getLastPublishDate()),
 			Time.getShortTimestamp(newAssetListEntry.getLastPublishDate()));
@@ -511,11 +511,11 @@ public class AssetListEntryPersistenceTest {
 
 		assetListEntry.setModifiedDate(RandomTestUtil.nextDate());
 
-		assetListEntry.setTypeSettings(RandomTestUtil.randomString());
-
 		assetListEntry.setTitle(RandomTestUtil.randomString());
 
 		assetListEntry.setType(RandomTestUtil.nextInt());
+
+		assetListEntry.setTypeSettings(RandomTestUtil.randomString());
 
 		assetListEntry.setLastPublishDate(RandomTestUtil.nextDate());
 

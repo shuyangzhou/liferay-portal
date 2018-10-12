@@ -39,11 +39,11 @@ import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.odata.filter.Filter;
+import com.liferay.portal.odata.sort.Sort;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerTestRule;
-import com.liferay.structured.content.apio.architect.filter.Filter;
-import com.liferay.structured.content.apio.architect.sort.Sort;
 
 import java.util.Date;
 import java.util.HashMap;

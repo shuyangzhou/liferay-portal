@@ -43,6 +43,34 @@ class Select extends Component {
 		/**
 		 * @default undefined
 		 * @instance
+		 * @memberof Text
+		 * @type {?(string|undefined)}
+		 */
+
+		fieldName: Config.string(),
+
+		fixedOptions: Config.arrayOf(
+			Config.shapeOf(
+				{
+					dataType: Config.string(),
+					name: Config.string(),
+					options: Config.arrayOf(
+						Config.shapeOf(
+							{
+								label: Config.string(),
+								value: Config.string()
+							}
+						)
+					),
+					type: Config.string(),
+					value: Config.string()
+				}
+			)
+		).value([]),
+
+		/**
+		 * @default undefined
+		 * @instance
 		 * @memberof Select
 		 * @type {?array<object>}
 		 */
@@ -60,16 +88,7 @@ class Select extends Component {
 					value: Config.string()
 				}
 			)
-		).value(
-			[
-				{
-					value: 'Option 1'
-				},
-				{
-					value: 'Option 2'
-				}
-			]
-		),
+		).value([]),
 
 		/**
 		 * @default undefined
@@ -96,7 +115,7 @@ class Select extends Component {
 		 * @type {?string}
 		 */
 
-		placeholder: Config.string().value('Choose an Option'),
+		placeholder: Config.string(),
 
 		/**
 		 * @default undefined
@@ -117,6 +136,15 @@ class Select extends Component {
 		required: Config.bool().value(false),
 
 		/**
+		 * @default undefined
+		 * @instance
+		 * @memberof FieldBase
+		 * @type {?(bool|undefined)}
+		 */
+
+		repeatable: Config.bool(),
+
+		/**
 		 * @default false
 		 * @instance
 		 * @memberof Select
@@ -133,6 +161,19 @@ class Select extends Component {
 		 */
 
 		spritemap: Config.string(),
+
+		/**
+		 * @default {}
+		 * @instance
+		 * @memberof Select
+		 * @type {object}
+		 */
+
+		strings: Config.object().value(
+			{
+				chooseAnOption: Liferay.Language.get('choose-an-option')
+			}
+		),
 
 		/**
 		 * @default undefined
@@ -158,19 +199,35 @@ class Select extends Component {
 		this._eventHandler.removeAllListeners();
 	}
 
-	prepareStateForRender(states) {
-		const {predefinedValue, value} = states;
+	prepareStateForRender(state) {
+		const {predefinedValue, value} = state;
 		let newValue = value;
 
 		if (typeof (newValue) === 'string') {
 			newValue = [value];
 		}
 
+		const selectedValue = newValue && newValue.length ? newValue[0] : '';
+
+		const selectedLabel = this._getSelectedLabel(selectedValue);
+
 		return {
-			...states,
+			...state,
 			predefinedValue: predefinedValue && predefinedValue.length ? predefinedValue[0] : '',
-			value: newValue && newValue.length ? newValue[0] : ''
+			selectedLabel,
+			value: selectedValue
 		};
+	}
+
+	_getSelectedLabel(selectedValue) {
+		const {fixedOptions, options, placeholder} = this;
+		let selectedOption = options.find(option => option.value === selectedValue);
+
+		if (!selectedOption) {
+			selectedOption = fixedOptions.find(option => option.value === selectedValue);
+		}
+
+		return selectedOption ? selectedOption.label : placeholder;
 	}
 
 	_handleDocumentClicked({target}) {
@@ -180,10 +237,12 @@ class Select extends Component {
 	}
 
 	_handleItemClicked(event) {
+		const value = [event.target.dataset.optionValue];
+
 		this.setState(
 			{
-				predefinedValue: event.target.innerText,
-				value: event.target.innerText
+				open: !this.open,
+				value
 			}
 		);
 
@@ -192,16 +251,18 @@ class Select extends Component {
 			{
 				fieldInstance: this,
 				originalEvent: event,
-				value: event.target.innerText
+				value
 			}
 		);
-
-		this.setState({open: !this.open});
 	}
 
 	_handleClick() {
 		if (!this.readOnly) {
-			this.setState({open: !this.open});
+			this.setState(
+				{
+					open: !this.open
+				}
+			);
 		}
 	}
 }

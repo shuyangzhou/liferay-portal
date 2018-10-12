@@ -34,18 +34,18 @@ public class CORSFilterTest {
 	public void testFilterAddCORSHeaders() {
 		CORSFilter corsFilter = new CORSFilter();
 
-		ContainerResponseContext responseContext = Mockito.mock(
+		ContainerResponseContext containerResponseContext = Mockito.mock(
 			ContainerResponseContext.class);
 
 		MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>();
 
 		Mockito.when(
-			responseContext.getHeaders()
+			containerResponseContext.getHeaders()
 		).thenReturn(
 			headers
 		);
 
-		corsFilter.filter(null, responseContext);
+		corsFilter.filter(null, containerResponseContext);
 
 		assertThat(headers.getFirst("Access-Control-Allow-Origin"), is("*"));
 		assertThat(

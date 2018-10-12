@@ -113,7 +113,7 @@ public class FormEndpoint {
 			() -> _nestedCollectionRoutesFunction.andThen(
 				NestedCollectionRoutes::getFormOptional
 			).apply(
-				name, nestedName, null
+				name, nestedName, nestedName
 			),
 			notFound(name, nestedName));
 	}

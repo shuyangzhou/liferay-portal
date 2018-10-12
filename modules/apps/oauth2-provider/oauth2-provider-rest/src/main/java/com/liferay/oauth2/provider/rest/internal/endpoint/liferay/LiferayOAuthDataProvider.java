@@ -565,6 +565,10 @@ public class LiferayOAuthDataProvider
 
 		RefreshToken newRefreshToken = doCreateNewRefreshToken(accessToken);
 
+		if (_oAuth2ProviderConfiguration.recycleRefreshToken()) {
+			newRefreshToken.setTokenKey(oldRefreshToken.getTokenKey());
+		}
+
 		List<String> accessTokens = newRefreshToken.getAccessTokens();
 
 		accessTokens.add(accessToken.getTokenKey());
@@ -1035,8 +1039,6 @@ public class LiferayOAuthDataProvider
 	private void _transactionalSaveServerAccessToken(
 		ServerAccessToken serverAccessToken) {
 
-		Client client = serverAccessToken.getClient();
-
 		Date createDate = fromCXFTime(serverAccessToken.getIssuedAt());
 		Date expirationDate = fromCXFTime(
 			serverAccessToken.getIssuedAt() + serverAccessToken.getExpiresIn());
@@ -1057,6 +1059,8 @@ public class LiferayOAuthDataProvider
 
 			return;
 		}
+
+		Client client = serverAccessToken.getClient();
 
 		OAuth2Application oAuth2Application = resolveOAuth2Application(client);
 

@@ -82,9 +82,9 @@ public class AssetListEntryModelImpl extends BaseModelImpl<AssetListEntry>
 			{ "userName", Types.VARCHAR },
 			{ "createDate", Types.TIMESTAMP },
 			{ "modifiedDate", Types.TIMESTAMP },
-			{ "typeSettings", Types.CLOB },
 			{ "title", Types.VARCHAR },
 			{ "type_", Types.INTEGER },
+			{ "typeSettings", Types.CLOB },
 			{ "lastPublishDate", Types.TIMESTAMP }
 		};
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
@@ -98,13 +98,13 @@ public class AssetListEntryModelImpl extends BaseModelImpl<AssetListEntry>
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
-		TABLE_COLUMNS_MAP.put("typeSettings", Types.CLOB);
 		TABLE_COLUMNS_MAP.put("title", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("type_", Types.INTEGER);
+		TABLE_COLUMNS_MAP.put("typeSettings", Types.CLOB);
 		TABLE_COLUMNS_MAP.put("lastPublishDate", Types.TIMESTAMP);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table AssetListEntry (uuid_ VARCHAR(75) null,assetListEntryId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,typeSettings TEXT null,title VARCHAR(75) null,type_ INTEGER,lastPublishDate DATE null)";
+	public static final String TABLE_SQL_CREATE = "create table AssetListEntry (uuid_ VARCHAR(75) null,assetListEntryId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,title VARCHAR(75) null,type_ INTEGER,typeSettings TEXT null,lastPublishDate DATE null)";
 	public static final String TABLE_SQL_DROP = "drop table AssetListEntry";
 	public static final String ORDER_BY_JPQL = " ORDER BY assetListEntry.assetListEntryId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY AssetListEntry.assetListEntryId ASC";
@@ -148,9 +148,9 @@ public class AssetListEntryModelImpl extends BaseModelImpl<AssetListEntry>
 		model.setUserName(soapModel.getUserName());
 		model.setCreateDate(soapModel.getCreateDate());
 		model.setModifiedDate(soapModel.getModifiedDate());
-		model.setTypeSettings(soapModel.getTypeSettings());
 		model.setTitle(soapModel.getTitle());
 		model.setType(soapModel.getType());
+		model.setTypeSettings(soapModel.getTypeSettings());
 		model.setLastPublishDate(soapModel.getLastPublishDate());
 
 		return model;
@@ -224,9 +224,9 @@ public class AssetListEntryModelImpl extends BaseModelImpl<AssetListEntry>
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("typeSettings", getTypeSettings());
 		attributes.put("title", getTitle());
 		attributes.put("type", getType());
+		attributes.put("typeSettings", getTypeSettings());
 		attributes.put("lastPublishDate", getLastPublishDate());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
@@ -285,12 +285,6 @@ public class AssetListEntryModelImpl extends BaseModelImpl<AssetListEntry>
 			setModifiedDate(modifiedDate);
 		}
 
-		String typeSettings = (String)attributes.get("typeSettings");
-
-		if (typeSettings != null) {
-			setTypeSettings(typeSettings);
-		}
-
 		String title = (String)attributes.get("title");
 
 		if (title != null) {
@@ -301,6 +295,12 @@ public class AssetListEntryModelImpl extends BaseModelImpl<AssetListEntry>
 
 		if (type != null) {
 			setType(type);
+		}
+
+		String typeSettings = (String)attributes.get("typeSettings");
+
+		if (typeSettings != null) {
+			setTypeSettings(typeSettings);
 		}
 
 		Date lastPublishDate = (Date)attributes.get("lastPublishDate");
@@ -464,22 +464,6 @@ public class AssetListEntryModelImpl extends BaseModelImpl<AssetListEntry>
 
 	@JSON
 	@Override
-	public String getTypeSettings() {
-		if (_typeSettings == null) {
-			return "";
-		}
-		else {
-			return _typeSettings;
-		}
-	}
-
-	@Override
-	public void setTypeSettings(String typeSettings) {
-		_typeSettings = typeSettings;
-	}
-
-	@JSON
-	@Override
 	public String getTitle() {
 		if (_title == null) {
 			return "";
@@ -525,6 +509,22 @@ public class AssetListEntryModelImpl extends BaseModelImpl<AssetListEntry>
 
 	public int getOriginalType() {
 		return _originalType;
+	}
+
+	@JSON
+	@Override
+	public String getTypeSettings() {
+		if (_typeSettings == null) {
+			return "";
+		}
+		else {
+			return _typeSettings;
+		}
+	}
+
+	@Override
+	public void setTypeSettings(String typeSettings) {
+		_typeSettings = typeSettings;
 	}
 
 	@JSON
@@ -583,9 +583,9 @@ public class AssetListEntryModelImpl extends BaseModelImpl<AssetListEntry>
 		assetListEntryImpl.setUserName(getUserName());
 		assetListEntryImpl.setCreateDate(getCreateDate());
 		assetListEntryImpl.setModifiedDate(getModifiedDate());
-		assetListEntryImpl.setTypeSettings(getTypeSettings());
 		assetListEntryImpl.setTitle(getTitle());
 		assetListEntryImpl.setType(getType());
+		assetListEntryImpl.setTypeSettings(getTypeSettings());
 		assetListEntryImpl.setLastPublishDate(getLastPublishDate());
 
 		assetListEntryImpl.resetOriginalValues();
@@ -716,14 +716,6 @@ public class AssetListEntryModelImpl extends BaseModelImpl<AssetListEntry>
 			assetListEntryCacheModel.modifiedDate = Long.MIN_VALUE;
 		}
 
-		assetListEntryCacheModel.typeSettings = getTypeSettings();
-
-		String typeSettings = assetListEntryCacheModel.typeSettings;
-
-		if ((typeSettings != null) && (typeSettings.length() == 0)) {
-			assetListEntryCacheModel.typeSettings = null;
-		}
-
 		assetListEntryCacheModel.title = getTitle();
 
 		String title = assetListEntryCacheModel.title;
@@ -733,6 +725,14 @@ public class AssetListEntryModelImpl extends BaseModelImpl<AssetListEntry>
 		}
 
 		assetListEntryCacheModel.type = getType();
+
+		assetListEntryCacheModel.typeSettings = getTypeSettings();
+
+		String typeSettings = assetListEntryCacheModel.typeSettings;
+
+		if ((typeSettings != null) && (typeSettings.length() == 0)) {
+			assetListEntryCacheModel.typeSettings = null;
+		}
 
 		Date lastPublishDate = getLastPublishDate();
 
@@ -766,12 +766,12 @@ public class AssetListEntryModelImpl extends BaseModelImpl<AssetListEntry>
 		sb.append(getCreateDate());
 		sb.append(", modifiedDate=");
 		sb.append(getModifiedDate());
-		sb.append(", typeSettings=");
-		sb.append(getTypeSettings());
 		sb.append(", title=");
 		sb.append(getTitle());
 		sb.append(", type=");
 		sb.append(getType());
+		sb.append(", typeSettings=");
+		sb.append(getTypeSettings());
 		sb.append(", lastPublishDate=");
 		sb.append(getLastPublishDate());
 		sb.append("}");
@@ -820,16 +820,16 @@ public class AssetListEntryModelImpl extends BaseModelImpl<AssetListEntry>
 		sb.append(getModifiedDate());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>typeSettings</column-name><column-value><![CDATA[");
-		sb.append(getTypeSettings());
-		sb.append("]]></column-value></column>");
-		sb.append(
 			"<column><column-name>title</column-name><column-value><![CDATA[");
 		sb.append(getTitle());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>type</column-name><column-value><![CDATA[");
 		sb.append(getType());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>typeSettings</column-name><column-value><![CDATA[");
+		sb.append(getTypeSettings());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>lastPublishDate</column-name><column-value><![CDATA[");
@@ -859,12 +859,12 @@ public class AssetListEntryModelImpl extends BaseModelImpl<AssetListEntry>
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
-	private String _typeSettings;
 	private String _title;
 	private String _originalTitle;
 	private int _type;
 	private int _originalType;
 	private boolean _setOriginalType;
+	private String _typeSettings;
 	private Date _lastPublishDate;
 	private long _columnBitmask;
 	private AssetListEntry _escapedModel;

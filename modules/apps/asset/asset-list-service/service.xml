@@ -20,12 +20,12 @@
 		<column name="userName" type="String" />
 		<column name="createDate" type="Date" />
 		<column name="modifiedDate" type="Date" />
-		<column name="typeSettings" type="String" />
 
 		<!-- Other fields -->
 
 		<column name="title" type="String" />
 		<column name="type" type="int" />
+		<column name="typeSettings" type="String" />
 		<column name="lastPublishDate" type="Date" />
 
 		<!-- Finder methods -->

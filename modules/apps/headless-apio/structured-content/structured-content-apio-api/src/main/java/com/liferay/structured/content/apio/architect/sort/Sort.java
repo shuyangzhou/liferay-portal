@@ -20,31 +20,31 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Models a Sort param for sorting structured content by different fields and
- * sort directives.
+ * Models a sort parameter for sorting structured content by different fields
+ * and sort directives.
  *
- * @author Cristina González
- * @review
+ * @author     Cristina González
+ * @deprecated As of Judson (7.1.x), replaced by {@link
+ *             com.liferay.portal.odata.sort.Sort}
  */
+@Deprecated
 public class Sort {
 
 	public static final Sort EMPTY_SORT = new Sort();
 
 	/**
-	 * Returns an empty Sort.
+	 * Returns an empty sort.
 	 *
-	 * @return - an empty Sort
-	 * @review
+	 * @return the empty sort
 	 */
 	public static Sort emptySort() {
 		return EMPTY_SORT;
 	}
 
 	/**
-	 * Creates a new Sort from a list of sort fields.
+	 * Creates a new sort from the sort fields.
 	 *
-	 * @param  sortFields - list of sort fields
-	 * @review
+	 * @param sortFields the sort fields
 	 */
 	public Sort(List<SortField> sortFields) {
 		if (ListUtil.isEmpty(sortFields)) {
@@ -55,10 +55,9 @@ public class Sort {
 	}
 
 	/**
-	 * Returns the list of sort fields.
+	 * Returns the sort fields.
 	 *
-	 * @return - the list of sort fields
-	 * @review
+	 * @return the sort fields
 	 */
 	public List<SortField> getSortFields() {
 		return _sortFields;

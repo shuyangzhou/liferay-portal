@@ -24,15 +24,14 @@ import java.util.Locale;
 /**
  * @author Sergio González
  */
-public interface SharingEntryInterpreter<T> {
+public interface SharingEntryInterpreter {
 
-	public String getAssetTypeTitle(SharingEntry sharingEntry, Locale locale);
+	public String getAssetTypeTitle(SharingEntry sharingEntry, Locale locale)
+		throws PortalException;
 
-	public T getEntry(SharingEntry sharingEntry) throws PortalException;
+	public SharingEntryEditRenderer getSharingEntryEditRenderer();
 
-	public SharingEntryEditRenderer<T> getSharingEntryEditRenderer();
-
-	public SharingEntryViewRenderer<T> getSharingEntryViewRenderer();
+	public SharingEntryViewRenderer getSharingEntryViewRenderer();
 
 	public String getTitle(SharingEntry sharingEntry);
 

@@ -68,9 +68,9 @@ public class AssetListEntryWrapper implements AssetListEntry,
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("typeSettings", getTypeSettings());
 		attributes.put("title", getTitle());
 		attributes.put("type", getType());
+		attributes.put("typeSettings", getTypeSettings());
 		attributes.put("lastPublishDate", getLastPublishDate());
 
 		return attributes;
@@ -126,12 +126,6 @@ public class AssetListEntryWrapper implements AssetListEntry,
 			setModifiedDate(modifiedDate);
 		}
 
-		String typeSettings = (String)attributes.get("typeSettings");
-
-		if (typeSettings != null) {
-			setTypeSettings(typeSettings);
-		}
-
 		String title = (String)attributes.get("title");
 
 		if (title != null) {
@@ -142,6 +136,12 @@ public class AssetListEntryWrapper implements AssetListEntry,
 
 		if (type != null) {
 			setType(type);
+		}
+
+		String typeSettings = (String)attributes.get("typeSettings");
+
+		if (typeSettings != null) {
+			setTypeSettings(typeSettings);
 		}
 
 		Date lastPublishDate = (Date)attributes.get("lastPublishDate");

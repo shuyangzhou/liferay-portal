@@ -17,19 +17,20 @@ package com.liferay.structured.content.apio.architect.sort;
 import java.util.List;
 
 /**
- * Models a Parser from String to Sort Fields.
+ * Models a parser from string to sort fields.
  *
- * @author Cristina González
- * @review
+ * @author     Cristina González
+ * @deprecated As of Judson (7.1.x), replaced by {@link
+ *             com.liferay.portal.odata.sort.SortParser}
  */
+@Deprecated
 public interface SortParser {
 
 	/**
-	 * Returns a List of {@link SortField} obtained from a String.
+	 * Returns a {@link SortField} list from a string.
 	 *
-	 * @param  sortString - String to be parsed
-	 * @return a List of  {@link SortField}
-	 * @review
+	 * @param  sortString the string to parse
+	 * @return the {@link SortField} list
 	 */
 	public List<SortField> parse(String sortString);
 

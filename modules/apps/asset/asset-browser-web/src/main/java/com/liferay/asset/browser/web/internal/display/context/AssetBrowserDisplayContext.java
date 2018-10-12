@@ -532,13 +532,17 @@ public class AssetBrowserDisplayContext {
 			portletURL.setParameter(
 				"selectedGroupId", String.valueOf(selectedGroupId));
 		}
-		else {
-			long[] selectedGroupIds = _getSelectedGroupIds();
 
-			if (selectedGroupIds.length > 0) {
-				portletURL.setParameter(
-					"selectedGroupIds", StringUtil.merge(selectedGroupIds));
-			}
+		if (isMultipleSelection()) {
+			portletURL.setParameter(
+				"multipleSelection", Boolean.TRUE.toString());
+		}
+
+		long[] selectedGroupIds = _getSelectedGroupIds();
+
+		if (selectedGroupIds.length > 0) {
+			portletURL.setParameter(
+				"selectedGroupIds", StringUtil.merge(selectedGroupIds));
 		}
 
 		portletURL.setParameter(

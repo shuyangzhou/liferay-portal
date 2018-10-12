@@ -594,9 +594,11 @@ name = HtmlUtil.escapeJS(name);
 			'dataReady',
 			function(event) {
 				if (instancePendingData) {
-					ckEditor.setData(instancePendingData);
+					var pendingData = instancePendingData;
 
 					instancePendingData = null;
+
+					ckEditor.setData(pendingData);
 				}
 				else {
 					instanceDataReady = true;

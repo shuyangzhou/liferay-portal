@@ -15,32 +15,31 @@
 package com.liferay.structured.content.apio.architect.filter.expression;
 
 /**
- * Exception class used by the <code>ExpressionVisitor</code> to throw
- * exceptions while traversing the expression tree
+ * Defines an exception for {@link ExpressionVisitor} to throw if an error
+ * occurs while traversing the expression tree.
  *
- * @author Cristina González
- * @review
+ * @author     Cristina González
+ * @deprecated As of Judson (7.1.x), replaced by {@link
+ *             com.liferay.portal.odata.filter.expression.ExpressionVisitException}
  */
+@Deprecated
 public class ExpressionVisitException extends Exception {
 
 	/**
-	 * Creates a new <code>ExpressionVisitException</code> with a message and a
-	 * cause
+	 * Creates a new {@code ExpressionVisitException} with a message.
 	 *
-	 * @param  msg - message of the Exception
-	 * @review
+	 * @param msg the exception's message
 	 */
 	public ExpressionVisitException(String msg) {
 		super(msg);
 	}
 
 	/**
-	 * Creates a new <code>ExpressionVisitException</code> with a message and a
-	 * cause
+	 * Creates a new {@code ExpressionVisitException} with a message and the
+	 * cause of the exception.
 	 *
-	 * @param  msg - message of the Exception
-	 * @param  cause - cause of the Exception
-	 * @review
+	 * @param msg the exception's message
+	 * @param cause the exception's cause
 	 */
 	public ExpressionVisitException(String msg, Throwable cause) {
 		super(msg, cause);

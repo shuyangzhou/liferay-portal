@@ -25,7 +25,6 @@ import static javax.ws.rs.core.Response.noContent;
 import com.liferay.apio.architect.alias.IdentifierFunction;
 import com.liferay.apio.architect.consumer.throwable.ThrowableConsumer;
 import com.liferay.apio.architect.form.Body;
-import com.liferay.apio.architect.function.throwable.ThrowableFunction;
 import com.liferay.apio.architect.function.throwable.ThrowableTriFunction;
 import com.liferay.apio.architect.functional.Try;
 import com.liferay.apio.architect.pagination.Page;
@@ -96,13 +95,8 @@ public class PageEndpointImpl<T, S> implements PageEndpoint<T> {
 		).map(
 			requestFunction -> requestFunction.apply(_httpServletRequest)
 		).flatMap(
-			identifierFunction -> _singleModelFunction.apply(
-				id
-			).map(
-				this::_getIdentifierFunction
-			).map(
-				identifierFunction::apply
-			)
+			identifierFunction -> _getFunctionTry(
+				id, nestedName, identifierFunction)
 		).flatMap(
 			bodyFunction -> bodyFunction.apply(body)
 		).mapFailMatching(
@@ -157,9 +151,17 @@ public class PageEndpointImpl<T, S> implements PageEndpoint<T> {
 		).map(
 			requestFunction -> requestFunction.apply(_httpServletRequest)
 		).map(
-			pathFunction -> pathFunction.apply(new Path(_name, id))
+			pathFunction -> {
+				if (_name.equals("r")) {
+					return pathFunction.apply(new Path(id, nestedName));
+				}
+				else {
+					return pathFunction.apply(new Path(_name, id));
+				}
+			}
 		).flatMap(
-			_getIdFunction(id, nestedName)
+			identifierFunction -> _getPageTry(
+				id, nestedName, identifierFunction)
 		).mapFailMatching(
 			NoSuchElementException.class, notFound(id, nestedName)
 		);
@@ -184,6 +186,27 @@ public class PageEndpointImpl<T, S> implements PageEndpoint<T> {
 		);
 	}
 
+	private Try<Function<Body, Try<SingleModel<T>>>> _getFunctionTry(
+		String id, String nestedName,
+		Function<Object, Function<Body, Try<SingleModel<T>>>>
+			identifierFunction) {
+
+		if (_name.equals("r")) {
+			return Try.fromFallible(
+				() -> identifierFunction.apply(
+					_pathToIdentifierFunction.apply(new Path(id, nestedName))));
+		}
+		else {
+			return _singleModelFunction.apply(
+				id
+			).map(
+				this::_getIdentifierFunction
+			).map(
+				identifierFunction::apply
+			);
+		}
+	}
+
 	private Object _getIdentifierFunction(SingleModel<T> singleModel)
 		throws Exception {
 
@@ -192,17 +215,16 @@ public class PageEndpointImpl<T, S> implements PageEndpoint<T> {
 		return representor.getIdentifier(singleModel.getModel());
 	}
 
-	private ThrowableFunction
-		<Function<Object, Try<Page<T>>>, Try<Page<T>>> _getIdFunction(
-			String id, String nestedName) {
+	private Try<Page<T>> _getPageTry(
+		String id, String nestedName,
+		Function<Object, Try<Page<T>>> identifierFunction) {
 
 		if (_name.equals("r")) {
-			return identifierFunction -> identifierFunction.apply(
-				_pathToIdentifierFunction.apply(new Path(id, nestedName))
-			);
+			return identifierFunction.apply(
+				_pathToIdentifierFunction.apply(new Path(id, nestedName)));
 		}
 		else {
-			return identifierFunction -> _singleModelFunction.apply(
+			return _singleModelFunction.apply(
 				id
 			).map(
 				this::_getIdentifierFunction

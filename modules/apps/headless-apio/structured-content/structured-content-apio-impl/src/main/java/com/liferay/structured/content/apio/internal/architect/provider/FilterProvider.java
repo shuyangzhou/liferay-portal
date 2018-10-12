@@ -16,9 +16,9 @@ package com.liferay.structured.content.apio.internal.architect.provider;
 
 import com.liferay.apio.architect.provider.Provider;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.structured.content.apio.architect.filter.Filter;
-import com.liferay.structured.content.apio.architect.filter.FilterParser;
-import com.liferay.structured.content.apio.architect.filter.InvalidFilterException;
+import com.liferay.portal.odata.filter.Filter;
+import com.liferay.portal.odata.filter.FilterParser;
+import com.liferay.portal.odata.filter.InvalidFilterException;
 import com.liferay.structured.content.apio.internal.architect.filter.StructuredContentEntityModel;
 
 import javax.servlet.http.HttpServletRequest;

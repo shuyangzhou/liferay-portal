@@ -42,6 +42,7 @@ renderResponse.setTitle(editSegmentsEntryDisplayContext.getSegmentsEntryName(loc
 <aui:form action="<%= updateSegmentsEntryActionURL %>" cssClass="container-fluid-1280" method="post" name="fm" onSubmit='<%= "event.preventDefault(); " + renderResponse.getNamespace() + "saveSegmentsEntry();" %>'>
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="segmentsEntryId" type="hidden" value="<%= segmentsEntryId %>" />
+	<aui:input name="saveAndContinue" type="hidden" />
 
 	<div class="lfr-form-content">
 		<aui:model-context bean="<%= segmentsEntry %>" model="<%= SegmentsEntry.class %>" />
@@ -58,9 +59,12 @@ renderResponse.setTitle(editSegmentsEntryDisplayContext.getSegmentsEntryName(loc
 
 				<aui:input checked="<%= (segmentsEntry == null) ? false : segmentsEntry.isActive() %>" name="active" type="toggle-switch" />
 
-				<aui:input name="criteria" type="textarea" />
+				<aui:select disabled="<%= segmentsEntry != null %>" name="type">
+					<aui:option label="organizations" value="<%= SegmentsConstants.TYPE_ORGANIZATIONS %>" />
+					<aui:option label="users" value="<%= SegmentsConstants.TYPE_USERS %>" />
+				</aui:select>
 
-				<aui:input disabled="<%= segmentsEntry != null %>" name="type" />
+				<aui:input name="criteria" type="textarea" />
 			</aui:fieldset>
 		</aui:fieldset-group>
 	</div>
@@ -68,12 +72,20 @@ renderResponse.setTitle(editSegmentsEntryDisplayContext.getSegmentsEntryName(loc
 	<aui:button-row>
 		<aui:button cssClass="btn-lg" type="submit" />
 
+		<aui:button cssClass="btn-lg" onClick='<%= renderResponse.getNamespace() + "saveSegmentsEntryAndContinue();" %>' value="save-and-continue" />
+
 		<aui:button cssClass="btn-lg" href="<%= redirect %>" type="cancel" />
 	</aui:button-row>
 </aui:form>
 
 <aui:script>
 	function <portlet:namespace />saveSegmentsEntry() {
+		submitForm(document.<portlet:namespace />fm);
+	}
+
+	function <portlet:namespace />saveSegmentsEntryAndContinue() {
+		document.<portlet:namespace />fm.<portlet:namespace />saveAndContinue.value = 'true';
+
 		submitForm(document.<portlet:namespace />fm);
 	}
 </aui:script>

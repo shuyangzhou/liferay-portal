@@ -9,9 +9,58 @@ Array [
           Object {
             "fields": Array [
               Object {
-                "label": "Radio",
+                "fieldName": "radio",
+                "label": "Radio Field",
+                "options": Array [
+                  Object {
+                    "label": "Option 1",
+                    "value": "option1",
+                  },
+                  Object {
+                    "label": "Option 2",
+                    "value": "option2",
+                  },
+                ],
                 "settingsContext": Object {
-                  "pages": Array [],
+                  "pages": Array [
+                    Object {
+                      "rows": Array [
+                        Object {
+                          "columns": Array [
+                            Object {
+                              "fields": Array [
+                                Object {
+                                  "fieldName": "label",
+                                  "localizable": true,
+                                  "settingsContext": Object {
+                                    "pages": Array [
+                                      Object {
+                                        "rows": Array [
+                                          Object {
+                                            "columns": Array [],
+                                          },
+                                        ],
+                                      },
+                                    ],
+                                  },
+                                },
+                                Object {
+                                  "fieldName": "name",
+                                },
+                                Object {
+                                  "fieldName": "required",
+                                },
+                                Object {
+                                  "fieldName": "type",
+                                },
+                              ],
+                              "size": 12,
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  ],
                 },
                 "type": "radio",
               },
@@ -29,7 +78,17 @@ Array [
           Object {
             "fields": Array [
               Object {
-                "label": "Text",
+                "fieldName": "text1",
+                "label": "Text Field 1",
+                "required": true,
+                "settingsContext": Object {
+                  "pages": Array [],
+                },
+                "type": "text",
+              },
+              Object {
+                "fieldName": "text2",
+                "label": "Text Field 2",
                 "required": true,
                 "settingsContext": Object {
                   "pages": Array [],
@@ -42,15 +101,18 @@ Array [
           Object {
             "fields": Array [
               Object {
-                "items": Array [
+                "fieldName": "select",
+                "label": "Select Field",
+                "options": Array [
                   Object {
-                    "name": "Foo",
+                    "label": "Option 1",
+                    "value": "option1",
                   },
                   Object {
-                    "name": "Bar",
+                    "label": "Option 2",
+                    "value": "option2",
                   },
                 ],
-                "label": "Select",
                 "required": true,
                 "settingsContext": Object {
                   "pages": Array [],
@@ -71,12 +133,13 @@ Array [
           Object {
             "fields": Array [
               Object {
-                "label": "Second row",
+                "fieldName": "date",
+                "label": "Date Field",
                 "required": true,
                 "settingsContext": Object {
                   "pages": Array [],
                 },
-                "type": "text",
+                "type": "date",
               },
             ],
             "size": 6,
@@ -98,9 +161,58 @@ Array [
           Object {
             "fields": Array [
               Object {
+                "fieldName": "radio",
                 "label": "New label 0",
+                "options": Array [
+                  Object {
+                    "label": "Option 1",
+                    "value": "option1",
+                  },
+                  Object {
+                    "label": "Option 2",
+                    "value": "option2",
+                  },
+                ],
                 "settingsContext": Object {
-                  "pages": Array [],
+                  "pages": Array [
+                    Object {
+                      "rows": Array [
+                        Object {
+                          "columns": Array [
+                            Object {
+                              "fields": Array [
+                                Object {
+                                  "fieldName": "label",
+                                  "localizable": true,
+                                  "settingsContext": Object {
+                                    "pages": Array [
+                                      Object {
+                                        "rows": Array [
+                                          Object {
+                                            "columns": Array [],
+                                          },
+                                        ],
+                                      },
+                                    ],
+                                  },
+                                },
+                                Object {
+                                  "fieldName": "name",
+                                },
+                                Object {
+                                  "fieldName": "required",
+                                },
+                                Object {
+                                  "fieldName": "type",
+                                },
+                              ],
+                              "size": 12,
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  ],
                 },
                 "type": "radio",
               },
@@ -118,7 +230,17 @@ Array [
           Object {
             "fields": Array [
               Object {
+                "fieldName": "text1",
                 "label": "New label 0",
+                "required": true,
+                "settingsContext": Object {
+                  "pages": Array [],
+                },
+                "type": "text",
+              },
+              Object {
+                "fieldName": "text2",
+                "label": "New label 1",
                 "required": true,
                 "settingsContext": Object {
                   "pages": Array [],
@@ -131,15 +253,18 @@ Array [
           Object {
             "fields": Array [
               Object {
-                "items": Array [
+                "fieldName": "select",
+                "label": "New label 0",
+                "options": Array [
                   Object {
-                    "name": "Foo",
+                    "label": "Option 1",
+                    "value": "option1",
                   },
                   Object {
-                    "name": "Bar",
+                    "label": "Option 2",
+                    "value": "option2",
                   },
                 ],
-                "label": "New label 0",
                 "required": true,
                 "settingsContext": Object {
                   "pages": Array [],
@@ -160,12 +285,13 @@ Array [
           Object {
             "fields": Array [
               Object {
+                "fieldName": "date",
                 "label": "New label 0",
                 "required": true,
                 "settingsContext": Object {
                   "pages": Array [],
                 },
-                "type": "text",
+                "type": "date",
               },
             ],
             "size": 12,
@@ -187,9 +313,58 @@ Array [
           Object {
             "fields": Array [
               Object {
-                "label": "Radio",
+                "fieldName": "radio",
+                "label": "Radio Field",
+                "options": Array [
+                  Object {
+                    "label": "Option 1",
+                    "value": "option1",
+                  },
+                  Object {
+                    "label": "Option 2",
+                    "value": "option2",
+                  },
+                ],
                 "settingsContext": Object {
-                  "pages": Array [],
+                  "pages": Array [
+                    Object {
+                      "rows": Array [
+                        Object {
+                          "columns": Array [
+                            Object {
+                              "fields": Array [
+                                Object {
+                                  "fieldName": "label",
+                                  "localizable": true,
+                                  "settingsContext": Object {
+                                    "pages": Array [
+                                      Object {
+                                        "rows": Array [
+                                          Object {
+                                            "columns": Array [],
+                                          },
+                                        ],
+                                      },
+                                    ],
+                                  },
+                                },
+                                Object {
+                                  "fieldName": "name",
+                                },
+                                Object {
+                                  "fieldName": "required",
+                                },
+                                Object {
+                                  "fieldName": "type",
+                                },
+                              ],
+                              "size": 12,
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  ],
                 },
                 "type": "radio",
               },
@@ -207,7 +382,17 @@ Array [
           Object {
             "fields": Array [
               Object {
-                "label": "Text",
+                "fieldName": "text1",
+                "label": "Text Field 1",
+                "required": true,
+                "settingsContext": Object {
+                  "pages": Array [],
+                },
+                "type": "text",
+              },
+              Object {
+                "fieldName": "text2",
+                "label": "Text Field 2",
                 "required": true,
                 "settingsContext": Object {
                   "pages": Array [],
@@ -220,15 +405,18 @@ Array [
           Object {
             "fields": Array [
               Object {
-                "items": Array [
+                "fieldName": "select",
+                "label": "Select Field",
+                "options": Array [
                   Object {
-                    "name": "Foo",
+                    "label": "Option 1",
+                    "value": "option1",
                   },
                   Object {
-                    "name": "Bar",
+                    "label": "Option 2",
+                    "value": "option2",
                   },
                 ],
-                "label": "Select",
                 "required": true,
                 "settingsContext": Object {
                   "pages": Array [],
@@ -249,12 +437,13 @@ Array [
           Object {
             "fields": Array [
               Object {
-                "label": "Second row",
+                "fieldName": "date",
+                "label": "Date Field",
                 "required": true,
                 "settingsContext": Object {
                   "pages": Array [],
                 },
-                "type": "text",
+                "type": "date",
               },
             ],
             "size": 12,

@@ -5466,8 +5466,8 @@ to version 2.3.241.
 ## 3.12.117 - 2018-08-28
 
 ### Changed
-- [LPS-84094]: Allow properties defined in `gradle-ext.properties` to be
-overridden by values defined in a `gradle-ext.properties` file
+- [LPS-84094]: Allow properties defined in a `gradle.properties` file to be
+overridden by values defined in a `gradle-ext.properties` file.
 - [LPS-84094]: Update the [Liferay Gradle Util] dependency to version 1.0.30.
 
 ## 3.12.118 - 2018-08-29
@@ -5750,6 +5750,66 @@ version 2.4.13.
 to version 2.3.270.
 - [LPS-84119]: Update the [Liferay Source Formatter] dependency to version
 1.0.744.
+
+## 3.12.153 - 2018-10-04
+
+### Changed
+- [LPS-84119]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.3.271.
+- [LPS-84119]: Update the [Liferay Source Formatter] dependency to version
+1.0.745.
+
+## 3.12.154 - 2018-10-05
+
+### Changed
+- [LPS-80388]: Update the [Liferay Ant BND] dependency to version 2.0.57.
+
+## 3.12.155 - 2018-10-07
+
+### Changed
+- [LPS-84119]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.3.272.
+- [LPS-84119]: Update the [Liferay Source Formatter] dependency to version
+1.0.746.
+
+## 3.12.156 - 2018-10-08
+
+### Changed
+- [LPS-84119]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.3.273.
+- [LPS-84119]: Update the [Liferay Source Formatter] dependency to version
+1.0.747.
+
+## 3.12.157 - 2018-10-09
+
+### Changed
+- [LPS-84119]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.3.274.
+- [LPS-84119]: Update the [Liferay Source Formatter] dependency to version
+1.0.748.
+
+## 3.12.158 - 2018-10-09
+
+### Changed
+- [LPS-74544]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.3.275.
+- [LPS-74544]: Update the [Liferay Source Formatter] dependency to version
+1.0.749.
+
+## 3.12.159 - 2018-10-09
+
+### Changed
+- [LPS-85959]: Update the [Liferay Gradle Plugins Gulp] dependency to version
+2.0.34.
+- [LPS-85959]: Update the [Liferay Gradle Plugins JS Module Config Generator]
+dependency to version 2.1.35.
+- [LPS-85959]: Update the [Liferay Gradle Plugins JS Transpiler] dependency to
+version 2.4.14.
+
+## 3.12.160 - 2018-10-10
+
+### Changed
+- [LPS-86308]: Update the [Liferay Alloy Taglib] dependency to version 1.1.13.
 
 [Gradle Bundle Plugin]: https://github.com/TomDmitriev/gradle-bundle-plugin
 [Liferay Alloy Taglib]: https://github.com/liferay/alloy-taglibs
@@ -6198,4 +6258,5 @@ to version 2.3.270.
 [LPS-85609]: https://issues.liferay.com/browse/LPS-85609
 [LPS-85678]: https://issues.liferay.com/browse/LPS-85678
 [LPS-85959]: https://issues.liferay.com/browse/LPS-85959
+[LPS-86308]: https://issues.liferay.com/browse/LPS-86308
 [LRDOCS-3023]: https://issues.liferay.com/browse/LRDOCS-3023

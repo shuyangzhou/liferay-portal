@@ -163,8 +163,6 @@ public class FileShortcutStagedModelDataHandler
 			PortletDataContext portletDataContext, FileShortcut fileShortcut)
 		throws Exception {
 
-		long userId = portletDataContext.getUserId(fileShortcut.getUserUuid());
-
 		Map<Long, Long> folderIds =
 			(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
 				Folder.class);
@@ -200,6 +198,8 @@ public class FileShortcutStagedModelDataHandler
 
 			return;
 		}
+
+		long userId = portletDataContext.getUserId(fileShortcut.getUserUuid());
 
 		ServiceContext serviceContext = portletDataContext.createServiceContext(
 			fileShortcut, DLFileShortcut.class);
@@ -240,8 +240,6 @@ public class FileShortcutStagedModelDataHandler
 			PortletDataContext portletDataContext, FileShortcut fileShortcut)
 		throws Exception {
 
-		long userId = portletDataContext.getUserId(fileShortcut.getUserUuid());
-
 		FileShortcut existingFileShortcut = fetchStagedModelByUuidAndGroupId(
 			fileShortcut.getUuid(), portletDataContext.getScopeGroupId());
 
@@ -263,6 +261,9 @@ public class FileShortcutStagedModelDataHandler
 
 		if (trashHandler.isRestorable(
 				existingFileShortcut.getFileShortcutId())) {
+
+			long userId = portletDataContext.getUserId(
+				fileShortcut.getUserUuid());
 
 			trashHandler.restoreTrashEntry(
 				userId, existingFileShortcut.getFileShortcutId());

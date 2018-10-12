@@ -558,6 +558,10 @@ public class FieldsWriter<T> {
 		U relatedIdentifier = modelToIdentifierFunction.apply(
 			_singleModel.getModel());
 
+		if (relatedIdentifier == null) {
+			return;
+		}
+
 		pathFunction.apply(
 			relatedModel.getIdentifierName(), relatedIdentifier
 		).map(
