@@ -163,7 +163,7 @@ public class LicenseReportDefaultsPlugin implements Plugin<Project> {
 					"Unable to configure license report for " + project, e);
 			}
 
-			// We need to pass a non-existent group to avoid excluding
+			// We need to pass a nonexistent group to avoid excluding
 			// "com.liferay" dependencies.
 
 			licenseReportExtension.setExcludeGroups(
