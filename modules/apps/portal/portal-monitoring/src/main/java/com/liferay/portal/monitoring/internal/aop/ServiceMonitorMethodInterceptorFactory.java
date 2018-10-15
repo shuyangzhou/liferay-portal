@@ -12,13 +12,14 @@
  * details.
  */
 
-package com.liferay.portal.monitoring.statistics.service;
+package com.liferay.portal.monitoring.internal.aop;
 
 import com.liferay.portal.kernel.monitoring.DataSample;
 import com.liferay.portal.kernel.monitoring.DataSampleThreadLocal;
 import com.liferay.portal.kernel.monitoring.MethodSignature;
 import com.liferay.portal.kernel.monitoring.RequestStatus;
 import com.liferay.portal.kernel.monitoring.ServiceMonitoringControl;
+import com.liferay.portal.monitoring.statistics.service.DataSampleFactoryUtil;
 import com.liferay.portal.spring.aop.MethodInterceptorFactory;
 import com.liferay.portal.spring.aop.MethodInterceptorFactoryHelper;
 
