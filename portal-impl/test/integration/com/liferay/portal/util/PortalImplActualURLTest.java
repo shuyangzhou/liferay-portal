@@ -88,7 +88,7 @@ public class PortalImplActualURLTest {
 			PortalUtil.getActualURL(
 				userGroup.getGroup().getGroupId(), true, Portal.PATH_MAIN,
 				"/~/" + userGroup.getUserGroupId() +
-					"/non-existing-child-layout",
+					"/nonexistent-child-layout",
 				new HashMap<String, String[]>(), getRequestContext());
 
 			Assert.fail();
