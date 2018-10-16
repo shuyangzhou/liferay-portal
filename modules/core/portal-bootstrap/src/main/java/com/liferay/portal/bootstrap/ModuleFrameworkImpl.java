@@ -1647,33 +1647,10 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 			fileInstallBundle.stop(Bundle.STOP_TRANSIENT);
 		}
 
-		FrameworkWiring frameworkWiring = _framework.adapt(
-			FrameworkWiring.class);
-
-		final DefaultNoticeableFuture<FrameworkEvent> refreshFuture =
-			new DefaultNoticeableFuture<>();
-
-		frameworkWiring.refreshBundles(
-			null,
-			new FrameworkListener() {
-
-				@Override
-				public void frameworkEvent(FrameworkEvent fe) {
-					refreshFuture.set(fe);
-				}
-
-			});
-
-		FrameworkEvent frameworkEvent = refreshFuture.get();
-
-		if (frameworkEvent.getType() == FrameworkEvent.ERROR) {
-			ReflectionUtil.throwException(frameworkEvent.getThrowable());
-		}
-
 		FrameworkStartLevel frameworkStartLevel = _framework.adapt(
 			FrameworkStartLevel.class);
 
-		final DefaultNoticeableFuture<FrameworkEvent> startLevelFuture =
+		final DefaultNoticeableFuture<FrameworkEvent> defaultNoticeableFuture =
 			new DefaultNoticeableFuture<>();
 
 		frameworkStartLevel.setStartLevel(
@@ -1682,12 +1659,12 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 				@Override
 				public void frameworkEvent(FrameworkEvent fe) {
-					startLevelFuture.set(fe);
+					defaultNoticeableFuture.set(fe);
 				}
 
 			});
 
-		frameworkEvent = startLevelFuture.get();
+		FrameworkEvent frameworkEvent = defaultNoticeableFuture.get();
 
 		if (frameworkEvent.getType() == FrameworkEvent.ERROR) {
 			ReflectionUtil.throwException(frameworkEvent.getThrowable());
