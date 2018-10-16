@@ -51,6 +51,11 @@ public class UserEntityModel implements EntityModel {
 
 	private static final Map<String, EntityField> _entityFieldsMap = Stream.of(
 		new EntityField(
+			"ancestorOrganizationIds", EntityField.Type.STRING,
+			locale -> "ancestorOrganizationIds"),
+		new EntityField(
+			"companyId", EntityField.Type.STRING, locale -> "companyId"),
+		new EntityField(
 			"dateModified", EntityField.Type.DATE,
 			locale -> Field.getSortableFieldName(Field.MODIFIED_DATE),
 			locale -> Field.MODIFIED_DATE),
@@ -64,12 +69,32 @@ public class UserEntityModel implements EntityModel {
 		new EntityField(
 			"groupIds", EntityField.Type.STRING, locale -> "groupIds"),
 		new EntityField(
+			"jobTitle", EntityField.Type.STRING,
+			locale -> Field.getSortableFieldName("jobTitle")),
+		new EntityField(
 			"lastName", EntityField.Type.STRING,
 			locale -> Field.getSortableFieldName("lastName")),
 		new EntityField(
+			"organizationCount", EntityField.Type.STRING,
+			locale -> "organizationCount"),
+		new EntityField(
+			"organizationIds", EntityField.Type.STRING,
+			locale -> "organizationIds"),
+		new EntityField(
+			"roleIds", EntityField.Type.STRING, locale -> "roleIds"),
+		new EntityField(
+			"scopeGroupId", EntityField.Type.STRING, locale -> "scopeGroupId"),
+		new EntityField(
 			"screenName", EntityField.Type.STRING,
 			locale -> Field.getSortableFieldName("screenName"),
-			locale -> "screenName")
+			locale -> "screenName"),
+		new EntityField(
+			"teamIds", EntityField.Type.STRING, locale -> "teamIds"),
+		new EntityField(
+			"userGroupIds", EntityField.Type.STRING, locale -> "userGroupIds"),
+		new EntityField("userId", EntityField.Type.STRING, locale -> "userId"),
+		new EntityField(
+			"userName", EntityField.Type.STRING, locale -> "userName")
 	).collect(
 		Collectors.toMap(EntityField::getName, Function.identity())
 	);

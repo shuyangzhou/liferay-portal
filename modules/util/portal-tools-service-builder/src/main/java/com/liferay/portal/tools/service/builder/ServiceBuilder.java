@@ -837,7 +837,7 @@ public class ServiceBuilder {
 							_createUADAnonymizerTest(entity);
 							_createUADExporter(entity);
 							_createUADExporterTest(entity);
-							_createUADTestHelper(entity);
+							//_createUADTestHelper(entity);
 
 							if (ListUtil.isEmpty(
 									entity.
