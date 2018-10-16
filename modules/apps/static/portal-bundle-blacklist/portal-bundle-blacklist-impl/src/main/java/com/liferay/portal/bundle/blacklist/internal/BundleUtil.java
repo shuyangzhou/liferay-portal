@@ -14,6 +14,7 @@
 
 package com.liferay.portal.bundle.blacklist.internal;
 
+import com.liferay.osgi.util.bundle.BundleStartLevelUtil;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.concurrent.DefaultNoticeableFuture;
@@ -67,7 +68,7 @@ public class BundleUtil {
 		}
 	}
 
-	public static Bundle reinstallBundle(
+	public static void reinstallBundle(
 			FrameworkWiring frameworkWiring,
 			UninstalledBundleData uninstalledBundleData,
 			BundleContext bundleContext, LPKGDeployer lpkgDeployer)
@@ -92,6 +93,8 @@ public class BundleUtil {
 
 			refreshBundles(
 				frameworkWiring, Collections.<Bundle>singletonList(bundle));
+
+			return;
 		}
 		else if (ArrayUtil.isNotEmpty(protocol) && protocol[0].equals("lpkg") &&
 				 ArrayUtil.isNotEmpty(webContextPath)) {
@@ -110,18 +113,23 @@ public class BundleUtil {
 						Collections.<Bundle>singletonList(installedBundle));
 				}
 			}
+
+			return;
 		}
 		else if (location.startsWith("webbundle:")) {
 			WebBundleInstaller webBundleInstaller = new WebBundleInstaller(
 				bundleContext, location, uninstalledBundleData.getStartLevel());
 
 			webBundleInstaller.open();
+
+			return;
 		}
 		else {
 			bundle = bundleContext.installBundle(location);
 		}
 
-		return bundle;
+		BundleStartLevelUtil.setStartLevelAndStart(
+			bundle, uninstalledBundleData.getStartLevel(), bundleContext);
 	}
 
 }
