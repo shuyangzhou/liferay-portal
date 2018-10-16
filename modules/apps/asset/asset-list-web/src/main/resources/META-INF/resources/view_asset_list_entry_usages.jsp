@@ -17,7 +17,20 @@
 <%@ include file="/init.jsp" %>
 
 <%
+String redirect = ParamUtil.getString(request, "redirect");
+
+if (Validator.isNull(redirect)) {
+	PortletURL portletURL = renderResponse.createRenderURL();
+
+	redirect = portletURL.toString();
+}
+
 AssetListEntryUsagesDisplayContext assetListEntryUsagesDisplayContext = new AssetListEntryUsagesDisplayContext(renderRequest, renderResponse);
+
+portletDisplay.setShowBackIcon(true);
+portletDisplay.setURLBack(redirect);
+
+renderResponse.setTitle(assetListDisplayContext.getAssetListEntryTitle());
 %>
 
 <div class="container-fluid container-fluid-max-xl container-form-lg">

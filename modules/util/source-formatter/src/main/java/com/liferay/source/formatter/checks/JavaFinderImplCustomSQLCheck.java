@@ -171,7 +171,7 @@ public class JavaFinderImplCustomSQLCheck extends BaseJavaTermCheck {
 
 		addMessage(
 			fileName,
-			"'" + variableName + "' points to non-existing custom query",
+			"'" + variableName + "' points to nonexistent custom query",
 			getLineNumber(fileContent, pos));
 	}
 
