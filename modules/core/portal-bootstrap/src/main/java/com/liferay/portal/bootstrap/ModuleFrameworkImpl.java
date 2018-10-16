@@ -1650,21 +1650,21 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		FrameworkWiring frameworkWiring = _framework.adapt(
 			FrameworkWiring.class);
 
-		final DefaultNoticeableFuture<FrameworkEvent>
-			refreshDefaultNoticeableFuture = new DefaultNoticeableFuture<>();
+		final DefaultNoticeableFuture<FrameworkEvent> refreshFuture =
+			new DefaultNoticeableFuture<>();
 
 		frameworkWiring.refreshBundles(
 			null,
 			new FrameworkListener() {
 
 				@Override
-				public void frameworkEvent(FrameworkEvent frameworkEvent) {
-					refreshDefaultNoticeableFuture.set(frameworkEvent);
+				public void frameworkEvent(FrameworkEvent fe) {
+					refreshFuture.set(fe);
 				}
 
 			});
 
-		FrameworkEvent frameworkEvent = refreshDefaultNoticeableFuture.get();
+		FrameworkEvent frameworkEvent = refreshFuture.get();
 
 		if (frameworkEvent.getType() == FrameworkEvent.ERROR) {
 			ReflectionUtil.throwException(frameworkEvent.getThrowable());
@@ -1673,21 +1673,21 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		FrameworkStartLevel frameworkStartLevel = _framework.adapt(
 			FrameworkStartLevel.class);
 
-		final DefaultNoticeableFuture<FrameworkEvent>
-			startLevelDefaultNoticeableFuture = new DefaultNoticeableFuture<>();
+		final DefaultNoticeableFuture<FrameworkEvent> startLevelFuture =
+			new DefaultNoticeableFuture<>();
 
 		frameworkStartLevel.setStartLevel(
 			PropsValues.MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL,
 			new FrameworkListener() {
 
 				@Override
-				public void frameworkEvent(FrameworkEvent frameworkEvent) {
-					startLevelDefaultNoticeableFuture.set(frameworkEvent);
+				public void frameworkEvent(FrameworkEvent fe) {
+					startLevelFuture.set(fe);
 				}
 
 			});
 
-		frameworkEvent = startLevelDefaultNoticeableFuture.get();
+		frameworkEvent = startLevelFuture.get();
 
 		if (frameworkEvent.getType() == FrameworkEvent.ERROR) {
 			ReflectionUtil.throwException(frameworkEvent.getThrowable());
