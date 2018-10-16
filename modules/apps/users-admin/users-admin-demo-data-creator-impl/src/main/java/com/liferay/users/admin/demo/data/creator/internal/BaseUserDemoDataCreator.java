@@ -261,14 +261,18 @@ public abstract class BaseUserDemoDataCreator implements UserDemoDataCreator {
 		}
 
 		if (!Validator.isEmailAddress(emailAddress)) {
-			String[] emailComponents = StringUtil.split(
+			String[] emailAddressParts = StringUtil.split(
 				emailAddress, CharPool.AT);
 
-			String normalizedEmail = FriendlyURLNormalizerUtil.normalize(
-				emailComponents[0]);
+			String normalizedEmailAddress = FriendlyURLNormalizerUtil.normalize(
+				emailAddressParts[0]);
+
+			if (StringUtil.endsWith(normalizedEmailAddress, CharPool.DASH)) {
+				normalizedEmailAddress = StringUtil.randomString();
+			}
 
 			emailAddress = String.format(
-				"%s@%s", normalizedEmail, emailComponents[1]);
+				"%s@%s", normalizedEmailAddress, emailAddressParts[1]);
 		}
 
 		return emailAddress;

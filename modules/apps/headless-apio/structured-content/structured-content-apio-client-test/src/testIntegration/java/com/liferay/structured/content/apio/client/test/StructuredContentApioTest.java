@@ -88,6 +88,58 @@ public class StructuredContentApioTest {
 	}
 
 	@Test
+	public void testDefaultTitleIsDisplayedWhenAcceptLanguageIsNotSpecified()
+		throws Exception {
+
+		List<String> hrefs = JsonPath.read(
+			_toStringAsAdmin(
+				JsonPath.read(
+					_toStringAsAdmin(_rootEndpointURL.toExternalForm()),
+					"$._links.content-space.href")),
+			"$._embedded.ContentSpace[?(@.name == '" +
+				StructuredContentApioTestBundleActivator.SITE_NAME +
+					"')]._links.structuredContents.href");
+
+		Map<String, String> headers = _getHeaders();
+
+		List<String> titles = JsonPath.read(
+			_toStringAsGuest(hrefs.get(0), headers),
+			"$._embedded.StructuredContent[*].title");
+
+		Assert.assertTrue(
+			titles.contains(
+				StructuredContentApioTestBundleActivator.
+					TITLE_2_LOCALE_DEFAULT));
+	}
+
+	@Test
+	public void testDefaultTitleIsDisplayedWhenAcceptLanguageIsSpecifiedAndDoesNotMatch()
+		throws Exception {
+
+		List<String> hrefs = JsonPath.read(
+			_toStringAsAdmin(
+				JsonPath.read(
+					_toStringAsAdmin(_rootEndpointURL.toExternalForm()),
+					"$._links.content-space.href")),
+			"$._embedded.ContentSpace[?(@.name == '" +
+				StructuredContentApioTestBundleActivator.SITE_NAME +
+					"')]._links.structuredContents.href");
+
+		Map<String, String> headers = _getHeaders();
+
+		headers.put("Accept-Language", "de-DE");
+
+		List<String> titles = JsonPath.read(
+			_toStringAsGuest(hrefs.get(0), headers),
+			"$._embedded.StructuredContent[*].title");
+
+		Assert.assertTrue(
+			titles.contains(
+				StructuredContentApioTestBundleActivator.
+					TITLE_2_LOCALE_DEFAULT));
+	}
+
+	@Test
 	public void testGuestUserSeesRightStructuredContents() throws Exception {
 		List<String> hrefs = JsonPath.read(
 			_toStringAsAdmin(
@@ -114,6 +166,32 @@ public class StructuredContentApioTest {
 			titles.contains(
 				StructuredContentApioTestBundleActivator.
 					TITLE_YES_GUEST_YES_GROUP));
+	}
+
+	@Test
+	public void testLocalizedTitleIsDisplayedWhenAcceptLanguageIsSpecifiedAndMatches()
+		throws Exception {
+
+		List<String> hrefs = JsonPath.read(
+			_toStringAsAdmin(
+				JsonPath.read(
+					_toStringAsAdmin(_rootEndpointURL.toExternalForm()),
+					"$._links.content-space.href")),
+			"$._embedded.ContentSpace[?(@.name == '" +
+				StructuredContentApioTestBundleActivator.SITE_NAME +
+					"')]._links.structuredContents.href");
+
+		Map<String, String> headers = _getHeaders();
+
+		headers.put("Accept-Language", "es-ES");
+
+		List<String> titles = JsonPath.read(
+			_toStringAsGuest(hrefs.get(0), headers),
+			"$._embedded.StructuredContent[*].title");
+
+		Assert.assertTrue(
+			titles.contains(
+				StructuredContentApioTestBundleActivator.TITLE_2_LOCALE_ES));
 	}
 
 	@Test
@@ -149,6 +227,30 @@ public class StructuredContentApioTest {
 			titles.contains(
 				StructuredContentApioTestBundleActivator.
 					TITLE_YES_GUEST_YES_GROUP));
+	}
+
+	@Test
+	public void testSetDefaultTitleIsDisplayedWhenAcceptLanguageIsNotSpecified()
+		throws Exception {
+
+		List<String> hrefs = JsonPath.read(
+			_toStringAsAdmin(
+				JsonPath.read(
+					_toStringAsAdmin(_rootEndpointURL.toExternalForm()),
+					"$._links.content-space.href")),
+			"$._embedded.ContentSpace[?(@.name == '" +
+				StructuredContentApioTestBundleActivator.SITE_NAME +
+					"')]._links.structuredContents.href");
+
+		Map<String, String> headers = _getHeaders();
+
+		List<String> titles = JsonPath.read(
+			_toStringAsGuest(hrefs.get(0), headers),
+			"$._embedded.StructuredContent[*].title");
+
+		Assert.assertTrue(
+			titles.contains(
+				StructuredContentApioTestBundleActivator.TITLE_1_LOCALE_ES));
 	}
 
 	@Test
@@ -230,6 +332,14 @@ public class StructuredContentApioTest {
 		return jsonWebServiceClient;
 	}
 
+	private Map<String, String> _getHeaders() {
+		return new HashMap<String, String>() {
+			{
+				put("Accept", "application/hal+json");
+			}
+		};
+	}
+
 	private JSONWebServiceClient _getJSONWebServiceClient(
 		String login, String password) {
 
@@ -252,9 +362,17 @@ public class StructuredContentApioTest {
 			JSONWebServiceClient jsonWebServiceClient, String url)
 		throws Exception {
 
-		return jsonWebServiceClient.doGet(
-			url, Collections.emptyMap(),
+		return _toString(
+			jsonWebServiceClient, url,
 			Collections.singletonMap("Accept", "application/hal+json"));
+	}
+
+	private String _toString(
+			JSONWebServiceClient jsonWebServiceClient, String url,
+			Map<String, String> headers)
+		throws Exception {
+
+		return jsonWebServiceClient.doGet(url, Collections.emptyMap(), headers);
 	}
 
 	private String _toStringAsAdmin(String url) throws Exception {
@@ -262,7 +380,13 @@ public class StructuredContentApioTest {
 	}
 
 	private String _toStringAsGuest(String url) throws Exception {
-		return _toString(_getGuestJSONWebServiceClient(), url);
+		return _toStringAsGuest(url, _getHeaders());
+	}
+
+	private String _toStringAsGuest(String url, Map<String, String> headers)
+		throws Exception {
+
+		return _toString(_getGuestJSONWebServiceClient(), url, headers);
 	}
 
 	private String _toStringAsUser(String url, String login, String password)
