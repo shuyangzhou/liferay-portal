@@ -155,7 +155,7 @@ public class ModulesStructureTestUtil {
 			Assert.assertTrue(
 				StringBundler.concat(
 					"Dependency in ", String.valueOf(gradlePath),
-					" points to non-existent project directory ",
+					" points to nonexistent project directory ",
 					String.valueOf(projectDirPath), ": ", matcher.group()),
 				Files.exists(projectDirPath));
 

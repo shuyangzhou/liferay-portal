@@ -68,8 +68,8 @@ public class AuthorizationCodeGrantServiceContainerRequestFilter
 	implements ContainerRequestFilter {
 
 	@Override
-	public void filter(ContainerRequestContext requestContext) {
-		UriInfo uriInfo = requestContext.getUriInfo();
+	public void filter(ContainerRequestContext containerRequestContext) {
+		UriInfo uriInfo = containerRequestContext.getUriInfo();
 
 		if (!StringUtil.startsWith(uriInfo.getPath(), "authorize")) {
 			return;
@@ -79,10 +79,7 @@ public class AuthorizationCodeGrantServiceContainerRequestFilter
 			User user = _portal.getUser(_httpServletRequest);
 
 			if ((user != null) && !user.isDefaultUser()) {
-				SecurityContext securityContext =
-					requestContext.getSecurityContext();
-
-				requestContext.setSecurityContext(
+				containerRequestContext.setSecurityContext(
 					new PortalCXFSecurityContext() {
 
 						@Override
@@ -93,7 +90,7 @@ public class AuthorizationCodeGrantServiceContainerRequestFilter
 
 						@Override
 						public boolean isSecure() {
-							return securityContext.isSecure();
+							return _portal.isSecure(_httpServletRequest);
 						}
 
 					});
@@ -104,7 +101,7 @@ public class AuthorizationCodeGrantServiceContainerRequestFilter
 		catch (Exception e) {
 			_log.error("Unable to resolve authenticated user", e);
 
-			requestContext.abortWith(
+			containerRequestContext.abortWith(
 				Response.status(
 					Response.Status.INTERNAL_SERVER_ERROR
 				).build());
@@ -131,7 +128,7 @@ public class AuthorizationCodeGrantServiceContainerRequestFilter
 		loginURL = _http.addParameter(
 			loginURL, "redirect", requestURI.toASCIIString());
 
-		requestContext.abortWith(
+		containerRequestContext.abortWith(
 			Response.status(
 				Response.Status.FOUND
 			).location(

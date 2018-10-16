@@ -251,7 +251,7 @@ public class XMLBuildFileCheck extends BaseFileCheck {
 			if (!importFile) {
 				addMessage(
 					fileName,
-					"Ant element points to non-existing build file '" +
+					"Ant element points to nonexistent build file '" +
 						buildFileName + "'");
 			}
 
