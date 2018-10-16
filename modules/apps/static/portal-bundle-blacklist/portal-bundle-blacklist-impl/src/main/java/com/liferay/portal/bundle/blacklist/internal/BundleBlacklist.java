@@ -108,13 +108,13 @@ public class BundleBlacklist {
 
 		_scanBundles(bundleContext, frameworkWiring);
 
-		Map<Bundle, Integer> installedBundles = new HashMap<>();
-
 		Set<Map.Entry<String, UninstalledBundleData>> entrySet =
 			_uninstalledBundles.entrySet();
 
 		Iterator<Map.Entry<String, UninstalledBundleData>> iterator =
 			entrySet.iterator();
+
+		Map<Bundle, Integer> installedBundles = new HashMap<>();
 
 		while (iterator.hasNext()) {
 			Map.Entry<String, UninstalledBundleData> entry = iterator.next();
@@ -144,7 +144,7 @@ public class BundleBlacklist {
 		}
 
 		// We need to perform this asynchronously because we might already
-		// be in the refresher thread
+		// be in the refresher thread.
 
 		CompletableFuture.supplyAsync(
 			() -> {
