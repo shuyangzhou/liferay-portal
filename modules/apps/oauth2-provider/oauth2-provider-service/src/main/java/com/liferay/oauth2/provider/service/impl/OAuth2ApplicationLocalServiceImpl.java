@@ -44,9 +44,9 @@ import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Repository;
 import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil;
-import com.liferay.portal.kernel.repository.capabilities.PortalCapabilityLocator;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
+import com.liferay.portal.kernel.repository.registry.RepositoryDefiner;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.HttpUtil;
@@ -531,9 +531,6 @@ public class OAuth2ApplicationLocalServiceImpl
 		}
 	}
 
-	@ServiceReference(type = PortalCapabilityLocator.class)
-	protected PortalCapabilityLocator portalCapabilityLocator;
-
 	private static Set<String> _ianaRegisteredUriSchemes = SetUtil.fromArray(
 		new String[] {
 			"aaa", "aaas", "about", "acap", "acct", "acr", "adiumxtra", "afp",
@@ -589,5 +586,11 @@ public class OAuth2ApplicationLocalServiceImpl
 			"xmlrpc.beep", "xmlrpc.beeps", "xmpp", "xri", "ymsgr", "z39.50",
 			"z39.50r", "z39.50s"
 		});
+
+	@ServiceReference(
+		filterString = "(class.name=com.liferay.portal.repository.portletrepository.PortletRepository)",
+		type = RepositoryDefiner.class
+	)
+	private RepositoryDefiner _repositoryDefiner;
 
 }
