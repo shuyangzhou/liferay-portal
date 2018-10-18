@@ -42,6 +42,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -139,6 +140,12 @@ public class DefaultIndexValidator implements IndexValidator {
 			}
 
 			return messages;
+		}
+		finally {
+			ExecutorService executorService =
+				(ExecutorService)Processor.getExecutor();
+
+			executorService.shutdown();
 		}
 	}
 
