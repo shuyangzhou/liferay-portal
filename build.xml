@@ -394,6 +394,15 @@ message.
 					<replacevalue><![CDATA[  <jsp-attribute name="jdkSourceLevel" value="18" />
 </web-ext>]]></replacevalue>
 				</replace>
+				<replace
+					file="${app.server.websphere.instance.dir}/config/cells/liferay-cell/applications/liferay-portal.ear/deployments/liferay-portal/liferay-portal.war/WEB-INF/web.xml"
+				>
+					<replacetoken><![CDATA[<async-supported>true</async-supported>]]></replacetoken>
+					<replacevalue><![CDATA[<init-param>
+			<param-name>com.ibm.ws.webcontainer.async-supported</param-name>
+			<param-value>true</param-value>
+		</init-param>]]></replacevalue>
+				</replace>
 			</then>
 		</if>
 
