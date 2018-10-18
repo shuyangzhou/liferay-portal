@@ -16,9 +16,12 @@ import org.osgi.resource.Requirement;
 import org.osgi.resource.Resource;
 
 import aQute.bnd.osgi.resource.ResourceUtils;
+import java.util.HashMap;
 
 public class ResourcesRepository extends BaseRepository {
 	final Set<Resource> resources = new LinkedHashSet<>();
+
+	private final Map<Requirement, List<Capability>> _cache = new HashMap<>();
 
 	public ResourcesRepository(Resource resource) {
 		add(resource);
@@ -37,12 +40,21 @@ public class ResourcesRepository extends BaseRepository {
 	}
 
 	public List<Capability> findProvider(Requirement requirement) {
+		if (_cache.containsKey(requirement)) {
+			return _cache.get(requirement);
+		}
+
 		String namespace = requirement.getNamespace();
-		return resources.stream()
+		List<Capability> capabilities = resources.stream()
 			.flatMap(resource -> resource.getCapabilities(namespace)
 				.stream())
 			.filter(capability -> ResourceUtils.matches(requirement, capability))
 			.collect(toCapabilities());
+
+
+		_cache.put(requirement, capabilities);
+
+		return capabilities;
 	}
 
 	public void add(Resource resource) {
@@ -89,3 +101,4 @@ public class ResourcesRepository extends BaseRepository {
 		return t;
 	}
 }
+/* @generated */
