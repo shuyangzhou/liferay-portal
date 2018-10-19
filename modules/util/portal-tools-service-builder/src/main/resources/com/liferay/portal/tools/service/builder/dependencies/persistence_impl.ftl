@@ -1821,7 +1821,10 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		protected boolean rebuildTreeEnabled = true;
 	</#if>
 
-	<#assign hasDateFinder = false />
+	<#assign
+		hasConvertNullFinder = false
+		hasDateFinder = false
+	/>
 
 	<#list entity.entityFinders as entityFinder>
 		<#assign entityColumns = entityFinder.entityColumns />
@@ -1829,11 +1832,21 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		<#list entityColumns as entityColumn>
 			<#if stringUtil.equals(entityColumn.type, "Date")>
 				<#assign hasDateFinder = true />
-
-				<#break>
+			<#elseif stringUtil.equals(entityColumn.type, "String") && entityColumn.isConvertNull()>
+				<#assign hasConvertNullFinder = true />
 			</#if>
 		</#list>
 	</#list>
+
+	<#if hasConvertNullFinder>
+		private String _getString(String s) {
+			if (s == null) {
+				return "";
+			}
+
+			return s;
+		}
+	</#if>
 
 	<#if hasDateFinder>
 		private Long _getTime(Date date) {
