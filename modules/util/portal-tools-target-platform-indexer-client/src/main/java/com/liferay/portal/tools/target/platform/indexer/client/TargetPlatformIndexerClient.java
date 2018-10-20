@@ -59,7 +59,7 @@ public class TargetPlatformIndexerClient {
 			System.err.println(
 				"== -Dliferay.home must point to a valid directory");
 
-			return;
+			System.exit(12);
 		}
 
 		String portalLibDirName = System.getProperty("portal.lib.dir");
@@ -68,7 +68,7 @@ public class TargetPlatformIndexerClient {
 			System.err.println(
 				"== -Dportal.lib.dir must point to a valid directory");
 
-			return;
+			System.exit(13);
 		}
 
 		BytesURLSupport.init();
@@ -106,6 +106,9 @@ public class TargetPlatformIndexerClient {
 
 			_updateIntegrityProperties(
 				uris, Paths.get(integrityPropertiesFileName));
+		}
+		else {
+			System.exit(16);
 		}
 	}
 
