@@ -56,7 +56,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -177,6 +176,8 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	@Override
 	public List<Website> findByUuid(String uuid, int start, int end,
 		OrderByComparator<Website> orderByComparator, boolean retrieveFromCache) {
+		uuid = _getString(uuid);
+
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -200,7 +201,7 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 
 			if ((list != null) && !list.isEmpty()) {
 				for (Website website : list) {
-					if (!Objects.equals(uuid, website.getUuid())) {
+					if (!uuid.equals(website.getUuid())) {
 						list = null;
 
 						break;
@@ -224,10 +225,7 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 
 			boolean bindUuid = false;
 
-			if (uuid == null) {
-				query.append(_FINDER_COLUMN_UUID_UUID_1);
-			}
-			else if (uuid.equals("")) {
+			if (uuid.equals("")) {
 				query.append(_FINDER_COLUMN_UUID_UUID_3);
 			}
 			else {
@@ -408,6 +406,8 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	public Website[] findByUuid_PrevAndNext(long websiteId, String uuid,
 		OrderByComparator<Website> orderByComparator)
 		throws NoSuchWebsiteException {
+		uuid = _getString(uuid);
+
 		Website website = findByPrimaryKey(websiteId);
 
 		Session session = null;
@@ -453,10 +453,7 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 
 		boolean bindUuid = false;
 
-		if (uuid == null) {
-			query.append(_FINDER_COLUMN_UUID_UUID_1);
-		}
-		else if (uuid.equals("")) {
+		if (uuid.equals("")) {
 			query.append(_FINDER_COLUMN_UUID_UUID_3);
 		}
 		else {
@@ -576,6 +573,8 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	 */
 	@Override
 	public int countByUuid(String uuid) {
+		uuid = _getString(uuid);
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_UUID;
 
 		Object[] finderArgs = new Object[] { uuid };
@@ -590,10 +589,7 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 
 			boolean bindUuid = false;
 
-			if (uuid == null) {
-				query.append(_FINDER_COLUMN_UUID_UUID_1);
-			}
-			else if (uuid.equals("")) {
+			if (uuid.equals("")) {
 				query.append(_FINDER_COLUMN_UUID_UUID_3);
 			}
 			else {
@@ -730,6 +726,8 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	public List<Website> findByUuid_C(String uuid, long companyId, int start,
 		int end, OrderByComparator<Website> orderByComparator,
 		boolean retrieveFromCache) {
+		uuid = _getString(uuid);
+
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -757,7 +755,7 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 
 			if ((list != null) && !list.isEmpty()) {
 				for (Website website : list) {
-					if (!Objects.equals(uuid, website.getUuid()) ||
+					if (!uuid.equals(website.getUuid()) ||
 							(companyId != website.getCompanyId())) {
 						list = null;
 
@@ -782,10 +780,7 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 
 			boolean bindUuid = false;
 
-			if (uuid == null) {
-				query.append(_FINDER_COLUMN_UUID_C_UUID_1);
-			}
-			else if (uuid.equals("")) {
+			if (uuid.equals("")) {
 				query.append(_FINDER_COLUMN_UUID_C_UUID_3);
 			}
 			else {
@@ -982,6 +977,8 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	public Website[] findByUuid_C_PrevAndNext(long websiteId, String uuid,
 		long companyId, OrderByComparator<Website> orderByComparator)
 		throws NoSuchWebsiteException {
+		uuid = _getString(uuid);
+
 		Website website = findByPrimaryKey(websiteId);
 
 		Session session = null;
@@ -1027,10 +1024,7 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 
 		boolean bindUuid = false;
 
-		if (uuid == null) {
-			query.append(_FINDER_COLUMN_UUID_C_UUID_1);
-		}
-		else if (uuid.equals("")) {
+		if (uuid.equals("")) {
 			query.append(_FINDER_COLUMN_UUID_C_UUID_3);
 		}
 		else {
@@ -1156,6 +1150,8 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	 */
 	@Override
 	public int countByUuid_C(String uuid, long companyId) {
+		uuid = _getString(uuid);
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_UUID_C;
 
 		Object[] finderArgs = new Object[] { uuid, companyId };
@@ -1170,10 +1166,7 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 
 			boolean bindUuid = false;
 
-			if (uuid == null) {
-				query.append(_FINDER_COLUMN_UUID_C_UUID_1);
-			}
-			else if (uuid.equals("")) {
+			if (uuid.equals("")) {
 				query.append(_FINDER_COLUMN_UUID_C_UUID_3);
 			}
 			else {
@@ -4875,6 +4868,15 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
+
+	private String _getString(String s) {
+		if (s == null) {
+			return "";
+		}
+
+		return s;
+	}
+
 	private static final String _SQL_SELECT_WEBSITE = "SELECT website FROM Website website";
 	private static final String _SQL_SELECT_WEBSITE_WHERE_PKS_IN = "SELECT website FROM Website website WHERE websiteId IN (";
 	private static final String _SQL_SELECT_WEBSITE_WHERE = "SELECT website FROM Website website WHERE ";

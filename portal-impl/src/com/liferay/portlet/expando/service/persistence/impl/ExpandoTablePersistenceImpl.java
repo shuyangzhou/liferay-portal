@@ -714,6 +714,8 @@ public class ExpandoTablePersistenceImpl extends BasePersistenceImpl<ExpandoTabl
 	@Override
 	public ExpandoTable fetchByC_C_N(long companyId, long classNameId,
 		String name, boolean retrieveFromCache) {
+		name = _getString(name);
+
 		Object[] finderArgs = new Object[] { companyId, classNameId, name };
 
 		Object result = null;
@@ -744,10 +746,7 @@ public class ExpandoTablePersistenceImpl extends BasePersistenceImpl<ExpandoTabl
 
 			boolean bindName = false;
 
-			if (name == null) {
-				query.append(_FINDER_COLUMN_C_C_N_NAME_1);
-			}
-			else if (name.equals("")) {
+			if (name.equals("")) {
 				query.append(_FINDER_COLUMN_C_C_N_NAME_3);
 			}
 			else {
@@ -834,6 +833,8 @@ public class ExpandoTablePersistenceImpl extends BasePersistenceImpl<ExpandoTabl
 	 */
 	@Override
 	public int countByC_C_N(long companyId, long classNameId, String name) {
+		name = _getString(name);
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_C_N;
 
 		Object[] finderArgs = new Object[] { companyId, classNameId, name };
@@ -852,10 +853,7 @@ public class ExpandoTablePersistenceImpl extends BasePersistenceImpl<ExpandoTabl
 
 			boolean bindName = false;
 
-			if (name == null) {
-				query.append(_FINDER_COLUMN_C_C_N_NAME_1);
-			}
-			else if (name.equals("")) {
+			if (name.equals("")) {
 				query.append(_FINDER_COLUMN_C_C_N_NAME_3);
 			}
 			else {
@@ -1636,6 +1634,15 @@ public class ExpandoTablePersistenceImpl extends BasePersistenceImpl<ExpandoTabl
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
+
+	private String _getString(String s) {
+		if (s == null) {
+			return "";
+		}
+
+		return s;
+	}
+
 	private static final String _SQL_SELECT_EXPANDOTABLE = "SELECT expandoTable FROM ExpandoTable expandoTable";
 	private static final String _SQL_SELECT_EXPANDOTABLE_WHERE_PKS_IN = "SELECT expandoTable FROM ExpandoTable expandoTable WHERE tableId IN (";
 	private static final String _SQL_SELECT_EXPANDOTABLE_WHERE = "SELECT expandoTable FROM ExpandoTable expandoTable WHERE ";

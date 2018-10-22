@@ -1227,6 +1227,8 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 	@Override
 	public LayoutBranch fetchByL_P_N(long layoutSetBranchId, long plid,
 		String name, boolean retrieveFromCache) {
+		name = _getString(name);
+
 		Object[] finderArgs = new Object[] { layoutSetBranchId, plid, name };
 
 		Object result = null;
@@ -1257,10 +1259,7 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 
 			boolean bindName = false;
 
-			if (name == null) {
-				query.append(_FINDER_COLUMN_L_P_N_NAME_1);
-			}
-			else if (name.equals("")) {
+			if (name.equals("")) {
 				query.append(_FINDER_COLUMN_L_P_N_NAME_3);
 			}
 			else {
@@ -1347,6 +1346,8 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 	 */
 	@Override
 	public int countByL_P_N(long layoutSetBranchId, long plid, String name) {
+		name = _getString(name);
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_L_P_N;
 
 		Object[] finderArgs = new Object[] { layoutSetBranchId, plid, name };
@@ -1365,10 +1366,7 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 
 			boolean bindName = false;
 
-			if (name == null) {
-				query.append(_FINDER_COLUMN_L_P_N_NAME_1);
-			}
-			else if (name.equals("")) {
+			if (name.equals("")) {
 				query.append(_FINDER_COLUMN_L_P_N_NAME_3);
 			}
 			else {
@@ -2796,6 +2794,15 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
+
+	private String _getString(String s) {
+		if (s == null) {
+			return "";
+		}
+
+		return s;
+	}
+
 	private static final String _SQL_SELECT_LAYOUTBRANCH = "SELECT layoutBranch FROM LayoutBranch layoutBranch";
 	private static final String _SQL_SELECT_LAYOUTBRANCH_WHERE_PKS_IN = "SELECT layoutBranch FROM LayoutBranch layoutBranch WHERE layoutBranchId IN (";
 	private static final String _SQL_SELECT_LAYOUTBRANCH_WHERE = "SELECT layoutBranch FROM LayoutBranch layoutBranch WHERE ";

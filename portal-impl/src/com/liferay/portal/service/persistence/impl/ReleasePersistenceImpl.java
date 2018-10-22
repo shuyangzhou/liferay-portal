@@ -152,6 +152,8 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 	@Override
 	public Release fetchByServletContextName(String servletContextName,
 		boolean retrieveFromCache) {
+		servletContextName = _getString(servletContextName);
+
 		Object[] finderArgs = new Object[] { servletContextName };
 
 		Object result = null;
@@ -177,10 +179,7 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 
 			boolean bindServletContextName = false;
 
-			if (servletContextName == null) {
-				query.append(_FINDER_COLUMN_SERVLETCONTEXTNAME_SERVLETCONTEXTNAME_1);
-			}
-			else if (servletContextName.equals("")) {
+			if (servletContextName.equals("")) {
 				query.append(_FINDER_COLUMN_SERVLETCONTEXTNAME_SERVLETCONTEXTNAME_3);
 			}
 			else {
@@ -259,6 +258,8 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 	 */
 	@Override
 	public int countByServletContextName(String servletContextName) {
+		servletContextName = _getString(servletContextName);
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_SERVLETCONTEXTNAME;
 
 		Object[] finderArgs = new Object[] { servletContextName };
@@ -273,10 +274,7 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 
 			boolean bindServletContextName = false;
 
-			if (servletContextName == null) {
-				query.append(_FINDER_COLUMN_SERVLETCONTEXTNAME_SERVLETCONTEXTNAME_1);
-			}
-			else if (servletContextName.equals("")) {
+			if (servletContextName.equals("")) {
 				query.append(_FINDER_COLUMN_SERVLETCONTEXTNAME_SERVLETCONTEXTNAME_3);
 			}
 			else {
@@ -1049,6 +1047,14 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private String _getString(String s) {
+		if (s == null) {
+			return "";
+		}
+
+		return s;
 	}
 
 	private static final String _SQL_SELECT_RELEASE = "SELECT release FROM Release release";

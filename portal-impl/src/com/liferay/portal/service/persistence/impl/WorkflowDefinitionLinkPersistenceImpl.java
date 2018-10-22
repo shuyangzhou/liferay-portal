@@ -53,7 +53,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -1314,6 +1313,8 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 		int start, int end,
 		OrderByComparator<WorkflowDefinitionLink> orderByComparator,
 		boolean retrieveFromCache) {
+		workflowDefinitionName = _getString(workflowDefinitionName);
+
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1344,7 +1345,7 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 			if ((list != null) && !list.isEmpty()) {
 				for (WorkflowDefinitionLink workflowDefinitionLink : list) {
 					if ((companyId != workflowDefinitionLink.getCompanyId()) ||
-							!Objects.equals(workflowDefinitionName,
+							!workflowDefinitionName.equals(
 								workflowDefinitionLink.getWorkflowDefinitionName()) ||
 							(workflowDefinitionVersion != workflowDefinitionLink.getWorkflowDefinitionVersion())) {
 						list = null;
@@ -1372,10 +1373,7 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 
 			boolean bindWorkflowDefinitionName = false;
 
-			if (workflowDefinitionName == null) {
-				query.append(_FINDER_COLUMN_C_W_W_WORKFLOWDEFINITIONNAME_1);
-			}
-			else if (workflowDefinitionName.equals("")) {
+			if (workflowDefinitionName.equals("")) {
 				query.append(_FINDER_COLUMN_C_W_W_WORKFLOWDEFINITIONNAME_3);
 			}
 			else {
@@ -1598,6 +1596,8 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 		String workflowDefinitionName, int workflowDefinitionVersion,
 		OrderByComparator<WorkflowDefinitionLink> orderByComparator)
 		throws NoSuchWorkflowDefinitionLinkException {
+		workflowDefinitionName = _getString(workflowDefinitionName);
+
 		WorkflowDefinitionLink workflowDefinitionLink = findByPrimaryKey(workflowDefinitionLinkId);
 
 		Session session = null;
@@ -1649,10 +1649,7 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 
 		boolean bindWorkflowDefinitionName = false;
 
-		if (workflowDefinitionName == null) {
-			query.append(_FINDER_COLUMN_C_W_W_WORKFLOWDEFINITIONNAME_1);
-		}
-		else if (workflowDefinitionName.equals("")) {
+		if (workflowDefinitionName.equals("")) {
 			query.append(_FINDER_COLUMN_C_W_W_WORKFLOWDEFINITIONNAME_3);
 		}
 		else {
@@ -1785,6 +1782,8 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 	@Override
 	public int countByC_W_W(long companyId, String workflowDefinitionName,
 		int workflowDefinitionVersion) {
+		workflowDefinitionName = _getString(workflowDefinitionName);
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_W_W;
 
 		Object[] finderArgs = new Object[] {
@@ -1803,10 +1802,7 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 
 			boolean bindWorkflowDefinitionName = false;
 
-			if (workflowDefinitionName == null) {
-				query.append(_FINDER_COLUMN_C_W_W_WORKFLOWDEFINITIONNAME_1);
-			}
-			else if (workflowDefinitionName.equals("")) {
+			if (workflowDefinitionName.equals("")) {
 				query.append(_FINDER_COLUMN_C_W_W_WORKFLOWDEFINITIONNAME_3);
 			}
 			else {
@@ -3681,6 +3677,15 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
+
+	private String _getString(String s) {
+		if (s == null) {
+			return "";
+		}
+
+		return s;
+	}
+
 	private static final String _SQL_SELECT_WORKFLOWDEFINITIONLINK = "SELECT workflowDefinitionLink FROM WorkflowDefinitionLink workflowDefinitionLink";
 	private static final String _SQL_SELECT_WORKFLOWDEFINITIONLINK_WHERE_PKS_IN = "SELECT workflowDefinitionLink FROM WorkflowDefinitionLink workflowDefinitionLink WHERE workflowDefinitionLinkId IN (";
 	private static final String _SQL_SELECT_WORKFLOWDEFINITIONLINK_WHERE = "SELECT workflowDefinitionLink FROM WorkflowDefinitionLink workflowDefinitionLink WHERE ";

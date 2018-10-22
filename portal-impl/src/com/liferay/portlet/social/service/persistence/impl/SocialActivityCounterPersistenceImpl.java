@@ -1898,6 +1898,8 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 	public SocialActivityCounter fetchByG_C_C_N_O_S(long groupId,
 		long classNameId, long classPK, String name, int ownerType,
 		int startPeriod, boolean retrieveFromCache) {
+		name = _getString(name);
+
 		Object[] finderArgs = new Object[] {
 				groupId, classNameId, classPK, name, ownerType, startPeriod
 			};
@@ -1935,10 +1937,7 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 
 			boolean bindName = false;
 
-			if (name == null) {
-				query.append(_FINDER_COLUMN_G_C_C_N_O_S_NAME_1);
-			}
-			else if (name.equals("")) {
+			if (name.equals("")) {
 				query.append(_FINDER_COLUMN_G_C_C_N_O_S_NAME_3);
 			}
 			else {
@@ -2044,6 +2043,8 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 	@Override
 	public int countByG_C_C_N_O_S(long groupId, long classNameId, long classPK,
 		String name, int ownerType, int startPeriod) {
+		name = _getString(name);
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_C_C_N_O_S;
 
 		Object[] finderArgs = new Object[] {
@@ -2066,10 +2067,7 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 
 			boolean bindName = false;
 
-			if (name == null) {
-				query.append(_FINDER_COLUMN_G_C_C_N_O_S_NAME_1);
-			}
-			else if (name.equals("")) {
+			if (name.equals("")) {
 				query.append(_FINDER_COLUMN_G_C_C_N_O_S_NAME_3);
 			}
 			else {
@@ -2245,6 +2243,8 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 	public SocialActivityCounter fetchByG_C_C_N_O_E(long groupId,
 		long classNameId, long classPK, String name, int ownerType,
 		int endPeriod, boolean retrieveFromCache) {
+		name = _getString(name);
+
 		Object[] finderArgs = new Object[] {
 				groupId, classNameId, classPK, name, ownerType, endPeriod
 			};
@@ -2282,10 +2282,7 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 
 			boolean bindName = false;
 
-			if (name == null) {
-				query.append(_FINDER_COLUMN_G_C_C_N_O_E_NAME_1);
-			}
-			else if (name.equals("")) {
+			if (name.equals("")) {
 				query.append(_FINDER_COLUMN_G_C_C_N_O_E_NAME_3);
 			}
 			else {
@@ -2391,6 +2388,8 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 	@Override
 	public int countByG_C_C_N_O_E(long groupId, long classNameId, long classPK,
 		String name, int ownerType, int endPeriod) {
+		name = _getString(name);
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_C_C_N_O_E;
 
 		Object[] finderArgs = new Object[] {
@@ -2413,10 +2412,7 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 
 			boolean bindName = false;
 
-			if (name == null) {
-				query.append(_FINDER_COLUMN_G_C_C_N_O_E_NAME_1);
-			}
-			else if (name.equals("")) {
+			if (name.equals("")) {
 				query.append(_FINDER_COLUMN_G_C_C_N_O_E_NAME_3);
 			}
 			else {
@@ -3371,6 +3367,15 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
+
+	private String _getString(String s) {
+		if (s == null) {
+			return "";
+		}
+
+		return s;
+	}
+
 	private static final String _SQL_SELECT_SOCIALACTIVITYCOUNTER = "SELECT socialActivityCounter FROM SocialActivityCounter socialActivityCounter";
 	private static final String _SQL_SELECT_SOCIALACTIVITYCOUNTER_WHERE_PKS_IN = "SELECT socialActivityCounter FROM SocialActivityCounter socialActivityCounter WHERE activityCounterId IN (";
 	private static final String _SQL_SELECT_SOCIALACTIVITYCOUNTER_WHERE = "SELECT socialActivityCounter FROM SocialActivityCounter socialActivityCounter WHERE ";

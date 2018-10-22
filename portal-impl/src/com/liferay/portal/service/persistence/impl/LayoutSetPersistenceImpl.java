@@ -55,7 +55,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -689,6 +688,8 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 		String layoutSetPrototypeUuid, int start, int end,
 		OrderByComparator<LayoutSet> orderByComparator,
 		boolean retrieveFromCache) {
+		layoutSetPrototypeUuid = _getString(layoutSetPrototypeUuid);
+
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -716,7 +717,7 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 
 			if ((list != null) && !list.isEmpty()) {
 				for (LayoutSet layoutSet : list) {
-					if (!Objects.equals(layoutSetPrototypeUuid,
+					if (!layoutSetPrototypeUuid.equals(
 								layoutSet.getLayoutSetPrototypeUuid())) {
 						list = null;
 
@@ -741,10 +742,7 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 
 			boolean bindLayoutSetPrototypeUuid = false;
 
-			if (layoutSetPrototypeUuid == null) {
-				query.append(_FINDER_COLUMN_LAYOUTSETPROTOTYPEUUID_LAYOUTSETPROTOTYPEUUID_1);
-			}
-			else if (layoutSetPrototypeUuid.equals("")) {
+			if (layoutSetPrototypeUuid.equals("")) {
 				query.append(_FINDER_COLUMN_LAYOUTSETPROTOTYPEUUID_LAYOUTSETPROTOTYPEUUID_3);
 			}
 			else {
@@ -933,6 +931,8 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 		long layoutSetId, String layoutSetPrototypeUuid,
 		OrderByComparator<LayoutSet> orderByComparator)
 		throws NoSuchLayoutSetException {
+		layoutSetPrototypeUuid = _getString(layoutSetPrototypeUuid);
+
 		LayoutSet layoutSet = findByPrimaryKey(layoutSetId);
 
 		Session session = null;
@@ -978,10 +978,7 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 
 		boolean bindLayoutSetPrototypeUuid = false;
 
-		if (layoutSetPrototypeUuid == null) {
-			query.append(_FINDER_COLUMN_LAYOUTSETPROTOTYPEUUID_LAYOUTSETPROTOTYPEUUID_1);
-		}
-		else if (layoutSetPrototypeUuid.equals("")) {
+		if (layoutSetPrototypeUuid.equals("")) {
 			query.append(_FINDER_COLUMN_LAYOUTSETPROTOTYPEUUID_LAYOUTSETPROTOTYPEUUID_3);
 		}
 		else {
@@ -1102,6 +1099,8 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 	 */
 	@Override
 	public int countByLayoutSetPrototypeUuid(String layoutSetPrototypeUuid) {
+		layoutSetPrototypeUuid = _getString(layoutSetPrototypeUuid);
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_LAYOUTSETPROTOTYPEUUID;
 
 		Object[] finderArgs = new Object[] { layoutSetPrototypeUuid };
@@ -1116,10 +1115,7 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 
 			boolean bindLayoutSetPrototypeUuid = false;
 
-			if (layoutSetPrototypeUuid == null) {
-				query.append(_FINDER_COLUMN_LAYOUTSETPROTOTYPEUUID_LAYOUTSETPROTOTYPEUUID_1);
-			}
-			else if (layoutSetPrototypeUuid.equals("")) {
+			if (layoutSetPrototypeUuid.equals("")) {
 				query.append(_FINDER_COLUMN_LAYOUTSETPROTOTYPEUUID_LAYOUTSETPROTOTYPEUUID_3);
 			}
 			else {
@@ -2441,6 +2437,15 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
+
+	private String _getString(String s) {
+		if (s == null) {
+			return "";
+		}
+
+		return s;
+	}
+
 	private static final String _SQL_SELECT_LAYOUTSET = "SELECT layoutSet FROM LayoutSet layoutSet";
 	private static final String _SQL_SELECT_LAYOUTSET_WHERE_PKS_IN = "SELECT layoutSet FROM LayoutSet layoutSet WHERE layoutSetId IN (";
 	private static final String _SQL_SELECT_LAYOUTSET_WHERE = "SELECT layoutSet FROM LayoutSet layoutSet WHERE ";

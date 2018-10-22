@@ -49,7 +49,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -1181,6 +1180,8 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 	public List<UserTracker> findBySessionId(String sessionId, int start,
 		int end, OrderByComparator<UserTracker> orderByComparator,
 		boolean retrieveFromCache) {
+		sessionId = _getString(sessionId);
+
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1204,7 +1205,7 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 
 			if ((list != null) && !list.isEmpty()) {
 				for (UserTracker userTracker : list) {
-					if (!Objects.equals(sessionId, userTracker.getSessionId())) {
+					if (!sessionId.equals(userTracker.getSessionId())) {
 						list = null;
 
 						break;
@@ -1228,10 +1229,7 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 
 			boolean bindSessionId = false;
 
-			if (sessionId == null) {
-				query.append(_FINDER_COLUMN_SESSIONID_SESSIONID_1);
-			}
-			else if (sessionId.equals("")) {
+			if (sessionId.equals("")) {
 				query.append(_FINDER_COLUMN_SESSIONID_SESSIONID_3);
 			}
 			else {
@@ -1415,6 +1413,8 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 	public UserTracker[] findBySessionId_PrevAndNext(long userTrackerId,
 		String sessionId, OrderByComparator<UserTracker> orderByComparator)
 		throws NoSuchUserTrackerException {
+		sessionId = _getString(sessionId);
+
 		UserTracker userTracker = findByPrimaryKey(userTrackerId);
 
 		Session session = null;
@@ -1460,10 +1460,7 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 
 		boolean bindSessionId = false;
 
-		if (sessionId == null) {
-			query.append(_FINDER_COLUMN_SESSIONID_SESSIONID_1);
-		}
-		else if (sessionId.equals("")) {
+		if (sessionId.equals("")) {
 			query.append(_FINDER_COLUMN_SESSIONID_SESSIONID_3);
 		}
 		else {
@@ -1583,6 +1580,8 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 	 */
 	@Override
 	public int countBySessionId(String sessionId) {
+		sessionId = _getString(sessionId);
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_SESSIONID;
 
 		Object[] finderArgs = new Object[] { sessionId };
@@ -1597,10 +1596,7 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 
 			boolean bindSessionId = false;
 
-			if (sessionId == null) {
-				query.append(_FINDER_COLUMN_SESSIONID_SESSIONID_1);
-			}
-			else if (sessionId.equals("")) {
+			if (sessionId.equals("")) {
 				query.append(_FINDER_COLUMN_SESSIONID_SESSIONID_3);
 			}
 			else {
@@ -2366,6 +2362,15 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
+
+	private String _getString(String s) {
+		if (s == null) {
+			return "";
+		}
+
+		return s;
+	}
+
 	private static final String _SQL_SELECT_USERTRACKER = "SELECT userTracker FROM UserTracker userTracker";
 	private static final String _SQL_SELECT_USERTRACKER_WHERE_PKS_IN = "SELECT userTracker FROM UserTracker userTracker WHERE userTrackerId IN (";
 	private static final String _SQL_SELECT_USERTRACKER_WHERE = "SELECT userTracker FROM UserTracker userTracker WHERE ";

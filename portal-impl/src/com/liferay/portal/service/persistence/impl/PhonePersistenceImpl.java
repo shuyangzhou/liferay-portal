@@ -56,7 +56,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -177,6 +176,8 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	@Override
 	public List<Phone> findByUuid(String uuid, int start, int end,
 		OrderByComparator<Phone> orderByComparator, boolean retrieveFromCache) {
+		uuid = _getString(uuid);
+
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -200,7 +201,7 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 
 			if ((list != null) && !list.isEmpty()) {
 				for (Phone phone : list) {
-					if (!Objects.equals(uuid, phone.getUuid())) {
+					if (!uuid.equals(phone.getUuid())) {
 						list = null;
 
 						break;
@@ -224,10 +225,7 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 
 			boolean bindUuid = false;
 
-			if (uuid == null) {
-				query.append(_FINDER_COLUMN_UUID_UUID_1);
-			}
-			else if (uuid.equals("")) {
+			if (uuid.equals("")) {
 				query.append(_FINDER_COLUMN_UUID_UUID_3);
 			}
 			else {
@@ -404,6 +402,8 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	@Override
 	public Phone[] findByUuid_PrevAndNext(long phoneId, String uuid,
 		OrderByComparator<Phone> orderByComparator) throws NoSuchPhoneException {
+		uuid = _getString(uuid);
+
 		Phone phone = findByPrimaryKey(phoneId);
 
 		Session session = null;
@@ -449,10 +449,7 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 
 		boolean bindUuid = false;
 
-		if (uuid == null) {
-			query.append(_FINDER_COLUMN_UUID_UUID_1);
-		}
-		else if (uuid.equals("")) {
+		if (uuid.equals("")) {
 			query.append(_FINDER_COLUMN_UUID_UUID_3);
 		}
 		else {
@@ -572,6 +569,8 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	 */
 	@Override
 	public int countByUuid(String uuid) {
+		uuid = _getString(uuid);
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_UUID;
 
 		Object[] finderArgs = new Object[] { uuid };
@@ -586,10 +585,7 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 
 			boolean bindUuid = false;
 
-			if (uuid == null) {
-				query.append(_FINDER_COLUMN_UUID_UUID_1);
-			}
-			else if (uuid.equals("")) {
+			if (uuid.equals("")) {
 				query.append(_FINDER_COLUMN_UUID_UUID_3);
 			}
 			else {
@@ -726,6 +722,8 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	public List<Phone> findByUuid_C(String uuid, long companyId, int start,
 		int end, OrderByComparator<Phone> orderByComparator,
 		boolean retrieveFromCache) {
+		uuid = _getString(uuid);
+
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -753,7 +751,7 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 
 			if ((list != null) && !list.isEmpty()) {
 				for (Phone phone : list) {
-					if (!Objects.equals(uuid, phone.getUuid()) ||
+					if (!uuid.equals(phone.getUuid()) ||
 							(companyId != phone.getCompanyId())) {
 						list = null;
 
@@ -778,10 +776,7 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 
 			boolean bindUuid = false;
 
-			if (uuid == null) {
-				query.append(_FINDER_COLUMN_UUID_C_UUID_1);
-			}
-			else if (uuid.equals("")) {
+			if (uuid.equals("")) {
 				query.append(_FINDER_COLUMN_UUID_C_UUID_3);
 			}
 			else {
@@ -975,6 +970,8 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	public Phone[] findByUuid_C_PrevAndNext(long phoneId, String uuid,
 		long companyId, OrderByComparator<Phone> orderByComparator)
 		throws NoSuchPhoneException {
+		uuid = _getString(uuid);
+
 		Phone phone = findByPrimaryKey(phoneId);
 
 		Session session = null;
@@ -1020,10 +1017,7 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 
 		boolean bindUuid = false;
 
-		if (uuid == null) {
-			query.append(_FINDER_COLUMN_UUID_C_UUID_1);
-		}
-		else if (uuid.equals("")) {
+		if (uuid.equals("")) {
 			query.append(_FINDER_COLUMN_UUID_C_UUID_3);
 		}
 		else {
@@ -1149,6 +1143,8 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	 */
 	@Override
 	public int countByUuid_C(String uuid, long companyId) {
+		uuid = _getString(uuid);
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_UUID_C;
 
 		Object[] finderArgs = new Object[] { uuid, companyId };
@@ -1163,10 +1159,7 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 
 			boolean bindUuid = false;
 
-			if (uuid == null) {
-				query.append(_FINDER_COLUMN_UUID_C_UUID_1);
-			}
-			else if (uuid.equals("")) {
+			if (uuid.equals("")) {
 				query.append(_FINDER_COLUMN_UUID_C_UUID_3);
 			}
 			else {
@@ -4846,6 +4839,15 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
+
+	private String _getString(String s) {
+		if (s == null) {
+			return "";
+		}
+
+		return s;
+	}
+
 	private static final String _SQL_SELECT_PHONE = "SELECT phone FROM Phone phone";
 	private static final String _SQL_SELECT_PHONE_WHERE_PKS_IN = "SELECT phone FROM Phone phone WHERE phoneId IN (";
 	private static final String _SQL_SELECT_PHONE_WHERE = "SELECT phone FROM Phone phone WHERE ";

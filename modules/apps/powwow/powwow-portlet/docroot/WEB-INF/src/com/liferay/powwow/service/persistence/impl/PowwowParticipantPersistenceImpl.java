@@ -922,6 +922,8 @@ public class PowwowParticipantPersistenceImpl extends BasePersistenceImpl<Powwow
 	@Override
 	public PowwowParticipant fetchByPMI_EA(long powwowMeetingId,
 		String emailAddress, boolean retrieveFromCache) {
+		emailAddress = _getString(emailAddress);
+
 		Object[] finderArgs = new Object[] { powwowMeetingId, emailAddress };
 
 		Object result = null;
@@ -950,10 +952,7 @@ public class PowwowParticipantPersistenceImpl extends BasePersistenceImpl<Powwow
 
 			boolean bindEmailAddress = false;
 
-			if (emailAddress == null) {
-				query.append(_FINDER_COLUMN_PMI_EA_EMAILADDRESS_1);
-			}
-			else if (emailAddress.equals("")) {
+			if (emailAddress.equals("")) {
 				query.append(_FINDER_COLUMN_PMI_EA_EMAILADDRESS_3);
 			}
 			else {
@@ -1037,6 +1036,8 @@ public class PowwowParticipantPersistenceImpl extends BasePersistenceImpl<Powwow
 	 */
 	@Override
 	public int countByPMI_EA(long powwowMeetingId, String emailAddress) {
+		emailAddress = _getString(emailAddress);
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_PMI_EA;
 
 		Object[] finderArgs = new Object[] { powwowMeetingId, emailAddress };
@@ -1053,10 +1054,7 @@ public class PowwowParticipantPersistenceImpl extends BasePersistenceImpl<Powwow
 
 			boolean bindEmailAddress = false;
 
-			if (emailAddress == null) {
-				query.append(_FINDER_COLUMN_PMI_EA_EMAILADDRESS_1);
-			}
-			else if (emailAddress.equals("")) {
+			if (emailAddress.equals("")) {
 				query.append(_FINDER_COLUMN_PMI_EA_EMAILADDRESS_3);
 			}
 			else {
@@ -2499,6 +2497,15 @@ public class PowwowParticipantPersistenceImpl extends BasePersistenceImpl<Powwow
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
+
+	private String _getString(String s) {
+		if (s == null) {
+			return "";
+		}
+
+		return s;
+	}
+
 	private static final String _SQL_SELECT_POWWOWPARTICIPANT = "SELECT powwowParticipant FROM PowwowParticipant powwowParticipant";
 	private static final String _SQL_SELECT_POWWOWPARTICIPANT_WHERE_PKS_IN = "SELECT powwowParticipant FROM PowwowParticipant powwowParticipant WHERE powwowParticipantId IN (";
 	private static final String _SQL_SELECT_POWWOWPARTICIPANT_WHERE = "SELECT powwowParticipant FROM PowwowParticipant powwowParticipant WHERE ";

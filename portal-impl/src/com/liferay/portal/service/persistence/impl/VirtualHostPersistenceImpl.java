@@ -149,6 +149,8 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	@Override
 	public VirtualHost fetchByHostname(String hostname,
 		boolean retrieveFromCache) {
+		hostname = _getString(hostname);
+
 		Object[] finderArgs = new Object[] { hostname };
 
 		Object result = null;
@@ -173,10 +175,7 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 
 			boolean bindHostname = false;
 
-			if (hostname == null) {
-				query.append(_FINDER_COLUMN_HOSTNAME_HOSTNAME_1);
-			}
-			else if (hostname.equals("")) {
+			if (hostname.equals("")) {
 				query.append(_FINDER_COLUMN_HOSTNAME_HOSTNAME_3);
 			}
 			else {
@@ -255,6 +254,8 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	 */
 	@Override
 	public int countByHostname(String hostname) {
+		hostname = _getString(hostname);
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_HOSTNAME;
 
 		Object[] finderArgs = new Object[] { hostname };
@@ -269,10 +270,7 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 
 			boolean bindHostname = false;
 
-			if (hostname == null) {
-				query.append(_FINDER_COLUMN_HOSTNAME_HOSTNAME_1);
-			}
-			else if (hostname.equals("")) {
+			if (hostname.equals("")) {
 				query.append(_FINDER_COLUMN_HOSTNAME_HOSTNAME_3);
 			}
 			else {
@@ -1258,6 +1256,15 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
+
+	private String _getString(String s) {
+		if (s == null) {
+			return "";
+		}
+
+		return s;
+	}
+
 	private static final String _SQL_SELECT_VIRTUALHOST = "SELECT virtualHost FROM VirtualHost virtualHost";
 	private static final String _SQL_SELECT_VIRTUALHOST_WHERE_PKS_IN = "SELECT virtualHost FROM VirtualHost virtualHost WHERE virtualHostId IN (";
 	private static final String _SQL_SELECT_VIRTUALHOST_WHERE = "SELECT virtualHost FROM VirtualHost virtualHost WHERE ";

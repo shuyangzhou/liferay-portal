@@ -53,7 +53,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -4345,6 +4344,8 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 		String data, int start, int end,
 		OrderByComparator<ExpandoValue> orderByComparator,
 		boolean retrieveFromCache) {
+		data = _getString(data);
+
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -4374,7 +4375,7 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 				for (ExpandoValue expandoValue : list) {
 					if ((tableId != expandoValue.getTableId()) ||
 							(columnId != expandoValue.getColumnId()) ||
-							!Objects.equals(data, expandoValue.getData())) {
+							!data.equals(expandoValue.getData())) {
 						list = null;
 
 						break;
@@ -4402,10 +4403,7 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 
 			boolean bindData = false;
 
-			if (data == null) {
-				query.append(_FINDER_COLUMN_T_C_D_DATA_1);
-			}
-			else if (data.equals("")) {
+			if (data.equals("")) {
 				query.append(_FINDER_COLUMN_T_C_D_DATA_3);
 			}
 			else {
@@ -4616,6 +4614,8 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 		long columnId, String data,
 		OrderByComparator<ExpandoValue> orderByComparator)
 		throws NoSuchValueException {
+		data = _getString(data);
+
 		ExpandoValue expandoValue = findByPrimaryKey(valueId);
 
 		Session session = null;
@@ -4665,10 +4665,7 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 
 		boolean bindData = false;
 
-		if (data == null) {
-			query.append(_FINDER_COLUMN_T_C_D_DATA_1);
-		}
-		else if (data.equals("")) {
+		if (data.equals("")) {
 			query.append(_FINDER_COLUMN_T_C_D_DATA_3);
 		}
 		else {
@@ -4796,6 +4793,8 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 */
 	@Override
 	public int countByT_C_D(long tableId, long columnId, String data) {
+		data = _getString(data);
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_T_C_D;
 
 		Object[] finderArgs = new Object[] { tableId, columnId, data };
@@ -4814,10 +4813,7 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 
 			boolean bindData = false;
 
-			if (data == null) {
-				query.append(_FINDER_COLUMN_T_C_D_DATA_1);
-			}
-			else if (data.equals("")) {
+			if (data.equals("")) {
 				query.append(_FINDER_COLUMN_T_C_D_DATA_3);
 			}
 			else {
@@ -5849,6 +5845,15 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
+
+	private String _getString(String s) {
+		if (s == null) {
+			return "";
+		}
+
+		return s;
+	}
+
 	private static final String _SQL_SELECT_EXPANDOVALUE = "SELECT expandoValue FROM ExpandoValue expandoValue";
 	private static final String _SQL_SELECT_EXPANDOVALUE_WHERE_PKS_IN = "SELECT expandoValue FROM ExpandoValue expandoValue WHERE valueId IN (";
 	private static final String _SQL_SELECT_EXPANDOVALUE_WHERE = "SELECT expandoValue FROM ExpandoValue expandoValue WHERE ";

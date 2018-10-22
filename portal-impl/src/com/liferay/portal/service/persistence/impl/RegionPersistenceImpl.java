@@ -1159,6 +1159,8 @@ public class RegionPersistenceImpl extends BasePersistenceImpl<Region>
 	@Override
 	public Region fetchByC_R(long countryId, String regionCode,
 		boolean retrieveFromCache) {
+		regionCode = _getString(regionCode);
+
 		Object[] finderArgs = new Object[] { countryId, regionCode };
 
 		Object result = null;
@@ -1186,10 +1188,7 @@ public class RegionPersistenceImpl extends BasePersistenceImpl<Region>
 
 			boolean bindRegionCode = false;
 
-			if (regionCode == null) {
-				query.append(_FINDER_COLUMN_C_R_REGIONCODE_1);
-			}
-			else if (regionCode.equals("")) {
+			if (regionCode.equals("")) {
 				query.append(_FINDER_COLUMN_C_R_REGIONCODE_3);
 			}
 			else {
@@ -1272,6 +1271,8 @@ public class RegionPersistenceImpl extends BasePersistenceImpl<Region>
 	 */
 	@Override
 	public int countByC_R(long countryId, String regionCode) {
+		regionCode = _getString(regionCode);
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_R;
 
 		Object[] finderArgs = new Object[] { countryId, regionCode };
@@ -1288,10 +1289,7 @@ public class RegionPersistenceImpl extends BasePersistenceImpl<Region>
 
 			boolean bindRegionCode = false;
 
-			if (regionCode == null) {
-				query.append(_FINDER_COLUMN_C_R_REGIONCODE_1);
-			}
-			else if (regionCode.equals("")) {
+			if (regionCode.equals("")) {
 				query.append(_FINDER_COLUMN_C_R_REGIONCODE_3);
 			}
 			else {
@@ -2657,6 +2655,14 @@ public class RegionPersistenceImpl extends BasePersistenceImpl<Region>
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private String _getString(String s) {
+		if (s == null) {
+			return "";
+		}
+
+		return s;
 	}
 
 	private static final String _SQL_SELECT_REGION = "SELECT region FROM Region region";

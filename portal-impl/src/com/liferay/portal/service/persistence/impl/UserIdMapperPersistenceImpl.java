@@ -660,6 +660,8 @@ public class UserIdMapperPersistenceImpl extends BasePersistenceImpl<UserIdMappe
 	@Override
 	public UserIdMapper fetchByU_T(long userId, String type,
 		boolean retrieveFromCache) {
+		type = _getString(type);
+
 		Object[] finderArgs = new Object[] { userId, type };
 
 		Object result = null;
@@ -687,10 +689,7 @@ public class UserIdMapperPersistenceImpl extends BasePersistenceImpl<UserIdMappe
 
 			boolean bindType = false;
 
-			if (type == null) {
-				query.append(_FINDER_COLUMN_U_T_TYPE_1);
-			}
-			else if (type.equals("")) {
+			if (type.equals("")) {
 				query.append(_FINDER_COLUMN_U_T_TYPE_3);
 			}
 			else {
@@ -773,6 +772,8 @@ public class UserIdMapperPersistenceImpl extends BasePersistenceImpl<UserIdMappe
 	 */
 	@Override
 	public int countByU_T(long userId, String type) {
+		type = _getString(type);
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_U_T;
 
 		Object[] finderArgs = new Object[] { userId, type };
@@ -789,10 +790,7 @@ public class UserIdMapperPersistenceImpl extends BasePersistenceImpl<UserIdMappe
 
 			boolean bindType = false;
 
-			if (type == null) {
-				query.append(_FINDER_COLUMN_U_T_TYPE_1);
-			}
-			else if (type.equals("")) {
+			if (type.equals("")) {
 				query.append(_FINDER_COLUMN_U_T_TYPE_3);
 			}
 			else {
@@ -909,6 +907,9 @@ public class UserIdMapperPersistenceImpl extends BasePersistenceImpl<UserIdMappe
 	@Override
 	public UserIdMapper fetchByT_E(String type, String externalUserId,
 		boolean retrieveFromCache) {
+		type = _getString(type);
+		externalUserId = _getString(externalUserId);
+
 		Object[] finderArgs = new Object[] { type, externalUserId };
 
 		Object result = null;
@@ -935,10 +936,7 @@ public class UserIdMapperPersistenceImpl extends BasePersistenceImpl<UserIdMappe
 
 			boolean bindType = false;
 
-			if (type == null) {
-				query.append(_FINDER_COLUMN_T_E_TYPE_1);
-			}
-			else if (type.equals("")) {
+			if (type.equals("")) {
 				query.append(_FINDER_COLUMN_T_E_TYPE_3);
 			}
 			else {
@@ -949,10 +947,7 @@ public class UserIdMapperPersistenceImpl extends BasePersistenceImpl<UserIdMappe
 
 			boolean bindExternalUserId = false;
 
-			if (externalUserId == null) {
-				query.append(_FINDER_COLUMN_T_E_EXTERNALUSERID_1);
-			}
-			else if (externalUserId.equals("")) {
+			if (externalUserId.equals("")) {
 				query.append(_FINDER_COLUMN_T_E_EXTERNALUSERID_3);
 			}
 			else {
@@ -1037,6 +1032,9 @@ public class UserIdMapperPersistenceImpl extends BasePersistenceImpl<UserIdMappe
 	 */
 	@Override
 	public int countByT_E(String type, String externalUserId) {
+		type = _getString(type);
+		externalUserId = _getString(externalUserId);
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_T_E;
 
 		Object[] finderArgs = new Object[] { type, externalUserId };
@@ -1051,10 +1049,7 @@ public class UserIdMapperPersistenceImpl extends BasePersistenceImpl<UserIdMappe
 
 			boolean bindType = false;
 
-			if (type == null) {
-				query.append(_FINDER_COLUMN_T_E_TYPE_1);
-			}
-			else if (type.equals("")) {
+			if (type.equals("")) {
 				query.append(_FINDER_COLUMN_T_E_TYPE_3);
 			}
 			else {
@@ -1065,10 +1060,7 @@ public class UserIdMapperPersistenceImpl extends BasePersistenceImpl<UserIdMappe
 
 			boolean bindExternalUserId = false;
 
-			if (externalUserId == null) {
-				query.append(_FINDER_COLUMN_T_E_EXTERNALUSERID_1);
-			}
-			else if (externalUserId.equals("")) {
+			if (externalUserId.equals("")) {
 				query.append(_FINDER_COLUMN_T_E_EXTERNALUSERID_3);
 			}
 			else {
@@ -1898,6 +1890,15 @@ public class UserIdMapperPersistenceImpl extends BasePersistenceImpl<UserIdMappe
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
+
+	private String _getString(String s) {
+		if (s == null) {
+			return "";
+		}
+
+		return s;
+	}
+
 	private static final String _SQL_SELECT_USERIDMAPPER = "SELECT userIdMapper FROM UserIdMapper userIdMapper";
 	private static final String _SQL_SELECT_USERIDMAPPER_WHERE_PKS_IN = "SELECT userIdMapper FROM UserIdMapper userIdMapper WHERE userIdMapperId IN (";
 	private static final String _SQL_SELECT_USERIDMAPPER_WHERE = "SELECT userIdMapper FROM UserIdMapper userIdMapper WHERE ";

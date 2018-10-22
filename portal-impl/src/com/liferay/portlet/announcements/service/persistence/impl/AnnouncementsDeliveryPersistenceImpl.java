@@ -671,6 +671,8 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 	@Override
 	public AnnouncementsDelivery fetchByU_T(long userId, String type,
 		boolean retrieveFromCache) {
+		type = _getString(type);
+
 		Object[] finderArgs = new Object[] { userId, type };
 
 		Object result = null;
@@ -698,10 +700,7 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 
 			boolean bindType = false;
 
-			if (type == null) {
-				query.append(_FINDER_COLUMN_U_T_TYPE_1);
-			}
-			else if (type.equals("")) {
+			if (type.equals("")) {
 				query.append(_FINDER_COLUMN_U_T_TYPE_3);
 			}
 			else {
@@ -784,6 +783,8 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 	 */
 	@Override
 	public int countByU_T(long userId, String type) {
+		type = _getString(type);
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_U_T;
 
 		Object[] finderArgs = new Object[] { userId, type };
@@ -800,10 +801,7 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 
 			boolean bindType = false;
 
-			if (type == null) {
-				query.append(_FINDER_COLUMN_U_T_TYPE_1);
-			}
-			else if (type.equals("")) {
+			if (type.equals("")) {
 				query.append(_FINDER_COLUMN_U_T_TYPE_3);
 			}
 			else {
@@ -1607,6 +1605,15 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
+
+	private String _getString(String s) {
+		if (s == null) {
+			return "";
+		}
+
+		return s;
+	}
+
 	private static final String _SQL_SELECT_ANNOUNCEMENTSDELIVERY = "SELECT announcementsDelivery FROM AnnouncementsDelivery announcementsDelivery";
 	private static final String _SQL_SELECT_ANNOUNCEMENTSDELIVERY_WHERE_PKS_IN = "SELECT announcementsDelivery FROM AnnouncementsDelivery announcementsDelivery WHERE deliveryId IN (";
 	private static final String _SQL_SELECT_ANNOUNCEMENTSDELIVERY_WHERE = "SELECT announcementsDelivery FROM AnnouncementsDelivery announcementsDelivery WHERE ";

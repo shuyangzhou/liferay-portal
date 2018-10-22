@@ -55,7 +55,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -185,6 +184,8 @@ public class PowwowServerPersistenceImpl extends BasePersistenceImpl<PowwowServe
 	public List<PowwowServer> findByPT_A(String providerType, boolean active,
 		int start, int end, OrderByComparator<PowwowServer> orderByComparator,
 		boolean retrieveFromCache) {
+		providerType = _getString(providerType);
+
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -212,8 +213,7 @@ public class PowwowServerPersistenceImpl extends BasePersistenceImpl<PowwowServe
 
 			if ((list != null) && !list.isEmpty()) {
 				for (PowwowServer powwowServer : list) {
-					if (!Objects.equals(providerType,
-								powwowServer.getProviderType()) ||
+					if (!providerType.equals(powwowServer.getProviderType()) ||
 							(active != powwowServer.isActive())) {
 						list = null;
 
@@ -238,10 +238,7 @@ public class PowwowServerPersistenceImpl extends BasePersistenceImpl<PowwowServe
 
 			boolean bindProviderType = false;
 
-			if (providerType == null) {
-				query.append(_FINDER_COLUMN_PT_A_PROVIDERTYPE_1);
-			}
-			else if (providerType.equals("")) {
+			if (providerType.equals("")) {
 				query.append(_FINDER_COLUMN_PT_A_PROVIDERTYPE_3);
 			}
 			else {
@@ -441,6 +438,8 @@ public class PowwowServerPersistenceImpl extends BasePersistenceImpl<PowwowServe
 		String providerType, boolean active,
 		OrderByComparator<PowwowServer> orderByComparator)
 		throws NoSuchServerException {
+		providerType = _getString(providerType);
+
 		PowwowServer powwowServer = findByPrimaryKey(powwowServerId);
 
 		Session session = null;
@@ -486,10 +485,7 @@ public class PowwowServerPersistenceImpl extends BasePersistenceImpl<PowwowServe
 
 		boolean bindProviderType = false;
 
-		if (providerType == null) {
-			query.append(_FINDER_COLUMN_PT_A_PROVIDERTYPE_1);
-		}
-		else if (providerType.equals("")) {
+		if (providerType.equals("")) {
 			query.append(_FINDER_COLUMN_PT_A_PROVIDERTYPE_3);
 		}
 		else {
@@ -615,6 +611,8 @@ public class PowwowServerPersistenceImpl extends BasePersistenceImpl<PowwowServe
 	 */
 	@Override
 	public int countByPT_A(String providerType, boolean active) {
+		providerType = _getString(providerType);
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_PT_A;
 
 		Object[] finderArgs = new Object[] { providerType, active };
@@ -629,10 +627,7 @@ public class PowwowServerPersistenceImpl extends BasePersistenceImpl<PowwowServe
 
 			boolean bindProviderType = false;
 
-			if (providerType == null) {
-				query.append(_FINDER_COLUMN_PT_A_PROVIDERTYPE_1);
-			}
-			else if (providerType.equals("")) {
+			if (providerType.equals("")) {
 				query.append(_FINDER_COLUMN_PT_A_PROVIDERTYPE_3);
 			}
 			else {
@@ -1405,6 +1400,15 @@ public class PowwowServerPersistenceImpl extends BasePersistenceImpl<PowwowServe
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
+
+	private String _getString(String s) {
+		if (s == null) {
+			return "";
+		}
+
+		return s;
+	}
+
 	private static final String _SQL_SELECT_POWWOWSERVER = "SELECT powwowServer FROM PowwowServer powwowServer";
 	private static final String _SQL_SELECT_POWWOWSERVER_WHERE_PKS_IN = "SELECT powwowServer FROM PowwowServer powwowServer WHERE powwowServerId IN (";
 	private static final String _SQL_SELECT_POWWOWSERVER_WHERE = "SELECT powwowServer FROM PowwowServer powwowServer WHERE ";

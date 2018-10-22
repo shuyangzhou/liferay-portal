@@ -170,6 +170,8 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 	@Override
 	public List<ListType> findByType(String type, int start, int end,
 		OrderByComparator<ListType> orderByComparator, boolean retrieveFromCache) {
+		type = _getString(type);
+
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -193,7 +195,7 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 
 			if ((list != null) && !list.isEmpty()) {
 				for (ListType listType : list) {
-					if (!Objects.equals(type, listType.getType())) {
+					if (!type.equals(listType.getType())) {
 						list = null;
 
 						break;
@@ -217,10 +219,7 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 
 			boolean bindType = false;
 
-			if (type == null) {
-				query.append(_FINDER_COLUMN_TYPE_TYPE_1);
-			}
-			else if (type.equals("")) {
+			if (type.equals("")) {
 				query.append(_FINDER_COLUMN_TYPE_TYPE_3);
 			}
 			else {
@@ -401,6 +400,8 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 	public ListType[] findByType_PrevAndNext(long listTypeId, String type,
 		OrderByComparator<ListType> orderByComparator)
 		throws NoSuchListTypeException {
+		type = _getString(type);
+
 		ListType listType = findByPrimaryKey(listTypeId);
 
 		Session session = null;
@@ -446,10 +447,7 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 
 		boolean bindType = false;
 
-		if (type == null) {
-			query.append(_FINDER_COLUMN_TYPE_TYPE_1);
-		}
-		else if (type.equals("")) {
+		if (type.equals("")) {
 			query.append(_FINDER_COLUMN_TYPE_TYPE_3);
 		}
 		else {
@@ -569,6 +567,8 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 	 */
 	@Override
 	public int countByType(String type) {
+		type = _getString(type);
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_TYPE;
 
 		Object[] finderArgs = new Object[] { type };
@@ -583,10 +583,7 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 
 			boolean bindType = false;
 
-			if (type == null) {
-				query.append(_FINDER_COLUMN_TYPE_TYPE_1);
-			}
-			else if (type.equals("")) {
+			if (type.equals("")) {
 				query.append(_FINDER_COLUMN_TYPE_TYPE_3);
 			}
 			else {
@@ -700,6 +697,9 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 	@Override
 	public ListType fetchByN_T(String name, String type,
 		boolean retrieveFromCache) {
+		name = _getString(name);
+		type = _getString(type);
+
 		Object[] finderArgs = new Object[] { name, type };
 
 		Object result = null;
@@ -725,10 +725,7 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 
 			boolean bindName = false;
 
-			if (name == null) {
-				query.append(_FINDER_COLUMN_N_T_NAME_1);
-			}
-			else if (name.equals("")) {
+			if (name.equals("")) {
 				query.append(_FINDER_COLUMN_N_T_NAME_3);
 			}
 			else {
@@ -739,10 +736,7 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 
 			boolean bindType = false;
 
-			if (type == null) {
-				query.append(_FINDER_COLUMN_N_T_TYPE_1);
-			}
-			else if (type.equals("")) {
+			if (type.equals("")) {
 				query.append(_FINDER_COLUMN_N_T_TYPE_3);
 			}
 			else {
@@ -838,6 +832,9 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 	 */
 	@Override
 	public int countByN_T(String name, String type) {
+		name = _getString(name);
+		type = _getString(type);
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_N_T;
 
 		Object[] finderArgs = new Object[] { name, type };
@@ -852,10 +849,7 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 
 			boolean bindName = false;
 
-			if (name == null) {
-				query.append(_FINDER_COLUMN_N_T_NAME_1);
-			}
-			else if (name.equals("")) {
+			if (name.equals("")) {
 				query.append(_FINDER_COLUMN_N_T_NAME_3);
 			}
 			else {
@@ -866,10 +860,7 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 
 			boolean bindType = false;
 
-			if (type == null) {
-				query.append(_FINDER_COLUMN_N_T_TYPE_1);
-			}
-			else if (type.equals("")) {
+			if (type.equals("")) {
 				query.append(_FINDER_COLUMN_N_T_TYPE_3);
 			}
 			else {
@@ -1647,6 +1638,14 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private String _getString(String s) {
+		if (s == null) {
+			return "";
+		}
+
+		return s;
 	}
 
 	private static final String _SQL_SELECT_LISTTYPE = "SELECT listType FROM ListType listType";

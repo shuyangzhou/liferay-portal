@@ -150,6 +150,8 @@ public class TicketPersistenceImpl extends BasePersistenceImpl<Ticket>
 	 */
 	@Override
 	public Ticket fetchByKey(String key, boolean retrieveFromCache) {
+		key = _getString(key);
+
 		Object[] finderArgs = new Object[] { key };
 
 		Object result = null;
@@ -174,10 +176,7 @@ public class TicketPersistenceImpl extends BasePersistenceImpl<Ticket>
 
 			boolean bindKey = false;
 
-			if (key == null) {
-				query.append(_FINDER_COLUMN_KEY_KEY_1);
-			}
-			else if (key.equals("")) {
+			if (key.equals("")) {
 				query.append(_FINDER_COLUMN_KEY_KEY_3);
 			}
 			else {
@@ -266,6 +265,8 @@ public class TicketPersistenceImpl extends BasePersistenceImpl<Ticket>
 	 */
 	@Override
 	public int countByKey(String key) {
+		key = _getString(key);
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_KEY;
 
 		Object[] finderArgs = new Object[] { key };
@@ -280,10 +281,7 @@ public class TicketPersistenceImpl extends BasePersistenceImpl<Ticket>
 
 			boolean bindKey = false;
 
-			if (key == null) {
-				query.append(_FINDER_COLUMN_KEY_KEY_1);
-			}
-			else if (key.equals("")) {
+			if (key.equals("")) {
 				query.append(_FINDER_COLUMN_KEY_KEY_3);
 			}
 			else {
@@ -2296,6 +2294,15 @@ public class TicketPersistenceImpl extends BasePersistenceImpl<Ticket>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
+
+	private String _getString(String s) {
+		if (s == null) {
+			return "";
+		}
+
+		return s;
+	}
+
 	private static final String _SQL_SELECT_TICKET = "SELECT ticket FROM Ticket ticket";
 	private static final String _SQL_SELECT_TICKET_WHERE_PKS_IN = "SELECT ticket FROM Ticket ticket WHERE ticketId IN (";
 	private static final String _SQL_SELECT_TICKET_WHERE = "SELECT ticket FROM Ticket ticket WHERE ";
