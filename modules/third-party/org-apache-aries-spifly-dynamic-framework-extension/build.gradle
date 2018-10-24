@@ -19,6 +19,8 @@ jarPatched {
 
 	from sourceSets.main.output
 
+	exclude "org/objectweb/asm/Item.class"
+
 	from {
 		zipTree(configurations.compileOnly.singleFile)
 	}
