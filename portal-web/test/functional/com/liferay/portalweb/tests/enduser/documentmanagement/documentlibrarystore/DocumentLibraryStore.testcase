@@ -71,6 +71,7 @@
 	</command>
 
 	<command name="DBStoreSmoke" priority="5">
+		<property name="portal.acceptance" value="victor" />
 		<property name="custom.properties" value="dl.store.impl=com.liferay.portal.store.db.DBStore" />
 
 		<execute macro="Navigator#openURL" />
