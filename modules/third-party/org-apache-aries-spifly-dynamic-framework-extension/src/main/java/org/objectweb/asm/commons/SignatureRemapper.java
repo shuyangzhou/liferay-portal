@@ -28,30 +28,44 @@
 
 package org.objectweb.asm.commons;
 
+import java.util.ArrayList;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.signature.SignatureVisitor;
 
 /**
- * A {@link SignatureVisitor} adapter for type mapping.
+ * A {@link SignatureVisitor} that remaps types with a {@link Remapper}.
  *
- * @deprecated use {@link SignatureRemapper} instead.
  * @author Eugene Kuleshov
  */
-@Deprecated
-public class RemappingSignatureAdapter extends SignatureVisitor {
+public class SignatureRemapper extends SignatureVisitor {
 
   private final SignatureVisitor signatureVisitor;
 
   private final Remapper remapper;
 
-  private String className;
+  private ArrayList<String> classNames = new ArrayList<String>();
 
-  public RemappingSignatureAdapter(
-      final SignatureVisitor signatureVisitor, final Remapper remapper) {
-    this(Opcodes.ASM6, signatureVisitor, remapper);
+  /**
+   * Constructs a new {@link SignatureRemapper}. <i>Subclasses must not use this constructor</i>.
+   * Instead, they must use the {@link #SignatureRemapper(int,SignatureVisitor,Remapper)} version.
+   *
+   * @param signatureVisitor the signature visitor this remapper must deleted to.
+   * @param remapper the remapper to use to remap the types in the visited signature.
+   */
+  public SignatureRemapper(final SignatureVisitor signatureVisitor, final Remapper remapper) {
+    this(Opcodes.ASM7, signatureVisitor, remapper);
   }
 
-  protected RemappingSignatureAdapter(
+  /**
+   * Constructs a new {@link SignatureRemapper}.
+   *
+   * @param api the ASM API version supported by this remapper. Must be one of {@link
+   *     org.objectweb.asm.Opcodes#ASM4}, {@link org.objectweb.asm.Opcodes#ASM5} or {@link
+   *     org.objectweb.asm.Opcodes#ASM6}.
+   * @param signatureVisitor the signature visitor this remapper must deleted to.
+   * @param remapper the remapper to use to remap the types in the visited signature.
+   */
+  protected SignatureRemapper(
       final int api, final SignatureVisitor signatureVisitor, final Remapper remapper) {
     super(api);
     this.signatureVisitor = signatureVisitor;
@@ -60,14 +74,16 @@ public class RemappingSignatureAdapter extends SignatureVisitor {
 
   @Override
   public void visitClassType(final String name) {
-    className = name;
+    classNames.add(name);
     signatureVisitor.visitClassType(remapper.mapType(name));
   }
 
   @Override
   public void visitInnerClassType(final String name) {
-    String remappedOuter = remapper.mapType(className) + '$';
-    className = className + '$' + name;
+    String outerClassName = classNames.remove(classNames.size() - 1);
+    String className = outerClassName + '$' + name;
+    classNames.add(className);
+    String remappedOuter = remapper.mapType(outerClassName) + '$';
     String remappedName = remapper.mapType(className);
     int index =
         remappedName.startsWith(remappedOuter)
@@ -153,5 +169,6 @@ public class RemappingSignatureAdapter extends SignatureVisitor {
   @Override
   public void visitEnd() {
     signatureVisitor.visitEnd();
+    classNames.remove(classNames.size() - 1);
   }
 }

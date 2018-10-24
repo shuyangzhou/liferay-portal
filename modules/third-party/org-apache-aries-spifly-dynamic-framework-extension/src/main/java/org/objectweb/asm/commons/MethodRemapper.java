@@ -36,31 +36,38 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.TypePath;
 
 /**
- * A {@link LocalVariablesSorter} for type mapping.
+ * A {@link MethodVisitor} that remaps types with a {@link Remapper}.
  *
- * @deprecated use {@link MethodRemapper} instead.
  * @author Eugene Kuleshov
  */
-@Deprecated
-public class RemappingMethodAdapter extends LocalVariablesSorter {
+public class MethodRemapper extends MethodVisitor {
 
+  /** The remapper used to remap the types in the visited field. */
   protected final Remapper remapper;
 
-  public RemappingMethodAdapter(
-      final int access,
-      final String descriptor,
-      final MethodVisitor methodVisitor,
-      final Remapper remapper) {
-    this(Opcodes.ASM6, access, descriptor, methodVisitor, remapper);
+  /**
+   * Constructs a new {@link MethodRemapper}. <i>Subclasses must not use this constructor</i>.
+   * Instead, they must use the {@link #MethodRemapper(int,MethodVisitor,Remapper)} version.
+   *
+   * @param methodVisitor the method visitor this remapper must deleted to.
+   * @param remapper the remapper to use to remap the types in the visited method.
+   */
+  public MethodRemapper(final MethodVisitor methodVisitor, final Remapper remapper) {
+    this(Opcodes.ASM7, methodVisitor, remapper);
   }
 
-  protected RemappingMethodAdapter(
-      final int api,
-      final int access,
-      final String descriptor,
-      final MethodVisitor methodVisitor,
-      final Remapper remapper) {
-    super(api, access, descriptor, methodVisitor);
+  /**
+   * Constructs a new {@link MethodRemapper}.
+   *
+   * @param api the ASM API version supported by this remapper. Must be one of {@link
+   *     org.objectweb.asm.Opcodes#ASM4}, {@link org.objectweb.asm.Opcodes#ASM5} or {@link
+   *     org.objectweb.asm.Opcodes#ASM6}.
+   * @param methodVisitor the method visitor this remapper must deleted to.
+   * @param remapper the remapper to use to remap the types in the visited method.
+   */
+  protected MethodRemapper(
+      final int api, final MethodVisitor methodVisitor, final Remapper remapper) {
+    super(api, methodVisitor);
     this.remapper = remapper;
   }
 
@@ -69,7 +76,7 @@ public class RemappingMethodAdapter extends LocalVariablesSorter {
     AnnotationVisitor annotationVisitor = super.visitAnnotationDefault();
     return annotationVisitor == null
         ? annotationVisitor
-        : new RemappingAnnotationAdapter(annotationVisitor, remapper);
+        : new AnnotationRemapper(api, annotationVisitor, remapper);
   }
 
   @Override
@@ -78,7 +85,7 @@ public class RemappingMethodAdapter extends LocalVariablesSorter {
         super.visitAnnotation(remapper.mapDesc(descriptor), visible);
     return annotationVisitor == null
         ? annotationVisitor
-        : new RemappingAnnotationAdapter(annotationVisitor, remapper);
+        : new AnnotationRemapper(api, annotationVisitor, remapper);
   }
 
   @Override
@@ -88,7 +95,7 @@ public class RemappingMethodAdapter extends LocalVariablesSorter {
         super.visitTypeAnnotation(typeRef, typePath, remapper.mapDesc(descriptor), visible);
     return annotationVisitor == null
         ? annotationVisitor
-        : new RemappingAnnotationAdapter(annotationVisitor, remapper);
+        : new AnnotationRemapper(api, annotationVisitor, remapper);
   }
 
   @Override
@@ -98,7 +105,7 @@ public class RemappingMethodAdapter extends LocalVariablesSorter {
         super.visitParameterAnnotation(parameter, remapper.mapDesc(descriptor), visible);
     return annotationVisitor == null
         ? annotationVisitor
-        : new RemappingAnnotationAdapter(annotationVisitor, remapper);
+        : new AnnotationRemapper(api, annotationVisitor, remapper);
   }
 
   @Override
@@ -109,24 +116,28 @@ public class RemappingMethodAdapter extends LocalVariablesSorter {
       final int numStack,
       final Object[] stack) {
     super.visitFrame(
-        type, numLocal, remapEntries(numLocal, local), numStack, remapEntries(numStack, stack));
+        type,
+        numLocal,
+        remapFrameTypes(numLocal, local),
+        numStack,
+        remapFrameTypes(numStack, stack));
   }
 
-  private Object[] remapEntries(final int numTypes, final Object[] entries) {
-    if (entries == null) {
-      return entries;
+  private Object[] remapFrameTypes(final int numTypes, final Object[] frameTypes) {
+    if (frameTypes == null) {
+      return frameTypes;
     }
-    Object[] remappedEntries = null;
+    Object[] remappedFrameTypes = null;
     for (int i = 0; i < numTypes; ++i) {
-      if (entries[i] instanceof String) {
-        if (remappedEntries == null) {
-          remappedEntries = new Object[numTypes];
-          System.arraycopy(entries, 0, remappedEntries, 0, numTypes);
+      if (frameTypes[i] instanceof String) {
+        if (remappedFrameTypes == null) {
+          remappedFrameTypes = new Object[numTypes];
+          System.arraycopy(frameTypes, 0, remappedFrameTypes, 0, numTypes);
         }
-        remappedEntries[i] = remapper.mapType((String) entries[i]);
+        remappedFrameTypes[i] = remapper.mapType((String) frameTypes[i]);
       }
     }
-    return remappedEntries == null ? entries : remappedEntries;
+    return remappedFrameTypes == null ? frameTypes : remappedFrameTypes;
   }
 
   @Override
@@ -139,6 +150,11 @@ public class RemappingMethodAdapter extends LocalVariablesSorter {
         remapper.mapDesc(descriptor));
   }
 
+  /**
+   * Deprecated.
+   *
+   * @deprecated use {@link #visitMethodInsn(int, String, String, String, boolean)} instead.
+   */
   @Deprecated
   @Override
   public void visitMethodInsn(
@@ -170,12 +186,9 @@ public class RemappingMethodAdapter extends LocalVariablesSorter {
       final String name,
       final String descriptor,
       final boolean isInterface) {
-    // Calling super.visitMethodInsn requires to call the correct version
-    // depending on this.api (otherwise infinite loops can occur). To
-    // simplify and to make it easier to automatically remove the backward
-    // compatibility code, we inline the code of the overridden method here.
-    // IMPORTANT: THIS ASSUMES THAT visitMethodInsn IS NOT OVERRIDDEN IN
-    // LocalVariableSorter.
+    // Calling super.visitMethodInsn requires to call the correct version depending on this.api
+    // (otherwise infinite loops can occur). To simplify and to make it easier to automatically
+    // remove the backward compatibility code, we inline the code of the overridden method here.
     if (mv != null) {
       mv.visitMethodInsn(
           opcode,
@@ -192,14 +205,15 @@ public class RemappingMethodAdapter extends LocalVariablesSorter {
       final String descriptor,
       final Handle bootstrapMethodHandle,
       final Object... bootstrapMethodArguments) {
-    for (int i = 0; i < bootstrapMethodArguments.length; i++) {
-      bootstrapMethodArguments[i] = remapper.mapValue(bootstrapMethodArguments[i]);
+    Object[] remappedBootstrapMethodArguments = new Object[bootstrapMethodArguments.length];
+    for (int i = 0; i < bootstrapMethodArguments.length; ++i) {
+      remappedBootstrapMethodArguments[i] = remapper.mapValue(bootstrapMethodArguments[i]);
     }
     super.visitInvokeDynamicInsn(
         remapper.mapInvokeDynamicMethodName(name, descriptor),
         remapper.mapMethodDesc(descriptor),
         (Handle) remapper.mapValue(bootstrapMethodHandle),
-        bootstrapMethodArguments);
+        remappedBootstrapMethodArguments);
   }
 
   @Override
@@ -224,7 +238,7 @@ public class RemappingMethodAdapter extends LocalVariablesSorter {
         super.visitInsnAnnotation(typeRef, typePath, remapper.mapDesc(descriptor), visible);
     return annotationVisitor == null
         ? annotationVisitor
-        : new RemappingAnnotationAdapter(annotationVisitor, remapper);
+        : new AnnotationRemapper(api, annotationVisitor, remapper);
   }
 
   @Override
@@ -240,7 +254,7 @@ public class RemappingMethodAdapter extends LocalVariablesSorter {
         super.visitTryCatchAnnotation(typeRef, typePath, remapper.mapDesc(descriptor), visible);
     return annotationVisitor == null
         ? annotationVisitor
-        : new RemappingAnnotationAdapter(annotationVisitor, remapper);
+        : new AnnotationRemapper(api, annotationVisitor, remapper);
   }
 
   @Override
@@ -274,6 +288,6 @@ public class RemappingMethodAdapter extends LocalVariablesSorter {
             typeRef, typePath, start, end, index, remapper.mapDesc(descriptor), visible);
     return annotationVisitor == null
         ? annotationVisitor
-        : new RemappingAnnotationAdapter(annotationVisitor, remapper);
+        : new AnnotationRemapper(api, annotationVisitor, remapper);
   }
 }

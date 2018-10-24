@@ -32,22 +32,36 @@ import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Opcodes;
 
 /**
- * An {@link AnnotationVisitor} adapter for type remapping.
+ * An {@link AnnotationVisitor} that remaps types with a {@link Remapper}.
  *
- * @deprecated use {@link AnnotationRemapper} instead.
  * @author Eugene Kuleshov
  */
-@Deprecated
-public class RemappingAnnotationAdapter extends AnnotationVisitor {
+public class AnnotationRemapper extends AnnotationVisitor {
 
+  /** The remapper used to remap the types in the visited annotation. */
   protected final Remapper remapper;
 
-  public RemappingAnnotationAdapter(
-      final AnnotationVisitor annotationVisitor, final Remapper remapper) {
-    this(Opcodes.ASM6, annotationVisitor, remapper);
+  /**
+   * Constructs a new {@link AnnotationRemapper}. <i>Subclasses must not use this constructor</i>.
+   * Instead, they must use the {@link #AnnotationRemapper(int,AnnotationVisitor,Remapper)} version.
+   *
+   * @param annotationVisitor the annotation visitor this remapper must deleted to.
+   * @param remapper the remapper to use to remap the types in the visited annotation.
+   */
+  public AnnotationRemapper(final AnnotationVisitor annotationVisitor, final Remapper remapper) {
+    this(Opcodes.ASM7, annotationVisitor, remapper);
   }
 
-  protected RemappingAnnotationAdapter(
+  /**
+   * Constructs a new {@link AnnotationRemapper}.
+   *
+   * @param api the ASM API version supported by this remapper. Must be one of {@link
+   *     org.objectweb.asm.Opcodes#ASM4}, {@link org.objectweb.asm.Opcodes#ASM5} or {@link
+   *     org.objectweb.asm.Opcodes#ASM6}.
+   * @param annotationVisitor the annotation visitor this remapper must deleted to.
+   * @param remapper the remapper to use to remap the types in the visited annotation.
+   */
+  protected AnnotationRemapper(
       final int api, final AnnotationVisitor annotationVisitor, final Remapper remapper) {
     super(api, annotationVisitor);
     this.remapper = remapper;
@@ -55,31 +69,35 @@ public class RemappingAnnotationAdapter extends AnnotationVisitor {
 
   @Override
   public void visit(final String name, final Object value) {
-    av.visit(name, remapper.mapValue(value));
+    super.visit(name, remapper.mapValue(value));
   }
 
   @Override
   public void visitEnum(final String name, final String descriptor, final String value) {
-    av.visitEnum(name, remapper.mapDesc(descriptor), value);
+    super.visitEnum(name, remapper.mapDesc(descriptor), value);
   }
 
   @Override
   public AnnotationVisitor visitAnnotation(final String name, final String descriptor) {
-    AnnotationVisitor annotationVisitor = av.visitAnnotation(name, remapper.mapDesc(descriptor));
-    return annotationVisitor == null
-        ? null
-        : (annotationVisitor == av
-            ? this
-            : new RemappingAnnotationAdapter(annotationVisitor, remapper));
+    AnnotationVisitor annotationVisitor = super.visitAnnotation(name, remapper.mapDesc(descriptor));
+    if (annotationVisitor == null) {
+      return null;
+    } else {
+      return annotationVisitor == av
+          ? this
+          : new AnnotationRemapper(api, annotationVisitor, remapper);
+    }
   }
 
   @Override
   public AnnotationVisitor visitArray(final String name) {
-    AnnotationVisitor annotationVisitor = av.visitArray(name);
-    return annotationVisitor == null
-        ? null
-        : (annotationVisitor == av
-            ? this
-            : new RemappingAnnotationAdapter(annotationVisitor, remapper));
+    AnnotationVisitor annotationVisitor = super.visitArray(name);
+    if (annotationVisitor == null) {
+      return null;
+    } else {
+      return annotationVisitor == av
+          ? this
+          : new AnnotationRemapper(api, annotationVisitor, remapper);
+    }
   }
 }

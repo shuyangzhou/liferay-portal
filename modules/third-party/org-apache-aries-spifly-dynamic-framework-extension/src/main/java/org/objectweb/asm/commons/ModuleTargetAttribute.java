@@ -25,27 +25,63 @@
 // CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 // THE POSSIBILITY OF SUCH DAMAGE.
+
 package org.objectweb.asm.commons;
 
+import org.objectweb.asm.Attribute;
+import org.objectweb.asm.ByteVector;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 
 /**
- * A code generator for switch statements.
+ * A ModuleTarget attribute. This attribute is specific to the OpenJDK and may change in the future.
  *
- * @author Juozas Baliuka
- * @author Chris Nokleberg
- * @author Eric Bruneton
+ * @author Remi Forax
  */
-public interface TableSwitchGenerator {
+public final class ModuleTargetAttribute extends Attribute {
+
+  /** The name of the platform on which the module can run. */
+  public String platform;
 
   /**
-   * Generates the code for a switch case.
+   * Constructs a new {@link ModuleTargetAttribute}.
    *
-   * @param key the switch case key.
-   * @param end a label that corresponds to the end of the switch statement.
+   * @param platform the name of the platform on which the module can run.
    */
-  void generateCase(int key, Label end);
+  public ModuleTargetAttribute(final String platform) {
+    super("ModuleTarget");
+    this.platform = platform;
+  }
 
-  /** Generates the code for the default switch case. */
-  void generateDefault();
+  /**
+   * Constructs an empty {@link ModuleTargetAttribute}. This object can be passed as a prototype to
+   * the {@link ClassReader#accept(org.objectweb.asm.ClassVisitor, Attribute[], int)} method.
+   */
+  public ModuleTargetAttribute() {
+    this(null);
+  }
+
+  @Override
+  protected Attribute read(
+      final ClassReader classReader,
+      final int offset,
+      final int length,
+      final char[] charBuffer,
+      final int codeOffset,
+      final Label[] labels) {
+    return new ModuleTargetAttribute(classReader.readUTF8(offset, charBuffer));
+  }
+
+  @Override
+  protected ByteVector write(
+      final ClassWriter classWriter,
+      final byte[] code,
+      final int codeLength,
+      final int maxStack,
+      final int maxLocals) {
+    ByteVector byteVector = new ByteVector();
+    byteVector.putShort(platform == null ? 0 : classWriter.newUTF8(platform));
+    return byteVector;
+  }
 }

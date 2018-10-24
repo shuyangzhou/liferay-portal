@@ -34,32 +34,47 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.TypePath;
 
 /**
- * A {@link FieldVisitor} adapter for type remapping.
+ * A {@link FieldVisitor} that remaps types with a {@link Remapper}.
  *
- * @deprecated use {@link FieldRemapper} instead.
  * @author Eugene Kuleshov
  */
-@Deprecated
-public class RemappingFieldAdapter extends FieldVisitor {
+public class FieldRemapper extends FieldVisitor {
 
-  private final Remapper remapper;
+  /** The remapper used to remap the types in the visited field. */
+  protected final Remapper remapper;
 
-  public RemappingFieldAdapter(final FieldVisitor fieldVisitor, final Remapper remapper) {
-    this(Opcodes.ASM6, fieldVisitor, remapper);
+  /**
+   * Constructs a new {@link FieldRemapper}. <i>Subclasses must not use this constructor</i>.
+   * Instead, they must use the {@link #FieldRemapper(int,FieldVisitor,Remapper)} version.
+   *
+   * @param fieldVisitor the field visitor this remapper must deleted to.
+   * @param remapper the remapper to use to remap the types in the visited field.
+   */
+  public FieldRemapper(final FieldVisitor fieldVisitor, final Remapper remapper) {
+    this(Opcodes.ASM7, fieldVisitor, remapper);
   }
 
-  protected RemappingFieldAdapter(
-      final int api, final FieldVisitor fieldVisitor, final Remapper remapper) {
+  /**
+   * Constructs a new {@link FieldRemapper}.
+   *
+   * @param api the ASM API version supported by this remapper. Must be one of {@link
+   *     org.objectweb.asm.Opcodes#ASM4}, {@link org.objectweb.asm.Opcodes#ASM5} or {@link
+   *     org.objectweb.asm.Opcodes#ASM6}.
+   * @param fieldVisitor the field visitor this remapper must deleted to.
+   * @param remapper the remapper to use to remap the types in the visited field.
+   */
+  protected FieldRemapper(final int api, final FieldVisitor fieldVisitor, final Remapper remapper) {
     super(api, fieldVisitor);
     this.remapper = remapper;
   }
 
   @Override
   public AnnotationVisitor visitAnnotation(final String descriptor, final boolean visible) {
-    AnnotationVisitor annotationVisitor = fv.visitAnnotation(remapper.mapDesc(descriptor), visible);
+    AnnotationVisitor annotationVisitor =
+        super.visitAnnotation(remapper.mapDesc(descriptor), visible);
     return annotationVisitor == null
         ? null
-        : new RemappingAnnotationAdapter(annotationVisitor, remapper);
+        : new AnnotationRemapper(api, annotationVisitor, remapper);
   }
 
   @Override
@@ -69,6 +84,6 @@ public class RemappingFieldAdapter extends FieldVisitor {
         super.visitTypeAnnotation(typeRef, typePath, remapper.mapDesc(descriptor), visible);
     return annotationVisitor == null
         ? null
-        : new RemappingAnnotationAdapter(annotationVisitor, remapper);
+        : new AnnotationRemapper(api, annotationVisitor, remapper);
   }
 }
