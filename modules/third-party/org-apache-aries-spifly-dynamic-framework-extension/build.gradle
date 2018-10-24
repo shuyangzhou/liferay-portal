@@ -1,6 +1,8 @@
 task jarPatched(type: Zip)
 
 dependencies {
+	compile group: "org.ow2.asm", name: "asm-tree", version: "7.0-beta"
+
 	compileOnly group: "org.apache.aries.spifly", name: "org.apache.aries.spifly.dynamic.framework.extension", version: "1.0.14"
 }
 
