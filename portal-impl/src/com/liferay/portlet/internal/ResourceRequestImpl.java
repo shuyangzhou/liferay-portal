@@ -21,10 +21,12 @@ import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayResourceRequest;
 import com.liferay.portal.kernel.servlet.PortletServlet;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portlet.AsyncPortletServletRequest;
 
 import java.util.Collections;
@@ -72,9 +74,10 @@ public class ResourceRequestImpl
 
 	@Override
 	public DispatcherType getDispatcherType() {
-		if ((_portletAsyncContextImpl != null) &&
-			_portletAsyncContextImpl.isCalledDispatch()) {
+		ThemeDisplay themeDisplay = (ThemeDisplay)getAttribute(
+			WebKeys.THEME_DISPLAY);
 
+		if (themeDisplay.isAsync()) {
 			return DispatcherType.ASYNC;
 		}
 
@@ -171,6 +174,8 @@ public class ResourceRequestImpl
 		_cacheablity = ParamUtil.getString(
 			request, "p_p_cacheability", ResourceURL.PAGE);
 
+		_portletConfig = invokerPortlet.getPortletConfig();
+
 		_resourceID = request.getParameter("p_p_resource_id");
 
 		if (!PortalUtil.isValidResourceId(_resourceID)) {
@@ -257,7 +262,7 @@ public class ResourceRequestImpl
 		}
 
 		_portletAsyncContextImpl.initialize(
-			resourceRequest, resourceResponse, asyncContext,
+			resourceRequest, resourceResponse, _portletConfig, asyncContext,
 			hasOriginalRequestAndResponse);
 
 		// The portletConfig is already set by PortletRequestImpl.defineObjects
@@ -294,6 +299,7 @@ public class ResourceRequestImpl
 
 	private String _cacheablity;
 	private PortletAsyncContextImpl _portletAsyncContextImpl;
+	private PortletConfig _portletConfig;
 	private String _resourceID;
 	private ResourceParameters _resourceParameters;
 	private ResourceResponse _resourceResponse;

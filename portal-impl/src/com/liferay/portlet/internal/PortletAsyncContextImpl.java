@@ -14,12 +14,19 @@
 
 package com.liferay.portlet.internal;
 
+import com.liferay.portal.kernel.util.PortletAsyncScopeManager;
+import com.liferay.portal.kernel.util.PortletAsyncScopeManagerFactory;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portlet.AsyncPortletServletRequest;
 import com.liferay.portlet.PortletAsyncListenerAdapter;
 
+import java.util.function.Function;
+
 import javax.portlet.PortletAsyncContext;
 import javax.portlet.PortletAsyncListener;
+import javax.portlet.PortletConfig;
+import javax.portlet.PortletContext;
 import javax.portlet.PortletException;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
@@ -70,9 +77,57 @@ public class PortletAsyncContextImpl implements PortletAsyncContext {
 			Class<T> listenerClass)
 		throws PortletException {
 
-		// TODO
+		if ((listenerClass == null) ||
+			!PortletAsyncListener.class.isAssignableFrom(listenerClass)) {
 
-		throw new UnsupportedOperationException();
+			throw new PortletException(
+				"listenerClass is not of type PortletAsyncListener");
+		}
+
+		try {
+			listenerClass.getConstructor();
+		}
+		catch (NoSuchMethodException nsme) {
+			throw new PortletException(
+				listenerClass.getName() +
+					" does not have a zero-arg constructor",
+				nsme);
+		}
+
+		PortletContext portletContext = _resourceRequest.getPortletContext();
+
+		Function<Class<T>, T> portletAsyncListenerFactory =
+			(Function<Class<T>, T>)
+				portletContext.getAttribute(
+					WebKeys.PORTLET_ASYNC_LISTENER_FACTORY);
+
+		if (portletAsyncListenerFactory == null) {
+			try {
+				return listenerClass.newInstance();
+			}
+			catch (Throwable e) {
+				throw new PortletException(e);
+			}
+		}
+
+		T portletAsyncListener = null;
+
+		try {
+			portletAsyncListener = portletAsyncListenerFactory.apply(
+				listenerClass);
+		}
+		catch (Exception e) {
+			throw new PortletException(
+				"Unable to create an instance of " + listenerClass.getName(),
+				e);
+		}
+
+		if (portletAsyncListener == null) {
+			throw new PortletException(
+				"Unable to create an instance of " + listenerClass.getName());
+		}
+
+		return portletAsyncListener;
 	}
 
 	@Override
@@ -87,7 +142,7 @@ public class PortletAsyncContextImpl implements PortletAsyncContext {
 			(HttpServletRequest)_getOriginalServletRequest();
 
 		String path = StringBundler.concat(
-			originalHttpServletRequest.getRequestURI(), "?",
+			originalHttpServletRequest.getRequestURI(), "?p_p_async=1&",
 			originalHttpServletRequest.getQueryString());
 
 		ServletContext servletContext =
@@ -173,15 +228,21 @@ public class PortletAsyncContextImpl implements PortletAsyncContext {
 
 	@Override
 	public void start(Runnable runnable) throws IllegalStateException {
-		_asyncContext.start(runnable);
+		_asyncContext.start(
+			new PortletAsyncScopingRunnable(
+				runnable, _resourceRequest, _resourceResponse, _portletConfig,
+				_portletAsyncListenerAdapter,
+				_portletAsyncScopeManagerFactory));
 	}
 
 	protected void initialize(
 		ResourceRequest resourceRequest, ResourceResponse resourceResponse,
-		AsyncContext asyncContext, boolean hasOriginalRequestAndResponse) {
+		PortletConfig portletConfig, AsyncContext asyncContext,
+		boolean hasOriginalRequestAndResponse) {
 
 		_resourceRequest = resourceRequest;
 		_resourceResponse = resourceResponse;
+		_portletConfig = portletConfig;
 		_asyncContext = asyncContext;
 		_hasOriginalRequestAndResponse = hasOriginalRequestAndResponse;
 
@@ -189,9 +250,26 @@ public class PortletAsyncContextImpl implements PortletAsyncContext {
 		_calledComplete = false;
 		_returnedToContainer = false;
 
+		PortletContext portletContext = resourceRequest.getPortletContext();
+
+		_portletAsyncScopeManagerFactory =
+			(PortletAsyncScopeManagerFactory)portletContext.getAttribute(
+				WebKeys.PORTLET_ASYNC_SCOPE_MANAGER_FACTORY);
+
+		PortletAsyncScopeManager portletAsyncScopeManager = null;
+
+		if (_portletAsyncScopeManagerFactory != null) {
+			portletAsyncScopeManager =
+				_portletAsyncScopeManagerFactory.getPortletAsyncScopeManager(
+					resourceRequest, resourceResponse, portletConfig);
+
+			portletAsyncScopeManager.activateScopeContexts();
+		}
+
 		if (_portletAsyncListenerAdapter == null) {
-			_portletAsyncListenerAdapter = new PortletAsyncListenerAdapter(
-				this);
+			_portletAsyncListenerAdapter = new PortletAsyncScopingListener(
+				resourceRequest, resourceResponse, portletConfig, this,
+				_portletAsyncScopeManagerFactory);
 
 			_asyncContext.addListener(_portletAsyncListenerAdapter);
 		}
@@ -221,6 +299,8 @@ public class PortletAsyncContextImpl implements PortletAsyncContext {
 	private boolean _calledDispatch;
 	private boolean _hasOriginalRequestAndResponse;
 	private PortletAsyncListenerAdapter _portletAsyncListenerAdapter;
+	private PortletAsyncScopeManagerFactory _portletAsyncScopeManagerFactory;
+	private PortletConfig _portletConfig;
 	private ResourceRequest _resourceRequest;
 	private ResourceResponse _resourceResponse;
 	private boolean _returnedToContainer;
