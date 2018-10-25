@@ -15,19 +15,16 @@ task export(type: Export)
 task resolve(type: Resolve)
 task run(type: JavaExec)
 
-sourceCompatibility = "1.8"
-targetCompatibility = "1.8"
-
 dependencies {
 	compileInclude group: "com.github.javafaker", name: "javafaker", version: "0.13"
 	compileInclude group: "com.github.mifmif", name: "generex", version: "1.0.2"
 	compileInclude group: "dk.brics.automaton", name: "automaton", version: "1.11-8"
 	compileInclude group: "org.apache.commons", name: "commons-lang3", version: "3.5"
 
+	compileOnly group: "com.liferay", name: "org.apache.felix.gogo.runtime", version: "1.1.0.LIFERAY-PATCHED-1"
 	compileOnly group: "javax.servlet", name: "javax.servlet-api", version: "3.0.1"
 	compileOnly group: "org.apache.aries.spec", name: "org.apache.aries.javax.jax.rs-api", version: "1.0.0"
 	compileOnly group: "org.apache.felix", name: "org.apache.felix.gogo.command", version: "1.0.2"
-	compileOnly group: "org.apache.felix", name: "org.apache.felix.gogo.runtime", version: "1.0.6"
 	compileOnly group: "org.apache.felix", name: "org.apache.felix.gogo.shell", version: "1.0.0"
 	compileOnly group: "org.apache.felix", name: "org.apache.felix.scr", version: "2.0.8"
 	compileOnly group: "org.apache.felix", name: "org.apache.felix.shell.remote", version: "1.2.0"
