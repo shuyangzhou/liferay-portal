@@ -56,7 +56,21 @@ public class StoreFactory {
 	public StoreFactory() {
 		_storeWrapperServiceTrackerMap =
 			ServiceTrackerCollections.openMultiValueMap(
-				StoreWrapper.class, "store.type");
+				StoreWrapper.class, "store.type",
+				(serviceReference, emitter) -> {
+					String storeType = (String)serviceReference.getProperty(
+						"store.type");
+
+					if (storeType == null) {
+						return;
+					}
+
+					if (PropsValues.DL_STORE_IMPL.equals(storeType)) {
+						_store = null;
+					}
+
+					emitter.emit(storeType);
+				});
 
 		_storeServiceTrackerMap = ServiceTrackerCollections.openSingleValueMap(
 			Store.class, "store.type", new StoreServiceTrackerCustomizer());
