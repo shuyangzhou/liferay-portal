@@ -22,14 +22,21 @@ import com.liferay.portal.kernel.search.SearchEngine;
 import com.liferay.portal.kernel.search.SearchEngineConfigurator;
 import com.liferay.portal.kernel.search.SearchEngineHelper;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.elasticsearch6.internal.connection.ElasticsearchConnection;
 import com.liferay.portal.search.elasticsearch6.internal.connection.ElasticsearchConnectionManager;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -91,7 +98,52 @@ public class ElasticsearchEngineConfigurator
 	protected void initialize() {
 		FutureTask<Void> futureTask = new FutureTask<>(
 			() -> {
-				_elasticsearchConnectionManager.connect();
+				try {
+					_elasticsearchConnectionManager.connect();
+				}
+				catch (NullPointerException npe) {
+					System.out.println(
+						"###########config.class :" +
+							System.getProperty(
+								"java.util.logging.config.class"));
+
+					String fileName = System.getProperty(
+						"java.util.logging.config.file");
+
+					Path path = Paths.get(fileName);
+
+					if (Files.exists(path)) {
+						System.out.println(
+							"###########config.file :" + fileName +
+								" with content :\n" +
+									new String(Files.readAllBytes(path)));
+					}
+					else {
+						System.out.println(
+							"###########config.file :" + fileName +
+								" does not exist.");
+					}
+
+					System.out.println(
+						"###########LogManager class :" +
+							System.getProperty("java.util.logging.manager"));
+
+					LogManager logManager = LogManager.getLogManager();
+
+					System.out.println(
+						"###########LogManager instance :" + logManager);
+
+					Logger rootLogger = logManager.getLogger("");
+
+					System.out.println("###########Root logger :" + rootLogger);
+
+					System.out.println(
+						"###########Logger names :" +
+							SetUtil.fromEnumeration(
+								logManager.getLoggerNames()));
+
+					throw npe;
+				}
 
 				return null;
 			});
