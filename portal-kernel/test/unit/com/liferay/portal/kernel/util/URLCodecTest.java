@@ -113,9 +113,9 @@ public class URLCodecTest {
 		}
 	}
 
-	private static final String[] _ENCODED_URLS = new String[9];
+	private static final String[] _ENCODED_URLS;
 
-	private static final String[] _ESCAPE_SPACES_ENCODED_URLS = new String[9];
+	private static final String[] _ESCAPE_SPACES_ENCODED_URLS;
 
 	private static final String[] _RAW_URLS = {
 		"abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
@@ -127,6 +127,9 @@ public class URLCodecTest {
 		{"1f408", "1f431", "1f415", "1f436"};
 
 	static {
+		_ENCODED_URLS = new String[_RAW_URLS.length];
+		_ESCAPE_SPACES_ENCODED_URLS = new String[_RAW_URLS.length];
+
 		try {
 			for (int i = 0; i < _RAW_URLS.length; i++) {
 				_ENCODED_URLS[i] = URLEncoder.encode(
