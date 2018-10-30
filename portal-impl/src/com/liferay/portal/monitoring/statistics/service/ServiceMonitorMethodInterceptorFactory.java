@@ -14,8 +14,6 @@
 
 package com.liferay.portal.monitoring.statistics.service;
 
-import com.liferay.petra.lang.CentralizedThreadLocal;
-import com.liferay.portal.aop.BaseMethodInterceptor;
 import com.liferay.portal.aop.MethodInterceptorFactory;
 import com.liferay.portal.aop.context.MethodInterceptorContext;
 import com.liferay.portal.kernel.monitoring.DataSample;
@@ -44,14 +42,9 @@ public class ServiceMonitorMethodInterceptorFactory
 	public MethodInterceptor create(
 		MethodInterceptorContext methodInterceptorContext) {
 
-		ServiceMonitorMethodInterceptor serviceMonitorMethodInterceptor =
-			new ServiceMonitorMethodInterceptor();
-
-		serviceMonitorMethodInterceptor.setServiceMonitoringControl(
+		return new ServiceMonitorMethodInterceptor(
 			methodInterceptorContext.getService(
 				ServiceMonitoringControl.class));
-
-		return serviceMonitorMethodInterceptor;
 	}
 
 	@Override
@@ -70,50 +63,44 @@ public class ServiceMonitorMethodInterceptorFactory
 	}
 
 	private static class ServiceMonitorMethodInterceptor
-		extends BaseMethodInterceptor {
+		implements MethodInterceptor {
 
 		@Override
-		protected void afterReturning(
-				MethodInvocation methodInvocation, Object result)
-			throws Throwable {
-
-			DataSample dataSample = _dataSampleThreadLocal.get();
-
-			if (dataSample != null) {
-				dataSample.capture(RequestStatus.SUCCESS);
-			}
-		}
-
-		@Override
-		protected void afterThrowing(
-				MethodInvocation methodInvocation, Throwable throwable)
-			throws Throwable {
-
-			DataSample dataSample = _dataSampleThreadLocal.get();
-
-			if (dataSample != null) {
-				dataSample.capture(RequestStatus.ERROR);
-			}
-		}
-
-		@Override
-		protected Object before(MethodInvocation methodInvocation)
+		public Object invoke(MethodInvocation methodInvocation)
 			throws Throwable {
 
 			if (!_serviceMonitoringControl.isMonitorServiceRequest()) {
-				return null;
+				return methodInvocation.proceed();
 			}
 
-			boolean included = _isIncluded(methodInvocation);
+			Method method = methodInvocation.getMethod();
+
+			MethodSignature methodSignature = new MethodSignature(method);
+
+			boolean included = false;
+
+			Class<?> declaringClass = method.getDeclaringClass();
+
+			Set<String> serviceClasses =
+				_serviceMonitoringControl.getServiceClasses();
+
+			if (serviceClasses.contains(declaringClass.getName())) {
+				included = true;
+			}
+			else {
+				Set<MethodSignature> serviceClassMethods =
+					_serviceMonitoringControl.getServiceClassMethods();
+
+				if (serviceClassMethods.contains(methodSignature)) {
+					included = true;
+				}
+			}
 
 			boolean inclusiveMode = _serviceMonitoringControl.isInclusiveMode();
 
 			if ((!inclusiveMode && included) || (inclusiveMode && !included)) {
-				return null;
+				return methodInvocation.proceed();
 			}
-
-			MethodSignature methodSignature = new MethodSignature(
-				methodInvocation.getMethod());
 
 			DataSample dataSample =
 				DataSampleFactoryUtil.createServiceRequestDataSample(
@@ -121,62 +108,34 @@ public class ServiceMonitorMethodInterceptorFactory
 
 			dataSample.prepare();
 
-			_dataSampleThreadLocal.set(dataSample);
-
 			DataSampleThreadLocal.initialize();
 
-			return null;
-		}
+			Object returnValue = null;
 
-		@Override
-		protected void duringFinally(MethodInvocation methodInvocation) {
-			DataSample dataSample = _dataSampleThreadLocal.get();
+			try {
+				returnValue = methodInvocation.proceed();
 
-			if (dataSample != null) {
-				_dataSampleThreadLocal.remove();
+				dataSample.capture(RequestStatus.SUCCESS);
+			}
+			catch (Throwable throwable) {
+				dataSample.capture(RequestStatus.ERROR);
 
+				throw throwable;
+			}
+			finally {
 				DataSampleThreadLocal.addDataSample(dataSample);
 			}
+
+			return returnValue;
 		}
 
-		protected void setServiceMonitoringControl(
+		private ServiceMonitorMethodInterceptor(
 			ServiceMonitoringControl serviceMonitoringControl) {
 
 			_serviceMonitoringControl = serviceMonitoringControl;
 		}
 
-		private boolean _isIncluded(MethodInvocation methodInvocation) {
-			Method method = methodInvocation.getMethod();
-
-			Class<?> declaringClass = method.getDeclaringClass();
-
-			String className = declaringClass.getName();
-
-			Set<String> serviceClasses =
-				_serviceMonitoringControl.getServiceClasses();
-
-			if (serviceClasses.contains(className)) {
-				return true;
-			}
-
-			MethodSignature methodSignature = new MethodSignature(method);
-
-			Set<MethodSignature> serviceClassMethods =
-				_serviceMonitoringControl.getServiceClassMethods();
-
-			if (serviceClassMethods.contains(methodSignature)) {
-				return true;
-			}
-
-			return false;
-		}
-
-		private static final ThreadLocal<DataSample> _dataSampleThreadLocal =
-			new CentralizedThreadLocal<>(
-				ServiceMonitorMethodInterceptor.class +
-					"._dataSampleThreadLocal");
-
-		private ServiceMonitoringControl _serviceMonitoringControl;
+		private final ServiceMonitoringControl _serviceMonitoringControl;
 
 	}
 
