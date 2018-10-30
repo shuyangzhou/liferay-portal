@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.monitoring.statistics.service;
+package com.liferay.portal.monitoring.internal.aop;
 
 import com.liferay.portal.aop.MethodInterceptorFactory;
 import com.liferay.portal.aop.context.MethodInterceptorContext;
@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.monitoring.DataSampleThreadLocal;
 import com.liferay.portal.kernel.monitoring.MethodSignature;
 import com.liferay.portal.kernel.monitoring.RequestStatus;
 import com.liferay.portal.kernel.monitoring.ServiceMonitoringControl;
+import com.liferay.portal.monitoring.statistics.service.DataSampleFactoryUtil;
 import com.liferay.portal.resiliency.service.PortalResiliencyMethodInterceptorFactory;
 
 import java.lang.annotation.Annotation;
@@ -31,10 +32,16 @@ import java.util.Set;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Michael C. Han
  * @author Preston Crary
  */
+@Component(
+	enabled = false, immediate = true, service = MethodInterceptorFactory.class
+)
 public class ServiceMonitorMethodInterceptorFactory
 	implements MethodInterceptorFactory {
 
@@ -42,9 +49,7 @@ public class ServiceMonitorMethodInterceptorFactory
 	public MethodInterceptor create(
 		MethodInterceptorContext methodInterceptorContext) {
 
-		return new ServiceMonitorMethodInterceptor(
-			methodInterceptorContext.getService(
-				ServiceMonitoringControl.class));
+		return new ServiceMonitorMethodInterceptor(_serviceMonitoringControl);
 	}
 
 	@Override
@@ -61,6 +66,9 @@ public class ServiceMonitorMethodInterceptorFactory
 	public boolean isEnabled() {
 		return true;
 	}
+
+	@Reference
+	private ServiceMonitoringControl _serviceMonitoringControl;
 
 	private static class ServiceMonitorMethodInterceptor
 		implements MethodInterceptor {
