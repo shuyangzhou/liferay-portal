@@ -14,14 +14,18 @@
 
 package com.liferay.portal.spring.aop;
 
+import com.liferay.portal.aop.cache.MethodInterceptorCache;
+import com.liferay.portal.aop.spi.MethodInterceptorCacheManager;
+import com.liferay.portal.internal.aop.MethodInterceptorProxyImpl;
 import com.liferay.portal.kernel.spring.aop.AopProxyFactory;
+import com.liferay.portal.kernel.util.ProxyUtil;
 
 import org.springframework.aop.TargetSource;
-import org.springframework.aop.framework.AdvisedSupport;
-import org.springframework.aop.framework.AopConfigException;
 import org.springframework.aop.framework.AopProxy;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.aop.framework.autoproxy.AbstractAdvisorAutoProxyCreator;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.util.ClassUtils;
 
 /**
  * @author Shuyang Zhou
@@ -36,8 +40,21 @@ public class ServiceBeanAutoProxyCreator
 		if (_beanMatcher == null) {
 			_beanMatcher = new ServiceBeanMatcher();
 		}
+
+		BeanFactory beanFactory = getBeanFactory();
+
+		_methodInterceptorCache = MethodInterceptorCacheManager.create(
+			beanFactory::getBean);
 	}
 
+	public void destroy() {
+		MethodInterceptorCacheManager.destroy(_methodInterceptorCache);
+	}
+
+	/**
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
+	 */
+	@Deprecated
 	public void setAopProxyFactory(AopProxyFactory aopProxyFactory) {
 		_aopProxyFactory = aopProxyFactory;
 	}
@@ -49,17 +66,36 @@ public class ServiceBeanAutoProxyCreator
 	@Override
 	protected void customizeProxyFactory(ProxyFactory proxyFactory) {
 		proxyFactory.setAopProxyFactory(
-			new org.springframework.aop.framework.AopProxyFactory() {
+			advisedSupport -> {
+				AdvisedSupportAdapter advisedSupportAdapter =
+					new AdvisedSupportAdapter(advisedSupport);
 
-				@Override
-				public AopProxy createAopProxy(AdvisedSupport advisedSupport)
-					throws AopConfigException {
+				if (_aopProxyFactory == null) {
+					Class<?>[] proxiedInterfaces =
+						advisedSupportAdapter.getProxiedInterfaces();
 
-					return new AopProxyAdapter(
-						_aopProxyFactory.getAopProxy(
-							new AdvisedSupportAdapter(advisedSupport)));
+					return new AopProxy() {
+
+						@Override
+						public Object getProxy() {
+							return getProxy(ClassUtils.getDefaultClassLoader());
+						}
+
+						@Override
+						public Object getProxy(ClassLoader classLoader) {
+							return ProxyUtil.newProxyInstance(
+								classLoader, proxiedInterfaces,
+								new MethodInterceptorProxyImpl(
+									advisedSupportAdapter.getTarget(),
+									proxiedInterfaces,
+									_methodInterceptorCache));
+						}
+
+					};
 				}
 
+				return new AopProxyAdapter(
+					_aopProxyFactory.getAopProxy(advisedSupportAdapter));
 			});
 	}
 
@@ -84,5 +120,6 @@ public class ServiceBeanAutoProxyCreator
 
 	private AopProxyFactory _aopProxyFactory;
 	private BeanMatcher _beanMatcher;
+	private MethodInterceptorCache _methodInterceptorCache;
 
 }
