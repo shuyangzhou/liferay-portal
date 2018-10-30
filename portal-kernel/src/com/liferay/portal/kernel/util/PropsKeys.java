@@ -1895,6 +1895,8 @@ public interface PropsKeys {
 
 	public static final String POP_SERVER_SUBDOMAIN = "pop.server.subdomain";
 
+	public static final String PORTAL_DEFAULT_METHOD_INTERCEPTOR_FACTORIES = "portal.default.method.interceptor.factories";
+
 	public static final String PORTAL_FABRIC_AGENT_SELECTOR_CLASS = "portal.fabric.agent.selector.class";
 
 	public static final String PORTAL_FABRIC_CLIENT_EVENT_LOOP_GROUP_THREAD_COUNT = "portal.fabric.client.event.loop.group.thread.count";
