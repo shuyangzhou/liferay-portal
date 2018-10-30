@@ -14,12 +14,11 @@
 
 package com.liferay.portal.internal.cluster;
 
+import com.liferay.portal.aop.AnnotatedMethodInterceptor;
 import com.liferay.portal.kernel.cluster.ClusterInvokeThreadLocal;
 import com.liferay.portal.kernel.cluster.ClusterMasterExecutorUtil;
 import com.liferay.portal.kernel.cluster.Clusterable;
 import com.liferay.portal.kernel.cluster.ClusterableInvokerUtil;
-import com.liferay.portal.kernel.cluster.NullClusterable;
-import com.liferay.portal.spring.aop.AnnotationChainableMethodAdvice;
 
 import java.lang.reflect.Method;
 
@@ -28,11 +27,11 @@ import org.aopalliance.intercept.MethodInvocation;
 /**
  * @author Shuyang Zhou
  */
-public class ClusterableAdvice
-	extends AnnotationChainableMethodAdvice<Clusterable> {
+public class ClusterableAdvice extends AnnotatedMethodInterceptor<Clusterable> {
 
 	@Override
-	public void afterReturning(MethodInvocation methodInvocation, Object result)
+	protected void afterReturning(
+			MethodInvocation methodInvocation, Object result)
 		throws Throwable {
 
 		if (!ClusterInvokeThreadLocal.isEnabled()) {
@@ -41,7 +40,7 @@ public class ClusterableAdvice
 
 		Clusterable clusterable = findAnnotation(methodInvocation);
 
-		if (clusterable == NullClusterable.NULL_CLUSTERABLE) {
+		if (clusterable == null) {
 			return;
 		}
 
@@ -51,14 +50,16 @@ public class ClusterableAdvice
 	}
 
 	@Override
-	public Object before(MethodInvocation methodInvocation) throws Throwable {
+	protected Object before(MethodInvocation methodInvocation)
+		throws Throwable {
+
 		if (!ClusterInvokeThreadLocal.isEnabled()) {
 			return null;
 		}
 
 		Clusterable clusterable = findAnnotation(methodInvocation);
 
-		if (clusterable == NullClusterable.NULL_CLUSTERABLE) {
+		if (clusterable == null) {
 			return null;
 		}
 
@@ -86,11 +87,6 @@ public class ClusterableAdvice
 		}
 
 		return result;
-	}
-
-	@Override
-	public Clusterable getNullAnnotation() {
-		return NullClusterable.NULL_CLUSTERABLE;
 	}
 
 }

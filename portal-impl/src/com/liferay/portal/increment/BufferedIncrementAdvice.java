@@ -14,6 +14,7 @@
 
 package com.liferay.portal.increment;
 
+import com.liferay.portal.aop.AnnotatedMethodInterceptor;
 import com.liferay.portal.internal.increment.BufferedIncreasableEntry;
 import com.liferay.portal.internal.increment.BufferedIncrementProcessor;
 import com.liferay.portal.internal.increment.BufferedIncrementProcessorUtil;
@@ -26,11 +27,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.spring.aop.AnnotationChainableMethodAdvice;
 
 import java.io.Serializable;
-
-import java.lang.annotation.Annotation;
 
 import java.util.concurrent.Callable;
 
@@ -41,14 +39,16 @@ import org.aopalliance.intercept.MethodInvocation;
  * @author     Shuyang Zhou
  */
 public class BufferedIncrementAdvice
-	extends AnnotationChainableMethodAdvice<BufferedIncrement> {
+	extends AnnotatedMethodInterceptor<BufferedIncrement> {
 
 	@Override
 	@SuppressWarnings("rawtypes")
-	public Object before(MethodInvocation methodInvocation) throws Throwable {
+	protected Object before(MethodInvocation methodInvocation)
+		throws Throwable {
+
 		BufferedIncrement bufferedIncrement = findAnnotation(methodInvocation);
 
-		if (bufferedIncrement == _nullBufferedIncrement) {
+		if (bufferedIncrement == null) {
 			return null;
 		}
 
@@ -106,35 +106,7 @@ public class BufferedIncrementAdvice
 		return nullResult;
 	}
 
-	public void destroy() {
-	}
-
-	@Override
-	public BufferedIncrement getNullAnnotation() {
-		return _nullBufferedIncrement;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		BufferedIncrementAdvice.class);
-
-	private static final BufferedIncrement _nullBufferedIncrement =
-		new BufferedIncrement() {
-
-			@Override
-			public Class<? extends Annotation> annotationType() {
-				return BufferedIncrement.class;
-			}
-
-			@Override
-			public String configuration() {
-				return "default";
-			}
-
-			@Override
-			public Class<? extends Increment<?>> incrementClass() {
-				return null;
-			}
-
-		};
 
 }

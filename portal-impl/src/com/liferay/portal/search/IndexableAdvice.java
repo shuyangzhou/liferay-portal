@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search;
 
+import com.liferay.portal.aop.AnnotatedMethodInterceptor;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -24,9 +25,7 @@ import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.spring.aop.AnnotationChainableMethodAdvice;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import org.aopalliance.intercept.MethodInvocation;
@@ -34,11 +33,11 @@ import org.aopalliance.intercept.MethodInvocation;
 /**
  * @author Shuyang Zhou
  */
-public class IndexableAdvice
-	extends AnnotationChainableMethodAdvice<Indexable> {
+public class IndexableAdvice extends AnnotatedMethodInterceptor<Indexable> {
 
 	@Override
-	public void afterReturning(MethodInvocation methodInvocation, Object result)
+	protected void afterReturning(
+			MethodInvocation methodInvocation, Object result)
 		throws Throwable {
 
 		if (result == null) {
@@ -63,7 +62,7 @@ public class IndexableAdvice
 
 		Indexable indexable = findAnnotation(methodInvocation);
 
-		if (indexable == _nullIndexable) {
+		if (indexable == null) {
 			return;
 		}
 
@@ -84,7 +83,7 @@ public class IndexableAdvice
 			returnType.getName());
 
 		if (indexer == null) {
-			serviceBeanAopCacheManager.removeMethodInterceptor(
+			methodInterceptorCache.removeMethodInterceptor(
 				methodInvocation, this);
 
 			return;
@@ -122,26 +121,7 @@ public class IndexableAdvice
 		}
 	}
 
-	@Override
-	public Indexable getNullAnnotation() {
-		return _nullIndexable;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		IndexableAdvice.class);
-
-	private static final Indexable _nullIndexable = new Indexable() {
-
-		@Override
-		public Class<? extends Annotation> annotationType() {
-			return Indexable.class;
-		}
-
-		@Override
-		public IndexableType type() {
-			return null;
-		}
-
-	};
 
 }

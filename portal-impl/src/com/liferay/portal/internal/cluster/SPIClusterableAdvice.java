@@ -14,13 +14,12 @@
 
 package com.liferay.portal.internal.cluster;
 
+import com.liferay.portal.aop.AnnotatedMethodInterceptor;
 import com.liferay.portal.kernel.cluster.Clusterable;
 import com.liferay.portal.kernel.cluster.ClusterableInvokerUtil;
-import com.liferay.portal.kernel.cluster.NullClusterable;
 import com.liferay.portal.kernel.nio.intraband.rpc.IntrabandRPCUtil;
 import com.liferay.portal.kernel.resiliency.spi.SPI;
 import com.liferay.portal.kernel.resiliency.spi.SPIUtil;
-import com.liferay.portal.spring.aop.AnnotationChainableMethodAdvice;
 
 import java.io.Serializable;
 
@@ -34,15 +33,16 @@ import org.aopalliance.intercept.MethodInvocation;
  * @author Shuyang Zhou
  */
 public class SPIClusterableAdvice
-	extends AnnotationChainableMethodAdvice<Clusterable> {
+	extends AnnotatedMethodInterceptor<Clusterable> {
 
 	@Override
-	public void afterReturning(MethodInvocation methodInvocation, Object result)
+	protected void afterReturning(
+			MethodInvocation methodInvocation, Object result)
 		throws Throwable {
 
 		Clusterable clusterable = findAnnotation(methodInvocation);
 
-		if (clusterable == NullClusterable.NULL_CLUSTERABLE) {
+		if (clusterable == null) {
 			return;
 		}
 
@@ -50,7 +50,7 @@ public class SPIClusterableAdvice
 
 		IntrabandRPCUtil.execute(
 			spi.getRegistrationReference(),
-			new MethodHandlerProcessCallable<Serializable>(
+			new MethodHandlerProcessCallable<>(
 				ClusterableInvokerUtil.createMethodHandler(
 					clusterable.acceptor(), methodInvocation.getThis(),
 					methodInvocation.getMethod(),
@@ -58,10 +58,12 @@ public class SPIClusterableAdvice
 	}
 
 	@Override
-	public Object before(MethodInvocation methodInvocation) throws Throwable {
+	protected Object before(MethodInvocation methodInvocation)
+		throws Throwable {
+
 		Clusterable clusterable = findAnnotation(methodInvocation);
 
-		if (clusterable == NullClusterable.NULL_CLUSTERABLE) {
+		if (clusterable == null) {
 			return null;
 		}
 
@@ -73,7 +75,7 @@ public class SPIClusterableAdvice
 
 		Future<Serializable> futureResult = IntrabandRPCUtil.execute(
 			spi.getRegistrationReference(),
-			new MethodHandlerProcessCallable<Serializable>(
+			new MethodHandlerProcessCallable<>(
 				ClusterableInvokerUtil.createMethodHandler(
 					clusterable.acceptor(), methodInvocation.getThis(),
 					methodInvocation.getMethod(),
@@ -90,11 +92,6 @@ public class SPIClusterableAdvice
 		}
 
 		return result;
-	}
-
-	@Override
-	public Clusterable getNullAnnotation() {
-		return NullClusterable.NULL_CLUSTERABLE;
 	}
 
 }

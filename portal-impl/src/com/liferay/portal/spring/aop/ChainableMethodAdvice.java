@@ -20,7 +20,9 @@ import org.aopalliance.intercept.MethodInvocation;
 /**
  * @author Shuyang Zhou
  * @author Brian Wing Shun Chan
+ * @deprecated As of Judson (7.1.x), replaced by {@link BaseMethodInterceptor}
  */
+@Deprecated
 public abstract class ChainableMethodAdvice implements MethodInterceptor {
 
 	public void afterReturning(MethodInvocation methodInvocation, Object result)

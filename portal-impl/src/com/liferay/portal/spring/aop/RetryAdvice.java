@@ -14,6 +14,8 @@
 
 package com.liferay.portal.spring.aop;
 
+import com.liferay.portal.aop.AnnotatedMethodInterceptor;
+import com.liferay.portal.internal.aop.MethodInvocationImpl;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.RetryAcceptor;
@@ -21,8 +23,6 @@ import com.liferay.portal.kernel.spring.aop.Property;
 import com.liferay.portal.kernel.spring.aop.Retry;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.util.PropsValues;
-
-import java.lang.annotation.Annotation;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,18 +32,13 @@ import org.aopalliance.intercept.MethodInvocation;
 /**
  * @author Matthew Tambara
  */
-public class RetryAdvice extends AnnotationChainableMethodAdvice<Retry> {
-
-	@Override
-	public Retry getNullAnnotation() {
-		return _nullRetry;
-	}
+public class RetryAdvice extends AnnotatedMethodInterceptor<Retry> {
 
 	@Override
 	public Object invoke(MethodInvocation methodInvocation) throws Throwable {
 		Retry retry = findAnnotation(methodInvocation);
 
-		if (retry == _nullRetry) {
+		if (retry == null) {
 			return methodInvocation.proceed();
 		}
 
@@ -69,17 +64,17 @@ public class RetryAdvice extends AnnotationChainableMethodAdvice<Retry> {
 
 		RetryAcceptor retryAcceptor = clazz.newInstance();
 
-		ServiceBeanMethodInvocation serviceBeanMethodInvocation =
-			(ServiceBeanMethodInvocation)methodInvocation;
+		MethodInvocationImpl methodInvocationImpl =
+			(MethodInvocationImpl)methodInvocation;
 
-		serviceBeanMethodInvocation.mark();
+		methodInvocationImpl.mark();
 
 		Object returnValue = null;
 		Throwable throwable = null;
 
 		while ((retries < 0) || (retries-- > 0)) {
 			try {
-				returnValue = serviceBeanMethodInvocation.proceed();
+				returnValue = methodInvocationImpl.proceed();
 
 				if (!retryAcceptor.acceptResult(returnValue, properties)) {
 					return returnValue;
@@ -122,7 +117,7 @@ public class RetryAdvice extends AnnotationChainableMethodAdvice<Retry> {
 				}
 			}
 
-			serviceBeanMethodInvocation.reset();
+			methodInvocationImpl.reset();
 		}
 
 		if (throwable != null) {
@@ -153,29 +148,5 @@ public class RetryAdvice extends AnnotationChainableMethodAdvice<Retry> {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(RetryAdvice.class);
-
-	private static final Retry _nullRetry = new Retry() {
-
-		@Override
-		public Class<? extends RetryAcceptor> acceptor() {
-			return null;
-		}
-
-		@Override
-		public Class<? extends Annotation> annotationType() {
-			return Retry.class;
-		}
-
-		@Override
-		public Property[] properties() {
-			return null;
-		}
-
-		@Override
-		public int retries() {
-			return 0;
-		}
-
-	};
 
 }

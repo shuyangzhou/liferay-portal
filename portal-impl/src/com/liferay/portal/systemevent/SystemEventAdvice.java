@@ -16,6 +16,7 @@ package com.liferay.portal.systemevent;
 
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.aop.AnnotatedMethodInterceptor;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.AuditedModel;
@@ -29,11 +30,9 @@ import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.systemevent.SystemEventHierarchyEntry;
 import com.liferay.portal.kernel.systemevent.SystemEventHierarchyEntryThreadLocal;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.spring.aop.AnnotationChainableMethodAdvice;
 
 import java.io.Serializable;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import org.aopalliance.intercept.MethodInvocation;
@@ -41,16 +40,16 @@ import org.aopalliance.intercept.MethodInvocation;
 /**
  * @author Zsolt Berentey
  */
-public class SystemEventAdvice
-	extends AnnotationChainableMethodAdvice<SystemEvent> {
+public class SystemEventAdvice extends AnnotatedMethodInterceptor<SystemEvent> {
 
 	@Override
-	public void afterReturning(MethodInvocation methodInvocation, Object result)
+	protected void afterReturning(
+			MethodInvocation methodInvocation, Object result)
 		throws Throwable {
 
 		SystemEvent systemEvent = findAnnotation(methodInvocation);
 
-		if ((systemEvent == _nullSystemEvent) || !systemEvent.send()) {
+		if ((systemEvent == null) || !systemEvent.send()) {
 			return;
 		}
 
@@ -112,10 +111,12 @@ public class SystemEventAdvice
 	}
 
 	@Override
-	public Object before(MethodInvocation methodInvocation) throws Throwable {
+	protected Object before(MethodInvocation methodInvocation)
+		throws Throwable {
+
 		SystemEvent systemEvent = findAnnotation(methodInvocation);
 
-		if (systemEvent == _nullSystemEvent) {
+		if (systemEvent == null) {
 			return null;
 		}
 
@@ -142,10 +143,10 @@ public class SystemEventAdvice
 	}
 
 	@Override
-	public void duringFinally(MethodInvocation methodInvocation) {
+	protected void duringFinally(MethodInvocation methodInvocation) {
 		SystemEvent systemEvent = findAnnotation(methodInvocation);
 
-		if (systemEvent == _nullSystemEvent) {
+		if (systemEvent == null) {
 			return;
 		}
 
@@ -169,11 +170,6 @@ public class SystemEventAdvice
 
 		SystemEventHierarchyEntryThreadLocal.pop(
 			getClassName(classedModel), classPK);
-	}
-
-	@Override
-	public SystemEvent getNullAnnotation() {
-		return _nullSystemEvent;
 	}
 
 	protected String getClassName(ClassedModel classedModel) {
@@ -329,29 +325,5 @@ public class SystemEventAdvice
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SystemEventAdvice.class);
-
-	private static final SystemEvent _nullSystemEvent = new SystemEvent() {
-
-		@Override
-		public int action() {
-			return SystemEventConstants.ACTION_NONE;
-		}
-
-		@Override
-		public Class<? extends Annotation> annotationType() {
-			return SystemEvent.class;
-		}
-
-		@Override
-		public boolean send() {
-			return false;
-		}
-
-		@Override
-		public int type() {
-			return 0;
-		}
-
-	};
 
 }

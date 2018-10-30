@@ -15,15 +15,14 @@
 package com.liferay.portal.resiliency.service;
 
 import com.liferay.petra.lang.ClassLoaderPool;
+import com.liferay.portal.aop.AnnotatedMethodInterceptor;
 import com.liferay.portal.internal.resiliency.service.ServiceMethodProcessCallable;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServiceInvokerUtil;
 import com.liferay.portal.kernel.nio.intraband.rpc.IntrabandRPCUtil;
 import com.liferay.portal.kernel.resiliency.spi.SPI;
 import com.liferay.portal.kernel.resiliency.spi.SPIRegistryUtil;
-import com.liferay.portal.kernel.security.access.control.AccessControl;
 import com.liferay.portal.kernel.security.access.control.AccessControlThreadLocal;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
-import com.liferay.portal.spring.aop.AnnotationChainableMethodAdvice;
 
 import java.io.Serializable;
 
@@ -37,19 +36,19 @@ import org.aopalliance.intercept.MethodInvocation;
  * @author Shuyang Zhou
  */
 public class PortalResiliencyAdvice
-	extends AnnotationChainableMethodAdvice<AccessControlled> {
+	extends AnnotatedMethodInterceptor<AccessControlled> {
 
 	@Override
-	public Object before(MethodInvocation methodInvocation) throws Throwable {
+	protected Object before(MethodInvocation methodInvocation)
+		throws Throwable {
+
 		AccessControlled accessControlled = findAnnotation(methodInvocation);
 
-		if (accessControlled == AccessControl.NULL_ACCESS_CONTROLLED) {
+		if (accessControlled == null) {
 			return null;
 		}
 
-		boolean remoteAccess = AccessControlThreadLocal.isRemoteAccess();
-
-		if (!remoteAccess) {
+		if (!AccessControlThreadLocal.isRemoteAccess()) {
 			return null;
 		}
 
@@ -63,7 +62,7 @@ public class PortalResiliencyAdvice
 		SPI spi = SPIRegistryUtil.getServletContextSPI(servletContextName);
 
 		if (spi == null) {
-			serviceBeanAopCacheManager.removeMethodInterceptor(
+			methodInterceptorCache.removeMethodInterceptor(
 				methodInvocation, this);
 
 			return null;
@@ -89,11 +88,6 @@ public class PortalResiliencyAdvice
 		}
 
 		return result;
-	}
-
-	@Override
-	public AccessControlled getNullAnnotation() {
-		return AccessControl.NULL_ACCESS_CONTROLLED;
 	}
 
 }
