@@ -16,7 +16,9 @@ package com.liferay.portal.kernel.spring.aop;
 
 /**
  * @author Tina Tian
+ * @deprecated As of Judson (7.1.x), with no direct replacement
  */
+@Deprecated
 public interface AopProxyFactory {
 
 	public AopProxy getAopProxy(AdvisedSupport advisedSupport);
