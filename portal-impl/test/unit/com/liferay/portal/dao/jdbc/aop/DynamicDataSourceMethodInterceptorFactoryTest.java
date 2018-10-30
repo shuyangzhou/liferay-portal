@@ -15,24 +15,24 @@
 package com.liferay.portal.dao.jdbc.aop;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.aop.AnnotatedMethodInterceptor;
+import com.liferay.portal.aop.context.MethodInterceptorContext;
+import com.liferay.portal.aop.retry.RetryMethodInterceptorFactory;
+import com.liferay.portal.internal.aop.MethodInvocationImpl;
+import com.liferay.portal.internal.aop.cache.MethodInterceptorCacheImpl;
 import com.liferay.portal.kernel.dao.jdbc.aop.DynamicDataSourceTargetSource;
 import com.liferay.portal.kernel.dao.jdbc.aop.MasterDataSource;
 import com.liferay.portal.kernel.dao.jdbc.aop.Operation;
-import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
 import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
-import com.liferay.portal.spring.aop.AnnotationChainableMethodAdvice;
-import com.liferay.portal.spring.aop.ServiceBeanAopCacheManager;
-import com.liferay.portal.spring.aop.ServiceBeanMethodInvocation;
-import com.liferay.portal.spring.transaction.TransactionInterceptor;
+import com.liferay.portal.spring.transaction.TransactionExecutor;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
-import java.util.Arrays;
-import java.util.Map;
+import java.util.Collections;
 import java.util.Stack;
 
 import javax.sql.DataSource;
@@ -48,7 +48,7 @@ import org.junit.Test;
 /**
  * @author Shuyang Zhou
  */
-public class DynamicDataSourceAdviceTest {
+public class DynamicDataSourceMethodInterceptorFactoryTest {
 
 	@ClassRule
 	public static final CodeCoverageAssertor codeCoverageAssertor =
@@ -56,24 +56,16 @@ public class DynamicDataSourceAdviceTest {
 
 	@Before
 	public void setUp() {
-		_dynamicDataSourceAdvice = new DynamicDataSourceAdvice();
+		ClassLoader classLoader =
+			DynamicDataSourceMethodInterceptorFactoryTest.class.
+				getClassLoader();
+
+		InvocationHandler invocationHandler = (proxy, method, args) -> {
+			throw new UnsupportedOperationException();
+		};
 
 		_dynamicDataSourceTargetSource =
 			new DefaultDynamicDataSourceTargetSource();
-
-		ClassLoader classLoader =
-			DynamicDataSourceAdviceTest.class.getClassLoader();
-
-		InvocationHandler invocationHandler = new InvocationHandler() {
-
-			@Override
-			public Object invoke(Object proxy, Method method, Object[] args)
-				throws Throwable {
-
-				throw new UnsupportedOperationException();
-			}
-
-		};
 
 		_readDataSource = (DataSource)ProxyUtil.newProxyInstance(
 			classLoader, new Class<?>[] {DataSource.class}, invocationHandler);
@@ -85,48 +77,55 @@ public class DynamicDataSourceAdviceTest {
 
 		_dynamicDataSourceTargetSource.setWriteDataSource(_writeDataSource);
 
-		_dynamicDataSourceAdvice.setDynamicDataSourceTargetSource(
+		DynamicDataSourceMethodInterceptorFactory
+			dynamicDataSourceMethodInterceptorFactory =
+				new DynamicDataSourceMethodInterceptorFactory();
+
+		Assert.assertFalse(
+			dynamicDataSourceMethodInterceptorFactory.isEnabled());
+
+		InfrastructureUtil infrastructureUtil = new InfrastructureUtil();
+
+		infrastructureUtil.setDynamicDataSourceTargetSource(
 			_dynamicDataSourceTargetSource);
 
-		_serviceBeanAopCacheManager = new ServiceBeanAopCacheManager(
-			_dynamicDataSourceAdvice);
+		Assert.assertTrue(
+			dynamicDataSourceMethodInterceptorFactory.isEnabled());
 
-		Map<Class<? extends Annotation>, AnnotationChainableMethodAdvice<?>[]>
-			registeredAnnotationChainableMethodAdvices =
-				ReflectionTestUtil.getFieldValue(
-					_serviceBeanAopCacheManager,
-					"_annotationChainableMethodAdvices");
+		_annotatedMethodInterceptor =
+			(AnnotatedMethodInterceptor<?>)
+				dynamicDataSourceMethodInterceptorFactory.create(
+					new MethodInterceptorContext() {
 
-		AnnotationChainableMethodAdvice<?>[] annotationChainableMethodAdvices =
-			registeredAnnotationChainableMethodAdvices.get(
-				MasterDataSource.class);
+						@Override
+						public <T> T getService(Class<T> serviceClass) {
+							Assert.assertSame(
+								TransactionExecutor.class, serviceClass);
 
-		Assert.assertEquals(
-			Arrays.toString(annotationChainableMethodAdvices), 1,
-			annotationChainableMethodAdvices.length);
-		Assert.assertSame(
-			_dynamicDataSourceAdvice, annotationChainableMethodAdvices[0]);
-		Assert.assertSame(
-			annotationChainableMethodAdvices,
-			registeredAnnotationChainableMethodAdvices.get(
-				MasterDataSource.class));
+							return null;
+						}
 
-		_dynamicDataSourceAdvice.setTransactionInterceptor(
-			new TransactionInterceptor());
-	}
-
-	@Test
-	public void testAnnotationType() {
-		MasterDataSource masterDataSource = ReflectionTestUtil.getFieldValue(
-			DynamicDataSourceAdvice.class, "_nullMasterDataSource");
+					});
 
 		Assert.assertSame(
-			MasterDataSource.class, masterDataSource.annotationType());
-	}
+			RetryMethodInterceptorFactory.class,
+			dynamicDataSourceMethodInterceptorFactory.getParentClass());
 
-	@Test
-	public void testDeprecatedMethods() {
-		_dynamicDataSourceAdvice.setTransactionAttributeSource(null);
+		MethodInterceptorCacheImpl methodInterceptorCache =
+			new MethodInterceptorCacheImpl();
+
+		MethodInterceptor[] methodInterceptors = new MethodInterceptor[1];
+
+		methodInterceptors[0] = _annotatedMethodInterceptor;
+
+		methodInterceptorCache.setMethodInterceptorsAndAnnotationTypes(
+			methodInterceptors, methodInterceptors,
+			Collections.singleton(
+				dynamicDataSourceMethodInterceptorFactory.
+					getAnnotationClass()));
+
+		_annotatedMethodInterceptor.setMethodInterceptorCache(
+			methodInterceptorCache);
 	}
 
 	@Test
@@ -149,19 +148,18 @@ public class DynamicDataSourceAdviceTest {
 
 		Method method = TestClass.class.getMethod(methodName);
 
-		ServiceBeanMethodInvocation serviceBeanMethodInvocation =
-			new ServiceBeanMethodInvocation(testClass, method, new Object[0]);
+		MethodInvocationImpl methodInvocation = new MethodInvocationImpl(
+			testClass, method, new Object[0]);
 
-		serviceBeanMethodInvocation.setMethodInterceptors(
-			new MethodInterceptor[] {_dynamicDataSourceAdvice});
+		methodInvocation.setMethodInterceptors(
+			new MethodInterceptor[] {_annotatedMethodInterceptor});
 
-		return serviceBeanMethodInvocation;
+		return methodInvocation;
 	}
 
-	private DynamicDataSourceAdvice _dynamicDataSourceAdvice;
+	private AnnotatedMethodInterceptor<?> _annotatedMethodInterceptor;
 	private DynamicDataSourceTargetSource _dynamicDataSourceTargetSource;
 	private DataSource _readDataSource;
-	private ServiceBeanAopCacheManager _serviceBeanAopCacheManager;
 	private DataSource _writeDataSource;
 
 	private class TestClass {
