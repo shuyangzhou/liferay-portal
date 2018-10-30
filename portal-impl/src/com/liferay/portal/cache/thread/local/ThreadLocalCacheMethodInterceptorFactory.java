@@ -14,12 +14,19 @@
 
 package com.liferay.portal.cache.thread.local;
 
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.aop.AnnotatedMethodInterceptor;
 import com.liferay.portal.aop.MethodInterceptorFactory;
 import com.liferay.portal.aop.context.MethodInterceptorContext;
 import com.liferay.portal.kernel.cache.thread.local.ThreadLocalCachable;
+import com.liferay.portal.kernel.cache.thread.local.ThreadLocalCache;
+import com.liferay.portal.kernel.cache.thread.local.ThreadLocalCacheManager;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.messaging.async.AsyncMethodInterceptorFactory;
 
 import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
 
 /**
  * @author Shuyang Zhou
@@ -33,7 +40,7 @@ public class ThreadLocalCacheMethodInterceptorFactory
 	public MethodInterceptor create(
 		MethodInterceptorContext methodInterceptorContext) {
 
-		return new ThreadLocalCacheAdvice();
+		return new ThreadLocalCacheMethodInterceptor();
 	}
 
 	@Override
@@ -49,6 +56,68 @@ public class ThreadLocalCacheMethodInterceptorFactory
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	private static class ThreadLocalCacheMethodInterceptor
+		extends AnnotatedMethodInterceptor<ThreadLocalCachable> {
+
+		@Override
+		public Object invoke(MethodInvocation methodInvocation)
+			throws Throwable {
+
+			ThreadLocalCachable threadLocalCachable = findAnnotation(
+				methodInvocation);
+
+			if (threadLocalCachable == null) {
+				return methodInvocation.proceed();
+			}
+
+			ThreadLocalCache<Object> threadLocalCache =
+				ThreadLocalCacheManager.getThreadLocalCache(
+					threadLocalCachable.scope(), methodInvocation.getMethod());
+
+			String cacheKey = _getCacheKey(methodInvocation.getArguments());
+
+			Object value = threadLocalCache.get(cacheKey);
+
+			if (value != null) {
+				if (value == nullResult) {
+					return null;
+				}
+
+				return value;
+			}
+
+			Object result = methodInvocation.proceed();
+
+			if (result == null) {
+				threadLocalCache.put(cacheKey, nullResult);
+			}
+			else {
+				threadLocalCache.put(cacheKey, result);
+			}
+
+			return result;
+		}
+
+		private String _getCacheKey(Object[] arguments) {
+			if (arguments.length == 1) {
+				return StringUtil.toHexString(arguments[0]);
+			}
+
+			StringBundler sb = new StringBundler(arguments.length * 2 - 1);
+
+			for (int i = 0; i < arguments.length; i++) {
+				sb.append(StringUtil.toHexString(arguments[i]));
+
+				if ((i + 1) < arguments.length) {
+					sb.append(StringPool.POUND);
+				}
+			}
+
+			return sb.toString();
+		}
+
 	}
 
 }

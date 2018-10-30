@@ -14,12 +14,14 @@
 
 package com.liferay.portal.aop.skip;
 
+import com.liferay.portal.aop.AnnotatedMethodInterceptor;
 import com.liferay.portal.aop.MethodInterceptorFactory;
 import com.liferay.portal.aop.context.MethodInterceptorContext;
+import com.liferay.portal.internal.aop.MethodInvocationImpl;
 import com.liferay.portal.kernel.spring.aop.Skip;
-import com.liferay.portal.spring.aop.SkipAdvice;
 
 import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
 
 /**
  * @author Shuyang Zhou
@@ -31,7 +33,7 @@ public class SkipMethodInterceptorFactory implements MethodInterceptorFactory {
 	public MethodInterceptor create(
 		MethodInterceptorContext methodInterceptorContext) {
 
-		return new SkipAdvice();
+		return new SkipMethodInterceptor();
 	}
 
 	@Override
@@ -47,6 +49,34 @@ public class SkipMethodInterceptorFactory implements MethodInterceptorFactory {
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	private static class SkipMethodInterceptor
+		extends AnnotatedMethodInterceptor<Skip> {
+
+		@Override
+		protected Object before(MethodInvocation methodInvocation)
+			throws Throwable {
+
+			Skip skip = findAnnotation(methodInvocation);
+
+			if (skip != null) {
+				methodInterceptorCache.setMethodInterceptors(
+					methodInvocation, _emptyMethodInterceptors);
+
+				MethodInvocationImpl methodInvocationImpl =
+					(MethodInvocationImpl)methodInvocation;
+
+				methodInvocationImpl.setMethodInterceptors(
+					_emptyMethodInterceptors);
+			}
+
+			return null;
+		}
+
+		private static final MethodInterceptor[] _emptyMethodInterceptors =
+			new MethodInterceptor[0];
+
 	}
 
 }

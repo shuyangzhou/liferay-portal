@@ -14,12 +14,18 @@
 
 package com.liferay.portal.security.access.control;
 
+import com.liferay.portal.aop.AnnotatedMethodInterceptor;
 import com.liferay.portal.aop.MethodInterceptorFactory;
 import com.liferay.portal.aop.context.MethodInterceptorContext;
 import com.liferay.portal.internal.cluster.ClusterableMethodInterceptorFactory;
+import com.liferay.portal.kernel.security.access.control.AccessControlUtil;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
+import com.liferay.portal.kernel.security.auth.AccessControlContext;
+
+import java.util.Map;
 
 import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
 
 /**
  * @author Tomas Polesovsky
@@ -36,7 +42,7 @@ public class AccessControlMethodInterceptorFactory
 	public MethodInterceptor create(
 		MethodInterceptorContext methodInterceptorContext) {
 
-		return new AccessControlAdvice();
+		return new AccessControlMethodInterceptor();
 	}
 
 	@Override
@@ -52,6 +58,86 @@ public class AccessControlMethodInterceptorFactory
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	private class AccessControlMethodInterceptor
+		extends AnnotatedMethodInterceptor<AccessControlled> {
+
+		@Override
+		protected Object before(MethodInvocation methodInvocation)
+			throws Throwable {
+
+			incrementServiceDepth();
+
+			AccessControlled accessControlled = findAnnotation(
+				methodInvocation);
+
+			if (accessControlled == null) {
+				return null;
+			}
+
+			_accessControlAdvisor.accept(methodInvocation, accessControlled);
+
+			return null;
+		}
+
+		protected void decrementServiceDepth() {
+			AccessControlContext accessControlContext =
+				AccessControlUtil.getAccessControlContext();
+
+			if (accessControlContext == null) {
+				return;
+			}
+
+			Map<String, Object> settings = accessControlContext.getSettings();
+
+			Integer serviceDepth = (Integer)settings.get(
+				AccessControlContext.Settings.SERVICE_DEPTH.toString());
+
+			if (serviceDepth == null) {
+				return;
+			}
+
+			serviceDepth--;
+
+			settings.put(
+				AccessControlContext.Settings.SERVICE_DEPTH.toString(),
+				serviceDepth);
+		}
+
+		@Override
+		protected void duringFinally(MethodInvocation methodInvocation) {
+			decrementServiceDepth();
+		}
+
+		protected void incrementServiceDepth() {
+			AccessControlContext accessControlContext =
+				AccessControlUtil.getAccessControlContext();
+
+			if (accessControlContext == null) {
+				return;
+			}
+
+			Map<String, Object> settings = accessControlContext.getSettings();
+
+			Integer serviceDepth = (Integer)settings.get(
+				AccessControlContext.Settings.SERVICE_DEPTH.toString());
+
+			if (serviceDepth == null) {
+				serviceDepth = Integer.valueOf(1);
+			}
+			else {
+				serviceDepth++;
+			}
+
+			settings.put(
+				AccessControlContext.Settings.SERVICE_DEPTH.toString(),
+				serviceDepth);
+		}
+
+		private final AccessControlAdvisor _accessControlAdvisor =
+			new AccessControlAdvisorImpl();
+
 	}
 
 }

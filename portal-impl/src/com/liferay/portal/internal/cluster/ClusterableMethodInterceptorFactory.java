@@ -14,14 +14,27 @@
 
 package com.liferay.portal.internal.cluster;
 
+import com.liferay.portal.aop.AnnotatedMethodInterceptor;
 import com.liferay.portal.aop.MethodInterceptorFactory;
 import com.liferay.portal.aop.context.MethodInterceptorContext;
 import com.liferay.portal.aop.skip.SkipMethodInterceptorFactory;
+import com.liferay.portal.kernel.cluster.ClusterInvokeThreadLocal;
+import com.liferay.portal.kernel.cluster.ClusterMasterExecutorUtil;
 import com.liferay.portal.kernel.cluster.Clusterable;
+import com.liferay.portal.kernel.cluster.ClusterableInvokerUtil;
+import com.liferay.portal.kernel.nio.intraband.rpc.IntrabandRPCUtil;
+import com.liferay.portal.kernel.resiliency.spi.SPI;
 import com.liferay.portal.kernel.resiliency.spi.SPIUtil;
 import com.liferay.portal.util.PropsValues;
 
+import java.io.Serializable;
+
+import java.lang.reflect.Method;
+
+import java.util.concurrent.Future;
+
 import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
 
 /**
  * @author Shuyang Zhou
@@ -35,10 +48,10 @@ public class ClusterableMethodInterceptorFactory
 		MethodInterceptorContext methodInterceptorContext) {
 
 		if (SPIUtil.isSPI()) {
-			return new SPIClusterableAdvice();
+			return new SPIClusterableMethodInterceptor();
 		}
 
-		return new ClusterableAdvice();
+		return new ClusterableMethodInterceptor();
 	}
 
 	@Override
@@ -62,6 +75,136 @@ public class ClusterableMethodInterceptorFactory
 		}
 
 		return false;
+	}
+
+	public class ClusterableMethodInterceptor
+		extends AnnotatedMethodInterceptor<Clusterable> {
+
+		@Override
+		protected void afterReturning(
+				MethodInvocation methodInvocation, Object result)
+			throws Throwable {
+
+			if (!ClusterInvokeThreadLocal.isEnabled()) {
+				return;
+			}
+
+			Clusterable clusterable = findAnnotation(methodInvocation);
+
+			if (clusterable == null) {
+				return;
+			}
+
+			ClusterableInvokerUtil.invokeOnCluster(
+				clusterable.acceptor(), methodInvocation.getThis(),
+				methodInvocation.getMethod(), methodInvocation.getArguments());
+		}
+
+		@Override
+		protected Object before(MethodInvocation methodInvocation)
+			throws Throwable {
+
+			if (!ClusterInvokeThreadLocal.isEnabled()) {
+				return null;
+			}
+
+			Clusterable clusterable = findAnnotation(methodInvocation);
+
+			if (clusterable == null) {
+				return null;
+			}
+
+			if (!clusterable.onMaster()) {
+				return null;
+			}
+
+			Object result = null;
+
+			if (ClusterMasterExecutorUtil.isMaster()) {
+				result = methodInvocation.proceed();
+			}
+			else {
+				result = ClusterableInvokerUtil.invokeOnMaster(
+					clusterable.acceptor(), methodInvocation.getThis(),
+					methodInvocation.getMethod(),
+					methodInvocation.getArguments());
+			}
+
+			Method method = methodInvocation.getMethod();
+
+			Class<?> returnType = method.getReturnType();
+
+			if (returnType == void.class) {
+				result = nullResult;
+			}
+
+			return result;
+		}
+
+	}
+
+	public class SPIClusterableMethodInterceptor
+		extends AnnotatedMethodInterceptor<Clusterable> {
+
+		@Override
+		protected void afterReturning(
+				MethodInvocation methodInvocation, Object result)
+			throws Throwable {
+
+			Clusterable clusterable = findAnnotation(methodInvocation);
+
+			if (clusterable == null) {
+				return;
+			}
+
+			SPI spi = SPIUtil.getSPI();
+
+			IntrabandRPCUtil.execute(
+				spi.getRegistrationReference(),
+				new MethodHandlerProcessCallable<>(
+					ClusterableInvokerUtil.createMethodHandler(
+						clusterable.acceptor(), methodInvocation.getThis(),
+						methodInvocation.getMethod(),
+						methodInvocation.getArguments())));
+		}
+
+		@Override
+		protected Object before(MethodInvocation methodInvocation)
+			throws Throwable {
+
+			Clusterable clusterable = findAnnotation(methodInvocation);
+
+			if (clusterable == null) {
+				return null;
+			}
+
+			if (!clusterable.onMaster()) {
+				return null;
+			}
+
+			SPI spi = SPIUtil.getSPI();
+
+			Future<Serializable> futureResult = IntrabandRPCUtil.execute(
+				spi.getRegistrationReference(),
+				new MethodHandlerProcessCallable<>(
+					ClusterableInvokerUtil.createMethodHandler(
+						clusterable.acceptor(), methodInvocation.getThis(),
+						methodInvocation.getMethod(),
+						methodInvocation.getArguments())));
+
+			Object result = futureResult.get();
+
+			Method method = methodInvocation.getMethod();
+
+			Class<?> returnType = method.getReturnType();
+
+			if (returnType == void.class) {
+				result = nullResult;
+			}
+
+			return result;
+		}
+
 	}
 
 }

@@ -14,7 +14,7 @@
 
 package com.liferay.portal.spring.bean;
 
-import com.liferay.portal.internal.cluster.ClusterableAdvice;
+import com.liferay.portal.internal.cluster.ClusterableMethodInterceptorFactory;
 import com.liferay.portal.kernel.bean.BeanLocatorException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
@@ -80,7 +80,7 @@ public class BeanReferenceAnnotationBeanPostProcessor
 				StringBundler.concat(
 					beanName, " should implement ",
 					IdentifiableOSGiService.class.getName(), " for ",
-					ClusterableAdvice.class.getName()));
+					ClusterableMethodInterceptorFactory.class.getName()));
 		}
 
 		_autoInject(bean, beanName, bean.getClass());

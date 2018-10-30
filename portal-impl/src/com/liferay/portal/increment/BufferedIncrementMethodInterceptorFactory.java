@@ -14,12 +14,29 @@
 
 package com.liferay.portal.increment;
 
+import com.liferay.portal.aop.AnnotatedMethodInterceptor;
 import com.liferay.portal.aop.MethodInterceptorFactory;
 import com.liferay.portal.aop.context.MethodInterceptorContext;
 import com.liferay.portal.cache.thread.local.ThreadLocalCacheMethodInterceptorFactory;
+import com.liferay.portal.internal.increment.BufferedIncreasableEntry;
+import com.liferay.portal.internal.increment.BufferedIncrementProcessor;
+import com.liferay.portal.internal.increment.BufferedIncrementProcessorUtil;
+import com.liferay.portal.kernel.cache.key.CacheKeyGenerator;
+import com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil;
 import com.liferay.portal.kernel.increment.BufferedIncrement;
+import com.liferay.portal.kernel.increment.Increment;
+import com.liferay.portal.kernel.increment.IncrementFactory;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
+import com.liferay.portal.kernel.util.StringUtil;
+
+import java.io.Serializable;
+
+import java.util.concurrent.Callable;
 
 import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
 
 /**
  * @author Zsolt Berentey
@@ -33,7 +50,7 @@ public class BufferedIncrementMethodInterceptorFactory
 	public MethodInterceptor create(
 		MethodInterceptorContext methodInterceptorContext) {
 
-		return new BufferedIncrementAdvice();
+		return new BufferedMethodInterceptor();
 	}
 
 	@Override
@@ -49,6 +66,80 @@ public class BufferedIncrementMethodInterceptorFactory
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	private static class BufferedMethodInterceptor
+		extends AnnotatedMethodInterceptor<BufferedIncrement> {
+
+		@Override
+		@SuppressWarnings("rawtypes")
+		protected Object before(MethodInvocation methodInvocation)
+			throws Throwable {
+
+			BufferedIncrement bufferedIncrement = findAnnotation(
+				methodInvocation);
+
+			if (bufferedIncrement == null) {
+				return null;
+			}
+
+			String configuration = bufferedIncrement.configuration();
+
+			BufferedIncrementProcessor bufferedIncrementProcessor =
+				BufferedIncrementProcessorUtil.getBufferedIncrementProcessor(
+					configuration);
+
+			if (bufferedIncrementProcessor == null) {
+				return nullResult;
+			}
+
+			Object[] arguments = methodInvocation.getArguments();
+
+			Object value = arguments[arguments.length - 1];
+
+			CacheKeyGenerator cacheKeyGenerator =
+				CacheKeyGeneratorUtil.getCacheKeyGenerator(
+					BufferedMethodInterceptor.class.getName());
+
+			for (int i = 0; i < arguments.length - 1; i++) {
+				cacheKeyGenerator.append(StringUtil.toHexString(arguments[i]));
+			}
+
+			Serializable batchKey = cacheKeyGenerator.finish();
+
+			try {
+				Increment<?> increment = IncrementFactory.createIncrement(
+					bufferedIncrement.incrementClass(), value);
+
+				BufferedIncreasableEntry bufferedIncreasableEntry =
+					new BufferedIncreasableEntry(
+						methodInvocation, batchKey, increment);
+
+				TransactionCommitCallbackUtil.registerCallback(
+					new Callable<Void>() {
+
+						@Override
+						public Void call() throws Exception {
+							bufferedIncrementProcessor.process(
+								bufferedIncreasableEntry);
+
+							return null;
+						}
+
+					});
+			}
+			catch (Exception e) {
+				if (_log.isWarnEnabled()) {
+					_log.warn("Unable to increment", e);
+				}
+			}
+
+			return nullResult;
+		}
+
+		private static final Log _log = LogFactoryUtil.getLog(
+			BufferedMethodInterceptor.class);
+
 	}
 
 }
