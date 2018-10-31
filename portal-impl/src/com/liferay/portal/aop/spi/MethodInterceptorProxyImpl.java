@@ -12,9 +12,12 @@
  * details.
  */
 
-package com.liferay.portal.internal.aop;
+package com.liferay.portal.aop.spi;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.aop.cache.MethodInterceptorCache;
+import com.liferay.portal.internal.aop.MethodInvocationImpl;
 import com.liferay.portal.kernel.spring.aop.AdvisedSupport;
 import com.liferay.portal.spring.aop.AdvisedSupportProxy;
 import com.liferay.portal.transaction.TransactionsUtil;
@@ -28,6 +31,7 @@ import org.aopalliance.intercept.MethodInterceptor;
  * @author Shuyang Zhou
  * @author Preston Crary
  */
+@ProviderType
 public class MethodInterceptorProxyImpl
 	implements AdvisedSupport, AdvisedSupportProxy, InvocationHandler {
 

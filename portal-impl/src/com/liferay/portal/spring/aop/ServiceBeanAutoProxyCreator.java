@@ -16,7 +16,7 @@ package com.liferay.portal.spring.aop;
 
 import com.liferay.portal.aop.cache.MethodInterceptorCache;
 import com.liferay.portal.aop.spi.MethodInterceptorCacheManager;
-import com.liferay.portal.internal.aop.MethodInterceptorProxyImpl;
+import com.liferay.portal.aop.spi.MethodInterceptorProxyImpl;
 import com.liferay.portal.kernel.spring.aop.AopProxyFactory;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
