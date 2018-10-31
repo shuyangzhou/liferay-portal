@@ -1,4 +1,4 @@
-task jarPatched(type: Zip)
+task patchedJar(type: Copy)
 
 dependencies {
 	compileOnly group: "org.apache.aries.spifly", name: "org.apache.aries.spifly.dynamic.framework.extension", version: "1.0.14"
@@ -7,20 +7,32 @@ dependencies {
 jar {
 	deleteAllActions()
 
-	dependsOn jarPatched
+	dependsOn patchedJar
 }
 
-jarPatched {
-	archiveName = jar.archiveName
-	destinationDir = jar.destinationDir
+patchedJar {
+	File tmpDir = new File (buildDir, "tmp/patchedJar")
+
 	duplicatesStrategy = "exclude"
-
-	from sourceSets.main.output
-
 	exclude "org/objectweb/asm/Item.class"
+	into tmpDir
+
+	from {
+		sourceSets.main.output
+	}
 
 	from {
 		zipTree(configurations.compileOnly.singleFile)
+	}
+
+	doFirst {
+		delete tmpDir
+	}
+
+	doLast {
+		ant.jar(destFile: jar.archivePath, manifest: new File(tmpDir, "META-INF/MANIFEST.MF")) {
+			zipFileSet(dir: tmpDir)
+		}
 	}
 }
 
