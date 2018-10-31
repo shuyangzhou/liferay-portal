@@ -17,6 +17,7 @@ package com.liferay.portal.security.ldap.internal.validator;
 import com.liferay.portal.security.ldap.validator.LDAPFilterValidator;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -239,6 +240,7 @@ public class LDAPFilterValidatorImplTest {
 					"dc=MyDomain,dc=com)"));
 	}
 
+	@Ignore
 	@Test
 	public void testIsValidFilterNoFilterType() {
 		Assert.assertTrue(isValidFilter("(object=value)"));
@@ -355,6 +357,7 @@ public class LDAPFilterValidatorImplTest {
 		Assert.assertFalse(isValidFilter("(~=value)(object=value)"));
 	}
 
+	@Ignore
 	@Test
 	public void testIsValidFilterTypeBeforeCloseParenthesis() {
 		Assert.assertTrue(isValidFilter("(object=value)"));

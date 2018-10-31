@@ -126,6 +126,10 @@ public class PoshiRunnerVariablesUtil {
 		else {
 			_commandMap.put((String)replaceCommandVars(key), value);
 		}
+
+		if (containsKeyInStaticMap(key)) {
+			putIntoStaticMap(key, value);
+		}
 	}
 
 	public static void putIntoExecuteMap(String key, Object value) {

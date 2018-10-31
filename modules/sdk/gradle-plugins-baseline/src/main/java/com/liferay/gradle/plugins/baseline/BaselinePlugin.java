@@ -36,10 +36,8 @@ import org.gradle.api.artifacts.ConfigurationContainer;
 import org.gradle.api.artifacts.Dependency;
 import org.gradle.api.artifacts.DependencySet;
 import org.gradle.api.artifacts.ResolutionStrategy;
-import org.gradle.api.artifacts.ResolveException;
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier;
 import org.gradle.api.artifacts.dsl.DependencyHandler;
-import org.gradle.api.file.FileCollection;
 import org.gradle.api.plugins.JavaBasePlugin;
 import org.gradle.api.plugins.JavaPlugin;
 import org.gradle.api.plugins.PluginContainer;
@@ -48,7 +46,6 @@ import org.gradle.api.tasks.SourceSet;
 import org.gradle.api.tasks.TaskContainer;
 import org.gradle.api.tasks.bundling.AbstractArchiveTask;
 import org.gradle.api.tasks.bundling.Jar;
-import org.gradle.internal.resolve.ModuleVersionNotFoundException;
 import org.gradle.util.VersionNumber;
 
 /**
@@ -180,20 +177,12 @@ public class BaselinePlugin implements Plugin<Project> {
 		Dependency dependency = _createDependencyBaseline(
 			newJarTask, majorVersion);
 
-		final Configuration configuration =
+		final Configuration baselineConfiguration =
 			configurationContainer.detachedConfiguration(dependency);
 
-		_configureConfigurationBaseline(configuration);
+		_configureConfigurationBaseline(baselineConfiguration);
 
-		baselineTask.setOldJarFile(
-			new Callable<File>() {
-
-				@Override
-				public File call() throws Exception {
-					return configuration.getSingleFile();
-				}
-
-			});
+		baselineTask.setBaselineConfiguration(baselineConfiguration);
 
 		return baselineTask;
 	}
@@ -240,12 +229,14 @@ public class BaselinePlugin implements Plugin<Project> {
 		return baselineTask;
 	}
 
-	private void _configureConfigurationBaseline(Configuration configuration) {
-		configuration.setTransitive(false);
-		configuration.setVisible(false);
+	private void _configureConfigurationBaseline(
+		Configuration baselineConfiguration) {
+
+		baselineConfiguration.setTransitive(false);
+		baselineConfiguration.setVisible(false);
 
 		ResolutionStrategy resolutionStrategy =
-			configuration.getResolutionStrategy();
+			baselineConfiguration.getResolutionStrategy();
 
 		ComponentSelectionRules componentSelectionRules =
 			resolutionStrategy.getComponentSelection();
@@ -273,7 +264,7 @@ public class BaselinePlugin implements Plugin<Project> {
 
 	private void _configureTaskBaseline(
 		BaselineTask baselineTask, final AbstractArchiveTask newJarTask,
-		final FileCollection oldJarFileCollection,
+		final Configuration baselineConfiguration,
 		BaselineConfigurationExtension baselineConfigurationExtension) {
 
 		VersionNumber lowestBaselineVersionNumber = VersionNumber.parse(
@@ -285,14 +276,6 @@ public class BaselinePlugin implements Plugin<Project> {
 			baselineTask.setEnabled(false);
 
 			return;
-		}
-
-		if (versionNumber.compareTo(VersionNumber.parse("2.0.0")) == 0) {
-			if (_isModuleVersionNotFound(oldJarFileCollection)) {
-				baselineTask.setEnabled(false);
-
-				return;
-			}
 		}
 
 		Integer lowestMajorVersion =
@@ -339,15 +322,7 @@ public class BaselinePlugin implements Plugin<Project> {
 
 		baselineTask.dependsOn(newJarTask);
 
-		baselineTask.setOldJarFile(
-			new Callable<File>() {
-
-				@Override
-				public File call() throws Exception {
-					return oldJarFileCollection.getSingleFile();
-				}
-
-			});
+		baselineTask.setBaselineConfiguration(baselineConfiguration);
 	}
 
 	private void _configureTaskBaseline(
@@ -466,21 +441,6 @@ public class BaselinePlugin implements Plugin<Project> {
 		args.put("version", version);
 
 		return dependencyHandler.create(args);
-	}
-
-	private boolean _isModuleVersionNotFound(FileCollection fileCollection) {
-		try {
-			fileCollection.getSingleFile();
-		}
-		catch (ResolveException re) {
-			Throwable throwable = re.getCause();
-
-			if (throwable instanceof ModuleVersionNotFoundException) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 }

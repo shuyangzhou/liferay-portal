@@ -910,7 +910,9 @@ public class PoshiRunnerExecutor {
 		if (currentFilePath.contains(".testcase")) {
 			String staticValue = element.attributeValue("static");
 
-			if ((staticValue != null) && staticValue.equals("true")) {
+			if ((staticValue != null) && staticValue.equals("true") &&
+				!PoshiRunnerVariablesUtil.containsKeyInStaticMap(varName)) {
+
 				PoshiRunnerVariablesUtil.putIntoStaticMap(varName, varValue);
 			}
 		}

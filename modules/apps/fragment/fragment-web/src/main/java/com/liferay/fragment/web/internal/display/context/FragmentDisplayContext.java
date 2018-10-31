@@ -18,6 +18,7 @@ import com.liferay.fragment.constants.FragmentActionKeys;
 import com.liferay.fragment.constants.FragmentPortletKeys;
 import com.liferay.fragment.model.FragmentCollection;
 import com.liferay.fragment.model.FragmentEntry;
+import com.liferay.fragment.processor.FragmentEntryProcessorRegistry;
 import com.liferay.fragment.service.FragmentCollectionLocalServiceUtil;
 import com.liferay.fragment.service.FragmentEntryLocalServiceUtil;
 import com.liferay.fragment.service.FragmentEntryServiceUtil;
@@ -75,6 +76,9 @@ public class FragmentDisplayContext {
 		_renderResponse = renderResponse;
 		_request = request;
 
+		_fragmentEntryProcessorRegistry =
+			(FragmentEntryProcessorRegistry)_request.getAttribute(
+				FragmentWebKeys.FRAGMENT_ENTRY_PROCESSOR_REGISTRY);
 		_fragmentPortletConfiguration =
 			(FragmentPortletConfiguration)_request.getAttribute(
 				FragmentPortletConfiguration.class.getName());
@@ -216,6 +220,9 @@ public class FragmentDisplayContext {
 
 		soyContext.put("allowedStatus", allowedStatusSoyContext);
 
+		soyContext.put(
+			"autocompleteTags",
+			_fragmentEntryProcessorRegistry.getAvailableTagsJSONArray());
 		soyContext.put("fragmentCollectionId", getFragmentCollectionId());
 		soyContext.put("fragmentEntryId", getFragmentEntryId());
 		soyContext.put("initialCSS", getCssContent());
@@ -542,6 +549,8 @@ public class FragmentDisplayContext {
 	private SearchContainer _fragmentEntriesSearchContainer;
 	private FragmentEntry _fragmentEntry;
 	private Long _fragmentEntryId;
+	private final FragmentEntryProcessorRegistry
+		_fragmentEntryProcessorRegistry;
 	private final FragmentPortletConfiguration _fragmentPortletConfiguration;
 	private String _htmlContent;
 	private final ItemSelector _itemSelector;

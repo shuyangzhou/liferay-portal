@@ -291,9 +291,7 @@ public class DDMFormFieldTemplateContextFactory {
 			changedProperties = new HashMap<>();
 		}
 
-		if (!_pageEnabled) {
-			changedProperties.put("required", false);
-		}
+		changedProperties.put("enabled", _pageEnabled);
 
 		if (_ddmFormRenderingContext.isReadOnly()) {
 			changedProperties.put("readOnly", true);
@@ -365,6 +363,19 @@ public class DDMFormFieldTemplateContextFactory {
 
 		ddmFormFieldTemplateContext.put(
 			"dir", LanguageUtil.get(_locale, LanguageConstants.KEY_DIR));
+	}
+
+	protected void setDDMFormFieldTemplateContextEnabled(
+		Map<String, Object> ddmFormFieldTemplateContext,
+		Map<String, Object> changedProperties, boolean defaultValue) {
+
+		if (!addProperty(changedProperties, "enabled")) {
+			return;
+		}
+
+		ddmFormFieldTemplateContext.put(
+			"enabled",
+			MapUtil.getBoolean(changedProperties, "enabled", defaultValue));
 	}
 
 	protected void setDDMFormFieldTemplateContextEvaluable(
@@ -677,6 +688,8 @@ public class DDMFormFieldTemplateContextFactory {
 		Map<String, Object> changedProperties, DDMFormField ddmFormField,
 		DDMFormFieldValue ddmFormFieldValue) {
 
+		setDDMFormFieldTemplateContextEnabled(
+			ddmFormFieldTemplateContext, changedProperties, true);
 		setDDMFormFieldTemplateContextEvaluable(
 			ddmFormFieldTemplateContext, ddmFormField, changedProperties,
 			ddmFormField.getProperty("evaluable"));

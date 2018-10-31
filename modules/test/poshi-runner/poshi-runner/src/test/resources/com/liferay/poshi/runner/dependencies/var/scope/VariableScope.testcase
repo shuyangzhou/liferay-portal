@@ -1,4 +1,19 @@
 <definition>
+	<var name="testCaseStaticVar" static="true" value="A static var set in the definition." />
+
+	<set-up>
+		<if>
+			<not>
+				<equals arg1="${testCaseStaticVar}" arg2="A static var set in the definition." />
+			</not>
+			<then>
+				<fail message="Expected static var value does not match actual value" />
+			</then>
+		</if>
+
+		<var name="testCaseStaticVar" value="A static var overridden in the set up." />
+	</set-up>
+
 	<command name="ExecuteVarInheritance">
 		<execute macro="RootVar#assertExecuteVar">
 			<var name="rootVar" value="An execute var that will referenced by another execute var." />
@@ -13,6 +28,12 @@
 		</execute>
 	</command>
 
+	<command name="MacroStaticVarInheritance">
+		<execute macro="MacroVar#setStaticVar" />
+
+		<execute macro="MacroVar#callStaticVar" />
+	</command>
+
 	<command name="RootVarInheritance">
 		<execute macro="RootVar#assertRootVar" />
 
@@ -25,5 +46,27 @@
 		<execute macro="RootVar#overrideRootVarInNestedMacro">
 			<var name="rootVar" value="An execute variable passed into a macro." />
 		</execute>
+	</command>
+
+	<command name="TestCaseStaticVarInheritance">
+		<if>
+			<not>
+				<equals arg1="${testCaseStaticVar}" arg2="A static var overridden in the set up." />
+			</not>
+			<then>
+				<fail message="Expected static var value does not match actual value" />
+			</then>
+		</if>
+
+		<var name="testCaseStaticVar" value="A static var overridden in the command." />
+
+		<if>
+			<not>
+				<equals arg1="${testCaseStaticVar}" arg2="A static var overridden in the command." />
+			</not>
+			<then>
+				<fail message="Expected static var value does not match actual value" />
+			</then>
+		</if>
 	</command>
 </definition>

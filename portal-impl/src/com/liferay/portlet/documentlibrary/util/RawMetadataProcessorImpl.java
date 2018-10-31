@@ -185,9 +185,7 @@ public class RawMetadataProcessorImpl
 
 			LiferayFileEntry liferayFileEntry = (LiferayFileEntry)fileEntry;
 
-			if (indexer != null) {
-				indexer.reindex(liferayFileEntry.getDLFileEntry());
-			}
+			indexer.reindex(liferayFileEntry.getDLFileEntry());
 		}
 	}
 

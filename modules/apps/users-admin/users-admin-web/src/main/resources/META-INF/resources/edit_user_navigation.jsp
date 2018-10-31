@@ -67,23 +67,21 @@ if (!portletName.equals(UsersAdminPortletKeys.MY_ACCOUNT)) {
 	<aui:input name="screenNavigationCategoryKey" type="hidden" value="<%= screenNavigationCategoryKey %>" />
 	<aui:input name="screenNavigationEntryKey" type="hidden" value="<%= screenNavigationEntryKey %>" />
 
-	<aui:fieldset-group markupView="lexicon">
-		<div class="sheet">
-			<h2 class="sheet-title"><%= formLabel %></h2>
+	<div class="sheet">
+		<h2 class="sheet-title"><%= formLabel %></h2>
 
-			<div class="sheet-section">
-				<liferay-util:include page="<%= jspPath %>" servletContext="<%= application %>" />
-			</div>
-
-			<c:if test="<%= editable %>">
-				<div class="sheet-footer">
-					<aui:button primary="<%= true %>" type="submit" />
-
-					<c:if test="<%= !portletName.equals(UsersAdminPortletKeys.MY_ACCOUNT) %>">
-						<aui:button href="<%= backURL %>" type="cancel" />
-					</c:if>
-				</div>
-			</c:if>
+		<div class="sheet-section">
+			<liferay-util:include page="<%= jspPath %>" servletContext="<%= application %>" />
 		</div>
-	</aui:fieldset-group>
+
+		<c:if test="<%= editable %>">
+			<div class="sheet-footer">
+				<aui:button primary="<%= true %>" type="submit" />
+
+				<c:if test="<%= !portletName.equals(UsersAdminPortletKeys.MY_ACCOUNT) %>">
+					<aui:button href="<%= backURL %>" type="cancel" />
+				</c:if>
+			</div>
+		</c:if>
+	</div>
 </aui:form>

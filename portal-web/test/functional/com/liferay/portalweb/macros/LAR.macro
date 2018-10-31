@@ -294,7 +294,7 @@
 			</else>
 		</if>
 
-		<execute function="Pause" locator1="10000" />
+		<execute function="Pause" locator1="20000" />
 
 		<if>
 			<equals arg1="${cannotImport}" arg2="true" />

@@ -12,7 +12,6 @@ import './SourceEditorToolbar.es';
  * to allow code editing.
  * @review
  */
-
 class SourceEditor extends Component {
 
 	/**
@@ -21,7 +20,6 @@ class SourceEditor extends Component {
 	 * @param {!Event} event
 	 * @review
 	 */
-
 	_handleContentChanged(event) {
 		this.emit(
 			'contentChanged',
@@ -39,8 +37,24 @@ class SourceEditor extends Component {
  * @static
  * @type {!Object}
  */
-
 SourceEditor.STATE = {
+
+	/**
+	 * List of tags to support custom autocomplete in the HTML editor
+	 * @default []
+	 * @instance
+	 * @memberOf SourceEditor
+	 * @review
+	 * @type Array
+	 */
+	autocompleteTags: Config.arrayOf(
+		Config.shapeOf(
+			{
+				content: Config.string(),
+				name: Config.string()
+			}
+		)
+	),
 
 	/**
 	 * Initial content sent to the editor
@@ -50,7 +64,6 @@ SourceEditor.STATE = {
 	 * @review
 	 * @type {!string}
 	 */
-
 	initialContent: Config.string().required(),
 
 	/**
@@ -61,7 +74,6 @@ SourceEditor.STATE = {
 	 * @review
 	 * @type {!string}
 	 */
-
 	spritemap: Config.string().required(),
 
 	/**
@@ -74,7 +86,6 @@ SourceEditor.STATE = {
 	 * @see AceEditor.SYNTAX
 	 * @type {!string}
 	 */
-
 	syntax: Config.oneOf(Object.values(AceEditor.SYNTAX)).required()
 };
 

@@ -12,24 +12,17 @@
  * details.
  */
 
-package com.liferay.dynamic.data.mapping.internal.upgrade.v1_2_0;
-
-import com.liferay.dynamic.data.mapping.constants.DDMPortletKeys;
-import com.liferay.portal.kernel.upgrade.BaseUpgradePortletId;
+package com.liferay.portal.tools.java.parser;
 
 /**
- * @author Rafael Praxedes
+ * @author Hugo Huijser
  */
-public class UpgradeDDMFormPortletId extends BaseUpgradePortletId {
+public class JavaSimpleValue extends JavaExpression {
 
-	@Override
-	protected String[][] getRenamePortletIdsArray() {
-		return new String[][] {
-			{_OLD_PORTLET_NAME, DDMPortletKeys.DYNAMIC_DATA_MAPPING_FORM}
-		};
+	public JavaSimpleValue(String name) {
+		_name = name;
 	}
 
-	private static final String _OLD_PORTLET_NAME =
-		"com_liferay_dynamic_data_lists_form_web_portlet_DDLFormPortlet";
+	private final String _name;
 
 }

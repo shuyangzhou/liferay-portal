@@ -21,23 +21,21 @@ OrganizationScreenNavigationDisplayContext organizationScreenNavigationDisplayCo
 %>
 
 <aui:form action="<%= organizationScreenNavigationDisplayContext.getEditOrganizationActionURL() %>" cssClass="container-fluid container-fluid-max-xl" data-senna-off="true" method="post" name="fm">
-	<aui:fieldset-group markupView="lexicon">
-		<div class="sheet">
-			<c:if test="<%= organizationScreenNavigationDisplayContext.isShowTitle() %>">
-				<h2 class="sheet-title"><%= organizationScreenNavigationDisplayContext.getFormLabel() %></h2>
-			</c:if>
+	<div class="sheet">
+		<c:if test="<%= organizationScreenNavigationDisplayContext.isShowTitle() %>">
+			<h2 class="sheet-title"><%= organizationScreenNavigationDisplayContext.getFormLabel() %></h2>
+		</c:if>
 
-			<div class="sheet-section">
-				<liferay-util:include page="<%= organizationScreenNavigationDisplayContext.getJspPath() %>" servletContext="<%= application %>" />
-			</div>
-
-			<c:if test="<%= organizationScreenNavigationDisplayContext.isShowControls() %>">
-				<div class="sheet-footer">
-					<aui:button primary="<%= true %>" type="submit" />
-
-					<aui:button href="<%= organizationScreenNavigationDisplayContext.getBackURL() %>" type="cancel" />
-				</div>
-			</c:if>
+		<div class="sheet-section">
+			<liferay-util:include page="<%= organizationScreenNavigationDisplayContext.getJspPath() %>" servletContext="<%= application %>" />
 		</div>
-	</aui:fieldset-group>
+
+		<c:if test="<%= organizationScreenNavigationDisplayContext.isShowControls() %>">
+			<div class="sheet-footer">
+				<aui:button primary="<%= true %>" type="submit" />
+
+				<aui:button href="<%= organizationScreenNavigationDisplayContext.getBackURL() %>" type="cancel" />
+			</div>
+		</c:if>
+	</div>
 </aui:form>

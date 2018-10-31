@@ -1,0 +1,51 @@
+task patchedJar(type: Copy)
+
+dependencies {
+	compile group: "org.ow2.asm", name: "asm-tree", version: "7.0-beta"
+
+	compileOnly group: "org.apache.aries.spifly", name: "org.apache.aries.spifly.dynamic.framework.extension", version: "1.0.14"
+}
+
+jar {
+	deleteAllActions()
+
+	dependsOn patchedJar
+}
+
+patchedJar {
+	File tmpDir = new File (buildDir, "tmp/patchedJar")
+
+	duplicatesStrategy = "exclude"
+	exclude "org/objectweb/asm/Item.class"
+	into tmpDir
+
+	from {
+		sourceSets.main.output
+	}
+
+	from {
+		zipTree(configurations.compileOnly.singleFile)
+	}
+
+	doFirst {
+		delete tmpDir
+	}
+
+	doLast {
+		ant.jar(destFile: jar.archivePath, manifest: new File(tmpDir, "META-INF/MANIFEST.MF")) {
+			zipFileSet(dir: tmpDir)
+		}
+	}
+}
+
+updateFileVersions {
+	replaceOnlyIf([{
+		String group, String replacement, String content, File contentFile ->
+
+		if (buildFile == contentFile) {
+			return false
+		}
+
+		return true
+	}])
+}

@@ -33,9 +33,11 @@ if (addressId > 0L) {
 %>
 
 <aui:form cssClass="modal-body" name="fm">
-	<div class="alert alert-info">
-		<liferay-ui:message key="postal-code-could-be-required-in-some-countries" />
-	</div>
+	<clay:alert
+		message='<%= LanguageUtil.get(request, "postal-code-could-be-required-in-some-countries") %>'
+		style="info"
+		title='<%= LanguageUtil.get(request, "info") + ":" %>'
+	/>
 
 	<aui:model-context bean="<%= address %>" model="<%= Address.class %>" />
 

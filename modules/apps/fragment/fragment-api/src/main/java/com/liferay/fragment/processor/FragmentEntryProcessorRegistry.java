@@ -16,6 +16,7 @@ package com.liferay.fragment.processor;
 
 import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.LocaleUtil;
 
@@ -25,6 +26,10 @@ import java.util.Locale;
  * @author Lance Ji
  */
 public interface FragmentEntryProcessorRegistry {
+
+	public default JSONArray getAvailableTagsJSONArray() {
+		return null;
+	}
 
 	public JSONObject getDefaultEditableValuesJSONObject(String html);
 

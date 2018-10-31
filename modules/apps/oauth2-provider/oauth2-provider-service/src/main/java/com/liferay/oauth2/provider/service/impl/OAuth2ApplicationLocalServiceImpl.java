@@ -14,6 +14,7 @@
 
 package com.liferay.oauth2.provider.service.impl;
 
+import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.store.Store;
 import com.liferay.oauth2.provider.constants.GrantType;
@@ -48,6 +49,7 @@ import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil
 import com.liferay.portal.kernel.repository.RepositoryFactory;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
+import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.HttpUtil;
@@ -587,6 +589,12 @@ public class OAuth2ApplicationLocalServiceImpl
 			"xmlrpc.beep", "xmlrpc.beeps", "xmpp", "xri", "ymsgr", "z39.50",
 			"z39.50r", "z39.50s"
 		});
+
+	@ServiceReference(
+		filterString = "(indexer.class.name=com.liferay.document.library.kernel.model.DLFileEntry)",
+		type = Indexer.class
+	)
+	private Indexer<DLFileEntry> _indexer;
 
 	@ServiceReference(
 		filterString = "(class.name=com.liferay.portal.repository.portletrepository.PortletRepository)",

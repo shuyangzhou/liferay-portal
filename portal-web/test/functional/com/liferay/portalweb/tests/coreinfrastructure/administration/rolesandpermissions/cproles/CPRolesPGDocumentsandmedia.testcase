@@ -63,7 +63,7 @@
 	</command>
 
 	<command name="AddDMDocumentRegRoleDefinePermissions" priority="5">
-		<property name="portal.acceptance" value="true" />
+		<property name="portal.acceptance" value="false" />
 
 		<execute macro="Permissions#setUpRegRolePG">
 			<var name="pageName" value="Documents and Media Page" />

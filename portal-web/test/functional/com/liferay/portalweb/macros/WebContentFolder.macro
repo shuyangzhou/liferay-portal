@@ -47,9 +47,17 @@
 
 		<execute macro="LexiconEntry#gotoAdd" />
 
-		<execute macro="MenuItem#click">
-			<var name="menuItem" value="Subfolder" />
-		</execute>
+		<if>
+			<condition function="IsElementPresent" locator1="MenuItem#ANY_MENU_ITEM">
+				<var name="key_menuItem" value="Subfolder" />
+			</condition>
+
+			<then>
+				<execute macro="MenuItem#click">
+					<var name="menuItem" value="Subfolder" />
+				</execute>
+			</then>
+		</if>
 
 		<execute macro="PortletEntry#inputName">
 			<var name="name" value="${subfolderName}" />

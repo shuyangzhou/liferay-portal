@@ -16,6 +16,7 @@ package com.liferay.source.formatter.checkstyle.checks;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.source.formatter.checkstyle.util.DetailASTUtil;
@@ -41,21 +42,36 @@ public class VariableNameCheck extends BaseCheck {
 
 	@Override
 	protected void doVisitToken(DetailAST detailAST) {
-		DetailAST modifiersAST = detailAST.findFirstToken(TokenTypes.MODIFIERS);
+		DetailAST modifiersDetailAST = detailAST.findFirstToken(
+			TokenTypes.MODIFIERS);
 
-		if (modifiersAST.branchContains(TokenTypes.LITERAL_PROTECTED) ||
-			modifiersAST.branchContains(TokenTypes.LITERAL_PUBLIC)) {
+		if (modifiersDetailAST.branchContains(TokenTypes.LITERAL_PROTECTED) ||
+			modifiersDetailAST.branchContains(TokenTypes.LITERAL_PUBLIC)) {
 
 			return;
 		}
 
-		DetailAST nameAST = detailAST.findFirstToken(TokenTypes.IDENT);
+		DetailAST nameDetailAST = detailAST.findFirstToken(TokenTypes.IDENT);
 
-		String name = nameAST.getText();
+		String name = nameDetailAST.getText();
 
 		_checkCaps(detailAST, name);
 		_checkIsVariableName(detailAST, name);
-		_checkTypo(detailAST, name);
+
+		DetailAST typeDetailAST = detailAST.findFirstToken(TokenTypes.TYPE);
+
+		DetailAST firstChildDetailAST = typeDetailAST.getFirstChild();
+
+		if ((firstChildDetailAST == null) ||
+			(firstChildDetailAST.getType() != TokenTypes.IDENT)) {
+
+			return;
+		}
+
+		String typeName = firstChildDetailAST.getText();
+
+		_checkTypeNameEnding(detailAST, name, typeName, "DetailAST");
+		_checkTypo(detailAST, name, typeName);
 	}
 
 	private void _checkCaps(DetailAST detailAST, String name) {
@@ -121,35 +137,36 @@ public class VariableNameCheck extends BaseCheck {
 		}
 	}
 
-	private void _checkTypo(DetailAST detailAST, String name) {
-		if (StringUtil.isUpperCase(name)) {
+	private void _checkTypeNameEnding(
+		DetailAST detailAST, String variableName, String typeName,
+		String... typeNames) {
+
+		if (ArrayUtil.contains(typeNames, typeName) &&
+			!variableName.matches("(?i).*" + typeName + "[0-9]*")) {
+
+			log(
+				detailAST, _MSG_INCORRECT_ENDING_VARIABLE, typeName,
+				_getExpectedVariableName(typeName));
+		}
+	}
+
+	private void _checkTypo(
+		DetailAST detailAST, String variableName, String typeName) {
+
+		if (StringUtil.isUpperCase(variableName) ||
+			typeName.contains(StringPool.UNDERLINE)) {
+
 			return;
 		}
 
-		DetailAST typeAST = detailAST.findFirstToken(TokenTypes.TYPE);
-
-		DetailAST firstChildAST = typeAST.getFirstChild();
-
-		if ((firstChildAST == null) ||
-			(firstChildAST.getType() != TokenTypes.IDENT)) {
-
-			return;
-		}
-
-		String typeName = firstChildAST.getText();
-
-		if (typeName.contains(StringPool.UNDERLINE)) {
-			return;
-		}
-
-		String nameTrailingDigits = _getTrailingDigits(name);
+		String nameTrailingDigits = _getTrailingDigits(variableName);
 
 		String trimmedName = StringUtil.replaceLast(
-			name, nameTrailingDigits, StringPool.BLANK);
+			variableName, nameTrailingDigits, StringPool.BLANK);
 
 		String leadingUnderline = StringPool.BLANK;
 
-		if (name.startsWith(StringPool.UNDERLINE)) {
+		if (variableName.startsWith(StringPool.UNDERLINE)) {
 			leadingUnderline = StringPool.UNDERLINE;
 
 			trimmedName = trimmedName.substring(1);
@@ -186,7 +203,7 @@ public class VariableNameCheck extends BaseCheck {
 			}
 
 			log(
-				detailAST, _MSG_TYPO_VARIABLE, name,
+				detailAST, _MSG_TYPO_VARIABLE, variableName,
 				StringBundler.concat(
 					leadingUnderline, expectedName, nameTrailingDigits));
 
@@ -237,7 +254,7 @@ public class VariableNameCheck extends BaseCheck {
 		}
 
 		log(
-			detailAST, _MSG_TYPO_VARIABLE, name,
+			detailAST, _MSG_TYPO_VARIABLE, variableName,
 			_getExpectedVariableName(
 				typeName, leadingUnderline, nameTrailingDigits));
 	}
@@ -245,39 +262,39 @@ public class VariableNameCheck extends BaseCheck {
 	private boolean _classHasVariableWithName(
 		DetailAST detailAST, String variableName) {
 
-		DetailAST parentAST = detailAST.getParent();
+		DetailAST parentDetailAST = detailAST.getParent();
 
-		List<DetailAST> definitionASTList = new ArrayList<>();
+		List<DetailAST> definitionDetailASTList = new ArrayList<>();
 
 		while (true) {
-			if (parentAST == null) {
+			if (parentDetailAST == null) {
 				break;
 			}
 
-			if (parentAST.getType() == TokenTypes.METHOD_DEF) {
-				definitionASTList.addAll(
+			if (parentDetailAST.getType() == TokenTypes.METHOD_DEF) {
+				definitionDetailASTList.addAll(
 					DetailASTUtil.getAllChildTokens(
-						parentAST, true, TokenTypes.PARAMETER_DEF,
+						parentDetailAST, true, TokenTypes.PARAMETER_DEF,
 						TokenTypes.VARIABLE_DEF));
 			}
 
-			if (parentAST.getType() == TokenTypes.CLASS_DEF) {
-				DetailAST objblockAST = parentAST.findFirstToken(
+			if (parentDetailAST.getType() == TokenTypes.CLASS_DEF) {
+				DetailAST objBlockDetailAST = parentDetailAST.findFirstToken(
 					TokenTypes.OBJBLOCK);
 
-				definitionASTList.addAll(
+				definitionDetailASTList.addAll(
 					DetailASTUtil.getAllChildTokens(
-						objblockAST, false, TokenTypes.VARIABLE_DEF));
+						objBlockDetailAST, false, TokenTypes.VARIABLE_DEF));
 			}
 
-			parentAST = parentAST.getParent();
+			parentDetailAST = parentDetailAST.getParent();
 		}
 
-		for (DetailAST definitionAST : definitionASTList) {
-			DetailAST definitionNameAST = definitionAST.findFirstToken(
-				TokenTypes.IDENT);
+		for (DetailAST definitionDetailAST : definitionDetailASTList) {
+			DetailAST definitionNameDetailAST =
+				definitionDetailAST.findFirstToken(TokenTypes.IDENT);
 
-			if (variableName.equals(definitionNameAST.getText())) {
+			if (variableName.equals(definitionNameDetailAST.getText())) {
 				return true;
 			}
 		}
@@ -354,19 +371,19 @@ public class VariableNameCheck extends BaseCheck {
 		return digits;
 	}
 
-	private boolean _isBooleanType(DetailAST typeAST) {
-		DetailAST childAST = typeAST.getFirstChild();
+	private boolean _isBooleanType(DetailAST typeDetailAST) {
+		DetailAST childDetailAST = typeDetailAST.getFirstChild();
 
-		if (childAST == null) {
+		if (childDetailAST == null) {
 			return false;
 		}
 
-		if (childAST.getType() == TokenTypes.LITERAL_BOOLEAN) {
+		if (childDetailAST.getType() == TokenTypes.LITERAL_BOOLEAN) {
 			return true;
 		}
 
-		if (childAST.getType() == TokenTypes.IDENT) {
-			String name = childAST.getText();
+		if (childDetailAST.getType() == TokenTypes.IDENT) {
+			String name = childDetailAST.getText();
 
 			if (name.equals("Boolean")) {
 				return true;
@@ -379,6 +396,9 @@ public class VariableNameCheck extends BaseCheck {
 	private static final String[][] _ALL_CAPS_STRINGS = {
 		{"DDL", "Ddl"}, {"DDM", "Ddm"}, {"DL", "Dl"}, {"PK", "Pk"}
 	};
+
+	private static final String _MSG_INCORRECT_ENDING_VARIABLE =
+		"variable.incorrect.ending";
 
 	private static final String _MSG_RENAME_VARIABLE = "variable.rename";
 

@@ -24,6 +24,8 @@ import junit.framework.TestCase;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import org.junit.After;
+
 /**
  * @author Kenji Heigel
  */
@@ -35,8 +37,6 @@ public abstract class PoshiRunnerTestCase extends TestCase {
 		poshiRunner.setUp();
 
 		poshiRunner.test();
-
-		SeleniumUtil.stopSelenium();
 	}
 
 	public void setUpPoshiRunner(String testBaseDirName) throws Exception {
@@ -59,6 +59,11 @@ public abstract class PoshiRunnerTestCase extends TestCase {
 		PoshiRunnerContext.readFiles(poshiFileNames, testBaseDirName);
 
 		PoshiRunnerValidation.validate();
+	}
+
+	@After
+	public void tearDown() {
+		SeleniumUtil.stopSelenium();
 	}
 
 }

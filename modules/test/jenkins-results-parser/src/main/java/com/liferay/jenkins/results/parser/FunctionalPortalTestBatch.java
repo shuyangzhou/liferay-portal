@@ -20,36 +20,28 @@ import java.io.IOException;
 /**
  * @author Michael Hashimoto
  */
-public class GitBisectToolBatchBuildRunner
-	extends PortalBatchBuildRunner<PortalBatchBuildData> {
+public class FunctionalPortalTestBatch
+	<T extends PortalBatchBuildData, S extends PortalWorkspace>
+		extends BasePortalTestBatch<T, S> {
 
 	@Override
 	public void run() {
-		super.run();
+		executeBatch();
+
+		publishResults();
 
 		publishPoshiReport();
 	}
 
-	protected GitBisectToolBatchBuildRunner(
-		PortalBatchBuildData portalBatchBuildData) {
-
-		super(portalBatchBuildData);
-
-		_setBuildDataBuildDescription();
+	protected FunctionalPortalTestBatch(T batchBuildData, S workspace) {
+		super(batchBuildData, workspace);
 	}
 
 	protected void publishPoshiReport() {
-		PortalBatchBuildData portalBatchBuildData = getBuildData();
-
-		WorkspaceGitRepository workspaceGitRepository =
-			workspace.getPrimaryPortalWorkspaceGitRepository();
+		PortalBatchBuildData portalBatchBuildData = getBatchBuildData();
 
 		File portalWebTestResultsDir = new File(
-			workspaceGitRepository.getDirectory(), "portal-web/test-results");
-
-		File poshiBaseDir = new File(
-			portalBatchBuildData.getWorkspaceDir(),
-			portalBatchBuildData.getRunID());
+			getPrimaryPortalWorkspaceDirectory(), "portal-web/test-results");
 
 		File[] poshiResultsDirs = portalWebTestResultsDir.listFiles();
 
@@ -64,19 +56,15 @@ public class GitBisectToolBatchBuildRunner
 				try {
 					JenkinsResultsParserUtil.copy(
 						poshiResultsDir,
-						new File(poshiBaseDir, poshiResultsDirName));
+						new File(
+							portalBatchBuildData.getArtifactDir(),
+							poshiResultsDirName));
 				}
 				catch (IOException ioe) {
 					throw new RuntimeException(ioe);
 				}
 			}
 		}
-
-		publishToUserContentDir(poshiBaseDir);
-	}
-
-	private void _setBuildDataBuildDescription() {
-		PortalBatchBuildData portalBatchBuildData = getBuildData();
 
 		StringBuilder sb = new StringBuilder();
 

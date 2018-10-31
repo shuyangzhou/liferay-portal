@@ -1902,8 +1902,9 @@ public class ProjectTemplatesTest {
 	}
 
 	@Test
-	public void testBuildTemplateRest() throws Exception {
-		File gradleProjectDir = _buildTemplateWithGradle("rest", "my-rest");
+	public void testBuildTemplateRest70() throws Exception {
+		File gradleProjectDir = _buildTemplateWithGradle(
+			"rest", "my-rest", "--liferayVersion", "7.0");
 
 		_testExists(gradleProjectDir, "bnd.bnd");
 
@@ -1932,7 +1933,7 @@ public class ProjectTemplatesTest {
 
 		File mavenProjectDir = _buildTemplateWithMaven(
 			"rest", "my-rest", "com.test", "-DclassName=MyRest",
-			"-Dpackage=my.rest");
+			"-Dpackage=my.rest", "-DliferayVersion=7.0");
 
 		_testContains(
 			mavenProjectDir,
@@ -1949,16 +1950,61 @@ public class ProjectTemplatesTest {
 	}
 
 	@Test
+	public void testBuildTemplateRest71() throws Exception {
+		File gradleProjectDir = _buildTemplateWithGradle(
+			"rest", "my-rest", "--liferayVersion", "7.1");
+
+		_testExists(gradleProjectDir, "bnd.bnd");
+
+		_testContains(
+			gradleProjectDir, "build.gradle",
+			"compileOnly group: \"org.osgi\", name: " +
+				"\"org.osgi.service.jaxrs\", version: \"1.0.0\"");
+		_testContains(
+			gradleProjectDir,
+			"src/main/java/my/rest/application/MyRestApplication.java",
+			"public class MyRestApplication extends Application");
+		_testNotExists(
+			gradleProjectDir,
+			"src/main/resources/configuration" +
+				"/com.liferay.portal.remote.cxf.common.configuration." +
+					"CXFEndpointPublisherConfiguration-cxf.properties");
+		_testNotExists(
+			gradleProjectDir,
+			"src/main/resources/configuration/com.liferay.portal.remote.rest." +
+				"extender.configuration.RestExtenderConfiguration-rest." +
+					"properties");
+		_testNotExists(gradleProjectDir, "src/main/resources/configuration");
+
+		File mavenProjectDir = _buildTemplateWithMaven(
+			"rest", "my-rest", "com.test", "-DclassName=MyRest",
+			"-Dpackage=my.rest", "-DliferayVersion=7.1");
+
+		_testContains(
+			mavenProjectDir,
+			"src/main/java/my/rest/application/MyRestApplication.java",
+			"public class MyRestApplication extends Application");
+		_testNotExists(
+			mavenProjectDir,
+			"src/main/resources/configuration" +
+				"/com.liferay.portal.remote.cxf.common.configuration." +
+					"CXFEndpointPublisherConfiguration-cxf.properties");
+		_testNotExists(mavenProjectDir, "src/main/resources/configuration");
+
+		_buildProjects(gradleProjectDir, mavenProjectDir);
+	}
+
+	@Test
 	public void testBuildTemplateRestInWorkspace() throws Exception {
 		_testBuildTemplateWithWorkspace(
 			"rest", "my-rest", "build/libs/my.rest-1.0.0.jar");
 	}
 
 	@Test
-	public void testBuildTemplateRestWithBOM() throws Exception {
+	public void testBuildTemplateRestWithBOM70() throws Exception {
 		File gradleProjectDir = _buildTemplateWithGradle(
 			"rest", "rest-dependency-management",
-			"--dependency-management-enabled");
+			"--dependency-management-enabled", "--liferayVersion", "7.0");
 
 		_testNotContains(
 			gradleProjectDir, "build.gradle", "version: \"[0-9].*");
@@ -1966,6 +2012,19 @@ public class ProjectTemplatesTest {
 		_testContains(
 			gradleProjectDir, "build.gradle",
 			"compileOnly group: \"javax.ws.rs\", name: \"javax.ws.rs-api\"");
+	}
+
+	@Test
+	public void testBuildTemplateRestWithBOM71() throws Exception {
+		File gradleProjectDir = _buildTemplateWithGradle(
+			"rest", "rest-dependency-management",
+			"--dependency-management-enabled", "--liferayVersion", "7.1");
+
+		_testContains(
+			gradleProjectDir, "build.gradle",
+			"compileOnly group: \"javax.ws.rs\", name: \"javax.ws.rs-api\"\n",
+			"compileOnly group: \"org.osgi\", name: " +
+				"\"org.osgi.service.jaxrs\", version: \"1.0.0\"");
 	}
 
 	@Test
@@ -3374,15 +3433,6 @@ public class ProjectTemplatesTest {
 		_testNotExists(workspaceProjectDir, "themes/pom.xml");
 		_testNotExists(workspaceProjectDir, "wars/pom.xml");
 
-		String gradlePluginsWorkspaceVersion = System.getProperty(
-			"com.liferay.gradle.plugins.workspace.version");
-
-		Assert.assertNotNull(gradlePluginsWorkspaceVersion);
-
-		_testContains(
-			workspaceProjectDir, "settings.gradle",
-			"version: \"" + gradlePluginsWorkspaceVersion + "\"");
-
 		File moduleProjectDir = _buildTemplateWithGradle(
 			new File(workspaceProjectDir, "modules"), "", "foo-portlet");
 
@@ -4129,8 +4179,20 @@ public class ProjectTemplatesTest {
 								"\"" + repositoryUrl + "\"");
 						}
 
-						content = content.replace(
-							"repositories {", "repositories {\tmavenLocal()\n");
+						String mavenRepoString = System.getProperty(
+							"maven.repo.local");
+
+						Path m2tmpPath = Paths.get(mavenRepoString + "-tmp");
+
+						if (!content.contains("mavenLocal()")) {
+							if (Files.exists(m2tmpPath)) {
+								content = content.replace(
+									"repositories {",
+									"repositories {\n\t\tmavenLocal()\n\t\t" +
+										"maven { \n\t\t\turl \"" + m2tmpPath +
+											"\"\n\t\t}");
+							}
+						}
 
 						Files.write(
 							path, content.getBytes(StandardCharsets.UTF_8));

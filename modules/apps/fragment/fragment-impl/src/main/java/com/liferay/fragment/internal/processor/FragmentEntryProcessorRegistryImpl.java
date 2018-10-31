@@ -22,7 +22,9 @@ import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceComparator;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 
 import java.util.Collections;
@@ -40,6 +42,28 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = FragmentEntryProcessorRegistry.class)
 public class FragmentEntryProcessorRegistryImpl
 	implements FragmentEntryProcessorRegistry {
+
+	@Override
+	public JSONArray getAvailableTagsJSONArray() {
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		for (FragmentEntryProcessor fragmentEntryProcessor :
+				_serviceTrackerList) {
+
+			JSONArray availableTagsJSONArray =
+				fragmentEntryProcessor.getAvailableTagsJSONArray();
+
+			if (availableTagsJSONArray == null) {
+				continue;
+			}
+
+			for (int i = 0; i < availableTagsJSONArray.length(); i++) {
+				jsonArray.put(availableTagsJSONArray.getJSONObject(i));
+			}
+		}
+
+		return jsonArray;
+	}
 
 	@Override
 	public JSONObject getDefaultEditableValuesJSONObject(String html) {
