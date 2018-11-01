@@ -122,7 +122,7 @@ public class StructuredContentApioTest {
 	}
 
 	@Test
-	public void testColorFieldDataTypeIsDisplayed() throws Exception {
+	public void testBooleanFieldInputControlIsDisplayed() throws Exception {
 		List<String> hrefs = JsonPath.read(
 			_toStringAsAdmin(
 				JsonPath.read(
@@ -136,7 +136,7 @@ public class StructuredContentApioTest {
 
 		headers.put("Accept-Language", "en-US");
 
-		List<String> dataTypes = JsonPath.read(
+		List<String> inputControls = JsonPath.read(
 			_toStringAsGuest(
 				_getURLWithFilterByTitle(
 					hrefs.get(0),
@@ -144,14 +144,14 @@ public class StructuredContentApioTest {
 						TITLE_2_LOCALE_DEFAULT),
 				headers),
 			"$._embedded.StructuredContent[*]._embedded.values._embedded" +
-				"[?(@.name=='MyColor')].dataType");
+				"[?(@.name=='MyBoolean')].inputControl");
 
-		Assert.assertEquals(dataTypes.toString(), 1, dataTypes.size());
-		Assert.assertTrue(dataTypes.contains("color"));
+		Assert.assertEquals(inputControls.toString(), 1, inputControls.size());
+		Assert.assertTrue(inputControls.contains("checkbox"));
 	}
 
 	@Test
-	public void testDateFieldDataTypeIsDisplayed() throws Exception {
+	public void testColorFieldInputControlIsNotDisplayed() throws Exception {
 		List<String> hrefs = JsonPath.read(
 			_toStringAsAdmin(
 				JsonPath.read(
@@ -165,7 +165,7 @@ public class StructuredContentApioTest {
 
 		headers.put("Accept-Language", "en-US");
 
-		List<String> dataTypes = JsonPath.read(
+		List<String> inputControls = JsonPath.read(
 			_toStringAsGuest(
 				_getURLWithFilterByTitle(
 					hrefs.get(0),
@@ -173,39 +173,9 @@ public class StructuredContentApioTest {
 						TITLE_2_LOCALE_DEFAULT),
 				headers),
 			"$._embedded.StructuredContent[*]._embedded.values._embedded" +
-				"[?(@.name=='MyDate')].dataType");
+				"[?(@.name=='MyColor')].inputControl");
 
-		Assert.assertEquals(dataTypes.toString(), 1, dataTypes.size());
-		Assert.assertTrue(dataTypes.contains("date"));
-	}
-
-	@Test
-	public void testDecimalFieldDataTypeIsDisplayed() throws Exception {
-		List<String> hrefs = JsonPath.read(
-			_toStringAsAdmin(
-				JsonPath.read(
-					_toStringAsAdmin(_rootEndpointURL.toExternalForm()),
-					"$._links.content-space.href")),
-			"$._embedded.ContentSpace[?(@.name == '" +
-				StructuredContentApioTestBundleActivator.SITE_NAME +
-					"')]._links.structuredContents.href");
-
-		Map<String, String> headers = _getHeaders();
-
-		headers.put("Accept-Language", "en-US");
-
-		List<String> dataTypes = JsonPath.read(
-			_toStringAsGuest(
-				_getURLWithFilterByTitle(
-					hrefs.get(0),
-					StructuredContentApioTestBundleActivator.
-						TITLE_2_LOCALE_DEFAULT),
-				headers),
-			"$._embedded.StructuredContent[*]._embedded.values._embedded" +
-				"[?(@.name=='MyDecimal')].dataType");
-
-		Assert.assertEquals(dataTypes.toString(), 1, dataTypes.size());
-		Assert.assertTrue(dataTypes.contains("double"));
+		Assert.assertTrue(inputControls.toString(), inputControls.isEmpty());
 	}
 
 	@Test
@@ -318,66 +288,6 @@ public class StructuredContentApioTest {
 	}
 
 	@Test
-	public void testDocumentsAndMediaFieldDataTypeIsDisplayed()
-		throws Exception {
-
-		List<String> hrefs = JsonPath.read(
-			_toStringAsAdmin(
-				JsonPath.read(
-					_toStringAsAdmin(_rootEndpointURL.toExternalForm()),
-					"$._links.content-space.href")),
-			"$._embedded.ContentSpace[?(@.name == '" +
-				StructuredContentApioTestBundleActivator.SITE_NAME +
-					"')]._links.structuredContents.href");
-
-		Map<String, String> headers = _getHeaders();
-
-		headers.put("Accept-Language", "en-US");
-
-		List<String> dataTypes = JsonPath.read(
-			_toStringAsGuest(
-				_getURLWithFilterByTitle(
-					hrefs.get(0),
-					StructuredContentApioTestBundleActivator.
-						TITLE_2_LOCALE_DEFAULT),
-				headers),
-			"$._embedded.StructuredContent[*]._embedded.values._embedded" +
-				"[?(@.name=='MyDocumentsAndMedia')].dataType");
-
-		Assert.assertEquals(dataTypes.toString(), 1, dataTypes.size());
-		Assert.assertTrue(dataTypes.contains("document-library"));
-	}
-
-	@Test
-	public void testGeolocationDataTypeIsDisplayed() throws Exception {
-		List<String> hrefs = JsonPath.read(
-			_toStringAsAdmin(
-				JsonPath.read(
-					_toStringAsAdmin(_rootEndpointURL.toExternalForm()),
-					"$._links.content-space.href")),
-			"$._embedded.ContentSpace[?(@.name == '" +
-				StructuredContentApioTestBundleActivator.SITE_NAME +
-					"')]._links.structuredContents.href");
-
-		Map<String, String> headers = _getHeaders();
-
-		headers.put("Accept-Language", "en-US");
-
-		List<String> dataTypes = JsonPath.read(
-			_toStringAsGuest(
-				_getURLWithFilterByTitle(
-					hrefs.get(0),
-					StructuredContentApioTestBundleActivator.
-						TITLE_2_LOCALE_DEFAULT),
-				headers),
-			"$._embedded.StructuredContent[*]._embedded.values._embedded" +
-				"[?(@.name=='MyGeolocation')].dataType");
-
-		Assert.assertEquals(dataTypes.toString(), 1, dataTypes.size());
-		Assert.assertTrue(dataTypes.contains("geolocation"));
-	}
-
-	@Test
 	public void testGuestUserSeesRightStructuredContents() throws Exception {
 		List<String> hrefs = JsonPath.read(
 			_toStringAsAdmin(
@@ -404,151 +314,6 @@ public class StructuredContentApioTest {
 			titles.contains(
 				StructuredContentApioTestBundleActivator.
 					TITLE_YES_GUEST_YES_GROUP));
-	}
-
-	@Test
-	public void testHtmlDataTypeIsDisplayed() throws Exception {
-		List<String> hrefs = JsonPath.read(
-			_toStringAsAdmin(
-				JsonPath.read(
-					_toStringAsAdmin(_rootEndpointURL.toExternalForm()),
-					"$._links.content-space.href")),
-			"$._embedded.ContentSpace[?(@.name == '" +
-				StructuredContentApioTestBundleActivator.SITE_NAME +
-					"')]._links.structuredContents.href");
-
-		Map<String, String> headers = _getHeaders();
-
-		headers.put("Accept-Language", "en-US");
-
-		List<String> dataTypes = JsonPath.read(
-			_toStringAsGuest(
-				_getURLWithFilterByTitle(
-					hrefs.get(0),
-					StructuredContentApioTestBundleActivator.
-						TITLE_2_LOCALE_DEFAULT),
-				headers),
-			"$._embedded.StructuredContent[*]._embedded.values._embedded" +
-				"[?(@.name=='MyHTML')].dataType");
-
-		Assert.assertEquals(dataTypes.toString(), 1, dataTypes.size());
-		Assert.assertTrue(dataTypes.contains("html"));
-	}
-
-	@Test
-	public void testImageDataTypeIsDisplayed() throws Exception {
-		List<String> hrefs = JsonPath.read(
-			_toStringAsAdmin(
-				JsonPath.read(
-					_toStringAsAdmin(_rootEndpointURL.toExternalForm()),
-					"$._links.content-space.href")),
-			"$._embedded.ContentSpace[?(@.name == '" +
-				StructuredContentApioTestBundleActivator.SITE_NAME +
-					"')]._links.structuredContents.href");
-
-		Map<String, String> headers = _getHeaders();
-
-		headers.put("Accept-Language", "en-US");
-
-		List<String> dataTypes = JsonPath.read(
-			_toStringAsGuest(
-				_getURLWithFilterByTitle(
-					hrefs.get(0),
-					StructuredContentApioTestBundleActivator.
-						TITLE_2_LOCALE_DEFAULT),
-				headers),
-			"$._embedded.StructuredContent[*]._embedded.values._embedded" +
-				"[?(@.name=='MyImage')].dataType");
-
-		Assert.assertEquals(dataTypes.toString(), 1, dataTypes.size());
-		Assert.assertTrue(dataTypes.contains("image"));
-	}
-
-	@Test
-	public void testIntegerDataTypeIsDisplayed() throws Exception {
-		List<String> hrefs = JsonPath.read(
-			_toStringAsAdmin(
-				JsonPath.read(
-					_toStringAsAdmin(_rootEndpointURL.toExternalForm()),
-					"$._links.content-space.href")),
-			"$._embedded.ContentSpace[?(@.name == '" +
-				StructuredContentApioTestBundleActivator.SITE_NAME +
-					"')]._links.structuredContents.href");
-
-		Map<String, String> headers = _getHeaders();
-
-		headers.put("Accept-Language", "en-US");
-
-		List<String> dataTypes = JsonPath.read(
-			_toStringAsGuest(
-				_getURLWithFilterByTitle(
-					hrefs.get(0),
-					StructuredContentApioTestBundleActivator.
-						TITLE_2_LOCALE_DEFAULT),
-				headers),
-			"$._embedded.StructuredContent[*]._embedded.values._embedded" +
-				"[?(@.name=='MyInteger')].dataType");
-
-		Assert.assertEquals(dataTypes.toString(), 1, dataTypes.size());
-		Assert.assertTrue(dataTypes.contains("integer"));
-	}
-
-	@Test
-	public void testJournalArticleDataTypeIsDisplayed() throws Exception {
-		List<String> hrefs = JsonPath.read(
-			_toStringAsAdmin(
-				JsonPath.read(
-					_toStringAsAdmin(_rootEndpointURL.toExternalForm()),
-					"$._links.content-space.href")),
-			"$._embedded.ContentSpace[?(@.name == '" +
-				StructuredContentApioTestBundleActivator.SITE_NAME +
-					"')]._links.structuredContents.href");
-
-		Map<String, String> headers = _getHeaders();
-
-		headers.put("Accept-Language", "en-US");
-
-		List<String> dataTypes = JsonPath.read(
-			_toStringAsGuest(
-				_getURLWithFilterByTitle(
-					hrefs.get(0),
-					StructuredContentApioTestBundleActivator.
-						TITLE_2_LOCALE_DEFAULT),
-				headers),
-			"$._embedded.StructuredContent[*]._embedded.values._embedded" +
-				"[?(@.name=='MyJournalArticle')].dataType");
-
-		Assert.assertEquals(dataTypes.toString(), 1, dataTypes.size());
-		Assert.assertTrue(dataTypes.contains("journal-article"));
-	}
-
-	@Test
-	public void testLinkToPageDataTypeIsDisplayed() throws Exception {
-		List<String> hrefs = JsonPath.read(
-			_toStringAsAdmin(
-				JsonPath.read(
-					_toStringAsAdmin(_rootEndpointURL.toExternalForm()),
-					"$._links.content-space.href")),
-			"$._embedded.ContentSpace[?(@.name == '" +
-				StructuredContentApioTestBundleActivator.SITE_NAME +
-					"')]._links.structuredContents.href");
-
-		Map<String, String> headers = _getHeaders();
-
-		headers.put("Accept-Language", "en-US");
-
-		List<String> dataTypes = JsonPath.read(
-			_toStringAsGuest(
-				_getURLWithFilterByTitle(
-					hrefs.get(0),
-					StructuredContentApioTestBundleActivator.
-						TITLE_2_LOCALE_DEFAULT),
-				headers),
-			"$._embedded.StructuredContent[*]._embedded.values._embedded" +
-				"[?(@.name=='MyLinkToPage')].dataType");
-
-		Assert.assertEquals(dataTypes.toString(), 1, dataTypes.size());
-		Assert.assertTrue(dataTypes.contains("link-to-page"));
 	}
 
 	@Test
@@ -669,93 +434,6 @@ public class StructuredContentApioTest {
 	}
 
 	@Test
-	public void testNumberDataTypeIsDisplayed() throws Exception {
-		List<String> hrefs = JsonPath.read(
-			_toStringAsAdmin(
-				JsonPath.read(
-					_toStringAsAdmin(_rootEndpointURL.toExternalForm()),
-					"$._links.content-space.href")),
-			"$._embedded.ContentSpace[?(@.name == '" +
-				StructuredContentApioTestBundleActivator.SITE_NAME +
-					"')]._links.structuredContents.href");
-
-		Map<String, String> headers = _getHeaders();
-
-		headers.put("Accept-Language", "en-US");
-
-		List<String> dataTypes = JsonPath.read(
-			_toStringAsGuest(
-				_getURLWithFilterByTitle(
-					hrefs.get(0),
-					StructuredContentApioTestBundleActivator.
-						TITLE_2_LOCALE_DEFAULT),
-				headers),
-			"$._embedded.StructuredContent[*]._embedded.values._embedded" +
-				"[?(@.name=='MyNumber')].dataType");
-
-		Assert.assertEquals(dataTypes.toString(), 1, dataTypes.size());
-		Assert.assertTrue(dataTypes.contains("number"));
-	}
-
-	@Test
-	public void testRadioDataTypeIsDisplayed() throws Exception {
-		List<String> hrefs = JsonPath.read(
-			_toStringAsAdmin(
-				JsonPath.read(
-					_toStringAsAdmin(_rootEndpointURL.toExternalForm()),
-					"$._links.content-space.href")),
-			"$._embedded.ContentSpace[?(@.name == '" +
-				StructuredContentApioTestBundleActivator.SITE_NAME +
-					"')]._links.structuredContents.href");
-
-		Map<String, String> headers = _getHeaders();
-
-		headers.put("Accept-Language", "en-US");
-
-		List<String> dataTypes = JsonPath.read(
-			_toStringAsGuest(
-				_getURLWithFilterByTitle(
-					hrefs.get(0),
-					StructuredContentApioTestBundleActivator.
-						TITLE_2_LOCALE_DEFAULT),
-				headers),
-			"$._embedded.StructuredContent[*]._embedded.values._embedded" +
-				"[?(@.name=='MyRadio')].dataType");
-
-		Assert.assertEquals(dataTypes.toString(), 1, dataTypes.size());
-		Assert.assertTrue(dataTypes.contains("radio"));
-	}
-
-	@Test
-	public void testSelectDataTypeIsDisplayed() throws Exception {
-		List<String> hrefs = JsonPath.read(
-			_toStringAsAdmin(
-				JsonPath.read(
-					_toStringAsAdmin(_rootEndpointURL.toExternalForm()),
-					"$._links.content-space.href")),
-			"$._embedded.ContentSpace[?(@.name == '" +
-				StructuredContentApioTestBundleActivator.SITE_NAME +
-					"')]._links.structuredContents.href");
-
-		Map<String, String> headers = _getHeaders();
-
-		headers.put("Accept-Language", "en-US");
-
-		List<String> dataTypes = JsonPath.read(
-			_toStringAsGuest(
-				_getURLWithFilterByTitle(
-					hrefs.get(0),
-					StructuredContentApioTestBundleActivator.
-						TITLE_2_LOCALE_DEFAULT),
-				headers),
-			"$._embedded.StructuredContent[*]._embedded.values._embedded" +
-				"[?(@.name=='MySelect')].dataType");
-
-		Assert.assertEquals(dataTypes.toString(), 1, dataTypes.size());
-		Assert.assertTrue(dataTypes.contains("string"));
-	}
-
-	@Test
 	public void testSetDefaultTitleIsDisplayedWhenAcceptLanguageIsNotSpecified()
 		throws Exception {
 
@@ -845,64 +523,6 @@ public class StructuredContentApioTest {
 			_toStringAsGuest(hrefs.get(0)), "$._links.self.href");
 
 		Assert.assertTrue(href.startsWith(hrefs.get(0)));
-	}
-
-	@Test
-	public void testTextBoxDataTypeIsDisplayed() throws Exception {
-		List<String> hrefs = JsonPath.read(
-			_toStringAsAdmin(
-				JsonPath.read(
-					_toStringAsAdmin(_rootEndpointURL.toExternalForm()),
-					"$._links.content-space.href")),
-			"$._embedded.ContentSpace[?(@.name == '" +
-				StructuredContentApioTestBundleActivator.SITE_NAME +
-					"')]._links.structuredContents.href");
-
-		Map<String, String> headers = _getHeaders();
-
-		headers.put("Accept-Language", "en-US");
-
-		List<String> dataTypes = JsonPath.read(
-			_toStringAsGuest(
-				_getURLWithFilterByTitle(
-					hrefs.get(0),
-					StructuredContentApioTestBundleActivator.
-						TITLE_2_LOCALE_DEFAULT),
-				headers),
-			"$._embedded.StructuredContent[*]._embedded.values._embedded" +
-				"[?(@.name=='MyTextBox')].dataType");
-
-		Assert.assertEquals(dataTypes.toString(), 1, dataTypes.size());
-		Assert.assertTrue(dataTypes.contains("string"));
-	}
-
-	@Test
-	public void testTextDataTypeIsDisplayed() throws Exception {
-		List<String> hrefs = JsonPath.read(
-			_toStringAsAdmin(
-				JsonPath.read(
-					_toStringAsAdmin(_rootEndpointURL.toExternalForm()),
-					"$._links.content-space.href")),
-			"$._embedded.ContentSpace[?(@.name == '" +
-				StructuredContentApioTestBundleActivator.SITE_NAME +
-					"')]._links.structuredContents.href");
-
-		Map<String, String> headers = _getHeaders();
-
-		headers.put("Accept-Language", "en-US");
-
-		List<String> dataTypes = JsonPath.read(
-			_toStringAsGuest(
-				_getURLWithFilterByTitle(
-					hrefs.get(0),
-					StructuredContentApioTestBundleActivator.
-						TITLE_2_LOCALE_DEFAULT),
-				headers),
-			"$._embedded.StructuredContent[*]._embedded.values._embedded" +
-				"[?(@.name=='TextFieldName')].dataType");
-
-		Assert.assertEquals(dataTypes.toString(), 1, dataTypes.size());
-		Assert.assertTrue(dataTypes.contains("string"));
 	}
 
 	private JSONWebServiceClient _getGuestJSONWebServiceClient() {

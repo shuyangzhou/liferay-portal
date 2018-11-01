@@ -24,6 +24,8 @@ import com.liferay.dynamic.data.mapping.io.DDMFormDeserializer;
 import com.liferay.dynamic.data.mapping.io.DDMFormDeserializerDeserializeRequest;
 import com.liferay.dynamic.data.mapping.io.DDMFormDeserializerDeserializeResponse;
 import com.liferay.dynamic.data.mapping.io.DDMFormDeserializerTracker;
+import com.liferay.dynamic.data.mapping.kernel.DDMFormFieldValue;
+import com.liferay.dynamic.data.mapping.kernel.LocalizedValue;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMStructureConstants;
@@ -118,19 +120,165 @@ public class StructuredContentNestedCollectionResourceFilteringTest
 		_ddmStructure = ddmStructureTestHelper.addStructure(
 			PortalUtil.getClassNameId(JournalArticle.class),
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
-			deserialize(_read("test-journal-structured-text-field.json")),
+			deserialize(_read("test-journal-all-fields-structure.json")),
 			StorageType.JSON.getValue(), DDMStructureConstants.TYPE_DEFAULT);
 
 		_ddmTemplate = DDMTemplateTestUtil.addTemplate(
 			_group.getGroupId(), _ddmStructure.getStructureId(),
 			PortalUtil.getClassNameId(JournalArticle.class),
 			TemplateConstants.LANG_TYPE_VM,
-			_read("test-journal-template-text-field.xsl"), LocaleUtil.US);
+			_read("test-journal-all-fields-template.xsl"), LocaleUtil.US);
 	}
 
 	@After
 	public void tearDown() {
 		_serviceTracker.close();
+	}
+
+	@Test
+	public void testBooleanFieldDataType() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyBoolean");
+
+		String dataType = getDDMFormFieldDataType(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertEquals("boolean", dataType);
+	}
+
+	@Test
+	public void testBooleanFieldInputControl() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyBoolean");
+
+		String inputControl = getDDMFormFieldInputControl(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertEquals("checkbox", inputControl);
+	}
+
+	@Test
+	public void testColorFieldDataType() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyColor");
+
+		String dataType = getDDMFormFieldDataType(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertEquals("color", dataType);
+	}
+
+	@Test
+	public void testColorFieldInputControlIsNull() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyColor");
+
+		String inputControl = getDDMFormFieldInputControl(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertNull(inputControl);
+	}
+
+	@Test
+	public void testDateFieldDataType() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyDate");
+
+		String dataType = getDDMFormFieldDataType(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertEquals("date", dataType);
+	}
+
+	@Test
+	public void testDateFieldInputControlIsNull() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyDate");
+
+		String inputControl = getDDMFormFieldInputControl(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertNull(inputControl);
+	}
+
+	@Test
+	public void testDecimalFieldDataType() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyDecimal");
+
+		String dataType = getDDMFormFieldDataType(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertEquals("double", dataType);
+	}
+
+	@Test
+	public void testDecimalFieldInputControlIsNull() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyDecimal");
+
+		String inputControl = getDDMFormFieldInputControl(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertNull(inputControl);
+	}
+
+	@Test
+	public void testDocumentsAndMediaFieldDataType() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyDocumentsAndMedia");
+
+		String dataType = getDDMFormFieldDataType(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertEquals("document", dataType);
+	}
+
+	@Test
+	public void testDocumentsAndMediaFieldInputControlIsNull()
+		throws Exception {
+
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyDocumentsAndMedia");
+
+		String inputControl = getDDMFormFieldInputControl(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertNull(inputControl);
+	}
+
+	@Test
+	public void testGeolocationFieldDataType() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyGeolocation");
+
+		String dataType = getDDMFormFieldDataType(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertEquals("geolocation", dataType);
+	}
+
+	@Test
+	public void testGeolocationFieldInputControlIsNull() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyGeolocation");
+
+		String inputControl = getDDMFormFieldInputControl(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertNull(inputControl);
 	}
 
 	@Test
@@ -979,7 +1127,7 @@ public class StructuredContentNestedCollectionResourceFilteringTest
 			JournalArticleLocalServiceUtil.addArticle(
 				TestPropsValues.getUser().getUserId(), _group.getGroupId(),
 				JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID, stringMap1,
-				null, _read("test-journal-content-text-field.xml"),
+				null, _read("test-journal-all-fields-content.xml"),
 				_ddmStructure.getStructureKey(), _ddmTemplate.getTemplateKey(),
 				ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
 
@@ -992,8 +1140,8 @@ public class StructuredContentNestedCollectionResourceFilteringTest
 				filterParser.parse(
 					StringBundler.concat(
 						"(values/_", _ddmStructure.getStructureId(),
-						StringPool.UNDERLINE, "TextFieldName eq ",
-						"'textfield')"))),
+						StringPool.UNDERLINE, "MyText eq ",
+						"'TextFieldValue_us')"))),
 			Sort.emptySort());
 
 		Assert.assertEquals(1, pageItems.getTotalCount());
@@ -1653,6 +1801,252 @@ public class StructuredContentNestedCollectionResourceFilteringTest
 		Assert.assertEquals("title value", termQuery.getValue());
 	}
 
+	@Test
+	public void testHtmlFieldDataType() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyHTML");
+
+		String dataType = getDDMFormFieldDataType(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertEquals("html", dataType);
+	}
+
+	@Test
+	public void testHtmlFieldInputControlIsNull() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyHTML");
+
+		String inputControl = getDDMFormFieldInputControl(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertNull(inputControl);
+	}
+
+	@Test
+	public void testImageFieldDataType() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyImage");
+
+		String dataType = getDDMFormFieldDataType(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertEquals("image", dataType);
+	}
+
+	@Test
+	public void testImageFieldInputControlIsNull() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyImage");
+
+		String inputControl = getDDMFormFieldInputControl(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertNull(inputControl);
+	}
+
+	@Test
+	public void testIntegerFieldDataType() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyInteger");
+
+		String dataType = getDDMFormFieldDataType(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertEquals("integer", dataType);
+	}
+
+	@Test
+	public void testIntegerFieldInputControlIsNull() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyInteger");
+
+		String inputControl = getDDMFormFieldInputControl(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertNull(inputControl);
+	}
+
+	@Test
+	public void testJournalArticleFieldDataType() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyJournalArticle");
+
+		String dataType = getDDMFormFieldDataType(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertEquals("structuredContent", dataType);
+	}
+
+	@Test
+	public void testJournalArticleFieldInputControlIsNull() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyJournalArticle");
+
+		String inputControl = getDDMFormFieldInputControl(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertNull(inputControl);
+	}
+
+	@Test
+	public void testLinkToPageFieldDataType() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyLinkToPage");
+
+		String dataType = getDDMFormFieldDataType(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertEquals("url", dataType);
+	}
+
+	@Test
+	public void testLinkToPageFieldInputControlIsNull() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyLinkToPage");
+
+		String inputControl = getDDMFormFieldInputControl(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertNull(inputControl);
+	}
+
+	@Test
+	public void testNumberFieldDataType() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyNumber");
+
+		String dataType = getDDMFormFieldDataType(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertEquals("number", dataType);
+	}
+
+	@Test
+	public void testNumberFieldInputControlIsNull() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyNumber");
+
+		String inputControl = getDDMFormFieldInputControl(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertNull(inputControl);
+	}
+
+	@Test
+	public void testRadioFieldDataType() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyRadio");
+
+		String dataType = getDDMFormFieldDataType(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertEquals("string", dataType);
+	}
+
+	@Test
+	public void testRadioFieldInputControl() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyRadio");
+
+		String inputControl = getDDMFormFieldInputControl(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertEquals("radio", inputControl);
+	}
+
+	@Test
+	public void testSelectFieldDataType() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MySelect");
+
+		String dataType = getDDMFormFieldDataType(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertEquals("string", dataType);
+	}
+
+	@Test
+	public void testSelectFieldInputControl() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MySelect");
+
+		String inputControl = getDDMFormFieldInputControl(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertEquals("select", inputControl);
+	}
+
+	@Test
+	public void testTextBoxFieldDataType() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyTextBox");
+
+		String dataType = getDDMFormFieldDataType(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertEquals("string", dataType);
+	}
+
+	@Test
+	public void testTextBoxFieldInputControl() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyTextBox");
+
+		String inputControl = getDDMFormFieldInputControl(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertEquals("textarea", inputControl);
+	}
+
+	@Test
+	public void testTextFieldDataType() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyText");
+
+		LocalizedValue localizedValue = new LocalizedValue(LocaleUtil.US);
+
+		localizedValue.addString(LocaleUtil.US, "someValue");
+
+		ddmFormFieldValue.setValue(localizedValue);
+
+		String dataType = getDDMFormFieldDataType(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertEquals("string", dataType);
+	}
+
+	@Test
+	public void testTextFieldInputControl() throws Exception {
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
+
+		ddmFormFieldValue.setName("MyText");
+
+		String inputControl = getDDMFormFieldInputControl(
+			ddmFormFieldValue, _ddmStructure);
+
+		Assert.assertEquals("text", inputControl);
+	}
+
 	protected DDMForm deserialize(String content) {
 		DDMFormDeserializer ddmFormDeserializer =
 			_ddmFormDeserializerTracker.getDDMFormDeserializer("json");
@@ -1667,7 +2061,7 @@ public class StructuredContentNestedCollectionResourceFilteringTest
 		return ddmFormDeserializerDeserializeResponse.getDDMForm();
 	}
 
-	private FilterParser _getFilterParser() throws Exception {
+	private FilterParser _getFilterParser() {
 		return _serviceTracker.getService();
 	}
 

@@ -38,6 +38,7 @@ import com.liferay.document.library.kernel.service.DLAppService;
 import com.liferay.dynamic.data.mapping.kernel.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.kernel.DDMFormValues;
 import com.liferay.dynamic.data.mapping.kernel.Value;
+import com.liferay.dynamic.data.mapping.model.DDMFormFieldType;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
 import com.liferay.dynamic.data.mapping.service.DDMStructureService;
@@ -101,6 +102,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -242,6 +244,9 @@ public class StructuredContentNestedCollectionResource
 				"link", this::_getLink
 			).addString(
 				"dataType", StructuredContentField::getDDMFormFieldDataType
+			).addString(
+				"inputControl",
+				StructuredContentField::getDDMFormFieldInputControl
 			).addLocalizedStringByLocale(
 				"label", StructuredContentField::getLocalizedLabel
 			).addString(
@@ -839,8 +844,25 @@ public class StructuredContentNestedCollectionResource
 
 		public String getDDMFormFieldDataType() {
 			try {
-				return _ddmStructure.getFieldDataType(
+				String dataType = _ddmStructure.getFieldDataType(
 					_ddmFormFieldValue.getName());
+
+				String displayDataType = dataType;
+
+				if (Objects.equals(dataType, "document-library")) {
+					displayDataType = "document";
+				}
+				else if (Objects.equals(dataType, "journal-article")) {
+					displayDataType = "structuredContent";
+				}
+				else if (Objects.equals(dataType, "link-to-page")) {
+					displayDataType = "url";
+				}
+				else if (Objects.equals(dataType, "radio")) {
+					displayDataType = "string";
+				}
+
+				return displayDataType;
 			}
 			catch (PortalException pe) {
 				if (_log.isWarnEnabled()) {
@@ -852,6 +874,25 @@ public class StructuredContentNestedCollectionResource
 
 				return null;
 			}
+		}
+
+		public String getDDMFormFieldInputControl() {
+			return Try.fromFallible(
+				() -> _ddmStructure.getFieldType(_ddmFormFieldValue.getName())
+			).filter(
+				this::_isDDMFormFieldInputControl
+			).recover(
+				pe -> {
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							"Unable to get input control for field name " +
+								_ddmFormFieldValue.getName(),
+							pe);
+					}
+
+					return null;
+				}
+			);
 		}
 
 		public DDMFormFieldValue getDDMFormFieldValue() {
@@ -909,6 +950,19 @@ public class StructuredContentNestedCollectionResource
 			).collect(
 				Collectors.toList()
 			);
+		}
+
+		private boolean _isDDMFormFieldInputControl(String type) {
+			if (DDMFormFieldType.CHECKBOX.equals(type) ||
+				DDMFormFieldType.RADIO.equals(type) ||
+				DDMFormFieldType.SELECT.equals(type) ||
+				DDMFormFieldType.TEXT.equals(type) ||
+				DDMFormFieldType.TEXT_AREA.equals(type)) {
+
+				return true;
+			}
+
+			return false;
 		}
 
 		private final DDMFormFieldValue _ddmFormFieldValue;
