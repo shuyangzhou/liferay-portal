@@ -21,12 +21,14 @@ import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Manuel de la Peña
+ * @deprecated As of Judson (7.1.x), with no direct replacement
  */
 @Component(
 	immediate = true,
 	property = {"service.ranking:Integer=999", "store.type=test"},
 	service = StoreWrapper.class
 )
+@Deprecated
 public class LastStoreWrapper implements StoreWrapper {
 
 	@Override
