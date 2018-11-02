@@ -15,29 +15,40 @@
 package com.liferay.portal.store.ignore.duplicates.wrapper.internal;
 
 import com.liferay.document.library.kernel.store.Store;
-import com.liferay.document.library.kernel.store.StoreWrapper;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Roberto Díaz
  */
 @Component(
 	immediate = true,
-	property = "store.type=com.liferay.portal.store.file.system.FileSystemStore",
-	service = StoreWrapper.class
+	property = {
+		"service.ranking:Integer=" + IgnoreDuplicatesStore.SERVICE_RANKING,
+		"store.type=com.liferay.portal.store.file.system.FileSystemStore"
+	},
+	service = Store.class
 )
-public class IgnoreDuplicatesFileSystemStoreWrapper implements StoreWrapper {
+public class IgnoreDuplicatesFileSystemStoreWrapper
+	extends IgnoreDuplicatesStore {
 
 	@Override
-	public Store wrap(Store store) {
-		return new IgnoreDuplicatesStore(store);
+	@Reference(
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY,
+		target = "(&(store.type=com.liferay.portal.store.file.system.FileSystemStore)(service.ranking<=" + (IgnoreDuplicatesStore.SERVICE_RANKING - 1) + "))"
+	)
+	protected void setStore(Store store) {
+		this.store = store;
 	}
 
-	@Reference(
-		target = "(store.type=com.liferay.portal.store.file.system.FileSystemStore)"
-	)
-	private Store _store;
+	protected void unsetStore(Store store) {
+		if (this.store == store) {
+			this.store = null;
+		}
+	}
 
 }
