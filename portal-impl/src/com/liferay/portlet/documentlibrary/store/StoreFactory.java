@@ -32,10 +32,11 @@ import com.liferay.registry.ServiceTrackerCustomizer;
 import com.liferay.registry.collections.ServiceTrackerCollections;
 import com.liferay.registry.collections.ServiceTrackerMap;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Brian Wing Shun Chan
@@ -199,8 +200,8 @@ public class StoreFactory {
 	private static StoreFactory _storeFactory;
 	private static boolean _warned;
 
-	private volatile ServiceRegistration<Store>
-		_currentStoreServiceRegistration;
+	private final Map<ServiceReference<Store>, ServiceRegistration<Store>>
+		_currentStoreServiceRegistrations = new ConcurrentHashMap<>();
 	private volatile Store _store;
 	private final ServiceTrackerMap<String, Store> _storeServiceTrackerMap;
 	private String _storeType;
@@ -218,8 +219,6 @@ public class StoreFactory {
 				return null;
 			}
 
-			cleanUp(serviceReference);
-
 			Registry registry = RegistryUtil.getRegistry();
 
 			Store store = registry.getService(serviceReference);
@@ -228,16 +227,19 @@ public class StoreFactory {
 				"store.type");
 
 			if (PropsValues.DL_STORE_IMPL.equals(storeType)) {
-				_store = _wrapStore(store, storeType);
-
-				Map<String, Object> properties = new HashMap<>();
+				Map<String, Object> properties =
+					serviceReference.getProperties();
 
 				properties.put("current.store", "true");
-				properties.put("store.type", storeType);
 
-				_currentStoreServiceRegistration = registry.registerService(
-					Store.class, store, properties);
+				ServiceRegistration<Store> currentStoreServiceRegistration =
+					registry.registerService(Store.class, store, properties);
+
+				_currentStoreServiceRegistrations.put(
+					serviceReference, currentStoreServiceRegistration);
 			}
+
+			cleanUp(serviceReference);
 
 			return store;
 		}
@@ -246,6 +248,24 @@ public class StoreFactory {
 		public void modifiedService(
 			ServiceReference<Store> serviceReference, Store service) {
 
+			ServiceRegistration<Store> currentStoreServiceRegistration =
+				_currentStoreServiceRegistrations.get(serviceReference);
+
+			if (currentStoreServiceRegistration != null) {
+				ServiceReference<Store> currentStoreServiceReference =
+					currentStoreServiceRegistration.getServiceReference();
+
+				if (!Objects.equals(
+						serviceReference.getProperty("store.type"),
+						currentStoreServiceReference.getProperty(
+							"store.type"))) {
+
+					currentStoreServiceRegistration.unregister();
+
+					_store = null;
+				}
+			}
+
 			cleanUp(serviceReference);
 		}
 
@@ -253,16 +273,14 @@ public class StoreFactory {
 		public void removedService(
 			ServiceReference<Store> serviceReference, Store service) {
 
-			cleanUp(serviceReference);
+			ServiceRegistration<Store> currentStoreServiceRegistration =
+				_currentStoreServiceRegistrations.remove(serviceReference);
 
-			String storeType = (String)serviceReference.getProperty(
-				"store.type");
-
-			if (PropsValues.DL_STORE_IMPL.equals(storeType)) {
-				_currentStoreServiceRegistration.unregister();
-
-				_currentStoreServiceRegistration = null;
+			if (currentStoreServiceRegistration != null) {
+				currentStoreServiceRegistration.unregister();
 			}
+
+			cleanUp(serviceReference);
 
 			Registry registry = RegistryUtil.getRegistry();
 
