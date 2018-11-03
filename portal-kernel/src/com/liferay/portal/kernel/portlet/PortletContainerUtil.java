@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.portlet;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
@@ -157,7 +158,62 @@ public class PortletContainerUtil {
 							host.equals(renderURL.getHost()) &&
 							(port == renderURL.getPort())) {
 
-							location = renderURL.toString();
+							String renderURLQuery = renderURL.getQuery();
+
+							if (renderURLQuery != null) {
+								StringBundler fileSB = new StringBundler();
+
+								if (locationURL.getPath() != null) {
+									fileSB.append(locationURL.getPath());
+								}
+
+								fileSB.append("?");
+
+								boolean firstParam = true;
+
+								String query = locationURL.getQuery();
+
+								if (query != null) {
+									fileSB.append(query);
+									firstParam = false;
+								}
+
+								String publicRenderParameterNamespace =
+									PortletQName.
+										PUBLIC_RENDER_PARAMETER_NAMESPACE;
+
+								String[] renderURLParams = renderURLQuery.split(
+									"[&]");
+
+								for (String nameValuePair : renderURLParams) {
+									String name = nameValuePair.substring(
+										0, nameValuePair.indexOf("="));
+
+									if (name.startsWith(
+											publicRenderParameterNamespace) &&
+										!query.contains(name)) {
+
+										if (firstParam) {
+											firstParam = false;
+										}
+										else {
+											fileSB.append("&");
+										}
+
+										fileSB.append(nameValuePair);
+									}
+								}
+
+								if (locationURL.getRef() != null) {
+									fileSB.append("#");
+									fileSB.append(locationURL.getRef());
+								}
+
+								locationURL = new URL(
+									protocol, host, port, fileSB.toString());
+
+								location = locationURL.toString();
+							}
 						}
 					}
 					catch (MalformedURLException murle) {
