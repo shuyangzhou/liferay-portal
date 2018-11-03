@@ -39,6 +39,7 @@ import com.liferay.portlet.PortletServletResponse;
 import java.io.IOException;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -239,11 +240,56 @@ public class PortletRequestDispatcherImpl
 			}
 
 			if (servletPath == null) {
-				if (!include &&
-					!(pathNoQueryString.endsWith(".jsp") ||
-					  pathNoQueryString.endsWith(".jspx"))) {
+				if (!include) {
+					boolean servletMappedPath = false;
 
-					pathInfo = pathNoQueryString;
+					servletURLPatterns = new HashSet<>(servletURLPatterns);
+
+					servletURLPatterns.add("*.jsp");
+					servletURLPatterns.add("*.jspx");
+
+					for (String urlPattern : servletURLPatterns) {
+						if (urlPattern.startsWith("*.") &&
+							pathNoQueryString.endsWith(
+								urlPattern.substring(1))) {
+
+							servletMappedPath = true;
+
+							break;
+						}
+
+						String pathMapping = null;
+
+						if (urlPattern.startsWith("/") &&
+							urlPattern.endsWith("/*")) {
+
+							pathMapping = urlPattern.substring(
+								0, urlPattern.length() - 1);
+						}
+						else {
+							pathMapping = urlPattern;
+						}
+
+						String path = pathNoQueryString;
+
+						pos = pathNoQueryString.lastIndexOf("/");
+
+						if (pos > 0) {
+							path = pathNoQueryString.substring(0, pos);
+						}
+
+						if (pathMapping.contains(path) ||
+							path.startsWith(pathMapping)) {
+
+							servletMappedPath = true;
+
+							break;
+						}
+					}
+
+					if (!servletMappedPath) {
+						pathInfo = pathNoQueryString;
+					}
 				}
 
 				servletPath = pathNoQueryString;
