@@ -33,6 +33,9 @@ import com.liferay.portal.kernel.xml.QName;
 
 import java.io.IOException;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -136,11 +139,30 @@ public class PortletContainerUtil {
 					Layout layout = (Layout)request.getAttribute(
 						WebKeys.LAYOUT);
 
-					LiferayPortletURL renderURL = PortletURLFactoryUtil.create(
-						request, portlet, layout, PortletRequest.RENDER_PHASE,
-						MimeResponse.Copy.ALL);
+					LiferayPortletURL liferayPortletURL =
+						PortletURLFactoryUtil.create(
+							request, portlet, layout,
+							PortletRequest.RENDER_PHASE, MimeResponse.Copy.ALL);
 
-					location = renderURL.toString();
+					try {
+						URL locationURL = new URL(location);
+
+						URL renderURL = new URL(liferayPortletURL.toString());
+
+						String protocol = locationURL.getProtocol();
+						String host = locationURL.getHost();
+						int port = locationURL.getPort();
+
+						if (protocol.equals(renderURL.getProtocol()) &&
+							host.equals(renderURL.getHost()) &&
+							(port == renderURL.getPort())) {
+
+							location = renderURL.toString();
+						}
+					}
+					catch (MalformedURLException murle) {
+						throw new PortletContainerException(murle);
+					}
 				}
 
 				response.sendRedirect(location);
