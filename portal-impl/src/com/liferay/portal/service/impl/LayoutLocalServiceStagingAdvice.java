@@ -82,11 +82,9 @@ public class LayoutLocalServiceStagingAdvice implements BeanFactoryAware {
 	}
 
 	public void afterPropertiesSet() throws BeansException {
-		InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(
-			_beanFactory.getBean(LayoutLocalService.class.getName()));
-
 		ServiceBeanAopProxy serviceBeanAopProxy =
-			(ServiceBeanAopProxy)invocationHandler;
+			ProxyUtil.fetchInvocationHandler(
+				_beanFactory.getBean(LayoutLocalService.class.getName()));
 
 		serviceBeanAopProxy.setTarget(
 			ProxyUtil.newProxyInstance(

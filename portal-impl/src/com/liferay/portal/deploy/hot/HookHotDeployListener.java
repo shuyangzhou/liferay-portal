@@ -133,7 +133,6 @@ import java.io.InputStream;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationHandler;
 
 import java.net.URL;
 
@@ -1774,11 +1773,8 @@ public class HookHotDeployListener
 			Constructor<?> serviceImplConstructor, Object serviceProxy)
 		throws ReflectiveOperationException {
 
-		InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(
-			serviceProxy);
-
 		ServiceBeanAopProxy serviceBeanAopProxy =
-			(ServiceBeanAopProxy)invocationHandler;
+			ProxyUtil.fetchInvocationHandler(serviceProxy);
 
 		Object previousService = serviceBeanAopProxy.getTarget();
 
@@ -2235,11 +2231,8 @@ public class HookHotDeployListener
 		Class<?> proxyClass = serviceProxy.getClass();
 
 		if (ProxyUtil.isProxyClass(proxyClass)) {
-			InvocationHandler invocationHandler =
-				ProxyUtil.getInvocationHandler(serviceProxy);
-
 			ServiceBeanAopProxy serviceBeanAopProxy =
-				(ServiceBeanAopProxy)invocationHandler;
+				ProxyUtil.fetchInvocationHandler(serviceProxy);
 
 			Object previousService = serviceBeanAopProxy.getTarget();
 
