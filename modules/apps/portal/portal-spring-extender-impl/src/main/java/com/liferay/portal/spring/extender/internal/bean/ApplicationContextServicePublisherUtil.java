@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.ProxyUtil;
-import com.liferay.portal.spring.aop.ServiceBeanAopProxy;
+import com.liferay.portal.spring.aop.ServiceBeanAopInvocationHandler;
 import com.liferay.portal.util.PropsValues;
 
 import java.util.ArrayList;
@@ -111,11 +111,11 @@ public class ApplicationContextServicePublisherUtil {
 		Class<?> clazz = bean.getClass();
 
 		if (ProxyUtil.isProxyClass(clazz)) {
-			ServiceBeanAopProxy serviceBeanAopProxy =
+			ServiceBeanAopInvocationHandler serviceBeanAopInvocationHandler =
 				ProxyUtil.fetchInvocationHandler(bean);
 
-			if (serviceBeanAopProxy != null) {
-				Object target = serviceBeanAopProxy.getTarget();
+			if (serviceBeanAopInvocationHandler != null) {
+				Object target = serviceBeanAopInvocationHandler.getTarget();
 
 				clazz = target.getClass();
 			}
