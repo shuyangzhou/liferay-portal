@@ -46,11 +46,9 @@ import org.springframework.beans.factory.BeanFactoryAware;
 public class LayoutSetLocalServiceStagingAdvice implements BeanFactoryAware {
 
 	public void afterPropertiesSet() {
-		InvocationHandler invocationHandler = ProxyUtil.getInvocationHandler(
-			_beanFactory.getBean(LayoutSetLocalService.class.getName()));
-
 		ServiceBeanAopProxy serviceBeanAopProxy =
-			(ServiceBeanAopProxy)invocationHandler;
+			ProxyUtil.fetchInvocationHandler(
+				_beanFactory.getBean(LayoutSetLocalService.class.getName()));
 
 		serviceBeanAopProxy.setTarget(
 			ProxyUtil.newProxyInstance(
