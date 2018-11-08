@@ -14,7 +14,6 @@
 
 package com.liferay.portal.resiliency.service;
 
-import com.liferay.petra.lang.ClassLoaderPool;
 import com.liferay.portal.internal.resiliency.service.ServiceMethodProcessCallable;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServiceInvokerUtil;
 import com.liferay.portal.kernel.nio.intraband.rpc.IntrabandRPCUtil;
@@ -23,6 +22,7 @@ import com.liferay.portal.kernel.resiliency.spi.SPIRegistryUtil;
 import com.liferay.portal.kernel.security.access.control.AccessControl;
 import com.liferay.portal.kernel.security.access.control.AccessControlThreadLocal;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
+import com.liferay.portal.kernel.servlet.ServletContextClassLoaderPool;
 import com.liferay.portal.spring.aop.AnnotationChainableMethodAdvice;
 
 import java.io.Serializable;
@@ -57,10 +57,15 @@ public class PortalResiliencyAdvice
 
 		Class<?> targetClass = targetObject.getClass();
 
-		String servletContextName = ClassLoaderPool.getContextName(
-			targetClass.getClassLoader());
+		String servletContextName =
+			ServletContextClassLoaderPool.getServletContextName(
+				targetClass.getClassLoader());
 
-		SPI spi = SPIRegistryUtil.getServletContextSPI(servletContextName);
+		SPI spi = null;
+
+		if (servletContextName != null) {
+			spi = SPIRegistryUtil.getServletContextSPI(servletContextName);
+		}
 
 		if (spi == null) {
 			serviceBeanAopCacheManager.removeMethodInterceptor(
