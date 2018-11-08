@@ -117,7 +117,7 @@ import com.liferay.portal.repository.util.ExternalRepositoryFactoryImpl;
 import com.liferay.portal.security.auth.AuthVerifierPipeline;
 import com.liferay.portal.servlet.filters.cache.CacheUtil;
 import com.liferay.portal.servlet.taglib.ui.DeprecatedFormNavigatorEntry;
-import com.liferay.portal.spring.aop.ServiceBeanAopProxy;
+import com.liferay.portal.spring.aop.ServiceBeanAopInvocationHandler;
 import com.liferay.portal.spring.context.PortalContextLoaderListener;
 import com.liferay.portal.util.JavaScriptBundleUtil;
 import com.liferay.portal.util.PortalInstances;
@@ -1773,10 +1773,10 @@ public class HookHotDeployListener
 			Constructor<?> serviceImplConstructor, Object serviceProxy)
 		throws ReflectiveOperationException {
 
-		ServiceBeanAopProxy serviceBeanAopProxy =
+		ServiceBeanAopInvocationHandler serviceBeanAopInvocationHandler =
 			ProxyUtil.fetchInvocationHandler(serviceProxy);
 
-		Object previousService = serviceBeanAopProxy.getTarget();
+		Object previousService = serviceBeanAopInvocationHandler.getTarget();
 
 		ServiceWrapper<?> serviceWrapper =
 			(ServiceWrapper<?>)serviceImplConstructor.newInstance(
@@ -2231,10 +2231,11 @@ public class HookHotDeployListener
 		Class<?> proxyClass = serviceProxy.getClass();
 
 		if (ProxyUtil.isProxyClass(proxyClass)) {
-			ServiceBeanAopProxy serviceBeanAopProxy =
+			ServiceBeanAopInvocationHandler serviceBeanAopInvocationHandler =
 				ProxyUtil.fetchInvocationHandler(serviceProxy);
 
-			Object previousService = serviceBeanAopProxy.getTarget();
+			Object previousService =
+				serviceBeanAopInvocationHandler.getTarget();
 
 			ServiceWrapper<?> serviceWrapper =
 				(ServiceWrapper<?>)serviceImplConstructor.newInstance(
