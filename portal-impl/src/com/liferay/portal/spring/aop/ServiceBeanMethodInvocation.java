@@ -127,11 +127,11 @@ public class ServiceBeanMethodInvocation
 				return false;
 			}
 
-			ServiceBeanAopProxy serviceBeanAopProxy =
+			ServiceBeanAopInvocationHandler serviceBeanAopInvocationHandler =
 				ProxyUtil.fetchInvocationHandler(argument);
 
-			if (serviceBeanAopProxy != null) {
-				argument = serviceBeanAopProxy.getTarget();
+			if (serviceBeanAopInvocationHandler != null) {
+				argument = serviceBeanAopInvocationHandler.getTarget();
 			}
 
 			return _target.equals(argument);
