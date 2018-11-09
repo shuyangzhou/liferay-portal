@@ -109,7 +109,7 @@ public class PluginContextListener
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
 		portalDestroy();
 
-		if (_registeredClassLoader) {
+		if (_classLoaderRegistered) {
 			ServletContextClassLoaderPool.unregister(
 				servletContext.getServletContextName());
 		}
@@ -131,7 +131,7 @@ public class PluginContextListener
 			ServletContextClassLoaderPool.register(
 				servletContextName, pluginClassLoader);
 
-			_registeredClassLoader = true;
+			_classLoaderRegistered = true;
 		}
 
 		servletContext.setAttribute(PLUGIN_CLASS_LOADER, pluginClassLoader);
@@ -202,6 +202,6 @@ public class PluginContextListener
 		PluginContextListener.class);
 
 	private boolean _addedPluginClassLoader;
-	private boolean _registeredClassLoader;
+	private boolean _classLoaderRegistered;
 
 }
