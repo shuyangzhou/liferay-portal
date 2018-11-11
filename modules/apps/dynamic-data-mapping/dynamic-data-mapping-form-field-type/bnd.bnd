@@ -2,4 +2,8 @@ Bundle-Name: Liferay Dynamic Data Mapping Form Field Type
 Bundle-SymbolicName: com.liferay.dynamic.data.mapping.form.field.type
 Bundle-Version: 4.0.0
 Liferay-JS-Config: /META-INF/resources/config.js
+Provide-Capability:\
+	liferay.resource.bundle;\
+		resource.bundle.aggregate:String="(bundle.symbolic.name=com.liferay.dynamic.data.mapping.lang)";\
+		resource.bundle.base.name="content.Language"
 Web-ContextPath: /dynamic-data-mapping-form-field-type
