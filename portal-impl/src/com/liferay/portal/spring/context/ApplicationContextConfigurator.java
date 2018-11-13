@@ -12,30 +12,16 @@
  * details.
  */
 
-package com.liferay.portal.internal.spring.context;
+package com.liferay.portal.spring.context;
 
-import com.liferay.portal.spring.context.ApplicationContextConfigurator;
-
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * @author Preston Crary
  */
-public class PortalApplicationContextConfigurator
-	implements ApplicationContextConfigurator {
+public interface ApplicationContextConfigurator {
 
-	@Override
 	public void configure(
-		ConfigurableApplicationContext configurableApplicationContext) {
-
-		ConfigurableBeanFactory configurableBeanFactory =
-			configurableApplicationContext.getBeanFactory();
-
-		configurableBeanFactory.addBeanPostProcessor(
-			new AOPBeanPostProcessor(
-				configurableBeanFactory,
-				configurableApplicationContext.getClassLoader()));
-	}
+		ConfigurableApplicationContext configurableApplicationContext);
 
 }

@@ -16,7 +16,6 @@ package com.liferay.portal.spring.extender.internal.context;
 
 import com.liferay.osgi.felix.util.AbstractExtender;
 import com.liferay.petra.concurrent.ConcurrentReferenceValueHashMap;
-import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.memory.FinalizeManager;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -35,6 +34,7 @@ import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TextFormatter;
 import com.liferay.portal.spring.bean.LiferayBeanFactory;
+import com.liferay.portal.spring.context.ApplicationContextConfigurator;
 import com.liferay.portal.spring.extender.internal.bean.ApplicationContextServicePublisherUtil;
 import com.liferay.portal.spring.extender.internal.classloader.BundleResolverClassLoader;
 import com.liferay.portal.spring.extender.internal.configuration.ConfigurationUtil;
@@ -82,7 +82,6 @@ import org.springframework.beans.factory.support.ManagedProperties;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.factory.xml.ResourceEntityResolver;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 
@@ -148,11 +147,8 @@ public class ParentModuleApplicationContextExtender extends AbstractExtender {
 	private static final Log _log = LogFactoryUtil.getLog(
 		ParentModuleApplicationContextExtender.class);
 
-	@Reference(
-		target = "(&(bean.id=applicationContextConfigurator)(original.bean=true))"
-	)
-	private UnsafeConsumer<ConfigurableApplicationContext, RuntimeException>
-		_applicationContextUnsafeConsumer;
+	@Reference(target = "(original.bean=true)")
+	private ApplicationContextConfigurator _applicationContextConfigurator;
 
 	private static class CacheableURLResource extends UrlResource {
 
@@ -487,7 +483,7 @@ public class ParentModuleApplicationContextExtender extends AbstractExtender {
 			prepareBeanFactory(configurableListableBeanFactory);
 
 			try {
-				_applicationContextUnsafeConsumer.accept(this);
+				_applicationContextConfigurator.configure(this);
 
 				initMessageSource();
 
