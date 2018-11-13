@@ -63,9 +63,6 @@ public class PortalResiliencyAdvice
 		SPI spi = SPIRegistryUtil.getServletContextSPI(servletContextName);
 
 		if (spi == null) {
-			serviceBeanAopCacheManager.removeMethodInterceptor(
-				methodInvocation.getMethod(), this);
-
 			return null;
 		}
 
@@ -94,6 +91,20 @@ public class PortalResiliencyAdvice
 	@Override
 	public AccessControlled getNullAnnotation() {
 		return AccessControl.NULL_ACCESS_CONTROLLED;
+	}
+
+	@Override
+	public boolean isEnabled(Class<?> targetClass, Method method) {
+		String servletContextName = ClassLoaderPool.getContextName(
+			targetClass.getClassLoader());
+
+		SPI spi = SPIRegistryUtil.getServletContextSPI(servletContextName);
+
+		if (spi == null) {
+			return false;
+		}
+
+		return true;
 	}
 
 }
