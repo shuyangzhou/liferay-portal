@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.exception.NoSuchWorkflowDefinitionLinkException
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.WorkflowDefinitionLink;
-import com.liferay.portal.kernel.spring.aop.Skip;
+import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -260,7 +260,7 @@ public class WorkflowDefinitionLinkLocalServiceImpl
 	}
 
 	@Override
-	@Skip
+	@Transactional(enabled = false)
 	public boolean hasWorkflowDefinitionLink(
 		long companyId, long groupId, String className) {
 
@@ -276,7 +276,7 @@ public class WorkflowDefinitionLinkLocalServiceImpl
 	}
 
 	@Override
-	@Skip
+	@Transactional(enabled = false)
 	public boolean hasWorkflowDefinitionLink(
 		long companyId, long groupId, String className, long classPK) {
 
@@ -292,7 +292,7 @@ public class WorkflowDefinitionLinkLocalServiceImpl
 	}
 
 	@Override
-	@Skip
+	@Transactional(enabled = false)
 	public boolean hasWorkflowDefinitionLink(
 		long companyId, long groupId, String className, long classPK,
 		long typePK) {
