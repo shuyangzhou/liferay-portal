@@ -16,6 +16,7 @@ package com.liferay.portal.spring.extender.internal.context;
 
 import com.liferay.osgi.felix.util.AbstractExtender;
 import com.liferay.petra.concurrent.ConcurrentReferenceValueHashMap;
+import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.memory.FinalizeManager;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -81,6 +82,7 @@ import org.springframework.beans.factory.support.ManagedProperties;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.factory.xml.ResourceEntityResolver;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 
@@ -145,6 +147,12 @@ public class ParentModuleApplicationContextExtender extends AbstractExtender {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ParentModuleApplicationContextExtender.class);
+
+	@Reference(
+		target = "(&(bean.id=applicationContextConfigurator)(original.bean=true))"
+	)
+	private UnsafeConsumer<ConfigurableApplicationContext, RuntimeException>
+		_applicationContextUnsafeConsumer;
 
 	private static class CacheableURLResource extends UrlResource {
 
@@ -282,7 +290,7 @@ public class ParentModuleApplicationContextExtender extends AbstractExtender {
 
 	}
 
-	private static class ParentModuleApplicationContext
+	private class ParentModuleApplicationContext
 		extends ModuleApplicationContext {
 
 		@Override
@@ -318,6 +326,8 @@ public class ParentModuleApplicationContextExtender extends AbstractExtender {
 			prepareBeanFactory(configurableListableBeanFactory);
 
 			try {
+				_applicationContextUnsafeConsumer.accept(this);
+
 				initMessageSource();
 
 				initApplicationEventMulticaster();

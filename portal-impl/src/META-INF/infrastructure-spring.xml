@@ -13,6 +13,7 @@
 	<bean class="com.liferay.portal.dao.jdbc.spring.DataSourceFactoryBean" id="liferayDataSourceImpl">
 		<property name="propertyPrefix" value="jdbc.default." />
 	</bean>
+	<bean class="com.liferay.portal.internal.spring.context.PortalApplicationContextConfigurator" id="applicationContextConfigurator" />
 	<bean class="com.liferay.portal.service.PersistedModelLocalServiceRegistryImpl" id="com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry" />
 	<bean class="com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistryUtil" id="com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistryUtil">
 		<property name="persistedModelLocalServiceRegistry" ref="com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry" />
