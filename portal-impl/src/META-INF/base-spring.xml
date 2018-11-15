@@ -41,24 +41,11 @@
 	<bean class="com.liferay.portal.service.ServiceContextAdvice" id="serviceContextAdvice">
 		<property name="nextMethodInterceptor" ref="retryAdvice" />
 	</bean>
+	<bean class="com.liferay.portal.spring.aop.AopConfigurableApplicationContextConfigurator" id="configurableApplicationContextConfigurator" />
 	<bean class="com.liferay.portal.spring.aop.ChainableMethodAdviceAssembler" id="chainableMethodAdviceAssembler" />
 	<bean class="com.liferay.portal.spring.aop.DynamicProxyCreator" factory-method="getDynamicProxyCreator" />
 	<bean class="com.liferay.portal.spring.aop.RetryAdvice" id="retryAdvice">
 		<property name="nextMethodInterceptor" ref="transactionAdvice" />
-	</bean>
-	<bean class="com.liferay.portal.spring.aop.ServiceBeanAutoProxyCreator" depends-on="chainableMethodAdviceAssembler">
-		<property name="beanMatcher">
-			<bean class="com.liferay.portal.spring.aop.ServiceBeanMatcher">
-				<constructor-arg value="true" />
-			</bean>
-		</property>
-		<property name="methodInterceptor" ref="counterTransactionAdvice" />
-	</bean>
-	<bean class="com.liferay.portal.spring.aop.ServiceBeanAutoProxyCreator" depends-on="chainableMethodAdviceAssembler">
-		<property name="beanMatcher">
-			<bean class="com.liferay.portal.spring.aop.ServiceBeanMatcher" />
-		</property>
-		<property name="methodInterceptor" ref="serviceAdvice" />
 	</bean>
 	<bean class="com.liferay.portal.spring.bean.BeanReferenceAnnotationBeanPostProcessor" />
 	<bean class="com.liferay.portal.spring.transaction.TransactionExecutorFactory" factory-method="createTransactionExecutor" id="transactionExecutor">
