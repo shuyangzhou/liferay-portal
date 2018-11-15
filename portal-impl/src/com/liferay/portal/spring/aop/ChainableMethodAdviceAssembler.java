@@ -14,23 +14,16 @@
 
 package com.liferay.portal.spring.aop;
 
-import com.liferay.portal.kernel.spring.aop.AdvisedSupport;
-import com.liferay.portal.kernel.spring.aop.AopProxy;
-import com.liferay.portal.kernel.spring.aop.AopProxyFactory;
-
 import java.util.Map;
 
-import org.aopalliance.intercept.MethodInterceptor;
-
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.ListableBeanFactory;
 
 /**
- * @author Tina Tian
+ * @author Shuyang Zhou
  */
-public class AopProxyFactoryImpl implements AopProxyFactory, BeanFactoryAware {
+public class ChainableMethodAdviceAssembler implements BeanFactoryAware {
 
 	public void afterPropertiesSet() {
 		ListableBeanFactory listableBeanFactory =
@@ -45,31 +38,13 @@ public class AopProxyFactoryImpl implements AopProxyFactory, BeanFactoryAware {
 
 			chainableMethodAdviceInjector.inject();
 		}
-
-		_serviceBeanAopCacheManager = new ServiceBeanAopCacheManager(
-			_methodInterceptor);
-	}
-
-	public void destroy() {
 	}
 
 	@Override
-	public AopProxy getAopProxy(AdvisedSupport advisedSupport) {
-		return new ServiceBeanAopProxy(
-			advisedSupport, _serviceBeanAopCacheManager);
-	}
-
-	@Override
-	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+	public void setBeanFactory(BeanFactory beanFactory) {
 		_beanFactory = beanFactory;
 	}
 
-	public void setMethodInterceptor(MethodInterceptor methodInterceptor) {
-		_methodInterceptor = methodInterceptor;
-	}
-
 	private BeanFactory _beanFactory;
-	private MethodInterceptor _methodInterceptor;
-	private ServiceBeanAopCacheManager _serviceBeanAopCacheManager;
 
 }
