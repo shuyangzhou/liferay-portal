@@ -15,6 +15,7 @@
 package com.liferay.portal.spring.aop;
 
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+import com.liferay.portal.monitoring.statistics.service.ServiceMonitorAdvice;
 import com.liferay.portal.resiliency.service.PortalResiliencyAdvice;
 import com.liferay.portal.security.access.control.AccessControlAdvice;
 import com.liferay.portal.spring.context.ConfigurableApplicationContextConfigurator;
@@ -126,10 +127,16 @@ public class AopConfigurableApplicationContextConfigurator
 			MethodInterceptor methodInterceptor = beanFactory.getBean(
 				"serviceAdvice", MethodInterceptor.class);
 
+			ServiceMonitorAdvice serviceMonitorAdvice =
+				new ServiceMonitorAdvice();
+
+			serviceMonitorAdvice.setNextMethodInterceptor(methodInterceptor);
+
 			PortalResiliencyAdvice portalResiliencyAdvice =
 				new PortalResiliencyAdvice();
 
-			portalResiliencyAdvice.setNextMethodInterceptor(methodInterceptor);
+			portalResiliencyAdvice.setNextMethodInterceptor(
+				serviceMonitorAdvice);
 
 			AccessControlAdvice accessControlAdvice = new AccessControlAdvice();
 
