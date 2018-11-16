@@ -26,39 +26,18 @@
 	</bean>
 	<bean class="com.liferay.portal.kernel.portlet.PortletClassLoaderUtil" factory-method="getClassLoader" id="portletClassLoader" />
 	<bean class="com.liferay.portal.kernel.portlet.PortletClassLoaderUtil" factory-method="getServletContextName" id="servletContextName" />
-	<bean class="com.liferay.portal.messaging.async.AsyncAdvice" id="asyncAdvice">
+	<bean class="com.liferay.portal.messaging.async.AsyncAdvice" id="serviceAdvice">
 		<property name="defaultDestinationName" value="liferay/async_service" />
 		<property name="nextMethodInterceptor" ref="threadLocalCacheAdvice" />
-	</bean>
-	<bean class="com.liferay.portal.monitoring.statistics.service.ServiceMonitorAdvice" id="serviceMonitorAdvice">
-		<property name="nextMethodInterceptor" ref="asyncAdvice" />
-	</bean>
-	<bean class="com.liferay.portal.resiliency.service.PortalResiliencyAdvice" id="portalResiliencyAdvice">
-		<property name="nextMethodInterceptor" ref="serviceMonitorAdvice" />
 	</bean>
 	<bean class="com.liferay.portal.search.IndexableAdvice" id="indexableAdvice">
 		<property name="nextMethodInterceptor" ref="systemEventAdvice" />
 	</bean>
-	<bean class="com.liferay.portal.security.access.control.AccessControlAdvice" id="accessControlAdvice">
-		<property name="nextMethodInterceptor" ref="portalResiliencyAdvice" />
-	</bean>
 	<bean class="com.liferay.portal.service.ServiceContextAdvice" id="serviceContextAdvice">
 		<property name="nextMethodInterceptor" ref="retryAdvice" />
 	</bean>
-	<bean class="com.liferay.portal.spring.aop.AopProxyFactoryImpl" id="aopProxyFactory">
-		<property name="methodInterceptor" ref="serviceAdvice" />
-	</bean>
 	<bean class="com.liferay.portal.spring.aop.RetryAdvice" id="retryAdvice">
 		<property name="nextMethodInterceptor" ref="transactionAdvice" />
-	</bean>
-	<bean class="com.liferay.portal.spring.aop.ServiceBeanAutoProxyCreator">
-		<property name="aopProxyFactory" ref="aopProxyFactory" />
-		<property name="beanMatcher">
-			<bean class="com.liferay.portal.spring.aop.ServiceBeanMatcher" />
-		</property>
-	</bean>
-	<bean class="com.liferay.portal.spring.aop.SkipAdvice" id="serviceAdvice">
-		<property name="nextMethodInterceptor" ref="accessControlAdvice" />
 	</bean>
 	<bean class="com.liferay.portal.spring.bean.BeanReferenceAnnotationBeanPostProcessor" />
 	<bean class="com.liferay.portal.spring.context.PortletBeanFactoryCleaner" />

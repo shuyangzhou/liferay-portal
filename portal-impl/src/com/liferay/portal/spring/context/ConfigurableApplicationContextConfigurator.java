@@ -12,15 +12,16 @@
  * details.
  */
 
-package com.liferay.portal.spring.aop;
+package com.liferay.portal.spring.context;
 
-import com.liferay.portal.kernel.spring.aop.AdvisedSupport;
+import org.springframework.context.ConfigurableApplicationContext;
 
 /**
- * @author Miguel Pastor
+ * @author Shuyang Zhou
  */
-public interface AdvisedSupportProxy {
+public interface ConfigurableApplicationContextConfigurator {
 
-	public AdvisedSupport getAdvisedSupport();
+	public void configure(
+		ConfigurableApplicationContext configurableApplicationContext);
 
 }

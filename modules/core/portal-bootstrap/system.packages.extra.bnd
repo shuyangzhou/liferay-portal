@@ -29,14 +29,16 @@ Export-Package:\
 	!com.liferay.portal.license.*,\
 	!com.liferay.portal.messaging,\
 	!com.liferay.portal.microsofttranslator,\
-	!com.liferay.portal.monitoring.statistics,\
+	!com.liferay.portal.monitoring.statistics.service,\
 	!com.liferay.portal.nio.intraband.proxy,\
+	!com.liferay.portal.resiliency.service,\
 	!com.liferay.portal.scripting.beanshell,\
 	!com.liferay.portal.scripting.groovy,\
 	!com.liferay.portal.scripting.javascript,\
 	!com.liferay.portal.scripting.python,\
 	!com.liferay.portal.scripting.ruby,\
 	!com.liferay.portal.search.lucene.*,\
+	!com.liferay.portal.security.access.control,\
 	!com.liferay.portal.security.jaas.ext.*,\
 	!com.liferay.portal.sharepoint.*,\
 	!com.liferay.portal.tools.comparator,\

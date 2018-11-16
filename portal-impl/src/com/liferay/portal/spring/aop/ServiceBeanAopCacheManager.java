@@ -14,136 +14,73 @@
 
 package com.liferay.portal.spring.aop;
 
+import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.reflect.AnnotationLocator;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.transaction.TransactionsUtil;
 
 import java.lang.annotation.Annotation;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Target;
 import java.lang.reflect.Method;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.aopalliance.intercept.MethodInterceptor;
-import org.aopalliance.intercept.MethodInvocation;
 
 /**
  * @author Shuyang Zhou
  */
 public class ServiceBeanAopCacheManager {
 
-	/**
-	 * @deprecated As of Judson (7.1.x), replaced by {@link
-	 *             #findAnnotation(MethodInvocation, Class, Object)}
-	 */
-	@Deprecated
-	public static <T> T getAnnotation(
-		MethodInvocation methodInvocation,
-		Class<? extends Annotation> annotationType, T defaultValue) {
+	public ServiceBeanAopCacheManager(
+		ChainableMethodAdvice chainableMethodAdvice) {
 
-		return _findAnnotation(
-			_annotations, methodInvocation, annotationType, defaultValue);
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	public static void putAnnotations(
-		MethodInvocation methodInvocation, Annotation[] annotations) {
-
-		_setAnnotations(_annotations, methodInvocation, annotations);
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), replaced by {@link
-	 *             #ServiceBeanAopCacheManager(MethodInterceptor)}
-	 */
-	@Deprecated
-	public ServiceBeanAopCacheManager() {
-		_classLevelMethodInterceptors = new MethodInterceptor[0];
-		_fullMethodInterceptors = new MethodInterceptor[0];
-	}
-
-	public ServiceBeanAopCacheManager(MethodInterceptor methodInterceptor) {
-		List<MethodInterceptor> classLevelMethodInterceptors =
+		List<ChainableMethodAdvice> fullChainableMethodAdvices =
 			new ArrayList<>();
-		List<MethodInterceptor> fullMethodInterceptors = new ArrayList<>();
 
-		while (true) {
-			if (!(methodInterceptor instanceof ChainableMethodAdvice)) {
-				classLevelMethodInterceptors.add(methodInterceptor);
-				fullMethodInterceptors.add(methodInterceptor);
-
-				break;
-			}
-
-			ChainableMethodAdvice chainableMethodAdvice =
-				(ChainableMethodAdvice)methodInterceptor;
-
+		while (chainableMethodAdvice != null) {
 			chainableMethodAdvice.setServiceBeanAopCacheManager(this);
 
-			if (methodInterceptor instanceof AnnotationChainableMethodAdvice) {
+			if (chainableMethodAdvice instanceof
+					AnnotationChainableMethodAdvice) {
+
 				AnnotationChainableMethodAdvice<?>
 					annotationChainableMethodAdvice =
-						(AnnotationChainableMethodAdvice<?>)methodInterceptor;
+						(AnnotationChainableMethodAdvice<?>)
+							chainableMethodAdvice;
 
 				Class<? extends Annotation> annotationClass =
 					annotationChainableMethodAdvice.getAnnotationClass();
 
-				Target target = annotationClass.getAnnotation(Target.class);
-
-				if (target == null) {
-					classLevelMethodInterceptors.add(methodInterceptor);
-				}
-				else {
-					for (ElementType elementType : target.value()) {
-						if (elementType == ElementType.TYPE) {
-							classLevelMethodInterceptors.add(methodInterceptor);
-
-							break;
-						}
-					}
-				}
-
 				_registerAnnotationChainableMethodAdvice(
 					annotationClass, annotationChainableMethodAdvice);
 			}
-			else {
-				classLevelMethodInterceptors.add(methodInterceptor);
-			}
 
-			fullMethodInterceptors.add(methodInterceptor);
+			fullChainableMethodAdvices.add(chainableMethodAdvice);
 
-			methodInterceptor = chainableMethodAdvice.nextMethodInterceptor;
+			chainableMethodAdvice = (ChainableMethodAdvice)
+				chainableMethodAdvice.nextMethodInterceptor;
 		}
 
-		_classLevelMethodInterceptors = classLevelMethodInterceptors.toArray(
-			new MethodInterceptor[classLevelMethodInterceptors.size()]);
-		_fullMethodInterceptors = fullMethodInterceptors.toArray(
-			new MethodInterceptor[fullMethodInterceptors.size()]);
+		_fullChainableMethodAdvices = fullChainableMethodAdvices.toArray(
+			new ChainableMethodAdvice[fullChainableMethodAdvices.size()]);
 	}
 
 	public <T> T findAnnotation(
-		MethodInvocation methodInvocation,
+		Class<?> targetClass, Method method,
 		Class<? extends Annotation> annotationType, T defaultValue) {
 
 		T annotation = _findAnnotation(
-			_methodAnnotations, methodInvocation, annotationType, defaultValue);
+			_methodAnnotations, method, annotationType, defaultValue);
 
 		if (annotation == null) {
 			annotation = defaultValue;
 
-			Object target = methodInvocation.getThis();
-
 			List<Annotation> annotations = AnnotationLocator.locate(
-				methodInvocation.getMethod(), target.getClass());
+				method, targetClass);
 
 			Iterator<Annotation> iterator = annotations.iterator();
 
@@ -163,179 +100,37 @@ public class ServiceBeanAopCacheManager {
 				}
 			}
 
-			_setAnnotations(
-				_methodAnnotations, methodInvocation,
-				annotations.toArray(new Annotation[annotations.size()]));
+			if (annotations.isEmpty()) {
+				_methodAnnotations.put(method, _nullAnnotations);
+			}
+			else {
+				_methodAnnotations.put(
+					method,
+					annotations.toArray(new Annotation[annotations.size()]));
+			}
 		}
 
 		return annotation;
 	}
 
-	public MethodInterceptor[] getMethodInterceptors(
-		MethodInvocation methodInvocation) {
-
-		MethodInterceptor[] methodInterceptors = _methodInterceptors.get(
-			methodInvocation.getMethod());
-
-		if (methodInterceptors == null) {
-			methodInterceptors = _fullMethodInterceptors;
-
-			_methodInterceptors.put(
-				methodInvocation.getMethod(), methodInterceptors);
+	public AopMethod getAopMethod(Object target, Method method) {
+		if (!TransactionsUtil.isEnabled()) {
+			return new AopMethod(target, method, _emptyChainableMethodAdvices);
 		}
 
-		return methodInterceptors;
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), replaced by {@link
-	 *             #getMethodInterceptors(MethodInvocation)}
-	 */
-	@Deprecated
-	public MethodInterceptorsBag getMethodInterceptorsBag(
-		MethodInvocation methodInvocation) {
-
-		MethodInterceptor[] methodInterceptors = getMethodInterceptors(
-			methodInvocation);
-
-		return new MethodInterceptorsBag(
-			Arrays.asList(_classLevelMethodInterceptors),
-			Arrays.asList(methodInterceptors));
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	public Map
-		<Class<? extends Annotation>, AnnotationChainableMethodAdvice<?>[]>
-			getRegisteredAnnotationChainableMethodAdvices() {
-
-		return _annotationChainableMethodAdvices;
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	public boolean isRegisteredAnnotationClass(
-		Class<? extends Annotation> annotationClass) {
-
-		return _annotationChainableMethodAdvices.containsKey(annotationClass);
-	}
-
-	public void putMethodInterceptors(
-		MethodInvocation methodInvocation,
-		MethodInterceptor[] methodInterceptors) {
-
-		_methodInterceptors.put(
-			methodInvocation.getMethod(), methodInterceptors);
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), replaced by {@link
-	 *             #putMethodInterceptors(MethodInvocation, MethodInterceptor[])}
-	 */
-	@Deprecated
-	public void putMethodInterceptorsBag(
-		MethodInvocation methodInvocation,
-		MethodInterceptorsBag methodInterceptorsBag) {
-
-		List<MethodInterceptor> methodInterceptors =
-			methodInterceptorsBag.getMergedMethodInterceptors();
-
-		putMethodInterceptors(
-			methodInvocation,
-			methodInterceptors.toArray(
-				new MethodInterceptor[methodInterceptors.size()]));
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	public void registerAnnotationChainableMethodAdvice(
-		Class<? extends Annotation> annotationClass,
-		AnnotationChainableMethodAdvice<?> annotationChainableMethodAdvice) {
-
-		_registerAnnotationChainableMethodAdvice(
-			annotationClass, annotationChainableMethodAdvice);
-	}
-
-	public void removeMethodInterceptor(
-		MethodInvocation methodInvocation,
-		MethodInterceptor methodInterceptor) {
-
-		Method method = methodInvocation.getMethod();
-
-		MethodInterceptor[] methodInterceptors = _methodInterceptors.get(
-			method);
-
-		if (methodInterceptors == null) {
-			return;
-		}
-
-		int index = -1;
-
-		for (int i = 0; i < methodInterceptors.length; i++) {
-			if (methodInterceptors[i].equals(methodInterceptor)) {
-				index = i;
-
-				break;
-			}
-		}
-
-		if (index < 0) {
-			return;
-		}
-
-		int newLength = methodInterceptors.length - 1;
-
-		MethodInterceptor[] newMethodInterceptors = new MethodInterceptor[
-			newLength];
-
-		if (index > 0) {
-			System.arraycopy(
-				methodInterceptors, 0, newMethodInterceptors, 0, index);
-		}
-
-		if (index < newLength) {
-			System.arraycopy(
-				methodInterceptors, index + 1, newMethodInterceptors, index,
-				newLength - index);
-		}
-
-		if (Arrays.equals(
-				newMethodInterceptors, _classLevelMethodInterceptors)) {
-
-			newMethodInterceptors = _classLevelMethodInterceptors;
-		}
-
-		_methodInterceptors.put(method, newMethodInterceptors);
+		return _aopMethods.computeIfAbsent(
+			new CacheKey(target, method), this::_createAopMethod);
 	}
 
 	public void reset() {
-		_annotations.clear();
-		_methodInterceptors.clear();
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	public void setAnnotations(
-		MethodInvocation methodInvocation, Annotation[] annotations) {
-
-		_setAnnotations(_methodAnnotations, methodInvocation, annotations);
+		_aopMethods.clear();
 	}
 
 	private static <T> T _findAnnotation(
-		Map<Method, Annotation[]> methodAnnotations,
-		MethodInvocation methodInvocation,
+		Map<Method, Annotation[]> methodAnnotations, Method method,
 		Class<? extends Annotation> annotationType, T defaultValue) {
 
-		Annotation[] annotations = methodAnnotations.get(
-			methodInvocation.getMethod());
+		Annotation[] annotations = methodAnnotations.get(method);
 
 		if (annotations == _nullAnnotations) {
 			return defaultValue;
@@ -354,15 +149,34 @@ public class ServiceBeanAopCacheManager {
 		return defaultValue;
 	}
 
-	private static void _setAnnotations(
-		Map<Method, Annotation[]> methodAnnotations,
-		MethodInvocation methodInvocation, Annotation[] annotations) {
+	private AopMethod _createAopMethod(CacheKey cacheKey) {
+		Object target = cacheKey._target;
 
-		if (ArrayUtil.isEmpty(annotations)) {
-			annotations = _nullAnnotations;
+		Class<?> targetClass = target.getClass();
+
+		Method method = cacheKey._method;
+
+		List<ChainableMethodAdvice> filteredChainableMethodAdvices =
+			new ArrayList<>();
+
+		for (ChainableMethodAdvice chainableMethodAdvice :
+				_fullChainableMethodAdvices) {
+
+			if (chainableMethodAdvice.isEnabled(targetClass, method)) {
+				filteredChainableMethodAdvices.add(chainableMethodAdvice);
+			}
 		}
 
-		methodAnnotations.put(methodInvocation.getMethod(), annotations);
+		ChainableMethodAdvice[] chainableMethodAdvices =
+			_emptyChainableMethodAdvices;
+
+		if (!filteredChainableMethodAdvices.isEmpty()) {
+			chainableMethodAdvices = filteredChainableMethodAdvices.toArray(
+				new ChainableMethodAdvice[
+					filteredChainableMethodAdvices.size()]);
+		}
+
+		return new AopMethod(target, method, chainableMethodAdvices);
 	}
 
 	private void _registerAnnotationChainableMethodAdvice(
@@ -389,18 +203,49 @@ public class ServiceBeanAopCacheManager {
 			annotationClass, annotationChainableMethodAdvices);
 	}
 
-	private static final Map<Method, Annotation[]> _annotations =
-		new ConcurrentHashMap<>();
+	private static final ChainableMethodAdvice[] _emptyChainableMethodAdvices =
+		new ChainableMethodAdvice[0];
 	private static final Annotation[] _nullAnnotations = new Annotation[0];
 
 	private final
 		Map<Class<? extends Annotation>, AnnotationChainableMethodAdvice<?>[]>
 			_annotationChainableMethodAdvices = new HashMap<>();
-	private final MethodInterceptor[] _classLevelMethodInterceptors;
-	private final MethodInterceptor[] _fullMethodInterceptors;
+	private final Map<CacheKey, AopMethod> _aopMethods =
+		new ConcurrentHashMap<>();
+	private final ChainableMethodAdvice[] _fullChainableMethodAdvices;
 	private final Map<Method, Annotation[]> _methodAnnotations =
 		new ConcurrentHashMap<>();
-	private final Map<Method, MethodInterceptor[]> _methodInterceptors =
-		new ConcurrentHashMap<>();
+
+	private static class CacheKey {
+
+		@Override
+		public boolean equals(Object obj) {
+			CacheKey cacheKey = (CacheKey)obj;
+
+			if (Objects.equals(_target, cacheKey._target) &&
+				Objects.equals(_method, cacheKey._method)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			int hash = HashUtil.hash(0, _target);
+
+			return HashUtil.hash(hash, _method);
+		}
+
+		private CacheKey(Object target, Method method) {
+			_target = target;
+			_method = method;
+		}
+
+		private final Method _method;
+		private final Object _target;
+
+	}
 
 }
