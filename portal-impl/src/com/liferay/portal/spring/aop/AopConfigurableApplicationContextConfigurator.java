@@ -62,6 +62,13 @@ public class AopConfigurableApplicationContextConfigurator
 		ClassLoader classLoader,
 		ConfigurableListableBeanFactory configurableListableBeanFactory) {
 
+		if (configurableListableBeanFactory.getBeanDefinitionCount() == 0) {
+
+			// Protection for the those theme wars with no spring xmls.
+
+			return;
+		}
+
 		// Ensure the ChainableMethodAdvice assembling is done
 
 		configurableListableBeanFactory.getBean(
