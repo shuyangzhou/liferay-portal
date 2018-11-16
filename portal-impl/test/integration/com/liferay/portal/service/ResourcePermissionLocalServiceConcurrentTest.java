@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.service.ResourceActionLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.ResourcePermissionPersistence;
-import com.liferay.portal.kernel.spring.aop.AdvisedSupport;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.randomizerbumpers.UniqueStringRandomizerBumper;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
@@ -35,7 +34,7 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.service.impl.ResourcePermissionLocalServiceImpl;
 import com.liferay.portal.service.impl.SynchronousInvocationHandler;
 import com.liferay.portal.service.test.ServiceTestUtil;
-import com.liferay.portal.spring.aop.ServiceBeanAopProxy;
+import com.liferay.portal.spring.aop.ServiceBeanAopInvocationHandler;
 import com.liferay.portal.spring.transaction.DefaultTransactionExecutor;
 import com.liferay.portal.test.rule.ExpectedDBType;
 import com.liferay.portal.test.rule.ExpectedLog;
@@ -75,7 +74,7 @@ public class ResourcePermissionLocalServiceConcurrentTest {
 		new LiferayIntegrationTestRule();
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws NoSuchMethodException {
 		Assume.assumeTrue(PropsValues.RETRY_ADVICE_MAX_RETRIES != 0);
 
 		_threadCount = ServiceTestUtil.THREAD_COUNT;
@@ -96,12 +95,15 @@ public class ResourcePermissionLocalServiceConcurrentTest {
 
 		ResourceActionLocalServiceUtil.checkResourceActions();
 
-		AdvisedSupport advisedSupport = ServiceBeanAopProxy.getAdvisedSupport(
-			ResourcePermissionLocalServiceUtil.getService());
+		ServiceBeanAopInvocationHandler serviceBeanAopInvocationHandler =
+			ProxyUtil.fetchInvocationHandler(
+				ResourcePermissionLocalServiceUtil.getService(),
+				ServiceBeanAopInvocationHandler.class);
 
 		final ResourcePermissionLocalServiceImpl
 			resourcePermissionLocalServiceImpl =
-				(ResourcePermissionLocalServiceImpl)advisedSupport.getTarget();
+				(ResourcePermissionLocalServiceImpl)
+					serviceBeanAopInvocationHandler.getTarget();
 
 		final ResourcePermissionPersistence resourcePermissionPersistence =
 			resourcePermissionLocalServiceImpl.
