@@ -37,26 +37,15 @@
 	<bean class="com.liferay.portal.search.IndexableAdvice" id="indexableAdvice">
 		<property name="nextMethodInterceptor" ref="systemEventAdvice" />
 	</bean>
-	<bean class="com.liferay.portal.security.access.control.AccessControlAdvice" id="accessControlAdvice">
+	<bean class="com.liferay.portal.security.access.control.AccessControlAdvice" id="serviceAdvice">
 		<property name="nextMethodInterceptor" ref="portalResiliencyAdvice" />
 	</bean>
 	<bean class="com.liferay.portal.service.ServiceContextAdvice" id="serviceContextAdvice">
 		<property name="nextMethodInterceptor" ref="retryAdvice" />
 	</bean>
-	<bean class="com.liferay.portal.spring.aop.AopProxyFactoryImpl" id="aopProxyFactory">
-		<property name="methodInterceptor" ref="serviceAdvice" />
-	</bean>
+	<bean class="com.liferay.portal.spring.aop.ChainableMethodAdviceAssembler" id="chainableMethodAdviceAssembler" />
 	<bean class="com.liferay.portal.spring.aop.RetryAdvice" id="retryAdvice">
 		<property name="nextMethodInterceptor" ref="transactionAdvice" />
-	</bean>
-	<bean class="com.liferay.portal.spring.aop.ServiceBeanAutoProxyCreator">
-		<property name="aopProxyFactory" ref="aopProxyFactory" />
-		<property name="beanMatcher">
-			<bean class="com.liferay.portal.spring.aop.ServiceBeanMatcher" />
-		</property>
-	</bean>
-	<bean class="com.liferay.portal.spring.aop.SkipAdvice" id="serviceAdvice">
-		<property name="nextMethodInterceptor" ref="accessControlAdvice" />
 	</bean>
 	<bean class="com.liferay.portal.spring.context.PortletBeanFactoryCleaner" />
 	<bean class="com.liferay.portal.spring.transaction.TransactionExecutorFactory" factory-method="createTransactionExecutor" id="transactionExecutor">
