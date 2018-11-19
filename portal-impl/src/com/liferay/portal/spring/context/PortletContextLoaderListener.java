@@ -140,9 +140,6 @@ public class PortletContextLoaderListener extends ContextLoaderListener {
 
 		configurableWebApplicationContext.setConfigLocation(configLocation);
 
-		configurableWebApplicationContext.addBeanFactoryPostProcessor(
-			new PortletBeanFactoryPostProcessor());
-
 		ConfigurableApplicationContextConfigurator
 			configurableApplicationContextConfigurator =
 				(ConfigurableApplicationContextConfigurator)
