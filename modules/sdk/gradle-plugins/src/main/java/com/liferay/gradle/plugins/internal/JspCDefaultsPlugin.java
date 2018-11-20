@@ -32,6 +32,7 @@ import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
 import org.gradle.api.file.ConfigurableFileCollection;
+import org.gradle.api.file.CopySpec;
 import org.gradle.api.plugins.JavaPlugin;
 import org.gradle.api.tasks.bundling.Jar;
 
@@ -144,22 +145,6 @@ public class JspCDefaultsPlugin
 		CompileJSPTask compileJSPTask = (CompileJSPTask)GradleUtil.getTask(
 			project, JspCPlugin.GENERATE_JSP_JAVA_TASK_NAME);
 
-		compileJSPTask.setDestinationDir(
-			new Callable<File>() {
-
-				@Override
-				public File call() throws Exception {
-					LiferayExtension liferayExtension = GradleUtil.getExtension(
-						project, LiferayExtension.class);
-
-					return new File(
-						liferayExtension.getLiferayHome() + "/work/" +
-							GradleUtil.getArchivesBaseName(project) + "-" +
-								project.getVersion());
-				}
-
-			});
-
 		compileJSPTask.setWebAppDir(
 			new Callable<File>() {
 
@@ -178,6 +163,39 @@ public class JspCDefaultsPlugin
 				}
 
 			});
+
+		Action<Task> taskAction = new Action<Task>() {
+
+			@Override
+			public void execute(Task task) {
+				final CompileJSPTask compileJSPTask = (CompileJSPTask)task;
+
+				Action<CopySpec> copySpecAction = new Action<CopySpec>() {
+
+					@Override
+					public void execute(CopySpec copySpec) {
+						copySpec.from(compileJSPTask.getDestinationDir());
+
+						LiferayExtension liferayExtension =
+							GradleUtil.getExtension(
+								project, LiferayExtension.class);
+
+						File destinationDir = new File(
+							liferayExtension.getLiferayHome() + "/work/" +
+								GradleUtil.getArchivesBaseName(project) + "-" +
+									project.getVersion());
+
+						copySpec.into(destinationDir);
+					}
+
+				};
+
+				project.copy(copySpecAction);
+			}
+
+		};
+
+		compileJSPTask.doLast(taskAction);
 	}
 
 	private File _getUnzippedJarDir(Project project) {

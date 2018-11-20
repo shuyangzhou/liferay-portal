@@ -43,7 +43,7 @@ import java.util.List;
 public class RepositoryWrapper implements Repository {
 
 	public RepositoryWrapper(Repository repository) {
-		_repository = repository;
+		setRepository(repository);
 	}
 
 	@Override
@@ -781,6 +781,10 @@ public class RepositoryWrapper implements Repository {
 		return _repository.search(searchContext, query);
 	}
 
+	public void setRepository(Repository repository) {
+		_repository = repository;
+	}
+
 	@Override
 	public void unlockFolder(long folderId, String lockUuid)
 		throws PortalException {
@@ -954,6 +958,6 @@ public class RepositoryWrapper implements Repository {
 		return _repository.verifyInheritableLock(folderId, lockUuid);
 	}
 
-	private final Repository _repository;
+	private volatile Repository _repository;
 
 }

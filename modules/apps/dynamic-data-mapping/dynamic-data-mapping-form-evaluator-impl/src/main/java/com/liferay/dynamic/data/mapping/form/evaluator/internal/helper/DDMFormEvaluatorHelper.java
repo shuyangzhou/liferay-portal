@@ -18,6 +18,8 @@ import com.liferay.dynamic.data.mapping.expression.CreateExpressionRequest;
 import com.liferay.dynamic.data.mapping.expression.DDMExpression;
 import com.liferay.dynamic.data.mapping.expression.DDMExpressionException;
 import com.liferay.dynamic.data.mapping.expression.DDMExpressionFactory;
+import com.liferay.dynamic.data.mapping.expression.GetFieldPropertyRequest;
+import com.liferay.dynamic.data.mapping.expression.GetFieldPropertyResponse;
 import com.liferay.dynamic.data.mapping.expression.UpdateFieldPropertyRequest;
 import com.liferay.dynamic.data.mapping.form.evaluator.DDMFormEvaluatorEvaluateRequest;
 import com.liferay.dynamic.data.mapping.form.evaluator.DDMFormEvaluatorEvaluateResponse;
@@ -55,6 +57,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -138,6 +141,26 @@ public class DDMFormEvaluatorHelper {
 		return formEvaluatorEvaluateResponse.build();
 	}
 
+	protected <T> DDMExpression<T> createExpression(String expression)
+		throws DDMExpressionException {
+
+		CreateExpressionRequest.Builder createExpressionRequestBuilder =
+			CreateExpressionRequest.Builder.newBuilder(expression);
+
+		createExpressionRequestBuilder.withDDMExpressionActionHandler(
+			ddmFormEvaluatorExpressionActionHandler
+		).withDDMExpressionFieldAccessor(
+			ddmFormEvaluatorDDMExpressionFieldAccessor
+		).withDDMExpressionObserver(
+			ddmFormEvaluatorExpressionObserver
+		).withDDMExpressionParameterAccessor(
+			ddmFormEvaluatorExpressionParameterAccessor
+		);
+
+		return _ddmExpressionFactory.createExpression(
+			createExpressionRequestBuilder.build());
+	}
+
 	protected void createResourceBundle(Locale locale) {
 		ResourceBundleLoader portalResourceBundleLoader =
 			ResourceBundleLoaderUtil.getPortalResourceBundleLoader();
@@ -193,21 +216,7 @@ public class DDMFormEvaluatorHelper {
 	protected <T> T evaluateExpression(String expression)
 		throws DDMExpressionException {
 
-		CreateExpressionRequest.Builder createExpressionRequestBuilder =
-			CreateExpressionRequest.Builder.newBuilder(expression);
-
-		createExpressionRequestBuilder.withDDMExpressionActionHandler(
-			ddmFormEvaluatorExpressionActionHandler
-		).withDDMExpressionFieldAccessor(
-			ddmFormEvaluatorDDMExpressionFieldAccessor
-		).withDDMExpressionObserver(
-			ddmFormEvaluatorExpressionObserver
-		).withDDMExpressionParameterAccessor(
-			ddmFormEvaluatorExpressionParameterAccessor
-		);
-
-		DDMExpression<T> ddmExpression = _ddmExpressionFactory.createExpression(
-			createExpressionRequestBuilder.build());
+		DDMExpression<T> ddmExpression = createExpression(expression);
 
 		return (T)ddmExpression.evaluate();
 	}
@@ -246,12 +255,8 @@ public class DDMFormEvaluatorHelper {
 					field -> field.getVisibilityExpression())
 			);
 
-		Set<Map.Entry<String, String>> entrySet =
-			nameVisibilityExpressionMap.entrySet();
-
-		Stream<Map.Entry<String, String>> entryStream = entrySet.stream();
-
-		entryStream.forEach(this::evaluateVisibilityExpression);
+		forEachEntry(
+			nameVisibilityExpressionMap, this::evaluateVisibilityExpression);
 	}
 
 	protected boolean fieldsWithValidations(DDMFormField ddmFormField) {
@@ -275,6 +280,16 @@ public class DDMFormEvaluatorHelper {
 		}
 
 		return getBooleanPropertyValue(ddmFormFieldContextKey, "visible", true);
+	}
+
+	protected <K, V> void forEachEntry(
+		Map<K, V> map, Consumer<Map.Entry<K, V>> entryConsumer) {
+
+		Set<Map.Entry<K, V>> set = map.entrySet();
+
+		Stream<Map.Entry<K, V>> stream = set.parallelStream();
+
+		stream.forEach(entryConsumer);
 	}
 
 	protected boolean getBooleanPropertyValue(
@@ -303,8 +318,11 @@ public class DDMFormEvaluatorHelper {
 		return _ddmFormFieldsPropertyChanges;
 	}
 
-	protected DDMFormFieldValidation getDDMFormFieldValidation(String field) {
-		DDMFormField ddmFormField = _ddmFormFieldsMap.get(field);
+	protected DDMFormFieldValidation getDDMFormFieldValidation(
+		DDMFormEvaluatorFieldContextKey ddmFormEvaluatorFieldContextKey) {
+
+		DDMFormField ddmFormField = _ddmFormFieldsMap.get(
+			ddmFormEvaluatorFieldContextKey.getName());
 
 		return ddmFormField.getDDMFormFieldValidation();
 	}
@@ -408,16 +426,41 @@ public class DDMFormEvaluatorHelper {
 	}
 
 	protected void validateField(
-		Map.Entry<String, DDMFormFieldValidation> entry) {
+		Map.Entry<DDMFormEvaluatorFieldContextKey, DDMFormFieldValidation>
+			entry) {
 
-		String fieldName = entry.getKey();
+		DDMFormEvaluatorFieldContextKey ddmFormEvaluatorFieldContextKey =
+			entry.getKey();
+
+		if (isFieldEmpty(ddmFormEvaluatorFieldContextKey)) {
+			return;
+		}
+
+		String fieldName = ddmFormEvaluatorFieldContextKey.getName();
+		String fieldInstanceId =
+			ddmFormEvaluatorFieldContextKey.getInstanceId();
 
 		DDMFormFieldValidation ddmFormFieldValidation = entry.getValue();
 
 		boolean valid = false;
 
 		try {
-			valid = evaluateExpression(ddmFormFieldValidation.getExpression());
+			DDMExpression<Boolean> ddmExpression = createExpression(
+				ddmFormFieldValidation.getExpression());
+
+			GetFieldPropertyRequest.Builder builder =
+				GetFieldPropertyRequest.Builder.newBuilder(fieldName, "value");
+
+			builder.withInstanceId(fieldInstanceId);
+
+			GetFieldPropertyResponse getFieldPropertyResponse =
+				ddmFormEvaluatorDDMExpressionFieldAccessor.getFieldProperty(
+					builder.build());
+
+			ddmExpression.setVariable(
+				fieldName, getFieldPropertyResponse.getValue());
+
+			valid = ddmExpression.evaluate();
 		}
 		catch (DDMExpressionException ddmee) {
 			if (_log.isDebugEnabled()) {
@@ -425,16 +468,13 @@ public class DDMFormEvaluatorHelper {
 			}
 		}
 
-		UpdateFieldPropertyRequest updateFieldPropertyRequest = null;
+		UpdateFieldPropertyRequest.Builder builder =
+			UpdateFieldPropertyRequest.Builder.newBuilder(
+				fieldName, "valid", valid);
 
-		if (valid) {
-			UpdateFieldPropertyRequest.Builder builder =
-				UpdateFieldPropertyRequest.Builder.newBuilder(
-					fieldName, "valid", true);
+		builder.withInstanceId(fieldInstanceId);
 
-			updateFieldPropertyRequest = builder.build();
-		}
-		else {
+		if (!valid) {
 			String errorMessage = ddmFormFieldValidation.getErrorMessage();
 
 			if (errorMessage == null) {
@@ -442,17 +482,12 @@ public class DDMFormEvaluatorHelper {
 					_resourceBundle, "this-field-is-invalid");
 			}
 
-			UpdateFieldPropertyRequest.Builder builder =
-				UpdateFieldPropertyRequest.Builder.newBuilder(
-					fieldName, "valid", false);
-
-			updateFieldPropertyRequest = builder.withParameter(
+			builder.withParameter(
 				"errorMessage", errorMessage
-			).build();
+			);
 		}
 
-		ddmFormEvaluatorExpressionObserver.updateFieldProperty(
-			updateFieldPropertyRequest);
+		ddmFormEvaluatorExpressionObserver.updateFieldProperty(builder.build());
 	}
 
 	protected void validateFields() {
@@ -460,23 +495,25 @@ public class DDMFormEvaluatorHelper {
 
 		Stream<DDMFormField> ddmFormFieldStream = ddmFormFields.stream();
 
-		Map<String, DDMFormFieldValidation> ddmFormFieldValidations =
-			ddmFormFieldStream.filter(
+		Map<DDMFormEvaluatorFieldContextKey, DDMFormFieldValidation>
+			ddmFormFieldValidations = ddmFormFieldStream.filter(
 				this::fieldsWithValidations
-			).map(
-				formField -> formField.getName()
+			).flatMap(
+				formField -> {
+					Set<DDMFormEvaluatorFieldContextKey>
+						ddmFormFieldContextKeySet =
+							_ddmFormEvaluatorFormValuesHelper.
+								getDDMFormFieldContextKeySet(
+									formField.getName());
+
+					return ddmFormFieldContextKeySet.stream();
+				}
 			).collect(
 				Collectors.toMap(
 					Function.identity(), this::getDDMFormFieldValidation)
 			);
 
-		Set<Map.Entry<String, DDMFormFieldValidation>> entrySet =
-			ddmFormFieldValidations.entrySet();
-
-		Stream<Map.Entry<String, DDMFormFieldValidation>> entryStream =
-			entrySet.stream();
-
-		entryStream.forEach(this::validateField);
+		forEachEntry(ddmFormFieldValidations, this::validateField);
 	}
 
 	protected void verifyFieldsMarkedAsRequired() {

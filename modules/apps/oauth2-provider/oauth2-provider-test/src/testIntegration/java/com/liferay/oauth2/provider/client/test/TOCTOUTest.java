@@ -41,6 +41,7 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -49,6 +50,7 @@ import org.osgi.framework.ServiceReference;
 /**
  * @author Stian Sigvartsen
  */
+@Ignore
 @RunAsClient
 @RunWith(Arquillian.class)
 public class TOCTOUTest extends BaseClientTestCase {

@@ -130,8 +130,14 @@ public class FileUtil {
 		String mirrorsCacheArtifactSubdir = url.replaceFirst(
 			"https?:\\/\\/(.+\\/).+", "$1");
 
-		mirrorsCacheArtifactSubdir = URLEncoder.encode(
-			mirrorsCacheArtifactSubdir, "UTF-8");
+		StringBuilder sb = new StringBuilder();
+
+		for (String segment : mirrorsCacheArtifactSubdir.split("/")) {
+			sb.append(URLEncoder.encode(segment, "UTF-8"));
+			sb.append('/');
+		}
+
+		mirrorsCacheArtifactSubdir = sb.toString();
 
 		File mirrorsCacheArtifactDir = new File(
 			_getMirrorsCacheDir(), mirrorsCacheArtifactSubdir);

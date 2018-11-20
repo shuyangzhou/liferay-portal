@@ -253,6 +253,10 @@ public class AssetListEntryStagedModelDataHandler
 
 		Element referencesElement = importDataRootElement.element("references");
 
+		if (referencesElement == null) {
+			return;
+		}
+
 		List<Element> referenceElements = referencesElement.elements();
 
 		for (Element referenceElement : referenceElements) {

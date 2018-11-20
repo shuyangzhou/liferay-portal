@@ -14,6 +14,7 @@ import {
 	clearFollowingColumns,
 	clearPath,
 	deleteEmptyColumns,
+	setActiveItem,
 	setHomePage
 } from './utils/LayoutUpdateUtils.es';
 import {
@@ -254,6 +255,14 @@ class Layout extends Component {
 			let priority = null;
 
 			if (targetType === DROP_TARGET_TYPES.column) {
+				layoutColumns = clearPath(
+					layoutColumns,
+					this._draggingItem,
+					this._draggingItemColumnIndex,
+					targetId,
+					targetType
+				);
+
 				const dropData = dropItemInsideColumn(
 					layoutColumns,
 					this._draggingItem,
@@ -271,7 +280,8 @@ class Layout extends Component {
 					layoutColumns,
 					this._draggingItem,
 					this._draggingItemColumnIndex,
-					targetId
+					targetId,
+					targetType
 				);
 
 				if (this._draggingItemPosition === DRAG_POSITIONS.inside) {
@@ -397,6 +407,8 @@ class Layout extends Component {
 				const itemPlid = event.delegateTarget.dataset.layoutColumnItemPlid;
 
 				const item = getItem(this.layoutColumns, itemPlid);
+
+				this.layoutColumns = setActiveItem(this.layoutColumns, itemPlid);
 
 				navigate(item.url);
 			}
@@ -694,37 +706,9 @@ class Layout extends Component {
 			targetColumnIndex
 		);
 
-		const targetItem = getItem(
-			nextLayoutColumns,
-			targetItemPlid
-		);
+		nextLayoutColumns = setActiveItem(nextLayoutColumns, targetItemPlid);
 
-		const activeItem = getColumnActiveItem(
-			nextLayoutColumns,
-			targetColumnIndex
-		);
-
-		if (activeItem && (activeItem !== targetItem)) {
-			nextLayoutColumns = setIn(
-				nextLayoutColumns,
-				[
-					targetColumnIndex,
-					targetColumn.indexOf(activeItem),
-					'active'
-				],
-				false
-			);
-		}
-
-		nextLayoutColumns = setIn(
-			nextLayoutColumns,
-			[
-				targetColumnIndex,
-				targetColumn.indexOf(targetItem),
-				'active'
-			],
-			true
-		);
+		this._draggingItem.active = false;
 
 		this._currentPathItemPlid = targetItemPlid;
 

@@ -1,4 +1,6 @@
+import {DROP_TARGET_TYPES} from './LayoutDragDrop.es';
 import {
+	getColumnActiveItem,
 	getHomeItem,
 	getItem,
 	getItemColumn,
@@ -63,16 +65,21 @@ function clearPath(
 	layoutColumns,
 	sourceItem,
 	sourceItemColumnIndex,
-	targetItemPlid
+	targetId,
+	targetType
 ) {
 	let nextLayoutColumns = layoutColumns.map(
 		(layoutColumn) => [...layoutColumn]
 	);
 
-	const targetColumnIndex = getItemColumnIndex(
-		nextLayoutColumns,
-		targetItemPlid
-	);
+	let targetColumnIndex = targetId;
+
+	if (targetType === DROP_TARGET_TYPES.item) {
+		targetColumnIndex = getItemColumnIndex(
+			nextLayoutColumns,
+			targetId
+		);
+	}
 
 	if (
 		sourceItem &&
@@ -272,6 +279,48 @@ function setHomePage(layoutColumns) {
 	return nextLayoutColumns;
 }
 
+/**
+ * Set the item with the given plid as the active item of its column
+ * and returns a new layoutColumns
+ * @param {object} layoutColumns
+ * @param {string} itemPlid
+ * @return {object}
+ * @review
+ */
+function setActiveItem(layoutColumns, itemPlid) {
+	const columnIndex = getItemColumnIndex(layoutColumns, itemPlid);
+
+	const column = layoutColumns[columnIndex];
+	const currentActiveItemIndex = column.indexOf(
+		getColumnActiveItem(layoutColumns, columnIndex)
+	);
+	const newActiveItemIndex = column.indexOf(
+		getItem(layoutColumns, itemPlid)
+	);
+
+	let nextLayoutColumns = setIn(
+		layoutColumns,
+		[
+			columnIndex,
+			currentActiveItemIndex,
+			'active'
+		],
+		false
+	);
+
+	nextLayoutColumns = setIn(
+		nextLayoutColumns,
+		[
+			columnIndex,
+			newActiveItemIndex,
+			'active'
+		],
+		true
+	);
+
+	return nextLayoutColumns;
+}
+
 export {
 	appendItemToColumn,
 	clearFollowingColumns,
@@ -279,5 +328,6 @@ export {
 	deleteEmptyColumns,
 	moveItemInside,
 	removeItem,
+	setActiveItem,
 	setHomePage
 };

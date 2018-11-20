@@ -21,24 +21,35 @@ Export-Package:\
 	\
 	!com.liferay.portal.asm,\
 	!com.liferay.portal.aspectj,\
+	!com.liferay.portal.cache.thread.local,\
+	!com.liferay.portal.dao.jdbc.aop,\
 	!com.liferay.portal.fabric,\
 	!com.liferay.portal.freemarker,\
+	!com.liferay.portal.increment,\
 	!com.liferay.portal.javadoc,\
 	!com.liferay.portal.jcr.jackrabbit,\
 	!com.liferay.portal.jericho,\
 	!com.liferay.portal.license.*,\
 	!com.liferay.portal.messaging,\
+	!com.liferay.portal.messaging.async,\
 	!com.liferay.portal.microsofttranslator,\
-	!com.liferay.portal.monitoring.statistics,\
+	!com.liferay.portal.monitoring.statistics.service,\
 	!com.liferay.portal.nio.intraband.proxy,\
+	!com.liferay.portal.resiliency.service,\
 	!com.liferay.portal.scripting.beanshell,\
 	!com.liferay.portal.scripting.groovy,\
 	!com.liferay.portal.scripting.javascript,\
 	!com.liferay.portal.scripting.python,\
 	!com.liferay.portal.scripting.ruby,\
-	!com.liferay.portal.search.lucene.*,\
+	!com.liferay.portal.search,\
+	!com.liferay.portal.security.access.control,\
 	!com.liferay.portal.security.jaas.ext.*,\
+	!com.liferay.portal.service,\
 	!com.liferay.portal.sharepoint.*,\
+	!com.liferay.portal.spring.aop,\
+	!com.liferay.portal.spring.context,\
+	!com.liferay.portal.spring.transaction,\
+	!com.liferay.portal.systemevent,\
 	!com.liferay.portal.tools.comparator,\
 	!com.liferay.portal.tools.javadocformatter,\
 	!com.liferay.portal.tools.jspc.common,\

@@ -14,7 +14,6 @@
 
 package com.liferay.portal.dao.jdbc.aop;
 
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.jdbc.aop.DynamicDataSourceTargetSource;
 import com.liferay.portal.kernel.dao.jdbc.aop.MasterDataSource;
 import com.liferay.portal.kernel.dao.jdbc.aop.Operation;
@@ -27,7 +26,6 @@ import java.lang.reflect.Method;
 import org.aopalliance.intercept.MethodInvocation;
 
 import org.springframework.transaction.interceptor.TransactionAttribute;
-import org.springframework.transaction.interceptor.TransactionAttributeSource;
 
 /**
  * @author Shuyang Zhou
@@ -40,12 +38,6 @@ public class DynamicDataSourceAdvice
 	public Object before(MethodInvocation methodInvocation) throws Throwable {
 		Operation operation = Operation.WRITE;
 
-		Object targetBean = methodInvocation.getThis();
-
-		Class<?> targetClass = targetBean.getClass();
-
-		Method targetMethod = methodInvocation.getMethod();
-
 		MasterDataSource masterDataSource = findAnnotation(methodInvocation);
 
 		if (masterDataSource == _nullMasterDataSource) {
@@ -53,27 +45,19 @@ public class DynamicDataSourceAdvice
 				_transactionInterceptor.getTransactionAttribute(
 					methodInvocation);
 
-			if ((transactionAttribute != null) &&
-				transactionAttribute.isReadOnly()) {
-
+			if (transactionAttribute.isReadOnly()) {
 				operation = Operation.READ;
 			}
 		}
 
-		_dynamicDataSourceTargetSource.setOperation(operation);
-
-		String targetClassName = targetClass.getName();
-
-		_dynamicDataSourceTargetSource.pushMethod(
-			targetClassName.concat(StringPool.PERIOD).concat(
-				targetMethod.getName()));
+		_dynamicDataSourceTargetSource.pushOperation(operation);
 
 		return null;
 	}
 
 	@Override
 	public void duringFinally(MethodInvocation methodInvocation) {
-		_dynamicDataSourceTargetSource.popMethod();
+		_dynamicDataSourceTargetSource.popOperation();
 	}
 
 	@Override
@@ -81,18 +65,15 @@ public class DynamicDataSourceAdvice
 		return _nullMasterDataSource;
 	}
 
+	@Override
+	public boolean isEnabled(Class<?> targetClass, Method method) {
+		return _transactionInterceptor.isEnabled(targetClass, method);
+	}
+
 	public void setDynamicDataSourceTargetSource(
 		DynamicDataSourceTargetSource dynamicDataSourceTargetSource) {
 
 		_dynamicDataSourceTargetSource = dynamicDataSourceTargetSource;
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	public void setTransactionAttributeSource(
-		TransactionAttributeSource transactionAttributeSource) {
 	}
 
 	public void setTransactionInterceptor(
@@ -107,8 +88,11 @@ public class DynamicDataSourceAdvice
 	protected MasterDataSource findAnnotation(
 		MethodInvocation methodInvocation) {
 
+		Object target = methodInvocation.getThis();
+
 		return serviceBeanAopCacheManager.findAnnotation(
-			methodInvocation, MasterDataSource.class, _nullMasterDataSource);
+			target.getClass(), methodInvocation.getMethod(),
+			MasterDataSource.class, _nullMasterDataSource);
 	}
 
 	@Override

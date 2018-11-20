@@ -17,10 +17,7 @@ package com.liferay.portal.remote.json.web.service.extender.internal;
 import com.liferay.portal.kernel.bean.ClassLoaderBeanHandler;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceScannerStrategy;
 import com.liferay.portal.kernel.service.ServiceWrapper;
-import com.liferay.portal.kernel.spring.aop.AdvisedSupport;
 import com.liferay.portal.kernel.util.ProxyUtil;
-import com.liferay.portal.spring.aop.AdvisedSupportProxy;
-import com.liferay.portal.spring.aop.ServiceBeanAopProxy;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -36,14 +33,7 @@ public class ServiceJSONWebServiceScannerStrategy
 
 	@Override
 	public MethodDescriptor[] scan(Object service) {
-		Class<?> clazz = null;
-
-		try {
-			clazz = getTargetClass(service);
-		}
-		catch (Exception e) {
-			return new MethodDescriptor[0];
-		}
+		Class<?> clazz = getTargetClass(service);
 
 		Method[] methods = clazz.getMethods();
 
@@ -68,18 +58,12 @@ public class ServiceJSONWebServiceScannerStrategy
 	 * @see com.liferay.portal.jsonwebservice.SpringJSONWebServiceScannerStrategy#getTargetClass(
 	 *      Object)
 	 */
-	protected Class<?> getTargetClass(Object service) throws Exception {
+	protected Class<?> getTargetClass(Object service) {
 		while (ProxyUtil.isProxyClass(service.getClass())) {
 			InvocationHandler invocationHandler =
 				ProxyUtil.getInvocationHandler(service);
 
-			if (invocationHandler instanceof AdvisedSupportProxy) {
-				AdvisedSupport advisedSupport =
-					ServiceBeanAopProxy.getAdvisedSupport(service);
-
-				service = advisedSupport.getTarget();
-			}
-			else if (invocationHandler instanceof ClassLoaderBeanHandler) {
+			if (invocationHandler instanceof ClassLoaderBeanHandler) {
 				ClassLoaderBeanHandler classLoaderBeanHandler =
 					(ClassLoaderBeanHandler)invocationHandler;
 
@@ -92,6 +76,18 @@ public class ServiceJSONWebServiceScannerStrategy
 				}
 				else {
 					service = bean;
+				}
+			}
+			else {
+				Class<?> invocationHandlerClass = invocationHandler.getClass();
+
+				try {
+					Method method = invocationHandlerClass.getMethod(
+						"getTarget");
+
+					service = method.invoke(invocationHandler);
+				}
+				catch (ReflectiveOperationException roe) {
 				}
 			}
 		}

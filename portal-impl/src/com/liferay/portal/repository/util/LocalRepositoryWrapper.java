@@ -379,6 +379,10 @@ public class LocalRepositoryWrapper implements LocalRepository {
 			userId, fileEntryId, version, serviceContext);
 	}
 
+	public void setLocalRepository(LocalRepository localRepository) {
+		_localRepository = localRepository;
+	}
+
 	/**
 	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement
 	 */
@@ -485,6 +489,6 @@ public class LocalRepositoryWrapper implements LocalRepository {
 			folderId, parentFolderId, name, description, serviceContext);
 	}
 
-	private final LocalRepository _localRepository;
+	private volatile LocalRepository _localRepository;
 
 }

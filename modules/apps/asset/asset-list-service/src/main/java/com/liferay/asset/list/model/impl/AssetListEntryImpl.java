@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetEntry;
+import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.service.AssetCategoryLocalServiceUtil;
 import com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil;
 import com.liferay.asset.kernel.service.AssetTagLocalServiceUtil;
@@ -28,6 +29,8 @@ import com.liferay.asset.list.model.AssetListEntryAssetEntryRel;
 import com.liferay.asset.list.service.AssetListEntryAssetEntryRelLocalServiceUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -269,6 +272,33 @@ public class AssetListEntryImpl extends AssetListEntryBaseImpl {
 			assetListEntryAssetEntryRel ->
 				AssetEntryLocalServiceUtil.fetchEntry(
 					assetListEntryAssetEntryRel.getAssetEntryId())
+		).filter(
+			assetEntry -> {
+				if (assetEntry == null) {
+					return false;
+				}
+
+				if (!assetEntry.isVisible()) {
+					return false;
+				}
+
+				AssetRendererFactory assetRendererFactory =
+					AssetRendererFactoryRegistryUtil.
+						getAssetRendererFactoryByClassName(
+							assetEntry.getClassName());
+
+				if (assetRendererFactory == null) {
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							"No asset renderer factory associated with " +
+								assetEntry.getClassName());
+					}
+
+					return false;
+				}
+
+				return true;
+			}
 		).collect(
 			Collectors.toList()
 		);
@@ -380,5 +410,8 @@ public class AssetListEntryImpl extends AssetListEntryBaseImpl {
 
 		assetEntryQuery.setNotAnyTagIds(notAnyAssetTagIds);
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		AssetListEntryImpl.class);
 
 }
