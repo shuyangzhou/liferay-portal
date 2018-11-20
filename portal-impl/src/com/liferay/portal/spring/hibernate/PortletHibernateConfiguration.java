@@ -23,10 +23,6 @@ import javax.sql.DataSource;
 public class PortletHibernateConfiguration
 	extends PortalHibernateConfiguration {
 
-	public PortletHibernateConfiguration() {
-		this(null, null);
-	}
-
 	public PortletHibernateConfiguration(
 		ClassLoader classLoader, DataSource dataSource) {
 
@@ -42,7 +38,9 @@ public class PortletHibernateConfiguration
 
 	@Override
 	protected String[] getConfigurationResources() {
-		return new String[] {"META-INF/portlet-hbm.xml"};
+		return new String[] {
+			"META-INF/module-hbm.xml", "META-INF/portlet-hbm.xml"
+		};
 	}
 
 	private final ClassLoader _classLoader;

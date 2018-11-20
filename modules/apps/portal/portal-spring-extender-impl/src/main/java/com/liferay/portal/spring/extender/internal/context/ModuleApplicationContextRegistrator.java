@@ -18,9 +18,10 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.bean.BeanLocatorImpl;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.util.AggregateClassLoader;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.spring.configurator.ConfigurableApplicationContextConfigurator;
 import com.liferay.portal.spring.extender.internal.bean.ApplicationContextServicePublisherUtil;
-import com.liferay.portal.spring.extender.internal.classloader.BundleResolverClassLoader;
 
 import java.beans.Introspector;
 
@@ -41,16 +42,33 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class ModuleApplicationContextRegistrator {
 
 	public ModuleApplicationContextRegistrator(
+		ConfigurableApplicationContextConfigurator
+			configurableApplicationContextConfigurator,
 		Bundle extendeeBundle, Bundle extenderBundle) {
 
+		_configurableApplicationContextConfigurator =
+			configurableApplicationContextConfigurator;
 		_extendeeBundle = extendeeBundle;
 		_extenderBundle = extenderBundle;
 	}
 
 	protected void start() throws Exception {
 		try {
-			ClassLoader classLoader = new BundleResolverClassLoader(
-				_extendeeBundle, _extenderBundle);
+			BundleWiring extendeeBundleWiring = _extendeeBundle.adapt(
+				BundleWiring.class);
+
+			ClassLoader extendeeClassLoader =
+				extendeeBundleWiring.getClassLoader();
+
+			BundleWiring extenderBundleWiring = _extenderBundle.adapt(
+				BundleWiring.class);
+
+			ClassLoader extenderClassLoader =
+				extenderBundleWiring.getClassLoader();
+
+			ClassLoader classLoader =
+				AggregateClassLoader.getAggregateClassLoader(
+					extendeeClassLoader, extenderClassLoader);
 
 			Dictionary<String, String> headers = _extendeeBundle.getHeaders(
 				StringPool.BLANK);
@@ -62,7 +80,7 @@ public class ModuleApplicationContextRegistrator {
 
 			_configurableApplicationContext.addBeanFactoryPostProcessor(
 				new ModuleBeanFactoryPostProcessor(
-					classLoader, _extendeeBundle.getBundleContext()));
+					_extendeeBundle.getBundleContext()));
 
 			ApplicationContext parentApplicationContext =
 				ParentModuleApplicationContextHolder.getApplicationContext(
@@ -72,6 +90,9 @@ public class ModuleApplicationContextRegistrator {
 				_configurableApplicationContext.setParent(
 					parentApplicationContext);
 			}
+
+			_configurableApplicationContextConfigurator.configure(
+				_configurableApplicationContext);
 
 			_configurableApplicationContext.refresh();
 
@@ -115,6 +136,8 @@ public class ModuleApplicationContextRegistrator {
 	}
 
 	private ConfigurableApplicationContext _configurableApplicationContext;
+	private final ConfigurableApplicationContextConfigurator
+		_configurableApplicationContextConfigurator;
 	private final Bundle _extendeeBundle;
 	private final Bundle _extenderBundle;
 	private List<ServiceRegistration<?>> _serviceRegistrations;
