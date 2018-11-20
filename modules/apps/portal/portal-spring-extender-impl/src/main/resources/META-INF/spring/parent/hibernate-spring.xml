@@ -14,8 +14,12 @@
 			</bean>
 		</constructor-arg>
 	</bean>
-	<bean class="com.liferay.portal.spring.extender.internal.hibernate.configuration.ModuleHibernateConfiguration" id="liferayHibernateSessionFactory">
-		<property name="dataSource" ref="liferayDataSource" />
+	<bean class="com.liferay.portal.spring.extender.internal.classloader.BundleResolverClassLoaderBeanFactory" id="com.liferay.portal.spring.extender.internal.classloader.BundleResolverClassLoaderBeanFactory" />
+	<bean factory-bean="com.liferay.portal.spring.extender.internal.classloader.BundleResolverClassLoaderBeanFactory" factory-method="getClassLoader" id="portletClassLoader" />
+	<bean class="com.liferay.portal.spring.hibernate.PortletHibernateConfiguration" id="liferayHibernateSessionFactory">
+		<constructor-arg name="classLoader" ref="portletClassLoader" />
+		<constructor-arg name="dataSource" ref="liferayDataSource" />
+		<constructor-arg name="configurationResource" ref="hibernateConfigurationResource" />
 		<property name="hibernateProperties">
 			<props>
 				<prop key="javax.persistence.validation.mode">none</prop>
@@ -26,5 +30,8 @@
 		<constructor-arg ref="liferayDataSource" />
 		<constructor-arg ref="originalLiferayTransactionManager" />
 		<constructor-arg ref="liferayHibernateSessionFactory" />
+	</bean>
+	<bean class="java.lang.String" id="hibernateConfigurationResource">
+		<constructor-arg value="META-INF/module-hbm.xml" />
 	</bean>
 </beans>

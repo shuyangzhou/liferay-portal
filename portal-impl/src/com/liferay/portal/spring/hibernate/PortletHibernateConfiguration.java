@@ -30,7 +30,15 @@ public class PortletHibernateConfiguration
 	public PortletHibernateConfiguration(
 		ClassLoader classLoader, DataSource dataSource) {
 
+		this(classLoader, dataSource, "META-INF/portlet-hbm.xml");
+	}
+
+	public PortletHibernateConfiguration(
+		ClassLoader classLoader, DataSource dataSource,
+		String configurationResource) {
+
 		_classLoader = classLoader;
+		_configurationResources = new String[] {configurationResource};
 
 		setDataSource(dataSource);
 	}
@@ -42,9 +50,10 @@ public class PortletHibernateConfiguration
 
 	@Override
 	protected String[] getConfigurationResources() {
-		return new String[] {"META-INF/portlet-hbm.xml"};
+		return _configurationResources;
 	}
 
 	private final ClassLoader _classLoader;
+	private final String[] _configurationResources;
 
 }
