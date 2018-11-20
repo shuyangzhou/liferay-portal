@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.service.UserGroupServiceUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.test.util.StaleDataTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserGroupTestUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -90,6 +91,10 @@ public class UserGroupServiceTest {
 		allUserGroups.addAll(
 			UserGroupLocalServiceUtil.getUserGroups(
 				TestPropsValues.getCompanyId()));
+
+		StaleDataTestUtil.expectEmpty(
+			allUserGroups,
+			"Expected no user groups, but found " + allUserGroups.size());
 
 		List<UserGroup> likeNameUserGroups = new ArrayList<>();
 
