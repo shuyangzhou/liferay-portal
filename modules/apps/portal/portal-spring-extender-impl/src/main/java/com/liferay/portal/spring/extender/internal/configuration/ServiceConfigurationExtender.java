@@ -133,6 +133,8 @@ public class ServiceConfigurationExtender extends AbstractExtender {
 
 		@Override
 		public void start() {
+			_serviceConfigurationInitializer.readResourceActions();
+
 			_dependencyManager.add(_component);
 		}
 
@@ -142,6 +144,7 @@ public class ServiceConfigurationExtender extends AbstractExtender {
 
 			_dependencyManager = new DependencyManager(
 				bundle.getBundleContext());
+			_serviceConfigurationInitializer = serviceConfigurationInitializer;
 
 			_component = _dependencyManager.createComponent();
 
@@ -206,6 +209,8 @@ public class ServiceConfigurationExtender extends AbstractExtender {
 
 		private final org.apache.felix.dm.Component _component;
 		private final DependencyManager _dependencyManager;
+		private final ServiceConfigurationInitializer
+			_serviceConfigurationInitializer;
 
 	}
 

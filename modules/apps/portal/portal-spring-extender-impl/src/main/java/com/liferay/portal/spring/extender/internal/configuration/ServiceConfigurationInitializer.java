@@ -79,8 +79,6 @@ public class ServiceConfigurationInitializer {
 		if (_portletConfiguration != null) {
 			_reconfigureCaches();
 
-			_readResourceActions();
-
 			_registerConfiguration(
 				bundleContext, _portletConfiguration, "portlet");
 		}
@@ -127,7 +125,11 @@ public class ServiceConfigurationInitializer {
 		}
 	}
 
-	private void _readResourceActions() {
+	public void readResourceActions() {
+		if (_portletConfiguration == null) {
+			return;
+		}
+
 		try {
 			String portlets = _portletConfiguration.get(
 				"service.configurator.portlet.ids");
