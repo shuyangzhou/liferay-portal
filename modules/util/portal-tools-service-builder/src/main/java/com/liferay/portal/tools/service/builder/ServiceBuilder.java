@@ -600,19 +600,48 @@ public class ServiceBuilder {
 
 			DocumentType documentType = document.getDocType();
 
-			Matcher matcher = _dtdVersionPattern.matcher(
-				documentType.getSystemID());
+			Properties properties = new Properties();
 
-			if (matcher.matches()) {
-				_dtdVersion = Version.getInstance(
-					StringUtil.replace(matcher.group(1), '_', '.'));
-			}
-			else {
-				throw new IllegalArgumentException(
-					"Unable to parse DTD version for " + inputFileName);
+			File file = new File("./");
+
+			file = file.getAbsoluteFile();
+
+			while (file != null) {
+				File propertiesFile = new File(file, _PROPERTIES_FILE_NAME);
+
+				if (propertiesFile.exists()) {
+					try (InputStream inputStream =
+							new FileInputStream(propertiesFile)) {
+
+						properties.load(inputStream);
+					}
+
+					break;
+				}
+
+				file = file.getParentFile();
 			}
 
-			_compatProperties = _getCompatProperties(matcher.group(1));
+			String liferayVersion = properties.getProperty("liferay-version");
+
+			if (liferayVersion == null) {
+				Matcher matcher = _dtdVersionPattern.matcher(
+					documentType.getSystemID());
+
+				if (matcher.matches()) {
+					liferayVersion = StringUtil.replace(
+						matcher.group(1), '_', '.');
+				}
+				else {
+					throw new IllegalArgumentException(
+						"Unable to parse DTD version for " + inputFileName);
+				}
+			}
+
+			_liferayVersion = Version.getInstance(liferayVersion);
+
+			_compatProperties = _getCompatProperties(
+				StringUtil.replace(liferayVersion, '.', '_'));
 
 			Element rootElement = document.getRootElement();
 
@@ -1856,8 +1885,8 @@ public class ServiceBuilder {
 	}
 
 	public boolean isVersionGTE_7_1_0() {
-		if (_dtdVersion.isLaterVersionThan("7.1.0") ||
-			_dtdVersion.isSameVersionAs("7.1.0")) {
+		if (_liferayVersion.isLaterVersionThan("7.1.0") ||
+			_liferayVersion.isSameVersionAs("7.1.0")) {
 
 			return true;
 		}
@@ -1866,8 +1895,8 @@ public class ServiceBuilder {
 	}
 
 	public boolean isVersionLTE_7_1_0() {
-		if (_dtdVersion.isPreviousVersionThan("7.1.0") ||
-			_dtdVersion.isSameVersionAs("7.1.0")) {
+		if (_liferayVersion.isPreviousVersionThan("7.1.0") ||
+			_liferayVersion.isSameVersionAs("7.1.0")) {
 
 			return true;
 		}
@@ -5830,7 +5859,7 @@ public class ServiceBuilder {
 				try {
 					Entity entity = getEntity(referenceEntityName);
 
-					if (_dtdVersion.isPreviousVersionThan("7.1.0")) {
+					if (_liferayVersion.isPreviousVersionThan("7.1.0")) {
 
 						// See LPS-76509. Added this hack for
 						// c9c1fcef14c5cdc1325ae97fee79dbc138728c3c in 7.1.x.
@@ -6824,6 +6853,9 @@ public class ServiceBuilder {
 
 	private static final int _DEFAULT_COLUMN_MAX_LENGTH = 75;
 
+	private static final String _PROPERTIES_FILE_NAME =
+		"service-builder.properties";
+
 	private static final int _SESSION_TYPE_LOCAL = 1;
 
 	private static final int _SESSION_TYPE_REMOTE = 0;
@@ -6869,13 +6901,13 @@ public class ServiceBuilder {
 	private Properties _compatProperties;
 	private String _currentTplName;
 	private int _databaseNameMaxLength = 30;
-	private Version _dtdVersion;
 	private List<Entity> _entities;
 	private Map<String, EntityMapping> _entityMappings;
 	private Map<String, Entity> _entityPool = new HashMap<>();
 	private String _hbmFileName;
 	private String _implDirName;
 	private Map<String, JavaClass> _javaClasses = new HashMap<>();
+	private Version _liferayVersion;
 	private String _modelHintsFileName;
 	private Set<String> _modifiedFileNames = new HashSet<>();
 	private boolean _mvccEnabled;
