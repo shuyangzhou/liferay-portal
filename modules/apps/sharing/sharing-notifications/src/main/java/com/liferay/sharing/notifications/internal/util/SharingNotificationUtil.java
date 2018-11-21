@@ -130,6 +130,10 @@ public class SharingNotificationUtil {
 			portletURL.setParameter(
 				"sharingEntryId",
 				String.valueOf(sharingEntry.getSharingEntryId()));
+			portletURL.setParameter(
+				"classNameId", String.valueOf(sharingEntry.getClassNameId()));
+			portletURL.setParameter(
+				"classPK", String.valueOf(sharingEntry.getClassPK()));
 
 			return portletURL.toString();
 		}
@@ -140,19 +144,15 @@ public class SharingNotificationUtil {
 	private String _getActionName(
 		SharingEntry sharingEntry, ResourceBundle resourceBundle) {
 
-		if (_sharingEntryLocalService.hasSharingPermission(
-				sharingEntry, SharingEntryAction.UPDATE)) {
-
+		if (sharingEntry.hasSharingPermission(SharingEntryAction.UPDATE)) {
 			return ResourceBundleUtil.getString(resourceBundle, "updating");
 		}
-		else if (_sharingEntryLocalService.hasSharingPermission(
-					sharingEntry, SharingEntryAction.ADD_DISCUSSION)) {
+		else if (sharingEntry.hasSharingPermission(
+					SharingEntryAction.ADD_DISCUSSION)) {
 
 			return ResourceBundleUtil.getString(resourceBundle, "commenting");
 		}
-		else if (_sharingEntryLocalService.hasSharingPermission(
-					sharingEntry, SharingEntryAction.VIEW)) {
-
+		else if (sharingEntry.hasSharingPermission(SharingEntryAction.VIEW)) {
 			return ResourceBundleUtil.getString(resourceBundle, "viewing");
 		}
 

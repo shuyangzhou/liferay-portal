@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.security.access.control.AccessControl;
 import com.liferay.portal.kernel.security.access.control.AccessControlThreadLocal;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.spring.aop.AnnotationChainableMethodAdvice;
+import com.liferay.portal.util.PropsValues;
 
 import java.io.Serializable;
 
@@ -63,9 +64,6 @@ public class PortalResiliencyAdvice
 		SPI spi = SPIRegistryUtil.getServletContextSPI(servletContextName);
 
 		if (spi == null) {
-			serviceBeanAopCacheManager.removeMethodInterceptor(
-				methodInvocation, this);
-
 			return null;
 		}
 
@@ -94,6 +92,28 @@ public class PortalResiliencyAdvice
 	@Override
 	public AccessControlled getNullAnnotation() {
 		return AccessControl.NULL_ACCESS_CONTROLLED;
+	}
+
+	@Override
+	public boolean isEnabled(Class<?> targetClass, Method method) {
+		if (!PropsValues.PORTAL_RESILIENCY_ENABLED) {
+			return false;
+		}
+
+		if (!super.isEnabled(targetClass, method)) {
+			return false;
+		}
+
+		String servletContextName = ClassLoaderPool.getContextName(
+			targetClass.getClassLoader());
+
+		SPI spi = SPIRegistryUtil.getServletContextSPI(servletContextName);
+
+		if (spi == null) {
+			return false;
+		}
+
+		return true;
 	}
 
 }

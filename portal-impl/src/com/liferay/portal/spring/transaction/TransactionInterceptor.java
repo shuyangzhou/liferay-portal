@@ -14,88 +14,41 @@
 
 package com.liferay.portal.spring.transaction;
 
-import aQute.bnd.annotation.ProviderType;
-
-import com.liferay.petra.reflect.AnnotationLocator;
+import com.liferay.petra.lang.HashUtil;
+import com.liferay.portal.kernel.transaction.Isolation;
+import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.spring.aop.AnnotationChainableMethodAdvice;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
-import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.interceptor.TransactionAttribute;
-import org.springframework.transaction.interceptor.TransactionAttributeSource;
 
 /**
  * @author Shuyang Zhou
  */
-@ProviderType
-public class TransactionInterceptor implements MethodInterceptor {
+public class TransactionInterceptor
+	extends AnnotationChainableMethodAdvice<Transactional> {
+
+	@Override
+	public Transactional getNullAnnotation() {
+		return _nullTransactional;
+	}
 
 	public TransactionAttribute getTransactionAttribute(
 		MethodInvocation methodInvocation) {
 
-		Object targetBean = methodInvocation.getThis();
+		Object target = methodInvocation.getThis();
 
-		Class<?> targetClass = targetBean.getClass();
-
-		Map<Method, TransactionAttribute> transactionAttributes =
-			_transactionAttributes.get(targetClass);
-
-		if (transactionAttributes == null) {
-			transactionAttributes = new ConcurrentHashMap<>();
-
-			Map<Method, TransactionAttribute> previousTransactionAttributes =
-				_transactionAttributes.putIfAbsent(
-					targetClass, transactionAttributes);
-
-			if (previousTransactionAttributes != null) {
-				transactionAttributes = previousTransactionAttributes;
-			}
-		}
-
-		Method method = methodInvocation.getMethod();
-
-		TransactionAttribute transactionAttribute = transactionAttributes.get(
-			method);
-
-		if (transactionAttribute == null) {
-			Transactional transactional = AnnotationLocator.locate(
-				method, targetClass, Transactional.class);
-
-			transactionAttribute = TransactionAttributeBuilder.build(
-				transactional);
-
-			if (transactionAttribute == null) {
-				transactionAttributes.put(method, _nullTransactionAttribute);
-			}
-			else {
-				transactionAttributes.put(method, transactionAttribute);
-			}
-
-			return transactionAttribute;
-		}
-
-		if (transactionAttribute == _nullTransactionAttribute) {
-			return null;
-		}
-
-		return transactionAttribute;
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	public TransactionAttributeSource getTransactionAttributeSource() {
-		return transactionAttributeSource;
+		return _transactionAttributes.get(
+			new CacheKey(target.getClass(), methodInvocation.getMethod()));
 	}
 
 	@Override
@@ -114,20 +67,26 @@ public class TransactionInterceptor implements MethodInterceptor {
 			transactionAttributeAdapter, methodInvocation);
 	}
 
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	public void setPlatformTransactionManager(
-		PlatformTransactionManager platformTransactionManager) {
-	}
+	@Override
+	public boolean isEnabled(Class<?> targetClass, Method method) {
+		Transactional transactional = serviceBeanAopCacheManager.findAnnotation(
+			targetClass, method, Transactional.class, _nullTransactional);
 
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	public void setTransactionAttributeSource(
-		TransactionAttributeSource transactionAttributeSource) {
+		if (transactional == _nullTransactional) {
+			return false;
+		}
+
+		TransactionAttribute transactionAttribute =
+			TransactionAttributeBuilder.build(transactional);
+
+		if (transactionAttribute == null) {
+			return false;
+		}
+
+		_transactionAttributes.put(
+			new CacheKey(targetClass, method), transactionAttribute);
+
+		return true;
 	}
 
 	public void setTransactionExecutor(
@@ -136,24 +95,96 @@ public class TransactionInterceptor implements MethodInterceptor {
 		this.transactionExecutor = transactionExecutor;
 	}
 
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	protected PlatformTransactionManager platformTransactionManager;
-
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	protected TransactionAttributeSource transactionAttributeSource;
-
 	protected TransactionExecutor transactionExecutor;
 
-	private static final TransactionAttribute _nullTransactionAttribute =
-		new DefaultTransactionAttribute();
+	private static final Transactional _nullTransactional =
+		new Transactional() {
 
-	private final ConcurrentMap<Class<?>, Map<Method, TransactionAttribute>>
+			@Override
+			public Class<? extends Annotation> annotationType() {
+				return Transactional.class;
+			}
+
+			@Override
+			public boolean enabled() {
+				return false;
+			}
+
+			@Override
+			public Isolation isolation() {
+				return null;
+			}
+
+			@Override
+			public Class<? extends Throwable>[] noRollbackFor() {
+				return null;
+			}
+
+			@Override
+			public String[] noRollbackForClassName() {
+				return null;
+			}
+
+			@Override
+			public Propagation propagation() {
+				return null;
+			}
+
+			@Override
+			public boolean readOnly() {
+				return true;
+			}
+
+			@Override
+			public Class<? extends Throwable>[] rollbackFor() {
+				return null;
+			}
+
+			@Override
+			public String[] rollbackForClassName() {
+				return null;
+			}
+
+			@Override
+			public int timeout() {
+				return -1;
+			}
+
+		};
+
+	private final ConcurrentMap<CacheKey, TransactionAttribute>
 		_transactionAttributes = new ConcurrentHashMap<>();
+
+	private static class CacheKey {
+
+		@Override
+		public boolean equals(Object obj) {
+			CacheKey cacheKey = (CacheKey)obj;
+
+			if (Objects.equals(_targetClass, cacheKey._targetClass) &&
+				Objects.equals(_method, cacheKey._method)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			int hash = HashUtil.hash(0, _targetClass);
+
+			return HashUtil.hash(hash, _method);
+		}
+
+		private CacheKey(Class<?> targetClass, Method method) {
+			_targetClass = targetClass;
+			_method = method;
+		}
+
+		private final Method _method;
+		private final Class<?> _targetClass;
+
+	}
 
 }

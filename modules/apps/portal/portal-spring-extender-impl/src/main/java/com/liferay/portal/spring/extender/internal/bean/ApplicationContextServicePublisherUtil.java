@@ -16,15 +16,17 @@ package com.liferay.portal.spring.extender.internal.bean;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.spring.aop.AdvisedSupport;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.ProxyUtil;
-import com.liferay.portal.spring.aop.ServiceBeanAopProxy;
 import com.liferay.portal.util.PropsValues;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
 
 import java.util.ArrayList;
 import java.util.Dictionary;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -33,7 +35,9 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
 import org.springframework.beans.factory.BeanIsAbstractException;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
 
 /**
@@ -43,49 +47,48 @@ import org.springframework.core.annotation.AnnotationUtils;
 public class ApplicationContextServicePublisherUtil {
 
 	public static List<ServiceRegistration<?>> registerContext(
-		ApplicationContext applicationContext, BundleContext bundleContext,
-		boolean parentContext) {
+		ConfigurableApplicationContext configurableApplicationContext,
+		BundleContext bundleContext) {
 
-		String[] beanNames = applicationContext.getBeanDefinitionNames();
+		List<ServiceRegistration<?>> serviceRegistrations = new ArrayList<>();
 
-		List<ServiceRegistration<?>> serviceRegistrations = new ArrayList<>(
-			beanNames.length + 1);
+		ConfigurableListableBeanFactory configurableListableBeanFactory =
+			configurableApplicationContext.getBeanFactory();
 
-		for (String beanName : beanNames) {
-			try {
-				ServiceRegistration<?> serviceRegistration = _registerService(
-					bundleContext, beanName,
-					applicationContext.getBean(beanName));
+		Iterator<String> iterator =
+			configurableListableBeanFactory.getBeanNamesIterator();
 
-				if (serviceRegistration != null) {
-					serviceRegistrations.add(serviceRegistration);
+		iterator.forEachRemaining(
+			beanName -> {
+				try {
+					ServiceRegistration<?> serviceRegistration =
+						_registerService(
+							bundleContext, beanName,
+							configurableApplicationContext.getBean(beanName));
+
+					if (serviceRegistration != null) {
+						serviceRegistrations.add(serviceRegistration);
+					}
 				}
-			}
-			catch (BeanIsAbstractException biae) {
-			}
-			catch (Exception e) {
-				_log.error("Unable to register service " + beanName, e);
-			}
-		}
+				catch (BeanIsAbstractException biae) {
+				}
+				catch (Exception e) {
+					_log.error("Unable to register service " + beanName, e);
+				}
+			});
 
 		Bundle bundle = bundleContext.getBundle();
 
 		Dictionary<String, Object> properties = new HashMapDictionary<>();
 
-		if (parentContext) {
-			properties.put(
-				"org.springframework.parent.context.service.name",
-				bundle.getSymbolicName());
-		}
-		else {
-			properties.put(
-				"org.springframework.context.service.name",
-				bundle.getSymbolicName());
-		}
+		properties.put(
+			"org.springframework.context.service.name",
+			bundle.getSymbolicName());
 
 		ServiceRegistration<ApplicationContext> serviceRegistration =
 			bundleContext.registerService(
-				ApplicationContext.class, applicationContext, properties);
+				ApplicationContext.class, configurableApplicationContext,
+				properties);
 
 		serviceRegistrations.add(serviceRegistration);
 
@@ -109,29 +112,27 @@ public class ApplicationContextServicePublisherUtil {
 	private static ServiceRegistration<?> _registerService(
 		BundleContext bundleContext, String beanName, Object bean) {
 
-		OSGiBeanProperties osgiBeanProperties = null;
+		Class<?> clazz = bean.getClass();
 
-		try {
-			Class<?> clazz = bean.getClass();
+		if (ProxyUtil.isProxyClass(clazz)) {
+			InvocationHandler invocationHandler =
+				ProxyUtil.getInvocationHandler(bean);
 
-			if (ProxyUtil.isProxyClass(clazz)) {
-				AdvisedSupport advisedSupport =
-					ServiceBeanAopProxy.getAdvisedSupport(bean);
+			Class<?> invocationHandlerClass = invocationHandler.getClass();
 
-				if (advisedSupport != null) {
-					Object target = advisedSupport.getTarget();
+			try {
+				Method method = invocationHandlerClass.getMethod("getTarget");
 
-					clazz = target.getClass();
-				}
+				Object target = method.invoke(invocationHandler);
+
+				clazz = target.getClass();
 			}
+			catch (ReflectiveOperationException roe) {
+			}
+		}
 
-			osgiBeanProperties = AnnotationUtils.findAnnotation(
-				clazz, OSGiBeanProperties.class);
-		}
-		catch (Exception e) {
-			_log.error(
-				"Unable to unwrap service during registration " + bean, e);
-		}
+		OSGiBeanProperties osgiBeanProperties = AnnotationUtils.findAnnotation(
+			clazz, OSGiBeanProperties.class);
 
 		Set<String> names = OSGiBeanProperties.Service.interfaceNames(
 			bean, osgiBeanProperties,

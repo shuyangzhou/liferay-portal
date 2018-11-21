@@ -53,4 +53,15 @@ public interface SharingEntry extends SharingEntryModel, PersistedModel {
 				return SharingEntry.class;
 			}
 		};
+
+	/**
+	* Returns {@code true} if the sharing entry has the sharing entry action.
+	*
+	* @param sharingEntryAction the sharing entry action
+	* @return {@code true} if the sharing entry has the sharing entry action;
+	{@code false} otherwise
+	* @review
+	*/
+	public boolean hasSharingPermission(
+		com.liferay.sharing.security.permission.SharingEntryAction sharingEntryAction);
 }
