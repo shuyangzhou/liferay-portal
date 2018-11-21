@@ -3,21 +3,12 @@ Bundle-SymbolicName: ${manifest.bundle.symbolic.name}
 Bundle-Version: 4.0.0
 Export-Package:\
 	com.liferay.portal.bean,\
-	com.liferay.portal.cache.thread.local,\
-	com.liferay.portal.cluster,\
-	com.liferay.portal.dao.jdbc.aop,\
 	com.liferay.portal.dao.orm.hibernate,\
 	com.liferay.portal.deploy.hot,\
 	com.liferay.portal.events,\
 	com.liferay.portal.freemarker,\
-	com.liferay.portal.increment,\
-	com.liferay.portal.messaging.async,\
 	com.liferay.portal.minifier,\
-	com.liferay.portal.monitoring.statistics.service,\
 	com.liferay.portal.plugin,\
-	com.liferay.portal.resiliency.service,\
-	com.liferay.portal.search,\
-	com.liferay.portal.security.access.control,\
 	com.liferay.portal.security.auth,\
 	com.liferay.portal.security.lang,\
 	com.liferay.portal.service.http,\
@@ -25,13 +16,7 @@ Export-Package:\
 	com.liferay.portal.service.persistence.constants,\
 	com.liferay.portal.servlet,\
 	com.liferay.portal.servlet.filters.authverifier,\
-	com.liferay.portal.spring.aop,\
-	com.liferay.portal.spring.bean,\
-	com.liferay.portal.spring.context,\
-	com.liferay.portal.spring.hibernate,\
-	com.liferay.portal.spring.jndi,\
-	com.liferay.portal.spring.transaction,\
-	com.liferay.portal.systemevent,\
+	com.liferay.portal.spring.configurator,\
 	com.liferay.portal.template,\
 	com.liferay.portal.tools,\
 	com.liferay.portal.upgrade.util,\
