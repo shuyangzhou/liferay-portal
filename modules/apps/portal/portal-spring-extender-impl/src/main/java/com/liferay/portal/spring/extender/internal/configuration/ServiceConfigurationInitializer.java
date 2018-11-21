@@ -60,6 +60,42 @@ public class ServiceConfigurationInitializer {
 		_serviceComponentLocalService = serviceComponentLocalService;
 	}
 
+	public void readResourceActions() {
+		if (_portletConfiguration == null) {
+			return;
+		}
+
+		try {
+			String portlets = _portletConfiguration.get(
+				"service.configurator.portlet.ids");
+
+			if (Validator.isNull(portlets)) {
+				_resourceActions.readAndCheck(
+					null, _classLoader,
+					StringUtil.split(
+						_portletConfiguration.get(
+							PropsKeys.RESOURCE_ACTIONS_CONFIGS)));
+			}
+			else {
+				_resourceActions.read(
+					null, _classLoader,
+					StringUtil.split(
+						_portletConfiguration.get(
+							PropsKeys.RESOURCE_ACTIONS_CONFIGS)));
+
+				for (String portletId : StringUtil.split(portlets)) {
+					_resourceActions.check(portletId);
+				}
+			}
+		}
+		catch (Exception e) {
+			_log.error(
+				"Unable to read resource actions config in " +
+					PropsKeys.RESOURCE_ACTIONS_CONFIGS,
+				e);
+		}
+	}
+
 	public void stop() {
 		_serviceComponentLocalService.destroyServiceComponent(
 			_serviceComponentConfiguration, _classLoader);
@@ -122,42 +158,6 @@ public class ServiceConfigurationInitializer {
 		}
 		catch (PortalException pe) {
 			_log.error("Unable to initialize service component", pe);
-		}
-	}
-
-	public void readResourceActions() {
-		if (_portletConfiguration == null) {
-			return;
-		}
-
-		try {
-			String portlets = _portletConfiguration.get(
-				"service.configurator.portlet.ids");
-
-			if (Validator.isNull(portlets)) {
-				_resourceActions.readAndCheck(
-					null, _classLoader,
-					StringUtil.split(
-						_portletConfiguration.get(
-							PropsKeys.RESOURCE_ACTIONS_CONFIGS)));
-			}
-			else {
-				_resourceActions.read(
-					null, _classLoader,
-					StringUtil.split(
-						_portletConfiguration.get(
-							PropsKeys.RESOURCE_ACTIONS_CONFIGS)));
-
-				for (String portletId : StringUtil.split(portlets)) {
-					_resourceActions.check(portletId);
-				}
-			}
-		}
-		catch (Exception e) {
-			_log.error(
-				"Unable to read resource actions config in " +
-					PropsKeys.RESOURCE_ACTIONS_CONFIGS,
-				e);
 		}
 	}
 
