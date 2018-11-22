@@ -18,7 +18,6 @@ import aQute.bnd.version.Version;
 
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.Release;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.ReleaseLocalService;
 
 import java.util.Dictionary;
@@ -96,9 +95,8 @@ public final class ReleasePublisher {
 		}
 	}
 
-	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
+	@Reference(target = "(servlet.context.name=portal)", unbind = "-")
+	protected void setRelease(Release release) {
 	}
 
 	@Reference(unbind = "-")
