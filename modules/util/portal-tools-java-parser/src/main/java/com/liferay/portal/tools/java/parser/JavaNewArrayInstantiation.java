@@ -21,14 +21,27 @@ import com.liferay.portal.kernel.util.StringBundler;
  */
 public class JavaNewArrayInstantiation extends JavaExpression {
 
+	public void setInitialJavaArray(JavaArray initialJavaArray) {
+		_initialJavaArray = initialJavaArray;
+	}
+
+	public void setJavaArrayDeclarator(
+		JavaArrayDeclarator javaArrayDeclarator) {
+
+		_javaArrayDeclarator = javaArrayDeclarator;
+	}
+
 	@Override
-	public String getString(
+	protected String getString(
 		String indent, String prefix, String suffix, int maxLineLength,
 		boolean forceLineBreak) {
 
 		StringBundler sb = new StringBundler();
 
 		sb.append(indent);
+
+		indent += "\t";
+
 		sb.append(prefix);
 
 		if (_initialJavaArray == null) {
@@ -59,16 +72,6 @@ public class JavaNewArrayInstantiation extends JavaExpression {
 		}
 
 		return sb.toString();
-	}
-
-	public void setInitialJavaArray(JavaArray initialJavaArray) {
-		_initialJavaArray = initialJavaArray;
-	}
-
-	public void setJavaArrayDeclarator(
-		JavaArrayDeclarator javaArrayDeclarator) {
-
-		_javaArrayDeclarator = javaArrayDeclarator;
 	}
 
 	private JavaArray _initialJavaArray;

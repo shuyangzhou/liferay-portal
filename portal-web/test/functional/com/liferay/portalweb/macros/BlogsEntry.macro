@@ -53,6 +53,18 @@
 		</execute>
 	</command>
 
+	<command name="addEntryExternalURL">
+		<execute function="SelectFieldText" locator1="AlloyEditor#EDITOR">
+			<var name="key_editor" value="content" />
+		</execute>
+
+		<execute function="Click" locator1="AlloyEditor#TEXT_FORMATTING_LINK" />
+
+		<execute function="Type" locator1="AlloyEditor#TEXT_FORMATTING_LINK_INPUT" value1="${entryExternalURL}" />
+
+		<execute function="Click" locator1="AlloyEditor#TEXT_FORMATTING_LINK_INPUT_CONFIRM" />
+	</command>
+
 	<command name="addRelatedAsset">
 		<execute function="AssertClick" locator1="AssetRelatedAssets#RELATED_ASSETS_SELECT" value1="Select" />
 
@@ -616,7 +628,6 @@
 		<var name="key_entryContent" value="${entryContent}" />
 		<var name="key_entrySubtitle" value="${entrySubtitle}" />
 		<var name="key_entryTitle" value="${entryTitle}" />
-		<var name="key_uploadFileName" value="${uploadFileName}" />
 
 		<execute function="Pause" locator1="3000" />
 
@@ -632,7 +643,9 @@
 		<if>
 			<isset var="uploadFileName" />
 			<then>
-				<execute function="AssertElementPresent" locator1="BlogsEntry#ENTRY_COVER_IMAGE" />
+				<execute function="AssertElementPresent" locator1="BlogsEntry#ENTRY_COVER_IMAGE">
+					<var name="key_uploadFileName" value="${uploadFileName}" />
+				</execute>
 			</then>
 		</if>
 
@@ -654,6 +667,24 @@
 			<isset var="entryContentItalics" />
 			<then>
 				<execute function="AssertTextEquals#assertPartialText" locator1="BlogsEntry#CONTENT_HTML_ITALICS" value1="${entryContentItalics}" />
+			</then>
+		</if>
+
+		<if>
+			<isset var="entryExternalURL" />
+			<then>
+				<execute function="AssertClick#assertTextClickAtNoJavaScript" locator1="BlogsEntry#CONTENT" value1="${entryContent}" />
+
+				<execute function="AssertLocation" value1="${entryExternalURL}/" />
+			</then>
+		</if>
+
+		<if>
+			<isset var="entryInlineImage" />
+			<then>
+				<execute macro="BlogsEntry#viewInlineImage">
+					<var name="uploadFileName" value="${entryInlineImage}" />
+				</execute>
 			</then>
 		</if>
 	</command>

@@ -21,29 +21,33 @@ import com.liferay.portal.kernel.util.StringBundler;
  */
 public class JavaNewClassInstantiation extends JavaExpression {
 
+	public void setJavaClassCall(JavaClassCall javaClassCall) {
+		_javaClassCall = javaClassCall;
+	}
+
 	@Override
-	public String getString(
+	protected String getString(
 		String indent, String prefix, String suffix, int maxLineLength,
 		boolean forceLineBreak) {
 
 		StringBundler sb = new StringBundler();
 
 		sb.append(indent);
-		sb.append(prefix);
+
+		indent += "\t";
 
 		if (forceLineBreak) {
 			appendWithLineBreak(
-				sb, _javaClassCall, indent, "new ", suffix, maxLineLength);
+				sb, _javaClassCall, indent, prefix + "new ", suffix,
+				maxLineLength);
 		}
 		else {
-			append(sb, _javaClassCall, indent, "new ", suffix, maxLineLength);
+			append(
+				sb, _javaClassCall, indent, prefix + "new ", suffix,
+				maxLineLength);
 		}
 
 		return sb.toString();
-	}
-
-	public void setJavaClassCall(JavaClassCall javaClassCall) {
-		_javaClassCall = javaClassCall;
 	}
 
 	private JavaClassCall _javaClassCall;

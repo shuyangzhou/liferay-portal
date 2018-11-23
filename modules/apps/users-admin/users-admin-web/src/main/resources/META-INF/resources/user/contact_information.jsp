@@ -28,34 +28,38 @@ if (selUser != null) {
 request.setAttribute("user.selContact", selContact);
 request.setAttribute("user.selUser", selUser);
 
-long selContactId = (selUser != null) ? selContact.getContactId() : 0;
+request.setAttribute("emailAddresses.className", Contact.class.getName());
+request.setAttribute("phones.className", Contact.class.getName());
+request.setAttribute("websites.className", Contact.class.getName());
 
-String contactInformationRequireJS = (String)request.getAttribute(UsersAdminWebKeys.CONTACT_INFORMATION_REQUIRE_JS);
-
-request.setAttribute("contact_information.jsp-className", Contact.class.getName());
-request.setAttribute("contact_information.jsp-classPK", selContactId);
-request.setAttribute("contact_information.jsp-contactInformationRequireJS", contactInformationRequireJS);
-request.setAttribute("contact_information.jsp-mvcActionPath", "/users_admin/update_user_contact_information");
+if (selContact != null) {
+	request.setAttribute("emailAddresses.classPK", selContact.getContactId());
+	request.setAttribute("phones.classPK", selContact.getContactId());
+	request.setAttribute("websites.classPK", selContact.getContactId());
+}
+else {
+	request.setAttribute("emailAddresses.classPK", 0L);
+	request.setAttribute("phones.classPK", 0L);
+	request.setAttribute("websites.classPK", 0L);
+}
 %>
 
-<aui:input name="classPK" type="hidden" value="<%= String.valueOf(selContactId) %>" />
-
 <div class="sheet-section">
-	<liferay-util:include page="/common/phone_numbers.jsp" servletContext="<%= application %>">
-		<liferay-util:param name="emptyResultsMessage" value="this-user-does-not-have-any-phone-numbers" />
-	</liferay-util:include>
+	<h3 class="sheet-subtitle"><liferay-ui:message key="phone-numbers" /></h3>
+
+	<liferay-util:include page="/common/phone_numbers.jsp" servletContext="<%= application %>" />
 </div>
 
 <div class="sheet-section">
-	<liferay-util:include page="/common/additional_email_addresses.jsp" servletContext="<%= application %>">
-		<liferay-util:param name="emptyResultsMessage" value="this-user-does-not-have-any-additional-email-addresses" />
-	</liferay-util:include>
+	<h3 class="sheet-subtitle"><liferay-ui:message key="additional-email-addresses" /></h3>
+
+	<liferay-util:include page="/common/additional_email_addresses.jsp" servletContext="<%= application %>" />
 </div>
 
 <div class="sheet-section">
-	<liferay-util:include page="/common/websites.jsp" servletContext="<%= application %>">
-		<liferay-util:param name="emptyResultsMessage" value="this-user-does-not-have-any-websites" />
-	</liferay-util:include>
+	<h3 class="sheet-subtitle"><liferay-ui:message key="websites" /></h3>
+
+	<liferay-util:include page="/common/websites.jsp" servletContext="<%= application %>" />
 </div>
 
 <div class="sheet-section">

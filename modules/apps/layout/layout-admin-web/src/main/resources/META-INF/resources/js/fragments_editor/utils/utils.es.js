@@ -1,3 +1,88 @@
+import {DRAG_POSITIONS} from '../reducers/placeholders.es';
+
+/**
+ * Inserts an element in the given position of a given array and returns
+ * a copy of the array
+ * @param {!Array} array
+ * @param {*} element
+ * @param {!number} position
+ */
+function add(array, element, position) {
+	const newArray = [...array];
+
+	newArray.splice(position, 0, element);
+
+	return newArray;
+}
+
+/**
+ * Returns the column with the given columnId
+ * @param {Object} structure
+ * @param {string} columnId
+ * @return {Object}
+ */
+function getColumn(structure, columnId) {
+	return structure
+		.map(
+			section => section.columns.find(
+				_column => _column.columnId === columnId
+			)
+		)
+		.filter(column => column)
+		.find(column => column);
+}
+
+/**
+ * Returns the position in the structure of the given section
+ * @param {object} structure
+ * @param {number} targetSectionId
+ * @param {string} targetBorder
+ * @return {number}
+ */
+function getDropSectionPosition(
+	structure,
+	targetSectionId,
+	targetBorder
+) {
+	let position = structure.length;
+
+	const targetPosition = structure.findIndex(
+		section => section.rowId === targetSectionId
+	);
+
+	if (targetPosition > -1 && targetBorder) {
+		if (targetBorder === DRAG_POSITIONS.top) {
+			position = targetPosition;
+		}
+		else {
+			position = targetPosition + 1;
+		}
+	}
+
+	return position;
+}
+
+/**
+ * Returns the column that contains the fragment
+ * with the given fragmentEntryLinkId.
+ *
+ * @param {Array} structure
+ * @param {string} fragmentEntryLinkId
+ * @return {Object}
+ */
+function getFragmentColumn(structure, fragmentEntryLinkId) {
+	return structure
+		.map(
+			section => section.columns.find(
+				_column => _column.fragmentEntryLinkIds.find(
+					fragmentId => fragmentId === fragmentEntryLinkId
+				)
+			)
+		)
+		.filter(column => column)
+		.find(column => column);
+}
+
 /**
  * Returns the row index of a given fragmentEntryLinkId.
  * -1 if it is not present.
@@ -33,22 +118,46 @@ function getFragmentRowIndex(structure, fragmentEntryLinkId) {
  * @review
  */
 function setIn(object, keyPath, value) {
+	return updateIn(
+		object,
+		keyPath,
+		() => value
+	);
+}
+
+/**
+ * Recursively inserts the value returned from updater inside an object creating
+ * a copy of the original target. It the object (or any in the path),
+ * it's an Array, it will generate new Arrays, preserving the same structure.
+ * Updater receives the previous value or defaultValue and returns a new value.
+ * @param {!Array|Object} object Original object that will be copied
+ * @param {!Array<string>} keyPath Array of strings used for reaching the deep property
+ * @param {!function} updater
+ * @param {*} defaultValue
+ */
+function updateIn(object, keyPath, updater, defaultValue) {
 	const nextKey = keyPath[0];
 	const target = object instanceof Array ?
 		[...object] :
 		Object.assign({}, object);
 
-	let nextValue = value;
-
 	if (keyPath.length > 1) {
-		nextValue = setIn(
+		target[nextKey] = updateIn(
 			object[nextKey] || {},
 			keyPath.slice(1),
-			value
+			updater,
+			defaultValue
 		);
 	}
+	else {
+		let nextValue = target[nextKey];
 
-	target[nextKey] = nextValue;
+		if (typeof nextValue === 'undefined') {
+			nextValue = defaultValue;
+		}
+
+		target[nextKey] = updater(nextValue);
+	}
 
 	return target;
 }
@@ -91,7 +200,12 @@ function updateLayoutData(
 }
 
 export {
+	add,
+	getColumn,
+	getDropSectionPosition,
+	getFragmentColumn,
 	getFragmentRowIndex,
 	setIn,
+	updateIn,
 	updateLayoutData
 };

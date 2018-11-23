@@ -102,36 +102,42 @@ public class LayoutPrototypeModelListener
 	public void onAfterUpdate(LayoutPrototype layoutPrototype)
 		throws ModelListenerException {
 
-		LayoutPageTemplateEntry layoutPageTemplateEntry =
-			_layoutPageTemplateEntryLocalService.
-				fetchFirstLayoutPageTemplateEntry(
-					layoutPrototype.getLayoutPrototypeId());
+		try {
+			LayoutPageTemplateEntry layoutPageTemplateEntry =
+				_layoutPageTemplateEntryLocalService.
+					fetchFirstLayoutPageTemplateEntry(
+						layoutPrototype.getLayoutPrototypeId());
 
-		if (layoutPageTemplateEntry == null) {
-			return;
+			if (layoutPageTemplateEntry == null) {
+				return;
+			}
+
+			String nameXML = layoutPrototype.getName();
+
+			Map<Locale, String> nameMap = LocalizationUtil.getLocalizationMap(
+				nameXML);
+
+			Locale defaultLocale = LocaleUtil.fromLanguageId(
+				LocalizationUtil.getDefaultLanguageId(nameXML));
+
+			int status = WorkflowConstants.STATUS_INACTIVE;
+
+			if (layoutPrototype.isActive()) {
+				status = WorkflowConstants.STATUS_APPROVED;
+			}
+
+			_layoutPageTemplateEntryLocalService.updateLayoutPageTemplateEntry(
+				layoutPageTemplateEntry.getUserId(),
+				layoutPageTemplateEntry.getLayoutPageTemplateEntryId(),
+				nameMap.get(defaultLocale), status);
 		}
+		catch (PortalException pe) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(pe, pe);
+			}
 
-		String nameXML = layoutPrototype.getName();
-
-		Map<Locale, String> nameMap = LocalizationUtil.getLocalizationMap(
-			nameXML);
-
-		Locale defaultLocale = LocaleUtil.fromLanguageId(
-			LocalizationUtil.getDefaultLanguageId(nameXML));
-
-		layoutPageTemplateEntry.setName(nameMap.get(defaultLocale));
-
-		if (layoutPrototype.isActive()) {
-			layoutPageTemplateEntry.setStatus(
-				WorkflowConstants.STATUS_APPROVED);
+			throw new ModelListenerException(pe);
 		}
-		else {
-			layoutPageTemplateEntry.setStatus(
-				WorkflowConstants.STATUS_INACTIVE);
-		}
-
-		_layoutPageTemplateEntryLocalService.updateLayoutPageTemplateEntry(
-			layoutPageTemplateEntry);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

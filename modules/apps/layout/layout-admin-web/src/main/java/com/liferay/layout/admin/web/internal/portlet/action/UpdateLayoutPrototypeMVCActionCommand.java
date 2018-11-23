@@ -15,6 +15,8 @@
 package com.liferay.layout.admin.web.internal.portlet.action;
 
 import com.liferay.layout.admin.constants.LayoutAdminPortletKeys;
+import com.liferay.layout.page.template.exception.DuplicateLayoutPageTemplateEntryException;
+import com.liferay.layout.page.template.exception.LayoutPageTemplateEntryNameException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -92,10 +94,19 @@ public class UpdateLayoutPrototypeMVCActionCommand
 			ThemeDisplay themeDisplay =
 				(ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
+			String errorMessage = "an-unexpected-error-occurred";
+
+			if (pe instanceof LayoutPageTemplateEntryNameException) {
+				errorMessage = "please-enter-a-valid-name";
+			}
+			else if (pe instanceof DuplicateLayoutPageTemplateEntryException) {
+				errorMessage =
+					"a-page-template-entry-with-that-name-already-exists";
+			}
+
 			jsonObject.put(
 				"error",
-				LanguageUtil.get(
-					themeDisplay.getRequest(), "an-unexpected-error-occurred"));
+				LanguageUtil.get(themeDisplay.getRequest(), errorMessage));
 		}
 
 		JSONPortletResponseUtil.writeJSON(

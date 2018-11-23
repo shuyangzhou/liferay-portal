@@ -31,14 +31,27 @@ public class JavaMethodCall extends JavaExpression {
 		return _parameterValueJavaExpressions;
 	}
 
+	public void setGenericJavaTypes(List<JavaType> genericJavaTypes) {
+		_genericJavaTypes = genericJavaTypes;
+	}
+
+	public void setParameterValueJavaExpressions(
+		List<JavaExpression> parameterValueJavaExpressions) {
+
+		_parameterValueJavaExpressions = parameterValueJavaExpressions;
+	}
+
 	@Override
-	public String getString(
+	protected String getString(
 		String indent, String prefix, String suffix, int maxLineLength,
 		boolean forceLineBreak) {
 
 		StringBundler sb = new StringBundler();
 
 		sb.append(indent);
+
+		indent += "\t";
+
 		sb.append(prefix);
 
 		if (_genericJavaTypes != null) {
@@ -56,7 +69,7 @@ public class JavaMethodCall extends JavaExpression {
 
 			if (forceLineBreak) {
 				appendNewLine(
-					sb, _parameterValueJavaExpressions, indent + "\t", "",
+					sb, _parameterValueJavaExpressions, indent, "",
 					")" + suffix, maxLineLength);
 			}
 			else {
@@ -67,16 +80,6 @@ public class JavaMethodCall extends JavaExpression {
 		}
 
 		return sb.toString();
-	}
-
-	public void setGenericJavaTypes(List<JavaType> genericJavaTypes) {
-		_genericJavaTypes = genericJavaTypes;
-	}
-
-	public void setParameterValueJavaExpressions(
-		List<JavaExpression> parameterValueJavaExpressions) {
-
-		_parameterValueJavaExpressions = parameterValueJavaExpressions;
 	}
 
 	private List<JavaType> _genericJavaTypes;

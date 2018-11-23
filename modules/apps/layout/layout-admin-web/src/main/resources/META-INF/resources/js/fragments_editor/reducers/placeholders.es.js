@@ -15,13 +15,25 @@ const DRAG_POSITIONS = {
 };
 
 /**
+ * Possible drop target types
+ * @review
+ * @type {!object}
+ */
+const DROP_TARGET_TYPES = {
+	column: 'layout-column',
+	fragment: 'fragment-entry-link',
+	fragmentList: 'fragment-entry-link-list',
+	section: 'layout-section'
+};
+
+/**
  * Updates hover status with the information sent.
  * @param {!object} state
  * @param {CLEAR_DRAG_TARGET|UPDATE_DRAG_TARGET} actionType
  * @param {!object} payload
  * @param {string} payload.hoveredElementBorder
- * @param {string} payload.hoveredFragmentEntryLinkId
- * @param {string} payload.hoveredSectionId
+ * @param {string} payload.hoveredElementId
+ * @param {string} payload.hoveredElementType
  * @return {object}
  * @review
  */
@@ -30,17 +42,13 @@ function updateDragTargetReducer(state, actionType, payload) {
 
 	if (actionType === CLEAR_DRAG_TARGET) {
 		nextState.hoveredElementBorder = null;
-		nextState.hoveredFragmentEntryLinkId = null;
-		nextState.hoveredSectionId = null;
+		nextState.hoveredElementId = null;
+		nextState.hoveredElementType = null;
 	}
 	else if (actionType === UPDATE_DRAG_TARGET) {
-		if (payload.hoveredSectionId) {
-			nextState.hoveredSectionId = payload.hoveredSectionId;
-		}
-		else if (payload.hoveredFragmentEntryLinkId) {
-			nextState.hoveredFragmentEntryLinkId = payload.hoveredFragmentEntryLinkId;
-		}
 		nextState.hoveredElementBorder = payload.hoveredElementBorder;
+		nextState.hoveredElementId = payload.hoveredElementId;
+		nextState.hoveredElementType = payload.hoveredElementType;
 	}
 
 	return nextState;
@@ -72,6 +80,7 @@ function updateHighlightMappingReducer(state, actionType, payload) {
 
 export {
 	DRAG_POSITIONS,
+	DROP_TARGET_TYPES,
 	updateDragTargetReducer,
 	updateHighlightMappingReducer
 };

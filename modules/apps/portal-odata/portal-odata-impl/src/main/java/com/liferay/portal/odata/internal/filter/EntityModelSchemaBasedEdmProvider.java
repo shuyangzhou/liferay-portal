@@ -176,11 +176,30 @@ public class EntityModelSchemaBasedEdmProvider extends SchemaBasedEdmProvider {
 	private Optional<CsdlProperty> _createCsdlProperty(
 		String namespace, EntityField entityField) {
 
-		if (Objects.equals(entityField.getType(), EntityField.Type.DATE)) {
+		if (Objects.equals(entityField.getType(), EntityField.Type.COMPLEX)) {
+			CsdlProperty csdlProperty = new CsdlProperty();
+
+			csdlProperty.setName(entityField.getName());
+
+			csdlProperty.setType(
+				new FullQualifiedName(namespace, entityField.getName()));
+
+			return Optional.of(csdlProperty);
+		}
+		else if (Objects.equals(entityField.getType(), EntityField.Type.DATE)) {
 			return Optional.of(
 				_createPrimitiveCsdlProperty(
 					entityField,
 					EdmPrimitiveTypeKind.DateTimeOffset.getFullQualifiedName())
+			);
+		}
+		else if (Objects.equals(
+					entityField.getType(), EntityField.Type.DOUBLE)) {
+
+			return Optional.of(
+				_createPrimitiveCsdlProperty(
+					entityField,
+					EdmPrimitiveTypeKind.Double.getFullQualifiedName())
 			);
 		}
 		else if (Objects.equals(entityField.getType(), EntityField.Type.ID) ||
@@ -194,16 +213,13 @@ public class EntityModelSchemaBasedEdmProvider extends SchemaBasedEdmProvider {
 			);
 		}
 		else if (Objects.equals(
-					entityField.getType(), EntityField.Type.COMPLEX)) {
+					entityField.getType(), EntityField.Type.INTEGER)) {
 
-			CsdlProperty csdlProperty = new CsdlProperty();
-
-			csdlProperty.setName(entityField.getName());
-
-			csdlProperty.setType(
-				new FullQualifiedName(namespace, entityField.getName()));
-
-			return Optional.of(csdlProperty);
+			return Optional.of(
+				_createPrimitiveCsdlProperty(
+					entityField,
+					EdmPrimitiveTypeKind.Int64.getFullQualifiedName())
+			);
 		}
 
 		return Optional.empty();

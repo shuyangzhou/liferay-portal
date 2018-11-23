@@ -4,11 +4,16 @@ import {
 	REMOVE_FRAGMENT_ENTRY_LINK,
 	UPDATE_EDITABLE_VALUE
 } from '../actions/actions.es';
-import {DRAG_POSITIONS} from './placeholders.es';
+import {DRAG_POSITIONS, DROP_TARGET_TYPES} from './placeholders.es';
 import {EDITABLE_FRAGMENT_ENTRY_PROCESSOR} from '../components/fragment_entry_link/FragmentEntryLink.es';
 import {
+	add,
+	getColumn,
+	getDropSectionPosition,
+	getFragmentColumn,
 	getFragmentRowIndex,
 	setIn,
+	updateIn,
 	updateLayoutData
 } from '../utils/utils.es';
 
@@ -42,16 +47,12 @@ function addFragmentEntryLinkReducer(state, actionType, payload) {
 						response => {
 							fragmentEntryLink = response;
 
-							const position = _getDropFragmentPosition(
-								state.layoutData.structure,
-								state.hoveredFragmentEntryLinkId,
-								state.hoveredElementBorder
-							);
-
-							nextData = _addSingleFragmentRow(
-								state.layoutData,
-								fragmentEntryLink.fragmentEntryLinkId,
-								position
+							nextData = _addFragment(
+								fragmentEntryLink,
+								state.hoveredElementBorder,
+								state.hoveredElementId,
+								state.hoveredElementType,
+								state.layoutData
 							);
 
 							return updateLayoutData(
@@ -321,6 +322,81 @@ function updateEditableValueReducer(state, actionType, payload) {
 	);
 }
 
+/**
+ * Adds a fragment at the corresponding container in the layout
+ * @param {object} fragmentEntryLink
+ * @param {string} hoveredElementBorder
+ * @param {string} hoveredElementId
+ * @param {string} hoveredElementType
+ * @param {object} layoutData
+ * @private
+ * @review
+ */
+function _addFragment(
+	fragmentEntryLink,
+	hoveredElementBorder,
+	hoveredElementId,
+	hoveredElementType,
+	layoutData
+) {
+	let nextData = layoutData;
+
+	if (hoveredElementType === DROP_TARGET_TYPES.column) {
+		const fragmentColumn = getColumn(
+			layoutData.structure,
+			hoveredElementId
+		);
+
+		nextData = _addFragmentToColumn(
+			layoutData,
+			fragmentEntryLink.fragmentEntryLinkId,
+			hoveredElementId,
+			fragmentColumn.fragmentEntryLinkIds.length
+		);
+	}
+	else if (hoveredElementType === DROP_TARGET_TYPES.fragment) {
+		const fragmentColumn = getFragmentColumn(
+			layoutData.structure,
+			hoveredElementId
+		);
+
+		const position = _getDropFragmentPosition(
+			fragmentColumn.fragmentEntryLinkIds,
+			hoveredElementId,
+			hoveredElementBorder
+		);
+
+		nextData = _addFragmentToColumn(
+			layoutData,
+			fragmentEntryLink.fragmentEntryLinkId,
+			fragmentColumn.columnId,
+			position
+		);
+	}
+	else if (hoveredElementType === DROP_TARGET_TYPES.section) {
+		const position = getDropSectionPosition(
+			layoutData.structure,
+			hoveredElementId,
+			hoveredElementBorder
+		);
+
+		nextData = _addSingleFragmentRow(
+			layoutData,
+			fragmentEntryLink.fragmentEntryLinkId,
+			position
+		);
+	}
+	else {
+		nextData = _addSingleFragmentRow(
+			layoutData,
+			fragmentEntryLink.fragmentEntryLinkId,
+			layoutData.structure.length
+		);
+	}
+
+	return nextData;
+}
+
 function _addFragmentEntryLink(
 	addFragmentEntryLinkURL,
 	fragmentEntryId,
@@ -365,14 +441,13 @@ function _addFragmentEntryLink(
 }
 
 function _getDropFragmentPosition(
-	structure,
+	fragmentEntryLinkIds,
 	targetFragmentEntryLinkId,
 	targetBorder
 ) {
-	let position = structure.length;
+	let position = fragmentEntryLinkIds.length;
 
-	const targetPosition = getFragmentRowIndex(
-		structure,
+	const targetPosition = fragmentEntryLinkIds.indexOf(
 		targetFragmentEntryLinkId
 	);
 
@@ -421,6 +496,52 @@ function _getFragmentEntryLinkContent(
 				{content: response.content}
 			);
 		}
+	);
+}
+
+/**
+ * Returns a new layoutData with the given fragmentEntryLinkId inserted
+ * into a given column at the given position
+ *
+ * @param {object} layoutData
+ * @param {string} fragmentEntryLinkId
+ * @param {string} targetColumnId
+ * @param {number} position
+ * @return {object}
+ */
+
+function _addFragmentToColumn(
+	layoutData,
+	fragmentEntryLinkId,
+	targetColumnId,
+	position
+) {
+	const {structure} = layoutData;
+
+	const column = getColumn(structure, targetColumnId);
+	const section = structure.find(
+		section => section.columns.find(
+			_column => column === _column
+		)
+	);
+
+	const columnIndex = section.columns.indexOf(column);
+	const sectionIndex = structure.indexOf(section);
+
+	return updateIn(
+		layoutData,
+		[
+			'structure',
+			sectionIndex,
+			'columns',
+			columnIndex,
+			'fragmentEntryLinkIds'
+		],
+		fragmentEntryLinkIds => add(
+			fragmentEntryLinkIds,
+			fragmentEntryLinkId,
+			position
+		)
 	);
 }
 

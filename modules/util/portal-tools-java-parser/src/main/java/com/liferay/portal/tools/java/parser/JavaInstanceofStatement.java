@@ -25,14 +25,21 @@ public class JavaInstanceofStatement extends JavaExpression {
 		_classJavaType = classJavaType;
 	}
 
+	public void setValue(JavaExpression valueJavaExpression) {
+		_valueJavaExpression = valueJavaExpression;
+	}
+
 	@Override
-	public String getString(
+	protected String getString(
 		String indent, String prefix, String suffix, int maxLineLength,
 		boolean forceLineBreak) {
 
 		StringBundler sb = new StringBundler();
 
 		sb.append(indent);
+
+		indent += "\t";
+
 		sb.append(prefix);
 
 		indent = append(
@@ -42,10 +49,6 @@ public class JavaInstanceofStatement extends JavaExpression {
 		append(sb, _classJavaType, indent, "", suffix, maxLineLength);
 
 		return sb.toString();
-	}
-
-	public void setValue(JavaExpression valueJavaExpression) {
-		_valueJavaExpression = valueJavaExpression;
 	}
 
 	private final JavaType _classJavaType;

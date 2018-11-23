@@ -27,14 +27,26 @@ public class JavaClassCall extends JavaExpression {
 		_className = new JavaSimpleValue(className);
 	}
 
+	public void setGenericJavaTypes(List<JavaType> genericJavaTypes) {
+		_genericJavaTypes = genericJavaTypes;
+	}
+
+	public void setParameterValueJavaExpressions(
+		List<JavaExpression> parameterValueJavaExpressions) {
+
+		_parameterValueJavaExpressions = parameterValueJavaExpressions;
+	}
+
 	@Override
-	public String getString(
+	protected String getString(
 		String indent, String prefix, String suffix, int maxLineLength,
 		boolean forceLineBreak) {
 
 		StringBundler sb = new StringBundler();
 
 		sb.append(indent);
+
+		indent += "\t";
 
 		if (_genericJavaTypes == null) {
 			if (_parameterValueJavaExpressions.isEmpty()) {
@@ -68,8 +80,8 @@ public class JavaClassCall extends JavaExpression {
 
 		if (forceLineBreak) {
 			appendNewLine(
-				sb, _parameterValueJavaExpressions, indent + "\t", "",
-				")" + suffix, maxLineLength);
+				sb, _parameterValueJavaExpressions, indent, "", ")" + suffix,
+				maxLineLength);
 		}
 		else {
 			append(
@@ -78,16 +90,6 @@ public class JavaClassCall extends JavaExpression {
 		}
 
 		return sb.toString();
-	}
-
-	public void setGenericJavaTypes(List<JavaType> genericJavaTypes) {
-		_genericJavaTypes = genericJavaTypes;
-	}
-
-	public void setParameterValueJavaExpressions(
-		List<JavaExpression> parameterValueJavaExpressions) {
-
-		_parameterValueJavaExpressions = parameterValueJavaExpressions;
 	}
 
 	private final JavaSimpleValue _className;

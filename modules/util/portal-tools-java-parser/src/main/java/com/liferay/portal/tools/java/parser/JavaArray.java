@@ -15,6 +15,7 @@
 package com.liferay.portal.tools.java.parser;
 
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,13 +30,16 @@ public class JavaArray extends JavaExpression {
 	}
 
 	@Override
-	public String getString(
+	protected String getString(
 		String indent, String prefix, String suffix, int maxLineLength,
 		boolean forceLineBreak) {
 
 		StringBundler sb = new StringBundler();
 
 		sb.append(indent);
+
+		indent += "\t";
+
 		sb.append(prefix);
 		sb.append("{");
 
@@ -46,10 +50,10 @@ public class JavaArray extends JavaExpression {
 			return sb.toString();
 		}
 
-		appendNewLine(sb, _valueJavaExpressions, indent + "\t", maxLineLength);
+		appendNewLine(sb, _valueJavaExpressions, indent, maxLineLength);
 
 		sb.append("\n");
-		sb.append(indent);
+		sb.append(StringUtil.replaceFirst(indent, "\t", ""));
 		sb.append("}");
 		sb.append(suffix);
 

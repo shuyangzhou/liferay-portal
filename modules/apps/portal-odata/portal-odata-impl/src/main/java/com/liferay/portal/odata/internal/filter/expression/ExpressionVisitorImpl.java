@@ -27,8 +27,15 @@ import java.util.stream.Stream;
 
 import org.apache.olingo.commons.api.edm.EdmEnumType;
 import org.apache.olingo.commons.api.edm.EdmType;
+import org.apache.olingo.commons.core.edm.primitivetype.EdmByte;
 import org.apache.olingo.commons.core.edm.primitivetype.EdmDate;
 import org.apache.olingo.commons.core.edm.primitivetype.EdmDateTimeOffset;
+import org.apache.olingo.commons.core.edm.primitivetype.EdmDecimal;
+import org.apache.olingo.commons.core.edm.primitivetype.EdmDouble;
+import org.apache.olingo.commons.core.edm.primitivetype.EdmInt16;
+import org.apache.olingo.commons.core.edm.primitivetype.EdmInt32;
+import org.apache.olingo.commons.core.edm.primitivetype.EdmInt64;
+import org.apache.olingo.commons.core.edm.primitivetype.EdmSByte;
 import org.apache.olingo.commons.core.edm.primitivetype.EdmString;
 import org.apache.olingo.server.api.uri.UriInfoResource;
 import org.apache.olingo.server.api.uri.UriResource;
@@ -94,11 +101,24 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Expression> {
 	public Expression visitLiteral(Literal literal) {
 		EdmType edmType = literal.getType();
 
-		if (edmType instanceof EdmDate ||
-			edmType instanceof EdmDateTimeOffset) {
+		if (edmType instanceof EdmByte || edmType instanceof EdmInt16 ||
+			edmType instanceof EdmInt32 || edmType instanceof EdmInt64 ||
+			edmType instanceof EdmSByte) {
+
+			return new LiteralExpressionImpl(
+				literal.getText(), LiteralExpression.Type.INTEGER);
+		}
+		else if (edmType instanceof EdmDate ||
+				 edmType instanceof EdmDateTimeOffset) {
 
 			return new LiteralExpressionImpl(
 				literal.getText(), LiteralExpression.Type.DATE);
+		}
+		else if (edmType instanceof EdmDecimal ||
+				 edmType instanceof EdmDouble) {
+
+			return new LiteralExpressionImpl(
+				literal.getText(), LiteralExpression.Type.DOUBLE);
 		}
 		else if (edmType instanceof EdmString) {
 			return new LiteralExpressionImpl(
@@ -106,7 +126,7 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Expression> {
 		}
 
 		throw new UnsupportedOperationException(
-			"Liferal: " + edmType.getKind());
+			"Literal: " + edmType.getFullQualifiedName());
 	}
 
 	@Override

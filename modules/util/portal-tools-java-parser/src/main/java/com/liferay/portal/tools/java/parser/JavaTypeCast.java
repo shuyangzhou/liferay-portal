@@ -23,14 +23,28 @@ import java.util.List;
  */
 public class JavaTypeCast extends JavaExpression {
 
+	public JavaExpression getValueJavaExpression() {
+		return _valueJavaExpression;
+	}
+
+	public void setJavaTypes(List<JavaType> javaTypes) {
+		_javaTypes = javaTypes;
+	}
+
+	public void setValueJavaExpression(JavaExpression valueJavaExpression) {
+		_valueJavaExpression = valueJavaExpression;
+	}
+
 	@Override
-	public String getString(
+	protected String getString(
 		String indent, String prefix, String suffix, int maxLineLength,
 		boolean forceLineBreak) {
 
 		StringBundler sb = new StringBundler();
 
 		sb.append(indent);
+
+		indent += "\t";
 
 		indent = append(
 			sb, _javaTypes, " & ", indent, prefix + "(", ")", maxLineLength);
@@ -46,18 +60,6 @@ public class JavaTypeCast extends JavaExpression {
 		}
 
 		return sb.toString();
-	}
-
-	public JavaExpression getValueJavaExpression() {
-		return _valueJavaExpression;
-	}
-
-	public void setJavaTypes(List<JavaType> javaTypes) {
-		_javaTypes = javaTypes;
-	}
-
-	public void setValueJavaExpression(JavaExpression valueJavaExpression) {
-		_valueJavaExpression = valueJavaExpression;
 	}
 
 	private List<JavaType> _javaTypes;

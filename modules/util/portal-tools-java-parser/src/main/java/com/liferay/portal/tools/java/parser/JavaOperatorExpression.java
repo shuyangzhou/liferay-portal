@@ -32,14 +32,32 @@ public class JavaOperatorExpression extends JavaExpression {
 		return _javaOperator;
 	}
 
+	public JavaExpression getRightHandJavaExpression() {
+		return _rightHandJavaExpression;
+	}
+
+	public void setLeftHandJavaExpression(
+		JavaExpression leftHandJavaExpression) {
+
+		_leftHandJavaExpression = leftHandJavaExpression;
+	}
+
+	public void setRightHandJavaExpression(
+		JavaExpression rightHandJavaExpression) {
+
+		_rightHandJavaExpression = rightHandJavaExpression;
+	}
+
 	@Override
-	public String getString(
+	protected String getString(
 		String indent, String prefix, String suffix, int maxLineLength,
 		boolean forceLineBreak) {
 
 		StringBundler sb = new StringBundler();
 
 		sb.append(indent);
+
+		indent += "\t";
 
 		if (_leftHandJavaExpression != null) {
 			if (_rightHandJavaExpression != null) {
@@ -61,19 +79,35 @@ public class JavaOperatorExpression extends JavaExpression {
 						false);
 				}
 
-				if (forceLineBreak ||
-					!(_rightHandJavaExpression instanceof
-						JavaOperatorExpression)) {
+				boolean newLine = false;
 
-					append(
-						sb, _rightHandJavaExpression, indent, "", suffix,
-						maxLineLength);
+				if (Objects.equals(
+						_javaOperator.getCategory(),
+						JavaOperator.Category.ASSIGNMENT)) {
+
+					if (_rightHandJavaExpression instanceof
+							JavaOperatorExpression) {
+
+						JavaOperatorExpression javaOperatorExpression =
+							(JavaOperatorExpression)_rightHandJavaExpression;
+
+						JavaOperator javaOperator =
+							javaOperatorExpression.getJavaOperator();
+
+						if (!javaOperator.equals(
+								JavaOperator.LOGICAL_COMPLEMENT_OPERATOR)) {
+
+							newLine = true;
+						}
+					}
 				}
 				else {
-					append(
-						sb, _rightHandJavaExpression, indent, "", suffix,
-						maxLineLength);
+					newLine = true;
 				}
+
+				append(
+					sb, _rightHandJavaExpression, indent, "", suffix,
+					maxLineLength, newLine);
 			}
 			else {
 				append(
@@ -94,18 +128,6 @@ public class JavaOperatorExpression extends JavaExpression {
 		}
 
 		return sb.toString();
-	}
-
-	public void setLeftHandJavaExpression(
-		JavaExpression leftHandJavaExpression) {
-
-		_leftHandJavaExpression = leftHandJavaExpression;
-	}
-
-	public void setRightHandJavaExpression(
-		JavaExpression rightHandJavaExpression) {
-
-		_rightHandJavaExpression = rightHandJavaExpression;
 	}
 
 	private final JavaOperator _javaOperator;

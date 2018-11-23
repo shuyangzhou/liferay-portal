@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.LayoutPrototypeLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -73,9 +74,17 @@ public class LayoutPageTemplateEntryLocalServiceImpl
 			status = WorkflowConstants.STATUS_INACTIVE;
 		}
 
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
+		long groupId = company.getGroupId();
+
+		if (serviceContext != null) {
+			groupId = serviceContext.getScopeGroupId();
+		}
+
 		return addLayoutPageTemplateEntry(
-			layoutPrototype.getUserId(), company.getGroupId(), 0,
-			nameMap.get(defaultLocale),
+			layoutPrototype.getUserId(), groupId, 0, nameMap.get(defaultLocale),
 			LayoutPageTemplateEntryTypeConstants.TYPE_WIDGET_PAGE,
 			layoutPrototype.getLayoutPrototypeId(), status,
 			new ServiceContext());
@@ -121,7 +130,7 @@ public class LayoutPageTemplateEntryLocalServiceImpl
 		layoutPageTemplateEntry.setLayoutPrototypeId(layoutPrototypeId);
 		layoutPageTemplateEntry.setStatus(status);
 		layoutPageTemplateEntry.setStatusByUserId(userId);
-		layoutPageTemplateEntry.setStatusByUserName(user.getFullName());
+		layoutPageTemplateEntry.setStatusByUserName(user.getScreenName());
 		layoutPageTemplateEntry.setStatusDate(new Date());
 
 		layoutPageTemplateEntryPersistence.update(layoutPageTemplateEntry);
@@ -491,6 +500,33 @@ public class LayoutPageTemplateEntryLocalServiceImpl
 			layoutPageTemplateEntryId, classTypeId);
 
 		return layoutPageTemplateEntry;
+	}
+
+	@Override
+	public LayoutPageTemplateEntry updateLayoutPageTemplateEntry(
+			long userId, long layoutPageTemplateEntryId, String name,
+			int status)
+		throws PortalException {
+
+		User user = userLocalService.getUser(userId);
+
+		LayoutPageTemplateEntry layoutPageTemplateEntry =
+			layoutPageTemplateEntryPersistence.findByPrimaryKey(
+				layoutPageTemplateEntryId);
+
+		if (!Objects.equals(layoutPageTemplateEntry.getName(), name)) {
+			validate(layoutPageTemplateEntry.getGroupId(), name);
+		}
+
+		layoutPageTemplateEntry.setModifiedDate(new Date());
+		layoutPageTemplateEntry.setName(name);
+		layoutPageTemplateEntry.setStatus(status);
+		layoutPageTemplateEntry.setStatusByUserId(userId);
+		layoutPageTemplateEntry.setStatusByUserName(user.getScreenName());
+		layoutPageTemplateEntry.setStatusDate(new Date());
+
+		return layoutPageTemplateEntryLocalService.
+			updateLayoutPageTemplateEntry(layoutPageTemplateEntry);
 	}
 
 	@Override
