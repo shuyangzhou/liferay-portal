@@ -3,11 +3,7 @@ Bundle-SymbolicName: com.liferay.portal.spring.extender.impl
 Bundle-Version: 2.0.0
 Import-Package:\
 	com.liferay.portal.bean,\
-	com.liferay.portal.cache.thread.local,\
-	com.liferay.portal.cluster,\
-	com.liferay.portal.dao.jdbc.aop,\
 	com.liferay.portal.dao.orm.hibernate,\
-	com.liferay.portal.increment,\
 	com.liferay.portal.kernel.bean,\
 	com.liferay.portal.kernel.configuration,\
 	com.liferay.portal.kernel.exception,\
@@ -17,20 +13,8 @@ Import-Package:\
 	com.liferay.portal.kernel.service.configuration,\
 	com.liferay.portal.kernel.spring.util,\
 	com.liferay.portal.kernel.util,\
-	com.liferay.portal.messaging.async,\
-	com.liferay.portal.monitoring.statistics.service,\
-	com.liferay.portal.resiliency.service,\
-	com.liferay.portal.search,\
-	com.liferay.portal.security.access.control,\
 	com.liferay.portal.security.permission,\
-	com.liferay.portal.service,\
-	com.liferay.portal.spring.aop,\
-	com.liferay.portal.spring.bean,\
-	com.liferay.portal.spring.context,\
-	com.liferay.portal.spring.hibernate,\
-	com.liferay.portal.spring.jndi,\
-	com.liferay.portal.spring.transaction,\
-	com.liferay.portal.systemevent,\
+	com.liferay.portal.spring.configurator,\
 	\
 	javax.servlet,\
 	javax.servlet.http,\

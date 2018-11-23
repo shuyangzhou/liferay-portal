@@ -17,10 +17,8 @@ package com.liferay.portal.jsonwebservice;
 import com.liferay.portal.kernel.bean.ClassLoaderBeanHandler;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceScannerStrategy;
 import com.liferay.portal.kernel.service.ServiceWrapper;
-import com.liferay.portal.kernel.spring.aop.AdvisedSupport;
 import com.liferay.portal.kernel.util.ProxyUtil;
-import com.liferay.portal.spring.aop.AdvisedSupportProxy;
-import com.liferay.portal.spring.aop.ServiceBeanAopProxy;
+import com.liferay.portal.spring.aop.ServiceBeanAopInvocationHandler;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -40,14 +38,7 @@ public class SpringJSONWebServiceScannerStrategy
 
 	@Override
 	public MethodDescriptor[] scan(Object service) {
-		Class<?> clazz = null;
-
-		try {
-			clazz = getTargetClass(service);
-		}
-		catch (Exception e) {
-			return new MethodDescriptor[0];
-		}
+		Class<?> clazz = getTargetClass(service);
 
 		Method[] methods = clazz.getMethods();
 
@@ -72,16 +63,17 @@ public class SpringJSONWebServiceScannerStrategy
 	 * @see com.liferay.portal.remote.json.web.service.extender.internal.ServiceJSONWebServiceScannerStrategy#getTargetClass(
 	 *      Object)
 	 */
-	protected Class<?> getTargetClass(Object service) throws Exception {
+	protected Class<?> getTargetClass(Object service) {
 		while (ProxyUtil.isProxyClass(service.getClass())) {
 			InvocationHandler invocationHandler =
 				ProxyUtil.getInvocationHandler(service);
 
-			if (invocationHandler instanceof AdvisedSupportProxy) {
-				AdvisedSupport advisedSupport =
-					ServiceBeanAopProxy.getAdvisedSupport(service);
+			if (invocationHandler instanceof ServiceBeanAopInvocationHandler) {
+				ServiceBeanAopInvocationHandler
+					serviceBeanAopInvocationHandler =
+						(ServiceBeanAopInvocationHandler)invocationHandler;
 
-				service = advisedSupport.getTarget();
+				service = serviceBeanAopInvocationHandler.getTarget();
 			}
 			else if (invocationHandler instanceof ClassLoaderBeanHandler) {
 				ClassLoaderBeanHandler classLoaderBeanHandler =
