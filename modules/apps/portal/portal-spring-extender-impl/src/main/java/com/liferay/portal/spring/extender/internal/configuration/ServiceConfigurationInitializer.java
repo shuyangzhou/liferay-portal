@@ -81,6 +81,8 @@ public class ServiceConfigurationInitializer {
 
 			_readResourceActions();
 
+			System.out.println("############ Resource action loaded for " + _bundle);
+
 			_registerConfiguration(
 				bundleContext, _portletConfiguration, "portlet");
 		}

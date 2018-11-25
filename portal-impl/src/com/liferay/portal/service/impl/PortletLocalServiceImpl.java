@@ -182,6 +182,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 	@Override
 	public void checkPortlet(Portlet portlet) throws PortalException {
+		System.out.println("^^^^^^^^Checking portlet : " + portlet);
 		resourcePermissionLocalService.initPortletDefaultPermissions(portlet);
 
 		initPortletAddToPagePermissions(portlet);
