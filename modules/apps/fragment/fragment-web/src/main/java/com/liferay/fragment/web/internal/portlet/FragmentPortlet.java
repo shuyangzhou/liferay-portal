@@ -20,11 +20,11 @@ import com.liferay.fragment.web.internal.configuration.FragmentPortletConfigurat
 import com.liferay.fragment.web.internal.constants.FragmentWebKeys;
 import com.liferay.item.selector.ItemSelector;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -152,6 +152,11 @@ public class FragmentPortlet extends MVCPortlet {
 	private static final Log _log = LogFactoryUtil.getLog(
 		FragmentPortlet.class);
 
+	@Reference(
+		target = "(&(configuration.bundle.symbolic.name=com.liferay.fragment.service)(name=portlet))"
+	)
+	private Configuration _configuration;
+
 	@Reference
 	private FragmentEntryProcessorRegistry _fragmentEntryProcessorRegistry;
 
@@ -162,11 +167,6 @@ public class FragmentPortlet extends MVCPortlet {
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;
-
-	@Reference(
-		target = "(&(release.bundle.symbolic.name=com.liferay.fragment.service)(release.schema.version>=2.1.0))"
-	)
-	private Release _release;
 
 	@Reference
 	private UserLocalService _userLocalService;
