@@ -60,6 +60,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.module.framework.ModuleFrameworkUtilAdapter;
 import com.liferay.portal.servlet.PortalSessionListener;
 import com.liferay.portal.spring.aop.DynamicProxyCreator;
+import com.liferay.portal.spring.configurator.ConfigurableApplicationContextConfigurator;
 import com.liferay.portal.util.InitUtil;
 import com.liferay.portal.util.PortalClassPathUtil;
 import com.liferay.portal.util.PropsValues;
@@ -88,6 +89,7 @@ import org.springframework.beans.CachedIntrospectionResults;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ConfigurableWebApplicationContext;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.ContextLoaderListener;
 
@@ -402,6 +404,21 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 				_log.error(ioe, ioe);
 			}
 		}
+	}
+
+	@Override
+	protected void customizeContext(
+		ServletContext servletContext,
+		ConfigurableWebApplicationContext configurableWebApplicationContext) {
+
+		ConfigurableApplicationContextConfigurator
+			configurableApplicationContextConfigurator =
+				_arrayApplicationContext.getBean(
+					"configurableApplicationContextConfigurator",
+					ConfigurableApplicationContextConfigurator.class);
+
+		configurableApplicationContextConfigurator.configure(
+			configurableWebApplicationContext);
 	}
 
 	protected void initListeners(ServletContext servletContext) {

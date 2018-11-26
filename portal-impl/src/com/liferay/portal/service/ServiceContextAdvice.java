@@ -20,6 +20,8 @@ import com.liferay.portal.spring.aop.ChainableMethodAdvice;
 
 import java.lang.reflect.Method;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.aopalliance.intercept.MethodInvocation;
 
 /**
@@ -29,13 +31,9 @@ public class ServiceContextAdvice extends ChainableMethodAdvice {
 
 	@Override
 	public Object invoke(MethodInvocation methodInvocation) throws Throwable {
-		int index = _getServiceContextParameterIndex(
-			methodInvocation.getMethod());
+		Integer index = _indexCache.get(methodInvocation.getMethod());
 
-		if (index < 0) {
-			serviceBeanAopCacheManager.removeMethodInterceptor(
-				methodInvocation, this);
-
+		if (index == null) {
 			return methodInvocation.proceed();
 		}
 
@@ -57,45 +55,20 @@ public class ServiceContextAdvice extends ChainableMethodAdvice {
 		}
 	}
 
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	protected boolean hasServiceContextParameter(Method method) {
-		Class<?>[] parameterTypes = method.getParameterTypes();
+	@Override
+	public boolean isEnabled(Class<?> targetClass, Method method) {
+		int index = _getServiceContextParameterIndex(method);
 
-		for (int i = parameterTypes.length - 1; i >= 0; i--) {
-			if (ServiceContext.class.isAssignableFrom(parameterTypes[i])) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	protected boolean pushServiceContext(MethodInvocation methodInvocation) {
-		Object[] arguments = methodInvocation.getArguments();
-
-		if (arguments == null) {
+		if (index == -1) {
 			return false;
 		}
 
-		for (int i = arguments.length - 1; i >= 0; i--) {
-			if (arguments[i] instanceof ServiceContext) {
-				ServiceContext serviceContext = (ServiceContext)arguments[i];
+		_indexCache.put(method, index);
 
-				ServiceContextThreadLocal.pushServiceContext(serviceContext);
-
-				return true;
-			}
-		}
-
-		return false;
+		return true;
 	}
+
+	private final Map<Method, Integer> _indexCache = new ConcurrentHashMap<>();
 
 	private int _getServiceContextParameterIndex(Method method) {
 		Class<?>[] parameterTypes = method.getParameterTypes();

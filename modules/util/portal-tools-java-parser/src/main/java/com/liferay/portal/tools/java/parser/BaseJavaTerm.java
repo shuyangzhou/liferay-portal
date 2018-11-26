@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.source.formatter.checks.util.SourceUtil;
 
 import java.util.List;
 
@@ -64,6 +65,64 @@ public abstract class BaseJavaTerm implements JavaTerm {
 		boolean forceLineBreak) {
 
 		return toString(indent, prefix, suffix, maxLineLength);
+	}
+
+	protected String adjustIndent(StringBundler sb, String indent) {
+		String s = sb.toString();
+
+		String lastLine = StringUtil.trim(_getLastLine(s));
+
+		if (lastLine.endsWith("&") || lastLine.endsWith("|") ||
+			lastLine.endsWith("^")) {
+
+			int x = s.length();
+
+			while (true) {
+				x = s.lastIndexOf(CharPool.OPEN_PARENTHESIS, x - 1);
+
+				if (x == -1) {
+					return _getLeadingWhitespace(s);
+				}
+
+				if (SourceUtil.getLevel(s.substring(x)) != 0) {
+					continue;
+				}
+
+				int y = s.lastIndexOf('\n', x) + 1;
+
+				String linePart = s.substring(y, x);
+
+				int z = linePart.length();
+
+				while (true) {
+					z = linePart.lastIndexOf(CharPool.OPEN_PARENTHESIS, z - 1);
+
+					if (z == -1) {
+						s = s.substring(y, x);
+
+						String leadingWhitespace = _getLeadingWhitespace(s);
+
+						if (!StringUtil.startsWith(
+								StringUtil.trim(s), "return ")) {
+
+							return leadingWhitespace;
+						}
+
+						return leadingWhitespace + "\t   ";
+					}
+
+					if (SourceUtil.getLevel(linePart.substring(z)) != 0) {
+						return _convertToWhitespace(s.substring(y, z + 1));
+					}
+				}
+			}
+		}
+
+		if (lastLine.startsWith("while (")) {
+			return indent + "\t\t";
+		}
+
+		return indent;
 	}
 
 	protected String append(
@@ -120,7 +179,7 @@ public abstract class BaseJavaTerm implements JavaTerm {
 			for (int i = 0; i < (afterLineBreakCount - beforeLineBreakCount);
 				 i++) {
 
-				indent += "\t";
+				indent = "\t" + indent;
 			}
 
 			return indent;
@@ -180,7 +239,7 @@ public abstract class BaseJavaTerm implements JavaTerm {
 			sb.toString(), CharPool.NEW_LINE);
 
 		for (int i = 0; i < (afterLineBreakCount - beforeLineBreakCount); i++) {
-			indent += "\t";
+			indent = "\t" + indent;
 		}
 
 		return indent;
@@ -201,6 +260,8 @@ public abstract class BaseJavaTerm implements JavaTerm {
 		sb = _stripTrailingWhitespace(sb);
 
 		if (sb.index() > 0) {
+			indent = adjustIndent(sb, indent);
+
 			sb.append("\n");
 		}
 
@@ -243,7 +304,7 @@ public abstract class BaseJavaTerm implements JavaTerm {
 			JavaTerm javaTerm = list.get(i);
 
 			if (i == 1) {
-				newLinePrefix = _getPrefixWhitespace(prefix);
+				newLinePrefix = _convertToWhitespace(prefix);
 
 				prefix = StringPool.BLANK;
 			}
@@ -354,49 +415,54 @@ public abstract class BaseJavaTerm implements JavaTerm {
 				indent, prefix, suffix, maxLineLength, true);
 
 			sb.append(s);
-
-			return "\t" + getIndent(_getLastLine(s));
-		}
-
-		String javaTermContent = javaTerm.toString(
-			indent, "", suffix, maxLineLength, true);
-
-		javaTermContent = StringUtil.replaceFirst(
-			javaTermContent, indent, prefix);
-
-		String firstLineJavaTermContent = _getFirstLine(javaTermContent);
-
-		String s = lastLine + firstLineJavaTermContent;
-
-		lastLine = StringUtil.trim(lastLine);
-
-		if ((getLineLength(s) > maxLineLength) ||
-			((lastLine.endsWith("=") || lastLine.endsWith(")")) &&
-			 (firstLineJavaTermContent.endsWith(".") ||
-			  firstLineJavaTermContent.matches("\\s*\\([^\\)]+\\)?")))) {
-
-			appendNewLine(
-				sb, javaTerm, "\t" + indent, prefix, suffix, maxLineLength);
 		}
 		else {
-			sb.append(javaTermContent);
+			String javaTermContent = javaTerm.toString(
+				indent, "", suffix, maxLineLength, true);
+
+			javaTermContent = StringUtil.replaceFirst(
+				javaTermContent, indent, prefix);
+
+			String firstLineJavaTermContent = _getFirstLine(javaTermContent);
+
+			String s = lastLine + firstLineJavaTermContent;
+
+			lastLine = StringUtil.trim(lastLine);
+
+			if ((getLineLength(s) > maxLineLength) ||
+				((lastLine.endsWith("=") || lastLine.endsWith(")")) &&
+				 (firstLineJavaTermContent.endsWith(".") ||
+				  firstLineJavaTermContent.matches("\\s*\\([^\\)]+\\)?")))) {
+
+				appendNewLine(
+					sb, javaTerm, "\t" + indent, prefix, suffix, maxLineLength);
+			}
+			else {
+				sb.append(javaTermContent);
+			}
 		}
 
-		return "\t" + getIndent(getLastLine(sb));
+		indent = "\t" + getIndent(getLastLine(sb));
+
+		if (javaTerm instanceof JavaType) {
+			return _trimTrailingSpaces(indent);
+		}
+
+		return indent;
 	}
 
 	protected String getIndent(String s) {
 		StringBundler sb = new StringBundler(s.length());
 
-		for (int i = 0; i < s.length(); i++) {
-			if (s.charAt(i) != CharPool.TAB) {
-				break;
+		for (char c : s.toCharArray()) {
+			if (!Character.isWhitespace(c)) {
+				return sb.toString();
 			}
 
-			sb.append(CharPool.TAB);
+			sb.append(c);
 		}
 
-		return sb.toString();
+		return s;
 	}
 
 	protected String getLastLine(StringBundler sb) {
@@ -461,6 +527,24 @@ public abstract class BaseJavaTerm implements JavaTerm {
 		return false;
 	}
 
+	private String _convertToWhitespace(String s) {
+		StringBundler sb = new StringBundler(s.length());
+
+		int i = getLineLength(s);
+
+		while (i >= 4) {
+			sb.append(StringPool.TAB);
+
+			i -= 4;
+		}
+
+		for (int j = 0; j < i; j++) {
+			sb.append(StringPool.SPACE);
+		}
+
+		return sb.toString();
+	}
+
 	private String _getFirstLine(String s) {
 		int x = s.indexOf("\n");
 
@@ -481,22 +565,19 @@ public abstract class BaseJavaTerm implements JavaTerm {
 		return s;
 	}
 
-	private String _getPrefixWhitespace(String prefix) {
-		StringBundler sb = new StringBundler(prefix.length());
+	private String _getLeadingWhitespace(String s) {
+		StringBundler sb = new StringBundler();
 
-		int i = getLineLength(StringUtil.trimLeading(prefix));
-
-		while (i >= 4) {
-			sb.append(StringPool.TAB);
-
-			i -= 4;
+		for (char c : s.toCharArray()) {
+			if (Character.isWhitespace(c)) {
+				sb.append(c);
+			}
+			else {
+				return sb.toString();
+			}
 		}
 
-		for (int j = 0; j < i; j++) {
-			sb.append(StringPool.SPACE);
-		}
-
-		return sb.toString();
+		return s;
 	}
 
 	private StringBundler _stripTrailingWhitespace(StringBundler sb) {
@@ -515,6 +596,16 @@ public abstract class BaseJavaTerm implements JavaTerm {
 			}
 
 			sb.setIndex(sb.index() - 1);
+		}
+	}
+
+	private String _trimTrailingSpaces(String s) {
+		while (true) {
+			if (s.charAt(s.length() - 1) != CharPool.SPACE) {
+				return s;
+			}
+
+			s = s.substring(0, s.length() - 1);
 		}
 	}
 

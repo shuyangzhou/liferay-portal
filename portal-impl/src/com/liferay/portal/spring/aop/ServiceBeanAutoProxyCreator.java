@@ -14,20 +14,30 @@
 
 package com.liferay.portal.spring.aop;
 
-import com.liferay.portal.kernel.spring.aop.AopProxyFactory;
+import com.liferay.petra.lang.HashUtil;
+import com.liferay.petra.reflect.ReflectionUtil;
+import com.liferay.portal.kernel.util.ProxyUtil;
 
-import org.springframework.aop.TargetSource;
-import org.springframework.aop.framework.AdvisedSupport;
-import org.springframework.aop.framework.AopConfigException;
-import org.springframework.aop.framework.AopProxy;
-import org.springframework.aop.framework.ProxyFactory;
-import org.springframework.aop.framework.autoproxy.AbstractAdvisorAutoProxyCreator;
+import java.beans.PropertyDescriptor;
+
+import java.lang.reflect.Constructor;
+
+import java.util.Collections;
+import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.aopalliance.intercept.MethodInterceptor;
+
+import org.springframework.beans.PropertyValues;
+import org.springframework.beans.factory.BeanClassLoaderAware;
+import org.springframework.beans.factory.config.SmartInstantiationAwareBeanPostProcessor;
 
 /**
  * @author Shuyang Zhou
  */
 public class ServiceBeanAutoProxyCreator
-	extends AbstractAdvisorAutoProxyCreator {
+	implements BeanClassLoaderAware, SmartInstantiationAwareBeanPostProcessor {
 
 	public void afterPropertiesSet() {
 
@@ -36,53 +46,132 @@ public class ServiceBeanAutoProxyCreator
 		if (_beanMatcher == null) {
 			_beanMatcher = new ServiceBeanMatcher();
 		}
+
+		_serviceBeanAopCacheManager = new ServiceBeanAopCacheManager(
+			_chainableMethodAdvice);
 	}
 
-	public void setAopProxyFactory(AopProxyFactory aopProxyFactory) {
-		_aopProxyFactory = aopProxyFactory;
+	@Override
+	public Constructor<?>[] determineCandidateConstructors(
+		Class<?> beanClass, String beanName) {
+
+		return null;
+	}
+
+	@Override
+	public Object getEarlyBeanReference(Object bean, String beanName) {
+		Class<?> beanClass = bean.getClass();
+
+		if (!_beanMatcher.match(beanClass, beanName)) {
+			return bean;
+		}
+
+		_earlyProxyReferences.add(new CacheKey(beanClass, beanName));
+
+		return ProxyUtil.newProxyInstance(
+			_classLoader, ReflectionUtil.getInterfaces(bean),
+			new ServiceBeanAopInvocationHandler(
+				bean, _serviceBeanAopCacheManager));
+	}
+
+	@Override
+	public Object postProcessAfterInitialization(Object bean, String beanName) {
+		Class<?> beanClass = bean.getClass();
+
+		if (!_beanMatcher.match(beanClass, beanName) ||
+			_earlyProxyReferences.contains(new CacheKey(beanClass, beanName))) {
+
+			return bean;
+		}
+
+		return ProxyUtil.newProxyInstance(
+			_classLoader, ReflectionUtil.getInterfaces(bean),
+			new ServiceBeanAopInvocationHandler(
+				bean, _serviceBeanAopCacheManager));
+	}
+
+	@Override
+	public boolean postProcessAfterInstantiation(Object bean, String beanName) {
+		return true;
+	}
+
+	@Override
+	public Object postProcessBeforeInitialization(
+		Object bean, String beanName) {
+
+		return bean;
+	}
+
+	@Override
+	public Object postProcessBeforeInstantiation(
+		Class<?> beanClass, String beanName) {
+
+		return null;
+	}
+
+	@Override
+	public PropertyValues postProcessPropertyValues(
+		PropertyValues propertyValues, PropertyDescriptor[] propertyDescriptors,
+		Object bean, String beanName) {
+
+		return propertyValues;
+	}
+
+	@Override
+	public Class<?> predictBeanType(Class<?> beanClass, String beanName) {
+		return null;
+	}
+
+	@Override
+	public void setBeanClassLoader(ClassLoader classLoader) {
+		_classLoader = classLoader;
 	}
 
 	public void setBeanMatcher(BeanMatcher beanMatcher) {
 		_beanMatcher = beanMatcher;
 	}
 
-	@Override
-	protected void customizeProxyFactory(ProxyFactory proxyFactory) {
-		proxyFactory.setAopProxyFactory(
-			new org.springframework.aop.framework.AopProxyFactory() {
-
-				@Override
-				public AopProxy createAopProxy(AdvisedSupport advisedSupport)
-					throws AopConfigException {
-
-					return new AopProxyAdapter(
-						_aopProxyFactory.getAopProxy(
-							new AdvisedSupportAdapter(advisedSupport)));
-				}
-
-			});
+	public void setMethodInterceptor(MethodInterceptor methodInterceptor) {
+		_chainableMethodAdvice = (ChainableMethodAdvice)methodInterceptor;
 	}
 
-	@Override
-	@SuppressWarnings("rawtypes")
-	protected Object[] getAdvicesAndAdvisorsForBean(
-		Class beanClass, String beanName, TargetSource targetSource) {
+	private BeanMatcher _beanMatcher;
+	private ChainableMethodAdvice _chainableMethodAdvice;
+	private ClassLoader _classLoader;
+	private final Set<CacheKey> _earlyProxyReferences =
+		Collections.newSetFromMap(new ConcurrentHashMap<>());
+	private ServiceBeanAopCacheManager _serviceBeanAopCacheManager;
 
-		Object[] advices = DO_NOT_PROXY;
+	private static class CacheKey {
 
-		if (_beanMatcher.match(beanClass, beanName)) {
-			advices = super.getAdvicesAndAdvisorsForBean(
-				beanClass, beanName, targetSource);
+		@Override
+		public boolean equals(Object obj) {
+			CacheKey cacheKey = (CacheKey)obj;
 
-			if (advices == DO_NOT_PROXY) {
-				advices = PROXY_WITHOUT_ADDITIONAL_INTERCEPTORS;
+			if (_clazz.equals(cacheKey._clazz) &&
+				Objects.equals(_beanName, cacheKey._beanName)) {
+
+				return true;
 			}
+
+			return false;
 		}
 
-		return advices;
-	}
+		@Override
+		public int hashCode() {
+			int hash = HashUtil.hash(0, _clazz);
 
-	private AopProxyFactory _aopProxyFactory;
-	private BeanMatcher _beanMatcher;
+			return HashUtil.hash(hash, _beanName);
+		}
+
+		private CacheKey(Class<?> clazz, String beanName) {
+			_clazz = clazz;
+			_beanName = beanName;
+		}
+
+		private final String _beanName;
+		private final Class<?> _clazz;
+
+	}
 
 }
