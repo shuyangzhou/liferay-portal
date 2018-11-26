@@ -64,19 +64,6 @@ public class ValidatorTest {
 	}
 
 	@Test
-	public void testIsDomain() {
-
-		// 来锐.com, живот.рс
-
-		String[] validDomains = {
-			"localhost", "liferay.com", "\u6765\u9510.com",
-			"\u0436\u0438\u0432\u043E\u0442.\u0440\u0441"
-		};
-
-		testIsValidByMethodName("isDomain", validDomains, true);
-	}
-
-	@Test
 	public void testIsFileExtension() throws Exception {
 		String[] validFileExtensions = {"abc", ".abc", "."};
 
@@ -111,6 +98,16 @@ public class ValidatorTest {
 		};
 
 		testValidFilePaths(validFilePathsWithParentDirectories, true, true);
+	}
+
+	@Test
+	public void testIsInvalidDomain() {
+
+		String[] invalidDomains = {
+			"8.8.8.8", "0:0:0:0:0:0:13.1.68.3"
+		};
+
+		testValidDomains(invalidDomains, false);
 	}
 
 	@Test
@@ -434,6 +431,19 @@ public class ValidatorTest {
 	}
 
 	@Test
+	public void testIsValidDomain() {
+
+		// 来锐.com, живот.рс
+
+		String[] validDomains = {
+			"localhost", "liferay.com", "\u6765\u9510.com",
+			"\u0436\u0438\u0432\u043E\u0442.\u0440\u0441"
+		};
+
+		testValidDomains(validDomains, true);
+	}
+
+	@Test
 	public void testIsValidEmailAddress() throws Exception {
 		String[] validEmailAddresses = {
 			"test@liferay.com", "test123@liferay.com", "test.user@liferay.com",
@@ -618,6 +628,10 @@ public class ValidatorTest {
 					Validator.class, methodName, new Class<?>[] {String.class},
 					param));
 		}
+	}
+
+	protected void testValidDomains(String[] validDomains, boolean valid) {
+		testIsValidByMethodName("isDomain", validDomains, valid);
 	}
 
 	protected void testValidEmailAddreses(
