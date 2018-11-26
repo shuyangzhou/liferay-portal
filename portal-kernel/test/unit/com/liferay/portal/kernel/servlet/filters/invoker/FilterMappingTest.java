@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.test.JDKLoggerTestUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
 import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.StringBundler;
 
 import java.util.Collections;
 import java.util.Enumeration;
@@ -122,47 +123,39 @@ public class FilterMappingTest {
 	@Test
 	public void testIsMatchURLPattern() {
 		FilterMapping filterMapping = new FilterMapping(
-			_TEST_FILTER_NAME, _dummyFilter,
-			ProxyFactory.newDummyInstance(FilterConfig.class),
+			null, null, ProxyFactory.newDummyInstance(FilterConfig.class),
 			Collections.emptyList(), Collections.emptyList());
 
 		Assert.assertTrue(
-			"True should be returned because uri \"/test/login.jsp\" matches " +
-				"urlPattern \"/test/login.jsp\"",
+			_getIsMatchURLPatternMessage(
+				true, "/test/login.jsp", "/test/login.jsp"),
 			filterMapping.isMatchURLPattern(
 				"/test/login.jsp", "/test/login.jsp"));
 		Assert.assertTrue(
-			"True should be returned because uri \"/test/login\" matches " +
-				"urlPattern \"/*\"",
+			_getIsMatchURLPatternMessage(true, "/test/login", "/*"),
 			filterMapping.isMatchURLPattern("/test/login", "/*"));
 		Assert.assertTrue(
-			"True should be returned because uri \"/test/login\" matches " +
-				"urlPattern \"/test/*\"",
+			_getIsMatchURLPatternMessage(true, "/test/login", "/test/*"),
 			filterMapping.isMatchURLPattern("/test/login", "/test/*"));
 		Assert.assertTrue(
-			"True should be returned because uri \"/test\" matches " +
-				"urlPattern \"/test/*\"",
+			_getIsMatchURLPatternMessage(true, "/test", "/test/*"),
 			filterMapping.isMatchURLPattern("/test", "/test/*"));
 		Assert.assertTrue(
-			"True should be returned because uri \"/test/login.jsp\" matches " +
-				"urlPattern \"*.jsp\"",
+			_getIsMatchURLPatternMessage(true, "/test/login.jsp", "*.jsp"),
 			filterMapping.isMatchURLPattern("/test/login.jsp", "*.jsp"));
 		Assert.assertFalse(
-			"False should be returned because uri \"/c/test/login\" does not " +
-				"match urlPattern \"/test/*\"",
+			_getIsMatchURLPatternMessage(false, "/c/test/login", "/test/*"),
 			filterMapping.isMatchURLPattern("/c/test/login", "/test/*"));
 		Assert.assertFalse(
-			"False should be returned because uri \"/test/login.css\" does " +
-				"not match urlPattern \"/test/login.jsp\"",
+			_getIsMatchURLPatternMessage(
+				false, "/test/login.css", "/test/login.jsp"),
 			filterMapping.isMatchURLPattern(
 				"/test/login.css", "/test/login.jsp"));
 		Assert.assertFalse(
-			"False should be returned because uri \"login.jsp\" does not " +
-				"match urlPattern \"*.jsp\"",
+			_getIsMatchURLPatternMessage(false, "login.jsp", "*.jsp"),
 			filterMapping.isMatchURLPattern("login.jsp", "*.jsp"));
 		Assert.assertFalse(
-			"False should be returned because uri \"/test/login.css\" does " +
-				"not match urlPattern \"*.jsp\"",
+			_getIsMatchURLPatternMessage(false, "/test/login.css", "*.jsp"),
 			filterMapping.isMatchURLPattern("/test/login.css", "*.jsp"));
 	}
 
@@ -250,6 +243,30 @@ public class FilterMappingTest {
 		else {
 			Assert.assertEquals(expectedURLRegex, pattern.pattern());
 		}
+	}
+
+	private String _getIsMatchURLPatternMessage(
+		boolean returnValue, String uri, String urlPattern) {
+
+		StringBundler sb = new StringBundler(7);
+
+		sb.append(
+			"FilterMapping.isMatchURLPattern(String, String) should return ");
+		sb.append(returnValue);
+		sb.append(" when uri \"");
+		sb.append(uri);
+
+		if (returnValue) {
+			sb.append("\" matches pattern ");
+		}
+		else {
+			sb.append("\" does not match pattern \"");
+		}
+
+		sb.append(urlPattern);
+		sb.append("\"");
+
+		return sb.toString();
 	}
 
 	private void _testIsMatch(
