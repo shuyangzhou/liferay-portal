@@ -102,10 +102,7 @@ public class ValidatorTest {
 
 	@Test
 	public void testIsInvalidDomain() {
-
-		String[] invalidDomains = {
-			"8.8.8.8", "0:0:0:0:0:0:13.1.68.3"
-		};
+		String[] invalidDomains = {"8.8.8.8", "0:0:0:0:0:0:13.1.68.3"};
 
 		testValidDomains(invalidDomains, false);
 	}
@@ -125,9 +122,8 @@ public class ValidatorTest {
 
 	@Test
 	public void testIsInvalidFileExtension() throws Exception {
-		String[] invalidFileExtensions = {
-			null, "", "\u0000", ".\u0000", "abc\u0000\u0000/", "a/b", "c\\d"
-		};
+		String[] invalidFileExtensions =
+			{null, "", "\u0000", ".\u0000", "abc\u0000\u0000/", "a/b", "c\\d"};
 
 		testValidFileExtensions(invalidFileExtensions, false);
 	}
@@ -145,18 +141,16 @@ public class ValidatorTest {
 
 	@Test
 	public void testIsInvalidFilePath() throws Exception {
-		String[] invalidFilePaths = {
-			null, "", "..", "./..", "../a", "/../a", "\u0000", "a\u0000/../a"
-		};
+		String[] invalidFilePaths =
+			{null, "", "..", "./..", "../a", "/../a", "\u0000", "a\u0000/../a"};
 
 		testValidFilePaths(invalidFilePaths, false, false);
 	}
 
 	@Test
 	public void testIsInvalidFilePathWithParentDirectories() throws Exception {
-		String[] invalidFilePathsWithParentDirectories = {
-			null, "", "\u0000", "a\u0000/../a"
-		};
+		String[] invalidFilePathsWithParentDirectories =
+			{null, "", "\u0000", "a\u0000/../a"};
 
 		testValidFilePaths(invalidFilePathsWithParentDirectories, true, false);
 	}
@@ -414,18 +408,16 @@ public class ValidatorTest {
 
 	@Test
 	public void testIsNull() throws Exception {
-		String[] nullStrings = {
-			null, "", "  ", "null", " null", "null ", "  null  "
-		};
+		String[] nullStrings =
+			{null, "", "  ", "null", " null", "null ", "  null  "};
 
 		testIsNull(nullStrings, true);
 	}
 
 	@Test
 	public void testIsNullInvalid() throws Exception {
-		String[] notNullStrings = {
-			"a", "anull", "nulla", " anull", " nulla ", "  null  a"
-		};
+		String[] notNullStrings =
+			{"a", "anull", "nulla", " anull", " nulla ", "  null  a"};
 
 		testIsNull(notNullStrings, false);
 	}
