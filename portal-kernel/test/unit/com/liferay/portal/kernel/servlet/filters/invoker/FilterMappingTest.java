@@ -205,36 +205,17 @@ public class FilterMappingTest {
 
 	@Test
 	public void testReplaceFilter() {
-		FilterMapping oldFilterMapping = new FilterMapping(
+		FilterMapping filterMapping = new FilterMapping(
 			_TEST_FILTER_NAME, null,
 			new TestFilterConfig(_URL_REGEX_IGNORE_PATTERN, _URL_REGEX_PATTERN),
-			Collections.emptyList(),
+			Collections.singletonList(_URL_PATTERN),
 			Collections.singletonList(String.valueOf(Dispatcher.ASYNC)));
 
-		Assert.assertSame(null, oldFilterMapping.getFilter());
-
-		FilterMapping newFilterMapping = oldFilterMapping.replaceFilter(
-			_dummyFilter);
-
-		Assert.assertSame(
-			oldFilterMapping.getFilterName(), newFilterMapping.getFilterName());
-		Assert.assertSame(_dummyFilter, newFilterMapping.getFilter());
-		Assert.assertSame(
-			ReflectionTestUtil.getFieldValue(oldFilterMapping, "_urlPatterns"),
-			ReflectionTestUtil.getFieldValue(newFilterMapping, "_urlPatterns"));
-		Assert.assertSame(
-			ReflectionTestUtil.getFieldValue(oldFilterMapping, "_dispatchers"),
-			ReflectionTestUtil.getFieldValue(newFilterMapping, "_dispatchers"));
-		Assert.assertSame(
-			ReflectionTestUtil.getFieldValue(
-				oldFilterMapping, "_urlRegexIgnorePattern"),
-			ReflectionTestUtil.getFieldValue(
-				newFilterMapping, "_urlRegexIgnorePattern"));
-		Assert.assertSame(
-			ReflectionTestUtil.getFieldValue(
-				oldFilterMapping, "_urlRegexPattern"),
-			ReflectionTestUtil.getFieldValue(
-				newFilterMapping, "_urlRegexPattern"));
+		_assertFilterMapping(
+			_TEST_FILTER_NAME, _dummyFilter, _URL_REGEX_IGNORE_PATTERN,
+			_URL_REGEX_PATTERN, new String[] {_URL_PATTERN},
+			Collections.singleton(Dispatcher.ASYNC),
+			filterMapping.replaceFilter(_dummyFilter));
 	}
 
 	private void _assertFilterMapping(
