@@ -51,13 +51,22 @@ public class FilterMappingTest {
 
 	@Test
 	public void testConstructor() {
-		_testConstructor(
-			Collections.singleton(Dispatcher.ASYNC), null, null,
-			Collections.singletonList(String.valueOf(Dispatcher.ASYNC)));
-		_testConstructor(
+		_assertFilterMapping(
+			null, null, null, null, new String[0],
 			Collections.singleton(Dispatcher.REQUEST),
-			_URL_REGEX_IGNORE_PATTERN, _URL_REGEX_PATTERN,
-			Collections.emptyList());
+			new FilterMapping(
+				null, null, new TestFilterConfig(null, null),
+				Collections.emptyList(), Collections.emptyList()));
+		_assertFilterMapping(
+			_TEST_FILTER_NAME, _dummyFilter, _URL_REGEX_IGNORE_PATTERN,
+			_URL_REGEX_PATTERN, new String[] {_URL_PATTERN},
+			Collections.singleton(Dispatcher.ASYNC),
+			new FilterMapping(
+				_TEST_FILTER_NAME, _dummyFilter,
+				new TestFilterConfig(
+					_URL_REGEX_IGNORE_PATTERN, _URL_REGEX_PATTERN),
+				Collections.singletonList(_URL_PATTERN),
+				Collections.singletonList(String.valueOf(Dispatcher.ASYNC))));
 	}
 
 	@Test
@@ -239,6 +248,31 @@ public class FilterMappingTest {
 				newFilterMapping, "_urlRegexPattern"));
 	}
 
+	private void _assertFilterMapping(
+		String expectedFilterName, Filter expectedFilter,
+		String expectedUrlRegexIgnore, String expectedUrlRegex,
+		String[] expectedUrlPattern, Set<Dispatcher> expectedDispatchers,
+		FilterMapping filterMapping) {
+
+		Assert.assertSame(expectedFilterName, filterMapping.getFilterName());
+		Assert.assertSame(expectedFilter, filterMapping.getFilter());
+		Assert.assertArrayEquals(
+			expectedUrlPattern,
+			ReflectionTestUtil.getFieldValue(filterMapping, "_urlPatterns"));
+		Assert.assertEquals(
+			expectedDispatchers,
+			ReflectionTestUtil.getFieldValue(filterMapping, "_dispatchers"));
+
+		_assertURLRegex(
+			expectedUrlRegexIgnore,
+			ReflectionTestUtil.getFieldValue(
+				filterMapping, "_urlRegexIgnorePattern"));
+		_assertURLRegex(
+			expectedUrlRegex,
+			ReflectionTestUtil.getFieldValue(
+				filterMapping, "_urlRegexPattern"));
+	}
+
 	private void _assertURLRegex(String expectedURLRegex, Pattern pattern) {
 		if (expectedURLRegex == null) {
 			Assert.assertNull(pattern);
@@ -246,34 +280,6 @@ public class FilterMappingTest {
 		else {
 			Assert.assertEquals(expectedURLRegex, pattern.pattern());
 		}
-	}
-
-	private void _testConstructor(
-		Set<Dispatcher> expectedDispatchers, String urlRegexIgnorePattern,
-		String urlRegexPattern, List<String> dispatchers) {
-
-		FilterMapping filterMapping = new FilterMapping(
-			_TEST_FILTER_NAME, _dummyFilter,
-			new TestFilterConfig(urlRegexIgnorePattern, urlRegexPattern),
-			Collections.singletonList(_URL_PATTERN), dispatchers);
-
-		Assert.assertSame(_TEST_FILTER_NAME, filterMapping.getFilterName());
-		Assert.assertSame(_dummyFilter, filterMapping.getFilter());
-		Assert.assertArrayEquals(
-			new String[] {_URL_PATTERN},
-			ReflectionTestUtil.getFieldValue(filterMapping, "_urlPatterns"));
-		Assert.assertEquals(
-			expectedDispatchers,
-			ReflectionTestUtil.getFieldValue(filterMapping, "_dispatchers"));
-
-		_assertURLRegex(
-			urlRegexIgnorePattern,
-			ReflectionTestUtil.getFieldValue(
-				filterMapping, "_urlRegexIgnorePattern"));
-		_assertURLRegex(
-			urlRegexPattern,
-			ReflectionTestUtil.getFieldValue(
-				filterMapping, "_urlRegexPattern"));
 	}
 
 	private void _testIsMatch(
