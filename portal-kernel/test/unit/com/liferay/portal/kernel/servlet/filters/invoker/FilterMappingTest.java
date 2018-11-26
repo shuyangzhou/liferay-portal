@@ -70,17 +70,6 @@ public class FilterMappingTest {
 	}
 
 	@Test
-	public void testGetterMethods() {
-		FilterMapping filterMapping = new FilterMapping(
-			_TEST_FILTER_NAME, _dummyFilter,
-			ProxyFactory.newDummyInstance(FilterConfig.class),
-			Collections.emptyList(), Collections.emptyList());
-
-		Assert.assertSame(_TEST_FILTER_NAME, filterMapping.getFilterName());
-		Assert.assertSame(_dummyFilter, filterMapping.getFilter());
-	}
-
-	@Test
 	public void testIsMatch() {
 		_testWithLog(
 			new String[] {
