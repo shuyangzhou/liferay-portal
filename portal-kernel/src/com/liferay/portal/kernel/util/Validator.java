@@ -587,6 +587,13 @@ public class Validator {
 			}
 		}
 
+		// RFC-1123 (section 2.1) differentiates between a domain and an IP
+		// address
+
+		if (isIPv4Address(domainName)) {
+			return false;
+		}
+
 		return true;
 	}
 
