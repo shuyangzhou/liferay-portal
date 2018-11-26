@@ -3960,8 +3960,8 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 
 		RemoteOptionsException roe = null;
 
-		if (!Validator.isDomain(remoteAddress) &&
-			!Validator.isIPAddress(remoteAddress)) {
+		if (!Validator.isIPAddress(remoteAddress) &&
+			!Validator.isDomain(remoteAddress)) {
 
 			roe = new RemoteOptionsException(
 				RemoteOptionsException.REMOTE_ADDRESS);

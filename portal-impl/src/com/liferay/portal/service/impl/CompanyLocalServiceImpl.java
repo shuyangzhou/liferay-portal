@@ -1613,7 +1613,9 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	}
 
 	protected void validateMx(String mx) throws PortalException {
-		if (Validator.isNull(mx) || !Validator.isDomain(mx)) {
+		if (Validator.isNull(mx) ||
+		(!Validator.isIPv4Address(mx) && !Validator.isDomain(mx))) {
+
 			throw new CompanyMxException();
 		}
 	}
@@ -1639,7 +1641,9 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 			throw new CompanyVirtualHostException();
 		}
-		else if (!Validator.isDomain(virtualHostname)) {
+		else if (!Validator.isIPv4Address(virtualHostname) &&
+				!Validator.isDomain(virtualHostname)) {
+
 			throw new CompanyVirtualHostException();
 		}
 		else {

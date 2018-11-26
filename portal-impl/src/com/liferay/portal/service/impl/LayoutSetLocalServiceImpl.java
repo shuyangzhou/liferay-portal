@@ -474,6 +474,7 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 			StringUtil.trim(virtualHostname));
 
 		if (Validator.isNotNull(virtualHostname) &&
+			!Validator.isIPv4Address(virtualHostname) &&
 			!Validator.isDomain(virtualHostname)) {
 
 			throw new LayoutSetVirtualHostException();
