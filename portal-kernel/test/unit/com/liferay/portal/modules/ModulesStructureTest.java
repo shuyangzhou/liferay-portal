@@ -439,15 +439,13 @@ public class ModulesStructureTest {
 
 							Path path = dirPath.resolve(entry.getKey());
 
-							if (Files.exists(path)) {
-								Assert.fail(
-									StringBundler.concat(
-										"Please rename ", String.valueOf(path),
-										" to ",
-										String.valueOf(
-											path.resolveSibling(
-												entry.getValue()))));
-							}
+							Assert.assertFalse(
+								StringBundler.concat(
+									"Please rename ", String.valueOf(path),
+									" to ",
+									String.valueOf(
+										path.resolveSibling(entry.getValue()))),
+								Files.exists(path));
 						}
 					}
 
@@ -1117,7 +1115,10 @@ public class ModulesStructureTest {
 					sb.append(gradlePropertiesPattern.pattern());
 					sb.append("\".");
 
-					Assert.fail(sb.toString());
+					Assert.assertFalse(
+						sb.toString(),
+						!_gitRepoGradlePropertiesKeys.contains(key) &&
+						!key.endsWith(".version") && !matcher.matches());
 				}
 			}
 
@@ -1293,37 +1294,36 @@ public class ModulesStructureTest {
 			"testIntegrationRuntime", hasSrcTestIntegrationDir);
 
 		for (GradleDependency gradleDependency : gradleDependencies) {
-			if (_shouldBecomeProjectDependency(gradleDependency, dirPath)) {
-				StringBundler sb = new StringBundler(9);
+			StringBundler sb = new StringBundler(9);
 
-				sb.append("Artifact dependency {");
-				sb.append(gradleDependency);
-				sb.append("} in ");
-				sb.append(path);
-				sb.append(" not permitted on ");
-				sb.append(_branchName);
-				sb.append(" branch. Use ");
+			sb.append("Artifact dependency {");
+			sb.append(gradleDependency);
+			sb.append("} in ");
+			sb.append(path);
+			sb.append(" not permitted on ");
+			sb.append(_branchName);
+			sb.append(" branch. Use ");
 
-				String moduleGroup = gradleDependency.getModuleGroup();
+			String moduleGroup = gradleDependency.getModuleGroup();
 
-				if (moduleGroup.equals("com.liferay.portal")) {
-					sb.append("version \"default\"");
-				}
-				else {
-					sb.append("a project dependency");
-				}
-
-				sb.append(" instead.");
-
-				Assert.fail(sb.toString());
+			if (moduleGroup.equals("com.liferay.portal")) {
+				sb.append("version \"default\"");
 			}
+			else {
+				sb.append("a project dependency");
+			}
+
+			sb.append(" instead.");
+
+			Assert.assertFalse(
+				sb.toString(),
+				_shouldBecomeProjectDependency(gradleDependency, dirPath));
 
 			Boolean allowed = allowedConfigurationsMap.get(
 				gradleDependency.getConfiguration());
 
 			if ((allowed != null) && !allowed.booleanValue()) {
-				StringBundler sb = new StringBundler(
-					allowedConfigurationsMap.size() * 4 + 4);
+				sb = new StringBundler(allowedConfigurationsMap.size() * 4 + 4);
 
 				sb.append("Incorrect configuration of dependency {");
 				sb.append(gradleDependency);
@@ -1351,7 +1351,7 @@ public class ModulesStructureTest {
 					sb.append(CharPool.QUOTE);
 				}
 
-				Assert.fail(sb.toString());
+				Assert.assertFalse(sb.toString(), !allowed);
 			}
 
 			GradleDependency activeGradleDependency =

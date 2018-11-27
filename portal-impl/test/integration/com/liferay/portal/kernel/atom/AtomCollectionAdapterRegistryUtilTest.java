@@ -56,6 +56,8 @@ public class AtomCollectionAdapterRegistryUtilTest {
 		List<AtomCollectionAdapter<?>> atomCollectionAdapters =
 			AtomCollectionAdapterRegistryUtil.getAtomCollectionAdapters();
 
+		boolean found = false;
+
 		for (AtomCollectionAdapter<?> atomCollectionAdapter :
 				atomCollectionAdapters) {
 
@@ -64,11 +66,14 @@ public class AtomCollectionAdapterRegistryUtilTest {
 			if (collectionName.equals(
 					TestAtomCollectionAdapter.COLLECTION_NAME)) {
 
-				return;
+				found = true;
 			}
 		}
 
-		Assert.fail();
+		Assert.assertTrue(
+			TestAtomCollectionAdapter.COLLECTION_NAME + " not found in " +
+				atomCollectionAdapters,
+			found);
 	}
 
 }

@@ -267,7 +267,10 @@ public class ReleaseVersionsTest {
 			sb.append(_portalPath.relativize(updateVersionPath));
 			sb.append(" for the 'master' branch.");
 
-			Assert.fail(sb.toString());
+			Assert.assertFalse(
+				sb.toString(),
+				!releaseVersion.equals(Version.ONE) &&
+				(masterVersion.getMajor() != (releaseVersion.getMajor() + 1)));
 		}
 	}
 

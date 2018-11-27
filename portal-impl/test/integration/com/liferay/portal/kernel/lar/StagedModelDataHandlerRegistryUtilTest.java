@@ -58,6 +58,8 @@ public class StagedModelDataHandlerRegistryUtilTest {
 		List<StagedModelDataHandler<?>> stagedModelDataHandlers =
 			StagedModelDataHandlerRegistryUtil.getStagedModelDataHandlers();
 
+		boolean found = false;
+
 		for (StagedModelDataHandler<?> stagedModelDataHandler :
 				stagedModelDataHandlers) {
 
@@ -66,11 +68,14 @@ public class StagedModelDataHandlerRegistryUtilTest {
 			String className = clazz.getName();
 
 			if (className.equals(TestStagedModelDataHandler.class.getName())) {
-				return;
+				found = true;
 			}
 		}
 
-		Assert.fail();
+		Assert.assertTrue(
+			TestStagedModelDataHandler.class.getName() + " not found in " +
+				stagedModelDataHandlers,
+			found);
 	}
 
 }

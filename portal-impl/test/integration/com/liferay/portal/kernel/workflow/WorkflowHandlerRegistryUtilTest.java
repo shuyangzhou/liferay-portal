@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.workflow;
 
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.workflow.bundle.workflowhandlerregistryutil.TestWorkflowHandler;
@@ -71,49 +72,44 @@ public class WorkflowHandlerRegistryUtilTest {
 		List<WorkflowHandler<?>> workflowHandlers =
 			WorkflowHandlerRegistryUtil.getWorkflowHandlers();
 
+		boolean found = false;
+
 		for (WorkflowHandler<?> workflowHandler : workflowHandlers) {
 			String className = workflowHandler.getClassName();
 
 			if (className.equals(TestWorkflowHandler.class.getName())) {
-				return;
+				found = true;
 			}
 		}
 
-		Assert.fail();
+		Assert.assertTrue(
+			TestWorkflowHandler.class.getName() + " not found in " +
+				workflowHandlers,
+			found);
 	}
 
 	@Test
-	public void testStartWorkflowInstance1() {
+	public void testStartWorkflowInstance1() throws PortalException {
 		_atomicState.reset();
 
-		try {
-			ServiceContext serviceContext = new ServiceContext();
+		ServiceContext serviceContext = new ServiceContext();
 
-			WorkflowHandlerRegistryUtil.startWorkflowInstance(
-				1, 1, 1, TestWorkflowHandler.class.getName(), 1, null,
-				serviceContext, new HashMap<String, Serializable>());
-		}
-		catch (Exception e) {
-			Assert.fail();
-		}
+		WorkflowHandlerRegistryUtil.startWorkflowInstance(
+			1, 1, 1, TestWorkflowHandler.class.getName(), 1, null,
+			serviceContext, new HashMap<String, Serializable>());
 
 		Assert.assertTrue(_atomicState.isSet());
 	}
 
 	@Test
-	public void testStartWorkflowInstance2() {
+	public void testStartWorkflowInstance2() throws PortalException {
 		_atomicState.reset();
 
-		try {
-			ServiceContext serviceContext = new ServiceContext();
+		ServiceContext serviceContext = new ServiceContext();
 
-			WorkflowHandlerRegistryUtil.startWorkflowInstance(
-				1, 1, 1, TestWorkflowHandler.class.getName(), 1, null,
-				serviceContext);
-		}
-		catch (Exception e) {
-			Assert.fail();
-		}
+		WorkflowHandlerRegistryUtil.startWorkflowInstance(
+			1, 1, 1, TestWorkflowHandler.class.getName(), 1, null,
+			serviceContext);
 
 		Assert.assertTrue(_atomicState.isSet());
 	}

@@ -63,19 +63,22 @@ public class PortletToolbarTest {
 			RandomTestUtil.randomString(), Mockito.mock(PortletRequest.class),
 			Mockito.mock(PortletResponse.class));
 
+		boolean found = false;
+
 		for (Menu menu : menus) {
 			String label = menu.getLabel();
 
 			if ((label != null) &&
 				label.equals(TestPortletToolbarContributor.LABEL)) {
 
-				return;
+				found = true;
 			}
 		}
 
-		Assert.fail(
+		Assert.assertTrue(
 			"Unable to retrieve menu with label " +
-				TestPortletToolbarContributor.LABEL);
+				TestPortletToolbarContributor.LABEL,
+			found);
 	}
 
 }

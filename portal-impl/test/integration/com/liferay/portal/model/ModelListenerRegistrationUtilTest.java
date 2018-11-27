@@ -22,6 +22,8 @@ import com.liferay.portal.model.bundle.modellistenerregistrationutil.TestModelLi
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.SyntheticBundleRule;
 
+import java.util.Arrays;
+
 import org.junit.Assert;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -44,17 +46,22 @@ public class ModelListenerRegistrationUtilTest {
 		ModelListener<Contact>[] modelListeners =
 			ModelListenerRegistrationUtil.getModelListeners(Contact.class);
 
+		boolean found = false;
+
 		for (ModelListener<Contact> modelListener : modelListeners) {
 			Class<?> clazz = modelListener.getClass();
 
 			String className = clazz.getName();
 
 			if (className.equals(TestModelListener.class.getName())) {
-				return;
+				found = true;
 			}
 		}
 
-		Assert.fail();
+		Assert.assertTrue(
+			TestModelListener.class.getName() + " not found in " +
+				Arrays.toString(modelListeners),
+			found);
 	}
 
 }
