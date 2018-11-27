@@ -14,8 +14,6 @@
 
 package com.liferay.portal.osgi.web.wab.generator.internal.cdi;
 
-import java.util.EnumSet;
-
 /**
  * @author Raymond Augé
  */
@@ -23,18 +21,16 @@ public enum Discover {
 
 	all, annotated, annotated_by_bean, none;
 
-	public static void parse(String s, EnumSet<Discover> options) {
-		if (s == null) {
-			return;
+	public static Discover parse(String s) {
+		if ((s == null) || s.isEmpty()) {
+			return null;
 		}
 
 		if (s.startsWith("!")) {
-			s = s.substring(1);
+			return null;
 		}
 
-		Discover option = Discover.valueOf(s);
-
-		options.add(option);
+		return Discover.valueOf(s);
 	}
 
 }
