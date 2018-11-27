@@ -1143,25 +1143,16 @@ public class WabProcessor {
 
 		Set<Object> plugins = analyzer.getPlugins();
 
-		Object dsAnnotationsPlugin = null;
-		Object cdiAnnotationsPlugin = null;
+		Iterator<Object> iterator = plugins.iterator();
 
-		for (Object plugin : plugins) {
-			if (plugin instanceof aQute.bnd.cdi.CDIAnnotations) {
-				cdiAnnotationsPlugin = plugin;
+		while (iterator.hasNext()) {
+			Object plugin = iterator.next();
+
+			if ((plugin instanceof aQute.bnd.cdi.CDIAnnotations) ||
+				(plugin instanceof DSAnnotations)) {
+
+				iterator.remove();
 			}
-
-			if (plugin instanceof DSAnnotations) {
-				dsAnnotationsPlugin = plugin;
-			}
-		}
-
-		if (cdiAnnotationsPlugin != null) {
-			plugins.remove(cdiAnnotationsPlugin);
-		}
-
-		if (dsAnnotationsPlugin != null) {
-			plugins.remove(dsAnnotationsPlugin);
 		}
 
 		plugins.add(new CDIAnnotations());
