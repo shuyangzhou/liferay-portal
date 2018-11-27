@@ -14,6 +14,7 @@
 
 package com.liferay.portal.spring.bean;
 
+import com.liferay.portal.internal.spring.context.AOPBeanPostProcessor;
 import com.liferay.portal.spring.aop.DynamicProxyCreator;
 import com.liferay.portal.spring.aop.ServiceBeanAutoProxyCreator;
 
@@ -44,6 +45,7 @@ public class LiferayBeanFactory extends DefaultListableBeanFactory {
 
 		if ((beanPostProcessor instanceof
 				InstantiationAwareBeanPostProcessor) &&
+			!(beanPostProcessor instanceof AOPBeanPostProcessor) &&
 			!(beanPostProcessor instanceof DynamicProxyCreator) &&
 			!(beanPostProcessor instanceof ServiceBeanAutoProxyCreator)) {
 

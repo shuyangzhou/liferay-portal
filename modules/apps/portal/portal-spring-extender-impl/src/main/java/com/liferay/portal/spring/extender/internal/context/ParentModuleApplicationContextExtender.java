@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TextFormatter;
 import com.liferay.portal.spring.bean.LiferayBeanFactory;
+import com.liferay.portal.spring.context.ApplicationContextConfigurator;
 import com.liferay.portal.spring.extender.internal.bean.ApplicationContextServicePublisherUtil;
 import com.liferay.portal.spring.extender.internal.classloader.BundleResolverClassLoader;
 import com.liferay.portal.spring.extender.internal.configuration.ConfigurationUtil;
@@ -146,6 +147,9 @@ public class ParentModuleApplicationContextExtender extends AbstractExtender {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ParentModuleApplicationContextExtender.class);
+
+	@Reference(target = "(original.bean=true)")
+	private ApplicationContextConfigurator _applicationContextConfigurator;
 
 	private static class CacheableURLResource extends UrlResource {
 
@@ -280,99 +284,6 @@ public class ParentModuleApplicationContextExtender extends AbstractExtender {
 		}
 
 		private final Bundle _bundle;
-
-	}
-
-	private static class ParentModuleApplicationContext
-		extends ModuleApplicationContext {
-
-		@Override
-		public Resource[] getResources(String locationPattern) {
-			List<Resource> resources = new ArrayList<>();
-
-			Enumeration<URL> enumeration = _extenderBundle.findEntries(
-				locationPattern, "*.xml", false);
-
-			while (enumeration.hasMoreElements()) {
-				resources.add(
-					new CacheableURLResource(enumeration.nextElement()));
-			}
-
-			enumeration = bundle.findEntries(locationPattern, "*.xml", false);
-
-			if (enumeration != null) {
-				while (enumeration.hasMoreElements()) {
-					resources.add(new UrlResource(enumeration.nextElement()));
-				}
-			}
-
-			return resources.toArray(new Resource[resources.size()]);
-		}
-
-		@Override
-		public void refresh() {
-			prepareRefresh();
-
-			ConfigurableListableBeanFactory configurableListableBeanFactory =
-				obtainFreshBeanFactory();
-
-			prepareBeanFactory(configurableListableBeanFactory);
-
-			try {
-				initMessageSource();
-
-				initApplicationEventMulticaster();
-
-				configurableListableBeanFactory.freezeConfiguration();
-
-				configurableListableBeanFactory.preInstantiateSingletons();
-
-				finishRefresh();
-			}
-			catch (BeansException be) {
-				destroyBeans();
-
-				cancelRefresh(be);
-
-				throw be;
-			}
-		}
-
-		@Override
-		protected DefaultListableBeanFactory createBeanFactory() {
-			return new ParentModuleApplicationContextBeanFactory(
-				getInternalParentBeanFactory());
-		}
-
-		@Override
-		protected void loadBeanDefinitions(
-				DefaultListableBeanFactory defaultListableBeanFactory)
-			throws IOException {
-
-			XmlBeanDefinitionReader xmlBeanDefinitionReader =
-				new CachingXmlBeanDefinitionReader(defaultListableBeanFactory);
-
-			xmlBeanDefinitionReader.setEntityResolver(
-				new ResourceEntityResolver(this));
-			xmlBeanDefinitionReader.setEnvironment(getEnvironment());
-			xmlBeanDefinitionReader.setResourceLoader(this);
-
-			initBeanDefinitionReader(xmlBeanDefinitionReader);
-
-			loadBeanDefinitions(xmlBeanDefinitionReader);
-		}
-
-		private ParentModuleApplicationContext(
-			Bundle bundle, Bundle extenderBundle) {
-
-			super(
-				bundle, new BundleResolverClassLoader(bundle, extenderBundle),
-				_PARENT_CONFIG_LOCATIONS);
-
-			_extenderBundle = extenderBundle;
-		}
-
-		private final Bundle _extenderBundle;
 
 	}
 
@@ -534,6 +445,101 @@ public class ParentModuleApplicationContextExtender extends AbstractExtender {
 
 		private static final Map<String, Method> _methods =
 			new ConcurrentHashMap<>();
+
+	}
+
+	private class ParentModuleApplicationContext
+		extends ModuleApplicationContext {
+
+		@Override
+		public Resource[] getResources(String locationPattern) {
+			List<Resource> resources = new ArrayList<>();
+
+			Enumeration<URL> enumeration = _extenderBundle.findEntries(
+				locationPattern, "*.xml", false);
+
+			while (enumeration.hasMoreElements()) {
+				resources.add(
+					new CacheableURLResource(enumeration.nextElement()));
+			}
+
+			enumeration = bundle.findEntries(locationPattern, "*.xml", false);
+
+			if (enumeration != null) {
+				while (enumeration.hasMoreElements()) {
+					resources.add(new UrlResource(enumeration.nextElement()));
+				}
+			}
+
+			return resources.toArray(new Resource[resources.size()]);
+		}
+
+		@Override
+		public void refresh() {
+			prepareRefresh();
+
+			ConfigurableListableBeanFactory configurableListableBeanFactory =
+				obtainFreshBeanFactory();
+
+			prepareBeanFactory(configurableListableBeanFactory);
+
+			try {
+				_applicationContextConfigurator.configure(this);
+
+				initMessageSource();
+
+				initApplicationEventMulticaster();
+
+				configurableListableBeanFactory.freezeConfiguration();
+
+				configurableListableBeanFactory.preInstantiateSingletons();
+
+				finishRefresh();
+			}
+			catch (BeansException be) {
+				destroyBeans();
+
+				cancelRefresh(be);
+
+				throw be;
+			}
+		}
+
+		@Override
+		protected DefaultListableBeanFactory createBeanFactory() {
+			return new ParentModuleApplicationContextBeanFactory(
+				getInternalParentBeanFactory());
+		}
+
+		@Override
+		protected void loadBeanDefinitions(
+				DefaultListableBeanFactory defaultListableBeanFactory)
+			throws IOException {
+
+			XmlBeanDefinitionReader xmlBeanDefinitionReader =
+				new CachingXmlBeanDefinitionReader(defaultListableBeanFactory);
+
+			xmlBeanDefinitionReader.setEntityResolver(
+				new ResourceEntityResolver(this));
+			xmlBeanDefinitionReader.setEnvironment(getEnvironment());
+			xmlBeanDefinitionReader.setResourceLoader(this);
+
+			initBeanDefinitionReader(xmlBeanDefinitionReader);
+
+			loadBeanDefinitions(xmlBeanDefinitionReader);
+		}
+
+		private ParentModuleApplicationContext(
+			Bundle bundle, Bundle extenderBundle) {
+
+			super(
+				bundle, new BundleResolverClassLoader(bundle, extenderBundle),
+				_PARENT_CONFIG_LOCATIONS);
+
+			_extenderBundle = extenderBundle;
+		}
+
+		private final Bundle _extenderBundle;
 
 	}
 
