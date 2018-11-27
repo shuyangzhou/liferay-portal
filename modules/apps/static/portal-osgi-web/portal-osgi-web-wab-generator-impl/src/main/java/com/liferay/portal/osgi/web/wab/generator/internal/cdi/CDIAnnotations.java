@@ -232,7 +232,7 @@ public class CDIAnnotations implements AnalyzerPlugin {
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName();
+		return "CDIAnnotations";
 	}
 
 	private void _addExtenderRequirement(
