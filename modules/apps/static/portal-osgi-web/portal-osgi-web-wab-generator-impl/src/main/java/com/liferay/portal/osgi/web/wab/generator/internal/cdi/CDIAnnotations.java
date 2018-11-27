@@ -36,7 +36,6 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Node;
-import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.kernel.xml.UnsecureSAXReaderUtil;
 
 import java.lang.reflect.Modifier;
@@ -317,9 +316,13 @@ public class CDIAnnotations implements AnalyzerPlugin {
 			return Discover.none;
 		}
 
-		Document document = _readXMLResource(beansResource);
+		Document document = null;
 
-		if (!document.hasContent()) {
+		try {
+			document = UnsecureSAXReaderUtil.read(
+				beansResource.openInputStream());
+		}
+		catch (Exception e) {
 			return Discover.all;
 		}
 
@@ -352,15 +355,6 @@ public class CDIAnnotations implements AnalyzerPlugin {
 		}
 
 		return name.concat("-").concat(version);
-	}
-
-	private Document _readXMLResource(Resource resource) {
-		try {
-			return UnsecureSAXReaderUtil.read(resource.openInputStream());
-		}
-		catch (Throwable t) {
-			return SAXReaderUtil.createDocument();
-		}
 	}
 
 	/**
