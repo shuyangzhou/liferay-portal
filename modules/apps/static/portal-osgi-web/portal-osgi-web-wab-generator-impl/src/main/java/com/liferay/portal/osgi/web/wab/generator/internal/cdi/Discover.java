@@ -28,22 +28,13 @@ public enum Discover {
 			return;
 		}
 
-		boolean negation = false;
-
 		if (s.startsWith("!")) {
-			negation = true;
-
 			s = s.substring(1);
 		}
 
 		Discover option = Discover.valueOf(s);
 
-		if (negation) {
-			options.remove(option);
-		}
-		else {
-			options.add(option);
-		}
+		options.add(option);
 	}
 
 }
