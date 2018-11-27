@@ -346,12 +346,12 @@ public class CDIAnnotations implements AnalyzerPlugin {
 		return Discover.all;
 	}
 
-	private String _name(String name, String version) throws Exception {
+	private String _name(String name, String version) {
 		if (version == null) {
 			version = "0.0.0";
 		}
 
-		return name + "-" + version;
+		return name.concat("-").concat(version);
 	}
 
 	private Document _readXMLResource(Resource resource) {
