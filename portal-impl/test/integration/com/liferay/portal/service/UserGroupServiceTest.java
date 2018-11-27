@@ -92,9 +92,7 @@ public class UserGroupServiceTest {
 			UserGroupLocalServiceUtil.getUserGroups(
 				TestPropsValues.getCompanyId()));
 
-		StaleDataTestUtil.expectEmpty(
-			allUserGroups,
-			"Expected no user groups, but found " + allUserGroups.size());
+		StaleDataTestUtil.expectEmpty(allUserGroups);
 
 		List<UserGroup> likeNameUserGroups = new ArrayList<>();
 

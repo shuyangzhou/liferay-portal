@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.test.util;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.ClassedModel;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.StackTraceUtil;
 
 import java.util.List;
 
@@ -26,12 +26,9 @@ import java.util.List;
  */
 public class StaleDataTestUtil {
 
-	public static void expectEmpty(List items, String warningMessage) {
-		if (ListUtil.isNotEmpty(items) && _log.isWarnEnabled()) {
-			_log.warn(
-				"LRQA-44602 Stale data found: " +
-					StackTraceUtil.getStackTrace(
-						new Exception(warningMessage)));
+	public static void expectEmpty(List<? extends ClassedModel> list) {
+		if (!ListUtil.isEmpty(list) && _log.isInfoEnabled()) {
+			_log.info("LRQA-44602 Stale data found: " + list.toString());
 		}
 	}
 

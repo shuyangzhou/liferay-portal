@@ -6749,6 +6749,10 @@ osb.lcs.portlet.oauth.consumer.secret=${osb.lcs.portlet.oauth.consumer.secret}</
 		<priority value="DEBUG" />
 	</category>
 
+	<category name="com.liferay.portal.kernel.test.util.StaleDataTestUtil">
+		<priority value="INFO" />
+	</category>
+
 	<category name="com.liferay.portal.spring.hibernate.DialectDetector">
 		<priority value="${dialect.detector.log.level}" />
 	</category>
