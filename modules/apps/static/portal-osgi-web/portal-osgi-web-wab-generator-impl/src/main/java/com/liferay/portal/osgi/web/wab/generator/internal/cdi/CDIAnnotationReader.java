@@ -66,34 +66,32 @@ public class CDIAnnotationReader extends ClassDataCollector {
 		try {
 			Descriptors.TypeRef typeRef = annotation.getName();
 
-			switch (typeRef.getFQN()) {
-				case "org.osgi.service.cdi.annotations.Bean" :
-					BeanDef beanDef = _definitions.get(0);
+			String fqn = typeRef.getFQN();
 
-					beanDef.marked = true;
+			if ("org.osgi.service.cdi.annotations.MinimumCardinality".equals(
+					fqn)) {
 
-					break;
-				case "org.osgi.service.cdi.annotations.Service" :
-					_service(annotation);
+				int minimumCardinality = (int)annotation.get("value");
 
-					break;
-				case "org.osgi.service.cdi.annotations.MinimumCardinality" :
-					int minimumCardinality = (int)annotation.get("value");
-
-					if (minimumCardinality > 0) {
-						if (_referenceDef == null) {
-							_referenceDef = new ReferenceDef();
-						}
-
-						_referenceDef.cardinality =
-							ReferenceCardinality.AT_LEAST_ONE;
+				if (minimumCardinality > 0) {
+					if (_referenceDef == null) {
+						_referenceDef = new ReferenceDef();
 					}
 
-					break;
-				case "org.osgi.service.cdi.annotations.Reference" :
-					_reference(annotation, _parameter);
+					_referenceDef.cardinality =
+						ReferenceCardinality.AT_LEAST_ONE;
+				}
+			}
+			else if ("org.osgi.service.cdi.annotations.Bean".equals(fqn)) {
+				BeanDef beanDef = _definitions.get(0);
 
-					break;
+				beanDef.marked = true;
+			}
+			else if ("org.osgi.service.cdi.annotations.Service".equals(fqn)) {
+				_service(annotation);
+			}
+			else if ("org.osgi.service.cdi.annotations.Reference".equals(fqn)) {
+				_reference(annotation, _parameter);
 			}
 		}
 		catch (Exception e) {
@@ -207,52 +205,46 @@ public class CDIAnnotationReader extends ClassDataCollector {
 
 		ClassTypeSignature param = (ClassTypeSignature)parameterSig;
 
-		switch (param.binary) {
-			case "org/osgi/service/cdi/reference/BindService" :
-			case "org/osgi/service/cdi/reference/BindBeanServiceObjects" :
-			case "org/osgi/service/cdi/reference/BindServiceReference" :
-				if (param.classType.typeArguments.length != 1) {
-					_analyzer.error(
-						"In bean %s, Bind parameter has wrong type " +
-							"arguments: %s",
-						_clazz, param);
+		String binary = param.binary;
 
-					return;
-				}
+		if ("org/osgi/service/cdi/reference/BindService".equals(binary) ||
+			"org/osgi/service/cdi/reference/BindBeanServiceObjects".equals(
+				binary) ||
+			"org/osgi/service/cdi/reference/BindServiceReference".equals(
+				binary)) {
 
-				ReferenceTypeSignature inferred = resolver.resolveType(
-					param.classType.typeArguments[0]);
+			if (param.classType.typeArguments.length != 1) {
+				_analyzer.error(
+					"In bean %s, Bind parameter has wrong type arguments: %s",
+					_clazz, param);
 
-				if (!(inferred instanceof ClassTypeSignature)) {
-					_analyzer.error(
-						"In bean %s, Bind parameter has unresolvable type " +
-							"argument: %s",
-						_clazz, inferred);
+				return;
+			}
 
-					return;
-				}
+			ReferenceTypeSignature inferred = resolver.resolveType(
+				param.classType.typeArguments[0]);
 
-				ClassTypeSignature classSig = (ClassTypeSignature)inferred;
+			if (!(inferred instanceof ClassTypeSignature)) {
+				_analyzer.error(
+					"In bean %s, Bind parameter has unresolvable type " +
+						"argument: %s",
+					_clazz, inferred);
 
-				Descriptors.TypeRef typeRef = _analyzer.getTypeRef(
-					classSig.binary);
+				return;
+			}
 
-				ReferenceDef referenceDef = new ReferenceDef();
+			ClassTypeSignature classSig = (ClassTypeSignature)inferred;
 
-				referenceDef.service = typeRef.getFQN();
-				referenceDef.cardinality = ReferenceCardinality.MULTIPLE;
+			Descriptors.TypeRef typeRef = _analyzer.getTypeRef(classSig.binary);
 
-				BeanDef beanDef = _definitions.get(0);
+			ReferenceDef referenceDef = new ReferenceDef();
 
-				beanDef.references.add(referenceDef);
+			referenceDef.service = typeRef.getFQN();
+			referenceDef.cardinality = ReferenceCardinality.MULTIPLE;
 
-				break;
+			BeanDef beanDef = _definitions.get(0);
 
-			default :
-
-				// skip
-
-				break;
+			beanDef.references.add(referenceDef);
 		}
 	}
 
@@ -374,75 +366,70 @@ public class CDIAnnotationReader extends ClassDataCollector {
 
 		String signature = descriptor.toString();
 
-		switch (reference.getElementType()) {
-			case PARAMETER :
-				if (_member.getSignature() != null) {
-					signature = _member.getSignature();
+		if (reference.getElementType() == ElementType.PARAMETER) {
+			if (_member.getSignature() != null) {
+				signature = _member.getSignature();
+			}
+
+			MethodSignature methodSig = _analyzer.getMethodSignature(signature);
+
+			resolver = new MethodResolver(_classSignature, methodSig);
+
+			JavaTypeSignature parameterType =
+				((MethodResolver)resolver).resolveParameter(_parameter);
+
+			if (!(parameterType instanceof ClassTypeSignature)) {
+				_analyzer.error(
+					"In bean %s, method %s, parameter %s with @Reference has " +
+						"unresolved type %s",
+					_classSignature, _member.getName(), targetIndex,
+					parameterType);
+
+				return;
+			}
+
+			type = (ClassTypeSignature)parameterType;
+		}
+		else {
+			FieldSignature fieldSig = null;
+
+			if (signature == null) {
+				try {
+					fieldSig = _analyzer.getFieldSignature(
+						descriptor.toString());
 				}
-
-				MethodSignature methodSig = _analyzer.getMethodSignature(
-					signature);
-
-				resolver = new MethodResolver(_classSignature, methodSig);
-
-				JavaTypeSignature parameterType =
-					((MethodResolver)resolver).resolveParameter(_parameter);
-
-				if (!(parameterType instanceof ClassTypeSignature)) {
-					_analyzer.error(
-						"In bean %s, method %s, parameter %s with @Reference " +
-							"has unresolved type %s",
-						_classSignature, _member.getName(), targetIndex,
-						parameterType);
-
-					return;
+				catch (IllegalArgumentException iae) {
+					fieldSig = null;
 				}
+			}
+			else {
+				fieldSig = _analyzer.getFieldSignature(signature);
+			}
 
-				type = (ClassTypeSignature)parameterType;
+			if (fieldSig == null) {
+				_analyzer.error(
+					"In bean %s, field %s has an incompatible type for " +
+						"@Reference: %s",
+					_clazz, _member.getName(), _member.getDescriptor());
 
-				break;
-			default :
-				FieldSignature fieldSig = null;
+				return;
+			}
 
-				if (signature == null) {
-					try {
-						fieldSig = _analyzer.getFieldSignature(
-							descriptor.toString());
-					}
-					catch (IllegalArgumentException iae) {
-						fieldSig = null;
-					}
-				}
-				else {
-					fieldSig = _analyzer.getFieldSignature(signature);
-				}
+			resolver = new FieldResolver(_classSignature, fieldSig);
 
-				if (fieldSig == null) {
-					_analyzer.error(
-						"In bean %s, field %s has an incompatible type for " +
-							"@Reference: %s",
-						_clazz, _member.getName(), _member.getDescriptor());
+			ReferenceTypeSignature inferred =
+				((FieldResolver)resolver).resolveField();
 
-					return;
-				}
+			if (!(inferred instanceof ClassTypeSignature)) {
+				_analyzer.error(
+					"In bean %s, field %s with @Reference has unresolved " +
+						"type: %s",
+					_classSignature, _member.getName(), inferred);
 
-				resolver = new FieldResolver(_classSignature, fieldSig);
+				return;
+			}
 
-				ReferenceTypeSignature inferred =
-					((FieldResolver)resolver).resolveField();
-
-				if (!(inferred instanceof ClassTypeSignature)) {
-					_analyzer.error(
-						"In bean %s, field %s with @Reference has unresolved " +
-							"type: %s",
-						_classSignature, _member.getName(), inferred);
-
-					return;
-				}
-
-				type = (ClassTypeSignature)inferred;
-
-				break;
+			type = (ClassTypeSignature)inferred;
 		}
 
 		Descriptors.TypeRef typeRef = _analyzer.getTypeRef(type.binary);
@@ -572,182 +559,168 @@ public class CDIAnnotationReader extends ClassDataCollector {
 		ClassTypeSignature classTypeSignature;
 		Descriptors.TypeRef typeRef;
 
-		switch (annotation.getElementType()) {
-			case FIELD :
-				FieldSignature fieldSig;
+		ElementType elementType = annotation.getElementType();
 
-				if (signature == null) {
-					try {
-						fieldSig = _analyzer.getFieldSignature(
-							descriptor.toString());
-					}
-					catch (IllegalArgumentException iae) {
-						fieldSig = null;
-					}
+		if (elementType == ElementType.FIELD) {
+			FieldSignature fieldSig;
+
+			if (signature == null) {
+				try {
+					fieldSig = _analyzer.getFieldSignature(
+						descriptor.toString());
 				}
-				else {
-					fieldSig = _analyzer.getFieldSignature(signature);
+				catch (IllegalArgumentException iae) {
+					fieldSig = null;
 				}
+			}
+			else {
+				fieldSig = _analyzer.getFieldSignature(signature);
+			}
 
-				if (fieldSig == null) {
-					_analyzer.error(
-						"In bean %s, field %s has an incompatible type for " +
-							"@Service: %s",
-						_clazz, _member.getName(), descriptor);
+			if (fieldSig == null) {
+				_analyzer.error(
+					"In bean %s, field %s has an incompatible type for " +
+						"@Service: %s",
+					_clazz, _member.getName(), descriptor);
 
-					return;
+				return;
+			}
+
+			FieldResolver fieldResolver = new FieldResolver(
+				_classSignature, fieldSig);
+
+			ReferenceTypeSignature type = fieldResolver.resolveField();
+
+			if (!(type instanceof ClassTypeSignature)) {
+				_analyzer.error(
+					"In bean %s, field %s has an incompatible type for " +
+						"@Service: %s",
+					_clazz, _member.getName(), descriptor);
+
+				return;
+			}
+
+			classTypeSignature = (ClassTypeSignature)type;
+
+			typeRef = _analyzer.getTypeRef(classTypeSignature.binary);
+
+			beanDef = new BeanDef();
+
+			beanDef.service.add(typeRef);
+
+			_definitions.add(beanDef);
+		}
+		else if (elementType == ElementType.METHOD) {
+			MethodSignature methodSig;
+
+			if (signature == null) {
+				try {
+					methodSig = _analyzer.getMethodSignature(
+						descriptor.toString());
 				}
-
-				FieldResolver fieldResolver = new FieldResolver(
-					_classSignature, fieldSig);
-
-				ReferenceTypeSignature type = fieldResolver.resolveField();
-
-				if (!(type instanceof ClassTypeSignature)) {
-					_analyzer.error(
-						"In bean %s, field %s has an incompatible type for " +
-							"@Service: %s",
-						_clazz, _member.getName(), descriptor);
-
-					return;
+				catch (IllegalArgumentException iae) {
+					methodSig = null;
 				}
+			}
+			else {
+				methodSig = _analyzer.getMethodSignature(signature);
+			}
 
-				classTypeSignature = (ClassTypeSignature)type;
+			if (methodSig == null) {
+				_analyzer.error(
+					"In bean %s, method %s has an incompatible type for " +
+						"@Service: %s",
+					_clazz, _member.getName(), descriptor);
 
-				typeRef = _analyzer.getTypeRef(classTypeSignature.binary);
+				return;
+			}
 
-				beanDef = new BeanDef();
+			MethodResolver methodResolver = new MethodResolver(
+				_classSignature, methodSig);
 
-				beanDef.service.add(typeRef);
+			Result result = methodResolver.resolveResult();
 
-				_definitions.add(beanDef);
+			if (result instanceof VoidDescriptor) {
+				_analyzer.error(
+					"In bean %s, method %s has @Service and returns void: %s",
+					_clazz, _member.getName(), descriptor);
 
-				break;
+				return;
+			}
 
-			case METHOD :
-				MethodSignature methodSig;
+			if (!(result instanceof ClassTypeSignature)) {
+				_analyzer.error(
+					"In bean %s, method %s has an incompatible return type " +
+						"for @Service: %s",
+					_clazz, _member.getName(), descriptor);
 
-				if (signature == null) {
-					try {
-						methodSig = _analyzer.getMethodSignature(
-							descriptor.toString());
-					}
-					catch (IllegalArgumentException iae) {
-						methodSig = null;
-					}
+				return;
+			}
+
+			classTypeSignature = (ClassTypeSignature)result;
+
+			typeRef = _analyzer.getTypeRef(classTypeSignature.binary);
+
+			beanDef = new BeanDef();
+
+			beanDef.service.add(typeRef);
+
+			_definitions.add(beanDef);
+		}
+		else if (elementType == ElementType.TYPE_USE) {
+			beanDef = _definitions.get(0);
+
+			if ((beanDef.serviceOrigin != null) &&
+				(beanDef.serviceOrigin == ElementType.TYPE)) {
+
+				_analyzer.error(
+					"In bean %s, @Service cannot be used both on TYPE and " +
+						"TYPE_USE: %s",
+					_clazz, _classSignature);
+
+				return;
+			}
+
+			beanDef.serviceOrigin = ElementType.TYPE_USE;
+
+			if (_targetIndex == Clazz.TYPEUSE_TARGET_INDEX_EXTENDS) {
+				beanDef.service.add(_extendsClass);
+			}
+			else if (_targetIndex != Clazz.TYPEUSE_INDEX_NONE) {
+				beanDef.service.add(_interfaces[_targetIndex]);
+			}
+		}
+		else if (elementType == ElementType.TYPE) {
+			beanDef = _definitions.get(0);
+
+			if ((beanDef.serviceOrigin != null) &&
+				(beanDef.serviceOrigin == ElementType.TYPE_USE)) {
+
+				_analyzer.error(
+					"In bean %s, @Service cannot be used both on TYPE and " +
+						"TYPE_USE: %s",
+					_clazz, _classSignature);
+
+				return;
+			}
+
+			beanDef.serviceOrigin = ElementType.TYPE;
+
+			Object[] serviceClasses = annotation.get("value");
+
+			if ((serviceClasses != null) && (serviceClasses.length > 0)) {
+				for (Object serviceClass : serviceClasses) {
+					beanDef.service.add((Descriptors.TypeRef)serviceClass);
 				}
-				else {
-					methodSig = _analyzer.getMethodSignature(signature);
+			}
+			else if ((_interfaces != null) && (_interfaces.length > 0)) {
+				for (Descriptors.TypeRef inter : _interfaces) {
+					beanDef.service.add(inter);
 				}
-
-				if (methodSig == null) {
-					_analyzer.error(
-						"In bean %s, method %s has an incompatible type for " +
-							"@Service: %s",
-						_clazz, _member.getName(), descriptor);
-
-					return;
-				}
-
-				MethodResolver methodResolver = new MethodResolver(
-					_classSignature, methodSig);
-
-				Result result = methodResolver.resolveResult();
-
-				if (result instanceof VoidDescriptor) {
-					_analyzer.error(
-						"In bean %s, method %s has @Service and returns " +
-							"void: %s",
-						_clazz, _member.getName(), descriptor);
-
-					return;
-				}
-
-				if (!(result instanceof ClassTypeSignature)) {
-					_analyzer.error(
-						"In bean %s, method %s has an incompatible return " +
-							"type for @Service: %s",
-						_clazz, _member.getName(), descriptor);
-
-					return;
-				}
-
-				classTypeSignature = (ClassTypeSignature)result;
-
-				typeRef = _analyzer.getTypeRef(classTypeSignature.binary);
-
-				beanDef = new BeanDef();
-
-				beanDef.service.add(typeRef);
-
-				_definitions.add(beanDef);
-
-				break;
-
-			case TYPE_USE :
-				beanDef = _definitions.get(0);
-
-				if ((beanDef.serviceOrigin != null) &&
-					(beanDef.serviceOrigin == ElementType.TYPE)) {
-
-					_analyzer.error(
-						"In bean %s, @Service cannot be used both on TYPE " +
-							"and TYPE_USE: %s",
-						_clazz, _classSignature);
-
-					break;
-				}
-
-				beanDef.serviceOrigin = ElementType.TYPE_USE;
-
-				if (_targetIndex == Clazz.TYPEUSE_TARGET_INDEX_EXTENDS) {
-					beanDef.service.add(_extendsClass);
-				}
-				else if (_targetIndex != Clazz.TYPEUSE_INDEX_NONE) {
-					beanDef.service.add(_interfaces[_targetIndex]);
-				}
-
-				break;
-
-			case TYPE :
-				beanDef = _definitions.get(0);
-
-				if ((beanDef.serviceOrigin != null) &&
-					(beanDef.serviceOrigin == ElementType.TYPE_USE)) {
-
-					_analyzer.error(
-						"In bean %s, @Service cannot be used both on TYPE " +
-							"and TYPE_USE: %s",
-						_clazz, _classSignature);
-
-					break;
-				}
-
-				beanDef.serviceOrigin = ElementType.TYPE;
-
-				Object[] serviceClasses = annotation.get("value");
-
-				if ((serviceClasses != null) && (serviceClasses.length > 0)) {
-					for (Object serviceClass : serviceClasses) {
-						beanDef.service.add((Descriptors.TypeRef)serviceClass);
-					}
-				}
-				else if ((_interfaces != null) && (_interfaces.length > 0)) {
-					for (Descriptors.TypeRef inter : _interfaces) {
-						beanDef.service.add(inter);
-					}
-				}
-				else {
-					beanDef.service.add(_clazz.getClassName());
-				}
-
-				break;
-
-			default :
-
-				// this can't happen, @Service is limited to the above targets
-
-				break;
+			}
+			else {
+				beanDef.service.add(_clazz.getClassName());
+			}
 		}
 	}
 
