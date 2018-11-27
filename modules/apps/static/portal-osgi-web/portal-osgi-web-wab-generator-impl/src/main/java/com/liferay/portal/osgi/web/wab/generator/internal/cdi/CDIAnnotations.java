@@ -151,7 +151,7 @@ public class CDIAnnotations implements AnalyzerPlugin {
 					EnumSet<Discover> options = EnumSet.noneOf(Discover.class);
 
 					try {
-						Discover.parse(discover, options, this);
+						Discover.parse(discover, options);
 					}
 					catch (IllegalArgumentException iae) {
 						analyzer.error(

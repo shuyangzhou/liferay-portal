@@ -23,9 +23,7 @@ public enum Discover {
 
 	all, annotated, annotated_by_bean, none;
 
-	public static void parse(
-		String s, EnumSet<Discover> options, CDIAnnotations state) {
-
+	public static void parse(String s, EnumSet<Discover> options) {
 		if (s == null) {
 			return;
 		}
