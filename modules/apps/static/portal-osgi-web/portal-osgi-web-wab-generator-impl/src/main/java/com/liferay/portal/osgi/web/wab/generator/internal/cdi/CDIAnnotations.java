@@ -60,14 +60,14 @@ public class CDIAnnotations implements AnalyzerPlugin {
 
 	@Override
 	public boolean analyzeJar(Analyzer analyzer) throws Exception {
-		Parameters header = OSGiHeader.parseHeader(
+		Parameters parameters = OSGiHeader.parseHeader(
 			analyzer.getProperty(Constants.CDIANNOTATIONS, "*"));
 
-		if (header.size() == 0) {
+		if (parameters.isEmpty()) {
 			return false;
 		}
 
-		Instructions instructions = new Instructions(header);
+		Instructions instructions = new Instructions(parameters);
 
 		Map<Descriptors.TypeRef, Clazz> classspace = analyzer.getClassspace();
 
