@@ -19,18 +19,6 @@ package com.liferay.portal.osgi.web.wab.generator.internal.cdi;
  */
 public enum Discover {
 
-	all, annotated, annotated_by_bean, none;
-
-	public static Discover parse(String s) {
-		if ((s == null) || s.isEmpty()) {
-			return null;
-		}
-
-		if (s.startsWith("!")) {
-			return null;
-		}
-
-		return Discover.valueOf(s);
-	}
+	all, annotated, annotated_by_bean, none
 
 }

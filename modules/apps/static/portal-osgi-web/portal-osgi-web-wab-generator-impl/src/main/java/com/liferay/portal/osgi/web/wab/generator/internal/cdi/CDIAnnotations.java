@@ -33,6 +33,7 @@ import aQute.bnd.version.Version;
 
 import aQute.lib.strings.Strings;
 
+import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Node;
@@ -148,16 +149,21 @@ public class CDIAnnotations implements AnalyzerPlugin {
 					}
 
 					String discover = attrs.get("discover");
+
 					EnumSet<Discover> options = EnumSet.noneOf(Discover.class);
 
-					try {
-						options.add(Discover.parse(discover));
-					}
-					catch (IllegalArgumentException iae) {
-						analyzer.error(
-							"Unrecognized discover '%s', expected values are " +
-								"%s",
-							discover, EnumSet.allOf(Discover.class));
+					if ((discover != null) && discover.isEmpty() &&
+						(discover.charAt(0) != CharPool.EXCLAMATION)) {
+
+						try {
+							options.add(Discover.valueOf(discover));
+						}
+						catch (IllegalArgumentException iae) {
+							analyzer.error(
+								"Unrecognized discover '%s', expected values " +
+									"are %s",
+								discover, EnumSet.allOf(Discover.class));
+						}
 					}
 
 					if (options.isEmpty()) {
