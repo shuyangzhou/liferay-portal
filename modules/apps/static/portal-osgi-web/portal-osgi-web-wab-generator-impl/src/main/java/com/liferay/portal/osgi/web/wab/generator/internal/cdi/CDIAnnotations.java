@@ -24,7 +24,6 @@ import aQute.bnd.osgi.Clazz;
 import aQute.bnd.osgi.Constants;
 import aQute.bnd.osgi.Descriptors;
 import aQute.bnd.osgi.Instruction;
-import aQute.bnd.osgi.Instructions;
 import aQute.bnd.osgi.Jar;
 import aQute.bnd.osgi.Packages;
 import aQute.bnd.osgi.Resource;
@@ -66,8 +65,6 @@ public class CDIAnnotations implements AnalyzerPlugin {
 		if (parameters.isEmpty()) {
 			return false;
 		}
-
-		Instructions instructions = new Instructions(parameters);
 
 		Map<Descriptors.TypeRef, Clazz> classspace = analyzer.getClassspace();
 
@@ -137,10 +134,9 @@ public class CDIAnnotations implements AnalyzerPlugin {
 				continue;
 			}
 
-			for (Map.Entry<Instruction, Attrs> entry :
-					instructions.entrySet()) {
+			for (Map.Entry<String, Attrs> entry : parameters.entrySet()) {
+				Instruction instruction = new Instruction(entry.getKey());
 
-				Instruction instruction = entry.getKey();
 				Attrs attrs = entry.getValue();
 
 				if (instruction.matches(c.getFQN())) {
