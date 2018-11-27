@@ -137,12 +137,12 @@ public class CDIAnnotations implements AnalyzerPlugin {
 			for (Map.Entry<String, Attrs> entry : parameters.entrySet()) {
 				Instruction instruction = new Instruction(entry.getKey());
 
-				Attrs attrs = entry.getValue();
-
 				if (instruction.matches(c.getFQN())) {
 					if (instruction.isNegated()) {
 						break;
 					}
+
+					Attrs attrs = entry.getValue();
 
 					String discover = attrs.get("discover");
 
