@@ -59,14 +59,14 @@ public class FilterMappingTest {
 				null, null, new TestFilterConfig(null, null),
 				Collections.emptyList(), Collections.emptyList()));
 		_assertFilterMapping(
-			_TEST_FILTER_NAME, _dummyFilter, _URL_REGEX_IGNORE_PATTERN,
-			_URL_REGEX_PATTERN, new String[] {_URL_PATTERN},
+			_TEST_FILTER_NAME, _dummyFilter, _TEST_URL_REGEX_IGNORE_PATTERN,
+			_TEST_URL_REGEX_PATTERN, new String[] {_TEST_URL_PATTERN},
 			Collections.singleton(Dispatcher.ASYNC),
 			new FilterMapping(
 				_TEST_FILTER_NAME, _dummyFilter,
 				new TestFilterConfig(
-					_URL_REGEX_IGNORE_PATTERN, _URL_REGEX_PATTERN),
-				Collections.singletonList(_URL_PATTERN),
+					_TEST_URL_REGEX_IGNORE_PATTERN, _TEST_URL_REGEX_PATTERN),
+				Collections.singletonList(_TEST_URL_PATTERN),
 				Collections.singletonList(String.valueOf(Dispatcher.ASYNC))));
 	}
 
@@ -81,17 +81,17 @@ public class FilterMappingTest {
 			},
 			() -> _testIsMatch(
 				true, Dispatcher.ASYNC, "/test/login.jsp",
-				Collections.singletonList(_URL_PATTERN)));
+				Collections.singletonList(_TEST_URL_PATTERN)));
 		_testWithLog(
 			new String[0],
 			() -> _testIsMatch(
 				false, Dispatcher.REQUEST, "/test/login.jsp",
-				Collections.singletonList(_URL_PATTERN)));
+				Collections.singletonList(_TEST_URL_PATTERN)));
 		_testWithLog(
 			new String[0],
 			() -> _testIsMatch(
 				false, Dispatcher.ASYNC, null,
-				Collections.singletonList(_URL_PATTERN)));
+				Collections.singletonList(_TEST_URL_PATTERN)));
 		_testWithLog(
 			new String[] {
 				_dummyFilter.getClass() + " does not have a pattern match " +
@@ -99,7 +99,7 @@ public class FilterMappingTest {
 			},
 			() -> _testIsMatch(
 				false, Dispatcher.ASYNC, "/login",
-				Collections.singletonList(_URL_PATTERN)));
+				Collections.singletonList(_TEST_URL_PATTERN)));
 		_testWithLog(
 			new String[] {
 				_dummyFilter.getClass() + " has a pattern match with /test" +
@@ -109,7 +109,7 @@ public class FilterMappingTest {
 			},
 			() -> _testIsMatch(
 				false, Dispatcher.ASYNC, "/test/login.css",
-				Collections.singletonList(_URL_PATTERN)));
+				Collections.singletonList(_TEST_URL_PATTERN)));
 		_testWithLog(
 			new String[] {
 				_dummyFilter.getClass() + " does not have a pattern match " +
@@ -185,7 +185,7 @@ public class FilterMappingTest {
 			() -> _testIsMatchURLRegexPattern(
 				false, "/test/ignore/login.jsp", "key=value",
 				new TestFilterConfig(
-					_URL_REGEX_IGNORE_PATTERN, _URL_REGEX_PATTERN)));
+					_TEST_URL_REGEX_IGNORE_PATTERN, _TEST_URL_REGEX_PATTERN)));
 		_testWithLog(
 			new String[] {
 				_dummyFilter.getClass() + " does not have a regex match with " +
@@ -193,20 +193,21 @@ public class FilterMappingTest {
 			},
 			() -> _testIsMatchURLRegexPattern(
 				false, "/test/login.css", null,
-				new TestFilterConfig(null, _URL_REGEX_PATTERN)));
+				new TestFilterConfig(null, _TEST_URL_REGEX_PATTERN)));
 	}
 
 	@Test
 	public void testReplaceFilter() {
 		FilterMapping filterMapping = new FilterMapping(
 			_TEST_FILTER_NAME, null,
-			new TestFilterConfig(_URL_REGEX_IGNORE_PATTERN, _URL_REGEX_PATTERN),
-			Collections.singletonList(_URL_PATTERN),
+			new TestFilterConfig(
+				_TEST_URL_REGEX_IGNORE_PATTERN, _TEST_URL_REGEX_PATTERN),
+			Collections.singletonList(_TEST_URL_PATTERN),
 			Collections.singletonList(String.valueOf(Dispatcher.ASYNC)));
 
 		_assertFilterMapping(
-			_TEST_FILTER_NAME, _dummyFilter, _URL_REGEX_IGNORE_PATTERN,
-			_URL_REGEX_PATTERN, new String[] {_URL_PATTERN},
+			_TEST_FILTER_NAME, _dummyFilter, _TEST_URL_REGEX_IGNORE_PATTERN,
+			_TEST_URL_REGEX_PATTERN, new String[] {_TEST_URL_PATTERN},
 			Collections.singleton(Dispatcher.ASYNC),
 			filterMapping.replaceFilter(_dummyFilter));
 	}
@@ -275,7 +276,8 @@ public class FilterMappingTest {
 
 		FilterMapping filterMapping = new FilterMapping(
 			_TEST_FILTER_NAME, _dummyFilter,
-			new TestFilterConfig(_URL_REGEX_IGNORE_PATTERN, _URL_REGEX_PATTERN),
+			new TestFilterConfig(
+				_TEST_URL_REGEX_IGNORE_PATTERN, _TEST_URL_REGEX_PATTERN),
 			urlPatterns,
 			Collections.singletonList(String.valueOf(Dispatcher.ASYNC)));
 
@@ -336,11 +338,11 @@ public class FilterMappingTest {
 
 	private static final String _TEST_FILTER_NAME = "testFilterName";
 
-	private static final String _URL_PATTERN = "/test/*";
+	private static final String _TEST_URL_PATTERN = "/test/*";
 
-	private static final String _URL_REGEX_IGNORE_PATTERN = ".+/ignore/*";
+	private static final String _TEST_URL_REGEX_IGNORE_PATTERN = ".+/ignore/*";
 
-	private static final String _URL_REGEX_PATTERN = ".+\\.jsp";
+	private static final String _TEST_URL_REGEX_PATTERN = ".+\\.jsp";
 
 	private final Filter _dummyFilter = ProxyFactory.newDummyInstance(
 		Filter.class);
