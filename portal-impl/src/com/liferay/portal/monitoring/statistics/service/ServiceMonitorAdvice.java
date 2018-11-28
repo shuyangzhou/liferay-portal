@@ -14,7 +14,6 @@
 
 package com.liferay.portal.monitoring.statistics.service;
 
-import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.monitoring.DataSample;
 import com.liferay.portal.kernel.monitoring.DataSampleThreadLocal;
 import com.liferay.portal.kernel.monitoring.MethodSignature;
@@ -24,12 +23,10 @@ import com.liferay.portal.spring.aop.ChainableMethodAdvice;
 import com.liferay.portal.spring.aop.ServiceBeanAopCacheManager;
 import com.liferay.portal.spring.aop.ServiceBeanMethodInvocation;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -54,38 +51,12 @@ public class ServiceMonitorAdvice
 	}
 
 	@Override
-	public void afterReturning(
-			ServiceBeanMethodInvocation serviceBeanMethodInvocation,
-			Object result)
-		throws Throwable {
-
-		DataSample dataSample = _dataSampleThreadLocal.get();
-
-		if (dataSample != null) {
-			dataSample.capture(RequestStatus.SUCCESS);
-		}
-	}
-
-	@Override
-	public void afterThrowing(
-			ServiceBeanMethodInvocation serviceBeanMethodInvocation,
-			Throwable throwable)
-		throws Throwable {
-
-		DataSample dataSample = _dataSampleThreadLocal.get();
-
-		if (dataSample != null) {
-			dataSample.capture(RequestStatus.ERROR);
-		}
-	}
-
-	@Override
-	public Object before(
+	public Object invoke(
 			ServiceBeanMethodInvocation serviceBeanMethodInvocation)
 		throws Throwable {
 
 		if (!_monitorServiceRequest) {
-			return null;
+			return serviceBeanMethodInvocation.proceed();
 		}
 
 		boolean included = false;
@@ -103,7 +74,7 @@ public class ServiceMonitorAdvice
 		}
 
 		if (_inclusiveMode != included) {
-			return null;
+			return serviceBeanMethodInvocation.proceed();
 		}
 
 		DataSample dataSample =
@@ -112,34 +83,21 @@ public class ServiceMonitorAdvice
 
 		dataSample.prepare();
 
-		_dataSampleThreadLocal.set(dataSample);
-
 		DataSampleThreadLocal.initialize();
 
-		return null;
-	}
+		try {
+			Object returnValue = serviceBeanMethodInvocation.proceed();
 
-	@Override
-	public Object createMethodContext(
-		Class<?> targetClass, Method method,
-		Map<Class<? extends Annotation>, Annotation> annotations) {
+			dataSample.capture(RequestStatus.SUCCESS);
 
-		if (_monitorServiceRequest) {
-			return nullResult;
+			return returnValue;
 		}
+		catch (Throwable throwable) {
+			dataSample.capture(RequestStatus.ERROR);
 
-		return null;
-	}
-
-	@Override
-	public void duringFinally(
-		ServiceBeanMethodInvocation serviceBeanMethodInvocation) {
-
-		DataSample dataSample = _dataSampleThreadLocal.get();
-
-		if (dataSample != null) {
-			_dataSampleThreadLocal.remove();
-
+			throw throwable;
+		}
+		finally {
 			DataSampleThreadLocal.addDataSample(dataSample);
 		}
 	}
@@ -178,9 +136,6 @@ public class ServiceMonitorAdvice
 		_monitorServiceRequest = monitorServiceRequest;
 	}
 
-	private static final ThreadLocal<DataSample> _dataSampleThreadLocal =
-		new CentralizedThreadLocal<>(
-			ServiceMonitorAdvice.class + "._dataSampleThreadLocal");
 	private static boolean _inclusiveMode = true;
 	private static boolean _monitorServiceRequest;
 	private static final Set<String> _serviceClasses = new HashSet<>();
