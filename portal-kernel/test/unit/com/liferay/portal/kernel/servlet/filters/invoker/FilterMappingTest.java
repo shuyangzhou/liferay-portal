@@ -330,7 +330,8 @@ public class FilterMappingTest {
 			List<LogRecord> logRecords = captureHandler.getLogRecords();
 
 			Assert.assertTrue(
-				"logRecords should be empty because the log level is OFF",
+				"logRecords should be empty because the log level is OFF but " +
+					"contains " + logRecords,
 				logRecords.isEmpty());
 
 			captureHandler.resetLogLevel(Level.ALL);
