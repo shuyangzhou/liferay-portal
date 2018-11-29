@@ -22,8 +22,11 @@ import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
 import com.liferay.portal.kernel.util.ProxyFactory;
 import com.liferay.portal.kernel.util.StringBundler;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -54,20 +57,11 @@ public class FilterMappingTest {
 	public void testConstructor() {
 		_assertFilterMapping(
 			null, null, null, null, new String[0],
-			Collections.singleton(Dispatcher.REQUEST),
-			new FilterMapping(
-				null, null, new TestFilterConfig(null, null),
-				Collections.emptyList(), Collections.emptyList()));
+			Collections.singleton(Dispatcher.REQUEST));
 		_assertFilterMapping(
 			_TEST_FILTER_NAME, _dummyFilter, _TEST_URL_REGEX_IGNORE_PATTERN,
 			_TEST_URL_REGEX_PATTERN, new String[] {_TEST_URL_PATTERN},
-			Collections.singleton(Dispatcher.ASYNC),
-			new FilterMapping(
-				_TEST_FILTER_NAME, _dummyFilter,
-				new TestFilterConfig(
-					_TEST_URL_REGEX_IGNORE_PATTERN, _TEST_URL_REGEX_PATTERN),
-				Collections.singletonList(_TEST_URL_PATTERN),
-				Collections.singletonList(String.valueOf(Dispatcher.ASYNC))));
+			Collections.singleton(Dispatcher.ASYNC));
 	}
 
 	@Test
@@ -210,6 +204,26 @@ public class FilterMappingTest {
 			_TEST_URL_REGEX_PATTERN, new String[] {_TEST_URL_PATTERN},
 			Collections.singleton(Dispatcher.ASYNC),
 			filterMapping.replaceFilter(_dummyFilter));
+	}
+
+	private void _assertFilterMapping(
+		String expectedFilterName, Filter expectedFilter,
+		String expectedUrlRegexIgnore, String expectedUrlRegex,
+		String[] expectedUrlPattern, Set<Dispatcher> expectedDispatchers) {
+
+		Set<String> dispatchers = new HashSet<>();
+
+		for (Dispatcher expectedDispatcher : expectedDispatchers) {
+			dispatchers.add(String.valueOf(expectedDispatcher));
+		}
+
+		_assertFilterMapping(
+			expectedFilterName, expectedFilter, expectedUrlRegexIgnore,
+			expectedUrlRegex, expectedUrlPattern, expectedDispatchers,
+			new FilterMapping(
+				expectedFilterName, expectedFilter,
+				new TestFilterConfig(expectedUrlRegexIgnore, expectedUrlRegex),
+				Arrays.asList(expectedUrlPattern), new ArrayList(dispatchers)));
 	}
 
 	private void _assertFilterMapping(
