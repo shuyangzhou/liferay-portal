@@ -18,6 +18,7 @@ import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -30,11 +31,13 @@ public class AopMethod {
 
 	public AopMethod(
 		Object target, Method method,
-		ChainableMethodAdvice[] chainableMethodAdvices) {
+		ChainableMethodAdvice[] chainableMethodAdvices,
+		Annotation[] annotations) {
 
 		_target = target;
 		_method = method;
 		_chainableMethodAdvices = chainableMethodAdvices;
+		_annotations = annotations;
 
 		_method.setAccessible(true);
 	}
@@ -133,6 +136,11 @@ public class AopMethod {
 		return _toString;
 	}
 
+	protected Annotation[] getAnnotations() {
+		return _annotations;
+	}
+
+	private final Annotation[] _annotations;
 	private final ChainableMethodAdvice[] _chainableMethodAdvices;
 	private int _hashCode;
 	private final Method _method;

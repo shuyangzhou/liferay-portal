@@ -83,7 +83,7 @@ public class ServiceBeanMethodInvocationFactoryImpl
 		Object[] arguments) {
 
 		return new ServiceBeanMethodInvocation(
-			new AopMethod(target, method, new ChainableMethodAdvice[0]),
+			new AopMethod(target, method, new ChainableMethodAdvice[0], null),
 			arguments);
 	}
 

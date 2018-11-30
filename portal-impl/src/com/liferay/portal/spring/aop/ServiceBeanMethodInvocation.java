@@ -14,6 +14,7 @@
 
 package com.liferay.portal.spring.aop;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Method;
 
@@ -55,6 +56,13 @@ public class ServiceBeanMethodInvocation implements MethodInvocation {
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
+	public <T extends Annotation> T getAnnotation() {
+		Annotation[] annotations = _aopMethod.getAnnotations();
+
+		return (T)annotations[_index - 1];
+	}
+
 	@Override
 	public Object[] getArguments() {
 		return _arguments;
@@ -90,7 +98,12 @@ public class ServiceBeanMethodInvocation implements MethodInvocation {
 			_aopMethod.getChainableMethodAdvices();
 
 		if (_index < chainableMethodAdvices.length) {
-			return chainableMethodAdvices[_index++].invoke(this);
+			try {
+				return chainableMethodAdvices[_index++].invoke(this);
+			}
+			finally {
+				_index--;
+			}
 		}
 
 		return _aopMethod.invoke(_arguments);

@@ -14,14 +14,10 @@
 
 package com.liferay.portal.spring.aop;
 
-import com.liferay.petra.lang.HashUtil;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 import org.aopalliance.intercept.MethodInvocation;
 
@@ -36,7 +32,7 @@ public abstract class AnnotationChainableMethodAdvice<T extends Annotation>
 		_annotationClass = Objects.requireNonNull(annotationClass);
 	}
 
-	public Class<? extends Annotation> getAnnotationClass() {
+	public Class<T> getAnnotationClass() {
 		return _annotationClass;
 	}
 
@@ -51,52 +47,16 @@ public abstract class AnnotationChainableMethodAdvice<T extends Annotation>
 			return false;
 		}
 
-		_annotations.put(new CacheKey(targetClass, method), annotation);
-
 		return true;
 	}
 
 	protected T findAnnotation(MethodInvocation methodInvocation) {
-		Object target = methodInvocation.getThis();
+		ServiceBeanMethodInvocation serviceBeanMethodInvocation =
+			(ServiceBeanMethodInvocation)methodInvocation;
 
-		return _annotations.get(
-			new CacheKey(target.getClass(), methodInvocation.getMethod()));
+		return serviceBeanMethodInvocation.getAnnotation();
 	}
 
 	private final Class<T> _annotationClass;
-	private final ConcurrentMap<CacheKey, T> _annotations =
-		new ConcurrentHashMap<>();
-
-	private static class CacheKey {
-
-		@Override
-		public boolean equals(Object obj) {
-			CacheKey cacheKey = (CacheKey)obj;
-
-			if (Objects.equals(_targetClass, cacheKey._targetClass) &&
-				Objects.equals(_method, cacheKey._method)) {
-
-				return true;
-			}
-
-			return false;
-		}
-
-		@Override
-		public int hashCode() {
-			int hash = HashUtil.hash(0, _targetClass);
-
-			return HashUtil.hash(hash, _method);
-		}
-
-		private CacheKey(Class<?> targetClass, Method method) {
-			_targetClass = targetClass;
-			_method = method;
-		}
-
-		private final Method _method;
-		private final Class<?> _targetClass;
-
-	}
 
 }

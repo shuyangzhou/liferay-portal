@@ -47,7 +47,8 @@ public class ServiceBeanAopCacheManager {
 
 	public AopMethod getAopMethod(Object target, Method method) {
 		if (!TransactionsUtil.isEnabled()) {
-			return new AopMethod(target, method, _emptyChainableMethodAdvices);
+			return new AopMethod(
+				target, method, _emptyChainableMethodAdvices, null);
 		}
 
 		return _aopMethods.computeIfAbsent(
@@ -85,18 +86,40 @@ public class ServiceBeanAopCacheManager {
 			}
 		}
 
-		defaultAnnotationHelper._methodAnnotations.clear();
-
 		ChainableMethodAdvice[] chainableMethodAdvices =
 			_emptyChainableMethodAdvices;
+
+		Annotation[] annotations = null;
 
 		if (!filteredChainableMethodAdvices.isEmpty()) {
 			chainableMethodAdvices = filteredChainableMethodAdvices.toArray(
 				new ChainableMethodAdvice
 					[filteredChainableMethodAdvices.size()]);
+
+			annotations = new Annotation[chainableMethodAdvices.length];
+
+			for (int i = 0; i < chainableMethodAdvices.length; i++) {
+				ChainableMethodAdvice chainableMethodAdvice =
+					chainableMethodAdvices[i];
+
+				if (chainableMethodAdvice instanceof
+						AnnotationChainableMethodAdvice<?>) {
+
+					AnnotationChainableMethodAdvice<?>
+						annotationChainableMethodAdvice =
+							(AnnotationChainableMethodAdvice<?>)
+								chainableMethodAdvice;
+
+					annotations[i] = defaultAnnotationHelper.findAnnotation(
+						annotationChainableMethodAdvice.getAnnotationClass());
+				}
+			}
 		}
 
-		return new AopMethod(target, method, chainableMethodAdvices);
+		defaultAnnotationHelper._methodAnnotations.clear();
+
+		return new AopMethod(
+			target, method, chainableMethodAdvices, annotations);
 	}
 
 	private static final ChainableMethodAdvice[] _emptyChainableMethodAdvices =
