@@ -62,17 +62,16 @@ public class ServiceBeanAopCacheManager {
 			new ChainableMethodAdvice[chainableMethodAdvices.size()]);
 	}
 
-	public <T> T findAnnotation(
-		Class<?> targetClass, Method method,
-		Class<? extends Annotation> annotationType, T defaultValue) {
+	public <T extends Annotation> T findAnnotation(
+		Class<?> targetClass, Method method, Class<T> annotationType) {
 
 		Annotation[] annotationsArray = _methodAnnotations.get(method);
 
 		if (annotationsArray == _nullAnnotations) {
-			return defaultValue;
+			return null;
 		}
 
-		T annotation = defaultValue;
+		T annotation = null;
 
 		if (annotationsArray == null) {
 			List<Annotation> annotations = AnnotationLocator.locate(
