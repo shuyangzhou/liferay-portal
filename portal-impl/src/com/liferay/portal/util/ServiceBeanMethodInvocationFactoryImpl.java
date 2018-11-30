@@ -20,11 +20,12 @@ import com.liferay.portal.kernel.util.ServiceBeanMethodInvocationFactory;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.spring.aop.AopMethod;
 import com.liferay.portal.spring.aop.ChainableMethodAdvice;
+import com.liferay.portal.spring.aop.ServiceBeanAopCacheManager;
 import com.liferay.portal.spring.aop.ServiceBeanMethodInvocation;
 
 import java.lang.reflect.Method;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,11 +53,12 @@ public class ServiceBeanMethodInvocationFactoryImpl
 				"Method interceptor bean IDs array is empty");
 		}
 
+		ServiceBeanAopCacheManager serviceBeanAopCacheManager =
+			_getServiceBeanAopCacheManager(methodInterceptorBeanIds);
+
 		ServiceBeanMethodInvocation serviceBeanMethodInvocation =
 			new ServiceBeanMethodInvocation(
-				new AopMethod(
-					target, method,
-					_getChainableMethodAdvices(methodInterceptorBeanIds)),
+				serviceBeanAopCacheManager.getAopMethod(target, method),
 				arguments);
 
 		try {
@@ -91,43 +93,54 @@ public class ServiceBeanMethodInvocationFactoryImpl
 	protected List<MethodInterceptor> getMethodInterceptors(
 		String... methodInterceptorBeanIds) {
 
-		return Arrays.asList(
-			_getChainableMethodAdvices(methodInterceptorBeanIds));
+		List<MethodInterceptor> chainableMethodAdvices = new ArrayList<>(
+			methodInterceptorBeanIds.length);
+
+		for (String methodInterceptorBeanId : methodInterceptorBeanIds) {
+			ChainableMethodAdvice chainableMethodAdvice =
+				(ChainableMethodAdvice)PortalBeanLocatorUtil.locate(
+					methodInterceptorBeanId);
+
+			chainableMethodAdvices.add(chainableMethodAdvice);
+		}
+
+		return chainableMethodAdvices;
 	}
 
-	private ChainableMethodAdvice[] _getChainableMethodAdvices(
+	private ServiceBeanAopCacheManager _getServiceBeanAopCacheManager(
 		String... methodInterceptorBeanIds) {
 
 		String methodInterceptorsKey = StringUtil.merge(
 			methodInterceptorBeanIds);
 
-		ChainableMethodAdvice[] chainableMethodAdvices =
-			_chainableMethodAdvices.get(methodInterceptorsKey);
+		ServiceBeanAopCacheManager serviceBeanAopCacheManager =
+			_serviceBeanAopCacheManagers.get(methodInterceptorsKey);
 
-		if (chainableMethodAdvices != null) {
-			return chainableMethodAdvices;
+		if (serviceBeanAopCacheManager != null) {
+			return serviceBeanAopCacheManager;
 		}
 
-		chainableMethodAdvices =
-			new ChainableMethodAdvice[methodInterceptorBeanIds.length];
+		List<ChainableMethodAdvice> chainableMethodAdvices = new ArrayList<>(
+			methodInterceptorBeanIds.length);
 
-		for (int i = 0; i < methodInterceptorBeanIds.length; i++) {
-			String methodInterceptorBeanId = methodInterceptorBeanIds[i];
-
+		for (String methodInterceptorBeanId : methodInterceptorBeanIds) {
 			ChainableMethodAdvice chainableMethodAdvice =
 				(ChainableMethodAdvice)PortalBeanLocatorUtil.locate(
 					methodInterceptorBeanId);
 
-			chainableMethodAdvices[i] = chainableMethodAdvice;
+			chainableMethodAdvices.add(chainableMethodAdvice);
 		}
 
-		_chainableMethodAdvices.put(
-			methodInterceptorsKey, chainableMethodAdvices);
+		serviceBeanAopCacheManager = new ServiceBeanAopCacheManager(
+			chainableMethodAdvices);
 
-		return chainableMethodAdvices;
+		_serviceBeanAopCacheManagers.put(
+			methodInterceptorsKey, serviceBeanAopCacheManager);
+
+		return serviceBeanAopCacheManager;
 	}
 
-	private final Map<String, ChainableMethodAdvice[]> _chainableMethodAdvices =
-		new HashMap<>();
+	private final Map<String, ServiceBeanAopCacheManager>
+		_serviceBeanAopCacheManagers = new HashMap<>();
 
 }
