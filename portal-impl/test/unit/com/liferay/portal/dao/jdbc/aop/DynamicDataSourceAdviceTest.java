@@ -137,12 +137,13 @@ public class DynamicDataSourceAdviceTest {
 			};
 		}
 
-		ServiceBeanMethodInvocation serviceBeanMethodInvocation =
-			new ServiceBeanMethodInvocation(
-				new AopMethod(testClass, method, chainableMethodAdvices),
-				new Object[0]);
+		AopMethod aopMethod = _serviceBeanAopCacheManager.getAopMethod(
+			testClass, method);
 
-		return serviceBeanMethodInvocation;
+		ReflectionTestUtil.setFieldValue(
+			aopMethod, "_chainableMethodAdvices", chainableMethodAdvices);
+
+		return new ServiceBeanMethodInvocation(aopMethod, new Object[0]);
 	}
 
 	private DynamicDataSourceAdvice _dynamicDataSourceAdvice;
