@@ -48,7 +48,7 @@ public class ServiceContextAdviceTest {
 
 		Assert.assertTrue(
 			_serviceContextAdvice.isEnabled(
-				TestInterceptedClass.class, method));
+				TestInterceptedClass.class, method, null));
 
 		ServiceContext serviceContext = new ServiceContext();
 
@@ -68,7 +68,7 @@ public class ServiceContextAdviceTest {
 
 		Assert.assertFalse(
 			_serviceContextAdvice.isEnabled(
-				TestInterceptedClass.class, method));
+				TestInterceptedClass.class, method, null));
 	}
 
 	@Test
@@ -78,7 +78,7 @@ public class ServiceContextAdviceTest {
 
 		Assert.assertFalse(
 			_serviceContextAdvice.isEnabled(
-				TestInterceptedClass.class, method));
+				TestInterceptedClass.class, method, null));
 	}
 
 	@Test
@@ -89,7 +89,7 @@ public class ServiceContextAdviceTest {
 
 		Assert.assertTrue(
 			_serviceContextAdvice.isEnabled(
-				TestInterceptedClass.class, method));
+				TestInterceptedClass.class, method, null));
 
 		ServiceContext serviceContext = new TestServiceContextWrapper();
 

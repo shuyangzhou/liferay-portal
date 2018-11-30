@@ -22,6 +22,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -62,57 +63,6 @@ public class ServiceBeanAopCacheManager {
 			new ChainableMethodAdvice[chainableMethodAdvices.size()]);
 	}
 
-	public <T extends Annotation> T findAnnotation(
-		Class<?> targetClass, Method method, Class<T> annotationType) {
-
-		Annotation[] annotationsArray = _methodAnnotations.get(method);
-
-		if (annotationsArray == _nullAnnotations) {
-			return null;
-		}
-
-		T annotation = null;
-
-		if (annotationsArray == null) {
-			List<Annotation> annotations = AnnotationLocator.locate(
-				method, targetClass);
-
-			Iterator<Annotation> iterator = annotations.iterator();
-
-			while (iterator.hasNext()) {
-				Annotation curAnnotation = iterator.next();
-
-				Class<? extends Annotation> curAnnotationType =
-					curAnnotation.annotationType();
-
-				if (!_annotationClasses.contains(curAnnotationType)) {
-					iterator.remove();
-				}
-				else if (annotationType == curAnnotationType) {
-					annotation = (T)curAnnotation;
-				}
-			}
-
-			annotationsArray = _nullAnnotations;
-
-			if (!annotations.isEmpty()) {
-				annotationsArray = annotations.toArray(
-					new Annotation[annotations.size()]);
-			}
-
-			_methodAnnotations.put(method, annotationsArray);
-		}
-		else {
-			for (Annotation curAnnotation : annotationsArray) {
-				if (curAnnotation.annotationType() == annotationType) {
-					return (T)curAnnotation;
-				}
-			}
-		}
-
-		return annotation;
-	}
-
 	public AopMethod getAopMethod(Object target, Method method) {
 		if (!TransactionsUtil.isEnabled()) {
 			return new AopMethod(target, method, _emptyChainableMethodAdvices);
@@ -140,10 +90,15 @@ public class ServiceBeanAopCacheManager {
 		List<ChainableMethodAdvice> filteredChainableMethodAdvices =
 			new ArrayList<>();
 
+		ChainableMethodAdvice.AnnotationHelper annotationHelper =
+			new DefaultAnnotationHelper();
+
 		for (ChainableMethodAdvice chainableMethodAdvice :
 				_fullChainableMethodAdvices) {
 
-			if (chainableMethodAdvice.isEnabled(targetClass, method)) {
+			if (chainableMethodAdvice.isEnabled(
+					targetClass, method, annotationHelper)) {
+
 				filteredChainableMethodAdvices.add(chainableMethodAdvice);
 			}
 		}
@@ -169,8 +124,6 @@ public class ServiceBeanAopCacheManager {
 	private final Map<CacheKey, AopMethod> _aopMethods =
 		new ConcurrentHashMap<>();
 	private final ChainableMethodAdvice[] _fullChainableMethodAdvices;
-	private final Map<Method, Annotation[]> _methodAnnotations =
-		new ConcurrentHashMap<>();
 
 	private static class CacheKey {
 
@@ -201,6 +154,66 @@ public class ServiceBeanAopCacheManager {
 
 		private final Method _method;
 		private final Object _target;
+
+	}
+
+	private class DefaultAnnotationHelper
+		implements ChainableMethodAdvice.AnnotationHelper {
+
+		@Override
+		public <T extends Annotation> T findAnnotation(
+			Class<?> targetClass, Method method, Class<T> annotationClass) {
+
+			Annotation[] annotationsArray = _methodAnnotations.get(method);
+
+			if (annotationsArray == _nullAnnotations) {
+				return null;
+			}
+
+			T annotation = null;
+
+			if (annotationsArray == null) {
+				List<Annotation> annotations = AnnotationLocator.locate(
+					method, targetClass);
+
+				Iterator<Annotation> iterator = annotations.iterator();
+
+				while (iterator.hasNext()) {
+					Annotation curAnnotation = iterator.next();
+
+					Class<? extends Annotation> curAnnotationType =
+						curAnnotation.annotationType();
+
+					if (!_annotationClasses.contains(curAnnotationType)) {
+						iterator.remove();
+					}
+					else if (annotationClass == curAnnotationType) {
+						annotation = (T)curAnnotation;
+					}
+				}
+
+				annotationsArray = _nullAnnotations;
+
+				if (!annotations.isEmpty()) {
+					annotationsArray = annotations.toArray(
+						new Annotation[annotations.size()]);
+				}
+
+				_methodAnnotations.put(method, annotationsArray);
+			}
+			else {
+				for (Annotation curAnnotation : annotationsArray) {
+					if (curAnnotation.annotationType() == annotationClass) {
+						return (T)curAnnotation;
+					}
+				}
+			}
+
+			return annotation;
+		}
+
+		private final Map<Method, Annotation[]> _methodAnnotations =
+			new HashMap<>();
 
 	}
 

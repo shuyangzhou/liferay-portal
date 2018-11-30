@@ -124,7 +124,10 @@ public class ServiceMonitorAdvice
 	}
 
 	@Override
-	public boolean isEnabled(Class<?> targetClass, Method method) {
+	public boolean isEnabled(
+		Class<?> targetClass, Method method,
+		AnnotationHelper annotationHelper) {
+
 		return _monitorServiceRequest;
 	}
 
