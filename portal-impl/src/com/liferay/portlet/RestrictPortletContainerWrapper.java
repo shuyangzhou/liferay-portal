@@ -123,7 +123,8 @@ public class RestrictPortletContainerWrapper implements PortletContainer {
 
 		_render(
 			request,
-			() -> _portletContainer.render(request, response, portlet));
+			portletRequest -> _portletContainer.render(
+				portletRequest, response, portlet));
 	}
 
 	@Override
@@ -134,7 +135,8 @@ public class RestrictPortletContainerWrapper implements PortletContainer {
 
 		_render(
 			request,
-			() -> _portletContainer.renderHeaders(request, response, portlet));
+			portletRequest -> _portletContainer.renderHeaders(
+				portletRequest, response, portlet));
 	}
 
 	@Override
@@ -180,7 +182,7 @@ public class RestrictPortletContainerWrapper implements PortletContainer {
 		}
 
 		try {
-			renderable.render();
+			renderable.render(restrictPortletServletRequest);
 		}
 		finally {
 			restrictPortletServletRequest.removeAttribute(WebKeys.RENDER_PATH);
@@ -212,7 +214,9 @@ public class RestrictPortletContainerWrapper implements PortletContainer {
 	@FunctionalInterface
 	private interface Renderable {
 
-		public void render() throws PortletContainerException;
+		public void render(
+				RestrictPortletServletRequest restrictPortletServletRequest)
+			throws PortletContainerException;
 
 	}
 
