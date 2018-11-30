@@ -250,7 +250,7 @@ public class AutoBatchPreparedStatementUtilTest {
 			return;
 		}
 
-		Assert.fail();
+		throw new IllegalStateException("Should have returned from catch");
 	}
 
 	protected void doTestConcurrentExecutionExceptions(
@@ -308,7 +308,7 @@ public class AutoBatchPreparedStatementUtilTest {
 			return;
 		}
 
-		Assert.fail();
+		throw new IllegalStateException("Should have returned from catch");
 	}
 
 	protected void doTestConcurrentWaitingForFutures(
