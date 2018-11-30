@@ -126,22 +126,20 @@ public class DynamicDataSourceAdviceTest {
 
 		Method method = TestClass.class.getMethod(methodName);
 
-		ChainableMethodAdvice[] chainableMethodAdvices =
-			new ChainableMethodAdvice[0];
-
-		if (_dynamicDataSourceAdvice.isEnabled(TestClass.class, method) &&
-			_transactionInterceptor.isEnabled(TestClass.class, method)) {
-
-			chainableMethodAdvices = new ChainableMethodAdvice[] {
-				_dynamicDataSourceAdvice
-			};
-		}
-
 		AopMethod aopMethod = _serviceBeanAopCacheManager.getAopMethod(
 			testClass, method);
 
-		ReflectionTestUtil.setFieldValue(
-			aopMethod, "_chainableMethodAdvices", chainableMethodAdvices);
+		ChainableMethodAdvice[] chainableMethodAdvices =
+			aopMethod.getChainableMethodAdvices();
+
+		if (chainableMethodAdvices.length > 0) {
+			chainableMethodAdvices = new ChainableMethodAdvice[] {
+				_dynamicDataSourceAdvice
+			};
+
+			ReflectionTestUtil.setFieldValue(
+				aopMethod, "_chainableMethodAdvices", chainableMethodAdvices);
+		}
 
 		return new ServiceBeanMethodInvocation(aopMethod, new Object[0]);
 	}
