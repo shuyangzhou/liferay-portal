@@ -123,6 +123,10 @@ public class ServiceBeanAopCacheManager {
 			new CacheKey(target, method), this::_createAopMethod);
 	}
 
+	public ChainableMethodAdvice[] getChainableMethodAdvices() {
+		return _fullChainableMethodAdvices;
+	}
+
 	public void reset() {
 		_aopMethods.clear();
 	}
