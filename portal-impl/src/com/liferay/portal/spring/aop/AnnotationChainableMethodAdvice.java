@@ -45,8 +45,7 @@ public abstract class AnnotationChainableMethodAdvice<T extends Annotation>
 		Class<?> targetClass, Method method,
 		AnnotationHelper annotationHelper) {
 
-		T annotation = annotationHelper.findAnnotation(
-			targetClass, method, _annotationClass);
+		T annotation = annotationHelper.findAnnotation(_annotationClass);
 
 		if (annotation == null) {
 			return false;

@@ -27,12 +27,10 @@ import com.liferay.portal.spring.aop.ServiceBeanAopCacheManager;
 import com.liferay.portal.spring.aop.ServiceBeanMethodInvocation;
 import com.liferay.portal.spring.transaction.TransactionInterceptor;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 import java.util.Arrays;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -91,19 +89,6 @@ public class DynamicDataSourceAdviceTest {
 
 		_serviceBeanAopCacheManager = new ServiceBeanAopCacheManager(
 			Arrays.asList(_dynamicDataSourceAdvice, _transactionInterceptor));
-
-		Set<Class<? extends Annotation>> annotationClasses =
-			ReflectionTestUtil.getFieldValue(
-				_serviceBeanAopCacheManager, "_annotationClasses");
-
-		Assert.assertEquals(
-			annotationClasses.toString(), 2, annotationClasses.size());
-		Assert.assertTrue(
-			annotationClasses.toString(),
-			annotationClasses.contains(MasterDataSource.class));
-		Assert.assertTrue(
-			annotationClasses.toString(),
-			annotationClasses.contains(Transactional.class));
 	}
 
 	@Test
