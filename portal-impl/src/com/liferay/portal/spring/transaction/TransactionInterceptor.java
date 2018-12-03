@@ -69,7 +69,7 @@ public class TransactionInterceptor
 		AnnotationHelper annotationHelper) {
 
 		Transactional transactional = annotationHelper.findAnnotation(
-			targetClass, method, Transactional.class);
+			Transactional.class);
 
 		if (transactional == null) {
 			return false;
