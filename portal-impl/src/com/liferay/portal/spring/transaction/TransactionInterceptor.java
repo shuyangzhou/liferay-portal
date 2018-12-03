@@ -54,10 +54,6 @@ public class TransactionInterceptor
 		Transactional transactional = methodContextHelper.findAnnotation(
 			Transactional.class);
 
-		if (transactional == null) {
-			return false;
-		}
-
 		TransactionAttribute transactionAttribute =
 			TransactionAttributeBuilder.build(transactional);
 
