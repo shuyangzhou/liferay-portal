@@ -86,13 +86,13 @@ public class PortalResiliencyAdvice
 	@Override
 	public boolean isEnabled(
 		Class<?> targetClass, Method method,
-		AnnotationHelper annotationHelper) {
+		MethodContextHelper methodContextHelper) {
 
 		if (!PropsValues.PORTAL_RESILIENCY_ENABLED) {
 			return false;
 		}
 
-		if (!super.isEnabled(targetClass, method, annotationHelper)) {
+		if (!super.isEnabled(targetClass, method, methodContextHelper)) {
 			return false;
 		}
 

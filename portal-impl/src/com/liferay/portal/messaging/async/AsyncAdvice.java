@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.messaging.async.Async;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.spring.aop.AnnotationChainableMethodAdvice;
+import com.liferay.portal.spring.aop.ServiceBeanMethodInvocation;
 
 import java.lang.reflect.Method;
 
@@ -45,19 +46,11 @@ public class AsyncAdvice extends AnnotationChainableMethodAdvice<Async> {
 			return null;
 		}
 
-		String destinationName = null;
+		ServiceBeanMethodInvocation serviceBeanMethodInvocation =
+			(ServiceBeanMethodInvocation)methodInvocation;
 
-		if ((_destinationNames != null) && !_destinationNames.isEmpty()) {
-			Object thisObject = methodInvocation.getThis();
-
-			destinationName = _destinationNames.get(thisObject.getClass());
-		}
-
-		if (destinationName == null) {
-			destinationName = _defaultDestinationName;
-		}
-
-		final String callbackDestinationName = destinationName;
+		String callbackDestinationName =
+			serviceBeanMethodInvocation.getCurrentAdviceMethodContext();
 
 		TransactionCommitCallbackUtil.registerCallback(
 			() -> {
@@ -93,6 +86,18 @@ public class AsyncAdvice extends AnnotationChainableMethodAdvice<Async> {
 
 			return false;
 		}
+
+		String destinationName = null;
+
+		if ((_destinationNames != null) && !_destinationNames.isEmpty()) {
+			destinationName = _destinationNames.get(targetClass);
+		}
+
+		if (destinationName == null) {
+			destinationName = _defaultDestinationName;
+		}
+
+		methodContextHelper.setCurrentAdviceMethodContext(destinationName);
 
 		return true;
 	}

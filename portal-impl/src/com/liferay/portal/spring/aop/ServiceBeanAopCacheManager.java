@@ -47,7 +47,8 @@ public class ServiceBeanAopCacheManager {
 
 	public AopMethod getAopMethod(Object target, Method method) {
 		if (!TransactionsUtil.isEnabled()) {
-			return new AopMethod(target, method, _emptyChainableMethodAdvices);
+			return new AopMethod(
+				target, method, _emptyChainableMethodAdvices, null);
 		}
 
 		return _aopMethods.computeIfAbsent(
@@ -67,32 +68,43 @@ public class ServiceBeanAopCacheManager {
 
 		List<ChainableMethodAdvice> filteredChainableMethodAdvices =
 			new ArrayList<>();
+		List<Object> filteredAdviceMethodContexts = new ArrayList<>();
 
-		DefaultAnnotationHelper defaultAnnotationHelper =
-			new DefaultAnnotationHelper(targetClass, method);
+		DefaultMethodContextHelper defaultMethodContextHelper =
+			new DefaultMethodContextHelper(targetClass, method);
 
 		for (ChainableMethodAdvice chainableMethodAdvice :
 				_fullChainableMethodAdvices) {
 
 			if (chainableMethodAdvice.isEnabled(
-					targetClass, method, defaultAnnotationHelper)) {
+					targetClass, method, defaultMethodContextHelper)) {
 
 				filteredChainableMethodAdvices.add(chainableMethodAdvice);
-			}
-		}
 
-		defaultAnnotationHelper._methodAnnotations.clear();
+				filteredAdviceMethodContexts.add(
+					defaultMethodContextHelper._currentAdviceMethodContext);
+			}
+
+			defaultMethodContextHelper._currentAdviceMethodContext = null;
+		}
 
 		ChainableMethodAdvice[] chainableMethodAdvices =
 			_emptyChainableMethodAdvices;
+		Object[] adviceMethodContexts = null;
 
 		if (!filteredChainableMethodAdvices.isEmpty()) {
 			chainableMethodAdvices = filteredChainableMethodAdvices.toArray(
 				new ChainableMethodAdvice
 					[filteredChainableMethodAdvices.size()]);
+
+			adviceMethodContexts = filteredAdviceMethodContexts.toArray(
+				new Object[filteredAdviceMethodContexts.size()]);
 		}
 
-		return new AopMethod(target, method, chainableMethodAdvices);
+		defaultMethodContextHelper._methodAnnotations.clear();
+
+		return new AopMethod(
+			target, method, chainableMethodAdvices, adviceMethodContexts);
 	}
 
 	private static final ChainableMethodAdvice[] _emptyChainableMethodAdvices =
@@ -134,8 +146,8 @@ public class ServiceBeanAopCacheManager {
 
 	}
 
-	private class DefaultAnnotationHelper
-		implements ChainableMethodAdvice.AnnotationHelper {
+	private class DefaultMethodContextHelper
+		implements ChainableMethodAdvice.MethodContextHelper {
 
 		@Override
 		public <T extends Annotation> T findAnnotation(
@@ -150,10 +162,20 @@ public class ServiceBeanAopCacheManager {
 			return null;
 		}
 
-		private DefaultAnnotationHelper(Class<?> targetClass, Method method) {
+		@Override
+		public void setCurrentAdviceMethodContext(
+			Object currentAdviceMethodContext) {
+
+			_currentAdviceMethodContext = currentAdviceMethodContext;
+		}
+
+		private DefaultMethodContextHelper(
+			Class<?> targetClass, Method method) {
+
 			_methodAnnotations = AnnotationLocator.locate(method, targetClass);
 		}
 
+		private Object _currentAdviceMethodContext;
 		private final List<Annotation> _methodAnnotations;
 
 	}

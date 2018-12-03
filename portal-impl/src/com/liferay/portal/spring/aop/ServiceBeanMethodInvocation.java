@@ -60,6 +60,13 @@ public class ServiceBeanMethodInvocation implements MethodInvocation {
 		return _arguments;
 	}
 
+	@SuppressWarnings("unchecked")
+	public <T> T getCurrentAdviceMethodContext() {
+		Object[] annotations = _aopMethod.getAdviceMethodContexts();
+
+		return (T)annotations[_index - 1];
+	}
+
 	public int getIndex() {
 		return _index;
 	}
@@ -90,7 +97,12 @@ public class ServiceBeanMethodInvocation implements MethodInvocation {
 			_aopMethod.getChainableMethodAdvices();
 
 		if (_index < chainableMethodAdvices.length) {
-			return chainableMethodAdvices[_index++].invoke(this);
+			try {
+				return chainableMethodAdvices[_index++].invoke(this);
+			}
+			finally {
+				_index--;
+			}
 		}
 
 		return _aopMethod.invoke(_arguments);

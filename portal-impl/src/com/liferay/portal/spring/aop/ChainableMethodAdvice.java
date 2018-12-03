@@ -73,15 +73,17 @@ public abstract class ChainableMethodAdvice implements MethodInterceptor {
 
 	public boolean isEnabled(
 		Class<?> targetClass, Method method,
-		AnnotationHelper annotationHelper) {
+		MethodContextHelper methodContextHelper) {
 
 		return true;
 	}
 
-	public interface AnnotationHelper {
+	public interface MethodContextHelper {
 
 		public <T extends Annotation> T findAnnotation(
 			Class<T> annotationClass);
+
+		public void setCurrentAdviceMethodContext(Object methodContext);
 
 	}
 
