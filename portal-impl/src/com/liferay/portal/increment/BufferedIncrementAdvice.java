@@ -50,8 +50,8 @@ public class BufferedIncrementAdvice
 			ServiceBeanMethodInvocation serviceBeanMethodInvocation)
 		throws Throwable {
 
-		BufferedIncrement bufferedIncrement = findAnnotation(
-			serviceBeanMethodInvocation);
+		BufferedIncrement bufferedIncrement =
+			serviceBeanMethodInvocation.getCurrentAdviceMethodContext();
 
 		String configuration = bufferedIncrement.configuration();
 
