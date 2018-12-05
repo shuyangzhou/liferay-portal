@@ -197,7 +197,6 @@ public class MainServlet extends HttpServlet {
 		ServletContext servletContext = getServletContext();
 
 		servletContext.removeAttribute(Globals.ACTION_SERVLET_KEY);
-		servletContext.removeAttribute(Globals.MODULE_KEY);
 	}
 
 	@Override
@@ -901,8 +900,6 @@ public class MainServlet extends HttpServlet {
 		}
 
 		moduleConfig.freeze();
-
-		servletContext.setAttribute(Globals.MODULE_KEY, moduleConfig);
 
 		return moduleConfig;
 	}
