@@ -513,10 +513,6 @@ public class PortalRequestProcessor {
 
 		Action action = _processActionCreate(actionMapping);
 
-		if (action == null) {
-			return;
-		}
-
 		try {
 			ActionForward actionForward = action.execute(
 				actionMapping, request, response);
