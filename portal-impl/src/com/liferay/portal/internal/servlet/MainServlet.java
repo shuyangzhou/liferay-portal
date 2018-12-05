@@ -134,8 +134,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.PageContext;
 
-import org.apache.struts.Globals;
-
 /**
  * @author Brian Wing Shun Chan
  * @author Jorge Ferrer
@@ -1025,7 +1023,7 @@ public class MainServlet extends HttpServlet {
 
 		HttpSession session = request.getSession();
 
-		session.setAttribute(Globals.LOCALE_KEY, user.getLocale());
+		session.setAttribute(WebKeys.LOCALE, user.getLocale());
 		session.setAttribute(WebKeys.USER, user);
 		session.setAttribute(WebKeys.USER_ID, Long.valueOf(userId));
 
