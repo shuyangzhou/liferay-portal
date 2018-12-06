@@ -131,12 +131,16 @@ public class SigarNativeLoader {
 			String name = file.getName();
 
 			if (name.contains(libraryName)) {
-				Method finalizeMethod = nativeLibraryClass.getDeclaredMethod(
-					"finalize");
+				try {
+					Method finalizeMethod =
+						nativeLibraryClass.getDeclaredMethod("finalize");
 
-				finalizeMethod.setAccessible(true);
+					finalizeMethod.setAccessible(true);
 
-				finalizeMethod.invoke(nativeLibrary);
+					finalizeMethod.invoke(nativeLibrary);
+				}
+				catch (NoSuchMethodException nsme) {
+				}
 
 				if (_log.isDebugEnabled()) {
 					_log.debug(
