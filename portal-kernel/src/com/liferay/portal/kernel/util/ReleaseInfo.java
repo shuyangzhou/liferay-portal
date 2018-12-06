@@ -278,7 +278,7 @@ public class ReleaseInfo {
 
 	private static final int _BUILD_NUMBER = GetterUtil.getInteger(_BUILD);
 
-	private static final String _CODE_NAME = "Mueller";
+	private static final String _CODE_NAME = "Judson";
 
 	private static final String _DATE = "January 7, 2019";
 
