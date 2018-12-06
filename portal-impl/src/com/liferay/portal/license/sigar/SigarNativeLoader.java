@@ -17,6 +17,7 @@ package com.liferay.portal.license.sigar;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.JavaDetector;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 
@@ -28,6 +29,8 @@ import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import java.util.Collection;
+import java.util.Map;
 import java.util.Vector;
 
 import org.hyperic.sigar.Sigar;
@@ -92,8 +95,25 @@ public class SigarNativeLoader {
 
 		nativeLibrariesField.setAccessible(true);
 
-		Vector<?> nativeLibraries = (Vector<?>)nativeLibrariesField.get(
-			SigarNativeLoader.class.getClassLoader());
+		Collection<?> nativeLibraries = null;
+
+		if (JavaDetector.isJDK11()) {
+			Map<Object, Object> map = (Map<Object, Object>)
+				nativeLibrariesField.get(
+					SigarNativeLoader.class.getClassLoader());
+
+			if (map == null) {
+				FileUtil.deltree(_getTargetDirectory());
+
+				return;
+			}
+
+			nativeLibraries = map.values();
+		}
+		else {
+			nativeLibraries = (Collection<?>)nativeLibrariesField.get(
+				SigarNativeLoader.class.getClassLoader());
+		}
 
 		SigarLoader sigarLoader = new SigarLoader(Sigar.class);
 
