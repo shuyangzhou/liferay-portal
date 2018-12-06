@@ -83,6 +83,7 @@ import com.liferay.portal.servlet.I18nServlet;
 import com.liferay.portal.servlet.filters.absoluteredirects.AbsoluteRedirectsResponse;
 import com.liferay.portal.servlet.filters.i18n.I18nFilter;
 import com.liferay.portal.setup.SetupWizardSampleDataUtil;
+import com.liferay.portal.struts.Action;
 import com.liferay.portal.struts.PortalRequestProcessor;
 import com.liferay.portal.struts.StrutsUtil;
 import com.liferay.portal.struts.TilesUtil;
@@ -841,6 +842,8 @@ public class MainServlet extends HttpServlet {
 
 		ServletContext servletContext = getServletContext();
 
+		ClassLoader classLoader = MainServlet.class.getClassLoader();
+
 		try (InputStream inputStream = servletContext.getResourceAsStream(
 				"/WEB-INF/struts-config.xml")) {
 
@@ -866,10 +869,21 @@ public class MainServlet extends HttpServlet {
 			for (Element actionElement :
 					actionMappingsElement.elements("action")) {
 
+				Action action = null;
+
+				String type = actionElement.attributeValue("type");
+
+				if (type != null) {
+					Class<? extends Action> clazz =
+						(Class<? extends Action>)classLoader.loadClass(
+							actionElement.attributeValue("type"));
+
+					action = clazz.newInstance();
+				}
+
 				ActionMapping actionMapping = new ActionMapping(
 					moduleConfig, actionElement.attributeValue("forward"),
-					actionElement.attributeValue("path"),
-					actionElement.attributeValue("type"));
+					actionElement.attributeValue("path"), action);
 
 				for (Element forwardElement :
 						actionElement.elements("forward")) {
