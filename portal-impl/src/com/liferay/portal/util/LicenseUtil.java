@@ -499,7 +499,9 @@ public class LicenseUtil {
 			}
 		}
 
-		if (OSDetector.isAIX() || JavaDetector.isIBM()) {
+		if (OSDetector.isAIX() || JavaDetector.isIBM() ||
+			(JavaDetector.isJDK11() && OSDetector.isWindows())) {
+
 			Runtime runtime = Runtime.getRuntime();
 
 			return runtime.availableProcessors();
