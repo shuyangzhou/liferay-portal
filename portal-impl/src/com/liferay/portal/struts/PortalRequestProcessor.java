@@ -14,7 +14,6 @@
 
 package com.liferay.portal.struts;
 
-import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.LayoutPermissionException;
@@ -26,18 +25,11 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.PasswordPolicy;
 import com.liferay.portal.kernel.model.Portlet;
-import com.liferay.portal.kernel.model.PortletPreferencesIds;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserTracker;
 import com.liferay.portal.kernel.model.UserTrackerPath;
 import com.liferay.portal.kernel.portlet.FriendlyURLMapper;
-import com.liferay.portal.kernel.portlet.InvokerPortlet;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
-import com.liferay.portal.kernel.portlet.LiferayRenderRequest;
-import com.liferay.portal.kernel.portlet.LiferayRenderResponse;
-import com.liferay.portal.kernel.portlet.PortletConfigFactoryUtil;
-import com.liferay.portal.kernel.portlet.PortletInstanceFactoryUtil;
-import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.security.auth.InterruptedPortletRequestWhitelistUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -45,16 +37,13 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
-import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
 import com.liferay.portal.kernel.service.persistence.UserTrackerPathUtil;
 import com.liferay.portal.kernel.servlet.HttpMethods;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.struts.LastPath;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
-import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -63,11 +52,11 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.liveusers.LiveUsers;
+import com.liferay.portal.struts.model.ActionForward;
+import com.liferay.portal.struts.model.ActionMapping;
+import com.liferay.portal.struts.model.ModuleConfig;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.portlet.LiferayPortletUtil;
-import com.liferay.portlet.RenderRequestFactory;
-import com.liferay.portlet.RenderResponseFactory;
 
 import java.io.IOException;
 
@@ -77,28 +66,14 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletContext;
-import javax.portlet.PortletMode;
-import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
-import javax.portlet.WindowState;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.PageContext;
-
-import org.apache.struts.Globals;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.config.ActionConfig;
-import org.apache.struts.config.ForwardConfig;
-import org.apache.struts.config.ModuleConfig;
 
 /**
  * @author Brian Wing Shun Chan
@@ -160,14 +135,11 @@ public class PortalRequestProcessor {
 			HttpServletRequest request, HttpServletResponse response)
 		throws IOException, ServletException {
 
-		String path = _findPath(request);
+		String path = _processPath(request);
 
-		ActionMapping actionMapping =
-			(ActionMapping)_moduleConfig.findActionConfig(path);
+		ActionMapping actionMapping = _moduleConfig.getActionMapping(path);
 
-		if ((actionMapping == null) &&
-			(StrutsActionRegistryUtil.getAction(path) == null)) {
-
+		if (actionMapping == null) {
 			String lastPath = _getLastPath(request);
 
 			if (_log.isDebugEnabled()) {
@@ -179,104 +151,10 @@ public class PortalRequestProcessor {
 			return;
 		}
 
-		_process(request, response);
-
-		try {
-			if (_isPortletPath(path)) {
-				_cleanUp(request);
-			}
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
+		_process(actionMapping, request, response);
 	}
 
-	private void _cleanUp(HttpServletRequest request) throws Exception {
-
-		// Clean up portlet objects that may have been created by defineObjects
-		// for portlets that are called directly from a Struts path
-
-		LiferayRenderRequest liferayRenderRequest =
-			(LiferayRenderRequest)LiferayPortletUtil.getLiferayPortletRequest(
-				(PortletRequest)request.getAttribute(
-					JavaConstants.JAVAX_PORTLET_REQUEST));
-
-		if (liferayRenderRequest != null) {
-			liferayRenderRequest.cleanUp();
-		}
-	}
-
-	private void _defineObjects(
-			HttpServletRequest request, HttpServletResponse response,
-			Portlet portlet)
-		throws Exception {
-
-		String portletId = portlet.getPortletId();
-
-		ServletContext servletContext = (ServletContext)request.getAttribute(
-			WebKeys.CTX);
-
-		InvokerPortlet invokerPortlet = PortletInstanceFactoryUtil.create(
-			portlet, servletContext);
-
-		PortletPreferencesIds portletPreferencesIds =
-			PortletPreferencesFactoryUtil.getPortletPreferencesIds(
-				request, portletId);
-
-		PortletPreferences portletPreferences =
-			PortletPreferencesLocalServiceUtil.getStrictPreferences(
-				portletPreferencesIds);
-
-		PortletConfig portletConfig = PortletConfigFactoryUtil.create(
-			portlet, servletContext);
-
-		PortletContext portletContext = portletConfig.getPortletContext();
-
-		LiferayRenderRequest liferayRenderRequest = RenderRequestFactory.create(
-			request, portlet, invokerPortlet, portletContext,
-			WindowState.MAXIMIZED, PortletMode.VIEW, portletPreferences);
-
-		LiferayRenderResponse liferayRenderResponse =
-			RenderResponseFactory.create(liferayRenderRequest, response);
-
-		liferayRenderRequest.defineObjects(
-			portletConfig, liferayRenderResponse);
-
-		request.setAttribute(WebKeys.PORTLET_STRUTS_EXECUTE, Boolean.TRUE);
-	}
-
-	private ActionMapping _findMapping(
-			HttpServletRequest request, HttpServletResponse response,
-			String path)
-		throws IOException {
-
-		ActionMapping actionMapping =
-			(ActionMapping)_moduleConfig.findActionConfig(path);
-
-		if (actionMapping != null) {
-			return actionMapping;
-		}
-
-		for (ActionConfig actionConfig : _moduleConfig.findActionConfigs()) {
-			if (actionConfig.getUnknown()) {
-				return (ActionMapping)actionConfig;
-			}
-		}
-
-		response.sendError(
-			HttpServletResponse.SC_NOT_FOUND, "Invalid path was requested");
-
-		_log.error("Current URL " + PortalUtil.getCurrentURL(request));
-		_log.error("Referer " + request.getHeader("Referer"));
-		_log.error("Remote address " + request.getRemoteAddr());
-		_log.error("User ID " + request.getRemoteUser());
-
-		_log.error("Invalid path was requested: " + path);
-
-		return null;
-	}
-
-	private String _findPath(HttpServletRequest request) throws IOException {
+	private String _findPath(HttpServletRequest request) {
 		String path = (String)request.getAttribute(INCLUDE_PATH_INFO);
 
 		if (path == null) {
@@ -438,9 +316,8 @@ public class PortalRequestProcessor {
 		String contextPath = lastPath.getContextPath();
 
 		if (contextPath.equals(themeDisplay.getPathMain())) {
-			ActionMapping actionMapping =
-				(ActionMapping)_moduleConfig.findActionConfig(
-					lastPath.getPath());
+			ActionMapping actionMapping = _moduleConfig.getActionMapping(
+				lastPath.getPath());
 
 			if ((actionMapping == null) || parameters.isEmpty()) {
 				return sb.toString();
@@ -455,25 +332,6 @@ public class PortalRequestProcessor {
 		lastPathSB.append(parameters);
 
 		return lastPathSB.toString();
-	}
-
-	private Action _getOriginalAction(ActionMapping actionMapping) {
-		ClassLoader classLoader = PortalRequestProcessor.class.getClassLoader();
-
-		return _actions.computeIfAbsent(
-			actionMapping.getType(),
-			classNameKey -> {
-				try {
-					Class<? extends Action> clazz =
-						(Class<? extends Action>)classLoader.loadClass(
-							classNameKey);
-
-					return clazz.newInstance();
-				}
-				catch (ReflectiveOperationException roe) {
-					return ReflectionUtil.throwException(roe);
-				}
-			});
 	}
 
 	private void _internalModuleRelativeForward(
@@ -516,24 +374,13 @@ public class PortalRequestProcessor {
 	}
 
 	private void _process(
-			HttpServletRequest request, HttpServletResponse response)
+			ActionMapping actionMapping, HttpServletRequest request,
+			HttpServletResponse response)
 		throws IOException, ServletException {
-
-		String path = _processPath(request, response);
-
-		if (path == null) {
-			return;
-		}
 
 		_processLocale(request);
 
 		response.setContentType("text/html; charset=UTF-8");
-
-		ActionMapping actionMapping = _processMapping(request, response, path);
-
-		if (actionMapping == null) {
-			return;
-		}
 
 		if (!_processRoles(request, response, actionMapping)) {
 			return;
@@ -543,11 +390,7 @@ public class PortalRequestProcessor {
 			return;
 		}
 
-		Action action = _processActionCreate(actionMapping);
-
-		if (action == null) {
-			return;
-		}
+		Action action = actionMapping.getAction();
 
 		try {
 			ActionForward actionForward = action.execute(
@@ -564,28 +407,6 @@ public class PortalRequestProcessor {
 		catch (Exception e) {
 			throw new ServletException(e);
 		}
-	}
-
-	private Action _processActionCreate(ActionMapping actionMapping)
-		throws IOException {
-
-		ActionAdapter actionAdapter =
-			(ActionAdapter)StrutsActionRegistryUtil.getAction(
-				actionMapping.getPath());
-
-		if (actionAdapter != null) {
-			ActionConfig actionConfig = _moduleConfig.findActionConfig(
-				actionMapping.getPath());
-
-			if (actionConfig != null) {
-				actionAdapter.setOriginalAction(
-					_getOriginalAction(actionMapping));
-			}
-
-			return actionAdapter;
-		}
-
-		return _getOriginalAction(actionMapping);
 	}
 
 	private boolean _processForward(
@@ -607,46 +428,19 @@ public class PortalRequestProcessor {
 	private void _processLocale(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 
-		if (session.getAttribute(Globals.LOCALE_KEY) != null) {
+		if (session.getAttribute(WebKeys.LOCALE) != null) {
 			return;
 		}
 
 		Locale locale = request.getLocale();
 
 		if (locale != null) {
-			session.setAttribute(Globals.LOCALE_KEY, locale);
+			session.setAttribute(WebKeys.LOCALE, locale);
 		}
 	}
 
-	private ActionMapping _processMapping(
-			HttpServletRequest request, HttpServletResponse response,
-			String path)
-		throws IOException {
-
-		Action action = StrutsActionRegistryUtil.getAction(path);
-
-		if (action != null) {
-			ActionMapping actionMapping =
-				(ActionMapping)_moduleConfig.findActionConfig(path);
-
-			if (actionMapping == null) {
-				actionMapping = new ActionMapping();
-
-				actionMapping.setModuleConfig(_moduleConfig);
-				actionMapping.setPath(path);
-			}
-
-			return actionMapping;
-		}
-
-		return _findMapping(request, response, path);
-	}
-
-	private String _processPath(
-			HttpServletRequest request, HttpServletResponse response)
-		throws IOException {
-
-		String path = GetterUtil.getString(_findPath(request));
+	private String _processPath(HttpServletRequest request) {
+		String path = _findPath(request);
 
 		HttpSession session = request.getSession();
 
@@ -885,50 +679,6 @@ public class PortalRequestProcessor {
 			return _PATH_PORTAL_LOGIN;
 		}
 
-		ActionMapping actionMapping =
-			(ActionMapping)_moduleConfig.findActionConfig(path);
-
-		if (actionMapping == null) {
-			Action strutsAction = StrutsActionRegistryUtil.getAction(path);
-
-			if (strutsAction == null) {
-				return null;
-			}
-		}
-		else {
-			path = actionMapping.getPath();
-		}
-
-		// Define the portlet objects
-
-		if (_isPortletPath(path)) {
-			try {
-				Portlet portlet = null;
-
-				if (Validator.isNotNull(portletId)) {
-					portlet = PortletLocalServiceUtil.getPortletById(
-						companyId, portletId);
-				}
-
-				if (portlet == null) {
-					String strutsPath = path.substring(
-						1, path.lastIndexOf(CharPool.SLASH));
-
-					portlet = PortletLocalServiceUtil.getPortletByStrutsPath(
-						companyId, strutsPath);
-				}
-
-				if ((portlet != null) && portlet.isActive()) {
-					_defineObjects(request, response, portlet);
-				}
-			}
-			catch (Exception e) {
-				request.setAttribute(PageContext.EXCEPTION, e);
-
-				path = _PATH_COMMON_ERROR;
-			}
-		}
-
 		// Authenticated users must have access to at least one layout
 
 		if (SessionErrors.contains(
@@ -1028,12 +778,12 @@ public class PortalRequestProcessor {
 		}
 
 		if (!authorized) {
-			ForwardConfig forwardConfig = actionMapping.findForward(
+			ActionForward actionForward = actionMapping.getActionForward(
 				_PATH_PORTAL_ERROR);
 
-			if (forwardConfig != null) {
+			if (actionForward != null) {
 				_internalModuleRelativeForward(
-					forwardConfig.getPath(), request, response);
+					actionForward.getPath(), request, response);
 			}
 
 			return false;
@@ -1045,8 +795,6 @@ public class PortalRequestProcessor {
 	private static final String _PATH_C = "/c";
 
 	private static final String _PATH_COMMON = "/common";
-
-	private static final String _PATH_COMMON_ERROR = "/common/error";
 
 	private static final String _PATH_J_SECURITY_CHECK = "/j_security_check";
 
@@ -1115,7 +863,6 @@ public class PortalRequestProcessor {
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortalRequestProcessor.class);
 
-	private final Map<String, Action> _actions = new ConcurrentHashMap<>();
 	private final Map<String, Definition> _definitions;
 	private final Set<String> _lastPaths;
 	private final ModuleConfig _moduleConfig;

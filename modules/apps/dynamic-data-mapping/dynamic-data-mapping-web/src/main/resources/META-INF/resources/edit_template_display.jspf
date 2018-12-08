@@ -65,6 +65,10 @@ if (Validator.isNotNull(scriptContent)) {
 
 							ResourceBundleLoader resourceBundleLoader = ResourceBundleLoaderUtil.getResourceBundleLoaderByBundleSymbolicName(bundle.getSymbolicName());
 
+							if (resourceBundleLoader == null) {
+								resourceBundleLoader = new AggregateResourceBundleLoader(ResourceBundleUtil.getResourceBundleLoader("content.Language", clazz.getClassLoader()), LanguageResources.RESOURCE_BUNDLE_LOADER);
+							}
+
 							ResourceBundle templateHandlerResourceBundle = resourceBundleLoader.loadResourceBundle(locale);
 
 							for (TemplateVariableGroup templateVariableGroup : templateVariableGroups.values()) {

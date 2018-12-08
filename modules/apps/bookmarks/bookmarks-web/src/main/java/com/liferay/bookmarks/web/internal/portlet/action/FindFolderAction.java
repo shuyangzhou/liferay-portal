@@ -17,8 +17,12 @@ package com.liferay.bookmarks.web.internal.portlet.action;
 import com.liferay.bookmarks.constants.BookmarksPortletKeys;
 import com.liferay.bookmarks.model.BookmarksFolder;
 import com.liferay.bookmarks.service.BookmarksFolderLocalService;
+import com.liferay.portal.kernel.portlet.BasePortletLayoutFinder;
+import com.liferay.portal.kernel.portlet.PortletLayoutFinder;
 import com.liferay.portal.kernel.struts.StrutsAction;
 import com.liferay.portal.struts.FindStrutsAction;
+
+import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -34,6 +38,13 @@ import org.osgi.service.component.annotations.Reference;
 public class FindFolderAction extends FindStrutsAction {
 
 	@Override
+	protected void addRequiredParameters(
+		HttpServletRequest request, String portletId, PortletURL portletURL) {
+
+		portletURL.setParameter("struts_action", "/bookmarks/view_folder");
+	}
+
+	@Override
 	protected long getGroupId(long primaryKey) throws Exception {
 		BookmarksFolder folder = _bookmarksFolderLocalService.getFolder(
 			primaryKey);
@@ -42,20 +53,20 @@ public class FindFolderAction extends FindStrutsAction {
 	}
 
 	@Override
+	protected PortletLayoutFinder getPortletLayoutFinder() {
+		return new BasePortletLayoutFinder() {
+
+			@Override
+			protected String[] getPortletIds() {
+				return new String[] {BookmarksPortletKeys.BOOKMARKS};
+			}
+
+		};
+	}
+
+	@Override
 	protected String getPrimaryKeyParameterName() {
 		return "folderId";
-	}
-
-	@Override
-	protected String getStrutsAction(
-		HttpServletRequest request, String portletId) {
-
-		return "/bookmarks/view_folder";
-	}
-
-	@Override
-	protected String[] initPortletIds() {
-		return new String[] {BookmarksPortletKeys.BOOKMARKS};
 	}
 
 	@Reference(unbind = "-")

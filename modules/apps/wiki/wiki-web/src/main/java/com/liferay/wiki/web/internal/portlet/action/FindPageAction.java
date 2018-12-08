@@ -14,6 +14,8 @@
 
 package com.liferay.wiki.web.internal.portlet.action;
 
+import com.liferay.portal.kernel.portlet.BasePortletLayoutFinder;
+import com.liferay.portal.kernel.portlet.PortletLayoutFinder;
 import com.liferay.portal.kernel.struts.StrutsAction;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.struts.FindStrutsAction;
@@ -37,6 +39,13 @@ import org.osgi.service.component.annotations.Reference;
 public class FindPageAction extends FindStrutsAction {
 
 	@Override
+	protected void addRequiredParameters(
+		HttpServletRequest request, String portletId, PortletURL portletURL) {
+
+		portletURL.setParameter("struts_action", _getStrutsAction(portletId));
+	}
+
+	@Override
 	protected long getGroupId(long primaryKey) throws Exception {
 		WikiPageResource pageResource =
 			_wikiPageResourceLocalService.getPageResource(primaryKey);
@@ -47,32 +56,23 @@ public class FindPageAction extends FindStrutsAction {
 	}
 
 	@Override
+	protected PortletLayoutFinder getPortletLayoutFinder() {
+		return new BasePortletLayoutFinder() {
+
+			@Override
+			protected String[] getPortletIds() {
+				return new String[] {
+					WikiPortletKeys.WIKI_ADMIN, WikiPortletKeys.WIKI,
+					WikiPortletKeys.WIKI_DISPLAY
+				};
+			}
+
+		};
+	}
+
+	@Override
 	protected String getPrimaryKeyParameterName() {
 		return "pageResourcePrimKey";
-	}
-
-	@Override
-	protected String getStrutsAction(
-		HttpServletRequest request, String portletId) {
-
-		if (portletId.equals(WikiPortletKeys.WIKI) ||
-			portletId.equals(WikiPortletKeys.WIKI_ADMIN)) {
-
-			return "/wiki/view";
-		}
-
-		return "/wiki_display/view";
-	}
-
-	@Override
-	protected String[] initPortletIds() {
-
-		// Order is important. See LPS-23770.
-
-		return new String[] {
-			WikiPortletKeys.WIKI_ADMIN, WikiPortletKeys.WIKI,
-			WikiPortletKeys.WIKI_DISPLAY
-		};
 	}
 
 	@Override
@@ -107,6 +107,16 @@ public class FindPageAction extends FindStrutsAction {
 		WikiPageResourceLocalService wikiPageResourceLocalService) {
 
 		_wikiPageResourceLocalService = wikiPageResourceLocalService;
+	}
+
+	private String _getStrutsAction(String portletId) {
+		if (portletId.equals(WikiPortletKeys.WIKI) ||
+			portletId.equals(WikiPortletKeys.WIKI_ADMIN)) {
+
+			return "/wiki/view";
+		}
+
+		return "/wiki_display/view";
 	}
 
 	private WikiNodeLocalService _wikiNodeLocalService;

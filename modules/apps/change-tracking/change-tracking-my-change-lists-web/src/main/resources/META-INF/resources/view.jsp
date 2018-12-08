@@ -19,6 +19,7 @@
 <div class="sheet sheet-lg">
 	<div class="sheet-header">
 		<h2 class="sheet-title">My Change Lists example screen</h2>
+
 		<div class="sheet-text">This is only a placeholder for what's later be added to the my change lists screen.</div>
 	</div>
 </div>

@@ -461,8 +461,16 @@ public interface WebKeys {
 	@Deprecated
 	public static final String PORTLET_STRUTS_EXCEPTION = "PORTLET_STRUTS_EXCEPTION";
 
+	/**
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
+	 */
+	@Deprecated
 	public static final String PORTLET_STRUTS_EXECUTE = "PORTLET_STRUTS_EXECUTE";
 
+	/**
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
+	 */
+	@Deprecated
 	@Distributed(direction = Direction.DUPLEX, matchType = MatchType.POSTFIX)
 	public static final String PORTLET_STRUTS_FORWARD = "PORTLET_STRUTS_FORWARD";
 
@@ -538,6 +546,8 @@ public interface WebKeys {
 
 	public static final String SERVLET_CONTEXT_INCLUDE_FILTER_THEME = "SERVLET_CONTEXT_INCLUDE_FILTER_THEME";
 
+	public static final String SERVLET_MAPPING = "SERVLET_MAPPING";
+
 	public static final String SERVLET_PATH = "SERVLET_PATH";
 
 	public static final String SESSION_LISTENER = "SESSION_LISTENER";
@@ -603,6 +613,10 @@ public interface WebKeys {
 
 	public static final String STARTUP_FINISHED = "STARTUP_FINISHED";
 
+	/**
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
+	 */
+	@Deprecated
 	public static final String STRUTS_BRIDGES_ATTRIBUTES = "STRUTS_BRIDGES_ATTRIBUTES";
 
 	public static final String SUBJECT = "SUBJECT";

@@ -26,4 +26,7 @@ public class ChangeTrackingPortletKeys {
 		"com_liferay_change_tracking_my_change_lists_web_portlet_" +
 			"MyChangeListsPortlet";
 
+	public static final String SITE_CHANGE_LISTS =
+		"com_liferay_change_tracking_web_portlet_SiteChangeListsPortlet";
+
 }

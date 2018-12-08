@@ -168,6 +168,16 @@ public class GogoShellPortlet extends MVCPortlet {
 		super.processAction(actionRequest, actionResponse);
 	}
 
+	@Override
+	public void render(
+			RenderRequest renderRequest, RenderResponse renderResponse)
+		throws IOException, PortletException {
+
+		checkOmniAdmin();
+
+		super.render(renderRequest, renderResponse);
+	}
+
 	protected void checkCommand(String command, ThemeDisplay themeDisplay)
 		throws Exception {
 
@@ -254,7 +264,8 @@ public class GogoShellPortlet extends MVCPortlet {
 	private static final InputStream _emptyInputStream =
 		new UnsyncByteArrayInputStream(new byte[0]);
 	private static final Pattern _pattern = Pattern.compile(
-		"\\b(close|disconnect|exit|shutdown)\\b");
+		".*(close|disconnect|exit|shutdown).*",
+		Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 
 	@Reference
 	private CommandProcessor _commandProcessor;

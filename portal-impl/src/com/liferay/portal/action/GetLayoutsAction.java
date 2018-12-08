@@ -22,8 +22,6 @@ import com.liferay.portlet.layoutsadmin.util.LayoutsTreeUtil;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.struts.action.ActionMapping;
-
 /**
  * @author Eduardo Lundgren
  * @author Zsolt Szabó
@@ -33,8 +31,7 @@ public class GetLayoutsAction extends JSONAction {
 
 	@Override
 	public String getJSON(
-			ActionMapping actionMapping, HttpServletRequest request,
-			HttpServletResponse response)
+			HttpServletRequest request, HttpServletResponse response)
 		throws Exception {
 
 		String cmd = ParamUtil.getString(request, Constants.CMD);

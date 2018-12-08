@@ -151,6 +151,24 @@ public class JSONUtil {
 		return values;
 	}
 
+	public static Set<Long> toLongSet(
+		JSONArray jsonArray, String jsonObjectKey) {
+
+		if (jsonArray == null) {
+			return Collections.emptySet();
+		}
+
+		Set<Long> values = new HashSet<>(jsonArray.length());
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			values.add(jsonObject.getLong(jsonObjectKey));
+		}
+
+		return values;
+	}
+
 	public static List<String> toStringList(JSONArray jsonArray) {
 		if (jsonArray == null) {
 			return Collections.emptyList();
@@ -177,9 +195,7 @@ public class JSONUtil {
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-			String value = jsonObject.getString(jsonObjectKey);
-
-			values.add(value);
+			values.add(jsonObject.getString(jsonObjectKey));
 		}
 
 		return values;
@@ -197,9 +213,7 @@ public class JSONUtil {
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-			String value = jsonObject.getString(jsonObjectKey);
-
-			values.add(value);
+			values.add(jsonObject.getString(jsonObjectKey));
 		}
 
 		return values;

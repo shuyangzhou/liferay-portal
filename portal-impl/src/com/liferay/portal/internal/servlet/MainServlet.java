@@ -83,9 +83,13 @@ import com.liferay.portal.servlet.I18nServlet;
 import com.liferay.portal.servlet.filters.absoluteredirects.AbsoluteRedirectsResponse;
 import com.liferay.portal.servlet.filters.i18n.I18nFilter;
 import com.liferay.portal.setup.SetupWizardSampleDataUtil;
+import com.liferay.portal.struts.Action;
 import com.liferay.portal.struts.PortalRequestProcessor;
 import com.liferay.portal.struts.StrutsUtil;
 import com.liferay.portal.struts.TilesUtil;
+import com.liferay.portal.struts.model.ActionForward;
+import com.liferay.portal.struts.model.ActionMapping;
+import com.liferay.portal.struts.model.ModuleConfig;
 import com.liferay.portal.util.ExtRegistry;
 import com.liferay.portal.util.MaintenanceUtil;
 import com.liferay.portal.util.PortalInstances;
@@ -130,12 +134,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.PageContext;
-
-import org.apache.struts.Globals;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.config.ModuleConfig;
-import org.apache.struts.config.impl.ModuleConfigImpl;
 
 /**
  * @author Brian Wing Shun Chan
@@ -193,11 +191,6 @@ public class MainServlet extends HttpServlet {
 		catch (Exception e) {
 			_log.error(e, e);
 		}
-
-		ServletContext servletContext = getServletContext();
-
-		servletContext.removeAttribute(Globals.ACTION_SERVLET_KEY);
-		servletContext.removeAttribute(Globals.MODULE_KEY);
 	}
 
 	@Override
@@ -747,13 +740,7 @@ public class MainServlet extends HttpServlet {
 		try {
 			_initServlet();
 
-			ServletContext servletContext = getServletContext();
-
-			servletContext.setAttribute(Globals.ACTION_SERVLET_KEY, this);
-			servletContext.setAttribute(
-				Globals.MODULE_PREFIXES_KEY, StringPool.EMPTY_ARRAY);
-
-			TilesUtil.loadDefinitions(servletContext);
+			TilesUtil.loadDefinitions(getServletContext());
 
 			return _initModuleConfig();
 		}
@@ -851,9 +838,11 @@ public class MainServlet extends HttpServlet {
 	}
 
 	private ModuleConfig _initModuleConfig() throws Exception {
-		ModuleConfig moduleConfig = new ModuleConfigImpl("");
+		ModuleConfig moduleConfig = new ModuleConfig();
 
 		ServletContext servletContext = getServletContext();
+
+		ClassLoader classLoader = MainServlet.class.getClassLoader();
 
 		try (InputStream inputStream = servletContext.getResourceAsStream(
 				"/WEB-INF/struts-config.xml")) {
@@ -868,10 +857,10 @@ public class MainServlet extends HttpServlet {
 			for (Element forwardElement :
 					globalForwardsElement.elements("forward")) {
 
-				moduleConfig.addForwardConfig(
+				moduleConfig.addActionForward(
 					new ActionForward(
 						forwardElement.attributeValue("name"),
-						forwardElement.attributeValue("path"), false));
+						forwardElement.attributeValue("path")));
 			}
 
 			Element actionMappingsElement = rootElement.element(
@@ -880,29 +869,34 @@ public class MainServlet extends HttpServlet {
 			for (Element actionElement :
 					actionMappingsElement.elements("action")) {
 
-				ActionMapping actionMapping = new ActionMapping();
+				Action action = null;
 
-				actionMapping.setForward(
-					actionElement.attributeValue("forward"));
-				actionMapping.setPath(actionElement.attributeValue("path"));
-				actionMapping.setType(actionElement.attributeValue("type"));
+				String type = actionElement.attributeValue("type");
+
+				if (type != null) {
+					Class<? extends Action> clazz =
+						(Class<? extends Action>)classLoader.loadClass(
+							actionElement.attributeValue("type"));
+
+					action = clazz.newInstance();
+				}
+
+				ActionMapping actionMapping = new ActionMapping(
+					moduleConfig, actionElement.attributeValue("forward"),
+					actionElement.attributeValue("path"), action);
 
 				for (Element forwardElement :
 						actionElement.elements("forward")) {
 
-					actionMapping.addForwardConfig(
+					actionMapping.addActionForward(
 						new ActionForward(
 							forwardElement.attributeValue("name"),
-							forwardElement.attributeValue("path"), false));
+							forwardElement.attributeValue("path")));
 				}
 
-				moduleConfig.addActionConfig(actionMapping);
+				moduleConfig.addActionMapping(actionMapping);
 			}
 		}
-
-		moduleConfig.freeze();
-
-		servletContext.setAttribute(Globals.MODULE_KEY, moduleConfig);
 
 		return moduleConfig;
 	}
@@ -1005,7 +999,8 @@ public class MainServlet extends HttpServlet {
 		Iterator<String> iterator = mappings.iterator();
 
 		if (iterator.hasNext()) {
-			servletContext.setAttribute(Globals.SERVLET_KEY, iterator.next());
+			servletContext.setAttribute(
+				WebKeys.SERVLET_MAPPING, iterator.next());
 		}
 	}
 
@@ -1042,7 +1037,7 @@ public class MainServlet extends HttpServlet {
 
 		HttpSession session = request.getSession();
 
-		session.setAttribute(Globals.LOCALE_KEY, user.getLocale());
+		session.setAttribute(WebKeys.LOCALE, user.getLocale());
 		session.setAttribute(WebKeys.USER, user);
 		session.setAttribute(WebKeys.USER_ID, Long.valueOf(userId));
 

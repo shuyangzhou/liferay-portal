@@ -217,11 +217,12 @@ public class OAuth2ProviderShortcutPortalInstanceLifecycleListener
 				GroupService.class.getName(), "#getGroups\n",
 				GroupService.class.getName(), "#getGroupsCount\n",
 				GroupService.class.getName(), "#getGtGroups\n",
-				OrganizationService.class.getName(), "#fetchOrganizations\n",
+				OrganizationService.class.getName(), "#fetchOrganization\n",
 				OrganizationService.class.getName(), "#getGtOrganizations\n",
 				OrganizationService.class.getName(), "#getOrganization\n",
 				OrganizationService.class.getName(), "#getOrganizations\n",
 				OrganizationService.class.getName(), "#getOrganizationsCount\n",
+				OrganizationService.class.getName(), "#getUserOrganizations\n",
 				PortalService.class.getName(), "#getBuildNumber\n",
 				UserService.class.getName(), "#getCompanyUsers\n",
 				UserService.class.getName(), "#getCompanyUsersCount\n",
@@ -239,7 +240,8 @@ public class OAuth2ProviderShortcutPortalInstanceLifecycleListener
 				UserGroupService.class.getName(), "#getGtUserGroups\n",
 				UserGroupService.class.getName(), "#getUserGroup\n",
 				UserGroupService.class.getName(), "#getUserGroups\n",
-				UserGroupService.class.getName(), "#getUserGroupsCount")
+				UserGroupService.class.getName(), "#getUserGroupsCount\n",
+				UserGroupService.class.getName(), "#getUserUserGroups")
 		},
 		{
 			"OAUTH2_analytics.write",

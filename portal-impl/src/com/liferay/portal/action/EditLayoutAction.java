@@ -46,8 +46,6 @@ import com.liferay.sites.kernel.util.SitesUtil;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.struts.action.ActionMapping;
-
 /**
  * @author Ming-Gih Lam
  * @author Hugo Huijser
@@ -56,8 +54,7 @@ public class EditLayoutAction extends JSONAction {
 
 	@Override
 	public String getJSON(
-			ActionMapping actionMapping, HttpServletRequest request,
-			HttpServletResponse response)
+			HttpServletRequest request, HttpServletResponse response)
 		throws Exception {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(

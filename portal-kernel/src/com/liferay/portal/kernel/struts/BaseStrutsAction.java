@@ -19,7 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Mika Koivisto
+ * @deprecated As of Judson (7.1.x), replaced by {@link StrutsAction}
  */
+@Deprecated
 public class BaseStrutsAction implements StrutsAction {
 
 	@Override
