@@ -52,7 +52,6 @@ import com.liferay.portal.kernel.servlet.HttpMethods;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.struts.LastPath;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -97,7 +96,6 @@ import org.apache.struts.Globals;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.config.ActionConfig;
-import org.apache.struts.config.ForwardConfig;
 import org.apache.struts.config.ModuleConfig;
 
 /**
@@ -160,7 +158,7 @@ public class PortalRequestProcessor {
 			HttpServletRequest request, HttpServletResponse response)
 		throws IOException, ServletException {
 
-		String path = _findPath(request);
+		String path = _processPath(request, response);
 
 		ActionMapping actionMapping =
 			(ActionMapping)_moduleConfig.findActionConfig(path);
@@ -179,7 +177,7 @@ public class PortalRequestProcessor {
 			return;
 		}
 
-		_process(request, response);
+		_process(path, request, response);
 
 		try {
 			if (_isPortletPath(path)) {
@@ -243,37 +241,6 @@ public class PortalRequestProcessor {
 			portletConfig, liferayRenderResponse);
 
 		request.setAttribute(WebKeys.PORTLET_STRUTS_EXECUTE, Boolean.TRUE);
-	}
-
-	private ActionMapping _findMapping(
-			HttpServletRequest request, HttpServletResponse response,
-			String path)
-		throws IOException {
-
-		ActionMapping actionMapping =
-			(ActionMapping)_moduleConfig.findActionConfig(path);
-
-		if (actionMapping != null) {
-			return actionMapping;
-		}
-
-		for (ActionConfig actionConfig : _moduleConfig.findActionConfigs()) {
-			if (actionConfig.getUnknown()) {
-				return (ActionMapping)actionConfig;
-			}
-		}
-
-		response.sendError(
-			HttpServletResponse.SC_NOT_FOUND, "Invalid path was requested");
-
-		_log.error("Current URL " + PortalUtil.getCurrentURL(request));
-		_log.error("Referer " + request.getHeader("Referer"));
-		_log.error("Remote address " + request.getRemoteAddr());
-		_log.error("User ID " + request.getRemoteUser());
-
-		_log.error("Invalid path was requested: " + path);
-
-		return null;
 	}
 
 	private String _findPath(HttpServletRequest request) throws IOException {
@@ -516,23 +483,24 @@ public class PortalRequestProcessor {
 	}
 
 	private void _process(
-			HttpServletRequest request, HttpServletResponse response)
+			String path, HttpServletRequest request,
+			HttpServletResponse response)
 		throws IOException, ServletException {
-
-		String path = _processPath(request, response);
-
-		if (path == null) {
-			return;
-		}
 
 		_processLocale(request);
 
 		response.setContentType("text/html; charset=UTF-8");
 
-		ActionMapping actionMapping = _processMapping(request, response, path);
+		ActionMapping actionMapping =
+			(ActionMapping)_moduleConfig.findActionConfig(path);
 
-		if (actionMapping == null) {
-			return;
+		if ((StrutsActionRegistryUtil.getAction(path) != null) &&
+			(actionMapping == null)) {
+
+			actionMapping = new ActionMapping();
+
+			actionMapping.setModuleConfig(_moduleConfig);
+			actionMapping.setPath(path);
 		}
 
 		if (!_processRoles(request, response, actionMapping)) {
@@ -544,10 +512,6 @@ public class PortalRequestProcessor {
 		}
 
 		Action action = _processActionCreate(actionMapping);
-
-		if (action == null) {
-			return;
-		}
 
 		try {
 			ActionForward actionForward = action.execute(
@@ -618,35 +582,11 @@ public class PortalRequestProcessor {
 		}
 	}
 
-	private ActionMapping _processMapping(
-			HttpServletRequest request, HttpServletResponse response,
-			String path)
-		throws IOException {
-
-		Action action = StrutsActionRegistryUtil.getAction(path);
-
-		if (action != null) {
-			ActionMapping actionMapping =
-				(ActionMapping)_moduleConfig.findActionConfig(path);
-
-			if (actionMapping == null) {
-				actionMapping = new ActionMapping();
-
-				actionMapping.setModuleConfig(_moduleConfig);
-				actionMapping.setPath(path);
-			}
-
-			return actionMapping;
-		}
-
-		return _findMapping(request, response, path);
-	}
-
 	private String _processPath(
 			HttpServletRequest request, HttpServletResponse response)
 		throws IOException {
 
-		String path = GetterUtil.getString(_findPath(request));
+		String path = _findPath(request);
 
 		HttpSession session = request.getSession();
 
@@ -885,20 +825,6 @@ public class PortalRequestProcessor {
 			return _PATH_PORTAL_LOGIN;
 		}
 
-		ActionMapping actionMapping =
-			(ActionMapping)_moduleConfig.findActionConfig(path);
-
-		if (actionMapping == null) {
-			Action strutsAction = StrutsActionRegistryUtil.getAction(path);
-
-			if (strutsAction == null) {
-				return null;
-			}
-		}
-		else {
-			path = actionMapping.getPath();
-		}
-
 		// Define the portlet objects
 
 		if (_isPortletPath(path)) {
@@ -1028,12 +954,12 @@ public class PortalRequestProcessor {
 		}
 
 		if (!authorized) {
-			ForwardConfig forwardConfig = actionMapping.findForward(
+			ActionForward actionForward = actionMapping.findForward(
 				_PATH_PORTAL_ERROR);
 
-			if (forwardConfig != null) {
+			if (actionForward != null) {
 				_internalModuleRelativeForward(
-					forwardConfig.getPath(), request, response);
+					actionForward.getPath(), request, response);
 			}
 
 			return false;
