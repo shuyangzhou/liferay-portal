@@ -46,6 +46,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.portlet.ActionRequest;
 import javax.portlet.PortletMode;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
@@ -403,6 +404,35 @@ public abstract class BaseAssetRenderer<T> implements AssetRenderer<T> {
 		return LocaleUtil.getMostRelevantLocale();
 	}
 
+	protected String getURLViewInContext(
+		LiferayPortletRequest liferayPortletRequest,
+		LiferayPortletResponse liferayPortletResponse, String portletName,
+		String path, String noSuchEntryRedirect, String primaryKeyParameterName,
+		long primaryKeyParameterValue) {
+
+		LiferayPortletURL liferayPortletURL =
+			liferayPortletResponse.createActionURL(portletName);
+
+		liferayPortletURL.setParameter(ActionRequest.ACTION_NAME, path);
+
+		if (noSuchEntryRedirect != null) {
+			liferayPortletURL.setParameter(
+				"noSuchEntryRedirect", noSuchEntryRedirect);
+		}
+
+		liferayPortletURL.setParameter(
+			primaryKeyParameterName, String.valueOf(primaryKeyParameterValue));
+
+		return liferayPortletURL.toString();
+	}
+
+	/**
+	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
+	 *             #getURLViewInContext(LiferayPortletRequest,
+	 *             LiferayPortletResponse, String, String, String, String,
+	 *             long)}
+	 */
+	@Deprecated
 	protected String getURLViewInContext(
 		LiferayPortletRequest liferayPortletRequest, String noSuchEntryRedirect,
 		String path, String primaryKeyParameterName,
