@@ -14,15 +14,15 @@
 
 package com.liferay.document.library.web.internal.portlet.action;
 
+import com.liferay.document.library.constants.DLPortletKeys;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.portal.kernel.portlet.PortletLayoutFinder;
+import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.repository.model.FileEntry;
-import com.liferay.portal.kernel.struts.StrutsAction;
-import com.liferay.portal.struts.FindStrutsAction;
+import com.liferay.portlet.brides.mvc.FindMVCActionCommand;
 
+import javax.portlet.ActionRequest;
 import javax.portlet.PortletURL;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -32,10 +32,14 @@ import org.osgi.service.component.annotations.Reference;
  * @author Ryan Park
  */
 @Component(
-	immediate = true, property = "path=/document_library/find_file_entry",
-	service = StrutsAction.class
+	immediate = true,
+	property = {
+		"javax.portlet.name=" + DLPortletKeys.DOCUMENT_LIBRARY,
+		"mvc.command.name=/document_library/find_file_entry"
+	},
+	service = MVCActionCommand.class
 )
-public class FindFileEntryAction extends FindStrutsAction {
+public class FindFileEntryMVCActionCommand extends FindMVCActionCommand {
 
 	@Override
 	public long getGroupId(long primaryKey) throws Exception {
@@ -59,7 +63,7 @@ public class FindFileEntryAction extends FindStrutsAction {
 
 	@Override
 	protected void addRequiredParameters(
-		HttpServletRequest request, String portletId, PortletURL portletURL) {
+		ActionRequest actionRequest, String portletId, PortletURL portletURL) {
 
 		portletURL.setParameter(
 			"mvcRenderCommandName", "/document_library/view_file_entry");

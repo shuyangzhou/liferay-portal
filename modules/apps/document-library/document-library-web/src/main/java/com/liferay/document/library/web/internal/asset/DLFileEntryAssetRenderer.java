@@ -349,9 +349,9 @@ public class DLFileEntryAssetRenderer
 		String noSuchEntryRedirect) {
 
 		return getURLViewInContext(
-			liferayPortletRequest, noSuchEntryRedirect,
-			"/document_library/find_file_entry", "fileEntryId",
-			_fileEntry.getFileEntryId());
+			liferayPortletRequest, liferayPortletResponse,
+			DLPortletKeys.DOCUMENT_LIBRARY, "/document_library/find_file_entry",
+			noSuchEntryRedirect, "fileEntryId", _fileEntry.getFileEntryId());
 	}
 
 	@Override
