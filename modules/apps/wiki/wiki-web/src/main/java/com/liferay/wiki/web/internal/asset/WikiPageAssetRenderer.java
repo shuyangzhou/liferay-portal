@@ -304,8 +304,9 @@ public class WikiPageAssetRenderer
 		String noSuchEntryRedirect) {
 
 		return getURLViewInContext(
-			liferayPortletRequest, noSuchEntryRedirect, "/wiki/find_page",
-			"pageResourcePrimKey", _page.getResourcePrimKey());
+			liferayPortletRequest, liferayPortletResponse, WikiPortletKeys.WIKI,
+			"/wiki/find_page", noSuchEntryRedirect, "pageResourcePrimKey",
+			_page.getResourcePrimKey());
 	}
 
 	@Override
