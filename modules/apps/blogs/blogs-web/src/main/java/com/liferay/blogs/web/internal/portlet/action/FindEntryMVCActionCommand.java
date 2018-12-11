@@ -18,25 +18,28 @@ import com.liferay.blogs.constants.BlogsPortletKeys;
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.service.BlogsEntryLocalService;
 import com.liferay.portal.kernel.portlet.PortletLayoutFinder;
-import com.liferay.portal.kernel.struts.StrutsAction;
+import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.struts.FindStrutsAction;
+import com.liferay.portlet.brides.mvc.FindMVCActionCommand;
 
+import javax.portlet.ActionRequest;
 import javax.portlet.PortletURL;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Shuyang Zhou
  */
 @Component(
-	immediate = true, property = "path=/blogs/find_entry",
-	service = StrutsAction.class
+	immediate = true,
+	property = {
+		"javax.portlet.name=" + BlogsPortletKeys.BLOGS,
+		"mvc.command.name=/blogs/find_entry"
+	},
+	service = MVCActionCommand.class
 )
-public class FindEntryAction extends FindStrutsAction {
+public class FindEntryMVCActionCommand extends FindMVCActionCommand {
 
 	@Override
 	public long getGroupId(long primaryKey) throws Exception {
@@ -67,7 +70,7 @@ public class FindEntryAction extends FindStrutsAction {
 
 	@Override
 	protected void addRequiredParameters(
-		HttpServletRequest request, String portletId, PortletURL portletURL) {
+		ActionRequest actionRequest, String portletId, PortletURL portletURL) {
 
 		String mvcRenderCommandName = null;
 

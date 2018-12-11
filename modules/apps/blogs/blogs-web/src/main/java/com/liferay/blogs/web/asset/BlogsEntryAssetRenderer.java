@@ -237,7 +237,8 @@ public class BlogsEntryAssetRenderer
 		String noSuchEntryRedirect) {
 
 		return getURLViewInContext(
-			liferayPortletRequest, noSuchEntryRedirect, "/blogs/find_entry",
+			liferayPortletRequest, liferayPortletResponse,
+			BlogsPortletKeys.BLOGS, "/blogs/find_entry", noSuchEntryRedirect,
 			"entryId", _entry.getEntryId());
 	}
 
