@@ -95,6 +95,28 @@ public class ScriptData implements Mergeable<ScriptData>, Serializable {
 		_writeAuiModulesTo(writer);
 	}
 
+	public void writeTo(Writer writer, String portletId) throws IOException {
+		if (Validator.isNull(portletId)) {
+			writeTo(writer);
+
+			return;
+		}
+
+		PortletData portletData = _portletDataMap.get(portletId);
+
+		if (portletData == null) {
+			return;
+		}
+
+		writer.write("<script type=\"text/javascript\">\n// <![CDATA[\n");
+
+		portletData._rawSB.writeTo(writer);
+
+		_writeEs6ModulesTo(writer);
+
+		_writeAuiModulesTo(writer);
+	}
+
 	public static enum ModulesType {
 
 		AUI, ES6
