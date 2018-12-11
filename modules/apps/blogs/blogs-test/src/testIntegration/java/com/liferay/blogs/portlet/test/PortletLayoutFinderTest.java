@@ -29,19 +29,23 @@ import com.liferay.portal.kernel.portlet.PortletProviderUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.servlet.PortletServlet;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.struts.FindStrutsAction;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.test.LayoutTestUtil;
 
+import com.liferay.portlet.brides.mvc.FindMVCActionCommand;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.portlet.ActionRequest;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -54,6 +58,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.portlet.MockActionRequest;
 
 /**
  * @author Julio Camarero
@@ -130,14 +135,19 @@ public class PortletLayoutFinderTest {
 	public void testSetTargetGroupWithDifferentGroup() throws Exception {
 		addLayouts(true, true);
 
-		HttpServletRequest request = getHttpServletRequest();
+		ThemeDisplay themeDisplay = getThemeDisplay();
+
+		ActionRequest actionRequest = getActionRequest(themeDisplay);
 
 		ReflectionTestUtil.invoke(
-			FindStrutsAction.class, "_setTargetLayout",
-			new Class<?>[] {HttpServletRequest.class, long.class, long.class},
-			request, _blogsEntryGroupId, _blogLayout.getPlid());
+			FindMVCActionCommand.class, "_setTargetLayout",
+			new Class<?>[] {
+				ThemeDisplay.class, ActionRequest.class, long.class, long.class
+			},
+			themeDisplay, actionRequest, _blogsEntryGroupId,
+			_blogLayout.getPlid());
 
-		Layout layout = (Layout)request.getAttribute(WebKeys.LAYOUT);
+		Layout layout = (Layout)actionRequest.getAttribute(WebKeys.LAYOUT);
 
 		Assert.assertTrue(layout instanceof VirtualLayout);
 		Assert.assertNotEquals(_group.getGroupId(), layout.getGroupId());
@@ -147,12 +157,19 @@ public class PortletLayoutFinderTest {
 	public void testSetTargetGroupWithSameGroup() throws Exception {
 		addLayouts(true, false);
 
-		HttpServletRequest request = getHttpServletRequest();
+		ThemeDisplay themeDisplay = getThemeDisplay();
+
+		ActionRequest actionRequest = getActionRequest(themeDisplay);
 
 		ReflectionTestUtil.invoke(
-			FindStrutsAction.class, "_setTargetLayout",
-			new Class<?>[] {HttpServletRequest.class, long.class, long.class},
-			request, _blogsEntryGroupId, _blogLayout.getPlid());
+			FindMVCActionCommand.class, "_setTargetLayout",
+			new Class<?>[] {
+				ThemeDisplay.class, ActionRequest.class, long.class, long.class
+			},
+			actionRequest, _blogsEntryGroupId, _blogLayout.getPlid());
+
+		HttpServletRequest request = PortalUtil.getHttpServletRequest(
+			actionRequest);
 
 		Layout layout = (Layout)request.getAttribute(WebKeys.LAYOUT);
 
@@ -195,14 +212,19 @@ public class PortletLayoutFinderTest {
 		_blogsEntryGroupId = group.getGroupId();
 	}
 
-	protected HttpServletRequest getHttpServletRequest() throws Exception {
-		HttpServletRequest request = new MockHttpServletRequest();
+	protected ActionRequest getActionRequest(ThemeDisplay themeDisplay)
+		throws Exception {
 
-		ThemeDisplay themeDisplay = getThemeDisplay();
+		HttpServletRequest request = new MockHttpServletRequest();
 
 		request.setAttribute(WebKeys.THEME_DISPLAY, themeDisplay);
 
-		return request;
+		ActionRequest actionRequest = new MockActionRequest();
+
+		actionRequest.setAttribute(
+			PortletServlet.PORTLET_SERVLET_REQUEST, request);
+
+		return actionRequest;
 	}
 
 	protected ThemeDisplay getThemeDisplay() throws Exception {
