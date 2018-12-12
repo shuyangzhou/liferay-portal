@@ -516,10 +516,10 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 		qPos.add(entryId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(announcementsFlag);
+			Object[] objs = orderByComparator.getOrderByConditionValues(announcementsFlag);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 

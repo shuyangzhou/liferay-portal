@@ -544,10 +544,10 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 		}
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(userNotificationEvent);
+			Object[] objs = orderByComparator.getOrderByConditionValues(userNotificationEvent);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -1130,10 +1130,10 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 		qPos.add(companyId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(userNotificationEvent);
+			Object[] objs = orderByComparator.getOrderByConditionValues(userNotificationEvent);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -1661,10 +1661,10 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 		qPos.add(userId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(userNotificationEvent);
+			Object[] objs = orderByComparator.getOrderByConditionValues(userNotificationEvent);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -2196,10 +2196,10 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 		}
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(userNotificationEvent);
+			Object[] objs = orderByComparator.getOrderByConditionValues(userNotificationEvent);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -2756,10 +2756,10 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 		qPos.add(deliveryType);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(userNotificationEvent);
+			Object[] objs = orderByComparator.getOrderByConditionValues(userNotificationEvent);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -3308,10 +3308,10 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 		qPos.add(delivered);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(userNotificationEvent);
+			Object[] objs = orderByComparator.getOrderByConditionValues(userNotificationEvent);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -3858,10 +3858,10 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 		qPos.add(archived);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(userNotificationEvent);
+			Object[] objs = orderByComparator.getOrderByConditionValues(userNotificationEvent);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -4447,10 +4447,10 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 		qPos.add(delivered);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(userNotificationEvent);
+			Object[] objs = orderByComparator.getOrderByConditionValues(userNotificationEvent);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -5044,10 +5044,10 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 		qPos.add(archived);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(userNotificationEvent);
+			Object[] objs = orderByComparator.getOrderByConditionValues(userNotificationEvent);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -5640,10 +5640,10 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 		qPos.add(actionRequired);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(userNotificationEvent);
+			Object[] objs = orderByComparator.getOrderByConditionValues(userNotificationEvent);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -6238,10 +6238,10 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 		qPos.add(archived);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(userNotificationEvent);
+			Object[] objs = orderByComparator.getOrderByConditionValues(userNotificationEvent);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -6891,10 +6891,10 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 		qPos.add(delivered);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(userNotificationEvent);
+			Object[] objs = orderByComparator.getOrderByConditionValues(userNotificationEvent);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -7543,10 +7543,10 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 		qPos.add(actionRequired);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(userNotificationEvent);
+			Object[] objs = orderByComparator.getOrderByConditionValues(userNotificationEvent);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -8183,10 +8183,10 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 		qPos.add(archived);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(userNotificationEvent);
+			Object[] objs = orderByComparator.getOrderByConditionValues(userNotificationEvent);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 

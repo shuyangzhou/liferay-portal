@@ -510,10 +510,10 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 		qPos.add(companyId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(userTracker);
+			Object[] objs = orderByComparator.getOrderByConditionValues(userTracker);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -1011,10 +1011,10 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 		qPos.add(userId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(userTracker);
+			Object[] objs = orderByComparator.getOrderByConditionValues(userTracker);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -1544,10 +1544,10 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 		}
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(userTracker);
+			Object[] objs = orderByComparator.getOrderByConditionValues(userTracker);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 

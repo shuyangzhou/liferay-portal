@@ -505,10 +505,10 @@ public class RegionPersistenceImpl extends BasePersistenceImpl<Region>
 		qPos.add(countryId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(region);
+			Object[] objs = orderByComparator.getOrderByConditionValues(region);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -1006,10 +1006,10 @@ public class RegionPersistenceImpl extends BasePersistenceImpl<Region>
 		qPos.add(active);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(region);
+			Object[] objs = orderByComparator.getOrderByConditionValues(region);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -1784,10 +1784,10 @@ public class RegionPersistenceImpl extends BasePersistenceImpl<Region>
 		qPos.add(active);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(region);
+			Object[] objs = orderByComparator.getOrderByConditionValues(region);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 

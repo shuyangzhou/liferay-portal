@@ -1169,10 +1169,10 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 		qPos.add(system);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(company);
+			Object[] objs = orderByComparator.getOrderByConditionValues(company);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 

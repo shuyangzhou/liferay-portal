@@ -539,10 +539,10 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 		}
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(team);
+			Object[] objs = orderByComparator.getOrderByConditionValues(team);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -1356,10 +1356,10 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 		qPos.add(companyId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(team);
+			Object[] objs = orderByComparator.getOrderByConditionValues(team);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -1875,10 +1875,10 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 		qPos.add(groupId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(team);
+			Object[] objs = orderByComparator.getOrderByConditionValues(team);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -2182,10 +2182,10 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 		qPos.add(groupId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(team);
+			Object[] objs = orderByComparator.getOrderByConditionValues(team);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 

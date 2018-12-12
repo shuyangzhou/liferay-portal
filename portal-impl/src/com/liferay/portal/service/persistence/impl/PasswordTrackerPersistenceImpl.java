@@ -513,10 +513,10 @@ public class PasswordTrackerPersistenceImpl extends BasePersistenceImpl<Password
 		qPos.add(userId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(passwordTracker);
+			Object[] objs = orderByComparator.getOrderByConditionValues(passwordTracker);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 

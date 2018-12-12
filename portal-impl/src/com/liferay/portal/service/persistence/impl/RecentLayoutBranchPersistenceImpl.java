@@ -514,10 +514,10 @@ public class RecentLayoutBranchPersistenceImpl extends BasePersistenceImpl<Recen
 		qPos.add(groupId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(recentLayoutBranch);
+			Object[] objs = orderByComparator.getOrderByConditionValues(recentLayoutBranch);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -1022,10 +1022,10 @@ public class RecentLayoutBranchPersistenceImpl extends BasePersistenceImpl<Recen
 		qPos.add(userId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(recentLayoutBranch);
+			Object[] objs = orderByComparator.getOrderByConditionValues(recentLayoutBranch);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -1541,10 +1541,10 @@ public class RecentLayoutBranchPersistenceImpl extends BasePersistenceImpl<Recen
 		qPos.add(layoutBranchId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(recentLayoutBranch);
+			Object[] objs = orderByComparator.getOrderByConditionValues(recentLayoutBranch);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 

@@ -516,10 +516,10 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 		qPos.add(userId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(userNotificationDelivery);
+			Object[] objs = orderByComparator.getOrderByConditionValues(userNotificationDelivery);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 

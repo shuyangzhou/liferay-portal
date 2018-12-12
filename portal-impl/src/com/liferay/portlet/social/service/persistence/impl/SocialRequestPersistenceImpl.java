@@ -538,10 +538,10 @@ public class SocialRequestPersistenceImpl extends BasePersistenceImpl<SocialRequ
 		}
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(socialRequest);
+			Object[] objs = orderByComparator.getOrderByConditionValues(socialRequest);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -1362,10 +1362,10 @@ public class SocialRequestPersistenceImpl extends BasePersistenceImpl<SocialRequ
 		qPos.add(companyId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(socialRequest);
+			Object[] objs = orderByComparator.getOrderByConditionValues(socialRequest);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -1891,10 +1891,10 @@ public class SocialRequestPersistenceImpl extends BasePersistenceImpl<SocialRequ
 		qPos.add(companyId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(socialRequest);
+			Object[] objs = orderByComparator.getOrderByConditionValues(socialRequest);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -2395,10 +2395,10 @@ public class SocialRequestPersistenceImpl extends BasePersistenceImpl<SocialRequ
 		qPos.add(userId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(socialRequest);
+			Object[] objs = orderByComparator.getOrderByConditionValues(socialRequest);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -2908,10 +2908,10 @@ public class SocialRequestPersistenceImpl extends BasePersistenceImpl<SocialRequ
 		qPos.add(receiverUserId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(socialRequest);
+			Object[] objs = orderByComparator.getOrderByConditionValues(socialRequest);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -3444,10 +3444,10 @@ public class SocialRequestPersistenceImpl extends BasePersistenceImpl<SocialRequ
 		qPos.add(status);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(socialRequest);
+			Object[] objs = orderByComparator.getOrderByConditionValues(socialRequest);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -3989,10 +3989,10 @@ public class SocialRequestPersistenceImpl extends BasePersistenceImpl<SocialRequ
 		qPos.add(classPK);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(socialRequest);
+			Object[] objs = orderByComparator.getOrderByConditionValues(socialRequest);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -4534,10 +4534,10 @@ public class SocialRequestPersistenceImpl extends BasePersistenceImpl<SocialRequ
 		qPos.add(status);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(socialRequest);
+			Object[] objs = orderByComparator.getOrderByConditionValues(socialRequest);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -5468,10 +5468,10 @@ public class SocialRequestPersistenceImpl extends BasePersistenceImpl<SocialRequ
 		qPos.add(status);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(socialRequest);
+			Object[] objs = orderByComparator.getOrderByConditionValues(socialRequest);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -6140,10 +6140,10 @@ public class SocialRequestPersistenceImpl extends BasePersistenceImpl<SocialRequ
 		qPos.add(status);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(socialRequest);
+			Object[] objs = orderByComparator.getOrderByConditionValues(socialRequest);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 

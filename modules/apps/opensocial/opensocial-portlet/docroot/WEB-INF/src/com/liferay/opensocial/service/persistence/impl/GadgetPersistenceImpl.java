@@ -538,10 +538,10 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 		}
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(gadget);
+			Object[] objs = orderByComparator.getOrderByConditionValues(gadget);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -869,10 +869,10 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 		}
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(gadget);
+			Object[] objs = orderByComparator.getOrderByConditionValues(gadget);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -1505,10 +1505,10 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 		qPos.add(companyId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(gadget);
+			Object[] objs = orderByComparator.getOrderByConditionValues(gadget);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -1851,10 +1851,10 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 		qPos.add(companyId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(gadget);
+			Object[] objs = orderByComparator.getOrderByConditionValues(gadget);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -2442,10 +2442,10 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 		qPos.add(companyId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(gadget);
+			Object[] objs = orderByComparator.getOrderByConditionValues(gadget);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -2749,10 +2749,10 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 		qPos.add(companyId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(gadget);
+			Object[] objs = orderByComparator.getOrderByConditionValues(gadget);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 

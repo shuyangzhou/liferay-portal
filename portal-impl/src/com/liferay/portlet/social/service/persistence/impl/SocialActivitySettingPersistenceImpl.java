@@ -518,10 +518,10 @@ public class SocialActivitySettingPersistenceImpl extends BasePersistenceImpl<So
 		qPos.add(groupId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(socialActivitySetting);
+			Object[] objs = orderByComparator.getOrderByConditionValues(socialActivitySetting);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -1063,10 +1063,10 @@ public class SocialActivitySettingPersistenceImpl extends BasePersistenceImpl<So
 		qPos.add(classNameId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(socialActivitySetting);
+			Object[] objs = orderByComparator.getOrderByConditionValues(socialActivitySetting);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -1615,10 +1615,10 @@ public class SocialActivitySettingPersistenceImpl extends BasePersistenceImpl<So
 		qPos.add(activityType);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(socialActivitySetting);
+			Object[] objs = orderByComparator.getOrderByConditionValues(socialActivitySetting);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -2202,10 +2202,10 @@ public class SocialActivitySettingPersistenceImpl extends BasePersistenceImpl<So
 		qPos.add(activityType);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(socialActivitySetting);
+			Object[] objs = orderByComparator.getOrderByConditionValues(socialActivitySetting);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 

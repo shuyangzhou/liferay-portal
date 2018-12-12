@@ -546,10 +546,10 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 		}
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(layoutSetPrototype);
+			Object[] objs = orderByComparator.getOrderByConditionValues(layoutSetPrototype);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -884,10 +884,10 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 		}
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(layoutSetPrototype);
+			Object[] objs = orderByComparator.getOrderByConditionValues(layoutSetPrototype);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -1528,10 +1528,10 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 		qPos.add(companyId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(layoutSetPrototype);
+			Object[] objs = orderByComparator.getOrderByConditionValues(layoutSetPrototype);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -1883,10 +1883,10 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 		qPos.add(companyId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(layoutSetPrototype);
+			Object[] objs = orderByComparator.getOrderByConditionValues(layoutSetPrototype);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -2483,10 +2483,10 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 		qPos.add(companyId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(layoutSetPrototype);
+			Object[] objs = orderByComparator.getOrderByConditionValues(layoutSetPrototype);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -2797,10 +2797,10 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 		qPos.add(companyId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(layoutSetPrototype);
+			Object[] objs = orderByComparator.getOrderByConditionValues(layoutSetPrototype);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -3385,10 +3385,10 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 		qPos.add(active);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(layoutSetPrototype);
+			Object[] objs = orderByComparator.getOrderByConditionValues(layoutSetPrototype);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -3712,10 +3712,10 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 		qPos.add(active);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(layoutSetPrototype);
+			Object[] objs = orderByComparator.getOrderByConditionValues(layoutSetPrototype);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 

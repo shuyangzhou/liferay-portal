@@ -507,10 +507,10 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 		qPos.add(companyId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(portlet);
+			Object[] objs = orderByComparator.getOrderByConditionValues(portlet);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 

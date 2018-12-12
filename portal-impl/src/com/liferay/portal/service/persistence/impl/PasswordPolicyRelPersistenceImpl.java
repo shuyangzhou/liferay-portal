@@ -528,10 +528,10 @@ public class PasswordPolicyRelPersistenceImpl extends BasePersistenceImpl<Passwo
 		qPos.add(passwordPolicyId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(passwordPolicyRel);
+			Object[] objs = orderByComparator.getOrderByConditionValues(passwordPolicyRel);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 

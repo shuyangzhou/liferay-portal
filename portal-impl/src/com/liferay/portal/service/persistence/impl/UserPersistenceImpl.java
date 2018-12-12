@@ -542,10 +542,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 		}
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(user);
+			Object[] objs = orderByComparator.getOrderByConditionValues(user);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -1112,10 +1112,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 		qPos.add(companyId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(user);
+			Object[] objs = orderByComparator.getOrderByConditionValues(user);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -1632,10 +1632,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 		qPos.add(companyId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(user);
+			Object[] objs = orderByComparator.getOrderByConditionValues(user);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -2362,10 +2362,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 		}
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(user);
+			Object[] objs = orderByComparator.getOrderByConditionValues(user);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -3726,10 +3726,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 		}
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(user);
+			Object[] objs = orderByComparator.getOrderByConditionValues(user);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -4298,10 +4298,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 		}
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(user);
+			Object[] objs = orderByComparator.getOrderByConditionValues(user);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -6310,10 +6310,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 		qPos.add(status);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(user);
+			Object[] objs = orderByComparator.getOrderByConditionValues(user);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -6931,10 +6931,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 		}
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(user);
+			Object[] objs = orderByComparator.getOrderByConditionValues(user);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
@@ -7542,10 +7542,10 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 		qPos.add(status);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(user);
+			Object[] objs = orderByComparator.getOrderByConditionValues(user);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 

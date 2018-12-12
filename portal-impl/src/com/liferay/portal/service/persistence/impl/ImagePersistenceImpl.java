@@ -483,10 +483,10 @@ public class ImagePersistenceImpl extends BasePersistenceImpl<Image>
 		qPos.add(size);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(image);
+			Object[] objs = orderByComparator.getOrderByConditionValues(image);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 

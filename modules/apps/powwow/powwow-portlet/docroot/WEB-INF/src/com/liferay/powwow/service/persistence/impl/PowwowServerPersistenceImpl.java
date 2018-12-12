@@ -572,10 +572,10 @@ public class PowwowServerPersistenceImpl extends BasePersistenceImpl<PowwowServe
 		qPos.add(active);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(powwowServer);
+			Object[] objs = orderByComparator.getOrderByConditionValues(powwowServer);
 
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object obj : objs) {
+				qPos.add(obj);
 			}
 		}
 
