@@ -837,197 +837,6 @@ public class ResourcePermissionUtil {
 	}
 
 	/**
-	* Returns all the resource permissions where companyId = &#63; and name = &#63; and scope = &#63;.
-	*
-	* @param companyId the company ID
-	* @param name the name
-	* @param scope the scope
-	* @return the matching resource permissions
-	*/
-	public static List<ResourcePermission> findByC_N_S(long companyId,
-		String name, int scope) {
-		return getPersistence().findByC_N_S(companyId, name, scope);
-	}
-
-	/**
-	* Returns a range of all the resource permissions where companyId = &#63; and name = &#63; and scope = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ResourcePermissionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param companyId the company ID
-	* @param name the name
-	* @param scope the scope
-	* @param start the lower bound of the range of resource permissions
-	* @param end the upper bound of the range of resource permissions (not inclusive)
-	* @return the range of matching resource permissions
-	*/
-	public static List<ResourcePermission> findByC_N_S(long companyId,
-		String name, int scope, int start, int end) {
-		return getPersistence().findByC_N_S(companyId, name, scope, start, end);
-	}
-
-	/**
-	* Returns an ordered range of all the resource permissions where companyId = &#63; and name = &#63; and scope = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ResourcePermissionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param companyId the company ID
-	* @param name the name
-	* @param scope the scope
-	* @param start the lower bound of the range of resource permissions
-	* @param end the upper bound of the range of resource permissions (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of matching resource permissions
-	*/
-	public static List<ResourcePermission> findByC_N_S(long companyId,
-		String name, int scope, int start, int end,
-		OrderByComparator<ResourcePermission> orderByComparator) {
-		return getPersistence()
-				   .findByC_N_S(companyId, name, scope, start, end,
-			orderByComparator);
-	}
-
-	/**
-	* Returns an ordered range of all the resource permissions where companyId = &#63; and name = &#63; and scope = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ResourcePermissionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param companyId the company ID
-	* @param name the name
-	* @param scope the scope
-	* @param start the lower bound of the range of resource permissions
-	* @param end the upper bound of the range of resource permissions (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @param retrieveFromCache whether to retrieve from the finder cache
-	* @return the ordered range of matching resource permissions
-	*/
-	public static List<ResourcePermission> findByC_N_S(long companyId,
-		String name, int scope, int start, int end,
-		OrderByComparator<ResourcePermission> orderByComparator,
-		boolean retrieveFromCache) {
-		return getPersistence()
-				   .findByC_N_S(companyId, name, scope, start, end,
-			orderByComparator, retrieveFromCache);
-	}
-
-	/**
-	* Returns the first resource permission in the ordered set where companyId = &#63; and name = &#63; and scope = &#63;.
-	*
-	* @param companyId the company ID
-	* @param name the name
-	* @param scope the scope
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the first matching resource permission
-	* @throws NoSuchResourcePermissionException if a matching resource permission could not be found
-	*/
-	public static ResourcePermission findByC_N_S_First(long companyId,
-		String name, int scope,
-		OrderByComparator<ResourcePermission> orderByComparator)
-		throws com.liferay.portal.kernel.exception.NoSuchResourcePermissionException {
-		return getPersistence()
-				   .findByC_N_S_First(companyId, name, scope, orderByComparator);
-	}
-
-	/**
-	* Returns the first resource permission in the ordered set where companyId = &#63; and name = &#63; and scope = &#63;.
-	*
-	* @param companyId the company ID
-	* @param name the name
-	* @param scope the scope
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the first matching resource permission, or <code>null</code> if a matching resource permission could not be found
-	*/
-	public static ResourcePermission fetchByC_N_S_First(long companyId,
-		String name, int scope,
-		OrderByComparator<ResourcePermission> orderByComparator) {
-		return getPersistence()
-				   .fetchByC_N_S_First(companyId, name, scope, orderByComparator);
-	}
-
-	/**
-	* Returns the last resource permission in the ordered set where companyId = &#63; and name = &#63; and scope = &#63;.
-	*
-	* @param companyId the company ID
-	* @param name the name
-	* @param scope the scope
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the last matching resource permission
-	* @throws NoSuchResourcePermissionException if a matching resource permission could not be found
-	*/
-	public static ResourcePermission findByC_N_S_Last(long companyId,
-		String name, int scope,
-		OrderByComparator<ResourcePermission> orderByComparator)
-		throws com.liferay.portal.kernel.exception.NoSuchResourcePermissionException {
-		return getPersistence()
-				   .findByC_N_S_Last(companyId, name, scope, orderByComparator);
-	}
-
-	/**
-	* Returns the last resource permission in the ordered set where companyId = &#63; and name = &#63; and scope = &#63;.
-	*
-	* @param companyId the company ID
-	* @param name the name
-	* @param scope the scope
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the last matching resource permission, or <code>null</code> if a matching resource permission could not be found
-	*/
-	public static ResourcePermission fetchByC_N_S_Last(long companyId,
-		String name, int scope,
-		OrderByComparator<ResourcePermission> orderByComparator) {
-		return getPersistence()
-				   .fetchByC_N_S_Last(companyId, name, scope, orderByComparator);
-	}
-
-	/**
-	* Returns the resource permissions before and after the current resource permission in the ordered set where companyId = &#63; and name = &#63; and scope = &#63;.
-	*
-	* @param resourcePermissionId the primary key of the current resource permission
-	* @param companyId the company ID
-	* @param name the name
-	* @param scope the scope
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the previous, current, and next resource permission
-	* @throws NoSuchResourcePermissionException if a resource permission with the primary key could not be found
-	*/
-	public static ResourcePermission[] findByC_N_S_PrevAndNext(
-		long resourcePermissionId, long companyId, String name, int scope,
-		OrderByComparator<ResourcePermission> orderByComparator)
-		throws com.liferay.portal.kernel.exception.NoSuchResourcePermissionException {
-		return getPersistence()
-				   .findByC_N_S_PrevAndNext(resourcePermissionId, companyId,
-			name, scope, orderByComparator);
-	}
-
-	/**
-	* Removes all the resource permissions where companyId = &#63; and name = &#63; and scope = &#63; from the database.
-	*
-	* @param companyId the company ID
-	* @param name the name
-	* @param scope the scope
-	*/
-	public static void removeByC_N_S(long companyId, String name, int scope) {
-		getPersistence().removeByC_N_S(companyId, name, scope);
-	}
-
-	/**
-	* Returns the number of resource permissions where companyId = &#63; and name = &#63; and scope = &#63;.
-	*
-	* @param companyId the company ID
-	* @param name the name
-	* @param scope the scope
-	* @return the number of matching resource permissions
-	*/
-	public static int countByC_N_S(long companyId, String name, int scope) {
-		return getPersistence().countByC_N_S(companyId, name, scope);
-	}
-
-	/**
 	* Returns all the resource permissions where companyId = &#63; and scope = &#63; and primKey = &#63;.
 	*
 	* @param companyId the company ID
@@ -1430,6 +1239,215 @@ public class ResourcePermissionUtil {
 	public static int countByC_N_S_P(long companyId, String name, int scope,
 		String primKey) {
 		return getPersistence().countByC_N_S_P(companyId, name, scope, primKey);
+	}
+
+	/**
+	* Returns all the resource permissions where companyId = &#63; and name = &#63; and scope = &#63; and roleId = &#63;.
+	*
+	* @param companyId the company ID
+	* @param name the name
+	* @param scope the scope
+	* @param roleId the role ID
+	* @return the matching resource permissions
+	*/
+	public static List<ResourcePermission> findByC_N_S_R(long companyId,
+		String name, int scope, long roleId) {
+		return getPersistence().findByC_N_S_R(companyId, name, scope, roleId);
+	}
+
+	/**
+	* Returns a range of all the resource permissions where companyId = &#63; and name = &#63; and scope = &#63; and roleId = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ResourcePermissionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param name the name
+	* @param scope the scope
+	* @param roleId the role ID
+	* @param start the lower bound of the range of resource permissions
+	* @param end the upper bound of the range of resource permissions (not inclusive)
+	* @return the range of matching resource permissions
+	*/
+	public static List<ResourcePermission> findByC_N_S_R(long companyId,
+		String name, int scope, long roleId, int start, int end) {
+		return getPersistence()
+				   .findByC_N_S_R(companyId, name, scope, roleId, start, end);
+	}
+
+	/**
+	* Returns an ordered range of all the resource permissions where companyId = &#63; and name = &#63; and scope = &#63; and roleId = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ResourcePermissionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param name the name
+	* @param scope the scope
+	* @param roleId the role ID
+	* @param start the lower bound of the range of resource permissions
+	* @param end the upper bound of the range of resource permissions (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching resource permissions
+	*/
+	public static List<ResourcePermission> findByC_N_S_R(long companyId,
+		String name, int scope, long roleId, int start, int end,
+		OrderByComparator<ResourcePermission> orderByComparator) {
+		return getPersistence()
+				   .findByC_N_S_R(companyId, name, scope, roleId, start, end,
+			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the resource permissions where companyId = &#63; and name = &#63; and scope = &#63; and roleId = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ResourcePermissionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param companyId the company ID
+	* @param name the name
+	* @param scope the scope
+	* @param roleId the role ID
+	* @param start the lower bound of the range of resource permissions
+	* @param end the upper bound of the range of resource permissions (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of matching resource permissions
+	*/
+	public static List<ResourcePermission> findByC_N_S_R(long companyId,
+		String name, int scope, long roleId, int start, int end,
+		OrderByComparator<ResourcePermission> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByC_N_S_R(companyId, name, scope, roleId, start, end,
+			orderByComparator, retrieveFromCache);
+	}
+
+	/**
+	* Returns the first resource permission in the ordered set where companyId = &#63; and name = &#63; and scope = &#63; and roleId = &#63;.
+	*
+	* @param companyId the company ID
+	* @param name the name
+	* @param scope the scope
+	* @param roleId the role ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching resource permission
+	* @throws NoSuchResourcePermissionException if a matching resource permission could not be found
+	*/
+	public static ResourcePermission findByC_N_S_R_First(long companyId,
+		String name, int scope, long roleId,
+		OrderByComparator<ResourcePermission> orderByComparator)
+		throws com.liferay.portal.kernel.exception.NoSuchResourcePermissionException {
+		return getPersistence()
+				   .findByC_N_S_R_First(companyId, name, scope, roleId,
+			orderByComparator);
+	}
+
+	/**
+	* Returns the first resource permission in the ordered set where companyId = &#63; and name = &#63; and scope = &#63; and roleId = &#63;.
+	*
+	* @param companyId the company ID
+	* @param name the name
+	* @param scope the scope
+	* @param roleId the role ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching resource permission, or <code>null</code> if a matching resource permission could not be found
+	*/
+	public static ResourcePermission fetchByC_N_S_R_First(long companyId,
+		String name, int scope, long roleId,
+		OrderByComparator<ResourcePermission> orderByComparator) {
+		return getPersistence()
+				   .fetchByC_N_S_R_First(companyId, name, scope, roleId,
+			orderByComparator);
+	}
+
+	/**
+	* Returns the last resource permission in the ordered set where companyId = &#63; and name = &#63; and scope = &#63; and roleId = &#63;.
+	*
+	* @param companyId the company ID
+	* @param name the name
+	* @param scope the scope
+	* @param roleId the role ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching resource permission
+	* @throws NoSuchResourcePermissionException if a matching resource permission could not be found
+	*/
+	public static ResourcePermission findByC_N_S_R_Last(long companyId,
+		String name, int scope, long roleId,
+		OrderByComparator<ResourcePermission> orderByComparator)
+		throws com.liferay.portal.kernel.exception.NoSuchResourcePermissionException {
+		return getPersistence()
+				   .findByC_N_S_R_Last(companyId, name, scope, roleId,
+			orderByComparator);
+	}
+
+	/**
+	* Returns the last resource permission in the ordered set where companyId = &#63; and name = &#63; and scope = &#63; and roleId = &#63;.
+	*
+	* @param companyId the company ID
+	* @param name the name
+	* @param scope the scope
+	* @param roleId the role ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching resource permission, or <code>null</code> if a matching resource permission could not be found
+	*/
+	public static ResourcePermission fetchByC_N_S_R_Last(long companyId,
+		String name, int scope, long roleId,
+		OrderByComparator<ResourcePermission> orderByComparator) {
+		return getPersistence()
+				   .fetchByC_N_S_R_Last(companyId, name, scope, roleId,
+			orderByComparator);
+	}
+
+	/**
+	* Returns the resource permissions before and after the current resource permission in the ordered set where companyId = &#63; and name = &#63; and scope = &#63; and roleId = &#63;.
+	*
+	* @param resourcePermissionId the primary key of the current resource permission
+	* @param companyId the company ID
+	* @param name the name
+	* @param scope the scope
+	* @param roleId the role ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next resource permission
+	* @throws NoSuchResourcePermissionException if a resource permission with the primary key could not be found
+	*/
+	public static ResourcePermission[] findByC_N_S_R_PrevAndNext(
+		long resourcePermissionId, long companyId, String name, int scope,
+		long roleId, OrderByComparator<ResourcePermission> orderByComparator)
+		throws com.liferay.portal.kernel.exception.NoSuchResourcePermissionException {
+		return getPersistence()
+				   .findByC_N_S_R_PrevAndNext(resourcePermissionId, companyId,
+			name, scope, roleId, orderByComparator);
+	}
+
+	/**
+	* Removes all the resource permissions where companyId = &#63; and name = &#63; and scope = &#63; and roleId = &#63; from the database.
+	*
+	* @param companyId the company ID
+	* @param name the name
+	* @param scope the scope
+	* @param roleId the role ID
+	*/
+	public static void removeByC_N_S_R(long companyId, String name, int scope,
+		long roleId) {
+		getPersistence().removeByC_N_S_R(companyId, name, scope, roleId);
+	}
+
+	/**
+	* Returns the number of resource permissions where companyId = &#63; and name = &#63; and scope = &#63; and roleId = &#63;.
+	*
+	* @param companyId the company ID
+	* @param name the name
+	* @param scope the scope
+	* @param roleId the role ID
+	* @return the number of matching resource permissions
+	*/
+	public static int countByC_N_S_R(long companyId, String name, int scope,
+		long roleId) {
+		return getPersistence().countByC_N_S_R(companyId, name, scope, roleId);
 	}
 
 	/**
