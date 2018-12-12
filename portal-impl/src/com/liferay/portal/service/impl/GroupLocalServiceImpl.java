@@ -4411,17 +4411,15 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 				Set<Group> rolePermissionsGroups = new HashSet<>();
 
 				List<ResourcePermission> resourcePermissions =
-					resourcePermissionPersistence.findByC_N_S(
+					resourcePermissionPersistence.findByC_N_S_R(
 						companyId, rolePermissions.getName(),
-						rolePermissions.getScope());
+						rolePermissions.getScope(),
+						rolePermissions.getRoleId());
 
 				for (ResourcePermission resourcePermission :
 						resourcePermissions) {
 
-					if ((resourcePermission.getRoleId() ==
-							rolePermissions.getRoleId()) &&
-						resourcePermission.hasAction(resourceAction)) {
-
+					if (resourcePermission.hasAction(resourceAction)) {
 						Group group = groupPersistence.fetchByPrimaryKey(
 							GetterUtil.getLong(
 								resourcePermission.getPrimKey()));

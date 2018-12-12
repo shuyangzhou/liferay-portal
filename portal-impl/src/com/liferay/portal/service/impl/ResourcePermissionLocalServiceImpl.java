@@ -1247,12 +1247,11 @@ public class ResourcePermissionLocalServiceImpl
 			resourceActionLocalService.getResourceAction(name, actionId);
 
 		List<ResourcePermission> resourcePermissions =
-			resourcePermissionPersistence.findByC_N_S(companyId, name, scope);
+			resourcePermissionPersistence.findByC_N_S_R(
+				companyId, name, scope, roleId);
 
 		for (ResourcePermission resourcePermission : resourcePermissions) {
-			if (resourcePermission.getRoleId() == roleId &&
-				resourcePermission.hasAction(resourceAction)) {
-
+			if (resourcePermission.hasAction(resourceAction)) {
 				return true;
 			}
 		}
@@ -1462,7 +1461,8 @@ public class ResourcePermissionLocalServiceImpl
 		throws PortalException {
 
 		List<ResourcePermission> resourcePermissions =
-			resourcePermissionPersistence.findByC_N_S(companyId, name, scope);
+			resourcePermissionPersistence.findByC_N_S_R(
+				companyId, name, scope, roleId);
 
 		for (ResourcePermission resourcePermission : resourcePermissions) {
 			updateResourcePermission(
