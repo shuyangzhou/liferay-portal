@@ -1464,11 +1464,13 @@ public class ResourcePermissionLocalServiceImpl
 			resourcePermissionPersistence.findByC_N_S_R(
 				companyId, name, scope, roleId);
 
+		String[] actionIds = {actionId};
+
 		for (ResourcePermission resourcePermission : resourcePermissions) {
-			updateResourcePermission(
-				companyId, name, scope, resourcePermission.getPrimKey(), roleId,
-				0, new String[] {actionId},
-				ResourcePermissionConstants.OPERATOR_REMOVE);
+			_updateResourcePermission(
+				companyId, name, scope, resourcePermission.getPrimKey(), 0,
+				roleId, actionIds, ResourcePermissionConstants.OPERATOR_REMOVE,
+				true, Collections.singletonMap(roleId, resourcePermission));
 		}
 	}
 
