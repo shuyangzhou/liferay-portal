@@ -21,6 +21,11 @@ import com.liferay.change.tracking.model.ChangeTrackingCollection;
 
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the change tracking collection service.
  *
@@ -40,6 +45,9 @@ public interface ChangeTrackingCollectionPersistence extends BasePersistence<Cha
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ChangeTrackingCollectionUtil} to access the change tracking collection persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, ChangeTrackingCollection> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Caches the change tracking collection in the entity cache if it is enabled.
@@ -95,10 +103,6 @@ public interface ChangeTrackingCollectionPersistence extends BasePersistence<Cha
 	*/
 	public ChangeTrackingCollection fetchByPrimaryKey(
 		long changeTrackingCollectionId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, ChangeTrackingCollection> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the change tracking collections.

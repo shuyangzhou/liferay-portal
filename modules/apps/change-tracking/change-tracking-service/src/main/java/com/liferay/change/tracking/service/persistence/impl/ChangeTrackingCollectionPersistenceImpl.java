@@ -54,9 +54,7 @@ import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -102,6 +100,7 @@ public class ChangeTrackingCollectionPersistenceImpl extends BasePersistenceImpl
 		setModelClass(ChangeTrackingCollection.class);
 
 		setModelImplClass(ChangeTrackingCollectionImpl.class);
+		setModelPKClass(long.class);
 		setEntityCacheEnabled(ChangeTrackingCollectionModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
@@ -423,101 +422,6 @@ public class ChangeTrackingCollectionPersistenceImpl extends BasePersistenceImpl
 	public ChangeTrackingCollection fetchByPrimaryKey(
 		long changeTrackingCollectionId) {
 		return fetchByPrimaryKey((Serializable)changeTrackingCollectionId);
-	}
-
-	@Override
-	public Map<Serializable, ChangeTrackingCollection> fetchByPrimaryKeys(
-		Set<Serializable> primaryKeys) {
-		if (primaryKeys.isEmpty()) {
-			return Collections.emptyMap();
-		}
-
-		Map<Serializable, ChangeTrackingCollection> map = new HashMap<Serializable, ChangeTrackingCollection>();
-
-		if (primaryKeys.size() == 1) {
-			Iterator<Serializable> iterator = primaryKeys.iterator();
-
-			Serializable primaryKey = iterator.next();
-
-			ChangeTrackingCollection changeTrackingCollection = fetchByPrimaryKey(primaryKey);
-
-			if (changeTrackingCollection != null) {
-				map.put(primaryKey, changeTrackingCollection);
-			}
-
-			return map;
-		}
-
-		Set<Serializable> uncachedPrimaryKeys = null;
-
-		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(ChangeTrackingCollectionModelImpl.ENTITY_CACHE_ENABLED,
-					ChangeTrackingCollectionImpl.class, primaryKey);
-
-			if (serializable != nullModel) {
-				if (serializable == null) {
-					if (uncachedPrimaryKeys == null) {
-						uncachedPrimaryKeys = new HashSet<Serializable>();
-					}
-
-					uncachedPrimaryKeys.add(primaryKey);
-				}
-				else {
-					map.put(primaryKey, (ChangeTrackingCollection)serializable);
-				}
-			}
-		}
-
-		if (uncachedPrimaryKeys == null) {
-			return map;
-		}
-
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
-
-		query.append(_SQL_SELECT_CHANGETRACKINGCOLLECTION_WHERE_PKS_IN);
-
-		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			query.append((long)primaryKey);
-
-			query.append(",");
-		}
-
-		query.setIndex(query.index() - 1);
-
-		query.append(")");
-
-		String sql = query.toString();
-
-		Session session = null;
-
-		try {
-			session = openSession();
-
-			Query q = session.createQuery(sql);
-
-			for (ChangeTrackingCollection changeTrackingCollection : (List<ChangeTrackingCollection>)q.list()) {
-				map.put(changeTrackingCollection.getPrimaryKeyObj(),
-					changeTrackingCollection);
-
-				cacheResult(changeTrackingCollection);
-
-				uncachedPrimaryKeys.remove(changeTrackingCollection.getPrimaryKeyObj());
-			}
-
-			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(ChangeTrackingCollectionModelImpl.ENTITY_CACHE_ENABLED,
-					ChangeTrackingCollectionImpl.class, primaryKey, nullModel);
-			}
-		}
-		catch (Exception e) {
-			throw processException(e);
-		}
-		finally {
-			closeSession(session);
-		}
-
-		return map;
 	}
 
 	/**
@@ -1026,6 +930,16 @@ public class ChangeTrackingCollectionPersistenceImpl extends BasePersistenceImpl
 	}
 
 	@Override
+	protected String getPKDBName() {
+		return "changeTrackingCollectionId";
+	}
+
+	@Override
+	protected String getSelectSQL() {
+		return _SQL_SELECT_CHANGETRACKINGCOLLECTION;
+	}
+
+	@Override
 	protected Map<String, Integer> getTableColumnsMap() {
 		return ChangeTrackingCollectionModelImpl.TABLE_COLUMNS_MAP;
 	}
@@ -1058,8 +972,6 @@ public class ChangeTrackingCollectionPersistenceImpl extends BasePersistenceImpl
 	protected ChangeTrackingEntryPersistence changeTrackingEntryPersistence;
 	protected TableMapper<ChangeTrackingCollection, com.liferay.change.tracking.model.ChangeTrackingEntry> changeTrackingCollectionToChangeTrackingEntryTableMapper;
 	private static final String _SQL_SELECT_CHANGETRACKINGCOLLECTION = "SELECT changeTrackingCollection FROM ChangeTrackingCollection changeTrackingCollection";
-	private static final String _SQL_SELECT_CHANGETRACKINGCOLLECTION_WHERE_PKS_IN =
-		"SELECT changeTrackingCollection FROM ChangeTrackingCollection changeTrackingCollection WHERE changeTrackingCollectionId IN (";
 	private static final String _SQL_COUNT_CHANGETRACKINGCOLLECTION = "SELECT COUNT(changeTrackingCollection) FROM ChangeTrackingCollection changeTrackingCollection";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "changeTrackingCollection.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No ChangeTrackingCollection exists with the primary key ";
