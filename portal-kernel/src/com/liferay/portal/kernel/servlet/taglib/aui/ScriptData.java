@@ -28,6 +28,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -90,9 +91,9 @@ public class ScriptData implements Mergeable<ScriptData>, Serializable {
 			portletData._rawSB.writeTo(writer);
 		}
 
-		_writeEs6ModulesTo(writer);
+		_writeEs6ModulesTo(writer, null);
 
-		_writeAuiModulesTo(writer);
+		_writeAuiModulesTo(writer, null);
 	}
 
 	public void writeTo(Writer writer, String portletId) throws IOException {
@@ -112,9 +113,9 @@ public class ScriptData implements Mergeable<ScriptData>, Serializable {
 
 		portletData._rawSB.writeTo(writer);
 
-		_writeEs6ModulesTo(writer);
+		_writeEs6ModulesTo(writer, portletId);
 
-		_writeAuiModulesTo(writer);
+		_writeAuiModulesTo(writer, portletId);
 	}
 
 	public static enum ModulesType {
@@ -229,6 +230,20 @@ public class ScriptData implements Mergeable<ScriptData>, Serializable {
 		return portletData;
 	}
 
+	private Set<Map.Entry<String, PortletData>> _getPortletDataSet(
+		String portletId) {
+
+		Set<Map.Entry<String, PortletData>> portletDataSet =
+			_portletDataMap.entrySet();
+
+		if (Validator.isNotNull(portletId)) {
+			portletDataSet.removeIf(
+				entry -> !StringUtil.equals(entry.getKey(), portletId));
+		}
+
+		return portletDataSet;
+	}
+
 	private String[] _splitNameAlias(String name) {
 		String[] parts = _whitespacePattern.split(name, 4);
 
@@ -241,11 +256,18 @@ public class ScriptData implements Mergeable<ScriptData>, Serializable {
 		return new String[] {name, StringPool.BLANK};
 	}
 
-	private void _writeAuiModulesTo(Writer writer) throws IOException {
+	private void _writeAuiModulesTo(Writer writer, String portletId)
+		throws IOException {
+
 		StringBundler auiModulesSB = new StringBundler(_portletDataMap.size());
 		Set<String> auiModulesSet = new HashSet<>();
 
-		for (PortletData portletData : _portletDataMap.values()) {
+		Set<Map.Entry<String, PortletData>> portletDataSet = _getPortletDataSet(
+			portletId);
+
+		for (Map.Entry<String, PortletData> portletDataEntry : portletDataSet) {
+			PortletData portletData = portletDataEntry.getValue();
+
 			if (!portletData._auiModulesSet.isEmpty()) {
 				auiModulesSB.append(portletData._auiCallbackSB);
 				auiModulesSet.addAll(portletData._auiModulesSet);
@@ -272,14 +294,21 @@ public class ScriptData implements Mergeable<ScriptData>, Serializable {
 		writer.write("\n// ]]>\n</script>");
 	}
 
-	private void _writeEs6ModulesTo(Writer writer) throws IOException {
+	private void _writeEs6ModulesTo(Writer writer, String portletId)
+		throws IOException {
+
 		StringBundler es6CallbacksSB = new StringBundler(
 			_portletDataMap.size());
 		List<String> es6Modules = new ArrayList<>();
 		List<String> es6Variables = new ArrayList<>();
 		Set<String> variableNames = new HashSet<>();
 
-		for (PortletData portletData : _portletDataMap.values()) {
+		Set<Map.Entry<String, PortletData>> portletDataSet = _getPortletDataSet(
+			portletId);
+
+		for (Map.Entry<String, PortletData> portletDataEntry : portletDataSet) {
+			PortletData portletData = portletDataEntry.getValue();
+
 			if (!portletData._es6ModulesSet.isEmpty()) {
 				es6CallbacksSB.append("(function(){\n");
 
