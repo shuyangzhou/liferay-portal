@@ -5492,7 +5492,6 @@ public class ServiceBuilder {
 				columnDBName = columnName;
 
 				if (_badColumnNames.contains(columnName)) {
-					columnName += StringPool.UNDERLINE;
 					columnDBName += StringPool.UNDERLINE;
 				}
 			}
@@ -5831,11 +5830,6 @@ public class ServiceBuilder {
 			for (Element finderColumnElement : finderColumnElements) {
 				String finderColumnName = finderColumnElement.attributeValue(
 					"name");
-
-				if (_badColumnNames.contains(finderColumnName)) {
-					finderColumnName += StringPool.UNDERLINE;
-				}
-
 				boolean finderColCaseSensitive = GetterUtil.getBoolean(
 					finderColumnElement.attributeValue("case-sensitive"), true);
 				String finderColComparator = GetterUtil.getString(
