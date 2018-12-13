@@ -20,44 +20,21 @@ import com.liferay.portal.kernel.monitoring.MethodSignature;
 import com.liferay.portal.kernel.monitoring.RequestStatus;
 import com.liferay.portal.kernel.monitoring.ServiceMonitoringControl;
 import com.liferay.portal.spring.aop.ChainableMethodAdvice;
-import com.liferay.portal.spring.aop.ServiceBeanAopCacheManager;
 import com.liferay.portal.spring.aop.ServiceBeanMethodInvocation;
 
 import java.lang.reflect.Method;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
  * @author Michael C. Han
  */
-public class ServiceMonitorAdvice
-	extends ChainableMethodAdvice implements ServiceMonitoringControl {
+public class ServiceMonitorAdvice extends ChainableMethodAdvice {
 
-	@Override
-	public void addServiceClass(String className) {
-		_serviceClasses.add(className);
-	}
+	public ServiceMonitorAdvice(
+		ServiceMonitoringControl serviceMonitoringControl) {
 
-	@Override
-	public void addServiceClassMethod(
-		String className, String methodName, String[] parameterTypes) {
-
-		MethodSignature methodSignature = new MethodSignature(
-			className, methodName, parameterTypes);
-
-		_serviceClassMethods.add(methodSignature);
-	}
-
-	@Override
-	public Set<String> getServiceClasses() {
-		return Collections.unmodifiableSet(_serviceClasses);
-	}
-
-	@Override
-	public Set<MethodSignature> getServiceClassMethods() {
-		return Collections.unmodifiableSet(_serviceClassMethods);
+		_serviceMonitoringControl = serviceMonitoringControl;
 	}
 
 	@Override
@@ -65,7 +42,7 @@ public class ServiceMonitorAdvice
 			ServiceBeanMethodInvocation serviceBeanMethodInvocation)
 		throws Throwable {
 
-		if (!_monitorServiceRequest) {
+		if (!_serviceMonitoringControl.isMonitorServiceRequest()) {
 			return serviceBeanMethodInvocation.proceed();
 		}
 
@@ -77,13 +54,18 @@ public class ServiceMonitorAdvice
 
 		MethodSignature methodSignature = new MethodSignature(method);
 
-		if (_serviceClasses.contains(declaringClass.getName()) ||
-			_serviceClassMethods.contains(methodSignature)) {
+		Set<String> serviceClasses =
+			_serviceMonitoringControl.getServiceClasses();
+		Set<MethodSignature> serviceClassMethods =
+			_serviceMonitoringControl.getServiceClassMethods();
+
+		if (serviceClasses.contains(declaringClass.getName()) ||
+			serviceClassMethods.contains(methodSignature)) {
 
 			included = true;
 		}
 
-		if (_inclusiveMode != included) {
+		if (_serviceMonitoringControl.isInclusiveMode() != included) {
 			return serviceBeanMethodInvocation.proceed();
 		}
 
@@ -112,34 +94,6 @@ public class ServiceMonitorAdvice
 		}
 	}
 
-	@Override
-	public boolean isInclusiveMode() {
-		return _inclusiveMode;
-	}
-
-	@Override
-	public boolean isMonitorServiceRequest() {
-		return _monitorServiceRequest;
-	}
-
-	@Override
-	public void setInclusiveMode(boolean inclusiveMode) {
-		_inclusiveMode = inclusiveMode;
-	}
-
-	@Override
-	public void setMonitorServiceRequest(boolean monitorServiceRequest) {
-		if (monitorServiceRequest && !_monitorServiceRequest) {
-			ServiceBeanAopCacheManager.reset();
-		}
-
-		_monitorServiceRequest = monitorServiceRequest;
-	}
-
-	private static boolean _inclusiveMode = true;
-	private static boolean _monitorServiceRequest;
-	private static final Set<String> _serviceClasses = new HashSet<>();
-	private static final Set<MethodSignature> _serviceClassMethods =
-		new HashSet<>();
+	private final ServiceMonitoringControl _serviceMonitoringControl;
 
 }
