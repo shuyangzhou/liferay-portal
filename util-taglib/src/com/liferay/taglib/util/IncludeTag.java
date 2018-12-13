@@ -290,6 +290,10 @@ public class IncludeTag extends AttributesTagSupport {
 		String customPage = CustomJspRegistryUtil.getCustomJspFileName(
 			customJspServletContextName, page);
 
+		if (servletContext.getRealPath(customPage) == null) {
+			return null;
+		}
+
 		if (FileAvailabilityUtil.isAvailable(servletContext, customPage)) {
 			return customPage;
 		}
