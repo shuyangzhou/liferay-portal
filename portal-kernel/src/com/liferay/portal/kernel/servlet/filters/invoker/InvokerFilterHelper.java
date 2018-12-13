@@ -404,10 +404,11 @@ public class InvokerFilterHelper {
 				urlPatterns.add(urlPatternElement.getTextTrim());
 			}
 
-			Set<Dispatcher> dispatchers = new HashSet<>();
-
 			List<Element> dispatcherElements = filterMappingElement.elements(
 				"dispatcher");
+
+			Set<Dispatcher> dispatchers = new HashSet<>(
+				dispatcherElements.size());
 
 			for (Element dispatcherElement : dispatcherElements) {
 				String dispatcher = StringUtil.toUpperCase(
