@@ -184,8 +184,7 @@ public class VirtualHostFilter extends BasePortalFilter {
 
 		long companyId = PortalInstances.getCompanyId(request);
 
-		String originalFriendlyURL = HttpUtil.normalizePath(
-			request.getRequestURI());
+		String originalFriendlyURL = request.getRequestURI();
 
 		String friendlyURL = originalFriendlyURL;
 
