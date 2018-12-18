@@ -23,7 +23,8 @@ import javax.servlet.http.HttpServletRequestWrapper;
 /**
  * @author Tomas Polesovsky
  */
-public class NormalizedPathServletRequest extends HttpServletRequestWrapper {
+public class NormalizedPathServletRequest
+	extends PersistentHttpServletRequestWrapper {
 
 	public static HttpServletRequest getNormalizedPathServletRequest(
 		HttpServletRequest request) {
