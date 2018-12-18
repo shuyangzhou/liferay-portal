@@ -15,6 +15,7 @@
 package com.liferay.portal.kernel.servlet;
 
 import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.JavaConstants;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -50,8 +51,24 @@ public class NormalizedPathServletRequest
 	}
 
 	@Override
+	public Object getAttribute(String name) {
+		if (JavaConstants.JAVAX_SERVLET_ERROR_REQUEST_URI.equals(name) ||
+			JavaConstants.JAVAX_SERVLET_INCLUDE_REQUEST_URI.equals(name)) {
+
+			return HttpUtil.normalizePath((String)super.getAttribute(name));
+		}
+
+		return super.getAttribute(name);
+	}
+
+	@Override
 	public String getPathInfo() {
 		return HttpUtil.normalizePath(super.getPathInfo());
+	}
+
+	@Override
+	public String getRequestURI() {
+		return HttpUtil.normalizePath(super.getRequestURI());
 	}
 
 }
