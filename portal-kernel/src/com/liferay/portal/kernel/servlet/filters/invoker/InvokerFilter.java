@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.HttpOnlyCookieServletResponse;
 import com.liferay.portal.kernel.servlet.NonSerializableObjectRequestWrapper;
+import com.liferay.portal.kernel.servlet.NormalizedPathServletRequest;
 import com.liferay.portal.kernel.servlet.SanitizedServletResponse;
 import com.liferay.portal.kernel.util.BasePortalLifecycle;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -45,7 +46,6 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -76,7 +76,8 @@ public class InvokerFilter extends BasePortalLifecycle implements Filter {
 			return;
 		}
 
-		request = new PathInfoServletRequest(request);
+		request = NormalizedPathServletRequest.getNormalizedPathServletRequest(
+			request);
 
 		request = handleNonSerializableRequest(request);
 
@@ -372,18 +373,5 @@ public class InvokerFilter extends BasePortalLifecycle implements Filter {
 	private PortalCache<String, InvokerFilterChain> _filterChains;
 	private FilterConfig _filterConfig;
 	private InvokerFilterHelper _invokerFilterHelper;
-
-	private class PathInfoServletRequest extends HttpServletRequestWrapper {
-
-		public PathInfoServletRequest(HttpServletRequest request) {
-			super(request);
-		}
-
-		@Override
-		public String getPathInfo() {
-			return HttpUtil.normalizePath(super.getPathInfo());
-		}
-
-	}
 
 }
