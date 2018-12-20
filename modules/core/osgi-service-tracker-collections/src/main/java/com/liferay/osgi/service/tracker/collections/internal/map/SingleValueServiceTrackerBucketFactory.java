@@ -33,23 +33,28 @@ public class SingleValueServiceTrackerBucketFactory<SR, TS>
 	implements ServiceTrackerBucketFactory<SR, TS, TS> {
 
 	public SingleValueServiceTrackerBucketFactory() {
-		_comparator = Collections.reverseOrder();
+		_serviceReferenceServiceTupleComparator =
+			new ServiceReferenceServiceTupleComparator<>(
+				Collections.reverseOrder());
 	}
 
 	public SingleValueServiceTrackerBucketFactory(
 		Comparator<ServiceReference<SR>> comparator) {
 
-		_comparator = comparator;
+		_serviceReferenceServiceTupleComparator =
+			new ServiceReferenceServiceTupleComparator<>(comparator);
 	}
 
 	@Override
 	public ServiceTrackerBucket<SR, TS, TS> create() {
-		return new SingleBucket();
+		return new SingleBucket<>(_serviceReferenceServiceTupleComparator);
 	}
 
-	private final Comparator<ServiceReference<SR>> _comparator;
+	private final ServiceReferenceServiceTupleComparator<SR>
+		_serviceReferenceServiceTupleComparator;
 
-	private class SingleBucket implements ServiceTrackerBucket<SR, TS, TS> {
+	private static class SingleBucket<SR, TS>
+		implements ServiceTrackerBucket<SR, TS, TS> {
 
 		@Override
 		public TS getContent() {
@@ -99,12 +104,19 @@ public class SingleValueServiceTrackerBucketFactory<SR, TS>
 			_service = headServiceReferenceServiceTuple.getService();
 		}
 
+		private SingleBucket(
+			ServiceReferenceServiceTupleComparator<SR>
+				serviceReferenceServiceTupleComparator) {
+
+			_serviceReferenceServiceTupleComparator =
+				serviceReferenceServiceTupleComparator;
+		}
+
 		private TS _service;
 		private final List<ServiceReferenceServiceTuple<SR, TS>>
 			_serviceReferences = new ArrayList<>(1);
 		private final ServiceReferenceServiceTupleComparator<SR>
-			_serviceReferenceServiceTupleComparator =
-				new ServiceReferenceServiceTupleComparator<>(_comparator);
+			_serviceReferenceServiceTupleComparator;
 
 	}
 

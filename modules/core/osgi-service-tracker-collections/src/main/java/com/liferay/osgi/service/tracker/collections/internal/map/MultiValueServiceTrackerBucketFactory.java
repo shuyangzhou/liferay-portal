@@ -33,23 +33,28 @@ public class MultiValueServiceTrackerBucketFactory<SR, TS>
 	implements ServiceTrackerBucketFactory<SR, TS, List<TS>> {
 
 	public MultiValueServiceTrackerBucketFactory() {
-		_comparator = Collections.reverseOrder();
+		_serviceReferenceServiceTupleComparator =
+			new ServiceReferenceServiceTupleComparator<>(
+				Collections.reverseOrder());
 	}
 
 	public MultiValueServiceTrackerBucketFactory(
 		Comparator<ServiceReference<SR>> comparator) {
 
-		_comparator = comparator;
+		_serviceReferenceServiceTupleComparator =
+			new ServiceReferenceServiceTupleComparator<>(comparator);
 	}
 
 	@Override
 	public ServiceTrackerBucket<SR, TS, List<TS>> create() {
-		return new ListServiceTrackerBucket();
+		return new ListServiceTrackerBucket<>(
+			_serviceReferenceServiceTupleComparator);
 	}
 
-	private final Comparator<ServiceReference<SR>> _comparator;
+	private final ServiceReferenceServiceTupleComparator<SR>
+		_serviceReferenceServiceTupleComparator;
 
-	private class ListServiceTrackerBucket
+	private static class ListServiceTrackerBucket<SR, TS>
 		implements ServiceTrackerBucket<SR, TS, List<TS>> {
 
 		@Override
@@ -89,6 +94,14 @@ public class MultiValueServiceTrackerBucketFactory<SR, TS>
 			_rebuild();
 		}
 
+		private ListServiceTrackerBucket(
+			ServiceReferenceServiceTupleComparator<SR>
+				serviceReferenceServiceTupleComparator) {
+
+			_serviceReferenceServiceTupleComparator =
+				serviceReferenceServiceTupleComparator;
+		}
+
 		private void _rebuild() {
 			_services = new ArrayList<>(_serviceReferenceServiceTuples.size());
 
@@ -103,8 +116,7 @@ public class MultiValueServiceTrackerBucketFactory<SR, TS>
 		}
 
 		private final ServiceReferenceServiceTupleComparator<SR>
-			_serviceReferenceServiceTupleComparator =
-				new ServiceReferenceServiceTupleComparator<>(_comparator);
+			_serviceReferenceServiceTupleComparator;
 		private final List<ServiceReferenceServiceTuple<SR, TS>>
 			_serviceReferenceServiceTuples = new ArrayList<>();
 		private List<TS> _services = new ArrayList<>();
