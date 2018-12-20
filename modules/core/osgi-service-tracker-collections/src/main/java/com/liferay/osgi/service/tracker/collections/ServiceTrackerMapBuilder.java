@@ -14,6 +14,8 @@
 
 package com.liferay.osgi.service.tracker.collections;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.osgi.service.tracker.collections.internal.DefaultServiceTrackerCustomizer;
 import com.liferay.osgi.service.tracker.collections.internal.map.MultiValueServiceTrackerBucketFactory;
 import com.liferay.osgi.service.tracker.collections.internal.map.ServiceTrackerMapImpl;
@@ -34,17 +36,22 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 /**
  * @author Carlos Sierra Andrés
  */
+@ProviderType
 public class ServiceTrackerMapBuilder {
 
+	@ProviderType
 	public interface Collector<K, SR, NR, R> {
 
 		public ServiceTrackerMap<K, R> build();
+
+		public ServiceTrackerMap<K, R> build(boolean allServices);
 
 		public Collector<K, SR, NR, R> newCollector(
 			ServiceTrackerMapListener<K, NR, R> serviceTrackerMapListener);
 
 	}
 
+	@ProviderType
 	public interface Mapper<K, SR, NR, R> {
 
 		public <R> Collector<K, SR, NR, R> collect(
@@ -62,6 +69,7 @@ public class ServiceTrackerMapBuilder {
 
 	}
 
+	@ProviderType
 	public interface Selector<SR, NR> {
 
 		public <K> Mapper<K, SR, NR, ?> map(
@@ -76,6 +84,7 @@ public class ServiceTrackerMapBuilder {
 
 	}
 
+	@ProviderType
 	public interface SelectorFactory {
 
 		public static <T> Selector<T, T> newSelector(
@@ -119,6 +128,14 @@ public class ServiceTrackerMapBuilder {
 					_serviceTrackerBucketFactory, _serviceTrackerMapListener);
 
 			return serviceTrackerMap;
+		}
+
+		@Override
+		public ServiceTrackerMap<K, R> build(boolean allServices) {
+			return new ServiceTrackerMapImpl<>(
+				_bundleContext, _clazz, _filterString, _serviceReferenceMapper,
+				_serviceTrackerCustomizer, _serviceTrackerBucketFactory,
+				_serviceTrackerMapListener, allServices);
 		}
 
 		@Override

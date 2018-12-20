@@ -50,6 +50,20 @@ public class ServiceTrackerMapImpl<K, SR, TS, R>
 		ServiceTrackerBucketFactory<SR, TS, R> serviceTrackerMapBucketFactory,
 		ServiceTrackerMapListener<K, TS, R> serviceTrackerMapListener) {
 
+		this(
+			bundleContext, clazz, filterString, serviceReferenceMapper,
+			serviceTrackerCustomizer, serviceTrackerMapBucketFactory,
+			serviceTrackerMapListener, false);
+	}
+
+	public ServiceTrackerMapImpl(
+		BundleContext bundleContext, Class<SR> clazz, String filterString,
+		ServiceReferenceMapper<K, ? super SR> serviceReferenceMapper,
+		ServiceTrackerCustomizer<SR, TS> serviceTrackerCustomizer,
+		ServiceTrackerBucketFactory<SR, TS, R> serviceTrackerMapBucketFactory,
+		ServiceTrackerMapListener<K, TS, R> serviceTrackerMapListener,
+		boolean allServices) {
+
 		_serviceReferenceMapper = serviceReferenceMapper;
 		_serviceTrackerCustomizer = serviceTrackerCustomizer;
 		_serviceTrackerMapBucketFactory = serviceTrackerMapBucketFactory;
@@ -61,7 +75,7 @@ public class ServiceTrackerMapImpl<K, SR, TS, R>
 			bundleContext, clazz, filterString,
 			new ServiceReferenceServiceTrackerCustomizer());
 
-		_serviceTracker.open();
+		_serviceTracker.open(allServices);
 	}
 
 	@Override
