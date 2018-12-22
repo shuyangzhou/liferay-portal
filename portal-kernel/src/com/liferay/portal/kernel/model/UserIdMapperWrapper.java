@@ -25,6 +25,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -56,60 +58,41 @@ public class UserIdMapperWrapper implements UserIdMapper,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("userIdMapperId", getUserIdMapperId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("type", getType());
-		attributes.put("description", getDescription());
-		attributes.put("externalUserId", getExternalUserId());
+		Map<String, Function<UserIdMapper, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<UserIdMapper, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<UserIdMapper, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<UserIdMapper, Object>> attributeSetters = getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<UserIdMapper, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<UserIdMapper, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long userIdMapperId = (Long)attributes.get("userIdMapperId");
+	@Override
+	public Map<String, Function<UserIdMapper, Object>> getAttributeGetters() {
+		return _userIdMapper.getAttributeGetters();
+	}
 
-		if (userIdMapperId != null) {
-			setUserIdMapperId(userIdMapperId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String type = (String)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
-		String externalUserId = (String)attributes.get("externalUserId");
-
-		if (externalUserId != null) {
-			setExternalUserId(externalUserId);
-		}
+	@Override
+	public Map<String, BiConsumer<UserIdMapper, Object>> getAttributeSetters() {
+		return _userIdMapper.getAttributeSetters();
 	}
 
 	@Override

@@ -29,6 +29,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -59,88 +61,41 @@ public class DDMContentWrapper implements DDMContent, ModelWrapper<DDMContent> {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("uuid", getUuid());
-		attributes.put("contentId", getContentId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("name", getName());
-		attributes.put("description", getDescription());
-		attributes.put("data", getData());
+		Map<String, Function<DDMContent, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<DDMContent, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<DDMContent, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+		Map<String, BiConsumer<DDMContent, Object>> attributeSetters = getAttributeSetters();
 
-		if (uuid != null) {
-			setUuid(uuid);
+		for (Map.Entry<String, BiConsumer<DDMContent, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<DDMContent, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long contentId = (Long)attributes.get("contentId");
+	@Override
+	public Map<String, Function<DDMContent, Object>> getAttributeGetters() {
+		return _ddmContent.getAttributeGetters();
+	}
 
-		if (contentId != null) {
-			setContentId(contentId);
-		}
-
-		Long groupId = (Long)attributes.get("groupId");
-
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
-		String data = (String)attributes.get("data");
-
-		if (data != null) {
-			setData(data);
-		}
+	@Override
+	public Map<String, BiConsumer<DDMContent, Object>> getAttributeSetters() {
+		return _ddmContent.getAttributeSetters();
 	}
 
 	@Override

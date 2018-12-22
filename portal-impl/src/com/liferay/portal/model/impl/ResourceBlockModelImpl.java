@@ -19,8 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -38,9 +36,13 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the ResourceBlock service. Represents a row in the &quot;ResourceBlock&quot; database table, with each column mapped to a property of this class.
@@ -191,66 +193,130 @@ public class ResourceBlockModelImpl extends BaseModelImpl<ResourceBlock>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("resourceBlockId", getResourceBlockId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("name", getName());
-		attributes.put("permissionsHash", getPermissionsHash());
-		attributes.put("referenceCount", getReferenceCount());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<ResourceBlock, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+	public Map<String, BiConsumer<ResourceBlock, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
-		}
+	private static final Map<String, Function<ResourceBlock, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<ResourceBlock, Object>> _attributeSetters;
 
-		Long resourceBlockId = (Long)attributes.get("resourceBlockId");
+	static {
+		Map<String, Function<ResourceBlock, Object>> attributeGetters = new LinkedHashMap<String, Function<ResourceBlock, Object>>();
 
-		if (resourceBlockId != null) {
-			setResourceBlockId(resourceBlockId);
-		}
+		attributeGetters.put("mvccVersion",
+			new Function<ResourceBlock, Object>() {
+				@Override
+				public Object apply(ResourceBlock resourceBlock) {
+					return resourceBlock.getMvccVersion();
+				}
+			});
+		attributeGetters.put("resourceBlockId",
+			new Function<ResourceBlock, Object>() {
+				@Override
+				public Object apply(ResourceBlock resourceBlock) {
+					return resourceBlock.getResourceBlockId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<ResourceBlock, Object>() {
+				@Override
+				public Object apply(ResourceBlock resourceBlock) {
+					return resourceBlock.getCompanyId();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<ResourceBlock, Object>() {
+				@Override
+				public Object apply(ResourceBlock resourceBlock) {
+					return resourceBlock.getGroupId();
+				}
+			});
+		attributeGetters.put("name",
+			new Function<ResourceBlock, Object>() {
+				@Override
+				public Object apply(ResourceBlock resourceBlock) {
+					return resourceBlock.getName();
+				}
+			});
+		attributeGetters.put("permissionsHash",
+			new Function<ResourceBlock, Object>() {
+				@Override
+				public Object apply(ResourceBlock resourceBlock) {
+					return resourceBlock.getPermissionsHash();
+				}
+			});
+		attributeGetters.put("referenceCount",
+			new Function<ResourceBlock, Object>() {
+				@Override
+				public Object apply(ResourceBlock resourceBlock) {
+					return resourceBlock.getReferenceCount();
+				}
+			});
 
-		Long companyId = (Long)attributes.get("companyId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		Map<String, BiConsumer<ResourceBlock, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<ResourceBlock, Object>>();
 
-		Long groupId = (Long)attributes.get("groupId");
+		attributeSetters.put("mvccVersion",
+			new BiConsumer<ResourceBlock, Object>() {
+				@Override
+				public void accept(ResourceBlock resourceBlock,
+					Object mvccVersion) {
+					resourceBlock.setMvccVersion((Long)mvccVersion);
+				}
+			});
+		attributeSetters.put("resourceBlockId",
+			new BiConsumer<ResourceBlock, Object>() {
+				@Override
+				public void accept(ResourceBlock resourceBlock,
+					Object resourceBlockId) {
+					resourceBlock.setResourceBlockId((Long)resourceBlockId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<ResourceBlock, Object>() {
+				@Override
+				public void accept(ResourceBlock resourceBlock, Object companyId) {
+					resourceBlock.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<ResourceBlock, Object>() {
+				@Override
+				public void accept(ResourceBlock resourceBlock, Object groupId) {
+					resourceBlock.setGroupId((Long)groupId);
+				}
+			});
+		attributeSetters.put("name",
+			new BiConsumer<ResourceBlock, Object>() {
+				@Override
+				public void accept(ResourceBlock resourceBlock, Object name) {
+					resourceBlock.setName((String)name);
+				}
+			});
+		attributeSetters.put("permissionsHash",
+			new BiConsumer<ResourceBlock, Object>() {
+				@Override
+				public void accept(ResourceBlock resourceBlock,
+					Object permissionsHash) {
+					resourceBlock.setPermissionsHash((String)permissionsHash);
+				}
+			});
+		attributeSetters.put("referenceCount",
+			new BiConsumer<ResourceBlock, Object>() {
+				@Override
+				public void accept(ResourceBlock resourceBlock,
+					Object referenceCount) {
+					resourceBlock.setReferenceCount((Long)referenceCount);
+				}
+			});
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String permissionsHash = (String)attributes.get("permissionsHash");
-
-		if (permissionsHash != null) {
-			setPermissionsHash(permissionsHash);
-		}
-
-		Long referenceCount = (Long)attributes.get("referenceCount");
-
-		if (referenceCount != null) {
-			setReferenceCount(referenceCount);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON
@@ -530,71 +596,6 @@ public class ResourceBlockModelImpl extends BaseModelImpl<ResourceBlock>
 		resourceBlockCacheModel.referenceCount = getReferenceCount();
 
 		return resourceBlockCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(15);
-
-		sb.append("{mvccVersion=");
-		sb.append(getMvccVersion());
-		sb.append(", resourceBlockId=");
-		sb.append(getResourceBlockId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", name=");
-		sb.append(getName());
-		sb.append(", permissionsHash=");
-		sb.append(getPermissionsHash());
-		sb.append(", referenceCount=");
-		sb.append(getReferenceCount());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(25);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.kernel.model.ResourceBlock");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>mvccVersion</column-name><column-value><![CDATA[");
-		sb.append(getMvccVersion());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>resourceBlockId</column-name><column-value><![CDATA[");
-		sb.append(getResourceBlockId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(getName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>permissionsHash</column-name><column-value><![CDATA[");
-		sb.append(getPermissionsHash());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>referenceCount</column-name><column-value><![CDATA[");
-		sb.append(getReferenceCount());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = ResourceBlock.class.getClassLoader();

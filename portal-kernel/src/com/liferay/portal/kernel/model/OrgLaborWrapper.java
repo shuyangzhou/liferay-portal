@@ -25,6 +25,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -55,144 +57,41 @@ public class OrgLaborWrapper implements OrgLabor, ModelWrapper<OrgLabor> {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("orgLaborId", getOrgLaborId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("organizationId", getOrganizationId());
-		attributes.put("typeId", getTypeId());
-		attributes.put("sunOpen", getSunOpen());
-		attributes.put("sunClose", getSunClose());
-		attributes.put("monOpen", getMonOpen());
-		attributes.put("monClose", getMonClose());
-		attributes.put("tueOpen", getTueOpen());
-		attributes.put("tueClose", getTueClose());
-		attributes.put("wedOpen", getWedOpen());
-		attributes.put("wedClose", getWedClose());
-		attributes.put("thuOpen", getThuOpen());
-		attributes.put("thuClose", getThuClose());
-		attributes.put("friOpen", getFriOpen());
-		attributes.put("friClose", getFriClose());
-		attributes.put("satOpen", getSatOpen());
-		attributes.put("satClose", getSatClose());
+		Map<String, Function<OrgLabor, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<OrgLabor, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<OrgLabor, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<OrgLabor, Object>> attributeSetters = getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<OrgLabor, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<OrgLabor, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long orgLaborId = (Long)attributes.get("orgLaborId");
+	@Override
+	public Map<String, Function<OrgLabor, Object>> getAttributeGetters() {
+		return _orgLabor.getAttributeGetters();
+	}
 
-		if (orgLaborId != null) {
-			setOrgLaborId(orgLaborId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long organizationId = (Long)attributes.get("organizationId");
-
-		if (organizationId != null) {
-			setOrganizationId(organizationId);
-		}
-
-		Long typeId = (Long)attributes.get("typeId");
-
-		if (typeId != null) {
-			setTypeId(typeId);
-		}
-
-		Integer sunOpen = (Integer)attributes.get("sunOpen");
-
-		if (sunOpen != null) {
-			setSunOpen(sunOpen);
-		}
-
-		Integer sunClose = (Integer)attributes.get("sunClose");
-
-		if (sunClose != null) {
-			setSunClose(sunClose);
-		}
-
-		Integer monOpen = (Integer)attributes.get("monOpen");
-
-		if (monOpen != null) {
-			setMonOpen(monOpen);
-		}
-
-		Integer monClose = (Integer)attributes.get("monClose");
-
-		if (monClose != null) {
-			setMonClose(monClose);
-		}
-
-		Integer tueOpen = (Integer)attributes.get("tueOpen");
-
-		if (tueOpen != null) {
-			setTueOpen(tueOpen);
-		}
-
-		Integer tueClose = (Integer)attributes.get("tueClose");
-
-		if (tueClose != null) {
-			setTueClose(tueClose);
-		}
-
-		Integer wedOpen = (Integer)attributes.get("wedOpen");
-
-		if (wedOpen != null) {
-			setWedOpen(wedOpen);
-		}
-
-		Integer wedClose = (Integer)attributes.get("wedClose");
-
-		if (wedClose != null) {
-			setWedClose(wedClose);
-		}
-
-		Integer thuOpen = (Integer)attributes.get("thuOpen");
-
-		if (thuOpen != null) {
-			setThuOpen(thuOpen);
-		}
-
-		Integer thuClose = (Integer)attributes.get("thuClose");
-
-		if (thuClose != null) {
-			setThuClose(thuClose);
-		}
-
-		Integer friOpen = (Integer)attributes.get("friOpen");
-
-		if (friOpen != null) {
-			setFriOpen(friOpen);
-		}
-
-		Integer friClose = (Integer)attributes.get("friClose");
-
-		if (friClose != null) {
-			setFriClose(friClose);
-		}
-
-		Integer satOpen = (Integer)attributes.get("satOpen");
-
-		if (satOpen != null) {
-			setSatOpen(satOpen);
-		}
-
-		Integer satClose = (Integer)attributes.get("satClose");
-
-		if (satClose != null) {
-			setSatClose(satClose);
-		}
+	@Override
+	public Map<String, BiConsumer<OrgLabor, Object>> getAttributeSetters() {
+		return _orgLabor.getAttributeSetters();
 	}
 
 	@Override

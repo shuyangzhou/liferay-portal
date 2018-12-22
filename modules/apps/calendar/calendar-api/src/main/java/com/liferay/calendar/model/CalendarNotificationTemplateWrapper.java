@@ -29,6 +29,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -62,120 +64,44 @@ public class CalendarNotificationTemplateWrapper
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("uuid", getUuid());
-		attributes.put("calendarNotificationTemplateId",
-			getCalendarNotificationTemplateId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("calendarId", getCalendarId());
-		attributes.put("notificationType", getNotificationType());
-		attributes.put("notificationTypeSettings", getNotificationTypeSettings());
-		attributes.put("notificationTemplateType", getNotificationTemplateType());
-		attributes.put("subject", getSubject());
-		attributes.put("body", getBody());
-		attributes.put("lastPublishDate", getLastPublishDate());
+		Map<String, Function<CalendarNotificationTemplate, Object>> attributeGetters =
+			getAttributeGetters();
+
+		for (Map.Entry<String, Function<CalendarNotificationTemplate, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<CalendarNotificationTemplate, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+		Map<String, BiConsumer<CalendarNotificationTemplate, Object>> attributeSetters =
+			getAttributeSetters();
 
-		if (uuid != null) {
-			setUuid(uuid);
+		for (Map.Entry<String, BiConsumer<CalendarNotificationTemplate, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<CalendarNotificationTemplate, Object> attributeBiConsumer =
+				entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long calendarNotificationTemplateId = (Long)attributes.get(
-				"calendarNotificationTemplateId");
+	@Override
+	public Map<String, Function<CalendarNotificationTemplate, Object>> getAttributeGetters() {
+		return _calendarNotificationTemplate.getAttributeGetters();
+	}
 
-		if (calendarNotificationTemplateId != null) {
-			setCalendarNotificationTemplateId(calendarNotificationTemplateId);
-		}
-
-		Long groupId = (Long)attributes.get("groupId");
-
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long calendarId = (Long)attributes.get("calendarId");
-
-		if (calendarId != null) {
-			setCalendarId(calendarId);
-		}
-
-		String notificationType = (String)attributes.get("notificationType");
-
-		if (notificationType != null) {
-			setNotificationType(notificationType);
-		}
-
-		String notificationTypeSettings = (String)attributes.get(
-				"notificationTypeSettings");
-
-		if (notificationTypeSettings != null) {
-			setNotificationTypeSettings(notificationTypeSettings);
-		}
-
-		String notificationTemplateType = (String)attributes.get(
-				"notificationTemplateType");
-
-		if (notificationTemplateType != null) {
-			setNotificationTemplateType(notificationTemplateType);
-		}
-
-		String subject = (String)attributes.get("subject");
-
-		if (subject != null) {
-			setSubject(subject);
-		}
-
-		String body = (String)attributes.get("body");
-
-		if (body != null) {
-			setBody(body);
-		}
-
-		Date lastPublishDate = (Date)attributes.get("lastPublishDate");
-
-		if (lastPublishDate != null) {
-			setLastPublishDate(lastPublishDate);
-		}
+	@Override
+	public Map<String, BiConsumer<CalendarNotificationTemplate, Object>> getAttributeSetters() {
+		return _calendarNotificationTemplate.getAttributeSetters();
 	}
 
 	@Override

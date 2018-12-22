@@ -19,8 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -38,9 +36,13 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the KaleoTimerInstanceToken service. Represents a row in the &quot;KaleoTimerInstanceToken&quot; database table, with each column mapped to a property of this class.
@@ -170,161 +172,369 @@ public class KaleoTimerInstanceTokenModelImpl extends BaseModelImpl<KaleoTimerIn
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("kaleoTimerInstanceTokenId",
-			getKaleoTimerInstanceTokenId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("kaleoClassName", getKaleoClassName());
-		attributes.put("kaleoClassPK", getKaleoClassPK());
-		attributes.put("kaleoDefinitionVersionId", getKaleoDefinitionVersionId());
-		attributes.put("kaleoInstanceId", getKaleoInstanceId());
-		attributes.put("kaleoInstanceTokenId", getKaleoInstanceTokenId());
-		attributes.put("kaleoTaskInstanceTokenId", getKaleoTaskInstanceTokenId());
-		attributes.put("kaleoTimerId", getKaleoTimerId());
-		attributes.put("kaleoTimerName", getKaleoTimerName());
-		attributes.put("blocking", isBlocking());
-		attributes.put("completionUserId", getCompletionUserId());
-		attributes.put("completed", isCompleted());
-		attributes.put("completionDate", getCompletionDate());
-		attributes.put("workflowContext", getWorkflowContext());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<KaleoTimerInstanceToken, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long kaleoTimerInstanceTokenId = (Long)attributes.get(
-				"kaleoTimerInstanceTokenId");
+	public Map<String, BiConsumer<KaleoTimerInstanceToken, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (kaleoTimerInstanceTokenId != null) {
-			setKaleoTimerInstanceTokenId(kaleoTimerInstanceTokenId);
-		}
+	private static final Map<String, Function<KaleoTimerInstanceToken, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<KaleoTimerInstanceToken, Object>> _attributeSetters;
 
-		Long groupId = (Long)attributes.get("groupId");
+	static {
+		Map<String, Function<KaleoTimerInstanceToken, Object>> attributeGetters = new LinkedHashMap<String, Function<KaleoTimerInstanceToken, Object>>();
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+		attributeGetters.put("kaleoTimerInstanceTokenId",
+			new Function<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public Object apply(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken) {
+					return kaleoTimerInstanceToken.getKaleoTimerInstanceTokenId();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public Object apply(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken) {
+					return kaleoTimerInstanceToken.getGroupId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public Object apply(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken) {
+					return kaleoTimerInstanceToken.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public Object apply(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken) {
+					return kaleoTimerInstanceToken.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public Object apply(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken) {
+					return kaleoTimerInstanceToken.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public Object apply(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken) {
+					return kaleoTimerInstanceToken.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public Object apply(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken) {
+					return kaleoTimerInstanceToken.getModifiedDate();
+				}
+			});
+		attributeGetters.put("kaleoClassName",
+			new Function<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public Object apply(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken) {
+					return kaleoTimerInstanceToken.getKaleoClassName();
+				}
+			});
+		attributeGetters.put("kaleoClassPK",
+			new Function<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public Object apply(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken) {
+					return kaleoTimerInstanceToken.getKaleoClassPK();
+				}
+			});
+		attributeGetters.put("kaleoDefinitionVersionId",
+			new Function<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public Object apply(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken) {
+					return kaleoTimerInstanceToken.getKaleoDefinitionVersionId();
+				}
+			});
+		attributeGetters.put("kaleoInstanceId",
+			new Function<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public Object apply(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken) {
+					return kaleoTimerInstanceToken.getKaleoInstanceId();
+				}
+			});
+		attributeGetters.put("kaleoInstanceTokenId",
+			new Function<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public Object apply(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken) {
+					return kaleoTimerInstanceToken.getKaleoInstanceTokenId();
+				}
+			});
+		attributeGetters.put("kaleoTaskInstanceTokenId",
+			new Function<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public Object apply(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken) {
+					return kaleoTimerInstanceToken.getKaleoTaskInstanceTokenId();
+				}
+			});
+		attributeGetters.put("kaleoTimerId",
+			new Function<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public Object apply(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken) {
+					return kaleoTimerInstanceToken.getKaleoTimerId();
+				}
+			});
+		attributeGetters.put("kaleoTimerName",
+			new Function<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public Object apply(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken) {
+					return kaleoTimerInstanceToken.getKaleoTimerName();
+				}
+			});
+		attributeGetters.put("blocking",
+			new Function<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public Object apply(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken) {
+					return kaleoTimerInstanceToken.isBlocking();
+				}
+			});
+		attributeGetters.put("completionUserId",
+			new Function<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public Object apply(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken) {
+					return kaleoTimerInstanceToken.getCompletionUserId();
+				}
+			});
+		attributeGetters.put("completed",
+			new Function<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public Object apply(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken) {
+					return kaleoTimerInstanceToken.isCompleted();
+				}
+			});
+		attributeGetters.put("completionDate",
+			new Function<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public Object apply(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken) {
+					return kaleoTimerInstanceToken.getCompletionDate();
+				}
+			});
+		attributeGetters.put("workflowContext",
+			new Function<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public Object apply(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken) {
+					return kaleoTimerInstanceToken.getWorkflowContext();
+				}
+			});
 
-		Long companyId = (Long)attributes.get("companyId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		Map<String, BiConsumer<KaleoTimerInstanceToken, Object>> attributeSetters =
+			new LinkedHashMap<String, BiConsumer<KaleoTimerInstanceToken, Object>>();
 
-		Long userId = (Long)attributes.get("userId");
+		attributeSetters.put("kaleoTimerInstanceTokenId",
+			new BiConsumer<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public void accept(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken,
+					Object kaleoTimerInstanceTokenId) {
+					kaleoTimerInstanceToken.setKaleoTimerInstanceTokenId((Long)kaleoTimerInstanceTokenId);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public void accept(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken,
+					Object groupId) {
+					kaleoTimerInstanceToken.setGroupId((Long)groupId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public void accept(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken,
+					Object companyId) {
+					kaleoTimerInstanceToken.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public void accept(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken,
+					Object userId) {
+					kaleoTimerInstanceToken.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public void accept(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken,
+					Object userName) {
+					kaleoTimerInstanceToken.setUserName((String)userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public void accept(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken,
+					Object createDate) {
+					kaleoTimerInstanceToken.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public void accept(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken,
+					Object modifiedDate) {
+					kaleoTimerInstanceToken.setModifiedDate((Date)modifiedDate);
+				}
+			});
+		attributeSetters.put("kaleoClassName",
+			new BiConsumer<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public void accept(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken,
+					Object kaleoClassName) {
+					kaleoTimerInstanceToken.setKaleoClassName((String)kaleoClassName);
+				}
+			});
+		attributeSetters.put("kaleoClassPK",
+			new BiConsumer<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public void accept(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken,
+					Object kaleoClassPK) {
+					kaleoTimerInstanceToken.setKaleoClassPK((Long)kaleoClassPK);
+				}
+			});
+		attributeSetters.put("kaleoDefinitionVersionId",
+			new BiConsumer<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public void accept(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken,
+					Object kaleoDefinitionVersionId) {
+					kaleoTimerInstanceToken.setKaleoDefinitionVersionId((Long)kaleoDefinitionVersionId);
+				}
+			});
+		attributeSetters.put("kaleoInstanceId",
+			new BiConsumer<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public void accept(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken,
+					Object kaleoInstanceId) {
+					kaleoTimerInstanceToken.setKaleoInstanceId((Long)kaleoInstanceId);
+				}
+			});
+		attributeSetters.put("kaleoInstanceTokenId",
+			new BiConsumer<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public void accept(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken,
+					Object kaleoInstanceTokenId) {
+					kaleoTimerInstanceToken.setKaleoInstanceTokenId((Long)kaleoInstanceTokenId);
+				}
+			});
+		attributeSetters.put("kaleoTaskInstanceTokenId",
+			new BiConsumer<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public void accept(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken,
+					Object kaleoTaskInstanceTokenId) {
+					kaleoTimerInstanceToken.setKaleoTaskInstanceTokenId((Long)kaleoTaskInstanceTokenId);
+				}
+			});
+		attributeSetters.put("kaleoTimerId",
+			new BiConsumer<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public void accept(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken,
+					Object kaleoTimerId) {
+					kaleoTimerInstanceToken.setKaleoTimerId((Long)kaleoTimerId);
+				}
+			});
+		attributeSetters.put("kaleoTimerName",
+			new BiConsumer<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public void accept(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken,
+					Object kaleoTimerName) {
+					kaleoTimerInstanceToken.setKaleoTimerName((String)kaleoTimerName);
+				}
+			});
+		attributeSetters.put("blocking",
+			new BiConsumer<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public void accept(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken,
+					Object blocking) {
+					kaleoTimerInstanceToken.setBlocking((Boolean)blocking);
+				}
+			});
+		attributeSetters.put("completionUserId",
+			new BiConsumer<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public void accept(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken,
+					Object completionUserId) {
+					kaleoTimerInstanceToken.setCompletionUserId((Long)completionUserId);
+				}
+			});
+		attributeSetters.put("completed",
+			new BiConsumer<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public void accept(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken,
+					Object completed) {
+					kaleoTimerInstanceToken.setCompleted((Boolean)completed);
+				}
+			});
+		attributeSetters.put("completionDate",
+			new BiConsumer<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public void accept(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken,
+					Object completionDate) {
+					kaleoTimerInstanceToken.setCompletionDate((Date)completionDate);
+				}
+			});
+		attributeSetters.put("workflowContext",
+			new BiConsumer<KaleoTimerInstanceToken, Object>() {
+				@Override
+				public void accept(
+					KaleoTimerInstanceToken kaleoTimerInstanceToken,
+					Object workflowContext) {
+					kaleoTimerInstanceToken.setWorkflowContext((String)workflowContext);
+				}
+			});
 
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		String kaleoClassName = (String)attributes.get("kaleoClassName");
-
-		if (kaleoClassName != null) {
-			setKaleoClassName(kaleoClassName);
-		}
-
-		Long kaleoClassPK = (Long)attributes.get("kaleoClassPK");
-
-		if (kaleoClassPK != null) {
-			setKaleoClassPK(kaleoClassPK);
-		}
-
-		Long kaleoDefinitionVersionId = (Long)attributes.get(
-				"kaleoDefinitionVersionId");
-
-		if (kaleoDefinitionVersionId != null) {
-			setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
-		}
-
-		Long kaleoInstanceId = (Long)attributes.get("kaleoInstanceId");
-
-		if (kaleoInstanceId != null) {
-			setKaleoInstanceId(kaleoInstanceId);
-		}
-
-		Long kaleoInstanceTokenId = (Long)attributes.get("kaleoInstanceTokenId");
-
-		if (kaleoInstanceTokenId != null) {
-			setKaleoInstanceTokenId(kaleoInstanceTokenId);
-		}
-
-		Long kaleoTaskInstanceTokenId = (Long)attributes.get(
-				"kaleoTaskInstanceTokenId");
-
-		if (kaleoTaskInstanceTokenId != null) {
-			setKaleoTaskInstanceTokenId(kaleoTaskInstanceTokenId);
-		}
-
-		Long kaleoTimerId = (Long)attributes.get("kaleoTimerId");
-
-		if (kaleoTimerId != null) {
-			setKaleoTimerId(kaleoTimerId);
-		}
-
-		String kaleoTimerName = (String)attributes.get("kaleoTimerName");
-
-		if (kaleoTimerName != null) {
-			setKaleoTimerName(kaleoTimerName);
-		}
-
-		Boolean blocking = (Boolean)attributes.get("blocking");
-
-		if (blocking != null) {
-			setBlocking(blocking);
-		}
-
-		Long completionUserId = (Long)attributes.get("completionUserId");
-
-		if (completionUserId != null) {
-			setCompletionUserId(completionUserId);
-		}
-
-		Boolean completed = (Boolean)attributes.get("completed");
-
-		if (completed != null) {
-			setCompleted(completed);
-		}
-
-		Date completionDate = (Date)attributes.get("completionDate");
-
-		if (completionDate != null) {
-			setCompletionDate(completionDate);
-		}
-
-		String workflowContext = (String)attributes.get("workflowContext");
-
-		if (workflowContext != null) {
-			setWorkflowContext(workflowContext);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override
@@ -891,150 +1101,6 @@ public class KaleoTimerInstanceTokenModelImpl extends BaseModelImpl<KaleoTimerIn
 		}
 
 		return kaleoTimerInstanceTokenCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(41);
-
-		sb.append("{kaleoTimerInstanceTokenId=");
-		sb.append(getKaleoTimerInstanceTokenId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", kaleoClassName=");
-		sb.append(getKaleoClassName());
-		sb.append(", kaleoClassPK=");
-		sb.append(getKaleoClassPK());
-		sb.append(", kaleoDefinitionVersionId=");
-		sb.append(getKaleoDefinitionVersionId());
-		sb.append(", kaleoInstanceId=");
-		sb.append(getKaleoInstanceId());
-		sb.append(", kaleoInstanceTokenId=");
-		sb.append(getKaleoInstanceTokenId());
-		sb.append(", kaleoTaskInstanceTokenId=");
-		sb.append(getKaleoTaskInstanceTokenId());
-		sb.append(", kaleoTimerId=");
-		sb.append(getKaleoTimerId());
-		sb.append(", kaleoTimerName=");
-		sb.append(getKaleoTimerName());
-		sb.append(", blocking=");
-		sb.append(isBlocking());
-		sb.append(", completionUserId=");
-		sb.append(getCompletionUserId());
-		sb.append(", completed=");
-		sb.append(isCompleted());
-		sb.append(", completionDate=");
-		sb.append(getCompletionDate());
-		sb.append(", workflowContext=");
-		sb.append(getWorkflowContext());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(64);
-
-		sb.append("<model><model-name>");
-		sb.append(
-			"com.liferay.portal.workflow.kaleo.model.KaleoTimerInstanceToken");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>kaleoTimerInstanceTokenId</column-name><column-value><![CDATA[");
-		sb.append(getKaleoTimerInstanceTokenId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>kaleoClassName</column-name><column-value><![CDATA[");
-		sb.append(getKaleoClassName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>kaleoClassPK</column-name><column-value><![CDATA[");
-		sb.append(getKaleoClassPK());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>kaleoDefinitionVersionId</column-name><column-value><![CDATA[");
-		sb.append(getKaleoDefinitionVersionId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>kaleoInstanceId</column-name><column-value><![CDATA[");
-		sb.append(getKaleoInstanceId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>kaleoInstanceTokenId</column-name><column-value><![CDATA[");
-		sb.append(getKaleoInstanceTokenId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>kaleoTaskInstanceTokenId</column-name><column-value><![CDATA[");
-		sb.append(getKaleoTaskInstanceTokenId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>kaleoTimerId</column-name><column-value><![CDATA[");
-		sb.append(getKaleoTimerId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>kaleoTimerName</column-name><column-value><![CDATA[");
-		sb.append(getKaleoTimerName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>blocking</column-name><column-value><![CDATA[");
-		sb.append(isBlocking());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>completionUserId</column-name><column-value><![CDATA[");
-		sb.append(getCompletionUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>completed</column-name><column-value><![CDATA[");
-		sb.append(isCompleted());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>completionDate</column-name><column-value><![CDATA[");
-		sb.append(getCompletionDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>workflowContext</column-name><column-value><![CDATA[");
-		sb.append(getWorkflowContext());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = KaleoTimerInstanceToken.class.getClassLoader();

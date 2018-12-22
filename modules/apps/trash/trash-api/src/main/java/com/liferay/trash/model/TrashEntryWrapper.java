@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -57,88 +59,41 @@ public class TrashEntryWrapper implements TrashEntry, ModelWrapper<TrashEntry> {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("entryId", getEntryId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("systemEventSetKey", getSystemEventSetKey());
-		attributes.put("typeSettings", getTypeSettings());
-		attributes.put("status", getStatus());
+		Map<String, Function<TrashEntry, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<TrashEntry, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<TrashEntry, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long entryId = (Long)attributes.get("entryId");
+		Map<String, BiConsumer<TrashEntry, Object>> attributeSetters = getAttributeSetters();
 
-		if (entryId != null) {
-			setEntryId(entryId);
+		for (Map.Entry<String, BiConsumer<TrashEntry, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<TrashEntry, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long groupId = (Long)attributes.get("groupId");
+	@Override
+	public Map<String, Function<TrashEntry, Object>> getAttributeGetters() {
+		return _trashEntry.getAttributeGetters();
+	}
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		Long systemEventSetKey = (Long)attributes.get("systemEventSetKey");
-
-		if (systemEventSetKey != null) {
-			setSystemEventSetKey(systemEventSetKey);
-		}
-
-		String typeSettings = (String)attributes.get("typeSettings");
-
-		if (typeSettings != null) {
-			setTypeSettings(typeSettings);
-		}
-
-		Integer status = (Integer)attributes.get("status");
-
-		if (status != null) {
-			setStatus(status);
-		}
+	@Override
+	public Map<String, BiConsumer<TrashEntry, Object>> getAttributeSetters() {
+		return _trashEntry.getAttributeSetters();
 	}
 
 	@Override

@@ -29,6 +29,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -60,158 +62,41 @@ public class FragmentEntryWrapper implements FragmentEntry,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("uuid", getUuid());
-		attributes.put("fragmentEntryId", getFragmentEntryId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("fragmentCollectionId", getFragmentCollectionId());
-		attributes.put("fragmentEntryKey", getFragmentEntryKey());
-		attributes.put("name", getName());
-		attributes.put("css", getCss());
-		attributes.put("html", getHtml());
-		attributes.put("js", getJs());
-		attributes.put("previewFileEntryId", getPreviewFileEntryId());
-		attributes.put("type", getType());
-		attributes.put("lastPublishDate", getLastPublishDate());
-		attributes.put("status", getStatus());
-		attributes.put("statusByUserId", getStatusByUserId());
-		attributes.put("statusByUserName", getStatusByUserName());
-		attributes.put("statusDate", getStatusDate());
+		Map<String, Function<FragmentEntry, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<FragmentEntry, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<FragmentEntry, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+		Map<String, BiConsumer<FragmentEntry, Object>> attributeSetters = getAttributeSetters();
 
-		if (uuid != null) {
-			setUuid(uuid);
+		for (Map.Entry<String, BiConsumer<FragmentEntry, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<FragmentEntry, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long fragmentEntryId = (Long)attributes.get("fragmentEntryId");
+	@Override
+	public Map<String, Function<FragmentEntry, Object>> getAttributeGetters() {
+		return _fragmentEntry.getAttributeGetters();
+	}
 
-		if (fragmentEntryId != null) {
-			setFragmentEntryId(fragmentEntryId);
-		}
-
-		Long groupId = (Long)attributes.get("groupId");
-
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long fragmentCollectionId = (Long)attributes.get("fragmentCollectionId");
-
-		if (fragmentCollectionId != null) {
-			setFragmentCollectionId(fragmentCollectionId);
-		}
-
-		String fragmentEntryKey = (String)attributes.get("fragmentEntryKey");
-
-		if (fragmentEntryKey != null) {
-			setFragmentEntryKey(fragmentEntryKey);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String css = (String)attributes.get("css");
-
-		if (css != null) {
-			setCss(css);
-		}
-
-		String html = (String)attributes.get("html");
-
-		if (html != null) {
-			setHtml(html);
-		}
-
-		String js = (String)attributes.get("js");
-
-		if (js != null) {
-			setJs(js);
-		}
-
-		Long previewFileEntryId = (Long)attributes.get("previewFileEntryId");
-
-		if (previewFileEntryId != null) {
-			setPreviewFileEntryId(previewFileEntryId);
-		}
-
-		Integer type = (Integer)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
-
-		Date lastPublishDate = (Date)attributes.get("lastPublishDate");
-
-		if (lastPublishDate != null) {
-			setLastPublishDate(lastPublishDate);
-		}
-
-		Integer status = (Integer)attributes.get("status");
-
-		if (status != null) {
-			setStatus(status);
-		}
-
-		Long statusByUserId = (Long)attributes.get("statusByUserId");
-
-		if (statusByUserId != null) {
-			setStatusByUserId(statusByUserId);
-		}
-
-		String statusByUserName = (String)attributes.get("statusByUserName");
-
-		if (statusByUserName != null) {
-			setStatusByUserName(statusByUserName);
-		}
-
-		Date statusDate = (Date)attributes.get("statusDate");
-
-		if (statusDate != null) {
-			setStatusDate(statusDate);
-		}
+	@Override
+	public Map<String, BiConsumer<FragmentEntry, Object>> getAttributeSetters() {
+		return _fragmentEntry.getAttributeSetters();
 	}
 
 	@Override

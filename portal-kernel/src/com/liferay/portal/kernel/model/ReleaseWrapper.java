@@ -26,6 +26,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -56,88 +58,41 @@ public class ReleaseWrapper implements Release, ModelWrapper<Release> {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("releaseId", getReleaseId());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("servletContextName", getServletContextName());
-		attributes.put("schemaVersion", getSchemaVersion());
-		attributes.put("buildNumber", getBuildNumber());
-		attributes.put("buildDate", getBuildDate());
-		attributes.put("verified", isVerified());
-		attributes.put("state", getState());
-		attributes.put("testString", getTestString());
+		Map<String, Function<Release, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<Release, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<Release, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<Release, Object>> attributeSetters = getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<Release, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<Release, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long releaseId = (Long)attributes.get("releaseId");
+	@Override
+	public Map<String, Function<Release, Object>> getAttributeGetters() {
+		return _release.getAttributeGetters();
+	}
 
-		if (releaseId != null) {
-			setReleaseId(releaseId);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		String servletContextName = (String)attributes.get("servletContextName");
-
-		if (servletContextName != null) {
-			setServletContextName(servletContextName);
-		}
-
-		String schemaVersion = (String)attributes.get("schemaVersion");
-
-		if (schemaVersion != null) {
-			setSchemaVersion(schemaVersion);
-		}
-
-		Integer buildNumber = (Integer)attributes.get("buildNumber");
-
-		if (buildNumber != null) {
-			setBuildNumber(buildNumber);
-		}
-
-		Date buildDate = (Date)attributes.get("buildDate");
-
-		if (buildDate != null) {
-			setBuildDate(buildDate);
-		}
-
-		Boolean verified = (Boolean)attributes.get("verified");
-
-		if (verified != null) {
-			setVerified(verified);
-		}
-
-		Integer state = (Integer)attributes.get("state");
-
-		if (state != null) {
-			setState(state);
-		}
-
-		String testString = (String)attributes.get("testString");
-
-		if (testString != null) {
-			setTestString(testString);
-		}
+	@Override
+	public Map<String, BiConsumer<Release, Object>> getAttributeSetters() {
+		return _release.getAttributeSetters();
 	}
 
 	@Override

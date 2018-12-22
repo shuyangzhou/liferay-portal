@@ -25,8 +25,6 @@ import com.liferay.journal.model.JournalFolder;
 import com.liferay.journal.model.JournalFolderModel;
 import com.liferay.journal.model.JournalFolderSoap;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -50,10 +48,14 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the JournalFolder service. Represents a row in the &quot;JournalFolder&quot; database table, with each column mapped to a property of this class.
@@ -237,143 +239,289 @@ public class JournalFolderModelImpl extends BaseModelImpl<JournalFolder>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("uuid", getUuid());
-		attributes.put("folderId", getFolderId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("parentFolderId", getParentFolderId());
-		attributes.put("treePath", getTreePath());
-		attributes.put("name", getName());
-		attributes.put("description", getDescription());
-		attributes.put("restrictionType", getRestrictionType());
-		attributes.put("lastPublishDate", getLastPublishDate());
-		attributes.put("status", getStatus());
-		attributes.put("statusByUserId", getStatusByUserId());
-		attributes.put("statusByUserName", getStatusByUserName());
-		attributes.put("statusDate", getStatusDate());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<JournalFolder, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+	public Map<String, BiConsumer<JournalFolder, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
+	private static final Map<String, Function<JournalFolder, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<JournalFolder, Object>> _attributeSetters;
 
-		Long folderId = (Long)attributes.get("folderId");
+	static {
+		Map<String, Function<JournalFolder, Object>> attributeGetters = new LinkedHashMap<String, Function<JournalFolder, Object>>();
 
-		if (folderId != null) {
-			setFolderId(folderId);
-		}
+		attributeGetters.put("uuid",
+			new Function<JournalFolder, Object>() {
+				@Override
+				public Object apply(JournalFolder journalFolder) {
+					return journalFolder.getUuid();
+				}
+			});
+		attributeGetters.put("folderId",
+			new Function<JournalFolder, Object>() {
+				@Override
+				public Object apply(JournalFolder journalFolder) {
+					return journalFolder.getFolderId();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<JournalFolder, Object>() {
+				@Override
+				public Object apply(JournalFolder journalFolder) {
+					return journalFolder.getGroupId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<JournalFolder, Object>() {
+				@Override
+				public Object apply(JournalFolder journalFolder) {
+					return journalFolder.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<JournalFolder, Object>() {
+				@Override
+				public Object apply(JournalFolder journalFolder) {
+					return journalFolder.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<JournalFolder, Object>() {
+				@Override
+				public Object apply(JournalFolder journalFolder) {
+					return journalFolder.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<JournalFolder, Object>() {
+				@Override
+				public Object apply(JournalFolder journalFolder) {
+					return journalFolder.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<JournalFolder, Object>() {
+				@Override
+				public Object apply(JournalFolder journalFolder) {
+					return journalFolder.getModifiedDate();
+				}
+			});
+		attributeGetters.put("parentFolderId",
+			new Function<JournalFolder, Object>() {
+				@Override
+				public Object apply(JournalFolder journalFolder) {
+					return journalFolder.getParentFolderId();
+				}
+			});
+		attributeGetters.put("treePath",
+			new Function<JournalFolder, Object>() {
+				@Override
+				public Object apply(JournalFolder journalFolder) {
+					return journalFolder.getTreePath();
+				}
+			});
+		attributeGetters.put("name",
+			new Function<JournalFolder, Object>() {
+				@Override
+				public Object apply(JournalFolder journalFolder) {
+					return journalFolder.getName();
+				}
+			});
+		attributeGetters.put("description",
+			new Function<JournalFolder, Object>() {
+				@Override
+				public Object apply(JournalFolder journalFolder) {
+					return journalFolder.getDescription();
+				}
+			});
+		attributeGetters.put("restrictionType",
+			new Function<JournalFolder, Object>() {
+				@Override
+				public Object apply(JournalFolder journalFolder) {
+					return journalFolder.getRestrictionType();
+				}
+			});
+		attributeGetters.put("lastPublishDate",
+			new Function<JournalFolder, Object>() {
+				@Override
+				public Object apply(JournalFolder journalFolder) {
+					return journalFolder.getLastPublishDate();
+				}
+			});
+		attributeGetters.put("status",
+			new Function<JournalFolder, Object>() {
+				@Override
+				public Object apply(JournalFolder journalFolder) {
+					return journalFolder.getStatus();
+				}
+			});
+		attributeGetters.put("statusByUserId",
+			new Function<JournalFolder, Object>() {
+				@Override
+				public Object apply(JournalFolder journalFolder) {
+					return journalFolder.getStatusByUserId();
+				}
+			});
+		attributeGetters.put("statusByUserName",
+			new Function<JournalFolder, Object>() {
+				@Override
+				public Object apply(JournalFolder journalFolder) {
+					return journalFolder.getStatusByUserName();
+				}
+			});
+		attributeGetters.put("statusDate",
+			new Function<JournalFolder, Object>() {
+				@Override
+				public Object apply(JournalFolder journalFolder) {
+					return journalFolder.getStatusDate();
+				}
+			});
 
-		Long groupId = (Long)attributes.get("groupId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+		Map<String, BiConsumer<JournalFolder, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<JournalFolder, Object>>();
 
-		Long companyId = (Long)attributes.get("companyId");
+		attributeSetters.put("uuid",
+			new BiConsumer<JournalFolder, Object>() {
+				@Override
+				public void accept(JournalFolder journalFolder, Object uuid) {
+					journalFolder.setUuid((String)uuid);
+				}
+			});
+		attributeSetters.put("folderId",
+			new BiConsumer<JournalFolder, Object>() {
+				@Override
+				public void accept(JournalFolder journalFolder, Object folderId) {
+					journalFolder.setFolderId((Long)folderId);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<JournalFolder, Object>() {
+				@Override
+				public void accept(JournalFolder journalFolder, Object groupId) {
+					journalFolder.setGroupId((Long)groupId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<JournalFolder, Object>() {
+				@Override
+				public void accept(JournalFolder journalFolder, Object companyId) {
+					journalFolder.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<JournalFolder, Object>() {
+				@Override
+				public void accept(JournalFolder journalFolder, Object userId) {
+					journalFolder.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<JournalFolder, Object>() {
+				@Override
+				public void accept(JournalFolder journalFolder, Object userName) {
+					journalFolder.setUserName((String)userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<JournalFolder, Object>() {
+				@Override
+				public void accept(JournalFolder journalFolder,
+					Object createDate) {
+					journalFolder.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<JournalFolder, Object>() {
+				@Override
+				public void accept(JournalFolder journalFolder,
+					Object modifiedDate) {
+					journalFolder.setModifiedDate((Date)modifiedDate);
+				}
+			});
+		attributeSetters.put("parentFolderId",
+			new BiConsumer<JournalFolder, Object>() {
+				@Override
+				public void accept(JournalFolder journalFolder,
+					Object parentFolderId) {
+					journalFolder.setParentFolderId((Long)parentFolderId);
+				}
+			});
+		attributeSetters.put("treePath",
+			new BiConsumer<JournalFolder, Object>() {
+				@Override
+				public void accept(JournalFolder journalFolder, Object treePath) {
+					journalFolder.setTreePath((String)treePath);
+				}
+			});
+		attributeSetters.put("name",
+			new BiConsumer<JournalFolder, Object>() {
+				@Override
+				public void accept(JournalFolder journalFolder, Object name) {
+					journalFolder.setName((String)name);
+				}
+			});
+		attributeSetters.put("description",
+			new BiConsumer<JournalFolder, Object>() {
+				@Override
+				public void accept(JournalFolder journalFolder,
+					Object description) {
+					journalFolder.setDescription((String)description);
+				}
+			});
+		attributeSetters.put("restrictionType",
+			new BiConsumer<JournalFolder, Object>() {
+				@Override
+				public void accept(JournalFolder journalFolder,
+					Object restrictionType) {
+					journalFolder.setRestrictionType((Integer)restrictionType);
+				}
+			});
+		attributeSetters.put("lastPublishDate",
+			new BiConsumer<JournalFolder, Object>() {
+				@Override
+				public void accept(JournalFolder journalFolder,
+					Object lastPublishDate) {
+					journalFolder.setLastPublishDate((Date)lastPublishDate);
+				}
+			});
+		attributeSetters.put("status",
+			new BiConsumer<JournalFolder, Object>() {
+				@Override
+				public void accept(JournalFolder journalFolder, Object status) {
+					journalFolder.setStatus((Integer)status);
+				}
+			});
+		attributeSetters.put("statusByUserId",
+			new BiConsumer<JournalFolder, Object>() {
+				@Override
+				public void accept(JournalFolder journalFolder,
+					Object statusByUserId) {
+					journalFolder.setStatusByUserId((Long)statusByUserId);
+				}
+			});
+		attributeSetters.put("statusByUserName",
+			new BiConsumer<JournalFolder, Object>() {
+				@Override
+				public void accept(JournalFolder journalFolder,
+					Object statusByUserName) {
+					journalFolder.setStatusByUserName((String)statusByUserName);
+				}
+			});
+		attributeSetters.put("statusDate",
+			new BiConsumer<JournalFolder, Object>() {
+				@Override
+				public void accept(JournalFolder journalFolder,
+					Object statusDate) {
+					journalFolder.setStatusDate((Date)statusDate);
+				}
+			});
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long parentFolderId = (Long)attributes.get("parentFolderId");
-
-		if (parentFolderId != null) {
-			setParentFolderId(parentFolderId);
-		}
-
-		String treePath = (String)attributes.get("treePath");
-
-		if (treePath != null) {
-			setTreePath(treePath);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
-		Integer restrictionType = (Integer)attributes.get("restrictionType");
-
-		if (restrictionType != null) {
-			setRestrictionType(restrictionType);
-		}
-
-		Date lastPublishDate = (Date)attributes.get("lastPublishDate");
-
-		if (lastPublishDate != null) {
-			setLastPublishDate(lastPublishDate);
-		}
-
-		Integer status = (Integer)attributes.get("status");
-
-		if (status != null) {
-			setStatus(status);
-		}
-
-		Long statusByUserId = (Long)attributes.get("statusByUserId");
-
-		if (statusByUserId != null) {
-			setStatusByUserId(statusByUserId);
-		}
-
-		String statusByUserName = (String)attributes.get("statusByUserName");
-
-		if (statusByUserName != null) {
-			setStatusByUserName(statusByUserName);
-		}
-
-		Date statusDate = (Date)attributes.get("statusDate");
-
-		if (statusDate != null) {
-			setStatusDate(statusDate);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON
@@ -1219,137 +1367,6 @@ public class JournalFolderModelImpl extends BaseModelImpl<JournalFolder>
 		}
 
 		return journalFolderCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(37);
-
-		sb.append("{uuid=");
-		sb.append(getUuid());
-		sb.append(", folderId=");
-		sb.append(getFolderId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", parentFolderId=");
-		sb.append(getParentFolderId());
-		sb.append(", treePath=");
-		sb.append(getTreePath());
-		sb.append(", name=");
-		sb.append(getName());
-		sb.append(", description=");
-		sb.append(getDescription());
-		sb.append(", restrictionType=");
-		sb.append(getRestrictionType());
-		sb.append(", lastPublishDate=");
-		sb.append(getLastPublishDate());
-		sb.append(", status=");
-		sb.append(getStatus());
-		sb.append(", statusByUserId=");
-		sb.append(getStatusByUserId());
-		sb.append(", statusByUserName=");
-		sb.append(getStatusByUserName());
-		sb.append(", statusDate=");
-		sb.append(getStatusDate());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(58);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.journal.model.JournalFolder");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>folderId</column-name><column-value><![CDATA[");
-		sb.append(getFolderId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>parentFolderId</column-name><column-value><![CDATA[");
-		sb.append(getParentFolderId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>treePath</column-name><column-value><![CDATA[");
-		sb.append(getTreePath());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(getName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(getDescription());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>restrictionType</column-name><column-value><![CDATA[");
-		sb.append(getRestrictionType());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>lastPublishDate</column-name><column-value><![CDATA[");
-		sb.append(getLastPublishDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>status</column-name><column-value><![CDATA[");
-		sb.append(getStatus());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusByUserId</column-name><column-value><![CDATA[");
-		sb.append(getStatusByUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusByUserName</column-name><column-value><![CDATA[");
-		sb.append(getStatusByUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusDate</column-name><column-value><![CDATA[");
-		sb.append(getStatusDate());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = JournalFolder.class.getClassLoader();

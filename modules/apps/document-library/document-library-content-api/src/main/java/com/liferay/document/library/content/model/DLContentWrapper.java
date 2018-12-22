@@ -28,6 +28,8 @@ import java.sql.Blob;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -58,67 +60,41 @@ public class DLContentWrapper implements DLContent, ModelWrapper<DLContent> {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("contentId", getContentId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("repositoryId", getRepositoryId());
-		attributes.put("path", getPath());
-		attributes.put("version", getVersion());
-		attributes.put("data", getData());
-		attributes.put("size", getSize());
+		Map<String, Function<DLContent, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<DLContent, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<DLContent, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long contentId = (Long)attributes.get("contentId");
+		Map<String, BiConsumer<DLContent, Object>> attributeSetters = getAttributeSetters();
 
-		if (contentId != null) {
-			setContentId(contentId);
+		for (Map.Entry<String, BiConsumer<DLContent, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<DLContent, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long groupId = (Long)attributes.get("groupId");
+	@Override
+	public Map<String, Function<DLContent, Object>> getAttributeGetters() {
+		return _dlContent.getAttributeGetters();
+	}
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long repositoryId = (Long)attributes.get("repositoryId");
-
-		if (repositoryId != null) {
-			setRepositoryId(repositoryId);
-		}
-
-		String path = (String)attributes.get("path");
-
-		if (path != null) {
-			setPath(path);
-		}
-
-		String version = (String)attributes.get("version");
-
-		if (version != null) {
-			setVersion(version);
-		}
-
-		Blob data = (Blob)attributes.get("data");
-
-		if (data != null) {
-			setData(data);
-		}
-
-		Long size = (Long)attributes.get("size");
-
-		if (size != null) {
-			setSize(size);
-		}
+	@Override
+	public Map<String, BiConsumer<DLContent, Object>> getAttributeSetters() {
+		return _dlContent.getAttributeSetters();
 	}
 
 	@Override

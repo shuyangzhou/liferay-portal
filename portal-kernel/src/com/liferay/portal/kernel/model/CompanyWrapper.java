@@ -25,6 +25,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -55,88 +57,41 @@ public class CompanyWrapper implements Company, ModelWrapper<Company> {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("accountId", getAccountId());
-		attributes.put("webId", getWebId());
-		attributes.put("key", getKey());
-		attributes.put("mx", getMx());
-		attributes.put("homeURL", getHomeURL());
-		attributes.put("logoId", getLogoId());
-		attributes.put("system", isSystem());
-		attributes.put("maxUsers", getMaxUsers());
-		attributes.put("active", isActive());
+		Map<String, Function<Company, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<Company, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<Company, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<Company, Object>> attributeSetters = getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<Company, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<Company, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	@Override
+	public Map<String, Function<Company, Object>> getAttributeGetters() {
+		return _company.getAttributeGetters();
+	}
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long accountId = (Long)attributes.get("accountId");
-
-		if (accountId != null) {
-			setAccountId(accountId);
-		}
-
-		String webId = (String)attributes.get("webId");
-
-		if (webId != null) {
-			setWebId(webId);
-		}
-
-		String key = (String)attributes.get("key");
-
-		if (key != null) {
-			setKey(key);
-		}
-
-		String mx = (String)attributes.get("mx");
-
-		if (mx != null) {
-			setMx(mx);
-		}
-
-		String homeURL = (String)attributes.get("homeURL");
-
-		if (homeURL != null) {
-			setHomeURL(homeURL);
-		}
-
-		Long logoId = (Long)attributes.get("logoId");
-
-		if (logoId != null) {
-			setLogoId(logoId);
-		}
-
-		Boolean system = (Boolean)attributes.get("system");
-
-		if (system != null) {
-			setSystem(system);
-		}
-
-		Integer maxUsers = (Integer)attributes.get("maxUsers");
-
-		if (maxUsers != null) {
-			setMaxUsers(maxUsers);
-		}
-
-		Boolean active = (Boolean)attributes.get("active");
-
-		if (active != null) {
-			setActive(active);
-		}
+	@Override
+	public Map<String, BiConsumer<Company, Object>> getAttributeSetters() {
+		return _company.getAttributeSetters();
 	}
 
 	@Override

@@ -19,8 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -38,9 +36,13 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the Company service. Represents a row in the &quot;Company&quot; database table, with each column mapped to a property of this class.
@@ -201,94 +203,182 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("accountId", getAccountId());
-		attributes.put("webId", getWebId());
-		attributes.put("key", getKey());
-		attributes.put("mx", getMx());
-		attributes.put("homeURL", getHomeURL());
-		attributes.put("logoId", getLogoId());
-		attributes.put("system", isSystem());
-		attributes.put("maxUsers", getMaxUsers());
-		attributes.put("active", isActive());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<Company, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+	public Map<String, BiConsumer<Company, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
-		}
+	private static final Map<String, Function<Company, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<Company, Object>> _attributeSetters;
 
-		Long companyId = (Long)attributes.get("companyId");
+	static {
+		Map<String, Function<Company, Object>> attributeGetters = new LinkedHashMap<String, Function<Company, Object>>();
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		attributeGetters.put("mvccVersion",
+			new Function<Company, Object>() {
+				@Override
+				public Object apply(Company company) {
+					return company.getMvccVersion();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<Company, Object>() {
+				@Override
+				public Object apply(Company company) {
+					return company.getCompanyId();
+				}
+			});
+		attributeGetters.put("accountId",
+			new Function<Company, Object>() {
+				@Override
+				public Object apply(Company company) {
+					return company.getAccountId();
+				}
+			});
+		attributeGetters.put("webId",
+			new Function<Company, Object>() {
+				@Override
+				public Object apply(Company company) {
+					return company.getWebId();
+				}
+			});
+		attributeGetters.put("key",
+			new Function<Company, Object>() {
+				@Override
+				public Object apply(Company company) {
+					return company.getKey();
+				}
+			});
+		attributeGetters.put("mx",
+			new Function<Company, Object>() {
+				@Override
+				public Object apply(Company company) {
+					return company.getMx();
+				}
+			});
+		attributeGetters.put("homeURL",
+			new Function<Company, Object>() {
+				@Override
+				public Object apply(Company company) {
+					return company.getHomeURL();
+				}
+			});
+		attributeGetters.put("logoId",
+			new Function<Company, Object>() {
+				@Override
+				public Object apply(Company company) {
+					return company.getLogoId();
+				}
+			});
+		attributeGetters.put("system",
+			new Function<Company, Object>() {
+				@Override
+				public Object apply(Company company) {
+					return company.isSystem();
+				}
+			});
+		attributeGetters.put("maxUsers",
+			new Function<Company, Object>() {
+				@Override
+				public Object apply(Company company) {
+					return company.getMaxUsers();
+				}
+			});
+		attributeGetters.put("active",
+			new Function<Company, Object>() {
+				@Override
+				public Object apply(Company company) {
+					return company.isActive();
+				}
+			});
 
-		Long accountId = (Long)attributes.get("accountId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (accountId != null) {
-			setAccountId(accountId);
-		}
+		Map<String, BiConsumer<Company, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Company, Object>>();
 
-		String webId = (String)attributes.get("webId");
+		attributeSetters.put("mvccVersion",
+			new BiConsumer<Company, Object>() {
+				@Override
+				public void accept(Company company, Object mvccVersion) {
+					company.setMvccVersion((Long)mvccVersion);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<Company, Object>() {
+				@Override
+				public void accept(Company company, Object companyId) {
+					company.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("accountId",
+			new BiConsumer<Company, Object>() {
+				@Override
+				public void accept(Company company, Object accountId) {
+					company.setAccountId((Long)accountId);
+				}
+			});
+		attributeSetters.put("webId",
+			new BiConsumer<Company, Object>() {
+				@Override
+				public void accept(Company company, Object webId) {
+					company.setWebId((String)webId);
+				}
+			});
+		attributeSetters.put("key",
+			new BiConsumer<Company, Object>() {
+				@Override
+				public void accept(Company company, Object key) {
+					company.setKey((String)key);
+				}
+			});
+		attributeSetters.put("mx",
+			new BiConsumer<Company, Object>() {
+				@Override
+				public void accept(Company company, Object mx) {
+					company.setMx((String)mx);
+				}
+			});
+		attributeSetters.put("homeURL",
+			new BiConsumer<Company, Object>() {
+				@Override
+				public void accept(Company company, Object homeURL) {
+					company.setHomeURL((String)homeURL);
+				}
+			});
+		attributeSetters.put("logoId",
+			new BiConsumer<Company, Object>() {
+				@Override
+				public void accept(Company company, Object logoId) {
+					company.setLogoId((Long)logoId);
+				}
+			});
+		attributeSetters.put("system",
+			new BiConsumer<Company, Object>() {
+				@Override
+				public void accept(Company company, Object system) {
+					company.setSystem((Boolean)system);
+				}
+			});
+		attributeSetters.put("maxUsers",
+			new BiConsumer<Company, Object>() {
+				@Override
+				public void accept(Company company, Object maxUsers) {
+					company.setMaxUsers((Integer)maxUsers);
+				}
+			});
+		attributeSetters.put("active",
+			new BiConsumer<Company, Object>() {
+				@Override
+				public void accept(Company company, Object active) {
+					company.setActive((Boolean)active);
+				}
+			});
 
-		if (webId != null) {
-			setWebId(webId);
-		}
-
-		String key = (String)attributes.get("key");
-
-		if (key != null) {
-			setKey(key);
-		}
-
-		String mx = (String)attributes.get("mx");
-
-		if (mx != null) {
-			setMx(mx);
-		}
-
-		String homeURL = (String)attributes.get("homeURL");
-
-		if (homeURL != null) {
-			setHomeURL(homeURL);
-		}
-
-		Long logoId = (Long)attributes.get("logoId");
-
-		if (logoId != null) {
-			setLogoId(logoId);
-		}
-
-		Boolean system = (Boolean)attributes.get("system");
-
-		if (system != null) {
-			setSystem(system);
-		}
-
-		Integer maxUsers = (Integer)attributes.get("maxUsers");
-
-		if (maxUsers != null) {
-			setMaxUsers(maxUsers);
-		}
-
-		Boolean active = (Boolean)attributes.get("active");
-
-		if (active != null) {
-			setActive(active);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON
@@ -692,95 +782,6 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 		companyCacheModel._virtualHostname = getVirtualHostname();
 
 		return companyCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(23);
-
-		sb.append("{mvccVersion=");
-		sb.append(getMvccVersion());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", accountId=");
-		sb.append(getAccountId());
-		sb.append(", webId=");
-		sb.append(getWebId());
-		sb.append(", key=");
-		sb.append(getKey());
-		sb.append(", mx=");
-		sb.append(getMx());
-		sb.append(", homeURL=");
-		sb.append(getHomeURL());
-		sb.append(", logoId=");
-		sb.append(getLogoId());
-		sb.append(", system=");
-		sb.append(isSystem());
-		sb.append(", maxUsers=");
-		sb.append(getMaxUsers());
-		sb.append(", active=");
-		sb.append(isActive());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(37);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.kernel.model.Company");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>mvccVersion</column-name><column-value><![CDATA[");
-		sb.append(getMvccVersion());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>accountId</column-name><column-value><![CDATA[");
-		sb.append(getAccountId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>webId</column-name><column-value><![CDATA[");
-		sb.append(getWebId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>key</column-name><column-value><![CDATA[");
-		sb.append(getKey());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>mx</column-name><column-value><![CDATA[");
-		sb.append(getMx());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>homeURL</column-name><column-value><![CDATA[");
-		sb.append(getHomeURL());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>logoId</column-name><column-value><![CDATA[");
-		sb.append(getLogoId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>system</column-name><column-value><![CDATA[");
-		sb.append(isSystem());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>maxUsers</column-name><column-value><![CDATA[");
-		sb.append(getMaxUsers());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>active</column-name><column-value><![CDATA[");
-		sb.append(isActive());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = Company.class.getClassLoader();

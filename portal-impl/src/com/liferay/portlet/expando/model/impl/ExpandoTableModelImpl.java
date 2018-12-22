@@ -19,8 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.expando.kernel.model.ExpandoTableModel;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -35,8 +33,12 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the ExpandoTable service. Represents a row in the &quot;ExpandoTable&quot; database table, with each column mapped to a property of this class.
@@ -133,45 +135,84 @@ public class ExpandoTableModelImpl extends BaseModelImpl<ExpandoTable>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("tableId", getTableId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("name", getName());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<ExpandoTable, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long tableId = (Long)attributes.get("tableId");
+	public Map<String, BiConsumer<ExpandoTable, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (tableId != null) {
-			setTableId(tableId);
-		}
+	private static final Map<String, Function<ExpandoTable, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<ExpandoTable, Object>> _attributeSetters;
 
-		Long companyId = (Long)attributes.get("companyId");
+	static {
+		Map<String, Function<ExpandoTable, Object>> attributeGetters = new LinkedHashMap<String, Function<ExpandoTable, Object>>();
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		attributeGetters.put("tableId",
+			new Function<ExpandoTable, Object>() {
+				@Override
+				public Object apply(ExpandoTable expandoTable) {
+					return expandoTable.getTableId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<ExpandoTable, Object>() {
+				@Override
+				public Object apply(ExpandoTable expandoTable) {
+					return expandoTable.getCompanyId();
+				}
+			});
+		attributeGetters.put("classNameId",
+			new Function<ExpandoTable, Object>() {
+				@Override
+				public Object apply(ExpandoTable expandoTable) {
+					return expandoTable.getClassNameId();
+				}
+			});
+		attributeGetters.put("name",
+			new Function<ExpandoTable, Object>() {
+				@Override
+				public Object apply(ExpandoTable expandoTable) {
+					return expandoTable.getName();
+				}
+			});
 
-		Long classNameId = (Long)attributes.get("classNameId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
+		Map<String, BiConsumer<ExpandoTable, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<ExpandoTable, Object>>();
 
-		String name = (String)attributes.get("name");
+		attributeSetters.put("tableId",
+			new BiConsumer<ExpandoTable, Object>() {
+				@Override
+				public void accept(ExpandoTable expandoTable, Object tableId) {
+					expandoTable.setTableId((Long)tableId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<ExpandoTable, Object>() {
+				@Override
+				public void accept(ExpandoTable expandoTable, Object companyId) {
+					expandoTable.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("classNameId",
+			new BiConsumer<ExpandoTable, Object>() {
+				@Override
+				public void accept(ExpandoTable expandoTable, Object classNameId) {
+					expandoTable.setClassNameId((Long)classNameId);
+				}
+			});
+		attributeSetters.put("name",
+			new BiConsumer<ExpandoTable, Object>() {
+				@Override
+				public void accept(ExpandoTable expandoTable, Object name) {
+					expandoTable.setName((String)name);
+				}
+			});
 
-		if (name != null) {
-			setName(name);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON
@@ -393,53 +434,6 @@ public class ExpandoTableModelImpl extends BaseModelImpl<ExpandoTable>
 		}
 
 		return expandoTableCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(9);
-
-		sb.append("{tableId=");
-		sb.append(getTableId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", classNameId=");
-		sb.append(getClassNameId());
-		sb.append(", name=");
-		sb.append(getName());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(16);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.expando.kernel.model.ExpandoTable");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>tableId</column-name><column-value><![CDATA[");
-		sb.append(getTableId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classNameId</column-name><column-value><![CDATA[");
-		sb.append(getClassNameId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(getName());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = ExpandoTable.class.getClassLoader();

@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -57,95 +59,41 @@ public class LockWrapper implements Lock, ModelWrapper<Lock> {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("uuid", getUuid());
-		attributes.put("lockId", getLockId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("className", getClassName());
-		attributes.put("key", getKey());
-		attributes.put("owner", getOwner());
-		attributes.put("inheritable", isInheritable());
-		attributes.put("expirationDate", getExpirationDate());
+		Map<String, Function<Lock, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<Lock, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<Lock, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<Lock, Object>> attributeSetters = getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<Lock, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<Lock, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		String uuid = (String)attributes.get("uuid");
+	@Override
+	public Map<String, Function<Lock, Object>> getAttributeGetters() {
+		return _lock.getAttributeGetters();
+	}
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
-
-		Long lockId = (Long)attributes.get("lockId");
-
-		if (lockId != null) {
-			setLockId(lockId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		String className = (String)attributes.get("className");
-
-		if (className != null) {
-			setClassName(className);
-		}
-
-		String key = (String)attributes.get("key");
-
-		if (key != null) {
-			setKey(key);
-		}
-
-		String owner = (String)attributes.get("owner");
-
-		if (owner != null) {
-			setOwner(owner);
-		}
-
-		Boolean inheritable = (Boolean)attributes.get("inheritable");
-
-		if (inheritable != null) {
-			setInheritable(inheritable);
-		}
-
-		Date expirationDate = (Date)attributes.get("expirationDate");
-
-		if (expirationDate != null) {
-			setExpirationDate(expirationDate);
-		}
+	@Override
+	public Map<String, BiConsumer<Lock, Object>> getAttributeSetters() {
+		return _lock.getAttributeSetters();
 	}
 
 	@Override

@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -56,60 +58,41 @@ public class ModuleWrapper implements Module, ModelWrapper<Module> {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("uuid", getUuid());
-		attributes.put("moduleId", getModuleId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("appId", getAppId());
-		attributes.put("bundleSymbolicName", getBundleSymbolicName());
-		attributes.put("bundleVersion", getBundleVersion());
-		attributes.put("contextName", getContextName());
+		Map<String, Function<Module, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<Module, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<Module, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+		Map<String, BiConsumer<Module, Object>> attributeSetters = getAttributeSetters();
 
-		if (uuid != null) {
-			setUuid(uuid);
+		for (Map.Entry<String, BiConsumer<Module, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<Module, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long moduleId = (Long)attributes.get("moduleId");
+	@Override
+	public Map<String, Function<Module, Object>> getAttributeGetters() {
+		return _module.getAttributeGetters();
+	}
 
-		if (moduleId != null) {
-			setModuleId(moduleId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long appId = (Long)attributes.get("appId");
-
-		if (appId != null) {
-			setAppId(appId);
-		}
-
-		String bundleSymbolicName = (String)attributes.get("bundleSymbolicName");
-
-		if (bundleSymbolicName != null) {
-			setBundleSymbolicName(bundleSymbolicName);
-		}
-
-		String bundleVersion = (String)attributes.get("bundleVersion");
-
-		if (bundleVersion != null) {
-			setBundleVersion(bundleVersion);
-		}
-
-		String contextName = (String)attributes.get("contextName");
-
-		if (contextName != null) {
-			setContextName(contextName);
-		}
+	@Override
+	public Map<String, BiConsumer<Module, Object>> getAttributeSetters() {
+		return _module.getAttributeSetters();
 	}
 
 	@Override

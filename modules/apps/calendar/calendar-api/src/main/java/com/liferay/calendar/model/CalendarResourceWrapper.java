@@ -29,6 +29,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -60,123 +62,41 @@ public class CalendarResourceWrapper implements CalendarResource,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("uuid", getUuid());
-		attributes.put("calendarResourceId", getCalendarResourceId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("classUuid", getClassUuid());
-		attributes.put("code", getCode());
-		attributes.put("name", getName());
-		attributes.put("description", getDescription());
-		attributes.put("active", isActive());
-		attributes.put("lastPublishDate", getLastPublishDate());
+		Map<String, Function<CalendarResource, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<CalendarResource, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<CalendarResource, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+		Map<String, BiConsumer<CalendarResource, Object>> attributeSetters = getAttributeSetters();
 
-		if (uuid != null) {
-			setUuid(uuid);
+		for (Map.Entry<String, BiConsumer<CalendarResource, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<CalendarResource, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long calendarResourceId = (Long)attributes.get("calendarResourceId");
+	@Override
+	public Map<String, Function<CalendarResource, Object>> getAttributeGetters() {
+		return _calendarResource.getAttributeGetters();
+	}
 
-		if (calendarResourceId != null) {
-			setCalendarResourceId(calendarResourceId);
-		}
-
-		Long groupId = (Long)attributes.get("groupId");
-
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		String classUuid = (String)attributes.get("classUuid");
-
-		if (classUuid != null) {
-			setClassUuid(classUuid);
-		}
-
-		String code = (String)attributes.get("code");
-
-		if (code != null) {
-			setCode(code);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
-		Boolean active = (Boolean)attributes.get("active");
-
-		if (active != null) {
-			setActive(active);
-		}
-
-		Date lastPublishDate = (Date)attributes.get("lastPublishDate");
-
-		if (lastPublishDate != null) {
-			setLastPublishDate(lastPublishDate);
-		}
+	@Override
+	public Map<String, BiConsumer<CalendarResource, Object>> getAttributeSetters() {
+		return _calendarResource.getAttributeSetters();
 	}
 
 	@Override

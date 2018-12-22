@@ -25,6 +25,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -57,76 +59,43 @@ public class UserNotificationDeliveryWrapper implements UserNotificationDelivery
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("userNotificationDeliveryId",
-			getUserNotificationDeliveryId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("portletId", getPortletId());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("notificationType", getNotificationType());
-		attributes.put("deliveryType", getDeliveryType());
-		attributes.put("deliver", isDeliver());
+		Map<String, Function<UserNotificationDelivery, Object>> attributeGetters =
+			getAttributeGetters();
+
+		for (Map.Entry<String, Function<UserNotificationDelivery, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<UserNotificationDelivery, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<UserNotificationDelivery, Object>> attributeSetters =
+			getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<UserNotificationDelivery, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<UserNotificationDelivery, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long userNotificationDeliveryId = (Long)attributes.get(
-				"userNotificationDeliveryId");
+	@Override
+	public Map<String, Function<UserNotificationDelivery, Object>> getAttributeGetters() {
+		return _userNotificationDelivery.getAttributeGetters();
+	}
 
-		if (userNotificationDeliveryId != null) {
-			setUserNotificationDeliveryId(userNotificationDeliveryId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String portletId = (String)attributes.get("portletId");
-
-		if (portletId != null) {
-			setPortletId(portletId);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Integer notificationType = (Integer)attributes.get("notificationType");
-
-		if (notificationType != null) {
-			setNotificationType(notificationType);
-		}
-
-		Integer deliveryType = (Integer)attributes.get("deliveryType");
-
-		if (deliveryType != null) {
-			setDeliveryType(deliveryType);
-		}
-
-		Boolean deliver = (Boolean)attributes.get("deliver");
-
-		if (deliver != null) {
-			setDeliver(deliver);
-		}
+	@Override
+	public Map<String, BiConsumer<UserNotificationDelivery, Object>> getAttributeSetters() {
+		return _userNotificationDelivery.getAttributeSetters();
 	}
 
 	@Override

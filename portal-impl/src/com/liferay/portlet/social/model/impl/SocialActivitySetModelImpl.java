@@ -19,8 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -41,8 +39,12 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the SocialActivitySet service. Represents a row in the &quot;SocialActivitySet&quot; database table, with each column mapped to a property of this class.
@@ -154,94 +156,193 @@ public class SocialActivitySetModelImpl extends BaseModelImpl<SocialActivitySet>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("activitySetId", getActivitySetId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("type", getType());
-		attributes.put("extraData", getExtraData());
-		attributes.put("activityCount", getActivityCount());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<SocialActivitySet, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long activitySetId = (Long)attributes.get("activitySetId");
+	public Map<String, BiConsumer<SocialActivitySet, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (activitySetId != null) {
-			setActivitySetId(activitySetId);
-		}
+	private static final Map<String, Function<SocialActivitySet, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<SocialActivitySet, Object>> _attributeSetters;
 
-		Long groupId = (Long)attributes.get("groupId");
+	static {
+		Map<String, Function<SocialActivitySet, Object>> attributeGetters = new LinkedHashMap<String, Function<SocialActivitySet, Object>>();
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+		attributeGetters.put("activitySetId",
+			new Function<SocialActivitySet, Object>() {
+				@Override
+				public Object apply(SocialActivitySet socialActivitySet) {
+					return socialActivitySet.getActivitySetId();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<SocialActivitySet, Object>() {
+				@Override
+				public Object apply(SocialActivitySet socialActivitySet) {
+					return socialActivitySet.getGroupId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<SocialActivitySet, Object>() {
+				@Override
+				public Object apply(SocialActivitySet socialActivitySet) {
+					return socialActivitySet.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<SocialActivitySet, Object>() {
+				@Override
+				public Object apply(SocialActivitySet socialActivitySet) {
+					return socialActivitySet.getUserId();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<SocialActivitySet, Object>() {
+				@Override
+				public Object apply(SocialActivitySet socialActivitySet) {
+					return socialActivitySet.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<SocialActivitySet, Object>() {
+				@Override
+				public Object apply(SocialActivitySet socialActivitySet) {
+					return socialActivitySet.getModifiedDate();
+				}
+			});
+		attributeGetters.put("classNameId",
+			new Function<SocialActivitySet, Object>() {
+				@Override
+				public Object apply(SocialActivitySet socialActivitySet) {
+					return socialActivitySet.getClassNameId();
+				}
+			});
+		attributeGetters.put("classPK",
+			new Function<SocialActivitySet, Object>() {
+				@Override
+				public Object apply(SocialActivitySet socialActivitySet) {
+					return socialActivitySet.getClassPK();
+				}
+			});
+		attributeGetters.put("type",
+			new Function<SocialActivitySet, Object>() {
+				@Override
+				public Object apply(SocialActivitySet socialActivitySet) {
+					return socialActivitySet.getType();
+				}
+			});
+		attributeGetters.put("extraData",
+			new Function<SocialActivitySet, Object>() {
+				@Override
+				public Object apply(SocialActivitySet socialActivitySet) {
+					return socialActivitySet.getExtraData();
+				}
+			});
+		attributeGetters.put("activityCount",
+			new Function<SocialActivitySet, Object>() {
+				@Override
+				public Object apply(SocialActivitySet socialActivitySet) {
+					return socialActivitySet.getActivityCount();
+				}
+			});
 
-		Long companyId = (Long)attributes.get("companyId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		Map<String, BiConsumer<SocialActivitySet, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SocialActivitySet, Object>>();
 
-		Long userId = (Long)attributes.get("userId");
+		attributeSetters.put("activitySetId",
+			new BiConsumer<SocialActivitySet, Object>() {
+				@Override
+				public void accept(SocialActivitySet socialActivitySet,
+					Object activitySetId) {
+					socialActivitySet.setActivitySetId((Long)activitySetId);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<SocialActivitySet, Object>() {
+				@Override
+				public void accept(SocialActivitySet socialActivitySet,
+					Object groupId) {
+					socialActivitySet.setGroupId((Long)groupId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<SocialActivitySet, Object>() {
+				@Override
+				public void accept(SocialActivitySet socialActivitySet,
+					Object companyId) {
+					socialActivitySet.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<SocialActivitySet, Object>() {
+				@Override
+				public void accept(SocialActivitySet socialActivitySet,
+					Object userId) {
+					socialActivitySet.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<SocialActivitySet, Object>() {
+				@Override
+				public void accept(SocialActivitySet socialActivitySet,
+					Object createDate) {
+					socialActivitySet.setCreateDate((Long)createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<SocialActivitySet, Object>() {
+				@Override
+				public void accept(SocialActivitySet socialActivitySet,
+					Object modifiedDate) {
+					socialActivitySet.setModifiedDate((Long)modifiedDate);
+				}
+			});
+		attributeSetters.put("classNameId",
+			new BiConsumer<SocialActivitySet, Object>() {
+				@Override
+				public void accept(SocialActivitySet socialActivitySet,
+					Object classNameId) {
+					socialActivitySet.setClassNameId((Long)classNameId);
+				}
+			});
+		attributeSetters.put("classPK",
+			new BiConsumer<SocialActivitySet, Object>() {
+				@Override
+				public void accept(SocialActivitySet socialActivitySet,
+					Object classPK) {
+					socialActivitySet.setClassPK((Long)classPK);
+				}
+			});
+		attributeSetters.put("type",
+			new BiConsumer<SocialActivitySet, Object>() {
+				@Override
+				public void accept(SocialActivitySet socialActivitySet,
+					Object type) {
+					socialActivitySet.setType((Integer)type);
+				}
+			});
+		attributeSetters.put("extraData",
+			new BiConsumer<SocialActivitySet, Object>() {
+				@Override
+				public void accept(SocialActivitySet socialActivitySet,
+					Object extraData) {
+					socialActivitySet.setExtraData((String)extraData);
+				}
+			});
+		attributeSetters.put("activityCount",
+			new BiConsumer<SocialActivitySet, Object>() {
+				@Override
+				public void accept(SocialActivitySet socialActivitySet,
+					Object activityCount) {
+					socialActivitySet.setActivityCount((Integer)activityCount);
+				}
+			});
 
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		Long createDate = (Long)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Long modifiedDate = (Long)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		Integer type = (Integer)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
-
-		String extraData = (String)attributes.get("extraData");
-
-		if (extraData != null) {
-			setExtraData(extraData);
-		}
-
-		Integer activityCount = (Integer)attributes.get("activityCount");
-
-		if (activityCount != null) {
-			setActivityCount(activityCount);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override
@@ -625,95 +726,6 @@ public class SocialActivitySetModelImpl extends BaseModelImpl<SocialActivitySet>
 		socialActivitySetCacheModel.activityCount = getActivityCount();
 
 		return socialActivitySetCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(23);
-
-		sb.append("{activitySetId=");
-		sb.append(getActivitySetId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", classNameId=");
-		sb.append(getClassNameId());
-		sb.append(", classPK=");
-		sb.append(getClassPK());
-		sb.append(", type=");
-		sb.append(getType());
-		sb.append(", extraData=");
-		sb.append(getExtraData());
-		sb.append(", activityCount=");
-		sb.append(getActivityCount());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(37);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.social.kernel.model.SocialActivitySet");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>activitySetId</column-name><column-value><![CDATA[");
-		sb.append(getActivitySetId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classNameId</column-name><column-value><![CDATA[");
-		sb.append(getClassNameId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classPK</column-name><column-value><![CDATA[");
-		sb.append(getClassPK());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>type</column-name><column-value><![CDATA[");
-		sb.append(getType());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>extraData</column-name><column-value><![CDATA[");
-		sb.append(getExtraData());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>activityCount</column-name><column-value><![CDATA[");
-		sb.append(getActivityCount());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = SocialActivitySet.class.getClassLoader();

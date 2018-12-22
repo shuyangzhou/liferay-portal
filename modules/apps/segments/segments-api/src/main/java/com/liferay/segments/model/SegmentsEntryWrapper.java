@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -58,109 +60,41 @@ public class SegmentsEntryWrapper implements SegmentsEntry,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("segmentsEntryId", getSegmentsEntryId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("name", getName());
-		attributes.put("description", getDescription());
-		attributes.put("active", isActive());
-		attributes.put("criteria", getCriteria());
-		attributes.put("key", getKey());
-		attributes.put("source", getSource());
-		attributes.put("type", getType());
+		Map<String, Function<SegmentsEntry, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<SegmentsEntry, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<SegmentsEntry, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long segmentsEntryId = (Long)attributes.get("segmentsEntryId");
+		Map<String, BiConsumer<SegmentsEntry, Object>> attributeSetters = getAttributeSetters();
 
-		if (segmentsEntryId != null) {
-			setSegmentsEntryId(segmentsEntryId);
+		for (Map.Entry<String, BiConsumer<SegmentsEntry, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<SegmentsEntry, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long groupId = (Long)attributes.get("groupId");
+	@Override
+	public Map<String, Function<SegmentsEntry, Object>> getAttributeGetters() {
+		return _segmentsEntry.getAttributeGetters();
+	}
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
-		Boolean active = (Boolean)attributes.get("active");
-
-		if (active != null) {
-			setActive(active);
-		}
-
-		String criteria = (String)attributes.get("criteria");
-
-		if (criteria != null) {
-			setCriteria(criteria);
-		}
-
-		String key = (String)attributes.get("key");
-
-		if (key != null) {
-			setKey(key);
-		}
-
-		String source = (String)attributes.get("source");
-
-		if (source != null) {
-			setSource(source);
-		}
-
-		String type = (String)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
+	@Override
+	public Map<String, BiConsumer<SegmentsEntry, Object>> getAttributeSetters() {
+		return _segmentsEntry.getAttributeSetters();
 	}
 
 	@Override

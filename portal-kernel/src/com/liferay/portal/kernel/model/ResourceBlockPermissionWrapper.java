@@ -25,6 +25,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -59,55 +61,42 @@ public class ResourceBlockPermissionWrapper implements ResourceBlockPermission,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("resourceBlockPermissionId",
-			getResourceBlockPermissionId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("resourceBlockId", getResourceBlockId());
-		attributes.put("roleId", getRoleId());
-		attributes.put("actionIds", getActionIds());
+		Map<String, Function<ResourceBlockPermission, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<ResourceBlockPermission, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<ResourceBlockPermission, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<ResourceBlockPermission, Object>> attributeSetters =
+			getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<ResourceBlockPermission, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<ResourceBlockPermission, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long resourceBlockPermissionId = (Long)attributes.get(
-				"resourceBlockPermissionId");
+	@Override
+	public Map<String, Function<ResourceBlockPermission, Object>> getAttributeGetters() {
+		return _resourceBlockPermission.getAttributeGetters();
+	}
 
-		if (resourceBlockPermissionId != null) {
-			setResourceBlockPermissionId(resourceBlockPermissionId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long resourceBlockId = (Long)attributes.get("resourceBlockId");
-
-		if (resourceBlockId != null) {
-			setResourceBlockId(resourceBlockId);
-		}
-
-		Long roleId = (Long)attributes.get("roleId");
-
-		if (roleId != null) {
-			setRoleId(roleId);
-		}
-
-		Long actionIds = (Long)attributes.get("actionIds");
-
-		if (actionIds != null) {
-			setActionIds(actionIds);
-		}
+	@Override
+	public Map<String, BiConsumer<ResourceBlockPermission, Object>> getAttributeSetters() {
+		return _resourceBlockPermission.getAttributeSetters();
 	}
 
 	@Override

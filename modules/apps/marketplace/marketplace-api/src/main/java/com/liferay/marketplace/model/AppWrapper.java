@@ -29,6 +29,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -59,109 +61,41 @@ public class AppWrapper implements App, ModelWrapper<App> {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("uuid", getUuid());
-		attributes.put("appId", getAppId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("remoteAppId", getRemoteAppId());
-		attributes.put("title", getTitle());
-		attributes.put("description", getDescription());
-		attributes.put("category", getCategory());
-		attributes.put("iconURL", getIconURL());
-		attributes.put("version", getVersion());
-		attributes.put("required", isRequired());
+		Map<String, Function<App, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<App, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<App, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+		Map<String, BiConsumer<App, Object>> attributeSetters = getAttributeSetters();
 
-		if (uuid != null) {
-			setUuid(uuid);
+		for (Map.Entry<String, BiConsumer<App, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<App, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long appId = (Long)attributes.get("appId");
+	@Override
+	public Map<String, Function<App, Object>> getAttributeGetters() {
+		return _app.getAttributeGetters();
+	}
 
-		if (appId != null) {
-			setAppId(appId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long remoteAppId = (Long)attributes.get("remoteAppId");
-
-		if (remoteAppId != null) {
-			setRemoteAppId(remoteAppId);
-		}
-
-		String title = (String)attributes.get("title");
-
-		if (title != null) {
-			setTitle(title);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
-		String category = (String)attributes.get("category");
-
-		if (category != null) {
-			setCategory(category);
-		}
-
-		String iconURL = (String)attributes.get("iconURL");
-
-		if (iconURL != null) {
-			setIconURL(iconURL);
-		}
-
-		String version = (String)attributes.get("version");
-
-		if (version != null) {
-			setVersion(version);
-		}
-
-		Boolean required = (Boolean)attributes.get("required");
-
-		if (required != null) {
-			setRequired(required);
-		}
+	@Override
+	public Map<String, BiConsumer<App, Object>> getAttributeSetters() {
+		return _app.getAttributeSetters();
 	}
 
 	@Override

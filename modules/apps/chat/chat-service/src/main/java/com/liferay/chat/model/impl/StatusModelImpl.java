@@ -22,8 +22,6 @@ import com.liferay.chat.model.StatusModel;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -39,8 +37,12 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the Status service. Represents a row in the &quot;Chat_Status&quot; database table, with each column mapped to a property of this class.
@@ -144,73 +146,140 @@ public class StatusModelImpl extends BaseModelImpl<Status>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("statusId", getStatusId());
-		attributes.put("userId", getUserId());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("online", isOnline());
-		attributes.put("awake", isAwake());
-		attributes.put("activePanelIds", getActivePanelIds());
-		attributes.put("message", getMessage());
-		attributes.put("playSound", isPlaySound());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<Status, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long statusId = (Long)attributes.get("statusId");
+	public Map<String, BiConsumer<Status, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (statusId != null) {
-			setStatusId(statusId);
-		}
+	private static final Map<String, Function<Status, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<Status, Object>> _attributeSetters;
 
-		Long userId = (Long)attributes.get("userId");
+	static {
+		Map<String, Function<Status, Object>> attributeGetters = new LinkedHashMap<String, Function<Status, Object>>();
 
-		if (userId != null) {
-			setUserId(userId);
-		}
+		attributeGetters.put("statusId",
+			new Function<Status, Object>() {
+				@Override
+				public Object apply(Status status) {
+					return status.getStatusId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<Status, Object>() {
+				@Override
+				public Object apply(Status status) {
+					return status.getUserId();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<Status, Object>() {
+				@Override
+				public Object apply(Status status) {
+					return status.getModifiedDate();
+				}
+			});
+		attributeGetters.put("online",
+			new Function<Status, Object>() {
+				@Override
+				public Object apply(Status status) {
+					return status.isOnline();
+				}
+			});
+		attributeGetters.put("awake",
+			new Function<Status, Object>() {
+				@Override
+				public Object apply(Status status) {
+					return status.isAwake();
+				}
+			});
+		attributeGetters.put("activePanelIds",
+			new Function<Status, Object>() {
+				@Override
+				public Object apply(Status status) {
+					return status.getActivePanelIds();
+				}
+			});
+		attributeGetters.put("message",
+			new Function<Status, Object>() {
+				@Override
+				public Object apply(Status status) {
+					return status.getMessage();
+				}
+			});
+		attributeGetters.put("playSound",
+			new Function<Status, Object>() {
+				@Override
+				public Object apply(Status status) {
+					return status.isPlaySound();
+				}
+			});
 
-		Long modifiedDate = (Long)attributes.get("modifiedDate");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
+		Map<String, BiConsumer<Status, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Status, Object>>();
 
-		Boolean online = (Boolean)attributes.get("online");
+		attributeSetters.put("statusId",
+			new BiConsumer<Status, Object>() {
+				@Override
+				public void accept(Status status, Object statusId) {
+					status.setStatusId((Long)statusId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<Status, Object>() {
+				@Override
+				public void accept(Status status, Object userId) {
+					status.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<Status, Object>() {
+				@Override
+				public void accept(Status status, Object modifiedDate) {
+					status.setModifiedDate((Long)modifiedDate);
+				}
+			});
+		attributeSetters.put("online",
+			new BiConsumer<Status, Object>() {
+				@Override
+				public void accept(Status status, Object online) {
+					status.setOnline((Boolean)online);
+				}
+			});
+		attributeSetters.put("awake",
+			new BiConsumer<Status, Object>() {
+				@Override
+				public void accept(Status status, Object awake) {
+					status.setAwake((Boolean)awake);
+				}
+			});
+		attributeSetters.put("activePanelIds",
+			new BiConsumer<Status, Object>() {
+				@Override
+				public void accept(Status status, Object activePanelIds) {
+					status.setActivePanelIds((String)activePanelIds);
+				}
+			});
+		attributeSetters.put("message",
+			new BiConsumer<Status, Object>() {
+				@Override
+				public void accept(Status status, Object message) {
+					status.setMessage((String)message);
+				}
+			});
+		attributeSetters.put("playSound",
+			new BiConsumer<Status, Object>() {
+				@Override
+				public void accept(Status status, Object playSound) {
+					status.setPlaySound((Boolean)playSound);
+				}
+			});
 
-		if (online != null) {
-			setOnline(online);
-		}
-
-		Boolean awake = (Boolean)attributes.get("awake");
-
-		if (awake != null) {
-			setAwake(awake);
-		}
-
-		String activePanelIds = (String)attributes.get("activePanelIds");
-
-		if (activePanelIds != null) {
-			setActivePanelIds(activePanelIds);
-		}
-
-		String message = (String)attributes.get("message");
-
-		if (message != null) {
-			setMessage(message);
-		}
-
-		Boolean playSound = (Boolean)attributes.get("playSound");
-
-		if (playSound != null) {
-			setPlaySound(playSound);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override
@@ -519,77 +588,6 @@ public class StatusModelImpl extends BaseModelImpl<Status>
 		statusCacheModel.playSound = isPlaySound();
 
 		return statusCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(17);
-
-		sb.append("{statusId=");
-		sb.append(getStatusId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", online=");
-		sb.append(isOnline());
-		sb.append(", awake=");
-		sb.append(isAwake());
-		sb.append(", activePanelIds=");
-		sb.append(getActivePanelIds());
-		sb.append(", message=");
-		sb.append(getMessage());
-		sb.append(", playSound=");
-		sb.append(isPlaySound());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(28);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.chat.model.Status");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>statusId</column-name><column-value><![CDATA[");
-		sb.append(getStatusId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>online</column-name><column-value><![CDATA[");
-		sb.append(isOnline());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>awake</column-name><column-value><![CDATA[");
-		sb.append(isAwake());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>activePanelIds</column-name><column-value><![CDATA[");
-		sb.append(getActivePanelIds());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>message</column-name><column-value><![CDATA[");
-		sb.append(getMessage());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>playSound</column-name><column-value><![CDATA[");
-		sb.append(isPlaySound());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = Status.class.getClassLoader();

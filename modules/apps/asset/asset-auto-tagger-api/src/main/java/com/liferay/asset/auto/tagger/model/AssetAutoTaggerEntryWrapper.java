@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -59,61 +61,41 @@ public class AssetAutoTaggerEntryWrapper implements AssetAutoTaggerEntry,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("assetAutoTaggerEntryId", getAssetAutoTaggerEntryId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("assetEntryId", getAssetEntryId());
-		attributes.put("assetTagId", getAssetTagId());
+		Map<String, Function<AssetAutoTaggerEntry, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<AssetAutoTaggerEntry, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<AssetAutoTaggerEntry, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long assetAutoTaggerEntryId = (Long)attributes.get(
-				"assetAutoTaggerEntryId");
+		Map<String, BiConsumer<AssetAutoTaggerEntry, Object>> attributeSetters = getAttributeSetters();
 
-		if (assetAutoTaggerEntryId != null) {
-			setAssetAutoTaggerEntryId(assetAutoTaggerEntryId);
+		for (Map.Entry<String, BiConsumer<AssetAutoTaggerEntry, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<AssetAutoTaggerEntry, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long groupId = (Long)attributes.get("groupId");
+	@Override
+	public Map<String, Function<AssetAutoTaggerEntry, Object>> getAttributeGetters() {
+		return _assetAutoTaggerEntry.getAttributeGetters();
+	}
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long assetEntryId = (Long)attributes.get("assetEntryId");
-
-		if (assetEntryId != null) {
-			setAssetEntryId(assetEntryId);
-		}
-
-		Long assetTagId = (Long)attributes.get("assetTagId");
-
-		if (assetTagId != null) {
-			setAssetTagId(assetTagId);
-		}
+	@Override
+	public Map<String, BiConsumer<AssetAutoTaggerEntry, Object>> getAttributeSetters() {
+		return _assetAutoTaggerEntry.getAttributeSetters();
 	}
 
 	@Override

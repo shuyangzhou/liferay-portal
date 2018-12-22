@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -57,53 +59,41 @@ public class WikiPageResourceWrapper implements WikiPageResource,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("uuid", getUuid());
-		attributes.put("resourcePrimKey", getResourcePrimKey());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("nodeId", getNodeId());
-		attributes.put("title", getTitle());
+		Map<String, Function<WikiPageResource, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<WikiPageResource, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WikiPageResource, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+		Map<String, BiConsumer<WikiPageResource, Object>> attributeSetters = getAttributeSetters();
 
-		if (uuid != null) {
-			setUuid(uuid);
+		for (Map.Entry<String, BiConsumer<WikiPageResource, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<WikiPageResource, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long resourcePrimKey = (Long)attributes.get("resourcePrimKey");
+	@Override
+	public Map<String, Function<WikiPageResource, Object>> getAttributeGetters() {
+		return _wikiPageResource.getAttributeGetters();
+	}
 
-		if (resourcePrimKey != null) {
-			setResourcePrimKey(resourcePrimKey);
-		}
-
-		Long groupId = (Long)attributes.get("groupId");
-
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long nodeId = (Long)attributes.get("nodeId");
-
-		if (nodeId != null) {
-			setNodeId(nodeId);
-		}
-
-		String title = (String)attributes.get("title");
-
-		if (title != null) {
-			setTitle(title);
-		}
+	@Override
+	public Map<String, BiConsumer<WikiPageResource, Object>> getAttributeSetters() {
+		return _wikiPageResource.getAttributeSetters();
 	}
 
 	@Override

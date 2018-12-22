@@ -25,6 +25,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -56,88 +58,41 @@ public class ResourcePermissionWrapper implements ResourcePermission,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("resourcePermissionId", getResourcePermissionId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("name", getName());
-		attributes.put("scope", getScope());
-		attributes.put("primKey", getPrimKey());
-		attributes.put("primKeyId", getPrimKeyId());
-		attributes.put("roleId", getRoleId());
-		attributes.put("ownerId", getOwnerId());
-		attributes.put("actionIds", getActionIds());
-		attributes.put("viewActionId", isViewActionId());
+		Map<String, Function<ResourcePermission, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<ResourcePermission, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<ResourcePermission, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<ResourcePermission, Object>> attributeSetters = getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<ResourcePermission, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<ResourcePermission, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long resourcePermissionId = (Long)attributes.get("resourcePermissionId");
+	@Override
+	public Map<String, Function<ResourcePermission, Object>> getAttributeGetters() {
+		return _resourcePermission.getAttributeGetters();
+	}
 
-		if (resourcePermissionId != null) {
-			setResourcePermissionId(resourcePermissionId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		Integer scope = (Integer)attributes.get("scope");
-
-		if (scope != null) {
-			setScope(scope);
-		}
-
-		String primKey = (String)attributes.get("primKey");
-
-		if (primKey != null) {
-			setPrimKey(primKey);
-		}
-
-		Long primKeyId = (Long)attributes.get("primKeyId");
-
-		if (primKeyId != null) {
-			setPrimKeyId(primKeyId);
-		}
-
-		Long roleId = (Long)attributes.get("roleId");
-
-		if (roleId != null) {
-			setRoleId(roleId);
-		}
-
-		Long ownerId = (Long)attributes.get("ownerId");
-
-		if (ownerId != null) {
-			setOwnerId(ownerId);
-		}
-
-		Long actionIds = (Long)attributes.get("actionIds");
-
-		if (actionIds != null) {
-			setActionIds(actionIds);
-		}
-
-		Boolean viewActionId = (Boolean)attributes.get("viewActionId");
-
-		if (viewActionId != null) {
-			setViewActionId(viewActionId);
-		}
+	@Override
+	public Map<String, BiConsumer<ResourcePermission, Object>> getAttributeSetters() {
+		return _resourcePermission.getAttributeSetters();
 	}
 
 	@Override

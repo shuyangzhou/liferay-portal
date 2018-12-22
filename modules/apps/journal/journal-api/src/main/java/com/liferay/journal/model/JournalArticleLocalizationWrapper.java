@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -59,54 +61,43 @@ public class JournalArticleLocalizationWrapper
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("articleLocalizationId", getArticleLocalizationId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("articlePK", getArticlePK());
-		attributes.put("title", getTitle());
-		attributes.put("description", getDescription());
-		attributes.put("languageId", getLanguageId());
+		Map<String, Function<JournalArticleLocalization, Object>> attributeGetters =
+			getAttributeGetters();
+
+		for (Map.Entry<String, Function<JournalArticleLocalization, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<JournalArticleLocalization, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long articleLocalizationId = (Long)attributes.get(
-				"articleLocalizationId");
+		Map<String, BiConsumer<JournalArticleLocalization, Object>> attributeSetters =
+			getAttributeSetters();
 
-		if (articleLocalizationId != null) {
-			setArticleLocalizationId(articleLocalizationId);
+		for (Map.Entry<String, BiConsumer<JournalArticleLocalization, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<JournalArticleLocalization, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	@Override
+	public Map<String, Function<JournalArticleLocalization, Object>> getAttributeGetters() {
+		return _journalArticleLocalization.getAttributeGetters();
+	}
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long articlePK = (Long)attributes.get("articlePK");
-
-		if (articlePK != null) {
-			setArticlePK(articlePK);
-		}
-
-		String title = (String)attributes.get("title");
-
-		if (title != null) {
-			setTitle(title);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
-		String languageId = (String)attributes.get("languageId");
-
-		if (languageId != null) {
-			setLanguageId(languageId);
-		}
+	@Override
+	public Map<String, BiConsumer<JournalArticleLocalization, Object>> getAttributeSetters() {
+		return _journalArticleLocalization.getAttributeSetters();
 	}
 
 	@Override

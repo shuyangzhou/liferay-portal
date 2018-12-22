@@ -25,8 +25,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -49,13 +47,17 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the AssetVocabulary service. Represents a row in the &quot;AssetVocabulary&quot; database table, with each column mapped to a property of this class.
@@ -226,116 +228,235 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("uuid", getUuid());
-		attributes.put("externalReferenceCode", getExternalReferenceCode());
-		attributes.put("vocabularyId", getVocabularyId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("name", getName());
-		attributes.put("title", getTitle());
-		attributes.put("description", getDescription());
-		attributes.put("settings", getSettings());
-		attributes.put("lastPublishDate", getLastPublishDate());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<AssetVocabulary, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+	public Map<String, BiConsumer<AssetVocabulary, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
+	private static final Map<String, Function<AssetVocabulary, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<AssetVocabulary, Object>> _attributeSetters;
 
-		String externalReferenceCode = (String)attributes.get(
-				"externalReferenceCode");
+	static {
+		Map<String, Function<AssetVocabulary, Object>> attributeGetters = new LinkedHashMap<String, Function<AssetVocabulary, Object>>();
 
-		if (externalReferenceCode != null) {
-			setExternalReferenceCode(externalReferenceCode);
-		}
+		attributeGetters.put("uuid",
+			new Function<AssetVocabulary, Object>() {
+				@Override
+				public Object apply(AssetVocabulary assetVocabulary) {
+					return assetVocabulary.getUuid();
+				}
+			});
+		attributeGetters.put("externalReferenceCode",
+			new Function<AssetVocabulary, Object>() {
+				@Override
+				public Object apply(AssetVocabulary assetVocabulary) {
+					return assetVocabulary.getExternalReferenceCode();
+				}
+			});
+		attributeGetters.put("vocabularyId",
+			new Function<AssetVocabulary, Object>() {
+				@Override
+				public Object apply(AssetVocabulary assetVocabulary) {
+					return assetVocabulary.getVocabularyId();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<AssetVocabulary, Object>() {
+				@Override
+				public Object apply(AssetVocabulary assetVocabulary) {
+					return assetVocabulary.getGroupId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<AssetVocabulary, Object>() {
+				@Override
+				public Object apply(AssetVocabulary assetVocabulary) {
+					return assetVocabulary.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<AssetVocabulary, Object>() {
+				@Override
+				public Object apply(AssetVocabulary assetVocabulary) {
+					return assetVocabulary.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<AssetVocabulary, Object>() {
+				@Override
+				public Object apply(AssetVocabulary assetVocabulary) {
+					return assetVocabulary.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<AssetVocabulary, Object>() {
+				@Override
+				public Object apply(AssetVocabulary assetVocabulary) {
+					return assetVocabulary.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<AssetVocabulary, Object>() {
+				@Override
+				public Object apply(AssetVocabulary assetVocabulary) {
+					return assetVocabulary.getModifiedDate();
+				}
+			});
+		attributeGetters.put("name",
+			new Function<AssetVocabulary, Object>() {
+				@Override
+				public Object apply(AssetVocabulary assetVocabulary) {
+					return assetVocabulary.getName();
+				}
+			});
+		attributeGetters.put("title",
+			new Function<AssetVocabulary, Object>() {
+				@Override
+				public Object apply(AssetVocabulary assetVocabulary) {
+					return assetVocabulary.getTitle();
+				}
+			});
+		attributeGetters.put("description",
+			new Function<AssetVocabulary, Object>() {
+				@Override
+				public Object apply(AssetVocabulary assetVocabulary) {
+					return assetVocabulary.getDescription();
+				}
+			});
+		attributeGetters.put("settings",
+			new Function<AssetVocabulary, Object>() {
+				@Override
+				public Object apply(AssetVocabulary assetVocabulary) {
+					return assetVocabulary.getSettings();
+				}
+			});
+		attributeGetters.put("lastPublishDate",
+			new Function<AssetVocabulary, Object>() {
+				@Override
+				public Object apply(AssetVocabulary assetVocabulary) {
+					return assetVocabulary.getLastPublishDate();
+				}
+			});
 
-		Long vocabularyId = (Long)attributes.get("vocabularyId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (vocabularyId != null) {
-			setVocabularyId(vocabularyId);
-		}
+		Map<String, BiConsumer<AssetVocabulary, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetVocabulary, Object>>();
 
-		Long groupId = (Long)attributes.get("groupId");
+		attributeSetters.put("uuid",
+			new BiConsumer<AssetVocabulary, Object>() {
+				@Override
+				public void accept(AssetVocabulary assetVocabulary, Object uuid) {
+					assetVocabulary.setUuid((String)uuid);
+				}
+			});
+		attributeSetters.put("externalReferenceCode",
+			new BiConsumer<AssetVocabulary, Object>() {
+				@Override
+				public void accept(AssetVocabulary assetVocabulary,
+					Object externalReferenceCode) {
+					assetVocabulary.setExternalReferenceCode((String)externalReferenceCode);
+				}
+			});
+		attributeSetters.put("vocabularyId",
+			new BiConsumer<AssetVocabulary, Object>() {
+				@Override
+				public void accept(AssetVocabulary assetVocabulary,
+					Object vocabularyId) {
+					assetVocabulary.setVocabularyId((Long)vocabularyId);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<AssetVocabulary, Object>() {
+				@Override
+				public void accept(AssetVocabulary assetVocabulary,
+					Object groupId) {
+					assetVocabulary.setGroupId((Long)groupId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<AssetVocabulary, Object>() {
+				@Override
+				public void accept(AssetVocabulary assetVocabulary,
+					Object companyId) {
+					assetVocabulary.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<AssetVocabulary, Object>() {
+				@Override
+				public void accept(AssetVocabulary assetVocabulary,
+					Object userId) {
+					assetVocabulary.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<AssetVocabulary, Object>() {
+				@Override
+				public void accept(AssetVocabulary assetVocabulary,
+					Object userName) {
+					assetVocabulary.setUserName((String)userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<AssetVocabulary, Object>() {
+				@Override
+				public void accept(AssetVocabulary assetVocabulary,
+					Object createDate) {
+					assetVocabulary.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<AssetVocabulary, Object>() {
+				@Override
+				public void accept(AssetVocabulary assetVocabulary,
+					Object modifiedDate) {
+					assetVocabulary.setModifiedDate((Date)modifiedDate);
+				}
+			});
+		attributeSetters.put("name",
+			new BiConsumer<AssetVocabulary, Object>() {
+				@Override
+				public void accept(AssetVocabulary assetVocabulary, Object name) {
+					assetVocabulary.setName((String)name);
+				}
+			});
+		attributeSetters.put("title",
+			new BiConsumer<AssetVocabulary, Object>() {
+				@Override
+				public void accept(AssetVocabulary assetVocabulary, Object title) {
+					assetVocabulary.setTitle((String)title);
+				}
+			});
+		attributeSetters.put("description",
+			new BiConsumer<AssetVocabulary, Object>() {
+				@Override
+				public void accept(AssetVocabulary assetVocabulary,
+					Object description) {
+					assetVocabulary.setDescription((String)description);
+				}
+			});
+		attributeSetters.put("settings",
+			new BiConsumer<AssetVocabulary, Object>() {
+				@Override
+				public void accept(AssetVocabulary assetVocabulary,
+					Object settings) {
+					assetVocabulary.setSettings((String)settings);
+				}
+			});
+		attributeSetters.put("lastPublishDate",
+			new BiConsumer<AssetVocabulary, Object>() {
+				@Override
+				public void accept(AssetVocabulary assetVocabulary,
+					Object lastPublishDate) {
+					assetVocabulary.setLastPublishDate((Date)lastPublishDate);
+				}
+			});
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String title = (String)attributes.get("title");
-
-		if (title != null) {
-			setTitle(title);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
-		String settings = (String)attributes.get("settings");
-
-		if (settings != null) {
-			setSettings(settings);
-		}
-
-		Date lastPublishDate = (Date)attributes.get("lastPublishDate");
-
-		if (lastPublishDate != null) {
-			setLastPublishDate(lastPublishDate);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON
@@ -1080,113 +1201,6 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 		}
 
 		return assetVocabularyCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(29);
-
-		sb.append("{uuid=");
-		sb.append(getUuid());
-		sb.append(", externalReferenceCode=");
-		sb.append(getExternalReferenceCode());
-		sb.append(", vocabularyId=");
-		sb.append(getVocabularyId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", name=");
-		sb.append(getName());
-		sb.append(", title=");
-		sb.append(getTitle());
-		sb.append(", description=");
-		sb.append(getDescription());
-		sb.append(", settings=");
-		sb.append(getSettings());
-		sb.append(", lastPublishDate=");
-		sb.append(getLastPublishDate());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(46);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.asset.kernel.model.AssetVocabulary");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>externalReferenceCode</column-name><column-value><![CDATA[");
-		sb.append(getExternalReferenceCode());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>vocabularyId</column-name><column-value><![CDATA[");
-		sb.append(getVocabularyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(getName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>title</column-name><column-value><![CDATA[");
-		sb.append(getTitle());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(getDescription());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>settings</column-name><column-value><![CDATA[");
-		sb.append(getSettings());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>lastPublishDate</column-name><column-value><![CDATA[");
-		sb.append(getLastPublishDate());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = AssetVocabulary.class.getClassLoader();

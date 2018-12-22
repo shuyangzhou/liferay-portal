@@ -25,6 +25,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -55,167 +57,41 @@ public class GroupWrapper implements Group, ModelWrapper<Group> {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("uuid", getUuid());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("creatorUserId", getCreatorUserId());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("parentGroupId", getParentGroupId());
-		attributes.put("liveGroupId", getLiveGroupId());
-		attributes.put("treePath", getTreePath());
-		attributes.put("groupKey", getGroupKey());
-		attributes.put("name", getName());
-		attributes.put("description", getDescription());
-		attributes.put("type", getType());
-		attributes.put("typeSettings", getTypeSettings());
-		attributes.put("manualMembership", isManualMembership());
-		attributes.put("membershipRestriction", getMembershipRestriction());
-		attributes.put("friendlyURL", getFriendlyURL());
-		attributes.put("site", isSite());
-		attributes.put("remoteStagingGroupCount", getRemoteStagingGroupCount());
-		attributes.put("inheritContent", isInheritContent());
-		attributes.put("active", isActive());
+		Map<String, Function<Group, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<Group, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<Group, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<Group, Object>> attributeSetters = getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<Group, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<Group, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		String uuid = (String)attributes.get("uuid");
+	@Override
+	public Map<String, Function<Group, Object>> getAttributeGetters() {
+		return _group.getAttributeGetters();
+	}
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
-
-		Long groupId = (Long)attributes.get("groupId");
-
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long creatorUserId = (Long)attributes.get("creatorUserId");
-
-		if (creatorUserId != null) {
-			setCreatorUserId(creatorUserId);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		Long parentGroupId = (Long)attributes.get("parentGroupId");
-
-		if (parentGroupId != null) {
-			setParentGroupId(parentGroupId);
-		}
-
-		Long liveGroupId = (Long)attributes.get("liveGroupId");
-
-		if (liveGroupId != null) {
-			setLiveGroupId(liveGroupId);
-		}
-
-		String treePath = (String)attributes.get("treePath");
-
-		if (treePath != null) {
-			setTreePath(treePath);
-		}
-
-		String groupKey = (String)attributes.get("groupKey");
-
-		if (groupKey != null) {
-			setGroupKey(groupKey);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
-		Integer type = (Integer)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
-
-		String typeSettings = (String)attributes.get("typeSettings");
-
-		if (typeSettings != null) {
-			setTypeSettings(typeSettings);
-		}
-
-		Boolean manualMembership = (Boolean)attributes.get("manualMembership");
-
-		if (manualMembership != null) {
-			setManualMembership(manualMembership);
-		}
-
-		Integer membershipRestriction = (Integer)attributes.get(
-				"membershipRestriction");
-
-		if (membershipRestriction != null) {
-			setMembershipRestriction(membershipRestriction);
-		}
-
-		String friendlyURL = (String)attributes.get("friendlyURL");
-
-		if (friendlyURL != null) {
-			setFriendlyURL(friendlyURL);
-		}
-
-		Boolean site = (Boolean)attributes.get("site");
-
-		if (site != null) {
-			setSite(site);
-		}
-
-		Integer remoteStagingGroupCount = (Integer)attributes.get(
-				"remoteStagingGroupCount");
-
-		if (remoteStagingGroupCount != null) {
-			setRemoteStagingGroupCount(remoteStagingGroupCount);
-		}
-
-		Boolean inheritContent = (Boolean)attributes.get("inheritContent");
-
-		if (inheritContent != null) {
-			setInheritContent(inheritContent);
-		}
-
-		Boolean active = (Boolean)attributes.get("active");
-
-		if (active != null) {
-			setActive(active);
-		}
+	@Override
+	public Map<String, BiConsumer<Group, Object>> getAttributeSetters() {
+		return _group.getAttributeSetters();
 	}
 
 	@Override

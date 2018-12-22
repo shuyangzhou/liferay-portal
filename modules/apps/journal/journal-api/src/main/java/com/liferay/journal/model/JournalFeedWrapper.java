@@ -29,6 +29,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -60,174 +62,41 @@ public class JournalFeedWrapper implements JournalFeed,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("uuid", getUuid());
-		attributes.put("id", getId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("feedId", getFeedId());
-		attributes.put("name", getName());
-		attributes.put("description", getDescription());
-		attributes.put("DDMStructureKey", getDDMStructureKey());
-		attributes.put("DDMTemplateKey", getDDMTemplateKey());
-		attributes.put("DDMRendererTemplateKey", getDDMRendererTemplateKey());
-		attributes.put("delta", getDelta());
-		attributes.put("orderByCol", getOrderByCol());
-		attributes.put("orderByType", getOrderByType());
-		attributes.put("targetLayoutFriendlyUrl", getTargetLayoutFriendlyUrl());
-		attributes.put("targetPortletId", getTargetPortletId());
-		attributes.put("contentField", getContentField());
-		attributes.put("feedFormat", getFeedFormat());
-		attributes.put("feedVersion", getFeedVersion());
-		attributes.put("lastPublishDate", getLastPublishDate());
+		Map<String, Function<JournalFeed, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<JournalFeed, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<JournalFeed, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+		Map<String, BiConsumer<JournalFeed, Object>> attributeSetters = getAttributeSetters();
 
-		if (uuid != null) {
-			setUuid(uuid);
+		for (Map.Entry<String, BiConsumer<JournalFeed, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<JournalFeed, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long id = (Long)attributes.get("id");
+	@Override
+	public Map<String, Function<JournalFeed, Object>> getAttributeGetters() {
+		return _journalFeed.getAttributeGetters();
+	}
 
-		if (id != null) {
-			setId(id);
-		}
-
-		Long groupId = (Long)attributes.get("groupId");
-
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		String feedId = (String)attributes.get("feedId");
-
-		if (feedId != null) {
-			setFeedId(feedId);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
-		String DDMStructureKey = (String)attributes.get("DDMStructureKey");
-
-		if (DDMStructureKey != null) {
-			setDDMStructureKey(DDMStructureKey);
-		}
-
-		String DDMTemplateKey = (String)attributes.get("DDMTemplateKey");
-
-		if (DDMTemplateKey != null) {
-			setDDMTemplateKey(DDMTemplateKey);
-		}
-
-		String DDMRendererTemplateKey = (String)attributes.get(
-				"DDMRendererTemplateKey");
-
-		if (DDMRendererTemplateKey != null) {
-			setDDMRendererTemplateKey(DDMRendererTemplateKey);
-		}
-
-		Integer delta = (Integer)attributes.get("delta");
-
-		if (delta != null) {
-			setDelta(delta);
-		}
-
-		String orderByCol = (String)attributes.get("orderByCol");
-
-		if (orderByCol != null) {
-			setOrderByCol(orderByCol);
-		}
-
-		String orderByType = (String)attributes.get("orderByType");
-
-		if (orderByType != null) {
-			setOrderByType(orderByType);
-		}
-
-		String targetLayoutFriendlyUrl = (String)attributes.get(
-				"targetLayoutFriendlyUrl");
-
-		if (targetLayoutFriendlyUrl != null) {
-			setTargetLayoutFriendlyUrl(targetLayoutFriendlyUrl);
-		}
-
-		String targetPortletId = (String)attributes.get("targetPortletId");
-
-		if (targetPortletId != null) {
-			setTargetPortletId(targetPortletId);
-		}
-
-		String contentField = (String)attributes.get("contentField");
-
-		if (contentField != null) {
-			setContentField(contentField);
-		}
-
-		String feedFormat = (String)attributes.get("feedFormat");
-
-		if (feedFormat != null) {
-			setFeedFormat(feedFormat);
-		}
-
-		Double feedVersion = (Double)attributes.get("feedVersion");
-
-		if (feedVersion != null) {
-			setFeedVersion(feedVersion);
-		}
-
-		Date lastPublishDate = (Date)attributes.get("lastPublishDate");
-
-		if (lastPublishDate != null) {
-			setLastPublishDate(lastPublishDate);
-		}
+	@Override
+	public Map<String, BiConsumer<JournalFeed, Object>> getAttributeSetters() {
+		return _journalFeed.getAttributeSetters();
 	}
 
 	@Override

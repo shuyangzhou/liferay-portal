@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -57,60 +59,41 @@ public class SocialRelationWrapper implements SocialRelation,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("uuid", getUuid());
-		attributes.put("relationId", getRelationId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("userId1", getUserId1());
-		attributes.put("userId2", getUserId2());
-		attributes.put("type", getType());
+		Map<String, Function<SocialRelation, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<SocialRelation, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<SocialRelation, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+		Map<String, BiConsumer<SocialRelation, Object>> attributeSetters = getAttributeSetters();
 
-		if (uuid != null) {
-			setUuid(uuid);
+		for (Map.Entry<String, BiConsumer<SocialRelation, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<SocialRelation, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long relationId = (Long)attributes.get("relationId");
+	@Override
+	public Map<String, Function<SocialRelation, Object>> getAttributeGetters() {
+		return _socialRelation.getAttributeGetters();
+	}
 
-		if (relationId != null) {
-			setRelationId(relationId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long createDate = (Long)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Long userId1 = (Long)attributes.get("userId1");
-
-		if (userId1 != null) {
-			setUserId1(userId1);
-		}
-
-		Long userId2 = (Long)attributes.get("userId2");
-
-		if (userId2 != null) {
-			setUserId2(userId2);
-		}
-
-		Integer type = (Integer)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
+	@Override
+	public Map<String, BiConsumer<SocialRelation, Object>> getAttributeSetters() {
+		return _socialRelation.getAttributeSetters();
 	}
 
 	@Override

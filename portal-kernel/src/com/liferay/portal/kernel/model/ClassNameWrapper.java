@@ -25,6 +25,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -55,32 +57,41 @@ public class ClassNameWrapper implements ClassName, ModelWrapper<ClassName> {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("value", getValue());
+		Map<String, Function<ClassName, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<ClassName, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<ClassName, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<ClassName, Object>> attributeSetters = getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<ClassName, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<ClassName, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long classNameId = (Long)attributes.get("classNameId");
+	@Override
+	public Map<String, Function<ClassName, Object>> getAttributeGetters() {
+		return _className.getAttributeGetters();
+	}
 
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		String value = (String)attributes.get("value");
-
-		if (value != null) {
-			setValue(value);
-		}
+	@Override
+	public Map<String, BiConsumer<ClassName, Object>> getAttributeSetters() {
+		return _className.getAttributeSetters();
 	}
 
 	@Override

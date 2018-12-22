@@ -19,8 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
@@ -44,9 +42,13 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the SocialRequest service. Represents a row in the &quot;SocialRequest&quot; database table, with each column mapped to a property of this class.
@@ -218,108 +220,214 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("uuid", getUuid());
-		attributes.put("requestId", getRequestId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("type", getType());
-		attributes.put("extraData", getExtraData());
-		attributes.put("receiverUserId", getReceiverUserId());
-		attributes.put("status", getStatus());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<SocialRequest, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+	public Map<String, BiConsumer<SocialRequest, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
+	private static final Map<String, Function<SocialRequest, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<SocialRequest, Object>> _attributeSetters;
 
-		Long requestId = (Long)attributes.get("requestId");
+	static {
+		Map<String, Function<SocialRequest, Object>> attributeGetters = new LinkedHashMap<String, Function<SocialRequest, Object>>();
 
-		if (requestId != null) {
-			setRequestId(requestId);
-		}
+		attributeGetters.put("uuid",
+			new Function<SocialRequest, Object>() {
+				@Override
+				public Object apply(SocialRequest socialRequest) {
+					return socialRequest.getUuid();
+				}
+			});
+		attributeGetters.put("requestId",
+			new Function<SocialRequest, Object>() {
+				@Override
+				public Object apply(SocialRequest socialRequest) {
+					return socialRequest.getRequestId();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<SocialRequest, Object>() {
+				@Override
+				public Object apply(SocialRequest socialRequest) {
+					return socialRequest.getGroupId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<SocialRequest, Object>() {
+				@Override
+				public Object apply(SocialRequest socialRequest) {
+					return socialRequest.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<SocialRequest, Object>() {
+				@Override
+				public Object apply(SocialRequest socialRequest) {
+					return socialRequest.getUserId();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<SocialRequest, Object>() {
+				@Override
+				public Object apply(SocialRequest socialRequest) {
+					return socialRequest.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<SocialRequest, Object>() {
+				@Override
+				public Object apply(SocialRequest socialRequest) {
+					return socialRequest.getModifiedDate();
+				}
+			});
+		attributeGetters.put("classNameId",
+			new Function<SocialRequest, Object>() {
+				@Override
+				public Object apply(SocialRequest socialRequest) {
+					return socialRequest.getClassNameId();
+				}
+			});
+		attributeGetters.put("classPK",
+			new Function<SocialRequest, Object>() {
+				@Override
+				public Object apply(SocialRequest socialRequest) {
+					return socialRequest.getClassPK();
+				}
+			});
+		attributeGetters.put("type",
+			new Function<SocialRequest, Object>() {
+				@Override
+				public Object apply(SocialRequest socialRequest) {
+					return socialRequest.getType();
+				}
+			});
+		attributeGetters.put("extraData",
+			new Function<SocialRequest, Object>() {
+				@Override
+				public Object apply(SocialRequest socialRequest) {
+					return socialRequest.getExtraData();
+				}
+			});
+		attributeGetters.put("receiverUserId",
+			new Function<SocialRequest, Object>() {
+				@Override
+				public Object apply(SocialRequest socialRequest) {
+					return socialRequest.getReceiverUserId();
+				}
+			});
+		attributeGetters.put("status",
+			new Function<SocialRequest, Object>() {
+				@Override
+				public Object apply(SocialRequest socialRequest) {
+					return socialRequest.getStatus();
+				}
+			});
 
-		Long groupId = (Long)attributes.get("groupId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+		Map<String, BiConsumer<SocialRequest, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SocialRequest, Object>>();
 
-		Long companyId = (Long)attributes.get("companyId");
+		attributeSetters.put("uuid",
+			new BiConsumer<SocialRequest, Object>() {
+				@Override
+				public void accept(SocialRequest socialRequest, Object uuid) {
+					socialRequest.setUuid((String)uuid);
+				}
+			});
+		attributeSetters.put("requestId",
+			new BiConsumer<SocialRequest, Object>() {
+				@Override
+				public void accept(SocialRequest socialRequest, Object requestId) {
+					socialRequest.setRequestId((Long)requestId);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<SocialRequest, Object>() {
+				@Override
+				public void accept(SocialRequest socialRequest, Object groupId) {
+					socialRequest.setGroupId((Long)groupId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<SocialRequest, Object>() {
+				@Override
+				public void accept(SocialRequest socialRequest, Object companyId) {
+					socialRequest.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<SocialRequest, Object>() {
+				@Override
+				public void accept(SocialRequest socialRequest, Object userId) {
+					socialRequest.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<SocialRequest, Object>() {
+				@Override
+				public void accept(SocialRequest socialRequest,
+					Object createDate) {
+					socialRequest.setCreateDate((Long)createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<SocialRequest, Object>() {
+				@Override
+				public void accept(SocialRequest socialRequest,
+					Object modifiedDate) {
+					socialRequest.setModifiedDate((Long)modifiedDate);
+				}
+			});
+		attributeSetters.put("classNameId",
+			new BiConsumer<SocialRequest, Object>() {
+				@Override
+				public void accept(SocialRequest socialRequest,
+					Object classNameId) {
+					socialRequest.setClassNameId((Long)classNameId);
+				}
+			});
+		attributeSetters.put("classPK",
+			new BiConsumer<SocialRequest, Object>() {
+				@Override
+				public void accept(SocialRequest socialRequest, Object classPK) {
+					socialRequest.setClassPK((Long)classPK);
+				}
+			});
+		attributeSetters.put("type",
+			new BiConsumer<SocialRequest, Object>() {
+				@Override
+				public void accept(SocialRequest socialRequest, Object type) {
+					socialRequest.setType((Integer)type);
+				}
+			});
+		attributeSetters.put("extraData",
+			new BiConsumer<SocialRequest, Object>() {
+				@Override
+				public void accept(SocialRequest socialRequest, Object extraData) {
+					socialRequest.setExtraData((String)extraData);
+				}
+			});
+		attributeSetters.put("receiverUserId",
+			new BiConsumer<SocialRequest, Object>() {
+				@Override
+				public void accept(SocialRequest socialRequest,
+					Object receiverUserId) {
+					socialRequest.setReceiverUserId((Long)receiverUserId);
+				}
+			});
+		attributeSetters.put("status",
+			new BiConsumer<SocialRequest, Object>() {
+				@Override
+				public void accept(SocialRequest socialRequest, Object status) {
+					socialRequest.setStatus((Integer)status);
+				}
+			});
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		Long createDate = (Long)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Long modifiedDate = (Long)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		Integer type = (Integer)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
-
-		String extraData = (String)attributes.get("extraData");
-
-		if (extraData != null) {
-			setExtraData(extraData);
-		}
-
-		Long receiverUserId = (Long)attributes.get("receiverUserId");
-
-		if (receiverUserId != null) {
-			setReceiverUserId(receiverUserId);
-		}
-
-		Integer status = (Integer)attributes.get("status");
-
-		if (status != null) {
-			setStatus(status);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON
@@ -827,107 +935,6 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 		socialRequestCacheModel.status = getStatus();
 
 		return socialRequestCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(27);
-
-		sb.append("{uuid=");
-		sb.append(getUuid());
-		sb.append(", requestId=");
-		sb.append(getRequestId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", classNameId=");
-		sb.append(getClassNameId());
-		sb.append(", classPK=");
-		sb.append(getClassPK());
-		sb.append(", type=");
-		sb.append(getType());
-		sb.append(", extraData=");
-		sb.append(getExtraData());
-		sb.append(", receiverUserId=");
-		sb.append(getReceiverUserId());
-		sb.append(", status=");
-		sb.append(getStatus());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(43);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.social.kernel.model.SocialRequest");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>requestId</column-name><column-value><![CDATA[");
-		sb.append(getRequestId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classNameId</column-name><column-value><![CDATA[");
-		sb.append(getClassNameId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classPK</column-name><column-value><![CDATA[");
-		sb.append(getClassPK());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>type</column-name><column-value><![CDATA[");
-		sb.append(getType());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>extraData</column-name><column-value><![CDATA[");
-		sb.append(getExtraData());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>receiverUserId</column-name><column-value><![CDATA[");
-		sb.append(getReceiverUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>status</column-name><column-value><![CDATA[");
-		sb.append(getStatus());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = SocialRequest.class.getClassLoader();

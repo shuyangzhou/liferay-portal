@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -58,139 +60,41 @@ public class OAuth2ApplicationWrapper implements OAuth2Application,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("oAuth2ApplicationId", getOAuth2ApplicationId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("oAuth2ApplicationScopeAliasesId",
-			getOAuth2ApplicationScopeAliasesId());
-		attributes.put("allowedGrantTypes", getAllowedGrantTypes());
-		attributes.put("clientId", getClientId());
-		attributes.put("clientProfile", getClientProfile());
-		attributes.put("clientSecret", getClientSecret());
-		attributes.put("description", getDescription());
-		attributes.put("features", getFeatures());
-		attributes.put("homePageURL", getHomePageURL());
-		attributes.put("iconFileEntryId", getIconFileEntryId());
-		attributes.put("name", getName());
-		attributes.put("privacyPolicyURL", getPrivacyPolicyURL());
-		attributes.put("redirectURIs", getRedirectURIs());
+		Map<String, Function<OAuth2Application, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<OAuth2Application, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<OAuth2Application, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long oAuth2ApplicationId = (Long)attributes.get("oAuth2ApplicationId");
+		Map<String, BiConsumer<OAuth2Application, Object>> attributeSetters = getAttributeSetters();
 
-		if (oAuth2ApplicationId != null) {
-			setOAuth2ApplicationId(oAuth2ApplicationId);
+		for (Map.Entry<String, BiConsumer<OAuth2Application, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<OAuth2Application, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	@Override
+	public Map<String, Function<OAuth2Application, Object>> getAttributeGetters() {
+		return _oAuth2Application.getAttributeGetters();
+	}
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long oAuth2ApplicationScopeAliasesId = (Long)attributes.get(
-				"oAuth2ApplicationScopeAliasesId");
-
-		if (oAuth2ApplicationScopeAliasesId != null) {
-			setOAuth2ApplicationScopeAliasesId(oAuth2ApplicationScopeAliasesId);
-		}
-
-		String allowedGrantTypes = (String)attributes.get("allowedGrantTypes");
-
-		if (allowedGrantTypes != null) {
-			setAllowedGrantTypes(allowedGrantTypes);
-		}
-
-		String clientId = (String)attributes.get("clientId");
-
-		if (clientId != null) {
-			setClientId(clientId);
-		}
-
-		Integer clientProfile = (Integer)attributes.get("clientProfile");
-
-		if (clientProfile != null) {
-			setClientProfile(clientProfile);
-		}
-
-		String clientSecret = (String)attributes.get("clientSecret");
-
-		if (clientSecret != null) {
-			setClientSecret(clientSecret);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
-		String features = (String)attributes.get("features");
-
-		if (features != null) {
-			setFeatures(features);
-		}
-
-		String homePageURL = (String)attributes.get("homePageURL");
-
-		if (homePageURL != null) {
-			setHomePageURL(homePageURL);
-		}
-
-		Long iconFileEntryId = (Long)attributes.get("iconFileEntryId");
-
-		if (iconFileEntryId != null) {
-			setIconFileEntryId(iconFileEntryId);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String privacyPolicyURL = (String)attributes.get("privacyPolicyURL");
-
-		if (privacyPolicyURL != null) {
-			setPrivacyPolicyURL(privacyPolicyURL);
-		}
-
-		String redirectURIs = (String)attributes.get("redirectURIs");
-
-		if (redirectURIs != null) {
-			setRedirectURIs(redirectURIs);
-		}
+	@Override
+	public Map<String, BiConsumer<OAuth2Application, Object>> getAttributeSetters() {
+		return _oAuth2Application.getAttributeSetters();
 	}
 
 	@Override

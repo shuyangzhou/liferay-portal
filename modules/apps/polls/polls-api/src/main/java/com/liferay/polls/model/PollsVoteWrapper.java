@@ -29,6 +29,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -59,95 +61,41 @@ public class PollsVoteWrapper implements PollsVote, ModelWrapper<PollsVote> {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("uuid", getUuid());
-		attributes.put("voteId", getVoteId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("questionId", getQuestionId());
-		attributes.put("choiceId", getChoiceId());
-		attributes.put("lastPublishDate", getLastPublishDate());
-		attributes.put("voteDate", getVoteDate());
+		Map<String, Function<PollsVote, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<PollsVote, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<PollsVote, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+		Map<String, BiConsumer<PollsVote, Object>> attributeSetters = getAttributeSetters();
 
-		if (uuid != null) {
-			setUuid(uuid);
+		for (Map.Entry<String, BiConsumer<PollsVote, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<PollsVote, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long voteId = (Long)attributes.get("voteId");
+	@Override
+	public Map<String, Function<PollsVote, Object>> getAttributeGetters() {
+		return _pollsVote.getAttributeGetters();
+	}
 
-		if (voteId != null) {
-			setVoteId(voteId);
-		}
-
-		Long groupId = (Long)attributes.get("groupId");
-
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long questionId = (Long)attributes.get("questionId");
-
-		if (questionId != null) {
-			setQuestionId(questionId);
-		}
-
-		Long choiceId = (Long)attributes.get("choiceId");
-
-		if (choiceId != null) {
-			setChoiceId(choiceId);
-		}
-
-		Date lastPublishDate = (Date)attributes.get("lastPublishDate");
-
-		if (lastPublishDate != null) {
-			setLastPublishDate(lastPublishDate);
-		}
-
-		Date voteDate = (Date)attributes.get("voteDate");
-
-		if (voteDate != null) {
-			setVoteDate(voteDate);
-		}
+	@Override
+	public Map<String, BiConsumer<PollsVote, Object>> getAttributeSetters() {
+		return _pollsVote.getAttributeSetters();
 	}
 
 	@Override

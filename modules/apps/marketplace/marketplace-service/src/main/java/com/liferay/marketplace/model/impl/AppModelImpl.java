@@ -25,8 +25,6 @@ import com.liferay.marketplace.model.App;
 import com.liferay.marketplace.model.AppModel;
 import com.liferay.marketplace.model.AppSoap;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
@@ -45,10 +43,14 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the App service. Represents a row in the &quot;Marketplace_App&quot; database table, with each column mapped to a property of this class.
@@ -217,115 +219,224 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("uuid", getUuid());
-		attributes.put("appId", getAppId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("remoteAppId", getRemoteAppId());
-		attributes.put("title", getTitle());
-		attributes.put("description", getDescription());
-		attributes.put("category", getCategory());
-		attributes.put("iconURL", getIconURL());
-		attributes.put("version", getVersion());
-		attributes.put("required", isRequired());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<App, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+	public Map<String, BiConsumer<App, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
+	private static final Map<String, Function<App, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<App, Object>> _attributeSetters;
 
-		Long appId = (Long)attributes.get("appId");
+	static {
+		Map<String, Function<App, Object>> attributeGetters = new LinkedHashMap<String, Function<App, Object>>();
 
-		if (appId != null) {
-			setAppId(appId);
-		}
+		attributeGetters.put("uuid",
+			new Function<App, Object>() {
+				@Override
+				public Object apply(App app) {
+					return app.getUuid();
+				}
+			});
+		attributeGetters.put("appId",
+			new Function<App, Object>() {
+				@Override
+				public Object apply(App app) {
+					return app.getAppId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<App, Object>() {
+				@Override
+				public Object apply(App app) {
+					return app.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<App, Object>() {
+				@Override
+				public Object apply(App app) {
+					return app.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<App, Object>() {
+				@Override
+				public Object apply(App app) {
+					return app.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<App, Object>() {
+				@Override
+				public Object apply(App app) {
+					return app.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<App, Object>() {
+				@Override
+				public Object apply(App app) {
+					return app.getModifiedDate();
+				}
+			});
+		attributeGetters.put("remoteAppId",
+			new Function<App, Object>() {
+				@Override
+				public Object apply(App app) {
+					return app.getRemoteAppId();
+				}
+			});
+		attributeGetters.put("title",
+			new Function<App, Object>() {
+				@Override
+				public Object apply(App app) {
+					return app.getTitle();
+				}
+			});
+		attributeGetters.put("description",
+			new Function<App, Object>() {
+				@Override
+				public Object apply(App app) {
+					return app.getDescription();
+				}
+			});
+		attributeGetters.put("category",
+			new Function<App, Object>() {
+				@Override
+				public Object apply(App app) {
+					return app.getCategory();
+				}
+			});
+		attributeGetters.put("iconURL",
+			new Function<App, Object>() {
+				@Override
+				public Object apply(App app) {
+					return app.getIconURL();
+				}
+			});
+		attributeGetters.put("version",
+			new Function<App, Object>() {
+				@Override
+				public Object apply(App app) {
+					return app.getVersion();
+				}
+			});
+		attributeGetters.put("required",
+			new Function<App, Object>() {
+				@Override
+				public Object apply(App app) {
+					return app.isRequired();
+				}
+			});
 
-		Long companyId = (Long)attributes.get("companyId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		Map<String, BiConsumer<App, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<App, Object>>();
 
-		Long userId = (Long)attributes.get("userId");
+		attributeSetters.put("uuid",
+			new BiConsumer<App, Object>() {
+				@Override
+				public void accept(App app, Object uuid) {
+					app.setUuid((String)uuid);
+				}
+			});
+		attributeSetters.put("appId",
+			new BiConsumer<App, Object>() {
+				@Override
+				public void accept(App app, Object appId) {
+					app.setAppId((Long)appId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<App, Object>() {
+				@Override
+				public void accept(App app, Object companyId) {
+					app.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<App, Object>() {
+				@Override
+				public void accept(App app, Object userId) {
+					app.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<App, Object>() {
+				@Override
+				public void accept(App app, Object userName) {
+					app.setUserName((String)userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<App, Object>() {
+				@Override
+				public void accept(App app, Object createDate) {
+					app.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<App, Object>() {
+				@Override
+				public void accept(App app, Object modifiedDate) {
+					app.setModifiedDate((Date)modifiedDate);
+				}
+			});
+		attributeSetters.put("remoteAppId",
+			new BiConsumer<App, Object>() {
+				@Override
+				public void accept(App app, Object remoteAppId) {
+					app.setRemoteAppId((Long)remoteAppId);
+				}
+			});
+		attributeSetters.put("title",
+			new BiConsumer<App, Object>() {
+				@Override
+				public void accept(App app, Object title) {
+					app.setTitle((String)title);
+				}
+			});
+		attributeSetters.put("description",
+			new BiConsumer<App, Object>() {
+				@Override
+				public void accept(App app, Object description) {
+					app.setDescription((String)description);
+				}
+			});
+		attributeSetters.put("category",
+			new BiConsumer<App, Object>() {
+				@Override
+				public void accept(App app, Object category) {
+					app.setCategory((String)category);
+				}
+			});
+		attributeSetters.put("iconURL",
+			new BiConsumer<App, Object>() {
+				@Override
+				public void accept(App app, Object iconURL) {
+					app.setIconURL((String)iconURL);
+				}
+			});
+		attributeSetters.put("version",
+			new BiConsumer<App, Object>() {
+				@Override
+				public void accept(App app, Object version) {
+					app.setVersion((String)version);
+				}
+			});
+		attributeSetters.put("required",
+			new BiConsumer<App, Object>() {
+				@Override
+				public void accept(App app, Object required) {
+					app.setRequired((Boolean)required);
+				}
+			});
 
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long remoteAppId = (Long)attributes.get("remoteAppId");
-
-		if (remoteAppId != null) {
-			setRemoteAppId(remoteAppId);
-		}
-
-		String title = (String)attributes.get("title");
-
-		if (title != null) {
-			setTitle(title);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
-		String category = (String)attributes.get("category");
-
-		if (category != null) {
-			setCategory(category);
-		}
-
-		String iconURL = (String)attributes.get("iconURL");
-
-		if (iconURL != null) {
-			setIconURL(iconURL);
-		}
-
-		String version = (String)attributes.get("version");
-
-		if (version != null) {
-			setVersion(version);
-		}
-
-		Boolean required = (Boolean)attributes.get("required");
-
-		if (required != null) {
-			setRequired(required);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON
@@ -806,113 +917,6 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 		appCacheModel.required = isRequired();
 
 		return appCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(29);
-
-		sb.append("{uuid=");
-		sb.append(getUuid());
-		sb.append(", appId=");
-		sb.append(getAppId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", remoteAppId=");
-		sb.append(getRemoteAppId());
-		sb.append(", title=");
-		sb.append(getTitle());
-		sb.append(", description=");
-		sb.append(getDescription());
-		sb.append(", category=");
-		sb.append(getCategory());
-		sb.append(", iconURL=");
-		sb.append(getIconURL());
-		sb.append(", version=");
-		sb.append(getVersion());
-		sb.append(", required=");
-		sb.append(isRequired());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(46);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.marketplace.model.App");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>appId</column-name><column-value><![CDATA[");
-		sb.append(getAppId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>remoteAppId</column-name><column-value><![CDATA[");
-		sb.append(getRemoteAppId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>title</column-name><column-value><![CDATA[");
-		sb.append(getTitle());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(getDescription());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>category</column-name><column-value><![CDATA[");
-		sb.append(getCategory());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>iconURL</column-name><column-value><![CDATA[");
-		sb.append(getIconURL());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>version</column-name><column-value><![CDATA[");
-		sb.append(getVersion());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>required</column-name><column-value><![CDATA[");
-		sb.append(isRequired());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = App.class.getClassLoader();

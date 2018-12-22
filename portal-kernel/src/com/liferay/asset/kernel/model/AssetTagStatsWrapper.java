@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -60,46 +62,41 @@ public class AssetTagStatsWrapper implements AssetTagStats,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("tagStatsId", getTagStatsId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("tagId", getTagId());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("assetCount", getAssetCount());
+		Map<String, Function<AssetTagStats, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<AssetTagStats, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<AssetTagStats, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long tagStatsId = (Long)attributes.get("tagStatsId");
+		Map<String, BiConsumer<AssetTagStats, Object>> attributeSetters = getAttributeSetters();
 
-		if (tagStatsId != null) {
-			setTagStatsId(tagStatsId);
+		for (Map.Entry<String, BiConsumer<AssetTagStats, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<AssetTagStats, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	@Override
+	public Map<String, Function<AssetTagStats, Object>> getAttributeGetters() {
+		return _assetTagStats.getAttributeGetters();
+	}
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long tagId = (Long)attributes.get("tagId");
-
-		if (tagId != null) {
-			setTagId(tagId);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Integer assetCount = (Integer)attributes.get("assetCount");
-
-		if (assetCount != null) {
-			setAssetCount(assetCount);
-		}
+	@Override
+	public Map<String, BiConsumer<AssetTagStats, Object>> getAttributeSetters() {
+		return _assetTagStats.getAttributeSetters();
 	}
 
 	@Override

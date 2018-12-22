@@ -25,6 +25,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -56,53 +58,41 @@ public class PasswordPolicyRelWrapper implements PasswordPolicyRel,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("passwordPolicyRelId", getPasswordPolicyRelId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("passwordPolicyId", getPasswordPolicyId());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
+		Map<String, Function<PasswordPolicyRel, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<PasswordPolicyRel, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<PasswordPolicyRel, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<PasswordPolicyRel, Object>> attributeSetters = getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<PasswordPolicyRel, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<PasswordPolicyRel, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long passwordPolicyRelId = (Long)attributes.get("passwordPolicyRelId");
+	@Override
+	public Map<String, Function<PasswordPolicyRel, Object>> getAttributeGetters() {
+		return _passwordPolicyRel.getAttributeGetters();
+	}
 
-		if (passwordPolicyRelId != null) {
-			setPasswordPolicyRelId(passwordPolicyRelId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long passwordPolicyId = (Long)attributes.get("passwordPolicyId");
-
-		if (passwordPolicyId != null) {
-			setPasswordPolicyId(passwordPolicyId);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
+	@Override
+	public Map<String, BiConsumer<PasswordPolicyRel, Object>> getAttributeSetters() {
+		return _passwordPolicyRel.getAttributeSetters();
 	}
 
 	@Override

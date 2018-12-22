@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -56,67 +58,41 @@ public class StatusWrapper implements Status, ModelWrapper<Status> {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("statusId", getStatusId());
-		attributes.put("userId", getUserId());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("online", isOnline());
-		attributes.put("awake", isAwake());
-		attributes.put("activePanelIds", getActivePanelIds());
-		attributes.put("message", getMessage());
-		attributes.put("playSound", isPlaySound());
+		Map<String, Function<Status, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<Status, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<Status, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long statusId = (Long)attributes.get("statusId");
+		Map<String, BiConsumer<Status, Object>> attributeSetters = getAttributeSetters();
 
-		if (statusId != null) {
-			setStatusId(statusId);
+		for (Map.Entry<String, BiConsumer<Status, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<Status, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long userId = (Long)attributes.get("userId");
+	@Override
+	public Map<String, Function<Status, Object>> getAttributeGetters() {
+		return _status.getAttributeGetters();
+	}
 
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		Long modifiedDate = (Long)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Boolean online = (Boolean)attributes.get("online");
-
-		if (online != null) {
-			setOnline(online);
-		}
-
-		Boolean awake = (Boolean)attributes.get("awake");
-
-		if (awake != null) {
-			setAwake(awake);
-		}
-
-		String activePanelIds = (String)attributes.get("activePanelIds");
-
-		if (activePanelIds != null) {
-			setActivePanelIds(activePanelIds);
-		}
-
-		String message = (String)attributes.get("message");
-
-		if (message != null) {
-			setMessage(message);
-		}
-
-		Boolean playSound = (Boolean)attributes.get("playSound");
-
-		if (playSound != null) {
-			setPlaySound(playSound);
-		}
+	@Override
+	public Map<String, BiConsumer<Status, Object>> getAttributeSetters() {
+		return _status.getAttributeSetters();
 	}
 
 	@Override

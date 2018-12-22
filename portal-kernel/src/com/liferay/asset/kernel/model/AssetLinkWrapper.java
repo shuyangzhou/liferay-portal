@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -57,74 +59,41 @@ public class AssetLinkWrapper implements AssetLink, ModelWrapper<AssetLink> {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("linkId", getLinkId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("entryId1", getEntryId1());
-		attributes.put("entryId2", getEntryId2());
-		attributes.put("type", getType());
-		attributes.put("weight", getWeight());
+		Map<String, Function<AssetLink, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<AssetLink, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<AssetLink, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long linkId = (Long)attributes.get("linkId");
+		Map<String, BiConsumer<AssetLink, Object>> attributeSetters = getAttributeSetters();
 
-		if (linkId != null) {
-			setLinkId(linkId);
+		for (Map.Entry<String, BiConsumer<AssetLink, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<AssetLink, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	@Override
+	public Map<String, Function<AssetLink, Object>> getAttributeGetters() {
+		return _assetLink.getAttributeGetters();
+	}
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Long entryId1 = (Long)attributes.get("entryId1");
-
-		if (entryId1 != null) {
-			setEntryId1(entryId1);
-		}
-
-		Long entryId2 = (Long)attributes.get("entryId2");
-
-		if (entryId2 != null) {
-			setEntryId2(entryId2);
-		}
-
-		Integer type = (Integer)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
-
-		Integer weight = (Integer)attributes.get("weight");
-
-		if (weight != null) {
-			setWeight(weight);
-		}
+	@Override
+	public Map<String, BiConsumer<AssetLink, Object>> getAttributeSetters() {
+		return _assetLink.getAttributeSetters();
 	}
 
 	@Override

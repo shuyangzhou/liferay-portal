@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -58,135 +60,41 @@ public class OAuth2AuthorizationWrapper implements OAuth2Authorization,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("oAuth2AuthorizationId", getOAuth2AuthorizationId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("oAuth2ApplicationId", getOAuth2ApplicationId());
-		attributes.put("oAuth2ApplicationScopeAliasesId",
-			getOAuth2ApplicationScopeAliasesId());
-		attributes.put("accessTokenContent", getAccessTokenContent());
-		attributes.put("accessTokenContentHash", getAccessTokenContentHash());
-		attributes.put("accessTokenCreateDate", getAccessTokenCreateDate());
-		attributes.put("accessTokenExpirationDate",
-			getAccessTokenExpirationDate());
-		attributes.put("remoteIPInfo", getRemoteIPInfo());
-		attributes.put("refreshTokenContent", getRefreshTokenContent());
-		attributes.put("refreshTokenContentHash", getRefreshTokenContentHash());
-		attributes.put("refreshTokenCreateDate", getRefreshTokenCreateDate());
-		attributes.put("refreshTokenExpirationDate",
-			getRefreshTokenExpirationDate());
+		Map<String, Function<OAuth2Authorization, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<OAuth2Authorization, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<OAuth2Authorization, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long oAuth2AuthorizationId = (Long)attributes.get(
-				"oAuth2AuthorizationId");
+		Map<String, BiConsumer<OAuth2Authorization, Object>> attributeSetters = getAttributeSetters();
 
-		if (oAuth2AuthorizationId != null) {
-			setOAuth2AuthorizationId(oAuth2AuthorizationId);
+		for (Map.Entry<String, BiConsumer<OAuth2Authorization, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<OAuth2Authorization, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	@Override
+	public Map<String, Function<OAuth2Authorization, Object>> getAttributeGetters() {
+		return _oAuth2Authorization.getAttributeGetters();
+	}
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Long oAuth2ApplicationId = (Long)attributes.get("oAuth2ApplicationId");
-
-		if (oAuth2ApplicationId != null) {
-			setOAuth2ApplicationId(oAuth2ApplicationId);
-		}
-
-		Long oAuth2ApplicationScopeAliasesId = (Long)attributes.get(
-				"oAuth2ApplicationScopeAliasesId");
-
-		if (oAuth2ApplicationScopeAliasesId != null) {
-			setOAuth2ApplicationScopeAliasesId(oAuth2ApplicationScopeAliasesId);
-		}
-
-		String accessTokenContent = (String)attributes.get("accessTokenContent");
-
-		if (accessTokenContent != null) {
-			setAccessTokenContent(accessTokenContent);
-		}
-
-		Long accessTokenContentHash = (Long)attributes.get(
-				"accessTokenContentHash");
-
-		if (accessTokenContentHash != null) {
-			setAccessTokenContentHash(accessTokenContentHash);
-		}
-
-		Date accessTokenCreateDate = (Date)attributes.get(
-				"accessTokenCreateDate");
-
-		if (accessTokenCreateDate != null) {
-			setAccessTokenCreateDate(accessTokenCreateDate);
-		}
-
-		Date accessTokenExpirationDate = (Date)attributes.get(
-				"accessTokenExpirationDate");
-
-		if (accessTokenExpirationDate != null) {
-			setAccessTokenExpirationDate(accessTokenExpirationDate);
-		}
-
-		String remoteIPInfo = (String)attributes.get("remoteIPInfo");
-
-		if (remoteIPInfo != null) {
-			setRemoteIPInfo(remoteIPInfo);
-		}
-
-		String refreshTokenContent = (String)attributes.get(
-				"refreshTokenContent");
-
-		if (refreshTokenContent != null) {
-			setRefreshTokenContent(refreshTokenContent);
-		}
-
-		Long refreshTokenContentHash = (Long)attributes.get(
-				"refreshTokenContentHash");
-
-		if (refreshTokenContentHash != null) {
-			setRefreshTokenContentHash(refreshTokenContentHash);
-		}
-
-		Date refreshTokenCreateDate = (Date)attributes.get(
-				"refreshTokenCreateDate");
-
-		if (refreshTokenCreateDate != null) {
-			setRefreshTokenCreateDate(refreshTokenCreateDate);
-		}
-
-		Date refreshTokenExpirationDate = (Date)attributes.get(
-				"refreshTokenExpirationDate");
-
-		if (refreshTokenExpirationDate != null) {
-			setRefreshTokenExpirationDate(refreshTokenExpirationDate);
-		}
+	@Override
+	public Map<String, BiConsumer<OAuth2Authorization, Object>> getAttributeSetters() {
+		return _oAuth2Authorization.getAttributeSetters();
 	}
 
 	@Override

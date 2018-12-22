@@ -25,6 +25,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -56,53 +58,41 @@ public class ServiceComponentWrapper implements ServiceComponent,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("serviceComponentId", getServiceComponentId());
-		attributes.put("buildNamespace", getBuildNamespace());
-		attributes.put("buildNumber", getBuildNumber());
-		attributes.put("buildDate", getBuildDate());
-		attributes.put("data", getData());
+		Map<String, Function<ServiceComponent, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<ServiceComponent, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<ServiceComponent, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<ServiceComponent, Object>> attributeSetters = getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<ServiceComponent, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<ServiceComponent, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long serviceComponentId = (Long)attributes.get("serviceComponentId");
+	@Override
+	public Map<String, Function<ServiceComponent, Object>> getAttributeGetters() {
+		return _serviceComponent.getAttributeGetters();
+	}
 
-		if (serviceComponentId != null) {
-			setServiceComponentId(serviceComponentId);
-		}
-
-		String buildNamespace = (String)attributes.get("buildNamespace");
-
-		if (buildNamespace != null) {
-			setBuildNamespace(buildNamespace);
-		}
-
-		Long buildNumber = (Long)attributes.get("buildNumber");
-
-		if (buildNumber != null) {
-			setBuildNumber(buildNumber);
-		}
-
-		Long buildDate = (Long)attributes.get("buildDate");
-
-		if (buildDate != null) {
-			setBuildDate(buildDate);
-		}
-
-		String data = (String)attributes.get("data");
-
-		if (data != null) {
-			setData(data);
-		}
+	@Override
+	public Map<String, BiConsumer<ServiceComponent, Object>> getAttributeSetters() {
+		return _serviceComponent.getAttributeSetters();
 	}
 
 	@Override

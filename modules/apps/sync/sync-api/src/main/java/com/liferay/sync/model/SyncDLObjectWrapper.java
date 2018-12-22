@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -58,208 +60,41 @@ public class SyncDLObjectWrapper implements SyncDLObject,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("syncDLObjectId", getSyncDLObjectId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createTime", getCreateTime());
-		attributes.put("modifiedTime", getModifiedTime());
-		attributes.put("repositoryId", getRepositoryId());
-		attributes.put("parentFolderId", getParentFolderId());
-		attributes.put("treePath", getTreePath());
-		attributes.put("name", getName());
-		attributes.put("extension", getExtension());
-		attributes.put("mimeType", getMimeType());
-		attributes.put("description", getDescription());
-		attributes.put("changeLog", getChangeLog());
-		attributes.put("extraSettings", getExtraSettings());
-		attributes.put("version", getVersion());
-		attributes.put("versionId", getVersionId());
-		attributes.put("size", getSize());
-		attributes.put("checksum", getChecksum());
-		attributes.put("event", getEvent());
-		attributes.put("lanTokenKey", getLanTokenKey());
-		attributes.put("lastPermissionChangeDate", getLastPermissionChangeDate());
-		attributes.put("lockExpirationDate", getLockExpirationDate());
-		attributes.put("lockUserId", getLockUserId());
-		attributes.put("lockUserName", getLockUserName());
-		attributes.put("type", getType());
-		attributes.put("typePK", getTypePK());
-		attributes.put("typeUuid", getTypeUuid());
+		Map<String, Function<SyncDLObject, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<SyncDLObject, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<SyncDLObject, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long syncDLObjectId = (Long)attributes.get("syncDLObjectId");
+		Map<String, BiConsumer<SyncDLObject, Object>> attributeSetters = getAttributeSetters();
 
-		if (syncDLObjectId != null) {
-			setSyncDLObjectId(syncDLObjectId);
+		for (Map.Entry<String, BiConsumer<SyncDLObject, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<SyncDLObject, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	@Override
+	public Map<String, Function<SyncDLObject, Object>> getAttributeGetters() {
+		return _syncDLObject.getAttributeGetters();
+	}
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Long createTime = (Long)attributes.get("createTime");
-
-		if (createTime != null) {
-			setCreateTime(createTime);
-		}
-
-		Long modifiedTime = (Long)attributes.get("modifiedTime");
-
-		if (modifiedTime != null) {
-			setModifiedTime(modifiedTime);
-		}
-
-		Long repositoryId = (Long)attributes.get("repositoryId");
-
-		if (repositoryId != null) {
-			setRepositoryId(repositoryId);
-		}
-
-		Long parentFolderId = (Long)attributes.get("parentFolderId");
-
-		if (parentFolderId != null) {
-			setParentFolderId(parentFolderId);
-		}
-
-		String treePath = (String)attributes.get("treePath");
-
-		if (treePath != null) {
-			setTreePath(treePath);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String extension = (String)attributes.get("extension");
-
-		if (extension != null) {
-			setExtension(extension);
-		}
-
-		String mimeType = (String)attributes.get("mimeType");
-
-		if (mimeType != null) {
-			setMimeType(mimeType);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
-		String changeLog = (String)attributes.get("changeLog");
-
-		if (changeLog != null) {
-			setChangeLog(changeLog);
-		}
-
-		String extraSettings = (String)attributes.get("extraSettings");
-
-		if (extraSettings != null) {
-			setExtraSettings(extraSettings);
-		}
-
-		String version = (String)attributes.get("version");
-
-		if (version != null) {
-			setVersion(version);
-		}
-
-		Long versionId = (Long)attributes.get("versionId");
-
-		if (versionId != null) {
-			setVersionId(versionId);
-		}
-
-		Long size = (Long)attributes.get("size");
-
-		if (size != null) {
-			setSize(size);
-		}
-
-		String checksum = (String)attributes.get("checksum");
-
-		if (checksum != null) {
-			setChecksum(checksum);
-		}
-
-		String event = (String)attributes.get("event");
-
-		if (event != null) {
-			setEvent(event);
-		}
-
-		String lanTokenKey = (String)attributes.get("lanTokenKey");
-
-		if (lanTokenKey != null) {
-			setLanTokenKey(lanTokenKey);
-		}
-
-		Date lastPermissionChangeDate = (Date)attributes.get(
-				"lastPermissionChangeDate");
-
-		if (lastPermissionChangeDate != null) {
-			setLastPermissionChangeDate(lastPermissionChangeDate);
-		}
-
-		Date lockExpirationDate = (Date)attributes.get("lockExpirationDate");
-
-		if (lockExpirationDate != null) {
-			setLockExpirationDate(lockExpirationDate);
-		}
-
-		Long lockUserId = (Long)attributes.get("lockUserId");
-
-		if (lockUserId != null) {
-			setLockUserId(lockUserId);
-		}
-
-		String lockUserName = (String)attributes.get("lockUserName");
-
-		if (lockUserName != null) {
-			setLockUserName(lockUserName);
-		}
-
-		String type = (String)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
-
-		Long typePK = (Long)attributes.get("typePK");
-
-		if (typePK != null) {
-			setTypePK(typePK);
-		}
-
-		String typeUuid = (String)attributes.get("typeUuid");
-
-		if (typeUuid != null) {
-			setTypeUuid(typeUuid);
-		}
+	@Override
+	public Map<String, BiConsumer<SyncDLObject, Object>> getAttributeSetters() {
+		return _syncDLObject.getAttributeSetters();
 	}
 
 	@Override

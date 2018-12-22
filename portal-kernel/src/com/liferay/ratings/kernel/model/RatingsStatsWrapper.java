@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -57,60 +59,41 @@ public class RatingsStatsWrapper implements RatingsStats,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("statsId", getStatsId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("totalEntries", getTotalEntries());
-		attributes.put("totalScore", getTotalScore());
-		attributes.put("averageScore", getAverageScore());
+		Map<String, Function<RatingsStats, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<RatingsStats, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<RatingsStats, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long statsId = (Long)attributes.get("statsId");
+		Map<String, BiConsumer<RatingsStats, Object>> attributeSetters = getAttributeSetters();
 
-		if (statsId != null) {
-			setStatsId(statsId);
+		for (Map.Entry<String, BiConsumer<RatingsStats, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<RatingsStats, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	@Override
+	public Map<String, Function<RatingsStats, Object>> getAttributeGetters() {
+		return _ratingsStats.getAttributeGetters();
+	}
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		Integer totalEntries = (Integer)attributes.get("totalEntries");
-
-		if (totalEntries != null) {
-			setTotalEntries(totalEntries);
-		}
-
-		Double totalScore = (Double)attributes.get("totalScore");
-
-		if (totalScore != null) {
-			setTotalScore(totalScore);
-		}
-
-		Double averageScore = (Double)attributes.get("averageScore");
-
-		if (averageScore != null) {
-			setAverageScore(averageScore);
-		}
+	@Override
+	public Map<String, BiConsumer<RatingsStats, Object>> getAttributeSetters() {
+		return _ratingsStats.getAttributeSetters();
 	}
 
 	@Override

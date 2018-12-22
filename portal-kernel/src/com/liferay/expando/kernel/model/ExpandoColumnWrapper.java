@@ -24,6 +24,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -55,60 +57,41 @@ public class ExpandoColumnWrapper implements ExpandoColumn,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("columnId", getColumnId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("tableId", getTableId());
-		attributes.put("name", getName());
-		attributes.put("type", getType());
-		attributes.put("defaultData", getDefaultData());
-		attributes.put("typeSettings", getTypeSettings());
+		Map<String, Function<ExpandoColumn, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<ExpandoColumn, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<ExpandoColumn, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long columnId = (Long)attributes.get("columnId");
+		Map<String, BiConsumer<ExpandoColumn, Object>> attributeSetters = getAttributeSetters();
 
-		if (columnId != null) {
-			setColumnId(columnId);
+		for (Map.Entry<String, BiConsumer<ExpandoColumn, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<ExpandoColumn, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	@Override
+	public Map<String, Function<ExpandoColumn, Object>> getAttributeGetters() {
+		return _expandoColumn.getAttributeGetters();
+	}
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long tableId = (Long)attributes.get("tableId");
-
-		if (tableId != null) {
-			setTableId(tableId);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		Integer type = (Integer)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
-
-		String defaultData = (String)attributes.get("defaultData");
-
-		if (defaultData != null) {
-			setDefaultData(defaultData);
-		}
-
-		String typeSettings = (String)attributes.get("typeSettings");
-
-		if (typeSettings != null) {
-			setTypeSettings(typeSettings);
-		}
+	@Override
+	public Map<String, BiConsumer<ExpandoColumn, Object>> getAttributeSetters() {
+		return _expandoColumn.getAttributeSetters();
 	}
 
 	@Override

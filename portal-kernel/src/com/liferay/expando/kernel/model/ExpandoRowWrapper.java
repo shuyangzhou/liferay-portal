@@ -25,6 +25,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -55,46 +57,41 @@ public class ExpandoRowWrapper implements ExpandoRow, ModelWrapper<ExpandoRow> {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("rowId", getRowId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("tableId", getTableId());
-		attributes.put("classPK", getClassPK());
+		Map<String, Function<ExpandoRow, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<ExpandoRow, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<ExpandoRow, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long rowId = (Long)attributes.get("rowId");
+		Map<String, BiConsumer<ExpandoRow, Object>> attributeSetters = getAttributeSetters();
 
-		if (rowId != null) {
-			setRowId(rowId);
+		for (Map.Entry<String, BiConsumer<ExpandoRow, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<ExpandoRow, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	@Override
+	public Map<String, Function<ExpandoRow, Object>> getAttributeGetters() {
+		return _expandoRow.getAttributeGetters();
+	}
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long tableId = (Long)attributes.get("tableId");
-
-		if (tableId != null) {
-			setTableId(tableId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
+	@Override
+	public Map<String, BiConsumer<ExpandoRow, Object>> getAttributeSetters() {
+		return _expandoRow.getAttributeSetters();
 	}
 
 	@Override

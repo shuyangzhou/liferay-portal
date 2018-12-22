@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -59,55 +61,42 @@ public class PushNotificationsDeviceWrapper implements PushNotificationsDevice,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("pushNotificationsDeviceId",
-			getPushNotificationsDeviceId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("platform", getPlatform());
-		attributes.put("token", getToken());
+		Map<String, Function<PushNotificationsDevice, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<PushNotificationsDevice, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<PushNotificationsDevice, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long pushNotificationsDeviceId = (Long)attributes.get(
-				"pushNotificationsDeviceId");
+		Map<String, BiConsumer<PushNotificationsDevice, Object>> attributeSetters =
+			getAttributeSetters();
 
-		if (pushNotificationsDeviceId != null) {
-			setPushNotificationsDeviceId(pushNotificationsDeviceId);
+		for (Map.Entry<String, BiConsumer<PushNotificationsDevice, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<PushNotificationsDevice, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	@Override
+	public Map<String, Function<PushNotificationsDevice, Object>> getAttributeGetters() {
+		return _pushNotificationsDevice.getAttributeGetters();
+	}
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		String platform = (String)attributes.get("platform");
-
-		if (platform != null) {
-			setPlatform(platform);
-		}
-
-		String token = (String)attributes.get("token");
-
-		if (token != null) {
-			setToken(token);
-		}
+	@Override
+	public Map<String, BiConsumer<PushNotificationsDevice, Object>> getAttributeSetters() {
+		return _pushNotificationsDevice.getAttributeSetters();
 	}
 
 	@Override

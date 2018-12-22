@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -57,109 +59,41 @@ public class SocialActivityWrapper implements SocialActivity,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("activityId", getActivityId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("activitySetId", getActivitySetId());
-		attributes.put("mirrorActivityId", getMirrorActivityId());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("parentClassNameId", getParentClassNameId());
-		attributes.put("parentClassPK", getParentClassPK());
-		attributes.put("type", getType());
-		attributes.put("extraData", getExtraData());
-		attributes.put("receiverUserId", getReceiverUserId());
+		Map<String, Function<SocialActivity, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<SocialActivity, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<SocialActivity, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long activityId = (Long)attributes.get("activityId");
+		Map<String, BiConsumer<SocialActivity, Object>> attributeSetters = getAttributeSetters();
 
-		if (activityId != null) {
-			setActivityId(activityId);
+		for (Map.Entry<String, BiConsumer<SocialActivity, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<SocialActivity, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long groupId = (Long)attributes.get("groupId");
+	@Override
+	public Map<String, Function<SocialActivity, Object>> getAttributeGetters() {
+		return _socialActivity.getAttributeGetters();
+	}
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		Long createDate = (Long)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Long activitySetId = (Long)attributes.get("activitySetId");
-
-		if (activitySetId != null) {
-			setActivitySetId(activitySetId);
-		}
-
-		Long mirrorActivityId = (Long)attributes.get("mirrorActivityId");
-
-		if (mirrorActivityId != null) {
-			setMirrorActivityId(mirrorActivityId);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		Long parentClassNameId = (Long)attributes.get("parentClassNameId");
-
-		if (parentClassNameId != null) {
-			setParentClassNameId(parentClassNameId);
-		}
-
-		Long parentClassPK = (Long)attributes.get("parentClassPK");
-
-		if (parentClassPK != null) {
-			setParentClassPK(parentClassPK);
-		}
-
-		Integer type = (Integer)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
-
-		String extraData = (String)attributes.get("extraData");
-
-		if (extraData != null) {
-			setExtraData(extraData);
-		}
-
-		Long receiverUserId = (Long)attributes.get("receiverUserId");
-
-		if (receiverUserId != null) {
-			setReceiverUserId(receiverUserId);
-		}
+	@Override
+	public Map<String, BiConsumer<SocialActivity, Object>> getAttributeSetters() {
+		return _socialActivity.getAttributeSetters();
 	}
 
 	@Override

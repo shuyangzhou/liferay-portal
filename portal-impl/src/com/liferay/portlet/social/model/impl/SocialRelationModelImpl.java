@@ -19,8 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
@@ -36,8 +34,12 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the SocialRelation service. Represents a row in the &quot;SocialRelation&quot; database table, with each column mapped to a property of this class.
@@ -141,66 +143,129 @@ public class SocialRelationModelImpl extends BaseModelImpl<SocialRelation>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("uuid", getUuid());
-		attributes.put("relationId", getRelationId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("userId1", getUserId1());
-		attributes.put("userId2", getUserId2());
-		attributes.put("type", getType());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<SocialRelation, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+	public Map<String, BiConsumer<SocialRelation, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
+	private static final Map<String, Function<SocialRelation, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<SocialRelation, Object>> _attributeSetters;
 
-		Long relationId = (Long)attributes.get("relationId");
+	static {
+		Map<String, Function<SocialRelation, Object>> attributeGetters = new LinkedHashMap<String, Function<SocialRelation, Object>>();
 
-		if (relationId != null) {
-			setRelationId(relationId);
-		}
+		attributeGetters.put("uuid",
+			new Function<SocialRelation, Object>() {
+				@Override
+				public Object apply(SocialRelation socialRelation) {
+					return socialRelation.getUuid();
+				}
+			});
+		attributeGetters.put("relationId",
+			new Function<SocialRelation, Object>() {
+				@Override
+				public Object apply(SocialRelation socialRelation) {
+					return socialRelation.getRelationId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<SocialRelation, Object>() {
+				@Override
+				public Object apply(SocialRelation socialRelation) {
+					return socialRelation.getCompanyId();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<SocialRelation, Object>() {
+				@Override
+				public Object apply(SocialRelation socialRelation) {
+					return socialRelation.getCreateDate();
+				}
+			});
+		attributeGetters.put("userId1",
+			new Function<SocialRelation, Object>() {
+				@Override
+				public Object apply(SocialRelation socialRelation) {
+					return socialRelation.getUserId1();
+				}
+			});
+		attributeGetters.put("userId2",
+			new Function<SocialRelation, Object>() {
+				@Override
+				public Object apply(SocialRelation socialRelation) {
+					return socialRelation.getUserId2();
+				}
+			});
+		attributeGetters.put("type",
+			new Function<SocialRelation, Object>() {
+				@Override
+				public Object apply(SocialRelation socialRelation) {
+					return socialRelation.getType();
+				}
+			});
 
-		Long companyId = (Long)attributes.get("companyId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		Map<String, BiConsumer<SocialRelation, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SocialRelation, Object>>();
 
-		Long createDate = (Long)attributes.get("createDate");
+		attributeSetters.put("uuid",
+			new BiConsumer<SocialRelation, Object>() {
+				@Override
+				public void accept(SocialRelation socialRelation, Object uuid) {
+					socialRelation.setUuid((String)uuid);
+				}
+			});
+		attributeSetters.put("relationId",
+			new BiConsumer<SocialRelation, Object>() {
+				@Override
+				public void accept(SocialRelation socialRelation,
+					Object relationId) {
+					socialRelation.setRelationId((Long)relationId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<SocialRelation, Object>() {
+				@Override
+				public void accept(SocialRelation socialRelation,
+					Object companyId) {
+					socialRelation.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<SocialRelation, Object>() {
+				@Override
+				public void accept(SocialRelation socialRelation,
+					Object createDate) {
+					socialRelation.setCreateDate((Long)createDate);
+				}
+			});
+		attributeSetters.put("userId1",
+			new BiConsumer<SocialRelation, Object>() {
+				@Override
+				public void accept(SocialRelation socialRelation, Object userId1) {
+					socialRelation.setUserId1((Long)userId1);
+				}
+			});
+		attributeSetters.put("userId2",
+			new BiConsumer<SocialRelation, Object>() {
+				@Override
+				public void accept(SocialRelation socialRelation, Object userId2) {
+					socialRelation.setUserId2((Long)userId2);
+				}
+			});
+		attributeSetters.put("type",
+			new BiConsumer<SocialRelation, Object>() {
+				@Override
+				public void accept(SocialRelation socialRelation, Object type) {
+					socialRelation.setType((Integer)type);
+				}
+			});
 
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Long userId1 = (Long)attributes.get("userId1");
-
-		if (userId1 != null) {
-			setUserId1(userId1);
-		}
-
-		Long userId2 = (Long)attributes.get("userId2");
-
-		if (userId2 != null) {
-			setUserId2(userId2);
-		}
-
-		Integer type = (Integer)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override
@@ -480,71 +545,6 @@ public class SocialRelationModelImpl extends BaseModelImpl<SocialRelation>
 		socialRelationCacheModel.type = getType();
 
 		return socialRelationCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(15);
-
-		sb.append("{uuid=");
-		sb.append(getUuid());
-		sb.append(", relationId=");
-		sb.append(getRelationId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", userId1=");
-		sb.append(getUserId1());
-		sb.append(", userId2=");
-		sb.append(getUserId2());
-		sb.append(", type=");
-		sb.append(getType());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(25);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.social.kernel.model.SocialRelation");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>relationId</column-name><column-value><![CDATA[");
-		sb.append(getRelationId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId1</column-name><column-value><![CDATA[");
-		sb.append(getUserId1());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId2</column-name><column-value><![CDATA[");
-		sb.append(getUserId2());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>type</column-name><column-value><![CDATA[");
-		sb.append(getType());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = SocialRelation.class.getClassLoader();

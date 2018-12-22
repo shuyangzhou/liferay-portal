@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -59,42 +61,43 @@ public class DDMDataProviderInstanceLinkWrapper
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("dataProviderInstanceLinkId",
-			getDataProviderInstanceLinkId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("dataProviderInstanceId", getDataProviderInstanceId());
-		attributes.put("structureId", getStructureId());
+		Map<String, Function<DDMDataProviderInstanceLink, Object>> attributeGetters =
+			getAttributeGetters();
+
+		for (Map.Entry<String, Function<DDMDataProviderInstanceLink, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<DDMDataProviderInstanceLink, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long dataProviderInstanceLinkId = (Long)attributes.get(
-				"dataProviderInstanceLinkId");
+		Map<String, BiConsumer<DDMDataProviderInstanceLink, Object>> attributeSetters =
+			getAttributeSetters();
 
-		if (dataProviderInstanceLinkId != null) {
-			setDataProviderInstanceLinkId(dataProviderInstanceLinkId);
+		for (Map.Entry<String, BiConsumer<DDMDataProviderInstanceLink, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<DDMDataProviderInstanceLink, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	@Override
+	public Map<String, Function<DDMDataProviderInstanceLink, Object>> getAttributeGetters() {
+		return _ddmDataProviderInstanceLink.getAttributeGetters();
+	}
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long dataProviderInstanceId = (Long)attributes.get(
-				"dataProviderInstanceId");
-
-		if (dataProviderInstanceId != null) {
-			setDataProviderInstanceId(dataProviderInstanceId);
-		}
-
-		Long structureId = (Long)attributes.get("structureId");
-
-		if (structureId != null) {
-			setStructureId(structureId);
-		}
+	@Override
+	public Map<String, BiConsumer<DDMDataProviderInstanceLink, Object>> getAttributeSetters() {
+		return _ddmDataProviderInstanceLink.getAttributeSetters();
 	}
 
 	@Override

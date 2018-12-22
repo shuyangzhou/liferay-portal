@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -58,127 +60,41 @@ public class KaleoInstanceWrapper implements KaleoInstance,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("kaleoInstanceId", getKaleoInstanceId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("kaleoDefinitionVersionId", getKaleoDefinitionVersionId());
-		attributes.put("kaleoDefinitionName", getKaleoDefinitionName());
-		attributes.put("kaleoDefinitionVersion", getKaleoDefinitionVersion());
-		attributes.put("rootKaleoInstanceTokenId", getRootKaleoInstanceTokenId());
-		attributes.put("className", getClassName());
-		attributes.put("classPK", getClassPK());
-		attributes.put("completed", isCompleted());
-		attributes.put("completionDate", getCompletionDate());
-		attributes.put("workflowContext", getWorkflowContext());
+		Map<String, Function<KaleoInstance, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<KaleoInstance, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<KaleoInstance, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long kaleoInstanceId = (Long)attributes.get("kaleoInstanceId");
+		Map<String, BiConsumer<KaleoInstance, Object>> attributeSetters = getAttributeSetters();
 
-		if (kaleoInstanceId != null) {
-			setKaleoInstanceId(kaleoInstanceId);
+		for (Map.Entry<String, BiConsumer<KaleoInstance, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<KaleoInstance, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long groupId = (Long)attributes.get("groupId");
+	@Override
+	public Map<String, Function<KaleoInstance, Object>> getAttributeGetters() {
+		return _kaleoInstance.getAttributeGetters();
+	}
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long kaleoDefinitionVersionId = (Long)attributes.get(
-				"kaleoDefinitionVersionId");
-
-		if (kaleoDefinitionVersionId != null) {
-			setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
-		}
-
-		String kaleoDefinitionName = (String)attributes.get(
-				"kaleoDefinitionName");
-
-		if (kaleoDefinitionName != null) {
-			setKaleoDefinitionName(kaleoDefinitionName);
-		}
-
-		Integer kaleoDefinitionVersion = (Integer)attributes.get(
-				"kaleoDefinitionVersion");
-
-		if (kaleoDefinitionVersion != null) {
-			setKaleoDefinitionVersion(kaleoDefinitionVersion);
-		}
-
-		Long rootKaleoInstanceTokenId = (Long)attributes.get(
-				"rootKaleoInstanceTokenId");
-
-		if (rootKaleoInstanceTokenId != null) {
-			setRootKaleoInstanceTokenId(rootKaleoInstanceTokenId);
-		}
-
-		String className = (String)attributes.get("className");
-
-		if (className != null) {
-			setClassName(className);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		Boolean completed = (Boolean)attributes.get("completed");
-
-		if (completed != null) {
-			setCompleted(completed);
-		}
-
-		Date completionDate = (Date)attributes.get("completionDate");
-
-		if (completionDate != null) {
-			setCompletionDate(completionDate);
-		}
-
-		String workflowContext = (String)attributes.get("workflowContext");
-
-		if (workflowContext != null) {
-			setWorkflowContext(workflowContext);
-		}
+	@Override
+	public Map<String, BiConsumer<KaleoInstance, Object>> getAttributeSetters() {
+		return _kaleoInstance.getAttributeSetters();
 	}
 
 	@Override

@@ -25,6 +25,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -55,74 +57,41 @@ public class CountryWrapper implements Country, ModelWrapper<Country> {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("countryId", getCountryId());
-		attributes.put("name", getName());
-		attributes.put("a2", getA2());
-		attributes.put("a3", getA3());
-		attributes.put("number", getNumber());
-		attributes.put("idd", getIdd());
-		attributes.put("zipRequired", isZipRequired());
-		attributes.put("active", isActive());
+		Map<String, Function<Country, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<Country, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<Country, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<Country, Object>> attributeSetters = getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<Country, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<Country, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long countryId = (Long)attributes.get("countryId");
+	@Override
+	public Map<String, Function<Country, Object>> getAttributeGetters() {
+		return _country.getAttributeGetters();
+	}
 
-		if (countryId != null) {
-			setCountryId(countryId);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String a2 = (String)attributes.get("a2");
-
-		if (a2 != null) {
-			setA2(a2);
-		}
-
-		String a3 = (String)attributes.get("a3");
-
-		if (a3 != null) {
-			setA3(a3);
-		}
-
-		String number = (String)attributes.get("number");
-
-		if (number != null) {
-			setNumber(number);
-		}
-
-		String idd = (String)attributes.get("idd");
-
-		if (idd != null) {
-			setIdd(idd);
-		}
-
-		Boolean zipRequired = (Boolean)attributes.get("zipRequired");
-
-		if (zipRequired != null) {
-			setZipRequired(zipRequired);
-		}
-
-		Boolean active = (Boolean)attributes.get("active");
-
-		if (active != null) {
-			setActive(active);
-		}
+	@Override
+	public Map<String, BiConsumer<Country, Object>> getAttributeSetters() {
+		return _country.getAttributeSetters();
 	}
 
 	@Override

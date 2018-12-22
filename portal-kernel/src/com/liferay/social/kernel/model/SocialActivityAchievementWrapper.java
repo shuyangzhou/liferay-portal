@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -59,61 +61,43 @@ public class SocialActivityAchievementWrapper
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("activityAchievementId", getActivityAchievementId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("name", getName());
-		attributes.put("firstInGroup", isFirstInGroup());
+		Map<String, Function<SocialActivityAchievement, Object>> attributeGetters =
+			getAttributeGetters();
+
+		for (Map.Entry<String, Function<SocialActivityAchievement, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<SocialActivityAchievement, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long activityAchievementId = (Long)attributes.get(
-				"activityAchievementId");
+		Map<String, BiConsumer<SocialActivityAchievement, Object>> attributeSetters =
+			getAttributeSetters();
 
-		if (activityAchievementId != null) {
-			setActivityAchievementId(activityAchievementId);
+		for (Map.Entry<String, BiConsumer<SocialActivityAchievement, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<SocialActivityAchievement, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long groupId = (Long)attributes.get("groupId");
+	@Override
+	public Map<String, Function<SocialActivityAchievement, Object>> getAttributeGetters() {
+		return _socialActivityAchievement.getAttributeGetters();
+	}
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		Long createDate = (Long)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		Boolean firstInGroup = (Boolean)attributes.get("firstInGroup");
-
-		if (firstInGroup != null) {
-			setFirstInGroup(firstInGroup);
-		}
+	@Override
+	public Map<String, BiConsumer<SocialActivityAchievement, Object>> getAttributeSetters() {
+		return _socialActivityAchievement.getAttributeSetters();
 	}
 
 	@Override

@@ -25,6 +25,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -56,46 +58,41 @@ public class BrowserTrackerWrapper implements BrowserTracker,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("browserTrackerId", getBrowserTrackerId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("browserKey", getBrowserKey());
+		Map<String, Function<BrowserTracker, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<BrowserTracker, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<BrowserTracker, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<BrowserTracker, Object>> attributeSetters = getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<BrowserTracker, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<BrowserTracker, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long browserTrackerId = (Long)attributes.get("browserTrackerId");
+	@Override
+	public Map<String, Function<BrowserTracker, Object>> getAttributeGetters() {
+		return _browserTracker.getAttributeGetters();
+	}
 
-		if (browserTrackerId != null) {
-			setBrowserTrackerId(browserTrackerId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		Long browserKey = (Long)attributes.get("browserKey");
-
-		if (browserKey != null) {
-			setBrowserKey(browserKey);
-		}
+	@Override
+	public Map<String, BiConsumer<BrowserTracker, Object>> getAttributeSetters() {
+		return _browserTracker.getAttributeSetters();
 	}
 
 	@Override

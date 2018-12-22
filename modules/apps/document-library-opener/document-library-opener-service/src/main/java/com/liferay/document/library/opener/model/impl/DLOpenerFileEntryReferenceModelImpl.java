@@ -22,8 +22,6 @@ import com.liferay.document.library.opener.model.DLOpenerFileEntryReferenceModel
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -39,9 +37,13 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the DLOpenerFileEntryReference service. Represents a row in the &quot;DLOpenerFileEntryReference&quot; database table, with each column mapped to a property of this class.
@@ -147,89 +149,200 @@ public class DLOpenerFileEntryReferenceModelImpl extends BaseModelImpl<DLOpenerF
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("dlOpenerFileEntryReferenceId",
-			getDlOpenerFileEntryReferenceId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("referenceKey", getReferenceKey());
-		attributes.put("fileEntryId", getFileEntryId());
-		attributes.put("type", getType());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<DLOpenerFileEntryReference, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long dlOpenerFileEntryReferenceId = (Long)attributes.get(
-				"dlOpenerFileEntryReferenceId");
+	public Map<String, BiConsumer<DLOpenerFileEntryReference, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (dlOpenerFileEntryReferenceId != null) {
-			setDlOpenerFileEntryReferenceId(dlOpenerFileEntryReferenceId);
-		}
+	private static final Map<String, Function<DLOpenerFileEntryReference, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<DLOpenerFileEntryReference, Object>> _attributeSetters;
 
-		Long groupId = (Long)attributes.get("groupId");
+	static {
+		Map<String, Function<DLOpenerFileEntryReference, Object>> attributeGetters =
+			new LinkedHashMap<String, Function<DLOpenerFileEntryReference, Object>>();
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+		attributeGetters.put("dlOpenerFileEntryReferenceId",
+			new Function<DLOpenerFileEntryReference, Object>() {
+				@Override
+				public Object apply(
+					DLOpenerFileEntryReference dlOpenerFileEntryReference) {
+					return dlOpenerFileEntryReference.getDlOpenerFileEntryReferenceId();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<DLOpenerFileEntryReference, Object>() {
+				@Override
+				public Object apply(
+					DLOpenerFileEntryReference dlOpenerFileEntryReference) {
+					return dlOpenerFileEntryReference.getGroupId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<DLOpenerFileEntryReference, Object>() {
+				@Override
+				public Object apply(
+					DLOpenerFileEntryReference dlOpenerFileEntryReference) {
+					return dlOpenerFileEntryReference.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<DLOpenerFileEntryReference, Object>() {
+				@Override
+				public Object apply(
+					DLOpenerFileEntryReference dlOpenerFileEntryReference) {
+					return dlOpenerFileEntryReference.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<DLOpenerFileEntryReference, Object>() {
+				@Override
+				public Object apply(
+					DLOpenerFileEntryReference dlOpenerFileEntryReference) {
+					return dlOpenerFileEntryReference.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<DLOpenerFileEntryReference, Object>() {
+				@Override
+				public Object apply(
+					DLOpenerFileEntryReference dlOpenerFileEntryReference) {
+					return dlOpenerFileEntryReference.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<DLOpenerFileEntryReference, Object>() {
+				@Override
+				public Object apply(
+					DLOpenerFileEntryReference dlOpenerFileEntryReference) {
+					return dlOpenerFileEntryReference.getModifiedDate();
+				}
+			});
+		attributeGetters.put("referenceKey",
+			new Function<DLOpenerFileEntryReference, Object>() {
+				@Override
+				public Object apply(
+					DLOpenerFileEntryReference dlOpenerFileEntryReference) {
+					return dlOpenerFileEntryReference.getReferenceKey();
+				}
+			});
+		attributeGetters.put("fileEntryId",
+			new Function<DLOpenerFileEntryReference, Object>() {
+				@Override
+				public Object apply(
+					DLOpenerFileEntryReference dlOpenerFileEntryReference) {
+					return dlOpenerFileEntryReference.getFileEntryId();
+				}
+			});
+		attributeGetters.put("type",
+			new Function<DLOpenerFileEntryReference, Object>() {
+				@Override
+				public Object apply(
+					DLOpenerFileEntryReference dlOpenerFileEntryReference) {
+					return dlOpenerFileEntryReference.getType();
+				}
+			});
 
-		Long companyId = (Long)attributes.get("companyId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		Map<String, BiConsumer<DLOpenerFileEntryReference, Object>> attributeSetters =
+			new LinkedHashMap<String, BiConsumer<DLOpenerFileEntryReference, Object>>();
 
-		Long userId = (Long)attributes.get("userId");
+		attributeSetters.put("dlOpenerFileEntryReferenceId",
+			new BiConsumer<DLOpenerFileEntryReference, Object>() {
+				@Override
+				public void accept(
+					DLOpenerFileEntryReference dlOpenerFileEntryReference,
+					Object dlOpenerFileEntryReferenceId) {
+					dlOpenerFileEntryReference.setDlOpenerFileEntryReferenceId((Long)dlOpenerFileEntryReferenceId);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<DLOpenerFileEntryReference, Object>() {
+				@Override
+				public void accept(
+					DLOpenerFileEntryReference dlOpenerFileEntryReference,
+					Object groupId) {
+					dlOpenerFileEntryReference.setGroupId((Long)groupId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<DLOpenerFileEntryReference, Object>() {
+				@Override
+				public void accept(
+					DLOpenerFileEntryReference dlOpenerFileEntryReference,
+					Object companyId) {
+					dlOpenerFileEntryReference.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<DLOpenerFileEntryReference, Object>() {
+				@Override
+				public void accept(
+					DLOpenerFileEntryReference dlOpenerFileEntryReference,
+					Object userId) {
+					dlOpenerFileEntryReference.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<DLOpenerFileEntryReference, Object>() {
+				@Override
+				public void accept(
+					DLOpenerFileEntryReference dlOpenerFileEntryReference,
+					Object userName) {
+					dlOpenerFileEntryReference.setUserName((String)userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<DLOpenerFileEntryReference, Object>() {
+				@Override
+				public void accept(
+					DLOpenerFileEntryReference dlOpenerFileEntryReference,
+					Object createDate) {
+					dlOpenerFileEntryReference.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<DLOpenerFileEntryReference, Object>() {
+				@Override
+				public void accept(
+					DLOpenerFileEntryReference dlOpenerFileEntryReference,
+					Object modifiedDate) {
+					dlOpenerFileEntryReference.setModifiedDate((Date)modifiedDate);
+				}
+			});
+		attributeSetters.put("referenceKey",
+			new BiConsumer<DLOpenerFileEntryReference, Object>() {
+				@Override
+				public void accept(
+					DLOpenerFileEntryReference dlOpenerFileEntryReference,
+					Object referenceKey) {
+					dlOpenerFileEntryReference.setReferenceKey((String)referenceKey);
+				}
+			});
+		attributeSetters.put("fileEntryId",
+			new BiConsumer<DLOpenerFileEntryReference, Object>() {
+				@Override
+				public void accept(
+					DLOpenerFileEntryReference dlOpenerFileEntryReference,
+					Object fileEntryId) {
+					dlOpenerFileEntryReference.setFileEntryId((Long)fileEntryId);
+				}
+			});
+		attributeSetters.put("type",
+			new BiConsumer<DLOpenerFileEntryReference, Object>() {
+				@Override
+				public void accept(
+					DLOpenerFileEntryReference dlOpenerFileEntryReference,
+					Object type) {
+					dlOpenerFileEntryReference.setType((Integer)type);
+				}
+			});
 
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		String referenceKey = (String)attributes.get("referenceKey");
-
-		if (referenceKey != null) {
-			setReferenceKey(referenceKey);
-		}
-
-		Long fileEntryId = (Long)attributes.get("fileEntryId");
-
-		if (fileEntryId != null) {
-			setFileEntryId(fileEntryId);
-		}
-
-		Integer type = (Integer)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override
@@ -541,90 +654,6 @@ public class DLOpenerFileEntryReferenceModelImpl extends BaseModelImpl<DLOpenerF
 		dlOpenerFileEntryReferenceCacheModel.type = getType();
 
 		return dlOpenerFileEntryReferenceCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(21);
-
-		sb.append("{dlOpenerFileEntryReferenceId=");
-		sb.append(getDlOpenerFileEntryReferenceId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", referenceKey=");
-		sb.append(getReferenceKey());
-		sb.append(", fileEntryId=");
-		sb.append(getFileEntryId());
-		sb.append(", type=");
-		sb.append(getType());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(34);
-
-		sb.append("<model><model-name>");
-		sb.append(
-			"com.liferay.document.library.opener.model.DLOpenerFileEntryReference");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>dlOpenerFileEntryReferenceId</column-name><column-value><![CDATA[");
-		sb.append(getDlOpenerFileEntryReferenceId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>referenceKey</column-name><column-value><![CDATA[");
-		sb.append(getReferenceKey());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>fileEntryId</column-name><column-value><![CDATA[");
-		sb.append(getFileEntryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>type</column-name><column-value><![CDATA[");
-		sb.append(getType());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = DLOpenerFileEntryReference.class.getClassLoader();

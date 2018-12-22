@@ -25,6 +25,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -57,103 +59,41 @@ public class UserNotificationEventWrapper implements UserNotificationEvent,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("uuid", getUuid());
-		attributes.put("userNotificationEventId", getUserNotificationEventId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("type", getType());
-		attributes.put("timestamp", getTimestamp());
-		attributes.put("deliveryType", getDeliveryType());
-		attributes.put("deliverBy", getDeliverBy());
-		attributes.put("delivered", isDelivered());
-		attributes.put("payload", getPayload());
-		attributes.put("actionRequired", isActionRequired());
-		attributes.put("archived", isArchived());
+		Map<String, Function<UserNotificationEvent, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<UserNotificationEvent, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<UserNotificationEvent, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<UserNotificationEvent, Object>> attributeSetters = getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<UserNotificationEvent, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<UserNotificationEvent, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		String uuid = (String)attributes.get("uuid");
+	@Override
+	public Map<String, Function<UserNotificationEvent, Object>> getAttributeGetters() {
+		return _userNotificationEvent.getAttributeGetters();
+	}
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
-
-		Long userNotificationEventId = (Long)attributes.get(
-				"userNotificationEventId");
-
-		if (userNotificationEventId != null) {
-			setUserNotificationEventId(userNotificationEventId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String type = (String)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
-
-		Long timestamp = (Long)attributes.get("timestamp");
-
-		if (timestamp != null) {
-			setTimestamp(timestamp);
-		}
-
-		Integer deliveryType = (Integer)attributes.get("deliveryType");
-
-		if (deliveryType != null) {
-			setDeliveryType(deliveryType);
-		}
-
-		Long deliverBy = (Long)attributes.get("deliverBy");
-
-		if (deliverBy != null) {
-			setDeliverBy(deliverBy);
-		}
-
-		Boolean delivered = (Boolean)attributes.get("delivered");
-
-		if (delivered != null) {
-			setDelivered(delivered);
-		}
-
-		String payload = (String)attributes.get("payload");
-
-		if (payload != null) {
-			setPayload(payload);
-		}
-
-		Boolean actionRequired = (Boolean)attributes.get("actionRequired");
-
-		if (actionRequired != null) {
-			setActionRequired(actionRequired);
-		}
-
-		Boolean archived = (Boolean)attributes.get("archived");
-
-		if (archived != null) {
-			setArchived(archived);
-		}
+	@Override
+	public Map<String, BiConsumer<UserNotificationEvent, Object>> getAttributeSetters() {
+		return _userNotificationEvent.getAttributeSetters();
 	}
 
 	@Override

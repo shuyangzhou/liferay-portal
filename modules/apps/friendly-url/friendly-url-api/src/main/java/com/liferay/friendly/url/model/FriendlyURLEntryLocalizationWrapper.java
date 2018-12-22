@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -59,76 +61,44 @@ public class FriendlyURLEntryLocalizationWrapper
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("friendlyURLEntryLocalizationId",
-			getFriendlyURLEntryLocalizationId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("friendlyURLEntryId", getFriendlyURLEntryId());
-		attributes.put("languageId", getLanguageId());
-		attributes.put("urlTitle", getUrlTitle());
-		attributes.put("groupId", getGroupId());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
+		Map<String, Function<FriendlyURLEntryLocalization, Object>> attributeGetters =
+			getAttributeGetters();
+
+		for (Map.Entry<String, Function<FriendlyURLEntryLocalization, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<FriendlyURLEntryLocalization, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<FriendlyURLEntryLocalization, Object>> attributeSetters =
+			getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<FriendlyURLEntryLocalization, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<FriendlyURLEntryLocalization, Object> attributeBiConsumer =
+				entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long friendlyURLEntryLocalizationId = (Long)attributes.get(
-				"friendlyURLEntryLocalizationId");
+	@Override
+	public Map<String, Function<FriendlyURLEntryLocalization, Object>> getAttributeGetters() {
+		return _friendlyURLEntryLocalization.getAttributeGetters();
+	}
 
-		if (friendlyURLEntryLocalizationId != null) {
-			setFriendlyURLEntryLocalizationId(friendlyURLEntryLocalizationId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long friendlyURLEntryId = (Long)attributes.get("friendlyURLEntryId");
-
-		if (friendlyURLEntryId != null) {
-			setFriendlyURLEntryId(friendlyURLEntryId);
-		}
-
-		String languageId = (String)attributes.get("languageId");
-
-		if (languageId != null) {
-			setLanguageId(languageId);
-		}
-
-		String urlTitle = (String)attributes.get("urlTitle");
-
-		if (urlTitle != null) {
-			setUrlTitle(urlTitle);
-		}
-
-		Long groupId = (Long)attributes.get("groupId");
-
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
+	@Override
+	public Map<String, BiConsumer<FriendlyURLEntryLocalization, Object>> getAttributeSetters() {
+		return _friendlyURLEntryLocalization.getAttributeSetters();
 	}
 
 	@Override

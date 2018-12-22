@@ -25,6 +25,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -57,68 +59,41 @@ public class RecentLayoutRevisionWrapper implements RecentLayoutRevision,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("recentLayoutRevisionId", getRecentLayoutRevisionId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("layoutRevisionId", getLayoutRevisionId());
-		attributes.put("layoutSetBranchId", getLayoutSetBranchId());
-		attributes.put("plid", getPlid());
+		Map<String, Function<RecentLayoutRevision, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<RecentLayoutRevision, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<RecentLayoutRevision, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<RecentLayoutRevision, Object>> attributeSetters = getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<RecentLayoutRevision, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<RecentLayoutRevision, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long recentLayoutRevisionId = (Long)attributes.get(
-				"recentLayoutRevisionId");
+	@Override
+	public Map<String, Function<RecentLayoutRevision, Object>> getAttributeGetters() {
+		return _recentLayoutRevision.getAttributeGetters();
+	}
 
-		if (recentLayoutRevisionId != null) {
-			setRecentLayoutRevisionId(recentLayoutRevisionId);
-		}
-
-		Long groupId = (Long)attributes.get("groupId");
-
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		Long layoutRevisionId = (Long)attributes.get("layoutRevisionId");
-
-		if (layoutRevisionId != null) {
-			setLayoutRevisionId(layoutRevisionId);
-		}
-
-		Long layoutSetBranchId = (Long)attributes.get("layoutSetBranchId");
-
-		if (layoutSetBranchId != null) {
-			setLayoutSetBranchId(layoutSetBranchId);
-		}
-
-		Long plid = (Long)attributes.get("plid");
-
-		if (plid != null) {
-			setPlid(plid);
-		}
+	@Override
+	public Map<String, BiConsumer<RecentLayoutRevision, Object>> getAttributeSetters() {
+		return _recentLayoutRevision.getAttributeSetters();
 	}
 
 	@Override

@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -56,25 +58,41 @@ public class CounterWrapper implements Counter, ModelWrapper<Counter> {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("name", getName());
-		attributes.put("currentId", getCurrentId());
+		Map<String, Function<Counter, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<Counter, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<Counter, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		String name = (String)attributes.get("name");
+		Map<String, BiConsumer<Counter, Object>> attributeSetters = getAttributeSetters();
 
-		if (name != null) {
-			setName(name);
+		for (Map.Entry<String, BiConsumer<Counter, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<Counter, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long currentId = (Long)attributes.get("currentId");
+	@Override
+	public Map<String, Function<Counter, Object>> getAttributeGetters() {
+		return _counter.getAttributeGetters();
+	}
 
-		if (currentId != null) {
-			setCurrentId(currentId);
-		}
+	@Override
+	public Map<String, BiConsumer<Counter, Object>> getAttributeSetters() {
+		return _counter.getAttributeSetters();
 	}
 
 	@Override

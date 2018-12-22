@@ -19,8 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
@@ -36,8 +34,12 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the WikiPageResource service. Represents a row in the &quot;WikiPageResource&quot; database table, with each column mapped to a property of this class.
@@ -139,59 +141,118 @@ public class WikiPageResourceModelImpl extends BaseModelImpl<WikiPageResource>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("uuid", getUuid());
-		attributes.put("resourcePrimKey", getResourcePrimKey());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("nodeId", getNodeId());
-		attributes.put("title", getTitle());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<WikiPageResource, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+	public Map<String, BiConsumer<WikiPageResource, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
+	private static final Map<String, Function<WikiPageResource, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<WikiPageResource, Object>> _attributeSetters;
 
-		Long resourcePrimKey = (Long)attributes.get("resourcePrimKey");
+	static {
+		Map<String, Function<WikiPageResource, Object>> attributeGetters = new LinkedHashMap<String, Function<WikiPageResource, Object>>();
 
-		if (resourcePrimKey != null) {
-			setResourcePrimKey(resourcePrimKey);
-		}
+		attributeGetters.put("uuid",
+			new Function<WikiPageResource, Object>() {
+				@Override
+				public Object apply(WikiPageResource wikiPageResource) {
+					return wikiPageResource.getUuid();
+				}
+			});
+		attributeGetters.put("resourcePrimKey",
+			new Function<WikiPageResource, Object>() {
+				@Override
+				public Object apply(WikiPageResource wikiPageResource) {
+					return wikiPageResource.getResourcePrimKey();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<WikiPageResource, Object>() {
+				@Override
+				public Object apply(WikiPageResource wikiPageResource) {
+					return wikiPageResource.getGroupId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<WikiPageResource, Object>() {
+				@Override
+				public Object apply(WikiPageResource wikiPageResource) {
+					return wikiPageResource.getCompanyId();
+				}
+			});
+		attributeGetters.put("nodeId",
+			new Function<WikiPageResource, Object>() {
+				@Override
+				public Object apply(WikiPageResource wikiPageResource) {
+					return wikiPageResource.getNodeId();
+				}
+			});
+		attributeGetters.put("title",
+			new Function<WikiPageResource, Object>() {
+				@Override
+				public Object apply(WikiPageResource wikiPageResource) {
+					return wikiPageResource.getTitle();
+				}
+			});
 
-		Long groupId = (Long)attributes.get("groupId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+		Map<String, BiConsumer<WikiPageResource, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<WikiPageResource, Object>>();
 
-		Long companyId = (Long)attributes.get("companyId");
+		attributeSetters.put("uuid",
+			new BiConsumer<WikiPageResource, Object>() {
+				@Override
+				public void accept(WikiPageResource wikiPageResource,
+					Object uuid) {
+					wikiPageResource.setUuid((String)uuid);
+				}
+			});
+		attributeSetters.put("resourcePrimKey",
+			new BiConsumer<WikiPageResource, Object>() {
+				@Override
+				public void accept(WikiPageResource wikiPageResource,
+					Object resourcePrimKey) {
+					wikiPageResource.setResourcePrimKey((Long)resourcePrimKey);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<WikiPageResource, Object>() {
+				@Override
+				public void accept(WikiPageResource wikiPageResource,
+					Object groupId) {
+					wikiPageResource.setGroupId((Long)groupId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<WikiPageResource, Object>() {
+				@Override
+				public void accept(WikiPageResource wikiPageResource,
+					Object companyId) {
+					wikiPageResource.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("nodeId",
+			new BiConsumer<WikiPageResource, Object>() {
+				@Override
+				public void accept(WikiPageResource wikiPageResource,
+					Object nodeId) {
+					wikiPageResource.setNodeId((Long)nodeId);
+				}
+			});
+		attributeSetters.put("title",
+			new BiConsumer<WikiPageResource, Object>() {
+				@Override
+				public void accept(WikiPageResource wikiPageResource,
+					Object title) {
+					wikiPageResource.setTitle((String)title);
+				}
+			});
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long nodeId = (Long)attributes.get("nodeId");
-
-		if (nodeId != null) {
-			setNodeId(nodeId);
-		}
-
-		String title = (String)attributes.get("title");
-
-		if (title != null) {
-			setTitle(title);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override
@@ -465,65 +526,6 @@ public class WikiPageResourceModelImpl extends BaseModelImpl<WikiPageResource>
 		}
 
 		return wikiPageResourceCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(13);
-
-		sb.append("{uuid=");
-		sb.append(getUuid());
-		sb.append(", resourcePrimKey=");
-		sb.append(getResourcePrimKey());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", nodeId=");
-		sb.append(getNodeId());
-		sb.append(", title=");
-		sb.append(getTitle());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(22);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.wiki.model.WikiPageResource");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>resourcePrimKey</column-name><column-value><![CDATA[");
-		sb.append(getResourcePrimKey());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>nodeId</column-name><column-value><![CDATA[");
-		sb.append(getNodeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>title</column-name><column-value><![CDATA[");
-		sb.append(getTitle());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = WikiPageResource.class.getClassLoader();

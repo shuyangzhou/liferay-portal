@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -58,117 +60,41 @@ public class PowwowMeetingWrapper implements PowwowMeeting,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("powwowMeetingId", getPowwowMeetingId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("powwowServerId", getPowwowServerId());
-		attributes.put("name", getName());
-		attributes.put("description", getDescription());
-		attributes.put("providerType", getProviderType());
-		attributes.put("providerTypeMetadata", getProviderTypeMetadata());
-		attributes.put("languageId", getLanguageId());
-		attributes.put("calendarBookingId", getCalendarBookingId());
-		attributes.put("status", getStatus());
+		Map<String, Function<PowwowMeeting, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<PowwowMeeting, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<PowwowMeeting, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long powwowMeetingId = (Long)attributes.get("powwowMeetingId");
+		Map<String, BiConsumer<PowwowMeeting, Object>> attributeSetters = getAttributeSetters();
 
-		if (powwowMeetingId != null) {
-			setPowwowMeetingId(powwowMeetingId);
+		for (Map.Entry<String, BiConsumer<PowwowMeeting, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<PowwowMeeting, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long groupId = (Long)attributes.get("groupId");
+	@Override
+	public Map<String, Function<PowwowMeeting, Object>> getAttributeGetters() {
+		return _powwowMeeting.getAttributeGetters();
+	}
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long powwowServerId = (Long)attributes.get("powwowServerId");
-
-		if (powwowServerId != null) {
-			setPowwowServerId(powwowServerId);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
-		String providerType = (String)attributes.get("providerType");
-
-		if (providerType != null) {
-			setProviderType(providerType);
-		}
-
-		String providerTypeMetadata = (String)attributes.get(
-				"providerTypeMetadata");
-
-		if (providerTypeMetadata != null) {
-			setProviderTypeMetadata(providerTypeMetadata);
-		}
-
-		String languageId = (String)attributes.get("languageId");
-
-		if (languageId != null) {
-			setLanguageId(languageId);
-		}
-
-		Long calendarBookingId = (Long)attributes.get("calendarBookingId");
-
-		if (calendarBookingId != null) {
-			setCalendarBookingId(calendarBookingId);
-		}
-
-		Integer status = (Integer)attributes.get("status");
-
-		if (status != null) {
-			setStatus(status);
-		}
+	@Override
+	public Map<String, BiConsumer<PowwowMeeting, Object>> getAttributeSetters() {
+		return _powwowMeeting.getAttributeSetters();
 	}
 
 	@Override

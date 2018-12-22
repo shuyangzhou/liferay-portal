@@ -29,6 +29,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -59,179 +61,41 @@ public class WikiPageWrapper implements WikiPage, ModelWrapper<WikiPage> {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("uuid", getUuid());
-		attributes.put("pageId", getPageId());
-		attributes.put("resourcePrimKey", getResourcePrimKey());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("nodeId", getNodeId());
-		attributes.put("title", getTitle());
-		attributes.put("version", getVersion());
-		attributes.put("minorEdit", isMinorEdit());
-		attributes.put("content", getContent());
-		attributes.put("summary", getSummary());
-		attributes.put("format", getFormat());
-		attributes.put("head", isHead());
-		attributes.put("parentTitle", getParentTitle());
-		attributes.put("redirectTitle", getRedirectTitle());
-		attributes.put("lastPublishDate", getLastPublishDate());
-		attributes.put("status", getStatus());
-		attributes.put("statusByUserId", getStatusByUserId());
-		attributes.put("statusByUserName", getStatusByUserName());
-		attributes.put("statusDate", getStatusDate());
+		Map<String, Function<WikiPage, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<WikiPage, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WikiPage, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+		Map<String, BiConsumer<WikiPage, Object>> attributeSetters = getAttributeSetters();
 
-		if (uuid != null) {
-			setUuid(uuid);
+		for (Map.Entry<String, BiConsumer<WikiPage, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<WikiPage, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long pageId = (Long)attributes.get("pageId");
+	@Override
+	public Map<String, Function<WikiPage, Object>> getAttributeGetters() {
+		return _wikiPage.getAttributeGetters();
+	}
 
-		if (pageId != null) {
-			setPageId(pageId);
-		}
-
-		Long resourcePrimKey = (Long)attributes.get("resourcePrimKey");
-
-		if (resourcePrimKey != null) {
-			setResourcePrimKey(resourcePrimKey);
-		}
-
-		Long groupId = (Long)attributes.get("groupId");
-
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long nodeId = (Long)attributes.get("nodeId");
-
-		if (nodeId != null) {
-			setNodeId(nodeId);
-		}
-
-		String title = (String)attributes.get("title");
-
-		if (title != null) {
-			setTitle(title);
-		}
-
-		Double version = (Double)attributes.get("version");
-
-		if (version != null) {
-			setVersion(version);
-		}
-
-		Boolean minorEdit = (Boolean)attributes.get("minorEdit");
-
-		if (minorEdit != null) {
-			setMinorEdit(minorEdit);
-		}
-
-		String content = (String)attributes.get("content");
-
-		if (content != null) {
-			setContent(content);
-		}
-
-		String summary = (String)attributes.get("summary");
-
-		if (summary != null) {
-			setSummary(summary);
-		}
-
-		String format = (String)attributes.get("format");
-
-		if (format != null) {
-			setFormat(format);
-		}
-
-		Boolean head = (Boolean)attributes.get("head");
-
-		if (head != null) {
-			setHead(head);
-		}
-
-		String parentTitle = (String)attributes.get("parentTitle");
-
-		if (parentTitle != null) {
-			setParentTitle(parentTitle);
-		}
-
-		String redirectTitle = (String)attributes.get("redirectTitle");
-
-		if (redirectTitle != null) {
-			setRedirectTitle(redirectTitle);
-		}
-
-		Date lastPublishDate = (Date)attributes.get("lastPublishDate");
-
-		if (lastPublishDate != null) {
-			setLastPublishDate(lastPublishDate);
-		}
-
-		Integer status = (Integer)attributes.get("status");
-
-		if (status != null) {
-			setStatus(status);
-		}
-
-		Long statusByUserId = (Long)attributes.get("statusByUserId");
-
-		if (statusByUserId != null) {
-			setStatusByUserId(statusByUserId);
-		}
-
-		String statusByUserName = (String)attributes.get("statusByUserName");
-
-		if (statusByUserName != null) {
-			setStatusByUserName(statusByUserName);
-		}
-
-		Date statusDate = (Date)attributes.get("statusDate");
-
-		if (statusDate != null) {
-			setStatusDate(statusDate);
-		}
+	@Override
+	public Map<String, BiConsumer<WikiPage, Object>> getAttributeSetters() {
+		return _wikiPage.getAttributeSetters();
 	}
 
 	@Override

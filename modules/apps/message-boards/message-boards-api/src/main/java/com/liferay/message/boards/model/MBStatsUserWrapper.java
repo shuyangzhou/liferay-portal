@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -58,53 +60,41 @@ public class MBStatsUserWrapper implements MBStatsUser,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("statsUserId", getStatsUserId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("messageCount", getMessageCount());
-		attributes.put("lastPostDate", getLastPostDate());
+		Map<String, Function<MBStatsUser, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<MBStatsUser, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<MBStatsUser, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long statsUserId = (Long)attributes.get("statsUserId");
+		Map<String, BiConsumer<MBStatsUser, Object>> attributeSetters = getAttributeSetters();
 
-		if (statsUserId != null) {
-			setStatsUserId(statsUserId);
+		for (Map.Entry<String, BiConsumer<MBStatsUser, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<MBStatsUser, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long groupId = (Long)attributes.get("groupId");
+	@Override
+	public Map<String, Function<MBStatsUser, Object>> getAttributeGetters() {
+		return _mbStatsUser.getAttributeGetters();
+	}
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		Integer messageCount = (Integer)attributes.get("messageCount");
-
-		if (messageCount != null) {
-			setMessageCount(messageCount);
-		}
-
-		Date lastPostDate = (Date)attributes.get("lastPostDate");
-
-		if (lastPostDate != null) {
-			setLastPostDate(lastPostDate);
-		}
+	@Override
+	public Map<String, BiConsumer<MBStatsUser, Object>> getAttributeSetters() {
+		return _mbStatsUser.getAttributeSetters();
 	}
 
 	@Override

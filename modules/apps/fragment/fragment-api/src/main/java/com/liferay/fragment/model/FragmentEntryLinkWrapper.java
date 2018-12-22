@@ -29,6 +29,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -60,153 +62,41 @@ public class FragmentEntryLinkWrapper implements FragmentEntryLink,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("uuid", getUuid());
-		attributes.put("fragmentEntryLinkId", getFragmentEntryLinkId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("originalFragmentEntryLinkId",
-			getOriginalFragmentEntryLinkId());
-		attributes.put("fragmentEntryId", getFragmentEntryId());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("css", getCss());
-		attributes.put("html", getHtml());
-		attributes.put("js", getJs());
-		attributes.put("editableValues", getEditableValues());
-		attributes.put("position", getPosition());
-		attributes.put("lastPropagationDate", getLastPropagationDate());
-		attributes.put("namespace", getNamespace());
-		attributes.put("lastPublishDate", getLastPublishDate());
+		Map<String, Function<FragmentEntryLink, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<FragmentEntryLink, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<FragmentEntryLink, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+		Map<String, BiConsumer<FragmentEntryLink, Object>> attributeSetters = getAttributeSetters();
 
-		if (uuid != null) {
-			setUuid(uuid);
+		for (Map.Entry<String, BiConsumer<FragmentEntryLink, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<FragmentEntryLink, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long fragmentEntryLinkId = (Long)attributes.get("fragmentEntryLinkId");
+	@Override
+	public Map<String, Function<FragmentEntryLink, Object>> getAttributeGetters() {
+		return _fragmentEntryLink.getAttributeGetters();
+	}
 
-		if (fragmentEntryLinkId != null) {
-			setFragmentEntryLinkId(fragmentEntryLinkId);
-		}
-
-		Long groupId = (Long)attributes.get("groupId");
-
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long originalFragmentEntryLinkId = (Long)attributes.get(
-				"originalFragmentEntryLinkId");
-
-		if (originalFragmentEntryLinkId != null) {
-			setOriginalFragmentEntryLinkId(originalFragmentEntryLinkId);
-		}
-
-		Long fragmentEntryId = (Long)attributes.get("fragmentEntryId");
-
-		if (fragmentEntryId != null) {
-			setFragmentEntryId(fragmentEntryId);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		String css = (String)attributes.get("css");
-
-		if (css != null) {
-			setCss(css);
-		}
-
-		String html = (String)attributes.get("html");
-
-		if (html != null) {
-			setHtml(html);
-		}
-
-		String js = (String)attributes.get("js");
-
-		if (js != null) {
-			setJs(js);
-		}
-
-		String editableValues = (String)attributes.get("editableValues");
-
-		if (editableValues != null) {
-			setEditableValues(editableValues);
-		}
-
-		Integer position = (Integer)attributes.get("position");
-
-		if (position != null) {
-			setPosition(position);
-		}
-
-		Date lastPropagationDate = (Date)attributes.get("lastPropagationDate");
-
-		if (lastPropagationDate != null) {
-			setLastPropagationDate(lastPropagationDate);
-		}
-
-		String namespace = (String)attributes.get("namespace");
-
-		if (namespace != null) {
-			setNamespace(namespace);
-		}
-
-		Date lastPublishDate = (Date)attributes.get("lastPublishDate");
-
-		if (lastPublishDate != null) {
-			setLastPublishDate(lastPublishDate);
-		}
+	@Override
+	public Map<String, BiConsumer<FragmentEntryLink, Object>> getAttributeSetters() {
+		return _fragmentEntryLink.getAttributeSetters();
 	}
 
 	@Override

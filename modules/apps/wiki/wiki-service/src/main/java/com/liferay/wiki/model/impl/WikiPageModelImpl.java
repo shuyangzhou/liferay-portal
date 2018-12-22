@@ -21,8 +21,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -50,10 +48,14 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the WikiPage service. Represents a row in the &quot;WikiPage&quot; database table, with each column mapped to a property of this class.
@@ -261,185 +263,364 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("uuid", getUuid());
-		attributes.put("pageId", getPageId());
-		attributes.put("resourcePrimKey", getResourcePrimKey());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("nodeId", getNodeId());
-		attributes.put("title", getTitle());
-		attributes.put("version", getVersion());
-		attributes.put("minorEdit", isMinorEdit());
-		attributes.put("content", getContent());
-		attributes.put("summary", getSummary());
-		attributes.put("format", getFormat());
-		attributes.put("head", isHead());
-		attributes.put("parentTitle", getParentTitle());
-		attributes.put("redirectTitle", getRedirectTitle());
-		attributes.put("lastPublishDate", getLastPublishDate());
-		attributes.put("status", getStatus());
-		attributes.put("statusByUserId", getStatusByUserId());
-		attributes.put("statusByUserName", getStatusByUserName());
-		attributes.put("statusDate", getStatusDate());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<WikiPage, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+	public Map<String, BiConsumer<WikiPage, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
+	private static final Map<String, Function<WikiPage, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<WikiPage, Object>> _attributeSetters;
 
-		Long pageId = (Long)attributes.get("pageId");
+	static {
+		Map<String, Function<WikiPage, Object>> attributeGetters = new LinkedHashMap<String, Function<WikiPage, Object>>();
 
-		if (pageId != null) {
-			setPageId(pageId);
-		}
+		attributeGetters.put("uuid",
+			new Function<WikiPage, Object>() {
+				@Override
+				public Object apply(WikiPage wikiPage) {
+					return wikiPage.getUuid();
+				}
+			});
+		attributeGetters.put("pageId",
+			new Function<WikiPage, Object>() {
+				@Override
+				public Object apply(WikiPage wikiPage) {
+					return wikiPage.getPageId();
+				}
+			});
+		attributeGetters.put("resourcePrimKey",
+			new Function<WikiPage, Object>() {
+				@Override
+				public Object apply(WikiPage wikiPage) {
+					return wikiPage.getResourcePrimKey();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<WikiPage, Object>() {
+				@Override
+				public Object apply(WikiPage wikiPage) {
+					return wikiPage.getGroupId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<WikiPage, Object>() {
+				@Override
+				public Object apply(WikiPage wikiPage) {
+					return wikiPage.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<WikiPage, Object>() {
+				@Override
+				public Object apply(WikiPage wikiPage) {
+					return wikiPage.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<WikiPage, Object>() {
+				@Override
+				public Object apply(WikiPage wikiPage) {
+					return wikiPage.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<WikiPage, Object>() {
+				@Override
+				public Object apply(WikiPage wikiPage) {
+					return wikiPage.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<WikiPage, Object>() {
+				@Override
+				public Object apply(WikiPage wikiPage) {
+					return wikiPage.getModifiedDate();
+				}
+			});
+		attributeGetters.put("nodeId",
+			new Function<WikiPage, Object>() {
+				@Override
+				public Object apply(WikiPage wikiPage) {
+					return wikiPage.getNodeId();
+				}
+			});
+		attributeGetters.put("title",
+			new Function<WikiPage, Object>() {
+				@Override
+				public Object apply(WikiPage wikiPage) {
+					return wikiPage.getTitle();
+				}
+			});
+		attributeGetters.put("version",
+			new Function<WikiPage, Object>() {
+				@Override
+				public Object apply(WikiPage wikiPage) {
+					return wikiPage.getVersion();
+				}
+			});
+		attributeGetters.put("minorEdit",
+			new Function<WikiPage, Object>() {
+				@Override
+				public Object apply(WikiPage wikiPage) {
+					return wikiPage.isMinorEdit();
+				}
+			});
+		attributeGetters.put("content",
+			new Function<WikiPage, Object>() {
+				@Override
+				public Object apply(WikiPage wikiPage) {
+					return wikiPage.getContent();
+				}
+			});
+		attributeGetters.put("summary",
+			new Function<WikiPage, Object>() {
+				@Override
+				public Object apply(WikiPage wikiPage) {
+					return wikiPage.getSummary();
+				}
+			});
+		attributeGetters.put("format",
+			new Function<WikiPage, Object>() {
+				@Override
+				public Object apply(WikiPage wikiPage) {
+					return wikiPage.getFormat();
+				}
+			});
+		attributeGetters.put("head",
+			new Function<WikiPage, Object>() {
+				@Override
+				public Object apply(WikiPage wikiPage) {
+					return wikiPage.isHead();
+				}
+			});
+		attributeGetters.put("parentTitle",
+			new Function<WikiPage, Object>() {
+				@Override
+				public Object apply(WikiPage wikiPage) {
+					return wikiPage.getParentTitle();
+				}
+			});
+		attributeGetters.put("redirectTitle",
+			new Function<WikiPage, Object>() {
+				@Override
+				public Object apply(WikiPage wikiPage) {
+					return wikiPage.getRedirectTitle();
+				}
+			});
+		attributeGetters.put("lastPublishDate",
+			new Function<WikiPage, Object>() {
+				@Override
+				public Object apply(WikiPage wikiPage) {
+					return wikiPage.getLastPublishDate();
+				}
+			});
+		attributeGetters.put("status",
+			new Function<WikiPage, Object>() {
+				@Override
+				public Object apply(WikiPage wikiPage) {
+					return wikiPage.getStatus();
+				}
+			});
+		attributeGetters.put("statusByUserId",
+			new Function<WikiPage, Object>() {
+				@Override
+				public Object apply(WikiPage wikiPage) {
+					return wikiPage.getStatusByUserId();
+				}
+			});
+		attributeGetters.put("statusByUserName",
+			new Function<WikiPage, Object>() {
+				@Override
+				public Object apply(WikiPage wikiPage) {
+					return wikiPage.getStatusByUserName();
+				}
+			});
+		attributeGetters.put("statusDate",
+			new Function<WikiPage, Object>() {
+				@Override
+				public Object apply(WikiPage wikiPage) {
+					return wikiPage.getStatusDate();
+				}
+			});
 
-		Long resourcePrimKey = (Long)attributes.get("resourcePrimKey");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (resourcePrimKey != null) {
-			setResourcePrimKey(resourcePrimKey);
-		}
+		Map<String, BiConsumer<WikiPage, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<WikiPage, Object>>();
 
-		Long groupId = (Long)attributes.get("groupId");
+		attributeSetters.put("uuid",
+			new BiConsumer<WikiPage, Object>() {
+				@Override
+				public void accept(WikiPage wikiPage, Object uuid) {
+					wikiPage.setUuid((String)uuid);
+				}
+			});
+		attributeSetters.put("pageId",
+			new BiConsumer<WikiPage, Object>() {
+				@Override
+				public void accept(WikiPage wikiPage, Object pageId) {
+					wikiPage.setPageId((Long)pageId);
+				}
+			});
+		attributeSetters.put("resourcePrimKey",
+			new BiConsumer<WikiPage, Object>() {
+				@Override
+				public void accept(WikiPage wikiPage, Object resourcePrimKey) {
+					wikiPage.setResourcePrimKey((Long)resourcePrimKey);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<WikiPage, Object>() {
+				@Override
+				public void accept(WikiPage wikiPage, Object groupId) {
+					wikiPage.setGroupId((Long)groupId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<WikiPage, Object>() {
+				@Override
+				public void accept(WikiPage wikiPage, Object companyId) {
+					wikiPage.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<WikiPage, Object>() {
+				@Override
+				public void accept(WikiPage wikiPage, Object userId) {
+					wikiPage.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<WikiPage, Object>() {
+				@Override
+				public void accept(WikiPage wikiPage, Object userName) {
+					wikiPage.setUserName((String)userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<WikiPage, Object>() {
+				@Override
+				public void accept(WikiPage wikiPage, Object createDate) {
+					wikiPage.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<WikiPage, Object>() {
+				@Override
+				public void accept(WikiPage wikiPage, Object modifiedDate) {
+					wikiPage.setModifiedDate((Date)modifiedDate);
+				}
+			});
+		attributeSetters.put("nodeId",
+			new BiConsumer<WikiPage, Object>() {
+				@Override
+				public void accept(WikiPage wikiPage, Object nodeId) {
+					wikiPage.setNodeId((Long)nodeId);
+				}
+			});
+		attributeSetters.put("title",
+			new BiConsumer<WikiPage, Object>() {
+				@Override
+				public void accept(WikiPage wikiPage, Object title) {
+					wikiPage.setTitle((String)title);
+				}
+			});
+		attributeSetters.put("version",
+			new BiConsumer<WikiPage, Object>() {
+				@Override
+				public void accept(WikiPage wikiPage, Object version) {
+					wikiPage.setVersion((Double)version);
+				}
+			});
+		attributeSetters.put("minorEdit",
+			new BiConsumer<WikiPage, Object>() {
+				@Override
+				public void accept(WikiPage wikiPage, Object minorEdit) {
+					wikiPage.setMinorEdit((Boolean)minorEdit);
+				}
+			});
+		attributeSetters.put("content",
+			new BiConsumer<WikiPage, Object>() {
+				@Override
+				public void accept(WikiPage wikiPage, Object content) {
+					wikiPage.setContent((String)content);
+				}
+			});
+		attributeSetters.put("summary",
+			new BiConsumer<WikiPage, Object>() {
+				@Override
+				public void accept(WikiPage wikiPage, Object summary) {
+					wikiPage.setSummary((String)summary);
+				}
+			});
+		attributeSetters.put("format",
+			new BiConsumer<WikiPage, Object>() {
+				@Override
+				public void accept(WikiPage wikiPage, Object format) {
+					wikiPage.setFormat((String)format);
+				}
+			});
+		attributeSetters.put("head",
+			new BiConsumer<WikiPage, Object>() {
+				@Override
+				public void accept(WikiPage wikiPage, Object head) {
+					wikiPage.setHead((Boolean)head);
+				}
+			});
+		attributeSetters.put("parentTitle",
+			new BiConsumer<WikiPage, Object>() {
+				@Override
+				public void accept(WikiPage wikiPage, Object parentTitle) {
+					wikiPage.setParentTitle((String)parentTitle);
+				}
+			});
+		attributeSetters.put("redirectTitle",
+			new BiConsumer<WikiPage, Object>() {
+				@Override
+				public void accept(WikiPage wikiPage, Object redirectTitle) {
+					wikiPage.setRedirectTitle((String)redirectTitle);
+				}
+			});
+		attributeSetters.put("lastPublishDate",
+			new BiConsumer<WikiPage, Object>() {
+				@Override
+				public void accept(WikiPage wikiPage, Object lastPublishDate) {
+					wikiPage.setLastPublishDate((Date)lastPublishDate);
+				}
+			});
+		attributeSetters.put("status",
+			new BiConsumer<WikiPage, Object>() {
+				@Override
+				public void accept(WikiPage wikiPage, Object status) {
+					wikiPage.setStatus((Integer)status);
+				}
+			});
+		attributeSetters.put("statusByUserId",
+			new BiConsumer<WikiPage, Object>() {
+				@Override
+				public void accept(WikiPage wikiPage, Object statusByUserId) {
+					wikiPage.setStatusByUserId((Long)statusByUserId);
+				}
+			});
+		attributeSetters.put("statusByUserName",
+			new BiConsumer<WikiPage, Object>() {
+				@Override
+				public void accept(WikiPage wikiPage, Object statusByUserName) {
+					wikiPage.setStatusByUserName((String)statusByUserName);
+				}
+			});
+		attributeSetters.put("statusDate",
+			new BiConsumer<WikiPage, Object>() {
+				@Override
+				public void accept(WikiPage wikiPage, Object statusDate) {
+					wikiPage.setStatusDate((Date)statusDate);
+				}
+			});
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long nodeId = (Long)attributes.get("nodeId");
-
-		if (nodeId != null) {
-			setNodeId(nodeId);
-		}
-
-		String title = (String)attributes.get("title");
-
-		if (title != null) {
-			setTitle(title);
-		}
-
-		Double version = (Double)attributes.get("version");
-
-		if (version != null) {
-			setVersion(version);
-		}
-
-		Boolean minorEdit = (Boolean)attributes.get("minorEdit");
-
-		if (minorEdit != null) {
-			setMinorEdit(minorEdit);
-		}
-
-		String content = (String)attributes.get("content");
-
-		if (content != null) {
-			setContent(content);
-		}
-
-		String summary = (String)attributes.get("summary");
-
-		if (summary != null) {
-			setSummary(summary);
-		}
-
-		String format = (String)attributes.get("format");
-
-		if (format != null) {
-			setFormat(format);
-		}
-
-		Boolean head = (Boolean)attributes.get("head");
-
-		if (head != null) {
-			setHead(head);
-		}
-
-		String parentTitle = (String)attributes.get("parentTitle");
-
-		if (parentTitle != null) {
-			setParentTitle(parentTitle);
-		}
-
-		String redirectTitle = (String)attributes.get("redirectTitle");
-
-		if (redirectTitle != null) {
-			setRedirectTitle(redirectTitle);
-		}
-
-		Date lastPublishDate = (Date)attributes.get("lastPublishDate");
-
-		if (lastPublishDate != null) {
-			setLastPublishDate(lastPublishDate);
-		}
-
-		Integer status = (Integer)attributes.get("status");
-
-		if (status != null) {
-			setStatus(status);
-		}
-
-		Long statusByUserId = (Long)attributes.get("statusByUserId");
-
-		if (statusByUserId != null) {
-			setStatusByUserId(statusByUserId);
-		}
-
-		String statusByUserName = (String)attributes.get("statusByUserName");
-
-		if (statusByUserName != null) {
-			setStatusByUserName(statusByUserName);
-		}
-
-		Date statusDate = (Date)attributes.get("statusDate");
-
-		if (statusDate != null) {
-			setStatusDate(statusDate);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON
@@ -1518,173 +1699,6 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		}
 
 		return wikiPageCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(49);
-
-		sb.append("{uuid=");
-		sb.append(getUuid());
-		sb.append(", pageId=");
-		sb.append(getPageId());
-		sb.append(", resourcePrimKey=");
-		sb.append(getResourcePrimKey());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", nodeId=");
-		sb.append(getNodeId());
-		sb.append(", title=");
-		sb.append(getTitle());
-		sb.append(", version=");
-		sb.append(getVersion());
-		sb.append(", minorEdit=");
-		sb.append(isMinorEdit());
-		sb.append(", content=");
-		sb.append(getContent());
-		sb.append(", summary=");
-		sb.append(getSummary());
-		sb.append(", format=");
-		sb.append(getFormat());
-		sb.append(", head=");
-		sb.append(isHead());
-		sb.append(", parentTitle=");
-		sb.append(getParentTitle());
-		sb.append(", redirectTitle=");
-		sb.append(getRedirectTitle());
-		sb.append(", lastPublishDate=");
-		sb.append(getLastPublishDate());
-		sb.append(", status=");
-		sb.append(getStatus());
-		sb.append(", statusByUserId=");
-		sb.append(getStatusByUserId());
-		sb.append(", statusByUserName=");
-		sb.append(getStatusByUserName());
-		sb.append(", statusDate=");
-		sb.append(getStatusDate());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(76);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.wiki.model.WikiPage");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>pageId</column-name><column-value><![CDATA[");
-		sb.append(getPageId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>resourcePrimKey</column-name><column-value><![CDATA[");
-		sb.append(getResourcePrimKey());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>nodeId</column-name><column-value><![CDATA[");
-		sb.append(getNodeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>title</column-name><column-value><![CDATA[");
-		sb.append(getTitle());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>version</column-name><column-value><![CDATA[");
-		sb.append(getVersion());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>minorEdit</column-name><column-value><![CDATA[");
-		sb.append(isMinorEdit());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>content</column-name><column-value><![CDATA[");
-		sb.append(getContent());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>summary</column-name><column-value><![CDATA[");
-		sb.append(getSummary());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>format</column-name><column-value><![CDATA[");
-		sb.append(getFormat());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>head</column-name><column-value><![CDATA[");
-		sb.append(isHead());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>parentTitle</column-name><column-value><![CDATA[");
-		sb.append(getParentTitle());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>redirectTitle</column-name><column-value><![CDATA[");
-		sb.append(getRedirectTitle());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>lastPublishDate</column-name><column-value><![CDATA[");
-		sb.append(getLastPublishDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>status</column-name><column-value><![CDATA[");
-		sb.append(getStatus());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusByUserId</column-name><column-value><![CDATA[");
-		sb.append(getStatusByUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusByUserName</column-name><column-value><![CDATA[");
-		sb.append(getStatusByUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusDate</column-name><column-value><![CDATA[");
-		sb.append(getStatusDate());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = WikiPage.class.getClassLoader();

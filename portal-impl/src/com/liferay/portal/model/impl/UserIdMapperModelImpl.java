@@ -19,8 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -38,8 +36,12 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the UserIdMapper service. Represents a row in the &quot;UserIdMapper&quot; database table, with each column mapped to a property of this class.
@@ -141,66 +143,128 @@ public class UserIdMapperModelImpl extends BaseModelImpl<UserIdMapper>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("userIdMapperId", getUserIdMapperId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("type", getType());
-		attributes.put("description", getDescription());
-		attributes.put("externalUserId", getExternalUserId());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<UserIdMapper, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+	public Map<String, BiConsumer<UserIdMapper, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
-		}
+	private static final Map<String, Function<UserIdMapper, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<UserIdMapper, Object>> _attributeSetters;
 
-		Long userIdMapperId = (Long)attributes.get("userIdMapperId");
+	static {
+		Map<String, Function<UserIdMapper, Object>> attributeGetters = new LinkedHashMap<String, Function<UserIdMapper, Object>>();
 
-		if (userIdMapperId != null) {
-			setUserIdMapperId(userIdMapperId);
-		}
+		attributeGetters.put("mvccVersion",
+			new Function<UserIdMapper, Object>() {
+				@Override
+				public Object apply(UserIdMapper userIdMapper) {
+					return userIdMapper.getMvccVersion();
+				}
+			});
+		attributeGetters.put("userIdMapperId",
+			new Function<UserIdMapper, Object>() {
+				@Override
+				public Object apply(UserIdMapper userIdMapper) {
+					return userIdMapper.getUserIdMapperId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<UserIdMapper, Object>() {
+				@Override
+				public Object apply(UserIdMapper userIdMapper) {
+					return userIdMapper.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<UserIdMapper, Object>() {
+				@Override
+				public Object apply(UserIdMapper userIdMapper) {
+					return userIdMapper.getUserId();
+				}
+			});
+		attributeGetters.put("type",
+			new Function<UserIdMapper, Object>() {
+				@Override
+				public Object apply(UserIdMapper userIdMapper) {
+					return userIdMapper.getType();
+				}
+			});
+		attributeGetters.put("description",
+			new Function<UserIdMapper, Object>() {
+				@Override
+				public Object apply(UserIdMapper userIdMapper) {
+					return userIdMapper.getDescription();
+				}
+			});
+		attributeGetters.put("externalUserId",
+			new Function<UserIdMapper, Object>() {
+				@Override
+				public Object apply(UserIdMapper userIdMapper) {
+					return userIdMapper.getExternalUserId();
+				}
+			});
 
-		Long companyId = (Long)attributes.get("companyId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		Map<String, BiConsumer<UserIdMapper, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<UserIdMapper, Object>>();
 
-		Long userId = (Long)attributes.get("userId");
+		attributeSetters.put("mvccVersion",
+			new BiConsumer<UserIdMapper, Object>() {
+				@Override
+				public void accept(UserIdMapper userIdMapper, Object mvccVersion) {
+					userIdMapper.setMvccVersion((Long)mvccVersion);
+				}
+			});
+		attributeSetters.put("userIdMapperId",
+			new BiConsumer<UserIdMapper, Object>() {
+				@Override
+				public void accept(UserIdMapper userIdMapper,
+					Object userIdMapperId) {
+					userIdMapper.setUserIdMapperId((Long)userIdMapperId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<UserIdMapper, Object>() {
+				@Override
+				public void accept(UserIdMapper userIdMapper, Object companyId) {
+					userIdMapper.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<UserIdMapper, Object>() {
+				@Override
+				public void accept(UserIdMapper userIdMapper, Object userId) {
+					userIdMapper.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("type",
+			new BiConsumer<UserIdMapper, Object>() {
+				@Override
+				public void accept(UserIdMapper userIdMapper, Object type) {
+					userIdMapper.setType((String)type);
+				}
+			});
+		attributeSetters.put("description",
+			new BiConsumer<UserIdMapper, Object>() {
+				@Override
+				public void accept(UserIdMapper userIdMapper, Object description) {
+					userIdMapper.setDescription((String)description);
+				}
+			});
+		attributeSetters.put("externalUserId",
+			new BiConsumer<UserIdMapper, Object>() {
+				@Override
+				public void accept(UserIdMapper userIdMapper,
+					Object externalUserId) {
+					userIdMapper.setExternalUserId((String)externalUserId);
+				}
+			});
 
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String type = (String)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
-		String externalUserId = (String)attributes.get("externalUserId");
-
-		if (externalUserId != null) {
-			setExternalUserId(externalUserId);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override
@@ -484,71 +548,6 @@ public class UserIdMapperModelImpl extends BaseModelImpl<UserIdMapper>
 		}
 
 		return userIdMapperCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(15);
-
-		sb.append("{mvccVersion=");
-		sb.append(getMvccVersion());
-		sb.append(", userIdMapperId=");
-		sb.append(getUserIdMapperId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", type=");
-		sb.append(getType());
-		sb.append(", description=");
-		sb.append(getDescription());
-		sb.append(", externalUserId=");
-		sb.append(getExternalUserId());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(25);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.kernel.model.UserIdMapper");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>mvccVersion</column-name><column-value><![CDATA[");
-		sb.append(getMvccVersion());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userIdMapperId</column-name><column-value><![CDATA[");
-		sb.append(getUserIdMapperId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>type</column-name><column-value><![CDATA[");
-		sb.append(getType());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(getDescription());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>externalUserId</column-name><column-value><![CDATA[");
-		sb.append(getExternalUserId());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = UserIdMapper.class.getClassLoader();

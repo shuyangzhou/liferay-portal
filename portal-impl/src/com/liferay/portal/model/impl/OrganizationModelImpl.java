@@ -21,8 +21,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
@@ -44,10 +42,14 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the Organization service. Represents a row in the &quot;Organization_&quot; database table, with each column mapped to a property of this class.
@@ -252,151 +254,298 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("uuid", getUuid());
-		attributes.put("externalReferenceCode", getExternalReferenceCode());
-		attributes.put("organizationId", getOrganizationId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("parentOrganizationId", getParentOrganizationId());
-		attributes.put("treePath", getTreePath());
-		attributes.put("name", getName());
-		attributes.put("type", getType());
-		attributes.put("recursable", isRecursable());
-		attributes.put("regionId", getRegionId());
-		attributes.put("countryId", getCountryId());
-		attributes.put("statusId", getStatusId());
-		attributes.put("comments", getComments());
-		attributes.put("logoId", getLogoId());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<Organization, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+	public Map<String, BiConsumer<Organization, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
-		}
+	private static final Map<String, Function<Organization, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<Organization, Object>> _attributeSetters;
 
-		String uuid = (String)attributes.get("uuid");
+	static {
+		Map<String, Function<Organization, Object>> attributeGetters = new LinkedHashMap<String, Function<Organization, Object>>();
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
+		attributeGetters.put("mvccVersion",
+			new Function<Organization, Object>() {
+				@Override
+				public Object apply(Organization organization) {
+					return organization.getMvccVersion();
+				}
+			});
+		attributeGetters.put("uuid",
+			new Function<Organization, Object>() {
+				@Override
+				public Object apply(Organization organization) {
+					return organization.getUuid();
+				}
+			});
+		attributeGetters.put("externalReferenceCode",
+			new Function<Organization, Object>() {
+				@Override
+				public Object apply(Organization organization) {
+					return organization.getExternalReferenceCode();
+				}
+			});
+		attributeGetters.put("organizationId",
+			new Function<Organization, Object>() {
+				@Override
+				public Object apply(Organization organization) {
+					return organization.getOrganizationId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<Organization, Object>() {
+				@Override
+				public Object apply(Organization organization) {
+					return organization.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<Organization, Object>() {
+				@Override
+				public Object apply(Organization organization) {
+					return organization.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<Organization, Object>() {
+				@Override
+				public Object apply(Organization organization) {
+					return organization.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<Organization, Object>() {
+				@Override
+				public Object apply(Organization organization) {
+					return organization.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<Organization, Object>() {
+				@Override
+				public Object apply(Organization organization) {
+					return organization.getModifiedDate();
+				}
+			});
+		attributeGetters.put("parentOrganizationId",
+			new Function<Organization, Object>() {
+				@Override
+				public Object apply(Organization organization) {
+					return organization.getParentOrganizationId();
+				}
+			});
+		attributeGetters.put("treePath",
+			new Function<Organization, Object>() {
+				@Override
+				public Object apply(Organization organization) {
+					return organization.getTreePath();
+				}
+			});
+		attributeGetters.put("name",
+			new Function<Organization, Object>() {
+				@Override
+				public Object apply(Organization organization) {
+					return organization.getName();
+				}
+			});
+		attributeGetters.put("type",
+			new Function<Organization, Object>() {
+				@Override
+				public Object apply(Organization organization) {
+					return organization.getType();
+				}
+			});
+		attributeGetters.put("recursable",
+			new Function<Organization, Object>() {
+				@Override
+				public Object apply(Organization organization) {
+					return organization.isRecursable();
+				}
+			});
+		attributeGetters.put("regionId",
+			new Function<Organization, Object>() {
+				@Override
+				public Object apply(Organization organization) {
+					return organization.getRegionId();
+				}
+			});
+		attributeGetters.put("countryId",
+			new Function<Organization, Object>() {
+				@Override
+				public Object apply(Organization organization) {
+					return organization.getCountryId();
+				}
+			});
+		attributeGetters.put("statusId",
+			new Function<Organization, Object>() {
+				@Override
+				public Object apply(Organization organization) {
+					return organization.getStatusId();
+				}
+			});
+		attributeGetters.put("comments",
+			new Function<Organization, Object>() {
+				@Override
+				public Object apply(Organization organization) {
+					return organization.getComments();
+				}
+			});
+		attributeGetters.put("logoId",
+			new Function<Organization, Object>() {
+				@Override
+				public Object apply(Organization organization) {
+					return organization.getLogoId();
+				}
+			});
 
-		String externalReferenceCode = (String)attributes.get(
-				"externalReferenceCode");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (externalReferenceCode != null) {
-			setExternalReferenceCode(externalReferenceCode);
-		}
+		Map<String, BiConsumer<Organization, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Organization, Object>>();
 
-		Long organizationId = (Long)attributes.get("organizationId");
+		attributeSetters.put("mvccVersion",
+			new BiConsumer<Organization, Object>() {
+				@Override
+				public void accept(Organization organization, Object mvccVersion) {
+					organization.setMvccVersion((Long)mvccVersion);
+				}
+			});
+		attributeSetters.put("uuid",
+			new BiConsumer<Organization, Object>() {
+				@Override
+				public void accept(Organization organization, Object uuid) {
+					organization.setUuid((String)uuid);
+				}
+			});
+		attributeSetters.put("externalReferenceCode",
+			new BiConsumer<Organization, Object>() {
+				@Override
+				public void accept(Organization organization,
+					Object externalReferenceCode) {
+					organization.setExternalReferenceCode((String)externalReferenceCode);
+				}
+			});
+		attributeSetters.put("organizationId",
+			new BiConsumer<Organization, Object>() {
+				@Override
+				public void accept(Organization organization,
+					Object organizationId) {
+					organization.setOrganizationId((Long)organizationId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<Organization, Object>() {
+				@Override
+				public void accept(Organization organization, Object companyId) {
+					organization.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<Organization, Object>() {
+				@Override
+				public void accept(Organization organization, Object userId) {
+					organization.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<Organization, Object>() {
+				@Override
+				public void accept(Organization organization, Object userName) {
+					organization.setUserName((String)userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<Organization, Object>() {
+				@Override
+				public void accept(Organization organization, Object createDate) {
+					organization.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<Organization, Object>() {
+				@Override
+				public void accept(Organization organization,
+					Object modifiedDate) {
+					organization.setModifiedDate((Date)modifiedDate);
+				}
+			});
+		attributeSetters.put("parentOrganizationId",
+			new BiConsumer<Organization, Object>() {
+				@Override
+				public void accept(Organization organization,
+					Object parentOrganizationId) {
+					organization.setParentOrganizationId((Long)parentOrganizationId);
+				}
+			});
+		attributeSetters.put("treePath",
+			new BiConsumer<Organization, Object>() {
+				@Override
+				public void accept(Organization organization, Object treePath) {
+					organization.setTreePath((String)treePath);
+				}
+			});
+		attributeSetters.put("name",
+			new BiConsumer<Organization, Object>() {
+				@Override
+				public void accept(Organization organization, Object name) {
+					organization.setName((String)name);
+				}
+			});
+		attributeSetters.put("type",
+			new BiConsumer<Organization, Object>() {
+				@Override
+				public void accept(Organization organization, Object type) {
+					organization.setType((String)type);
+				}
+			});
+		attributeSetters.put("recursable",
+			new BiConsumer<Organization, Object>() {
+				@Override
+				public void accept(Organization organization, Object recursable) {
+					organization.setRecursable((Boolean)recursable);
+				}
+			});
+		attributeSetters.put("regionId",
+			new BiConsumer<Organization, Object>() {
+				@Override
+				public void accept(Organization organization, Object regionId) {
+					organization.setRegionId((Long)regionId);
+				}
+			});
+		attributeSetters.put("countryId",
+			new BiConsumer<Organization, Object>() {
+				@Override
+				public void accept(Organization organization, Object countryId) {
+					organization.setCountryId((Long)countryId);
+				}
+			});
+		attributeSetters.put("statusId",
+			new BiConsumer<Organization, Object>() {
+				@Override
+				public void accept(Organization organization, Object statusId) {
+					organization.setStatusId((Long)statusId);
+				}
+			});
+		attributeSetters.put("comments",
+			new BiConsumer<Organization, Object>() {
+				@Override
+				public void accept(Organization organization, Object comments) {
+					organization.setComments((String)comments);
+				}
+			});
+		attributeSetters.put("logoId",
+			new BiConsumer<Organization, Object>() {
+				@Override
+				public void accept(Organization organization, Object logoId) {
+					organization.setLogoId((Long)logoId);
+				}
+			});
 
-		if (organizationId != null) {
-			setOrganizationId(organizationId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long parentOrganizationId = (Long)attributes.get("parentOrganizationId");
-
-		if (parentOrganizationId != null) {
-			setParentOrganizationId(parentOrganizationId);
-		}
-
-		String treePath = (String)attributes.get("treePath");
-
-		if (treePath != null) {
-			setTreePath(treePath);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String type = (String)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
-
-		Boolean recursable = (Boolean)attributes.get("recursable");
-
-		if (recursable != null) {
-			setRecursable(recursable);
-		}
-
-		Long regionId = (Long)attributes.get("regionId");
-
-		if (regionId != null) {
-			setRegionId(regionId);
-		}
-
-		Long countryId = (Long)attributes.get("countryId");
-
-		if (countryId != null) {
-			setCountryId(countryId);
-		}
-
-		Long statusId = (Long)attributes.get("statusId");
-
-		if (statusId != null) {
-			setStatusId(statusId);
-		}
-
-		String comments = (String)attributes.get("comments");
-
-		if (comments != null) {
-			setComments(comments);
-		}
-
-		Long logoId = (Long)attributes.get("logoId");
-
-		if (logoId != null) {
-			setLogoId(logoId);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON
@@ -986,143 +1135,6 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 		organizationCacheModel.logoId = getLogoId();
 
 		return organizationCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(39);
-
-		sb.append("{mvccVersion=");
-		sb.append(getMvccVersion());
-		sb.append(", uuid=");
-		sb.append(getUuid());
-		sb.append(", externalReferenceCode=");
-		sb.append(getExternalReferenceCode());
-		sb.append(", organizationId=");
-		sb.append(getOrganizationId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", parentOrganizationId=");
-		sb.append(getParentOrganizationId());
-		sb.append(", treePath=");
-		sb.append(getTreePath());
-		sb.append(", name=");
-		sb.append(getName());
-		sb.append(", type=");
-		sb.append(getType());
-		sb.append(", recursable=");
-		sb.append(isRecursable());
-		sb.append(", regionId=");
-		sb.append(getRegionId());
-		sb.append(", countryId=");
-		sb.append(getCountryId());
-		sb.append(", statusId=");
-		sb.append(getStatusId());
-		sb.append(", comments=");
-		sb.append(getComments());
-		sb.append(", logoId=");
-		sb.append(getLogoId());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(61);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.kernel.model.Organization");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>mvccVersion</column-name><column-value><![CDATA[");
-		sb.append(getMvccVersion());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>externalReferenceCode</column-name><column-value><![CDATA[");
-		sb.append(getExternalReferenceCode());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>organizationId</column-name><column-value><![CDATA[");
-		sb.append(getOrganizationId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>parentOrganizationId</column-name><column-value><![CDATA[");
-		sb.append(getParentOrganizationId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>treePath</column-name><column-value><![CDATA[");
-		sb.append(getTreePath());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(getName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>type</column-name><column-value><![CDATA[");
-		sb.append(getType());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>recursable</column-name><column-value><![CDATA[");
-		sb.append(isRecursable());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>regionId</column-name><column-value><![CDATA[");
-		sb.append(getRegionId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>countryId</column-name><column-value><![CDATA[");
-		sb.append(getCountryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusId</column-name><column-value><![CDATA[");
-		sb.append(getStatusId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>comments</column-name><column-value><![CDATA[");
-		sb.append(getComments());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>logoId</column-name><column-value><![CDATA[");
-		sb.append(getLogoId());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = Organization.class.getClassLoader();

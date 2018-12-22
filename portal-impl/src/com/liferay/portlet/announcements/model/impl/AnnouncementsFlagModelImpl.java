@@ -23,8 +23,6 @@ import com.liferay.announcements.kernel.model.AnnouncementsFlagSoap;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
@@ -43,10 +41,14 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the AnnouncementsFlag service. Represents a row in the &quot;AnnouncementsFlag&quot; database table, with each column mapped to a property of this class.
@@ -192,59 +194,118 @@ public class AnnouncementsFlagModelImpl extends BaseModelImpl<AnnouncementsFlag>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("flagId", getFlagId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("entryId", getEntryId());
-		attributes.put("value", getValue());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<AnnouncementsFlag, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long flagId = (Long)attributes.get("flagId");
+	public Map<String, BiConsumer<AnnouncementsFlag, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (flagId != null) {
-			setFlagId(flagId);
-		}
+	private static final Map<String, Function<AnnouncementsFlag, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<AnnouncementsFlag, Object>> _attributeSetters;
 
-		Long companyId = (Long)attributes.get("companyId");
+	static {
+		Map<String, Function<AnnouncementsFlag, Object>> attributeGetters = new LinkedHashMap<String, Function<AnnouncementsFlag, Object>>();
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		attributeGetters.put("flagId",
+			new Function<AnnouncementsFlag, Object>() {
+				@Override
+				public Object apply(AnnouncementsFlag announcementsFlag) {
+					return announcementsFlag.getFlagId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<AnnouncementsFlag, Object>() {
+				@Override
+				public Object apply(AnnouncementsFlag announcementsFlag) {
+					return announcementsFlag.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<AnnouncementsFlag, Object>() {
+				@Override
+				public Object apply(AnnouncementsFlag announcementsFlag) {
+					return announcementsFlag.getUserId();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<AnnouncementsFlag, Object>() {
+				@Override
+				public Object apply(AnnouncementsFlag announcementsFlag) {
+					return announcementsFlag.getCreateDate();
+				}
+			});
+		attributeGetters.put("entryId",
+			new Function<AnnouncementsFlag, Object>() {
+				@Override
+				public Object apply(AnnouncementsFlag announcementsFlag) {
+					return announcementsFlag.getEntryId();
+				}
+			});
+		attributeGetters.put("value",
+			new Function<AnnouncementsFlag, Object>() {
+				@Override
+				public Object apply(AnnouncementsFlag announcementsFlag) {
+					return announcementsFlag.getValue();
+				}
+			});
 
-		Long userId = (Long)attributes.get("userId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (userId != null) {
-			setUserId(userId);
-		}
+		Map<String, BiConsumer<AnnouncementsFlag, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<AnnouncementsFlag, Object>>();
 
-		Date createDate = (Date)attributes.get("createDate");
+		attributeSetters.put("flagId",
+			new BiConsumer<AnnouncementsFlag, Object>() {
+				@Override
+				public void accept(AnnouncementsFlag announcementsFlag,
+					Object flagId) {
+					announcementsFlag.setFlagId((Long)flagId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<AnnouncementsFlag, Object>() {
+				@Override
+				public void accept(AnnouncementsFlag announcementsFlag,
+					Object companyId) {
+					announcementsFlag.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<AnnouncementsFlag, Object>() {
+				@Override
+				public void accept(AnnouncementsFlag announcementsFlag,
+					Object userId) {
+					announcementsFlag.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<AnnouncementsFlag, Object>() {
+				@Override
+				public void accept(AnnouncementsFlag announcementsFlag,
+					Object createDate) {
+					announcementsFlag.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("entryId",
+			new BiConsumer<AnnouncementsFlag, Object>() {
+				@Override
+				public void accept(AnnouncementsFlag announcementsFlag,
+					Object entryId) {
+					announcementsFlag.setEntryId((Long)entryId);
+				}
+			});
+		attributeSetters.put("value",
+			new BiConsumer<AnnouncementsFlag, Object>() {
+				@Override
+				public void accept(AnnouncementsFlag announcementsFlag,
+					Object value) {
+					announcementsFlag.setValue((Integer)value);
+				}
+			});
 
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Long entryId = (Long)attributes.get("entryId");
-
-		if (entryId != null) {
-			setEntryId(entryId);
-		}
-
-		Integer value = (Integer)attributes.get("value");
-
-		if (value != null) {
-			setValue(value);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON
@@ -518,65 +579,6 @@ public class AnnouncementsFlagModelImpl extends BaseModelImpl<AnnouncementsFlag>
 		announcementsFlagCacheModel.value = getValue();
 
 		return announcementsFlagCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(13);
-
-		sb.append("{flagId=");
-		sb.append(getFlagId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", entryId=");
-		sb.append(getEntryId());
-		sb.append(", value=");
-		sb.append(getValue());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(22);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.announcements.kernel.model.AnnouncementsFlag");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>flagId</column-name><column-value><![CDATA[");
-		sb.append(getFlagId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>entryId</column-name><column-value><![CDATA[");
-		sb.append(getEntryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>value</column-name><column-value><![CDATA[");
-		sb.append(getValue());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = AnnouncementsFlag.class.getClassLoader();

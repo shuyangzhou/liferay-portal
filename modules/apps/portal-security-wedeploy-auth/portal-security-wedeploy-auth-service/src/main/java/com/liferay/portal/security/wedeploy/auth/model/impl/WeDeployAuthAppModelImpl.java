@@ -19,8 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
@@ -41,10 +39,14 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the WeDeployAuthApp service. Represents a row in the &quot;WeDeployAuth_WeDeployAuthApp&quot; database table, with each column mapped to a property of this class.
@@ -202,87 +204,177 @@ public class WeDeployAuthAppModelImpl extends BaseModelImpl<WeDeployAuthApp>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("weDeployAuthAppId", getWeDeployAuthAppId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("name", getName());
-		attributes.put("redirectURI", getRedirectURI());
-		attributes.put("clientId", getClientId());
-		attributes.put("clientSecret", getClientSecret());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<WeDeployAuthApp, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long weDeployAuthAppId = (Long)attributes.get("weDeployAuthAppId");
+	public Map<String, BiConsumer<WeDeployAuthApp, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (weDeployAuthAppId != null) {
-			setWeDeployAuthAppId(weDeployAuthAppId);
-		}
+	private static final Map<String, Function<WeDeployAuthApp, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<WeDeployAuthApp, Object>> _attributeSetters;
 
-		Long companyId = (Long)attributes.get("companyId");
+	static {
+		Map<String, Function<WeDeployAuthApp, Object>> attributeGetters = new LinkedHashMap<String, Function<WeDeployAuthApp, Object>>();
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		attributeGetters.put("weDeployAuthAppId",
+			new Function<WeDeployAuthApp, Object>() {
+				@Override
+				public Object apply(WeDeployAuthApp weDeployAuthApp) {
+					return weDeployAuthApp.getWeDeployAuthAppId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<WeDeployAuthApp, Object>() {
+				@Override
+				public Object apply(WeDeployAuthApp weDeployAuthApp) {
+					return weDeployAuthApp.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<WeDeployAuthApp, Object>() {
+				@Override
+				public Object apply(WeDeployAuthApp weDeployAuthApp) {
+					return weDeployAuthApp.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<WeDeployAuthApp, Object>() {
+				@Override
+				public Object apply(WeDeployAuthApp weDeployAuthApp) {
+					return weDeployAuthApp.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<WeDeployAuthApp, Object>() {
+				@Override
+				public Object apply(WeDeployAuthApp weDeployAuthApp) {
+					return weDeployAuthApp.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<WeDeployAuthApp, Object>() {
+				@Override
+				public Object apply(WeDeployAuthApp weDeployAuthApp) {
+					return weDeployAuthApp.getModifiedDate();
+				}
+			});
+		attributeGetters.put("name",
+			new Function<WeDeployAuthApp, Object>() {
+				@Override
+				public Object apply(WeDeployAuthApp weDeployAuthApp) {
+					return weDeployAuthApp.getName();
+				}
+			});
+		attributeGetters.put("redirectURI",
+			new Function<WeDeployAuthApp, Object>() {
+				@Override
+				public Object apply(WeDeployAuthApp weDeployAuthApp) {
+					return weDeployAuthApp.getRedirectURI();
+				}
+			});
+		attributeGetters.put("clientId",
+			new Function<WeDeployAuthApp, Object>() {
+				@Override
+				public Object apply(WeDeployAuthApp weDeployAuthApp) {
+					return weDeployAuthApp.getClientId();
+				}
+			});
+		attributeGetters.put("clientSecret",
+			new Function<WeDeployAuthApp, Object>() {
+				@Override
+				public Object apply(WeDeployAuthApp weDeployAuthApp) {
+					return weDeployAuthApp.getClientSecret();
+				}
+			});
 
-		Long userId = (Long)attributes.get("userId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (userId != null) {
-			setUserId(userId);
-		}
+		Map<String, BiConsumer<WeDeployAuthApp, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<WeDeployAuthApp, Object>>();
 
-		String userName = (String)attributes.get("userName");
+		attributeSetters.put("weDeployAuthAppId",
+			new BiConsumer<WeDeployAuthApp, Object>() {
+				@Override
+				public void accept(WeDeployAuthApp weDeployAuthApp,
+					Object weDeployAuthAppId) {
+					weDeployAuthApp.setWeDeployAuthAppId((Long)weDeployAuthAppId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<WeDeployAuthApp, Object>() {
+				@Override
+				public void accept(WeDeployAuthApp weDeployAuthApp,
+					Object companyId) {
+					weDeployAuthApp.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<WeDeployAuthApp, Object>() {
+				@Override
+				public void accept(WeDeployAuthApp weDeployAuthApp,
+					Object userId) {
+					weDeployAuthApp.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<WeDeployAuthApp, Object>() {
+				@Override
+				public void accept(WeDeployAuthApp weDeployAuthApp,
+					Object userName) {
+					weDeployAuthApp.setUserName((String)userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<WeDeployAuthApp, Object>() {
+				@Override
+				public void accept(WeDeployAuthApp weDeployAuthApp,
+					Object createDate) {
+					weDeployAuthApp.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<WeDeployAuthApp, Object>() {
+				@Override
+				public void accept(WeDeployAuthApp weDeployAuthApp,
+					Object modifiedDate) {
+					weDeployAuthApp.setModifiedDate((Date)modifiedDate);
+				}
+			});
+		attributeSetters.put("name",
+			new BiConsumer<WeDeployAuthApp, Object>() {
+				@Override
+				public void accept(WeDeployAuthApp weDeployAuthApp, Object name) {
+					weDeployAuthApp.setName((String)name);
+				}
+			});
+		attributeSetters.put("redirectURI",
+			new BiConsumer<WeDeployAuthApp, Object>() {
+				@Override
+				public void accept(WeDeployAuthApp weDeployAuthApp,
+					Object redirectURI) {
+					weDeployAuthApp.setRedirectURI((String)redirectURI);
+				}
+			});
+		attributeSetters.put("clientId",
+			new BiConsumer<WeDeployAuthApp, Object>() {
+				@Override
+				public void accept(WeDeployAuthApp weDeployAuthApp,
+					Object clientId) {
+					weDeployAuthApp.setClientId((String)clientId);
+				}
+			});
+		attributeSetters.put("clientSecret",
+			new BiConsumer<WeDeployAuthApp, Object>() {
+				@Override
+				public void accept(WeDeployAuthApp weDeployAuthApp,
+					Object clientSecret) {
+					weDeployAuthApp.setClientSecret((String)clientSecret);
+				}
+			});
 
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String redirectURI = (String)attributes.get("redirectURI");
-
-		if (redirectURI != null) {
-			setRedirectURI(redirectURI);
-		}
-
-		String clientId = (String)attributes.get("clientId");
-
-		if (clientId != null) {
-			setClientId(clientId);
-		}
-
-		String clientSecret = (String)attributes.get("clientSecret");
-
-		if (clientSecret != null) {
-			setClientSecret(clientSecret);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON
@@ -655,90 +747,6 @@ public class WeDeployAuthAppModelImpl extends BaseModelImpl<WeDeployAuthApp>
 		}
 
 		return weDeployAuthAppCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(21);
-
-		sb.append("{weDeployAuthAppId=");
-		sb.append(getWeDeployAuthAppId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", name=");
-		sb.append(getName());
-		sb.append(", redirectURI=");
-		sb.append(getRedirectURI());
-		sb.append(", clientId=");
-		sb.append(getClientId());
-		sb.append(", clientSecret=");
-		sb.append(getClientSecret());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(34);
-
-		sb.append("<model><model-name>");
-		sb.append(
-			"com.liferay.portal.security.wedeploy.auth.model.WeDeployAuthApp");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>weDeployAuthAppId</column-name><column-value><![CDATA[");
-		sb.append(getWeDeployAuthAppId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(getName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>redirectURI</column-name><column-value><![CDATA[");
-		sb.append(getRedirectURI());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>clientId</column-name><column-value><![CDATA[");
-		sb.append(getClientId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>clientSecret</column-name><column-value><![CDATA[");
-		sb.append(getClientSecret());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = WeDeployAuthApp.class.getClassLoader();

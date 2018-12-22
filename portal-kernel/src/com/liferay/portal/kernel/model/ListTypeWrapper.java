@@ -25,6 +25,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -55,39 +57,41 @@ public class ListTypeWrapper implements ListType, ModelWrapper<ListType> {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("listTypeId", getListTypeId());
-		attributes.put("name", getName());
-		attributes.put("type", getType());
+		Map<String, Function<ListType, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<ListType, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<ListType, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<ListType, Object>> attributeSetters = getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<ListType, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<ListType, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long listTypeId = (Long)attributes.get("listTypeId");
+	@Override
+	public Map<String, Function<ListType, Object>> getAttributeGetters() {
+		return _listType.getAttributeGetters();
+	}
 
-		if (listTypeId != null) {
-			setListTypeId(listTypeId);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String type = (String)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
+	@Override
+	public Map<String, BiConsumer<ListType, Object>> getAttributeSetters() {
+		return _listType.getAttributeSetters();
 	}
 
 	@Override

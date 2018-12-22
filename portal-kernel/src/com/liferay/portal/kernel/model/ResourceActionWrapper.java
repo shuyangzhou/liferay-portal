@@ -25,6 +25,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -56,46 +58,41 @@ public class ResourceActionWrapper implements ResourceAction,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("resourceActionId", getResourceActionId());
-		attributes.put("name", getName());
-		attributes.put("actionId", getActionId());
-		attributes.put("bitwiseValue", getBitwiseValue());
+		Map<String, Function<ResourceAction, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<ResourceAction, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<ResourceAction, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<ResourceAction, Object>> attributeSetters = getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<ResourceAction, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<ResourceAction, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long resourceActionId = (Long)attributes.get("resourceActionId");
+	@Override
+	public Map<String, Function<ResourceAction, Object>> getAttributeGetters() {
+		return _resourceAction.getAttributeGetters();
+	}
 
-		if (resourceActionId != null) {
-			setResourceActionId(resourceActionId);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String actionId = (String)attributes.get("actionId");
-
-		if (actionId != null) {
-			setActionId(actionId);
-		}
-
-		Long bitwiseValue = (Long)attributes.get("bitwiseValue");
-
-		if (bitwiseValue != null) {
-			setBitwiseValue(bitwiseValue);
-		}
+	@Override
+	public Map<String, BiConsumer<ResourceAction, Object>> getAttributeSetters() {
+		return _resourceAction.getAttributeSetters();
 	}
 
 	@Override

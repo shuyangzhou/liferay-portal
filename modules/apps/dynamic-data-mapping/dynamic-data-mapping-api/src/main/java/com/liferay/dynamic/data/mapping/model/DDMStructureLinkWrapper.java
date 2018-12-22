@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -57,46 +59,41 @@ public class DDMStructureLinkWrapper implements DDMStructureLink,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("structureLinkId", getStructureLinkId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("structureId", getStructureId());
+		Map<String, Function<DDMStructureLink, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<DDMStructureLink, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<DDMStructureLink, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long structureLinkId = (Long)attributes.get("structureLinkId");
+		Map<String, BiConsumer<DDMStructureLink, Object>> attributeSetters = getAttributeSetters();
 
-		if (structureLinkId != null) {
-			setStructureLinkId(structureLinkId);
+		for (Map.Entry<String, BiConsumer<DDMStructureLink, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<DDMStructureLink, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	@Override
+	public Map<String, Function<DDMStructureLink, Object>> getAttributeGetters() {
+		return _ddmStructureLink.getAttributeGetters();
+	}
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		Long structureId = (Long)attributes.get("structureId");
-
-		if (structureId != null) {
-			setStructureId(structureId);
-		}
+	@Override
+	public Map<String, BiConsumer<DDMStructureLink, Object>> getAttributeSetters() {
+		return _ddmStructureLink.getAttributeSetters();
 	}
 
 	@Override

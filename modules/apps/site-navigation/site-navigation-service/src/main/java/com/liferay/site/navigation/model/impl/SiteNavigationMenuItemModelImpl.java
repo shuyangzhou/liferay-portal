@@ -21,8 +21,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
@@ -45,10 +43,14 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the SiteNavigationMenuItem service. Represents a row in the &quot;SiteNavigationMenuItem&quot; database table, with each column mapped to a property of this class.
@@ -225,125 +227,279 @@ public class SiteNavigationMenuItemModelImpl extends BaseModelImpl<SiteNavigatio
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("uuid", getUuid());
-		attributes.put("siteNavigationMenuItemId", getSiteNavigationMenuItemId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("siteNavigationMenuId", getSiteNavigationMenuId());
-		attributes.put("parentSiteNavigationMenuItemId",
-			getParentSiteNavigationMenuItemId());
-		attributes.put("name", getName());
-		attributes.put("type", getType());
-		attributes.put("typeSettings", getTypeSettings());
-		attributes.put("order", getOrder());
-		attributes.put("lastPublishDate", getLastPublishDate());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<SiteNavigationMenuItem, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+	public Map<String, BiConsumer<SiteNavigationMenuItem, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
+	private static final Map<String, Function<SiteNavigationMenuItem, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<SiteNavigationMenuItem, Object>> _attributeSetters;
 
-		Long siteNavigationMenuItemId = (Long)attributes.get(
-				"siteNavigationMenuItemId");
+	static {
+		Map<String, Function<SiteNavigationMenuItem, Object>> attributeGetters = new LinkedHashMap<String, Function<SiteNavigationMenuItem, Object>>();
 
-		if (siteNavigationMenuItemId != null) {
-			setSiteNavigationMenuItemId(siteNavigationMenuItemId);
-		}
+		attributeGetters.put("uuid",
+			new Function<SiteNavigationMenuItem, Object>() {
+				@Override
+				public Object apply(
+					SiteNavigationMenuItem siteNavigationMenuItem) {
+					return siteNavigationMenuItem.getUuid();
+				}
+			});
+		attributeGetters.put("siteNavigationMenuItemId",
+			new Function<SiteNavigationMenuItem, Object>() {
+				@Override
+				public Object apply(
+					SiteNavigationMenuItem siteNavigationMenuItem) {
+					return siteNavigationMenuItem.getSiteNavigationMenuItemId();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<SiteNavigationMenuItem, Object>() {
+				@Override
+				public Object apply(
+					SiteNavigationMenuItem siteNavigationMenuItem) {
+					return siteNavigationMenuItem.getGroupId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<SiteNavigationMenuItem, Object>() {
+				@Override
+				public Object apply(
+					SiteNavigationMenuItem siteNavigationMenuItem) {
+					return siteNavigationMenuItem.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<SiteNavigationMenuItem, Object>() {
+				@Override
+				public Object apply(
+					SiteNavigationMenuItem siteNavigationMenuItem) {
+					return siteNavigationMenuItem.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<SiteNavigationMenuItem, Object>() {
+				@Override
+				public Object apply(
+					SiteNavigationMenuItem siteNavigationMenuItem) {
+					return siteNavigationMenuItem.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<SiteNavigationMenuItem, Object>() {
+				@Override
+				public Object apply(
+					SiteNavigationMenuItem siteNavigationMenuItem) {
+					return siteNavigationMenuItem.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<SiteNavigationMenuItem, Object>() {
+				@Override
+				public Object apply(
+					SiteNavigationMenuItem siteNavigationMenuItem) {
+					return siteNavigationMenuItem.getModifiedDate();
+				}
+			});
+		attributeGetters.put("siteNavigationMenuId",
+			new Function<SiteNavigationMenuItem, Object>() {
+				@Override
+				public Object apply(
+					SiteNavigationMenuItem siteNavigationMenuItem) {
+					return siteNavigationMenuItem.getSiteNavigationMenuId();
+				}
+			});
+		attributeGetters.put("parentSiteNavigationMenuItemId",
+			new Function<SiteNavigationMenuItem, Object>() {
+				@Override
+				public Object apply(
+					SiteNavigationMenuItem siteNavigationMenuItem) {
+					return siteNavigationMenuItem.getParentSiteNavigationMenuItemId();
+				}
+			});
+		attributeGetters.put("name",
+			new Function<SiteNavigationMenuItem, Object>() {
+				@Override
+				public Object apply(
+					SiteNavigationMenuItem siteNavigationMenuItem) {
+					return siteNavigationMenuItem.getName();
+				}
+			});
+		attributeGetters.put("type",
+			new Function<SiteNavigationMenuItem, Object>() {
+				@Override
+				public Object apply(
+					SiteNavigationMenuItem siteNavigationMenuItem) {
+					return siteNavigationMenuItem.getType();
+				}
+			});
+		attributeGetters.put("typeSettings",
+			new Function<SiteNavigationMenuItem, Object>() {
+				@Override
+				public Object apply(
+					SiteNavigationMenuItem siteNavigationMenuItem) {
+					return siteNavigationMenuItem.getTypeSettings();
+				}
+			});
+		attributeGetters.put("order",
+			new Function<SiteNavigationMenuItem, Object>() {
+				@Override
+				public Object apply(
+					SiteNavigationMenuItem siteNavigationMenuItem) {
+					return siteNavigationMenuItem.getOrder();
+				}
+			});
+		attributeGetters.put("lastPublishDate",
+			new Function<SiteNavigationMenuItem, Object>() {
+				@Override
+				public Object apply(
+					SiteNavigationMenuItem siteNavigationMenuItem) {
+					return siteNavigationMenuItem.getLastPublishDate();
+				}
+			});
 
-		Long groupId = (Long)attributes.get("groupId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+		Map<String, BiConsumer<SiteNavigationMenuItem, Object>> attributeSetters =
+			new LinkedHashMap<String, BiConsumer<SiteNavigationMenuItem, Object>>();
 
-		Long companyId = (Long)attributes.get("companyId");
+		attributeSetters.put("uuid",
+			new BiConsumer<SiteNavigationMenuItem, Object>() {
+				@Override
+				public void accept(
+					SiteNavigationMenuItem siteNavigationMenuItem, Object uuid) {
+					siteNavigationMenuItem.setUuid((String)uuid);
+				}
+			});
+		attributeSetters.put("siteNavigationMenuItemId",
+			new BiConsumer<SiteNavigationMenuItem, Object>() {
+				@Override
+				public void accept(
+					SiteNavigationMenuItem siteNavigationMenuItem,
+					Object siteNavigationMenuItemId) {
+					siteNavigationMenuItem.setSiteNavigationMenuItemId((Long)siteNavigationMenuItemId);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<SiteNavigationMenuItem, Object>() {
+				@Override
+				public void accept(
+					SiteNavigationMenuItem siteNavigationMenuItem,
+					Object groupId) {
+					siteNavigationMenuItem.setGroupId((Long)groupId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<SiteNavigationMenuItem, Object>() {
+				@Override
+				public void accept(
+					SiteNavigationMenuItem siteNavigationMenuItem,
+					Object companyId) {
+					siteNavigationMenuItem.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<SiteNavigationMenuItem, Object>() {
+				@Override
+				public void accept(
+					SiteNavigationMenuItem siteNavigationMenuItem, Object userId) {
+					siteNavigationMenuItem.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<SiteNavigationMenuItem, Object>() {
+				@Override
+				public void accept(
+					SiteNavigationMenuItem siteNavigationMenuItem,
+					Object userName) {
+					siteNavigationMenuItem.setUserName((String)userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<SiteNavigationMenuItem, Object>() {
+				@Override
+				public void accept(
+					SiteNavigationMenuItem siteNavigationMenuItem,
+					Object createDate) {
+					siteNavigationMenuItem.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<SiteNavigationMenuItem, Object>() {
+				@Override
+				public void accept(
+					SiteNavigationMenuItem siteNavigationMenuItem,
+					Object modifiedDate) {
+					siteNavigationMenuItem.setModifiedDate((Date)modifiedDate);
+				}
+			});
+		attributeSetters.put("siteNavigationMenuId",
+			new BiConsumer<SiteNavigationMenuItem, Object>() {
+				@Override
+				public void accept(
+					SiteNavigationMenuItem siteNavigationMenuItem,
+					Object siteNavigationMenuId) {
+					siteNavigationMenuItem.setSiteNavigationMenuId((Long)siteNavigationMenuId);
+				}
+			});
+		attributeSetters.put("parentSiteNavigationMenuItemId",
+			new BiConsumer<SiteNavigationMenuItem, Object>() {
+				@Override
+				public void accept(
+					SiteNavigationMenuItem siteNavigationMenuItem,
+					Object parentSiteNavigationMenuItemId) {
+					siteNavigationMenuItem.setParentSiteNavigationMenuItemId((Long)parentSiteNavigationMenuItemId);
+				}
+			});
+		attributeSetters.put("name",
+			new BiConsumer<SiteNavigationMenuItem, Object>() {
+				@Override
+				public void accept(
+					SiteNavigationMenuItem siteNavigationMenuItem, Object name) {
+					siteNavigationMenuItem.setName((String)name);
+				}
+			});
+		attributeSetters.put("type",
+			new BiConsumer<SiteNavigationMenuItem, Object>() {
+				@Override
+				public void accept(
+					SiteNavigationMenuItem siteNavigationMenuItem, Object type) {
+					siteNavigationMenuItem.setType((String)type);
+				}
+			});
+		attributeSetters.put("typeSettings",
+			new BiConsumer<SiteNavigationMenuItem, Object>() {
+				@Override
+				public void accept(
+					SiteNavigationMenuItem siteNavigationMenuItem,
+					Object typeSettings) {
+					siteNavigationMenuItem.setTypeSettings((String)typeSettings);
+				}
+			});
+		attributeSetters.put("order",
+			new BiConsumer<SiteNavigationMenuItem, Object>() {
+				@Override
+				public void accept(
+					SiteNavigationMenuItem siteNavigationMenuItem, Object order) {
+					siteNavigationMenuItem.setOrder((Integer)order);
+				}
+			});
+		attributeSetters.put("lastPublishDate",
+			new BiConsumer<SiteNavigationMenuItem, Object>() {
+				@Override
+				public void accept(
+					SiteNavigationMenuItem siteNavigationMenuItem,
+					Object lastPublishDate) {
+					siteNavigationMenuItem.setLastPublishDate((Date)lastPublishDate);
+				}
+			});
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long siteNavigationMenuId = (Long)attributes.get("siteNavigationMenuId");
-
-		if (siteNavigationMenuId != null) {
-			setSiteNavigationMenuId(siteNavigationMenuId);
-		}
-
-		Long parentSiteNavigationMenuItemId = (Long)attributes.get(
-				"parentSiteNavigationMenuItemId");
-
-		if (parentSiteNavigationMenuItemId != null) {
-			setParentSiteNavigationMenuItemId(parentSiteNavigationMenuItemId);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String type = (String)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
-
-		String typeSettings = (String)attributes.get("typeSettings");
-
-		if (typeSettings != null) {
-			setTypeSettings(typeSettings);
-		}
-
-		Integer order = (Integer)attributes.get("order");
-
-		if (order != null) {
-			setOrder(order);
-		}
-
-		Date lastPublishDate = (Date)attributes.get("lastPublishDate");
-
-		if (lastPublishDate != null) {
-			setLastPublishDate(lastPublishDate);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON
@@ -850,119 +1006,6 @@ public class SiteNavigationMenuItemModelImpl extends BaseModelImpl<SiteNavigatio
 		}
 
 		return siteNavigationMenuItemCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(31);
-
-		sb.append("{uuid=");
-		sb.append(getUuid());
-		sb.append(", siteNavigationMenuItemId=");
-		sb.append(getSiteNavigationMenuItemId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", siteNavigationMenuId=");
-		sb.append(getSiteNavigationMenuId());
-		sb.append(", parentSiteNavigationMenuItemId=");
-		sb.append(getParentSiteNavigationMenuItemId());
-		sb.append(", name=");
-		sb.append(getName());
-		sb.append(", type=");
-		sb.append(getType());
-		sb.append(", typeSettings=");
-		sb.append(getTypeSettings());
-		sb.append(", order=");
-		sb.append(getOrder());
-		sb.append(", lastPublishDate=");
-		sb.append(getLastPublishDate());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(49);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.site.navigation.model.SiteNavigationMenuItem");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>siteNavigationMenuItemId</column-name><column-value><![CDATA[");
-		sb.append(getSiteNavigationMenuItemId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>siteNavigationMenuId</column-name><column-value><![CDATA[");
-		sb.append(getSiteNavigationMenuId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>parentSiteNavigationMenuItemId</column-name><column-value><![CDATA[");
-		sb.append(getParentSiteNavigationMenuItemId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(getName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>type</column-name><column-value><![CDATA[");
-		sb.append(getType());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>typeSettings</column-name><column-value><![CDATA[");
-		sb.append(getTypeSettings());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>order</column-name><column-value><![CDATA[");
-		sb.append(getOrder());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>lastPublishDate</column-name><column-value><![CDATA[");
-		sb.append(getLastPublishDate());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = SiteNavigationMenuItem.class.getClassLoader();

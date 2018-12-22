@@ -19,8 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -38,9 +36,13 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the Country service. Represents a row in the &quot;Country&quot; database table, with each column mapped to a property of this class.
@@ -194,80 +196,154 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("countryId", getCountryId());
-		attributes.put("name", getName());
-		attributes.put("a2", getA2());
-		attributes.put("a3", getA3());
-		attributes.put("number", getNumber());
-		attributes.put("idd", getIdd());
-		attributes.put("zipRequired", isZipRequired());
-		attributes.put("active", isActive());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<Country, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+	public Map<String, BiConsumer<Country, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
-		}
+	private static final Map<String, Function<Country, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<Country, Object>> _attributeSetters;
 
-		Long countryId = (Long)attributes.get("countryId");
+	static {
+		Map<String, Function<Country, Object>> attributeGetters = new LinkedHashMap<String, Function<Country, Object>>();
 
-		if (countryId != null) {
-			setCountryId(countryId);
-		}
+		attributeGetters.put("mvccVersion",
+			new Function<Country, Object>() {
+				@Override
+				public Object apply(Country country) {
+					return country.getMvccVersion();
+				}
+			});
+		attributeGetters.put("countryId",
+			new Function<Country, Object>() {
+				@Override
+				public Object apply(Country country) {
+					return country.getCountryId();
+				}
+			});
+		attributeGetters.put("name",
+			new Function<Country, Object>() {
+				@Override
+				public Object apply(Country country) {
+					return country.getName();
+				}
+			});
+		attributeGetters.put("a2",
+			new Function<Country, Object>() {
+				@Override
+				public Object apply(Country country) {
+					return country.getA2();
+				}
+			});
+		attributeGetters.put("a3",
+			new Function<Country, Object>() {
+				@Override
+				public Object apply(Country country) {
+					return country.getA3();
+				}
+			});
+		attributeGetters.put("number",
+			new Function<Country, Object>() {
+				@Override
+				public Object apply(Country country) {
+					return country.getNumber();
+				}
+			});
+		attributeGetters.put("idd",
+			new Function<Country, Object>() {
+				@Override
+				public Object apply(Country country) {
+					return country.getIdd();
+				}
+			});
+		attributeGetters.put("zipRequired",
+			new Function<Country, Object>() {
+				@Override
+				public Object apply(Country country) {
+					return country.isZipRequired();
+				}
+			});
+		attributeGetters.put("active",
+			new Function<Country, Object>() {
+				@Override
+				public Object apply(Country country) {
+					return country.isActive();
+				}
+			});
 
-		String name = (String)attributes.get("name");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (name != null) {
-			setName(name);
-		}
+		Map<String, BiConsumer<Country, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Country, Object>>();
 
-		String a2 = (String)attributes.get("a2");
+		attributeSetters.put("mvccVersion",
+			new BiConsumer<Country, Object>() {
+				@Override
+				public void accept(Country country, Object mvccVersion) {
+					country.setMvccVersion((Long)mvccVersion);
+				}
+			});
+		attributeSetters.put("countryId",
+			new BiConsumer<Country, Object>() {
+				@Override
+				public void accept(Country country, Object countryId) {
+					country.setCountryId((Long)countryId);
+				}
+			});
+		attributeSetters.put("name",
+			new BiConsumer<Country, Object>() {
+				@Override
+				public void accept(Country country, Object name) {
+					country.setName((String)name);
+				}
+			});
+		attributeSetters.put("a2",
+			new BiConsumer<Country, Object>() {
+				@Override
+				public void accept(Country country, Object a2) {
+					country.setA2((String)a2);
+				}
+			});
+		attributeSetters.put("a3",
+			new BiConsumer<Country, Object>() {
+				@Override
+				public void accept(Country country, Object a3) {
+					country.setA3((String)a3);
+				}
+			});
+		attributeSetters.put("number",
+			new BiConsumer<Country, Object>() {
+				@Override
+				public void accept(Country country, Object number) {
+					country.setNumber((String)number);
+				}
+			});
+		attributeSetters.put("idd",
+			new BiConsumer<Country, Object>() {
+				@Override
+				public void accept(Country country, Object idd) {
+					country.setIdd((String)idd);
+				}
+			});
+		attributeSetters.put("zipRequired",
+			new BiConsumer<Country, Object>() {
+				@Override
+				public void accept(Country country, Object zipRequired) {
+					country.setZipRequired((Boolean)zipRequired);
+				}
+			});
+		attributeSetters.put("active",
+			new BiConsumer<Country, Object>() {
+				@Override
+				public void accept(Country country, Object active) {
+					country.setActive((Boolean)active);
+				}
+			});
 
-		if (a2 != null) {
-			setA2(a2);
-		}
-
-		String a3 = (String)attributes.get("a3");
-
-		if (a3 != null) {
-			setA3(a3);
-		}
-
-		String number = (String)attributes.get("number");
-
-		if (number != null) {
-			setNumber(number);
-		}
-
-		String idd = (String)attributes.get("idd");
-
-		if (idd != null) {
-			setIdd(idd);
-		}
-
-		Boolean zipRequired = (Boolean)attributes.get("zipRequired");
-
-		if (zipRequired != null) {
-			setZipRequired(zipRequired);
-		}
-
-		Boolean active = (Boolean)attributes.get("active");
-
-		if (active != null) {
-			setActive(active);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON
@@ -614,83 +690,6 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 		countryCacheModel.active = isActive();
 
 		return countryCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(19);
-
-		sb.append("{mvccVersion=");
-		sb.append(getMvccVersion());
-		sb.append(", countryId=");
-		sb.append(getCountryId());
-		sb.append(", name=");
-		sb.append(getName());
-		sb.append(", a2=");
-		sb.append(getA2());
-		sb.append(", a3=");
-		sb.append(getA3());
-		sb.append(", number=");
-		sb.append(getNumber());
-		sb.append(", idd=");
-		sb.append(getIdd());
-		sb.append(", zipRequired=");
-		sb.append(isZipRequired());
-		sb.append(", active=");
-		sb.append(isActive());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(31);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.kernel.model.Country");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>mvccVersion</column-name><column-value><![CDATA[");
-		sb.append(getMvccVersion());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>countryId</column-name><column-value><![CDATA[");
-		sb.append(getCountryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(getName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>a2</column-name><column-value><![CDATA[");
-		sb.append(getA2());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>a3</column-name><column-value><![CDATA[");
-		sb.append(getA3());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>number</column-name><column-value><![CDATA[");
-		sb.append(getNumber());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>idd</column-name><column-value><![CDATA[");
-		sb.append(getIdd());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>zipRequired</column-name><column-value><![CDATA[");
-		sb.append(isZipRequired());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>active</column-name><column-value><![CDATA[");
-		sb.append(isActive());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = Country.class.getClassLoader();

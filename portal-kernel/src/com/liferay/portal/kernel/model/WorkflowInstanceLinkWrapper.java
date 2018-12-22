@@ -26,6 +26,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -58,89 +60,41 @@ public class WorkflowInstanceLinkWrapper implements WorkflowInstanceLink,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("workflowInstanceLinkId", getWorkflowInstanceLinkId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("workflowInstanceId", getWorkflowInstanceId());
+		Map<String, Function<WorkflowInstanceLink, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<WorkflowInstanceLink, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WorkflowInstanceLink, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<WorkflowInstanceLink, Object>> attributeSetters = getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<WorkflowInstanceLink, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<WorkflowInstanceLink, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long workflowInstanceLinkId = (Long)attributes.get(
-				"workflowInstanceLinkId");
+	@Override
+	public Map<String, Function<WorkflowInstanceLink, Object>> getAttributeGetters() {
+		return _workflowInstanceLink.getAttributeGetters();
+	}
 
-		if (workflowInstanceLinkId != null) {
-			setWorkflowInstanceLinkId(workflowInstanceLinkId);
-		}
-
-		Long groupId = (Long)attributes.get("groupId");
-
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		Long workflowInstanceId = (Long)attributes.get("workflowInstanceId");
-
-		if (workflowInstanceId != null) {
-			setWorkflowInstanceId(workflowInstanceId);
-		}
+	@Override
+	public Map<String, BiConsumer<WorkflowInstanceLink, Object>> getAttributeSetters() {
+		return _workflowInstanceLink.getAttributeSetters();
 	}
 
 	@Override

@@ -29,6 +29,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -60,193 +62,41 @@ public class MBMailingListWrapper implements MBMailingList,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("uuid", getUuid());
-		attributes.put("mailingListId", getMailingListId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("categoryId", getCategoryId());
-		attributes.put("emailAddress", getEmailAddress());
-		attributes.put("inProtocol", getInProtocol());
-		attributes.put("inServerName", getInServerName());
-		attributes.put("inServerPort", getInServerPort());
-		attributes.put("inUseSSL", isInUseSSL());
-		attributes.put("inUserName", getInUserName());
-		attributes.put("inPassword", getInPassword());
-		attributes.put("inReadInterval", getInReadInterval());
-		attributes.put("outEmailAddress", getOutEmailAddress());
-		attributes.put("outCustom", isOutCustom());
-		attributes.put("outServerName", getOutServerName());
-		attributes.put("outServerPort", getOutServerPort());
-		attributes.put("outUseSSL", isOutUseSSL());
-		attributes.put("outUserName", getOutUserName());
-		attributes.put("outPassword", getOutPassword());
-		attributes.put("allowAnonymous", isAllowAnonymous());
-		attributes.put("active", isActive());
+		Map<String, Function<MBMailingList, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<MBMailingList, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<MBMailingList, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+		Map<String, BiConsumer<MBMailingList, Object>> attributeSetters = getAttributeSetters();
 
-		if (uuid != null) {
-			setUuid(uuid);
+		for (Map.Entry<String, BiConsumer<MBMailingList, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<MBMailingList, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long mailingListId = (Long)attributes.get("mailingListId");
+	@Override
+	public Map<String, Function<MBMailingList, Object>> getAttributeGetters() {
+		return _mbMailingList.getAttributeGetters();
+	}
 
-		if (mailingListId != null) {
-			setMailingListId(mailingListId);
-		}
-
-		Long groupId = (Long)attributes.get("groupId");
-
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long categoryId = (Long)attributes.get("categoryId");
-
-		if (categoryId != null) {
-			setCategoryId(categoryId);
-		}
-
-		String emailAddress = (String)attributes.get("emailAddress");
-
-		if (emailAddress != null) {
-			setEmailAddress(emailAddress);
-		}
-
-		String inProtocol = (String)attributes.get("inProtocol");
-
-		if (inProtocol != null) {
-			setInProtocol(inProtocol);
-		}
-
-		String inServerName = (String)attributes.get("inServerName");
-
-		if (inServerName != null) {
-			setInServerName(inServerName);
-		}
-
-		Integer inServerPort = (Integer)attributes.get("inServerPort");
-
-		if (inServerPort != null) {
-			setInServerPort(inServerPort);
-		}
-
-		Boolean inUseSSL = (Boolean)attributes.get("inUseSSL");
-
-		if (inUseSSL != null) {
-			setInUseSSL(inUseSSL);
-		}
-
-		String inUserName = (String)attributes.get("inUserName");
-
-		if (inUserName != null) {
-			setInUserName(inUserName);
-		}
-
-		String inPassword = (String)attributes.get("inPassword");
-
-		if (inPassword != null) {
-			setInPassword(inPassword);
-		}
-
-		Integer inReadInterval = (Integer)attributes.get("inReadInterval");
-
-		if (inReadInterval != null) {
-			setInReadInterval(inReadInterval);
-		}
-
-		String outEmailAddress = (String)attributes.get("outEmailAddress");
-
-		if (outEmailAddress != null) {
-			setOutEmailAddress(outEmailAddress);
-		}
-
-		Boolean outCustom = (Boolean)attributes.get("outCustom");
-
-		if (outCustom != null) {
-			setOutCustom(outCustom);
-		}
-
-		String outServerName = (String)attributes.get("outServerName");
-
-		if (outServerName != null) {
-			setOutServerName(outServerName);
-		}
-
-		Integer outServerPort = (Integer)attributes.get("outServerPort");
-
-		if (outServerPort != null) {
-			setOutServerPort(outServerPort);
-		}
-
-		Boolean outUseSSL = (Boolean)attributes.get("outUseSSL");
-
-		if (outUseSSL != null) {
-			setOutUseSSL(outUseSSL);
-		}
-
-		String outUserName = (String)attributes.get("outUserName");
-
-		if (outUserName != null) {
-			setOutUserName(outUserName);
-		}
-
-		String outPassword = (String)attributes.get("outPassword");
-
-		if (outPassword != null) {
-			setOutPassword(outPassword);
-		}
-
-		Boolean allowAnonymous = (Boolean)attributes.get("allowAnonymous");
-
-		if (allowAnonymous != null) {
-			setAllowAnonymous(allowAnonymous);
-		}
-
-		Boolean active = (Boolean)attributes.get("active");
-
-		if (active != null) {
-			setActive(active);
-		}
+	@Override
+	public Map<String, BiConsumer<MBMailingList, Object>> getAttributeSetters() {
+		return _mbMailingList.getAttributeSetters();
 	}
 
 	@Override

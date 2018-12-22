@@ -19,8 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -38,9 +36,13 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the KaleoNotificationRecipient service. Represents a row in the &quot;KaleoNotificationRecipient&quot; database table, with each column mapped to a property of this class.
@@ -162,143 +164,319 @@ public class KaleoNotificationRecipientModelImpl extends BaseModelImpl<KaleoNoti
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("kaleoNotificationRecipientId",
-			getKaleoNotificationRecipientId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("kaleoDefinitionVersionId", getKaleoDefinitionVersionId());
-		attributes.put("kaleoNotificationId", getKaleoNotificationId());
-		attributes.put("recipientClassName", getRecipientClassName());
-		attributes.put("recipientClassPK", getRecipientClassPK());
-		attributes.put("recipientRoleType", getRecipientRoleType());
-		attributes.put("recipientScript", getRecipientScript());
-		attributes.put("recipientScriptLanguage", getRecipientScriptLanguage());
-		attributes.put("recipientScriptContexts", getRecipientScriptContexts());
-		attributes.put("address", getAddress());
-		attributes.put("notificationReceptionType",
-			getNotificationReceptionType());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<KaleoNotificationRecipient, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long kaleoNotificationRecipientId = (Long)attributes.get(
-				"kaleoNotificationRecipientId");
+	public Map<String, BiConsumer<KaleoNotificationRecipient, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (kaleoNotificationRecipientId != null) {
-			setKaleoNotificationRecipientId(kaleoNotificationRecipientId);
-		}
+	private static final Map<String, Function<KaleoNotificationRecipient, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<KaleoNotificationRecipient, Object>> _attributeSetters;
 
-		Long groupId = (Long)attributes.get("groupId");
+	static {
+		Map<String, Function<KaleoNotificationRecipient, Object>> attributeGetters =
+			new LinkedHashMap<String, Function<KaleoNotificationRecipient, Object>>();
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+		attributeGetters.put("kaleoNotificationRecipientId",
+			new Function<KaleoNotificationRecipient, Object>() {
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+					return kaleoNotificationRecipient.getKaleoNotificationRecipientId();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<KaleoNotificationRecipient, Object>() {
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+					return kaleoNotificationRecipient.getGroupId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<KaleoNotificationRecipient, Object>() {
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+					return kaleoNotificationRecipient.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<KaleoNotificationRecipient, Object>() {
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+					return kaleoNotificationRecipient.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<KaleoNotificationRecipient, Object>() {
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+					return kaleoNotificationRecipient.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<KaleoNotificationRecipient, Object>() {
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+					return kaleoNotificationRecipient.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<KaleoNotificationRecipient, Object>() {
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+					return kaleoNotificationRecipient.getModifiedDate();
+				}
+			});
+		attributeGetters.put("kaleoDefinitionVersionId",
+			new Function<KaleoNotificationRecipient, Object>() {
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+					return kaleoNotificationRecipient.getKaleoDefinitionVersionId();
+				}
+			});
+		attributeGetters.put("kaleoNotificationId",
+			new Function<KaleoNotificationRecipient, Object>() {
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+					return kaleoNotificationRecipient.getKaleoNotificationId();
+				}
+			});
+		attributeGetters.put("recipientClassName",
+			new Function<KaleoNotificationRecipient, Object>() {
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+					return kaleoNotificationRecipient.getRecipientClassName();
+				}
+			});
+		attributeGetters.put("recipientClassPK",
+			new Function<KaleoNotificationRecipient, Object>() {
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+					return kaleoNotificationRecipient.getRecipientClassPK();
+				}
+			});
+		attributeGetters.put("recipientRoleType",
+			new Function<KaleoNotificationRecipient, Object>() {
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+					return kaleoNotificationRecipient.getRecipientRoleType();
+				}
+			});
+		attributeGetters.put("recipientScript",
+			new Function<KaleoNotificationRecipient, Object>() {
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+					return kaleoNotificationRecipient.getRecipientScript();
+				}
+			});
+		attributeGetters.put("recipientScriptLanguage",
+			new Function<KaleoNotificationRecipient, Object>() {
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+					return kaleoNotificationRecipient.getRecipientScriptLanguage();
+				}
+			});
+		attributeGetters.put("recipientScriptContexts",
+			new Function<KaleoNotificationRecipient, Object>() {
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+					return kaleoNotificationRecipient.getRecipientScriptContexts();
+				}
+			});
+		attributeGetters.put("address",
+			new Function<KaleoNotificationRecipient, Object>() {
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+					return kaleoNotificationRecipient.getAddress();
+				}
+			});
+		attributeGetters.put("notificationReceptionType",
+			new Function<KaleoNotificationRecipient, Object>() {
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+					return kaleoNotificationRecipient.getNotificationReceptionType();
+				}
+			});
 
-		Long companyId = (Long)attributes.get("companyId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		Map<String, BiConsumer<KaleoNotificationRecipient, Object>> attributeSetters =
+			new LinkedHashMap<String, BiConsumer<KaleoNotificationRecipient, Object>>();
 
-		Long userId = (Long)attributes.get("userId");
+		attributeSetters.put("kaleoNotificationRecipientId",
+			new BiConsumer<KaleoNotificationRecipient, Object>() {
+				@Override
+				public void accept(
+					KaleoNotificationRecipient kaleoNotificationRecipient,
+					Object kaleoNotificationRecipientId) {
+					kaleoNotificationRecipient.setKaleoNotificationRecipientId((Long)kaleoNotificationRecipientId);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<KaleoNotificationRecipient, Object>() {
+				@Override
+				public void accept(
+					KaleoNotificationRecipient kaleoNotificationRecipient,
+					Object groupId) {
+					kaleoNotificationRecipient.setGroupId((Long)groupId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<KaleoNotificationRecipient, Object>() {
+				@Override
+				public void accept(
+					KaleoNotificationRecipient kaleoNotificationRecipient,
+					Object companyId) {
+					kaleoNotificationRecipient.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<KaleoNotificationRecipient, Object>() {
+				@Override
+				public void accept(
+					KaleoNotificationRecipient kaleoNotificationRecipient,
+					Object userId) {
+					kaleoNotificationRecipient.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<KaleoNotificationRecipient, Object>() {
+				@Override
+				public void accept(
+					KaleoNotificationRecipient kaleoNotificationRecipient,
+					Object userName) {
+					kaleoNotificationRecipient.setUserName((String)userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<KaleoNotificationRecipient, Object>() {
+				@Override
+				public void accept(
+					KaleoNotificationRecipient kaleoNotificationRecipient,
+					Object createDate) {
+					kaleoNotificationRecipient.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<KaleoNotificationRecipient, Object>() {
+				@Override
+				public void accept(
+					KaleoNotificationRecipient kaleoNotificationRecipient,
+					Object modifiedDate) {
+					kaleoNotificationRecipient.setModifiedDate((Date)modifiedDate);
+				}
+			});
+		attributeSetters.put("kaleoDefinitionVersionId",
+			new BiConsumer<KaleoNotificationRecipient, Object>() {
+				@Override
+				public void accept(
+					KaleoNotificationRecipient kaleoNotificationRecipient,
+					Object kaleoDefinitionVersionId) {
+					kaleoNotificationRecipient.setKaleoDefinitionVersionId((Long)kaleoDefinitionVersionId);
+				}
+			});
+		attributeSetters.put("kaleoNotificationId",
+			new BiConsumer<KaleoNotificationRecipient, Object>() {
+				@Override
+				public void accept(
+					KaleoNotificationRecipient kaleoNotificationRecipient,
+					Object kaleoNotificationId) {
+					kaleoNotificationRecipient.setKaleoNotificationId((Long)kaleoNotificationId);
+				}
+			});
+		attributeSetters.put("recipientClassName",
+			new BiConsumer<KaleoNotificationRecipient, Object>() {
+				@Override
+				public void accept(
+					KaleoNotificationRecipient kaleoNotificationRecipient,
+					Object recipientClassName) {
+					kaleoNotificationRecipient.setRecipientClassName((String)recipientClassName);
+				}
+			});
+		attributeSetters.put("recipientClassPK",
+			new BiConsumer<KaleoNotificationRecipient, Object>() {
+				@Override
+				public void accept(
+					KaleoNotificationRecipient kaleoNotificationRecipient,
+					Object recipientClassPK) {
+					kaleoNotificationRecipient.setRecipientClassPK((Long)recipientClassPK);
+				}
+			});
+		attributeSetters.put("recipientRoleType",
+			new BiConsumer<KaleoNotificationRecipient, Object>() {
+				@Override
+				public void accept(
+					KaleoNotificationRecipient kaleoNotificationRecipient,
+					Object recipientRoleType) {
+					kaleoNotificationRecipient.setRecipientRoleType((Integer)recipientRoleType);
+				}
+			});
+		attributeSetters.put("recipientScript",
+			new BiConsumer<KaleoNotificationRecipient, Object>() {
+				@Override
+				public void accept(
+					KaleoNotificationRecipient kaleoNotificationRecipient,
+					Object recipientScript) {
+					kaleoNotificationRecipient.setRecipientScript((String)recipientScript);
+				}
+			});
+		attributeSetters.put("recipientScriptLanguage",
+			new BiConsumer<KaleoNotificationRecipient, Object>() {
+				@Override
+				public void accept(
+					KaleoNotificationRecipient kaleoNotificationRecipient,
+					Object recipientScriptLanguage) {
+					kaleoNotificationRecipient.setRecipientScriptLanguage((String)recipientScriptLanguage);
+				}
+			});
+		attributeSetters.put("recipientScriptContexts",
+			new BiConsumer<KaleoNotificationRecipient, Object>() {
+				@Override
+				public void accept(
+					KaleoNotificationRecipient kaleoNotificationRecipient,
+					Object recipientScriptContexts) {
+					kaleoNotificationRecipient.setRecipientScriptContexts((String)recipientScriptContexts);
+				}
+			});
+		attributeSetters.put("address",
+			new BiConsumer<KaleoNotificationRecipient, Object>() {
+				@Override
+				public void accept(
+					KaleoNotificationRecipient kaleoNotificationRecipient,
+					Object address) {
+					kaleoNotificationRecipient.setAddress((String)address);
+				}
+			});
+		attributeSetters.put("notificationReceptionType",
+			new BiConsumer<KaleoNotificationRecipient, Object>() {
+				@Override
+				public void accept(
+					KaleoNotificationRecipient kaleoNotificationRecipient,
+					Object notificationReceptionType) {
+					kaleoNotificationRecipient.setNotificationReceptionType((String)notificationReceptionType);
+				}
+			});
 
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long kaleoDefinitionVersionId = (Long)attributes.get(
-				"kaleoDefinitionVersionId");
-
-		if (kaleoDefinitionVersionId != null) {
-			setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
-		}
-
-		Long kaleoNotificationId = (Long)attributes.get("kaleoNotificationId");
-
-		if (kaleoNotificationId != null) {
-			setKaleoNotificationId(kaleoNotificationId);
-		}
-
-		String recipientClassName = (String)attributes.get("recipientClassName");
-
-		if (recipientClassName != null) {
-			setRecipientClassName(recipientClassName);
-		}
-
-		Long recipientClassPK = (Long)attributes.get("recipientClassPK");
-
-		if (recipientClassPK != null) {
-			setRecipientClassPK(recipientClassPK);
-		}
-
-		Integer recipientRoleType = (Integer)attributes.get("recipientRoleType");
-
-		if (recipientRoleType != null) {
-			setRecipientRoleType(recipientRoleType);
-		}
-
-		String recipientScript = (String)attributes.get("recipientScript");
-
-		if (recipientScript != null) {
-			setRecipientScript(recipientScript);
-		}
-
-		String recipientScriptLanguage = (String)attributes.get(
-				"recipientScriptLanguage");
-
-		if (recipientScriptLanguage != null) {
-			setRecipientScriptLanguage(recipientScriptLanguage);
-		}
-
-		String recipientScriptContexts = (String)attributes.get(
-				"recipientScriptContexts");
-
-		if (recipientScriptContexts != null) {
-			setRecipientScriptContexts(recipientScriptContexts);
-		}
-
-		String address = (String)attributes.get("address");
-
-		if (address != null) {
-			setAddress(address);
-		}
-
-		String notificationReceptionType = (String)attributes.get(
-				"notificationReceptionType");
-
-		if (notificationReceptionType != null) {
-			setNotificationReceptionType(notificationReceptionType);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override
@@ -799,132 +977,6 @@ public class KaleoNotificationRecipientModelImpl extends BaseModelImpl<KaleoNoti
 		}
 
 		return kaleoNotificationRecipientCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(35);
-
-		sb.append("{kaleoNotificationRecipientId=");
-		sb.append(getKaleoNotificationRecipientId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", kaleoDefinitionVersionId=");
-		sb.append(getKaleoDefinitionVersionId());
-		sb.append(", kaleoNotificationId=");
-		sb.append(getKaleoNotificationId());
-		sb.append(", recipientClassName=");
-		sb.append(getRecipientClassName());
-		sb.append(", recipientClassPK=");
-		sb.append(getRecipientClassPK());
-		sb.append(", recipientRoleType=");
-		sb.append(getRecipientRoleType());
-		sb.append(", recipientScript=");
-		sb.append(getRecipientScript());
-		sb.append(", recipientScriptLanguage=");
-		sb.append(getRecipientScriptLanguage());
-		sb.append(", recipientScriptContexts=");
-		sb.append(getRecipientScriptContexts());
-		sb.append(", address=");
-		sb.append(getAddress());
-		sb.append(", notificationReceptionType=");
-		sb.append(getNotificationReceptionType());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(55);
-
-		sb.append("<model><model-name>");
-		sb.append(
-			"com.liferay.portal.workflow.kaleo.model.KaleoNotificationRecipient");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>kaleoNotificationRecipientId</column-name><column-value><![CDATA[");
-		sb.append(getKaleoNotificationRecipientId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>kaleoDefinitionVersionId</column-name><column-value><![CDATA[");
-		sb.append(getKaleoDefinitionVersionId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>kaleoNotificationId</column-name><column-value><![CDATA[");
-		sb.append(getKaleoNotificationId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>recipientClassName</column-name><column-value><![CDATA[");
-		sb.append(getRecipientClassName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>recipientClassPK</column-name><column-value><![CDATA[");
-		sb.append(getRecipientClassPK());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>recipientRoleType</column-name><column-value><![CDATA[");
-		sb.append(getRecipientRoleType());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>recipientScript</column-name><column-value><![CDATA[");
-		sb.append(getRecipientScript());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>recipientScriptLanguage</column-name><column-value><![CDATA[");
-		sb.append(getRecipientScriptLanguage());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>recipientScriptContexts</column-name><column-value><![CDATA[");
-		sb.append(getRecipientScriptContexts());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>address</column-name><column-value><![CDATA[");
-		sb.append(getAddress());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>notificationReceptionType</column-name><column-value><![CDATA[");
-		sb.append(getNotificationReceptionType());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = KaleoNotificationRecipient.class.getClassLoader();

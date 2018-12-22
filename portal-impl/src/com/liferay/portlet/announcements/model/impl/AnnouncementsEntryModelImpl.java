@@ -25,8 +25,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
@@ -47,10 +45,14 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the AnnouncementsEntry service. Represents a row in the &quot;AnnouncementsEntry&quot; database table, with each column mapped to a property of this class.
@@ -233,136 +235,283 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("uuid", getUuid());
-		attributes.put("entryId", getEntryId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("title", getTitle());
-		attributes.put("content", getContent());
-		attributes.put("url", getUrl());
-		attributes.put("type", getType());
-		attributes.put("displayDate", getDisplayDate());
-		attributes.put("expirationDate", getExpirationDate());
-		attributes.put("priority", getPriority());
-		attributes.put("alert", isAlert());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<AnnouncementsEntry, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+	public Map<String, BiConsumer<AnnouncementsEntry, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
+	private static final Map<String, Function<AnnouncementsEntry, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<AnnouncementsEntry, Object>> _attributeSetters;
 
-		Long entryId = (Long)attributes.get("entryId");
+	static {
+		Map<String, Function<AnnouncementsEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<AnnouncementsEntry, Object>>();
 
-		if (entryId != null) {
-			setEntryId(entryId);
-		}
+		attributeGetters.put("uuid",
+			new Function<AnnouncementsEntry, Object>() {
+				@Override
+				public Object apply(AnnouncementsEntry announcementsEntry) {
+					return announcementsEntry.getUuid();
+				}
+			});
+		attributeGetters.put("entryId",
+			new Function<AnnouncementsEntry, Object>() {
+				@Override
+				public Object apply(AnnouncementsEntry announcementsEntry) {
+					return announcementsEntry.getEntryId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<AnnouncementsEntry, Object>() {
+				@Override
+				public Object apply(AnnouncementsEntry announcementsEntry) {
+					return announcementsEntry.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<AnnouncementsEntry, Object>() {
+				@Override
+				public Object apply(AnnouncementsEntry announcementsEntry) {
+					return announcementsEntry.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<AnnouncementsEntry, Object>() {
+				@Override
+				public Object apply(AnnouncementsEntry announcementsEntry) {
+					return announcementsEntry.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<AnnouncementsEntry, Object>() {
+				@Override
+				public Object apply(AnnouncementsEntry announcementsEntry) {
+					return announcementsEntry.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<AnnouncementsEntry, Object>() {
+				@Override
+				public Object apply(AnnouncementsEntry announcementsEntry) {
+					return announcementsEntry.getModifiedDate();
+				}
+			});
+		attributeGetters.put("classNameId",
+			new Function<AnnouncementsEntry, Object>() {
+				@Override
+				public Object apply(AnnouncementsEntry announcementsEntry) {
+					return announcementsEntry.getClassNameId();
+				}
+			});
+		attributeGetters.put("classPK",
+			new Function<AnnouncementsEntry, Object>() {
+				@Override
+				public Object apply(AnnouncementsEntry announcementsEntry) {
+					return announcementsEntry.getClassPK();
+				}
+			});
+		attributeGetters.put("title",
+			new Function<AnnouncementsEntry, Object>() {
+				@Override
+				public Object apply(AnnouncementsEntry announcementsEntry) {
+					return announcementsEntry.getTitle();
+				}
+			});
+		attributeGetters.put("content",
+			new Function<AnnouncementsEntry, Object>() {
+				@Override
+				public Object apply(AnnouncementsEntry announcementsEntry) {
+					return announcementsEntry.getContent();
+				}
+			});
+		attributeGetters.put("url",
+			new Function<AnnouncementsEntry, Object>() {
+				@Override
+				public Object apply(AnnouncementsEntry announcementsEntry) {
+					return announcementsEntry.getUrl();
+				}
+			});
+		attributeGetters.put("type",
+			new Function<AnnouncementsEntry, Object>() {
+				@Override
+				public Object apply(AnnouncementsEntry announcementsEntry) {
+					return announcementsEntry.getType();
+				}
+			});
+		attributeGetters.put("displayDate",
+			new Function<AnnouncementsEntry, Object>() {
+				@Override
+				public Object apply(AnnouncementsEntry announcementsEntry) {
+					return announcementsEntry.getDisplayDate();
+				}
+			});
+		attributeGetters.put("expirationDate",
+			new Function<AnnouncementsEntry, Object>() {
+				@Override
+				public Object apply(AnnouncementsEntry announcementsEntry) {
+					return announcementsEntry.getExpirationDate();
+				}
+			});
+		attributeGetters.put("priority",
+			new Function<AnnouncementsEntry, Object>() {
+				@Override
+				public Object apply(AnnouncementsEntry announcementsEntry) {
+					return announcementsEntry.getPriority();
+				}
+			});
+		attributeGetters.put("alert",
+			new Function<AnnouncementsEntry, Object>() {
+				@Override
+				public Object apply(AnnouncementsEntry announcementsEntry) {
+					return announcementsEntry.isAlert();
+				}
+			});
 
-		Long companyId = (Long)attributes.get("companyId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		Map<String, BiConsumer<AnnouncementsEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<AnnouncementsEntry, Object>>();
 
-		Long userId = (Long)attributes.get("userId");
+		attributeSetters.put("uuid",
+			new BiConsumer<AnnouncementsEntry, Object>() {
+				@Override
+				public void accept(AnnouncementsEntry announcementsEntry,
+					Object uuid) {
+					announcementsEntry.setUuid((String)uuid);
+				}
+			});
+		attributeSetters.put("entryId",
+			new BiConsumer<AnnouncementsEntry, Object>() {
+				@Override
+				public void accept(AnnouncementsEntry announcementsEntry,
+					Object entryId) {
+					announcementsEntry.setEntryId((Long)entryId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<AnnouncementsEntry, Object>() {
+				@Override
+				public void accept(AnnouncementsEntry announcementsEntry,
+					Object companyId) {
+					announcementsEntry.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<AnnouncementsEntry, Object>() {
+				@Override
+				public void accept(AnnouncementsEntry announcementsEntry,
+					Object userId) {
+					announcementsEntry.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<AnnouncementsEntry, Object>() {
+				@Override
+				public void accept(AnnouncementsEntry announcementsEntry,
+					Object userName) {
+					announcementsEntry.setUserName((String)userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<AnnouncementsEntry, Object>() {
+				@Override
+				public void accept(AnnouncementsEntry announcementsEntry,
+					Object createDate) {
+					announcementsEntry.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<AnnouncementsEntry, Object>() {
+				@Override
+				public void accept(AnnouncementsEntry announcementsEntry,
+					Object modifiedDate) {
+					announcementsEntry.setModifiedDate((Date)modifiedDate);
+				}
+			});
+		attributeSetters.put("classNameId",
+			new BiConsumer<AnnouncementsEntry, Object>() {
+				@Override
+				public void accept(AnnouncementsEntry announcementsEntry,
+					Object classNameId) {
+					announcementsEntry.setClassNameId((Long)classNameId);
+				}
+			});
+		attributeSetters.put("classPK",
+			new BiConsumer<AnnouncementsEntry, Object>() {
+				@Override
+				public void accept(AnnouncementsEntry announcementsEntry,
+					Object classPK) {
+					announcementsEntry.setClassPK((Long)classPK);
+				}
+			});
+		attributeSetters.put("title",
+			new BiConsumer<AnnouncementsEntry, Object>() {
+				@Override
+				public void accept(AnnouncementsEntry announcementsEntry,
+					Object title) {
+					announcementsEntry.setTitle((String)title);
+				}
+			});
+		attributeSetters.put("content",
+			new BiConsumer<AnnouncementsEntry, Object>() {
+				@Override
+				public void accept(AnnouncementsEntry announcementsEntry,
+					Object content) {
+					announcementsEntry.setContent((String)content);
+				}
+			});
+		attributeSetters.put("url",
+			new BiConsumer<AnnouncementsEntry, Object>() {
+				@Override
+				public void accept(AnnouncementsEntry announcementsEntry,
+					Object url) {
+					announcementsEntry.setUrl((String)url);
+				}
+			});
+		attributeSetters.put("type",
+			new BiConsumer<AnnouncementsEntry, Object>() {
+				@Override
+				public void accept(AnnouncementsEntry announcementsEntry,
+					Object type) {
+					announcementsEntry.setType((String)type);
+				}
+			});
+		attributeSetters.put("displayDate",
+			new BiConsumer<AnnouncementsEntry, Object>() {
+				@Override
+				public void accept(AnnouncementsEntry announcementsEntry,
+					Object displayDate) {
+					announcementsEntry.setDisplayDate((Date)displayDate);
+				}
+			});
+		attributeSetters.put("expirationDate",
+			new BiConsumer<AnnouncementsEntry, Object>() {
+				@Override
+				public void accept(AnnouncementsEntry announcementsEntry,
+					Object expirationDate) {
+					announcementsEntry.setExpirationDate((Date)expirationDate);
+				}
+			});
+		attributeSetters.put("priority",
+			new BiConsumer<AnnouncementsEntry, Object>() {
+				@Override
+				public void accept(AnnouncementsEntry announcementsEntry,
+					Object priority) {
+					announcementsEntry.setPriority((Integer)priority);
+				}
+			});
+		attributeSetters.put("alert",
+			new BiConsumer<AnnouncementsEntry, Object>() {
+				@Override
+				public void accept(AnnouncementsEntry announcementsEntry,
+					Object alert) {
+					announcementsEntry.setAlert((Boolean)alert);
+				}
+			});
 
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		String title = (String)attributes.get("title");
-
-		if (title != null) {
-			setTitle(title);
-		}
-
-		String content = (String)attributes.get("content");
-
-		if (content != null) {
-			setContent(content);
-		}
-
-		String url = (String)attributes.get("url");
-
-		if (url != null) {
-			setUrl(url);
-		}
-
-		String type = (String)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
-
-		Date displayDate = (Date)attributes.get("displayDate");
-
-		if (displayDate != null) {
-			setDisplayDate(displayDate);
-		}
-
-		Date expirationDate = (Date)attributes.get("expirationDate");
-
-		if (expirationDate != null) {
-			setExpirationDate(expirationDate);
-		}
-
-		Integer priority = (Integer)attributes.get("priority");
-
-		if (priority != null) {
-			setPriority(priority);
-		}
-
-		Boolean alert = (Boolean)attributes.get("alert");
-
-		if (alert != null) {
-			setAlert(alert);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON
@@ -961,131 +1110,6 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 		announcementsEntryCacheModel.alert = isAlert();
 
 		return announcementsEntryCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(35);
-
-		sb.append("{uuid=");
-		sb.append(getUuid());
-		sb.append(", entryId=");
-		sb.append(getEntryId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", classNameId=");
-		sb.append(getClassNameId());
-		sb.append(", classPK=");
-		sb.append(getClassPK());
-		sb.append(", title=");
-		sb.append(getTitle());
-		sb.append(", content=");
-		sb.append(getContent());
-		sb.append(", url=");
-		sb.append(getUrl());
-		sb.append(", type=");
-		sb.append(getType());
-		sb.append(", displayDate=");
-		sb.append(getDisplayDate());
-		sb.append(", expirationDate=");
-		sb.append(getExpirationDate());
-		sb.append(", priority=");
-		sb.append(getPriority());
-		sb.append(", alert=");
-		sb.append(isAlert());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(55);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.announcements.kernel.model.AnnouncementsEntry");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>entryId</column-name><column-value><![CDATA[");
-		sb.append(getEntryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classNameId</column-name><column-value><![CDATA[");
-		sb.append(getClassNameId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classPK</column-name><column-value><![CDATA[");
-		sb.append(getClassPK());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>title</column-name><column-value><![CDATA[");
-		sb.append(getTitle());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>content</column-name><column-value><![CDATA[");
-		sb.append(getContent());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>url</column-name><column-value><![CDATA[");
-		sb.append(getUrl());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>type</column-name><column-value><![CDATA[");
-		sb.append(getType());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>displayDate</column-name><column-value><![CDATA[");
-		sb.append(getDisplayDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>expirationDate</column-name><column-value><![CDATA[");
-		sb.append(getExpirationDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>priority</column-name><column-value><![CDATA[");
-		sb.append(getPriority());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>alert</column-name><column-value><![CDATA[");
-		sb.append(isAlert());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = AnnouncementsEntry.class.getClassLoader();

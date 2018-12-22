@@ -25,6 +25,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -57,61 +59,41 @@ public class RecentLayoutSetBranchWrapper implements RecentLayoutSetBranch,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("recentLayoutSetBranchId", getRecentLayoutSetBranchId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("layoutSetBranchId", getLayoutSetBranchId());
-		attributes.put("layoutSetId", getLayoutSetId());
+		Map<String, Function<RecentLayoutSetBranch, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<RecentLayoutSetBranch, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<RecentLayoutSetBranch, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<RecentLayoutSetBranch, Object>> attributeSetters = getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<RecentLayoutSetBranch, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<RecentLayoutSetBranch, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long recentLayoutSetBranchId = (Long)attributes.get(
-				"recentLayoutSetBranchId");
+	@Override
+	public Map<String, Function<RecentLayoutSetBranch, Object>> getAttributeGetters() {
+		return _recentLayoutSetBranch.getAttributeGetters();
+	}
 
-		if (recentLayoutSetBranchId != null) {
-			setRecentLayoutSetBranchId(recentLayoutSetBranchId);
-		}
-
-		Long groupId = (Long)attributes.get("groupId");
-
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		Long layoutSetBranchId = (Long)attributes.get("layoutSetBranchId");
-
-		if (layoutSetBranchId != null) {
-			setLayoutSetBranchId(layoutSetBranchId);
-		}
-
-		Long layoutSetId = (Long)attributes.get("layoutSetId");
-
-		if (layoutSetId != null) {
-			setLayoutSetId(layoutSetId);
-		}
+	@Override
+	public Map<String, BiConsumer<RecentLayoutSetBranch, Object>> getAttributeSetters() {
+		return _recentLayoutSetBranch.getAttributeSetters();
 	}
 
 	@Override

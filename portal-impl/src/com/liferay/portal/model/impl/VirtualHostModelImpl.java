@@ -19,8 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
@@ -35,8 +33,12 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the VirtualHost service. Represents a row in the &quot;VirtualHost&quot; database table, with each column mapped to a property of this class.
@@ -134,52 +136,98 @@ public class VirtualHostModelImpl extends BaseModelImpl<VirtualHost>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("virtualHostId", getVirtualHostId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("layoutSetId", getLayoutSetId());
-		attributes.put("hostname", getHostname());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<VirtualHost, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+	public Map<String, BiConsumer<VirtualHost, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
-		}
+	private static final Map<String, Function<VirtualHost, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<VirtualHost, Object>> _attributeSetters;
 
-		Long virtualHostId = (Long)attributes.get("virtualHostId");
+	static {
+		Map<String, Function<VirtualHost, Object>> attributeGetters = new LinkedHashMap<String, Function<VirtualHost, Object>>();
 
-		if (virtualHostId != null) {
-			setVirtualHostId(virtualHostId);
-		}
+		attributeGetters.put("mvccVersion",
+			new Function<VirtualHost, Object>() {
+				@Override
+				public Object apply(VirtualHost virtualHost) {
+					return virtualHost.getMvccVersion();
+				}
+			});
+		attributeGetters.put("virtualHostId",
+			new Function<VirtualHost, Object>() {
+				@Override
+				public Object apply(VirtualHost virtualHost) {
+					return virtualHost.getVirtualHostId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<VirtualHost, Object>() {
+				@Override
+				public Object apply(VirtualHost virtualHost) {
+					return virtualHost.getCompanyId();
+				}
+			});
+		attributeGetters.put("layoutSetId",
+			new Function<VirtualHost, Object>() {
+				@Override
+				public Object apply(VirtualHost virtualHost) {
+					return virtualHost.getLayoutSetId();
+				}
+			});
+		attributeGetters.put("hostname",
+			new Function<VirtualHost, Object>() {
+				@Override
+				public Object apply(VirtualHost virtualHost) {
+					return virtualHost.getHostname();
+				}
+			});
 
-		Long companyId = (Long)attributes.get("companyId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		Map<String, BiConsumer<VirtualHost, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<VirtualHost, Object>>();
 
-		Long layoutSetId = (Long)attributes.get("layoutSetId");
+		attributeSetters.put("mvccVersion",
+			new BiConsumer<VirtualHost, Object>() {
+				@Override
+				public void accept(VirtualHost virtualHost, Object mvccVersion) {
+					virtualHost.setMvccVersion((Long)mvccVersion);
+				}
+			});
+		attributeSetters.put("virtualHostId",
+			new BiConsumer<VirtualHost, Object>() {
+				@Override
+				public void accept(VirtualHost virtualHost, Object virtualHostId) {
+					virtualHost.setVirtualHostId((Long)virtualHostId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<VirtualHost, Object>() {
+				@Override
+				public void accept(VirtualHost virtualHost, Object companyId) {
+					virtualHost.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("layoutSetId",
+			new BiConsumer<VirtualHost, Object>() {
+				@Override
+				public void accept(VirtualHost virtualHost, Object layoutSetId) {
+					virtualHost.setLayoutSetId((Long)layoutSetId);
+				}
+			});
+		attributeSetters.put("hostname",
+			new BiConsumer<VirtualHost, Object>() {
+				@Override
+				public void accept(VirtualHost virtualHost, Object hostname) {
+					virtualHost.setHostname((String)hostname);
+				}
+			});
 
-		if (layoutSetId != null) {
-			setLayoutSetId(layoutSetId);
-		}
-
-		String hostname = (String)attributes.get("hostname");
-
-		if (hostname != null) {
-			setHostname(hostname);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override
@@ -403,59 +451,6 @@ public class VirtualHostModelImpl extends BaseModelImpl<VirtualHost>
 		}
 
 		return virtualHostCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(11);
-
-		sb.append("{mvccVersion=");
-		sb.append(getMvccVersion());
-		sb.append(", virtualHostId=");
-		sb.append(getVirtualHostId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", layoutSetId=");
-		sb.append(getLayoutSetId());
-		sb.append(", hostname=");
-		sb.append(getHostname());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(19);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.kernel.model.VirtualHost");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>mvccVersion</column-name><column-value><![CDATA[");
-		sb.append(getMvccVersion());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>virtualHostId</column-name><column-value><![CDATA[");
-		sb.append(getVirtualHostId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>layoutSetId</column-name><column-value><![CDATA[");
-		sb.append(getLayoutSetId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>hostname</column-name><column-value><![CDATA[");
-		sb.append(getHostname());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = VirtualHost.class.getClassLoader();

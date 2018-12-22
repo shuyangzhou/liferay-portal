@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -58,74 +60,41 @@ public class OAuthConsumerWrapper implements OAuthConsumer,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("oAuthConsumerId", getOAuthConsumerId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("gadgetKey", getGadgetKey());
-		attributes.put("serviceName", getServiceName());
-		attributes.put("consumerKey", getConsumerKey());
-		attributes.put("consumerSecret", getConsumerSecret());
-		attributes.put("keyType", getKeyType());
+		Map<String, Function<OAuthConsumer, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<OAuthConsumer, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<OAuthConsumer, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long oAuthConsumerId = (Long)attributes.get("oAuthConsumerId");
+		Map<String, BiConsumer<OAuthConsumer, Object>> attributeSetters = getAttributeSetters();
 
-		if (oAuthConsumerId != null) {
-			setOAuthConsumerId(oAuthConsumerId);
+		for (Map.Entry<String, BiConsumer<OAuthConsumer, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<OAuthConsumer, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	@Override
+	public Map<String, Function<OAuthConsumer, Object>> getAttributeGetters() {
+		return _oAuthConsumer.getAttributeGetters();
+	}
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		String gadgetKey = (String)attributes.get("gadgetKey");
-
-		if (gadgetKey != null) {
-			setGadgetKey(gadgetKey);
-		}
-
-		String serviceName = (String)attributes.get("serviceName");
-
-		if (serviceName != null) {
-			setServiceName(serviceName);
-		}
-
-		String consumerKey = (String)attributes.get("consumerKey");
-
-		if (consumerKey != null) {
-			setConsumerKey(consumerKey);
-		}
-
-		String consumerSecret = (String)attributes.get("consumerSecret");
-
-		if (consumerSecret != null) {
-			setConsumerSecret(consumerSecret);
-		}
-
-		String keyType = (String)attributes.get("keyType");
-
-		if (keyType != null) {
-			setKeyType(keyType);
-		}
+	@Override
+	public Map<String, BiConsumer<OAuthConsumer, Object>> getAttributeSetters() {
+		return _oAuthConsumer.getAttributeSetters();
 	}
 
 	@Override

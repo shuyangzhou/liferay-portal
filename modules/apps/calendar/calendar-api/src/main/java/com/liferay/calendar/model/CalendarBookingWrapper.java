@@ -29,6 +29,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -60,217 +62,41 @@ public class CalendarBookingWrapper implements CalendarBooking,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("uuid", getUuid());
-		attributes.put("calendarBookingId", getCalendarBookingId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("calendarId", getCalendarId());
-		attributes.put("calendarResourceId", getCalendarResourceId());
-		attributes.put("parentCalendarBookingId", getParentCalendarBookingId());
-		attributes.put("recurringCalendarBookingId",
-			getRecurringCalendarBookingId());
-		attributes.put("vEventUid", getVEventUid());
-		attributes.put("title", getTitle());
-		attributes.put("description", getDescription());
-		attributes.put("location", getLocation());
-		attributes.put("startTime", getStartTime());
-		attributes.put("endTime", getEndTime());
-		attributes.put("allDay", isAllDay());
-		attributes.put("recurrence", getRecurrence());
-		attributes.put("firstReminder", getFirstReminder());
-		attributes.put("firstReminderType", getFirstReminderType());
-		attributes.put("secondReminder", getSecondReminder());
-		attributes.put("secondReminderType", getSecondReminderType());
-		attributes.put("lastPublishDate", getLastPublishDate());
-		attributes.put("status", getStatus());
-		attributes.put("statusByUserId", getStatusByUserId());
-		attributes.put("statusByUserName", getStatusByUserName());
-		attributes.put("statusDate", getStatusDate());
+		Map<String, Function<CalendarBooking, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<CalendarBooking, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<CalendarBooking, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+		Map<String, BiConsumer<CalendarBooking, Object>> attributeSetters = getAttributeSetters();
 
-		if (uuid != null) {
-			setUuid(uuid);
+		for (Map.Entry<String, BiConsumer<CalendarBooking, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<CalendarBooking, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long calendarBookingId = (Long)attributes.get("calendarBookingId");
+	@Override
+	public Map<String, Function<CalendarBooking, Object>> getAttributeGetters() {
+		return _calendarBooking.getAttributeGetters();
+	}
 
-		if (calendarBookingId != null) {
-			setCalendarBookingId(calendarBookingId);
-		}
-
-		Long groupId = (Long)attributes.get("groupId");
-
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long calendarId = (Long)attributes.get("calendarId");
-
-		if (calendarId != null) {
-			setCalendarId(calendarId);
-		}
-
-		Long calendarResourceId = (Long)attributes.get("calendarResourceId");
-
-		if (calendarResourceId != null) {
-			setCalendarResourceId(calendarResourceId);
-		}
-
-		Long parentCalendarBookingId = (Long)attributes.get(
-				"parentCalendarBookingId");
-
-		if (parentCalendarBookingId != null) {
-			setParentCalendarBookingId(parentCalendarBookingId);
-		}
-
-		Long recurringCalendarBookingId = (Long)attributes.get(
-				"recurringCalendarBookingId");
-
-		if (recurringCalendarBookingId != null) {
-			setRecurringCalendarBookingId(recurringCalendarBookingId);
-		}
-
-		String vEventUid = (String)attributes.get("vEventUid");
-
-		if (vEventUid != null) {
-			setVEventUid(vEventUid);
-		}
-
-		String title = (String)attributes.get("title");
-
-		if (title != null) {
-			setTitle(title);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
-		String location = (String)attributes.get("location");
-
-		if (location != null) {
-			setLocation(location);
-		}
-
-		Long startTime = (Long)attributes.get("startTime");
-
-		if (startTime != null) {
-			setStartTime(startTime);
-		}
-
-		Long endTime = (Long)attributes.get("endTime");
-
-		if (endTime != null) {
-			setEndTime(endTime);
-		}
-
-		Boolean allDay = (Boolean)attributes.get("allDay");
-
-		if (allDay != null) {
-			setAllDay(allDay);
-		}
-
-		String recurrence = (String)attributes.get("recurrence");
-
-		if (recurrence != null) {
-			setRecurrence(recurrence);
-		}
-
-		Long firstReminder = (Long)attributes.get("firstReminder");
-
-		if (firstReminder != null) {
-			setFirstReminder(firstReminder);
-		}
-
-		String firstReminderType = (String)attributes.get("firstReminderType");
-
-		if (firstReminderType != null) {
-			setFirstReminderType(firstReminderType);
-		}
-
-		Long secondReminder = (Long)attributes.get("secondReminder");
-
-		if (secondReminder != null) {
-			setSecondReminder(secondReminder);
-		}
-
-		String secondReminderType = (String)attributes.get("secondReminderType");
-
-		if (secondReminderType != null) {
-			setSecondReminderType(secondReminderType);
-		}
-
-		Date lastPublishDate = (Date)attributes.get("lastPublishDate");
-
-		if (lastPublishDate != null) {
-			setLastPublishDate(lastPublishDate);
-		}
-
-		Integer status = (Integer)attributes.get("status");
-
-		if (status != null) {
-			setStatus(status);
-		}
-
-		Long statusByUserId = (Long)attributes.get("statusByUserId");
-
-		if (statusByUserId != null) {
-			setStatusByUserId(statusByUserId);
-		}
-
-		String statusByUserName = (String)attributes.get("statusByUserName");
-
-		if (statusByUserName != null) {
-			setStatusByUserName(statusByUserName);
-		}
-
-		Date statusDate = (Date)attributes.get("statusDate");
-
-		if (statusDate != null) {
-			setStatusDate(statusDate);
-		}
+	@Override
+	public Map<String, BiConsumer<CalendarBooking, Object>> getAttributeSetters() {
+		return _calendarBooking.getAttributeSetters();
 	}
 
 	@Override

@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -57,60 +59,41 @@ public class DLFileEntryMetadataWrapper implements DLFileEntryMetadata,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("uuid", getUuid());
-		attributes.put("fileEntryMetadataId", getFileEntryMetadataId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("DDMStorageId", getDDMStorageId());
-		attributes.put("DDMStructureId", getDDMStructureId());
-		attributes.put("fileEntryId", getFileEntryId());
-		attributes.put("fileVersionId", getFileVersionId());
+		Map<String, Function<DLFileEntryMetadata, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<DLFileEntryMetadata, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<DLFileEntryMetadata, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+		Map<String, BiConsumer<DLFileEntryMetadata, Object>> attributeSetters = getAttributeSetters();
 
-		if (uuid != null) {
-			setUuid(uuid);
+		for (Map.Entry<String, BiConsumer<DLFileEntryMetadata, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<DLFileEntryMetadata, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long fileEntryMetadataId = (Long)attributes.get("fileEntryMetadataId");
+	@Override
+	public Map<String, Function<DLFileEntryMetadata, Object>> getAttributeGetters() {
+		return _dlFileEntryMetadata.getAttributeGetters();
+	}
 
-		if (fileEntryMetadataId != null) {
-			setFileEntryMetadataId(fileEntryMetadataId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long DDMStorageId = (Long)attributes.get("DDMStorageId");
-
-		if (DDMStorageId != null) {
-			setDDMStorageId(DDMStorageId);
-		}
-
-		Long DDMStructureId = (Long)attributes.get("DDMStructureId");
-
-		if (DDMStructureId != null) {
-			setDDMStructureId(DDMStructureId);
-		}
-
-		Long fileEntryId = (Long)attributes.get("fileEntryId");
-
-		if (fileEntryId != null) {
-			setFileEntryId(fileEntryId);
-		}
-
-		Long fileVersionId = (Long)attributes.get("fileVersionId");
-
-		if (fileVersionId != null) {
-			setFileVersionId(fileVersionId);
-		}
+	@Override
+	public Map<String, BiConsumer<DLFileEntryMetadata, Object>> getAttributeSetters() {
+		return _dlFileEntryMetadata.getAttributeSetters();
 	}
 
 	@Override

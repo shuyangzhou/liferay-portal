@@ -25,6 +25,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -56,46 +58,41 @@ public class UserGroupRoleWrapper implements UserGroupRole,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("userId", getUserId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("roleId", getRoleId());
-		attributes.put("companyId", getCompanyId());
+		Map<String, Function<UserGroupRole, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<UserGroupRole, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<UserGroupRole, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<UserGroupRole, Object>> attributeSetters = getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<UserGroupRole, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<UserGroupRole, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long userId = (Long)attributes.get("userId");
+	@Override
+	public Map<String, Function<UserGroupRole, Object>> getAttributeGetters() {
+		return _userGroupRole.getAttributeGetters();
+	}
 
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		Long groupId = (Long)attributes.get("groupId");
-
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long roleId = (Long)attributes.get("roleId");
-
-		if (roleId != null) {
-			setRoleId(roleId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+	@Override
+	public Map<String, BiConsumer<UserGroupRole, Object>> getAttributeSetters() {
+		return _userGroupRole.getAttributeSetters();
 	}
 
 	@Override

@@ -25,6 +25,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -56,46 +58,41 @@ public class VirtualHostWrapper implements VirtualHost,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("virtualHostId", getVirtualHostId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("layoutSetId", getLayoutSetId());
-		attributes.put("hostname", getHostname());
+		Map<String, Function<VirtualHost, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<VirtualHost, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<VirtualHost, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<VirtualHost, Object>> attributeSetters = getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<VirtualHost, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<VirtualHost, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long virtualHostId = (Long)attributes.get("virtualHostId");
+	@Override
+	public Map<String, Function<VirtualHost, Object>> getAttributeGetters() {
+		return _virtualHost.getAttributeGetters();
+	}
 
-		if (virtualHostId != null) {
-			setVirtualHostId(virtualHostId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long layoutSetId = (Long)attributes.get("layoutSetId");
-
-		if (layoutSetId != null) {
-			setLayoutSetId(layoutSetId);
-		}
-
-		String hostname = (String)attributes.get("hostname");
-
-		if (hostname != null) {
-			setHostname(hostname);
-		}
+	@Override
+	public Map<String, BiConsumer<VirtualHost, Object>> getAttributeSetters() {
+		return _virtualHost.getAttributeSetters();
 	}
 
 	@Override

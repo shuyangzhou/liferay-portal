@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -57,60 +59,41 @@ public class DDMStorageLinkWrapper implements DDMStorageLink,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("uuid", getUuid());
-		attributes.put("storageLinkId", getStorageLinkId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("structureId", getStructureId());
-		attributes.put("structureVersionId", getStructureVersionId());
+		Map<String, Function<DDMStorageLink, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<DDMStorageLink, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<DDMStorageLink, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+		Map<String, BiConsumer<DDMStorageLink, Object>> attributeSetters = getAttributeSetters();
 
-		if (uuid != null) {
-			setUuid(uuid);
+		for (Map.Entry<String, BiConsumer<DDMStorageLink, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<DDMStorageLink, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long storageLinkId = (Long)attributes.get("storageLinkId");
+	@Override
+	public Map<String, Function<DDMStorageLink, Object>> getAttributeGetters() {
+		return _ddmStorageLink.getAttributeGetters();
+	}
 
-		if (storageLinkId != null) {
-			setStorageLinkId(storageLinkId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		Long structureId = (Long)attributes.get("structureId");
-
-		if (structureId != null) {
-			setStructureId(structureId);
-		}
-
-		Long structureVersionId = (Long)attributes.get("structureVersionId");
-
-		if (structureVersionId != null) {
-			setStructureVersionId(structureVersionId);
-		}
+	@Override
+	public Map<String, BiConsumer<DDMStorageLink, Object>> getAttributeSetters() {
+		return _ddmStorageLink.getAttributeSetters();
 	}
 
 	@Override

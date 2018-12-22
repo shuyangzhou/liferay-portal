@@ -22,8 +22,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.invitation.invite.members.model.MemberRequest;
 import com.liferay.invitation.invite.members.model.MemberRequestModel;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -40,9 +38,13 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the MemberRequest service. Represents a row in the &quot;IM_MemberRequest&quot; database table, with each column mapped to a property of this class.
@@ -155,101 +157,202 @@ public class MemberRequestModelImpl extends BaseModelImpl<MemberRequest>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("memberRequestId", getMemberRequestId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("key", getKey());
-		attributes.put("receiverUserId", getReceiverUserId());
-		attributes.put("invitedRoleId", getInvitedRoleId());
-		attributes.put("invitedTeamId", getInvitedTeamId());
-		attributes.put("status", getStatus());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<MemberRequest, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long memberRequestId = (Long)attributes.get("memberRequestId");
+	public Map<String, BiConsumer<MemberRequest, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (memberRequestId != null) {
-			setMemberRequestId(memberRequestId);
-		}
+	private static final Map<String, Function<MemberRequest, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<MemberRequest, Object>> _attributeSetters;
 
-		Long groupId = (Long)attributes.get("groupId");
+	static {
+		Map<String, Function<MemberRequest, Object>> attributeGetters = new LinkedHashMap<String, Function<MemberRequest, Object>>();
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+		attributeGetters.put("memberRequestId",
+			new Function<MemberRequest, Object>() {
+				@Override
+				public Object apply(MemberRequest memberRequest) {
+					return memberRequest.getMemberRequestId();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<MemberRequest, Object>() {
+				@Override
+				public Object apply(MemberRequest memberRequest) {
+					return memberRequest.getGroupId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<MemberRequest, Object>() {
+				@Override
+				public Object apply(MemberRequest memberRequest) {
+					return memberRequest.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<MemberRequest, Object>() {
+				@Override
+				public Object apply(MemberRequest memberRequest) {
+					return memberRequest.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<MemberRequest, Object>() {
+				@Override
+				public Object apply(MemberRequest memberRequest) {
+					return memberRequest.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<MemberRequest, Object>() {
+				@Override
+				public Object apply(MemberRequest memberRequest) {
+					return memberRequest.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<MemberRequest, Object>() {
+				@Override
+				public Object apply(MemberRequest memberRequest) {
+					return memberRequest.getModifiedDate();
+				}
+			});
+		attributeGetters.put("key",
+			new Function<MemberRequest, Object>() {
+				@Override
+				public Object apply(MemberRequest memberRequest) {
+					return memberRequest.getKey();
+				}
+			});
+		attributeGetters.put("receiverUserId",
+			new Function<MemberRequest, Object>() {
+				@Override
+				public Object apply(MemberRequest memberRequest) {
+					return memberRequest.getReceiverUserId();
+				}
+			});
+		attributeGetters.put("invitedRoleId",
+			new Function<MemberRequest, Object>() {
+				@Override
+				public Object apply(MemberRequest memberRequest) {
+					return memberRequest.getInvitedRoleId();
+				}
+			});
+		attributeGetters.put("invitedTeamId",
+			new Function<MemberRequest, Object>() {
+				@Override
+				public Object apply(MemberRequest memberRequest) {
+					return memberRequest.getInvitedTeamId();
+				}
+			});
+		attributeGetters.put("status",
+			new Function<MemberRequest, Object>() {
+				@Override
+				public Object apply(MemberRequest memberRequest) {
+					return memberRequest.getStatus();
+				}
+			});
 
-		Long companyId = (Long)attributes.get("companyId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		Map<String, BiConsumer<MemberRequest, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<MemberRequest, Object>>();
 
-		Long userId = (Long)attributes.get("userId");
+		attributeSetters.put("memberRequestId",
+			new BiConsumer<MemberRequest, Object>() {
+				@Override
+				public void accept(MemberRequest memberRequest,
+					Object memberRequestId) {
+					memberRequest.setMemberRequestId((Long)memberRequestId);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<MemberRequest, Object>() {
+				@Override
+				public void accept(MemberRequest memberRequest, Object groupId) {
+					memberRequest.setGroupId((Long)groupId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<MemberRequest, Object>() {
+				@Override
+				public void accept(MemberRequest memberRequest, Object companyId) {
+					memberRequest.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<MemberRequest, Object>() {
+				@Override
+				public void accept(MemberRequest memberRequest, Object userId) {
+					memberRequest.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<MemberRequest, Object>() {
+				@Override
+				public void accept(MemberRequest memberRequest, Object userName) {
+					memberRequest.setUserName((String)userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<MemberRequest, Object>() {
+				@Override
+				public void accept(MemberRequest memberRequest,
+					Object createDate) {
+					memberRequest.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<MemberRequest, Object>() {
+				@Override
+				public void accept(MemberRequest memberRequest,
+					Object modifiedDate) {
+					memberRequest.setModifiedDate((Date)modifiedDate);
+				}
+			});
+		attributeSetters.put("key",
+			new BiConsumer<MemberRequest, Object>() {
+				@Override
+				public void accept(MemberRequest memberRequest, Object key) {
+					memberRequest.setKey((String)key);
+				}
+			});
+		attributeSetters.put("receiverUserId",
+			new BiConsumer<MemberRequest, Object>() {
+				@Override
+				public void accept(MemberRequest memberRequest,
+					Object receiverUserId) {
+					memberRequest.setReceiverUserId((Long)receiverUserId);
+				}
+			});
+		attributeSetters.put("invitedRoleId",
+			new BiConsumer<MemberRequest, Object>() {
+				@Override
+				public void accept(MemberRequest memberRequest,
+					Object invitedRoleId) {
+					memberRequest.setInvitedRoleId((Long)invitedRoleId);
+				}
+			});
+		attributeSetters.put("invitedTeamId",
+			new BiConsumer<MemberRequest, Object>() {
+				@Override
+				public void accept(MemberRequest memberRequest,
+					Object invitedTeamId) {
+					memberRequest.setInvitedTeamId((Long)invitedTeamId);
+				}
+			});
+		attributeSetters.put("status",
+			new BiConsumer<MemberRequest, Object>() {
+				@Override
+				public void accept(MemberRequest memberRequest, Object status) {
+					memberRequest.setStatus((Integer)status);
+				}
+			});
 
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		String key = (String)attributes.get("key");
-
-		if (key != null) {
-			setKey(key);
-		}
-
-		Long receiverUserId = (Long)attributes.get("receiverUserId");
-
-		if (receiverUserId != null) {
-			setReceiverUserId(receiverUserId);
-		}
-
-		Long invitedRoleId = (Long)attributes.get("invitedRoleId");
-
-		if (invitedRoleId != null) {
-			setInvitedRoleId(invitedRoleId);
-		}
-
-		Long invitedTeamId = (Long)attributes.get("invitedTeamId");
-
-		if (invitedTeamId != null) {
-			setInvitedTeamId(invitedTeamId);
-		}
-
-		Integer status = (Integer)attributes.get("status");
-
-		if (status != null) {
-			setStatus(status);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override
@@ -648,101 +751,6 @@ public class MemberRequestModelImpl extends BaseModelImpl<MemberRequest>
 		memberRequestCacheModel.status = getStatus();
 
 		return memberRequestCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(25);
-
-		sb.append("{memberRequestId=");
-		sb.append(getMemberRequestId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", key=");
-		sb.append(getKey());
-		sb.append(", receiverUserId=");
-		sb.append(getReceiverUserId());
-		sb.append(", invitedRoleId=");
-		sb.append(getInvitedRoleId());
-		sb.append(", invitedTeamId=");
-		sb.append(getInvitedTeamId());
-		sb.append(", status=");
-		sb.append(getStatus());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(40);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.invitation.invite.members.model.MemberRequest");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>memberRequestId</column-name><column-value><![CDATA[");
-		sb.append(getMemberRequestId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>key</column-name><column-value><![CDATA[");
-		sb.append(getKey());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>receiverUserId</column-name><column-value><![CDATA[");
-		sb.append(getReceiverUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>invitedRoleId</column-name><column-value><![CDATA[");
-		sb.append(getInvitedRoleId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>invitedTeamId</column-name><column-value><![CDATA[");
-		sb.append(getInvitedTeamId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>status</column-name><column-value><![CDATA[");
-		sb.append(getStatus());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = MemberRequest.class.getClassLoader();

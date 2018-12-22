@@ -25,8 +25,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -51,10 +49,14 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the BlogsEntry service. Represents a row in the &quot;BlogsEntry&quot; database table, with each column mapped to a property of this class.
@@ -272,222 +274,438 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("uuid", getUuid());
-		attributes.put("entryId", getEntryId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("title", getTitle());
-		attributes.put("subtitle", getSubtitle());
-		attributes.put("urlTitle", getUrlTitle());
-		attributes.put("description", getDescription());
-		attributes.put("content", getContent());
-		attributes.put("displayDate", getDisplayDate());
-		attributes.put("allowPingbacks", isAllowPingbacks());
-		attributes.put("allowTrackbacks", isAllowTrackbacks());
-		attributes.put("trackbacks", getTrackbacks());
-		attributes.put("coverImageCaption", getCoverImageCaption());
-		attributes.put("coverImageFileEntryId", getCoverImageFileEntryId());
-		attributes.put("coverImageURL", getCoverImageURL());
-		attributes.put("smallImage", isSmallImage());
-		attributes.put("smallImageFileEntryId", getSmallImageFileEntryId());
-		attributes.put("smallImageId", getSmallImageId());
-		attributes.put("smallImageURL", getSmallImageURL());
-		attributes.put("lastPublishDate", getLastPublishDate());
-		attributes.put("status", getStatus());
-		attributes.put("statusByUserId", getStatusByUserId());
-		attributes.put("statusByUserName", getStatusByUserName());
-		attributes.put("statusDate", getStatusDate());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<BlogsEntry, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+	public Map<String, BiConsumer<BlogsEntry, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
+	private static final Map<String, Function<BlogsEntry, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<BlogsEntry, Object>> _attributeSetters;
 
-		Long entryId = (Long)attributes.get("entryId");
+	static {
+		Map<String, Function<BlogsEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<BlogsEntry, Object>>();
 
-		if (entryId != null) {
-			setEntryId(entryId);
-		}
+		attributeGetters.put("uuid",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.getUuid();
+				}
+			});
+		attributeGetters.put("entryId",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.getEntryId();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.getGroupId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.getModifiedDate();
+				}
+			});
+		attributeGetters.put("title",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.getTitle();
+				}
+			});
+		attributeGetters.put("subtitle",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.getSubtitle();
+				}
+			});
+		attributeGetters.put("urlTitle",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.getUrlTitle();
+				}
+			});
+		attributeGetters.put("description",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.getDescription();
+				}
+			});
+		attributeGetters.put("content",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.getContent();
+				}
+			});
+		attributeGetters.put("displayDate",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.getDisplayDate();
+				}
+			});
+		attributeGetters.put("allowPingbacks",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.isAllowPingbacks();
+				}
+			});
+		attributeGetters.put("allowTrackbacks",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.isAllowTrackbacks();
+				}
+			});
+		attributeGetters.put("trackbacks",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.getTrackbacks();
+				}
+			});
+		attributeGetters.put("coverImageCaption",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.getCoverImageCaption();
+				}
+			});
+		attributeGetters.put("coverImageFileEntryId",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.getCoverImageFileEntryId();
+				}
+			});
+		attributeGetters.put("coverImageURL",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.getCoverImageURL();
+				}
+			});
+		attributeGetters.put("smallImage",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.isSmallImage();
+				}
+			});
+		attributeGetters.put("smallImageFileEntryId",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.getSmallImageFileEntryId();
+				}
+			});
+		attributeGetters.put("smallImageId",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.getSmallImageId();
+				}
+			});
+		attributeGetters.put("smallImageURL",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.getSmallImageURL();
+				}
+			});
+		attributeGetters.put("lastPublishDate",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.getLastPublishDate();
+				}
+			});
+		attributeGetters.put("status",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.getStatus();
+				}
+			});
+		attributeGetters.put("statusByUserId",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.getStatusByUserId();
+				}
+			});
+		attributeGetters.put("statusByUserName",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.getStatusByUserName();
+				}
+			});
+		attributeGetters.put("statusDate",
+			new Function<BlogsEntry, Object>() {
+				@Override
+				public Object apply(BlogsEntry blogsEntry) {
+					return blogsEntry.getStatusDate();
+				}
+			});
 
-		Long groupId = (Long)attributes.get("groupId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+		Map<String, BiConsumer<BlogsEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<BlogsEntry, Object>>();
 
-		Long companyId = (Long)attributes.get("companyId");
+		attributeSetters.put("uuid",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry, Object uuid) {
+					blogsEntry.setUuid((String)uuid);
+				}
+			});
+		attributeSetters.put("entryId",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry, Object entryId) {
+					blogsEntry.setEntryId((Long)entryId);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry, Object groupId) {
+					blogsEntry.setGroupId((Long)groupId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry, Object companyId) {
+					blogsEntry.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry, Object userId) {
+					blogsEntry.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry, Object userName) {
+					blogsEntry.setUserName((String)userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry, Object createDate) {
+					blogsEntry.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry, Object modifiedDate) {
+					blogsEntry.setModifiedDate((Date)modifiedDate);
+				}
+			});
+		attributeSetters.put("title",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry, Object title) {
+					blogsEntry.setTitle((String)title);
+				}
+			});
+		attributeSetters.put("subtitle",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry, Object subtitle) {
+					blogsEntry.setSubtitle((String)subtitle);
+				}
+			});
+		attributeSetters.put("urlTitle",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry, Object urlTitle) {
+					blogsEntry.setUrlTitle((String)urlTitle);
+				}
+			});
+		attributeSetters.put("description",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry, Object description) {
+					blogsEntry.setDescription((String)description);
+				}
+			});
+		attributeSetters.put("content",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry, Object content) {
+					blogsEntry.setContent((String)content);
+				}
+			});
+		attributeSetters.put("displayDate",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry, Object displayDate) {
+					blogsEntry.setDisplayDate((Date)displayDate);
+				}
+			});
+		attributeSetters.put("allowPingbacks",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry, Object allowPingbacks) {
+					blogsEntry.setAllowPingbacks((Boolean)allowPingbacks);
+				}
+			});
+		attributeSetters.put("allowTrackbacks",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry, Object allowTrackbacks) {
+					blogsEntry.setAllowTrackbacks((Boolean)allowTrackbacks);
+				}
+			});
+		attributeSetters.put("trackbacks",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry, Object trackbacks) {
+					blogsEntry.setTrackbacks((String)trackbacks);
+				}
+			});
+		attributeSetters.put("coverImageCaption",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry,
+					Object coverImageCaption) {
+					blogsEntry.setCoverImageCaption((String)coverImageCaption);
+				}
+			});
+		attributeSetters.put("coverImageFileEntryId",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry,
+					Object coverImageFileEntryId) {
+					blogsEntry.setCoverImageFileEntryId((Long)coverImageFileEntryId);
+				}
+			});
+		attributeSetters.put("coverImageURL",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry, Object coverImageURL) {
+					blogsEntry.setCoverImageURL((String)coverImageURL);
+				}
+			});
+		attributeSetters.put("smallImage",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry, Object smallImage) {
+					blogsEntry.setSmallImage((Boolean)smallImage);
+				}
+			});
+		attributeSetters.put("smallImageFileEntryId",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry,
+					Object smallImageFileEntryId) {
+					blogsEntry.setSmallImageFileEntryId((Long)smallImageFileEntryId);
+				}
+			});
+		attributeSetters.put("smallImageId",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry, Object smallImageId) {
+					blogsEntry.setSmallImageId((Long)smallImageId);
+				}
+			});
+		attributeSetters.put("smallImageURL",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry, Object smallImageURL) {
+					blogsEntry.setSmallImageURL((String)smallImageURL);
+				}
+			});
+		attributeSetters.put("lastPublishDate",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry, Object lastPublishDate) {
+					blogsEntry.setLastPublishDate((Date)lastPublishDate);
+				}
+			});
+		attributeSetters.put("status",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry, Object status) {
+					blogsEntry.setStatus((Integer)status);
+				}
+			});
+		attributeSetters.put("statusByUserId",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry, Object statusByUserId) {
+					blogsEntry.setStatusByUserId((Long)statusByUserId);
+				}
+			});
+		attributeSetters.put("statusByUserName",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry,
+					Object statusByUserName) {
+					blogsEntry.setStatusByUserName((String)statusByUserName);
+				}
+			});
+		attributeSetters.put("statusDate",
+			new BiConsumer<BlogsEntry, Object>() {
+				@Override
+				public void accept(BlogsEntry blogsEntry, Object statusDate) {
+					blogsEntry.setStatusDate((Date)statusDate);
+				}
+			});
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		String title = (String)attributes.get("title");
-
-		if (title != null) {
-			setTitle(title);
-		}
-
-		String subtitle = (String)attributes.get("subtitle");
-
-		if (subtitle != null) {
-			setSubtitle(subtitle);
-		}
-
-		String urlTitle = (String)attributes.get("urlTitle");
-
-		if (urlTitle != null) {
-			setUrlTitle(urlTitle);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
-		String content = (String)attributes.get("content");
-
-		if (content != null) {
-			setContent(content);
-		}
-
-		Date displayDate = (Date)attributes.get("displayDate");
-
-		if (displayDate != null) {
-			setDisplayDate(displayDate);
-		}
-
-		Boolean allowPingbacks = (Boolean)attributes.get("allowPingbacks");
-
-		if (allowPingbacks != null) {
-			setAllowPingbacks(allowPingbacks);
-		}
-
-		Boolean allowTrackbacks = (Boolean)attributes.get("allowTrackbacks");
-
-		if (allowTrackbacks != null) {
-			setAllowTrackbacks(allowTrackbacks);
-		}
-
-		String trackbacks = (String)attributes.get("trackbacks");
-
-		if (trackbacks != null) {
-			setTrackbacks(trackbacks);
-		}
-
-		String coverImageCaption = (String)attributes.get("coverImageCaption");
-
-		if (coverImageCaption != null) {
-			setCoverImageCaption(coverImageCaption);
-		}
-
-		Long coverImageFileEntryId = (Long)attributes.get(
-				"coverImageFileEntryId");
-
-		if (coverImageFileEntryId != null) {
-			setCoverImageFileEntryId(coverImageFileEntryId);
-		}
-
-		String coverImageURL = (String)attributes.get("coverImageURL");
-
-		if (coverImageURL != null) {
-			setCoverImageURL(coverImageURL);
-		}
-
-		Boolean smallImage = (Boolean)attributes.get("smallImage");
-
-		if (smallImage != null) {
-			setSmallImage(smallImage);
-		}
-
-		Long smallImageFileEntryId = (Long)attributes.get(
-				"smallImageFileEntryId");
-
-		if (smallImageFileEntryId != null) {
-			setSmallImageFileEntryId(smallImageFileEntryId);
-		}
-
-		Long smallImageId = (Long)attributes.get("smallImageId");
-
-		if (smallImageId != null) {
-			setSmallImageId(smallImageId);
-		}
-
-		String smallImageURL = (String)attributes.get("smallImageURL");
-
-		if (smallImageURL != null) {
-			setSmallImageURL(smallImageURL);
-		}
-
-		Date lastPublishDate = (Date)attributes.get("lastPublishDate");
-
-		if (lastPublishDate != null) {
-			setLastPublishDate(lastPublishDate);
-		}
-
-		Integer status = (Integer)attributes.get("status");
-
-		if (status != null) {
-			setStatus(status);
-		}
-
-		Long statusByUserId = (Long)attributes.get("statusByUserId");
-
-		if (statusByUserId != null) {
-			setStatusByUserId(statusByUserId);
-		}
-
-		String statusByUserName = (String)attributes.get("statusByUserName");
-
-		if (statusByUserName != null) {
-			setStatusByUserName(statusByUserName);
-		}
-
-		Date statusDate = (Date)attributes.get("statusDate");
-
-		if (statusDate != null) {
-			setStatusDate(statusDate);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON
@@ -1547,203 +1765,6 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 		}
 
 		return blogsEntryCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(59);
-
-		sb.append("{uuid=");
-		sb.append(getUuid());
-		sb.append(", entryId=");
-		sb.append(getEntryId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", title=");
-		sb.append(getTitle());
-		sb.append(", subtitle=");
-		sb.append(getSubtitle());
-		sb.append(", urlTitle=");
-		sb.append(getUrlTitle());
-		sb.append(", description=");
-		sb.append(getDescription());
-		sb.append(", content=");
-		sb.append(getContent());
-		sb.append(", displayDate=");
-		sb.append(getDisplayDate());
-		sb.append(", allowPingbacks=");
-		sb.append(isAllowPingbacks());
-		sb.append(", allowTrackbacks=");
-		sb.append(isAllowTrackbacks());
-		sb.append(", trackbacks=");
-		sb.append(getTrackbacks());
-		sb.append(", coverImageCaption=");
-		sb.append(getCoverImageCaption());
-		sb.append(", coverImageFileEntryId=");
-		sb.append(getCoverImageFileEntryId());
-		sb.append(", coverImageURL=");
-		sb.append(getCoverImageURL());
-		sb.append(", smallImage=");
-		sb.append(isSmallImage());
-		sb.append(", smallImageFileEntryId=");
-		sb.append(getSmallImageFileEntryId());
-		sb.append(", smallImageId=");
-		sb.append(getSmallImageId());
-		sb.append(", smallImageURL=");
-		sb.append(getSmallImageURL());
-		sb.append(", lastPublishDate=");
-		sb.append(getLastPublishDate());
-		sb.append(", status=");
-		sb.append(getStatus());
-		sb.append(", statusByUserId=");
-		sb.append(getStatusByUserId());
-		sb.append(", statusByUserName=");
-		sb.append(getStatusByUserName());
-		sb.append(", statusDate=");
-		sb.append(getStatusDate());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(91);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.blogs.model.BlogsEntry");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>entryId</column-name><column-value><![CDATA[");
-		sb.append(getEntryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>title</column-name><column-value><![CDATA[");
-		sb.append(getTitle());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>subtitle</column-name><column-value><![CDATA[");
-		sb.append(getSubtitle());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>urlTitle</column-name><column-value><![CDATA[");
-		sb.append(getUrlTitle());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(getDescription());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>content</column-name><column-value><![CDATA[");
-		sb.append(getContent());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>displayDate</column-name><column-value><![CDATA[");
-		sb.append(getDisplayDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>allowPingbacks</column-name><column-value><![CDATA[");
-		sb.append(isAllowPingbacks());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>allowTrackbacks</column-name><column-value><![CDATA[");
-		sb.append(isAllowTrackbacks());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>trackbacks</column-name><column-value><![CDATA[");
-		sb.append(getTrackbacks());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>coverImageCaption</column-name><column-value><![CDATA[");
-		sb.append(getCoverImageCaption());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>coverImageFileEntryId</column-name><column-value><![CDATA[");
-		sb.append(getCoverImageFileEntryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>coverImageURL</column-name><column-value><![CDATA[");
-		sb.append(getCoverImageURL());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>smallImage</column-name><column-value><![CDATA[");
-		sb.append(isSmallImage());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>smallImageFileEntryId</column-name><column-value><![CDATA[");
-		sb.append(getSmallImageFileEntryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>smallImageId</column-name><column-value><![CDATA[");
-		sb.append(getSmallImageId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>smallImageURL</column-name><column-value><![CDATA[");
-		sb.append(getSmallImageURL());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>lastPublishDate</column-name><column-value><![CDATA[");
-		sb.append(getLastPublishDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>status</column-name><column-value><![CDATA[");
-		sb.append(getStatus());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusByUserId</column-name><column-value><![CDATA[");
-		sb.append(getStatusByUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusByUserName</column-name><column-value><![CDATA[");
-		sb.append(getStatusByUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusDate</column-name><column-value><![CDATA[");
-		sb.append(getStatusDate());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = BlogsEntry.class.getClassLoader();

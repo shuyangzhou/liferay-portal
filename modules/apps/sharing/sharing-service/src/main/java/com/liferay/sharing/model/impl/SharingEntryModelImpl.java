@@ -21,8 +21,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
@@ -46,10 +44,14 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the SharingEntry service. Represents a row in the &quot;SharingEntry&quot; database table, with each column mapped to a property of this class.
@@ -220,108 +222,213 @@ public class SharingEntryModelImpl extends BaseModelImpl<SharingEntry>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("uuid", getUuid());
-		attributes.put("sharingEntryId", getSharingEntryId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("fromUserId", getFromUserId());
-		attributes.put("toUserId", getToUserId());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("shareable", isShareable());
-		attributes.put("actionIds", getActionIds());
-		attributes.put("expirationDate", getExpirationDate());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<SharingEntry, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+	public Map<String, BiConsumer<SharingEntry, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
+	private static final Map<String, Function<SharingEntry, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<SharingEntry, Object>> _attributeSetters;
 
-		Long sharingEntryId = (Long)attributes.get("sharingEntryId");
+	static {
+		Map<String, Function<SharingEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<SharingEntry, Object>>();
 
-		if (sharingEntryId != null) {
-			setSharingEntryId(sharingEntryId);
-		}
+		attributeGetters.put("uuid",
+			new Function<SharingEntry, Object>() {
+				@Override
+				public Object apply(SharingEntry sharingEntry) {
+					return sharingEntry.getUuid();
+				}
+			});
+		attributeGetters.put("sharingEntryId",
+			new Function<SharingEntry, Object>() {
+				@Override
+				public Object apply(SharingEntry sharingEntry) {
+					return sharingEntry.getSharingEntryId();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<SharingEntry, Object>() {
+				@Override
+				public Object apply(SharingEntry sharingEntry) {
+					return sharingEntry.getGroupId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<SharingEntry, Object>() {
+				@Override
+				public Object apply(SharingEntry sharingEntry) {
+					return sharingEntry.getCompanyId();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<SharingEntry, Object>() {
+				@Override
+				public Object apply(SharingEntry sharingEntry) {
+					return sharingEntry.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<SharingEntry, Object>() {
+				@Override
+				public Object apply(SharingEntry sharingEntry) {
+					return sharingEntry.getModifiedDate();
+				}
+			});
+		attributeGetters.put("fromUserId",
+			new Function<SharingEntry, Object>() {
+				@Override
+				public Object apply(SharingEntry sharingEntry) {
+					return sharingEntry.getFromUserId();
+				}
+			});
+		attributeGetters.put("toUserId",
+			new Function<SharingEntry, Object>() {
+				@Override
+				public Object apply(SharingEntry sharingEntry) {
+					return sharingEntry.getToUserId();
+				}
+			});
+		attributeGetters.put("classNameId",
+			new Function<SharingEntry, Object>() {
+				@Override
+				public Object apply(SharingEntry sharingEntry) {
+					return sharingEntry.getClassNameId();
+				}
+			});
+		attributeGetters.put("classPK",
+			new Function<SharingEntry, Object>() {
+				@Override
+				public Object apply(SharingEntry sharingEntry) {
+					return sharingEntry.getClassPK();
+				}
+			});
+		attributeGetters.put("shareable",
+			new Function<SharingEntry, Object>() {
+				@Override
+				public Object apply(SharingEntry sharingEntry) {
+					return sharingEntry.isShareable();
+				}
+			});
+		attributeGetters.put("actionIds",
+			new Function<SharingEntry, Object>() {
+				@Override
+				public Object apply(SharingEntry sharingEntry) {
+					return sharingEntry.getActionIds();
+				}
+			});
+		attributeGetters.put("expirationDate",
+			new Function<SharingEntry, Object>() {
+				@Override
+				public Object apply(SharingEntry sharingEntry) {
+					return sharingEntry.getExpirationDate();
+				}
+			});
 
-		Long groupId = (Long)attributes.get("groupId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+		Map<String, BiConsumer<SharingEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SharingEntry, Object>>();
 
-		Long companyId = (Long)attributes.get("companyId");
+		attributeSetters.put("uuid",
+			new BiConsumer<SharingEntry, Object>() {
+				@Override
+				public void accept(SharingEntry sharingEntry, Object uuid) {
+					sharingEntry.setUuid((String)uuid);
+				}
+			});
+		attributeSetters.put("sharingEntryId",
+			new BiConsumer<SharingEntry, Object>() {
+				@Override
+				public void accept(SharingEntry sharingEntry,
+					Object sharingEntryId) {
+					sharingEntry.setSharingEntryId((Long)sharingEntryId);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<SharingEntry, Object>() {
+				@Override
+				public void accept(SharingEntry sharingEntry, Object groupId) {
+					sharingEntry.setGroupId((Long)groupId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<SharingEntry, Object>() {
+				@Override
+				public void accept(SharingEntry sharingEntry, Object companyId) {
+					sharingEntry.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<SharingEntry, Object>() {
+				@Override
+				public void accept(SharingEntry sharingEntry, Object createDate) {
+					sharingEntry.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<SharingEntry, Object>() {
+				@Override
+				public void accept(SharingEntry sharingEntry,
+					Object modifiedDate) {
+					sharingEntry.setModifiedDate((Date)modifiedDate);
+				}
+			});
+		attributeSetters.put("fromUserId",
+			new BiConsumer<SharingEntry, Object>() {
+				@Override
+				public void accept(SharingEntry sharingEntry, Object fromUserId) {
+					sharingEntry.setFromUserId((Long)fromUserId);
+				}
+			});
+		attributeSetters.put("toUserId",
+			new BiConsumer<SharingEntry, Object>() {
+				@Override
+				public void accept(SharingEntry sharingEntry, Object toUserId) {
+					sharingEntry.setToUserId((Long)toUserId);
+				}
+			});
+		attributeSetters.put("classNameId",
+			new BiConsumer<SharingEntry, Object>() {
+				@Override
+				public void accept(SharingEntry sharingEntry, Object classNameId) {
+					sharingEntry.setClassNameId((Long)classNameId);
+				}
+			});
+		attributeSetters.put("classPK",
+			new BiConsumer<SharingEntry, Object>() {
+				@Override
+				public void accept(SharingEntry sharingEntry, Object classPK) {
+					sharingEntry.setClassPK((Long)classPK);
+				}
+			});
+		attributeSetters.put("shareable",
+			new BiConsumer<SharingEntry, Object>() {
+				@Override
+				public void accept(SharingEntry sharingEntry, Object shareable) {
+					sharingEntry.setShareable((Boolean)shareable);
+				}
+			});
+		attributeSetters.put("actionIds",
+			new BiConsumer<SharingEntry, Object>() {
+				@Override
+				public void accept(SharingEntry sharingEntry, Object actionIds) {
+					sharingEntry.setActionIds((Long)actionIds);
+				}
+			});
+		attributeSetters.put("expirationDate",
+			new BiConsumer<SharingEntry, Object>() {
+				@Override
+				public void accept(SharingEntry sharingEntry,
+					Object expirationDate) {
+					sharingEntry.setExpirationDate((Date)expirationDate);
+				}
+			});
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long fromUserId = (Long)attributes.get("fromUserId");
-
-		if (fromUserId != null) {
-			setFromUserId(fromUserId);
-		}
-
-		Long toUserId = (Long)attributes.get("toUserId");
-
-		if (toUserId != null) {
-			setToUserId(toUserId);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		Boolean shareable = (Boolean)attributes.get("shareable");
-
-		if (shareable != null) {
-			setShareable(shareable);
-		}
-
-		Long actionIds = (Long)attributes.get("actionIds");
-
-		if (actionIds != null) {
-			setActionIds(actionIds);
-		}
-
-		Date expirationDate = (Date)attributes.get("expirationDate");
-
-		if (expirationDate != null) {
-			setExpirationDate(expirationDate);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON
@@ -829,107 +936,6 @@ public class SharingEntryModelImpl extends BaseModelImpl<SharingEntry>
 		}
 
 		return sharingEntryCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(27);
-
-		sb.append("{uuid=");
-		sb.append(getUuid());
-		sb.append(", sharingEntryId=");
-		sb.append(getSharingEntryId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", fromUserId=");
-		sb.append(getFromUserId());
-		sb.append(", toUserId=");
-		sb.append(getToUserId());
-		sb.append(", classNameId=");
-		sb.append(getClassNameId());
-		sb.append(", classPK=");
-		sb.append(getClassPK());
-		sb.append(", shareable=");
-		sb.append(isShareable());
-		sb.append(", actionIds=");
-		sb.append(getActionIds());
-		sb.append(", expirationDate=");
-		sb.append(getExpirationDate());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(43);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.sharing.model.SharingEntry");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>sharingEntryId</column-name><column-value><![CDATA[");
-		sb.append(getSharingEntryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>fromUserId</column-name><column-value><![CDATA[");
-		sb.append(getFromUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>toUserId</column-name><column-value><![CDATA[");
-		sb.append(getToUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classNameId</column-name><column-value><![CDATA[");
-		sb.append(getClassNameId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classPK</column-name><column-value><![CDATA[");
-		sb.append(getClassPK());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>shareable</column-name><column-value><![CDATA[");
-		sb.append(isShareable());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>actionIds</column-name><column-value><![CDATA[");
-		sb.append(getActionIds());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>expirationDate</column-name><column-value><![CDATA[");
-		sb.append(getExpirationDate());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = SharingEntry.class.getClassLoader();

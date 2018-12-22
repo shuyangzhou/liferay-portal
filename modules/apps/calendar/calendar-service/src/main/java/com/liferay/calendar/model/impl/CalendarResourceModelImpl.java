@@ -25,8 +25,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -49,13 +47,17 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the CalendarResource service. Represents a row in the &quot;CalendarResource&quot; database table, with each column mapped to a property of this class.
@@ -234,129 +236,268 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("uuid", getUuid());
-		attributes.put("calendarResourceId", getCalendarResourceId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("classUuid", getClassUuid());
-		attributes.put("code", getCode());
-		attributes.put("name", getName());
-		attributes.put("description", getDescription());
-		attributes.put("active", isActive());
-		attributes.put("lastPublishDate", getLastPublishDate());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<CalendarResource, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+	public Map<String, BiConsumer<CalendarResource, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
+	private static final Map<String, Function<CalendarResource, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<CalendarResource, Object>> _attributeSetters;
 
-		Long calendarResourceId = (Long)attributes.get("calendarResourceId");
+	static {
+		Map<String, Function<CalendarResource, Object>> attributeGetters = new LinkedHashMap<String, Function<CalendarResource, Object>>();
 
-		if (calendarResourceId != null) {
-			setCalendarResourceId(calendarResourceId);
-		}
+		attributeGetters.put("uuid",
+			new Function<CalendarResource, Object>() {
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getUuid();
+				}
+			});
+		attributeGetters.put("calendarResourceId",
+			new Function<CalendarResource, Object>() {
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getCalendarResourceId();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<CalendarResource, Object>() {
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getGroupId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<CalendarResource, Object>() {
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<CalendarResource, Object>() {
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<CalendarResource, Object>() {
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<CalendarResource, Object>() {
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<CalendarResource, Object>() {
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getModifiedDate();
+				}
+			});
+		attributeGetters.put("classNameId",
+			new Function<CalendarResource, Object>() {
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getClassNameId();
+				}
+			});
+		attributeGetters.put("classPK",
+			new Function<CalendarResource, Object>() {
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getClassPK();
+				}
+			});
+		attributeGetters.put("classUuid",
+			new Function<CalendarResource, Object>() {
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getClassUuid();
+				}
+			});
+		attributeGetters.put("code",
+			new Function<CalendarResource, Object>() {
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getCode();
+				}
+			});
+		attributeGetters.put("name",
+			new Function<CalendarResource, Object>() {
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getName();
+				}
+			});
+		attributeGetters.put("description",
+			new Function<CalendarResource, Object>() {
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getDescription();
+				}
+			});
+		attributeGetters.put("active",
+			new Function<CalendarResource, Object>() {
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.isActive();
+				}
+			});
+		attributeGetters.put("lastPublishDate",
+			new Function<CalendarResource, Object>() {
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getLastPublishDate();
+				}
+			});
 
-		Long groupId = (Long)attributes.get("groupId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+		Map<String, BiConsumer<CalendarResource, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<CalendarResource, Object>>();
 
-		Long companyId = (Long)attributes.get("companyId");
+		attributeSetters.put("uuid",
+			new BiConsumer<CalendarResource, Object>() {
+				@Override
+				public void accept(CalendarResource calendarResource,
+					Object uuid) {
+					calendarResource.setUuid((String)uuid);
+				}
+			});
+		attributeSetters.put("calendarResourceId",
+			new BiConsumer<CalendarResource, Object>() {
+				@Override
+				public void accept(CalendarResource calendarResource,
+					Object calendarResourceId) {
+					calendarResource.setCalendarResourceId((Long)calendarResourceId);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<CalendarResource, Object>() {
+				@Override
+				public void accept(CalendarResource calendarResource,
+					Object groupId) {
+					calendarResource.setGroupId((Long)groupId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<CalendarResource, Object>() {
+				@Override
+				public void accept(CalendarResource calendarResource,
+					Object companyId) {
+					calendarResource.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<CalendarResource, Object>() {
+				@Override
+				public void accept(CalendarResource calendarResource,
+					Object userId) {
+					calendarResource.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<CalendarResource, Object>() {
+				@Override
+				public void accept(CalendarResource calendarResource,
+					Object userName) {
+					calendarResource.setUserName((String)userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<CalendarResource, Object>() {
+				@Override
+				public void accept(CalendarResource calendarResource,
+					Object createDate) {
+					calendarResource.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<CalendarResource, Object>() {
+				@Override
+				public void accept(CalendarResource calendarResource,
+					Object modifiedDate) {
+					calendarResource.setModifiedDate((Date)modifiedDate);
+				}
+			});
+		attributeSetters.put("classNameId",
+			new BiConsumer<CalendarResource, Object>() {
+				@Override
+				public void accept(CalendarResource calendarResource,
+					Object classNameId) {
+					calendarResource.setClassNameId((Long)classNameId);
+				}
+			});
+		attributeSetters.put("classPK",
+			new BiConsumer<CalendarResource, Object>() {
+				@Override
+				public void accept(CalendarResource calendarResource,
+					Object classPK) {
+					calendarResource.setClassPK((Long)classPK);
+				}
+			});
+		attributeSetters.put("classUuid",
+			new BiConsumer<CalendarResource, Object>() {
+				@Override
+				public void accept(CalendarResource calendarResource,
+					Object classUuid) {
+					calendarResource.setClassUuid((String)classUuid);
+				}
+			});
+		attributeSetters.put("code",
+			new BiConsumer<CalendarResource, Object>() {
+				@Override
+				public void accept(CalendarResource calendarResource,
+					Object code) {
+					calendarResource.setCode((String)code);
+				}
+			});
+		attributeSetters.put("name",
+			new BiConsumer<CalendarResource, Object>() {
+				@Override
+				public void accept(CalendarResource calendarResource,
+					Object name) {
+					calendarResource.setName((String)name);
+				}
+			});
+		attributeSetters.put("description",
+			new BiConsumer<CalendarResource, Object>() {
+				@Override
+				public void accept(CalendarResource calendarResource,
+					Object description) {
+					calendarResource.setDescription((String)description);
+				}
+			});
+		attributeSetters.put("active",
+			new BiConsumer<CalendarResource, Object>() {
+				@Override
+				public void accept(CalendarResource calendarResource,
+					Object active) {
+					calendarResource.setActive((Boolean)active);
+				}
+			});
+		attributeSetters.put("lastPublishDate",
+			new BiConsumer<CalendarResource, Object>() {
+				@Override
+				public void accept(CalendarResource calendarResource,
+					Object lastPublishDate) {
+					calendarResource.setLastPublishDate((Date)lastPublishDate);
+				}
+			});
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		String classUuid = (String)attributes.get("classUuid");
-
-		if (classUuid != null) {
-			setClassUuid(classUuid);
-		}
-
-		String code = (String)attributes.get("code");
-
-		if (code != null) {
-			setCode(code);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
-		Boolean active = (Boolean)attributes.get("active");
-
-		if (active != null) {
-			setActive(active);
-		}
-
-		Date lastPublishDate = (Date)attributes.get("lastPublishDate");
-
-		if (lastPublishDate != null) {
-			setLastPublishDate(lastPublishDate);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON
@@ -1179,125 +1320,6 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 		}
 
 		return calendarResourceCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(33);
-
-		sb.append("{uuid=");
-		sb.append(getUuid());
-		sb.append(", calendarResourceId=");
-		sb.append(getCalendarResourceId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", classNameId=");
-		sb.append(getClassNameId());
-		sb.append(", classPK=");
-		sb.append(getClassPK());
-		sb.append(", classUuid=");
-		sb.append(getClassUuid());
-		sb.append(", code=");
-		sb.append(getCode());
-		sb.append(", name=");
-		sb.append(getName());
-		sb.append(", description=");
-		sb.append(getDescription());
-		sb.append(", active=");
-		sb.append(isActive());
-		sb.append(", lastPublishDate=");
-		sb.append(getLastPublishDate());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(52);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.calendar.model.CalendarResource");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>calendarResourceId</column-name><column-value><![CDATA[");
-		sb.append(getCalendarResourceId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classNameId</column-name><column-value><![CDATA[");
-		sb.append(getClassNameId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classPK</column-name><column-value><![CDATA[");
-		sb.append(getClassPK());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classUuid</column-name><column-value><![CDATA[");
-		sb.append(getClassUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>code</column-name><column-value><![CDATA[");
-		sb.append(getCode());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(getName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(getDescription());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>active</column-name><column-value><![CDATA[");
-		sb.append(isActive());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>lastPublishDate</column-name><column-value><![CDATA[");
-		sb.append(getLastPublishDate());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = CalendarResource.class.getClassLoader();

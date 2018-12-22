@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -58,48 +60,42 @@ public class FriendlyURLEntryMappingWrapper implements FriendlyURLEntryMapping,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("friendlyURLEntryMappingId",
-			getFriendlyURLEntryMappingId());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("friendlyURLEntryId", getFriendlyURLEntryId());
+		Map<String, Function<FriendlyURLEntryMapping, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<FriendlyURLEntryMapping, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<FriendlyURLEntryMapping, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<FriendlyURLEntryMapping, Object>> attributeSetters =
+			getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<FriendlyURLEntryMapping, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<FriendlyURLEntryMapping, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long friendlyURLEntryMappingId = (Long)attributes.get(
-				"friendlyURLEntryMappingId");
+	@Override
+	public Map<String, Function<FriendlyURLEntryMapping, Object>> getAttributeGetters() {
+		return _friendlyURLEntryMapping.getAttributeGetters();
+	}
 
-		if (friendlyURLEntryMappingId != null) {
-			setFriendlyURLEntryMappingId(friendlyURLEntryMappingId);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		Long friendlyURLEntryId = (Long)attributes.get("friendlyURLEntryId");
-
-		if (friendlyURLEntryId != null) {
-			setFriendlyURLEntryId(friendlyURLEntryId);
-		}
+	@Override
+	public Map<String, BiConsumer<FriendlyURLEntryMapping, Object>> getAttributeSetters() {
+		return _friendlyURLEntryMapping.getAttributeSetters();
 	}
 
 	@Override

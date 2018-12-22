@@ -22,8 +22,6 @@ import com.liferay.changeset.model.ChangesetCollectionModel;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -39,9 +37,13 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the ChangesetCollection service. Represents a row in the &quot;ChangesetCollection&quot; database table, with each column mapped to a property of this class.
@@ -148,81 +150,163 @@ public class ChangesetCollectionModelImpl extends BaseModelImpl<ChangesetCollect
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("changesetCollectionId", getChangesetCollectionId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("name", getName());
-		attributes.put("description", getDescription());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<ChangesetCollection, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long changesetCollectionId = (Long)attributes.get(
-				"changesetCollectionId");
+	public Map<String, BiConsumer<ChangesetCollection, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (changesetCollectionId != null) {
-			setChangesetCollectionId(changesetCollectionId);
-		}
+	private static final Map<String, Function<ChangesetCollection, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<ChangesetCollection, Object>> _attributeSetters;
 
-		Long groupId = (Long)attributes.get("groupId");
+	static {
+		Map<String, Function<ChangesetCollection, Object>> attributeGetters = new LinkedHashMap<String, Function<ChangesetCollection, Object>>();
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+		attributeGetters.put("changesetCollectionId",
+			new Function<ChangesetCollection, Object>() {
+				@Override
+				public Object apply(ChangesetCollection changesetCollection) {
+					return changesetCollection.getChangesetCollectionId();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<ChangesetCollection, Object>() {
+				@Override
+				public Object apply(ChangesetCollection changesetCollection) {
+					return changesetCollection.getGroupId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<ChangesetCollection, Object>() {
+				@Override
+				public Object apply(ChangesetCollection changesetCollection) {
+					return changesetCollection.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<ChangesetCollection, Object>() {
+				@Override
+				public Object apply(ChangesetCollection changesetCollection) {
+					return changesetCollection.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<ChangesetCollection, Object>() {
+				@Override
+				public Object apply(ChangesetCollection changesetCollection) {
+					return changesetCollection.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<ChangesetCollection, Object>() {
+				@Override
+				public Object apply(ChangesetCollection changesetCollection) {
+					return changesetCollection.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<ChangesetCollection, Object>() {
+				@Override
+				public Object apply(ChangesetCollection changesetCollection) {
+					return changesetCollection.getModifiedDate();
+				}
+			});
+		attributeGetters.put("name",
+			new Function<ChangesetCollection, Object>() {
+				@Override
+				public Object apply(ChangesetCollection changesetCollection) {
+					return changesetCollection.getName();
+				}
+			});
+		attributeGetters.put("description",
+			new Function<ChangesetCollection, Object>() {
+				@Override
+				public Object apply(ChangesetCollection changesetCollection) {
+					return changesetCollection.getDescription();
+				}
+			});
 
-		Long companyId = (Long)attributes.get("companyId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		Map<String, BiConsumer<ChangesetCollection, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<ChangesetCollection, Object>>();
 
-		Long userId = (Long)attributes.get("userId");
+		attributeSetters.put("changesetCollectionId",
+			new BiConsumer<ChangesetCollection, Object>() {
+				@Override
+				public void accept(ChangesetCollection changesetCollection,
+					Object changesetCollectionId) {
+					changesetCollection.setChangesetCollectionId((Long)changesetCollectionId);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<ChangesetCollection, Object>() {
+				@Override
+				public void accept(ChangesetCollection changesetCollection,
+					Object groupId) {
+					changesetCollection.setGroupId((Long)groupId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<ChangesetCollection, Object>() {
+				@Override
+				public void accept(ChangesetCollection changesetCollection,
+					Object companyId) {
+					changesetCollection.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<ChangesetCollection, Object>() {
+				@Override
+				public void accept(ChangesetCollection changesetCollection,
+					Object userId) {
+					changesetCollection.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<ChangesetCollection, Object>() {
+				@Override
+				public void accept(ChangesetCollection changesetCollection,
+					Object userName) {
+					changesetCollection.setUserName((String)userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<ChangesetCollection, Object>() {
+				@Override
+				public void accept(ChangesetCollection changesetCollection,
+					Object createDate) {
+					changesetCollection.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<ChangesetCollection, Object>() {
+				@Override
+				public void accept(ChangesetCollection changesetCollection,
+					Object modifiedDate) {
+					changesetCollection.setModifiedDate((Date)modifiedDate);
+				}
+			});
+		attributeSetters.put("name",
+			new BiConsumer<ChangesetCollection, Object>() {
+				@Override
+				public void accept(ChangesetCollection changesetCollection,
+					Object name) {
+					changesetCollection.setName((String)name);
+				}
+			});
+		attributeSetters.put("description",
+			new BiConsumer<ChangesetCollection, Object>() {
+				@Override
+				public void accept(ChangesetCollection changesetCollection,
+					Object description) {
+					changesetCollection.setDescription((String)description);
+				}
+			});
 
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override
@@ -574,83 +658,6 @@ public class ChangesetCollectionModelImpl extends BaseModelImpl<ChangesetCollect
 		}
 
 		return changesetCollectionCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(19);
-
-		sb.append("{changesetCollectionId=");
-		sb.append(getChangesetCollectionId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", name=");
-		sb.append(getName());
-		sb.append(", description=");
-		sb.append(getDescription());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(31);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.changeset.model.ChangesetCollection");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>changesetCollectionId</column-name><column-value><![CDATA[");
-		sb.append(getChangesetCollectionId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(getName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(getDescription());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = ChangesetCollection.class.getClassLoader();

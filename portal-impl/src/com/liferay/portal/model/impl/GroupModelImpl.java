@@ -19,8 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -46,12 +44,16 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the Group service. Represents a row in the &quot;Group_&quot; database table, with each column mapped to a property of this class.
@@ -290,173 +292,336 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("uuid", getUuid());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("creatorUserId", getCreatorUserId());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("parentGroupId", getParentGroupId());
-		attributes.put("liveGroupId", getLiveGroupId());
-		attributes.put("treePath", getTreePath());
-		attributes.put("groupKey", getGroupKey());
-		attributes.put("name", getName());
-		attributes.put("description", getDescription());
-		attributes.put("type", getType());
-		attributes.put("typeSettings", getTypeSettings());
-		attributes.put("manualMembership", isManualMembership());
-		attributes.put("membershipRestriction", getMembershipRestriction());
-		attributes.put("friendlyURL", getFriendlyURL());
-		attributes.put("site", isSite());
-		attributes.put("remoteStagingGroupCount", getRemoteStagingGroupCount());
-		attributes.put("inheritContent", isInheritContent());
-		attributes.put("active", isActive());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<Group, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+	public Map<String, BiConsumer<Group, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
-		}
+	private static final Map<String, Function<Group, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<Group, Object>> _attributeSetters;
 
-		String uuid = (String)attributes.get("uuid");
+	static {
+		Map<String, Function<Group, Object>> attributeGetters = new LinkedHashMap<String, Function<Group, Object>>();
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
+		attributeGetters.put("mvccVersion",
+			new Function<Group, Object>() {
+				@Override
+				public Object apply(Group group) {
+					return group.getMvccVersion();
+				}
+			});
+		attributeGetters.put("uuid",
+			new Function<Group, Object>() {
+				@Override
+				public Object apply(Group group) {
+					return group.getUuid();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<Group, Object>() {
+				@Override
+				public Object apply(Group group) {
+					return group.getGroupId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<Group, Object>() {
+				@Override
+				public Object apply(Group group) {
+					return group.getCompanyId();
+				}
+			});
+		attributeGetters.put("creatorUserId",
+			new Function<Group, Object>() {
+				@Override
+				public Object apply(Group group) {
+					return group.getCreatorUserId();
+				}
+			});
+		attributeGetters.put("classNameId",
+			new Function<Group, Object>() {
+				@Override
+				public Object apply(Group group) {
+					return group.getClassNameId();
+				}
+			});
+		attributeGetters.put("classPK",
+			new Function<Group, Object>() {
+				@Override
+				public Object apply(Group group) {
+					return group.getClassPK();
+				}
+			});
+		attributeGetters.put("parentGroupId",
+			new Function<Group, Object>() {
+				@Override
+				public Object apply(Group group) {
+					return group.getParentGroupId();
+				}
+			});
+		attributeGetters.put("liveGroupId",
+			new Function<Group, Object>() {
+				@Override
+				public Object apply(Group group) {
+					return group.getLiveGroupId();
+				}
+			});
+		attributeGetters.put("treePath",
+			new Function<Group, Object>() {
+				@Override
+				public Object apply(Group group) {
+					return group.getTreePath();
+				}
+			});
+		attributeGetters.put("groupKey",
+			new Function<Group, Object>() {
+				@Override
+				public Object apply(Group group) {
+					return group.getGroupKey();
+				}
+			});
+		attributeGetters.put("name",
+			new Function<Group, Object>() {
+				@Override
+				public Object apply(Group group) {
+					return group.getName();
+				}
+			});
+		attributeGetters.put("description",
+			new Function<Group, Object>() {
+				@Override
+				public Object apply(Group group) {
+					return group.getDescription();
+				}
+			});
+		attributeGetters.put("type",
+			new Function<Group, Object>() {
+				@Override
+				public Object apply(Group group) {
+					return group.getType();
+				}
+			});
+		attributeGetters.put("typeSettings",
+			new Function<Group, Object>() {
+				@Override
+				public Object apply(Group group) {
+					return group.getTypeSettings();
+				}
+			});
+		attributeGetters.put("manualMembership",
+			new Function<Group, Object>() {
+				@Override
+				public Object apply(Group group) {
+					return group.isManualMembership();
+				}
+			});
+		attributeGetters.put("membershipRestriction",
+			new Function<Group, Object>() {
+				@Override
+				public Object apply(Group group) {
+					return group.getMembershipRestriction();
+				}
+			});
+		attributeGetters.put("friendlyURL",
+			new Function<Group, Object>() {
+				@Override
+				public Object apply(Group group) {
+					return group.getFriendlyURL();
+				}
+			});
+		attributeGetters.put("site",
+			new Function<Group, Object>() {
+				@Override
+				public Object apply(Group group) {
+					return group.isSite();
+				}
+			});
+		attributeGetters.put("remoteStagingGroupCount",
+			new Function<Group, Object>() {
+				@Override
+				public Object apply(Group group) {
+					return group.getRemoteStagingGroupCount();
+				}
+			});
+		attributeGetters.put("inheritContent",
+			new Function<Group, Object>() {
+				@Override
+				public Object apply(Group group) {
+					return group.isInheritContent();
+				}
+			});
+		attributeGetters.put("active",
+			new Function<Group, Object>() {
+				@Override
+				public Object apply(Group group) {
+					return group.isActive();
+				}
+			});
 
-		Long groupId = (Long)attributes.get("groupId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+		Map<String, BiConsumer<Group, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Group, Object>>();
 
-		Long companyId = (Long)attributes.get("companyId");
+		attributeSetters.put("mvccVersion",
+			new BiConsumer<Group, Object>() {
+				@Override
+				public void accept(Group group, Object mvccVersion) {
+					group.setMvccVersion((Long)mvccVersion);
+				}
+			});
+		attributeSetters.put("uuid",
+			new BiConsumer<Group, Object>() {
+				@Override
+				public void accept(Group group, Object uuid) {
+					group.setUuid((String)uuid);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<Group, Object>() {
+				@Override
+				public void accept(Group group, Object groupId) {
+					group.setGroupId((Long)groupId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<Group, Object>() {
+				@Override
+				public void accept(Group group, Object companyId) {
+					group.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("creatorUserId",
+			new BiConsumer<Group, Object>() {
+				@Override
+				public void accept(Group group, Object creatorUserId) {
+					group.setCreatorUserId((Long)creatorUserId);
+				}
+			});
+		attributeSetters.put("classNameId",
+			new BiConsumer<Group, Object>() {
+				@Override
+				public void accept(Group group, Object classNameId) {
+					group.setClassNameId((Long)classNameId);
+				}
+			});
+		attributeSetters.put("classPK",
+			new BiConsumer<Group, Object>() {
+				@Override
+				public void accept(Group group, Object classPK) {
+					group.setClassPK((Long)classPK);
+				}
+			});
+		attributeSetters.put("parentGroupId",
+			new BiConsumer<Group, Object>() {
+				@Override
+				public void accept(Group group, Object parentGroupId) {
+					group.setParentGroupId((Long)parentGroupId);
+				}
+			});
+		attributeSetters.put("liveGroupId",
+			new BiConsumer<Group, Object>() {
+				@Override
+				public void accept(Group group, Object liveGroupId) {
+					group.setLiveGroupId((Long)liveGroupId);
+				}
+			});
+		attributeSetters.put("treePath",
+			new BiConsumer<Group, Object>() {
+				@Override
+				public void accept(Group group, Object treePath) {
+					group.setTreePath((String)treePath);
+				}
+			});
+		attributeSetters.put("groupKey",
+			new BiConsumer<Group, Object>() {
+				@Override
+				public void accept(Group group, Object groupKey) {
+					group.setGroupKey((String)groupKey);
+				}
+			});
+		attributeSetters.put("name",
+			new BiConsumer<Group, Object>() {
+				@Override
+				public void accept(Group group, Object name) {
+					group.setName((String)name);
+				}
+			});
+		attributeSetters.put("description",
+			new BiConsumer<Group, Object>() {
+				@Override
+				public void accept(Group group, Object description) {
+					group.setDescription((String)description);
+				}
+			});
+		attributeSetters.put("type",
+			new BiConsumer<Group, Object>() {
+				@Override
+				public void accept(Group group, Object type) {
+					group.setType((Integer)type);
+				}
+			});
+		attributeSetters.put("typeSettings",
+			new BiConsumer<Group, Object>() {
+				@Override
+				public void accept(Group group, Object typeSettings) {
+					group.setTypeSettings((String)typeSettings);
+				}
+			});
+		attributeSetters.put("manualMembership",
+			new BiConsumer<Group, Object>() {
+				@Override
+				public void accept(Group group, Object manualMembership) {
+					group.setManualMembership((Boolean)manualMembership);
+				}
+			});
+		attributeSetters.put("membershipRestriction",
+			new BiConsumer<Group, Object>() {
+				@Override
+				public void accept(Group group, Object membershipRestriction) {
+					group.setMembershipRestriction((Integer)membershipRestriction);
+				}
+			});
+		attributeSetters.put("friendlyURL",
+			new BiConsumer<Group, Object>() {
+				@Override
+				public void accept(Group group, Object friendlyURL) {
+					group.setFriendlyURL((String)friendlyURL);
+				}
+			});
+		attributeSetters.put("site",
+			new BiConsumer<Group, Object>() {
+				@Override
+				public void accept(Group group, Object site) {
+					group.setSite((Boolean)site);
+				}
+			});
+		attributeSetters.put("remoteStagingGroupCount",
+			new BiConsumer<Group, Object>() {
+				@Override
+				public void accept(Group group, Object remoteStagingGroupCount) {
+					group.setRemoteStagingGroupCount((Integer)remoteStagingGroupCount);
+				}
+			});
+		attributeSetters.put("inheritContent",
+			new BiConsumer<Group, Object>() {
+				@Override
+				public void accept(Group group, Object inheritContent) {
+					group.setInheritContent((Boolean)inheritContent);
+				}
+			});
+		attributeSetters.put("active",
+			new BiConsumer<Group, Object>() {
+				@Override
+				public void accept(Group group, Object active) {
+					group.setActive((Boolean)active);
+				}
+			});
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long creatorUserId = (Long)attributes.get("creatorUserId");
-
-		if (creatorUserId != null) {
-			setCreatorUserId(creatorUserId);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		Long parentGroupId = (Long)attributes.get("parentGroupId");
-
-		if (parentGroupId != null) {
-			setParentGroupId(parentGroupId);
-		}
-
-		Long liveGroupId = (Long)attributes.get("liveGroupId");
-
-		if (liveGroupId != null) {
-			setLiveGroupId(liveGroupId);
-		}
-
-		String treePath = (String)attributes.get("treePath");
-
-		if (treePath != null) {
-			setTreePath(treePath);
-		}
-
-		String groupKey = (String)attributes.get("groupKey");
-
-		if (groupKey != null) {
-			setGroupKey(groupKey);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
-		Integer type = (Integer)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
-
-		String typeSettings = (String)attributes.get("typeSettings");
-
-		if (typeSettings != null) {
-			setTypeSettings(typeSettings);
-		}
-
-		Boolean manualMembership = (Boolean)attributes.get("manualMembership");
-
-		if (manualMembership != null) {
-			setManualMembership(manualMembership);
-		}
-
-		Integer membershipRestriction = (Integer)attributes.get(
-				"membershipRestriction");
-
-		if (membershipRestriction != null) {
-			setMembershipRestriction(membershipRestriction);
-		}
-
-		String friendlyURL = (String)attributes.get("friendlyURL");
-
-		if (friendlyURL != null) {
-			setFriendlyURL(friendlyURL);
-		}
-
-		Boolean site = (Boolean)attributes.get("site");
-
-		if (site != null) {
-			setSite(site);
-		}
-
-		Integer remoteStagingGroupCount = (Integer)attributes.get(
-				"remoteStagingGroupCount");
-
-		if (remoteStagingGroupCount != null) {
-			setRemoteStagingGroupCount(remoteStagingGroupCount);
-		}
-
-		Boolean inheritContent = (Boolean)attributes.get("inheritContent");
-
-		if (inheritContent != null) {
-			setInheritContent(inheritContent);
-		}
-
-		Boolean active = (Boolean)attributes.get("active");
-
-		if (active != null) {
-			setActive(active);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON
@@ -1473,161 +1638,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		groupCacheModel.active = isActive();
 
 		return groupCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(45);
-
-		sb.append("{mvccVersion=");
-		sb.append(getMvccVersion());
-		sb.append(", uuid=");
-		sb.append(getUuid());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", creatorUserId=");
-		sb.append(getCreatorUserId());
-		sb.append(", classNameId=");
-		sb.append(getClassNameId());
-		sb.append(", classPK=");
-		sb.append(getClassPK());
-		sb.append(", parentGroupId=");
-		sb.append(getParentGroupId());
-		sb.append(", liveGroupId=");
-		sb.append(getLiveGroupId());
-		sb.append(", treePath=");
-		sb.append(getTreePath());
-		sb.append(", groupKey=");
-		sb.append(getGroupKey());
-		sb.append(", name=");
-		sb.append(getName());
-		sb.append(", description=");
-		sb.append(getDescription());
-		sb.append(", type=");
-		sb.append(getType());
-		sb.append(", typeSettings=");
-		sb.append(getTypeSettings());
-		sb.append(", manualMembership=");
-		sb.append(isManualMembership());
-		sb.append(", membershipRestriction=");
-		sb.append(getMembershipRestriction());
-		sb.append(", friendlyURL=");
-		sb.append(getFriendlyURL());
-		sb.append(", site=");
-		sb.append(isSite());
-		sb.append(", remoteStagingGroupCount=");
-		sb.append(getRemoteStagingGroupCount());
-		sb.append(", inheritContent=");
-		sb.append(isInheritContent());
-		sb.append(", active=");
-		sb.append(isActive());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(70);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.kernel.model.Group");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>mvccVersion</column-name><column-value><![CDATA[");
-		sb.append(getMvccVersion());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>creatorUserId</column-name><column-value><![CDATA[");
-		sb.append(getCreatorUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classNameId</column-name><column-value><![CDATA[");
-		sb.append(getClassNameId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classPK</column-name><column-value><![CDATA[");
-		sb.append(getClassPK());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>parentGroupId</column-name><column-value><![CDATA[");
-		sb.append(getParentGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>liveGroupId</column-name><column-value><![CDATA[");
-		sb.append(getLiveGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>treePath</column-name><column-value><![CDATA[");
-		sb.append(getTreePath());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupKey</column-name><column-value><![CDATA[");
-		sb.append(getGroupKey());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(getName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(getDescription());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>type</column-name><column-value><![CDATA[");
-		sb.append(getType());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>typeSettings</column-name><column-value><![CDATA[");
-		sb.append(getTypeSettings());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>manualMembership</column-name><column-value><![CDATA[");
-		sb.append(isManualMembership());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>membershipRestriction</column-name><column-value><![CDATA[");
-		sb.append(getMembershipRestriction());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>friendlyURL</column-name><column-value><![CDATA[");
-		sb.append(getFriendlyURL());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>site</column-name><column-value><![CDATA[");
-		sb.append(isSite());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>remoteStagingGroupCount</column-name><column-value><![CDATA[");
-		sb.append(getRemoteStagingGroupCount());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>inheritContent</column-name><column-value><![CDATA[");
-		sb.append(isInheritContent());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>active</column-name><column-value><![CDATA[");
-		sb.append(isActive());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = Group.class.getClassLoader();

@@ -29,6 +29,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -59,130 +61,41 @@ public class CalendarWrapper implements Calendar, ModelWrapper<Calendar> {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("uuid", getUuid());
-		attributes.put("calendarId", getCalendarId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("calendarResourceId", getCalendarResourceId());
-		attributes.put("name", getName());
-		attributes.put("description", getDescription());
-		attributes.put("timeZoneId", getTimeZoneId());
-		attributes.put("color", getColor());
-		attributes.put("defaultCalendar", isDefaultCalendar());
-		attributes.put("enableComments", isEnableComments());
-		attributes.put("enableRatings", isEnableRatings());
-		attributes.put("lastPublishDate", getLastPublishDate());
+		Map<String, Function<Calendar, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<Calendar, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<Calendar, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+		Map<String, BiConsumer<Calendar, Object>> attributeSetters = getAttributeSetters();
 
-		if (uuid != null) {
-			setUuid(uuid);
+		for (Map.Entry<String, BiConsumer<Calendar, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<Calendar, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long calendarId = (Long)attributes.get("calendarId");
+	@Override
+	public Map<String, Function<Calendar, Object>> getAttributeGetters() {
+		return _calendar.getAttributeGetters();
+	}
 
-		if (calendarId != null) {
-			setCalendarId(calendarId);
-		}
-
-		Long groupId = (Long)attributes.get("groupId");
-
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long calendarResourceId = (Long)attributes.get("calendarResourceId");
-
-		if (calendarResourceId != null) {
-			setCalendarResourceId(calendarResourceId);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
-		String timeZoneId = (String)attributes.get("timeZoneId");
-
-		if (timeZoneId != null) {
-			setTimeZoneId(timeZoneId);
-		}
-
-		Integer color = (Integer)attributes.get("color");
-
-		if (color != null) {
-			setColor(color);
-		}
-
-		Boolean defaultCalendar = (Boolean)attributes.get("defaultCalendar");
-
-		if (defaultCalendar != null) {
-			setDefaultCalendar(defaultCalendar);
-		}
-
-		Boolean enableComments = (Boolean)attributes.get("enableComments");
-
-		if (enableComments != null) {
-			setEnableComments(enableComments);
-		}
-
-		Boolean enableRatings = (Boolean)attributes.get("enableRatings");
-
-		if (enableRatings != null) {
-			setEnableRatings(enableRatings);
-		}
-
-		Date lastPublishDate = (Date)attributes.get("lastPublishDate");
-
-		if (lastPublishDate != null) {
-			setLastPublishDate(lastPublishDate);
-		}
+	@Override
+	public Map<String, BiConsumer<Calendar, Object>> getAttributeSetters() {
+		return _calendar.getAttributeSetters();
 	}
 
 	@Override

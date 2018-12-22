@@ -19,8 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -38,9 +36,13 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the Region service. Represents a row in the &quot;Region&quot; database table, with each column mapped to a property of this class.
@@ -185,59 +187,112 @@ public class RegionModelImpl extends BaseModelImpl<Region>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("regionId", getRegionId());
-		attributes.put("countryId", getCountryId());
-		attributes.put("regionCode", getRegionCode());
-		attributes.put("name", getName());
-		attributes.put("active", isActive());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<Region, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+	public Map<String, BiConsumer<Region, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
-		}
+	private static final Map<String, Function<Region, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<Region, Object>> _attributeSetters;
 
-		Long regionId = (Long)attributes.get("regionId");
+	static {
+		Map<String, Function<Region, Object>> attributeGetters = new LinkedHashMap<String, Function<Region, Object>>();
 
-		if (regionId != null) {
-			setRegionId(regionId);
-		}
+		attributeGetters.put("mvccVersion",
+			new Function<Region, Object>() {
+				@Override
+				public Object apply(Region region) {
+					return region.getMvccVersion();
+				}
+			});
+		attributeGetters.put("regionId",
+			new Function<Region, Object>() {
+				@Override
+				public Object apply(Region region) {
+					return region.getRegionId();
+				}
+			});
+		attributeGetters.put("countryId",
+			new Function<Region, Object>() {
+				@Override
+				public Object apply(Region region) {
+					return region.getCountryId();
+				}
+			});
+		attributeGetters.put("regionCode",
+			new Function<Region, Object>() {
+				@Override
+				public Object apply(Region region) {
+					return region.getRegionCode();
+				}
+			});
+		attributeGetters.put("name",
+			new Function<Region, Object>() {
+				@Override
+				public Object apply(Region region) {
+					return region.getName();
+				}
+			});
+		attributeGetters.put("active",
+			new Function<Region, Object>() {
+				@Override
+				public Object apply(Region region) {
+					return region.isActive();
+				}
+			});
 
-		Long countryId = (Long)attributes.get("countryId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (countryId != null) {
-			setCountryId(countryId);
-		}
+		Map<String, BiConsumer<Region, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Region, Object>>();
 
-		String regionCode = (String)attributes.get("regionCode");
+		attributeSetters.put("mvccVersion",
+			new BiConsumer<Region, Object>() {
+				@Override
+				public void accept(Region region, Object mvccVersion) {
+					region.setMvccVersion((Long)mvccVersion);
+				}
+			});
+		attributeSetters.put("regionId",
+			new BiConsumer<Region, Object>() {
+				@Override
+				public void accept(Region region, Object regionId) {
+					region.setRegionId((Long)regionId);
+				}
+			});
+		attributeSetters.put("countryId",
+			new BiConsumer<Region, Object>() {
+				@Override
+				public void accept(Region region, Object countryId) {
+					region.setCountryId((Long)countryId);
+				}
+			});
+		attributeSetters.put("regionCode",
+			new BiConsumer<Region, Object>() {
+				@Override
+				public void accept(Region region, Object regionCode) {
+					region.setRegionCode((String)regionCode);
+				}
+			});
+		attributeSetters.put("name",
+			new BiConsumer<Region, Object>() {
+				@Override
+				public void accept(Region region, Object name) {
+					region.setName((String)name);
+				}
+			});
+		attributeSetters.put("active",
+			new BiConsumer<Region, Object>() {
+				@Override
+				public void accept(Region region, Object active) {
+					region.setActive((Boolean)active);
+				}
+			});
 
-		if (regionCode != null) {
-			setRegionCode(regionCode);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		Boolean active = (Boolean)attributes.get("active");
-
-		if (active != null) {
-			setActive(active);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON
@@ -497,65 +552,6 @@ public class RegionModelImpl extends BaseModelImpl<Region>
 		regionCacheModel.active = isActive();
 
 		return regionCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(13);
-
-		sb.append("{mvccVersion=");
-		sb.append(getMvccVersion());
-		sb.append(", regionId=");
-		sb.append(getRegionId());
-		sb.append(", countryId=");
-		sb.append(getCountryId());
-		sb.append(", regionCode=");
-		sb.append(getRegionCode());
-		sb.append(", name=");
-		sb.append(getName());
-		sb.append(", active=");
-		sb.append(isActive());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(22);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.kernel.model.Region");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>mvccVersion</column-name><column-value><![CDATA[");
-		sb.append(getMvccVersion());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>regionId</column-name><column-value><![CDATA[");
-		sb.append(getRegionId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>countryId</column-name><column-value><![CDATA[");
-		sb.append(getCountryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>regionCode</column-name><column-value><![CDATA[");
-		sb.append(getRegionCode());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(getName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>active</column-name><column-value><![CDATA[");
-		sb.append(isActive());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = Region.class.getClassLoader();

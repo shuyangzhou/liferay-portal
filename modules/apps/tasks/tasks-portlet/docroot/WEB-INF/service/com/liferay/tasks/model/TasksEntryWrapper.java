@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -57,109 +59,41 @@ public class TasksEntryWrapper implements TasksEntry, ModelWrapper<TasksEntry> {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("tasksEntryId", getTasksEntryId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("title", getTitle());
-		attributes.put("priority", getPriority());
-		attributes.put("assigneeUserId", getAssigneeUserId());
-		attributes.put("resolverUserId", getResolverUserId());
-		attributes.put("dueDate", getDueDate());
-		attributes.put("finishDate", getFinishDate());
-		attributes.put("status", getStatus());
+		Map<String, Function<TasksEntry, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<TasksEntry, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<TasksEntry, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long tasksEntryId = (Long)attributes.get("tasksEntryId");
+		Map<String, BiConsumer<TasksEntry, Object>> attributeSetters = getAttributeSetters();
 
-		if (tasksEntryId != null) {
-			setTasksEntryId(tasksEntryId);
+		for (Map.Entry<String, BiConsumer<TasksEntry, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<TasksEntry, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long groupId = (Long)attributes.get("groupId");
+	@Override
+	public Map<String, Function<TasksEntry, Object>> getAttributeGetters() {
+		return _tasksEntry.getAttributeGetters();
+	}
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		String title = (String)attributes.get("title");
-
-		if (title != null) {
-			setTitle(title);
-		}
-
-		Integer priority = (Integer)attributes.get("priority");
-
-		if (priority != null) {
-			setPriority(priority);
-		}
-
-		Long assigneeUserId = (Long)attributes.get("assigneeUserId");
-
-		if (assigneeUserId != null) {
-			setAssigneeUserId(assigneeUserId);
-		}
-
-		Long resolverUserId = (Long)attributes.get("resolverUserId");
-
-		if (resolverUserId != null) {
-			setResolverUserId(resolverUserId);
-		}
-
-		Date dueDate = (Date)attributes.get("dueDate");
-
-		if (dueDate != null) {
-			setDueDate(dueDate);
-		}
-
-		Date finishDate = (Date)attributes.get("finishDate");
-
-		if (finishDate != null) {
-			setFinishDate(finishDate);
-		}
-
-		Integer status = (Integer)attributes.get("status");
-
-		if (status != null) {
-			setStatus(status);
-		}
+	@Override
+	public Map<String, BiConsumer<TasksEntry, Object>> getAttributeSetters() {
+		return _tasksEntry.getAttributeSetters();
 	}
 
 	@Override

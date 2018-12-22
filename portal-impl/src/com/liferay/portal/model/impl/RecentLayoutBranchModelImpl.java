@@ -19,8 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -38,8 +36,12 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the RecentLayoutBranch service. Represents a row in the &quot;RecentLayoutBranch&quot; database table, with each column mapped to a property of this class.
@@ -145,73 +147,148 @@ public class RecentLayoutBranchModelImpl extends BaseModelImpl<RecentLayoutBranc
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("recentLayoutBranchId", getRecentLayoutBranchId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("layoutBranchId", getLayoutBranchId());
-		attributes.put("layoutSetBranchId", getLayoutSetBranchId());
-		attributes.put("plid", getPlid());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<RecentLayoutBranch, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+	public Map<String, BiConsumer<RecentLayoutBranch, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
-		}
+	private static final Map<String, Function<RecentLayoutBranch, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<RecentLayoutBranch, Object>> _attributeSetters;
 
-		Long recentLayoutBranchId = (Long)attributes.get("recentLayoutBranchId");
+	static {
+		Map<String, Function<RecentLayoutBranch, Object>> attributeGetters = new LinkedHashMap<String, Function<RecentLayoutBranch, Object>>();
 
-		if (recentLayoutBranchId != null) {
-			setRecentLayoutBranchId(recentLayoutBranchId);
-		}
+		attributeGetters.put("mvccVersion",
+			new Function<RecentLayoutBranch, Object>() {
+				@Override
+				public Object apply(RecentLayoutBranch recentLayoutBranch) {
+					return recentLayoutBranch.getMvccVersion();
+				}
+			});
+		attributeGetters.put("recentLayoutBranchId",
+			new Function<RecentLayoutBranch, Object>() {
+				@Override
+				public Object apply(RecentLayoutBranch recentLayoutBranch) {
+					return recentLayoutBranch.getRecentLayoutBranchId();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<RecentLayoutBranch, Object>() {
+				@Override
+				public Object apply(RecentLayoutBranch recentLayoutBranch) {
+					return recentLayoutBranch.getGroupId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<RecentLayoutBranch, Object>() {
+				@Override
+				public Object apply(RecentLayoutBranch recentLayoutBranch) {
+					return recentLayoutBranch.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<RecentLayoutBranch, Object>() {
+				@Override
+				public Object apply(RecentLayoutBranch recentLayoutBranch) {
+					return recentLayoutBranch.getUserId();
+				}
+			});
+		attributeGetters.put("layoutBranchId",
+			new Function<RecentLayoutBranch, Object>() {
+				@Override
+				public Object apply(RecentLayoutBranch recentLayoutBranch) {
+					return recentLayoutBranch.getLayoutBranchId();
+				}
+			});
+		attributeGetters.put("layoutSetBranchId",
+			new Function<RecentLayoutBranch, Object>() {
+				@Override
+				public Object apply(RecentLayoutBranch recentLayoutBranch) {
+					return recentLayoutBranch.getLayoutSetBranchId();
+				}
+			});
+		attributeGetters.put("plid",
+			new Function<RecentLayoutBranch, Object>() {
+				@Override
+				public Object apply(RecentLayoutBranch recentLayoutBranch) {
+					return recentLayoutBranch.getPlid();
+				}
+			});
 
-		Long groupId = (Long)attributes.get("groupId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+		Map<String, BiConsumer<RecentLayoutBranch, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<RecentLayoutBranch, Object>>();
 
-		Long companyId = (Long)attributes.get("companyId");
+		attributeSetters.put("mvccVersion",
+			new BiConsumer<RecentLayoutBranch, Object>() {
+				@Override
+				public void accept(RecentLayoutBranch recentLayoutBranch,
+					Object mvccVersion) {
+					recentLayoutBranch.setMvccVersion((Long)mvccVersion);
+				}
+			});
+		attributeSetters.put("recentLayoutBranchId",
+			new BiConsumer<RecentLayoutBranch, Object>() {
+				@Override
+				public void accept(RecentLayoutBranch recentLayoutBranch,
+					Object recentLayoutBranchId) {
+					recentLayoutBranch.setRecentLayoutBranchId((Long)recentLayoutBranchId);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<RecentLayoutBranch, Object>() {
+				@Override
+				public void accept(RecentLayoutBranch recentLayoutBranch,
+					Object groupId) {
+					recentLayoutBranch.setGroupId((Long)groupId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<RecentLayoutBranch, Object>() {
+				@Override
+				public void accept(RecentLayoutBranch recentLayoutBranch,
+					Object companyId) {
+					recentLayoutBranch.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<RecentLayoutBranch, Object>() {
+				@Override
+				public void accept(RecentLayoutBranch recentLayoutBranch,
+					Object userId) {
+					recentLayoutBranch.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("layoutBranchId",
+			new BiConsumer<RecentLayoutBranch, Object>() {
+				@Override
+				public void accept(RecentLayoutBranch recentLayoutBranch,
+					Object layoutBranchId) {
+					recentLayoutBranch.setLayoutBranchId((Long)layoutBranchId);
+				}
+			});
+		attributeSetters.put("layoutSetBranchId",
+			new BiConsumer<RecentLayoutBranch, Object>() {
+				@Override
+				public void accept(RecentLayoutBranch recentLayoutBranch,
+					Object layoutSetBranchId) {
+					recentLayoutBranch.setLayoutSetBranchId((Long)layoutSetBranchId);
+				}
+			});
+		attributeSetters.put("plid",
+			new BiConsumer<RecentLayoutBranch, Object>() {
+				@Override
+				public void accept(RecentLayoutBranch recentLayoutBranch,
+					Object plid) {
+					recentLayoutBranch.setPlid((Long)plid);
+				}
+			});
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		Long layoutBranchId = (Long)attributes.get("layoutBranchId");
-
-		if (layoutBranchId != null) {
-			setLayoutBranchId(layoutBranchId);
-		}
-
-		Long layoutSetBranchId = (Long)attributes.get("layoutSetBranchId");
-
-		if (layoutSetBranchId != null) {
-			setLayoutSetBranchId(layoutSetBranchId);
-		}
-
-		Long plid = (Long)attributes.get("plid");
-
-		if (plid != null) {
-			setPlid(plid);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override
@@ -515,77 +592,6 @@ public class RecentLayoutBranchModelImpl extends BaseModelImpl<RecentLayoutBranc
 		recentLayoutBranchCacheModel.plid = getPlid();
 
 		return recentLayoutBranchCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(17);
-
-		sb.append("{mvccVersion=");
-		sb.append(getMvccVersion());
-		sb.append(", recentLayoutBranchId=");
-		sb.append(getRecentLayoutBranchId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", layoutBranchId=");
-		sb.append(getLayoutBranchId());
-		sb.append(", layoutSetBranchId=");
-		sb.append(getLayoutSetBranchId());
-		sb.append(", plid=");
-		sb.append(getPlid());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(28);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.kernel.model.RecentLayoutBranch");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>mvccVersion</column-name><column-value><![CDATA[");
-		sb.append(getMvccVersion());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>recentLayoutBranchId</column-name><column-value><![CDATA[");
-		sb.append(getRecentLayoutBranchId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>layoutBranchId</column-name><column-value><![CDATA[");
-		sb.append(getLayoutBranchId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>layoutSetBranchId</column-name><column-value><![CDATA[");
-		sb.append(getLayoutSetBranchId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>plid</column-name><column-value><![CDATA[");
-		sb.append(getPlid());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = RecentLayoutBranch.class.getClassLoader();

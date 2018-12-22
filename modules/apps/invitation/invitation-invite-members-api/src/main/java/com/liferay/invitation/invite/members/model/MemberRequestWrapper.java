@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -58,95 +60,41 @@ public class MemberRequestWrapper implements MemberRequest,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("memberRequestId", getMemberRequestId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("key", getKey());
-		attributes.put("receiverUserId", getReceiverUserId());
-		attributes.put("invitedRoleId", getInvitedRoleId());
-		attributes.put("invitedTeamId", getInvitedTeamId());
-		attributes.put("status", getStatus());
+		Map<String, Function<MemberRequest, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<MemberRequest, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<MemberRequest, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long memberRequestId = (Long)attributes.get("memberRequestId");
+		Map<String, BiConsumer<MemberRequest, Object>> attributeSetters = getAttributeSetters();
 
-		if (memberRequestId != null) {
-			setMemberRequestId(memberRequestId);
+		for (Map.Entry<String, BiConsumer<MemberRequest, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<MemberRequest, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long groupId = (Long)attributes.get("groupId");
+	@Override
+	public Map<String, Function<MemberRequest, Object>> getAttributeGetters() {
+		return _memberRequest.getAttributeGetters();
+	}
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		String key = (String)attributes.get("key");
-
-		if (key != null) {
-			setKey(key);
-		}
-
-		Long receiverUserId = (Long)attributes.get("receiverUserId");
-
-		if (receiverUserId != null) {
-			setReceiverUserId(receiverUserId);
-		}
-
-		Long invitedRoleId = (Long)attributes.get("invitedRoleId");
-
-		if (invitedRoleId != null) {
-			setInvitedRoleId(invitedRoleId);
-		}
-
-		Long invitedTeamId = (Long)attributes.get("invitedTeamId");
-
-		if (invitedTeamId != null) {
-			setInvitedTeamId(invitedTeamId);
-		}
-
-		Integer status = (Integer)attributes.get("status");
-
-		if (status != null) {
-			setStatus(status);
-		}
+	@Override
+	public Map<String, BiConsumer<MemberRequest, Object>> getAttributeSetters() {
+		return _memberRequest.getAttributeSetters();
 	}
 
 	@Override

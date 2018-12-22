@@ -19,8 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
@@ -44,10 +42,14 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the SegmentsEntryRel service. Represents a row in the &quot;SegmentsEntryRel&quot; database table, with each column mapped to a property of this class.
@@ -206,87 +208,178 @@ public class SegmentsEntryRelModelImpl extends BaseModelImpl<SegmentsEntryRel>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("segmentsEntryRelId", getSegmentsEntryRelId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("segmentsEntryId", getSegmentsEntryId());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<SegmentsEntryRel, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long segmentsEntryRelId = (Long)attributes.get("segmentsEntryRelId");
+	public Map<String, BiConsumer<SegmentsEntryRel, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (segmentsEntryRelId != null) {
-			setSegmentsEntryRelId(segmentsEntryRelId);
-		}
+	private static final Map<String, Function<SegmentsEntryRel, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<SegmentsEntryRel, Object>> _attributeSetters;
 
-		Long groupId = (Long)attributes.get("groupId");
+	static {
+		Map<String, Function<SegmentsEntryRel, Object>> attributeGetters = new LinkedHashMap<String, Function<SegmentsEntryRel, Object>>();
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+		attributeGetters.put("segmentsEntryRelId",
+			new Function<SegmentsEntryRel, Object>() {
+				@Override
+				public Object apply(SegmentsEntryRel segmentsEntryRel) {
+					return segmentsEntryRel.getSegmentsEntryRelId();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<SegmentsEntryRel, Object>() {
+				@Override
+				public Object apply(SegmentsEntryRel segmentsEntryRel) {
+					return segmentsEntryRel.getGroupId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<SegmentsEntryRel, Object>() {
+				@Override
+				public Object apply(SegmentsEntryRel segmentsEntryRel) {
+					return segmentsEntryRel.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<SegmentsEntryRel, Object>() {
+				@Override
+				public Object apply(SegmentsEntryRel segmentsEntryRel) {
+					return segmentsEntryRel.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<SegmentsEntryRel, Object>() {
+				@Override
+				public Object apply(SegmentsEntryRel segmentsEntryRel) {
+					return segmentsEntryRel.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<SegmentsEntryRel, Object>() {
+				@Override
+				public Object apply(SegmentsEntryRel segmentsEntryRel) {
+					return segmentsEntryRel.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<SegmentsEntryRel, Object>() {
+				@Override
+				public Object apply(SegmentsEntryRel segmentsEntryRel) {
+					return segmentsEntryRel.getModifiedDate();
+				}
+			});
+		attributeGetters.put("segmentsEntryId",
+			new Function<SegmentsEntryRel, Object>() {
+				@Override
+				public Object apply(SegmentsEntryRel segmentsEntryRel) {
+					return segmentsEntryRel.getSegmentsEntryId();
+				}
+			});
+		attributeGetters.put("classNameId",
+			new Function<SegmentsEntryRel, Object>() {
+				@Override
+				public Object apply(SegmentsEntryRel segmentsEntryRel) {
+					return segmentsEntryRel.getClassNameId();
+				}
+			});
+		attributeGetters.put("classPK",
+			new Function<SegmentsEntryRel, Object>() {
+				@Override
+				public Object apply(SegmentsEntryRel segmentsEntryRel) {
+					return segmentsEntryRel.getClassPK();
+				}
+			});
 
-		Long companyId = (Long)attributes.get("companyId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		Map<String, BiConsumer<SegmentsEntryRel, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SegmentsEntryRel, Object>>();
 
-		Long userId = (Long)attributes.get("userId");
+		attributeSetters.put("segmentsEntryRelId",
+			new BiConsumer<SegmentsEntryRel, Object>() {
+				@Override
+				public void accept(SegmentsEntryRel segmentsEntryRel,
+					Object segmentsEntryRelId) {
+					segmentsEntryRel.setSegmentsEntryRelId((Long)segmentsEntryRelId);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<SegmentsEntryRel, Object>() {
+				@Override
+				public void accept(SegmentsEntryRel segmentsEntryRel,
+					Object groupId) {
+					segmentsEntryRel.setGroupId((Long)groupId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<SegmentsEntryRel, Object>() {
+				@Override
+				public void accept(SegmentsEntryRel segmentsEntryRel,
+					Object companyId) {
+					segmentsEntryRel.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<SegmentsEntryRel, Object>() {
+				@Override
+				public void accept(SegmentsEntryRel segmentsEntryRel,
+					Object userId) {
+					segmentsEntryRel.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<SegmentsEntryRel, Object>() {
+				@Override
+				public void accept(SegmentsEntryRel segmentsEntryRel,
+					Object userName) {
+					segmentsEntryRel.setUserName((String)userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<SegmentsEntryRel, Object>() {
+				@Override
+				public void accept(SegmentsEntryRel segmentsEntryRel,
+					Object createDate) {
+					segmentsEntryRel.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<SegmentsEntryRel, Object>() {
+				@Override
+				public void accept(SegmentsEntryRel segmentsEntryRel,
+					Object modifiedDate) {
+					segmentsEntryRel.setModifiedDate((Date)modifiedDate);
+				}
+			});
+		attributeSetters.put("segmentsEntryId",
+			new BiConsumer<SegmentsEntryRel, Object>() {
+				@Override
+				public void accept(SegmentsEntryRel segmentsEntryRel,
+					Object segmentsEntryId) {
+					segmentsEntryRel.setSegmentsEntryId((Long)segmentsEntryId);
+				}
+			});
+		attributeSetters.put("classNameId",
+			new BiConsumer<SegmentsEntryRel, Object>() {
+				@Override
+				public void accept(SegmentsEntryRel segmentsEntryRel,
+					Object classNameId) {
+					segmentsEntryRel.setClassNameId((Long)classNameId);
+				}
+			});
+		attributeSetters.put("classPK",
+			new BiConsumer<SegmentsEntryRel, Object>() {
+				@Override
+				public void accept(SegmentsEntryRel segmentsEntryRel,
+					Object classPK) {
+					segmentsEntryRel.setClassPK((Long)classPK);
+				}
+			});
 
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long segmentsEntryId = (Long)attributes.get("segmentsEntryId");
-
-		if (segmentsEntryId != null) {
-			setSegmentsEntryId(segmentsEntryId);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON
@@ -663,89 +756,6 @@ public class SegmentsEntryRelModelImpl extends BaseModelImpl<SegmentsEntryRel>
 		segmentsEntryRelCacheModel.classPK = getClassPK();
 
 		return segmentsEntryRelCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(21);
-
-		sb.append("{segmentsEntryRelId=");
-		sb.append(getSegmentsEntryRelId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", segmentsEntryId=");
-		sb.append(getSegmentsEntryId());
-		sb.append(", classNameId=");
-		sb.append(getClassNameId());
-		sb.append(", classPK=");
-		sb.append(getClassPK());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(34);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.segments.model.SegmentsEntryRel");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>segmentsEntryRelId</column-name><column-value><![CDATA[");
-		sb.append(getSegmentsEntryRelId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>segmentsEntryId</column-name><column-value><![CDATA[");
-		sb.append(getSegmentsEntryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classNameId</column-name><column-value><![CDATA[");
-		sb.append(getClassNameId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classPK</column-name><column-value><![CDATA[");
-		sb.append(getClassPK());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = SegmentsEntryRel.class.getClassLoader();

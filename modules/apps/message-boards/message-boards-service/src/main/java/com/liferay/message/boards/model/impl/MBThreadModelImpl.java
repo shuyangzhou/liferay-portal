@@ -25,8 +25,6 @@ import com.liferay.message.boards.model.MBThread;
 import com.liferay.message.boards.model.MBThreadModel;
 import com.liferay.message.boards.model.MBThreadSoap;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -51,10 +49,14 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the MBThread service. Represents a row in the &quot;MBThread&quot; database table, with each column mapped to a property of this class.
@@ -254,178 +256,350 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("uuid", getUuid());
-		attributes.put("threadId", getThreadId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("categoryId", getCategoryId());
-		attributes.put("rootMessageId", getRootMessageId());
-		attributes.put("rootMessageUserId", getRootMessageUserId());
-		attributes.put("title", getTitle());
-		attributes.put("messageCount", getMessageCount());
-		attributes.put("viewCount", getViewCount());
-		attributes.put("lastPostByUserId", getLastPostByUserId());
-		attributes.put("lastPostDate", getLastPostDate());
-		attributes.put("priority", getPriority());
-		attributes.put("question", isQuestion());
-		attributes.put("lastPublishDate", getLastPublishDate());
-		attributes.put("status", getStatus());
-		attributes.put("statusByUserId", getStatusByUserId());
-		attributes.put("statusByUserName", getStatusByUserName());
-		attributes.put("statusDate", getStatusDate());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<MBThread, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+	public Map<String, BiConsumer<MBThread, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
+	private static final Map<String, Function<MBThread, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<MBThread, Object>> _attributeSetters;
 
-		Long threadId = (Long)attributes.get("threadId");
+	static {
+		Map<String, Function<MBThread, Object>> attributeGetters = new LinkedHashMap<String, Function<MBThread, Object>>();
 
-		if (threadId != null) {
-			setThreadId(threadId);
-		}
+		attributeGetters.put("uuid",
+			new Function<MBThread, Object>() {
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getUuid();
+				}
+			});
+		attributeGetters.put("threadId",
+			new Function<MBThread, Object>() {
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getThreadId();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<MBThread, Object>() {
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getGroupId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<MBThread, Object>() {
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<MBThread, Object>() {
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<MBThread, Object>() {
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<MBThread, Object>() {
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<MBThread, Object>() {
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getModifiedDate();
+				}
+			});
+		attributeGetters.put("categoryId",
+			new Function<MBThread, Object>() {
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getCategoryId();
+				}
+			});
+		attributeGetters.put("rootMessageId",
+			new Function<MBThread, Object>() {
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getRootMessageId();
+				}
+			});
+		attributeGetters.put("rootMessageUserId",
+			new Function<MBThread, Object>() {
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getRootMessageUserId();
+				}
+			});
+		attributeGetters.put("title",
+			new Function<MBThread, Object>() {
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getTitle();
+				}
+			});
+		attributeGetters.put("messageCount",
+			new Function<MBThread, Object>() {
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getMessageCount();
+				}
+			});
+		attributeGetters.put("viewCount",
+			new Function<MBThread, Object>() {
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getViewCount();
+				}
+			});
+		attributeGetters.put("lastPostByUserId",
+			new Function<MBThread, Object>() {
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getLastPostByUserId();
+				}
+			});
+		attributeGetters.put("lastPostDate",
+			new Function<MBThread, Object>() {
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getLastPostDate();
+				}
+			});
+		attributeGetters.put("priority",
+			new Function<MBThread, Object>() {
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getPriority();
+				}
+			});
+		attributeGetters.put("question",
+			new Function<MBThread, Object>() {
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.isQuestion();
+				}
+			});
+		attributeGetters.put("lastPublishDate",
+			new Function<MBThread, Object>() {
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getLastPublishDate();
+				}
+			});
+		attributeGetters.put("status",
+			new Function<MBThread, Object>() {
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getStatus();
+				}
+			});
+		attributeGetters.put("statusByUserId",
+			new Function<MBThread, Object>() {
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getStatusByUserId();
+				}
+			});
+		attributeGetters.put("statusByUserName",
+			new Function<MBThread, Object>() {
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getStatusByUserName();
+				}
+			});
+		attributeGetters.put("statusDate",
+			new Function<MBThread, Object>() {
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getStatusDate();
+				}
+			});
 
-		Long groupId = (Long)attributes.get("groupId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+		Map<String, BiConsumer<MBThread, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<MBThread, Object>>();
 
-		Long companyId = (Long)attributes.get("companyId");
+		attributeSetters.put("uuid",
+			new BiConsumer<MBThread, Object>() {
+				@Override
+				public void accept(MBThread mbThread, Object uuid) {
+					mbThread.setUuid((String)uuid);
+				}
+			});
+		attributeSetters.put("threadId",
+			new BiConsumer<MBThread, Object>() {
+				@Override
+				public void accept(MBThread mbThread, Object threadId) {
+					mbThread.setThreadId((Long)threadId);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<MBThread, Object>() {
+				@Override
+				public void accept(MBThread mbThread, Object groupId) {
+					mbThread.setGroupId((Long)groupId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<MBThread, Object>() {
+				@Override
+				public void accept(MBThread mbThread, Object companyId) {
+					mbThread.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<MBThread, Object>() {
+				@Override
+				public void accept(MBThread mbThread, Object userId) {
+					mbThread.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<MBThread, Object>() {
+				@Override
+				public void accept(MBThread mbThread, Object userName) {
+					mbThread.setUserName((String)userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<MBThread, Object>() {
+				@Override
+				public void accept(MBThread mbThread, Object createDate) {
+					mbThread.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<MBThread, Object>() {
+				@Override
+				public void accept(MBThread mbThread, Object modifiedDate) {
+					mbThread.setModifiedDate((Date)modifiedDate);
+				}
+			});
+		attributeSetters.put("categoryId",
+			new BiConsumer<MBThread, Object>() {
+				@Override
+				public void accept(MBThread mbThread, Object categoryId) {
+					mbThread.setCategoryId((Long)categoryId);
+				}
+			});
+		attributeSetters.put("rootMessageId",
+			new BiConsumer<MBThread, Object>() {
+				@Override
+				public void accept(MBThread mbThread, Object rootMessageId) {
+					mbThread.setRootMessageId((Long)rootMessageId);
+				}
+			});
+		attributeSetters.put("rootMessageUserId",
+			new BiConsumer<MBThread, Object>() {
+				@Override
+				public void accept(MBThread mbThread, Object rootMessageUserId) {
+					mbThread.setRootMessageUserId((Long)rootMessageUserId);
+				}
+			});
+		attributeSetters.put("title",
+			new BiConsumer<MBThread, Object>() {
+				@Override
+				public void accept(MBThread mbThread, Object title) {
+					mbThread.setTitle((String)title);
+				}
+			});
+		attributeSetters.put("messageCount",
+			new BiConsumer<MBThread, Object>() {
+				@Override
+				public void accept(MBThread mbThread, Object messageCount) {
+					mbThread.setMessageCount((Integer)messageCount);
+				}
+			});
+		attributeSetters.put("viewCount",
+			new BiConsumer<MBThread, Object>() {
+				@Override
+				public void accept(MBThread mbThread, Object viewCount) {
+					mbThread.setViewCount((Integer)viewCount);
+				}
+			});
+		attributeSetters.put("lastPostByUserId",
+			new BiConsumer<MBThread, Object>() {
+				@Override
+				public void accept(MBThread mbThread, Object lastPostByUserId) {
+					mbThread.setLastPostByUserId((Long)lastPostByUserId);
+				}
+			});
+		attributeSetters.put("lastPostDate",
+			new BiConsumer<MBThread, Object>() {
+				@Override
+				public void accept(MBThread mbThread, Object lastPostDate) {
+					mbThread.setLastPostDate((Date)lastPostDate);
+				}
+			});
+		attributeSetters.put("priority",
+			new BiConsumer<MBThread, Object>() {
+				@Override
+				public void accept(MBThread mbThread, Object priority) {
+					mbThread.setPriority((Double)priority);
+				}
+			});
+		attributeSetters.put("question",
+			new BiConsumer<MBThread, Object>() {
+				@Override
+				public void accept(MBThread mbThread, Object question) {
+					mbThread.setQuestion((Boolean)question);
+				}
+			});
+		attributeSetters.put("lastPublishDate",
+			new BiConsumer<MBThread, Object>() {
+				@Override
+				public void accept(MBThread mbThread, Object lastPublishDate) {
+					mbThread.setLastPublishDate((Date)lastPublishDate);
+				}
+			});
+		attributeSetters.put("status",
+			new BiConsumer<MBThread, Object>() {
+				@Override
+				public void accept(MBThread mbThread, Object status) {
+					mbThread.setStatus((Integer)status);
+				}
+			});
+		attributeSetters.put("statusByUserId",
+			new BiConsumer<MBThread, Object>() {
+				@Override
+				public void accept(MBThread mbThread, Object statusByUserId) {
+					mbThread.setStatusByUserId((Long)statusByUserId);
+				}
+			});
+		attributeSetters.put("statusByUserName",
+			new BiConsumer<MBThread, Object>() {
+				@Override
+				public void accept(MBThread mbThread, Object statusByUserName) {
+					mbThread.setStatusByUserName((String)statusByUserName);
+				}
+			});
+		attributeSetters.put("statusDate",
+			new BiConsumer<MBThread, Object>() {
+				@Override
+				public void accept(MBThread mbThread, Object statusDate) {
+					mbThread.setStatusDate((Date)statusDate);
+				}
+			});
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long categoryId = (Long)attributes.get("categoryId");
-
-		if (categoryId != null) {
-			setCategoryId(categoryId);
-		}
-
-		Long rootMessageId = (Long)attributes.get("rootMessageId");
-
-		if (rootMessageId != null) {
-			setRootMessageId(rootMessageId);
-		}
-
-		Long rootMessageUserId = (Long)attributes.get("rootMessageUserId");
-
-		if (rootMessageUserId != null) {
-			setRootMessageUserId(rootMessageUserId);
-		}
-
-		String title = (String)attributes.get("title");
-
-		if (title != null) {
-			setTitle(title);
-		}
-
-		Integer messageCount = (Integer)attributes.get("messageCount");
-
-		if (messageCount != null) {
-			setMessageCount(messageCount);
-		}
-
-		Integer viewCount = (Integer)attributes.get("viewCount");
-
-		if (viewCount != null) {
-			setViewCount(viewCount);
-		}
-
-		Long lastPostByUserId = (Long)attributes.get("lastPostByUserId");
-
-		if (lastPostByUserId != null) {
-			setLastPostByUserId(lastPostByUserId);
-		}
-
-		Date lastPostDate = (Date)attributes.get("lastPostDate");
-
-		if (lastPostDate != null) {
-			setLastPostDate(lastPostDate);
-		}
-
-		Double priority = (Double)attributes.get("priority");
-
-		if (priority != null) {
-			setPriority(priority);
-		}
-
-		Boolean question = (Boolean)attributes.get("question");
-
-		if (question != null) {
-			setQuestion(question);
-		}
-
-		Date lastPublishDate = (Date)attributes.get("lastPublishDate");
-
-		if (lastPublishDate != null) {
-			setLastPublishDate(lastPublishDate);
-		}
-
-		Integer status = (Integer)attributes.get("status");
-
-		if (status != null) {
-			setStatus(status);
-		}
-
-		Long statusByUserId = (Long)attributes.get("statusByUserId");
-
-		if (statusByUserId != null) {
-			setStatusByUserId(statusByUserId);
-		}
-
-		String statusByUserName = (String)attributes.get("statusByUserName");
-
-		if (statusByUserName != null) {
-			setStatusByUserName(statusByUserName);
-		}
-
-		Date statusDate = (Date)attributes.get("statusDate");
-
-		if (statusDate != null) {
-			setStatusDate(statusDate);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON
@@ -1384,167 +1558,6 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 		}
 
 		return mbThreadCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(47);
-
-		sb.append("{uuid=");
-		sb.append(getUuid());
-		sb.append(", threadId=");
-		sb.append(getThreadId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", categoryId=");
-		sb.append(getCategoryId());
-		sb.append(", rootMessageId=");
-		sb.append(getRootMessageId());
-		sb.append(", rootMessageUserId=");
-		sb.append(getRootMessageUserId());
-		sb.append(", title=");
-		sb.append(getTitle());
-		sb.append(", messageCount=");
-		sb.append(getMessageCount());
-		sb.append(", viewCount=");
-		sb.append(getViewCount());
-		sb.append(", lastPostByUserId=");
-		sb.append(getLastPostByUserId());
-		sb.append(", lastPostDate=");
-		sb.append(getLastPostDate());
-		sb.append(", priority=");
-		sb.append(getPriority());
-		sb.append(", question=");
-		sb.append(isQuestion());
-		sb.append(", lastPublishDate=");
-		sb.append(getLastPublishDate());
-		sb.append(", status=");
-		sb.append(getStatus());
-		sb.append(", statusByUserId=");
-		sb.append(getStatusByUserId());
-		sb.append(", statusByUserName=");
-		sb.append(getStatusByUserName());
-		sb.append(", statusDate=");
-		sb.append(getStatusDate());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(73);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.message.boards.model.MBThread");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>threadId</column-name><column-value><![CDATA[");
-		sb.append(getThreadId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>categoryId</column-name><column-value><![CDATA[");
-		sb.append(getCategoryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>rootMessageId</column-name><column-value><![CDATA[");
-		sb.append(getRootMessageId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>rootMessageUserId</column-name><column-value><![CDATA[");
-		sb.append(getRootMessageUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>title</column-name><column-value><![CDATA[");
-		sb.append(getTitle());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>messageCount</column-name><column-value><![CDATA[");
-		sb.append(getMessageCount());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>viewCount</column-name><column-value><![CDATA[");
-		sb.append(getViewCount());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>lastPostByUserId</column-name><column-value><![CDATA[");
-		sb.append(getLastPostByUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>lastPostDate</column-name><column-value><![CDATA[");
-		sb.append(getLastPostDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>priority</column-name><column-value><![CDATA[");
-		sb.append(getPriority());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>question</column-name><column-value><![CDATA[");
-		sb.append(isQuestion());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>lastPublishDate</column-name><column-value><![CDATA[");
-		sb.append(getLastPublishDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>status</column-name><column-value><![CDATA[");
-		sb.append(getStatus());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusByUserId</column-name><column-value><![CDATA[");
-		sb.append(getStatusByUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusByUserName</column-name><column-value><![CDATA[");
-		sb.append(getStatusByUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusDate</column-name><column-value><![CDATA[");
-		sb.append(getStatusDate());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = MBThread.class.getClassLoader();

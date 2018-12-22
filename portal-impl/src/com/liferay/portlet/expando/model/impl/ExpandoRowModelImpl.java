@@ -19,8 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoRow;
 import com.liferay.expando.kernel.model.ExpandoRowModel;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
@@ -32,9 +30,13 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the ExpandoRow service. Represents a row in the &quot;ExpandoRow&quot; database table, with each column mapped to a property of this class.
@@ -131,52 +133,98 @@ public class ExpandoRowModelImpl extends BaseModelImpl<ExpandoRow>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("rowId", getRowId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("tableId", getTableId());
-		attributes.put("classPK", getClassPK());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<ExpandoRow, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long rowId = (Long)attributes.get("rowId");
+	public Map<String, BiConsumer<ExpandoRow, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (rowId != null) {
-			setRowId(rowId);
-		}
+	private static final Map<String, Function<ExpandoRow, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<ExpandoRow, Object>> _attributeSetters;
 
-		Long companyId = (Long)attributes.get("companyId");
+	static {
+		Map<String, Function<ExpandoRow, Object>> attributeGetters = new LinkedHashMap<String, Function<ExpandoRow, Object>>();
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		attributeGetters.put("rowId",
+			new Function<ExpandoRow, Object>() {
+				@Override
+				public Object apply(ExpandoRow expandoRow) {
+					return expandoRow.getRowId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<ExpandoRow, Object>() {
+				@Override
+				public Object apply(ExpandoRow expandoRow) {
+					return expandoRow.getCompanyId();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<ExpandoRow, Object>() {
+				@Override
+				public Object apply(ExpandoRow expandoRow) {
+					return expandoRow.getModifiedDate();
+				}
+			});
+		attributeGetters.put("tableId",
+			new Function<ExpandoRow, Object>() {
+				@Override
+				public Object apply(ExpandoRow expandoRow) {
+					return expandoRow.getTableId();
+				}
+			});
+		attributeGetters.put("classPK",
+			new Function<ExpandoRow, Object>() {
+				@Override
+				public Object apply(ExpandoRow expandoRow) {
+					return expandoRow.getClassPK();
+				}
+			});
 
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
+		Map<String, BiConsumer<ExpandoRow, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<ExpandoRow, Object>>();
 
-		Long tableId = (Long)attributes.get("tableId");
+		attributeSetters.put("rowId",
+			new BiConsumer<ExpandoRow, Object>() {
+				@Override
+				public void accept(ExpandoRow expandoRow, Object rowId) {
+					expandoRow.setRowId((Long)rowId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<ExpandoRow, Object>() {
+				@Override
+				public void accept(ExpandoRow expandoRow, Object companyId) {
+					expandoRow.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<ExpandoRow, Object>() {
+				@Override
+				public void accept(ExpandoRow expandoRow, Object modifiedDate) {
+					expandoRow.setModifiedDate((Date)modifiedDate);
+				}
+			});
+		attributeSetters.put("tableId",
+			new BiConsumer<ExpandoRow, Object>() {
+				@Override
+				public void accept(ExpandoRow expandoRow, Object tableId) {
+					expandoRow.setTableId((Long)tableId);
+				}
+			});
+		attributeSetters.put("classPK",
+			new BiConsumer<ExpandoRow, Object>() {
+				@Override
+				public void accept(ExpandoRow expandoRow, Object classPK) {
+					expandoRow.setClassPK((Long)classPK);
+				}
+			});
 
-		if (tableId != null) {
-			setTableId(tableId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override
@@ -371,59 +419,6 @@ public class ExpandoRowModelImpl extends BaseModelImpl<ExpandoRow>
 		expandoRowCacheModel.classPK = getClassPK();
 
 		return expandoRowCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(11);
-
-		sb.append("{rowId=");
-		sb.append(getRowId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", tableId=");
-		sb.append(getTableId());
-		sb.append(", classPK=");
-		sb.append(getClassPK());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(19);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.expando.kernel.model.ExpandoRow");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>rowId</column-name><column-value><![CDATA[");
-		sb.append(getRowId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>tableId</column-name><column-value><![CDATA[");
-		sb.append(getTableId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classPK</column-name><column-value><![CDATA[");
-		sb.append(getClassPK());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = ExpandoRow.class.getClassLoader();

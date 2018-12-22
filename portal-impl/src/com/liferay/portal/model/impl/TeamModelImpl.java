@@ -21,8 +21,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
@@ -44,10 +42,14 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the Team service. Represents a row in the &quot;Team&quot; database table, with each column mapped to a property of this class.
@@ -227,101 +229,196 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("uuid", getUuid());
-		attributes.put("teamId", getTeamId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("groupId", getGroupId());
-		attributes.put("name", getName());
-		attributes.put("description", getDescription());
-		attributes.put("lastPublishDate", getLastPublishDate());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<Team, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+	public Map<String, BiConsumer<Team, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
-		}
+	private static final Map<String, Function<Team, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<Team, Object>> _attributeSetters;
 
-		String uuid = (String)attributes.get("uuid");
+	static {
+		Map<String, Function<Team, Object>> attributeGetters = new LinkedHashMap<String, Function<Team, Object>>();
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
+		attributeGetters.put("mvccVersion",
+			new Function<Team, Object>() {
+				@Override
+				public Object apply(Team team) {
+					return team.getMvccVersion();
+				}
+			});
+		attributeGetters.put("uuid",
+			new Function<Team, Object>() {
+				@Override
+				public Object apply(Team team) {
+					return team.getUuid();
+				}
+			});
+		attributeGetters.put("teamId",
+			new Function<Team, Object>() {
+				@Override
+				public Object apply(Team team) {
+					return team.getTeamId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<Team, Object>() {
+				@Override
+				public Object apply(Team team) {
+					return team.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<Team, Object>() {
+				@Override
+				public Object apply(Team team) {
+					return team.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<Team, Object>() {
+				@Override
+				public Object apply(Team team) {
+					return team.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<Team, Object>() {
+				@Override
+				public Object apply(Team team) {
+					return team.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<Team, Object>() {
+				@Override
+				public Object apply(Team team) {
+					return team.getModifiedDate();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<Team, Object>() {
+				@Override
+				public Object apply(Team team) {
+					return team.getGroupId();
+				}
+			});
+		attributeGetters.put("name",
+			new Function<Team, Object>() {
+				@Override
+				public Object apply(Team team) {
+					return team.getName();
+				}
+			});
+		attributeGetters.put("description",
+			new Function<Team, Object>() {
+				@Override
+				public Object apply(Team team) {
+					return team.getDescription();
+				}
+			});
+		attributeGetters.put("lastPublishDate",
+			new Function<Team, Object>() {
+				@Override
+				public Object apply(Team team) {
+					return team.getLastPublishDate();
+				}
+			});
 
-		Long teamId = (Long)attributes.get("teamId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (teamId != null) {
-			setTeamId(teamId);
-		}
+		Map<String, BiConsumer<Team, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Team, Object>>();
 
-		Long companyId = (Long)attributes.get("companyId");
+		attributeSetters.put("mvccVersion",
+			new BiConsumer<Team, Object>() {
+				@Override
+				public void accept(Team team, Object mvccVersion) {
+					team.setMvccVersion((Long)mvccVersion);
+				}
+			});
+		attributeSetters.put("uuid",
+			new BiConsumer<Team, Object>() {
+				@Override
+				public void accept(Team team, Object uuid) {
+					team.setUuid((String)uuid);
+				}
+			});
+		attributeSetters.put("teamId",
+			new BiConsumer<Team, Object>() {
+				@Override
+				public void accept(Team team, Object teamId) {
+					team.setTeamId((Long)teamId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<Team, Object>() {
+				@Override
+				public void accept(Team team, Object companyId) {
+					team.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<Team, Object>() {
+				@Override
+				public void accept(Team team, Object userId) {
+					team.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<Team, Object>() {
+				@Override
+				public void accept(Team team, Object userName) {
+					team.setUserName((String)userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<Team, Object>() {
+				@Override
+				public void accept(Team team, Object createDate) {
+					team.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<Team, Object>() {
+				@Override
+				public void accept(Team team, Object modifiedDate) {
+					team.setModifiedDate((Date)modifiedDate);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<Team, Object>() {
+				@Override
+				public void accept(Team team, Object groupId) {
+					team.setGroupId((Long)groupId);
+				}
+			});
+		attributeSetters.put("name",
+			new BiConsumer<Team, Object>() {
+				@Override
+				public void accept(Team team, Object name) {
+					team.setName((String)name);
+				}
+			});
+		attributeSetters.put("description",
+			new BiConsumer<Team, Object>() {
+				@Override
+				public void accept(Team team, Object description) {
+					team.setDescription((String)description);
+				}
+			});
+		attributeSetters.put("lastPublishDate",
+			new BiConsumer<Team, Object>() {
+				@Override
+				public void accept(Team team, Object lastPublishDate) {
+					team.setLastPublishDate((Date)lastPublishDate);
+				}
+			});
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long groupId = (Long)attributes.get("groupId");
-
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
-		Date lastPublishDate = (Date)attributes.get("lastPublishDate");
-
-		if (lastPublishDate != null) {
-			setLastPublishDate(lastPublishDate);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON
@@ -740,101 +837,6 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 		}
 
 		return teamCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(25);
-
-		sb.append("{mvccVersion=");
-		sb.append(getMvccVersion());
-		sb.append(", uuid=");
-		sb.append(getUuid());
-		sb.append(", teamId=");
-		sb.append(getTeamId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", name=");
-		sb.append(getName());
-		sb.append(", description=");
-		sb.append(getDescription());
-		sb.append(", lastPublishDate=");
-		sb.append(getLastPublishDate());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(40);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.kernel.model.Team");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>mvccVersion</column-name><column-value><![CDATA[");
-		sb.append(getMvccVersion());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>teamId</column-name><column-value><![CDATA[");
-		sb.append(getTeamId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(getName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(getDescription());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>lastPublishDate</column-name><column-value><![CDATA[");
-		sb.append(getLastPublishDate());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = Team.class.getClassLoader();

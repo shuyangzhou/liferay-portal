@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -57,82 +59,41 @@ public class FolderWrapper implements Folder, ModelWrapper<Folder> {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("folderId", getFolderId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("accountId", getAccountId());
-		attributes.put("fullName", getFullName());
-		attributes.put("displayName", getDisplayName());
-		attributes.put("remoteMessageCount", getRemoteMessageCount());
+		Map<String, Function<Folder, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<Folder, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<Folder, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long folderId = (Long)attributes.get("folderId");
+		Map<String, BiConsumer<Folder, Object>> attributeSetters = getAttributeSetters();
 
-		if (folderId != null) {
-			setFolderId(folderId);
+		for (Map.Entry<String, BiConsumer<Folder, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<Folder, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	@Override
+	public Map<String, Function<Folder, Object>> getAttributeGetters() {
+		return _folder.getAttributeGetters();
+	}
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long accountId = (Long)attributes.get("accountId");
-
-		if (accountId != null) {
-			setAccountId(accountId);
-		}
-
-		String fullName = (String)attributes.get("fullName");
-
-		if (fullName != null) {
-			setFullName(fullName);
-		}
-
-		String displayName = (String)attributes.get("displayName");
-
-		if (displayName != null) {
-			setDisplayName(displayName);
-		}
-
-		Integer remoteMessageCount = (Integer)attributes.get(
-				"remoteMessageCount");
-
-		if (remoteMessageCount != null) {
-			setRemoteMessageCount(remoteMessageCount);
-		}
+	@Override
+	public Map<String, BiConsumer<Folder, Object>> getAttributeSetters() {
+		return _folder.getAttributeSetters();
 	}
 
 	@Override

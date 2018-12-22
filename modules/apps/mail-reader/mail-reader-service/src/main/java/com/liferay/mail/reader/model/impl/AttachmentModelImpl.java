@@ -22,8 +22,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.mail.reader.model.Attachment;
 import com.liferay.mail.reader.model.AttachmentModel;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -39,8 +37,12 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the Attachment service. Represents a row in the &quot;Mail_Attachment&quot; database table, with each column mapped to a property of this class.
@@ -144,80 +146,154 @@ public class AttachmentModelImpl extends BaseModelImpl<Attachment>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("attachmentId", getAttachmentId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("accountId", getAccountId());
-		attributes.put("folderId", getFolderId());
-		attributes.put("messageId", getMessageId());
-		attributes.put("contentPath", getContentPath());
-		attributes.put("fileName", getFileName());
-		attributes.put("size", getSize());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<Attachment, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long attachmentId = (Long)attributes.get("attachmentId");
+	public Map<String, BiConsumer<Attachment, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (attachmentId != null) {
-			setAttachmentId(attachmentId);
-		}
+	private static final Map<String, Function<Attachment, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<Attachment, Object>> _attributeSetters;
 
-		Long companyId = (Long)attributes.get("companyId");
+	static {
+		Map<String, Function<Attachment, Object>> attributeGetters = new LinkedHashMap<String, Function<Attachment, Object>>();
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		attributeGetters.put("attachmentId",
+			new Function<Attachment, Object>() {
+				@Override
+				public Object apply(Attachment attachment) {
+					return attachment.getAttachmentId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<Attachment, Object>() {
+				@Override
+				public Object apply(Attachment attachment) {
+					return attachment.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<Attachment, Object>() {
+				@Override
+				public Object apply(Attachment attachment) {
+					return attachment.getUserId();
+				}
+			});
+		attributeGetters.put("accountId",
+			new Function<Attachment, Object>() {
+				@Override
+				public Object apply(Attachment attachment) {
+					return attachment.getAccountId();
+				}
+			});
+		attributeGetters.put("folderId",
+			new Function<Attachment, Object>() {
+				@Override
+				public Object apply(Attachment attachment) {
+					return attachment.getFolderId();
+				}
+			});
+		attributeGetters.put("messageId",
+			new Function<Attachment, Object>() {
+				@Override
+				public Object apply(Attachment attachment) {
+					return attachment.getMessageId();
+				}
+			});
+		attributeGetters.put("contentPath",
+			new Function<Attachment, Object>() {
+				@Override
+				public Object apply(Attachment attachment) {
+					return attachment.getContentPath();
+				}
+			});
+		attributeGetters.put("fileName",
+			new Function<Attachment, Object>() {
+				@Override
+				public Object apply(Attachment attachment) {
+					return attachment.getFileName();
+				}
+			});
+		attributeGetters.put("size",
+			new Function<Attachment, Object>() {
+				@Override
+				public Object apply(Attachment attachment) {
+					return attachment.getSize();
+				}
+			});
 
-		Long userId = (Long)attributes.get("userId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (userId != null) {
-			setUserId(userId);
-		}
+		Map<String, BiConsumer<Attachment, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Attachment, Object>>();
 
-		Long accountId = (Long)attributes.get("accountId");
+		attributeSetters.put("attachmentId",
+			new BiConsumer<Attachment, Object>() {
+				@Override
+				public void accept(Attachment attachment, Object attachmentId) {
+					attachment.setAttachmentId((Long)attachmentId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<Attachment, Object>() {
+				@Override
+				public void accept(Attachment attachment, Object companyId) {
+					attachment.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<Attachment, Object>() {
+				@Override
+				public void accept(Attachment attachment, Object userId) {
+					attachment.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("accountId",
+			new BiConsumer<Attachment, Object>() {
+				@Override
+				public void accept(Attachment attachment, Object accountId) {
+					attachment.setAccountId((Long)accountId);
+				}
+			});
+		attributeSetters.put("folderId",
+			new BiConsumer<Attachment, Object>() {
+				@Override
+				public void accept(Attachment attachment, Object folderId) {
+					attachment.setFolderId((Long)folderId);
+				}
+			});
+		attributeSetters.put("messageId",
+			new BiConsumer<Attachment, Object>() {
+				@Override
+				public void accept(Attachment attachment, Object messageId) {
+					attachment.setMessageId((Long)messageId);
+				}
+			});
+		attributeSetters.put("contentPath",
+			new BiConsumer<Attachment, Object>() {
+				@Override
+				public void accept(Attachment attachment, Object contentPath) {
+					attachment.setContentPath((String)contentPath);
+				}
+			});
+		attributeSetters.put("fileName",
+			new BiConsumer<Attachment, Object>() {
+				@Override
+				public void accept(Attachment attachment, Object fileName) {
+					attachment.setFileName((String)fileName);
+				}
+			});
+		attributeSetters.put("size",
+			new BiConsumer<Attachment, Object>() {
+				@Override
+				public void accept(Attachment attachment, Object size) {
+					attachment.setSize((Long)size);
+				}
+			});
 
-		if (accountId != null) {
-			setAccountId(accountId);
-		}
-
-		Long folderId = (Long)attributes.get("folderId");
-
-		if (folderId != null) {
-			setFolderId(folderId);
-		}
-
-		Long messageId = (Long)attributes.get("messageId");
-
-		if (messageId != null) {
-			setMessageId(messageId);
-		}
-
-		String contentPath = (String)attributes.get("contentPath");
-
-		if (contentPath != null) {
-			setContentPath(contentPath);
-		}
-
-		String fileName = (String)attributes.get("fileName");
-
-		if (fileName != null) {
-			setFileName(fileName);
-		}
-
-		Long size = (Long)attributes.get("size");
-
-		if (size != null) {
-			setSize(size);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override
@@ -492,83 +568,6 @@ public class AttachmentModelImpl extends BaseModelImpl<Attachment>
 		attachmentCacheModel.size = getSize();
 
 		return attachmentCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(19);
-
-		sb.append("{attachmentId=");
-		sb.append(getAttachmentId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", accountId=");
-		sb.append(getAccountId());
-		sb.append(", folderId=");
-		sb.append(getFolderId());
-		sb.append(", messageId=");
-		sb.append(getMessageId());
-		sb.append(", contentPath=");
-		sb.append(getContentPath());
-		sb.append(", fileName=");
-		sb.append(getFileName());
-		sb.append(", size=");
-		sb.append(getSize());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(31);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.mail.reader.model.Attachment");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>attachmentId</column-name><column-value><![CDATA[");
-		sb.append(getAttachmentId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>accountId</column-name><column-value><![CDATA[");
-		sb.append(getAccountId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>folderId</column-name><column-value><![CDATA[");
-		sb.append(getFolderId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>messageId</column-name><column-value><![CDATA[");
-		sb.append(getMessageId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>contentPath</column-name><column-value><![CDATA[");
-		sb.append(getContentPath());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>fileName</column-name><column-value><![CDATA[");
-		sb.append(getFileName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>size</column-name><column-value><![CDATA[");
-		sb.append(getSize());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = Attachment.class.getClassLoader();

@@ -22,8 +22,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.marketplace.model.Module;
 import com.liferay.marketplace.model.ModuleModel;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
@@ -36,8 +34,12 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the Module service. Represents a row in the &quot;Marketplace_Module&quot; database table, with each column mapped to a property of this class.
@@ -142,66 +144,126 @@ public class ModuleModelImpl extends BaseModelImpl<Module>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("uuid", getUuid());
-		attributes.put("moduleId", getModuleId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("appId", getAppId());
-		attributes.put("bundleSymbolicName", getBundleSymbolicName());
-		attributes.put("bundleVersion", getBundleVersion());
-		attributes.put("contextName", getContextName());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<Module, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+	public Map<String, BiConsumer<Module, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
+	private static final Map<String, Function<Module, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<Module, Object>> _attributeSetters;
 
-		Long moduleId = (Long)attributes.get("moduleId");
+	static {
+		Map<String, Function<Module, Object>> attributeGetters = new LinkedHashMap<String, Function<Module, Object>>();
 
-		if (moduleId != null) {
-			setModuleId(moduleId);
-		}
+		attributeGetters.put("uuid",
+			new Function<Module, Object>() {
+				@Override
+				public Object apply(Module module) {
+					return module.getUuid();
+				}
+			});
+		attributeGetters.put("moduleId",
+			new Function<Module, Object>() {
+				@Override
+				public Object apply(Module module) {
+					return module.getModuleId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<Module, Object>() {
+				@Override
+				public Object apply(Module module) {
+					return module.getCompanyId();
+				}
+			});
+		attributeGetters.put("appId",
+			new Function<Module, Object>() {
+				@Override
+				public Object apply(Module module) {
+					return module.getAppId();
+				}
+			});
+		attributeGetters.put("bundleSymbolicName",
+			new Function<Module, Object>() {
+				@Override
+				public Object apply(Module module) {
+					return module.getBundleSymbolicName();
+				}
+			});
+		attributeGetters.put("bundleVersion",
+			new Function<Module, Object>() {
+				@Override
+				public Object apply(Module module) {
+					return module.getBundleVersion();
+				}
+			});
+		attributeGetters.put("contextName",
+			new Function<Module, Object>() {
+				@Override
+				public Object apply(Module module) {
+					return module.getContextName();
+				}
+			});
 
-		Long companyId = (Long)attributes.get("companyId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		Map<String, BiConsumer<Module, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Module, Object>>();
 
-		Long appId = (Long)attributes.get("appId");
+		attributeSetters.put("uuid",
+			new BiConsumer<Module, Object>() {
+				@Override
+				public void accept(Module module, Object uuid) {
+					module.setUuid((String)uuid);
+				}
+			});
+		attributeSetters.put("moduleId",
+			new BiConsumer<Module, Object>() {
+				@Override
+				public void accept(Module module, Object moduleId) {
+					module.setModuleId((Long)moduleId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<Module, Object>() {
+				@Override
+				public void accept(Module module, Object companyId) {
+					module.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("appId",
+			new BiConsumer<Module, Object>() {
+				@Override
+				public void accept(Module module, Object appId) {
+					module.setAppId((Long)appId);
+				}
+			});
+		attributeSetters.put("bundleSymbolicName",
+			new BiConsumer<Module, Object>() {
+				@Override
+				public void accept(Module module, Object bundleSymbolicName) {
+					module.setBundleSymbolicName((String)bundleSymbolicName);
+				}
+			});
+		attributeSetters.put("bundleVersion",
+			new BiConsumer<Module, Object>() {
+				@Override
+				public void accept(Module module, Object bundleVersion) {
+					module.setBundleVersion((String)bundleVersion);
+				}
+			});
+		attributeSetters.put("contextName",
+			new BiConsumer<Module, Object>() {
+				@Override
+				public void accept(Module module, Object contextName) {
+					module.setContextName((String)contextName);
+				}
+			});
 
-		if (appId != null) {
-			setAppId(appId);
-		}
-
-		String bundleSymbolicName = (String)attributes.get("bundleSymbolicName");
-
-		if (bundleSymbolicName != null) {
-			setBundleSymbolicName(bundleSymbolicName);
-		}
-
-		String bundleVersion = (String)attributes.get("bundleVersion");
-
-		if (bundleVersion != null) {
-			setBundleVersion(bundleVersion);
-		}
-
-		String contextName = (String)attributes.get("contextName");
-
-		if (contextName != null) {
-			setContextName(contextName);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override
@@ -518,71 +580,6 @@ public class ModuleModelImpl extends BaseModelImpl<Module>
 		}
 
 		return moduleCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(15);
-
-		sb.append("{uuid=");
-		sb.append(getUuid());
-		sb.append(", moduleId=");
-		sb.append(getModuleId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", appId=");
-		sb.append(getAppId());
-		sb.append(", bundleSymbolicName=");
-		sb.append(getBundleSymbolicName());
-		sb.append(", bundleVersion=");
-		sb.append(getBundleVersion());
-		sb.append(", contextName=");
-		sb.append(getContextName());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(25);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.marketplace.model.Module");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>moduleId</column-name><column-value><![CDATA[");
-		sb.append(getModuleId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>appId</column-name><column-value><![CDATA[");
-		sb.append(getAppId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>bundleSymbolicName</column-name><column-value><![CDATA[");
-		sb.append(getBundleSymbolicName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>bundleVersion</column-name><column-value><![CDATA[");
-		sb.append(getBundleVersion());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>contextName</column-name><column-value><![CDATA[");
-		sb.append(getContextName());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = Module.class.getClassLoader();

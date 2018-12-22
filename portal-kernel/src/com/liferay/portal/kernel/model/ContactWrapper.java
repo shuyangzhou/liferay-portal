@@ -26,6 +26,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -56,214 +58,41 @@ public class ContactWrapper implements Contact, ModelWrapper<Contact> {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("contactId", getContactId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("accountId", getAccountId());
-		attributes.put("parentContactId", getParentContactId());
-		attributes.put("emailAddress", getEmailAddress());
-		attributes.put("firstName", getFirstName());
-		attributes.put("middleName", getMiddleName());
-		attributes.put("lastName", getLastName());
-		attributes.put("prefixId", getPrefixId());
-		attributes.put("suffixId", getSuffixId());
-		attributes.put("male", isMale());
-		attributes.put("birthday", getBirthday());
-		attributes.put("smsSn", getSmsSn());
-		attributes.put("facebookSn", getFacebookSn());
-		attributes.put("jabberSn", getJabberSn());
-		attributes.put("skypeSn", getSkypeSn());
-		attributes.put("twitterSn", getTwitterSn());
-		attributes.put("employeeStatusId", getEmployeeStatusId());
-		attributes.put("employeeNumber", getEmployeeNumber());
-		attributes.put("jobTitle", getJobTitle());
-		attributes.put("jobClass", getJobClass());
-		attributes.put("hoursOfOperation", getHoursOfOperation());
+		Map<String, Function<Contact, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<Contact, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<Contact, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<Contact, Object>> attributeSetters = getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<Contact, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<Contact, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long contactId = (Long)attributes.get("contactId");
+	@Override
+	public Map<String, Function<Contact, Object>> getAttributeGetters() {
+		return _contact.getAttributeGetters();
+	}
 
-		if (contactId != null) {
-			setContactId(contactId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		Long accountId = (Long)attributes.get("accountId");
-
-		if (accountId != null) {
-			setAccountId(accountId);
-		}
-
-		Long parentContactId = (Long)attributes.get("parentContactId");
-
-		if (parentContactId != null) {
-			setParentContactId(parentContactId);
-		}
-
-		String emailAddress = (String)attributes.get("emailAddress");
-
-		if (emailAddress != null) {
-			setEmailAddress(emailAddress);
-		}
-
-		String firstName = (String)attributes.get("firstName");
-
-		if (firstName != null) {
-			setFirstName(firstName);
-		}
-
-		String middleName = (String)attributes.get("middleName");
-
-		if (middleName != null) {
-			setMiddleName(middleName);
-		}
-
-		String lastName = (String)attributes.get("lastName");
-
-		if (lastName != null) {
-			setLastName(lastName);
-		}
-
-		Long prefixId = (Long)attributes.get("prefixId");
-
-		if (prefixId != null) {
-			setPrefixId(prefixId);
-		}
-
-		Long suffixId = (Long)attributes.get("suffixId");
-
-		if (suffixId != null) {
-			setSuffixId(suffixId);
-		}
-
-		Boolean male = (Boolean)attributes.get("male");
-
-		if (male != null) {
-			setMale(male);
-		}
-
-		Date birthday = (Date)attributes.get("birthday");
-
-		if (birthday != null) {
-			setBirthday(birthday);
-		}
-
-		String smsSn = (String)attributes.get("smsSn");
-
-		if (smsSn != null) {
-			setSmsSn(smsSn);
-		}
-
-		String facebookSn = (String)attributes.get("facebookSn");
-
-		if (facebookSn != null) {
-			setFacebookSn(facebookSn);
-		}
-
-		String jabberSn = (String)attributes.get("jabberSn");
-
-		if (jabberSn != null) {
-			setJabberSn(jabberSn);
-		}
-
-		String skypeSn = (String)attributes.get("skypeSn");
-
-		if (skypeSn != null) {
-			setSkypeSn(skypeSn);
-		}
-
-		String twitterSn = (String)attributes.get("twitterSn");
-
-		if (twitterSn != null) {
-			setTwitterSn(twitterSn);
-		}
-
-		String employeeStatusId = (String)attributes.get("employeeStatusId");
-
-		if (employeeStatusId != null) {
-			setEmployeeStatusId(employeeStatusId);
-		}
-
-		String employeeNumber = (String)attributes.get("employeeNumber");
-
-		if (employeeNumber != null) {
-			setEmployeeNumber(employeeNumber);
-		}
-
-		String jobTitle = (String)attributes.get("jobTitle");
-
-		if (jobTitle != null) {
-			setJobTitle(jobTitle);
-		}
-
-		String jobClass = (String)attributes.get("jobClass");
-
-		if (jobClass != null) {
-			setJobClass(jobClass);
-		}
-
-		String hoursOfOperation = (String)attributes.get("hoursOfOperation");
-
-		if (hoursOfOperation != null) {
-			setHoursOfOperation(hoursOfOperation);
-		}
+	@Override
+	public Map<String, BiConsumer<Contact, Object>> getAttributeSetters() {
+		return _contact.getAttributeSetters();
 	}
 
 	@Override

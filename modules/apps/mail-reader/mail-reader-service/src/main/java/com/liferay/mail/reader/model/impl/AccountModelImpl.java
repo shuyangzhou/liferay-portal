@@ -22,8 +22,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.mail.reader.model.Account;
 import com.liferay.mail.reader.model.AccountModel;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -39,9 +37,13 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the Account service. Represents a row in the &quot;Mail_Account&quot; database table, with each column mapped to a property of this class.
@@ -179,199 +181,392 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("accountId", getAccountId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("address", getAddress());
-		attributes.put("personalName", getPersonalName());
-		attributes.put("protocol", getProtocol());
-		attributes.put("incomingHostName", getIncomingHostName());
-		attributes.put("incomingPort", getIncomingPort());
-		attributes.put("incomingSecure", isIncomingSecure());
-		attributes.put("outgoingHostName", getOutgoingHostName());
-		attributes.put("outgoingPort", getOutgoingPort());
-		attributes.put("outgoingSecure", isOutgoingSecure());
-		attributes.put("login", getLogin());
-		attributes.put("password", getPassword());
-		attributes.put("savePassword", isSavePassword());
-		attributes.put("signature", getSignature());
-		attributes.put("useSignature", isUseSignature());
-		attributes.put("folderPrefix", getFolderPrefix());
-		attributes.put("inboxFolderId", getInboxFolderId());
-		attributes.put("draftFolderId", getDraftFolderId());
-		attributes.put("sentFolderId", getSentFolderId());
-		attributes.put("trashFolderId", getTrashFolderId());
-		attributes.put("defaultSender", isDefaultSender());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<Account, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long accountId = (Long)attributes.get("accountId");
+	public Map<String, BiConsumer<Account, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (accountId != null) {
-			setAccountId(accountId);
-		}
+	private static final Map<String, Function<Account, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<Account, Object>> _attributeSetters;
 
-		Long companyId = (Long)attributes.get("companyId");
+	static {
+		Map<String, Function<Account, Object>> attributeGetters = new LinkedHashMap<String, Function<Account, Object>>();
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		attributeGetters.put("accountId",
+			new Function<Account, Object>() {
+				@Override
+				public Object apply(Account account) {
+					return account.getAccountId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<Account, Object>() {
+				@Override
+				public Object apply(Account account) {
+					return account.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<Account, Object>() {
+				@Override
+				public Object apply(Account account) {
+					return account.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<Account, Object>() {
+				@Override
+				public Object apply(Account account) {
+					return account.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<Account, Object>() {
+				@Override
+				public Object apply(Account account) {
+					return account.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<Account, Object>() {
+				@Override
+				public Object apply(Account account) {
+					return account.getModifiedDate();
+				}
+			});
+		attributeGetters.put("address",
+			new Function<Account, Object>() {
+				@Override
+				public Object apply(Account account) {
+					return account.getAddress();
+				}
+			});
+		attributeGetters.put("personalName",
+			new Function<Account, Object>() {
+				@Override
+				public Object apply(Account account) {
+					return account.getPersonalName();
+				}
+			});
+		attributeGetters.put("protocol",
+			new Function<Account, Object>() {
+				@Override
+				public Object apply(Account account) {
+					return account.getProtocol();
+				}
+			});
+		attributeGetters.put("incomingHostName",
+			new Function<Account, Object>() {
+				@Override
+				public Object apply(Account account) {
+					return account.getIncomingHostName();
+				}
+			});
+		attributeGetters.put("incomingPort",
+			new Function<Account, Object>() {
+				@Override
+				public Object apply(Account account) {
+					return account.getIncomingPort();
+				}
+			});
+		attributeGetters.put("incomingSecure",
+			new Function<Account, Object>() {
+				@Override
+				public Object apply(Account account) {
+					return account.isIncomingSecure();
+				}
+			});
+		attributeGetters.put("outgoingHostName",
+			new Function<Account, Object>() {
+				@Override
+				public Object apply(Account account) {
+					return account.getOutgoingHostName();
+				}
+			});
+		attributeGetters.put("outgoingPort",
+			new Function<Account, Object>() {
+				@Override
+				public Object apply(Account account) {
+					return account.getOutgoingPort();
+				}
+			});
+		attributeGetters.put("outgoingSecure",
+			new Function<Account, Object>() {
+				@Override
+				public Object apply(Account account) {
+					return account.isOutgoingSecure();
+				}
+			});
+		attributeGetters.put("login",
+			new Function<Account, Object>() {
+				@Override
+				public Object apply(Account account) {
+					return account.getLogin();
+				}
+			});
+		attributeGetters.put("password",
+			new Function<Account, Object>() {
+				@Override
+				public Object apply(Account account) {
+					return account.getPassword();
+				}
+			});
+		attributeGetters.put("savePassword",
+			new Function<Account, Object>() {
+				@Override
+				public Object apply(Account account) {
+					return account.isSavePassword();
+				}
+			});
+		attributeGetters.put("signature",
+			new Function<Account, Object>() {
+				@Override
+				public Object apply(Account account) {
+					return account.getSignature();
+				}
+			});
+		attributeGetters.put("useSignature",
+			new Function<Account, Object>() {
+				@Override
+				public Object apply(Account account) {
+					return account.isUseSignature();
+				}
+			});
+		attributeGetters.put("folderPrefix",
+			new Function<Account, Object>() {
+				@Override
+				public Object apply(Account account) {
+					return account.getFolderPrefix();
+				}
+			});
+		attributeGetters.put("inboxFolderId",
+			new Function<Account, Object>() {
+				@Override
+				public Object apply(Account account) {
+					return account.getInboxFolderId();
+				}
+			});
+		attributeGetters.put("draftFolderId",
+			new Function<Account, Object>() {
+				@Override
+				public Object apply(Account account) {
+					return account.getDraftFolderId();
+				}
+			});
+		attributeGetters.put("sentFolderId",
+			new Function<Account, Object>() {
+				@Override
+				public Object apply(Account account) {
+					return account.getSentFolderId();
+				}
+			});
+		attributeGetters.put("trashFolderId",
+			new Function<Account, Object>() {
+				@Override
+				public Object apply(Account account) {
+					return account.getTrashFolderId();
+				}
+			});
+		attributeGetters.put("defaultSender",
+			new Function<Account, Object>() {
+				@Override
+				public Object apply(Account account) {
+					return account.isDefaultSender();
+				}
+			});
 
-		Long userId = (Long)attributes.get("userId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (userId != null) {
-			setUserId(userId);
-		}
+		Map<String, BiConsumer<Account, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Account, Object>>();
 
-		String userName = (String)attributes.get("userName");
+		attributeSetters.put("accountId",
+			new BiConsumer<Account, Object>() {
+				@Override
+				public void accept(Account account, Object accountId) {
+					account.setAccountId((Long)accountId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<Account, Object>() {
+				@Override
+				public void accept(Account account, Object companyId) {
+					account.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<Account, Object>() {
+				@Override
+				public void accept(Account account, Object userId) {
+					account.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<Account, Object>() {
+				@Override
+				public void accept(Account account, Object userName) {
+					account.setUserName((String)userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<Account, Object>() {
+				@Override
+				public void accept(Account account, Object createDate) {
+					account.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<Account, Object>() {
+				@Override
+				public void accept(Account account, Object modifiedDate) {
+					account.setModifiedDate((Date)modifiedDate);
+				}
+			});
+		attributeSetters.put("address",
+			new BiConsumer<Account, Object>() {
+				@Override
+				public void accept(Account account, Object address) {
+					account.setAddress((String)address);
+				}
+			});
+		attributeSetters.put("personalName",
+			new BiConsumer<Account, Object>() {
+				@Override
+				public void accept(Account account, Object personalName) {
+					account.setPersonalName((String)personalName);
+				}
+			});
+		attributeSetters.put("protocol",
+			new BiConsumer<Account, Object>() {
+				@Override
+				public void accept(Account account, Object protocol) {
+					account.setProtocol((String)protocol);
+				}
+			});
+		attributeSetters.put("incomingHostName",
+			new BiConsumer<Account, Object>() {
+				@Override
+				public void accept(Account account, Object incomingHostName) {
+					account.setIncomingHostName((String)incomingHostName);
+				}
+			});
+		attributeSetters.put("incomingPort",
+			new BiConsumer<Account, Object>() {
+				@Override
+				public void accept(Account account, Object incomingPort) {
+					account.setIncomingPort((Integer)incomingPort);
+				}
+			});
+		attributeSetters.put("incomingSecure",
+			new BiConsumer<Account, Object>() {
+				@Override
+				public void accept(Account account, Object incomingSecure) {
+					account.setIncomingSecure((Boolean)incomingSecure);
+				}
+			});
+		attributeSetters.put("outgoingHostName",
+			new BiConsumer<Account, Object>() {
+				@Override
+				public void accept(Account account, Object outgoingHostName) {
+					account.setOutgoingHostName((String)outgoingHostName);
+				}
+			});
+		attributeSetters.put("outgoingPort",
+			new BiConsumer<Account, Object>() {
+				@Override
+				public void accept(Account account, Object outgoingPort) {
+					account.setOutgoingPort((Integer)outgoingPort);
+				}
+			});
+		attributeSetters.put("outgoingSecure",
+			new BiConsumer<Account, Object>() {
+				@Override
+				public void accept(Account account, Object outgoingSecure) {
+					account.setOutgoingSecure((Boolean)outgoingSecure);
+				}
+			});
+		attributeSetters.put("login",
+			new BiConsumer<Account, Object>() {
+				@Override
+				public void accept(Account account, Object login) {
+					account.setLogin((String)login);
+				}
+			});
+		attributeSetters.put("password",
+			new BiConsumer<Account, Object>() {
+				@Override
+				public void accept(Account account, Object password) {
+					account.setPassword((String)password);
+				}
+			});
+		attributeSetters.put("savePassword",
+			new BiConsumer<Account, Object>() {
+				@Override
+				public void accept(Account account, Object savePassword) {
+					account.setSavePassword((Boolean)savePassword);
+				}
+			});
+		attributeSetters.put("signature",
+			new BiConsumer<Account, Object>() {
+				@Override
+				public void accept(Account account, Object signature) {
+					account.setSignature((String)signature);
+				}
+			});
+		attributeSetters.put("useSignature",
+			new BiConsumer<Account, Object>() {
+				@Override
+				public void accept(Account account, Object useSignature) {
+					account.setUseSignature((Boolean)useSignature);
+				}
+			});
+		attributeSetters.put("folderPrefix",
+			new BiConsumer<Account, Object>() {
+				@Override
+				public void accept(Account account, Object folderPrefix) {
+					account.setFolderPrefix((String)folderPrefix);
+				}
+			});
+		attributeSetters.put("inboxFolderId",
+			new BiConsumer<Account, Object>() {
+				@Override
+				public void accept(Account account, Object inboxFolderId) {
+					account.setInboxFolderId((Long)inboxFolderId);
+				}
+			});
+		attributeSetters.put("draftFolderId",
+			new BiConsumer<Account, Object>() {
+				@Override
+				public void accept(Account account, Object draftFolderId) {
+					account.setDraftFolderId((Long)draftFolderId);
+				}
+			});
+		attributeSetters.put("sentFolderId",
+			new BiConsumer<Account, Object>() {
+				@Override
+				public void accept(Account account, Object sentFolderId) {
+					account.setSentFolderId((Long)sentFolderId);
+				}
+			});
+		attributeSetters.put("trashFolderId",
+			new BiConsumer<Account, Object>() {
+				@Override
+				public void accept(Account account, Object trashFolderId) {
+					account.setTrashFolderId((Long)trashFolderId);
+				}
+			});
+		attributeSetters.put("defaultSender",
+			new BiConsumer<Account, Object>() {
+				@Override
+				public void accept(Account account, Object defaultSender) {
+					account.setDefaultSender((Boolean)defaultSender);
+				}
+			});
 
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		String address = (String)attributes.get("address");
-
-		if (address != null) {
-			setAddress(address);
-		}
-
-		String personalName = (String)attributes.get("personalName");
-
-		if (personalName != null) {
-			setPersonalName(personalName);
-		}
-
-		String protocol = (String)attributes.get("protocol");
-
-		if (protocol != null) {
-			setProtocol(protocol);
-		}
-
-		String incomingHostName = (String)attributes.get("incomingHostName");
-
-		if (incomingHostName != null) {
-			setIncomingHostName(incomingHostName);
-		}
-
-		Integer incomingPort = (Integer)attributes.get("incomingPort");
-
-		if (incomingPort != null) {
-			setIncomingPort(incomingPort);
-		}
-
-		Boolean incomingSecure = (Boolean)attributes.get("incomingSecure");
-
-		if (incomingSecure != null) {
-			setIncomingSecure(incomingSecure);
-		}
-
-		String outgoingHostName = (String)attributes.get("outgoingHostName");
-
-		if (outgoingHostName != null) {
-			setOutgoingHostName(outgoingHostName);
-		}
-
-		Integer outgoingPort = (Integer)attributes.get("outgoingPort");
-
-		if (outgoingPort != null) {
-			setOutgoingPort(outgoingPort);
-		}
-
-		Boolean outgoingSecure = (Boolean)attributes.get("outgoingSecure");
-
-		if (outgoingSecure != null) {
-			setOutgoingSecure(outgoingSecure);
-		}
-
-		String login = (String)attributes.get("login");
-
-		if (login != null) {
-			setLogin(login);
-		}
-
-		String password = (String)attributes.get("password");
-
-		if (password != null) {
-			setPassword(password);
-		}
-
-		Boolean savePassword = (Boolean)attributes.get("savePassword");
-
-		if (savePassword != null) {
-			setSavePassword(savePassword);
-		}
-
-		String signature = (String)attributes.get("signature");
-
-		if (signature != null) {
-			setSignature(signature);
-		}
-
-		Boolean useSignature = (Boolean)attributes.get("useSignature");
-
-		if (useSignature != null) {
-			setUseSignature(useSignature);
-		}
-
-		String folderPrefix = (String)attributes.get("folderPrefix");
-
-		if (folderPrefix != null) {
-			setFolderPrefix(folderPrefix);
-		}
-
-		Long inboxFolderId = (Long)attributes.get("inboxFolderId");
-
-		if (inboxFolderId != null) {
-			setInboxFolderId(inboxFolderId);
-		}
-
-		Long draftFolderId = (Long)attributes.get("draftFolderId");
-
-		if (draftFolderId != null) {
-			setDraftFolderId(draftFolderId);
-		}
-
-		Long sentFolderId = (Long)attributes.get("sentFolderId");
-
-		if (sentFolderId != null) {
-			setSentFolderId(sentFolderId);
-		}
-
-		Long trashFolderId = (Long)attributes.get("trashFolderId");
-
-		if (trashFolderId != null) {
-			setTrashFolderId(trashFolderId);
-		}
-
-		Boolean defaultSender = (Boolean)attributes.get("defaultSender");
-
-		if (defaultSender != null) {
-			setDefaultSender(defaultSender);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override
@@ -1012,185 +1207,6 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 		accountCacheModel.defaultSender = isDefaultSender();
 
 		return accountCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(53);
-
-		sb.append("{accountId=");
-		sb.append(getAccountId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", address=");
-		sb.append(getAddress());
-		sb.append(", personalName=");
-		sb.append(getPersonalName());
-		sb.append(", protocol=");
-		sb.append(getProtocol());
-		sb.append(", incomingHostName=");
-		sb.append(getIncomingHostName());
-		sb.append(", incomingPort=");
-		sb.append(getIncomingPort());
-		sb.append(", incomingSecure=");
-		sb.append(isIncomingSecure());
-		sb.append(", outgoingHostName=");
-		sb.append(getOutgoingHostName());
-		sb.append(", outgoingPort=");
-		sb.append(getOutgoingPort());
-		sb.append(", outgoingSecure=");
-		sb.append(isOutgoingSecure());
-		sb.append(", login=");
-		sb.append(getLogin());
-		sb.append(", password=");
-		sb.append(getPassword());
-		sb.append(", savePassword=");
-		sb.append(isSavePassword());
-		sb.append(", signature=");
-		sb.append(getSignature());
-		sb.append(", useSignature=");
-		sb.append(isUseSignature());
-		sb.append(", folderPrefix=");
-		sb.append(getFolderPrefix());
-		sb.append(", inboxFolderId=");
-		sb.append(getInboxFolderId());
-		sb.append(", draftFolderId=");
-		sb.append(getDraftFolderId());
-		sb.append(", sentFolderId=");
-		sb.append(getSentFolderId());
-		sb.append(", trashFolderId=");
-		sb.append(getTrashFolderId());
-		sb.append(", defaultSender=");
-		sb.append(isDefaultSender());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(82);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.mail.reader.model.Account");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>accountId</column-name><column-value><![CDATA[");
-		sb.append(getAccountId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>address</column-name><column-value><![CDATA[");
-		sb.append(getAddress());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>personalName</column-name><column-value><![CDATA[");
-		sb.append(getPersonalName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>protocol</column-name><column-value><![CDATA[");
-		sb.append(getProtocol());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>incomingHostName</column-name><column-value><![CDATA[");
-		sb.append(getIncomingHostName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>incomingPort</column-name><column-value><![CDATA[");
-		sb.append(getIncomingPort());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>incomingSecure</column-name><column-value><![CDATA[");
-		sb.append(isIncomingSecure());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>outgoingHostName</column-name><column-value><![CDATA[");
-		sb.append(getOutgoingHostName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>outgoingPort</column-name><column-value><![CDATA[");
-		sb.append(getOutgoingPort());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>outgoingSecure</column-name><column-value><![CDATA[");
-		sb.append(isOutgoingSecure());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>login</column-name><column-value><![CDATA[");
-		sb.append(getLogin());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>password</column-name><column-value><![CDATA[");
-		sb.append(getPassword());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>savePassword</column-name><column-value><![CDATA[");
-		sb.append(isSavePassword());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>signature</column-name><column-value><![CDATA[");
-		sb.append(getSignature());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>useSignature</column-name><column-value><![CDATA[");
-		sb.append(isUseSignature());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>folderPrefix</column-name><column-value><![CDATA[");
-		sb.append(getFolderPrefix());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>inboxFolderId</column-name><column-value><![CDATA[");
-		sb.append(getInboxFolderId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>draftFolderId</column-name><column-value><![CDATA[");
-		sb.append(getDraftFolderId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>sentFolderId</column-name><column-value><![CDATA[");
-		sb.append(getSentFolderId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>trashFolderId</column-name><column-value><![CDATA[");
-		sb.append(getTrashFolderId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>defaultSender</column-name><column-value><![CDATA[");
-		sb.append(isDefaultSender());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = Account.class.getClassLoader();

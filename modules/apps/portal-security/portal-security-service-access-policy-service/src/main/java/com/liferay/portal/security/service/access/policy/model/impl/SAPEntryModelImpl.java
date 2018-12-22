@@ -21,8 +21,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -48,13 +46,17 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the SAPEntry service. Represents a row in the &quot;SAPEntry&quot; database table, with each column mapped to a property of this class.
@@ -218,102 +220,197 @@ public class SAPEntryModelImpl extends BaseModelImpl<SAPEntry>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("uuid", getUuid());
-		attributes.put("sapEntryId", getSapEntryId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("allowedServiceSignatures", getAllowedServiceSignatures());
-		attributes.put("defaultSAPEntry", isDefaultSAPEntry());
-		attributes.put("enabled", isEnabled());
-		attributes.put("name", getName());
-		attributes.put("title", getTitle());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<SAPEntry, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+	public Map<String, BiConsumer<SAPEntry, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
+	private static final Map<String, Function<SAPEntry, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<SAPEntry, Object>> _attributeSetters;
 
-		Long sapEntryId = (Long)attributes.get("sapEntryId");
+	static {
+		Map<String, Function<SAPEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<SAPEntry, Object>>();
 
-		if (sapEntryId != null) {
-			setSapEntryId(sapEntryId);
-		}
+		attributeGetters.put("uuid",
+			new Function<SAPEntry, Object>() {
+				@Override
+				public Object apply(SAPEntry sapEntry) {
+					return sapEntry.getUuid();
+				}
+			});
+		attributeGetters.put("sapEntryId",
+			new Function<SAPEntry, Object>() {
+				@Override
+				public Object apply(SAPEntry sapEntry) {
+					return sapEntry.getSapEntryId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<SAPEntry, Object>() {
+				@Override
+				public Object apply(SAPEntry sapEntry) {
+					return sapEntry.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<SAPEntry, Object>() {
+				@Override
+				public Object apply(SAPEntry sapEntry) {
+					return sapEntry.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<SAPEntry, Object>() {
+				@Override
+				public Object apply(SAPEntry sapEntry) {
+					return sapEntry.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<SAPEntry, Object>() {
+				@Override
+				public Object apply(SAPEntry sapEntry) {
+					return sapEntry.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<SAPEntry, Object>() {
+				@Override
+				public Object apply(SAPEntry sapEntry) {
+					return sapEntry.getModifiedDate();
+				}
+			});
+		attributeGetters.put("allowedServiceSignatures",
+			new Function<SAPEntry, Object>() {
+				@Override
+				public Object apply(SAPEntry sapEntry) {
+					return sapEntry.getAllowedServiceSignatures();
+				}
+			});
+		attributeGetters.put("defaultSAPEntry",
+			new Function<SAPEntry, Object>() {
+				@Override
+				public Object apply(SAPEntry sapEntry) {
+					return sapEntry.isDefaultSAPEntry();
+				}
+			});
+		attributeGetters.put("enabled",
+			new Function<SAPEntry, Object>() {
+				@Override
+				public Object apply(SAPEntry sapEntry) {
+					return sapEntry.isEnabled();
+				}
+			});
+		attributeGetters.put("name",
+			new Function<SAPEntry, Object>() {
+				@Override
+				public Object apply(SAPEntry sapEntry) {
+					return sapEntry.getName();
+				}
+			});
+		attributeGetters.put("title",
+			new Function<SAPEntry, Object>() {
+				@Override
+				public Object apply(SAPEntry sapEntry) {
+					return sapEntry.getTitle();
+				}
+			});
 
-		Long companyId = (Long)attributes.get("companyId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		Map<String, BiConsumer<SAPEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SAPEntry, Object>>();
 
-		Long userId = (Long)attributes.get("userId");
+		attributeSetters.put("uuid",
+			new BiConsumer<SAPEntry, Object>() {
+				@Override
+				public void accept(SAPEntry sapEntry, Object uuid) {
+					sapEntry.setUuid((String)uuid);
+				}
+			});
+		attributeSetters.put("sapEntryId",
+			new BiConsumer<SAPEntry, Object>() {
+				@Override
+				public void accept(SAPEntry sapEntry, Object sapEntryId) {
+					sapEntry.setSapEntryId((Long)sapEntryId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<SAPEntry, Object>() {
+				@Override
+				public void accept(SAPEntry sapEntry, Object companyId) {
+					sapEntry.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<SAPEntry, Object>() {
+				@Override
+				public void accept(SAPEntry sapEntry, Object userId) {
+					sapEntry.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<SAPEntry, Object>() {
+				@Override
+				public void accept(SAPEntry sapEntry, Object userName) {
+					sapEntry.setUserName((String)userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<SAPEntry, Object>() {
+				@Override
+				public void accept(SAPEntry sapEntry, Object createDate) {
+					sapEntry.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<SAPEntry, Object>() {
+				@Override
+				public void accept(SAPEntry sapEntry, Object modifiedDate) {
+					sapEntry.setModifiedDate((Date)modifiedDate);
+				}
+			});
+		attributeSetters.put("allowedServiceSignatures",
+			new BiConsumer<SAPEntry, Object>() {
+				@Override
+				public void accept(SAPEntry sapEntry,
+					Object allowedServiceSignatures) {
+					sapEntry.setAllowedServiceSignatures((String)allowedServiceSignatures);
+				}
+			});
+		attributeSetters.put("defaultSAPEntry",
+			new BiConsumer<SAPEntry, Object>() {
+				@Override
+				public void accept(SAPEntry sapEntry, Object defaultSAPEntry) {
+					sapEntry.setDefaultSAPEntry((Boolean)defaultSAPEntry);
+				}
+			});
+		attributeSetters.put("enabled",
+			new BiConsumer<SAPEntry, Object>() {
+				@Override
+				public void accept(SAPEntry sapEntry, Object enabled) {
+					sapEntry.setEnabled((Boolean)enabled);
+				}
+			});
+		attributeSetters.put("name",
+			new BiConsumer<SAPEntry, Object>() {
+				@Override
+				public void accept(SAPEntry sapEntry, Object name) {
+					sapEntry.setName((String)name);
+				}
+			});
+		attributeSetters.put("title",
+			new BiConsumer<SAPEntry, Object>() {
+				@Override
+				public void accept(SAPEntry sapEntry, Object title) {
+					sapEntry.setTitle((String)title);
+				}
+			});
 
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		String allowedServiceSignatures = (String)attributes.get(
-				"allowedServiceSignatures");
-
-		if (allowedServiceSignatures != null) {
-			setAllowedServiceSignatures(allowedServiceSignatures);
-		}
-
-		Boolean defaultSAPEntry = (Boolean)attributes.get("defaultSAPEntry");
-
-		if (defaultSAPEntry != null) {
-			setDefaultSAPEntry(defaultSAPEntry);
-		}
-
-		Boolean enabled = (Boolean)attributes.get("enabled");
-
-		if (enabled != null) {
-			setEnabled(enabled);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String title = (String)attributes.get("title");
-
-		if (title != null) {
-			setTitle(title);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON
@@ -895,102 +992,6 @@ public class SAPEntryModelImpl extends BaseModelImpl<SAPEntry>
 		}
 
 		return sapEntryCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(25);
-
-		sb.append("{uuid=");
-		sb.append(getUuid());
-		sb.append(", sapEntryId=");
-		sb.append(getSapEntryId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", allowedServiceSignatures=");
-		sb.append(getAllowedServiceSignatures());
-		sb.append(", defaultSAPEntry=");
-		sb.append(isDefaultSAPEntry());
-		sb.append(", enabled=");
-		sb.append(isEnabled());
-		sb.append(", name=");
-		sb.append(getName());
-		sb.append(", title=");
-		sb.append(getTitle());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(40);
-
-		sb.append("<model><model-name>");
-		sb.append(
-			"com.liferay.portal.security.service.access.policy.model.SAPEntry");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>sapEntryId</column-name><column-value><![CDATA[");
-		sb.append(getSapEntryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>allowedServiceSignatures</column-name><column-value><![CDATA[");
-		sb.append(getAllowedServiceSignatures());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>defaultSAPEntry</column-name><column-value><![CDATA[");
-		sb.append(isDefaultSAPEntry());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>enabled</column-name><column-value><![CDATA[");
-		sb.append(isEnabled());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(getName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>title</column-name><column-value><![CDATA[");
-		sb.append(getTitle());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = SAPEntry.class.getClassLoader();

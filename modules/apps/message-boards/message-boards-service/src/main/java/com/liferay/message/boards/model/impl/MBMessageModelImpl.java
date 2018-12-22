@@ -25,8 +25,6 @@ import com.liferay.message.boards.model.MBMessage;
 import com.liferay.message.boards.model.MBMessageModel;
 import com.liferay.message.boards.model.MBMessageSoap;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -51,10 +49,14 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the MBMessage service. Represents a row in the &quot;MBMessage&quot; database table, with each column mapped to a property of this class.
@@ -268,199 +270,392 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("uuid", getUuid());
-		attributes.put("messageId", getMessageId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("categoryId", getCategoryId());
-		attributes.put("threadId", getThreadId());
-		attributes.put("rootMessageId", getRootMessageId());
-		attributes.put("parentMessageId", getParentMessageId());
-		attributes.put("subject", getSubject());
-		attributes.put("body", getBody());
-		attributes.put("format", getFormat());
-		attributes.put("anonymous", isAnonymous());
-		attributes.put("priority", getPriority());
-		attributes.put("allowPingbacks", isAllowPingbacks());
-		attributes.put("answer", isAnswer());
-		attributes.put("lastPublishDate", getLastPublishDate());
-		attributes.put("status", getStatus());
-		attributes.put("statusByUserId", getStatusByUserId());
-		attributes.put("statusByUserName", getStatusByUserName());
-		attributes.put("statusDate", getStatusDate());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<MBMessage, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+	public Map<String, BiConsumer<MBMessage, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
+	private static final Map<String, Function<MBMessage, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<MBMessage, Object>> _attributeSetters;
 
-		Long messageId = (Long)attributes.get("messageId");
+	static {
+		Map<String, Function<MBMessage, Object>> attributeGetters = new LinkedHashMap<String, Function<MBMessage, Object>>();
 
-		if (messageId != null) {
-			setMessageId(messageId);
-		}
+		attributeGetters.put("uuid",
+			new Function<MBMessage, Object>() {
+				@Override
+				public Object apply(MBMessage mbMessage) {
+					return mbMessage.getUuid();
+				}
+			});
+		attributeGetters.put("messageId",
+			new Function<MBMessage, Object>() {
+				@Override
+				public Object apply(MBMessage mbMessage) {
+					return mbMessage.getMessageId();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<MBMessage, Object>() {
+				@Override
+				public Object apply(MBMessage mbMessage) {
+					return mbMessage.getGroupId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<MBMessage, Object>() {
+				@Override
+				public Object apply(MBMessage mbMessage) {
+					return mbMessage.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<MBMessage, Object>() {
+				@Override
+				public Object apply(MBMessage mbMessage) {
+					return mbMessage.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<MBMessage, Object>() {
+				@Override
+				public Object apply(MBMessage mbMessage) {
+					return mbMessage.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<MBMessage, Object>() {
+				@Override
+				public Object apply(MBMessage mbMessage) {
+					return mbMessage.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<MBMessage, Object>() {
+				@Override
+				public Object apply(MBMessage mbMessage) {
+					return mbMessage.getModifiedDate();
+				}
+			});
+		attributeGetters.put("classNameId",
+			new Function<MBMessage, Object>() {
+				@Override
+				public Object apply(MBMessage mbMessage) {
+					return mbMessage.getClassNameId();
+				}
+			});
+		attributeGetters.put("classPK",
+			new Function<MBMessage, Object>() {
+				@Override
+				public Object apply(MBMessage mbMessage) {
+					return mbMessage.getClassPK();
+				}
+			});
+		attributeGetters.put("categoryId",
+			new Function<MBMessage, Object>() {
+				@Override
+				public Object apply(MBMessage mbMessage) {
+					return mbMessage.getCategoryId();
+				}
+			});
+		attributeGetters.put("threadId",
+			new Function<MBMessage, Object>() {
+				@Override
+				public Object apply(MBMessage mbMessage) {
+					return mbMessage.getThreadId();
+				}
+			});
+		attributeGetters.put("rootMessageId",
+			new Function<MBMessage, Object>() {
+				@Override
+				public Object apply(MBMessage mbMessage) {
+					return mbMessage.getRootMessageId();
+				}
+			});
+		attributeGetters.put("parentMessageId",
+			new Function<MBMessage, Object>() {
+				@Override
+				public Object apply(MBMessage mbMessage) {
+					return mbMessage.getParentMessageId();
+				}
+			});
+		attributeGetters.put("subject",
+			new Function<MBMessage, Object>() {
+				@Override
+				public Object apply(MBMessage mbMessage) {
+					return mbMessage.getSubject();
+				}
+			});
+		attributeGetters.put("body",
+			new Function<MBMessage, Object>() {
+				@Override
+				public Object apply(MBMessage mbMessage) {
+					return mbMessage.getBody();
+				}
+			});
+		attributeGetters.put("format",
+			new Function<MBMessage, Object>() {
+				@Override
+				public Object apply(MBMessage mbMessage) {
+					return mbMessage.getFormat();
+				}
+			});
+		attributeGetters.put("anonymous",
+			new Function<MBMessage, Object>() {
+				@Override
+				public Object apply(MBMessage mbMessage) {
+					return mbMessage.isAnonymous();
+				}
+			});
+		attributeGetters.put("priority",
+			new Function<MBMessage, Object>() {
+				@Override
+				public Object apply(MBMessage mbMessage) {
+					return mbMessage.getPriority();
+				}
+			});
+		attributeGetters.put("allowPingbacks",
+			new Function<MBMessage, Object>() {
+				@Override
+				public Object apply(MBMessage mbMessage) {
+					return mbMessage.isAllowPingbacks();
+				}
+			});
+		attributeGetters.put("answer",
+			new Function<MBMessage, Object>() {
+				@Override
+				public Object apply(MBMessage mbMessage) {
+					return mbMessage.isAnswer();
+				}
+			});
+		attributeGetters.put("lastPublishDate",
+			new Function<MBMessage, Object>() {
+				@Override
+				public Object apply(MBMessage mbMessage) {
+					return mbMessage.getLastPublishDate();
+				}
+			});
+		attributeGetters.put("status",
+			new Function<MBMessage, Object>() {
+				@Override
+				public Object apply(MBMessage mbMessage) {
+					return mbMessage.getStatus();
+				}
+			});
+		attributeGetters.put("statusByUserId",
+			new Function<MBMessage, Object>() {
+				@Override
+				public Object apply(MBMessage mbMessage) {
+					return mbMessage.getStatusByUserId();
+				}
+			});
+		attributeGetters.put("statusByUserName",
+			new Function<MBMessage, Object>() {
+				@Override
+				public Object apply(MBMessage mbMessage) {
+					return mbMessage.getStatusByUserName();
+				}
+			});
+		attributeGetters.put("statusDate",
+			new Function<MBMessage, Object>() {
+				@Override
+				public Object apply(MBMessage mbMessage) {
+					return mbMessage.getStatusDate();
+				}
+			});
 
-		Long groupId = (Long)attributes.get("groupId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+		Map<String, BiConsumer<MBMessage, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<MBMessage, Object>>();
 
-		Long companyId = (Long)attributes.get("companyId");
+		attributeSetters.put("uuid",
+			new BiConsumer<MBMessage, Object>() {
+				@Override
+				public void accept(MBMessage mbMessage, Object uuid) {
+					mbMessage.setUuid((String)uuid);
+				}
+			});
+		attributeSetters.put("messageId",
+			new BiConsumer<MBMessage, Object>() {
+				@Override
+				public void accept(MBMessage mbMessage, Object messageId) {
+					mbMessage.setMessageId((Long)messageId);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<MBMessage, Object>() {
+				@Override
+				public void accept(MBMessage mbMessage, Object groupId) {
+					mbMessage.setGroupId((Long)groupId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<MBMessage, Object>() {
+				@Override
+				public void accept(MBMessage mbMessage, Object companyId) {
+					mbMessage.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<MBMessage, Object>() {
+				@Override
+				public void accept(MBMessage mbMessage, Object userId) {
+					mbMessage.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<MBMessage, Object>() {
+				@Override
+				public void accept(MBMessage mbMessage, Object userName) {
+					mbMessage.setUserName((String)userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<MBMessage, Object>() {
+				@Override
+				public void accept(MBMessage mbMessage, Object createDate) {
+					mbMessage.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<MBMessage, Object>() {
+				@Override
+				public void accept(MBMessage mbMessage, Object modifiedDate) {
+					mbMessage.setModifiedDate((Date)modifiedDate);
+				}
+			});
+		attributeSetters.put("classNameId",
+			new BiConsumer<MBMessage, Object>() {
+				@Override
+				public void accept(MBMessage mbMessage, Object classNameId) {
+					mbMessage.setClassNameId((Long)classNameId);
+				}
+			});
+		attributeSetters.put("classPK",
+			new BiConsumer<MBMessage, Object>() {
+				@Override
+				public void accept(MBMessage mbMessage, Object classPK) {
+					mbMessage.setClassPK((Long)classPK);
+				}
+			});
+		attributeSetters.put("categoryId",
+			new BiConsumer<MBMessage, Object>() {
+				@Override
+				public void accept(MBMessage mbMessage, Object categoryId) {
+					mbMessage.setCategoryId((Long)categoryId);
+				}
+			});
+		attributeSetters.put("threadId",
+			new BiConsumer<MBMessage, Object>() {
+				@Override
+				public void accept(MBMessage mbMessage, Object threadId) {
+					mbMessage.setThreadId((Long)threadId);
+				}
+			});
+		attributeSetters.put("rootMessageId",
+			new BiConsumer<MBMessage, Object>() {
+				@Override
+				public void accept(MBMessage mbMessage, Object rootMessageId) {
+					mbMessage.setRootMessageId((Long)rootMessageId);
+				}
+			});
+		attributeSetters.put("parentMessageId",
+			new BiConsumer<MBMessage, Object>() {
+				@Override
+				public void accept(MBMessage mbMessage, Object parentMessageId) {
+					mbMessage.setParentMessageId((Long)parentMessageId);
+				}
+			});
+		attributeSetters.put("subject",
+			new BiConsumer<MBMessage, Object>() {
+				@Override
+				public void accept(MBMessage mbMessage, Object subject) {
+					mbMessage.setSubject((String)subject);
+				}
+			});
+		attributeSetters.put("body",
+			new BiConsumer<MBMessage, Object>() {
+				@Override
+				public void accept(MBMessage mbMessage, Object body) {
+					mbMessage.setBody((String)body);
+				}
+			});
+		attributeSetters.put("format",
+			new BiConsumer<MBMessage, Object>() {
+				@Override
+				public void accept(MBMessage mbMessage, Object format) {
+					mbMessage.setFormat((String)format);
+				}
+			});
+		attributeSetters.put("anonymous",
+			new BiConsumer<MBMessage, Object>() {
+				@Override
+				public void accept(MBMessage mbMessage, Object anonymous) {
+					mbMessage.setAnonymous((Boolean)anonymous);
+				}
+			});
+		attributeSetters.put("priority",
+			new BiConsumer<MBMessage, Object>() {
+				@Override
+				public void accept(MBMessage mbMessage, Object priority) {
+					mbMessage.setPriority((Double)priority);
+				}
+			});
+		attributeSetters.put("allowPingbacks",
+			new BiConsumer<MBMessage, Object>() {
+				@Override
+				public void accept(MBMessage mbMessage, Object allowPingbacks) {
+					mbMessage.setAllowPingbacks((Boolean)allowPingbacks);
+				}
+			});
+		attributeSetters.put("answer",
+			new BiConsumer<MBMessage, Object>() {
+				@Override
+				public void accept(MBMessage mbMessage, Object answer) {
+					mbMessage.setAnswer((Boolean)answer);
+				}
+			});
+		attributeSetters.put("lastPublishDate",
+			new BiConsumer<MBMessage, Object>() {
+				@Override
+				public void accept(MBMessage mbMessage, Object lastPublishDate) {
+					mbMessage.setLastPublishDate((Date)lastPublishDate);
+				}
+			});
+		attributeSetters.put("status",
+			new BiConsumer<MBMessage, Object>() {
+				@Override
+				public void accept(MBMessage mbMessage, Object status) {
+					mbMessage.setStatus((Integer)status);
+				}
+			});
+		attributeSetters.put("statusByUserId",
+			new BiConsumer<MBMessage, Object>() {
+				@Override
+				public void accept(MBMessage mbMessage, Object statusByUserId) {
+					mbMessage.setStatusByUserId((Long)statusByUserId);
+				}
+			});
+		attributeSetters.put("statusByUserName",
+			new BiConsumer<MBMessage, Object>() {
+				@Override
+				public void accept(MBMessage mbMessage, Object statusByUserName) {
+					mbMessage.setStatusByUserName((String)statusByUserName);
+				}
+			});
+		attributeSetters.put("statusDate",
+			new BiConsumer<MBMessage, Object>() {
+				@Override
+				public void accept(MBMessage mbMessage, Object statusDate) {
+					mbMessage.setStatusDate((Date)statusDate);
+				}
+			});
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		Long categoryId = (Long)attributes.get("categoryId");
-
-		if (categoryId != null) {
-			setCategoryId(categoryId);
-		}
-
-		Long threadId = (Long)attributes.get("threadId");
-
-		if (threadId != null) {
-			setThreadId(threadId);
-		}
-
-		Long rootMessageId = (Long)attributes.get("rootMessageId");
-
-		if (rootMessageId != null) {
-			setRootMessageId(rootMessageId);
-		}
-
-		Long parentMessageId = (Long)attributes.get("parentMessageId");
-
-		if (parentMessageId != null) {
-			setParentMessageId(parentMessageId);
-		}
-
-		String subject = (String)attributes.get("subject");
-
-		if (subject != null) {
-			setSubject(subject);
-		}
-
-		String body = (String)attributes.get("body");
-
-		if (body != null) {
-			setBody(body);
-		}
-
-		String format = (String)attributes.get("format");
-
-		if (format != null) {
-			setFormat(format);
-		}
-
-		Boolean anonymous = (Boolean)attributes.get("anonymous");
-
-		if (anonymous != null) {
-			setAnonymous(anonymous);
-		}
-
-		Double priority = (Double)attributes.get("priority");
-
-		if (priority != null) {
-			setPriority(priority);
-		}
-
-		Boolean allowPingbacks = (Boolean)attributes.get("allowPingbacks");
-
-		if (allowPingbacks != null) {
-			setAllowPingbacks(allowPingbacks);
-		}
-
-		Boolean answer = (Boolean)attributes.get("answer");
-
-		if (answer != null) {
-			setAnswer(answer);
-		}
-
-		Date lastPublishDate = (Date)attributes.get("lastPublishDate");
-
-		if (lastPublishDate != null) {
-			setLastPublishDate(lastPublishDate);
-		}
-
-		Integer status = (Integer)attributes.get("status");
-
-		if (status != null) {
-			setStatus(status);
-		}
-
-		Long statusByUserId = (Long)attributes.get("statusByUserId");
-
-		if (statusByUserId != null) {
-			setStatusByUserId(statusByUserId);
-		}
-
-		String statusByUserName = (String)attributes.get("statusByUserName");
-
-		if (statusByUserName != null) {
-			setStatusByUserName(statusByUserName);
-		}
-
-		Date statusDate = (Date)attributes.get("statusDate");
-
-		if (statusDate != null) {
-			setStatusDate(statusDate);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON
@@ -1503,185 +1698,6 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 		}
 
 		return mbMessageCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(53);
-
-		sb.append("{uuid=");
-		sb.append(getUuid());
-		sb.append(", messageId=");
-		sb.append(getMessageId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", classNameId=");
-		sb.append(getClassNameId());
-		sb.append(", classPK=");
-		sb.append(getClassPK());
-		sb.append(", categoryId=");
-		sb.append(getCategoryId());
-		sb.append(", threadId=");
-		sb.append(getThreadId());
-		sb.append(", rootMessageId=");
-		sb.append(getRootMessageId());
-		sb.append(", parentMessageId=");
-		sb.append(getParentMessageId());
-		sb.append(", subject=");
-		sb.append(getSubject());
-		sb.append(", body=");
-		sb.append(getBody());
-		sb.append(", format=");
-		sb.append(getFormat());
-		sb.append(", anonymous=");
-		sb.append(isAnonymous());
-		sb.append(", priority=");
-		sb.append(getPriority());
-		sb.append(", allowPingbacks=");
-		sb.append(isAllowPingbacks());
-		sb.append(", answer=");
-		sb.append(isAnswer());
-		sb.append(", lastPublishDate=");
-		sb.append(getLastPublishDate());
-		sb.append(", status=");
-		sb.append(getStatus());
-		sb.append(", statusByUserId=");
-		sb.append(getStatusByUserId());
-		sb.append(", statusByUserName=");
-		sb.append(getStatusByUserName());
-		sb.append(", statusDate=");
-		sb.append(getStatusDate());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(82);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.message.boards.model.MBMessage");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>messageId</column-name><column-value><![CDATA[");
-		sb.append(getMessageId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classNameId</column-name><column-value><![CDATA[");
-		sb.append(getClassNameId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classPK</column-name><column-value><![CDATA[");
-		sb.append(getClassPK());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>categoryId</column-name><column-value><![CDATA[");
-		sb.append(getCategoryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>threadId</column-name><column-value><![CDATA[");
-		sb.append(getThreadId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>rootMessageId</column-name><column-value><![CDATA[");
-		sb.append(getRootMessageId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>parentMessageId</column-name><column-value><![CDATA[");
-		sb.append(getParentMessageId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>subject</column-name><column-value><![CDATA[");
-		sb.append(getSubject());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>body</column-name><column-value><![CDATA[");
-		sb.append(getBody());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>format</column-name><column-value><![CDATA[");
-		sb.append(getFormat());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>anonymous</column-name><column-value><![CDATA[");
-		sb.append(isAnonymous());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>priority</column-name><column-value><![CDATA[");
-		sb.append(getPriority());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>allowPingbacks</column-name><column-value><![CDATA[");
-		sb.append(isAllowPingbacks());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>answer</column-name><column-value><![CDATA[");
-		sb.append(isAnswer());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>lastPublishDate</column-name><column-value><![CDATA[");
-		sb.append(getLastPublishDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>status</column-name><column-value><![CDATA[");
-		sb.append(getStatus());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusByUserId</column-name><column-value><![CDATA[");
-		sb.append(getStatusByUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusByUserName</column-name><column-value><![CDATA[");
-		sb.append(getStatusByUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusDate</column-name><column-value><![CDATA[");
-		sb.append(getStatusDate());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = MBMessage.class.getClassLoader();

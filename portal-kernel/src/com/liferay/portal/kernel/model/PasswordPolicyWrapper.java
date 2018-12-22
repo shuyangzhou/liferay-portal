@@ -28,6 +28,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -59,257 +61,41 @@ public class PasswordPolicyWrapper implements PasswordPolicy,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("uuid", getUuid());
-		attributes.put("passwordPolicyId", getPasswordPolicyId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("defaultPolicy", isDefaultPolicy());
-		attributes.put("name", getName());
-		attributes.put("description", getDescription());
-		attributes.put("changeable", isChangeable());
-		attributes.put("changeRequired", isChangeRequired());
-		attributes.put("minAge", getMinAge());
-		attributes.put("checkSyntax", isCheckSyntax());
-		attributes.put("allowDictionaryWords", isAllowDictionaryWords());
-		attributes.put("minAlphanumeric", getMinAlphanumeric());
-		attributes.put("minLength", getMinLength());
-		attributes.put("minLowerCase", getMinLowerCase());
-		attributes.put("minNumbers", getMinNumbers());
-		attributes.put("minSymbols", getMinSymbols());
-		attributes.put("minUpperCase", getMinUpperCase());
-		attributes.put("regex", getRegex());
-		attributes.put("history", isHistory());
-		attributes.put("historyCount", getHistoryCount());
-		attributes.put("expireable", isExpireable());
-		attributes.put("maxAge", getMaxAge());
-		attributes.put("warningTime", getWarningTime());
-		attributes.put("graceLimit", getGraceLimit());
-		attributes.put("lockout", isLockout());
-		attributes.put("maxFailure", getMaxFailure());
-		attributes.put("lockoutDuration", getLockoutDuration());
-		attributes.put("requireUnlock", isRequireUnlock());
-		attributes.put("resetFailureCount", getResetFailureCount());
-		attributes.put("resetTicketMaxAge", getResetTicketMaxAge());
+		Map<String, Function<PasswordPolicy, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<PasswordPolicy, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<PasswordPolicy, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<PasswordPolicy, Object>> attributeSetters = getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<PasswordPolicy, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<PasswordPolicy, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
-
-		String uuid = (String)attributes.get("uuid");
-
-		if (uuid != null) {
-			setUuid(uuid);
-		}
-
-		Long passwordPolicyId = (Long)attributes.get("passwordPolicyId");
-
-		if (passwordPolicyId != null) {
-			setPasswordPolicyId(passwordPolicyId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Boolean defaultPolicy = (Boolean)attributes.get("defaultPolicy");
-
-		if (defaultPolicy != null) {
-			setDefaultPolicy(defaultPolicy);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
-		Boolean changeable = (Boolean)attributes.get("changeable");
-
-		if (changeable != null) {
-			setChangeable(changeable);
-		}
-
-		Boolean changeRequired = (Boolean)attributes.get("changeRequired");
-
-		if (changeRequired != null) {
-			setChangeRequired(changeRequired);
-		}
-
-		Long minAge = (Long)attributes.get("minAge");
-
-		if (minAge != null) {
-			setMinAge(minAge);
-		}
-
-		Boolean checkSyntax = (Boolean)attributes.get("checkSyntax");
-
-		if (checkSyntax != null) {
-			setCheckSyntax(checkSyntax);
-		}
-
-		Boolean allowDictionaryWords = (Boolean)attributes.get(
-				"allowDictionaryWords");
-
-		if (allowDictionaryWords != null) {
-			setAllowDictionaryWords(allowDictionaryWords);
-		}
-
-		Integer minAlphanumeric = (Integer)attributes.get("minAlphanumeric");
-
-		if (minAlphanumeric != null) {
-			setMinAlphanumeric(minAlphanumeric);
-		}
-
-		Integer minLength = (Integer)attributes.get("minLength");
-
-		if (minLength != null) {
-			setMinLength(minLength);
-		}
-
-		Integer minLowerCase = (Integer)attributes.get("minLowerCase");
-
-		if (minLowerCase != null) {
-			setMinLowerCase(minLowerCase);
-		}
-
-		Integer minNumbers = (Integer)attributes.get("minNumbers");
-
-		if (minNumbers != null) {
-			setMinNumbers(minNumbers);
-		}
-
-		Integer minSymbols = (Integer)attributes.get("minSymbols");
-
-		if (minSymbols != null) {
-			setMinSymbols(minSymbols);
-		}
-
-		Integer minUpperCase = (Integer)attributes.get("minUpperCase");
-
-		if (minUpperCase != null) {
-			setMinUpperCase(minUpperCase);
-		}
-
-		String regex = (String)attributes.get("regex");
-
-		if (regex != null) {
-			setRegex(regex);
-		}
-
-		Boolean history = (Boolean)attributes.get("history");
-
-		if (history != null) {
-			setHistory(history);
-		}
-
-		Integer historyCount = (Integer)attributes.get("historyCount");
-
-		if (historyCount != null) {
-			setHistoryCount(historyCount);
-		}
-
-		Boolean expireable = (Boolean)attributes.get("expireable");
-
-		if (expireable != null) {
-			setExpireable(expireable);
-		}
-
-		Long maxAge = (Long)attributes.get("maxAge");
-
-		if (maxAge != null) {
-			setMaxAge(maxAge);
-		}
-
-		Long warningTime = (Long)attributes.get("warningTime");
-
-		if (warningTime != null) {
-			setWarningTime(warningTime);
-		}
-
-		Integer graceLimit = (Integer)attributes.get("graceLimit");
-
-		if (graceLimit != null) {
-			setGraceLimit(graceLimit);
-		}
-
-		Boolean lockout = (Boolean)attributes.get("lockout");
-
-		if (lockout != null) {
-			setLockout(lockout);
-		}
-
-		Integer maxFailure = (Integer)attributes.get("maxFailure");
-
-		if (maxFailure != null) {
-			setMaxFailure(maxFailure);
-		}
-
-		Long lockoutDuration = (Long)attributes.get("lockoutDuration");
-
-		if (lockoutDuration != null) {
-			setLockoutDuration(lockoutDuration);
-		}
-
-		Boolean requireUnlock = (Boolean)attributes.get("requireUnlock");
-
-		if (requireUnlock != null) {
-			setRequireUnlock(requireUnlock);
-		}
-
-		Long resetFailureCount = (Long)attributes.get("resetFailureCount");
-
-		if (resetFailureCount != null) {
-			setResetFailureCount(resetFailureCount);
-		}
-
-		Long resetTicketMaxAge = (Long)attributes.get("resetTicketMaxAge");
-
-		if (resetTicketMaxAge != null) {
-			setResetTicketMaxAge(resetTicketMaxAge);
-		}
+	}
+
+	@Override
+	public Map<String, Function<PasswordPolicy, Object>> getAttributeGetters() {
+		return _passwordPolicy.getAttributeGetters();
+	}
+
+	@Override
+	public Map<String, BiConsumer<PasswordPolicy, Object>> getAttributeSetters() {
+		return _passwordPolicy.getAttributeSetters();
 	}
 
 	@Override

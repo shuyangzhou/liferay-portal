@@ -25,6 +25,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -56,67 +58,41 @@ public class ExpandoValueWrapper implements ExpandoValue,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("valueId", getValueId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("tableId", getTableId());
-		attributes.put("columnId", getColumnId());
-		attributes.put("rowId", getRowId());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("data", getData());
+		Map<String, Function<ExpandoValue, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<ExpandoValue, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<ExpandoValue, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long valueId = (Long)attributes.get("valueId");
+		Map<String, BiConsumer<ExpandoValue, Object>> attributeSetters = getAttributeSetters();
 
-		if (valueId != null) {
-			setValueId(valueId);
+		for (Map.Entry<String, BiConsumer<ExpandoValue, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<ExpandoValue, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	@Override
+	public Map<String, Function<ExpandoValue, Object>> getAttributeGetters() {
+		return _expandoValue.getAttributeGetters();
+	}
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long tableId = (Long)attributes.get("tableId");
-
-		if (tableId != null) {
-			setTableId(tableId);
-		}
-
-		Long columnId = (Long)attributes.get("columnId");
-
-		if (columnId != null) {
-			setColumnId(columnId);
-		}
-
-		Long rowId = (Long)attributes.get("rowId");
-
-		if (rowId != null) {
-			setRowId(rowId);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		String data = (String)attributes.get("data");
-
-		if (data != null) {
-			setData(data);
-		}
+	@Override
+	public Map<String, BiConsumer<ExpandoValue, Object>> getAttributeSetters() {
+		return _expandoValue.getAttributeSetters();
 	}
 
 	@Override

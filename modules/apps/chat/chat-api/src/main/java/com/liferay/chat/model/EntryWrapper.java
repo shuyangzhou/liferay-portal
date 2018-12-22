@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -56,53 +58,41 @@ public class EntryWrapper implements Entry, ModelWrapper<Entry> {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("entryId", getEntryId());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("fromUserId", getFromUserId());
-		attributes.put("toUserId", getToUserId());
-		attributes.put("content", getContent());
-		attributes.put("flag", getFlag());
+		Map<String, Function<Entry, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<Entry, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<Entry, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long entryId = (Long)attributes.get("entryId");
+		Map<String, BiConsumer<Entry, Object>> attributeSetters = getAttributeSetters();
 
-		if (entryId != null) {
-			setEntryId(entryId);
+		for (Map.Entry<String, BiConsumer<Entry, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<Entry, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long createDate = (Long)attributes.get("createDate");
+	@Override
+	public Map<String, Function<Entry, Object>> getAttributeGetters() {
+		return _entry.getAttributeGetters();
+	}
 
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Long fromUserId = (Long)attributes.get("fromUserId");
-
-		if (fromUserId != null) {
-			setFromUserId(fromUserId);
-		}
-
-		Long toUserId = (Long)attributes.get("toUserId");
-
-		if (toUserId != null) {
-			setToUserId(toUserId);
-		}
-
-		String content = (String)attributes.get("content");
-
-		if (content != null) {
-			setContent(content);
-		}
-
-		Integer flag = (Integer)attributes.get("flag");
-
-		if (flag != null) {
-			setFlag(flag);
-		}
+	@Override
+	public Map<String, BiConsumer<Entry, Object>> getAttributeSetters() {
+		return _entry.getAttributeSetters();
 	}
 
 	@Override

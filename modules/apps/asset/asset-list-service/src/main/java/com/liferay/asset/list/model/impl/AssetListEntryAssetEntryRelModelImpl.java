@@ -24,8 +24,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -42,9 +40,13 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the AssetListEntryAssetEntryRel service. Represents a row in the &quot;AssetListEntryAssetEntryRel&quot; database table, with each column mapped to a property of this class.
@@ -157,103 +159,234 @@ public class AssetListEntryAssetEntryRelModelImpl extends BaseModelImpl<AssetLis
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("uuid", getUuid());
-		attributes.put("assetListEntryAssetEntryRelId",
-			getAssetListEntryAssetEntryRelId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("assetListEntryId", getAssetListEntryId());
-		attributes.put("assetEntryId", getAssetEntryId());
-		attributes.put("position", getPosition());
-		attributes.put("lastPublishDate", getLastPublishDate());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<AssetListEntryAssetEntryRel, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+	public Map<String, BiConsumer<AssetListEntryAssetEntryRel, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
+	private static final Map<String, Function<AssetListEntryAssetEntryRel, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<AssetListEntryAssetEntryRel, Object>> _attributeSetters;
 
-		Long assetListEntryAssetEntryRelId = (Long)attributes.get(
-				"assetListEntryAssetEntryRelId");
+	static {
+		Map<String, Function<AssetListEntryAssetEntryRel, Object>> attributeGetters =
+			new LinkedHashMap<String, Function<AssetListEntryAssetEntryRel, Object>>();
 
-		if (assetListEntryAssetEntryRelId != null) {
-			setAssetListEntryAssetEntryRelId(assetListEntryAssetEntryRelId);
-		}
+		attributeGetters.put("uuid",
+			new Function<AssetListEntryAssetEntryRel, Object>() {
+				@Override
+				public Object apply(
+					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel) {
+					return assetListEntryAssetEntryRel.getUuid();
+				}
+			});
+		attributeGetters.put("assetListEntryAssetEntryRelId",
+			new Function<AssetListEntryAssetEntryRel, Object>() {
+				@Override
+				public Object apply(
+					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel) {
+					return assetListEntryAssetEntryRel.getAssetListEntryAssetEntryRelId();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<AssetListEntryAssetEntryRel, Object>() {
+				@Override
+				public Object apply(
+					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel) {
+					return assetListEntryAssetEntryRel.getGroupId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<AssetListEntryAssetEntryRel, Object>() {
+				@Override
+				public Object apply(
+					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel) {
+					return assetListEntryAssetEntryRel.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<AssetListEntryAssetEntryRel, Object>() {
+				@Override
+				public Object apply(
+					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel) {
+					return assetListEntryAssetEntryRel.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<AssetListEntryAssetEntryRel, Object>() {
+				@Override
+				public Object apply(
+					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel) {
+					return assetListEntryAssetEntryRel.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<AssetListEntryAssetEntryRel, Object>() {
+				@Override
+				public Object apply(
+					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel) {
+					return assetListEntryAssetEntryRel.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<AssetListEntryAssetEntryRel, Object>() {
+				@Override
+				public Object apply(
+					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel) {
+					return assetListEntryAssetEntryRel.getModifiedDate();
+				}
+			});
+		attributeGetters.put("assetListEntryId",
+			new Function<AssetListEntryAssetEntryRel, Object>() {
+				@Override
+				public Object apply(
+					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel) {
+					return assetListEntryAssetEntryRel.getAssetListEntryId();
+				}
+			});
+		attributeGetters.put("assetEntryId",
+			new Function<AssetListEntryAssetEntryRel, Object>() {
+				@Override
+				public Object apply(
+					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel) {
+					return assetListEntryAssetEntryRel.getAssetEntryId();
+				}
+			});
+		attributeGetters.put("position",
+			new Function<AssetListEntryAssetEntryRel, Object>() {
+				@Override
+				public Object apply(
+					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel) {
+					return assetListEntryAssetEntryRel.getPosition();
+				}
+			});
+		attributeGetters.put("lastPublishDate",
+			new Function<AssetListEntryAssetEntryRel, Object>() {
+				@Override
+				public Object apply(
+					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel) {
+					return assetListEntryAssetEntryRel.getLastPublishDate();
+				}
+			});
 
-		Long groupId = (Long)attributes.get("groupId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+		Map<String, BiConsumer<AssetListEntryAssetEntryRel, Object>> attributeSetters =
+			new LinkedHashMap<String, BiConsumer<AssetListEntryAssetEntryRel, Object>>();
 
-		Long companyId = (Long)attributes.get("companyId");
+		attributeSetters.put("uuid",
+			new BiConsumer<AssetListEntryAssetEntryRel, Object>() {
+				@Override
+				public void accept(
+					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel,
+					Object uuid) {
+					assetListEntryAssetEntryRel.setUuid((String)uuid);
+				}
+			});
+		attributeSetters.put("assetListEntryAssetEntryRelId",
+			new BiConsumer<AssetListEntryAssetEntryRel, Object>() {
+				@Override
+				public void accept(
+					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel,
+					Object assetListEntryAssetEntryRelId) {
+					assetListEntryAssetEntryRel.setAssetListEntryAssetEntryRelId((Long)assetListEntryAssetEntryRelId);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<AssetListEntryAssetEntryRel, Object>() {
+				@Override
+				public void accept(
+					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel,
+					Object groupId) {
+					assetListEntryAssetEntryRel.setGroupId((Long)groupId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<AssetListEntryAssetEntryRel, Object>() {
+				@Override
+				public void accept(
+					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel,
+					Object companyId) {
+					assetListEntryAssetEntryRel.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<AssetListEntryAssetEntryRel, Object>() {
+				@Override
+				public void accept(
+					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel,
+					Object userId) {
+					assetListEntryAssetEntryRel.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<AssetListEntryAssetEntryRel, Object>() {
+				@Override
+				public void accept(
+					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel,
+					Object userName) {
+					assetListEntryAssetEntryRel.setUserName((String)userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<AssetListEntryAssetEntryRel, Object>() {
+				@Override
+				public void accept(
+					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel,
+					Object createDate) {
+					assetListEntryAssetEntryRel.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<AssetListEntryAssetEntryRel, Object>() {
+				@Override
+				public void accept(
+					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel,
+					Object modifiedDate) {
+					assetListEntryAssetEntryRel.setModifiedDate((Date)modifiedDate);
+				}
+			});
+		attributeSetters.put("assetListEntryId",
+			new BiConsumer<AssetListEntryAssetEntryRel, Object>() {
+				@Override
+				public void accept(
+					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel,
+					Object assetListEntryId) {
+					assetListEntryAssetEntryRel.setAssetListEntryId((Long)assetListEntryId);
+				}
+			});
+		attributeSetters.put("assetEntryId",
+			new BiConsumer<AssetListEntryAssetEntryRel, Object>() {
+				@Override
+				public void accept(
+					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel,
+					Object assetEntryId) {
+					assetListEntryAssetEntryRel.setAssetEntryId((Long)assetEntryId);
+				}
+			});
+		attributeSetters.put("position",
+			new BiConsumer<AssetListEntryAssetEntryRel, Object>() {
+				@Override
+				public void accept(
+					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel,
+					Object position) {
+					assetListEntryAssetEntryRel.setPosition((Integer)position);
+				}
+			});
+		attributeSetters.put("lastPublishDate",
+			new BiConsumer<AssetListEntryAssetEntryRel, Object>() {
+				@Override
+				public void accept(
+					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel,
+					Object lastPublishDate) {
+					assetListEntryAssetEntryRel.setLastPublishDate((Date)lastPublishDate);
+				}
+			});
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long assetListEntryId = (Long)attributes.get("assetListEntryId");
-
-		if (assetListEntryId != null) {
-			setAssetListEntryId(assetListEntryId);
-		}
-
-		Long assetEntryId = (Long)attributes.get("assetEntryId");
-
-		if (assetEntryId != null) {
-			setAssetEntryId(assetEntryId);
-		}
-
-		Integer position = (Integer)attributes.get("position");
-
-		if (position != null) {
-			setPosition(position);
-		}
-
-		Date lastPublishDate = (Date)attributes.get("lastPublishDate");
-
-		if (lastPublishDate != null) {
-			setLastPublishDate(lastPublishDate);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override
@@ -670,101 +803,6 @@ public class AssetListEntryAssetEntryRelModelImpl extends BaseModelImpl<AssetLis
 		}
 
 		return assetListEntryAssetEntryRelCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(25);
-
-		sb.append("{uuid=");
-		sb.append(getUuid());
-		sb.append(", assetListEntryAssetEntryRelId=");
-		sb.append(getAssetListEntryAssetEntryRelId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", assetListEntryId=");
-		sb.append(getAssetListEntryId());
-		sb.append(", assetEntryId=");
-		sb.append(getAssetEntryId());
-		sb.append(", position=");
-		sb.append(getPosition());
-		sb.append(", lastPublishDate=");
-		sb.append(getLastPublishDate());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(40);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.asset.list.model.AssetListEntryAssetEntryRel");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>assetListEntryAssetEntryRelId</column-name><column-value><![CDATA[");
-		sb.append(getAssetListEntryAssetEntryRelId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>assetListEntryId</column-name><column-value><![CDATA[");
-		sb.append(getAssetListEntryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>assetEntryId</column-name><column-value><![CDATA[");
-		sb.append(getAssetEntryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>position</column-name><column-value><![CDATA[");
-		sb.append(getPosition());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>lastPublishDate</column-name><column-value><![CDATA[");
-		sb.append(getLastPublishDate());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = AssetListEntryAssetEntryRel.class.getClassLoader();

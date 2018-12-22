@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -57,109 +59,41 @@ public class OAuthTokenWrapper implements OAuthToken, ModelWrapper<OAuthToken> {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("oAuthTokenId", getOAuthTokenId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("gadgetKey", getGadgetKey());
-		attributes.put("serviceName", getServiceName());
-		attributes.put("moduleId", getModuleId());
-		attributes.put("accessToken", getAccessToken());
-		attributes.put("tokenName", getTokenName());
-		attributes.put("tokenSecret", getTokenSecret());
-		attributes.put("sessionHandle", getSessionHandle());
-		attributes.put("expiration", getExpiration());
+		Map<String, Function<OAuthToken, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<OAuthToken, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<OAuthToken, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long oAuthTokenId = (Long)attributes.get("oAuthTokenId");
+		Map<String, BiConsumer<OAuthToken, Object>> attributeSetters = getAttributeSetters();
 
-		if (oAuthTokenId != null) {
-			setOAuthTokenId(oAuthTokenId);
+		for (Map.Entry<String, BiConsumer<OAuthToken, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<OAuthToken, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	@Override
+	public Map<String, Function<OAuthToken, Object>> getAttributeGetters() {
+		return _oAuthToken.getAttributeGetters();
+	}
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		String gadgetKey = (String)attributes.get("gadgetKey");
-
-		if (gadgetKey != null) {
-			setGadgetKey(gadgetKey);
-		}
-
-		String serviceName = (String)attributes.get("serviceName");
-
-		if (serviceName != null) {
-			setServiceName(serviceName);
-		}
-
-		Long moduleId = (Long)attributes.get("moduleId");
-
-		if (moduleId != null) {
-			setModuleId(moduleId);
-		}
-
-		String accessToken = (String)attributes.get("accessToken");
-
-		if (accessToken != null) {
-			setAccessToken(accessToken);
-		}
-
-		String tokenName = (String)attributes.get("tokenName");
-
-		if (tokenName != null) {
-			setTokenName(tokenName);
-		}
-
-		String tokenSecret = (String)attributes.get("tokenSecret");
-
-		if (tokenSecret != null) {
-			setTokenSecret(tokenSecret);
-		}
-
-		String sessionHandle = (String)attributes.get("sessionHandle");
-
-		if (sessionHandle != null) {
-			setSessionHandle(sessionHandle);
-		}
-
-		Long expiration = (Long)attributes.get("expiration");
-
-		if (expiration != null) {
-			setExpiration(expiration);
-		}
+	@Override
+	public Map<String, BiConsumer<OAuthToken, Object>> getAttributeSetters() {
+		return _oAuthToken.getAttributeSetters();
 	}
 
 	@Override

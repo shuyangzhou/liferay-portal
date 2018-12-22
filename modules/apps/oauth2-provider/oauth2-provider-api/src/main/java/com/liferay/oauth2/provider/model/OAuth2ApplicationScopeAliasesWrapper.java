@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -60,69 +62,44 @@ public class OAuth2ApplicationScopeAliasesWrapper
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("oAuth2ApplicationScopeAliasesId",
-			getOAuth2ApplicationScopeAliasesId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("oAuth2ApplicationId", getOAuth2ApplicationId());
-		attributes.put("scopeAliases", getScopeAliases());
-		attributes.put("scopeAliasesHash", getScopeAliasesHash());
+		Map<String, Function<OAuth2ApplicationScopeAliases, Object>> attributeGetters =
+			getAttributeGetters();
+
+		for (Map.Entry<String, Function<OAuth2ApplicationScopeAliases, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<OAuth2ApplicationScopeAliases, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long oAuth2ApplicationScopeAliasesId = (Long)attributes.get(
-				"oAuth2ApplicationScopeAliasesId");
+		Map<String, BiConsumer<OAuth2ApplicationScopeAliases, Object>> attributeSetters =
+			getAttributeSetters();
 
-		if (oAuth2ApplicationScopeAliasesId != null) {
-			setOAuth2ApplicationScopeAliasesId(oAuth2ApplicationScopeAliasesId);
+		for (Map.Entry<String, BiConsumer<OAuth2ApplicationScopeAliases, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<OAuth2ApplicationScopeAliases, Object> attributeBiConsumer =
+				entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	@Override
+	public Map<String, Function<OAuth2ApplicationScopeAliases, Object>> getAttributeGetters() {
+		return _oAuth2ApplicationScopeAliases.getAttributeGetters();
+	}
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Long oAuth2ApplicationId = (Long)attributes.get("oAuth2ApplicationId");
-
-		if (oAuth2ApplicationId != null) {
-			setOAuth2ApplicationId(oAuth2ApplicationId);
-		}
-
-		String scopeAliases = (String)attributes.get("scopeAliases");
-
-		if (scopeAliases != null) {
-			setScopeAliases(scopeAliases);
-		}
-
-		Long scopeAliasesHash = (Long)attributes.get("scopeAliasesHash");
-
-		if (scopeAliasesHash != null) {
-			setScopeAliasesHash(scopeAliasesHash);
-		}
+	@Override
+	public Map<String, BiConsumer<OAuth2ApplicationScopeAliases, Object>> getAttributeSetters() {
+		return _oAuth2ApplicationScopeAliases.getAttributeSetters();
 	}
 
 	@Override

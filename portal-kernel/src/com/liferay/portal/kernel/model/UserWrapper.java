@@ -28,6 +28,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -58,318 +60,41 @@ public class UserWrapper implements User, ModelWrapper<User> {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("uuid", getUuid());
-		attributes.put("externalReferenceCode", getExternalReferenceCode());
-		attributes.put("userId", getUserId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("defaultUser", isDefaultUser());
-		attributes.put("contactId", getContactId());
-		attributes.put("password", getPassword());
-		attributes.put("passwordEncrypted", isPasswordEncrypted());
-		attributes.put("passwordReset", isPasswordReset());
-		attributes.put("passwordModifiedDate", getPasswordModifiedDate());
-		attributes.put("digest", getDigest());
-		attributes.put("reminderQueryQuestion", getReminderQueryQuestion());
-		attributes.put("reminderQueryAnswer", getReminderQueryAnswer());
-		attributes.put("graceLoginCount", getGraceLoginCount());
-		attributes.put("screenName", getScreenName());
-		attributes.put("emailAddress", getEmailAddress());
-		attributes.put("facebookId", getFacebookId());
-		attributes.put("googleUserId", getGoogleUserId());
-		attributes.put("ldapServerId", getLdapServerId());
-		attributes.put("openId", getOpenId());
-		attributes.put("portraitId", getPortraitId());
-		attributes.put("languageId", getLanguageId());
-		attributes.put("timeZoneId", getTimeZoneId());
-		attributes.put("greeting", getGreeting());
-		attributes.put("comments", getComments());
-		attributes.put("firstName", getFirstName());
-		attributes.put("middleName", getMiddleName());
-		attributes.put("lastName", getLastName());
-		attributes.put("jobTitle", getJobTitle());
-		attributes.put("loginDate", getLoginDate());
-		attributes.put("loginIP", getLoginIP());
-		attributes.put("lastLoginDate", getLastLoginDate());
-		attributes.put("lastLoginIP", getLastLoginIP());
-		attributes.put("lastFailedLoginDate", getLastFailedLoginDate());
-		attributes.put("failedLoginAttempts", getFailedLoginAttempts());
-		attributes.put("lockout", isLockout());
-		attributes.put("lockoutDate", getLockoutDate());
-		attributes.put("agreedToTermsOfUse", isAgreedToTermsOfUse());
-		attributes.put("emailAddressVerified", isEmailAddressVerified());
-		attributes.put("status", getStatus());
+		Map<String, Function<User, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<User, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<User, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<User, Object>> attributeSetters = getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<User, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<User, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
-
-		String uuid = (String)attributes.get("uuid");
-
-		if (uuid != null) {
-			setUuid(uuid);
-		}
-
-		String externalReferenceCode = (String)attributes.get(
-				"externalReferenceCode");
-
-		if (externalReferenceCode != null) {
-			setExternalReferenceCode(externalReferenceCode);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Boolean defaultUser = (Boolean)attributes.get("defaultUser");
-
-		if (defaultUser != null) {
-			setDefaultUser(defaultUser);
-		}
-
-		Long contactId = (Long)attributes.get("contactId");
-
-		if (contactId != null) {
-			setContactId(contactId);
-		}
-
-		String password = (String)attributes.get("password");
-
-		if (password != null) {
-			setPassword(password);
-		}
-
-		Boolean passwordEncrypted = (Boolean)attributes.get("passwordEncrypted");
-
-		if (passwordEncrypted != null) {
-			setPasswordEncrypted(passwordEncrypted);
-		}
-
-		Boolean passwordReset = (Boolean)attributes.get("passwordReset");
-
-		if (passwordReset != null) {
-			setPasswordReset(passwordReset);
-		}
-
-		Date passwordModifiedDate = (Date)attributes.get("passwordModifiedDate");
-
-		if (passwordModifiedDate != null) {
-			setPasswordModifiedDate(passwordModifiedDate);
-		}
-
-		String digest = (String)attributes.get("digest");
-
-		if (digest != null) {
-			setDigest(digest);
-		}
-
-		String reminderQueryQuestion = (String)attributes.get(
-				"reminderQueryQuestion");
-
-		if (reminderQueryQuestion != null) {
-			setReminderQueryQuestion(reminderQueryQuestion);
-		}
-
-		String reminderQueryAnswer = (String)attributes.get(
-				"reminderQueryAnswer");
-
-		if (reminderQueryAnswer != null) {
-			setReminderQueryAnswer(reminderQueryAnswer);
-		}
-
-		Integer graceLoginCount = (Integer)attributes.get("graceLoginCount");
-
-		if (graceLoginCount != null) {
-			setGraceLoginCount(graceLoginCount);
-		}
-
-		String screenName = (String)attributes.get("screenName");
-
-		if (screenName != null) {
-			setScreenName(screenName);
-		}
-
-		String emailAddress = (String)attributes.get("emailAddress");
-
-		if (emailAddress != null) {
-			setEmailAddress(emailAddress);
-		}
-
-		Long facebookId = (Long)attributes.get("facebookId");
-
-		if (facebookId != null) {
-			setFacebookId(facebookId);
-		}
-
-		String googleUserId = (String)attributes.get("googleUserId");
-
-		if (googleUserId != null) {
-			setGoogleUserId(googleUserId);
-		}
-
-		Long ldapServerId = (Long)attributes.get("ldapServerId");
-
-		if (ldapServerId != null) {
-			setLdapServerId(ldapServerId);
-		}
-
-		String openId = (String)attributes.get("openId");
-
-		if (openId != null) {
-			setOpenId(openId);
-		}
-
-		Long portraitId = (Long)attributes.get("portraitId");
-
-		if (portraitId != null) {
-			setPortraitId(portraitId);
-		}
-
-		String languageId = (String)attributes.get("languageId");
-
-		if (languageId != null) {
-			setLanguageId(languageId);
-		}
-
-		String timeZoneId = (String)attributes.get("timeZoneId");
-
-		if (timeZoneId != null) {
-			setTimeZoneId(timeZoneId);
-		}
-
-		String greeting = (String)attributes.get("greeting");
-
-		if (greeting != null) {
-			setGreeting(greeting);
-		}
-
-		String comments = (String)attributes.get("comments");
-
-		if (comments != null) {
-			setComments(comments);
-		}
-
-		String firstName = (String)attributes.get("firstName");
-
-		if (firstName != null) {
-			setFirstName(firstName);
-		}
-
-		String middleName = (String)attributes.get("middleName");
-
-		if (middleName != null) {
-			setMiddleName(middleName);
-		}
-
-		String lastName = (String)attributes.get("lastName");
-
-		if (lastName != null) {
-			setLastName(lastName);
-		}
-
-		String jobTitle = (String)attributes.get("jobTitle");
-
-		if (jobTitle != null) {
-			setJobTitle(jobTitle);
-		}
-
-		Date loginDate = (Date)attributes.get("loginDate");
-
-		if (loginDate != null) {
-			setLoginDate(loginDate);
-		}
-
-		String loginIP = (String)attributes.get("loginIP");
-
-		if (loginIP != null) {
-			setLoginIP(loginIP);
-		}
-
-		Date lastLoginDate = (Date)attributes.get("lastLoginDate");
-
-		if (lastLoginDate != null) {
-			setLastLoginDate(lastLoginDate);
-		}
-
-		String lastLoginIP = (String)attributes.get("lastLoginIP");
-
-		if (lastLoginIP != null) {
-			setLastLoginIP(lastLoginIP);
-		}
-
-		Date lastFailedLoginDate = (Date)attributes.get("lastFailedLoginDate");
-
-		if (lastFailedLoginDate != null) {
-			setLastFailedLoginDate(lastFailedLoginDate);
-		}
-
-		Integer failedLoginAttempts = (Integer)attributes.get(
-				"failedLoginAttempts");
-
-		if (failedLoginAttempts != null) {
-			setFailedLoginAttempts(failedLoginAttempts);
-		}
-
-		Boolean lockout = (Boolean)attributes.get("lockout");
-
-		if (lockout != null) {
-			setLockout(lockout);
-		}
-
-		Date lockoutDate = (Date)attributes.get("lockoutDate");
-
-		if (lockoutDate != null) {
-			setLockoutDate(lockoutDate);
-		}
-
-		Boolean agreedToTermsOfUse = (Boolean)attributes.get(
-				"agreedToTermsOfUse");
-
-		if (agreedToTermsOfUse != null) {
-			setAgreedToTermsOfUse(agreedToTermsOfUse);
-		}
-
-		Boolean emailAddressVerified = (Boolean)attributes.get(
-				"emailAddressVerified");
-
-		if (emailAddressVerified != null) {
-			setEmailAddressVerified(emailAddressVerified);
-		}
-
-		Integer status = (Integer)attributes.get("status");
-
-		if (status != null) {
-			setStatus(status);
-		}
+	}
+
+	@Override
+	public Map<String, Function<User, Object>> getAttributeGetters() {
+		return _user.getAttributeGetters();
+	}
+
+	@Override
+	public Map<String, BiConsumer<User, Object>> getAttributeSetters() {
+		return _user.getAttributeSetters();
 	}
 
 	@Override

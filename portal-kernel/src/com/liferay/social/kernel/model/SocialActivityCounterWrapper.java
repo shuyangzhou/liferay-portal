@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -58,102 +60,41 @@ public class SocialActivityCounterWrapper implements SocialActivityCounter,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("activityCounterId", getActivityCounterId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("name", getName());
-		attributes.put("ownerType", getOwnerType());
-		attributes.put("currentValue", getCurrentValue());
-		attributes.put("totalValue", getTotalValue());
-		attributes.put("graceValue", getGraceValue());
-		attributes.put("startPeriod", getStartPeriod());
-		attributes.put("endPeriod", getEndPeriod());
-		attributes.put("active", isActive());
+		Map<String, Function<SocialActivityCounter, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<SocialActivityCounter, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<SocialActivityCounter, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long activityCounterId = (Long)attributes.get("activityCounterId");
+		Map<String, BiConsumer<SocialActivityCounter, Object>> attributeSetters = getAttributeSetters();
 
-		if (activityCounterId != null) {
-			setActivityCounterId(activityCounterId);
+		for (Map.Entry<String, BiConsumer<SocialActivityCounter, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<SocialActivityCounter, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long groupId = (Long)attributes.get("groupId");
+	@Override
+	public Map<String, Function<SocialActivityCounter, Object>> getAttributeGetters() {
+		return _socialActivityCounter.getAttributeGetters();
+	}
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		Integer ownerType = (Integer)attributes.get("ownerType");
-
-		if (ownerType != null) {
-			setOwnerType(ownerType);
-		}
-
-		Integer currentValue = (Integer)attributes.get("currentValue");
-
-		if (currentValue != null) {
-			setCurrentValue(currentValue);
-		}
-
-		Integer totalValue = (Integer)attributes.get("totalValue");
-
-		if (totalValue != null) {
-			setTotalValue(totalValue);
-		}
-
-		Integer graceValue = (Integer)attributes.get("graceValue");
-
-		if (graceValue != null) {
-			setGraceValue(graceValue);
-		}
-
-		Integer startPeriod = (Integer)attributes.get("startPeriod");
-
-		if (startPeriod != null) {
-			setStartPeriod(startPeriod);
-		}
-
-		Integer endPeriod = (Integer)attributes.get("endPeriod");
-
-		if (endPeriod != null) {
-			setEndPeriod(endPeriod);
-		}
-
-		Boolean active = (Boolean)attributes.get("active");
-
-		if (active != null) {
-			setActive(active);
-		}
+	@Override
+	public Map<String, BiConsumer<SocialActivityCounter, Object>> getAttributeSetters() {
+		return _socialActivityCounter.getAttributeSetters();
 	}
 
 	@Override

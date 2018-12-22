@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -57,53 +59,41 @@ public class DLSyncEventWrapper implements DLSyncEvent,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("syncEventId", getSyncEventId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("modifiedTime", getModifiedTime());
-		attributes.put("event", getEvent());
-		attributes.put("type", getType());
-		attributes.put("typePK", getTypePK());
+		Map<String, Function<DLSyncEvent, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<DLSyncEvent, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<DLSyncEvent, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long syncEventId = (Long)attributes.get("syncEventId");
+		Map<String, BiConsumer<DLSyncEvent, Object>> attributeSetters = getAttributeSetters();
 
-		if (syncEventId != null) {
-			setSyncEventId(syncEventId);
+		for (Map.Entry<String, BiConsumer<DLSyncEvent, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<DLSyncEvent, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	@Override
+	public Map<String, Function<DLSyncEvent, Object>> getAttributeGetters() {
+		return _dlSyncEvent.getAttributeGetters();
+	}
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long modifiedTime = (Long)attributes.get("modifiedTime");
-
-		if (modifiedTime != null) {
-			setModifiedTime(modifiedTime);
-		}
-
-		String event = (String)attributes.get("event");
-
-		if (event != null) {
-			setEvent(event);
-		}
-
-		String type = (String)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
-
-		Long typePK = (Long)attributes.get("typePK");
-
-		if (typePK != null) {
-			setTypePK(typePK);
-		}
+	@Override
+	public Map<String, BiConsumer<DLSyncEvent, Object>> getAttributeSetters() {
+		return _dlSyncEvent.getAttributeSetters();
 	}
 
 	@Override

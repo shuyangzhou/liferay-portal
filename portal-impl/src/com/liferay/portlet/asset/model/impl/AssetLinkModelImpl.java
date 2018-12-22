@@ -22,8 +22,6 @@ import com.liferay.asset.kernel.model.AssetLinkModel;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -39,9 +37,13 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the AssetLink service. Represents a row in the &quot;AssetLink&quot; database table, with each column mapped to a property of this class.
@@ -147,80 +149,154 @@ public class AssetLinkModelImpl extends BaseModelImpl<AssetLink>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("linkId", getLinkId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("entryId1", getEntryId1());
-		attributes.put("entryId2", getEntryId2());
-		attributes.put("type", getType());
-		attributes.put("weight", getWeight());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<AssetLink, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long linkId = (Long)attributes.get("linkId");
+	public Map<String, BiConsumer<AssetLink, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (linkId != null) {
-			setLinkId(linkId);
-		}
+	private static final Map<String, Function<AssetLink, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<AssetLink, Object>> _attributeSetters;
 
-		Long companyId = (Long)attributes.get("companyId");
+	static {
+		Map<String, Function<AssetLink, Object>> attributeGetters = new LinkedHashMap<String, Function<AssetLink, Object>>();
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		attributeGetters.put("linkId",
+			new Function<AssetLink, Object>() {
+				@Override
+				public Object apply(AssetLink assetLink) {
+					return assetLink.getLinkId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<AssetLink, Object>() {
+				@Override
+				public Object apply(AssetLink assetLink) {
+					return assetLink.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<AssetLink, Object>() {
+				@Override
+				public Object apply(AssetLink assetLink) {
+					return assetLink.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<AssetLink, Object>() {
+				@Override
+				public Object apply(AssetLink assetLink) {
+					return assetLink.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<AssetLink, Object>() {
+				@Override
+				public Object apply(AssetLink assetLink) {
+					return assetLink.getCreateDate();
+				}
+			});
+		attributeGetters.put("entryId1",
+			new Function<AssetLink, Object>() {
+				@Override
+				public Object apply(AssetLink assetLink) {
+					return assetLink.getEntryId1();
+				}
+			});
+		attributeGetters.put("entryId2",
+			new Function<AssetLink, Object>() {
+				@Override
+				public Object apply(AssetLink assetLink) {
+					return assetLink.getEntryId2();
+				}
+			});
+		attributeGetters.put("type",
+			new Function<AssetLink, Object>() {
+				@Override
+				public Object apply(AssetLink assetLink) {
+					return assetLink.getType();
+				}
+			});
+		attributeGetters.put("weight",
+			new Function<AssetLink, Object>() {
+				@Override
+				public Object apply(AssetLink assetLink) {
+					return assetLink.getWeight();
+				}
+			});
 
-		Long userId = (Long)attributes.get("userId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (userId != null) {
-			setUserId(userId);
-		}
+		Map<String, BiConsumer<AssetLink, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetLink, Object>>();
 
-		String userName = (String)attributes.get("userName");
+		attributeSetters.put("linkId",
+			new BiConsumer<AssetLink, Object>() {
+				@Override
+				public void accept(AssetLink assetLink, Object linkId) {
+					assetLink.setLinkId((Long)linkId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<AssetLink, Object>() {
+				@Override
+				public void accept(AssetLink assetLink, Object companyId) {
+					assetLink.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<AssetLink, Object>() {
+				@Override
+				public void accept(AssetLink assetLink, Object userId) {
+					assetLink.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<AssetLink, Object>() {
+				@Override
+				public void accept(AssetLink assetLink, Object userName) {
+					assetLink.setUserName((String)userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<AssetLink, Object>() {
+				@Override
+				public void accept(AssetLink assetLink, Object createDate) {
+					assetLink.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("entryId1",
+			new BiConsumer<AssetLink, Object>() {
+				@Override
+				public void accept(AssetLink assetLink, Object entryId1) {
+					assetLink.setEntryId1((Long)entryId1);
+				}
+			});
+		attributeSetters.put("entryId2",
+			new BiConsumer<AssetLink, Object>() {
+				@Override
+				public void accept(AssetLink assetLink, Object entryId2) {
+					assetLink.setEntryId2((Long)entryId2);
+				}
+			});
+		attributeSetters.put("type",
+			new BiConsumer<AssetLink, Object>() {
+				@Override
+				public void accept(AssetLink assetLink, Object type) {
+					assetLink.setType((Integer)type);
+				}
+			});
+		attributeSetters.put("weight",
+			new BiConsumer<AssetLink, Object>() {
+				@Override
+				public void accept(AssetLink assetLink, Object weight) {
+					assetLink.setWeight((Integer)weight);
+				}
+			});
 
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Long entryId1 = (Long)attributes.get("entryId1");
-
-		if (entryId1 != null) {
-			setEntryId1(entryId1);
-		}
-
-		Long entryId2 = (Long)attributes.get("entryId2");
-
-		if (entryId2 != null) {
-			setEntryId2(entryId2);
-		}
-
-		Integer type = (Integer)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
-
-		Integer weight = (Integer)attributes.get("weight");
-
-		if (weight != null) {
-			setWeight(weight);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override
@@ -531,83 +607,6 @@ public class AssetLinkModelImpl extends BaseModelImpl<AssetLink>
 		assetLinkCacheModel.weight = getWeight();
 
 		return assetLinkCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(19);
-
-		sb.append("{linkId=");
-		sb.append(getLinkId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", entryId1=");
-		sb.append(getEntryId1());
-		sb.append(", entryId2=");
-		sb.append(getEntryId2());
-		sb.append(", type=");
-		sb.append(getType());
-		sb.append(", weight=");
-		sb.append(getWeight());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(31);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.asset.kernel.model.AssetLink");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>linkId</column-name><column-value><![CDATA[");
-		sb.append(getLinkId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>entryId1</column-name><column-value><![CDATA[");
-		sb.append(getEntryId1());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>entryId2</column-name><column-value><![CDATA[");
-		sb.append(getEntryId2());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>type</column-name><column-value><![CDATA[");
-		sb.append(getType());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>weight</column-name><column-value><![CDATA[");
-		sb.append(getWeight());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = AssetLink.class.getClassLoader();

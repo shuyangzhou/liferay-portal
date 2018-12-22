@@ -26,6 +26,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -56,130 +58,41 @@ public class AccountWrapper implements Account, ModelWrapper<Account> {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("accountId", getAccountId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("parentAccountId", getParentAccountId());
-		attributes.put("name", getName());
-		attributes.put("legalName", getLegalName());
-		attributes.put("legalId", getLegalId());
-		attributes.put("legalType", getLegalType());
-		attributes.put("sicCode", getSicCode());
-		attributes.put("tickerSymbol", getTickerSymbol());
-		attributes.put("industry", getIndustry());
-		attributes.put("type", getType());
-		attributes.put("size", getSize());
+		Map<String, Function<Account, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<Account, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<Account, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<Account, Object>> attributeSetters = getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<Account, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<Account, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long accountId = (Long)attributes.get("accountId");
+	@Override
+	public Map<String, Function<Account, Object>> getAttributeGetters() {
+		return _account.getAttributeGetters();
+	}
 
-		if (accountId != null) {
-			setAccountId(accountId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long parentAccountId = (Long)attributes.get("parentAccountId");
-
-		if (parentAccountId != null) {
-			setParentAccountId(parentAccountId);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String legalName = (String)attributes.get("legalName");
-
-		if (legalName != null) {
-			setLegalName(legalName);
-		}
-
-		String legalId = (String)attributes.get("legalId");
-
-		if (legalId != null) {
-			setLegalId(legalId);
-		}
-
-		String legalType = (String)attributes.get("legalType");
-
-		if (legalType != null) {
-			setLegalType(legalType);
-		}
-
-		String sicCode = (String)attributes.get("sicCode");
-
-		if (sicCode != null) {
-			setSicCode(sicCode);
-		}
-
-		String tickerSymbol = (String)attributes.get("tickerSymbol");
-
-		if (tickerSymbol != null) {
-			setTickerSymbol(tickerSymbol);
-		}
-
-		String industry = (String)attributes.get("industry");
-
-		if (industry != null) {
-			setIndustry(industry);
-		}
-
-		String type = (String)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
-
-		String size = (String)attributes.get("size");
-
-		if (size != null) {
-			setSize(size);
-		}
+	@Override
+	public Map<String, BiConsumer<Account, Object>> getAttributeSetters() {
+		return _account.getAttributeSetters();
 	}
 
 	@Override

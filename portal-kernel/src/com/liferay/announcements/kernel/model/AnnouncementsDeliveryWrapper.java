@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -58,60 +60,41 @@ public class AnnouncementsDeliveryWrapper implements AnnouncementsDelivery,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("deliveryId", getDeliveryId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("type", getType());
-		attributes.put("email", isEmail());
-		attributes.put("sms", isSms());
-		attributes.put("website", isWebsite());
+		Map<String, Function<AnnouncementsDelivery, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<AnnouncementsDelivery, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<AnnouncementsDelivery, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long deliveryId = (Long)attributes.get("deliveryId");
+		Map<String, BiConsumer<AnnouncementsDelivery, Object>> attributeSetters = getAttributeSetters();
 
-		if (deliveryId != null) {
-			setDeliveryId(deliveryId);
+		for (Map.Entry<String, BiConsumer<AnnouncementsDelivery, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<AnnouncementsDelivery, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	@Override
+	public Map<String, Function<AnnouncementsDelivery, Object>> getAttributeGetters() {
+		return _announcementsDelivery.getAttributeGetters();
+	}
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String type = (String)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
-
-		Boolean email = (Boolean)attributes.get("email");
-
-		if (email != null) {
-			setEmail(email);
-		}
-
-		Boolean sms = (Boolean)attributes.get("sms");
-
-		if (sms != null) {
-			setSms(sms);
-		}
-
-		Boolean website = (Boolean)attributes.get("website");
-
-		if (website != null) {
-			setWebsite(website);
-		}
+	@Override
+	public Map<String, BiConsumer<AnnouncementsDelivery, Object>> getAttributeSetters() {
+		return _announcementsDelivery.getAttributeSetters();
 	}
 
 	@Override

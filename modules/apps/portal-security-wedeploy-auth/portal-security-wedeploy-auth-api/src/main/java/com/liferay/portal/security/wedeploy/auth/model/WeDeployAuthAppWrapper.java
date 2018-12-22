@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -58,81 +60,41 @@ public class WeDeployAuthAppWrapper implements WeDeployAuthApp,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("weDeployAuthAppId", getWeDeployAuthAppId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("name", getName());
-		attributes.put("redirectURI", getRedirectURI());
-		attributes.put("clientId", getClientId());
-		attributes.put("clientSecret", getClientSecret());
+		Map<String, Function<WeDeployAuthApp, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<WeDeployAuthApp, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WeDeployAuthApp, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long weDeployAuthAppId = (Long)attributes.get("weDeployAuthAppId");
+		Map<String, BiConsumer<WeDeployAuthApp, Object>> attributeSetters = getAttributeSetters();
 
-		if (weDeployAuthAppId != null) {
-			setWeDeployAuthAppId(weDeployAuthAppId);
+		for (Map.Entry<String, BiConsumer<WeDeployAuthApp, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<WeDeployAuthApp, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	@Override
+	public Map<String, Function<WeDeployAuthApp, Object>> getAttributeGetters() {
+		return _weDeployAuthApp.getAttributeGetters();
+	}
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String redirectURI = (String)attributes.get("redirectURI");
-
-		if (redirectURI != null) {
-			setRedirectURI(redirectURI);
-		}
-
-		String clientId = (String)attributes.get("clientId");
-
-		if (clientId != null) {
-			setClientId(clientId);
-		}
-
-		String clientSecret = (String)attributes.get("clientSecret");
-
-		if (clientSecret != null) {
-			setClientSecret(clientSecret);
-		}
+	@Override
+	public Map<String, BiConsumer<WeDeployAuthApp, Object>> getAttributeSetters() {
+		return _weDeployAuthApp.getAttributeSetters();
 	}
 
 	@Override

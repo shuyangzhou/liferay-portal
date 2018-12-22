@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -58,126 +60,41 @@ public class BackgroundTaskWrapper implements BackgroundTask,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("backgroundTaskId", getBackgroundTaskId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("name", getName());
-		attributes.put("servletContextNames", getServletContextNames());
-		attributes.put("taskExecutorClassName", getTaskExecutorClassName());
-		attributes.put("taskContextMap", getTaskContextMap());
-		attributes.put("completed", isCompleted());
-		attributes.put("completionDate", getCompletionDate());
-		attributes.put("status", getStatus());
-		attributes.put("statusMessage", getStatusMessage());
+		Map<String, Function<BackgroundTask, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<BackgroundTask, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<BackgroundTask, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<BackgroundTask, Object>> attributeSetters = getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<BackgroundTask, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<BackgroundTask, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long backgroundTaskId = (Long)attributes.get("backgroundTaskId");
+	@Override
+	public Map<String, Function<BackgroundTask, Object>> getAttributeGetters() {
+		return _backgroundTask.getAttributeGetters();
+	}
 
-		if (backgroundTaskId != null) {
-			setBackgroundTaskId(backgroundTaskId);
-		}
-
-		Long groupId = (Long)attributes.get("groupId");
-
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String servletContextNames = (String)attributes.get(
-				"servletContextNames");
-
-		if (servletContextNames != null) {
-			setServletContextNames(servletContextNames);
-		}
-
-		String taskExecutorClassName = (String)attributes.get(
-				"taskExecutorClassName");
-
-		if (taskExecutorClassName != null) {
-			setTaskExecutorClassName(taskExecutorClassName);
-		}
-
-		Map<String, Serializable> taskContextMap = (Map<String, Serializable>)attributes.get(
-				"taskContextMap");
-
-		if (taskContextMap != null) {
-			setTaskContextMap(taskContextMap);
-		}
-
-		Boolean completed = (Boolean)attributes.get("completed");
-
-		if (completed != null) {
-			setCompleted(completed);
-		}
-
-		Date completionDate = (Date)attributes.get("completionDate");
-
-		if (completionDate != null) {
-			setCompletionDate(completionDate);
-		}
-
-		Integer status = (Integer)attributes.get("status");
-
-		if (status != null) {
-			setStatus(status);
-		}
-
-		String statusMessage = (String)attributes.get("statusMessage");
-
-		if (statusMessage != null) {
-			setStatusMessage(statusMessage);
-		}
+	@Override
+	public Map<String, BiConsumer<BackgroundTask, Object>> getAttributeSetters() {
+		return _backgroundTask.getAttributeSetters();
 	}
 
 	@Override

@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -58,46 +60,42 @@ public class JournalArticleResourceWrapper implements JournalArticleResource,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("uuid", getUuid());
-		attributes.put("resourcePrimKey", getResourcePrimKey());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("articleId", getArticleId());
+		Map<String, Function<JournalArticleResource, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<JournalArticleResource, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<JournalArticleResource, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+		Map<String, BiConsumer<JournalArticleResource, Object>> attributeSetters =
+			getAttributeSetters();
 
-		if (uuid != null) {
-			setUuid(uuid);
+		for (Map.Entry<String, BiConsumer<JournalArticleResource, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<JournalArticleResource, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long resourcePrimKey = (Long)attributes.get("resourcePrimKey");
+	@Override
+	public Map<String, Function<JournalArticleResource, Object>> getAttributeGetters() {
+		return _journalArticleResource.getAttributeGetters();
+	}
 
-		if (resourcePrimKey != null) {
-			setResourcePrimKey(resourcePrimKey);
-		}
-
-		Long groupId = (Long)attributes.get("groupId");
-
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		String articleId = (String)attributes.get("articleId");
-
-		if (articleId != null) {
-			setArticleId(articleId);
-		}
+	@Override
+	public Map<String, BiConsumer<JournalArticleResource, Object>> getAttributeSetters() {
+		return _journalArticleResource.getAttributeSetters();
 	}
 
 	@Override

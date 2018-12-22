@@ -22,8 +22,6 @@ import com.liferay.dynamic.data.mapping.model.DDMStorageLinkModel;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
@@ -38,8 +36,12 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the DDMStorageLink service. Represents a row in the &quot;DDMStorageLink&quot; database table, with each column mapped to a property of this class.
@@ -143,66 +145,131 @@ public class DDMStorageLinkModelImpl extends BaseModelImpl<DDMStorageLink>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("uuid", getUuid());
-		attributes.put("storageLinkId", getStorageLinkId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("structureId", getStructureId());
-		attributes.put("structureVersionId", getStructureVersionId());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<DDMStorageLink, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+	public Map<String, BiConsumer<DDMStorageLink, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
+	private static final Map<String, Function<DDMStorageLink, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<DDMStorageLink, Object>> _attributeSetters;
 
-		Long storageLinkId = (Long)attributes.get("storageLinkId");
+	static {
+		Map<String, Function<DDMStorageLink, Object>> attributeGetters = new LinkedHashMap<String, Function<DDMStorageLink, Object>>();
 
-		if (storageLinkId != null) {
-			setStorageLinkId(storageLinkId);
-		}
+		attributeGetters.put("uuid",
+			new Function<DDMStorageLink, Object>() {
+				@Override
+				public Object apply(DDMStorageLink ddmStorageLink) {
+					return ddmStorageLink.getUuid();
+				}
+			});
+		attributeGetters.put("storageLinkId",
+			new Function<DDMStorageLink, Object>() {
+				@Override
+				public Object apply(DDMStorageLink ddmStorageLink) {
+					return ddmStorageLink.getStorageLinkId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<DDMStorageLink, Object>() {
+				@Override
+				public Object apply(DDMStorageLink ddmStorageLink) {
+					return ddmStorageLink.getCompanyId();
+				}
+			});
+		attributeGetters.put("classNameId",
+			new Function<DDMStorageLink, Object>() {
+				@Override
+				public Object apply(DDMStorageLink ddmStorageLink) {
+					return ddmStorageLink.getClassNameId();
+				}
+			});
+		attributeGetters.put("classPK",
+			new Function<DDMStorageLink, Object>() {
+				@Override
+				public Object apply(DDMStorageLink ddmStorageLink) {
+					return ddmStorageLink.getClassPK();
+				}
+			});
+		attributeGetters.put("structureId",
+			new Function<DDMStorageLink, Object>() {
+				@Override
+				public Object apply(DDMStorageLink ddmStorageLink) {
+					return ddmStorageLink.getStructureId();
+				}
+			});
+		attributeGetters.put("structureVersionId",
+			new Function<DDMStorageLink, Object>() {
+				@Override
+				public Object apply(DDMStorageLink ddmStorageLink) {
+					return ddmStorageLink.getStructureVersionId();
+				}
+			});
 
-		Long companyId = (Long)attributes.get("companyId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		Map<String, BiConsumer<DDMStorageLink, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDMStorageLink, Object>>();
 
-		Long classNameId = (Long)attributes.get("classNameId");
+		attributeSetters.put("uuid",
+			new BiConsumer<DDMStorageLink, Object>() {
+				@Override
+				public void accept(DDMStorageLink ddmStorageLink, Object uuid) {
+					ddmStorageLink.setUuid((String)uuid);
+				}
+			});
+		attributeSetters.put("storageLinkId",
+			new BiConsumer<DDMStorageLink, Object>() {
+				@Override
+				public void accept(DDMStorageLink ddmStorageLink,
+					Object storageLinkId) {
+					ddmStorageLink.setStorageLinkId((Long)storageLinkId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<DDMStorageLink, Object>() {
+				@Override
+				public void accept(DDMStorageLink ddmStorageLink,
+					Object companyId) {
+					ddmStorageLink.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("classNameId",
+			new BiConsumer<DDMStorageLink, Object>() {
+				@Override
+				public void accept(DDMStorageLink ddmStorageLink,
+					Object classNameId) {
+					ddmStorageLink.setClassNameId((Long)classNameId);
+				}
+			});
+		attributeSetters.put("classPK",
+			new BiConsumer<DDMStorageLink, Object>() {
+				@Override
+				public void accept(DDMStorageLink ddmStorageLink, Object classPK) {
+					ddmStorageLink.setClassPK((Long)classPK);
+				}
+			});
+		attributeSetters.put("structureId",
+			new BiConsumer<DDMStorageLink, Object>() {
+				@Override
+				public void accept(DDMStorageLink ddmStorageLink,
+					Object structureId) {
+					ddmStorageLink.setStructureId((Long)structureId);
+				}
+			});
+		attributeSetters.put("structureVersionId",
+			new BiConsumer<DDMStorageLink, Object>() {
+				@Override
+				public void accept(DDMStorageLink ddmStorageLink,
+					Object structureVersionId) {
+					ddmStorageLink.setStructureVersionId((Long)structureVersionId);
+				}
+			});
 
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		Long structureId = (Long)attributes.get("structureId");
-
-		if (structureId != null) {
-			setStructureId(structureId);
-		}
-
-		Long structureVersionId = (Long)attributes.get("structureVersionId");
-
-		if (structureVersionId != null) {
-			setStructureVersionId(structureVersionId);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override
@@ -502,71 +569,6 @@ public class DDMStorageLinkModelImpl extends BaseModelImpl<DDMStorageLink>
 		ddmStorageLinkCacheModel.structureVersionId = getStructureVersionId();
 
 		return ddmStorageLinkCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(15);
-
-		sb.append("{uuid=");
-		sb.append(getUuid());
-		sb.append(", storageLinkId=");
-		sb.append(getStorageLinkId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", classNameId=");
-		sb.append(getClassNameId());
-		sb.append(", classPK=");
-		sb.append(getClassPK());
-		sb.append(", structureId=");
-		sb.append(getStructureId());
-		sb.append(", structureVersionId=");
-		sb.append(getStructureVersionId());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(25);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.dynamic.data.mapping.model.DDMStorageLink");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>storageLinkId</column-name><column-value><![CDATA[");
-		sb.append(getStorageLinkId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classNameId</column-name><column-value><![CDATA[");
-		sb.append(getClassNameId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classPK</column-name><column-value><![CDATA[");
-		sb.append(getClassPK());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>structureId</column-name><column-value><![CDATA[");
-		sb.append(getStructureId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>structureVersionId</column-name><column-value><![CDATA[");
-		sb.append(getStructureVersionId());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = DDMStorageLink.class.getClassLoader();

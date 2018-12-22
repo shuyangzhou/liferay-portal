@@ -25,8 +25,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -49,13 +47,17 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the DDMDataProviderInstance service. Represents a row in the &quot;DDMDataProviderInstance&quot; database table, with each column mapped to a property of this class.
@@ -220,102 +222,230 @@ public class DDMDataProviderInstanceModelImpl extends BaseModelImpl<DDMDataProvi
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("uuid", getUuid());
-		attributes.put("dataProviderInstanceId", getDataProviderInstanceId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("name", getName());
-		attributes.put("description", getDescription());
-		attributes.put("definition", getDefinition());
-		attributes.put("type", getType());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<DDMDataProviderInstance, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+	public Map<String, BiConsumer<DDMDataProviderInstance, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
+	private static final Map<String, Function<DDMDataProviderInstance, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<DDMDataProviderInstance, Object>> _attributeSetters;
 
-		Long dataProviderInstanceId = (Long)attributes.get(
-				"dataProviderInstanceId");
+	static {
+		Map<String, Function<DDMDataProviderInstance, Object>> attributeGetters = new LinkedHashMap<String, Function<DDMDataProviderInstance, Object>>();
 
-		if (dataProviderInstanceId != null) {
-			setDataProviderInstanceId(dataProviderInstanceId);
-		}
+		attributeGetters.put("uuid",
+			new Function<DDMDataProviderInstance, Object>() {
+				@Override
+				public Object apply(
+					DDMDataProviderInstance ddmDataProviderInstance) {
+					return ddmDataProviderInstance.getUuid();
+				}
+			});
+		attributeGetters.put("dataProviderInstanceId",
+			new Function<DDMDataProviderInstance, Object>() {
+				@Override
+				public Object apply(
+					DDMDataProviderInstance ddmDataProviderInstance) {
+					return ddmDataProviderInstance.getDataProviderInstanceId();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<DDMDataProviderInstance, Object>() {
+				@Override
+				public Object apply(
+					DDMDataProviderInstance ddmDataProviderInstance) {
+					return ddmDataProviderInstance.getGroupId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<DDMDataProviderInstance, Object>() {
+				@Override
+				public Object apply(
+					DDMDataProviderInstance ddmDataProviderInstance) {
+					return ddmDataProviderInstance.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<DDMDataProviderInstance, Object>() {
+				@Override
+				public Object apply(
+					DDMDataProviderInstance ddmDataProviderInstance) {
+					return ddmDataProviderInstance.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<DDMDataProviderInstance, Object>() {
+				@Override
+				public Object apply(
+					DDMDataProviderInstance ddmDataProviderInstance) {
+					return ddmDataProviderInstance.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<DDMDataProviderInstance, Object>() {
+				@Override
+				public Object apply(
+					DDMDataProviderInstance ddmDataProviderInstance) {
+					return ddmDataProviderInstance.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<DDMDataProviderInstance, Object>() {
+				@Override
+				public Object apply(
+					DDMDataProviderInstance ddmDataProviderInstance) {
+					return ddmDataProviderInstance.getModifiedDate();
+				}
+			});
+		attributeGetters.put("name",
+			new Function<DDMDataProviderInstance, Object>() {
+				@Override
+				public Object apply(
+					DDMDataProviderInstance ddmDataProviderInstance) {
+					return ddmDataProviderInstance.getName();
+				}
+			});
+		attributeGetters.put("description",
+			new Function<DDMDataProviderInstance, Object>() {
+				@Override
+				public Object apply(
+					DDMDataProviderInstance ddmDataProviderInstance) {
+					return ddmDataProviderInstance.getDescription();
+				}
+			});
+		attributeGetters.put("definition",
+			new Function<DDMDataProviderInstance, Object>() {
+				@Override
+				public Object apply(
+					DDMDataProviderInstance ddmDataProviderInstance) {
+					return ddmDataProviderInstance.getDefinition();
+				}
+			});
+		attributeGetters.put("type",
+			new Function<DDMDataProviderInstance, Object>() {
+				@Override
+				public Object apply(
+					DDMDataProviderInstance ddmDataProviderInstance) {
+					return ddmDataProviderInstance.getType();
+				}
+			});
 
-		Long groupId = (Long)attributes.get("groupId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+		Map<String, BiConsumer<DDMDataProviderInstance, Object>> attributeSetters =
+			new LinkedHashMap<String, BiConsumer<DDMDataProviderInstance, Object>>();
 
-		Long companyId = (Long)attributes.get("companyId");
+		attributeSetters.put("uuid",
+			new BiConsumer<DDMDataProviderInstance, Object>() {
+				@Override
+				public void accept(
+					DDMDataProviderInstance ddmDataProviderInstance, Object uuid) {
+					ddmDataProviderInstance.setUuid((String)uuid);
+				}
+			});
+		attributeSetters.put("dataProviderInstanceId",
+			new BiConsumer<DDMDataProviderInstance, Object>() {
+				@Override
+				public void accept(
+					DDMDataProviderInstance ddmDataProviderInstance,
+					Object dataProviderInstanceId) {
+					ddmDataProviderInstance.setDataProviderInstanceId((Long)dataProviderInstanceId);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<DDMDataProviderInstance, Object>() {
+				@Override
+				public void accept(
+					DDMDataProviderInstance ddmDataProviderInstance,
+					Object groupId) {
+					ddmDataProviderInstance.setGroupId((Long)groupId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<DDMDataProviderInstance, Object>() {
+				@Override
+				public void accept(
+					DDMDataProviderInstance ddmDataProviderInstance,
+					Object companyId) {
+					ddmDataProviderInstance.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<DDMDataProviderInstance, Object>() {
+				@Override
+				public void accept(
+					DDMDataProviderInstance ddmDataProviderInstance,
+					Object userId) {
+					ddmDataProviderInstance.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<DDMDataProviderInstance, Object>() {
+				@Override
+				public void accept(
+					DDMDataProviderInstance ddmDataProviderInstance,
+					Object userName) {
+					ddmDataProviderInstance.setUserName((String)userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<DDMDataProviderInstance, Object>() {
+				@Override
+				public void accept(
+					DDMDataProviderInstance ddmDataProviderInstance,
+					Object createDate) {
+					ddmDataProviderInstance.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<DDMDataProviderInstance, Object>() {
+				@Override
+				public void accept(
+					DDMDataProviderInstance ddmDataProviderInstance,
+					Object modifiedDate) {
+					ddmDataProviderInstance.setModifiedDate((Date)modifiedDate);
+				}
+			});
+		attributeSetters.put("name",
+			new BiConsumer<DDMDataProviderInstance, Object>() {
+				@Override
+				public void accept(
+					DDMDataProviderInstance ddmDataProviderInstance, Object name) {
+					ddmDataProviderInstance.setName((String)name);
+				}
+			});
+		attributeSetters.put("description",
+			new BiConsumer<DDMDataProviderInstance, Object>() {
+				@Override
+				public void accept(
+					DDMDataProviderInstance ddmDataProviderInstance,
+					Object description) {
+					ddmDataProviderInstance.setDescription((String)description);
+				}
+			});
+		attributeSetters.put("definition",
+			new BiConsumer<DDMDataProviderInstance, Object>() {
+				@Override
+				public void accept(
+					DDMDataProviderInstance ddmDataProviderInstance,
+					Object definition) {
+					ddmDataProviderInstance.setDefinition((String)definition);
+				}
+			});
+		attributeSetters.put("type",
+			new BiConsumer<DDMDataProviderInstance, Object>() {
+				@Override
+				public void accept(
+					DDMDataProviderInstance ddmDataProviderInstance, Object type) {
+					ddmDataProviderInstance.setType((String)type);
+				}
+			});
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
-		String definition = (String)attributes.get("definition");
-
-		if (definition != null) {
-			setDefinition(definition);
-		}
-
-		String type = (String)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON
@@ -991,102 +1121,6 @@ public class DDMDataProviderInstanceModelImpl extends BaseModelImpl<DDMDataProvi
 		}
 
 		return ddmDataProviderInstanceCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(25);
-
-		sb.append("{uuid=");
-		sb.append(getUuid());
-		sb.append(", dataProviderInstanceId=");
-		sb.append(getDataProviderInstanceId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", name=");
-		sb.append(getName());
-		sb.append(", description=");
-		sb.append(getDescription());
-		sb.append(", definition=");
-		sb.append(getDefinition());
-		sb.append(", type=");
-		sb.append(getType());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(40);
-
-		sb.append("<model><model-name>");
-		sb.append(
-			"com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>dataProviderInstanceId</column-name><column-value><![CDATA[");
-		sb.append(getDataProviderInstanceId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(getName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(getDescription());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>definition</column-name><column-value><![CDATA[");
-		sb.append(getDefinition());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>type</column-name><column-value><![CDATA[");
-		sb.append(getType());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = DDMDataProviderInstance.class.getClassLoader();

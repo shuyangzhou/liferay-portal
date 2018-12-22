@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -60,83 +62,43 @@ public class DLOpenerFileEntryReferenceWrapper
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("dlOpenerFileEntryReferenceId",
-			getDlOpenerFileEntryReferenceId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("referenceKey", getReferenceKey());
-		attributes.put("fileEntryId", getFileEntryId());
-		attributes.put("type", getType());
+		Map<String, Function<DLOpenerFileEntryReference, Object>> attributeGetters =
+			getAttributeGetters();
+
+		for (Map.Entry<String, Function<DLOpenerFileEntryReference, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<DLOpenerFileEntryReference, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long dlOpenerFileEntryReferenceId = (Long)attributes.get(
-				"dlOpenerFileEntryReferenceId");
+		Map<String, BiConsumer<DLOpenerFileEntryReference, Object>> attributeSetters =
+			getAttributeSetters();
 
-		if (dlOpenerFileEntryReferenceId != null) {
-			setDlOpenerFileEntryReferenceId(dlOpenerFileEntryReferenceId);
+		for (Map.Entry<String, BiConsumer<DLOpenerFileEntryReference, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<DLOpenerFileEntryReference, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long groupId = (Long)attributes.get("groupId");
+	@Override
+	public Map<String, Function<DLOpenerFileEntryReference, Object>> getAttributeGetters() {
+		return _dlOpenerFileEntryReference.getAttributeGetters();
+	}
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		String referenceKey = (String)attributes.get("referenceKey");
-
-		if (referenceKey != null) {
-			setReferenceKey(referenceKey);
-		}
-
-		Long fileEntryId = (Long)attributes.get("fileEntryId");
-
-		if (fileEntryId != null) {
-			setFileEntryId(fileEntryId);
-		}
-
-		Integer type = (Integer)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
+	@Override
+	public Map<String, BiConsumer<DLOpenerFileEntryReference, Object>> getAttributeSetters() {
+		return _dlOpenerFileEntryReference.getAttributeSetters();
 	}
 
 	@Override

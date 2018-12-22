@@ -21,8 +21,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
@@ -46,10 +44,14 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the Website service. Represents a row in the &quot;Website&quot; database table, with each column mapped to a property of this class.
@@ -221,115 +223,224 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("uuid", getUuid());
-		attributes.put("websiteId", getWebsiteId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("url", getUrl());
-		attributes.put("typeId", getTypeId());
-		attributes.put("primary", isPrimary());
-		attributes.put("lastPublishDate", getLastPublishDate());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<Website, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+	public Map<String, BiConsumer<Website, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
-		}
+	private static final Map<String, Function<Website, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<Website, Object>> _attributeSetters;
 
-		String uuid = (String)attributes.get("uuid");
+	static {
+		Map<String, Function<Website, Object>> attributeGetters = new LinkedHashMap<String, Function<Website, Object>>();
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
+		attributeGetters.put("mvccVersion",
+			new Function<Website, Object>() {
+				@Override
+				public Object apply(Website website) {
+					return website.getMvccVersion();
+				}
+			});
+		attributeGetters.put("uuid",
+			new Function<Website, Object>() {
+				@Override
+				public Object apply(Website website) {
+					return website.getUuid();
+				}
+			});
+		attributeGetters.put("websiteId",
+			new Function<Website, Object>() {
+				@Override
+				public Object apply(Website website) {
+					return website.getWebsiteId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<Website, Object>() {
+				@Override
+				public Object apply(Website website) {
+					return website.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<Website, Object>() {
+				@Override
+				public Object apply(Website website) {
+					return website.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<Website, Object>() {
+				@Override
+				public Object apply(Website website) {
+					return website.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<Website, Object>() {
+				@Override
+				public Object apply(Website website) {
+					return website.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<Website, Object>() {
+				@Override
+				public Object apply(Website website) {
+					return website.getModifiedDate();
+				}
+			});
+		attributeGetters.put("classNameId",
+			new Function<Website, Object>() {
+				@Override
+				public Object apply(Website website) {
+					return website.getClassNameId();
+				}
+			});
+		attributeGetters.put("classPK",
+			new Function<Website, Object>() {
+				@Override
+				public Object apply(Website website) {
+					return website.getClassPK();
+				}
+			});
+		attributeGetters.put("url",
+			new Function<Website, Object>() {
+				@Override
+				public Object apply(Website website) {
+					return website.getUrl();
+				}
+			});
+		attributeGetters.put("typeId",
+			new Function<Website, Object>() {
+				@Override
+				public Object apply(Website website) {
+					return website.getTypeId();
+				}
+			});
+		attributeGetters.put("primary",
+			new Function<Website, Object>() {
+				@Override
+				public Object apply(Website website) {
+					return website.isPrimary();
+				}
+			});
+		attributeGetters.put("lastPublishDate",
+			new Function<Website, Object>() {
+				@Override
+				public Object apply(Website website) {
+					return website.getLastPublishDate();
+				}
+			});
 
-		Long websiteId = (Long)attributes.get("websiteId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (websiteId != null) {
-			setWebsiteId(websiteId);
-		}
+		Map<String, BiConsumer<Website, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Website, Object>>();
 
-		Long companyId = (Long)attributes.get("companyId");
+		attributeSetters.put("mvccVersion",
+			new BiConsumer<Website, Object>() {
+				@Override
+				public void accept(Website website, Object mvccVersion) {
+					website.setMvccVersion((Long)mvccVersion);
+				}
+			});
+		attributeSetters.put("uuid",
+			new BiConsumer<Website, Object>() {
+				@Override
+				public void accept(Website website, Object uuid) {
+					website.setUuid((String)uuid);
+				}
+			});
+		attributeSetters.put("websiteId",
+			new BiConsumer<Website, Object>() {
+				@Override
+				public void accept(Website website, Object websiteId) {
+					website.setWebsiteId((Long)websiteId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<Website, Object>() {
+				@Override
+				public void accept(Website website, Object companyId) {
+					website.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<Website, Object>() {
+				@Override
+				public void accept(Website website, Object userId) {
+					website.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<Website, Object>() {
+				@Override
+				public void accept(Website website, Object userName) {
+					website.setUserName((String)userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<Website, Object>() {
+				@Override
+				public void accept(Website website, Object createDate) {
+					website.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<Website, Object>() {
+				@Override
+				public void accept(Website website, Object modifiedDate) {
+					website.setModifiedDate((Date)modifiedDate);
+				}
+			});
+		attributeSetters.put("classNameId",
+			new BiConsumer<Website, Object>() {
+				@Override
+				public void accept(Website website, Object classNameId) {
+					website.setClassNameId((Long)classNameId);
+				}
+			});
+		attributeSetters.put("classPK",
+			new BiConsumer<Website, Object>() {
+				@Override
+				public void accept(Website website, Object classPK) {
+					website.setClassPK((Long)classPK);
+				}
+			});
+		attributeSetters.put("url",
+			new BiConsumer<Website, Object>() {
+				@Override
+				public void accept(Website website, Object url) {
+					website.setUrl((String)url);
+				}
+			});
+		attributeSetters.put("typeId",
+			new BiConsumer<Website, Object>() {
+				@Override
+				public void accept(Website website, Object typeId) {
+					website.setTypeId((Long)typeId);
+				}
+			});
+		attributeSetters.put("primary",
+			new BiConsumer<Website, Object>() {
+				@Override
+				public void accept(Website website, Object primary) {
+					website.setPrimary((Boolean)primary);
+				}
+			});
+		attributeSetters.put("lastPublishDate",
+			new BiConsumer<Website, Object>() {
+				@Override
+				public void accept(Website website, Object lastPublishDate) {
+					website.setLastPublishDate((Date)lastPublishDate);
+				}
+			});
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		String url = (String)attributes.get("url");
-
-		if (url != null) {
-			setUrl(url);
-		}
-
-		Long typeId = (Long)attributes.get("typeId");
-
-		if (typeId != null) {
-			setTypeId(typeId);
-		}
-
-		Boolean primary = (Boolean)attributes.get("primary");
-
-		if (primary != null) {
-			setPrimary(primary);
-		}
-
-		Date lastPublishDate = (Date)attributes.get("lastPublishDate");
-
-		if (lastPublishDate != null) {
-			setLastPublishDate(lastPublishDate);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON
@@ -829,113 +940,6 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 		}
 
 		return websiteCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(29);
-
-		sb.append("{mvccVersion=");
-		sb.append(getMvccVersion());
-		sb.append(", uuid=");
-		sb.append(getUuid());
-		sb.append(", websiteId=");
-		sb.append(getWebsiteId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", classNameId=");
-		sb.append(getClassNameId());
-		sb.append(", classPK=");
-		sb.append(getClassPK());
-		sb.append(", url=");
-		sb.append(getUrl());
-		sb.append(", typeId=");
-		sb.append(getTypeId());
-		sb.append(", primary=");
-		sb.append(isPrimary());
-		sb.append(", lastPublishDate=");
-		sb.append(getLastPublishDate());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(46);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.kernel.model.Website");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>mvccVersion</column-name><column-value><![CDATA[");
-		sb.append(getMvccVersion());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>websiteId</column-name><column-value><![CDATA[");
-		sb.append(getWebsiteId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classNameId</column-name><column-value><![CDATA[");
-		sb.append(getClassNameId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classPK</column-name><column-value><![CDATA[");
-		sb.append(getClassPK());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>url</column-name><column-value><![CDATA[");
-		sb.append(getUrl());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>typeId</column-name><column-value><![CDATA[");
-		sb.append(getTypeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>primary</column-name><column-value><![CDATA[");
-		sb.append(isPrimary());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>lastPublishDate</column-name><column-value><![CDATA[");
-		sb.append(getLastPublishDate());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = Website.class.getClassLoader();

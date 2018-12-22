@@ -25,6 +25,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -56,60 +58,41 @@ public class PluginSettingWrapper implements PluginSetting,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("pluginSettingId", getPluginSettingId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("pluginId", getPluginId());
-		attributes.put("pluginType", getPluginType());
-		attributes.put("roles", getRoles());
-		attributes.put("active", isActive());
+		Map<String, Function<PluginSetting, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<PluginSetting, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<PluginSetting, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<PluginSetting, Object>> attributeSetters = getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<PluginSetting, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<PluginSetting, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long pluginSettingId = (Long)attributes.get("pluginSettingId");
+	@Override
+	public Map<String, Function<PluginSetting, Object>> getAttributeGetters() {
+		return _pluginSetting.getAttributeGetters();
+	}
 
-		if (pluginSettingId != null) {
-			setPluginSettingId(pluginSettingId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		String pluginId = (String)attributes.get("pluginId");
-
-		if (pluginId != null) {
-			setPluginId(pluginId);
-		}
-
-		String pluginType = (String)attributes.get("pluginType");
-
-		if (pluginType != null) {
-			setPluginType(pluginType);
-		}
-
-		String roles = (String)attributes.get("roles");
-
-		if (roles != null) {
-			setRoles(roles);
-		}
-
-		Boolean active = (Boolean)attributes.get("active");
-
-		if (active != null) {
-			setActive(active);
-		}
+	@Override
+	public Map<String, BiConsumer<PluginSetting, Object>> getAttributeSetters() {
+		return _pluginSetting.getAttributeSetters();
 	}
 
 	/**

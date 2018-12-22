@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -57,46 +59,41 @@ public class DDMTemplateLinkWrapper implements DDMTemplateLink,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("templateLinkId", getTemplateLinkId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("templateId", getTemplateId());
+		Map<String, Function<DDMTemplateLink, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<DDMTemplateLink, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<DDMTemplateLink, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long templateLinkId = (Long)attributes.get("templateLinkId");
+		Map<String, BiConsumer<DDMTemplateLink, Object>> attributeSetters = getAttributeSetters();
 
-		if (templateLinkId != null) {
-			setTemplateLinkId(templateLinkId);
+		for (Map.Entry<String, BiConsumer<DDMTemplateLink, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<DDMTemplateLink, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	@Override
+	public Map<String, Function<DDMTemplateLink, Object>> getAttributeGetters() {
+		return _ddmTemplateLink.getAttributeGetters();
+	}
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		Long templateId = (Long)attributes.get("templateId");
-
-		if (templateId != null) {
-			setTemplateId(templateId);
-		}
+	@Override
+	public Map<String, BiConsumer<DDMTemplateLink, Object>> getAttributeSetters() {
+		return _ddmTemplateLink.getAttributeSetters();
 	}
 
 	@Override

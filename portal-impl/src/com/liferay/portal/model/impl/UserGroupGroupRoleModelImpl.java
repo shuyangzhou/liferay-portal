@@ -16,8 +16,6 @@ package com.liferay.portal.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -35,9 +33,13 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the UserGroupGroupRole service. Represents a row in the &quot;UserGroupGroupRole&quot; database table, with each column mapped to a property of this class.
@@ -181,52 +183,103 @@ public class UserGroupGroupRoleModelImpl extends BaseModelImpl<UserGroupGroupRol
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("userGroupId", getUserGroupId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("roleId", getRoleId());
-		attributes.put("companyId", getCompanyId());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<UserGroupGroupRole, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+	public Map<String, BiConsumer<UserGroupGroupRole, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
-		}
+	private static final Map<String, Function<UserGroupGroupRole, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<UserGroupGroupRole, Object>> _attributeSetters;
 
-		Long userGroupId = (Long)attributes.get("userGroupId");
+	static {
+		Map<String, Function<UserGroupGroupRole, Object>> attributeGetters = new LinkedHashMap<String, Function<UserGroupGroupRole, Object>>();
 
-		if (userGroupId != null) {
-			setUserGroupId(userGroupId);
-		}
+		attributeGetters.put("mvccVersion",
+			new Function<UserGroupGroupRole, Object>() {
+				@Override
+				public Object apply(UserGroupGroupRole userGroupGroupRole) {
+					return userGroupGroupRole.getMvccVersion();
+				}
+			});
+		attributeGetters.put("userGroupId",
+			new Function<UserGroupGroupRole, Object>() {
+				@Override
+				public Object apply(UserGroupGroupRole userGroupGroupRole) {
+					return userGroupGroupRole.getUserGroupId();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<UserGroupGroupRole, Object>() {
+				@Override
+				public Object apply(UserGroupGroupRole userGroupGroupRole) {
+					return userGroupGroupRole.getGroupId();
+				}
+			});
+		attributeGetters.put("roleId",
+			new Function<UserGroupGroupRole, Object>() {
+				@Override
+				public Object apply(UserGroupGroupRole userGroupGroupRole) {
+					return userGroupGroupRole.getRoleId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<UserGroupGroupRole, Object>() {
+				@Override
+				public Object apply(UserGroupGroupRole userGroupGroupRole) {
+					return userGroupGroupRole.getCompanyId();
+				}
+			});
 
-		Long groupId = (Long)attributes.get("groupId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+		Map<String, BiConsumer<UserGroupGroupRole, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<UserGroupGroupRole, Object>>();
 
-		Long roleId = (Long)attributes.get("roleId");
+		attributeSetters.put("mvccVersion",
+			new BiConsumer<UserGroupGroupRole, Object>() {
+				@Override
+				public void accept(UserGroupGroupRole userGroupGroupRole,
+					Object mvccVersion) {
+					userGroupGroupRole.setMvccVersion((Long)mvccVersion);
+				}
+			});
+		attributeSetters.put("userGroupId",
+			new BiConsumer<UserGroupGroupRole, Object>() {
+				@Override
+				public void accept(UserGroupGroupRole userGroupGroupRole,
+					Object userGroupId) {
+					userGroupGroupRole.setUserGroupId((Long)userGroupId);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<UserGroupGroupRole, Object>() {
+				@Override
+				public void accept(UserGroupGroupRole userGroupGroupRole,
+					Object groupId) {
+					userGroupGroupRole.setGroupId((Long)groupId);
+				}
+			});
+		attributeSetters.put("roleId",
+			new BiConsumer<UserGroupGroupRole, Object>() {
+				@Override
+				public void accept(UserGroupGroupRole userGroupGroupRole,
+					Object roleId) {
+					userGroupGroupRole.setRoleId((Long)roleId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<UserGroupGroupRole, Object>() {
+				@Override
+				public void accept(UserGroupGroupRole userGroupGroupRole,
+					Object companyId) {
+					userGroupGroupRole.setCompanyId((Long)companyId);
+				}
+			});
 
-		if (roleId != null) {
-			setRoleId(roleId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON
@@ -429,59 +482,6 @@ public class UserGroupGroupRoleModelImpl extends BaseModelImpl<UserGroupGroupRol
 		userGroupGroupRoleCacheModel.companyId = getCompanyId();
 
 		return userGroupGroupRoleCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(11);
-
-		sb.append("{mvccVersion=");
-		sb.append(getMvccVersion());
-		sb.append(", userGroupId=");
-		sb.append(getUserGroupId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", roleId=");
-		sb.append(getRoleId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(19);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.kernel.model.UserGroupGroupRole");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>mvccVersion</column-name><column-value><![CDATA[");
-		sb.append(getMvccVersion());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userGroupId</column-name><column-value><![CDATA[");
-		sb.append(getUserGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>roleId</column-name><column-value><![CDATA[");
-		sb.append(getRoleId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = UserGroupGroupRole.class.getClassLoader();

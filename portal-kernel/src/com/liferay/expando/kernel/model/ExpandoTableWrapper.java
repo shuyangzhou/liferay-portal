@@ -24,6 +24,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -55,39 +57,41 @@ public class ExpandoTableWrapper implements ExpandoTable,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("tableId", getTableId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("name", getName());
+		Map<String, Function<ExpandoTable, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<ExpandoTable, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<ExpandoTable, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long tableId = (Long)attributes.get("tableId");
+		Map<String, BiConsumer<ExpandoTable, Object>> attributeSetters = getAttributeSetters();
 
-		if (tableId != null) {
-			setTableId(tableId);
+		for (Map.Entry<String, BiConsumer<ExpandoTable, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<ExpandoTable, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	@Override
+	public Map<String, Function<ExpandoTable, Object>> getAttributeGetters() {
+		return _expandoTable.getAttributeGetters();
+	}
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
+	@Override
+	public Map<String, BiConsumer<ExpandoTable, Object>> getAttributeSetters() {
+		return _expandoTable.getAttributeSetters();
 	}
 
 	@Override

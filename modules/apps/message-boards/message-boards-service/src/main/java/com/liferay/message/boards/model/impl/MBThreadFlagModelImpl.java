@@ -24,8 +24,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.message.boards.model.MBThreadFlag;
 import com.liferay.message.boards.model.MBThreadFlagModel;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -42,9 +40,13 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the MBThreadFlag service. Represents a row in the &quot;MBThreadFlag&quot; database table, with each column mapped to a property of this class.
@@ -154,87 +156,171 @@ public class MBThreadFlagModelImpl extends BaseModelImpl<MBThreadFlag>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("uuid", getUuid());
-		attributes.put("threadFlagId", getThreadFlagId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("threadId", getThreadId());
-		attributes.put("lastPublishDate", getLastPublishDate());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<MBThreadFlag, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
+	public Map<String, BiConsumer<MBThreadFlag, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
+	private static final Map<String, Function<MBThreadFlag, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<MBThreadFlag, Object>> _attributeSetters;
 
-		Long threadFlagId = (Long)attributes.get("threadFlagId");
+	static {
+		Map<String, Function<MBThreadFlag, Object>> attributeGetters = new LinkedHashMap<String, Function<MBThreadFlag, Object>>();
 
-		if (threadFlagId != null) {
-			setThreadFlagId(threadFlagId);
-		}
+		attributeGetters.put("uuid",
+			new Function<MBThreadFlag, Object>() {
+				@Override
+				public Object apply(MBThreadFlag mbThreadFlag) {
+					return mbThreadFlag.getUuid();
+				}
+			});
+		attributeGetters.put("threadFlagId",
+			new Function<MBThreadFlag, Object>() {
+				@Override
+				public Object apply(MBThreadFlag mbThreadFlag) {
+					return mbThreadFlag.getThreadFlagId();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<MBThreadFlag, Object>() {
+				@Override
+				public Object apply(MBThreadFlag mbThreadFlag) {
+					return mbThreadFlag.getGroupId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<MBThreadFlag, Object>() {
+				@Override
+				public Object apply(MBThreadFlag mbThreadFlag) {
+					return mbThreadFlag.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<MBThreadFlag, Object>() {
+				@Override
+				public Object apply(MBThreadFlag mbThreadFlag) {
+					return mbThreadFlag.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<MBThreadFlag, Object>() {
+				@Override
+				public Object apply(MBThreadFlag mbThreadFlag) {
+					return mbThreadFlag.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<MBThreadFlag, Object>() {
+				@Override
+				public Object apply(MBThreadFlag mbThreadFlag) {
+					return mbThreadFlag.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<MBThreadFlag, Object>() {
+				@Override
+				public Object apply(MBThreadFlag mbThreadFlag) {
+					return mbThreadFlag.getModifiedDate();
+				}
+			});
+		attributeGetters.put("threadId",
+			new Function<MBThreadFlag, Object>() {
+				@Override
+				public Object apply(MBThreadFlag mbThreadFlag) {
+					return mbThreadFlag.getThreadId();
+				}
+			});
+		attributeGetters.put("lastPublishDate",
+			new Function<MBThreadFlag, Object>() {
+				@Override
+				public Object apply(MBThreadFlag mbThreadFlag) {
+					return mbThreadFlag.getLastPublishDate();
+				}
+			});
 
-		Long groupId = (Long)attributes.get("groupId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+		Map<String, BiConsumer<MBThreadFlag, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<MBThreadFlag, Object>>();
 
-		Long companyId = (Long)attributes.get("companyId");
+		attributeSetters.put("uuid",
+			new BiConsumer<MBThreadFlag, Object>() {
+				@Override
+				public void accept(MBThreadFlag mbThreadFlag, Object uuid) {
+					mbThreadFlag.setUuid((String)uuid);
+				}
+			});
+		attributeSetters.put("threadFlagId",
+			new BiConsumer<MBThreadFlag, Object>() {
+				@Override
+				public void accept(MBThreadFlag mbThreadFlag,
+					Object threadFlagId) {
+					mbThreadFlag.setThreadFlagId((Long)threadFlagId);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<MBThreadFlag, Object>() {
+				@Override
+				public void accept(MBThreadFlag mbThreadFlag, Object groupId) {
+					mbThreadFlag.setGroupId((Long)groupId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<MBThreadFlag, Object>() {
+				@Override
+				public void accept(MBThreadFlag mbThreadFlag, Object companyId) {
+					mbThreadFlag.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<MBThreadFlag, Object>() {
+				@Override
+				public void accept(MBThreadFlag mbThreadFlag, Object userId) {
+					mbThreadFlag.setUserId((Long)userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<MBThreadFlag, Object>() {
+				@Override
+				public void accept(MBThreadFlag mbThreadFlag, Object userName) {
+					mbThreadFlag.setUserName((String)userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<MBThreadFlag, Object>() {
+				@Override
+				public void accept(MBThreadFlag mbThreadFlag, Object createDate) {
+					mbThreadFlag.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<MBThreadFlag, Object>() {
+				@Override
+				public void accept(MBThreadFlag mbThreadFlag,
+					Object modifiedDate) {
+					mbThreadFlag.setModifiedDate((Date)modifiedDate);
+				}
+			});
+		attributeSetters.put("threadId",
+			new BiConsumer<MBThreadFlag, Object>() {
+				@Override
+				public void accept(MBThreadFlag mbThreadFlag, Object threadId) {
+					mbThreadFlag.setThreadId((Long)threadId);
+				}
+			});
+		attributeSetters.put("lastPublishDate",
+			new BiConsumer<MBThreadFlag, Object>() {
+				@Override
+				public void accept(MBThreadFlag mbThreadFlag,
+					Object lastPublishDate) {
+					mbThreadFlag.setLastPublishDate((Date)lastPublishDate);
+				}
+			});
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long threadId = (Long)attributes.get("threadId");
-
-		if (threadId != null) {
-			setThreadId(threadId);
-		}
-
-		Date lastPublishDate = (Date)attributes.get("lastPublishDate");
-
-		if (lastPublishDate != null) {
-			setLastPublishDate(lastPublishDate);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override
@@ -615,89 +701,6 @@ public class MBThreadFlagModelImpl extends BaseModelImpl<MBThreadFlag>
 		}
 
 		return mbThreadFlagCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(21);
-
-		sb.append("{uuid=");
-		sb.append(getUuid());
-		sb.append(", threadFlagId=");
-		sb.append(getThreadFlagId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", threadId=");
-		sb.append(getThreadId());
-		sb.append(", lastPublishDate=");
-		sb.append(getLastPublishDate());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(34);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.message.boards.model.MBThreadFlag");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>threadFlagId</column-name><column-value><![CDATA[");
-		sb.append(getThreadFlagId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>threadId</column-name><column-value><![CDATA[");
-		sb.append(getThreadId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>lastPublishDate</column-name><column-value><![CDATA[");
-		sb.append(getLastPublishDate());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = MBThreadFlag.class.getClassLoader();

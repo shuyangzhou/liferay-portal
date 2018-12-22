@@ -25,6 +25,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -56,46 +58,41 @@ public class ClusterGroupWrapper implements ClusterGroup,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("clusterGroupId", getClusterGroupId());
-		attributes.put("name", getName());
-		attributes.put("clusterNodeIds", getClusterNodeIds());
-		attributes.put("wholeCluster", isWholeCluster());
+		Map<String, Function<ClusterGroup, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<ClusterGroup, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<ClusterGroup, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<ClusterGroup, Object>> attributeSetters = getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<ClusterGroup, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<ClusterGroup, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long clusterGroupId = (Long)attributes.get("clusterGroupId");
+	@Override
+	public Map<String, Function<ClusterGroup, Object>> getAttributeGetters() {
+		return _clusterGroup.getAttributeGetters();
+	}
 
-		if (clusterGroupId != null) {
-			setClusterGroupId(clusterGroupId);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String clusterNodeIds = (String)attributes.get("clusterNodeIds");
-
-		if (clusterNodeIds != null) {
-			setClusterNodeIds(clusterNodeIds);
-		}
-
-		Boolean wholeCluster = (Boolean)attributes.get("wholeCluster");
-
-		if (wholeCluster != null) {
-			setWholeCluster(wholeCluster);
-		}
+	@Override
+	public Map<String, BiConsumer<ClusterGroup, Object>> getAttributeSetters() {
+		return _clusterGroup.getAttributeSetters();
 	}
 
 	@Override

@@ -19,8 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
@@ -35,8 +33,12 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the ResourceAction service. Represents a row in the &quot;ResourceAction&quot; database table, with each column mapped to a property of this class.
@@ -133,52 +135,102 @@ public class ResourceActionModelImpl extends BaseModelImpl<ResourceAction>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("resourceActionId", getResourceActionId());
-		attributes.put("name", getName());
-		attributes.put("actionId", getActionId());
-		attributes.put("bitwiseValue", getBitwiseValue());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<ResourceAction, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+	public Map<String, BiConsumer<ResourceAction, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
-		}
+	private static final Map<String, Function<ResourceAction, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<ResourceAction, Object>> _attributeSetters;
 
-		Long resourceActionId = (Long)attributes.get("resourceActionId");
+	static {
+		Map<String, Function<ResourceAction, Object>> attributeGetters = new LinkedHashMap<String, Function<ResourceAction, Object>>();
 
-		if (resourceActionId != null) {
-			setResourceActionId(resourceActionId);
-		}
+		attributeGetters.put("mvccVersion",
+			new Function<ResourceAction, Object>() {
+				@Override
+				public Object apply(ResourceAction resourceAction) {
+					return resourceAction.getMvccVersion();
+				}
+			});
+		attributeGetters.put("resourceActionId",
+			new Function<ResourceAction, Object>() {
+				@Override
+				public Object apply(ResourceAction resourceAction) {
+					return resourceAction.getResourceActionId();
+				}
+			});
+		attributeGetters.put("name",
+			new Function<ResourceAction, Object>() {
+				@Override
+				public Object apply(ResourceAction resourceAction) {
+					return resourceAction.getName();
+				}
+			});
+		attributeGetters.put("actionId",
+			new Function<ResourceAction, Object>() {
+				@Override
+				public Object apply(ResourceAction resourceAction) {
+					return resourceAction.getActionId();
+				}
+			});
+		attributeGetters.put("bitwiseValue",
+			new Function<ResourceAction, Object>() {
+				@Override
+				public Object apply(ResourceAction resourceAction) {
+					return resourceAction.getBitwiseValue();
+				}
+			});
 
-		String name = (String)attributes.get("name");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (name != null) {
-			setName(name);
-		}
+		Map<String, BiConsumer<ResourceAction, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<ResourceAction, Object>>();
 
-		String actionId = (String)attributes.get("actionId");
+		attributeSetters.put("mvccVersion",
+			new BiConsumer<ResourceAction, Object>() {
+				@Override
+				public void accept(ResourceAction resourceAction,
+					Object mvccVersion) {
+					resourceAction.setMvccVersion((Long)mvccVersion);
+				}
+			});
+		attributeSetters.put("resourceActionId",
+			new BiConsumer<ResourceAction, Object>() {
+				@Override
+				public void accept(ResourceAction resourceAction,
+					Object resourceActionId) {
+					resourceAction.setResourceActionId((Long)resourceActionId);
+				}
+			});
+		attributeSetters.put("name",
+			new BiConsumer<ResourceAction, Object>() {
+				@Override
+				public void accept(ResourceAction resourceAction, Object name) {
+					resourceAction.setName((String)name);
+				}
+			});
+		attributeSetters.put("actionId",
+			new BiConsumer<ResourceAction, Object>() {
+				@Override
+				public void accept(ResourceAction resourceAction,
+					Object actionId) {
+					resourceAction.setActionId((String)actionId);
+				}
+			});
+		attributeSetters.put("bitwiseValue",
+			new BiConsumer<ResourceAction, Object>() {
+				@Override
+				public void accept(ResourceAction resourceAction,
+					Object bitwiseValue) {
+					resourceAction.setBitwiseValue((Long)bitwiseValue);
+				}
+			});
 
-		if (actionId != null) {
-			setActionId(actionId);
-		}
-
-		Long bitwiseValue = (Long)attributes.get("bitwiseValue");
-
-		if (bitwiseValue != null) {
-			setBitwiseValue(bitwiseValue);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override
@@ -407,59 +459,6 @@ public class ResourceActionModelImpl extends BaseModelImpl<ResourceAction>
 		resourceActionCacheModel.bitwiseValue = getBitwiseValue();
 
 		return resourceActionCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(11);
-
-		sb.append("{mvccVersion=");
-		sb.append(getMvccVersion());
-		sb.append(", resourceActionId=");
-		sb.append(getResourceActionId());
-		sb.append(", name=");
-		sb.append(getName());
-		sb.append(", actionId=");
-		sb.append(getActionId());
-		sb.append(", bitwiseValue=");
-		sb.append(getBitwiseValue());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(19);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.kernel.model.ResourceAction");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>mvccVersion</column-name><column-value><![CDATA[");
-		sb.append(getMvccVersion());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>resourceActionId</column-name><column-value><![CDATA[");
-		sb.append(getResourceActionId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(getName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>actionId</column-name><column-value><![CDATA[");
-		sb.append(getActionId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>bitwiseValue</column-name><column-value><![CDATA[");
-		sb.append(getBitwiseValue());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = ResourceAction.class.getClassLoader();

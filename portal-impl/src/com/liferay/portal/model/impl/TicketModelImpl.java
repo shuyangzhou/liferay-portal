@@ -19,8 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
@@ -37,9 +35,13 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the Ticket service. Represents a row in the &quot;Ticket&quot; database table, with each column mapped to a property of this class.
@@ -149,87 +151,168 @@ public class TicketModelImpl extends BaseModelImpl<Ticket>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("ticketId", getTicketId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("key", getKey());
-		attributes.put("type", getType());
-		attributes.put("extraInfo", getExtraInfo());
-		attributes.put("expirationDate", getExpirationDate());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<Ticket, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+	public Map<String, BiConsumer<Ticket, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
-		}
+	private static final Map<String, Function<Ticket, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<Ticket, Object>> _attributeSetters;
 
-		Long ticketId = (Long)attributes.get("ticketId");
+	static {
+		Map<String, Function<Ticket, Object>> attributeGetters = new LinkedHashMap<String, Function<Ticket, Object>>();
 
-		if (ticketId != null) {
-			setTicketId(ticketId);
-		}
+		attributeGetters.put("mvccVersion",
+			new Function<Ticket, Object>() {
+				@Override
+				public Object apply(Ticket ticket) {
+					return ticket.getMvccVersion();
+				}
+			});
+		attributeGetters.put("ticketId",
+			new Function<Ticket, Object>() {
+				@Override
+				public Object apply(Ticket ticket) {
+					return ticket.getTicketId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<Ticket, Object>() {
+				@Override
+				public Object apply(Ticket ticket) {
+					return ticket.getCompanyId();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<Ticket, Object>() {
+				@Override
+				public Object apply(Ticket ticket) {
+					return ticket.getCreateDate();
+				}
+			});
+		attributeGetters.put("classNameId",
+			new Function<Ticket, Object>() {
+				@Override
+				public Object apply(Ticket ticket) {
+					return ticket.getClassNameId();
+				}
+			});
+		attributeGetters.put("classPK",
+			new Function<Ticket, Object>() {
+				@Override
+				public Object apply(Ticket ticket) {
+					return ticket.getClassPK();
+				}
+			});
+		attributeGetters.put("key",
+			new Function<Ticket, Object>() {
+				@Override
+				public Object apply(Ticket ticket) {
+					return ticket.getKey();
+				}
+			});
+		attributeGetters.put("type",
+			new Function<Ticket, Object>() {
+				@Override
+				public Object apply(Ticket ticket) {
+					return ticket.getType();
+				}
+			});
+		attributeGetters.put("extraInfo",
+			new Function<Ticket, Object>() {
+				@Override
+				public Object apply(Ticket ticket) {
+					return ticket.getExtraInfo();
+				}
+			});
+		attributeGetters.put("expirationDate",
+			new Function<Ticket, Object>() {
+				@Override
+				public Object apply(Ticket ticket) {
+					return ticket.getExpirationDate();
+				}
+			});
 
-		Long companyId = (Long)attributes.get("companyId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		Map<String, BiConsumer<Ticket, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Ticket, Object>>();
 
-		Date createDate = (Date)attributes.get("createDate");
+		attributeSetters.put("mvccVersion",
+			new BiConsumer<Ticket, Object>() {
+				@Override
+				public void accept(Ticket ticket, Object mvccVersion) {
+					ticket.setMvccVersion((Long)mvccVersion);
+				}
+			});
+		attributeSetters.put("ticketId",
+			new BiConsumer<Ticket, Object>() {
+				@Override
+				public void accept(Ticket ticket, Object ticketId) {
+					ticket.setTicketId((Long)ticketId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<Ticket, Object>() {
+				@Override
+				public void accept(Ticket ticket, Object companyId) {
+					ticket.setCompanyId((Long)companyId);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<Ticket, Object>() {
+				@Override
+				public void accept(Ticket ticket, Object createDate) {
+					ticket.setCreateDate((Date)createDate);
+				}
+			});
+		attributeSetters.put("classNameId",
+			new BiConsumer<Ticket, Object>() {
+				@Override
+				public void accept(Ticket ticket, Object classNameId) {
+					ticket.setClassNameId((Long)classNameId);
+				}
+			});
+		attributeSetters.put("classPK",
+			new BiConsumer<Ticket, Object>() {
+				@Override
+				public void accept(Ticket ticket, Object classPK) {
+					ticket.setClassPK((Long)classPK);
+				}
+			});
+		attributeSetters.put("key",
+			new BiConsumer<Ticket, Object>() {
+				@Override
+				public void accept(Ticket ticket, Object key) {
+					ticket.setKey((String)key);
+				}
+			});
+		attributeSetters.put("type",
+			new BiConsumer<Ticket, Object>() {
+				@Override
+				public void accept(Ticket ticket, Object type) {
+					ticket.setType((Integer)type);
+				}
+			});
+		attributeSetters.put("extraInfo",
+			new BiConsumer<Ticket, Object>() {
+				@Override
+				public void accept(Ticket ticket, Object extraInfo) {
+					ticket.setExtraInfo((String)extraInfo);
+				}
+			});
+		attributeSetters.put("expirationDate",
+			new BiConsumer<Ticket, Object>() {
+				@Override
+				public void accept(Ticket ticket, Object expirationDate) {
+					ticket.setExpirationDate((Date)expirationDate);
+				}
+			});
 
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		String key = (String)attributes.get("key");
-
-		if (key != null) {
-			setKey(key);
-		}
-
-		Integer type = (Integer)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
-
-		String extraInfo = (String)attributes.get("extraInfo");
-
-		if (extraInfo != null) {
-			setExtraInfo(extraInfo);
-		}
-
-		Date expirationDate = (Date)attributes.get("expirationDate");
-
-		if (expirationDate != null) {
-			setExpirationDate(expirationDate);
-		}
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override
@@ -603,89 +686,6 @@ public class TicketModelImpl extends BaseModelImpl<Ticket>
 		}
 
 		return ticketCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(21);
-
-		sb.append("{mvccVersion=");
-		sb.append(getMvccVersion());
-		sb.append(", ticketId=");
-		sb.append(getTicketId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", classNameId=");
-		sb.append(getClassNameId());
-		sb.append(", classPK=");
-		sb.append(getClassPK());
-		sb.append(", key=");
-		sb.append(getKey());
-		sb.append(", type=");
-		sb.append(getType());
-		sb.append(", extraInfo=");
-		sb.append(getExtraInfo());
-		sb.append(", expirationDate=");
-		sb.append(getExpirationDate());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(34);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.kernel.model.Ticket");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>mvccVersion</column-name><column-value><![CDATA[");
-		sb.append(getMvccVersion());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>ticketId</column-name><column-value><![CDATA[");
-		sb.append(getTicketId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classNameId</column-name><column-value><![CDATA[");
-		sb.append(getClassNameId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classPK</column-name><column-value><![CDATA[");
-		sb.append(getClassPK());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>key</column-name><column-value><![CDATA[");
-		sb.append(getKey());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>type</column-name><column-value><![CDATA[");
-		sb.append(getType());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>extraInfo</column-name><column-value><![CDATA[");
-		sb.append(getExtraInfo());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>expirationDate</column-name><column-value><![CDATA[");
-		sb.append(getExpirationDate());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = Ticket.class.getClassLoader();

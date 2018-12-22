@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -58,60 +60,41 @@ public class JournalContentSearchWrapper implements JournalContentSearch,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("contentSearchId", getContentSearchId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("privateLayout", isPrivateLayout());
-		attributes.put("layoutId", getLayoutId());
-		attributes.put("portletId", getPortletId());
-		attributes.put("articleId", getArticleId());
+		Map<String, Function<JournalContentSearch, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<JournalContentSearch, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<JournalContentSearch, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long contentSearchId = (Long)attributes.get("contentSearchId");
+		Map<String, BiConsumer<JournalContentSearch, Object>> attributeSetters = getAttributeSetters();
 
-		if (contentSearchId != null) {
-			setContentSearchId(contentSearchId);
+		for (Map.Entry<String, BiConsumer<JournalContentSearch, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<JournalContentSearch, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long groupId = (Long)attributes.get("groupId");
+	@Override
+	public Map<String, Function<JournalContentSearch, Object>> getAttributeGetters() {
+		return _journalContentSearch.getAttributeGetters();
+	}
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Boolean privateLayout = (Boolean)attributes.get("privateLayout");
-
-		if (privateLayout != null) {
-			setPrivateLayout(privateLayout);
-		}
-
-		Long layoutId = (Long)attributes.get("layoutId");
-
-		if (layoutId != null) {
-			setLayoutId(layoutId);
-		}
-
-		String portletId = (String)attributes.get("portletId");
-
-		if (portletId != null) {
-			setPortletId(portletId);
-		}
-
-		String articleId = (String)attributes.get("articleId");
-
-		if (articleId != null) {
-			setArticleId(articleId);
-		}
+	@Override
+	public Map<String, BiConsumer<JournalContentSearch, Object>> getAttributeSetters() {
+		return _journalContentSearch.getAttributeSetters();
 	}
 
 	@Override

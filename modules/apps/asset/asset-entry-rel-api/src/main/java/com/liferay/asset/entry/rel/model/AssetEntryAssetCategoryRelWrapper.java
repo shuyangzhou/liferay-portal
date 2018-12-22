@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -59,41 +61,43 @@ public class AssetEntryAssetCategoryRelWrapper
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("assetEntryAssetCategoryRelId",
-			getAssetEntryAssetCategoryRelId());
-		attributes.put("assetEntryId", getAssetEntryId());
-		attributes.put("assetCategoryId", getAssetCategoryId());
-		attributes.put("priority", getPriority());
+		Map<String, Function<AssetEntryAssetCategoryRel, Object>> attributeGetters =
+			getAttributeGetters();
+
+		for (Map.Entry<String, Function<AssetEntryAssetCategoryRel, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<AssetEntryAssetCategoryRel, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long assetEntryAssetCategoryRelId = (Long)attributes.get(
-				"assetEntryAssetCategoryRelId");
+		Map<String, BiConsumer<AssetEntryAssetCategoryRel, Object>> attributeSetters =
+			getAttributeSetters();
 
-		if (assetEntryAssetCategoryRelId != null) {
-			setAssetEntryAssetCategoryRelId(assetEntryAssetCategoryRelId);
+		for (Map.Entry<String, BiConsumer<AssetEntryAssetCategoryRel, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<AssetEntryAssetCategoryRel, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long assetEntryId = (Long)attributes.get("assetEntryId");
+	@Override
+	public Map<String, Function<AssetEntryAssetCategoryRel, Object>> getAttributeGetters() {
+		return _assetEntryAssetCategoryRel.getAttributeGetters();
+	}
 
-		if (assetEntryId != null) {
-			setAssetEntryId(assetEntryId);
-		}
-
-		Long assetCategoryId = (Long)attributes.get("assetCategoryId");
-
-		if (assetCategoryId != null) {
-			setAssetCategoryId(assetCategoryId);
-		}
-
-		Integer priority = (Integer)attributes.get("priority");
-
-		if (priority != null) {
-			setPriority(priority);
-		}
+	@Override
+	public Map<String, BiConsumer<AssetEntryAssetCategoryRel, Object>> getAttributeSetters() {
+		return _assetEntryAssetCategoryRel.getAttributeSetters();
 	}
 
 	@Override

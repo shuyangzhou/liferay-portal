@@ -26,6 +26,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -57,53 +59,41 @@ public class UserTrackerPathWrapper implements UserTrackerPath,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("userTrackerPathId", getUserTrackerPathId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userTrackerId", getUserTrackerId());
-		attributes.put("path", getPath());
-		attributes.put("pathDate", getPathDate());
+		Map<String, Function<UserTrackerPath, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<UserTrackerPath, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<UserTrackerPath, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+		Map<String, BiConsumer<UserTrackerPath, Object>> attributeSetters = getAttributeSetters();
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
+		for (Map.Entry<String, BiConsumer<UserTrackerPath, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<UserTrackerPath, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long userTrackerPathId = (Long)attributes.get("userTrackerPathId");
+	@Override
+	public Map<String, Function<UserTrackerPath, Object>> getAttributeGetters() {
+		return _userTrackerPath.getAttributeGetters();
+	}
 
-		if (userTrackerPathId != null) {
-			setUserTrackerPathId(userTrackerPathId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userTrackerId = (Long)attributes.get("userTrackerId");
-
-		if (userTrackerId != null) {
-			setUserTrackerId(userTrackerId);
-		}
-
-		String path = (String)attributes.get("path");
-
-		if (path != null) {
-			setPath(path);
-		}
-
-		Date pathDate = (Date)attributes.get("pathDate");
-
-		if (pathDate != null) {
-			setPathDate(pathDate);
-		}
+	@Override
+	public Map<String, BiConsumer<UserTrackerPath, Object>> getAttributeSetters() {
+		return _userTrackerPath.getAttributeSetters();
 	}
 
 	@Override

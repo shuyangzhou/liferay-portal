@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -57,75 +59,41 @@ public class SocialActivityLimitWrapper implements SocialActivityLimit,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("activityLimitId", getActivityLimitId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("activityType", getActivityType());
-		attributes.put("activityCounterName", getActivityCounterName());
-		attributes.put("value", getValue());
+		Map<String, Function<SocialActivityLimit, Object>> attributeGetters = getAttributeGetters();
+
+		for (Map.Entry<String, Function<SocialActivityLimit, Object>> entry : attributeGetters.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<SocialActivityLimit, Object> attributeFunction = entry.getValue();
+
+			attributes.put(attributeName, attributeFunction.apply(this));
+		}
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long activityLimitId = (Long)attributes.get("activityLimitId");
+		Map<String, BiConsumer<SocialActivityLimit, Object>> attributeSetters = getAttributeSetters();
 
-		if (activityLimitId != null) {
-			setActivityLimitId(activityLimitId);
+		for (Map.Entry<String, BiConsumer<SocialActivityLimit, Object>> entry : attributeSetters.entrySet()) {
+			String attributeName = entry.getKey();
+			BiConsumer<SocialActivityLimit, Object> attributeBiConsumer = entry.getValue();
+
+			attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
 		}
+	}
 
-		Long groupId = (Long)attributes.get("groupId");
+	@Override
+	public Map<String, Function<SocialActivityLimit, Object>> getAttributeGetters() {
+		return _socialActivityLimit.getAttributeGetters();
+	}
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		Integer activityType = (Integer)attributes.get("activityType");
-
-		if (activityType != null) {
-			setActivityType(activityType);
-		}
-
-		String activityCounterName = (String)attributes.get(
-				"activityCounterName");
-
-		if (activityCounterName != null) {
-			setActivityCounterName(activityCounterName);
-		}
-
-		String value = (String)attributes.get("value");
-
-		if (value != null) {
-			setValue(value);
-		}
+	@Override
+	public Map<String, BiConsumer<SocialActivityLimit, Object>> getAttributeSetters() {
+		return _socialActivityLimit.getAttributeSetters();
 	}
 
 	@Override
