@@ -14,10 +14,14 @@ import java.math.BigDecimal;
 
 import java.sql.Blob;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -53,45 +57,88 @@ public class ${entity.name}Wrapper implements ${entity.name}, ModelWrapper<${ent
 		return ${entity.name}.class.getName();
 	}
 
-	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
+	<#if serviceBuilder.isVersionLTE_7_1_0()>
+		@Override
+		public Map<String, Object> getModelAttributes() {
+			Map<String, Object> attributes = new HashMap<String, Object>();
 
-		<#list entity.regularEntityColumns as entityColumn>
-			<#if stringUtil.equals(entityColumn.type, "boolean")>
-				attributes.put("${entityColumn.name}", is${entityColumn.methodName}());
-			<#else>
-				attributes.put("${entityColumn.name}", get${entityColumn.methodName}());
-			</#if>
-		</#list>
+			<#list entity.regularEntityColumns as entityColumn>
+				<#if stringUtil.equals(entityColumn.type, "boolean")>
+					attributes.put("${entityColumn.name}", is${entityColumn.methodName}());
+				<#else>
+					attributes.put("${entityColumn.name}", get${entityColumn.methodName}());
+				</#if>
+			</#list>
 
-		return attributes;
-	}
+			return attributes;
+		}
 
-	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		<#list entity.regularEntityColumns as entityColumn>
-			<#if entityColumn.isPrimitiveType()>
-				${serviceBuilder.getPrimitiveObj(entityColumn.type)}
-			<#else>
-				${entityColumn.genericizedType}
-			</#if>
+		@Override
+		public void setModelAttributes(Map<String, Object> attributes) {
+			<#list entity.regularEntityColumns as entityColumn>
+				<#if entityColumn.isPrimitiveType()>
+					${serviceBuilder.getPrimitiveObj(entityColumn.type)}
+				<#else>
+					${entityColumn.genericizedType}
+				</#if>
 
-			${entityColumn.name} =
+				${entityColumn.name} =
 
-			<#if entityColumn.isPrimitiveType()>
-				(${serviceBuilder.getPrimitiveObj(entityColumn.type)})
-			<#else>
-				(${entityColumn.genericizedType})
-			</#if>
+				<#if entityColumn.isPrimitiveType()>
+					(${serviceBuilder.getPrimitiveObj(entityColumn.type)})
+				<#else>
+					(${entityColumn.genericizedType})
+				</#if>
 
-			attributes.get("${entityColumn.name}");
+				attributes.get("${entityColumn.name}");
 
-			if (${entityColumn.name} != null) {
-				set${entityColumn.methodName}(${entityColumn.name});
+				if (${entityColumn.name} != null) {
+					set${entityColumn.methodName}(${entityColumn.name});
+				}
+			</#list>
+		}
+	<#else>
+		@Override
+		public Map<String, Object> getModelAttributes() {
+			Map<String, Object> attributes = new HashMap<String, Object>();
+
+			Map<String, Function<${entity.name}, Object>> attributeGetters = getAttributeGetters();
+
+			for (Map.Entry<String, Function<${entity.name}, Object>> entry : attributeGetters.entrySet()) {
+				String attributeName = entry.getKey();
+				Function<${entity.name}, Object> attributeFunction = entry.getValue();
+
+				attributes.put(attributeName, attributeFunction.apply(this));
 			}
-		</#list>
-	}
+
+			attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+			attributes.put("finderCacheEnabled", isFinderCacheEnabled());
+
+			return attributes;
+		}
+
+		@Override
+		public void setModelAttributes(Map<String, Object> attributes) {
+			Map<String, BiConsumer<${entity.name}, Object>> attributeSetters = getAttributeSetters();
+
+			for (Map.Entry<String, BiConsumer<${entity.name}, Object>> entry : attributeSetters.entrySet()) {
+				String attributeName = entry.getKey();
+				BiConsumer<${entity.name}, Object> attributeBiConsumer = entry.getValue();
+
+				attributeBiConsumer.accept(this, attributeSetters.get(attributeName));
+			}
+		}
+
+		@Override
+		public Map<String, Function<${entity.name}, Object>> getAttributeGetters() {
+			return _${entity.varName}.getAttributeGetters();
+		}
+
+		@Override
+		public Map<String, BiConsumer<${entity.name}, Object>> getAttributeSetters() {
+			return _${entity.varName}.getAttributeSetters();
+		}
+	</#if>
 
 	<#list methods as method>
 		<#assign parameters = method.parameters />
