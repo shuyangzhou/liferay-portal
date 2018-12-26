@@ -68,8 +68,6 @@ public class MultiVMEhcachePortalCacheManager
 
 		try {
 			initialize();
-
-			initPortalCacheConfiguratorSettingsServiceTracker();
 		}
 		finally {
 			currentThread.setContextClassLoader(contextClassLoader);
