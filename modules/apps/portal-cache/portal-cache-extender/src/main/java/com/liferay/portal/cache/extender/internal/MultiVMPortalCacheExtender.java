@@ -38,7 +38,7 @@ public class MultiVMPortalCacheExtender extends BasePortalCacheExtender {
 		_bundleTracker = createBundleTracker(
 			bundleContext, _portalCacheManager,
 			PropsKeys.EHCACHE_MULTI_VM_CONFIG_LOCATION,
-			"/META-INF/module-multi-vm-clustered.xml");
+			"/META-INF/module-multi-vm.xml");
 
 		_bundleTracker.open();
 	}
