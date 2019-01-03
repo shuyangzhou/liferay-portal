@@ -965,6 +965,13 @@ information.
 				<equals arg1="@{test.type}" arg2="unit" />
 				<then>
 					<if>
+						<isset property="junit.java.unit.gc[${java.specification.version}]" />
+						<then>
+							<propertycopy from="junit.java.unit.gc[${java.specification.version}]" name="junit.java.unit.gc" override="true" />
+						</then>
+					</if>
+
+					<if>
 						<equals arg1="${junit.java.unit.gc.logging}" arg2="on" />
 						<then>
 							<property name="junit.java.gc" value="${junit.java.unit.gc} -verbose:gc -XX:+PrintGCCause -XX:+PrintGCDetails" />
@@ -975,6 +982,13 @@ information.
 					</if>
 				</then>
 				<else>
+					<if>
+						<isset property="junit.java.integration.gc[${java.specification.version}]" />
+						<then>
+							<propertycopy from="junit.java.integration.gc[${java.specification.version}]" name="junit.java.integration.gc" override="true" />
+						</then>
+					</if>
+
 					<property name="aspectj.weaver.enabled" value="true" />
 
 					<local name="project.dir.name" />
