@@ -22,8 +22,6 @@ import com.liferay.contacts.model.EntryModel;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -39,9 +37,13 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the Entry service. Represents a row in the &quot;Contacts_Entry&quot; database table, with each column mapped to a property of this class.
@@ -147,87 +149,168 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("entryId", getEntryId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("fullName", getFullName());
-		attributes.put("emailAddress", getEmailAddress());
-		attributes.put("comments", getComments());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<Entry, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long entryId = (Long)attributes.get("entryId");
+	public Map<String, BiConsumer<Entry, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (entryId != null) {
-			setEntryId(entryId);
-		}
+	private static final Map<String, Function<Entry, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<Entry, Object>> _attributeSetters;
 
-		Long groupId = (Long)attributes.get("groupId");
+	static {
+		Map<String, Function<Entry, Object>> attributeGetters = new LinkedHashMap<String, Function<Entry, Object>>();
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+		attributeGetters.put("entryId",
+			new Function<Entry, Object>() {
+				@Override
+				public Object apply(Entry entry) {
+					return entry.getEntryId();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<Entry, Object>() {
+				@Override
+				public Object apply(Entry entry) {
+					return entry.getGroupId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<Entry, Object>() {
+				@Override
+				public Object apply(Entry entry) {
+					return entry.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<Entry, Object>() {
+				@Override
+				public Object apply(Entry entry) {
+					return entry.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<Entry, Object>() {
+				@Override
+				public Object apply(Entry entry) {
+					return entry.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<Entry, Object>() {
+				@Override
+				public Object apply(Entry entry) {
+					return entry.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<Entry, Object>() {
+				@Override
+				public Object apply(Entry entry) {
+					return entry.getModifiedDate();
+				}
+			});
+		attributeGetters.put("fullName",
+			new Function<Entry, Object>() {
+				@Override
+				public Object apply(Entry entry) {
+					return entry.getFullName();
+				}
+			});
+		attributeGetters.put("emailAddress",
+			new Function<Entry, Object>() {
+				@Override
+				public Object apply(Entry entry) {
+					return entry.getEmailAddress();
+				}
+			});
+		attributeGetters.put("comments",
+			new Function<Entry, Object>() {
+				@Override
+				public Object apply(Entry entry) {
+					return entry.getComments();
+				}
+			});
 
-		Long companyId = (Long)attributes.get("companyId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		Map<String, BiConsumer<Entry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Entry, ?>>();
 
-		Long userId = (Long)attributes.get("userId");
+		attributeSetters.put("entryId",
+			new BiConsumer<Entry, Long>() {
+				@Override
+				public void accept(Entry entry, Long entryId) {
+					entry.setEntryId(entryId);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<Entry, Long>() {
+				@Override
+				public void accept(Entry entry, Long groupId) {
+					entry.setGroupId(groupId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<Entry, Long>() {
+				@Override
+				public void accept(Entry entry, Long companyId) {
+					entry.setCompanyId(companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<Entry, Long>() {
+				@Override
+				public void accept(Entry entry, Long userId) {
+					entry.setUserId(userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<Entry, String>() {
+				@Override
+				public void accept(Entry entry, String userName) {
+					entry.setUserName(userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<Entry, Date>() {
+				@Override
+				public void accept(Entry entry, Date createDate) {
+					entry.setCreateDate(createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<Entry, Date>() {
+				@Override
+				public void accept(Entry entry, Date modifiedDate) {
+					entry.setModifiedDate(modifiedDate);
+				}
+			});
+		attributeSetters.put("fullName",
+			new BiConsumer<Entry, String>() {
+				@Override
+				public void accept(Entry entry, String fullName) {
+					entry.setFullName(fullName);
+				}
+			});
+		attributeSetters.put("emailAddress",
+			new BiConsumer<Entry, String>() {
+				@Override
+				public void accept(Entry entry, String emailAddress) {
+					entry.setEmailAddress(emailAddress);
+				}
+			});
+		attributeSetters.put("comments",
+			new BiConsumer<Entry, String>() {
+				@Override
+				public void accept(Entry entry, String comments) {
+					entry.setComments(comments);
+				}
+			});
 
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		String fullName = (String)attributes.get("fullName");
-
-		if (fullName != null) {
-			setFullName(fullName);
-		}
-
-		String emailAddress = (String)attributes.get("emailAddress");
-
-		if (emailAddress != null) {
-			setEmailAddress(emailAddress);
-		}
-
-		String comments = (String)attributes.get("comments");
-
-		if (comments != null) {
-			setComments(comments);
-		}
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override
@@ -571,89 +654,6 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 		}
 
 		return entryCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(21);
-
-		sb.append("{entryId=");
-		sb.append(getEntryId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", fullName=");
-		sb.append(getFullName());
-		sb.append(", emailAddress=");
-		sb.append(getEmailAddress());
-		sb.append(", comments=");
-		sb.append(getComments());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(34);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.contacts.model.Entry");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>entryId</column-name><column-value><![CDATA[");
-		sb.append(getEntryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>fullName</column-name><column-value><![CDATA[");
-		sb.append(getFullName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>emailAddress</column-name><column-value><![CDATA[");
-		sb.append(getEmailAddress());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>comments</column-name><column-value><![CDATA[");
-		sb.append(getComments());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = Entry.class.getClassLoader();

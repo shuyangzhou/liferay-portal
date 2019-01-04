@@ -22,8 +22,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.journal.model.JournalArticleLocalization;
 import com.liferay.journal.model.JournalArticleLocalizationModel;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
@@ -36,8 +34,12 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the JournalArticleLocalization service. Represents a row in the &quot;JournalArticleLocalization&quot; database table, with each column mapped to a property of this class.
@@ -136,60 +138,131 @@ public class JournalArticleLocalizationModelImpl extends BaseModelImpl<JournalAr
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("articleLocalizationId", getArticleLocalizationId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("articlePK", getArticlePK());
-		attributes.put("title", getTitle());
-		attributes.put("description", getDescription());
-		attributes.put("languageId", getLanguageId());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<JournalArticleLocalization, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long articleLocalizationId = (Long)attributes.get(
-				"articleLocalizationId");
+	public Map<String, BiConsumer<JournalArticleLocalization, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (articleLocalizationId != null) {
-			setArticleLocalizationId(articleLocalizationId);
-		}
+	private static final Map<String, Function<JournalArticleLocalization, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<JournalArticleLocalization, Object>> _attributeSetters;
 
-		Long companyId = (Long)attributes.get("companyId");
+	static {
+		Map<String, Function<JournalArticleLocalization, Object>> attributeGetters =
+			new LinkedHashMap<String, Function<JournalArticleLocalization, Object>>();
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		attributeGetters.put("articleLocalizationId",
+			new Function<JournalArticleLocalization, Object>() {
+				@Override
+				public Object apply(
+					JournalArticleLocalization journalArticleLocalization) {
+					return journalArticleLocalization.getArticleLocalizationId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<JournalArticleLocalization, Object>() {
+				@Override
+				public Object apply(
+					JournalArticleLocalization journalArticleLocalization) {
+					return journalArticleLocalization.getCompanyId();
+				}
+			});
+		attributeGetters.put("articlePK",
+			new Function<JournalArticleLocalization, Object>() {
+				@Override
+				public Object apply(
+					JournalArticleLocalization journalArticleLocalization) {
+					return journalArticleLocalization.getArticlePK();
+				}
+			});
+		attributeGetters.put("title",
+			new Function<JournalArticleLocalization, Object>() {
+				@Override
+				public Object apply(
+					JournalArticleLocalization journalArticleLocalization) {
+					return journalArticleLocalization.getTitle();
+				}
+			});
+		attributeGetters.put("description",
+			new Function<JournalArticleLocalization, Object>() {
+				@Override
+				public Object apply(
+					JournalArticleLocalization journalArticleLocalization) {
+					return journalArticleLocalization.getDescription();
+				}
+			});
+		attributeGetters.put("languageId",
+			new Function<JournalArticleLocalization, Object>() {
+				@Override
+				public Object apply(
+					JournalArticleLocalization journalArticleLocalization) {
+					return journalArticleLocalization.getLanguageId();
+				}
+			});
 
-		Long articlePK = (Long)attributes.get("articlePK");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (articlePK != null) {
-			setArticlePK(articlePK);
-		}
+		Map<String, BiConsumer<JournalArticleLocalization, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<JournalArticleLocalization, ?>>();
 
-		String title = (String)attributes.get("title");
+		attributeSetters.put("articleLocalizationId",
+			new BiConsumer<JournalArticleLocalization, Long>() {
+				@Override
+				public void accept(
+					JournalArticleLocalization journalArticleLocalization,
+					Long articleLocalizationId) {
+					journalArticleLocalization.setArticleLocalizationId(articleLocalizationId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<JournalArticleLocalization, Long>() {
+				@Override
+				public void accept(
+					JournalArticleLocalization journalArticleLocalization,
+					Long companyId) {
+					journalArticleLocalization.setCompanyId(companyId);
+				}
+			});
+		attributeSetters.put("articlePK",
+			new BiConsumer<JournalArticleLocalization, Long>() {
+				@Override
+				public void accept(
+					JournalArticleLocalization journalArticleLocalization,
+					Long articlePK) {
+					journalArticleLocalization.setArticlePK(articlePK);
+				}
+			});
+		attributeSetters.put("title",
+			new BiConsumer<JournalArticleLocalization, String>() {
+				@Override
+				public void accept(
+					JournalArticleLocalization journalArticleLocalization,
+					String title) {
+					journalArticleLocalization.setTitle(title);
+				}
+			});
+		attributeSetters.put("description",
+			new BiConsumer<JournalArticleLocalization, String>() {
+				@Override
+				public void accept(
+					JournalArticleLocalization journalArticleLocalization,
+					String description) {
+					journalArticleLocalization.setDescription(description);
+				}
+			});
+		attributeSetters.put("languageId",
+			new BiConsumer<JournalArticleLocalization, String>() {
+				@Override
+				public void accept(
+					JournalArticleLocalization journalArticleLocalization,
+					String languageId) {
+					journalArticleLocalization.setLanguageId(languageId);
+				}
+			});
 
-		if (title != null) {
-			setTitle(title);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
-		String languageId = (String)attributes.get("languageId");
-
-		if (languageId != null) {
-			setLanguageId(languageId);
-		}
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override
@@ -433,65 +506,6 @@ public class JournalArticleLocalizationModelImpl extends BaseModelImpl<JournalAr
 		}
 
 		return journalArticleLocalizationCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(13);
-
-		sb.append("{articleLocalizationId=");
-		sb.append(getArticleLocalizationId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", articlePK=");
-		sb.append(getArticlePK());
-		sb.append(", title=");
-		sb.append(getTitle());
-		sb.append(", description=");
-		sb.append(getDescription());
-		sb.append(", languageId=");
-		sb.append(getLanguageId());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(22);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.journal.model.JournalArticleLocalization");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>articleLocalizationId</column-name><column-value><![CDATA[");
-		sb.append(getArticleLocalizationId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>articlePK</column-name><column-value><![CDATA[");
-		sb.append(getArticlePK());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>title</column-name><column-value><![CDATA[");
-		sb.append(getTitle());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(getDescription());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>languageId</column-name><column-value><![CDATA[");
-		sb.append(getLanguageId());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = JournalArticleLocalization.class.getClassLoader();
