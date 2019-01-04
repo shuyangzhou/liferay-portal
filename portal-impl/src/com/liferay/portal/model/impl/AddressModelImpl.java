@@ -21,8 +21,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
@@ -46,10 +44,14 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the Address service. Represents a row in the &quot;Address&quot; database table, with each column mapped to a property of this class.
@@ -240,157 +242,308 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("uuid", getUuid());
-		attributes.put("addressId", getAddressId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("street1", getStreet1());
-		attributes.put("street2", getStreet2());
-		attributes.put("street3", getStreet3());
-		attributes.put("city", getCity());
-		attributes.put("zip", getZip());
-		attributes.put("regionId", getRegionId());
-		attributes.put("countryId", getCountryId());
-		attributes.put("typeId", getTypeId());
-		attributes.put("mailing", isMailing());
-		attributes.put("primary", isPrimary());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<Address, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+	public Map<String, BiConsumer<Address, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
-		}
+	private static final Map<String, Function<Address, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<Address, Object>> _attributeSetters;
 
-		String uuid = (String)attributes.get("uuid");
+	static {
+		Map<String, Function<Address, Object>> attributeGetters = new LinkedHashMap<String, Function<Address, Object>>();
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
+		attributeGetters.put("mvccVersion",
+			new Function<Address, Object>() {
+				@Override
+				public Object apply(Address address) {
+					return address.getMvccVersion();
+				}
+			});
+		attributeGetters.put("uuid",
+			new Function<Address, Object>() {
+				@Override
+				public Object apply(Address address) {
+					return address.getUuid();
+				}
+			});
+		attributeGetters.put("addressId",
+			new Function<Address, Object>() {
+				@Override
+				public Object apply(Address address) {
+					return address.getAddressId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<Address, Object>() {
+				@Override
+				public Object apply(Address address) {
+					return address.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<Address, Object>() {
+				@Override
+				public Object apply(Address address) {
+					return address.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<Address, Object>() {
+				@Override
+				public Object apply(Address address) {
+					return address.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<Address, Object>() {
+				@Override
+				public Object apply(Address address) {
+					return address.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<Address, Object>() {
+				@Override
+				public Object apply(Address address) {
+					return address.getModifiedDate();
+				}
+			});
+		attributeGetters.put("classNameId",
+			new Function<Address, Object>() {
+				@Override
+				public Object apply(Address address) {
+					return address.getClassNameId();
+				}
+			});
+		attributeGetters.put("classPK",
+			new Function<Address, Object>() {
+				@Override
+				public Object apply(Address address) {
+					return address.getClassPK();
+				}
+			});
+		attributeGetters.put("street1",
+			new Function<Address, Object>() {
+				@Override
+				public Object apply(Address address) {
+					return address.getStreet1();
+				}
+			});
+		attributeGetters.put("street2",
+			new Function<Address, Object>() {
+				@Override
+				public Object apply(Address address) {
+					return address.getStreet2();
+				}
+			});
+		attributeGetters.put("street3",
+			new Function<Address, Object>() {
+				@Override
+				public Object apply(Address address) {
+					return address.getStreet3();
+				}
+			});
+		attributeGetters.put("city",
+			new Function<Address, Object>() {
+				@Override
+				public Object apply(Address address) {
+					return address.getCity();
+				}
+			});
+		attributeGetters.put("zip",
+			new Function<Address, Object>() {
+				@Override
+				public Object apply(Address address) {
+					return address.getZip();
+				}
+			});
+		attributeGetters.put("regionId",
+			new Function<Address, Object>() {
+				@Override
+				public Object apply(Address address) {
+					return address.getRegionId();
+				}
+			});
+		attributeGetters.put("countryId",
+			new Function<Address, Object>() {
+				@Override
+				public Object apply(Address address) {
+					return address.getCountryId();
+				}
+			});
+		attributeGetters.put("typeId",
+			new Function<Address, Object>() {
+				@Override
+				public Object apply(Address address) {
+					return address.getTypeId();
+				}
+			});
+		attributeGetters.put("mailing",
+			new Function<Address, Object>() {
+				@Override
+				public Object apply(Address address) {
+					return address.isMailing();
+				}
+			});
+		attributeGetters.put("primary",
+			new Function<Address, Object>() {
+				@Override
+				public Object apply(Address address) {
+					return address.isPrimary();
+				}
+			});
 
-		Long addressId = (Long)attributes.get("addressId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (addressId != null) {
-			setAddressId(addressId);
-		}
+		Map<String, BiConsumer<Address, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Address, ?>>();
 
-		Long companyId = (Long)attributes.get("companyId");
+		attributeSetters.put("mvccVersion",
+			new BiConsumer<Address, Long>() {
+				@Override
+				public void accept(Address address, Long mvccVersion) {
+					address.setMvccVersion(mvccVersion);
+				}
+			});
+		attributeSetters.put("uuid",
+			new BiConsumer<Address, String>() {
+				@Override
+				public void accept(Address address, String uuid) {
+					address.setUuid(uuid);
+				}
+			});
+		attributeSetters.put("addressId",
+			new BiConsumer<Address, Long>() {
+				@Override
+				public void accept(Address address, Long addressId) {
+					address.setAddressId(addressId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<Address, Long>() {
+				@Override
+				public void accept(Address address, Long companyId) {
+					address.setCompanyId(companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<Address, Long>() {
+				@Override
+				public void accept(Address address, Long userId) {
+					address.setUserId(userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<Address, String>() {
+				@Override
+				public void accept(Address address, String userName) {
+					address.setUserName(userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<Address, Date>() {
+				@Override
+				public void accept(Address address, Date createDate) {
+					address.setCreateDate(createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<Address, Date>() {
+				@Override
+				public void accept(Address address, Date modifiedDate) {
+					address.setModifiedDate(modifiedDate);
+				}
+			});
+		attributeSetters.put("classNameId",
+			new BiConsumer<Address, Long>() {
+				@Override
+				public void accept(Address address, Long classNameId) {
+					address.setClassNameId(classNameId);
+				}
+			});
+		attributeSetters.put("classPK",
+			new BiConsumer<Address, Long>() {
+				@Override
+				public void accept(Address address, Long classPK) {
+					address.setClassPK(classPK);
+				}
+			});
+		attributeSetters.put("street1",
+			new BiConsumer<Address, String>() {
+				@Override
+				public void accept(Address address, String street1) {
+					address.setStreet1(street1);
+				}
+			});
+		attributeSetters.put("street2",
+			new BiConsumer<Address, String>() {
+				@Override
+				public void accept(Address address, String street2) {
+					address.setStreet2(street2);
+				}
+			});
+		attributeSetters.put("street3",
+			new BiConsumer<Address, String>() {
+				@Override
+				public void accept(Address address, String street3) {
+					address.setStreet3(street3);
+				}
+			});
+		attributeSetters.put("city",
+			new BiConsumer<Address, String>() {
+				@Override
+				public void accept(Address address, String city) {
+					address.setCity(city);
+				}
+			});
+		attributeSetters.put("zip",
+			new BiConsumer<Address, String>() {
+				@Override
+				public void accept(Address address, String zip) {
+					address.setZip(zip);
+				}
+			});
+		attributeSetters.put("regionId",
+			new BiConsumer<Address, Long>() {
+				@Override
+				public void accept(Address address, Long regionId) {
+					address.setRegionId(regionId);
+				}
+			});
+		attributeSetters.put("countryId",
+			new BiConsumer<Address, Long>() {
+				@Override
+				public void accept(Address address, Long countryId) {
+					address.setCountryId(countryId);
+				}
+			});
+		attributeSetters.put("typeId",
+			new BiConsumer<Address, Long>() {
+				@Override
+				public void accept(Address address, Long typeId) {
+					address.setTypeId(typeId);
+				}
+			});
+		attributeSetters.put("mailing",
+			new BiConsumer<Address, Boolean>() {
+				@Override
+				public void accept(Address address, Boolean mailing) {
+					address.setMailing(mailing);
+				}
+			});
+		attributeSetters.put("primary",
+			new BiConsumer<Address, Boolean>() {
+				@Override
+				public void accept(Address address, Boolean primary) {
+					address.setPrimary(primary);
+				}
+			});
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		String street1 = (String)attributes.get("street1");
-
-		if (street1 != null) {
-			setStreet1(street1);
-		}
-
-		String street2 = (String)attributes.get("street2");
-
-		if (street2 != null) {
-			setStreet2(street2);
-		}
-
-		String street3 = (String)attributes.get("street3");
-
-		if (street3 != null) {
-			setStreet3(street3);
-		}
-
-		String city = (String)attributes.get("city");
-
-		if (city != null) {
-			setCity(city);
-		}
-
-		String zip = (String)attributes.get("zip");
-
-		if (zip != null) {
-			setZip(zip);
-		}
-
-		Long regionId = (Long)attributes.get("regionId");
-
-		if (regionId != null) {
-			setRegionId(regionId);
-		}
-
-		Long countryId = (Long)attributes.get("countryId");
-
-		if (countryId != null) {
-			setCountryId(countryId);
-		}
-
-		Long typeId = (Long)attributes.get("typeId");
-
-		if (typeId != null) {
-			setTypeId(typeId);
-		}
-
-		Boolean mailing = (Boolean)attributes.get("mailing");
-
-		if (mailing != null) {
-			setMailing(mailing);
-		}
-
-		Boolean primary = (Boolean)attributes.get("primary");
-
-		if (primary != null) {
-			setPrimary(primary);
-		}
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON
@@ -1033,149 +1186,6 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 		addressCacheModel.primary = isPrimary();
 
 		return addressCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(41);
-
-		sb.append("{mvccVersion=");
-		sb.append(getMvccVersion());
-		sb.append(", uuid=");
-		sb.append(getUuid());
-		sb.append(", addressId=");
-		sb.append(getAddressId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", classNameId=");
-		sb.append(getClassNameId());
-		sb.append(", classPK=");
-		sb.append(getClassPK());
-		sb.append(", street1=");
-		sb.append(getStreet1());
-		sb.append(", street2=");
-		sb.append(getStreet2());
-		sb.append(", street3=");
-		sb.append(getStreet3());
-		sb.append(", city=");
-		sb.append(getCity());
-		sb.append(", zip=");
-		sb.append(getZip());
-		sb.append(", regionId=");
-		sb.append(getRegionId());
-		sb.append(", countryId=");
-		sb.append(getCountryId());
-		sb.append(", typeId=");
-		sb.append(getTypeId());
-		sb.append(", mailing=");
-		sb.append(isMailing());
-		sb.append(", primary=");
-		sb.append(isPrimary());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(64);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.kernel.model.Address");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>mvccVersion</column-name><column-value><![CDATA[");
-		sb.append(getMvccVersion());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>addressId</column-name><column-value><![CDATA[");
-		sb.append(getAddressId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classNameId</column-name><column-value><![CDATA[");
-		sb.append(getClassNameId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classPK</column-name><column-value><![CDATA[");
-		sb.append(getClassPK());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>street1</column-name><column-value><![CDATA[");
-		sb.append(getStreet1());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>street2</column-name><column-value><![CDATA[");
-		sb.append(getStreet2());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>street3</column-name><column-value><![CDATA[");
-		sb.append(getStreet3());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>city</column-name><column-value><![CDATA[");
-		sb.append(getCity());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>zip</column-name><column-value><![CDATA[");
-		sb.append(getZip());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>regionId</column-name><column-value><![CDATA[");
-		sb.append(getRegionId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>countryId</column-name><column-value><![CDATA[");
-		sb.append(getCountryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>typeId</column-name><column-value><![CDATA[");
-		sb.append(getTypeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>mailing</column-name><column-value><![CDATA[");
-		sb.append(isMailing());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>primary</column-name><column-value><![CDATA[");
-		sb.append(isPrimary());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = Address.class.getClassLoader();

@@ -22,8 +22,6 @@ import com.liferay.change.tracking.model.CTEntryModel;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -41,9 +39,13 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the CTEntry service. Represents a row in the &quot;CTEntry&quot; database table, with each column mapped to a property of this class.
@@ -160,80 +162,154 @@ public class CTEntryModelImpl extends BaseModelImpl<CTEntry>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("ctEntryId", getCtEntryId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("resourcePrimKey", getResourcePrimKey());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<CTEntry, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long ctEntryId = (Long)attributes.get("ctEntryId");
+	public Map<String, BiConsumer<CTEntry, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (ctEntryId != null) {
-			setCtEntryId(ctEntryId);
-		}
+	private static final Map<String, Function<CTEntry, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<CTEntry, Object>> _attributeSetters;
 
-		Long companyId = (Long)attributes.get("companyId");
+	static {
+		Map<String, Function<CTEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<CTEntry, Object>>();
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		attributeGetters.put("ctEntryId",
+			new Function<CTEntry, Object>() {
+				@Override
+				public Object apply(CTEntry ctEntry) {
+					return ctEntry.getCtEntryId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<CTEntry, Object>() {
+				@Override
+				public Object apply(CTEntry ctEntry) {
+					return ctEntry.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<CTEntry, Object>() {
+				@Override
+				public Object apply(CTEntry ctEntry) {
+					return ctEntry.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<CTEntry, Object>() {
+				@Override
+				public Object apply(CTEntry ctEntry) {
+					return ctEntry.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<CTEntry, Object>() {
+				@Override
+				public Object apply(CTEntry ctEntry) {
+					return ctEntry.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<CTEntry, Object>() {
+				@Override
+				public Object apply(CTEntry ctEntry) {
+					return ctEntry.getModifiedDate();
+				}
+			});
+		attributeGetters.put("classNameId",
+			new Function<CTEntry, Object>() {
+				@Override
+				public Object apply(CTEntry ctEntry) {
+					return ctEntry.getClassNameId();
+				}
+			});
+		attributeGetters.put("classPK",
+			new Function<CTEntry, Object>() {
+				@Override
+				public Object apply(CTEntry ctEntry) {
+					return ctEntry.getClassPK();
+				}
+			});
+		attributeGetters.put("resourcePrimKey",
+			new Function<CTEntry, Object>() {
+				@Override
+				public Object apply(CTEntry ctEntry) {
+					return ctEntry.getResourcePrimKey();
+				}
+			});
 
-		Long userId = (Long)attributes.get("userId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (userId != null) {
-			setUserId(userId);
-		}
+		Map<String, BiConsumer<CTEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<CTEntry, ?>>();
 
-		String userName = (String)attributes.get("userName");
+		attributeSetters.put("ctEntryId",
+			new BiConsumer<CTEntry, Long>() {
+				@Override
+				public void accept(CTEntry ctEntry, Long ctEntryId) {
+					ctEntry.setCtEntryId(ctEntryId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<CTEntry, Long>() {
+				@Override
+				public void accept(CTEntry ctEntry, Long companyId) {
+					ctEntry.setCompanyId(companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<CTEntry, Long>() {
+				@Override
+				public void accept(CTEntry ctEntry, Long userId) {
+					ctEntry.setUserId(userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<CTEntry, String>() {
+				@Override
+				public void accept(CTEntry ctEntry, String userName) {
+					ctEntry.setUserName(userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<CTEntry, Date>() {
+				@Override
+				public void accept(CTEntry ctEntry, Date createDate) {
+					ctEntry.setCreateDate(createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<CTEntry, Date>() {
+				@Override
+				public void accept(CTEntry ctEntry, Date modifiedDate) {
+					ctEntry.setModifiedDate(modifiedDate);
+				}
+			});
+		attributeSetters.put("classNameId",
+			new BiConsumer<CTEntry, Long>() {
+				@Override
+				public void accept(CTEntry ctEntry, Long classNameId) {
+					ctEntry.setClassNameId(classNameId);
+				}
+			});
+		attributeSetters.put("classPK",
+			new BiConsumer<CTEntry, Long>() {
+				@Override
+				public void accept(CTEntry ctEntry, Long classPK) {
+					ctEntry.setClassPK(classPK);
+				}
+			});
+		attributeSetters.put("resourcePrimKey",
+			new BiConsumer<CTEntry, Long>() {
+				@Override
+				public void accept(CTEntry ctEntry, Long resourcePrimKey) {
+					ctEntry.setResourcePrimKey(resourcePrimKey);
+				}
+			});
 
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		Long resourcePrimKey = (Long)attributes.get("resourcePrimKey");
-
-		if (resourcePrimKey != null) {
-			setResourcePrimKey(resourcePrimKey);
-		}
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override
@@ -576,83 +652,6 @@ public class CTEntryModelImpl extends BaseModelImpl<CTEntry>
 		ctEntryCacheModel.resourcePrimKey = getResourcePrimKey();
 
 		return ctEntryCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(19);
-
-		sb.append("{ctEntryId=");
-		sb.append(getCtEntryId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", classNameId=");
-		sb.append(getClassNameId());
-		sb.append(", classPK=");
-		sb.append(getClassPK());
-		sb.append(", resourcePrimKey=");
-		sb.append(getResourcePrimKey());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(31);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.change.tracking.model.CTEntry");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>ctEntryId</column-name><column-value><![CDATA[");
-		sb.append(getCtEntryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classNameId</column-name><column-value><![CDATA[");
-		sb.append(getClassNameId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classPK</column-name><column-value><![CDATA[");
-		sb.append(getClassPK());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>resourcePrimKey</column-name><column-value><![CDATA[");
-		sb.append(getResourcePrimKey());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = CTEntry.class.getClassLoader();

@@ -21,8 +21,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
@@ -45,10 +43,14 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the Repository service. Represents a row in the &quot;Repository&quot; database table, with each column mapped to a property of this class.
@@ -225,129 +227,252 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("uuid", getUuid());
-		attributes.put("repositoryId", getRepositoryId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("name", getName());
-		attributes.put("description", getDescription());
-		attributes.put("portletId", getPortletId());
-		attributes.put("typeSettings", getTypeSettings());
-		attributes.put("dlFolderId", getDlFolderId());
-		attributes.put("lastPublishDate", getLastPublishDate());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<Repository, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+	public Map<String, BiConsumer<Repository, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
-		}
+	private static final Map<String, Function<Repository, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<Repository, Object>> _attributeSetters;
 
-		String uuid = (String)attributes.get("uuid");
+	static {
+		Map<String, Function<Repository, Object>> attributeGetters = new LinkedHashMap<String, Function<Repository, Object>>();
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
+		attributeGetters.put("mvccVersion",
+			new Function<Repository, Object>() {
+				@Override
+				public Object apply(Repository repository) {
+					return repository.getMvccVersion();
+				}
+			});
+		attributeGetters.put("uuid",
+			new Function<Repository, Object>() {
+				@Override
+				public Object apply(Repository repository) {
+					return repository.getUuid();
+				}
+			});
+		attributeGetters.put("repositoryId",
+			new Function<Repository, Object>() {
+				@Override
+				public Object apply(Repository repository) {
+					return repository.getRepositoryId();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<Repository, Object>() {
+				@Override
+				public Object apply(Repository repository) {
+					return repository.getGroupId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<Repository, Object>() {
+				@Override
+				public Object apply(Repository repository) {
+					return repository.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<Repository, Object>() {
+				@Override
+				public Object apply(Repository repository) {
+					return repository.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<Repository, Object>() {
+				@Override
+				public Object apply(Repository repository) {
+					return repository.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<Repository, Object>() {
+				@Override
+				public Object apply(Repository repository) {
+					return repository.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<Repository, Object>() {
+				@Override
+				public Object apply(Repository repository) {
+					return repository.getModifiedDate();
+				}
+			});
+		attributeGetters.put("classNameId",
+			new Function<Repository, Object>() {
+				@Override
+				public Object apply(Repository repository) {
+					return repository.getClassNameId();
+				}
+			});
+		attributeGetters.put("name",
+			new Function<Repository, Object>() {
+				@Override
+				public Object apply(Repository repository) {
+					return repository.getName();
+				}
+			});
+		attributeGetters.put("description",
+			new Function<Repository, Object>() {
+				@Override
+				public Object apply(Repository repository) {
+					return repository.getDescription();
+				}
+			});
+		attributeGetters.put("portletId",
+			new Function<Repository, Object>() {
+				@Override
+				public Object apply(Repository repository) {
+					return repository.getPortletId();
+				}
+			});
+		attributeGetters.put("typeSettings",
+			new Function<Repository, Object>() {
+				@Override
+				public Object apply(Repository repository) {
+					return repository.getTypeSettings();
+				}
+			});
+		attributeGetters.put("dlFolderId",
+			new Function<Repository, Object>() {
+				@Override
+				public Object apply(Repository repository) {
+					return repository.getDlFolderId();
+				}
+			});
+		attributeGetters.put("lastPublishDate",
+			new Function<Repository, Object>() {
+				@Override
+				public Object apply(Repository repository) {
+					return repository.getLastPublishDate();
+				}
+			});
 
-		Long repositoryId = (Long)attributes.get("repositoryId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (repositoryId != null) {
-			setRepositoryId(repositoryId);
-		}
+		Map<String, BiConsumer<Repository, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Repository, ?>>();
 
-		Long groupId = (Long)attributes.get("groupId");
+		attributeSetters.put("mvccVersion",
+			new BiConsumer<Repository, Long>() {
+				@Override
+				public void accept(Repository repository, Long mvccVersion) {
+					repository.setMvccVersion(mvccVersion);
+				}
+			});
+		attributeSetters.put("uuid",
+			new BiConsumer<Repository, String>() {
+				@Override
+				public void accept(Repository repository, String uuid) {
+					repository.setUuid(uuid);
+				}
+			});
+		attributeSetters.put("repositoryId",
+			new BiConsumer<Repository, Long>() {
+				@Override
+				public void accept(Repository repository, Long repositoryId) {
+					repository.setRepositoryId(repositoryId);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<Repository, Long>() {
+				@Override
+				public void accept(Repository repository, Long groupId) {
+					repository.setGroupId(groupId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<Repository, Long>() {
+				@Override
+				public void accept(Repository repository, Long companyId) {
+					repository.setCompanyId(companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<Repository, Long>() {
+				@Override
+				public void accept(Repository repository, Long userId) {
+					repository.setUserId(userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<Repository, String>() {
+				@Override
+				public void accept(Repository repository, String userName) {
+					repository.setUserName(userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<Repository, Date>() {
+				@Override
+				public void accept(Repository repository, Date createDate) {
+					repository.setCreateDate(createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<Repository, Date>() {
+				@Override
+				public void accept(Repository repository, Date modifiedDate) {
+					repository.setModifiedDate(modifiedDate);
+				}
+			});
+		attributeSetters.put("classNameId",
+			new BiConsumer<Repository, Long>() {
+				@Override
+				public void accept(Repository repository, Long classNameId) {
+					repository.setClassNameId(classNameId);
+				}
+			});
+		attributeSetters.put("name",
+			new BiConsumer<Repository, String>() {
+				@Override
+				public void accept(Repository repository, String name) {
+					repository.setName(name);
+				}
+			});
+		attributeSetters.put("description",
+			new BiConsumer<Repository, String>() {
+				@Override
+				public void accept(Repository repository, String description) {
+					repository.setDescription(description);
+				}
+			});
+		attributeSetters.put("portletId",
+			new BiConsumer<Repository, String>() {
+				@Override
+				public void accept(Repository repository, String portletId) {
+					repository.setPortletId(portletId);
+				}
+			});
+		attributeSetters.put("typeSettings",
+			new BiConsumer<Repository, String>() {
+				@Override
+				public void accept(Repository repository, String typeSettings) {
+					repository.setTypeSettings(typeSettings);
+				}
+			});
+		attributeSetters.put("dlFolderId",
+			new BiConsumer<Repository, Long>() {
+				@Override
+				public void accept(Repository repository, Long dlFolderId) {
+					repository.setDlFolderId(dlFolderId);
+				}
+			});
+		attributeSetters.put("lastPublishDate",
+			new BiConsumer<Repository, Date>() {
+				@Override
+				public void accept(Repository repository, Date lastPublishDate) {
+					repository.setLastPublishDate(lastPublishDate);
+				}
+			});
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
-		String portletId = (String)attributes.get("portletId");
-
-		if (portletId != null) {
-			setPortletId(portletId);
-		}
-
-		String typeSettings = (String)attributes.get("typeSettings");
-
-		if (typeSettings != null) {
-			setTypeSettings(typeSettings);
-		}
-
-		Long dlFolderId = (Long)attributes.get("dlFolderId");
-
-		if (dlFolderId != null) {
-			setDlFolderId(dlFolderId);
-		}
-
-		Date lastPublishDate = (Date)attributes.get("lastPublishDate");
-
-		if (lastPublishDate != null) {
-			setLastPublishDate(lastPublishDate);
-		}
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON
@@ -878,125 +1003,6 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 		}
 
 		return repositoryCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(33);
-
-		sb.append("{mvccVersion=");
-		sb.append(getMvccVersion());
-		sb.append(", uuid=");
-		sb.append(getUuid());
-		sb.append(", repositoryId=");
-		sb.append(getRepositoryId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", classNameId=");
-		sb.append(getClassNameId());
-		sb.append(", name=");
-		sb.append(getName());
-		sb.append(", description=");
-		sb.append(getDescription());
-		sb.append(", portletId=");
-		sb.append(getPortletId());
-		sb.append(", typeSettings=");
-		sb.append(getTypeSettings());
-		sb.append(", dlFolderId=");
-		sb.append(getDlFolderId());
-		sb.append(", lastPublishDate=");
-		sb.append(getLastPublishDate());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(52);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.kernel.model.Repository");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>mvccVersion</column-name><column-value><![CDATA[");
-		sb.append(getMvccVersion());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>repositoryId</column-name><column-value><![CDATA[");
-		sb.append(getRepositoryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classNameId</column-name><column-value><![CDATA[");
-		sb.append(getClassNameId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(getName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(getDescription());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>portletId</column-name><column-value><![CDATA[");
-		sb.append(getPortletId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>typeSettings</column-name><column-value><![CDATA[");
-		sb.append(getTypeSettings());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>dlFolderId</column-name><column-value><![CDATA[");
-		sb.append(getDlFolderId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>lastPublishDate</column-name><column-value><![CDATA[");
-		sb.append(getLastPublishDate());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = Repository.class.getClassLoader();
