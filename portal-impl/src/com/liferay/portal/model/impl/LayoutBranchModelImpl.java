@@ -19,8 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
@@ -41,9 +39,13 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the LayoutBranch service. Represents a row in the &quot;LayoutBranch&quot; database table, with each column mapped to a property of this class.
@@ -204,94 +206,184 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("layoutBranchId", getLayoutBranchId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("layoutSetBranchId", getLayoutSetBranchId());
-		attributes.put("plid", getPlid());
-		attributes.put("name", getName());
-		attributes.put("description", getDescription());
-		attributes.put("master", isMaster());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<LayoutBranch, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+	public Map<String, BiConsumer<LayoutBranch, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
-		}
+	private static final Map<String, Function<LayoutBranch, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<LayoutBranch, Object>> _attributeSetters;
 
-		Long layoutBranchId = (Long)attributes.get("layoutBranchId");
+	static {
+		Map<String, Function<LayoutBranch, Object>> attributeGetters = new LinkedHashMap<String, Function<LayoutBranch, Object>>();
 
-		if (layoutBranchId != null) {
-			setLayoutBranchId(layoutBranchId);
-		}
+		attributeGetters.put("mvccVersion",
+			new Function<LayoutBranch, Object>() {
+				@Override
+				public Object apply(LayoutBranch layoutBranch) {
+					return layoutBranch.getMvccVersion();
+				}
+			});
+		attributeGetters.put("layoutBranchId",
+			new Function<LayoutBranch, Object>() {
+				@Override
+				public Object apply(LayoutBranch layoutBranch) {
+					return layoutBranch.getLayoutBranchId();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<LayoutBranch, Object>() {
+				@Override
+				public Object apply(LayoutBranch layoutBranch) {
+					return layoutBranch.getGroupId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<LayoutBranch, Object>() {
+				@Override
+				public Object apply(LayoutBranch layoutBranch) {
+					return layoutBranch.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<LayoutBranch, Object>() {
+				@Override
+				public Object apply(LayoutBranch layoutBranch) {
+					return layoutBranch.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<LayoutBranch, Object>() {
+				@Override
+				public Object apply(LayoutBranch layoutBranch) {
+					return layoutBranch.getUserName();
+				}
+			});
+		attributeGetters.put("layoutSetBranchId",
+			new Function<LayoutBranch, Object>() {
+				@Override
+				public Object apply(LayoutBranch layoutBranch) {
+					return layoutBranch.getLayoutSetBranchId();
+				}
+			});
+		attributeGetters.put("plid",
+			new Function<LayoutBranch, Object>() {
+				@Override
+				public Object apply(LayoutBranch layoutBranch) {
+					return layoutBranch.getPlid();
+				}
+			});
+		attributeGetters.put("name",
+			new Function<LayoutBranch, Object>() {
+				@Override
+				public Object apply(LayoutBranch layoutBranch) {
+					return layoutBranch.getName();
+				}
+			});
+		attributeGetters.put("description",
+			new Function<LayoutBranch, Object>() {
+				@Override
+				public Object apply(LayoutBranch layoutBranch) {
+					return layoutBranch.getDescription();
+				}
+			});
+		attributeGetters.put("master",
+			new Function<LayoutBranch, Object>() {
+				@Override
+				public Object apply(LayoutBranch layoutBranch) {
+					return layoutBranch.isMaster();
+				}
+			});
 
-		Long groupId = (Long)attributes.get("groupId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+		Map<String, BiConsumer<LayoutBranch, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<LayoutBranch, ?>>();
 
-		Long companyId = (Long)attributes.get("companyId");
+		attributeSetters.put("mvccVersion",
+			new BiConsumer<LayoutBranch, Long>() {
+				@Override
+				public void accept(LayoutBranch layoutBranch, Long mvccVersion) {
+					layoutBranch.setMvccVersion(mvccVersion);
+				}
+			});
+		attributeSetters.put("layoutBranchId",
+			new BiConsumer<LayoutBranch, Long>() {
+				@Override
+				public void accept(LayoutBranch layoutBranch,
+					Long layoutBranchId) {
+					layoutBranch.setLayoutBranchId(layoutBranchId);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<LayoutBranch, Long>() {
+				@Override
+				public void accept(LayoutBranch layoutBranch, Long groupId) {
+					layoutBranch.setGroupId(groupId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<LayoutBranch, Long>() {
+				@Override
+				public void accept(LayoutBranch layoutBranch, Long companyId) {
+					layoutBranch.setCompanyId(companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<LayoutBranch, Long>() {
+				@Override
+				public void accept(LayoutBranch layoutBranch, Long userId) {
+					layoutBranch.setUserId(userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<LayoutBranch, String>() {
+				@Override
+				public void accept(LayoutBranch layoutBranch, String userName) {
+					layoutBranch.setUserName(userName);
+				}
+			});
+		attributeSetters.put("layoutSetBranchId",
+			new BiConsumer<LayoutBranch, Long>() {
+				@Override
+				public void accept(LayoutBranch layoutBranch,
+					Long layoutSetBranchId) {
+					layoutBranch.setLayoutSetBranchId(layoutSetBranchId);
+				}
+			});
+		attributeSetters.put("plid",
+			new BiConsumer<LayoutBranch, Long>() {
+				@Override
+				public void accept(LayoutBranch layoutBranch, Long plid) {
+					layoutBranch.setPlid(plid);
+				}
+			});
+		attributeSetters.put("name",
+			new BiConsumer<LayoutBranch, String>() {
+				@Override
+				public void accept(LayoutBranch layoutBranch, String name) {
+					layoutBranch.setName(name);
+				}
+			});
+		attributeSetters.put("description",
+			new BiConsumer<LayoutBranch, String>() {
+				@Override
+				public void accept(LayoutBranch layoutBranch, String description) {
+					layoutBranch.setDescription(description);
+				}
+			});
+		attributeSetters.put("master",
+			new BiConsumer<LayoutBranch, Boolean>() {
+				@Override
+				public void accept(LayoutBranch layoutBranch, Boolean master) {
+					layoutBranch.setMaster(master);
+				}
+			});
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Long layoutSetBranchId = (Long)attributes.get("layoutSetBranchId");
-
-		if (layoutSetBranchId != null) {
-			setLayoutSetBranchId(layoutSetBranchId);
-		}
-
-		Long plid = (Long)attributes.get("plid");
-
-		if (plid != null) {
-			setPlid(plid);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
-		Boolean master = (Boolean)attributes.get("master");
-
-		if (master != null) {
-			setMaster(master);
-		}
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON
@@ -664,95 +756,6 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 		layoutBranchCacheModel.master = isMaster();
 
 		return layoutBranchCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(23);
-
-		sb.append("{mvccVersion=");
-		sb.append(getMvccVersion());
-		sb.append(", layoutBranchId=");
-		sb.append(getLayoutBranchId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", layoutSetBranchId=");
-		sb.append(getLayoutSetBranchId());
-		sb.append(", plid=");
-		sb.append(getPlid());
-		sb.append(", name=");
-		sb.append(getName());
-		sb.append(", description=");
-		sb.append(getDescription());
-		sb.append(", master=");
-		sb.append(isMaster());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(37);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.kernel.model.LayoutBranch");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>mvccVersion</column-name><column-value><![CDATA[");
-		sb.append(getMvccVersion());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>layoutBranchId</column-name><column-value><![CDATA[");
-		sb.append(getLayoutBranchId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>layoutSetBranchId</column-name><column-value><![CDATA[");
-		sb.append(getLayoutSetBranchId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>plid</column-name><column-value><![CDATA[");
-		sb.append(getPlid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(getName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(getDescription());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>master</column-name><column-value><![CDATA[");
-		sb.append(isMaster());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = LayoutBranch.class.getClassLoader();

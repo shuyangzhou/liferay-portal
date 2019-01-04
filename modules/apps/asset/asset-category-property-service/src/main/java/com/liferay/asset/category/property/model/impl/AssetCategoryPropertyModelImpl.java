@@ -23,8 +23,6 @@ import com.liferay.asset.category.property.model.AssetCategoryPropertySoap;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
@@ -42,10 +40,14 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the AssetCategoryProperty service. Represents a row in the &quot;AssetCategoryProperty&quot; database table, with each column mapped to a property of this class.
@@ -200,80 +202,165 @@ public class AssetCategoryPropertyModelImpl extends BaseModelImpl<AssetCategoryP
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("categoryPropertyId", getCategoryPropertyId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("categoryId", getCategoryId());
-		attributes.put("key", getKey());
-		attributes.put("value", getValue());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<AssetCategoryProperty, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long categoryPropertyId = (Long)attributes.get("categoryPropertyId");
+	public Map<String, BiConsumer<AssetCategoryProperty, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (categoryPropertyId != null) {
-			setCategoryPropertyId(categoryPropertyId);
-		}
+	private static final Map<String, Function<AssetCategoryProperty, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<AssetCategoryProperty, Object>> _attributeSetters;
 
-		Long companyId = (Long)attributes.get("companyId");
+	static {
+		Map<String, Function<AssetCategoryProperty, Object>> attributeGetters = new LinkedHashMap<String, Function<AssetCategoryProperty, Object>>();
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		attributeGetters.put("categoryPropertyId",
+			new Function<AssetCategoryProperty, Object>() {
+				@Override
+				public Object apply(AssetCategoryProperty assetCategoryProperty) {
+					return assetCategoryProperty.getCategoryPropertyId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<AssetCategoryProperty, Object>() {
+				@Override
+				public Object apply(AssetCategoryProperty assetCategoryProperty) {
+					return assetCategoryProperty.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<AssetCategoryProperty, Object>() {
+				@Override
+				public Object apply(AssetCategoryProperty assetCategoryProperty) {
+					return assetCategoryProperty.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<AssetCategoryProperty, Object>() {
+				@Override
+				public Object apply(AssetCategoryProperty assetCategoryProperty) {
+					return assetCategoryProperty.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<AssetCategoryProperty, Object>() {
+				@Override
+				public Object apply(AssetCategoryProperty assetCategoryProperty) {
+					return assetCategoryProperty.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<AssetCategoryProperty, Object>() {
+				@Override
+				public Object apply(AssetCategoryProperty assetCategoryProperty) {
+					return assetCategoryProperty.getModifiedDate();
+				}
+			});
+		attributeGetters.put("categoryId",
+			new Function<AssetCategoryProperty, Object>() {
+				@Override
+				public Object apply(AssetCategoryProperty assetCategoryProperty) {
+					return assetCategoryProperty.getCategoryId();
+				}
+			});
+		attributeGetters.put("key",
+			new Function<AssetCategoryProperty, Object>() {
+				@Override
+				public Object apply(AssetCategoryProperty assetCategoryProperty) {
+					return assetCategoryProperty.getKey();
+				}
+			});
+		attributeGetters.put("value",
+			new Function<AssetCategoryProperty, Object>() {
+				@Override
+				public Object apply(AssetCategoryProperty assetCategoryProperty) {
+					return assetCategoryProperty.getValue();
+				}
+			});
 
-		Long userId = (Long)attributes.get("userId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (userId != null) {
-			setUserId(userId);
-		}
+		Map<String, BiConsumer<AssetCategoryProperty, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetCategoryProperty, ?>>();
 
-		String userName = (String)attributes.get("userName");
+		attributeSetters.put("categoryPropertyId",
+			new BiConsumer<AssetCategoryProperty, Long>() {
+				@Override
+				public void accept(
+					AssetCategoryProperty assetCategoryProperty,
+					Long categoryPropertyId) {
+					assetCategoryProperty.setCategoryPropertyId(categoryPropertyId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<AssetCategoryProperty, Long>() {
+				@Override
+				public void accept(
+					AssetCategoryProperty assetCategoryProperty, Long companyId) {
+					assetCategoryProperty.setCompanyId(companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<AssetCategoryProperty, Long>() {
+				@Override
+				public void accept(
+					AssetCategoryProperty assetCategoryProperty, Long userId) {
+					assetCategoryProperty.setUserId(userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<AssetCategoryProperty, String>() {
+				@Override
+				public void accept(
+					AssetCategoryProperty assetCategoryProperty, String userName) {
+					assetCategoryProperty.setUserName(userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<AssetCategoryProperty, Date>() {
+				@Override
+				public void accept(
+					AssetCategoryProperty assetCategoryProperty, Date createDate) {
+					assetCategoryProperty.setCreateDate(createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<AssetCategoryProperty, Date>() {
+				@Override
+				public void accept(
+					AssetCategoryProperty assetCategoryProperty,
+					Date modifiedDate) {
+					assetCategoryProperty.setModifiedDate(modifiedDate);
+				}
+			});
+		attributeSetters.put("categoryId",
+			new BiConsumer<AssetCategoryProperty, Long>() {
+				@Override
+				public void accept(
+					AssetCategoryProperty assetCategoryProperty, Long categoryId) {
+					assetCategoryProperty.setCategoryId(categoryId);
+				}
+			});
+		attributeSetters.put("key",
+			new BiConsumer<AssetCategoryProperty, String>() {
+				@Override
+				public void accept(
+					AssetCategoryProperty assetCategoryProperty, String key) {
+					assetCategoryProperty.setKey(key);
+				}
+			});
+		attributeSetters.put("value",
+			new BiConsumer<AssetCategoryProperty, String>() {
+				@Override
+				public void accept(
+					AssetCategoryProperty assetCategoryProperty, String value) {
+					assetCategoryProperty.setValue(value);
+				}
+			});
 
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long categoryId = (Long)attributes.get("categoryId");
-
-		if (categoryId != null) {
-			setCategoryId(categoryId);
-		}
-
-		String key = (String)attributes.get("key");
-
-		if (key != null) {
-			setKey(key);
-		}
-
-		String value = (String)attributes.get("value");
-
-		if (value != null) {
-			setValue(value);
-		}
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON
@@ -616,84 +703,6 @@ public class AssetCategoryPropertyModelImpl extends BaseModelImpl<AssetCategoryP
 		}
 
 		return assetCategoryPropertyCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(19);
-
-		sb.append("{categoryPropertyId=");
-		sb.append(getCategoryPropertyId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", categoryId=");
-		sb.append(getCategoryId());
-		sb.append(", key=");
-		sb.append(getKey());
-		sb.append(", value=");
-		sb.append(getValue());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(31);
-
-		sb.append("<model><model-name>");
-		sb.append(
-			"com.liferay.asset.category.property.model.AssetCategoryProperty");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>categoryPropertyId</column-name><column-value><![CDATA[");
-		sb.append(getCategoryPropertyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>categoryId</column-name><column-value><![CDATA[");
-		sb.append(getCategoryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>key</column-name><column-value><![CDATA[");
-		sb.append(getKey());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>value</column-name><column-value><![CDATA[");
-		sb.append(getValue());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = AssetCategoryProperty.class.getClassLoader();

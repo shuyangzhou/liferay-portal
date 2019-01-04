@@ -21,8 +21,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
@@ -46,10 +44,14 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the EmailAddress service. Represents a row in the &quot;EmailAddress&quot; database table, with each column mapped to a property of this class.
@@ -218,108 +220,211 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("uuid", getUuid());
-		attributes.put("emailAddressId", getEmailAddressId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("address", getAddress());
-		attributes.put("typeId", getTypeId());
-		attributes.put("primary", isPrimary());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<EmailAddress, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long mvccVersion = (Long)attributes.get("mvccVersion");
+	public Map<String, BiConsumer<EmailAddress, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (mvccVersion != null) {
-			setMvccVersion(mvccVersion);
-		}
+	private static final Map<String, Function<EmailAddress, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<EmailAddress, Object>> _attributeSetters;
 
-		String uuid = (String)attributes.get("uuid");
+	static {
+		Map<String, Function<EmailAddress, Object>> attributeGetters = new LinkedHashMap<String, Function<EmailAddress, Object>>();
 
-		if (uuid != null) {
-			setUuid(uuid);
-		}
+		attributeGetters.put("mvccVersion",
+			new Function<EmailAddress, Object>() {
+				@Override
+				public Object apply(EmailAddress emailAddress) {
+					return emailAddress.getMvccVersion();
+				}
+			});
+		attributeGetters.put("uuid",
+			new Function<EmailAddress, Object>() {
+				@Override
+				public Object apply(EmailAddress emailAddress) {
+					return emailAddress.getUuid();
+				}
+			});
+		attributeGetters.put("emailAddressId",
+			new Function<EmailAddress, Object>() {
+				@Override
+				public Object apply(EmailAddress emailAddress) {
+					return emailAddress.getEmailAddressId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<EmailAddress, Object>() {
+				@Override
+				public Object apply(EmailAddress emailAddress) {
+					return emailAddress.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<EmailAddress, Object>() {
+				@Override
+				public Object apply(EmailAddress emailAddress) {
+					return emailAddress.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<EmailAddress, Object>() {
+				@Override
+				public Object apply(EmailAddress emailAddress) {
+					return emailAddress.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<EmailAddress, Object>() {
+				@Override
+				public Object apply(EmailAddress emailAddress) {
+					return emailAddress.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<EmailAddress, Object>() {
+				@Override
+				public Object apply(EmailAddress emailAddress) {
+					return emailAddress.getModifiedDate();
+				}
+			});
+		attributeGetters.put("classNameId",
+			new Function<EmailAddress, Object>() {
+				@Override
+				public Object apply(EmailAddress emailAddress) {
+					return emailAddress.getClassNameId();
+				}
+			});
+		attributeGetters.put("classPK",
+			new Function<EmailAddress, Object>() {
+				@Override
+				public Object apply(EmailAddress emailAddress) {
+					return emailAddress.getClassPK();
+				}
+			});
+		attributeGetters.put("address",
+			new Function<EmailAddress, Object>() {
+				@Override
+				public Object apply(EmailAddress emailAddress) {
+					return emailAddress.getAddress();
+				}
+			});
+		attributeGetters.put("typeId",
+			new Function<EmailAddress, Object>() {
+				@Override
+				public Object apply(EmailAddress emailAddress) {
+					return emailAddress.getTypeId();
+				}
+			});
+		attributeGetters.put("primary",
+			new Function<EmailAddress, Object>() {
+				@Override
+				public Object apply(EmailAddress emailAddress) {
+					return emailAddress.isPrimary();
+				}
+			});
 
-		Long emailAddressId = (Long)attributes.get("emailAddressId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (emailAddressId != null) {
-			setEmailAddressId(emailAddressId);
-		}
+		Map<String, BiConsumer<EmailAddress, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<EmailAddress, ?>>();
 
-		Long companyId = (Long)attributes.get("companyId");
+		attributeSetters.put("mvccVersion",
+			new BiConsumer<EmailAddress, Long>() {
+				@Override
+				public void accept(EmailAddress emailAddress, Long mvccVersion) {
+					emailAddress.setMvccVersion(mvccVersion);
+				}
+			});
+		attributeSetters.put("uuid",
+			new BiConsumer<EmailAddress, String>() {
+				@Override
+				public void accept(EmailAddress emailAddress, String uuid) {
+					emailAddress.setUuid(uuid);
+				}
+			});
+		attributeSetters.put("emailAddressId",
+			new BiConsumer<EmailAddress, Long>() {
+				@Override
+				public void accept(EmailAddress emailAddress,
+					Long emailAddressId) {
+					emailAddress.setEmailAddressId(emailAddressId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<EmailAddress, Long>() {
+				@Override
+				public void accept(EmailAddress emailAddress, Long companyId) {
+					emailAddress.setCompanyId(companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<EmailAddress, Long>() {
+				@Override
+				public void accept(EmailAddress emailAddress, Long userId) {
+					emailAddress.setUserId(userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<EmailAddress, String>() {
+				@Override
+				public void accept(EmailAddress emailAddress, String userName) {
+					emailAddress.setUserName(userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<EmailAddress, Date>() {
+				@Override
+				public void accept(EmailAddress emailAddress, Date createDate) {
+					emailAddress.setCreateDate(createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<EmailAddress, Date>() {
+				@Override
+				public void accept(EmailAddress emailAddress, Date modifiedDate) {
+					emailAddress.setModifiedDate(modifiedDate);
+				}
+			});
+		attributeSetters.put("classNameId",
+			new BiConsumer<EmailAddress, Long>() {
+				@Override
+				public void accept(EmailAddress emailAddress, Long classNameId) {
+					emailAddress.setClassNameId(classNameId);
+				}
+			});
+		attributeSetters.put("classPK",
+			new BiConsumer<EmailAddress, Long>() {
+				@Override
+				public void accept(EmailAddress emailAddress, Long classPK) {
+					emailAddress.setClassPK(classPK);
+				}
+			});
+		attributeSetters.put("address",
+			new BiConsumer<EmailAddress, String>() {
+				@Override
+				public void accept(EmailAddress emailAddress, String address) {
+					emailAddress.setAddress(address);
+				}
+			});
+		attributeSetters.put("typeId",
+			new BiConsumer<EmailAddress, Long>() {
+				@Override
+				public void accept(EmailAddress emailAddress, Long typeId) {
+					emailAddress.setTypeId(typeId);
+				}
+			});
+		attributeSetters.put("primary",
+			new BiConsumer<EmailAddress, Boolean>() {
+				@Override
+				public void accept(EmailAddress emailAddress, Boolean primary) {
+					emailAddress.setPrimary(primary);
+				}
+			});
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
-
-		Long classPK = (Long)attributes.get("classPK");
-
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
-
-		String address = (String)attributes.get("address");
-
-		if (address != null) {
-			setAddress(address);
-		}
-
-		Long typeId = (Long)attributes.get("typeId");
-
-		if (typeId != null) {
-			setTypeId(typeId);
-		}
-
-		Boolean primary = (Boolean)attributes.get("primary");
-
-		if (primary != null) {
-			setPrimary(primary);
-		}
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON
@@ -798,107 +903,6 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 		emailAddressCacheModel.primary = isPrimary();
 
 		return emailAddressCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(27);
-
-		sb.append("{mvccVersion=");
-		sb.append(getMvccVersion());
-		sb.append(", uuid=");
-		sb.append(getUuid());
-		sb.append(", emailAddressId=");
-		sb.append(getEmailAddressId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", classNameId=");
-		sb.append(getClassNameId());
-		sb.append(", classPK=");
-		sb.append(getClassPK());
-		sb.append(", address=");
-		sb.append(getAddress());
-		sb.append(", typeId=");
-		sb.append(getTypeId());
-		sb.append(", primary=");
-		sb.append(isPrimary());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(43);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.kernel.model.EmailAddress");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>mvccVersion</column-name><column-value><![CDATA[");
-		sb.append(getMvccVersion());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>emailAddressId</column-name><column-value><![CDATA[");
-		sb.append(getEmailAddressId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classNameId</column-name><column-value><![CDATA[");
-		sb.append(getClassNameId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classPK</column-name><column-value><![CDATA[");
-		sb.append(getClassPK());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>address</column-name><column-value><![CDATA[");
-		sb.append(getAddress());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>typeId</column-name><column-value><![CDATA[");
-		sb.append(getTypeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>primary</column-name><column-value><![CDATA[");
-		sb.append(isPrimary());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = EmailAddress.class.getClassLoader();

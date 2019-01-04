@@ -19,8 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -38,9 +36,13 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the KaleoTimer service. Represents a row in the &quot;KaleoTimer&quot; database table, with each column mapped to a property of this class.
@@ -162,137 +164,268 @@ public class KaleoTimerModelImpl extends BaseModelImpl<KaleoTimer>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("kaleoTimerId", getKaleoTimerId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("kaleoClassName", getKaleoClassName());
-		attributes.put("kaleoClassPK", getKaleoClassPK());
-		attributes.put("kaleoDefinitionVersionId", getKaleoDefinitionVersionId());
-		attributes.put("name", getName());
-		attributes.put("blocking", isBlocking());
-		attributes.put("description", getDescription());
-		attributes.put("duration", getDuration());
-		attributes.put("scale", getScale());
-		attributes.put("recurrenceDuration", getRecurrenceDuration());
-		attributes.put("recurrenceScale", getRecurrenceScale());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<KaleoTimer, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long kaleoTimerId = (Long)attributes.get("kaleoTimerId");
+	public Map<String, BiConsumer<KaleoTimer, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (kaleoTimerId != null) {
-			setKaleoTimerId(kaleoTimerId);
-		}
+	private static final Map<String, Function<KaleoTimer, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<KaleoTimer, Object>> _attributeSetters;
 
-		Long groupId = (Long)attributes.get("groupId");
+	static {
+		Map<String, Function<KaleoTimer, Object>> attributeGetters = new LinkedHashMap<String, Function<KaleoTimer, Object>>();
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+		attributeGetters.put("kaleoTimerId",
+			new Function<KaleoTimer, Object>() {
+				@Override
+				public Object apply(KaleoTimer kaleoTimer) {
+					return kaleoTimer.getKaleoTimerId();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<KaleoTimer, Object>() {
+				@Override
+				public Object apply(KaleoTimer kaleoTimer) {
+					return kaleoTimer.getGroupId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<KaleoTimer, Object>() {
+				@Override
+				public Object apply(KaleoTimer kaleoTimer) {
+					return kaleoTimer.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<KaleoTimer, Object>() {
+				@Override
+				public Object apply(KaleoTimer kaleoTimer) {
+					return kaleoTimer.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<KaleoTimer, Object>() {
+				@Override
+				public Object apply(KaleoTimer kaleoTimer) {
+					return kaleoTimer.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<KaleoTimer, Object>() {
+				@Override
+				public Object apply(KaleoTimer kaleoTimer) {
+					return kaleoTimer.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<KaleoTimer, Object>() {
+				@Override
+				public Object apply(KaleoTimer kaleoTimer) {
+					return kaleoTimer.getModifiedDate();
+				}
+			});
+		attributeGetters.put("kaleoClassName",
+			new Function<KaleoTimer, Object>() {
+				@Override
+				public Object apply(KaleoTimer kaleoTimer) {
+					return kaleoTimer.getKaleoClassName();
+				}
+			});
+		attributeGetters.put("kaleoClassPK",
+			new Function<KaleoTimer, Object>() {
+				@Override
+				public Object apply(KaleoTimer kaleoTimer) {
+					return kaleoTimer.getKaleoClassPK();
+				}
+			});
+		attributeGetters.put("kaleoDefinitionVersionId",
+			new Function<KaleoTimer, Object>() {
+				@Override
+				public Object apply(KaleoTimer kaleoTimer) {
+					return kaleoTimer.getKaleoDefinitionVersionId();
+				}
+			});
+		attributeGetters.put("name",
+			new Function<KaleoTimer, Object>() {
+				@Override
+				public Object apply(KaleoTimer kaleoTimer) {
+					return kaleoTimer.getName();
+				}
+			});
+		attributeGetters.put("blocking",
+			new Function<KaleoTimer, Object>() {
+				@Override
+				public Object apply(KaleoTimer kaleoTimer) {
+					return kaleoTimer.isBlocking();
+				}
+			});
+		attributeGetters.put("description",
+			new Function<KaleoTimer, Object>() {
+				@Override
+				public Object apply(KaleoTimer kaleoTimer) {
+					return kaleoTimer.getDescription();
+				}
+			});
+		attributeGetters.put("duration",
+			new Function<KaleoTimer, Object>() {
+				@Override
+				public Object apply(KaleoTimer kaleoTimer) {
+					return kaleoTimer.getDuration();
+				}
+			});
+		attributeGetters.put("scale",
+			new Function<KaleoTimer, Object>() {
+				@Override
+				public Object apply(KaleoTimer kaleoTimer) {
+					return kaleoTimer.getScale();
+				}
+			});
+		attributeGetters.put("recurrenceDuration",
+			new Function<KaleoTimer, Object>() {
+				@Override
+				public Object apply(KaleoTimer kaleoTimer) {
+					return kaleoTimer.getRecurrenceDuration();
+				}
+			});
+		attributeGetters.put("recurrenceScale",
+			new Function<KaleoTimer, Object>() {
+				@Override
+				public Object apply(KaleoTimer kaleoTimer) {
+					return kaleoTimer.getRecurrenceScale();
+				}
+			});
 
-		Long companyId = (Long)attributes.get("companyId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		Map<String, BiConsumer<KaleoTimer, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<KaleoTimer, ?>>();
 
-		Long userId = (Long)attributes.get("userId");
+		attributeSetters.put("kaleoTimerId",
+			new BiConsumer<KaleoTimer, Long>() {
+				@Override
+				public void accept(KaleoTimer kaleoTimer, Long kaleoTimerId) {
+					kaleoTimer.setKaleoTimerId(kaleoTimerId);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<KaleoTimer, Long>() {
+				@Override
+				public void accept(KaleoTimer kaleoTimer, Long groupId) {
+					kaleoTimer.setGroupId(groupId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<KaleoTimer, Long>() {
+				@Override
+				public void accept(KaleoTimer kaleoTimer, Long companyId) {
+					kaleoTimer.setCompanyId(companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<KaleoTimer, Long>() {
+				@Override
+				public void accept(KaleoTimer kaleoTimer, Long userId) {
+					kaleoTimer.setUserId(userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<KaleoTimer, String>() {
+				@Override
+				public void accept(KaleoTimer kaleoTimer, String userName) {
+					kaleoTimer.setUserName(userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<KaleoTimer, Date>() {
+				@Override
+				public void accept(KaleoTimer kaleoTimer, Date createDate) {
+					kaleoTimer.setCreateDate(createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<KaleoTimer, Date>() {
+				@Override
+				public void accept(KaleoTimer kaleoTimer, Date modifiedDate) {
+					kaleoTimer.setModifiedDate(modifiedDate);
+				}
+			});
+		attributeSetters.put("kaleoClassName",
+			new BiConsumer<KaleoTimer, String>() {
+				@Override
+				public void accept(KaleoTimer kaleoTimer, String kaleoClassName) {
+					kaleoTimer.setKaleoClassName(kaleoClassName);
+				}
+			});
+		attributeSetters.put("kaleoClassPK",
+			new BiConsumer<KaleoTimer, Long>() {
+				@Override
+				public void accept(KaleoTimer kaleoTimer, Long kaleoClassPK) {
+					kaleoTimer.setKaleoClassPK(kaleoClassPK);
+				}
+			});
+		attributeSetters.put("kaleoDefinitionVersionId",
+			new BiConsumer<KaleoTimer, Long>() {
+				@Override
+				public void accept(KaleoTimer kaleoTimer,
+					Long kaleoDefinitionVersionId) {
+					kaleoTimer.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
+				}
+			});
+		attributeSetters.put("name",
+			new BiConsumer<KaleoTimer, String>() {
+				@Override
+				public void accept(KaleoTimer kaleoTimer, String name) {
+					kaleoTimer.setName(name);
+				}
+			});
+		attributeSetters.put("blocking",
+			new BiConsumer<KaleoTimer, Boolean>() {
+				@Override
+				public void accept(KaleoTimer kaleoTimer, Boolean blocking) {
+					kaleoTimer.setBlocking(blocking);
+				}
+			});
+		attributeSetters.put("description",
+			new BiConsumer<KaleoTimer, String>() {
+				@Override
+				public void accept(KaleoTimer kaleoTimer, String description) {
+					kaleoTimer.setDescription(description);
+				}
+			});
+		attributeSetters.put("duration",
+			new BiConsumer<KaleoTimer, Double>() {
+				@Override
+				public void accept(KaleoTimer kaleoTimer, Double duration) {
+					kaleoTimer.setDuration(duration);
+				}
+			});
+		attributeSetters.put("scale",
+			new BiConsumer<KaleoTimer, String>() {
+				@Override
+				public void accept(KaleoTimer kaleoTimer, String scale) {
+					kaleoTimer.setScale(scale);
+				}
+			});
+		attributeSetters.put("recurrenceDuration",
+			new BiConsumer<KaleoTimer, Double>() {
+				@Override
+				public void accept(KaleoTimer kaleoTimer,
+					Double recurrenceDuration) {
+					kaleoTimer.setRecurrenceDuration(recurrenceDuration);
+				}
+			});
+		attributeSetters.put("recurrenceScale",
+			new BiConsumer<KaleoTimer, String>() {
+				@Override
+				public void accept(KaleoTimer kaleoTimer, String recurrenceScale) {
+					kaleoTimer.setRecurrenceScale(recurrenceScale);
+				}
+			});
 
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		String kaleoClassName = (String)attributes.get("kaleoClassName");
-
-		if (kaleoClassName != null) {
-			setKaleoClassName(kaleoClassName);
-		}
-
-		Long kaleoClassPK = (Long)attributes.get("kaleoClassPK");
-
-		if (kaleoClassPK != null) {
-			setKaleoClassPK(kaleoClassPK);
-		}
-
-		Long kaleoDefinitionVersionId = (Long)attributes.get(
-				"kaleoDefinitionVersionId");
-
-		if (kaleoDefinitionVersionId != null) {
-			setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		Boolean blocking = (Boolean)attributes.get("blocking");
-
-		if (blocking != null) {
-			setBlocking(blocking);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
-		Double duration = (Double)attributes.get("duration");
-
-		if (duration != null) {
-			setDuration(duration);
-		}
-
-		String scale = (String)attributes.get("scale");
-
-		if (scale != null) {
-			setScale(scale);
-		}
-
-		Double recurrenceDuration = (Double)attributes.get("recurrenceDuration");
-
-		if (recurrenceDuration != null) {
-			setRecurrenceDuration(recurrenceDuration);
-		}
-
-		String recurrenceScale = (String)attributes.get("recurrenceScale");
-
-		if (recurrenceScale != null) {
-			setRecurrenceScale(recurrenceScale);
-		}
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override
@@ -778,131 +911,6 @@ public class KaleoTimerModelImpl extends BaseModelImpl<KaleoTimer>
 		}
 
 		return kaleoTimerCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(35);
-
-		sb.append("{kaleoTimerId=");
-		sb.append(getKaleoTimerId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", kaleoClassName=");
-		sb.append(getKaleoClassName());
-		sb.append(", kaleoClassPK=");
-		sb.append(getKaleoClassPK());
-		sb.append(", kaleoDefinitionVersionId=");
-		sb.append(getKaleoDefinitionVersionId());
-		sb.append(", name=");
-		sb.append(getName());
-		sb.append(", blocking=");
-		sb.append(isBlocking());
-		sb.append(", description=");
-		sb.append(getDescription());
-		sb.append(", duration=");
-		sb.append(getDuration());
-		sb.append(", scale=");
-		sb.append(getScale());
-		sb.append(", recurrenceDuration=");
-		sb.append(getRecurrenceDuration());
-		sb.append(", recurrenceScale=");
-		sb.append(getRecurrenceScale());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(55);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.workflow.kaleo.model.KaleoTimer");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>kaleoTimerId</column-name><column-value><![CDATA[");
-		sb.append(getKaleoTimerId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>kaleoClassName</column-name><column-value><![CDATA[");
-		sb.append(getKaleoClassName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>kaleoClassPK</column-name><column-value><![CDATA[");
-		sb.append(getKaleoClassPK());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>kaleoDefinitionVersionId</column-name><column-value><![CDATA[");
-		sb.append(getKaleoDefinitionVersionId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(getName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>blocking</column-name><column-value><![CDATA[");
-		sb.append(isBlocking());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(getDescription());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>duration</column-name><column-value><![CDATA[");
-		sb.append(getDuration());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>scale</column-name><column-value><![CDATA[");
-		sb.append(getScale());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>recurrenceDuration</column-name><column-value><![CDATA[");
-		sb.append(getRecurrenceDuration());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>recurrenceScale</column-name><column-value><![CDATA[");
-		sb.append(getRecurrenceScale());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = KaleoTimer.class.getClassLoader();

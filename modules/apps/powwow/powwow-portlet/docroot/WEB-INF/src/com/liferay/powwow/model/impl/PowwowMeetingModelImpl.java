@@ -19,8 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.petra.string.StringBundler;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
@@ -43,10 +41,14 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the PowwowMeeting service. Represents a row in the &quot;PowwowMeeting&quot; database table, with each column mapped to a property of this class.
@@ -219,123 +221,246 @@ public class PowwowMeetingModelImpl extends BaseModelImpl<PowwowMeeting>
 	}
 
 	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("powwowMeetingId", getPowwowMeetingId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("powwowServerId", getPowwowServerId());
-		attributes.put("name", getName());
-		attributes.put("description", getDescription());
-		attributes.put("providerType", getProviderType());
-		attributes.put("providerTypeMetadata", getProviderTypeMetadata());
-		attributes.put("languageId", getLanguageId());
-		attributes.put("calendarBookingId", getCalendarBookingId());
-		attributes.put("status", getStatus());
-
-		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
-		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
-
-		return attributes;
+	public Map<String, Function<PowwowMeeting, Object>> getAttributeGetters() {
+		return _attributeGetters;
 	}
 
 	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long powwowMeetingId = (Long)attributes.get("powwowMeetingId");
+	public Map<String, BiConsumer<PowwowMeeting, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
 
-		if (powwowMeetingId != null) {
-			setPowwowMeetingId(powwowMeetingId);
-		}
+	private static final Map<String, Function<PowwowMeeting, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<PowwowMeeting, Object>> _attributeSetters;
 
-		Long groupId = (Long)attributes.get("groupId");
+	static {
+		Map<String, Function<PowwowMeeting, Object>> attributeGetters = new LinkedHashMap<String, Function<PowwowMeeting, Object>>();
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+		attributeGetters.put("powwowMeetingId",
+			new Function<PowwowMeeting, Object>() {
+				@Override
+				public Object apply(PowwowMeeting powwowMeeting) {
+					return powwowMeeting.getPowwowMeetingId();
+				}
+			});
+		attributeGetters.put("groupId",
+			new Function<PowwowMeeting, Object>() {
+				@Override
+				public Object apply(PowwowMeeting powwowMeeting) {
+					return powwowMeeting.getGroupId();
+				}
+			});
+		attributeGetters.put("companyId",
+			new Function<PowwowMeeting, Object>() {
+				@Override
+				public Object apply(PowwowMeeting powwowMeeting) {
+					return powwowMeeting.getCompanyId();
+				}
+			});
+		attributeGetters.put("userId",
+			new Function<PowwowMeeting, Object>() {
+				@Override
+				public Object apply(PowwowMeeting powwowMeeting) {
+					return powwowMeeting.getUserId();
+				}
+			});
+		attributeGetters.put("userName",
+			new Function<PowwowMeeting, Object>() {
+				@Override
+				public Object apply(PowwowMeeting powwowMeeting) {
+					return powwowMeeting.getUserName();
+				}
+			});
+		attributeGetters.put("createDate",
+			new Function<PowwowMeeting, Object>() {
+				@Override
+				public Object apply(PowwowMeeting powwowMeeting) {
+					return powwowMeeting.getCreateDate();
+				}
+			});
+		attributeGetters.put("modifiedDate",
+			new Function<PowwowMeeting, Object>() {
+				@Override
+				public Object apply(PowwowMeeting powwowMeeting) {
+					return powwowMeeting.getModifiedDate();
+				}
+			});
+		attributeGetters.put("powwowServerId",
+			new Function<PowwowMeeting, Object>() {
+				@Override
+				public Object apply(PowwowMeeting powwowMeeting) {
+					return powwowMeeting.getPowwowServerId();
+				}
+			});
+		attributeGetters.put("name",
+			new Function<PowwowMeeting, Object>() {
+				@Override
+				public Object apply(PowwowMeeting powwowMeeting) {
+					return powwowMeeting.getName();
+				}
+			});
+		attributeGetters.put("description",
+			new Function<PowwowMeeting, Object>() {
+				@Override
+				public Object apply(PowwowMeeting powwowMeeting) {
+					return powwowMeeting.getDescription();
+				}
+			});
+		attributeGetters.put("providerType",
+			new Function<PowwowMeeting, Object>() {
+				@Override
+				public Object apply(PowwowMeeting powwowMeeting) {
+					return powwowMeeting.getProviderType();
+				}
+			});
+		attributeGetters.put("providerTypeMetadata",
+			new Function<PowwowMeeting, Object>() {
+				@Override
+				public Object apply(PowwowMeeting powwowMeeting) {
+					return powwowMeeting.getProviderTypeMetadata();
+				}
+			});
+		attributeGetters.put("languageId",
+			new Function<PowwowMeeting, Object>() {
+				@Override
+				public Object apply(PowwowMeeting powwowMeeting) {
+					return powwowMeeting.getLanguageId();
+				}
+			});
+		attributeGetters.put("calendarBookingId",
+			new Function<PowwowMeeting, Object>() {
+				@Override
+				public Object apply(PowwowMeeting powwowMeeting) {
+					return powwowMeeting.getCalendarBookingId();
+				}
+			});
+		attributeGetters.put("status",
+			new Function<PowwowMeeting, Object>() {
+				@Override
+				public Object apply(PowwowMeeting powwowMeeting) {
+					return powwowMeeting.getStatus();
+				}
+			});
 
-		Long companyId = (Long)attributes.get("companyId");
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+		Map<String, BiConsumer<PowwowMeeting, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<PowwowMeeting, ?>>();
 
-		Long userId = (Long)attributes.get("userId");
+		attributeSetters.put("powwowMeetingId",
+			new BiConsumer<PowwowMeeting, Long>() {
+				@Override
+				public void accept(PowwowMeeting powwowMeeting,
+					Long powwowMeetingId) {
+					powwowMeeting.setPowwowMeetingId(powwowMeetingId);
+				}
+			});
+		attributeSetters.put("groupId",
+			new BiConsumer<PowwowMeeting, Long>() {
+				@Override
+				public void accept(PowwowMeeting powwowMeeting, Long groupId) {
+					powwowMeeting.setGroupId(groupId);
+				}
+			});
+		attributeSetters.put("companyId",
+			new BiConsumer<PowwowMeeting, Long>() {
+				@Override
+				public void accept(PowwowMeeting powwowMeeting, Long companyId) {
+					powwowMeeting.setCompanyId(companyId);
+				}
+			});
+		attributeSetters.put("userId",
+			new BiConsumer<PowwowMeeting, Long>() {
+				@Override
+				public void accept(PowwowMeeting powwowMeeting, Long userId) {
+					powwowMeeting.setUserId(userId);
+				}
+			});
+		attributeSetters.put("userName",
+			new BiConsumer<PowwowMeeting, String>() {
+				@Override
+				public void accept(PowwowMeeting powwowMeeting, String userName) {
+					powwowMeeting.setUserName(userName);
+				}
+			});
+		attributeSetters.put("createDate",
+			new BiConsumer<PowwowMeeting, Date>() {
+				@Override
+				public void accept(PowwowMeeting powwowMeeting, Date createDate) {
+					powwowMeeting.setCreateDate(createDate);
+				}
+			});
+		attributeSetters.put("modifiedDate",
+			new BiConsumer<PowwowMeeting, Date>() {
+				@Override
+				public void accept(PowwowMeeting powwowMeeting,
+					Date modifiedDate) {
+					powwowMeeting.setModifiedDate(modifiedDate);
+				}
+			});
+		attributeSetters.put("powwowServerId",
+			new BiConsumer<PowwowMeeting, Long>() {
+				@Override
+				public void accept(PowwowMeeting powwowMeeting,
+					Long powwowServerId) {
+					powwowMeeting.setPowwowServerId(powwowServerId);
+				}
+			});
+		attributeSetters.put("name",
+			new BiConsumer<PowwowMeeting, String>() {
+				@Override
+				public void accept(PowwowMeeting powwowMeeting, String name) {
+					powwowMeeting.setName(name);
+				}
+			});
+		attributeSetters.put("description",
+			new BiConsumer<PowwowMeeting, String>() {
+				@Override
+				public void accept(PowwowMeeting powwowMeeting,
+					String description) {
+					powwowMeeting.setDescription(description);
+				}
+			});
+		attributeSetters.put("providerType",
+			new BiConsumer<PowwowMeeting, String>() {
+				@Override
+				public void accept(PowwowMeeting powwowMeeting,
+					String providerType) {
+					powwowMeeting.setProviderType(providerType);
+				}
+			});
+		attributeSetters.put("providerTypeMetadata",
+			new BiConsumer<PowwowMeeting, String>() {
+				@Override
+				public void accept(PowwowMeeting powwowMeeting,
+					String providerTypeMetadata) {
+					powwowMeeting.setProviderTypeMetadata(providerTypeMetadata);
+				}
+			});
+		attributeSetters.put("languageId",
+			new BiConsumer<PowwowMeeting, String>() {
+				@Override
+				public void accept(PowwowMeeting powwowMeeting,
+					String languageId) {
+					powwowMeeting.setLanguageId(languageId);
+				}
+			});
+		attributeSetters.put("calendarBookingId",
+			new BiConsumer<PowwowMeeting, Long>() {
+				@Override
+				public void accept(PowwowMeeting powwowMeeting,
+					Long calendarBookingId) {
+					powwowMeeting.setCalendarBookingId(calendarBookingId);
+				}
+			});
+		attributeSetters.put("status",
+			new BiConsumer<PowwowMeeting, Integer>() {
+				@Override
+				public void accept(PowwowMeeting powwowMeeting, Integer status) {
+					powwowMeeting.setStatus(status);
+				}
+			});
 
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String userName = (String)attributes.get("userName");
-
-		if (userName != null) {
-			setUserName(userName);
-		}
-
-		Date createDate = (Date)attributes.get("createDate");
-
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
-
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
-
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
-
-		Long powwowServerId = (Long)attributes.get("powwowServerId");
-
-		if (powwowServerId != null) {
-			setPowwowServerId(powwowServerId);
-		}
-
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
-		String providerType = (String)attributes.get("providerType");
-
-		if (providerType != null) {
-			setProviderType(providerType);
-		}
-
-		String providerTypeMetadata = (String)attributes.get(
-				"providerTypeMetadata");
-
-		if (providerTypeMetadata != null) {
-			setProviderTypeMetadata(providerTypeMetadata);
-		}
-
-		String languageId = (String)attributes.get("languageId");
-
-		if (languageId != null) {
-			setLanguageId(languageId);
-		}
-
-		Long calendarBookingId = (Long)attributes.get("calendarBookingId");
-
-		if (calendarBookingId != null) {
-			setCalendarBookingId(calendarBookingId);
-		}
-
-		Integer status = (Integer)attributes.get("status");
-
-		if (status != null) {
-			setStatus(status);
-		}
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON
@@ -821,119 +946,6 @@ public class PowwowMeetingModelImpl extends BaseModelImpl<PowwowMeeting>
 		powwowMeetingCacheModel.status = getStatus();
 
 		return powwowMeetingCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(31);
-
-		sb.append("{powwowMeetingId=");
-		sb.append(getPowwowMeetingId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", powwowServerId=");
-		sb.append(getPowwowServerId());
-		sb.append(", name=");
-		sb.append(getName());
-		sb.append(", description=");
-		sb.append(getDescription());
-		sb.append(", providerType=");
-		sb.append(getProviderType());
-		sb.append(", providerTypeMetadata=");
-		sb.append(getProviderTypeMetadata());
-		sb.append(", languageId=");
-		sb.append(getLanguageId());
-		sb.append(", calendarBookingId=");
-		sb.append(getCalendarBookingId());
-		sb.append(", status=");
-		sb.append(getStatus());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(49);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.powwow.model.PowwowMeeting");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>powwowMeetingId</column-name><column-value><![CDATA[");
-		sb.append(getPowwowMeetingId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>powwowServerId</column-name><column-value><![CDATA[");
-		sb.append(getPowwowServerId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(getName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(getDescription());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>providerType</column-name><column-value><![CDATA[");
-		sb.append(getProviderType());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>providerTypeMetadata</column-name><column-value><![CDATA[");
-		sb.append(getProviderTypeMetadata());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>languageId</column-name><column-value><![CDATA[");
-		sb.append(getLanguageId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>calendarBookingId</column-name><column-value><![CDATA[");
-		sb.append(getCalendarBookingId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>status</column-name><column-value><![CDATA[");
-		sb.append(getStatus());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
 	}
 
 	private static final ClassLoader _classLoader = PowwowMeeting.class.getClassLoader();

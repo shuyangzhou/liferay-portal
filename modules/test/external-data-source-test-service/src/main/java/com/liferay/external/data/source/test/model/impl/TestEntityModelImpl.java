@@ -35,8 +35,12 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the TestEntity service. Represents a row in the &quot;TestEntity&quot; database table, with each column mapped to a property of this class.
@@ -147,6 +151,57 @@ public class TestEntityModelImpl extends BaseModelImpl<TestEntity>
 		if (data != null) {
 			setData(data);
 		}
+	}
+
+	public Map<String, Function<TestEntity, Object>> getAttributeGetters() {
+		return _attributeGetters;
+	}
+
+	public Map<String, BiConsumer<TestEntity, Object>> getAttributeSetters() {
+		return _attributeSetters;
+	}
+
+	private static final Map<String, Function<TestEntity, Object>> _attributeGetters;
+	private static final Map<String, BiConsumer<TestEntity, Object>> _attributeSetters;
+
+	static {
+		Map<String, Function<TestEntity, Object>> attributeGetters = new LinkedHashMap<String, Function<TestEntity, Object>>();
+
+		attributeGetters.put("id",
+			new Function<TestEntity, Object>() {
+				@Override
+				public Object apply(TestEntity testEntity) {
+					return testEntity.getId();
+				}
+			});
+		attributeGetters.put("data",
+			new Function<TestEntity, Object>() {
+				@Override
+				public Object apply(TestEntity testEntity) {
+					return testEntity.getData();
+				}
+			});
+
+		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
+
+		Map<String, BiConsumer<TestEntity, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<TestEntity, ?>>();
+
+		attributeSetters.put("id",
+			new BiConsumer<TestEntity, Long>() {
+				@Override
+				public void accept(TestEntity testEntity, Long id) {
+					testEntity.setId(id);
+				}
+			});
+		attributeSetters.put("data",
+			new BiConsumer<TestEntity, String>() {
+				@Override
+				public void accept(TestEntity testEntity, String data) {
+					testEntity.setData(data);
+				}
+			});
+
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override
