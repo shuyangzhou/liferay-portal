@@ -45,8 +45,13 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author David Arques
  */
-@Component(immediate = true, service = AsahFaroBackendClient.class)
+@Component(factory = "AsahFaroBackendClient", service = {})
 public class AsahFaroBackendClientImpl implements AsahFaroBackendClient {
+
+	@Override
+	public String getDataSourceId() {
+		return _dataSourceId;
+	}
 
 	@Override
 	public Results<Individual> getIndividualResults(
@@ -56,8 +61,7 @@ public class AsahFaroBackendClientImpl implements AsahFaroBackendClient {
 		FilterBuilder filterBuilder = new FilterBuilder();
 
 		filterBuilder.addNullFilter(
-			"dataSourceIndividualPKs/" +
-				System.getProperty("asah.faro.backend.dxp.dataSourceId"),
+			"dataSourceIndividualPKs/" + _dataSourceId,
 			FilterConstants.COMPARISON_OPERATOR_NOT_EQUALS);
 
 		filterBuilder.addFilter(
@@ -71,7 +75,7 @@ public class AsahFaroBackendClientImpl implements AsahFaroBackendClient {
 					filterBuilder,
 					FilterConstants.FIELD_NAME_CONTEXT_INDIVIDUAL, cur, delta,
 					orderByFields),
-				_getHeaders());
+				_headers);
 
 			return _individualJSONObjectMapper.mapToResults(response);
 		}
@@ -101,7 +105,7 @@ public class AsahFaroBackendClientImpl implements AsahFaroBackendClient {
 					filterBuilder,
 					FilterConstants.FIELD_NAME_CONTEXT_INDIVIDUAL_SEGMENT, cur,
 					delta, orderByFields),
-				_getHeaders());
+				_headers);
 
 			return _individualSegmentJSONObjectMapper.mapToResults(response);
 		}
@@ -112,19 +116,15 @@ public class AsahFaroBackendClientImpl implements AsahFaroBackendClient {
 	}
 
 	@Activate
-	protected void activate() {
-		_jsonWebServiceClient.setBaseURI(
-			System.getProperty("asah.faro.backend.url"));
-	}
+	protected void activate(Map<String, Object> properties) {
+		_dataSourceId = _getString(properties, "asahFaroBackendDataSourceId");
 
-	private Map<String, String> _getHeaders() {
-		Map<String, String> headers = new HashMap<>();
-
-		headers.put(
+		_headers.put(
 			"OSB-Asah-Faro-Backend-Security-Signature",
-			System.getProperty("asah.faro.backend.security.signature"));
+			_getString(properties, "asahFaroBackendSecuritySignature"));
 
-		return headers;
+		_jsonWebServiceClient.setBaseURI(
+			_getString(properties, "asahFaroBackendUrl"));
 	}
 
 	private MultivaluedMap<String, Object> _getParameters(
@@ -137,6 +137,14 @@ public class AsahFaroBackendClientImpl implements AsahFaroBackendClient {
 		uriVariables.putSingle("filter", filterBuilder.build());
 
 		return uriVariables;
+	}
+
+	private String _getString(Map<String, Object> properties, String key) {
+		if (!properties.containsKey(key)) {
+			return null;
+		}
+
+		return String.valueOf(properties.get(key));
 	}
 
 	private MultivaluedMap<String, Object> _getUriVariables(
@@ -176,6 +184,9 @@ public class AsahFaroBackendClientImpl implements AsahFaroBackendClient {
 	private static final IndividualSegmentJSONObjectMapper
 		_individualSegmentJSONObjectMapper =
 			new IndividualSegmentJSONObjectMapper();
+
+	private String _dataSourceId;
+	private final Map<String, String> _headers = new HashMap();
 
 	@Reference
 	private JSONWebServiceClient _jsonWebServiceClient;

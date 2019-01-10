@@ -232,6 +232,7 @@ public class PredicatesTest {
 			"GET"
 		).returns(
 			Page.class
+		).permissionFunction(
 		).executeFunction(
 			__ -> null
 		).receivesParams(

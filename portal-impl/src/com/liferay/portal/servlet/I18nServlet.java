@@ -177,7 +177,9 @@ public class I18nServlet extends HttpServlet {
 			}
 		}
 
-		String i18nPath = StringPool.SLASH + i18nLanguageId;
+		Locale i18nLocale = LocaleUtil.fromLanguageId(i18nLanguageId);
+
+		String i18nPath = StringPool.SLASH + i18nLocale.toLanguageTag();
 
 		if (siteDefaultLocale == null) {
 			if (PropsValues.LOCALE_USE_DEFAULT_IF_NOT_AVAILABLE) {
@@ -217,7 +219,7 @@ public class I18nServlet extends HttpServlet {
 	protected I18nData getI18nData(Locale locale) throws PortalException {
 		String languageId = LocaleUtil.toLanguageId(locale);
 
-		String i18nPath = StringPool.SLASH + languageId;
+		String i18nPath = StringPool.SLASH + locale.toLanguageTag();
 
 		Locale defaultLocale = LanguageUtil.getLocale(locale.getLanguage());
 

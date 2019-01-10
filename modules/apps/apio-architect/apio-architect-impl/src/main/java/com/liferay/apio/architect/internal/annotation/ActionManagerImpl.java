@@ -219,7 +219,8 @@ public class ActionManagerImpl implements ActionManager {
 
 	@Override
 	public Stream<ActionSemantics> getActionSemantics(
-		Resource resource, Credentials credentials) {
+		Resource resource, Credentials credentials,
+		HttpServletRequest httpServletRequest) {
 
 		Stream<ActionSemantics> stream = actionSemantics();
 
@@ -227,6 +228,18 @@ public class ActionManagerImpl implements ActionManager {
 			isActionFor(resource)
 		).map(
 			actionSemantics -> actionSemantics.withResource(resource)
+		).filter(
+			actionSemantics -> Try.of(
+				() -> {
+					List<Object> params = actionSemantics.getPermissionParams(
+						clazz -> _provide(
+							actionSemantics, httpServletRequest, clazz));
+
+					return actionSemantics.checkPermissions(params);
+				}
+			).getOrElse(
+				false
+			)
 		);
 	}
 
@@ -255,7 +268,7 @@ public class ActionManagerImpl implements ActionManager {
 		return new Documentation(
 			apiTitleSupplier, apiDescriptionSupplier, applicationUrlSupplier,
 			() -> _representableManager.getRepresentors(), resourceStream,
-			resource -> getActionSemantics(resource, null),
+			resource -> getActionSemantics(resource, null, null),
 			() -> _customDocumentationManager.getCustomDocumentation());
 	}
 

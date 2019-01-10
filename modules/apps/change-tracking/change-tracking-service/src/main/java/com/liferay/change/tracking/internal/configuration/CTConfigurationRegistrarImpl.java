@@ -53,7 +53,7 @@ public class CTConfigurationRegistrarImpl implements CTConfigurationRegistrar {
 		}
 
 		ServiceRegistration<CTConfiguration> serviceRegistration =
-			_serviceRegistrations.get(ctConfiguration);
+			_serviceRegistrations.remove(ctConfiguration);
 
 		serviceRegistration.unregister();
 	}

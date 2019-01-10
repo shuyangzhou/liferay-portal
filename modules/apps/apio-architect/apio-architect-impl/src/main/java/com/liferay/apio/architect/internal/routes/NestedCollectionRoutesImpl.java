@@ -24,6 +24,7 @@ import com.liferay.apio.architect.alias.routes.permission.HasNestedAddingPermiss
 import com.liferay.apio.architect.annotation.GenericParentId;
 import com.liferay.apio.architect.annotation.ParentId;
 import com.liferay.apio.architect.batch.BatchResult;
+import com.liferay.apio.architect.credentials.Credentials;
 import com.liferay.apio.architect.form.Body;
 import com.liferay.apio.architect.form.Form;
 import com.liferay.apio.architect.function.throwable.ThrowableFunction;
@@ -155,6 +156,13 @@ public class NestedCollectionRoutesImpl<T, S, U>
 					"POST"
 				).returns(
 					BatchResult.class
+				).permissionFunction(
+					params ->
+						hasNestedAddingPermissionFunction.apply(
+							unsafeCast(params.get(0)),
+							unsafeCast(params.get(1)))
+				).permissionProvidedClasses(
+					Credentials.class, _getIdClass()
 				).executeFunction(
 					params -> batchCreatorThrowableHexaFunction.andThen(
 						t -> new BatchResult<>(t, _resource.getName())
@@ -179,6 +187,11 @@ public class NestedCollectionRoutesImpl<T, S, U>
 				"POST"
 			).returns(
 				SingleModel.class
+			).permissionFunction(
+				params -> hasNestedAddingPermissionFunction.apply(
+					unsafeCast(params.get(0)), unsafeCast(params.get(1)))
+			).permissionProvidedClasses(
+				Credentials.class, _getIdClass()
 			).executeFunction(
 				params -> creatorThrowableHexaFunction.andThen(
 					t -> new SingleModelImpl<>(t, _resource.getName())
@@ -213,6 +226,7 @@ public class NestedCollectionRoutesImpl<T, S, U>
 				"GET"
 			).returns(
 				Page.class
+			).permissionFunction(
 			).executeFunction(
 				params -> getterThrowableHexaFunction.andThen(
 					pageItems -> new PageImpl<>(

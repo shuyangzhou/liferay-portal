@@ -76,7 +76,8 @@ public interface ActionManager {
 	 * @review
 	 */
 	public Stream<ActionSemantics> getActionSemantics(
-		Resource resource, Credentials credentials);
+		Resource resource, Credentials credentials,
+		HttpServletRequest httpServletRequest);
 
 	/**
 	 * The API documentation with the list of actions and resources.

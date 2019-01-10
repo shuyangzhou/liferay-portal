@@ -44,7 +44,7 @@ public class WorkflowListedTaskResource {
 
 	@GET
 	@Produces("application/json")
-	public List<WorkflowTaskModel> getUserWorkflowTaskHeaders(
+	public List<WorkflowTaskModel> getWorkflowTaskModels(
 			@Context Company company, @Context User user,
 			@Context Locale locale)
 		throws PortalException {

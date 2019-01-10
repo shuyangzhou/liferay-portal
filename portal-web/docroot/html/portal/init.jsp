@@ -18,6 +18,7 @@
 
 <%@ page import="com.liferay.admin.kernel.util.PortalProductMenuApplicationType" %><%@
 page import="com.liferay.exportimport.kernel.lar.DefaultConfigurationPortletDataHandler" %><%@
+page import="com.liferay.portal.internal.terms.of.use.TermsOfUseContentProviderUtil" %><%@
 page import="com.liferay.portal.kernel.cluster.ClusterExecutorUtil" %><%@
 page import="com.liferay.portal.kernel.cluster.ClusterNode" %><%@
 page import="com.liferay.portal.kernel.dao.db.DBManagerUtil" %><%@
@@ -36,10 +37,9 @@ page import="com.liferay.portal.kernel.parsers.bbcode.BBCodeTranslatorUtil" %><%
 page import="com.liferay.portal.kernel.portlet.PortletConfigurationLayoutUtil" %><%@
 page import="com.liferay.portal.kernel.servlet.HttpHeaders" %><%@
 page import="com.liferay.portal.kernel.templateparser.TransformException" %><%@
+page import="com.liferay.portal.kernel.terms.of.use.TermsOfUseContentProvider" %><%@
 page import="com.liferay.portal.kernel.util.ClassUtil" %><%@
 page import="com.liferay.portal.kernel.util.ProgressTracker" %><%@
-page import="com.liferay.portal.kernel.util.TermsOfUseContentProvider" %><%@
-page import="com.liferay.portal.kernel.util.TermsOfUseContentProviderRegistryUtil" %><%@
 page import="com.liferay.portal.setup.SetupWizardUtil" %><%@
 page import="com.liferay.portal.util.LicenseUtil" %><%@
 page import="com.liferay.portal.util.PortletCategoryUtil" %><%@

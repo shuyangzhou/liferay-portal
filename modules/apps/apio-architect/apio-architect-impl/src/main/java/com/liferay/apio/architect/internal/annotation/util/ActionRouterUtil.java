@@ -16,6 +16,7 @@ package com.liferay.apio.architect.internal.annotation.util;
 
 import static com.liferay.apio.architect.internal.annotation.representor.StringUtil.toLowercaseSlug;
 import static com.liferay.apio.architect.internal.annotation.util.AnnotationUtil.findAnnotationInAnyParameter;
+import static com.liferay.apio.architect.internal.annotation.util.AnnotationUtil.findAnnotationInMethodOrInItsAnnotations;
 
 import static io.leangen.geantyref.GenericTypeReflector.getTypeParameter;
 
@@ -24,6 +25,7 @@ import static java.util.Objects.nonNull;
 import com.liferay.apio.architect.annotation.GenericParentId;
 import com.liferay.apio.architect.annotation.Id;
 import com.liferay.apio.architect.annotation.ParentId;
+import com.liferay.apio.architect.annotation.Permissions.HasPermission;
 import com.liferay.apio.architect.annotation.Vocabulary.Type;
 import com.liferay.apio.architect.form.Body;
 import com.liferay.apio.architect.identifier.Identifier;
@@ -42,6 +44,7 @@ import com.liferay.apio.architect.single.model.SingleModel;
 
 import io.vavr.CheckedFunction1;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -163,6 +166,35 @@ public final class ActionRouterUtil {
 	}
 
 	/**
+	 * Finds the permission method associated with a an action
+	 *
+	 * @param  actionRouterClass the class to find the permission method
+	 * @param  resourceClass the class of resource
+	 * @param  actionName the name of the action to search
+	 * @param  httpMethod the http method of the action to search
+	 * @return an optional containing the method or empty otherwise
+	 * @review
+	 */
+	public static Optional<Method> findPermissionMethodOptional(
+		Class actionRouterClass, Class<? extends Resource> resourceClass,
+		String actionName, String httpMethod) {
+
+		return Stream.of(
+			actionRouterClass.getMethods()
+		).filter(
+			method -> {
+				HasPermission hasPermission =
+					findAnnotationInMethodOrInItsAnnotations(
+						method, HasPermission.class);
+
+				return _matchesPermission(
+					actionName, httpMethod, hasPermission, resourceClass,
+					method);
+			}
+		).findFirst();
+	}
+
+	/**
 	 * Returns the name of the class that must be provided from the HTTP body.
 	 *
 	 * <p>
@@ -267,7 +299,7 @@ public final class ActionRouterUtil {
 	 *
 	 * @param  method the action's method
 	 * @param  name the name of the resource, extracted from the {@link
-	 *         com.liferay.apio.architect.router.ActionRouter}
+	 *         ActionRouter}
 	 * @return the action's {@link Resource}
 	 * @review
 	 */
@@ -378,6 +410,50 @@ public final class ActionRouterUtil {
 	 */
 	public static boolean needsParameterFromBody(Method method) {
 		return nonNull(findAnnotationInAnyParameter(method, _BODY_ANNOTATION));
+	}
+
+	private static <A extends Annotation> boolean _isResourceWithAnnotation(
+		Class<? extends Resource> resourceClass,
+		Class<? extends Resource> routerClass, Method method,
+		Class<A> annotationClass) {
+
+		A annotationInAnyParameter = findAnnotationInAnyParameter(
+			method, annotationClass);
+
+		if ((annotationInAnyParameter == null) ||
+			routerClass.isAssignableFrom(resourceClass)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	private static boolean _matchesPermission(
+		String actionName, String httpMethod, HasPermission hasPermission,
+		Class<? extends Resource> resourceClass, Method method) {
+
+		if (hasPermission != null) {
+			boolean validIdAnnotation = _isResourceWithAnnotation(
+				resourceClass, Item.class, method, Id.class);
+
+			boolean validGenericParentIdAnnotation = _isResourceWithAnnotation(
+				resourceClass, GenericParent.class, method,
+				GenericParentId.class);
+
+			boolean validParentIdAnnotation = _isResourceWithAnnotation(
+				resourceClass, Nested.class, method, ParentId.class);
+
+			if (actionName.equals(hasPermission.name()) &&
+				httpMethod.equals(hasPermission.httpMethod()) &&
+				validIdAnnotation && validGenericParentIdAnnotation &&
+				validParentIdAnnotation) {
+
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private ActionRouterUtil() {

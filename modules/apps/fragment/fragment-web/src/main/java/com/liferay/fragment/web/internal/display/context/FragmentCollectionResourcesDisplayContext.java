@@ -60,12 +60,12 @@ public class FragmentCollectionResourcesDisplayContext {
 		PortletURL portletURL = _renderResponse.createRenderURL();
 
 		portletURL.setParameter("mvcRenderCommandName", "/fragment/view");
+		portletURL.setParameter("tabs1", "resources");
 		portletURL.setParameter(
 			"redirect", _fragmentDisplayContext.getRedirect());
 		portletURL.setParameter(
 			"fragmentCollectionId",
 			String.valueOf(_fragmentDisplayContext.getFragmentCollectionId()));
-		portletURL.setParameter("viewResources", Boolean.TRUE.toString());
 
 		SearchContainer searchContainer = new SearchContainer(
 			_renderRequest, portletURL, null, "there-are-no-resources");

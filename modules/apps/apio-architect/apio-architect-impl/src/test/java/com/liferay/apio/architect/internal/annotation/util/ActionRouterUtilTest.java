@@ -15,6 +15,7 @@
 package com.liferay.apio.architect.internal.annotation.util;
 
 import static com.liferay.apio.architect.internal.annotation.util.ActionRouterUtil.execute;
+import static com.liferay.apio.architect.internal.annotation.util.ActionRouterUtil.findPermissionMethodOptional;
 import static com.liferay.apio.architect.internal.annotation.util.ActionRouterUtil.getBodyResourceClassName;
 import static com.liferay.apio.architect.internal.annotation.util.ActionRouterUtil.getParamClasses;
 import static com.liferay.apio.architect.internal.annotation.util.ActionRouterUtil.getResource;
@@ -56,6 +57,7 @@ import com.liferay.apio.architect.single.model.SingleModel;
 import java.lang.reflect.Method;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Test;
 
@@ -64,6 +66,22 @@ import org.junit.Test;
  * @author Javier Gamarra
  */
 public class ActionRouterUtilTest {
+
+	@Test
+	public void testCanCreateAnnotationReturnsMethod() {
+		Optional<Method> createMethodOptional = findPermissionMethodOptional(
+			MyAnnotatedInterface.class, Paged.class, "create", "POST");
+		Optional<Method> notExistingMethodOptional =
+			findPermissionMethodOptional(
+				MyAnnotatedInterface.class, Paged.class, "update", "POST");
+		Optional<Method> retrieveItemMethodOptional =
+			findPermissionMethodOptional(
+				MyAnnotatedInterface.class, Item.class, "retrieve", "GET");
+
+		assertTrue(createMethodOptional.isPresent());
+		assertFalse(notExistingMethodOptional.isPresent());
+		assertTrue(retrieveItemMethodOptional.isPresent());
+	}
 
 	@Test
 	public void testExecuteLeavesNullAsNull() throws Throwable {

@@ -74,7 +74,7 @@ public class BulkAssetEntryResource {
 	@Path("/tags/{classNameId}/common")
 	@POST
 	@Produces(ContentTypes.APPLICATION_JSON)
-	public BulkAssetEntryCommonTagsModel getAssetEntryCommonTags(
+	public BulkAssetEntryCommonTagsModel getBulkAssetEntryCommonTagsModel(
 		@Context User user, @Context Locale locale,
 		@PathParam("classNameId") long classNameId,
 		BulkAssetEntryCommonTagsActionModel
@@ -88,7 +88,8 @@ public class BulkAssetEntryResource {
 			Stream<FileEntry> stream = bulkSelection.stream();
 
 			Set<String> commonTags = stream.map(
-				_getFileEntryTagsSet(PermissionCheckerFactoryUtil.create(user))
+				_getFileEntryTagsFunction(
+					PermissionCheckerFactoryUtil.create(user))
 			).reduce(
 				SetUtil::intersect
 			).orElse(
@@ -107,7 +108,7 @@ public class BulkAssetEntryResource {
 	@Path("/tags/{classNameId}")
 	@POST
 	@Produces(ContentTypes.APPLICATION_JSON)
-	public BulkActionResponseModel updateAssetEntryTags(
+	public BulkActionResponseModel updateBulkActionResponseModel(
 		@Context User user, @PathParam("classNameId") long classNameId,
 		BulkAssetEntryUpdateTagsActionModel
 			bulkAssetEntryUpdateTagsActionModel) {
@@ -150,7 +151,7 @@ public class BulkAssetEntryResource {
 		return BulkActionResponseModel.SUCCESS;
 	}
 
-	private Function<FileEntry, Set<String>> _getFileEntryTagsSet(
+	private Function<FileEntry, Set<String>> _getFileEntryTagsFunction(
 		PermissionChecker permissionChecker) {
 
 		return fileEntry -> {

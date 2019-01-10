@@ -74,7 +74,7 @@ public class WorkflowTaskResource {
 	@GET
 	@Path("/{workflowTaskId}/activities")
 	@Produces("application/json")
-	public List<WorkflowActivityModel> getWorkflowActivities(
+	public List<WorkflowActivityModel> getWorkflowActivityModels(
 			@Context Company company, @Context User user,
 			@Context Locale locale,
 			@PathParam("workflowTaskId") long workflowTaskId)
@@ -87,7 +87,7 @@ public class WorkflowTaskResource {
 	@GET
 	@Path("/{workflowTaskId}")
 	@Produces("application/json")
-	public WorkflowTaskModel getWorkflowTask(
+	public WorkflowTaskModel getWorkflowTaskModel(
 			@Context Company company, @Context User user,
 			@Context Locale locale,
 			@PathParam("workflowTaskId") long workflowTaskId)

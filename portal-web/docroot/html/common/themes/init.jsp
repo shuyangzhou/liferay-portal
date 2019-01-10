@@ -18,10 +18,8 @@
 
 <%@ page import="com.liferay.portal.kernel.model.Portlet" %><%@
 page import="com.liferay.portal.kernel.model.portlet.PortletDependency" %><%@
-page import="com.liferay.portal.kernel.portlet.JavaScriptPortletResourcePredicateFilter" %><%@
 page import="com.liferay.portal.kernel.servlet.BrowserMetadata" %><%@
 page import="com.liferay.portal.kernel.upload.UploadServletRequestConfigurationHelperUtil" %><%@
-page import="com.liferay.portal.kernel.util.PredicateFilter" %><%@
 page import="com.liferay.portal.servlet.ComboServletStaticURLGenerator" %><%@
 page import="com.liferay.portal.util.LayoutTypeAccessPolicyTracker" %><%@
 page import="com.liferay.portlet.PortletResourceAccessor" %><%@
@@ -30,4 +28,5 @@ page import="com.liferay.portlet.internal.RenderStateUtil" %><%@
 page import="com.liferay.taglib.aui.ScriptTag" %>
 
 <%@ page import="java.util.Iterator" %><%@
-page import="java.util.concurrent.ConcurrentHashMap" %>
+page import="java.util.concurrent.ConcurrentHashMap" %><%@
+page import="java.util.function.Predicate" %>

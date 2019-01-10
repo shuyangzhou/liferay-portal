@@ -25,6 +25,7 @@ import com.liferay.apio.architect.annotation.Body;
 import com.liferay.apio.architect.annotation.GenericParentId;
 import com.liferay.apio.architect.annotation.Id;
 import com.liferay.apio.architect.annotation.ParentId;
+import com.liferay.apio.architect.annotation.Permissions.CanRetrieve;
 import com.liferay.apio.architect.credentials.Credentials;
 import com.liferay.apio.architect.pagination.PageItems;
 import com.liferay.apio.architect.pagination.Pagination;
@@ -59,6 +60,15 @@ import org.osgi.service.component.annotations.Reference;
 	service = {ActionRouter.class, BlogPostingCommentActionRouter.class}
 )
 public class BlogPostingCommentActionRouter implements ActionRouter<Comment> {
+
+	@CanRetrieve
+	public boolean canRetrieve(Credentials credentials, @Id long id) {
+		if (hasPermission(credentials)) {
+			return true;
+		}
+
+		return false;
+	}
 
 	@Create
 	public Comment create(

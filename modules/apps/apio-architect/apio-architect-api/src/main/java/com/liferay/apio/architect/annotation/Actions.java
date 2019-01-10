@@ -152,6 +152,7 @@ public @interface Actions {
 	 * Defines an annotation that indicates a method updates an element. That
 	 * method must live inside a class that implements {@link
 	 * com.liferay.apio.architect.router.ActionRouter}.
+	 *
 	 * @review
 	 */
 	@Action(httpMethod = "PATCH", name = "update")

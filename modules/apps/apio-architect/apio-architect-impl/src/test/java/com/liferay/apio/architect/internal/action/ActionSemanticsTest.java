@@ -29,8 +29,12 @@ import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
 import static org.hamcrest.core.Is.is;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+import com.liferay.apio.architect.annotation.Id;
 import com.liferay.apio.architect.internal.annotation.Action;
+import com.liferay.apio.architect.internal.unsafe.Unsafe;
 import com.liferay.apio.architect.pagination.Page;
 import com.liferay.apio.architect.resource.Resource;
 import com.liferay.apio.architect.resource.Resource.Item;
@@ -61,6 +65,7 @@ public class ActionSemanticsTest {
 			GET
 		).returns(
 			Long.class
+		).permissionFunction(
 		).executeFunction(
 			_join
 		).receivesParams(
@@ -83,6 +88,10 @@ public class ActionSemanticsTest {
 		String result = (String)actionSemantics.execute(asList("1", "2"));
 
 		assertThat(result, is("1-2"));
+
+		boolean permission = actionSemantics.checkPermissions(null);
+
+		assertTrue(permission);
 	}
 
 	@Test
@@ -97,6 +106,7 @@ public class ActionSemanticsTest {
 			GET
 		).returns(
 			Void.class
+		).permissionFunction(
 		).executeFunction(
 			_join
 		).build();
@@ -125,6 +135,7 @@ public class ActionSemanticsTest {
 			GET
 		).returns(
 			Long.class
+		).permissionFunction(
 		).executeFunction(
 			_join
 		).annotatedWith(
@@ -144,6 +155,39 @@ public class ActionSemanticsTest {
 	}
 
 	@Test
+	public void testBuilderWithPermissionFunctionCreatesActionSemantics()
+		throws Throwable {
+
+		ActionSemantics actionSemantics = ActionSemantics.ofResource(
+			Paged.of("name")
+		).name(
+			"action"
+		).method(
+			GET
+		).returns(
+			Long.class
+		).permissionFunction(
+			params -> Unsafe.unsafeCast(params.get(0)).equals(0L)
+		).permissionProvidedClasses(
+			Id.class
+		).executeFunction(
+			_join
+		).annotatedWith(
+			_myAnnotation
+		).build();
+
+		boolean validParam = actionSemantics.checkPermissions(
+			Collections.singletonList(0L));
+
+		assertTrue(validParam);
+
+		boolean invalidParam = actionSemantics.checkPermissions(
+			Collections.singletonList(1L));
+
+		assertFalse(invalidParam);
+	}
+
+	@Test
 	public void testBuilderWithStringMethodCreatesActionSemantics()
 		throws Throwable {
 
@@ -155,6 +199,7 @@ public class ActionSemanticsTest {
 			"POST"
 		).returns(
 			Void.class
+		).permissionFunction(
 		).executeFunction(
 			_join
 		).annotatedWith(
@@ -183,6 +228,7 @@ public class ActionSemanticsTest {
 			GET
 		).returns(
 			String.class
+		).permissionFunction(
 		).executeFunction(
 			_join
 		).receivesParams(
@@ -214,6 +260,7 @@ public class ActionSemanticsTest {
 			"GET"
 		).returns(
 			Page.class
+		).permissionFunction(
 		).executeFunction(
 			__ -> null
 		).annotatedWith(
@@ -241,6 +288,7 @@ public class ActionSemanticsTest {
 			"GET"
 		).returns(
 			Page.class
+		).permissionFunction(
 		).executeFunction(
 			__ -> null
 		).build();
@@ -264,6 +312,7 @@ public class ActionSemanticsTest {
 			"GET"
 		).returns(
 			Page.class
+		).permissionFunction(
 		).executeFunction(
 			__ -> null
 		).build();
@@ -286,6 +335,7 @@ public class ActionSemanticsTest {
 			"GET"
 		).returns(
 			Page.class
+		).permissionFunction(
 		).executeFunction(
 			__ -> null
 		).build();
@@ -308,6 +358,7 @@ public class ActionSemanticsTest {
 			"GET"
 		).returns(
 			Page.class
+		).permissionFunction(
 		).executeFunction(
 			__ -> null
 		).build();

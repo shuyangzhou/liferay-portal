@@ -14,6 +14,7 @@
 
 package com.liferay.gradle.plugins.node;
 
+import com.liferay.gradle.plugins.node.internal.util.FileUtil;
 import com.liferay.gradle.plugins.node.internal.util.GradleUtil;
 import com.liferay.gradle.plugins.node.internal.util.StringUtil;
 import com.liferay.gradle.plugins.node.tasks.DownloadNodeModuleTask;
@@ -28,8 +29,13 @@ import com.liferay.gradle.plugins.node.tasks.PublishNodeModuleTask;
 import groovy.json.JsonSlurper;
 
 import java.io.File;
+import java.io.IOException;
+
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
@@ -37,6 +43,9 @@ import org.gradle.api.Action;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
+import org.gradle.api.UncheckedIOException;
+import org.gradle.api.file.FileCollection;
+import org.gradle.api.file.FileCopyDetails;
 import org.gradle.api.internal.plugins.osgi.OsgiHelper;
 import org.gradle.api.plugins.BasePlugin;
 import org.gradle.api.plugins.JavaPlugin;
@@ -48,6 +57,7 @@ import org.gradle.api.tasks.SourceSetOutput;
 import org.gradle.api.tasks.TaskContainer;
 import org.gradle.api.tasks.TaskOutputs;
 import org.gradle.language.base.plugins.LifecycleBasePlugin;
+import org.gradle.language.jvm.tasks.ProcessResources;
 import org.gradle.util.VersionNumber;
 
 /**
@@ -498,37 +508,69 @@ public class NodePlugin implements Plugin<Project> {
 		npmRunTask.setNodeVersion(nodeExtension.getNodeVersion());
 		npmRunTask.setNpmVersion(nodeExtension.getNpmVersion());
 
-		SourceSet sourceSet = GradleUtil.getSourceSet(
-			npmRunTask.getProject(), SourceSet.MAIN_SOURCE_SET_NAME);
+		Project project = npmRunTask.getProject();
 
-		SourceSetOutput sourceSetOutput = sourceSet.getOutput();
+		PluginContainer pluginContainer = project.getPlugins();
 
-		File classesDir = sourceSetOutput.getClassesDir();
+		if (pluginContainer.hasPlugin(JavaPlugin.class)) {
+			SourceSet sourceSet = GradleUtil.getSourceSet(
+				npmRunTask.getProject(), SourceSet.MAIN_SOURCE_SET_NAME);
 
-		if (!classesDir.exists()) {
-			TaskOutputs taskOutputs = npmRunTask.getOutputs();
+			SourceSetOutput sourceSetOutput = sourceSet.getOutput();
 
-			taskOutputs.upToDateWhen(
-				new Spec<Task>() {
+			File classesDir = sourceSetOutput.getClassesDir();
+
+			if (!classesDir.exists()) {
+				TaskOutputs taskOutputs = npmRunTask.getOutputs();
+
+				taskOutputs.upToDateWhen(
+					new Spec<Task>() {
+
+						@Override
+						public boolean isSatisfiedBy(Task task) {
+							return false;
+						}
+
+					});
+			}
+		}
+	}
+
+	private void _configureTaskNpmRunBuildForJavaPlugin(NpmRunTask npmRunTask) {
+		npmRunTask.mustRunAfter(JavaPlugin.PROCESS_RESOURCES_TASK_NAME);
+
+		Task classesTask = GradleUtil.getTask(
+			npmRunTask.getProject(), JavaPlugin.CLASSES_TASK_NAME);
+
+		classesTask.dependsOn(npmRunTask);
+
+		File sourceDigestFile = npmRunTask.getSourceDigestFile();
+
+		if (!_isStale(sourceDigestFile, npmRunTask.getSourceFiles())) {
+			Project project = npmRunTask.getProject();
+
+			ProcessResources processResourcesTask =
+				(ProcessResources)GradleUtil.getTask(
+					project, JavaPlugin.PROCESS_RESOURCES_TASK_NAME);
+
+			processResourcesTask.eachFile(
+				new Action<FileCopyDetails>() {
 
 					@Override
-					public boolean isSatisfiedBy(Task task) {
-						return false;
+					public void execute(FileCopyDetails fileCopyDetails) {
+						String name = fileCopyDetails.getName();
+
+						if (name.endsWith(".es.js")) {
+							File file = fileCopyDetails.getFile();
+
+							if (file.exists()) {
+								fileCopyDetails.exclude();
+							}
+						}
 					}
 
 				});
 		}
-	}
-
-	private void _configureTaskNpmRunBuildForJavaPlugin(
-		ExecuteNpmTask executeNpmTask) {
-
-		executeNpmTask.mustRunAfter(JavaPlugin.PROCESS_RESOURCES_TASK_NAME);
-
-		Task classesTask = GradleUtil.getTask(
-			executeNpmTask.getProject(), JavaPlugin.CLASSES_TASK_NAME);
-
-		classesTask.dependsOn(executeNpmTask);
 	}
 
 	private void _configureTaskNpmRunTestForLifecycleBasePlugin(
@@ -710,6 +752,32 @@ public class NodePlugin implements Plugin<Project> {
 				}
 
 			});
+	}
+
+	private boolean _isStale(
+		File sourceDigestFile, FileCollection sourceFileCollection) {
+
+		if (!sourceDigestFile.exists()) {
+			return true;
+		}
+
+		byte[] bytes = null;
+
+		try {
+			bytes = Files.readAllBytes(sourceDigestFile.toPath());
+		}
+		catch (IOException ioe) {
+			throw new UncheckedIOException(ioe);
+		}
+
+		String oldDigest = new String(bytes, StandardCharsets.UTF_8);
+		String newDigest = FileUtil.getDigest(sourceFileCollection);
+
+		if (!Objects.equals(oldDigest, newDigest)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	private static final String _NPM_RUN_TEST_TASK_NAME = "npmRunTest";

@@ -92,7 +92,7 @@ public class PageMessageBodyWriter<T>
 				this::getSingleModelOptional
 			).actionSemanticsFunction(
 				resource -> actionManager.getActionSemantics(
-					resource, credentials)
+					resource, credentials, requestInfo.getHttpServletRequest())
 			).build());
 
 		return pageWriter.write();

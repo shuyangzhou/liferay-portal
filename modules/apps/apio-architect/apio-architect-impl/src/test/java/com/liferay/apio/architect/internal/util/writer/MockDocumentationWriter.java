@@ -131,6 +131,7 @@ public class MockDocumentationWriter {
 			"GET"
 		).returns(
 			Page.class
+		).permissionFunction(
 		).executeFunction(
 			__ -> null
 		).build();
@@ -145,6 +146,7 @@ public class MockDocumentationWriter {
 			"GET"
 		).returns(
 			SingleModel.class
+		).permissionFunction(
 		).executeFunction(
 			__ -> null
 		).build();
@@ -157,6 +159,7 @@ public class MockDocumentationWriter {
 			"DELETE"
 		).returns(
 			Void.class
+		).permissionFunction(
 		).executeFunction(
 			__ -> null
 		).build();
@@ -169,6 +172,7 @@ public class MockDocumentationWriter {
 			"PUT"
 		).returns(
 			SingleModel.class
+		).permissionFunction(
 		).executeFunction(
 			__ -> null
 		).build();

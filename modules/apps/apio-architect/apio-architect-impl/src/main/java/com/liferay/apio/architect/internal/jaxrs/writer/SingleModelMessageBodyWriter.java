@@ -95,7 +95,7 @@ public class SingleModelMessageBodyWriter<T>
 				this::getSingleModelOptional
 			).actionSemanticsFunction(
 				resource -> actionManager.getActionSemantics(
-					resource, credentials)
+					resource, credentials, requestInfo.getHttpServletRequest())
 			).build());
 
 		Optional<String> optional = singleModelWriter.write();
