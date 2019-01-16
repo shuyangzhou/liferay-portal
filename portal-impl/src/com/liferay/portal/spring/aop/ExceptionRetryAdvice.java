@@ -61,8 +61,7 @@ public class ExceptionRetryAdvice extends ChainableMethodAdvice {
 
 		properties.put(ExceptionRetryAcceptor.EXCEPTION_NAME, exceptionName);
 
-		return new RetryContext(
-			new ExceptionRetryAcceptor(), properties, retries);
+		return new RetryContext(properties, retries);
 	}
 
 	@Override
@@ -73,8 +72,6 @@ public class ExceptionRetryAdvice extends ChainableMethodAdvice {
 		RetryContext retryContext =
 			aopMethodInvocation.getAdviceMethodContext();
 
-		ExceptionRetryAcceptor exceptionRetryAcceptor =
-			retryContext._exceptionRetryAcceptor;
 		Map<String, String> properties = retryContext._properties;
 
 		int retries = retryContext._retries;
@@ -94,7 +91,7 @@ public class ExceptionRetryAdvice extends ChainableMethodAdvice {
 			catch (Throwable t) {
 				throwable = t;
 
-				if (!exceptionRetryAcceptor.acceptException(t, properties)) {
+				if (!_acceptException(t, properties)) {
 					throw t;
 				}
 
@@ -128,21 +125,57 @@ public class ExceptionRetryAdvice extends ChainableMethodAdvice {
 		throw throwable;
 	}
 
+	private boolean _acceptException(
+		Throwable throwable, Map<String, String> propertyMap) {
+
+		String name = propertyMap.get(ExceptionRetryAcceptor.EXCEPTION_NAME);
+
+		if (name == null) {
+			throw new IllegalArgumentException(
+				"Missing property " + ExceptionRetryAcceptor.EXCEPTION_NAME);
+		}
+
+		while (true) {
+			Class<?> clazz = throwable.getClass();
+
+			ClassLoader classLoader = clazz.getClassLoader();
+
+			if (classLoader == null) {
+				classLoader = ClassLoader.getSystemClassLoader();
+			}
+
+			try {
+				Class<?> exceptionClass = classLoader.loadClass(name);
+
+				if (exceptionClass.isInstance(throwable)) {
+					return true;
+				}
+			}
+			catch (ClassNotFoundException cnfe) {
+			}
+
+			Throwable cause = throwable.getCause();
+
+			if ((throwable == cause) || (cause == null)) {
+				break;
+			}
+
+			throwable = cause;
+		}
+
+		return false;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		ExceptionRetryAdvice.class);
 
 	private static class RetryContext {
 
-		private RetryContext(
-			ExceptionRetryAcceptor exceptionRetryAcceptor,
-			Map<String, String> properties, int retries) {
-
-			_exceptionRetryAcceptor = exceptionRetryAcceptor;
+		private RetryContext(Map<String, String> properties, int retries) {
 			_properties = properties;
 			_retries = retries;
 		}
 
-		private final ExceptionRetryAcceptor _exceptionRetryAcceptor;
 		private final Map<String, String> _properties;
 		private final int _retries;
 
