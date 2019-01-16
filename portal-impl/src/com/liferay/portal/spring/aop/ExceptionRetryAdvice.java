@@ -25,7 +25,6 @@ import com.liferay.portal.util.PropsValues;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -57,11 +56,7 @@ public class ExceptionRetryAdvice extends ChainableMethodAdvice {
 			retries = PropsValues.RETRY_ADVICE_MAX_RETRIES;
 		}
 
-		Map<String, String> properties = new HashMap<>();
-
-		properties.put(ExceptionRetryAcceptor.EXCEPTION_NAME, exceptionName);
-
-		return new RetryContext(properties, retries);
+		return new RetryContext(exceptionName, retries);
 	}
 
 	@Override
@@ -71,8 +66,6 @@ public class ExceptionRetryAdvice extends ChainableMethodAdvice {
 
 		RetryContext retryContext =
 			aopMethodInvocation.getAdviceMethodContext();
-
-		Map<String, String> properties = retryContext._properties;
 
 		int retries = retryContext._retries;
 
@@ -91,7 +84,7 @@ public class ExceptionRetryAdvice extends ChainableMethodAdvice {
 			catch (Throwable t) {
 				throwable = t;
 
-				if (!_acceptException(t, properties)) {
+				if (!_acceptException(t, retryContext._exceptionName)) {
 					throw t;
 				}
 
@@ -126,11 +119,9 @@ public class ExceptionRetryAdvice extends ChainableMethodAdvice {
 	}
 
 	private boolean _acceptException(
-		Throwable throwable, Map<String, String> propertyMap) {
+		Throwable throwable, String exceptionName) {
 
-		String name = propertyMap.get(ExceptionRetryAcceptor.EXCEPTION_NAME);
-
-		if (name == null) {
+		if (exceptionName == null) {
 			throw new IllegalArgumentException(
 				"Missing property " + ExceptionRetryAcceptor.EXCEPTION_NAME);
 		}
@@ -145,7 +136,7 @@ public class ExceptionRetryAdvice extends ChainableMethodAdvice {
 			}
 
 			try {
-				Class<?> exceptionClass = classLoader.loadClass(name);
+				Class<?> exceptionClass = classLoader.loadClass(exceptionName);
 
 				if (exceptionClass.isInstance(throwable)) {
 					return true;
@@ -171,12 +162,12 @@ public class ExceptionRetryAdvice extends ChainableMethodAdvice {
 
 	private static class RetryContext {
 
-		private RetryContext(Map<String, String> properties, int retries) {
-			_properties = properties;
+		private RetryContext(String exceptionName, int retries) {
+			_exceptionName = exceptionName;
 			_retries = retries;
 		}
 
-		private final Map<String, String> _properties;
+		private final String _exceptionName;
 		private final int _retries;
 
 	}
