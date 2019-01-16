@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.kernel.service;
+package com.liferay.portal.kernel.spring.aop;
 
 import java.util.Map;
 
