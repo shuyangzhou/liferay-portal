@@ -16,9 +16,8 @@ package com.liferay.portal.spring.aop;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.service.RetryAcceptor;
-import com.liferay.portal.kernel.spring.aop.Property;
-import com.liferay.portal.kernel.spring.aop.Retry;
+import com.liferay.portal.kernel.service.ExceptionRetryAcceptor;
+import com.liferay.portal.kernel.spring.aop.ExceptionRetry;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.util.PropsValues;
 
@@ -38,13 +37,14 @@ public class ExceptionRetryAdvice extends ChainableMethodAdvice {
 		Class<?> targetClass, Method method,
 		Map<Class<? extends Annotation>, Annotation> annotations) {
 
-		Retry retry = (Retry)annotations.get(Retry.class);
+		ExceptionRetry exceptionRetry = (ExceptionRetry)annotations.get(
+			ExceptionRetry.class);
 
-		if (retry == null) {
+		if (exceptionRetry == null) {
 			return null;
 		}
 
-		int retries = retry.retries();
+		int retries = exceptionRetry.retries();
 
 		if (retries < 0) {
 			retries = PropsValues.RETRY_ADVICE_MAX_RETRIES;
@@ -52,22 +52,12 @@ public class ExceptionRetryAdvice extends ChainableMethodAdvice {
 
 		Map<String, String> properties = new HashMap<>();
 
-		for (Property property : retry.properties()) {
-			properties.put(property.name(), property.value());
-		}
+		properties.put(
+			ExceptionRetryAcceptor.EXCEPTION_NAME,
+			exceptionRetry.exceptionName());
 
-		Class<? extends RetryAcceptor> clazz = retry.acceptor();
-
-		try {
-			RetryAcceptor retryAcceptor = clazz.newInstance();
-
-			return new RetryContext(retryAcceptor, properties, retries);
-		}
-		catch (ReflectiveOperationException roe) {
-			_log.error(roe, roe);
-
-			return null;
-		}
+		return new RetryContext(
+			new ExceptionRetryAcceptor(), properties, retries);
 	}
 
 	@Override
@@ -78,7 +68,8 @@ public class ExceptionRetryAdvice extends ChainableMethodAdvice {
 		RetryContext retryContext =
 			aopMethodInvocation.getAdviceMethodContext();
 
-		RetryAcceptor retryAcceptor = retryContext._retryAcceptor;
+		ExceptionRetryAcceptor exceptionRetryAcceptor =
+			retryContext._exceptionRetryAcceptor;
 		Map<String, String> properties = retryContext._properties;
 
 		int retries = retryContext._retries;
@@ -96,7 +87,9 @@ public class ExceptionRetryAdvice extends ChainableMethodAdvice {
 			try {
 				returnValue = aopMethodInvocation.proceed(arguments);
 
-				if (!retryAcceptor.acceptResult(returnValue, properties)) {
+				if (!exceptionRetryAcceptor.acceptResult(
+						returnValue, properties)) {
+
 					return returnValue;
 				}
 
@@ -117,7 +110,7 @@ public class ExceptionRetryAdvice extends ChainableMethodAdvice {
 			catch (Throwable t) {
 				throwable = t;
 
-				if (!retryAcceptor.acceptException(t, properties)) {
+				if (!exceptionRetryAcceptor.acceptException(t, properties)) {
 					throw t;
 				}
 
@@ -171,17 +164,17 @@ public class ExceptionRetryAdvice extends ChainableMethodAdvice {
 	private static class RetryContext {
 
 		private RetryContext(
-			RetryAcceptor retryAcceptor, Map<String, String> properties,
-			int retries) {
+			ExceptionRetryAcceptor exceptionRetryAcceptor,
+			Map<String, String> properties, int retries) {
 
-			_retryAcceptor = retryAcceptor;
+			_exceptionRetryAcceptor = exceptionRetryAcceptor;
 			_properties = properties;
 			_retries = retries;
 		}
 
+		private final ExceptionRetryAcceptor _exceptionRetryAcceptor;
 		private final Map<String, String> _properties;
 		private final int _retries;
-		private final RetryAcceptor _retryAcceptor;
 
 	}
 
