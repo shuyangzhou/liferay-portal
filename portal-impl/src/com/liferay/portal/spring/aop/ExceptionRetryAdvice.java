@@ -85,32 +85,11 @@ public class ExceptionRetryAdvice extends ChainableMethodAdvice {
 			retries++;
 		}
 
-		Object returnValue = null;
 		Throwable throwable = null;
 
 		while ((retries < 0) || (retries-- > 0)) {
 			try {
-				returnValue = aopMethodInvocation.proceed(arguments);
-
-				if (!exceptionRetryAcceptor.acceptResult(
-						returnValue, properties)) {
-
-					return returnValue;
-				}
-
-				if (_log.isWarnEnabled() && (retries != 0)) {
-					String number = String.valueOf(retries);
-
-					if (retries < 0) {
-						number = "unlimited";
-					}
-
-					_log.warn(
-						StringBundler.concat(
-							"Retry on ", String.valueOf(aopMethodInvocation),
-							" for ", number, " more times due to result ",
-							String.valueOf(returnValue)));
-				}
+				return aopMethodInvocation.proceed(arguments);
 			}
 			catch (Throwable t) {
 				throwable = t;
@@ -136,31 +115,17 @@ public class ExceptionRetryAdvice extends ChainableMethodAdvice {
 			}
 		}
 
-		if (throwable != null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					StringBundler.concat(
-						"Give up retrying on ",
-						String.valueOf(aopMethodInvocation), " after ",
-						String.valueOf(totalRetries),
-						" retries and rethrow last retry's exception ",
-						String.valueOf(throwable)),
-					throwable);
-			}
-
-			throw throwable;
-		}
-
 		if (_log.isWarnEnabled()) {
 			_log.warn(
 				StringBundler.concat(
 					"Give up retrying on ", String.valueOf(aopMethodInvocation),
 					" after ", String.valueOf(totalRetries),
-					" retries and returning the last retry's result ",
-					String.valueOf(returnValue)));
+					" retries and rethrow last retry's exception ",
+					String.valueOf(throwable)),
+				throwable);
 		}
 
-		return returnValue;
+		throw throwable;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
