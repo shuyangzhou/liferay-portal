@@ -31,8 +31,7 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.settings.PortletInstanceSettingsLocator;
 import com.liferay.portal.kernel.settings.Settings;
-import com.liferay.portal.kernel.spring.aop.Property;
-import com.liferay.portal.kernel.spring.aop.Retry;
+import com.liferay.portal.kernel.spring.aop.ExceptionRetry;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -317,27 +316,18 @@ public interface PortletPreferencesLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getPortletPreferencesesCount();
 
-	@Retry(acceptor = ExceptionRetryAcceptor.class, properties =  {
-		@Property(name = ExceptionRetryAcceptor.EXCEPTION_NAME, value = "org.springframework.dao.DataIntegrityViolationException")
-	}
-	)
+	@ExceptionRetry(exceptionName = "org.springframework.dao.DataIntegrityViolationException")
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public javax.portlet.PortletPreferences getPreferences(long companyId,
 		long ownerId, int ownerType, long plid, String portletId);
 
-	@Retry(acceptor = ExceptionRetryAcceptor.class, properties =  {
-		@Property(name = ExceptionRetryAcceptor.EXCEPTION_NAME, value = "org.springframework.dao.DataIntegrityViolationException")
-	}
-	)
+	@ExceptionRetry(exceptionName = "org.springframework.dao.DataIntegrityViolationException")
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public javax.portlet.PortletPreferences getPreferences(long companyId,
 		long ownerId, int ownerType, long plid, String portletId,
 		String defaultPreferences);
 
-	@Retry(acceptor = ExceptionRetryAcceptor.class, properties =  {
-		@Property(name = ExceptionRetryAcceptor.EXCEPTION_NAME, value = "org.springframework.dao.DataIntegrityViolationException")
-	}
-	)
+	@ExceptionRetry(exceptionName = "org.springframework.dao.DataIntegrityViolationException")
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public javax.portlet.PortletPreferences getPreferences(
 		PortletPreferencesIds portletPreferencesIds);

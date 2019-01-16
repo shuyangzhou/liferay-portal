@@ -32,8 +32,7 @@ import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.permission.ModelPermissions;
-import com.liferay.portal.kernel.spring.aop.Property;
-import com.liferay.portal.kernel.spring.aop.Retry;
+import com.liferay.portal.kernel.spring.aop.ExceptionRetry;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -129,10 +128,7 @@ public interface ResourcePermissionLocalService extends BaseLocalService,
 	* @param roleId the primary key of the role
 	* @param actionId the action ID
 	*/
-	@Retry(acceptor = ExceptionRetryAcceptor.class, properties =  {
-		@Property(name = ExceptionRetryAcceptor.EXCEPTION_NAME, value = "org.springframework.dao.DataIntegrityViolationException")
-	}
-	)
+	@ExceptionRetry(exceptionName = "org.springframework.dao.DataIntegrityViolationException")
 	public void addResourcePermission(long companyId, String name, int scope,
 		String primKey, long roleId, String actionId) throws PortalException;
 
@@ -762,10 +758,7 @@ public interface ResourcePermissionLocalService extends BaseLocalService,
 	created the resource)
 	* @param actionIds the action IDs of the actions
 	*/
-	@Retry(acceptor = ExceptionRetryAcceptor.class, properties =  {
-		@Property(name = ExceptionRetryAcceptor.EXCEPTION_NAME, value = "org.springframework.dao.DataIntegrityViolationException")
-	}
-	)
+	@ExceptionRetry(exceptionName = "org.springframework.dao.DataIntegrityViolationException")
 	public void setOwnerResourcePermissions(long companyId, String name,
 		int scope, String primKey, long roleId, long ownerId, String[] actionIds)
 		throws PortalException;
@@ -794,10 +787,7 @@ public interface ResourcePermissionLocalService extends BaseLocalService,
 	* @param roleId the primary key of the role
 	* @param actionIds the action IDs of the actions
 	*/
-	@Retry(acceptor = ExceptionRetryAcceptor.class, properties =  {
-		@Property(name = ExceptionRetryAcceptor.EXCEPTION_NAME, value = "org.springframework.dao.DataIntegrityViolationException")
-	}
-	)
+	@ExceptionRetry(exceptionName = "org.springframework.dao.DataIntegrityViolationException")
 	public void setResourcePermissions(long companyId, String name, int scope,
 		String primKey, long roleId, String[] actionIds)
 		throws PortalException;
@@ -825,10 +815,7 @@ public interface ResourcePermissionLocalService extends BaseLocalService,
 	* @param primKey the primary key
 	* @param roleIdsToActionIds a map of role IDs to action IDs of the actions
 	*/
-	@Retry(acceptor = ExceptionRetryAcceptor.class, properties =  {
-		@Property(name = ExceptionRetryAcceptor.EXCEPTION_NAME, value = "org.springframework.dao.DataIntegrityViolationException")
-	}
-	)
+	@ExceptionRetry(exceptionName = "org.springframework.dao.DataIntegrityViolationException")
 	public void setResourcePermissions(long companyId, String name, int scope,
 		String primKey, Map<Long, String[]> roleIdsToActionIds)
 		throws PortalException;
