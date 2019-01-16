@@ -30,7 +30,10 @@ import java.util.Map;
 
 /**
  * @author Matthew Tambara
+ * @deprecated As of Mueller (7.2.x), replaced by {@link
+ * 	 	ExceptionRetryAdvice}
  */
+@Deprecated
 public class RetryAdvice extends ChainableMethodAdvice {
 
 	@Override

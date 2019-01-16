@@ -22,7 +22,9 @@ import java.lang.annotation.Target;
 
 /**
  * @author Matthew Tambara
+ * @deprecated As of Mueller (7.2.x), with no direct replacement
  */
+@Deprecated
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
