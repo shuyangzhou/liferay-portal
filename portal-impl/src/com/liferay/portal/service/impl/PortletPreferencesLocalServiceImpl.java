@@ -33,15 +33,13 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
-import com.liferay.portal.kernel.service.ExceptionRetryAcceptor;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.settings.PortletInstanceSettingsLocator;
 import com.liferay.portal.kernel.settings.PortletPreferencesSettings;
 import com.liferay.portal.kernel.settings.Settings;
 import com.liferay.portal.kernel.settings.SettingsLocatorHelperUtil;
-import com.liferay.portal.kernel.spring.aop.Property;
-import com.liferay.portal.kernel.spring.aop.Retry;
+import com.liferay.portal.kernel.spring.aop.ExceptionRetry;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
@@ -400,16 +398,10 @@ public class PortletPreferencesLocalServiceImpl
 			ownerId, ownerType, portletId, excludeDefaultPreferences);
 	}
 
-	@Override
-	@Retry(
-		acceptor = ExceptionRetryAcceptor.class,
-		properties = {
-			@Property(
-				name = ExceptionRetryAcceptor.EXCEPTION_NAME,
-				value = "org.springframework.dao.DataIntegrityViolationException"
-			)
-		}
+	@ExceptionRetry(
+		exceptionName = "org.springframework.dao.DataIntegrityViolationException"
 	)
+	@Override
 	public javax.portlet.PortletPreferences getPreferences(
 		long companyId, long ownerId, int ownerType, long plid,
 		String portletId) {
@@ -418,16 +410,10 @@ public class PortletPreferencesLocalServiceImpl
 			companyId, ownerId, ownerType, plid, portletId, null);
 	}
 
-	@Override
-	@Retry(
-		acceptor = ExceptionRetryAcceptor.class,
-		properties = {
-			@Property(
-				name = ExceptionRetryAcceptor.EXCEPTION_NAME,
-				value = "org.springframework.dao.DataIntegrityViolationException"
-			)
-		}
+	@ExceptionRetry(
+		exceptionName = "org.springframework.dao.DataIntegrityViolationException"
 	)
+	@Override
 	public javax.portlet.PortletPreferences getPreferences(
 		long companyId, long ownerId, int ownerType, long plid,
 		String portletId, String defaultPreferences) {
@@ -453,16 +439,10 @@ public class PortletPreferencesLocalServiceImpl
 			portletPreferences.getPreferences());
 	}
 
-	@Override
-	@Retry(
-		acceptor = ExceptionRetryAcceptor.class,
-		properties = {
-			@Property(
-				name = ExceptionRetryAcceptor.EXCEPTION_NAME,
-				value = "org.springframework.dao.DataIntegrityViolationException"
-			)
-		}
+	@ExceptionRetry(
+		exceptionName = "org.springframework.dao.DataIntegrityViolationException"
 	)
+	@Override
 	public javax.portlet.PortletPreferences getPreferences(
 		PortletPreferencesIds portletPreferencesIds) {
 

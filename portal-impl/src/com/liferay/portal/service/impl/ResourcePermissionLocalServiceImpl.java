@@ -45,12 +45,10 @@ import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.security.permission.PermissionUpdateHandler;
 import com.liferay.portal.kernel.security.permission.PermissionUpdateHandlerRegistryUtil;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
-import com.liferay.portal.kernel.service.ExceptionRetryAcceptor;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.permission.ModelPermissions;
 import com.liferay.portal.kernel.service.permission.ModelPermissionsFactory;
-import com.liferay.portal.kernel.spring.aop.Property;
-import com.liferay.portal.kernel.spring.aop.Retry;
+import com.liferay.portal.kernel.spring.aop.ExceptionRetry;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -264,16 +262,10 @@ public class ResourcePermissionLocalServiceImpl
 	 * @param roleId the primary key of the role
 	 * @param actionId the action ID
 	 */
-	@Override
-	@Retry(
-		acceptor = ExceptionRetryAcceptor.class,
-		properties = {
-			@Property(
-				name = ExceptionRetryAcceptor.EXCEPTION_NAME,
-				value = "org.springframework.dao.DataIntegrityViolationException"
-			)
-		}
+	@ExceptionRetry(
+		exceptionName = "org.springframework.dao.DataIntegrityViolationException"
 	)
+	@Override
 	public void addResourcePermission(
 			long companyId, String name, int scope, String primKey, long roleId,
 			String actionId)
@@ -1501,16 +1493,10 @@ public class ResourcePermissionLocalServiceImpl
 	 *        created the resource)
 	 * @param actionIds the action IDs of the actions
 	 */
-	@Override
-	@Retry(
-		acceptor = ExceptionRetryAcceptor.class,
-		properties = {
-			@Property(
-				name = ExceptionRetryAcceptor.EXCEPTION_NAME,
-				value = "org.springframework.dao.DataIntegrityViolationException"
-			)
-		}
+	@ExceptionRetry(
+		exceptionName = "org.springframework.dao.DataIntegrityViolationException"
 	)
+	@Override
 	public void setOwnerResourcePermissions(
 			long companyId, String name, int scope, String primKey, long roleId,
 			long ownerId, String[] actionIds)
@@ -1545,16 +1531,10 @@ public class ResourcePermissionLocalServiceImpl
 	 * @param roleId the primary key of the role
 	 * @param actionIds the action IDs of the actions
 	 */
-	@Override
-	@Retry(
-		acceptor = ExceptionRetryAcceptor.class,
-		properties = {
-			@Property(
-				name = ExceptionRetryAcceptor.EXCEPTION_NAME,
-				value = "org.springframework.dao.DataIntegrityViolationException"
-			)
-		}
+	@ExceptionRetry(
+		exceptionName = "org.springframework.dao.DataIntegrityViolationException"
 	)
+	@Override
 	public void setResourcePermissions(
 			long companyId, String name, int scope, String primKey, long roleId,
 			String[] actionIds)
@@ -1588,16 +1568,10 @@ public class ResourcePermissionLocalServiceImpl
 	 * @param primKey the primary key
 	 * @param roleIdsToActionIds a map of role IDs to action IDs of the actions
 	 */
-	@Override
-	@Retry(
-		acceptor = ExceptionRetryAcceptor.class,
-		properties = {
-			@Property(
-				name = ExceptionRetryAcceptor.EXCEPTION_NAME,
-				value = "org.springframework.dao.DataIntegrityViolationException"
-			)
-		}
+	@ExceptionRetry(
+		exceptionName = "org.springframework.dao.DataIntegrityViolationException"
 	)
+	@Override
 	public void setResourcePermissions(
 			long companyId, String name, int scope, String primKey,
 			Map<Long, String[]> roleIdsToActionIds)
