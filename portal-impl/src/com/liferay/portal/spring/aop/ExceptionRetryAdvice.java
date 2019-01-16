@@ -68,8 +68,6 @@ public class ExceptionRetryAdvice extends ChainableMethodAdvice {
 
 		int retries = retryContext._retries;
 
-		int totalRetries = retries;
-
 		if (retries >= 0) {
 			retries++;
 		}
@@ -108,7 +106,7 @@ public class ExceptionRetryAdvice extends ChainableMethodAdvice {
 			_log.warn(
 				StringBundler.concat(
 					"Give up retrying on ", String.valueOf(aopMethodInvocation),
-					" after ", String.valueOf(totalRetries),
+					" after ", String.valueOf(retryContext._retries),
 					" retries and rethrow last retry's exception ",
 					String.valueOf(throwable)),
 				throwable);
