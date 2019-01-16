@@ -96,8 +96,6 @@ public class AopCacheManager {
 
 		chainableMethodAdvices.add(new ServiceContextAdvice());
 
-		chainableMethodAdvices.add(new RetryAdvice());
-
 		chainableMethodAdvices.add(new ExceptionRetryAdvice());
 
 		TransactionInterceptor transactionInterceptor =
