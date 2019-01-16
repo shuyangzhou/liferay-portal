@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.ExceptionRetryAcceptor;
 import com.liferay.portal.kernel.spring.aop.ExceptionRetry;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.PropsValues;
 
 import java.lang.annotation.Annotation;
@@ -44,6 +45,12 @@ public class ExceptionRetryAdvice extends ChainableMethodAdvice {
 			return null;
 		}
 
+		String exceptionName = exceptionRetry.exceptionName();
+
+		if (Validator.isNull(exceptionName)) {
+			return null;
+		}
+
 		int retries = exceptionRetry.retries();
 
 		if (retries < 0) {
@@ -52,9 +59,7 @@ public class ExceptionRetryAdvice extends ChainableMethodAdvice {
 
 		Map<String, String> properties = new HashMap<>();
 
-		properties.put(
-			ExceptionRetryAcceptor.EXCEPTION_NAME,
-			exceptionRetry.exceptionName());
+		properties.put(ExceptionRetryAcceptor.EXCEPTION_NAME, exceptionName);
 
 		return new RetryContext(
 			new ExceptionRetryAcceptor(), properties, retries);
