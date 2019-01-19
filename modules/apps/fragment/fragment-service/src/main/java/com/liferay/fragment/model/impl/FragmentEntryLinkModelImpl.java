@@ -192,314 +192,70 @@ public class FragmentEntryLinkModelImpl extends BaseModelImpl<FragmentEntryLink>
 
 	static {
 		Map<String, Function<FragmentEntryLink, Object>> attributeGetters = new LinkedHashMap<String, Function<FragmentEntryLink, Object>>();
+		Map<String, BiConsumer<FragmentEntryLink, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<FragmentEntryLink, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<FragmentEntryLink, Object>() {
-				@Override
-				public Object apply(FragmentEntryLink fragmentEntryLink) {
-					return fragmentEntryLink.getUuid();
-				}
-			});
-		attributeGetters.put("fragmentEntryLinkId",
-			new Function<FragmentEntryLink, Object>() {
-				@Override
-				public Object apply(FragmentEntryLink fragmentEntryLink) {
-					return fragmentEntryLink.getFragmentEntryLinkId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<FragmentEntryLink, Object>() {
-				@Override
-				public Object apply(FragmentEntryLink fragmentEntryLink) {
-					return fragmentEntryLink.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<FragmentEntryLink, Object>() {
-				@Override
-				public Object apply(FragmentEntryLink fragmentEntryLink) {
-					return fragmentEntryLink.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<FragmentEntryLink, Object>() {
-				@Override
-				public Object apply(FragmentEntryLink fragmentEntryLink) {
-					return fragmentEntryLink.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<FragmentEntryLink, Object>() {
-				@Override
-				public Object apply(FragmentEntryLink fragmentEntryLink) {
-					return fragmentEntryLink.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<FragmentEntryLink, Object>() {
-				@Override
-				public Object apply(FragmentEntryLink fragmentEntryLink) {
-					return fragmentEntryLink.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<FragmentEntryLink, Object>() {
-				@Override
-				public Object apply(FragmentEntryLink fragmentEntryLink) {
-					return fragmentEntryLink.getModifiedDate();
-				}
-			});
-		attributeGetters.put("originalFragmentEntryLinkId",
-			new Function<FragmentEntryLink, Object>() {
-				@Override
-				public Object apply(FragmentEntryLink fragmentEntryLink) {
-					return fragmentEntryLink.getOriginalFragmentEntryLinkId();
-				}
-			});
-		attributeGetters.put("fragmentEntryId",
-			new Function<FragmentEntryLink, Object>() {
-				@Override
-				public Object apply(FragmentEntryLink fragmentEntryLink) {
-					return fragmentEntryLink.getFragmentEntryId();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<FragmentEntryLink, Object>() {
-				@Override
-				public Object apply(FragmentEntryLink fragmentEntryLink) {
-					return fragmentEntryLink.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<FragmentEntryLink, Object>() {
-				@Override
-				public Object apply(FragmentEntryLink fragmentEntryLink) {
-					return fragmentEntryLink.getClassPK();
-				}
-			});
-		attributeGetters.put("css",
-			new Function<FragmentEntryLink, Object>() {
-				@Override
-				public Object apply(FragmentEntryLink fragmentEntryLink) {
-					return fragmentEntryLink.getCss();
-				}
-			});
-		attributeGetters.put("html",
-			new Function<FragmentEntryLink, Object>() {
-				@Override
-				public Object apply(FragmentEntryLink fragmentEntryLink) {
-					return fragmentEntryLink.getHtml();
-				}
-			});
-		attributeGetters.put("js",
-			new Function<FragmentEntryLink, Object>() {
-				@Override
-				public Object apply(FragmentEntryLink fragmentEntryLink) {
-					return fragmentEntryLink.getJs();
-				}
-			});
-		attributeGetters.put("editableValues",
-			new Function<FragmentEntryLink, Object>() {
-				@Override
-				public Object apply(FragmentEntryLink fragmentEntryLink) {
-					return fragmentEntryLink.getEditableValues();
-				}
-			});
-		attributeGetters.put("position",
-			new Function<FragmentEntryLink, Object>() {
-				@Override
-				public Object apply(FragmentEntryLink fragmentEntryLink) {
-					return fragmentEntryLink.getPosition();
-				}
-			});
-		attributeGetters.put("lastPropagationDate",
-			new Function<FragmentEntryLink, Object>() {
-				@Override
-				public Object apply(FragmentEntryLink fragmentEntryLink) {
-					return fragmentEntryLink.getLastPropagationDate();
-				}
-			});
-		attributeGetters.put("namespace",
-			new Function<FragmentEntryLink, Object>() {
-				@Override
-				public Object apply(FragmentEntryLink fragmentEntryLink) {
-					return fragmentEntryLink.getNamespace();
-				}
-			});
-		attributeGetters.put("lastPublishDate",
-			new Function<FragmentEntryLink, Object>() {
-				@Override
-				public Object apply(FragmentEntryLink fragmentEntryLink) {
-					return fragmentEntryLink.getLastPublishDate();
-				}
-			});
+		attributeGetters.put("uuid", FragmentEntryLink::getUuid);
+		attributeSetters.put("uuid", FragmentEntryLink::setUuid);
+
+		attributeGetters.put("fragmentEntryLinkId", FragmentEntryLink::getFragmentEntryLinkId);
+		attributeSetters.put("fragmentEntryLinkId", FragmentEntryLink::setFragmentEntryLinkId);
+
+		attributeGetters.put("groupId", FragmentEntryLink::getGroupId);
+		attributeSetters.put("groupId", FragmentEntryLink::setGroupId);
+
+		attributeGetters.put("companyId", FragmentEntryLink::getCompanyId);
+		attributeSetters.put("companyId", FragmentEntryLink::setCompanyId);
+
+		attributeGetters.put("userId", FragmentEntryLink::getUserId);
+		attributeSetters.put("userId", FragmentEntryLink::setUserId);
+
+		attributeGetters.put("userName", FragmentEntryLink::getUserName);
+		attributeSetters.put("userName", FragmentEntryLink::setUserName);
+
+		attributeGetters.put("createDate", FragmentEntryLink::getCreateDate);
+		attributeSetters.put("createDate", FragmentEntryLink::setCreateDate);
+
+		attributeGetters.put("modifiedDate", FragmentEntryLink::getModifiedDate);
+		attributeSetters.put("modifiedDate", FragmentEntryLink::setModifiedDate);
+
+		attributeGetters.put("originalFragmentEntryLinkId", FragmentEntryLink::getOriginalFragmentEntryLinkId);
+		attributeSetters.put("originalFragmentEntryLinkId", FragmentEntryLink::setOriginalFragmentEntryLinkId);
+
+		attributeGetters.put("fragmentEntryId", FragmentEntryLink::getFragmentEntryId);
+		attributeSetters.put("fragmentEntryId", FragmentEntryLink::setFragmentEntryId);
+
+		attributeGetters.put("classNameId", FragmentEntryLink::getClassNameId);
+		attributeSetters.put("classNameId", FragmentEntryLink::setClassNameId);
+
+		attributeGetters.put("classPK", FragmentEntryLink::getClassPK);
+		attributeSetters.put("classPK", FragmentEntryLink::setClassPK);
+
+		attributeGetters.put("css", FragmentEntryLink::getCss);
+		attributeSetters.put("css", FragmentEntryLink::setCss);
+
+		attributeGetters.put("html", FragmentEntryLink::getHtml);
+		attributeSetters.put("html", FragmentEntryLink::setHtml);
+
+		attributeGetters.put("js", FragmentEntryLink::getJs);
+		attributeSetters.put("js", FragmentEntryLink::setJs);
+
+		attributeGetters.put("editableValues", FragmentEntryLink::getEditableValues);
+		attributeSetters.put("editableValues", FragmentEntryLink::setEditableValues);
+
+		attributeGetters.put("position", FragmentEntryLink::getPosition);
+		attributeSetters.put("position", FragmentEntryLink::setPosition);
+
+		attributeGetters.put("lastPropagationDate", FragmentEntryLink::getLastPropagationDate);
+		attributeSetters.put("lastPropagationDate", FragmentEntryLink::setLastPropagationDate);
+
+		attributeGetters.put("namespace", FragmentEntryLink::getNamespace);
+		attributeSetters.put("namespace", FragmentEntryLink::setNamespace);
+
+		attributeGetters.put("lastPublishDate", FragmentEntryLink::getLastPublishDate);
+		attributeSetters.put("lastPublishDate", FragmentEntryLink::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<FragmentEntryLink, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<FragmentEntryLink, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<FragmentEntryLink, String>() {
-				@Override
-				public void accept(FragmentEntryLink fragmentEntryLink,
-					String uuid) {
-					fragmentEntryLink.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("fragmentEntryLinkId",
-			new BiConsumer<FragmentEntryLink, Long>() {
-				@Override
-				public void accept(FragmentEntryLink fragmentEntryLink,
-					Long fragmentEntryLinkId) {
-					fragmentEntryLink.setFragmentEntryLinkId(fragmentEntryLinkId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<FragmentEntryLink, Long>() {
-				@Override
-				public void accept(FragmentEntryLink fragmentEntryLink,
-					Long groupId) {
-					fragmentEntryLink.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<FragmentEntryLink, Long>() {
-				@Override
-				public void accept(FragmentEntryLink fragmentEntryLink,
-					Long companyId) {
-					fragmentEntryLink.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<FragmentEntryLink, Long>() {
-				@Override
-				public void accept(FragmentEntryLink fragmentEntryLink,
-					Long userId) {
-					fragmentEntryLink.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<FragmentEntryLink, String>() {
-				@Override
-				public void accept(FragmentEntryLink fragmentEntryLink,
-					String userName) {
-					fragmentEntryLink.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<FragmentEntryLink, Date>() {
-				@Override
-				public void accept(FragmentEntryLink fragmentEntryLink,
-					Date createDate) {
-					fragmentEntryLink.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<FragmentEntryLink, Date>() {
-				@Override
-				public void accept(FragmentEntryLink fragmentEntryLink,
-					Date modifiedDate) {
-					fragmentEntryLink.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("originalFragmentEntryLinkId",
-			new BiConsumer<FragmentEntryLink, Long>() {
-				@Override
-				public void accept(FragmentEntryLink fragmentEntryLink,
-					Long originalFragmentEntryLinkId) {
-					fragmentEntryLink.setOriginalFragmentEntryLinkId(originalFragmentEntryLinkId);
-				}
-			});
-		attributeSetters.put("fragmentEntryId",
-			new BiConsumer<FragmentEntryLink, Long>() {
-				@Override
-				public void accept(FragmentEntryLink fragmentEntryLink,
-					Long fragmentEntryId) {
-					fragmentEntryLink.setFragmentEntryId(fragmentEntryId);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<FragmentEntryLink, Long>() {
-				@Override
-				public void accept(FragmentEntryLink fragmentEntryLink,
-					Long classNameId) {
-					fragmentEntryLink.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<FragmentEntryLink, Long>() {
-				@Override
-				public void accept(FragmentEntryLink fragmentEntryLink,
-					Long classPK) {
-					fragmentEntryLink.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("css",
-			new BiConsumer<FragmentEntryLink, String>() {
-				@Override
-				public void accept(FragmentEntryLink fragmentEntryLink,
-					String css) {
-					fragmentEntryLink.setCss(css);
-				}
-			});
-		attributeSetters.put("html",
-			new BiConsumer<FragmentEntryLink, String>() {
-				@Override
-				public void accept(FragmentEntryLink fragmentEntryLink,
-					String html) {
-					fragmentEntryLink.setHtml(html);
-				}
-			});
-		attributeSetters.put("js",
-			new BiConsumer<FragmentEntryLink, String>() {
-				@Override
-				public void accept(FragmentEntryLink fragmentEntryLink,
-					String js) {
-					fragmentEntryLink.setJs(js);
-				}
-			});
-		attributeSetters.put("editableValues",
-			new BiConsumer<FragmentEntryLink, String>() {
-				@Override
-				public void accept(FragmentEntryLink fragmentEntryLink,
-					String editableValues) {
-					fragmentEntryLink.setEditableValues(editableValues);
-				}
-			});
-		attributeSetters.put("position",
-			new BiConsumer<FragmentEntryLink, Integer>() {
-				@Override
-				public void accept(FragmentEntryLink fragmentEntryLink,
-					Integer position) {
-					fragmentEntryLink.setPosition(position);
-				}
-			});
-		attributeSetters.put("lastPropagationDate",
-			new BiConsumer<FragmentEntryLink, Date>() {
-				@Override
-				public void accept(FragmentEntryLink fragmentEntryLink,
-					Date lastPropagationDate) {
-					fragmentEntryLink.setLastPropagationDate(lastPropagationDate);
-				}
-			});
-		attributeSetters.put("namespace",
-			new BiConsumer<FragmentEntryLink, String>() {
-				@Override
-				public void accept(FragmentEntryLink fragmentEntryLink,
-					String namespace) {
-					fragmentEntryLink.setNamespace(namespace);
-				}
-			});
-		attributeSetters.put("lastPublishDate",
-			new BiConsumer<FragmentEntryLink, Date>() {
-				@Override
-				public void accept(FragmentEntryLink fragmentEntryLink,
-					Date lastPublishDate) {
-					fragmentEntryLink.setLastPublishDate(lastPublishDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

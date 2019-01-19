@@ -166,169 +166,43 @@ public class KaleoTaskModelImpl extends BaseModelImpl<KaleoTask>
 
 	static {
 		Map<String, Function<KaleoTask, Object>> attributeGetters = new LinkedHashMap<String, Function<KaleoTask, Object>>();
+		Map<String, BiConsumer<KaleoTask, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<KaleoTask, Object>>();
 
-		attributeGetters.put("kaleoTaskId",
-			new Function<KaleoTask, Object>() {
-				@Override
-				public Object apply(KaleoTask kaleoTask) {
-					return kaleoTask.getKaleoTaskId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<KaleoTask, Object>() {
-				@Override
-				public Object apply(KaleoTask kaleoTask) {
-					return kaleoTask.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<KaleoTask, Object>() {
-				@Override
-				public Object apply(KaleoTask kaleoTask) {
-					return kaleoTask.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<KaleoTask, Object>() {
-				@Override
-				public Object apply(KaleoTask kaleoTask) {
-					return kaleoTask.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<KaleoTask, Object>() {
-				@Override
-				public Object apply(KaleoTask kaleoTask) {
-					return kaleoTask.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<KaleoTask, Object>() {
-				@Override
-				public Object apply(KaleoTask kaleoTask) {
-					return kaleoTask.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<KaleoTask, Object>() {
-				@Override
-				public Object apply(KaleoTask kaleoTask) {
-					return kaleoTask.getModifiedDate();
-				}
-			});
-		attributeGetters.put("kaleoDefinitionVersionId",
-			new Function<KaleoTask, Object>() {
-				@Override
-				public Object apply(KaleoTask kaleoTask) {
-					return kaleoTask.getKaleoDefinitionVersionId();
-				}
-			});
-		attributeGetters.put("kaleoNodeId",
-			new Function<KaleoTask, Object>() {
-				@Override
-				public Object apply(KaleoTask kaleoTask) {
-					return kaleoTask.getKaleoNodeId();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<KaleoTask, Object>() {
-				@Override
-				public Object apply(KaleoTask kaleoTask) {
-					return kaleoTask.getName();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<KaleoTask, Object>() {
-				@Override
-				public Object apply(KaleoTask kaleoTask) {
-					return kaleoTask.getDescription();
-				}
-			});
+		attributeGetters.put("kaleoTaskId", KaleoTask::getKaleoTaskId);
+		attributeSetters.put("kaleoTaskId", KaleoTask::setKaleoTaskId);
+
+		attributeGetters.put("groupId", KaleoTask::getGroupId);
+		attributeSetters.put("groupId", KaleoTask::setGroupId);
+
+		attributeGetters.put("companyId", KaleoTask::getCompanyId);
+		attributeSetters.put("companyId", KaleoTask::setCompanyId);
+
+		attributeGetters.put("userId", KaleoTask::getUserId);
+		attributeSetters.put("userId", KaleoTask::setUserId);
+
+		attributeGetters.put("userName", KaleoTask::getUserName);
+		attributeSetters.put("userName", KaleoTask::setUserName);
+
+		attributeGetters.put("createDate", KaleoTask::getCreateDate);
+		attributeSetters.put("createDate", KaleoTask::setCreateDate);
+
+		attributeGetters.put("modifiedDate", KaleoTask::getModifiedDate);
+		attributeSetters.put("modifiedDate", KaleoTask::setModifiedDate);
+
+		attributeGetters.put("kaleoDefinitionVersionId", KaleoTask::getKaleoDefinitionVersionId);
+		attributeSetters.put("kaleoDefinitionVersionId", KaleoTask::setKaleoDefinitionVersionId);
+
+		attributeGetters.put("kaleoNodeId", KaleoTask::getKaleoNodeId);
+		attributeSetters.put("kaleoNodeId", KaleoTask::setKaleoNodeId);
+
+		attributeGetters.put("name", KaleoTask::getName);
+		attributeSetters.put("name", KaleoTask::setName);
+
+		attributeGetters.put("description", KaleoTask::getDescription);
+		attributeSetters.put("description", KaleoTask::setDescription);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<KaleoTask, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<KaleoTask, ?>>();
-
-		attributeSetters.put("kaleoTaskId",
-			new BiConsumer<KaleoTask, Long>() {
-				@Override
-				public void accept(KaleoTask kaleoTask, Long kaleoTaskId) {
-					kaleoTask.setKaleoTaskId(kaleoTaskId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<KaleoTask, Long>() {
-				@Override
-				public void accept(KaleoTask kaleoTask, Long groupId) {
-					kaleoTask.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<KaleoTask, Long>() {
-				@Override
-				public void accept(KaleoTask kaleoTask, Long companyId) {
-					kaleoTask.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<KaleoTask, Long>() {
-				@Override
-				public void accept(KaleoTask kaleoTask, Long userId) {
-					kaleoTask.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<KaleoTask, String>() {
-				@Override
-				public void accept(KaleoTask kaleoTask, String userName) {
-					kaleoTask.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<KaleoTask, Date>() {
-				@Override
-				public void accept(KaleoTask kaleoTask, Date createDate) {
-					kaleoTask.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<KaleoTask, Date>() {
-				@Override
-				public void accept(KaleoTask kaleoTask, Date modifiedDate) {
-					kaleoTask.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("kaleoDefinitionVersionId",
-			new BiConsumer<KaleoTask, Long>() {
-				@Override
-				public void accept(KaleoTask kaleoTask,
-					Long kaleoDefinitionVersionId) {
-					kaleoTask.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
-				}
-			});
-		attributeSetters.put("kaleoNodeId",
-			new BiConsumer<KaleoTask, Long>() {
-				@Override
-				public void accept(KaleoTask kaleoTask, Long kaleoNodeId) {
-					kaleoTask.setKaleoNodeId(kaleoNodeId);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<KaleoTask, String>() {
-				@Override
-				public void accept(KaleoTask kaleoTask, String name) {
-					kaleoTask.setName(name);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<KaleoTask, String>() {
-				@Override
-				public void accept(KaleoTask kaleoTask, String description) {
-					kaleoTask.setDescription(description);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

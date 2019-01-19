@@ -158,112 +158,31 @@ public class ModuleModelImpl extends BaseModelImpl<Module>
 
 	static {
 		Map<String, Function<Module, Object>> attributeGetters = new LinkedHashMap<String, Function<Module, Object>>();
+		Map<String, BiConsumer<Module, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Module, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<Module, Object>() {
-				@Override
-				public Object apply(Module module) {
-					return module.getUuid();
-				}
-			});
-		attributeGetters.put("moduleId",
-			new Function<Module, Object>() {
-				@Override
-				public Object apply(Module module) {
-					return module.getModuleId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<Module, Object>() {
-				@Override
-				public Object apply(Module module) {
-					return module.getCompanyId();
-				}
-			});
-		attributeGetters.put("appId",
-			new Function<Module, Object>() {
-				@Override
-				public Object apply(Module module) {
-					return module.getAppId();
-				}
-			});
-		attributeGetters.put("bundleSymbolicName",
-			new Function<Module, Object>() {
-				@Override
-				public Object apply(Module module) {
-					return module.getBundleSymbolicName();
-				}
-			});
-		attributeGetters.put("bundleVersion",
-			new Function<Module, Object>() {
-				@Override
-				public Object apply(Module module) {
-					return module.getBundleVersion();
-				}
-			});
-		attributeGetters.put("contextName",
-			new Function<Module, Object>() {
-				@Override
-				public Object apply(Module module) {
-					return module.getContextName();
-				}
-			});
+		attributeGetters.put("uuid", Module::getUuid);
+		attributeSetters.put("uuid", Module::setUuid);
+
+		attributeGetters.put("moduleId", Module::getModuleId);
+		attributeSetters.put("moduleId", Module::setModuleId);
+
+		attributeGetters.put("companyId", Module::getCompanyId);
+		attributeSetters.put("companyId", Module::setCompanyId);
+
+		attributeGetters.put("appId", Module::getAppId);
+		attributeSetters.put("appId", Module::setAppId);
+
+		attributeGetters.put("bundleSymbolicName", Module::getBundleSymbolicName);
+		attributeSetters.put("bundleSymbolicName", Module::setBundleSymbolicName);
+
+		attributeGetters.put("bundleVersion", Module::getBundleVersion);
+		attributeSetters.put("bundleVersion", Module::setBundleVersion);
+
+		attributeGetters.put("contextName", Module::getContextName);
+		attributeSetters.put("contextName", Module::setContextName);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<Module, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Module, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<Module, String>() {
-				@Override
-				public void accept(Module module, String uuid) {
-					module.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("moduleId",
-			new BiConsumer<Module, Long>() {
-				@Override
-				public void accept(Module module, Long moduleId) {
-					module.setModuleId(moduleId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<Module, Long>() {
-				@Override
-				public void accept(Module module, Long companyId) {
-					module.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("appId",
-			new BiConsumer<Module, Long>() {
-				@Override
-				public void accept(Module module, Long appId) {
-					module.setAppId(appId);
-				}
-			});
-		attributeSetters.put("bundleSymbolicName",
-			new BiConsumer<Module, String>() {
-				@Override
-				public void accept(Module module, String bundleSymbolicName) {
-					module.setBundleSymbolicName(bundleSymbolicName);
-				}
-			});
-		attributeSetters.put("bundleVersion",
-			new BiConsumer<Module, String>() {
-				@Override
-				public void accept(Module module, String bundleVersion) {
-					module.setBundleVersion(bundleVersion);
-				}
-			});
-		attributeSetters.put("contextName",
-			new BiConsumer<Module, String>() {
-				@Override
-				public void accept(Module module, String contextName) {
-					module.setContextName(contextName);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

@@ -284,378 +284,88 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 
 	static {
 		Map<String, Function<MBMessage, Object>> attributeGetters = new LinkedHashMap<String, Function<MBMessage, Object>>();
+		Map<String, BiConsumer<MBMessage, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<MBMessage, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<MBMessage, Object>() {
-				@Override
-				public Object apply(MBMessage mbMessage) {
-					return mbMessage.getUuid();
-				}
-			});
-		attributeGetters.put("messageId",
-			new Function<MBMessage, Object>() {
-				@Override
-				public Object apply(MBMessage mbMessage) {
-					return mbMessage.getMessageId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<MBMessage, Object>() {
-				@Override
-				public Object apply(MBMessage mbMessage) {
-					return mbMessage.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<MBMessage, Object>() {
-				@Override
-				public Object apply(MBMessage mbMessage) {
-					return mbMessage.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<MBMessage, Object>() {
-				@Override
-				public Object apply(MBMessage mbMessage) {
-					return mbMessage.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<MBMessage, Object>() {
-				@Override
-				public Object apply(MBMessage mbMessage) {
-					return mbMessage.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<MBMessage, Object>() {
-				@Override
-				public Object apply(MBMessage mbMessage) {
-					return mbMessage.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<MBMessage, Object>() {
-				@Override
-				public Object apply(MBMessage mbMessage) {
-					return mbMessage.getModifiedDate();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<MBMessage, Object>() {
-				@Override
-				public Object apply(MBMessage mbMessage) {
-					return mbMessage.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<MBMessage, Object>() {
-				@Override
-				public Object apply(MBMessage mbMessage) {
-					return mbMessage.getClassPK();
-				}
-			});
-		attributeGetters.put("categoryId",
-			new Function<MBMessage, Object>() {
-				@Override
-				public Object apply(MBMessage mbMessage) {
-					return mbMessage.getCategoryId();
-				}
-			});
-		attributeGetters.put("threadId",
-			new Function<MBMessage, Object>() {
-				@Override
-				public Object apply(MBMessage mbMessage) {
-					return mbMessage.getThreadId();
-				}
-			});
-		attributeGetters.put("rootMessageId",
-			new Function<MBMessage, Object>() {
-				@Override
-				public Object apply(MBMessage mbMessage) {
-					return mbMessage.getRootMessageId();
-				}
-			});
-		attributeGetters.put("parentMessageId",
-			new Function<MBMessage, Object>() {
-				@Override
-				public Object apply(MBMessage mbMessage) {
-					return mbMessage.getParentMessageId();
-				}
-			});
-		attributeGetters.put("subject",
-			new Function<MBMessage, Object>() {
-				@Override
-				public Object apply(MBMessage mbMessage) {
-					return mbMessage.getSubject();
-				}
-			});
-		attributeGetters.put("body",
-			new Function<MBMessage, Object>() {
-				@Override
-				public Object apply(MBMessage mbMessage) {
-					return mbMessage.getBody();
-				}
-			});
-		attributeGetters.put("format",
-			new Function<MBMessage, Object>() {
-				@Override
-				public Object apply(MBMessage mbMessage) {
-					return mbMessage.getFormat();
-				}
-			});
-		attributeGetters.put("anonymous",
-			new Function<MBMessage, Object>() {
-				@Override
-				public Object apply(MBMessage mbMessage) {
-					return mbMessage.isAnonymous();
-				}
-			});
-		attributeGetters.put("priority",
-			new Function<MBMessage, Object>() {
-				@Override
-				public Object apply(MBMessage mbMessage) {
-					return mbMessage.getPriority();
-				}
-			});
-		attributeGetters.put("allowPingbacks",
-			new Function<MBMessage, Object>() {
-				@Override
-				public Object apply(MBMessage mbMessage) {
-					return mbMessage.isAllowPingbacks();
-				}
-			});
-		attributeGetters.put("answer",
-			new Function<MBMessage, Object>() {
-				@Override
-				public Object apply(MBMessage mbMessage) {
-					return mbMessage.isAnswer();
-				}
-			});
-		attributeGetters.put("lastPublishDate",
-			new Function<MBMessage, Object>() {
-				@Override
-				public Object apply(MBMessage mbMessage) {
-					return mbMessage.getLastPublishDate();
-				}
-			});
-		attributeGetters.put("status",
-			new Function<MBMessage, Object>() {
-				@Override
-				public Object apply(MBMessage mbMessage) {
-					return mbMessage.getStatus();
-				}
-			});
-		attributeGetters.put("statusByUserId",
-			new Function<MBMessage, Object>() {
-				@Override
-				public Object apply(MBMessage mbMessage) {
-					return mbMessage.getStatusByUserId();
-				}
-			});
-		attributeGetters.put("statusByUserName",
-			new Function<MBMessage, Object>() {
-				@Override
-				public Object apply(MBMessage mbMessage) {
-					return mbMessage.getStatusByUserName();
-				}
-			});
-		attributeGetters.put("statusDate",
-			new Function<MBMessage, Object>() {
-				@Override
-				public Object apply(MBMessage mbMessage) {
-					return mbMessage.getStatusDate();
-				}
-			});
+		attributeGetters.put("uuid", MBMessage::getUuid);
+		attributeSetters.put("uuid", MBMessage::setUuid);
+
+		attributeGetters.put("messageId", MBMessage::getMessageId);
+		attributeSetters.put("messageId", MBMessage::setMessageId);
+
+		attributeGetters.put("groupId", MBMessage::getGroupId);
+		attributeSetters.put("groupId", MBMessage::setGroupId);
+
+		attributeGetters.put("companyId", MBMessage::getCompanyId);
+		attributeSetters.put("companyId", MBMessage::setCompanyId);
+
+		attributeGetters.put("userId", MBMessage::getUserId);
+		attributeSetters.put("userId", MBMessage::setUserId);
+
+		attributeGetters.put("userName", MBMessage::getUserName);
+		attributeSetters.put("userName", MBMessage::setUserName);
+
+		attributeGetters.put("createDate", MBMessage::getCreateDate);
+		attributeSetters.put("createDate", MBMessage::setCreateDate);
+
+		attributeGetters.put("modifiedDate", MBMessage::getModifiedDate);
+		attributeSetters.put("modifiedDate", MBMessage::setModifiedDate);
+
+		attributeGetters.put("classNameId", MBMessage::getClassNameId);
+		attributeSetters.put("classNameId", MBMessage::setClassNameId);
+
+		attributeGetters.put("classPK", MBMessage::getClassPK);
+		attributeSetters.put("classPK", MBMessage::setClassPK);
+
+		attributeGetters.put("categoryId", MBMessage::getCategoryId);
+		attributeSetters.put("categoryId", MBMessage::setCategoryId);
+
+		attributeGetters.put("threadId", MBMessage::getThreadId);
+		attributeSetters.put("threadId", MBMessage::setThreadId);
+
+		attributeGetters.put("rootMessageId", MBMessage::getRootMessageId);
+		attributeSetters.put("rootMessageId", MBMessage::setRootMessageId);
+
+		attributeGetters.put("parentMessageId", MBMessage::getParentMessageId);
+		attributeSetters.put("parentMessageId", MBMessage::setParentMessageId);
+
+		attributeGetters.put("subject", MBMessage::getSubject);
+		attributeSetters.put("subject", MBMessage::setSubject);
+
+		attributeGetters.put("body", MBMessage::getBody);
+		attributeSetters.put("body", MBMessage::setBody);
+
+		attributeGetters.put("format", MBMessage::getFormat);
+		attributeSetters.put("format", MBMessage::setFormat);
+
+		attributeGetters.put("anonymous", MBMessage::getAnonymous);
+		attributeSetters.put("anonymous", MBMessage::setAnonymous);
+
+		attributeGetters.put("priority", MBMessage::getPriority);
+		attributeSetters.put("priority", MBMessage::setPriority);
+
+		attributeGetters.put("allowPingbacks", MBMessage::getAllowPingbacks);
+		attributeSetters.put("allowPingbacks", MBMessage::setAllowPingbacks);
+
+		attributeGetters.put("answer", MBMessage::getAnswer);
+		attributeSetters.put("answer", MBMessage::setAnswer);
+
+		attributeGetters.put("lastPublishDate", MBMessage::getLastPublishDate);
+		attributeSetters.put("lastPublishDate", MBMessage::setLastPublishDate);
+
+		attributeGetters.put("status", MBMessage::getStatus);
+		attributeSetters.put("status", MBMessage::setStatus);
+
+		attributeGetters.put("statusByUserId", MBMessage::getStatusByUserId);
+		attributeSetters.put("statusByUserId", MBMessage::setStatusByUserId);
+
+		attributeGetters.put("statusByUserName", MBMessage::getStatusByUserName);
+		attributeSetters.put("statusByUserName", MBMessage::setStatusByUserName);
+
+		attributeGetters.put("statusDate", MBMessage::getStatusDate);
+		attributeSetters.put("statusDate", MBMessage::setStatusDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<MBMessage, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<MBMessage, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<MBMessage, String>() {
-				@Override
-				public void accept(MBMessage mbMessage, String uuid) {
-					mbMessage.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("messageId",
-			new BiConsumer<MBMessage, Long>() {
-				@Override
-				public void accept(MBMessage mbMessage, Long messageId) {
-					mbMessage.setMessageId(messageId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<MBMessage, Long>() {
-				@Override
-				public void accept(MBMessage mbMessage, Long groupId) {
-					mbMessage.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<MBMessage, Long>() {
-				@Override
-				public void accept(MBMessage mbMessage, Long companyId) {
-					mbMessage.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<MBMessage, Long>() {
-				@Override
-				public void accept(MBMessage mbMessage, Long userId) {
-					mbMessage.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<MBMessage, String>() {
-				@Override
-				public void accept(MBMessage mbMessage, String userName) {
-					mbMessage.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<MBMessage, Date>() {
-				@Override
-				public void accept(MBMessage mbMessage, Date createDate) {
-					mbMessage.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<MBMessage, Date>() {
-				@Override
-				public void accept(MBMessage mbMessage, Date modifiedDate) {
-					mbMessage.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<MBMessage, Long>() {
-				@Override
-				public void accept(MBMessage mbMessage, Long classNameId) {
-					mbMessage.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<MBMessage, Long>() {
-				@Override
-				public void accept(MBMessage mbMessage, Long classPK) {
-					mbMessage.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("categoryId",
-			new BiConsumer<MBMessage, Long>() {
-				@Override
-				public void accept(MBMessage mbMessage, Long categoryId) {
-					mbMessage.setCategoryId(categoryId);
-				}
-			});
-		attributeSetters.put("threadId",
-			new BiConsumer<MBMessage, Long>() {
-				@Override
-				public void accept(MBMessage mbMessage, Long threadId) {
-					mbMessage.setThreadId(threadId);
-				}
-			});
-		attributeSetters.put("rootMessageId",
-			new BiConsumer<MBMessage, Long>() {
-				@Override
-				public void accept(MBMessage mbMessage, Long rootMessageId) {
-					mbMessage.setRootMessageId(rootMessageId);
-				}
-			});
-		attributeSetters.put("parentMessageId",
-			new BiConsumer<MBMessage, Long>() {
-				@Override
-				public void accept(MBMessage mbMessage, Long parentMessageId) {
-					mbMessage.setParentMessageId(parentMessageId);
-				}
-			});
-		attributeSetters.put("subject",
-			new BiConsumer<MBMessage, String>() {
-				@Override
-				public void accept(MBMessage mbMessage, String subject) {
-					mbMessage.setSubject(subject);
-				}
-			});
-		attributeSetters.put("body",
-			new BiConsumer<MBMessage, String>() {
-				@Override
-				public void accept(MBMessage mbMessage, String body) {
-					mbMessage.setBody(body);
-				}
-			});
-		attributeSetters.put("format",
-			new BiConsumer<MBMessage, String>() {
-				@Override
-				public void accept(MBMessage mbMessage, String format) {
-					mbMessage.setFormat(format);
-				}
-			});
-		attributeSetters.put("anonymous",
-			new BiConsumer<MBMessage, Boolean>() {
-				@Override
-				public void accept(MBMessage mbMessage, Boolean anonymous) {
-					mbMessage.setAnonymous(anonymous);
-				}
-			});
-		attributeSetters.put("priority",
-			new BiConsumer<MBMessage, Double>() {
-				@Override
-				public void accept(MBMessage mbMessage, Double priority) {
-					mbMessage.setPriority(priority);
-				}
-			});
-		attributeSetters.put("allowPingbacks",
-			new BiConsumer<MBMessage, Boolean>() {
-				@Override
-				public void accept(MBMessage mbMessage, Boolean allowPingbacks) {
-					mbMessage.setAllowPingbacks(allowPingbacks);
-				}
-			});
-		attributeSetters.put("answer",
-			new BiConsumer<MBMessage, Boolean>() {
-				@Override
-				public void accept(MBMessage mbMessage, Boolean answer) {
-					mbMessage.setAnswer(answer);
-				}
-			});
-		attributeSetters.put("lastPublishDate",
-			new BiConsumer<MBMessage, Date>() {
-				@Override
-				public void accept(MBMessage mbMessage, Date lastPublishDate) {
-					mbMessage.setLastPublishDate(lastPublishDate);
-				}
-			});
-		attributeSetters.put("status",
-			new BiConsumer<MBMessage, Integer>() {
-				@Override
-				public void accept(MBMessage mbMessage, Integer status) {
-					mbMessage.setStatus(status);
-				}
-			});
-		attributeSetters.put("statusByUserId",
-			new BiConsumer<MBMessage, Long>() {
-				@Override
-				public void accept(MBMessage mbMessage, Long statusByUserId) {
-					mbMessage.setStatusByUserId(statusByUserId);
-				}
-			});
-		attributeSetters.put("statusByUserName",
-			new BiConsumer<MBMessage, String>() {
-				@Override
-				public void accept(MBMessage mbMessage, String statusByUserName) {
-					mbMessage.setStatusByUserName(statusByUserName);
-				}
-			});
-		attributeSetters.put("statusDate",
-			new BiConsumer<MBMessage, Date>() {
-				@Override
-				public void accept(MBMessage mbMessage, Date statusDate) {
-					mbMessage.setStatusDate(statusDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

@@ -162,112 +162,31 @@ public class DLFileRankModelImpl extends BaseModelImpl<DLFileRank>
 
 	static {
 		Map<String, Function<DLFileRank, Object>> attributeGetters = new LinkedHashMap<String, Function<DLFileRank, Object>>();
+		Map<String, BiConsumer<DLFileRank, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<DLFileRank, Object>>();
 
-		attributeGetters.put("fileRankId",
-			new Function<DLFileRank, Object>() {
-				@Override
-				public Object apply(DLFileRank dlFileRank) {
-					return dlFileRank.getFileRankId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<DLFileRank, Object>() {
-				@Override
-				public Object apply(DLFileRank dlFileRank) {
-					return dlFileRank.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<DLFileRank, Object>() {
-				@Override
-				public Object apply(DLFileRank dlFileRank) {
-					return dlFileRank.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<DLFileRank, Object>() {
-				@Override
-				public Object apply(DLFileRank dlFileRank) {
-					return dlFileRank.getUserId();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<DLFileRank, Object>() {
-				@Override
-				public Object apply(DLFileRank dlFileRank) {
-					return dlFileRank.getCreateDate();
-				}
-			});
-		attributeGetters.put("fileEntryId",
-			new Function<DLFileRank, Object>() {
-				@Override
-				public Object apply(DLFileRank dlFileRank) {
-					return dlFileRank.getFileEntryId();
-				}
-			});
-		attributeGetters.put("active",
-			new Function<DLFileRank, Object>() {
-				@Override
-				public Object apply(DLFileRank dlFileRank) {
-					return dlFileRank.isActive();
-				}
-			});
+		attributeGetters.put("fileRankId", DLFileRank::getFileRankId);
+		attributeSetters.put("fileRankId", DLFileRank::setFileRankId);
+
+		attributeGetters.put("groupId", DLFileRank::getGroupId);
+		attributeSetters.put("groupId", DLFileRank::setGroupId);
+
+		attributeGetters.put("companyId", DLFileRank::getCompanyId);
+		attributeSetters.put("companyId", DLFileRank::setCompanyId);
+
+		attributeGetters.put("userId", DLFileRank::getUserId);
+		attributeSetters.put("userId", DLFileRank::setUserId);
+
+		attributeGetters.put("createDate", DLFileRank::getCreateDate);
+		attributeSetters.put("createDate", DLFileRank::setCreateDate);
+
+		attributeGetters.put("fileEntryId", DLFileRank::getFileEntryId);
+		attributeSetters.put("fileEntryId", DLFileRank::setFileEntryId);
+
+		attributeGetters.put("active", DLFileRank::getActive);
+		attributeSetters.put("active", DLFileRank::setActive);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<DLFileRank, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DLFileRank, ?>>();
-
-		attributeSetters.put("fileRankId",
-			new BiConsumer<DLFileRank, Long>() {
-				@Override
-				public void accept(DLFileRank dlFileRank, Long fileRankId) {
-					dlFileRank.setFileRankId(fileRankId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<DLFileRank, Long>() {
-				@Override
-				public void accept(DLFileRank dlFileRank, Long groupId) {
-					dlFileRank.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<DLFileRank, Long>() {
-				@Override
-				public void accept(DLFileRank dlFileRank, Long companyId) {
-					dlFileRank.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<DLFileRank, Long>() {
-				@Override
-				public void accept(DLFileRank dlFileRank, Long userId) {
-					dlFileRank.setUserId(userId);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<DLFileRank, Date>() {
-				@Override
-				public void accept(DLFileRank dlFileRank, Date createDate) {
-					dlFileRank.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("fileEntryId",
-			new BiConsumer<DLFileRank, Long>() {
-				@Override
-				public void accept(DLFileRank dlFileRank, Long fileEntryId) {
-					dlFileRank.setFileEntryId(fileEntryId);
-				}
-			});
-		attributeSetters.put("active",
-			new BiConsumer<DLFileRank, Boolean>() {
-				@Override
-				public void accept(DLFileRank dlFileRank, Boolean active) {
-					dlFileRank.setActive(active);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

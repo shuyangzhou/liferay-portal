@@ -234,197 +234,49 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 
 	static {
 		Map<String, Function<EmailAddress, Object>> attributeGetters = new LinkedHashMap<String, Function<EmailAddress, Object>>();
+		Map<String, BiConsumer<EmailAddress, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<EmailAddress, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<EmailAddress, Object>() {
-				@Override
-				public Object apply(EmailAddress emailAddress) {
-					return emailAddress.getMvccVersion();
-				}
-			});
-		attributeGetters.put("uuid",
-			new Function<EmailAddress, Object>() {
-				@Override
-				public Object apply(EmailAddress emailAddress) {
-					return emailAddress.getUuid();
-				}
-			});
-		attributeGetters.put("emailAddressId",
-			new Function<EmailAddress, Object>() {
-				@Override
-				public Object apply(EmailAddress emailAddress) {
-					return emailAddress.getEmailAddressId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<EmailAddress, Object>() {
-				@Override
-				public Object apply(EmailAddress emailAddress) {
-					return emailAddress.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<EmailAddress, Object>() {
-				@Override
-				public Object apply(EmailAddress emailAddress) {
-					return emailAddress.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<EmailAddress, Object>() {
-				@Override
-				public Object apply(EmailAddress emailAddress) {
-					return emailAddress.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<EmailAddress, Object>() {
-				@Override
-				public Object apply(EmailAddress emailAddress) {
-					return emailAddress.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<EmailAddress, Object>() {
-				@Override
-				public Object apply(EmailAddress emailAddress) {
-					return emailAddress.getModifiedDate();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<EmailAddress, Object>() {
-				@Override
-				public Object apply(EmailAddress emailAddress) {
-					return emailAddress.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<EmailAddress, Object>() {
-				@Override
-				public Object apply(EmailAddress emailAddress) {
-					return emailAddress.getClassPK();
-				}
-			});
-		attributeGetters.put("address",
-			new Function<EmailAddress, Object>() {
-				@Override
-				public Object apply(EmailAddress emailAddress) {
-					return emailAddress.getAddress();
-				}
-			});
-		attributeGetters.put("typeId",
-			new Function<EmailAddress, Object>() {
-				@Override
-				public Object apply(EmailAddress emailAddress) {
-					return emailAddress.getTypeId();
-				}
-			});
-		attributeGetters.put("primary",
-			new Function<EmailAddress, Object>() {
-				@Override
-				public Object apply(EmailAddress emailAddress) {
-					return emailAddress.isPrimary();
-				}
-			});
+		attributeGetters.put("mvccVersion", EmailAddress::getMvccVersion);
+		attributeSetters.put("mvccVersion", EmailAddress::setMvccVersion);
+
+		attributeGetters.put("uuid", EmailAddress::getUuid);
+		attributeSetters.put("uuid", EmailAddress::setUuid);
+
+		attributeGetters.put("emailAddressId", EmailAddress::getEmailAddressId);
+		attributeSetters.put("emailAddressId", EmailAddress::setEmailAddressId);
+
+		attributeGetters.put("companyId", EmailAddress::getCompanyId);
+		attributeSetters.put("companyId", EmailAddress::setCompanyId);
+
+		attributeGetters.put("userId", EmailAddress::getUserId);
+		attributeSetters.put("userId", EmailAddress::setUserId);
+
+		attributeGetters.put("userName", EmailAddress::getUserName);
+		attributeSetters.put("userName", EmailAddress::setUserName);
+
+		attributeGetters.put("createDate", EmailAddress::getCreateDate);
+		attributeSetters.put("createDate", EmailAddress::setCreateDate);
+
+		attributeGetters.put("modifiedDate", EmailAddress::getModifiedDate);
+		attributeSetters.put("modifiedDate", EmailAddress::setModifiedDate);
+
+		attributeGetters.put("classNameId", EmailAddress::getClassNameId);
+		attributeSetters.put("classNameId", EmailAddress::setClassNameId);
+
+		attributeGetters.put("classPK", EmailAddress::getClassPK);
+		attributeSetters.put("classPK", EmailAddress::setClassPK);
+
+		attributeGetters.put("address", EmailAddress::getAddress);
+		attributeSetters.put("address", EmailAddress::setAddress);
+
+		attributeGetters.put("typeId", EmailAddress::getTypeId);
+		attributeSetters.put("typeId", EmailAddress::setTypeId);
+
+		attributeGetters.put("primary", EmailAddress::getPrimary);
+		attributeSetters.put("primary", EmailAddress::setPrimary);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<EmailAddress, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<EmailAddress, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<EmailAddress, Long>() {
-				@Override
-				public void accept(EmailAddress emailAddress, Long mvccVersion) {
-					emailAddress.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("uuid",
-			new BiConsumer<EmailAddress, String>() {
-				@Override
-				public void accept(EmailAddress emailAddress, String uuid) {
-					emailAddress.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("emailAddressId",
-			new BiConsumer<EmailAddress, Long>() {
-				@Override
-				public void accept(EmailAddress emailAddress,
-					Long emailAddressId) {
-					emailAddress.setEmailAddressId(emailAddressId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<EmailAddress, Long>() {
-				@Override
-				public void accept(EmailAddress emailAddress, Long companyId) {
-					emailAddress.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<EmailAddress, Long>() {
-				@Override
-				public void accept(EmailAddress emailAddress, Long userId) {
-					emailAddress.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<EmailAddress, String>() {
-				@Override
-				public void accept(EmailAddress emailAddress, String userName) {
-					emailAddress.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<EmailAddress, Date>() {
-				@Override
-				public void accept(EmailAddress emailAddress, Date createDate) {
-					emailAddress.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<EmailAddress, Date>() {
-				@Override
-				public void accept(EmailAddress emailAddress, Date modifiedDate) {
-					emailAddress.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<EmailAddress, Long>() {
-				@Override
-				public void accept(EmailAddress emailAddress, Long classNameId) {
-					emailAddress.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<EmailAddress, Long>() {
-				@Override
-				public void accept(EmailAddress emailAddress, Long classPK) {
-					emailAddress.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("address",
-			new BiConsumer<EmailAddress, String>() {
-				@Override
-				public void accept(EmailAddress emailAddress, String address) {
-					emailAddress.setAddress(address);
-				}
-			});
-		attributeSetters.put("typeId",
-			new BiConsumer<EmailAddress, Long>() {
-				@Override
-				public void accept(EmailAddress emailAddress, Long typeId) {
-					emailAddress.setTypeId(typeId);
-				}
-			});
-		attributeSetters.put("primary",
-			new BiConsumer<EmailAddress, Boolean>() {
-				@Override
-				public void accept(EmailAddress emailAddress, Boolean primary) {
-					emailAddress.setPrimary(primary);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

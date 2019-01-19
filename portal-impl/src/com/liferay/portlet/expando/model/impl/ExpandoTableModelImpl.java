@@ -149,70 +149,22 @@ public class ExpandoTableModelImpl extends BaseModelImpl<ExpandoTable>
 
 	static {
 		Map<String, Function<ExpandoTable, Object>> attributeGetters = new LinkedHashMap<String, Function<ExpandoTable, Object>>();
+		Map<String, BiConsumer<ExpandoTable, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<ExpandoTable, Object>>();
 
-		attributeGetters.put("tableId",
-			new Function<ExpandoTable, Object>() {
-				@Override
-				public Object apply(ExpandoTable expandoTable) {
-					return expandoTable.getTableId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<ExpandoTable, Object>() {
-				@Override
-				public Object apply(ExpandoTable expandoTable) {
-					return expandoTable.getCompanyId();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<ExpandoTable, Object>() {
-				@Override
-				public Object apply(ExpandoTable expandoTable) {
-					return expandoTable.getClassNameId();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<ExpandoTable, Object>() {
-				@Override
-				public Object apply(ExpandoTable expandoTable) {
-					return expandoTable.getName();
-				}
-			});
+		attributeGetters.put("tableId", ExpandoTable::getTableId);
+		attributeSetters.put("tableId", ExpandoTable::setTableId);
+
+		attributeGetters.put("companyId", ExpandoTable::getCompanyId);
+		attributeSetters.put("companyId", ExpandoTable::setCompanyId);
+
+		attributeGetters.put("classNameId", ExpandoTable::getClassNameId);
+		attributeSetters.put("classNameId", ExpandoTable::setClassNameId);
+
+		attributeGetters.put("name", ExpandoTable::getName);
+		attributeSetters.put("name", ExpandoTable::setName);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<ExpandoTable, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<ExpandoTable, ?>>();
-
-		attributeSetters.put("tableId",
-			new BiConsumer<ExpandoTable, Long>() {
-				@Override
-				public void accept(ExpandoTable expandoTable, Long tableId) {
-					expandoTable.setTableId(tableId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<ExpandoTable, Long>() {
-				@Override
-				public void accept(ExpandoTable expandoTable, Long companyId) {
-					expandoTable.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<ExpandoTable, Long>() {
-				@Override
-				public void accept(ExpandoTable expandoTable, Long classNameId) {
-					expandoTable.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<ExpandoTable, String>() {
-				@Override
-				public void accept(ExpandoTable expandoTable, String name) {
-					expandoTable.setName(name);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

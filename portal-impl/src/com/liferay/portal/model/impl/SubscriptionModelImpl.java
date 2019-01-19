@@ -172,169 +172,43 @@ public class SubscriptionModelImpl extends BaseModelImpl<Subscription>
 
 	static {
 		Map<String, Function<Subscription, Object>> attributeGetters = new LinkedHashMap<String, Function<Subscription, Object>>();
+		Map<String, BiConsumer<Subscription, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Subscription, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<Subscription, Object>() {
-				@Override
-				public Object apply(Subscription subscription) {
-					return subscription.getMvccVersion();
-				}
-			});
-		attributeGetters.put("subscriptionId",
-			new Function<Subscription, Object>() {
-				@Override
-				public Object apply(Subscription subscription) {
-					return subscription.getSubscriptionId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<Subscription, Object>() {
-				@Override
-				public Object apply(Subscription subscription) {
-					return subscription.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<Subscription, Object>() {
-				@Override
-				public Object apply(Subscription subscription) {
-					return subscription.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<Subscription, Object>() {
-				@Override
-				public Object apply(Subscription subscription) {
-					return subscription.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<Subscription, Object>() {
-				@Override
-				public Object apply(Subscription subscription) {
-					return subscription.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<Subscription, Object>() {
-				@Override
-				public Object apply(Subscription subscription) {
-					return subscription.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<Subscription, Object>() {
-				@Override
-				public Object apply(Subscription subscription) {
-					return subscription.getModifiedDate();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<Subscription, Object>() {
-				@Override
-				public Object apply(Subscription subscription) {
-					return subscription.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<Subscription, Object>() {
-				@Override
-				public Object apply(Subscription subscription) {
-					return subscription.getClassPK();
-				}
-			});
-		attributeGetters.put("frequency",
-			new Function<Subscription, Object>() {
-				@Override
-				public Object apply(Subscription subscription) {
-					return subscription.getFrequency();
-				}
-			});
+		attributeGetters.put("mvccVersion", Subscription::getMvccVersion);
+		attributeSetters.put("mvccVersion", Subscription::setMvccVersion);
+
+		attributeGetters.put("subscriptionId", Subscription::getSubscriptionId);
+		attributeSetters.put("subscriptionId", Subscription::setSubscriptionId);
+
+		attributeGetters.put("groupId", Subscription::getGroupId);
+		attributeSetters.put("groupId", Subscription::setGroupId);
+
+		attributeGetters.put("companyId", Subscription::getCompanyId);
+		attributeSetters.put("companyId", Subscription::setCompanyId);
+
+		attributeGetters.put("userId", Subscription::getUserId);
+		attributeSetters.put("userId", Subscription::setUserId);
+
+		attributeGetters.put("userName", Subscription::getUserName);
+		attributeSetters.put("userName", Subscription::setUserName);
+
+		attributeGetters.put("createDate", Subscription::getCreateDate);
+		attributeSetters.put("createDate", Subscription::setCreateDate);
+
+		attributeGetters.put("modifiedDate", Subscription::getModifiedDate);
+		attributeSetters.put("modifiedDate", Subscription::setModifiedDate);
+
+		attributeGetters.put("classNameId", Subscription::getClassNameId);
+		attributeSetters.put("classNameId", Subscription::setClassNameId);
+
+		attributeGetters.put("classPK", Subscription::getClassPK);
+		attributeSetters.put("classPK", Subscription::setClassPK);
+
+		attributeGetters.put("frequency", Subscription::getFrequency);
+		attributeSetters.put("frequency", Subscription::setFrequency);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<Subscription, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Subscription, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<Subscription, Long>() {
-				@Override
-				public void accept(Subscription subscription, Long mvccVersion) {
-					subscription.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("subscriptionId",
-			new BiConsumer<Subscription, Long>() {
-				@Override
-				public void accept(Subscription subscription,
-					Long subscriptionId) {
-					subscription.setSubscriptionId(subscriptionId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<Subscription, Long>() {
-				@Override
-				public void accept(Subscription subscription, Long groupId) {
-					subscription.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<Subscription, Long>() {
-				@Override
-				public void accept(Subscription subscription, Long companyId) {
-					subscription.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<Subscription, Long>() {
-				@Override
-				public void accept(Subscription subscription, Long userId) {
-					subscription.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<Subscription, String>() {
-				@Override
-				public void accept(Subscription subscription, String userName) {
-					subscription.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<Subscription, Date>() {
-				@Override
-				public void accept(Subscription subscription, Date createDate) {
-					subscription.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<Subscription, Date>() {
-				@Override
-				public void accept(Subscription subscription, Date modifiedDate) {
-					subscription.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<Subscription, Long>() {
-				@Override
-				public void accept(Subscription subscription, Long classNameId) {
-					subscription.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<Subscription, Long>() {
-				@Override
-				public void accept(Subscription subscription, Long classPK) {
-					subscription.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("frequency",
-			new BiConsumer<Subscription, String>() {
-				@Override
-				public void accept(Subscription subscription, String frequency) {
-					subscription.setFrequency(frequency);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

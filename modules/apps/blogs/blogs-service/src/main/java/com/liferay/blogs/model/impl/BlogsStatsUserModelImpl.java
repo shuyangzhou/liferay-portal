@@ -164,146 +164,37 @@ public class BlogsStatsUserModelImpl extends BaseModelImpl<BlogsStatsUser>
 
 	static {
 		Map<String, Function<BlogsStatsUser, Object>> attributeGetters = new LinkedHashMap<String, Function<BlogsStatsUser, Object>>();
+		Map<String, BiConsumer<BlogsStatsUser, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<BlogsStatsUser, Object>>();
 
-		attributeGetters.put("statsUserId",
-			new Function<BlogsStatsUser, Object>() {
-				@Override
-				public Object apply(BlogsStatsUser blogsStatsUser) {
-					return blogsStatsUser.getStatsUserId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<BlogsStatsUser, Object>() {
-				@Override
-				public Object apply(BlogsStatsUser blogsStatsUser) {
-					return blogsStatsUser.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<BlogsStatsUser, Object>() {
-				@Override
-				public Object apply(BlogsStatsUser blogsStatsUser) {
-					return blogsStatsUser.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<BlogsStatsUser, Object>() {
-				@Override
-				public Object apply(BlogsStatsUser blogsStatsUser) {
-					return blogsStatsUser.getUserId();
-				}
-			});
-		attributeGetters.put("entryCount",
-			new Function<BlogsStatsUser, Object>() {
-				@Override
-				public Object apply(BlogsStatsUser blogsStatsUser) {
-					return blogsStatsUser.getEntryCount();
-				}
-			});
-		attributeGetters.put("lastPostDate",
-			new Function<BlogsStatsUser, Object>() {
-				@Override
-				public Object apply(BlogsStatsUser blogsStatsUser) {
-					return blogsStatsUser.getLastPostDate();
-				}
-			});
-		attributeGetters.put("ratingsTotalEntries",
-			new Function<BlogsStatsUser, Object>() {
-				@Override
-				public Object apply(BlogsStatsUser blogsStatsUser) {
-					return blogsStatsUser.getRatingsTotalEntries();
-				}
-			});
-		attributeGetters.put("ratingsTotalScore",
-			new Function<BlogsStatsUser, Object>() {
-				@Override
-				public Object apply(BlogsStatsUser blogsStatsUser) {
-					return blogsStatsUser.getRatingsTotalScore();
-				}
-			});
-		attributeGetters.put("ratingsAverageScore",
-			new Function<BlogsStatsUser, Object>() {
-				@Override
-				public Object apply(BlogsStatsUser blogsStatsUser) {
-					return blogsStatsUser.getRatingsAverageScore();
-				}
-			});
+		attributeGetters.put("statsUserId", BlogsStatsUser::getStatsUserId);
+		attributeSetters.put("statsUserId", BlogsStatsUser::setStatsUserId);
+
+		attributeGetters.put("groupId", BlogsStatsUser::getGroupId);
+		attributeSetters.put("groupId", BlogsStatsUser::setGroupId);
+
+		attributeGetters.put("companyId", BlogsStatsUser::getCompanyId);
+		attributeSetters.put("companyId", BlogsStatsUser::setCompanyId);
+
+		attributeGetters.put("userId", BlogsStatsUser::getUserId);
+		attributeSetters.put("userId", BlogsStatsUser::setUserId);
+
+		attributeGetters.put("entryCount", BlogsStatsUser::getEntryCount);
+		attributeSetters.put("entryCount", BlogsStatsUser::setEntryCount);
+
+		attributeGetters.put("lastPostDate", BlogsStatsUser::getLastPostDate);
+		attributeSetters.put("lastPostDate", BlogsStatsUser::setLastPostDate);
+
+		attributeGetters.put("ratingsTotalEntries", BlogsStatsUser::getRatingsTotalEntries);
+		attributeSetters.put("ratingsTotalEntries", BlogsStatsUser::setRatingsTotalEntries);
+
+		attributeGetters.put("ratingsTotalScore", BlogsStatsUser::getRatingsTotalScore);
+		attributeSetters.put("ratingsTotalScore", BlogsStatsUser::setRatingsTotalScore);
+
+		attributeGetters.put("ratingsAverageScore", BlogsStatsUser::getRatingsAverageScore);
+		attributeSetters.put("ratingsAverageScore", BlogsStatsUser::setRatingsAverageScore);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<BlogsStatsUser, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<BlogsStatsUser, ?>>();
-
-		attributeSetters.put("statsUserId",
-			new BiConsumer<BlogsStatsUser, Long>() {
-				@Override
-				public void accept(BlogsStatsUser blogsStatsUser,
-					Long statsUserId) {
-					blogsStatsUser.setStatsUserId(statsUserId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<BlogsStatsUser, Long>() {
-				@Override
-				public void accept(BlogsStatsUser blogsStatsUser, Long groupId) {
-					blogsStatsUser.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<BlogsStatsUser, Long>() {
-				@Override
-				public void accept(BlogsStatsUser blogsStatsUser, Long companyId) {
-					blogsStatsUser.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<BlogsStatsUser, Long>() {
-				@Override
-				public void accept(BlogsStatsUser blogsStatsUser, Long userId) {
-					blogsStatsUser.setUserId(userId);
-				}
-			});
-		attributeSetters.put("entryCount",
-			new BiConsumer<BlogsStatsUser, Integer>() {
-				@Override
-				public void accept(BlogsStatsUser blogsStatsUser,
-					Integer entryCount) {
-					blogsStatsUser.setEntryCount(entryCount);
-				}
-			});
-		attributeSetters.put("lastPostDate",
-			new BiConsumer<BlogsStatsUser, Date>() {
-				@Override
-				public void accept(BlogsStatsUser blogsStatsUser,
-					Date lastPostDate) {
-					blogsStatsUser.setLastPostDate(lastPostDate);
-				}
-			});
-		attributeSetters.put("ratingsTotalEntries",
-			new BiConsumer<BlogsStatsUser, Integer>() {
-				@Override
-				public void accept(BlogsStatsUser blogsStatsUser,
-					Integer ratingsTotalEntries) {
-					blogsStatsUser.setRatingsTotalEntries(ratingsTotalEntries);
-				}
-			});
-		attributeSetters.put("ratingsTotalScore",
-			new BiConsumer<BlogsStatsUser, Double>() {
-				@Override
-				public void accept(BlogsStatsUser blogsStatsUser,
-					Double ratingsTotalScore) {
-					blogsStatsUser.setRatingsTotalScore(ratingsTotalScore);
-				}
-			});
-		attributeSetters.put("ratingsAverageScore",
-			new BiConsumer<BlogsStatsUser, Double>() {
-				@Override
-				public void accept(BlogsStatsUser blogsStatsUser,
-					Double ratingsAverageScore) {
-					blogsStatsUser.setRatingsAverageScore(ratingsAverageScore);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

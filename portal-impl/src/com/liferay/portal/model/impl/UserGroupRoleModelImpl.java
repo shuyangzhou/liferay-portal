@@ -199,84 +199,25 @@ public class UserGroupRoleModelImpl extends BaseModelImpl<UserGroupRole>
 
 	static {
 		Map<String, Function<UserGroupRole, Object>> attributeGetters = new LinkedHashMap<String, Function<UserGroupRole, Object>>();
+		Map<String, BiConsumer<UserGroupRole, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<UserGroupRole, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<UserGroupRole, Object>() {
-				@Override
-				public Object apply(UserGroupRole userGroupRole) {
-					return userGroupRole.getMvccVersion();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<UserGroupRole, Object>() {
-				@Override
-				public Object apply(UserGroupRole userGroupRole) {
-					return userGroupRole.getUserId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<UserGroupRole, Object>() {
-				@Override
-				public Object apply(UserGroupRole userGroupRole) {
-					return userGroupRole.getGroupId();
-				}
-			});
-		attributeGetters.put("roleId",
-			new Function<UserGroupRole, Object>() {
-				@Override
-				public Object apply(UserGroupRole userGroupRole) {
-					return userGroupRole.getRoleId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<UserGroupRole, Object>() {
-				@Override
-				public Object apply(UserGroupRole userGroupRole) {
-					return userGroupRole.getCompanyId();
-				}
-			});
+		attributeGetters.put("mvccVersion", UserGroupRole::getMvccVersion);
+		attributeSetters.put("mvccVersion", UserGroupRole::setMvccVersion);
+
+		attributeGetters.put("userId", UserGroupRole::getUserId);
+		attributeSetters.put("userId", UserGroupRole::setUserId);
+
+		attributeGetters.put("groupId", UserGroupRole::getGroupId);
+		attributeSetters.put("groupId", UserGroupRole::setGroupId);
+
+		attributeGetters.put("roleId", UserGroupRole::getRoleId);
+		attributeSetters.put("roleId", UserGroupRole::setRoleId);
+
+		attributeGetters.put("companyId", UserGroupRole::getCompanyId);
+		attributeSetters.put("companyId", UserGroupRole::setCompanyId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<UserGroupRole, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<UserGroupRole, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<UserGroupRole, Long>() {
-				@Override
-				public void accept(UserGroupRole userGroupRole, Long mvccVersion) {
-					userGroupRole.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<UserGroupRole, Long>() {
-				@Override
-				public void accept(UserGroupRole userGroupRole, Long userId) {
-					userGroupRole.setUserId(userId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<UserGroupRole, Long>() {
-				@Override
-				public void accept(UserGroupRole userGroupRole, Long groupId) {
-					userGroupRole.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("roleId",
-			new BiConsumer<UserGroupRole, Long>() {
-				@Override
-				public void accept(UserGroupRole userGroupRole, Long roleId) {
-					userGroupRole.setRoleId(roleId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<UserGroupRole, Long>() {
-				@Override
-				public void accept(UserGroupRole userGroupRole, Long companyId) {
-					userGroupRole.setCompanyId(companyId);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

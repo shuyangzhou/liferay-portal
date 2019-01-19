@@ -232,252 +232,61 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 
 	static {
 		Map<String, Function<Account, Object>> attributeGetters = new LinkedHashMap<String, Function<Account, Object>>();
+		Map<String, BiConsumer<Account, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Account, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getMvccVersion();
-				}
-			});
-		attributeGetters.put("accountId",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getAccountId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getModifiedDate();
-				}
-			});
-		attributeGetters.put("parentAccountId",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getParentAccountId();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getName();
-				}
-			});
-		attributeGetters.put("legalName",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getLegalName();
-				}
-			});
-		attributeGetters.put("legalId",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getLegalId();
-				}
-			});
-		attributeGetters.put("legalType",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getLegalType();
-				}
-			});
-		attributeGetters.put("sicCode",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getSicCode();
-				}
-			});
-		attributeGetters.put("tickerSymbol",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getTickerSymbol();
-				}
-			});
-		attributeGetters.put("industry",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getIndustry();
-				}
-			});
-		attributeGetters.put("type",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getType();
-				}
-			});
-		attributeGetters.put("size",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getSize();
-				}
-			});
+		attributeGetters.put("mvccVersion", Account::getMvccVersion);
+		attributeSetters.put("mvccVersion", Account::setMvccVersion);
+
+		attributeGetters.put("accountId", Account::getAccountId);
+		attributeSetters.put("accountId", Account::setAccountId);
+
+		attributeGetters.put("companyId", Account::getCompanyId);
+		attributeSetters.put("companyId", Account::setCompanyId);
+
+		attributeGetters.put("userId", Account::getUserId);
+		attributeSetters.put("userId", Account::setUserId);
+
+		attributeGetters.put("userName", Account::getUserName);
+		attributeSetters.put("userName", Account::setUserName);
+
+		attributeGetters.put("createDate", Account::getCreateDate);
+		attributeSetters.put("createDate", Account::setCreateDate);
+
+		attributeGetters.put("modifiedDate", Account::getModifiedDate);
+		attributeSetters.put("modifiedDate", Account::setModifiedDate);
+
+		attributeGetters.put("parentAccountId", Account::getParentAccountId);
+		attributeSetters.put("parentAccountId", Account::setParentAccountId);
+
+		attributeGetters.put("name", Account::getName);
+		attributeSetters.put("name", Account::setName);
+
+		attributeGetters.put("legalName", Account::getLegalName);
+		attributeSetters.put("legalName", Account::setLegalName);
+
+		attributeGetters.put("legalId", Account::getLegalId);
+		attributeSetters.put("legalId", Account::setLegalId);
+
+		attributeGetters.put("legalType", Account::getLegalType);
+		attributeSetters.put("legalType", Account::setLegalType);
+
+		attributeGetters.put("sicCode", Account::getSicCode);
+		attributeSetters.put("sicCode", Account::setSicCode);
+
+		attributeGetters.put("tickerSymbol", Account::getTickerSymbol);
+		attributeSetters.put("tickerSymbol", Account::setTickerSymbol);
+
+		attributeGetters.put("industry", Account::getIndustry);
+		attributeSetters.put("industry", Account::setIndustry);
+
+		attributeGetters.put("type", Account::getType);
+		attributeSetters.put("type", Account::setType);
+
+		attributeGetters.put("size", Account::getSize);
+		attributeSetters.put("size", Account::setSize);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<Account, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Account, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<Account, Long>() {
-				@Override
-				public void accept(Account account, Long mvccVersion) {
-					account.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("accountId",
-			new BiConsumer<Account, Long>() {
-				@Override
-				public void accept(Account account, Long accountId) {
-					account.setAccountId(accountId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<Account, Long>() {
-				@Override
-				public void accept(Account account, Long companyId) {
-					account.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<Account, Long>() {
-				@Override
-				public void accept(Account account, Long userId) {
-					account.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<Account, String>() {
-				@Override
-				public void accept(Account account, String userName) {
-					account.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<Account, Date>() {
-				@Override
-				public void accept(Account account, Date createDate) {
-					account.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<Account, Date>() {
-				@Override
-				public void accept(Account account, Date modifiedDate) {
-					account.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("parentAccountId",
-			new BiConsumer<Account, Long>() {
-				@Override
-				public void accept(Account account, Long parentAccountId) {
-					account.setParentAccountId(parentAccountId);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<Account, String>() {
-				@Override
-				public void accept(Account account, String name) {
-					account.setName(name);
-				}
-			});
-		attributeSetters.put("legalName",
-			new BiConsumer<Account, String>() {
-				@Override
-				public void accept(Account account, String legalName) {
-					account.setLegalName(legalName);
-				}
-			});
-		attributeSetters.put("legalId",
-			new BiConsumer<Account, String>() {
-				@Override
-				public void accept(Account account, String legalId) {
-					account.setLegalId(legalId);
-				}
-			});
-		attributeSetters.put("legalType",
-			new BiConsumer<Account, String>() {
-				@Override
-				public void accept(Account account, String legalType) {
-					account.setLegalType(legalType);
-				}
-			});
-		attributeSetters.put("sicCode",
-			new BiConsumer<Account, String>() {
-				@Override
-				public void accept(Account account, String sicCode) {
-					account.setSicCode(sicCode);
-				}
-			});
-		attributeSetters.put("tickerSymbol",
-			new BiConsumer<Account, String>() {
-				@Override
-				public void accept(Account account, String tickerSymbol) {
-					account.setTickerSymbol(tickerSymbol);
-				}
-			});
-		attributeSetters.put("industry",
-			new BiConsumer<Account, String>() {
-				@Override
-				public void accept(Account account, String industry) {
-					account.setIndustry(industry);
-				}
-			});
-		attributeSetters.put("type",
-			new BiConsumer<Account, String>() {
-				@Override
-				public void accept(Account account, String type) {
-					account.setType(type);
-				}
-			});
-		attributeSetters.put("size",
-			new BiConsumer<Account, String>() {
-				@Override
-				public void accept(Account account, String size) {
-					account.setSize(size);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

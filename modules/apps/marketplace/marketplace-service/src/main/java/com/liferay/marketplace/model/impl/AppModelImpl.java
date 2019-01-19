@@ -233,210 +233,52 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 
 	static {
 		Map<String, Function<App, Object>> attributeGetters = new LinkedHashMap<String, Function<App, Object>>();
+		Map<String, BiConsumer<App, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<App, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<App, Object>() {
-				@Override
-				public Object apply(App app) {
-					return app.getUuid();
-				}
-			});
-		attributeGetters.put("appId",
-			new Function<App, Object>() {
-				@Override
-				public Object apply(App app) {
-					return app.getAppId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<App, Object>() {
-				@Override
-				public Object apply(App app) {
-					return app.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<App, Object>() {
-				@Override
-				public Object apply(App app) {
-					return app.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<App, Object>() {
-				@Override
-				public Object apply(App app) {
-					return app.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<App, Object>() {
-				@Override
-				public Object apply(App app) {
-					return app.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<App, Object>() {
-				@Override
-				public Object apply(App app) {
-					return app.getModifiedDate();
-				}
-			});
-		attributeGetters.put("remoteAppId",
-			new Function<App, Object>() {
-				@Override
-				public Object apply(App app) {
-					return app.getRemoteAppId();
-				}
-			});
-		attributeGetters.put("title",
-			new Function<App, Object>() {
-				@Override
-				public Object apply(App app) {
-					return app.getTitle();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<App, Object>() {
-				@Override
-				public Object apply(App app) {
-					return app.getDescription();
-				}
-			});
-		attributeGetters.put("category",
-			new Function<App, Object>() {
-				@Override
-				public Object apply(App app) {
-					return app.getCategory();
-				}
-			});
-		attributeGetters.put("iconURL",
-			new Function<App, Object>() {
-				@Override
-				public Object apply(App app) {
-					return app.getIconURL();
-				}
-			});
-		attributeGetters.put("version",
-			new Function<App, Object>() {
-				@Override
-				public Object apply(App app) {
-					return app.getVersion();
-				}
-			});
-		attributeGetters.put("required",
-			new Function<App, Object>() {
-				@Override
-				public Object apply(App app) {
-					return app.isRequired();
-				}
-			});
+		attributeGetters.put("uuid", App::getUuid);
+		attributeSetters.put("uuid", App::setUuid);
+
+		attributeGetters.put("appId", App::getAppId);
+		attributeSetters.put("appId", App::setAppId);
+
+		attributeGetters.put("companyId", App::getCompanyId);
+		attributeSetters.put("companyId", App::setCompanyId);
+
+		attributeGetters.put("userId", App::getUserId);
+		attributeSetters.put("userId", App::setUserId);
+
+		attributeGetters.put("userName", App::getUserName);
+		attributeSetters.put("userName", App::setUserName);
+
+		attributeGetters.put("createDate", App::getCreateDate);
+		attributeSetters.put("createDate", App::setCreateDate);
+
+		attributeGetters.put("modifiedDate", App::getModifiedDate);
+		attributeSetters.put("modifiedDate", App::setModifiedDate);
+
+		attributeGetters.put("remoteAppId", App::getRemoteAppId);
+		attributeSetters.put("remoteAppId", App::setRemoteAppId);
+
+		attributeGetters.put("title", App::getTitle);
+		attributeSetters.put("title", App::setTitle);
+
+		attributeGetters.put("description", App::getDescription);
+		attributeSetters.put("description", App::setDescription);
+
+		attributeGetters.put("category", App::getCategory);
+		attributeSetters.put("category", App::setCategory);
+
+		attributeGetters.put("iconURL", App::getIconURL);
+		attributeSetters.put("iconURL", App::setIconURL);
+
+		attributeGetters.put("version", App::getVersion);
+		attributeSetters.put("version", App::setVersion);
+
+		attributeGetters.put("required", App::getRequired);
+		attributeSetters.put("required", App::setRequired);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<App, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<App, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<App, String>() {
-				@Override
-				public void accept(App app, String uuid) {
-					app.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("appId",
-			new BiConsumer<App, Long>() {
-				@Override
-				public void accept(App app, Long appId) {
-					app.setAppId(appId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<App, Long>() {
-				@Override
-				public void accept(App app, Long companyId) {
-					app.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<App, Long>() {
-				@Override
-				public void accept(App app, Long userId) {
-					app.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<App, String>() {
-				@Override
-				public void accept(App app, String userName) {
-					app.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<App, Date>() {
-				@Override
-				public void accept(App app, Date createDate) {
-					app.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<App, Date>() {
-				@Override
-				public void accept(App app, Date modifiedDate) {
-					app.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("remoteAppId",
-			new BiConsumer<App, Long>() {
-				@Override
-				public void accept(App app, Long remoteAppId) {
-					app.setRemoteAppId(remoteAppId);
-				}
-			});
-		attributeSetters.put("title",
-			new BiConsumer<App, String>() {
-				@Override
-				public void accept(App app, String title) {
-					app.setTitle(title);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<App, String>() {
-				@Override
-				public void accept(App app, String description) {
-					app.setDescription(description);
-				}
-			});
-		attributeSetters.put("category",
-			new BiConsumer<App, String>() {
-				@Override
-				public void accept(App app, String category) {
-					app.setCategory(category);
-				}
-			});
-		attributeSetters.put("iconURL",
-			new BiConsumer<App, String>() {
-				@Override
-				public void accept(App app, String iconURL) {
-					app.setIconURL(iconURL);
-				}
-			});
-		attributeSetters.put("version",
-			new BiConsumer<App, String>() {
-				@Override
-				public void accept(App app, String version) {
-					app.setVersion(version);
-				}
-			});
-		attributeSetters.put("required",
-			new BiConsumer<App, Boolean>() {
-				@Override
-				public void accept(App app, Boolean required) {
-					app.setRequired(required);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

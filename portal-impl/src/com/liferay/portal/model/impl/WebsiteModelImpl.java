@@ -237,210 +237,52 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 
 	static {
 		Map<String, Function<Website, Object>> attributeGetters = new LinkedHashMap<String, Function<Website, Object>>();
+		Map<String, BiConsumer<Website, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Website, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<Website, Object>() {
-				@Override
-				public Object apply(Website website) {
-					return website.getMvccVersion();
-				}
-			});
-		attributeGetters.put("uuid",
-			new Function<Website, Object>() {
-				@Override
-				public Object apply(Website website) {
-					return website.getUuid();
-				}
-			});
-		attributeGetters.put("websiteId",
-			new Function<Website, Object>() {
-				@Override
-				public Object apply(Website website) {
-					return website.getWebsiteId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<Website, Object>() {
-				@Override
-				public Object apply(Website website) {
-					return website.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<Website, Object>() {
-				@Override
-				public Object apply(Website website) {
-					return website.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<Website, Object>() {
-				@Override
-				public Object apply(Website website) {
-					return website.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<Website, Object>() {
-				@Override
-				public Object apply(Website website) {
-					return website.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<Website, Object>() {
-				@Override
-				public Object apply(Website website) {
-					return website.getModifiedDate();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<Website, Object>() {
-				@Override
-				public Object apply(Website website) {
-					return website.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<Website, Object>() {
-				@Override
-				public Object apply(Website website) {
-					return website.getClassPK();
-				}
-			});
-		attributeGetters.put("url",
-			new Function<Website, Object>() {
-				@Override
-				public Object apply(Website website) {
-					return website.getUrl();
-				}
-			});
-		attributeGetters.put("typeId",
-			new Function<Website, Object>() {
-				@Override
-				public Object apply(Website website) {
-					return website.getTypeId();
-				}
-			});
-		attributeGetters.put("primary",
-			new Function<Website, Object>() {
-				@Override
-				public Object apply(Website website) {
-					return website.isPrimary();
-				}
-			});
-		attributeGetters.put("lastPublishDate",
-			new Function<Website, Object>() {
-				@Override
-				public Object apply(Website website) {
-					return website.getLastPublishDate();
-				}
-			});
+		attributeGetters.put("mvccVersion", Website::getMvccVersion);
+		attributeSetters.put("mvccVersion", Website::setMvccVersion);
+
+		attributeGetters.put("uuid", Website::getUuid);
+		attributeSetters.put("uuid", Website::setUuid);
+
+		attributeGetters.put("websiteId", Website::getWebsiteId);
+		attributeSetters.put("websiteId", Website::setWebsiteId);
+
+		attributeGetters.put("companyId", Website::getCompanyId);
+		attributeSetters.put("companyId", Website::setCompanyId);
+
+		attributeGetters.put("userId", Website::getUserId);
+		attributeSetters.put("userId", Website::setUserId);
+
+		attributeGetters.put("userName", Website::getUserName);
+		attributeSetters.put("userName", Website::setUserName);
+
+		attributeGetters.put("createDate", Website::getCreateDate);
+		attributeSetters.put("createDate", Website::setCreateDate);
+
+		attributeGetters.put("modifiedDate", Website::getModifiedDate);
+		attributeSetters.put("modifiedDate", Website::setModifiedDate);
+
+		attributeGetters.put("classNameId", Website::getClassNameId);
+		attributeSetters.put("classNameId", Website::setClassNameId);
+
+		attributeGetters.put("classPK", Website::getClassPK);
+		attributeSetters.put("classPK", Website::setClassPK);
+
+		attributeGetters.put("url", Website::getUrl);
+		attributeSetters.put("url", Website::setUrl);
+
+		attributeGetters.put("typeId", Website::getTypeId);
+		attributeSetters.put("typeId", Website::setTypeId);
+
+		attributeGetters.put("primary", Website::getPrimary);
+		attributeSetters.put("primary", Website::setPrimary);
+
+		attributeGetters.put("lastPublishDate", Website::getLastPublishDate);
+		attributeSetters.put("lastPublishDate", Website::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<Website, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Website, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<Website, Long>() {
-				@Override
-				public void accept(Website website, Long mvccVersion) {
-					website.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("uuid",
-			new BiConsumer<Website, String>() {
-				@Override
-				public void accept(Website website, String uuid) {
-					website.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("websiteId",
-			new BiConsumer<Website, Long>() {
-				@Override
-				public void accept(Website website, Long websiteId) {
-					website.setWebsiteId(websiteId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<Website, Long>() {
-				@Override
-				public void accept(Website website, Long companyId) {
-					website.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<Website, Long>() {
-				@Override
-				public void accept(Website website, Long userId) {
-					website.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<Website, String>() {
-				@Override
-				public void accept(Website website, String userName) {
-					website.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<Website, Date>() {
-				@Override
-				public void accept(Website website, Date createDate) {
-					website.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<Website, Date>() {
-				@Override
-				public void accept(Website website, Date modifiedDate) {
-					website.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<Website, Long>() {
-				@Override
-				public void accept(Website website, Long classNameId) {
-					website.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<Website, Long>() {
-				@Override
-				public void accept(Website website, Long classPK) {
-					website.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("url",
-			new BiConsumer<Website, String>() {
-				@Override
-				public void accept(Website website, String url) {
-					website.setUrl(url);
-				}
-			});
-		attributeSetters.put("typeId",
-			new BiConsumer<Website, Long>() {
-				@Override
-				public void accept(Website website, Long typeId) {
-					website.setTypeId(typeId);
-				}
-			});
-		attributeSetters.put("primary",
-			new BiConsumer<Website, Boolean>() {
-				@Override
-				public void accept(Website website, Boolean primary) {
-					website.setPrimary(primary);
-				}
-			});
-		attributeSetters.put("lastPublishDate",
-			new BiConsumer<Website, Date>() {
-				@Override
-				public void accept(Website website, Date lastPublishDate) {
-					website.setLastPublishDate(lastPublishDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

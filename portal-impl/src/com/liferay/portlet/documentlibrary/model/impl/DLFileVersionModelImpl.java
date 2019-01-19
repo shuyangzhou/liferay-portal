@@ -283,415 +283,94 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 
 	static {
 		Map<String, Function<DLFileVersion, Object>> attributeGetters = new LinkedHashMap<String, Function<DLFileVersion, Object>>();
+		Map<String, BiConsumer<DLFileVersion, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<DLFileVersion, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<DLFileVersion, Object>() {
-				@Override
-				public Object apply(DLFileVersion dlFileVersion) {
-					return dlFileVersion.getUuid();
-				}
-			});
-		attributeGetters.put("fileVersionId",
-			new Function<DLFileVersion, Object>() {
-				@Override
-				public Object apply(DLFileVersion dlFileVersion) {
-					return dlFileVersion.getFileVersionId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<DLFileVersion, Object>() {
-				@Override
-				public Object apply(DLFileVersion dlFileVersion) {
-					return dlFileVersion.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<DLFileVersion, Object>() {
-				@Override
-				public Object apply(DLFileVersion dlFileVersion) {
-					return dlFileVersion.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<DLFileVersion, Object>() {
-				@Override
-				public Object apply(DLFileVersion dlFileVersion) {
-					return dlFileVersion.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<DLFileVersion, Object>() {
-				@Override
-				public Object apply(DLFileVersion dlFileVersion) {
-					return dlFileVersion.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<DLFileVersion, Object>() {
-				@Override
-				public Object apply(DLFileVersion dlFileVersion) {
-					return dlFileVersion.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<DLFileVersion, Object>() {
-				@Override
-				public Object apply(DLFileVersion dlFileVersion) {
-					return dlFileVersion.getModifiedDate();
-				}
-			});
-		attributeGetters.put("repositoryId",
-			new Function<DLFileVersion, Object>() {
-				@Override
-				public Object apply(DLFileVersion dlFileVersion) {
-					return dlFileVersion.getRepositoryId();
-				}
-			});
-		attributeGetters.put("folderId",
-			new Function<DLFileVersion, Object>() {
-				@Override
-				public Object apply(DLFileVersion dlFileVersion) {
-					return dlFileVersion.getFolderId();
-				}
-			});
-		attributeGetters.put("fileEntryId",
-			new Function<DLFileVersion, Object>() {
-				@Override
-				public Object apply(DLFileVersion dlFileVersion) {
-					return dlFileVersion.getFileEntryId();
-				}
-			});
-		attributeGetters.put("treePath",
-			new Function<DLFileVersion, Object>() {
-				@Override
-				public Object apply(DLFileVersion dlFileVersion) {
-					return dlFileVersion.getTreePath();
-				}
-			});
-		attributeGetters.put("fileName",
-			new Function<DLFileVersion, Object>() {
-				@Override
-				public Object apply(DLFileVersion dlFileVersion) {
-					return dlFileVersion.getFileName();
-				}
-			});
-		attributeGetters.put("extension",
-			new Function<DLFileVersion, Object>() {
-				@Override
-				public Object apply(DLFileVersion dlFileVersion) {
-					return dlFileVersion.getExtension();
-				}
-			});
-		attributeGetters.put("mimeType",
-			new Function<DLFileVersion, Object>() {
-				@Override
-				public Object apply(DLFileVersion dlFileVersion) {
-					return dlFileVersion.getMimeType();
-				}
-			});
-		attributeGetters.put("title",
-			new Function<DLFileVersion, Object>() {
-				@Override
-				public Object apply(DLFileVersion dlFileVersion) {
-					return dlFileVersion.getTitle();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<DLFileVersion, Object>() {
-				@Override
-				public Object apply(DLFileVersion dlFileVersion) {
-					return dlFileVersion.getDescription();
-				}
-			});
-		attributeGetters.put("changeLog",
-			new Function<DLFileVersion, Object>() {
-				@Override
-				public Object apply(DLFileVersion dlFileVersion) {
-					return dlFileVersion.getChangeLog();
-				}
-			});
-		attributeGetters.put("extraSettings",
-			new Function<DLFileVersion, Object>() {
-				@Override
-				public Object apply(DLFileVersion dlFileVersion) {
-					return dlFileVersion.getExtraSettings();
-				}
-			});
-		attributeGetters.put("fileEntryTypeId",
-			new Function<DLFileVersion, Object>() {
-				@Override
-				public Object apply(DLFileVersion dlFileVersion) {
-					return dlFileVersion.getFileEntryTypeId();
-				}
-			});
-		attributeGetters.put("version",
-			new Function<DLFileVersion, Object>() {
-				@Override
-				public Object apply(DLFileVersion dlFileVersion) {
-					return dlFileVersion.getVersion();
-				}
-			});
-		attributeGetters.put("size",
-			new Function<DLFileVersion, Object>() {
-				@Override
-				public Object apply(DLFileVersion dlFileVersion) {
-					return dlFileVersion.getSize();
-				}
-			});
-		attributeGetters.put("checksum",
-			new Function<DLFileVersion, Object>() {
-				@Override
-				public Object apply(DLFileVersion dlFileVersion) {
-					return dlFileVersion.getChecksum();
-				}
-			});
-		attributeGetters.put("lastPublishDate",
-			new Function<DLFileVersion, Object>() {
-				@Override
-				public Object apply(DLFileVersion dlFileVersion) {
-					return dlFileVersion.getLastPublishDate();
-				}
-			});
-		attributeGetters.put("status",
-			new Function<DLFileVersion, Object>() {
-				@Override
-				public Object apply(DLFileVersion dlFileVersion) {
-					return dlFileVersion.getStatus();
-				}
-			});
-		attributeGetters.put("statusByUserId",
-			new Function<DLFileVersion, Object>() {
-				@Override
-				public Object apply(DLFileVersion dlFileVersion) {
-					return dlFileVersion.getStatusByUserId();
-				}
-			});
-		attributeGetters.put("statusByUserName",
-			new Function<DLFileVersion, Object>() {
-				@Override
-				public Object apply(DLFileVersion dlFileVersion) {
-					return dlFileVersion.getStatusByUserName();
-				}
-			});
-		attributeGetters.put("statusDate",
-			new Function<DLFileVersion, Object>() {
-				@Override
-				public Object apply(DLFileVersion dlFileVersion) {
-					return dlFileVersion.getStatusDate();
-				}
-			});
+		attributeGetters.put("uuid", DLFileVersion::getUuid);
+		attributeSetters.put("uuid", DLFileVersion::setUuid);
+
+		attributeGetters.put("fileVersionId", DLFileVersion::getFileVersionId);
+		attributeSetters.put("fileVersionId", DLFileVersion::setFileVersionId);
+
+		attributeGetters.put("groupId", DLFileVersion::getGroupId);
+		attributeSetters.put("groupId", DLFileVersion::setGroupId);
+
+		attributeGetters.put("companyId", DLFileVersion::getCompanyId);
+		attributeSetters.put("companyId", DLFileVersion::setCompanyId);
+
+		attributeGetters.put("userId", DLFileVersion::getUserId);
+		attributeSetters.put("userId", DLFileVersion::setUserId);
+
+		attributeGetters.put("userName", DLFileVersion::getUserName);
+		attributeSetters.put("userName", DLFileVersion::setUserName);
+
+		attributeGetters.put("createDate", DLFileVersion::getCreateDate);
+		attributeSetters.put("createDate", DLFileVersion::setCreateDate);
+
+		attributeGetters.put("modifiedDate", DLFileVersion::getModifiedDate);
+		attributeSetters.put("modifiedDate", DLFileVersion::setModifiedDate);
+
+		attributeGetters.put("repositoryId", DLFileVersion::getRepositoryId);
+		attributeSetters.put("repositoryId", DLFileVersion::setRepositoryId);
+
+		attributeGetters.put("folderId", DLFileVersion::getFolderId);
+		attributeSetters.put("folderId", DLFileVersion::setFolderId);
+
+		attributeGetters.put("fileEntryId", DLFileVersion::getFileEntryId);
+		attributeSetters.put("fileEntryId", DLFileVersion::setFileEntryId);
+
+		attributeGetters.put("treePath", DLFileVersion::getTreePath);
+		attributeSetters.put("treePath", DLFileVersion::setTreePath);
+
+		attributeGetters.put("fileName", DLFileVersion::getFileName);
+		attributeSetters.put("fileName", DLFileVersion::setFileName);
+
+		attributeGetters.put("extension", DLFileVersion::getExtension);
+		attributeSetters.put("extension", DLFileVersion::setExtension);
+
+		attributeGetters.put("mimeType", DLFileVersion::getMimeType);
+		attributeSetters.put("mimeType", DLFileVersion::setMimeType);
+
+		attributeGetters.put("title", DLFileVersion::getTitle);
+		attributeSetters.put("title", DLFileVersion::setTitle);
+
+		attributeGetters.put("description", DLFileVersion::getDescription);
+		attributeSetters.put("description", DLFileVersion::setDescription);
+
+		attributeGetters.put("changeLog", DLFileVersion::getChangeLog);
+		attributeSetters.put("changeLog", DLFileVersion::setChangeLog);
+
+		attributeGetters.put("extraSettings", DLFileVersion::getExtraSettings);
+		attributeSetters.put("extraSettings", DLFileVersion::setExtraSettings);
+
+		attributeGetters.put("fileEntryTypeId", DLFileVersion::getFileEntryTypeId);
+		attributeSetters.put("fileEntryTypeId", DLFileVersion::setFileEntryTypeId);
+
+		attributeGetters.put("version", DLFileVersion::getVersion);
+		attributeSetters.put("version", DLFileVersion::setVersion);
+
+		attributeGetters.put("size", DLFileVersion::getSize);
+		attributeSetters.put("size", DLFileVersion::setSize);
+
+		attributeGetters.put("checksum", DLFileVersion::getChecksum);
+		attributeSetters.put("checksum", DLFileVersion::setChecksum);
+
+		attributeGetters.put("lastPublishDate", DLFileVersion::getLastPublishDate);
+		attributeSetters.put("lastPublishDate", DLFileVersion::setLastPublishDate);
+
+		attributeGetters.put("status", DLFileVersion::getStatus);
+		attributeSetters.put("status", DLFileVersion::setStatus);
+
+		attributeGetters.put("statusByUserId", DLFileVersion::getStatusByUserId);
+		attributeSetters.put("statusByUserId", DLFileVersion::setStatusByUserId);
+
+		attributeGetters.put("statusByUserName", DLFileVersion::getStatusByUserName);
+		attributeSetters.put("statusByUserName", DLFileVersion::setStatusByUserName);
+
+		attributeGetters.put("statusDate", DLFileVersion::getStatusDate);
+		attributeSetters.put("statusDate", DLFileVersion::setStatusDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<DLFileVersion, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DLFileVersion, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<DLFileVersion, String>() {
-				@Override
-				public void accept(DLFileVersion dlFileVersion, String uuid) {
-					dlFileVersion.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("fileVersionId",
-			new BiConsumer<DLFileVersion, Long>() {
-				@Override
-				public void accept(DLFileVersion dlFileVersion,
-					Long fileVersionId) {
-					dlFileVersion.setFileVersionId(fileVersionId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<DLFileVersion, Long>() {
-				@Override
-				public void accept(DLFileVersion dlFileVersion, Long groupId) {
-					dlFileVersion.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<DLFileVersion, Long>() {
-				@Override
-				public void accept(DLFileVersion dlFileVersion, Long companyId) {
-					dlFileVersion.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<DLFileVersion, Long>() {
-				@Override
-				public void accept(DLFileVersion dlFileVersion, Long userId) {
-					dlFileVersion.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<DLFileVersion, String>() {
-				@Override
-				public void accept(DLFileVersion dlFileVersion, String userName) {
-					dlFileVersion.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<DLFileVersion, Date>() {
-				@Override
-				public void accept(DLFileVersion dlFileVersion, Date createDate) {
-					dlFileVersion.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<DLFileVersion, Date>() {
-				@Override
-				public void accept(DLFileVersion dlFileVersion,
-					Date modifiedDate) {
-					dlFileVersion.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("repositoryId",
-			new BiConsumer<DLFileVersion, Long>() {
-				@Override
-				public void accept(DLFileVersion dlFileVersion,
-					Long repositoryId) {
-					dlFileVersion.setRepositoryId(repositoryId);
-				}
-			});
-		attributeSetters.put("folderId",
-			new BiConsumer<DLFileVersion, Long>() {
-				@Override
-				public void accept(DLFileVersion dlFileVersion, Long folderId) {
-					dlFileVersion.setFolderId(folderId);
-				}
-			});
-		attributeSetters.put("fileEntryId",
-			new BiConsumer<DLFileVersion, Long>() {
-				@Override
-				public void accept(DLFileVersion dlFileVersion, Long fileEntryId) {
-					dlFileVersion.setFileEntryId(fileEntryId);
-				}
-			});
-		attributeSetters.put("treePath",
-			new BiConsumer<DLFileVersion, String>() {
-				@Override
-				public void accept(DLFileVersion dlFileVersion, String treePath) {
-					dlFileVersion.setTreePath(treePath);
-				}
-			});
-		attributeSetters.put("fileName",
-			new BiConsumer<DLFileVersion, String>() {
-				@Override
-				public void accept(DLFileVersion dlFileVersion, String fileName) {
-					dlFileVersion.setFileName(fileName);
-				}
-			});
-		attributeSetters.put("extension",
-			new BiConsumer<DLFileVersion, String>() {
-				@Override
-				public void accept(DLFileVersion dlFileVersion, String extension) {
-					dlFileVersion.setExtension(extension);
-				}
-			});
-		attributeSetters.put("mimeType",
-			new BiConsumer<DLFileVersion, String>() {
-				@Override
-				public void accept(DLFileVersion dlFileVersion, String mimeType) {
-					dlFileVersion.setMimeType(mimeType);
-				}
-			});
-		attributeSetters.put("title",
-			new BiConsumer<DLFileVersion, String>() {
-				@Override
-				public void accept(DLFileVersion dlFileVersion, String title) {
-					dlFileVersion.setTitle(title);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<DLFileVersion, String>() {
-				@Override
-				public void accept(DLFileVersion dlFileVersion,
-					String description) {
-					dlFileVersion.setDescription(description);
-				}
-			});
-		attributeSetters.put("changeLog",
-			new BiConsumer<DLFileVersion, String>() {
-				@Override
-				public void accept(DLFileVersion dlFileVersion, String changeLog) {
-					dlFileVersion.setChangeLog(changeLog);
-				}
-			});
-		attributeSetters.put("extraSettings",
-			new BiConsumer<DLFileVersion, String>() {
-				@Override
-				public void accept(DLFileVersion dlFileVersion,
-					String extraSettings) {
-					dlFileVersion.setExtraSettings(extraSettings);
-				}
-			});
-		attributeSetters.put("fileEntryTypeId",
-			new BiConsumer<DLFileVersion, Long>() {
-				@Override
-				public void accept(DLFileVersion dlFileVersion,
-					Long fileEntryTypeId) {
-					dlFileVersion.setFileEntryTypeId(fileEntryTypeId);
-				}
-			});
-		attributeSetters.put("version",
-			new BiConsumer<DLFileVersion, String>() {
-				@Override
-				public void accept(DLFileVersion dlFileVersion, String version) {
-					dlFileVersion.setVersion(version);
-				}
-			});
-		attributeSetters.put("size",
-			new BiConsumer<DLFileVersion, Long>() {
-				@Override
-				public void accept(DLFileVersion dlFileVersion, Long size) {
-					dlFileVersion.setSize(size);
-				}
-			});
-		attributeSetters.put("checksum",
-			new BiConsumer<DLFileVersion, String>() {
-				@Override
-				public void accept(DLFileVersion dlFileVersion, String checksum) {
-					dlFileVersion.setChecksum(checksum);
-				}
-			});
-		attributeSetters.put("lastPublishDate",
-			new BiConsumer<DLFileVersion, Date>() {
-				@Override
-				public void accept(DLFileVersion dlFileVersion,
-					Date lastPublishDate) {
-					dlFileVersion.setLastPublishDate(lastPublishDate);
-				}
-			});
-		attributeSetters.put("status",
-			new BiConsumer<DLFileVersion, Integer>() {
-				@Override
-				public void accept(DLFileVersion dlFileVersion, Integer status) {
-					dlFileVersion.setStatus(status);
-				}
-			});
-		attributeSetters.put("statusByUserId",
-			new BiConsumer<DLFileVersion, Long>() {
-				@Override
-				public void accept(DLFileVersion dlFileVersion,
-					Long statusByUserId) {
-					dlFileVersion.setStatusByUserId(statusByUserId);
-				}
-			});
-		attributeSetters.put("statusByUserName",
-			new BiConsumer<DLFileVersion, String>() {
-				@Override
-				public void accept(DLFileVersion dlFileVersion,
-					String statusByUserName) {
-					dlFileVersion.setStatusByUserName(statusByUserName);
-				}
-			});
-		attributeSetters.put("statusDate",
-			new BiConsumer<DLFileVersion, Date>() {
-				@Override
-				public void accept(DLFileVersion dlFileVersion, Date statusDate) {
-					dlFileVersion.setStatusDate(statusDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

@@ -268,283 +268,67 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 
 	static {
 		Map<String, Function<Organization, Object>> attributeGetters = new LinkedHashMap<String, Function<Organization, Object>>();
+		Map<String, BiConsumer<Organization, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Organization, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<Organization, Object>() {
-				@Override
-				public Object apply(Organization organization) {
-					return organization.getMvccVersion();
-				}
-			});
-		attributeGetters.put("uuid",
-			new Function<Organization, Object>() {
-				@Override
-				public Object apply(Organization organization) {
-					return organization.getUuid();
-				}
-			});
-		attributeGetters.put("externalReferenceCode",
-			new Function<Organization, Object>() {
-				@Override
-				public Object apply(Organization organization) {
-					return organization.getExternalReferenceCode();
-				}
-			});
-		attributeGetters.put("organizationId",
-			new Function<Organization, Object>() {
-				@Override
-				public Object apply(Organization organization) {
-					return organization.getOrganizationId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<Organization, Object>() {
-				@Override
-				public Object apply(Organization organization) {
-					return organization.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<Organization, Object>() {
-				@Override
-				public Object apply(Organization organization) {
-					return organization.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<Organization, Object>() {
-				@Override
-				public Object apply(Organization organization) {
-					return organization.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<Organization, Object>() {
-				@Override
-				public Object apply(Organization organization) {
-					return organization.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<Organization, Object>() {
-				@Override
-				public Object apply(Organization organization) {
-					return organization.getModifiedDate();
-				}
-			});
-		attributeGetters.put("parentOrganizationId",
-			new Function<Organization, Object>() {
-				@Override
-				public Object apply(Organization organization) {
-					return organization.getParentOrganizationId();
-				}
-			});
-		attributeGetters.put("treePath",
-			new Function<Organization, Object>() {
-				@Override
-				public Object apply(Organization organization) {
-					return organization.getTreePath();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<Organization, Object>() {
-				@Override
-				public Object apply(Organization organization) {
-					return organization.getName();
-				}
-			});
-		attributeGetters.put("type",
-			new Function<Organization, Object>() {
-				@Override
-				public Object apply(Organization organization) {
-					return organization.getType();
-				}
-			});
-		attributeGetters.put("recursable",
-			new Function<Organization, Object>() {
-				@Override
-				public Object apply(Organization organization) {
-					return organization.isRecursable();
-				}
-			});
-		attributeGetters.put("regionId",
-			new Function<Organization, Object>() {
-				@Override
-				public Object apply(Organization organization) {
-					return organization.getRegionId();
-				}
-			});
-		attributeGetters.put("countryId",
-			new Function<Organization, Object>() {
-				@Override
-				public Object apply(Organization organization) {
-					return organization.getCountryId();
-				}
-			});
-		attributeGetters.put("statusId",
-			new Function<Organization, Object>() {
-				@Override
-				public Object apply(Organization organization) {
-					return organization.getStatusId();
-				}
-			});
-		attributeGetters.put("comments",
-			new Function<Organization, Object>() {
-				@Override
-				public Object apply(Organization organization) {
-					return organization.getComments();
-				}
-			});
-		attributeGetters.put("logoId",
-			new Function<Organization, Object>() {
-				@Override
-				public Object apply(Organization organization) {
-					return organization.getLogoId();
-				}
-			});
+		attributeGetters.put("mvccVersion", Organization::getMvccVersion);
+		attributeSetters.put("mvccVersion", Organization::setMvccVersion);
+
+		attributeGetters.put("uuid", Organization::getUuid);
+		attributeSetters.put("uuid", Organization::setUuid);
+
+		attributeGetters.put("externalReferenceCode", Organization::getExternalReferenceCode);
+		attributeSetters.put("externalReferenceCode", Organization::setExternalReferenceCode);
+
+		attributeGetters.put("organizationId", Organization::getOrganizationId);
+		attributeSetters.put("organizationId", Organization::setOrganizationId);
+
+		attributeGetters.put("companyId", Organization::getCompanyId);
+		attributeSetters.put("companyId", Organization::setCompanyId);
+
+		attributeGetters.put("userId", Organization::getUserId);
+		attributeSetters.put("userId", Organization::setUserId);
+
+		attributeGetters.put("userName", Organization::getUserName);
+		attributeSetters.put("userName", Organization::setUserName);
+
+		attributeGetters.put("createDate", Organization::getCreateDate);
+		attributeSetters.put("createDate", Organization::setCreateDate);
+
+		attributeGetters.put("modifiedDate", Organization::getModifiedDate);
+		attributeSetters.put("modifiedDate", Organization::setModifiedDate);
+
+		attributeGetters.put("parentOrganizationId", Organization::getParentOrganizationId);
+		attributeSetters.put("parentOrganizationId", Organization::setParentOrganizationId);
+
+		attributeGetters.put("treePath", Organization::getTreePath);
+		attributeSetters.put("treePath", Organization::setTreePath);
+
+		attributeGetters.put("name", Organization::getName);
+		attributeSetters.put("name", Organization::setName);
+
+		attributeGetters.put("type", Organization::getType);
+		attributeSetters.put("type", Organization::setType);
+
+		attributeGetters.put("recursable", Organization::getRecursable);
+		attributeSetters.put("recursable", Organization::setRecursable);
+
+		attributeGetters.put("regionId", Organization::getRegionId);
+		attributeSetters.put("regionId", Organization::setRegionId);
+
+		attributeGetters.put("countryId", Organization::getCountryId);
+		attributeSetters.put("countryId", Organization::setCountryId);
+
+		attributeGetters.put("statusId", Organization::getStatusId);
+		attributeSetters.put("statusId", Organization::setStatusId);
+
+		attributeGetters.put("comments", Organization::getComments);
+		attributeSetters.put("comments", Organization::setComments);
+
+		attributeGetters.put("logoId", Organization::getLogoId);
+		attributeSetters.put("logoId", Organization::setLogoId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<Organization, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Organization, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<Organization, Long>() {
-				@Override
-				public void accept(Organization organization, Long mvccVersion) {
-					organization.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("uuid",
-			new BiConsumer<Organization, String>() {
-				@Override
-				public void accept(Organization organization, String uuid) {
-					organization.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("externalReferenceCode",
-			new BiConsumer<Organization, String>() {
-				@Override
-				public void accept(Organization organization,
-					String externalReferenceCode) {
-					organization.setExternalReferenceCode(externalReferenceCode);
-				}
-			});
-		attributeSetters.put("organizationId",
-			new BiConsumer<Organization, Long>() {
-				@Override
-				public void accept(Organization organization,
-					Long organizationId) {
-					organization.setOrganizationId(organizationId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<Organization, Long>() {
-				@Override
-				public void accept(Organization organization, Long companyId) {
-					organization.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<Organization, Long>() {
-				@Override
-				public void accept(Organization organization, Long userId) {
-					organization.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<Organization, String>() {
-				@Override
-				public void accept(Organization organization, String userName) {
-					organization.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<Organization, Date>() {
-				@Override
-				public void accept(Organization organization, Date createDate) {
-					organization.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<Organization, Date>() {
-				@Override
-				public void accept(Organization organization, Date modifiedDate) {
-					organization.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("parentOrganizationId",
-			new BiConsumer<Organization, Long>() {
-				@Override
-				public void accept(Organization organization,
-					Long parentOrganizationId) {
-					organization.setParentOrganizationId(parentOrganizationId);
-				}
-			});
-		attributeSetters.put("treePath",
-			new BiConsumer<Organization, String>() {
-				@Override
-				public void accept(Organization organization, String treePath) {
-					organization.setTreePath(treePath);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<Organization, String>() {
-				@Override
-				public void accept(Organization organization, String name) {
-					organization.setName(name);
-				}
-			});
-		attributeSetters.put("type",
-			new BiConsumer<Organization, String>() {
-				@Override
-				public void accept(Organization organization, String type) {
-					organization.setType(type);
-				}
-			});
-		attributeSetters.put("recursable",
-			new BiConsumer<Organization, Boolean>() {
-				@Override
-				public void accept(Organization organization, Boolean recursable) {
-					organization.setRecursable(recursable);
-				}
-			});
-		attributeSetters.put("regionId",
-			new BiConsumer<Organization, Long>() {
-				@Override
-				public void accept(Organization organization, Long regionId) {
-					organization.setRegionId(regionId);
-				}
-			});
-		attributeSetters.put("countryId",
-			new BiConsumer<Organization, Long>() {
-				@Override
-				public void accept(Organization organization, Long countryId) {
-					organization.setCountryId(countryId);
-				}
-			});
-		attributeSetters.put("statusId",
-			new BiConsumer<Organization, Long>() {
-				@Override
-				public void accept(Organization organization, Long statusId) {
-					organization.setStatusId(statusId);
-				}
-			});
-		attributeSetters.put("comments",
-			new BiConsumer<Organization, String>() {
-				@Override
-				public void accept(Organization organization, String comments) {
-					organization.setComments(comments);
-				}
-			});
-		attributeSetters.put("logoId",
-			new BiConsumer<Organization, Long>() {
-				@Override
-				public void accept(Organization organization, Long logoId) {
-					organization.setLogoId(logoId);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

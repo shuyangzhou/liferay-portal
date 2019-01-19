@@ -189,72 +189,94 @@ public class VersionedEntryModelImpl extends BaseModelImpl<VersionedEntry>
 
 	static {
 		Map<String, Function<VersionedEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<VersionedEntry, Object>>();
+		Map<String, BiConsumer<VersionedEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<VersionedEntry, Object>>();
 
-		attributeGetters.put("mvccVersion",
+		attributeGetters.put(
+			"mvccVersion",
 			new Function<VersionedEntry, Object>() {
+
 				@Override
 				public Object apply(VersionedEntry versionedEntry) {
 					return versionedEntry.getMvccVersion();
 				}
+
 			});
-		attributeGetters.put("headId",
+		attributeSetters.put(
+			"mvccVersion",
+			new BiConsumer<VersionedEntry, Object>() {
+
+				@Override
+				public void accept(VersionedEntry versionedEntry, Object mvccVersion) {
+					versionedEntry.setMvccVersion((Long)mvccVersion);
+				}
+
+			});
+
+		attributeGetters.put(
+			"headId",
 			new Function<VersionedEntry, Object>() {
+
 				@Override
 				public Object apply(VersionedEntry versionedEntry) {
 					return versionedEntry.getHeadId();
 				}
+
 			});
-		attributeGetters.put("versionedEntryId",
+		attributeSetters.put(
+			"headId",
+			new BiConsumer<VersionedEntry, Object>() {
+
+				@Override
+				public void accept(VersionedEntry versionedEntry, Object headId) {
+					versionedEntry.setHeadId((Long)headId);
+				}
+
+			});
+
+		attributeGetters.put(
+			"versionedEntryId",
 			new Function<VersionedEntry, Object>() {
+
 				@Override
 				public Object apply(VersionedEntry versionedEntry) {
 					return versionedEntry.getVersionedEntryId();
 				}
+
 			});
-		attributeGetters.put("groupId",
+		attributeSetters.put(
+			"versionedEntryId",
+			new BiConsumer<VersionedEntry, Object>() {
+
+				@Override
+				public void accept(VersionedEntry versionedEntry, Object versionedEntryId) {
+					versionedEntry.setVersionedEntryId((Long)versionedEntryId);
+				}
+
+			});
+
+		attributeGetters.put(
+			"groupId",
 			new Function<VersionedEntry, Object>() {
+
 				@Override
 				public Object apply(VersionedEntry versionedEntry) {
 					return versionedEntry.getGroupId();
 				}
+
+			});
+		attributeSetters.put(
+			"groupId",
+			new BiConsumer<VersionedEntry, Object>() {
+
+				@Override
+				public void accept(VersionedEntry versionedEntry, Object groupId) {
+					versionedEntry.setGroupId((Long)groupId);
+				}
+
 			});
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<VersionedEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<VersionedEntry, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<VersionedEntry, Long>() {
-				@Override
-				public void accept(VersionedEntry versionedEntry,
-					Long mvccVersion) {
-					versionedEntry.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("headId",
-			new BiConsumer<VersionedEntry, Long>() {
-				@Override
-				public void accept(VersionedEntry versionedEntry, Long headId) {
-					versionedEntry.setHeadId(headId);
-				}
-			});
-		attributeSetters.put("versionedEntryId",
-			new BiConsumer<VersionedEntry, Long>() {
-				@Override
-				public void accept(VersionedEntry versionedEntry,
-					Long versionedEntryId) {
-					versionedEntry.setVersionedEntryId(versionedEntryId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<VersionedEntry, Long>() {
-				@Override
-				public void accept(VersionedEntry versionedEntry, Long groupId) {
-					versionedEntry.setGroupId(groupId);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

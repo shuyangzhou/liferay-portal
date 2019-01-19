@@ -160,133 +160,32 @@ public class SocialActivityAchievementModelImpl extends BaseModelImpl<SocialActi
 	static {
 		Map<String, Function<SocialActivityAchievement, Object>> attributeGetters =
 			new LinkedHashMap<String, Function<SocialActivityAchievement, Object>>();
+		Map<String, BiConsumer<SocialActivityAchievement, Object>> attributeSetters =
+			new LinkedHashMap<String, BiConsumer<SocialActivityAchievement, Object>>();
 
-		attributeGetters.put("activityAchievementId",
-			new Function<SocialActivityAchievement, Object>() {
-				@Override
-				public Object apply(
-					SocialActivityAchievement socialActivityAchievement) {
-					return socialActivityAchievement.getActivityAchievementId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<SocialActivityAchievement, Object>() {
-				@Override
-				public Object apply(
-					SocialActivityAchievement socialActivityAchievement) {
-					return socialActivityAchievement.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<SocialActivityAchievement, Object>() {
-				@Override
-				public Object apply(
-					SocialActivityAchievement socialActivityAchievement) {
-					return socialActivityAchievement.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<SocialActivityAchievement, Object>() {
-				@Override
-				public Object apply(
-					SocialActivityAchievement socialActivityAchievement) {
-					return socialActivityAchievement.getUserId();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<SocialActivityAchievement, Object>() {
-				@Override
-				public Object apply(
-					SocialActivityAchievement socialActivityAchievement) {
-					return socialActivityAchievement.getCreateDate();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<SocialActivityAchievement, Object>() {
-				@Override
-				public Object apply(
-					SocialActivityAchievement socialActivityAchievement) {
-					return socialActivityAchievement.getName();
-				}
-			});
-		attributeGetters.put("firstInGroup",
-			new Function<SocialActivityAchievement, Object>() {
-				@Override
-				public Object apply(
-					SocialActivityAchievement socialActivityAchievement) {
-					return socialActivityAchievement.isFirstInGroup();
-				}
-			});
+		attributeGetters.put("activityAchievementId", SocialActivityAchievement::getActivityAchievementId);
+		attributeSetters.put("activityAchievementId", SocialActivityAchievement::setActivityAchievementId);
+
+		attributeGetters.put("groupId", SocialActivityAchievement::getGroupId);
+		attributeSetters.put("groupId", SocialActivityAchievement::setGroupId);
+
+		attributeGetters.put("companyId", SocialActivityAchievement::getCompanyId);
+		attributeSetters.put("companyId", SocialActivityAchievement::setCompanyId);
+
+		attributeGetters.put("userId", SocialActivityAchievement::getUserId);
+		attributeSetters.put("userId", SocialActivityAchievement::setUserId);
+
+		attributeGetters.put("createDate", SocialActivityAchievement::getCreateDate);
+		attributeSetters.put("createDate", SocialActivityAchievement::setCreateDate);
+
+		attributeGetters.put("name", SocialActivityAchievement::getName);
+		attributeSetters.put("name", SocialActivityAchievement::setName);
+
+		attributeGetters.put("firstInGroup", SocialActivityAchievement::getFirstInGroup);
+		attributeSetters.put("firstInGroup", SocialActivityAchievement::setFirstInGroup);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<SocialActivityAchievement, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<SocialActivityAchievement, ?>>();
-
-		attributeSetters.put("activityAchievementId",
-			new BiConsumer<SocialActivityAchievement, Long>() {
-				@Override
-				public void accept(
-					SocialActivityAchievement socialActivityAchievement,
-					Long activityAchievementId) {
-					socialActivityAchievement.setActivityAchievementId(activityAchievementId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<SocialActivityAchievement, Long>() {
-				@Override
-				public void accept(
-					SocialActivityAchievement socialActivityAchievement,
-					Long groupId) {
-					socialActivityAchievement.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<SocialActivityAchievement, Long>() {
-				@Override
-				public void accept(
-					SocialActivityAchievement socialActivityAchievement,
-					Long companyId) {
-					socialActivityAchievement.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<SocialActivityAchievement, Long>() {
-				@Override
-				public void accept(
-					SocialActivityAchievement socialActivityAchievement,
-					Long userId) {
-					socialActivityAchievement.setUserId(userId);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<SocialActivityAchievement, Long>() {
-				@Override
-				public void accept(
-					SocialActivityAchievement socialActivityAchievement,
-					Long createDate) {
-					socialActivityAchievement.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<SocialActivityAchievement, String>() {
-				@Override
-				public void accept(
-					SocialActivityAchievement socialActivityAchievement,
-					String name) {
-					socialActivityAchievement.setName(name);
-				}
-			});
-		attributeSetters.put("firstInGroup",
-			new BiConsumer<SocialActivityAchievement, Boolean>() {
-				@Override
-				public void accept(
-					SocialActivityAchievement socialActivityAchievement,
-					Boolean firstInGroup) {
-					socialActivityAchievement.setFirstInGroup(firstInGroup);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

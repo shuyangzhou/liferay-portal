@@ -153,88 +153,25 @@ public class DDMTemplateLinkModelImpl extends BaseModelImpl<DDMTemplateLink>
 
 	static {
 		Map<String, Function<DDMTemplateLink, Object>> attributeGetters = new LinkedHashMap<String, Function<DDMTemplateLink, Object>>();
+		Map<String, BiConsumer<DDMTemplateLink, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDMTemplateLink, Object>>();
 
-		attributeGetters.put("templateLinkId",
-			new Function<DDMTemplateLink, Object>() {
-				@Override
-				public Object apply(DDMTemplateLink ddmTemplateLink) {
-					return ddmTemplateLink.getTemplateLinkId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<DDMTemplateLink, Object>() {
-				@Override
-				public Object apply(DDMTemplateLink ddmTemplateLink) {
-					return ddmTemplateLink.getCompanyId();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<DDMTemplateLink, Object>() {
-				@Override
-				public Object apply(DDMTemplateLink ddmTemplateLink) {
-					return ddmTemplateLink.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<DDMTemplateLink, Object>() {
-				@Override
-				public Object apply(DDMTemplateLink ddmTemplateLink) {
-					return ddmTemplateLink.getClassPK();
-				}
-			});
-		attributeGetters.put("templateId",
-			new Function<DDMTemplateLink, Object>() {
-				@Override
-				public Object apply(DDMTemplateLink ddmTemplateLink) {
-					return ddmTemplateLink.getTemplateId();
-				}
-			});
+		attributeGetters.put("templateLinkId", DDMTemplateLink::getTemplateLinkId);
+		attributeSetters.put("templateLinkId", DDMTemplateLink::setTemplateLinkId);
+
+		attributeGetters.put("companyId", DDMTemplateLink::getCompanyId);
+		attributeSetters.put("companyId", DDMTemplateLink::setCompanyId);
+
+		attributeGetters.put("classNameId", DDMTemplateLink::getClassNameId);
+		attributeSetters.put("classNameId", DDMTemplateLink::setClassNameId);
+
+		attributeGetters.put("classPK", DDMTemplateLink::getClassPK);
+		attributeSetters.put("classPK", DDMTemplateLink::setClassPK);
+
+		attributeGetters.put("templateId", DDMTemplateLink::getTemplateId);
+		attributeSetters.put("templateId", DDMTemplateLink::setTemplateId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<DDMTemplateLink, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDMTemplateLink, ?>>();
-
-		attributeSetters.put("templateLinkId",
-			new BiConsumer<DDMTemplateLink, Long>() {
-				@Override
-				public void accept(DDMTemplateLink ddmTemplateLink,
-					Long templateLinkId) {
-					ddmTemplateLink.setTemplateLinkId(templateLinkId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<DDMTemplateLink, Long>() {
-				@Override
-				public void accept(DDMTemplateLink ddmTemplateLink,
-					Long companyId) {
-					ddmTemplateLink.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<DDMTemplateLink, Long>() {
-				@Override
-				public void accept(DDMTemplateLink ddmTemplateLink,
-					Long classNameId) {
-					ddmTemplateLink.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<DDMTemplateLink, Long>() {
-				@Override
-				public void accept(DDMTemplateLink ddmTemplateLink, Long classPK) {
-					ddmTemplateLink.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("templateId",
-			new BiConsumer<DDMTemplateLink, Long>() {
-				@Override
-				public void accept(DDMTemplateLink ddmTemplateLink,
-					Long templateId) {
-					ddmTemplateLink.setTemplateId(templateId);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

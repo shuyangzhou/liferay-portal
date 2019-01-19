@@ -207,115 +207,31 @@ public class ResourceBlockModelImpl extends BaseModelImpl<ResourceBlock>
 
 	static {
 		Map<String, Function<ResourceBlock, Object>> attributeGetters = new LinkedHashMap<String, Function<ResourceBlock, Object>>();
+		Map<String, BiConsumer<ResourceBlock, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<ResourceBlock, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<ResourceBlock, Object>() {
-				@Override
-				public Object apply(ResourceBlock resourceBlock) {
-					return resourceBlock.getMvccVersion();
-				}
-			});
-		attributeGetters.put("resourceBlockId",
-			new Function<ResourceBlock, Object>() {
-				@Override
-				public Object apply(ResourceBlock resourceBlock) {
-					return resourceBlock.getResourceBlockId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<ResourceBlock, Object>() {
-				@Override
-				public Object apply(ResourceBlock resourceBlock) {
-					return resourceBlock.getCompanyId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<ResourceBlock, Object>() {
-				@Override
-				public Object apply(ResourceBlock resourceBlock) {
-					return resourceBlock.getGroupId();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<ResourceBlock, Object>() {
-				@Override
-				public Object apply(ResourceBlock resourceBlock) {
-					return resourceBlock.getName();
-				}
-			});
-		attributeGetters.put("permissionsHash",
-			new Function<ResourceBlock, Object>() {
-				@Override
-				public Object apply(ResourceBlock resourceBlock) {
-					return resourceBlock.getPermissionsHash();
-				}
-			});
-		attributeGetters.put("referenceCount",
-			new Function<ResourceBlock, Object>() {
-				@Override
-				public Object apply(ResourceBlock resourceBlock) {
-					return resourceBlock.getReferenceCount();
-				}
-			});
+		attributeGetters.put("mvccVersion", ResourceBlock::getMvccVersion);
+		attributeSetters.put("mvccVersion", ResourceBlock::setMvccVersion);
+
+		attributeGetters.put("resourceBlockId", ResourceBlock::getResourceBlockId);
+		attributeSetters.put("resourceBlockId", ResourceBlock::setResourceBlockId);
+
+		attributeGetters.put("companyId", ResourceBlock::getCompanyId);
+		attributeSetters.put("companyId", ResourceBlock::setCompanyId);
+
+		attributeGetters.put("groupId", ResourceBlock::getGroupId);
+		attributeSetters.put("groupId", ResourceBlock::setGroupId);
+
+		attributeGetters.put("name", ResourceBlock::getName);
+		attributeSetters.put("name", ResourceBlock::setName);
+
+		attributeGetters.put("permissionsHash", ResourceBlock::getPermissionsHash);
+		attributeSetters.put("permissionsHash", ResourceBlock::setPermissionsHash);
+
+		attributeGetters.put("referenceCount", ResourceBlock::getReferenceCount);
+		attributeSetters.put("referenceCount", ResourceBlock::setReferenceCount);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<ResourceBlock, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<ResourceBlock, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<ResourceBlock, Long>() {
-				@Override
-				public void accept(ResourceBlock resourceBlock, Long mvccVersion) {
-					resourceBlock.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("resourceBlockId",
-			new BiConsumer<ResourceBlock, Long>() {
-				@Override
-				public void accept(ResourceBlock resourceBlock,
-					Long resourceBlockId) {
-					resourceBlock.setResourceBlockId(resourceBlockId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<ResourceBlock, Long>() {
-				@Override
-				public void accept(ResourceBlock resourceBlock, Long companyId) {
-					resourceBlock.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<ResourceBlock, Long>() {
-				@Override
-				public void accept(ResourceBlock resourceBlock, Long groupId) {
-					resourceBlock.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<ResourceBlock, String>() {
-				@Override
-				public void accept(ResourceBlock resourceBlock, String name) {
-					resourceBlock.setName(name);
-				}
-			});
-		attributeSetters.put("permissionsHash",
-			new BiConsumer<ResourceBlock, String>() {
-				@Override
-				public void accept(ResourceBlock resourceBlock,
-					String permissionsHash) {
-					resourceBlock.setPermissionsHash(permissionsHash);
-				}
-			});
-		attributeSetters.put("referenceCount",
-			new BiConsumer<ResourceBlock, Long>() {
-				@Override
-				public void accept(ResourceBlock resourceBlock,
-					Long referenceCount) {
-					resourceBlock.setReferenceCount(referenceCount);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

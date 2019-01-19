@@ -167,149 +167,37 @@ public class SocialActivityLimitModelImpl extends BaseModelImpl<SocialActivityLi
 
 	static {
 		Map<String, Function<SocialActivityLimit, Object>> attributeGetters = new LinkedHashMap<String, Function<SocialActivityLimit, Object>>();
+		Map<String, BiConsumer<SocialActivityLimit, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SocialActivityLimit, Object>>();
 
-		attributeGetters.put("activityLimitId",
-			new Function<SocialActivityLimit, Object>() {
-				@Override
-				public Object apply(SocialActivityLimit socialActivityLimit) {
-					return socialActivityLimit.getActivityLimitId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<SocialActivityLimit, Object>() {
-				@Override
-				public Object apply(SocialActivityLimit socialActivityLimit) {
-					return socialActivityLimit.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<SocialActivityLimit, Object>() {
-				@Override
-				public Object apply(SocialActivityLimit socialActivityLimit) {
-					return socialActivityLimit.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<SocialActivityLimit, Object>() {
-				@Override
-				public Object apply(SocialActivityLimit socialActivityLimit) {
-					return socialActivityLimit.getUserId();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<SocialActivityLimit, Object>() {
-				@Override
-				public Object apply(SocialActivityLimit socialActivityLimit) {
-					return socialActivityLimit.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<SocialActivityLimit, Object>() {
-				@Override
-				public Object apply(SocialActivityLimit socialActivityLimit) {
-					return socialActivityLimit.getClassPK();
-				}
-			});
-		attributeGetters.put("activityType",
-			new Function<SocialActivityLimit, Object>() {
-				@Override
-				public Object apply(SocialActivityLimit socialActivityLimit) {
-					return socialActivityLimit.getActivityType();
-				}
-			});
-		attributeGetters.put("activityCounterName",
-			new Function<SocialActivityLimit, Object>() {
-				@Override
-				public Object apply(SocialActivityLimit socialActivityLimit) {
-					return socialActivityLimit.getActivityCounterName();
-				}
-			});
-		attributeGetters.put("value",
-			new Function<SocialActivityLimit, Object>() {
-				@Override
-				public Object apply(SocialActivityLimit socialActivityLimit) {
-					return socialActivityLimit.getValue();
-				}
-			});
+		attributeGetters.put("activityLimitId", SocialActivityLimit::getActivityLimitId);
+		attributeSetters.put("activityLimitId", SocialActivityLimit::setActivityLimitId);
+
+		attributeGetters.put("groupId", SocialActivityLimit::getGroupId);
+		attributeSetters.put("groupId", SocialActivityLimit::setGroupId);
+
+		attributeGetters.put("companyId", SocialActivityLimit::getCompanyId);
+		attributeSetters.put("companyId", SocialActivityLimit::setCompanyId);
+
+		attributeGetters.put("userId", SocialActivityLimit::getUserId);
+		attributeSetters.put("userId", SocialActivityLimit::setUserId);
+
+		attributeGetters.put("classNameId", SocialActivityLimit::getClassNameId);
+		attributeSetters.put("classNameId", SocialActivityLimit::setClassNameId);
+
+		attributeGetters.put("classPK", SocialActivityLimit::getClassPK);
+		attributeSetters.put("classPK", SocialActivityLimit::setClassPK);
+
+		attributeGetters.put("activityType", SocialActivityLimit::getActivityType);
+		attributeSetters.put("activityType", SocialActivityLimit::setActivityType);
+
+		attributeGetters.put("activityCounterName", SocialActivityLimit::getActivityCounterName);
+		attributeSetters.put("activityCounterName", SocialActivityLimit::setActivityCounterName);
+
+		attributeGetters.put("value", SocialActivityLimit::getValue);
+		attributeSetters.put("value", SocialActivityLimit::setValue);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<SocialActivityLimit, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<SocialActivityLimit, ?>>();
-
-		attributeSetters.put("activityLimitId",
-			new BiConsumer<SocialActivityLimit, Long>() {
-				@Override
-				public void accept(SocialActivityLimit socialActivityLimit,
-					Long activityLimitId) {
-					socialActivityLimit.setActivityLimitId(activityLimitId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<SocialActivityLimit, Long>() {
-				@Override
-				public void accept(SocialActivityLimit socialActivityLimit,
-					Long groupId) {
-					socialActivityLimit.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<SocialActivityLimit, Long>() {
-				@Override
-				public void accept(SocialActivityLimit socialActivityLimit,
-					Long companyId) {
-					socialActivityLimit.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<SocialActivityLimit, Long>() {
-				@Override
-				public void accept(SocialActivityLimit socialActivityLimit,
-					Long userId) {
-					socialActivityLimit.setUserId(userId);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<SocialActivityLimit, Long>() {
-				@Override
-				public void accept(SocialActivityLimit socialActivityLimit,
-					Long classNameId) {
-					socialActivityLimit.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<SocialActivityLimit, Long>() {
-				@Override
-				public void accept(SocialActivityLimit socialActivityLimit,
-					Long classPK) {
-					socialActivityLimit.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("activityType",
-			new BiConsumer<SocialActivityLimit, Integer>() {
-				@Override
-				public void accept(SocialActivityLimit socialActivityLimit,
-					Integer activityType) {
-					socialActivityLimit.setActivityType(activityType);
-				}
-			});
-		attributeSetters.put("activityCounterName",
-			new BiConsumer<SocialActivityLimit, String>() {
-				@Override
-				public void accept(SocialActivityLimit socialActivityLimit,
-					String activityCounterName) {
-					socialActivityLimit.setActivityCounterName(activityCounterName);
-				}
-			});
-		attributeSetters.put("value",
-			new BiConsumer<SocialActivityLimit, String>() {
-				@Override
-				public void accept(SocialActivityLimit socialActivityLimit,
-					String value) {
-					socialActivityLimit.setValue(value);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

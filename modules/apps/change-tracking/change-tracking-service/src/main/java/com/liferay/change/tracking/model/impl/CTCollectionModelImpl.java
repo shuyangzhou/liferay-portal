@@ -181,185 +181,46 @@ public class CTCollectionModelImpl extends BaseModelImpl<CTCollection>
 
 	static {
 		Map<String, Function<CTCollection, Object>> attributeGetters = new LinkedHashMap<String, Function<CTCollection, Object>>();
+		Map<String, BiConsumer<CTCollection, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<CTCollection, Object>>();
 
-		attributeGetters.put("ctCollectionId",
-			new Function<CTCollection, Object>() {
-				@Override
-				public Object apply(CTCollection ctCollection) {
-					return ctCollection.getCtCollectionId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<CTCollection, Object>() {
-				@Override
-				public Object apply(CTCollection ctCollection) {
-					return ctCollection.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<CTCollection, Object>() {
-				@Override
-				public Object apply(CTCollection ctCollection) {
-					return ctCollection.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<CTCollection, Object>() {
-				@Override
-				public Object apply(CTCollection ctCollection) {
-					return ctCollection.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<CTCollection, Object>() {
-				@Override
-				public Object apply(CTCollection ctCollection) {
-					return ctCollection.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<CTCollection, Object>() {
-				@Override
-				public Object apply(CTCollection ctCollection) {
-					return ctCollection.getModifiedDate();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<CTCollection, Object>() {
-				@Override
-				public Object apply(CTCollection ctCollection) {
-					return ctCollection.getName();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<CTCollection, Object>() {
-				@Override
-				public Object apply(CTCollection ctCollection) {
-					return ctCollection.getDescription();
-				}
-			});
-		attributeGetters.put("status",
-			new Function<CTCollection, Object>() {
-				@Override
-				public Object apply(CTCollection ctCollection) {
-					return ctCollection.getStatus();
-				}
-			});
-		attributeGetters.put("statusByUserId",
-			new Function<CTCollection, Object>() {
-				@Override
-				public Object apply(CTCollection ctCollection) {
-					return ctCollection.getStatusByUserId();
-				}
-			});
-		attributeGetters.put("statusByUserName",
-			new Function<CTCollection, Object>() {
-				@Override
-				public Object apply(CTCollection ctCollection) {
-					return ctCollection.getStatusByUserName();
-				}
-			});
-		attributeGetters.put("statusDate",
-			new Function<CTCollection, Object>() {
-				@Override
-				public Object apply(CTCollection ctCollection) {
-					return ctCollection.getStatusDate();
-				}
-			});
+		attributeGetters.put("ctCollectionId", CTCollection::getCtCollectionId);
+		attributeSetters.put("ctCollectionId", CTCollection::setCtCollectionId);
+
+		attributeGetters.put("companyId", CTCollection::getCompanyId);
+		attributeSetters.put("companyId", CTCollection::setCompanyId);
+
+		attributeGetters.put("userId", CTCollection::getUserId);
+		attributeSetters.put("userId", CTCollection::setUserId);
+
+		attributeGetters.put("userName", CTCollection::getUserName);
+		attributeSetters.put("userName", CTCollection::setUserName);
+
+		attributeGetters.put("createDate", CTCollection::getCreateDate);
+		attributeSetters.put("createDate", CTCollection::setCreateDate);
+
+		attributeGetters.put("modifiedDate", CTCollection::getModifiedDate);
+		attributeSetters.put("modifiedDate", CTCollection::setModifiedDate);
+
+		attributeGetters.put("name", CTCollection::getName);
+		attributeSetters.put("name", CTCollection::setName);
+
+		attributeGetters.put("description", CTCollection::getDescription);
+		attributeSetters.put("description", CTCollection::setDescription);
+
+		attributeGetters.put("status", CTCollection::getStatus);
+		attributeSetters.put("status", CTCollection::setStatus);
+
+		attributeGetters.put("statusByUserId", CTCollection::getStatusByUserId);
+		attributeSetters.put("statusByUserId", CTCollection::setStatusByUserId);
+
+		attributeGetters.put("statusByUserName", CTCollection::getStatusByUserName);
+		attributeSetters.put("statusByUserName", CTCollection::setStatusByUserName);
+
+		attributeGetters.put("statusDate", CTCollection::getStatusDate);
+		attributeSetters.put("statusDate", CTCollection::setStatusDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<CTCollection, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<CTCollection, ?>>();
-
-		attributeSetters.put("ctCollectionId",
-			new BiConsumer<CTCollection, Long>() {
-				@Override
-				public void accept(CTCollection ctCollection,
-					Long ctCollectionId) {
-					ctCollection.setCtCollectionId(ctCollectionId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<CTCollection, Long>() {
-				@Override
-				public void accept(CTCollection ctCollection, Long companyId) {
-					ctCollection.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<CTCollection, Long>() {
-				@Override
-				public void accept(CTCollection ctCollection, Long userId) {
-					ctCollection.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<CTCollection, String>() {
-				@Override
-				public void accept(CTCollection ctCollection, String userName) {
-					ctCollection.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<CTCollection, Date>() {
-				@Override
-				public void accept(CTCollection ctCollection, Date createDate) {
-					ctCollection.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<CTCollection, Date>() {
-				@Override
-				public void accept(CTCollection ctCollection, Date modifiedDate) {
-					ctCollection.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<CTCollection, String>() {
-				@Override
-				public void accept(CTCollection ctCollection, String name) {
-					ctCollection.setName(name);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<CTCollection, String>() {
-				@Override
-				public void accept(CTCollection ctCollection, String description) {
-					ctCollection.setDescription(description);
-				}
-			});
-		attributeSetters.put("status",
-			new BiConsumer<CTCollection, Integer>() {
-				@Override
-				public void accept(CTCollection ctCollection, Integer status) {
-					ctCollection.setStatus(status);
-				}
-			});
-		attributeSetters.put("statusByUserId",
-			new BiConsumer<CTCollection, Long>() {
-				@Override
-				public void accept(CTCollection ctCollection,
-					Long statusByUserId) {
-					ctCollection.setStatusByUserId(statusByUserId);
-				}
-			});
-		attributeSetters.put("statusByUserName",
-			new BiConsumer<CTCollection, String>() {
-				@Override
-				public void accept(CTCollection ctCollection,
-					String statusByUserName) {
-					ctCollection.setStatusByUserName(statusByUserName);
-				}
-			});
-		attributeSetters.put("statusDate",
-			new BiConsumer<CTCollection, Date>() {
-				@Override
-				public void accept(CTCollection ctCollection, Date statusDate) {
-					ctCollection.setStatusDate(statusDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

@@ -178,254 +178,58 @@ public class KaleoInstanceTokenModelImpl extends BaseModelImpl<KaleoInstanceToke
 
 	static {
 		Map<String, Function<KaleoInstanceToken, Object>> attributeGetters = new LinkedHashMap<String, Function<KaleoInstanceToken, Object>>();
+		Map<String, BiConsumer<KaleoInstanceToken, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<KaleoInstanceToken, Object>>();
 
-		attributeGetters.put("kaleoInstanceTokenId",
-			new Function<KaleoInstanceToken, Object>() {
-				@Override
-				public Object apply(KaleoInstanceToken kaleoInstanceToken) {
-					return kaleoInstanceToken.getKaleoInstanceTokenId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<KaleoInstanceToken, Object>() {
-				@Override
-				public Object apply(KaleoInstanceToken kaleoInstanceToken) {
-					return kaleoInstanceToken.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<KaleoInstanceToken, Object>() {
-				@Override
-				public Object apply(KaleoInstanceToken kaleoInstanceToken) {
-					return kaleoInstanceToken.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<KaleoInstanceToken, Object>() {
-				@Override
-				public Object apply(KaleoInstanceToken kaleoInstanceToken) {
-					return kaleoInstanceToken.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<KaleoInstanceToken, Object>() {
-				@Override
-				public Object apply(KaleoInstanceToken kaleoInstanceToken) {
-					return kaleoInstanceToken.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<KaleoInstanceToken, Object>() {
-				@Override
-				public Object apply(KaleoInstanceToken kaleoInstanceToken) {
-					return kaleoInstanceToken.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<KaleoInstanceToken, Object>() {
-				@Override
-				public Object apply(KaleoInstanceToken kaleoInstanceToken) {
-					return kaleoInstanceToken.getModifiedDate();
-				}
-			});
-		attributeGetters.put("kaleoDefinitionVersionId",
-			new Function<KaleoInstanceToken, Object>() {
-				@Override
-				public Object apply(KaleoInstanceToken kaleoInstanceToken) {
-					return kaleoInstanceToken.getKaleoDefinitionVersionId();
-				}
-			});
-		attributeGetters.put("kaleoInstanceId",
-			new Function<KaleoInstanceToken, Object>() {
-				@Override
-				public Object apply(KaleoInstanceToken kaleoInstanceToken) {
-					return kaleoInstanceToken.getKaleoInstanceId();
-				}
-			});
-		attributeGetters.put("parentKaleoInstanceTokenId",
-			new Function<KaleoInstanceToken, Object>() {
-				@Override
-				public Object apply(KaleoInstanceToken kaleoInstanceToken) {
-					return kaleoInstanceToken.getParentKaleoInstanceTokenId();
-				}
-			});
-		attributeGetters.put("currentKaleoNodeId",
-			new Function<KaleoInstanceToken, Object>() {
-				@Override
-				public Object apply(KaleoInstanceToken kaleoInstanceToken) {
-					return kaleoInstanceToken.getCurrentKaleoNodeId();
-				}
-			});
-		attributeGetters.put("currentKaleoNodeName",
-			new Function<KaleoInstanceToken, Object>() {
-				@Override
-				public Object apply(KaleoInstanceToken kaleoInstanceToken) {
-					return kaleoInstanceToken.getCurrentKaleoNodeName();
-				}
-			});
-		attributeGetters.put("className",
-			new Function<KaleoInstanceToken, Object>() {
-				@Override
-				public Object apply(KaleoInstanceToken kaleoInstanceToken) {
-					return kaleoInstanceToken.getClassName();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<KaleoInstanceToken, Object>() {
-				@Override
-				public Object apply(KaleoInstanceToken kaleoInstanceToken) {
-					return kaleoInstanceToken.getClassPK();
-				}
-			});
-		attributeGetters.put("completed",
-			new Function<KaleoInstanceToken, Object>() {
-				@Override
-				public Object apply(KaleoInstanceToken kaleoInstanceToken) {
-					return kaleoInstanceToken.isCompleted();
-				}
-			});
-		attributeGetters.put("completionDate",
-			new Function<KaleoInstanceToken, Object>() {
-				@Override
-				public Object apply(KaleoInstanceToken kaleoInstanceToken) {
-					return kaleoInstanceToken.getCompletionDate();
-				}
-			});
+		attributeGetters.put("kaleoInstanceTokenId", KaleoInstanceToken::getKaleoInstanceTokenId);
+		attributeSetters.put("kaleoInstanceTokenId", KaleoInstanceToken::setKaleoInstanceTokenId);
+
+		attributeGetters.put("groupId", KaleoInstanceToken::getGroupId);
+		attributeSetters.put("groupId", KaleoInstanceToken::setGroupId);
+
+		attributeGetters.put("companyId", KaleoInstanceToken::getCompanyId);
+		attributeSetters.put("companyId", KaleoInstanceToken::setCompanyId);
+
+		attributeGetters.put("userId", KaleoInstanceToken::getUserId);
+		attributeSetters.put("userId", KaleoInstanceToken::setUserId);
+
+		attributeGetters.put("userName", KaleoInstanceToken::getUserName);
+		attributeSetters.put("userName", KaleoInstanceToken::setUserName);
+
+		attributeGetters.put("createDate", KaleoInstanceToken::getCreateDate);
+		attributeSetters.put("createDate", KaleoInstanceToken::setCreateDate);
+
+		attributeGetters.put("modifiedDate", KaleoInstanceToken::getModifiedDate);
+		attributeSetters.put("modifiedDate", KaleoInstanceToken::setModifiedDate);
+
+		attributeGetters.put("kaleoDefinitionVersionId", KaleoInstanceToken::getKaleoDefinitionVersionId);
+		attributeSetters.put("kaleoDefinitionVersionId", KaleoInstanceToken::setKaleoDefinitionVersionId);
+
+		attributeGetters.put("kaleoInstanceId", KaleoInstanceToken::getKaleoInstanceId);
+		attributeSetters.put("kaleoInstanceId", KaleoInstanceToken::setKaleoInstanceId);
+
+		attributeGetters.put("parentKaleoInstanceTokenId", KaleoInstanceToken::getParentKaleoInstanceTokenId);
+		attributeSetters.put("parentKaleoInstanceTokenId", KaleoInstanceToken::setParentKaleoInstanceTokenId);
+
+		attributeGetters.put("currentKaleoNodeId", KaleoInstanceToken::getCurrentKaleoNodeId);
+		attributeSetters.put("currentKaleoNodeId", KaleoInstanceToken::setCurrentKaleoNodeId);
+
+		attributeGetters.put("currentKaleoNodeName", KaleoInstanceToken::getCurrentKaleoNodeName);
+		attributeSetters.put("currentKaleoNodeName", KaleoInstanceToken::setCurrentKaleoNodeName);
+
+		attributeGetters.put("className", KaleoInstanceToken::getClassName);
+		attributeSetters.put("className", KaleoInstanceToken::setClassName);
+
+		attributeGetters.put("classPK", KaleoInstanceToken::getClassPK);
+		attributeSetters.put("classPK", KaleoInstanceToken::setClassPK);
+
+		attributeGetters.put("completed", KaleoInstanceToken::getCompleted);
+		attributeSetters.put("completed", KaleoInstanceToken::setCompleted);
+
+		attributeGetters.put("completionDate", KaleoInstanceToken::getCompletionDate);
+		attributeSetters.put("completionDate", KaleoInstanceToken::setCompletionDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<KaleoInstanceToken, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<KaleoInstanceToken, ?>>();
-
-		attributeSetters.put("kaleoInstanceTokenId",
-			new BiConsumer<KaleoInstanceToken, Long>() {
-				@Override
-				public void accept(KaleoInstanceToken kaleoInstanceToken,
-					Long kaleoInstanceTokenId) {
-					kaleoInstanceToken.setKaleoInstanceTokenId(kaleoInstanceTokenId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<KaleoInstanceToken, Long>() {
-				@Override
-				public void accept(KaleoInstanceToken kaleoInstanceToken,
-					Long groupId) {
-					kaleoInstanceToken.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<KaleoInstanceToken, Long>() {
-				@Override
-				public void accept(KaleoInstanceToken kaleoInstanceToken,
-					Long companyId) {
-					kaleoInstanceToken.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<KaleoInstanceToken, Long>() {
-				@Override
-				public void accept(KaleoInstanceToken kaleoInstanceToken,
-					Long userId) {
-					kaleoInstanceToken.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<KaleoInstanceToken, String>() {
-				@Override
-				public void accept(KaleoInstanceToken kaleoInstanceToken,
-					String userName) {
-					kaleoInstanceToken.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<KaleoInstanceToken, Date>() {
-				@Override
-				public void accept(KaleoInstanceToken kaleoInstanceToken,
-					Date createDate) {
-					kaleoInstanceToken.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<KaleoInstanceToken, Date>() {
-				@Override
-				public void accept(KaleoInstanceToken kaleoInstanceToken,
-					Date modifiedDate) {
-					kaleoInstanceToken.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("kaleoDefinitionVersionId",
-			new BiConsumer<KaleoInstanceToken, Long>() {
-				@Override
-				public void accept(KaleoInstanceToken kaleoInstanceToken,
-					Long kaleoDefinitionVersionId) {
-					kaleoInstanceToken.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
-				}
-			});
-		attributeSetters.put("kaleoInstanceId",
-			new BiConsumer<KaleoInstanceToken, Long>() {
-				@Override
-				public void accept(KaleoInstanceToken kaleoInstanceToken,
-					Long kaleoInstanceId) {
-					kaleoInstanceToken.setKaleoInstanceId(kaleoInstanceId);
-				}
-			});
-		attributeSetters.put("parentKaleoInstanceTokenId",
-			new BiConsumer<KaleoInstanceToken, Long>() {
-				@Override
-				public void accept(KaleoInstanceToken kaleoInstanceToken,
-					Long parentKaleoInstanceTokenId) {
-					kaleoInstanceToken.setParentKaleoInstanceTokenId(parentKaleoInstanceTokenId);
-				}
-			});
-		attributeSetters.put("currentKaleoNodeId",
-			new BiConsumer<KaleoInstanceToken, Long>() {
-				@Override
-				public void accept(KaleoInstanceToken kaleoInstanceToken,
-					Long currentKaleoNodeId) {
-					kaleoInstanceToken.setCurrentKaleoNodeId(currentKaleoNodeId);
-				}
-			});
-		attributeSetters.put("currentKaleoNodeName",
-			new BiConsumer<KaleoInstanceToken, String>() {
-				@Override
-				public void accept(KaleoInstanceToken kaleoInstanceToken,
-					String currentKaleoNodeName) {
-					kaleoInstanceToken.setCurrentKaleoNodeName(currentKaleoNodeName);
-				}
-			});
-		attributeSetters.put("className",
-			new BiConsumer<KaleoInstanceToken, String>() {
-				@Override
-				public void accept(KaleoInstanceToken kaleoInstanceToken,
-					String className) {
-					kaleoInstanceToken.setClassName(className);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<KaleoInstanceToken, Long>() {
-				@Override
-				public void accept(KaleoInstanceToken kaleoInstanceToken,
-					Long classPK) {
-					kaleoInstanceToken.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("completed",
-			new BiConsumer<KaleoInstanceToken, Boolean>() {
-				@Override
-				public void accept(KaleoInstanceToken kaleoInstanceToken,
-					Boolean completed) {
-					kaleoInstanceToken.setCompleted(completed);
-				}
-			});
-		attributeSetters.put("completionDate",
-			new BiConsumer<KaleoInstanceToken, Date>() {
-				@Override
-				public void accept(KaleoInstanceToken kaleoInstanceToken,
-					Date completionDate) {
-					kaleoInstanceToken.setCompletionDate(completionDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

@@ -193,70 +193,22 @@ public class ListTypeModelImpl extends BaseModelImpl<ListType>
 
 	static {
 		Map<String, Function<ListType, Object>> attributeGetters = new LinkedHashMap<String, Function<ListType, Object>>();
+		Map<String, BiConsumer<ListType, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<ListType, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<ListType, Object>() {
-				@Override
-				public Object apply(ListType listType) {
-					return listType.getMvccVersion();
-				}
-			});
-		attributeGetters.put("listTypeId",
-			new Function<ListType, Object>() {
-				@Override
-				public Object apply(ListType listType) {
-					return listType.getListTypeId();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<ListType, Object>() {
-				@Override
-				public Object apply(ListType listType) {
-					return listType.getName();
-				}
-			});
-		attributeGetters.put("type",
-			new Function<ListType, Object>() {
-				@Override
-				public Object apply(ListType listType) {
-					return listType.getType();
-				}
-			});
+		attributeGetters.put("mvccVersion", ListType::getMvccVersion);
+		attributeSetters.put("mvccVersion", ListType::setMvccVersion);
+
+		attributeGetters.put("listTypeId", ListType::getListTypeId);
+		attributeSetters.put("listTypeId", ListType::setListTypeId);
+
+		attributeGetters.put("name", ListType::getName);
+		attributeSetters.put("name", ListType::setName);
+
+		attributeGetters.put("type", ListType::getType);
+		attributeSetters.put("type", ListType::setType);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<ListType, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<ListType, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<ListType, Long>() {
-				@Override
-				public void accept(ListType listType, Long mvccVersion) {
-					listType.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("listTypeId",
-			new BiConsumer<ListType, Long>() {
-				@Override
-				public void accept(ListType listType, Long listTypeId) {
-					listType.setListTypeId(listTypeId);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<ListType, String>() {
-				@Override
-				public void accept(ListType listType, String name) {
-					listType.setName(name);
-				}
-			});
-		attributeSetters.put("type",
-			new BiConsumer<ListType, String>() {
-				@Override
-				public void accept(ListType listType, String type) {
-					listType.setType(type);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

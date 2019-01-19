@@ -157,113 +157,31 @@ public class TrashVersionModelImpl extends BaseModelImpl<TrashVersion>
 
 	static {
 		Map<String, Function<TrashVersion, Object>> attributeGetters = new LinkedHashMap<String, Function<TrashVersion, Object>>();
+		Map<String, BiConsumer<TrashVersion, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<TrashVersion, Object>>();
 
-		attributeGetters.put("versionId",
-			new Function<TrashVersion, Object>() {
-				@Override
-				public Object apply(TrashVersion trashVersion) {
-					return trashVersion.getVersionId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<TrashVersion, Object>() {
-				@Override
-				public Object apply(TrashVersion trashVersion) {
-					return trashVersion.getCompanyId();
-				}
-			});
-		attributeGetters.put("entryId",
-			new Function<TrashVersion, Object>() {
-				@Override
-				public Object apply(TrashVersion trashVersion) {
-					return trashVersion.getEntryId();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<TrashVersion, Object>() {
-				@Override
-				public Object apply(TrashVersion trashVersion) {
-					return trashVersion.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<TrashVersion, Object>() {
-				@Override
-				public Object apply(TrashVersion trashVersion) {
-					return trashVersion.getClassPK();
-				}
-			});
-		attributeGetters.put("typeSettings",
-			new Function<TrashVersion, Object>() {
-				@Override
-				public Object apply(TrashVersion trashVersion) {
-					return trashVersion.getTypeSettings();
-				}
-			});
-		attributeGetters.put("status",
-			new Function<TrashVersion, Object>() {
-				@Override
-				public Object apply(TrashVersion trashVersion) {
-					return trashVersion.getStatus();
-				}
-			});
+		attributeGetters.put("versionId", TrashVersion::getVersionId);
+		attributeSetters.put("versionId", TrashVersion::setVersionId);
+
+		attributeGetters.put("companyId", TrashVersion::getCompanyId);
+		attributeSetters.put("companyId", TrashVersion::setCompanyId);
+
+		attributeGetters.put("entryId", TrashVersion::getEntryId);
+		attributeSetters.put("entryId", TrashVersion::setEntryId);
+
+		attributeGetters.put("classNameId", TrashVersion::getClassNameId);
+		attributeSetters.put("classNameId", TrashVersion::setClassNameId);
+
+		attributeGetters.put("classPK", TrashVersion::getClassPK);
+		attributeSetters.put("classPK", TrashVersion::setClassPK);
+
+		attributeGetters.put("typeSettings", TrashVersion::getTypeSettings);
+		attributeSetters.put("typeSettings", TrashVersion::setTypeSettings);
+
+		attributeGetters.put("status", TrashVersion::getStatus);
+		attributeSetters.put("status", TrashVersion::setStatus);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<TrashVersion, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<TrashVersion, ?>>();
-
-		attributeSetters.put("versionId",
-			new BiConsumer<TrashVersion, Long>() {
-				@Override
-				public void accept(TrashVersion trashVersion, Long versionId) {
-					trashVersion.setVersionId(versionId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<TrashVersion, Long>() {
-				@Override
-				public void accept(TrashVersion trashVersion, Long companyId) {
-					trashVersion.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("entryId",
-			new BiConsumer<TrashVersion, Long>() {
-				@Override
-				public void accept(TrashVersion trashVersion, Long entryId) {
-					trashVersion.setEntryId(entryId);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<TrashVersion, Long>() {
-				@Override
-				public void accept(TrashVersion trashVersion, Long classNameId) {
-					trashVersion.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<TrashVersion, Long>() {
-				@Override
-				public void accept(TrashVersion trashVersion, Long classPK) {
-					trashVersion.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("typeSettings",
-			new BiConsumer<TrashVersion, String>() {
-				@Override
-				public void accept(TrashVersion trashVersion,
-					String typeSettings) {
-					trashVersion.setTypeSettings(typeSettings);
-				}
-			});
-		attributeSetters.put("status",
-			new BiConsumer<TrashVersion, Integer>() {
-				@Override
-				public void accept(TrashVersion trashVersion, Integer status) {
-					trashVersion.setStatus(status);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

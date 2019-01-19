@@ -179,227 +179,55 @@ public class SystemEventModelImpl extends BaseModelImpl<SystemEvent>
 
 	static {
 		Map<String, Function<SystemEvent, Object>> attributeGetters = new LinkedHashMap<String, Function<SystemEvent, Object>>();
+		Map<String, BiConsumer<SystemEvent, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SystemEvent, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<SystemEvent, Object>() {
-				@Override
-				public Object apply(SystemEvent systemEvent) {
-					return systemEvent.getMvccVersion();
-				}
-			});
-		attributeGetters.put("systemEventId",
-			new Function<SystemEvent, Object>() {
-				@Override
-				public Object apply(SystemEvent systemEvent) {
-					return systemEvent.getSystemEventId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<SystemEvent, Object>() {
-				@Override
-				public Object apply(SystemEvent systemEvent) {
-					return systemEvent.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<SystemEvent, Object>() {
-				@Override
-				public Object apply(SystemEvent systemEvent) {
-					return systemEvent.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<SystemEvent, Object>() {
-				@Override
-				public Object apply(SystemEvent systemEvent) {
-					return systemEvent.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<SystemEvent, Object>() {
-				@Override
-				public Object apply(SystemEvent systemEvent) {
-					return systemEvent.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<SystemEvent, Object>() {
-				@Override
-				public Object apply(SystemEvent systemEvent) {
-					return systemEvent.getCreateDate();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<SystemEvent, Object>() {
-				@Override
-				public Object apply(SystemEvent systemEvent) {
-					return systemEvent.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<SystemEvent, Object>() {
-				@Override
-				public Object apply(SystemEvent systemEvent) {
-					return systemEvent.getClassPK();
-				}
-			});
-		attributeGetters.put("classUuid",
-			new Function<SystemEvent, Object>() {
-				@Override
-				public Object apply(SystemEvent systemEvent) {
-					return systemEvent.getClassUuid();
-				}
-			});
-		attributeGetters.put("referrerClassNameId",
-			new Function<SystemEvent, Object>() {
-				@Override
-				public Object apply(SystemEvent systemEvent) {
-					return systemEvent.getReferrerClassNameId();
-				}
-			});
-		attributeGetters.put("parentSystemEventId",
-			new Function<SystemEvent, Object>() {
-				@Override
-				public Object apply(SystemEvent systemEvent) {
-					return systemEvent.getParentSystemEventId();
-				}
-			});
-		attributeGetters.put("systemEventSetKey",
-			new Function<SystemEvent, Object>() {
-				@Override
-				public Object apply(SystemEvent systemEvent) {
-					return systemEvent.getSystemEventSetKey();
-				}
-			});
-		attributeGetters.put("type",
-			new Function<SystemEvent, Object>() {
-				@Override
-				public Object apply(SystemEvent systemEvent) {
-					return systemEvent.getType();
-				}
-			});
-		attributeGetters.put("extraData",
-			new Function<SystemEvent, Object>() {
-				@Override
-				public Object apply(SystemEvent systemEvent) {
-					return systemEvent.getExtraData();
-				}
-			});
+		attributeGetters.put("mvccVersion", SystemEvent::getMvccVersion);
+		attributeSetters.put("mvccVersion", SystemEvent::setMvccVersion);
+
+		attributeGetters.put("systemEventId", SystemEvent::getSystemEventId);
+		attributeSetters.put("systemEventId", SystemEvent::setSystemEventId);
+
+		attributeGetters.put("groupId", SystemEvent::getGroupId);
+		attributeSetters.put("groupId", SystemEvent::setGroupId);
+
+		attributeGetters.put("companyId", SystemEvent::getCompanyId);
+		attributeSetters.put("companyId", SystemEvent::setCompanyId);
+
+		attributeGetters.put("userId", SystemEvent::getUserId);
+		attributeSetters.put("userId", SystemEvent::setUserId);
+
+		attributeGetters.put("userName", SystemEvent::getUserName);
+		attributeSetters.put("userName", SystemEvent::setUserName);
+
+		attributeGetters.put("createDate", SystemEvent::getCreateDate);
+		attributeSetters.put("createDate", SystemEvent::setCreateDate);
+
+		attributeGetters.put("classNameId", SystemEvent::getClassNameId);
+		attributeSetters.put("classNameId", SystemEvent::setClassNameId);
+
+		attributeGetters.put("classPK", SystemEvent::getClassPK);
+		attributeSetters.put("classPK", SystemEvent::setClassPK);
+
+		attributeGetters.put("classUuid", SystemEvent::getClassUuid);
+		attributeSetters.put("classUuid", SystemEvent::setClassUuid);
+
+		attributeGetters.put("referrerClassNameId", SystemEvent::getReferrerClassNameId);
+		attributeSetters.put("referrerClassNameId", SystemEvent::setReferrerClassNameId);
+
+		attributeGetters.put("parentSystemEventId", SystemEvent::getParentSystemEventId);
+		attributeSetters.put("parentSystemEventId", SystemEvent::setParentSystemEventId);
+
+		attributeGetters.put("systemEventSetKey", SystemEvent::getSystemEventSetKey);
+		attributeSetters.put("systemEventSetKey", SystemEvent::setSystemEventSetKey);
+
+		attributeGetters.put("type", SystemEvent::getType);
+		attributeSetters.put("type", SystemEvent::setType);
+
+		attributeGetters.put("extraData", SystemEvent::getExtraData);
+		attributeSetters.put("extraData", SystemEvent::setExtraData);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<SystemEvent, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<SystemEvent, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<SystemEvent, Long>() {
-				@Override
-				public void accept(SystemEvent systemEvent, Long mvccVersion) {
-					systemEvent.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("systemEventId",
-			new BiConsumer<SystemEvent, Long>() {
-				@Override
-				public void accept(SystemEvent systemEvent, Long systemEventId) {
-					systemEvent.setSystemEventId(systemEventId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<SystemEvent, Long>() {
-				@Override
-				public void accept(SystemEvent systemEvent, Long groupId) {
-					systemEvent.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<SystemEvent, Long>() {
-				@Override
-				public void accept(SystemEvent systemEvent, Long companyId) {
-					systemEvent.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<SystemEvent, Long>() {
-				@Override
-				public void accept(SystemEvent systemEvent, Long userId) {
-					systemEvent.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<SystemEvent, String>() {
-				@Override
-				public void accept(SystemEvent systemEvent, String userName) {
-					systemEvent.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<SystemEvent, Date>() {
-				@Override
-				public void accept(SystemEvent systemEvent, Date createDate) {
-					systemEvent.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<SystemEvent, Long>() {
-				@Override
-				public void accept(SystemEvent systemEvent, Long classNameId) {
-					systemEvent.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<SystemEvent, Long>() {
-				@Override
-				public void accept(SystemEvent systemEvent, Long classPK) {
-					systemEvent.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("classUuid",
-			new BiConsumer<SystemEvent, String>() {
-				@Override
-				public void accept(SystemEvent systemEvent, String classUuid) {
-					systemEvent.setClassUuid(classUuid);
-				}
-			});
-		attributeSetters.put("referrerClassNameId",
-			new BiConsumer<SystemEvent, Long>() {
-				@Override
-				public void accept(SystemEvent systemEvent,
-					Long referrerClassNameId) {
-					systemEvent.setReferrerClassNameId(referrerClassNameId);
-				}
-			});
-		attributeSetters.put("parentSystemEventId",
-			new BiConsumer<SystemEvent, Long>() {
-				@Override
-				public void accept(SystemEvent systemEvent,
-					Long parentSystemEventId) {
-					systemEvent.setParentSystemEventId(parentSystemEventId);
-				}
-			});
-		attributeSetters.put("systemEventSetKey",
-			new BiConsumer<SystemEvent, Long>() {
-				@Override
-				public void accept(SystemEvent systemEvent,
-					Long systemEventSetKey) {
-					systemEvent.setSystemEventSetKey(systemEventSetKey);
-				}
-			});
-		attributeSetters.put("type",
-			new BiConsumer<SystemEvent, Integer>() {
-				@Override
-				public void accept(SystemEvent systemEvent, Integer type) {
-					systemEvent.setType(type);
-				}
-			});
-		attributeSetters.put("extraData",
-			new BiConsumer<SystemEvent, String>() {
-				@Override
-				public void accept(SystemEvent systemEvent, String extraData) {
-					systemEvent.setExtraData(extraData);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

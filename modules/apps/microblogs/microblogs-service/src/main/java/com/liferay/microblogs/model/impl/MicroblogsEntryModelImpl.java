@@ -230,192 +230,46 @@ public class MicroblogsEntryModelImpl extends BaseModelImpl<MicroblogsEntry>
 
 	static {
 		Map<String, Function<MicroblogsEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<MicroblogsEntry, Object>>();
+		Map<String, BiConsumer<MicroblogsEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<MicroblogsEntry, Object>>();
 
-		attributeGetters.put("microblogsEntryId",
-			new Function<MicroblogsEntry, Object>() {
-				@Override
-				public Object apply(MicroblogsEntry microblogsEntry) {
-					return microblogsEntry.getMicroblogsEntryId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<MicroblogsEntry, Object>() {
-				@Override
-				public Object apply(MicroblogsEntry microblogsEntry) {
-					return microblogsEntry.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<MicroblogsEntry, Object>() {
-				@Override
-				public Object apply(MicroblogsEntry microblogsEntry) {
-					return microblogsEntry.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<MicroblogsEntry, Object>() {
-				@Override
-				public Object apply(MicroblogsEntry microblogsEntry) {
-					return microblogsEntry.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<MicroblogsEntry, Object>() {
-				@Override
-				public Object apply(MicroblogsEntry microblogsEntry) {
-					return microblogsEntry.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<MicroblogsEntry, Object>() {
-				@Override
-				public Object apply(MicroblogsEntry microblogsEntry) {
-					return microblogsEntry.getModifiedDate();
-				}
-			});
-		attributeGetters.put("creatorClassNameId",
-			new Function<MicroblogsEntry, Object>() {
-				@Override
-				public Object apply(MicroblogsEntry microblogsEntry) {
-					return microblogsEntry.getCreatorClassNameId();
-				}
-			});
-		attributeGetters.put("creatorClassPK",
-			new Function<MicroblogsEntry, Object>() {
-				@Override
-				public Object apply(MicroblogsEntry microblogsEntry) {
-					return microblogsEntry.getCreatorClassPK();
-				}
-			});
-		attributeGetters.put("content",
-			new Function<MicroblogsEntry, Object>() {
-				@Override
-				public Object apply(MicroblogsEntry microblogsEntry) {
-					return microblogsEntry.getContent();
-				}
-			});
-		attributeGetters.put("type",
-			new Function<MicroblogsEntry, Object>() {
-				@Override
-				public Object apply(MicroblogsEntry microblogsEntry) {
-					return microblogsEntry.getType();
-				}
-			});
-		attributeGetters.put("parentMicroblogsEntryId",
-			new Function<MicroblogsEntry, Object>() {
-				@Override
-				public Object apply(MicroblogsEntry microblogsEntry) {
-					return microblogsEntry.getParentMicroblogsEntryId();
-				}
-			});
-		attributeGetters.put("socialRelationType",
-			new Function<MicroblogsEntry, Object>() {
-				@Override
-				public Object apply(MicroblogsEntry microblogsEntry) {
-					return microblogsEntry.getSocialRelationType();
-				}
-			});
+		attributeGetters.put("microblogsEntryId", MicroblogsEntry::getMicroblogsEntryId);
+		attributeSetters.put("microblogsEntryId", MicroblogsEntry::setMicroblogsEntryId);
+
+		attributeGetters.put("companyId", MicroblogsEntry::getCompanyId);
+		attributeSetters.put("companyId", MicroblogsEntry::setCompanyId);
+
+		attributeGetters.put("userId", MicroblogsEntry::getUserId);
+		attributeSetters.put("userId", MicroblogsEntry::setUserId);
+
+		attributeGetters.put("userName", MicroblogsEntry::getUserName);
+		attributeSetters.put("userName", MicroblogsEntry::setUserName);
+
+		attributeGetters.put("createDate", MicroblogsEntry::getCreateDate);
+		attributeSetters.put("createDate", MicroblogsEntry::setCreateDate);
+
+		attributeGetters.put("modifiedDate", MicroblogsEntry::getModifiedDate);
+		attributeSetters.put("modifiedDate", MicroblogsEntry::setModifiedDate);
+
+		attributeGetters.put("creatorClassNameId", MicroblogsEntry::getCreatorClassNameId);
+		attributeSetters.put("creatorClassNameId", MicroblogsEntry::setCreatorClassNameId);
+
+		attributeGetters.put("creatorClassPK", MicroblogsEntry::getCreatorClassPK);
+		attributeSetters.put("creatorClassPK", MicroblogsEntry::setCreatorClassPK);
+
+		attributeGetters.put("content", MicroblogsEntry::getContent);
+		attributeSetters.put("content", MicroblogsEntry::setContent);
+
+		attributeGetters.put("type", MicroblogsEntry::getType);
+		attributeSetters.put("type", MicroblogsEntry::setType);
+
+		attributeGetters.put("parentMicroblogsEntryId", MicroblogsEntry::getParentMicroblogsEntryId);
+		attributeSetters.put("parentMicroblogsEntryId", MicroblogsEntry::setParentMicroblogsEntryId);
+
+		attributeGetters.put("socialRelationType", MicroblogsEntry::getSocialRelationType);
+		attributeSetters.put("socialRelationType", MicroblogsEntry::setSocialRelationType);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<MicroblogsEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<MicroblogsEntry, ?>>();
-
-		attributeSetters.put("microblogsEntryId",
-			new BiConsumer<MicroblogsEntry, Long>() {
-				@Override
-				public void accept(MicroblogsEntry microblogsEntry,
-					Long microblogsEntryId) {
-					microblogsEntry.setMicroblogsEntryId(microblogsEntryId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<MicroblogsEntry, Long>() {
-				@Override
-				public void accept(MicroblogsEntry microblogsEntry,
-					Long companyId) {
-					microblogsEntry.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<MicroblogsEntry, Long>() {
-				@Override
-				public void accept(MicroblogsEntry microblogsEntry, Long userId) {
-					microblogsEntry.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<MicroblogsEntry, String>() {
-				@Override
-				public void accept(MicroblogsEntry microblogsEntry,
-					String userName) {
-					microblogsEntry.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<MicroblogsEntry, Date>() {
-				@Override
-				public void accept(MicroblogsEntry microblogsEntry,
-					Date createDate) {
-					microblogsEntry.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<MicroblogsEntry, Date>() {
-				@Override
-				public void accept(MicroblogsEntry microblogsEntry,
-					Date modifiedDate) {
-					microblogsEntry.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("creatorClassNameId",
-			new BiConsumer<MicroblogsEntry, Long>() {
-				@Override
-				public void accept(MicroblogsEntry microblogsEntry,
-					Long creatorClassNameId) {
-					microblogsEntry.setCreatorClassNameId(creatorClassNameId);
-				}
-			});
-		attributeSetters.put("creatorClassPK",
-			new BiConsumer<MicroblogsEntry, Long>() {
-				@Override
-				public void accept(MicroblogsEntry microblogsEntry,
-					Long creatorClassPK) {
-					microblogsEntry.setCreatorClassPK(creatorClassPK);
-				}
-			});
-		attributeSetters.put("content",
-			new BiConsumer<MicroblogsEntry, String>() {
-				@Override
-				public void accept(MicroblogsEntry microblogsEntry,
-					String content) {
-					microblogsEntry.setContent(content);
-				}
-			});
-		attributeSetters.put("type",
-			new BiConsumer<MicroblogsEntry, Integer>() {
-				@Override
-				public void accept(MicroblogsEntry microblogsEntry, Integer type) {
-					microblogsEntry.setType(type);
-				}
-			});
-		attributeSetters.put("parentMicroblogsEntryId",
-			new BiConsumer<MicroblogsEntry, Long>() {
-				@Override
-				public void accept(MicroblogsEntry microblogsEntry,
-					Long parentMicroblogsEntryId) {
-					microblogsEntry.setParentMicroblogsEntryId(parentMicroblogsEntryId);
-				}
-			});
-		attributeSetters.put("socialRelationType",
-			new BiConsumer<MicroblogsEntry, Integer>() {
-				@Override
-				public void accept(MicroblogsEntry microblogsEntry,
-					Integer socialRelationType) {
-					microblogsEntry.setSocialRelationType(socialRelationType);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

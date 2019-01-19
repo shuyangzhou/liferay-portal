@@ -172,164 +172,40 @@ public class FriendlyURLEntryModelImpl extends BaseModelImpl<FriendlyURLEntry>
 
 	static {
 		Map<String, Function<FriendlyURLEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<FriendlyURLEntry, Object>>();
+		Map<String, BiConsumer<FriendlyURLEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<FriendlyURLEntry, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<FriendlyURLEntry, Object>() {
-				@Override
-				public Object apply(FriendlyURLEntry friendlyURLEntry) {
-					return friendlyURLEntry.getMvccVersion();
-				}
-			});
-		attributeGetters.put("uuid",
-			new Function<FriendlyURLEntry, Object>() {
-				@Override
-				public Object apply(FriendlyURLEntry friendlyURLEntry) {
-					return friendlyURLEntry.getUuid();
-				}
-			});
-		attributeGetters.put("defaultLanguageId",
-			new Function<FriendlyURLEntry, Object>() {
-				@Override
-				public Object apply(FriendlyURLEntry friendlyURLEntry) {
-					return friendlyURLEntry.getDefaultLanguageId();
-				}
-			});
-		attributeGetters.put("friendlyURLEntryId",
-			new Function<FriendlyURLEntry, Object>() {
-				@Override
-				public Object apply(FriendlyURLEntry friendlyURLEntry) {
-					return friendlyURLEntry.getFriendlyURLEntryId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<FriendlyURLEntry, Object>() {
-				@Override
-				public Object apply(FriendlyURLEntry friendlyURLEntry) {
-					return friendlyURLEntry.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<FriendlyURLEntry, Object>() {
-				@Override
-				public Object apply(FriendlyURLEntry friendlyURLEntry) {
-					return friendlyURLEntry.getCompanyId();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<FriendlyURLEntry, Object>() {
-				@Override
-				public Object apply(FriendlyURLEntry friendlyURLEntry) {
-					return friendlyURLEntry.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<FriendlyURLEntry, Object>() {
-				@Override
-				public Object apply(FriendlyURLEntry friendlyURLEntry) {
-					return friendlyURLEntry.getModifiedDate();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<FriendlyURLEntry, Object>() {
-				@Override
-				public Object apply(FriendlyURLEntry friendlyURLEntry) {
-					return friendlyURLEntry.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<FriendlyURLEntry, Object>() {
-				@Override
-				public Object apply(FriendlyURLEntry friendlyURLEntry) {
-					return friendlyURLEntry.getClassPK();
-				}
-			});
+		attributeGetters.put("mvccVersion", FriendlyURLEntry::getMvccVersion);
+		attributeSetters.put("mvccVersion", FriendlyURLEntry::setMvccVersion);
+
+		attributeGetters.put("uuid", FriendlyURLEntry::getUuid);
+		attributeSetters.put("uuid", FriendlyURLEntry::setUuid);
+
+		attributeGetters.put("defaultLanguageId", FriendlyURLEntry::getDefaultLanguageId);
+		attributeSetters.put("defaultLanguageId", FriendlyURLEntry::setDefaultLanguageId);
+
+		attributeGetters.put("friendlyURLEntryId", FriendlyURLEntry::getFriendlyURLEntryId);
+		attributeSetters.put("friendlyURLEntryId", FriendlyURLEntry::setFriendlyURLEntryId);
+
+		attributeGetters.put("groupId", FriendlyURLEntry::getGroupId);
+		attributeSetters.put("groupId", FriendlyURLEntry::setGroupId);
+
+		attributeGetters.put("companyId", FriendlyURLEntry::getCompanyId);
+		attributeSetters.put("companyId", FriendlyURLEntry::setCompanyId);
+
+		attributeGetters.put("createDate", FriendlyURLEntry::getCreateDate);
+		attributeSetters.put("createDate", FriendlyURLEntry::setCreateDate);
+
+		attributeGetters.put("modifiedDate", FriendlyURLEntry::getModifiedDate);
+		attributeSetters.put("modifiedDate", FriendlyURLEntry::setModifiedDate);
+
+		attributeGetters.put("classNameId", FriendlyURLEntry::getClassNameId);
+		attributeSetters.put("classNameId", FriendlyURLEntry::setClassNameId);
+
+		attributeGetters.put("classPK", FriendlyURLEntry::getClassPK);
+		attributeSetters.put("classPK", FriendlyURLEntry::setClassPK);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<FriendlyURLEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<FriendlyURLEntry, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<FriendlyURLEntry, Long>() {
-				@Override
-				public void accept(FriendlyURLEntry friendlyURLEntry,
-					Long mvccVersion) {
-					friendlyURLEntry.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("uuid",
-			new BiConsumer<FriendlyURLEntry, String>() {
-				@Override
-				public void accept(FriendlyURLEntry friendlyURLEntry,
-					String uuid) {
-					friendlyURLEntry.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("defaultLanguageId",
-			new BiConsumer<FriendlyURLEntry, String>() {
-				@Override
-				public void accept(FriendlyURLEntry friendlyURLEntry,
-					String defaultLanguageId) {
-					friendlyURLEntry.setDefaultLanguageId(defaultLanguageId);
-				}
-			});
-		attributeSetters.put("friendlyURLEntryId",
-			new BiConsumer<FriendlyURLEntry, Long>() {
-				@Override
-				public void accept(FriendlyURLEntry friendlyURLEntry,
-					Long friendlyURLEntryId) {
-					friendlyURLEntry.setFriendlyURLEntryId(friendlyURLEntryId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<FriendlyURLEntry, Long>() {
-				@Override
-				public void accept(FriendlyURLEntry friendlyURLEntry,
-					Long groupId) {
-					friendlyURLEntry.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<FriendlyURLEntry, Long>() {
-				@Override
-				public void accept(FriendlyURLEntry friendlyURLEntry,
-					Long companyId) {
-					friendlyURLEntry.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<FriendlyURLEntry, Date>() {
-				@Override
-				public void accept(FriendlyURLEntry friendlyURLEntry,
-					Date createDate) {
-					friendlyURLEntry.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<FriendlyURLEntry, Date>() {
-				@Override
-				public void accept(FriendlyURLEntry friendlyURLEntry,
-					Date modifiedDate) {
-					friendlyURLEntry.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<FriendlyURLEntry, Long>() {
-				@Override
-				public void accept(FriendlyURLEntry friendlyURLEntry,
-					Long classNameId) {
-					friendlyURLEntry.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<FriendlyURLEntry, Long>() {
-				@Override
-				public void accept(FriendlyURLEntry friendlyURLEntry,
-					Long classPK) {
-					friendlyURLEntry.setClassPK(classPK);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

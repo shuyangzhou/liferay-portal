@@ -156,98 +156,28 @@ public class MBStatsUserModelImpl extends BaseModelImpl<MBStatsUser>
 
 	static {
 		Map<String, Function<MBStatsUser, Object>> attributeGetters = new LinkedHashMap<String, Function<MBStatsUser, Object>>();
+		Map<String, BiConsumer<MBStatsUser, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<MBStatsUser, Object>>();
 
-		attributeGetters.put("statsUserId",
-			new Function<MBStatsUser, Object>() {
-				@Override
-				public Object apply(MBStatsUser mbStatsUser) {
-					return mbStatsUser.getStatsUserId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<MBStatsUser, Object>() {
-				@Override
-				public Object apply(MBStatsUser mbStatsUser) {
-					return mbStatsUser.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<MBStatsUser, Object>() {
-				@Override
-				public Object apply(MBStatsUser mbStatsUser) {
-					return mbStatsUser.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<MBStatsUser, Object>() {
-				@Override
-				public Object apply(MBStatsUser mbStatsUser) {
-					return mbStatsUser.getUserId();
-				}
-			});
-		attributeGetters.put("messageCount",
-			new Function<MBStatsUser, Object>() {
-				@Override
-				public Object apply(MBStatsUser mbStatsUser) {
-					return mbStatsUser.getMessageCount();
-				}
-			});
-		attributeGetters.put("lastPostDate",
-			new Function<MBStatsUser, Object>() {
-				@Override
-				public Object apply(MBStatsUser mbStatsUser) {
-					return mbStatsUser.getLastPostDate();
-				}
-			});
+		attributeGetters.put("statsUserId", MBStatsUser::getStatsUserId);
+		attributeSetters.put("statsUserId", MBStatsUser::setStatsUserId);
+
+		attributeGetters.put("groupId", MBStatsUser::getGroupId);
+		attributeSetters.put("groupId", MBStatsUser::setGroupId);
+
+		attributeGetters.put("companyId", MBStatsUser::getCompanyId);
+		attributeSetters.put("companyId", MBStatsUser::setCompanyId);
+
+		attributeGetters.put("userId", MBStatsUser::getUserId);
+		attributeSetters.put("userId", MBStatsUser::setUserId);
+
+		attributeGetters.put("messageCount", MBStatsUser::getMessageCount);
+		attributeSetters.put("messageCount", MBStatsUser::setMessageCount);
+
+		attributeGetters.put("lastPostDate", MBStatsUser::getLastPostDate);
+		attributeSetters.put("lastPostDate", MBStatsUser::setLastPostDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<MBStatsUser, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<MBStatsUser, ?>>();
-
-		attributeSetters.put("statsUserId",
-			new BiConsumer<MBStatsUser, Long>() {
-				@Override
-				public void accept(MBStatsUser mbStatsUser, Long statsUserId) {
-					mbStatsUser.setStatsUserId(statsUserId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<MBStatsUser, Long>() {
-				@Override
-				public void accept(MBStatsUser mbStatsUser, Long groupId) {
-					mbStatsUser.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<MBStatsUser, Long>() {
-				@Override
-				public void accept(MBStatsUser mbStatsUser, Long companyId) {
-					mbStatsUser.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<MBStatsUser, Long>() {
-				@Override
-				public void accept(MBStatsUser mbStatsUser, Long userId) {
-					mbStatsUser.setUserId(userId);
-				}
-			});
-		attributeSetters.put("messageCount",
-			new BiConsumer<MBStatsUser, Integer>() {
-				@Override
-				public void accept(MBStatsUser mbStatsUser, Integer messageCount) {
-					mbStatsUser.setMessageCount(messageCount);
-				}
-			});
-		attributeSetters.put("lastPostDate",
-			new BiConsumer<MBStatsUser, Date>() {
-				@Override
-				public void accept(MBStatsUser mbStatsUser, Date lastPostDate) {
-					mbStatsUser.setLastPostDate(lastPostDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

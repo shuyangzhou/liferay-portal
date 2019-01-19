@@ -171,187 +171,46 @@ public class MemberRequestModelImpl extends BaseModelImpl<MemberRequest>
 
 	static {
 		Map<String, Function<MemberRequest, Object>> attributeGetters = new LinkedHashMap<String, Function<MemberRequest, Object>>();
+		Map<String, BiConsumer<MemberRequest, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<MemberRequest, Object>>();
 
-		attributeGetters.put("memberRequestId",
-			new Function<MemberRequest, Object>() {
-				@Override
-				public Object apply(MemberRequest memberRequest) {
-					return memberRequest.getMemberRequestId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<MemberRequest, Object>() {
-				@Override
-				public Object apply(MemberRequest memberRequest) {
-					return memberRequest.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<MemberRequest, Object>() {
-				@Override
-				public Object apply(MemberRequest memberRequest) {
-					return memberRequest.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<MemberRequest, Object>() {
-				@Override
-				public Object apply(MemberRequest memberRequest) {
-					return memberRequest.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<MemberRequest, Object>() {
-				@Override
-				public Object apply(MemberRequest memberRequest) {
-					return memberRequest.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<MemberRequest, Object>() {
-				@Override
-				public Object apply(MemberRequest memberRequest) {
-					return memberRequest.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<MemberRequest, Object>() {
-				@Override
-				public Object apply(MemberRequest memberRequest) {
-					return memberRequest.getModifiedDate();
-				}
-			});
-		attributeGetters.put("key",
-			new Function<MemberRequest, Object>() {
-				@Override
-				public Object apply(MemberRequest memberRequest) {
-					return memberRequest.getKey();
-				}
-			});
-		attributeGetters.put("receiverUserId",
-			new Function<MemberRequest, Object>() {
-				@Override
-				public Object apply(MemberRequest memberRequest) {
-					return memberRequest.getReceiverUserId();
-				}
-			});
-		attributeGetters.put("invitedRoleId",
-			new Function<MemberRequest, Object>() {
-				@Override
-				public Object apply(MemberRequest memberRequest) {
-					return memberRequest.getInvitedRoleId();
-				}
-			});
-		attributeGetters.put("invitedTeamId",
-			new Function<MemberRequest, Object>() {
-				@Override
-				public Object apply(MemberRequest memberRequest) {
-					return memberRequest.getInvitedTeamId();
-				}
-			});
-		attributeGetters.put("status",
-			new Function<MemberRequest, Object>() {
-				@Override
-				public Object apply(MemberRequest memberRequest) {
-					return memberRequest.getStatus();
-				}
-			});
+		attributeGetters.put("memberRequestId", MemberRequest::getMemberRequestId);
+		attributeSetters.put("memberRequestId", MemberRequest::setMemberRequestId);
+
+		attributeGetters.put("groupId", MemberRequest::getGroupId);
+		attributeSetters.put("groupId", MemberRequest::setGroupId);
+
+		attributeGetters.put("companyId", MemberRequest::getCompanyId);
+		attributeSetters.put("companyId", MemberRequest::setCompanyId);
+
+		attributeGetters.put("userId", MemberRequest::getUserId);
+		attributeSetters.put("userId", MemberRequest::setUserId);
+
+		attributeGetters.put("userName", MemberRequest::getUserName);
+		attributeSetters.put("userName", MemberRequest::setUserName);
+
+		attributeGetters.put("createDate", MemberRequest::getCreateDate);
+		attributeSetters.put("createDate", MemberRequest::setCreateDate);
+
+		attributeGetters.put("modifiedDate", MemberRequest::getModifiedDate);
+		attributeSetters.put("modifiedDate", MemberRequest::setModifiedDate);
+
+		attributeGetters.put("key", MemberRequest::getKey);
+		attributeSetters.put("key", MemberRequest::setKey);
+
+		attributeGetters.put("receiverUserId", MemberRequest::getReceiverUserId);
+		attributeSetters.put("receiverUserId", MemberRequest::setReceiverUserId);
+
+		attributeGetters.put("invitedRoleId", MemberRequest::getInvitedRoleId);
+		attributeSetters.put("invitedRoleId", MemberRequest::setInvitedRoleId);
+
+		attributeGetters.put("invitedTeamId", MemberRequest::getInvitedTeamId);
+		attributeSetters.put("invitedTeamId", MemberRequest::setInvitedTeamId);
+
+		attributeGetters.put("status", MemberRequest::getStatus);
+		attributeSetters.put("status", MemberRequest::setStatus);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<MemberRequest, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<MemberRequest, ?>>();
-
-		attributeSetters.put("memberRequestId",
-			new BiConsumer<MemberRequest, Long>() {
-				@Override
-				public void accept(MemberRequest memberRequest,
-					Long memberRequestId) {
-					memberRequest.setMemberRequestId(memberRequestId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<MemberRequest, Long>() {
-				@Override
-				public void accept(MemberRequest memberRequest, Long groupId) {
-					memberRequest.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<MemberRequest, Long>() {
-				@Override
-				public void accept(MemberRequest memberRequest, Long companyId) {
-					memberRequest.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<MemberRequest, Long>() {
-				@Override
-				public void accept(MemberRequest memberRequest, Long userId) {
-					memberRequest.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<MemberRequest, String>() {
-				@Override
-				public void accept(MemberRequest memberRequest, String userName) {
-					memberRequest.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<MemberRequest, Date>() {
-				@Override
-				public void accept(MemberRequest memberRequest, Date createDate) {
-					memberRequest.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<MemberRequest, Date>() {
-				@Override
-				public void accept(MemberRequest memberRequest,
-					Date modifiedDate) {
-					memberRequest.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("key",
-			new BiConsumer<MemberRequest, String>() {
-				@Override
-				public void accept(MemberRequest memberRequest, String key) {
-					memberRequest.setKey(key);
-				}
-			});
-		attributeSetters.put("receiverUserId",
-			new BiConsumer<MemberRequest, Long>() {
-				@Override
-				public void accept(MemberRequest memberRequest,
-					Long receiverUserId) {
-					memberRequest.setReceiverUserId(receiverUserId);
-				}
-			});
-		attributeSetters.put("invitedRoleId",
-			new BiConsumer<MemberRequest, Long>() {
-				@Override
-				public void accept(MemberRequest memberRequest,
-					Long invitedRoleId) {
-					memberRequest.setInvitedRoleId(invitedRoleId);
-				}
-			});
-		attributeSetters.put("invitedTeamId",
-			new BiConsumer<MemberRequest, Long>() {
-				@Override
-				public void accept(MemberRequest memberRequest,
-					Long invitedTeamId) {
-					memberRequest.setInvitedTeamId(invitedTeamId);
-				}
-			});
-		attributeSetters.put("status",
-			new BiConsumer<MemberRequest, Integer>() {
-				@Override
-				public void accept(MemberRequest memberRequest, Integer status) {
-					memberRequest.setStatus(status);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

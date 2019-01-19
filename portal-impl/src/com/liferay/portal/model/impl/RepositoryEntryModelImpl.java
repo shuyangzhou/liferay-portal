@@ -175,206 +175,49 @@ public class RepositoryEntryModelImpl extends BaseModelImpl<RepositoryEntry>
 
 	static {
 		Map<String, Function<RepositoryEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<RepositoryEntry, Object>>();
+		Map<String, BiConsumer<RepositoryEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<RepositoryEntry, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<RepositoryEntry, Object>() {
-				@Override
-				public Object apply(RepositoryEntry repositoryEntry) {
-					return repositoryEntry.getMvccVersion();
-				}
-			});
-		attributeGetters.put("uuid",
-			new Function<RepositoryEntry, Object>() {
-				@Override
-				public Object apply(RepositoryEntry repositoryEntry) {
-					return repositoryEntry.getUuid();
-				}
-			});
-		attributeGetters.put("repositoryEntryId",
-			new Function<RepositoryEntry, Object>() {
-				@Override
-				public Object apply(RepositoryEntry repositoryEntry) {
-					return repositoryEntry.getRepositoryEntryId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<RepositoryEntry, Object>() {
-				@Override
-				public Object apply(RepositoryEntry repositoryEntry) {
-					return repositoryEntry.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<RepositoryEntry, Object>() {
-				@Override
-				public Object apply(RepositoryEntry repositoryEntry) {
-					return repositoryEntry.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<RepositoryEntry, Object>() {
-				@Override
-				public Object apply(RepositoryEntry repositoryEntry) {
-					return repositoryEntry.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<RepositoryEntry, Object>() {
-				@Override
-				public Object apply(RepositoryEntry repositoryEntry) {
-					return repositoryEntry.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<RepositoryEntry, Object>() {
-				@Override
-				public Object apply(RepositoryEntry repositoryEntry) {
-					return repositoryEntry.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<RepositoryEntry, Object>() {
-				@Override
-				public Object apply(RepositoryEntry repositoryEntry) {
-					return repositoryEntry.getModifiedDate();
-				}
-			});
-		attributeGetters.put("repositoryId",
-			new Function<RepositoryEntry, Object>() {
-				@Override
-				public Object apply(RepositoryEntry repositoryEntry) {
-					return repositoryEntry.getRepositoryId();
-				}
-			});
-		attributeGetters.put("mappedId",
-			new Function<RepositoryEntry, Object>() {
-				@Override
-				public Object apply(RepositoryEntry repositoryEntry) {
-					return repositoryEntry.getMappedId();
-				}
-			});
-		attributeGetters.put("manualCheckInRequired",
-			new Function<RepositoryEntry, Object>() {
-				@Override
-				public Object apply(RepositoryEntry repositoryEntry) {
-					return repositoryEntry.isManualCheckInRequired();
-				}
-			});
-		attributeGetters.put("lastPublishDate",
-			new Function<RepositoryEntry, Object>() {
-				@Override
-				public Object apply(RepositoryEntry repositoryEntry) {
-					return repositoryEntry.getLastPublishDate();
-				}
-			});
+		attributeGetters.put("mvccVersion", RepositoryEntry::getMvccVersion);
+		attributeSetters.put("mvccVersion", RepositoryEntry::setMvccVersion);
+
+		attributeGetters.put("uuid", RepositoryEntry::getUuid);
+		attributeSetters.put("uuid", RepositoryEntry::setUuid);
+
+		attributeGetters.put("repositoryEntryId", RepositoryEntry::getRepositoryEntryId);
+		attributeSetters.put("repositoryEntryId", RepositoryEntry::setRepositoryEntryId);
+
+		attributeGetters.put("groupId", RepositoryEntry::getGroupId);
+		attributeSetters.put("groupId", RepositoryEntry::setGroupId);
+
+		attributeGetters.put("companyId", RepositoryEntry::getCompanyId);
+		attributeSetters.put("companyId", RepositoryEntry::setCompanyId);
+
+		attributeGetters.put("userId", RepositoryEntry::getUserId);
+		attributeSetters.put("userId", RepositoryEntry::setUserId);
+
+		attributeGetters.put("userName", RepositoryEntry::getUserName);
+		attributeSetters.put("userName", RepositoryEntry::setUserName);
+
+		attributeGetters.put("createDate", RepositoryEntry::getCreateDate);
+		attributeSetters.put("createDate", RepositoryEntry::setCreateDate);
+
+		attributeGetters.put("modifiedDate", RepositoryEntry::getModifiedDate);
+		attributeSetters.put("modifiedDate", RepositoryEntry::setModifiedDate);
+
+		attributeGetters.put("repositoryId", RepositoryEntry::getRepositoryId);
+		attributeSetters.put("repositoryId", RepositoryEntry::setRepositoryId);
+
+		attributeGetters.put("mappedId", RepositoryEntry::getMappedId);
+		attributeSetters.put("mappedId", RepositoryEntry::setMappedId);
+
+		attributeGetters.put("manualCheckInRequired", RepositoryEntry::getManualCheckInRequired);
+		attributeSetters.put("manualCheckInRequired", RepositoryEntry::setManualCheckInRequired);
+
+		attributeGetters.put("lastPublishDate", RepositoryEntry::getLastPublishDate);
+		attributeSetters.put("lastPublishDate", RepositoryEntry::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<RepositoryEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<RepositoryEntry, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<RepositoryEntry, Long>() {
-				@Override
-				public void accept(RepositoryEntry repositoryEntry,
-					Long mvccVersion) {
-					repositoryEntry.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("uuid",
-			new BiConsumer<RepositoryEntry, String>() {
-				@Override
-				public void accept(RepositoryEntry repositoryEntry, String uuid) {
-					repositoryEntry.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("repositoryEntryId",
-			new BiConsumer<RepositoryEntry, Long>() {
-				@Override
-				public void accept(RepositoryEntry repositoryEntry,
-					Long repositoryEntryId) {
-					repositoryEntry.setRepositoryEntryId(repositoryEntryId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<RepositoryEntry, Long>() {
-				@Override
-				public void accept(RepositoryEntry repositoryEntry, Long groupId) {
-					repositoryEntry.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<RepositoryEntry, Long>() {
-				@Override
-				public void accept(RepositoryEntry repositoryEntry,
-					Long companyId) {
-					repositoryEntry.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<RepositoryEntry, Long>() {
-				@Override
-				public void accept(RepositoryEntry repositoryEntry, Long userId) {
-					repositoryEntry.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<RepositoryEntry, String>() {
-				@Override
-				public void accept(RepositoryEntry repositoryEntry,
-					String userName) {
-					repositoryEntry.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<RepositoryEntry, Date>() {
-				@Override
-				public void accept(RepositoryEntry repositoryEntry,
-					Date createDate) {
-					repositoryEntry.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<RepositoryEntry, Date>() {
-				@Override
-				public void accept(RepositoryEntry repositoryEntry,
-					Date modifiedDate) {
-					repositoryEntry.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("repositoryId",
-			new BiConsumer<RepositoryEntry, Long>() {
-				@Override
-				public void accept(RepositoryEntry repositoryEntry,
-					Long repositoryId) {
-					repositoryEntry.setRepositoryId(repositoryId);
-				}
-			});
-		attributeSetters.put("mappedId",
-			new BiConsumer<RepositoryEntry, String>() {
-				@Override
-				public void accept(RepositoryEntry repositoryEntry,
-					String mappedId) {
-					repositoryEntry.setMappedId(mappedId);
-				}
-			});
-		attributeSetters.put("manualCheckInRequired",
-			new BiConsumer<RepositoryEntry, Boolean>() {
-				@Override
-				public void accept(RepositoryEntry repositoryEntry,
-					Boolean manualCheckInRequired) {
-					repositoryEntry.setManualCheckInRequired(manualCheckInRequired);
-				}
-			});
-		attributeSetters.put("lastPublishDate",
-			new BiConsumer<RepositoryEntry, Date>() {
-				@Override
-				public void accept(RepositoryEntry repositoryEntry,
-					Date lastPublishDate) {
-					repositoryEntry.setLastPublishDate(lastPublishDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

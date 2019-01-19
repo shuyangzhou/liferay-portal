@@ -210,134 +210,34 @@ public class PortletPreferencesModelImpl extends BaseModelImpl<PortletPreference
 
 	static {
 		Map<String, Function<PortletPreferences, Object>> attributeGetters = new LinkedHashMap<String, Function<PortletPreferences, Object>>();
+		Map<String, BiConsumer<PortletPreferences, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<PortletPreferences, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<PortletPreferences, Object>() {
-				@Override
-				public Object apply(PortletPreferences portletPreferences) {
-					return portletPreferences.getMvccVersion();
-				}
-			});
-		attributeGetters.put("portletPreferencesId",
-			new Function<PortletPreferences, Object>() {
-				@Override
-				public Object apply(PortletPreferences portletPreferences) {
-					return portletPreferences.getPortletPreferencesId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<PortletPreferences, Object>() {
-				@Override
-				public Object apply(PortletPreferences portletPreferences) {
-					return portletPreferences.getCompanyId();
-				}
-			});
-		attributeGetters.put("ownerId",
-			new Function<PortletPreferences, Object>() {
-				@Override
-				public Object apply(PortletPreferences portletPreferences) {
-					return portletPreferences.getOwnerId();
-				}
-			});
-		attributeGetters.put("ownerType",
-			new Function<PortletPreferences, Object>() {
-				@Override
-				public Object apply(PortletPreferences portletPreferences) {
-					return portletPreferences.getOwnerType();
-				}
-			});
-		attributeGetters.put("plid",
-			new Function<PortletPreferences, Object>() {
-				@Override
-				public Object apply(PortletPreferences portletPreferences) {
-					return portletPreferences.getPlid();
-				}
-			});
-		attributeGetters.put("portletId",
-			new Function<PortletPreferences, Object>() {
-				@Override
-				public Object apply(PortletPreferences portletPreferences) {
-					return portletPreferences.getPortletId();
-				}
-			});
-		attributeGetters.put("preferences",
-			new Function<PortletPreferences, Object>() {
-				@Override
-				public Object apply(PortletPreferences portletPreferences) {
-					return portletPreferences.getPreferences();
-				}
-			});
+		attributeGetters.put("mvccVersion", PortletPreferences::getMvccVersion);
+		attributeSetters.put("mvccVersion", PortletPreferences::setMvccVersion);
+
+		attributeGetters.put("portletPreferencesId", PortletPreferences::getPortletPreferencesId);
+		attributeSetters.put("portletPreferencesId", PortletPreferences::setPortletPreferencesId);
+
+		attributeGetters.put("companyId", PortletPreferences::getCompanyId);
+		attributeSetters.put("companyId", PortletPreferences::setCompanyId);
+
+		attributeGetters.put("ownerId", PortletPreferences::getOwnerId);
+		attributeSetters.put("ownerId", PortletPreferences::setOwnerId);
+
+		attributeGetters.put("ownerType", PortletPreferences::getOwnerType);
+		attributeSetters.put("ownerType", PortletPreferences::setOwnerType);
+
+		attributeGetters.put("plid", PortletPreferences::getPlid);
+		attributeSetters.put("plid", PortletPreferences::setPlid);
+
+		attributeGetters.put("portletId", PortletPreferences::getPortletId);
+		attributeSetters.put("portletId", PortletPreferences::setPortletId);
+
+		attributeGetters.put("preferences", PortletPreferences::getPreferences);
+		attributeSetters.put("preferences", PortletPreferences::setPreferences);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<PortletPreferences, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<PortletPreferences, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<PortletPreferences, Long>() {
-				@Override
-				public void accept(PortletPreferences portletPreferences,
-					Long mvccVersion) {
-					portletPreferences.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("portletPreferencesId",
-			new BiConsumer<PortletPreferences, Long>() {
-				@Override
-				public void accept(PortletPreferences portletPreferences,
-					Long portletPreferencesId) {
-					portletPreferences.setPortletPreferencesId(portletPreferencesId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<PortletPreferences, Long>() {
-				@Override
-				public void accept(PortletPreferences portletPreferences,
-					Long companyId) {
-					portletPreferences.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("ownerId",
-			new BiConsumer<PortletPreferences, Long>() {
-				@Override
-				public void accept(PortletPreferences portletPreferences,
-					Long ownerId) {
-					portletPreferences.setOwnerId(ownerId);
-				}
-			});
-		attributeSetters.put("ownerType",
-			new BiConsumer<PortletPreferences, Integer>() {
-				@Override
-				public void accept(PortletPreferences portletPreferences,
-					Integer ownerType) {
-					portletPreferences.setOwnerType(ownerType);
-				}
-			});
-		attributeSetters.put("plid",
-			new BiConsumer<PortletPreferences, Long>() {
-				@Override
-				public void accept(PortletPreferences portletPreferences,
-					Long plid) {
-					portletPreferences.setPlid(plid);
-				}
-			});
-		attributeSetters.put("portletId",
-			new BiConsumer<PortletPreferences, String>() {
-				@Override
-				public void accept(PortletPreferences portletPreferences,
-					String portletId) {
-					portletPreferences.setPortletId(portletId);
-				}
-			});
-		attributeSetters.put("preferences",
-			new BiConsumer<PortletPreferences, String>() {
-				@Override
-				public void accept(PortletPreferences portletPreferences,
-					String preferences) {
-					portletPreferences.setPreferences(preferences);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

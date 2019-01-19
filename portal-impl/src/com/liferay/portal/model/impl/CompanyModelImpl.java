@@ -217,168 +217,43 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 
 	static {
 		Map<String, Function<Company, Object>> attributeGetters = new LinkedHashMap<String, Function<Company, Object>>();
+		Map<String, BiConsumer<Company, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Company, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<Company, Object>() {
-				@Override
-				public Object apply(Company company) {
-					return company.getMvccVersion();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<Company, Object>() {
-				@Override
-				public Object apply(Company company) {
-					return company.getCompanyId();
-				}
-			});
-		attributeGetters.put("accountId",
-			new Function<Company, Object>() {
-				@Override
-				public Object apply(Company company) {
-					return company.getAccountId();
-				}
-			});
-		attributeGetters.put("webId",
-			new Function<Company, Object>() {
-				@Override
-				public Object apply(Company company) {
-					return company.getWebId();
-				}
-			});
-		attributeGetters.put("key",
-			new Function<Company, Object>() {
-				@Override
-				public Object apply(Company company) {
-					return company.getKey();
-				}
-			});
-		attributeGetters.put("mx",
-			new Function<Company, Object>() {
-				@Override
-				public Object apply(Company company) {
-					return company.getMx();
-				}
-			});
-		attributeGetters.put("homeURL",
-			new Function<Company, Object>() {
-				@Override
-				public Object apply(Company company) {
-					return company.getHomeURL();
-				}
-			});
-		attributeGetters.put("logoId",
-			new Function<Company, Object>() {
-				@Override
-				public Object apply(Company company) {
-					return company.getLogoId();
-				}
-			});
-		attributeGetters.put("system",
-			new Function<Company, Object>() {
-				@Override
-				public Object apply(Company company) {
-					return company.isSystem();
-				}
-			});
-		attributeGetters.put("maxUsers",
-			new Function<Company, Object>() {
-				@Override
-				public Object apply(Company company) {
-					return company.getMaxUsers();
-				}
-			});
-		attributeGetters.put("active",
-			new Function<Company, Object>() {
-				@Override
-				public Object apply(Company company) {
-					return company.isActive();
-				}
-			});
+		attributeGetters.put("mvccVersion", Company::getMvccVersion);
+		attributeSetters.put("mvccVersion", Company::setMvccVersion);
+
+		attributeGetters.put("companyId", Company::getCompanyId);
+		attributeSetters.put("companyId", Company::setCompanyId);
+
+		attributeGetters.put("accountId", Company::getAccountId);
+		attributeSetters.put("accountId", Company::setAccountId);
+
+		attributeGetters.put("webId", Company::getWebId);
+		attributeSetters.put("webId", Company::setWebId);
+
+		attributeGetters.put("key", Company::getKey);
+		attributeSetters.put("key", Company::setKey);
+
+		attributeGetters.put("mx", Company::getMx);
+		attributeSetters.put("mx", Company::setMx);
+
+		attributeGetters.put("homeURL", Company::getHomeURL);
+		attributeSetters.put("homeURL", Company::setHomeURL);
+
+		attributeGetters.put("logoId", Company::getLogoId);
+		attributeSetters.put("logoId", Company::setLogoId);
+
+		attributeGetters.put("system", Company::getSystem);
+		attributeSetters.put("system", Company::setSystem);
+
+		attributeGetters.put("maxUsers", Company::getMaxUsers);
+		attributeSetters.put("maxUsers", Company::setMaxUsers);
+
+		attributeGetters.put("active", Company::getActive);
+		attributeSetters.put("active", Company::setActive);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<Company, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Company, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<Company, Long>() {
-				@Override
-				public void accept(Company company, Long mvccVersion) {
-					company.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<Company, Long>() {
-				@Override
-				public void accept(Company company, Long companyId) {
-					company.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("accountId",
-			new BiConsumer<Company, Long>() {
-				@Override
-				public void accept(Company company, Long accountId) {
-					company.setAccountId(accountId);
-				}
-			});
-		attributeSetters.put("webId",
-			new BiConsumer<Company, String>() {
-				@Override
-				public void accept(Company company, String webId) {
-					company.setWebId(webId);
-				}
-			});
-		attributeSetters.put("key",
-			new BiConsumer<Company, String>() {
-				@Override
-				public void accept(Company company, String key) {
-					company.setKey(key);
-				}
-			});
-		attributeSetters.put("mx",
-			new BiConsumer<Company, String>() {
-				@Override
-				public void accept(Company company, String mx) {
-					company.setMx(mx);
-				}
-			});
-		attributeSetters.put("homeURL",
-			new BiConsumer<Company, String>() {
-				@Override
-				public void accept(Company company, String homeURL) {
-					company.setHomeURL(homeURL);
-				}
-			});
-		attributeSetters.put("logoId",
-			new BiConsumer<Company, Long>() {
-				@Override
-				public void accept(Company company, Long logoId) {
-					company.setLogoId(logoId);
-				}
-			});
-		attributeSetters.put("system",
-			new BiConsumer<Company, Boolean>() {
-				@Override
-				public void accept(Company company, Boolean system) {
-					company.setSystem(system);
-				}
-			});
-		attributeSetters.put("maxUsers",
-			new BiConsumer<Company, Integer>() {
-				@Override
-				public void accept(Company company, Integer maxUsers) {
-					company.setMaxUsers(maxUsers);
-				}
-			});
-		attributeSetters.put("active",
-			new BiConsumer<Company, Boolean>() {
-				@Override
-				public void accept(Company company, Boolean active) {
-					company.setActive(active);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

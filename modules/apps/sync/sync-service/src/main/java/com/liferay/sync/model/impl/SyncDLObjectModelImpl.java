@@ -276,412 +276,94 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 
 	static {
 		Map<String, Function<SyncDLObject, Object>> attributeGetters = new LinkedHashMap<String, Function<SyncDLObject, Object>>();
+		Map<String, BiConsumer<SyncDLObject, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SyncDLObject, Object>>();
 
-		attributeGetters.put("syncDLObjectId",
-			new Function<SyncDLObject, Object>() {
-				@Override
-				public Object apply(SyncDLObject syncDLObject) {
-					return syncDLObject.getSyncDLObjectId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<SyncDLObject, Object>() {
-				@Override
-				public Object apply(SyncDLObject syncDLObject) {
-					return syncDLObject.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<SyncDLObject, Object>() {
-				@Override
-				public Object apply(SyncDLObject syncDLObject) {
-					return syncDLObject.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<SyncDLObject, Object>() {
-				@Override
-				public Object apply(SyncDLObject syncDLObject) {
-					return syncDLObject.getUserName();
-				}
-			});
-		attributeGetters.put("createTime",
-			new Function<SyncDLObject, Object>() {
-				@Override
-				public Object apply(SyncDLObject syncDLObject) {
-					return syncDLObject.getCreateTime();
-				}
-			});
-		attributeGetters.put("modifiedTime",
-			new Function<SyncDLObject, Object>() {
-				@Override
-				public Object apply(SyncDLObject syncDLObject) {
-					return syncDLObject.getModifiedTime();
-				}
-			});
-		attributeGetters.put("repositoryId",
-			new Function<SyncDLObject, Object>() {
-				@Override
-				public Object apply(SyncDLObject syncDLObject) {
-					return syncDLObject.getRepositoryId();
-				}
-			});
-		attributeGetters.put("parentFolderId",
-			new Function<SyncDLObject, Object>() {
-				@Override
-				public Object apply(SyncDLObject syncDLObject) {
-					return syncDLObject.getParentFolderId();
-				}
-			});
-		attributeGetters.put("treePath",
-			new Function<SyncDLObject, Object>() {
-				@Override
-				public Object apply(SyncDLObject syncDLObject) {
-					return syncDLObject.getTreePath();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<SyncDLObject, Object>() {
-				@Override
-				public Object apply(SyncDLObject syncDLObject) {
-					return syncDLObject.getName();
-				}
-			});
-		attributeGetters.put("extension",
-			new Function<SyncDLObject, Object>() {
-				@Override
-				public Object apply(SyncDLObject syncDLObject) {
-					return syncDLObject.getExtension();
-				}
-			});
-		attributeGetters.put("mimeType",
-			new Function<SyncDLObject, Object>() {
-				@Override
-				public Object apply(SyncDLObject syncDLObject) {
-					return syncDLObject.getMimeType();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<SyncDLObject, Object>() {
-				@Override
-				public Object apply(SyncDLObject syncDLObject) {
-					return syncDLObject.getDescription();
-				}
-			});
-		attributeGetters.put("changeLog",
-			new Function<SyncDLObject, Object>() {
-				@Override
-				public Object apply(SyncDLObject syncDLObject) {
-					return syncDLObject.getChangeLog();
-				}
-			});
-		attributeGetters.put("extraSettings",
-			new Function<SyncDLObject, Object>() {
-				@Override
-				public Object apply(SyncDLObject syncDLObject) {
-					return syncDLObject.getExtraSettings();
-				}
-			});
-		attributeGetters.put("version",
-			new Function<SyncDLObject, Object>() {
-				@Override
-				public Object apply(SyncDLObject syncDLObject) {
-					return syncDLObject.getVersion();
-				}
-			});
-		attributeGetters.put("versionId",
-			new Function<SyncDLObject, Object>() {
-				@Override
-				public Object apply(SyncDLObject syncDLObject) {
-					return syncDLObject.getVersionId();
-				}
-			});
-		attributeGetters.put("size",
-			new Function<SyncDLObject, Object>() {
-				@Override
-				public Object apply(SyncDLObject syncDLObject) {
-					return syncDLObject.getSize();
-				}
-			});
-		attributeGetters.put("checksum",
-			new Function<SyncDLObject, Object>() {
-				@Override
-				public Object apply(SyncDLObject syncDLObject) {
-					return syncDLObject.getChecksum();
-				}
-			});
-		attributeGetters.put("event",
-			new Function<SyncDLObject, Object>() {
-				@Override
-				public Object apply(SyncDLObject syncDLObject) {
-					return syncDLObject.getEvent();
-				}
-			});
-		attributeGetters.put("lanTokenKey",
-			new Function<SyncDLObject, Object>() {
-				@Override
-				public Object apply(SyncDLObject syncDLObject) {
-					return syncDLObject.getLanTokenKey();
-				}
-			});
-		attributeGetters.put("lastPermissionChangeDate",
-			new Function<SyncDLObject, Object>() {
-				@Override
-				public Object apply(SyncDLObject syncDLObject) {
-					return syncDLObject.getLastPermissionChangeDate();
-				}
-			});
-		attributeGetters.put("lockExpirationDate",
-			new Function<SyncDLObject, Object>() {
-				@Override
-				public Object apply(SyncDLObject syncDLObject) {
-					return syncDLObject.getLockExpirationDate();
-				}
-			});
-		attributeGetters.put("lockUserId",
-			new Function<SyncDLObject, Object>() {
-				@Override
-				public Object apply(SyncDLObject syncDLObject) {
-					return syncDLObject.getLockUserId();
-				}
-			});
-		attributeGetters.put("lockUserName",
-			new Function<SyncDLObject, Object>() {
-				@Override
-				public Object apply(SyncDLObject syncDLObject) {
-					return syncDLObject.getLockUserName();
-				}
-			});
-		attributeGetters.put("type",
-			new Function<SyncDLObject, Object>() {
-				@Override
-				public Object apply(SyncDLObject syncDLObject) {
-					return syncDLObject.getType();
-				}
-			});
-		attributeGetters.put("typePK",
-			new Function<SyncDLObject, Object>() {
-				@Override
-				public Object apply(SyncDLObject syncDLObject) {
-					return syncDLObject.getTypePK();
-				}
-			});
-		attributeGetters.put("typeUuid",
-			new Function<SyncDLObject, Object>() {
-				@Override
-				public Object apply(SyncDLObject syncDLObject) {
-					return syncDLObject.getTypeUuid();
-				}
-			});
+		attributeGetters.put("syncDLObjectId", SyncDLObject::getSyncDLObjectId);
+		attributeSetters.put("syncDLObjectId", SyncDLObject::setSyncDLObjectId);
+
+		attributeGetters.put("companyId", SyncDLObject::getCompanyId);
+		attributeSetters.put("companyId", SyncDLObject::setCompanyId);
+
+		attributeGetters.put("userId", SyncDLObject::getUserId);
+		attributeSetters.put("userId", SyncDLObject::setUserId);
+
+		attributeGetters.put("userName", SyncDLObject::getUserName);
+		attributeSetters.put("userName", SyncDLObject::setUserName);
+
+		attributeGetters.put("createTime", SyncDLObject::getCreateTime);
+		attributeSetters.put("createTime", SyncDLObject::setCreateTime);
+
+		attributeGetters.put("modifiedTime", SyncDLObject::getModifiedTime);
+		attributeSetters.put("modifiedTime", SyncDLObject::setModifiedTime);
+
+		attributeGetters.put("repositoryId", SyncDLObject::getRepositoryId);
+		attributeSetters.put("repositoryId", SyncDLObject::setRepositoryId);
+
+		attributeGetters.put("parentFolderId", SyncDLObject::getParentFolderId);
+		attributeSetters.put("parentFolderId", SyncDLObject::setParentFolderId);
+
+		attributeGetters.put("treePath", SyncDLObject::getTreePath);
+		attributeSetters.put("treePath", SyncDLObject::setTreePath);
+
+		attributeGetters.put("name", SyncDLObject::getName);
+		attributeSetters.put("name", SyncDLObject::setName);
+
+		attributeGetters.put("extension", SyncDLObject::getExtension);
+		attributeSetters.put("extension", SyncDLObject::setExtension);
+
+		attributeGetters.put("mimeType", SyncDLObject::getMimeType);
+		attributeSetters.put("mimeType", SyncDLObject::setMimeType);
+
+		attributeGetters.put("description", SyncDLObject::getDescription);
+		attributeSetters.put("description", SyncDLObject::setDescription);
+
+		attributeGetters.put("changeLog", SyncDLObject::getChangeLog);
+		attributeSetters.put("changeLog", SyncDLObject::setChangeLog);
+
+		attributeGetters.put("extraSettings", SyncDLObject::getExtraSettings);
+		attributeSetters.put("extraSettings", SyncDLObject::setExtraSettings);
+
+		attributeGetters.put("version", SyncDLObject::getVersion);
+		attributeSetters.put("version", SyncDLObject::setVersion);
+
+		attributeGetters.put("versionId", SyncDLObject::getVersionId);
+		attributeSetters.put("versionId", SyncDLObject::setVersionId);
+
+		attributeGetters.put("size", SyncDLObject::getSize);
+		attributeSetters.put("size", SyncDLObject::setSize);
+
+		attributeGetters.put("checksum", SyncDLObject::getChecksum);
+		attributeSetters.put("checksum", SyncDLObject::setChecksum);
+
+		attributeGetters.put("event", SyncDLObject::getEvent);
+		attributeSetters.put("event", SyncDLObject::setEvent);
+
+		attributeGetters.put("lanTokenKey", SyncDLObject::getLanTokenKey);
+		attributeSetters.put("lanTokenKey", SyncDLObject::setLanTokenKey);
+
+		attributeGetters.put("lastPermissionChangeDate", SyncDLObject::getLastPermissionChangeDate);
+		attributeSetters.put("lastPermissionChangeDate", SyncDLObject::setLastPermissionChangeDate);
+
+		attributeGetters.put("lockExpirationDate", SyncDLObject::getLockExpirationDate);
+		attributeSetters.put("lockExpirationDate", SyncDLObject::setLockExpirationDate);
+
+		attributeGetters.put("lockUserId", SyncDLObject::getLockUserId);
+		attributeSetters.put("lockUserId", SyncDLObject::setLockUserId);
+
+		attributeGetters.put("lockUserName", SyncDLObject::getLockUserName);
+		attributeSetters.put("lockUserName", SyncDLObject::setLockUserName);
+
+		attributeGetters.put("type", SyncDLObject::getType);
+		attributeSetters.put("type", SyncDLObject::setType);
+
+		attributeGetters.put("typePK", SyncDLObject::getTypePK);
+		attributeSetters.put("typePK", SyncDLObject::setTypePK);
+
+		attributeGetters.put("typeUuid", SyncDLObject::getTypeUuid);
+		attributeSetters.put("typeUuid", SyncDLObject::setTypeUuid);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<SyncDLObject, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<SyncDLObject, ?>>();
-
-		attributeSetters.put("syncDLObjectId",
-			new BiConsumer<SyncDLObject, Long>() {
-				@Override
-				public void accept(SyncDLObject syncDLObject,
-					Long syncDLObjectId) {
-					syncDLObject.setSyncDLObjectId(syncDLObjectId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<SyncDLObject, Long>() {
-				@Override
-				public void accept(SyncDLObject syncDLObject, Long companyId) {
-					syncDLObject.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<SyncDLObject, Long>() {
-				@Override
-				public void accept(SyncDLObject syncDLObject, Long userId) {
-					syncDLObject.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<SyncDLObject, String>() {
-				@Override
-				public void accept(SyncDLObject syncDLObject, String userName) {
-					syncDLObject.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createTime",
-			new BiConsumer<SyncDLObject, Long>() {
-				@Override
-				public void accept(SyncDLObject syncDLObject, Long createTime) {
-					syncDLObject.setCreateTime(createTime);
-				}
-			});
-		attributeSetters.put("modifiedTime",
-			new BiConsumer<SyncDLObject, Long>() {
-				@Override
-				public void accept(SyncDLObject syncDLObject, Long modifiedTime) {
-					syncDLObject.setModifiedTime(modifiedTime);
-				}
-			});
-		attributeSetters.put("repositoryId",
-			new BiConsumer<SyncDLObject, Long>() {
-				@Override
-				public void accept(SyncDLObject syncDLObject, Long repositoryId) {
-					syncDLObject.setRepositoryId(repositoryId);
-				}
-			});
-		attributeSetters.put("parentFolderId",
-			new BiConsumer<SyncDLObject, Long>() {
-				@Override
-				public void accept(SyncDLObject syncDLObject,
-					Long parentFolderId) {
-					syncDLObject.setParentFolderId(parentFolderId);
-				}
-			});
-		attributeSetters.put("treePath",
-			new BiConsumer<SyncDLObject, String>() {
-				@Override
-				public void accept(SyncDLObject syncDLObject, String treePath) {
-					syncDLObject.setTreePath(treePath);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<SyncDLObject, String>() {
-				@Override
-				public void accept(SyncDLObject syncDLObject, String name) {
-					syncDLObject.setName(name);
-				}
-			});
-		attributeSetters.put("extension",
-			new BiConsumer<SyncDLObject, String>() {
-				@Override
-				public void accept(SyncDLObject syncDLObject, String extension) {
-					syncDLObject.setExtension(extension);
-				}
-			});
-		attributeSetters.put("mimeType",
-			new BiConsumer<SyncDLObject, String>() {
-				@Override
-				public void accept(SyncDLObject syncDLObject, String mimeType) {
-					syncDLObject.setMimeType(mimeType);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<SyncDLObject, String>() {
-				@Override
-				public void accept(SyncDLObject syncDLObject, String description) {
-					syncDLObject.setDescription(description);
-				}
-			});
-		attributeSetters.put("changeLog",
-			new BiConsumer<SyncDLObject, String>() {
-				@Override
-				public void accept(SyncDLObject syncDLObject, String changeLog) {
-					syncDLObject.setChangeLog(changeLog);
-				}
-			});
-		attributeSetters.put("extraSettings",
-			new BiConsumer<SyncDLObject, String>() {
-				@Override
-				public void accept(SyncDLObject syncDLObject,
-					String extraSettings) {
-					syncDLObject.setExtraSettings(extraSettings);
-				}
-			});
-		attributeSetters.put("version",
-			new BiConsumer<SyncDLObject, String>() {
-				@Override
-				public void accept(SyncDLObject syncDLObject, String version) {
-					syncDLObject.setVersion(version);
-				}
-			});
-		attributeSetters.put("versionId",
-			new BiConsumer<SyncDLObject, Long>() {
-				@Override
-				public void accept(SyncDLObject syncDLObject, Long versionId) {
-					syncDLObject.setVersionId(versionId);
-				}
-			});
-		attributeSetters.put("size",
-			new BiConsumer<SyncDLObject, Long>() {
-				@Override
-				public void accept(SyncDLObject syncDLObject, Long size) {
-					syncDLObject.setSize(size);
-				}
-			});
-		attributeSetters.put("checksum",
-			new BiConsumer<SyncDLObject, String>() {
-				@Override
-				public void accept(SyncDLObject syncDLObject, String checksum) {
-					syncDLObject.setChecksum(checksum);
-				}
-			});
-		attributeSetters.put("event",
-			new BiConsumer<SyncDLObject, String>() {
-				@Override
-				public void accept(SyncDLObject syncDLObject, String event) {
-					syncDLObject.setEvent(event);
-				}
-			});
-		attributeSetters.put("lanTokenKey",
-			new BiConsumer<SyncDLObject, String>() {
-				@Override
-				public void accept(SyncDLObject syncDLObject, String lanTokenKey) {
-					syncDLObject.setLanTokenKey(lanTokenKey);
-				}
-			});
-		attributeSetters.put("lastPermissionChangeDate",
-			new BiConsumer<SyncDLObject, Date>() {
-				@Override
-				public void accept(SyncDLObject syncDLObject,
-					Date lastPermissionChangeDate) {
-					syncDLObject.setLastPermissionChangeDate(lastPermissionChangeDate);
-				}
-			});
-		attributeSetters.put("lockExpirationDate",
-			new BiConsumer<SyncDLObject, Date>() {
-				@Override
-				public void accept(SyncDLObject syncDLObject,
-					Date lockExpirationDate) {
-					syncDLObject.setLockExpirationDate(lockExpirationDate);
-				}
-			});
-		attributeSetters.put("lockUserId",
-			new BiConsumer<SyncDLObject, Long>() {
-				@Override
-				public void accept(SyncDLObject syncDLObject, Long lockUserId) {
-					syncDLObject.setLockUserId(lockUserId);
-				}
-			});
-		attributeSetters.put("lockUserName",
-			new BiConsumer<SyncDLObject, String>() {
-				@Override
-				public void accept(SyncDLObject syncDLObject,
-					String lockUserName) {
-					syncDLObject.setLockUserName(lockUserName);
-				}
-			});
-		attributeSetters.put("type",
-			new BiConsumer<SyncDLObject, String>() {
-				@Override
-				public void accept(SyncDLObject syncDLObject, String type) {
-					syncDLObject.setType(type);
-				}
-			});
-		attributeSetters.put("typePK",
-			new BiConsumer<SyncDLObject, Long>() {
-				@Override
-				public void accept(SyncDLObject syncDLObject, Long typePK) {
-					syncDLObject.setTypePK(typePK);
-				}
-			});
-		attributeSetters.put("typeUuid",
-			new BiConsumer<SyncDLObject, String>() {
-				@Override
-				public void accept(SyncDLObject syncDLObject, String typeUuid) {
-					syncDLObject.setTypeUuid(typeUuid);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

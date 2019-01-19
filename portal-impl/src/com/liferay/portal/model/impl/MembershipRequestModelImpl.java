@@ -222,179 +222,43 @@ public class MembershipRequestModelImpl extends BaseModelImpl<MembershipRequest>
 
 	static {
 		Map<String, Function<MembershipRequest, Object>> attributeGetters = new LinkedHashMap<String, Function<MembershipRequest, Object>>();
+		Map<String, BiConsumer<MembershipRequest, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<MembershipRequest, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<MembershipRequest, Object>() {
-				@Override
-				public Object apply(MembershipRequest membershipRequest) {
-					return membershipRequest.getMvccVersion();
-				}
-			});
-		attributeGetters.put("membershipRequestId",
-			new Function<MembershipRequest, Object>() {
-				@Override
-				public Object apply(MembershipRequest membershipRequest) {
-					return membershipRequest.getMembershipRequestId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<MembershipRequest, Object>() {
-				@Override
-				public Object apply(MembershipRequest membershipRequest) {
-					return membershipRequest.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<MembershipRequest, Object>() {
-				@Override
-				public Object apply(MembershipRequest membershipRequest) {
-					return membershipRequest.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<MembershipRequest, Object>() {
-				@Override
-				public Object apply(MembershipRequest membershipRequest) {
-					return membershipRequest.getUserId();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<MembershipRequest, Object>() {
-				@Override
-				public Object apply(MembershipRequest membershipRequest) {
-					return membershipRequest.getCreateDate();
-				}
-			});
-		attributeGetters.put("comments",
-			new Function<MembershipRequest, Object>() {
-				@Override
-				public Object apply(MembershipRequest membershipRequest) {
-					return membershipRequest.getComments();
-				}
-			});
-		attributeGetters.put("replyComments",
-			new Function<MembershipRequest, Object>() {
-				@Override
-				public Object apply(MembershipRequest membershipRequest) {
-					return membershipRequest.getReplyComments();
-				}
-			});
-		attributeGetters.put("replyDate",
-			new Function<MembershipRequest, Object>() {
-				@Override
-				public Object apply(MembershipRequest membershipRequest) {
-					return membershipRequest.getReplyDate();
-				}
-			});
-		attributeGetters.put("replierUserId",
-			new Function<MembershipRequest, Object>() {
-				@Override
-				public Object apply(MembershipRequest membershipRequest) {
-					return membershipRequest.getReplierUserId();
-				}
-			});
-		attributeGetters.put("statusId",
-			new Function<MembershipRequest, Object>() {
-				@Override
-				public Object apply(MembershipRequest membershipRequest) {
-					return membershipRequest.getStatusId();
-				}
-			});
+		attributeGetters.put("mvccVersion", MembershipRequest::getMvccVersion);
+		attributeSetters.put("mvccVersion", MembershipRequest::setMvccVersion);
+
+		attributeGetters.put("membershipRequestId", MembershipRequest::getMembershipRequestId);
+		attributeSetters.put("membershipRequestId", MembershipRequest::setMembershipRequestId);
+
+		attributeGetters.put("groupId", MembershipRequest::getGroupId);
+		attributeSetters.put("groupId", MembershipRequest::setGroupId);
+
+		attributeGetters.put("companyId", MembershipRequest::getCompanyId);
+		attributeSetters.put("companyId", MembershipRequest::setCompanyId);
+
+		attributeGetters.put("userId", MembershipRequest::getUserId);
+		attributeSetters.put("userId", MembershipRequest::setUserId);
+
+		attributeGetters.put("createDate", MembershipRequest::getCreateDate);
+		attributeSetters.put("createDate", MembershipRequest::setCreateDate);
+
+		attributeGetters.put("comments", MembershipRequest::getComments);
+		attributeSetters.put("comments", MembershipRequest::setComments);
+
+		attributeGetters.put("replyComments", MembershipRequest::getReplyComments);
+		attributeSetters.put("replyComments", MembershipRequest::setReplyComments);
+
+		attributeGetters.put("replyDate", MembershipRequest::getReplyDate);
+		attributeSetters.put("replyDate", MembershipRequest::setReplyDate);
+
+		attributeGetters.put("replierUserId", MembershipRequest::getReplierUserId);
+		attributeSetters.put("replierUserId", MembershipRequest::setReplierUserId);
+
+		attributeGetters.put("statusId", MembershipRequest::getStatusId);
+		attributeSetters.put("statusId", MembershipRequest::setStatusId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<MembershipRequest, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<MembershipRequest, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<MembershipRequest, Long>() {
-				@Override
-				public void accept(MembershipRequest membershipRequest,
-					Long mvccVersion) {
-					membershipRequest.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("membershipRequestId",
-			new BiConsumer<MembershipRequest, Long>() {
-				@Override
-				public void accept(MembershipRequest membershipRequest,
-					Long membershipRequestId) {
-					membershipRequest.setMembershipRequestId(membershipRequestId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<MembershipRequest, Long>() {
-				@Override
-				public void accept(MembershipRequest membershipRequest,
-					Long groupId) {
-					membershipRequest.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<MembershipRequest, Long>() {
-				@Override
-				public void accept(MembershipRequest membershipRequest,
-					Long companyId) {
-					membershipRequest.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<MembershipRequest, Long>() {
-				@Override
-				public void accept(MembershipRequest membershipRequest,
-					Long userId) {
-					membershipRequest.setUserId(userId);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<MembershipRequest, Date>() {
-				@Override
-				public void accept(MembershipRequest membershipRequest,
-					Date createDate) {
-					membershipRequest.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("comments",
-			new BiConsumer<MembershipRequest, String>() {
-				@Override
-				public void accept(MembershipRequest membershipRequest,
-					String comments) {
-					membershipRequest.setComments(comments);
-				}
-			});
-		attributeSetters.put("replyComments",
-			new BiConsumer<MembershipRequest, String>() {
-				@Override
-				public void accept(MembershipRequest membershipRequest,
-					String replyComments) {
-					membershipRequest.setReplyComments(replyComments);
-				}
-			});
-		attributeSetters.put("replyDate",
-			new BiConsumer<MembershipRequest, Date>() {
-				@Override
-				public void accept(MembershipRequest membershipRequest,
-					Date replyDate) {
-					membershipRequest.setReplyDate(replyDate);
-				}
-			});
-		attributeSetters.put("replierUserId",
-			new BiConsumer<MembershipRequest, Long>() {
-				@Override
-				public void accept(MembershipRequest membershipRequest,
-					Long replierUserId) {
-					membershipRequest.setReplierUserId(replierUserId);
-				}
-			});
-		attributeSetters.put("statusId",
-			new BiConsumer<MembershipRequest, Long>() {
-				@Override
-				public void accept(MembershipRequest membershipRequest,
-					Long statusId) {
-					membershipRequest.setStatusId(statusId);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

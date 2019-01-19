@@ -153,116 +153,29 @@ public class JournalArticleLocalizationModelImpl extends BaseModelImpl<JournalAr
 	static {
 		Map<String, Function<JournalArticleLocalization, Object>> attributeGetters =
 			new LinkedHashMap<String, Function<JournalArticleLocalization, Object>>();
+		Map<String, BiConsumer<JournalArticleLocalization, Object>> attributeSetters =
+			new LinkedHashMap<String, BiConsumer<JournalArticleLocalization, Object>>();
 
-		attributeGetters.put("articleLocalizationId",
-			new Function<JournalArticleLocalization, Object>() {
-				@Override
-				public Object apply(
-					JournalArticleLocalization journalArticleLocalization) {
-					return journalArticleLocalization.getArticleLocalizationId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<JournalArticleLocalization, Object>() {
-				@Override
-				public Object apply(
-					JournalArticleLocalization journalArticleLocalization) {
-					return journalArticleLocalization.getCompanyId();
-				}
-			});
-		attributeGetters.put("articlePK",
-			new Function<JournalArticleLocalization, Object>() {
-				@Override
-				public Object apply(
-					JournalArticleLocalization journalArticleLocalization) {
-					return journalArticleLocalization.getArticlePK();
-				}
-			});
-		attributeGetters.put("title",
-			new Function<JournalArticleLocalization, Object>() {
-				@Override
-				public Object apply(
-					JournalArticleLocalization journalArticleLocalization) {
-					return journalArticleLocalization.getTitle();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<JournalArticleLocalization, Object>() {
-				@Override
-				public Object apply(
-					JournalArticleLocalization journalArticleLocalization) {
-					return journalArticleLocalization.getDescription();
-				}
-			});
-		attributeGetters.put("languageId",
-			new Function<JournalArticleLocalization, Object>() {
-				@Override
-				public Object apply(
-					JournalArticleLocalization journalArticleLocalization) {
-					return journalArticleLocalization.getLanguageId();
-				}
-			});
+		attributeGetters.put("articleLocalizationId", JournalArticleLocalization::getArticleLocalizationId);
+		attributeSetters.put("articleLocalizationId", JournalArticleLocalization::setArticleLocalizationId);
+
+		attributeGetters.put("companyId", JournalArticleLocalization::getCompanyId);
+		attributeSetters.put("companyId", JournalArticleLocalization::setCompanyId);
+
+		attributeGetters.put("articlePK", JournalArticleLocalization::getArticlePK);
+		attributeSetters.put("articlePK", JournalArticleLocalization::setArticlePK);
+
+		attributeGetters.put("title", JournalArticleLocalization::getTitle);
+		attributeSetters.put("title", JournalArticleLocalization::setTitle);
+
+		attributeGetters.put("description", JournalArticleLocalization::getDescription);
+		attributeSetters.put("description", JournalArticleLocalization::setDescription);
+
+		attributeGetters.put("languageId", JournalArticleLocalization::getLanguageId);
+		attributeSetters.put("languageId", JournalArticleLocalization::setLanguageId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<JournalArticleLocalization, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<JournalArticleLocalization, ?>>();
-
-		attributeSetters.put("articleLocalizationId",
-			new BiConsumer<JournalArticleLocalization, Long>() {
-				@Override
-				public void accept(
-					JournalArticleLocalization journalArticleLocalization,
-					Long articleLocalizationId) {
-					journalArticleLocalization.setArticleLocalizationId(articleLocalizationId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<JournalArticleLocalization, Long>() {
-				@Override
-				public void accept(
-					JournalArticleLocalization journalArticleLocalization,
-					Long companyId) {
-					journalArticleLocalization.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("articlePK",
-			new BiConsumer<JournalArticleLocalization, Long>() {
-				@Override
-				public void accept(
-					JournalArticleLocalization journalArticleLocalization,
-					Long articlePK) {
-					journalArticleLocalization.setArticlePK(articlePK);
-				}
-			});
-		attributeSetters.put("title",
-			new BiConsumer<JournalArticleLocalization, String>() {
-				@Override
-				public void accept(
-					JournalArticleLocalization journalArticleLocalization,
-					String title) {
-					journalArticleLocalization.setTitle(title);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<JournalArticleLocalization, String>() {
-				@Override
-				public void accept(
-					JournalArticleLocalization journalArticleLocalization,
-					String description) {
-					journalArticleLocalization.setDescription(description);
-				}
-			});
-		attributeSetters.put("languageId",
-			new BiConsumer<JournalArticleLocalization, String>() {
-				@Override
-				public void accept(
-					JournalArticleLocalization journalArticleLocalization,
-					String languageId) {
-					journalArticleLocalization.setLanguageId(languageId);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

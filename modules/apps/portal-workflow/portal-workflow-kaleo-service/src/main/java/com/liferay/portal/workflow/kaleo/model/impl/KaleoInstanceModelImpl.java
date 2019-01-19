@@ -182,247 +182,58 @@ public class KaleoInstanceModelImpl extends BaseModelImpl<KaleoInstance>
 
 	static {
 		Map<String, Function<KaleoInstance, Object>> attributeGetters = new LinkedHashMap<String, Function<KaleoInstance, Object>>();
+		Map<String, BiConsumer<KaleoInstance, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<KaleoInstance, Object>>();
 
-		attributeGetters.put("kaleoInstanceId",
-			new Function<KaleoInstance, Object>() {
-				@Override
-				public Object apply(KaleoInstance kaleoInstance) {
-					return kaleoInstance.getKaleoInstanceId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<KaleoInstance, Object>() {
-				@Override
-				public Object apply(KaleoInstance kaleoInstance) {
-					return kaleoInstance.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<KaleoInstance, Object>() {
-				@Override
-				public Object apply(KaleoInstance kaleoInstance) {
-					return kaleoInstance.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<KaleoInstance, Object>() {
-				@Override
-				public Object apply(KaleoInstance kaleoInstance) {
-					return kaleoInstance.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<KaleoInstance, Object>() {
-				@Override
-				public Object apply(KaleoInstance kaleoInstance) {
-					return kaleoInstance.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<KaleoInstance, Object>() {
-				@Override
-				public Object apply(KaleoInstance kaleoInstance) {
-					return kaleoInstance.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<KaleoInstance, Object>() {
-				@Override
-				public Object apply(KaleoInstance kaleoInstance) {
-					return kaleoInstance.getModifiedDate();
-				}
-			});
-		attributeGetters.put("kaleoDefinitionVersionId",
-			new Function<KaleoInstance, Object>() {
-				@Override
-				public Object apply(KaleoInstance kaleoInstance) {
-					return kaleoInstance.getKaleoDefinitionVersionId();
-				}
-			});
-		attributeGetters.put("kaleoDefinitionName",
-			new Function<KaleoInstance, Object>() {
-				@Override
-				public Object apply(KaleoInstance kaleoInstance) {
-					return kaleoInstance.getKaleoDefinitionName();
-				}
-			});
-		attributeGetters.put("kaleoDefinitionVersion",
-			new Function<KaleoInstance, Object>() {
-				@Override
-				public Object apply(KaleoInstance kaleoInstance) {
-					return kaleoInstance.getKaleoDefinitionVersion();
-				}
-			});
-		attributeGetters.put("rootKaleoInstanceTokenId",
-			new Function<KaleoInstance, Object>() {
-				@Override
-				public Object apply(KaleoInstance kaleoInstance) {
-					return kaleoInstance.getRootKaleoInstanceTokenId();
-				}
-			});
-		attributeGetters.put("className",
-			new Function<KaleoInstance, Object>() {
-				@Override
-				public Object apply(KaleoInstance kaleoInstance) {
-					return kaleoInstance.getClassName();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<KaleoInstance, Object>() {
-				@Override
-				public Object apply(KaleoInstance kaleoInstance) {
-					return kaleoInstance.getClassPK();
-				}
-			});
-		attributeGetters.put("completed",
-			new Function<KaleoInstance, Object>() {
-				@Override
-				public Object apply(KaleoInstance kaleoInstance) {
-					return kaleoInstance.isCompleted();
-				}
-			});
-		attributeGetters.put("completionDate",
-			new Function<KaleoInstance, Object>() {
-				@Override
-				public Object apply(KaleoInstance kaleoInstance) {
-					return kaleoInstance.getCompletionDate();
-				}
-			});
-		attributeGetters.put("workflowContext",
-			new Function<KaleoInstance, Object>() {
-				@Override
-				public Object apply(KaleoInstance kaleoInstance) {
-					return kaleoInstance.getWorkflowContext();
-				}
-			});
+		attributeGetters.put("kaleoInstanceId", KaleoInstance::getKaleoInstanceId);
+		attributeSetters.put("kaleoInstanceId", KaleoInstance::setKaleoInstanceId);
+
+		attributeGetters.put("groupId", KaleoInstance::getGroupId);
+		attributeSetters.put("groupId", KaleoInstance::setGroupId);
+
+		attributeGetters.put("companyId", KaleoInstance::getCompanyId);
+		attributeSetters.put("companyId", KaleoInstance::setCompanyId);
+
+		attributeGetters.put("userId", KaleoInstance::getUserId);
+		attributeSetters.put("userId", KaleoInstance::setUserId);
+
+		attributeGetters.put("userName", KaleoInstance::getUserName);
+		attributeSetters.put("userName", KaleoInstance::setUserName);
+
+		attributeGetters.put("createDate", KaleoInstance::getCreateDate);
+		attributeSetters.put("createDate", KaleoInstance::setCreateDate);
+
+		attributeGetters.put("modifiedDate", KaleoInstance::getModifiedDate);
+		attributeSetters.put("modifiedDate", KaleoInstance::setModifiedDate);
+
+		attributeGetters.put("kaleoDefinitionVersionId", KaleoInstance::getKaleoDefinitionVersionId);
+		attributeSetters.put("kaleoDefinitionVersionId", KaleoInstance::setKaleoDefinitionVersionId);
+
+		attributeGetters.put("kaleoDefinitionName", KaleoInstance::getKaleoDefinitionName);
+		attributeSetters.put("kaleoDefinitionName", KaleoInstance::setKaleoDefinitionName);
+
+		attributeGetters.put("kaleoDefinitionVersion", KaleoInstance::getKaleoDefinitionVersion);
+		attributeSetters.put("kaleoDefinitionVersion", KaleoInstance::setKaleoDefinitionVersion);
+
+		attributeGetters.put("rootKaleoInstanceTokenId", KaleoInstance::getRootKaleoInstanceTokenId);
+		attributeSetters.put("rootKaleoInstanceTokenId", KaleoInstance::setRootKaleoInstanceTokenId);
+
+		attributeGetters.put("className", KaleoInstance::getClassName);
+		attributeSetters.put("className", KaleoInstance::setClassName);
+
+		attributeGetters.put("classPK", KaleoInstance::getClassPK);
+		attributeSetters.put("classPK", KaleoInstance::setClassPK);
+
+		attributeGetters.put("completed", KaleoInstance::getCompleted);
+		attributeSetters.put("completed", KaleoInstance::setCompleted);
+
+		attributeGetters.put("completionDate", KaleoInstance::getCompletionDate);
+		attributeSetters.put("completionDate", KaleoInstance::setCompletionDate);
+
+		attributeGetters.put("workflowContext", KaleoInstance::getWorkflowContext);
+		attributeSetters.put("workflowContext", KaleoInstance::setWorkflowContext);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<KaleoInstance, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<KaleoInstance, ?>>();
-
-		attributeSetters.put("kaleoInstanceId",
-			new BiConsumer<KaleoInstance, Long>() {
-				@Override
-				public void accept(KaleoInstance kaleoInstance,
-					Long kaleoInstanceId) {
-					kaleoInstance.setKaleoInstanceId(kaleoInstanceId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<KaleoInstance, Long>() {
-				@Override
-				public void accept(KaleoInstance kaleoInstance, Long groupId) {
-					kaleoInstance.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<KaleoInstance, Long>() {
-				@Override
-				public void accept(KaleoInstance kaleoInstance, Long companyId) {
-					kaleoInstance.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<KaleoInstance, Long>() {
-				@Override
-				public void accept(KaleoInstance kaleoInstance, Long userId) {
-					kaleoInstance.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<KaleoInstance, String>() {
-				@Override
-				public void accept(KaleoInstance kaleoInstance, String userName) {
-					kaleoInstance.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<KaleoInstance, Date>() {
-				@Override
-				public void accept(KaleoInstance kaleoInstance, Date createDate) {
-					kaleoInstance.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<KaleoInstance, Date>() {
-				@Override
-				public void accept(KaleoInstance kaleoInstance,
-					Date modifiedDate) {
-					kaleoInstance.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("kaleoDefinitionVersionId",
-			new BiConsumer<KaleoInstance, Long>() {
-				@Override
-				public void accept(KaleoInstance kaleoInstance,
-					Long kaleoDefinitionVersionId) {
-					kaleoInstance.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
-				}
-			});
-		attributeSetters.put("kaleoDefinitionName",
-			new BiConsumer<KaleoInstance, String>() {
-				@Override
-				public void accept(KaleoInstance kaleoInstance,
-					String kaleoDefinitionName) {
-					kaleoInstance.setKaleoDefinitionName(kaleoDefinitionName);
-				}
-			});
-		attributeSetters.put("kaleoDefinitionVersion",
-			new BiConsumer<KaleoInstance, Integer>() {
-				@Override
-				public void accept(KaleoInstance kaleoInstance,
-					Integer kaleoDefinitionVersion) {
-					kaleoInstance.setKaleoDefinitionVersion(kaleoDefinitionVersion);
-				}
-			});
-		attributeSetters.put("rootKaleoInstanceTokenId",
-			new BiConsumer<KaleoInstance, Long>() {
-				@Override
-				public void accept(KaleoInstance kaleoInstance,
-					Long rootKaleoInstanceTokenId) {
-					kaleoInstance.setRootKaleoInstanceTokenId(rootKaleoInstanceTokenId);
-				}
-			});
-		attributeSetters.put("className",
-			new BiConsumer<KaleoInstance, String>() {
-				@Override
-				public void accept(KaleoInstance kaleoInstance, String className) {
-					kaleoInstance.setClassName(className);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<KaleoInstance, Long>() {
-				@Override
-				public void accept(KaleoInstance kaleoInstance, Long classPK) {
-					kaleoInstance.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("completed",
-			new BiConsumer<KaleoInstance, Boolean>() {
-				@Override
-				public void accept(KaleoInstance kaleoInstance,
-					Boolean completed) {
-					kaleoInstance.setCompleted(completed);
-				}
-			});
-		attributeSetters.put("completionDate",
-			new BiConsumer<KaleoInstance, Date>() {
-				@Override
-				public void accept(KaleoInstance kaleoInstance,
-					Date completionDate) {
-					kaleoInstance.setCompletionDate(completionDate);
-				}
-			});
-		attributeSetters.put("workflowContext",
-			new BiConsumer<KaleoInstance, String>() {
-				@Override
-				public void accept(KaleoInstance kaleoInstance,
-					String workflowContext) {
-					kaleoInstance.setWorkflowContext(workflowContext);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

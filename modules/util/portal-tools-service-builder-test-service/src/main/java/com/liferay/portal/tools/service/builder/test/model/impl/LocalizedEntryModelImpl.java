@@ -169,44 +169,52 @@ public class LocalizedEntryModelImpl extends BaseModelImpl<LocalizedEntry>
 
 	static {
 		Map<String, Function<LocalizedEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<LocalizedEntry, Object>>();
+		Map<String, BiConsumer<LocalizedEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<LocalizedEntry, Object>>();
 
-		attributeGetters.put("defaultLanguageId",
+		attributeGetters.put(
+			"defaultLanguageId",
 			new Function<LocalizedEntry, Object>() {
+
 				@Override
 				public Object apply(LocalizedEntry localizedEntry) {
 					return localizedEntry.getDefaultLanguageId();
 				}
+
 			});
-		attributeGetters.put("localizedEntryId",
+		attributeSetters.put(
+			"defaultLanguageId",
+			new BiConsumer<LocalizedEntry, Object>() {
+
+				@Override
+				public void accept(LocalizedEntry localizedEntry, Object defaultLanguageId) {
+					localizedEntry.setDefaultLanguageId((String)defaultLanguageId);
+				}
+
+			});
+
+		attributeGetters.put(
+			"localizedEntryId",
 			new Function<LocalizedEntry, Object>() {
+
 				@Override
 				public Object apply(LocalizedEntry localizedEntry) {
 					return localizedEntry.getLocalizedEntryId();
 				}
+
+			});
+		attributeSetters.put(
+			"localizedEntryId",
+			new BiConsumer<LocalizedEntry, Object>() {
+
+				@Override
+				public void accept(LocalizedEntry localizedEntry, Object localizedEntryId) {
+					localizedEntry.setLocalizedEntryId((Long)localizedEntryId);
+				}
+
 			});
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<LocalizedEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<LocalizedEntry, ?>>();
-
-		attributeSetters.put("defaultLanguageId",
-			new BiConsumer<LocalizedEntry, String>() {
-				@Override
-				public void accept(LocalizedEntry localizedEntry,
-					String defaultLanguageId) {
-					localizedEntry.setDefaultLanguageId(defaultLanguageId);
-				}
-			});
-		attributeSetters.put("localizedEntryId",
-			new BiConsumer<LocalizedEntry, Long>() {
-				@Override
-				public void accept(LocalizedEntry localizedEntry,
-					Long localizedEntryId) {
-					localizedEntry.setLocalizedEntryId(localizedEntryId);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

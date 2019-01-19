@@ -218,162 +218,40 @@ public class WeDeployAuthAppModelImpl extends BaseModelImpl<WeDeployAuthApp>
 
 	static {
 		Map<String, Function<WeDeployAuthApp, Object>> attributeGetters = new LinkedHashMap<String, Function<WeDeployAuthApp, Object>>();
+		Map<String, BiConsumer<WeDeployAuthApp, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<WeDeployAuthApp, Object>>();
 
-		attributeGetters.put("weDeployAuthAppId",
-			new Function<WeDeployAuthApp, Object>() {
-				@Override
-				public Object apply(WeDeployAuthApp weDeployAuthApp) {
-					return weDeployAuthApp.getWeDeployAuthAppId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<WeDeployAuthApp, Object>() {
-				@Override
-				public Object apply(WeDeployAuthApp weDeployAuthApp) {
-					return weDeployAuthApp.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<WeDeployAuthApp, Object>() {
-				@Override
-				public Object apply(WeDeployAuthApp weDeployAuthApp) {
-					return weDeployAuthApp.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<WeDeployAuthApp, Object>() {
-				@Override
-				public Object apply(WeDeployAuthApp weDeployAuthApp) {
-					return weDeployAuthApp.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<WeDeployAuthApp, Object>() {
-				@Override
-				public Object apply(WeDeployAuthApp weDeployAuthApp) {
-					return weDeployAuthApp.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<WeDeployAuthApp, Object>() {
-				@Override
-				public Object apply(WeDeployAuthApp weDeployAuthApp) {
-					return weDeployAuthApp.getModifiedDate();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<WeDeployAuthApp, Object>() {
-				@Override
-				public Object apply(WeDeployAuthApp weDeployAuthApp) {
-					return weDeployAuthApp.getName();
-				}
-			});
-		attributeGetters.put("redirectURI",
-			new Function<WeDeployAuthApp, Object>() {
-				@Override
-				public Object apply(WeDeployAuthApp weDeployAuthApp) {
-					return weDeployAuthApp.getRedirectURI();
-				}
-			});
-		attributeGetters.put("clientId",
-			new Function<WeDeployAuthApp, Object>() {
-				@Override
-				public Object apply(WeDeployAuthApp weDeployAuthApp) {
-					return weDeployAuthApp.getClientId();
-				}
-			});
-		attributeGetters.put("clientSecret",
-			new Function<WeDeployAuthApp, Object>() {
-				@Override
-				public Object apply(WeDeployAuthApp weDeployAuthApp) {
-					return weDeployAuthApp.getClientSecret();
-				}
-			});
+		attributeGetters.put("weDeployAuthAppId", WeDeployAuthApp::getWeDeployAuthAppId);
+		attributeSetters.put("weDeployAuthAppId", WeDeployAuthApp::setWeDeployAuthAppId);
+
+		attributeGetters.put("companyId", WeDeployAuthApp::getCompanyId);
+		attributeSetters.put("companyId", WeDeployAuthApp::setCompanyId);
+
+		attributeGetters.put("userId", WeDeployAuthApp::getUserId);
+		attributeSetters.put("userId", WeDeployAuthApp::setUserId);
+
+		attributeGetters.put("userName", WeDeployAuthApp::getUserName);
+		attributeSetters.put("userName", WeDeployAuthApp::setUserName);
+
+		attributeGetters.put("createDate", WeDeployAuthApp::getCreateDate);
+		attributeSetters.put("createDate", WeDeployAuthApp::setCreateDate);
+
+		attributeGetters.put("modifiedDate", WeDeployAuthApp::getModifiedDate);
+		attributeSetters.put("modifiedDate", WeDeployAuthApp::setModifiedDate);
+
+		attributeGetters.put("name", WeDeployAuthApp::getName);
+		attributeSetters.put("name", WeDeployAuthApp::setName);
+
+		attributeGetters.put("redirectURI", WeDeployAuthApp::getRedirectURI);
+		attributeSetters.put("redirectURI", WeDeployAuthApp::setRedirectURI);
+
+		attributeGetters.put("clientId", WeDeployAuthApp::getClientId);
+		attributeSetters.put("clientId", WeDeployAuthApp::setClientId);
+
+		attributeGetters.put("clientSecret", WeDeployAuthApp::getClientSecret);
+		attributeSetters.put("clientSecret", WeDeployAuthApp::setClientSecret);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<WeDeployAuthApp, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<WeDeployAuthApp, ?>>();
-
-		attributeSetters.put("weDeployAuthAppId",
-			new BiConsumer<WeDeployAuthApp, Long>() {
-				@Override
-				public void accept(WeDeployAuthApp weDeployAuthApp,
-					Long weDeployAuthAppId) {
-					weDeployAuthApp.setWeDeployAuthAppId(weDeployAuthAppId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<WeDeployAuthApp, Long>() {
-				@Override
-				public void accept(WeDeployAuthApp weDeployAuthApp,
-					Long companyId) {
-					weDeployAuthApp.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<WeDeployAuthApp, Long>() {
-				@Override
-				public void accept(WeDeployAuthApp weDeployAuthApp, Long userId) {
-					weDeployAuthApp.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<WeDeployAuthApp, String>() {
-				@Override
-				public void accept(WeDeployAuthApp weDeployAuthApp,
-					String userName) {
-					weDeployAuthApp.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<WeDeployAuthApp, Date>() {
-				@Override
-				public void accept(WeDeployAuthApp weDeployAuthApp,
-					Date createDate) {
-					weDeployAuthApp.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<WeDeployAuthApp, Date>() {
-				@Override
-				public void accept(WeDeployAuthApp weDeployAuthApp,
-					Date modifiedDate) {
-					weDeployAuthApp.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<WeDeployAuthApp, String>() {
-				@Override
-				public void accept(WeDeployAuthApp weDeployAuthApp, String name) {
-					weDeployAuthApp.setName(name);
-				}
-			});
-		attributeSetters.put("redirectURI",
-			new BiConsumer<WeDeployAuthApp, String>() {
-				@Override
-				public void accept(WeDeployAuthApp weDeployAuthApp,
-					String redirectURI) {
-					weDeployAuthApp.setRedirectURI(redirectURI);
-				}
-			});
-		attributeSetters.put("clientId",
-			new BiConsumer<WeDeployAuthApp, String>() {
-				@Override
-				public void accept(WeDeployAuthApp weDeployAuthApp,
-					String clientId) {
-					weDeployAuthApp.setClientId(clientId);
-				}
-			});
-		attributeSetters.put("clientSecret",
-			new BiConsumer<WeDeployAuthApp, String>() {
-				@Override
-				public void accept(WeDeployAuthApp weDeployAuthApp,
-					String clientSecret) {
-					weDeployAuthApp.setClientSecret(clientSecret);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

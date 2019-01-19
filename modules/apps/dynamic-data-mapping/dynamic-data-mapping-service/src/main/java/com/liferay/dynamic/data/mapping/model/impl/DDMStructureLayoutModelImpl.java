@@ -169,164 +169,40 @@ public class DDMStructureLayoutModelImpl extends BaseModelImpl<DDMStructureLayou
 
 	static {
 		Map<String, Function<DDMStructureLayout, Object>> attributeGetters = new LinkedHashMap<String, Function<DDMStructureLayout, Object>>();
+		Map<String, BiConsumer<DDMStructureLayout, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDMStructureLayout, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<DDMStructureLayout, Object>() {
-				@Override
-				public Object apply(DDMStructureLayout ddmStructureLayout) {
-					return ddmStructureLayout.getUuid();
-				}
-			});
-		attributeGetters.put("structureLayoutId",
-			new Function<DDMStructureLayout, Object>() {
-				@Override
-				public Object apply(DDMStructureLayout ddmStructureLayout) {
-					return ddmStructureLayout.getStructureLayoutId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<DDMStructureLayout, Object>() {
-				@Override
-				public Object apply(DDMStructureLayout ddmStructureLayout) {
-					return ddmStructureLayout.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<DDMStructureLayout, Object>() {
-				@Override
-				public Object apply(DDMStructureLayout ddmStructureLayout) {
-					return ddmStructureLayout.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<DDMStructureLayout, Object>() {
-				@Override
-				public Object apply(DDMStructureLayout ddmStructureLayout) {
-					return ddmStructureLayout.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<DDMStructureLayout, Object>() {
-				@Override
-				public Object apply(DDMStructureLayout ddmStructureLayout) {
-					return ddmStructureLayout.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<DDMStructureLayout, Object>() {
-				@Override
-				public Object apply(DDMStructureLayout ddmStructureLayout) {
-					return ddmStructureLayout.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<DDMStructureLayout, Object>() {
-				@Override
-				public Object apply(DDMStructureLayout ddmStructureLayout) {
-					return ddmStructureLayout.getModifiedDate();
-				}
-			});
-		attributeGetters.put("structureVersionId",
-			new Function<DDMStructureLayout, Object>() {
-				@Override
-				public Object apply(DDMStructureLayout ddmStructureLayout) {
-					return ddmStructureLayout.getStructureVersionId();
-				}
-			});
-		attributeGetters.put("definition",
-			new Function<DDMStructureLayout, Object>() {
-				@Override
-				public Object apply(DDMStructureLayout ddmStructureLayout) {
-					return ddmStructureLayout.getDefinition();
-				}
-			});
+		attributeGetters.put("uuid", DDMStructureLayout::getUuid);
+		attributeSetters.put("uuid", DDMStructureLayout::setUuid);
+
+		attributeGetters.put("structureLayoutId", DDMStructureLayout::getStructureLayoutId);
+		attributeSetters.put("structureLayoutId", DDMStructureLayout::setStructureLayoutId);
+
+		attributeGetters.put("groupId", DDMStructureLayout::getGroupId);
+		attributeSetters.put("groupId", DDMStructureLayout::setGroupId);
+
+		attributeGetters.put("companyId", DDMStructureLayout::getCompanyId);
+		attributeSetters.put("companyId", DDMStructureLayout::setCompanyId);
+
+		attributeGetters.put("userId", DDMStructureLayout::getUserId);
+		attributeSetters.put("userId", DDMStructureLayout::setUserId);
+
+		attributeGetters.put("userName", DDMStructureLayout::getUserName);
+		attributeSetters.put("userName", DDMStructureLayout::setUserName);
+
+		attributeGetters.put("createDate", DDMStructureLayout::getCreateDate);
+		attributeSetters.put("createDate", DDMStructureLayout::setCreateDate);
+
+		attributeGetters.put("modifiedDate", DDMStructureLayout::getModifiedDate);
+		attributeSetters.put("modifiedDate", DDMStructureLayout::setModifiedDate);
+
+		attributeGetters.put("structureVersionId", DDMStructureLayout::getStructureVersionId);
+		attributeSetters.put("structureVersionId", DDMStructureLayout::setStructureVersionId);
+
+		attributeGetters.put("definition", DDMStructureLayout::getDefinition);
+		attributeSetters.put("definition", DDMStructureLayout::setDefinition);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<DDMStructureLayout, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDMStructureLayout, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<DDMStructureLayout, String>() {
-				@Override
-				public void accept(DDMStructureLayout ddmStructureLayout,
-					String uuid) {
-					ddmStructureLayout.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("structureLayoutId",
-			new BiConsumer<DDMStructureLayout, Long>() {
-				@Override
-				public void accept(DDMStructureLayout ddmStructureLayout,
-					Long structureLayoutId) {
-					ddmStructureLayout.setStructureLayoutId(structureLayoutId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<DDMStructureLayout, Long>() {
-				@Override
-				public void accept(DDMStructureLayout ddmStructureLayout,
-					Long groupId) {
-					ddmStructureLayout.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<DDMStructureLayout, Long>() {
-				@Override
-				public void accept(DDMStructureLayout ddmStructureLayout,
-					Long companyId) {
-					ddmStructureLayout.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<DDMStructureLayout, Long>() {
-				@Override
-				public void accept(DDMStructureLayout ddmStructureLayout,
-					Long userId) {
-					ddmStructureLayout.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<DDMStructureLayout, String>() {
-				@Override
-				public void accept(DDMStructureLayout ddmStructureLayout,
-					String userName) {
-					ddmStructureLayout.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<DDMStructureLayout, Date>() {
-				@Override
-				public void accept(DDMStructureLayout ddmStructureLayout,
-					Date createDate) {
-					ddmStructureLayout.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<DDMStructureLayout, Date>() {
-				@Override
-				public void accept(DDMStructureLayout ddmStructureLayout,
-					Date modifiedDate) {
-					ddmStructureLayout.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("structureVersionId",
-			new BiConsumer<DDMStructureLayout, Long>() {
-				@Override
-				public void accept(DDMStructureLayout ddmStructureLayout,
-					Long structureVersionId) {
-					ddmStructureLayout.setStructureVersionId(structureVersionId);
-				}
-			});
-		attributeSetters.put("definition",
-			new BiConsumer<DDMStructureLayout, String>() {
-				@Override
-				public void accept(DDMStructureLayout ddmStructureLayout,
-					String definition) {
-					ddmStructureLayout.setDefinition(definition);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

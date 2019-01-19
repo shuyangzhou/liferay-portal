@@ -250,254 +250,58 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 
 	static {
 		Map<String, Function<CalendarResource, Object>> attributeGetters = new LinkedHashMap<String, Function<CalendarResource, Object>>();
+		Map<String, BiConsumer<CalendarResource, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<CalendarResource, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<CalendarResource, Object>() {
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getUuid();
-				}
-			});
-		attributeGetters.put("calendarResourceId",
-			new Function<CalendarResource, Object>() {
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getCalendarResourceId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<CalendarResource, Object>() {
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<CalendarResource, Object>() {
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<CalendarResource, Object>() {
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<CalendarResource, Object>() {
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<CalendarResource, Object>() {
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<CalendarResource, Object>() {
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getModifiedDate();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<CalendarResource, Object>() {
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<CalendarResource, Object>() {
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getClassPK();
-				}
-			});
-		attributeGetters.put("classUuid",
-			new Function<CalendarResource, Object>() {
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getClassUuid();
-				}
-			});
-		attributeGetters.put("code",
-			new Function<CalendarResource, Object>() {
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getCode();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<CalendarResource, Object>() {
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getName();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<CalendarResource, Object>() {
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getDescription();
-				}
-			});
-		attributeGetters.put("active",
-			new Function<CalendarResource, Object>() {
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.isActive();
-				}
-			});
-		attributeGetters.put("lastPublishDate",
-			new Function<CalendarResource, Object>() {
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getLastPublishDate();
-				}
-			});
+		attributeGetters.put("uuid", CalendarResource::getUuid);
+		attributeSetters.put("uuid", CalendarResource::setUuid);
+
+		attributeGetters.put("calendarResourceId", CalendarResource::getCalendarResourceId);
+		attributeSetters.put("calendarResourceId", CalendarResource::setCalendarResourceId);
+
+		attributeGetters.put("groupId", CalendarResource::getGroupId);
+		attributeSetters.put("groupId", CalendarResource::setGroupId);
+
+		attributeGetters.put("companyId", CalendarResource::getCompanyId);
+		attributeSetters.put("companyId", CalendarResource::setCompanyId);
+
+		attributeGetters.put("userId", CalendarResource::getUserId);
+		attributeSetters.put("userId", CalendarResource::setUserId);
+
+		attributeGetters.put("userName", CalendarResource::getUserName);
+		attributeSetters.put("userName", CalendarResource::setUserName);
+
+		attributeGetters.put("createDate", CalendarResource::getCreateDate);
+		attributeSetters.put("createDate", CalendarResource::setCreateDate);
+
+		attributeGetters.put("modifiedDate", CalendarResource::getModifiedDate);
+		attributeSetters.put("modifiedDate", CalendarResource::setModifiedDate);
+
+		attributeGetters.put("classNameId", CalendarResource::getClassNameId);
+		attributeSetters.put("classNameId", CalendarResource::setClassNameId);
+
+		attributeGetters.put("classPK", CalendarResource::getClassPK);
+		attributeSetters.put("classPK", CalendarResource::setClassPK);
+
+		attributeGetters.put("classUuid", CalendarResource::getClassUuid);
+		attributeSetters.put("classUuid", CalendarResource::setClassUuid);
+
+		attributeGetters.put("code", CalendarResource::getCode);
+		attributeSetters.put("code", CalendarResource::setCode);
+
+		attributeGetters.put("name", CalendarResource::getName);
+		attributeSetters.put("name", CalendarResource::setName);
+
+		attributeGetters.put("description", CalendarResource::getDescription);
+		attributeSetters.put("description", CalendarResource::setDescription);
+
+		attributeGetters.put("active", CalendarResource::getActive);
+		attributeSetters.put("active", CalendarResource::setActive);
+
+		attributeGetters.put("lastPublishDate", CalendarResource::getLastPublishDate);
+		attributeSetters.put("lastPublishDate", CalendarResource::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<CalendarResource, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<CalendarResource, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<CalendarResource, String>() {
-				@Override
-				public void accept(CalendarResource calendarResource,
-					String uuid) {
-					calendarResource.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("calendarResourceId",
-			new BiConsumer<CalendarResource, Long>() {
-				@Override
-				public void accept(CalendarResource calendarResource,
-					Long calendarResourceId) {
-					calendarResource.setCalendarResourceId(calendarResourceId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<CalendarResource, Long>() {
-				@Override
-				public void accept(CalendarResource calendarResource,
-					Long groupId) {
-					calendarResource.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<CalendarResource, Long>() {
-				@Override
-				public void accept(CalendarResource calendarResource,
-					Long companyId) {
-					calendarResource.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<CalendarResource, Long>() {
-				@Override
-				public void accept(CalendarResource calendarResource,
-					Long userId) {
-					calendarResource.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<CalendarResource, String>() {
-				@Override
-				public void accept(CalendarResource calendarResource,
-					String userName) {
-					calendarResource.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<CalendarResource, Date>() {
-				@Override
-				public void accept(CalendarResource calendarResource,
-					Date createDate) {
-					calendarResource.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<CalendarResource, Date>() {
-				@Override
-				public void accept(CalendarResource calendarResource,
-					Date modifiedDate) {
-					calendarResource.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<CalendarResource, Long>() {
-				@Override
-				public void accept(CalendarResource calendarResource,
-					Long classNameId) {
-					calendarResource.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<CalendarResource, Long>() {
-				@Override
-				public void accept(CalendarResource calendarResource,
-					Long classPK) {
-					calendarResource.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("classUuid",
-			new BiConsumer<CalendarResource, String>() {
-				@Override
-				public void accept(CalendarResource calendarResource,
-					String classUuid) {
-					calendarResource.setClassUuid(classUuid);
-				}
-			});
-		attributeSetters.put("code",
-			new BiConsumer<CalendarResource, String>() {
-				@Override
-				public void accept(CalendarResource calendarResource,
-					String code) {
-					calendarResource.setCode(code);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<CalendarResource, String>() {
-				@Override
-				public void accept(CalendarResource calendarResource,
-					String name) {
-					calendarResource.setName(name);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<CalendarResource, String>() {
-				@Override
-				public void accept(CalendarResource calendarResource,
-					String description) {
-					calendarResource.setDescription(description);
-				}
-			});
-		attributeSetters.put("active",
-			new BiConsumer<CalendarResource, Boolean>() {
-				@Override
-				public void accept(CalendarResource calendarResource,
-					Boolean active) {
-					calendarResource.setActive(active);
-				}
-			});
-		attributeSetters.put("lastPublishDate",
-			new BiConsumer<CalendarResource, Date>() {
-				@Override
-				public void accept(CalendarResource calendarResource,
-					Date lastPublishDate) {
-					calendarResource.setLastPublishDate(lastPublishDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

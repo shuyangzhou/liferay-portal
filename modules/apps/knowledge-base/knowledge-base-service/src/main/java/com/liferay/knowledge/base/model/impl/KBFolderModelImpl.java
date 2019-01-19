@@ -233,196 +233,49 @@ public class KBFolderModelImpl extends BaseModelImpl<KBFolder>
 
 	static {
 		Map<String, Function<KBFolder, Object>> attributeGetters = new LinkedHashMap<String, Function<KBFolder, Object>>();
+		Map<String, BiConsumer<KBFolder, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<KBFolder, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<KBFolder, Object>() {
-				@Override
-				public Object apply(KBFolder kbFolder) {
-					return kbFolder.getUuid();
-				}
-			});
-		attributeGetters.put("kbFolderId",
-			new Function<KBFolder, Object>() {
-				@Override
-				public Object apply(KBFolder kbFolder) {
-					return kbFolder.getKbFolderId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<KBFolder, Object>() {
-				@Override
-				public Object apply(KBFolder kbFolder) {
-					return kbFolder.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<KBFolder, Object>() {
-				@Override
-				public Object apply(KBFolder kbFolder) {
-					return kbFolder.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<KBFolder, Object>() {
-				@Override
-				public Object apply(KBFolder kbFolder) {
-					return kbFolder.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<KBFolder, Object>() {
-				@Override
-				public Object apply(KBFolder kbFolder) {
-					return kbFolder.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<KBFolder, Object>() {
-				@Override
-				public Object apply(KBFolder kbFolder) {
-					return kbFolder.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<KBFolder, Object>() {
-				@Override
-				public Object apply(KBFolder kbFolder) {
-					return kbFolder.getModifiedDate();
-				}
-			});
-		attributeGetters.put("parentKBFolderId",
-			new Function<KBFolder, Object>() {
-				@Override
-				public Object apply(KBFolder kbFolder) {
-					return kbFolder.getParentKBFolderId();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<KBFolder, Object>() {
-				@Override
-				public Object apply(KBFolder kbFolder) {
-					return kbFolder.getName();
-				}
-			});
-		attributeGetters.put("urlTitle",
-			new Function<KBFolder, Object>() {
-				@Override
-				public Object apply(KBFolder kbFolder) {
-					return kbFolder.getUrlTitle();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<KBFolder, Object>() {
-				@Override
-				public Object apply(KBFolder kbFolder) {
-					return kbFolder.getDescription();
-				}
-			});
-		attributeGetters.put("lastPublishDate",
-			new Function<KBFolder, Object>() {
-				@Override
-				public Object apply(KBFolder kbFolder) {
-					return kbFolder.getLastPublishDate();
-				}
-			});
+		attributeGetters.put("uuid", KBFolder::getUuid);
+		attributeSetters.put("uuid", KBFolder::setUuid);
+
+		attributeGetters.put("kbFolderId", KBFolder::getKbFolderId);
+		attributeSetters.put("kbFolderId", KBFolder::setKbFolderId);
+
+		attributeGetters.put("groupId", KBFolder::getGroupId);
+		attributeSetters.put("groupId", KBFolder::setGroupId);
+
+		attributeGetters.put("companyId", KBFolder::getCompanyId);
+		attributeSetters.put("companyId", KBFolder::setCompanyId);
+
+		attributeGetters.put("userId", KBFolder::getUserId);
+		attributeSetters.put("userId", KBFolder::setUserId);
+
+		attributeGetters.put("userName", KBFolder::getUserName);
+		attributeSetters.put("userName", KBFolder::setUserName);
+
+		attributeGetters.put("createDate", KBFolder::getCreateDate);
+		attributeSetters.put("createDate", KBFolder::setCreateDate);
+
+		attributeGetters.put("modifiedDate", KBFolder::getModifiedDate);
+		attributeSetters.put("modifiedDate", KBFolder::setModifiedDate);
+
+		attributeGetters.put("parentKBFolderId", KBFolder::getParentKBFolderId);
+		attributeSetters.put("parentKBFolderId", KBFolder::setParentKBFolderId);
+
+		attributeGetters.put("name", KBFolder::getName);
+		attributeSetters.put("name", KBFolder::setName);
+
+		attributeGetters.put("urlTitle", KBFolder::getUrlTitle);
+		attributeSetters.put("urlTitle", KBFolder::setUrlTitle);
+
+		attributeGetters.put("description", KBFolder::getDescription);
+		attributeSetters.put("description", KBFolder::setDescription);
+
+		attributeGetters.put("lastPublishDate", KBFolder::getLastPublishDate);
+		attributeSetters.put("lastPublishDate", KBFolder::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<KBFolder, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<KBFolder, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<KBFolder, String>() {
-				@Override
-				public void accept(KBFolder kbFolder, String uuid) {
-					kbFolder.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("kbFolderId",
-			new BiConsumer<KBFolder, Long>() {
-				@Override
-				public void accept(KBFolder kbFolder, Long kbFolderId) {
-					kbFolder.setKbFolderId(kbFolderId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<KBFolder, Long>() {
-				@Override
-				public void accept(KBFolder kbFolder, Long groupId) {
-					kbFolder.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<KBFolder, Long>() {
-				@Override
-				public void accept(KBFolder kbFolder, Long companyId) {
-					kbFolder.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<KBFolder, Long>() {
-				@Override
-				public void accept(KBFolder kbFolder, Long userId) {
-					kbFolder.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<KBFolder, String>() {
-				@Override
-				public void accept(KBFolder kbFolder, String userName) {
-					kbFolder.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<KBFolder, Date>() {
-				@Override
-				public void accept(KBFolder kbFolder, Date createDate) {
-					kbFolder.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<KBFolder, Date>() {
-				@Override
-				public void accept(KBFolder kbFolder, Date modifiedDate) {
-					kbFolder.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("parentKBFolderId",
-			new BiConsumer<KBFolder, Long>() {
-				@Override
-				public void accept(KBFolder kbFolder, Long parentKBFolderId) {
-					kbFolder.setParentKBFolderId(parentKBFolderId);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<KBFolder, String>() {
-				@Override
-				public void accept(KBFolder kbFolder, String name) {
-					kbFolder.setName(name);
-				}
-			});
-		attributeSetters.put("urlTitle",
-			new BiConsumer<KBFolder, String>() {
-				@Override
-				public void accept(KBFolder kbFolder, String urlTitle) {
-					kbFolder.setUrlTitle(urlTitle);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<KBFolder, String>() {
-				@Override
-				public void accept(KBFolder kbFolder, String description) {
-					kbFolder.setDescription(description);
-				}
-			});
-		attributeSetters.put("lastPublishDate",
-			new BiConsumer<KBFolder, Date>() {
-				@Override
-				public void accept(KBFolder kbFolder, Date lastPublishDate) {
-					kbFolder.setLastPublishDate(lastPublishDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

@@ -171,211 +171,52 @@ public class KaleoNodeModelImpl extends BaseModelImpl<KaleoNode>
 
 	static {
 		Map<String, Function<KaleoNode, Object>> attributeGetters = new LinkedHashMap<String, Function<KaleoNode, Object>>();
+		Map<String, BiConsumer<KaleoNode, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<KaleoNode, Object>>();
 
-		attributeGetters.put("kaleoNodeId",
-			new Function<KaleoNode, Object>() {
-				@Override
-				public Object apply(KaleoNode kaleoNode) {
-					return kaleoNode.getKaleoNodeId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<KaleoNode, Object>() {
-				@Override
-				public Object apply(KaleoNode kaleoNode) {
-					return kaleoNode.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<KaleoNode, Object>() {
-				@Override
-				public Object apply(KaleoNode kaleoNode) {
-					return kaleoNode.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<KaleoNode, Object>() {
-				@Override
-				public Object apply(KaleoNode kaleoNode) {
-					return kaleoNode.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<KaleoNode, Object>() {
-				@Override
-				public Object apply(KaleoNode kaleoNode) {
-					return kaleoNode.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<KaleoNode, Object>() {
-				@Override
-				public Object apply(KaleoNode kaleoNode) {
-					return kaleoNode.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<KaleoNode, Object>() {
-				@Override
-				public Object apply(KaleoNode kaleoNode) {
-					return kaleoNode.getModifiedDate();
-				}
-			});
-		attributeGetters.put("kaleoDefinitionVersionId",
-			new Function<KaleoNode, Object>() {
-				@Override
-				public Object apply(KaleoNode kaleoNode) {
-					return kaleoNode.getKaleoDefinitionVersionId();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<KaleoNode, Object>() {
-				@Override
-				public Object apply(KaleoNode kaleoNode) {
-					return kaleoNode.getName();
-				}
-			});
-		attributeGetters.put("metadata",
-			new Function<KaleoNode, Object>() {
-				@Override
-				public Object apply(KaleoNode kaleoNode) {
-					return kaleoNode.getMetadata();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<KaleoNode, Object>() {
-				@Override
-				public Object apply(KaleoNode kaleoNode) {
-					return kaleoNode.getDescription();
-				}
-			});
-		attributeGetters.put("type",
-			new Function<KaleoNode, Object>() {
-				@Override
-				public Object apply(KaleoNode kaleoNode) {
-					return kaleoNode.getType();
-				}
-			});
-		attributeGetters.put("initial",
-			new Function<KaleoNode, Object>() {
-				@Override
-				public Object apply(KaleoNode kaleoNode) {
-					return kaleoNode.isInitial();
-				}
-			});
-		attributeGetters.put("terminal",
-			new Function<KaleoNode, Object>() {
-				@Override
-				public Object apply(KaleoNode kaleoNode) {
-					return kaleoNode.isTerminal();
-				}
-			});
+		attributeGetters.put("kaleoNodeId", KaleoNode::getKaleoNodeId);
+		attributeSetters.put("kaleoNodeId", KaleoNode::setKaleoNodeId);
+
+		attributeGetters.put("groupId", KaleoNode::getGroupId);
+		attributeSetters.put("groupId", KaleoNode::setGroupId);
+
+		attributeGetters.put("companyId", KaleoNode::getCompanyId);
+		attributeSetters.put("companyId", KaleoNode::setCompanyId);
+
+		attributeGetters.put("userId", KaleoNode::getUserId);
+		attributeSetters.put("userId", KaleoNode::setUserId);
+
+		attributeGetters.put("userName", KaleoNode::getUserName);
+		attributeSetters.put("userName", KaleoNode::setUserName);
+
+		attributeGetters.put("createDate", KaleoNode::getCreateDate);
+		attributeSetters.put("createDate", KaleoNode::setCreateDate);
+
+		attributeGetters.put("modifiedDate", KaleoNode::getModifiedDate);
+		attributeSetters.put("modifiedDate", KaleoNode::setModifiedDate);
+
+		attributeGetters.put("kaleoDefinitionVersionId", KaleoNode::getKaleoDefinitionVersionId);
+		attributeSetters.put("kaleoDefinitionVersionId", KaleoNode::setKaleoDefinitionVersionId);
+
+		attributeGetters.put("name", KaleoNode::getName);
+		attributeSetters.put("name", KaleoNode::setName);
+
+		attributeGetters.put("metadata", KaleoNode::getMetadata);
+		attributeSetters.put("metadata", KaleoNode::setMetadata);
+
+		attributeGetters.put("description", KaleoNode::getDescription);
+		attributeSetters.put("description", KaleoNode::setDescription);
+
+		attributeGetters.put("type", KaleoNode::getType);
+		attributeSetters.put("type", KaleoNode::setType);
+
+		attributeGetters.put("initial", KaleoNode::getInitial);
+		attributeSetters.put("initial", KaleoNode::setInitial);
+
+		attributeGetters.put("terminal", KaleoNode::getTerminal);
+		attributeSetters.put("terminal", KaleoNode::setTerminal);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<KaleoNode, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<KaleoNode, ?>>();
-
-		attributeSetters.put("kaleoNodeId",
-			new BiConsumer<KaleoNode, Long>() {
-				@Override
-				public void accept(KaleoNode kaleoNode, Long kaleoNodeId) {
-					kaleoNode.setKaleoNodeId(kaleoNodeId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<KaleoNode, Long>() {
-				@Override
-				public void accept(KaleoNode kaleoNode, Long groupId) {
-					kaleoNode.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<KaleoNode, Long>() {
-				@Override
-				public void accept(KaleoNode kaleoNode, Long companyId) {
-					kaleoNode.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<KaleoNode, Long>() {
-				@Override
-				public void accept(KaleoNode kaleoNode, Long userId) {
-					kaleoNode.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<KaleoNode, String>() {
-				@Override
-				public void accept(KaleoNode kaleoNode, String userName) {
-					kaleoNode.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<KaleoNode, Date>() {
-				@Override
-				public void accept(KaleoNode kaleoNode, Date createDate) {
-					kaleoNode.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<KaleoNode, Date>() {
-				@Override
-				public void accept(KaleoNode kaleoNode, Date modifiedDate) {
-					kaleoNode.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("kaleoDefinitionVersionId",
-			new BiConsumer<KaleoNode, Long>() {
-				@Override
-				public void accept(KaleoNode kaleoNode,
-					Long kaleoDefinitionVersionId) {
-					kaleoNode.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<KaleoNode, String>() {
-				@Override
-				public void accept(KaleoNode kaleoNode, String name) {
-					kaleoNode.setName(name);
-				}
-			});
-		attributeSetters.put("metadata",
-			new BiConsumer<KaleoNode, String>() {
-				@Override
-				public void accept(KaleoNode kaleoNode, String metadata) {
-					kaleoNode.setMetadata(metadata);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<KaleoNode, String>() {
-				@Override
-				public void accept(KaleoNode kaleoNode, String description) {
-					kaleoNode.setDescription(description);
-				}
-			});
-		attributeSetters.put("type",
-			new BiConsumer<KaleoNode, String>() {
-				@Override
-				public void accept(KaleoNode kaleoNode, String type) {
-					kaleoNode.setType(type);
-				}
-			});
-		attributeSetters.put("initial",
-			new BiConsumer<KaleoNode, Boolean>() {
-				@Override
-				public void accept(KaleoNode kaleoNode, Boolean initial) {
-					kaleoNode.setInitial(initial);
-				}
-			});
-		attributeSetters.put("terminal",
-			new BiConsumer<KaleoNode, Boolean>() {
-				@Override
-				public void accept(KaleoNode kaleoNode, Boolean terminal) {
-					kaleoNode.setTerminal(terminal);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

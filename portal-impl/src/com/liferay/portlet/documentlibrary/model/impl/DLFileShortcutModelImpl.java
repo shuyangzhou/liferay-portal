@@ -254,277 +254,64 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 
 	static {
 		Map<String, Function<DLFileShortcut, Object>> attributeGetters = new LinkedHashMap<String, Function<DLFileShortcut, Object>>();
+		Map<String, BiConsumer<DLFileShortcut, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<DLFileShortcut, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<DLFileShortcut, Object>() {
-				@Override
-				public Object apply(DLFileShortcut dlFileShortcut) {
-					return dlFileShortcut.getUuid();
-				}
-			});
-		attributeGetters.put("fileShortcutId",
-			new Function<DLFileShortcut, Object>() {
-				@Override
-				public Object apply(DLFileShortcut dlFileShortcut) {
-					return dlFileShortcut.getFileShortcutId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<DLFileShortcut, Object>() {
-				@Override
-				public Object apply(DLFileShortcut dlFileShortcut) {
-					return dlFileShortcut.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<DLFileShortcut, Object>() {
-				@Override
-				public Object apply(DLFileShortcut dlFileShortcut) {
-					return dlFileShortcut.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<DLFileShortcut, Object>() {
-				@Override
-				public Object apply(DLFileShortcut dlFileShortcut) {
-					return dlFileShortcut.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<DLFileShortcut, Object>() {
-				@Override
-				public Object apply(DLFileShortcut dlFileShortcut) {
-					return dlFileShortcut.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<DLFileShortcut, Object>() {
-				@Override
-				public Object apply(DLFileShortcut dlFileShortcut) {
-					return dlFileShortcut.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<DLFileShortcut, Object>() {
-				@Override
-				public Object apply(DLFileShortcut dlFileShortcut) {
-					return dlFileShortcut.getModifiedDate();
-				}
-			});
-		attributeGetters.put("repositoryId",
-			new Function<DLFileShortcut, Object>() {
-				@Override
-				public Object apply(DLFileShortcut dlFileShortcut) {
-					return dlFileShortcut.getRepositoryId();
-				}
-			});
-		attributeGetters.put("folderId",
-			new Function<DLFileShortcut, Object>() {
-				@Override
-				public Object apply(DLFileShortcut dlFileShortcut) {
-					return dlFileShortcut.getFolderId();
-				}
-			});
-		attributeGetters.put("toFileEntryId",
-			new Function<DLFileShortcut, Object>() {
-				@Override
-				public Object apply(DLFileShortcut dlFileShortcut) {
-					return dlFileShortcut.getToFileEntryId();
-				}
-			});
-		attributeGetters.put("treePath",
-			new Function<DLFileShortcut, Object>() {
-				@Override
-				public Object apply(DLFileShortcut dlFileShortcut) {
-					return dlFileShortcut.getTreePath();
-				}
-			});
-		attributeGetters.put("active",
-			new Function<DLFileShortcut, Object>() {
-				@Override
-				public Object apply(DLFileShortcut dlFileShortcut) {
-					return dlFileShortcut.isActive();
-				}
-			});
-		attributeGetters.put("lastPublishDate",
-			new Function<DLFileShortcut, Object>() {
-				@Override
-				public Object apply(DLFileShortcut dlFileShortcut) {
-					return dlFileShortcut.getLastPublishDate();
-				}
-			});
-		attributeGetters.put("status",
-			new Function<DLFileShortcut, Object>() {
-				@Override
-				public Object apply(DLFileShortcut dlFileShortcut) {
-					return dlFileShortcut.getStatus();
-				}
-			});
-		attributeGetters.put("statusByUserId",
-			new Function<DLFileShortcut, Object>() {
-				@Override
-				public Object apply(DLFileShortcut dlFileShortcut) {
-					return dlFileShortcut.getStatusByUserId();
-				}
-			});
-		attributeGetters.put("statusByUserName",
-			new Function<DLFileShortcut, Object>() {
-				@Override
-				public Object apply(DLFileShortcut dlFileShortcut) {
-					return dlFileShortcut.getStatusByUserName();
-				}
-			});
-		attributeGetters.put("statusDate",
-			new Function<DLFileShortcut, Object>() {
-				@Override
-				public Object apply(DLFileShortcut dlFileShortcut) {
-					return dlFileShortcut.getStatusDate();
-				}
-			});
+		attributeGetters.put("uuid", DLFileShortcut::getUuid);
+		attributeSetters.put("uuid", DLFileShortcut::setUuid);
+
+		attributeGetters.put("fileShortcutId", DLFileShortcut::getFileShortcutId);
+		attributeSetters.put("fileShortcutId", DLFileShortcut::setFileShortcutId);
+
+		attributeGetters.put("groupId", DLFileShortcut::getGroupId);
+		attributeSetters.put("groupId", DLFileShortcut::setGroupId);
+
+		attributeGetters.put("companyId", DLFileShortcut::getCompanyId);
+		attributeSetters.put("companyId", DLFileShortcut::setCompanyId);
+
+		attributeGetters.put("userId", DLFileShortcut::getUserId);
+		attributeSetters.put("userId", DLFileShortcut::setUserId);
+
+		attributeGetters.put("userName", DLFileShortcut::getUserName);
+		attributeSetters.put("userName", DLFileShortcut::setUserName);
+
+		attributeGetters.put("createDate", DLFileShortcut::getCreateDate);
+		attributeSetters.put("createDate", DLFileShortcut::setCreateDate);
+
+		attributeGetters.put("modifiedDate", DLFileShortcut::getModifiedDate);
+		attributeSetters.put("modifiedDate", DLFileShortcut::setModifiedDate);
+
+		attributeGetters.put("repositoryId", DLFileShortcut::getRepositoryId);
+		attributeSetters.put("repositoryId", DLFileShortcut::setRepositoryId);
+
+		attributeGetters.put("folderId", DLFileShortcut::getFolderId);
+		attributeSetters.put("folderId", DLFileShortcut::setFolderId);
+
+		attributeGetters.put("toFileEntryId", DLFileShortcut::getToFileEntryId);
+		attributeSetters.put("toFileEntryId", DLFileShortcut::setToFileEntryId);
+
+		attributeGetters.put("treePath", DLFileShortcut::getTreePath);
+		attributeSetters.put("treePath", DLFileShortcut::setTreePath);
+
+		attributeGetters.put("active", DLFileShortcut::getActive);
+		attributeSetters.put("active", DLFileShortcut::setActive);
+
+		attributeGetters.put("lastPublishDate", DLFileShortcut::getLastPublishDate);
+		attributeSetters.put("lastPublishDate", DLFileShortcut::setLastPublishDate);
+
+		attributeGetters.put("status", DLFileShortcut::getStatus);
+		attributeSetters.put("status", DLFileShortcut::setStatus);
+
+		attributeGetters.put("statusByUserId", DLFileShortcut::getStatusByUserId);
+		attributeSetters.put("statusByUserId", DLFileShortcut::setStatusByUserId);
+
+		attributeGetters.put("statusByUserName", DLFileShortcut::getStatusByUserName);
+		attributeSetters.put("statusByUserName", DLFileShortcut::setStatusByUserName);
+
+		attributeGetters.put("statusDate", DLFileShortcut::getStatusDate);
+		attributeSetters.put("statusDate", DLFileShortcut::setStatusDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<DLFileShortcut, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DLFileShortcut, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<DLFileShortcut, String>() {
-				@Override
-				public void accept(DLFileShortcut dlFileShortcut, String uuid) {
-					dlFileShortcut.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("fileShortcutId",
-			new BiConsumer<DLFileShortcut, Long>() {
-				@Override
-				public void accept(DLFileShortcut dlFileShortcut,
-					Long fileShortcutId) {
-					dlFileShortcut.setFileShortcutId(fileShortcutId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<DLFileShortcut, Long>() {
-				@Override
-				public void accept(DLFileShortcut dlFileShortcut, Long groupId) {
-					dlFileShortcut.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<DLFileShortcut, Long>() {
-				@Override
-				public void accept(DLFileShortcut dlFileShortcut, Long companyId) {
-					dlFileShortcut.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<DLFileShortcut, Long>() {
-				@Override
-				public void accept(DLFileShortcut dlFileShortcut, Long userId) {
-					dlFileShortcut.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<DLFileShortcut, String>() {
-				@Override
-				public void accept(DLFileShortcut dlFileShortcut,
-					String userName) {
-					dlFileShortcut.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<DLFileShortcut, Date>() {
-				@Override
-				public void accept(DLFileShortcut dlFileShortcut,
-					Date createDate) {
-					dlFileShortcut.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<DLFileShortcut, Date>() {
-				@Override
-				public void accept(DLFileShortcut dlFileShortcut,
-					Date modifiedDate) {
-					dlFileShortcut.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("repositoryId",
-			new BiConsumer<DLFileShortcut, Long>() {
-				@Override
-				public void accept(DLFileShortcut dlFileShortcut,
-					Long repositoryId) {
-					dlFileShortcut.setRepositoryId(repositoryId);
-				}
-			});
-		attributeSetters.put("folderId",
-			new BiConsumer<DLFileShortcut, Long>() {
-				@Override
-				public void accept(DLFileShortcut dlFileShortcut, Long folderId) {
-					dlFileShortcut.setFolderId(folderId);
-				}
-			});
-		attributeSetters.put("toFileEntryId",
-			new BiConsumer<DLFileShortcut, Long>() {
-				@Override
-				public void accept(DLFileShortcut dlFileShortcut,
-					Long toFileEntryId) {
-					dlFileShortcut.setToFileEntryId(toFileEntryId);
-				}
-			});
-		attributeSetters.put("treePath",
-			new BiConsumer<DLFileShortcut, String>() {
-				@Override
-				public void accept(DLFileShortcut dlFileShortcut,
-					String treePath) {
-					dlFileShortcut.setTreePath(treePath);
-				}
-			});
-		attributeSetters.put("active",
-			new BiConsumer<DLFileShortcut, Boolean>() {
-				@Override
-				public void accept(DLFileShortcut dlFileShortcut, Boolean active) {
-					dlFileShortcut.setActive(active);
-				}
-			});
-		attributeSetters.put("lastPublishDate",
-			new BiConsumer<DLFileShortcut, Date>() {
-				@Override
-				public void accept(DLFileShortcut dlFileShortcut,
-					Date lastPublishDate) {
-					dlFileShortcut.setLastPublishDate(lastPublishDate);
-				}
-			});
-		attributeSetters.put("status",
-			new BiConsumer<DLFileShortcut, Integer>() {
-				@Override
-				public void accept(DLFileShortcut dlFileShortcut, Integer status) {
-					dlFileShortcut.setStatus(status);
-				}
-			});
-		attributeSetters.put("statusByUserId",
-			new BiConsumer<DLFileShortcut, Long>() {
-				@Override
-				public void accept(DLFileShortcut dlFileShortcut,
-					Long statusByUserId) {
-					dlFileShortcut.setStatusByUserId(statusByUserId);
-				}
-			});
-		attributeSetters.put("statusByUserName",
-			new BiConsumer<DLFileShortcut, String>() {
-				@Override
-				public void accept(DLFileShortcut dlFileShortcut,
-					String statusByUserName) {
-					dlFileShortcut.setStatusByUserName(statusByUserName);
-				}
-			});
-		attributeSetters.put("statusDate",
-			new BiConsumer<DLFileShortcut, Date>() {
-				@Override
-				public void accept(DLFileShortcut dlFileShortcut,
-					Date statusDate) {
-					dlFileShortcut.setStatusDate(statusDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

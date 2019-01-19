@@ -149,82 +149,23 @@ public class AssetEntryAssetCategoryRelModelImpl extends BaseModelImpl<AssetEntr
 	static {
 		Map<String, Function<AssetEntryAssetCategoryRel, Object>> attributeGetters =
 			new LinkedHashMap<String, Function<AssetEntryAssetCategoryRel, Object>>();
+		Map<String, BiConsumer<AssetEntryAssetCategoryRel, Object>> attributeSetters =
+			new LinkedHashMap<String, BiConsumer<AssetEntryAssetCategoryRel, Object>>();
 
-		attributeGetters.put("assetEntryAssetCategoryRelId",
-			new Function<AssetEntryAssetCategoryRel, Object>() {
-				@Override
-				public Object apply(
-					AssetEntryAssetCategoryRel assetEntryAssetCategoryRel) {
-					return assetEntryAssetCategoryRel.getAssetEntryAssetCategoryRelId();
-				}
-			});
-		attributeGetters.put("assetEntryId",
-			new Function<AssetEntryAssetCategoryRel, Object>() {
-				@Override
-				public Object apply(
-					AssetEntryAssetCategoryRel assetEntryAssetCategoryRel) {
-					return assetEntryAssetCategoryRel.getAssetEntryId();
-				}
-			});
-		attributeGetters.put("assetCategoryId",
-			new Function<AssetEntryAssetCategoryRel, Object>() {
-				@Override
-				public Object apply(
-					AssetEntryAssetCategoryRel assetEntryAssetCategoryRel) {
-					return assetEntryAssetCategoryRel.getAssetCategoryId();
-				}
-			});
-		attributeGetters.put("priority",
-			new Function<AssetEntryAssetCategoryRel, Object>() {
-				@Override
-				public Object apply(
-					AssetEntryAssetCategoryRel assetEntryAssetCategoryRel) {
-					return assetEntryAssetCategoryRel.getPriority();
-				}
-			});
+		attributeGetters.put("assetEntryAssetCategoryRelId", AssetEntryAssetCategoryRel::getAssetEntryAssetCategoryRelId);
+		attributeSetters.put("assetEntryAssetCategoryRelId", AssetEntryAssetCategoryRel::setAssetEntryAssetCategoryRelId);
+
+		attributeGetters.put("assetEntryId", AssetEntryAssetCategoryRel::getAssetEntryId);
+		attributeSetters.put("assetEntryId", AssetEntryAssetCategoryRel::setAssetEntryId);
+
+		attributeGetters.put("assetCategoryId", AssetEntryAssetCategoryRel::getAssetCategoryId);
+		attributeSetters.put("assetCategoryId", AssetEntryAssetCategoryRel::setAssetCategoryId);
+
+		attributeGetters.put("priority", AssetEntryAssetCategoryRel::getPriority);
+		attributeSetters.put("priority", AssetEntryAssetCategoryRel::setPriority);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<AssetEntryAssetCategoryRel, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetEntryAssetCategoryRel, ?>>();
-
-		attributeSetters.put("assetEntryAssetCategoryRelId",
-			new BiConsumer<AssetEntryAssetCategoryRel, Long>() {
-				@Override
-				public void accept(
-					AssetEntryAssetCategoryRel assetEntryAssetCategoryRel,
-					Long assetEntryAssetCategoryRelId) {
-					assetEntryAssetCategoryRel.setAssetEntryAssetCategoryRelId(assetEntryAssetCategoryRelId);
-				}
-			});
-		attributeSetters.put("assetEntryId",
-			new BiConsumer<AssetEntryAssetCategoryRel, Long>() {
-				@Override
-				public void accept(
-					AssetEntryAssetCategoryRel assetEntryAssetCategoryRel,
-					Long assetEntryId) {
-					assetEntryAssetCategoryRel.setAssetEntryId(assetEntryId);
-				}
-			});
-		attributeSetters.put("assetCategoryId",
-			new BiConsumer<AssetEntryAssetCategoryRel, Long>() {
-				@Override
-				public void accept(
-					AssetEntryAssetCategoryRel assetEntryAssetCategoryRel,
-					Long assetCategoryId) {
-					assetEntryAssetCategoryRel.setAssetCategoryId(assetCategoryId);
-				}
-			});
-		attributeSetters.put("priority",
-			new BiConsumer<AssetEntryAssetCategoryRel, Integer>() {
-				@Override
-				public void accept(
-					AssetEntryAssetCategoryRel assetEntryAssetCategoryRel,
-					Integer priority) {
-					assetEntryAssetCategoryRel.setPriority(priority);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

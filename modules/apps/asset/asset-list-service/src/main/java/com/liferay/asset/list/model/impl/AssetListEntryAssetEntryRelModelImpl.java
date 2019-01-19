@@ -174,219 +174,47 @@ public class AssetListEntryAssetEntryRelModelImpl extends BaseModelImpl<AssetLis
 	static {
 		Map<String, Function<AssetListEntryAssetEntryRel, Object>> attributeGetters =
 			new LinkedHashMap<String, Function<AssetListEntryAssetEntryRel, Object>>();
+		Map<String, BiConsumer<AssetListEntryAssetEntryRel, Object>> attributeSetters =
+			new LinkedHashMap<String, BiConsumer<AssetListEntryAssetEntryRel, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<AssetListEntryAssetEntryRel, Object>() {
-				@Override
-				public Object apply(
-					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel) {
-					return assetListEntryAssetEntryRel.getUuid();
-				}
-			});
-		attributeGetters.put("assetListEntryAssetEntryRelId",
-			new Function<AssetListEntryAssetEntryRel, Object>() {
-				@Override
-				public Object apply(
-					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel) {
-					return assetListEntryAssetEntryRel.getAssetListEntryAssetEntryRelId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<AssetListEntryAssetEntryRel, Object>() {
-				@Override
-				public Object apply(
-					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel) {
-					return assetListEntryAssetEntryRel.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<AssetListEntryAssetEntryRel, Object>() {
-				@Override
-				public Object apply(
-					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel) {
-					return assetListEntryAssetEntryRel.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<AssetListEntryAssetEntryRel, Object>() {
-				@Override
-				public Object apply(
-					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel) {
-					return assetListEntryAssetEntryRel.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<AssetListEntryAssetEntryRel, Object>() {
-				@Override
-				public Object apply(
-					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel) {
-					return assetListEntryAssetEntryRel.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<AssetListEntryAssetEntryRel, Object>() {
-				@Override
-				public Object apply(
-					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel) {
-					return assetListEntryAssetEntryRel.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<AssetListEntryAssetEntryRel, Object>() {
-				@Override
-				public Object apply(
-					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel) {
-					return assetListEntryAssetEntryRel.getModifiedDate();
-				}
-			});
-		attributeGetters.put("assetListEntryId",
-			new Function<AssetListEntryAssetEntryRel, Object>() {
-				@Override
-				public Object apply(
-					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel) {
-					return assetListEntryAssetEntryRel.getAssetListEntryId();
-				}
-			});
-		attributeGetters.put("assetEntryId",
-			new Function<AssetListEntryAssetEntryRel, Object>() {
-				@Override
-				public Object apply(
-					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel) {
-					return assetListEntryAssetEntryRel.getAssetEntryId();
-				}
-			});
-		attributeGetters.put("position",
-			new Function<AssetListEntryAssetEntryRel, Object>() {
-				@Override
-				public Object apply(
-					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel) {
-					return assetListEntryAssetEntryRel.getPosition();
-				}
-			});
-		attributeGetters.put("lastPublishDate",
-			new Function<AssetListEntryAssetEntryRel, Object>() {
-				@Override
-				public Object apply(
-					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel) {
-					return assetListEntryAssetEntryRel.getLastPublishDate();
-				}
-			});
+		attributeGetters.put("uuid", AssetListEntryAssetEntryRel::getUuid);
+		attributeSetters.put("uuid", AssetListEntryAssetEntryRel::setUuid);
+
+		attributeGetters.put("assetListEntryAssetEntryRelId", AssetListEntryAssetEntryRel::getAssetListEntryAssetEntryRelId);
+		attributeSetters.put("assetListEntryAssetEntryRelId", AssetListEntryAssetEntryRel::setAssetListEntryAssetEntryRelId);
+
+		attributeGetters.put("groupId", AssetListEntryAssetEntryRel::getGroupId);
+		attributeSetters.put("groupId", AssetListEntryAssetEntryRel::setGroupId);
+
+		attributeGetters.put("companyId", AssetListEntryAssetEntryRel::getCompanyId);
+		attributeSetters.put("companyId", AssetListEntryAssetEntryRel::setCompanyId);
+
+		attributeGetters.put("userId", AssetListEntryAssetEntryRel::getUserId);
+		attributeSetters.put("userId", AssetListEntryAssetEntryRel::setUserId);
+
+		attributeGetters.put("userName", AssetListEntryAssetEntryRel::getUserName);
+		attributeSetters.put("userName", AssetListEntryAssetEntryRel::setUserName);
+
+		attributeGetters.put("createDate", AssetListEntryAssetEntryRel::getCreateDate);
+		attributeSetters.put("createDate", AssetListEntryAssetEntryRel::setCreateDate);
+
+		attributeGetters.put("modifiedDate", AssetListEntryAssetEntryRel::getModifiedDate);
+		attributeSetters.put("modifiedDate", AssetListEntryAssetEntryRel::setModifiedDate);
+
+		attributeGetters.put("assetListEntryId", AssetListEntryAssetEntryRel::getAssetListEntryId);
+		attributeSetters.put("assetListEntryId", AssetListEntryAssetEntryRel::setAssetListEntryId);
+
+		attributeGetters.put("assetEntryId", AssetListEntryAssetEntryRel::getAssetEntryId);
+		attributeSetters.put("assetEntryId", AssetListEntryAssetEntryRel::setAssetEntryId);
+
+		attributeGetters.put("position", AssetListEntryAssetEntryRel::getPosition);
+		attributeSetters.put("position", AssetListEntryAssetEntryRel::setPosition);
+
+		attributeGetters.put("lastPublishDate", AssetListEntryAssetEntryRel::getLastPublishDate);
+		attributeSetters.put("lastPublishDate", AssetListEntryAssetEntryRel::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<AssetListEntryAssetEntryRel, ?>> attributeSetters =
-			new LinkedHashMap<String, BiConsumer<AssetListEntryAssetEntryRel, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<AssetListEntryAssetEntryRel, String>() {
-				@Override
-				public void accept(
-					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel,
-					String uuid) {
-					assetListEntryAssetEntryRel.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("assetListEntryAssetEntryRelId",
-			new BiConsumer<AssetListEntryAssetEntryRel, Long>() {
-				@Override
-				public void accept(
-					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel,
-					Long assetListEntryAssetEntryRelId) {
-					assetListEntryAssetEntryRel.setAssetListEntryAssetEntryRelId(assetListEntryAssetEntryRelId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<AssetListEntryAssetEntryRel, Long>() {
-				@Override
-				public void accept(
-					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel,
-					Long groupId) {
-					assetListEntryAssetEntryRel.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<AssetListEntryAssetEntryRel, Long>() {
-				@Override
-				public void accept(
-					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel,
-					Long companyId) {
-					assetListEntryAssetEntryRel.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<AssetListEntryAssetEntryRel, Long>() {
-				@Override
-				public void accept(
-					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel,
-					Long userId) {
-					assetListEntryAssetEntryRel.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<AssetListEntryAssetEntryRel, String>() {
-				@Override
-				public void accept(
-					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel,
-					String userName) {
-					assetListEntryAssetEntryRel.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<AssetListEntryAssetEntryRel, Date>() {
-				@Override
-				public void accept(
-					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel,
-					Date createDate) {
-					assetListEntryAssetEntryRel.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<AssetListEntryAssetEntryRel, Date>() {
-				@Override
-				public void accept(
-					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel,
-					Date modifiedDate) {
-					assetListEntryAssetEntryRel.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("assetListEntryId",
-			new BiConsumer<AssetListEntryAssetEntryRel, Long>() {
-				@Override
-				public void accept(
-					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel,
-					Long assetListEntryId) {
-					assetListEntryAssetEntryRel.setAssetListEntryId(assetListEntryId);
-				}
-			});
-		attributeSetters.put("assetEntryId",
-			new BiConsumer<AssetListEntryAssetEntryRel, Long>() {
-				@Override
-				public void accept(
-					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel,
-					Long assetEntryId) {
-					assetListEntryAssetEntryRel.setAssetEntryId(assetEntryId);
-				}
-			});
-		attributeSetters.put("position",
-			new BiConsumer<AssetListEntryAssetEntryRel, Integer>() {
-				@Override
-				public void accept(
-					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel,
-					Integer position) {
-					assetListEntryAssetEntryRel.setPosition(position);
-				}
-			});
-		attributeSetters.put("lastPublishDate",
-			new BiConsumer<AssetListEntryAssetEntryRel, Date>() {
-				@Override
-				public void accept(
-					AssetListEntryAssetEntryRel assetListEntryAssetEntryRel,
-					Date lastPublishDate) {
-					assetListEntryAssetEntryRel.setLastPublishDate(lastPublishDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

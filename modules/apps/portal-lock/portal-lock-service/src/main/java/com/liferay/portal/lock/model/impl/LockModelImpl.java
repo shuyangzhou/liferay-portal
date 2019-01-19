@@ -169,182 +169,46 @@ public class LockModelImpl extends BaseModelImpl<Lock> implements LockModel {
 
 	static {
 		Map<String, Function<Lock, Object>> attributeGetters = new LinkedHashMap<String, Function<Lock, Object>>();
+		Map<String, BiConsumer<Lock, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Lock, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<Lock, Object>() {
-				@Override
-				public Object apply(Lock lock) {
-					return lock.getMvccVersion();
-				}
-			});
-		attributeGetters.put("uuid",
-			new Function<Lock, Object>() {
-				@Override
-				public Object apply(Lock lock) {
-					return lock.getUuid();
-				}
-			});
-		attributeGetters.put("lockId",
-			new Function<Lock, Object>() {
-				@Override
-				public Object apply(Lock lock) {
-					return lock.getLockId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<Lock, Object>() {
-				@Override
-				public Object apply(Lock lock) {
-					return lock.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<Lock, Object>() {
-				@Override
-				public Object apply(Lock lock) {
-					return lock.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<Lock, Object>() {
-				@Override
-				public Object apply(Lock lock) {
-					return lock.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<Lock, Object>() {
-				@Override
-				public Object apply(Lock lock) {
-					return lock.getCreateDate();
-				}
-			});
-		attributeGetters.put("className",
-			new Function<Lock, Object>() {
-				@Override
-				public Object apply(Lock lock) {
-					return lock.getClassName();
-				}
-			});
-		attributeGetters.put("key",
-			new Function<Lock, Object>() {
-				@Override
-				public Object apply(Lock lock) {
-					return lock.getKey();
-				}
-			});
-		attributeGetters.put("owner",
-			new Function<Lock, Object>() {
-				@Override
-				public Object apply(Lock lock) {
-					return lock.getOwner();
-				}
-			});
-		attributeGetters.put("inheritable",
-			new Function<Lock, Object>() {
-				@Override
-				public Object apply(Lock lock) {
-					return lock.isInheritable();
-				}
-			});
-		attributeGetters.put("expirationDate",
-			new Function<Lock, Object>() {
-				@Override
-				public Object apply(Lock lock) {
-					return lock.getExpirationDate();
-				}
-			});
+		attributeGetters.put("mvccVersion", Lock::getMvccVersion);
+		attributeSetters.put("mvccVersion", Lock::setMvccVersion);
+
+		attributeGetters.put("uuid", Lock::getUuid);
+		attributeSetters.put("uuid", Lock::setUuid);
+
+		attributeGetters.put("lockId", Lock::getLockId);
+		attributeSetters.put("lockId", Lock::setLockId);
+
+		attributeGetters.put("companyId", Lock::getCompanyId);
+		attributeSetters.put("companyId", Lock::setCompanyId);
+
+		attributeGetters.put("userId", Lock::getUserId);
+		attributeSetters.put("userId", Lock::setUserId);
+
+		attributeGetters.put("userName", Lock::getUserName);
+		attributeSetters.put("userName", Lock::setUserName);
+
+		attributeGetters.put("createDate", Lock::getCreateDate);
+		attributeSetters.put("createDate", Lock::setCreateDate);
+
+		attributeGetters.put("className", Lock::getClassName);
+		attributeSetters.put("className", Lock::setClassName);
+
+		attributeGetters.put("key", Lock::getKey);
+		attributeSetters.put("key", Lock::setKey);
+
+		attributeGetters.put("owner", Lock::getOwner);
+		attributeSetters.put("owner", Lock::setOwner);
+
+		attributeGetters.put("inheritable", Lock::getInheritable);
+		attributeSetters.put("inheritable", Lock::setInheritable);
+
+		attributeGetters.put("expirationDate", Lock::getExpirationDate);
+		attributeSetters.put("expirationDate", Lock::setExpirationDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<Lock, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Lock, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<Lock, Long>() {
-				@Override
-				public void accept(Lock lock, Long mvccVersion) {
-					lock.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("uuid",
-			new BiConsumer<Lock, String>() {
-				@Override
-				public void accept(Lock lock, String uuid) {
-					lock.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("lockId",
-			new BiConsumer<Lock, Long>() {
-				@Override
-				public void accept(Lock lock, Long lockId) {
-					lock.setLockId(lockId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<Lock, Long>() {
-				@Override
-				public void accept(Lock lock, Long companyId) {
-					lock.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<Lock, Long>() {
-				@Override
-				public void accept(Lock lock, Long userId) {
-					lock.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<Lock, String>() {
-				@Override
-				public void accept(Lock lock, String userName) {
-					lock.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<Lock, Date>() {
-				@Override
-				public void accept(Lock lock, Date createDate) {
-					lock.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("className",
-			new BiConsumer<Lock, String>() {
-				@Override
-				public void accept(Lock lock, String className) {
-					lock.setClassName(className);
-				}
-			});
-		attributeSetters.put("key",
-			new BiConsumer<Lock, String>() {
-				@Override
-				public void accept(Lock lock, String key) {
-					lock.setKey(key);
-				}
-			});
-		attributeSetters.put("owner",
-			new BiConsumer<Lock, String>() {
-				@Override
-				public void accept(Lock lock, String owner) {
-					lock.setOwner(owner);
-				}
-			});
-		attributeSetters.put("inheritable",
-			new BiConsumer<Lock, Boolean>() {
-				@Override
-				public void accept(Lock lock, Boolean inheritable) {
-					lock.setInheritable(inheritable);
-				}
-			});
-		attributeSetters.put("expirationDate",
-			new BiConsumer<Lock, Date>() {
-				@Override
-				public void accept(Lock lock, Date expirationDate) {
-					lock.setExpirationDate(expirationDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

@@ -178,213 +178,49 @@ public class AssetDisplayPageEntryModelImpl extends BaseModelImpl<AssetDisplayPa
 
 	static {
 		Map<String, Function<AssetDisplayPageEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<AssetDisplayPageEntry, Object>>();
+		Map<String, BiConsumer<AssetDisplayPageEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetDisplayPageEntry, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<AssetDisplayPageEntry, Object>() {
-				@Override
-				public Object apply(AssetDisplayPageEntry assetDisplayPageEntry) {
-					return assetDisplayPageEntry.getUuid();
-				}
-			});
-		attributeGetters.put("assetDisplayPageEntryId",
-			new Function<AssetDisplayPageEntry, Object>() {
-				@Override
-				public Object apply(AssetDisplayPageEntry assetDisplayPageEntry) {
-					return assetDisplayPageEntry.getAssetDisplayPageEntryId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<AssetDisplayPageEntry, Object>() {
-				@Override
-				public Object apply(AssetDisplayPageEntry assetDisplayPageEntry) {
-					return assetDisplayPageEntry.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<AssetDisplayPageEntry, Object>() {
-				@Override
-				public Object apply(AssetDisplayPageEntry assetDisplayPageEntry) {
-					return assetDisplayPageEntry.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<AssetDisplayPageEntry, Object>() {
-				@Override
-				public Object apply(AssetDisplayPageEntry assetDisplayPageEntry) {
-					return assetDisplayPageEntry.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<AssetDisplayPageEntry, Object>() {
-				@Override
-				public Object apply(AssetDisplayPageEntry assetDisplayPageEntry) {
-					return assetDisplayPageEntry.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<AssetDisplayPageEntry, Object>() {
-				@Override
-				public Object apply(AssetDisplayPageEntry assetDisplayPageEntry) {
-					return assetDisplayPageEntry.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<AssetDisplayPageEntry, Object>() {
-				@Override
-				public Object apply(AssetDisplayPageEntry assetDisplayPageEntry) {
-					return assetDisplayPageEntry.getModifiedDate();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<AssetDisplayPageEntry, Object>() {
-				@Override
-				public Object apply(AssetDisplayPageEntry assetDisplayPageEntry) {
-					return assetDisplayPageEntry.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<AssetDisplayPageEntry, Object>() {
-				@Override
-				public Object apply(AssetDisplayPageEntry assetDisplayPageEntry) {
-					return assetDisplayPageEntry.getClassPK();
-				}
-			});
-		attributeGetters.put("layoutPageTemplateEntryId",
-			new Function<AssetDisplayPageEntry, Object>() {
-				@Override
-				public Object apply(AssetDisplayPageEntry assetDisplayPageEntry) {
-					return assetDisplayPageEntry.getLayoutPageTemplateEntryId();
-				}
-			});
-		attributeGetters.put("type",
-			new Function<AssetDisplayPageEntry, Object>() {
-				@Override
-				public Object apply(AssetDisplayPageEntry assetDisplayPageEntry) {
-					return assetDisplayPageEntry.getType();
-				}
-			});
-		attributeGetters.put("plid",
-			new Function<AssetDisplayPageEntry, Object>() {
-				@Override
-				public Object apply(AssetDisplayPageEntry assetDisplayPageEntry) {
-					return assetDisplayPageEntry.getPlid();
-				}
-			});
+		attributeGetters.put("uuid", AssetDisplayPageEntry::getUuid);
+		attributeSetters.put("uuid", AssetDisplayPageEntry::setUuid);
+
+		attributeGetters.put("assetDisplayPageEntryId", AssetDisplayPageEntry::getAssetDisplayPageEntryId);
+		attributeSetters.put("assetDisplayPageEntryId", AssetDisplayPageEntry::setAssetDisplayPageEntryId);
+
+		attributeGetters.put("groupId", AssetDisplayPageEntry::getGroupId);
+		attributeSetters.put("groupId", AssetDisplayPageEntry::setGroupId);
+
+		attributeGetters.put("companyId", AssetDisplayPageEntry::getCompanyId);
+		attributeSetters.put("companyId", AssetDisplayPageEntry::setCompanyId);
+
+		attributeGetters.put("userId", AssetDisplayPageEntry::getUserId);
+		attributeSetters.put("userId", AssetDisplayPageEntry::setUserId);
+
+		attributeGetters.put("userName", AssetDisplayPageEntry::getUserName);
+		attributeSetters.put("userName", AssetDisplayPageEntry::setUserName);
+
+		attributeGetters.put("createDate", AssetDisplayPageEntry::getCreateDate);
+		attributeSetters.put("createDate", AssetDisplayPageEntry::setCreateDate);
+
+		attributeGetters.put("modifiedDate", AssetDisplayPageEntry::getModifiedDate);
+		attributeSetters.put("modifiedDate", AssetDisplayPageEntry::setModifiedDate);
+
+		attributeGetters.put("classNameId", AssetDisplayPageEntry::getClassNameId);
+		attributeSetters.put("classNameId", AssetDisplayPageEntry::setClassNameId);
+
+		attributeGetters.put("classPK", AssetDisplayPageEntry::getClassPK);
+		attributeSetters.put("classPK", AssetDisplayPageEntry::setClassPK);
+
+		attributeGetters.put("layoutPageTemplateEntryId", AssetDisplayPageEntry::getLayoutPageTemplateEntryId);
+		attributeSetters.put("layoutPageTemplateEntryId", AssetDisplayPageEntry::setLayoutPageTemplateEntryId);
+
+		attributeGetters.put("type", AssetDisplayPageEntry::getType);
+		attributeSetters.put("type", AssetDisplayPageEntry::setType);
+
+		attributeGetters.put("plid", AssetDisplayPageEntry::getPlid);
+		attributeSetters.put("plid", AssetDisplayPageEntry::setPlid);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<AssetDisplayPageEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetDisplayPageEntry, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<AssetDisplayPageEntry, String>() {
-				@Override
-				public void accept(
-					AssetDisplayPageEntry assetDisplayPageEntry, String uuid) {
-					assetDisplayPageEntry.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("assetDisplayPageEntryId",
-			new BiConsumer<AssetDisplayPageEntry, Long>() {
-				@Override
-				public void accept(
-					AssetDisplayPageEntry assetDisplayPageEntry,
-					Long assetDisplayPageEntryId) {
-					assetDisplayPageEntry.setAssetDisplayPageEntryId(assetDisplayPageEntryId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<AssetDisplayPageEntry, Long>() {
-				@Override
-				public void accept(
-					AssetDisplayPageEntry assetDisplayPageEntry, Long groupId) {
-					assetDisplayPageEntry.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<AssetDisplayPageEntry, Long>() {
-				@Override
-				public void accept(
-					AssetDisplayPageEntry assetDisplayPageEntry, Long companyId) {
-					assetDisplayPageEntry.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<AssetDisplayPageEntry, Long>() {
-				@Override
-				public void accept(
-					AssetDisplayPageEntry assetDisplayPageEntry, Long userId) {
-					assetDisplayPageEntry.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<AssetDisplayPageEntry, String>() {
-				@Override
-				public void accept(
-					AssetDisplayPageEntry assetDisplayPageEntry, String userName) {
-					assetDisplayPageEntry.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<AssetDisplayPageEntry, Date>() {
-				@Override
-				public void accept(
-					AssetDisplayPageEntry assetDisplayPageEntry, Date createDate) {
-					assetDisplayPageEntry.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<AssetDisplayPageEntry, Date>() {
-				@Override
-				public void accept(
-					AssetDisplayPageEntry assetDisplayPageEntry,
-					Date modifiedDate) {
-					assetDisplayPageEntry.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<AssetDisplayPageEntry, Long>() {
-				@Override
-				public void accept(
-					AssetDisplayPageEntry assetDisplayPageEntry,
-					Long classNameId) {
-					assetDisplayPageEntry.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<AssetDisplayPageEntry, Long>() {
-				@Override
-				public void accept(
-					AssetDisplayPageEntry assetDisplayPageEntry, Long classPK) {
-					assetDisplayPageEntry.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("layoutPageTemplateEntryId",
-			new BiConsumer<AssetDisplayPageEntry, Long>() {
-				@Override
-				public void accept(
-					AssetDisplayPageEntry assetDisplayPageEntry,
-					Long layoutPageTemplateEntryId) {
-					assetDisplayPageEntry.setLayoutPageTemplateEntryId(layoutPageTemplateEntryId);
-				}
-			});
-		attributeSetters.put("type",
-			new BiConsumer<AssetDisplayPageEntry, Integer>() {
-				@Override
-				public void accept(
-					AssetDisplayPageEntry assetDisplayPageEntry, Integer type) {
-					assetDisplayPageEntry.setType(type);
-				}
-			});
-		attributeSetters.put("plid",
-			new BiConsumer<AssetDisplayPageEntry, Long>() {
-				@Override
-				public void accept(
-					AssetDisplayPageEntry assetDisplayPageEntry, Long plid) {
-					assetDisplayPageEntry.setPlid(plid);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

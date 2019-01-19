@@ -232,169 +232,43 @@ public class MDRRuleGroupModelImpl extends BaseModelImpl<MDRRuleGroup>
 
 	static {
 		Map<String, Function<MDRRuleGroup, Object>> attributeGetters = new LinkedHashMap<String, Function<MDRRuleGroup, Object>>();
+		Map<String, BiConsumer<MDRRuleGroup, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<MDRRuleGroup, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<MDRRuleGroup, Object>() {
-				@Override
-				public Object apply(MDRRuleGroup mdrRuleGroup) {
-					return mdrRuleGroup.getUuid();
-				}
-			});
-		attributeGetters.put("ruleGroupId",
-			new Function<MDRRuleGroup, Object>() {
-				@Override
-				public Object apply(MDRRuleGroup mdrRuleGroup) {
-					return mdrRuleGroup.getRuleGroupId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<MDRRuleGroup, Object>() {
-				@Override
-				public Object apply(MDRRuleGroup mdrRuleGroup) {
-					return mdrRuleGroup.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<MDRRuleGroup, Object>() {
-				@Override
-				public Object apply(MDRRuleGroup mdrRuleGroup) {
-					return mdrRuleGroup.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<MDRRuleGroup, Object>() {
-				@Override
-				public Object apply(MDRRuleGroup mdrRuleGroup) {
-					return mdrRuleGroup.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<MDRRuleGroup, Object>() {
-				@Override
-				public Object apply(MDRRuleGroup mdrRuleGroup) {
-					return mdrRuleGroup.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<MDRRuleGroup, Object>() {
-				@Override
-				public Object apply(MDRRuleGroup mdrRuleGroup) {
-					return mdrRuleGroup.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<MDRRuleGroup, Object>() {
-				@Override
-				public Object apply(MDRRuleGroup mdrRuleGroup) {
-					return mdrRuleGroup.getModifiedDate();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<MDRRuleGroup, Object>() {
-				@Override
-				public Object apply(MDRRuleGroup mdrRuleGroup) {
-					return mdrRuleGroup.getName();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<MDRRuleGroup, Object>() {
-				@Override
-				public Object apply(MDRRuleGroup mdrRuleGroup) {
-					return mdrRuleGroup.getDescription();
-				}
-			});
-		attributeGetters.put("lastPublishDate",
-			new Function<MDRRuleGroup, Object>() {
-				@Override
-				public Object apply(MDRRuleGroup mdrRuleGroup) {
-					return mdrRuleGroup.getLastPublishDate();
-				}
-			});
+		attributeGetters.put("uuid", MDRRuleGroup::getUuid);
+		attributeSetters.put("uuid", MDRRuleGroup::setUuid);
+
+		attributeGetters.put("ruleGroupId", MDRRuleGroup::getRuleGroupId);
+		attributeSetters.put("ruleGroupId", MDRRuleGroup::setRuleGroupId);
+
+		attributeGetters.put("groupId", MDRRuleGroup::getGroupId);
+		attributeSetters.put("groupId", MDRRuleGroup::setGroupId);
+
+		attributeGetters.put("companyId", MDRRuleGroup::getCompanyId);
+		attributeSetters.put("companyId", MDRRuleGroup::setCompanyId);
+
+		attributeGetters.put("userId", MDRRuleGroup::getUserId);
+		attributeSetters.put("userId", MDRRuleGroup::setUserId);
+
+		attributeGetters.put("userName", MDRRuleGroup::getUserName);
+		attributeSetters.put("userName", MDRRuleGroup::setUserName);
+
+		attributeGetters.put("createDate", MDRRuleGroup::getCreateDate);
+		attributeSetters.put("createDate", MDRRuleGroup::setCreateDate);
+
+		attributeGetters.put("modifiedDate", MDRRuleGroup::getModifiedDate);
+		attributeSetters.put("modifiedDate", MDRRuleGroup::setModifiedDate);
+
+		attributeGetters.put("name", MDRRuleGroup::getName);
+		attributeSetters.put("name", MDRRuleGroup::setName);
+
+		attributeGetters.put("description", MDRRuleGroup::getDescription);
+		attributeSetters.put("description", MDRRuleGroup::setDescription);
+
+		attributeGetters.put("lastPublishDate", MDRRuleGroup::getLastPublishDate);
+		attributeSetters.put("lastPublishDate", MDRRuleGroup::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<MDRRuleGroup, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<MDRRuleGroup, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<MDRRuleGroup, String>() {
-				@Override
-				public void accept(MDRRuleGroup mdrRuleGroup, String uuid) {
-					mdrRuleGroup.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("ruleGroupId",
-			new BiConsumer<MDRRuleGroup, Long>() {
-				@Override
-				public void accept(MDRRuleGroup mdrRuleGroup, Long ruleGroupId) {
-					mdrRuleGroup.setRuleGroupId(ruleGroupId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<MDRRuleGroup, Long>() {
-				@Override
-				public void accept(MDRRuleGroup mdrRuleGroup, Long groupId) {
-					mdrRuleGroup.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<MDRRuleGroup, Long>() {
-				@Override
-				public void accept(MDRRuleGroup mdrRuleGroup, Long companyId) {
-					mdrRuleGroup.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<MDRRuleGroup, Long>() {
-				@Override
-				public void accept(MDRRuleGroup mdrRuleGroup, Long userId) {
-					mdrRuleGroup.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<MDRRuleGroup, String>() {
-				@Override
-				public void accept(MDRRuleGroup mdrRuleGroup, String userName) {
-					mdrRuleGroup.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<MDRRuleGroup, Date>() {
-				@Override
-				public void accept(MDRRuleGroup mdrRuleGroup, Date createDate) {
-					mdrRuleGroup.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<MDRRuleGroup, Date>() {
-				@Override
-				public void accept(MDRRuleGroup mdrRuleGroup, Date modifiedDate) {
-					mdrRuleGroup.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<MDRRuleGroup, String>() {
-				@Override
-				public void accept(MDRRuleGroup mdrRuleGroup, String name) {
-					mdrRuleGroup.setName(name);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<MDRRuleGroup, String>() {
-				@Override
-				public void accept(MDRRuleGroup mdrRuleGroup, String description) {
-					mdrRuleGroup.setDescription(description);
-				}
-			});
-		attributeSetters.put("lastPublishDate",
-			new BiConsumer<MDRRuleGroup, Date>() {
-				@Override
-				public void accept(MDRRuleGroup mdrRuleGroup,
-					Date lastPublishDate) {
-					mdrRuleGroup.setLastPublishDate(lastPublishDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

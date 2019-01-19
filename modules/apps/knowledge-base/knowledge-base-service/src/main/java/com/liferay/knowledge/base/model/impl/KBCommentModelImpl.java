@@ -239,210 +239,52 @@ public class KBCommentModelImpl extends BaseModelImpl<KBComment>
 
 	static {
 		Map<String, Function<KBComment, Object>> attributeGetters = new LinkedHashMap<String, Function<KBComment, Object>>();
+		Map<String, BiConsumer<KBComment, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<KBComment, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<KBComment, Object>() {
-				@Override
-				public Object apply(KBComment kbComment) {
-					return kbComment.getUuid();
-				}
-			});
-		attributeGetters.put("kbCommentId",
-			new Function<KBComment, Object>() {
-				@Override
-				public Object apply(KBComment kbComment) {
-					return kbComment.getKbCommentId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<KBComment, Object>() {
-				@Override
-				public Object apply(KBComment kbComment) {
-					return kbComment.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<KBComment, Object>() {
-				@Override
-				public Object apply(KBComment kbComment) {
-					return kbComment.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<KBComment, Object>() {
-				@Override
-				public Object apply(KBComment kbComment) {
-					return kbComment.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<KBComment, Object>() {
-				@Override
-				public Object apply(KBComment kbComment) {
-					return kbComment.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<KBComment, Object>() {
-				@Override
-				public Object apply(KBComment kbComment) {
-					return kbComment.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<KBComment, Object>() {
-				@Override
-				public Object apply(KBComment kbComment) {
-					return kbComment.getModifiedDate();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<KBComment, Object>() {
-				@Override
-				public Object apply(KBComment kbComment) {
-					return kbComment.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<KBComment, Object>() {
-				@Override
-				public Object apply(KBComment kbComment) {
-					return kbComment.getClassPK();
-				}
-			});
-		attributeGetters.put("content",
-			new Function<KBComment, Object>() {
-				@Override
-				public Object apply(KBComment kbComment) {
-					return kbComment.getContent();
-				}
-			});
-		attributeGetters.put("userRating",
-			new Function<KBComment, Object>() {
-				@Override
-				public Object apply(KBComment kbComment) {
-					return kbComment.getUserRating();
-				}
-			});
-		attributeGetters.put("lastPublishDate",
-			new Function<KBComment, Object>() {
-				@Override
-				public Object apply(KBComment kbComment) {
-					return kbComment.getLastPublishDate();
-				}
-			});
-		attributeGetters.put("status",
-			new Function<KBComment, Object>() {
-				@Override
-				public Object apply(KBComment kbComment) {
-					return kbComment.getStatus();
-				}
-			});
+		attributeGetters.put("uuid", KBComment::getUuid);
+		attributeSetters.put("uuid", KBComment::setUuid);
+
+		attributeGetters.put("kbCommentId", KBComment::getKbCommentId);
+		attributeSetters.put("kbCommentId", KBComment::setKbCommentId);
+
+		attributeGetters.put("groupId", KBComment::getGroupId);
+		attributeSetters.put("groupId", KBComment::setGroupId);
+
+		attributeGetters.put("companyId", KBComment::getCompanyId);
+		attributeSetters.put("companyId", KBComment::setCompanyId);
+
+		attributeGetters.put("userId", KBComment::getUserId);
+		attributeSetters.put("userId", KBComment::setUserId);
+
+		attributeGetters.put("userName", KBComment::getUserName);
+		attributeSetters.put("userName", KBComment::setUserName);
+
+		attributeGetters.put("createDate", KBComment::getCreateDate);
+		attributeSetters.put("createDate", KBComment::setCreateDate);
+
+		attributeGetters.put("modifiedDate", KBComment::getModifiedDate);
+		attributeSetters.put("modifiedDate", KBComment::setModifiedDate);
+
+		attributeGetters.put("classNameId", KBComment::getClassNameId);
+		attributeSetters.put("classNameId", KBComment::setClassNameId);
+
+		attributeGetters.put("classPK", KBComment::getClassPK);
+		attributeSetters.put("classPK", KBComment::setClassPK);
+
+		attributeGetters.put("content", KBComment::getContent);
+		attributeSetters.put("content", KBComment::setContent);
+
+		attributeGetters.put("userRating", KBComment::getUserRating);
+		attributeSetters.put("userRating", KBComment::setUserRating);
+
+		attributeGetters.put("lastPublishDate", KBComment::getLastPublishDate);
+		attributeSetters.put("lastPublishDate", KBComment::setLastPublishDate);
+
+		attributeGetters.put("status", KBComment::getStatus);
+		attributeSetters.put("status", KBComment::setStatus);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<KBComment, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<KBComment, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<KBComment, String>() {
-				@Override
-				public void accept(KBComment kbComment, String uuid) {
-					kbComment.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("kbCommentId",
-			new BiConsumer<KBComment, Long>() {
-				@Override
-				public void accept(KBComment kbComment, Long kbCommentId) {
-					kbComment.setKbCommentId(kbCommentId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<KBComment, Long>() {
-				@Override
-				public void accept(KBComment kbComment, Long groupId) {
-					kbComment.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<KBComment, Long>() {
-				@Override
-				public void accept(KBComment kbComment, Long companyId) {
-					kbComment.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<KBComment, Long>() {
-				@Override
-				public void accept(KBComment kbComment, Long userId) {
-					kbComment.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<KBComment, String>() {
-				@Override
-				public void accept(KBComment kbComment, String userName) {
-					kbComment.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<KBComment, Date>() {
-				@Override
-				public void accept(KBComment kbComment, Date createDate) {
-					kbComment.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<KBComment, Date>() {
-				@Override
-				public void accept(KBComment kbComment, Date modifiedDate) {
-					kbComment.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<KBComment, Long>() {
-				@Override
-				public void accept(KBComment kbComment, Long classNameId) {
-					kbComment.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<KBComment, Long>() {
-				@Override
-				public void accept(KBComment kbComment, Long classPK) {
-					kbComment.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("content",
-			new BiConsumer<KBComment, String>() {
-				@Override
-				public void accept(KBComment kbComment, String content) {
-					kbComment.setContent(content);
-				}
-			});
-		attributeSetters.put("userRating",
-			new BiConsumer<KBComment, Integer>() {
-				@Override
-				public void accept(KBComment kbComment, Integer userRating) {
-					kbComment.setUserRating(userRating);
-				}
-			});
-		attributeSetters.put("lastPublishDate",
-			new BiConsumer<KBComment, Date>() {
-				@Override
-				public void accept(KBComment kbComment, Date lastPublishDate) {
-					kbComment.setLastPublishDate(lastPublishDate);
-				}
-			});
-		attributeSetters.put("status",
-			new BiConsumer<KBComment, Integer>() {
-				@Override
-				public void accept(KBComment kbComment, Integer status) {
-					kbComment.setStatus(status);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

@@ -225,154 +225,40 @@ public class RatingsEntryModelImpl extends BaseModelImpl<RatingsEntry>
 
 	static {
 		Map<String, Function<RatingsEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<RatingsEntry, Object>>();
+		Map<String, BiConsumer<RatingsEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<RatingsEntry, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<RatingsEntry, Object>() {
-				@Override
-				public Object apply(RatingsEntry ratingsEntry) {
-					return ratingsEntry.getUuid();
-				}
-			});
-		attributeGetters.put("entryId",
-			new Function<RatingsEntry, Object>() {
-				@Override
-				public Object apply(RatingsEntry ratingsEntry) {
-					return ratingsEntry.getEntryId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<RatingsEntry, Object>() {
-				@Override
-				public Object apply(RatingsEntry ratingsEntry) {
-					return ratingsEntry.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<RatingsEntry, Object>() {
-				@Override
-				public Object apply(RatingsEntry ratingsEntry) {
-					return ratingsEntry.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<RatingsEntry, Object>() {
-				@Override
-				public Object apply(RatingsEntry ratingsEntry) {
-					return ratingsEntry.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<RatingsEntry, Object>() {
-				@Override
-				public Object apply(RatingsEntry ratingsEntry) {
-					return ratingsEntry.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<RatingsEntry, Object>() {
-				@Override
-				public Object apply(RatingsEntry ratingsEntry) {
-					return ratingsEntry.getModifiedDate();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<RatingsEntry, Object>() {
-				@Override
-				public Object apply(RatingsEntry ratingsEntry) {
-					return ratingsEntry.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<RatingsEntry, Object>() {
-				@Override
-				public Object apply(RatingsEntry ratingsEntry) {
-					return ratingsEntry.getClassPK();
-				}
-			});
-		attributeGetters.put("score",
-			new Function<RatingsEntry, Object>() {
-				@Override
-				public Object apply(RatingsEntry ratingsEntry) {
-					return ratingsEntry.getScore();
-				}
-			});
+		attributeGetters.put("uuid", RatingsEntry::getUuid);
+		attributeSetters.put("uuid", RatingsEntry::setUuid);
+
+		attributeGetters.put("entryId", RatingsEntry::getEntryId);
+		attributeSetters.put("entryId", RatingsEntry::setEntryId);
+
+		attributeGetters.put("companyId", RatingsEntry::getCompanyId);
+		attributeSetters.put("companyId", RatingsEntry::setCompanyId);
+
+		attributeGetters.put("userId", RatingsEntry::getUserId);
+		attributeSetters.put("userId", RatingsEntry::setUserId);
+
+		attributeGetters.put("userName", RatingsEntry::getUserName);
+		attributeSetters.put("userName", RatingsEntry::setUserName);
+
+		attributeGetters.put("createDate", RatingsEntry::getCreateDate);
+		attributeSetters.put("createDate", RatingsEntry::setCreateDate);
+
+		attributeGetters.put("modifiedDate", RatingsEntry::getModifiedDate);
+		attributeSetters.put("modifiedDate", RatingsEntry::setModifiedDate);
+
+		attributeGetters.put("classNameId", RatingsEntry::getClassNameId);
+		attributeSetters.put("classNameId", RatingsEntry::setClassNameId);
+
+		attributeGetters.put("classPK", RatingsEntry::getClassPK);
+		attributeSetters.put("classPK", RatingsEntry::setClassPK);
+
+		attributeGetters.put("score", RatingsEntry::getScore);
+		attributeSetters.put("score", RatingsEntry::setScore);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<RatingsEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<RatingsEntry, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<RatingsEntry, String>() {
-				@Override
-				public void accept(RatingsEntry ratingsEntry, String uuid) {
-					ratingsEntry.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("entryId",
-			new BiConsumer<RatingsEntry, Long>() {
-				@Override
-				public void accept(RatingsEntry ratingsEntry, Long entryId) {
-					ratingsEntry.setEntryId(entryId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<RatingsEntry, Long>() {
-				@Override
-				public void accept(RatingsEntry ratingsEntry, Long companyId) {
-					ratingsEntry.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<RatingsEntry, Long>() {
-				@Override
-				public void accept(RatingsEntry ratingsEntry, Long userId) {
-					ratingsEntry.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<RatingsEntry, String>() {
-				@Override
-				public void accept(RatingsEntry ratingsEntry, String userName) {
-					ratingsEntry.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<RatingsEntry, Date>() {
-				@Override
-				public void accept(RatingsEntry ratingsEntry, Date createDate) {
-					ratingsEntry.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<RatingsEntry, Date>() {
-				@Override
-				public void accept(RatingsEntry ratingsEntry, Date modifiedDate) {
-					ratingsEntry.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<RatingsEntry, Long>() {
-				@Override
-				public void accept(RatingsEntry ratingsEntry, Long classNameId) {
-					ratingsEntry.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<RatingsEntry, Long>() {
-				@Override
-				public void accept(RatingsEntry ratingsEntry, Long classPK) {
-					ratingsEntry.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("score",
-			new BiConsumer<RatingsEntry, Double>() {
-				@Override
-				public void accept(RatingsEntry ratingsEntry, Double score) {
-					ratingsEntry.setScore(score);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

@@ -172,176 +172,43 @@ public class SiteFriendlyURLModelImpl extends BaseModelImpl<SiteFriendlyURL>
 
 	static {
 		Map<String, Function<SiteFriendlyURL, Object>> attributeGetters = new LinkedHashMap<String, Function<SiteFriendlyURL, Object>>();
+		Map<String, BiConsumer<SiteFriendlyURL, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SiteFriendlyURL, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<SiteFriendlyURL, Object>() {
-				@Override
-				public Object apply(SiteFriendlyURL siteFriendlyURL) {
-					return siteFriendlyURL.getUuid();
-				}
-			});
-		attributeGetters.put("siteFriendlyURLId",
-			new Function<SiteFriendlyURL, Object>() {
-				@Override
-				public Object apply(SiteFriendlyURL siteFriendlyURL) {
-					return siteFriendlyURL.getSiteFriendlyURLId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<SiteFriendlyURL, Object>() {
-				@Override
-				public Object apply(SiteFriendlyURL siteFriendlyURL) {
-					return siteFriendlyURL.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<SiteFriendlyURL, Object>() {
-				@Override
-				public Object apply(SiteFriendlyURL siteFriendlyURL) {
-					return siteFriendlyURL.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<SiteFriendlyURL, Object>() {
-				@Override
-				public Object apply(SiteFriendlyURL siteFriendlyURL) {
-					return siteFriendlyURL.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<SiteFriendlyURL, Object>() {
-				@Override
-				public Object apply(SiteFriendlyURL siteFriendlyURL) {
-					return siteFriendlyURL.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<SiteFriendlyURL, Object>() {
-				@Override
-				public Object apply(SiteFriendlyURL siteFriendlyURL) {
-					return siteFriendlyURL.getModifiedDate();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<SiteFriendlyURL, Object>() {
-				@Override
-				public Object apply(SiteFriendlyURL siteFriendlyURL) {
-					return siteFriendlyURL.getGroupId();
-				}
-			});
-		attributeGetters.put("friendlyURL",
-			new Function<SiteFriendlyURL, Object>() {
-				@Override
-				public Object apply(SiteFriendlyURL siteFriendlyURL) {
-					return siteFriendlyURL.getFriendlyURL();
-				}
-			});
-		attributeGetters.put("languageId",
-			new Function<SiteFriendlyURL, Object>() {
-				@Override
-				public Object apply(SiteFriendlyURL siteFriendlyURL) {
-					return siteFriendlyURL.getLanguageId();
-				}
-			});
-		attributeGetters.put("lastPublishDate",
-			new Function<SiteFriendlyURL, Object>() {
-				@Override
-				public Object apply(SiteFriendlyURL siteFriendlyURL) {
-					return siteFriendlyURL.getLastPublishDate();
-				}
-			});
+		attributeGetters.put("uuid", SiteFriendlyURL::getUuid);
+		attributeSetters.put("uuid", SiteFriendlyURL::setUuid);
+
+		attributeGetters.put("siteFriendlyURLId", SiteFriendlyURL::getSiteFriendlyURLId);
+		attributeSetters.put("siteFriendlyURLId", SiteFriendlyURL::setSiteFriendlyURLId);
+
+		attributeGetters.put("companyId", SiteFriendlyURL::getCompanyId);
+		attributeSetters.put("companyId", SiteFriendlyURL::setCompanyId);
+
+		attributeGetters.put("userId", SiteFriendlyURL::getUserId);
+		attributeSetters.put("userId", SiteFriendlyURL::setUserId);
+
+		attributeGetters.put("userName", SiteFriendlyURL::getUserName);
+		attributeSetters.put("userName", SiteFriendlyURL::setUserName);
+
+		attributeGetters.put("createDate", SiteFriendlyURL::getCreateDate);
+		attributeSetters.put("createDate", SiteFriendlyURL::setCreateDate);
+
+		attributeGetters.put("modifiedDate", SiteFriendlyURL::getModifiedDate);
+		attributeSetters.put("modifiedDate", SiteFriendlyURL::setModifiedDate);
+
+		attributeGetters.put("groupId", SiteFriendlyURL::getGroupId);
+		attributeSetters.put("groupId", SiteFriendlyURL::setGroupId);
+
+		attributeGetters.put("friendlyURL", SiteFriendlyURL::getFriendlyURL);
+		attributeSetters.put("friendlyURL", SiteFriendlyURL::setFriendlyURL);
+
+		attributeGetters.put("languageId", SiteFriendlyURL::getLanguageId);
+		attributeSetters.put("languageId", SiteFriendlyURL::setLanguageId);
+
+		attributeGetters.put("lastPublishDate", SiteFriendlyURL::getLastPublishDate);
+		attributeSetters.put("lastPublishDate", SiteFriendlyURL::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<SiteFriendlyURL, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<SiteFriendlyURL, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<SiteFriendlyURL, String>() {
-				@Override
-				public void accept(SiteFriendlyURL siteFriendlyURL, String uuid) {
-					siteFriendlyURL.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("siteFriendlyURLId",
-			new BiConsumer<SiteFriendlyURL, Long>() {
-				@Override
-				public void accept(SiteFriendlyURL siteFriendlyURL,
-					Long siteFriendlyURLId) {
-					siteFriendlyURL.setSiteFriendlyURLId(siteFriendlyURLId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<SiteFriendlyURL, Long>() {
-				@Override
-				public void accept(SiteFriendlyURL siteFriendlyURL,
-					Long companyId) {
-					siteFriendlyURL.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<SiteFriendlyURL, Long>() {
-				@Override
-				public void accept(SiteFriendlyURL siteFriendlyURL, Long userId) {
-					siteFriendlyURL.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<SiteFriendlyURL, String>() {
-				@Override
-				public void accept(SiteFriendlyURL siteFriendlyURL,
-					String userName) {
-					siteFriendlyURL.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<SiteFriendlyURL, Date>() {
-				@Override
-				public void accept(SiteFriendlyURL siteFriendlyURL,
-					Date createDate) {
-					siteFriendlyURL.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<SiteFriendlyURL, Date>() {
-				@Override
-				public void accept(SiteFriendlyURL siteFriendlyURL,
-					Date modifiedDate) {
-					siteFriendlyURL.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<SiteFriendlyURL, Long>() {
-				@Override
-				public void accept(SiteFriendlyURL siteFriendlyURL, Long groupId) {
-					siteFriendlyURL.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("friendlyURL",
-			new BiConsumer<SiteFriendlyURL, String>() {
-				@Override
-				public void accept(SiteFriendlyURL siteFriendlyURL,
-					String friendlyURL) {
-					siteFriendlyURL.setFriendlyURL(friendlyURL);
-				}
-			});
-		attributeSetters.put("languageId",
-			new BiConsumer<SiteFriendlyURL, String>() {
-				@Override
-				public void accept(SiteFriendlyURL siteFriendlyURL,
-					String languageId) {
-					siteFriendlyURL.setLanguageId(languageId);
-				}
-			});
-		attributeSetters.put("lastPublishDate",
-			new BiConsumer<SiteFriendlyURL, Date>() {
-				@Override
-				public void accept(SiteFriendlyURL siteFriendlyURL,
-					Date lastPublishDate) {
-					siteFriendlyURL.setLastPublishDate(lastPublishDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

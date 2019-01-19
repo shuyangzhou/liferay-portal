@@ -179,224 +179,52 @@ public class LayoutFriendlyURLModelImpl extends BaseModelImpl<LayoutFriendlyURL>
 
 	static {
 		Map<String, Function<LayoutFriendlyURL, Object>> attributeGetters = new LinkedHashMap<String, Function<LayoutFriendlyURL, Object>>();
+		Map<String, BiConsumer<LayoutFriendlyURL, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<LayoutFriendlyURL, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<LayoutFriendlyURL, Object>() {
-				@Override
-				public Object apply(LayoutFriendlyURL layoutFriendlyURL) {
-					return layoutFriendlyURL.getMvccVersion();
-				}
-			});
-		attributeGetters.put("uuid",
-			new Function<LayoutFriendlyURL, Object>() {
-				@Override
-				public Object apply(LayoutFriendlyURL layoutFriendlyURL) {
-					return layoutFriendlyURL.getUuid();
-				}
-			});
-		attributeGetters.put("layoutFriendlyURLId",
-			new Function<LayoutFriendlyURL, Object>() {
-				@Override
-				public Object apply(LayoutFriendlyURL layoutFriendlyURL) {
-					return layoutFriendlyURL.getLayoutFriendlyURLId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<LayoutFriendlyURL, Object>() {
-				@Override
-				public Object apply(LayoutFriendlyURL layoutFriendlyURL) {
-					return layoutFriendlyURL.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<LayoutFriendlyURL, Object>() {
-				@Override
-				public Object apply(LayoutFriendlyURL layoutFriendlyURL) {
-					return layoutFriendlyURL.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<LayoutFriendlyURL, Object>() {
-				@Override
-				public Object apply(LayoutFriendlyURL layoutFriendlyURL) {
-					return layoutFriendlyURL.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<LayoutFriendlyURL, Object>() {
-				@Override
-				public Object apply(LayoutFriendlyURL layoutFriendlyURL) {
-					return layoutFriendlyURL.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<LayoutFriendlyURL, Object>() {
-				@Override
-				public Object apply(LayoutFriendlyURL layoutFriendlyURL) {
-					return layoutFriendlyURL.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<LayoutFriendlyURL, Object>() {
-				@Override
-				public Object apply(LayoutFriendlyURL layoutFriendlyURL) {
-					return layoutFriendlyURL.getModifiedDate();
-				}
-			});
-		attributeGetters.put("plid",
-			new Function<LayoutFriendlyURL, Object>() {
-				@Override
-				public Object apply(LayoutFriendlyURL layoutFriendlyURL) {
-					return layoutFriendlyURL.getPlid();
-				}
-			});
-		attributeGetters.put("privateLayout",
-			new Function<LayoutFriendlyURL, Object>() {
-				@Override
-				public Object apply(LayoutFriendlyURL layoutFriendlyURL) {
-					return layoutFriendlyURL.isPrivateLayout();
-				}
-			});
-		attributeGetters.put("friendlyURL",
-			new Function<LayoutFriendlyURL, Object>() {
-				@Override
-				public Object apply(LayoutFriendlyURL layoutFriendlyURL) {
-					return layoutFriendlyURL.getFriendlyURL();
-				}
-			});
-		attributeGetters.put("languageId",
-			new Function<LayoutFriendlyURL, Object>() {
-				@Override
-				public Object apply(LayoutFriendlyURL layoutFriendlyURL) {
-					return layoutFriendlyURL.getLanguageId();
-				}
-			});
-		attributeGetters.put("lastPublishDate",
-			new Function<LayoutFriendlyURL, Object>() {
-				@Override
-				public Object apply(LayoutFriendlyURL layoutFriendlyURL) {
-					return layoutFriendlyURL.getLastPublishDate();
-				}
-			});
+		attributeGetters.put("mvccVersion", LayoutFriendlyURL::getMvccVersion);
+		attributeSetters.put("mvccVersion", LayoutFriendlyURL::setMvccVersion);
+
+		attributeGetters.put("uuid", LayoutFriendlyURL::getUuid);
+		attributeSetters.put("uuid", LayoutFriendlyURL::setUuid);
+
+		attributeGetters.put("layoutFriendlyURLId", LayoutFriendlyURL::getLayoutFriendlyURLId);
+		attributeSetters.put("layoutFriendlyURLId", LayoutFriendlyURL::setLayoutFriendlyURLId);
+
+		attributeGetters.put("groupId", LayoutFriendlyURL::getGroupId);
+		attributeSetters.put("groupId", LayoutFriendlyURL::setGroupId);
+
+		attributeGetters.put("companyId", LayoutFriendlyURL::getCompanyId);
+		attributeSetters.put("companyId", LayoutFriendlyURL::setCompanyId);
+
+		attributeGetters.put("userId", LayoutFriendlyURL::getUserId);
+		attributeSetters.put("userId", LayoutFriendlyURL::setUserId);
+
+		attributeGetters.put("userName", LayoutFriendlyURL::getUserName);
+		attributeSetters.put("userName", LayoutFriendlyURL::setUserName);
+
+		attributeGetters.put("createDate", LayoutFriendlyURL::getCreateDate);
+		attributeSetters.put("createDate", LayoutFriendlyURL::setCreateDate);
+
+		attributeGetters.put("modifiedDate", LayoutFriendlyURL::getModifiedDate);
+		attributeSetters.put("modifiedDate", LayoutFriendlyURL::setModifiedDate);
+
+		attributeGetters.put("plid", LayoutFriendlyURL::getPlid);
+		attributeSetters.put("plid", LayoutFriendlyURL::setPlid);
+
+		attributeGetters.put("privateLayout", LayoutFriendlyURL::getPrivateLayout);
+		attributeSetters.put("privateLayout", LayoutFriendlyURL::setPrivateLayout);
+
+		attributeGetters.put("friendlyURL", LayoutFriendlyURL::getFriendlyURL);
+		attributeSetters.put("friendlyURL", LayoutFriendlyURL::setFriendlyURL);
+
+		attributeGetters.put("languageId", LayoutFriendlyURL::getLanguageId);
+		attributeSetters.put("languageId", LayoutFriendlyURL::setLanguageId);
+
+		attributeGetters.put("lastPublishDate", LayoutFriendlyURL::getLastPublishDate);
+		attributeSetters.put("lastPublishDate", LayoutFriendlyURL::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<LayoutFriendlyURL, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<LayoutFriendlyURL, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<LayoutFriendlyURL, Long>() {
-				@Override
-				public void accept(LayoutFriendlyURL layoutFriendlyURL,
-					Long mvccVersion) {
-					layoutFriendlyURL.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("uuid",
-			new BiConsumer<LayoutFriendlyURL, String>() {
-				@Override
-				public void accept(LayoutFriendlyURL layoutFriendlyURL,
-					String uuid) {
-					layoutFriendlyURL.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("layoutFriendlyURLId",
-			new BiConsumer<LayoutFriendlyURL, Long>() {
-				@Override
-				public void accept(LayoutFriendlyURL layoutFriendlyURL,
-					Long layoutFriendlyURLId) {
-					layoutFriendlyURL.setLayoutFriendlyURLId(layoutFriendlyURLId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<LayoutFriendlyURL, Long>() {
-				@Override
-				public void accept(LayoutFriendlyURL layoutFriendlyURL,
-					Long groupId) {
-					layoutFriendlyURL.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<LayoutFriendlyURL, Long>() {
-				@Override
-				public void accept(LayoutFriendlyURL layoutFriendlyURL,
-					Long companyId) {
-					layoutFriendlyURL.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<LayoutFriendlyURL, Long>() {
-				@Override
-				public void accept(LayoutFriendlyURL layoutFriendlyURL,
-					Long userId) {
-					layoutFriendlyURL.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<LayoutFriendlyURL, String>() {
-				@Override
-				public void accept(LayoutFriendlyURL layoutFriendlyURL,
-					String userName) {
-					layoutFriendlyURL.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<LayoutFriendlyURL, Date>() {
-				@Override
-				public void accept(LayoutFriendlyURL layoutFriendlyURL,
-					Date createDate) {
-					layoutFriendlyURL.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<LayoutFriendlyURL, Date>() {
-				@Override
-				public void accept(LayoutFriendlyURL layoutFriendlyURL,
-					Date modifiedDate) {
-					layoutFriendlyURL.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("plid",
-			new BiConsumer<LayoutFriendlyURL, Long>() {
-				@Override
-				public void accept(LayoutFriendlyURL layoutFriendlyURL,
-					Long plid) {
-					layoutFriendlyURL.setPlid(plid);
-				}
-			});
-		attributeSetters.put("privateLayout",
-			new BiConsumer<LayoutFriendlyURL, Boolean>() {
-				@Override
-				public void accept(LayoutFriendlyURL layoutFriendlyURL,
-					Boolean privateLayout) {
-					layoutFriendlyURL.setPrivateLayout(privateLayout);
-				}
-			});
-		attributeSetters.put("friendlyURL",
-			new BiConsumer<LayoutFriendlyURL, String>() {
-				@Override
-				public void accept(LayoutFriendlyURL layoutFriendlyURL,
-					String friendlyURL) {
-					layoutFriendlyURL.setFriendlyURL(friendlyURL);
-				}
-			});
-		attributeSetters.put("languageId",
-			new BiConsumer<LayoutFriendlyURL, String>() {
-				@Override
-				public void accept(LayoutFriendlyURL layoutFriendlyURL,
-					String languageId) {
-					layoutFriendlyURL.setLanguageId(languageId);
-				}
-			});
-		attributeSetters.put("lastPublishDate",
-			new BiConsumer<LayoutFriendlyURL, Date>() {
-				@Override
-				public void accept(LayoutFriendlyURL layoutFriendlyURL,
-					Date lastPublishDate) {
-					layoutFriendlyURL.setLastPublishDate(lastPublishDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

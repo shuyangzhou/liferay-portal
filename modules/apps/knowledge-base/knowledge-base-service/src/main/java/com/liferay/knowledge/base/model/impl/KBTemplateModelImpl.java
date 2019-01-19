@@ -225,168 +225,43 @@ public class KBTemplateModelImpl extends BaseModelImpl<KBTemplate>
 
 	static {
 		Map<String, Function<KBTemplate, Object>> attributeGetters = new LinkedHashMap<String, Function<KBTemplate, Object>>();
+		Map<String, BiConsumer<KBTemplate, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<KBTemplate, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<KBTemplate, Object>() {
-				@Override
-				public Object apply(KBTemplate kbTemplate) {
-					return kbTemplate.getUuid();
-				}
-			});
-		attributeGetters.put("kbTemplateId",
-			new Function<KBTemplate, Object>() {
-				@Override
-				public Object apply(KBTemplate kbTemplate) {
-					return kbTemplate.getKbTemplateId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<KBTemplate, Object>() {
-				@Override
-				public Object apply(KBTemplate kbTemplate) {
-					return kbTemplate.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<KBTemplate, Object>() {
-				@Override
-				public Object apply(KBTemplate kbTemplate) {
-					return kbTemplate.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<KBTemplate, Object>() {
-				@Override
-				public Object apply(KBTemplate kbTemplate) {
-					return kbTemplate.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<KBTemplate, Object>() {
-				@Override
-				public Object apply(KBTemplate kbTemplate) {
-					return kbTemplate.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<KBTemplate, Object>() {
-				@Override
-				public Object apply(KBTemplate kbTemplate) {
-					return kbTemplate.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<KBTemplate, Object>() {
-				@Override
-				public Object apply(KBTemplate kbTemplate) {
-					return kbTemplate.getModifiedDate();
-				}
-			});
-		attributeGetters.put("title",
-			new Function<KBTemplate, Object>() {
-				@Override
-				public Object apply(KBTemplate kbTemplate) {
-					return kbTemplate.getTitle();
-				}
-			});
-		attributeGetters.put("content",
-			new Function<KBTemplate, Object>() {
-				@Override
-				public Object apply(KBTemplate kbTemplate) {
-					return kbTemplate.getContent();
-				}
-			});
-		attributeGetters.put("lastPublishDate",
-			new Function<KBTemplate, Object>() {
-				@Override
-				public Object apply(KBTemplate kbTemplate) {
-					return kbTemplate.getLastPublishDate();
-				}
-			});
+		attributeGetters.put("uuid", KBTemplate::getUuid);
+		attributeSetters.put("uuid", KBTemplate::setUuid);
+
+		attributeGetters.put("kbTemplateId", KBTemplate::getKbTemplateId);
+		attributeSetters.put("kbTemplateId", KBTemplate::setKbTemplateId);
+
+		attributeGetters.put("groupId", KBTemplate::getGroupId);
+		attributeSetters.put("groupId", KBTemplate::setGroupId);
+
+		attributeGetters.put("companyId", KBTemplate::getCompanyId);
+		attributeSetters.put("companyId", KBTemplate::setCompanyId);
+
+		attributeGetters.put("userId", KBTemplate::getUserId);
+		attributeSetters.put("userId", KBTemplate::setUserId);
+
+		attributeGetters.put("userName", KBTemplate::getUserName);
+		attributeSetters.put("userName", KBTemplate::setUserName);
+
+		attributeGetters.put("createDate", KBTemplate::getCreateDate);
+		attributeSetters.put("createDate", KBTemplate::setCreateDate);
+
+		attributeGetters.put("modifiedDate", KBTemplate::getModifiedDate);
+		attributeSetters.put("modifiedDate", KBTemplate::setModifiedDate);
+
+		attributeGetters.put("title", KBTemplate::getTitle);
+		attributeSetters.put("title", KBTemplate::setTitle);
+
+		attributeGetters.put("content", KBTemplate::getContent);
+		attributeSetters.put("content", KBTemplate::setContent);
+
+		attributeGetters.put("lastPublishDate", KBTemplate::getLastPublishDate);
+		attributeSetters.put("lastPublishDate", KBTemplate::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<KBTemplate, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<KBTemplate, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<KBTemplate, String>() {
-				@Override
-				public void accept(KBTemplate kbTemplate, String uuid) {
-					kbTemplate.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("kbTemplateId",
-			new BiConsumer<KBTemplate, Long>() {
-				@Override
-				public void accept(KBTemplate kbTemplate, Long kbTemplateId) {
-					kbTemplate.setKbTemplateId(kbTemplateId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<KBTemplate, Long>() {
-				@Override
-				public void accept(KBTemplate kbTemplate, Long groupId) {
-					kbTemplate.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<KBTemplate, Long>() {
-				@Override
-				public void accept(KBTemplate kbTemplate, Long companyId) {
-					kbTemplate.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<KBTemplate, Long>() {
-				@Override
-				public void accept(KBTemplate kbTemplate, Long userId) {
-					kbTemplate.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<KBTemplate, String>() {
-				@Override
-				public void accept(KBTemplate kbTemplate, String userName) {
-					kbTemplate.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<KBTemplate, Date>() {
-				@Override
-				public void accept(KBTemplate kbTemplate, Date createDate) {
-					kbTemplate.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<KBTemplate, Date>() {
-				@Override
-				public void accept(KBTemplate kbTemplate, Date modifiedDate) {
-					kbTemplate.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("title",
-			new BiConsumer<KBTemplate, String>() {
-				@Override
-				public void accept(KBTemplate kbTemplate, String title) {
-					kbTemplate.setTitle(title);
-				}
-			});
-		attributeSetters.put("content",
-			new BiConsumer<KBTemplate, String>() {
-				@Override
-				public void accept(KBTemplate kbTemplate, String content) {
-					kbTemplate.setContent(content);
-				}
-			});
-		attributeSetters.put("lastPublishDate",
-			new BiConsumer<KBTemplate, Date>() {
-				@Override
-				public void accept(KBTemplate kbTemplate, Date lastPublishDate) {
-					kbTemplate.setLastPublishDate(lastPublishDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

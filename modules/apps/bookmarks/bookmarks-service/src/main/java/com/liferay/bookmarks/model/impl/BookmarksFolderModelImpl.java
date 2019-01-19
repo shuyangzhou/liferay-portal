@@ -251,265 +251,61 @@ public class BookmarksFolderModelImpl extends BaseModelImpl<BookmarksFolder>
 
 	static {
 		Map<String, Function<BookmarksFolder, Object>> attributeGetters = new LinkedHashMap<String, Function<BookmarksFolder, Object>>();
+		Map<String, BiConsumer<BookmarksFolder, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<BookmarksFolder, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<BookmarksFolder, Object>() {
-				@Override
-				public Object apply(BookmarksFolder bookmarksFolder) {
-					return bookmarksFolder.getUuid();
-				}
-			});
-		attributeGetters.put("folderId",
-			new Function<BookmarksFolder, Object>() {
-				@Override
-				public Object apply(BookmarksFolder bookmarksFolder) {
-					return bookmarksFolder.getFolderId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<BookmarksFolder, Object>() {
-				@Override
-				public Object apply(BookmarksFolder bookmarksFolder) {
-					return bookmarksFolder.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<BookmarksFolder, Object>() {
-				@Override
-				public Object apply(BookmarksFolder bookmarksFolder) {
-					return bookmarksFolder.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<BookmarksFolder, Object>() {
-				@Override
-				public Object apply(BookmarksFolder bookmarksFolder) {
-					return bookmarksFolder.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<BookmarksFolder, Object>() {
-				@Override
-				public Object apply(BookmarksFolder bookmarksFolder) {
-					return bookmarksFolder.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<BookmarksFolder, Object>() {
-				@Override
-				public Object apply(BookmarksFolder bookmarksFolder) {
-					return bookmarksFolder.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<BookmarksFolder, Object>() {
-				@Override
-				public Object apply(BookmarksFolder bookmarksFolder) {
-					return bookmarksFolder.getModifiedDate();
-				}
-			});
-		attributeGetters.put("parentFolderId",
-			new Function<BookmarksFolder, Object>() {
-				@Override
-				public Object apply(BookmarksFolder bookmarksFolder) {
-					return bookmarksFolder.getParentFolderId();
-				}
-			});
-		attributeGetters.put("treePath",
-			new Function<BookmarksFolder, Object>() {
-				@Override
-				public Object apply(BookmarksFolder bookmarksFolder) {
-					return bookmarksFolder.getTreePath();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<BookmarksFolder, Object>() {
-				@Override
-				public Object apply(BookmarksFolder bookmarksFolder) {
-					return bookmarksFolder.getName();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<BookmarksFolder, Object>() {
-				@Override
-				public Object apply(BookmarksFolder bookmarksFolder) {
-					return bookmarksFolder.getDescription();
-				}
-			});
-		attributeGetters.put("lastPublishDate",
-			new Function<BookmarksFolder, Object>() {
-				@Override
-				public Object apply(BookmarksFolder bookmarksFolder) {
-					return bookmarksFolder.getLastPublishDate();
-				}
-			});
-		attributeGetters.put("status",
-			new Function<BookmarksFolder, Object>() {
-				@Override
-				public Object apply(BookmarksFolder bookmarksFolder) {
-					return bookmarksFolder.getStatus();
-				}
-			});
-		attributeGetters.put("statusByUserId",
-			new Function<BookmarksFolder, Object>() {
-				@Override
-				public Object apply(BookmarksFolder bookmarksFolder) {
-					return bookmarksFolder.getStatusByUserId();
-				}
-			});
-		attributeGetters.put("statusByUserName",
-			new Function<BookmarksFolder, Object>() {
-				@Override
-				public Object apply(BookmarksFolder bookmarksFolder) {
-					return bookmarksFolder.getStatusByUserName();
-				}
-			});
-		attributeGetters.put("statusDate",
-			new Function<BookmarksFolder, Object>() {
-				@Override
-				public Object apply(BookmarksFolder bookmarksFolder) {
-					return bookmarksFolder.getStatusDate();
-				}
-			});
+		attributeGetters.put("uuid", BookmarksFolder::getUuid);
+		attributeSetters.put("uuid", BookmarksFolder::setUuid);
+
+		attributeGetters.put("folderId", BookmarksFolder::getFolderId);
+		attributeSetters.put("folderId", BookmarksFolder::setFolderId);
+
+		attributeGetters.put("groupId", BookmarksFolder::getGroupId);
+		attributeSetters.put("groupId", BookmarksFolder::setGroupId);
+
+		attributeGetters.put("companyId", BookmarksFolder::getCompanyId);
+		attributeSetters.put("companyId", BookmarksFolder::setCompanyId);
+
+		attributeGetters.put("userId", BookmarksFolder::getUserId);
+		attributeSetters.put("userId", BookmarksFolder::setUserId);
+
+		attributeGetters.put("userName", BookmarksFolder::getUserName);
+		attributeSetters.put("userName", BookmarksFolder::setUserName);
+
+		attributeGetters.put("createDate", BookmarksFolder::getCreateDate);
+		attributeSetters.put("createDate", BookmarksFolder::setCreateDate);
+
+		attributeGetters.put("modifiedDate", BookmarksFolder::getModifiedDate);
+		attributeSetters.put("modifiedDate", BookmarksFolder::setModifiedDate);
+
+		attributeGetters.put("parentFolderId", BookmarksFolder::getParentFolderId);
+		attributeSetters.put("parentFolderId", BookmarksFolder::setParentFolderId);
+
+		attributeGetters.put("treePath", BookmarksFolder::getTreePath);
+		attributeSetters.put("treePath", BookmarksFolder::setTreePath);
+
+		attributeGetters.put("name", BookmarksFolder::getName);
+		attributeSetters.put("name", BookmarksFolder::setName);
+
+		attributeGetters.put("description", BookmarksFolder::getDescription);
+		attributeSetters.put("description", BookmarksFolder::setDescription);
+
+		attributeGetters.put("lastPublishDate", BookmarksFolder::getLastPublishDate);
+		attributeSetters.put("lastPublishDate", BookmarksFolder::setLastPublishDate);
+
+		attributeGetters.put("status", BookmarksFolder::getStatus);
+		attributeSetters.put("status", BookmarksFolder::setStatus);
+
+		attributeGetters.put("statusByUserId", BookmarksFolder::getStatusByUserId);
+		attributeSetters.put("statusByUserId", BookmarksFolder::setStatusByUserId);
+
+		attributeGetters.put("statusByUserName", BookmarksFolder::getStatusByUserName);
+		attributeSetters.put("statusByUserName", BookmarksFolder::setStatusByUserName);
+
+		attributeGetters.put("statusDate", BookmarksFolder::getStatusDate);
+		attributeSetters.put("statusDate", BookmarksFolder::setStatusDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<BookmarksFolder, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<BookmarksFolder, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<BookmarksFolder, String>() {
-				@Override
-				public void accept(BookmarksFolder bookmarksFolder, String uuid) {
-					bookmarksFolder.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("folderId",
-			new BiConsumer<BookmarksFolder, Long>() {
-				@Override
-				public void accept(BookmarksFolder bookmarksFolder,
-					Long folderId) {
-					bookmarksFolder.setFolderId(folderId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<BookmarksFolder, Long>() {
-				@Override
-				public void accept(BookmarksFolder bookmarksFolder, Long groupId) {
-					bookmarksFolder.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<BookmarksFolder, Long>() {
-				@Override
-				public void accept(BookmarksFolder bookmarksFolder,
-					Long companyId) {
-					bookmarksFolder.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<BookmarksFolder, Long>() {
-				@Override
-				public void accept(BookmarksFolder bookmarksFolder, Long userId) {
-					bookmarksFolder.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<BookmarksFolder, String>() {
-				@Override
-				public void accept(BookmarksFolder bookmarksFolder,
-					String userName) {
-					bookmarksFolder.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<BookmarksFolder, Date>() {
-				@Override
-				public void accept(BookmarksFolder bookmarksFolder,
-					Date createDate) {
-					bookmarksFolder.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<BookmarksFolder, Date>() {
-				@Override
-				public void accept(BookmarksFolder bookmarksFolder,
-					Date modifiedDate) {
-					bookmarksFolder.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("parentFolderId",
-			new BiConsumer<BookmarksFolder, Long>() {
-				@Override
-				public void accept(BookmarksFolder bookmarksFolder,
-					Long parentFolderId) {
-					bookmarksFolder.setParentFolderId(parentFolderId);
-				}
-			});
-		attributeSetters.put("treePath",
-			new BiConsumer<BookmarksFolder, String>() {
-				@Override
-				public void accept(BookmarksFolder bookmarksFolder,
-					String treePath) {
-					bookmarksFolder.setTreePath(treePath);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<BookmarksFolder, String>() {
-				@Override
-				public void accept(BookmarksFolder bookmarksFolder, String name) {
-					bookmarksFolder.setName(name);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<BookmarksFolder, String>() {
-				@Override
-				public void accept(BookmarksFolder bookmarksFolder,
-					String description) {
-					bookmarksFolder.setDescription(description);
-				}
-			});
-		attributeSetters.put("lastPublishDate",
-			new BiConsumer<BookmarksFolder, Date>() {
-				@Override
-				public void accept(BookmarksFolder bookmarksFolder,
-					Date lastPublishDate) {
-					bookmarksFolder.setLastPublishDate(lastPublishDate);
-				}
-			});
-		attributeSetters.put("status",
-			new BiConsumer<BookmarksFolder, Integer>() {
-				@Override
-				public void accept(BookmarksFolder bookmarksFolder,
-					Integer status) {
-					bookmarksFolder.setStatus(status);
-				}
-			});
-		attributeSetters.put("statusByUserId",
-			new BiConsumer<BookmarksFolder, Long>() {
-				@Override
-				public void accept(BookmarksFolder bookmarksFolder,
-					Long statusByUserId) {
-					bookmarksFolder.setStatusByUserId(statusByUserId);
-				}
-			});
-		attributeSetters.put("statusByUserName",
-			new BiConsumer<BookmarksFolder, String>() {
-				@Override
-				public void accept(BookmarksFolder bookmarksFolder,
-					String statusByUserName) {
-					bookmarksFolder.setStatusByUserName(statusByUserName);
-				}
-			});
-		attributeSetters.put("statusDate",
-			new BiConsumer<BookmarksFolder, Date>() {
-				@Override
-				public void accept(BookmarksFolder bookmarksFolder,
-					Date statusDate) {
-					bookmarksFolder.setStatusDate(statusDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

@@ -231,194 +231,46 @@ public class SiteNavigationMenuModelImpl extends BaseModelImpl<SiteNavigationMen
 
 	static {
 		Map<String, Function<SiteNavigationMenu, Object>> attributeGetters = new LinkedHashMap<String, Function<SiteNavigationMenu, Object>>();
+		Map<String, BiConsumer<SiteNavigationMenu, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SiteNavigationMenu, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<SiteNavigationMenu, Object>() {
-				@Override
-				public Object apply(SiteNavigationMenu siteNavigationMenu) {
-					return siteNavigationMenu.getUuid();
-				}
-			});
-		attributeGetters.put("siteNavigationMenuId",
-			new Function<SiteNavigationMenu, Object>() {
-				@Override
-				public Object apply(SiteNavigationMenu siteNavigationMenu) {
-					return siteNavigationMenu.getSiteNavigationMenuId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<SiteNavigationMenu, Object>() {
-				@Override
-				public Object apply(SiteNavigationMenu siteNavigationMenu) {
-					return siteNavigationMenu.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<SiteNavigationMenu, Object>() {
-				@Override
-				public Object apply(SiteNavigationMenu siteNavigationMenu) {
-					return siteNavigationMenu.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<SiteNavigationMenu, Object>() {
-				@Override
-				public Object apply(SiteNavigationMenu siteNavigationMenu) {
-					return siteNavigationMenu.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<SiteNavigationMenu, Object>() {
-				@Override
-				public Object apply(SiteNavigationMenu siteNavigationMenu) {
-					return siteNavigationMenu.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<SiteNavigationMenu, Object>() {
-				@Override
-				public Object apply(SiteNavigationMenu siteNavigationMenu) {
-					return siteNavigationMenu.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<SiteNavigationMenu, Object>() {
-				@Override
-				public Object apply(SiteNavigationMenu siteNavigationMenu) {
-					return siteNavigationMenu.getModifiedDate();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<SiteNavigationMenu, Object>() {
-				@Override
-				public Object apply(SiteNavigationMenu siteNavigationMenu) {
-					return siteNavigationMenu.getName();
-				}
-			});
-		attributeGetters.put("type",
-			new Function<SiteNavigationMenu, Object>() {
-				@Override
-				public Object apply(SiteNavigationMenu siteNavigationMenu) {
-					return siteNavigationMenu.getType();
-				}
-			});
-		attributeGetters.put("auto",
-			new Function<SiteNavigationMenu, Object>() {
-				@Override
-				public Object apply(SiteNavigationMenu siteNavigationMenu) {
-					return siteNavigationMenu.isAuto();
-				}
-			});
-		attributeGetters.put("lastPublishDate",
-			new Function<SiteNavigationMenu, Object>() {
-				@Override
-				public Object apply(SiteNavigationMenu siteNavigationMenu) {
-					return siteNavigationMenu.getLastPublishDate();
-				}
-			});
+		attributeGetters.put("uuid", SiteNavigationMenu::getUuid);
+		attributeSetters.put("uuid", SiteNavigationMenu::setUuid);
+
+		attributeGetters.put("siteNavigationMenuId", SiteNavigationMenu::getSiteNavigationMenuId);
+		attributeSetters.put("siteNavigationMenuId", SiteNavigationMenu::setSiteNavigationMenuId);
+
+		attributeGetters.put("groupId", SiteNavigationMenu::getGroupId);
+		attributeSetters.put("groupId", SiteNavigationMenu::setGroupId);
+
+		attributeGetters.put("companyId", SiteNavigationMenu::getCompanyId);
+		attributeSetters.put("companyId", SiteNavigationMenu::setCompanyId);
+
+		attributeGetters.put("userId", SiteNavigationMenu::getUserId);
+		attributeSetters.put("userId", SiteNavigationMenu::setUserId);
+
+		attributeGetters.put("userName", SiteNavigationMenu::getUserName);
+		attributeSetters.put("userName", SiteNavigationMenu::setUserName);
+
+		attributeGetters.put("createDate", SiteNavigationMenu::getCreateDate);
+		attributeSetters.put("createDate", SiteNavigationMenu::setCreateDate);
+
+		attributeGetters.put("modifiedDate", SiteNavigationMenu::getModifiedDate);
+		attributeSetters.put("modifiedDate", SiteNavigationMenu::setModifiedDate);
+
+		attributeGetters.put("name", SiteNavigationMenu::getName);
+		attributeSetters.put("name", SiteNavigationMenu::setName);
+
+		attributeGetters.put("type", SiteNavigationMenu::getType);
+		attributeSetters.put("type", SiteNavigationMenu::setType);
+
+		attributeGetters.put("auto", SiteNavigationMenu::getAuto);
+		attributeSetters.put("auto", SiteNavigationMenu::setAuto);
+
+		attributeGetters.put("lastPublishDate", SiteNavigationMenu::getLastPublishDate);
+		attributeSetters.put("lastPublishDate", SiteNavigationMenu::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<SiteNavigationMenu, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<SiteNavigationMenu, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<SiteNavigationMenu, String>() {
-				@Override
-				public void accept(SiteNavigationMenu siteNavigationMenu,
-					String uuid) {
-					siteNavigationMenu.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("siteNavigationMenuId",
-			new BiConsumer<SiteNavigationMenu, Long>() {
-				@Override
-				public void accept(SiteNavigationMenu siteNavigationMenu,
-					Long siteNavigationMenuId) {
-					siteNavigationMenu.setSiteNavigationMenuId(siteNavigationMenuId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<SiteNavigationMenu, Long>() {
-				@Override
-				public void accept(SiteNavigationMenu siteNavigationMenu,
-					Long groupId) {
-					siteNavigationMenu.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<SiteNavigationMenu, Long>() {
-				@Override
-				public void accept(SiteNavigationMenu siteNavigationMenu,
-					Long companyId) {
-					siteNavigationMenu.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<SiteNavigationMenu, Long>() {
-				@Override
-				public void accept(SiteNavigationMenu siteNavigationMenu,
-					Long userId) {
-					siteNavigationMenu.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<SiteNavigationMenu, String>() {
-				@Override
-				public void accept(SiteNavigationMenu siteNavigationMenu,
-					String userName) {
-					siteNavigationMenu.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<SiteNavigationMenu, Date>() {
-				@Override
-				public void accept(SiteNavigationMenu siteNavigationMenu,
-					Date createDate) {
-					siteNavigationMenu.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<SiteNavigationMenu, Date>() {
-				@Override
-				public void accept(SiteNavigationMenu siteNavigationMenu,
-					Date modifiedDate) {
-					siteNavigationMenu.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<SiteNavigationMenu, String>() {
-				@Override
-				public void accept(SiteNavigationMenu siteNavigationMenu,
-					String name) {
-					siteNavigationMenu.setName(name);
-				}
-			});
-		attributeSetters.put("type",
-			new BiConsumer<SiteNavigationMenu, Integer>() {
-				@Override
-				public void accept(SiteNavigationMenu siteNavigationMenu,
-					Integer type) {
-					siteNavigationMenu.setType(type);
-				}
-			});
-		attributeSetters.put("auto",
-			new BiConsumer<SiteNavigationMenu, Boolean>() {
-				@Override
-				public void accept(SiteNavigationMenu siteNavigationMenu,
-					Boolean auto) {
-					siteNavigationMenu.setAuto(auto);
-				}
-			});
-		attributeSetters.put("lastPublishDate",
-			new BiConsumer<SiteNavigationMenu, Date>() {
-				@Override
-				public void accept(SiteNavigationMenu siteNavigationMenu,
-					Date lastPublishDate) {
-					siteNavigationMenu.setLastPublishDate(lastPublishDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

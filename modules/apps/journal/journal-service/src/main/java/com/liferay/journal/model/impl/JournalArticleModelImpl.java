@@ -310,499 +310,109 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 
 	static {
 		Map<String, Function<JournalArticle, Object>> attributeGetters = new LinkedHashMap<String, Function<JournalArticle, Object>>();
+		Map<String, BiConsumer<JournalArticle, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<JournalArticle, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getUuid();
-				}
-			});
-		attributeGetters.put("id",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getId();
-				}
-			});
-		attributeGetters.put("resourcePrimKey",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getResourcePrimKey();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getModifiedDate();
-				}
-			});
-		attributeGetters.put("folderId",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getFolderId();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getClassPK();
-				}
-			});
-		attributeGetters.put("treePath",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getTreePath();
-				}
-			});
-		attributeGetters.put("articleId",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getArticleId();
-				}
-			});
-		attributeGetters.put("version",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getVersion();
-				}
-			});
-		attributeGetters.put("urlTitle",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getUrlTitle();
-				}
-			});
-		attributeGetters.put("content",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getContent();
-				}
-			});
-		attributeGetters.put("DDMStructureKey",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getDDMStructureKey();
-				}
-			});
-		attributeGetters.put("DDMTemplateKey",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getDDMTemplateKey();
-				}
-			});
-		attributeGetters.put("defaultLanguageId",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getDefaultLanguageId();
-				}
-			});
-		attributeGetters.put("layoutUuid",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getLayoutUuid();
-				}
-			});
-		attributeGetters.put("displayDate",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getDisplayDate();
-				}
-			});
-		attributeGetters.put("expirationDate",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getExpirationDate();
-				}
-			});
-		attributeGetters.put("reviewDate",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getReviewDate();
-				}
-			});
-		attributeGetters.put("indexable",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.isIndexable();
-				}
-			});
-		attributeGetters.put("smallImage",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.isSmallImage();
-				}
-			});
-		attributeGetters.put("smallImageId",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getSmallImageId();
-				}
-			});
-		attributeGetters.put("smallImageURL",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getSmallImageURL();
-				}
-			});
-		attributeGetters.put("lastPublishDate",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getLastPublishDate();
-				}
-			});
-		attributeGetters.put("status",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getStatus();
-				}
-			});
-		attributeGetters.put("statusByUserId",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getStatusByUserId();
-				}
-			});
-		attributeGetters.put("statusByUserName",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getStatusByUserName();
-				}
-			});
-		attributeGetters.put("statusDate",
-			new Function<JournalArticle, Object>() {
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getStatusDate();
-				}
-			});
+		attributeGetters.put("uuid", JournalArticle::getUuid);
+		attributeSetters.put("uuid", JournalArticle::setUuid);
+
+		attributeGetters.put("id", JournalArticle::getId);
+		attributeSetters.put("id", JournalArticle::setId);
+
+		attributeGetters.put("resourcePrimKey", JournalArticle::getResourcePrimKey);
+		attributeSetters.put("resourcePrimKey", JournalArticle::setResourcePrimKey);
+
+		attributeGetters.put("groupId", JournalArticle::getGroupId);
+		attributeSetters.put("groupId", JournalArticle::setGroupId);
+
+		attributeGetters.put("companyId", JournalArticle::getCompanyId);
+		attributeSetters.put("companyId", JournalArticle::setCompanyId);
+
+		attributeGetters.put("userId", JournalArticle::getUserId);
+		attributeSetters.put("userId", JournalArticle::setUserId);
+
+		attributeGetters.put("userName", JournalArticle::getUserName);
+		attributeSetters.put("userName", JournalArticle::setUserName);
+
+		attributeGetters.put("createDate", JournalArticle::getCreateDate);
+		attributeSetters.put("createDate", JournalArticle::setCreateDate);
+
+		attributeGetters.put("modifiedDate", JournalArticle::getModifiedDate);
+		attributeSetters.put("modifiedDate", JournalArticle::setModifiedDate);
+
+		attributeGetters.put("folderId", JournalArticle::getFolderId);
+		attributeSetters.put("folderId", JournalArticle::setFolderId);
+
+		attributeGetters.put("classNameId", JournalArticle::getClassNameId);
+		attributeSetters.put("classNameId", JournalArticle::setClassNameId);
+
+		attributeGetters.put("classPK", JournalArticle::getClassPK);
+		attributeSetters.put("classPK", JournalArticle::setClassPK);
+
+		attributeGetters.put("treePath", JournalArticle::getTreePath);
+		attributeSetters.put("treePath", JournalArticle::setTreePath);
+
+		attributeGetters.put("articleId", JournalArticle::getArticleId);
+		attributeSetters.put("articleId", JournalArticle::setArticleId);
+
+		attributeGetters.put("version", JournalArticle::getVersion);
+		attributeSetters.put("version", JournalArticle::setVersion);
+
+		attributeGetters.put("urlTitle", JournalArticle::getUrlTitle);
+		attributeSetters.put("urlTitle", JournalArticle::setUrlTitle);
+
+		attributeGetters.put("content", JournalArticle::getContent);
+		attributeSetters.put("content", JournalArticle::setContent);
+
+		attributeGetters.put("DDMStructureKey", JournalArticle::getDDMStructureKey);
+		attributeSetters.put("DDMStructureKey", JournalArticle::setDDMStructureKey);
+
+		attributeGetters.put("DDMTemplateKey", JournalArticle::getDDMTemplateKey);
+		attributeSetters.put("DDMTemplateKey", JournalArticle::setDDMTemplateKey);
+
+		attributeGetters.put("defaultLanguageId", JournalArticle::getDefaultLanguageId);
+		attributeSetters.put("defaultLanguageId", JournalArticle::setDefaultLanguageId);
+
+		attributeGetters.put("layoutUuid", JournalArticle::getLayoutUuid);
+		attributeSetters.put("layoutUuid", JournalArticle::setLayoutUuid);
+
+		attributeGetters.put("displayDate", JournalArticle::getDisplayDate);
+		attributeSetters.put("displayDate", JournalArticle::setDisplayDate);
+
+		attributeGetters.put("expirationDate", JournalArticle::getExpirationDate);
+		attributeSetters.put("expirationDate", JournalArticle::setExpirationDate);
+
+		attributeGetters.put("reviewDate", JournalArticle::getReviewDate);
+		attributeSetters.put("reviewDate", JournalArticle::setReviewDate);
+
+		attributeGetters.put("indexable", JournalArticle::getIndexable);
+		attributeSetters.put("indexable", JournalArticle::setIndexable);
+
+		attributeGetters.put("smallImage", JournalArticle::getSmallImage);
+		attributeSetters.put("smallImage", JournalArticle::setSmallImage);
+
+		attributeGetters.put("smallImageId", JournalArticle::getSmallImageId);
+		attributeSetters.put("smallImageId", JournalArticle::setSmallImageId);
+
+		attributeGetters.put("smallImageURL", JournalArticle::getSmallImageURL);
+		attributeSetters.put("smallImageURL", JournalArticle::setSmallImageURL);
+
+		attributeGetters.put("lastPublishDate", JournalArticle::getLastPublishDate);
+		attributeSetters.put("lastPublishDate", JournalArticle::setLastPublishDate);
+
+		attributeGetters.put("status", JournalArticle::getStatus);
+		attributeSetters.put("status", JournalArticle::setStatus);
+
+		attributeGetters.put("statusByUserId", JournalArticle::getStatusByUserId);
+		attributeSetters.put("statusByUserId", JournalArticle::setStatusByUserId);
+
+		attributeGetters.put("statusByUserName", JournalArticle::getStatusByUserName);
+		attributeSetters.put("statusByUserName", JournalArticle::setStatusByUserName);
+
+		attributeGetters.put("statusDate", JournalArticle::getStatusDate);
+		attributeSetters.put("statusDate", JournalArticle::setStatusDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<JournalArticle, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<JournalArticle, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<JournalArticle, String>() {
-				@Override
-				public void accept(JournalArticle journalArticle, String uuid) {
-					journalArticle.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("id",
-			new BiConsumer<JournalArticle, Long>() {
-				@Override
-				public void accept(JournalArticle journalArticle, Long id) {
-					journalArticle.setId(id);
-				}
-			});
-		attributeSetters.put("resourcePrimKey",
-			new BiConsumer<JournalArticle, Long>() {
-				@Override
-				public void accept(JournalArticle journalArticle,
-					Long resourcePrimKey) {
-					journalArticle.setResourcePrimKey(resourcePrimKey);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<JournalArticle, Long>() {
-				@Override
-				public void accept(JournalArticle journalArticle, Long groupId) {
-					journalArticle.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<JournalArticle, Long>() {
-				@Override
-				public void accept(JournalArticle journalArticle, Long companyId) {
-					journalArticle.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<JournalArticle, Long>() {
-				@Override
-				public void accept(JournalArticle journalArticle, Long userId) {
-					journalArticle.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<JournalArticle, String>() {
-				@Override
-				public void accept(JournalArticle journalArticle,
-					String userName) {
-					journalArticle.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<JournalArticle, Date>() {
-				@Override
-				public void accept(JournalArticle journalArticle,
-					Date createDate) {
-					journalArticle.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<JournalArticle, Date>() {
-				@Override
-				public void accept(JournalArticle journalArticle,
-					Date modifiedDate) {
-					journalArticle.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("folderId",
-			new BiConsumer<JournalArticle, Long>() {
-				@Override
-				public void accept(JournalArticle journalArticle, Long folderId) {
-					journalArticle.setFolderId(folderId);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<JournalArticle, Long>() {
-				@Override
-				public void accept(JournalArticle journalArticle,
-					Long classNameId) {
-					journalArticle.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<JournalArticle, Long>() {
-				@Override
-				public void accept(JournalArticle journalArticle, Long classPK) {
-					journalArticle.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("treePath",
-			new BiConsumer<JournalArticle, String>() {
-				@Override
-				public void accept(JournalArticle journalArticle,
-					String treePath) {
-					journalArticle.setTreePath(treePath);
-				}
-			});
-		attributeSetters.put("articleId",
-			new BiConsumer<JournalArticle, String>() {
-				@Override
-				public void accept(JournalArticle journalArticle,
-					String articleId) {
-					journalArticle.setArticleId(articleId);
-				}
-			});
-		attributeSetters.put("version",
-			new BiConsumer<JournalArticle, Double>() {
-				@Override
-				public void accept(JournalArticle journalArticle, Double version) {
-					journalArticle.setVersion(version);
-				}
-			});
-		attributeSetters.put("urlTitle",
-			new BiConsumer<JournalArticle, String>() {
-				@Override
-				public void accept(JournalArticle journalArticle,
-					String urlTitle) {
-					journalArticle.setUrlTitle(urlTitle);
-				}
-			});
-		attributeSetters.put("content",
-			new BiConsumer<JournalArticle, String>() {
-				@Override
-				public void accept(JournalArticle journalArticle, String content) {
-					journalArticle.setContent(content);
-				}
-			});
-		attributeSetters.put("DDMStructureKey",
-			new BiConsumer<JournalArticle, String>() {
-				@Override
-				public void accept(JournalArticle journalArticle,
-					String DDMStructureKey) {
-					journalArticle.setDDMStructureKey(DDMStructureKey);
-				}
-			});
-		attributeSetters.put("DDMTemplateKey",
-			new BiConsumer<JournalArticle, String>() {
-				@Override
-				public void accept(JournalArticle journalArticle,
-					String DDMTemplateKey) {
-					journalArticle.setDDMTemplateKey(DDMTemplateKey);
-				}
-			});
-		attributeSetters.put("defaultLanguageId",
-			new BiConsumer<JournalArticle, String>() {
-				@Override
-				public void accept(JournalArticle journalArticle,
-					String defaultLanguageId) {
-					journalArticle.setDefaultLanguageId(defaultLanguageId);
-				}
-			});
-		attributeSetters.put("layoutUuid",
-			new BiConsumer<JournalArticle, String>() {
-				@Override
-				public void accept(JournalArticle journalArticle,
-					String layoutUuid) {
-					journalArticle.setLayoutUuid(layoutUuid);
-				}
-			});
-		attributeSetters.put("displayDate",
-			new BiConsumer<JournalArticle, Date>() {
-				@Override
-				public void accept(JournalArticle journalArticle,
-					Date displayDate) {
-					journalArticle.setDisplayDate(displayDate);
-				}
-			});
-		attributeSetters.put("expirationDate",
-			new BiConsumer<JournalArticle, Date>() {
-				@Override
-				public void accept(JournalArticle journalArticle,
-					Date expirationDate) {
-					journalArticle.setExpirationDate(expirationDate);
-				}
-			});
-		attributeSetters.put("reviewDate",
-			new BiConsumer<JournalArticle, Date>() {
-				@Override
-				public void accept(JournalArticle journalArticle,
-					Date reviewDate) {
-					journalArticle.setReviewDate(reviewDate);
-				}
-			});
-		attributeSetters.put("indexable",
-			new BiConsumer<JournalArticle, Boolean>() {
-				@Override
-				public void accept(JournalArticle journalArticle,
-					Boolean indexable) {
-					journalArticle.setIndexable(indexable);
-				}
-			});
-		attributeSetters.put("smallImage",
-			new BiConsumer<JournalArticle, Boolean>() {
-				@Override
-				public void accept(JournalArticle journalArticle,
-					Boolean smallImage) {
-					journalArticle.setSmallImage(smallImage);
-				}
-			});
-		attributeSetters.put("smallImageId",
-			new BiConsumer<JournalArticle, Long>() {
-				@Override
-				public void accept(JournalArticle journalArticle,
-					Long smallImageId) {
-					journalArticle.setSmallImageId(smallImageId);
-				}
-			});
-		attributeSetters.put("smallImageURL",
-			new BiConsumer<JournalArticle, String>() {
-				@Override
-				public void accept(JournalArticle journalArticle,
-					String smallImageURL) {
-					journalArticle.setSmallImageURL(smallImageURL);
-				}
-			});
-		attributeSetters.put("lastPublishDate",
-			new BiConsumer<JournalArticle, Date>() {
-				@Override
-				public void accept(JournalArticle journalArticle,
-					Date lastPublishDate) {
-					journalArticle.setLastPublishDate(lastPublishDate);
-				}
-			});
-		attributeSetters.put("status",
-			new BiConsumer<JournalArticle, Integer>() {
-				@Override
-				public void accept(JournalArticle journalArticle, Integer status) {
-					journalArticle.setStatus(status);
-				}
-			});
-		attributeSetters.put("statusByUserId",
-			new BiConsumer<JournalArticle, Long>() {
-				@Override
-				public void accept(JournalArticle journalArticle,
-					Long statusByUserId) {
-					journalArticle.setStatusByUserId(statusByUserId);
-				}
-			});
-		attributeSetters.put("statusByUserName",
-			new BiConsumer<JournalArticle, String>() {
-				@Override
-				public void accept(JournalArticle journalArticle,
-					String statusByUserName) {
-					journalArticle.setStatusByUserName(statusByUserName);
-				}
-			});
-		attributeSetters.put("statusDate",
-			new BiConsumer<JournalArticle, Date>() {
-				@Override
-				public void accept(JournalArticle journalArticle,
-					Date statusDate) {
-					journalArticle.setStatusDate(statusDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

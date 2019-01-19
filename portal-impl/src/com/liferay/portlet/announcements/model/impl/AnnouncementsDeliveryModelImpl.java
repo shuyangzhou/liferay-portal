@@ -209,119 +209,31 @@ public class AnnouncementsDeliveryModelImpl extends BaseModelImpl<AnnouncementsD
 
 	static {
 		Map<String, Function<AnnouncementsDelivery, Object>> attributeGetters = new LinkedHashMap<String, Function<AnnouncementsDelivery, Object>>();
+		Map<String, BiConsumer<AnnouncementsDelivery, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<AnnouncementsDelivery, Object>>();
 
-		attributeGetters.put("deliveryId",
-			new Function<AnnouncementsDelivery, Object>() {
-				@Override
-				public Object apply(AnnouncementsDelivery announcementsDelivery) {
-					return announcementsDelivery.getDeliveryId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<AnnouncementsDelivery, Object>() {
-				@Override
-				public Object apply(AnnouncementsDelivery announcementsDelivery) {
-					return announcementsDelivery.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<AnnouncementsDelivery, Object>() {
-				@Override
-				public Object apply(AnnouncementsDelivery announcementsDelivery) {
-					return announcementsDelivery.getUserId();
-				}
-			});
-		attributeGetters.put("type",
-			new Function<AnnouncementsDelivery, Object>() {
-				@Override
-				public Object apply(AnnouncementsDelivery announcementsDelivery) {
-					return announcementsDelivery.getType();
-				}
-			});
-		attributeGetters.put("email",
-			new Function<AnnouncementsDelivery, Object>() {
-				@Override
-				public Object apply(AnnouncementsDelivery announcementsDelivery) {
-					return announcementsDelivery.isEmail();
-				}
-			});
-		attributeGetters.put("sms",
-			new Function<AnnouncementsDelivery, Object>() {
-				@Override
-				public Object apply(AnnouncementsDelivery announcementsDelivery) {
-					return announcementsDelivery.isSms();
-				}
-			});
-		attributeGetters.put("website",
-			new Function<AnnouncementsDelivery, Object>() {
-				@Override
-				public Object apply(AnnouncementsDelivery announcementsDelivery) {
-					return announcementsDelivery.isWebsite();
-				}
-			});
+		attributeGetters.put("deliveryId", AnnouncementsDelivery::getDeliveryId);
+		attributeSetters.put("deliveryId", AnnouncementsDelivery::setDeliveryId);
+
+		attributeGetters.put("companyId", AnnouncementsDelivery::getCompanyId);
+		attributeSetters.put("companyId", AnnouncementsDelivery::setCompanyId);
+
+		attributeGetters.put("userId", AnnouncementsDelivery::getUserId);
+		attributeSetters.put("userId", AnnouncementsDelivery::setUserId);
+
+		attributeGetters.put("type", AnnouncementsDelivery::getType);
+		attributeSetters.put("type", AnnouncementsDelivery::setType);
+
+		attributeGetters.put("email", AnnouncementsDelivery::getEmail);
+		attributeSetters.put("email", AnnouncementsDelivery::setEmail);
+
+		attributeGetters.put("sms", AnnouncementsDelivery::getSms);
+		attributeSetters.put("sms", AnnouncementsDelivery::setSms);
+
+		attributeGetters.put("website", AnnouncementsDelivery::getWebsite);
+		attributeSetters.put("website", AnnouncementsDelivery::setWebsite);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<AnnouncementsDelivery, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<AnnouncementsDelivery, ?>>();
-
-		attributeSetters.put("deliveryId",
-			new BiConsumer<AnnouncementsDelivery, Long>() {
-				@Override
-				public void accept(
-					AnnouncementsDelivery announcementsDelivery, Long deliveryId) {
-					announcementsDelivery.setDeliveryId(deliveryId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<AnnouncementsDelivery, Long>() {
-				@Override
-				public void accept(
-					AnnouncementsDelivery announcementsDelivery, Long companyId) {
-					announcementsDelivery.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<AnnouncementsDelivery, Long>() {
-				@Override
-				public void accept(
-					AnnouncementsDelivery announcementsDelivery, Long userId) {
-					announcementsDelivery.setUserId(userId);
-				}
-			});
-		attributeSetters.put("type",
-			new BiConsumer<AnnouncementsDelivery, String>() {
-				@Override
-				public void accept(
-					AnnouncementsDelivery announcementsDelivery, String type) {
-					announcementsDelivery.setType(type);
-				}
-			});
-		attributeSetters.put("email",
-			new BiConsumer<AnnouncementsDelivery, Boolean>() {
-				@Override
-				public void accept(
-					AnnouncementsDelivery announcementsDelivery, Boolean email) {
-					announcementsDelivery.setEmail(email);
-				}
-			});
-		attributeSetters.put("sms",
-			new BiConsumer<AnnouncementsDelivery, Boolean>() {
-				@Override
-				public void accept(
-					AnnouncementsDelivery announcementsDelivery, Boolean sms) {
-					announcementsDelivery.setSms(sms);
-				}
-			});
-		attributeSetters.put("website",
-			new BiConsumer<AnnouncementsDelivery, Boolean>() {
-				@Override
-				public void accept(
-					AnnouncementsDelivery announcementsDelivery, Boolean website) {
-					announcementsDelivery.setWebsite(website);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

@@ -246,283 +246,59 @@ public class DDMFormInstanceVersionModelImpl extends BaseModelImpl<DDMFormInstan
 
 	static {
 		Map<String, Function<DDMFormInstanceVersion, Object>> attributeGetters = new LinkedHashMap<String, Function<DDMFormInstanceVersion, Object>>();
+		Map<String, BiConsumer<DDMFormInstanceVersion, Object>> attributeSetters =
+			new LinkedHashMap<String, BiConsumer<DDMFormInstanceVersion, Object>>();
 
-		attributeGetters.put("formInstanceVersionId",
-			new Function<DDMFormInstanceVersion, Object>() {
-				@Override
-				public Object apply(
-					DDMFormInstanceVersion ddmFormInstanceVersion) {
-					return ddmFormInstanceVersion.getFormInstanceVersionId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<DDMFormInstanceVersion, Object>() {
-				@Override
-				public Object apply(
-					DDMFormInstanceVersion ddmFormInstanceVersion) {
-					return ddmFormInstanceVersion.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<DDMFormInstanceVersion, Object>() {
-				@Override
-				public Object apply(
-					DDMFormInstanceVersion ddmFormInstanceVersion) {
-					return ddmFormInstanceVersion.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<DDMFormInstanceVersion, Object>() {
-				@Override
-				public Object apply(
-					DDMFormInstanceVersion ddmFormInstanceVersion) {
-					return ddmFormInstanceVersion.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<DDMFormInstanceVersion, Object>() {
-				@Override
-				public Object apply(
-					DDMFormInstanceVersion ddmFormInstanceVersion) {
-					return ddmFormInstanceVersion.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<DDMFormInstanceVersion, Object>() {
-				@Override
-				public Object apply(
-					DDMFormInstanceVersion ddmFormInstanceVersion) {
-					return ddmFormInstanceVersion.getCreateDate();
-				}
-			});
-		attributeGetters.put("formInstanceId",
-			new Function<DDMFormInstanceVersion, Object>() {
-				@Override
-				public Object apply(
-					DDMFormInstanceVersion ddmFormInstanceVersion) {
-					return ddmFormInstanceVersion.getFormInstanceId();
-				}
-			});
-		attributeGetters.put("structureVersionId",
-			new Function<DDMFormInstanceVersion, Object>() {
-				@Override
-				public Object apply(
-					DDMFormInstanceVersion ddmFormInstanceVersion) {
-					return ddmFormInstanceVersion.getStructureVersionId();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<DDMFormInstanceVersion, Object>() {
-				@Override
-				public Object apply(
-					DDMFormInstanceVersion ddmFormInstanceVersion) {
-					return ddmFormInstanceVersion.getName();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<DDMFormInstanceVersion, Object>() {
-				@Override
-				public Object apply(
-					DDMFormInstanceVersion ddmFormInstanceVersion) {
-					return ddmFormInstanceVersion.getDescription();
-				}
-			});
-		attributeGetters.put("settings",
-			new Function<DDMFormInstanceVersion, Object>() {
-				@Override
-				public Object apply(
-					DDMFormInstanceVersion ddmFormInstanceVersion) {
-					return ddmFormInstanceVersion.getSettings();
-				}
-			});
-		attributeGetters.put("version",
-			new Function<DDMFormInstanceVersion, Object>() {
-				@Override
-				public Object apply(
-					DDMFormInstanceVersion ddmFormInstanceVersion) {
-					return ddmFormInstanceVersion.getVersion();
-				}
-			});
-		attributeGetters.put("status",
-			new Function<DDMFormInstanceVersion, Object>() {
-				@Override
-				public Object apply(
-					DDMFormInstanceVersion ddmFormInstanceVersion) {
-					return ddmFormInstanceVersion.getStatus();
-				}
-			});
-		attributeGetters.put("statusByUserId",
-			new Function<DDMFormInstanceVersion, Object>() {
-				@Override
-				public Object apply(
-					DDMFormInstanceVersion ddmFormInstanceVersion) {
-					return ddmFormInstanceVersion.getStatusByUserId();
-				}
-			});
-		attributeGetters.put("statusByUserName",
-			new Function<DDMFormInstanceVersion, Object>() {
-				@Override
-				public Object apply(
-					DDMFormInstanceVersion ddmFormInstanceVersion) {
-					return ddmFormInstanceVersion.getStatusByUserName();
-				}
-			});
-		attributeGetters.put("statusDate",
-			new Function<DDMFormInstanceVersion, Object>() {
-				@Override
-				public Object apply(
-					DDMFormInstanceVersion ddmFormInstanceVersion) {
-					return ddmFormInstanceVersion.getStatusDate();
-				}
-			});
+		attributeGetters.put("formInstanceVersionId", DDMFormInstanceVersion::getFormInstanceVersionId);
+		attributeSetters.put("formInstanceVersionId", DDMFormInstanceVersion::setFormInstanceVersionId);
+
+		attributeGetters.put("groupId", DDMFormInstanceVersion::getGroupId);
+		attributeSetters.put("groupId", DDMFormInstanceVersion::setGroupId);
+
+		attributeGetters.put("companyId", DDMFormInstanceVersion::getCompanyId);
+		attributeSetters.put("companyId", DDMFormInstanceVersion::setCompanyId);
+
+		attributeGetters.put("userId", DDMFormInstanceVersion::getUserId);
+		attributeSetters.put("userId", DDMFormInstanceVersion::setUserId);
+
+		attributeGetters.put("userName", DDMFormInstanceVersion::getUserName);
+		attributeSetters.put("userName", DDMFormInstanceVersion::setUserName);
+
+		attributeGetters.put("createDate", DDMFormInstanceVersion::getCreateDate);
+		attributeSetters.put("createDate", DDMFormInstanceVersion::setCreateDate);
+
+		attributeGetters.put("formInstanceId", DDMFormInstanceVersion::getFormInstanceId);
+		attributeSetters.put("formInstanceId", DDMFormInstanceVersion::setFormInstanceId);
+
+		attributeGetters.put("structureVersionId", DDMFormInstanceVersion::getStructureVersionId);
+		attributeSetters.put("structureVersionId", DDMFormInstanceVersion::setStructureVersionId);
+
+		attributeGetters.put("name", DDMFormInstanceVersion::getName);
+		attributeSetters.put("name", DDMFormInstanceVersion::setName);
+
+		attributeGetters.put("description", DDMFormInstanceVersion::getDescription);
+		attributeSetters.put("description", DDMFormInstanceVersion::setDescription);
+
+		attributeGetters.put("settings", DDMFormInstanceVersion::getSettings);
+		attributeSetters.put("settings", DDMFormInstanceVersion::setSettings);
+
+		attributeGetters.put("version", DDMFormInstanceVersion::getVersion);
+		attributeSetters.put("version", DDMFormInstanceVersion::setVersion);
+
+		attributeGetters.put("status", DDMFormInstanceVersion::getStatus);
+		attributeSetters.put("status", DDMFormInstanceVersion::setStatus);
+
+		attributeGetters.put("statusByUserId", DDMFormInstanceVersion::getStatusByUserId);
+		attributeSetters.put("statusByUserId", DDMFormInstanceVersion::setStatusByUserId);
+
+		attributeGetters.put("statusByUserName", DDMFormInstanceVersion::getStatusByUserName);
+		attributeSetters.put("statusByUserName", DDMFormInstanceVersion::setStatusByUserName);
+
+		attributeGetters.put("statusDate", DDMFormInstanceVersion::getStatusDate);
+		attributeSetters.put("statusDate", DDMFormInstanceVersion::setStatusDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<DDMFormInstanceVersion, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDMFormInstanceVersion, ?>>();
-
-		attributeSetters.put("formInstanceVersionId",
-			new BiConsumer<DDMFormInstanceVersion, Long>() {
-				@Override
-				public void accept(
-					DDMFormInstanceVersion ddmFormInstanceVersion,
-					Long formInstanceVersionId) {
-					ddmFormInstanceVersion.setFormInstanceVersionId(formInstanceVersionId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<DDMFormInstanceVersion, Long>() {
-				@Override
-				public void accept(
-					DDMFormInstanceVersion ddmFormInstanceVersion, Long groupId) {
-					ddmFormInstanceVersion.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<DDMFormInstanceVersion, Long>() {
-				@Override
-				public void accept(
-					DDMFormInstanceVersion ddmFormInstanceVersion,
-					Long companyId) {
-					ddmFormInstanceVersion.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<DDMFormInstanceVersion, Long>() {
-				@Override
-				public void accept(
-					DDMFormInstanceVersion ddmFormInstanceVersion, Long userId) {
-					ddmFormInstanceVersion.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<DDMFormInstanceVersion, String>() {
-				@Override
-				public void accept(
-					DDMFormInstanceVersion ddmFormInstanceVersion,
-					String userName) {
-					ddmFormInstanceVersion.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<DDMFormInstanceVersion, Date>() {
-				@Override
-				public void accept(
-					DDMFormInstanceVersion ddmFormInstanceVersion,
-					Date createDate) {
-					ddmFormInstanceVersion.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("formInstanceId",
-			new BiConsumer<DDMFormInstanceVersion, Long>() {
-				@Override
-				public void accept(
-					DDMFormInstanceVersion ddmFormInstanceVersion,
-					Long formInstanceId) {
-					ddmFormInstanceVersion.setFormInstanceId(formInstanceId);
-				}
-			});
-		attributeSetters.put("structureVersionId",
-			new BiConsumer<DDMFormInstanceVersion, Long>() {
-				@Override
-				public void accept(
-					DDMFormInstanceVersion ddmFormInstanceVersion,
-					Long structureVersionId) {
-					ddmFormInstanceVersion.setStructureVersionId(structureVersionId);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<DDMFormInstanceVersion, String>() {
-				@Override
-				public void accept(
-					DDMFormInstanceVersion ddmFormInstanceVersion, String name) {
-					ddmFormInstanceVersion.setName(name);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<DDMFormInstanceVersion, String>() {
-				@Override
-				public void accept(
-					DDMFormInstanceVersion ddmFormInstanceVersion,
-					String description) {
-					ddmFormInstanceVersion.setDescription(description);
-				}
-			});
-		attributeSetters.put("settings",
-			new BiConsumer<DDMFormInstanceVersion, String>() {
-				@Override
-				public void accept(
-					DDMFormInstanceVersion ddmFormInstanceVersion,
-					String settings) {
-					ddmFormInstanceVersion.setSettings(settings);
-				}
-			});
-		attributeSetters.put("version",
-			new BiConsumer<DDMFormInstanceVersion, String>() {
-				@Override
-				public void accept(
-					DDMFormInstanceVersion ddmFormInstanceVersion,
-					String version) {
-					ddmFormInstanceVersion.setVersion(version);
-				}
-			});
-		attributeSetters.put("status",
-			new BiConsumer<DDMFormInstanceVersion, Integer>() {
-				@Override
-				public void accept(
-					DDMFormInstanceVersion ddmFormInstanceVersion,
-					Integer status) {
-					ddmFormInstanceVersion.setStatus(status);
-				}
-			});
-		attributeSetters.put("statusByUserId",
-			new BiConsumer<DDMFormInstanceVersion, Long>() {
-				@Override
-				public void accept(
-					DDMFormInstanceVersion ddmFormInstanceVersion,
-					Long statusByUserId) {
-					ddmFormInstanceVersion.setStatusByUserId(statusByUserId);
-				}
-			});
-		attributeSetters.put("statusByUserName",
-			new BiConsumer<DDMFormInstanceVersion, String>() {
-				@Override
-				public void accept(
-					DDMFormInstanceVersion ddmFormInstanceVersion,
-					String statusByUserName) {
-					ddmFormInstanceVersion.setStatusByUserName(statusByUserName);
-				}
-			});
-		attributeSetters.put("statusDate",
-			new BiConsumer<DDMFormInstanceVersion, Date>() {
-				@Override
-				public void accept(
-					DDMFormInstanceVersion ddmFormInstanceVersion,
-					Date statusDate) {
-					ddmFormInstanceVersion.setStatusDate(statusDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

@@ -199,114 +199,31 @@ public class ExpandoColumnModelImpl extends BaseModelImpl<ExpandoColumn>
 
 	static {
 		Map<String, Function<ExpandoColumn, Object>> attributeGetters = new LinkedHashMap<String, Function<ExpandoColumn, Object>>();
+		Map<String, BiConsumer<ExpandoColumn, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<ExpandoColumn, Object>>();
 
-		attributeGetters.put("columnId",
-			new Function<ExpandoColumn, Object>() {
-				@Override
-				public Object apply(ExpandoColumn expandoColumn) {
-					return expandoColumn.getColumnId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<ExpandoColumn, Object>() {
-				@Override
-				public Object apply(ExpandoColumn expandoColumn) {
-					return expandoColumn.getCompanyId();
-				}
-			});
-		attributeGetters.put("tableId",
-			new Function<ExpandoColumn, Object>() {
-				@Override
-				public Object apply(ExpandoColumn expandoColumn) {
-					return expandoColumn.getTableId();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<ExpandoColumn, Object>() {
-				@Override
-				public Object apply(ExpandoColumn expandoColumn) {
-					return expandoColumn.getName();
-				}
-			});
-		attributeGetters.put("type",
-			new Function<ExpandoColumn, Object>() {
-				@Override
-				public Object apply(ExpandoColumn expandoColumn) {
-					return expandoColumn.getType();
-				}
-			});
-		attributeGetters.put("defaultData",
-			new Function<ExpandoColumn, Object>() {
-				@Override
-				public Object apply(ExpandoColumn expandoColumn) {
-					return expandoColumn.getDefaultData();
-				}
-			});
-		attributeGetters.put("typeSettings",
-			new Function<ExpandoColumn, Object>() {
-				@Override
-				public Object apply(ExpandoColumn expandoColumn) {
-					return expandoColumn.getTypeSettings();
-				}
-			});
+		attributeGetters.put("columnId", ExpandoColumn::getColumnId);
+		attributeSetters.put("columnId", ExpandoColumn::setColumnId);
+
+		attributeGetters.put("companyId", ExpandoColumn::getCompanyId);
+		attributeSetters.put("companyId", ExpandoColumn::setCompanyId);
+
+		attributeGetters.put("tableId", ExpandoColumn::getTableId);
+		attributeSetters.put("tableId", ExpandoColumn::setTableId);
+
+		attributeGetters.put("name", ExpandoColumn::getName);
+		attributeSetters.put("name", ExpandoColumn::setName);
+
+		attributeGetters.put("type", ExpandoColumn::getType);
+		attributeSetters.put("type", ExpandoColumn::setType);
+
+		attributeGetters.put("defaultData", ExpandoColumn::getDefaultData);
+		attributeSetters.put("defaultData", ExpandoColumn::setDefaultData);
+
+		attributeGetters.put("typeSettings", ExpandoColumn::getTypeSettings);
+		attributeSetters.put("typeSettings", ExpandoColumn::setTypeSettings);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<ExpandoColumn, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<ExpandoColumn, ?>>();
-
-		attributeSetters.put("columnId",
-			new BiConsumer<ExpandoColumn, Long>() {
-				@Override
-				public void accept(ExpandoColumn expandoColumn, Long columnId) {
-					expandoColumn.setColumnId(columnId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<ExpandoColumn, Long>() {
-				@Override
-				public void accept(ExpandoColumn expandoColumn, Long companyId) {
-					expandoColumn.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("tableId",
-			new BiConsumer<ExpandoColumn, Long>() {
-				@Override
-				public void accept(ExpandoColumn expandoColumn, Long tableId) {
-					expandoColumn.setTableId(tableId);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<ExpandoColumn, String>() {
-				@Override
-				public void accept(ExpandoColumn expandoColumn, String name) {
-					expandoColumn.setName(name);
-				}
-			});
-		attributeSetters.put("type",
-			new BiConsumer<ExpandoColumn, Integer>() {
-				@Override
-				public void accept(ExpandoColumn expandoColumn, Integer type) {
-					expandoColumn.setType(type);
-				}
-			});
-		attributeSetters.put("defaultData",
-			new BiConsumer<ExpandoColumn, String>() {
-				@Override
-				public void accept(ExpandoColumn expandoColumn,
-					String defaultData) {
-					expandoColumn.setDefaultData(defaultData);
-				}
-			});
-		attributeSetters.put("typeSettings",
-			new BiConsumer<ExpandoColumn, String>() {
-				@Override
-				public void accept(ExpandoColumn expandoColumn,
-					String typeSettings) {
-					expandoColumn.setTypeSettings(typeSettings);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

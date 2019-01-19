@@ -252,284 +252,64 @@ public class DDMTemplateVersionModelImpl extends BaseModelImpl<DDMTemplateVersio
 
 	static {
 		Map<String, Function<DDMTemplateVersion, Object>> attributeGetters = new LinkedHashMap<String, Function<DDMTemplateVersion, Object>>();
+		Map<String, BiConsumer<DDMTemplateVersion, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDMTemplateVersion, Object>>();
 
-		attributeGetters.put("templateVersionId",
-			new Function<DDMTemplateVersion, Object>() {
-				@Override
-				public Object apply(DDMTemplateVersion ddmTemplateVersion) {
-					return ddmTemplateVersion.getTemplateVersionId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<DDMTemplateVersion, Object>() {
-				@Override
-				public Object apply(DDMTemplateVersion ddmTemplateVersion) {
-					return ddmTemplateVersion.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<DDMTemplateVersion, Object>() {
-				@Override
-				public Object apply(DDMTemplateVersion ddmTemplateVersion) {
-					return ddmTemplateVersion.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<DDMTemplateVersion, Object>() {
-				@Override
-				public Object apply(DDMTemplateVersion ddmTemplateVersion) {
-					return ddmTemplateVersion.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<DDMTemplateVersion, Object>() {
-				@Override
-				public Object apply(DDMTemplateVersion ddmTemplateVersion) {
-					return ddmTemplateVersion.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<DDMTemplateVersion, Object>() {
-				@Override
-				public Object apply(DDMTemplateVersion ddmTemplateVersion) {
-					return ddmTemplateVersion.getCreateDate();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<DDMTemplateVersion, Object>() {
-				@Override
-				public Object apply(DDMTemplateVersion ddmTemplateVersion) {
-					return ddmTemplateVersion.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<DDMTemplateVersion, Object>() {
-				@Override
-				public Object apply(DDMTemplateVersion ddmTemplateVersion) {
-					return ddmTemplateVersion.getClassPK();
-				}
-			});
-		attributeGetters.put("templateId",
-			new Function<DDMTemplateVersion, Object>() {
-				@Override
-				public Object apply(DDMTemplateVersion ddmTemplateVersion) {
-					return ddmTemplateVersion.getTemplateId();
-				}
-			});
-		attributeGetters.put("version",
-			new Function<DDMTemplateVersion, Object>() {
-				@Override
-				public Object apply(DDMTemplateVersion ddmTemplateVersion) {
-					return ddmTemplateVersion.getVersion();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<DDMTemplateVersion, Object>() {
-				@Override
-				public Object apply(DDMTemplateVersion ddmTemplateVersion) {
-					return ddmTemplateVersion.getName();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<DDMTemplateVersion, Object>() {
-				@Override
-				public Object apply(DDMTemplateVersion ddmTemplateVersion) {
-					return ddmTemplateVersion.getDescription();
-				}
-			});
-		attributeGetters.put("language",
-			new Function<DDMTemplateVersion, Object>() {
-				@Override
-				public Object apply(DDMTemplateVersion ddmTemplateVersion) {
-					return ddmTemplateVersion.getLanguage();
-				}
-			});
-		attributeGetters.put("script",
-			new Function<DDMTemplateVersion, Object>() {
-				@Override
-				public Object apply(DDMTemplateVersion ddmTemplateVersion) {
-					return ddmTemplateVersion.getScript();
-				}
-			});
-		attributeGetters.put("status",
-			new Function<DDMTemplateVersion, Object>() {
-				@Override
-				public Object apply(DDMTemplateVersion ddmTemplateVersion) {
-					return ddmTemplateVersion.getStatus();
-				}
-			});
-		attributeGetters.put("statusByUserId",
-			new Function<DDMTemplateVersion, Object>() {
-				@Override
-				public Object apply(DDMTemplateVersion ddmTemplateVersion) {
-					return ddmTemplateVersion.getStatusByUserId();
-				}
-			});
-		attributeGetters.put("statusByUserName",
-			new Function<DDMTemplateVersion, Object>() {
-				@Override
-				public Object apply(DDMTemplateVersion ddmTemplateVersion) {
-					return ddmTemplateVersion.getStatusByUserName();
-				}
-			});
-		attributeGetters.put("statusDate",
-			new Function<DDMTemplateVersion, Object>() {
-				@Override
-				public Object apply(DDMTemplateVersion ddmTemplateVersion) {
-					return ddmTemplateVersion.getStatusDate();
-				}
-			});
+		attributeGetters.put("templateVersionId", DDMTemplateVersion::getTemplateVersionId);
+		attributeSetters.put("templateVersionId", DDMTemplateVersion::setTemplateVersionId);
+
+		attributeGetters.put("groupId", DDMTemplateVersion::getGroupId);
+		attributeSetters.put("groupId", DDMTemplateVersion::setGroupId);
+
+		attributeGetters.put("companyId", DDMTemplateVersion::getCompanyId);
+		attributeSetters.put("companyId", DDMTemplateVersion::setCompanyId);
+
+		attributeGetters.put("userId", DDMTemplateVersion::getUserId);
+		attributeSetters.put("userId", DDMTemplateVersion::setUserId);
+
+		attributeGetters.put("userName", DDMTemplateVersion::getUserName);
+		attributeSetters.put("userName", DDMTemplateVersion::setUserName);
+
+		attributeGetters.put("createDate", DDMTemplateVersion::getCreateDate);
+		attributeSetters.put("createDate", DDMTemplateVersion::setCreateDate);
+
+		attributeGetters.put("classNameId", DDMTemplateVersion::getClassNameId);
+		attributeSetters.put("classNameId", DDMTemplateVersion::setClassNameId);
+
+		attributeGetters.put("classPK", DDMTemplateVersion::getClassPK);
+		attributeSetters.put("classPK", DDMTemplateVersion::setClassPK);
+
+		attributeGetters.put("templateId", DDMTemplateVersion::getTemplateId);
+		attributeSetters.put("templateId", DDMTemplateVersion::setTemplateId);
+
+		attributeGetters.put("version", DDMTemplateVersion::getVersion);
+		attributeSetters.put("version", DDMTemplateVersion::setVersion);
+
+		attributeGetters.put("name", DDMTemplateVersion::getName);
+		attributeSetters.put("name", DDMTemplateVersion::setName);
+
+		attributeGetters.put("description", DDMTemplateVersion::getDescription);
+		attributeSetters.put("description", DDMTemplateVersion::setDescription);
+
+		attributeGetters.put("language", DDMTemplateVersion::getLanguage);
+		attributeSetters.put("language", DDMTemplateVersion::setLanguage);
+
+		attributeGetters.put("script", DDMTemplateVersion::getScript);
+		attributeSetters.put("script", DDMTemplateVersion::setScript);
+
+		attributeGetters.put("status", DDMTemplateVersion::getStatus);
+		attributeSetters.put("status", DDMTemplateVersion::setStatus);
+
+		attributeGetters.put("statusByUserId", DDMTemplateVersion::getStatusByUserId);
+		attributeSetters.put("statusByUserId", DDMTemplateVersion::setStatusByUserId);
+
+		attributeGetters.put("statusByUserName", DDMTemplateVersion::getStatusByUserName);
+		attributeSetters.put("statusByUserName", DDMTemplateVersion::setStatusByUserName);
+
+		attributeGetters.put("statusDate", DDMTemplateVersion::getStatusDate);
+		attributeSetters.put("statusDate", DDMTemplateVersion::setStatusDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<DDMTemplateVersion, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDMTemplateVersion, ?>>();
-
-		attributeSetters.put("templateVersionId",
-			new BiConsumer<DDMTemplateVersion, Long>() {
-				@Override
-				public void accept(DDMTemplateVersion ddmTemplateVersion,
-					Long templateVersionId) {
-					ddmTemplateVersion.setTemplateVersionId(templateVersionId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<DDMTemplateVersion, Long>() {
-				@Override
-				public void accept(DDMTemplateVersion ddmTemplateVersion,
-					Long groupId) {
-					ddmTemplateVersion.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<DDMTemplateVersion, Long>() {
-				@Override
-				public void accept(DDMTemplateVersion ddmTemplateVersion,
-					Long companyId) {
-					ddmTemplateVersion.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<DDMTemplateVersion, Long>() {
-				@Override
-				public void accept(DDMTemplateVersion ddmTemplateVersion,
-					Long userId) {
-					ddmTemplateVersion.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<DDMTemplateVersion, String>() {
-				@Override
-				public void accept(DDMTemplateVersion ddmTemplateVersion,
-					String userName) {
-					ddmTemplateVersion.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<DDMTemplateVersion, Date>() {
-				@Override
-				public void accept(DDMTemplateVersion ddmTemplateVersion,
-					Date createDate) {
-					ddmTemplateVersion.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<DDMTemplateVersion, Long>() {
-				@Override
-				public void accept(DDMTemplateVersion ddmTemplateVersion,
-					Long classNameId) {
-					ddmTemplateVersion.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<DDMTemplateVersion, Long>() {
-				@Override
-				public void accept(DDMTemplateVersion ddmTemplateVersion,
-					Long classPK) {
-					ddmTemplateVersion.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("templateId",
-			new BiConsumer<DDMTemplateVersion, Long>() {
-				@Override
-				public void accept(DDMTemplateVersion ddmTemplateVersion,
-					Long templateId) {
-					ddmTemplateVersion.setTemplateId(templateId);
-				}
-			});
-		attributeSetters.put("version",
-			new BiConsumer<DDMTemplateVersion, String>() {
-				@Override
-				public void accept(DDMTemplateVersion ddmTemplateVersion,
-					String version) {
-					ddmTemplateVersion.setVersion(version);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<DDMTemplateVersion, String>() {
-				@Override
-				public void accept(DDMTemplateVersion ddmTemplateVersion,
-					String name) {
-					ddmTemplateVersion.setName(name);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<DDMTemplateVersion, String>() {
-				@Override
-				public void accept(DDMTemplateVersion ddmTemplateVersion,
-					String description) {
-					ddmTemplateVersion.setDescription(description);
-				}
-			});
-		attributeSetters.put("language",
-			new BiConsumer<DDMTemplateVersion, String>() {
-				@Override
-				public void accept(DDMTemplateVersion ddmTemplateVersion,
-					String language) {
-					ddmTemplateVersion.setLanguage(language);
-				}
-			});
-		attributeSetters.put("script",
-			new BiConsumer<DDMTemplateVersion, String>() {
-				@Override
-				public void accept(DDMTemplateVersion ddmTemplateVersion,
-					String script) {
-					ddmTemplateVersion.setScript(script);
-				}
-			});
-		attributeSetters.put("status",
-			new BiConsumer<DDMTemplateVersion, Integer>() {
-				@Override
-				public void accept(DDMTemplateVersion ddmTemplateVersion,
-					Integer status) {
-					ddmTemplateVersion.setStatus(status);
-				}
-			});
-		attributeSetters.put("statusByUserId",
-			new BiConsumer<DDMTemplateVersion, Long>() {
-				@Override
-				public void accept(DDMTemplateVersion ddmTemplateVersion,
-					Long statusByUserId) {
-					ddmTemplateVersion.setStatusByUserId(statusByUserId);
-				}
-			});
-		attributeSetters.put("statusByUserName",
-			new BiConsumer<DDMTemplateVersion, String>() {
-				@Override
-				public void accept(DDMTemplateVersion ddmTemplateVersion,
-					String statusByUserName) {
-					ddmTemplateVersion.setStatusByUserName(statusByUserName);
-				}
-			});
-		attributeSetters.put("statusDate",
-			new BiConsumer<DDMTemplateVersion, Date>() {
-				@Override
-				public void accept(DDMTemplateVersion ddmTemplateVersion,
-					Date statusDate) {
-					ddmTemplateVersion.setStatusDate(statusDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

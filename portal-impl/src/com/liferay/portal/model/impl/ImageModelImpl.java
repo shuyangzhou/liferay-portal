@@ -205,126 +205,34 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 
 	static {
 		Map<String, Function<Image, Object>> attributeGetters = new LinkedHashMap<String, Function<Image, Object>>();
+		Map<String, BiConsumer<Image, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Image, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<Image, Object>() {
-				@Override
-				public Object apply(Image image) {
-					return image.getMvccVersion();
-				}
-			});
-		attributeGetters.put("imageId",
-			new Function<Image, Object>() {
-				@Override
-				public Object apply(Image image) {
-					return image.getImageId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<Image, Object>() {
-				@Override
-				public Object apply(Image image) {
-					return image.getCompanyId();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<Image, Object>() {
-				@Override
-				public Object apply(Image image) {
-					return image.getModifiedDate();
-				}
-			});
-		attributeGetters.put("type",
-			new Function<Image, Object>() {
-				@Override
-				public Object apply(Image image) {
-					return image.getType();
-				}
-			});
-		attributeGetters.put("height",
-			new Function<Image, Object>() {
-				@Override
-				public Object apply(Image image) {
-					return image.getHeight();
-				}
-			});
-		attributeGetters.put("width",
-			new Function<Image, Object>() {
-				@Override
-				public Object apply(Image image) {
-					return image.getWidth();
-				}
-			});
-		attributeGetters.put("size",
-			new Function<Image, Object>() {
-				@Override
-				public Object apply(Image image) {
-					return image.getSize();
-				}
-			});
+		attributeGetters.put("mvccVersion", Image::getMvccVersion);
+		attributeSetters.put("mvccVersion", Image::setMvccVersion);
+
+		attributeGetters.put("imageId", Image::getImageId);
+		attributeSetters.put("imageId", Image::setImageId);
+
+		attributeGetters.put("companyId", Image::getCompanyId);
+		attributeSetters.put("companyId", Image::setCompanyId);
+
+		attributeGetters.put("modifiedDate", Image::getModifiedDate);
+		attributeSetters.put("modifiedDate", Image::setModifiedDate);
+
+		attributeGetters.put("type", Image::getType);
+		attributeSetters.put("type", Image::setType);
+
+		attributeGetters.put("height", Image::getHeight);
+		attributeSetters.put("height", Image::setHeight);
+
+		attributeGetters.put("width", Image::getWidth);
+		attributeSetters.put("width", Image::setWidth);
+
+		attributeGetters.put("size", Image::getSize);
+		attributeSetters.put("size", Image::setSize);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<Image, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Image, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<Image, Long>() {
-				@Override
-				public void accept(Image image, Long mvccVersion) {
-					image.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("imageId",
-			new BiConsumer<Image, Long>() {
-				@Override
-				public void accept(Image image, Long imageId) {
-					image.setImageId(imageId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<Image, Long>() {
-				@Override
-				public void accept(Image image, Long companyId) {
-					image.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<Image, Date>() {
-				@Override
-				public void accept(Image image, Date modifiedDate) {
-					image.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("type",
-			new BiConsumer<Image, String>() {
-				@Override
-				public void accept(Image image, String type) {
-					image.setType(type);
-				}
-			});
-		attributeSetters.put("height",
-			new BiConsumer<Image, Integer>() {
-				@Override
-				public void accept(Image image, Integer height) {
-					image.setHeight(height);
-				}
-			});
-		attributeSetters.put("width",
-			new BiConsumer<Image, Integer>() {
-				@Override
-				public void accept(Image image, Integer width) {
-					image.setWidth(width);
-				}
-			});
-		attributeSetters.put("size",
-			new BiConsumer<Image, Integer>() {
-				@Override
-				public void accept(Image image, Integer size) {
-					image.setSize(size);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

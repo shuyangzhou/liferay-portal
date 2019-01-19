@@ -225,149 +225,37 @@ public class ReadingTimeEntryModelImpl extends BaseModelImpl<ReadingTimeEntry>
 
 	static {
 		Map<String, Function<ReadingTimeEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<ReadingTimeEntry, Object>>();
+		Map<String, BiConsumer<ReadingTimeEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<ReadingTimeEntry, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<ReadingTimeEntry, Object>() {
-				@Override
-				public Object apply(ReadingTimeEntry readingTimeEntry) {
-					return readingTimeEntry.getUuid();
-				}
-			});
-		attributeGetters.put("readingTimeEntryId",
-			new Function<ReadingTimeEntry, Object>() {
-				@Override
-				public Object apply(ReadingTimeEntry readingTimeEntry) {
-					return readingTimeEntry.getReadingTimeEntryId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<ReadingTimeEntry, Object>() {
-				@Override
-				public Object apply(ReadingTimeEntry readingTimeEntry) {
-					return readingTimeEntry.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<ReadingTimeEntry, Object>() {
-				@Override
-				public Object apply(ReadingTimeEntry readingTimeEntry) {
-					return readingTimeEntry.getCompanyId();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<ReadingTimeEntry, Object>() {
-				@Override
-				public Object apply(ReadingTimeEntry readingTimeEntry) {
-					return readingTimeEntry.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<ReadingTimeEntry, Object>() {
-				@Override
-				public Object apply(ReadingTimeEntry readingTimeEntry) {
-					return readingTimeEntry.getModifiedDate();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<ReadingTimeEntry, Object>() {
-				@Override
-				public Object apply(ReadingTimeEntry readingTimeEntry) {
-					return readingTimeEntry.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<ReadingTimeEntry, Object>() {
-				@Override
-				public Object apply(ReadingTimeEntry readingTimeEntry) {
-					return readingTimeEntry.getClassPK();
-				}
-			});
-		attributeGetters.put("readingTime",
-			new Function<ReadingTimeEntry, Object>() {
-				@Override
-				public Object apply(ReadingTimeEntry readingTimeEntry) {
-					return readingTimeEntry.getReadingTime();
-				}
-			});
+		attributeGetters.put("uuid", ReadingTimeEntry::getUuid);
+		attributeSetters.put("uuid", ReadingTimeEntry::setUuid);
+
+		attributeGetters.put("readingTimeEntryId", ReadingTimeEntry::getReadingTimeEntryId);
+		attributeSetters.put("readingTimeEntryId", ReadingTimeEntry::setReadingTimeEntryId);
+
+		attributeGetters.put("groupId", ReadingTimeEntry::getGroupId);
+		attributeSetters.put("groupId", ReadingTimeEntry::setGroupId);
+
+		attributeGetters.put("companyId", ReadingTimeEntry::getCompanyId);
+		attributeSetters.put("companyId", ReadingTimeEntry::setCompanyId);
+
+		attributeGetters.put("createDate", ReadingTimeEntry::getCreateDate);
+		attributeSetters.put("createDate", ReadingTimeEntry::setCreateDate);
+
+		attributeGetters.put("modifiedDate", ReadingTimeEntry::getModifiedDate);
+		attributeSetters.put("modifiedDate", ReadingTimeEntry::setModifiedDate);
+
+		attributeGetters.put("classNameId", ReadingTimeEntry::getClassNameId);
+		attributeSetters.put("classNameId", ReadingTimeEntry::setClassNameId);
+
+		attributeGetters.put("classPK", ReadingTimeEntry::getClassPK);
+		attributeSetters.put("classPK", ReadingTimeEntry::setClassPK);
+
+		attributeGetters.put("readingTime", ReadingTimeEntry::getReadingTime);
+		attributeSetters.put("readingTime", ReadingTimeEntry::setReadingTime);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<ReadingTimeEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<ReadingTimeEntry, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<ReadingTimeEntry, String>() {
-				@Override
-				public void accept(ReadingTimeEntry readingTimeEntry,
-					String uuid) {
-					readingTimeEntry.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("readingTimeEntryId",
-			new BiConsumer<ReadingTimeEntry, Long>() {
-				@Override
-				public void accept(ReadingTimeEntry readingTimeEntry,
-					Long readingTimeEntryId) {
-					readingTimeEntry.setReadingTimeEntryId(readingTimeEntryId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<ReadingTimeEntry, Long>() {
-				@Override
-				public void accept(ReadingTimeEntry readingTimeEntry,
-					Long groupId) {
-					readingTimeEntry.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<ReadingTimeEntry, Long>() {
-				@Override
-				public void accept(ReadingTimeEntry readingTimeEntry,
-					Long companyId) {
-					readingTimeEntry.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<ReadingTimeEntry, Date>() {
-				@Override
-				public void accept(ReadingTimeEntry readingTimeEntry,
-					Date createDate) {
-					readingTimeEntry.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<ReadingTimeEntry, Date>() {
-				@Override
-				public void accept(ReadingTimeEntry readingTimeEntry,
-					Date modifiedDate) {
-					readingTimeEntry.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<ReadingTimeEntry, Long>() {
-				@Override
-				public void accept(ReadingTimeEntry readingTimeEntry,
-					Long classNameId) {
-					readingTimeEntry.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<ReadingTimeEntry, Long>() {
-				@Override
-				public void accept(ReadingTimeEntry readingTimeEntry,
-					Long classPK) {
-					readingTimeEntry.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("readingTime",
-			new BiConsumer<ReadingTimeEntry, Long>() {
-				@Override
-				public void accept(ReadingTimeEntry readingTimeEntry,
-					Long readingTime) {
-					readingTimeEntry.setReadingTime(readingTime);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

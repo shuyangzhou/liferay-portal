@@ -165,154 +165,40 @@ public class TicketModelImpl extends BaseModelImpl<Ticket>
 
 	static {
 		Map<String, Function<Ticket, Object>> attributeGetters = new LinkedHashMap<String, Function<Ticket, Object>>();
+		Map<String, BiConsumer<Ticket, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Ticket, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<Ticket, Object>() {
-				@Override
-				public Object apply(Ticket ticket) {
-					return ticket.getMvccVersion();
-				}
-			});
-		attributeGetters.put("ticketId",
-			new Function<Ticket, Object>() {
-				@Override
-				public Object apply(Ticket ticket) {
-					return ticket.getTicketId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<Ticket, Object>() {
-				@Override
-				public Object apply(Ticket ticket) {
-					return ticket.getCompanyId();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<Ticket, Object>() {
-				@Override
-				public Object apply(Ticket ticket) {
-					return ticket.getCreateDate();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<Ticket, Object>() {
-				@Override
-				public Object apply(Ticket ticket) {
-					return ticket.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<Ticket, Object>() {
-				@Override
-				public Object apply(Ticket ticket) {
-					return ticket.getClassPK();
-				}
-			});
-		attributeGetters.put("key",
-			new Function<Ticket, Object>() {
-				@Override
-				public Object apply(Ticket ticket) {
-					return ticket.getKey();
-				}
-			});
-		attributeGetters.put("type",
-			new Function<Ticket, Object>() {
-				@Override
-				public Object apply(Ticket ticket) {
-					return ticket.getType();
-				}
-			});
-		attributeGetters.put("extraInfo",
-			new Function<Ticket, Object>() {
-				@Override
-				public Object apply(Ticket ticket) {
-					return ticket.getExtraInfo();
-				}
-			});
-		attributeGetters.put("expirationDate",
-			new Function<Ticket, Object>() {
-				@Override
-				public Object apply(Ticket ticket) {
-					return ticket.getExpirationDate();
-				}
-			});
+		attributeGetters.put("mvccVersion", Ticket::getMvccVersion);
+		attributeSetters.put("mvccVersion", Ticket::setMvccVersion);
+
+		attributeGetters.put("ticketId", Ticket::getTicketId);
+		attributeSetters.put("ticketId", Ticket::setTicketId);
+
+		attributeGetters.put("companyId", Ticket::getCompanyId);
+		attributeSetters.put("companyId", Ticket::setCompanyId);
+
+		attributeGetters.put("createDate", Ticket::getCreateDate);
+		attributeSetters.put("createDate", Ticket::setCreateDate);
+
+		attributeGetters.put("classNameId", Ticket::getClassNameId);
+		attributeSetters.put("classNameId", Ticket::setClassNameId);
+
+		attributeGetters.put("classPK", Ticket::getClassPK);
+		attributeSetters.put("classPK", Ticket::setClassPK);
+
+		attributeGetters.put("key", Ticket::getKey);
+		attributeSetters.put("key", Ticket::setKey);
+
+		attributeGetters.put("type", Ticket::getType);
+		attributeSetters.put("type", Ticket::setType);
+
+		attributeGetters.put("extraInfo", Ticket::getExtraInfo);
+		attributeSetters.put("extraInfo", Ticket::setExtraInfo);
+
+		attributeGetters.put("expirationDate", Ticket::getExpirationDate);
+		attributeSetters.put("expirationDate", Ticket::setExpirationDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<Ticket, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Ticket, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<Ticket, Long>() {
-				@Override
-				public void accept(Ticket ticket, Long mvccVersion) {
-					ticket.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("ticketId",
-			new BiConsumer<Ticket, Long>() {
-				@Override
-				public void accept(Ticket ticket, Long ticketId) {
-					ticket.setTicketId(ticketId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<Ticket, Long>() {
-				@Override
-				public void accept(Ticket ticket, Long companyId) {
-					ticket.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<Ticket, Date>() {
-				@Override
-				public void accept(Ticket ticket, Date createDate) {
-					ticket.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<Ticket, Long>() {
-				@Override
-				public void accept(Ticket ticket, Long classNameId) {
-					ticket.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<Ticket, Long>() {
-				@Override
-				public void accept(Ticket ticket, Long classPK) {
-					ticket.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("key",
-			new BiConsumer<Ticket, String>() {
-				@Override
-				public void accept(Ticket ticket, String key) {
-					ticket.setKey(key);
-				}
-			});
-		attributeSetters.put("type",
-			new BiConsumer<Ticket, Integer>() {
-				@Override
-				public void accept(Ticket ticket, Integer type) {
-					ticket.setType(type);
-				}
-			});
-		attributeSetters.put("extraInfo",
-			new BiConsumer<Ticket, String>() {
-				@Override
-				public void accept(Ticket ticket, String extraInfo) {
-					ticket.setExtraInfo(extraInfo);
-				}
-			});
-		attributeSetters.put("expirationDate",
-			new BiConsumer<Ticket, Date>() {
-				@Override
-				public void accept(Ticket ticket, Date expirationDate) {
-					ticket.setExpirationDate(expirationDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

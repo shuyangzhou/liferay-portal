@@ -245,294 +245,67 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 
 	static {
 		Map<String, Function<LayoutSetBranch, Object>> attributeGetters = new LinkedHashMap<String, Function<LayoutSetBranch, Object>>();
+		Map<String, BiConsumer<LayoutSetBranch, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<LayoutSetBranch, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<LayoutSetBranch, Object>() {
-				@Override
-				public Object apply(LayoutSetBranch layoutSetBranch) {
-					return layoutSetBranch.getMvccVersion();
-				}
-			});
-		attributeGetters.put("layoutSetBranchId",
-			new Function<LayoutSetBranch, Object>() {
-				@Override
-				public Object apply(LayoutSetBranch layoutSetBranch) {
-					return layoutSetBranch.getLayoutSetBranchId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<LayoutSetBranch, Object>() {
-				@Override
-				public Object apply(LayoutSetBranch layoutSetBranch) {
-					return layoutSetBranch.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<LayoutSetBranch, Object>() {
-				@Override
-				public Object apply(LayoutSetBranch layoutSetBranch) {
-					return layoutSetBranch.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<LayoutSetBranch, Object>() {
-				@Override
-				public Object apply(LayoutSetBranch layoutSetBranch) {
-					return layoutSetBranch.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<LayoutSetBranch, Object>() {
-				@Override
-				public Object apply(LayoutSetBranch layoutSetBranch) {
-					return layoutSetBranch.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<LayoutSetBranch, Object>() {
-				@Override
-				public Object apply(LayoutSetBranch layoutSetBranch) {
-					return layoutSetBranch.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<LayoutSetBranch, Object>() {
-				@Override
-				public Object apply(LayoutSetBranch layoutSetBranch) {
-					return layoutSetBranch.getModifiedDate();
-				}
-			});
-		attributeGetters.put("privateLayout",
-			new Function<LayoutSetBranch, Object>() {
-				@Override
-				public Object apply(LayoutSetBranch layoutSetBranch) {
-					return layoutSetBranch.isPrivateLayout();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<LayoutSetBranch, Object>() {
-				@Override
-				public Object apply(LayoutSetBranch layoutSetBranch) {
-					return layoutSetBranch.getName();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<LayoutSetBranch, Object>() {
-				@Override
-				public Object apply(LayoutSetBranch layoutSetBranch) {
-					return layoutSetBranch.getDescription();
-				}
-			});
-		attributeGetters.put("master",
-			new Function<LayoutSetBranch, Object>() {
-				@Override
-				public Object apply(LayoutSetBranch layoutSetBranch) {
-					return layoutSetBranch.isMaster();
-				}
-			});
-		attributeGetters.put("logoId",
-			new Function<LayoutSetBranch, Object>() {
-				@Override
-				public Object apply(LayoutSetBranch layoutSetBranch) {
-					return layoutSetBranch.getLogoId();
-				}
-			});
-		attributeGetters.put("themeId",
-			new Function<LayoutSetBranch, Object>() {
-				@Override
-				public Object apply(LayoutSetBranch layoutSetBranch) {
-					return layoutSetBranch.getThemeId();
-				}
-			});
-		attributeGetters.put("colorSchemeId",
-			new Function<LayoutSetBranch, Object>() {
-				@Override
-				public Object apply(LayoutSetBranch layoutSetBranch) {
-					return layoutSetBranch.getColorSchemeId();
-				}
-			});
-		attributeGetters.put("css",
-			new Function<LayoutSetBranch, Object>() {
-				@Override
-				public Object apply(LayoutSetBranch layoutSetBranch) {
-					return layoutSetBranch.getCss();
-				}
-			});
-		attributeGetters.put("settings",
-			new Function<LayoutSetBranch, Object>() {
-				@Override
-				public Object apply(LayoutSetBranch layoutSetBranch) {
-					return layoutSetBranch.getSettings();
-				}
-			});
-		attributeGetters.put("layoutSetPrototypeUuid",
-			new Function<LayoutSetBranch, Object>() {
-				@Override
-				public Object apply(LayoutSetBranch layoutSetBranch) {
-					return layoutSetBranch.getLayoutSetPrototypeUuid();
-				}
-			});
-		attributeGetters.put("layoutSetPrototypeLinkEnabled",
-			new Function<LayoutSetBranch, Object>() {
-				@Override
-				public Object apply(LayoutSetBranch layoutSetBranch) {
-					return layoutSetBranch.isLayoutSetPrototypeLinkEnabled();
-				}
-			});
+		attributeGetters.put("mvccVersion", LayoutSetBranch::getMvccVersion);
+		attributeSetters.put("mvccVersion", LayoutSetBranch::setMvccVersion);
+
+		attributeGetters.put("layoutSetBranchId", LayoutSetBranch::getLayoutSetBranchId);
+		attributeSetters.put("layoutSetBranchId", LayoutSetBranch::setLayoutSetBranchId);
+
+		attributeGetters.put("groupId", LayoutSetBranch::getGroupId);
+		attributeSetters.put("groupId", LayoutSetBranch::setGroupId);
+
+		attributeGetters.put("companyId", LayoutSetBranch::getCompanyId);
+		attributeSetters.put("companyId", LayoutSetBranch::setCompanyId);
+
+		attributeGetters.put("userId", LayoutSetBranch::getUserId);
+		attributeSetters.put("userId", LayoutSetBranch::setUserId);
+
+		attributeGetters.put("userName", LayoutSetBranch::getUserName);
+		attributeSetters.put("userName", LayoutSetBranch::setUserName);
+
+		attributeGetters.put("createDate", LayoutSetBranch::getCreateDate);
+		attributeSetters.put("createDate", LayoutSetBranch::setCreateDate);
+
+		attributeGetters.put("modifiedDate", LayoutSetBranch::getModifiedDate);
+		attributeSetters.put("modifiedDate", LayoutSetBranch::setModifiedDate);
+
+		attributeGetters.put("privateLayout", LayoutSetBranch::getPrivateLayout);
+		attributeSetters.put("privateLayout", LayoutSetBranch::setPrivateLayout);
+
+		attributeGetters.put("name", LayoutSetBranch::getName);
+		attributeSetters.put("name", LayoutSetBranch::setName);
+
+		attributeGetters.put("description", LayoutSetBranch::getDescription);
+		attributeSetters.put("description", LayoutSetBranch::setDescription);
+
+		attributeGetters.put("master", LayoutSetBranch::getMaster);
+		attributeSetters.put("master", LayoutSetBranch::setMaster);
+
+		attributeGetters.put("logoId", LayoutSetBranch::getLogoId);
+		attributeSetters.put("logoId", LayoutSetBranch::setLogoId);
+
+		attributeGetters.put("themeId", LayoutSetBranch::getThemeId);
+		attributeSetters.put("themeId", LayoutSetBranch::setThemeId);
+
+		attributeGetters.put("colorSchemeId", LayoutSetBranch::getColorSchemeId);
+		attributeSetters.put("colorSchemeId", LayoutSetBranch::setColorSchemeId);
+
+		attributeGetters.put("css", LayoutSetBranch::getCss);
+		attributeSetters.put("css", LayoutSetBranch::setCss);
+
+		attributeGetters.put("settings", LayoutSetBranch::getSettings);
+		attributeSetters.put("settings", LayoutSetBranch::setSettings);
+
+		attributeGetters.put("layoutSetPrototypeUuid", LayoutSetBranch::getLayoutSetPrototypeUuid);
+		attributeSetters.put("layoutSetPrototypeUuid", LayoutSetBranch::setLayoutSetPrototypeUuid);
+
+		attributeGetters.put("layoutSetPrototypeLinkEnabled", LayoutSetBranch::getLayoutSetPrototypeLinkEnabled);
+		attributeSetters.put("layoutSetPrototypeLinkEnabled", LayoutSetBranch::setLayoutSetPrototypeLinkEnabled);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<LayoutSetBranch, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<LayoutSetBranch, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<LayoutSetBranch, Long>() {
-				@Override
-				public void accept(LayoutSetBranch layoutSetBranch,
-					Long mvccVersion) {
-					layoutSetBranch.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("layoutSetBranchId",
-			new BiConsumer<LayoutSetBranch, Long>() {
-				@Override
-				public void accept(LayoutSetBranch layoutSetBranch,
-					Long layoutSetBranchId) {
-					layoutSetBranch.setLayoutSetBranchId(layoutSetBranchId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<LayoutSetBranch, Long>() {
-				@Override
-				public void accept(LayoutSetBranch layoutSetBranch, Long groupId) {
-					layoutSetBranch.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<LayoutSetBranch, Long>() {
-				@Override
-				public void accept(LayoutSetBranch layoutSetBranch,
-					Long companyId) {
-					layoutSetBranch.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<LayoutSetBranch, Long>() {
-				@Override
-				public void accept(LayoutSetBranch layoutSetBranch, Long userId) {
-					layoutSetBranch.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<LayoutSetBranch, String>() {
-				@Override
-				public void accept(LayoutSetBranch layoutSetBranch,
-					String userName) {
-					layoutSetBranch.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<LayoutSetBranch, Date>() {
-				@Override
-				public void accept(LayoutSetBranch layoutSetBranch,
-					Date createDate) {
-					layoutSetBranch.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<LayoutSetBranch, Date>() {
-				@Override
-				public void accept(LayoutSetBranch layoutSetBranch,
-					Date modifiedDate) {
-					layoutSetBranch.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("privateLayout",
-			new BiConsumer<LayoutSetBranch, Boolean>() {
-				@Override
-				public void accept(LayoutSetBranch layoutSetBranch,
-					Boolean privateLayout) {
-					layoutSetBranch.setPrivateLayout(privateLayout);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<LayoutSetBranch, String>() {
-				@Override
-				public void accept(LayoutSetBranch layoutSetBranch, String name) {
-					layoutSetBranch.setName(name);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<LayoutSetBranch, String>() {
-				@Override
-				public void accept(LayoutSetBranch layoutSetBranch,
-					String description) {
-					layoutSetBranch.setDescription(description);
-				}
-			});
-		attributeSetters.put("master",
-			new BiConsumer<LayoutSetBranch, Boolean>() {
-				@Override
-				public void accept(LayoutSetBranch layoutSetBranch,
-					Boolean master) {
-					layoutSetBranch.setMaster(master);
-				}
-			});
-		attributeSetters.put("logoId",
-			new BiConsumer<LayoutSetBranch, Long>() {
-				@Override
-				public void accept(LayoutSetBranch layoutSetBranch, Long logoId) {
-					layoutSetBranch.setLogoId(logoId);
-				}
-			});
-		attributeSetters.put("themeId",
-			new BiConsumer<LayoutSetBranch, String>() {
-				@Override
-				public void accept(LayoutSetBranch layoutSetBranch,
-					String themeId) {
-					layoutSetBranch.setThemeId(themeId);
-				}
-			});
-		attributeSetters.put("colorSchemeId",
-			new BiConsumer<LayoutSetBranch, String>() {
-				@Override
-				public void accept(LayoutSetBranch layoutSetBranch,
-					String colorSchemeId) {
-					layoutSetBranch.setColorSchemeId(colorSchemeId);
-				}
-			});
-		attributeSetters.put("css",
-			new BiConsumer<LayoutSetBranch, String>() {
-				@Override
-				public void accept(LayoutSetBranch layoutSetBranch, String css) {
-					layoutSetBranch.setCss(css);
-				}
-			});
-		attributeSetters.put("settings",
-			new BiConsumer<LayoutSetBranch, String>() {
-				@Override
-				public void accept(LayoutSetBranch layoutSetBranch,
-					String settings) {
-					layoutSetBranch.setSettings(settings);
-				}
-			});
-		attributeSetters.put("layoutSetPrototypeUuid",
-			new BiConsumer<LayoutSetBranch, String>() {
-				@Override
-				public void accept(LayoutSetBranch layoutSetBranch,
-					String layoutSetPrototypeUuid) {
-					layoutSetBranch.setLayoutSetPrototypeUuid(layoutSetPrototypeUuid);
-				}
-			});
-		attributeSetters.put("layoutSetPrototypeLinkEnabled",
-			new BiConsumer<LayoutSetBranch, Boolean>() {
-				@Override
-				public void accept(LayoutSetBranch layoutSetBranch,
-					Boolean layoutSetPrototypeLinkEnabled) {
-					layoutSetBranch.setLayoutSetPrototypeLinkEnabled(layoutSetPrototypeLinkEnabled);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

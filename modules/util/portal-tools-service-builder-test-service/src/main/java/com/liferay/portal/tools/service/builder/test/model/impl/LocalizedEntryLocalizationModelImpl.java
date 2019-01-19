@@ -209,116 +209,137 @@ public class LocalizedEntryLocalizationModelImpl extends BaseModelImpl<Localized
 	static {
 		Map<String, Function<LocalizedEntryLocalization, Object>> attributeGetters =
 			new LinkedHashMap<String, Function<LocalizedEntryLocalization, Object>>();
+		Map<String, BiConsumer<LocalizedEntryLocalization, Object>> attributeSetters =
+			new LinkedHashMap<String, BiConsumer<LocalizedEntryLocalization, Object>>();
 
-		attributeGetters.put("mvccVersion",
+		attributeGetters.put(
+			"mvccVersion",
 			new Function<LocalizedEntryLocalization, Object>() {
+
 				@Override
-				public Object apply(
-					LocalizedEntryLocalization localizedEntryLocalization) {
+				public Object apply(LocalizedEntryLocalization localizedEntryLocalization) {
 					return localizedEntryLocalization.getMvccVersion();
 				}
+
 			});
-		attributeGetters.put("localizedEntryLocalizationId",
-			new Function<LocalizedEntryLocalization, Object>() {
+		attributeSetters.put(
+			"mvccVersion",
+			new BiConsumer<LocalizedEntryLocalization, Object>() {
+
 				@Override
-				public Object apply(
-					LocalizedEntryLocalization localizedEntryLocalization) {
+				public void accept(LocalizedEntryLocalization localizedEntryLocalization, Object mvccVersion) {
+					localizedEntryLocalization.setMvccVersion((Long)mvccVersion);
+				}
+
+			});
+
+		attributeGetters.put(
+			"localizedEntryLocalizationId",
+			new Function<LocalizedEntryLocalization, Object>() {
+
+				@Override
+				public Object apply(LocalizedEntryLocalization localizedEntryLocalization) {
 					return localizedEntryLocalization.getLocalizedEntryLocalizationId();
 				}
+
 			});
-		attributeGetters.put("localizedEntryId",
-			new Function<LocalizedEntryLocalization, Object>() {
+		attributeSetters.put(
+			"localizedEntryLocalizationId",
+			new BiConsumer<LocalizedEntryLocalization, Object>() {
+
 				@Override
-				public Object apply(
-					LocalizedEntryLocalization localizedEntryLocalization) {
+				public void accept(LocalizedEntryLocalization localizedEntryLocalization, Object localizedEntryLocalizationId) {
+					localizedEntryLocalization.setLocalizedEntryLocalizationId((Long)localizedEntryLocalizationId);
+				}
+
+			});
+
+		attributeGetters.put(
+			"localizedEntryId",
+			new Function<LocalizedEntryLocalization, Object>() {
+
+				@Override
+				public Object apply(LocalizedEntryLocalization localizedEntryLocalization) {
 					return localizedEntryLocalization.getLocalizedEntryId();
 				}
+
 			});
-		attributeGetters.put("languageId",
-			new Function<LocalizedEntryLocalization, Object>() {
+		attributeSetters.put(
+			"localizedEntryId",
+			new BiConsumer<LocalizedEntryLocalization, Object>() {
+
 				@Override
-				public Object apply(
-					LocalizedEntryLocalization localizedEntryLocalization) {
+				public void accept(LocalizedEntryLocalization localizedEntryLocalization, Object localizedEntryId) {
+					localizedEntryLocalization.setLocalizedEntryId((Long)localizedEntryId);
+				}
+
+			});
+
+		attributeGetters.put(
+			"languageId",
+			new Function<LocalizedEntryLocalization, Object>() {
+
+				@Override
+				public Object apply(LocalizedEntryLocalization localizedEntryLocalization) {
 					return localizedEntryLocalization.getLanguageId();
 				}
+
 			});
-		attributeGetters.put("title",
-			new Function<LocalizedEntryLocalization, Object>() {
+		attributeSetters.put(
+			"languageId",
+			new BiConsumer<LocalizedEntryLocalization, Object>() {
+
 				@Override
-				public Object apply(
-					LocalizedEntryLocalization localizedEntryLocalization) {
+				public void accept(LocalizedEntryLocalization localizedEntryLocalization, Object languageId) {
+					localizedEntryLocalization.setLanguageId((String)languageId);
+				}
+
+			});
+
+		attributeGetters.put(
+			"title",
+			new Function<LocalizedEntryLocalization, Object>() {
+
+				@Override
+				public Object apply(LocalizedEntryLocalization localizedEntryLocalization) {
 					return localizedEntryLocalization.getTitle();
 				}
+
 			});
-		attributeGetters.put("content",
-			new Function<LocalizedEntryLocalization, Object>() {
+		attributeSetters.put(
+			"title",
+			new BiConsumer<LocalizedEntryLocalization, Object>() {
+
 				@Override
-				public Object apply(
-					LocalizedEntryLocalization localizedEntryLocalization) {
+				public void accept(LocalizedEntryLocalization localizedEntryLocalization, Object title) {
+					localizedEntryLocalization.setTitle((String)title);
+				}
+
+			});
+
+		attributeGetters.put(
+			"content",
+			new Function<LocalizedEntryLocalization, Object>() {
+
+				@Override
+				public Object apply(LocalizedEntryLocalization localizedEntryLocalization) {
 					return localizedEntryLocalization.getContent();
 				}
+
+			});
+		attributeSetters.put(
+			"content",
+			new BiConsumer<LocalizedEntryLocalization, Object>() {
+
+				@Override
+				public void accept(LocalizedEntryLocalization localizedEntryLocalization, Object content) {
+					localizedEntryLocalization.setContent((String)content);
+				}
+
 			});
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<LocalizedEntryLocalization, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<LocalizedEntryLocalization, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<LocalizedEntryLocalization, Long>() {
-				@Override
-				public void accept(
-					LocalizedEntryLocalization localizedEntryLocalization,
-					Long mvccVersion) {
-					localizedEntryLocalization.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("localizedEntryLocalizationId",
-			new BiConsumer<LocalizedEntryLocalization, Long>() {
-				@Override
-				public void accept(
-					LocalizedEntryLocalization localizedEntryLocalization,
-					Long localizedEntryLocalizationId) {
-					localizedEntryLocalization.setLocalizedEntryLocalizationId(localizedEntryLocalizationId);
-				}
-			});
-		attributeSetters.put("localizedEntryId",
-			new BiConsumer<LocalizedEntryLocalization, Long>() {
-				@Override
-				public void accept(
-					LocalizedEntryLocalization localizedEntryLocalization,
-					Long localizedEntryId) {
-					localizedEntryLocalization.setLocalizedEntryId(localizedEntryId);
-				}
-			});
-		attributeSetters.put("languageId",
-			new BiConsumer<LocalizedEntryLocalization, String>() {
-				@Override
-				public void accept(
-					LocalizedEntryLocalization localizedEntryLocalization,
-					String languageId) {
-					localizedEntryLocalization.setLanguageId(languageId);
-				}
-			});
-		attributeSetters.put("title",
-			new BiConsumer<LocalizedEntryLocalization, String>() {
-				@Override
-				public void accept(
-					LocalizedEntryLocalization localizedEntryLocalization,
-					String title) {
-					localizedEntryLocalization.setTitle(title);
-				}
-			});
-		attributeSetters.put("content",
-			new BiConsumer<LocalizedEntryLocalization, String>() {
-				@Override
-				public void accept(
-					LocalizedEntryLocalization localizedEntryLocalization,
-					String content) {
-					localizedEntryLocalization.setContent(content);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

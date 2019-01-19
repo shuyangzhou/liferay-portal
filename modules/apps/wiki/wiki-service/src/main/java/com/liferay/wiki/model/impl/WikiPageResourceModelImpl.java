@@ -155,104 +155,28 @@ public class WikiPageResourceModelImpl extends BaseModelImpl<WikiPageResource>
 
 	static {
 		Map<String, Function<WikiPageResource, Object>> attributeGetters = new LinkedHashMap<String, Function<WikiPageResource, Object>>();
+		Map<String, BiConsumer<WikiPageResource, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<WikiPageResource, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<WikiPageResource, Object>() {
-				@Override
-				public Object apply(WikiPageResource wikiPageResource) {
-					return wikiPageResource.getUuid();
-				}
-			});
-		attributeGetters.put("resourcePrimKey",
-			new Function<WikiPageResource, Object>() {
-				@Override
-				public Object apply(WikiPageResource wikiPageResource) {
-					return wikiPageResource.getResourcePrimKey();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<WikiPageResource, Object>() {
-				@Override
-				public Object apply(WikiPageResource wikiPageResource) {
-					return wikiPageResource.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<WikiPageResource, Object>() {
-				@Override
-				public Object apply(WikiPageResource wikiPageResource) {
-					return wikiPageResource.getCompanyId();
-				}
-			});
-		attributeGetters.put("nodeId",
-			new Function<WikiPageResource, Object>() {
-				@Override
-				public Object apply(WikiPageResource wikiPageResource) {
-					return wikiPageResource.getNodeId();
-				}
-			});
-		attributeGetters.put("title",
-			new Function<WikiPageResource, Object>() {
-				@Override
-				public Object apply(WikiPageResource wikiPageResource) {
-					return wikiPageResource.getTitle();
-				}
-			});
+		attributeGetters.put("uuid", WikiPageResource::getUuid);
+		attributeSetters.put("uuid", WikiPageResource::setUuid);
+
+		attributeGetters.put("resourcePrimKey", WikiPageResource::getResourcePrimKey);
+		attributeSetters.put("resourcePrimKey", WikiPageResource::setResourcePrimKey);
+
+		attributeGetters.put("groupId", WikiPageResource::getGroupId);
+		attributeSetters.put("groupId", WikiPageResource::setGroupId);
+
+		attributeGetters.put("companyId", WikiPageResource::getCompanyId);
+		attributeSetters.put("companyId", WikiPageResource::setCompanyId);
+
+		attributeGetters.put("nodeId", WikiPageResource::getNodeId);
+		attributeSetters.put("nodeId", WikiPageResource::setNodeId);
+
+		attributeGetters.put("title", WikiPageResource::getTitle);
+		attributeSetters.put("title", WikiPageResource::setTitle);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<WikiPageResource, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<WikiPageResource, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<WikiPageResource, String>() {
-				@Override
-				public void accept(WikiPageResource wikiPageResource,
-					String uuid) {
-					wikiPageResource.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("resourcePrimKey",
-			new BiConsumer<WikiPageResource, Long>() {
-				@Override
-				public void accept(WikiPageResource wikiPageResource,
-					Long resourcePrimKey) {
-					wikiPageResource.setResourcePrimKey(resourcePrimKey);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<WikiPageResource, Long>() {
-				@Override
-				public void accept(WikiPageResource wikiPageResource,
-					Long groupId) {
-					wikiPageResource.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<WikiPageResource, Long>() {
-				@Override
-				public void accept(WikiPageResource wikiPageResource,
-					Long companyId) {
-					wikiPageResource.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("nodeId",
-			new BiConsumer<WikiPageResource, Long>() {
-				@Override
-				public void accept(WikiPageResource wikiPageResource,
-					Long nodeId) {
-					wikiPageResource.setNodeId(nodeId);
-				}
-			});
-		attributeSetters.put("title",
-			new BiConsumer<WikiPageResource, String>() {
-				@Override
-				public void accept(WikiPageResource wikiPageResource,
-					String title) {
-					wikiPageResource.setTitle(title);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

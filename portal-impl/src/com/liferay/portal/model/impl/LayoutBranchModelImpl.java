@@ -220,170 +220,43 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 
 	static {
 		Map<String, Function<LayoutBranch, Object>> attributeGetters = new LinkedHashMap<String, Function<LayoutBranch, Object>>();
+		Map<String, BiConsumer<LayoutBranch, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<LayoutBranch, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<LayoutBranch, Object>() {
-				@Override
-				public Object apply(LayoutBranch layoutBranch) {
-					return layoutBranch.getMvccVersion();
-				}
-			});
-		attributeGetters.put("layoutBranchId",
-			new Function<LayoutBranch, Object>() {
-				@Override
-				public Object apply(LayoutBranch layoutBranch) {
-					return layoutBranch.getLayoutBranchId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<LayoutBranch, Object>() {
-				@Override
-				public Object apply(LayoutBranch layoutBranch) {
-					return layoutBranch.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<LayoutBranch, Object>() {
-				@Override
-				public Object apply(LayoutBranch layoutBranch) {
-					return layoutBranch.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<LayoutBranch, Object>() {
-				@Override
-				public Object apply(LayoutBranch layoutBranch) {
-					return layoutBranch.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<LayoutBranch, Object>() {
-				@Override
-				public Object apply(LayoutBranch layoutBranch) {
-					return layoutBranch.getUserName();
-				}
-			});
-		attributeGetters.put("layoutSetBranchId",
-			new Function<LayoutBranch, Object>() {
-				@Override
-				public Object apply(LayoutBranch layoutBranch) {
-					return layoutBranch.getLayoutSetBranchId();
-				}
-			});
-		attributeGetters.put("plid",
-			new Function<LayoutBranch, Object>() {
-				@Override
-				public Object apply(LayoutBranch layoutBranch) {
-					return layoutBranch.getPlid();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<LayoutBranch, Object>() {
-				@Override
-				public Object apply(LayoutBranch layoutBranch) {
-					return layoutBranch.getName();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<LayoutBranch, Object>() {
-				@Override
-				public Object apply(LayoutBranch layoutBranch) {
-					return layoutBranch.getDescription();
-				}
-			});
-		attributeGetters.put("master",
-			new Function<LayoutBranch, Object>() {
-				@Override
-				public Object apply(LayoutBranch layoutBranch) {
-					return layoutBranch.isMaster();
-				}
-			});
+		attributeGetters.put("mvccVersion", LayoutBranch::getMvccVersion);
+		attributeSetters.put("mvccVersion", LayoutBranch::setMvccVersion);
+
+		attributeGetters.put("layoutBranchId", LayoutBranch::getLayoutBranchId);
+		attributeSetters.put("layoutBranchId", LayoutBranch::setLayoutBranchId);
+
+		attributeGetters.put("groupId", LayoutBranch::getGroupId);
+		attributeSetters.put("groupId", LayoutBranch::setGroupId);
+
+		attributeGetters.put("companyId", LayoutBranch::getCompanyId);
+		attributeSetters.put("companyId", LayoutBranch::setCompanyId);
+
+		attributeGetters.put("userId", LayoutBranch::getUserId);
+		attributeSetters.put("userId", LayoutBranch::setUserId);
+
+		attributeGetters.put("userName", LayoutBranch::getUserName);
+		attributeSetters.put("userName", LayoutBranch::setUserName);
+
+		attributeGetters.put("layoutSetBranchId", LayoutBranch::getLayoutSetBranchId);
+		attributeSetters.put("layoutSetBranchId", LayoutBranch::setLayoutSetBranchId);
+
+		attributeGetters.put("plid", LayoutBranch::getPlid);
+		attributeSetters.put("plid", LayoutBranch::setPlid);
+
+		attributeGetters.put("name", LayoutBranch::getName);
+		attributeSetters.put("name", LayoutBranch::setName);
+
+		attributeGetters.put("description", LayoutBranch::getDescription);
+		attributeSetters.put("description", LayoutBranch::setDescription);
+
+		attributeGetters.put("master", LayoutBranch::getMaster);
+		attributeSetters.put("master", LayoutBranch::setMaster);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<LayoutBranch, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<LayoutBranch, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<LayoutBranch, Long>() {
-				@Override
-				public void accept(LayoutBranch layoutBranch, Long mvccVersion) {
-					layoutBranch.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("layoutBranchId",
-			new BiConsumer<LayoutBranch, Long>() {
-				@Override
-				public void accept(LayoutBranch layoutBranch,
-					Long layoutBranchId) {
-					layoutBranch.setLayoutBranchId(layoutBranchId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<LayoutBranch, Long>() {
-				@Override
-				public void accept(LayoutBranch layoutBranch, Long groupId) {
-					layoutBranch.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<LayoutBranch, Long>() {
-				@Override
-				public void accept(LayoutBranch layoutBranch, Long companyId) {
-					layoutBranch.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<LayoutBranch, Long>() {
-				@Override
-				public void accept(LayoutBranch layoutBranch, Long userId) {
-					layoutBranch.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<LayoutBranch, String>() {
-				@Override
-				public void accept(LayoutBranch layoutBranch, String userName) {
-					layoutBranch.setUserName(userName);
-				}
-			});
-		attributeSetters.put("layoutSetBranchId",
-			new BiConsumer<LayoutBranch, Long>() {
-				@Override
-				public void accept(LayoutBranch layoutBranch,
-					Long layoutSetBranchId) {
-					layoutBranch.setLayoutSetBranchId(layoutSetBranchId);
-				}
-			});
-		attributeSetters.put("plid",
-			new BiConsumer<LayoutBranch, Long>() {
-				@Override
-				public void accept(LayoutBranch layoutBranch, Long plid) {
-					layoutBranch.setPlid(plid);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<LayoutBranch, String>() {
-				@Override
-				public void accept(LayoutBranch layoutBranch, String name) {
-					layoutBranch.setName(name);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<LayoutBranch, String>() {
-				@Override
-				public void accept(LayoutBranch layoutBranch, String description) {
-					layoutBranch.setDescription(description);
-				}
-			});
-		attributeSetters.put("master",
-			new BiConsumer<LayoutBranch, Boolean>() {
-				@Override
-				public void accept(LayoutBranch layoutBranch, Boolean master) {
-					layoutBranch.setMaster(master);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

@@ -238,280 +238,67 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 
 	static {
 		Map<String, Function<OrgLabor, Object>> attributeGetters = new LinkedHashMap<String, Function<OrgLabor, Object>>();
+		Map<String, BiConsumer<OrgLabor, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<OrgLabor, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<OrgLabor, Object>() {
-				@Override
-				public Object apply(OrgLabor orgLabor) {
-					return orgLabor.getMvccVersion();
-				}
-			});
-		attributeGetters.put("orgLaborId",
-			new Function<OrgLabor, Object>() {
-				@Override
-				public Object apply(OrgLabor orgLabor) {
-					return orgLabor.getOrgLaborId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<OrgLabor, Object>() {
-				@Override
-				public Object apply(OrgLabor orgLabor) {
-					return orgLabor.getCompanyId();
-				}
-			});
-		attributeGetters.put("organizationId",
-			new Function<OrgLabor, Object>() {
-				@Override
-				public Object apply(OrgLabor orgLabor) {
-					return orgLabor.getOrganizationId();
-				}
-			});
-		attributeGetters.put("typeId",
-			new Function<OrgLabor, Object>() {
-				@Override
-				public Object apply(OrgLabor orgLabor) {
-					return orgLabor.getTypeId();
-				}
-			});
-		attributeGetters.put("sunOpen",
-			new Function<OrgLabor, Object>() {
-				@Override
-				public Object apply(OrgLabor orgLabor) {
-					return orgLabor.getSunOpen();
-				}
-			});
-		attributeGetters.put("sunClose",
-			new Function<OrgLabor, Object>() {
-				@Override
-				public Object apply(OrgLabor orgLabor) {
-					return orgLabor.getSunClose();
-				}
-			});
-		attributeGetters.put("monOpen",
-			new Function<OrgLabor, Object>() {
-				@Override
-				public Object apply(OrgLabor orgLabor) {
-					return orgLabor.getMonOpen();
-				}
-			});
-		attributeGetters.put("monClose",
-			new Function<OrgLabor, Object>() {
-				@Override
-				public Object apply(OrgLabor orgLabor) {
-					return orgLabor.getMonClose();
-				}
-			});
-		attributeGetters.put("tueOpen",
-			new Function<OrgLabor, Object>() {
-				@Override
-				public Object apply(OrgLabor orgLabor) {
-					return orgLabor.getTueOpen();
-				}
-			});
-		attributeGetters.put("tueClose",
-			new Function<OrgLabor, Object>() {
-				@Override
-				public Object apply(OrgLabor orgLabor) {
-					return orgLabor.getTueClose();
-				}
-			});
-		attributeGetters.put("wedOpen",
-			new Function<OrgLabor, Object>() {
-				@Override
-				public Object apply(OrgLabor orgLabor) {
-					return orgLabor.getWedOpen();
-				}
-			});
-		attributeGetters.put("wedClose",
-			new Function<OrgLabor, Object>() {
-				@Override
-				public Object apply(OrgLabor orgLabor) {
-					return orgLabor.getWedClose();
-				}
-			});
-		attributeGetters.put("thuOpen",
-			new Function<OrgLabor, Object>() {
-				@Override
-				public Object apply(OrgLabor orgLabor) {
-					return orgLabor.getThuOpen();
-				}
-			});
-		attributeGetters.put("thuClose",
-			new Function<OrgLabor, Object>() {
-				@Override
-				public Object apply(OrgLabor orgLabor) {
-					return orgLabor.getThuClose();
-				}
-			});
-		attributeGetters.put("friOpen",
-			new Function<OrgLabor, Object>() {
-				@Override
-				public Object apply(OrgLabor orgLabor) {
-					return orgLabor.getFriOpen();
-				}
-			});
-		attributeGetters.put("friClose",
-			new Function<OrgLabor, Object>() {
-				@Override
-				public Object apply(OrgLabor orgLabor) {
-					return orgLabor.getFriClose();
-				}
-			});
-		attributeGetters.put("satOpen",
-			new Function<OrgLabor, Object>() {
-				@Override
-				public Object apply(OrgLabor orgLabor) {
-					return orgLabor.getSatOpen();
-				}
-			});
-		attributeGetters.put("satClose",
-			new Function<OrgLabor, Object>() {
-				@Override
-				public Object apply(OrgLabor orgLabor) {
-					return orgLabor.getSatClose();
-				}
-			});
+		attributeGetters.put("mvccVersion", OrgLabor::getMvccVersion);
+		attributeSetters.put("mvccVersion", OrgLabor::setMvccVersion);
+
+		attributeGetters.put("orgLaborId", OrgLabor::getOrgLaborId);
+		attributeSetters.put("orgLaborId", OrgLabor::setOrgLaborId);
+
+		attributeGetters.put("companyId", OrgLabor::getCompanyId);
+		attributeSetters.put("companyId", OrgLabor::setCompanyId);
+
+		attributeGetters.put("organizationId", OrgLabor::getOrganizationId);
+		attributeSetters.put("organizationId", OrgLabor::setOrganizationId);
+
+		attributeGetters.put("typeId", OrgLabor::getTypeId);
+		attributeSetters.put("typeId", OrgLabor::setTypeId);
+
+		attributeGetters.put("sunOpen", OrgLabor::getSunOpen);
+		attributeSetters.put("sunOpen", OrgLabor::setSunOpen);
+
+		attributeGetters.put("sunClose", OrgLabor::getSunClose);
+		attributeSetters.put("sunClose", OrgLabor::setSunClose);
+
+		attributeGetters.put("monOpen", OrgLabor::getMonOpen);
+		attributeSetters.put("monOpen", OrgLabor::setMonOpen);
+
+		attributeGetters.put("monClose", OrgLabor::getMonClose);
+		attributeSetters.put("monClose", OrgLabor::setMonClose);
+
+		attributeGetters.put("tueOpen", OrgLabor::getTueOpen);
+		attributeSetters.put("tueOpen", OrgLabor::setTueOpen);
+
+		attributeGetters.put("tueClose", OrgLabor::getTueClose);
+		attributeSetters.put("tueClose", OrgLabor::setTueClose);
+
+		attributeGetters.put("wedOpen", OrgLabor::getWedOpen);
+		attributeSetters.put("wedOpen", OrgLabor::setWedOpen);
+
+		attributeGetters.put("wedClose", OrgLabor::getWedClose);
+		attributeSetters.put("wedClose", OrgLabor::setWedClose);
+
+		attributeGetters.put("thuOpen", OrgLabor::getThuOpen);
+		attributeSetters.put("thuOpen", OrgLabor::setThuOpen);
+
+		attributeGetters.put("thuClose", OrgLabor::getThuClose);
+		attributeSetters.put("thuClose", OrgLabor::setThuClose);
+
+		attributeGetters.put("friOpen", OrgLabor::getFriOpen);
+		attributeSetters.put("friOpen", OrgLabor::setFriOpen);
+
+		attributeGetters.put("friClose", OrgLabor::getFriClose);
+		attributeSetters.put("friClose", OrgLabor::setFriClose);
+
+		attributeGetters.put("satOpen", OrgLabor::getSatOpen);
+		attributeSetters.put("satOpen", OrgLabor::setSatOpen);
+
+		attributeGetters.put("satClose", OrgLabor::getSatClose);
+		attributeSetters.put("satClose", OrgLabor::setSatClose);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<OrgLabor, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<OrgLabor, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<OrgLabor, Long>() {
-				@Override
-				public void accept(OrgLabor orgLabor, Long mvccVersion) {
-					orgLabor.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("orgLaborId",
-			new BiConsumer<OrgLabor, Long>() {
-				@Override
-				public void accept(OrgLabor orgLabor, Long orgLaborId) {
-					orgLabor.setOrgLaborId(orgLaborId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<OrgLabor, Long>() {
-				@Override
-				public void accept(OrgLabor orgLabor, Long companyId) {
-					orgLabor.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("organizationId",
-			new BiConsumer<OrgLabor, Long>() {
-				@Override
-				public void accept(OrgLabor orgLabor, Long organizationId) {
-					orgLabor.setOrganizationId(organizationId);
-				}
-			});
-		attributeSetters.put("typeId",
-			new BiConsumer<OrgLabor, Long>() {
-				@Override
-				public void accept(OrgLabor orgLabor, Long typeId) {
-					orgLabor.setTypeId(typeId);
-				}
-			});
-		attributeSetters.put("sunOpen",
-			new BiConsumer<OrgLabor, Integer>() {
-				@Override
-				public void accept(OrgLabor orgLabor, Integer sunOpen) {
-					orgLabor.setSunOpen(sunOpen);
-				}
-			});
-		attributeSetters.put("sunClose",
-			new BiConsumer<OrgLabor, Integer>() {
-				@Override
-				public void accept(OrgLabor orgLabor, Integer sunClose) {
-					orgLabor.setSunClose(sunClose);
-				}
-			});
-		attributeSetters.put("monOpen",
-			new BiConsumer<OrgLabor, Integer>() {
-				@Override
-				public void accept(OrgLabor orgLabor, Integer monOpen) {
-					orgLabor.setMonOpen(monOpen);
-				}
-			});
-		attributeSetters.put("monClose",
-			new BiConsumer<OrgLabor, Integer>() {
-				@Override
-				public void accept(OrgLabor orgLabor, Integer monClose) {
-					orgLabor.setMonClose(monClose);
-				}
-			});
-		attributeSetters.put("tueOpen",
-			new BiConsumer<OrgLabor, Integer>() {
-				@Override
-				public void accept(OrgLabor orgLabor, Integer tueOpen) {
-					orgLabor.setTueOpen(tueOpen);
-				}
-			});
-		attributeSetters.put("tueClose",
-			new BiConsumer<OrgLabor, Integer>() {
-				@Override
-				public void accept(OrgLabor orgLabor, Integer tueClose) {
-					orgLabor.setTueClose(tueClose);
-				}
-			});
-		attributeSetters.put("wedOpen",
-			new BiConsumer<OrgLabor, Integer>() {
-				@Override
-				public void accept(OrgLabor orgLabor, Integer wedOpen) {
-					orgLabor.setWedOpen(wedOpen);
-				}
-			});
-		attributeSetters.put("wedClose",
-			new BiConsumer<OrgLabor, Integer>() {
-				@Override
-				public void accept(OrgLabor orgLabor, Integer wedClose) {
-					orgLabor.setWedClose(wedClose);
-				}
-			});
-		attributeSetters.put("thuOpen",
-			new BiConsumer<OrgLabor, Integer>() {
-				@Override
-				public void accept(OrgLabor orgLabor, Integer thuOpen) {
-					orgLabor.setThuOpen(thuOpen);
-				}
-			});
-		attributeSetters.put("thuClose",
-			new BiConsumer<OrgLabor, Integer>() {
-				@Override
-				public void accept(OrgLabor orgLabor, Integer thuClose) {
-					orgLabor.setThuClose(thuClose);
-				}
-			});
-		attributeSetters.put("friOpen",
-			new BiConsumer<OrgLabor, Integer>() {
-				@Override
-				public void accept(OrgLabor orgLabor, Integer friOpen) {
-					orgLabor.setFriOpen(friOpen);
-				}
-			});
-		attributeSetters.put("friClose",
-			new BiConsumer<OrgLabor, Integer>() {
-				@Override
-				public void accept(OrgLabor orgLabor, Integer friClose) {
-					orgLabor.setFriClose(friClose);
-				}
-			});
-		attributeSetters.put("satOpen",
-			new BiConsumer<OrgLabor, Integer>() {
-				@Override
-				public void accept(OrgLabor orgLabor, Integer satOpen) {
-					orgLabor.setSatOpen(satOpen);
-				}
-			});
-		attributeSetters.put("satClose",
-			new BiConsumer<OrgLabor, Integer>() {
-				@Override
-				public void accept(OrgLabor orgLabor, Integer satClose) {
-					orgLabor.setSatClose(satClose);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

@@ -158,145 +158,37 @@ public class OAuthConsumerModelImpl extends BaseModelImpl<OAuthConsumer>
 
 	static {
 		Map<String, Function<OAuthConsumer, Object>> attributeGetters = new LinkedHashMap<String, Function<OAuthConsumer, Object>>();
+		Map<String, BiConsumer<OAuthConsumer, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<OAuthConsumer, Object>>();
 
-		attributeGetters.put("oAuthConsumerId",
-			new Function<OAuthConsumer, Object>() {
-				@Override
-				public Object apply(OAuthConsumer oAuthConsumer) {
-					return oAuthConsumer.getOAuthConsumerId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<OAuthConsumer, Object>() {
-				@Override
-				public Object apply(OAuthConsumer oAuthConsumer) {
-					return oAuthConsumer.getCompanyId();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<OAuthConsumer, Object>() {
-				@Override
-				public Object apply(OAuthConsumer oAuthConsumer) {
-					return oAuthConsumer.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<OAuthConsumer, Object>() {
-				@Override
-				public Object apply(OAuthConsumer oAuthConsumer) {
-					return oAuthConsumer.getModifiedDate();
-				}
-			});
-		attributeGetters.put("gadgetKey",
-			new Function<OAuthConsumer, Object>() {
-				@Override
-				public Object apply(OAuthConsumer oAuthConsumer) {
-					return oAuthConsumer.getGadgetKey();
-				}
-			});
-		attributeGetters.put("serviceName",
-			new Function<OAuthConsumer, Object>() {
-				@Override
-				public Object apply(OAuthConsumer oAuthConsumer) {
-					return oAuthConsumer.getServiceName();
-				}
-			});
-		attributeGetters.put("consumerKey",
-			new Function<OAuthConsumer, Object>() {
-				@Override
-				public Object apply(OAuthConsumer oAuthConsumer) {
-					return oAuthConsumer.getConsumerKey();
-				}
-			});
-		attributeGetters.put("consumerSecret",
-			new Function<OAuthConsumer, Object>() {
-				@Override
-				public Object apply(OAuthConsumer oAuthConsumer) {
-					return oAuthConsumer.getConsumerSecret();
-				}
-			});
-		attributeGetters.put("keyType",
-			new Function<OAuthConsumer, Object>() {
-				@Override
-				public Object apply(OAuthConsumer oAuthConsumer) {
-					return oAuthConsumer.getKeyType();
-				}
-			});
+		attributeGetters.put("oAuthConsumerId", OAuthConsumer::getOAuthConsumerId);
+		attributeSetters.put("oAuthConsumerId", OAuthConsumer::setOAuthConsumerId);
+
+		attributeGetters.put("companyId", OAuthConsumer::getCompanyId);
+		attributeSetters.put("companyId", OAuthConsumer::setCompanyId);
+
+		attributeGetters.put("createDate", OAuthConsumer::getCreateDate);
+		attributeSetters.put("createDate", OAuthConsumer::setCreateDate);
+
+		attributeGetters.put("modifiedDate", OAuthConsumer::getModifiedDate);
+		attributeSetters.put("modifiedDate", OAuthConsumer::setModifiedDate);
+
+		attributeGetters.put("gadgetKey", OAuthConsumer::getGadgetKey);
+		attributeSetters.put("gadgetKey", OAuthConsumer::setGadgetKey);
+
+		attributeGetters.put("serviceName", OAuthConsumer::getServiceName);
+		attributeSetters.put("serviceName", OAuthConsumer::setServiceName);
+
+		attributeGetters.put("consumerKey", OAuthConsumer::getConsumerKey);
+		attributeSetters.put("consumerKey", OAuthConsumer::setConsumerKey);
+
+		attributeGetters.put("consumerSecret", OAuthConsumer::getConsumerSecret);
+		attributeSetters.put("consumerSecret", OAuthConsumer::setConsumerSecret);
+
+		attributeGetters.put("keyType", OAuthConsumer::getKeyType);
+		attributeSetters.put("keyType", OAuthConsumer::setKeyType);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<OAuthConsumer, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<OAuthConsumer, ?>>();
-
-		attributeSetters.put("oAuthConsumerId",
-			new BiConsumer<OAuthConsumer, Long>() {
-				@Override
-				public void accept(OAuthConsumer oAuthConsumer,
-					Long oAuthConsumerId) {
-					oAuthConsumer.setOAuthConsumerId(oAuthConsumerId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<OAuthConsumer, Long>() {
-				@Override
-				public void accept(OAuthConsumer oAuthConsumer, Long companyId) {
-					oAuthConsumer.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<OAuthConsumer, Date>() {
-				@Override
-				public void accept(OAuthConsumer oAuthConsumer, Date createDate) {
-					oAuthConsumer.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<OAuthConsumer, Date>() {
-				@Override
-				public void accept(OAuthConsumer oAuthConsumer,
-					Date modifiedDate) {
-					oAuthConsumer.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("gadgetKey",
-			new BiConsumer<OAuthConsumer, String>() {
-				@Override
-				public void accept(OAuthConsumer oAuthConsumer, String gadgetKey) {
-					oAuthConsumer.setGadgetKey(gadgetKey);
-				}
-			});
-		attributeSetters.put("serviceName",
-			new BiConsumer<OAuthConsumer, String>() {
-				@Override
-				public void accept(OAuthConsumer oAuthConsumer,
-					String serviceName) {
-					oAuthConsumer.setServiceName(serviceName);
-				}
-			});
-		attributeSetters.put("consumerKey",
-			new BiConsumer<OAuthConsumer, String>() {
-				@Override
-				public void accept(OAuthConsumer oAuthConsumer,
-					String consumerKey) {
-					oAuthConsumer.setConsumerKey(consumerKey);
-				}
-			});
-		attributeSetters.put("consumerSecret",
-			new BiConsumer<OAuthConsumer, String>() {
-				@Override
-				public void accept(OAuthConsumer oAuthConsumer,
-					String consumerSecret) {
-					oAuthConsumer.setConsumerSecret(consumerSecret);
-				}
-			});
-		attributeSetters.put("keyType",
-			new BiConsumer<OAuthConsumer, String>() {
-				@Override
-				public void accept(OAuthConsumer oAuthConsumer, String keyType) {
-					oAuthConsumer.setKeyType(keyType);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

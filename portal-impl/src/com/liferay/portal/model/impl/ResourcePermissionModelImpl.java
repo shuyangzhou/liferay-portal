@@ -221,179 +221,43 @@ public class ResourcePermissionModelImpl extends BaseModelImpl<ResourcePermissio
 
 	static {
 		Map<String, Function<ResourcePermission, Object>> attributeGetters = new LinkedHashMap<String, Function<ResourcePermission, Object>>();
+		Map<String, BiConsumer<ResourcePermission, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<ResourcePermission, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<ResourcePermission, Object>() {
-				@Override
-				public Object apply(ResourcePermission resourcePermission) {
-					return resourcePermission.getMvccVersion();
-				}
-			});
-		attributeGetters.put("resourcePermissionId",
-			new Function<ResourcePermission, Object>() {
-				@Override
-				public Object apply(ResourcePermission resourcePermission) {
-					return resourcePermission.getResourcePermissionId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<ResourcePermission, Object>() {
-				@Override
-				public Object apply(ResourcePermission resourcePermission) {
-					return resourcePermission.getCompanyId();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<ResourcePermission, Object>() {
-				@Override
-				public Object apply(ResourcePermission resourcePermission) {
-					return resourcePermission.getName();
-				}
-			});
-		attributeGetters.put("scope",
-			new Function<ResourcePermission, Object>() {
-				@Override
-				public Object apply(ResourcePermission resourcePermission) {
-					return resourcePermission.getScope();
-				}
-			});
-		attributeGetters.put("primKey",
-			new Function<ResourcePermission, Object>() {
-				@Override
-				public Object apply(ResourcePermission resourcePermission) {
-					return resourcePermission.getPrimKey();
-				}
-			});
-		attributeGetters.put("primKeyId",
-			new Function<ResourcePermission, Object>() {
-				@Override
-				public Object apply(ResourcePermission resourcePermission) {
-					return resourcePermission.getPrimKeyId();
-				}
-			});
-		attributeGetters.put("roleId",
-			new Function<ResourcePermission, Object>() {
-				@Override
-				public Object apply(ResourcePermission resourcePermission) {
-					return resourcePermission.getRoleId();
-				}
-			});
-		attributeGetters.put("ownerId",
-			new Function<ResourcePermission, Object>() {
-				@Override
-				public Object apply(ResourcePermission resourcePermission) {
-					return resourcePermission.getOwnerId();
-				}
-			});
-		attributeGetters.put("actionIds",
-			new Function<ResourcePermission, Object>() {
-				@Override
-				public Object apply(ResourcePermission resourcePermission) {
-					return resourcePermission.getActionIds();
-				}
-			});
-		attributeGetters.put("viewActionId",
-			new Function<ResourcePermission, Object>() {
-				@Override
-				public Object apply(ResourcePermission resourcePermission) {
-					return resourcePermission.isViewActionId();
-				}
-			});
+		attributeGetters.put("mvccVersion", ResourcePermission::getMvccVersion);
+		attributeSetters.put("mvccVersion", ResourcePermission::setMvccVersion);
+
+		attributeGetters.put("resourcePermissionId", ResourcePermission::getResourcePermissionId);
+		attributeSetters.put("resourcePermissionId", ResourcePermission::setResourcePermissionId);
+
+		attributeGetters.put("companyId", ResourcePermission::getCompanyId);
+		attributeSetters.put("companyId", ResourcePermission::setCompanyId);
+
+		attributeGetters.put("name", ResourcePermission::getName);
+		attributeSetters.put("name", ResourcePermission::setName);
+
+		attributeGetters.put("scope", ResourcePermission::getScope);
+		attributeSetters.put("scope", ResourcePermission::setScope);
+
+		attributeGetters.put("primKey", ResourcePermission::getPrimKey);
+		attributeSetters.put("primKey", ResourcePermission::setPrimKey);
+
+		attributeGetters.put("primKeyId", ResourcePermission::getPrimKeyId);
+		attributeSetters.put("primKeyId", ResourcePermission::setPrimKeyId);
+
+		attributeGetters.put("roleId", ResourcePermission::getRoleId);
+		attributeSetters.put("roleId", ResourcePermission::setRoleId);
+
+		attributeGetters.put("ownerId", ResourcePermission::getOwnerId);
+		attributeSetters.put("ownerId", ResourcePermission::setOwnerId);
+
+		attributeGetters.put("actionIds", ResourcePermission::getActionIds);
+		attributeSetters.put("actionIds", ResourcePermission::setActionIds);
+
+		attributeGetters.put("viewActionId", ResourcePermission::getViewActionId);
+		attributeSetters.put("viewActionId", ResourcePermission::setViewActionId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<ResourcePermission, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<ResourcePermission, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<ResourcePermission, Long>() {
-				@Override
-				public void accept(ResourcePermission resourcePermission,
-					Long mvccVersion) {
-					resourcePermission.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("resourcePermissionId",
-			new BiConsumer<ResourcePermission, Long>() {
-				@Override
-				public void accept(ResourcePermission resourcePermission,
-					Long resourcePermissionId) {
-					resourcePermission.setResourcePermissionId(resourcePermissionId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<ResourcePermission, Long>() {
-				@Override
-				public void accept(ResourcePermission resourcePermission,
-					Long companyId) {
-					resourcePermission.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<ResourcePermission, String>() {
-				@Override
-				public void accept(ResourcePermission resourcePermission,
-					String name) {
-					resourcePermission.setName(name);
-				}
-			});
-		attributeSetters.put("scope",
-			new BiConsumer<ResourcePermission, Integer>() {
-				@Override
-				public void accept(ResourcePermission resourcePermission,
-					Integer scope) {
-					resourcePermission.setScope(scope);
-				}
-			});
-		attributeSetters.put("primKey",
-			new BiConsumer<ResourcePermission, String>() {
-				@Override
-				public void accept(ResourcePermission resourcePermission,
-					String primKey) {
-					resourcePermission.setPrimKey(primKey);
-				}
-			});
-		attributeSetters.put("primKeyId",
-			new BiConsumer<ResourcePermission, Long>() {
-				@Override
-				public void accept(ResourcePermission resourcePermission,
-					Long primKeyId) {
-					resourcePermission.setPrimKeyId(primKeyId);
-				}
-			});
-		attributeSetters.put("roleId",
-			new BiConsumer<ResourcePermission, Long>() {
-				@Override
-				public void accept(ResourcePermission resourcePermission,
-					Long roleId) {
-					resourcePermission.setRoleId(roleId);
-				}
-			});
-		attributeSetters.put("ownerId",
-			new BiConsumer<ResourcePermission, Long>() {
-				@Override
-				public void accept(ResourcePermission resourcePermission,
-					Long ownerId) {
-					resourcePermission.setOwnerId(ownerId);
-				}
-			});
-		attributeSetters.put("actionIds",
-			new BiConsumer<ResourcePermission, Long>() {
-				@Override
-				public void accept(ResourcePermission resourcePermission,
-					Long actionIds) {
-					resourcePermission.setActionIds(actionIds);
-				}
-			});
-		attributeSetters.put("viewActionId",
-			new BiConsumer<ResourcePermission, Boolean>() {
-				@Override
-				public void accept(ResourcePermission resourcePermission,
-					Boolean viewActionId) {
-					resourcePermission.setViewActionId(viewActionId);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

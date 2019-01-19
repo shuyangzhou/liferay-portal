@@ -373,616 +373,139 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	static {
 		Map<String, Function<User, Object>> attributeGetters = new LinkedHashMap<String, Function<User, Object>>();
+		Map<String, BiConsumer<User, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<User, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getMvccVersion();
-				}
-			});
-		attributeGetters.put("uuid",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getUuid();
-				}
-			});
-		attributeGetters.put("externalReferenceCode",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getExternalReferenceCode();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getUserId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getCompanyId();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getModifiedDate();
-				}
-			});
-		attributeGetters.put("defaultUser",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.isDefaultUser();
-				}
-			});
-		attributeGetters.put("contactId",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getContactId();
-				}
-			});
-		attributeGetters.put("password",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getPassword();
-				}
-			});
-		attributeGetters.put("passwordEncrypted",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.isPasswordEncrypted();
-				}
-			});
-		attributeGetters.put("passwordReset",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.isPasswordReset();
-				}
-			});
-		attributeGetters.put("passwordModifiedDate",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getPasswordModifiedDate();
-				}
-			});
-		attributeGetters.put("digest",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getDigest();
-				}
-			});
-		attributeGetters.put("reminderQueryQuestion",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getReminderQueryQuestion();
-				}
-			});
-		attributeGetters.put("reminderQueryAnswer",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getReminderQueryAnswer();
-				}
-			});
-		attributeGetters.put("graceLoginCount",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getGraceLoginCount();
-				}
-			});
-		attributeGetters.put("screenName",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getScreenName();
-				}
-			});
-		attributeGetters.put("emailAddress",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getEmailAddress();
-				}
-			});
-		attributeGetters.put("facebookId",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getFacebookId();
-				}
-			});
-		attributeGetters.put("googleUserId",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getGoogleUserId();
-				}
-			});
-		attributeGetters.put("ldapServerId",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getLdapServerId();
-				}
-			});
-		attributeGetters.put("openId",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getOpenId();
-				}
-			});
-		attributeGetters.put("portraitId",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getPortraitId();
-				}
-			});
-		attributeGetters.put("languageId",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getLanguageId();
-				}
-			});
-		attributeGetters.put("timeZoneId",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getTimeZoneId();
-				}
-			});
-		attributeGetters.put("greeting",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getGreeting();
-				}
-			});
-		attributeGetters.put("comments",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getComments();
-				}
-			});
-		attributeGetters.put("firstName",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getFirstName();
-				}
-			});
-		attributeGetters.put("middleName",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getMiddleName();
-				}
-			});
-		attributeGetters.put("lastName",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getLastName();
-				}
-			});
-		attributeGetters.put("jobTitle",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getJobTitle();
-				}
-			});
-		attributeGetters.put("loginDate",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getLoginDate();
-				}
-			});
-		attributeGetters.put("loginIP",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getLoginIP();
-				}
-			});
-		attributeGetters.put("lastLoginDate",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getLastLoginDate();
-				}
-			});
-		attributeGetters.put("lastLoginIP",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getLastLoginIP();
-				}
-			});
-		attributeGetters.put("lastFailedLoginDate",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getLastFailedLoginDate();
-				}
-			});
-		attributeGetters.put("failedLoginAttempts",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getFailedLoginAttempts();
-				}
-			});
-		attributeGetters.put("lockout",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.isLockout();
-				}
-			});
-		attributeGetters.put("lockoutDate",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getLockoutDate();
-				}
-			});
-		attributeGetters.put("agreedToTermsOfUse",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.isAgreedToTermsOfUse();
-				}
-			});
-		attributeGetters.put("emailAddressVerified",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.isEmailAddressVerified();
-				}
-			});
-		attributeGetters.put("status",
-			new Function<User, Object>() {
-				@Override
-				public Object apply(User user) {
-					return user.getStatus();
-				}
-			});
+		attributeGetters.put("mvccVersion", User::getMvccVersion);
+		attributeSetters.put("mvccVersion", User::setMvccVersion);
+
+		attributeGetters.put("uuid", User::getUuid);
+		attributeSetters.put("uuid", User::setUuid);
+
+		attributeGetters.put("externalReferenceCode", User::getExternalReferenceCode);
+		attributeSetters.put("externalReferenceCode", User::setExternalReferenceCode);
+
+		attributeGetters.put("userId", User::getUserId);
+		attributeSetters.put("userId", User::setUserId);
+
+		attributeGetters.put("companyId", User::getCompanyId);
+		attributeSetters.put("companyId", User::setCompanyId);
+
+		attributeGetters.put("createDate", User::getCreateDate);
+		attributeSetters.put("createDate", User::setCreateDate);
+
+		attributeGetters.put("modifiedDate", User::getModifiedDate);
+		attributeSetters.put("modifiedDate", User::setModifiedDate);
+
+		attributeGetters.put("defaultUser", User::getDefaultUser);
+		attributeSetters.put("defaultUser", User::setDefaultUser);
+
+		attributeGetters.put("contactId", User::getContactId);
+		attributeSetters.put("contactId", User::setContactId);
+
+		attributeGetters.put("password", User::getPassword);
+		attributeSetters.put("password", User::setPassword);
+
+		attributeGetters.put("passwordEncrypted", User::getPasswordEncrypted);
+		attributeSetters.put("passwordEncrypted", User::setPasswordEncrypted);
+
+		attributeGetters.put("passwordReset", User::getPasswordReset);
+		attributeSetters.put("passwordReset", User::setPasswordReset);
+
+		attributeGetters.put("passwordModifiedDate", User::getPasswordModifiedDate);
+		attributeSetters.put("passwordModifiedDate", User::setPasswordModifiedDate);
+
+		attributeGetters.put("digest", User::getDigest);
+		attributeSetters.put("digest", User::setDigest);
+
+		attributeGetters.put("reminderQueryQuestion", User::getReminderQueryQuestion);
+		attributeSetters.put("reminderQueryQuestion", User::setReminderQueryQuestion);
+
+		attributeGetters.put("reminderQueryAnswer", User::getReminderQueryAnswer);
+		attributeSetters.put("reminderQueryAnswer", User::setReminderQueryAnswer);
+
+		attributeGetters.put("graceLoginCount", User::getGraceLoginCount);
+		attributeSetters.put("graceLoginCount", User::setGraceLoginCount);
+
+		attributeGetters.put("screenName", User::getScreenName);
+		attributeSetters.put("screenName", User::setScreenName);
+
+		attributeGetters.put("emailAddress", User::getEmailAddress);
+		attributeSetters.put("emailAddress", User::setEmailAddress);
+
+		attributeGetters.put("facebookId", User::getFacebookId);
+		attributeSetters.put("facebookId", User::setFacebookId);
+
+		attributeGetters.put("googleUserId", User::getGoogleUserId);
+		attributeSetters.put("googleUserId", User::setGoogleUserId);
+
+		attributeGetters.put("ldapServerId", User::getLdapServerId);
+		attributeSetters.put("ldapServerId", User::setLdapServerId);
+
+		attributeGetters.put("openId", User::getOpenId);
+		attributeSetters.put("openId", User::setOpenId);
+
+		attributeGetters.put("portraitId", User::getPortraitId);
+		attributeSetters.put("portraitId", User::setPortraitId);
+
+		attributeGetters.put("languageId", User::getLanguageId);
+		attributeSetters.put("languageId", User::setLanguageId);
+
+		attributeGetters.put("timeZoneId", User::getTimeZoneId);
+		attributeSetters.put("timeZoneId", User::setTimeZoneId);
+
+		attributeGetters.put("greeting", User::getGreeting);
+		attributeSetters.put("greeting", User::setGreeting);
+
+		attributeGetters.put("comments", User::getComments);
+		attributeSetters.put("comments", User::setComments);
+
+		attributeGetters.put("firstName", User::getFirstName);
+		attributeSetters.put("firstName", User::setFirstName);
+
+		attributeGetters.put("middleName", User::getMiddleName);
+		attributeSetters.put("middleName", User::setMiddleName);
+
+		attributeGetters.put("lastName", User::getLastName);
+		attributeSetters.put("lastName", User::setLastName);
+
+		attributeGetters.put("jobTitle", User::getJobTitle);
+		attributeSetters.put("jobTitle", User::setJobTitle);
+
+		attributeGetters.put("loginDate", User::getLoginDate);
+		attributeSetters.put("loginDate", User::setLoginDate);
+
+		attributeGetters.put("loginIP", User::getLoginIP);
+		attributeSetters.put("loginIP", User::setLoginIP);
+
+		attributeGetters.put("lastLoginDate", User::getLastLoginDate);
+		attributeSetters.put("lastLoginDate", User::setLastLoginDate);
+
+		attributeGetters.put("lastLoginIP", User::getLastLoginIP);
+		attributeSetters.put("lastLoginIP", User::setLastLoginIP);
+
+		attributeGetters.put("lastFailedLoginDate", User::getLastFailedLoginDate);
+		attributeSetters.put("lastFailedLoginDate", User::setLastFailedLoginDate);
+
+		attributeGetters.put("failedLoginAttempts", User::getFailedLoginAttempts);
+		attributeSetters.put("failedLoginAttempts", User::setFailedLoginAttempts);
+
+		attributeGetters.put("lockout", User::getLockout);
+		attributeSetters.put("lockout", User::setLockout);
+
+		attributeGetters.put("lockoutDate", User::getLockoutDate);
+		attributeSetters.put("lockoutDate", User::setLockoutDate);
+
+		attributeGetters.put("agreedToTermsOfUse", User::getAgreedToTermsOfUse);
+		attributeSetters.put("agreedToTermsOfUse", User::setAgreedToTermsOfUse);
+
+		attributeGetters.put("emailAddressVerified", User::getEmailAddressVerified);
+		attributeSetters.put("emailAddressVerified", User::setEmailAddressVerified);
+
+		attributeGetters.put("status", User::getStatus);
+		attributeSetters.put("status", User::setStatus);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<User, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<User, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<User, Long>() {
-				@Override
-				public void accept(User user, Long mvccVersion) {
-					user.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("uuid",
-			new BiConsumer<User, String>() {
-				@Override
-				public void accept(User user, String uuid) {
-					user.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("externalReferenceCode",
-			new BiConsumer<User, String>() {
-				@Override
-				public void accept(User user, String externalReferenceCode) {
-					user.setExternalReferenceCode(externalReferenceCode);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<User, Long>() {
-				@Override
-				public void accept(User user, Long userId) {
-					user.setUserId(userId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<User, Long>() {
-				@Override
-				public void accept(User user, Long companyId) {
-					user.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<User, Date>() {
-				@Override
-				public void accept(User user, Date createDate) {
-					user.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<User, Date>() {
-				@Override
-				public void accept(User user, Date modifiedDate) {
-					user.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("defaultUser",
-			new BiConsumer<User, Boolean>() {
-				@Override
-				public void accept(User user, Boolean defaultUser) {
-					user.setDefaultUser(defaultUser);
-				}
-			});
-		attributeSetters.put("contactId",
-			new BiConsumer<User, Long>() {
-				@Override
-				public void accept(User user, Long contactId) {
-					user.setContactId(contactId);
-				}
-			});
-		attributeSetters.put("password",
-			new BiConsumer<User, String>() {
-				@Override
-				public void accept(User user, String password) {
-					user.setPassword(password);
-				}
-			});
-		attributeSetters.put("passwordEncrypted",
-			new BiConsumer<User, Boolean>() {
-				@Override
-				public void accept(User user, Boolean passwordEncrypted) {
-					user.setPasswordEncrypted(passwordEncrypted);
-				}
-			});
-		attributeSetters.put("passwordReset",
-			new BiConsumer<User, Boolean>() {
-				@Override
-				public void accept(User user, Boolean passwordReset) {
-					user.setPasswordReset(passwordReset);
-				}
-			});
-		attributeSetters.put("passwordModifiedDate",
-			new BiConsumer<User, Date>() {
-				@Override
-				public void accept(User user, Date passwordModifiedDate) {
-					user.setPasswordModifiedDate(passwordModifiedDate);
-				}
-			});
-		attributeSetters.put("digest",
-			new BiConsumer<User, String>() {
-				@Override
-				public void accept(User user, String digest) {
-					user.setDigest(digest);
-				}
-			});
-		attributeSetters.put("reminderQueryQuestion",
-			new BiConsumer<User, String>() {
-				@Override
-				public void accept(User user, String reminderQueryQuestion) {
-					user.setReminderQueryQuestion(reminderQueryQuestion);
-				}
-			});
-		attributeSetters.put("reminderQueryAnswer",
-			new BiConsumer<User, String>() {
-				@Override
-				public void accept(User user, String reminderQueryAnswer) {
-					user.setReminderQueryAnswer(reminderQueryAnswer);
-				}
-			});
-		attributeSetters.put("graceLoginCount",
-			new BiConsumer<User, Integer>() {
-				@Override
-				public void accept(User user, Integer graceLoginCount) {
-					user.setGraceLoginCount(graceLoginCount);
-				}
-			});
-		attributeSetters.put("screenName",
-			new BiConsumer<User, String>() {
-				@Override
-				public void accept(User user, String screenName) {
-					user.setScreenName(screenName);
-				}
-			});
-		attributeSetters.put("emailAddress",
-			new BiConsumer<User, String>() {
-				@Override
-				public void accept(User user, String emailAddress) {
-					user.setEmailAddress(emailAddress);
-				}
-			});
-		attributeSetters.put("facebookId",
-			new BiConsumer<User, Long>() {
-				@Override
-				public void accept(User user, Long facebookId) {
-					user.setFacebookId(facebookId);
-				}
-			});
-		attributeSetters.put("googleUserId",
-			new BiConsumer<User, String>() {
-				@Override
-				public void accept(User user, String googleUserId) {
-					user.setGoogleUserId(googleUserId);
-				}
-			});
-		attributeSetters.put("ldapServerId",
-			new BiConsumer<User, Long>() {
-				@Override
-				public void accept(User user, Long ldapServerId) {
-					user.setLdapServerId(ldapServerId);
-				}
-			});
-		attributeSetters.put("openId",
-			new BiConsumer<User, String>() {
-				@Override
-				public void accept(User user, String openId) {
-					user.setOpenId(openId);
-				}
-			});
-		attributeSetters.put("portraitId",
-			new BiConsumer<User, Long>() {
-				@Override
-				public void accept(User user, Long portraitId) {
-					user.setPortraitId(portraitId);
-				}
-			});
-		attributeSetters.put("languageId",
-			new BiConsumer<User, String>() {
-				@Override
-				public void accept(User user, String languageId) {
-					user.setLanguageId(languageId);
-				}
-			});
-		attributeSetters.put("timeZoneId",
-			new BiConsumer<User, String>() {
-				@Override
-				public void accept(User user, String timeZoneId) {
-					user.setTimeZoneId(timeZoneId);
-				}
-			});
-		attributeSetters.put("greeting",
-			new BiConsumer<User, String>() {
-				@Override
-				public void accept(User user, String greeting) {
-					user.setGreeting(greeting);
-				}
-			});
-		attributeSetters.put("comments",
-			new BiConsumer<User, String>() {
-				@Override
-				public void accept(User user, String comments) {
-					user.setComments(comments);
-				}
-			});
-		attributeSetters.put("firstName",
-			new BiConsumer<User, String>() {
-				@Override
-				public void accept(User user, String firstName) {
-					user.setFirstName(firstName);
-				}
-			});
-		attributeSetters.put("middleName",
-			new BiConsumer<User, String>() {
-				@Override
-				public void accept(User user, String middleName) {
-					user.setMiddleName(middleName);
-				}
-			});
-		attributeSetters.put("lastName",
-			new BiConsumer<User, String>() {
-				@Override
-				public void accept(User user, String lastName) {
-					user.setLastName(lastName);
-				}
-			});
-		attributeSetters.put("jobTitle",
-			new BiConsumer<User, String>() {
-				@Override
-				public void accept(User user, String jobTitle) {
-					user.setJobTitle(jobTitle);
-				}
-			});
-		attributeSetters.put("loginDate",
-			new BiConsumer<User, Date>() {
-				@Override
-				public void accept(User user, Date loginDate) {
-					user.setLoginDate(loginDate);
-				}
-			});
-		attributeSetters.put("loginIP",
-			new BiConsumer<User, String>() {
-				@Override
-				public void accept(User user, String loginIP) {
-					user.setLoginIP(loginIP);
-				}
-			});
-		attributeSetters.put("lastLoginDate",
-			new BiConsumer<User, Date>() {
-				@Override
-				public void accept(User user, Date lastLoginDate) {
-					user.setLastLoginDate(lastLoginDate);
-				}
-			});
-		attributeSetters.put("lastLoginIP",
-			new BiConsumer<User, String>() {
-				@Override
-				public void accept(User user, String lastLoginIP) {
-					user.setLastLoginIP(lastLoginIP);
-				}
-			});
-		attributeSetters.put("lastFailedLoginDate",
-			new BiConsumer<User, Date>() {
-				@Override
-				public void accept(User user, Date lastFailedLoginDate) {
-					user.setLastFailedLoginDate(lastFailedLoginDate);
-				}
-			});
-		attributeSetters.put("failedLoginAttempts",
-			new BiConsumer<User, Integer>() {
-				@Override
-				public void accept(User user, Integer failedLoginAttempts) {
-					user.setFailedLoginAttempts(failedLoginAttempts);
-				}
-			});
-		attributeSetters.put("lockout",
-			new BiConsumer<User, Boolean>() {
-				@Override
-				public void accept(User user, Boolean lockout) {
-					user.setLockout(lockout);
-				}
-			});
-		attributeSetters.put("lockoutDate",
-			new BiConsumer<User, Date>() {
-				@Override
-				public void accept(User user, Date lockoutDate) {
-					user.setLockoutDate(lockoutDate);
-				}
-			});
-		attributeSetters.put("agreedToTermsOfUse",
-			new BiConsumer<User, Boolean>() {
-				@Override
-				public void accept(User user, Boolean agreedToTermsOfUse) {
-					user.setAgreedToTermsOfUse(agreedToTermsOfUse);
-				}
-			});
-		attributeSetters.put("emailAddressVerified",
-			new BiConsumer<User, Boolean>() {
-				@Override
-				public void accept(User user, Boolean emailAddressVerified) {
-					user.setEmailAddressVerified(emailAddressVerified);
-				}
-			});
-		attributeSetters.put("status",
-			new BiConsumer<User, Integer>() {
-				@Override
-				public void accept(User user, Integer status) {
-					user.setStatus(status);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

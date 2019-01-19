@@ -186,294 +186,70 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 
 	static {
 		Map<String, Function<Message, Object>> attributeGetters = new LinkedHashMap<String, Function<Message, Object>>();
+		Map<String, BiConsumer<Message, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Message, Object>>();
 
-		attributeGetters.put("messageId",
-			new Function<Message, Object>() {
-				@Override
-				public Object apply(Message message) {
-					return message.getMessageId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<Message, Object>() {
-				@Override
-				public Object apply(Message message) {
-					return message.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<Message, Object>() {
-				@Override
-				public Object apply(Message message) {
-					return message.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<Message, Object>() {
-				@Override
-				public Object apply(Message message) {
-					return message.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<Message, Object>() {
-				@Override
-				public Object apply(Message message) {
-					return message.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<Message, Object>() {
-				@Override
-				public Object apply(Message message) {
-					return message.getModifiedDate();
-				}
-			});
-		attributeGetters.put("accountId",
-			new Function<Message, Object>() {
-				@Override
-				public Object apply(Message message) {
-					return message.getAccountId();
-				}
-			});
-		attributeGetters.put("folderId",
-			new Function<Message, Object>() {
-				@Override
-				public Object apply(Message message) {
-					return message.getFolderId();
-				}
-			});
-		attributeGetters.put("sender",
-			new Function<Message, Object>() {
-				@Override
-				public Object apply(Message message) {
-					return message.getSender();
-				}
-			});
-		attributeGetters.put("to",
-			new Function<Message, Object>() {
-				@Override
-				public Object apply(Message message) {
-					return message.getTo();
-				}
-			});
-		attributeGetters.put("cc",
-			new Function<Message, Object>() {
-				@Override
-				public Object apply(Message message) {
-					return message.getCc();
-				}
-			});
-		attributeGetters.put("bcc",
-			new Function<Message, Object>() {
-				@Override
-				public Object apply(Message message) {
-					return message.getBcc();
-				}
-			});
-		attributeGetters.put("sentDate",
-			new Function<Message, Object>() {
-				@Override
-				public Object apply(Message message) {
-					return message.getSentDate();
-				}
-			});
-		attributeGetters.put("subject",
-			new Function<Message, Object>() {
-				@Override
-				public Object apply(Message message) {
-					return message.getSubject();
-				}
-			});
-		attributeGetters.put("preview",
-			new Function<Message, Object>() {
-				@Override
-				public Object apply(Message message) {
-					return message.getPreview();
-				}
-			});
-		attributeGetters.put("body",
-			new Function<Message, Object>() {
-				@Override
-				public Object apply(Message message) {
-					return message.getBody();
-				}
-			});
-		attributeGetters.put("flags",
-			new Function<Message, Object>() {
-				@Override
-				public Object apply(Message message) {
-					return message.getFlags();
-				}
-			});
-		attributeGetters.put("size",
-			new Function<Message, Object>() {
-				@Override
-				public Object apply(Message message) {
-					return message.getSize();
-				}
-			});
-		attributeGetters.put("remoteMessageId",
-			new Function<Message, Object>() {
-				@Override
-				public Object apply(Message message) {
-					return message.getRemoteMessageId();
-				}
-			});
-		attributeGetters.put("contentType",
-			new Function<Message, Object>() {
-				@Override
-				public Object apply(Message message) {
-					return message.getContentType();
-				}
-			});
+		attributeGetters.put("messageId", Message::getMessageId);
+		attributeSetters.put("messageId", Message::setMessageId);
+
+		attributeGetters.put("companyId", Message::getCompanyId);
+		attributeSetters.put("companyId", Message::setCompanyId);
+
+		attributeGetters.put("userId", Message::getUserId);
+		attributeSetters.put("userId", Message::setUserId);
+
+		attributeGetters.put("userName", Message::getUserName);
+		attributeSetters.put("userName", Message::setUserName);
+
+		attributeGetters.put("createDate", Message::getCreateDate);
+		attributeSetters.put("createDate", Message::setCreateDate);
+
+		attributeGetters.put("modifiedDate", Message::getModifiedDate);
+		attributeSetters.put("modifiedDate", Message::setModifiedDate);
+
+		attributeGetters.put("accountId", Message::getAccountId);
+		attributeSetters.put("accountId", Message::setAccountId);
+
+		attributeGetters.put("folderId", Message::getFolderId);
+		attributeSetters.put("folderId", Message::setFolderId);
+
+		attributeGetters.put("sender", Message::getSender);
+		attributeSetters.put("sender", Message::setSender);
+
+		attributeGetters.put("to", Message::getTo);
+		attributeSetters.put("to", Message::setTo);
+
+		attributeGetters.put("cc", Message::getCc);
+		attributeSetters.put("cc", Message::setCc);
+
+		attributeGetters.put("bcc", Message::getBcc);
+		attributeSetters.put("bcc", Message::setBcc);
+
+		attributeGetters.put("sentDate", Message::getSentDate);
+		attributeSetters.put("sentDate", Message::setSentDate);
+
+		attributeGetters.put("subject", Message::getSubject);
+		attributeSetters.put("subject", Message::setSubject);
+
+		attributeGetters.put("preview", Message::getPreview);
+		attributeSetters.put("preview", Message::setPreview);
+
+		attributeGetters.put("body", Message::getBody);
+		attributeSetters.put("body", Message::setBody);
+
+		attributeGetters.put("flags", Message::getFlags);
+		attributeSetters.put("flags", Message::setFlags);
+
+		attributeGetters.put("size", Message::getSize);
+		attributeSetters.put("size", Message::setSize);
+
+		attributeGetters.put("remoteMessageId", Message::getRemoteMessageId);
+		attributeSetters.put("remoteMessageId", Message::setRemoteMessageId);
+
+		attributeGetters.put("contentType", Message::getContentType);
+		attributeSetters.put("contentType", Message::setContentType);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<Message, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Message, ?>>();
-
-		attributeSetters.put("messageId",
-			new BiConsumer<Message, Long>() {
-				@Override
-				public void accept(Message message, Long messageId) {
-					message.setMessageId(messageId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<Message, Long>() {
-				@Override
-				public void accept(Message message, Long companyId) {
-					message.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<Message, Long>() {
-				@Override
-				public void accept(Message message, Long userId) {
-					message.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<Message, String>() {
-				@Override
-				public void accept(Message message, String userName) {
-					message.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<Message, Date>() {
-				@Override
-				public void accept(Message message, Date createDate) {
-					message.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<Message, Date>() {
-				@Override
-				public void accept(Message message, Date modifiedDate) {
-					message.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("accountId",
-			new BiConsumer<Message, Long>() {
-				@Override
-				public void accept(Message message, Long accountId) {
-					message.setAccountId(accountId);
-				}
-			});
-		attributeSetters.put("folderId",
-			new BiConsumer<Message, Long>() {
-				@Override
-				public void accept(Message message, Long folderId) {
-					message.setFolderId(folderId);
-				}
-			});
-		attributeSetters.put("sender",
-			new BiConsumer<Message, String>() {
-				@Override
-				public void accept(Message message, String sender) {
-					message.setSender(sender);
-				}
-			});
-		attributeSetters.put("to",
-			new BiConsumer<Message, String>() {
-				@Override
-				public void accept(Message message, String to) {
-					message.setTo(to);
-				}
-			});
-		attributeSetters.put("cc",
-			new BiConsumer<Message, String>() {
-				@Override
-				public void accept(Message message, String cc) {
-					message.setCc(cc);
-				}
-			});
-		attributeSetters.put("bcc",
-			new BiConsumer<Message, String>() {
-				@Override
-				public void accept(Message message, String bcc) {
-					message.setBcc(bcc);
-				}
-			});
-		attributeSetters.put("sentDate",
-			new BiConsumer<Message, Date>() {
-				@Override
-				public void accept(Message message, Date sentDate) {
-					message.setSentDate(sentDate);
-				}
-			});
-		attributeSetters.put("subject",
-			new BiConsumer<Message, String>() {
-				@Override
-				public void accept(Message message, String subject) {
-					message.setSubject(subject);
-				}
-			});
-		attributeSetters.put("preview",
-			new BiConsumer<Message, String>() {
-				@Override
-				public void accept(Message message, String preview) {
-					message.setPreview(preview);
-				}
-			});
-		attributeSetters.put("body",
-			new BiConsumer<Message, String>() {
-				@Override
-				public void accept(Message message, String body) {
-					message.setBody(body);
-				}
-			});
-		attributeSetters.put("flags",
-			new BiConsumer<Message, String>() {
-				@Override
-				public void accept(Message message, String flags) {
-					message.setFlags(flags);
-				}
-			});
-		attributeSetters.put("size",
-			new BiConsumer<Message, Long>() {
-				@Override
-				public void accept(Message message, Long size) {
-					message.setSize(size);
-				}
-			});
-		attributeSetters.put("remoteMessageId",
-			new BiConsumer<Message, Long>() {
-				@Override
-				public void accept(Message message, Long remoteMessageId) {
-					message.setRemoteMessageId(remoteMessageId);
-				}
-			});
-		attributeSetters.put("contentType",
-			new BiConsumer<Message, String>() {
-				@Override
-				public void accept(Message message, String contentType) {
-					message.setContentType(contentType);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

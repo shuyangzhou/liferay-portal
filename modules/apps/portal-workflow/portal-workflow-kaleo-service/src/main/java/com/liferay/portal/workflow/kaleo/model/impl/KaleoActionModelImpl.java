@@ -182,270 +182,64 @@ public class KaleoActionModelImpl extends BaseModelImpl<KaleoAction>
 
 	static {
 		Map<String, Function<KaleoAction, Object>> attributeGetters = new LinkedHashMap<String, Function<KaleoAction, Object>>();
+		Map<String, BiConsumer<KaleoAction, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<KaleoAction, Object>>();
 
-		attributeGetters.put("kaleoActionId",
-			new Function<KaleoAction, Object>() {
-				@Override
-				public Object apply(KaleoAction kaleoAction) {
-					return kaleoAction.getKaleoActionId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<KaleoAction, Object>() {
-				@Override
-				public Object apply(KaleoAction kaleoAction) {
-					return kaleoAction.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<KaleoAction, Object>() {
-				@Override
-				public Object apply(KaleoAction kaleoAction) {
-					return kaleoAction.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<KaleoAction, Object>() {
-				@Override
-				public Object apply(KaleoAction kaleoAction) {
-					return kaleoAction.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<KaleoAction, Object>() {
-				@Override
-				public Object apply(KaleoAction kaleoAction) {
-					return kaleoAction.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<KaleoAction, Object>() {
-				@Override
-				public Object apply(KaleoAction kaleoAction) {
-					return kaleoAction.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<KaleoAction, Object>() {
-				@Override
-				public Object apply(KaleoAction kaleoAction) {
-					return kaleoAction.getModifiedDate();
-				}
-			});
-		attributeGetters.put("kaleoClassName",
-			new Function<KaleoAction, Object>() {
-				@Override
-				public Object apply(KaleoAction kaleoAction) {
-					return kaleoAction.getKaleoClassName();
-				}
-			});
-		attributeGetters.put("kaleoClassPK",
-			new Function<KaleoAction, Object>() {
-				@Override
-				public Object apply(KaleoAction kaleoAction) {
-					return kaleoAction.getKaleoClassPK();
-				}
-			});
-		attributeGetters.put("kaleoDefinitionVersionId",
-			new Function<KaleoAction, Object>() {
-				@Override
-				public Object apply(KaleoAction kaleoAction) {
-					return kaleoAction.getKaleoDefinitionVersionId();
-				}
-			});
-		attributeGetters.put("kaleoNodeName",
-			new Function<KaleoAction, Object>() {
-				@Override
-				public Object apply(KaleoAction kaleoAction) {
-					return kaleoAction.getKaleoNodeName();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<KaleoAction, Object>() {
-				@Override
-				public Object apply(KaleoAction kaleoAction) {
-					return kaleoAction.getName();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<KaleoAction, Object>() {
-				@Override
-				public Object apply(KaleoAction kaleoAction) {
-					return kaleoAction.getDescription();
-				}
-			});
-		attributeGetters.put("executionType",
-			new Function<KaleoAction, Object>() {
-				@Override
-				public Object apply(KaleoAction kaleoAction) {
-					return kaleoAction.getExecutionType();
-				}
-			});
-		attributeGetters.put("script",
-			new Function<KaleoAction, Object>() {
-				@Override
-				public Object apply(KaleoAction kaleoAction) {
-					return kaleoAction.getScript();
-				}
-			});
-		attributeGetters.put("scriptLanguage",
-			new Function<KaleoAction, Object>() {
-				@Override
-				public Object apply(KaleoAction kaleoAction) {
-					return kaleoAction.getScriptLanguage();
-				}
-			});
-		attributeGetters.put("scriptRequiredContexts",
-			new Function<KaleoAction, Object>() {
-				@Override
-				public Object apply(KaleoAction kaleoAction) {
-					return kaleoAction.getScriptRequiredContexts();
-				}
-			});
-		attributeGetters.put("priority",
-			new Function<KaleoAction, Object>() {
-				@Override
-				public Object apply(KaleoAction kaleoAction) {
-					return kaleoAction.getPriority();
-				}
-			});
+		attributeGetters.put("kaleoActionId", KaleoAction::getKaleoActionId);
+		attributeSetters.put("kaleoActionId", KaleoAction::setKaleoActionId);
+
+		attributeGetters.put("groupId", KaleoAction::getGroupId);
+		attributeSetters.put("groupId", KaleoAction::setGroupId);
+
+		attributeGetters.put("companyId", KaleoAction::getCompanyId);
+		attributeSetters.put("companyId", KaleoAction::setCompanyId);
+
+		attributeGetters.put("userId", KaleoAction::getUserId);
+		attributeSetters.put("userId", KaleoAction::setUserId);
+
+		attributeGetters.put("userName", KaleoAction::getUserName);
+		attributeSetters.put("userName", KaleoAction::setUserName);
+
+		attributeGetters.put("createDate", KaleoAction::getCreateDate);
+		attributeSetters.put("createDate", KaleoAction::setCreateDate);
+
+		attributeGetters.put("modifiedDate", KaleoAction::getModifiedDate);
+		attributeSetters.put("modifiedDate", KaleoAction::setModifiedDate);
+
+		attributeGetters.put("kaleoClassName", KaleoAction::getKaleoClassName);
+		attributeSetters.put("kaleoClassName", KaleoAction::setKaleoClassName);
+
+		attributeGetters.put("kaleoClassPK", KaleoAction::getKaleoClassPK);
+		attributeSetters.put("kaleoClassPK", KaleoAction::setKaleoClassPK);
+
+		attributeGetters.put("kaleoDefinitionVersionId", KaleoAction::getKaleoDefinitionVersionId);
+		attributeSetters.put("kaleoDefinitionVersionId", KaleoAction::setKaleoDefinitionVersionId);
+
+		attributeGetters.put("kaleoNodeName", KaleoAction::getKaleoNodeName);
+		attributeSetters.put("kaleoNodeName", KaleoAction::setKaleoNodeName);
+
+		attributeGetters.put("name", KaleoAction::getName);
+		attributeSetters.put("name", KaleoAction::setName);
+
+		attributeGetters.put("description", KaleoAction::getDescription);
+		attributeSetters.put("description", KaleoAction::setDescription);
+
+		attributeGetters.put("executionType", KaleoAction::getExecutionType);
+		attributeSetters.put("executionType", KaleoAction::setExecutionType);
+
+		attributeGetters.put("script", KaleoAction::getScript);
+		attributeSetters.put("script", KaleoAction::setScript);
+
+		attributeGetters.put("scriptLanguage", KaleoAction::getScriptLanguage);
+		attributeSetters.put("scriptLanguage", KaleoAction::setScriptLanguage);
+
+		attributeGetters.put("scriptRequiredContexts", KaleoAction::getScriptRequiredContexts);
+		attributeSetters.put("scriptRequiredContexts", KaleoAction::setScriptRequiredContexts);
+
+		attributeGetters.put("priority", KaleoAction::getPriority);
+		attributeSetters.put("priority", KaleoAction::setPriority);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<KaleoAction, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<KaleoAction, ?>>();
-
-		attributeSetters.put("kaleoActionId",
-			new BiConsumer<KaleoAction, Long>() {
-				@Override
-				public void accept(KaleoAction kaleoAction, Long kaleoActionId) {
-					kaleoAction.setKaleoActionId(kaleoActionId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<KaleoAction, Long>() {
-				@Override
-				public void accept(KaleoAction kaleoAction, Long groupId) {
-					kaleoAction.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<KaleoAction, Long>() {
-				@Override
-				public void accept(KaleoAction kaleoAction, Long companyId) {
-					kaleoAction.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<KaleoAction, Long>() {
-				@Override
-				public void accept(KaleoAction kaleoAction, Long userId) {
-					kaleoAction.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<KaleoAction, String>() {
-				@Override
-				public void accept(KaleoAction kaleoAction, String userName) {
-					kaleoAction.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<KaleoAction, Date>() {
-				@Override
-				public void accept(KaleoAction kaleoAction, Date createDate) {
-					kaleoAction.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<KaleoAction, Date>() {
-				@Override
-				public void accept(KaleoAction kaleoAction, Date modifiedDate) {
-					kaleoAction.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("kaleoClassName",
-			new BiConsumer<KaleoAction, String>() {
-				@Override
-				public void accept(KaleoAction kaleoAction,
-					String kaleoClassName) {
-					kaleoAction.setKaleoClassName(kaleoClassName);
-				}
-			});
-		attributeSetters.put("kaleoClassPK",
-			new BiConsumer<KaleoAction, Long>() {
-				@Override
-				public void accept(KaleoAction kaleoAction, Long kaleoClassPK) {
-					kaleoAction.setKaleoClassPK(kaleoClassPK);
-				}
-			});
-		attributeSetters.put("kaleoDefinitionVersionId",
-			new BiConsumer<KaleoAction, Long>() {
-				@Override
-				public void accept(KaleoAction kaleoAction,
-					Long kaleoDefinitionVersionId) {
-					kaleoAction.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
-				}
-			});
-		attributeSetters.put("kaleoNodeName",
-			new BiConsumer<KaleoAction, String>() {
-				@Override
-				public void accept(KaleoAction kaleoAction, String kaleoNodeName) {
-					kaleoAction.setKaleoNodeName(kaleoNodeName);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<KaleoAction, String>() {
-				@Override
-				public void accept(KaleoAction kaleoAction, String name) {
-					kaleoAction.setName(name);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<KaleoAction, String>() {
-				@Override
-				public void accept(KaleoAction kaleoAction, String description) {
-					kaleoAction.setDescription(description);
-				}
-			});
-		attributeSetters.put("executionType",
-			new BiConsumer<KaleoAction, String>() {
-				@Override
-				public void accept(KaleoAction kaleoAction, String executionType) {
-					kaleoAction.setExecutionType(executionType);
-				}
-			});
-		attributeSetters.put("script",
-			new BiConsumer<KaleoAction, String>() {
-				@Override
-				public void accept(KaleoAction kaleoAction, String script) {
-					kaleoAction.setScript(script);
-				}
-			});
-		attributeSetters.put("scriptLanguage",
-			new BiConsumer<KaleoAction, String>() {
-				@Override
-				public void accept(KaleoAction kaleoAction,
-					String scriptLanguage) {
-					kaleoAction.setScriptLanguage(scriptLanguage);
-				}
-			});
-		attributeSetters.put("scriptRequiredContexts",
-			new BiConsumer<KaleoAction, String>() {
-				@Override
-				public void accept(KaleoAction kaleoAction,
-					String scriptRequiredContexts) {
-					kaleoAction.setScriptRequiredContexts(scriptRequiredContexts);
-				}
-			});
-		attributeSetters.put("priority",
-			new BiConsumer<KaleoAction, Integer>() {
-				@Override
-				public void accept(KaleoAction kaleoAction, Integer priority) {
-					kaleoAction.setPriority(priority);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

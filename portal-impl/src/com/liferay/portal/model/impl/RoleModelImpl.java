@@ -262,224 +262,55 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 	static {
 		Map<String, Function<Role, Object>> attributeGetters = new LinkedHashMap<String, Function<Role, Object>>();
+		Map<String, BiConsumer<Role, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Role, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<Role, Object>() {
-				@Override
-				public Object apply(Role role) {
-					return role.getMvccVersion();
-				}
-			});
-		attributeGetters.put("uuid",
-			new Function<Role, Object>() {
-				@Override
-				public Object apply(Role role) {
-					return role.getUuid();
-				}
-			});
-		attributeGetters.put("roleId",
-			new Function<Role, Object>() {
-				@Override
-				public Object apply(Role role) {
-					return role.getRoleId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<Role, Object>() {
-				@Override
-				public Object apply(Role role) {
-					return role.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<Role, Object>() {
-				@Override
-				public Object apply(Role role) {
-					return role.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<Role, Object>() {
-				@Override
-				public Object apply(Role role) {
-					return role.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<Role, Object>() {
-				@Override
-				public Object apply(Role role) {
-					return role.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<Role, Object>() {
-				@Override
-				public Object apply(Role role) {
-					return role.getModifiedDate();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<Role, Object>() {
-				@Override
-				public Object apply(Role role) {
-					return role.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<Role, Object>() {
-				@Override
-				public Object apply(Role role) {
-					return role.getClassPK();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<Role, Object>() {
-				@Override
-				public Object apply(Role role) {
-					return role.getName();
-				}
-			});
-		attributeGetters.put("title",
-			new Function<Role, Object>() {
-				@Override
-				public Object apply(Role role) {
-					return role.getTitle();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<Role, Object>() {
-				@Override
-				public Object apply(Role role) {
-					return role.getDescription();
-				}
-			});
-		attributeGetters.put("type",
-			new Function<Role, Object>() {
-				@Override
-				public Object apply(Role role) {
-					return role.getType();
-				}
-			});
-		attributeGetters.put("subtype",
-			new Function<Role, Object>() {
-				@Override
-				public Object apply(Role role) {
-					return role.getSubtype();
-				}
-			});
+		attributeGetters.put("mvccVersion", Role::getMvccVersion);
+		attributeSetters.put("mvccVersion", Role::setMvccVersion);
+
+		attributeGetters.put("uuid", Role::getUuid);
+		attributeSetters.put("uuid", Role::setUuid);
+
+		attributeGetters.put("roleId", Role::getRoleId);
+		attributeSetters.put("roleId", Role::setRoleId);
+
+		attributeGetters.put("companyId", Role::getCompanyId);
+		attributeSetters.put("companyId", Role::setCompanyId);
+
+		attributeGetters.put("userId", Role::getUserId);
+		attributeSetters.put("userId", Role::setUserId);
+
+		attributeGetters.put("userName", Role::getUserName);
+		attributeSetters.put("userName", Role::setUserName);
+
+		attributeGetters.put("createDate", Role::getCreateDate);
+		attributeSetters.put("createDate", Role::setCreateDate);
+
+		attributeGetters.put("modifiedDate", Role::getModifiedDate);
+		attributeSetters.put("modifiedDate", Role::setModifiedDate);
+
+		attributeGetters.put("classNameId", Role::getClassNameId);
+		attributeSetters.put("classNameId", Role::setClassNameId);
+
+		attributeGetters.put("classPK", Role::getClassPK);
+		attributeSetters.put("classPK", Role::setClassPK);
+
+		attributeGetters.put("name", Role::getName);
+		attributeSetters.put("name", Role::setName);
+
+		attributeGetters.put("title", Role::getTitle);
+		attributeSetters.put("title", Role::setTitle);
+
+		attributeGetters.put("description", Role::getDescription);
+		attributeSetters.put("description", Role::setDescription);
+
+		attributeGetters.put("type", Role::getType);
+		attributeSetters.put("type", Role::setType);
+
+		attributeGetters.put("subtype", Role::getSubtype);
+		attributeSetters.put("subtype", Role::setSubtype);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<Role, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Role, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<Role, Long>() {
-				@Override
-				public void accept(Role role, Long mvccVersion) {
-					role.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("uuid",
-			new BiConsumer<Role, String>() {
-				@Override
-				public void accept(Role role, String uuid) {
-					role.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("roleId",
-			new BiConsumer<Role, Long>() {
-				@Override
-				public void accept(Role role, Long roleId) {
-					role.setRoleId(roleId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<Role, Long>() {
-				@Override
-				public void accept(Role role, Long companyId) {
-					role.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<Role, Long>() {
-				@Override
-				public void accept(Role role, Long userId) {
-					role.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<Role, String>() {
-				@Override
-				public void accept(Role role, String userName) {
-					role.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<Role, Date>() {
-				@Override
-				public void accept(Role role, Date createDate) {
-					role.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<Role, Date>() {
-				@Override
-				public void accept(Role role, Date modifiedDate) {
-					role.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<Role, Long>() {
-				@Override
-				public void accept(Role role, Long classNameId) {
-					role.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<Role, Long>() {
-				@Override
-				public void accept(Role role, Long classPK) {
-					role.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<Role, String>() {
-				@Override
-				public void accept(Role role, String name) {
-					role.setName(name);
-				}
-			});
-		attributeSetters.put("title",
-			new BiConsumer<Role, String>() {
-				@Override
-				public void accept(Role role, String title) {
-					role.setTitle(title);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<Role, String>() {
-				@Override
-				public void accept(Role role, String description) {
-					role.setDescription(description);
-				}
-			});
-		attributeSetters.put("type",
-			new BiConsumer<Role, Integer>() {
-				@Override
-				public void accept(Role role, Integer type) {
-					role.setType(type);
-				}
-			});
-		attributeSetters.put("subtype",
-			new BiConsumer<Role, String>() {
-				@Override
-				public void accept(Role role, String subtype) {
-					role.setSubtype(subtype);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

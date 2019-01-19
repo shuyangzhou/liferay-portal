@@ -260,341 +260,79 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 
 	static {
 		Map<String, Function<JournalFeed, Object>> attributeGetters = new LinkedHashMap<String, Function<JournalFeed, Object>>();
+		Map<String, BiConsumer<JournalFeed, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<JournalFeed, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<JournalFeed, Object>() {
-				@Override
-				public Object apply(JournalFeed journalFeed) {
-					return journalFeed.getUuid();
-				}
-			});
-		attributeGetters.put("id",
-			new Function<JournalFeed, Object>() {
-				@Override
-				public Object apply(JournalFeed journalFeed) {
-					return journalFeed.getId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<JournalFeed, Object>() {
-				@Override
-				public Object apply(JournalFeed journalFeed) {
-					return journalFeed.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<JournalFeed, Object>() {
-				@Override
-				public Object apply(JournalFeed journalFeed) {
-					return journalFeed.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<JournalFeed, Object>() {
-				@Override
-				public Object apply(JournalFeed journalFeed) {
-					return journalFeed.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<JournalFeed, Object>() {
-				@Override
-				public Object apply(JournalFeed journalFeed) {
-					return journalFeed.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<JournalFeed, Object>() {
-				@Override
-				public Object apply(JournalFeed journalFeed) {
-					return journalFeed.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<JournalFeed, Object>() {
-				@Override
-				public Object apply(JournalFeed journalFeed) {
-					return journalFeed.getModifiedDate();
-				}
-			});
-		attributeGetters.put("feedId",
-			new Function<JournalFeed, Object>() {
-				@Override
-				public Object apply(JournalFeed journalFeed) {
-					return journalFeed.getFeedId();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<JournalFeed, Object>() {
-				@Override
-				public Object apply(JournalFeed journalFeed) {
-					return journalFeed.getName();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<JournalFeed, Object>() {
-				@Override
-				public Object apply(JournalFeed journalFeed) {
-					return journalFeed.getDescription();
-				}
-			});
-		attributeGetters.put("DDMStructureKey",
-			new Function<JournalFeed, Object>() {
-				@Override
-				public Object apply(JournalFeed journalFeed) {
-					return journalFeed.getDDMStructureKey();
-				}
-			});
-		attributeGetters.put("DDMTemplateKey",
-			new Function<JournalFeed, Object>() {
-				@Override
-				public Object apply(JournalFeed journalFeed) {
-					return journalFeed.getDDMTemplateKey();
-				}
-			});
-		attributeGetters.put("DDMRendererTemplateKey",
-			new Function<JournalFeed, Object>() {
-				@Override
-				public Object apply(JournalFeed journalFeed) {
-					return journalFeed.getDDMRendererTemplateKey();
-				}
-			});
-		attributeGetters.put("delta",
-			new Function<JournalFeed, Object>() {
-				@Override
-				public Object apply(JournalFeed journalFeed) {
-					return journalFeed.getDelta();
-				}
-			});
-		attributeGetters.put("orderByCol",
-			new Function<JournalFeed, Object>() {
-				@Override
-				public Object apply(JournalFeed journalFeed) {
-					return journalFeed.getOrderByCol();
-				}
-			});
-		attributeGetters.put("orderByType",
-			new Function<JournalFeed, Object>() {
-				@Override
-				public Object apply(JournalFeed journalFeed) {
-					return journalFeed.getOrderByType();
-				}
-			});
-		attributeGetters.put("targetLayoutFriendlyUrl",
-			new Function<JournalFeed, Object>() {
-				@Override
-				public Object apply(JournalFeed journalFeed) {
-					return journalFeed.getTargetLayoutFriendlyUrl();
-				}
-			});
-		attributeGetters.put("targetPortletId",
-			new Function<JournalFeed, Object>() {
-				@Override
-				public Object apply(JournalFeed journalFeed) {
-					return journalFeed.getTargetPortletId();
-				}
-			});
-		attributeGetters.put("contentField",
-			new Function<JournalFeed, Object>() {
-				@Override
-				public Object apply(JournalFeed journalFeed) {
-					return journalFeed.getContentField();
-				}
-			});
-		attributeGetters.put("feedFormat",
-			new Function<JournalFeed, Object>() {
-				@Override
-				public Object apply(JournalFeed journalFeed) {
-					return journalFeed.getFeedFormat();
-				}
-			});
-		attributeGetters.put("feedVersion",
-			new Function<JournalFeed, Object>() {
-				@Override
-				public Object apply(JournalFeed journalFeed) {
-					return journalFeed.getFeedVersion();
-				}
-			});
-		attributeGetters.put("lastPublishDate",
-			new Function<JournalFeed, Object>() {
-				@Override
-				public Object apply(JournalFeed journalFeed) {
-					return journalFeed.getLastPublishDate();
-				}
-			});
+		attributeGetters.put("uuid", JournalFeed::getUuid);
+		attributeSetters.put("uuid", JournalFeed::setUuid);
+
+		attributeGetters.put("id", JournalFeed::getId);
+		attributeSetters.put("id", JournalFeed::setId);
+
+		attributeGetters.put("groupId", JournalFeed::getGroupId);
+		attributeSetters.put("groupId", JournalFeed::setGroupId);
+
+		attributeGetters.put("companyId", JournalFeed::getCompanyId);
+		attributeSetters.put("companyId", JournalFeed::setCompanyId);
+
+		attributeGetters.put("userId", JournalFeed::getUserId);
+		attributeSetters.put("userId", JournalFeed::setUserId);
+
+		attributeGetters.put("userName", JournalFeed::getUserName);
+		attributeSetters.put("userName", JournalFeed::setUserName);
+
+		attributeGetters.put("createDate", JournalFeed::getCreateDate);
+		attributeSetters.put("createDate", JournalFeed::setCreateDate);
+
+		attributeGetters.put("modifiedDate", JournalFeed::getModifiedDate);
+		attributeSetters.put("modifiedDate", JournalFeed::setModifiedDate);
+
+		attributeGetters.put("feedId", JournalFeed::getFeedId);
+		attributeSetters.put("feedId", JournalFeed::setFeedId);
+
+		attributeGetters.put("name", JournalFeed::getName);
+		attributeSetters.put("name", JournalFeed::setName);
+
+		attributeGetters.put("description", JournalFeed::getDescription);
+		attributeSetters.put("description", JournalFeed::setDescription);
+
+		attributeGetters.put("DDMStructureKey", JournalFeed::getDDMStructureKey);
+		attributeSetters.put("DDMStructureKey", JournalFeed::setDDMStructureKey);
+
+		attributeGetters.put("DDMTemplateKey", JournalFeed::getDDMTemplateKey);
+		attributeSetters.put("DDMTemplateKey", JournalFeed::setDDMTemplateKey);
+
+		attributeGetters.put("DDMRendererTemplateKey", JournalFeed::getDDMRendererTemplateKey);
+		attributeSetters.put("DDMRendererTemplateKey", JournalFeed::setDDMRendererTemplateKey);
+
+		attributeGetters.put("delta", JournalFeed::getDelta);
+		attributeSetters.put("delta", JournalFeed::setDelta);
+
+		attributeGetters.put("orderByCol", JournalFeed::getOrderByCol);
+		attributeSetters.put("orderByCol", JournalFeed::setOrderByCol);
+
+		attributeGetters.put("orderByType", JournalFeed::getOrderByType);
+		attributeSetters.put("orderByType", JournalFeed::setOrderByType);
+
+		attributeGetters.put("targetLayoutFriendlyUrl", JournalFeed::getTargetLayoutFriendlyUrl);
+		attributeSetters.put("targetLayoutFriendlyUrl", JournalFeed::setTargetLayoutFriendlyUrl);
+
+		attributeGetters.put("targetPortletId", JournalFeed::getTargetPortletId);
+		attributeSetters.put("targetPortletId", JournalFeed::setTargetPortletId);
+
+		attributeGetters.put("contentField", JournalFeed::getContentField);
+		attributeSetters.put("contentField", JournalFeed::setContentField);
+
+		attributeGetters.put("feedFormat", JournalFeed::getFeedFormat);
+		attributeSetters.put("feedFormat", JournalFeed::setFeedFormat);
+
+		attributeGetters.put("feedVersion", JournalFeed::getFeedVersion);
+		attributeSetters.put("feedVersion", JournalFeed::setFeedVersion);
+
+		attributeGetters.put("lastPublishDate", JournalFeed::getLastPublishDate);
+		attributeSetters.put("lastPublishDate", JournalFeed::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<JournalFeed, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<JournalFeed, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<JournalFeed, String>() {
-				@Override
-				public void accept(JournalFeed journalFeed, String uuid) {
-					journalFeed.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("id",
-			new BiConsumer<JournalFeed, Long>() {
-				@Override
-				public void accept(JournalFeed journalFeed, Long id) {
-					journalFeed.setId(id);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<JournalFeed, Long>() {
-				@Override
-				public void accept(JournalFeed journalFeed, Long groupId) {
-					journalFeed.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<JournalFeed, Long>() {
-				@Override
-				public void accept(JournalFeed journalFeed, Long companyId) {
-					journalFeed.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<JournalFeed, Long>() {
-				@Override
-				public void accept(JournalFeed journalFeed, Long userId) {
-					journalFeed.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<JournalFeed, String>() {
-				@Override
-				public void accept(JournalFeed journalFeed, String userName) {
-					journalFeed.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<JournalFeed, Date>() {
-				@Override
-				public void accept(JournalFeed journalFeed, Date createDate) {
-					journalFeed.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<JournalFeed, Date>() {
-				@Override
-				public void accept(JournalFeed journalFeed, Date modifiedDate) {
-					journalFeed.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("feedId",
-			new BiConsumer<JournalFeed, String>() {
-				@Override
-				public void accept(JournalFeed journalFeed, String feedId) {
-					journalFeed.setFeedId(feedId);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<JournalFeed, String>() {
-				@Override
-				public void accept(JournalFeed journalFeed, String name) {
-					journalFeed.setName(name);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<JournalFeed, String>() {
-				@Override
-				public void accept(JournalFeed journalFeed, String description) {
-					journalFeed.setDescription(description);
-				}
-			});
-		attributeSetters.put("DDMStructureKey",
-			new BiConsumer<JournalFeed, String>() {
-				@Override
-				public void accept(JournalFeed journalFeed,
-					String DDMStructureKey) {
-					journalFeed.setDDMStructureKey(DDMStructureKey);
-				}
-			});
-		attributeSetters.put("DDMTemplateKey",
-			new BiConsumer<JournalFeed, String>() {
-				@Override
-				public void accept(JournalFeed journalFeed,
-					String DDMTemplateKey) {
-					journalFeed.setDDMTemplateKey(DDMTemplateKey);
-				}
-			});
-		attributeSetters.put("DDMRendererTemplateKey",
-			new BiConsumer<JournalFeed, String>() {
-				@Override
-				public void accept(JournalFeed journalFeed,
-					String DDMRendererTemplateKey) {
-					journalFeed.setDDMRendererTemplateKey(DDMRendererTemplateKey);
-				}
-			});
-		attributeSetters.put("delta",
-			new BiConsumer<JournalFeed, Integer>() {
-				@Override
-				public void accept(JournalFeed journalFeed, Integer delta) {
-					journalFeed.setDelta(delta);
-				}
-			});
-		attributeSetters.put("orderByCol",
-			new BiConsumer<JournalFeed, String>() {
-				@Override
-				public void accept(JournalFeed journalFeed, String orderByCol) {
-					journalFeed.setOrderByCol(orderByCol);
-				}
-			});
-		attributeSetters.put("orderByType",
-			new BiConsumer<JournalFeed, String>() {
-				@Override
-				public void accept(JournalFeed journalFeed, String orderByType) {
-					journalFeed.setOrderByType(orderByType);
-				}
-			});
-		attributeSetters.put("targetLayoutFriendlyUrl",
-			new BiConsumer<JournalFeed, String>() {
-				@Override
-				public void accept(JournalFeed journalFeed,
-					String targetLayoutFriendlyUrl) {
-					journalFeed.setTargetLayoutFriendlyUrl(targetLayoutFriendlyUrl);
-				}
-			});
-		attributeSetters.put("targetPortletId",
-			new BiConsumer<JournalFeed, String>() {
-				@Override
-				public void accept(JournalFeed journalFeed,
-					String targetPortletId) {
-					journalFeed.setTargetPortletId(targetPortletId);
-				}
-			});
-		attributeSetters.put("contentField",
-			new BiConsumer<JournalFeed, String>() {
-				@Override
-				public void accept(JournalFeed journalFeed, String contentField) {
-					journalFeed.setContentField(contentField);
-				}
-			});
-		attributeSetters.put("feedFormat",
-			new BiConsumer<JournalFeed, String>() {
-				@Override
-				public void accept(JournalFeed journalFeed, String feedFormat) {
-					journalFeed.setFeedFormat(feedFormat);
-				}
-			});
-		attributeSetters.put("feedVersion",
-			new BiConsumer<JournalFeed, Double>() {
-				@Override
-				public void accept(JournalFeed journalFeed, Double feedVersion) {
-					journalFeed.setFeedVersion(feedVersion);
-				}
-			});
-		attributeSetters.put("lastPublishDate",
-			new BiConsumer<JournalFeed, Date>() {
-				@Override
-				public void accept(JournalFeed journalFeed, Date lastPublishDate) {
-					journalFeed.setLastPublishDate(lastPublishDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

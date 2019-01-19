@@ -222,154 +222,40 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 
 	static {
 		Map<String, Function<MBBan, Object>> attributeGetters = new LinkedHashMap<String, Function<MBBan, Object>>();
+		Map<String, BiConsumer<MBBan, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<MBBan, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<MBBan, Object>() {
-				@Override
-				public Object apply(MBBan mbBan) {
-					return mbBan.getUuid();
-				}
-			});
-		attributeGetters.put("banId",
-			new Function<MBBan, Object>() {
-				@Override
-				public Object apply(MBBan mbBan) {
-					return mbBan.getBanId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<MBBan, Object>() {
-				@Override
-				public Object apply(MBBan mbBan) {
-					return mbBan.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<MBBan, Object>() {
-				@Override
-				public Object apply(MBBan mbBan) {
-					return mbBan.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<MBBan, Object>() {
-				@Override
-				public Object apply(MBBan mbBan) {
-					return mbBan.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<MBBan, Object>() {
-				@Override
-				public Object apply(MBBan mbBan) {
-					return mbBan.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<MBBan, Object>() {
-				@Override
-				public Object apply(MBBan mbBan) {
-					return mbBan.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<MBBan, Object>() {
-				@Override
-				public Object apply(MBBan mbBan) {
-					return mbBan.getModifiedDate();
-				}
-			});
-		attributeGetters.put("banUserId",
-			new Function<MBBan, Object>() {
-				@Override
-				public Object apply(MBBan mbBan) {
-					return mbBan.getBanUserId();
-				}
-			});
-		attributeGetters.put("lastPublishDate",
-			new Function<MBBan, Object>() {
-				@Override
-				public Object apply(MBBan mbBan) {
-					return mbBan.getLastPublishDate();
-				}
-			});
+		attributeGetters.put("uuid", MBBan::getUuid);
+		attributeSetters.put("uuid", MBBan::setUuid);
+
+		attributeGetters.put("banId", MBBan::getBanId);
+		attributeSetters.put("banId", MBBan::setBanId);
+
+		attributeGetters.put("groupId", MBBan::getGroupId);
+		attributeSetters.put("groupId", MBBan::setGroupId);
+
+		attributeGetters.put("companyId", MBBan::getCompanyId);
+		attributeSetters.put("companyId", MBBan::setCompanyId);
+
+		attributeGetters.put("userId", MBBan::getUserId);
+		attributeSetters.put("userId", MBBan::setUserId);
+
+		attributeGetters.put("userName", MBBan::getUserName);
+		attributeSetters.put("userName", MBBan::setUserName);
+
+		attributeGetters.put("createDate", MBBan::getCreateDate);
+		attributeSetters.put("createDate", MBBan::setCreateDate);
+
+		attributeGetters.put("modifiedDate", MBBan::getModifiedDate);
+		attributeSetters.put("modifiedDate", MBBan::setModifiedDate);
+
+		attributeGetters.put("banUserId", MBBan::getBanUserId);
+		attributeSetters.put("banUserId", MBBan::setBanUserId);
+
+		attributeGetters.put("lastPublishDate", MBBan::getLastPublishDate);
+		attributeSetters.put("lastPublishDate", MBBan::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<MBBan, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<MBBan, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<MBBan, String>() {
-				@Override
-				public void accept(MBBan mbBan, String uuid) {
-					mbBan.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("banId",
-			new BiConsumer<MBBan, Long>() {
-				@Override
-				public void accept(MBBan mbBan, Long banId) {
-					mbBan.setBanId(banId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<MBBan, Long>() {
-				@Override
-				public void accept(MBBan mbBan, Long groupId) {
-					mbBan.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<MBBan, Long>() {
-				@Override
-				public void accept(MBBan mbBan, Long companyId) {
-					mbBan.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<MBBan, Long>() {
-				@Override
-				public void accept(MBBan mbBan, Long userId) {
-					mbBan.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<MBBan, String>() {
-				@Override
-				public void accept(MBBan mbBan, String userName) {
-					mbBan.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<MBBan, Date>() {
-				@Override
-				public void accept(MBBan mbBan, Date createDate) {
-					mbBan.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<MBBan, Date>() {
-				@Override
-				public void accept(MBBan mbBan, Date modifiedDate) {
-					mbBan.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("banUserId",
-			new BiConsumer<MBBan, Long>() {
-				@Override
-				public void accept(MBBan mbBan, Long banUserId) {
-					mbBan.setBanUserId(banUserId);
-				}
-			});
-		attributeSetters.put("lastPublishDate",
-			new BiConsumer<MBBan, Date>() {
-				@Override
-				public void accept(MBBan mbBan, Date lastPublishDate) {
-					mbBan.setLastPublishDate(lastPublishDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

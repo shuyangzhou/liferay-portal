@@ -230,226 +230,55 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 
 	static {
 		Map<String, Function<LayoutSet, Object>> attributeGetters = new LinkedHashMap<String, Function<LayoutSet, Object>>();
+		Map<String, BiConsumer<LayoutSet, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<LayoutSet, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<LayoutSet, Object>() {
-				@Override
-				public Object apply(LayoutSet layoutSet) {
-					return layoutSet.getMvccVersion();
-				}
-			});
-		attributeGetters.put("layoutSetId",
-			new Function<LayoutSet, Object>() {
-				@Override
-				public Object apply(LayoutSet layoutSet) {
-					return layoutSet.getLayoutSetId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<LayoutSet, Object>() {
-				@Override
-				public Object apply(LayoutSet layoutSet) {
-					return layoutSet.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<LayoutSet, Object>() {
-				@Override
-				public Object apply(LayoutSet layoutSet) {
-					return layoutSet.getCompanyId();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<LayoutSet, Object>() {
-				@Override
-				public Object apply(LayoutSet layoutSet) {
-					return layoutSet.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<LayoutSet, Object>() {
-				@Override
-				public Object apply(LayoutSet layoutSet) {
-					return layoutSet.getModifiedDate();
-				}
-			});
-		attributeGetters.put("privateLayout",
-			new Function<LayoutSet, Object>() {
-				@Override
-				public Object apply(LayoutSet layoutSet) {
-					return layoutSet.isPrivateLayout();
-				}
-			});
-		attributeGetters.put("logoId",
-			new Function<LayoutSet, Object>() {
-				@Override
-				public Object apply(LayoutSet layoutSet) {
-					return layoutSet.getLogoId();
-				}
-			});
-		attributeGetters.put("themeId",
-			new Function<LayoutSet, Object>() {
-				@Override
-				public Object apply(LayoutSet layoutSet) {
-					return layoutSet.getThemeId();
-				}
-			});
-		attributeGetters.put("colorSchemeId",
-			new Function<LayoutSet, Object>() {
-				@Override
-				public Object apply(LayoutSet layoutSet) {
-					return layoutSet.getColorSchemeId();
-				}
-			});
-		attributeGetters.put("css",
-			new Function<LayoutSet, Object>() {
-				@Override
-				public Object apply(LayoutSet layoutSet) {
-					return layoutSet.getCss();
-				}
-			});
-		attributeGetters.put("pageCount",
-			new Function<LayoutSet, Object>() {
-				@Override
-				public Object apply(LayoutSet layoutSet) {
-					return layoutSet.getPageCount();
-				}
-			});
-		attributeGetters.put("settings",
-			new Function<LayoutSet, Object>() {
-				@Override
-				public Object apply(LayoutSet layoutSet) {
-					return layoutSet.getSettings();
-				}
-			});
-		attributeGetters.put("layoutSetPrototypeUuid",
-			new Function<LayoutSet, Object>() {
-				@Override
-				public Object apply(LayoutSet layoutSet) {
-					return layoutSet.getLayoutSetPrototypeUuid();
-				}
-			});
-		attributeGetters.put("layoutSetPrototypeLinkEnabled",
-			new Function<LayoutSet, Object>() {
-				@Override
-				public Object apply(LayoutSet layoutSet) {
-					return layoutSet.isLayoutSetPrototypeLinkEnabled();
-				}
-			});
+		attributeGetters.put("mvccVersion", LayoutSet::getMvccVersion);
+		attributeSetters.put("mvccVersion", LayoutSet::setMvccVersion);
+
+		attributeGetters.put("layoutSetId", LayoutSet::getLayoutSetId);
+		attributeSetters.put("layoutSetId", LayoutSet::setLayoutSetId);
+
+		attributeGetters.put("groupId", LayoutSet::getGroupId);
+		attributeSetters.put("groupId", LayoutSet::setGroupId);
+
+		attributeGetters.put("companyId", LayoutSet::getCompanyId);
+		attributeSetters.put("companyId", LayoutSet::setCompanyId);
+
+		attributeGetters.put("createDate", LayoutSet::getCreateDate);
+		attributeSetters.put("createDate", LayoutSet::setCreateDate);
+
+		attributeGetters.put("modifiedDate", LayoutSet::getModifiedDate);
+		attributeSetters.put("modifiedDate", LayoutSet::setModifiedDate);
+
+		attributeGetters.put("privateLayout", LayoutSet::getPrivateLayout);
+		attributeSetters.put("privateLayout", LayoutSet::setPrivateLayout);
+
+		attributeGetters.put("logoId", LayoutSet::getLogoId);
+		attributeSetters.put("logoId", LayoutSet::setLogoId);
+
+		attributeGetters.put("themeId", LayoutSet::getThemeId);
+		attributeSetters.put("themeId", LayoutSet::setThemeId);
+
+		attributeGetters.put("colorSchemeId", LayoutSet::getColorSchemeId);
+		attributeSetters.put("colorSchemeId", LayoutSet::setColorSchemeId);
+
+		attributeGetters.put("css", LayoutSet::getCss);
+		attributeSetters.put("css", LayoutSet::setCss);
+
+		attributeGetters.put("pageCount", LayoutSet::getPageCount);
+		attributeSetters.put("pageCount", LayoutSet::setPageCount);
+
+		attributeGetters.put("settings", LayoutSet::getSettings);
+		attributeSetters.put("settings", LayoutSet::setSettings);
+
+		attributeGetters.put("layoutSetPrototypeUuid", LayoutSet::getLayoutSetPrototypeUuid);
+		attributeSetters.put("layoutSetPrototypeUuid", LayoutSet::setLayoutSetPrototypeUuid);
+
+		attributeGetters.put("layoutSetPrototypeLinkEnabled", LayoutSet::getLayoutSetPrototypeLinkEnabled);
+		attributeSetters.put("layoutSetPrototypeLinkEnabled", LayoutSet::setLayoutSetPrototypeLinkEnabled);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<LayoutSet, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<LayoutSet, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<LayoutSet, Long>() {
-				@Override
-				public void accept(LayoutSet layoutSet, Long mvccVersion) {
-					layoutSet.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("layoutSetId",
-			new BiConsumer<LayoutSet, Long>() {
-				@Override
-				public void accept(LayoutSet layoutSet, Long layoutSetId) {
-					layoutSet.setLayoutSetId(layoutSetId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<LayoutSet, Long>() {
-				@Override
-				public void accept(LayoutSet layoutSet, Long groupId) {
-					layoutSet.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<LayoutSet, Long>() {
-				@Override
-				public void accept(LayoutSet layoutSet, Long companyId) {
-					layoutSet.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<LayoutSet, Date>() {
-				@Override
-				public void accept(LayoutSet layoutSet, Date createDate) {
-					layoutSet.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<LayoutSet, Date>() {
-				@Override
-				public void accept(LayoutSet layoutSet, Date modifiedDate) {
-					layoutSet.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("privateLayout",
-			new BiConsumer<LayoutSet, Boolean>() {
-				@Override
-				public void accept(LayoutSet layoutSet, Boolean privateLayout) {
-					layoutSet.setPrivateLayout(privateLayout);
-				}
-			});
-		attributeSetters.put("logoId",
-			new BiConsumer<LayoutSet, Long>() {
-				@Override
-				public void accept(LayoutSet layoutSet, Long logoId) {
-					layoutSet.setLogoId(logoId);
-				}
-			});
-		attributeSetters.put("themeId",
-			new BiConsumer<LayoutSet, String>() {
-				@Override
-				public void accept(LayoutSet layoutSet, String themeId) {
-					layoutSet.setThemeId(themeId);
-				}
-			});
-		attributeSetters.put("colorSchemeId",
-			new BiConsumer<LayoutSet, String>() {
-				@Override
-				public void accept(LayoutSet layoutSet, String colorSchemeId) {
-					layoutSet.setColorSchemeId(colorSchemeId);
-				}
-			});
-		attributeSetters.put("css",
-			new BiConsumer<LayoutSet, String>() {
-				@Override
-				public void accept(LayoutSet layoutSet, String css) {
-					layoutSet.setCss(css);
-				}
-			});
-		attributeSetters.put("pageCount",
-			new BiConsumer<LayoutSet, Integer>() {
-				@Override
-				public void accept(LayoutSet layoutSet, Integer pageCount) {
-					layoutSet.setPageCount(pageCount);
-				}
-			});
-		attributeSetters.put("settings",
-			new BiConsumer<LayoutSet, String>() {
-				@Override
-				public void accept(LayoutSet layoutSet, String settings) {
-					layoutSet.setSettings(settings);
-				}
-			});
-		attributeSetters.put("layoutSetPrototypeUuid",
-			new BiConsumer<LayoutSet, String>() {
-				@Override
-				public void accept(LayoutSet layoutSet,
-					String layoutSetPrototypeUuid) {
-					layoutSet.setLayoutSetPrototypeUuid(layoutSetPrototypeUuid);
-				}
-			});
-		attributeSetters.put("layoutSetPrototypeLinkEnabled",
-			new BiConsumer<LayoutSet, Boolean>() {
-				@Override
-				public void accept(LayoutSet layoutSet,
-					Boolean layoutSetPrototypeLinkEnabled) {
-					layoutSet.setLayoutSetPrototypeLinkEnabled(layoutSetPrototypeLinkEnabled);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

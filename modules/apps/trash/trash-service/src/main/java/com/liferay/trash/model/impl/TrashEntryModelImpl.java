@@ -225,168 +225,43 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 
 	static {
 		Map<String, Function<TrashEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<TrashEntry, Object>>();
+		Map<String, BiConsumer<TrashEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<TrashEntry, Object>>();
 
-		attributeGetters.put("entryId",
-			new Function<TrashEntry, Object>() {
-				@Override
-				public Object apply(TrashEntry trashEntry) {
-					return trashEntry.getEntryId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<TrashEntry, Object>() {
-				@Override
-				public Object apply(TrashEntry trashEntry) {
-					return trashEntry.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<TrashEntry, Object>() {
-				@Override
-				public Object apply(TrashEntry trashEntry) {
-					return trashEntry.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<TrashEntry, Object>() {
-				@Override
-				public Object apply(TrashEntry trashEntry) {
-					return trashEntry.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<TrashEntry, Object>() {
-				@Override
-				public Object apply(TrashEntry trashEntry) {
-					return trashEntry.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<TrashEntry, Object>() {
-				@Override
-				public Object apply(TrashEntry trashEntry) {
-					return trashEntry.getCreateDate();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<TrashEntry, Object>() {
-				@Override
-				public Object apply(TrashEntry trashEntry) {
-					return trashEntry.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<TrashEntry, Object>() {
-				@Override
-				public Object apply(TrashEntry trashEntry) {
-					return trashEntry.getClassPK();
-				}
-			});
-		attributeGetters.put("systemEventSetKey",
-			new Function<TrashEntry, Object>() {
-				@Override
-				public Object apply(TrashEntry trashEntry) {
-					return trashEntry.getSystemEventSetKey();
-				}
-			});
-		attributeGetters.put("typeSettings",
-			new Function<TrashEntry, Object>() {
-				@Override
-				public Object apply(TrashEntry trashEntry) {
-					return trashEntry.getTypeSettings();
-				}
-			});
-		attributeGetters.put("status",
-			new Function<TrashEntry, Object>() {
-				@Override
-				public Object apply(TrashEntry trashEntry) {
-					return trashEntry.getStatus();
-				}
-			});
+		attributeGetters.put("entryId", TrashEntry::getEntryId);
+		attributeSetters.put("entryId", TrashEntry::setEntryId);
+
+		attributeGetters.put("groupId", TrashEntry::getGroupId);
+		attributeSetters.put("groupId", TrashEntry::setGroupId);
+
+		attributeGetters.put("companyId", TrashEntry::getCompanyId);
+		attributeSetters.put("companyId", TrashEntry::setCompanyId);
+
+		attributeGetters.put("userId", TrashEntry::getUserId);
+		attributeSetters.put("userId", TrashEntry::setUserId);
+
+		attributeGetters.put("userName", TrashEntry::getUserName);
+		attributeSetters.put("userName", TrashEntry::setUserName);
+
+		attributeGetters.put("createDate", TrashEntry::getCreateDate);
+		attributeSetters.put("createDate", TrashEntry::setCreateDate);
+
+		attributeGetters.put("classNameId", TrashEntry::getClassNameId);
+		attributeSetters.put("classNameId", TrashEntry::setClassNameId);
+
+		attributeGetters.put("classPK", TrashEntry::getClassPK);
+		attributeSetters.put("classPK", TrashEntry::setClassPK);
+
+		attributeGetters.put("systemEventSetKey", TrashEntry::getSystemEventSetKey);
+		attributeSetters.put("systemEventSetKey", TrashEntry::setSystemEventSetKey);
+
+		attributeGetters.put("typeSettings", TrashEntry::getTypeSettings);
+		attributeSetters.put("typeSettings", TrashEntry::setTypeSettings);
+
+		attributeGetters.put("status", TrashEntry::getStatus);
+		attributeSetters.put("status", TrashEntry::setStatus);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<TrashEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<TrashEntry, ?>>();
-
-		attributeSetters.put("entryId",
-			new BiConsumer<TrashEntry, Long>() {
-				@Override
-				public void accept(TrashEntry trashEntry, Long entryId) {
-					trashEntry.setEntryId(entryId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<TrashEntry, Long>() {
-				@Override
-				public void accept(TrashEntry trashEntry, Long groupId) {
-					trashEntry.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<TrashEntry, Long>() {
-				@Override
-				public void accept(TrashEntry trashEntry, Long companyId) {
-					trashEntry.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<TrashEntry, Long>() {
-				@Override
-				public void accept(TrashEntry trashEntry, Long userId) {
-					trashEntry.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<TrashEntry, String>() {
-				@Override
-				public void accept(TrashEntry trashEntry, String userName) {
-					trashEntry.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<TrashEntry, Date>() {
-				@Override
-				public void accept(TrashEntry trashEntry, Date createDate) {
-					trashEntry.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<TrashEntry, Long>() {
-				@Override
-				public void accept(TrashEntry trashEntry, Long classNameId) {
-					trashEntry.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<TrashEntry, Long>() {
-				@Override
-				public void accept(TrashEntry trashEntry, Long classPK) {
-					trashEntry.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("systemEventSetKey",
-			new BiConsumer<TrashEntry, Long>() {
-				@Override
-				public void accept(TrashEntry trashEntry, Long systemEventSetKey) {
-					trashEntry.setSystemEventSetKey(systemEventSetKey);
-				}
-			});
-		attributeSetters.put("typeSettings",
-			new BiConsumer<TrashEntry, String>() {
-				@Override
-				public void accept(TrashEntry trashEntry, String typeSettings) {
-					trashEntry.setTypeSettings(typeSettings);
-				}
-			});
-		attributeSetters.put("status",
-			new BiConsumer<TrashEntry, Integer>() {
-				@Override
-				public void accept(TrashEntry trashEntry, Integer status) {
-					trashEntry.setStatus(status);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

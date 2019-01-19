@@ -155,98 +155,28 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	static {
 		Map<String, Function<Entry, Object>> attributeGetters = new LinkedHashMap<String, Function<Entry, Object>>();
+		Map<String, BiConsumer<Entry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Entry, Object>>();
 
-		attributeGetters.put("entryId",
-			new Function<Entry, Object>() {
-				@Override
-				public Object apply(Entry entry) {
-					return entry.getEntryId();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<Entry, Object>() {
-				@Override
-				public Object apply(Entry entry) {
-					return entry.getCreateDate();
-				}
-			});
-		attributeGetters.put("fromUserId",
-			new Function<Entry, Object>() {
-				@Override
-				public Object apply(Entry entry) {
-					return entry.getFromUserId();
-				}
-			});
-		attributeGetters.put("toUserId",
-			new Function<Entry, Object>() {
-				@Override
-				public Object apply(Entry entry) {
-					return entry.getToUserId();
-				}
-			});
-		attributeGetters.put("content",
-			new Function<Entry, Object>() {
-				@Override
-				public Object apply(Entry entry) {
-					return entry.getContent();
-				}
-			});
-		attributeGetters.put("flag",
-			new Function<Entry, Object>() {
-				@Override
-				public Object apply(Entry entry) {
-					return entry.getFlag();
-				}
-			});
+		attributeGetters.put("entryId", Entry::getEntryId);
+		attributeSetters.put("entryId", Entry::setEntryId);
+
+		attributeGetters.put("createDate", Entry::getCreateDate);
+		attributeSetters.put("createDate", Entry::setCreateDate);
+
+		attributeGetters.put("fromUserId", Entry::getFromUserId);
+		attributeSetters.put("fromUserId", Entry::setFromUserId);
+
+		attributeGetters.put("toUserId", Entry::getToUserId);
+		attributeSetters.put("toUserId", Entry::setToUserId);
+
+		attributeGetters.put("content", Entry::getContent);
+		attributeSetters.put("content", Entry::setContent);
+
+		attributeGetters.put("flag", Entry::getFlag);
+		attributeSetters.put("flag", Entry::setFlag);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<Entry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Entry, ?>>();
-
-		attributeSetters.put("entryId",
-			new BiConsumer<Entry, Long>() {
-				@Override
-				public void accept(Entry entry, Long entryId) {
-					entry.setEntryId(entryId);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<Entry, Long>() {
-				@Override
-				public void accept(Entry entry, Long createDate) {
-					entry.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("fromUserId",
-			new BiConsumer<Entry, Long>() {
-				@Override
-				public void accept(Entry entry, Long fromUserId) {
-					entry.setFromUserId(fromUserId);
-				}
-			});
-		attributeSetters.put("toUserId",
-			new BiConsumer<Entry, Long>() {
-				@Override
-				public void accept(Entry entry, Long toUserId) {
-					entry.setToUserId(toUserId);
-				}
-			});
-		attributeSetters.put("content",
-			new BiConsumer<Entry, String>() {
-				@Override
-				public void accept(Entry entry, String content) {
-					entry.setContent(content);
-				}
-			});
-		attributeSetters.put("flag",
-			new BiConsumer<Entry, Integer>() {
-				@Override
-				public void accept(Entry entry, Integer flag) {
-					entry.setFlag(flag);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

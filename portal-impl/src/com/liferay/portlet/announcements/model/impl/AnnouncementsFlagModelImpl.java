@@ -208,104 +208,28 @@ public class AnnouncementsFlagModelImpl extends BaseModelImpl<AnnouncementsFlag>
 
 	static {
 		Map<String, Function<AnnouncementsFlag, Object>> attributeGetters = new LinkedHashMap<String, Function<AnnouncementsFlag, Object>>();
+		Map<String, BiConsumer<AnnouncementsFlag, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<AnnouncementsFlag, Object>>();
 
-		attributeGetters.put("flagId",
-			new Function<AnnouncementsFlag, Object>() {
-				@Override
-				public Object apply(AnnouncementsFlag announcementsFlag) {
-					return announcementsFlag.getFlagId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<AnnouncementsFlag, Object>() {
-				@Override
-				public Object apply(AnnouncementsFlag announcementsFlag) {
-					return announcementsFlag.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<AnnouncementsFlag, Object>() {
-				@Override
-				public Object apply(AnnouncementsFlag announcementsFlag) {
-					return announcementsFlag.getUserId();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<AnnouncementsFlag, Object>() {
-				@Override
-				public Object apply(AnnouncementsFlag announcementsFlag) {
-					return announcementsFlag.getCreateDate();
-				}
-			});
-		attributeGetters.put("entryId",
-			new Function<AnnouncementsFlag, Object>() {
-				@Override
-				public Object apply(AnnouncementsFlag announcementsFlag) {
-					return announcementsFlag.getEntryId();
-				}
-			});
-		attributeGetters.put("value",
-			new Function<AnnouncementsFlag, Object>() {
-				@Override
-				public Object apply(AnnouncementsFlag announcementsFlag) {
-					return announcementsFlag.getValue();
-				}
-			});
+		attributeGetters.put("flagId", AnnouncementsFlag::getFlagId);
+		attributeSetters.put("flagId", AnnouncementsFlag::setFlagId);
+
+		attributeGetters.put("companyId", AnnouncementsFlag::getCompanyId);
+		attributeSetters.put("companyId", AnnouncementsFlag::setCompanyId);
+
+		attributeGetters.put("userId", AnnouncementsFlag::getUserId);
+		attributeSetters.put("userId", AnnouncementsFlag::setUserId);
+
+		attributeGetters.put("createDate", AnnouncementsFlag::getCreateDate);
+		attributeSetters.put("createDate", AnnouncementsFlag::setCreateDate);
+
+		attributeGetters.put("entryId", AnnouncementsFlag::getEntryId);
+		attributeSetters.put("entryId", AnnouncementsFlag::setEntryId);
+
+		attributeGetters.put("value", AnnouncementsFlag::getValue);
+		attributeSetters.put("value", AnnouncementsFlag::setValue);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<AnnouncementsFlag, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<AnnouncementsFlag, ?>>();
-
-		attributeSetters.put("flagId",
-			new BiConsumer<AnnouncementsFlag, Long>() {
-				@Override
-				public void accept(AnnouncementsFlag announcementsFlag,
-					Long flagId) {
-					announcementsFlag.setFlagId(flagId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<AnnouncementsFlag, Long>() {
-				@Override
-				public void accept(AnnouncementsFlag announcementsFlag,
-					Long companyId) {
-					announcementsFlag.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<AnnouncementsFlag, Long>() {
-				@Override
-				public void accept(AnnouncementsFlag announcementsFlag,
-					Long userId) {
-					announcementsFlag.setUserId(userId);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<AnnouncementsFlag, Date>() {
-				@Override
-				public void accept(AnnouncementsFlag announcementsFlag,
-					Date createDate) {
-					announcementsFlag.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("entryId",
-			new BiConsumer<AnnouncementsFlag, Long>() {
-				@Override
-				public void accept(AnnouncementsFlag announcementsFlag,
-					Long entryId) {
-					announcementsFlag.setEntryId(entryId);
-				}
-			});
-		attributeSetters.put("value",
-			new BiConsumer<AnnouncementsFlag, Integer>() {
-				@Override
-				public void accept(AnnouncementsFlag announcementsFlag,
-					Integer value) {
-					announcementsFlag.setValue(value);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

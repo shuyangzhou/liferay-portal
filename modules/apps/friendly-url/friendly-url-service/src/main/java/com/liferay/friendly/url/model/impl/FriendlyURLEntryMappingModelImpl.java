@@ -152,99 +152,26 @@ public class FriendlyURLEntryMappingModelImpl extends BaseModelImpl<FriendlyURLE
 
 	static {
 		Map<String, Function<FriendlyURLEntryMapping, Object>> attributeGetters = new LinkedHashMap<String, Function<FriendlyURLEntryMapping, Object>>();
+		Map<String, BiConsumer<FriendlyURLEntryMapping, Object>> attributeSetters =
+			new LinkedHashMap<String, BiConsumer<FriendlyURLEntryMapping, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<FriendlyURLEntryMapping, Object>() {
-				@Override
-				public Object apply(
-					FriendlyURLEntryMapping friendlyURLEntryMapping) {
-					return friendlyURLEntryMapping.getMvccVersion();
-				}
-			});
-		attributeGetters.put("friendlyURLEntryMappingId",
-			new Function<FriendlyURLEntryMapping, Object>() {
-				@Override
-				public Object apply(
-					FriendlyURLEntryMapping friendlyURLEntryMapping) {
-					return friendlyURLEntryMapping.getFriendlyURLEntryMappingId();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<FriendlyURLEntryMapping, Object>() {
-				@Override
-				public Object apply(
-					FriendlyURLEntryMapping friendlyURLEntryMapping) {
-					return friendlyURLEntryMapping.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<FriendlyURLEntryMapping, Object>() {
-				@Override
-				public Object apply(
-					FriendlyURLEntryMapping friendlyURLEntryMapping) {
-					return friendlyURLEntryMapping.getClassPK();
-				}
-			});
-		attributeGetters.put("friendlyURLEntryId",
-			new Function<FriendlyURLEntryMapping, Object>() {
-				@Override
-				public Object apply(
-					FriendlyURLEntryMapping friendlyURLEntryMapping) {
-					return friendlyURLEntryMapping.getFriendlyURLEntryId();
-				}
-			});
+		attributeGetters.put("mvccVersion", FriendlyURLEntryMapping::getMvccVersion);
+		attributeSetters.put("mvccVersion", FriendlyURLEntryMapping::setMvccVersion);
+
+		attributeGetters.put("friendlyURLEntryMappingId", FriendlyURLEntryMapping::getFriendlyURLEntryMappingId);
+		attributeSetters.put("friendlyURLEntryMappingId", FriendlyURLEntryMapping::setFriendlyURLEntryMappingId);
+
+		attributeGetters.put("classNameId", FriendlyURLEntryMapping::getClassNameId);
+		attributeSetters.put("classNameId", FriendlyURLEntryMapping::setClassNameId);
+
+		attributeGetters.put("classPK", FriendlyURLEntryMapping::getClassPK);
+		attributeSetters.put("classPK", FriendlyURLEntryMapping::setClassPK);
+
+		attributeGetters.put("friendlyURLEntryId", FriendlyURLEntryMapping::getFriendlyURLEntryId);
+		attributeSetters.put("friendlyURLEntryId", FriendlyURLEntryMapping::setFriendlyURLEntryId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<FriendlyURLEntryMapping, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<FriendlyURLEntryMapping, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<FriendlyURLEntryMapping, Long>() {
-				@Override
-				public void accept(
-					FriendlyURLEntryMapping friendlyURLEntryMapping,
-					Long mvccVersion) {
-					friendlyURLEntryMapping.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("friendlyURLEntryMappingId",
-			new BiConsumer<FriendlyURLEntryMapping, Long>() {
-				@Override
-				public void accept(
-					FriendlyURLEntryMapping friendlyURLEntryMapping,
-					Long friendlyURLEntryMappingId) {
-					friendlyURLEntryMapping.setFriendlyURLEntryMappingId(friendlyURLEntryMappingId);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<FriendlyURLEntryMapping, Long>() {
-				@Override
-				public void accept(
-					FriendlyURLEntryMapping friendlyURLEntryMapping,
-					Long classNameId) {
-					friendlyURLEntryMapping.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<FriendlyURLEntryMapping, Long>() {
-				@Override
-				public void accept(
-					FriendlyURLEntryMapping friendlyURLEntryMapping,
-					Long classPK) {
-					friendlyURLEntryMapping.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("friendlyURLEntryId",
-			new BiConsumer<FriendlyURLEntryMapping, Long>() {
-				@Override
-				public void accept(
-					FriendlyURLEntryMapping friendlyURLEntryMapping,
-					Long friendlyURLEntryId) {
-					friendlyURLEntryMapping.setFriendlyURLEntryId(friendlyURLEntryId);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

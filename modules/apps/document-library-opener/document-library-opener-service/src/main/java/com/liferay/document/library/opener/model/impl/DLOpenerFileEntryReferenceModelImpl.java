@@ -164,184 +164,41 @@ public class DLOpenerFileEntryReferenceModelImpl extends BaseModelImpl<DLOpenerF
 	static {
 		Map<String, Function<DLOpenerFileEntryReference, Object>> attributeGetters =
 			new LinkedHashMap<String, Function<DLOpenerFileEntryReference, Object>>();
+		Map<String, BiConsumer<DLOpenerFileEntryReference, Object>> attributeSetters =
+			new LinkedHashMap<String, BiConsumer<DLOpenerFileEntryReference, Object>>();
 
-		attributeGetters.put("dlOpenerFileEntryReferenceId",
-			new Function<DLOpenerFileEntryReference, Object>() {
-				@Override
-				public Object apply(
-					DLOpenerFileEntryReference dlOpenerFileEntryReference) {
-					return dlOpenerFileEntryReference.getDlOpenerFileEntryReferenceId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<DLOpenerFileEntryReference, Object>() {
-				@Override
-				public Object apply(
-					DLOpenerFileEntryReference dlOpenerFileEntryReference) {
-					return dlOpenerFileEntryReference.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<DLOpenerFileEntryReference, Object>() {
-				@Override
-				public Object apply(
-					DLOpenerFileEntryReference dlOpenerFileEntryReference) {
-					return dlOpenerFileEntryReference.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<DLOpenerFileEntryReference, Object>() {
-				@Override
-				public Object apply(
-					DLOpenerFileEntryReference dlOpenerFileEntryReference) {
-					return dlOpenerFileEntryReference.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<DLOpenerFileEntryReference, Object>() {
-				@Override
-				public Object apply(
-					DLOpenerFileEntryReference dlOpenerFileEntryReference) {
-					return dlOpenerFileEntryReference.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<DLOpenerFileEntryReference, Object>() {
-				@Override
-				public Object apply(
-					DLOpenerFileEntryReference dlOpenerFileEntryReference) {
-					return dlOpenerFileEntryReference.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<DLOpenerFileEntryReference, Object>() {
-				@Override
-				public Object apply(
-					DLOpenerFileEntryReference dlOpenerFileEntryReference) {
-					return dlOpenerFileEntryReference.getModifiedDate();
-				}
-			});
-		attributeGetters.put("referenceKey",
-			new Function<DLOpenerFileEntryReference, Object>() {
-				@Override
-				public Object apply(
-					DLOpenerFileEntryReference dlOpenerFileEntryReference) {
-					return dlOpenerFileEntryReference.getReferenceKey();
-				}
-			});
-		attributeGetters.put("fileEntryId",
-			new Function<DLOpenerFileEntryReference, Object>() {
-				@Override
-				public Object apply(
-					DLOpenerFileEntryReference dlOpenerFileEntryReference) {
-					return dlOpenerFileEntryReference.getFileEntryId();
-				}
-			});
-		attributeGetters.put("type",
-			new Function<DLOpenerFileEntryReference, Object>() {
-				@Override
-				public Object apply(
-					DLOpenerFileEntryReference dlOpenerFileEntryReference) {
-					return dlOpenerFileEntryReference.getType();
-				}
-			});
+		attributeGetters.put("dlOpenerFileEntryReferenceId", DLOpenerFileEntryReference::getDlOpenerFileEntryReferenceId);
+		attributeSetters.put("dlOpenerFileEntryReferenceId", DLOpenerFileEntryReference::setDlOpenerFileEntryReferenceId);
+
+		attributeGetters.put("groupId", DLOpenerFileEntryReference::getGroupId);
+		attributeSetters.put("groupId", DLOpenerFileEntryReference::setGroupId);
+
+		attributeGetters.put("companyId", DLOpenerFileEntryReference::getCompanyId);
+		attributeSetters.put("companyId", DLOpenerFileEntryReference::setCompanyId);
+
+		attributeGetters.put("userId", DLOpenerFileEntryReference::getUserId);
+		attributeSetters.put("userId", DLOpenerFileEntryReference::setUserId);
+
+		attributeGetters.put("userName", DLOpenerFileEntryReference::getUserName);
+		attributeSetters.put("userName", DLOpenerFileEntryReference::setUserName);
+
+		attributeGetters.put("createDate", DLOpenerFileEntryReference::getCreateDate);
+		attributeSetters.put("createDate", DLOpenerFileEntryReference::setCreateDate);
+
+		attributeGetters.put("modifiedDate", DLOpenerFileEntryReference::getModifiedDate);
+		attributeSetters.put("modifiedDate", DLOpenerFileEntryReference::setModifiedDate);
+
+		attributeGetters.put("referenceKey", DLOpenerFileEntryReference::getReferenceKey);
+		attributeSetters.put("referenceKey", DLOpenerFileEntryReference::setReferenceKey);
+
+		attributeGetters.put("fileEntryId", DLOpenerFileEntryReference::getFileEntryId);
+		attributeSetters.put("fileEntryId", DLOpenerFileEntryReference::setFileEntryId);
+
+		attributeGetters.put("type", DLOpenerFileEntryReference::getType);
+		attributeSetters.put("type", DLOpenerFileEntryReference::setType);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<DLOpenerFileEntryReference, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DLOpenerFileEntryReference, ?>>();
-
-		attributeSetters.put("dlOpenerFileEntryReferenceId",
-			new BiConsumer<DLOpenerFileEntryReference, Long>() {
-				@Override
-				public void accept(
-					DLOpenerFileEntryReference dlOpenerFileEntryReference,
-					Long dlOpenerFileEntryReferenceId) {
-					dlOpenerFileEntryReference.setDlOpenerFileEntryReferenceId(dlOpenerFileEntryReferenceId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<DLOpenerFileEntryReference, Long>() {
-				@Override
-				public void accept(
-					DLOpenerFileEntryReference dlOpenerFileEntryReference,
-					Long groupId) {
-					dlOpenerFileEntryReference.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<DLOpenerFileEntryReference, Long>() {
-				@Override
-				public void accept(
-					DLOpenerFileEntryReference dlOpenerFileEntryReference,
-					Long companyId) {
-					dlOpenerFileEntryReference.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<DLOpenerFileEntryReference, Long>() {
-				@Override
-				public void accept(
-					DLOpenerFileEntryReference dlOpenerFileEntryReference,
-					Long userId) {
-					dlOpenerFileEntryReference.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<DLOpenerFileEntryReference, String>() {
-				@Override
-				public void accept(
-					DLOpenerFileEntryReference dlOpenerFileEntryReference,
-					String userName) {
-					dlOpenerFileEntryReference.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<DLOpenerFileEntryReference, Date>() {
-				@Override
-				public void accept(
-					DLOpenerFileEntryReference dlOpenerFileEntryReference,
-					Date createDate) {
-					dlOpenerFileEntryReference.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<DLOpenerFileEntryReference, Date>() {
-				@Override
-				public void accept(
-					DLOpenerFileEntryReference dlOpenerFileEntryReference,
-					Date modifiedDate) {
-					dlOpenerFileEntryReference.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("referenceKey",
-			new BiConsumer<DLOpenerFileEntryReference, String>() {
-				@Override
-				public void accept(
-					DLOpenerFileEntryReference dlOpenerFileEntryReference,
-					String referenceKey) {
-					dlOpenerFileEntryReference.setReferenceKey(referenceKey);
-				}
-			});
-		attributeSetters.put("fileEntryId",
-			new BiConsumer<DLOpenerFileEntryReference, Long>() {
-				@Override
-				public void accept(
-					DLOpenerFileEntryReference dlOpenerFileEntryReference,
-					Long fileEntryId) {
-					dlOpenerFileEntryReference.setFileEntryId(fileEntryId);
-				}
-			});
-		attributeSetters.put("type",
-			new BiConsumer<DLOpenerFileEntryReference, Integer>() {
-				@Override
-				public void accept(
-					DLOpenerFileEntryReference dlOpenerFileEntryReference,
-					Integer type) {
-					dlOpenerFileEntryReference.setType(type);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

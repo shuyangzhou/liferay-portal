@@ -156,114 +156,31 @@ public class RatingsStatsModelImpl extends BaseModelImpl<RatingsStats>
 
 	static {
 		Map<String, Function<RatingsStats, Object>> attributeGetters = new LinkedHashMap<String, Function<RatingsStats, Object>>();
+		Map<String, BiConsumer<RatingsStats, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<RatingsStats, Object>>();
 
-		attributeGetters.put("statsId",
-			new Function<RatingsStats, Object>() {
-				@Override
-				public Object apply(RatingsStats ratingsStats) {
-					return ratingsStats.getStatsId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<RatingsStats, Object>() {
-				@Override
-				public Object apply(RatingsStats ratingsStats) {
-					return ratingsStats.getCompanyId();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<RatingsStats, Object>() {
-				@Override
-				public Object apply(RatingsStats ratingsStats) {
-					return ratingsStats.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<RatingsStats, Object>() {
-				@Override
-				public Object apply(RatingsStats ratingsStats) {
-					return ratingsStats.getClassPK();
-				}
-			});
-		attributeGetters.put("totalEntries",
-			new Function<RatingsStats, Object>() {
-				@Override
-				public Object apply(RatingsStats ratingsStats) {
-					return ratingsStats.getTotalEntries();
-				}
-			});
-		attributeGetters.put("totalScore",
-			new Function<RatingsStats, Object>() {
-				@Override
-				public Object apply(RatingsStats ratingsStats) {
-					return ratingsStats.getTotalScore();
-				}
-			});
-		attributeGetters.put("averageScore",
-			new Function<RatingsStats, Object>() {
-				@Override
-				public Object apply(RatingsStats ratingsStats) {
-					return ratingsStats.getAverageScore();
-				}
-			});
+		attributeGetters.put("statsId", RatingsStats::getStatsId);
+		attributeSetters.put("statsId", RatingsStats::setStatsId);
+
+		attributeGetters.put("companyId", RatingsStats::getCompanyId);
+		attributeSetters.put("companyId", RatingsStats::setCompanyId);
+
+		attributeGetters.put("classNameId", RatingsStats::getClassNameId);
+		attributeSetters.put("classNameId", RatingsStats::setClassNameId);
+
+		attributeGetters.put("classPK", RatingsStats::getClassPK);
+		attributeSetters.put("classPK", RatingsStats::setClassPK);
+
+		attributeGetters.put("totalEntries", RatingsStats::getTotalEntries);
+		attributeSetters.put("totalEntries", RatingsStats::setTotalEntries);
+
+		attributeGetters.put("totalScore", RatingsStats::getTotalScore);
+		attributeSetters.put("totalScore", RatingsStats::setTotalScore);
+
+		attributeGetters.put("averageScore", RatingsStats::getAverageScore);
+		attributeSetters.put("averageScore", RatingsStats::setAverageScore);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<RatingsStats, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<RatingsStats, ?>>();
-
-		attributeSetters.put("statsId",
-			new BiConsumer<RatingsStats, Long>() {
-				@Override
-				public void accept(RatingsStats ratingsStats, Long statsId) {
-					ratingsStats.setStatsId(statsId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<RatingsStats, Long>() {
-				@Override
-				public void accept(RatingsStats ratingsStats, Long companyId) {
-					ratingsStats.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<RatingsStats, Long>() {
-				@Override
-				public void accept(RatingsStats ratingsStats, Long classNameId) {
-					ratingsStats.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<RatingsStats, Long>() {
-				@Override
-				public void accept(RatingsStats ratingsStats, Long classPK) {
-					ratingsStats.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("totalEntries",
-			new BiConsumer<RatingsStats, Integer>() {
-				@Override
-				public void accept(RatingsStats ratingsStats,
-					Integer totalEntries) {
-					ratingsStats.setTotalEntries(totalEntries);
-				}
-			});
-		attributeSetters.put("totalScore",
-			new BiConsumer<RatingsStats, Double>() {
-				@Override
-				public void accept(RatingsStats ratingsStats, Double totalScore) {
-					ratingsStats.setTotalScore(totalScore);
-				}
-			});
-		attributeSetters.put("averageScore",
-			new BiConsumer<RatingsStats, Double>() {
-				@Override
-				public void accept(RatingsStats ratingsStats,
-					Double averageScore) {
-					ratingsStats.setAverageScore(averageScore);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

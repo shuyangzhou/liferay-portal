@@ -175,210 +175,52 @@ public class OAuthTokenModelImpl extends BaseModelImpl<OAuthToken>
 
 	static {
 		Map<String, Function<OAuthToken, Object>> attributeGetters = new LinkedHashMap<String, Function<OAuthToken, Object>>();
+		Map<String, BiConsumer<OAuthToken, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<OAuthToken, Object>>();
 
-		attributeGetters.put("oAuthTokenId",
-			new Function<OAuthToken, Object>() {
-				@Override
-				public Object apply(OAuthToken oAuthToken) {
-					return oAuthToken.getOAuthTokenId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<OAuthToken, Object>() {
-				@Override
-				public Object apply(OAuthToken oAuthToken) {
-					return oAuthToken.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<OAuthToken, Object>() {
-				@Override
-				public Object apply(OAuthToken oAuthToken) {
-					return oAuthToken.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<OAuthToken, Object>() {
-				@Override
-				public Object apply(OAuthToken oAuthToken) {
-					return oAuthToken.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<OAuthToken, Object>() {
-				@Override
-				public Object apply(OAuthToken oAuthToken) {
-					return oAuthToken.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<OAuthToken, Object>() {
-				@Override
-				public Object apply(OAuthToken oAuthToken) {
-					return oAuthToken.getModifiedDate();
-				}
-			});
-		attributeGetters.put("gadgetKey",
-			new Function<OAuthToken, Object>() {
-				@Override
-				public Object apply(OAuthToken oAuthToken) {
-					return oAuthToken.getGadgetKey();
-				}
-			});
-		attributeGetters.put("serviceName",
-			new Function<OAuthToken, Object>() {
-				@Override
-				public Object apply(OAuthToken oAuthToken) {
-					return oAuthToken.getServiceName();
-				}
-			});
-		attributeGetters.put("moduleId",
-			new Function<OAuthToken, Object>() {
-				@Override
-				public Object apply(OAuthToken oAuthToken) {
-					return oAuthToken.getModuleId();
-				}
-			});
-		attributeGetters.put("accessToken",
-			new Function<OAuthToken, Object>() {
-				@Override
-				public Object apply(OAuthToken oAuthToken) {
-					return oAuthToken.getAccessToken();
-				}
-			});
-		attributeGetters.put("tokenName",
-			new Function<OAuthToken, Object>() {
-				@Override
-				public Object apply(OAuthToken oAuthToken) {
-					return oAuthToken.getTokenName();
-				}
-			});
-		attributeGetters.put("tokenSecret",
-			new Function<OAuthToken, Object>() {
-				@Override
-				public Object apply(OAuthToken oAuthToken) {
-					return oAuthToken.getTokenSecret();
-				}
-			});
-		attributeGetters.put("sessionHandle",
-			new Function<OAuthToken, Object>() {
-				@Override
-				public Object apply(OAuthToken oAuthToken) {
-					return oAuthToken.getSessionHandle();
-				}
-			});
-		attributeGetters.put("expiration",
-			new Function<OAuthToken, Object>() {
-				@Override
-				public Object apply(OAuthToken oAuthToken) {
-					return oAuthToken.getExpiration();
-				}
-			});
+		attributeGetters.put("oAuthTokenId", OAuthToken::getOAuthTokenId);
+		attributeSetters.put("oAuthTokenId", OAuthToken::setOAuthTokenId);
+
+		attributeGetters.put("companyId", OAuthToken::getCompanyId);
+		attributeSetters.put("companyId", OAuthToken::setCompanyId);
+
+		attributeGetters.put("userId", OAuthToken::getUserId);
+		attributeSetters.put("userId", OAuthToken::setUserId);
+
+		attributeGetters.put("userName", OAuthToken::getUserName);
+		attributeSetters.put("userName", OAuthToken::setUserName);
+
+		attributeGetters.put("createDate", OAuthToken::getCreateDate);
+		attributeSetters.put("createDate", OAuthToken::setCreateDate);
+
+		attributeGetters.put("modifiedDate", OAuthToken::getModifiedDate);
+		attributeSetters.put("modifiedDate", OAuthToken::setModifiedDate);
+
+		attributeGetters.put("gadgetKey", OAuthToken::getGadgetKey);
+		attributeSetters.put("gadgetKey", OAuthToken::setGadgetKey);
+
+		attributeGetters.put("serviceName", OAuthToken::getServiceName);
+		attributeSetters.put("serviceName", OAuthToken::setServiceName);
+
+		attributeGetters.put("moduleId", OAuthToken::getModuleId);
+		attributeSetters.put("moduleId", OAuthToken::setModuleId);
+
+		attributeGetters.put("accessToken", OAuthToken::getAccessToken);
+		attributeSetters.put("accessToken", OAuthToken::setAccessToken);
+
+		attributeGetters.put("tokenName", OAuthToken::getTokenName);
+		attributeSetters.put("tokenName", OAuthToken::setTokenName);
+
+		attributeGetters.put("tokenSecret", OAuthToken::getTokenSecret);
+		attributeSetters.put("tokenSecret", OAuthToken::setTokenSecret);
+
+		attributeGetters.put("sessionHandle", OAuthToken::getSessionHandle);
+		attributeSetters.put("sessionHandle", OAuthToken::setSessionHandle);
+
+		attributeGetters.put("expiration", OAuthToken::getExpiration);
+		attributeSetters.put("expiration", OAuthToken::setExpiration);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<OAuthToken, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<OAuthToken, ?>>();
-
-		attributeSetters.put("oAuthTokenId",
-			new BiConsumer<OAuthToken, Long>() {
-				@Override
-				public void accept(OAuthToken oAuthToken, Long oAuthTokenId) {
-					oAuthToken.setOAuthTokenId(oAuthTokenId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<OAuthToken, Long>() {
-				@Override
-				public void accept(OAuthToken oAuthToken, Long companyId) {
-					oAuthToken.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<OAuthToken, Long>() {
-				@Override
-				public void accept(OAuthToken oAuthToken, Long userId) {
-					oAuthToken.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<OAuthToken, String>() {
-				@Override
-				public void accept(OAuthToken oAuthToken, String userName) {
-					oAuthToken.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<OAuthToken, Date>() {
-				@Override
-				public void accept(OAuthToken oAuthToken, Date createDate) {
-					oAuthToken.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<OAuthToken, Date>() {
-				@Override
-				public void accept(OAuthToken oAuthToken, Date modifiedDate) {
-					oAuthToken.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("gadgetKey",
-			new BiConsumer<OAuthToken, String>() {
-				@Override
-				public void accept(OAuthToken oAuthToken, String gadgetKey) {
-					oAuthToken.setGadgetKey(gadgetKey);
-				}
-			});
-		attributeSetters.put("serviceName",
-			new BiConsumer<OAuthToken, String>() {
-				@Override
-				public void accept(OAuthToken oAuthToken, String serviceName) {
-					oAuthToken.setServiceName(serviceName);
-				}
-			});
-		attributeSetters.put("moduleId",
-			new BiConsumer<OAuthToken, Long>() {
-				@Override
-				public void accept(OAuthToken oAuthToken, Long moduleId) {
-					oAuthToken.setModuleId(moduleId);
-				}
-			});
-		attributeSetters.put("accessToken",
-			new BiConsumer<OAuthToken, String>() {
-				@Override
-				public void accept(OAuthToken oAuthToken, String accessToken) {
-					oAuthToken.setAccessToken(accessToken);
-				}
-			});
-		attributeSetters.put("tokenName",
-			new BiConsumer<OAuthToken, String>() {
-				@Override
-				public void accept(OAuthToken oAuthToken, String tokenName) {
-					oAuthToken.setTokenName(tokenName);
-				}
-			});
-		attributeSetters.put("tokenSecret",
-			new BiConsumer<OAuthToken, String>() {
-				@Override
-				public void accept(OAuthToken oAuthToken, String tokenSecret) {
-					oAuthToken.setTokenSecret(tokenSecret);
-				}
-			});
-		attributeSetters.put("sessionHandle",
-			new BiConsumer<OAuthToken, String>() {
-				@Override
-				public void accept(OAuthToken oAuthToken, String sessionHandle) {
-					oAuthToken.setSessionHandle(sessionHandle);
-				}
-			});
-		attributeSetters.put("expiration",
-			new BiConsumer<OAuthToken, Long>() {
-				@Override
-				public void accept(OAuthToken oAuthToken, Long expiration) {
-					oAuthToken.setExpiration(expiration);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

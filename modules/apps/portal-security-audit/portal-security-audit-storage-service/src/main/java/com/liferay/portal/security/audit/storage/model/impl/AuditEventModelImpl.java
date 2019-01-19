@@ -231,224 +231,55 @@ public class AuditEventModelImpl extends BaseModelImpl<AuditEvent>
 
 	static {
 		Map<String, Function<AuditEvent, Object>> attributeGetters = new LinkedHashMap<String, Function<AuditEvent, Object>>();
+		Map<String, BiConsumer<AuditEvent, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<AuditEvent, Object>>();
 
-		attributeGetters.put("auditEventId",
-			new Function<AuditEvent, Object>() {
-				@Override
-				public Object apply(AuditEvent auditEvent) {
-					return auditEvent.getAuditEventId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<AuditEvent, Object>() {
-				@Override
-				public Object apply(AuditEvent auditEvent) {
-					return auditEvent.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<AuditEvent, Object>() {
-				@Override
-				public Object apply(AuditEvent auditEvent) {
-					return auditEvent.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<AuditEvent, Object>() {
-				@Override
-				public Object apply(AuditEvent auditEvent) {
-					return auditEvent.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<AuditEvent, Object>() {
-				@Override
-				public Object apply(AuditEvent auditEvent) {
-					return auditEvent.getCreateDate();
-				}
-			});
-		attributeGetters.put("eventType",
-			new Function<AuditEvent, Object>() {
-				@Override
-				public Object apply(AuditEvent auditEvent) {
-					return auditEvent.getEventType();
-				}
-			});
-		attributeGetters.put("className",
-			new Function<AuditEvent, Object>() {
-				@Override
-				public Object apply(AuditEvent auditEvent) {
-					return auditEvent.getClassName();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<AuditEvent, Object>() {
-				@Override
-				public Object apply(AuditEvent auditEvent) {
-					return auditEvent.getClassPK();
-				}
-			});
-		attributeGetters.put("message",
-			new Function<AuditEvent, Object>() {
-				@Override
-				public Object apply(AuditEvent auditEvent) {
-					return auditEvent.getMessage();
-				}
-			});
-		attributeGetters.put("clientHost",
-			new Function<AuditEvent, Object>() {
-				@Override
-				public Object apply(AuditEvent auditEvent) {
-					return auditEvent.getClientHost();
-				}
-			});
-		attributeGetters.put("clientIP",
-			new Function<AuditEvent, Object>() {
-				@Override
-				public Object apply(AuditEvent auditEvent) {
-					return auditEvent.getClientIP();
-				}
-			});
-		attributeGetters.put("serverName",
-			new Function<AuditEvent, Object>() {
-				@Override
-				public Object apply(AuditEvent auditEvent) {
-					return auditEvent.getServerName();
-				}
-			});
-		attributeGetters.put("serverPort",
-			new Function<AuditEvent, Object>() {
-				@Override
-				public Object apply(AuditEvent auditEvent) {
-					return auditEvent.getServerPort();
-				}
-			});
-		attributeGetters.put("sessionID",
-			new Function<AuditEvent, Object>() {
-				@Override
-				public Object apply(AuditEvent auditEvent) {
-					return auditEvent.getSessionID();
-				}
-			});
-		attributeGetters.put("additionalInfo",
-			new Function<AuditEvent, Object>() {
-				@Override
-				public Object apply(AuditEvent auditEvent) {
-					return auditEvent.getAdditionalInfo();
-				}
-			});
+		attributeGetters.put("auditEventId", AuditEvent::getAuditEventId);
+		attributeSetters.put("auditEventId", AuditEvent::setAuditEventId);
+
+		attributeGetters.put("companyId", AuditEvent::getCompanyId);
+		attributeSetters.put("companyId", AuditEvent::setCompanyId);
+
+		attributeGetters.put("userId", AuditEvent::getUserId);
+		attributeSetters.put("userId", AuditEvent::setUserId);
+
+		attributeGetters.put("userName", AuditEvent::getUserName);
+		attributeSetters.put("userName", AuditEvent::setUserName);
+
+		attributeGetters.put("createDate", AuditEvent::getCreateDate);
+		attributeSetters.put("createDate", AuditEvent::setCreateDate);
+
+		attributeGetters.put("eventType", AuditEvent::getEventType);
+		attributeSetters.put("eventType", AuditEvent::setEventType);
+
+		attributeGetters.put("className", AuditEvent::getClassName);
+		attributeSetters.put("className", AuditEvent::setClassName);
+
+		attributeGetters.put("classPK", AuditEvent::getClassPK);
+		attributeSetters.put("classPK", AuditEvent::setClassPK);
+
+		attributeGetters.put("message", AuditEvent::getMessage);
+		attributeSetters.put("message", AuditEvent::setMessage);
+
+		attributeGetters.put("clientHost", AuditEvent::getClientHost);
+		attributeSetters.put("clientHost", AuditEvent::setClientHost);
+
+		attributeGetters.put("clientIP", AuditEvent::getClientIP);
+		attributeSetters.put("clientIP", AuditEvent::setClientIP);
+
+		attributeGetters.put("serverName", AuditEvent::getServerName);
+		attributeSetters.put("serverName", AuditEvent::setServerName);
+
+		attributeGetters.put("serverPort", AuditEvent::getServerPort);
+		attributeSetters.put("serverPort", AuditEvent::setServerPort);
+
+		attributeGetters.put("sessionID", AuditEvent::getSessionID);
+		attributeSetters.put("sessionID", AuditEvent::setSessionID);
+
+		attributeGetters.put("additionalInfo", AuditEvent::getAdditionalInfo);
+		attributeSetters.put("additionalInfo", AuditEvent::setAdditionalInfo);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<AuditEvent, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<AuditEvent, ?>>();
-
-		attributeSetters.put("auditEventId",
-			new BiConsumer<AuditEvent, Long>() {
-				@Override
-				public void accept(AuditEvent auditEvent, Long auditEventId) {
-					auditEvent.setAuditEventId(auditEventId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<AuditEvent, Long>() {
-				@Override
-				public void accept(AuditEvent auditEvent, Long companyId) {
-					auditEvent.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<AuditEvent, Long>() {
-				@Override
-				public void accept(AuditEvent auditEvent, Long userId) {
-					auditEvent.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<AuditEvent, String>() {
-				@Override
-				public void accept(AuditEvent auditEvent, String userName) {
-					auditEvent.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<AuditEvent, Date>() {
-				@Override
-				public void accept(AuditEvent auditEvent, Date createDate) {
-					auditEvent.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("eventType",
-			new BiConsumer<AuditEvent, String>() {
-				@Override
-				public void accept(AuditEvent auditEvent, String eventType) {
-					auditEvent.setEventType(eventType);
-				}
-			});
-		attributeSetters.put("className",
-			new BiConsumer<AuditEvent, String>() {
-				@Override
-				public void accept(AuditEvent auditEvent, String className) {
-					auditEvent.setClassName(className);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<AuditEvent, String>() {
-				@Override
-				public void accept(AuditEvent auditEvent, String classPK) {
-					auditEvent.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("message",
-			new BiConsumer<AuditEvent, String>() {
-				@Override
-				public void accept(AuditEvent auditEvent, String message) {
-					auditEvent.setMessage(message);
-				}
-			});
-		attributeSetters.put("clientHost",
-			new BiConsumer<AuditEvent, String>() {
-				@Override
-				public void accept(AuditEvent auditEvent, String clientHost) {
-					auditEvent.setClientHost(clientHost);
-				}
-			});
-		attributeSetters.put("clientIP",
-			new BiConsumer<AuditEvent, String>() {
-				@Override
-				public void accept(AuditEvent auditEvent, String clientIP) {
-					auditEvent.setClientIP(clientIP);
-				}
-			});
-		attributeSetters.put("serverName",
-			new BiConsumer<AuditEvent, String>() {
-				@Override
-				public void accept(AuditEvent auditEvent, String serverName) {
-					auditEvent.setServerName(serverName);
-				}
-			});
-		attributeSetters.put("serverPort",
-			new BiConsumer<AuditEvent, Integer>() {
-				@Override
-				public void accept(AuditEvent auditEvent, Integer serverPort) {
-					auditEvent.setServerPort(serverPort);
-				}
-			});
-		attributeSetters.put("sessionID",
-			new BiConsumer<AuditEvent, String>() {
-				@Override
-				public void accept(AuditEvent auditEvent, String sessionID) {
-					auditEvent.setSessionID(sessionID);
-				}
-			});
-		attributeSetters.put("additionalInfo",
-			new BiConsumer<AuditEvent, String>() {
-				@Override
-				public void accept(AuditEvent auditEvent, String additionalInfo) {
-					auditEvent.setAdditionalInfo(additionalInfo);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

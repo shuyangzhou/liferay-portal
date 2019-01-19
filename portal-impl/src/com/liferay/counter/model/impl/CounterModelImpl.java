@@ -135,42 +135,16 @@ public class CounterModelImpl extends BaseModelImpl<Counter>
 
 	static {
 		Map<String, Function<Counter, Object>> attributeGetters = new LinkedHashMap<String, Function<Counter, Object>>();
+		Map<String, BiConsumer<Counter, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Counter, Object>>();
 
-		attributeGetters.put("name",
-			new Function<Counter, Object>() {
-				@Override
-				public Object apply(Counter counter) {
-					return counter.getName();
-				}
-			});
-		attributeGetters.put("currentId",
-			new Function<Counter, Object>() {
-				@Override
-				public Object apply(Counter counter) {
-					return counter.getCurrentId();
-				}
-			});
+		attributeGetters.put("name", Counter::getName);
+		attributeSetters.put("name", Counter::setName);
+
+		attributeGetters.put("currentId", Counter::getCurrentId);
+		attributeSetters.put("currentId", Counter::setCurrentId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<Counter, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Counter, ?>>();
-
-		attributeSetters.put("name",
-			new BiConsumer<Counter, String>() {
-				@Override
-				public void accept(Counter counter, String name) {
-					counter.setName(name);
-				}
-			});
-		attributeSetters.put("currentId",
-			new BiConsumer<Counter, Long>() {
-				@Override
-				public void accept(Counter counter, Long currentId) {
-					counter.setCurrentId(currentId);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

@@ -157,119 +157,31 @@ public class JournalContentSearchModelImpl extends BaseModelImpl<JournalContentS
 
 	static {
 		Map<String, Function<JournalContentSearch, Object>> attributeGetters = new LinkedHashMap<String, Function<JournalContentSearch, Object>>();
+		Map<String, BiConsumer<JournalContentSearch, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<JournalContentSearch, Object>>();
 
-		attributeGetters.put("contentSearchId",
-			new Function<JournalContentSearch, Object>() {
-				@Override
-				public Object apply(JournalContentSearch journalContentSearch) {
-					return journalContentSearch.getContentSearchId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<JournalContentSearch, Object>() {
-				@Override
-				public Object apply(JournalContentSearch journalContentSearch) {
-					return journalContentSearch.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<JournalContentSearch, Object>() {
-				@Override
-				public Object apply(JournalContentSearch journalContentSearch) {
-					return journalContentSearch.getCompanyId();
-				}
-			});
-		attributeGetters.put("privateLayout",
-			new Function<JournalContentSearch, Object>() {
-				@Override
-				public Object apply(JournalContentSearch journalContentSearch) {
-					return journalContentSearch.isPrivateLayout();
-				}
-			});
-		attributeGetters.put("layoutId",
-			new Function<JournalContentSearch, Object>() {
-				@Override
-				public Object apply(JournalContentSearch journalContentSearch) {
-					return journalContentSearch.getLayoutId();
-				}
-			});
-		attributeGetters.put("portletId",
-			new Function<JournalContentSearch, Object>() {
-				@Override
-				public Object apply(JournalContentSearch journalContentSearch) {
-					return journalContentSearch.getPortletId();
-				}
-			});
-		attributeGetters.put("articleId",
-			new Function<JournalContentSearch, Object>() {
-				@Override
-				public Object apply(JournalContentSearch journalContentSearch) {
-					return journalContentSearch.getArticleId();
-				}
-			});
+		attributeGetters.put("contentSearchId", JournalContentSearch::getContentSearchId);
+		attributeSetters.put("contentSearchId", JournalContentSearch::setContentSearchId);
+
+		attributeGetters.put("groupId", JournalContentSearch::getGroupId);
+		attributeSetters.put("groupId", JournalContentSearch::setGroupId);
+
+		attributeGetters.put("companyId", JournalContentSearch::getCompanyId);
+		attributeSetters.put("companyId", JournalContentSearch::setCompanyId);
+
+		attributeGetters.put("privateLayout", JournalContentSearch::getPrivateLayout);
+		attributeSetters.put("privateLayout", JournalContentSearch::setPrivateLayout);
+
+		attributeGetters.put("layoutId", JournalContentSearch::getLayoutId);
+		attributeSetters.put("layoutId", JournalContentSearch::setLayoutId);
+
+		attributeGetters.put("portletId", JournalContentSearch::getPortletId);
+		attributeSetters.put("portletId", JournalContentSearch::setPortletId);
+
+		attributeGetters.put("articleId", JournalContentSearch::getArticleId);
+		attributeSetters.put("articleId", JournalContentSearch::setArticleId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<JournalContentSearch, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<JournalContentSearch, ?>>();
-
-		attributeSetters.put("contentSearchId",
-			new BiConsumer<JournalContentSearch, Long>() {
-				@Override
-				public void accept(JournalContentSearch journalContentSearch,
-					Long contentSearchId) {
-					journalContentSearch.setContentSearchId(contentSearchId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<JournalContentSearch, Long>() {
-				@Override
-				public void accept(JournalContentSearch journalContentSearch,
-					Long groupId) {
-					journalContentSearch.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<JournalContentSearch, Long>() {
-				@Override
-				public void accept(JournalContentSearch journalContentSearch,
-					Long companyId) {
-					journalContentSearch.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("privateLayout",
-			new BiConsumer<JournalContentSearch, Boolean>() {
-				@Override
-				public void accept(JournalContentSearch journalContentSearch,
-					Boolean privateLayout) {
-					journalContentSearch.setPrivateLayout(privateLayout);
-				}
-			});
-		attributeSetters.put("layoutId",
-			new BiConsumer<JournalContentSearch, Long>() {
-				@Override
-				public void accept(JournalContentSearch journalContentSearch,
-					Long layoutId) {
-					journalContentSearch.setLayoutId(layoutId);
-				}
-			});
-		attributeSetters.put("portletId",
-			new BiConsumer<JournalContentSearch, String>() {
-				@Override
-				public void accept(JournalContentSearch journalContentSearch,
-					String portletId) {
-					journalContentSearch.setPortletId(portletId);
-				}
-			});
-		attributeSetters.put("articleId",
-			new BiConsumer<JournalContentSearch, String>() {
-				@Override
-				public void accept(JournalContentSearch journalContentSearch,
-					String articleId) {
-					journalContentSearch.setArticleId(articleId);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

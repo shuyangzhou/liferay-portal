@@ -193,76 +193,94 @@ public class VersionedEntryVersionModelImpl extends BaseModelImpl<VersionedEntry
 
 	static {
 		Map<String, Function<VersionedEntryVersion, Object>> attributeGetters = new LinkedHashMap<String, Function<VersionedEntryVersion, Object>>();
+		Map<String, BiConsumer<VersionedEntryVersion, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<VersionedEntryVersion, Object>>();
 
-		attributeGetters.put("versionedEntryVersionId",
+		attributeGetters.put(
+			"versionedEntryVersionId",
 			new Function<VersionedEntryVersion, Object>() {
+
 				@Override
 				public Object apply(VersionedEntryVersion versionedEntryVersion) {
 					return versionedEntryVersion.getVersionedEntryVersionId();
 				}
+
 			});
-		attributeGetters.put("version",
+		attributeSetters.put(
+			"versionedEntryVersionId",
+			new BiConsumer<VersionedEntryVersion, Object>() {
+
+				@Override
+				public void accept(VersionedEntryVersion versionedEntryVersion, Object versionedEntryVersionId) {
+					versionedEntryVersion.setVersionedEntryVersionId((Long)versionedEntryVersionId);
+				}
+
+			});
+
+		attributeGetters.put(
+			"version",
 			new Function<VersionedEntryVersion, Object>() {
+
 				@Override
 				public Object apply(VersionedEntryVersion versionedEntryVersion) {
 					return versionedEntryVersion.getVersion();
 				}
+
 			});
-		attributeGetters.put("versionedEntryId",
+		attributeSetters.put(
+			"version",
+			new BiConsumer<VersionedEntryVersion, Object>() {
+
+				@Override
+				public void accept(VersionedEntryVersion versionedEntryVersion, Object version) {
+					versionedEntryVersion.setVersion((Integer)version);
+				}
+
+			});
+
+		attributeGetters.put(
+			"versionedEntryId",
 			new Function<VersionedEntryVersion, Object>() {
+
 				@Override
 				public Object apply(VersionedEntryVersion versionedEntryVersion) {
 					return versionedEntryVersion.getVersionedEntryId();
 				}
+
 			});
-		attributeGetters.put("groupId",
+		attributeSetters.put(
+			"versionedEntryId",
+			new BiConsumer<VersionedEntryVersion, Object>() {
+
+				@Override
+				public void accept(VersionedEntryVersion versionedEntryVersion, Object versionedEntryId) {
+					versionedEntryVersion.setVersionedEntryId((Long)versionedEntryId);
+				}
+
+			});
+
+		attributeGetters.put(
+			"groupId",
 			new Function<VersionedEntryVersion, Object>() {
+
 				@Override
 				public Object apply(VersionedEntryVersion versionedEntryVersion) {
 					return versionedEntryVersion.getGroupId();
 				}
+
+			});
+		attributeSetters.put(
+			"groupId",
+			new BiConsumer<VersionedEntryVersion, Object>() {
+
+				@Override
+				public void accept(VersionedEntryVersion versionedEntryVersion, Object groupId) {
+					versionedEntryVersion.setGroupId((Long)groupId);
+				}
+
 			});
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<VersionedEntryVersion, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<VersionedEntryVersion, ?>>();
-
-		attributeSetters.put("versionedEntryVersionId",
-			new BiConsumer<VersionedEntryVersion, Long>() {
-				@Override
-				public void accept(
-					VersionedEntryVersion versionedEntryVersion,
-					Long versionedEntryVersionId) {
-					versionedEntryVersion.setVersionedEntryVersionId(versionedEntryVersionId);
-				}
-			});
-		attributeSetters.put("version",
-			new BiConsumer<VersionedEntryVersion, Integer>() {
-				@Override
-				public void accept(
-					VersionedEntryVersion versionedEntryVersion, Integer version) {
-					versionedEntryVersion.setVersion(version);
-				}
-			});
-		attributeSetters.put("versionedEntryId",
-			new BiConsumer<VersionedEntryVersion, Long>() {
-				@Override
-				public void accept(
-					VersionedEntryVersion versionedEntryVersion,
-					Long versionedEntryId) {
-					versionedEntryVersion.setVersionedEntryId(versionedEntryId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<VersionedEntryVersion, Long>() {
-				@Override
-				public void accept(
-					VersionedEntryVersion versionedEntryVersion, Long groupId) {
-					versionedEntryVersion.setGroupId(groupId);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

@@ -166,104 +166,28 @@ public class OAuth2ScopeGrantModelImpl extends BaseModelImpl<OAuth2ScopeGrant>
 
 	static {
 		Map<String, Function<OAuth2ScopeGrant, Object>> attributeGetters = new LinkedHashMap<String, Function<OAuth2ScopeGrant, Object>>();
+		Map<String, BiConsumer<OAuth2ScopeGrant, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<OAuth2ScopeGrant, Object>>();
 
-		attributeGetters.put("oAuth2ScopeGrantId",
-			new Function<OAuth2ScopeGrant, Object>() {
-				@Override
-				public Object apply(OAuth2ScopeGrant oAuth2ScopeGrant) {
-					return oAuth2ScopeGrant.getOAuth2ScopeGrantId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<OAuth2ScopeGrant, Object>() {
-				@Override
-				public Object apply(OAuth2ScopeGrant oAuth2ScopeGrant) {
-					return oAuth2ScopeGrant.getCompanyId();
-				}
-			});
-		attributeGetters.put("oAuth2ApplicationScopeAliasesId",
-			new Function<OAuth2ScopeGrant, Object>() {
-				@Override
-				public Object apply(OAuth2ScopeGrant oAuth2ScopeGrant) {
-					return oAuth2ScopeGrant.getOAuth2ApplicationScopeAliasesId();
-				}
-			});
-		attributeGetters.put("applicationName",
-			new Function<OAuth2ScopeGrant, Object>() {
-				@Override
-				public Object apply(OAuth2ScopeGrant oAuth2ScopeGrant) {
-					return oAuth2ScopeGrant.getApplicationName();
-				}
-			});
-		attributeGetters.put("bundleSymbolicName",
-			new Function<OAuth2ScopeGrant, Object>() {
-				@Override
-				public Object apply(OAuth2ScopeGrant oAuth2ScopeGrant) {
-					return oAuth2ScopeGrant.getBundleSymbolicName();
-				}
-			});
-		attributeGetters.put("scope",
-			new Function<OAuth2ScopeGrant, Object>() {
-				@Override
-				public Object apply(OAuth2ScopeGrant oAuth2ScopeGrant) {
-					return oAuth2ScopeGrant.getScope();
-				}
-			});
+		attributeGetters.put("oAuth2ScopeGrantId", OAuth2ScopeGrant::getOAuth2ScopeGrantId);
+		attributeSetters.put("oAuth2ScopeGrantId", OAuth2ScopeGrant::setOAuth2ScopeGrantId);
+
+		attributeGetters.put("companyId", OAuth2ScopeGrant::getCompanyId);
+		attributeSetters.put("companyId", OAuth2ScopeGrant::setCompanyId);
+
+		attributeGetters.put("oAuth2ApplicationScopeAliasesId", OAuth2ScopeGrant::getOAuth2ApplicationScopeAliasesId);
+		attributeSetters.put("oAuth2ApplicationScopeAliasesId", OAuth2ScopeGrant::setOAuth2ApplicationScopeAliasesId);
+
+		attributeGetters.put("applicationName", OAuth2ScopeGrant::getApplicationName);
+		attributeSetters.put("applicationName", OAuth2ScopeGrant::setApplicationName);
+
+		attributeGetters.put("bundleSymbolicName", OAuth2ScopeGrant::getBundleSymbolicName);
+		attributeSetters.put("bundleSymbolicName", OAuth2ScopeGrant::setBundleSymbolicName);
+
+		attributeGetters.put("scope", OAuth2ScopeGrant::getScope);
+		attributeSetters.put("scope", OAuth2ScopeGrant::setScope);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<OAuth2ScopeGrant, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<OAuth2ScopeGrant, ?>>();
-
-		attributeSetters.put("oAuth2ScopeGrantId",
-			new BiConsumer<OAuth2ScopeGrant, Long>() {
-				@Override
-				public void accept(OAuth2ScopeGrant oAuth2ScopeGrant,
-					Long oAuth2ScopeGrantId) {
-					oAuth2ScopeGrant.setOAuth2ScopeGrantId(oAuth2ScopeGrantId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<OAuth2ScopeGrant, Long>() {
-				@Override
-				public void accept(OAuth2ScopeGrant oAuth2ScopeGrant,
-					Long companyId) {
-					oAuth2ScopeGrant.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("oAuth2ApplicationScopeAliasesId",
-			new BiConsumer<OAuth2ScopeGrant, Long>() {
-				@Override
-				public void accept(OAuth2ScopeGrant oAuth2ScopeGrant,
-					Long oAuth2ApplicationScopeAliasesId) {
-					oAuth2ScopeGrant.setOAuth2ApplicationScopeAliasesId(oAuth2ApplicationScopeAliasesId);
-				}
-			});
-		attributeSetters.put("applicationName",
-			new BiConsumer<OAuth2ScopeGrant, String>() {
-				@Override
-				public void accept(OAuth2ScopeGrant oAuth2ScopeGrant,
-					String applicationName) {
-					oAuth2ScopeGrant.setApplicationName(applicationName);
-				}
-			});
-		attributeSetters.put("bundleSymbolicName",
-			new BiConsumer<OAuth2ScopeGrant, String>() {
-				@Override
-				public void accept(OAuth2ScopeGrant oAuth2ScopeGrant,
-					String bundleSymbolicName) {
-					oAuth2ScopeGrant.setBundleSymbolicName(bundleSymbolicName);
-				}
-			});
-		attributeSetters.put("scope",
-			new BiConsumer<OAuth2ScopeGrant, String>() {
-				@Override
-				public void accept(OAuth2ScopeGrant oAuth2ScopeGrant,
-					String scope) {
-					oAuth2ScopeGrant.setScope(scope);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

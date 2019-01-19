@@ -208,115 +208,29 @@ public class PushNotificationsDeviceModelImpl extends BaseModelImpl<PushNotifica
 
 	static {
 		Map<String, Function<PushNotificationsDevice, Object>> attributeGetters = new LinkedHashMap<String, Function<PushNotificationsDevice, Object>>();
+		Map<String, BiConsumer<PushNotificationsDevice, Object>> attributeSetters =
+			new LinkedHashMap<String, BiConsumer<PushNotificationsDevice, Object>>();
 
-		attributeGetters.put("pushNotificationsDeviceId",
-			new Function<PushNotificationsDevice, Object>() {
-				@Override
-				public Object apply(
-					PushNotificationsDevice pushNotificationsDevice) {
-					return pushNotificationsDevice.getPushNotificationsDeviceId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<PushNotificationsDevice, Object>() {
-				@Override
-				public Object apply(
-					PushNotificationsDevice pushNotificationsDevice) {
-					return pushNotificationsDevice.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<PushNotificationsDevice, Object>() {
-				@Override
-				public Object apply(
-					PushNotificationsDevice pushNotificationsDevice) {
-					return pushNotificationsDevice.getUserId();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<PushNotificationsDevice, Object>() {
-				@Override
-				public Object apply(
-					PushNotificationsDevice pushNotificationsDevice) {
-					return pushNotificationsDevice.getCreateDate();
-				}
-			});
-		attributeGetters.put("platform",
-			new Function<PushNotificationsDevice, Object>() {
-				@Override
-				public Object apply(
-					PushNotificationsDevice pushNotificationsDevice) {
-					return pushNotificationsDevice.getPlatform();
-				}
-			});
-		attributeGetters.put("token",
-			new Function<PushNotificationsDevice, Object>() {
-				@Override
-				public Object apply(
-					PushNotificationsDevice pushNotificationsDevice) {
-					return pushNotificationsDevice.getToken();
-				}
-			});
+		attributeGetters.put("pushNotificationsDeviceId", PushNotificationsDevice::getPushNotificationsDeviceId);
+		attributeSetters.put("pushNotificationsDeviceId", PushNotificationsDevice::setPushNotificationsDeviceId);
+
+		attributeGetters.put("companyId", PushNotificationsDevice::getCompanyId);
+		attributeSetters.put("companyId", PushNotificationsDevice::setCompanyId);
+
+		attributeGetters.put("userId", PushNotificationsDevice::getUserId);
+		attributeSetters.put("userId", PushNotificationsDevice::setUserId);
+
+		attributeGetters.put("createDate", PushNotificationsDevice::getCreateDate);
+		attributeSetters.put("createDate", PushNotificationsDevice::setCreateDate);
+
+		attributeGetters.put("platform", PushNotificationsDevice::getPlatform);
+		attributeSetters.put("platform", PushNotificationsDevice::setPlatform);
+
+		attributeGetters.put("token", PushNotificationsDevice::getToken);
+		attributeSetters.put("token", PushNotificationsDevice::setToken);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<PushNotificationsDevice, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<PushNotificationsDevice, ?>>();
-
-		attributeSetters.put("pushNotificationsDeviceId",
-			new BiConsumer<PushNotificationsDevice, Long>() {
-				@Override
-				public void accept(
-					PushNotificationsDevice pushNotificationsDevice,
-					Long pushNotificationsDeviceId) {
-					pushNotificationsDevice.setPushNotificationsDeviceId(pushNotificationsDeviceId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<PushNotificationsDevice, Long>() {
-				@Override
-				public void accept(
-					PushNotificationsDevice pushNotificationsDevice,
-					Long companyId) {
-					pushNotificationsDevice.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<PushNotificationsDevice, Long>() {
-				@Override
-				public void accept(
-					PushNotificationsDevice pushNotificationsDevice, Long userId) {
-					pushNotificationsDevice.setUserId(userId);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<PushNotificationsDevice, Date>() {
-				@Override
-				public void accept(
-					PushNotificationsDevice pushNotificationsDevice,
-					Date createDate) {
-					pushNotificationsDevice.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("platform",
-			new BiConsumer<PushNotificationsDevice, String>() {
-				@Override
-				public void accept(
-					PushNotificationsDevice pushNotificationsDevice,
-					String platform) {
-					pushNotificationsDevice.setPlatform(platform);
-				}
-			});
-		attributeSetters.put("token",
-			new BiConsumer<PushNotificationsDevice, String>() {
-				@Override
-				public void accept(
-					PushNotificationsDevice pushNotificationsDevice,
-					String token) {
-					pushNotificationsDevice.setToken(token);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

@@ -236,214 +236,47 @@ public class DDMDataProviderInstanceModelImpl extends BaseModelImpl<DDMDataProvi
 
 	static {
 		Map<String, Function<DDMDataProviderInstance, Object>> attributeGetters = new LinkedHashMap<String, Function<DDMDataProviderInstance, Object>>();
+		Map<String, BiConsumer<DDMDataProviderInstance, Object>> attributeSetters =
+			new LinkedHashMap<String, BiConsumer<DDMDataProviderInstance, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<DDMDataProviderInstance, Object>() {
-				@Override
-				public Object apply(
-					DDMDataProviderInstance ddmDataProviderInstance) {
-					return ddmDataProviderInstance.getUuid();
-				}
-			});
-		attributeGetters.put("dataProviderInstanceId",
-			new Function<DDMDataProviderInstance, Object>() {
-				@Override
-				public Object apply(
-					DDMDataProviderInstance ddmDataProviderInstance) {
-					return ddmDataProviderInstance.getDataProviderInstanceId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<DDMDataProviderInstance, Object>() {
-				@Override
-				public Object apply(
-					DDMDataProviderInstance ddmDataProviderInstance) {
-					return ddmDataProviderInstance.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<DDMDataProviderInstance, Object>() {
-				@Override
-				public Object apply(
-					DDMDataProviderInstance ddmDataProviderInstance) {
-					return ddmDataProviderInstance.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<DDMDataProviderInstance, Object>() {
-				@Override
-				public Object apply(
-					DDMDataProviderInstance ddmDataProviderInstance) {
-					return ddmDataProviderInstance.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<DDMDataProviderInstance, Object>() {
-				@Override
-				public Object apply(
-					DDMDataProviderInstance ddmDataProviderInstance) {
-					return ddmDataProviderInstance.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<DDMDataProviderInstance, Object>() {
-				@Override
-				public Object apply(
-					DDMDataProviderInstance ddmDataProviderInstance) {
-					return ddmDataProviderInstance.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<DDMDataProviderInstance, Object>() {
-				@Override
-				public Object apply(
-					DDMDataProviderInstance ddmDataProviderInstance) {
-					return ddmDataProviderInstance.getModifiedDate();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<DDMDataProviderInstance, Object>() {
-				@Override
-				public Object apply(
-					DDMDataProviderInstance ddmDataProviderInstance) {
-					return ddmDataProviderInstance.getName();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<DDMDataProviderInstance, Object>() {
-				@Override
-				public Object apply(
-					DDMDataProviderInstance ddmDataProviderInstance) {
-					return ddmDataProviderInstance.getDescription();
-				}
-			});
-		attributeGetters.put("definition",
-			new Function<DDMDataProviderInstance, Object>() {
-				@Override
-				public Object apply(
-					DDMDataProviderInstance ddmDataProviderInstance) {
-					return ddmDataProviderInstance.getDefinition();
-				}
-			});
-		attributeGetters.put("type",
-			new Function<DDMDataProviderInstance, Object>() {
-				@Override
-				public Object apply(
-					DDMDataProviderInstance ddmDataProviderInstance) {
-					return ddmDataProviderInstance.getType();
-				}
-			});
+		attributeGetters.put("uuid", DDMDataProviderInstance::getUuid);
+		attributeSetters.put("uuid", DDMDataProviderInstance::setUuid);
+
+		attributeGetters.put("dataProviderInstanceId", DDMDataProviderInstance::getDataProviderInstanceId);
+		attributeSetters.put("dataProviderInstanceId", DDMDataProviderInstance::setDataProviderInstanceId);
+
+		attributeGetters.put("groupId", DDMDataProviderInstance::getGroupId);
+		attributeSetters.put("groupId", DDMDataProviderInstance::setGroupId);
+
+		attributeGetters.put("companyId", DDMDataProviderInstance::getCompanyId);
+		attributeSetters.put("companyId", DDMDataProviderInstance::setCompanyId);
+
+		attributeGetters.put("userId", DDMDataProviderInstance::getUserId);
+		attributeSetters.put("userId", DDMDataProviderInstance::setUserId);
+
+		attributeGetters.put("userName", DDMDataProviderInstance::getUserName);
+		attributeSetters.put("userName", DDMDataProviderInstance::setUserName);
+
+		attributeGetters.put("createDate", DDMDataProviderInstance::getCreateDate);
+		attributeSetters.put("createDate", DDMDataProviderInstance::setCreateDate);
+
+		attributeGetters.put("modifiedDate", DDMDataProviderInstance::getModifiedDate);
+		attributeSetters.put("modifiedDate", DDMDataProviderInstance::setModifiedDate);
+
+		attributeGetters.put("name", DDMDataProviderInstance::getName);
+		attributeSetters.put("name", DDMDataProviderInstance::setName);
+
+		attributeGetters.put("description", DDMDataProviderInstance::getDescription);
+		attributeSetters.put("description", DDMDataProviderInstance::setDescription);
+
+		attributeGetters.put("definition", DDMDataProviderInstance::getDefinition);
+		attributeSetters.put("definition", DDMDataProviderInstance::setDefinition);
+
+		attributeGetters.put("type", DDMDataProviderInstance::getType);
+		attributeSetters.put("type", DDMDataProviderInstance::setType);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<DDMDataProviderInstance, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDMDataProviderInstance, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<DDMDataProviderInstance, String>() {
-				@Override
-				public void accept(
-					DDMDataProviderInstance ddmDataProviderInstance, String uuid) {
-					ddmDataProviderInstance.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("dataProviderInstanceId",
-			new BiConsumer<DDMDataProviderInstance, Long>() {
-				@Override
-				public void accept(
-					DDMDataProviderInstance ddmDataProviderInstance,
-					Long dataProviderInstanceId) {
-					ddmDataProviderInstance.setDataProviderInstanceId(dataProviderInstanceId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<DDMDataProviderInstance, Long>() {
-				@Override
-				public void accept(
-					DDMDataProviderInstance ddmDataProviderInstance,
-					Long groupId) {
-					ddmDataProviderInstance.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<DDMDataProviderInstance, Long>() {
-				@Override
-				public void accept(
-					DDMDataProviderInstance ddmDataProviderInstance,
-					Long companyId) {
-					ddmDataProviderInstance.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<DDMDataProviderInstance, Long>() {
-				@Override
-				public void accept(
-					DDMDataProviderInstance ddmDataProviderInstance, Long userId) {
-					ddmDataProviderInstance.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<DDMDataProviderInstance, String>() {
-				@Override
-				public void accept(
-					DDMDataProviderInstance ddmDataProviderInstance,
-					String userName) {
-					ddmDataProviderInstance.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<DDMDataProviderInstance, Date>() {
-				@Override
-				public void accept(
-					DDMDataProviderInstance ddmDataProviderInstance,
-					Date createDate) {
-					ddmDataProviderInstance.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<DDMDataProviderInstance, Date>() {
-				@Override
-				public void accept(
-					DDMDataProviderInstance ddmDataProviderInstance,
-					Date modifiedDate) {
-					ddmDataProviderInstance.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<DDMDataProviderInstance, String>() {
-				@Override
-				public void accept(
-					DDMDataProviderInstance ddmDataProviderInstance, String name) {
-					ddmDataProviderInstance.setName(name);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<DDMDataProviderInstance, String>() {
-				@Override
-				public void accept(
-					DDMDataProviderInstance ddmDataProviderInstance,
-					String description) {
-					ddmDataProviderInstance.setDescription(description);
-				}
-			});
-		attributeSetters.put("definition",
-			new BiConsumer<DDMDataProviderInstance, String>() {
-				@Override
-				public void accept(
-					DDMDataProviderInstance ddmDataProviderInstance,
-					String definition) {
-					ddmDataProviderInstance.setDefinition(definition);
-				}
-			});
-		attributeSetters.put("type",
-			new BiConsumer<DDMDataProviderInstance, String>() {
-				@Override
-				public void accept(
-					DDMDataProviderInstance ddmDataProviderInstance, String type) {
-					ddmDataProviderInstance.setType(type);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

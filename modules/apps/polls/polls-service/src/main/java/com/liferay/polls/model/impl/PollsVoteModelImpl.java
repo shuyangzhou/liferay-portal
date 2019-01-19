@@ -230,182 +230,46 @@ public class PollsVoteModelImpl extends BaseModelImpl<PollsVote>
 
 	static {
 		Map<String, Function<PollsVote, Object>> attributeGetters = new LinkedHashMap<String, Function<PollsVote, Object>>();
+		Map<String, BiConsumer<PollsVote, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<PollsVote, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<PollsVote, Object>() {
-				@Override
-				public Object apply(PollsVote pollsVote) {
-					return pollsVote.getUuid();
-				}
-			});
-		attributeGetters.put("voteId",
-			new Function<PollsVote, Object>() {
-				@Override
-				public Object apply(PollsVote pollsVote) {
-					return pollsVote.getVoteId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<PollsVote, Object>() {
-				@Override
-				public Object apply(PollsVote pollsVote) {
-					return pollsVote.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<PollsVote, Object>() {
-				@Override
-				public Object apply(PollsVote pollsVote) {
-					return pollsVote.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<PollsVote, Object>() {
-				@Override
-				public Object apply(PollsVote pollsVote) {
-					return pollsVote.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<PollsVote, Object>() {
-				@Override
-				public Object apply(PollsVote pollsVote) {
-					return pollsVote.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<PollsVote, Object>() {
-				@Override
-				public Object apply(PollsVote pollsVote) {
-					return pollsVote.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<PollsVote, Object>() {
-				@Override
-				public Object apply(PollsVote pollsVote) {
-					return pollsVote.getModifiedDate();
-				}
-			});
-		attributeGetters.put("questionId",
-			new Function<PollsVote, Object>() {
-				@Override
-				public Object apply(PollsVote pollsVote) {
-					return pollsVote.getQuestionId();
-				}
-			});
-		attributeGetters.put("choiceId",
-			new Function<PollsVote, Object>() {
-				@Override
-				public Object apply(PollsVote pollsVote) {
-					return pollsVote.getChoiceId();
-				}
-			});
-		attributeGetters.put("lastPublishDate",
-			new Function<PollsVote, Object>() {
-				@Override
-				public Object apply(PollsVote pollsVote) {
-					return pollsVote.getLastPublishDate();
-				}
-			});
-		attributeGetters.put("voteDate",
-			new Function<PollsVote, Object>() {
-				@Override
-				public Object apply(PollsVote pollsVote) {
-					return pollsVote.getVoteDate();
-				}
-			});
+		attributeGetters.put("uuid", PollsVote::getUuid);
+		attributeSetters.put("uuid", PollsVote::setUuid);
+
+		attributeGetters.put("voteId", PollsVote::getVoteId);
+		attributeSetters.put("voteId", PollsVote::setVoteId);
+
+		attributeGetters.put("groupId", PollsVote::getGroupId);
+		attributeSetters.put("groupId", PollsVote::setGroupId);
+
+		attributeGetters.put("companyId", PollsVote::getCompanyId);
+		attributeSetters.put("companyId", PollsVote::setCompanyId);
+
+		attributeGetters.put("userId", PollsVote::getUserId);
+		attributeSetters.put("userId", PollsVote::setUserId);
+
+		attributeGetters.put("userName", PollsVote::getUserName);
+		attributeSetters.put("userName", PollsVote::setUserName);
+
+		attributeGetters.put("createDate", PollsVote::getCreateDate);
+		attributeSetters.put("createDate", PollsVote::setCreateDate);
+
+		attributeGetters.put("modifiedDate", PollsVote::getModifiedDate);
+		attributeSetters.put("modifiedDate", PollsVote::setModifiedDate);
+
+		attributeGetters.put("questionId", PollsVote::getQuestionId);
+		attributeSetters.put("questionId", PollsVote::setQuestionId);
+
+		attributeGetters.put("choiceId", PollsVote::getChoiceId);
+		attributeSetters.put("choiceId", PollsVote::setChoiceId);
+
+		attributeGetters.put("lastPublishDate", PollsVote::getLastPublishDate);
+		attributeSetters.put("lastPublishDate", PollsVote::setLastPublishDate);
+
+		attributeGetters.put("voteDate", PollsVote::getVoteDate);
+		attributeSetters.put("voteDate", PollsVote::setVoteDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<PollsVote, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<PollsVote, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<PollsVote, String>() {
-				@Override
-				public void accept(PollsVote pollsVote, String uuid) {
-					pollsVote.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("voteId",
-			new BiConsumer<PollsVote, Long>() {
-				@Override
-				public void accept(PollsVote pollsVote, Long voteId) {
-					pollsVote.setVoteId(voteId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<PollsVote, Long>() {
-				@Override
-				public void accept(PollsVote pollsVote, Long groupId) {
-					pollsVote.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<PollsVote, Long>() {
-				@Override
-				public void accept(PollsVote pollsVote, Long companyId) {
-					pollsVote.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<PollsVote, Long>() {
-				@Override
-				public void accept(PollsVote pollsVote, Long userId) {
-					pollsVote.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<PollsVote, String>() {
-				@Override
-				public void accept(PollsVote pollsVote, String userName) {
-					pollsVote.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<PollsVote, Date>() {
-				@Override
-				public void accept(PollsVote pollsVote, Date createDate) {
-					pollsVote.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<PollsVote, Date>() {
-				@Override
-				public void accept(PollsVote pollsVote, Date modifiedDate) {
-					pollsVote.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("questionId",
-			new BiConsumer<PollsVote, Long>() {
-				@Override
-				public void accept(PollsVote pollsVote, Long questionId) {
-					pollsVote.setQuestionId(questionId);
-				}
-			});
-		attributeSetters.put("choiceId",
-			new BiConsumer<PollsVote, Long>() {
-				@Override
-				public void accept(PollsVote pollsVote, Long choiceId) {
-					pollsVote.setChoiceId(choiceId);
-				}
-			});
-		attributeSetters.put("lastPublishDate",
-			new BiConsumer<PollsVote, Date>() {
-				@Override
-				public void accept(PollsVote pollsVote, Date lastPublishDate) {
-					pollsVote.setLastPublishDate(lastPublishDate);
-				}
-			});
-		attributeSetters.put("voteDate",
-			new BiConsumer<PollsVote, Date>() {
-				@Override
-				public void accept(PollsVote pollsVote, Date voteDate) {
-					pollsVote.setVoteDate(voteDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

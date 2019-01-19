@@ -147,84 +147,25 @@ public class ExpandoRowModelImpl extends BaseModelImpl<ExpandoRow>
 
 	static {
 		Map<String, Function<ExpandoRow, Object>> attributeGetters = new LinkedHashMap<String, Function<ExpandoRow, Object>>();
+		Map<String, BiConsumer<ExpandoRow, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<ExpandoRow, Object>>();
 
-		attributeGetters.put("rowId",
-			new Function<ExpandoRow, Object>() {
-				@Override
-				public Object apply(ExpandoRow expandoRow) {
-					return expandoRow.getRowId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<ExpandoRow, Object>() {
-				@Override
-				public Object apply(ExpandoRow expandoRow) {
-					return expandoRow.getCompanyId();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<ExpandoRow, Object>() {
-				@Override
-				public Object apply(ExpandoRow expandoRow) {
-					return expandoRow.getModifiedDate();
-				}
-			});
-		attributeGetters.put("tableId",
-			new Function<ExpandoRow, Object>() {
-				@Override
-				public Object apply(ExpandoRow expandoRow) {
-					return expandoRow.getTableId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<ExpandoRow, Object>() {
-				@Override
-				public Object apply(ExpandoRow expandoRow) {
-					return expandoRow.getClassPK();
-				}
-			});
+		attributeGetters.put("rowId", ExpandoRow::getRowId);
+		attributeSetters.put("rowId", ExpandoRow::setRowId);
+
+		attributeGetters.put("companyId", ExpandoRow::getCompanyId);
+		attributeSetters.put("companyId", ExpandoRow::setCompanyId);
+
+		attributeGetters.put("modifiedDate", ExpandoRow::getModifiedDate);
+		attributeSetters.put("modifiedDate", ExpandoRow::setModifiedDate);
+
+		attributeGetters.put("tableId", ExpandoRow::getTableId);
+		attributeSetters.put("tableId", ExpandoRow::setTableId);
+
+		attributeGetters.put("classPK", ExpandoRow::getClassPK);
+		attributeSetters.put("classPK", ExpandoRow::setClassPK);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<ExpandoRow, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<ExpandoRow, ?>>();
-
-		attributeSetters.put("rowId",
-			new BiConsumer<ExpandoRow, Long>() {
-				@Override
-				public void accept(ExpandoRow expandoRow, Long rowId) {
-					expandoRow.setRowId(rowId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<ExpandoRow, Long>() {
-				@Override
-				public void accept(ExpandoRow expandoRow, Long companyId) {
-					expandoRow.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<ExpandoRow, Date>() {
-				@Override
-				public void accept(ExpandoRow expandoRow, Date modifiedDate) {
-					expandoRow.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("tableId",
-			new BiConsumer<ExpandoRow, Long>() {
-				@Override
-				public void accept(ExpandoRow expandoRow, Long tableId) {
-					expandoRow.setTableId(tableId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<ExpandoRow, Long>() {
-				@Override
-				public void accept(ExpandoRow expandoRow, Long classPK) {
-					expandoRow.setClassPK(classPK);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

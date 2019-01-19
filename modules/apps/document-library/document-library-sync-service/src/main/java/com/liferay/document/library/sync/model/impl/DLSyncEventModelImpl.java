@@ -151,98 +151,28 @@ public class DLSyncEventModelImpl extends BaseModelImpl<DLSyncEvent>
 
 	static {
 		Map<String, Function<DLSyncEvent, Object>> attributeGetters = new LinkedHashMap<String, Function<DLSyncEvent, Object>>();
+		Map<String, BiConsumer<DLSyncEvent, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<DLSyncEvent, Object>>();
 
-		attributeGetters.put("syncEventId",
-			new Function<DLSyncEvent, Object>() {
-				@Override
-				public Object apply(DLSyncEvent dlSyncEvent) {
-					return dlSyncEvent.getSyncEventId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<DLSyncEvent, Object>() {
-				@Override
-				public Object apply(DLSyncEvent dlSyncEvent) {
-					return dlSyncEvent.getCompanyId();
-				}
-			});
-		attributeGetters.put("modifiedTime",
-			new Function<DLSyncEvent, Object>() {
-				@Override
-				public Object apply(DLSyncEvent dlSyncEvent) {
-					return dlSyncEvent.getModifiedTime();
-				}
-			});
-		attributeGetters.put("event",
-			new Function<DLSyncEvent, Object>() {
-				@Override
-				public Object apply(DLSyncEvent dlSyncEvent) {
-					return dlSyncEvent.getEvent();
-				}
-			});
-		attributeGetters.put("type",
-			new Function<DLSyncEvent, Object>() {
-				@Override
-				public Object apply(DLSyncEvent dlSyncEvent) {
-					return dlSyncEvent.getType();
-				}
-			});
-		attributeGetters.put("typePK",
-			new Function<DLSyncEvent, Object>() {
-				@Override
-				public Object apply(DLSyncEvent dlSyncEvent) {
-					return dlSyncEvent.getTypePK();
-				}
-			});
+		attributeGetters.put("syncEventId", DLSyncEvent::getSyncEventId);
+		attributeSetters.put("syncEventId", DLSyncEvent::setSyncEventId);
+
+		attributeGetters.put("companyId", DLSyncEvent::getCompanyId);
+		attributeSetters.put("companyId", DLSyncEvent::setCompanyId);
+
+		attributeGetters.put("modifiedTime", DLSyncEvent::getModifiedTime);
+		attributeSetters.put("modifiedTime", DLSyncEvent::setModifiedTime);
+
+		attributeGetters.put("event", DLSyncEvent::getEvent);
+		attributeSetters.put("event", DLSyncEvent::setEvent);
+
+		attributeGetters.put("type", DLSyncEvent::getType);
+		attributeSetters.put("type", DLSyncEvent::setType);
+
+		attributeGetters.put("typePK", DLSyncEvent::getTypePK);
+		attributeSetters.put("typePK", DLSyncEvent::setTypePK);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<DLSyncEvent, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DLSyncEvent, ?>>();
-
-		attributeSetters.put("syncEventId",
-			new BiConsumer<DLSyncEvent, Long>() {
-				@Override
-				public void accept(DLSyncEvent dlSyncEvent, Long syncEventId) {
-					dlSyncEvent.setSyncEventId(syncEventId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<DLSyncEvent, Long>() {
-				@Override
-				public void accept(DLSyncEvent dlSyncEvent, Long companyId) {
-					dlSyncEvent.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("modifiedTime",
-			new BiConsumer<DLSyncEvent, Long>() {
-				@Override
-				public void accept(DLSyncEvent dlSyncEvent, Long modifiedTime) {
-					dlSyncEvent.setModifiedTime(modifiedTime);
-				}
-			});
-		attributeSetters.put("event",
-			new BiConsumer<DLSyncEvent, String>() {
-				@Override
-				public void accept(DLSyncEvent dlSyncEvent, String event) {
-					dlSyncEvent.setEvent(event);
-				}
-			});
-		attributeSetters.put("type",
-			new BiConsumer<DLSyncEvent, String>() {
-				@Override
-				public void accept(DLSyncEvent dlSyncEvent, String type) {
-					dlSyncEvent.setType(type);
-				}
-			});
-		attributeSetters.put("typePK",
-			new BiConsumer<DLSyncEvent, Long>() {
-				@Override
-				public void accept(DLSyncEvent dlSyncEvent, Long typePK) {
-					dlSyncEvent.setTypePK(typePK);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

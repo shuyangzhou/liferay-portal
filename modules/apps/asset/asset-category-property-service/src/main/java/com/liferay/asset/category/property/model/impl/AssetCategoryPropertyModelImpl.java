@@ -216,151 +216,37 @@ public class AssetCategoryPropertyModelImpl extends BaseModelImpl<AssetCategoryP
 
 	static {
 		Map<String, Function<AssetCategoryProperty, Object>> attributeGetters = new LinkedHashMap<String, Function<AssetCategoryProperty, Object>>();
+		Map<String, BiConsumer<AssetCategoryProperty, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetCategoryProperty, Object>>();
 
-		attributeGetters.put("categoryPropertyId",
-			new Function<AssetCategoryProperty, Object>() {
-				@Override
-				public Object apply(AssetCategoryProperty assetCategoryProperty) {
-					return assetCategoryProperty.getCategoryPropertyId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<AssetCategoryProperty, Object>() {
-				@Override
-				public Object apply(AssetCategoryProperty assetCategoryProperty) {
-					return assetCategoryProperty.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<AssetCategoryProperty, Object>() {
-				@Override
-				public Object apply(AssetCategoryProperty assetCategoryProperty) {
-					return assetCategoryProperty.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<AssetCategoryProperty, Object>() {
-				@Override
-				public Object apply(AssetCategoryProperty assetCategoryProperty) {
-					return assetCategoryProperty.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<AssetCategoryProperty, Object>() {
-				@Override
-				public Object apply(AssetCategoryProperty assetCategoryProperty) {
-					return assetCategoryProperty.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<AssetCategoryProperty, Object>() {
-				@Override
-				public Object apply(AssetCategoryProperty assetCategoryProperty) {
-					return assetCategoryProperty.getModifiedDate();
-				}
-			});
-		attributeGetters.put("categoryId",
-			new Function<AssetCategoryProperty, Object>() {
-				@Override
-				public Object apply(AssetCategoryProperty assetCategoryProperty) {
-					return assetCategoryProperty.getCategoryId();
-				}
-			});
-		attributeGetters.put("key",
-			new Function<AssetCategoryProperty, Object>() {
-				@Override
-				public Object apply(AssetCategoryProperty assetCategoryProperty) {
-					return assetCategoryProperty.getKey();
-				}
-			});
-		attributeGetters.put("value",
-			new Function<AssetCategoryProperty, Object>() {
-				@Override
-				public Object apply(AssetCategoryProperty assetCategoryProperty) {
-					return assetCategoryProperty.getValue();
-				}
-			});
+		attributeGetters.put("categoryPropertyId", AssetCategoryProperty::getCategoryPropertyId);
+		attributeSetters.put("categoryPropertyId", AssetCategoryProperty::setCategoryPropertyId);
+
+		attributeGetters.put("companyId", AssetCategoryProperty::getCompanyId);
+		attributeSetters.put("companyId", AssetCategoryProperty::setCompanyId);
+
+		attributeGetters.put("userId", AssetCategoryProperty::getUserId);
+		attributeSetters.put("userId", AssetCategoryProperty::setUserId);
+
+		attributeGetters.put("userName", AssetCategoryProperty::getUserName);
+		attributeSetters.put("userName", AssetCategoryProperty::setUserName);
+
+		attributeGetters.put("createDate", AssetCategoryProperty::getCreateDate);
+		attributeSetters.put("createDate", AssetCategoryProperty::setCreateDate);
+
+		attributeGetters.put("modifiedDate", AssetCategoryProperty::getModifiedDate);
+		attributeSetters.put("modifiedDate", AssetCategoryProperty::setModifiedDate);
+
+		attributeGetters.put("categoryId", AssetCategoryProperty::getCategoryId);
+		attributeSetters.put("categoryId", AssetCategoryProperty::setCategoryId);
+
+		attributeGetters.put("key", AssetCategoryProperty::getKey);
+		attributeSetters.put("key", AssetCategoryProperty::setKey);
+
+		attributeGetters.put("value", AssetCategoryProperty::getValue);
+		attributeSetters.put("value", AssetCategoryProperty::setValue);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<AssetCategoryProperty, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetCategoryProperty, ?>>();
-
-		attributeSetters.put("categoryPropertyId",
-			new BiConsumer<AssetCategoryProperty, Long>() {
-				@Override
-				public void accept(
-					AssetCategoryProperty assetCategoryProperty,
-					Long categoryPropertyId) {
-					assetCategoryProperty.setCategoryPropertyId(categoryPropertyId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<AssetCategoryProperty, Long>() {
-				@Override
-				public void accept(
-					AssetCategoryProperty assetCategoryProperty, Long companyId) {
-					assetCategoryProperty.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<AssetCategoryProperty, Long>() {
-				@Override
-				public void accept(
-					AssetCategoryProperty assetCategoryProperty, Long userId) {
-					assetCategoryProperty.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<AssetCategoryProperty, String>() {
-				@Override
-				public void accept(
-					AssetCategoryProperty assetCategoryProperty, String userName) {
-					assetCategoryProperty.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<AssetCategoryProperty, Date>() {
-				@Override
-				public void accept(
-					AssetCategoryProperty assetCategoryProperty, Date createDate) {
-					assetCategoryProperty.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<AssetCategoryProperty, Date>() {
-				@Override
-				public void accept(
-					AssetCategoryProperty assetCategoryProperty,
-					Date modifiedDate) {
-					assetCategoryProperty.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("categoryId",
-			new BiConsumer<AssetCategoryProperty, Long>() {
-				@Override
-				public void accept(
-					AssetCategoryProperty assetCategoryProperty, Long categoryId) {
-					assetCategoryProperty.setCategoryId(categoryId);
-				}
-			});
-		attributeSetters.put("key",
-			new BiConsumer<AssetCategoryProperty, String>() {
-				@Override
-				public void accept(
-					AssetCategoryProperty assetCategoryProperty, String key) {
-					assetCategoryProperty.setKey(key);
-				}
-			});
-		attributeSetters.put("value",
-			new BiConsumer<AssetCategoryProperty, String>() {
-				@Override
-				public void accept(
-					AssetCategoryProperty assetCategoryProperty, String value) {
-					assetCategoryProperty.setValue(value);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

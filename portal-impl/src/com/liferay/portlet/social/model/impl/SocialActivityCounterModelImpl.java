@@ -173,217 +173,49 @@ public class SocialActivityCounterModelImpl extends BaseModelImpl<SocialActivity
 
 	static {
 		Map<String, Function<SocialActivityCounter, Object>> attributeGetters = new LinkedHashMap<String, Function<SocialActivityCounter, Object>>();
+		Map<String, BiConsumer<SocialActivityCounter, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SocialActivityCounter, Object>>();
 
-		attributeGetters.put("activityCounterId",
-			new Function<SocialActivityCounter, Object>() {
-				@Override
-				public Object apply(SocialActivityCounter socialActivityCounter) {
-					return socialActivityCounter.getActivityCounterId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<SocialActivityCounter, Object>() {
-				@Override
-				public Object apply(SocialActivityCounter socialActivityCounter) {
-					return socialActivityCounter.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<SocialActivityCounter, Object>() {
-				@Override
-				public Object apply(SocialActivityCounter socialActivityCounter) {
-					return socialActivityCounter.getCompanyId();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<SocialActivityCounter, Object>() {
-				@Override
-				public Object apply(SocialActivityCounter socialActivityCounter) {
-					return socialActivityCounter.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<SocialActivityCounter, Object>() {
-				@Override
-				public Object apply(SocialActivityCounter socialActivityCounter) {
-					return socialActivityCounter.getClassPK();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<SocialActivityCounter, Object>() {
-				@Override
-				public Object apply(SocialActivityCounter socialActivityCounter) {
-					return socialActivityCounter.getName();
-				}
-			});
-		attributeGetters.put("ownerType",
-			new Function<SocialActivityCounter, Object>() {
-				@Override
-				public Object apply(SocialActivityCounter socialActivityCounter) {
-					return socialActivityCounter.getOwnerType();
-				}
-			});
-		attributeGetters.put("currentValue",
-			new Function<SocialActivityCounter, Object>() {
-				@Override
-				public Object apply(SocialActivityCounter socialActivityCounter) {
-					return socialActivityCounter.getCurrentValue();
-				}
-			});
-		attributeGetters.put("totalValue",
-			new Function<SocialActivityCounter, Object>() {
-				@Override
-				public Object apply(SocialActivityCounter socialActivityCounter) {
-					return socialActivityCounter.getTotalValue();
-				}
-			});
-		attributeGetters.put("graceValue",
-			new Function<SocialActivityCounter, Object>() {
-				@Override
-				public Object apply(SocialActivityCounter socialActivityCounter) {
-					return socialActivityCounter.getGraceValue();
-				}
-			});
-		attributeGetters.put("startPeriod",
-			new Function<SocialActivityCounter, Object>() {
-				@Override
-				public Object apply(SocialActivityCounter socialActivityCounter) {
-					return socialActivityCounter.getStartPeriod();
-				}
-			});
-		attributeGetters.put("endPeriod",
-			new Function<SocialActivityCounter, Object>() {
-				@Override
-				public Object apply(SocialActivityCounter socialActivityCounter) {
-					return socialActivityCounter.getEndPeriod();
-				}
-			});
-		attributeGetters.put("active",
-			new Function<SocialActivityCounter, Object>() {
-				@Override
-				public Object apply(SocialActivityCounter socialActivityCounter) {
-					return socialActivityCounter.isActive();
-				}
-			});
+		attributeGetters.put("activityCounterId", SocialActivityCounter::getActivityCounterId);
+		attributeSetters.put("activityCounterId", SocialActivityCounter::setActivityCounterId);
+
+		attributeGetters.put("groupId", SocialActivityCounter::getGroupId);
+		attributeSetters.put("groupId", SocialActivityCounter::setGroupId);
+
+		attributeGetters.put("companyId", SocialActivityCounter::getCompanyId);
+		attributeSetters.put("companyId", SocialActivityCounter::setCompanyId);
+
+		attributeGetters.put("classNameId", SocialActivityCounter::getClassNameId);
+		attributeSetters.put("classNameId", SocialActivityCounter::setClassNameId);
+
+		attributeGetters.put("classPK", SocialActivityCounter::getClassPK);
+		attributeSetters.put("classPK", SocialActivityCounter::setClassPK);
+
+		attributeGetters.put("name", SocialActivityCounter::getName);
+		attributeSetters.put("name", SocialActivityCounter::setName);
+
+		attributeGetters.put("ownerType", SocialActivityCounter::getOwnerType);
+		attributeSetters.put("ownerType", SocialActivityCounter::setOwnerType);
+
+		attributeGetters.put("currentValue", SocialActivityCounter::getCurrentValue);
+		attributeSetters.put("currentValue", SocialActivityCounter::setCurrentValue);
+
+		attributeGetters.put("totalValue", SocialActivityCounter::getTotalValue);
+		attributeSetters.put("totalValue", SocialActivityCounter::setTotalValue);
+
+		attributeGetters.put("graceValue", SocialActivityCounter::getGraceValue);
+		attributeSetters.put("graceValue", SocialActivityCounter::setGraceValue);
+
+		attributeGetters.put("startPeriod", SocialActivityCounter::getStartPeriod);
+		attributeSetters.put("startPeriod", SocialActivityCounter::setStartPeriod);
+
+		attributeGetters.put("endPeriod", SocialActivityCounter::getEndPeriod);
+		attributeSetters.put("endPeriod", SocialActivityCounter::setEndPeriod);
+
+		attributeGetters.put("active", SocialActivityCounter::getActive);
+		attributeSetters.put("active", SocialActivityCounter::setActive);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<SocialActivityCounter, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<SocialActivityCounter, ?>>();
-
-		attributeSetters.put("activityCounterId",
-			new BiConsumer<SocialActivityCounter, Long>() {
-				@Override
-				public void accept(
-					SocialActivityCounter socialActivityCounter,
-					Long activityCounterId) {
-					socialActivityCounter.setActivityCounterId(activityCounterId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<SocialActivityCounter, Long>() {
-				@Override
-				public void accept(
-					SocialActivityCounter socialActivityCounter, Long groupId) {
-					socialActivityCounter.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<SocialActivityCounter, Long>() {
-				@Override
-				public void accept(
-					SocialActivityCounter socialActivityCounter, Long companyId) {
-					socialActivityCounter.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<SocialActivityCounter, Long>() {
-				@Override
-				public void accept(
-					SocialActivityCounter socialActivityCounter,
-					Long classNameId) {
-					socialActivityCounter.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<SocialActivityCounter, Long>() {
-				@Override
-				public void accept(
-					SocialActivityCounter socialActivityCounter, Long classPK) {
-					socialActivityCounter.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<SocialActivityCounter, String>() {
-				@Override
-				public void accept(
-					SocialActivityCounter socialActivityCounter, String name) {
-					socialActivityCounter.setName(name);
-				}
-			});
-		attributeSetters.put("ownerType",
-			new BiConsumer<SocialActivityCounter, Integer>() {
-				@Override
-				public void accept(
-					SocialActivityCounter socialActivityCounter,
-					Integer ownerType) {
-					socialActivityCounter.setOwnerType(ownerType);
-				}
-			});
-		attributeSetters.put("currentValue",
-			new BiConsumer<SocialActivityCounter, Integer>() {
-				@Override
-				public void accept(
-					SocialActivityCounter socialActivityCounter,
-					Integer currentValue) {
-					socialActivityCounter.setCurrentValue(currentValue);
-				}
-			});
-		attributeSetters.put("totalValue",
-			new BiConsumer<SocialActivityCounter, Integer>() {
-				@Override
-				public void accept(
-					SocialActivityCounter socialActivityCounter,
-					Integer totalValue) {
-					socialActivityCounter.setTotalValue(totalValue);
-				}
-			});
-		attributeSetters.put("graceValue",
-			new BiConsumer<SocialActivityCounter, Integer>() {
-				@Override
-				public void accept(
-					SocialActivityCounter socialActivityCounter,
-					Integer graceValue) {
-					socialActivityCounter.setGraceValue(graceValue);
-				}
-			});
-		attributeSetters.put("startPeriod",
-			new BiConsumer<SocialActivityCounter, Integer>() {
-				@Override
-				public void accept(
-					SocialActivityCounter socialActivityCounter,
-					Integer startPeriod) {
-					socialActivityCounter.setStartPeriod(startPeriod);
-				}
-			});
-		attributeSetters.put("endPeriod",
-			new BiConsumer<SocialActivityCounter, Integer>() {
-				@Override
-				public void accept(
-					SocialActivityCounter socialActivityCounter,
-					Integer endPeriod) {
-					socialActivityCounter.setEndPeriod(endPeriod);
-				}
-			});
-		attributeSetters.put("active",
-			new BiConsumer<SocialActivityCounter, Boolean>() {
-				@Override
-				public void accept(
-					SocialActivityCounter socialActivityCounter, Boolean active) {
-					socialActivityCounter.setActive(active);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

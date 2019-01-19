@@ -163,140 +163,37 @@ public class AssetLinkModelImpl extends BaseModelImpl<AssetLink>
 
 	static {
 		Map<String, Function<AssetLink, Object>> attributeGetters = new LinkedHashMap<String, Function<AssetLink, Object>>();
+		Map<String, BiConsumer<AssetLink, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetLink, Object>>();
 
-		attributeGetters.put("linkId",
-			new Function<AssetLink, Object>() {
-				@Override
-				public Object apply(AssetLink assetLink) {
-					return assetLink.getLinkId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<AssetLink, Object>() {
-				@Override
-				public Object apply(AssetLink assetLink) {
-					return assetLink.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<AssetLink, Object>() {
-				@Override
-				public Object apply(AssetLink assetLink) {
-					return assetLink.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<AssetLink, Object>() {
-				@Override
-				public Object apply(AssetLink assetLink) {
-					return assetLink.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<AssetLink, Object>() {
-				@Override
-				public Object apply(AssetLink assetLink) {
-					return assetLink.getCreateDate();
-				}
-			});
-		attributeGetters.put("entryId1",
-			new Function<AssetLink, Object>() {
-				@Override
-				public Object apply(AssetLink assetLink) {
-					return assetLink.getEntryId1();
-				}
-			});
-		attributeGetters.put("entryId2",
-			new Function<AssetLink, Object>() {
-				@Override
-				public Object apply(AssetLink assetLink) {
-					return assetLink.getEntryId2();
-				}
-			});
-		attributeGetters.put("type",
-			new Function<AssetLink, Object>() {
-				@Override
-				public Object apply(AssetLink assetLink) {
-					return assetLink.getType();
-				}
-			});
-		attributeGetters.put("weight",
-			new Function<AssetLink, Object>() {
-				@Override
-				public Object apply(AssetLink assetLink) {
-					return assetLink.getWeight();
-				}
-			});
+		attributeGetters.put("linkId", AssetLink::getLinkId);
+		attributeSetters.put("linkId", AssetLink::setLinkId);
+
+		attributeGetters.put("companyId", AssetLink::getCompanyId);
+		attributeSetters.put("companyId", AssetLink::setCompanyId);
+
+		attributeGetters.put("userId", AssetLink::getUserId);
+		attributeSetters.put("userId", AssetLink::setUserId);
+
+		attributeGetters.put("userName", AssetLink::getUserName);
+		attributeSetters.put("userName", AssetLink::setUserName);
+
+		attributeGetters.put("createDate", AssetLink::getCreateDate);
+		attributeSetters.put("createDate", AssetLink::setCreateDate);
+
+		attributeGetters.put("entryId1", AssetLink::getEntryId1);
+		attributeSetters.put("entryId1", AssetLink::setEntryId1);
+
+		attributeGetters.put("entryId2", AssetLink::getEntryId2);
+		attributeSetters.put("entryId2", AssetLink::setEntryId2);
+
+		attributeGetters.put("type", AssetLink::getType);
+		attributeSetters.put("type", AssetLink::setType);
+
+		attributeGetters.put("weight", AssetLink::getWeight);
+		attributeSetters.put("weight", AssetLink::setWeight);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<AssetLink, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetLink, ?>>();
-
-		attributeSetters.put("linkId",
-			new BiConsumer<AssetLink, Long>() {
-				@Override
-				public void accept(AssetLink assetLink, Long linkId) {
-					assetLink.setLinkId(linkId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<AssetLink, Long>() {
-				@Override
-				public void accept(AssetLink assetLink, Long companyId) {
-					assetLink.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<AssetLink, Long>() {
-				@Override
-				public void accept(AssetLink assetLink, Long userId) {
-					assetLink.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<AssetLink, String>() {
-				@Override
-				public void accept(AssetLink assetLink, String userName) {
-					assetLink.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<AssetLink, Date>() {
-				@Override
-				public void accept(AssetLink assetLink, Date createDate) {
-					assetLink.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("entryId1",
-			new BiConsumer<AssetLink, Long>() {
-				@Override
-				public void accept(AssetLink assetLink, Long entryId1) {
-					assetLink.setEntryId1(entryId1);
-				}
-			});
-		attributeSetters.put("entryId2",
-			new BiConsumer<AssetLink, Long>() {
-				@Override
-				public void accept(AssetLink assetLink, Long entryId2) {
-					assetLink.setEntryId2(entryId2);
-				}
-			});
-		attributeSetters.put("type",
-			new BiConsumer<AssetLink, Integer>() {
-				@Override
-				public void accept(AssetLink assetLink, Integer type) {
-					assetLink.setType(type);
-				}
-			});
-		attributeSetters.put("weight",
-			new BiConsumer<AssetLink, Integer>() {
-				@Override
-				public void accept(AssetLink assetLink, Integer weight) {
-					assetLink.setWeight(weight);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

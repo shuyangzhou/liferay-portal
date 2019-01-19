@@ -176,140 +176,37 @@ public class CTEntryModelImpl extends BaseModelImpl<CTEntry>
 
 	static {
 		Map<String, Function<CTEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<CTEntry, Object>>();
+		Map<String, BiConsumer<CTEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<CTEntry, Object>>();
 
-		attributeGetters.put("ctEntryId",
-			new Function<CTEntry, Object>() {
-				@Override
-				public Object apply(CTEntry ctEntry) {
-					return ctEntry.getCtEntryId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<CTEntry, Object>() {
-				@Override
-				public Object apply(CTEntry ctEntry) {
-					return ctEntry.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<CTEntry, Object>() {
-				@Override
-				public Object apply(CTEntry ctEntry) {
-					return ctEntry.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<CTEntry, Object>() {
-				@Override
-				public Object apply(CTEntry ctEntry) {
-					return ctEntry.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<CTEntry, Object>() {
-				@Override
-				public Object apply(CTEntry ctEntry) {
-					return ctEntry.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<CTEntry, Object>() {
-				@Override
-				public Object apply(CTEntry ctEntry) {
-					return ctEntry.getModifiedDate();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<CTEntry, Object>() {
-				@Override
-				public Object apply(CTEntry ctEntry) {
-					return ctEntry.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<CTEntry, Object>() {
-				@Override
-				public Object apply(CTEntry ctEntry) {
-					return ctEntry.getClassPK();
-				}
-			});
-		attributeGetters.put("resourcePrimKey",
-			new Function<CTEntry, Object>() {
-				@Override
-				public Object apply(CTEntry ctEntry) {
-					return ctEntry.getResourcePrimKey();
-				}
-			});
+		attributeGetters.put("ctEntryId", CTEntry::getCtEntryId);
+		attributeSetters.put("ctEntryId", CTEntry::setCtEntryId);
+
+		attributeGetters.put("companyId", CTEntry::getCompanyId);
+		attributeSetters.put("companyId", CTEntry::setCompanyId);
+
+		attributeGetters.put("userId", CTEntry::getUserId);
+		attributeSetters.put("userId", CTEntry::setUserId);
+
+		attributeGetters.put("userName", CTEntry::getUserName);
+		attributeSetters.put("userName", CTEntry::setUserName);
+
+		attributeGetters.put("createDate", CTEntry::getCreateDate);
+		attributeSetters.put("createDate", CTEntry::setCreateDate);
+
+		attributeGetters.put("modifiedDate", CTEntry::getModifiedDate);
+		attributeSetters.put("modifiedDate", CTEntry::setModifiedDate);
+
+		attributeGetters.put("classNameId", CTEntry::getClassNameId);
+		attributeSetters.put("classNameId", CTEntry::setClassNameId);
+
+		attributeGetters.put("classPK", CTEntry::getClassPK);
+		attributeSetters.put("classPK", CTEntry::setClassPK);
+
+		attributeGetters.put("resourcePrimKey", CTEntry::getResourcePrimKey);
+		attributeSetters.put("resourcePrimKey", CTEntry::setResourcePrimKey);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<CTEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<CTEntry, ?>>();
-
-		attributeSetters.put("ctEntryId",
-			new BiConsumer<CTEntry, Long>() {
-				@Override
-				public void accept(CTEntry ctEntry, Long ctEntryId) {
-					ctEntry.setCtEntryId(ctEntryId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<CTEntry, Long>() {
-				@Override
-				public void accept(CTEntry ctEntry, Long companyId) {
-					ctEntry.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<CTEntry, Long>() {
-				@Override
-				public void accept(CTEntry ctEntry, Long userId) {
-					ctEntry.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<CTEntry, String>() {
-				@Override
-				public void accept(CTEntry ctEntry, String userName) {
-					ctEntry.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<CTEntry, Date>() {
-				@Override
-				public void accept(CTEntry ctEntry, Date createDate) {
-					ctEntry.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<CTEntry, Date>() {
-				@Override
-				public void accept(CTEntry ctEntry, Date modifiedDate) {
-					ctEntry.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<CTEntry, Long>() {
-				@Override
-				public void accept(CTEntry ctEntry, Long classNameId) {
-					ctEntry.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<CTEntry, Long>() {
-				@Override
-				public void accept(CTEntry ctEntry, Long classPK) {
-					ctEntry.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("resourcePrimKey",
-			new BiConsumer<CTEntry, Long>() {
-				@Override
-				public void accept(CTEntry ctEntry, Long resourcePrimKey) {
-					ctEntry.setResourcePrimKey(resourcePrimKey);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

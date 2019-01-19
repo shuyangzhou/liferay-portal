@@ -227,202 +227,44 @@ public class LayoutPageTemplateCollectionModelImpl extends BaseModelImpl<LayoutP
 	static {
 		Map<String, Function<LayoutPageTemplateCollection, Object>> attributeGetters =
 			new LinkedHashMap<String, Function<LayoutPageTemplateCollection, Object>>();
+		Map<String, BiConsumer<LayoutPageTemplateCollection, Object>> attributeSetters =
+			new LinkedHashMap<String, BiConsumer<LayoutPageTemplateCollection, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<LayoutPageTemplateCollection, Object>() {
-				@Override
-				public Object apply(
-					LayoutPageTemplateCollection layoutPageTemplateCollection) {
-					return layoutPageTemplateCollection.getUuid();
-				}
-			});
-		attributeGetters.put("layoutPageTemplateCollectionId",
-			new Function<LayoutPageTemplateCollection, Object>() {
-				@Override
-				public Object apply(
-					LayoutPageTemplateCollection layoutPageTemplateCollection) {
-					return layoutPageTemplateCollection.getLayoutPageTemplateCollectionId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<LayoutPageTemplateCollection, Object>() {
-				@Override
-				public Object apply(
-					LayoutPageTemplateCollection layoutPageTemplateCollection) {
-					return layoutPageTemplateCollection.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<LayoutPageTemplateCollection, Object>() {
-				@Override
-				public Object apply(
-					LayoutPageTemplateCollection layoutPageTemplateCollection) {
-					return layoutPageTemplateCollection.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<LayoutPageTemplateCollection, Object>() {
-				@Override
-				public Object apply(
-					LayoutPageTemplateCollection layoutPageTemplateCollection) {
-					return layoutPageTemplateCollection.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<LayoutPageTemplateCollection, Object>() {
-				@Override
-				public Object apply(
-					LayoutPageTemplateCollection layoutPageTemplateCollection) {
-					return layoutPageTemplateCollection.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<LayoutPageTemplateCollection, Object>() {
-				@Override
-				public Object apply(
-					LayoutPageTemplateCollection layoutPageTemplateCollection) {
-					return layoutPageTemplateCollection.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<LayoutPageTemplateCollection, Object>() {
-				@Override
-				public Object apply(
-					LayoutPageTemplateCollection layoutPageTemplateCollection) {
-					return layoutPageTemplateCollection.getModifiedDate();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<LayoutPageTemplateCollection, Object>() {
-				@Override
-				public Object apply(
-					LayoutPageTemplateCollection layoutPageTemplateCollection) {
-					return layoutPageTemplateCollection.getName();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<LayoutPageTemplateCollection, Object>() {
-				@Override
-				public Object apply(
-					LayoutPageTemplateCollection layoutPageTemplateCollection) {
-					return layoutPageTemplateCollection.getDescription();
-				}
-			});
-		attributeGetters.put("lastPublishDate",
-			new Function<LayoutPageTemplateCollection, Object>() {
-				@Override
-				public Object apply(
-					LayoutPageTemplateCollection layoutPageTemplateCollection) {
-					return layoutPageTemplateCollection.getLastPublishDate();
-				}
-			});
+		attributeGetters.put("uuid", LayoutPageTemplateCollection::getUuid);
+		attributeSetters.put("uuid", LayoutPageTemplateCollection::setUuid);
+
+		attributeGetters.put("layoutPageTemplateCollectionId", LayoutPageTemplateCollection::getLayoutPageTemplateCollectionId);
+		attributeSetters.put("layoutPageTemplateCollectionId", LayoutPageTemplateCollection::setLayoutPageTemplateCollectionId);
+
+		attributeGetters.put("groupId", LayoutPageTemplateCollection::getGroupId);
+		attributeSetters.put("groupId", LayoutPageTemplateCollection::setGroupId);
+
+		attributeGetters.put("companyId", LayoutPageTemplateCollection::getCompanyId);
+		attributeSetters.put("companyId", LayoutPageTemplateCollection::setCompanyId);
+
+		attributeGetters.put("userId", LayoutPageTemplateCollection::getUserId);
+		attributeSetters.put("userId", LayoutPageTemplateCollection::setUserId);
+
+		attributeGetters.put("userName", LayoutPageTemplateCollection::getUserName);
+		attributeSetters.put("userName", LayoutPageTemplateCollection::setUserName);
+
+		attributeGetters.put("createDate", LayoutPageTemplateCollection::getCreateDate);
+		attributeSetters.put("createDate", LayoutPageTemplateCollection::setCreateDate);
+
+		attributeGetters.put("modifiedDate", LayoutPageTemplateCollection::getModifiedDate);
+		attributeSetters.put("modifiedDate", LayoutPageTemplateCollection::setModifiedDate);
+
+		attributeGetters.put("name", LayoutPageTemplateCollection::getName);
+		attributeSetters.put("name", LayoutPageTemplateCollection::setName);
+
+		attributeGetters.put("description", LayoutPageTemplateCollection::getDescription);
+		attributeSetters.put("description", LayoutPageTemplateCollection::setDescription);
+
+		attributeGetters.put("lastPublishDate", LayoutPageTemplateCollection::getLastPublishDate);
+		attributeSetters.put("lastPublishDate", LayoutPageTemplateCollection::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<LayoutPageTemplateCollection, ?>> attributeSetters =
-			new LinkedHashMap<String, BiConsumer<LayoutPageTemplateCollection, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<LayoutPageTemplateCollection, String>() {
-				@Override
-				public void accept(
-					LayoutPageTemplateCollection layoutPageTemplateCollection,
-					String uuid) {
-					layoutPageTemplateCollection.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("layoutPageTemplateCollectionId",
-			new BiConsumer<LayoutPageTemplateCollection, Long>() {
-				@Override
-				public void accept(
-					LayoutPageTemplateCollection layoutPageTemplateCollection,
-					Long layoutPageTemplateCollectionId) {
-					layoutPageTemplateCollection.setLayoutPageTemplateCollectionId(layoutPageTemplateCollectionId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<LayoutPageTemplateCollection, Long>() {
-				@Override
-				public void accept(
-					LayoutPageTemplateCollection layoutPageTemplateCollection,
-					Long groupId) {
-					layoutPageTemplateCollection.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<LayoutPageTemplateCollection, Long>() {
-				@Override
-				public void accept(
-					LayoutPageTemplateCollection layoutPageTemplateCollection,
-					Long companyId) {
-					layoutPageTemplateCollection.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<LayoutPageTemplateCollection, Long>() {
-				@Override
-				public void accept(
-					LayoutPageTemplateCollection layoutPageTemplateCollection,
-					Long userId) {
-					layoutPageTemplateCollection.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<LayoutPageTemplateCollection, String>() {
-				@Override
-				public void accept(
-					LayoutPageTemplateCollection layoutPageTemplateCollection,
-					String userName) {
-					layoutPageTemplateCollection.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<LayoutPageTemplateCollection, Date>() {
-				@Override
-				public void accept(
-					LayoutPageTemplateCollection layoutPageTemplateCollection,
-					Date createDate) {
-					layoutPageTemplateCollection.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<LayoutPageTemplateCollection, Date>() {
-				@Override
-				public void accept(
-					LayoutPageTemplateCollection layoutPageTemplateCollection,
-					Date modifiedDate) {
-					layoutPageTemplateCollection.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<LayoutPageTemplateCollection, String>() {
-				@Override
-				public void accept(
-					LayoutPageTemplateCollection layoutPageTemplateCollection,
-					String name) {
-					layoutPageTemplateCollection.setName(name);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<LayoutPageTemplateCollection, String>() {
-				@Override
-				public void accept(
-					LayoutPageTemplateCollection layoutPageTemplateCollection,
-					String description) {
-					layoutPageTemplateCollection.setDescription(description);
-				}
-			});
-		attributeSetters.put("lastPublishDate",
-			new BiConsumer<LayoutPageTemplateCollection, Date>() {
-				@Override
-				public void accept(
-					LayoutPageTemplateCollection layoutPageTemplateCollection,
-					Date lastPublishDate) {
-					layoutPageTemplateCollection.setLastPublishDate(lastPublishDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

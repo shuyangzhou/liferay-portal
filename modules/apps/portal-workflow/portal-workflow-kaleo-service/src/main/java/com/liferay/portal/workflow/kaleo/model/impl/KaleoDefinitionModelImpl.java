@@ -234,205 +234,49 @@ public class KaleoDefinitionModelImpl extends BaseModelImpl<KaleoDefinition>
 
 	static {
 		Map<String, Function<KaleoDefinition, Object>> attributeGetters = new LinkedHashMap<String, Function<KaleoDefinition, Object>>();
+		Map<String, BiConsumer<KaleoDefinition, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<KaleoDefinition, Object>>();
 
-		attributeGetters.put("kaleoDefinitionId",
-			new Function<KaleoDefinition, Object>() {
-				@Override
-				public Object apply(KaleoDefinition kaleoDefinition) {
-					return kaleoDefinition.getKaleoDefinitionId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<KaleoDefinition, Object>() {
-				@Override
-				public Object apply(KaleoDefinition kaleoDefinition) {
-					return kaleoDefinition.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<KaleoDefinition, Object>() {
-				@Override
-				public Object apply(KaleoDefinition kaleoDefinition) {
-					return kaleoDefinition.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<KaleoDefinition, Object>() {
-				@Override
-				public Object apply(KaleoDefinition kaleoDefinition) {
-					return kaleoDefinition.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<KaleoDefinition, Object>() {
-				@Override
-				public Object apply(KaleoDefinition kaleoDefinition) {
-					return kaleoDefinition.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<KaleoDefinition, Object>() {
-				@Override
-				public Object apply(KaleoDefinition kaleoDefinition) {
-					return kaleoDefinition.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<KaleoDefinition, Object>() {
-				@Override
-				public Object apply(KaleoDefinition kaleoDefinition) {
-					return kaleoDefinition.getModifiedDate();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<KaleoDefinition, Object>() {
-				@Override
-				public Object apply(KaleoDefinition kaleoDefinition) {
-					return kaleoDefinition.getName();
-				}
-			});
-		attributeGetters.put("title",
-			new Function<KaleoDefinition, Object>() {
-				@Override
-				public Object apply(KaleoDefinition kaleoDefinition) {
-					return kaleoDefinition.getTitle();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<KaleoDefinition, Object>() {
-				@Override
-				public Object apply(KaleoDefinition kaleoDefinition) {
-					return kaleoDefinition.getDescription();
-				}
-			});
-		attributeGetters.put("content",
-			new Function<KaleoDefinition, Object>() {
-				@Override
-				public Object apply(KaleoDefinition kaleoDefinition) {
-					return kaleoDefinition.getContent();
-				}
-			});
-		attributeGetters.put("version",
-			new Function<KaleoDefinition, Object>() {
-				@Override
-				public Object apply(KaleoDefinition kaleoDefinition) {
-					return kaleoDefinition.getVersion();
-				}
-			});
-		attributeGetters.put("active",
-			new Function<KaleoDefinition, Object>() {
-				@Override
-				public Object apply(KaleoDefinition kaleoDefinition) {
-					return kaleoDefinition.isActive();
-				}
-			});
+		attributeGetters.put("kaleoDefinitionId", KaleoDefinition::getKaleoDefinitionId);
+		attributeSetters.put("kaleoDefinitionId", KaleoDefinition::setKaleoDefinitionId);
+
+		attributeGetters.put("groupId", KaleoDefinition::getGroupId);
+		attributeSetters.put("groupId", KaleoDefinition::setGroupId);
+
+		attributeGetters.put("companyId", KaleoDefinition::getCompanyId);
+		attributeSetters.put("companyId", KaleoDefinition::setCompanyId);
+
+		attributeGetters.put("userId", KaleoDefinition::getUserId);
+		attributeSetters.put("userId", KaleoDefinition::setUserId);
+
+		attributeGetters.put("userName", KaleoDefinition::getUserName);
+		attributeSetters.put("userName", KaleoDefinition::setUserName);
+
+		attributeGetters.put("createDate", KaleoDefinition::getCreateDate);
+		attributeSetters.put("createDate", KaleoDefinition::setCreateDate);
+
+		attributeGetters.put("modifiedDate", KaleoDefinition::getModifiedDate);
+		attributeSetters.put("modifiedDate", KaleoDefinition::setModifiedDate);
+
+		attributeGetters.put("name", KaleoDefinition::getName);
+		attributeSetters.put("name", KaleoDefinition::setName);
+
+		attributeGetters.put("title", KaleoDefinition::getTitle);
+		attributeSetters.put("title", KaleoDefinition::setTitle);
+
+		attributeGetters.put("description", KaleoDefinition::getDescription);
+		attributeSetters.put("description", KaleoDefinition::setDescription);
+
+		attributeGetters.put("content", KaleoDefinition::getContent);
+		attributeSetters.put("content", KaleoDefinition::setContent);
+
+		attributeGetters.put("version", KaleoDefinition::getVersion);
+		attributeSetters.put("version", KaleoDefinition::setVersion);
+
+		attributeGetters.put("active", KaleoDefinition::getActive);
+		attributeSetters.put("active", KaleoDefinition::setActive);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<KaleoDefinition, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<KaleoDefinition, ?>>();
-
-		attributeSetters.put("kaleoDefinitionId",
-			new BiConsumer<KaleoDefinition, Long>() {
-				@Override
-				public void accept(KaleoDefinition kaleoDefinition,
-					Long kaleoDefinitionId) {
-					kaleoDefinition.setKaleoDefinitionId(kaleoDefinitionId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<KaleoDefinition, Long>() {
-				@Override
-				public void accept(KaleoDefinition kaleoDefinition, Long groupId) {
-					kaleoDefinition.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<KaleoDefinition, Long>() {
-				@Override
-				public void accept(KaleoDefinition kaleoDefinition,
-					Long companyId) {
-					kaleoDefinition.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<KaleoDefinition, Long>() {
-				@Override
-				public void accept(KaleoDefinition kaleoDefinition, Long userId) {
-					kaleoDefinition.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<KaleoDefinition, String>() {
-				@Override
-				public void accept(KaleoDefinition kaleoDefinition,
-					String userName) {
-					kaleoDefinition.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<KaleoDefinition, Date>() {
-				@Override
-				public void accept(KaleoDefinition kaleoDefinition,
-					Date createDate) {
-					kaleoDefinition.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<KaleoDefinition, Date>() {
-				@Override
-				public void accept(KaleoDefinition kaleoDefinition,
-					Date modifiedDate) {
-					kaleoDefinition.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<KaleoDefinition, String>() {
-				@Override
-				public void accept(KaleoDefinition kaleoDefinition, String name) {
-					kaleoDefinition.setName(name);
-				}
-			});
-		attributeSetters.put("title",
-			new BiConsumer<KaleoDefinition, String>() {
-				@Override
-				public void accept(KaleoDefinition kaleoDefinition, String title) {
-					kaleoDefinition.setTitle(title);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<KaleoDefinition, String>() {
-				@Override
-				public void accept(KaleoDefinition kaleoDefinition,
-					String description) {
-					kaleoDefinition.setDescription(description);
-				}
-			});
-		attributeSetters.put("content",
-			new BiConsumer<KaleoDefinition, String>() {
-				@Override
-				public void accept(KaleoDefinition kaleoDefinition,
-					String content) {
-					kaleoDefinition.setContent(content);
-				}
-			});
-		attributeSetters.put("version",
-			new BiConsumer<KaleoDefinition, Integer>() {
-				@Override
-				public void accept(KaleoDefinition kaleoDefinition,
-					Integer version) {
-					kaleoDefinition.setVersion(version);
-				}
-			});
-		attributeSetters.put("active",
-			new BiConsumer<KaleoDefinition, Boolean>() {
-				@Override
-				public void accept(KaleoDefinition kaleoDefinition,
-					Boolean active) {
-					kaleoDefinition.setActive(active);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

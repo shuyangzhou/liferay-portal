@@ -162,149 +162,37 @@ public class WeDeployAuthTokenModelImpl extends BaseModelImpl<WeDeployAuthToken>
 
 	static {
 		Map<String, Function<WeDeployAuthToken, Object>> attributeGetters = new LinkedHashMap<String, Function<WeDeployAuthToken, Object>>();
+		Map<String, BiConsumer<WeDeployAuthToken, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<WeDeployAuthToken, Object>>();
 
-		attributeGetters.put("weDeployAuthTokenId",
-			new Function<WeDeployAuthToken, Object>() {
-				@Override
-				public Object apply(WeDeployAuthToken weDeployAuthToken) {
-					return weDeployAuthToken.getWeDeployAuthTokenId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<WeDeployAuthToken, Object>() {
-				@Override
-				public Object apply(WeDeployAuthToken weDeployAuthToken) {
-					return weDeployAuthToken.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<WeDeployAuthToken, Object>() {
-				@Override
-				public Object apply(WeDeployAuthToken weDeployAuthToken) {
-					return weDeployAuthToken.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<WeDeployAuthToken, Object>() {
-				@Override
-				public Object apply(WeDeployAuthToken weDeployAuthToken) {
-					return weDeployAuthToken.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<WeDeployAuthToken, Object>() {
-				@Override
-				public Object apply(WeDeployAuthToken weDeployAuthToken) {
-					return weDeployAuthToken.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<WeDeployAuthToken, Object>() {
-				@Override
-				public Object apply(WeDeployAuthToken weDeployAuthToken) {
-					return weDeployAuthToken.getModifiedDate();
-				}
-			});
-		attributeGetters.put("clientId",
-			new Function<WeDeployAuthToken, Object>() {
-				@Override
-				public Object apply(WeDeployAuthToken weDeployAuthToken) {
-					return weDeployAuthToken.getClientId();
-				}
-			});
-		attributeGetters.put("token",
-			new Function<WeDeployAuthToken, Object>() {
-				@Override
-				public Object apply(WeDeployAuthToken weDeployAuthToken) {
-					return weDeployAuthToken.getToken();
-				}
-			});
-		attributeGetters.put("type",
-			new Function<WeDeployAuthToken, Object>() {
-				@Override
-				public Object apply(WeDeployAuthToken weDeployAuthToken) {
-					return weDeployAuthToken.getType();
-				}
-			});
+		attributeGetters.put("weDeployAuthTokenId", WeDeployAuthToken::getWeDeployAuthTokenId);
+		attributeSetters.put("weDeployAuthTokenId", WeDeployAuthToken::setWeDeployAuthTokenId);
+
+		attributeGetters.put("companyId", WeDeployAuthToken::getCompanyId);
+		attributeSetters.put("companyId", WeDeployAuthToken::setCompanyId);
+
+		attributeGetters.put("userId", WeDeployAuthToken::getUserId);
+		attributeSetters.put("userId", WeDeployAuthToken::setUserId);
+
+		attributeGetters.put("userName", WeDeployAuthToken::getUserName);
+		attributeSetters.put("userName", WeDeployAuthToken::setUserName);
+
+		attributeGetters.put("createDate", WeDeployAuthToken::getCreateDate);
+		attributeSetters.put("createDate", WeDeployAuthToken::setCreateDate);
+
+		attributeGetters.put("modifiedDate", WeDeployAuthToken::getModifiedDate);
+		attributeSetters.put("modifiedDate", WeDeployAuthToken::setModifiedDate);
+
+		attributeGetters.put("clientId", WeDeployAuthToken::getClientId);
+		attributeSetters.put("clientId", WeDeployAuthToken::setClientId);
+
+		attributeGetters.put("token", WeDeployAuthToken::getToken);
+		attributeSetters.put("token", WeDeployAuthToken::setToken);
+
+		attributeGetters.put("type", WeDeployAuthToken::getType);
+		attributeSetters.put("type", WeDeployAuthToken::setType);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<WeDeployAuthToken, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<WeDeployAuthToken, ?>>();
-
-		attributeSetters.put("weDeployAuthTokenId",
-			new BiConsumer<WeDeployAuthToken, Long>() {
-				@Override
-				public void accept(WeDeployAuthToken weDeployAuthToken,
-					Long weDeployAuthTokenId) {
-					weDeployAuthToken.setWeDeployAuthTokenId(weDeployAuthTokenId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<WeDeployAuthToken, Long>() {
-				@Override
-				public void accept(WeDeployAuthToken weDeployAuthToken,
-					Long companyId) {
-					weDeployAuthToken.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<WeDeployAuthToken, Long>() {
-				@Override
-				public void accept(WeDeployAuthToken weDeployAuthToken,
-					Long userId) {
-					weDeployAuthToken.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<WeDeployAuthToken, String>() {
-				@Override
-				public void accept(WeDeployAuthToken weDeployAuthToken,
-					String userName) {
-					weDeployAuthToken.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<WeDeployAuthToken, Date>() {
-				@Override
-				public void accept(WeDeployAuthToken weDeployAuthToken,
-					Date createDate) {
-					weDeployAuthToken.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<WeDeployAuthToken, Date>() {
-				@Override
-				public void accept(WeDeployAuthToken weDeployAuthToken,
-					Date modifiedDate) {
-					weDeployAuthToken.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("clientId",
-			new BiConsumer<WeDeployAuthToken, String>() {
-				@Override
-				public void accept(WeDeployAuthToken weDeployAuthToken,
-					String clientId) {
-					weDeployAuthToken.setClientId(clientId);
-				}
-			});
-		attributeSetters.put("token",
-			new BiConsumer<WeDeployAuthToken, String>() {
-				@Override
-				public void accept(WeDeployAuthToken weDeployAuthToken,
-					String token) {
-					weDeployAuthToken.setToken(token);
-				}
-			});
-		attributeSetters.put("type",
-			new BiConsumer<WeDeployAuthToken, Integer>() {
-				@Override
-				public void accept(WeDeployAuthToken weDeployAuthToken,
-					Integer type) {
-					weDeployAuthToken.setType(type);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

@@ -180,269 +180,61 @@ public class KaleoNotificationModelImpl extends BaseModelImpl<KaleoNotification>
 
 	static {
 		Map<String, Function<KaleoNotification, Object>> attributeGetters = new LinkedHashMap<String, Function<KaleoNotification, Object>>();
+		Map<String, BiConsumer<KaleoNotification, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<KaleoNotification, Object>>();
 
-		attributeGetters.put("kaleoNotificationId",
-			new Function<KaleoNotification, Object>() {
-				@Override
-				public Object apply(KaleoNotification kaleoNotification) {
-					return kaleoNotification.getKaleoNotificationId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<KaleoNotification, Object>() {
-				@Override
-				public Object apply(KaleoNotification kaleoNotification) {
-					return kaleoNotification.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<KaleoNotification, Object>() {
-				@Override
-				public Object apply(KaleoNotification kaleoNotification) {
-					return kaleoNotification.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<KaleoNotification, Object>() {
-				@Override
-				public Object apply(KaleoNotification kaleoNotification) {
-					return kaleoNotification.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<KaleoNotification, Object>() {
-				@Override
-				public Object apply(KaleoNotification kaleoNotification) {
-					return kaleoNotification.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<KaleoNotification, Object>() {
-				@Override
-				public Object apply(KaleoNotification kaleoNotification) {
-					return kaleoNotification.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<KaleoNotification, Object>() {
-				@Override
-				public Object apply(KaleoNotification kaleoNotification) {
-					return kaleoNotification.getModifiedDate();
-				}
-			});
-		attributeGetters.put("kaleoClassName",
-			new Function<KaleoNotification, Object>() {
-				@Override
-				public Object apply(KaleoNotification kaleoNotification) {
-					return kaleoNotification.getKaleoClassName();
-				}
-			});
-		attributeGetters.put("kaleoClassPK",
-			new Function<KaleoNotification, Object>() {
-				@Override
-				public Object apply(KaleoNotification kaleoNotification) {
-					return kaleoNotification.getKaleoClassPK();
-				}
-			});
-		attributeGetters.put("kaleoDefinitionVersionId",
-			new Function<KaleoNotification, Object>() {
-				@Override
-				public Object apply(KaleoNotification kaleoNotification) {
-					return kaleoNotification.getKaleoDefinitionVersionId();
-				}
-			});
-		attributeGetters.put("kaleoNodeName",
-			new Function<KaleoNotification, Object>() {
-				@Override
-				public Object apply(KaleoNotification kaleoNotification) {
-					return kaleoNotification.getKaleoNodeName();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<KaleoNotification, Object>() {
-				@Override
-				public Object apply(KaleoNotification kaleoNotification) {
-					return kaleoNotification.getName();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<KaleoNotification, Object>() {
-				@Override
-				public Object apply(KaleoNotification kaleoNotification) {
-					return kaleoNotification.getDescription();
-				}
-			});
-		attributeGetters.put("executionType",
-			new Function<KaleoNotification, Object>() {
-				@Override
-				public Object apply(KaleoNotification kaleoNotification) {
-					return kaleoNotification.getExecutionType();
-				}
-			});
-		attributeGetters.put("template",
-			new Function<KaleoNotification, Object>() {
-				@Override
-				public Object apply(KaleoNotification kaleoNotification) {
-					return kaleoNotification.getTemplate();
-				}
-			});
-		attributeGetters.put("templateLanguage",
-			new Function<KaleoNotification, Object>() {
-				@Override
-				public Object apply(KaleoNotification kaleoNotification) {
-					return kaleoNotification.getTemplateLanguage();
-				}
-			});
-		attributeGetters.put("notificationTypes",
-			new Function<KaleoNotification, Object>() {
-				@Override
-				public Object apply(KaleoNotification kaleoNotification) {
-					return kaleoNotification.getNotificationTypes();
-				}
-			});
+		attributeGetters.put("kaleoNotificationId", KaleoNotification::getKaleoNotificationId);
+		attributeSetters.put("kaleoNotificationId", KaleoNotification::setKaleoNotificationId);
+
+		attributeGetters.put("groupId", KaleoNotification::getGroupId);
+		attributeSetters.put("groupId", KaleoNotification::setGroupId);
+
+		attributeGetters.put("companyId", KaleoNotification::getCompanyId);
+		attributeSetters.put("companyId", KaleoNotification::setCompanyId);
+
+		attributeGetters.put("userId", KaleoNotification::getUserId);
+		attributeSetters.put("userId", KaleoNotification::setUserId);
+
+		attributeGetters.put("userName", KaleoNotification::getUserName);
+		attributeSetters.put("userName", KaleoNotification::setUserName);
+
+		attributeGetters.put("createDate", KaleoNotification::getCreateDate);
+		attributeSetters.put("createDate", KaleoNotification::setCreateDate);
+
+		attributeGetters.put("modifiedDate", KaleoNotification::getModifiedDate);
+		attributeSetters.put("modifiedDate", KaleoNotification::setModifiedDate);
+
+		attributeGetters.put("kaleoClassName", KaleoNotification::getKaleoClassName);
+		attributeSetters.put("kaleoClassName", KaleoNotification::setKaleoClassName);
+
+		attributeGetters.put("kaleoClassPK", KaleoNotification::getKaleoClassPK);
+		attributeSetters.put("kaleoClassPK", KaleoNotification::setKaleoClassPK);
+
+		attributeGetters.put("kaleoDefinitionVersionId", KaleoNotification::getKaleoDefinitionVersionId);
+		attributeSetters.put("kaleoDefinitionVersionId", KaleoNotification::setKaleoDefinitionVersionId);
+
+		attributeGetters.put("kaleoNodeName", KaleoNotification::getKaleoNodeName);
+		attributeSetters.put("kaleoNodeName", KaleoNotification::setKaleoNodeName);
+
+		attributeGetters.put("name", KaleoNotification::getName);
+		attributeSetters.put("name", KaleoNotification::setName);
+
+		attributeGetters.put("description", KaleoNotification::getDescription);
+		attributeSetters.put("description", KaleoNotification::setDescription);
+
+		attributeGetters.put("executionType", KaleoNotification::getExecutionType);
+		attributeSetters.put("executionType", KaleoNotification::setExecutionType);
+
+		attributeGetters.put("template", KaleoNotification::getTemplate);
+		attributeSetters.put("template", KaleoNotification::setTemplate);
+
+		attributeGetters.put("templateLanguage", KaleoNotification::getTemplateLanguage);
+		attributeSetters.put("templateLanguage", KaleoNotification::setTemplateLanguage);
+
+		attributeGetters.put("notificationTypes", KaleoNotification::getNotificationTypes);
+		attributeSetters.put("notificationTypes", KaleoNotification::setNotificationTypes);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<KaleoNotification, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<KaleoNotification, ?>>();
-
-		attributeSetters.put("kaleoNotificationId",
-			new BiConsumer<KaleoNotification, Long>() {
-				@Override
-				public void accept(KaleoNotification kaleoNotification,
-					Long kaleoNotificationId) {
-					kaleoNotification.setKaleoNotificationId(kaleoNotificationId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<KaleoNotification, Long>() {
-				@Override
-				public void accept(KaleoNotification kaleoNotification,
-					Long groupId) {
-					kaleoNotification.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<KaleoNotification, Long>() {
-				@Override
-				public void accept(KaleoNotification kaleoNotification,
-					Long companyId) {
-					kaleoNotification.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<KaleoNotification, Long>() {
-				@Override
-				public void accept(KaleoNotification kaleoNotification,
-					Long userId) {
-					kaleoNotification.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<KaleoNotification, String>() {
-				@Override
-				public void accept(KaleoNotification kaleoNotification,
-					String userName) {
-					kaleoNotification.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<KaleoNotification, Date>() {
-				@Override
-				public void accept(KaleoNotification kaleoNotification,
-					Date createDate) {
-					kaleoNotification.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<KaleoNotification, Date>() {
-				@Override
-				public void accept(KaleoNotification kaleoNotification,
-					Date modifiedDate) {
-					kaleoNotification.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("kaleoClassName",
-			new BiConsumer<KaleoNotification, String>() {
-				@Override
-				public void accept(KaleoNotification kaleoNotification,
-					String kaleoClassName) {
-					kaleoNotification.setKaleoClassName(kaleoClassName);
-				}
-			});
-		attributeSetters.put("kaleoClassPK",
-			new BiConsumer<KaleoNotification, Long>() {
-				@Override
-				public void accept(KaleoNotification kaleoNotification,
-					Long kaleoClassPK) {
-					kaleoNotification.setKaleoClassPK(kaleoClassPK);
-				}
-			});
-		attributeSetters.put("kaleoDefinitionVersionId",
-			new BiConsumer<KaleoNotification, Long>() {
-				@Override
-				public void accept(KaleoNotification kaleoNotification,
-					Long kaleoDefinitionVersionId) {
-					kaleoNotification.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
-				}
-			});
-		attributeSetters.put("kaleoNodeName",
-			new BiConsumer<KaleoNotification, String>() {
-				@Override
-				public void accept(KaleoNotification kaleoNotification,
-					String kaleoNodeName) {
-					kaleoNotification.setKaleoNodeName(kaleoNodeName);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<KaleoNotification, String>() {
-				@Override
-				public void accept(KaleoNotification kaleoNotification,
-					String name) {
-					kaleoNotification.setName(name);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<KaleoNotification, String>() {
-				@Override
-				public void accept(KaleoNotification kaleoNotification,
-					String description) {
-					kaleoNotification.setDescription(description);
-				}
-			});
-		attributeSetters.put("executionType",
-			new BiConsumer<KaleoNotification, String>() {
-				@Override
-				public void accept(KaleoNotification kaleoNotification,
-					String executionType) {
-					kaleoNotification.setExecutionType(executionType);
-				}
-			});
-		attributeSetters.put("template",
-			new BiConsumer<KaleoNotification, String>() {
-				@Override
-				public void accept(KaleoNotification kaleoNotification,
-					String template) {
-					kaleoNotification.setTemplate(template);
-				}
-			});
-		attributeSetters.put("templateLanguage",
-			new BiConsumer<KaleoNotification, String>() {
-				@Override
-				public void accept(KaleoNotification kaleoNotification,
-					String templateLanguage) {
-					kaleoNotification.setTemplateLanguage(templateLanguage);
-				}
-			});
-		attributeSetters.put("notificationTypes",
-			new BiConsumer<KaleoNotification, String>() {
-				@Override
-				public void accept(KaleoNotification kaleoNotification,
-					String notificationTypes) {
-					kaleoNotification.setNotificationTypes(notificationTypes);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

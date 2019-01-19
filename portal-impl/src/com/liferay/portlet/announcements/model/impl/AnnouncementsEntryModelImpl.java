@@ -249,269 +249,61 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 
 	static {
 		Map<String, Function<AnnouncementsEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<AnnouncementsEntry, Object>>();
+		Map<String, BiConsumer<AnnouncementsEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<AnnouncementsEntry, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<AnnouncementsEntry, Object>() {
-				@Override
-				public Object apply(AnnouncementsEntry announcementsEntry) {
-					return announcementsEntry.getUuid();
-				}
-			});
-		attributeGetters.put("entryId",
-			new Function<AnnouncementsEntry, Object>() {
-				@Override
-				public Object apply(AnnouncementsEntry announcementsEntry) {
-					return announcementsEntry.getEntryId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<AnnouncementsEntry, Object>() {
-				@Override
-				public Object apply(AnnouncementsEntry announcementsEntry) {
-					return announcementsEntry.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<AnnouncementsEntry, Object>() {
-				@Override
-				public Object apply(AnnouncementsEntry announcementsEntry) {
-					return announcementsEntry.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<AnnouncementsEntry, Object>() {
-				@Override
-				public Object apply(AnnouncementsEntry announcementsEntry) {
-					return announcementsEntry.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<AnnouncementsEntry, Object>() {
-				@Override
-				public Object apply(AnnouncementsEntry announcementsEntry) {
-					return announcementsEntry.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<AnnouncementsEntry, Object>() {
-				@Override
-				public Object apply(AnnouncementsEntry announcementsEntry) {
-					return announcementsEntry.getModifiedDate();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<AnnouncementsEntry, Object>() {
-				@Override
-				public Object apply(AnnouncementsEntry announcementsEntry) {
-					return announcementsEntry.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<AnnouncementsEntry, Object>() {
-				@Override
-				public Object apply(AnnouncementsEntry announcementsEntry) {
-					return announcementsEntry.getClassPK();
-				}
-			});
-		attributeGetters.put("title",
-			new Function<AnnouncementsEntry, Object>() {
-				@Override
-				public Object apply(AnnouncementsEntry announcementsEntry) {
-					return announcementsEntry.getTitle();
-				}
-			});
-		attributeGetters.put("content",
-			new Function<AnnouncementsEntry, Object>() {
-				@Override
-				public Object apply(AnnouncementsEntry announcementsEntry) {
-					return announcementsEntry.getContent();
-				}
-			});
-		attributeGetters.put("url",
-			new Function<AnnouncementsEntry, Object>() {
-				@Override
-				public Object apply(AnnouncementsEntry announcementsEntry) {
-					return announcementsEntry.getUrl();
-				}
-			});
-		attributeGetters.put("type",
-			new Function<AnnouncementsEntry, Object>() {
-				@Override
-				public Object apply(AnnouncementsEntry announcementsEntry) {
-					return announcementsEntry.getType();
-				}
-			});
-		attributeGetters.put("displayDate",
-			new Function<AnnouncementsEntry, Object>() {
-				@Override
-				public Object apply(AnnouncementsEntry announcementsEntry) {
-					return announcementsEntry.getDisplayDate();
-				}
-			});
-		attributeGetters.put("expirationDate",
-			new Function<AnnouncementsEntry, Object>() {
-				@Override
-				public Object apply(AnnouncementsEntry announcementsEntry) {
-					return announcementsEntry.getExpirationDate();
-				}
-			});
-		attributeGetters.put("priority",
-			new Function<AnnouncementsEntry, Object>() {
-				@Override
-				public Object apply(AnnouncementsEntry announcementsEntry) {
-					return announcementsEntry.getPriority();
-				}
-			});
-		attributeGetters.put("alert",
-			new Function<AnnouncementsEntry, Object>() {
-				@Override
-				public Object apply(AnnouncementsEntry announcementsEntry) {
-					return announcementsEntry.isAlert();
-				}
-			});
+		attributeGetters.put("uuid", AnnouncementsEntry::getUuid);
+		attributeSetters.put("uuid", AnnouncementsEntry::setUuid);
+
+		attributeGetters.put("entryId", AnnouncementsEntry::getEntryId);
+		attributeSetters.put("entryId", AnnouncementsEntry::setEntryId);
+
+		attributeGetters.put("companyId", AnnouncementsEntry::getCompanyId);
+		attributeSetters.put("companyId", AnnouncementsEntry::setCompanyId);
+
+		attributeGetters.put("userId", AnnouncementsEntry::getUserId);
+		attributeSetters.put("userId", AnnouncementsEntry::setUserId);
+
+		attributeGetters.put("userName", AnnouncementsEntry::getUserName);
+		attributeSetters.put("userName", AnnouncementsEntry::setUserName);
+
+		attributeGetters.put("createDate", AnnouncementsEntry::getCreateDate);
+		attributeSetters.put("createDate", AnnouncementsEntry::setCreateDate);
+
+		attributeGetters.put("modifiedDate", AnnouncementsEntry::getModifiedDate);
+		attributeSetters.put("modifiedDate", AnnouncementsEntry::setModifiedDate);
+
+		attributeGetters.put("classNameId", AnnouncementsEntry::getClassNameId);
+		attributeSetters.put("classNameId", AnnouncementsEntry::setClassNameId);
+
+		attributeGetters.put("classPK", AnnouncementsEntry::getClassPK);
+		attributeSetters.put("classPK", AnnouncementsEntry::setClassPK);
+
+		attributeGetters.put("title", AnnouncementsEntry::getTitle);
+		attributeSetters.put("title", AnnouncementsEntry::setTitle);
+
+		attributeGetters.put("content", AnnouncementsEntry::getContent);
+		attributeSetters.put("content", AnnouncementsEntry::setContent);
+
+		attributeGetters.put("url", AnnouncementsEntry::getUrl);
+		attributeSetters.put("url", AnnouncementsEntry::setUrl);
+
+		attributeGetters.put("type", AnnouncementsEntry::getType);
+		attributeSetters.put("type", AnnouncementsEntry::setType);
+
+		attributeGetters.put("displayDate", AnnouncementsEntry::getDisplayDate);
+		attributeSetters.put("displayDate", AnnouncementsEntry::setDisplayDate);
+
+		attributeGetters.put("expirationDate", AnnouncementsEntry::getExpirationDate);
+		attributeSetters.put("expirationDate", AnnouncementsEntry::setExpirationDate);
+
+		attributeGetters.put("priority", AnnouncementsEntry::getPriority);
+		attributeSetters.put("priority", AnnouncementsEntry::setPriority);
+
+		attributeGetters.put("alert", AnnouncementsEntry::getAlert);
+		attributeSetters.put("alert", AnnouncementsEntry::setAlert);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<AnnouncementsEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<AnnouncementsEntry, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<AnnouncementsEntry, String>() {
-				@Override
-				public void accept(AnnouncementsEntry announcementsEntry,
-					String uuid) {
-					announcementsEntry.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("entryId",
-			new BiConsumer<AnnouncementsEntry, Long>() {
-				@Override
-				public void accept(AnnouncementsEntry announcementsEntry,
-					Long entryId) {
-					announcementsEntry.setEntryId(entryId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<AnnouncementsEntry, Long>() {
-				@Override
-				public void accept(AnnouncementsEntry announcementsEntry,
-					Long companyId) {
-					announcementsEntry.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<AnnouncementsEntry, Long>() {
-				@Override
-				public void accept(AnnouncementsEntry announcementsEntry,
-					Long userId) {
-					announcementsEntry.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<AnnouncementsEntry, String>() {
-				@Override
-				public void accept(AnnouncementsEntry announcementsEntry,
-					String userName) {
-					announcementsEntry.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<AnnouncementsEntry, Date>() {
-				@Override
-				public void accept(AnnouncementsEntry announcementsEntry,
-					Date createDate) {
-					announcementsEntry.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<AnnouncementsEntry, Date>() {
-				@Override
-				public void accept(AnnouncementsEntry announcementsEntry,
-					Date modifiedDate) {
-					announcementsEntry.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<AnnouncementsEntry, Long>() {
-				@Override
-				public void accept(AnnouncementsEntry announcementsEntry,
-					Long classNameId) {
-					announcementsEntry.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<AnnouncementsEntry, Long>() {
-				@Override
-				public void accept(AnnouncementsEntry announcementsEntry,
-					Long classPK) {
-					announcementsEntry.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("title",
-			new BiConsumer<AnnouncementsEntry, String>() {
-				@Override
-				public void accept(AnnouncementsEntry announcementsEntry,
-					String title) {
-					announcementsEntry.setTitle(title);
-				}
-			});
-		attributeSetters.put("content",
-			new BiConsumer<AnnouncementsEntry, String>() {
-				@Override
-				public void accept(AnnouncementsEntry announcementsEntry,
-					String content) {
-					announcementsEntry.setContent(content);
-				}
-			});
-		attributeSetters.put("url",
-			new BiConsumer<AnnouncementsEntry, String>() {
-				@Override
-				public void accept(AnnouncementsEntry announcementsEntry,
-					String url) {
-					announcementsEntry.setUrl(url);
-				}
-			});
-		attributeSetters.put("type",
-			new BiConsumer<AnnouncementsEntry, String>() {
-				@Override
-				public void accept(AnnouncementsEntry announcementsEntry,
-					String type) {
-					announcementsEntry.setType(type);
-				}
-			});
-		attributeSetters.put("displayDate",
-			new BiConsumer<AnnouncementsEntry, Date>() {
-				@Override
-				public void accept(AnnouncementsEntry announcementsEntry,
-					Date displayDate) {
-					announcementsEntry.setDisplayDate(displayDate);
-				}
-			});
-		attributeSetters.put("expirationDate",
-			new BiConsumer<AnnouncementsEntry, Date>() {
-				@Override
-				public void accept(AnnouncementsEntry announcementsEntry,
-					Date expirationDate) {
-					announcementsEntry.setExpirationDate(expirationDate);
-				}
-			});
-		attributeSetters.put("priority",
-			new BiConsumer<AnnouncementsEntry, Integer>() {
-				@Override
-				public void accept(AnnouncementsEntry announcementsEntry,
-					Integer priority) {
-					announcementsEntry.setPriority(priority);
-				}
-			});
-		attributeSetters.put("alert",
-			new BiConsumer<AnnouncementsEntry, Boolean>() {
-				@Override
-				public void accept(AnnouncementsEntry announcementsEntry,
-					Boolean alert) {
-					announcementsEntry.setAlert(alert);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

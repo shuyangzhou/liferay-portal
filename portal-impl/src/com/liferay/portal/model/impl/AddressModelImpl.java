@@ -256,294 +256,70 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 
 	static {
 		Map<String, Function<Address, Object>> attributeGetters = new LinkedHashMap<String, Function<Address, Object>>();
+		Map<String, BiConsumer<Address, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Address, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<Address, Object>() {
-				@Override
-				public Object apply(Address address) {
-					return address.getMvccVersion();
-				}
-			});
-		attributeGetters.put("uuid",
-			new Function<Address, Object>() {
-				@Override
-				public Object apply(Address address) {
-					return address.getUuid();
-				}
-			});
-		attributeGetters.put("addressId",
-			new Function<Address, Object>() {
-				@Override
-				public Object apply(Address address) {
-					return address.getAddressId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<Address, Object>() {
-				@Override
-				public Object apply(Address address) {
-					return address.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<Address, Object>() {
-				@Override
-				public Object apply(Address address) {
-					return address.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<Address, Object>() {
-				@Override
-				public Object apply(Address address) {
-					return address.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<Address, Object>() {
-				@Override
-				public Object apply(Address address) {
-					return address.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<Address, Object>() {
-				@Override
-				public Object apply(Address address) {
-					return address.getModifiedDate();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<Address, Object>() {
-				@Override
-				public Object apply(Address address) {
-					return address.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<Address, Object>() {
-				@Override
-				public Object apply(Address address) {
-					return address.getClassPK();
-				}
-			});
-		attributeGetters.put("street1",
-			new Function<Address, Object>() {
-				@Override
-				public Object apply(Address address) {
-					return address.getStreet1();
-				}
-			});
-		attributeGetters.put("street2",
-			new Function<Address, Object>() {
-				@Override
-				public Object apply(Address address) {
-					return address.getStreet2();
-				}
-			});
-		attributeGetters.put("street3",
-			new Function<Address, Object>() {
-				@Override
-				public Object apply(Address address) {
-					return address.getStreet3();
-				}
-			});
-		attributeGetters.put("city",
-			new Function<Address, Object>() {
-				@Override
-				public Object apply(Address address) {
-					return address.getCity();
-				}
-			});
-		attributeGetters.put("zip",
-			new Function<Address, Object>() {
-				@Override
-				public Object apply(Address address) {
-					return address.getZip();
-				}
-			});
-		attributeGetters.put("regionId",
-			new Function<Address, Object>() {
-				@Override
-				public Object apply(Address address) {
-					return address.getRegionId();
-				}
-			});
-		attributeGetters.put("countryId",
-			new Function<Address, Object>() {
-				@Override
-				public Object apply(Address address) {
-					return address.getCountryId();
-				}
-			});
-		attributeGetters.put("typeId",
-			new Function<Address, Object>() {
-				@Override
-				public Object apply(Address address) {
-					return address.getTypeId();
-				}
-			});
-		attributeGetters.put("mailing",
-			new Function<Address, Object>() {
-				@Override
-				public Object apply(Address address) {
-					return address.isMailing();
-				}
-			});
-		attributeGetters.put("primary",
-			new Function<Address, Object>() {
-				@Override
-				public Object apply(Address address) {
-					return address.isPrimary();
-				}
-			});
+		attributeGetters.put("mvccVersion", Address::getMvccVersion);
+		attributeSetters.put("mvccVersion", Address::setMvccVersion);
+
+		attributeGetters.put("uuid", Address::getUuid);
+		attributeSetters.put("uuid", Address::setUuid);
+
+		attributeGetters.put("addressId", Address::getAddressId);
+		attributeSetters.put("addressId", Address::setAddressId);
+
+		attributeGetters.put("companyId", Address::getCompanyId);
+		attributeSetters.put("companyId", Address::setCompanyId);
+
+		attributeGetters.put("userId", Address::getUserId);
+		attributeSetters.put("userId", Address::setUserId);
+
+		attributeGetters.put("userName", Address::getUserName);
+		attributeSetters.put("userName", Address::setUserName);
+
+		attributeGetters.put("createDate", Address::getCreateDate);
+		attributeSetters.put("createDate", Address::setCreateDate);
+
+		attributeGetters.put("modifiedDate", Address::getModifiedDate);
+		attributeSetters.put("modifiedDate", Address::setModifiedDate);
+
+		attributeGetters.put("classNameId", Address::getClassNameId);
+		attributeSetters.put("classNameId", Address::setClassNameId);
+
+		attributeGetters.put("classPK", Address::getClassPK);
+		attributeSetters.put("classPK", Address::setClassPK);
+
+		attributeGetters.put("street1", Address::getStreet1);
+		attributeSetters.put("street1", Address::setStreet1);
+
+		attributeGetters.put("street2", Address::getStreet2);
+		attributeSetters.put("street2", Address::setStreet2);
+
+		attributeGetters.put("street3", Address::getStreet3);
+		attributeSetters.put("street3", Address::setStreet3);
+
+		attributeGetters.put("city", Address::getCity);
+		attributeSetters.put("city", Address::setCity);
+
+		attributeGetters.put("zip", Address::getZip);
+		attributeSetters.put("zip", Address::setZip);
+
+		attributeGetters.put("regionId", Address::getRegionId);
+		attributeSetters.put("regionId", Address::setRegionId);
+
+		attributeGetters.put("countryId", Address::getCountryId);
+		attributeSetters.put("countryId", Address::setCountryId);
+
+		attributeGetters.put("typeId", Address::getTypeId);
+		attributeSetters.put("typeId", Address::setTypeId);
+
+		attributeGetters.put("mailing", Address::getMailing);
+		attributeSetters.put("mailing", Address::setMailing);
+
+		attributeGetters.put("primary", Address::getPrimary);
+		attributeSetters.put("primary", Address::setPrimary);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<Address, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Address, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<Address, Long>() {
-				@Override
-				public void accept(Address address, Long mvccVersion) {
-					address.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("uuid",
-			new BiConsumer<Address, String>() {
-				@Override
-				public void accept(Address address, String uuid) {
-					address.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("addressId",
-			new BiConsumer<Address, Long>() {
-				@Override
-				public void accept(Address address, Long addressId) {
-					address.setAddressId(addressId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<Address, Long>() {
-				@Override
-				public void accept(Address address, Long companyId) {
-					address.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<Address, Long>() {
-				@Override
-				public void accept(Address address, Long userId) {
-					address.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<Address, String>() {
-				@Override
-				public void accept(Address address, String userName) {
-					address.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<Address, Date>() {
-				@Override
-				public void accept(Address address, Date createDate) {
-					address.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<Address, Date>() {
-				@Override
-				public void accept(Address address, Date modifiedDate) {
-					address.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<Address, Long>() {
-				@Override
-				public void accept(Address address, Long classNameId) {
-					address.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<Address, Long>() {
-				@Override
-				public void accept(Address address, Long classPK) {
-					address.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("street1",
-			new BiConsumer<Address, String>() {
-				@Override
-				public void accept(Address address, String street1) {
-					address.setStreet1(street1);
-				}
-			});
-		attributeSetters.put("street2",
-			new BiConsumer<Address, String>() {
-				@Override
-				public void accept(Address address, String street2) {
-					address.setStreet2(street2);
-				}
-			});
-		attributeSetters.put("street3",
-			new BiConsumer<Address, String>() {
-				@Override
-				public void accept(Address address, String street3) {
-					address.setStreet3(street3);
-				}
-			});
-		attributeSetters.put("city",
-			new BiConsumer<Address, String>() {
-				@Override
-				public void accept(Address address, String city) {
-					address.setCity(city);
-				}
-			});
-		attributeSetters.put("zip",
-			new BiConsumer<Address, String>() {
-				@Override
-				public void accept(Address address, String zip) {
-					address.setZip(zip);
-				}
-			});
-		attributeSetters.put("regionId",
-			new BiConsumer<Address, Long>() {
-				@Override
-				public void accept(Address address, Long regionId) {
-					address.setRegionId(regionId);
-				}
-			});
-		attributeSetters.put("countryId",
-			new BiConsumer<Address, Long>() {
-				@Override
-				public void accept(Address address, Long countryId) {
-					address.setCountryId(countryId);
-				}
-			});
-		attributeSetters.put("typeId",
-			new BiConsumer<Address, Long>() {
-				@Override
-				public void accept(Address address, Long typeId) {
-					address.setTypeId(typeId);
-				}
-			});
-		attributeSetters.put("mailing",
-			new BiConsumer<Address, Boolean>() {
-				@Override
-				public void accept(Address address, Boolean mailing) {
-					address.setMailing(mailing);
-				}
-			});
-		attributeSetters.put("primary",
-			new BiConsumer<Address, Boolean>() {
-				@Override
-				public void accept(Address address, Boolean primary) {
-					address.setPrimary(primary);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

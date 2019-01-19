@@ -157,130 +157,32 @@ public class ResourceTypePermissionModelImpl extends BaseModelImpl<ResourceTypeP
 
 	static {
 		Map<String, Function<ResourceTypePermission, Object>> attributeGetters = new LinkedHashMap<String, Function<ResourceTypePermission, Object>>();
+		Map<String, BiConsumer<ResourceTypePermission, Object>> attributeSetters =
+			new LinkedHashMap<String, BiConsumer<ResourceTypePermission, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<ResourceTypePermission, Object>() {
-				@Override
-				public Object apply(
-					ResourceTypePermission resourceTypePermission) {
-					return resourceTypePermission.getMvccVersion();
-				}
-			});
-		attributeGetters.put("resourceTypePermissionId",
-			new Function<ResourceTypePermission, Object>() {
-				@Override
-				public Object apply(
-					ResourceTypePermission resourceTypePermission) {
-					return resourceTypePermission.getResourceTypePermissionId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<ResourceTypePermission, Object>() {
-				@Override
-				public Object apply(
-					ResourceTypePermission resourceTypePermission) {
-					return resourceTypePermission.getCompanyId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<ResourceTypePermission, Object>() {
-				@Override
-				public Object apply(
-					ResourceTypePermission resourceTypePermission) {
-					return resourceTypePermission.getGroupId();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<ResourceTypePermission, Object>() {
-				@Override
-				public Object apply(
-					ResourceTypePermission resourceTypePermission) {
-					return resourceTypePermission.getName();
-				}
-			});
-		attributeGetters.put("roleId",
-			new Function<ResourceTypePermission, Object>() {
-				@Override
-				public Object apply(
-					ResourceTypePermission resourceTypePermission) {
-					return resourceTypePermission.getRoleId();
-				}
-			});
-		attributeGetters.put("actionIds",
-			new Function<ResourceTypePermission, Object>() {
-				@Override
-				public Object apply(
-					ResourceTypePermission resourceTypePermission) {
-					return resourceTypePermission.getActionIds();
-				}
-			});
+		attributeGetters.put("mvccVersion", ResourceTypePermission::getMvccVersion);
+		attributeSetters.put("mvccVersion", ResourceTypePermission::setMvccVersion);
+
+		attributeGetters.put("resourceTypePermissionId", ResourceTypePermission::getResourceTypePermissionId);
+		attributeSetters.put("resourceTypePermissionId", ResourceTypePermission::setResourceTypePermissionId);
+
+		attributeGetters.put("companyId", ResourceTypePermission::getCompanyId);
+		attributeSetters.put("companyId", ResourceTypePermission::setCompanyId);
+
+		attributeGetters.put("groupId", ResourceTypePermission::getGroupId);
+		attributeSetters.put("groupId", ResourceTypePermission::setGroupId);
+
+		attributeGetters.put("name", ResourceTypePermission::getName);
+		attributeSetters.put("name", ResourceTypePermission::setName);
+
+		attributeGetters.put("roleId", ResourceTypePermission::getRoleId);
+		attributeSetters.put("roleId", ResourceTypePermission::setRoleId);
+
+		attributeGetters.put("actionIds", ResourceTypePermission::getActionIds);
+		attributeSetters.put("actionIds", ResourceTypePermission::setActionIds);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<ResourceTypePermission, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<ResourceTypePermission, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<ResourceTypePermission, Long>() {
-				@Override
-				public void accept(
-					ResourceTypePermission resourceTypePermission,
-					Long mvccVersion) {
-					resourceTypePermission.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("resourceTypePermissionId",
-			new BiConsumer<ResourceTypePermission, Long>() {
-				@Override
-				public void accept(
-					ResourceTypePermission resourceTypePermission,
-					Long resourceTypePermissionId) {
-					resourceTypePermission.setResourceTypePermissionId(resourceTypePermissionId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<ResourceTypePermission, Long>() {
-				@Override
-				public void accept(
-					ResourceTypePermission resourceTypePermission,
-					Long companyId) {
-					resourceTypePermission.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<ResourceTypePermission, Long>() {
-				@Override
-				public void accept(
-					ResourceTypePermission resourceTypePermission, Long groupId) {
-					resourceTypePermission.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<ResourceTypePermission, String>() {
-				@Override
-				public void accept(
-					ResourceTypePermission resourceTypePermission, String name) {
-					resourceTypePermission.setName(name);
-				}
-			});
-		attributeSetters.put("roleId",
-			new BiConsumer<ResourceTypePermission, Long>() {
-				@Override
-				public void accept(
-					ResourceTypePermission resourceTypePermission, Long roleId) {
-					resourceTypePermission.setRoleId(roleId);
-				}
-			});
-		attributeSetters.put("actionIds",
-			new BiConsumer<ResourceTypePermission, Long>() {
-				@Override
-				public void accept(
-					ResourceTypePermission resourceTypePermission,
-					Long actionIds) {
-					resourceTypePermission.setActionIds(actionIds);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

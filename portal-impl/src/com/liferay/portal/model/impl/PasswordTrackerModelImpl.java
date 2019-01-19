@@ -155,103 +155,28 @@ public class PasswordTrackerModelImpl extends BaseModelImpl<PasswordTracker>
 
 	static {
 		Map<String, Function<PasswordTracker, Object>> attributeGetters = new LinkedHashMap<String, Function<PasswordTracker, Object>>();
+		Map<String, BiConsumer<PasswordTracker, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<PasswordTracker, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<PasswordTracker, Object>() {
-				@Override
-				public Object apply(PasswordTracker passwordTracker) {
-					return passwordTracker.getMvccVersion();
-				}
-			});
-		attributeGetters.put("passwordTrackerId",
-			new Function<PasswordTracker, Object>() {
-				@Override
-				public Object apply(PasswordTracker passwordTracker) {
-					return passwordTracker.getPasswordTrackerId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<PasswordTracker, Object>() {
-				@Override
-				public Object apply(PasswordTracker passwordTracker) {
-					return passwordTracker.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<PasswordTracker, Object>() {
-				@Override
-				public Object apply(PasswordTracker passwordTracker) {
-					return passwordTracker.getUserId();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<PasswordTracker, Object>() {
-				@Override
-				public Object apply(PasswordTracker passwordTracker) {
-					return passwordTracker.getCreateDate();
-				}
-			});
-		attributeGetters.put("password",
-			new Function<PasswordTracker, Object>() {
-				@Override
-				public Object apply(PasswordTracker passwordTracker) {
-					return passwordTracker.getPassword();
-				}
-			});
+		attributeGetters.put("mvccVersion", PasswordTracker::getMvccVersion);
+		attributeSetters.put("mvccVersion", PasswordTracker::setMvccVersion);
+
+		attributeGetters.put("passwordTrackerId", PasswordTracker::getPasswordTrackerId);
+		attributeSetters.put("passwordTrackerId", PasswordTracker::setPasswordTrackerId);
+
+		attributeGetters.put("companyId", PasswordTracker::getCompanyId);
+		attributeSetters.put("companyId", PasswordTracker::setCompanyId);
+
+		attributeGetters.put("userId", PasswordTracker::getUserId);
+		attributeSetters.put("userId", PasswordTracker::setUserId);
+
+		attributeGetters.put("createDate", PasswordTracker::getCreateDate);
+		attributeSetters.put("createDate", PasswordTracker::setCreateDate);
+
+		attributeGetters.put("password", PasswordTracker::getPassword);
+		attributeSetters.put("password", PasswordTracker::setPassword);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<PasswordTracker, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<PasswordTracker, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<PasswordTracker, Long>() {
-				@Override
-				public void accept(PasswordTracker passwordTracker,
-					Long mvccVersion) {
-					passwordTracker.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("passwordTrackerId",
-			new BiConsumer<PasswordTracker, Long>() {
-				@Override
-				public void accept(PasswordTracker passwordTracker,
-					Long passwordTrackerId) {
-					passwordTracker.setPasswordTrackerId(passwordTrackerId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<PasswordTracker, Long>() {
-				@Override
-				public void accept(PasswordTracker passwordTracker,
-					Long companyId) {
-					passwordTracker.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<PasswordTracker, Long>() {
-				@Override
-				public void accept(PasswordTracker passwordTracker, Long userId) {
-					passwordTracker.setUserId(userId);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<PasswordTracker, Date>() {
-				@Override
-				public void accept(PasswordTracker passwordTracker,
-					Date createDate) {
-					passwordTracker.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("password",
-			new BiConsumer<PasswordTracker, String>() {
-				@Override
-				public void accept(PasswordTracker passwordTracker,
-					String password) {
-					passwordTracker.setPassword(password);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

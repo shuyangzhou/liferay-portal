@@ -170,179 +170,43 @@ public class SocialActivitySetModelImpl extends BaseModelImpl<SocialActivitySet>
 
 	static {
 		Map<String, Function<SocialActivitySet, Object>> attributeGetters = new LinkedHashMap<String, Function<SocialActivitySet, Object>>();
+		Map<String, BiConsumer<SocialActivitySet, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SocialActivitySet, Object>>();
 
-		attributeGetters.put("activitySetId",
-			new Function<SocialActivitySet, Object>() {
-				@Override
-				public Object apply(SocialActivitySet socialActivitySet) {
-					return socialActivitySet.getActivitySetId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<SocialActivitySet, Object>() {
-				@Override
-				public Object apply(SocialActivitySet socialActivitySet) {
-					return socialActivitySet.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<SocialActivitySet, Object>() {
-				@Override
-				public Object apply(SocialActivitySet socialActivitySet) {
-					return socialActivitySet.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<SocialActivitySet, Object>() {
-				@Override
-				public Object apply(SocialActivitySet socialActivitySet) {
-					return socialActivitySet.getUserId();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<SocialActivitySet, Object>() {
-				@Override
-				public Object apply(SocialActivitySet socialActivitySet) {
-					return socialActivitySet.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<SocialActivitySet, Object>() {
-				@Override
-				public Object apply(SocialActivitySet socialActivitySet) {
-					return socialActivitySet.getModifiedDate();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<SocialActivitySet, Object>() {
-				@Override
-				public Object apply(SocialActivitySet socialActivitySet) {
-					return socialActivitySet.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<SocialActivitySet, Object>() {
-				@Override
-				public Object apply(SocialActivitySet socialActivitySet) {
-					return socialActivitySet.getClassPK();
-				}
-			});
-		attributeGetters.put("type",
-			new Function<SocialActivitySet, Object>() {
-				@Override
-				public Object apply(SocialActivitySet socialActivitySet) {
-					return socialActivitySet.getType();
-				}
-			});
-		attributeGetters.put("extraData",
-			new Function<SocialActivitySet, Object>() {
-				@Override
-				public Object apply(SocialActivitySet socialActivitySet) {
-					return socialActivitySet.getExtraData();
-				}
-			});
-		attributeGetters.put("activityCount",
-			new Function<SocialActivitySet, Object>() {
-				@Override
-				public Object apply(SocialActivitySet socialActivitySet) {
-					return socialActivitySet.getActivityCount();
-				}
-			});
+		attributeGetters.put("activitySetId", SocialActivitySet::getActivitySetId);
+		attributeSetters.put("activitySetId", SocialActivitySet::setActivitySetId);
+
+		attributeGetters.put("groupId", SocialActivitySet::getGroupId);
+		attributeSetters.put("groupId", SocialActivitySet::setGroupId);
+
+		attributeGetters.put("companyId", SocialActivitySet::getCompanyId);
+		attributeSetters.put("companyId", SocialActivitySet::setCompanyId);
+
+		attributeGetters.put("userId", SocialActivitySet::getUserId);
+		attributeSetters.put("userId", SocialActivitySet::setUserId);
+
+		attributeGetters.put("createDate", SocialActivitySet::getCreateDate);
+		attributeSetters.put("createDate", SocialActivitySet::setCreateDate);
+
+		attributeGetters.put("modifiedDate", SocialActivitySet::getModifiedDate);
+		attributeSetters.put("modifiedDate", SocialActivitySet::setModifiedDate);
+
+		attributeGetters.put("classNameId", SocialActivitySet::getClassNameId);
+		attributeSetters.put("classNameId", SocialActivitySet::setClassNameId);
+
+		attributeGetters.put("classPK", SocialActivitySet::getClassPK);
+		attributeSetters.put("classPK", SocialActivitySet::setClassPK);
+
+		attributeGetters.put("type", SocialActivitySet::getType);
+		attributeSetters.put("type", SocialActivitySet::setType);
+
+		attributeGetters.put("extraData", SocialActivitySet::getExtraData);
+		attributeSetters.put("extraData", SocialActivitySet::setExtraData);
+
+		attributeGetters.put("activityCount", SocialActivitySet::getActivityCount);
+		attributeSetters.put("activityCount", SocialActivitySet::setActivityCount);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<SocialActivitySet, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<SocialActivitySet, ?>>();
-
-		attributeSetters.put("activitySetId",
-			new BiConsumer<SocialActivitySet, Long>() {
-				@Override
-				public void accept(SocialActivitySet socialActivitySet,
-					Long activitySetId) {
-					socialActivitySet.setActivitySetId(activitySetId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<SocialActivitySet, Long>() {
-				@Override
-				public void accept(SocialActivitySet socialActivitySet,
-					Long groupId) {
-					socialActivitySet.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<SocialActivitySet, Long>() {
-				@Override
-				public void accept(SocialActivitySet socialActivitySet,
-					Long companyId) {
-					socialActivitySet.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<SocialActivitySet, Long>() {
-				@Override
-				public void accept(SocialActivitySet socialActivitySet,
-					Long userId) {
-					socialActivitySet.setUserId(userId);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<SocialActivitySet, Long>() {
-				@Override
-				public void accept(SocialActivitySet socialActivitySet,
-					Long createDate) {
-					socialActivitySet.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<SocialActivitySet, Long>() {
-				@Override
-				public void accept(SocialActivitySet socialActivitySet,
-					Long modifiedDate) {
-					socialActivitySet.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<SocialActivitySet, Long>() {
-				@Override
-				public void accept(SocialActivitySet socialActivitySet,
-					Long classNameId) {
-					socialActivitySet.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<SocialActivitySet, Long>() {
-				@Override
-				public void accept(SocialActivitySet socialActivitySet,
-					Long classPK) {
-					socialActivitySet.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("type",
-			new BiConsumer<SocialActivitySet, Integer>() {
-				@Override
-				public void accept(SocialActivitySet socialActivitySet,
-					Integer type) {
-					socialActivitySet.setType(type);
-				}
-			});
-		attributeSetters.put("extraData",
-			new BiConsumer<SocialActivitySet, String>() {
-				@Override
-				public void accept(SocialActivitySet socialActivitySet,
-					String extraData) {
-					socialActivitySet.setExtraData(extraData);
-				}
-			});
-		attributeSetters.put("activityCount",
-			new BiConsumer<SocialActivitySet, Integer>() {
-				@Override
-				public void accept(SocialActivitySet socialActivitySet,
-					Integer activityCount) {
-					socialActivitySet.setActivityCount(activityCount);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

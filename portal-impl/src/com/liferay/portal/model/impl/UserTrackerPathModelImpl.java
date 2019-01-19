@@ -151,103 +151,28 @@ public class UserTrackerPathModelImpl extends BaseModelImpl<UserTrackerPath>
 
 	static {
 		Map<String, Function<UserTrackerPath, Object>> attributeGetters = new LinkedHashMap<String, Function<UserTrackerPath, Object>>();
+		Map<String, BiConsumer<UserTrackerPath, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<UserTrackerPath, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<UserTrackerPath, Object>() {
-				@Override
-				public Object apply(UserTrackerPath userTrackerPath) {
-					return userTrackerPath.getMvccVersion();
-				}
-			});
-		attributeGetters.put("userTrackerPathId",
-			new Function<UserTrackerPath, Object>() {
-				@Override
-				public Object apply(UserTrackerPath userTrackerPath) {
-					return userTrackerPath.getUserTrackerPathId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<UserTrackerPath, Object>() {
-				@Override
-				public Object apply(UserTrackerPath userTrackerPath) {
-					return userTrackerPath.getCompanyId();
-				}
-			});
-		attributeGetters.put("userTrackerId",
-			new Function<UserTrackerPath, Object>() {
-				@Override
-				public Object apply(UserTrackerPath userTrackerPath) {
-					return userTrackerPath.getUserTrackerId();
-				}
-			});
-		attributeGetters.put("path",
-			new Function<UserTrackerPath, Object>() {
-				@Override
-				public Object apply(UserTrackerPath userTrackerPath) {
-					return userTrackerPath.getPath();
-				}
-			});
-		attributeGetters.put("pathDate",
-			new Function<UserTrackerPath, Object>() {
-				@Override
-				public Object apply(UserTrackerPath userTrackerPath) {
-					return userTrackerPath.getPathDate();
-				}
-			});
+		attributeGetters.put("mvccVersion", UserTrackerPath::getMvccVersion);
+		attributeSetters.put("mvccVersion", UserTrackerPath::setMvccVersion);
+
+		attributeGetters.put("userTrackerPathId", UserTrackerPath::getUserTrackerPathId);
+		attributeSetters.put("userTrackerPathId", UserTrackerPath::setUserTrackerPathId);
+
+		attributeGetters.put("companyId", UserTrackerPath::getCompanyId);
+		attributeSetters.put("companyId", UserTrackerPath::setCompanyId);
+
+		attributeGetters.put("userTrackerId", UserTrackerPath::getUserTrackerId);
+		attributeSetters.put("userTrackerId", UserTrackerPath::setUserTrackerId);
+
+		attributeGetters.put("path", UserTrackerPath::getPath);
+		attributeSetters.put("path", UserTrackerPath::setPath);
+
+		attributeGetters.put("pathDate", UserTrackerPath::getPathDate);
+		attributeSetters.put("pathDate", UserTrackerPath::setPathDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<UserTrackerPath, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<UserTrackerPath, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<UserTrackerPath, Long>() {
-				@Override
-				public void accept(UserTrackerPath userTrackerPath,
-					Long mvccVersion) {
-					userTrackerPath.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("userTrackerPathId",
-			new BiConsumer<UserTrackerPath, Long>() {
-				@Override
-				public void accept(UserTrackerPath userTrackerPath,
-					Long userTrackerPathId) {
-					userTrackerPath.setUserTrackerPathId(userTrackerPathId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<UserTrackerPath, Long>() {
-				@Override
-				public void accept(UserTrackerPath userTrackerPath,
-					Long companyId) {
-					userTrackerPath.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userTrackerId",
-			new BiConsumer<UserTrackerPath, Long>() {
-				@Override
-				public void accept(UserTrackerPath userTrackerPath,
-					Long userTrackerId) {
-					userTrackerPath.setUserTrackerId(userTrackerId);
-				}
-			});
-		attributeSetters.put("path",
-			new BiConsumer<UserTrackerPath, String>() {
-				@Override
-				public void accept(UserTrackerPath userTrackerPath, String path) {
-					userTrackerPath.setPath(path);
-				}
-			});
-		attributeSetters.put("pathDate",
-			new BiConsumer<UserTrackerPath, Date>() {
-				@Override
-				public void accept(UserTrackerPath userTrackerPath,
-					Date pathDate) {
-					userTrackerPath.setPathDate(pathDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

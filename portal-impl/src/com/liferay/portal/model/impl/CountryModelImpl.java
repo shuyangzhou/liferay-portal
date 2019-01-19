@@ -210,140 +210,37 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 
 	static {
 		Map<String, Function<Country, Object>> attributeGetters = new LinkedHashMap<String, Function<Country, Object>>();
+		Map<String, BiConsumer<Country, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Country, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<Country, Object>() {
-				@Override
-				public Object apply(Country country) {
-					return country.getMvccVersion();
-				}
-			});
-		attributeGetters.put("countryId",
-			new Function<Country, Object>() {
-				@Override
-				public Object apply(Country country) {
-					return country.getCountryId();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<Country, Object>() {
-				@Override
-				public Object apply(Country country) {
-					return country.getName();
-				}
-			});
-		attributeGetters.put("a2",
-			new Function<Country, Object>() {
-				@Override
-				public Object apply(Country country) {
-					return country.getA2();
-				}
-			});
-		attributeGetters.put("a3",
-			new Function<Country, Object>() {
-				@Override
-				public Object apply(Country country) {
-					return country.getA3();
-				}
-			});
-		attributeGetters.put("number",
-			new Function<Country, Object>() {
-				@Override
-				public Object apply(Country country) {
-					return country.getNumber();
-				}
-			});
-		attributeGetters.put("idd",
-			new Function<Country, Object>() {
-				@Override
-				public Object apply(Country country) {
-					return country.getIdd();
-				}
-			});
-		attributeGetters.put("zipRequired",
-			new Function<Country, Object>() {
-				@Override
-				public Object apply(Country country) {
-					return country.isZipRequired();
-				}
-			});
-		attributeGetters.put("active",
-			new Function<Country, Object>() {
-				@Override
-				public Object apply(Country country) {
-					return country.isActive();
-				}
-			});
+		attributeGetters.put("mvccVersion", Country::getMvccVersion);
+		attributeSetters.put("mvccVersion", Country::setMvccVersion);
+
+		attributeGetters.put("countryId", Country::getCountryId);
+		attributeSetters.put("countryId", Country::setCountryId);
+
+		attributeGetters.put("name", Country::getName);
+		attributeSetters.put("name", Country::setName);
+
+		attributeGetters.put("a2", Country::getA2);
+		attributeSetters.put("a2", Country::setA2);
+
+		attributeGetters.put("a3", Country::getA3);
+		attributeSetters.put("a3", Country::setA3);
+
+		attributeGetters.put("number", Country::getNumber);
+		attributeSetters.put("number", Country::setNumber);
+
+		attributeGetters.put("idd", Country::getIdd);
+		attributeSetters.put("idd", Country::setIdd);
+
+		attributeGetters.put("zipRequired", Country::getZipRequired);
+		attributeSetters.put("zipRequired", Country::setZipRequired);
+
+		attributeGetters.put("active", Country::getActive);
+		attributeSetters.put("active", Country::setActive);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<Country, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Country, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<Country, Long>() {
-				@Override
-				public void accept(Country country, Long mvccVersion) {
-					country.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("countryId",
-			new BiConsumer<Country, Long>() {
-				@Override
-				public void accept(Country country, Long countryId) {
-					country.setCountryId(countryId);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<Country, String>() {
-				@Override
-				public void accept(Country country, String name) {
-					country.setName(name);
-				}
-			});
-		attributeSetters.put("a2",
-			new BiConsumer<Country, String>() {
-				@Override
-				public void accept(Country country, String a2) {
-					country.setA2(a2);
-				}
-			});
-		attributeSetters.put("a3",
-			new BiConsumer<Country, String>() {
-				@Override
-				public void accept(Country country, String a3) {
-					country.setA3(a3);
-				}
-			});
-		attributeSetters.put("number",
-			new BiConsumer<Country, String>() {
-				@Override
-				public void accept(Country country, String number) {
-					country.setNumber(number);
-				}
-			});
-		attributeSetters.put("idd",
-			new BiConsumer<Country, String>() {
-				@Override
-				public void accept(Country country, String idd) {
-					country.setIdd(idd);
-				}
-			});
-		attributeSetters.put("zipRequired",
-			new BiConsumer<Country, Boolean>() {
-				@Override
-				public void accept(Country country, Boolean zipRequired) {
-					country.setZipRequired(zipRequired);
-				}
-			});
-		attributeSetters.put("active",
-			new BiConsumer<Country, Boolean>() {
-				@Override
-				public void accept(Country country, Boolean active) {
-					country.setActive(active);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

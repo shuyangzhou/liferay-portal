@@ -160,140 +160,37 @@ public class AttachmentModelImpl extends BaseModelImpl<Attachment>
 
 	static {
 		Map<String, Function<Attachment, Object>> attributeGetters = new LinkedHashMap<String, Function<Attachment, Object>>();
+		Map<String, BiConsumer<Attachment, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Attachment, Object>>();
 
-		attributeGetters.put("attachmentId",
-			new Function<Attachment, Object>() {
-				@Override
-				public Object apply(Attachment attachment) {
-					return attachment.getAttachmentId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<Attachment, Object>() {
-				@Override
-				public Object apply(Attachment attachment) {
-					return attachment.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<Attachment, Object>() {
-				@Override
-				public Object apply(Attachment attachment) {
-					return attachment.getUserId();
-				}
-			});
-		attributeGetters.put("accountId",
-			new Function<Attachment, Object>() {
-				@Override
-				public Object apply(Attachment attachment) {
-					return attachment.getAccountId();
-				}
-			});
-		attributeGetters.put("folderId",
-			new Function<Attachment, Object>() {
-				@Override
-				public Object apply(Attachment attachment) {
-					return attachment.getFolderId();
-				}
-			});
-		attributeGetters.put("messageId",
-			new Function<Attachment, Object>() {
-				@Override
-				public Object apply(Attachment attachment) {
-					return attachment.getMessageId();
-				}
-			});
-		attributeGetters.put("contentPath",
-			new Function<Attachment, Object>() {
-				@Override
-				public Object apply(Attachment attachment) {
-					return attachment.getContentPath();
-				}
-			});
-		attributeGetters.put("fileName",
-			new Function<Attachment, Object>() {
-				@Override
-				public Object apply(Attachment attachment) {
-					return attachment.getFileName();
-				}
-			});
-		attributeGetters.put("size",
-			new Function<Attachment, Object>() {
-				@Override
-				public Object apply(Attachment attachment) {
-					return attachment.getSize();
-				}
-			});
+		attributeGetters.put("attachmentId", Attachment::getAttachmentId);
+		attributeSetters.put("attachmentId", Attachment::setAttachmentId);
+
+		attributeGetters.put("companyId", Attachment::getCompanyId);
+		attributeSetters.put("companyId", Attachment::setCompanyId);
+
+		attributeGetters.put("userId", Attachment::getUserId);
+		attributeSetters.put("userId", Attachment::setUserId);
+
+		attributeGetters.put("accountId", Attachment::getAccountId);
+		attributeSetters.put("accountId", Attachment::setAccountId);
+
+		attributeGetters.put("folderId", Attachment::getFolderId);
+		attributeSetters.put("folderId", Attachment::setFolderId);
+
+		attributeGetters.put("messageId", Attachment::getMessageId);
+		attributeSetters.put("messageId", Attachment::setMessageId);
+
+		attributeGetters.put("contentPath", Attachment::getContentPath);
+		attributeSetters.put("contentPath", Attachment::setContentPath);
+
+		attributeGetters.put("fileName", Attachment::getFileName);
+		attributeSetters.put("fileName", Attachment::setFileName);
+
+		attributeGetters.put("size", Attachment::getSize);
+		attributeSetters.put("size", Attachment::setSize);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<Attachment, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Attachment, ?>>();
-
-		attributeSetters.put("attachmentId",
-			new BiConsumer<Attachment, Long>() {
-				@Override
-				public void accept(Attachment attachment, Long attachmentId) {
-					attachment.setAttachmentId(attachmentId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<Attachment, Long>() {
-				@Override
-				public void accept(Attachment attachment, Long companyId) {
-					attachment.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<Attachment, Long>() {
-				@Override
-				public void accept(Attachment attachment, Long userId) {
-					attachment.setUserId(userId);
-				}
-			});
-		attributeSetters.put("accountId",
-			new BiConsumer<Attachment, Long>() {
-				@Override
-				public void accept(Attachment attachment, Long accountId) {
-					attachment.setAccountId(accountId);
-				}
-			});
-		attributeSetters.put("folderId",
-			new BiConsumer<Attachment, Long>() {
-				@Override
-				public void accept(Attachment attachment, Long folderId) {
-					attachment.setFolderId(folderId);
-				}
-			});
-		attributeSetters.put("messageId",
-			new BiConsumer<Attachment, Long>() {
-				@Override
-				public void accept(Attachment attachment, Long messageId) {
-					attachment.setMessageId(messageId);
-				}
-			});
-		attributeSetters.put("contentPath",
-			new BiConsumer<Attachment, String>() {
-				@Override
-				public void accept(Attachment attachment, String contentPath) {
-					attachment.setContentPath(contentPath);
-				}
-			});
-		attributeSetters.put("fileName",
-			new BiConsumer<Attachment, String>() {
-				@Override
-				public void accept(Attachment attachment, String fileName) {
-					attachment.setFileName(fileName);
-				}
-			});
-		attributeSetters.put("size",
-			new BiConsumer<Attachment, Long>() {
-				@Override
-				public void accept(Attachment attachment, Long size) {
-					attachment.setSize(size);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

@@ -240,213 +240,52 @@ public class SegmentsEntryModelImpl extends BaseModelImpl<SegmentsEntry>
 
 	static {
 		Map<String, Function<SegmentsEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<SegmentsEntry, Object>>();
+		Map<String, BiConsumer<SegmentsEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SegmentsEntry, Object>>();
 
-		attributeGetters.put("segmentsEntryId",
-			new Function<SegmentsEntry, Object>() {
-				@Override
-				public Object apply(SegmentsEntry segmentsEntry) {
-					return segmentsEntry.getSegmentsEntryId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<SegmentsEntry, Object>() {
-				@Override
-				public Object apply(SegmentsEntry segmentsEntry) {
-					return segmentsEntry.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<SegmentsEntry, Object>() {
-				@Override
-				public Object apply(SegmentsEntry segmentsEntry) {
-					return segmentsEntry.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<SegmentsEntry, Object>() {
-				@Override
-				public Object apply(SegmentsEntry segmentsEntry) {
-					return segmentsEntry.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<SegmentsEntry, Object>() {
-				@Override
-				public Object apply(SegmentsEntry segmentsEntry) {
-					return segmentsEntry.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<SegmentsEntry, Object>() {
-				@Override
-				public Object apply(SegmentsEntry segmentsEntry) {
-					return segmentsEntry.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<SegmentsEntry, Object>() {
-				@Override
-				public Object apply(SegmentsEntry segmentsEntry) {
-					return segmentsEntry.getModifiedDate();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<SegmentsEntry, Object>() {
-				@Override
-				public Object apply(SegmentsEntry segmentsEntry) {
-					return segmentsEntry.getName();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<SegmentsEntry, Object>() {
-				@Override
-				public Object apply(SegmentsEntry segmentsEntry) {
-					return segmentsEntry.getDescription();
-				}
-			});
-		attributeGetters.put("active",
-			new Function<SegmentsEntry, Object>() {
-				@Override
-				public Object apply(SegmentsEntry segmentsEntry) {
-					return segmentsEntry.isActive();
-				}
-			});
-		attributeGetters.put("criteria",
-			new Function<SegmentsEntry, Object>() {
-				@Override
-				public Object apply(SegmentsEntry segmentsEntry) {
-					return segmentsEntry.getCriteria();
-				}
-			});
-		attributeGetters.put("key",
-			new Function<SegmentsEntry, Object>() {
-				@Override
-				public Object apply(SegmentsEntry segmentsEntry) {
-					return segmentsEntry.getKey();
-				}
-			});
-		attributeGetters.put("source",
-			new Function<SegmentsEntry, Object>() {
-				@Override
-				public Object apply(SegmentsEntry segmentsEntry) {
-					return segmentsEntry.getSource();
-				}
-			});
-		attributeGetters.put("type",
-			new Function<SegmentsEntry, Object>() {
-				@Override
-				public Object apply(SegmentsEntry segmentsEntry) {
-					return segmentsEntry.getType();
-				}
-			});
+		attributeGetters.put("segmentsEntryId", SegmentsEntry::getSegmentsEntryId);
+		attributeSetters.put("segmentsEntryId", SegmentsEntry::setSegmentsEntryId);
+
+		attributeGetters.put("groupId", SegmentsEntry::getGroupId);
+		attributeSetters.put("groupId", SegmentsEntry::setGroupId);
+
+		attributeGetters.put("companyId", SegmentsEntry::getCompanyId);
+		attributeSetters.put("companyId", SegmentsEntry::setCompanyId);
+
+		attributeGetters.put("userId", SegmentsEntry::getUserId);
+		attributeSetters.put("userId", SegmentsEntry::setUserId);
+
+		attributeGetters.put("userName", SegmentsEntry::getUserName);
+		attributeSetters.put("userName", SegmentsEntry::setUserName);
+
+		attributeGetters.put("createDate", SegmentsEntry::getCreateDate);
+		attributeSetters.put("createDate", SegmentsEntry::setCreateDate);
+
+		attributeGetters.put("modifiedDate", SegmentsEntry::getModifiedDate);
+		attributeSetters.put("modifiedDate", SegmentsEntry::setModifiedDate);
+
+		attributeGetters.put("name", SegmentsEntry::getName);
+		attributeSetters.put("name", SegmentsEntry::setName);
+
+		attributeGetters.put("description", SegmentsEntry::getDescription);
+		attributeSetters.put("description", SegmentsEntry::setDescription);
+
+		attributeGetters.put("active", SegmentsEntry::getActive);
+		attributeSetters.put("active", SegmentsEntry::setActive);
+
+		attributeGetters.put("criteria", SegmentsEntry::getCriteria);
+		attributeSetters.put("criteria", SegmentsEntry::setCriteria);
+
+		attributeGetters.put("key", SegmentsEntry::getKey);
+		attributeSetters.put("key", SegmentsEntry::setKey);
+
+		attributeGetters.put("source", SegmentsEntry::getSource);
+		attributeSetters.put("source", SegmentsEntry::setSource);
+
+		attributeGetters.put("type", SegmentsEntry::getType);
+		attributeSetters.put("type", SegmentsEntry::setType);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<SegmentsEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<SegmentsEntry, ?>>();
-
-		attributeSetters.put("segmentsEntryId",
-			new BiConsumer<SegmentsEntry, Long>() {
-				@Override
-				public void accept(SegmentsEntry segmentsEntry,
-					Long segmentsEntryId) {
-					segmentsEntry.setSegmentsEntryId(segmentsEntryId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<SegmentsEntry, Long>() {
-				@Override
-				public void accept(SegmentsEntry segmentsEntry, Long groupId) {
-					segmentsEntry.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<SegmentsEntry, Long>() {
-				@Override
-				public void accept(SegmentsEntry segmentsEntry, Long companyId) {
-					segmentsEntry.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<SegmentsEntry, Long>() {
-				@Override
-				public void accept(SegmentsEntry segmentsEntry, Long userId) {
-					segmentsEntry.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<SegmentsEntry, String>() {
-				@Override
-				public void accept(SegmentsEntry segmentsEntry, String userName) {
-					segmentsEntry.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<SegmentsEntry, Date>() {
-				@Override
-				public void accept(SegmentsEntry segmentsEntry, Date createDate) {
-					segmentsEntry.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<SegmentsEntry, Date>() {
-				@Override
-				public void accept(SegmentsEntry segmentsEntry,
-					Date modifiedDate) {
-					segmentsEntry.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<SegmentsEntry, String>() {
-				@Override
-				public void accept(SegmentsEntry segmentsEntry, String name) {
-					segmentsEntry.setName(name);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<SegmentsEntry, String>() {
-				@Override
-				public void accept(SegmentsEntry segmentsEntry,
-					String description) {
-					segmentsEntry.setDescription(description);
-				}
-			});
-		attributeSetters.put("active",
-			new BiConsumer<SegmentsEntry, Boolean>() {
-				@Override
-				public void accept(SegmentsEntry segmentsEntry, Boolean active) {
-					segmentsEntry.setActive(active);
-				}
-			});
-		attributeSetters.put("criteria",
-			new BiConsumer<SegmentsEntry, String>() {
-				@Override
-				public void accept(SegmentsEntry segmentsEntry, String criteria) {
-					segmentsEntry.setCriteria(criteria);
-				}
-			});
-		attributeSetters.put("key",
-			new BiConsumer<SegmentsEntry, String>() {
-				@Override
-				public void accept(SegmentsEntry segmentsEntry, String key) {
-					segmentsEntry.setKey(key);
-				}
-			});
-		attributeSetters.put("source",
-			new BiConsumer<SegmentsEntry, String>() {
-				@Override
-				public void accept(SegmentsEntry segmentsEntry, String source) {
-					segmentsEntry.setSource(source);
-				}
-			});
-		attributeSetters.put("type",
-			new BiConsumer<SegmentsEntry, String>() {
-				@Override
-				public void accept(SegmentsEntry segmentsEntry, String type) {
-					segmentsEntry.setType(type);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

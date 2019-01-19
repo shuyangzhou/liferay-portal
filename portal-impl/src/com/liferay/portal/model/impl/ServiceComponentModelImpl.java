@@ -150,104 +150,28 @@ public class ServiceComponentModelImpl extends BaseModelImpl<ServiceComponent>
 
 	static {
 		Map<String, Function<ServiceComponent, Object>> attributeGetters = new LinkedHashMap<String, Function<ServiceComponent, Object>>();
+		Map<String, BiConsumer<ServiceComponent, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<ServiceComponent, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<ServiceComponent, Object>() {
-				@Override
-				public Object apply(ServiceComponent serviceComponent) {
-					return serviceComponent.getMvccVersion();
-				}
-			});
-		attributeGetters.put("serviceComponentId",
-			new Function<ServiceComponent, Object>() {
-				@Override
-				public Object apply(ServiceComponent serviceComponent) {
-					return serviceComponent.getServiceComponentId();
-				}
-			});
-		attributeGetters.put("buildNamespace",
-			new Function<ServiceComponent, Object>() {
-				@Override
-				public Object apply(ServiceComponent serviceComponent) {
-					return serviceComponent.getBuildNamespace();
-				}
-			});
-		attributeGetters.put("buildNumber",
-			new Function<ServiceComponent, Object>() {
-				@Override
-				public Object apply(ServiceComponent serviceComponent) {
-					return serviceComponent.getBuildNumber();
-				}
-			});
-		attributeGetters.put("buildDate",
-			new Function<ServiceComponent, Object>() {
-				@Override
-				public Object apply(ServiceComponent serviceComponent) {
-					return serviceComponent.getBuildDate();
-				}
-			});
-		attributeGetters.put("data",
-			new Function<ServiceComponent, Object>() {
-				@Override
-				public Object apply(ServiceComponent serviceComponent) {
-					return serviceComponent.getData();
-				}
-			});
+		attributeGetters.put("mvccVersion", ServiceComponent::getMvccVersion);
+		attributeSetters.put("mvccVersion", ServiceComponent::setMvccVersion);
+
+		attributeGetters.put("serviceComponentId", ServiceComponent::getServiceComponentId);
+		attributeSetters.put("serviceComponentId", ServiceComponent::setServiceComponentId);
+
+		attributeGetters.put("buildNamespace", ServiceComponent::getBuildNamespace);
+		attributeSetters.put("buildNamespace", ServiceComponent::setBuildNamespace);
+
+		attributeGetters.put("buildNumber", ServiceComponent::getBuildNumber);
+		attributeSetters.put("buildNumber", ServiceComponent::setBuildNumber);
+
+		attributeGetters.put("buildDate", ServiceComponent::getBuildDate);
+		attributeSetters.put("buildDate", ServiceComponent::setBuildDate);
+
+		attributeGetters.put("data", ServiceComponent::getData);
+		attributeSetters.put("data", ServiceComponent::setData);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<ServiceComponent, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<ServiceComponent, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<ServiceComponent, Long>() {
-				@Override
-				public void accept(ServiceComponent serviceComponent,
-					Long mvccVersion) {
-					serviceComponent.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("serviceComponentId",
-			new BiConsumer<ServiceComponent, Long>() {
-				@Override
-				public void accept(ServiceComponent serviceComponent,
-					Long serviceComponentId) {
-					serviceComponent.setServiceComponentId(serviceComponentId);
-				}
-			});
-		attributeSetters.put("buildNamespace",
-			new BiConsumer<ServiceComponent, String>() {
-				@Override
-				public void accept(ServiceComponent serviceComponent,
-					String buildNamespace) {
-					serviceComponent.setBuildNamespace(buildNamespace);
-				}
-			});
-		attributeSetters.put("buildNumber",
-			new BiConsumer<ServiceComponent, Long>() {
-				@Override
-				public void accept(ServiceComponent serviceComponent,
-					Long buildNumber) {
-					serviceComponent.setBuildNumber(buildNumber);
-				}
-			});
-		attributeSetters.put("buildDate",
-			new BiConsumer<ServiceComponent, Long>() {
-				@Override
-				public void accept(ServiceComponent serviceComponent,
-					Long buildDate) {
-					serviceComponent.setBuildDate(buildDate);
-				}
-			});
-		attributeSetters.put("data",
-			new BiConsumer<ServiceComponent, String>() {
-				@Override
-				public void accept(ServiceComponent serviceComponent,
-					String data) {
-					serviceComponent.setData(data);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

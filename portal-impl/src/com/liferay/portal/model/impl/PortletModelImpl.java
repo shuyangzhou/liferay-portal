@@ -200,98 +200,28 @@ public class PortletModelImpl extends BaseModelImpl<Portlet>
 
 	static {
 		Map<String, Function<Portlet, Object>> attributeGetters = new LinkedHashMap<String, Function<Portlet, Object>>();
+		Map<String, BiConsumer<Portlet, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Portlet, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<Portlet, Object>() {
-				@Override
-				public Object apply(Portlet portlet) {
-					return portlet.getMvccVersion();
-				}
-			});
-		attributeGetters.put("id",
-			new Function<Portlet, Object>() {
-				@Override
-				public Object apply(Portlet portlet) {
-					return portlet.getId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<Portlet, Object>() {
-				@Override
-				public Object apply(Portlet portlet) {
-					return portlet.getCompanyId();
-				}
-			});
-		attributeGetters.put("portletId",
-			new Function<Portlet, Object>() {
-				@Override
-				public Object apply(Portlet portlet) {
-					return portlet.getPortletId();
-				}
-			});
-		attributeGetters.put("roles",
-			new Function<Portlet, Object>() {
-				@Override
-				public Object apply(Portlet portlet) {
-					return portlet.getRoles();
-				}
-			});
-		attributeGetters.put("active",
-			new Function<Portlet, Object>() {
-				@Override
-				public Object apply(Portlet portlet) {
-					return portlet.isActive();
-				}
-			});
+		attributeGetters.put("mvccVersion", Portlet::getMvccVersion);
+		attributeSetters.put("mvccVersion", Portlet::setMvccVersion);
+
+		attributeGetters.put("id", Portlet::getId);
+		attributeSetters.put("id", Portlet::setId);
+
+		attributeGetters.put("companyId", Portlet::getCompanyId);
+		attributeSetters.put("companyId", Portlet::setCompanyId);
+
+		attributeGetters.put("portletId", Portlet::getPortletId);
+		attributeSetters.put("portletId", Portlet::setPortletId);
+
+		attributeGetters.put("roles", Portlet::getRoles);
+		attributeSetters.put("roles", Portlet::setRoles);
+
+		attributeGetters.put("active", Portlet::getActive);
+		attributeSetters.put("active", Portlet::setActive);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<Portlet, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Portlet, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<Portlet, Long>() {
-				@Override
-				public void accept(Portlet portlet, Long mvccVersion) {
-					portlet.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("id",
-			new BiConsumer<Portlet, Long>() {
-				@Override
-				public void accept(Portlet portlet, Long id) {
-					portlet.setId(id);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<Portlet, Long>() {
-				@Override
-				public void accept(Portlet portlet, Long companyId) {
-					portlet.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("portletId",
-			new BiConsumer<Portlet, String>() {
-				@Override
-				public void accept(Portlet portlet, String portletId) {
-					portlet.setPortletId(portletId);
-				}
-			});
-		attributeSetters.put("roles",
-			new BiConsumer<Portlet, String>() {
-				@Override
-				public void accept(Portlet portlet, String roles) {
-					portlet.setRoles(roles);
-				}
-			});
-		attributeSetters.put("active",
-			new BiConsumer<Portlet, Boolean>() {
-				@Override
-				public void accept(Portlet portlet, Boolean active) {
-					portlet.setActive(active);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

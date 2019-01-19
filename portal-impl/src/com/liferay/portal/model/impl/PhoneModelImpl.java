@@ -236,210 +236,52 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 
 	static {
 		Map<String, Function<Phone, Object>> attributeGetters = new LinkedHashMap<String, Function<Phone, Object>>();
+		Map<String, BiConsumer<Phone, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Phone, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<Phone, Object>() {
-				@Override
-				public Object apply(Phone phone) {
-					return phone.getMvccVersion();
-				}
-			});
-		attributeGetters.put("uuid",
-			new Function<Phone, Object>() {
-				@Override
-				public Object apply(Phone phone) {
-					return phone.getUuid();
-				}
-			});
-		attributeGetters.put("phoneId",
-			new Function<Phone, Object>() {
-				@Override
-				public Object apply(Phone phone) {
-					return phone.getPhoneId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<Phone, Object>() {
-				@Override
-				public Object apply(Phone phone) {
-					return phone.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<Phone, Object>() {
-				@Override
-				public Object apply(Phone phone) {
-					return phone.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<Phone, Object>() {
-				@Override
-				public Object apply(Phone phone) {
-					return phone.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<Phone, Object>() {
-				@Override
-				public Object apply(Phone phone) {
-					return phone.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<Phone, Object>() {
-				@Override
-				public Object apply(Phone phone) {
-					return phone.getModifiedDate();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<Phone, Object>() {
-				@Override
-				public Object apply(Phone phone) {
-					return phone.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<Phone, Object>() {
-				@Override
-				public Object apply(Phone phone) {
-					return phone.getClassPK();
-				}
-			});
-		attributeGetters.put("number",
-			new Function<Phone, Object>() {
-				@Override
-				public Object apply(Phone phone) {
-					return phone.getNumber();
-				}
-			});
-		attributeGetters.put("extension",
-			new Function<Phone, Object>() {
-				@Override
-				public Object apply(Phone phone) {
-					return phone.getExtension();
-				}
-			});
-		attributeGetters.put("typeId",
-			new Function<Phone, Object>() {
-				@Override
-				public Object apply(Phone phone) {
-					return phone.getTypeId();
-				}
-			});
-		attributeGetters.put("primary",
-			new Function<Phone, Object>() {
-				@Override
-				public Object apply(Phone phone) {
-					return phone.isPrimary();
-				}
-			});
+		attributeGetters.put("mvccVersion", Phone::getMvccVersion);
+		attributeSetters.put("mvccVersion", Phone::setMvccVersion);
+
+		attributeGetters.put("uuid", Phone::getUuid);
+		attributeSetters.put("uuid", Phone::setUuid);
+
+		attributeGetters.put("phoneId", Phone::getPhoneId);
+		attributeSetters.put("phoneId", Phone::setPhoneId);
+
+		attributeGetters.put("companyId", Phone::getCompanyId);
+		attributeSetters.put("companyId", Phone::setCompanyId);
+
+		attributeGetters.put("userId", Phone::getUserId);
+		attributeSetters.put("userId", Phone::setUserId);
+
+		attributeGetters.put("userName", Phone::getUserName);
+		attributeSetters.put("userName", Phone::setUserName);
+
+		attributeGetters.put("createDate", Phone::getCreateDate);
+		attributeSetters.put("createDate", Phone::setCreateDate);
+
+		attributeGetters.put("modifiedDate", Phone::getModifiedDate);
+		attributeSetters.put("modifiedDate", Phone::setModifiedDate);
+
+		attributeGetters.put("classNameId", Phone::getClassNameId);
+		attributeSetters.put("classNameId", Phone::setClassNameId);
+
+		attributeGetters.put("classPK", Phone::getClassPK);
+		attributeSetters.put("classPK", Phone::setClassPK);
+
+		attributeGetters.put("number", Phone::getNumber);
+		attributeSetters.put("number", Phone::setNumber);
+
+		attributeGetters.put("extension", Phone::getExtension);
+		attributeSetters.put("extension", Phone::setExtension);
+
+		attributeGetters.put("typeId", Phone::getTypeId);
+		attributeSetters.put("typeId", Phone::setTypeId);
+
+		attributeGetters.put("primary", Phone::getPrimary);
+		attributeSetters.put("primary", Phone::setPrimary);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<Phone, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Phone, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<Phone, Long>() {
-				@Override
-				public void accept(Phone phone, Long mvccVersion) {
-					phone.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("uuid",
-			new BiConsumer<Phone, String>() {
-				@Override
-				public void accept(Phone phone, String uuid) {
-					phone.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("phoneId",
-			new BiConsumer<Phone, Long>() {
-				@Override
-				public void accept(Phone phone, Long phoneId) {
-					phone.setPhoneId(phoneId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<Phone, Long>() {
-				@Override
-				public void accept(Phone phone, Long companyId) {
-					phone.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<Phone, Long>() {
-				@Override
-				public void accept(Phone phone, Long userId) {
-					phone.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<Phone, String>() {
-				@Override
-				public void accept(Phone phone, String userName) {
-					phone.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<Phone, Date>() {
-				@Override
-				public void accept(Phone phone, Date createDate) {
-					phone.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<Phone, Date>() {
-				@Override
-				public void accept(Phone phone, Date modifiedDate) {
-					phone.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<Phone, Long>() {
-				@Override
-				public void accept(Phone phone, Long classNameId) {
-					phone.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<Phone, Long>() {
-				@Override
-				public void accept(Phone phone, Long classPK) {
-					phone.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("number",
-			new BiConsumer<Phone, String>() {
-				@Override
-				public void accept(Phone phone, String number) {
-					phone.setNumber(number);
-				}
-			});
-		attributeSetters.put("extension",
-			new BiConsumer<Phone, String>() {
-				@Override
-				public void accept(Phone phone, String extension) {
-					phone.setExtension(extension);
-				}
-			});
-		attributeSetters.put("typeId",
-			new BiConsumer<Phone, Long>() {
-				@Override
-				public void accept(Phone phone, Long typeId) {
-					phone.setTypeId(typeId);
-				}
-			});
-		attributeSetters.put("primary",
-			new BiConsumer<Phone, Boolean>() {
-				@Override
-				public void accept(Phone phone, Boolean primary) {
-					phone.setPrimary(primary);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

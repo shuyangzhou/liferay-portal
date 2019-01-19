@@ -229,194 +229,46 @@ public class FragmentCollectionModelImpl extends BaseModelImpl<FragmentCollectio
 
 	static {
 		Map<String, Function<FragmentCollection, Object>> attributeGetters = new LinkedHashMap<String, Function<FragmentCollection, Object>>();
+		Map<String, BiConsumer<FragmentCollection, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<FragmentCollection, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<FragmentCollection, Object>() {
-				@Override
-				public Object apply(FragmentCollection fragmentCollection) {
-					return fragmentCollection.getUuid();
-				}
-			});
-		attributeGetters.put("fragmentCollectionId",
-			new Function<FragmentCollection, Object>() {
-				@Override
-				public Object apply(FragmentCollection fragmentCollection) {
-					return fragmentCollection.getFragmentCollectionId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<FragmentCollection, Object>() {
-				@Override
-				public Object apply(FragmentCollection fragmentCollection) {
-					return fragmentCollection.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<FragmentCollection, Object>() {
-				@Override
-				public Object apply(FragmentCollection fragmentCollection) {
-					return fragmentCollection.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<FragmentCollection, Object>() {
-				@Override
-				public Object apply(FragmentCollection fragmentCollection) {
-					return fragmentCollection.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<FragmentCollection, Object>() {
-				@Override
-				public Object apply(FragmentCollection fragmentCollection) {
-					return fragmentCollection.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<FragmentCollection, Object>() {
-				@Override
-				public Object apply(FragmentCollection fragmentCollection) {
-					return fragmentCollection.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<FragmentCollection, Object>() {
-				@Override
-				public Object apply(FragmentCollection fragmentCollection) {
-					return fragmentCollection.getModifiedDate();
-				}
-			});
-		attributeGetters.put("fragmentCollectionKey",
-			new Function<FragmentCollection, Object>() {
-				@Override
-				public Object apply(FragmentCollection fragmentCollection) {
-					return fragmentCollection.getFragmentCollectionKey();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<FragmentCollection, Object>() {
-				@Override
-				public Object apply(FragmentCollection fragmentCollection) {
-					return fragmentCollection.getName();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<FragmentCollection, Object>() {
-				@Override
-				public Object apply(FragmentCollection fragmentCollection) {
-					return fragmentCollection.getDescription();
-				}
-			});
-		attributeGetters.put("lastPublishDate",
-			new Function<FragmentCollection, Object>() {
-				@Override
-				public Object apply(FragmentCollection fragmentCollection) {
-					return fragmentCollection.getLastPublishDate();
-				}
-			});
+		attributeGetters.put("uuid", FragmentCollection::getUuid);
+		attributeSetters.put("uuid", FragmentCollection::setUuid);
+
+		attributeGetters.put("fragmentCollectionId", FragmentCollection::getFragmentCollectionId);
+		attributeSetters.put("fragmentCollectionId", FragmentCollection::setFragmentCollectionId);
+
+		attributeGetters.put("groupId", FragmentCollection::getGroupId);
+		attributeSetters.put("groupId", FragmentCollection::setGroupId);
+
+		attributeGetters.put("companyId", FragmentCollection::getCompanyId);
+		attributeSetters.put("companyId", FragmentCollection::setCompanyId);
+
+		attributeGetters.put("userId", FragmentCollection::getUserId);
+		attributeSetters.put("userId", FragmentCollection::setUserId);
+
+		attributeGetters.put("userName", FragmentCollection::getUserName);
+		attributeSetters.put("userName", FragmentCollection::setUserName);
+
+		attributeGetters.put("createDate", FragmentCollection::getCreateDate);
+		attributeSetters.put("createDate", FragmentCollection::setCreateDate);
+
+		attributeGetters.put("modifiedDate", FragmentCollection::getModifiedDate);
+		attributeSetters.put("modifiedDate", FragmentCollection::setModifiedDate);
+
+		attributeGetters.put("fragmentCollectionKey", FragmentCollection::getFragmentCollectionKey);
+		attributeSetters.put("fragmentCollectionKey", FragmentCollection::setFragmentCollectionKey);
+
+		attributeGetters.put("name", FragmentCollection::getName);
+		attributeSetters.put("name", FragmentCollection::setName);
+
+		attributeGetters.put("description", FragmentCollection::getDescription);
+		attributeSetters.put("description", FragmentCollection::setDescription);
+
+		attributeGetters.put("lastPublishDate", FragmentCollection::getLastPublishDate);
+		attributeSetters.put("lastPublishDate", FragmentCollection::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<FragmentCollection, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<FragmentCollection, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<FragmentCollection, String>() {
-				@Override
-				public void accept(FragmentCollection fragmentCollection,
-					String uuid) {
-					fragmentCollection.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("fragmentCollectionId",
-			new BiConsumer<FragmentCollection, Long>() {
-				@Override
-				public void accept(FragmentCollection fragmentCollection,
-					Long fragmentCollectionId) {
-					fragmentCollection.setFragmentCollectionId(fragmentCollectionId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<FragmentCollection, Long>() {
-				@Override
-				public void accept(FragmentCollection fragmentCollection,
-					Long groupId) {
-					fragmentCollection.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<FragmentCollection, Long>() {
-				@Override
-				public void accept(FragmentCollection fragmentCollection,
-					Long companyId) {
-					fragmentCollection.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<FragmentCollection, Long>() {
-				@Override
-				public void accept(FragmentCollection fragmentCollection,
-					Long userId) {
-					fragmentCollection.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<FragmentCollection, String>() {
-				@Override
-				public void accept(FragmentCollection fragmentCollection,
-					String userName) {
-					fragmentCollection.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<FragmentCollection, Date>() {
-				@Override
-				public void accept(FragmentCollection fragmentCollection,
-					Date createDate) {
-					fragmentCollection.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<FragmentCollection, Date>() {
-				@Override
-				public void accept(FragmentCollection fragmentCollection,
-					Date modifiedDate) {
-					fragmentCollection.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("fragmentCollectionKey",
-			new BiConsumer<FragmentCollection, String>() {
-				@Override
-				public void accept(FragmentCollection fragmentCollection,
-					String fragmentCollectionKey) {
-					fragmentCollection.setFragmentCollectionKey(fragmentCollectionKey);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<FragmentCollection, String>() {
-				@Override
-				public void accept(FragmentCollection fragmentCollection,
-					String name) {
-					fragmentCollection.setName(name);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<FragmentCollection, String>() {
-				@Override
-				public void accept(FragmentCollection fragmentCollection,
-					String description) {
-					fragmentCollection.setDescription(description);
-				}
-			});
-		attributeSetters.put("lastPublishDate",
-			new BiConsumer<FragmentCollection, Date>() {
-				@Override
-				public void accept(FragmentCollection fragmentCollection,
-					Date lastPublishDate) {
-					fragmentCollection.setLastPublishDate(lastPublishDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

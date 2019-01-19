@@ -167,164 +167,40 @@ public class HtmlPreviewEntryModelImpl extends BaseModelImpl<HtmlPreviewEntry>
 
 	static {
 		Map<String, Function<HtmlPreviewEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<HtmlPreviewEntry, Object>>();
+		Map<String, BiConsumer<HtmlPreviewEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<HtmlPreviewEntry, Object>>();
 
-		attributeGetters.put("htmlPreviewEntryId",
-			new Function<HtmlPreviewEntry, Object>() {
-				@Override
-				public Object apply(HtmlPreviewEntry htmlPreviewEntry) {
-					return htmlPreviewEntry.getHtmlPreviewEntryId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<HtmlPreviewEntry, Object>() {
-				@Override
-				public Object apply(HtmlPreviewEntry htmlPreviewEntry) {
-					return htmlPreviewEntry.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<HtmlPreviewEntry, Object>() {
-				@Override
-				public Object apply(HtmlPreviewEntry htmlPreviewEntry) {
-					return htmlPreviewEntry.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<HtmlPreviewEntry, Object>() {
-				@Override
-				public Object apply(HtmlPreviewEntry htmlPreviewEntry) {
-					return htmlPreviewEntry.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<HtmlPreviewEntry, Object>() {
-				@Override
-				public Object apply(HtmlPreviewEntry htmlPreviewEntry) {
-					return htmlPreviewEntry.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<HtmlPreviewEntry, Object>() {
-				@Override
-				public Object apply(HtmlPreviewEntry htmlPreviewEntry) {
-					return htmlPreviewEntry.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<HtmlPreviewEntry, Object>() {
-				@Override
-				public Object apply(HtmlPreviewEntry htmlPreviewEntry) {
-					return htmlPreviewEntry.getModifiedDate();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<HtmlPreviewEntry, Object>() {
-				@Override
-				public Object apply(HtmlPreviewEntry htmlPreviewEntry) {
-					return htmlPreviewEntry.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<HtmlPreviewEntry, Object>() {
-				@Override
-				public Object apply(HtmlPreviewEntry htmlPreviewEntry) {
-					return htmlPreviewEntry.getClassPK();
-				}
-			});
-		attributeGetters.put("fileEntryId",
-			new Function<HtmlPreviewEntry, Object>() {
-				@Override
-				public Object apply(HtmlPreviewEntry htmlPreviewEntry) {
-					return htmlPreviewEntry.getFileEntryId();
-				}
-			});
+		attributeGetters.put("htmlPreviewEntryId", HtmlPreviewEntry::getHtmlPreviewEntryId);
+		attributeSetters.put("htmlPreviewEntryId", HtmlPreviewEntry::setHtmlPreviewEntryId);
+
+		attributeGetters.put("groupId", HtmlPreviewEntry::getGroupId);
+		attributeSetters.put("groupId", HtmlPreviewEntry::setGroupId);
+
+		attributeGetters.put("companyId", HtmlPreviewEntry::getCompanyId);
+		attributeSetters.put("companyId", HtmlPreviewEntry::setCompanyId);
+
+		attributeGetters.put("userId", HtmlPreviewEntry::getUserId);
+		attributeSetters.put("userId", HtmlPreviewEntry::setUserId);
+
+		attributeGetters.put("userName", HtmlPreviewEntry::getUserName);
+		attributeSetters.put("userName", HtmlPreviewEntry::setUserName);
+
+		attributeGetters.put("createDate", HtmlPreviewEntry::getCreateDate);
+		attributeSetters.put("createDate", HtmlPreviewEntry::setCreateDate);
+
+		attributeGetters.put("modifiedDate", HtmlPreviewEntry::getModifiedDate);
+		attributeSetters.put("modifiedDate", HtmlPreviewEntry::setModifiedDate);
+
+		attributeGetters.put("classNameId", HtmlPreviewEntry::getClassNameId);
+		attributeSetters.put("classNameId", HtmlPreviewEntry::setClassNameId);
+
+		attributeGetters.put("classPK", HtmlPreviewEntry::getClassPK);
+		attributeSetters.put("classPK", HtmlPreviewEntry::setClassPK);
+
+		attributeGetters.put("fileEntryId", HtmlPreviewEntry::getFileEntryId);
+		attributeSetters.put("fileEntryId", HtmlPreviewEntry::setFileEntryId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<HtmlPreviewEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<HtmlPreviewEntry, ?>>();
-
-		attributeSetters.put("htmlPreviewEntryId",
-			new BiConsumer<HtmlPreviewEntry, Long>() {
-				@Override
-				public void accept(HtmlPreviewEntry htmlPreviewEntry,
-					Long htmlPreviewEntryId) {
-					htmlPreviewEntry.setHtmlPreviewEntryId(htmlPreviewEntryId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<HtmlPreviewEntry, Long>() {
-				@Override
-				public void accept(HtmlPreviewEntry htmlPreviewEntry,
-					Long groupId) {
-					htmlPreviewEntry.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<HtmlPreviewEntry, Long>() {
-				@Override
-				public void accept(HtmlPreviewEntry htmlPreviewEntry,
-					Long companyId) {
-					htmlPreviewEntry.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<HtmlPreviewEntry, Long>() {
-				@Override
-				public void accept(HtmlPreviewEntry htmlPreviewEntry,
-					Long userId) {
-					htmlPreviewEntry.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<HtmlPreviewEntry, String>() {
-				@Override
-				public void accept(HtmlPreviewEntry htmlPreviewEntry,
-					String userName) {
-					htmlPreviewEntry.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<HtmlPreviewEntry, Date>() {
-				@Override
-				public void accept(HtmlPreviewEntry htmlPreviewEntry,
-					Date createDate) {
-					htmlPreviewEntry.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<HtmlPreviewEntry, Date>() {
-				@Override
-				public void accept(HtmlPreviewEntry htmlPreviewEntry,
-					Date modifiedDate) {
-					htmlPreviewEntry.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<HtmlPreviewEntry, Long>() {
-				@Override
-				public void accept(HtmlPreviewEntry htmlPreviewEntry,
-					Long classNameId) {
-					htmlPreviewEntry.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<HtmlPreviewEntry, Long>() {
-				@Override
-				public void accept(HtmlPreviewEntry htmlPreviewEntry,
-					Long classPK) {
-					htmlPreviewEntry.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("fileEntryId",
-			new BiConsumer<HtmlPreviewEntry, Long>() {
-				@Override
-				public void accept(HtmlPreviewEntry htmlPreviewEntry,
-					Long fileEntryId) {
-					htmlPreviewEntry.setFileEntryId(fileEntryId);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

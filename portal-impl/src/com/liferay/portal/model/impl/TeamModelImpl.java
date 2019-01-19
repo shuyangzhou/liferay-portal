@@ -243,182 +243,46 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 
 	static {
 		Map<String, Function<Team, Object>> attributeGetters = new LinkedHashMap<String, Function<Team, Object>>();
+		Map<String, BiConsumer<Team, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Team, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<Team, Object>() {
-				@Override
-				public Object apply(Team team) {
-					return team.getMvccVersion();
-				}
-			});
-		attributeGetters.put("uuid",
-			new Function<Team, Object>() {
-				@Override
-				public Object apply(Team team) {
-					return team.getUuid();
-				}
-			});
-		attributeGetters.put("teamId",
-			new Function<Team, Object>() {
-				@Override
-				public Object apply(Team team) {
-					return team.getTeamId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<Team, Object>() {
-				@Override
-				public Object apply(Team team) {
-					return team.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<Team, Object>() {
-				@Override
-				public Object apply(Team team) {
-					return team.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<Team, Object>() {
-				@Override
-				public Object apply(Team team) {
-					return team.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<Team, Object>() {
-				@Override
-				public Object apply(Team team) {
-					return team.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<Team, Object>() {
-				@Override
-				public Object apply(Team team) {
-					return team.getModifiedDate();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<Team, Object>() {
-				@Override
-				public Object apply(Team team) {
-					return team.getGroupId();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<Team, Object>() {
-				@Override
-				public Object apply(Team team) {
-					return team.getName();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<Team, Object>() {
-				@Override
-				public Object apply(Team team) {
-					return team.getDescription();
-				}
-			});
-		attributeGetters.put("lastPublishDate",
-			new Function<Team, Object>() {
-				@Override
-				public Object apply(Team team) {
-					return team.getLastPublishDate();
-				}
-			});
+		attributeGetters.put("mvccVersion", Team::getMvccVersion);
+		attributeSetters.put("mvccVersion", Team::setMvccVersion);
+
+		attributeGetters.put("uuid", Team::getUuid);
+		attributeSetters.put("uuid", Team::setUuid);
+
+		attributeGetters.put("teamId", Team::getTeamId);
+		attributeSetters.put("teamId", Team::setTeamId);
+
+		attributeGetters.put("companyId", Team::getCompanyId);
+		attributeSetters.put("companyId", Team::setCompanyId);
+
+		attributeGetters.put("userId", Team::getUserId);
+		attributeSetters.put("userId", Team::setUserId);
+
+		attributeGetters.put("userName", Team::getUserName);
+		attributeSetters.put("userName", Team::setUserName);
+
+		attributeGetters.put("createDate", Team::getCreateDate);
+		attributeSetters.put("createDate", Team::setCreateDate);
+
+		attributeGetters.put("modifiedDate", Team::getModifiedDate);
+		attributeSetters.put("modifiedDate", Team::setModifiedDate);
+
+		attributeGetters.put("groupId", Team::getGroupId);
+		attributeSetters.put("groupId", Team::setGroupId);
+
+		attributeGetters.put("name", Team::getName);
+		attributeSetters.put("name", Team::setName);
+
+		attributeGetters.put("description", Team::getDescription);
+		attributeSetters.put("description", Team::setDescription);
+
+		attributeGetters.put("lastPublishDate", Team::getLastPublishDate);
+		attributeSetters.put("lastPublishDate", Team::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<Team, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Team, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<Team, Long>() {
-				@Override
-				public void accept(Team team, Long mvccVersion) {
-					team.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("uuid",
-			new BiConsumer<Team, String>() {
-				@Override
-				public void accept(Team team, String uuid) {
-					team.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("teamId",
-			new BiConsumer<Team, Long>() {
-				@Override
-				public void accept(Team team, Long teamId) {
-					team.setTeamId(teamId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<Team, Long>() {
-				@Override
-				public void accept(Team team, Long companyId) {
-					team.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<Team, Long>() {
-				@Override
-				public void accept(Team team, Long userId) {
-					team.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<Team, String>() {
-				@Override
-				public void accept(Team team, String userName) {
-					team.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<Team, Date>() {
-				@Override
-				public void accept(Team team, Date createDate) {
-					team.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<Team, Date>() {
-				@Override
-				public void accept(Team team, Date modifiedDate) {
-					team.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<Team, Long>() {
-				@Override
-				public void accept(Team team, Long groupId) {
-					team.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<Team, String>() {
-				@Override
-				public void accept(Team team, String name) {
-					team.setName(name);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<Team, String>() {
-				@Override
-				public void accept(Team team, String description) {
-					team.setDescription(description);
-				}
-			});
-		attributeSetters.put("lastPublishDate",
-			new BiConsumer<Team, Date>() {
-				@Override
-				public void accept(Team team, Date lastPublishDate) {
-					team.setLastPublishDate(lastPublishDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

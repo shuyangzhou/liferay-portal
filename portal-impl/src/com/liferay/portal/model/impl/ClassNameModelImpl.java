@@ -192,56 +192,19 @@ public class ClassNameModelImpl extends BaseModelImpl<ClassName>
 
 	static {
 		Map<String, Function<ClassName, Object>> attributeGetters = new LinkedHashMap<String, Function<ClassName, Object>>();
+		Map<String, BiConsumer<ClassName, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<ClassName, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<ClassName, Object>() {
-				@Override
-				public Object apply(ClassName className) {
-					return className.getMvccVersion();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<ClassName, Object>() {
-				@Override
-				public Object apply(ClassName className) {
-					return className.getClassNameId();
-				}
-			});
-		attributeGetters.put("value",
-			new Function<ClassName, Object>() {
-				@Override
-				public Object apply(ClassName className) {
-					return className.getValue();
-				}
-			});
+		attributeGetters.put("mvccVersion", ClassName::getMvccVersion);
+		attributeSetters.put("mvccVersion", ClassName::setMvccVersion);
+
+		attributeGetters.put("classNameId", ClassName::getClassNameId);
+		attributeSetters.put("classNameId", ClassName::setClassNameId);
+
+		attributeGetters.put("value", ClassName::getValue);
+		attributeSetters.put("value", ClassName::setValue);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<ClassName, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<ClassName, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<ClassName, Long>() {
-				@Override
-				public void accept(ClassName className, Long mvccVersion) {
-					className.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<ClassName, Long>() {
-				@Override
-				public void accept(ClassName className, Long classNameId) {
-					className.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("value",
-			new BiConsumer<ClassName, String>() {
-				@Override
-				public void accept(ClassName className, String value) {
-					className.setValue(value);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

@@ -153,89 +153,25 @@ public class DDMStructureLinkModelImpl extends BaseModelImpl<DDMStructureLink>
 
 	static {
 		Map<String, Function<DDMStructureLink, Object>> attributeGetters = new LinkedHashMap<String, Function<DDMStructureLink, Object>>();
+		Map<String, BiConsumer<DDMStructureLink, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDMStructureLink, Object>>();
 
-		attributeGetters.put("structureLinkId",
-			new Function<DDMStructureLink, Object>() {
-				@Override
-				public Object apply(DDMStructureLink ddmStructureLink) {
-					return ddmStructureLink.getStructureLinkId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<DDMStructureLink, Object>() {
-				@Override
-				public Object apply(DDMStructureLink ddmStructureLink) {
-					return ddmStructureLink.getCompanyId();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<DDMStructureLink, Object>() {
-				@Override
-				public Object apply(DDMStructureLink ddmStructureLink) {
-					return ddmStructureLink.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<DDMStructureLink, Object>() {
-				@Override
-				public Object apply(DDMStructureLink ddmStructureLink) {
-					return ddmStructureLink.getClassPK();
-				}
-			});
-		attributeGetters.put("structureId",
-			new Function<DDMStructureLink, Object>() {
-				@Override
-				public Object apply(DDMStructureLink ddmStructureLink) {
-					return ddmStructureLink.getStructureId();
-				}
-			});
+		attributeGetters.put("structureLinkId", DDMStructureLink::getStructureLinkId);
+		attributeSetters.put("structureLinkId", DDMStructureLink::setStructureLinkId);
+
+		attributeGetters.put("companyId", DDMStructureLink::getCompanyId);
+		attributeSetters.put("companyId", DDMStructureLink::setCompanyId);
+
+		attributeGetters.put("classNameId", DDMStructureLink::getClassNameId);
+		attributeSetters.put("classNameId", DDMStructureLink::setClassNameId);
+
+		attributeGetters.put("classPK", DDMStructureLink::getClassPK);
+		attributeSetters.put("classPK", DDMStructureLink::setClassPK);
+
+		attributeGetters.put("structureId", DDMStructureLink::getStructureId);
+		attributeSetters.put("structureId", DDMStructureLink::setStructureId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<DDMStructureLink, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDMStructureLink, ?>>();
-
-		attributeSetters.put("structureLinkId",
-			new BiConsumer<DDMStructureLink, Long>() {
-				@Override
-				public void accept(DDMStructureLink ddmStructureLink,
-					Long structureLinkId) {
-					ddmStructureLink.setStructureLinkId(structureLinkId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<DDMStructureLink, Long>() {
-				@Override
-				public void accept(DDMStructureLink ddmStructureLink,
-					Long companyId) {
-					ddmStructureLink.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<DDMStructureLink, Long>() {
-				@Override
-				public void accept(DDMStructureLink ddmStructureLink,
-					Long classNameId) {
-					ddmStructureLink.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<DDMStructureLink, Long>() {
-				@Override
-				public void accept(DDMStructureLink ddmStructureLink,
-					Long classPK) {
-					ddmStructureLink.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("structureId",
-			new BiConsumer<DDMStructureLink, Long>() {
-				@Override
-				public void accept(DDMStructureLink ddmStructureLink,
-					Long structureId) {
-					ddmStructureLink.setStructureId(structureId);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

@@ -310,492 +310,112 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 
 	static {
 		Map<String, Function<Layout, Object>> attributeGetters = new LinkedHashMap<String, Function<Layout, Object>>();
+		Map<String, BiConsumer<Layout, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Layout, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getMvccVersion();
-				}
-			});
-		attributeGetters.put("uuid",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getUuid();
-				}
-			});
-		attributeGetters.put("plid",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getPlid();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getModifiedDate();
-				}
-			});
-		attributeGetters.put("parentPlid",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getParentPlid();
-				}
-			});
-		attributeGetters.put("leftPlid",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getLeftPlid();
-				}
-			});
-		attributeGetters.put("rightPlid",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getRightPlid();
-				}
-			});
-		attributeGetters.put("privateLayout",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.isPrivateLayout();
-				}
-			});
-		attributeGetters.put("layoutId",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getLayoutId();
-				}
-			});
-		attributeGetters.put("parentLayoutId",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getParentLayoutId();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getName();
-				}
-			});
-		attributeGetters.put("title",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getTitle();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getDescription();
-				}
-			});
-		attributeGetters.put("keywords",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getKeywords();
-				}
-			});
-		attributeGetters.put("robots",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getRobots();
-				}
-			});
-		attributeGetters.put("type",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getType();
-				}
-			});
-		attributeGetters.put("typeSettings",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getTypeSettings();
-				}
-			});
-		attributeGetters.put("hidden",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.isHidden();
-				}
-			});
-		attributeGetters.put("system",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.isSystem();
-				}
-			});
-		attributeGetters.put("friendlyURL",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getFriendlyURL();
-				}
-			});
-		attributeGetters.put("iconImageId",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getIconImageId();
-				}
-			});
-		attributeGetters.put("themeId",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getThemeId();
-				}
-			});
-		attributeGetters.put("colorSchemeId",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getColorSchemeId();
-				}
-			});
-		attributeGetters.put("css",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getCss();
-				}
-			});
-		attributeGetters.put("priority",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getPriority();
-				}
-			});
-		attributeGetters.put("layoutPrototypeUuid",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getLayoutPrototypeUuid();
-				}
-			});
-		attributeGetters.put("layoutPrototypeLinkEnabled",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.isLayoutPrototypeLinkEnabled();
-				}
-			});
-		attributeGetters.put("sourcePrototypeLayoutUuid",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getSourcePrototypeLayoutUuid();
-				}
-			});
-		attributeGetters.put("lastPublishDate",
-			new Function<Layout, Object>() {
-				@Override
-				public Object apply(Layout layout) {
-					return layout.getLastPublishDate();
-				}
-			});
+		attributeGetters.put("mvccVersion", Layout::getMvccVersion);
+		attributeSetters.put("mvccVersion", Layout::setMvccVersion);
+
+		attributeGetters.put("uuid", Layout::getUuid);
+		attributeSetters.put("uuid", Layout::setUuid);
+
+		attributeGetters.put("plid", Layout::getPlid);
+		attributeSetters.put("plid", Layout::setPlid);
+
+		attributeGetters.put("groupId", Layout::getGroupId);
+		attributeSetters.put("groupId", Layout::setGroupId);
+
+		attributeGetters.put("companyId", Layout::getCompanyId);
+		attributeSetters.put("companyId", Layout::setCompanyId);
+
+		attributeGetters.put("userId", Layout::getUserId);
+		attributeSetters.put("userId", Layout::setUserId);
+
+		attributeGetters.put("userName", Layout::getUserName);
+		attributeSetters.put("userName", Layout::setUserName);
+
+		attributeGetters.put("createDate", Layout::getCreateDate);
+		attributeSetters.put("createDate", Layout::setCreateDate);
+
+		attributeGetters.put("modifiedDate", Layout::getModifiedDate);
+		attributeSetters.put("modifiedDate", Layout::setModifiedDate);
+
+		attributeGetters.put("parentPlid", Layout::getParentPlid);
+		attributeSetters.put("parentPlid", Layout::setParentPlid);
+
+		attributeGetters.put("leftPlid", Layout::getLeftPlid);
+		attributeSetters.put("leftPlid", Layout::setLeftPlid);
+
+		attributeGetters.put("rightPlid", Layout::getRightPlid);
+		attributeSetters.put("rightPlid", Layout::setRightPlid);
+
+		attributeGetters.put("privateLayout", Layout::getPrivateLayout);
+		attributeSetters.put("privateLayout", Layout::setPrivateLayout);
+
+		attributeGetters.put("layoutId", Layout::getLayoutId);
+		attributeSetters.put("layoutId", Layout::setLayoutId);
+
+		attributeGetters.put("parentLayoutId", Layout::getParentLayoutId);
+		attributeSetters.put("parentLayoutId", Layout::setParentLayoutId);
+
+		attributeGetters.put("name", Layout::getName);
+		attributeSetters.put("name", Layout::setName);
+
+		attributeGetters.put("title", Layout::getTitle);
+		attributeSetters.put("title", Layout::setTitle);
+
+		attributeGetters.put("description", Layout::getDescription);
+		attributeSetters.put("description", Layout::setDescription);
+
+		attributeGetters.put("keywords", Layout::getKeywords);
+		attributeSetters.put("keywords", Layout::setKeywords);
+
+		attributeGetters.put("robots", Layout::getRobots);
+		attributeSetters.put("robots", Layout::setRobots);
+
+		attributeGetters.put("type", Layout::getType);
+		attributeSetters.put("type", Layout::setType);
+
+		attributeGetters.put("typeSettings", Layout::getTypeSettings);
+		attributeSetters.put("typeSettings", Layout::setTypeSettings);
+
+		attributeGetters.put("hidden", Layout::getHidden);
+		attributeSetters.put("hidden", Layout::setHidden);
+
+		attributeGetters.put("system", Layout::getSystem);
+		attributeSetters.put("system", Layout::setSystem);
+
+		attributeGetters.put("friendlyURL", Layout::getFriendlyURL);
+		attributeSetters.put("friendlyURL", Layout::setFriendlyURL);
+
+		attributeGetters.put("iconImageId", Layout::getIconImageId);
+		attributeSetters.put("iconImageId", Layout::setIconImageId);
+
+		attributeGetters.put("themeId", Layout::getThemeId);
+		attributeSetters.put("themeId", Layout::setThemeId);
+
+		attributeGetters.put("colorSchemeId", Layout::getColorSchemeId);
+		attributeSetters.put("colorSchemeId", Layout::setColorSchemeId);
+
+		attributeGetters.put("css", Layout::getCss);
+		attributeSetters.put("css", Layout::setCss);
+
+		attributeGetters.put("priority", Layout::getPriority);
+		attributeSetters.put("priority", Layout::setPriority);
+
+		attributeGetters.put("layoutPrototypeUuid", Layout::getLayoutPrototypeUuid);
+		attributeSetters.put("layoutPrototypeUuid", Layout::setLayoutPrototypeUuid);
+
+		attributeGetters.put("layoutPrototypeLinkEnabled", Layout::getLayoutPrototypeLinkEnabled);
+		attributeSetters.put("layoutPrototypeLinkEnabled", Layout::setLayoutPrototypeLinkEnabled);
+
+		attributeGetters.put("sourcePrototypeLayoutUuid", Layout::getSourcePrototypeLayoutUuid);
+		attributeSetters.put("sourcePrototypeLayoutUuid", Layout::setSourcePrototypeLayoutUuid);
+
+		attributeGetters.put("lastPublishDate", Layout::getLastPublishDate);
+		attributeSetters.put("lastPublishDate", Layout::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<Layout, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Layout, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<Layout, Long>() {
-				@Override
-				public void accept(Layout layout, Long mvccVersion) {
-					layout.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("uuid",
-			new BiConsumer<Layout, String>() {
-				@Override
-				public void accept(Layout layout, String uuid) {
-					layout.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("plid",
-			new BiConsumer<Layout, Long>() {
-				@Override
-				public void accept(Layout layout, Long plid) {
-					layout.setPlid(plid);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<Layout, Long>() {
-				@Override
-				public void accept(Layout layout, Long groupId) {
-					layout.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<Layout, Long>() {
-				@Override
-				public void accept(Layout layout, Long companyId) {
-					layout.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<Layout, Long>() {
-				@Override
-				public void accept(Layout layout, Long userId) {
-					layout.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<Layout, String>() {
-				@Override
-				public void accept(Layout layout, String userName) {
-					layout.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<Layout, Date>() {
-				@Override
-				public void accept(Layout layout, Date createDate) {
-					layout.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<Layout, Date>() {
-				@Override
-				public void accept(Layout layout, Date modifiedDate) {
-					layout.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("parentPlid",
-			new BiConsumer<Layout, Long>() {
-				@Override
-				public void accept(Layout layout, Long parentPlid) {
-					layout.setParentPlid(parentPlid);
-				}
-			});
-		attributeSetters.put("leftPlid",
-			new BiConsumer<Layout, Long>() {
-				@Override
-				public void accept(Layout layout, Long leftPlid) {
-					layout.setLeftPlid(leftPlid);
-				}
-			});
-		attributeSetters.put("rightPlid",
-			new BiConsumer<Layout, Long>() {
-				@Override
-				public void accept(Layout layout, Long rightPlid) {
-					layout.setRightPlid(rightPlid);
-				}
-			});
-		attributeSetters.put("privateLayout",
-			new BiConsumer<Layout, Boolean>() {
-				@Override
-				public void accept(Layout layout, Boolean privateLayout) {
-					layout.setPrivateLayout(privateLayout);
-				}
-			});
-		attributeSetters.put("layoutId",
-			new BiConsumer<Layout, Long>() {
-				@Override
-				public void accept(Layout layout, Long layoutId) {
-					layout.setLayoutId(layoutId);
-				}
-			});
-		attributeSetters.put("parentLayoutId",
-			new BiConsumer<Layout, Long>() {
-				@Override
-				public void accept(Layout layout, Long parentLayoutId) {
-					layout.setParentLayoutId(parentLayoutId);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<Layout, String>() {
-				@Override
-				public void accept(Layout layout, String name) {
-					layout.setName(name);
-				}
-			});
-		attributeSetters.put("title",
-			new BiConsumer<Layout, String>() {
-				@Override
-				public void accept(Layout layout, String title) {
-					layout.setTitle(title);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<Layout, String>() {
-				@Override
-				public void accept(Layout layout, String description) {
-					layout.setDescription(description);
-				}
-			});
-		attributeSetters.put("keywords",
-			new BiConsumer<Layout, String>() {
-				@Override
-				public void accept(Layout layout, String keywords) {
-					layout.setKeywords(keywords);
-				}
-			});
-		attributeSetters.put("robots",
-			new BiConsumer<Layout, String>() {
-				@Override
-				public void accept(Layout layout, String robots) {
-					layout.setRobots(robots);
-				}
-			});
-		attributeSetters.put("type",
-			new BiConsumer<Layout, String>() {
-				@Override
-				public void accept(Layout layout, String type) {
-					layout.setType(type);
-				}
-			});
-		attributeSetters.put("typeSettings",
-			new BiConsumer<Layout, String>() {
-				@Override
-				public void accept(Layout layout, String typeSettings) {
-					layout.setTypeSettings(typeSettings);
-				}
-			});
-		attributeSetters.put("hidden",
-			new BiConsumer<Layout, Boolean>() {
-				@Override
-				public void accept(Layout layout, Boolean hidden) {
-					layout.setHidden(hidden);
-				}
-			});
-		attributeSetters.put("system",
-			new BiConsumer<Layout, Boolean>() {
-				@Override
-				public void accept(Layout layout, Boolean system) {
-					layout.setSystem(system);
-				}
-			});
-		attributeSetters.put("friendlyURL",
-			new BiConsumer<Layout, String>() {
-				@Override
-				public void accept(Layout layout, String friendlyURL) {
-					layout.setFriendlyURL(friendlyURL);
-				}
-			});
-		attributeSetters.put("iconImageId",
-			new BiConsumer<Layout, Long>() {
-				@Override
-				public void accept(Layout layout, Long iconImageId) {
-					layout.setIconImageId(iconImageId);
-				}
-			});
-		attributeSetters.put("themeId",
-			new BiConsumer<Layout, String>() {
-				@Override
-				public void accept(Layout layout, String themeId) {
-					layout.setThemeId(themeId);
-				}
-			});
-		attributeSetters.put("colorSchemeId",
-			new BiConsumer<Layout, String>() {
-				@Override
-				public void accept(Layout layout, String colorSchemeId) {
-					layout.setColorSchemeId(colorSchemeId);
-				}
-			});
-		attributeSetters.put("css",
-			new BiConsumer<Layout, String>() {
-				@Override
-				public void accept(Layout layout, String css) {
-					layout.setCss(css);
-				}
-			});
-		attributeSetters.put("priority",
-			new BiConsumer<Layout, Integer>() {
-				@Override
-				public void accept(Layout layout, Integer priority) {
-					layout.setPriority(priority);
-				}
-			});
-		attributeSetters.put("layoutPrototypeUuid",
-			new BiConsumer<Layout, String>() {
-				@Override
-				public void accept(Layout layout, String layoutPrototypeUuid) {
-					layout.setLayoutPrototypeUuid(layoutPrototypeUuid);
-				}
-			});
-		attributeSetters.put("layoutPrototypeLinkEnabled",
-			new BiConsumer<Layout, Boolean>() {
-				@Override
-				public void accept(Layout layout,
-					Boolean layoutPrototypeLinkEnabled) {
-					layout.setLayoutPrototypeLinkEnabled(layoutPrototypeLinkEnabled);
-				}
-			});
-		attributeSetters.put("sourcePrototypeLayoutUuid",
-			new BiConsumer<Layout, String>() {
-				@Override
-				public void accept(Layout layout,
-					String sourcePrototypeLayoutUuid) {
-					layout.setSourcePrototypeLayoutUuid(sourcePrototypeLayoutUuid);
-				}
-			});
-		attributeSetters.put("lastPublishDate",
-			new BiConsumer<Layout, Date>() {
-				@Override
-				public void accept(Layout layout, Date lastPublishDate) {
-					layout.setLastPublishDate(lastPublishDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

@@ -169,168 +169,43 @@ public class PortletItemModelImpl extends BaseModelImpl<PortletItem>
 
 	static {
 		Map<String, Function<PortletItem, Object>> attributeGetters = new LinkedHashMap<String, Function<PortletItem, Object>>();
+		Map<String, BiConsumer<PortletItem, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<PortletItem, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<PortletItem, Object>() {
-				@Override
-				public Object apply(PortletItem portletItem) {
-					return portletItem.getMvccVersion();
-				}
-			});
-		attributeGetters.put("portletItemId",
-			new Function<PortletItem, Object>() {
-				@Override
-				public Object apply(PortletItem portletItem) {
-					return portletItem.getPortletItemId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<PortletItem, Object>() {
-				@Override
-				public Object apply(PortletItem portletItem) {
-					return portletItem.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<PortletItem, Object>() {
-				@Override
-				public Object apply(PortletItem portletItem) {
-					return portletItem.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<PortletItem, Object>() {
-				@Override
-				public Object apply(PortletItem portletItem) {
-					return portletItem.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<PortletItem, Object>() {
-				@Override
-				public Object apply(PortletItem portletItem) {
-					return portletItem.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<PortletItem, Object>() {
-				@Override
-				public Object apply(PortletItem portletItem) {
-					return portletItem.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<PortletItem, Object>() {
-				@Override
-				public Object apply(PortletItem portletItem) {
-					return portletItem.getModifiedDate();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<PortletItem, Object>() {
-				@Override
-				public Object apply(PortletItem portletItem) {
-					return portletItem.getName();
-				}
-			});
-		attributeGetters.put("portletId",
-			new Function<PortletItem, Object>() {
-				@Override
-				public Object apply(PortletItem portletItem) {
-					return portletItem.getPortletId();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<PortletItem, Object>() {
-				@Override
-				public Object apply(PortletItem portletItem) {
-					return portletItem.getClassNameId();
-				}
-			});
+		attributeGetters.put("mvccVersion", PortletItem::getMvccVersion);
+		attributeSetters.put("mvccVersion", PortletItem::setMvccVersion);
+
+		attributeGetters.put("portletItemId", PortletItem::getPortletItemId);
+		attributeSetters.put("portletItemId", PortletItem::setPortletItemId);
+
+		attributeGetters.put("groupId", PortletItem::getGroupId);
+		attributeSetters.put("groupId", PortletItem::setGroupId);
+
+		attributeGetters.put("companyId", PortletItem::getCompanyId);
+		attributeSetters.put("companyId", PortletItem::setCompanyId);
+
+		attributeGetters.put("userId", PortletItem::getUserId);
+		attributeSetters.put("userId", PortletItem::setUserId);
+
+		attributeGetters.put("userName", PortletItem::getUserName);
+		attributeSetters.put("userName", PortletItem::setUserName);
+
+		attributeGetters.put("createDate", PortletItem::getCreateDate);
+		attributeSetters.put("createDate", PortletItem::setCreateDate);
+
+		attributeGetters.put("modifiedDate", PortletItem::getModifiedDate);
+		attributeSetters.put("modifiedDate", PortletItem::setModifiedDate);
+
+		attributeGetters.put("name", PortletItem::getName);
+		attributeSetters.put("name", PortletItem::setName);
+
+		attributeGetters.put("portletId", PortletItem::getPortletId);
+		attributeSetters.put("portletId", PortletItem::setPortletId);
+
+		attributeGetters.put("classNameId", PortletItem::getClassNameId);
+		attributeSetters.put("classNameId", PortletItem::setClassNameId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<PortletItem, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<PortletItem, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<PortletItem, Long>() {
-				@Override
-				public void accept(PortletItem portletItem, Long mvccVersion) {
-					portletItem.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("portletItemId",
-			new BiConsumer<PortletItem, Long>() {
-				@Override
-				public void accept(PortletItem portletItem, Long portletItemId) {
-					portletItem.setPortletItemId(portletItemId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<PortletItem, Long>() {
-				@Override
-				public void accept(PortletItem portletItem, Long groupId) {
-					portletItem.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<PortletItem, Long>() {
-				@Override
-				public void accept(PortletItem portletItem, Long companyId) {
-					portletItem.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<PortletItem, Long>() {
-				@Override
-				public void accept(PortletItem portletItem, Long userId) {
-					portletItem.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<PortletItem, String>() {
-				@Override
-				public void accept(PortletItem portletItem, String userName) {
-					portletItem.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<PortletItem, Date>() {
-				@Override
-				public void accept(PortletItem portletItem, Date createDate) {
-					portletItem.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<PortletItem, Date>() {
-				@Override
-				public void accept(PortletItem portletItem, Date modifiedDate) {
-					portletItem.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<PortletItem, String>() {
-				@Override
-				public void accept(PortletItem portletItem, String name) {
-					portletItem.setName(name);
-				}
-			});
-		attributeSetters.put("portletId",
-			new BiConsumer<PortletItem, String>() {
-				@Override
-				public void accept(PortletItem portletItem, String portletId) {
-					portletItem.setPortletId(portletId);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<PortletItem, Long>() {
-				@Override
-				public void accept(PortletItem portletItem, Long classNameId) {
-					portletItem.setClassNameId(classNameId);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

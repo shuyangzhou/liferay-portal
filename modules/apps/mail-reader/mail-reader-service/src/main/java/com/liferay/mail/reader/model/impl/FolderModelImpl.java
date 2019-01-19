@@ -163,154 +163,40 @@ public class FolderModelImpl extends BaseModelImpl<Folder>
 
 	static {
 		Map<String, Function<Folder, Object>> attributeGetters = new LinkedHashMap<String, Function<Folder, Object>>();
+		Map<String, BiConsumer<Folder, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Folder, Object>>();
 
-		attributeGetters.put("folderId",
-			new Function<Folder, Object>() {
-				@Override
-				public Object apply(Folder folder) {
-					return folder.getFolderId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<Folder, Object>() {
-				@Override
-				public Object apply(Folder folder) {
-					return folder.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<Folder, Object>() {
-				@Override
-				public Object apply(Folder folder) {
-					return folder.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<Folder, Object>() {
-				@Override
-				public Object apply(Folder folder) {
-					return folder.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<Folder, Object>() {
-				@Override
-				public Object apply(Folder folder) {
-					return folder.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<Folder, Object>() {
-				@Override
-				public Object apply(Folder folder) {
-					return folder.getModifiedDate();
-				}
-			});
-		attributeGetters.put("accountId",
-			new Function<Folder, Object>() {
-				@Override
-				public Object apply(Folder folder) {
-					return folder.getAccountId();
-				}
-			});
-		attributeGetters.put("fullName",
-			new Function<Folder, Object>() {
-				@Override
-				public Object apply(Folder folder) {
-					return folder.getFullName();
-				}
-			});
-		attributeGetters.put("displayName",
-			new Function<Folder, Object>() {
-				@Override
-				public Object apply(Folder folder) {
-					return folder.getDisplayName();
-				}
-			});
-		attributeGetters.put("remoteMessageCount",
-			new Function<Folder, Object>() {
-				@Override
-				public Object apply(Folder folder) {
-					return folder.getRemoteMessageCount();
-				}
-			});
+		attributeGetters.put("folderId", Folder::getFolderId);
+		attributeSetters.put("folderId", Folder::setFolderId);
+
+		attributeGetters.put("companyId", Folder::getCompanyId);
+		attributeSetters.put("companyId", Folder::setCompanyId);
+
+		attributeGetters.put("userId", Folder::getUserId);
+		attributeSetters.put("userId", Folder::setUserId);
+
+		attributeGetters.put("userName", Folder::getUserName);
+		attributeSetters.put("userName", Folder::setUserName);
+
+		attributeGetters.put("createDate", Folder::getCreateDate);
+		attributeSetters.put("createDate", Folder::setCreateDate);
+
+		attributeGetters.put("modifiedDate", Folder::getModifiedDate);
+		attributeSetters.put("modifiedDate", Folder::setModifiedDate);
+
+		attributeGetters.put("accountId", Folder::getAccountId);
+		attributeSetters.put("accountId", Folder::setAccountId);
+
+		attributeGetters.put("fullName", Folder::getFullName);
+		attributeSetters.put("fullName", Folder::setFullName);
+
+		attributeGetters.put("displayName", Folder::getDisplayName);
+		attributeSetters.put("displayName", Folder::setDisplayName);
+
+		attributeGetters.put("remoteMessageCount", Folder::getRemoteMessageCount);
+		attributeSetters.put("remoteMessageCount", Folder::setRemoteMessageCount);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<Folder, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Folder, ?>>();
-
-		attributeSetters.put("folderId",
-			new BiConsumer<Folder, Long>() {
-				@Override
-				public void accept(Folder folder, Long folderId) {
-					folder.setFolderId(folderId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<Folder, Long>() {
-				@Override
-				public void accept(Folder folder, Long companyId) {
-					folder.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<Folder, Long>() {
-				@Override
-				public void accept(Folder folder, Long userId) {
-					folder.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<Folder, String>() {
-				@Override
-				public void accept(Folder folder, String userName) {
-					folder.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<Folder, Date>() {
-				@Override
-				public void accept(Folder folder, Date createDate) {
-					folder.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<Folder, Date>() {
-				@Override
-				public void accept(Folder folder, Date modifiedDate) {
-					folder.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("accountId",
-			new BiConsumer<Folder, Long>() {
-				@Override
-				public void accept(Folder folder, Long accountId) {
-					folder.setAccountId(accountId);
-				}
-			});
-		attributeSetters.put("fullName",
-			new BiConsumer<Folder, String>() {
-				@Override
-				public void accept(Folder folder, String fullName) {
-					folder.setFullName(fullName);
-				}
-			});
-		attributeSetters.put("displayName",
-			new BiConsumer<Folder, String>() {
-				@Override
-				public void accept(Folder folder, String displayName) {
-					folder.setDisplayName(displayName);
-				}
-			});
-		attributeSetters.put("remoteMessageCount",
-			new BiConsumer<Folder, Integer>() {
-				@Override
-				public void accept(Folder folder, Integer remoteMessageCount) {
-					folder.setRemoteMessageCount(remoteMessageCount);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

@@ -154,104 +154,28 @@ public class PasswordPolicyRelModelImpl extends BaseModelImpl<PasswordPolicyRel>
 
 	static {
 		Map<String, Function<PasswordPolicyRel, Object>> attributeGetters = new LinkedHashMap<String, Function<PasswordPolicyRel, Object>>();
+		Map<String, BiConsumer<PasswordPolicyRel, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<PasswordPolicyRel, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<PasswordPolicyRel, Object>() {
-				@Override
-				public Object apply(PasswordPolicyRel passwordPolicyRel) {
-					return passwordPolicyRel.getMvccVersion();
-				}
-			});
-		attributeGetters.put("passwordPolicyRelId",
-			new Function<PasswordPolicyRel, Object>() {
-				@Override
-				public Object apply(PasswordPolicyRel passwordPolicyRel) {
-					return passwordPolicyRel.getPasswordPolicyRelId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<PasswordPolicyRel, Object>() {
-				@Override
-				public Object apply(PasswordPolicyRel passwordPolicyRel) {
-					return passwordPolicyRel.getCompanyId();
-				}
-			});
-		attributeGetters.put("passwordPolicyId",
-			new Function<PasswordPolicyRel, Object>() {
-				@Override
-				public Object apply(PasswordPolicyRel passwordPolicyRel) {
-					return passwordPolicyRel.getPasswordPolicyId();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<PasswordPolicyRel, Object>() {
-				@Override
-				public Object apply(PasswordPolicyRel passwordPolicyRel) {
-					return passwordPolicyRel.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<PasswordPolicyRel, Object>() {
-				@Override
-				public Object apply(PasswordPolicyRel passwordPolicyRel) {
-					return passwordPolicyRel.getClassPK();
-				}
-			});
+		attributeGetters.put("mvccVersion", PasswordPolicyRel::getMvccVersion);
+		attributeSetters.put("mvccVersion", PasswordPolicyRel::setMvccVersion);
+
+		attributeGetters.put("passwordPolicyRelId", PasswordPolicyRel::getPasswordPolicyRelId);
+		attributeSetters.put("passwordPolicyRelId", PasswordPolicyRel::setPasswordPolicyRelId);
+
+		attributeGetters.put("companyId", PasswordPolicyRel::getCompanyId);
+		attributeSetters.put("companyId", PasswordPolicyRel::setCompanyId);
+
+		attributeGetters.put("passwordPolicyId", PasswordPolicyRel::getPasswordPolicyId);
+		attributeSetters.put("passwordPolicyId", PasswordPolicyRel::setPasswordPolicyId);
+
+		attributeGetters.put("classNameId", PasswordPolicyRel::getClassNameId);
+		attributeSetters.put("classNameId", PasswordPolicyRel::setClassNameId);
+
+		attributeGetters.put("classPK", PasswordPolicyRel::getClassPK);
+		attributeSetters.put("classPK", PasswordPolicyRel::setClassPK);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<PasswordPolicyRel, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<PasswordPolicyRel, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<PasswordPolicyRel, Long>() {
-				@Override
-				public void accept(PasswordPolicyRel passwordPolicyRel,
-					Long mvccVersion) {
-					passwordPolicyRel.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("passwordPolicyRelId",
-			new BiConsumer<PasswordPolicyRel, Long>() {
-				@Override
-				public void accept(PasswordPolicyRel passwordPolicyRel,
-					Long passwordPolicyRelId) {
-					passwordPolicyRel.setPasswordPolicyRelId(passwordPolicyRelId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<PasswordPolicyRel, Long>() {
-				@Override
-				public void accept(PasswordPolicyRel passwordPolicyRel,
-					Long companyId) {
-					passwordPolicyRel.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("passwordPolicyId",
-			new BiConsumer<PasswordPolicyRel, Long>() {
-				@Override
-				public void accept(PasswordPolicyRel passwordPolicyRel,
-					Long passwordPolicyId) {
-					passwordPolicyRel.setPasswordPolicyId(passwordPolicyId);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<PasswordPolicyRel, Long>() {
-				@Override
-				public void accept(PasswordPolicyRel passwordPolicyRel,
-					Long classNameId) {
-					passwordPolicyRel.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<PasswordPolicyRel, Long>() {
-				@Override
-				public void accept(PasswordPolicyRel passwordPolicyRel,
-					Long classPK) {
-					passwordPolicyRel.setClassPK(classPK);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

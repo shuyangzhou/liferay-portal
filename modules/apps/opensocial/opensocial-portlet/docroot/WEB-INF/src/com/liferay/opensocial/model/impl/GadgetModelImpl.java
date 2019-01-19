@@ -215,140 +215,37 @@ public class GadgetModelImpl extends BaseModelImpl<Gadget>
 
 	static {
 		Map<String, Function<Gadget, Object>> attributeGetters = new LinkedHashMap<String, Function<Gadget, Object>>();
+		Map<String, BiConsumer<Gadget, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Gadget, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<Gadget, Object>() {
-				@Override
-				public Object apply(Gadget gadget) {
-					return gadget.getUuid();
-				}
-			});
-		attributeGetters.put("gadgetId",
-			new Function<Gadget, Object>() {
-				@Override
-				public Object apply(Gadget gadget) {
-					return gadget.getGadgetId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<Gadget, Object>() {
-				@Override
-				public Object apply(Gadget gadget) {
-					return gadget.getCompanyId();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<Gadget, Object>() {
-				@Override
-				public Object apply(Gadget gadget) {
-					return gadget.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<Gadget, Object>() {
-				@Override
-				public Object apply(Gadget gadget) {
-					return gadget.getModifiedDate();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<Gadget, Object>() {
-				@Override
-				public Object apply(Gadget gadget) {
-					return gadget.getName();
-				}
-			});
-		attributeGetters.put("url",
-			new Function<Gadget, Object>() {
-				@Override
-				public Object apply(Gadget gadget) {
-					return gadget.getUrl();
-				}
-			});
-		attributeGetters.put("portletCategoryNames",
-			new Function<Gadget, Object>() {
-				@Override
-				public Object apply(Gadget gadget) {
-					return gadget.getPortletCategoryNames();
-				}
-			});
-		attributeGetters.put("lastPublishDate",
-			new Function<Gadget, Object>() {
-				@Override
-				public Object apply(Gadget gadget) {
-					return gadget.getLastPublishDate();
-				}
-			});
+		attributeGetters.put("uuid", Gadget::getUuid);
+		attributeSetters.put("uuid", Gadget::setUuid);
+
+		attributeGetters.put("gadgetId", Gadget::getGadgetId);
+		attributeSetters.put("gadgetId", Gadget::setGadgetId);
+
+		attributeGetters.put("companyId", Gadget::getCompanyId);
+		attributeSetters.put("companyId", Gadget::setCompanyId);
+
+		attributeGetters.put("createDate", Gadget::getCreateDate);
+		attributeSetters.put("createDate", Gadget::setCreateDate);
+
+		attributeGetters.put("modifiedDate", Gadget::getModifiedDate);
+		attributeSetters.put("modifiedDate", Gadget::setModifiedDate);
+
+		attributeGetters.put("name", Gadget::getName);
+		attributeSetters.put("name", Gadget::setName);
+
+		attributeGetters.put("url", Gadget::getUrl);
+		attributeSetters.put("url", Gadget::setUrl);
+
+		attributeGetters.put("portletCategoryNames", Gadget::getPortletCategoryNames);
+		attributeSetters.put("portletCategoryNames", Gadget::setPortletCategoryNames);
+
+		attributeGetters.put("lastPublishDate", Gadget::getLastPublishDate);
+		attributeSetters.put("lastPublishDate", Gadget::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<Gadget, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Gadget, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<Gadget, String>() {
-				@Override
-				public void accept(Gadget gadget, String uuid) {
-					gadget.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("gadgetId",
-			new BiConsumer<Gadget, Long>() {
-				@Override
-				public void accept(Gadget gadget, Long gadgetId) {
-					gadget.setGadgetId(gadgetId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<Gadget, Long>() {
-				@Override
-				public void accept(Gadget gadget, Long companyId) {
-					gadget.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<Gadget, Date>() {
-				@Override
-				public void accept(Gadget gadget, Date createDate) {
-					gadget.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<Gadget, Date>() {
-				@Override
-				public void accept(Gadget gadget, Date modifiedDate) {
-					gadget.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<Gadget, String>() {
-				@Override
-				public void accept(Gadget gadget, String name) {
-					gadget.setName(name);
-				}
-			});
-		attributeSetters.put("url",
-			new BiConsumer<Gadget, String>() {
-				@Override
-				public void accept(Gadget gadget, String url) {
-					gadget.setUrl(url);
-				}
-			});
-		attributeSetters.put("portletCategoryNames",
-			new BiConsumer<Gadget, String>() {
-				@Override
-				public void accept(Gadget gadget, String portletCategoryNames) {
-					gadget.setPortletCategoryNames(portletCategoryNames);
-				}
-			});
-		attributeSetters.put("lastPublishDate",
-			new BiConsumer<Gadget, Date>() {
-				@Override
-				public void accept(Gadget gadget, Date lastPublishDate) {
-					gadget.setLastPublishDate(lastPublishDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

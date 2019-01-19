@@ -234,183 +234,46 @@ public class SAPEntryModelImpl extends BaseModelImpl<SAPEntry>
 
 	static {
 		Map<String, Function<SAPEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<SAPEntry, Object>>();
+		Map<String, BiConsumer<SAPEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SAPEntry, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<SAPEntry, Object>() {
-				@Override
-				public Object apply(SAPEntry sapEntry) {
-					return sapEntry.getUuid();
-				}
-			});
-		attributeGetters.put("sapEntryId",
-			new Function<SAPEntry, Object>() {
-				@Override
-				public Object apply(SAPEntry sapEntry) {
-					return sapEntry.getSapEntryId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<SAPEntry, Object>() {
-				@Override
-				public Object apply(SAPEntry sapEntry) {
-					return sapEntry.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<SAPEntry, Object>() {
-				@Override
-				public Object apply(SAPEntry sapEntry) {
-					return sapEntry.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<SAPEntry, Object>() {
-				@Override
-				public Object apply(SAPEntry sapEntry) {
-					return sapEntry.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<SAPEntry, Object>() {
-				@Override
-				public Object apply(SAPEntry sapEntry) {
-					return sapEntry.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<SAPEntry, Object>() {
-				@Override
-				public Object apply(SAPEntry sapEntry) {
-					return sapEntry.getModifiedDate();
-				}
-			});
-		attributeGetters.put("allowedServiceSignatures",
-			new Function<SAPEntry, Object>() {
-				@Override
-				public Object apply(SAPEntry sapEntry) {
-					return sapEntry.getAllowedServiceSignatures();
-				}
-			});
-		attributeGetters.put("defaultSAPEntry",
-			new Function<SAPEntry, Object>() {
-				@Override
-				public Object apply(SAPEntry sapEntry) {
-					return sapEntry.isDefaultSAPEntry();
-				}
-			});
-		attributeGetters.put("enabled",
-			new Function<SAPEntry, Object>() {
-				@Override
-				public Object apply(SAPEntry sapEntry) {
-					return sapEntry.isEnabled();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<SAPEntry, Object>() {
-				@Override
-				public Object apply(SAPEntry sapEntry) {
-					return sapEntry.getName();
-				}
-			});
-		attributeGetters.put("title",
-			new Function<SAPEntry, Object>() {
-				@Override
-				public Object apply(SAPEntry sapEntry) {
-					return sapEntry.getTitle();
-				}
-			});
+		attributeGetters.put("uuid", SAPEntry::getUuid);
+		attributeSetters.put("uuid", SAPEntry::setUuid);
+
+		attributeGetters.put("sapEntryId", SAPEntry::getSapEntryId);
+		attributeSetters.put("sapEntryId", SAPEntry::setSapEntryId);
+
+		attributeGetters.put("companyId", SAPEntry::getCompanyId);
+		attributeSetters.put("companyId", SAPEntry::setCompanyId);
+
+		attributeGetters.put("userId", SAPEntry::getUserId);
+		attributeSetters.put("userId", SAPEntry::setUserId);
+
+		attributeGetters.put("userName", SAPEntry::getUserName);
+		attributeSetters.put("userName", SAPEntry::setUserName);
+
+		attributeGetters.put("createDate", SAPEntry::getCreateDate);
+		attributeSetters.put("createDate", SAPEntry::setCreateDate);
+
+		attributeGetters.put("modifiedDate", SAPEntry::getModifiedDate);
+		attributeSetters.put("modifiedDate", SAPEntry::setModifiedDate);
+
+		attributeGetters.put("allowedServiceSignatures", SAPEntry::getAllowedServiceSignatures);
+		attributeSetters.put("allowedServiceSignatures", SAPEntry::setAllowedServiceSignatures);
+
+		attributeGetters.put("defaultSAPEntry", SAPEntry::getDefaultSAPEntry);
+		attributeSetters.put("defaultSAPEntry", SAPEntry::setDefaultSAPEntry);
+
+		attributeGetters.put("enabled", SAPEntry::getEnabled);
+		attributeSetters.put("enabled", SAPEntry::setEnabled);
+
+		attributeGetters.put("name", SAPEntry::getName);
+		attributeSetters.put("name", SAPEntry::setName);
+
+		attributeGetters.put("title", SAPEntry::getTitle);
+		attributeSetters.put("title", SAPEntry::setTitle);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<SAPEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<SAPEntry, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<SAPEntry, String>() {
-				@Override
-				public void accept(SAPEntry sapEntry, String uuid) {
-					sapEntry.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("sapEntryId",
-			new BiConsumer<SAPEntry, Long>() {
-				@Override
-				public void accept(SAPEntry sapEntry, Long sapEntryId) {
-					sapEntry.setSapEntryId(sapEntryId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<SAPEntry, Long>() {
-				@Override
-				public void accept(SAPEntry sapEntry, Long companyId) {
-					sapEntry.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<SAPEntry, Long>() {
-				@Override
-				public void accept(SAPEntry sapEntry, Long userId) {
-					sapEntry.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<SAPEntry, String>() {
-				@Override
-				public void accept(SAPEntry sapEntry, String userName) {
-					sapEntry.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<SAPEntry, Date>() {
-				@Override
-				public void accept(SAPEntry sapEntry, Date createDate) {
-					sapEntry.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<SAPEntry, Date>() {
-				@Override
-				public void accept(SAPEntry sapEntry, Date modifiedDate) {
-					sapEntry.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("allowedServiceSignatures",
-			new BiConsumer<SAPEntry, String>() {
-				@Override
-				public void accept(SAPEntry sapEntry,
-					String allowedServiceSignatures) {
-					sapEntry.setAllowedServiceSignatures(allowedServiceSignatures);
-				}
-			});
-		attributeSetters.put("defaultSAPEntry",
-			new BiConsumer<SAPEntry, Boolean>() {
-				@Override
-				public void accept(SAPEntry sapEntry, Boolean defaultSAPEntry) {
-					sapEntry.setDefaultSAPEntry(defaultSAPEntry);
-				}
-			});
-		attributeSetters.put("enabled",
-			new BiConsumer<SAPEntry, Boolean>() {
-				@Override
-				public void accept(SAPEntry sapEntry, Boolean enabled) {
-					sapEntry.setEnabled(enabled);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<SAPEntry, String>() {
-				@Override
-				public void accept(SAPEntry sapEntry, String name) {
-					sapEntry.setName(name);
-				}
-			});
-		attributeSetters.put("title",
-			new BiConsumer<SAPEntry, String>() {
-				@Override
-				public void accept(SAPEntry sapEntry, String title) {
-					sapEntry.setTitle(title);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

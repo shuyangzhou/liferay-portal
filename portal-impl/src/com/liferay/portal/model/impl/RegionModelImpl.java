@@ -201,98 +201,28 @@ public class RegionModelImpl extends BaseModelImpl<Region>
 
 	static {
 		Map<String, Function<Region, Object>> attributeGetters = new LinkedHashMap<String, Function<Region, Object>>();
+		Map<String, BiConsumer<Region, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Region, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<Region, Object>() {
-				@Override
-				public Object apply(Region region) {
-					return region.getMvccVersion();
-				}
-			});
-		attributeGetters.put("regionId",
-			new Function<Region, Object>() {
-				@Override
-				public Object apply(Region region) {
-					return region.getRegionId();
-				}
-			});
-		attributeGetters.put("countryId",
-			new Function<Region, Object>() {
-				@Override
-				public Object apply(Region region) {
-					return region.getCountryId();
-				}
-			});
-		attributeGetters.put("regionCode",
-			new Function<Region, Object>() {
-				@Override
-				public Object apply(Region region) {
-					return region.getRegionCode();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<Region, Object>() {
-				@Override
-				public Object apply(Region region) {
-					return region.getName();
-				}
-			});
-		attributeGetters.put("active",
-			new Function<Region, Object>() {
-				@Override
-				public Object apply(Region region) {
-					return region.isActive();
-				}
-			});
+		attributeGetters.put("mvccVersion", Region::getMvccVersion);
+		attributeSetters.put("mvccVersion", Region::setMvccVersion);
+
+		attributeGetters.put("regionId", Region::getRegionId);
+		attributeSetters.put("regionId", Region::setRegionId);
+
+		attributeGetters.put("countryId", Region::getCountryId);
+		attributeSetters.put("countryId", Region::setCountryId);
+
+		attributeGetters.put("regionCode", Region::getRegionCode);
+		attributeSetters.put("regionCode", Region::setRegionCode);
+
+		attributeGetters.put("name", Region::getName);
+		attributeSetters.put("name", Region::setName);
+
+		attributeGetters.put("active", Region::getActive);
+		attributeSetters.put("active", Region::setActive);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<Region, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Region, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<Region, Long>() {
-				@Override
-				public void accept(Region region, Long mvccVersion) {
-					region.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("regionId",
-			new BiConsumer<Region, Long>() {
-				@Override
-				public void accept(Region region, Long regionId) {
-					region.setRegionId(regionId);
-				}
-			});
-		attributeSetters.put("countryId",
-			new BiConsumer<Region, Long>() {
-				@Override
-				public void accept(Region region, Long countryId) {
-					region.setCountryId(countryId);
-				}
-			});
-		attributeSetters.put("regionCode",
-			new BiConsumer<Region, String>() {
-				@Override
-				public void accept(Region region, String regionCode) {
-					region.setRegionCode(regionCode);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<Region, String>() {
-				@Override
-				public void accept(Region region, String name) {
-					region.setName(name);
-				}
-			});
-		attributeSetters.put("active",
-			new BiConsumer<Region, Boolean>() {
-				@Override
-				public void accept(Region region, Boolean active) {
-					region.setActive(active);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

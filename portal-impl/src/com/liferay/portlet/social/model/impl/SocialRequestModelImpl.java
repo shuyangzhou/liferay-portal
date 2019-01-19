@@ -234,198 +234,49 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 
 	static {
 		Map<String, Function<SocialRequest, Object>> attributeGetters = new LinkedHashMap<String, Function<SocialRequest, Object>>();
+		Map<String, BiConsumer<SocialRequest, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SocialRequest, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<SocialRequest, Object>() {
-				@Override
-				public Object apply(SocialRequest socialRequest) {
-					return socialRequest.getUuid();
-				}
-			});
-		attributeGetters.put("requestId",
-			new Function<SocialRequest, Object>() {
-				@Override
-				public Object apply(SocialRequest socialRequest) {
-					return socialRequest.getRequestId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<SocialRequest, Object>() {
-				@Override
-				public Object apply(SocialRequest socialRequest) {
-					return socialRequest.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<SocialRequest, Object>() {
-				@Override
-				public Object apply(SocialRequest socialRequest) {
-					return socialRequest.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<SocialRequest, Object>() {
-				@Override
-				public Object apply(SocialRequest socialRequest) {
-					return socialRequest.getUserId();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<SocialRequest, Object>() {
-				@Override
-				public Object apply(SocialRequest socialRequest) {
-					return socialRequest.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<SocialRequest, Object>() {
-				@Override
-				public Object apply(SocialRequest socialRequest) {
-					return socialRequest.getModifiedDate();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<SocialRequest, Object>() {
-				@Override
-				public Object apply(SocialRequest socialRequest) {
-					return socialRequest.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<SocialRequest, Object>() {
-				@Override
-				public Object apply(SocialRequest socialRequest) {
-					return socialRequest.getClassPK();
-				}
-			});
-		attributeGetters.put("type",
-			new Function<SocialRequest, Object>() {
-				@Override
-				public Object apply(SocialRequest socialRequest) {
-					return socialRequest.getType();
-				}
-			});
-		attributeGetters.put("extraData",
-			new Function<SocialRequest, Object>() {
-				@Override
-				public Object apply(SocialRequest socialRequest) {
-					return socialRequest.getExtraData();
-				}
-			});
-		attributeGetters.put("receiverUserId",
-			new Function<SocialRequest, Object>() {
-				@Override
-				public Object apply(SocialRequest socialRequest) {
-					return socialRequest.getReceiverUserId();
-				}
-			});
-		attributeGetters.put("status",
-			new Function<SocialRequest, Object>() {
-				@Override
-				public Object apply(SocialRequest socialRequest) {
-					return socialRequest.getStatus();
-				}
-			});
+		attributeGetters.put("uuid", SocialRequest::getUuid);
+		attributeSetters.put("uuid", SocialRequest::setUuid);
+
+		attributeGetters.put("requestId", SocialRequest::getRequestId);
+		attributeSetters.put("requestId", SocialRequest::setRequestId);
+
+		attributeGetters.put("groupId", SocialRequest::getGroupId);
+		attributeSetters.put("groupId", SocialRequest::setGroupId);
+
+		attributeGetters.put("companyId", SocialRequest::getCompanyId);
+		attributeSetters.put("companyId", SocialRequest::setCompanyId);
+
+		attributeGetters.put("userId", SocialRequest::getUserId);
+		attributeSetters.put("userId", SocialRequest::setUserId);
+
+		attributeGetters.put("createDate", SocialRequest::getCreateDate);
+		attributeSetters.put("createDate", SocialRequest::setCreateDate);
+
+		attributeGetters.put("modifiedDate", SocialRequest::getModifiedDate);
+		attributeSetters.put("modifiedDate", SocialRequest::setModifiedDate);
+
+		attributeGetters.put("classNameId", SocialRequest::getClassNameId);
+		attributeSetters.put("classNameId", SocialRequest::setClassNameId);
+
+		attributeGetters.put("classPK", SocialRequest::getClassPK);
+		attributeSetters.put("classPK", SocialRequest::setClassPK);
+
+		attributeGetters.put("type", SocialRequest::getType);
+		attributeSetters.put("type", SocialRequest::setType);
+
+		attributeGetters.put("extraData", SocialRequest::getExtraData);
+		attributeSetters.put("extraData", SocialRequest::setExtraData);
+
+		attributeGetters.put("receiverUserId", SocialRequest::getReceiverUserId);
+		attributeSetters.put("receiverUserId", SocialRequest::setReceiverUserId);
+
+		attributeGetters.put("status", SocialRequest::getStatus);
+		attributeSetters.put("status", SocialRequest::setStatus);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<SocialRequest, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<SocialRequest, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<SocialRequest, String>() {
-				@Override
-				public void accept(SocialRequest socialRequest, String uuid) {
-					socialRequest.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("requestId",
-			new BiConsumer<SocialRequest, Long>() {
-				@Override
-				public void accept(SocialRequest socialRequest, Long requestId) {
-					socialRequest.setRequestId(requestId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<SocialRequest, Long>() {
-				@Override
-				public void accept(SocialRequest socialRequest, Long groupId) {
-					socialRequest.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<SocialRequest, Long>() {
-				@Override
-				public void accept(SocialRequest socialRequest, Long companyId) {
-					socialRequest.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<SocialRequest, Long>() {
-				@Override
-				public void accept(SocialRequest socialRequest, Long userId) {
-					socialRequest.setUserId(userId);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<SocialRequest, Long>() {
-				@Override
-				public void accept(SocialRequest socialRequest, Long createDate) {
-					socialRequest.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<SocialRequest, Long>() {
-				@Override
-				public void accept(SocialRequest socialRequest,
-					Long modifiedDate) {
-					socialRequest.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<SocialRequest, Long>() {
-				@Override
-				public void accept(SocialRequest socialRequest, Long classNameId) {
-					socialRequest.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<SocialRequest, Long>() {
-				@Override
-				public void accept(SocialRequest socialRequest, Long classPK) {
-					socialRequest.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("type",
-			new BiConsumer<SocialRequest, Integer>() {
-				@Override
-				public void accept(SocialRequest socialRequest, Integer type) {
-					socialRequest.setType(type);
-				}
-			});
-		attributeSetters.put("extraData",
-			new BiConsumer<SocialRequest, String>() {
-				@Override
-				public void accept(SocialRequest socialRequest, String extraData) {
-					socialRequest.setExtraData(extraData);
-				}
-			});
-		attributeSetters.put("receiverUserId",
-			new BiConsumer<SocialRequest, Long>() {
-				@Override
-				public void accept(SocialRequest socialRequest,
-					Long receiverUserId) {
-					socialRequest.setReceiverUserId(receiverUserId);
-				}
-			});
-		attributeSetters.put("status",
-			new BiConsumer<SocialRequest, Integer>() {
-				@Override
-				public void accept(SocialRequest socialRequest, Integer status) {
-					socialRequest.setStatus(status);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

@@ -149,88 +149,25 @@ public class ResourceActionModelImpl extends BaseModelImpl<ResourceAction>
 
 	static {
 		Map<String, Function<ResourceAction, Object>> attributeGetters = new LinkedHashMap<String, Function<ResourceAction, Object>>();
+		Map<String, BiConsumer<ResourceAction, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<ResourceAction, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<ResourceAction, Object>() {
-				@Override
-				public Object apply(ResourceAction resourceAction) {
-					return resourceAction.getMvccVersion();
-				}
-			});
-		attributeGetters.put("resourceActionId",
-			new Function<ResourceAction, Object>() {
-				@Override
-				public Object apply(ResourceAction resourceAction) {
-					return resourceAction.getResourceActionId();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<ResourceAction, Object>() {
-				@Override
-				public Object apply(ResourceAction resourceAction) {
-					return resourceAction.getName();
-				}
-			});
-		attributeGetters.put("actionId",
-			new Function<ResourceAction, Object>() {
-				@Override
-				public Object apply(ResourceAction resourceAction) {
-					return resourceAction.getActionId();
-				}
-			});
-		attributeGetters.put("bitwiseValue",
-			new Function<ResourceAction, Object>() {
-				@Override
-				public Object apply(ResourceAction resourceAction) {
-					return resourceAction.getBitwiseValue();
-				}
-			});
+		attributeGetters.put("mvccVersion", ResourceAction::getMvccVersion);
+		attributeSetters.put("mvccVersion", ResourceAction::setMvccVersion);
+
+		attributeGetters.put("resourceActionId", ResourceAction::getResourceActionId);
+		attributeSetters.put("resourceActionId", ResourceAction::setResourceActionId);
+
+		attributeGetters.put("name", ResourceAction::getName);
+		attributeSetters.put("name", ResourceAction::setName);
+
+		attributeGetters.put("actionId", ResourceAction::getActionId);
+		attributeSetters.put("actionId", ResourceAction::setActionId);
+
+		attributeGetters.put("bitwiseValue", ResourceAction::getBitwiseValue);
+		attributeSetters.put("bitwiseValue", ResourceAction::setBitwiseValue);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<ResourceAction, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<ResourceAction, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<ResourceAction, Long>() {
-				@Override
-				public void accept(ResourceAction resourceAction,
-					Long mvccVersion) {
-					resourceAction.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("resourceActionId",
-			new BiConsumer<ResourceAction, Long>() {
-				@Override
-				public void accept(ResourceAction resourceAction,
-					Long resourceActionId) {
-					resourceAction.setResourceActionId(resourceActionId);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<ResourceAction, String>() {
-				@Override
-				public void accept(ResourceAction resourceAction, String name) {
-					resourceAction.setName(name);
-				}
-			});
-		attributeSetters.put("actionId",
-			new BiConsumer<ResourceAction, String>() {
-				@Override
-				public void accept(ResourceAction resourceAction,
-					String actionId) {
-					resourceAction.setActionId(actionId);
-				}
-			});
-		attributeSetters.put("bitwiseValue",
-			new BiConsumer<ResourceAction, Long>() {
-				@Override
-				public void accept(ResourceAction resourceAction,
-					Long bitwiseValue) {
-					resourceAction.setBitwiseValue(bitwiseValue);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

@@ -144,87 +144,25 @@ public class ClusterGroupModelImpl extends BaseModelImpl<ClusterGroup>
 
 	static {
 		Map<String, Function<ClusterGroup, Object>> attributeGetters = new LinkedHashMap<String, Function<ClusterGroup, Object>>();
+		Map<String, BiConsumer<ClusterGroup, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<ClusterGroup, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<ClusterGroup, Object>() {
-				@Override
-				public Object apply(ClusterGroup clusterGroup) {
-					return clusterGroup.getMvccVersion();
-				}
-			});
-		attributeGetters.put("clusterGroupId",
-			new Function<ClusterGroup, Object>() {
-				@Override
-				public Object apply(ClusterGroup clusterGroup) {
-					return clusterGroup.getClusterGroupId();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<ClusterGroup, Object>() {
-				@Override
-				public Object apply(ClusterGroup clusterGroup) {
-					return clusterGroup.getName();
-				}
-			});
-		attributeGetters.put("clusterNodeIds",
-			new Function<ClusterGroup, Object>() {
-				@Override
-				public Object apply(ClusterGroup clusterGroup) {
-					return clusterGroup.getClusterNodeIds();
-				}
-			});
-		attributeGetters.put("wholeCluster",
-			new Function<ClusterGroup, Object>() {
-				@Override
-				public Object apply(ClusterGroup clusterGroup) {
-					return clusterGroup.isWholeCluster();
-				}
-			});
+		attributeGetters.put("mvccVersion", ClusterGroup::getMvccVersion);
+		attributeSetters.put("mvccVersion", ClusterGroup::setMvccVersion);
+
+		attributeGetters.put("clusterGroupId", ClusterGroup::getClusterGroupId);
+		attributeSetters.put("clusterGroupId", ClusterGroup::setClusterGroupId);
+
+		attributeGetters.put("name", ClusterGroup::getName);
+		attributeSetters.put("name", ClusterGroup::setName);
+
+		attributeGetters.put("clusterNodeIds", ClusterGroup::getClusterNodeIds);
+		attributeSetters.put("clusterNodeIds", ClusterGroup::setClusterNodeIds);
+
+		attributeGetters.put("wholeCluster", ClusterGroup::getWholeCluster);
+		attributeSetters.put("wholeCluster", ClusterGroup::setWholeCluster);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<ClusterGroup, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<ClusterGroup, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<ClusterGroup, Long>() {
-				@Override
-				public void accept(ClusterGroup clusterGroup, Long mvccVersion) {
-					clusterGroup.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("clusterGroupId",
-			new BiConsumer<ClusterGroup, Long>() {
-				@Override
-				public void accept(ClusterGroup clusterGroup,
-					Long clusterGroupId) {
-					clusterGroup.setClusterGroupId(clusterGroupId);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<ClusterGroup, String>() {
-				@Override
-				public void accept(ClusterGroup clusterGroup, String name) {
-					clusterGroup.setName(name);
-				}
-			});
-		attributeSetters.put("clusterNodeIds",
-			new BiConsumer<ClusterGroup, String>() {
-				@Override
-				public void accept(ClusterGroup clusterGroup,
-					String clusterNodeIds) {
-					clusterGroup.setClusterNodeIds(clusterNodeIds);
-				}
-			});
-		attributeSetters.put("wholeCluster",
-			new BiConsumer<ClusterGroup, Boolean>() {
-				@Override
-				public void accept(ClusterGroup clusterGroup,
-					Boolean wholeCluster) {
-					clusterGroup.setWholeCluster(wholeCluster);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

@@ -306,322 +306,76 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	static {
 		Map<String, Function<Group, Object>> attributeGetters = new LinkedHashMap<String, Function<Group, Object>>();
+		Map<String, BiConsumer<Group, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Group, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<Group, Object>() {
-				@Override
-				public Object apply(Group group) {
-					return group.getMvccVersion();
-				}
-			});
-		attributeGetters.put("uuid",
-			new Function<Group, Object>() {
-				@Override
-				public Object apply(Group group) {
-					return group.getUuid();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<Group, Object>() {
-				@Override
-				public Object apply(Group group) {
-					return group.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<Group, Object>() {
-				@Override
-				public Object apply(Group group) {
-					return group.getCompanyId();
-				}
-			});
-		attributeGetters.put("creatorUserId",
-			new Function<Group, Object>() {
-				@Override
-				public Object apply(Group group) {
-					return group.getCreatorUserId();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<Group, Object>() {
-				@Override
-				public Object apply(Group group) {
-					return group.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<Group, Object>() {
-				@Override
-				public Object apply(Group group) {
-					return group.getClassPK();
-				}
-			});
-		attributeGetters.put("parentGroupId",
-			new Function<Group, Object>() {
-				@Override
-				public Object apply(Group group) {
-					return group.getParentGroupId();
-				}
-			});
-		attributeGetters.put("liveGroupId",
-			new Function<Group, Object>() {
-				@Override
-				public Object apply(Group group) {
-					return group.getLiveGroupId();
-				}
-			});
-		attributeGetters.put("treePath",
-			new Function<Group, Object>() {
-				@Override
-				public Object apply(Group group) {
-					return group.getTreePath();
-				}
-			});
-		attributeGetters.put("groupKey",
-			new Function<Group, Object>() {
-				@Override
-				public Object apply(Group group) {
-					return group.getGroupKey();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<Group, Object>() {
-				@Override
-				public Object apply(Group group) {
-					return group.getName();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<Group, Object>() {
-				@Override
-				public Object apply(Group group) {
-					return group.getDescription();
-				}
-			});
-		attributeGetters.put("type",
-			new Function<Group, Object>() {
-				@Override
-				public Object apply(Group group) {
-					return group.getType();
-				}
-			});
-		attributeGetters.put("typeSettings",
-			new Function<Group, Object>() {
-				@Override
-				public Object apply(Group group) {
-					return group.getTypeSettings();
-				}
-			});
-		attributeGetters.put("manualMembership",
-			new Function<Group, Object>() {
-				@Override
-				public Object apply(Group group) {
-					return group.isManualMembership();
-				}
-			});
-		attributeGetters.put("membershipRestriction",
-			new Function<Group, Object>() {
-				@Override
-				public Object apply(Group group) {
-					return group.getMembershipRestriction();
-				}
-			});
-		attributeGetters.put("friendlyURL",
-			new Function<Group, Object>() {
-				@Override
-				public Object apply(Group group) {
-					return group.getFriendlyURL();
-				}
-			});
-		attributeGetters.put("site",
-			new Function<Group, Object>() {
-				@Override
-				public Object apply(Group group) {
-					return group.isSite();
-				}
-			});
-		attributeGetters.put("remoteStagingGroupCount",
-			new Function<Group, Object>() {
-				@Override
-				public Object apply(Group group) {
-					return group.getRemoteStagingGroupCount();
-				}
-			});
-		attributeGetters.put("inheritContent",
-			new Function<Group, Object>() {
-				@Override
-				public Object apply(Group group) {
-					return group.isInheritContent();
-				}
-			});
-		attributeGetters.put("active",
-			new Function<Group, Object>() {
-				@Override
-				public Object apply(Group group) {
-					return group.isActive();
-				}
-			});
+		attributeGetters.put("mvccVersion", Group::getMvccVersion);
+		attributeSetters.put("mvccVersion", Group::setMvccVersion);
+
+		attributeGetters.put("uuid", Group::getUuid);
+		attributeSetters.put("uuid", Group::setUuid);
+
+		attributeGetters.put("groupId", Group::getGroupId);
+		attributeSetters.put("groupId", Group::setGroupId);
+
+		attributeGetters.put("companyId", Group::getCompanyId);
+		attributeSetters.put("companyId", Group::setCompanyId);
+
+		attributeGetters.put("creatorUserId", Group::getCreatorUserId);
+		attributeSetters.put("creatorUserId", Group::setCreatorUserId);
+
+		attributeGetters.put("classNameId", Group::getClassNameId);
+		attributeSetters.put("classNameId", Group::setClassNameId);
+
+		attributeGetters.put("classPK", Group::getClassPK);
+		attributeSetters.put("classPK", Group::setClassPK);
+
+		attributeGetters.put("parentGroupId", Group::getParentGroupId);
+		attributeSetters.put("parentGroupId", Group::setParentGroupId);
+
+		attributeGetters.put("liveGroupId", Group::getLiveGroupId);
+		attributeSetters.put("liveGroupId", Group::setLiveGroupId);
+
+		attributeGetters.put("treePath", Group::getTreePath);
+		attributeSetters.put("treePath", Group::setTreePath);
+
+		attributeGetters.put("groupKey", Group::getGroupKey);
+		attributeSetters.put("groupKey", Group::setGroupKey);
+
+		attributeGetters.put("name", Group::getName);
+		attributeSetters.put("name", Group::setName);
+
+		attributeGetters.put("description", Group::getDescription);
+		attributeSetters.put("description", Group::setDescription);
+
+		attributeGetters.put("type", Group::getType);
+		attributeSetters.put("type", Group::setType);
+
+		attributeGetters.put("typeSettings", Group::getTypeSettings);
+		attributeSetters.put("typeSettings", Group::setTypeSettings);
+
+		attributeGetters.put("manualMembership", Group::getManualMembership);
+		attributeSetters.put("manualMembership", Group::setManualMembership);
+
+		attributeGetters.put("membershipRestriction", Group::getMembershipRestriction);
+		attributeSetters.put("membershipRestriction", Group::setMembershipRestriction);
+
+		attributeGetters.put("friendlyURL", Group::getFriendlyURL);
+		attributeSetters.put("friendlyURL", Group::setFriendlyURL);
+
+		attributeGetters.put("site", Group::getSite);
+		attributeSetters.put("site", Group::setSite);
+
+		attributeGetters.put("remoteStagingGroupCount", Group::getRemoteStagingGroupCount);
+		attributeSetters.put("remoteStagingGroupCount", Group::setRemoteStagingGroupCount);
+
+		attributeGetters.put("inheritContent", Group::getInheritContent);
+		attributeSetters.put("inheritContent", Group::setInheritContent);
+
+		attributeGetters.put("active", Group::getActive);
+		attributeSetters.put("active", Group::setActive);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<Group, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Group, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<Group, Long>() {
-				@Override
-				public void accept(Group group, Long mvccVersion) {
-					group.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("uuid",
-			new BiConsumer<Group, String>() {
-				@Override
-				public void accept(Group group, String uuid) {
-					group.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<Group, Long>() {
-				@Override
-				public void accept(Group group, Long groupId) {
-					group.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<Group, Long>() {
-				@Override
-				public void accept(Group group, Long companyId) {
-					group.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("creatorUserId",
-			new BiConsumer<Group, Long>() {
-				@Override
-				public void accept(Group group, Long creatorUserId) {
-					group.setCreatorUserId(creatorUserId);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<Group, Long>() {
-				@Override
-				public void accept(Group group, Long classNameId) {
-					group.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<Group, Long>() {
-				@Override
-				public void accept(Group group, Long classPK) {
-					group.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("parentGroupId",
-			new BiConsumer<Group, Long>() {
-				@Override
-				public void accept(Group group, Long parentGroupId) {
-					group.setParentGroupId(parentGroupId);
-				}
-			});
-		attributeSetters.put("liveGroupId",
-			new BiConsumer<Group, Long>() {
-				@Override
-				public void accept(Group group, Long liveGroupId) {
-					group.setLiveGroupId(liveGroupId);
-				}
-			});
-		attributeSetters.put("treePath",
-			new BiConsumer<Group, String>() {
-				@Override
-				public void accept(Group group, String treePath) {
-					group.setTreePath(treePath);
-				}
-			});
-		attributeSetters.put("groupKey",
-			new BiConsumer<Group, String>() {
-				@Override
-				public void accept(Group group, String groupKey) {
-					group.setGroupKey(groupKey);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<Group, String>() {
-				@Override
-				public void accept(Group group, String name) {
-					group.setName(name);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<Group, String>() {
-				@Override
-				public void accept(Group group, String description) {
-					group.setDescription(description);
-				}
-			});
-		attributeSetters.put("type",
-			new BiConsumer<Group, Integer>() {
-				@Override
-				public void accept(Group group, Integer type) {
-					group.setType(type);
-				}
-			});
-		attributeSetters.put("typeSettings",
-			new BiConsumer<Group, String>() {
-				@Override
-				public void accept(Group group, String typeSettings) {
-					group.setTypeSettings(typeSettings);
-				}
-			});
-		attributeSetters.put("manualMembership",
-			new BiConsumer<Group, Boolean>() {
-				@Override
-				public void accept(Group group, Boolean manualMembership) {
-					group.setManualMembership(manualMembership);
-				}
-			});
-		attributeSetters.put("membershipRestriction",
-			new BiConsumer<Group, Integer>() {
-				@Override
-				public void accept(Group group, Integer membershipRestriction) {
-					group.setMembershipRestriction(membershipRestriction);
-				}
-			});
-		attributeSetters.put("friendlyURL",
-			new BiConsumer<Group, String>() {
-				@Override
-				public void accept(Group group, String friendlyURL) {
-					group.setFriendlyURL(friendlyURL);
-				}
-			});
-		attributeSetters.put("site",
-			new BiConsumer<Group, Boolean>() {
-				@Override
-				public void accept(Group group, Boolean site) {
-					group.setSite(site);
-				}
-			});
-		attributeSetters.put("remoteStagingGroupCount",
-			new BiConsumer<Group, Integer>() {
-				@Override
-				public void accept(Group group, Integer remoteStagingGroupCount) {
-					group.setRemoteStagingGroupCount(remoteStagingGroupCount);
-				}
-			});
-		attributeSetters.put("inheritContent",
-			new BiConsumer<Group, Boolean>() {
-				@Override
-				public void accept(Group group, Boolean inheritContent) {
-					group.setInheritContent(inheritContent);
-				}
-			});
-		attributeSetters.put("active",
-			new BiConsumer<Group, Boolean>() {
-				@Override
-				public void accept(Group group, Boolean active) {
-					group.setActive(active);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

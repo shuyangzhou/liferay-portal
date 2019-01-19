@@ -162,140 +162,37 @@ public class UserTrackerModelImpl extends BaseModelImpl<UserTracker>
 
 	static {
 		Map<String, Function<UserTracker, Object>> attributeGetters = new LinkedHashMap<String, Function<UserTracker, Object>>();
+		Map<String, BiConsumer<UserTracker, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<UserTracker, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<UserTracker, Object>() {
-				@Override
-				public Object apply(UserTracker userTracker) {
-					return userTracker.getMvccVersion();
-				}
-			});
-		attributeGetters.put("userTrackerId",
-			new Function<UserTracker, Object>() {
-				@Override
-				public Object apply(UserTracker userTracker) {
-					return userTracker.getUserTrackerId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<UserTracker, Object>() {
-				@Override
-				public Object apply(UserTracker userTracker) {
-					return userTracker.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<UserTracker, Object>() {
-				@Override
-				public Object apply(UserTracker userTracker) {
-					return userTracker.getUserId();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<UserTracker, Object>() {
-				@Override
-				public Object apply(UserTracker userTracker) {
-					return userTracker.getModifiedDate();
-				}
-			});
-		attributeGetters.put("sessionId",
-			new Function<UserTracker, Object>() {
-				@Override
-				public Object apply(UserTracker userTracker) {
-					return userTracker.getSessionId();
-				}
-			});
-		attributeGetters.put("remoteAddr",
-			new Function<UserTracker, Object>() {
-				@Override
-				public Object apply(UserTracker userTracker) {
-					return userTracker.getRemoteAddr();
-				}
-			});
-		attributeGetters.put("remoteHost",
-			new Function<UserTracker, Object>() {
-				@Override
-				public Object apply(UserTracker userTracker) {
-					return userTracker.getRemoteHost();
-				}
-			});
-		attributeGetters.put("userAgent",
-			new Function<UserTracker, Object>() {
-				@Override
-				public Object apply(UserTracker userTracker) {
-					return userTracker.getUserAgent();
-				}
-			});
+		attributeGetters.put("mvccVersion", UserTracker::getMvccVersion);
+		attributeSetters.put("mvccVersion", UserTracker::setMvccVersion);
+
+		attributeGetters.put("userTrackerId", UserTracker::getUserTrackerId);
+		attributeSetters.put("userTrackerId", UserTracker::setUserTrackerId);
+
+		attributeGetters.put("companyId", UserTracker::getCompanyId);
+		attributeSetters.put("companyId", UserTracker::setCompanyId);
+
+		attributeGetters.put("userId", UserTracker::getUserId);
+		attributeSetters.put("userId", UserTracker::setUserId);
+
+		attributeGetters.put("modifiedDate", UserTracker::getModifiedDate);
+		attributeSetters.put("modifiedDate", UserTracker::setModifiedDate);
+
+		attributeGetters.put("sessionId", UserTracker::getSessionId);
+		attributeSetters.put("sessionId", UserTracker::setSessionId);
+
+		attributeGetters.put("remoteAddr", UserTracker::getRemoteAddr);
+		attributeSetters.put("remoteAddr", UserTracker::setRemoteAddr);
+
+		attributeGetters.put("remoteHost", UserTracker::getRemoteHost);
+		attributeSetters.put("remoteHost", UserTracker::setRemoteHost);
+
+		attributeGetters.put("userAgent", UserTracker::getUserAgent);
+		attributeSetters.put("userAgent", UserTracker::setUserAgent);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<UserTracker, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<UserTracker, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<UserTracker, Long>() {
-				@Override
-				public void accept(UserTracker userTracker, Long mvccVersion) {
-					userTracker.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("userTrackerId",
-			new BiConsumer<UserTracker, Long>() {
-				@Override
-				public void accept(UserTracker userTracker, Long userTrackerId) {
-					userTracker.setUserTrackerId(userTrackerId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<UserTracker, Long>() {
-				@Override
-				public void accept(UserTracker userTracker, Long companyId) {
-					userTracker.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<UserTracker, Long>() {
-				@Override
-				public void accept(UserTracker userTracker, Long userId) {
-					userTracker.setUserId(userId);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<UserTracker, Date>() {
-				@Override
-				public void accept(UserTracker userTracker, Date modifiedDate) {
-					userTracker.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("sessionId",
-			new BiConsumer<UserTracker, String>() {
-				@Override
-				public void accept(UserTracker userTracker, String sessionId) {
-					userTracker.setSessionId(sessionId);
-				}
-			});
-		attributeSetters.put("remoteAddr",
-			new BiConsumer<UserTracker, String>() {
-				@Override
-				public void accept(UserTracker userTracker, String remoteAddr) {
-					userTracker.setRemoteAddr(remoteAddr);
-				}
-			});
-		attributeSetters.put("remoteHost",
-			new BiConsumer<UserTracker, String>() {
-				@Override
-				public void accept(UserTracker userTracker, String remoteHost) {
-					userTracker.setRemoteHost(remoteHost);
-				}
-			});
-		attributeSetters.put("userAgent",
-			new BiConsumer<UserTracker, String>() {
-				@Override
-				public void accept(UserTracker userTracker, String userAgent) {
-					userTracker.setUserAgent(userAgent);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

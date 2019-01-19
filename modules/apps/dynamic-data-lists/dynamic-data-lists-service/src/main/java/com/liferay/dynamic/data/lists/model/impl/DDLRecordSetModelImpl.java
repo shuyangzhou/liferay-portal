@@ -259,299 +259,70 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 
 	static {
 		Map<String, Function<DDLRecordSet, Object>> attributeGetters = new LinkedHashMap<String, Function<DDLRecordSet, Object>>();
+		Map<String, BiConsumer<DDLRecordSet, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDLRecordSet, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<DDLRecordSet, Object>() {
-				@Override
-				public Object apply(DDLRecordSet ddlRecordSet) {
-					return ddlRecordSet.getMvccVersion();
-				}
-			});
-		attributeGetters.put("uuid",
-			new Function<DDLRecordSet, Object>() {
-				@Override
-				public Object apply(DDLRecordSet ddlRecordSet) {
-					return ddlRecordSet.getUuid();
-				}
-			});
-		attributeGetters.put("recordSetId",
-			new Function<DDLRecordSet, Object>() {
-				@Override
-				public Object apply(DDLRecordSet ddlRecordSet) {
-					return ddlRecordSet.getRecordSetId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<DDLRecordSet, Object>() {
-				@Override
-				public Object apply(DDLRecordSet ddlRecordSet) {
-					return ddlRecordSet.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<DDLRecordSet, Object>() {
-				@Override
-				public Object apply(DDLRecordSet ddlRecordSet) {
-					return ddlRecordSet.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<DDLRecordSet, Object>() {
-				@Override
-				public Object apply(DDLRecordSet ddlRecordSet) {
-					return ddlRecordSet.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<DDLRecordSet, Object>() {
-				@Override
-				public Object apply(DDLRecordSet ddlRecordSet) {
-					return ddlRecordSet.getUserName();
-				}
-			});
-		attributeGetters.put("versionUserId",
-			new Function<DDLRecordSet, Object>() {
-				@Override
-				public Object apply(DDLRecordSet ddlRecordSet) {
-					return ddlRecordSet.getVersionUserId();
-				}
-			});
-		attributeGetters.put("versionUserName",
-			new Function<DDLRecordSet, Object>() {
-				@Override
-				public Object apply(DDLRecordSet ddlRecordSet) {
-					return ddlRecordSet.getVersionUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<DDLRecordSet, Object>() {
-				@Override
-				public Object apply(DDLRecordSet ddlRecordSet) {
-					return ddlRecordSet.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<DDLRecordSet, Object>() {
-				@Override
-				public Object apply(DDLRecordSet ddlRecordSet) {
-					return ddlRecordSet.getModifiedDate();
-				}
-			});
-		attributeGetters.put("DDMStructureId",
-			new Function<DDLRecordSet, Object>() {
-				@Override
-				public Object apply(DDLRecordSet ddlRecordSet) {
-					return ddlRecordSet.getDDMStructureId();
-				}
-			});
-		attributeGetters.put("recordSetKey",
-			new Function<DDLRecordSet, Object>() {
-				@Override
-				public Object apply(DDLRecordSet ddlRecordSet) {
-					return ddlRecordSet.getRecordSetKey();
-				}
-			});
-		attributeGetters.put("version",
-			new Function<DDLRecordSet, Object>() {
-				@Override
-				public Object apply(DDLRecordSet ddlRecordSet) {
-					return ddlRecordSet.getVersion();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<DDLRecordSet, Object>() {
-				@Override
-				public Object apply(DDLRecordSet ddlRecordSet) {
-					return ddlRecordSet.getName();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<DDLRecordSet, Object>() {
-				@Override
-				public Object apply(DDLRecordSet ddlRecordSet) {
-					return ddlRecordSet.getDescription();
-				}
-			});
-		attributeGetters.put("minDisplayRows",
-			new Function<DDLRecordSet, Object>() {
-				@Override
-				public Object apply(DDLRecordSet ddlRecordSet) {
-					return ddlRecordSet.getMinDisplayRows();
-				}
-			});
-		attributeGetters.put("scope",
-			new Function<DDLRecordSet, Object>() {
-				@Override
-				public Object apply(DDLRecordSet ddlRecordSet) {
-					return ddlRecordSet.getScope();
-				}
-			});
-		attributeGetters.put("settings",
-			new Function<DDLRecordSet, Object>() {
-				@Override
-				public Object apply(DDLRecordSet ddlRecordSet) {
-					return ddlRecordSet.getSettings();
-				}
-			});
-		attributeGetters.put("lastPublishDate",
-			new Function<DDLRecordSet, Object>() {
-				@Override
-				public Object apply(DDLRecordSet ddlRecordSet) {
-					return ddlRecordSet.getLastPublishDate();
-				}
-			});
+		attributeGetters.put("mvccVersion", DDLRecordSet::getMvccVersion);
+		attributeSetters.put("mvccVersion", DDLRecordSet::setMvccVersion);
+
+		attributeGetters.put("uuid", DDLRecordSet::getUuid);
+		attributeSetters.put("uuid", DDLRecordSet::setUuid);
+
+		attributeGetters.put("recordSetId", DDLRecordSet::getRecordSetId);
+		attributeSetters.put("recordSetId", DDLRecordSet::setRecordSetId);
+
+		attributeGetters.put("groupId", DDLRecordSet::getGroupId);
+		attributeSetters.put("groupId", DDLRecordSet::setGroupId);
+
+		attributeGetters.put("companyId", DDLRecordSet::getCompanyId);
+		attributeSetters.put("companyId", DDLRecordSet::setCompanyId);
+
+		attributeGetters.put("userId", DDLRecordSet::getUserId);
+		attributeSetters.put("userId", DDLRecordSet::setUserId);
+
+		attributeGetters.put("userName", DDLRecordSet::getUserName);
+		attributeSetters.put("userName", DDLRecordSet::setUserName);
+
+		attributeGetters.put("versionUserId", DDLRecordSet::getVersionUserId);
+		attributeSetters.put("versionUserId", DDLRecordSet::setVersionUserId);
+
+		attributeGetters.put("versionUserName", DDLRecordSet::getVersionUserName);
+		attributeSetters.put("versionUserName", DDLRecordSet::setVersionUserName);
+
+		attributeGetters.put("createDate", DDLRecordSet::getCreateDate);
+		attributeSetters.put("createDate", DDLRecordSet::setCreateDate);
+
+		attributeGetters.put("modifiedDate", DDLRecordSet::getModifiedDate);
+		attributeSetters.put("modifiedDate", DDLRecordSet::setModifiedDate);
+
+		attributeGetters.put("DDMStructureId", DDLRecordSet::getDDMStructureId);
+		attributeSetters.put("DDMStructureId", DDLRecordSet::setDDMStructureId);
+
+		attributeGetters.put("recordSetKey", DDLRecordSet::getRecordSetKey);
+		attributeSetters.put("recordSetKey", DDLRecordSet::setRecordSetKey);
+
+		attributeGetters.put("version", DDLRecordSet::getVersion);
+		attributeSetters.put("version", DDLRecordSet::setVersion);
+
+		attributeGetters.put("name", DDLRecordSet::getName);
+		attributeSetters.put("name", DDLRecordSet::setName);
+
+		attributeGetters.put("description", DDLRecordSet::getDescription);
+		attributeSetters.put("description", DDLRecordSet::setDescription);
+
+		attributeGetters.put("minDisplayRows", DDLRecordSet::getMinDisplayRows);
+		attributeSetters.put("minDisplayRows", DDLRecordSet::setMinDisplayRows);
+
+		attributeGetters.put("scope", DDLRecordSet::getScope);
+		attributeSetters.put("scope", DDLRecordSet::setScope);
+
+		attributeGetters.put("settings", DDLRecordSet::getSettings);
+		attributeSetters.put("settings", DDLRecordSet::setSettings);
+
+		attributeGetters.put("lastPublishDate", DDLRecordSet::getLastPublishDate);
+		attributeSetters.put("lastPublishDate", DDLRecordSet::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<DDLRecordSet, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDLRecordSet, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<DDLRecordSet, Long>() {
-				@Override
-				public void accept(DDLRecordSet ddlRecordSet, Long mvccVersion) {
-					ddlRecordSet.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("uuid",
-			new BiConsumer<DDLRecordSet, String>() {
-				@Override
-				public void accept(DDLRecordSet ddlRecordSet, String uuid) {
-					ddlRecordSet.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("recordSetId",
-			new BiConsumer<DDLRecordSet, Long>() {
-				@Override
-				public void accept(DDLRecordSet ddlRecordSet, Long recordSetId) {
-					ddlRecordSet.setRecordSetId(recordSetId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<DDLRecordSet, Long>() {
-				@Override
-				public void accept(DDLRecordSet ddlRecordSet, Long groupId) {
-					ddlRecordSet.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<DDLRecordSet, Long>() {
-				@Override
-				public void accept(DDLRecordSet ddlRecordSet, Long companyId) {
-					ddlRecordSet.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<DDLRecordSet, Long>() {
-				@Override
-				public void accept(DDLRecordSet ddlRecordSet, Long userId) {
-					ddlRecordSet.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<DDLRecordSet, String>() {
-				@Override
-				public void accept(DDLRecordSet ddlRecordSet, String userName) {
-					ddlRecordSet.setUserName(userName);
-				}
-			});
-		attributeSetters.put("versionUserId",
-			new BiConsumer<DDLRecordSet, Long>() {
-				@Override
-				public void accept(DDLRecordSet ddlRecordSet, Long versionUserId) {
-					ddlRecordSet.setVersionUserId(versionUserId);
-				}
-			});
-		attributeSetters.put("versionUserName",
-			new BiConsumer<DDLRecordSet, String>() {
-				@Override
-				public void accept(DDLRecordSet ddlRecordSet,
-					String versionUserName) {
-					ddlRecordSet.setVersionUserName(versionUserName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<DDLRecordSet, Date>() {
-				@Override
-				public void accept(DDLRecordSet ddlRecordSet, Date createDate) {
-					ddlRecordSet.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<DDLRecordSet, Date>() {
-				@Override
-				public void accept(DDLRecordSet ddlRecordSet, Date modifiedDate) {
-					ddlRecordSet.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("DDMStructureId",
-			new BiConsumer<DDLRecordSet, Long>() {
-				@Override
-				public void accept(DDLRecordSet ddlRecordSet,
-					Long DDMStructureId) {
-					ddlRecordSet.setDDMStructureId(DDMStructureId);
-				}
-			});
-		attributeSetters.put("recordSetKey",
-			new BiConsumer<DDLRecordSet, String>() {
-				@Override
-				public void accept(DDLRecordSet ddlRecordSet,
-					String recordSetKey) {
-					ddlRecordSet.setRecordSetKey(recordSetKey);
-				}
-			});
-		attributeSetters.put("version",
-			new BiConsumer<DDLRecordSet, String>() {
-				@Override
-				public void accept(DDLRecordSet ddlRecordSet, String version) {
-					ddlRecordSet.setVersion(version);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<DDLRecordSet, String>() {
-				@Override
-				public void accept(DDLRecordSet ddlRecordSet, String name) {
-					ddlRecordSet.setName(name);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<DDLRecordSet, String>() {
-				@Override
-				public void accept(DDLRecordSet ddlRecordSet, String description) {
-					ddlRecordSet.setDescription(description);
-				}
-			});
-		attributeSetters.put("minDisplayRows",
-			new BiConsumer<DDLRecordSet, Integer>() {
-				@Override
-				public void accept(DDLRecordSet ddlRecordSet,
-					Integer minDisplayRows) {
-					ddlRecordSet.setMinDisplayRows(minDisplayRows);
-				}
-			});
-		attributeSetters.put("scope",
-			new BiConsumer<DDLRecordSet, Integer>() {
-				@Override
-				public void accept(DDLRecordSet ddlRecordSet, Integer scope) {
-					ddlRecordSet.setScope(scope);
-				}
-			});
-		attributeSetters.put("settings",
-			new BiConsumer<DDLRecordSet, String>() {
-				@Override
-				public void accept(DDLRecordSet ddlRecordSet, String settings) {
-					ddlRecordSet.setSettings(settings);
-				}
-			});
-		attributeSetters.put("lastPublishDate",
-			new BiConsumer<DDLRecordSet, Date>() {
-				@Override
-				public void accept(DDLRecordSet ddlRecordSet,
-					Date lastPublishDate) {
-					ddlRecordSet.setLastPublishDate(lastPublishDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

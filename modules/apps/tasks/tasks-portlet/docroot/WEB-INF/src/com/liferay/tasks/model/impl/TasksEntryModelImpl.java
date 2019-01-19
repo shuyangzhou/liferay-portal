@@ -235,210 +235,52 @@ public class TasksEntryModelImpl extends BaseModelImpl<TasksEntry>
 
 	static {
 		Map<String, Function<TasksEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<TasksEntry, Object>>();
+		Map<String, BiConsumer<TasksEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<TasksEntry, Object>>();
 
-		attributeGetters.put("tasksEntryId",
-			new Function<TasksEntry, Object>() {
-				@Override
-				public Object apply(TasksEntry tasksEntry) {
-					return tasksEntry.getTasksEntryId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<TasksEntry, Object>() {
-				@Override
-				public Object apply(TasksEntry tasksEntry) {
-					return tasksEntry.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<TasksEntry, Object>() {
-				@Override
-				public Object apply(TasksEntry tasksEntry) {
-					return tasksEntry.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<TasksEntry, Object>() {
-				@Override
-				public Object apply(TasksEntry tasksEntry) {
-					return tasksEntry.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<TasksEntry, Object>() {
-				@Override
-				public Object apply(TasksEntry tasksEntry) {
-					return tasksEntry.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<TasksEntry, Object>() {
-				@Override
-				public Object apply(TasksEntry tasksEntry) {
-					return tasksEntry.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<TasksEntry, Object>() {
-				@Override
-				public Object apply(TasksEntry tasksEntry) {
-					return tasksEntry.getModifiedDate();
-				}
-			});
-		attributeGetters.put("title",
-			new Function<TasksEntry, Object>() {
-				@Override
-				public Object apply(TasksEntry tasksEntry) {
-					return tasksEntry.getTitle();
-				}
-			});
-		attributeGetters.put("priority",
-			new Function<TasksEntry, Object>() {
-				@Override
-				public Object apply(TasksEntry tasksEntry) {
-					return tasksEntry.getPriority();
-				}
-			});
-		attributeGetters.put("assigneeUserId",
-			new Function<TasksEntry, Object>() {
-				@Override
-				public Object apply(TasksEntry tasksEntry) {
-					return tasksEntry.getAssigneeUserId();
-				}
-			});
-		attributeGetters.put("resolverUserId",
-			new Function<TasksEntry, Object>() {
-				@Override
-				public Object apply(TasksEntry tasksEntry) {
-					return tasksEntry.getResolverUserId();
-				}
-			});
-		attributeGetters.put("dueDate",
-			new Function<TasksEntry, Object>() {
-				@Override
-				public Object apply(TasksEntry tasksEntry) {
-					return tasksEntry.getDueDate();
-				}
-			});
-		attributeGetters.put("finishDate",
-			new Function<TasksEntry, Object>() {
-				@Override
-				public Object apply(TasksEntry tasksEntry) {
-					return tasksEntry.getFinishDate();
-				}
-			});
-		attributeGetters.put("status",
-			new Function<TasksEntry, Object>() {
-				@Override
-				public Object apply(TasksEntry tasksEntry) {
-					return tasksEntry.getStatus();
-				}
-			});
+		attributeGetters.put("tasksEntryId", TasksEntry::getTasksEntryId);
+		attributeSetters.put("tasksEntryId", TasksEntry::setTasksEntryId);
+
+		attributeGetters.put("groupId", TasksEntry::getGroupId);
+		attributeSetters.put("groupId", TasksEntry::setGroupId);
+
+		attributeGetters.put("companyId", TasksEntry::getCompanyId);
+		attributeSetters.put("companyId", TasksEntry::setCompanyId);
+
+		attributeGetters.put("userId", TasksEntry::getUserId);
+		attributeSetters.put("userId", TasksEntry::setUserId);
+
+		attributeGetters.put("userName", TasksEntry::getUserName);
+		attributeSetters.put("userName", TasksEntry::setUserName);
+
+		attributeGetters.put("createDate", TasksEntry::getCreateDate);
+		attributeSetters.put("createDate", TasksEntry::setCreateDate);
+
+		attributeGetters.put("modifiedDate", TasksEntry::getModifiedDate);
+		attributeSetters.put("modifiedDate", TasksEntry::setModifiedDate);
+
+		attributeGetters.put("title", TasksEntry::getTitle);
+		attributeSetters.put("title", TasksEntry::setTitle);
+
+		attributeGetters.put("priority", TasksEntry::getPriority);
+		attributeSetters.put("priority", TasksEntry::setPriority);
+
+		attributeGetters.put("assigneeUserId", TasksEntry::getAssigneeUserId);
+		attributeSetters.put("assigneeUserId", TasksEntry::setAssigneeUserId);
+
+		attributeGetters.put("resolverUserId", TasksEntry::getResolverUserId);
+		attributeSetters.put("resolverUserId", TasksEntry::setResolverUserId);
+
+		attributeGetters.put("dueDate", TasksEntry::getDueDate);
+		attributeSetters.put("dueDate", TasksEntry::setDueDate);
+
+		attributeGetters.put("finishDate", TasksEntry::getFinishDate);
+		attributeSetters.put("finishDate", TasksEntry::setFinishDate);
+
+		attributeGetters.put("status", TasksEntry::getStatus);
+		attributeSetters.put("status", TasksEntry::setStatus);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<TasksEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<TasksEntry, ?>>();
-
-		attributeSetters.put("tasksEntryId",
-			new BiConsumer<TasksEntry, Long>() {
-				@Override
-				public void accept(TasksEntry tasksEntry, Long tasksEntryId) {
-					tasksEntry.setTasksEntryId(tasksEntryId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<TasksEntry, Long>() {
-				@Override
-				public void accept(TasksEntry tasksEntry, Long groupId) {
-					tasksEntry.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<TasksEntry, Long>() {
-				@Override
-				public void accept(TasksEntry tasksEntry, Long companyId) {
-					tasksEntry.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<TasksEntry, Long>() {
-				@Override
-				public void accept(TasksEntry tasksEntry, Long userId) {
-					tasksEntry.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<TasksEntry, String>() {
-				@Override
-				public void accept(TasksEntry tasksEntry, String userName) {
-					tasksEntry.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<TasksEntry, Date>() {
-				@Override
-				public void accept(TasksEntry tasksEntry, Date createDate) {
-					tasksEntry.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<TasksEntry, Date>() {
-				@Override
-				public void accept(TasksEntry tasksEntry, Date modifiedDate) {
-					tasksEntry.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("title",
-			new BiConsumer<TasksEntry, String>() {
-				@Override
-				public void accept(TasksEntry tasksEntry, String title) {
-					tasksEntry.setTitle(title);
-				}
-			});
-		attributeSetters.put("priority",
-			new BiConsumer<TasksEntry, Integer>() {
-				@Override
-				public void accept(TasksEntry tasksEntry, Integer priority) {
-					tasksEntry.setPriority(priority);
-				}
-			});
-		attributeSetters.put("assigneeUserId",
-			new BiConsumer<TasksEntry, Long>() {
-				@Override
-				public void accept(TasksEntry tasksEntry, Long assigneeUserId) {
-					tasksEntry.setAssigneeUserId(assigneeUserId);
-				}
-			});
-		attributeSetters.put("resolverUserId",
-			new BiConsumer<TasksEntry, Long>() {
-				@Override
-				public void accept(TasksEntry tasksEntry, Long resolverUserId) {
-					tasksEntry.setResolverUserId(resolverUserId);
-				}
-			});
-		attributeSetters.put("dueDate",
-			new BiConsumer<TasksEntry, Date>() {
-				@Override
-				public void accept(TasksEntry tasksEntry, Date dueDate) {
-					tasksEntry.setDueDate(dueDate);
-				}
-			});
-		attributeSetters.put("finishDate",
-			new BiConsumer<TasksEntry, Date>() {
-				@Override
-				public void accept(TasksEntry tasksEntry, Date finishDate) {
-					tasksEntry.setFinishDate(finishDate);
-				}
-			});
-		attributeSetters.put("status",
-			new BiConsumer<TasksEntry, Integer>() {
-				@Override
-				public void accept(TasksEntry tasksEntry, Integer status) {
-					tasksEntry.setStatus(status);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

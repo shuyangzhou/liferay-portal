@@ -178,168 +178,43 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 
 	static {
 		Map<String, Function<DDMContent, Object>> attributeGetters = new LinkedHashMap<String, Function<DDMContent, Object>>();
+		Map<String, BiConsumer<DDMContent, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDMContent, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<DDMContent, Object>() {
-				@Override
-				public Object apply(DDMContent ddmContent) {
-					return ddmContent.getUuid();
-				}
-			});
-		attributeGetters.put("contentId",
-			new Function<DDMContent, Object>() {
-				@Override
-				public Object apply(DDMContent ddmContent) {
-					return ddmContent.getContentId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<DDMContent, Object>() {
-				@Override
-				public Object apply(DDMContent ddmContent) {
-					return ddmContent.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<DDMContent, Object>() {
-				@Override
-				public Object apply(DDMContent ddmContent) {
-					return ddmContent.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<DDMContent, Object>() {
-				@Override
-				public Object apply(DDMContent ddmContent) {
-					return ddmContent.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<DDMContent, Object>() {
-				@Override
-				public Object apply(DDMContent ddmContent) {
-					return ddmContent.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<DDMContent, Object>() {
-				@Override
-				public Object apply(DDMContent ddmContent) {
-					return ddmContent.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<DDMContent, Object>() {
-				@Override
-				public Object apply(DDMContent ddmContent) {
-					return ddmContent.getModifiedDate();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<DDMContent, Object>() {
-				@Override
-				public Object apply(DDMContent ddmContent) {
-					return ddmContent.getName();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<DDMContent, Object>() {
-				@Override
-				public Object apply(DDMContent ddmContent) {
-					return ddmContent.getDescription();
-				}
-			});
-		attributeGetters.put("data",
-			new Function<DDMContent, Object>() {
-				@Override
-				public Object apply(DDMContent ddmContent) {
-					return ddmContent.getData();
-				}
-			});
+		attributeGetters.put("uuid", DDMContent::getUuid);
+		attributeSetters.put("uuid", DDMContent::setUuid);
+
+		attributeGetters.put("contentId", DDMContent::getContentId);
+		attributeSetters.put("contentId", DDMContent::setContentId);
+
+		attributeGetters.put("groupId", DDMContent::getGroupId);
+		attributeSetters.put("groupId", DDMContent::setGroupId);
+
+		attributeGetters.put("companyId", DDMContent::getCompanyId);
+		attributeSetters.put("companyId", DDMContent::setCompanyId);
+
+		attributeGetters.put("userId", DDMContent::getUserId);
+		attributeSetters.put("userId", DDMContent::setUserId);
+
+		attributeGetters.put("userName", DDMContent::getUserName);
+		attributeSetters.put("userName", DDMContent::setUserName);
+
+		attributeGetters.put("createDate", DDMContent::getCreateDate);
+		attributeSetters.put("createDate", DDMContent::setCreateDate);
+
+		attributeGetters.put("modifiedDate", DDMContent::getModifiedDate);
+		attributeSetters.put("modifiedDate", DDMContent::setModifiedDate);
+
+		attributeGetters.put("name", DDMContent::getName);
+		attributeSetters.put("name", DDMContent::setName);
+
+		attributeGetters.put("description", DDMContent::getDescription);
+		attributeSetters.put("description", DDMContent::setDescription);
+
+		attributeGetters.put("data", DDMContent::getData);
+		attributeSetters.put("data", DDMContent::setData);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<DDMContent, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDMContent, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<DDMContent, String>() {
-				@Override
-				public void accept(DDMContent ddmContent, String uuid) {
-					ddmContent.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("contentId",
-			new BiConsumer<DDMContent, Long>() {
-				@Override
-				public void accept(DDMContent ddmContent, Long contentId) {
-					ddmContent.setContentId(contentId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<DDMContent, Long>() {
-				@Override
-				public void accept(DDMContent ddmContent, Long groupId) {
-					ddmContent.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<DDMContent, Long>() {
-				@Override
-				public void accept(DDMContent ddmContent, Long companyId) {
-					ddmContent.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<DDMContent, Long>() {
-				@Override
-				public void accept(DDMContent ddmContent, Long userId) {
-					ddmContent.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<DDMContent, String>() {
-				@Override
-				public void accept(DDMContent ddmContent, String userName) {
-					ddmContent.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<DDMContent, Date>() {
-				@Override
-				public void accept(DDMContent ddmContent, Date createDate) {
-					ddmContent.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<DDMContent, Date>() {
-				@Override
-				public void accept(DDMContent ddmContent, Date modifiedDate) {
-					ddmContent.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<DDMContent, String>() {
-				@Override
-				public void accept(DDMContent ddmContent, String name) {
-					ddmContent.setName(name);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<DDMContent, String>() {
-				@Override
-				public void accept(DDMContent ddmContent, String description) {
-					ddmContent.setDescription(description);
-				}
-			});
-		attributeSetters.put("data",
-			new BiConsumer<DDMContent, String>() {
-				@Override
-				public void accept(DDMContent ddmContent, String data) {
-					ddmContent.setData(data);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

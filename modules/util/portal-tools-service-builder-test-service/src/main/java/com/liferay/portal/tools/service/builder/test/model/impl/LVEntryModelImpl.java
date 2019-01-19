@@ -202,84 +202,115 @@ public class LVEntryModelImpl extends BaseModelImpl<LVEntry>
 
 	static {
 		Map<String, Function<LVEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<LVEntry, Object>>();
+		Map<String, BiConsumer<LVEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<LVEntry, Object>>();
 
-		attributeGetters.put("mvccVersion",
+		attributeGetters.put(
+			"mvccVersion",
 			new Function<LVEntry, Object>() {
+
 				@Override
 				public Object apply(LVEntry lvEntry) {
 					return lvEntry.getMvccVersion();
 				}
+
 			});
-		attributeGetters.put("headId",
+		attributeSetters.put(
+			"mvccVersion",
+			new BiConsumer<LVEntry, Object>() {
+
+				@Override
+				public void accept(LVEntry lvEntry, Object mvccVersion) {
+					lvEntry.setMvccVersion((Long)mvccVersion);
+				}
+
+			});
+
+		attributeGetters.put(
+			"headId",
 			new Function<LVEntry, Object>() {
+
 				@Override
 				public Object apply(LVEntry lvEntry) {
 					return lvEntry.getHeadId();
 				}
+
 			});
-		attributeGetters.put("defaultLanguageId",
+		attributeSetters.put(
+			"headId",
+			new BiConsumer<LVEntry, Object>() {
+
+				@Override
+				public void accept(LVEntry lvEntry, Object headId) {
+					lvEntry.setHeadId((Long)headId);
+				}
+
+			});
+
+		attributeGetters.put(
+			"defaultLanguageId",
 			new Function<LVEntry, Object>() {
+
 				@Override
 				public Object apply(LVEntry lvEntry) {
 					return lvEntry.getDefaultLanguageId();
 				}
+
 			});
-		attributeGetters.put("lvEntryId",
+		attributeSetters.put(
+			"defaultLanguageId",
+			new BiConsumer<LVEntry, Object>() {
+
+				@Override
+				public void accept(LVEntry lvEntry, Object defaultLanguageId) {
+					lvEntry.setDefaultLanguageId((String)defaultLanguageId);
+				}
+
+			});
+
+		attributeGetters.put(
+			"lvEntryId",
 			new Function<LVEntry, Object>() {
+
 				@Override
 				public Object apply(LVEntry lvEntry) {
 					return lvEntry.getLvEntryId();
 				}
+
 			});
-		attributeGetters.put("groupId",
+		attributeSetters.put(
+			"lvEntryId",
+			new BiConsumer<LVEntry, Object>() {
+
+				@Override
+				public void accept(LVEntry lvEntry, Object lvEntryId) {
+					lvEntry.setLvEntryId((Long)lvEntryId);
+				}
+
+			});
+
+		attributeGetters.put(
+			"groupId",
 			new Function<LVEntry, Object>() {
+
 				@Override
 				public Object apply(LVEntry lvEntry) {
 					return lvEntry.getGroupId();
 				}
+
+			});
+		attributeSetters.put(
+			"groupId",
+			new BiConsumer<LVEntry, Object>() {
+
+				@Override
+				public void accept(LVEntry lvEntry, Object groupId) {
+					lvEntry.setGroupId((Long)groupId);
+				}
+
 			});
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<LVEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<LVEntry, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<LVEntry, Long>() {
-				@Override
-				public void accept(LVEntry lvEntry, Long mvccVersion) {
-					lvEntry.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("headId",
-			new BiConsumer<LVEntry, Long>() {
-				@Override
-				public void accept(LVEntry lvEntry, Long headId) {
-					lvEntry.setHeadId(headId);
-				}
-			});
-		attributeSetters.put("defaultLanguageId",
-			new BiConsumer<LVEntry, String>() {
-				@Override
-				public void accept(LVEntry lvEntry, String defaultLanguageId) {
-					lvEntry.setDefaultLanguageId(defaultLanguageId);
-				}
-			});
-		attributeSetters.put("lvEntryId",
-			new BiConsumer<LVEntry, Long>() {
-				@Override
-				public void accept(LVEntry lvEntry, Long lvEntryId) {
-					lvEntry.setLvEntryId(lvEntryId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<LVEntry, Long>() {
-				@Override
-				public void accept(LVEntry lvEntry, Long groupId) {
-					lvEntry.setGroupId(groupId);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

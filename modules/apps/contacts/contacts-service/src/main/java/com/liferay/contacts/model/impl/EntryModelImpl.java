@@ -163,154 +163,40 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	static {
 		Map<String, Function<Entry, Object>> attributeGetters = new LinkedHashMap<String, Function<Entry, Object>>();
+		Map<String, BiConsumer<Entry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Entry, Object>>();
 
-		attributeGetters.put("entryId",
-			new Function<Entry, Object>() {
-				@Override
-				public Object apply(Entry entry) {
-					return entry.getEntryId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<Entry, Object>() {
-				@Override
-				public Object apply(Entry entry) {
-					return entry.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<Entry, Object>() {
-				@Override
-				public Object apply(Entry entry) {
-					return entry.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<Entry, Object>() {
-				@Override
-				public Object apply(Entry entry) {
-					return entry.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<Entry, Object>() {
-				@Override
-				public Object apply(Entry entry) {
-					return entry.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<Entry, Object>() {
-				@Override
-				public Object apply(Entry entry) {
-					return entry.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<Entry, Object>() {
-				@Override
-				public Object apply(Entry entry) {
-					return entry.getModifiedDate();
-				}
-			});
-		attributeGetters.put("fullName",
-			new Function<Entry, Object>() {
-				@Override
-				public Object apply(Entry entry) {
-					return entry.getFullName();
-				}
-			});
-		attributeGetters.put("emailAddress",
-			new Function<Entry, Object>() {
-				@Override
-				public Object apply(Entry entry) {
-					return entry.getEmailAddress();
-				}
-			});
-		attributeGetters.put("comments",
-			new Function<Entry, Object>() {
-				@Override
-				public Object apply(Entry entry) {
-					return entry.getComments();
-				}
-			});
+		attributeGetters.put("entryId", Entry::getEntryId);
+		attributeSetters.put("entryId", Entry::setEntryId);
+
+		attributeGetters.put("groupId", Entry::getGroupId);
+		attributeSetters.put("groupId", Entry::setGroupId);
+
+		attributeGetters.put("companyId", Entry::getCompanyId);
+		attributeSetters.put("companyId", Entry::setCompanyId);
+
+		attributeGetters.put("userId", Entry::getUserId);
+		attributeSetters.put("userId", Entry::setUserId);
+
+		attributeGetters.put("userName", Entry::getUserName);
+		attributeSetters.put("userName", Entry::setUserName);
+
+		attributeGetters.put("createDate", Entry::getCreateDate);
+		attributeSetters.put("createDate", Entry::setCreateDate);
+
+		attributeGetters.put("modifiedDate", Entry::getModifiedDate);
+		attributeSetters.put("modifiedDate", Entry::setModifiedDate);
+
+		attributeGetters.put("fullName", Entry::getFullName);
+		attributeSetters.put("fullName", Entry::setFullName);
+
+		attributeGetters.put("emailAddress", Entry::getEmailAddress);
+		attributeSetters.put("emailAddress", Entry::setEmailAddress);
+
+		attributeGetters.put("comments", Entry::getComments);
+		attributeSetters.put("comments", Entry::setComments);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<Entry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Entry, ?>>();
-
-		attributeSetters.put("entryId",
-			new BiConsumer<Entry, Long>() {
-				@Override
-				public void accept(Entry entry, Long entryId) {
-					entry.setEntryId(entryId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<Entry, Long>() {
-				@Override
-				public void accept(Entry entry, Long groupId) {
-					entry.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<Entry, Long>() {
-				@Override
-				public void accept(Entry entry, Long companyId) {
-					entry.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<Entry, Long>() {
-				@Override
-				public void accept(Entry entry, Long userId) {
-					entry.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<Entry, String>() {
-				@Override
-				public void accept(Entry entry, String userName) {
-					entry.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<Entry, Date>() {
-				@Override
-				public void accept(Entry entry, Date createDate) {
-					entry.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<Entry, Date>() {
-				@Override
-				public void accept(Entry entry, Date modifiedDate) {
-					entry.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("fullName",
-			new BiConsumer<Entry, String>() {
-				@Override
-				public void accept(Entry entry, String fullName) {
-					entry.setFullName(fullName);
-				}
-			});
-		attributeSetters.put("emailAddress",
-			new BiConsumer<Entry, String>() {
-				@Override
-				public void accept(Entry entry, String emailAddress) {
-					entry.setEmailAddress(emailAddress);
-				}
-			});
-		attributeSetters.put("comments",
-			new BiConsumer<Entry, String>() {
-				@Override
-				public void accept(Entry entry, String comments) {
-					entry.setComments(comments);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

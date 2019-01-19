@@ -286,437 +286,97 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 	static {
 		Map<String, Function<LayoutRevision, Object>> attributeGetters = new LinkedHashMap<String, Function<LayoutRevision, Object>>();
+		Map<String, BiConsumer<LayoutRevision, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<LayoutRevision, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.getMvccVersion();
-				}
-			});
-		attributeGetters.put("layoutRevisionId",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.getLayoutRevisionId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.getModifiedDate();
-				}
-			});
-		attributeGetters.put("layoutSetBranchId",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.getLayoutSetBranchId();
-				}
-			});
-		attributeGetters.put("layoutBranchId",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.getLayoutBranchId();
-				}
-			});
-		attributeGetters.put("parentLayoutRevisionId",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.getParentLayoutRevisionId();
-				}
-			});
-		attributeGetters.put("head",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.isHead();
-				}
-			});
-		attributeGetters.put("major",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.isMajor();
-				}
-			});
-		attributeGetters.put("plid",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.getPlid();
-				}
-			});
-		attributeGetters.put("privateLayout",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.isPrivateLayout();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.getName();
-				}
-			});
-		attributeGetters.put("title",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.getTitle();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.getDescription();
-				}
-			});
-		attributeGetters.put("keywords",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.getKeywords();
-				}
-			});
-		attributeGetters.put("robots",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.getRobots();
-				}
-			});
-		attributeGetters.put("typeSettings",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.getTypeSettings();
-				}
-			});
-		attributeGetters.put("iconImageId",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.getIconImageId();
-				}
-			});
-		attributeGetters.put("themeId",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.getThemeId();
-				}
-			});
-		attributeGetters.put("colorSchemeId",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.getColorSchemeId();
-				}
-			});
-		attributeGetters.put("css",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.getCss();
-				}
-			});
-		attributeGetters.put("status",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.getStatus();
-				}
-			});
-		attributeGetters.put("statusByUserId",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.getStatusByUserId();
-				}
-			});
-		attributeGetters.put("statusByUserName",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.getStatusByUserName();
-				}
-			});
-		attributeGetters.put("statusDate",
-			new Function<LayoutRevision, Object>() {
-				@Override
-				public Object apply(LayoutRevision layoutRevision) {
-					return layoutRevision.getStatusDate();
-				}
-			});
+		attributeGetters.put("mvccVersion", LayoutRevision::getMvccVersion);
+		attributeSetters.put("mvccVersion", LayoutRevision::setMvccVersion);
+
+		attributeGetters.put("layoutRevisionId", LayoutRevision::getLayoutRevisionId);
+		attributeSetters.put("layoutRevisionId", LayoutRevision::setLayoutRevisionId);
+
+		attributeGetters.put("groupId", LayoutRevision::getGroupId);
+		attributeSetters.put("groupId", LayoutRevision::setGroupId);
+
+		attributeGetters.put("companyId", LayoutRevision::getCompanyId);
+		attributeSetters.put("companyId", LayoutRevision::setCompanyId);
+
+		attributeGetters.put("userId", LayoutRevision::getUserId);
+		attributeSetters.put("userId", LayoutRevision::setUserId);
+
+		attributeGetters.put("userName", LayoutRevision::getUserName);
+		attributeSetters.put("userName", LayoutRevision::setUserName);
+
+		attributeGetters.put("createDate", LayoutRevision::getCreateDate);
+		attributeSetters.put("createDate", LayoutRevision::setCreateDate);
+
+		attributeGetters.put("modifiedDate", LayoutRevision::getModifiedDate);
+		attributeSetters.put("modifiedDate", LayoutRevision::setModifiedDate);
+
+		attributeGetters.put("layoutSetBranchId", LayoutRevision::getLayoutSetBranchId);
+		attributeSetters.put("layoutSetBranchId", LayoutRevision::setLayoutSetBranchId);
+
+		attributeGetters.put("layoutBranchId", LayoutRevision::getLayoutBranchId);
+		attributeSetters.put("layoutBranchId", LayoutRevision::setLayoutBranchId);
+
+		attributeGetters.put("parentLayoutRevisionId", LayoutRevision::getParentLayoutRevisionId);
+		attributeSetters.put("parentLayoutRevisionId", LayoutRevision::setParentLayoutRevisionId);
+
+		attributeGetters.put("head", LayoutRevision::getHead);
+		attributeSetters.put("head", LayoutRevision::setHead);
+
+		attributeGetters.put("major", LayoutRevision::getMajor);
+		attributeSetters.put("major", LayoutRevision::setMajor);
+
+		attributeGetters.put("plid", LayoutRevision::getPlid);
+		attributeSetters.put("plid", LayoutRevision::setPlid);
+
+		attributeGetters.put("privateLayout", LayoutRevision::getPrivateLayout);
+		attributeSetters.put("privateLayout", LayoutRevision::setPrivateLayout);
+
+		attributeGetters.put("name", LayoutRevision::getName);
+		attributeSetters.put("name", LayoutRevision::setName);
+
+		attributeGetters.put("title", LayoutRevision::getTitle);
+		attributeSetters.put("title", LayoutRevision::setTitle);
+
+		attributeGetters.put("description", LayoutRevision::getDescription);
+		attributeSetters.put("description", LayoutRevision::setDescription);
+
+		attributeGetters.put("keywords", LayoutRevision::getKeywords);
+		attributeSetters.put("keywords", LayoutRevision::setKeywords);
+
+		attributeGetters.put("robots", LayoutRevision::getRobots);
+		attributeSetters.put("robots", LayoutRevision::setRobots);
+
+		attributeGetters.put("typeSettings", LayoutRevision::getTypeSettings);
+		attributeSetters.put("typeSettings", LayoutRevision::setTypeSettings);
+
+		attributeGetters.put("iconImageId", LayoutRevision::getIconImageId);
+		attributeSetters.put("iconImageId", LayoutRevision::setIconImageId);
+
+		attributeGetters.put("themeId", LayoutRevision::getThemeId);
+		attributeSetters.put("themeId", LayoutRevision::setThemeId);
+
+		attributeGetters.put("colorSchemeId", LayoutRevision::getColorSchemeId);
+		attributeSetters.put("colorSchemeId", LayoutRevision::setColorSchemeId);
+
+		attributeGetters.put("css", LayoutRevision::getCss);
+		attributeSetters.put("css", LayoutRevision::setCss);
+
+		attributeGetters.put("status", LayoutRevision::getStatus);
+		attributeSetters.put("status", LayoutRevision::setStatus);
+
+		attributeGetters.put("statusByUserId", LayoutRevision::getStatusByUserId);
+		attributeSetters.put("statusByUserId", LayoutRevision::setStatusByUserId);
+
+		attributeGetters.put("statusByUserName", LayoutRevision::getStatusByUserName);
+		attributeSetters.put("statusByUserName", LayoutRevision::setStatusByUserName);
+
+		attributeGetters.put("statusDate", LayoutRevision::getStatusDate);
+		attributeSetters.put("statusDate", LayoutRevision::setStatusDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<LayoutRevision, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<LayoutRevision, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<LayoutRevision, Long>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision,
-					Long mvccVersion) {
-					layoutRevision.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("layoutRevisionId",
-			new BiConsumer<LayoutRevision, Long>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision,
-					Long layoutRevisionId) {
-					layoutRevision.setLayoutRevisionId(layoutRevisionId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<LayoutRevision, Long>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision, Long groupId) {
-					layoutRevision.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<LayoutRevision, Long>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision, Long companyId) {
-					layoutRevision.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<LayoutRevision, Long>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision, Long userId) {
-					layoutRevision.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<LayoutRevision, String>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision,
-					String userName) {
-					layoutRevision.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<LayoutRevision, Date>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision,
-					Date createDate) {
-					layoutRevision.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<LayoutRevision, Date>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision,
-					Date modifiedDate) {
-					layoutRevision.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("layoutSetBranchId",
-			new BiConsumer<LayoutRevision, Long>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision,
-					Long layoutSetBranchId) {
-					layoutRevision.setLayoutSetBranchId(layoutSetBranchId);
-				}
-			});
-		attributeSetters.put("layoutBranchId",
-			new BiConsumer<LayoutRevision, Long>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision,
-					Long layoutBranchId) {
-					layoutRevision.setLayoutBranchId(layoutBranchId);
-				}
-			});
-		attributeSetters.put("parentLayoutRevisionId",
-			new BiConsumer<LayoutRevision, Long>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision,
-					Long parentLayoutRevisionId) {
-					layoutRevision.setParentLayoutRevisionId(parentLayoutRevisionId);
-				}
-			});
-		attributeSetters.put("head",
-			new BiConsumer<LayoutRevision, Boolean>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision, Boolean head) {
-					layoutRevision.setHead(head);
-				}
-			});
-		attributeSetters.put("major",
-			new BiConsumer<LayoutRevision, Boolean>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision, Boolean major) {
-					layoutRevision.setMajor(major);
-				}
-			});
-		attributeSetters.put("plid",
-			new BiConsumer<LayoutRevision, Long>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision, Long plid) {
-					layoutRevision.setPlid(plid);
-				}
-			});
-		attributeSetters.put("privateLayout",
-			new BiConsumer<LayoutRevision, Boolean>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision,
-					Boolean privateLayout) {
-					layoutRevision.setPrivateLayout(privateLayout);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<LayoutRevision, String>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision, String name) {
-					layoutRevision.setName(name);
-				}
-			});
-		attributeSetters.put("title",
-			new BiConsumer<LayoutRevision, String>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision, String title) {
-					layoutRevision.setTitle(title);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<LayoutRevision, String>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision,
-					String description) {
-					layoutRevision.setDescription(description);
-				}
-			});
-		attributeSetters.put("keywords",
-			new BiConsumer<LayoutRevision, String>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision,
-					String keywords) {
-					layoutRevision.setKeywords(keywords);
-				}
-			});
-		attributeSetters.put("robots",
-			new BiConsumer<LayoutRevision, String>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision, String robots) {
-					layoutRevision.setRobots(robots);
-				}
-			});
-		attributeSetters.put("typeSettings",
-			new BiConsumer<LayoutRevision, String>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision,
-					String typeSettings) {
-					layoutRevision.setTypeSettings(typeSettings);
-				}
-			});
-		attributeSetters.put("iconImageId",
-			new BiConsumer<LayoutRevision, Long>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision,
-					Long iconImageId) {
-					layoutRevision.setIconImageId(iconImageId);
-				}
-			});
-		attributeSetters.put("themeId",
-			new BiConsumer<LayoutRevision, String>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision, String themeId) {
-					layoutRevision.setThemeId(themeId);
-				}
-			});
-		attributeSetters.put("colorSchemeId",
-			new BiConsumer<LayoutRevision, String>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision,
-					String colorSchemeId) {
-					layoutRevision.setColorSchemeId(colorSchemeId);
-				}
-			});
-		attributeSetters.put("css",
-			new BiConsumer<LayoutRevision, String>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision, String css) {
-					layoutRevision.setCss(css);
-				}
-			});
-		attributeSetters.put("status",
-			new BiConsumer<LayoutRevision, Integer>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision, Integer status) {
-					layoutRevision.setStatus(status);
-				}
-			});
-		attributeSetters.put("statusByUserId",
-			new BiConsumer<LayoutRevision, Long>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision,
-					Long statusByUserId) {
-					layoutRevision.setStatusByUserId(statusByUserId);
-				}
-			});
-		attributeSetters.put("statusByUserName",
-			new BiConsumer<LayoutRevision, String>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision,
-					String statusByUserName) {
-					layoutRevision.setStatusByUserName(statusByUserName);
-				}
-			});
-		attributeSetters.put("statusDate",
-			new BiConsumer<LayoutRevision, Date>() {
-				@Override
-				public void accept(LayoutRevision layoutRevision,
-					Date statusDate) {
-					layoutRevision.setStatusDate(statusDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

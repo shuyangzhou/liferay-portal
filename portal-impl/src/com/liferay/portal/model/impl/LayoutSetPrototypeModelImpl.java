@@ -234,194 +234,46 @@ public class LayoutSetPrototypeModelImpl extends BaseModelImpl<LayoutSetPrototyp
 
 	static {
 		Map<String, Function<LayoutSetPrototype, Object>> attributeGetters = new LinkedHashMap<String, Function<LayoutSetPrototype, Object>>();
+		Map<String, BiConsumer<LayoutSetPrototype, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<LayoutSetPrototype, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<LayoutSetPrototype, Object>() {
-				@Override
-				public Object apply(LayoutSetPrototype layoutSetPrototype) {
-					return layoutSetPrototype.getMvccVersion();
-				}
-			});
-		attributeGetters.put("uuid",
-			new Function<LayoutSetPrototype, Object>() {
-				@Override
-				public Object apply(LayoutSetPrototype layoutSetPrototype) {
-					return layoutSetPrototype.getUuid();
-				}
-			});
-		attributeGetters.put("layoutSetPrototypeId",
-			new Function<LayoutSetPrototype, Object>() {
-				@Override
-				public Object apply(LayoutSetPrototype layoutSetPrototype) {
-					return layoutSetPrototype.getLayoutSetPrototypeId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<LayoutSetPrototype, Object>() {
-				@Override
-				public Object apply(LayoutSetPrototype layoutSetPrototype) {
-					return layoutSetPrototype.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<LayoutSetPrototype, Object>() {
-				@Override
-				public Object apply(LayoutSetPrototype layoutSetPrototype) {
-					return layoutSetPrototype.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<LayoutSetPrototype, Object>() {
-				@Override
-				public Object apply(LayoutSetPrototype layoutSetPrototype) {
-					return layoutSetPrototype.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<LayoutSetPrototype, Object>() {
-				@Override
-				public Object apply(LayoutSetPrototype layoutSetPrototype) {
-					return layoutSetPrototype.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<LayoutSetPrototype, Object>() {
-				@Override
-				public Object apply(LayoutSetPrototype layoutSetPrototype) {
-					return layoutSetPrototype.getModifiedDate();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<LayoutSetPrototype, Object>() {
-				@Override
-				public Object apply(LayoutSetPrototype layoutSetPrototype) {
-					return layoutSetPrototype.getName();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<LayoutSetPrototype, Object>() {
-				@Override
-				public Object apply(LayoutSetPrototype layoutSetPrototype) {
-					return layoutSetPrototype.getDescription();
-				}
-			});
-		attributeGetters.put("settings",
-			new Function<LayoutSetPrototype, Object>() {
-				@Override
-				public Object apply(LayoutSetPrototype layoutSetPrototype) {
-					return layoutSetPrototype.getSettings();
-				}
-			});
-		attributeGetters.put("active",
-			new Function<LayoutSetPrototype, Object>() {
-				@Override
-				public Object apply(LayoutSetPrototype layoutSetPrototype) {
-					return layoutSetPrototype.isActive();
-				}
-			});
+		attributeGetters.put("mvccVersion", LayoutSetPrototype::getMvccVersion);
+		attributeSetters.put("mvccVersion", LayoutSetPrototype::setMvccVersion);
+
+		attributeGetters.put("uuid", LayoutSetPrototype::getUuid);
+		attributeSetters.put("uuid", LayoutSetPrototype::setUuid);
+
+		attributeGetters.put("layoutSetPrototypeId", LayoutSetPrototype::getLayoutSetPrototypeId);
+		attributeSetters.put("layoutSetPrototypeId", LayoutSetPrototype::setLayoutSetPrototypeId);
+
+		attributeGetters.put("companyId", LayoutSetPrototype::getCompanyId);
+		attributeSetters.put("companyId", LayoutSetPrototype::setCompanyId);
+
+		attributeGetters.put("userId", LayoutSetPrototype::getUserId);
+		attributeSetters.put("userId", LayoutSetPrototype::setUserId);
+
+		attributeGetters.put("userName", LayoutSetPrototype::getUserName);
+		attributeSetters.put("userName", LayoutSetPrototype::setUserName);
+
+		attributeGetters.put("createDate", LayoutSetPrototype::getCreateDate);
+		attributeSetters.put("createDate", LayoutSetPrototype::setCreateDate);
+
+		attributeGetters.put("modifiedDate", LayoutSetPrototype::getModifiedDate);
+		attributeSetters.put("modifiedDate", LayoutSetPrototype::setModifiedDate);
+
+		attributeGetters.put("name", LayoutSetPrototype::getName);
+		attributeSetters.put("name", LayoutSetPrototype::setName);
+
+		attributeGetters.put("description", LayoutSetPrototype::getDescription);
+		attributeSetters.put("description", LayoutSetPrototype::setDescription);
+
+		attributeGetters.put("settings", LayoutSetPrototype::getSettings);
+		attributeSetters.put("settings", LayoutSetPrototype::setSettings);
+
+		attributeGetters.put("active", LayoutSetPrototype::getActive);
+		attributeSetters.put("active", LayoutSetPrototype::setActive);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<LayoutSetPrototype, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<LayoutSetPrototype, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<LayoutSetPrototype, Long>() {
-				@Override
-				public void accept(LayoutSetPrototype layoutSetPrototype,
-					Long mvccVersion) {
-					layoutSetPrototype.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("uuid",
-			new BiConsumer<LayoutSetPrototype, String>() {
-				@Override
-				public void accept(LayoutSetPrototype layoutSetPrototype,
-					String uuid) {
-					layoutSetPrototype.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("layoutSetPrototypeId",
-			new BiConsumer<LayoutSetPrototype, Long>() {
-				@Override
-				public void accept(LayoutSetPrototype layoutSetPrototype,
-					Long layoutSetPrototypeId) {
-					layoutSetPrototype.setLayoutSetPrototypeId(layoutSetPrototypeId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<LayoutSetPrototype, Long>() {
-				@Override
-				public void accept(LayoutSetPrototype layoutSetPrototype,
-					Long companyId) {
-					layoutSetPrototype.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<LayoutSetPrototype, Long>() {
-				@Override
-				public void accept(LayoutSetPrototype layoutSetPrototype,
-					Long userId) {
-					layoutSetPrototype.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<LayoutSetPrototype, String>() {
-				@Override
-				public void accept(LayoutSetPrototype layoutSetPrototype,
-					String userName) {
-					layoutSetPrototype.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<LayoutSetPrototype, Date>() {
-				@Override
-				public void accept(LayoutSetPrototype layoutSetPrototype,
-					Date createDate) {
-					layoutSetPrototype.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<LayoutSetPrototype, Date>() {
-				@Override
-				public void accept(LayoutSetPrototype layoutSetPrototype,
-					Date modifiedDate) {
-					layoutSetPrototype.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<LayoutSetPrototype, String>() {
-				@Override
-				public void accept(LayoutSetPrototype layoutSetPrototype,
-					String name) {
-					layoutSetPrototype.setName(name);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<LayoutSetPrototype, String>() {
-				@Override
-				public void accept(LayoutSetPrototype layoutSetPrototype,
-					String description) {
-					layoutSetPrototype.setDescription(description);
-				}
-			});
-		attributeSetters.put("settings",
-			new BiConsumer<LayoutSetPrototype, String>() {
-				@Override
-				public void accept(LayoutSetPrototype layoutSetPrototype,
-					String settings) {
-					layoutSetPrototype.setSettings(settings);
-				}
-			});
-		attributeSetters.put("active",
-			new BiConsumer<LayoutSetPrototype, Boolean>() {
-				@Override
-				public void accept(LayoutSetPrototype layoutSetPrototype,
-					Boolean active) {
-					layoutSetPrototype.setActive(active);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

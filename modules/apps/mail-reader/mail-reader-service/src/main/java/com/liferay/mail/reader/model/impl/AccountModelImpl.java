@@ -195,378 +195,88 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 
 	static {
 		Map<String, Function<Account, Object>> attributeGetters = new LinkedHashMap<String, Function<Account, Object>>();
+		Map<String, BiConsumer<Account, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Account, Object>>();
 
-		attributeGetters.put("accountId",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getAccountId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getModifiedDate();
-				}
-			});
-		attributeGetters.put("address",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getAddress();
-				}
-			});
-		attributeGetters.put("personalName",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getPersonalName();
-				}
-			});
-		attributeGetters.put("protocol",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getProtocol();
-				}
-			});
-		attributeGetters.put("incomingHostName",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getIncomingHostName();
-				}
-			});
-		attributeGetters.put("incomingPort",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getIncomingPort();
-				}
-			});
-		attributeGetters.put("incomingSecure",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.isIncomingSecure();
-				}
-			});
-		attributeGetters.put("outgoingHostName",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getOutgoingHostName();
-				}
-			});
-		attributeGetters.put("outgoingPort",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getOutgoingPort();
-				}
-			});
-		attributeGetters.put("outgoingSecure",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.isOutgoingSecure();
-				}
-			});
-		attributeGetters.put("login",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getLogin();
-				}
-			});
-		attributeGetters.put("password",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getPassword();
-				}
-			});
-		attributeGetters.put("savePassword",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.isSavePassword();
-				}
-			});
-		attributeGetters.put("signature",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getSignature();
-				}
-			});
-		attributeGetters.put("useSignature",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.isUseSignature();
-				}
-			});
-		attributeGetters.put("folderPrefix",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getFolderPrefix();
-				}
-			});
-		attributeGetters.put("inboxFolderId",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getInboxFolderId();
-				}
-			});
-		attributeGetters.put("draftFolderId",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getDraftFolderId();
-				}
-			});
-		attributeGetters.put("sentFolderId",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getSentFolderId();
-				}
-			});
-		attributeGetters.put("trashFolderId",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.getTrashFolderId();
-				}
-			});
-		attributeGetters.put("defaultSender",
-			new Function<Account, Object>() {
-				@Override
-				public Object apply(Account account) {
-					return account.isDefaultSender();
-				}
-			});
+		attributeGetters.put("accountId", Account::getAccountId);
+		attributeSetters.put("accountId", Account::setAccountId);
+
+		attributeGetters.put("companyId", Account::getCompanyId);
+		attributeSetters.put("companyId", Account::setCompanyId);
+
+		attributeGetters.put("userId", Account::getUserId);
+		attributeSetters.put("userId", Account::setUserId);
+
+		attributeGetters.put("userName", Account::getUserName);
+		attributeSetters.put("userName", Account::setUserName);
+
+		attributeGetters.put("createDate", Account::getCreateDate);
+		attributeSetters.put("createDate", Account::setCreateDate);
+
+		attributeGetters.put("modifiedDate", Account::getModifiedDate);
+		attributeSetters.put("modifiedDate", Account::setModifiedDate);
+
+		attributeGetters.put("address", Account::getAddress);
+		attributeSetters.put("address", Account::setAddress);
+
+		attributeGetters.put("personalName", Account::getPersonalName);
+		attributeSetters.put("personalName", Account::setPersonalName);
+
+		attributeGetters.put("protocol", Account::getProtocol);
+		attributeSetters.put("protocol", Account::setProtocol);
+
+		attributeGetters.put("incomingHostName", Account::getIncomingHostName);
+		attributeSetters.put("incomingHostName", Account::setIncomingHostName);
+
+		attributeGetters.put("incomingPort", Account::getIncomingPort);
+		attributeSetters.put("incomingPort", Account::setIncomingPort);
+
+		attributeGetters.put("incomingSecure", Account::getIncomingSecure);
+		attributeSetters.put("incomingSecure", Account::setIncomingSecure);
+
+		attributeGetters.put("outgoingHostName", Account::getOutgoingHostName);
+		attributeSetters.put("outgoingHostName", Account::setOutgoingHostName);
+
+		attributeGetters.put("outgoingPort", Account::getOutgoingPort);
+		attributeSetters.put("outgoingPort", Account::setOutgoingPort);
+
+		attributeGetters.put("outgoingSecure", Account::getOutgoingSecure);
+		attributeSetters.put("outgoingSecure", Account::setOutgoingSecure);
+
+		attributeGetters.put("login", Account::getLogin);
+		attributeSetters.put("login", Account::setLogin);
+
+		attributeGetters.put("password", Account::getPassword);
+		attributeSetters.put("password", Account::setPassword);
+
+		attributeGetters.put("savePassword", Account::getSavePassword);
+		attributeSetters.put("savePassword", Account::setSavePassword);
+
+		attributeGetters.put("signature", Account::getSignature);
+		attributeSetters.put("signature", Account::setSignature);
+
+		attributeGetters.put("useSignature", Account::getUseSignature);
+		attributeSetters.put("useSignature", Account::setUseSignature);
+
+		attributeGetters.put("folderPrefix", Account::getFolderPrefix);
+		attributeSetters.put("folderPrefix", Account::setFolderPrefix);
+
+		attributeGetters.put("inboxFolderId", Account::getInboxFolderId);
+		attributeSetters.put("inboxFolderId", Account::setInboxFolderId);
+
+		attributeGetters.put("draftFolderId", Account::getDraftFolderId);
+		attributeSetters.put("draftFolderId", Account::setDraftFolderId);
+
+		attributeGetters.put("sentFolderId", Account::getSentFolderId);
+		attributeSetters.put("sentFolderId", Account::setSentFolderId);
+
+		attributeGetters.put("trashFolderId", Account::getTrashFolderId);
+		attributeSetters.put("trashFolderId", Account::setTrashFolderId);
+
+		attributeGetters.put("defaultSender", Account::getDefaultSender);
+		attributeSetters.put("defaultSender", Account::setDefaultSender);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<Account, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Account, ?>>();
-
-		attributeSetters.put("accountId",
-			new BiConsumer<Account, Long>() {
-				@Override
-				public void accept(Account account, Long accountId) {
-					account.setAccountId(accountId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<Account, Long>() {
-				@Override
-				public void accept(Account account, Long companyId) {
-					account.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<Account, Long>() {
-				@Override
-				public void accept(Account account, Long userId) {
-					account.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<Account, String>() {
-				@Override
-				public void accept(Account account, String userName) {
-					account.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<Account, Date>() {
-				@Override
-				public void accept(Account account, Date createDate) {
-					account.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<Account, Date>() {
-				@Override
-				public void accept(Account account, Date modifiedDate) {
-					account.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("address",
-			new BiConsumer<Account, String>() {
-				@Override
-				public void accept(Account account, String address) {
-					account.setAddress(address);
-				}
-			});
-		attributeSetters.put("personalName",
-			new BiConsumer<Account, String>() {
-				@Override
-				public void accept(Account account, String personalName) {
-					account.setPersonalName(personalName);
-				}
-			});
-		attributeSetters.put("protocol",
-			new BiConsumer<Account, String>() {
-				@Override
-				public void accept(Account account, String protocol) {
-					account.setProtocol(protocol);
-				}
-			});
-		attributeSetters.put("incomingHostName",
-			new BiConsumer<Account, String>() {
-				@Override
-				public void accept(Account account, String incomingHostName) {
-					account.setIncomingHostName(incomingHostName);
-				}
-			});
-		attributeSetters.put("incomingPort",
-			new BiConsumer<Account, Integer>() {
-				@Override
-				public void accept(Account account, Integer incomingPort) {
-					account.setIncomingPort(incomingPort);
-				}
-			});
-		attributeSetters.put("incomingSecure",
-			new BiConsumer<Account, Boolean>() {
-				@Override
-				public void accept(Account account, Boolean incomingSecure) {
-					account.setIncomingSecure(incomingSecure);
-				}
-			});
-		attributeSetters.put("outgoingHostName",
-			new BiConsumer<Account, String>() {
-				@Override
-				public void accept(Account account, String outgoingHostName) {
-					account.setOutgoingHostName(outgoingHostName);
-				}
-			});
-		attributeSetters.put("outgoingPort",
-			new BiConsumer<Account, Integer>() {
-				@Override
-				public void accept(Account account, Integer outgoingPort) {
-					account.setOutgoingPort(outgoingPort);
-				}
-			});
-		attributeSetters.put("outgoingSecure",
-			new BiConsumer<Account, Boolean>() {
-				@Override
-				public void accept(Account account, Boolean outgoingSecure) {
-					account.setOutgoingSecure(outgoingSecure);
-				}
-			});
-		attributeSetters.put("login",
-			new BiConsumer<Account, String>() {
-				@Override
-				public void accept(Account account, String login) {
-					account.setLogin(login);
-				}
-			});
-		attributeSetters.put("password",
-			new BiConsumer<Account, String>() {
-				@Override
-				public void accept(Account account, String password) {
-					account.setPassword(password);
-				}
-			});
-		attributeSetters.put("savePassword",
-			new BiConsumer<Account, Boolean>() {
-				@Override
-				public void accept(Account account, Boolean savePassword) {
-					account.setSavePassword(savePassword);
-				}
-			});
-		attributeSetters.put("signature",
-			new BiConsumer<Account, String>() {
-				@Override
-				public void accept(Account account, String signature) {
-					account.setSignature(signature);
-				}
-			});
-		attributeSetters.put("useSignature",
-			new BiConsumer<Account, Boolean>() {
-				@Override
-				public void accept(Account account, Boolean useSignature) {
-					account.setUseSignature(useSignature);
-				}
-			});
-		attributeSetters.put("folderPrefix",
-			new BiConsumer<Account, String>() {
-				@Override
-				public void accept(Account account, String folderPrefix) {
-					account.setFolderPrefix(folderPrefix);
-				}
-			});
-		attributeSetters.put("inboxFolderId",
-			new BiConsumer<Account, Long>() {
-				@Override
-				public void accept(Account account, Long inboxFolderId) {
-					account.setInboxFolderId(inboxFolderId);
-				}
-			});
-		attributeSetters.put("draftFolderId",
-			new BiConsumer<Account, Long>() {
-				@Override
-				public void accept(Account account, Long draftFolderId) {
-					account.setDraftFolderId(draftFolderId);
-				}
-			});
-		attributeSetters.put("sentFolderId",
-			new BiConsumer<Account, Long>() {
-				@Override
-				public void accept(Account account, Long sentFolderId) {
-					account.setSentFolderId(sentFolderId);
-				}
-			});
-		attributeSetters.put("trashFolderId",
-			new BiConsumer<Account, Long>() {
-				@Override
-				public void accept(Account account, Long trashFolderId) {
-					account.setTrashFolderId(trashFolderId);
-				}
-			});
-		attributeSetters.put("defaultSender",
-			new BiConsumer<Account, Boolean>() {
-				@Override
-				public void accept(Account account, Boolean defaultSender) {
-					account.setDefaultSender(defaultSender);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

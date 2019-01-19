@@ -149,89 +149,25 @@ public class PortalPreferencesModelImpl extends BaseModelImpl<PortalPreferences>
 
 	static {
 		Map<String, Function<PortalPreferences, Object>> attributeGetters = new LinkedHashMap<String, Function<PortalPreferences, Object>>();
+		Map<String, BiConsumer<PortalPreferences, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<PortalPreferences, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<PortalPreferences, Object>() {
-				@Override
-				public Object apply(PortalPreferences portalPreferences) {
-					return portalPreferences.getMvccVersion();
-				}
-			});
-		attributeGetters.put("portalPreferencesId",
-			new Function<PortalPreferences, Object>() {
-				@Override
-				public Object apply(PortalPreferences portalPreferences) {
-					return portalPreferences.getPortalPreferencesId();
-				}
-			});
-		attributeGetters.put("ownerId",
-			new Function<PortalPreferences, Object>() {
-				@Override
-				public Object apply(PortalPreferences portalPreferences) {
-					return portalPreferences.getOwnerId();
-				}
-			});
-		attributeGetters.put("ownerType",
-			new Function<PortalPreferences, Object>() {
-				@Override
-				public Object apply(PortalPreferences portalPreferences) {
-					return portalPreferences.getOwnerType();
-				}
-			});
-		attributeGetters.put("preferences",
-			new Function<PortalPreferences, Object>() {
-				@Override
-				public Object apply(PortalPreferences portalPreferences) {
-					return portalPreferences.getPreferences();
-				}
-			});
+		attributeGetters.put("mvccVersion", PortalPreferences::getMvccVersion);
+		attributeSetters.put("mvccVersion", PortalPreferences::setMvccVersion);
+
+		attributeGetters.put("portalPreferencesId", PortalPreferences::getPortalPreferencesId);
+		attributeSetters.put("portalPreferencesId", PortalPreferences::setPortalPreferencesId);
+
+		attributeGetters.put("ownerId", PortalPreferences::getOwnerId);
+		attributeSetters.put("ownerId", PortalPreferences::setOwnerId);
+
+		attributeGetters.put("ownerType", PortalPreferences::getOwnerType);
+		attributeSetters.put("ownerType", PortalPreferences::setOwnerType);
+
+		attributeGetters.put("preferences", PortalPreferences::getPreferences);
+		attributeSetters.put("preferences", PortalPreferences::setPreferences);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<PortalPreferences, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<PortalPreferences, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<PortalPreferences, Long>() {
-				@Override
-				public void accept(PortalPreferences portalPreferences,
-					Long mvccVersion) {
-					portalPreferences.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("portalPreferencesId",
-			new BiConsumer<PortalPreferences, Long>() {
-				@Override
-				public void accept(PortalPreferences portalPreferences,
-					Long portalPreferencesId) {
-					portalPreferences.setPortalPreferencesId(portalPreferencesId);
-				}
-			});
-		attributeSetters.put("ownerId",
-			new BiConsumer<PortalPreferences, Long>() {
-				@Override
-				public void accept(PortalPreferences portalPreferences,
-					Long ownerId) {
-					portalPreferences.setOwnerId(ownerId);
-				}
-			});
-		attributeSetters.put("ownerType",
-			new BiConsumer<PortalPreferences, Integer>() {
-				@Override
-				public void accept(PortalPreferences portalPreferences,
-					Integer ownerType) {
-					portalPreferences.setOwnerType(ownerType);
-				}
-			});
-		attributeSetters.put("preferences",
-			new BiConsumer<PortalPreferences, String>() {
-				@Override
-				public void accept(PortalPreferences portalPreferences,
-					String preferences) {
-					portalPreferences.setPreferences(preferences);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

@@ -160,126 +160,34 @@ public class StatusModelImpl extends BaseModelImpl<Status>
 
 	static {
 		Map<String, Function<Status, Object>> attributeGetters = new LinkedHashMap<String, Function<Status, Object>>();
+		Map<String, BiConsumer<Status, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Status, Object>>();
 
-		attributeGetters.put("statusId",
-			new Function<Status, Object>() {
-				@Override
-				public Object apply(Status status) {
-					return status.getStatusId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<Status, Object>() {
-				@Override
-				public Object apply(Status status) {
-					return status.getUserId();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<Status, Object>() {
-				@Override
-				public Object apply(Status status) {
-					return status.getModifiedDate();
-				}
-			});
-		attributeGetters.put("online",
-			new Function<Status, Object>() {
-				@Override
-				public Object apply(Status status) {
-					return status.isOnline();
-				}
-			});
-		attributeGetters.put("awake",
-			new Function<Status, Object>() {
-				@Override
-				public Object apply(Status status) {
-					return status.isAwake();
-				}
-			});
-		attributeGetters.put("activePanelIds",
-			new Function<Status, Object>() {
-				@Override
-				public Object apply(Status status) {
-					return status.getActivePanelIds();
-				}
-			});
-		attributeGetters.put("message",
-			new Function<Status, Object>() {
-				@Override
-				public Object apply(Status status) {
-					return status.getMessage();
-				}
-			});
-		attributeGetters.put("playSound",
-			new Function<Status, Object>() {
-				@Override
-				public Object apply(Status status) {
-					return status.isPlaySound();
-				}
-			});
+		attributeGetters.put("statusId", Status::getStatusId);
+		attributeSetters.put("statusId", Status::setStatusId);
+
+		attributeGetters.put("userId", Status::getUserId);
+		attributeSetters.put("userId", Status::setUserId);
+
+		attributeGetters.put("modifiedDate", Status::getModifiedDate);
+		attributeSetters.put("modifiedDate", Status::setModifiedDate);
+
+		attributeGetters.put("online", Status::getOnline);
+		attributeSetters.put("online", Status::setOnline);
+
+		attributeGetters.put("awake", Status::getAwake);
+		attributeSetters.put("awake", Status::setAwake);
+
+		attributeGetters.put("activePanelIds", Status::getActivePanelIds);
+		attributeSetters.put("activePanelIds", Status::setActivePanelIds);
+
+		attributeGetters.put("message", Status::getMessage);
+		attributeSetters.put("message", Status::setMessage);
+
+		attributeGetters.put("playSound", Status::getPlaySound);
+		attributeSetters.put("playSound", Status::setPlaySound);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<Status, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Status, ?>>();
-
-		attributeSetters.put("statusId",
-			new BiConsumer<Status, Long>() {
-				@Override
-				public void accept(Status status, Long statusId) {
-					status.setStatusId(statusId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<Status, Long>() {
-				@Override
-				public void accept(Status status, Long userId) {
-					status.setUserId(userId);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<Status, Long>() {
-				@Override
-				public void accept(Status status, Long modifiedDate) {
-					status.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("online",
-			new BiConsumer<Status, Boolean>() {
-				@Override
-				public void accept(Status status, Boolean online) {
-					status.setOnline(online);
-				}
-			});
-		attributeSetters.put("awake",
-			new BiConsumer<Status, Boolean>() {
-				@Override
-				public void accept(Status status, Boolean awake) {
-					status.setAwake(awake);
-				}
-			});
-		attributeSetters.put("activePanelIds",
-			new BiConsumer<Status, String>() {
-				@Override
-				public void accept(Status status, String activePanelIds) {
-					status.setActivePanelIds(activePanelIds);
-				}
-			});
-		attributeSetters.put("message",
-			new BiConsumer<Status, String>() {
-				@Override
-				public void accept(Status status, String message) {
-					status.setMessage(message);
-				}
-			});
-		attributeSetters.put("playSound",
-			new BiConsumer<Status, Boolean>() {
-				@Override
-				public void accept(Status status, Boolean playSound) {
-					status.setPlaySound(playSound);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

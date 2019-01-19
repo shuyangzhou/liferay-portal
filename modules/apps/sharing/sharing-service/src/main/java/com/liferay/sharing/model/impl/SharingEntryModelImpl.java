@@ -236,198 +236,49 @@ public class SharingEntryModelImpl extends BaseModelImpl<SharingEntry>
 
 	static {
 		Map<String, Function<SharingEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<SharingEntry, Object>>();
+		Map<String, BiConsumer<SharingEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SharingEntry, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<SharingEntry, Object>() {
-				@Override
-				public Object apply(SharingEntry sharingEntry) {
-					return sharingEntry.getUuid();
-				}
-			});
-		attributeGetters.put("sharingEntryId",
-			new Function<SharingEntry, Object>() {
-				@Override
-				public Object apply(SharingEntry sharingEntry) {
-					return sharingEntry.getSharingEntryId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<SharingEntry, Object>() {
-				@Override
-				public Object apply(SharingEntry sharingEntry) {
-					return sharingEntry.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<SharingEntry, Object>() {
-				@Override
-				public Object apply(SharingEntry sharingEntry) {
-					return sharingEntry.getCompanyId();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<SharingEntry, Object>() {
-				@Override
-				public Object apply(SharingEntry sharingEntry) {
-					return sharingEntry.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<SharingEntry, Object>() {
-				@Override
-				public Object apply(SharingEntry sharingEntry) {
-					return sharingEntry.getModifiedDate();
-				}
-			});
-		attributeGetters.put("fromUserId",
-			new Function<SharingEntry, Object>() {
-				@Override
-				public Object apply(SharingEntry sharingEntry) {
-					return sharingEntry.getFromUserId();
-				}
-			});
-		attributeGetters.put("toUserId",
-			new Function<SharingEntry, Object>() {
-				@Override
-				public Object apply(SharingEntry sharingEntry) {
-					return sharingEntry.getToUserId();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<SharingEntry, Object>() {
-				@Override
-				public Object apply(SharingEntry sharingEntry) {
-					return sharingEntry.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<SharingEntry, Object>() {
-				@Override
-				public Object apply(SharingEntry sharingEntry) {
-					return sharingEntry.getClassPK();
-				}
-			});
-		attributeGetters.put("shareable",
-			new Function<SharingEntry, Object>() {
-				@Override
-				public Object apply(SharingEntry sharingEntry) {
-					return sharingEntry.isShareable();
-				}
-			});
-		attributeGetters.put("actionIds",
-			new Function<SharingEntry, Object>() {
-				@Override
-				public Object apply(SharingEntry sharingEntry) {
-					return sharingEntry.getActionIds();
-				}
-			});
-		attributeGetters.put("expirationDate",
-			new Function<SharingEntry, Object>() {
-				@Override
-				public Object apply(SharingEntry sharingEntry) {
-					return sharingEntry.getExpirationDate();
-				}
-			});
+		attributeGetters.put("uuid", SharingEntry::getUuid);
+		attributeSetters.put("uuid", SharingEntry::setUuid);
+
+		attributeGetters.put("sharingEntryId", SharingEntry::getSharingEntryId);
+		attributeSetters.put("sharingEntryId", SharingEntry::setSharingEntryId);
+
+		attributeGetters.put("groupId", SharingEntry::getGroupId);
+		attributeSetters.put("groupId", SharingEntry::setGroupId);
+
+		attributeGetters.put("companyId", SharingEntry::getCompanyId);
+		attributeSetters.put("companyId", SharingEntry::setCompanyId);
+
+		attributeGetters.put("createDate", SharingEntry::getCreateDate);
+		attributeSetters.put("createDate", SharingEntry::setCreateDate);
+
+		attributeGetters.put("modifiedDate", SharingEntry::getModifiedDate);
+		attributeSetters.put("modifiedDate", SharingEntry::setModifiedDate);
+
+		attributeGetters.put("fromUserId", SharingEntry::getFromUserId);
+		attributeSetters.put("fromUserId", SharingEntry::setFromUserId);
+
+		attributeGetters.put("toUserId", SharingEntry::getToUserId);
+		attributeSetters.put("toUserId", SharingEntry::setToUserId);
+
+		attributeGetters.put("classNameId", SharingEntry::getClassNameId);
+		attributeSetters.put("classNameId", SharingEntry::setClassNameId);
+
+		attributeGetters.put("classPK", SharingEntry::getClassPK);
+		attributeSetters.put("classPK", SharingEntry::setClassPK);
+
+		attributeGetters.put("shareable", SharingEntry::getShareable);
+		attributeSetters.put("shareable", SharingEntry::setShareable);
+
+		attributeGetters.put("actionIds", SharingEntry::getActionIds);
+		attributeSetters.put("actionIds", SharingEntry::setActionIds);
+
+		attributeGetters.put("expirationDate", SharingEntry::getExpirationDate);
+		attributeSetters.put("expirationDate", SharingEntry::setExpirationDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<SharingEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<SharingEntry, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<SharingEntry, String>() {
-				@Override
-				public void accept(SharingEntry sharingEntry, String uuid) {
-					sharingEntry.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("sharingEntryId",
-			new BiConsumer<SharingEntry, Long>() {
-				@Override
-				public void accept(SharingEntry sharingEntry,
-					Long sharingEntryId) {
-					sharingEntry.setSharingEntryId(sharingEntryId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<SharingEntry, Long>() {
-				@Override
-				public void accept(SharingEntry sharingEntry, Long groupId) {
-					sharingEntry.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<SharingEntry, Long>() {
-				@Override
-				public void accept(SharingEntry sharingEntry, Long companyId) {
-					sharingEntry.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<SharingEntry, Date>() {
-				@Override
-				public void accept(SharingEntry sharingEntry, Date createDate) {
-					sharingEntry.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<SharingEntry, Date>() {
-				@Override
-				public void accept(SharingEntry sharingEntry, Date modifiedDate) {
-					sharingEntry.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("fromUserId",
-			new BiConsumer<SharingEntry, Long>() {
-				@Override
-				public void accept(SharingEntry sharingEntry, Long fromUserId) {
-					sharingEntry.setFromUserId(fromUserId);
-				}
-			});
-		attributeSetters.put("toUserId",
-			new BiConsumer<SharingEntry, Long>() {
-				@Override
-				public void accept(SharingEntry sharingEntry, Long toUserId) {
-					sharingEntry.setToUserId(toUserId);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<SharingEntry, Long>() {
-				@Override
-				public void accept(SharingEntry sharingEntry, Long classNameId) {
-					sharingEntry.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<SharingEntry, Long>() {
-				@Override
-				public void accept(SharingEntry sharingEntry, Long classPK) {
-					sharingEntry.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("shareable",
-			new BiConsumer<SharingEntry, Boolean>() {
-				@Override
-				public void accept(SharingEntry sharingEntry, Boolean shareable) {
-					sharingEntry.setShareable(shareable);
-				}
-			});
-		attributeSetters.put("actionIds",
-			new BiConsumer<SharingEntry, Long>() {
-				@Override
-				public void accept(SharingEntry sharingEntry, Long actionIds) {
-					sharingEntry.setActionIds(actionIds);
-				}
-			});
-		attributeSetters.put("expirationDate",
-			new BiConsumer<SharingEntry, Date>() {
-				@Override
-				public void accept(SharingEntry sharingEntry,
-					Date expirationDate) {
-					sharingEntry.setExpirationDate(expirationDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

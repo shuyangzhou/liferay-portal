@@ -151,87 +151,25 @@ public class BrowserTrackerModelImpl extends BaseModelImpl<BrowserTracker>
 
 	static {
 		Map<String, Function<BrowserTracker, Object>> attributeGetters = new LinkedHashMap<String, Function<BrowserTracker, Object>>();
+		Map<String, BiConsumer<BrowserTracker, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<BrowserTracker, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<BrowserTracker, Object>() {
-				@Override
-				public Object apply(BrowserTracker browserTracker) {
-					return browserTracker.getMvccVersion();
-				}
-			});
-		attributeGetters.put("browserTrackerId",
-			new Function<BrowserTracker, Object>() {
-				@Override
-				public Object apply(BrowserTracker browserTracker) {
-					return browserTracker.getBrowserTrackerId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<BrowserTracker, Object>() {
-				@Override
-				public Object apply(BrowserTracker browserTracker) {
-					return browserTracker.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<BrowserTracker, Object>() {
-				@Override
-				public Object apply(BrowserTracker browserTracker) {
-					return browserTracker.getUserId();
-				}
-			});
-		attributeGetters.put("browserKey",
-			new Function<BrowserTracker, Object>() {
-				@Override
-				public Object apply(BrowserTracker browserTracker) {
-					return browserTracker.getBrowserKey();
-				}
-			});
+		attributeGetters.put("mvccVersion", BrowserTracker::getMvccVersion);
+		attributeSetters.put("mvccVersion", BrowserTracker::setMvccVersion);
+
+		attributeGetters.put("browserTrackerId", BrowserTracker::getBrowserTrackerId);
+		attributeSetters.put("browserTrackerId", BrowserTracker::setBrowserTrackerId);
+
+		attributeGetters.put("companyId", BrowserTracker::getCompanyId);
+		attributeSetters.put("companyId", BrowserTracker::setCompanyId);
+
+		attributeGetters.put("userId", BrowserTracker::getUserId);
+		attributeSetters.put("userId", BrowserTracker::setUserId);
+
+		attributeGetters.put("browserKey", BrowserTracker::getBrowserKey);
+		attributeSetters.put("browserKey", BrowserTracker::setBrowserKey);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<BrowserTracker, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<BrowserTracker, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<BrowserTracker, Long>() {
-				@Override
-				public void accept(BrowserTracker browserTracker,
-					Long mvccVersion) {
-					browserTracker.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("browserTrackerId",
-			new BiConsumer<BrowserTracker, Long>() {
-				@Override
-				public void accept(BrowserTracker browserTracker,
-					Long browserTrackerId) {
-					browserTracker.setBrowserTrackerId(browserTrackerId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<BrowserTracker, Long>() {
-				@Override
-				public void accept(BrowserTracker browserTracker, Long companyId) {
-					browserTracker.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<BrowserTracker, Long>() {
-				@Override
-				public void accept(BrowserTracker browserTracker, Long userId) {
-					browserTracker.setUserId(userId);
-				}
-			});
-		attributeSetters.put("browserKey",
-			new BiConsumer<BrowserTracker, Long>() {
-				@Override
-				public void accept(BrowserTracker browserTracker,
-					Long browserKey) {
-					browserTracker.setBrowserKey(browserKey);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

@@ -201,87 +201,115 @@ public class LVEntryVersionModelImpl extends BaseModelImpl<LVEntryVersion>
 
 	static {
 		Map<String, Function<LVEntryVersion, Object>> attributeGetters = new LinkedHashMap<String, Function<LVEntryVersion, Object>>();
+		Map<String, BiConsumer<LVEntryVersion, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<LVEntryVersion, Object>>();
 
-		attributeGetters.put("lvEntryVersionId",
+		attributeGetters.put(
+			"lvEntryVersionId",
 			new Function<LVEntryVersion, Object>() {
+
 				@Override
 				public Object apply(LVEntryVersion lvEntryVersion) {
 					return lvEntryVersion.getLvEntryVersionId();
 				}
+
 			});
-		attributeGetters.put("version",
+		attributeSetters.put(
+			"lvEntryVersionId",
+			new BiConsumer<LVEntryVersion, Object>() {
+
+				@Override
+				public void accept(LVEntryVersion lvEntryVersion, Object lvEntryVersionId) {
+					lvEntryVersion.setLvEntryVersionId((Long)lvEntryVersionId);
+				}
+
+			});
+
+		attributeGetters.put(
+			"version",
 			new Function<LVEntryVersion, Object>() {
+
 				@Override
 				public Object apply(LVEntryVersion lvEntryVersion) {
 					return lvEntryVersion.getVersion();
 				}
+
 			});
-		attributeGetters.put("defaultLanguageId",
+		attributeSetters.put(
+			"version",
+			new BiConsumer<LVEntryVersion, Object>() {
+
+				@Override
+				public void accept(LVEntryVersion lvEntryVersion, Object version) {
+					lvEntryVersion.setVersion((Integer)version);
+				}
+
+			});
+
+		attributeGetters.put(
+			"defaultLanguageId",
 			new Function<LVEntryVersion, Object>() {
+
 				@Override
 				public Object apply(LVEntryVersion lvEntryVersion) {
 					return lvEntryVersion.getDefaultLanguageId();
 				}
+
 			});
-		attributeGetters.put("lvEntryId",
+		attributeSetters.put(
+			"defaultLanguageId",
+			new BiConsumer<LVEntryVersion, Object>() {
+
+				@Override
+				public void accept(LVEntryVersion lvEntryVersion, Object defaultLanguageId) {
+					lvEntryVersion.setDefaultLanguageId((String)defaultLanguageId);
+				}
+
+			});
+
+		attributeGetters.put(
+			"lvEntryId",
 			new Function<LVEntryVersion, Object>() {
+
 				@Override
 				public Object apply(LVEntryVersion lvEntryVersion) {
 					return lvEntryVersion.getLvEntryId();
 				}
+
 			});
-		attributeGetters.put("groupId",
+		attributeSetters.put(
+			"lvEntryId",
+			new BiConsumer<LVEntryVersion, Object>() {
+
+				@Override
+				public void accept(LVEntryVersion lvEntryVersion, Object lvEntryId) {
+					lvEntryVersion.setLvEntryId((Long)lvEntryId);
+				}
+
+			});
+
+		attributeGetters.put(
+			"groupId",
 			new Function<LVEntryVersion, Object>() {
+
 				@Override
 				public Object apply(LVEntryVersion lvEntryVersion) {
 					return lvEntryVersion.getGroupId();
 				}
+
+			});
+		attributeSetters.put(
+			"groupId",
+			new BiConsumer<LVEntryVersion, Object>() {
+
+				@Override
+				public void accept(LVEntryVersion lvEntryVersion, Object groupId) {
+					lvEntryVersion.setGroupId((Long)groupId);
+				}
+
 			});
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<LVEntryVersion, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<LVEntryVersion, ?>>();
-
-		attributeSetters.put("lvEntryVersionId",
-			new BiConsumer<LVEntryVersion, Long>() {
-				@Override
-				public void accept(LVEntryVersion lvEntryVersion,
-					Long lvEntryVersionId) {
-					lvEntryVersion.setLvEntryVersionId(lvEntryVersionId);
-				}
-			});
-		attributeSetters.put("version",
-			new BiConsumer<LVEntryVersion, Integer>() {
-				@Override
-				public void accept(LVEntryVersion lvEntryVersion,
-					Integer version) {
-					lvEntryVersion.setVersion(version);
-				}
-			});
-		attributeSetters.put("defaultLanguageId",
-			new BiConsumer<LVEntryVersion, String>() {
-				@Override
-				public void accept(LVEntryVersion lvEntryVersion,
-					String defaultLanguageId) {
-					lvEntryVersion.setDefaultLanguageId(defaultLanguageId);
-				}
-			});
-		attributeSetters.put("lvEntryId",
-			new BiConsumer<LVEntryVersion, Long>() {
-				@Override
-				public void accept(LVEntryVersion lvEntryVersion, Long lvEntryId) {
-					lvEntryVersion.setLvEntryId(lvEntryId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<LVEntryVersion, Long>() {
-				@Override
-				public void accept(LVEntryVersion lvEntryVersion, Long groupId) {
-					lvEntryVersion.setGroupId(groupId);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

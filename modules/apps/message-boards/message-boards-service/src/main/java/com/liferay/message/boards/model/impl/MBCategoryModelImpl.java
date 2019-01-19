@@ -259,295 +259,70 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 
 	static {
 		Map<String, Function<MBCategory, Object>> attributeGetters = new LinkedHashMap<String, Function<MBCategory, Object>>();
+		Map<String, BiConsumer<MBCategory, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<MBCategory, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<MBCategory, Object>() {
-				@Override
-				public Object apply(MBCategory mbCategory) {
-					return mbCategory.getUuid();
-				}
-			});
-		attributeGetters.put("categoryId",
-			new Function<MBCategory, Object>() {
-				@Override
-				public Object apply(MBCategory mbCategory) {
-					return mbCategory.getCategoryId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<MBCategory, Object>() {
-				@Override
-				public Object apply(MBCategory mbCategory) {
-					return mbCategory.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<MBCategory, Object>() {
-				@Override
-				public Object apply(MBCategory mbCategory) {
-					return mbCategory.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<MBCategory, Object>() {
-				@Override
-				public Object apply(MBCategory mbCategory) {
-					return mbCategory.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<MBCategory, Object>() {
-				@Override
-				public Object apply(MBCategory mbCategory) {
-					return mbCategory.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<MBCategory, Object>() {
-				@Override
-				public Object apply(MBCategory mbCategory) {
-					return mbCategory.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<MBCategory, Object>() {
-				@Override
-				public Object apply(MBCategory mbCategory) {
-					return mbCategory.getModifiedDate();
-				}
-			});
-		attributeGetters.put("parentCategoryId",
-			new Function<MBCategory, Object>() {
-				@Override
-				public Object apply(MBCategory mbCategory) {
-					return mbCategory.getParentCategoryId();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<MBCategory, Object>() {
-				@Override
-				public Object apply(MBCategory mbCategory) {
-					return mbCategory.getName();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<MBCategory, Object>() {
-				@Override
-				public Object apply(MBCategory mbCategory) {
-					return mbCategory.getDescription();
-				}
-			});
-		attributeGetters.put("displayStyle",
-			new Function<MBCategory, Object>() {
-				@Override
-				public Object apply(MBCategory mbCategory) {
-					return mbCategory.getDisplayStyle();
-				}
-			});
-		attributeGetters.put("threadCount",
-			new Function<MBCategory, Object>() {
-				@Override
-				public Object apply(MBCategory mbCategory) {
-					return mbCategory.getThreadCount();
-				}
-			});
-		attributeGetters.put("messageCount",
-			new Function<MBCategory, Object>() {
-				@Override
-				public Object apply(MBCategory mbCategory) {
-					return mbCategory.getMessageCount();
-				}
-			});
-		attributeGetters.put("lastPostDate",
-			new Function<MBCategory, Object>() {
-				@Override
-				public Object apply(MBCategory mbCategory) {
-					return mbCategory.getLastPostDate();
-				}
-			});
-		attributeGetters.put("lastPublishDate",
-			new Function<MBCategory, Object>() {
-				@Override
-				public Object apply(MBCategory mbCategory) {
-					return mbCategory.getLastPublishDate();
-				}
-			});
-		attributeGetters.put("status",
-			new Function<MBCategory, Object>() {
-				@Override
-				public Object apply(MBCategory mbCategory) {
-					return mbCategory.getStatus();
-				}
-			});
-		attributeGetters.put("statusByUserId",
-			new Function<MBCategory, Object>() {
-				@Override
-				public Object apply(MBCategory mbCategory) {
-					return mbCategory.getStatusByUserId();
-				}
-			});
-		attributeGetters.put("statusByUserName",
-			new Function<MBCategory, Object>() {
-				@Override
-				public Object apply(MBCategory mbCategory) {
-					return mbCategory.getStatusByUserName();
-				}
-			});
-		attributeGetters.put("statusDate",
-			new Function<MBCategory, Object>() {
-				@Override
-				public Object apply(MBCategory mbCategory) {
-					return mbCategory.getStatusDate();
-				}
-			});
+		attributeGetters.put("uuid", MBCategory::getUuid);
+		attributeSetters.put("uuid", MBCategory::setUuid);
+
+		attributeGetters.put("categoryId", MBCategory::getCategoryId);
+		attributeSetters.put("categoryId", MBCategory::setCategoryId);
+
+		attributeGetters.put("groupId", MBCategory::getGroupId);
+		attributeSetters.put("groupId", MBCategory::setGroupId);
+
+		attributeGetters.put("companyId", MBCategory::getCompanyId);
+		attributeSetters.put("companyId", MBCategory::setCompanyId);
+
+		attributeGetters.put("userId", MBCategory::getUserId);
+		attributeSetters.put("userId", MBCategory::setUserId);
+
+		attributeGetters.put("userName", MBCategory::getUserName);
+		attributeSetters.put("userName", MBCategory::setUserName);
+
+		attributeGetters.put("createDate", MBCategory::getCreateDate);
+		attributeSetters.put("createDate", MBCategory::setCreateDate);
+
+		attributeGetters.put("modifiedDate", MBCategory::getModifiedDate);
+		attributeSetters.put("modifiedDate", MBCategory::setModifiedDate);
+
+		attributeGetters.put("parentCategoryId", MBCategory::getParentCategoryId);
+		attributeSetters.put("parentCategoryId", MBCategory::setParentCategoryId);
+
+		attributeGetters.put("name", MBCategory::getName);
+		attributeSetters.put("name", MBCategory::setName);
+
+		attributeGetters.put("description", MBCategory::getDescription);
+		attributeSetters.put("description", MBCategory::setDescription);
+
+		attributeGetters.put("displayStyle", MBCategory::getDisplayStyle);
+		attributeSetters.put("displayStyle", MBCategory::setDisplayStyle);
+
+		attributeGetters.put("threadCount", MBCategory::getThreadCount);
+		attributeSetters.put("threadCount", MBCategory::setThreadCount);
+
+		attributeGetters.put("messageCount", MBCategory::getMessageCount);
+		attributeSetters.put("messageCount", MBCategory::setMessageCount);
+
+		attributeGetters.put("lastPostDate", MBCategory::getLastPostDate);
+		attributeSetters.put("lastPostDate", MBCategory::setLastPostDate);
+
+		attributeGetters.put("lastPublishDate", MBCategory::getLastPublishDate);
+		attributeSetters.put("lastPublishDate", MBCategory::setLastPublishDate);
+
+		attributeGetters.put("status", MBCategory::getStatus);
+		attributeSetters.put("status", MBCategory::setStatus);
+
+		attributeGetters.put("statusByUserId", MBCategory::getStatusByUserId);
+		attributeSetters.put("statusByUserId", MBCategory::setStatusByUserId);
+
+		attributeGetters.put("statusByUserName", MBCategory::getStatusByUserName);
+		attributeSetters.put("statusByUserName", MBCategory::setStatusByUserName);
+
+		attributeGetters.put("statusDate", MBCategory::getStatusDate);
+		attributeSetters.put("statusDate", MBCategory::setStatusDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<MBCategory, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<MBCategory, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<MBCategory, String>() {
-				@Override
-				public void accept(MBCategory mbCategory, String uuid) {
-					mbCategory.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("categoryId",
-			new BiConsumer<MBCategory, Long>() {
-				@Override
-				public void accept(MBCategory mbCategory, Long categoryId) {
-					mbCategory.setCategoryId(categoryId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<MBCategory, Long>() {
-				@Override
-				public void accept(MBCategory mbCategory, Long groupId) {
-					mbCategory.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<MBCategory, Long>() {
-				@Override
-				public void accept(MBCategory mbCategory, Long companyId) {
-					mbCategory.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<MBCategory, Long>() {
-				@Override
-				public void accept(MBCategory mbCategory, Long userId) {
-					mbCategory.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<MBCategory, String>() {
-				@Override
-				public void accept(MBCategory mbCategory, String userName) {
-					mbCategory.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<MBCategory, Date>() {
-				@Override
-				public void accept(MBCategory mbCategory, Date createDate) {
-					mbCategory.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<MBCategory, Date>() {
-				@Override
-				public void accept(MBCategory mbCategory, Date modifiedDate) {
-					mbCategory.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("parentCategoryId",
-			new BiConsumer<MBCategory, Long>() {
-				@Override
-				public void accept(MBCategory mbCategory, Long parentCategoryId) {
-					mbCategory.setParentCategoryId(parentCategoryId);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<MBCategory, String>() {
-				@Override
-				public void accept(MBCategory mbCategory, String name) {
-					mbCategory.setName(name);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<MBCategory, String>() {
-				@Override
-				public void accept(MBCategory mbCategory, String description) {
-					mbCategory.setDescription(description);
-				}
-			});
-		attributeSetters.put("displayStyle",
-			new BiConsumer<MBCategory, String>() {
-				@Override
-				public void accept(MBCategory mbCategory, String displayStyle) {
-					mbCategory.setDisplayStyle(displayStyle);
-				}
-			});
-		attributeSetters.put("threadCount",
-			new BiConsumer<MBCategory, Integer>() {
-				@Override
-				public void accept(MBCategory mbCategory, Integer threadCount) {
-					mbCategory.setThreadCount(threadCount);
-				}
-			});
-		attributeSetters.put("messageCount",
-			new BiConsumer<MBCategory, Integer>() {
-				@Override
-				public void accept(MBCategory mbCategory, Integer messageCount) {
-					mbCategory.setMessageCount(messageCount);
-				}
-			});
-		attributeSetters.put("lastPostDate",
-			new BiConsumer<MBCategory, Date>() {
-				@Override
-				public void accept(MBCategory mbCategory, Date lastPostDate) {
-					mbCategory.setLastPostDate(lastPostDate);
-				}
-			});
-		attributeSetters.put("lastPublishDate",
-			new BiConsumer<MBCategory, Date>() {
-				@Override
-				public void accept(MBCategory mbCategory, Date lastPublishDate) {
-					mbCategory.setLastPublishDate(lastPublishDate);
-				}
-			});
-		attributeSetters.put("status",
-			new BiConsumer<MBCategory, Integer>() {
-				@Override
-				public void accept(MBCategory mbCategory, Integer status) {
-					mbCategory.setStatus(status);
-				}
-			});
-		attributeSetters.put("statusByUserId",
-			new BiConsumer<MBCategory, Long>() {
-				@Override
-				public void accept(MBCategory mbCategory, Long statusByUserId) {
-					mbCategory.setStatusByUserId(statusByUserId);
-				}
-			});
-		attributeSetters.put("statusByUserName",
-			new BiConsumer<MBCategory, String>() {
-				@Override
-				public void accept(MBCategory mbCategory,
-					String statusByUserName) {
-					mbCategory.setStatusByUserName(statusByUserName);
-				}
-			});
-		attributeSetters.put("statusDate",
-			new BiConsumer<MBCategory, Date>() {
-				@Override
-				public void accept(MBCategory mbCategory, Date statusDate) {
-					mbCategory.setStatusDate(statusDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

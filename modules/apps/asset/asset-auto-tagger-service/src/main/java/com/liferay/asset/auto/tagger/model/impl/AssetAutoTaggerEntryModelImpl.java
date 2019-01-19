@@ -156,119 +156,31 @@ public class AssetAutoTaggerEntryModelImpl extends BaseModelImpl<AssetAutoTagger
 
 	static {
 		Map<String, Function<AssetAutoTaggerEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<AssetAutoTaggerEntry, Object>>();
+		Map<String, BiConsumer<AssetAutoTaggerEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetAutoTaggerEntry, Object>>();
 
-		attributeGetters.put("assetAutoTaggerEntryId",
-			new Function<AssetAutoTaggerEntry, Object>() {
-				@Override
-				public Object apply(AssetAutoTaggerEntry assetAutoTaggerEntry) {
-					return assetAutoTaggerEntry.getAssetAutoTaggerEntryId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<AssetAutoTaggerEntry, Object>() {
-				@Override
-				public Object apply(AssetAutoTaggerEntry assetAutoTaggerEntry) {
-					return assetAutoTaggerEntry.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<AssetAutoTaggerEntry, Object>() {
-				@Override
-				public Object apply(AssetAutoTaggerEntry assetAutoTaggerEntry) {
-					return assetAutoTaggerEntry.getCompanyId();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<AssetAutoTaggerEntry, Object>() {
-				@Override
-				public Object apply(AssetAutoTaggerEntry assetAutoTaggerEntry) {
-					return assetAutoTaggerEntry.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<AssetAutoTaggerEntry, Object>() {
-				@Override
-				public Object apply(AssetAutoTaggerEntry assetAutoTaggerEntry) {
-					return assetAutoTaggerEntry.getModifiedDate();
-				}
-			});
-		attributeGetters.put("assetEntryId",
-			new Function<AssetAutoTaggerEntry, Object>() {
-				@Override
-				public Object apply(AssetAutoTaggerEntry assetAutoTaggerEntry) {
-					return assetAutoTaggerEntry.getAssetEntryId();
-				}
-			});
-		attributeGetters.put("assetTagId",
-			new Function<AssetAutoTaggerEntry, Object>() {
-				@Override
-				public Object apply(AssetAutoTaggerEntry assetAutoTaggerEntry) {
-					return assetAutoTaggerEntry.getAssetTagId();
-				}
-			});
+		attributeGetters.put("assetAutoTaggerEntryId", AssetAutoTaggerEntry::getAssetAutoTaggerEntryId);
+		attributeSetters.put("assetAutoTaggerEntryId", AssetAutoTaggerEntry::setAssetAutoTaggerEntryId);
+
+		attributeGetters.put("groupId", AssetAutoTaggerEntry::getGroupId);
+		attributeSetters.put("groupId", AssetAutoTaggerEntry::setGroupId);
+
+		attributeGetters.put("companyId", AssetAutoTaggerEntry::getCompanyId);
+		attributeSetters.put("companyId", AssetAutoTaggerEntry::setCompanyId);
+
+		attributeGetters.put("createDate", AssetAutoTaggerEntry::getCreateDate);
+		attributeSetters.put("createDate", AssetAutoTaggerEntry::setCreateDate);
+
+		attributeGetters.put("modifiedDate", AssetAutoTaggerEntry::getModifiedDate);
+		attributeSetters.put("modifiedDate", AssetAutoTaggerEntry::setModifiedDate);
+
+		attributeGetters.put("assetEntryId", AssetAutoTaggerEntry::getAssetEntryId);
+		attributeSetters.put("assetEntryId", AssetAutoTaggerEntry::setAssetEntryId);
+
+		attributeGetters.put("assetTagId", AssetAutoTaggerEntry::getAssetTagId);
+		attributeSetters.put("assetTagId", AssetAutoTaggerEntry::setAssetTagId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<AssetAutoTaggerEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetAutoTaggerEntry, ?>>();
-
-		attributeSetters.put("assetAutoTaggerEntryId",
-			new BiConsumer<AssetAutoTaggerEntry, Long>() {
-				@Override
-				public void accept(AssetAutoTaggerEntry assetAutoTaggerEntry,
-					Long assetAutoTaggerEntryId) {
-					assetAutoTaggerEntry.setAssetAutoTaggerEntryId(assetAutoTaggerEntryId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<AssetAutoTaggerEntry, Long>() {
-				@Override
-				public void accept(AssetAutoTaggerEntry assetAutoTaggerEntry,
-					Long groupId) {
-					assetAutoTaggerEntry.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<AssetAutoTaggerEntry, Long>() {
-				@Override
-				public void accept(AssetAutoTaggerEntry assetAutoTaggerEntry,
-					Long companyId) {
-					assetAutoTaggerEntry.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<AssetAutoTaggerEntry, Date>() {
-				@Override
-				public void accept(AssetAutoTaggerEntry assetAutoTaggerEntry,
-					Date createDate) {
-					assetAutoTaggerEntry.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<AssetAutoTaggerEntry, Date>() {
-				@Override
-				public void accept(AssetAutoTaggerEntry assetAutoTaggerEntry,
-					Date modifiedDate) {
-					assetAutoTaggerEntry.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("assetEntryId",
-			new BiConsumer<AssetAutoTaggerEntry, Long>() {
-				@Override
-				public void accept(AssetAutoTaggerEntry assetAutoTaggerEntry,
-					Long assetEntryId) {
-					assetAutoTaggerEntry.setAssetEntryId(assetEntryId);
-				}
-			});
-		attributeSetters.put("assetTagId",
-			new BiConsumer<AssetAutoTaggerEntry, Long>() {
-				@Override
-				public void accept(AssetAutoTaggerEntry assetAutoTaggerEntry,
-					Long assetTagId) {
-					assetAutoTaggerEntry.setAssetTagId(assetTagId);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

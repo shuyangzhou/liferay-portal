@@ -218,119 +218,157 @@ public class LVEntryLocalizationModelImpl extends BaseModelImpl<LVEntryLocalizat
 
 	static {
 		Map<String, Function<LVEntryLocalization, Object>> attributeGetters = new LinkedHashMap<String, Function<LVEntryLocalization, Object>>();
+		Map<String, BiConsumer<LVEntryLocalization, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<LVEntryLocalization, Object>>();
 
-		attributeGetters.put("mvccVersion",
+		attributeGetters.put(
+			"mvccVersion",
 			new Function<LVEntryLocalization, Object>() {
+
 				@Override
 				public Object apply(LVEntryLocalization lvEntryLocalization) {
 					return lvEntryLocalization.getMvccVersion();
 				}
+
 			});
-		attributeGetters.put("headId",
+		attributeSetters.put(
+			"mvccVersion",
+			new BiConsumer<LVEntryLocalization, Object>() {
+
+				@Override
+				public void accept(LVEntryLocalization lvEntryLocalization, Object mvccVersion) {
+					lvEntryLocalization.setMvccVersion((Long)mvccVersion);
+				}
+
+			});
+
+		attributeGetters.put(
+			"headId",
 			new Function<LVEntryLocalization, Object>() {
+
 				@Override
 				public Object apply(LVEntryLocalization lvEntryLocalization) {
 					return lvEntryLocalization.getHeadId();
 				}
+
 			});
-		attributeGetters.put("lvEntryLocalizationId",
+		attributeSetters.put(
+			"headId",
+			new BiConsumer<LVEntryLocalization, Object>() {
+
+				@Override
+				public void accept(LVEntryLocalization lvEntryLocalization, Object headId) {
+					lvEntryLocalization.setHeadId((Long)headId);
+				}
+
+			});
+
+		attributeGetters.put(
+			"lvEntryLocalizationId",
 			new Function<LVEntryLocalization, Object>() {
+
 				@Override
 				public Object apply(LVEntryLocalization lvEntryLocalization) {
 					return lvEntryLocalization.getLvEntryLocalizationId();
 				}
+
 			});
-		attributeGetters.put("lvEntryId",
+		attributeSetters.put(
+			"lvEntryLocalizationId",
+			new BiConsumer<LVEntryLocalization, Object>() {
+
+				@Override
+				public void accept(LVEntryLocalization lvEntryLocalization, Object lvEntryLocalizationId) {
+					lvEntryLocalization.setLvEntryLocalizationId((Long)lvEntryLocalizationId);
+				}
+
+			});
+
+		attributeGetters.put(
+			"lvEntryId",
 			new Function<LVEntryLocalization, Object>() {
+
 				@Override
 				public Object apply(LVEntryLocalization lvEntryLocalization) {
 					return lvEntryLocalization.getLvEntryId();
 				}
+
 			});
-		attributeGetters.put("languageId",
+		attributeSetters.put(
+			"lvEntryId",
+			new BiConsumer<LVEntryLocalization, Object>() {
+
+				@Override
+				public void accept(LVEntryLocalization lvEntryLocalization, Object lvEntryId) {
+					lvEntryLocalization.setLvEntryId((Long)lvEntryId);
+				}
+
+			});
+
+		attributeGetters.put(
+			"languageId",
 			new Function<LVEntryLocalization, Object>() {
+
 				@Override
 				public Object apply(LVEntryLocalization lvEntryLocalization) {
 					return lvEntryLocalization.getLanguageId();
 				}
+
 			});
-		attributeGetters.put("title",
+		attributeSetters.put(
+			"languageId",
+			new BiConsumer<LVEntryLocalization, Object>() {
+
+				@Override
+				public void accept(LVEntryLocalization lvEntryLocalization, Object languageId) {
+					lvEntryLocalization.setLanguageId((String)languageId);
+				}
+
+			});
+
+		attributeGetters.put(
+			"title",
 			new Function<LVEntryLocalization, Object>() {
+
 				@Override
 				public Object apply(LVEntryLocalization lvEntryLocalization) {
 					return lvEntryLocalization.getTitle();
 				}
+
 			});
-		attributeGetters.put("content",
+		attributeSetters.put(
+			"title",
+			new BiConsumer<LVEntryLocalization, Object>() {
+
+				@Override
+				public void accept(LVEntryLocalization lvEntryLocalization, Object title) {
+					lvEntryLocalization.setTitle((String)title);
+				}
+
+			});
+
+		attributeGetters.put(
+			"content",
 			new Function<LVEntryLocalization, Object>() {
+
 				@Override
 				public Object apply(LVEntryLocalization lvEntryLocalization) {
 					return lvEntryLocalization.getContent();
 				}
+
+			});
+		attributeSetters.put(
+			"content",
+			new BiConsumer<LVEntryLocalization, Object>() {
+
+				@Override
+				public void accept(LVEntryLocalization lvEntryLocalization, Object content) {
+					lvEntryLocalization.setContent((String)content);
+				}
+
 			});
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<LVEntryLocalization, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<LVEntryLocalization, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<LVEntryLocalization, Long>() {
-				@Override
-				public void accept(LVEntryLocalization lvEntryLocalization,
-					Long mvccVersion) {
-					lvEntryLocalization.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("headId",
-			new BiConsumer<LVEntryLocalization, Long>() {
-				@Override
-				public void accept(LVEntryLocalization lvEntryLocalization,
-					Long headId) {
-					lvEntryLocalization.setHeadId(headId);
-				}
-			});
-		attributeSetters.put("lvEntryLocalizationId",
-			new BiConsumer<LVEntryLocalization, Long>() {
-				@Override
-				public void accept(LVEntryLocalization lvEntryLocalization,
-					Long lvEntryLocalizationId) {
-					lvEntryLocalization.setLvEntryLocalizationId(lvEntryLocalizationId);
-				}
-			});
-		attributeSetters.put("lvEntryId",
-			new BiConsumer<LVEntryLocalization, Long>() {
-				@Override
-				public void accept(LVEntryLocalization lvEntryLocalization,
-					Long lvEntryId) {
-					lvEntryLocalization.setLvEntryId(lvEntryId);
-				}
-			});
-		attributeSetters.put("languageId",
-			new BiConsumer<LVEntryLocalization, String>() {
-				@Override
-				public void accept(LVEntryLocalization lvEntryLocalization,
-					String languageId) {
-					lvEntryLocalization.setLanguageId(languageId);
-				}
-			});
-		attributeSetters.put("title",
-			new BiConsumer<LVEntryLocalization, String>() {
-				@Override
-				public void accept(LVEntryLocalization lvEntryLocalization,
-					String title) {
-					lvEntryLocalization.setTitle(title);
-				}
-			});
-		attributeSetters.put("content",
-			new BiConsumer<LVEntryLocalization, String>() {
-				@Override
-				public void accept(LVEntryLocalization lvEntryLocalization,
-					String content) {
-					lvEntryLocalization.setContent(content);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

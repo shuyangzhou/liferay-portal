@@ -179,205 +179,49 @@ public class AssetEntryUsageModelImpl extends BaseModelImpl<AssetEntryUsage>
 
 	static {
 		Map<String, Function<AssetEntryUsage, Object>> attributeGetters = new LinkedHashMap<String, Function<AssetEntryUsage, Object>>();
+		Map<String, BiConsumer<AssetEntryUsage, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetEntryUsage, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<AssetEntryUsage, Object>() {
-				@Override
-				public Object apply(AssetEntryUsage assetEntryUsage) {
-					return assetEntryUsage.getUuid();
-				}
-			});
-		attributeGetters.put("assetEntryUsageId",
-			new Function<AssetEntryUsage, Object>() {
-				@Override
-				public Object apply(AssetEntryUsage assetEntryUsage) {
-					return assetEntryUsage.getAssetEntryUsageId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<AssetEntryUsage, Object>() {
-				@Override
-				public Object apply(AssetEntryUsage assetEntryUsage) {
-					return assetEntryUsage.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<AssetEntryUsage, Object>() {
-				@Override
-				public Object apply(AssetEntryUsage assetEntryUsage) {
-					return assetEntryUsage.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<AssetEntryUsage, Object>() {
-				@Override
-				public Object apply(AssetEntryUsage assetEntryUsage) {
-					return assetEntryUsage.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<AssetEntryUsage, Object>() {
-				@Override
-				public Object apply(AssetEntryUsage assetEntryUsage) {
-					return assetEntryUsage.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<AssetEntryUsage, Object>() {
-				@Override
-				public Object apply(AssetEntryUsage assetEntryUsage) {
-					return assetEntryUsage.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<AssetEntryUsage, Object>() {
-				@Override
-				public Object apply(AssetEntryUsage assetEntryUsage) {
-					return assetEntryUsage.getModifiedDate();
-				}
-			});
-		attributeGetters.put("assetEntryId",
-			new Function<AssetEntryUsage, Object>() {
-				@Override
-				public Object apply(AssetEntryUsage assetEntryUsage) {
-					return assetEntryUsage.getAssetEntryId();
-				}
-			});
-		attributeGetters.put("classNameId",
-			new Function<AssetEntryUsage, Object>() {
-				@Override
-				public Object apply(AssetEntryUsage assetEntryUsage) {
-					return assetEntryUsage.getClassNameId();
-				}
-			});
-		attributeGetters.put("classPK",
-			new Function<AssetEntryUsage, Object>() {
-				@Override
-				public Object apply(AssetEntryUsage assetEntryUsage) {
-					return assetEntryUsage.getClassPK();
-				}
-			});
-		attributeGetters.put("portletId",
-			new Function<AssetEntryUsage, Object>() {
-				@Override
-				public Object apply(AssetEntryUsage assetEntryUsage) {
-					return assetEntryUsage.getPortletId();
-				}
-			});
-		attributeGetters.put("lastPublishDate",
-			new Function<AssetEntryUsage, Object>() {
-				@Override
-				public Object apply(AssetEntryUsage assetEntryUsage) {
-					return assetEntryUsage.getLastPublishDate();
-				}
-			});
+		attributeGetters.put("uuid", AssetEntryUsage::getUuid);
+		attributeSetters.put("uuid", AssetEntryUsage::setUuid);
+
+		attributeGetters.put("assetEntryUsageId", AssetEntryUsage::getAssetEntryUsageId);
+		attributeSetters.put("assetEntryUsageId", AssetEntryUsage::setAssetEntryUsageId);
+
+		attributeGetters.put("groupId", AssetEntryUsage::getGroupId);
+		attributeSetters.put("groupId", AssetEntryUsage::setGroupId);
+
+		attributeGetters.put("companyId", AssetEntryUsage::getCompanyId);
+		attributeSetters.put("companyId", AssetEntryUsage::setCompanyId);
+
+		attributeGetters.put("userId", AssetEntryUsage::getUserId);
+		attributeSetters.put("userId", AssetEntryUsage::setUserId);
+
+		attributeGetters.put("userName", AssetEntryUsage::getUserName);
+		attributeSetters.put("userName", AssetEntryUsage::setUserName);
+
+		attributeGetters.put("createDate", AssetEntryUsage::getCreateDate);
+		attributeSetters.put("createDate", AssetEntryUsage::setCreateDate);
+
+		attributeGetters.put("modifiedDate", AssetEntryUsage::getModifiedDate);
+		attributeSetters.put("modifiedDate", AssetEntryUsage::setModifiedDate);
+
+		attributeGetters.put("assetEntryId", AssetEntryUsage::getAssetEntryId);
+		attributeSetters.put("assetEntryId", AssetEntryUsage::setAssetEntryId);
+
+		attributeGetters.put("classNameId", AssetEntryUsage::getClassNameId);
+		attributeSetters.put("classNameId", AssetEntryUsage::setClassNameId);
+
+		attributeGetters.put("classPK", AssetEntryUsage::getClassPK);
+		attributeSetters.put("classPK", AssetEntryUsage::setClassPK);
+
+		attributeGetters.put("portletId", AssetEntryUsage::getPortletId);
+		attributeSetters.put("portletId", AssetEntryUsage::setPortletId);
+
+		attributeGetters.put("lastPublishDate", AssetEntryUsage::getLastPublishDate);
+		attributeSetters.put("lastPublishDate", AssetEntryUsage::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<AssetEntryUsage, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetEntryUsage, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<AssetEntryUsage, String>() {
-				@Override
-				public void accept(AssetEntryUsage assetEntryUsage, String uuid) {
-					assetEntryUsage.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("assetEntryUsageId",
-			new BiConsumer<AssetEntryUsage, Long>() {
-				@Override
-				public void accept(AssetEntryUsage assetEntryUsage,
-					Long assetEntryUsageId) {
-					assetEntryUsage.setAssetEntryUsageId(assetEntryUsageId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<AssetEntryUsage, Long>() {
-				@Override
-				public void accept(AssetEntryUsage assetEntryUsage, Long groupId) {
-					assetEntryUsage.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<AssetEntryUsage, Long>() {
-				@Override
-				public void accept(AssetEntryUsage assetEntryUsage,
-					Long companyId) {
-					assetEntryUsage.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<AssetEntryUsage, Long>() {
-				@Override
-				public void accept(AssetEntryUsage assetEntryUsage, Long userId) {
-					assetEntryUsage.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<AssetEntryUsage, String>() {
-				@Override
-				public void accept(AssetEntryUsage assetEntryUsage,
-					String userName) {
-					assetEntryUsage.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<AssetEntryUsage, Date>() {
-				@Override
-				public void accept(AssetEntryUsage assetEntryUsage,
-					Date createDate) {
-					assetEntryUsage.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<AssetEntryUsage, Date>() {
-				@Override
-				public void accept(AssetEntryUsage assetEntryUsage,
-					Date modifiedDate) {
-					assetEntryUsage.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("assetEntryId",
-			new BiConsumer<AssetEntryUsage, Long>() {
-				@Override
-				public void accept(AssetEntryUsage assetEntryUsage,
-					Long assetEntryId) {
-					assetEntryUsage.setAssetEntryId(assetEntryId);
-				}
-			});
-		attributeSetters.put("classNameId",
-			new BiConsumer<AssetEntryUsage, Long>() {
-				@Override
-				public void accept(AssetEntryUsage assetEntryUsage,
-					Long classNameId) {
-					assetEntryUsage.setClassNameId(classNameId);
-				}
-			});
-		attributeSetters.put("classPK",
-			new BiConsumer<AssetEntryUsage, Long>() {
-				@Override
-				public void accept(AssetEntryUsage assetEntryUsage, Long classPK) {
-					assetEntryUsage.setClassPK(classPK);
-				}
-			});
-		attributeSetters.put("portletId",
-			new BiConsumer<AssetEntryUsage, String>() {
-				@Override
-				public void accept(AssetEntryUsage assetEntryUsage,
-					String portletId) {
-					assetEntryUsage.setPortletId(portletId);
-				}
-			});
-		attributeSetters.put("lastPublishDate",
-			new BiConsumer<AssetEntryUsage, Date>() {
-				@Override
-				public void accept(AssetEntryUsage assetEntryUsage,
-					Date lastPublishDate) {
-					assetEntryUsage.setLastPublishDate(lastPublishDate);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

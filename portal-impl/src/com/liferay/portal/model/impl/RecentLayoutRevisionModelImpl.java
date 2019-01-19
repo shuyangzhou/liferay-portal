@@ -161,134 +161,34 @@ public class RecentLayoutRevisionModelImpl extends BaseModelImpl<RecentLayoutRev
 
 	static {
 		Map<String, Function<RecentLayoutRevision, Object>> attributeGetters = new LinkedHashMap<String, Function<RecentLayoutRevision, Object>>();
+		Map<String, BiConsumer<RecentLayoutRevision, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<RecentLayoutRevision, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<RecentLayoutRevision, Object>() {
-				@Override
-				public Object apply(RecentLayoutRevision recentLayoutRevision) {
-					return recentLayoutRevision.getMvccVersion();
-				}
-			});
-		attributeGetters.put("recentLayoutRevisionId",
-			new Function<RecentLayoutRevision, Object>() {
-				@Override
-				public Object apply(RecentLayoutRevision recentLayoutRevision) {
-					return recentLayoutRevision.getRecentLayoutRevisionId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<RecentLayoutRevision, Object>() {
-				@Override
-				public Object apply(RecentLayoutRevision recentLayoutRevision) {
-					return recentLayoutRevision.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<RecentLayoutRevision, Object>() {
-				@Override
-				public Object apply(RecentLayoutRevision recentLayoutRevision) {
-					return recentLayoutRevision.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<RecentLayoutRevision, Object>() {
-				@Override
-				public Object apply(RecentLayoutRevision recentLayoutRevision) {
-					return recentLayoutRevision.getUserId();
-				}
-			});
-		attributeGetters.put("layoutRevisionId",
-			new Function<RecentLayoutRevision, Object>() {
-				@Override
-				public Object apply(RecentLayoutRevision recentLayoutRevision) {
-					return recentLayoutRevision.getLayoutRevisionId();
-				}
-			});
-		attributeGetters.put("layoutSetBranchId",
-			new Function<RecentLayoutRevision, Object>() {
-				@Override
-				public Object apply(RecentLayoutRevision recentLayoutRevision) {
-					return recentLayoutRevision.getLayoutSetBranchId();
-				}
-			});
-		attributeGetters.put("plid",
-			new Function<RecentLayoutRevision, Object>() {
-				@Override
-				public Object apply(RecentLayoutRevision recentLayoutRevision) {
-					return recentLayoutRevision.getPlid();
-				}
-			});
+		attributeGetters.put("mvccVersion", RecentLayoutRevision::getMvccVersion);
+		attributeSetters.put("mvccVersion", RecentLayoutRevision::setMvccVersion);
+
+		attributeGetters.put("recentLayoutRevisionId", RecentLayoutRevision::getRecentLayoutRevisionId);
+		attributeSetters.put("recentLayoutRevisionId", RecentLayoutRevision::setRecentLayoutRevisionId);
+
+		attributeGetters.put("groupId", RecentLayoutRevision::getGroupId);
+		attributeSetters.put("groupId", RecentLayoutRevision::setGroupId);
+
+		attributeGetters.put("companyId", RecentLayoutRevision::getCompanyId);
+		attributeSetters.put("companyId", RecentLayoutRevision::setCompanyId);
+
+		attributeGetters.put("userId", RecentLayoutRevision::getUserId);
+		attributeSetters.put("userId", RecentLayoutRevision::setUserId);
+
+		attributeGetters.put("layoutRevisionId", RecentLayoutRevision::getLayoutRevisionId);
+		attributeSetters.put("layoutRevisionId", RecentLayoutRevision::setLayoutRevisionId);
+
+		attributeGetters.put("layoutSetBranchId", RecentLayoutRevision::getLayoutSetBranchId);
+		attributeSetters.put("layoutSetBranchId", RecentLayoutRevision::setLayoutSetBranchId);
+
+		attributeGetters.put("plid", RecentLayoutRevision::getPlid);
+		attributeSetters.put("plid", RecentLayoutRevision::setPlid);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<RecentLayoutRevision, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<RecentLayoutRevision, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<RecentLayoutRevision, Long>() {
-				@Override
-				public void accept(RecentLayoutRevision recentLayoutRevision,
-					Long mvccVersion) {
-					recentLayoutRevision.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("recentLayoutRevisionId",
-			new BiConsumer<RecentLayoutRevision, Long>() {
-				@Override
-				public void accept(RecentLayoutRevision recentLayoutRevision,
-					Long recentLayoutRevisionId) {
-					recentLayoutRevision.setRecentLayoutRevisionId(recentLayoutRevisionId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<RecentLayoutRevision, Long>() {
-				@Override
-				public void accept(RecentLayoutRevision recentLayoutRevision,
-					Long groupId) {
-					recentLayoutRevision.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<RecentLayoutRevision, Long>() {
-				@Override
-				public void accept(RecentLayoutRevision recentLayoutRevision,
-					Long companyId) {
-					recentLayoutRevision.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<RecentLayoutRevision, Long>() {
-				@Override
-				public void accept(RecentLayoutRevision recentLayoutRevision,
-					Long userId) {
-					recentLayoutRevision.setUserId(userId);
-				}
-			});
-		attributeSetters.put("layoutRevisionId",
-			new BiConsumer<RecentLayoutRevision, Long>() {
-				@Override
-				public void accept(RecentLayoutRevision recentLayoutRevision,
-					Long layoutRevisionId) {
-					recentLayoutRevision.setLayoutRevisionId(layoutRevisionId);
-				}
-			});
-		attributeSetters.put("layoutSetBranchId",
-			new BiConsumer<RecentLayoutRevision, Long>() {
-				@Override
-				public void accept(RecentLayoutRevision recentLayoutRevision,
-					Long layoutSetBranchId) {
-					recentLayoutRevision.setLayoutSetBranchId(layoutSetBranchId);
-				}
-			});
-		attributeSetters.put("plid",
-			new BiConsumer<RecentLayoutRevision, Long>() {
-				@Override
-				public void accept(RecentLayoutRevision recentLayoutRevision,
-					Long plid) {
-					recentLayoutRevision.setPlid(plid);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

@@ -187,299 +187,62 @@ public class KaleoDefinitionVersionModelImpl extends BaseModelImpl<KaleoDefiniti
 
 	static {
 		Map<String, Function<KaleoDefinitionVersion, Object>> attributeGetters = new LinkedHashMap<String, Function<KaleoDefinitionVersion, Object>>();
+		Map<String, BiConsumer<KaleoDefinitionVersion, Object>> attributeSetters =
+			new LinkedHashMap<String, BiConsumer<KaleoDefinitionVersion, Object>>();
 
-		attributeGetters.put("kaleoDefinitionVersionId",
-			new Function<KaleoDefinitionVersion, Object>() {
-				@Override
-				public Object apply(
-					KaleoDefinitionVersion kaleoDefinitionVersion) {
-					return kaleoDefinitionVersion.getKaleoDefinitionVersionId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<KaleoDefinitionVersion, Object>() {
-				@Override
-				public Object apply(
-					KaleoDefinitionVersion kaleoDefinitionVersion) {
-					return kaleoDefinitionVersion.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<KaleoDefinitionVersion, Object>() {
-				@Override
-				public Object apply(
-					KaleoDefinitionVersion kaleoDefinitionVersion) {
-					return kaleoDefinitionVersion.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<KaleoDefinitionVersion, Object>() {
-				@Override
-				public Object apply(
-					KaleoDefinitionVersion kaleoDefinitionVersion) {
-					return kaleoDefinitionVersion.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<KaleoDefinitionVersion, Object>() {
-				@Override
-				public Object apply(
-					KaleoDefinitionVersion kaleoDefinitionVersion) {
-					return kaleoDefinitionVersion.getUserName();
-				}
-			});
-		attributeGetters.put("statusByUserId",
-			new Function<KaleoDefinitionVersion, Object>() {
-				@Override
-				public Object apply(
-					KaleoDefinitionVersion kaleoDefinitionVersion) {
-					return kaleoDefinitionVersion.getStatusByUserId();
-				}
-			});
-		attributeGetters.put("statusByUserName",
-			new Function<KaleoDefinitionVersion, Object>() {
-				@Override
-				public Object apply(
-					KaleoDefinitionVersion kaleoDefinitionVersion) {
-					return kaleoDefinitionVersion.getStatusByUserName();
-				}
-			});
-		attributeGetters.put("statusDate",
-			new Function<KaleoDefinitionVersion, Object>() {
-				@Override
-				public Object apply(
-					KaleoDefinitionVersion kaleoDefinitionVersion) {
-					return kaleoDefinitionVersion.getStatusDate();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<KaleoDefinitionVersion, Object>() {
-				@Override
-				public Object apply(
-					KaleoDefinitionVersion kaleoDefinitionVersion) {
-					return kaleoDefinitionVersion.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<KaleoDefinitionVersion, Object>() {
-				@Override
-				public Object apply(
-					KaleoDefinitionVersion kaleoDefinitionVersion) {
-					return kaleoDefinitionVersion.getModifiedDate();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<KaleoDefinitionVersion, Object>() {
-				@Override
-				public Object apply(
-					KaleoDefinitionVersion kaleoDefinitionVersion) {
-					return kaleoDefinitionVersion.getName();
-				}
-			});
-		attributeGetters.put("title",
-			new Function<KaleoDefinitionVersion, Object>() {
-				@Override
-				public Object apply(
-					KaleoDefinitionVersion kaleoDefinitionVersion) {
-					return kaleoDefinitionVersion.getTitle();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<KaleoDefinitionVersion, Object>() {
-				@Override
-				public Object apply(
-					KaleoDefinitionVersion kaleoDefinitionVersion) {
-					return kaleoDefinitionVersion.getDescription();
-				}
-			});
-		attributeGetters.put("content",
-			new Function<KaleoDefinitionVersion, Object>() {
-				@Override
-				public Object apply(
-					KaleoDefinitionVersion kaleoDefinitionVersion) {
-					return kaleoDefinitionVersion.getContent();
-				}
-			});
-		attributeGetters.put("version",
-			new Function<KaleoDefinitionVersion, Object>() {
-				@Override
-				public Object apply(
-					KaleoDefinitionVersion kaleoDefinitionVersion) {
-					return kaleoDefinitionVersion.getVersion();
-				}
-			});
-		attributeGetters.put("startKaleoNodeId",
-			new Function<KaleoDefinitionVersion, Object>() {
-				@Override
-				public Object apply(
-					KaleoDefinitionVersion kaleoDefinitionVersion) {
-					return kaleoDefinitionVersion.getStartKaleoNodeId();
-				}
-			});
-		attributeGetters.put("status",
-			new Function<KaleoDefinitionVersion, Object>() {
-				@Override
-				public Object apply(
-					KaleoDefinitionVersion kaleoDefinitionVersion) {
-					return kaleoDefinitionVersion.getStatus();
-				}
-			});
+		attributeGetters.put("kaleoDefinitionVersionId", KaleoDefinitionVersion::getKaleoDefinitionVersionId);
+		attributeSetters.put("kaleoDefinitionVersionId", KaleoDefinitionVersion::setKaleoDefinitionVersionId);
+
+		attributeGetters.put("groupId", KaleoDefinitionVersion::getGroupId);
+		attributeSetters.put("groupId", KaleoDefinitionVersion::setGroupId);
+
+		attributeGetters.put("companyId", KaleoDefinitionVersion::getCompanyId);
+		attributeSetters.put("companyId", KaleoDefinitionVersion::setCompanyId);
+
+		attributeGetters.put("userId", KaleoDefinitionVersion::getUserId);
+		attributeSetters.put("userId", KaleoDefinitionVersion::setUserId);
+
+		attributeGetters.put("userName", KaleoDefinitionVersion::getUserName);
+		attributeSetters.put("userName", KaleoDefinitionVersion::setUserName);
+
+		attributeGetters.put("statusByUserId", KaleoDefinitionVersion::getStatusByUserId);
+		attributeSetters.put("statusByUserId", KaleoDefinitionVersion::setStatusByUserId);
+
+		attributeGetters.put("statusByUserName", KaleoDefinitionVersion::getStatusByUserName);
+		attributeSetters.put("statusByUserName", KaleoDefinitionVersion::setStatusByUserName);
+
+		attributeGetters.put("statusDate", KaleoDefinitionVersion::getStatusDate);
+		attributeSetters.put("statusDate", KaleoDefinitionVersion::setStatusDate);
+
+		attributeGetters.put("createDate", KaleoDefinitionVersion::getCreateDate);
+		attributeSetters.put("createDate", KaleoDefinitionVersion::setCreateDate);
+
+		attributeGetters.put("modifiedDate", KaleoDefinitionVersion::getModifiedDate);
+		attributeSetters.put("modifiedDate", KaleoDefinitionVersion::setModifiedDate);
+
+		attributeGetters.put("name", KaleoDefinitionVersion::getName);
+		attributeSetters.put("name", KaleoDefinitionVersion::setName);
+
+		attributeGetters.put("title", KaleoDefinitionVersion::getTitle);
+		attributeSetters.put("title", KaleoDefinitionVersion::setTitle);
+
+		attributeGetters.put("description", KaleoDefinitionVersion::getDescription);
+		attributeSetters.put("description", KaleoDefinitionVersion::setDescription);
+
+		attributeGetters.put("content", KaleoDefinitionVersion::getContent);
+		attributeSetters.put("content", KaleoDefinitionVersion::setContent);
+
+		attributeGetters.put("version", KaleoDefinitionVersion::getVersion);
+		attributeSetters.put("version", KaleoDefinitionVersion::setVersion);
+
+		attributeGetters.put("startKaleoNodeId", KaleoDefinitionVersion::getStartKaleoNodeId);
+		attributeSetters.put("startKaleoNodeId", KaleoDefinitionVersion::setStartKaleoNodeId);
+
+		attributeGetters.put("status", KaleoDefinitionVersion::getStatus);
+		attributeSetters.put("status", KaleoDefinitionVersion::setStatus);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<KaleoDefinitionVersion, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<KaleoDefinitionVersion, ?>>();
-
-		attributeSetters.put("kaleoDefinitionVersionId",
-			new BiConsumer<KaleoDefinitionVersion, Long>() {
-				@Override
-				public void accept(
-					KaleoDefinitionVersion kaleoDefinitionVersion,
-					Long kaleoDefinitionVersionId) {
-					kaleoDefinitionVersion.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<KaleoDefinitionVersion, Long>() {
-				@Override
-				public void accept(
-					KaleoDefinitionVersion kaleoDefinitionVersion, Long groupId) {
-					kaleoDefinitionVersion.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<KaleoDefinitionVersion, Long>() {
-				@Override
-				public void accept(
-					KaleoDefinitionVersion kaleoDefinitionVersion,
-					Long companyId) {
-					kaleoDefinitionVersion.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<KaleoDefinitionVersion, Long>() {
-				@Override
-				public void accept(
-					KaleoDefinitionVersion kaleoDefinitionVersion, Long userId) {
-					kaleoDefinitionVersion.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<KaleoDefinitionVersion, String>() {
-				@Override
-				public void accept(
-					KaleoDefinitionVersion kaleoDefinitionVersion,
-					String userName) {
-					kaleoDefinitionVersion.setUserName(userName);
-				}
-			});
-		attributeSetters.put("statusByUserId",
-			new BiConsumer<KaleoDefinitionVersion, Long>() {
-				@Override
-				public void accept(
-					KaleoDefinitionVersion kaleoDefinitionVersion,
-					Long statusByUserId) {
-					kaleoDefinitionVersion.setStatusByUserId(statusByUserId);
-				}
-			});
-		attributeSetters.put("statusByUserName",
-			new BiConsumer<KaleoDefinitionVersion, String>() {
-				@Override
-				public void accept(
-					KaleoDefinitionVersion kaleoDefinitionVersion,
-					String statusByUserName) {
-					kaleoDefinitionVersion.setStatusByUserName(statusByUserName);
-				}
-			});
-		attributeSetters.put("statusDate",
-			new BiConsumer<KaleoDefinitionVersion, Date>() {
-				@Override
-				public void accept(
-					KaleoDefinitionVersion kaleoDefinitionVersion,
-					Date statusDate) {
-					kaleoDefinitionVersion.setStatusDate(statusDate);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<KaleoDefinitionVersion, Date>() {
-				@Override
-				public void accept(
-					KaleoDefinitionVersion kaleoDefinitionVersion,
-					Date createDate) {
-					kaleoDefinitionVersion.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<KaleoDefinitionVersion, Date>() {
-				@Override
-				public void accept(
-					KaleoDefinitionVersion kaleoDefinitionVersion,
-					Date modifiedDate) {
-					kaleoDefinitionVersion.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<KaleoDefinitionVersion, String>() {
-				@Override
-				public void accept(
-					KaleoDefinitionVersion kaleoDefinitionVersion, String name) {
-					kaleoDefinitionVersion.setName(name);
-				}
-			});
-		attributeSetters.put("title",
-			new BiConsumer<KaleoDefinitionVersion, String>() {
-				@Override
-				public void accept(
-					KaleoDefinitionVersion kaleoDefinitionVersion, String title) {
-					kaleoDefinitionVersion.setTitle(title);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<KaleoDefinitionVersion, String>() {
-				@Override
-				public void accept(
-					KaleoDefinitionVersion kaleoDefinitionVersion,
-					String description) {
-					kaleoDefinitionVersion.setDescription(description);
-				}
-			});
-		attributeSetters.put("content",
-			new BiConsumer<KaleoDefinitionVersion, String>() {
-				@Override
-				public void accept(
-					KaleoDefinitionVersion kaleoDefinitionVersion,
-					String content) {
-					kaleoDefinitionVersion.setContent(content);
-				}
-			});
-		attributeSetters.put("version",
-			new BiConsumer<KaleoDefinitionVersion, String>() {
-				@Override
-				public void accept(
-					KaleoDefinitionVersion kaleoDefinitionVersion,
-					String version) {
-					kaleoDefinitionVersion.setVersion(version);
-				}
-			});
-		attributeSetters.put("startKaleoNodeId",
-			new BiConsumer<KaleoDefinitionVersion, Long>() {
-				@Override
-				public void accept(
-					KaleoDefinitionVersion kaleoDefinitionVersion,
-					Long startKaleoNodeId) {
-					kaleoDefinitionVersion.setStartKaleoNodeId(startKaleoNodeId);
-				}
-			});
-		attributeSetters.put("status",
-			new BiConsumer<KaleoDefinitionVersion, Integer>() {
-				@Override
-				public void accept(
-					KaleoDefinitionVersion kaleoDefinitionVersion,
-					Integer status) {
-					kaleoDefinitionVersion.setStatus(status);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

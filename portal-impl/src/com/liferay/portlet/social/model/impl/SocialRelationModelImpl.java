@@ -157,114 +157,31 @@ public class SocialRelationModelImpl extends BaseModelImpl<SocialRelation>
 
 	static {
 		Map<String, Function<SocialRelation, Object>> attributeGetters = new LinkedHashMap<String, Function<SocialRelation, Object>>();
+		Map<String, BiConsumer<SocialRelation, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SocialRelation, Object>>();
 
-		attributeGetters.put("uuid",
-			new Function<SocialRelation, Object>() {
-				@Override
-				public Object apply(SocialRelation socialRelation) {
-					return socialRelation.getUuid();
-				}
-			});
-		attributeGetters.put("relationId",
-			new Function<SocialRelation, Object>() {
-				@Override
-				public Object apply(SocialRelation socialRelation) {
-					return socialRelation.getRelationId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<SocialRelation, Object>() {
-				@Override
-				public Object apply(SocialRelation socialRelation) {
-					return socialRelation.getCompanyId();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<SocialRelation, Object>() {
-				@Override
-				public Object apply(SocialRelation socialRelation) {
-					return socialRelation.getCreateDate();
-				}
-			});
-		attributeGetters.put("userId1",
-			new Function<SocialRelation, Object>() {
-				@Override
-				public Object apply(SocialRelation socialRelation) {
-					return socialRelation.getUserId1();
-				}
-			});
-		attributeGetters.put("userId2",
-			new Function<SocialRelation, Object>() {
-				@Override
-				public Object apply(SocialRelation socialRelation) {
-					return socialRelation.getUserId2();
-				}
-			});
-		attributeGetters.put("type",
-			new Function<SocialRelation, Object>() {
-				@Override
-				public Object apply(SocialRelation socialRelation) {
-					return socialRelation.getType();
-				}
-			});
+		attributeGetters.put("uuid", SocialRelation::getUuid);
+		attributeSetters.put("uuid", SocialRelation::setUuid);
+
+		attributeGetters.put("relationId", SocialRelation::getRelationId);
+		attributeSetters.put("relationId", SocialRelation::setRelationId);
+
+		attributeGetters.put("companyId", SocialRelation::getCompanyId);
+		attributeSetters.put("companyId", SocialRelation::setCompanyId);
+
+		attributeGetters.put("createDate", SocialRelation::getCreateDate);
+		attributeSetters.put("createDate", SocialRelation::setCreateDate);
+
+		attributeGetters.put("userId1", SocialRelation::getUserId1);
+		attributeSetters.put("userId1", SocialRelation::setUserId1);
+
+		attributeGetters.put("userId2", SocialRelation::getUserId2);
+		attributeSetters.put("userId2", SocialRelation::setUserId2);
+
+		attributeGetters.put("type", SocialRelation::getType);
+		attributeSetters.put("type", SocialRelation::setType);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<SocialRelation, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<SocialRelation, ?>>();
-
-		attributeSetters.put("uuid",
-			new BiConsumer<SocialRelation, String>() {
-				@Override
-				public void accept(SocialRelation socialRelation, String uuid) {
-					socialRelation.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("relationId",
-			new BiConsumer<SocialRelation, Long>() {
-				@Override
-				public void accept(SocialRelation socialRelation,
-					Long relationId) {
-					socialRelation.setRelationId(relationId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<SocialRelation, Long>() {
-				@Override
-				public void accept(SocialRelation socialRelation, Long companyId) {
-					socialRelation.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<SocialRelation, Long>() {
-				@Override
-				public void accept(SocialRelation socialRelation,
-					Long createDate) {
-					socialRelation.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("userId1",
-			new BiConsumer<SocialRelation, Long>() {
-				@Override
-				public void accept(SocialRelation socialRelation, Long userId1) {
-					socialRelation.setUserId1(userId1);
-				}
-			});
-		attributeSetters.put("userId2",
-			new BiConsumer<SocialRelation, Long>() {
-				@Override
-				public void accept(SocialRelation socialRelation, Long userId2) {
-					socialRelation.setUserId2(userId2);
-				}
-			});
-		attributeSetters.put("type",
-			new BiConsumer<SocialRelation, Integer>() {
-				@Override
-				public void accept(SocialRelation socialRelation, Integer type) {
-					socialRelation.setType(type);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

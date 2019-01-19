@@ -258,198 +258,49 @@ public class UserGroupModelImpl extends BaseModelImpl<UserGroup>
 
 	static {
 		Map<String, Function<UserGroup, Object>> attributeGetters = new LinkedHashMap<String, Function<UserGroup, Object>>();
+		Map<String, BiConsumer<UserGroup, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<UserGroup, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<UserGroup, Object>() {
-				@Override
-				public Object apply(UserGroup userGroup) {
-					return userGroup.getMvccVersion();
-				}
-			});
-		attributeGetters.put("uuid",
-			new Function<UserGroup, Object>() {
-				@Override
-				public Object apply(UserGroup userGroup) {
-					return userGroup.getUuid();
-				}
-			});
-		attributeGetters.put("externalReferenceCode",
-			new Function<UserGroup, Object>() {
-				@Override
-				public Object apply(UserGroup userGroup) {
-					return userGroup.getExternalReferenceCode();
-				}
-			});
-		attributeGetters.put("userGroupId",
-			new Function<UserGroup, Object>() {
-				@Override
-				public Object apply(UserGroup userGroup) {
-					return userGroup.getUserGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<UserGroup, Object>() {
-				@Override
-				public Object apply(UserGroup userGroup) {
-					return userGroup.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<UserGroup, Object>() {
-				@Override
-				public Object apply(UserGroup userGroup) {
-					return userGroup.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<UserGroup, Object>() {
-				@Override
-				public Object apply(UserGroup userGroup) {
-					return userGroup.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<UserGroup, Object>() {
-				@Override
-				public Object apply(UserGroup userGroup) {
-					return userGroup.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<UserGroup, Object>() {
-				@Override
-				public Object apply(UserGroup userGroup) {
-					return userGroup.getModifiedDate();
-				}
-			});
-		attributeGetters.put("parentUserGroupId",
-			new Function<UserGroup, Object>() {
-				@Override
-				public Object apply(UserGroup userGroup) {
-					return userGroup.getParentUserGroupId();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<UserGroup, Object>() {
-				@Override
-				public Object apply(UserGroup userGroup) {
-					return userGroup.getName();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<UserGroup, Object>() {
-				@Override
-				public Object apply(UserGroup userGroup) {
-					return userGroup.getDescription();
-				}
-			});
-		attributeGetters.put("addedByLDAPImport",
-			new Function<UserGroup, Object>() {
-				@Override
-				public Object apply(UserGroup userGroup) {
-					return userGroup.isAddedByLDAPImport();
-				}
-			});
+		attributeGetters.put("mvccVersion", UserGroup::getMvccVersion);
+		attributeSetters.put("mvccVersion", UserGroup::setMvccVersion);
+
+		attributeGetters.put("uuid", UserGroup::getUuid);
+		attributeSetters.put("uuid", UserGroup::setUuid);
+
+		attributeGetters.put("externalReferenceCode", UserGroup::getExternalReferenceCode);
+		attributeSetters.put("externalReferenceCode", UserGroup::setExternalReferenceCode);
+
+		attributeGetters.put("userGroupId", UserGroup::getUserGroupId);
+		attributeSetters.put("userGroupId", UserGroup::setUserGroupId);
+
+		attributeGetters.put("companyId", UserGroup::getCompanyId);
+		attributeSetters.put("companyId", UserGroup::setCompanyId);
+
+		attributeGetters.put("userId", UserGroup::getUserId);
+		attributeSetters.put("userId", UserGroup::setUserId);
+
+		attributeGetters.put("userName", UserGroup::getUserName);
+		attributeSetters.put("userName", UserGroup::setUserName);
+
+		attributeGetters.put("createDate", UserGroup::getCreateDate);
+		attributeSetters.put("createDate", UserGroup::setCreateDate);
+
+		attributeGetters.put("modifiedDate", UserGroup::getModifiedDate);
+		attributeSetters.put("modifiedDate", UserGroup::setModifiedDate);
+
+		attributeGetters.put("parentUserGroupId", UserGroup::getParentUserGroupId);
+		attributeSetters.put("parentUserGroupId", UserGroup::setParentUserGroupId);
+
+		attributeGetters.put("name", UserGroup::getName);
+		attributeSetters.put("name", UserGroup::setName);
+
+		attributeGetters.put("description", UserGroup::getDescription);
+		attributeSetters.put("description", UserGroup::setDescription);
+
+		attributeGetters.put("addedByLDAPImport", UserGroup::getAddedByLDAPImport);
+		attributeSetters.put("addedByLDAPImport", UserGroup::setAddedByLDAPImport);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<UserGroup, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<UserGroup, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<UserGroup, Long>() {
-				@Override
-				public void accept(UserGroup userGroup, Long mvccVersion) {
-					userGroup.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("uuid",
-			new BiConsumer<UserGroup, String>() {
-				@Override
-				public void accept(UserGroup userGroup, String uuid) {
-					userGroup.setUuid(uuid);
-				}
-			});
-		attributeSetters.put("externalReferenceCode",
-			new BiConsumer<UserGroup, String>() {
-				@Override
-				public void accept(UserGroup userGroup,
-					String externalReferenceCode) {
-					userGroup.setExternalReferenceCode(externalReferenceCode);
-				}
-			});
-		attributeSetters.put("userGroupId",
-			new BiConsumer<UserGroup, Long>() {
-				@Override
-				public void accept(UserGroup userGroup, Long userGroupId) {
-					userGroup.setUserGroupId(userGroupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<UserGroup, Long>() {
-				@Override
-				public void accept(UserGroup userGroup, Long companyId) {
-					userGroup.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<UserGroup, Long>() {
-				@Override
-				public void accept(UserGroup userGroup, Long userId) {
-					userGroup.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<UserGroup, String>() {
-				@Override
-				public void accept(UserGroup userGroup, String userName) {
-					userGroup.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<UserGroup, Date>() {
-				@Override
-				public void accept(UserGroup userGroup, Date createDate) {
-					userGroup.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<UserGroup, Date>() {
-				@Override
-				public void accept(UserGroup userGroup, Date modifiedDate) {
-					userGroup.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("parentUserGroupId",
-			new BiConsumer<UserGroup, Long>() {
-				@Override
-				public void accept(UserGroup userGroup, Long parentUserGroupId) {
-					userGroup.setParentUserGroupId(parentUserGroupId);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<UserGroup, String>() {
-				@Override
-				public void accept(UserGroup userGroup, String name) {
-					userGroup.setName(name);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<UserGroup, String>() {
-				@Override
-				public void accept(UserGroup userGroup, String description) {
-					userGroup.setDescription(description);
-				}
-			});
-		attributeSetters.put("addedByLDAPImport",
-			new BiConsumer<UserGroup, Boolean>() {
-				@Override
-				public void accept(UserGroup userGroup,
-					Boolean addedByLDAPImport) {
-					userGroup.setAddedByLDAPImport(addedByLDAPImport);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@JSON

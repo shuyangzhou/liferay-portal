@@ -164,149 +164,37 @@ public class ChangesetCollectionModelImpl extends BaseModelImpl<ChangesetCollect
 
 	static {
 		Map<String, Function<ChangesetCollection, Object>> attributeGetters = new LinkedHashMap<String, Function<ChangesetCollection, Object>>();
+		Map<String, BiConsumer<ChangesetCollection, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<ChangesetCollection, Object>>();
 
-		attributeGetters.put("changesetCollectionId",
-			new Function<ChangesetCollection, Object>() {
-				@Override
-				public Object apply(ChangesetCollection changesetCollection) {
-					return changesetCollection.getChangesetCollectionId();
-				}
-			});
-		attributeGetters.put("groupId",
-			new Function<ChangesetCollection, Object>() {
-				@Override
-				public Object apply(ChangesetCollection changesetCollection) {
-					return changesetCollection.getGroupId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<ChangesetCollection, Object>() {
-				@Override
-				public Object apply(ChangesetCollection changesetCollection) {
-					return changesetCollection.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<ChangesetCollection, Object>() {
-				@Override
-				public Object apply(ChangesetCollection changesetCollection) {
-					return changesetCollection.getUserId();
-				}
-			});
-		attributeGetters.put("userName",
-			new Function<ChangesetCollection, Object>() {
-				@Override
-				public Object apply(ChangesetCollection changesetCollection) {
-					return changesetCollection.getUserName();
-				}
-			});
-		attributeGetters.put("createDate",
-			new Function<ChangesetCollection, Object>() {
-				@Override
-				public Object apply(ChangesetCollection changesetCollection) {
-					return changesetCollection.getCreateDate();
-				}
-			});
-		attributeGetters.put("modifiedDate",
-			new Function<ChangesetCollection, Object>() {
-				@Override
-				public Object apply(ChangesetCollection changesetCollection) {
-					return changesetCollection.getModifiedDate();
-				}
-			});
-		attributeGetters.put("name",
-			new Function<ChangesetCollection, Object>() {
-				@Override
-				public Object apply(ChangesetCollection changesetCollection) {
-					return changesetCollection.getName();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<ChangesetCollection, Object>() {
-				@Override
-				public Object apply(ChangesetCollection changesetCollection) {
-					return changesetCollection.getDescription();
-				}
-			});
+		attributeGetters.put("changesetCollectionId", ChangesetCollection::getChangesetCollectionId);
+		attributeSetters.put("changesetCollectionId", ChangesetCollection::setChangesetCollectionId);
+
+		attributeGetters.put("groupId", ChangesetCollection::getGroupId);
+		attributeSetters.put("groupId", ChangesetCollection::setGroupId);
+
+		attributeGetters.put("companyId", ChangesetCollection::getCompanyId);
+		attributeSetters.put("companyId", ChangesetCollection::setCompanyId);
+
+		attributeGetters.put("userId", ChangesetCollection::getUserId);
+		attributeSetters.put("userId", ChangesetCollection::setUserId);
+
+		attributeGetters.put("userName", ChangesetCollection::getUserName);
+		attributeSetters.put("userName", ChangesetCollection::setUserName);
+
+		attributeGetters.put("createDate", ChangesetCollection::getCreateDate);
+		attributeSetters.put("createDate", ChangesetCollection::setCreateDate);
+
+		attributeGetters.put("modifiedDate", ChangesetCollection::getModifiedDate);
+		attributeSetters.put("modifiedDate", ChangesetCollection::setModifiedDate);
+
+		attributeGetters.put("name", ChangesetCollection::getName);
+		attributeSetters.put("name", ChangesetCollection::setName);
+
+		attributeGetters.put("description", ChangesetCollection::getDescription);
+		attributeSetters.put("description", ChangesetCollection::setDescription);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<ChangesetCollection, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<ChangesetCollection, ?>>();
-
-		attributeSetters.put("changesetCollectionId",
-			new BiConsumer<ChangesetCollection, Long>() {
-				@Override
-				public void accept(ChangesetCollection changesetCollection,
-					Long changesetCollectionId) {
-					changesetCollection.setChangesetCollectionId(changesetCollectionId);
-				}
-			});
-		attributeSetters.put("groupId",
-			new BiConsumer<ChangesetCollection, Long>() {
-				@Override
-				public void accept(ChangesetCollection changesetCollection,
-					Long groupId) {
-					changesetCollection.setGroupId(groupId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<ChangesetCollection, Long>() {
-				@Override
-				public void accept(ChangesetCollection changesetCollection,
-					Long companyId) {
-					changesetCollection.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<ChangesetCollection, Long>() {
-				@Override
-				public void accept(ChangesetCollection changesetCollection,
-					Long userId) {
-					changesetCollection.setUserId(userId);
-				}
-			});
-		attributeSetters.put("userName",
-			new BiConsumer<ChangesetCollection, String>() {
-				@Override
-				public void accept(ChangesetCollection changesetCollection,
-					String userName) {
-					changesetCollection.setUserName(userName);
-				}
-			});
-		attributeSetters.put("createDate",
-			new BiConsumer<ChangesetCollection, Date>() {
-				@Override
-				public void accept(ChangesetCollection changesetCollection,
-					Date createDate) {
-					changesetCollection.setCreateDate(createDate);
-				}
-			});
-		attributeSetters.put("modifiedDate",
-			new BiConsumer<ChangesetCollection, Date>() {
-				@Override
-				public void accept(ChangesetCollection changesetCollection,
-					Date modifiedDate) {
-					changesetCollection.setModifiedDate(modifiedDate);
-				}
-			});
-		attributeSetters.put("name",
-			new BiConsumer<ChangesetCollection, String>() {
-				@Override
-				public void accept(ChangesetCollection changesetCollection,
-					String name) {
-					changesetCollection.setName(name);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<ChangesetCollection, String>() {
-				@Override
-				public void accept(ChangesetCollection changesetCollection,
-					String description) {
-					changesetCollection.setDescription(description);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override

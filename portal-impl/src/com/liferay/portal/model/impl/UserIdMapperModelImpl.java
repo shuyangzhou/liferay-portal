@@ -157,114 +157,31 @@ public class UserIdMapperModelImpl extends BaseModelImpl<UserIdMapper>
 
 	static {
 		Map<String, Function<UserIdMapper, Object>> attributeGetters = new LinkedHashMap<String, Function<UserIdMapper, Object>>();
+		Map<String, BiConsumer<UserIdMapper, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<UserIdMapper, Object>>();
 
-		attributeGetters.put("mvccVersion",
-			new Function<UserIdMapper, Object>() {
-				@Override
-				public Object apply(UserIdMapper userIdMapper) {
-					return userIdMapper.getMvccVersion();
-				}
-			});
-		attributeGetters.put("userIdMapperId",
-			new Function<UserIdMapper, Object>() {
-				@Override
-				public Object apply(UserIdMapper userIdMapper) {
-					return userIdMapper.getUserIdMapperId();
-				}
-			});
-		attributeGetters.put("companyId",
-			new Function<UserIdMapper, Object>() {
-				@Override
-				public Object apply(UserIdMapper userIdMapper) {
-					return userIdMapper.getCompanyId();
-				}
-			});
-		attributeGetters.put("userId",
-			new Function<UserIdMapper, Object>() {
-				@Override
-				public Object apply(UserIdMapper userIdMapper) {
-					return userIdMapper.getUserId();
-				}
-			});
-		attributeGetters.put("type",
-			new Function<UserIdMapper, Object>() {
-				@Override
-				public Object apply(UserIdMapper userIdMapper) {
-					return userIdMapper.getType();
-				}
-			});
-		attributeGetters.put("description",
-			new Function<UserIdMapper, Object>() {
-				@Override
-				public Object apply(UserIdMapper userIdMapper) {
-					return userIdMapper.getDescription();
-				}
-			});
-		attributeGetters.put("externalUserId",
-			new Function<UserIdMapper, Object>() {
-				@Override
-				public Object apply(UserIdMapper userIdMapper) {
-					return userIdMapper.getExternalUserId();
-				}
-			});
+		attributeGetters.put("mvccVersion", UserIdMapper::getMvccVersion);
+		attributeSetters.put("mvccVersion", UserIdMapper::setMvccVersion);
+
+		attributeGetters.put("userIdMapperId", UserIdMapper::getUserIdMapperId);
+		attributeSetters.put("userIdMapperId", UserIdMapper::setUserIdMapperId);
+
+		attributeGetters.put("companyId", UserIdMapper::getCompanyId);
+		attributeSetters.put("companyId", UserIdMapper::setCompanyId);
+
+		attributeGetters.put("userId", UserIdMapper::getUserId);
+		attributeSetters.put("userId", UserIdMapper::setUserId);
+
+		attributeGetters.put("type", UserIdMapper::getType);
+		attributeSetters.put("type", UserIdMapper::setType);
+
+		attributeGetters.put("description", UserIdMapper::getDescription);
+		attributeSetters.put("description", UserIdMapper::setDescription);
+
+		attributeGetters.put("externalUserId", UserIdMapper::getExternalUserId);
+		attributeSetters.put("externalUserId", UserIdMapper::setExternalUserId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-
-		Map<String, BiConsumer<UserIdMapper, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<UserIdMapper, ?>>();
-
-		attributeSetters.put("mvccVersion",
-			new BiConsumer<UserIdMapper, Long>() {
-				@Override
-				public void accept(UserIdMapper userIdMapper, Long mvccVersion) {
-					userIdMapper.setMvccVersion(mvccVersion);
-				}
-			});
-		attributeSetters.put("userIdMapperId",
-			new BiConsumer<UserIdMapper, Long>() {
-				@Override
-				public void accept(UserIdMapper userIdMapper,
-					Long userIdMapperId) {
-					userIdMapper.setUserIdMapperId(userIdMapperId);
-				}
-			});
-		attributeSetters.put("companyId",
-			new BiConsumer<UserIdMapper, Long>() {
-				@Override
-				public void accept(UserIdMapper userIdMapper, Long companyId) {
-					userIdMapper.setCompanyId(companyId);
-				}
-			});
-		attributeSetters.put("userId",
-			new BiConsumer<UserIdMapper, Long>() {
-				@Override
-				public void accept(UserIdMapper userIdMapper, Long userId) {
-					userIdMapper.setUserId(userId);
-				}
-			});
-		attributeSetters.put("type",
-			new BiConsumer<UserIdMapper, String>() {
-				@Override
-				public void accept(UserIdMapper userIdMapper, String type) {
-					userIdMapper.setType(type);
-				}
-			});
-		attributeSetters.put("description",
-			new BiConsumer<UserIdMapper, String>() {
-				@Override
-				public void accept(UserIdMapper userIdMapper, String description) {
-					userIdMapper.setDescription(description);
-				}
-			});
-		attributeSetters.put("externalUserId",
-			new BiConsumer<UserIdMapper, String>() {
-				@Override
-				public void accept(UserIdMapper userIdMapper,
-					String externalUserId) {
-					userIdMapper.setExternalUserId(externalUserId);
-				}
-			});
-
-		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
 	}
 
 	@Override
