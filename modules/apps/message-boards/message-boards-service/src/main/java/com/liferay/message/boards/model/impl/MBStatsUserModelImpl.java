@@ -156,28 +156,23 @@ public class MBStatsUserModelImpl extends BaseModelImpl<MBStatsUser>
 
 	static {
 		Map<String, Function<MBStatsUser, Object>> attributeGetters = new LinkedHashMap<String, Function<MBStatsUser, Object>>();
-		Map<String, BiConsumer<MBStatsUser, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<MBStatsUser, Object>>();
+		Map<String, BiConsumer<MBStatsUser, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<MBStatsUser, ?>>();
 
 		attributeGetters.put("statsUserId", MBStatsUser::getStatsUserId);
-		attributeSetters.put("statsUserId", MBStatsUser::setStatsUserId);
-
+		attributeSetters.put("statsUserId", (BiConsumer<MBStatsUser, Long>)MBStatsUser::setStatsUserId);
 		attributeGetters.put("groupId", MBStatsUser::getGroupId);
-		attributeSetters.put("groupId", MBStatsUser::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<MBStatsUser, Long>)MBStatsUser::setGroupId);
 		attributeGetters.put("companyId", MBStatsUser::getCompanyId);
-		attributeSetters.put("companyId", MBStatsUser::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<MBStatsUser, Long>)MBStatsUser::setCompanyId);
 		attributeGetters.put("userId", MBStatsUser::getUserId);
-		attributeSetters.put("userId", MBStatsUser::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<MBStatsUser, Long>)MBStatsUser::setUserId);
 		attributeGetters.put("messageCount", MBStatsUser::getMessageCount);
-		attributeSetters.put("messageCount", MBStatsUser::setMessageCount);
-
+		attributeSetters.put("messageCount", (BiConsumer<MBStatsUser, Integer>)MBStatsUser::setMessageCount);
 		attributeGetters.put("lastPostDate", MBStatsUser::getLastPostDate);
-		attributeSetters.put("lastPostDate", MBStatsUser::setLastPostDate);
+		attributeSetters.put("lastPostDate", (BiConsumer<MBStatsUser, Date>)MBStatsUser::setLastPostDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

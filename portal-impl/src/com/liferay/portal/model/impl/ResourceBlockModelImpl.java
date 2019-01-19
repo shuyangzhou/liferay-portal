@@ -207,31 +207,25 @@ public class ResourceBlockModelImpl extends BaseModelImpl<ResourceBlock>
 
 	static {
 		Map<String, Function<ResourceBlock, Object>> attributeGetters = new LinkedHashMap<String, Function<ResourceBlock, Object>>();
-		Map<String, BiConsumer<ResourceBlock, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<ResourceBlock, Object>>();
+		Map<String, BiConsumer<ResourceBlock, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<ResourceBlock, ?>>();
 
 		attributeGetters.put("mvccVersion", ResourceBlock::getMvccVersion);
-		attributeSetters.put("mvccVersion", ResourceBlock::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<ResourceBlock, Long>)ResourceBlock::setMvccVersion);
 		attributeGetters.put("resourceBlockId", ResourceBlock::getResourceBlockId);
-		attributeSetters.put("resourceBlockId", ResourceBlock::setResourceBlockId);
-
+		attributeSetters.put("resourceBlockId", (BiConsumer<ResourceBlock, Long>)ResourceBlock::setResourceBlockId);
 		attributeGetters.put("companyId", ResourceBlock::getCompanyId);
-		attributeSetters.put("companyId", ResourceBlock::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<ResourceBlock, Long>)ResourceBlock::setCompanyId);
 		attributeGetters.put("groupId", ResourceBlock::getGroupId);
-		attributeSetters.put("groupId", ResourceBlock::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<ResourceBlock, Long>)ResourceBlock::setGroupId);
 		attributeGetters.put("name", ResourceBlock::getName);
-		attributeSetters.put("name", ResourceBlock::setName);
-
+		attributeSetters.put("name", (BiConsumer<ResourceBlock, String>)ResourceBlock::setName);
 		attributeGetters.put("permissionsHash", ResourceBlock::getPermissionsHash);
-		attributeSetters.put("permissionsHash", ResourceBlock::setPermissionsHash);
-
+		attributeSetters.put("permissionsHash", (BiConsumer<ResourceBlock, String>)ResourceBlock::setPermissionsHash);
 		attributeGetters.put("referenceCount", ResourceBlock::getReferenceCount);
-		attributeSetters.put("referenceCount", ResourceBlock::setReferenceCount);
+		attributeSetters.put("referenceCount", (BiConsumer<ResourceBlock, Long>)ResourceBlock::setReferenceCount);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

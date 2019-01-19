@@ -288,97 +288,69 @@ public class BlogsEntryModelImpl extends BaseModelImpl<BlogsEntry>
 
 	static {
 		Map<String, Function<BlogsEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<BlogsEntry, Object>>();
-		Map<String, BiConsumer<BlogsEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<BlogsEntry, Object>>();
+		Map<String, BiConsumer<BlogsEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<BlogsEntry, ?>>();
 
 		attributeGetters.put("uuid", BlogsEntry::getUuid);
-		attributeSetters.put("uuid", BlogsEntry::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<BlogsEntry, String>)BlogsEntry::setUuid);
 		attributeGetters.put("entryId", BlogsEntry::getEntryId);
-		attributeSetters.put("entryId", BlogsEntry::setEntryId);
-
+		attributeSetters.put("entryId", (BiConsumer<BlogsEntry, Long>)BlogsEntry::setEntryId);
 		attributeGetters.put("groupId", BlogsEntry::getGroupId);
-		attributeSetters.put("groupId", BlogsEntry::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<BlogsEntry, Long>)BlogsEntry::setGroupId);
 		attributeGetters.put("companyId", BlogsEntry::getCompanyId);
-		attributeSetters.put("companyId", BlogsEntry::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<BlogsEntry, Long>)BlogsEntry::setCompanyId);
 		attributeGetters.put("userId", BlogsEntry::getUserId);
-		attributeSetters.put("userId", BlogsEntry::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<BlogsEntry, Long>)BlogsEntry::setUserId);
 		attributeGetters.put("userName", BlogsEntry::getUserName);
-		attributeSetters.put("userName", BlogsEntry::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<BlogsEntry, String>)BlogsEntry::setUserName);
 		attributeGetters.put("createDate", BlogsEntry::getCreateDate);
-		attributeSetters.put("createDate", BlogsEntry::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<BlogsEntry, Date>)BlogsEntry::setCreateDate);
 		attributeGetters.put("modifiedDate", BlogsEntry::getModifiedDate);
-		attributeSetters.put("modifiedDate", BlogsEntry::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<BlogsEntry, Date>)BlogsEntry::setModifiedDate);
 		attributeGetters.put("title", BlogsEntry::getTitle);
-		attributeSetters.put("title", BlogsEntry::setTitle);
-
+		attributeSetters.put("title", (BiConsumer<BlogsEntry, String>)BlogsEntry::setTitle);
 		attributeGetters.put("subtitle", BlogsEntry::getSubtitle);
-		attributeSetters.put("subtitle", BlogsEntry::setSubtitle);
-
+		attributeSetters.put("subtitle", (BiConsumer<BlogsEntry, String>)BlogsEntry::setSubtitle);
 		attributeGetters.put("urlTitle", BlogsEntry::getUrlTitle);
-		attributeSetters.put("urlTitle", BlogsEntry::setUrlTitle);
-
+		attributeSetters.put("urlTitle", (BiConsumer<BlogsEntry, String>)BlogsEntry::setUrlTitle);
 		attributeGetters.put("description", BlogsEntry::getDescription);
-		attributeSetters.put("description", BlogsEntry::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<BlogsEntry, String>)BlogsEntry::setDescription);
 		attributeGetters.put("content", BlogsEntry::getContent);
-		attributeSetters.put("content", BlogsEntry::setContent);
-
+		attributeSetters.put("content", (BiConsumer<BlogsEntry, String>)BlogsEntry::setContent);
 		attributeGetters.put("displayDate", BlogsEntry::getDisplayDate);
-		attributeSetters.put("displayDate", BlogsEntry::setDisplayDate);
-
+		attributeSetters.put("displayDate", (BiConsumer<BlogsEntry, Date>)BlogsEntry::setDisplayDate);
 		attributeGetters.put("allowPingbacks", BlogsEntry::getAllowPingbacks);
-		attributeSetters.put("allowPingbacks", BlogsEntry::setAllowPingbacks);
-
+		attributeSetters.put("allowPingbacks", (BiConsumer<BlogsEntry, Boolean>)BlogsEntry::setAllowPingbacks);
 		attributeGetters.put("allowTrackbacks", BlogsEntry::getAllowTrackbacks);
-		attributeSetters.put("allowTrackbacks", BlogsEntry::setAllowTrackbacks);
-
+		attributeSetters.put("allowTrackbacks", (BiConsumer<BlogsEntry, Boolean>)BlogsEntry::setAllowTrackbacks);
 		attributeGetters.put("trackbacks", BlogsEntry::getTrackbacks);
-		attributeSetters.put("trackbacks", BlogsEntry::setTrackbacks);
-
+		attributeSetters.put("trackbacks", (BiConsumer<BlogsEntry, String>)BlogsEntry::setTrackbacks);
 		attributeGetters.put("coverImageCaption", BlogsEntry::getCoverImageCaption);
-		attributeSetters.put("coverImageCaption", BlogsEntry::setCoverImageCaption);
-
+		attributeSetters.put("coverImageCaption", (BiConsumer<BlogsEntry, String>)BlogsEntry::setCoverImageCaption);
 		attributeGetters.put("coverImageFileEntryId", BlogsEntry::getCoverImageFileEntryId);
-		attributeSetters.put("coverImageFileEntryId", BlogsEntry::setCoverImageFileEntryId);
-
+		attributeSetters.put("coverImageFileEntryId", (BiConsumer<BlogsEntry, Long>)BlogsEntry::setCoverImageFileEntryId);
 		attributeGetters.put("coverImageURL", BlogsEntry::getCoverImageURL);
-		attributeSetters.put("coverImageURL", BlogsEntry::setCoverImageURL);
-
+		attributeSetters.put("coverImageURL", (BiConsumer<BlogsEntry, String>)BlogsEntry::setCoverImageURL);
 		attributeGetters.put("smallImage", BlogsEntry::getSmallImage);
-		attributeSetters.put("smallImage", BlogsEntry::setSmallImage);
-
+		attributeSetters.put("smallImage", (BiConsumer<BlogsEntry, Boolean>)BlogsEntry::setSmallImage);
 		attributeGetters.put("smallImageFileEntryId", BlogsEntry::getSmallImageFileEntryId);
-		attributeSetters.put("smallImageFileEntryId", BlogsEntry::setSmallImageFileEntryId);
-
+		attributeSetters.put("smallImageFileEntryId", (BiConsumer<BlogsEntry, Long>)BlogsEntry::setSmallImageFileEntryId);
 		attributeGetters.put("smallImageId", BlogsEntry::getSmallImageId);
-		attributeSetters.put("smallImageId", BlogsEntry::setSmallImageId);
-
+		attributeSetters.put("smallImageId", (BiConsumer<BlogsEntry, Long>)BlogsEntry::setSmallImageId);
 		attributeGetters.put("smallImageURL", BlogsEntry::getSmallImageURL);
-		attributeSetters.put("smallImageURL", BlogsEntry::setSmallImageURL);
-
+		attributeSetters.put("smallImageURL", (BiConsumer<BlogsEntry, String>)BlogsEntry::setSmallImageURL);
 		attributeGetters.put("lastPublishDate", BlogsEntry::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", BlogsEntry::setLastPublishDate);
-
+		attributeSetters.put("lastPublishDate", (BiConsumer<BlogsEntry, Date>)BlogsEntry::setLastPublishDate);
 		attributeGetters.put("status", BlogsEntry::getStatus);
-		attributeSetters.put("status", BlogsEntry::setStatus);
-
+		attributeSetters.put("status", (BiConsumer<BlogsEntry, Integer>)BlogsEntry::setStatus);
 		attributeGetters.put("statusByUserId", BlogsEntry::getStatusByUserId);
-		attributeSetters.put("statusByUserId", BlogsEntry::setStatusByUserId);
-
+		attributeSetters.put("statusByUserId", (BiConsumer<BlogsEntry, Long>)BlogsEntry::setStatusByUserId);
 		attributeGetters.put("statusByUserName", BlogsEntry::getStatusByUserName);
-		attributeSetters.put("statusByUserName", BlogsEntry::setStatusByUserName);
-
+		attributeSetters.put("statusByUserName", (BiConsumer<BlogsEntry, String>)BlogsEntry::setStatusByUserName);
 		attributeGetters.put("statusDate", BlogsEntry::getStatusDate);
-		attributeSetters.put("statusDate", BlogsEntry::setStatusDate);
+		attributeSetters.put("statusDate", (BiConsumer<BlogsEntry, Date>)BlogsEntry::setStatusDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

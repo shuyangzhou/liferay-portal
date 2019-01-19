@@ -236,49 +236,37 @@ public class SharingEntryModelImpl extends BaseModelImpl<SharingEntry>
 
 	static {
 		Map<String, Function<SharingEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<SharingEntry, Object>>();
-		Map<String, BiConsumer<SharingEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SharingEntry, Object>>();
+		Map<String, BiConsumer<SharingEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<SharingEntry, ?>>();
 
 		attributeGetters.put("uuid", SharingEntry::getUuid);
-		attributeSetters.put("uuid", SharingEntry::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<SharingEntry, String>)SharingEntry::setUuid);
 		attributeGetters.put("sharingEntryId", SharingEntry::getSharingEntryId);
-		attributeSetters.put("sharingEntryId", SharingEntry::setSharingEntryId);
-
+		attributeSetters.put("sharingEntryId", (BiConsumer<SharingEntry, Long>)SharingEntry::setSharingEntryId);
 		attributeGetters.put("groupId", SharingEntry::getGroupId);
-		attributeSetters.put("groupId", SharingEntry::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<SharingEntry, Long>)SharingEntry::setGroupId);
 		attributeGetters.put("companyId", SharingEntry::getCompanyId);
-		attributeSetters.put("companyId", SharingEntry::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<SharingEntry, Long>)SharingEntry::setCompanyId);
 		attributeGetters.put("createDate", SharingEntry::getCreateDate);
-		attributeSetters.put("createDate", SharingEntry::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<SharingEntry, Date>)SharingEntry::setCreateDate);
 		attributeGetters.put("modifiedDate", SharingEntry::getModifiedDate);
-		attributeSetters.put("modifiedDate", SharingEntry::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<SharingEntry, Date>)SharingEntry::setModifiedDate);
 		attributeGetters.put("fromUserId", SharingEntry::getFromUserId);
-		attributeSetters.put("fromUserId", SharingEntry::setFromUserId);
-
+		attributeSetters.put("fromUserId", (BiConsumer<SharingEntry, Long>)SharingEntry::setFromUserId);
 		attributeGetters.put("toUserId", SharingEntry::getToUserId);
-		attributeSetters.put("toUserId", SharingEntry::setToUserId);
-
+		attributeSetters.put("toUserId", (BiConsumer<SharingEntry, Long>)SharingEntry::setToUserId);
 		attributeGetters.put("classNameId", SharingEntry::getClassNameId);
-		attributeSetters.put("classNameId", SharingEntry::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<SharingEntry, Long>)SharingEntry::setClassNameId);
 		attributeGetters.put("classPK", SharingEntry::getClassPK);
-		attributeSetters.put("classPK", SharingEntry::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<SharingEntry, Long>)SharingEntry::setClassPK);
 		attributeGetters.put("shareable", SharingEntry::getShareable);
-		attributeSetters.put("shareable", SharingEntry::setShareable);
-
+		attributeSetters.put("shareable", (BiConsumer<SharingEntry, Boolean>)SharingEntry::setShareable);
 		attributeGetters.put("actionIds", SharingEntry::getActionIds);
-		attributeSetters.put("actionIds", SharingEntry::setActionIds);
-
+		attributeSetters.put("actionIds", (BiConsumer<SharingEntry, Long>)SharingEntry::setActionIds);
 		attributeGetters.put("expirationDate", SharingEntry::getExpirationDate);
-		attributeSetters.put("expirationDate", SharingEntry::setExpirationDate);
+		attributeSetters.put("expirationDate", (BiConsumer<SharingEntry, Date>)SharingEntry::setExpirationDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

@@ -268,67 +268,49 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 
 	static {
 		Map<String, Function<Organization, Object>> attributeGetters = new LinkedHashMap<String, Function<Organization, Object>>();
-		Map<String, BiConsumer<Organization, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Organization, Object>>();
+		Map<String, BiConsumer<Organization, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Organization, ?>>();
 
 		attributeGetters.put("mvccVersion", Organization::getMvccVersion);
-		attributeSetters.put("mvccVersion", Organization::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<Organization, Long>)Organization::setMvccVersion);
 		attributeGetters.put("uuid", Organization::getUuid);
-		attributeSetters.put("uuid", Organization::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<Organization, String>)Organization::setUuid);
 		attributeGetters.put("externalReferenceCode", Organization::getExternalReferenceCode);
-		attributeSetters.put("externalReferenceCode", Organization::setExternalReferenceCode);
-
+		attributeSetters.put("externalReferenceCode", (BiConsumer<Organization, String>)Organization::setExternalReferenceCode);
 		attributeGetters.put("organizationId", Organization::getOrganizationId);
-		attributeSetters.put("organizationId", Organization::setOrganizationId);
-
+		attributeSetters.put("organizationId", (BiConsumer<Organization, Long>)Organization::setOrganizationId);
 		attributeGetters.put("companyId", Organization::getCompanyId);
-		attributeSetters.put("companyId", Organization::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<Organization, Long>)Organization::setCompanyId);
 		attributeGetters.put("userId", Organization::getUserId);
-		attributeSetters.put("userId", Organization::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<Organization, Long>)Organization::setUserId);
 		attributeGetters.put("userName", Organization::getUserName);
-		attributeSetters.put("userName", Organization::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<Organization, String>)Organization::setUserName);
 		attributeGetters.put("createDate", Organization::getCreateDate);
-		attributeSetters.put("createDate", Organization::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<Organization, Date>)Organization::setCreateDate);
 		attributeGetters.put("modifiedDate", Organization::getModifiedDate);
-		attributeSetters.put("modifiedDate", Organization::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<Organization, Date>)Organization::setModifiedDate);
 		attributeGetters.put("parentOrganizationId", Organization::getParentOrganizationId);
-		attributeSetters.put("parentOrganizationId", Organization::setParentOrganizationId);
-
+		attributeSetters.put("parentOrganizationId", (BiConsumer<Organization, Long>)Organization::setParentOrganizationId);
 		attributeGetters.put("treePath", Organization::getTreePath);
-		attributeSetters.put("treePath", Organization::setTreePath);
-
+		attributeSetters.put("treePath", (BiConsumer<Organization, String>)Organization::setTreePath);
 		attributeGetters.put("name", Organization::getName);
-		attributeSetters.put("name", Organization::setName);
-
+		attributeSetters.put("name", (BiConsumer<Organization, String>)Organization::setName);
 		attributeGetters.put("type", Organization::getType);
-		attributeSetters.put("type", Organization::setType);
-
+		attributeSetters.put("type", (BiConsumer<Organization, String>)Organization::setType);
 		attributeGetters.put("recursable", Organization::getRecursable);
-		attributeSetters.put("recursable", Organization::setRecursable);
-
+		attributeSetters.put("recursable", (BiConsumer<Organization, Boolean>)Organization::setRecursable);
 		attributeGetters.put("regionId", Organization::getRegionId);
-		attributeSetters.put("regionId", Organization::setRegionId);
-
+		attributeSetters.put("regionId", (BiConsumer<Organization, Long>)Organization::setRegionId);
 		attributeGetters.put("countryId", Organization::getCountryId);
-		attributeSetters.put("countryId", Organization::setCountryId);
-
+		attributeSetters.put("countryId", (BiConsumer<Organization, Long>)Organization::setCountryId);
 		attributeGetters.put("statusId", Organization::getStatusId);
-		attributeSetters.put("statusId", Organization::setStatusId);
-
+		attributeSetters.put("statusId", (BiConsumer<Organization, Long>)Organization::setStatusId);
 		attributeGetters.put("comments", Organization::getComments);
-		attributeSetters.put("comments", Organization::setComments);
-
+		attributeSetters.put("comments", (BiConsumer<Organization, String>)Organization::setComments);
 		attributeGetters.put("logoId", Organization::getLogoId);
-		attributeSetters.put("logoId", Organization::setLogoId);
+		attributeSetters.put("logoId", (BiConsumer<Organization, Long>)Organization::setLogoId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

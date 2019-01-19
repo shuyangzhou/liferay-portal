@@ -160,34 +160,27 @@ public class StatusModelImpl extends BaseModelImpl<Status>
 
 	static {
 		Map<String, Function<Status, Object>> attributeGetters = new LinkedHashMap<String, Function<Status, Object>>();
-		Map<String, BiConsumer<Status, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Status, Object>>();
+		Map<String, BiConsumer<Status, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Status, ?>>();
 
 		attributeGetters.put("statusId", Status::getStatusId);
-		attributeSetters.put("statusId", Status::setStatusId);
-
+		attributeSetters.put("statusId", (BiConsumer<Status, Long>)Status::setStatusId);
 		attributeGetters.put("userId", Status::getUserId);
-		attributeSetters.put("userId", Status::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<Status, Long>)Status::setUserId);
 		attributeGetters.put("modifiedDate", Status::getModifiedDate);
-		attributeSetters.put("modifiedDate", Status::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<Status, Long>)Status::setModifiedDate);
 		attributeGetters.put("online", Status::getOnline);
-		attributeSetters.put("online", Status::setOnline);
-
+		attributeSetters.put("online", (BiConsumer<Status, Boolean>)Status::setOnline);
 		attributeGetters.put("awake", Status::getAwake);
-		attributeSetters.put("awake", Status::setAwake);
-
+		attributeSetters.put("awake", (BiConsumer<Status, Boolean>)Status::setAwake);
 		attributeGetters.put("activePanelIds", Status::getActivePanelIds);
-		attributeSetters.put("activePanelIds", Status::setActivePanelIds);
-
+		attributeSetters.put("activePanelIds", (BiConsumer<Status, String>)Status::setActivePanelIds);
 		attributeGetters.put("message", Status::getMessage);
-		attributeSetters.put("message", Status::setMessage);
-
+		attributeSetters.put("message", (BiConsumer<Status, String>)Status::setMessage);
 		attributeGetters.put("playSound", Status::getPlaySound);
-		attributeSetters.put("playSound", Status::setPlaySound);
+		attributeSetters.put("playSound", (BiConsumer<Status, Boolean>)Status::setPlaySound);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

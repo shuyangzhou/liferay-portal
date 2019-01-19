@@ -242,52 +242,39 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 
 	static {
 		Map<String, Function<AssetVocabulary, Object>> attributeGetters = new LinkedHashMap<String, Function<AssetVocabulary, Object>>();
-		Map<String, BiConsumer<AssetVocabulary, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetVocabulary, Object>>();
+		Map<String, BiConsumer<AssetVocabulary, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetVocabulary, ?>>();
 
 		attributeGetters.put("uuid", AssetVocabulary::getUuid);
-		attributeSetters.put("uuid", AssetVocabulary::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<AssetVocabulary, String>)AssetVocabulary::setUuid);
 		attributeGetters.put("externalReferenceCode", AssetVocabulary::getExternalReferenceCode);
-		attributeSetters.put("externalReferenceCode", AssetVocabulary::setExternalReferenceCode);
-
+		attributeSetters.put("externalReferenceCode", (BiConsumer<AssetVocabulary, String>)AssetVocabulary::setExternalReferenceCode);
 		attributeGetters.put("vocabularyId", AssetVocabulary::getVocabularyId);
-		attributeSetters.put("vocabularyId", AssetVocabulary::setVocabularyId);
-
+		attributeSetters.put("vocabularyId", (BiConsumer<AssetVocabulary, Long>)AssetVocabulary::setVocabularyId);
 		attributeGetters.put("groupId", AssetVocabulary::getGroupId);
-		attributeSetters.put("groupId", AssetVocabulary::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<AssetVocabulary, Long>)AssetVocabulary::setGroupId);
 		attributeGetters.put("companyId", AssetVocabulary::getCompanyId);
-		attributeSetters.put("companyId", AssetVocabulary::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<AssetVocabulary, Long>)AssetVocabulary::setCompanyId);
 		attributeGetters.put("userId", AssetVocabulary::getUserId);
-		attributeSetters.put("userId", AssetVocabulary::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<AssetVocabulary, Long>)AssetVocabulary::setUserId);
 		attributeGetters.put("userName", AssetVocabulary::getUserName);
-		attributeSetters.put("userName", AssetVocabulary::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<AssetVocabulary, String>)AssetVocabulary::setUserName);
 		attributeGetters.put("createDate", AssetVocabulary::getCreateDate);
-		attributeSetters.put("createDate", AssetVocabulary::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<AssetVocabulary, Date>)AssetVocabulary::setCreateDate);
 		attributeGetters.put("modifiedDate", AssetVocabulary::getModifiedDate);
-		attributeSetters.put("modifiedDate", AssetVocabulary::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<AssetVocabulary, Date>)AssetVocabulary::setModifiedDate);
 		attributeGetters.put("name", AssetVocabulary::getName);
-		attributeSetters.put("name", AssetVocabulary::setName);
-
+		attributeSetters.put("name", (BiConsumer<AssetVocabulary, String>)AssetVocabulary::setName);
 		attributeGetters.put("title", AssetVocabulary::getTitle);
-		attributeSetters.put("title", AssetVocabulary::setTitle);
-
+		attributeSetters.put("title", (BiConsumer<AssetVocabulary, String>)AssetVocabulary::setTitle);
 		attributeGetters.put("description", AssetVocabulary::getDescription);
-		attributeSetters.put("description", AssetVocabulary::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<AssetVocabulary, String>)AssetVocabulary::setDescription);
 		attributeGetters.put("settings", AssetVocabulary::getSettings);
-		attributeSetters.put("settings", AssetVocabulary::setSettings);
-
+		attributeSetters.put("settings", (BiConsumer<AssetVocabulary, String>)AssetVocabulary::setSettings);
 		attributeGetters.put("lastPublishDate", AssetVocabulary::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", AssetVocabulary::setLastPublishDate);
+		attributeSetters.put("lastPublishDate", (BiConsumer<AssetVocabulary, Date>)AssetVocabulary::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

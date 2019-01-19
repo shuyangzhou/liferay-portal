@@ -155,28 +155,23 @@ public class PasswordTrackerModelImpl extends BaseModelImpl<PasswordTracker>
 
 	static {
 		Map<String, Function<PasswordTracker, Object>> attributeGetters = new LinkedHashMap<String, Function<PasswordTracker, Object>>();
-		Map<String, BiConsumer<PasswordTracker, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<PasswordTracker, Object>>();
+		Map<String, BiConsumer<PasswordTracker, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<PasswordTracker, ?>>();
 
 		attributeGetters.put("mvccVersion", PasswordTracker::getMvccVersion);
-		attributeSetters.put("mvccVersion", PasswordTracker::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<PasswordTracker, Long>)PasswordTracker::setMvccVersion);
 		attributeGetters.put("passwordTrackerId", PasswordTracker::getPasswordTrackerId);
-		attributeSetters.put("passwordTrackerId", PasswordTracker::setPasswordTrackerId);
-
+		attributeSetters.put("passwordTrackerId", (BiConsumer<PasswordTracker, Long>)PasswordTracker::setPasswordTrackerId);
 		attributeGetters.put("companyId", PasswordTracker::getCompanyId);
-		attributeSetters.put("companyId", PasswordTracker::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<PasswordTracker, Long>)PasswordTracker::setCompanyId);
 		attributeGetters.put("userId", PasswordTracker::getUserId);
-		attributeSetters.put("userId", PasswordTracker::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<PasswordTracker, Long>)PasswordTracker::setUserId);
 		attributeGetters.put("createDate", PasswordTracker::getCreateDate);
-		attributeSetters.put("createDate", PasswordTracker::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<PasswordTracker, Date>)PasswordTracker::setCreateDate);
 		attributeGetters.put("password", PasswordTracker::getPassword);
-		attributeSetters.put("password", PasswordTracker::setPassword);
+		attributeSetters.put("password", (BiConsumer<PasswordTracker, String>)PasswordTracker::setPassword);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

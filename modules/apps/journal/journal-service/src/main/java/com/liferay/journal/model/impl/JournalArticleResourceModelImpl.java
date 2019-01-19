@@ -152,26 +152,21 @@ public class JournalArticleResourceModelImpl extends BaseModelImpl<JournalArticl
 
 	static {
 		Map<String, Function<JournalArticleResource, Object>> attributeGetters = new LinkedHashMap<String, Function<JournalArticleResource, Object>>();
-		Map<String, BiConsumer<JournalArticleResource, Object>> attributeSetters =
-			new LinkedHashMap<String, BiConsumer<JournalArticleResource, Object>>();
+		Map<String, BiConsumer<JournalArticleResource, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<JournalArticleResource, ?>>();
 
 		attributeGetters.put("uuid", JournalArticleResource::getUuid);
-		attributeSetters.put("uuid", JournalArticleResource::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<JournalArticleResource, String>)JournalArticleResource::setUuid);
 		attributeGetters.put("resourcePrimKey", JournalArticleResource::getResourcePrimKey);
-		attributeSetters.put("resourcePrimKey", JournalArticleResource::setResourcePrimKey);
-
+		attributeSetters.put("resourcePrimKey", (BiConsumer<JournalArticleResource, Long>)JournalArticleResource::setResourcePrimKey);
 		attributeGetters.put("groupId", JournalArticleResource::getGroupId);
-		attributeSetters.put("groupId", JournalArticleResource::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<JournalArticleResource, Long>)JournalArticleResource::setGroupId);
 		attributeGetters.put("companyId", JournalArticleResource::getCompanyId);
-		attributeSetters.put("companyId", JournalArticleResource::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<JournalArticleResource, Long>)JournalArticleResource::setCompanyId);
 		attributeGetters.put("articleId", JournalArticleResource::getArticleId);
-		attributeSetters.put("articleId", JournalArticleResource::setArticleId);
+		attributeSetters.put("articleId", (BiConsumer<JournalArticleResource, String>)JournalArticleResource::setArticleId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

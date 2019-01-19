@@ -238,67 +238,49 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 
 	static {
 		Map<String, Function<OrgLabor, Object>> attributeGetters = new LinkedHashMap<String, Function<OrgLabor, Object>>();
-		Map<String, BiConsumer<OrgLabor, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<OrgLabor, Object>>();
+		Map<String, BiConsumer<OrgLabor, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<OrgLabor, ?>>();
 
 		attributeGetters.put("mvccVersion", OrgLabor::getMvccVersion);
-		attributeSetters.put("mvccVersion", OrgLabor::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<OrgLabor, Long>)OrgLabor::setMvccVersion);
 		attributeGetters.put("orgLaborId", OrgLabor::getOrgLaborId);
-		attributeSetters.put("orgLaborId", OrgLabor::setOrgLaborId);
-
+		attributeSetters.put("orgLaborId", (BiConsumer<OrgLabor, Long>)OrgLabor::setOrgLaborId);
 		attributeGetters.put("companyId", OrgLabor::getCompanyId);
-		attributeSetters.put("companyId", OrgLabor::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<OrgLabor, Long>)OrgLabor::setCompanyId);
 		attributeGetters.put("organizationId", OrgLabor::getOrganizationId);
-		attributeSetters.put("organizationId", OrgLabor::setOrganizationId);
-
+		attributeSetters.put("organizationId", (BiConsumer<OrgLabor, Long>)OrgLabor::setOrganizationId);
 		attributeGetters.put("typeId", OrgLabor::getTypeId);
-		attributeSetters.put("typeId", OrgLabor::setTypeId);
-
+		attributeSetters.put("typeId", (BiConsumer<OrgLabor, Long>)OrgLabor::setTypeId);
 		attributeGetters.put("sunOpen", OrgLabor::getSunOpen);
-		attributeSetters.put("sunOpen", OrgLabor::setSunOpen);
-
+		attributeSetters.put("sunOpen", (BiConsumer<OrgLabor, Integer>)OrgLabor::setSunOpen);
 		attributeGetters.put("sunClose", OrgLabor::getSunClose);
-		attributeSetters.put("sunClose", OrgLabor::setSunClose);
-
+		attributeSetters.put("sunClose", (BiConsumer<OrgLabor, Integer>)OrgLabor::setSunClose);
 		attributeGetters.put("monOpen", OrgLabor::getMonOpen);
-		attributeSetters.put("monOpen", OrgLabor::setMonOpen);
-
+		attributeSetters.put("monOpen", (BiConsumer<OrgLabor, Integer>)OrgLabor::setMonOpen);
 		attributeGetters.put("monClose", OrgLabor::getMonClose);
-		attributeSetters.put("monClose", OrgLabor::setMonClose);
-
+		attributeSetters.put("monClose", (BiConsumer<OrgLabor, Integer>)OrgLabor::setMonClose);
 		attributeGetters.put("tueOpen", OrgLabor::getTueOpen);
-		attributeSetters.put("tueOpen", OrgLabor::setTueOpen);
-
+		attributeSetters.put("tueOpen", (BiConsumer<OrgLabor, Integer>)OrgLabor::setTueOpen);
 		attributeGetters.put("tueClose", OrgLabor::getTueClose);
-		attributeSetters.put("tueClose", OrgLabor::setTueClose);
-
+		attributeSetters.put("tueClose", (BiConsumer<OrgLabor, Integer>)OrgLabor::setTueClose);
 		attributeGetters.put("wedOpen", OrgLabor::getWedOpen);
-		attributeSetters.put("wedOpen", OrgLabor::setWedOpen);
-
+		attributeSetters.put("wedOpen", (BiConsumer<OrgLabor, Integer>)OrgLabor::setWedOpen);
 		attributeGetters.put("wedClose", OrgLabor::getWedClose);
-		attributeSetters.put("wedClose", OrgLabor::setWedClose);
-
+		attributeSetters.put("wedClose", (BiConsumer<OrgLabor, Integer>)OrgLabor::setWedClose);
 		attributeGetters.put("thuOpen", OrgLabor::getThuOpen);
-		attributeSetters.put("thuOpen", OrgLabor::setThuOpen);
-
+		attributeSetters.put("thuOpen", (BiConsumer<OrgLabor, Integer>)OrgLabor::setThuOpen);
 		attributeGetters.put("thuClose", OrgLabor::getThuClose);
-		attributeSetters.put("thuClose", OrgLabor::setThuClose);
-
+		attributeSetters.put("thuClose", (BiConsumer<OrgLabor, Integer>)OrgLabor::setThuClose);
 		attributeGetters.put("friOpen", OrgLabor::getFriOpen);
-		attributeSetters.put("friOpen", OrgLabor::setFriOpen);
-
+		attributeSetters.put("friOpen", (BiConsumer<OrgLabor, Integer>)OrgLabor::setFriOpen);
 		attributeGetters.put("friClose", OrgLabor::getFriClose);
-		attributeSetters.put("friClose", OrgLabor::setFriClose);
-
+		attributeSetters.put("friClose", (BiConsumer<OrgLabor, Integer>)OrgLabor::setFriClose);
 		attributeGetters.put("satOpen", OrgLabor::getSatOpen);
-		attributeSetters.put("satOpen", OrgLabor::setSatOpen);
-
+		attributeSetters.put("satOpen", (BiConsumer<OrgLabor, Integer>)OrgLabor::setSatOpen);
 		attributeGetters.put("satClose", OrgLabor::getSatClose);
-		attributeSetters.put("satClose", OrgLabor::setSatClose);
+		attributeSetters.put("satClose", (BiConsumer<OrgLabor, Integer>)OrgLabor::setSatClose);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

@@ -222,40 +222,31 @@ public class SegmentsEntryRelModelImpl extends BaseModelImpl<SegmentsEntryRel>
 
 	static {
 		Map<String, Function<SegmentsEntryRel, Object>> attributeGetters = new LinkedHashMap<String, Function<SegmentsEntryRel, Object>>();
-		Map<String, BiConsumer<SegmentsEntryRel, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SegmentsEntryRel, Object>>();
+		Map<String, BiConsumer<SegmentsEntryRel, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<SegmentsEntryRel, ?>>();
 
 		attributeGetters.put("segmentsEntryRelId", SegmentsEntryRel::getSegmentsEntryRelId);
-		attributeSetters.put("segmentsEntryRelId", SegmentsEntryRel::setSegmentsEntryRelId);
-
+		attributeSetters.put("segmentsEntryRelId", (BiConsumer<SegmentsEntryRel, Long>)SegmentsEntryRel::setSegmentsEntryRelId);
 		attributeGetters.put("groupId", SegmentsEntryRel::getGroupId);
-		attributeSetters.put("groupId", SegmentsEntryRel::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<SegmentsEntryRel, Long>)SegmentsEntryRel::setGroupId);
 		attributeGetters.put("companyId", SegmentsEntryRel::getCompanyId);
-		attributeSetters.put("companyId", SegmentsEntryRel::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<SegmentsEntryRel, Long>)SegmentsEntryRel::setCompanyId);
 		attributeGetters.put("userId", SegmentsEntryRel::getUserId);
-		attributeSetters.put("userId", SegmentsEntryRel::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<SegmentsEntryRel, Long>)SegmentsEntryRel::setUserId);
 		attributeGetters.put("userName", SegmentsEntryRel::getUserName);
-		attributeSetters.put("userName", SegmentsEntryRel::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<SegmentsEntryRel, String>)SegmentsEntryRel::setUserName);
 		attributeGetters.put("createDate", SegmentsEntryRel::getCreateDate);
-		attributeSetters.put("createDate", SegmentsEntryRel::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<SegmentsEntryRel, Date>)SegmentsEntryRel::setCreateDate);
 		attributeGetters.put("modifiedDate", SegmentsEntryRel::getModifiedDate);
-		attributeSetters.put("modifiedDate", SegmentsEntryRel::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<SegmentsEntryRel, Date>)SegmentsEntryRel::setModifiedDate);
 		attributeGetters.put("segmentsEntryId", SegmentsEntryRel::getSegmentsEntryId);
-		attributeSetters.put("segmentsEntryId", SegmentsEntryRel::setSegmentsEntryId);
-
+		attributeSetters.put("segmentsEntryId", (BiConsumer<SegmentsEntryRel, Long>)SegmentsEntryRel::setSegmentsEntryId);
 		attributeGetters.put("classNameId", SegmentsEntryRel::getClassNameId);
-		attributeSetters.put("classNameId", SegmentsEntryRel::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<SegmentsEntryRel, Long>)SegmentsEntryRel::setClassNameId);
 		attributeGetters.put("classPK", SegmentsEntryRel::getClassPK);
-		attributeSetters.put("classPK", SegmentsEntryRel::setClassPK);
+		attributeSetters.put("classPK", (BiConsumer<SegmentsEntryRel, Long>)SegmentsEntryRel::setClassPK);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

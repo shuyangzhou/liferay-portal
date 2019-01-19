@@ -218,37 +218,29 @@ public class AssetCategoryPropertyModelImpl extends BaseModelImpl<AssetCategoryP
 
 	static {
 		Map<String, Function<AssetCategoryProperty, Object>> attributeGetters = new LinkedHashMap<String, Function<AssetCategoryProperty, Object>>();
-		Map<String, BiConsumer<AssetCategoryProperty, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetCategoryProperty, Object>>();
+		Map<String, BiConsumer<AssetCategoryProperty, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetCategoryProperty, ?>>();
 
 		attributeGetters.put("categoryPropertyId", AssetCategoryProperty::getCategoryPropertyId);
-		attributeSetters.put("categoryPropertyId", AssetCategoryProperty::setCategoryPropertyId);
-
+		attributeSetters.put("categoryPropertyId", (BiConsumer<AssetCategoryProperty, Long>)AssetCategoryProperty::setCategoryPropertyId);
 		attributeGetters.put("companyId", AssetCategoryProperty::getCompanyId);
-		attributeSetters.put("companyId", AssetCategoryProperty::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<AssetCategoryProperty, Long>)AssetCategoryProperty::setCompanyId);
 		attributeGetters.put("userId", AssetCategoryProperty::getUserId);
-		attributeSetters.put("userId", AssetCategoryProperty::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<AssetCategoryProperty, Long>)AssetCategoryProperty::setUserId);
 		attributeGetters.put("userName", AssetCategoryProperty::getUserName);
-		attributeSetters.put("userName", AssetCategoryProperty::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<AssetCategoryProperty, String>)AssetCategoryProperty::setUserName);
 		attributeGetters.put("createDate", AssetCategoryProperty::getCreateDate);
-		attributeSetters.put("createDate", AssetCategoryProperty::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<AssetCategoryProperty, Date>)AssetCategoryProperty::setCreateDate);
 		attributeGetters.put("modifiedDate", AssetCategoryProperty::getModifiedDate);
-		attributeSetters.put("modifiedDate", AssetCategoryProperty::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<AssetCategoryProperty, Date>)AssetCategoryProperty::setModifiedDate);
 		attributeGetters.put("categoryId", AssetCategoryProperty::getCategoryId);
-		attributeSetters.put("categoryId", AssetCategoryProperty::setCategoryId);
-
+		attributeSetters.put("categoryId", (BiConsumer<AssetCategoryProperty, Long>)AssetCategoryProperty::setCategoryId);
 		attributeGetters.put("key", AssetCategoryProperty::getKey);
-		attributeSetters.put("key", AssetCategoryProperty::setKey);
-
+		attributeSetters.put("key", (BiConsumer<AssetCategoryProperty, String>)AssetCategoryProperty::setKey);
 		attributeGetters.put("value", AssetCategoryProperty::getValue);
-		attributeSetters.put("value", AssetCategoryProperty::setValue);
+		attributeSetters.put("value", (BiConsumer<AssetCategoryProperty, String>)AssetCategoryProperty::setValue);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

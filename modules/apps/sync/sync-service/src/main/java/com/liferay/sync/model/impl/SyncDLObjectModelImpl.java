@@ -276,94 +276,67 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 
 	static {
 		Map<String, Function<SyncDLObject, Object>> attributeGetters = new LinkedHashMap<String, Function<SyncDLObject, Object>>();
-		Map<String, BiConsumer<SyncDLObject, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SyncDLObject, Object>>();
+		Map<String, BiConsumer<SyncDLObject, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<SyncDLObject, ?>>();
 
 		attributeGetters.put("syncDLObjectId", SyncDLObject::getSyncDLObjectId);
-		attributeSetters.put("syncDLObjectId", SyncDLObject::setSyncDLObjectId);
-
+		attributeSetters.put("syncDLObjectId", (BiConsumer<SyncDLObject, Long>)SyncDLObject::setSyncDLObjectId);
 		attributeGetters.put("companyId", SyncDLObject::getCompanyId);
-		attributeSetters.put("companyId", SyncDLObject::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<SyncDLObject, Long>)SyncDLObject::setCompanyId);
 		attributeGetters.put("userId", SyncDLObject::getUserId);
-		attributeSetters.put("userId", SyncDLObject::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<SyncDLObject, Long>)SyncDLObject::setUserId);
 		attributeGetters.put("userName", SyncDLObject::getUserName);
-		attributeSetters.put("userName", SyncDLObject::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<SyncDLObject, String>)SyncDLObject::setUserName);
 		attributeGetters.put("createTime", SyncDLObject::getCreateTime);
-		attributeSetters.put("createTime", SyncDLObject::setCreateTime);
-
+		attributeSetters.put("createTime", (BiConsumer<SyncDLObject, Long>)SyncDLObject::setCreateTime);
 		attributeGetters.put("modifiedTime", SyncDLObject::getModifiedTime);
-		attributeSetters.put("modifiedTime", SyncDLObject::setModifiedTime);
-
+		attributeSetters.put("modifiedTime", (BiConsumer<SyncDLObject, Long>)SyncDLObject::setModifiedTime);
 		attributeGetters.put("repositoryId", SyncDLObject::getRepositoryId);
-		attributeSetters.put("repositoryId", SyncDLObject::setRepositoryId);
-
+		attributeSetters.put("repositoryId", (BiConsumer<SyncDLObject, Long>)SyncDLObject::setRepositoryId);
 		attributeGetters.put("parentFolderId", SyncDLObject::getParentFolderId);
-		attributeSetters.put("parentFolderId", SyncDLObject::setParentFolderId);
-
+		attributeSetters.put("parentFolderId", (BiConsumer<SyncDLObject, Long>)SyncDLObject::setParentFolderId);
 		attributeGetters.put("treePath", SyncDLObject::getTreePath);
-		attributeSetters.put("treePath", SyncDLObject::setTreePath);
-
+		attributeSetters.put("treePath", (BiConsumer<SyncDLObject, String>)SyncDLObject::setTreePath);
 		attributeGetters.put("name", SyncDLObject::getName);
-		attributeSetters.put("name", SyncDLObject::setName);
-
+		attributeSetters.put("name", (BiConsumer<SyncDLObject, String>)SyncDLObject::setName);
 		attributeGetters.put("extension", SyncDLObject::getExtension);
-		attributeSetters.put("extension", SyncDLObject::setExtension);
-
+		attributeSetters.put("extension", (BiConsumer<SyncDLObject, String>)SyncDLObject::setExtension);
 		attributeGetters.put("mimeType", SyncDLObject::getMimeType);
-		attributeSetters.put("mimeType", SyncDLObject::setMimeType);
-
+		attributeSetters.put("mimeType", (BiConsumer<SyncDLObject, String>)SyncDLObject::setMimeType);
 		attributeGetters.put("description", SyncDLObject::getDescription);
-		attributeSetters.put("description", SyncDLObject::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<SyncDLObject, String>)SyncDLObject::setDescription);
 		attributeGetters.put("changeLog", SyncDLObject::getChangeLog);
-		attributeSetters.put("changeLog", SyncDLObject::setChangeLog);
-
+		attributeSetters.put("changeLog", (BiConsumer<SyncDLObject, String>)SyncDLObject::setChangeLog);
 		attributeGetters.put("extraSettings", SyncDLObject::getExtraSettings);
-		attributeSetters.put("extraSettings", SyncDLObject::setExtraSettings);
-
+		attributeSetters.put("extraSettings", (BiConsumer<SyncDLObject, String>)SyncDLObject::setExtraSettings);
 		attributeGetters.put("version", SyncDLObject::getVersion);
-		attributeSetters.put("version", SyncDLObject::setVersion);
-
+		attributeSetters.put("version", (BiConsumer<SyncDLObject, String>)SyncDLObject::setVersion);
 		attributeGetters.put("versionId", SyncDLObject::getVersionId);
-		attributeSetters.put("versionId", SyncDLObject::setVersionId);
-
+		attributeSetters.put("versionId", (BiConsumer<SyncDLObject, Long>)SyncDLObject::setVersionId);
 		attributeGetters.put("size", SyncDLObject::getSize);
-		attributeSetters.put("size", SyncDLObject::setSize);
-
+		attributeSetters.put("size", (BiConsumer<SyncDLObject, Long>)SyncDLObject::setSize);
 		attributeGetters.put("checksum", SyncDLObject::getChecksum);
-		attributeSetters.put("checksum", SyncDLObject::setChecksum);
-
+		attributeSetters.put("checksum", (BiConsumer<SyncDLObject, String>)SyncDLObject::setChecksum);
 		attributeGetters.put("event", SyncDLObject::getEvent);
-		attributeSetters.put("event", SyncDLObject::setEvent);
-
+		attributeSetters.put("event", (BiConsumer<SyncDLObject, String>)SyncDLObject::setEvent);
 		attributeGetters.put("lanTokenKey", SyncDLObject::getLanTokenKey);
-		attributeSetters.put("lanTokenKey", SyncDLObject::setLanTokenKey);
-
+		attributeSetters.put("lanTokenKey", (BiConsumer<SyncDLObject, String>)SyncDLObject::setLanTokenKey);
 		attributeGetters.put("lastPermissionChangeDate", SyncDLObject::getLastPermissionChangeDate);
-		attributeSetters.put("lastPermissionChangeDate", SyncDLObject::setLastPermissionChangeDate);
-
+		attributeSetters.put("lastPermissionChangeDate", (BiConsumer<SyncDLObject, Date>)SyncDLObject::setLastPermissionChangeDate);
 		attributeGetters.put("lockExpirationDate", SyncDLObject::getLockExpirationDate);
-		attributeSetters.put("lockExpirationDate", SyncDLObject::setLockExpirationDate);
-
+		attributeSetters.put("lockExpirationDate", (BiConsumer<SyncDLObject, Date>)SyncDLObject::setLockExpirationDate);
 		attributeGetters.put("lockUserId", SyncDLObject::getLockUserId);
-		attributeSetters.put("lockUserId", SyncDLObject::setLockUserId);
-
+		attributeSetters.put("lockUserId", (BiConsumer<SyncDLObject, Long>)SyncDLObject::setLockUserId);
 		attributeGetters.put("lockUserName", SyncDLObject::getLockUserName);
-		attributeSetters.put("lockUserName", SyncDLObject::setLockUserName);
-
+		attributeSetters.put("lockUserName", (BiConsumer<SyncDLObject, String>)SyncDLObject::setLockUserName);
 		attributeGetters.put("type", SyncDLObject::getType);
-		attributeSetters.put("type", SyncDLObject::setType);
-
+		attributeSetters.put("type", (BiConsumer<SyncDLObject, String>)SyncDLObject::setType);
 		attributeGetters.put("typePK", SyncDLObject::getTypePK);
-		attributeSetters.put("typePK", SyncDLObject::setTypePK);
-
+		attributeSetters.put("typePK", (BiConsumer<SyncDLObject, Long>)SyncDLObject::setTypePK);
 		attributeGetters.put("typeUuid", SyncDLObject::getTypeUuid);
-		attributeSetters.put("typeUuid", SyncDLObject::setTypeUuid);
+		attributeSetters.put("typeUuid", (BiConsumer<SyncDLObject, String>)SyncDLObject::setTypeUuid);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

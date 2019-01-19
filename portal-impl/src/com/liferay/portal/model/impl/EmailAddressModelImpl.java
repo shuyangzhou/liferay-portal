@@ -234,49 +234,37 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 
 	static {
 		Map<String, Function<EmailAddress, Object>> attributeGetters = new LinkedHashMap<String, Function<EmailAddress, Object>>();
-		Map<String, BiConsumer<EmailAddress, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<EmailAddress, Object>>();
+		Map<String, BiConsumer<EmailAddress, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<EmailAddress, ?>>();
 
 		attributeGetters.put("mvccVersion", EmailAddress::getMvccVersion);
-		attributeSetters.put("mvccVersion", EmailAddress::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<EmailAddress, Long>)EmailAddress::setMvccVersion);
 		attributeGetters.put("uuid", EmailAddress::getUuid);
-		attributeSetters.put("uuid", EmailAddress::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<EmailAddress, String>)EmailAddress::setUuid);
 		attributeGetters.put("emailAddressId", EmailAddress::getEmailAddressId);
-		attributeSetters.put("emailAddressId", EmailAddress::setEmailAddressId);
-
+		attributeSetters.put("emailAddressId", (BiConsumer<EmailAddress, Long>)EmailAddress::setEmailAddressId);
 		attributeGetters.put("companyId", EmailAddress::getCompanyId);
-		attributeSetters.put("companyId", EmailAddress::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<EmailAddress, Long>)EmailAddress::setCompanyId);
 		attributeGetters.put("userId", EmailAddress::getUserId);
-		attributeSetters.put("userId", EmailAddress::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<EmailAddress, Long>)EmailAddress::setUserId);
 		attributeGetters.put("userName", EmailAddress::getUserName);
-		attributeSetters.put("userName", EmailAddress::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<EmailAddress, String>)EmailAddress::setUserName);
 		attributeGetters.put("createDate", EmailAddress::getCreateDate);
-		attributeSetters.put("createDate", EmailAddress::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<EmailAddress, Date>)EmailAddress::setCreateDate);
 		attributeGetters.put("modifiedDate", EmailAddress::getModifiedDate);
-		attributeSetters.put("modifiedDate", EmailAddress::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<EmailAddress, Date>)EmailAddress::setModifiedDate);
 		attributeGetters.put("classNameId", EmailAddress::getClassNameId);
-		attributeSetters.put("classNameId", EmailAddress::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<EmailAddress, Long>)EmailAddress::setClassNameId);
 		attributeGetters.put("classPK", EmailAddress::getClassPK);
-		attributeSetters.put("classPK", EmailAddress::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<EmailAddress, Long>)EmailAddress::setClassPK);
 		attributeGetters.put("address", EmailAddress::getAddress);
-		attributeSetters.put("address", EmailAddress::setAddress);
-
+		attributeSetters.put("address", (BiConsumer<EmailAddress, String>)EmailAddress::setAddress);
 		attributeGetters.put("typeId", EmailAddress::getTypeId);
-		attributeSetters.put("typeId", EmailAddress::setTypeId);
-
+		attributeSetters.put("typeId", (BiConsumer<EmailAddress, Long>)EmailAddress::setTypeId);
 		attributeGetters.put("primary", EmailAddress::getPrimary);
-		attributeSetters.put("primary", EmailAddress::setPrimary);
+		attributeSetters.put("primary", (BiConsumer<EmailAddress, Boolean>)EmailAddress::setPrimary);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

@@ -234,46 +234,35 @@ public class LayoutPrototypeModelImpl extends BaseModelImpl<LayoutPrototype>
 
 	static {
 		Map<String, Function<LayoutPrototype, Object>> attributeGetters = new LinkedHashMap<String, Function<LayoutPrototype, Object>>();
-		Map<String, BiConsumer<LayoutPrototype, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<LayoutPrototype, Object>>();
+		Map<String, BiConsumer<LayoutPrototype, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<LayoutPrototype, ?>>();
 
 		attributeGetters.put("mvccVersion", LayoutPrototype::getMvccVersion);
-		attributeSetters.put("mvccVersion", LayoutPrototype::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<LayoutPrototype, Long>)LayoutPrototype::setMvccVersion);
 		attributeGetters.put("uuid", LayoutPrototype::getUuid);
-		attributeSetters.put("uuid", LayoutPrototype::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<LayoutPrototype, String>)LayoutPrototype::setUuid);
 		attributeGetters.put("layoutPrototypeId", LayoutPrototype::getLayoutPrototypeId);
-		attributeSetters.put("layoutPrototypeId", LayoutPrototype::setLayoutPrototypeId);
-
+		attributeSetters.put("layoutPrototypeId", (BiConsumer<LayoutPrototype, Long>)LayoutPrototype::setLayoutPrototypeId);
 		attributeGetters.put("companyId", LayoutPrototype::getCompanyId);
-		attributeSetters.put("companyId", LayoutPrototype::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<LayoutPrototype, Long>)LayoutPrototype::setCompanyId);
 		attributeGetters.put("userId", LayoutPrototype::getUserId);
-		attributeSetters.put("userId", LayoutPrototype::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<LayoutPrototype, Long>)LayoutPrototype::setUserId);
 		attributeGetters.put("userName", LayoutPrototype::getUserName);
-		attributeSetters.put("userName", LayoutPrototype::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<LayoutPrototype, String>)LayoutPrototype::setUserName);
 		attributeGetters.put("createDate", LayoutPrototype::getCreateDate);
-		attributeSetters.put("createDate", LayoutPrototype::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<LayoutPrototype, Date>)LayoutPrototype::setCreateDate);
 		attributeGetters.put("modifiedDate", LayoutPrototype::getModifiedDate);
-		attributeSetters.put("modifiedDate", LayoutPrototype::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<LayoutPrototype, Date>)LayoutPrototype::setModifiedDate);
 		attributeGetters.put("name", LayoutPrototype::getName);
-		attributeSetters.put("name", LayoutPrototype::setName);
-
+		attributeSetters.put("name", (BiConsumer<LayoutPrototype, String>)LayoutPrototype::setName);
 		attributeGetters.put("description", LayoutPrototype::getDescription);
-		attributeSetters.put("description", LayoutPrototype::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<LayoutPrototype, String>)LayoutPrototype::setDescription);
 		attributeGetters.put("settings", LayoutPrototype::getSettings);
-		attributeSetters.put("settings", LayoutPrototype::setSettings);
-
+		attributeSetters.put("settings", (BiConsumer<LayoutPrototype, String>)LayoutPrototype::setSettings);
 		attributeGetters.put("active", LayoutPrototype::getActive);
-		attributeSetters.put("active", LayoutPrototype::setActive);
+		attributeSetters.put("active", (BiConsumer<LayoutPrototype, Boolean>)LayoutPrototype::setActive);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

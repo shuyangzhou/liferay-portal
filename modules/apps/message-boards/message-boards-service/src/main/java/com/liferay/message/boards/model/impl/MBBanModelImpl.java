@@ -222,40 +222,31 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 
 	static {
 		Map<String, Function<MBBan, Object>> attributeGetters = new LinkedHashMap<String, Function<MBBan, Object>>();
-		Map<String, BiConsumer<MBBan, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<MBBan, Object>>();
+		Map<String, BiConsumer<MBBan, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<MBBan, ?>>();
 
 		attributeGetters.put("uuid", MBBan::getUuid);
-		attributeSetters.put("uuid", MBBan::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<MBBan, String>)MBBan::setUuid);
 		attributeGetters.put("banId", MBBan::getBanId);
-		attributeSetters.put("banId", MBBan::setBanId);
-
+		attributeSetters.put("banId", (BiConsumer<MBBan, Long>)MBBan::setBanId);
 		attributeGetters.put("groupId", MBBan::getGroupId);
-		attributeSetters.put("groupId", MBBan::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<MBBan, Long>)MBBan::setGroupId);
 		attributeGetters.put("companyId", MBBan::getCompanyId);
-		attributeSetters.put("companyId", MBBan::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<MBBan, Long>)MBBan::setCompanyId);
 		attributeGetters.put("userId", MBBan::getUserId);
-		attributeSetters.put("userId", MBBan::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<MBBan, Long>)MBBan::setUserId);
 		attributeGetters.put("userName", MBBan::getUserName);
-		attributeSetters.put("userName", MBBan::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<MBBan, String>)MBBan::setUserName);
 		attributeGetters.put("createDate", MBBan::getCreateDate);
-		attributeSetters.put("createDate", MBBan::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<MBBan, Date>)MBBan::setCreateDate);
 		attributeGetters.put("modifiedDate", MBBan::getModifiedDate);
-		attributeSetters.put("modifiedDate", MBBan::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<MBBan, Date>)MBBan::setModifiedDate);
 		attributeGetters.put("banUserId", MBBan::getBanUserId);
-		attributeSetters.put("banUserId", MBBan::setBanUserId);
-
+		attributeSetters.put("banUserId", (BiConsumer<MBBan, Long>)MBBan::setBanUserId);
 		attributeGetters.put("lastPublishDate", MBBan::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", MBBan::setLastPublishDate);
+		attributeSetters.put("lastPublishDate", (BiConsumer<MBBan, Date>)MBBan::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

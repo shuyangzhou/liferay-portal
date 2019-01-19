@@ -153,29 +153,23 @@ public class ResourceBlockPermissionModelImpl extends BaseModelImpl<ResourceBloc
 
 	static {
 		Map<String, Function<ResourceBlockPermission, Object>> attributeGetters = new LinkedHashMap<String, Function<ResourceBlockPermission, Object>>();
-		Map<String, BiConsumer<ResourceBlockPermission, Object>> attributeSetters =
-			new LinkedHashMap<String, BiConsumer<ResourceBlockPermission, Object>>();
+		Map<String, BiConsumer<ResourceBlockPermission, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<ResourceBlockPermission, ?>>();
 
 		attributeGetters.put("mvccVersion", ResourceBlockPermission::getMvccVersion);
-		attributeSetters.put("mvccVersion", ResourceBlockPermission::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<ResourceBlockPermission, Long>)ResourceBlockPermission::setMvccVersion);
 		attributeGetters.put("resourceBlockPermissionId", ResourceBlockPermission::getResourceBlockPermissionId);
-		attributeSetters.put("resourceBlockPermissionId", ResourceBlockPermission::setResourceBlockPermissionId);
-
+		attributeSetters.put("resourceBlockPermissionId", (BiConsumer<ResourceBlockPermission, Long>)ResourceBlockPermission::setResourceBlockPermissionId);
 		attributeGetters.put("companyId", ResourceBlockPermission::getCompanyId);
-		attributeSetters.put("companyId", ResourceBlockPermission::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<ResourceBlockPermission, Long>)ResourceBlockPermission::setCompanyId);
 		attributeGetters.put("resourceBlockId", ResourceBlockPermission::getResourceBlockId);
-		attributeSetters.put("resourceBlockId", ResourceBlockPermission::setResourceBlockId);
-
+		attributeSetters.put("resourceBlockId", (BiConsumer<ResourceBlockPermission, Long>)ResourceBlockPermission::setResourceBlockId);
 		attributeGetters.put("roleId", ResourceBlockPermission::getRoleId);
-		attributeSetters.put("roleId", ResourceBlockPermission::setRoleId);
-
+		attributeSetters.put("roleId", (BiConsumer<ResourceBlockPermission, Long>)ResourceBlockPermission::setRoleId);
 		attributeGetters.put("actionIds", ResourceBlockPermission::getActionIds);
-		attributeSetters.put("actionIds", ResourceBlockPermission::setActionIds);
+		attributeSetters.put("actionIds", (BiConsumer<ResourceBlockPermission, Long>)ResourceBlockPermission::setActionIds);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

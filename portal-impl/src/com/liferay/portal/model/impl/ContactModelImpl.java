@@ -277,97 +277,69 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 
 	static {
 		Map<String, Function<Contact, Object>> attributeGetters = new LinkedHashMap<String, Function<Contact, Object>>();
-		Map<String, BiConsumer<Contact, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Contact, Object>>();
+		Map<String, BiConsumer<Contact, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Contact, ?>>();
 
 		attributeGetters.put("mvccVersion", Contact::getMvccVersion);
-		attributeSetters.put("mvccVersion", Contact::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<Contact, Long>)Contact::setMvccVersion);
 		attributeGetters.put("contactId", Contact::getContactId);
-		attributeSetters.put("contactId", Contact::setContactId);
-
+		attributeSetters.put("contactId", (BiConsumer<Contact, Long>)Contact::setContactId);
 		attributeGetters.put("companyId", Contact::getCompanyId);
-		attributeSetters.put("companyId", Contact::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<Contact, Long>)Contact::setCompanyId);
 		attributeGetters.put("userId", Contact::getUserId);
-		attributeSetters.put("userId", Contact::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<Contact, Long>)Contact::setUserId);
 		attributeGetters.put("userName", Contact::getUserName);
-		attributeSetters.put("userName", Contact::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<Contact, String>)Contact::setUserName);
 		attributeGetters.put("createDate", Contact::getCreateDate);
-		attributeSetters.put("createDate", Contact::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<Contact, Date>)Contact::setCreateDate);
 		attributeGetters.put("modifiedDate", Contact::getModifiedDate);
-		attributeSetters.put("modifiedDate", Contact::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<Contact, Date>)Contact::setModifiedDate);
 		attributeGetters.put("classNameId", Contact::getClassNameId);
-		attributeSetters.put("classNameId", Contact::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<Contact, Long>)Contact::setClassNameId);
 		attributeGetters.put("classPK", Contact::getClassPK);
-		attributeSetters.put("classPK", Contact::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<Contact, Long>)Contact::setClassPK);
 		attributeGetters.put("accountId", Contact::getAccountId);
-		attributeSetters.put("accountId", Contact::setAccountId);
-
+		attributeSetters.put("accountId", (BiConsumer<Contact, Long>)Contact::setAccountId);
 		attributeGetters.put("parentContactId", Contact::getParentContactId);
-		attributeSetters.put("parentContactId", Contact::setParentContactId);
-
+		attributeSetters.put("parentContactId", (BiConsumer<Contact, Long>)Contact::setParentContactId);
 		attributeGetters.put("emailAddress", Contact::getEmailAddress);
-		attributeSetters.put("emailAddress", Contact::setEmailAddress);
-
+		attributeSetters.put("emailAddress", (BiConsumer<Contact, String>)Contact::setEmailAddress);
 		attributeGetters.put("firstName", Contact::getFirstName);
-		attributeSetters.put("firstName", Contact::setFirstName);
-
+		attributeSetters.put("firstName", (BiConsumer<Contact, String>)Contact::setFirstName);
 		attributeGetters.put("middleName", Contact::getMiddleName);
-		attributeSetters.put("middleName", Contact::setMiddleName);
-
+		attributeSetters.put("middleName", (BiConsumer<Contact, String>)Contact::setMiddleName);
 		attributeGetters.put("lastName", Contact::getLastName);
-		attributeSetters.put("lastName", Contact::setLastName);
-
+		attributeSetters.put("lastName", (BiConsumer<Contact, String>)Contact::setLastName);
 		attributeGetters.put("prefixId", Contact::getPrefixId);
-		attributeSetters.put("prefixId", Contact::setPrefixId);
-
+		attributeSetters.put("prefixId", (BiConsumer<Contact, Long>)Contact::setPrefixId);
 		attributeGetters.put("suffixId", Contact::getSuffixId);
-		attributeSetters.put("suffixId", Contact::setSuffixId);
-
+		attributeSetters.put("suffixId", (BiConsumer<Contact, Long>)Contact::setSuffixId);
 		attributeGetters.put("male", Contact::getMale);
-		attributeSetters.put("male", Contact::setMale);
-
+		attributeSetters.put("male", (BiConsumer<Contact, Boolean>)Contact::setMale);
 		attributeGetters.put("birthday", Contact::getBirthday);
-		attributeSetters.put("birthday", Contact::setBirthday);
-
+		attributeSetters.put("birthday", (BiConsumer<Contact, Date>)Contact::setBirthday);
 		attributeGetters.put("smsSn", Contact::getSmsSn);
-		attributeSetters.put("smsSn", Contact::setSmsSn);
-
+		attributeSetters.put("smsSn", (BiConsumer<Contact, String>)Contact::setSmsSn);
 		attributeGetters.put("facebookSn", Contact::getFacebookSn);
-		attributeSetters.put("facebookSn", Contact::setFacebookSn);
-
+		attributeSetters.put("facebookSn", (BiConsumer<Contact, String>)Contact::setFacebookSn);
 		attributeGetters.put("jabberSn", Contact::getJabberSn);
-		attributeSetters.put("jabberSn", Contact::setJabberSn);
-
+		attributeSetters.put("jabberSn", (BiConsumer<Contact, String>)Contact::setJabberSn);
 		attributeGetters.put("skypeSn", Contact::getSkypeSn);
-		attributeSetters.put("skypeSn", Contact::setSkypeSn);
-
+		attributeSetters.put("skypeSn", (BiConsumer<Contact, String>)Contact::setSkypeSn);
 		attributeGetters.put("twitterSn", Contact::getTwitterSn);
-		attributeSetters.put("twitterSn", Contact::setTwitterSn);
-
+		attributeSetters.put("twitterSn", (BiConsumer<Contact, String>)Contact::setTwitterSn);
 		attributeGetters.put("employeeStatusId", Contact::getEmployeeStatusId);
-		attributeSetters.put("employeeStatusId", Contact::setEmployeeStatusId);
-
+		attributeSetters.put("employeeStatusId", (BiConsumer<Contact, String>)Contact::setEmployeeStatusId);
 		attributeGetters.put("employeeNumber", Contact::getEmployeeNumber);
-		attributeSetters.put("employeeNumber", Contact::setEmployeeNumber);
-
+		attributeSetters.put("employeeNumber", (BiConsumer<Contact, String>)Contact::setEmployeeNumber);
 		attributeGetters.put("jobTitle", Contact::getJobTitle);
-		attributeSetters.put("jobTitle", Contact::setJobTitle);
-
+		attributeSetters.put("jobTitle", (BiConsumer<Contact, String>)Contact::setJobTitle);
 		attributeGetters.put("jobClass", Contact::getJobClass);
-		attributeSetters.put("jobClass", Contact::setJobClass);
-
+		attributeSetters.put("jobClass", (BiConsumer<Contact, String>)Contact::setJobClass);
 		attributeGetters.put("hoursOfOperation", Contact::getHoursOfOperation);
-		attributeSetters.put("hoursOfOperation", Contact::setHoursOfOperation);
+		attributeSetters.put("hoursOfOperation", (BiConsumer<Contact, String>)Contact::setHoursOfOperation);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

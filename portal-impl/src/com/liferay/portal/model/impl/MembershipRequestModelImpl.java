@@ -222,43 +222,33 @@ public class MembershipRequestModelImpl extends BaseModelImpl<MembershipRequest>
 
 	static {
 		Map<String, Function<MembershipRequest, Object>> attributeGetters = new LinkedHashMap<String, Function<MembershipRequest, Object>>();
-		Map<String, BiConsumer<MembershipRequest, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<MembershipRequest, Object>>();
+		Map<String, BiConsumer<MembershipRequest, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<MembershipRequest, ?>>();
 
 		attributeGetters.put("mvccVersion", MembershipRequest::getMvccVersion);
-		attributeSetters.put("mvccVersion", MembershipRequest::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<MembershipRequest, Long>)MembershipRequest::setMvccVersion);
 		attributeGetters.put("membershipRequestId", MembershipRequest::getMembershipRequestId);
-		attributeSetters.put("membershipRequestId", MembershipRequest::setMembershipRequestId);
-
+		attributeSetters.put("membershipRequestId", (BiConsumer<MembershipRequest, Long>)MembershipRequest::setMembershipRequestId);
 		attributeGetters.put("groupId", MembershipRequest::getGroupId);
-		attributeSetters.put("groupId", MembershipRequest::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<MembershipRequest, Long>)MembershipRequest::setGroupId);
 		attributeGetters.put("companyId", MembershipRequest::getCompanyId);
-		attributeSetters.put("companyId", MembershipRequest::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<MembershipRequest, Long>)MembershipRequest::setCompanyId);
 		attributeGetters.put("userId", MembershipRequest::getUserId);
-		attributeSetters.put("userId", MembershipRequest::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<MembershipRequest, Long>)MembershipRequest::setUserId);
 		attributeGetters.put("createDate", MembershipRequest::getCreateDate);
-		attributeSetters.put("createDate", MembershipRequest::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<MembershipRequest, Date>)MembershipRequest::setCreateDate);
 		attributeGetters.put("comments", MembershipRequest::getComments);
-		attributeSetters.put("comments", MembershipRequest::setComments);
-
+		attributeSetters.put("comments", (BiConsumer<MembershipRequest, String>)MembershipRequest::setComments);
 		attributeGetters.put("replyComments", MembershipRequest::getReplyComments);
-		attributeSetters.put("replyComments", MembershipRequest::setReplyComments);
-
+		attributeSetters.put("replyComments", (BiConsumer<MembershipRequest, String>)MembershipRequest::setReplyComments);
 		attributeGetters.put("replyDate", MembershipRequest::getReplyDate);
-		attributeSetters.put("replyDate", MembershipRequest::setReplyDate);
-
+		attributeSetters.put("replyDate", (BiConsumer<MembershipRequest, Date>)MembershipRequest::setReplyDate);
 		attributeGetters.put("replierUserId", MembershipRequest::getReplierUserId);
-		attributeSetters.put("replierUserId", MembershipRequest::setReplierUserId);
-
+		attributeSetters.put("replierUserId", (BiConsumer<MembershipRequest, Long>)MembershipRequest::setReplierUserId);
 		attributeGetters.put("statusId", MembershipRequest::getStatusId);
-		attributeSetters.put("statusId", MembershipRequest::setStatusId);
+		attributeSetters.put("statusId", (BiConsumer<MembershipRequest, Long>)MembershipRequest::setStatusId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

@@ -182,64 +182,47 @@ public class KaleoActionModelImpl extends BaseModelImpl<KaleoAction>
 
 	static {
 		Map<String, Function<KaleoAction, Object>> attributeGetters = new LinkedHashMap<String, Function<KaleoAction, Object>>();
-		Map<String, BiConsumer<KaleoAction, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<KaleoAction, Object>>();
+		Map<String, BiConsumer<KaleoAction, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<KaleoAction, ?>>();
 
 		attributeGetters.put("kaleoActionId", KaleoAction::getKaleoActionId);
-		attributeSetters.put("kaleoActionId", KaleoAction::setKaleoActionId);
-
+		attributeSetters.put("kaleoActionId", (BiConsumer<KaleoAction, Long>)KaleoAction::setKaleoActionId);
 		attributeGetters.put("groupId", KaleoAction::getGroupId);
-		attributeSetters.put("groupId", KaleoAction::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<KaleoAction, Long>)KaleoAction::setGroupId);
 		attributeGetters.put("companyId", KaleoAction::getCompanyId);
-		attributeSetters.put("companyId", KaleoAction::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<KaleoAction, Long>)KaleoAction::setCompanyId);
 		attributeGetters.put("userId", KaleoAction::getUserId);
-		attributeSetters.put("userId", KaleoAction::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<KaleoAction, Long>)KaleoAction::setUserId);
 		attributeGetters.put("userName", KaleoAction::getUserName);
-		attributeSetters.put("userName", KaleoAction::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<KaleoAction, String>)KaleoAction::setUserName);
 		attributeGetters.put("createDate", KaleoAction::getCreateDate);
-		attributeSetters.put("createDate", KaleoAction::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<KaleoAction, Date>)KaleoAction::setCreateDate);
 		attributeGetters.put("modifiedDate", KaleoAction::getModifiedDate);
-		attributeSetters.put("modifiedDate", KaleoAction::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<KaleoAction, Date>)KaleoAction::setModifiedDate);
 		attributeGetters.put("kaleoClassName", KaleoAction::getKaleoClassName);
-		attributeSetters.put("kaleoClassName", KaleoAction::setKaleoClassName);
-
+		attributeSetters.put("kaleoClassName", (BiConsumer<KaleoAction, String>)KaleoAction::setKaleoClassName);
 		attributeGetters.put("kaleoClassPK", KaleoAction::getKaleoClassPK);
-		attributeSetters.put("kaleoClassPK", KaleoAction::setKaleoClassPK);
-
+		attributeSetters.put("kaleoClassPK", (BiConsumer<KaleoAction, Long>)KaleoAction::setKaleoClassPK);
 		attributeGetters.put("kaleoDefinitionVersionId", KaleoAction::getKaleoDefinitionVersionId);
-		attributeSetters.put("kaleoDefinitionVersionId", KaleoAction::setKaleoDefinitionVersionId);
-
+		attributeSetters.put("kaleoDefinitionVersionId", (BiConsumer<KaleoAction, Long>)KaleoAction::setKaleoDefinitionVersionId);
 		attributeGetters.put("kaleoNodeName", KaleoAction::getKaleoNodeName);
-		attributeSetters.put("kaleoNodeName", KaleoAction::setKaleoNodeName);
-
+		attributeSetters.put("kaleoNodeName", (BiConsumer<KaleoAction, String>)KaleoAction::setKaleoNodeName);
 		attributeGetters.put("name", KaleoAction::getName);
-		attributeSetters.put("name", KaleoAction::setName);
-
+		attributeSetters.put("name", (BiConsumer<KaleoAction, String>)KaleoAction::setName);
 		attributeGetters.put("description", KaleoAction::getDescription);
-		attributeSetters.put("description", KaleoAction::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<KaleoAction, String>)KaleoAction::setDescription);
 		attributeGetters.put("executionType", KaleoAction::getExecutionType);
-		attributeSetters.put("executionType", KaleoAction::setExecutionType);
-
+		attributeSetters.put("executionType", (BiConsumer<KaleoAction, String>)KaleoAction::setExecutionType);
 		attributeGetters.put("script", KaleoAction::getScript);
-		attributeSetters.put("script", KaleoAction::setScript);
-
+		attributeSetters.put("script", (BiConsumer<KaleoAction, String>)KaleoAction::setScript);
 		attributeGetters.put("scriptLanguage", KaleoAction::getScriptLanguage);
-		attributeSetters.put("scriptLanguage", KaleoAction::setScriptLanguage);
-
+		attributeSetters.put("scriptLanguage", (BiConsumer<KaleoAction, String>)KaleoAction::setScriptLanguage);
 		attributeGetters.put("scriptRequiredContexts", KaleoAction::getScriptRequiredContexts);
-		attributeSetters.put("scriptRequiredContexts", KaleoAction::setScriptRequiredContexts);
-
+		attributeSetters.put("scriptRequiredContexts", (BiConsumer<KaleoAction, String>)KaleoAction::setScriptRequiredContexts);
 		attributeGetters.put("priority", KaleoAction::getPriority);
-		attributeSetters.put("priority", KaleoAction::setPriority);
+		attributeSetters.put("priority", (BiConsumer<KaleoAction, Integer>)KaleoAction::setPriority);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

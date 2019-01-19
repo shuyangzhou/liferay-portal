@@ -150,28 +150,23 @@ public class ServiceComponentModelImpl extends BaseModelImpl<ServiceComponent>
 
 	static {
 		Map<String, Function<ServiceComponent, Object>> attributeGetters = new LinkedHashMap<String, Function<ServiceComponent, Object>>();
-		Map<String, BiConsumer<ServiceComponent, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<ServiceComponent, Object>>();
+		Map<String, BiConsumer<ServiceComponent, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<ServiceComponent, ?>>();
 
 		attributeGetters.put("mvccVersion", ServiceComponent::getMvccVersion);
-		attributeSetters.put("mvccVersion", ServiceComponent::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<ServiceComponent, Long>)ServiceComponent::setMvccVersion);
 		attributeGetters.put("serviceComponentId", ServiceComponent::getServiceComponentId);
-		attributeSetters.put("serviceComponentId", ServiceComponent::setServiceComponentId);
-
+		attributeSetters.put("serviceComponentId", (BiConsumer<ServiceComponent, Long>)ServiceComponent::setServiceComponentId);
 		attributeGetters.put("buildNamespace", ServiceComponent::getBuildNamespace);
-		attributeSetters.put("buildNamespace", ServiceComponent::setBuildNamespace);
-
+		attributeSetters.put("buildNamespace", (BiConsumer<ServiceComponent, String>)ServiceComponent::setBuildNamespace);
 		attributeGetters.put("buildNumber", ServiceComponent::getBuildNumber);
-		attributeSetters.put("buildNumber", ServiceComponent::setBuildNumber);
-
+		attributeSetters.put("buildNumber", (BiConsumer<ServiceComponent, Long>)ServiceComponent::setBuildNumber);
 		attributeGetters.put("buildDate", ServiceComponent::getBuildDate);
-		attributeSetters.put("buildDate", ServiceComponent::setBuildDate);
-
+		attributeSetters.put("buildDate", (BiConsumer<ServiceComponent, Long>)ServiceComponent::setBuildDate);
 		attributeGetters.put("data", ServiceComponent::getData);
-		attributeSetters.put("data", ServiceComponent::setData);
+		attributeSetters.put("data", (BiConsumer<ServiceComponent, String>)ServiceComponent::setData);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

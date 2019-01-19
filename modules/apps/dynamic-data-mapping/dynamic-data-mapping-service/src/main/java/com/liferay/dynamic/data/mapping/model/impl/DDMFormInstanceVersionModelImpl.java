@@ -246,59 +246,43 @@ public class DDMFormInstanceVersionModelImpl extends BaseModelImpl<DDMFormInstan
 
 	static {
 		Map<String, Function<DDMFormInstanceVersion, Object>> attributeGetters = new LinkedHashMap<String, Function<DDMFormInstanceVersion, Object>>();
-		Map<String, BiConsumer<DDMFormInstanceVersion, Object>> attributeSetters =
-			new LinkedHashMap<String, BiConsumer<DDMFormInstanceVersion, Object>>();
+		Map<String, BiConsumer<DDMFormInstanceVersion, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDMFormInstanceVersion, ?>>();
 
 		attributeGetters.put("formInstanceVersionId", DDMFormInstanceVersion::getFormInstanceVersionId);
-		attributeSetters.put("formInstanceVersionId", DDMFormInstanceVersion::setFormInstanceVersionId);
-
+		attributeSetters.put("formInstanceVersionId", (BiConsumer<DDMFormInstanceVersion, Long>)DDMFormInstanceVersion::setFormInstanceVersionId);
 		attributeGetters.put("groupId", DDMFormInstanceVersion::getGroupId);
-		attributeSetters.put("groupId", DDMFormInstanceVersion::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<DDMFormInstanceVersion, Long>)DDMFormInstanceVersion::setGroupId);
 		attributeGetters.put("companyId", DDMFormInstanceVersion::getCompanyId);
-		attributeSetters.put("companyId", DDMFormInstanceVersion::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<DDMFormInstanceVersion, Long>)DDMFormInstanceVersion::setCompanyId);
 		attributeGetters.put("userId", DDMFormInstanceVersion::getUserId);
-		attributeSetters.put("userId", DDMFormInstanceVersion::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<DDMFormInstanceVersion, Long>)DDMFormInstanceVersion::setUserId);
 		attributeGetters.put("userName", DDMFormInstanceVersion::getUserName);
-		attributeSetters.put("userName", DDMFormInstanceVersion::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<DDMFormInstanceVersion, String>)DDMFormInstanceVersion::setUserName);
 		attributeGetters.put("createDate", DDMFormInstanceVersion::getCreateDate);
-		attributeSetters.put("createDate", DDMFormInstanceVersion::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<DDMFormInstanceVersion, Date>)DDMFormInstanceVersion::setCreateDate);
 		attributeGetters.put("formInstanceId", DDMFormInstanceVersion::getFormInstanceId);
-		attributeSetters.put("formInstanceId", DDMFormInstanceVersion::setFormInstanceId);
-
+		attributeSetters.put("formInstanceId", (BiConsumer<DDMFormInstanceVersion, Long>)DDMFormInstanceVersion::setFormInstanceId);
 		attributeGetters.put("structureVersionId", DDMFormInstanceVersion::getStructureVersionId);
-		attributeSetters.put("structureVersionId", DDMFormInstanceVersion::setStructureVersionId);
-
+		attributeSetters.put("structureVersionId", (BiConsumer<DDMFormInstanceVersion, Long>)DDMFormInstanceVersion::setStructureVersionId);
 		attributeGetters.put("name", DDMFormInstanceVersion::getName);
-		attributeSetters.put("name", DDMFormInstanceVersion::setName);
-
+		attributeSetters.put("name", (BiConsumer<DDMFormInstanceVersion, String>)DDMFormInstanceVersion::setName);
 		attributeGetters.put("description", DDMFormInstanceVersion::getDescription);
-		attributeSetters.put("description", DDMFormInstanceVersion::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<DDMFormInstanceVersion, String>)DDMFormInstanceVersion::setDescription);
 		attributeGetters.put("settings", DDMFormInstanceVersion::getSettings);
-		attributeSetters.put("settings", DDMFormInstanceVersion::setSettings);
-
+		attributeSetters.put("settings", (BiConsumer<DDMFormInstanceVersion, String>)DDMFormInstanceVersion::setSettings);
 		attributeGetters.put("version", DDMFormInstanceVersion::getVersion);
-		attributeSetters.put("version", DDMFormInstanceVersion::setVersion);
-
+		attributeSetters.put("version", (BiConsumer<DDMFormInstanceVersion, String>)DDMFormInstanceVersion::setVersion);
 		attributeGetters.put("status", DDMFormInstanceVersion::getStatus);
-		attributeSetters.put("status", DDMFormInstanceVersion::setStatus);
-
+		attributeSetters.put("status", (BiConsumer<DDMFormInstanceVersion, Integer>)DDMFormInstanceVersion::setStatus);
 		attributeGetters.put("statusByUserId", DDMFormInstanceVersion::getStatusByUserId);
-		attributeSetters.put("statusByUserId", DDMFormInstanceVersion::setStatusByUserId);
-
+		attributeSetters.put("statusByUserId", (BiConsumer<DDMFormInstanceVersion, Long>)DDMFormInstanceVersion::setStatusByUserId);
 		attributeGetters.put("statusByUserName", DDMFormInstanceVersion::getStatusByUserName);
-		attributeSetters.put("statusByUserName", DDMFormInstanceVersion::setStatusByUserName);
-
+		attributeSetters.put("statusByUserName", (BiConsumer<DDMFormInstanceVersion, String>)DDMFormInstanceVersion::setStatusByUserName);
 		attributeGetters.put("statusDate", DDMFormInstanceVersion::getStatusDate);
-		attributeSetters.put("statusDate", DDMFormInstanceVersion::setStatusDate);
+		attributeSetters.put("statusDate", (BiConsumer<DDMFormInstanceVersion, Date>)DDMFormInstanceVersion::setStatusDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

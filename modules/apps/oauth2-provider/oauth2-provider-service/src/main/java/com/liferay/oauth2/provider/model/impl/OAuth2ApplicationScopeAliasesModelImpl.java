@@ -162,35 +162,28 @@ public class OAuth2ApplicationScopeAliasesModelImpl extends BaseModelImpl<OAuth2
 	static {
 		Map<String, Function<OAuth2ApplicationScopeAliases, Object>> attributeGetters =
 			new LinkedHashMap<String, Function<OAuth2ApplicationScopeAliases, Object>>();
-		Map<String, BiConsumer<OAuth2ApplicationScopeAliases, Object>> attributeSetters =
-			new LinkedHashMap<String, BiConsumer<OAuth2ApplicationScopeAliases, Object>>();
+		Map<String, BiConsumer<OAuth2ApplicationScopeAliases, ?>> attributeSetters =
+			new LinkedHashMap<String, BiConsumer<OAuth2ApplicationScopeAliases, ?>>();
 
 		attributeGetters.put("oAuth2ApplicationScopeAliasesId", OAuth2ApplicationScopeAliases::getOAuth2ApplicationScopeAliasesId);
-		attributeSetters.put("oAuth2ApplicationScopeAliasesId", OAuth2ApplicationScopeAliases::setOAuth2ApplicationScopeAliasesId);
-
+		attributeSetters.put("oAuth2ApplicationScopeAliasesId", (BiConsumer<OAuth2ApplicationScopeAliases, Long>)OAuth2ApplicationScopeAliases::setOAuth2ApplicationScopeAliasesId);
 		attributeGetters.put("companyId", OAuth2ApplicationScopeAliases::getCompanyId);
-		attributeSetters.put("companyId", OAuth2ApplicationScopeAliases::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<OAuth2ApplicationScopeAliases, Long>)OAuth2ApplicationScopeAliases::setCompanyId);
 		attributeGetters.put("userId", OAuth2ApplicationScopeAliases::getUserId);
-		attributeSetters.put("userId", OAuth2ApplicationScopeAliases::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<OAuth2ApplicationScopeAliases, Long>)OAuth2ApplicationScopeAliases::setUserId);
 		attributeGetters.put("userName", OAuth2ApplicationScopeAliases::getUserName);
-		attributeSetters.put("userName", OAuth2ApplicationScopeAliases::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<OAuth2ApplicationScopeAliases, String>)OAuth2ApplicationScopeAliases::setUserName);
 		attributeGetters.put("createDate", OAuth2ApplicationScopeAliases::getCreateDate);
-		attributeSetters.put("createDate", OAuth2ApplicationScopeAliases::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<OAuth2ApplicationScopeAliases, Date>)OAuth2ApplicationScopeAliases::setCreateDate);
 		attributeGetters.put("oAuth2ApplicationId", OAuth2ApplicationScopeAliases::getOAuth2ApplicationId);
-		attributeSetters.put("oAuth2ApplicationId", OAuth2ApplicationScopeAliases::setOAuth2ApplicationId);
-
+		attributeSetters.put("oAuth2ApplicationId", (BiConsumer<OAuth2ApplicationScopeAliases, Long>)OAuth2ApplicationScopeAliases::setOAuth2ApplicationId);
 		attributeGetters.put("scopeAliases", OAuth2ApplicationScopeAliases::getScopeAliases);
-		attributeSetters.put("scopeAliases", OAuth2ApplicationScopeAliases::setScopeAliases);
-
+		attributeSetters.put("scopeAliases", (BiConsumer<OAuth2ApplicationScopeAliases, String>)OAuth2ApplicationScopeAliases::setScopeAliases);
 		attributeGetters.put("scopeAliasesHash", OAuth2ApplicationScopeAliases::getScopeAliasesHash);
-		attributeSetters.put("scopeAliasesHash", OAuth2ApplicationScopeAliases::setScopeAliasesHash);
+		attributeSetters.put("scopeAliasesHash", (BiConsumer<OAuth2ApplicationScopeAliases, Long>)OAuth2ApplicationScopeAliases::setScopeAliasesHash);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

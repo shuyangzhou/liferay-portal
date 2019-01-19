@@ -155,28 +155,23 @@ public class WikiPageResourceModelImpl extends BaseModelImpl<WikiPageResource>
 
 	static {
 		Map<String, Function<WikiPageResource, Object>> attributeGetters = new LinkedHashMap<String, Function<WikiPageResource, Object>>();
-		Map<String, BiConsumer<WikiPageResource, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<WikiPageResource, Object>>();
+		Map<String, BiConsumer<WikiPageResource, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<WikiPageResource, ?>>();
 
 		attributeGetters.put("uuid", WikiPageResource::getUuid);
-		attributeSetters.put("uuid", WikiPageResource::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<WikiPageResource, String>)WikiPageResource::setUuid);
 		attributeGetters.put("resourcePrimKey", WikiPageResource::getResourcePrimKey);
-		attributeSetters.put("resourcePrimKey", WikiPageResource::setResourcePrimKey);
-
+		attributeSetters.put("resourcePrimKey", (BiConsumer<WikiPageResource, Long>)WikiPageResource::setResourcePrimKey);
 		attributeGetters.put("groupId", WikiPageResource::getGroupId);
-		attributeSetters.put("groupId", WikiPageResource::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<WikiPageResource, Long>)WikiPageResource::setGroupId);
 		attributeGetters.put("companyId", WikiPageResource::getCompanyId);
-		attributeSetters.put("companyId", WikiPageResource::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<WikiPageResource, Long>)WikiPageResource::setCompanyId);
 		attributeGetters.put("nodeId", WikiPageResource::getNodeId);
-		attributeSetters.put("nodeId", WikiPageResource::setNodeId);
-
+		attributeSetters.put("nodeId", (BiConsumer<WikiPageResource, Long>)WikiPageResource::setNodeId);
 		attributeGetters.put("title", WikiPageResource::getTitle);
-		attributeSetters.put("title", WikiPageResource::setTitle);
+		attributeSetters.put("title", (BiConsumer<WikiPageResource, String>)WikiPageResource::setTitle);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

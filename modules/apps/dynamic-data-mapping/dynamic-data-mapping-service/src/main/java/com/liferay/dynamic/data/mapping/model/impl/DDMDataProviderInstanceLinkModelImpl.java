@@ -149,23 +149,20 @@ public class DDMDataProviderInstanceLinkModelImpl extends BaseModelImpl<DDMDataP
 	static {
 		Map<String, Function<DDMDataProviderInstanceLink, Object>> attributeGetters =
 			new LinkedHashMap<String, Function<DDMDataProviderInstanceLink, Object>>();
-		Map<String, BiConsumer<DDMDataProviderInstanceLink, Object>> attributeSetters =
-			new LinkedHashMap<String, BiConsumer<DDMDataProviderInstanceLink, Object>>();
+		Map<String, BiConsumer<DDMDataProviderInstanceLink, ?>> attributeSetters =
+			new LinkedHashMap<String, BiConsumer<DDMDataProviderInstanceLink, ?>>();
 
 		attributeGetters.put("dataProviderInstanceLinkId", DDMDataProviderInstanceLink::getDataProviderInstanceLinkId);
-		attributeSetters.put("dataProviderInstanceLinkId", DDMDataProviderInstanceLink::setDataProviderInstanceLinkId);
-
+		attributeSetters.put("dataProviderInstanceLinkId", (BiConsumer<DDMDataProviderInstanceLink, Long>)DDMDataProviderInstanceLink::setDataProviderInstanceLinkId);
 		attributeGetters.put("companyId", DDMDataProviderInstanceLink::getCompanyId);
-		attributeSetters.put("companyId", DDMDataProviderInstanceLink::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<DDMDataProviderInstanceLink, Long>)DDMDataProviderInstanceLink::setCompanyId);
 		attributeGetters.put("dataProviderInstanceId", DDMDataProviderInstanceLink::getDataProviderInstanceId);
-		attributeSetters.put("dataProviderInstanceId", DDMDataProviderInstanceLink::setDataProviderInstanceId);
-
+		attributeSetters.put("dataProviderInstanceId", (BiConsumer<DDMDataProviderInstanceLink, Long>)DDMDataProviderInstanceLink::setDataProviderInstanceId);
 		attributeGetters.put("structureId", DDMDataProviderInstanceLink::getStructureId);
-		attributeSetters.put("structureId", DDMDataProviderInstanceLink::setStructureId);
+		attributeSetters.put("structureId", (BiConsumer<DDMDataProviderInstanceLink, Long>)DDMDataProviderInstanceLink::setStructureId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

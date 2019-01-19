@@ -209,8 +209,7 @@ public class LocalizedEntryLocalizationModelImpl extends BaseModelImpl<Localized
 	static {
 		Map<String, Function<LocalizedEntryLocalization, Object>> attributeGetters =
 			new LinkedHashMap<String, Function<LocalizedEntryLocalization, Object>>();
-		Map<String, BiConsumer<LocalizedEntryLocalization, Object>> attributeSetters =
-			new LinkedHashMap<String, BiConsumer<LocalizedEntryLocalization, Object>>();
+		Map<String, BiConsumer<LocalizedEntryLocalization, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<LocalizedEntryLocalization, ?>>();
 
 		attributeGetters.put(
 			"mvccVersion",
@@ -232,7 +231,6 @@ public class LocalizedEntryLocalizationModelImpl extends BaseModelImpl<Localized
 				}
 
 			});
-
 		attributeGetters.put(
 			"localizedEntryLocalizationId",
 			new Function<LocalizedEntryLocalization, Object>() {
@@ -253,7 +251,6 @@ public class LocalizedEntryLocalizationModelImpl extends BaseModelImpl<Localized
 				}
 
 			});
-
 		attributeGetters.put(
 			"localizedEntryId",
 			new Function<LocalizedEntryLocalization, Object>() {
@@ -274,7 +271,6 @@ public class LocalizedEntryLocalizationModelImpl extends BaseModelImpl<Localized
 				}
 
 			});
-
 		attributeGetters.put(
 			"languageId",
 			new Function<LocalizedEntryLocalization, Object>() {
@@ -295,7 +291,6 @@ public class LocalizedEntryLocalizationModelImpl extends BaseModelImpl<Localized
 				}
 
 			});
-
 		attributeGetters.put(
 			"title",
 			new Function<LocalizedEntryLocalization, Object>() {
@@ -316,7 +311,6 @@ public class LocalizedEntryLocalizationModelImpl extends BaseModelImpl<Localized
 				}
 
 			});
-
 		attributeGetters.put(
 			"content",
 			new Function<LocalizedEntryLocalization, Object>() {
@@ -339,7 +333,7 @@ public class LocalizedEntryLocalizationModelImpl extends BaseModelImpl<Localized
 			});
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

@@ -234,43 +234,33 @@ public class AssetTagModelImpl extends BaseModelImpl<AssetTag>
 
 	static {
 		Map<String, Function<AssetTag, Object>> attributeGetters = new LinkedHashMap<String, Function<AssetTag, Object>>();
-		Map<String, BiConsumer<AssetTag, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetTag, Object>>();
+		Map<String, BiConsumer<AssetTag, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetTag, ?>>();
 
 		attributeGetters.put("uuid", AssetTag::getUuid);
-		attributeSetters.put("uuid", AssetTag::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<AssetTag, String>)AssetTag::setUuid);
 		attributeGetters.put("tagId", AssetTag::getTagId);
-		attributeSetters.put("tagId", AssetTag::setTagId);
-
+		attributeSetters.put("tagId", (BiConsumer<AssetTag, Long>)AssetTag::setTagId);
 		attributeGetters.put("groupId", AssetTag::getGroupId);
-		attributeSetters.put("groupId", AssetTag::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<AssetTag, Long>)AssetTag::setGroupId);
 		attributeGetters.put("companyId", AssetTag::getCompanyId);
-		attributeSetters.put("companyId", AssetTag::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<AssetTag, Long>)AssetTag::setCompanyId);
 		attributeGetters.put("userId", AssetTag::getUserId);
-		attributeSetters.put("userId", AssetTag::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<AssetTag, Long>)AssetTag::setUserId);
 		attributeGetters.put("userName", AssetTag::getUserName);
-		attributeSetters.put("userName", AssetTag::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<AssetTag, String>)AssetTag::setUserName);
 		attributeGetters.put("createDate", AssetTag::getCreateDate);
-		attributeSetters.put("createDate", AssetTag::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<AssetTag, Date>)AssetTag::setCreateDate);
 		attributeGetters.put("modifiedDate", AssetTag::getModifiedDate);
-		attributeSetters.put("modifiedDate", AssetTag::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<AssetTag, Date>)AssetTag::setModifiedDate);
 		attributeGetters.put("name", AssetTag::getName);
-		attributeSetters.put("name", AssetTag::setName);
-
+		attributeSetters.put("name", (BiConsumer<AssetTag, String>)AssetTag::setName);
 		attributeGetters.put("assetCount", AssetTag::getAssetCount);
-		attributeSetters.put("assetCount", AssetTag::setAssetCount);
-
+		attributeSetters.put("assetCount", (BiConsumer<AssetTag, Integer>)AssetTag::setAssetCount);
 		attributeGetters.put("lastPublishDate", AssetTag::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", AssetTag::setLastPublishDate);
+		attributeSetters.put("lastPublishDate", (BiConsumer<AssetTag, Date>)AssetTag::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

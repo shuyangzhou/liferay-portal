@@ -209,31 +209,25 @@ public class AnnouncementsDeliveryModelImpl extends BaseModelImpl<AnnouncementsD
 
 	static {
 		Map<String, Function<AnnouncementsDelivery, Object>> attributeGetters = new LinkedHashMap<String, Function<AnnouncementsDelivery, Object>>();
-		Map<String, BiConsumer<AnnouncementsDelivery, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<AnnouncementsDelivery, Object>>();
+		Map<String, BiConsumer<AnnouncementsDelivery, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<AnnouncementsDelivery, ?>>();
 
 		attributeGetters.put("deliveryId", AnnouncementsDelivery::getDeliveryId);
-		attributeSetters.put("deliveryId", AnnouncementsDelivery::setDeliveryId);
-
+		attributeSetters.put("deliveryId", (BiConsumer<AnnouncementsDelivery, Long>)AnnouncementsDelivery::setDeliveryId);
 		attributeGetters.put("companyId", AnnouncementsDelivery::getCompanyId);
-		attributeSetters.put("companyId", AnnouncementsDelivery::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<AnnouncementsDelivery, Long>)AnnouncementsDelivery::setCompanyId);
 		attributeGetters.put("userId", AnnouncementsDelivery::getUserId);
-		attributeSetters.put("userId", AnnouncementsDelivery::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<AnnouncementsDelivery, Long>)AnnouncementsDelivery::setUserId);
 		attributeGetters.put("type", AnnouncementsDelivery::getType);
-		attributeSetters.put("type", AnnouncementsDelivery::setType);
-
+		attributeSetters.put("type", (BiConsumer<AnnouncementsDelivery, String>)AnnouncementsDelivery::setType);
 		attributeGetters.put("email", AnnouncementsDelivery::getEmail);
-		attributeSetters.put("email", AnnouncementsDelivery::setEmail);
-
+		attributeSetters.put("email", (BiConsumer<AnnouncementsDelivery, Boolean>)AnnouncementsDelivery::setEmail);
 		attributeGetters.put("sms", AnnouncementsDelivery::getSms);
-		attributeSetters.put("sms", AnnouncementsDelivery::setSms);
-
+		attributeSetters.put("sms", (BiConsumer<AnnouncementsDelivery, Boolean>)AnnouncementsDelivery::setSms);
 		attributeGetters.put("website", AnnouncementsDelivery::getWebsite);
-		attributeSetters.put("website", AnnouncementsDelivery::setWebsite);
+		attributeSetters.put("website", (BiConsumer<AnnouncementsDelivery, Boolean>)AnnouncementsDelivery::setWebsite);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

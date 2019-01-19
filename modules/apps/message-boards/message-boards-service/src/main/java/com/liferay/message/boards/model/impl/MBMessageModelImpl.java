@@ -284,88 +284,63 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 
 	static {
 		Map<String, Function<MBMessage, Object>> attributeGetters = new LinkedHashMap<String, Function<MBMessage, Object>>();
-		Map<String, BiConsumer<MBMessage, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<MBMessage, Object>>();
+		Map<String, BiConsumer<MBMessage, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<MBMessage, ?>>();
 
 		attributeGetters.put("uuid", MBMessage::getUuid);
-		attributeSetters.put("uuid", MBMessage::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<MBMessage, String>)MBMessage::setUuid);
 		attributeGetters.put("messageId", MBMessage::getMessageId);
-		attributeSetters.put("messageId", MBMessage::setMessageId);
-
+		attributeSetters.put("messageId", (BiConsumer<MBMessage, Long>)MBMessage::setMessageId);
 		attributeGetters.put("groupId", MBMessage::getGroupId);
-		attributeSetters.put("groupId", MBMessage::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<MBMessage, Long>)MBMessage::setGroupId);
 		attributeGetters.put("companyId", MBMessage::getCompanyId);
-		attributeSetters.put("companyId", MBMessage::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<MBMessage, Long>)MBMessage::setCompanyId);
 		attributeGetters.put("userId", MBMessage::getUserId);
-		attributeSetters.put("userId", MBMessage::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<MBMessage, Long>)MBMessage::setUserId);
 		attributeGetters.put("userName", MBMessage::getUserName);
-		attributeSetters.put("userName", MBMessage::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<MBMessage, String>)MBMessage::setUserName);
 		attributeGetters.put("createDate", MBMessage::getCreateDate);
-		attributeSetters.put("createDate", MBMessage::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<MBMessage, Date>)MBMessage::setCreateDate);
 		attributeGetters.put("modifiedDate", MBMessage::getModifiedDate);
-		attributeSetters.put("modifiedDate", MBMessage::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<MBMessage, Date>)MBMessage::setModifiedDate);
 		attributeGetters.put("classNameId", MBMessage::getClassNameId);
-		attributeSetters.put("classNameId", MBMessage::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<MBMessage, Long>)MBMessage::setClassNameId);
 		attributeGetters.put("classPK", MBMessage::getClassPK);
-		attributeSetters.put("classPK", MBMessage::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<MBMessage, Long>)MBMessage::setClassPK);
 		attributeGetters.put("categoryId", MBMessage::getCategoryId);
-		attributeSetters.put("categoryId", MBMessage::setCategoryId);
-
+		attributeSetters.put("categoryId", (BiConsumer<MBMessage, Long>)MBMessage::setCategoryId);
 		attributeGetters.put("threadId", MBMessage::getThreadId);
-		attributeSetters.put("threadId", MBMessage::setThreadId);
-
+		attributeSetters.put("threadId", (BiConsumer<MBMessage, Long>)MBMessage::setThreadId);
 		attributeGetters.put("rootMessageId", MBMessage::getRootMessageId);
-		attributeSetters.put("rootMessageId", MBMessage::setRootMessageId);
-
+		attributeSetters.put("rootMessageId", (BiConsumer<MBMessage, Long>)MBMessage::setRootMessageId);
 		attributeGetters.put("parentMessageId", MBMessage::getParentMessageId);
-		attributeSetters.put("parentMessageId", MBMessage::setParentMessageId);
-
+		attributeSetters.put("parentMessageId", (BiConsumer<MBMessage, Long>)MBMessage::setParentMessageId);
 		attributeGetters.put("subject", MBMessage::getSubject);
-		attributeSetters.put("subject", MBMessage::setSubject);
-
+		attributeSetters.put("subject", (BiConsumer<MBMessage, String>)MBMessage::setSubject);
 		attributeGetters.put("body", MBMessage::getBody);
-		attributeSetters.put("body", MBMessage::setBody);
-
+		attributeSetters.put("body", (BiConsumer<MBMessage, String>)MBMessage::setBody);
 		attributeGetters.put("format", MBMessage::getFormat);
-		attributeSetters.put("format", MBMessage::setFormat);
-
+		attributeSetters.put("format", (BiConsumer<MBMessage, String>)MBMessage::setFormat);
 		attributeGetters.put("anonymous", MBMessage::getAnonymous);
-		attributeSetters.put("anonymous", MBMessage::setAnonymous);
-
+		attributeSetters.put("anonymous", (BiConsumer<MBMessage, Boolean>)MBMessage::setAnonymous);
 		attributeGetters.put("priority", MBMessage::getPriority);
-		attributeSetters.put("priority", MBMessage::setPriority);
-
+		attributeSetters.put("priority", (BiConsumer<MBMessage, Double>)MBMessage::setPriority);
 		attributeGetters.put("allowPingbacks", MBMessage::getAllowPingbacks);
-		attributeSetters.put("allowPingbacks", MBMessage::setAllowPingbacks);
-
+		attributeSetters.put("allowPingbacks", (BiConsumer<MBMessage, Boolean>)MBMessage::setAllowPingbacks);
 		attributeGetters.put("answer", MBMessage::getAnswer);
-		attributeSetters.put("answer", MBMessage::setAnswer);
-
+		attributeSetters.put("answer", (BiConsumer<MBMessage, Boolean>)MBMessage::setAnswer);
 		attributeGetters.put("lastPublishDate", MBMessage::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", MBMessage::setLastPublishDate);
-
+		attributeSetters.put("lastPublishDate", (BiConsumer<MBMessage, Date>)MBMessage::setLastPublishDate);
 		attributeGetters.put("status", MBMessage::getStatus);
-		attributeSetters.put("status", MBMessage::setStatus);
-
+		attributeSetters.put("status", (BiConsumer<MBMessage, Integer>)MBMessage::setStatus);
 		attributeGetters.put("statusByUserId", MBMessage::getStatusByUserId);
-		attributeSetters.put("statusByUserId", MBMessage::setStatusByUserId);
-
+		attributeSetters.put("statusByUserId", (BiConsumer<MBMessage, Long>)MBMessage::setStatusByUserId);
 		attributeGetters.put("statusByUserName", MBMessage::getStatusByUserName);
-		attributeSetters.put("statusByUserName", MBMessage::setStatusByUserName);
-
+		attributeSetters.put("statusByUserName", (BiConsumer<MBMessage, String>)MBMessage::setStatusByUserName);
 		attributeGetters.put("statusDate", MBMessage::getStatusDate);
-		attributeSetters.put("statusDate", MBMessage::setStatusDate);
+		attributeSetters.put("statusDate", (BiConsumer<MBMessage, Date>)MBMessage::setStatusDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

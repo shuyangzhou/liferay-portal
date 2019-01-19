@@ -173,49 +173,37 @@ public class SocialActivityCounterModelImpl extends BaseModelImpl<SocialActivity
 
 	static {
 		Map<String, Function<SocialActivityCounter, Object>> attributeGetters = new LinkedHashMap<String, Function<SocialActivityCounter, Object>>();
-		Map<String, BiConsumer<SocialActivityCounter, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SocialActivityCounter, Object>>();
+		Map<String, BiConsumer<SocialActivityCounter, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<SocialActivityCounter, ?>>();
 
 		attributeGetters.put("activityCounterId", SocialActivityCounter::getActivityCounterId);
-		attributeSetters.put("activityCounterId", SocialActivityCounter::setActivityCounterId);
-
+		attributeSetters.put("activityCounterId", (BiConsumer<SocialActivityCounter, Long>)SocialActivityCounter::setActivityCounterId);
 		attributeGetters.put("groupId", SocialActivityCounter::getGroupId);
-		attributeSetters.put("groupId", SocialActivityCounter::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<SocialActivityCounter, Long>)SocialActivityCounter::setGroupId);
 		attributeGetters.put("companyId", SocialActivityCounter::getCompanyId);
-		attributeSetters.put("companyId", SocialActivityCounter::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<SocialActivityCounter, Long>)SocialActivityCounter::setCompanyId);
 		attributeGetters.put("classNameId", SocialActivityCounter::getClassNameId);
-		attributeSetters.put("classNameId", SocialActivityCounter::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<SocialActivityCounter, Long>)SocialActivityCounter::setClassNameId);
 		attributeGetters.put("classPK", SocialActivityCounter::getClassPK);
-		attributeSetters.put("classPK", SocialActivityCounter::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<SocialActivityCounter, Long>)SocialActivityCounter::setClassPK);
 		attributeGetters.put("name", SocialActivityCounter::getName);
-		attributeSetters.put("name", SocialActivityCounter::setName);
-
+		attributeSetters.put("name", (BiConsumer<SocialActivityCounter, String>)SocialActivityCounter::setName);
 		attributeGetters.put("ownerType", SocialActivityCounter::getOwnerType);
-		attributeSetters.put("ownerType", SocialActivityCounter::setOwnerType);
-
+		attributeSetters.put("ownerType", (BiConsumer<SocialActivityCounter, Integer>)SocialActivityCounter::setOwnerType);
 		attributeGetters.put("currentValue", SocialActivityCounter::getCurrentValue);
-		attributeSetters.put("currentValue", SocialActivityCounter::setCurrentValue);
-
+		attributeSetters.put("currentValue", (BiConsumer<SocialActivityCounter, Integer>)SocialActivityCounter::setCurrentValue);
 		attributeGetters.put("totalValue", SocialActivityCounter::getTotalValue);
-		attributeSetters.put("totalValue", SocialActivityCounter::setTotalValue);
-
+		attributeSetters.put("totalValue", (BiConsumer<SocialActivityCounter, Integer>)SocialActivityCounter::setTotalValue);
 		attributeGetters.put("graceValue", SocialActivityCounter::getGraceValue);
-		attributeSetters.put("graceValue", SocialActivityCounter::setGraceValue);
-
+		attributeSetters.put("graceValue", (BiConsumer<SocialActivityCounter, Integer>)SocialActivityCounter::setGraceValue);
 		attributeGetters.put("startPeriod", SocialActivityCounter::getStartPeriod);
-		attributeSetters.put("startPeriod", SocialActivityCounter::setStartPeriod);
-
+		attributeSetters.put("startPeriod", (BiConsumer<SocialActivityCounter, Integer>)SocialActivityCounter::setStartPeriod);
 		attributeGetters.put("endPeriod", SocialActivityCounter::getEndPeriod);
-		attributeSetters.put("endPeriod", SocialActivityCounter::setEndPeriod);
-
+		attributeSetters.put("endPeriod", (BiConsumer<SocialActivityCounter, Integer>)SocialActivityCounter::setEndPeriod);
 		attributeGetters.put("active", SocialActivityCounter::getActive);
-		attributeSetters.put("active", SocialActivityCounter::setActive);
+		attributeSetters.put("active", (BiConsumer<SocialActivityCounter, Boolean>)SocialActivityCounter::setActive);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

@@ -175,50 +175,37 @@ public class WorkflowDefinitionLinkModelImpl extends BaseModelImpl<WorkflowDefin
 
 	static {
 		Map<String, Function<WorkflowDefinitionLink, Object>> attributeGetters = new LinkedHashMap<String, Function<WorkflowDefinitionLink, Object>>();
-		Map<String, BiConsumer<WorkflowDefinitionLink, Object>> attributeSetters =
-			new LinkedHashMap<String, BiConsumer<WorkflowDefinitionLink, Object>>();
+		Map<String, BiConsumer<WorkflowDefinitionLink, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<WorkflowDefinitionLink, ?>>();
 
 		attributeGetters.put("mvccVersion", WorkflowDefinitionLink::getMvccVersion);
-		attributeSetters.put("mvccVersion", WorkflowDefinitionLink::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<WorkflowDefinitionLink, Long>)WorkflowDefinitionLink::setMvccVersion);
 		attributeGetters.put("workflowDefinitionLinkId", WorkflowDefinitionLink::getWorkflowDefinitionLinkId);
-		attributeSetters.put("workflowDefinitionLinkId", WorkflowDefinitionLink::setWorkflowDefinitionLinkId);
-
+		attributeSetters.put("workflowDefinitionLinkId", (BiConsumer<WorkflowDefinitionLink, Long>)WorkflowDefinitionLink::setWorkflowDefinitionLinkId);
 		attributeGetters.put("groupId", WorkflowDefinitionLink::getGroupId);
-		attributeSetters.put("groupId", WorkflowDefinitionLink::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<WorkflowDefinitionLink, Long>)WorkflowDefinitionLink::setGroupId);
 		attributeGetters.put("companyId", WorkflowDefinitionLink::getCompanyId);
-		attributeSetters.put("companyId", WorkflowDefinitionLink::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<WorkflowDefinitionLink, Long>)WorkflowDefinitionLink::setCompanyId);
 		attributeGetters.put("userId", WorkflowDefinitionLink::getUserId);
-		attributeSetters.put("userId", WorkflowDefinitionLink::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<WorkflowDefinitionLink, Long>)WorkflowDefinitionLink::setUserId);
 		attributeGetters.put("userName", WorkflowDefinitionLink::getUserName);
-		attributeSetters.put("userName", WorkflowDefinitionLink::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<WorkflowDefinitionLink, String>)WorkflowDefinitionLink::setUserName);
 		attributeGetters.put("createDate", WorkflowDefinitionLink::getCreateDate);
-		attributeSetters.put("createDate", WorkflowDefinitionLink::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<WorkflowDefinitionLink, Date>)WorkflowDefinitionLink::setCreateDate);
 		attributeGetters.put("modifiedDate", WorkflowDefinitionLink::getModifiedDate);
-		attributeSetters.put("modifiedDate", WorkflowDefinitionLink::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<WorkflowDefinitionLink, Date>)WorkflowDefinitionLink::setModifiedDate);
 		attributeGetters.put("classNameId", WorkflowDefinitionLink::getClassNameId);
-		attributeSetters.put("classNameId", WorkflowDefinitionLink::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<WorkflowDefinitionLink, Long>)WorkflowDefinitionLink::setClassNameId);
 		attributeGetters.put("classPK", WorkflowDefinitionLink::getClassPK);
-		attributeSetters.put("classPK", WorkflowDefinitionLink::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<WorkflowDefinitionLink, Long>)WorkflowDefinitionLink::setClassPK);
 		attributeGetters.put("typePK", WorkflowDefinitionLink::getTypePK);
-		attributeSetters.put("typePK", WorkflowDefinitionLink::setTypePK);
-
+		attributeSetters.put("typePK", (BiConsumer<WorkflowDefinitionLink, Long>)WorkflowDefinitionLink::setTypePK);
 		attributeGetters.put("workflowDefinitionName", WorkflowDefinitionLink::getWorkflowDefinitionName);
-		attributeSetters.put("workflowDefinitionName", WorkflowDefinitionLink::setWorkflowDefinitionName);
-
+		attributeSetters.put("workflowDefinitionName", (BiConsumer<WorkflowDefinitionLink, String>)WorkflowDefinitionLink::setWorkflowDefinitionName);
 		attributeGetters.put("workflowDefinitionVersion", WorkflowDefinitionLink::getWorkflowDefinitionVersion);
-		attributeSetters.put("workflowDefinitionVersion", WorkflowDefinitionLink::setWorkflowDefinitionVersion);
+		attributeSetters.put("workflowDefinitionVersion", (BiConsumer<WorkflowDefinitionLink, Integer>)WorkflowDefinitionLink::setWorkflowDefinitionVersion);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

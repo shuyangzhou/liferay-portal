@@ -234,46 +234,35 @@ public class SAPEntryModelImpl extends BaseModelImpl<SAPEntry>
 
 	static {
 		Map<String, Function<SAPEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<SAPEntry, Object>>();
-		Map<String, BiConsumer<SAPEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SAPEntry, Object>>();
+		Map<String, BiConsumer<SAPEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<SAPEntry, ?>>();
 
 		attributeGetters.put("uuid", SAPEntry::getUuid);
-		attributeSetters.put("uuid", SAPEntry::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<SAPEntry, String>)SAPEntry::setUuid);
 		attributeGetters.put("sapEntryId", SAPEntry::getSapEntryId);
-		attributeSetters.put("sapEntryId", SAPEntry::setSapEntryId);
-
+		attributeSetters.put("sapEntryId", (BiConsumer<SAPEntry, Long>)SAPEntry::setSapEntryId);
 		attributeGetters.put("companyId", SAPEntry::getCompanyId);
-		attributeSetters.put("companyId", SAPEntry::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<SAPEntry, Long>)SAPEntry::setCompanyId);
 		attributeGetters.put("userId", SAPEntry::getUserId);
-		attributeSetters.put("userId", SAPEntry::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<SAPEntry, Long>)SAPEntry::setUserId);
 		attributeGetters.put("userName", SAPEntry::getUserName);
-		attributeSetters.put("userName", SAPEntry::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<SAPEntry, String>)SAPEntry::setUserName);
 		attributeGetters.put("createDate", SAPEntry::getCreateDate);
-		attributeSetters.put("createDate", SAPEntry::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<SAPEntry, Date>)SAPEntry::setCreateDate);
 		attributeGetters.put("modifiedDate", SAPEntry::getModifiedDate);
-		attributeSetters.put("modifiedDate", SAPEntry::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<SAPEntry, Date>)SAPEntry::setModifiedDate);
 		attributeGetters.put("allowedServiceSignatures", SAPEntry::getAllowedServiceSignatures);
-		attributeSetters.put("allowedServiceSignatures", SAPEntry::setAllowedServiceSignatures);
-
+		attributeSetters.put("allowedServiceSignatures", (BiConsumer<SAPEntry, String>)SAPEntry::setAllowedServiceSignatures);
 		attributeGetters.put("defaultSAPEntry", SAPEntry::getDefaultSAPEntry);
-		attributeSetters.put("defaultSAPEntry", SAPEntry::setDefaultSAPEntry);
-
+		attributeSetters.put("defaultSAPEntry", (BiConsumer<SAPEntry, Boolean>)SAPEntry::setDefaultSAPEntry);
 		attributeGetters.put("enabled", SAPEntry::getEnabled);
-		attributeSetters.put("enabled", SAPEntry::setEnabled);
-
+		attributeSetters.put("enabled", (BiConsumer<SAPEntry, Boolean>)SAPEntry::setEnabled);
 		attributeGetters.put("name", SAPEntry::getName);
-		attributeSetters.put("name", SAPEntry::setName);
-
+		attributeSetters.put("name", (BiConsumer<SAPEntry, String>)SAPEntry::setName);
 		attributeGetters.put("title", SAPEntry::getTitle);
-		attributeSetters.put("title", SAPEntry::setTitle);
+		attributeSetters.put("title", (BiConsumer<SAPEntry, String>)SAPEntry::setTitle);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

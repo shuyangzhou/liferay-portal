@@ -168,46 +168,35 @@ public class PowwowServerModelImpl extends BaseModelImpl<PowwowServer>
 
 	static {
 		Map<String, Function<PowwowServer, Object>> attributeGetters = new LinkedHashMap<String, Function<PowwowServer, Object>>();
-		Map<String, BiConsumer<PowwowServer, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<PowwowServer, Object>>();
+		Map<String, BiConsumer<PowwowServer, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<PowwowServer, ?>>();
 
 		attributeGetters.put("powwowServerId", PowwowServer::getPowwowServerId);
-		attributeSetters.put("powwowServerId", PowwowServer::setPowwowServerId);
-
+		attributeSetters.put("powwowServerId", (BiConsumer<PowwowServer, Long>)PowwowServer::setPowwowServerId);
 		attributeGetters.put("companyId", PowwowServer::getCompanyId);
-		attributeSetters.put("companyId", PowwowServer::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<PowwowServer, Long>)PowwowServer::setCompanyId);
 		attributeGetters.put("userId", PowwowServer::getUserId);
-		attributeSetters.put("userId", PowwowServer::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<PowwowServer, Long>)PowwowServer::setUserId);
 		attributeGetters.put("userName", PowwowServer::getUserName);
-		attributeSetters.put("userName", PowwowServer::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<PowwowServer, String>)PowwowServer::setUserName);
 		attributeGetters.put("createDate", PowwowServer::getCreateDate);
-		attributeSetters.put("createDate", PowwowServer::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<PowwowServer, Date>)PowwowServer::setCreateDate);
 		attributeGetters.put("modifiedDate", PowwowServer::getModifiedDate);
-		attributeSetters.put("modifiedDate", PowwowServer::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<PowwowServer, Date>)PowwowServer::setModifiedDate);
 		attributeGetters.put("name", PowwowServer::getName);
-		attributeSetters.put("name", PowwowServer::setName);
-
+		attributeSetters.put("name", (BiConsumer<PowwowServer, String>)PowwowServer::setName);
 		attributeGetters.put("providerType", PowwowServer::getProviderType);
-		attributeSetters.put("providerType", PowwowServer::setProviderType);
-
+		attributeSetters.put("providerType", (BiConsumer<PowwowServer, String>)PowwowServer::setProviderType);
 		attributeGetters.put("url", PowwowServer::getUrl);
-		attributeSetters.put("url", PowwowServer::setUrl);
-
+		attributeSetters.put("url", (BiConsumer<PowwowServer, String>)PowwowServer::setUrl);
 		attributeGetters.put("apiKey", PowwowServer::getApiKey);
-		attributeSetters.put("apiKey", PowwowServer::setApiKey);
-
+		attributeSetters.put("apiKey", (BiConsumer<PowwowServer, String>)PowwowServer::setApiKey);
 		attributeGetters.put("secret", PowwowServer::getSecret);
-		attributeSetters.put("secret", PowwowServer::setSecret);
-
+		attributeSetters.put("secret", (BiConsumer<PowwowServer, String>)PowwowServer::setSecret);
 		attributeGetters.put("active", PowwowServer::getActive);
-		attributeSetters.put("active", PowwowServer::setActive);
+		attributeSetters.put("active", (BiConsumer<PowwowServer, Boolean>)PowwowServer::setActive);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

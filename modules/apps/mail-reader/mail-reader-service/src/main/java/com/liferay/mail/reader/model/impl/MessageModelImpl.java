@@ -186,70 +186,51 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 
 	static {
 		Map<String, Function<Message, Object>> attributeGetters = new LinkedHashMap<String, Function<Message, Object>>();
-		Map<String, BiConsumer<Message, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Message, Object>>();
+		Map<String, BiConsumer<Message, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Message, ?>>();
 
 		attributeGetters.put("messageId", Message::getMessageId);
-		attributeSetters.put("messageId", Message::setMessageId);
-
+		attributeSetters.put("messageId", (BiConsumer<Message, Long>)Message::setMessageId);
 		attributeGetters.put("companyId", Message::getCompanyId);
-		attributeSetters.put("companyId", Message::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<Message, Long>)Message::setCompanyId);
 		attributeGetters.put("userId", Message::getUserId);
-		attributeSetters.put("userId", Message::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<Message, Long>)Message::setUserId);
 		attributeGetters.put("userName", Message::getUserName);
-		attributeSetters.put("userName", Message::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<Message, String>)Message::setUserName);
 		attributeGetters.put("createDate", Message::getCreateDate);
-		attributeSetters.put("createDate", Message::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<Message, Date>)Message::setCreateDate);
 		attributeGetters.put("modifiedDate", Message::getModifiedDate);
-		attributeSetters.put("modifiedDate", Message::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<Message, Date>)Message::setModifiedDate);
 		attributeGetters.put("accountId", Message::getAccountId);
-		attributeSetters.put("accountId", Message::setAccountId);
-
+		attributeSetters.put("accountId", (BiConsumer<Message, Long>)Message::setAccountId);
 		attributeGetters.put("folderId", Message::getFolderId);
-		attributeSetters.put("folderId", Message::setFolderId);
-
+		attributeSetters.put("folderId", (BiConsumer<Message, Long>)Message::setFolderId);
 		attributeGetters.put("sender", Message::getSender);
-		attributeSetters.put("sender", Message::setSender);
-
+		attributeSetters.put("sender", (BiConsumer<Message, String>)Message::setSender);
 		attributeGetters.put("to", Message::getTo);
-		attributeSetters.put("to", Message::setTo);
-
+		attributeSetters.put("to", (BiConsumer<Message, String>)Message::setTo);
 		attributeGetters.put("cc", Message::getCc);
-		attributeSetters.put("cc", Message::setCc);
-
+		attributeSetters.put("cc", (BiConsumer<Message, String>)Message::setCc);
 		attributeGetters.put("bcc", Message::getBcc);
-		attributeSetters.put("bcc", Message::setBcc);
-
+		attributeSetters.put("bcc", (BiConsumer<Message, String>)Message::setBcc);
 		attributeGetters.put("sentDate", Message::getSentDate);
-		attributeSetters.put("sentDate", Message::setSentDate);
-
+		attributeSetters.put("sentDate", (BiConsumer<Message, Date>)Message::setSentDate);
 		attributeGetters.put("subject", Message::getSubject);
-		attributeSetters.put("subject", Message::setSubject);
-
+		attributeSetters.put("subject", (BiConsumer<Message, String>)Message::setSubject);
 		attributeGetters.put("preview", Message::getPreview);
-		attributeSetters.put("preview", Message::setPreview);
-
+		attributeSetters.put("preview", (BiConsumer<Message, String>)Message::setPreview);
 		attributeGetters.put("body", Message::getBody);
-		attributeSetters.put("body", Message::setBody);
-
+		attributeSetters.put("body", (BiConsumer<Message, String>)Message::setBody);
 		attributeGetters.put("flags", Message::getFlags);
-		attributeSetters.put("flags", Message::setFlags);
-
+		attributeSetters.put("flags", (BiConsumer<Message, String>)Message::setFlags);
 		attributeGetters.put("size", Message::getSize);
-		attributeSetters.put("size", Message::setSize);
-
+		attributeSetters.put("size", (BiConsumer<Message, Long>)Message::setSize);
 		attributeGetters.put("remoteMessageId", Message::getRemoteMessageId);
-		attributeSetters.put("remoteMessageId", Message::setRemoteMessageId);
-
+		attributeSetters.put("remoteMessageId", (BiConsumer<Message, Long>)Message::setRemoteMessageId);
 		attributeGetters.put("contentType", Message::getContentType);
-		attributeSetters.put("contentType", Message::setContentType);
+		attributeSetters.put("contentType", (BiConsumer<Message, String>)Message::setContentType);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

@@ -262,55 +262,41 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 
 	static {
 		Map<String, Function<Role, Object>> attributeGetters = new LinkedHashMap<String, Function<Role, Object>>();
-		Map<String, BiConsumer<Role, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Role, Object>>();
+		Map<String, BiConsumer<Role, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Role, ?>>();
 
 		attributeGetters.put("mvccVersion", Role::getMvccVersion);
-		attributeSetters.put("mvccVersion", Role::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<Role, Long>)Role::setMvccVersion);
 		attributeGetters.put("uuid", Role::getUuid);
-		attributeSetters.put("uuid", Role::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<Role, String>)Role::setUuid);
 		attributeGetters.put("roleId", Role::getRoleId);
-		attributeSetters.put("roleId", Role::setRoleId);
-
+		attributeSetters.put("roleId", (BiConsumer<Role, Long>)Role::setRoleId);
 		attributeGetters.put("companyId", Role::getCompanyId);
-		attributeSetters.put("companyId", Role::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<Role, Long>)Role::setCompanyId);
 		attributeGetters.put("userId", Role::getUserId);
-		attributeSetters.put("userId", Role::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<Role, Long>)Role::setUserId);
 		attributeGetters.put("userName", Role::getUserName);
-		attributeSetters.put("userName", Role::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<Role, String>)Role::setUserName);
 		attributeGetters.put("createDate", Role::getCreateDate);
-		attributeSetters.put("createDate", Role::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<Role, Date>)Role::setCreateDate);
 		attributeGetters.put("modifiedDate", Role::getModifiedDate);
-		attributeSetters.put("modifiedDate", Role::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<Role, Date>)Role::setModifiedDate);
 		attributeGetters.put("classNameId", Role::getClassNameId);
-		attributeSetters.put("classNameId", Role::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<Role, Long>)Role::setClassNameId);
 		attributeGetters.put("classPK", Role::getClassPK);
-		attributeSetters.put("classPK", Role::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<Role, Long>)Role::setClassPK);
 		attributeGetters.put("name", Role::getName);
-		attributeSetters.put("name", Role::setName);
-
+		attributeSetters.put("name", (BiConsumer<Role, String>)Role::setName);
 		attributeGetters.put("title", Role::getTitle);
-		attributeSetters.put("title", Role::setTitle);
-
+		attributeSetters.put("title", (BiConsumer<Role, String>)Role::setTitle);
 		attributeGetters.put("description", Role::getDescription);
-		attributeSetters.put("description", Role::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<Role, String>)Role::setDescription);
 		attributeGetters.put("type", Role::getType);
-		attributeSetters.put("type", Role::setType);
-
+		attributeSetters.put("type", (BiConsumer<Role, Integer>)Role::setType);
 		attributeGetters.put("subtype", Role::getSubtype);
-		attributeSetters.put("subtype", Role::setSubtype);
+		attributeSetters.put("subtype", (BiConsumer<Role, String>)Role::setSubtype);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

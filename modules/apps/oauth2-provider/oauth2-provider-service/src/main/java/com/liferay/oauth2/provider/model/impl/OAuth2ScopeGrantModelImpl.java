@@ -166,28 +166,23 @@ public class OAuth2ScopeGrantModelImpl extends BaseModelImpl<OAuth2ScopeGrant>
 
 	static {
 		Map<String, Function<OAuth2ScopeGrant, Object>> attributeGetters = new LinkedHashMap<String, Function<OAuth2ScopeGrant, Object>>();
-		Map<String, BiConsumer<OAuth2ScopeGrant, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<OAuth2ScopeGrant, Object>>();
+		Map<String, BiConsumer<OAuth2ScopeGrant, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<OAuth2ScopeGrant, ?>>();
 
 		attributeGetters.put("oAuth2ScopeGrantId", OAuth2ScopeGrant::getOAuth2ScopeGrantId);
-		attributeSetters.put("oAuth2ScopeGrantId", OAuth2ScopeGrant::setOAuth2ScopeGrantId);
-
+		attributeSetters.put("oAuth2ScopeGrantId", (BiConsumer<OAuth2ScopeGrant, Long>)OAuth2ScopeGrant::setOAuth2ScopeGrantId);
 		attributeGetters.put("companyId", OAuth2ScopeGrant::getCompanyId);
-		attributeSetters.put("companyId", OAuth2ScopeGrant::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<OAuth2ScopeGrant, Long>)OAuth2ScopeGrant::setCompanyId);
 		attributeGetters.put("oAuth2ApplicationScopeAliasesId", OAuth2ScopeGrant::getOAuth2ApplicationScopeAliasesId);
-		attributeSetters.put("oAuth2ApplicationScopeAliasesId", OAuth2ScopeGrant::setOAuth2ApplicationScopeAliasesId);
-
+		attributeSetters.put("oAuth2ApplicationScopeAliasesId", (BiConsumer<OAuth2ScopeGrant, Long>)OAuth2ScopeGrant::setOAuth2ApplicationScopeAliasesId);
 		attributeGetters.put("applicationName", OAuth2ScopeGrant::getApplicationName);
-		attributeSetters.put("applicationName", OAuth2ScopeGrant::setApplicationName);
-
+		attributeSetters.put("applicationName", (BiConsumer<OAuth2ScopeGrant, String>)OAuth2ScopeGrant::setApplicationName);
 		attributeGetters.put("bundleSymbolicName", OAuth2ScopeGrant::getBundleSymbolicName);
-		attributeSetters.put("bundleSymbolicName", OAuth2ScopeGrant::setBundleSymbolicName);
-
+		attributeSetters.put("bundleSymbolicName", (BiConsumer<OAuth2ScopeGrant, String>)OAuth2ScopeGrant::setBundleSymbolicName);
 		attributeGetters.put("scope", OAuth2ScopeGrant::getScope);
-		attributeSetters.put("scope", OAuth2ScopeGrant::setScope);
+		attributeSetters.put("scope", (BiConsumer<OAuth2ScopeGrant, String>)OAuth2ScopeGrant::setScope);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

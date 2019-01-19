@@ -204,31 +204,25 @@ public class PluginSettingModelImpl extends BaseModelImpl<PluginSetting>
 
 	static {
 		Map<String, Function<PluginSetting, Object>> attributeGetters = new LinkedHashMap<String, Function<PluginSetting, Object>>();
-		Map<String, BiConsumer<PluginSetting, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<PluginSetting, Object>>();
+		Map<String, BiConsumer<PluginSetting, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<PluginSetting, ?>>();
 
 		attributeGetters.put("mvccVersion", PluginSetting::getMvccVersion);
-		attributeSetters.put("mvccVersion", PluginSetting::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<PluginSetting, Long>)PluginSetting::setMvccVersion);
 		attributeGetters.put("pluginSettingId", PluginSetting::getPluginSettingId);
-		attributeSetters.put("pluginSettingId", PluginSetting::setPluginSettingId);
-
+		attributeSetters.put("pluginSettingId", (BiConsumer<PluginSetting, Long>)PluginSetting::setPluginSettingId);
 		attributeGetters.put("companyId", PluginSetting::getCompanyId);
-		attributeSetters.put("companyId", PluginSetting::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<PluginSetting, Long>)PluginSetting::setCompanyId);
 		attributeGetters.put("pluginId", PluginSetting::getPluginId);
-		attributeSetters.put("pluginId", PluginSetting::setPluginId);
-
+		attributeSetters.put("pluginId", (BiConsumer<PluginSetting, String>)PluginSetting::setPluginId);
 		attributeGetters.put("pluginType", PluginSetting::getPluginType);
-		attributeSetters.put("pluginType", PluginSetting::setPluginType);
-
+		attributeSetters.put("pluginType", (BiConsumer<PluginSetting, String>)PluginSetting::setPluginType);
 		attributeGetters.put("roles", PluginSetting::getRoles);
-		attributeSetters.put("roles", PluginSetting::setRoles);
-
+		attributeSetters.put("roles", (BiConsumer<PluginSetting, String>)PluginSetting::setRoles);
 		attributeGetters.put("active", PluginSetting::getActive);
-		attributeSetters.put("active", PluginSetting::setActive);
+		attributeSetters.put("active", (BiConsumer<PluginSetting, Boolean>)PluginSetting::setActive);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

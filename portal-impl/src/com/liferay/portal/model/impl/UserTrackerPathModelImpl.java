@@ -151,28 +151,23 @@ public class UserTrackerPathModelImpl extends BaseModelImpl<UserTrackerPath>
 
 	static {
 		Map<String, Function<UserTrackerPath, Object>> attributeGetters = new LinkedHashMap<String, Function<UserTrackerPath, Object>>();
-		Map<String, BiConsumer<UserTrackerPath, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<UserTrackerPath, Object>>();
+		Map<String, BiConsumer<UserTrackerPath, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<UserTrackerPath, ?>>();
 
 		attributeGetters.put("mvccVersion", UserTrackerPath::getMvccVersion);
-		attributeSetters.put("mvccVersion", UserTrackerPath::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<UserTrackerPath, Long>)UserTrackerPath::setMvccVersion);
 		attributeGetters.put("userTrackerPathId", UserTrackerPath::getUserTrackerPathId);
-		attributeSetters.put("userTrackerPathId", UserTrackerPath::setUserTrackerPathId);
-
+		attributeSetters.put("userTrackerPathId", (BiConsumer<UserTrackerPath, Long>)UserTrackerPath::setUserTrackerPathId);
 		attributeGetters.put("companyId", UserTrackerPath::getCompanyId);
-		attributeSetters.put("companyId", UserTrackerPath::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<UserTrackerPath, Long>)UserTrackerPath::setCompanyId);
 		attributeGetters.put("userTrackerId", UserTrackerPath::getUserTrackerId);
-		attributeSetters.put("userTrackerId", UserTrackerPath::setUserTrackerId);
-
+		attributeSetters.put("userTrackerId", (BiConsumer<UserTrackerPath, Long>)UserTrackerPath::setUserTrackerId);
 		attributeGetters.put("path", UserTrackerPath::getPath);
-		attributeSetters.put("path", UserTrackerPath::setPath);
-
+		attributeSetters.put("path", (BiConsumer<UserTrackerPath, String>)UserTrackerPath::setPath);
 		attributeGetters.put("pathDate", UserTrackerPath::getPathDate);
-		attributeSetters.put("pathDate", UserTrackerPath::setPathDate);
+		attributeSetters.put("pathDate", (BiConsumer<UserTrackerPath, Date>)UserTrackerPath::setPathDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

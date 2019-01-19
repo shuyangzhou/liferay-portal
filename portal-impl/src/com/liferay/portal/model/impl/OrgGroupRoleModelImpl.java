@@ -148,25 +148,21 @@ public class OrgGroupRoleModelImpl extends BaseModelImpl<OrgGroupRole>
 
 	static {
 		Map<String, Function<OrgGroupRole, Object>> attributeGetters = new LinkedHashMap<String, Function<OrgGroupRole, Object>>();
-		Map<String, BiConsumer<OrgGroupRole, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<OrgGroupRole, Object>>();
+		Map<String, BiConsumer<OrgGroupRole, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<OrgGroupRole, ?>>();
 
 		attributeGetters.put("mvccVersion", OrgGroupRole::getMvccVersion);
-		attributeSetters.put("mvccVersion", OrgGroupRole::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<OrgGroupRole, Long>)OrgGroupRole::setMvccVersion);
 		attributeGetters.put("organizationId", OrgGroupRole::getOrganizationId);
-		attributeSetters.put("organizationId", OrgGroupRole::setOrganizationId);
-
+		attributeSetters.put("organizationId", (BiConsumer<OrgGroupRole, Long>)OrgGroupRole::setOrganizationId);
 		attributeGetters.put("groupId", OrgGroupRole::getGroupId);
-		attributeSetters.put("groupId", OrgGroupRole::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<OrgGroupRole, Long>)OrgGroupRole::setGroupId);
 		attributeGetters.put("roleId", OrgGroupRole::getRoleId);
-		attributeSetters.put("roleId", OrgGroupRole::setRoleId);
-
+		attributeSetters.put("roleId", (BiConsumer<OrgGroupRole, Long>)OrgGroupRole::setRoleId);
 		attributeGetters.put("companyId", OrgGroupRole::getCompanyId);
-		attributeSetters.put("companyId", OrgGroupRole::setCompanyId);
+		attributeSetters.put("companyId", (BiConsumer<OrgGroupRole, Long>)OrgGroupRole::setCompanyId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

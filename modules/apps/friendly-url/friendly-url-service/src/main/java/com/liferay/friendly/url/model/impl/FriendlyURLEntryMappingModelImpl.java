@@ -152,26 +152,21 @@ public class FriendlyURLEntryMappingModelImpl extends BaseModelImpl<FriendlyURLE
 
 	static {
 		Map<String, Function<FriendlyURLEntryMapping, Object>> attributeGetters = new LinkedHashMap<String, Function<FriendlyURLEntryMapping, Object>>();
-		Map<String, BiConsumer<FriendlyURLEntryMapping, Object>> attributeSetters =
-			new LinkedHashMap<String, BiConsumer<FriendlyURLEntryMapping, Object>>();
+		Map<String, BiConsumer<FriendlyURLEntryMapping, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<FriendlyURLEntryMapping, ?>>();
 
 		attributeGetters.put("mvccVersion", FriendlyURLEntryMapping::getMvccVersion);
-		attributeSetters.put("mvccVersion", FriendlyURLEntryMapping::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<FriendlyURLEntryMapping, Long>)FriendlyURLEntryMapping::setMvccVersion);
 		attributeGetters.put("friendlyURLEntryMappingId", FriendlyURLEntryMapping::getFriendlyURLEntryMappingId);
-		attributeSetters.put("friendlyURLEntryMappingId", FriendlyURLEntryMapping::setFriendlyURLEntryMappingId);
-
+		attributeSetters.put("friendlyURLEntryMappingId", (BiConsumer<FriendlyURLEntryMapping, Long>)FriendlyURLEntryMapping::setFriendlyURLEntryMappingId);
 		attributeGetters.put("classNameId", FriendlyURLEntryMapping::getClassNameId);
-		attributeSetters.put("classNameId", FriendlyURLEntryMapping::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<FriendlyURLEntryMapping, Long>)FriendlyURLEntryMapping::setClassNameId);
 		attributeGetters.put("classPK", FriendlyURLEntryMapping::getClassPK);
-		attributeSetters.put("classPK", FriendlyURLEntryMapping::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<FriendlyURLEntryMapping, Long>)FriendlyURLEntryMapping::setClassPK);
 		attributeGetters.put("friendlyURLEntryId", FriendlyURLEntryMapping::getFriendlyURLEntryId);
-		attributeSetters.put("friendlyURLEntryId", FriendlyURLEntryMapping::setFriendlyURLEntryId);
+		attributeSetters.put("friendlyURLEntryId", (BiConsumer<FriendlyURLEntryMapping, Long>)FriendlyURLEntryMapping::setFriendlyURLEntryId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

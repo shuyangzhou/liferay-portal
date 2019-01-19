@@ -237,52 +237,39 @@ public class SocialActivityModelImpl extends BaseModelImpl<SocialActivity>
 
 	static {
 		Map<String, Function<SocialActivity, Object>> attributeGetters = new LinkedHashMap<String, Function<SocialActivity, Object>>();
-		Map<String, BiConsumer<SocialActivity, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SocialActivity, Object>>();
+		Map<String, BiConsumer<SocialActivity, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<SocialActivity, ?>>();
 
 		attributeGetters.put("activityId", SocialActivity::getActivityId);
-		attributeSetters.put("activityId", SocialActivity::setActivityId);
-
+		attributeSetters.put("activityId", (BiConsumer<SocialActivity, Long>)SocialActivity::setActivityId);
 		attributeGetters.put("groupId", SocialActivity::getGroupId);
-		attributeSetters.put("groupId", SocialActivity::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<SocialActivity, Long>)SocialActivity::setGroupId);
 		attributeGetters.put("companyId", SocialActivity::getCompanyId);
-		attributeSetters.put("companyId", SocialActivity::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<SocialActivity, Long>)SocialActivity::setCompanyId);
 		attributeGetters.put("userId", SocialActivity::getUserId);
-		attributeSetters.put("userId", SocialActivity::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<SocialActivity, Long>)SocialActivity::setUserId);
 		attributeGetters.put("createDate", SocialActivity::getCreateDate);
-		attributeSetters.put("createDate", SocialActivity::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<SocialActivity, Long>)SocialActivity::setCreateDate);
 		attributeGetters.put("activitySetId", SocialActivity::getActivitySetId);
-		attributeSetters.put("activitySetId", SocialActivity::setActivitySetId);
-
+		attributeSetters.put("activitySetId", (BiConsumer<SocialActivity, Long>)SocialActivity::setActivitySetId);
 		attributeGetters.put("mirrorActivityId", SocialActivity::getMirrorActivityId);
-		attributeSetters.put("mirrorActivityId", SocialActivity::setMirrorActivityId);
-
+		attributeSetters.put("mirrorActivityId", (BiConsumer<SocialActivity, Long>)SocialActivity::setMirrorActivityId);
 		attributeGetters.put("classNameId", SocialActivity::getClassNameId);
-		attributeSetters.put("classNameId", SocialActivity::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<SocialActivity, Long>)SocialActivity::setClassNameId);
 		attributeGetters.put("classPK", SocialActivity::getClassPK);
-		attributeSetters.put("classPK", SocialActivity::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<SocialActivity, Long>)SocialActivity::setClassPK);
 		attributeGetters.put("parentClassNameId", SocialActivity::getParentClassNameId);
-		attributeSetters.put("parentClassNameId", SocialActivity::setParentClassNameId);
-
+		attributeSetters.put("parentClassNameId", (BiConsumer<SocialActivity, Long>)SocialActivity::setParentClassNameId);
 		attributeGetters.put("parentClassPK", SocialActivity::getParentClassPK);
-		attributeSetters.put("parentClassPK", SocialActivity::setParentClassPK);
-
+		attributeSetters.put("parentClassPK", (BiConsumer<SocialActivity, Long>)SocialActivity::setParentClassPK);
 		attributeGetters.put("type", SocialActivity::getType);
-		attributeSetters.put("type", SocialActivity::setType);
-
+		attributeSetters.put("type", (BiConsumer<SocialActivity, Integer>)SocialActivity::setType);
 		attributeGetters.put("extraData", SocialActivity::getExtraData);
-		attributeSetters.put("extraData", SocialActivity::setExtraData);
-
+		attributeSetters.put("extraData", (BiConsumer<SocialActivity, String>)SocialActivity::setExtraData);
 		attributeGetters.put("receiverUserId", SocialActivity::getReceiverUserId);
-		attributeSetters.put("receiverUserId", SocialActivity::setReceiverUserId);
+		attributeSetters.put("receiverUserId", (BiConsumer<SocialActivity, Long>)SocialActivity::setReceiverUserId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

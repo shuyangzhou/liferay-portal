@@ -179,52 +179,39 @@ public class LayoutFriendlyURLModelImpl extends BaseModelImpl<LayoutFriendlyURL>
 
 	static {
 		Map<String, Function<LayoutFriendlyURL, Object>> attributeGetters = new LinkedHashMap<String, Function<LayoutFriendlyURL, Object>>();
-		Map<String, BiConsumer<LayoutFriendlyURL, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<LayoutFriendlyURL, Object>>();
+		Map<String, BiConsumer<LayoutFriendlyURL, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<LayoutFriendlyURL, ?>>();
 
 		attributeGetters.put("mvccVersion", LayoutFriendlyURL::getMvccVersion);
-		attributeSetters.put("mvccVersion", LayoutFriendlyURL::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<LayoutFriendlyURL, Long>)LayoutFriendlyURL::setMvccVersion);
 		attributeGetters.put("uuid", LayoutFriendlyURL::getUuid);
-		attributeSetters.put("uuid", LayoutFriendlyURL::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<LayoutFriendlyURL, String>)LayoutFriendlyURL::setUuid);
 		attributeGetters.put("layoutFriendlyURLId", LayoutFriendlyURL::getLayoutFriendlyURLId);
-		attributeSetters.put("layoutFriendlyURLId", LayoutFriendlyURL::setLayoutFriendlyURLId);
-
+		attributeSetters.put("layoutFriendlyURLId", (BiConsumer<LayoutFriendlyURL, Long>)LayoutFriendlyURL::setLayoutFriendlyURLId);
 		attributeGetters.put("groupId", LayoutFriendlyURL::getGroupId);
-		attributeSetters.put("groupId", LayoutFriendlyURL::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<LayoutFriendlyURL, Long>)LayoutFriendlyURL::setGroupId);
 		attributeGetters.put("companyId", LayoutFriendlyURL::getCompanyId);
-		attributeSetters.put("companyId", LayoutFriendlyURL::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<LayoutFriendlyURL, Long>)LayoutFriendlyURL::setCompanyId);
 		attributeGetters.put("userId", LayoutFriendlyURL::getUserId);
-		attributeSetters.put("userId", LayoutFriendlyURL::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<LayoutFriendlyURL, Long>)LayoutFriendlyURL::setUserId);
 		attributeGetters.put("userName", LayoutFriendlyURL::getUserName);
-		attributeSetters.put("userName", LayoutFriendlyURL::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<LayoutFriendlyURL, String>)LayoutFriendlyURL::setUserName);
 		attributeGetters.put("createDate", LayoutFriendlyURL::getCreateDate);
-		attributeSetters.put("createDate", LayoutFriendlyURL::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<LayoutFriendlyURL, Date>)LayoutFriendlyURL::setCreateDate);
 		attributeGetters.put("modifiedDate", LayoutFriendlyURL::getModifiedDate);
-		attributeSetters.put("modifiedDate", LayoutFriendlyURL::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<LayoutFriendlyURL, Date>)LayoutFriendlyURL::setModifiedDate);
 		attributeGetters.put("plid", LayoutFriendlyURL::getPlid);
-		attributeSetters.put("plid", LayoutFriendlyURL::setPlid);
-
+		attributeSetters.put("plid", (BiConsumer<LayoutFriendlyURL, Long>)LayoutFriendlyURL::setPlid);
 		attributeGetters.put("privateLayout", LayoutFriendlyURL::getPrivateLayout);
-		attributeSetters.put("privateLayout", LayoutFriendlyURL::setPrivateLayout);
-
+		attributeSetters.put("privateLayout", (BiConsumer<LayoutFriendlyURL, Boolean>)LayoutFriendlyURL::setPrivateLayout);
 		attributeGetters.put("friendlyURL", LayoutFriendlyURL::getFriendlyURL);
-		attributeSetters.put("friendlyURL", LayoutFriendlyURL::setFriendlyURL);
-
+		attributeSetters.put("friendlyURL", (BiConsumer<LayoutFriendlyURL, String>)LayoutFriendlyURL::setFriendlyURL);
 		attributeGetters.put("languageId", LayoutFriendlyURL::getLanguageId);
-		attributeSetters.put("languageId", LayoutFriendlyURL::setLanguageId);
-
+		attributeSetters.put("languageId", (BiConsumer<LayoutFriendlyURL, String>)LayoutFriendlyURL::setLanguageId);
 		attributeGetters.put("lastPublishDate", LayoutFriendlyURL::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", LayoutFriendlyURL::setLastPublishDate);
+		attributeSetters.put("lastPublishDate", (BiConsumer<LayoutFriendlyURL, Date>)LayoutFriendlyURL::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

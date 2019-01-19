@@ -135,16 +135,15 @@ public class CounterModelImpl extends BaseModelImpl<Counter>
 
 	static {
 		Map<String, Function<Counter, Object>> attributeGetters = new LinkedHashMap<String, Function<Counter, Object>>();
-		Map<String, BiConsumer<Counter, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Counter, Object>>();
+		Map<String, BiConsumer<Counter, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Counter, ?>>();
 
 		attributeGetters.put("name", Counter::getName);
-		attributeSetters.put("name", Counter::setName);
-
+		attributeSetters.put("name", (BiConsumer<Counter, String>)Counter::setName);
 		attributeGetters.put("currentId", Counter::getCurrentId);
-		attributeSetters.put("currentId", Counter::setCurrentId);
+		attributeSetters.put("currentId", (BiConsumer<Counter, Long>)Counter::setCurrentId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

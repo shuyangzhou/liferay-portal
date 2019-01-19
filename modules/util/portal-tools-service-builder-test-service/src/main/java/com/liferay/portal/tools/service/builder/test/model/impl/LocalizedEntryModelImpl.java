@@ -169,7 +169,7 @@ public class LocalizedEntryModelImpl extends BaseModelImpl<LocalizedEntry>
 
 	static {
 		Map<String, Function<LocalizedEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<LocalizedEntry, Object>>();
-		Map<String, BiConsumer<LocalizedEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<LocalizedEntry, Object>>();
+		Map<String, BiConsumer<LocalizedEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<LocalizedEntry, ?>>();
 
 		attributeGetters.put(
 			"defaultLanguageId",
@@ -191,7 +191,6 @@ public class LocalizedEntryModelImpl extends BaseModelImpl<LocalizedEntry>
 				}
 
 			});
-
 		attributeGetters.put(
 			"localizedEntryId",
 			new Function<LocalizedEntry, Object>() {
@@ -214,7 +213,7 @@ public class LocalizedEntryModelImpl extends BaseModelImpl<LocalizedEntry>
 			});
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

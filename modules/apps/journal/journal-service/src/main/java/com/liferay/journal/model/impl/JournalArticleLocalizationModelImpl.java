@@ -153,29 +153,23 @@ public class JournalArticleLocalizationModelImpl extends BaseModelImpl<JournalAr
 	static {
 		Map<String, Function<JournalArticleLocalization, Object>> attributeGetters =
 			new LinkedHashMap<String, Function<JournalArticleLocalization, Object>>();
-		Map<String, BiConsumer<JournalArticleLocalization, Object>> attributeSetters =
-			new LinkedHashMap<String, BiConsumer<JournalArticleLocalization, Object>>();
+		Map<String, BiConsumer<JournalArticleLocalization, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<JournalArticleLocalization, ?>>();
 
 		attributeGetters.put("articleLocalizationId", JournalArticleLocalization::getArticleLocalizationId);
-		attributeSetters.put("articleLocalizationId", JournalArticleLocalization::setArticleLocalizationId);
-
+		attributeSetters.put("articleLocalizationId", (BiConsumer<JournalArticleLocalization, Long>)JournalArticleLocalization::setArticleLocalizationId);
 		attributeGetters.put("companyId", JournalArticleLocalization::getCompanyId);
-		attributeSetters.put("companyId", JournalArticleLocalization::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<JournalArticleLocalization, Long>)JournalArticleLocalization::setCompanyId);
 		attributeGetters.put("articlePK", JournalArticleLocalization::getArticlePK);
-		attributeSetters.put("articlePK", JournalArticleLocalization::setArticlePK);
-
+		attributeSetters.put("articlePK", (BiConsumer<JournalArticleLocalization, Long>)JournalArticleLocalization::setArticlePK);
 		attributeGetters.put("title", JournalArticleLocalization::getTitle);
-		attributeSetters.put("title", JournalArticleLocalization::setTitle);
-
+		attributeSetters.put("title", (BiConsumer<JournalArticleLocalization, String>)JournalArticleLocalization::setTitle);
 		attributeGetters.put("description", JournalArticleLocalization::getDescription);
-		attributeSetters.put("description", JournalArticleLocalization::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<JournalArticleLocalization, String>)JournalArticleLocalization::setDescription);
 		attributeGetters.put("languageId", JournalArticleLocalization::getLanguageId);
-		attributeSetters.put("languageId", JournalArticleLocalization::setLanguageId);
+		attributeSetters.put("languageId", (BiConsumer<JournalArticleLocalization, String>)JournalArticleLocalization::setLanguageId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

@@ -175,49 +175,37 @@ public class RepositoryEntryModelImpl extends BaseModelImpl<RepositoryEntry>
 
 	static {
 		Map<String, Function<RepositoryEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<RepositoryEntry, Object>>();
-		Map<String, BiConsumer<RepositoryEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<RepositoryEntry, Object>>();
+		Map<String, BiConsumer<RepositoryEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<RepositoryEntry, ?>>();
 
 		attributeGetters.put("mvccVersion", RepositoryEntry::getMvccVersion);
-		attributeSetters.put("mvccVersion", RepositoryEntry::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<RepositoryEntry, Long>)RepositoryEntry::setMvccVersion);
 		attributeGetters.put("uuid", RepositoryEntry::getUuid);
-		attributeSetters.put("uuid", RepositoryEntry::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<RepositoryEntry, String>)RepositoryEntry::setUuid);
 		attributeGetters.put("repositoryEntryId", RepositoryEntry::getRepositoryEntryId);
-		attributeSetters.put("repositoryEntryId", RepositoryEntry::setRepositoryEntryId);
-
+		attributeSetters.put("repositoryEntryId", (BiConsumer<RepositoryEntry, Long>)RepositoryEntry::setRepositoryEntryId);
 		attributeGetters.put("groupId", RepositoryEntry::getGroupId);
-		attributeSetters.put("groupId", RepositoryEntry::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<RepositoryEntry, Long>)RepositoryEntry::setGroupId);
 		attributeGetters.put("companyId", RepositoryEntry::getCompanyId);
-		attributeSetters.put("companyId", RepositoryEntry::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<RepositoryEntry, Long>)RepositoryEntry::setCompanyId);
 		attributeGetters.put("userId", RepositoryEntry::getUserId);
-		attributeSetters.put("userId", RepositoryEntry::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<RepositoryEntry, Long>)RepositoryEntry::setUserId);
 		attributeGetters.put("userName", RepositoryEntry::getUserName);
-		attributeSetters.put("userName", RepositoryEntry::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<RepositoryEntry, String>)RepositoryEntry::setUserName);
 		attributeGetters.put("createDate", RepositoryEntry::getCreateDate);
-		attributeSetters.put("createDate", RepositoryEntry::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<RepositoryEntry, Date>)RepositoryEntry::setCreateDate);
 		attributeGetters.put("modifiedDate", RepositoryEntry::getModifiedDate);
-		attributeSetters.put("modifiedDate", RepositoryEntry::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<RepositoryEntry, Date>)RepositoryEntry::setModifiedDate);
 		attributeGetters.put("repositoryId", RepositoryEntry::getRepositoryId);
-		attributeSetters.put("repositoryId", RepositoryEntry::setRepositoryId);
-
+		attributeSetters.put("repositoryId", (BiConsumer<RepositoryEntry, Long>)RepositoryEntry::setRepositoryId);
 		attributeGetters.put("mappedId", RepositoryEntry::getMappedId);
-		attributeSetters.put("mappedId", RepositoryEntry::setMappedId);
-
+		attributeSetters.put("mappedId", (BiConsumer<RepositoryEntry, String>)RepositoryEntry::setMappedId);
 		attributeGetters.put("manualCheckInRequired", RepositoryEntry::getManualCheckInRequired);
-		attributeSetters.put("manualCheckInRequired", RepositoryEntry::setManualCheckInRequired);
-
+		attributeSetters.put("manualCheckInRequired", (BiConsumer<RepositoryEntry, Boolean>)RepositoryEntry::setManualCheckInRequired);
 		attributeGetters.put("lastPublishDate", RepositoryEntry::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", RepositoryEntry::setLastPublishDate);
+		attributeSetters.put("lastPublishDate", (BiConsumer<RepositoryEntry, Date>)RepositoryEntry::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

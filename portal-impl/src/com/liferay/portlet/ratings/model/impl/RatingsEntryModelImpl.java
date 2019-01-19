@@ -225,40 +225,31 @@ public class RatingsEntryModelImpl extends BaseModelImpl<RatingsEntry>
 
 	static {
 		Map<String, Function<RatingsEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<RatingsEntry, Object>>();
-		Map<String, BiConsumer<RatingsEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<RatingsEntry, Object>>();
+		Map<String, BiConsumer<RatingsEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<RatingsEntry, ?>>();
 
 		attributeGetters.put("uuid", RatingsEntry::getUuid);
-		attributeSetters.put("uuid", RatingsEntry::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<RatingsEntry, String>)RatingsEntry::setUuid);
 		attributeGetters.put("entryId", RatingsEntry::getEntryId);
-		attributeSetters.put("entryId", RatingsEntry::setEntryId);
-
+		attributeSetters.put("entryId", (BiConsumer<RatingsEntry, Long>)RatingsEntry::setEntryId);
 		attributeGetters.put("companyId", RatingsEntry::getCompanyId);
-		attributeSetters.put("companyId", RatingsEntry::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<RatingsEntry, Long>)RatingsEntry::setCompanyId);
 		attributeGetters.put("userId", RatingsEntry::getUserId);
-		attributeSetters.put("userId", RatingsEntry::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<RatingsEntry, Long>)RatingsEntry::setUserId);
 		attributeGetters.put("userName", RatingsEntry::getUserName);
-		attributeSetters.put("userName", RatingsEntry::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<RatingsEntry, String>)RatingsEntry::setUserName);
 		attributeGetters.put("createDate", RatingsEntry::getCreateDate);
-		attributeSetters.put("createDate", RatingsEntry::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<RatingsEntry, Date>)RatingsEntry::setCreateDate);
 		attributeGetters.put("modifiedDate", RatingsEntry::getModifiedDate);
-		attributeSetters.put("modifiedDate", RatingsEntry::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<RatingsEntry, Date>)RatingsEntry::setModifiedDate);
 		attributeGetters.put("classNameId", RatingsEntry::getClassNameId);
-		attributeSetters.put("classNameId", RatingsEntry::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<RatingsEntry, Long>)RatingsEntry::setClassNameId);
 		attributeGetters.put("classPK", RatingsEntry::getClassPK);
-		attributeSetters.put("classPK", RatingsEntry::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<RatingsEntry, Long>)RatingsEntry::setClassPK);
 		attributeGetters.put("score", RatingsEntry::getScore);
-		attributeSetters.put("score", RatingsEntry::setScore);
+		attributeSetters.put("score", (BiConsumer<RatingsEntry, Double>)RatingsEntry::setScore);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

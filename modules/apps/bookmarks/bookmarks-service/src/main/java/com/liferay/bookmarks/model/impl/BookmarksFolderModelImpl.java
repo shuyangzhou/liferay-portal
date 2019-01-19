@@ -251,61 +251,45 @@ public class BookmarksFolderModelImpl extends BaseModelImpl<BookmarksFolder>
 
 	static {
 		Map<String, Function<BookmarksFolder, Object>> attributeGetters = new LinkedHashMap<String, Function<BookmarksFolder, Object>>();
-		Map<String, BiConsumer<BookmarksFolder, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<BookmarksFolder, Object>>();
+		Map<String, BiConsumer<BookmarksFolder, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<BookmarksFolder, ?>>();
 
 		attributeGetters.put("uuid", BookmarksFolder::getUuid);
-		attributeSetters.put("uuid", BookmarksFolder::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<BookmarksFolder, String>)BookmarksFolder::setUuid);
 		attributeGetters.put("folderId", BookmarksFolder::getFolderId);
-		attributeSetters.put("folderId", BookmarksFolder::setFolderId);
-
+		attributeSetters.put("folderId", (BiConsumer<BookmarksFolder, Long>)BookmarksFolder::setFolderId);
 		attributeGetters.put("groupId", BookmarksFolder::getGroupId);
-		attributeSetters.put("groupId", BookmarksFolder::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<BookmarksFolder, Long>)BookmarksFolder::setGroupId);
 		attributeGetters.put("companyId", BookmarksFolder::getCompanyId);
-		attributeSetters.put("companyId", BookmarksFolder::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<BookmarksFolder, Long>)BookmarksFolder::setCompanyId);
 		attributeGetters.put("userId", BookmarksFolder::getUserId);
-		attributeSetters.put("userId", BookmarksFolder::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<BookmarksFolder, Long>)BookmarksFolder::setUserId);
 		attributeGetters.put("userName", BookmarksFolder::getUserName);
-		attributeSetters.put("userName", BookmarksFolder::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<BookmarksFolder, String>)BookmarksFolder::setUserName);
 		attributeGetters.put("createDate", BookmarksFolder::getCreateDate);
-		attributeSetters.put("createDate", BookmarksFolder::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<BookmarksFolder, Date>)BookmarksFolder::setCreateDate);
 		attributeGetters.put("modifiedDate", BookmarksFolder::getModifiedDate);
-		attributeSetters.put("modifiedDate", BookmarksFolder::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<BookmarksFolder, Date>)BookmarksFolder::setModifiedDate);
 		attributeGetters.put("parentFolderId", BookmarksFolder::getParentFolderId);
-		attributeSetters.put("parentFolderId", BookmarksFolder::setParentFolderId);
-
+		attributeSetters.put("parentFolderId", (BiConsumer<BookmarksFolder, Long>)BookmarksFolder::setParentFolderId);
 		attributeGetters.put("treePath", BookmarksFolder::getTreePath);
-		attributeSetters.put("treePath", BookmarksFolder::setTreePath);
-
+		attributeSetters.put("treePath", (BiConsumer<BookmarksFolder, String>)BookmarksFolder::setTreePath);
 		attributeGetters.put("name", BookmarksFolder::getName);
-		attributeSetters.put("name", BookmarksFolder::setName);
-
+		attributeSetters.put("name", (BiConsumer<BookmarksFolder, String>)BookmarksFolder::setName);
 		attributeGetters.put("description", BookmarksFolder::getDescription);
-		attributeSetters.put("description", BookmarksFolder::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<BookmarksFolder, String>)BookmarksFolder::setDescription);
 		attributeGetters.put("lastPublishDate", BookmarksFolder::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", BookmarksFolder::setLastPublishDate);
-
+		attributeSetters.put("lastPublishDate", (BiConsumer<BookmarksFolder, Date>)BookmarksFolder::setLastPublishDate);
 		attributeGetters.put("status", BookmarksFolder::getStatus);
-		attributeSetters.put("status", BookmarksFolder::setStatus);
-
+		attributeSetters.put("status", (BiConsumer<BookmarksFolder, Integer>)BookmarksFolder::setStatus);
 		attributeGetters.put("statusByUserId", BookmarksFolder::getStatusByUserId);
-		attributeSetters.put("statusByUserId", BookmarksFolder::setStatusByUserId);
-
+		attributeSetters.put("statusByUserId", (BiConsumer<BookmarksFolder, Long>)BookmarksFolder::setStatusByUserId);
 		attributeGetters.put("statusByUserName", BookmarksFolder::getStatusByUserName);
-		attributeSetters.put("statusByUserName", BookmarksFolder::setStatusByUserName);
-
+		attributeSetters.put("statusByUserName", (BiConsumer<BookmarksFolder, String>)BookmarksFolder::setStatusByUserName);
 		attributeGetters.put("statusDate", BookmarksFolder::getStatusDate);
-		attributeSetters.put("statusDate", BookmarksFolder::setStatusDate);
+		attributeSetters.put("statusDate", (BiConsumer<BookmarksFolder, Date>)BookmarksFolder::setStatusDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

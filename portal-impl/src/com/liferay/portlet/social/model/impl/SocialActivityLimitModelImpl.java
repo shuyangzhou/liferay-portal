@@ -167,37 +167,29 @@ public class SocialActivityLimitModelImpl extends BaseModelImpl<SocialActivityLi
 
 	static {
 		Map<String, Function<SocialActivityLimit, Object>> attributeGetters = new LinkedHashMap<String, Function<SocialActivityLimit, Object>>();
-		Map<String, BiConsumer<SocialActivityLimit, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SocialActivityLimit, Object>>();
+		Map<String, BiConsumer<SocialActivityLimit, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<SocialActivityLimit, ?>>();
 
 		attributeGetters.put("activityLimitId", SocialActivityLimit::getActivityLimitId);
-		attributeSetters.put("activityLimitId", SocialActivityLimit::setActivityLimitId);
-
+		attributeSetters.put("activityLimitId", (BiConsumer<SocialActivityLimit, Long>)SocialActivityLimit::setActivityLimitId);
 		attributeGetters.put("groupId", SocialActivityLimit::getGroupId);
-		attributeSetters.put("groupId", SocialActivityLimit::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<SocialActivityLimit, Long>)SocialActivityLimit::setGroupId);
 		attributeGetters.put("companyId", SocialActivityLimit::getCompanyId);
-		attributeSetters.put("companyId", SocialActivityLimit::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<SocialActivityLimit, Long>)SocialActivityLimit::setCompanyId);
 		attributeGetters.put("userId", SocialActivityLimit::getUserId);
-		attributeSetters.put("userId", SocialActivityLimit::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<SocialActivityLimit, Long>)SocialActivityLimit::setUserId);
 		attributeGetters.put("classNameId", SocialActivityLimit::getClassNameId);
-		attributeSetters.put("classNameId", SocialActivityLimit::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<SocialActivityLimit, Long>)SocialActivityLimit::setClassNameId);
 		attributeGetters.put("classPK", SocialActivityLimit::getClassPK);
-		attributeSetters.put("classPK", SocialActivityLimit::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<SocialActivityLimit, Long>)SocialActivityLimit::setClassPK);
 		attributeGetters.put("activityType", SocialActivityLimit::getActivityType);
-		attributeSetters.put("activityType", SocialActivityLimit::setActivityType);
-
+		attributeSetters.put("activityType", (BiConsumer<SocialActivityLimit, Integer>)SocialActivityLimit::setActivityType);
 		attributeGetters.put("activityCounterName", SocialActivityLimit::getActivityCounterName);
-		attributeSetters.put("activityCounterName", SocialActivityLimit::setActivityCounterName);
-
+		attributeSetters.put("activityCounterName", (BiConsumer<SocialActivityLimit, String>)SocialActivityLimit::setActivityCounterName);
 		attributeGetters.put("value", SocialActivityLimit::getValue);
-		attributeSetters.put("value", SocialActivityLimit::setValue);
+		attributeSetters.put("value", (BiConsumer<SocialActivityLimit, String>)SocialActivityLimit::setValue);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

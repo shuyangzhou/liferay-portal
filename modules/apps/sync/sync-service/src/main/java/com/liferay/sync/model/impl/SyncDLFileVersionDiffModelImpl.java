@@ -157,31 +157,25 @@ public class SyncDLFileVersionDiffModelImpl extends BaseModelImpl<SyncDLFileVers
 
 	static {
 		Map<String, Function<SyncDLFileVersionDiff, Object>> attributeGetters = new LinkedHashMap<String, Function<SyncDLFileVersionDiff, Object>>();
-		Map<String, BiConsumer<SyncDLFileVersionDiff, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SyncDLFileVersionDiff, Object>>();
+		Map<String, BiConsumer<SyncDLFileVersionDiff, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<SyncDLFileVersionDiff, ?>>();
 
 		attributeGetters.put("syncDLFileVersionDiffId", SyncDLFileVersionDiff::getSyncDLFileVersionDiffId);
-		attributeSetters.put("syncDLFileVersionDiffId", SyncDLFileVersionDiff::setSyncDLFileVersionDiffId);
-
+		attributeSetters.put("syncDLFileVersionDiffId", (BiConsumer<SyncDLFileVersionDiff, Long>)SyncDLFileVersionDiff::setSyncDLFileVersionDiffId);
 		attributeGetters.put("fileEntryId", SyncDLFileVersionDiff::getFileEntryId);
-		attributeSetters.put("fileEntryId", SyncDLFileVersionDiff::setFileEntryId);
-
+		attributeSetters.put("fileEntryId", (BiConsumer<SyncDLFileVersionDiff, Long>)SyncDLFileVersionDiff::setFileEntryId);
 		attributeGetters.put("sourceFileVersionId", SyncDLFileVersionDiff::getSourceFileVersionId);
-		attributeSetters.put("sourceFileVersionId", SyncDLFileVersionDiff::setSourceFileVersionId);
-
+		attributeSetters.put("sourceFileVersionId", (BiConsumer<SyncDLFileVersionDiff, Long>)SyncDLFileVersionDiff::setSourceFileVersionId);
 		attributeGetters.put("targetFileVersionId", SyncDLFileVersionDiff::getTargetFileVersionId);
-		attributeSetters.put("targetFileVersionId", SyncDLFileVersionDiff::setTargetFileVersionId);
-
+		attributeSetters.put("targetFileVersionId", (BiConsumer<SyncDLFileVersionDiff, Long>)SyncDLFileVersionDiff::setTargetFileVersionId);
 		attributeGetters.put("dataFileEntryId", SyncDLFileVersionDiff::getDataFileEntryId);
-		attributeSetters.put("dataFileEntryId", SyncDLFileVersionDiff::setDataFileEntryId);
-
+		attributeSetters.put("dataFileEntryId", (BiConsumer<SyncDLFileVersionDiff, Long>)SyncDLFileVersionDiff::setDataFileEntryId);
 		attributeGetters.put("size", SyncDLFileVersionDiff::getSize);
-		attributeSetters.put("size", SyncDLFileVersionDiff::setSize);
-
+		attributeSetters.put("size", (BiConsumer<SyncDLFileVersionDiff, Long>)SyncDLFileVersionDiff::setSize);
 		attributeGetters.put("expirationDate", SyncDLFileVersionDiff::getExpirationDate);
-		attributeSetters.put("expirationDate", SyncDLFileVersionDiff::setExpirationDate);
+		attributeSetters.put("expirationDate", (BiConsumer<SyncDLFileVersionDiff, Date>)SyncDLFileVersionDiff::setExpirationDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

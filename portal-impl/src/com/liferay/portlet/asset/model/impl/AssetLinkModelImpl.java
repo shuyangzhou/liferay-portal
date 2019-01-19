@@ -163,37 +163,29 @@ public class AssetLinkModelImpl extends BaseModelImpl<AssetLink>
 
 	static {
 		Map<String, Function<AssetLink, Object>> attributeGetters = new LinkedHashMap<String, Function<AssetLink, Object>>();
-		Map<String, BiConsumer<AssetLink, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetLink, Object>>();
+		Map<String, BiConsumer<AssetLink, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetLink, ?>>();
 
 		attributeGetters.put("linkId", AssetLink::getLinkId);
-		attributeSetters.put("linkId", AssetLink::setLinkId);
-
+		attributeSetters.put("linkId", (BiConsumer<AssetLink, Long>)AssetLink::setLinkId);
 		attributeGetters.put("companyId", AssetLink::getCompanyId);
-		attributeSetters.put("companyId", AssetLink::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<AssetLink, Long>)AssetLink::setCompanyId);
 		attributeGetters.put("userId", AssetLink::getUserId);
-		attributeSetters.put("userId", AssetLink::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<AssetLink, Long>)AssetLink::setUserId);
 		attributeGetters.put("userName", AssetLink::getUserName);
-		attributeSetters.put("userName", AssetLink::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<AssetLink, String>)AssetLink::setUserName);
 		attributeGetters.put("createDate", AssetLink::getCreateDate);
-		attributeSetters.put("createDate", AssetLink::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<AssetLink, Date>)AssetLink::setCreateDate);
 		attributeGetters.put("entryId1", AssetLink::getEntryId1);
-		attributeSetters.put("entryId1", AssetLink::setEntryId1);
-
+		attributeSetters.put("entryId1", (BiConsumer<AssetLink, Long>)AssetLink::setEntryId1);
 		attributeGetters.put("entryId2", AssetLink::getEntryId2);
-		attributeSetters.put("entryId2", AssetLink::setEntryId2);
-
+		attributeSetters.put("entryId2", (BiConsumer<AssetLink, Long>)AssetLink::setEntryId2);
 		attributeGetters.put("type", AssetLink::getType);
-		attributeSetters.put("type", AssetLink::setType);
-
+		attributeSetters.put("type", (BiConsumer<AssetLink, Integer>)AssetLink::setType);
 		attributeGetters.put("weight", AssetLink::getWeight);
-		attributeSetters.put("weight", AssetLink::setWeight);
+		attributeSetters.put("weight", (BiConsumer<AssetLink, Integer>)AssetLink::setWeight);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

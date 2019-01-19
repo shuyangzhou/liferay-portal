@@ -235,55 +235,41 @@ public class PowwowMeetingModelImpl extends BaseModelImpl<PowwowMeeting>
 
 	static {
 		Map<String, Function<PowwowMeeting, Object>> attributeGetters = new LinkedHashMap<String, Function<PowwowMeeting, Object>>();
-		Map<String, BiConsumer<PowwowMeeting, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<PowwowMeeting, Object>>();
+		Map<String, BiConsumer<PowwowMeeting, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<PowwowMeeting, ?>>();
 
 		attributeGetters.put("powwowMeetingId", PowwowMeeting::getPowwowMeetingId);
-		attributeSetters.put("powwowMeetingId", PowwowMeeting::setPowwowMeetingId);
-
+		attributeSetters.put("powwowMeetingId", (BiConsumer<PowwowMeeting, Long>)PowwowMeeting::setPowwowMeetingId);
 		attributeGetters.put("groupId", PowwowMeeting::getGroupId);
-		attributeSetters.put("groupId", PowwowMeeting::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<PowwowMeeting, Long>)PowwowMeeting::setGroupId);
 		attributeGetters.put("companyId", PowwowMeeting::getCompanyId);
-		attributeSetters.put("companyId", PowwowMeeting::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<PowwowMeeting, Long>)PowwowMeeting::setCompanyId);
 		attributeGetters.put("userId", PowwowMeeting::getUserId);
-		attributeSetters.put("userId", PowwowMeeting::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<PowwowMeeting, Long>)PowwowMeeting::setUserId);
 		attributeGetters.put("userName", PowwowMeeting::getUserName);
-		attributeSetters.put("userName", PowwowMeeting::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<PowwowMeeting, String>)PowwowMeeting::setUserName);
 		attributeGetters.put("createDate", PowwowMeeting::getCreateDate);
-		attributeSetters.put("createDate", PowwowMeeting::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<PowwowMeeting, Date>)PowwowMeeting::setCreateDate);
 		attributeGetters.put("modifiedDate", PowwowMeeting::getModifiedDate);
-		attributeSetters.put("modifiedDate", PowwowMeeting::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<PowwowMeeting, Date>)PowwowMeeting::setModifiedDate);
 		attributeGetters.put("powwowServerId", PowwowMeeting::getPowwowServerId);
-		attributeSetters.put("powwowServerId", PowwowMeeting::setPowwowServerId);
-
+		attributeSetters.put("powwowServerId", (BiConsumer<PowwowMeeting, Long>)PowwowMeeting::setPowwowServerId);
 		attributeGetters.put("name", PowwowMeeting::getName);
-		attributeSetters.put("name", PowwowMeeting::setName);
-
+		attributeSetters.put("name", (BiConsumer<PowwowMeeting, String>)PowwowMeeting::setName);
 		attributeGetters.put("description", PowwowMeeting::getDescription);
-		attributeSetters.put("description", PowwowMeeting::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<PowwowMeeting, String>)PowwowMeeting::setDescription);
 		attributeGetters.put("providerType", PowwowMeeting::getProviderType);
-		attributeSetters.put("providerType", PowwowMeeting::setProviderType);
-
+		attributeSetters.put("providerType", (BiConsumer<PowwowMeeting, String>)PowwowMeeting::setProviderType);
 		attributeGetters.put("providerTypeMetadata", PowwowMeeting::getProviderTypeMetadata);
-		attributeSetters.put("providerTypeMetadata", PowwowMeeting::setProviderTypeMetadata);
-
+		attributeSetters.put("providerTypeMetadata", (BiConsumer<PowwowMeeting, String>)PowwowMeeting::setProviderTypeMetadata);
 		attributeGetters.put("languageId", PowwowMeeting::getLanguageId);
-		attributeSetters.put("languageId", PowwowMeeting::setLanguageId);
-
+		attributeSetters.put("languageId", (BiConsumer<PowwowMeeting, String>)PowwowMeeting::setLanguageId);
 		attributeGetters.put("calendarBookingId", PowwowMeeting::getCalendarBookingId);
-		attributeSetters.put("calendarBookingId", PowwowMeeting::setCalendarBookingId);
-
+		attributeSetters.put("calendarBookingId", (BiConsumer<PowwowMeeting, Long>)PowwowMeeting::setCalendarBookingId);
 		attributeGetters.put("status", PowwowMeeting::getStatus);
-		attributeSetters.put("status", PowwowMeeting::setStatus);
+		attributeSetters.put("status", (BiConsumer<PowwowMeeting, Integer>)PowwowMeeting::setStatus);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

@@ -161,34 +161,27 @@ public class RecentLayoutRevisionModelImpl extends BaseModelImpl<RecentLayoutRev
 
 	static {
 		Map<String, Function<RecentLayoutRevision, Object>> attributeGetters = new LinkedHashMap<String, Function<RecentLayoutRevision, Object>>();
-		Map<String, BiConsumer<RecentLayoutRevision, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<RecentLayoutRevision, Object>>();
+		Map<String, BiConsumer<RecentLayoutRevision, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<RecentLayoutRevision, ?>>();
 
 		attributeGetters.put("mvccVersion", RecentLayoutRevision::getMvccVersion);
-		attributeSetters.put("mvccVersion", RecentLayoutRevision::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<RecentLayoutRevision, Long>)RecentLayoutRevision::setMvccVersion);
 		attributeGetters.put("recentLayoutRevisionId", RecentLayoutRevision::getRecentLayoutRevisionId);
-		attributeSetters.put("recentLayoutRevisionId", RecentLayoutRevision::setRecentLayoutRevisionId);
-
+		attributeSetters.put("recentLayoutRevisionId", (BiConsumer<RecentLayoutRevision, Long>)RecentLayoutRevision::setRecentLayoutRevisionId);
 		attributeGetters.put("groupId", RecentLayoutRevision::getGroupId);
-		attributeSetters.put("groupId", RecentLayoutRevision::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<RecentLayoutRevision, Long>)RecentLayoutRevision::setGroupId);
 		attributeGetters.put("companyId", RecentLayoutRevision::getCompanyId);
-		attributeSetters.put("companyId", RecentLayoutRevision::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<RecentLayoutRevision, Long>)RecentLayoutRevision::setCompanyId);
 		attributeGetters.put("userId", RecentLayoutRevision::getUserId);
-		attributeSetters.put("userId", RecentLayoutRevision::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<RecentLayoutRevision, Long>)RecentLayoutRevision::setUserId);
 		attributeGetters.put("layoutRevisionId", RecentLayoutRevision::getLayoutRevisionId);
-		attributeSetters.put("layoutRevisionId", RecentLayoutRevision::setLayoutRevisionId);
-
+		attributeSetters.put("layoutRevisionId", (BiConsumer<RecentLayoutRevision, Long>)RecentLayoutRevision::setLayoutRevisionId);
 		attributeGetters.put("layoutSetBranchId", RecentLayoutRevision::getLayoutSetBranchId);
-		attributeSetters.put("layoutSetBranchId", RecentLayoutRevision::setLayoutSetBranchId);
-
+		attributeSetters.put("layoutSetBranchId", (BiConsumer<RecentLayoutRevision, Long>)RecentLayoutRevision::setLayoutSetBranchId);
 		attributeGetters.put("plid", RecentLayoutRevision::getPlid);
-		attributeSetters.put("plid", RecentLayoutRevision::setPlid);
+		attributeSetters.put("plid", (BiConsumer<RecentLayoutRevision, Long>)RecentLayoutRevision::setPlid);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

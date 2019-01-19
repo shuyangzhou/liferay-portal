@@ -227,44 +227,34 @@ public class LayoutPageTemplateCollectionModelImpl extends BaseModelImpl<LayoutP
 	static {
 		Map<String, Function<LayoutPageTemplateCollection, Object>> attributeGetters =
 			new LinkedHashMap<String, Function<LayoutPageTemplateCollection, Object>>();
-		Map<String, BiConsumer<LayoutPageTemplateCollection, Object>> attributeSetters =
-			new LinkedHashMap<String, BiConsumer<LayoutPageTemplateCollection, Object>>();
+		Map<String, BiConsumer<LayoutPageTemplateCollection, ?>> attributeSetters =
+			new LinkedHashMap<String, BiConsumer<LayoutPageTemplateCollection, ?>>();
 
 		attributeGetters.put("uuid", LayoutPageTemplateCollection::getUuid);
-		attributeSetters.put("uuid", LayoutPageTemplateCollection::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<LayoutPageTemplateCollection, String>)LayoutPageTemplateCollection::setUuid);
 		attributeGetters.put("layoutPageTemplateCollectionId", LayoutPageTemplateCollection::getLayoutPageTemplateCollectionId);
-		attributeSetters.put("layoutPageTemplateCollectionId", LayoutPageTemplateCollection::setLayoutPageTemplateCollectionId);
-
+		attributeSetters.put("layoutPageTemplateCollectionId", (BiConsumer<LayoutPageTemplateCollection, Long>)LayoutPageTemplateCollection::setLayoutPageTemplateCollectionId);
 		attributeGetters.put("groupId", LayoutPageTemplateCollection::getGroupId);
-		attributeSetters.put("groupId", LayoutPageTemplateCollection::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<LayoutPageTemplateCollection, Long>)LayoutPageTemplateCollection::setGroupId);
 		attributeGetters.put("companyId", LayoutPageTemplateCollection::getCompanyId);
-		attributeSetters.put("companyId", LayoutPageTemplateCollection::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<LayoutPageTemplateCollection, Long>)LayoutPageTemplateCollection::setCompanyId);
 		attributeGetters.put("userId", LayoutPageTemplateCollection::getUserId);
-		attributeSetters.put("userId", LayoutPageTemplateCollection::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<LayoutPageTemplateCollection, Long>)LayoutPageTemplateCollection::setUserId);
 		attributeGetters.put("userName", LayoutPageTemplateCollection::getUserName);
-		attributeSetters.put("userName", LayoutPageTemplateCollection::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<LayoutPageTemplateCollection, String>)LayoutPageTemplateCollection::setUserName);
 		attributeGetters.put("createDate", LayoutPageTemplateCollection::getCreateDate);
-		attributeSetters.put("createDate", LayoutPageTemplateCollection::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<LayoutPageTemplateCollection, Date>)LayoutPageTemplateCollection::setCreateDate);
 		attributeGetters.put("modifiedDate", LayoutPageTemplateCollection::getModifiedDate);
-		attributeSetters.put("modifiedDate", LayoutPageTemplateCollection::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<LayoutPageTemplateCollection, Date>)LayoutPageTemplateCollection::setModifiedDate);
 		attributeGetters.put("name", LayoutPageTemplateCollection::getName);
-		attributeSetters.put("name", LayoutPageTemplateCollection::setName);
-
+		attributeSetters.put("name", (BiConsumer<LayoutPageTemplateCollection, String>)LayoutPageTemplateCollection::setName);
 		attributeGetters.put("description", LayoutPageTemplateCollection::getDescription);
-		attributeSetters.put("description", LayoutPageTemplateCollection::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<LayoutPageTemplateCollection, String>)LayoutPageTemplateCollection::setDescription);
 		attributeGetters.put("lastPublishDate", LayoutPageTemplateCollection::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", LayoutPageTemplateCollection::setLastPublishDate);
+		attributeSetters.put("lastPublishDate", (BiConsumer<LayoutPageTemplateCollection, Date>)LayoutPageTemplateCollection::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

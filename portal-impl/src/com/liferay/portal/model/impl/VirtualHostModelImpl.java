@@ -150,25 +150,21 @@ public class VirtualHostModelImpl extends BaseModelImpl<VirtualHost>
 
 	static {
 		Map<String, Function<VirtualHost, Object>> attributeGetters = new LinkedHashMap<String, Function<VirtualHost, Object>>();
-		Map<String, BiConsumer<VirtualHost, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<VirtualHost, Object>>();
+		Map<String, BiConsumer<VirtualHost, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<VirtualHost, ?>>();
 
 		attributeGetters.put("mvccVersion", VirtualHost::getMvccVersion);
-		attributeSetters.put("mvccVersion", VirtualHost::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<VirtualHost, Long>)VirtualHost::setMvccVersion);
 		attributeGetters.put("virtualHostId", VirtualHost::getVirtualHostId);
-		attributeSetters.put("virtualHostId", VirtualHost::setVirtualHostId);
-
+		attributeSetters.put("virtualHostId", (BiConsumer<VirtualHost, Long>)VirtualHost::setVirtualHostId);
 		attributeGetters.put("companyId", VirtualHost::getCompanyId);
-		attributeSetters.put("companyId", VirtualHost::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<VirtualHost, Long>)VirtualHost::setCompanyId);
 		attributeGetters.put("layoutSetId", VirtualHost::getLayoutSetId);
-		attributeSetters.put("layoutSetId", VirtualHost::setLayoutSetId);
-
+		attributeSetters.put("layoutSetId", (BiConsumer<VirtualHost, Long>)VirtualHost::setLayoutSetId);
 		attributeGetters.put("hostname", VirtualHost::getHostname);
-		attributeSetters.put("hostname", VirtualHost::setHostname);
+		attributeSetters.put("hostname", (BiConsumer<VirtualHost, String>)VirtualHost::setHostname);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

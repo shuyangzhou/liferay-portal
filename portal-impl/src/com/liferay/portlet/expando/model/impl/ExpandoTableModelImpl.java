@@ -149,22 +149,19 @@ public class ExpandoTableModelImpl extends BaseModelImpl<ExpandoTable>
 
 	static {
 		Map<String, Function<ExpandoTable, Object>> attributeGetters = new LinkedHashMap<String, Function<ExpandoTable, Object>>();
-		Map<String, BiConsumer<ExpandoTable, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<ExpandoTable, Object>>();
+		Map<String, BiConsumer<ExpandoTable, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<ExpandoTable, ?>>();
 
 		attributeGetters.put("tableId", ExpandoTable::getTableId);
-		attributeSetters.put("tableId", ExpandoTable::setTableId);
-
+		attributeSetters.put("tableId", (BiConsumer<ExpandoTable, Long>)ExpandoTable::setTableId);
 		attributeGetters.put("companyId", ExpandoTable::getCompanyId);
-		attributeSetters.put("companyId", ExpandoTable::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<ExpandoTable, Long>)ExpandoTable::setCompanyId);
 		attributeGetters.put("classNameId", ExpandoTable::getClassNameId);
-		attributeSetters.put("classNameId", ExpandoTable::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<ExpandoTable, Long>)ExpandoTable::setClassNameId);
 		attributeGetters.put("name", ExpandoTable::getName);
-		attributeSetters.put("name", ExpandoTable::setName);
+		attributeSetters.put("name", (BiConsumer<ExpandoTable, String>)ExpandoTable::setName);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

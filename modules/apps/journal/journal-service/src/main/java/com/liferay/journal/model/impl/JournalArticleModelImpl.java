@@ -310,109 +310,77 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 
 	static {
 		Map<String, Function<JournalArticle, Object>> attributeGetters = new LinkedHashMap<String, Function<JournalArticle, Object>>();
-		Map<String, BiConsumer<JournalArticle, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<JournalArticle, Object>>();
+		Map<String, BiConsumer<JournalArticle, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<JournalArticle, ?>>();
 
 		attributeGetters.put("uuid", JournalArticle::getUuid);
-		attributeSetters.put("uuid", JournalArticle::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<JournalArticle, String>)JournalArticle::setUuid);
 		attributeGetters.put("id", JournalArticle::getId);
-		attributeSetters.put("id", JournalArticle::setId);
-
+		attributeSetters.put("id", (BiConsumer<JournalArticle, Long>)JournalArticle::setId);
 		attributeGetters.put("resourcePrimKey", JournalArticle::getResourcePrimKey);
-		attributeSetters.put("resourcePrimKey", JournalArticle::setResourcePrimKey);
-
+		attributeSetters.put("resourcePrimKey", (BiConsumer<JournalArticle, Long>)JournalArticle::setResourcePrimKey);
 		attributeGetters.put("groupId", JournalArticle::getGroupId);
-		attributeSetters.put("groupId", JournalArticle::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<JournalArticle, Long>)JournalArticle::setGroupId);
 		attributeGetters.put("companyId", JournalArticle::getCompanyId);
-		attributeSetters.put("companyId", JournalArticle::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<JournalArticle, Long>)JournalArticle::setCompanyId);
 		attributeGetters.put("userId", JournalArticle::getUserId);
-		attributeSetters.put("userId", JournalArticle::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<JournalArticle, Long>)JournalArticle::setUserId);
 		attributeGetters.put("userName", JournalArticle::getUserName);
-		attributeSetters.put("userName", JournalArticle::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<JournalArticle, String>)JournalArticle::setUserName);
 		attributeGetters.put("createDate", JournalArticle::getCreateDate);
-		attributeSetters.put("createDate", JournalArticle::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<JournalArticle, Date>)JournalArticle::setCreateDate);
 		attributeGetters.put("modifiedDate", JournalArticle::getModifiedDate);
-		attributeSetters.put("modifiedDate", JournalArticle::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<JournalArticle, Date>)JournalArticle::setModifiedDate);
 		attributeGetters.put("folderId", JournalArticle::getFolderId);
-		attributeSetters.put("folderId", JournalArticle::setFolderId);
-
+		attributeSetters.put("folderId", (BiConsumer<JournalArticle, Long>)JournalArticle::setFolderId);
 		attributeGetters.put("classNameId", JournalArticle::getClassNameId);
-		attributeSetters.put("classNameId", JournalArticle::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<JournalArticle, Long>)JournalArticle::setClassNameId);
 		attributeGetters.put("classPK", JournalArticle::getClassPK);
-		attributeSetters.put("classPK", JournalArticle::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<JournalArticle, Long>)JournalArticle::setClassPK);
 		attributeGetters.put("treePath", JournalArticle::getTreePath);
-		attributeSetters.put("treePath", JournalArticle::setTreePath);
-
+		attributeSetters.put("treePath", (BiConsumer<JournalArticle, String>)JournalArticle::setTreePath);
 		attributeGetters.put("articleId", JournalArticle::getArticleId);
-		attributeSetters.put("articleId", JournalArticle::setArticleId);
-
+		attributeSetters.put("articleId", (BiConsumer<JournalArticle, String>)JournalArticle::setArticleId);
 		attributeGetters.put("version", JournalArticle::getVersion);
-		attributeSetters.put("version", JournalArticle::setVersion);
-
+		attributeSetters.put("version", (BiConsumer<JournalArticle, Double>)JournalArticle::setVersion);
 		attributeGetters.put("urlTitle", JournalArticle::getUrlTitle);
-		attributeSetters.put("urlTitle", JournalArticle::setUrlTitle);
-
+		attributeSetters.put("urlTitle", (BiConsumer<JournalArticle, String>)JournalArticle::setUrlTitle);
 		attributeGetters.put("content", JournalArticle::getContent);
-		attributeSetters.put("content", JournalArticle::setContent);
-
+		attributeSetters.put("content", (BiConsumer<JournalArticle, String>)JournalArticle::setContent);
 		attributeGetters.put("DDMStructureKey", JournalArticle::getDDMStructureKey);
-		attributeSetters.put("DDMStructureKey", JournalArticle::setDDMStructureKey);
-
+		attributeSetters.put("DDMStructureKey", (BiConsumer<JournalArticle, String>)JournalArticle::setDDMStructureKey);
 		attributeGetters.put("DDMTemplateKey", JournalArticle::getDDMTemplateKey);
-		attributeSetters.put("DDMTemplateKey", JournalArticle::setDDMTemplateKey);
-
+		attributeSetters.put("DDMTemplateKey", (BiConsumer<JournalArticle, String>)JournalArticle::setDDMTemplateKey);
 		attributeGetters.put("defaultLanguageId", JournalArticle::getDefaultLanguageId);
-		attributeSetters.put("defaultLanguageId", JournalArticle::setDefaultLanguageId);
-
+		attributeSetters.put("defaultLanguageId", (BiConsumer<JournalArticle, String>)JournalArticle::setDefaultLanguageId);
 		attributeGetters.put("layoutUuid", JournalArticle::getLayoutUuid);
-		attributeSetters.put("layoutUuid", JournalArticle::setLayoutUuid);
-
+		attributeSetters.put("layoutUuid", (BiConsumer<JournalArticle, String>)JournalArticle::setLayoutUuid);
 		attributeGetters.put("displayDate", JournalArticle::getDisplayDate);
-		attributeSetters.put("displayDate", JournalArticle::setDisplayDate);
-
+		attributeSetters.put("displayDate", (BiConsumer<JournalArticle, Date>)JournalArticle::setDisplayDate);
 		attributeGetters.put("expirationDate", JournalArticle::getExpirationDate);
-		attributeSetters.put("expirationDate", JournalArticle::setExpirationDate);
-
+		attributeSetters.put("expirationDate", (BiConsumer<JournalArticle, Date>)JournalArticle::setExpirationDate);
 		attributeGetters.put("reviewDate", JournalArticle::getReviewDate);
-		attributeSetters.put("reviewDate", JournalArticle::setReviewDate);
-
+		attributeSetters.put("reviewDate", (BiConsumer<JournalArticle, Date>)JournalArticle::setReviewDate);
 		attributeGetters.put("indexable", JournalArticle::getIndexable);
-		attributeSetters.put("indexable", JournalArticle::setIndexable);
-
+		attributeSetters.put("indexable", (BiConsumer<JournalArticle, Boolean>)JournalArticle::setIndexable);
 		attributeGetters.put("smallImage", JournalArticle::getSmallImage);
-		attributeSetters.put("smallImage", JournalArticle::setSmallImage);
-
+		attributeSetters.put("smallImage", (BiConsumer<JournalArticle, Boolean>)JournalArticle::setSmallImage);
 		attributeGetters.put("smallImageId", JournalArticle::getSmallImageId);
-		attributeSetters.put("smallImageId", JournalArticle::setSmallImageId);
-
+		attributeSetters.put("smallImageId", (BiConsumer<JournalArticle, Long>)JournalArticle::setSmallImageId);
 		attributeGetters.put("smallImageURL", JournalArticle::getSmallImageURL);
-		attributeSetters.put("smallImageURL", JournalArticle::setSmallImageURL);
-
+		attributeSetters.put("smallImageURL", (BiConsumer<JournalArticle, String>)JournalArticle::setSmallImageURL);
 		attributeGetters.put("lastPublishDate", JournalArticle::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", JournalArticle::setLastPublishDate);
-
+		attributeSetters.put("lastPublishDate", (BiConsumer<JournalArticle, Date>)JournalArticle::setLastPublishDate);
 		attributeGetters.put("status", JournalArticle::getStatus);
-		attributeSetters.put("status", JournalArticle::setStatus);
-
+		attributeSetters.put("status", (BiConsumer<JournalArticle, Integer>)JournalArticle::setStatus);
 		attributeGetters.put("statusByUserId", JournalArticle::getStatusByUserId);
-		attributeSetters.put("statusByUserId", JournalArticle::setStatusByUserId);
-
+		attributeSetters.put("statusByUserId", (BiConsumer<JournalArticle, Long>)JournalArticle::setStatusByUserId);
 		attributeGetters.put("statusByUserName", JournalArticle::getStatusByUserName);
-		attributeSetters.put("statusByUserName", JournalArticle::setStatusByUserName);
-
+		attributeSetters.put("statusByUserName", (BiConsumer<JournalArticle, String>)JournalArticle::setStatusByUserName);
 		attributeGetters.put("statusDate", JournalArticle::getStatusDate);
-		attributeSetters.put("statusDate", JournalArticle::setStatusDate);
+		attributeSetters.put("statusDate", (BiConsumer<JournalArticle, Date>)JournalArticle::setStatusDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

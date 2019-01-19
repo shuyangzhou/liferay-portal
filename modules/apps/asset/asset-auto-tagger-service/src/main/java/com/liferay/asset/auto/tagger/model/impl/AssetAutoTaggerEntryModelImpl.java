@@ -156,31 +156,25 @@ public class AssetAutoTaggerEntryModelImpl extends BaseModelImpl<AssetAutoTagger
 
 	static {
 		Map<String, Function<AssetAutoTaggerEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<AssetAutoTaggerEntry, Object>>();
-		Map<String, BiConsumer<AssetAutoTaggerEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetAutoTaggerEntry, Object>>();
+		Map<String, BiConsumer<AssetAutoTaggerEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetAutoTaggerEntry, ?>>();
 
 		attributeGetters.put("assetAutoTaggerEntryId", AssetAutoTaggerEntry::getAssetAutoTaggerEntryId);
-		attributeSetters.put("assetAutoTaggerEntryId", AssetAutoTaggerEntry::setAssetAutoTaggerEntryId);
-
+		attributeSetters.put("assetAutoTaggerEntryId", (BiConsumer<AssetAutoTaggerEntry, Long>)AssetAutoTaggerEntry::setAssetAutoTaggerEntryId);
 		attributeGetters.put("groupId", AssetAutoTaggerEntry::getGroupId);
-		attributeSetters.put("groupId", AssetAutoTaggerEntry::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<AssetAutoTaggerEntry, Long>)AssetAutoTaggerEntry::setGroupId);
 		attributeGetters.put("companyId", AssetAutoTaggerEntry::getCompanyId);
-		attributeSetters.put("companyId", AssetAutoTaggerEntry::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<AssetAutoTaggerEntry, Long>)AssetAutoTaggerEntry::setCompanyId);
 		attributeGetters.put("createDate", AssetAutoTaggerEntry::getCreateDate);
-		attributeSetters.put("createDate", AssetAutoTaggerEntry::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<AssetAutoTaggerEntry, Date>)AssetAutoTaggerEntry::setCreateDate);
 		attributeGetters.put("modifiedDate", AssetAutoTaggerEntry::getModifiedDate);
-		attributeSetters.put("modifiedDate", AssetAutoTaggerEntry::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<AssetAutoTaggerEntry, Date>)AssetAutoTaggerEntry::setModifiedDate);
 		attributeGetters.put("assetEntryId", AssetAutoTaggerEntry::getAssetEntryId);
-		attributeSetters.put("assetEntryId", AssetAutoTaggerEntry::setAssetEntryId);
-
+		attributeSetters.put("assetEntryId", (BiConsumer<AssetAutoTaggerEntry, Long>)AssetAutoTaggerEntry::setAssetEntryId);
 		attributeGetters.put("assetTagId", AssetAutoTaggerEntry::getAssetTagId);
-		attributeSetters.put("assetTagId", AssetAutoTaggerEntry::setAssetTagId);
+		attributeSetters.put("assetTagId", (BiConsumer<AssetAutoTaggerEntry, Long>)AssetAutoTaggerEntry::setAssetTagId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

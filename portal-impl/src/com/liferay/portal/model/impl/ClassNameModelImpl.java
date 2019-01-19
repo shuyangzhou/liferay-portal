@@ -192,19 +192,17 @@ public class ClassNameModelImpl extends BaseModelImpl<ClassName>
 
 	static {
 		Map<String, Function<ClassName, Object>> attributeGetters = new LinkedHashMap<String, Function<ClassName, Object>>();
-		Map<String, BiConsumer<ClassName, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<ClassName, Object>>();
+		Map<String, BiConsumer<ClassName, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<ClassName, ?>>();
 
 		attributeGetters.put("mvccVersion", ClassName::getMvccVersion);
-		attributeSetters.put("mvccVersion", ClassName::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<ClassName, Long>)ClassName::setMvccVersion);
 		attributeGetters.put("classNameId", ClassName::getClassNameId);
-		attributeSetters.put("classNameId", ClassName::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<ClassName, Long>)ClassName::setClassNameId);
 		attributeGetters.put("value", ClassName::getValue);
-		attributeSetters.put("value", ClassName::setValue);
+		attributeSetters.put("value", (BiConsumer<ClassName, String>)ClassName::setValue);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

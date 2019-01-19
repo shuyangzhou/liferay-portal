@@ -286,97 +286,69 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 
 	static {
 		Map<String, Function<LayoutRevision, Object>> attributeGetters = new LinkedHashMap<String, Function<LayoutRevision, Object>>();
-		Map<String, BiConsumer<LayoutRevision, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<LayoutRevision, Object>>();
+		Map<String, BiConsumer<LayoutRevision, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<LayoutRevision, ?>>();
 
 		attributeGetters.put("mvccVersion", LayoutRevision::getMvccVersion);
-		attributeSetters.put("mvccVersion", LayoutRevision::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<LayoutRevision, Long>)LayoutRevision::setMvccVersion);
 		attributeGetters.put("layoutRevisionId", LayoutRevision::getLayoutRevisionId);
-		attributeSetters.put("layoutRevisionId", LayoutRevision::setLayoutRevisionId);
-
+		attributeSetters.put("layoutRevisionId", (BiConsumer<LayoutRevision, Long>)LayoutRevision::setLayoutRevisionId);
 		attributeGetters.put("groupId", LayoutRevision::getGroupId);
-		attributeSetters.put("groupId", LayoutRevision::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<LayoutRevision, Long>)LayoutRevision::setGroupId);
 		attributeGetters.put("companyId", LayoutRevision::getCompanyId);
-		attributeSetters.put("companyId", LayoutRevision::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<LayoutRevision, Long>)LayoutRevision::setCompanyId);
 		attributeGetters.put("userId", LayoutRevision::getUserId);
-		attributeSetters.put("userId", LayoutRevision::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<LayoutRevision, Long>)LayoutRevision::setUserId);
 		attributeGetters.put("userName", LayoutRevision::getUserName);
-		attributeSetters.put("userName", LayoutRevision::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<LayoutRevision, String>)LayoutRevision::setUserName);
 		attributeGetters.put("createDate", LayoutRevision::getCreateDate);
-		attributeSetters.put("createDate", LayoutRevision::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<LayoutRevision, Date>)LayoutRevision::setCreateDate);
 		attributeGetters.put("modifiedDate", LayoutRevision::getModifiedDate);
-		attributeSetters.put("modifiedDate", LayoutRevision::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<LayoutRevision, Date>)LayoutRevision::setModifiedDate);
 		attributeGetters.put("layoutSetBranchId", LayoutRevision::getLayoutSetBranchId);
-		attributeSetters.put("layoutSetBranchId", LayoutRevision::setLayoutSetBranchId);
-
+		attributeSetters.put("layoutSetBranchId", (BiConsumer<LayoutRevision, Long>)LayoutRevision::setLayoutSetBranchId);
 		attributeGetters.put("layoutBranchId", LayoutRevision::getLayoutBranchId);
-		attributeSetters.put("layoutBranchId", LayoutRevision::setLayoutBranchId);
-
+		attributeSetters.put("layoutBranchId", (BiConsumer<LayoutRevision, Long>)LayoutRevision::setLayoutBranchId);
 		attributeGetters.put("parentLayoutRevisionId", LayoutRevision::getParentLayoutRevisionId);
-		attributeSetters.put("parentLayoutRevisionId", LayoutRevision::setParentLayoutRevisionId);
-
+		attributeSetters.put("parentLayoutRevisionId", (BiConsumer<LayoutRevision, Long>)LayoutRevision::setParentLayoutRevisionId);
 		attributeGetters.put("head", LayoutRevision::getHead);
-		attributeSetters.put("head", LayoutRevision::setHead);
-
+		attributeSetters.put("head", (BiConsumer<LayoutRevision, Boolean>)LayoutRevision::setHead);
 		attributeGetters.put("major", LayoutRevision::getMajor);
-		attributeSetters.put("major", LayoutRevision::setMajor);
-
+		attributeSetters.put("major", (BiConsumer<LayoutRevision, Boolean>)LayoutRevision::setMajor);
 		attributeGetters.put("plid", LayoutRevision::getPlid);
-		attributeSetters.put("plid", LayoutRevision::setPlid);
-
+		attributeSetters.put("plid", (BiConsumer<LayoutRevision, Long>)LayoutRevision::setPlid);
 		attributeGetters.put("privateLayout", LayoutRevision::getPrivateLayout);
-		attributeSetters.put("privateLayout", LayoutRevision::setPrivateLayout);
-
+		attributeSetters.put("privateLayout", (BiConsumer<LayoutRevision, Boolean>)LayoutRevision::setPrivateLayout);
 		attributeGetters.put("name", LayoutRevision::getName);
-		attributeSetters.put("name", LayoutRevision::setName);
-
+		attributeSetters.put("name", (BiConsumer<LayoutRevision, String>)LayoutRevision::setName);
 		attributeGetters.put("title", LayoutRevision::getTitle);
-		attributeSetters.put("title", LayoutRevision::setTitle);
-
+		attributeSetters.put("title", (BiConsumer<LayoutRevision, String>)LayoutRevision::setTitle);
 		attributeGetters.put("description", LayoutRevision::getDescription);
-		attributeSetters.put("description", LayoutRevision::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<LayoutRevision, String>)LayoutRevision::setDescription);
 		attributeGetters.put("keywords", LayoutRevision::getKeywords);
-		attributeSetters.put("keywords", LayoutRevision::setKeywords);
-
+		attributeSetters.put("keywords", (BiConsumer<LayoutRevision, String>)LayoutRevision::setKeywords);
 		attributeGetters.put("robots", LayoutRevision::getRobots);
-		attributeSetters.put("robots", LayoutRevision::setRobots);
-
+		attributeSetters.put("robots", (BiConsumer<LayoutRevision, String>)LayoutRevision::setRobots);
 		attributeGetters.put("typeSettings", LayoutRevision::getTypeSettings);
-		attributeSetters.put("typeSettings", LayoutRevision::setTypeSettings);
-
+		attributeSetters.put("typeSettings", (BiConsumer<LayoutRevision, String>)LayoutRevision::setTypeSettings);
 		attributeGetters.put("iconImageId", LayoutRevision::getIconImageId);
-		attributeSetters.put("iconImageId", LayoutRevision::setIconImageId);
-
+		attributeSetters.put("iconImageId", (BiConsumer<LayoutRevision, Long>)LayoutRevision::setIconImageId);
 		attributeGetters.put("themeId", LayoutRevision::getThemeId);
-		attributeSetters.put("themeId", LayoutRevision::setThemeId);
-
+		attributeSetters.put("themeId", (BiConsumer<LayoutRevision, String>)LayoutRevision::setThemeId);
 		attributeGetters.put("colorSchemeId", LayoutRevision::getColorSchemeId);
-		attributeSetters.put("colorSchemeId", LayoutRevision::setColorSchemeId);
-
+		attributeSetters.put("colorSchemeId", (BiConsumer<LayoutRevision, String>)LayoutRevision::setColorSchemeId);
 		attributeGetters.put("css", LayoutRevision::getCss);
-		attributeSetters.put("css", LayoutRevision::setCss);
-
+		attributeSetters.put("css", (BiConsumer<LayoutRevision, String>)LayoutRevision::setCss);
 		attributeGetters.put("status", LayoutRevision::getStatus);
-		attributeSetters.put("status", LayoutRevision::setStatus);
-
+		attributeSetters.put("status", (BiConsumer<LayoutRevision, Integer>)LayoutRevision::setStatus);
 		attributeGetters.put("statusByUserId", LayoutRevision::getStatusByUserId);
-		attributeSetters.put("statusByUserId", LayoutRevision::setStatusByUserId);
-
+		attributeSetters.put("statusByUserId", (BiConsumer<LayoutRevision, Long>)LayoutRevision::setStatusByUserId);
 		attributeGetters.put("statusByUserName", LayoutRevision::getStatusByUserName);
-		attributeSetters.put("statusByUserName", LayoutRevision::setStatusByUserName);
-
+		attributeSetters.put("statusByUserName", (BiConsumer<LayoutRevision, String>)LayoutRevision::setStatusByUserName);
 		attributeGetters.put("statusDate", LayoutRevision::getStatusDate);
-		attributeSetters.put("statusDate", LayoutRevision::setStatusDate);
+		attributeSetters.put("statusDate", (BiConsumer<LayoutRevision, Date>)LayoutRevision::setStatusDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

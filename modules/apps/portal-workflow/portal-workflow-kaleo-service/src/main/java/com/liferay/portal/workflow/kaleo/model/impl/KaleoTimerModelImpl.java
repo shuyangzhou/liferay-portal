@@ -178,61 +178,45 @@ public class KaleoTimerModelImpl extends BaseModelImpl<KaleoTimer>
 
 	static {
 		Map<String, Function<KaleoTimer, Object>> attributeGetters = new LinkedHashMap<String, Function<KaleoTimer, Object>>();
-		Map<String, BiConsumer<KaleoTimer, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<KaleoTimer, Object>>();
+		Map<String, BiConsumer<KaleoTimer, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<KaleoTimer, ?>>();
 
 		attributeGetters.put("kaleoTimerId", KaleoTimer::getKaleoTimerId);
-		attributeSetters.put("kaleoTimerId", KaleoTimer::setKaleoTimerId);
-
+		attributeSetters.put("kaleoTimerId", (BiConsumer<KaleoTimer, Long>)KaleoTimer::setKaleoTimerId);
 		attributeGetters.put("groupId", KaleoTimer::getGroupId);
-		attributeSetters.put("groupId", KaleoTimer::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<KaleoTimer, Long>)KaleoTimer::setGroupId);
 		attributeGetters.put("companyId", KaleoTimer::getCompanyId);
-		attributeSetters.put("companyId", KaleoTimer::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<KaleoTimer, Long>)KaleoTimer::setCompanyId);
 		attributeGetters.put("userId", KaleoTimer::getUserId);
-		attributeSetters.put("userId", KaleoTimer::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<KaleoTimer, Long>)KaleoTimer::setUserId);
 		attributeGetters.put("userName", KaleoTimer::getUserName);
-		attributeSetters.put("userName", KaleoTimer::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<KaleoTimer, String>)KaleoTimer::setUserName);
 		attributeGetters.put("createDate", KaleoTimer::getCreateDate);
-		attributeSetters.put("createDate", KaleoTimer::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<KaleoTimer, Date>)KaleoTimer::setCreateDate);
 		attributeGetters.put("modifiedDate", KaleoTimer::getModifiedDate);
-		attributeSetters.put("modifiedDate", KaleoTimer::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<KaleoTimer, Date>)KaleoTimer::setModifiedDate);
 		attributeGetters.put("kaleoClassName", KaleoTimer::getKaleoClassName);
-		attributeSetters.put("kaleoClassName", KaleoTimer::setKaleoClassName);
-
+		attributeSetters.put("kaleoClassName", (BiConsumer<KaleoTimer, String>)KaleoTimer::setKaleoClassName);
 		attributeGetters.put("kaleoClassPK", KaleoTimer::getKaleoClassPK);
-		attributeSetters.put("kaleoClassPK", KaleoTimer::setKaleoClassPK);
-
+		attributeSetters.put("kaleoClassPK", (BiConsumer<KaleoTimer, Long>)KaleoTimer::setKaleoClassPK);
 		attributeGetters.put("kaleoDefinitionVersionId", KaleoTimer::getKaleoDefinitionVersionId);
-		attributeSetters.put("kaleoDefinitionVersionId", KaleoTimer::setKaleoDefinitionVersionId);
-
+		attributeSetters.put("kaleoDefinitionVersionId", (BiConsumer<KaleoTimer, Long>)KaleoTimer::setKaleoDefinitionVersionId);
 		attributeGetters.put("name", KaleoTimer::getName);
-		attributeSetters.put("name", KaleoTimer::setName);
-
+		attributeSetters.put("name", (BiConsumer<KaleoTimer, String>)KaleoTimer::setName);
 		attributeGetters.put("blocking", KaleoTimer::getBlocking);
-		attributeSetters.put("blocking", KaleoTimer::setBlocking);
-
+		attributeSetters.put("blocking", (BiConsumer<KaleoTimer, Boolean>)KaleoTimer::setBlocking);
 		attributeGetters.put("description", KaleoTimer::getDescription);
-		attributeSetters.put("description", KaleoTimer::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<KaleoTimer, String>)KaleoTimer::setDescription);
 		attributeGetters.put("duration", KaleoTimer::getDuration);
-		attributeSetters.put("duration", KaleoTimer::setDuration);
-
+		attributeSetters.put("duration", (BiConsumer<KaleoTimer, Double>)KaleoTimer::setDuration);
 		attributeGetters.put("scale", KaleoTimer::getScale);
-		attributeSetters.put("scale", KaleoTimer::setScale);
-
+		attributeSetters.put("scale", (BiConsumer<KaleoTimer, String>)KaleoTimer::setScale);
 		attributeGetters.put("recurrenceDuration", KaleoTimer::getRecurrenceDuration);
-		attributeSetters.put("recurrenceDuration", KaleoTimer::setRecurrenceDuration);
-
+		attributeSetters.put("recurrenceDuration", (BiConsumer<KaleoTimer, Double>)KaleoTimer::setRecurrenceDuration);
 		attributeGetters.put("recurrenceScale", KaleoTimer::getRecurrenceScale);
-		attributeSetters.put("recurrenceScale", KaleoTimer::setRecurrenceScale);
+		attributeSetters.put("recurrenceScale", (BiConsumer<KaleoTimer, String>)KaleoTimer::setRecurrenceScale);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

@@ -218,7 +218,7 @@ public class LVEntryLocalizationModelImpl extends BaseModelImpl<LVEntryLocalizat
 
 	static {
 		Map<String, Function<LVEntryLocalization, Object>> attributeGetters = new LinkedHashMap<String, Function<LVEntryLocalization, Object>>();
-		Map<String, BiConsumer<LVEntryLocalization, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<LVEntryLocalization, Object>>();
+		Map<String, BiConsumer<LVEntryLocalization, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<LVEntryLocalization, ?>>();
 
 		attributeGetters.put(
 			"mvccVersion",
@@ -240,7 +240,6 @@ public class LVEntryLocalizationModelImpl extends BaseModelImpl<LVEntryLocalizat
 				}
 
 			});
-
 		attributeGetters.put(
 			"headId",
 			new Function<LVEntryLocalization, Object>() {
@@ -261,7 +260,6 @@ public class LVEntryLocalizationModelImpl extends BaseModelImpl<LVEntryLocalizat
 				}
 
 			});
-
 		attributeGetters.put(
 			"lvEntryLocalizationId",
 			new Function<LVEntryLocalization, Object>() {
@@ -282,7 +280,6 @@ public class LVEntryLocalizationModelImpl extends BaseModelImpl<LVEntryLocalizat
 				}
 
 			});
-
 		attributeGetters.put(
 			"lvEntryId",
 			new Function<LVEntryLocalization, Object>() {
@@ -303,7 +300,6 @@ public class LVEntryLocalizationModelImpl extends BaseModelImpl<LVEntryLocalizat
 				}
 
 			});
-
 		attributeGetters.put(
 			"languageId",
 			new Function<LVEntryLocalization, Object>() {
@@ -324,7 +320,6 @@ public class LVEntryLocalizationModelImpl extends BaseModelImpl<LVEntryLocalizat
 				}
 
 			});
-
 		attributeGetters.put(
 			"title",
 			new Function<LVEntryLocalization, Object>() {
@@ -345,7 +340,6 @@ public class LVEntryLocalizationModelImpl extends BaseModelImpl<LVEntryLocalizat
 				}
 
 			});
-
 		attributeGetters.put(
 			"content",
 			new Function<LVEntryLocalization, Object>() {
@@ -368,7 +362,7 @@ public class LVEntryLocalizationModelImpl extends BaseModelImpl<LVEntryLocalizat
 			});
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

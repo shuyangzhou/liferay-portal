@@ -161,43 +161,33 @@ public class ReleaseModelImpl extends BaseModelImpl<Release>
 
 	static {
 		Map<String, Function<Release, Object>> attributeGetters = new LinkedHashMap<String, Function<Release, Object>>();
-		Map<String, BiConsumer<Release, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Release, Object>>();
+		Map<String, BiConsumer<Release, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Release, ?>>();
 
 		attributeGetters.put("mvccVersion", Release::getMvccVersion);
-		attributeSetters.put("mvccVersion", Release::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<Release, Long>)Release::setMvccVersion);
 		attributeGetters.put("releaseId", Release::getReleaseId);
-		attributeSetters.put("releaseId", Release::setReleaseId);
-
+		attributeSetters.put("releaseId", (BiConsumer<Release, Long>)Release::setReleaseId);
 		attributeGetters.put("createDate", Release::getCreateDate);
-		attributeSetters.put("createDate", Release::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<Release, Date>)Release::setCreateDate);
 		attributeGetters.put("modifiedDate", Release::getModifiedDate);
-		attributeSetters.put("modifiedDate", Release::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<Release, Date>)Release::setModifiedDate);
 		attributeGetters.put("servletContextName", Release::getServletContextName);
-		attributeSetters.put("servletContextName", Release::setServletContextName);
-
+		attributeSetters.put("servletContextName", (BiConsumer<Release, String>)Release::setServletContextName);
 		attributeGetters.put("schemaVersion", Release::getSchemaVersion);
-		attributeSetters.put("schemaVersion", Release::setSchemaVersion);
-
+		attributeSetters.put("schemaVersion", (BiConsumer<Release, String>)Release::setSchemaVersion);
 		attributeGetters.put("buildNumber", Release::getBuildNumber);
-		attributeSetters.put("buildNumber", Release::setBuildNumber);
-
+		attributeSetters.put("buildNumber", (BiConsumer<Release, Integer>)Release::setBuildNumber);
 		attributeGetters.put("buildDate", Release::getBuildDate);
-		attributeSetters.put("buildDate", Release::setBuildDate);
-
+		attributeSetters.put("buildDate", (BiConsumer<Release, Date>)Release::setBuildDate);
 		attributeGetters.put("verified", Release::getVerified);
-		attributeSetters.put("verified", Release::setVerified);
-
+		attributeSetters.put("verified", (BiConsumer<Release, Boolean>)Release::setVerified);
 		attributeGetters.put("state", Release::getState);
-		attributeSetters.put("state", Release::setState);
-
+		attributeSetters.put("state", (BiConsumer<Release, Integer>)Release::setState);
 		attributeGetters.put("testString", Release::getTestString);
-		attributeSetters.put("testString", Release::setTestString);
+		attributeSetters.put("testString", (BiConsumer<Release, String>)Release::setTestString);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

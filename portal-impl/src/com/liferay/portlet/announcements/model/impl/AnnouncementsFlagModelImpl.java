@@ -208,28 +208,23 @@ public class AnnouncementsFlagModelImpl extends BaseModelImpl<AnnouncementsFlag>
 
 	static {
 		Map<String, Function<AnnouncementsFlag, Object>> attributeGetters = new LinkedHashMap<String, Function<AnnouncementsFlag, Object>>();
-		Map<String, BiConsumer<AnnouncementsFlag, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<AnnouncementsFlag, Object>>();
+		Map<String, BiConsumer<AnnouncementsFlag, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<AnnouncementsFlag, ?>>();
 
 		attributeGetters.put("flagId", AnnouncementsFlag::getFlagId);
-		attributeSetters.put("flagId", AnnouncementsFlag::setFlagId);
-
+		attributeSetters.put("flagId", (BiConsumer<AnnouncementsFlag, Long>)AnnouncementsFlag::setFlagId);
 		attributeGetters.put("companyId", AnnouncementsFlag::getCompanyId);
-		attributeSetters.put("companyId", AnnouncementsFlag::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<AnnouncementsFlag, Long>)AnnouncementsFlag::setCompanyId);
 		attributeGetters.put("userId", AnnouncementsFlag::getUserId);
-		attributeSetters.put("userId", AnnouncementsFlag::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<AnnouncementsFlag, Long>)AnnouncementsFlag::setUserId);
 		attributeGetters.put("createDate", AnnouncementsFlag::getCreateDate);
-		attributeSetters.put("createDate", AnnouncementsFlag::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<AnnouncementsFlag, Date>)AnnouncementsFlag::setCreateDate);
 		attributeGetters.put("entryId", AnnouncementsFlag::getEntryId);
-		attributeSetters.put("entryId", AnnouncementsFlag::setEntryId);
-
+		attributeSetters.put("entryId", (BiConsumer<AnnouncementsFlag, Long>)AnnouncementsFlag::setEntryId);
 		attributeGetters.put("value", AnnouncementsFlag::getValue);
-		attributeSetters.put("value", AnnouncementsFlag::setValue);
+		attributeSetters.put("value", (BiConsumer<AnnouncementsFlag, Integer>)AnnouncementsFlag::setValue);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

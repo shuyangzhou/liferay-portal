@@ -233,52 +233,39 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 
 	static {
 		Map<String, Function<App, Object>> attributeGetters = new LinkedHashMap<String, Function<App, Object>>();
-		Map<String, BiConsumer<App, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<App, Object>>();
+		Map<String, BiConsumer<App, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<App, ?>>();
 
 		attributeGetters.put("uuid", App::getUuid);
-		attributeSetters.put("uuid", App::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<App, String>)App::setUuid);
 		attributeGetters.put("appId", App::getAppId);
-		attributeSetters.put("appId", App::setAppId);
-
+		attributeSetters.put("appId", (BiConsumer<App, Long>)App::setAppId);
 		attributeGetters.put("companyId", App::getCompanyId);
-		attributeSetters.put("companyId", App::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<App, Long>)App::setCompanyId);
 		attributeGetters.put("userId", App::getUserId);
-		attributeSetters.put("userId", App::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<App, Long>)App::setUserId);
 		attributeGetters.put("userName", App::getUserName);
-		attributeSetters.put("userName", App::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<App, String>)App::setUserName);
 		attributeGetters.put("createDate", App::getCreateDate);
-		attributeSetters.put("createDate", App::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<App, Date>)App::setCreateDate);
 		attributeGetters.put("modifiedDate", App::getModifiedDate);
-		attributeSetters.put("modifiedDate", App::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<App, Date>)App::setModifiedDate);
 		attributeGetters.put("remoteAppId", App::getRemoteAppId);
-		attributeSetters.put("remoteAppId", App::setRemoteAppId);
-
+		attributeSetters.put("remoteAppId", (BiConsumer<App, Long>)App::setRemoteAppId);
 		attributeGetters.put("title", App::getTitle);
-		attributeSetters.put("title", App::setTitle);
-
+		attributeSetters.put("title", (BiConsumer<App, String>)App::setTitle);
 		attributeGetters.put("description", App::getDescription);
-		attributeSetters.put("description", App::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<App, String>)App::setDescription);
 		attributeGetters.put("category", App::getCategory);
-		attributeSetters.put("category", App::setCategory);
-
+		attributeSetters.put("category", (BiConsumer<App, String>)App::setCategory);
 		attributeGetters.put("iconURL", App::getIconURL);
-		attributeSetters.put("iconURL", App::setIconURL);
-
+		attributeSetters.put("iconURL", (BiConsumer<App, String>)App::setIconURL);
 		attributeGetters.put("version", App::getVersion);
-		attributeSetters.put("version", App::setVersion);
-
+		attributeSetters.put("version", (BiConsumer<App, String>)App::setVersion);
 		attributeGetters.put("required", App::getRequired);
-		attributeSetters.put("required", App::setRequired);
+		attributeSetters.put("required", (BiConsumer<App, Boolean>)App::setRequired);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

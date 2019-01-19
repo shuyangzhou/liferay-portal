@@ -236,47 +236,35 @@ public class DDMDataProviderInstanceModelImpl extends BaseModelImpl<DDMDataProvi
 
 	static {
 		Map<String, Function<DDMDataProviderInstance, Object>> attributeGetters = new LinkedHashMap<String, Function<DDMDataProviderInstance, Object>>();
-		Map<String, BiConsumer<DDMDataProviderInstance, Object>> attributeSetters =
-			new LinkedHashMap<String, BiConsumer<DDMDataProviderInstance, Object>>();
+		Map<String, BiConsumer<DDMDataProviderInstance, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDMDataProviderInstance, ?>>();
 
 		attributeGetters.put("uuid", DDMDataProviderInstance::getUuid);
-		attributeSetters.put("uuid", DDMDataProviderInstance::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<DDMDataProviderInstance, String>)DDMDataProviderInstance::setUuid);
 		attributeGetters.put("dataProviderInstanceId", DDMDataProviderInstance::getDataProviderInstanceId);
-		attributeSetters.put("dataProviderInstanceId", DDMDataProviderInstance::setDataProviderInstanceId);
-
+		attributeSetters.put("dataProviderInstanceId", (BiConsumer<DDMDataProviderInstance, Long>)DDMDataProviderInstance::setDataProviderInstanceId);
 		attributeGetters.put("groupId", DDMDataProviderInstance::getGroupId);
-		attributeSetters.put("groupId", DDMDataProviderInstance::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<DDMDataProviderInstance, Long>)DDMDataProviderInstance::setGroupId);
 		attributeGetters.put("companyId", DDMDataProviderInstance::getCompanyId);
-		attributeSetters.put("companyId", DDMDataProviderInstance::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<DDMDataProviderInstance, Long>)DDMDataProviderInstance::setCompanyId);
 		attributeGetters.put("userId", DDMDataProviderInstance::getUserId);
-		attributeSetters.put("userId", DDMDataProviderInstance::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<DDMDataProviderInstance, Long>)DDMDataProviderInstance::setUserId);
 		attributeGetters.put("userName", DDMDataProviderInstance::getUserName);
-		attributeSetters.put("userName", DDMDataProviderInstance::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<DDMDataProviderInstance, String>)DDMDataProviderInstance::setUserName);
 		attributeGetters.put("createDate", DDMDataProviderInstance::getCreateDate);
-		attributeSetters.put("createDate", DDMDataProviderInstance::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<DDMDataProviderInstance, Date>)DDMDataProviderInstance::setCreateDate);
 		attributeGetters.put("modifiedDate", DDMDataProviderInstance::getModifiedDate);
-		attributeSetters.put("modifiedDate", DDMDataProviderInstance::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<DDMDataProviderInstance, Date>)DDMDataProviderInstance::setModifiedDate);
 		attributeGetters.put("name", DDMDataProviderInstance::getName);
-		attributeSetters.put("name", DDMDataProviderInstance::setName);
-
+		attributeSetters.put("name", (BiConsumer<DDMDataProviderInstance, String>)DDMDataProviderInstance::setName);
 		attributeGetters.put("description", DDMDataProviderInstance::getDescription);
-		attributeSetters.put("description", DDMDataProviderInstance::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<DDMDataProviderInstance, String>)DDMDataProviderInstance::setDescription);
 		attributeGetters.put("definition", DDMDataProviderInstance::getDefinition);
-		attributeSetters.put("definition", DDMDataProviderInstance::setDefinition);
-
+		attributeSetters.put("definition", (BiConsumer<DDMDataProviderInstance, String>)DDMDataProviderInstance::setDefinition);
 		attributeGetters.put("type", DDMDataProviderInstance::getType);
-		attributeSetters.put("type", DDMDataProviderInstance::setType);
+		attributeSetters.put("type", (BiConsumer<DDMDataProviderInstance, String>)DDMDataProviderInstance::setType);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

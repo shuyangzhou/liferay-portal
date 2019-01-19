@@ -230,46 +230,35 @@ public class MicroblogsEntryModelImpl extends BaseModelImpl<MicroblogsEntry>
 
 	static {
 		Map<String, Function<MicroblogsEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<MicroblogsEntry, Object>>();
-		Map<String, BiConsumer<MicroblogsEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<MicroblogsEntry, Object>>();
+		Map<String, BiConsumer<MicroblogsEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<MicroblogsEntry, ?>>();
 
 		attributeGetters.put("microblogsEntryId", MicroblogsEntry::getMicroblogsEntryId);
-		attributeSetters.put("microblogsEntryId", MicroblogsEntry::setMicroblogsEntryId);
-
+		attributeSetters.put("microblogsEntryId", (BiConsumer<MicroblogsEntry, Long>)MicroblogsEntry::setMicroblogsEntryId);
 		attributeGetters.put("companyId", MicroblogsEntry::getCompanyId);
-		attributeSetters.put("companyId", MicroblogsEntry::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<MicroblogsEntry, Long>)MicroblogsEntry::setCompanyId);
 		attributeGetters.put("userId", MicroblogsEntry::getUserId);
-		attributeSetters.put("userId", MicroblogsEntry::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<MicroblogsEntry, Long>)MicroblogsEntry::setUserId);
 		attributeGetters.put("userName", MicroblogsEntry::getUserName);
-		attributeSetters.put("userName", MicroblogsEntry::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<MicroblogsEntry, String>)MicroblogsEntry::setUserName);
 		attributeGetters.put("createDate", MicroblogsEntry::getCreateDate);
-		attributeSetters.put("createDate", MicroblogsEntry::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<MicroblogsEntry, Date>)MicroblogsEntry::setCreateDate);
 		attributeGetters.put("modifiedDate", MicroblogsEntry::getModifiedDate);
-		attributeSetters.put("modifiedDate", MicroblogsEntry::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<MicroblogsEntry, Date>)MicroblogsEntry::setModifiedDate);
 		attributeGetters.put("creatorClassNameId", MicroblogsEntry::getCreatorClassNameId);
-		attributeSetters.put("creatorClassNameId", MicroblogsEntry::setCreatorClassNameId);
-
+		attributeSetters.put("creatorClassNameId", (BiConsumer<MicroblogsEntry, Long>)MicroblogsEntry::setCreatorClassNameId);
 		attributeGetters.put("creatorClassPK", MicroblogsEntry::getCreatorClassPK);
-		attributeSetters.put("creatorClassPK", MicroblogsEntry::setCreatorClassPK);
-
+		attributeSetters.put("creatorClassPK", (BiConsumer<MicroblogsEntry, Long>)MicroblogsEntry::setCreatorClassPK);
 		attributeGetters.put("content", MicroblogsEntry::getContent);
-		attributeSetters.put("content", MicroblogsEntry::setContent);
-
+		attributeSetters.put("content", (BiConsumer<MicroblogsEntry, String>)MicroblogsEntry::setContent);
 		attributeGetters.put("type", MicroblogsEntry::getType);
-		attributeSetters.put("type", MicroblogsEntry::setType);
-
+		attributeSetters.put("type", (BiConsumer<MicroblogsEntry, Integer>)MicroblogsEntry::setType);
 		attributeGetters.put("parentMicroblogsEntryId", MicroblogsEntry::getParentMicroblogsEntryId);
-		attributeSetters.put("parentMicroblogsEntryId", MicroblogsEntry::setParentMicroblogsEntryId);
-
+		attributeSetters.put("parentMicroblogsEntryId", (BiConsumer<MicroblogsEntry, Long>)MicroblogsEntry::setParentMicroblogsEntryId);
 		attributeGetters.put("socialRelationType", MicroblogsEntry::getSocialRelationType);
-		attributeSetters.put("socialRelationType", MicroblogsEntry::setSocialRelationType);
+		attributeSetters.put("socialRelationType", (BiConsumer<MicroblogsEntry, Integer>)MicroblogsEntry::setSocialRelationType);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

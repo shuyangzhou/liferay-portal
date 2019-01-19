@@ -254,64 +254,47 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 
 	static {
 		Map<String, Function<DLFileShortcut, Object>> attributeGetters = new LinkedHashMap<String, Function<DLFileShortcut, Object>>();
-		Map<String, BiConsumer<DLFileShortcut, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<DLFileShortcut, Object>>();
+		Map<String, BiConsumer<DLFileShortcut, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DLFileShortcut, ?>>();
 
 		attributeGetters.put("uuid", DLFileShortcut::getUuid);
-		attributeSetters.put("uuid", DLFileShortcut::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<DLFileShortcut, String>)DLFileShortcut::setUuid);
 		attributeGetters.put("fileShortcutId", DLFileShortcut::getFileShortcutId);
-		attributeSetters.put("fileShortcutId", DLFileShortcut::setFileShortcutId);
-
+		attributeSetters.put("fileShortcutId", (BiConsumer<DLFileShortcut, Long>)DLFileShortcut::setFileShortcutId);
 		attributeGetters.put("groupId", DLFileShortcut::getGroupId);
-		attributeSetters.put("groupId", DLFileShortcut::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<DLFileShortcut, Long>)DLFileShortcut::setGroupId);
 		attributeGetters.put("companyId", DLFileShortcut::getCompanyId);
-		attributeSetters.put("companyId", DLFileShortcut::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<DLFileShortcut, Long>)DLFileShortcut::setCompanyId);
 		attributeGetters.put("userId", DLFileShortcut::getUserId);
-		attributeSetters.put("userId", DLFileShortcut::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<DLFileShortcut, Long>)DLFileShortcut::setUserId);
 		attributeGetters.put("userName", DLFileShortcut::getUserName);
-		attributeSetters.put("userName", DLFileShortcut::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<DLFileShortcut, String>)DLFileShortcut::setUserName);
 		attributeGetters.put("createDate", DLFileShortcut::getCreateDate);
-		attributeSetters.put("createDate", DLFileShortcut::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<DLFileShortcut, Date>)DLFileShortcut::setCreateDate);
 		attributeGetters.put("modifiedDate", DLFileShortcut::getModifiedDate);
-		attributeSetters.put("modifiedDate", DLFileShortcut::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<DLFileShortcut, Date>)DLFileShortcut::setModifiedDate);
 		attributeGetters.put("repositoryId", DLFileShortcut::getRepositoryId);
-		attributeSetters.put("repositoryId", DLFileShortcut::setRepositoryId);
-
+		attributeSetters.put("repositoryId", (BiConsumer<DLFileShortcut, Long>)DLFileShortcut::setRepositoryId);
 		attributeGetters.put("folderId", DLFileShortcut::getFolderId);
-		attributeSetters.put("folderId", DLFileShortcut::setFolderId);
-
+		attributeSetters.put("folderId", (BiConsumer<DLFileShortcut, Long>)DLFileShortcut::setFolderId);
 		attributeGetters.put("toFileEntryId", DLFileShortcut::getToFileEntryId);
-		attributeSetters.put("toFileEntryId", DLFileShortcut::setToFileEntryId);
-
+		attributeSetters.put("toFileEntryId", (BiConsumer<DLFileShortcut, Long>)DLFileShortcut::setToFileEntryId);
 		attributeGetters.put("treePath", DLFileShortcut::getTreePath);
-		attributeSetters.put("treePath", DLFileShortcut::setTreePath);
-
+		attributeSetters.put("treePath", (BiConsumer<DLFileShortcut, String>)DLFileShortcut::setTreePath);
 		attributeGetters.put("active", DLFileShortcut::getActive);
-		attributeSetters.put("active", DLFileShortcut::setActive);
-
+		attributeSetters.put("active", (BiConsumer<DLFileShortcut, Boolean>)DLFileShortcut::setActive);
 		attributeGetters.put("lastPublishDate", DLFileShortcut::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", DLFileShortcut::setLastPublishDate);
-
+		attributeSetters.put("lastPublishDate", (BiConsumer<DLFileShortcut, Date>)DLFileShortcut::setLastPublishDate);
 		attributeGetters.put("status", DLFileShortcut::getStatus);
-		attributeSetters.put("status", DLFileShortcut::setStatus);
-
+		attributeSetters.put("status", (BiConsumer<DLFileShortcut, Integer>)DLFileShortcut::setStatus);
 		attributeGetters.put("statusByUserId", DLFileShortcut::getStatusByUserId);
-		attributeSetters.put("statusByUserId", DLFileShortcut::setStatusByUserId);
-
+		attributeSetters.put("statusByUserId", (BiConsumer<DLFileShortcut, Long>)DLFileShortcut::setStatusByUserId);
 		attributeGetters.put("statusByUserName", DLFileShortcut::getStatusByUserName);
-		attributeSetters.put("statusByUserName", DLFileShortcut::setStatusByUserName);
-
+		attributeSetters.put("statusByUserName", (BiConsumer<DLFileShortcut, String>)DLFileShortcut::setStatusByUserName);
 		attributeGetters.put("statusDate", DLFileShortcut::getStatusDate);
-		attributeSetters.put("statusDate", DLFileShortcut::setStatusDate);
+		attributeSetters.put("statusDate", (BiConsumer<DLFileShortcut, Date>)DLFileShortcut::setStatusDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

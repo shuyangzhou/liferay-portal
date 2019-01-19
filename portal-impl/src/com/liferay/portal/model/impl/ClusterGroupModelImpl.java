@@ -144,25 +144,21 @@ public class ClusterGroupModelImpl extends BaseModelImpl<ClusterGroup>
 
 	static {
 		Map<String, Function<ClusterGroup, Object>> attributeGetters = new LinkedHashMap<String, Function<ClusterGroup, Object>>();
-		Map<String, BiConsumer<ClusterGroup, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<ClusterGroup, Object>>();
+		Map<String, BiConsumer<ClusterGroup, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<ClusterGroup, ?>>();
 
 		attributeGetters.put("mvccVersion", ClusterGroup::getMvccVersion);
-		attributeSetters.put("mvccVersion", ClusterGroup::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<ClusterGroup, Long>)ClusterGroup::setMvccVersion);
 		attributeGetters.put("clusterGroupId", ClusterGroup::getClusterGroupId);
-		attributeSetters.put("clusterGroupId", ClusterGroup::setClusterGroupId);
-
+		attributeSetters.put("clusterGroupId", (BiConsumer<ClusterGroup, Long>)ClusterGroup::setClusterGroupId);
 		attributeGetters.put("name", ClusterGroup::getName);
-		attributeSetters.put("name", ClusterGroup::setName);
-
+		attributeSetters.put("name", (BiConsumer<ClusterGroup, String>)ClusterGroup::setName);
 		attributeGetters.put("clusterNodeIds", ClusterGroup::getClusterNodeIds);
-		attributeSetters.put("clusterNodeIds", ClusterGroup::setClusterNodeIds);
-
+		attributeSetters.put("clusterNodeIds", (BiConsumer<ClusterGroup, String>)ClusterGroup::setClusterNodeIds);
 		attributeGetters.put("wholeCluster", ClusterGroup::getWholeCluster);
-		attributeSetters.put("wholeCluster", ClusterGroup::setWholeCluster);
+		attributeSetters.put("wholeCluster", (BiConsumer<ClusterGroup, Boolean>)ClusterGroup::setWholeCluster);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

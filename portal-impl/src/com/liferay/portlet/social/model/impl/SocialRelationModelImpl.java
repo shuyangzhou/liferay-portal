@@ -157,31 +157,25 @@ public class SocialRelationModelImpl extends BaseModelImpl<SocialRelation>
 
 	static {
 		Map<String, Function<SocialRelation, Object>> attributeGetters = new LinkedHashMap<String, Function<SocialRelation, Object>>();
-		Map<String, BiConsumer<SocialRelation, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SocialRelation, Object>>();
+		Map<String, BiConsumer<SocialRelation, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<SocialRelation, ?>>();
 
 		attributeGetters.put("uuid", SocialRelation::getUuid);
-		attributeSetters.put("uuid", SocialRelation::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<SocialRelation, String>)SocialRelation::setUuid);
 		attributeGetters.put("relationId", SocialRelation::getRelationId);
-		attributeSetters.put("relationId", SocialRelation::setRelationId);
-
+		attributeSetters.put("relationId", (BiConsumer<SocialRelation, Long>)SocialRelation::setRelationId);
 		attributeGetters.put("companyId", SocialRelation::getCompanyId);
-		attributeSetters.put("companyId", SocialRelation::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<SocialRelation, Long>)SocialRelation::setCompanyId);
 		attributeGetters.put("createDate", SocialRelation::getCreateDate);
-		attributeSetters.put("createDate", SocialRelation::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<SocialRelation, Long>)SocialRelation::setCreateDate);
 		attributeGetters.put("userId1", SocialRelation::getUserId1);
-		attributeSetters.put("userId1", SocialRelation::setUserId1);
-
+		attributeSetters.put("userId1", (BiConsumer<SocialRelation, Long>)SocialRelation::setUserId1);
 		attributeGetters.put("userId2", SocialRelation::getUserId2);
-		attributeSetters.put("userId2", SocialRelation::setUserId2);
-
+		attributeSetters.put("userId2", (BiConsumer<SocialRelation, Long>)SocialRelation::setUserId2);
 		attributeGetters.put("type", SocialRelation::getType);
-		attributeSetters.put("type", SocialRelation::setType);
+		attributeSetters.put("type", (BiConsumer<SocialRelation, Integer>)SocialRelation::setType);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

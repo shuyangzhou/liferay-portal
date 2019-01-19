@@ -170,43 +170,33 @@ public class WorkflowInstanceLinkModelImpl extends BaseModelImpl<WorkflowInstanc
 
 	static {
 		Map<String, Function<WorkflowInstanceLink, Object>> attributeGetters = new LinkedHashMap<String, Function<WorkflowInstanceLink, Object>>();
-		Map<String, BiConsumer<WorkflowInstanceLink, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<WorkflowInstanceLink, Object>>();
+		Map<String, BiConsumer<WorkflowInstanceLink, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<WorkflowInstanceLink, ?>>();
 
 		attributeGetters.put("mvccVersion", WorkflowInstanceLink::getMvccVersion);
-		attributeSetters.put("mvccVersion", WorkflowInstanceLink::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<WorkflowInstanceLink, Long>)WorkflowInstanceLink::setMvccVersion);
 		attributeGetters.put("workflowInstanceLinkId", WorkflowInstanceLink::getWorkflowInstanceLinkId);
-		attributeSetters.put("workflowInstanceLinkId", WorkflowInstanceLink::setWorkflowInstanceLinkId);
-
+		attributeSetters.put("workflowInstanceLinkId", (BiConsumer<WorkflowInstanceLink, Long>)WorkflowInstanceLink::setWorkflowInstanceLinkId);
 		attributeGetters.put("groupId", WorkflowInstanceLink::getGroupId);
-		attributeSetters.put("groupId", WorkflowInstanceLink::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<WorkflowInstanceLink, Long>)WorkflowInstanceLink::setGroupId);
 		attributeGetters.put("companyId", WorkflowInstanceLink::getCompanyId);
-		attributeSetters.put("companyId", WorkflowInstanceLink::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<WorkflowInstanceLink, Long>)WorkflowInstanceLink::setCompanyId);
 		attributeGetters.put("userId", WorkflowInstanceLink::getUserId);
-		attributeSetters.put("userId", WorkflowInstanceLink::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<WorkflowInstanceLink, Long>)WorkflowInstanceLink::setUserId);
 		attributeGetters.put("userName", WorkflowInstanceLink::getUserName);
-		attributeSetters.put("userName", WorkflowInstanceLink::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<WorkflowInstanceLink, String>)WorkflowInstanceLink::setUserName);
 		attributeGetters.put("createDate", WorkflowInstanceLink::getCreateDate);
-		attributeSetters.put("createDate", WorkflowInstanceLink::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<WorkflowInstanceLink, Date>)WorkflowInstanceLink::setCreateDate);
 		attributeGetters.put("modifiedDate", WorkflowInstanceLink::getModifiedDate);
-		attributeSetters.put("modifiedDate", WorkflowInstanceLink::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<WorkflowInstanceLink, Date>)WorkflowInstanceLink::setModifiedDate);
 		attributeGetters.put("classNameId", WorkflowInstanceLink::getClassNameId);
-		attributeSetters.put("classNameId", WorkflowInstanceLink::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<WorkflowInstanceLink, Long>)WorkflowInstanceLink::setClassNameId);
 		attributeGetters.put("classPK", WorkflowInstanceLink::getClassPK);
-		attributeSetters.put("classPK", WorkflowInstanceLink::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<WorkflowInstanceLink, Long>)WorkflowInstanceLink::setClassPK);
 		attributeGetters.put("workflowInstanceId", WorkflowInstanceLink::getWorkflowInstanceId);
-		attributeSetters.put("workflowInstanceId", WorkflowInstanceLink::setWorkflowInstanceId);
+		attributeSetters.put("workflowInstanceId", (BiConsumer<WorkflowInstanceLink, Long>)WorkflowInstanceLink::setWorkflowInstanceId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

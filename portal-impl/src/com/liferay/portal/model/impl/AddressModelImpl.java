@@ -256,70 +256,51 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 
 	static {
 		Map<String, Function<Address, Object>> attributeGetters = new LinkedHashMap<String, Function<Address, Object>>();
-		Map<String, BiConsumer<Address, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Address, Object>>();
+		Map<String, BiConsumer<Address, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Address, ?>>();
 
 		attributeGetters.put("mvccVersion", Address::getMvccVersion);
-		attributeSetters.put("mvccVersion", Address::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<Address, Long>)Address::setMvccVersion);
 		attributeGetters.put("uuid", Address::getUuid);
-		attributeSetters.put("uuid", Address::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<Address, String>)Address::setUuid);
 		attributeGetters.put("addressId", Address::getAddressId);
-		attributeSetters.put("addressId", Address::setAddressId);
-
+		attributeSetters.put("addressId", (BiConsumer<Address, Long>)Address::setAddressId);
 		attributeGetters.put("companyId", Address::getCompanyId);
-		attributeSetters.put("companyId", Address::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<Address, Long>)Address::setCompanyId);
 		attributeGetters.put("userId", Address::getUserId);
-		attributeSetters.put("userId", Address::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<Address, Long>)Address::setUserId);
 		attributeGetters.put("userName", Address::getUserName);
-		attributeSetters.put("userName", Address::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<Address, String>)Address::setUserName);
 		attributeGetters.put("createDate", Address::getCreateDate);
-		attributeSetters.put("createDate", Address::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<Address, Date>)Address::setCreateDate);
 		attributeGetters.put("modifiedDate", Address::getModifiedDate);
-		attributeSetters.put("modifiedDate", Address::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<Address, Date>)Address::setModifiedDate);
 		attributeGetters.put("classNameId", Address::getClassNameId);
-		attributeSetters.put("classNameId", Address::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<Address, Long>)Address::setClassNameId);
 		attributeGetters.put("classPK", Address::getClassPK);
-		attributeSetters.put("classPK", Address::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<Address, Long>)Address::setClassPK);
 		attributeGetters.put("street1", Address::getStreet1);
-		attributeSetters.put("street1", Address::setStreet1);
-
+		attributeSetters.put("street1", (BiConsumer<Address, String>)Address::setStreet1);
 		attributeGetters.put("street2", Address::getStreet2);
-		attributeSetters.put("street2", Address::setStreet2);
-
+		attributeSetters.put("street2", (BiConsumer<Address, String>)Address::setStreet2);
 		attributeGetters.put("street3", Address::getStreet3);
-		attributeSetters.put("street3", Address::setStreet3);
-
+		attributeSetters.put("street3", (BiConsumer<Address, String>)Address::setStreet3);
 		attributeGetters.put("city", Address::getCity);
-		attributeSetters.put("city", Address::setCity);
-
+		attributeSetters.put("city", (BiConsumer<Address, String>)Address::setCity);
 		attributeGetters.put("zip", Address::getZip);
-		attributeSetters.put("zip", Address::setZip);
-
+		attributeSetters.put("zip", (BiConsumer<Address, String>)Address::setZip);
 		attributeGetters.put("regionId", Address::getRegionId);
-		attributeSetters.put("regionId", Address::setRegionId);
-
+		attributeSetters.put("regionId", (BiConsumer<Address, Long>)Address::setRegionId);
 		attributeGetters.put("countryId", Address::getCountryId);
-		attributeSetters.put("countryId", Address::setCountryId);
-
+		attributeSetters.put("countryId", (BiConsumer<Address, Long>)Address::setCountryId);
 		attributeGetters.put("typeId", Address::getTypeId);
-		attributeSetters.put("typeId", Address::setTypeId);
-
+		attributeSetters.put("typeId", (BiConsumer<Address, Long>)Address::setTypeId);
 		attributeGetters.put("mailing", Address::getMailing);
-		attributeSetters.put("mailing", Address::setMailing);
-
+		attributeSetters.put("mailing", (BiConsumer<Address, Boolean>)Address::setMailing);
 		attributeGetters.put("primary", Address::getPrimary);
-		attributeSetters.put("primary", Address::setPrimary);
+		attributeSetters.put("primary", (BiConsumer<Address, Boolean>)Address::setPrimary);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

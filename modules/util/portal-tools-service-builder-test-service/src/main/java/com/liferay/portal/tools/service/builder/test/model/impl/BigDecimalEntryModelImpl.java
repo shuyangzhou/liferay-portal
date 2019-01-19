@@ -171,7 +171,7 @@ public class BigDecimalEntryModelImpl extends BaseModelImpl<BigDecimalEntry>
 
 	static {
 		Map<String, Function<BigDecimalEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<BigDecimalEntry, Object>>();
-		Map<String, BiConsumer<BigDecimalEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<BigDecimalEntry, Object>>();
+		Map<String, BiConsumer<BigDecimalEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<BigDecimalEntry, ?>>();
 
 		attributeGetters.put(
 			"bigDecimalEntryId",
@@ -193,7 +193,6 @@ public class BigDecimalEntryModelImpl extends BaseModelImpl<BigDecimalEntry>
 				}
 
 			});
-
 		attributeGetters.put(
 			"bigDecimalValue",
 			new Function<BigDecimalEntry, Object>() {
@@ -216,7 +215,7 @@ public class BigDecimalEntryModelImpl extends BaseModelImpl<BigDecimalEntry>
 			});
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

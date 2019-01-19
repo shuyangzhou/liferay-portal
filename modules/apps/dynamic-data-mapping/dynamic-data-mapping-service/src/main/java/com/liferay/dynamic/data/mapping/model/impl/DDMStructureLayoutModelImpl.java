@@ -169,40 +169,31 @@ public class DDMStructureLayoutModelImpl extends BaseModelImpl<DDMStructureLayou
 
 	static {
 		Map<String, Function<DDMStructureLayout, Object>> attributeGetters = new LinkedHashMap<String, Function<DDMStructureLayout, Object>>();
-		Map<String, BiConsumer<DDMStructureLayout, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDMStructureLayout, Object>>();
+		Map<String, BiConsumer<DDMStructureLayout, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDMStructureLayout, ?>>();
 
 		attributeGetters.put("uuid", DDMStructureLayout::getUuid);
-		attributeSetters.put("uuid", DDMStructureLayout::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<DDMStructureLayout, String>)DDMStructureLayout::setUuid);
 		attributeGetters.put("structureLayoutId", DDMStructureLayout::getStructureLayoutId);
-		attributeSetters.put("structureLayoutId", DDMStructureLayout::setStructureLayoutId);
-
+		attributeSetters.put("structureLayoutId", (BiConsumer<DDMStructureLayout, Long>)DDMStructureLayout::setStructureLayoutId);
 		attributeGetters.put("groupId", DDMStructureLayout::getGroupId);
-		attributeSetters.put("groupId", DDMStructureLayout::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<DDMStructureLayout, Long>)DDMStructureLayout::setGroupId);
 		attributeGetters.put("companyId", DDMStructureLayout::getCompanyId);
-		attributeSetters.put("companyId", DDMStructureLayout::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<DDMStructureLayout, Long>)DDMStructureLayout::setCompanyId);
 		attributeGetters.put("userId", DDMStructureLayout::getUserId);
-		attributeSetters.put("userId", DDMStructureLayout::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<DDMStructureLayout, Long>)DDMStructureLayout::setUserId);
 		attributeGetters.put("userName", DDMStructureLayout::getUserName);
-		attributeSetters.put("userName", DDMStructureLayout::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<DDMStructureLayout, String>)DDMStructureLayout::setUserName);
 		attributeGetters.put("createDate", DDMStructureLayout::getCreateDate);
-		attributeSetters.put("createDate", DDMStructureLayout::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<DDMStructureLayout, Date>)DDMStructureLayout::setCreateDate);
 		attributeGetters.put("modifiedDate", DDMStructureLayout::getModifiedDate);
-		attributeSetters.put("modifiedDate", DDMStructureLayout::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<DDMStructureLayout, Date>)DDMStructureLayout::setModifiedDate);
 		attributeGetters.put("structureVersionId", DDMStructureLayout::getStructureVersionId);
-		attributeSetters.put("structureVersionId", DDMStructureLayout::setStructureVersionId);
-
+		attributeSetters.put("structureVersionId", (BiConsumer<DDMStructureLayout, Long>)DDMStructureLayout::setStructureVersionId);
 		attributeGetters.put("definition", DDMStructureLayout::getDefinition);
-		attributeSetters.put("definition", DDMStructureLayout::setDefinition);
+		attributeSetters.put("definition", (BiConsumer<DDMStructureLayout, String>)DDMStructureLayout::setDefinition);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

@@ -193,22 +193,19 @@ public class ListTypeModelImpl extends BaseModelImpl<ListType>
 
 	static {
 		Map<String, Function<ListType, Object>> attributeGetters = new LinkedHashMap<String, Function<ListType, Object>>();
-		Map<String, BiConsumer<ListType, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<ListType, Object>>();
+		Map<String, BiConsumer<ListType, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<ListType, ?>>();
 
 		attributeGetters.put("mvccVersion", ListType::getMvccVersion);
-		attributeSetters.put("mvccVersion", ListType::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<ListType, Long>)ListType::setMvccVersion);
 		attributeGetters.put("listTypeId", ListType::getListTypeId);
-		attributeSetters.put("listTypeId", ListType::setListTypeId);
-
+		attributeSetters.put("listTypeId", (BiConsumer<ListType, Long>)ListType::setListTypeId);
 		attributeGetters.put("name", ListType::getName);
-		attributeSetters.put("name", ListType::setName);
-
+		attributeSetters.put("name", (BiConsumer<ListType, String>)ListType::setName);
 		attributeGetters.put("type", ListType::getType);
-		attributeSetters.put("type", ListType::setType);
+		attributeSetters.put("type", (BiConsumer<ListType, String>)ListType::setType);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

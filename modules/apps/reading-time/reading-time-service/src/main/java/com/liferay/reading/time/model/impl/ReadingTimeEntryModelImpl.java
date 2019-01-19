@@ -225,37 +225,29 @@ public class ReadingTimeEntryModelImpl extends BaseModelImpl<ReadingTimeEntry>
 
 	static {
 		Map<String, Function<ReadingTimeEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<ReadingTimeEntry, Object>>();
-		Map<String, BiConsumer<ReadingTimeEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<ReadingTimeEntry, Object>>();
+		Map<String, BiConsumer<ReadingTimeEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<ReadingTimeEntry, ?>>();
 
 		attributeGetters.put("uuid", ReadingTimeEntry::getUuid);
-		attributeSetters.put("uuid", ReadingTimeEntry::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<ReadingTimeEntry, String>)ReadingTimeEntry::setUuid);
 		attributeGetters.put("readingTimeEntryId", ReadingTimeEntry::getReadingTimeEntryId);
-		attributeSetters.put("readingTimeEntryId", ReadingTimeEntry::setReadingTimeEntryId);
-
+		attributeSetters.put("readingTimeEntryId", (BiConsumer<ReadingTimeEntry, Long>)ReadingTimeEntry::setReadingTimeEntryId);
 		attributeGetters.put("groupId", ReadingTimeEntry::getGroupId);
-		attributeSetters.put("groupId", ReadingTimeEntry::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<ReadingTimeEntry, Long>)ReadingTimeEntry::setGroupId);
 		attributeGetters.put("companyId", ReadingTimeEntry::getCompanyId);
-		attributeSetters.put("companyId", ReadingTimeEntry::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<ReadingTimeEntry, Long>)ReadingTimeEntry::setCompanyId);
 		attributeGetters.put("createDate", ReadingTimeEntry::getCreateDate);
-		attributeSetters.put("createDate", ReadingTimeEntry::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<ReadingTimeEntry, Date>)ReadingTimeEntry::setCreateDate);
 		attributeGetters.put("modifiedDate", ReadingTimeEntry::getModifiedDate);
-		attributeSetters.put("modifiedDate", ReadingTimeEntry::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<ReadingTimeEntry, Date>)ReadingTimeEntry::setModifiedDate);
 		attributeGetters.put("classNameId", ReadingTimeEntry::getClassNameId);
-		attributeSetters.put("classNameId", ReadingTimeEntry::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<ReadingTimeEntry, Long>)ReadingTimeEntry::setClassNameId);
 		attributeGetters.put("classPK", ReadingTimeEntry::getClassPK);
-		attributeSetters.put("classPK", ReadingTimeEntry::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<ReadingTimeEntry, Long>)ReadingTimeEntry::setClassPK);
 		attributeGetters.put("readingTime", ReadingTimeEntry::getReadingTime);
-		attributeSetters.put("readingTime", ReadingTimeEntry::setReadingTime);
+		attributeSetters.put("readingTime", (BiConsumer<ReadingTimeEntry, Long>)ReadingTimeEntry::setReadingTime);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

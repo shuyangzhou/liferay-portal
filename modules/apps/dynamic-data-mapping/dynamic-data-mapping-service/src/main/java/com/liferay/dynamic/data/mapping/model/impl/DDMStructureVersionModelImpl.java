@@ -251,64 +251,47 @@ public class DDMStructureVersionModelImpl extends BaseModelImpl<DDMStructureVers
 
 	static {
 		Map<String, Function<DDMStructureVersion, Object>> attributeGetters = new LinkedHashMap<String, Function<DDMStructureVersion, Object>>();
-		Map<String, BiConsumer<DDMStructureVersion, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDMStructureVersion, Object>>();
+		Map<String, BiConsumer<DDMStructureVersion, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDMStructureVersion, ?>>();
 
 		attributeGetters.put("structureVersionId", DDMStructureVersion::getStructureVersionId);
-		attributeSetters.put("structureVersionId", DDMStructureVersion::setStructureVersionId);
-
+		attributeSetters.put("structureVersionId", (BiConsumer<DDMStructureVersion, Long>)DDMStructureVersion::setStructureVersionId);
 		attributeGetters.put("groupId", DDMStructureVersion::getGroupId);
-		attributeSetters.put("groupId", DDMStructureVersion::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<DDMStructureVersion, Long>)DDMStructureVersion::setGroupId);
 		attributeGetters.put("companyId", DDMStructureVersion::getCompanyId);
-		attributeSetters.put("companyId", DDMStructureVersion::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<DDMStructureVersion, Long>)DDMStructureVersion::setCompanyId);
 		attributeGetters.put("userId", DDMStructureVersion::getUserId);
-		attributeSetters.put("userId", DDMStructureVersion::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<DDMStructureVersion, Long>)DDMStructureVersion::setUserId);
 		attributeGetters.put("userName", DDMStructureVersion::getUserName);
-		attributeSetters.put("userName", DDMStructureVersion::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<DDMStructureVersion, String>)DDMStructureVersion::setUserName);
 		attributeGetters.put("createDate", DDMStructureVersion::getCreateDate);
-		attributeSetters.put("createDate", DDMStructureVersion::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<DDMStructureVersion, Date>)DDMStructureVersion::setCreateDate);
 		attributeGetters.put("structureId", DDMStructureVersion::getStructureId);
-		attributeSetters.put("structureId", DDMStructureVersion::setStructureId);
-
+		attributeSetters.put("structureId", (BiConsumer<DDMStructureVersion, Long>)DDMStructureVersion::setStructureId);
 		attributeGetters.put("version", DDMStructureVersion::getVersion);
-		attributeSetters.put("version", DDMStructureVersion::setVersion);
-
+		attributeSetters.put("version", (BiConsumer<DDMStructureVersion, String>)DDMStructureVersion::setVersion);
 		attributeGetters.put("parentStructureId", DDMStructureVersion::getParentStructureId);
-		attributeSetters.put("parentStructureId", DDMStructureVersion::setParentStructureId);
-
+		attributeSetters.put("parentStructureId", (BiConsumer<DDMStructureVersion, Long>)DDMStructureVersion::setParentStructureId);
 		attributeGetters.put("name", DDMStructureVersion::getName);
-		attributeSetters.put("name", DDMStructureVersion::setName);
-
+		attributeSetters.put("name", (BiConsumer<DDMStructureVersion, String>)DDMStructureVersion::setName);
 		attributeGetters.put("description", DDMStructureVersion::getDescription);
-		attributeSetters.put("description", DDMStructureVersion::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<DDMStructureVersion, String>)DDMStructureVersion::setDescription);
 		attributeGetters.put("definition", DDMStructureVersion::getDefinition);
-		attributeSetters.put("definition", DDMStructureVersion::setDefinition);
-
+		attributeSetters.put("definition", (BiConsumer<DDMStructureVersion, String>)DDMStructureVersion::setDefinition);
 		attributeGetters.put("storageType", DDMStructureVersion::getStorageType);
-		attributeSetters.put("storageType", DDMStructureVersion::setStorageType);
-
+		attributeSetters.put("storageType", (BiConsumer<DDMStructureVersion, String>)DDMStructureVersion::setStorageType);
 		attributeGetters.put("type", DDMStructureVersion::getType);
-		attributeSetters.put("type", DDMStructureVersion::setType);
-
+		attributeSetters.put("type", (BiConsumer<DDMStructureVersion, Integer>)DDMStructureVersion::setType);
 		attributeGetters.put("status", DDMStructureVersion::getStatus);
-		attributeSetters.put("status", DDMStructureVersion::setStatus);
-
+		attributeSetters.put("status", (BiConsumer<DDMStructureVersion, Integer>)DDMStructureVersion::setStatus);
 		attributeGetters.put("statusByUserId", DDMStructureVersion::getStatusByUserId);
-		attributeSetters.put("statusByUserId", DDMStructureVersion::setStatusByUserId);
-
+		attributeSetters.put("statusByUserId", (BiConsumer<DDMStructureVersion, Long>)DDMStructureVersion::setStatusByUserId);
 		attributeGetters.put("statusByUserName", DDMStructureVersion::getStatusByUserName);
-		attributeSetters.put("statusByUserName", DDMStructureVersion::setStatusByUserName);
-
+		attributeSetters.put("statusByUserName", (BiConsumer<DDMStructureVersion, String>)DDMStructureVersion::setStatusByUserName);
 		attributeGetters.put("statusDate", DDMStructureVersion::getStatusDate);
-		attributeSetters.put("statusDate", DDMStructureVersion::setStatusDate);
+		attributeSetters.put("statusDate", (BiConsumer<DDMStructureVersion, Date>)DDMStructureVersion::setStatusDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

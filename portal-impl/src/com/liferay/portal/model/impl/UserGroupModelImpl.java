@@ -258,49 +258,37 @@ public class UserGroupModelImpl extends BaseModelImpl<UserGroup>
 
 	static {
 		Map<String, Function<UserGroup, Object>> attributeGetters = new LinkedHashMap<String, Function<UserGroup, Object>>();
-		Map<String, BiConsumer<UserGroup, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<UserGroup, Object>>();
+		Map<String, BiConsumer<UserGroup, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<UserGroup, ?>>();
 
 		attributeGetters.put("mvccVersion", UserGroup::getMvccVersion);
-		attributeSetters.put("mvccVersion", UserGroup::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<UserGroup, Long>)UserGroup::setMvccVersion);
 		attributeGetters.put("uuid", UserGroup::getUuid);
-		attributeSetters.put("uuid", UserGroup::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<UserGroup, String>)UserGroup::setUuid);
 		attributeGetters.put("externalReferenceCode", UserGroup::getExternalReferenceCode);
-		attributeSetters.put("externalReferenceCode", UserGroup::setExternalReferenceCode);
-
+		attributeSetters.put("externalReferenceCode", (BiConsumer<UserGroup, String>)UserGroup::setExternalReferenceCode);
 		attributeGetters.put("userGroupId", UserGroup::getUserGroupId);
-		attributeSetters.put("userGroupId", UserGroup::setUserGroupId);
-
+		attributeSetters.put("userGroupId", (BiConsumer<UserGroup, Long>)UserGroup::setUserGroupId);
 		attributeGetters.put("companyId", UserGroup::getCompanyId);
-		attributeSetters.put("companyId", UserGroup::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<UserGroup, Long>)UserGroup::setCompanyId);
 		attributeGetters.put("userId", UserGroup::getUserId);
-		attributeSetters.put("userId", UserGroup::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<UserGroup, Long>)UserGroup::setUserId);
 		attributeGetters.put("userName", UserGroup::getUserName);
-		attributeSetters.put("userName", UserGroup::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<UserGroup, String>)UserGroup::setUserName);
 		attributeGetters.put("createDate", UserGroup::getCreateDate);
-		attributeSetters.put("createDate", UserGroup::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<UserGroup, Date>)UserGroup::setCreateDate);
 		attributeGetters.put("modifiedDate", UserGroup::getModifiedDate);
-		attributeSetters.put("modifiedDate", UserGroup::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<UserGroup, Date>)UserGroup::setModifiedDate);
 		attributeGetters.put("parentUserGroupId", UserGroup::getParentUserGroupId);
-		attributeSetters.put("parentUserGroupId", UserGroup::setParentUserGroupId);
-
+		attributeSetters.put("parentUserGroupId", (BiConsumer<UserGroup, Long>)UserGroup::setParentUserGroupId);
 		attributeGetters.put("name", UserGroup::getName);
-		attributeSetters.put("name", UserGroup::setName);
-
+		attributeSetters.put("name", (BiConsumer<UserGroup, String>)UserGroup::setName);
 		attributeGetters.put("description", UserGroup::getDescription);
-		attributeSetters.put("description", UserGroup::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<UserGroup, String>)UserGroup::setDescription);
 		attributeGetters.put("addedByLDAPImport", UserGroup::getAddedByLDAPImport);
-		attributeSetters.put("addedByLDAPImport", UserGroup::setAddedByLDAPImport);
+		attributeSetters.put("addedByLDAPImport", (BiConsumer<UserGroup, Boolean>)UserGroup::setAddedByLDAPImport);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

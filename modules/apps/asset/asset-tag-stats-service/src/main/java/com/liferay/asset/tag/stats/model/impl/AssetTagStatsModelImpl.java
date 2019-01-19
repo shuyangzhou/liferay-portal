@@ -152,25 +152,21 @@ public class AssetTagStatsModelImpl extends BaseModelImpl<AssetTagStats>
 
 	static {
 		Map<String, Function<AssetTagStats, Object>> attributeGetters = new LinkedHashMap<String, Function<AssetTagStats, Object>>();
-		Map<String, BiConsumer<AssetTagStats, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetTagStats, Object>>();
+		Map<String, BiConsumer<AssetTagStats, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetTagStats, ?>>();
 
 		attributeGetters.put("tagStatsId", AssetTagStats::getTagStatsId);
-		attributeSetters.put("tagStatsId", AssetTagStats::setTagStatsId);
-
+		attributeSetters.put("tagStatsId", (BiConsumer<AssetTagStats, Long>)AssetTagStats::setTagStatsId);
 		attributeGetters.put("companyId", AssetTagStats::getCompanyId);
-		attributeSetters.put("companyId", AssetTagStats::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<AssetTagStats, Long>)AssetTagStats::setCompanyId);
 		attributeGetters.put("tagId", AssetTagStats::getTagId);
-		attributeSetters.put("tagId", AssetTagStats::setTagId);
-
+		attributeSetters.put("tagId", (BiConsumer<AssetTagStats, Long>)AssetTagStats::setTagId);
 		attributeGetters.put("classNameId", AssetTagStats::getClassNameId);
-		attributeSetters.put("classNameId", AssetTagStats::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<AssetTagStats, Long>)AssetTagStats::setClassNameId);
 		attributeGetters.put("assetCount", AssetTagStats::getAssetCount);
-		attributeSetters.put("assetCount", AssetTagStats::setAssetCount);
+		attributeSetters.put("assetCount", (BiConsumer<AssetTagStats, Integer>)AssetTagStats::setAssetCount);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

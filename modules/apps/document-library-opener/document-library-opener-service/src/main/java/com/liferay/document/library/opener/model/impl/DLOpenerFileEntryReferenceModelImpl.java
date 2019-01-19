@@ -164,41 +164,31 @@ public class DLOpenerFileEntryReferenceModelImpl extends BaseModelImpl<DLOpenerF
 	static {
 		Map<String, Function<DLOpenerFileEntryReference, Object>> attributeGetters =
 			new LinkedHashMap<String, Function<DLOpenerFileEntryReference, Object>>();
-		Map<String, BiConsumer<DLOpenerFileEntryReference, Object>> attributeSetters =
-			new LinkedHashMap<String, BiConsumer<DLOpenerFileEntryReference, Object>>();
+		Map<String, BiConsumer<DLOpenerFileEntryReference, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DLOpenerFileEntryReference, ?>>();
 
 		attributeGetters.put("dlOpenerFileEntryReferenceId", DLOpenerFileEntryReference::getDlOpenerFileEntryReferenceId);
-		attributeSetters.put("dlOpenerFileEntryReferenceId", DLOpenerFileEntryReference::setDlOpenerFileEntryReferenceId);
-
+		attributeSetters.put("dlOpenerFileEntryReferenceId", (BiConsumer<DLOpenerFileEntryReference, Long>)DLOpenerFileEntryReference::setDlOpenerFileEntryReferenceId);
 		attributeGetters.put("groupId", DLOpenerFileEntryReference::getGroupId);
-		attributeSetters.put("groupId", DLOpenerFileEntryReference::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<DLOpenerFileEntryReference, Long>)DLOpenerFileEntryReference::setGroupId);
 		attributeGetters.put("companyId", DLOpenerFileEntryReference::getCompanyId);
-		attributeSetters.put("companyId", DLOpenerFileEntryReference::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<DLOpenerFileEntryReference, Long>)DLOpenerFileEntryReference::setCompanyId);
 		attributeGetters.put("userId", DLOpenerFileEntryReference::getUserId);
-		attributeSetters.put("userId", DLOpenerFileEntryReference::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<DLOpenerFileEntryReference, Long>)DLOpenerFileEntryReference::setUserId);
 		attributeGetters.put("userName", DLOpenerFileEntryReference::getUserName);
-		attributeSetters.put("userName", DLOpenerFileEntryReference::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<DLOpenerFileEntryReference, String>)DLOpenerFileEntryReference::setUserName);
 		attributeGetters.put("createDate", DLOpenerFileEntryReference::getCreateDate);
-		attributeSetters.put("createDate", DLOpenerFileEntryReference::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<DLOpenerFileEntryReference, Date>)DLOpenerFileEntryReference::setCreateDate);
 		attributeGetters.put("modifiedDate", DLOpenerFileEntryReference::getModifiedDate);
-		attributeSetters.put("modifiedDate", DLOpenerFileEntryReference::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<DLOpenerFileEntryReference, Date>)DLOpenerFileEntryReference::setModifiedDate);
 		attributeGetters.put("referenceKey", DLOpenerFileEntryReference::getReferenceKey);
-		attributeSetters.put("referenceKey", DLOpenerFileEntryReference::setReferenceKey);
-
+		attributeSetters.put("referenceKey", (BiConsumer<DLOpenerFileEntryReference, String>)DLOpenerFileEntryReference::setReferenceKey);
 		attributeGetters.put("fileEntryId", DLOpenerFileEntryReference::getFileEntryId);
-		attributeSetters.put("fileEntryId", DLOpenerFileEntryReference::setFileEntryId);
-
+		attributeSetters.put("fileEntryId", (BiConsumer<DLOpenerFileEntryReference, Long>)DLOpenerFileEntryReference::setFileEntryId);
 		attributeGetters.put("type", DLOpenerFileEntryReference::getType);
-		attributeSetters.put("type", DLOpenerFileEntryReference::setType);
+		attributeSetters.put("type", (BiConsumer<DLOpenerFileEntryReference, Integer>)DLOpenerFileEntryReference::setType);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

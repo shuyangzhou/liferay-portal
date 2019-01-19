@@ -157,31 +157,25 @@ public class UserIdMapperModelImpl extends BaseModelImpl<UserIdMapper>
 
 	static {
 		Map<String, Function<UserIdMapper, Object>> attributeGetters = new LinkedHashMap<String, Function<UserIdMapper, Object>>();
-		Map<String, BiConsumer<UserIdMapper, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<UserIdMapper, Object>>();
+		Map<String, BiConsumer<UserIdMapper, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<UserIdMapper, ?>>();
 
 		attributeGetters.put("mvccVersion", UserIdMapper::getMvccVersion);
-		attributeSetters.put("mvccVersion", UserIdMapper::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<UserIdMapper, Long>)UserIdMapper::setMvccVersion);
 		attributeGetters.put("userIdMapperId", UserIdMapper::getUserIdMapperId);
-		attributeSetters.put("userIdMapperId", UserIdMapper::setUserIdMapperId);
-
+		attributeSetters.put("userIdMapperId", (BiConsumer<UserIdMapper, Long>)UserIdMapper::setUserIdMapperId);
 		attributeGetters.put("companyId", UserIdMapper::getCompanyId);
-		attributeSetters.put("companyId", UserIdMapper::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<UserIdMapper, Long>)UserIdMapper::setCompanyId);
 		attributeGetters.put("userId", UserIdMapper::getUserId);
-		attributeSetters.put("userId", UserIdMapper::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<UserIdMapper, Long>)UserIdMapper::setUserId);
 		attributeGetters.put("type", UserIdMapper::getType);
-		attributeSetters.put("type", UserIdMapper::setType);
-
+		attributeSetters.put("type", (BiConsumer<UserIdMapper, String>)UserIdMapper::setType);
 		attributeGetters.put("description", UserIdMapper::getDescription);
-		attributeSetters.put("description", UserIdMapper::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<UserIdMapper, String>)UserIdMapper::setDescription);
 		attributeGetters.put("externalUserId", UserIdMapper::getExternalUserId);
-		attributeSetters.put("externalUserId", UserIdMapper::setExternalUserId);
+		attributeSetters.put("externalUserId", (BiConsumer<UserIdMapper, String>)UserIdMapper::setExternalUserId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

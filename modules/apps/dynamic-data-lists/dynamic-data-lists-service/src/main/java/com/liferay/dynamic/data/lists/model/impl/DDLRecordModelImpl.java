@@ -245,61 +245,45 @@ public class DDLRecordModelImpl extends BaseModelImpl<DDLRecord>
 
 	static {
 		Map<String, Function<DDLRecord, Object>> attributeGetters = new LinkedHashMap<String, Function<DDLRecord, Object>>();
-		Map<String, BiConsumer<DDLRecord, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDLRecord, Object>>();
+		Map<String, BiConsumer<DDLRecord, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDLRecord, ?>>();
 
 		attributeGetters.put("mvccVersion", DDLRecord::getMvccVersion);
-		attributeSetters.put("mvccVersion", DDLRecord::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<DDLRecord, Long>)DDLRecord::setMvccVersion);
 		attributeGetters.put("uuid", DDLRecord::getUuid);
-		attributeSetters.put("uuid", DDLRecord::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<DDLRecord, String>)DDLRecord::setUuid);
 		attributeGetters.put("recordId", DDLRecord::getRecordId);
-		attributeSetters.put("recordId", DDLRecord::setRecordId);
-
+		attributeSetters.put("recordId", (BiConsumer<DDLRecord, Long>)DDLRecord::setRecordId);
 		attributeGetters.put("groupId", DDLRecord::getGroupId);
-		attributeSetters.put("groupId", DDLRecord::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<DDLRecord, Long>)DDLRecord::setGroupId);
 		attributeGetters.put("companyId", DDLRecord::getCompanyId);
-		attributeSetters.put("companyId", DDLRecord::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<DDLRecord, Long>)DDLRecord::setCompanyId);
 		attributeGetters.put("userId", DDLRecord::getUserId);
-		attributeSetters.put("userId", DDLRecord::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<DDLRecord, Long>)DDLRecord::setUserId);
 		attributeGetters.put("userName", DDLRecord::getUserName);
-		attributeSetters.put("userName", DDLRecord::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<DDLRecord, String>)DDLRecord::setUserName);
 		attributeGetters.put("versionUserId", DDLRecord::getVersionUserId);
-		attributeSetters.put("versionUserId", DDLRecord::setVersionUserId);
-
+		attributeSetters.put("versionUserId", (BiConsumer<DDLRecord, Long>)DDLRecord::setVersionUserId);
 		attributeGetters.put("versionUserName", DDLRecord::getVersionUserName);
-		attributeSetters.put("versionUserName", DDLRecord::setVersionUserName);
-
+		attributeSetters.put("versionUserName", (BiConsumer<DDLRecord, String>)DDLRecord::setVersionUserName);
 		attributeGetters.put("createDate", DDLRecord::getCreateDate);
-		attributeSetters.put("createDate", DDLRecord::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<DDLRecord, Date>)DDLRecord::setCreateDate);
 		attributeGetters.put("modifiedDate", DDLRecord::getModifiedDate);
-		attributeSetters.put("modifiedDate", DDLRecord::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<DDLRecord, Date>)DDLRecord::setModifiedDate);
 		attributeGetters.put("DDMStorageId", DDLRecord::getDDMStorageId);
-		attributeSetters.put("DDMStorageId", DDLRecord::setDDMStorageId);
-
+		attributeSetters.put("DDMStorageId", (BiConsumer<DDLRecord, Long>)DDLRecord::setDDMStorageId);
 		attributeGetters.put("recordSetId", DDLRecord::getRecordSetId);
-		attributeSetters.put("recordSetId", DDLRecord::setRecordSetId);
-
+		attributeSetters.put("recordSetId", (BiConsumer<DDLRecord, Long>)DDLRecord::setRecordSetId);
 		attributeGetters.put("recordSetVersion", DDLRecord::getRecordSetVersion);
-		attributeSetters.put("recordSetVersion", DDLRecord::setRecordSetVersion);
-
+		attributeSetters.put("recordSetVersion", (BiConsumer<DDLRecord, String>)DDLRecord::setRecordSetVersion);
 		attributeGetters.put("version", DDLRecord::getVersion);
-		attributeSetters.put("version", DDLRecord::setVersion);
-
+		attributeSetters.put("version", (BiConsumer<DDLRecord, String>)DDLRecord::setVersion);
 		attributeGetters.put("displayIndex", DDLRecord::getDisplayIndex);
-		attributeSetters.put("displayIndex", DDLRecord::setDisplayIndex);
-
+		attributeSetters.put("displayIndex", (BiConsumer<DDLRecord, Integer>)DDLRecord::setDisplayIndex);
 		attributeGetters.put("lastPublishDate", DDLRecord::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", DDLRecord::setLastPublishDate);
+		attributeSetters.put("lastPublishDate", (BiConsumer<DDLRecord, Date>)DDLRecord::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

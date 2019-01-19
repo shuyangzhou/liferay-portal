@@ -162,34 +162,27 @@ public class DLContentModelImpl extends BaseModelImpl<DLContent>
 
 	static {
 		Map<String, Function<DLContent, Object>> attributeGetters = new LinkedHashMap<String, Function<DLContent, Object>>();
-		Map<String, BiConsumer<DLContent, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<DLContent, Object>>();
+		Map<String, BiConsumer<DLContent, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DLContent, ?>>();
 
 		attributeGetters.put("contentId", DLContent::getContentId);
-		attributeSetters.put("contentId", DLContent::setContentId);
-
+		attributeSetters.put("contentId", (BiConsumer<DLContent, Long>)DLContent::setContentId);
 		attributeGetters.put("groupId", DLContent::getGroupId);
-		attributeSetters.put("groupId", DLContent::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<DLContent, Long>)DLContent::setGroupId);
 		attributeGetters.put("companyId", DLContent::getCompanyId);
-		attributeSetters.put("companyId", DLContent::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<DLContent, Long>)DLContent::setCompanyId);
 		attributeGetters.put("repositoryId", DLContent::getRepositoryId);
-		attributeSetters.put("repositoryId", DLContent::setRepositoryId);
-
+		attributeSetters.put("repositoryId", (BiConsumer<DLContent, Long>)DLContent::setRepositoryId);
 		attributeGetters.put("path", DLContent::getPath);
-		attributeSetters.put("path", DLContent::setPath);
-
+		attributeSetters.put("path", (BiConsumer<DLContent, String>)DLContent::setPath);
 		attributeGetters.put("version", DLContent::getVersion);
-		attributeSetters.put("version", DLContent::setVersion);
-
+		attributeSetters.put("version", (BiConsumer<DLContent, String>)DLContent::setVersion);
 		attributeGetters.put("data", DLContent::getData);
-		attributeSetters.put("data", DLContent::setData);
-
+		attributeSetters.put("data", (BiConsumer<DLContent, Blob>)DLContent::setData);
 		attributeGetters.put("size", DLContent::getSize);
-		attributeSetters.put("size", DLContent::setSize);
+		attributeSetters.put("size", (BiConsumer<DLContent, Long>)DLContent::setSize);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

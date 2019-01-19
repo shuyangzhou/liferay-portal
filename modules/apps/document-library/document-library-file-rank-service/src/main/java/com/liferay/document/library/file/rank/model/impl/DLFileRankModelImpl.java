@@ -162,31 +162,25 @@ public class DLFileRankModelImpl extends BaseModelImpl<DLFileRank>
 
 	static {
 		Map<String, Function<DLFileRank, Object>> attributeGetters = new LinkedHashMap<String, Function<DLFileRank, Object>>();
-		Map<String, BiConsumer<DLFileRank, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<DLFileRank, Object>>();
+		Map<String, BiConsumer<DLFileRank, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DLFileRank, ?>>();
 
 		attributeGetters.put("fileRankId", DLFileRank::getFileRankId);
-		attributeSetters.put("fileRankId", DLFileRank::setFileRankId);
-
+		attributeSetters.put("fileRankId", (BiConsumer<DLFileRank, Long>)DLFileRank::setFileRankId);
 		attributeGetters.put("groupId", DLFileRank::getGroupId);
-		attributeSetters.put("groupId", DLFileRank::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<DLFileRank, Long>)DLFileRank::setGroupId);
 		attributeGetters.put("companyId", DLFileRank::getCompanyId);
-		attributeSetters.put("companyId", DLFileRank::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<DLFileRank, Long>)DLFileRank::setCompanyId);
 		attributeGetters.put("userId", DLFileRank::getUserId);
-		attributeSetters.put("userId", DLFileRank::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<DLFileRank, Long>)DLFileRank::setUserId);
 		attributeGetters.put("createDate", DLFileRank::getCreateDate);
-		attributeSetters.put("createDate", DLFileRank::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<DLFileRank, Date>)DLFileRank::setCreateDate);
 		attributeGetters.put("fileEntryId", DLFileRank::getFileEntryId);
-		attributeSetters.put("fileEntryId", DLFileRank::setFileEntryId);
-
+		attributeSetters.put("fileEntryId", (BiConsumer<DLFileRank, Long>)DLFileRank::setFileEntryId);
 		attributeGetters.put("active", DLFileRank::getActive);
-		attributeSetters.put("active", DLFileRank::setActive);
+		attributeSetters.put("active", (BiConsumer<DLFileRank, Boolean>)DLFileRank::setActive);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

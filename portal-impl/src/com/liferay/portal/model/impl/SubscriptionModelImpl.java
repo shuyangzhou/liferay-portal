@@ -172,43 +172,33 @@ public class SubscriptionModelImpl extends BaseModelImpl<Subscription>
 
 	static {
 		Map<String, Function<Subscription, Object>> attributeGetters = new LinkedHashMap<String, Function<Subscription, Object>>();
-		Map<String, BiConsumer<Subscription, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Subscription, Object>>();
+		Map<String, BiConsumer<Subscription, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Subscription, ?>>();
 
 		attributeGetters.put("mvccVersion", Subscription::getMvccVersion);
-		attributeSetters.put("mvccVersion", Subscription::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<Subscription, Long>)Subscription::setMvccVersion);
 		attributeGetters.put("subscriptionId", Subscription::getSubscriptionId);
-		attributeSetters.put("subscriptionId", Subscription::setSubscriptionId);
-
+		attributeSetters.put("subscriptionId", (BiConsumer<Subscription, Long>)Subscription::setSubscriptionId);
 		attributeGetters.put("groupId", Subscription::getGroupId);
-		attributeSetters.put("groupId", Subscription::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<Subscription, Long>)Subscription::setGroupId);
 		attributeGetters.put("companyId", Subscription::getCompanyId);
-		attributeSetters.put("companyId", Subscription::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<Subscription, Long>)Subscription::setCompanyId);
 		attributeGetters.put("userId", Subscription::getUserId);
-		attributeSetters.put("userId", Subscription::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<Subscription, Long>)Subscription::setUserId);
 		attributeGetters.put("userName", Subscription::getUserName);
-		attributeSetters.put("userName", Subscription::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<Subscription, String>)Subscription::setUserName);
 		attributeGetters.put("createDate", Subscription::getCreateDate);
-		attributeSetters.put("createDate", Subscription::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<Subscription, Date>)Subscription::setCreateDate);
 		attributeGetters.put("modifiedDate", Subscription::getModifiedDate);
-		attributeSetters.put("modifiedDate", Subscription::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<Subscription, Date>)Subscription::setModifiedDate);
 		attributeGetters.put("classNameId", Subscription::getClassNameId);
-		attributeSetters.put("classNameId", Subscription::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<Subscription, Long>)Subscription::setClassNameId);
 		attributeGetters.put("classPK", Subscription::getClassPK);
-		attributeSetters.put("classPK", Subscription::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<Subscription, Long>)Subscription::setClassPK);
 		attributeGetters.put("frequency", Subscription::getFrequency);
-		attributeSetters.put("frequency", Subscription::setFrequency);
+		attributeSetters.put("frequency", (BiConsumer<Subscription, String>)Subscription::setFrequency);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

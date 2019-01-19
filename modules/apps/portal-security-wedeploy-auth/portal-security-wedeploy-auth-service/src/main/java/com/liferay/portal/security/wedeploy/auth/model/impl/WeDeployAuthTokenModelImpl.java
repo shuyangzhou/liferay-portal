@@ -162,37 +162,29 @@ public class WeDeployAuthTokenModelImpl extends BaseModelImpl<WeDeployAuthToken>
 
 	static {
 		Map<String, Function<WeDeployAuthToken, Object>> attributeGetters = new LinkedHashMap<String, Function<WeDeployAuthToken, Object>>();
-		Map<String, BiConsumer<WeDeployAuthToken, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<WeDeployAuthToken, Object>>();
+		Map<String, BiConsumer<WeDeployAuthToken, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<WeDeployAuthToken, ?>>();
 
 		attributeGetters.put("weDeployAuthTokenId", WeDeployAuthToken::getWeDeployAuthTokenId);
-		attributeSetters.put("weDeployAuthTokenId", WeDeployAuthToken::setWeDeployAuthTokenId);
-
+		attributeSetters.put("weDeployAuthTokenId", (BiConsumer<WeDeployAuthToken, Long>)WeDeployAuthToken::setWeDeployAuthTokenId);
 		attributeGetters.put("companyId", WeDeployAuthToken::getCompanyId);
-		attributeSetters.put("companyId", WeDeployAuthToken::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<WeDeployAuthToken, Long>)WeDeployAuthToken::setCompanyId);
 		attributeGetters.put("userId", WeDeployAuthToken::getUserId);
-		attributeSetters.put("userId", WeDeployAuthToken::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<WeDeployAuthToken, Long>)WeDeployAuthToken::setUserId);
 		attributeGetters.put("userName", WeDeployAuthToken::getUserName);
-		attributeSetters.put("userName", WeDeployAuthToken::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<WeDeployAuthToken, String>)WeDeployAuthToken::setUserName);
 		attributeGetters.put("createDate", WeDeployAuthToken::getCreateDate);
-		attributeSetters.put("createDate", WeDeployAuthToken::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<WeDeployAuthToken, Date>)WeDeployAuthToken::setCreateDate);
 		attributeGetters.put("modifiedDate", WeDeployAuthToken::getModifiedDate);
-		attributeSetters.put("modifiedDate", WeDeployAuthToken::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<WeDeployAuthToken, Date>)WeDeployAuthToken::setModifiedDate);
 		attributeGetters.put("clientId", WeDeployAuthToken::getClientId);
-		attributeSetters.put("clientId", WeDeployAuthToken::setClientId);
-
+		attributeSetters.put("clientId", (BiConsumer<WeDeployAuthToken, String>)WeDeployAuthToken::setClientId);
 		attributeGetters.put("token", WeDeployAuthToken::getToken);
-		attributeSetters.put("token", WeDeployAuthToken::setToken);
-
+		attributeSetters.put("token", (BiConsumer<WeDeployAuthToken, String>)WeDeployAuthToken::setToken);
 		attributeGetters.put("type", WeDeployAuthToken::getType);
-		attributeSetters.put("type", WeDeployAuthToken::setType);
+		attributeSetters.put("type", (BiConsumer<WeDeployAuthToken, Integer>)WeDeployAuthToken::setType);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

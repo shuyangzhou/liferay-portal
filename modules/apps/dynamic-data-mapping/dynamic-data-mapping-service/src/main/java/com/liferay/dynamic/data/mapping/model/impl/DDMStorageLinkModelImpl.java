@@ -159,31 +159,25 @@ public class DDMStorageLinkModelImpl extends BaseModelImpl<DDMStorageLink>
 
 	static {
 		Map<String, Function<DDMStorageLink, Object>> attributeGetters = new LinkedHashMap<String, Function<DDMStorageLink, Object>>();
-		Map<String, BiConsumer<DDMStorageLink, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDMStorageLink, Object>>();
+		Map<String, BiConsumer<DDMStorageLink, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDMStorageLink, ?>>();
 
 		attributeGetters.put("uuid", DDMStorageLink::getUuid);
-		attributeSetters.put("uuid", DDMStorageLink::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<DDMStorageLink, String>)DDMStorageLink::setUuid);
 		attributeGetters.put("storageLinkId", DDMStorageLink::getStorageLinkId);
-		attributeSetters.put("storageLinkId", DDMStorageLink::setStorageLinkId);
-
+		attributeSetters.put("storageLinkId", (BiConsumer<DDMStorageLink, Long>)DDMStorageLink::setStorageLinkId);
 		attributeGetters.put("companyId", DDMStorageLink::getCompanyId);
-		attributeSetters.put("companyId", DDMStorageLink::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<DDMStorageLink, Long>)DDMStorageLink::setCompanyId);
 		attributeGetters.put("classNameId", DDMStorageLink::getClassNameId);
-		attributeSetters.put("classNameId", DDMStorageLink::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<DDMStorageLink, Long>)DDMStorageLink::setClassNameId);
 		attributeGetters.put("classPK", DDMStorageLink::getClassPK);
-		attributeSetters.put("classPK", DDMStorageLink::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<DDMStorageLink, Long>)DDMStorageLink::setClassPK);
 		attributeGetters.put("structureId", DDMStorageLink::getStructureId);
-		attributeSetters.put("structureId", DDMStorageLink::setStructureId);
-
+		attributeSetters.put("structureId", (BiConsumer<DDMStorageLink, Long>)DDMStorageLink::setStructureId);
 		attributeGetters.put("structureVersionId", DDMStorageLink::getStructureVersionId);
-		attributeSetters.put("structureVersionId", DDMStorageLink::setStructureVersionId);
+		attributeSetters.put("structureVersionId", (BiConsumer<DDMStorageLink, Long>)DDMStorageLink::setStructureVersionId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

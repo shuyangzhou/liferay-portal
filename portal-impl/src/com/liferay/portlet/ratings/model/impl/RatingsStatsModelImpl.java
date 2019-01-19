@@ -156,31 +156,25 @@ public class RatingsStatsModelImpl extends BaseModelImpl<RatingsStats>
 
 	static {
 		Map<String, Function<RatingsStats, Object>> attributeGetters = new LinkedHashMap<String, Function<RatingsStats, Object>>();
-		Map<String, BiConsumer<RatingsStats, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<RatingsStats, Object>>();
+		Map<String, BiConsumer<RatingsStats, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<RatingsStats, ?>>();
 
 		attributeGetters.put("statsId", RatingsStats::getStatsId);
-		attributeSetters.put("statsId", RatingsStats::setStatsId);
-
+		attributeSetters.put("statsId", (BiConsumer<RatingsStats, Long>)RatingsStats::setStatsId);
 		attributeGetters.put("companyId", RatingsStats::getCompanyId);
-		attributeSetters.put("companyId", RatingsStats::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<RatingsStats, Long>)RatingsStats::setCompanyId);
 		attributeGetters.put("classNameId", RatingsStats::getClassNameId);
-		attributeSetters.put("classNameId", RatingsStats::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<RatingsStats, Long>)RatingsStats::setClassNameId);
 		attributeGetters.put("classPK", RatingsStats::getClassPK);
-		attributeSetters.put("classPK", RatingsStats::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<RatingsStats, Long>)RatingsStats::setClassPK);
 		attributeGetters.put("totalEntries", RatingsStats::getTotalEntries);
-		attributeSetters.put("totalEntries", RatingsStats::setTotalEntries);
-
+		attributeSetters.put("totalEntries", (BiConsumer<RatingsStats, Integer>)RatingsStats::setTotalEntries);
 		attributeGetters.put("totalScore", RatingsStats::getTotalScore);
-		attributeSetters.put("totalScore", RatingsStats::setTotalScore);
-
+		attributeSetters.put("totalScore", (BiConsumer<RatingsStats, Double>)RatingsStats::setTotalScore);
 		attributeGetters.put("averageScore", RatingsStats::getAverageScore);
-		attributeSetters.put("averageScore", RatingsStats::setAverageScore);
+		attributeSetters.put("averageScore", (BiConsumer<RatingsStats, Double>)RatingsStats::setAverageScore);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

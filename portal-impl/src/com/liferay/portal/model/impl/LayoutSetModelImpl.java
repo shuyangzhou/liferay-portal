@@ -230,55 +230,41 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 
 	static {
 		Map<String, Function<LayoutSet, Object>> attributeGetters = new LinkedHashMap<String, Function<LayoutSet, Object>>();
-		Map<String, BiConsumer<LayoutSet, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<LayoutSet, Object>>();
+		Map<String, BiConsumer<LayoutSet, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<LayoutSet, ?>>();
 
 		attributeGetters.put("mvccVersion", LayoutSet::getMvccVersion);
-		attributeSetters.put("mvccVersion", LayoutSet::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<LayoutSet, Long>)LayoutSet::setMvccVersion);
 		attributeGetters.put("layoutSetId", LayoutSet::getLayoutSetId);
-		attributeSetters.put("layoutSetId", LayoutSet::setLayoutSetId);
-
+		attributeSetters.put("layoutSetId", (BiConsumer<LayoutSet, Long>)LayoutSet::setLayoutSetId);
 		attributeGetters.put("groupId", LayoutSet::getGroupId);
-		attributeSetters.put("groupId", LayoutSet::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<LayoutSet, Long>)LayoutSet::setGroupId);
 		attributeGetters.put("companyId", LayoutSet::getCompanyId);
-		attributeSetters.put("companyId", LayoutSet::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<LayoutSet, Long>)LayoutSet::setCompanyId);
 		attributeGetters.put("createDate", LayoutSet::getCreateDate);
-		attributeSetters.put("createDate", LayoutSet::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<LayoutSet, Date>)LayoutSet::setCreateDate);
 		attributeGetters.put("modifiedDate", LayoutSet::getModifiedDate);
-		attributeSetters.put("modifiedDate", LayoutSet::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<LayoutSet, Date>)LayoutSet::setModifiedDate);
 		attributeGetters.put("privateLayout", LayoutSet::getPrivateLayout);
-		attributeSetters.put("privateLayout", LayoutSet::setPrivateLayout);
-
+		attributeSetters.put("privateLayout", (BiConsumer<LayoutSet, Boolean>)LayoutSet::setPrivateLayout);
 		attributeGetters.put("logoId", LayoutSet::getLogoId);
-		attributeSetters.put("logoId", LayoutSet::setLogoId);
-
+		attributeSetters.put("logoId", (BiConsumer<LayoutSet, Long>)LayoutSet::setLogoId);
 		attributeGetters.put("themeId", LayoutSet::getThemeId);
-		attributeSetters.put("themeId", LayoutSet::setThemeId);
-
+		attributeSetters.put("themeId", (BiConsumer<LayoutSet, String>)LayoutSet::setThemeId);
 		attributeGetters.put("colorSchemeId", LayoutSet::getColorSchemeId);
-		attributeSetters.put("colorSchemeId", LayoutSet::setColorSchemeId);
-
+		attributeSetters.put("colorSchemeId", (BiConsumer<LayoutSet, String>)LayoutSet::setColorSchemeId);
 		attributeGetters.put("css", LayoutSet::getCss);
-		attributeSetters.put("css", LayoutSet::setCss);
-
+		attributeSetters.put("css", (BiConsumer<LayoutSet, String>)LayoutSet::setCss);
 		attributeGetters.put("pageCount", LayoutSet::getPageCount);
-		attributeSetters.put("pageCount", LayoutSet::setPageCount);
-
+		attributeSetters.put("pageCount", (BiConsumer<LayoutSet, Integer>)LayoutSet::setPageCount);
 		attributeGetters.put("settings", LayoutSet::getSettings);
-		attributeSetters.put("settings", LayoutSet::setSettings);
-
+		attributeSetters.put("settings", (BiConsumer<LayoutSet, String>)LayoutSet::setSettings);
 		attributeGetters.put("layoutSetPrototypeUuid", LayoutSet::getLayoutSetPrototypeUuid);
-		attributeSetters.put("layoutSetPrototypeUuid", LayoutSet::setLayoutSetPrototypeUuid);
-
+		attributeSetters.put("layoutSetPrototypeUuid", (BiConsumer<LayoutSet, String>)LayoutSet::setLayoutSetPrototypeUuid);
 		attributeGetters.put("layoutSetPrototypeLinkEnabled", LayoutSet::getLayoutSetPrototypeLinkEnabled);
-		attributeSetters.put("layoutSetPrototypeLinkEnabled", LayoutSet::setLayoutSetPrototypeLinkEnabled);
+		attributeSetters.put("layoutSetPrototypeLinkEnabled", (BiConsumer<LayoutSet, Boolean>)LayoutSet::setLayoutSetPrototypeLinkEnabled);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

@@ -149,23 +149,19 @@ public class AssetEntryAssetCategoryRelModelImpl extends BaseModelImpl<AssetEntr
 	static {
 		Map<String, Function<AssetEntryAssetCategoryRel, Object>> attributeGetters =
 			new LinkedHashMap<String, Function<AssetEntryAssetCategoryRel, Object>>();
-		Map<String, BiConsumer<AssetEntryAssetCategoryRel, Object>> attributeSetters =
-			new LinkedHashMap<String, BiConsumer<AssetEntryAssetCategoryRel, Object>>();
+		Map<String, BiConsumer<AssetEntryAssetCategoryRel, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetEntryAssetCategoryRel, ?>>();
 
 		attributeGetters.put("assetEntryAssetCategoryRelId", AssetEntryAssetCategoryRel::getAssetEntryAssetCategoryRelId);
-		attributeSetters.put("assetEntryAssetCategoryRelId", AssetEntryAssetCategoryRel::setAssetEntryAssetCategoryRelId);
-
+		attributeSetters.put("assetEntryAssetCategoryRelId", (BiConsumer<AssetEntryAssetCategoryRel, Long>)AssetEntryAssetCategoryRel::setAssetEntryAssetCategoryRelId);
 		attributeGetters.put("assetEntryId", AssetEntryAssetCategoryRel::getAssetEntryId);
-		attributeSetters.put("assetEntryId", AssetEntryAssetCategoryRel::setAssetEntryId);
-
+		attributeSetters.put("assetEntryId", (BiConsumer<AssetEntryAssetCategoryRel, Long>)AssetEntryAssetCategoryRel::setAssetEntryId);
 		attributeGetters.put("assetCategoryId", AssetEntryAssetCategoryRel::getAssetCategoryId);
-		attributeSetters.put("assetCategoryId", AssetEntryAssetCategoryRel::setAssetCategoryId);
-
+		attributeSetters.put("assetCategoryId", (BiConsumer<AssetEntryAssetCategoryRel, Long>)AssetEntryAssetCategoryRel::setAssetCategoryId);
 		attributeGetters.put("priority", AssetEntryAssetCategoryRel::getPriority);
-		attributeSetters.put("priority", AssetEntryAssetCategoryRel::setPriority);
+		attributeSetters.put("priority", (BiConsumer<AssetEntryAssetCategoryRel, Integer>)AssetEntryAssetCategoryRel::setPriority);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

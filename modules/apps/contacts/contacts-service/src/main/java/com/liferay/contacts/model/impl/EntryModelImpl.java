@@ -163,40 +163,31 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	static {
 		Map<String, Function<Entry, Object>> attributeGetters = new LinkedHashMap<String, Function<Entry, Object>>();
-		Map<String, BiConsumer<Entry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Entry, Object>>();
+		Map<String, BiConsumer<Entry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Entry, ?>>();
 
 		attributeGetters.put("entryId", Entry::getEntryId);
-		attributeSetters.put("entryId", Entry::setEntryId);
-
+		attributeSetters.put("entryId", (BiConsumer<Entry, Long>)Entry::setEntryId);
 		attributeGetters.put("groupId", Entry::getGroupId);
-		attributeSetters.put("groupId", Entry::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<Entry, Long>)Entry::setGroupId);
 		attributeGetters.put("companyId", Entry::getCompanyId);
-		attributeSetters.put("companyId", Entry::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<Entry, Long>)Entry::setCompanyId);
 		attributeGetters.put("userId", Entry::getUserId);
-		attributeSetters.put("userId", Entry::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<Entry, Long>)Entry::setUserId);
 		attributeGetters.put("userName", Entry::getUserName);
-		attributeSetters.put("userName", Entry::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<Entry, String>)Entry::setUserName);
 		attributeGetters.put("createDate", Entry::getCreateDate);
-		attributeSetters.put("createDate", Entry::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<Entry, Date>)Entry::setCreateDate);
 		attributeGetters.put("modifiedDate", Entry::getModifiedDate);
-		attributeSetters.put("modifiedDate", Entry::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<Entry, Date>)Entry::setModifiedDate);
 		attributeGetters.put("fullName", Entry::getFullName);
-		attributeSetters.put("fullName", Entry::setFullName);
-
+		attributeSetters.put("fullName", (BiConsumer<Entry, String>)Entry::setFullName);
 		attributeGetters.put("emailAddress", Entry::getEmailAddress);
-		attributeSetters.put("emailAddress", Entry::setEmailAddress);
-
+		attributeSetters.put("emailAddress", (BiConsumer<Entry, String>)Entry::setEmailAddress);
 		attributeGetters.put("comments", Entry::getComments);
-		attributeSetters.put("comments", Entry::setComments);
+		attributeSetters.put("comments", (BiConsumer<Entry, String>)Entry::setComments);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

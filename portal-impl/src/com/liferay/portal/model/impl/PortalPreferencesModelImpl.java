@@ -149,25 +149,21 @@ public class PortalPreferencesModelImpl extends BaseModelImpl<PortalPreferences>
 
 	static {
 		Map<String, Function<PortalPreferences, Object>> attributeGetters = new LinkedHashMap<String, Function<PortalPreferences, Object>>();
-		Map<String, BiConsumer<PortalPreferences, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<PortalPreferences, Object>>();
+		Map<String, BiConsumer<PortalPreferences, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<PortalPreferences, ?>>();
 
 		attributeGetters.put("mvccVersion", PortalPreferences::getMvccVersion);
-		attributeSetters.put("mvccVersion", PortalPreferences::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<PortalPreferences, Long>)PortalPreferences::setMvccVersion);
 		attributeGetters.put("portalPreferencesId", PortalPreferences::getPortalPreferencesId);
-		attributeSetters.put("portalPreferencesId", PortalPreferences::setPortalPreferencesId);
-
+		attributeSetters.put("portalPreferencesId", (BiConsumer<PortalPreferences, Long>)PortalPreferences::setPortalPreferencesId);
 		attributeGetters.put("ownerId", PortalPreferences::getOwnerId);
-		attributeSetters.put("ownerId", PortalPreferences::setOwnerId);
-
+		attributeSetters.put("ownerId", (BiConsumer<PortalPreferences, Long>)PortalPreferences::setOwnerId);
 		attributeGetters.put("ownerType", PortalPreferences::getOwnerType);
-		attributeSetters.put("ownerType", PortalPreferences::setOwnerType);
-
+		attributeSetters.put("ownerType", (BiConsumer<PortalPreferences, Integer>)PortalPreferences::setOwnerType);
 		attributeGetters.put("preferences", PortalPreferences::getPreferences);
-		attributeSetters.put("preferences", PortalPreferences::setPreferences);
+		attributeSetters.put("preferences", (BiConsumer<PortalPreferences, String>)PortalPreferences::setPreferences);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

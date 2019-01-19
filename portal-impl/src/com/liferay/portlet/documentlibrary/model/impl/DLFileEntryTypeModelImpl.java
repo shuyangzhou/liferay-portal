@@ -248,46 +248,35 @@ public class DLFileEntryTypeModelImpl extends BaseModelImpl<DLFileEntryType>
 
 	static {
 		Map<String, Function<DLFileEntryType, Object>> attributeGetters = new LinkedHashMap<String, Function<DLFileEntryType, Object>>();
-		Map<String, BiConsumer<DLFileEntryType, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<DLFileEntryType, Object>>();
+		Map<String, BiConsumer<DLFileEntryType, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DLFileEntryType, ?>>();
 
 		attributeGetters.put("uuid", DLFileEntryType::getUuid);
-		attributeSetters.put("uuid", DLFileEntryType::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<DLFileEntryType, String>)DLFileEntryType::setUuid);
 		attributeGetters.put("fileEntryTypeId", DLFileEntryType::getFileEntryTypeId);
-		attributeSetters.put("fileEntryTypeId", DLFileEntryType::setFileEntryTypeId);
-
+		attributeSetters.put("fileEntryTypeId", (BiConsumer<DLFileEntryType, Long>)DLFileEntryType::setFileEntryTypeId);
 		attributeGetters.put("groupId", DLFileEntryType::getGroupId);
-		attributeSetters.put("groupId", DLFileEntryType::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<DLFileEntryType, Long>)DLFileEntryType::setGroupId);
 		attributeGetters.put("companyId", DLFileEntryType::getCompanyId);
-		attributeSetters.put("companyId", DLFileEntryType::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<DLFileEntryType, Long>)DLFileEntryType::setCompanyId);
 		attributeGetters.put("userId", DLFileEntryType::getUserId);
-		attributeSetters.put("userId", DLFileEntryType::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<DLFileEntryType, Long>)DLFileEntryType::setUserId);
 		attributeGetters.put("userName", DLFileEntryType::getUserName);
-		attributeSetters.put("userName", DLFileEntryType::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<DLFileEntryType, String>)DLFileEntryType::setUserName);
 		attributeGetters.put("createDate", DLFileEntryType::getCreateDate);
-		attributeSetters.put("createDate", DLFileEntryType::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<DLFileEntryType, Date>)DLFileEntryType::setCreateDate);
 		attributeGetters.put("modifiedDate", DLFileEntryType::getModifiedDate);
-		attributeSetters.put("modifiedDate", DLFileEntryType::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<DLFileEntryType, Date>)DLFileEntryType::setModifiedDate);
 		attributeGetters.put("fileEntryTypeKey", DLFileEntryType::getFileEntryTypeKey);
-		attributeSetters.put("fileEntryTypeKey", DLFileEntryType::setFileEntryTypeKey);
-
+		attributeSetters.put("fileEntryTypeKey", (BiConsumer<DLFileEntryType, String>)DLFileEntryType::setFileEntryTypeKey);
 		attributeGetters.put("name", DLFileEntryType::getName);
-		attributeSetters.put("name", DLFileEntryType::setName);
-
+		attributeSetters.put("name", (BiConsumer<DLFileEntryType, String>)DLFileEntryType::setName);
 		attributeGetters.put("description", DLFileEntryType::getDescription);
-		attributeSetters.put("description", DLFileEntryType::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<DLFileEntryType, String>)DLFileEntryType::setDescription);
 		attributeGetters.put("lastPublishDate", DLFileEntryType::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", DLFileEntryType::setLastPublishDate);
+		attributeSetters.put("lastPublishDate", (BiConsumer<DLFileEntryType, Date>)DLFileEntryType::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

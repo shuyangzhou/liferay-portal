@@ -157,31 +157,25 @@ public class TrashVersionModelImpl extends BaseModelImpl<TrashVersion>
 
 	static {
 		Map<String, Function<TrashVersion, Object>> attributeGetters = new LinkedHashMap<String, Function<TrashVersion, Object>>();
-		Map<String, BiConsumer<TrashVersion, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<TrashVersion, Object>>();
+		Map<String, BiConsumer<TrashVersion, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<TrashVersion, ?>>();
 
 		attributeGetters.put("versionId", TrashVersion::getVersionId);
-		attributeSetters.put("versionId", TrashVersion::setVersionId);
-
+		attributeSetters.put("versionId", (BiConsumer<TrashVersion, Long>)TrashVersion::setVersionId);
 		attributeGetters.put("companyId", TrashVersion::getCompanyId);
-		attributeSetters.put("companyId", TrashVersion::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<TrashVersion, Long>)TrashVersion::setCompanyId);
 		attributeGetters.put("entryId", TrashVersion::getEntryId);
-		attributeSetters.put("entryId", TrashVersion::setEntryId);
-
+		attributeSetters.put("entryId", (BiConsumer<TrashVersion, Long>)TrashVersion::setEntryId);
 		attributeGetters.put("classNameId", TrashVersion::getClassNameId);
-		attributeSetters.put("classNameId", TrashVersion::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<TrashVersion, Long>)TrashVersion::setClassNameId);
 		attributeGetters.put("classPK", TrashVersion::getClassPK);
-		attributeSetters.put("classPK", TrashVersion::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<TrashVersion, Long>)TrashVersion::setClassPK);
 		attributeGetters.put("typeSettings", TrashVersion::getTypeSettings);
-		attributeSetters.put("typeSettings", TrashVersion::setTypeSettings);
-
+		attributeSetters.put("typeSettings", (BiConsumer<TrashVersion, String>)TrashVersion::setTypeSettings);
 		attributeGetters.put("status", TrashVersion::getStatus);
-		attributeSetters.put("status", TrashVersion::setStatus);
+		attributeSetters.put("status", (BiConsumer<TrashVersion, Integer>)TrashVersion::setStatus);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

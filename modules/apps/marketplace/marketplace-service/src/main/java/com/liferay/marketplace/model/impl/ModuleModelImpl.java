@@ -158,31 +158,25 @@ public class ModuleModelImpl extends BaseModelImpl<Module>
 
 	static {
 		Map<String, Function<Module, Object>> attributeGetters = new LinkedHashMap<String, Function<Module, Object>>();
-		Map<String, BiConsumer<Module, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Module, Object>>();
+		Map<String, BiConsumer<Module, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Module, ?>>();
 
 		attributeGetters.put("uuid", Module::getUuid);
-		attributeSetters.put("uuid", Module::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<Module, String>)Module::setUuid);
 		attributeGetters.put("moduleId", Module::getModuleId);
-		attributeSetters.put("moduleId", Module::setModuleId);
-
+		attributeSetters.put("moduleId", (BiConsumer<Module, Long>)Module::setModuleId);
 		attributeGetters.put("companyId", Module::getCompanyId);
-		attributeSetters.put("companyId", Module::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<Module, Long>)Module::setCompanyId);
 		attributeGetters.put("appId", Module::getAppId);
-		attributeSetters.put("appId", Module::setAppId);
-
+		attributeSetters.put("appId", (BiConsumer<Module, Long>)Module::setAppId);
 		attributeGetters.put("bundleSymbolicName", Module::getBundleSymbolicName);
-		attributeSetters.put("bundleSymbolicName", Module::setBundleSymbolicName);
-
+		attributeSetters.put("bundleSymbolicName", (BiConsumer<Module, String>)Module::setBundleSymbolicName);
 		attributeGetters.put("bundleVersion", Module::getBundleVersion);
-		attributeSetters.put("bundleVersion", Module::setBundleVersion);
-
+		attributeSetters.put("bundleVersion", (BiConsumer<Module, String>)Module::setBundleVersion);
 		attributeGetters.put("contextName", Module::getContextName);
-		attributeSetters.put("contextName", Module::setContextName);
+		attributeSetters.put("contextName", (BiConsumer<Module, String>)Module::setContextName);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

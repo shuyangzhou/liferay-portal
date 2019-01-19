@@ -245,58 +245,43 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 
 	static {
 		Map<String, Function<WikiNode, Object>> attributeGetters = new LinkedHashMap<String, Function<WikiNode, Object>>();
-		Map<String, BiConsumer<WikiNode, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<WikiNode, Object>>();
+		Map<String, BiConsumer<WikiNode, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<WikiNode, ?>>();
 
 		attributeGetters.put("uuid", WikiNode::getUuid);
-		attributeSetters.put("uuid", WikiNode::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<WikiNode, String>)WikiNode::setUuid);
 		attributeGetters.put("nodeId", WikiNode::getNodeId);
-		attributeSetters.put("nodeId", WikiNode::setNodeId);
-
+		attributeSetters.put("nodeId", (BiConsumer<WikiNode, Long>)WikiNode::setNodeId);
 		attributeGetters.put("groupId", WikiNode::getGroupId);
-		attributeSetters.put("groupId", WikiNode::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<WikiNode, Long>)WikiNode::setGroupId);
 		attributeGetters.put("companyId", WikiNode::getCompanyId);
-		attributeSetters.put("companyId", WikiNode::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<WikiNode, Long>)WikiNode::setCompanyId);
 		attributeGetters.put("userId", WikiNode::getUserId);
-		attributeSetters.put("userId", WikiNode::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<WikiNode, Long>)WikiNode::setUserId);
 		attributeGetters.put("userName", WikiNode::getUserName);
-		attributeSetters.put("userName", WikiNode::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<WikiNode, String>)WikiNode::setUserName);
 		attributeGetters.put("createDate", WikiNode::getCreateDate);
-		attributeSetters.put("createDate", WikiNode::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<WikiNode, Date>)WikiNode::setCreateDate);
 		attributeGetters.put("modifiedDate", WikiNode::getModifiedDate);
-		attributeSetters.put("modifiedDate", WikiNode::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<WikiNode, Date>)WikiNode::setModifiedDate);
 		attributeGetters.put("name", WikiNode::getName);
-		attributeSetters.put("name", WikiNode::setName);
-
+		attributeSetters.put("name", (BiConsumer<WikiNode, String>)WikiNode::setName);
 		attributeGetters.put("description", WikiNode::getDescription);
-		attributeSetters.put("description", WikiNode::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<WikiNode, String>)WikiNode::setDescription);
 		attributeGetters.put("lastPostDate", WikiNode::getLastPostDate);
-		attributeSetters.put("lastPostDate", WikiNode::setLastPostDate);
-
+		attributeSetters.put("lastPostDate", (BiConsumer<WikiNode, Date>)WikiNode::setLastPostDate);
 		attributeGetters.put("lastPublishDate", WikiNode::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", WikiNode::setLastPublishDate);
-
+		attributeSetters.put("lastPublishDate", (BiConsumer<WikiNode, Date>)WikiNode::setLastPublishDate);
 		attributeGetters.put("status", WikiNode::getStatus);
-		attributeSetters.put("status", WikiNode::setStatus);
-
+		attributeSetters.put("status", (BiConsumer<WikiNode, Integer>)WikiNode::setStatus);
 		attributeGetters.put("statusByUserId", WikiNode::getStatusByUserId);
-		attributeSetters.put("statusByUserId", WikiNode::setStatusByUserId);
-
+		attributeSetters.put("statusByUserId", (BiConsumer<WikiNode, Long>)WikiNode::setStatusByUserId);
 		attributeGetters.put("statusByUserName", WikiNode::getStatusByUserName);
-		attributeSetters.put("statusByUserName", WikiNode::setStatusByUserName);
-
+		attributeSetters.put("statusByUserName", (BiConsumer<WikiNode, String>)WikiNode::setStatusByUserName);
 		attributeGetters.put("statusDate", WikiNode::getStatusDate);
-		attributeSetters.put("statusDate", WikiNode::setStatusDate);
+		attributeSetters.put("statusDate", (BiConsumer<WikiNode, Date>)WikiNode::setStatusDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

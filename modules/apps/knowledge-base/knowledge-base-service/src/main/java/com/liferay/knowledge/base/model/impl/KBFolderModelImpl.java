@@ -233,49 +233,37 @@ public class KBFolderModelImpl extends BaseModelImpl<KBFolder>
 
 	static {
 		Map<String, Function<KBFolder, Object>> attributeGetters = new LinkedHashMap<String, Function<KBFolder, Object>>();
-		Map<String, BiConsumer<KBFolder, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<KBFolder, Object>>();
+		Map<String, BiConsumer<KBFolder, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<KBFolder, ?>>();
 
 		attributeGetters.put("uuid", KBFolder::getUuid);
-		attributeSetters.put("uuid", KBFolder::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<KBFolder, String>)KBFolder::setUuid);
 		attributeGetters.put("kbFolderId", KBFolder::getKbFolderId);
-		attributeSetters.put("kbFolderId", KBFolder::setKbFolderId);
-
+		attributeSetters.put("kbFolderId", (BiConsumer<KBFolder, Long>)KBFolder::setKbFolderId);
 		attributeGetters.put("groupId", KBFolder::getGroupId);
-		attributeSetters.put("groupId", KBFolder::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<KBFolder, Long>)KBFolder::setGroupId);
 		attributeGetters.put("companyId", KBFolder::getCompanyId);
-		attributeSetters.put("companyId", KBFolder::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<KBFolder, Long>)KBFolder::setCompanyId);
 		attributeGetters.put("userId", KBFolder::getUserId);
-		attributeSetters.put("userId", KBFolder::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<KBFolder, Long>)KBFolder::setUserId);
 		attributeGetters.put("userName", KBFolder::getUserName);
-		attributeSetters.put("userName", KBFolder::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<KBFolder, String>)KBFolder::setUserName);
 		attributeGetters.put("createDate", KBFolder::getCreateDate);
-		attributeSetters.put("createDate", KBFolder::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<KBFolder, Date>)KBFolder::setCreateDate);
 		attributeGetters.put("modifiedDate", KBFolder::getModifiedDate);
-		attributeSetters.put("modifiedDate", KBFolder::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<KBFolder, Date>)KBFolder::setModifiedDate);
 		attributeGetters.put("parentKBFolderId", KBFolder::getParentKBFolderId);
-		attributeSetters.put("parentKBFolderId", KBFolder::setParentKBFolderId);
-
+		attributeSetters.put("parentKBFolderId", (BiConsumer<KBFolder, Long>)KBFolder::setParentKBFolderId);
 		attributeGetters.put("name", KBFolder::getName);
-		attributeSetters.put("name", KBFolder::setName);
-
+		attributeSetters.put("name", (BiConsumer<KBFolder, String>)KBFolder::setName);
 		attributeGetters.put("urlTitle", KBFolder::getUrlTitle);
-		attributeSetters.put("urlTitle", KBFolder::setUrlTitle);
-
+		attributeSetters.put("urlTitle", (BiConsumer<KBFolder, String>)KBFolder::setUrlTitle);
 		attributeGetters.put("description", KBFolder::getDescription);
-		attributeSetters.put("description", KBFolder::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<KBFolder, String>)KBFolder::setDescription);
 		attributeGetters.put("lastPublishDate", KBFolder::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", KBFolder::setLastPublishDate);
+		attributeSetters.put("lastPublishDate", (BiConsumer<KBFolder, Date>)KBFolder::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

@@ -158,37 +158,29 @@ public class OAuthConsumerModelImpl extends BaseModelImpl<OAuthConsumer>
 
 	static {
 		Map<String, Function<OAuthConsumer, Object>> attributeGetters = new LinkedHashMap<String, Function<OAuthConsumer, Object>>();
-		Map<String, BiConsumer<OAuthConsumer, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<OAuthConsumer, Object>>();
+		Map<String, BiConsumer<OAuthConsumer, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<OAuthConsumer, ?>>();
 
 		attributeGetters.put("oAuthConsumerId", OAuthConsumer::getOAuthConsumerId);
-		attributeSetters.put("oAuthConsumerId", OAuthConsumer::setOAuthConsumerId);
-
+		attributeSetters.put("oAuthConsumerId", (BiConsumer<OAuthConsumer, Long>)OAuthConsumer::setOAuthConsumerId);
 		attributeGetters.put("companyId", OAuthConsumer::getCompanyId);
-		attributeSetters.put("companyId", OAuthConsumer::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<OAuthConsumer, Long>)OAuthConsumer::setCompanyId);
 		attributeGetters.put("createDate", OAuthConsumer::getCreateDate);
-		attributeSetters.put("createDate", OAuthConsumer::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<OAuthConsumer, Date>)OAuthConsumer::setCreateDate);
 		attributeGetters.put("modifiedDate", OAuthConsumer::getModifiedDate);
-		attributeSetters.put("modifiedDate", OAuthConsumer::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<OAuthConsumer, Date>)OAuthConsumer::setModifiedDate);
 		attributeGetters.put("gadgetKey", OAuthConsumer::getGadgetKey);
-		attributeSetters.put("gadgetKey", OAuthConsumer::setGadgetKey);
-
+		attributeSetters.put("gadgetKey", (BiConsumer<OAuthConsumer, String>)OAuthConsumer::setGadgetKey);
 		attributeGetters.put("serviceName", OAuthConsumer::getServiceName);
-		attributeSetters.put("serviceName", OAuthConsumer::setServiceName);
-
+		attributeSetters.put("serviceName", (BiConsumer<OAuthConsumer, String>)OAuthConsumer::setServiceName);
 		attributeGetters.put("consumerKey", OAuthConsumer::getConsumerKey);
-		attributeSetters.put("consumerKey", OAuthConsumer::setConsumerKey);
-
+		attributeSetters.put("consumerKey", (BiConsumer<OAuthConsumer, String>)OAuthConsumer::setConsumerKey);
 		attributeGetters.put("consumerSecret", OAuthConsumer::getConsumerSecret);
-		attributeSetters.put("consumerSecret", OAuthConsumer::setConsumerSecret);
-
+		attributeSetters.put("consumerSecret", (BiConsumer<OAuthConsumer, String>)OAuthConsumer::setConsumerSecret);
 		attributeGetters.put("keyType", OAuthConsumer::getKeyType);
-		attributeSetters.put("keyType", OAuthConsumer::setKeyType);
+		attributeSetters.put("keyType", (BiConsumer<OAuthConsumer, String>)OAuthConsumer::setKeyType);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

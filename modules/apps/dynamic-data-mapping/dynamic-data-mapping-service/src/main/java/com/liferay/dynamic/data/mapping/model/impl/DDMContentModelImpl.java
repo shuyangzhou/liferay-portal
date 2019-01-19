@@ -178,43 +178,33 @@ public class DDMContentModelImpl extends BaseModelImpl<DDMContent>
 
 	static {
 		Map<String, Function<DDMContent, Object>> attributeGetters = new LinkedHashMap<String, Function<DDMContent, Object>>();
-		Map<String, BiConsumer<DDMContent, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDMContent, Object>>();
+		Map<String, BiConsumer<DDMContent, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDMContent, ?>>();
 
 		attributeGetters.put("uuid", DDMContent::getUuid);
-		attributeSetters.put("uuid", DDMContent::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<DDMContent, String>)DDMContent::setUuid);
 		attributeGetters.put("contentId", DDMContent::getContentId);
-		attributeSetters.put("contentId", DDMContent::setContentId);
-
+		attributeSetters.put("contentId", (BiConsumer<DDMContent, Long>)DDMContent::setContentId);
 		attributeGetters.put("groupId", DDMContent::getGroupId);
-		attributeSetters.put("groupId", DDMContent::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<DDMContent, Long>)DDMContent::setGroupId);
 		attributeGetters.put("companyId", DDMContent::getCompanyId);
-		attributeSetters.put("companyId", DDMContent::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<DDMContent, Long>)DDMContent::setCompanyId);
 		attributeGetters.put("userId", DDMContent::getUserId);
-		attributeSetters.put("userId", DDMContent::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<DDMContent, Long>)DDMContent::setUserId);
 		attributeGetters.put("userName", DDMContent::getUserName);
-		attributeSetters.put("userName", DDMContent::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<DDMContent, String>)DDMContent::setUserName);
 		attributeGetters.put("createDate", DDMContent::getCreateDate);
-		attributeSetters.put("createDate", DDMContent::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<DDMContent, Date>)DDMContent::setCreateDate);
 		attributeGetters.put("modifiedDate", DDMContent::getModifiedDate);
-		attributeSetters.put("modifiedDate", DDMContent::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<DDMContent, Date>)DDMContent::setModifiedDate);
 		attributeGetters.put("name", DDMContent::getName);
-		attributeSetters.put("name", DDMContent::setName);
-
+		attributeSetters.put("name", (BiConsumer<DDMContent, String>)DDMContent::setName);
 		attributeGetters.put("description", DDMContent::getDescription);
-		attributeSetters.put("description", DDMContent::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<DDMContent, String>)DDMContent::setDescription);
 		attributeGetters.put("data", DDMContent::getData);
-		attributeSetters.put("data", DDMContent::setData);
+		attributeSetters.put("data", (BiConsumer<DDMContent, String>)DDMContent::setData);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

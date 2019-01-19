@@ -166,38 +166,29 @@ public class UserNotificationDeliveryModelImpl extends BaseModelImpl<UserNotific
 	static {
 		Map<String, Function<UserNotificationDelivery, Object>> attributeGetters =
 			new LinkedHashMap<String, Function<UserNotificationDelivery, Object>>();
-		Map<String, BiConsumer<UserNotificationDelivery, Object>> attributeSetters =
-			new LinkedHashMap<String, BiConsumer<UserNotificationDelivery, Object>>();
+		Map<String, BiConsumer<UserNotificationDelivery, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<UserNotificationDelivery, ?>>();
 
 		attributeGetters.put("mvccVersion", UserNotificationDelivery::getMvccVersion);
-		attributeSetters.put("mvccVersion", UserNotificationDelivery::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<UserNotificationDelivery, Long>)UserNotificationDelivery::setMvccVersion);
 		attributeGetters.put("userNotificationDeliveryId", UserNotificationDelivery::getUserNotificationDeliveryId);
-		attributeSetters.put("userNotificationDeliveryId", UserNotificationDelivery::setUserNotificationDeliveryId);
-
+		attributeSetters.put("userNotificationDeliveryId", (BiConsumer<UserNotificationDelivery, Long>)UserNotificationDelivery::setUserNotificationDeliveryId);
 		attributeGetters.put("companyId", UserNotificationDelivery::getCompanyId);
-		attributeSetters.put("companyId", UserNotificationDelivery::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<UserNotificationDelivery, Long>)UserNotificationDelivery::setCompanyId);
 		attributeGetters.put("userId", UserNotificationDelivery::getUserId);
-		attributeSetters.put("userId", UserNotificationDelivery::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<UserNotificationDelivery, Long>)UserNotificationDelivery::setUserId);
 		attributeGetters.put("portletId", UserNotificationDelivery::getPortletId);
-		attributeSetters.put("portletId", UserNotificationDelivery::setPortletId);
-
+		attributeSetters.put("portletId", (BiConsumer<UserNotificationDelivery, String>)UserNotificationDelivery::setPortletId);
 		attributeGetters.put("classNameId", UserNotificationDelivery::getClassNameId);
-		attributeSetters.put("classNameId", UserNotificationDelivery::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<UserNotificationDelivery, Long>)UserNotificationDelivery::setClassNameId);
 		attributeGetters.put("notificationType", UserNotificationDelivery::getNotificationType);
-		attributeSetters.put("notificationType", UserNotificationDelivery::setNotificationType);
-
+		attributeSetters.put("notificationType", (BiConsumer<UserNotificationDelivery, Integer>)UserNotificationDelivery::setNotificationType);
 		attributeGetters.put("deliveryType", UserNotificationDelivery::getDeliveryType);
-		attributeSetters.put("deliveryType", UserNotificationDelivery::setDeliveryType);
-
+		attributeSetters.put("deliveryType", (BiConsumer<UserNotificationDelivery, Integer>)UserNotificationDelivery::setDeliveryType);
 		attributeGetters.put("deliver", UserNotificationDelivery::getDeliver);
-		attributeSetters.put("deliver", UserNotificationDelivery::setDeliver);
+		attributeSetters.put("deliver", (BiConsumer<UserNotificationDelivery, Boolean>)UserNotificationDelivery::setDeliver);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

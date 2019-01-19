@@ -176,37 +176,29 @@ public class CTEntryModelImpl extends BaseModelImpl<CTEntry>
 
 	static {
 		Map<String, Function<CTEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<CTEntry, Object>>();
-		Map<String, BiConsumer<CTEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<CTEntry, Object>>();
+		Map<String, BiConsumer<CTEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<CTEntry, ?>>();
 
 		attributeGetters.put("ctEntryId", CTEntry::getCtEntryId);
-		attributeSetters.put("ctEntryId", CTEntry::setCtEntryId);
-
+		attributeSetters.put("ctEntryId", (BiConsumer<CTEntry, Long>)CTEntry::setCtEntryId);
 		attributeGetters.put("companyId", CTEntry::getCompanyId);
-		attributeSetters.put("companyId", CTEntry::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<CTEntry, Long>)CTEntry::setCompanyId);
 		attributeGetters.put("userId", CTEntry::getUserId);
-		attributeSetters.put("userId", CTEntry::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<CTEntry, Long>)CTEntry::setUserId);
 		attributeGetters.put("userName", CTEntry::getUserName);
-		attributeSetters.put("userName", CTEntry::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<CTEntry, String>)CTEntry::setUserName);
 		attributeGetters.put("createDate", CTEntry::getCreateDate);
-		attributeSetters.put("createDate", CTEntry::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<CTEntry, Date>)CTEntry::setCreateDate);
 		attributeGetters.put("modifiedDate", CTEntry::getModifiedDate);
-		attributeSetters.put("modifiedDate", CTEntry::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<CTEntry, Date>)CTEntry::setModifiedDate);
 		attributeGetters.put("classNameId", CTEntry::getClassNameId);
-		attributeSetters.put("classNameId", CTEntry::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<CTEntry, Long>)CTEntry::setClassNameId);
 		attributeGetters.put("classPK", CTEntry::getClassPK);
-		attributeSetters.put("classPK", CTEntry::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<CTEntry, Long>)CTEntry::setClassPK);
 		attributeGetters.put("resourcePrimKey", CTEntry::getResourcePrimKey);
-		attributeSetters.put("resourcePrimKey", CTEntry::setResourcePrimKey);
+		attributeSetters.put("resourcePrimKey", (BiConsumer<CTEntry, Long>)CTEntry::setResourcePrimKey);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

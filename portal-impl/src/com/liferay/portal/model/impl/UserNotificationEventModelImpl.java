@@ -174,49 +174,37 @@ public class UserNotificationEventModelImpl extends BaseModelImpl<UserNotificati
 
 	static {
 		Map<String, Function<UserNotificationEvent, Object>> attributeGetters = new LinkedHashMap<String, Function<UserNotificationEvent, Object>>();
-		Map<String, BiConsumer<UserNotificationEvent, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<UserNotificationEvent, Object>>();
+		Map<String, BiConsumer<UserNotificationEvent, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<UserNotificationEvent, ?>>();
 
 		attributeGetters.put("mvccVersion", UserNotificationEvent::getMvccVersion);
-		attributeSetters.put("mvccVersion", UserNotificationEvent::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<UserNotificationEvent, Long>)UserNotificationEvent::setMvccVersion);
 		attributeGetters.put("uuid", UserNotificationEvent::getUuid);
-		attributeSetters.put("uuid", UserNotificationEvent::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<UserNotificationEvent, String>)UserNotificationEvent::setUuid);
 		attributeGetters.put("userNotificationEventId", UserNotificationEvent::getUserNotificationEventId);
-		attributeSetters.put("userNotificationEventId", UserNotificationEvent::setUserNotificationEventId);
-
+		attributeSetters.put("userNotificationEventId", (BiConsumer<UserNotificationEvent, Long>)UserNotificationEvent::setUserNotificationEventId);
 		attributeGetters.put("companyId", UserNotificationEvent::getCompanyId);
-		attributeSetters.put("companyId", UserNotificationEvent::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<UserNotificationEvent, Long>)UserNotificationEvent::setCompanyId);
 		attributeGetters.put("userId", UserNotificationEvent::getUserId);
-		attributeSetters.put("userId", UserNotificationEvent::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<UserNotificationEvent, Long>)UserNotificationEvent::setUserId);
 		attributeGetters.put("type", UserNotificationEvent::getType);
-		attributeSetters.put("type", UserNotificationEvent::setType);
-
+		attributeSetters.put("type", (BiConsumer<UserNotificationEvent, String>)UserNotificationEvent::setType);
 		attributeGetters.put("timestamp", UserNotificationEvent::getTimestamp);
-		attributeSetters.put("timestamp", UserNotificationEvent::setTimestamp);
-
+		attributeSetters.put("timestamp", (BiConsumer<UserNotificationEvent, Long>)UserNotificationEvent::setTimestamp);
 		attributeGetters.put("deliveryType", UserNotificationEvent::getDeliveryType);
-		attributeSetters.put("deliveryType", UserNotificationEvent::setDeliveryType);
-
+		attributeSetters.put("deliveryType", (BiConsumer<UserNotificationEvent, Integer>)UserNotificationEvent::setDeliveryType);
 		attributeGetters.put("deliverBy", UserNotificationEvent::getDeliverBy);
-		attributeSetters.put("deliverBy", UserNotificationEvent::setDeliverBy);
-
+		attributeSetters.put("deliverBy", (BiConsumer<UserNotificationEvent, Long>)UserNotificationEvent::setDeliverBy);
 		attributeGetters.put("delivered", UserNotificationEvent::getDelivered);
-		attributeSetters.put("delivered", UserNotificationEvent::setDelivered);
-
+		attributeSetters.put("delivered", (BiConsumer<UserNotificationEvent, Boolean>)UserNotificationEvent::setDelivered);
 		attributeGetters.put("payload", UserNotificationEvent::getPayload);
-		attributeSetters.put("payload", UserNotificationEvent::setPayload);
-
+		attributeSetters.put("payload", (BiConsumer<UserNotificationEvent, String>)UserNotificationEvent::setPayload);
 		attributeGetters.put("actionRequired", UserNotificationEvent::getActionRequired);
-		attributeSetters.put("actionRequired", UserNotificationEvent::setActionRequired);
-
+		attributeSetters.put("actionRequired", (BiConsumer<UserNotificationEvent, Boolean>)UserNotificationEvent::setActionRequired);
 		attributeGetters.put("archived", UserNotificationEvent::getArchived);
-		attributeSetters.put("archived", UserNotificationEvent::setArchived);
+		attributeSetters.put("archived", (BiConsumer<UserNotificationEvent, Boolean>)UserNotificationEvent::setArchived);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

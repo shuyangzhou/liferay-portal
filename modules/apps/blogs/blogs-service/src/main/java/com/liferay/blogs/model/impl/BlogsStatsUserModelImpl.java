@@ -164,37 +164,29 @@ public class BlogsStatsUserModelImpl extends BaseModelImpl<BlogsStatsUser>
 
 	static {
 		Map<String, Function<BlogsStatsUser, Object>> attributeGetters = new LinkedHashMap<String, Function<BlogsStatsUser, Object>>();
-		Map<String, BiConsumer<BlogsStatsUser, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<BlogsStatsUser, Object>>();
+		Map<String, BiConsumer<BlogsStatsUser, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<BlogsStatsUser, ?>>();
 
 		attributeGetters.put("statsUserId", BlogsStatsUser::getStatsUserId);
-		attributeSetters.put("statsUserId", BlogsStatsUser::setStatsUserId);
-
+		attributeSetters.put("statsUserId", (BiConsumer<BlogsStatsUser, Long>)BlogsStatsUser::setStatsUserId);
 		attributeGetters.put("groupId", BlogsStatsUser::getGroupId);
-		attributeSetters.put("groupId", BlogsStatsUser::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<BlogsStatsUser, Long>)BlogsStatsUser::setGroupId);
 		attributeGetters.put("companyId", BlogsStatsUser::getCompanyId);
-		attributeSetters.put("companyId", BlogsStatsUser::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<BlogsStatsUser, Long>)BlogsStatsUser::setCompanyId);
 		attributeGetters.put("userId", BlogsStatsUser::getUserId);
-		attributeSetters.put("userId", BlogsStatsUser::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<BlogsStatsUser, Long>)BlogsStatsUser::setUserId);
 		attributeGetters.put("entryCount", BlogsStatsUser::getEntryCount);
-		attributeSetters.put("entryCount", BlogsStatsUser::setEntryCount);
-
+		attributeSetters.put("entryCount", (BiConsumer<BlogsStatsUser, Integer>)BlogsStatsUser::setEntryCount);
 		attributeGetters.put("lastPostDate", BlogsStatsUser::getLastPostDate);
-		attributeSetters.put("lastPostDate", BlogsStatsUser::setLastPostDate);
-
+		attributeSetters.put("lastPostDate", (BiConsumer<BlogsStatsUser, Date>)BlogsStatsUser::setLastPostDate);
 		attributeGetters.put("ratingsTotalEntries", BlogsStatsUser::getRatingsTotalEntries);
-		attributeSetters.put("ratingsTotalEntries", BlogsStatsUser::setRatingsTotalEntries);
-
+		attributeSetters.put("ratingsTotalEntries", (BiConsumer<BlogsStatsUser, Integer>)BlogsStatsUser::setRatingsTotalEntries);
 		attributeGetters.put("ratingsTotalScore", BlogsStatsUser::getRatingsTotalScore);
-		attributeSetters.put("ratingsTotalScore", BlogsStatsUser::setRatingsTotalScore);
-
+		attributeSetters.put("ratingsTotalScore", (BiConsumer<BlogsStatsUser, Double>)BlogsStatsUser::setRatingsTotalScore);
 		attributeGetters.put("ratingsAverageScore", BlogsStatsUser::getRatingsAverageScore);
-		attributeSetters.put("ratingsAverageScore", BlogsStatsUser::setRatingsAverageScore);
+		attributeSetters.put("ratingsAverageScore", (BiConsumer<BlogsStatsUser, Double>)BlogsStatsUser::setRatingsAverageScore);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

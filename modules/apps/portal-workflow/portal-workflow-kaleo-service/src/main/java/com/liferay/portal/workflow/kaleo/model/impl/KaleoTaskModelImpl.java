@@ -166,43 +166,33 @@ public class KaleoTaskModelImpl extends BaseModelImpl<KaleoTask>
 
 	static {
 		Map<String, Function<KaleoTask, Object>> attributeGetters = new LinkedHashMap<String, Function<KaleoTask, Object>>();
-		Map<String, BiConsumer<KaleoTask, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<KaleoTask, Object>>();
+		Map<String, BiConsumer<KaleoTask, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<KaleoTask, ?>>();
 
 		attributeGetters.put("kaleoTaskId", KaleoTask::getKaleoTaskId);
-		attributeSetters.put("kaleoTaskId", KaleoTask::setKaleoTaskId);
-
+		attributeSetters.put("kaleoTaskId", (BiConsumer<KaleoTask, Long>)KaleoTask::setKaleoTaskId);
 		attributeGetters.put("groupId", KaleoTask::getGroupId);
-		attributeSetters.put("groupId", KaleoTask::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<KaleoTask, Long>)KaleoTask::setGroupId);
 		attributeGetters.put("companyId", KaleoTask::getCompanyId);
-		attributeSetters.put("companyId", KaleoTask::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<KaleoTask, Long>)KaleoTask::setCompanyId);
 		attributeGetters.put("userId", KaleoTask::getUserId);
-		attributeSetters.put("userId", KaleoTask::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<KaleoTask, Long>)KaleoTask::setUserId);
 		attributeGetters.put("userName", KaleoTask::getUserName);
-		attributeSetters.put("userName", KaleoTask::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<KaleoTask, String>)KaleoTask::setUserName);
 		attributeGetters.put("createDate", KaleoTask::getCreateDate);
-		attributeSetters.put("createDate", KaleoTask::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<KaleoTask, Date>)KaleoTask::setCreateDate);
 		attributeGetters.put("modifiedDate", KaleoTask::getModifiedDate);
-		attributeSetters.put("modifiedDate", KaleoTask::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<KaleoTask, Date>)KaleoTask::setModifiedDate);
 		attributeGetters.put("kaleoDefinitionVersionId", KaleoTask::getKaleoDefinitionVersionId);
-		attributeSetters.put("kaleoDefinitionVersionId", KaleoTask::setKaleoDefinitionVersionId);
-
+		attributeSetters.put("kaleoDefinitionVersionId", (BiConsumer<KaleoTask, Long>)KaleoTask::setKaleoDefinitionVersionId);
 		attributeGetters.put("kaleoNodeId", KaleoTask::getKaleoNodeId);
-		attributeSetters.put("kaleoNodeId", KaleoTask::setKaleoNodeId);
-
+		attributeSetters.put("kaleoNodeId", (BiConsumer<KaleoTask, Long>)KaleoTask::setKaleoNodeId);
 		attributeGetters.put("name", KaleoTask::getName);
-		attributeSetters.put("name", KaleoTask::setName);
-
+		attributeSetters.put("name", (BiConsumer<KaleoTask, String>)KaleoTask::setName);
 		attributeGetters.put("description", KaleoTask::getDescription);
-		attributeSetters.put("description", KaleoTask::setDescription);
+		attributeSetters.put("description", (BiConsumer<KaleoTask, String>)KaleoTask::setDescription);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

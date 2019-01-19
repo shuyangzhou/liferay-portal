@@ -236,49 +236,37 @@ public class MDRRuleGroupInstanceModelImpl extends BaseModelImpl<MDRRuleGroupIns
 
 	static {
 		Map<String, Function<MDRRuleGroupInstance, Object>> attributeGetters = new LinkedHashMap<String, Function<MDRRuleGroupInstance, Object>>();
-		Map<String, BiConsumer<MDRRuleGroupInstance, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<MDRRuleGroupInstance, Object>>();
+		Map<String, BiConsumer<MDRRuleGroupInstance, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<MDRRuleGroupInstance, ?>>();
 
 		attributeGetters.put("uuid", MDRRuleGroupInstance::getUuid);
-		attributeSetters.put("uuid", MDRRuleGroupInstance::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<MDRRuleGroupInstance, String>)MDRRuleGroupInstance::setUuid);
 		attributeGetters.put("ruleGroupInstanceId", MDRRuleGroupInstance::getRuleGroupInstanceId);
-		attributeSetters.put("ruleGroupInstanceId", MDRRuleGroupInstance::setRuleGroupInstanceId);
-
+		attributeSetters.put("ruleGroupInstanceId", (BiConsumer<MDRRuleGroupInstance, Long>)MDRRuleGroupInstance::setRuleGroupInstanceId);
 		attributeGetters.put("groupId", MDRRuleGroupInstance::getGroupId);
-		attributeSetters.put("groupId", MDRRuleGroupInstance::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<MDRRuleGroupInstance, Long>)MDRRuleGroupInstance::setGroupId);
 		attributeGetters.put("companyId", MDRRuleGroupInstance::getCompanyId);
-		attributeSetters.put("companyId", MDRRuleGroupInstance::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<MDRRuleGroupInstance, Long>)MDRRuleGroupInstance::setCompanyId);
 		attributeGetters.put("userId", MDRRuleGroupInstance::getUserId);
-		attributeSetters.put("userId", MDRRuleGroupInstance::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<MDRRuleGroupInstance, Long>)MDRRuleGroupInstance::setUserId);
 		attributeGetters.put("userName", MDRRuleGroupInstance::getUserName);
-		attributeSetters.put("userName", MDRRuleGroupInstance::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<MDRRuleGroupInstance, String>)MDRRuleGroupInstance::setUserName);
 		attributeGetters.put("createDate", MDRRuleGroupInstance::getCreateDate);
-		attributeSetters.put("createDate", MDRRuleGroupInstance::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<MDRRuleGroupInstance, Date>)MDRRuleGroupInstance::setCreateDate);
 		attributeGetters.put("modifiedDate", MDRRuleGroupInstance::getModifiedDate);
-		attributeSetters.put("modifiedDate", MDRRuleGroupInstance::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<MDRRuleGroupInstance, Date>)MDRRuleGroupInstance::setModifiedDate);
 		attributeGetters.put("classNameId", MDRRuleGroupInstance::getClassNameId);
-		attributeSetters.put("classNameId", MDRRuleGroupInstance::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<MDRRuleGroupInstance, Long>)MDRRuleGroupInstance::setClassNameId);
 		attributeGetters.put("classPK", MDRRuleGroupInstance::getClassPK);
-		attributeSetters.put("classPK", MDRRuleGroupInstance::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<MDRRuleGroupInstance, Long>)MDRRuleGroupInstance::setClassPK);
 		attributeGetters.put("ruleGroupId", MDRRuleGroupInstance::getRuleGroupId);
-		attributeSetters.put("ruleGroupId", MDRRuleGroupInstance::setRuleGroupId);
-
+		attributeSetters.put("ruleGroupId", (BiConsumer<MDRRuleGroupInstance, Long>)MDRRuleGroupInstance::setRuleGroupId);
 		attributeGetters.put("priority", MDRRuleGroupInstance::getPriority);
-		attributeSetters.put("priority", MDRRuleGroupInstance::setPriority);
-
+		attributeSetters.put("priority", (BiConsumer<MDRRuleGroupInstance, Integer>)MDRRuleGroupInstance::setPriority);
 		attributeGetters.put("lastPublishDate", MDRRuleGroupInstance::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", MDRRuleGroupInstance::setLastPublishDate);
+		attributeSetters.put("lastPublishDate", (BiConsumer<MDRRuleGroupInstance, Date>)MDRRuleGroupInstance::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

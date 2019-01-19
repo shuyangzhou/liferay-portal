@@ -242,52 +242,39 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 
 	static {
 		Map<String, Function<MDRRule, Object>> attributeGetters = new LinkedHashMap<String, Function<MDRRule, Object>>();
-		Map<String, BiConsumer<MDRRule, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<MDRRule, Object>>();
+		Map<String, BiConsumer<MDRRule, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<MDRRule, ?>>();
 
 		attributeGetters.put("uuid", MDRRule::getUuid);
-		attributeSetters.put("uuid", MDRRule::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<MDRRule, String>)MDRRule::setUuid);
 		attributeGetters.put("ruleId", MDRRule::getRuleId);
-		attributeSetters.put("ruleId", MDRRule::setRuleId);
-
+		attributeSetters.put("ruleId", (BiConsumer<MDRRule, Long>)MDRRule::setRuleId);
 		attributeGetters.put("groupId", MDRRule::getGroupId);
-		attributeSetters.put("groupId", MDRRule::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<MDRRule, Long>)MDRRule::setGroupId);
 		attributeGetters.put("companyId", MDRRule::getCompanyId);
-		attributeSetters.put("companyId", MDRRule::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<MDRRule, Long>)MDRRule::setCompanyId);
 		attributeGetters.put("userId", MDRRule::getUserId);
-		attributeSetters.put("userId", MDRRule::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<MDRRule, Long>)MDRRule::setUserId);
 		attributeGetters.put("userName", MDRRule::getUserName);
-		attributeSetters.put("userName", MDRRule::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<MDRRule, String>)MDRRule::setUserName);
 		attributeGetters.put("createDate", MDRRule::getCreateDate);
-		attributeSetters.put("createDate", MDRRule::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<MDRRule, Date>)MDRRule::setCreateDate);
 		attributeGetters.put("modifiedDate", MDRRule::getModifiedDate);
-		attributeSetters.put("modifiedDate", MDRRule::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<MDRRule, Date>)MDRRule::setModifiedDate);
 		attributeGetters.put("ruleGroupId", MDRRule::getRuleGroupId);
-		attributeSetters.put("ruleGroupId", MDRRule::setRuleGroupId);
-
+		attributeSetters.put("ruleGroupId", (BiConsumer<MDRRule, Long>)MDRRule::setRuleGroupId);
 		attributeGetters.put("name", MDRRule::getName);
-		attributeSetters.put("name", MDRRule::setName);
-
+		attributeSetters.put("name", (BiConsumer<MDRRule, String>)MDRRule::setName);
 		attributeGetters.put("description", MDRRule::getDescription);
-		attributeSetters.put("description", MDRRule::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<MDRRule, String>)MDRRule::setDescription);
 		attributeGetters.put("type", MDRRule::getType);
-		attributeSetters.put("type", MDRRule::setType);
-
+		attributeSetters.put("type", (BiConsumer<MDRRule, String>)MDRRule::setType);
 		attributeGetters.put("typeSettings", MDRRule::getTypeSettings);
-		attributeSetters.put("typeSettings", MDRRule::setTypeSettings);
-
+		attributeSetters.put("typeSettings", (BiConsumer<MDRRule, String>)MDRRule::setTypeSettings);
 		attributeGetters.put("lastPublishDate", MDRRule::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", MDRRule::setLastPublishDate);
+		attributeSetters.put("lastPublishDate", (BiConsumer<MDRRule, Date>)MDRRule::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

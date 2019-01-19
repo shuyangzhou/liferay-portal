@@ -246,59 +246,43 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 	static {
 		Map<String, Function<ExportImportConfiguration, Object>> attributeGetters =
 			new LinkedHashMap<String, Function<ExportImportConfiguration, Object>>();
-		Map<String, BiConsumer<ExportImportConfiguration, Object>> attributeSetters =
-			new LinkedHashMap<String, BiConsumer<ExportImportConfiguration, Object>>();
+		Map<String, BiConsumer<ExportImportConfiguration, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<ExportImportConfiguration, ?>>();
 
 		attributeGetters.put("mvccVersion", ExportImportConfiguration::getMvccVersion);
-		attributeSetters.put("mvccVersion", ExportImportConfiguration::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<ExportImportConfiguration, Long>)ExportImportConfiguration::setMvccVersion);
 		attributeGetters.put("exportImportConfigurationId", ExportImportConfiguration::getExportImportConfigurationId);
-		attributeSetters.put("exportImportConfigurationId", ExportImportConfiguration::setExportImportConfigurationId);
-
+		attributeSetters.put("exportImportConfigurationId", (BiConsumer<ExportImportConfiguration, Long>)ExportImportConfiguration::setExportImportConfigurationId);
 		attributeGetters.put("groupId", ExportImportConfiguration::getGroupId);
-		attributeSetters.put("groupId", ExportImportConfiguration::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<ExportImportConfiguration, Long>)ExportImportConfiguration::setGroupId);
 		attributeGetters.put("companyId", ExportImportConfiguration::getCompanyId);
-		attributeSetters.put("companyId", ExportImportConfiguration::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<ExportImportConfiguration, Long>)ExportImportConfiguration::setCompanyId);
 		attributeGetters.put("userId", ExportImportConfiguration::getUserId);
-		attributeSetters.put("userId", ExportImportConfiguration::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<ExportImportConfiguration, Long>)ExportImportConfiguration::setUserId);
 		attributeGetters.put("userName", ExportImportConfiguration::getUserName);
-		attributeSetters.put("userName", ExportImportConfiguration::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<ExportImportConfiguration, String>)ExportImportConfiguration::setUserName);
 		attributeGetters.put("createDate", ExportImportConfiguration::getCreateDate);
-		attributeSetters.put("createDate", ExportImportConfiguration::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<ExportImportConfiguration, Date>)ExportImportConfiguration::setCreateDate);
 		attributeGetters.put("modifiedDate", ExportImportConfiguration::getModifiedDate);
-		attributeSetters.put("modifiedDate", ExportImportConfiguration::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<ExportImportConfiguration, Date>)ExportImportConfiguration::setModifiedDate);
 		attributeGetters.put("name", ExportImportConfiguration::getName);
-		attributeSetters.put("name", ExportImportConfiguration::setName);
-
+		attributeSetters.put("name", (BiConsumer<ExportImportConfiguration, String>)ExportImportConfiguration::setName);
 		attributeGetters.put("description", ExportImportConfiguration::getDescription);
-		attributeSetters.put("description", ExportImportConfiguration::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<ExportImportConfiguration, String>)ExportImportConfiguration::setDescription);
 		attributeGetters.put("type", ExportImportConfiguration::getType);
-		attributeSetters.put("type", ExportImportConfiguration::setType);
-
+		attributeSetters.put("type", (BiConsumer<ExportImportConfiguration, Integer>)ExportImportConfiguration::setType);
 		attributeGetters.put("settings", ExportImportConfiguration::getSettings);
-		attributeSetters.put("settings", ExportImportConfiguration::setSettings);
-
+		attributeSetters.put("settings", (BiConsumer<ExportImportConfiguration, String>)ExportImportConfiguration::setSettings);
 		attributeGetters.put("status", ExportImportConfiguration::getStatus);
-		attributeSetters.put("status", ExportImportConfiguration::setStatus);
-
+		attributeSetters.put("status", (BiConsumer<ExportImportConfiguration, Integer>)ExportImportConfiguration::setStatus);
 		attributeGetters.put("statusByUserId", ExportImportConfiguration::getStatusByUserId);
-		attributeSetters.put("statusByUserId", ExportImportConfiguration::setStatusByUserId);
-
+		attributeSetters.put("statusByUserId", (BiConsumer<ExportImportConfiguration, Long>)ExportImportConfiguration::setStatusByUserId);
 		attributeGetters.put("statusByUserName", ExportImportConfiguration::getStatusByUserName);
-		attributeSetters.put("statusByUserName", ExportImportConfiguration::setStatusByUserName);
-
+		attributeSetters.put("statusByUserName", (BiConsumer<ExportImportConfiguration, String>)ExportImportConfiguration::setStatusByUserName);
 		attributeGetters.put("statusDate", ExportImportConfiguration::getStatusDate);
-		attributeSetters.put("statusDate", ExportImportConfiguration::setStatusDate);
+		attributeSetters.put("statusDate", (BiConsumer<ExportImportConfiguration, Date>)ExportImportConfiguration::setStatusDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

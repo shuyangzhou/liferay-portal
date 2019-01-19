@@ -154,28 +154,23 @@ public class PasswordPolicyRelModelImpl extends BaseModelImpl<PasswordPolicyRel>
 
 	static {
 		Map<String, Function<PasswordPolicyRel, Object>> attributeGetters = new LinkedHashMap<String, Function<PasswordPolicyRel, Object>>();
-		Map<String, BiConsumer<PasswordPolicyRel, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<PasswordPolicyRel, Object>>();
+		Map<String, BiConsumer<PasswordPolicyRel, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<PasswordPolicyRel, ?>>();
 
 		attributeGetters.put("mvccVersion", PasswordPolicyRel::getMvccVersion);
-		attributeSetters.put("mvccVersion", PasswordPolicyRel::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<PasswordPolicyRel, Long>)PasswordPolicyRel::setMvccVersion);
 		attributeGetters.put("passwordPolicyRelId", PasswordPolicyRel::getPasswordPolicyRelId);
-		attributeSetters.put("passwordPolicyRelId", PasswordPolicyRel::setPasswordPolicyRelId);
-
+		attributeSetters.put("passwordPolicyRelId", (BiConsumer<PasswordPolicyRel, Long>)PasswordPolicyRel::setPasswordPolicyRelId);
 		attributeGetters.put("companyId", PasswordPolicyRel::getCompanyId);
-		attributeSetters.put("companyId", PasswordPolicyRel::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<PasswordPolicyRel, Long>)PasswordPolicyRel::setCompanyId);
 		attributeGetters.put("passwordPolicyId", PasswordPolicyRel::getPasswordPolicyId);
-		attributeSetters.put("passwordPolicyId", PasswordPolicyRel::setPasswordPolicyId);
-
+		attributeSetters.put("passwordPolicyId", (BiConsumer<PasswordPolicyRel, Long>)PasswordPolicyRel::setPasswordPolicyId);
 		attributeGetters.put("classNameId", PasswordPolicyRel::getClassNameId);
-		attributeSetters.put("classNameId", PasswordPolicyRel::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<PasswordPolicyRel, Long>)PasswordPolicyRel::setClassNameId);
 		attributeGetters.put("classPK", PasswordPolicyRel::getClassPK);
-		attributeSetters.put("classPK", PasswordPolicyRel::setClassPK);
+		attributeSetters.put("classPK", (BiConsumer<PasswordPolicyRel, Long>)PasswordPolicyRel::setClassPK);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

@@ -179,55 +179,41 @@ public class SystemEventModelImpl extends BaseModelImpl<SystemEvent>
 
 	static {
 		Map<String, Function<SystemEvent, Object>> attributeGetters = new LinkedHashMap<String, Function<SystemEvent, Object>>();
-		Map<String, BiConsumer<SystemEvent, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SystemEvent, Object>>();
+		Map<String, BiConsumer<SystemEvent, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<SystemEvent, ?>>();
 
 		attributeGetters.put("mvccVersion", SystemEvent::getMvccVersion);
-		attributeSetters.put("mvccVersion", SystemEvent::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<SystemEvent, Long>)SystemEvent::setMvccVersion);
 		attributeGetters.put("systemEventId", SystemEvent::getSystemEventId);
-		attributeSetters.put("systemEventId", SystemEvent::setSystemEventId);
-
+		attributeSetters.put("systemEventId", (BiConsumer<SystemEvent, Long>)SystemEvent::setSystemEventId);
 		attributeGetters.put("groupId", SystemEvent::getGroupId);
-		attributeSetters.put("groupId", SystemEvent::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<SystemEvent, Long>)SystemEvent::setGroupId);
 		attributeGetters.put("companyId", SystemEvent::getCompanyId);
-		attributeSetters.put("companyId", SystemEvent::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<SystemEvent, Long>)SystemEvent::setCompanyId);
 		attributeGetters.put("userId", SystemEvent::getUserId);
-		attributeSetters.put("userId", SystemEvent::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<SystemEvent, Long>)SystemEvent::setUserId);
 		attributeGetters.put("userName", SystemEvent::getUserName);
-		attributeSetters.put("userName", SystemEvent::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<SystemEvent, String>)SystemEvent::setUserName);
 		attributeGetters.put("createDate", SystemEvent::getCreateDate);
-		attributeSetters.put("createDate", SystemEvent::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<SystemEvent, Date>)SystemEvent::setCreateDate);
 		attributeGetters.put("classNameId", SystemEvent::getClassNameId);
-		attributeSetters.put("classNameId", SystemEvent::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<SystemEvent, Long>)SystemEvent::setClassNameId);
 		attributeGetters.put("classPK", SystemEvent::getClassPK);
-		attributeSetters.put("classPK", SystemEvent::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<SystemEvent, Long>)SystemEvent::setClassPK);
 		attributeGetters.put("classUuid", SystemEvent::getClassUuid);
-		attributeSetters.put("classUuid", SystemEvent::setClassUuid);
-
+		attributeSetters.put("classUuid", (BiConsumer<SystemEvent, String>)SystemEvent::setClassUuid);
 		attributeGetters.put("referrerClassNameId", SystemEvent::getReferrerClassNameId);
-		attributeSetters.put("referrerClassNameId", SystemEvent::setReferrerClassNameId);
-
+		attributeSetters.put("referrerClassNameId", (BiConsumer<SystemEvent, Long>)SystemEvent::setReferrerClassNameId);
 		attributeGetters.put("parentSystemEventId", SystemEvent::getParentSystemEventId);
-		attributeSetters.put("parentSystemEventId", SystemEvent::setParentSystemEventId);
-
+		attributeSetters.put("parentSystemEventId", (BiConsumer<SystemEvent, Long>)SystemEvent::setParentSystemEventId);
 		attributeGetters.put("systemEventSetKey", SystemEvent::getSystemEventSetKey);
-		attributeSetters.put("systemEventSetKey", SystemEvent::setSystemEventSetKey);
-
+		attributeSetters.put("systemEventSetKey", (BiConsumer<SystemEvent, Long>)SystemEvent::setSystemEventSetKey);
 		attributeGetters.put("type", SystemEvent::getType);
-		attributeSetters.put("type", SystemEvent::setType);
-
+		attributeSetters.put("type", (BiConsumer<SystemEvent, Integer>)SystemEvent::setType);
 		attributeGetters.put("extraData", SystemEvent::getExtraData);
-		attributeSetters.put("extraData", SystemEvent::setExtraData);
+		attributeSetters.put("extraData", (BiConsumer<SystemEvent, String>)SystemEvent::setExtraData);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

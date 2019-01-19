@@ -231,55 +231,41 @@ public class AuditEventModelImpl extends BaseModelImpl<AuditEvent>
 
 	static {
 		Map<String, Function<AuditEvent, Object>> attributeGetters = new LinkedHashMap<String, Function<AuditEvent, Object>>();
-		Map<String, BiConsumer<AuditEvent, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<AuditEvent, Object>>();
+		Map<String, BiConsumer<AuditEvent, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<AuditEvent, ?>>();
 
 		attributeGetters.put("auditEventId", AuditEvent::getAuditEventId);
-		attributeSetters.put("auditEventId", AuditEvent::setAuditEventId);
-
+		attributeSetters.put("auditEventId", (BiConsumer<AuditEvent, Long>)AuditEvent::setAuditEventId);
 		attributeGetters.put("companyId", AuditEvent::getCompanyId);
-		attributeSetters.put("companyId", AuditEvent::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<AuditEvent, Long>)AuditEvent::setCompanyId);
 		attributeGetters.put("userId", AuditEvent::getUserId);
-		attributeSetters.put("userId", AuditEvent::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<AuditEvent, Long>)AuditEvent::setUserId);
 		attributeGetters.put("userName", AuditEvent::getUserName);
-		attributeSetters.put("userName", AuditEvent::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<AuditEvent, String>)AuditEvent::setUserName);
 		attributeGetters.put("createDate", AuditEvent::getCreateDate);
-		attributeSetters.put("createDate", AuditEvent::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<AuditEvent, Date>)AuditEvent::setCreateDate);
 		attributeGetters.put("eventType", AuditEvent::getEventType);
-		attributeSetters.put("eventType", AuditEvent::setEventType);
-
+		attributeSetters.put("eventType", (BiConsumer<AuditEvent, String>)AuditEvent::setEventType);
 		attributeGetters.put("className", AuditEvent::getClassName);
-		attributeSetters.put("className", AuditEvent::setClassName);
-
+		attributeSetters.put("className", (BiConsumer<AuditEvent, String>)AuditEvent::setClassName);
 		attributeGetters.put("classPK", AuditEvent::getClassPK);
-		attributeSetters.put("classPK", AuditEvent::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<AuditEvent, String>)AuditEvent::setClassPK);
 		attributeGetters.put("message", AuditEvent::getMessage);
-		attributeSetters.put("message", AuditEvent::setMessage);
-
+		attributeSetters.put("message", (BiConsumer<AuditEvent, String>)AuditEvent::setMessage);
 		attributeGetters.put("clientHost", AuditEvent::getClientHost);
-		attributeSetters.put("clientHost", AuditEvent::setClientHost);
-
+		attributeSetters.put("clientHost", (BiConsumer<AuditEvent, String>)AuditEvent::setClientHost);
 		attributeGetters.put("clientIP", AuditEvent::getClientIP);
-		attributeSetters.put("clientIP", AuditEvent::setClientIP);
-
+		attributeSetters.put("clientIP", (BiConsumer<AuditEvent, String>)AuditEvent::setClientIP);
 		attributeGetters.put("serverName", AuditEvent::getServerName);
-		attributeSetters.put("serverName", AuditEvent::setServerName);
-
+		attributeSetters.put("serverName", (BiConsumer<AuditEvent, String>)AuditEvent::setServerName);
 		attributeGetters.put("serverPort", AuditEvent::getServerPort);
-		attributeSetters.put("serverPort", AuditEvent::setServerPort);
-
+		attributeSetters.put("serverPort", (BiConsumer<AuditEvent, Integer>)AuditEvent::setServerPort);
 		attributeGetters.put("sessionID", AuditEvent::getSessionID);
-		attributeSetters.put("sessionID", AuditEvent::setSessionID);
-
+		attributeSetters.put("sessionID", (BiConsumer<AuditEvent, String>)AuditEvent::setSessionID);
 		attributeGetters.put("additionalInfo", AuditEvent::getAdditionalInfo);
-		attributeSetters.put("additionalInfo", AuditEvent::setAdditionalInfo);
+		attributeSetters.put("additionalInfo", (BiConsumer<AuditEvent, String>)AuditEvent::setAdditionalInfo);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

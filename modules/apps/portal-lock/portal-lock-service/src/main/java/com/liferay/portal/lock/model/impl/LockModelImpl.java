@@ -169,46 +169,35 @@ public class LockModelImpl extends BaseModelImpl<Lock> implements LockModel {
 
 	static {
 		Map<String, Function<Lock, Object>> attributeGetters = new LinkedHashMap<String, Function<Lock, Object>>();
-		Map<String, BiConsumer<Lock, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Lock, Object>>();
+		Map<String, BiConsumer<Lock, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Lock, ?>>();
 
 		attributeGetters.put("mvccVersion", Lock::getMvccVersion);
-		attributeSetters.put("mvccVersion", Lock::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<Lock, Long>)Lock::setMvccVersion);
 		attributeGetters.put("uuid", Lock::getUuid);
-		attributeSetters.put("uuid", Lock::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<Lock, String>)Lock::setUuid);
 		attributeGetters.put("lockId", Lock::getLockId);
-		attributeSetters.put("lockId", Lock::setLockId);
-
+		attributeSetters.put("lockId", (BiConsumer<Lock, Long>)Lock::setLockId);
 		attributeGetters.put("companyId", Lock::getCompanyId);
-		attributeSetters.put("companyId", Lock::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<Lock, Long>)Lock::setCompanyId);
 		attributeGetters.put("userId", Lock::getUserId);
-		attributeSetters.put("userId", Lock::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<Lock, Long>)Lock::setUserId);
 		attributeGetters.put("userName", Lock::getUserName);
-		attributeSetters.put("userName", Lock::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<Lock, String>)Lock::setUserName);
 		attributeGetters.put("createDate", Lock::getCreateDate);
-		attributeSetters.put("createDate", Lock::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<Lock, Date>)Lock::setCreateDate);
 		attributeGetters.put("className", Lock::getClassName);
-		attributeSetters.put("className", Lock::setClassName);
-
+		attributeSetters.put("className", (BiConsumer<Lock, String>)Lock::setClassName);
 		attributeGetters.put("key", Lock::getKey);
-		attributeSetters.put("key", Lock::setKey);
-
+		attributeSetters.put("key", (BiConsumer<Lock, String>)Lock::setKey);
 		attributeGetters.put("owner", Lock::getOwner);
-		attributeSetters.put("owner", Lock::setOwner);
-
+		attributeSetters.put("owner", (BiConsumer<Lock, String>)Lock::setOwner);
 		attributeGetters.put("inheritable", Lock::getInheritable);
-		attributeSetters.put("inheritable", Lock::setInheritable);
-
+		attributeSetters.put("inheritable", (BiConsumer<Lock, Boolean>)Lock::setInheritable);
 		attributeGetters.put("expirationDate", Lock::getExpirationDate);
-		attributeSetters.put("expirationDate", Lock::setExpirationDate);
+		attributeSetters.put("expirationDate", (BiConsumer<Lock, Date>)Lock::setExpirationDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

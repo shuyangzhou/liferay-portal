@@ -157,31 +157,25 @@ public class JournalContentSearchModelImpl extends BaseModelImpl<JournalContentS
 
 	static {
 		Map<String, Function<JournalContentSearch, Object>> attributeGetters = new LinkedHashMap<String, Function<JournalContentSearch, Object>>();
-		Map<String, BiConsumer<JournalContentSearch, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<JournalContentSearch, Object>>();
+		Map<String, BiConsumer<JournalContentSearch, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<JournalContentSearch, ?>>();
 
 		attributeGetters.put("contentSearchId", JournalContentSearch::getContentSearchId);
-		attributeSetters.put("contentSearchId", JournalContentSearch::setContentSearchId);
-
+		attributeSetters.put("contentSearchId", (BiConsumer<JournalContentSearch, Long>)JournalContentSearch::setContentSearchId);
 		attributeGetters.put("groupId", JournalContentSearch::getGroupId);
-		attributeSetters.put("groupId", JournalContentSearch::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<JournalContentSearch, Long>)JournalContentSearch::setGroupId);
 		attributeGetters.put("companyId", JournalContentSearch::getCompanyId);
-		attributeSetters.put("companyId", JournalContentSearch::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<JournalContentSearch, Long>)JournalContentSearch::setCompanyId);
 		attributeGetters.put("privateLayout", JournalContentSearch::getPrivateLayout);
-		attributeSetters.put("privateLayout", JournalContentSearch::setPrivateLayout);
-
+		attributeSetters.put("privateLayout", (BiConsumer<JournalContentSearch, Boolean>)JournalContentSearch::setPrivateLayout);
 		attributeGetters.put("layoutId", JournalContentSearch::getLayoutId);
-		attributeSetters.put("layoutId", JournalContentSearch::setLayoutId);
-
+		attributeSetters.put("layoutId", (BiConsumer<JournalContentSearch, Long>)JournalContentSearch::setLayoutId);
 		attributeGetters.put("portletId", JournalContentSearch::getPortletId);
-		attributeSetters.put("portletId", JournalContentSearch::setPortletId);
-
+		attributeSetters.put("portletId", (BiConsumer<JournalContentSearch, String>)JournalContentSearch::setPortletId);
 		attributeGetters.put("articleId", JournalContentSearch::getArticleId);
-		attributeSetters.put("articleId", JournalContentSearch::setArticleId);
+		attributeSetters.put("articleId", (BiConsumer<JournalContentSearch, String>)JournalContentSearch::setArticleId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

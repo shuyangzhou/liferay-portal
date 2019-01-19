@@ -200,28 +200,23 @@ public class PortletModelImpl extends BaseModelImpl<Portlet>
 
 	static {
 		Map<String, Function<Portlet, Object>> attributeGetters = new LinkedHashMap<String, Function<Portlet, Object>>();
-		Map<String, BiConsumer<Portlet, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Portlet, Object>>();
+		Map<String, BiConsumer<Portlet, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Portlet, ?>>();
 
 		attributeGetters.put("mvccVersion", Portlet::getMvccVersion);
-		attributeSetters.put("mvccVersion", Portlet::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<Portlet, Long>)Portlet::setMvccVersion);
 		attributeGetters.put("id", Portlet::getId);
-		attributeSetters.put("id", Portlet::setId);
-
+		attributeSetters.put("id", (BiConsumer<Portlet, Long>)Portlet::setId);
 		attributeGetters.put("companyId", Portlet::getCompanyId);
-		attributeSetters.put("companyId", Portlet::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<Portlet, Long>)Portlet::setCompanyId);
 		attributeGetters.put("portletId", Portlet::getPortletId);
-		attributeSetters.put("portletId", Portlet::setPortletId);
-
+		attributeSetters.put("portletId", (BiConsumer<Portlet, String>)Portlet::setPortletId);
 		attributeGetters.put("roles", Portlet::getRoles);
-		attributeSetters.put("roles", Portlet::setRoles);
-
+		attributeSetters.put("roles", (BiConsumer<Portlet, String>)Portlet::setRoles);
 		attributeGetters.put("active", Portlet::getActive);
-		attributeSetters.put("active", Portlet::setActive);
+		attributeSetters.put("active", (BiConsumer<Portlet, Boolean>)Portlet::setActive);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

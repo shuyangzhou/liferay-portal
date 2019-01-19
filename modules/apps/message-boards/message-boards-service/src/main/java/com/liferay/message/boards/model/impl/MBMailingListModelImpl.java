@@ -202,88 +202,63 @@ public class MBMailingListModelImpl extends BaseModelImpl<MBMailingList>
 
 	static {
 		Map<String, Function<MBMailingList, Object>> attributeGetters = new LinkedHashMap<String, Function<MBMailingList, Object>>();
-		Map<String, BiConsumer<MBMailingList, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<MBMailingList, Object>>();
+		Map<String, BiConsumer<MBMailingList, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<MBMailingList, ?>>();
 
 		attributeGetters.put("uuid", MBMailingList::getUuid);
-		attributeSetters.put("uuid", MBMailingList::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<MBMailingList, String>)MBMailingList::setUuid);
 		attributeGetters.put("mailingListId", MBMailingList::getMailingListId);
-		attributeSetters.put("mailingListId", MBMailingList::setMailingListId);
-
+		attributeSetters.put("mailingListId", (BiConsumer<MBMailingList, Long>)MBMailingList::setMailingListId);
 		attributeGetters.put("groupId", MBMailingList::getGroupId);
-		attributeSetters.put("groupId", MBMailingList::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<MBMailingList, Long>)MBMailingList::setGroupId);
 		attributeGetters.put("companyId", MBMailingList::getCompanyId);
-		attributeSetters.put("companyId", MBMailingList::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<MBMailingList, Long>)MBMailingList::setCompanyId);
 		attributeGetters.put("userId", MBMailingList::getUserId);
-		attributeSetters.put("userId", MBMailingList::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<MBMailingList, Long>)MBMailingList::setUserId);
 		attributeGetters.put("userName", MBMailingList::getUserName);
-		attributeSetters.put("userName", MBMailingList::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<MBMailingList, String>)MBMailingList::setUserName);
 		attributeGetters.put("createDate", MBMailingList::getCreateDate);
-		attributeSetters.put("createDate", MBMailingList::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<MBMailingList, Date>)MBMailingList::setCreateDate);
 		attributeGetters.put("modifiedDate", MBMailingList::getModifiedDate);
-		attributeSetters.put("modifiedDate", MBMailingList::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<MBMailingList, Date>)MBMailingList::setModifiedDate);
 		attributeGetters.put("categoryId", MBMailingList::getCategoryId);
-		attributeSetters.put("categoryId", MBMailingList::setCategoryId);
-
+		attributeSetters.put("categoryId", (BiConsumer<MBMailingList, Long>)MBMailingList::setCategoryId);
 		attributeGetters.put("emailAddress", MBMailingList::getEmailAddress);
-		attributeSetters.put("emailAddress", MBMailingList::setEmailAddress);
-
+		attributeSetters.put("emailAddress", (BiConsumer<MBMailingList, String>)MBMailingList::setEmailAddress);
 		attributeGetters.put("inProtocol", MBMailingList::getInProtocol);
-		attributeSetters.put("inProtocol", MBMailingList::setInProtocol);
-
+		attributeSetters.put("inProtocol", (BiConsumer<MBMailingList, String>)MBMailingList::setInProtocol);
 		attributeGetters.put("inServerName", MBMailingList::getInServerName);
-		attributeSetters.put("inServerName", MBMailingList::setInServerName);
-
+		attributeSetters.put("inServerName", (BiConsumer<MBMailingList, String>)MBMailingList::setInServerName);
 		attributeGetters.put("inServerPort", MBMailingList::getInServerPort);
-		attributeSetters.put("inServerPort", MBMailingList::setInServerPort);
-
+		attributeSetters.put("inServerPort", (BiConsumer<MBMailingList, Integer>)MBMailingList::setInServerPort);
 		attributeGetters.put("inUseSSL", MBMailingList::getInUseSSL);
-		attributeSetters.put("inUseSSL", MBMailingList::setInUseSSL);
-
+		attributeSetters.put("inUseSSL", (BiConsumer<MBMailingList, Boolean>)MBMailingList::setInUseSSL);
 		attributeGetters.put("inUserName", MBMailingList::getInUserName);
-		attributeSetters.put("inUserName", MBMailingList::setInUserName);
-
+		attributeSetters.put("inUserName", (BiConsumer<MBMailingList, String>)MBMailingList::setInUserName);
 		attributeGetters.put("inPassword", MBMailingList::getInPassword);
-		attributeSetters.put("inPassword", MBMailingList::setInPassword);
-
+		attributeSetters.put("inPassword", (BiConsumer<MBMailingList, String>)MBMailingList::setInPassword);
 		attributeGetters.put("inReadInterval", MBMailingList::getInReadInterval);
-		attributeSetters.put("inReadInterval", MBMailingList::setInReadInterval);
-
+		attributeSetters.put("inReadInterval", (BiConsumer<MBMailingList, Integer>)MBMailingList::setInReadInterval);
 		attributeGetters.put("outEmailAddress", MBMailingList::getOutEmailAddress);
-		attributeSetters.put("outEmailAddress", MBMailingList::setOutEmailAddress);
-
+		attributeSetters.put("outEmailAddress", (BiConsumer<MBMailingList, String>)MBMailingList::setOutEmailAddress);
 		attributeGetters.put("outCustom", MBMailingList::getOutCustom);
-		attributeSetters.put("outCustom", MBMailingList::setOutCustom);
-
+		attributeSetters.put("outCustom", (BiConsumer<MBMailingList, Boolean>)MBMailingList::setOutCustom);
 		attributeGetters.put("outServerName", MBMailingList::getOutServerName);
-		attributeSetters.put("outServerName", MBMailingList::setOutServerName);
-
+		attributeSetters.put("outServerName", (BiConsumer<MBMailingList, String>)MBMailingList::setOutServerName);
 		attributeGetters.put("outServerPort", MBMailingList::getOutServerPort);
-		attributeSetters.put("outServerPort", MBMailingList::setOutServerPort);
-
+		attributeSetters.put("outServerPort", (BiConsumer<MBMailingList, Integer>)MBMailingList::setOutServerPort);
 		attributeGetters.put("outUseSSL", MBMailingList::getOutUseSSL);
-		attributeSetters.put("outUseSSL", MBMailingList::setOutUseSSL);
-
+		attributeSetters.put("outUseSSL", (BiConsumer<MBMailingList, Boolean>)MBMailingList::setOutUseSSL);
 		attributeGetters.put("outUserName", MBMailingList::getOutUserName);
-		attributeSetters.put("outUserName", MBMailingList::setOutUserName);
-
+		attributeSetters.put("outUserName", (BiConsumer<MBMailingList, String>)MBMailingList::setOutUserName);
 		attributeGetters.put("outPassword", MBMailingList::getOutPassword);
-		attributeSetters.put("outPassword", MBMailingList::setOutPassword);
-
+		attributeSetters.put("outPassword", (BiConsumer<MBMailingList, String>)MBMailingList::setOutPassword);
 		attributeGetters.put("allowAnonymous", MBMailingList::getAllowAnonymous);
-		attributeSetters.put("allowAnonymous", MBMailingList::setAllowAnonymous);
-
+		attributeSetters.put("allowAnonymous", (BiConsumer<MBMailingList, Boolean>)MBMailingList::setAllowAnonymous);
 		attributeGetters.put("active", MBMailingList::getActive);
-		attributeSetters.put("active", MBMailingList::setActive);
+		attributeSetters.put("active", (BiConsumer<MBMailingList, Boolean>)MBMailingList::setActive);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

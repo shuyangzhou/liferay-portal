@@ -175,52 +175,39 @@ public class OAuthTokenModelImpl extends BaseModelImpl<OAuthToken>
 
 	static {
 		Map<String, Function<OAuthToken, Object>> attributeGetters = new LinkedHashMap<String, Function<OAuthToken, Object>>();
-		Map<String, BiConsumer<OAuthToken, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<OAuthToken, Object>>();
+		Map<String, BiConsumer<OAuthToken, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<OAuthToken, ?>>();
 
 		attributeGetters.put("oAuthTokenId", OAuthToken::getOAuthTokenId);
-		attributeSetters.put("oAuthTokenId", OAuthToken::setOAuthTokenId);
-
+		attributeSetters.put("oAuthTokenId", (BiConsumer<OAuthToken, Long>)OAuthToken::setOAuthTokenId);
 		attributeGetters.put("companyId", OAuthToken::getCompanyId);
-		attributeSetters.put("companyId", OAuthToken::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<OAuthToken, Long>)OAuthToken::setCompanyId);
 		attributeGetters.put("userId", OAuthToken::getUserId);
-		attributeSetters.put("userId", OAuthToken::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<OAuthToken, Long>)OAuthToken::setUserId);
 		attributeGetters.put("userName", OAuthToken::getUserName);
-		attributeSetters.put("userName", OAuthToken::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<OAuthToken, String>)OAuthToken::setUserName);
 		attributeGetters.put("createDate", OAuthToken::getCreateDate);
-		attributeSetters.put("createDate", OAuthToken::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<OAuthToken, Date>)OAuthToken::setCreateDate);
 		attributeGetters.put("modifiedDate", OAuthToken::getModifiedDate);
-		attributeSetters.put("modifiedDate", OAuthToken::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<OAuthToken, Date>)OAuthToken::setModifiedDate);
 		attributeGetters.put("gadgetKey", OAuthToken::getGadgetKey);
-		attributeSetters.put("gadgetKey", OAuthToken::setGadgetKey);
-
+		attributeSetters.put("gadgetKey", (BiConsumer<OAuthToken, String>)OAuthToken::setGadgetKey);
 		attributeGetters.put("serviceName", OAuthToken::getServiceName);
-		attributeSetters.put("serviceName", OAuthToken::setServiceName);
-
+		attributeSetters.put("serviceName", (BiConsumer<OAuthToken, String>)OAuthToken::setServiceName);
 		attributeGetters.put("moduleId", OAuthToken::getModuleId);
-		attributeSetters.put("moduleId", OAuthToken::setModuleId);
-
+		attributeSetters.put("moduleId", (BiConsumer<OAuthToken, Long>)OAuthToken::setModuleId);
 		attributeGetters.put("accessToken", OAuthToken::getAccessToken);
-		attributeSetters.put("accessToken", OAuthToken::setAccessToken);
-
+		attributeSetters.put("accessToken", (BiConsumer<OAuthToken, String>)OAuthToken::setAccessToken);
 		attributeGetters.put("tokenName", OAuthToken::getTokenName);
-		attributeSetters.put("tokenName", OAuthToken::setTokenName);
-
+		attributeSetters.put("tokenName", (BiConsumer<OAuthToken, String>)OAuthToken::setTokenName);
 		attributeGetters.put("tokenSecret", OAuthToken::getTokenSecret);
-		attributeSetters.put("tokenSecret", OAuthToken::setTokenSecret);
-
+		attributeSetters.put("tokenSecret", (BiConsumer<OAuthToken, String>)OAuthToken::setTokenSecret);
 		attributeGetters.put("sessionHandle", OAuthToken::getSessionHandle);
-		attributeSetters.put("sessionHandle", OAuthToken::setSessionHandle);
-
+		attributeSetters.put("sessionHandle", (BiConsumer<OAuthToken, String>)OAuthToken::setSessionHandle);
 		attributeGetters.put("expiration", OAuthToken::getExpiration);
-		attributeSetters.put("expiration", OAuthToken::setExpiration);
+		attributeSetters.put("expiration", (BiConsumer<OAuthToken, Long>)OAuthToken::setExpiration);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

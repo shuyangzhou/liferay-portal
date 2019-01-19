@@ -189,7 +189,7 @@ public class VersionedEntryModelImpl extends BaseModelImpl<VersionedEntry>
 
 	static {
 		Map<String, Function<VersionedEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<VersionedEntry, Object>>();
-		Map<String, BiConsumer<VersionedEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<VersionedEntry, Object>>();
+		Map<String, BiConsumer<VersionedEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<VersionedEntry, ?>>();
 
 		attributeGetters.put(
 			"mvccVersion",
@@ -211,7 +211,6 @@ public class VersionedEntryModelImpl extends BaseModelImpl<VersionedEntry>
 				}
 
 			});
-
 		attributeGetters.put(
 			"headId",
 			new Function<VersionedEntry, Object>() {
@@ -232,7 +231,6 @@ public class VersionedEntryModelImpl extends BaseModelImpl<VersionedEntry>
 				}
 
 			});
-
 		attributeGetters.put(
 			"versionedEntryId",
 			new Function<VersionedEntry, Object>() {
@@ -253,7 +251,6 @@ public class VersionedEntryModelImpl extends BaseModelImpl<VersionedEntry>
 				}
 
 			});
-
 		attributeGetters.put(
 			"groupId",
 			new Function<VersionedEntry, Object>() {
@@ -276,7 +273,7 @@ public class VersionedEntryModelImpl extends BaseModelImpl<VersionedEntry>
 			});
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

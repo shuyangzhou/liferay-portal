@@ -247,58 +247,43 @@ public class MDRActionModelImpl extends BaseModelImpl<MDRAction>
 
 	static {
 		Map<String, Function<MDRAction, Object>> attributeGetters = new LinkedHashMap<String, Function<MDRAction, Object>>();
-		Map<String, BiConsumer<MDRAction, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<MDRAction, Object>>();
+		Map<String, BiConsumer<MDRAction, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<MDRAction, ?>>();
 
 		attributeGetters.put("uuid", MDRAction::getUuid);
-		attributeSetters.put("uuid", MDRAction::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<MDRAction, String>)MDRAction::setUuid);
 		attributeGetters.put("actionId", MDRAction::getActionId);
-		attributeSetters.put("actionId", MDRAction::setActionId);
-
+		attributeSetters.put("actionId", (BiConsumer<MDRAction, Long>)MDRAction::setActionId);
 		attributeGetters.put("groupId", MDRAction::getGroupId);
-		attributeSetters.put("groupId", MDRAction::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<MDRAction, Long>)MDRAction::setGroupId);
 		attributeGetters.put("companyId", MDRAction::getCompanyId);
-		attributeSetters.put("companyId", MDRAction::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<MDRAction, Long>)MDRAction::setCompanyId);
 		attributeGetters.put("userId", MDRAction::getUserId);
-		attributeSetters.put("userId", MDRAction::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<MDRAction, Long>)MDRAction::setUserId);
 		attributeGetters.put("userName", MDRAction::getUserName);
-		attributeSetters.put("userName", MDRAction::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<MDRAction, String>)MDRAction::setUserName);
 		attributeGetters.put("createDate", MDRAction::getCreateDate);
-		attributeSetters.put("createDate", MDRAction::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<MDRAction, Date>)MDRAction::setCreateDate);
 		attributeGetters.put("modifiedDate", MDRAction::getModifiedDate);
-		attributeSetters.put("modifiedDate", MDRAction::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<MDRAction, Date>)MDRAction::setModifiedDate);
 		attributeGetters.put("classNameId", MDRAction::getClassNameId);
-		attributeSetters.put("classNameId", MDRAction::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<MDRAction, Long>)MDRAction::setClassNameId);
 		attributeGetters.put("classPK", MDRAction::getClassPK);
-		attributeSetters.put("classPK", MDRAction::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<MDRAction, Long>)MDRAction::setClassPK);
 		attributeGetters.put("ruleGroupInstanceId", MDRAction::getRuleGroupInstanceId);
-		attributeSetters.put("ruleGroupInstanceId", MDRAction::setRuleGroupInstanceId);
-
+		attributeSetters.put("ruleGroupInstanceId", (BiConsumer<MDRAction, Long>)MDRAction::setRuleGroupInstanceId);
 		attributeGetters.put("name", MDRAction::getName);
-		attributeSetters.put("name", MDRAction::setName);
-
+		attributeSetters.put("name", (BiConsumer<MDRAction, String>)MDRAction::setName);
 		attributeGetters.put("description", MDRAction::getDescription);
-		attributeSetters.put("description", MDRAction::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<MDRAction, String>)MDRAction::setDescription);
 		attributeGetters.put("type", MDRAction::getType);
-		attributeSetters.put("type", MDRAction::setType);
-
+		attributeSetters.put("type", (BiConsumer<MDRAction, String>)MDRAction::setType);
 		attributeGetters.put("typeSettings", MDRAction::getTypeSettings);
-		attributeSetters.put("typeSettings", MDRAction::setTypeSettings);
-
+		attributeSetters.put("typeSettings", (BiConsumer<MDRAction, String>)MDRAction::setTypeSettings);
 		attributeGetters.put("lastPublishDate", MDRAction::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", MDRAction::setLastPublishDate);
+		attributeSetters.put("lastPublishDate", (BiConsumer<MDRAction, Date>)MDRAction::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

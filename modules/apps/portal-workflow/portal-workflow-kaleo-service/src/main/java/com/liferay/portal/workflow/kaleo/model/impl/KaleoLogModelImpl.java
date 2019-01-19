@@ -209,100 +209,71 @@ public class KaleoLogModelImpl extends BaseModelImpl<KaleoLog>
 
 	static {
 		Map<String, Function<KaleoLog, Object>> attributeGetters = new LinkedHashMap<String, Function<KaleoLog, Object>>();
-		Map<String, BiConsumer<KaleoLog, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<KaleoLog, Object>>();
+		Map<String, BiConsumer<KaleoLog, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<KaleoLog, ?>>();
 
 		attributeGetters.put("kaleoLogId", KaleoLog::getKaleoLogId);
-		attributeSetters.put("kaleoLogId", KaleoLog::setKaleoLogId);
-
+		attributeSetters.put("kaleoLogId", (BiConsumer<KaleoLog, Long>)KaleoLog::setKaleoLogId);
 		attributeGetters.put("groupId", KaleoLog::getGroupId);
-		attributeSetters.put("groupId", KaleoLog::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<KaleoLog, Long>)KaleoLog::setGroupId);
 		attributeGetters.put("companyId", KaleoLog::getCompanyId);
-		attributeSetters.put("companyId", KaleoLog::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<KaleoLog, Long>)KaleoLog::setCompanyId);
 		attributeGetters.put("userId", KaleoLog::getUserId);
-		attributeSetters.put("userId", KaleoLog::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<KaleoLog, Long>)KaleoLog::setUserId);
 		attributeGetters.put("userName", KaleoLog::getUserName);
-		attributeSetters.put("userName", KaleoLog::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<KaleoLog, String>)KaleoLog::setUserName);
 		attributeGetters.put("createDate", KaleoLog::getCreateDate);
-		attributeSetters.put("createDate", KaleoLog::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<KaleoLog, Date>)KaleoLog::setCreateDate);
 		attributeGetters.put("modifiedDate", KaleoLog::getModifiedDate);
-		attributeSetters.put("modifiedDate", KaleoLog::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<KaleoLog, Date>)KaleoLog::setModifiedDate);
 		attributeGetters.put("kaleoClassName", KaleoLog::getKaleoClassName);
-		attributeSetters.put("kaleoClassName", KaleoLog::setKaleoClassName);
-
+		attributeSetters.put("kaleoClassName", (BiConsumer<KaleoLog, String>)KaleoLog::setKaleoClassName);
 		attributeGetters.put("kaleoClassPK", KaleoLog::getKaleoClassPK);
-		attributeSetters.put("kaleoClassPK", KaleoLog::setKaleoClassPK);
-
+		attributeSetters.put("kaleoClassPK", (BiConsumer<KaleoLog, Long>)KaleoLog::setKaleoClassPK);
 		attributeGetters.put("kaleoDefinitionVersionId", KaleoLog::getKaleoDefinitionVersionId);
-		attributeSetters.put("kaleoDefinitionVersionId", KaleoLog::setKaleoDefinitionVersionId);
-
+		attributeSetters.put("kaleoDefinitionVersionId", (BiConsumer<KaleoLog, Long>)KaleoLog::setKaleoDefinitionVersionId);
 		attributeGetters.put("kaleoInstanceId", KaleoLog::getKaleoInstanceId);
-		attributeSetters.put("kaleoInstanceId", KaleoLog::setKaleoInstanceId);
-
+		attributeSetters.put("kaleoInstanceId", (BiConsumer<KaleoLog, Long>)KaleoLog::setKaleoInstanceId);
 		attributeGetters.put("kaleoInstanceTokenId", KaleoLog::getKaleoInstanceTokenId);
-		attributeSetters.put("kaleoInstanceTokenId", KaleoLog::setKaleoInstanceTokenId);
-
+		attributeSetters.put("kaleoInstanceTokenId", (BiConsumer<KaleoLog, Long>)KaleoLog::setKaleoInstanceTokenId);
 		attributeGetters.put("kaleoTaskInstanceTokenId", KaleoLog::getKaleoTaskInstanceTokenId);
-		attributeSetters.put("kaleoTaskInstanceTokenId", KaleoLog::setKaleoTaskInstanceTokenId);
-
+		attributeSetters.put("kaleoTaskInstanceTokenId", (BiConsumer<KaleoLog, Long>)KaleoLog::setKaleoTaskInstanceTokenId);
 		attributeGetters.put("kaleoNodeName", KaleoLog::getKaleoNodeName);
-		attributeSetters.put("kaleoNodeName", KaleoLog::setKaleoNodeName);
-
+		attributeSetters.put("kaleoNodeName", (BiConsumer<KaleoLog, String>)KaleoLog::setKaleoNodeName);
 		attributeGetters.put("terminalKaleoNode", KaleoLog::getTerminalKaleoNode);
-		attributeSetters.put("terminalKaleoNode", KaleoLog::setTerminalKaleoNode);
-
+		attributeSetters.put("terminalKaleoNode", (BiConsumer<KaleoLog, Boolean>)KaleoLog::setTerminalKaleoNode);
 		attributeGetters.put("kaleoActionId", KaleoLog::getKaleoActionId);
-		attributeSetters.put("kaleoActionId", KaleoLog::setKaleoActionId);
-
+		attributeSetters.put("kaleoActionId", (BiConsumer<KaleoLog, Long>)KaleoLog::setKaleoActionId);
 		attributeGetters.put("kaleoActionName", KaleoLog::getKaleoActionName);
-		attributeSetters.put("kaleoActionName", KaleoLog::setKaleoActionName);
-
+		attributeSetters.put("kaleoActionName", (BiConsumer<KaleoLog, String>)KaleoLog::setKaleoActionName);
 		attributeGetters.put("kaleoActionDescription", KaleoLog::getKaleoActionDescription);
-		attributeSetters.put("kaleoActionDescription", KaleoLog::setKaleoActionDescription);
-
+		attributeSetters.put("kaleoActionDescription", (BiConsumer<KaleoLog, String>)KaleoLog::setKaleoActionDescription);
 		attributeGetters.put("previousKaleoNodeId", KaleoLog::getPreviousKaleoNodeId);
-		attributeSetters.put("previousKaleoNodeId", KaleoLog::setPreviousKaleoNodeId);
-
+		attributeSetters.put("previousKaleoNodeId", (BiConsumer<KaleoLog, Long>)KaleoLog::setPreviousKaleoNodeId);
 		attributeGetters.put("previousKaleoNodeName", KaleoLog::getPreviousKaleoNodeName);
-		attributeSetters.put("previousKaleoNodeName", KaleoLog::setPreviousKaleoNodeName);
-
+		attributeSetters.put("previousKaleoNodeName", (BiConsumer<KaleoLog, String>)KaleoLog::setPreviousKaleoNodeName);
 		attributeGetters.put("previousAssigneeClassName", KaleoLog::getPreviousAssigneeClassName);
-		attributeSetters.put("previousAssigneeClassName", KaleoLog::setPreviousAssigneeClassName);
-
+		attributeSetters.put("previousAssigneeClassName", (BiConsumer<KaleoLog, String>)KaleoLog::setPreviousAssigneeClassName);
 		attributeGetters.put("previousAssigneeClassPK", KaleoLog::getPreviousAssigneeClassPK);
-		attributeSetters.put("previousAssigneeClassPK", KaleoLog::setPreviousAssigneeClassPK);
-
+		attributeSetters.put("previousAssigneeClassPK", (BiConsumer<KaleoLog, Long>)KaleoLog::setPreviousAssigneeClassPK);
 		attributeGetters.put("currentAssigneeClassName", KaleoLog::getCurrentAssigneeClassName);
-		attributeSetters.put("currentAssigneeClassName", KaleoLog::setCurrentAssigneeClassName);
-
+		attributeSetters.put("currentAssigneeClassName", (BiConsumer<KaleoLog, String>)KaleoLog::setCurrentAssigneeClassName);
 		attributeGetters.put("currentAssigneeClassPK", KaleoLog::getCurrentAssigneeClassPK);
-		attributeSetters.put("currentAssigneeClassPK", KaleoLog::setCurrentAssigneeClassPK);
-
+		attributeSetters.put("currentAssigneeClassPK", (BiConsumer<KaleoLog, Long>)KaleoLog::setCurrentAssigneeClassPK);
 		attributeGetters.put("type", KaleoLog::getType);
-		attributeSetters.put("type", KaleoLog::setType);
-
+		attributeSetters.put("type", (BiConsumer<KaleoLog, String>)KaleoLog::setType);
 		attributeGetters.put("comment", KaleoLog::getComment);
-		attributeSetters.put("comment", KaleoLog::setComment);
-
+		attributeSetters.put("comment", (BiConsumer<KaleoLog, String>)KaleoLog::setComment);
 		attributeGetters.put("startDate", KaleoLog::getStartDate);
-		attributeSetters.put("startDate", KaleoLog::setStartDate);
-
+		attributeSetters.put("startDate", (BiConsumer<KaleoLog, Date>)KaleoLog::setStartDate);
 		attributeGetters.put("endDate", KaleoLog::getEndDate);
-		attributeSetters.put("endDate", KaleoLog::setEndDate);
-
+		attributeSetters.put("endDate", (BiConsumer<KaleoLog, Date>)KaleoLog::setEndDate);
 		attributeGetters.put("duration", KaleoLog::getDuration);
-		attributeSetters.put("duration", KaleoLog::setDuration);
-
+		attributeSetters.put("duration", (BiConsumer<KaleoLog, Long>)KaleoLog::setDuration);
 		attributeGetters.put("workflowContext", KaleoLog::getWorkflowContext);
-		attributeSetters.put("workflowContext", KaleoLog::setWorkflowContext);
+		attributeSetters.put("workflowContext", (BiConsumer<KaleoLog, String>)KaleoLog::setWorkflowContext);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

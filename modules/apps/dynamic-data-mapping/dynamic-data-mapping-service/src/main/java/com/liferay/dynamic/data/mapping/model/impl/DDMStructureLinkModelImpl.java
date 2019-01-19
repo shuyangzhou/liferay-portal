@@ -153,25 +153,21 @@ public class DDMStructureLinkModelImpl extends BaseModelImpl<DDMStructureLink>
 
 	static {
 		Map<String, Function<DDMStructureLink, Object>> attributeGetters = new LinkedHashMap<String, Function<DDMStructureLink, Object>>();
-		Map<String, BiConsumer<DDMStructureLink, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDMStructureLink, Object>>();
+		Map<String, BiConsumer<DDMStructureLink, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDMStructureLink, ?>>();
 
 		attributeGetters.put("structureLinkId", DDMStructureLink::getStructureLinkId);
-		attributeSetters.put("structureLinkId", DDMStructureLink::setStructureLinkId);
-
+		attributeSetters.put("structureLinkId", (BiConsumer<DDMStructureLink, Long>)DDMStructureLink::setStructureLinkId);
 		attributeGetters.put("companyId", DDMStructureLink::getCompanyId);
-		attributeSetters.put("companyId", DDMStructureLink::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<DDMStructureLink, Long>)DDMStructureLink::setCompanyId);
 		attributeGetters.put("classNameId", DDMStructureLink::getClassNameId);
-		attributeSetters.put("classNameId", DDMStructureLink::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<DDMStructureLink, Long>)DDMStructureLink::setClassNameId);
 		attributeGetters.put("classPK", DDMStructureLink::getClassPK);
-		attributeSetters.put("classPK", DDMStructureLink::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<DDMStructureLink, Long>)DDMStructureLink::setClassPK);
 		attributeGetters.put("structureId", DDMStructureLink::getStructureId);
-		attributeSetters.put("structureId", DDMStructureLink::setStructureId);
+		attributeSetters.put("structureId", (BiConsumer<DDMStructureLink, Long>)DDMStructureLink::setStructureId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

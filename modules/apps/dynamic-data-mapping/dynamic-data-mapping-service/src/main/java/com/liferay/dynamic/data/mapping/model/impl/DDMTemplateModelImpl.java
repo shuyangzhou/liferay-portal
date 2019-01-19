@@ -283,88 +283,63 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 
 	static {
 		Map<String, Function<DDMTemplate, Object>> attributeGetters = new LinkedHashMap<String, Function<DDMTemplate, Object>>();
-		Map<String, BiConsumer<DDMTemplate, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDMTemplate, Object>>();
+		Map<String, BiConsumer<DDMTemplate, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DDMTemplate, ?>>();
 
 		attributeGetters.put("uuid", DDMTemplate::getUuid);
-		attributeSetters.put("uuid", DDMTemplate::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<DDMTemplate, String>)DDMTemplate::setUuid);
 		attributeGetters.put("templateId", DDMTemplate::getTemplateId);
-		attributeSetters.put("templateId", DDMTemplate::setTemplateId);
-
+		attributeSetters.put("templateId", (BiConsumer<DDMTemplate, Long>)DDMTemplate::setTemplateId);
 		attributeGetters.put("groupId", DDMTemplate::getGroupId);
-		attributeSetters.put("groupId", DDMTemplate::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<DDMTemplate, Long>)DDMTemplate::setGroupId);
 		attributeGetters.put("companyId", DDMTemplate::getCompanyId);
-		attributeSetters.put("companyId", DDMTemplate::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<DDMTemplate, Long>)DDMTemplate::setCompanyId);
 		attributeGetters.put("userId", DDMTemplate::getUserId);
-		attributeSetters.put("userId", DDMTemplate::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<DDMTemplate, Long>)DDMTemplate::setUserId);
 		attributeGetters.put("userName", DDMTemplate::getUserName);
-		attributeSetters.put("userName", DDMTemplate::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<DDMTemplate, String>)DDMTemplate::setUserName);
 		attributeGetters.put("versionUserId", DDMTemplate::getVersionUserId);
-		attributeSetters.put("versionUserId", DDMTemplate::setVersionUserId);
-
+		attributeSetters.put("versionUserId", (BiConsumer<DDMTemplate, Long>)DDMTemplate::setVersionUserId);
 		attributeGetters.put("versionUserName", DDMTemplate::getVersionUserName);
-		attributeSetters.put("versionUserName", DDMTemplate::setVersionUserName);
-
+		attributeSetters.put("versionUserName", (BiConsumer<DDMTemplate, String>)DDMTemplate::setVersionUserName);
 		attributeGetters.put("createDate", DDMTemplate::getCreateDate);
-		attributeSetters.put("createDate", DDMTemplate::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<DDMTemplate, Date>)DDMTemplate::setCreateDate);
 		attributeGetters.put("modifiedDate", DDMTemplate::getModifiedDate);
-		attributeSetters.put("modifiedDate", DDMTemplate::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<DDMTemplate, Date>)DDMTemplate::setModifiedDate);
 		attributeGetters.put("classNameId", DDMTemplate::getClassNameId);
-		attributeSetters.put("classNameId", DDMTemplate::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<DDMTemplate, Long>)DDMTemplate::setClassNameId);
 		attributeGetters.put("classPK", DDMTemplate::getClassPK);
-		attributeSetters.put("classPK", DDMTemplate::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<DDMTemplate, Long>)DDMTemplate::setClassPK);
 		attributeGetters.put("resourceClassNameId", DDMTemplate::getResourceClassNameId);
-		attributeSetters.put("resourceClassNameId", DDMTemplate::setResourceClassNameId);
-
+		attributeSetters.put("resourceClassNameId", (BiConsumer<DDMTemplate, Long>)DDMTemplate::setResourceClassNameId);
 		attributeGetters.put("templateKey", DDMTemplate::getTemplateKey);
-		attributeSetters.put("templateKey", DDMTemplate::setTemplateKey);
-
+		attributeSetters.put("templateKey", (BiConsumer<DDMTemplate, String>)DDMTemplate::setTemplateKey);
 		attributeGetters.put("version", DDMTemplate::getVersion);
-		attributeSetters.put("version", DDMTemplate::setVersion);
-
+		attributeSetters.put("version", (BiConsumer<DDMTemplate, String>)DDMTemplate::setVersion);
 		attributeGetters.put("name", DDMTemplate::getName);
-		attributeSetters.put("name", DDMTemplate::setName);
-
+		attributeSetters.put("name", (BiConsumer<DDMTemplate, String>)DDMTemplate::setName);
 		attributeGetters.put("description", DDMTemplate::getDescription);
-		attributeSetters.put("description", DDMTemplate::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<DDMTemplate, String>)DDMTemplate::setDescription);
 		attributeGetters.put("type", DDMTemplate::getType);
-		attributeSetters.put("type", DDMTemplate::setType);
-
+		attributeSetters.put("type", (BiConsumer<DDMTemplate, String>)DDMTemplate::setType);
 		attributeGetters.put("mode", DDMTemplate::getMode);
-		attributeSetters.put("mode", DDMTemplate::setMode);
-
+		attributeSetters.put("mode", (BiConsumer<DDMTemplate, String>)DDMTemplate::setMode);
 		attributeGetters.put("language", DDMTemplate::getLanguage);
-		attributeSetters.put("language", DDMTemplate::setLanguage);
-
+		attributeSetters.put("language", (BiConsumer<DDMTemplate, String>)DDMTemplate::setLanguage);
 		attributeGetters.put("script", DDMTemplate::getScript);
-		attributeSetters.put("script", DDMTemplate::setScript);
-
+		attributeSetters.put("script", (BiConsumer<DDMTemplate, String>)DDMTemplate::setScript);
 		attributeGetters.put("cacheable", DDMTemplate::getCacheable);
-		attributeSetters.put("cacheable", DDMTemplate::setCacheable);
-
+		attributeSetters.put("cacheable", (BiConsumer<DDMTemplate, Boolean>)DDMTemplate::setCacheable);
 		attributeGetters.put("smallImage", DDMTemplate::getSmallImage);
-		attributeSetters.put("smallImage", DDMTemplate::setSmallImage);
-
+		attributeSetters.put("smallImage", (BiConsumer<DDMTemplate, Boolean>)DDMTemplate::setSmallImage);
 		attributeGetters.put("smallImageId", DDMTemplate::getSmallImageId);
-		attributeSetters.put("smallImageId", DDMTemplate::setSmallImageId);
-
+		attributeSetters.put("smallImageId", (BiConsumer<DDMTemplate, Long>)DDMTemplate::setSmallImageId);
 		attributeGetters.put("smallImageURL", DDMTemplate::getSmallImageURL);
-		attributeSetters.put("smallImageURL", DDMTemplate::setSmallImageURL);
-
+		attributeSetters.put("smallImageURL", (BiConsumer<DDMTemplate, String>)DDMTemplate::setSmallImageURL);
 		attributeGetters.put("lastPublishDate", DDMTemplate::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", DDMTemplate::setLastPublishDate);
+		attributeSetters.put("lastPublishDate", (BiConsumer<DDMTemplate, Date>)DDMTemplate::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

@@ -208,34 +208,27 @@ public class ExpandoValueModelImpl extends BaseModelImpl<ExpandoValue>
 
 	static {
 		Map<String, Function<ExpandoValue, Object>> attributeGetters = new LinkedHashMap<String, Function<ExpandoValue, Object>>();
-		Map<String, BiConsumer<ExpandoValue, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<ExpandoValue, Object>>();
+		Map<String, BiConsumer<ExpandoValue, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<ExpandoValue, ?>>();
 
 		attributeGetters.put("valueId", ExpandoValue::getValueId);
-		attributeSetters.put("valueId", ExpandoValue::setValueId);
-
+		attributeSetters.put("valueId", (BiConsumer<ExpandoValue, Long>)ExpandoValue::setValueId);
 		attributeGetters.put("companyId", ExpandoValue::getCompanyId);
-		attributeSetters.put("companyId", ExpandoValue::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<ExpandoValue, Long>)ExpandoValue::setCompanyId);
 		attributeGetters.put("tableId", ExpandoValue::getTableId);
-		attributeSetters.put("tableId", ExpandoValue::setTableId);
-
+		attributeSetters.put("tableId", (BiConsumer<ExpandoValue, Long>)ExpandoValue::setTableId);
 		attributeGetters.put("columnId", ExpandoValue::getColumnId);
-		attributeSetters.put("columnId", ExpandoValue::setColumnId);
-
+		attributeSetters.put("columnId", (BiConsumer<ExpandoValue, Long>)ExpandoValue::setColumnId);
 		attributeGetters.put("rowId", ExpandoValue::getRowId);
-		attributeSetters.put("rowId", ExpandoValue::setRowId);
-
+		attributeSetters.put("rowId", (BiConsumer<ExpandoValue, Long>)ExpandoValue::setRowId);
 		attributeGetters.put("classNameId", ExpandoValue::getClassNameId);
-		attributeSetters.put("classNameId", ExpandoValue::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<ExpandoValue, Long>)ExpandoValue::setClassNameId);
 		attributeGetters.put("classPK", ExpandoValue::getClassPK);
-		attributeSetters.put("classPK", ExpandoValue::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<ExpandoValue, Long>)ExpandoValue::setClassPK);
 		attributeGetters.put("data", ExpandoValue::getData);
-		attributeSetters.put("data", ExpandoValue::setData);
+		attributeSetters.put("data", (BiConsumer<ExpandoValue, String>)ExpandoValue::setData);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

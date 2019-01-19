@@ -225,43 +225,33 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 
 	static {
 		Map<String, Function<TrashEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<TrashEntry, Object>>();
-		Map<String, BiConsumer<TrashEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<TrashEntry, Object>>();
+		Map<String, BiConsumer<TrashEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<TrashEntry, ?>>();
 
 		attributeGetters.put("entryId", TrashEntry::getEntryId);
-		attributeSetters.put("entryId", TrashEntry::setEntryId);
-
+		attributeSetters.put("entryId", (BiConsumer<TrashEntry, Long>)TrashEntry::setEntryId);
 		attributeGetters.put("groupId", TrashEntry::getGroupId);
-		attributeSetters.put("groupId", TrashEntry::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<TrashEntry, Long>)TrashEntry::setGroupId);
 		attributeGetters.put("companyId", TrashEntry::getCompanyId);
-		attributeSetters.put("companyId", TrashEntry::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<TrashEntry, Long>)TrashEntry::setCompanyId);
 		attributeGetters.put("userId", TrashEntry::getUserId);
-		attributeSetters.put("userId", TrashEntry::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<TrashEntry, Long>)TrashEntry::setUserId);
 		attributeGetters.put("userName", TrashEntry::getUserName);
-		attributeSetters.put("userName", TrashEntry::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<TrashEntry, String>)TrashEntry::setUserName);
 		attributeGetters.put("createDate", TrashEntry::getCreateDate);
-		attributeSetters.put("createDate", TrashEntry::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<TrashEntry, Date>)TrashEntry::setCreateDate);
 		attributeGetters.put("classNameId", TrashEntry::getClassNameId);
-		attributeSetters.put("classNameId", TrashEntry::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<TrashEntry, Long>)TrashEntry::setClassNameId);
 		attributeGetters.put("classPK", TrashEntry::getClassPK);
-		attributeSetters.put("classPK", TrashEntry::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<TrashEntry, Long>)TrashEntry::setClassPK);
 		attributeGetters.put("systemEventSetKey", TrashEntry::getSystemEventSetKey);
-		attributeSetters.put("systemEventSetKey", TrashEntry::setSystemEventSetKey);
-
+		attributeSetters.put("systemEventSetKey", (BiConsumer<TrashEntry, Long>)TrashEntry::setSystemEventSetKey);
 		attributeGetters.put("typeSettings", TrashEntry::getTypeSettings);
-		attributeSetters.put("typeSettings", TrashEntry::setTypeSettings);
-
+		attributeSetters.put("typeSettings", (BiConsumer<TrashEntry, String>)TrashEntry::setTypeSettings);
 		attributeGetters.put("status", TrashEntry::getStatus);
-		attributeSetters.put("status", TrashEntry::setStatus);
+		attributeSetters.put("status", (BiConsumer<TrashEntry, Integer>)TrashEntry::setStatus);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

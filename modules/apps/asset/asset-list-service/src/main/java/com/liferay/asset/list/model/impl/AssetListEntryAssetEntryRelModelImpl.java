@@ -174,47 +174,36 @@ public class AssetListEntryAssetEntryRelModelImpl extends BaseModelImpl<AssetLis
 	static {
 		Map<String, Function<AssetListEntryAssetEntryRel, Object>> attributeGetters =
 			new LinkedHashMap<String, Function<AssetListEntryAssetEntryRel, Object>>();
-		Map<String, BiConsumer<AssetListEntryAssetEntryRel, Object>> attributeSetters =
-			new LinkedHashMap<String, BiConsumer<AssetListEntryAssetEntryRel, Object>>();
+		Map<String, BiConsumer<AssetListEntryAssetEntryRel, ?>> attributeSetters =
+			new LinkedHashMap<String, BiConsumer<AssetListEntryAssetEntryRel, ?>>();
 
 		attributeGetters.put("uuid", AssetListEntryAssetEntryRel::getUuid);
-		attributeSetters.put("uuid", AssetListEntryAssetEntryRel::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<AssetListEntryAssetEntryRel, String>)AssetListEntryAssetEntryRel::setUuid);
 		attributeGetters.put("assetListEntryAssetEntryRelId", AssetListEntryAssetEntryRel::getAssetListEntryAssetEntryRelId);
-		attributeSetters.put("assetListEntryAssetEntryRelId", AssetListEntryAssetEntryRel::setAssetListEntryAssetEntryRelId);
-
+		attributeSetters.put("assetListEntryAssetEntryRelId", (BiConsumer<AssetListEntryAssetEntryRel, Long>)AssetListEntryAssetEntryRel::setAssetListEntryAssetEntryRelId);
 		attributeGetters.put("groupId", AssetListEntryAssetEntryRel::getGroupId);
-		attributeSetters.put("groupId", AssetListEntryAssetEntryRel::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<AssetListEntryAssetEntryRel, Long>)AssetListEntryAssetEntryRel::setGroupId);
 		attributeGetters.put("companyId", AssetListEntryAssetEntryRel::getCompanyId);
-		attributeSetters.put("companyId", AssetListEntryAssetEntryRel::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<AssetListEntryAssetEntryRel, Long>)AssetListEntryAssetEntryRel::setCompanyId);
 		attributeGetters.put("userId", AssetListEntryAssetEntryRel::getUserId);
-		attributeSetters.put("userId", AssetListEntryAssetEntryRel::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<AssetListEntryAssetEntryRel, Long>)AssetListEntryAssetEntryRel::setUserId);
 		attributeGetters.put("userName", AssetListEntryAssetEntryRel::getUserName);
-		attributeSetters.put("userName", AssetListEntryAssetEntryRel::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<AssetListEntryAssetEntryRel, String>)AssetListEntryAssetEntryRel::setUserName);
 		attributeGetters.put("createDate", AssetListEntryAssetEntryRel::getCreateDate);
-		attributeSetters.put("createDate", AssetListEntryAssetEntryRel::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<AssetListEntryAssetEntryRel, Date>)AssetListEntryAssetEntryRel::setCreateDate);
 		attributeGetters.put("modifiedDate", AssetListEntryAssetEntryRel::getModifiedDate);
-		attributeSetters.put("modifiedDate", AssetListEntryAssetEntryRel::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<AssetListEntryAssetEntryRel, Date>)AssetListEntryAssetEntryRel::setModifiedDate);
 		attributeGetters.put("assetListEntryId", AssetListEntryAssetEntryRel::getAssetListEntryId);
-		attributeSetters.put("assetListEntryId", AssetListEntryAssetEntryRel::setAssetListEntryId);
-
+		attributeSetters.put("assetListEntryId", (BiConsumer<AssetListEntryAssetEntryRel, Long>)AssetListEntryAssetEntryRel::setAssetListEntryId);
 		attributeGetters.put("assetEntryId", AssetListEntryAssetEntryRel::getAssetEntryId);
-		attributeSetters.put("assetEntryId", AssetListEntryAssetEntryRel::setAssetEntryId);
-
+		attributeSetters.put("assetEntryId", (BiConsumer<AssetListEntryAssetEntryRel, Long>)AssetListEntryAssetEntryRel::setAssetEntryId);
 		attributeGetters.put("position", AssetListEntryAssetEntryRel::getPosition);
-		attributeSetters.put("position", AssetListEntryAssetEntryRel::setPosition);
-
+		attributeSetters.put("position", (BiConsumer<AssetListEntryAssetEntryRel, Integer>)AssetListEntryAssetEntryRel::setPosition);
 		attributeGetters.put("lastPublishDate", AssetListEntryAssetEntryRel::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", AssetListEntryAssetEntryRel::setLastPublishDate);
+		attributeSetters.put("lastPublishDate", (BiConsumer<AssetListEntryAssetEntryRel, Date>)AssetListEntryAssetEntryRel::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

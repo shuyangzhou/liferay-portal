@@ -284,79 +284,57 @@ public class DLFolderModelImpl extends BaseModelImpl<DLFolder>
 
 	static {
 		Map<String, Function<DLFolder, Object>> attributeGetters = new LinkedHashMap<String, Function<DLFolder, Object>>();
-		Map<String, BiConsumer<DLFolder, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<DLFolder, Object>>();
+		Map<String, BiConsumer<DLFolder, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DLFolder, ?>>();
 
 		attributeGetters.put("uuid", DLFolder::getUuid);
-		attributeSetters.put("uuid", DLFolder::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<DLFolder, String>)DLFolder::setUuid);
 		attributeGetters.put("folderId", DLFolder::getFolderId);
-		attributeSetters.put("folderId", DLFolder::setFolderId);
-
+		attributeSetters.put("folderId", (BiConsumer<DLFolder, Long>)DLFolder::setFolderId);
 		attributeGetters.put("groupId", DLFolder::getGroupId);
-		attributeSetters.put("groupId", DLFolder::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<DLFolder, Long>)DLFolder::setGroupId);
 		attributeGetters.put("companyId", DLFolder::getCompanyId);
-		attributeSetters.put("companyId", DLFolder::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<DLFolder, Long>)DLFolder::setCompanyId);
 		attributeGetters.put("userId", DLFolder::getUserId);
-		attributeSetters.put("userId", DLFolder::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<DLFolder, Long>)DLFolder::setUserId);
 		attributeGetters.put("userName", DLFolder::getUserName);
-		attributeSetters.put("userName", DLFolder::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<DLFolder, String>)DLFolder::setUserName);
 		attributeGetters.put("createDate", DLFolder::getCreateDate);
-		attributeSetters.put("createDate", DLFolder::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<DLFolder, Date>)DLFolder::setCreateDate);
 		attributeGetters.put("modifiedDate", DLFolder::getModifiedDate);
-		attributeSetters.put("modifiedDate", DLFolder::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<DLFolder, Date>)DLFolder::setModifiedDate);
 		attributeGetters.put("repositoryId", DLFolder::getRepositoryId);
-		attributeSetters.put("repositoryId", DLFolder::setRepositoryId);
-
+		attributeSetters.put("repositoryId", (BiConsumer<DLFolder, Long>)DLFolder::setRepositoryId);
 		attributeGetters.put("mountPoint", DLFolder::getMountPoint);
-		attributeSetters.put("mountPoint", DLFolder::setMountPoint);
-
+		attributeSetters.put("mountPoint", (BiConsumer<DLFolder, Boolean>)DLFolder::setMountPoint);
 		attributeGetters.put("parentFolderId", DLFolder::getParentFolderId);
-		attributeSetters.put("parentFolderId", DLFolder::setParentFolderId);
-
+		attributeSetters.put("parentFolderId", (BiConsumer<DLFolder, Long>)DLFolder::setParentFolderId);
 		attributeGetters.put("treePath", DLFolder::getTreePath);
-		attributeSetters.put("treePath", DLFolder::setTreePath);
-
+		attributeSetters.put("treePath", (BiConsumer<DLFolder, String>)DLFolder::setTreePath);
 		attributeGetters.put("name", DLFolder::getName);
-		attributeSetters.put("name", DLFolder::setName);
-
+		attributeSetters.put("name", (BiConsumer<DLFolder, String>)DLFolder::setName);
 		attributeGetters.put("description", DLFolder::getDescription);
-		attributeSetters.put("description", DLFolder::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<DLFolder, String>)DLFolder::setDescription);
 		attributeGetters.put("lastPostDate", DLFolder::getLastPostDate);
-		attributeSetters.put("lastPostDate", DLFolder::setLastPostDate);
-
+		attributeSetters.put("lastPostDate", (BiConsumer<DLFolder, Date>)DLFolder::setLastPostDate);
 		attributeGetters.put("defaultFileEntryTypeId", DLFolder::getDefaultFileEntryTypeId);
-		attributeSetters.put("defaultFileEntryTypeId", DLFolder::setDefaultFileEntryTypeId);
-
+		attributeSetters.put("defaultFileEntryTypeId", (BiConsumer<DLFolder, Long>)DLFolder::setDefaultFileEntryTypeId);
 		attributeGetters.put("hidden", DLFolder::getHidden);
-		attributeSetters.put("hidden", DLFolder::setHidden);
-
+		attributeSetters.put("hidden", (BiConsumer<DLFolder, Boolean>)DLFolder::setHidden);
 		attributeGetters.put("restrictionType", DLFolder::getRestrictionType);
-		attributeSetters.put("restrictionType", DLFolder::setRestrictionType);
-
+		attributeSetters.put("restrictionType", (BiConsumer<DLFolder, Integer>)DLFolder::setRestrictionType);
 		attributeGetters.put("lastPublishDate", DLFolder::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", DLFolder::setLastPublishDate);
-
+		attributeSetters.put("lastPublishDate", (BiConsumer<DLFolder, Date>)DLFolder::setLastPublishDate);
 		attributeGetters.put("status", DLFolder::getStatus);
-		attributeSetters.put("status", DLFolder::setStatus);
-
+		attributeSetters.put("status", (BiConsumer<DLFolder, Integer>)DLFolder::setStatus);
 		attributeGetters.put("statusByUserId", DLFolder::getStatusByUserId);
-		attributeSetters.put("statusByUserId", DLFolder::setStatusByUserId);
-
+		attributeSetters.put("statusByUserId", (BiConsumer<DLFolder, Long>)DLFolder::setStatusByUserId);
 		attributeGetters.put("statusByUserName", DLFolder::getStatusByUserName);
-		attributeSetters.put("statusByUserName", DLFolder::setStatusByUserName);
-
+		attributeSetters.put("statusByUserName", (BiConsumer<DLFolder, String>)DLFolder::setStatusByUserName);
 		attributeGetters.put("statusDate", DLFolder::getStatusDate);
-		attributeSetters.put("statusDate", DLFolder::setStatusDate);
+		attributeSetters.put("statusDate", (BiConsumer<DLFolder, Date>)DLFolder::setStatusDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

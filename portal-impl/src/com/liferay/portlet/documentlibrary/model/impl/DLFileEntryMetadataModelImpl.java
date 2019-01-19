@@ -157,31 +157,25 @@ public class DLFileEntryMetadataModelImpl extends BaseModelImpl<DLFileEntryMetad
 
 	static {
 		Map<String, Function<DLFileEntryMetadata, Object>> attributeGetters = new LinkedHashMap<String, Function<DLFileEntryMetadata, Object>>();
-		Map<String, BiConsumer<DLFileEntryMetadata, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<DLFileEntryMetadata, Object>>();
+		Map<String, BiConsumer<DLFileEntryMetadata, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<DLFileEntryMetadata, ?>>();
 
 		attributeGetters.put("uuid", DLFileEntryMetadata::getUuid);
-		attributeSetters.put("uuid", DLFileEntryMetadata::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<DLFileEntryMetadata, String>)DLFileEntryMetadata::setUuid);
 		attributeGetters.put("fileEntryMetadataId", DLFileEntryMetadata::getFileEntryMetadataId);
-		attributeSetters.put("fileEntryMetadataId", DLFileEntryMetadata::setFileEntryMetadataId);
-
+		attributeSetters.put("fileEntryMetadataId", (BiConsumer<DLFileEntryMetadata, Long>)DLFileEntryMetadata::setFileEntryMetadataId);
 		attributeGetters.put("companyId", DLFileEntryMetadata::getCompanyId);
-		attributeSetters.put("companyId", DLFileEntryMetadata::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<DLFileEntryMetadata, Long>)DLFileEntryMetadata::setCompanyId);
 		attributeGetters.put("DDMStorageId", DLFileEntryMetadata::getDDMStorageId);
-		attributeSetters.put("DDMStorageId", DLFileEntryMetadata::setDDMStorageId);
-
+		attributeSetters.put("DDMStorageId", (BiConsumer<DLFileEntryMetadata, Long>)DLFileEntryMetadata::setDDMStorageId);
 		attributeGetters.put("DDMStructureId", DLFileEntryMetadata::getDDMStructureId);
-		attributeSetters.put("DDMStructureId", DLFileEntryMetadata::setDDMStructureId);
-
+		attributeSetters.put("DDMStructureId", (BiConsumer<DLFileEntryMetadata, Long>)DLFileEntryMetadata::setDDMStructureId);
 		attributeGetters.put("fileEntryId", DLFileEntryMetadata::getFileEntryId);
-		attributeSetters.put("fileEntryId", DLFileEntryMetadata::setFileEntryId);
-
+		attributeSetters.put("fileEntryId", (BiConsumer<DLFileEntryMetadata, Long>)DLFileEntryMetadata::setFileEntryId);
 		attributeGetters.put("fileVersionId", DLFileEntryMetadata::getFileVersionId);
-		attributeSetters.put("fileVersionId", DLFileEntryMetadata::setFileVersionId);
+		attributeSetters.put("fileVersionId", (BiConsumer<DLFileEntryMetadata, Long>)DLFileEntryMetadata::setFileVersionId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

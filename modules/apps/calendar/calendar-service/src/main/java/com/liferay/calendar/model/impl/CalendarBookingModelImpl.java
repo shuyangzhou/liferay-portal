@@ -297,97 +297,69 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 
 	static {
 		Map<String, Function<CalendarBooking, Object>> attributeGetters = new LinkedHashMap<String, Function<CalendarBooking, Object>>();
-		Map<String, BiConsumer<CalendarBooking, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<CalendarBooking, Object>>();
+		Map<String, BiConsumer<CalendarBooking, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<CalendarBooking, ?>>();
 
 		attributeGetters.put("uuid", CalendarBooking::getUuid);
-		attributeSetters.put("uuid", CalendarBooking::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<CalendarBooking, String>)CalendarBooking::setUuid);
 		attributeGetters.put("calendarBookingId", CalendarBooking::getCalendarBookingId);
-		attributeSetters.put("calendarBookingId", CalendarBooking::setCalendarBookingId);
-
+		attributeSetters.put("calendarBookingId", (BiConsumer<CalendarBooking, Long>)CalendarBooking::setCalendarBookingId);
 		attributeGetters.put("groupId", CalendarBooking::getGroupId);
-		attributeSetters.put("groupId", CalendarBooking::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<CalendarBooking, Long>)CalendarBooking::setGroupId);
 		attributeGetters.put("companyId", CalendarBooking::getCompanyId);
-		attributeSetters.put("companyId", CalendarBooking::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<CalendarBooking, Long>)CalendarBooking::setCompanyId);
 		attributeGetters.put("userId", CalendarBooking::getUserId);
-		attributeSetters.put("userId", CalendarBooking::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<CalendarBooking, Long>)CalendarBooking::setUserId);
 		attributeGetters.put("userName", CalendarBooking::getUserName);
-		attributeSetters.put("userName", CalendarBooking::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<CalendarBooking, String>)CalendarBooking::setUserName);
 		attributeGetters.put("createDate", CalendarBooking::getCreateDate);
-		attributeSetters.put("createDate", CalendarBooking::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<CalendarBooking, Date>)CalendarBooking::setCreateDate);
 		attributeGetters.put("modifiedDate", CalendarBooking::getModifiedDate);
-		attributeSetters.put("modifiedDate", CalendarBooking::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<CalendarBooking, Date>)CalendarBooking::setModifiedDate);
 		attributeGetters.put("calendarId", CalendarBooking::getCalendarId);
-		attributeSetters.put("calendarId", CalendarBooking::setCalendarId);
-
+		attributeSetters.put("calendarId", (BiConsumer<CalendarBooking, Long>)CalendarBooking::setCalendarId);
 		attributeGetters.put("calendarResourceId", CalendarBooking::getCalendarResourceId);
-		attributeSetters.put("calendarResourceId", CalendarBooking::setCalendarResourceId);
-
+		attributeSetters.put("calendarResourceId", (BiConsumer<CalendarBooking, Long>)CalendarBooking::setCalendarResourceId);
 		attributeGetters.put("parentCalendarBookingId", CalendarBooking::getParentCalendarBookingId);
-		attributeSetters.put("parentCalendarBookingId", CalendarBooking::setParentCalendarBookingId);
-
+		attributeSetters.put("parentCalendarBookingId", (BiConsumer<CalendarBooking, Long>)CalendarBooking::setParentCalendarBookingId);
 		attributeGetters.put("recurringCalendarBookingId", CalendarBooking::getRecurringCalendarBookingId);
-		attributeSetters.put("recurringCalendarBookingId", CalendarBooking::setRecurringCalendarBookingId);
-
+		attributeSetters.put("recurringCalendarBookingId", (BiConsumer<CalendarBooking, Long>)CalendarBooking::setRecurringCalendarBookingId);
 		attributeGetters.put("vEventUid", CalendarBooking::getVEventUid);
-		attributeSetters.put("vEventUid", CalendarBooking::setVEventUid);
-
+		attributeSetters.put("vEventUid", (BiConsumer<CalendarBooking, String>)CalendarBooking::setVEventUid);
 		attributeGetters.put("title", CalendarBooking::getTitle);
-		attributeSetters.put("title", CalendarBooking::setTitle);
-
+		attributeSetters.put("title", (BiConsumer<CalendarBooking, String>)CalendarBooking::setTitle);
 		attributeGetters.put("description", CalendarBooking::getDescription);
-		attributeSetters.put("description", CalendarBooking::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<CalendarBooking, String>)CalendarBooking::setDescription);
 		attributeGetters.put("location", CalendarBooking::getLocation);
-		attributeSetters.put("location", CalendarBooking::setLocation);
-
+		attributeSetters.put("location", (BiConsumer<CalendarBooking, String>)CalendarBooking::setLocation);
 		attributeGetters.put("startTime", CalendarBooking::getStartTime);
-		attributeSetters.put("startTime", CalendarBooking::setStartTime);
-
+		attributeSetters.put("startTime", (BiConsumer<CalendarBooking, Long>)CalendarBooking::setStartTime);
 		attributeGetters.put("endTime", CalendarBooking::getEndTime);
-		attributeSetters.put("endTime", CalendarBooking::setEndTime);
-
+		attributeSetters.put("endTime", (BiConsumer<CalendarBooking, Long>)CalendarBooking::setEndTime);
 		attributeGetters.put("allDay", CalendarBooking::getAllDay);
-		attributeSetters.put("allDay", CalendarBooking::setAllDay);
-
+		attributeSetters.put("allDay", (BiConsumer<CalendarBooking, Boolean>)CalendarBooking::setAllDay);
 		attributeGetters.put("recurrence", CalendarBooking::getRecurrence);
-		attributeSetters.put("recurrence", CalendarBooking::setRecurrence);
-
+		attributeSetters.put("recurrence", (BiConsumer<CalendarBooking, String>)CalendarBooking::setRecurrence);
 		attributeGetters.put("firstReminder", CalendarBooking::getFirstReminder);
-		attributeSetters.put("firstReminder", CalendarBooking::setFirstReminder);
-
+		attributeSetters.put("firstReminder", (BiConsumer<CalendarBooking, Long>)CalendarBooking::setFirstReminder);
 		attributeGetters.put("firstReminderType", CalendarBooking::getFirstReminderType);
-		attributeSetters.put("firstReminderType", CalendarBooking::setFirstReminderType);
-
+		attributeSetters.put("firstReminderType", (BiConsumer<CalendarBooking, String>)CalendarBooking::setFirstReminderType);
 		attributeGetters.put("secondReminder", CalendarBooking::getSecondReminder);
-		attributeSetters.put("secondReminder", CalendarBooking::setSecondReminder);
-
+		attributeSetters.put("secondReminder", (BiConsumer<CalendarBooking, Long>)CalendarBooking::setSecondReminder);
 		attributeGetters.put("secondReminderType", CalendarBooking::getSecondReminderType);
-		attributeSetters.put("secondReminderType", CalendarBooking::setSecondReminderType);
-
+		attributeSetters.put("secondReminderType", (BiConsumer<CalendarBooking, String>)CalendarBooking::setSecondReminderType);
 		attributeGetters.put("lastPublishDate", CalendarBooking::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", CalendarBooking::setLastPublishDate);
-
+		attributeSetters.put("lastPublishDate", (BiConsumer<CalendarBooking, Date>)CalendarBooking::setLastPublishDate);
 		attributeGetters.put("status", CalendarBooking::getStatus);
-		attributeSetters.put("status", CalendarBooking::setStatus);
-
+		attributeSetters.put("status", (BiConsumer<CalendarBooking, Integer>)CalendarBooking::setStatus);
 		attributeGetters.put("statusByUserId", CalendarBooking::getStatusByUserId);
-		attributeSetters.put("statusByUserId", CalendarBooking::setStatusByUserId);
-
+		attributeSetters.put("statusByUserId", (BiConsumer<CalendarBooking, Long>)CalendarBooking::setStatusByUserId);
 		attributeGetters.put("statusByUserName", CalendarBooking::getStatusByUserName);
-		attributeSetters.put("statusByUserName", CalendarBooking::setStatusByUserName);
-
+		attributeSetters.put("statusByUserName", (BiConsumer<CalendarBooking, String>)CalendarBooking::setStatusByUserName);
 		attributeGetters.put("statusDate", CalendarBooking::getStatusDate);
-		attributeSetters.put("statusDate", CalendarBooking::setStatusDate);
+		attributeSetters.put("statusDate", (BiConsumer<CalendarBooking, Date>)CalendarBooking::setStatusDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

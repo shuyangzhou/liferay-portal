@@ -176,46 +176,35 @@ public class MBDiscussionModelImpl extends BaseModelImpl<MBDiscussion>
 
 	static {
 		Map<String, Function<MBDiscussion, Object>> attributeGetters = new LinkedHashMap<String, Function<MBDiscussion, Object>>();
-		Map<String, BiConsumer<MBDiscussion, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<MBDiscussion, Object>>();
+		Map<String, BiConsumer<MBDiscussion, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<MBDiscussion, ?>>();
 
 		attributeGetters.put("uuid", MBDiscussion::getUuid);
-		attributeSetters.put("uuid", MBDiscussion::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<MBDiscussion, String>)MBDiscussion::setUuid);
 		attributeGetters.put("discussionId", MBDiscussion::getDiscussionId);
-		attributeSetters.put("discussionId", MBDiscussion::setDiscussionId);
-
+		attributeSetters.put("discussionId", (BiConsumer<MBDiscussion, Long>)MBDiscussion::setDiscussionId);
 		attributeGetters.put("groupId", MBDiscussion::getGroupId);
-		attributeSetters.put("groupId", MBDiscussion::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<MBDiscussion, Long>)MBDiscussion::setGroupId);
 		attributeGetters.put("companyId", MBDiscussion::getCompanyId);
-		attributeSetters.put("companyId", MBDiscussion::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<MBDiscussion, Long>)MBDiscussion::setCompanyId);
 		attributeGetters.put("userId", MBDiscussion::getUserId);
-		attributeSetters.put("userId", MBDiscussion::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<MBDiscussion, Long>)MBDiscussion::setUserId);
 		attributeGetters.put("userName", MBDiscussion::getUserName);
-		attributeSetters.put("userName", MBDiscussion::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<MBDiscussion, String>)MBDiscussion::setUserName);
 		attributeGetters.put("createDate", MBDiscussion::getCreateDate);
-		attributeSetters.put("createDate", MBDiscussion::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<MBDiscussion, Date>)MBDiscussion::setCreateDate);
 		attributeGetters.put("modifiedDate", MBDiscussion::getModifiedDate);
-		attributeSetters.put("modifiedDate", MBDiscussion::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<MBDiscussion, Date>)MBDiscussion::setModifiedDate);
 		attributeGetters.put("classNameId", MBDiscussion::getClassNameId);
-		attributeSetters.put("classNameId", MBDiscussion::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<MBDiscussion, Long>)MBDiscussion::setClassNameId);
 		attributeGetters.put("classPK", MBDiscussion::getClassPK);
-		attributeSetters.put("classPK", MBDiscussion::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<MBDiscussion, Long>)MBDiscussion::setClassPK);
 		attributeGetters.put("threadId", MBDiscussion::getThreadId);
-		attributeSetters.put("threadId", MBDiscussion::setThreadId);
-
+		attributeSetters.put("threadId", (BiConsumer<MBDiscussion, Long>)MBDiscussion::setThreadId);
 		attributeGetters.put("lastPublishDate", MBDiscussion::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", MBDiscussion::setLastPublishDate);
+		attributeSetters.put("lastPublishDate", (BiConsumer<MBDiscussion, Date>)MBDiscussion::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

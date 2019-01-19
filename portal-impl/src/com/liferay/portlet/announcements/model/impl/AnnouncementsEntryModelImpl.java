@@ -249,61 +249,45 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 
 	static {
 		Map<String, Function<AnnouncementsEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<AnnouncementsEntry, Object>>();
-		Map<String, BiConsumer<AnnouncementsEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<AnnouncementsEntry, Object>>();
+		Map<String, BiConsumer<AnnouncementsEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<AnnouncementsEntry, ?>>();
 
 		attributeGetters.put("uuid", AnnouncementsEntry::getUuid);
-		attributeSetters.put("uuid", AnnouncementsEntry::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<AnnouncementsEntry, String>)AnnouncementsEntry::setUuid);
 		attributeGetters.put("entryId", AnnouncementsEntry::getEntryId);
-		attributeSetters.put("entryId", AnnouncementsEntry::setEntryId);
-
+		attributeSetters.put("entryId", (BiConsumer<AnnouncementsEntry, Long>)AnnouncementsEntry::setEntryId);
 		attributeGetters.put("companyId", AnnouncementsEntry::getCompanyId);
-		attributeSetters.put("companyId", AnnouncementsEntry::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<AnnouncementsEntry, Long>)AnnouncementsEntry::setCompanyId);
 		attributeGetters.put("userId", AnnouncementsEntry::getUserId);
-		attributeSetters.put("userId", AnnouncementsEntry::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<AnnouncementsEntry, Long>)AnnouncementsEntry::setUserId);
 		attributeGetters.put("userName", AnnouncementsEntry::getUserName);
-		attributeSetters.put("userName", AnnouncementsEntry::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<AnnouncementsEntry, String>)AnnouncementsEntry::setUserName);
 		attributeGetters.put("createDate", AnnouncementsEntry::getCreateDate);
-		attributeSetters.put("createDate", AnnouncementsEntry::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<AnnouncementsEntry, Date>)AnnouncementsEntry::setCreateDate);
 		attributeGetters.put("modifiedDate", AnnouncementsEntry::getModifiedDate);
-		attributeSetters.put("modifiedDate", AnnouncementsEntry::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<AnnouncementsEntry, Date>)AnnouncementsEntry::setModifiedDate);
 		attributeGetters.put("classNameId", AnnouncementsEntry::getClassNameId);
-		attributeSetters.put("classNameId", AnnouncementsEntry::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<AnnouncementsEntry, Long>)AnnouncementsEntry::setClassNameId);
 		attributeGetters.put("classPK", AnnouncementsEntry::getClassPK);
-		attributeSetters.put("classPK", AnnouncementsEntry::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<AnnouncementsEntry, Long>)AnnouncementsEntry::setClassPK);
 		attributeGetters.put("title", AnnouncementsEntry::getTitle);
-		attributeSetters.put("title", AnnouncementsEntry::setTitle);
-
+		attributeSetters.put("title", (BiConsumer<AnnouncementsEntry, String>)AnnouncementsEntry::setTitle);
 		attributeGetters.put("content", AnnouncementsEntry::getContent);
-		attributeSetters.put("content", AnnouncementsEntry::setContent);
-
+		attributeSetters.put("content", (BiConsumer<AnnouncementsEntry, String>)AnnouncementsEntry::setContent);
 		attributeGetters.put("url", AnnouncementsEntry::getUrl);
-		attributeSetters.put("url", AnnouncementsEntry::setUrl);
-
+		attributeSetters.put("url", (BiConsumer<AnnouncementsEntry, String>)AnnouncementsEntry::setUrl);
 		attributeGetters.put("type", AnnouncementsEntry::getType);
-		attributeSetters.put("type", AnnouncementsEntry::setType);
-
+		attributeSetters.put("type", (BiConsumer<AnnouncementsEntry, String>)AnnouncementsEntry::setType);
 		attributeGetters.put("displayDate", AnnouncementsEntry::getDisplayDate);
-		attributeSetters.put("displayDate", AnnouncementsEntry::setDisplayDate);
-
+		attributeSetters.put("displayDate", (BiConsumer<AnnouncementsEntry, Date>)AnnouncementsEntry::setDisplayDate);
 		attributeGetters.put("expirationDate", AnnouncementsEntry::getExpirationDate);
-		attributeSetters.put("expirationDate", AnnouncementsEntry::setExpirationDate);
-
+		attributeSetters.put("expirationDate", (BiConsumer<AnnouncementsEntry, Date>)AnnouncementsEntry::setExpirationDate);
 		attributeGetters.put("priority", AnnouncementsEntry::getPriority);
-		attributeSetters.put("priority", AnnouncementsEntry::setPriority);
-
+		attributeSetters.put("priority", (BiConsumer<AnnouncementsEntry, Integer>)AnnouncementsEntry::setPriority);
 		attributeGetters.put("alert", AnnouncementsEntry::getAlert);
-		attributeSetters.put("alert", AnnouncementsEntry::setAlert);
+		attributeSetters.put("alert", (BiConsumer<AnnouncementsEntry, Boolean>)AnnouncementsEntry::setAlert);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

@@ -260,79 +260,57 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 
 	static {
 		Map<String, Function<JournalFeed, Object>> attributeGetters = new LinkedHashMap<String, Function<JournalFeed, Object>>();
-		Map<String, BiConsumer<JournalFeed, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<JournalFeed, Object>>();
+		Map<String, BiConsumer<JournalFeed, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<JournalFeed, ?>>();
 
 		attributeGetters.put("uuid", JournalFeed::getUuid);
-		attributeSetters.put("uuid", JournalFeed::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<JournalFeed, String>)JournalFeed::setUuid);
 		attributeGetters.put("id", JournalFeed::getId);
-		attributeSetters.put("id", JournalFeed::setId);
-
+		attributeSetters.put("id", (BiConsumer<JournalFeed, Long>)JournalFeed::setId);
 		attributeGetters.put("groupId", JournalFeed::getGroupId);
-		attributeSetters.put("groupId", JournalFeed::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<JournalFeed, Long>)JournalFeed::setGroupId);
 		attributeGetters.put("companyId", JournalFeed::getCompanyId);
-		attributeSetters.put("companyId", JournalFeed::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<JournalFeed, Long>)JournalFeed::setCompanyId);
 		attributeGetters.put("userId", JournalFeed::getUserId);
-		attributeSetters.put("userId", JournalFeed::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<JournalFeed, Long>)JournalFeed::setUserId);
 		attributeGetters.put("userName", JournalFeed::getUserName);
-		attributeSetters.put("userName", JournalFeed::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<JournalFeed, String>)JournalFeed::setUserName);
 		attributeGetters.put("createDate", JournalFeed::getCreateDate);
-		attributeSetters.put("createDate", JournalFeed::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<JournalFeed, Date>)JournalFeed::setCreateDate);
 		attributeGetters.put("modifiedDate", JournalFeed::getModifiedDate);
-		attributeSetters.put("modifiedDate", JournalFeed::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<JournalFeed, Date>)JournalFeed::setModifiedDate);
 		attributeGetters.put("feedId", JournalFeed::getFeedId);
-		attributeSetters.put("feedId", JournalFeed::setFeedId);
-
+		attributeSetters.put("feedId", (BiConsumer<JournalFeed, String>)JournalFeed::setFeedId);
 		attributeGetters.put("name", JournalFeed::getName);
-		attributeSetters.put("name", JournalFeed::setName);
-
+		attributeSetters.put("name", (BiConsumer<JournalFeed, String>)JournalFeed::setName);
 		attributeGetters.put("description", JournalFeed::getDescription);
-		attributeSetters.put("description", JournalFeed::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<JournalFeed, String>)JournalFeed::setDescription);
 		attributeGetters.put("DDMStructureKey", JournalFeed::getDDMStructureKey);
-		attributeSetters.put("DDMStructureKey", JournalFeed::setDDMStructureKey);
-
+		attributeSetters.put("DDMStructureKey", (BiConsumer<JournalFeed, String>)JournalFeed::setDDMStructureKey);
 		attributeGetters.put("DDMTemplateKey", JournalFeed::getDDMTemplateKey);
-		attributeSetters.put("DDMTemplateKey", JournalFeed::setDDMTemplateKey);
-
+		attributeSetters.put("DDMTemplateKey", (BiConsumer<JournalFeed, String>)JournalFeed::setDDMTemplateKey);
 		attributeGetters.put("DDMRendererTemplateKey", JournalFeed::getDDMRendererTemplateKey);
-		attributeSetters.put("DDMRendererTemplateKey", JournalFeed::setDDMRendererTemplateKey);
-
+		attributeSetters.put("DDMRendererTemplateKey", (BiConsumer<JournalFeed, String>)JournalFeed::setDDMRendererTemplateKey);
 		attributeGetters.put("delta", JournalFeed::getDelta);
-		attributeSetters.put("delta", JournalFeed::setDelta);
-
+		attributeSetters.put("delta", (BiConsumer<JournalFeed, Integer>)JournalFeed::setDelta);
 		attributeGetters.put("orderByCol", JournalFeed::getOrderByCol);
-		attributeSetters.put("orderByCol", JournalFeed::setOrderByCol);
-
+		attributeSetters.put("orderByCol", (BiConsumer<JournalFeed, String>)JournalFeed::setOrderByCol);
 		attributeGetters.put("orderByType", JournalFeed::getOrderByType);
-		attributeSetters.put("orderByType", JournalFeed::setOrderByType);
-
+		attributeSetters.put("orderByType", (BiConsumer<JournalFeed, String>)JournalFeed::setOrderByType);
 		attributeGetters.put("targetLayoutFriendlyUrl", JournalFeed::getTargetLayoutFriendlyUrl);
-		attributeSetters.put("targetLayoutFriendlyUrl", JournalFeed::setTargetLayoutFriendlyUrl);
-
+		attributeSetters.put("targetLayoutFriendlyUrl", (BiConsumer<JournalFeed, String>)JournalFeed::setTargetLayoutFriendlyUrl);
 		attributeGetters.put("targetPortletId", JournalFeed::getTargetPortletId);
-		attributeSetters.put("targetPortletId", JournalFeed::setTargetPortletId);
-
+		attributeSetters.put("targetPortletId", (BiConsumer<JournalFeed, String>)JournalFeed::setTargetPortletId);
 		attributeGetters.put("contentField", JournalFeed::getContentField);
-		attributeSetters.put("contentField", JournalFeed::setContentField);
-
+		attributeSetters.put("contentField", (BiConsumer<JournalFeed, String>)JournalFeed::setContentField);
 		attributeGetters.put("feedFormat", JournalFeed::getFeedFormat);
-		attributeSetters.put("feedFormat", JournalFeed::setFeedFormat);
-
+		attributeSetters.put("feedFormat", (BiConsumer<JournalFeed, String>)JournalFeed::setFeedFormat);
 		attributeGetters.put("feedVersion", JournalFeed::getFeedVersion);
-		attributeSetters.put("feedVersion", JournalFeed::setFeedVersion);
-
+		attributeSetters.put("feedVersion", (BiConsumer<JournalFeed, Double>)JournalFeed::setFeedVersion);
 		attributeGetters.put("lastPublishDate", JournalFeed::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", JournalFeed::setLastPublishDate);
+		attributeSetters.put("lastPublishDate", (BiConsumer<JournalFeed, Date>)JournalFeed::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

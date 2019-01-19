@@ -217,43 +217,33 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 
 	static {
 		Map<String, Function<Company, Object>> attributeGetters = new LinkedHashMap<String, Function<Company, Object>>();
-		Map<String, BiConsumer<Company, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Company, Object>>();
+		Map<String, BiConsumer<Company, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Company, ?>>();
 
 		attributeGetters.put("mvccVersion", Company::getMvccVersion);
-		attributeSetters.put("mvccVersion", Company::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<Company, Long>)Company::setMvccVersion);
 		attributeGetters.put("companyId", Company::getCompanyId);
-		attributeSetters.put("companyId", Company::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<Company, Long>)Company::setCompanyId);
 		attributeGetters.put("accountId", Company::getAccountId);
-		attributeSetters.put("accountId", Company::setAccountId);
-
+		attributeSetters.put("accountId", (BiConsumer<Company, Long>)Company::setAccountId);
 		attributeGetters.put("webId", Company::getWebId);
-		attributeSetters.put("webId", Company::setWebId);
-
+		attributeSetters.put("webId", (BiConsumer<Company, String>)Company::setWebId);
 		attributeGetters.put("key", Company::getKey);
-		attributeSetters.put("key", Company::setKey);
-
+		attributeSetters.put("key", (BiConsumer<Company, String>)Company::setKey);
 		attributeGetters.put("mx", Company::getMx);
-		attributeSetters.put("mx", Company::setMx);
-
+		attributeSetters.put("mx", (BiConsumer<Company, String>)Company::setMx);
 		attributeGetters.put("homeURL", Company::getHomeURL);
-		attributeSetters.put("homeURL", Company::setHomeURL);
-
+		attributeSetters.put("homeURL", (BiConsumer<Company, String>)Company::setHomeURL);
 		attributeGetters.put("logoId", Company::getLogoId);
-		attributeSetters.put("logoId", Company::setLogoId);
-
+		attributeSetters.put("logoId", (BiConsumer<Company, Long>)Company::setLogoId);
 		attributeGetters.put("system", Company::getSystem);
-		attributeSetters.put("system", Company::setSystem);
-
+		attributeSetters.put("system", (BiConsumer<Company, Boolean>)Company::setSystem);
 		attributeGetters.put("maxUsers", Company::getMaxUsers);
-		attributeSetters.put("maxUsers", Company::setMaxUsers);
-
+		attributeSetters.put("maxUsers", (BiConsumer<Company, Integer>)Company::setMaxUsers);
 		attributeGetters.put("active", Company::getActive);
-		attributeSetters.put("active", Company::setActive);
+		attributeSetters.put("active", (BiConsumer<Company, Boolean>)Company::setActive);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

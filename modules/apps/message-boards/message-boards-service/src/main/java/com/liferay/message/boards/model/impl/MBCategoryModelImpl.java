@@ -259,70 +259,51 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 
 	static {
 		Map<String, Function<MBCategory, Object>> attributeGetters = new LinkedHashMap<String, Function<MBCategory, Object>>();
-		Map<String, BiConsumer<MBCategory, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<MBCategory, Object>>();
+		Map<String, BiConsumer<MBCategory, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<MBCategory, ?>>();
 
 		attributeGetters.put("uuid", MBCategory::getUuid);
-		attributeSetters.put("uuid", MBCategory::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<MBCategory, String>)MBCategory::setUuid);
 		attributeGetters.put("categoryId", MBCategory::getCategoryId);
-		attributeSetters.put("categoryId", MBCategory::setCategoryId);
-
+		attributeSetters.put("categoryId", (BiConsumer<MBCategory, Long>)MBCategory::setCategoryId);
 		attributeGetters.put("groupId", MBCategory::getGroupId);
-		attributeSetters.put("groupId", MBCategory::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<MBCategory, Long>)MBCategory::setGroupId);
 		attributeGetters.put("companyId", MBCategory::getCompanyId);
-		attributeSetters.put("companyId", MBCategory::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<MBCategory, Long>)MBCategory::setCompanyId);
 		attributeGetters.put("userId", MBCategory::getUserId);
-		attributeSetters.put("userId", MBCategory::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<MBCategory, Long>)MBCategory::setUserId);
 		attributeGetters.put("userName", MBCategory::getUserName);
-		attributeSetters.put("userName", MBCategory::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<MBCategory, String>)MBCategory::setUserName);
 		attributeGetters.put("createDate", MBCategory::getCreateDate);
-		attributeSetters.put("createDate", MBCategory::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<MBCategory, Date>)MBCategory::setCreateDate);
 		attributeGetters.put("modifiedDate", MBCategory::getModifiedDate);
-		attributeSetters.put("modifiedDate", MBCategory::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<MBCategory, Date>)MBCategory::setModifiedDate);
 		attributeGetters.put("parentCategoryId", MBCategory::getParentCategoryId);
-		attributeSetters.put("parentCategoryId", MBCategory::setParentCategoryId);
-
+		attributeSetters.put("parentCategoryId", (BiConsumer<MBCategory, Long>)MBCategory::setParentCategoryId);
 		attributeGetters.put("name", MBCategory::getName);
-		attributeSetters.put("name", MBCategory::setName);
-
+		attributeSetters.put("name", (BiConsumer<MBCategory, String>)MBCategory::setName);
 		attributeGetters.put("description", MBCategory::getDescription);
-		attributeSetters.put("description", MBCategory::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<MBCategory, String>)MBCategory::setDescription);
 		attributeGetters.put("displayStyle", MBCategory::getDisplayStyle);
-		attributeSetters.put("displayStyle", MBCategory::setDisplayStyle);
-
+		attributeSetters.put("displayStyle", (BiConsumer<MBCategory, String>)MBCategory::setDisplayStyle);
 		attributeGetters.put("threadCount", MBCategory::getThreadCount);
-		attributeSetters.put("threadCount", MBCategory::setThreadCount);
-
+		attributeSetters.put("threadCount", (BiConsumer<MBCategory, Integer>)MBCategory::setThreadCount);
 		attributeGetters.put("messageCount", MBCategory::getMessageCount);
-		attributeSetters.put("messageCount", MBCategory::setMessageCount);
-
+		attributeSetters.put("messageCount", (BiConsumer<MBCategory, Integer>)MBCategory::setMessageCount);
 		attributeGetters.put("lastPostDate", MBCategory::getLastPostDate);
-		attributeSetters.put("lastPostDate", MBCategory::setLastPostDate);
-
+		attributeSetters.put("lastPostDate", (BiConsumer<MBCategory, Date>)MBCategory::setLastPostDate);
 		attributeGetters.put("lastPublishDate", MBCategory::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", MBCategory::setLastPublishDate);
-
+		attributeSetters.put("lastPublishDate", (BiConsumer<MBCategory, Date>)MBCategory::setLastPublishDate);
 		attributeGetters.put("status", MBCategory::getStatus);
-		attributeSetters.put("status", MBCategory::setStatus);
-
+		attributeSetters.put("status", (BiConsumer<MBCategory, Integer>)MBCategory::setStatus);
 		attributeGetters.put("statusByUserId", MBCategory::getStatusByUserId);
-		attributeSetters.put("statusByUserId", MBCategory::setStatusByUserId);
-
+		attributeSetters.put("statusByUserId", (BiConsumer<MBCategory, Long>)MBCategory::setStatusByUserId);
 		attributeGetters.put("statusByUserName", MBCategory::getStatusByUserName);
-		attributeSetters.put("statusByUserName", MBCategory::setStatusByUserName);
-
+		attributeSetters.put("statusByUserName", (BiConsumer<MBCategory, String>)MBCategory::setStatusByUserName);
 		attributeGetters.put("statusDate", MBCategory::getStatusDate);
-		attributeSetters.put("statusDate", MBCategory::setStatusDate);
+		attributeSetters.put("statusDate", (BiConsumer<MBCategory, Date>)MBCategory::setStatusDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

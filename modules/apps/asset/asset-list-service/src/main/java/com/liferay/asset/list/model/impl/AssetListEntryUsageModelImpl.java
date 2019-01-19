@@ -179,49 +179,37 @@ public class AssetListEntryUsageModelImpl extends BaseModelImpl<AssetListEntryUs
 
 	static {
 		Map<String, Function<AssetListEntryUsage, Object>> attributeGetters = new LinkedHashMap<String, Function<AssetListEntryUsage, Object>>();
-		Map<String, BiConsumer<AssetListEntryUsage, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetListEntryUsage, Object>>();
+		Map<String, BiConsumer<AssetListEntryUsage, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetListEntryUsage, ?>>();
 
 		attributeGetters.put("uuid", AssetListEntryUsage::getUuid);
-		attributeSetters.put("uuid", AssetListEntryUsage::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<AssetListEntryUsage, String>)AssetListEntryUsage::setUuid);
 		attributeGetters.put("assetListEntryUsageId", AssetListEntryUsage::getAssetListEntryUsageId);
-		attributeSetters.put("assetListEntryUsageId", AssetListEntryUsage::setAssetListEntryUsageId);
-
+		attributeSetters.put("assetListEntryUsageId", (BiConsumer<AssetListEntryUsage, Long>)AssetListEntryUsage::setAssetListEntryUsageId);
 		attributeGetters.put("groupId", AssetListEntryUsage::getGroupId);
-		attributeSetters.put("groupId", AssetListEntryUsage::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<AssetListEntryUsage, Long>)AssetListEntryUsage::setGroupId);
 		attributeGetters.put("companyId", AssetListEntryUsage::getCompanyId);
-		attributeSetters.put("companyId", AssetListEntryUsage::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<AssetListEntryUsage, Long>)AssetListEntryUsage::setCompanyId);
 		attributeGetters.put("userId", AssetListEntryUsage::getUserId);
-		attributeSetters.put("userId", AssetListEntryUsage::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<AssetListEntryUsage, Long>)AssetListEntryUsage::setUserId);
 		attributeGetters.put("userName", AssetListEntryUsage::getUserName);
-		attributeSetters.put("userName", AssetListEntryUsage::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<AssetListEntryUsage, String>)AssetListEntryUsage::setUserName);
 		attributeGetters.put("createDate", AssetListEntryUsage::getCreateDate);
-		attributeSetters.put("createDate", AssetListEntryUsage::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<AssetListEntryUsage, Date>)AssetListEntryUsage::setCreateDate);
 		attributeGetters.put("modifiedDate", AssetListEntryUsage::getModifiedDate);
-		attributeSetters.put("modifiedDate", AssetListEntryUsage::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<AssetListEntryUsage, Date>)AssetListEntryUsage::setModifiedDate);
 		attributeGetters.put("assetListEntryId", AssetListEntryUsage::getAssetListEntryId);
-		attributeSetters.put("assetListEntryId", AssetListEntryUsage::setAssetListEntryId);
-
+		attributeSetters.put("assetListEntryId", (BiConsumer<AssetListEntryUsage, Long>)AssetListEntryUsage::setAssetListEntryId);
 		attributeGetters.put("classNameId", AssetListEntryUsage::getClassNameId);
-		attributeSetters.put("classNameId", AssetListEntryUsage::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<AssetListEntryUsage, Long>)AssetListEntryUsage::setClassNameId);
 		attributeGetters.put("classPK", AssetListEntryUsage::getClassPK);
-		attributeSetters.put("classPK", AssetListEntryUsage::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<AssetListEntryUsage, Long>)AssetListEntryUsage::setClassPK);
 		attributeGetters.put("portletId", AssetListEntryUsage::getPortletId);
-		attributeSetters.put("portletId", AssetListEntryUsage::setPortletId);
-
+		attributeSetters.put("portletId", (BiConsumer<AssetListEntryUsage, String>)AssetListEntryUsage::setPortletId);
 		attributeGetters.put("lastPublishDate", AssetListEntryUsage::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", AssetListEntryUsage::setLastPublishDate);
+		attributeSetters.put("lastPublishDate", (BiConsumer<AssetListEntryUsage, Date>)AssetListEntryUsage::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

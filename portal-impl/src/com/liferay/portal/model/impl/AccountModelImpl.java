@@ -232,61 +232,45 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 
 	static {
 		Map<String, Function<Account, Object>> attributeGetters = new LinkedHashMap<String, Function<Account, Object>>();
-		Map<String, BiConsumer<Account, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Account, Object>>();
+		Map<String, BiConsumer<Account, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Account, ?>>();
 
 		attributeGetters.put("mvccVersion", Account::getMvccVersion);
-		attributeSetters.put("mvccVersion", Account::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<Account, Long>)Account::setMvccVersion);
 		attributeGetters.put("accountId", Account::getAccountId);
-		attributeSetters.put("accountId", Account::setAccountId);
-
+		attributeSetters.put("accountId", (BiConsumer<Account, Long>)Account::setAccountId);
 		attributeGetters.put("companyId", Account::getCompanyId);
-		attributeSetters.put("companyId", Account::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<Account, Long>)Account::setCompanyId);
 		attributeGetters.put("userId", Account::getUserId);
-		attributeSetters.put("userId", Account::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<Account, Long>)Account::setUserId);
 		attributeGetters.put("userName", Account::getUserName);
-		attributeSetters.put("userName", Account::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<Account, String>)Account::setUserName);
 		attributeGetters.put("createDate", Account::getCreateDate);
-		attributeSetters.put("createDate", Account::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<Account, Date>)Account::setCreateDate);
 		attributeGetters.put("modifiedDate", Account::getModifiedDate);
-		attributeSetters.put("modifiedDate", Account::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<Account, Date>)Account::setModifiedDate);
 		attributeGetters.put("parentAccountId", Account::getParentAccountId);
-		attributeSetters.put("parentAccountId", Account::setParentAccountId);
-
+		attributeSetters.put("parentAccountId", (BiConsumer<Account, Long>)Account::setParentAccountId);
 		attributeGetters.put("name", Account::getName);
-		attributeSetters.put("name", Account::setName);
-
+		attributeSetters.put("name", (BiConsumer<Account, String>)Account::setName);
 		attributeGetters.put("legalName", Account::getLegalName);
-		attributeSetters.put("legalName", Account::setLegalName);
-
+		attributeSetters.put("legalName", (BiConsumer<Account, String>)Account::setLegalName);
 		attributeGetters.put("legalId", Account::getLegalId);
-		attributeSetters.put("legalId", Account::setLegalId);
-
+		attributeSetters.put("legalId", (BiConsumer<Account, String>)Account::setLegalId);
 		attributeGetters.put("legalType", Account::getLegalType);
-		attributeSetters.put("legalType", Account::setLegalType);
-
+		attributeSetters.put("legalType", (BiConsumer<Account, String>)Account::setLegalType);
 		attributeGetters.put("sicCode", Account::getSicCode);
-		attributeSetters.put("sicCode", Account::setSicCode);
-
+		attributeSetters.put("sicCode", (BiConsumer<Account, String>)Account::setSicCode);
 		attributeGetters.put("tickerSymbol", Account::getTickerSymbol);
-		attributeSetters.put("tickerSymbol", Account::setTickerSymbol);
-
+		attributeSetters.put("tickerSymbol", (BiConsumer<Account, String>)Account::setTickerSymbol);
 		attributeGetters.put("industry", Account::getIndustry);
-		attributeSetters.put("industry", Account::setIndustry);
-
+		attributeSetters.put("industry", (BiConsumer<Account, String>)Account::setIndustry);
 		attributeGetters.put("type", Account::getType);
-		attributeSetters.put("type", Account::setType);
-
+		attributeSetters.put("type", (BiConsumer<Account, String>)Account::setType);
 		attributeGetters.put("size", Account::getSize);
-		attributeSetters.put("size", Account::setSize);
+		attributeSetters.put("size", (BiConsumer<Account, String>)Account::setSize);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

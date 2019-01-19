@@ -158,31 +158,25 @@ public class RecentLayoutSetBranchModelImpl extends BaseModelImpl<RecentLayoutSe
 
 	static {
 		Map<String, Function<RecentLayoutSetBranch, Object>> attributeGetters = new LinkedHashMap<String, Function<RecentLayoutSetBranch, Object>>();
-		Map<String, BiConsumer<RecentLayoutSetBranch, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<RecentLayoutSetBranch, Object>>();
+		Map<String, BiConsumer<RecentLayoutSetBranch, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<RecentLayoutSetBranch, ?>>();
 
 		attributeGetters.put("mvccVersion", RecentLayoutSetBranch::getMvccVersion);
-		attributeSetters.put("mvccVersion", RecentLayoutSetBranch::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<RecentLayoutSetBranch, Long>)RecentLayoutSetBranch::setMvccVersion);
 		attributeGetters.put("recentLayoutSetBranchId", RecentLayoutSetBranch::getRecentLayoutSetBranchId);
-		attributeSetters.put("recentLayoutSetBranchId", RecentLayoutSetBranch::setRecentLayoutSetBranchId);
-
+		attributeSetters.put("recentLayoutSetBranchId", (BiConsumer<RecentLayoutSetBranch, Long>)RecentLayoutSetBranch::setRecentLayoutSetBranchId);
 		attributeGetters.put("groupId", RecentLayoutSetBranch::getGroupId);
-		attributeSetters.put("groupId", RecentLayoutSetBranch::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<RecentLayoutSetBranch, Long>)RecentLayoutSetBranch::setGroupId);
 		attributeGetters.put("companyId", RecentLayoutSetBranch::getCompanyId);
-		attributeSetters.put("companyId", RecentLayoutSetBranch::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<RecentLayoutSetBranch, Long>)RecentLayoutSetBranch::setCompanyId);
 		attributeGetters.put("userId", RecentLayoutSetBranch::getUserId);
-		attributeSetters.put("userId", RecentLayoutSetBranch::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<RecentLayoutSetBranch, Long>)RecentLayoutSetBranch::setUserId);
 		attributeGetters.put("layoutSetBranchId", RecentLayoutSetBranch::getLayoutSetBranchId);
-		attributeSetters.put("layoutSetBranchId", RecentLayoutSetBranch::setLayoutSetBranchId);
-
+		attributeSetters.put("layoutSetBranchId", (BiConsumer<RecentLayoutSetBranch, Long>)RecentLayoutSetBranch::setLayoutSetBranchId);
 		attributeGetters.put("layoutSetId", RecentLayoutSetBranch::getLayoutSetId);
-		attributeSetters.put("layoutSetId", RecentLayoutSetBranch::setLayoutSetId);
+		attributeSetters.put("layoutSetId", (BiConsumer<RecentLayoutSetBranch, Long>)RecentLayoutSetBranch::setLayoutSetId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

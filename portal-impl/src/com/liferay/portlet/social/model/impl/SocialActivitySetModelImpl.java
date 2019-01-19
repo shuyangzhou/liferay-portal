@@ -170,43 +170,33 @@ public class SocialActivitySetModelImpl extends BaseModelImpl<SocialActivitySet>
 
 	static {
 		Map<String, Function<SocialActivitySet, Object>> attributeGetters = new LinkedHashMap<String, Function<SocialActivitySet, Object>>();
-		Map<String, BiConsumer<SocialActivitySet, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SocialActivitySet, Object>>();
+		Map<String, BiConsumer<SocialActivitySet, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<SocialActivitySet, ?>>();
 
 		attributeGetters.put("activitySetId", SocialActivitySet::getActivitySetId);
-		attributeSetters.put("activitySetId", SocialActivitySet::setActivitySetId);
-
+		attributeSetters.put("activitySetId", (BiConsumer<SocialActivitySet, Long>)SocialActivitySet::setActivitySetId);
 		attributeGetters.put("groupId", SocialActivitySet::getGroupId);
-		attributeSetters.put("groupId", SocialActivitySet::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<SocialActivitySet, Long>)SocialActivitySet::setGroupId);
 		attributeGetters.put("companyId", SocialActivitySet::getCompanyId);
-		attributeSetters.put("companyId", SocialActivitySet::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<SocialActivitySet, Long>)SocialActivitySet::setCompanyId);
 		attributeGetters.put("userId", SocialActivitySet::getUserId);
-		attributeSetters.put("userId", SocialActivitySet::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<SocialActivitySet, Long>)SocialActivitySet::setUserId);
 		attributeGetters.put("createDate", SocialActivitySet::getCreateDate);
-		attributeSetters.put("createDate", SocialActivitySet::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<SocialActivitySet, Long>)SocialActivitySet::setCreateDate);
 		attributeGetters.put("modifiedDate", SocialActivitySet::getModifiedDate);
-		attributeSetters.put("modifiedDate", SocialActivitySet::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<SocialActivitySet, Long>)SocialActivitySet::setModifiedDate);
 		attributeGetters.put("classNameId", SocialActivitySet::getClassNameId);
-		attributeSetters.put("classNameId", SocialActivitySet::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<SocialActivitySet, Long>)SocialActivitySet::setClassNameId);
 		attributeGetters.put("classPK", SocialActivitySet::getClassPK);
-		attributeSetters.put("classPK", SocialActivitySet::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<SocialActivitySet, Long>)SocialActivitySet::setClassPK);
 		attributeGetters.put("type", SocialActivitySet::getType);
-		attributeSetters.put("type", SocialActivitySet::setType);
-
+		attributeSetters.put("type", (BiConsumer<SocialActivitySet, Integer>)SocialActivitySet::setType);
 		attributeGetters.put("extraData", SocialActivitySet::getExtraData);
-		attributeSetters.put("extraData", SocialActivitySet::setExtraData);
-
+		attributeSetters.put("extraData", (BiConsumer<SocialActivitySet, String>)SocialActivitySet::setExtraData);
 		attributeGetters.put("activityCount", SocialActivitySet::getActivityCount);
-		attributeSetters.put("activityCount", SocialActivitySet::setActivityCount);
+		attributeSetters.put("activityCount", (BiConsumer<SocialActivitySet, Integer>)SocialActivitySet::setActivityCount);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

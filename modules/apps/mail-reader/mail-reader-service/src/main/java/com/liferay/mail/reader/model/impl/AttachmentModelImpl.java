@@ -160,37 +160,29 @@ public class AttachmentModelImpl extends BaseModelImpl<Attachment>
 
 	static {
 		Map<String, Function<Attachment, Object>> attributeGetters = new LinkedHashMap<String, Function<Attachment, Object>>();
-		Map<String, BiConsumer<Attachment, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Attachment, Object>>();
+		Map<String, BiConsumer<Attachment, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Attachment, ?>>();
 
 		attributeGetters.put("attachmentId", Attachment::getAttachmentId);
-		attributeSetters.put("attachmentId", Attachment::setAttachmentId);
-
+		attributeSetters.put("attachmentId", (BiConsumer<Attachment, Long>)Attachment::setAttachmentId);
 		attributeGetters.put("companyId", Attachment::getCompanyId);
-		attributeSetters.put("companyId", Attachment::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<Attachment, Long>)Attachment::setCompanyId);
 		attributeGetters.put("userId", Attachment::getUserId);
-		attributeSetters.put("userId", Attachment::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<Attachment, Long>)Attachment::setUserId);
 		attributeGetters.put("accountId", Attachment::getAccountId);
-		attributeSetters.put("accountId", Attachment::setAccountId);
-
+		attributeSetters.put("accountId", (BiConsumer<Attachment, Long>)Attachment::setAccountId);
 		attributeGetters.put("folderId", Attachment::getFolderId);
-		attributeSetters.put("folderId", Attachment::setFolderId);
-
+		attributeSetters.put("folderId", (BiConsumer<Attachment, Long>)Attachment::setFolderId);
 		attributeGetters.put("messageId", Attachment::getMessageId);
-		attributeSetters.put("messageId", Attachment::setMessageId);
-
+		attributeSetters.put("messageId", (BiConsumer<Attachment, Long>)Attachment::setMessageId);
 		attributeGetters.put("contentPath", Attachment::getContentPath);
-		attributeSetters.put("contentPath", Attachment::setContentPath);
-
+		attributeSetters.put("contentPath", (BiConsumer<Attachment, String>)Attachment::setContentPath);
 		attributeGetters.put("fileName", Attachment::getFileName);
-		attributeSetters.put("fileName", Attachment::setFileName);
-
+		attributeSetters.put("fileName", (BiConsumer<Attachment, String>)Attachment::setFileName);
 		attributeGetters.put("size", Attachment::getSize);
-		attributeSetters.put("size", Attachment::setSize);
+		attributeSetters.put("size", (BiConsumer<Attachment, Long>)Attachment::setSize);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

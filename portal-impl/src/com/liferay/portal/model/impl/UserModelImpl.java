@@ -373,139 +373,97 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	static {
 		Map<String, Function<User, Object>> attributeGetters = new LinkedHashMap<String, Function<User, Object>>();
-		Map<String, BiConsumer<User, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<User, Object>>();
+		Map<String, BiConsumer<User, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<User, ?>>();
 
 		attributeGetters.put("mvccVersion", User::getMvccVersion);
-		attributeSetters.put("mvccVersion", User::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<User, Long>)User::setMvccVersion);
 		attributeGetters.put("uuid", User::getUuid);
-		attributeSetters.put("uuid", User::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<User, String>)User::setUuid);
 		attributeGetters.put("externalReferenceCode", User::getExternalReferenceCode);
-		attributeSetters.put("externalReferenceCode", User::setExternalReferenceCode);
-
+		attributeSetters.put("externalReferenceCode", (BiConsumer<User, String>)User::setExternalReferenceCode);
 		attributeGetters.put("userId", User::getUserId);
-		attributeSetters.put("userId", User::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<User, Long>)User::setUserId);
 		attributeGetters.put("companyId", User::getCompanyId);
-		attributeSetters.put("companyId", User::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<User, Long>)User::setCompanyId);
 		attributeGetters.put("createDate", User::getCreateDate);
-		attributeSetters.put("createDate", User::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<User, Date>)User::setCreateDate);
 		attributeGetters.put("modifiedDate", User::getModifiedDate);
-		attributeSetters.put("modifiedDate", User::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<User, Date>)User::setModifiedDate);
 		attributeGetters.put("defaultUser", User::getDefaultUser);
-		attributeSetters.put("defaultUser", User::setDefaultUser);
-
+		attributeSetters.put("defaultUser", (BiConsumer<User, Boolean>)User::setDefaultUser);
 		attributeGetters.put("contactId", User::getContactId);
-		attributeSetters.put("contactId", User::setContactId);
-
+		attributeSetters.put("contactId", (BiConsumer<User, Long>)User::setContactId);
 		attributeGetters.put("password", User::getPassword);
-		attributeSetters.put("password", User::setPassword);
-
+		attributeSetters.put("password", (BiConsumer<User, String>)User::setPassword);
 		attributeGetters.put("passwordEncrypted", User::getPasswordEncrypted);
-		attributeSetters.put("passwordEncrypted", User::setPasswordEncrypted);
-
+		attributeSetters.put("passwordEncrypted", (BiConsumer<User, Boolean>)User::setPasswordEncrypted);
 		attributeGetters.put("passwordReset", User::getPasswordReset);
-		attributeSetters.put("passwordReset", User::setPasswordReset);
-
+		attributeSetters.put("passwordReset", (BiConsumer<User, Boolean>)User::setPasswordReset);
 		attributeGetters.put("passwordModifiedDate", User::getPasswordModifiedDate);
-		attributeSetters.put("passwordModifiedDate", User::setPasswordModifiedDate);
-
+		attributeSetters.put("passwordModifiedDate", (BiConsumer<User, Date>)User::setPasswordModifiedDate);
 		attributeGetters.put("digest", User::getDigest);
-		attributeSetters.put("digest", User::setDigest);
-
+		attributeSetters.put("digest", (BiConsumer<User, String>)User::setDigest);
 		attributeGetters.put("reminderQueryQuestion", User::getReminderQueryQuestion);
-		attributeSetters.put("reminderQueryQuestion", User::setReminderQueryQuestion);
-
+		attributeSetters.put("reminderQueryQuestion", (BiConsumer<User, String>)User::setReminderQueryQuestion);
 		attributeGetters.put("reminderQueryAnswer", User::getReminderQueryAnswer);
-		attributeSetters.put("reminderQueryAnswer", User::setReminderQueryAnswer);
-
+		attributeSetters.put("reminderQueryAnswer", (BiConsumer<User, String>)User::setReminderQueryAnswer);
 		attributeGetters.put("graceLoginCount", User::getGraceLoginCount);
-		attributeSetters.put("graceLoginCount", User::setGraceLoginCount);
-
+		attributeSetters.put("graceLoginCount", (BiConsumer<User, Integer>)User::setGraceLoginCount);
 		attributeGetters.put("screenName", User::getScreenName);
-		attributeSetters.put("screenName", User::setScreenName);
-
+		attributeSetters.put("screenName", (BiConsumer<User, String>)User::setScreenName);
 		attributeGetters.put("emailAddress", User::getEmailAddress);
-		attributeSetters.put("emailAddress", User::setEmailAddress);
-
+		attributeSetters.put("emailAddress", (BiConsumer<User, String>)User::setEmailAddress);
 		attributeGetters.put("facebookId", User::getFacebookId);
-		attributeSetters.put("facebookId", User::setFacebookId);
-
+		attributeSetters.put("facebookId", (BiConsumer<User, Long>)User::setFacebookId);
 		attributeGetters.put("googleUserId", User::getGoogleUserId);
-		attributeSetters.put("googleUserId", User::setGoogleUserId);
-
+		attributeSetters.put("googleUserId", (BiConsumer<User, String>)User::setGoogleUserId);
 		attributeGetters.put("ldapServerId", User::getLdapServerId);
-		attributeSetters.put("ldapServerId", User::setLdapServerId);
-
+		attributeSetters.put("ldapServerId", (BiConsumer<User, Long>)User::setLdapServerId);
 		attributeGetters.put("openId", User::getOpenId);
-		attributeSetters.put("openId", User::setOpenId);
-
+		attributeSetters.put("openId", (BiConsumer<User, String>)User::setOpenId);
 		attributeGetters.put("portraitId", User::getPortraitId);
-		attributeSetters.put("portraitId", User::setPortraitId);
-
+		attributeSetters.put("portraitId", (BiConsumer<User, Long>)User::setPortraitId);
 		attributeGetters.put("languageId", User::getLanguageId);
-		attributeSetters.put("languageId", User::setLanguageId);
-
+		attributeSetters.put("languageId", (BiConsumer<User, String>)User::setLanguageId);
 		attributeGetters.put("timeZoneId", User::getTimeZoneId);
-		attributeSetters.put("timeZoneId", User::setTimeZoneId);
-
+		attributeSetters.put("timeZoneId", (BiConsumer<User, String>)User::setTimeZoneId);
 		attributeGetters.put("greeting", User::getGreeting);
-		attributeSetters.put("greeting", User::setGreeting);
-
+		attributeSetters.put("greeting", (BiConsumer<User, String>)User::setGreeting);
 		attributeGetters.put("comments", User::getComments);
-		attributeSetters.put("comments", User::setComments);
-
+		attributeSetters.put("comments", (BiConsumer<User, String>)User::setComments);
 		attributeGetters.put("firstName", User::getFirstName);
-		attributeSetters.put("firstName", User::setFirstName);
-
+		attributeSetters.put("firstName", (BiConsumer<User, String>)User::setFirstName);
 		attributeGetters.put("middleName", User::getMiddleName);
-		attributeSetters.put("middleName", User::setMiddleName);
-
+		attributeSetters.put("middleName", (BiConsumer<User, String>)User::setMiddleName);
 		attributeGetters.put("lastName", User::getLastName);
-		attributeSetters.put("lastName", User::setLastName);
-
+		attributeSetters.put("lastName", (BiConsumer<User, String>)User::setLastName);
 		attributeGetters.put("jobTitle", User::getJobTitle);
-		attributeSetters.put("jobTitle", User::setJobTitle);
-
+		attributeSetters.put("jobTitle", (BiConsumer<User, String>)User::setJobTitle);
 		attributeGetters.put("loginDate", User::getLoginDate);
-		attributeSetters.put("loginDate", User::setLoginDate);
-
+		attributeSetters.put("loginDate", (BiConsumer<User, Date>)User::setLoginDate);
 		attributeGetters.put("loginIP", User::getLoginIP);
-		attributeSetters.put("loginIP", User::setLoginIP);
-
+		attributeSetters.put("loginIP", (BiConsumer<User, String>)User::setLoginIP);
 		attributeGetters.put("lastLoginDate", User::getLastLoginDate);
-		attributeSetters.put("lastLoginDate", User::setLastLoginDate);
-
+		attributeSetters.put("lastLoginDate", (BiConsumer<User, Date>)User::setLastLoginDate);
 		attributeGetters.put("lastLoginIP", User::getLastLoginIP);
-		attributeSetters.put("lastLoginIP", User::setLastLoginIP);
-
+		attributeSetters.put("lastLoginIP", (BiConsumer<User, String>)User::setLastLoginIP);
 		attributeGetters.put("lastFailedLoginDate", User::getLastFailedLoginDate);
-		attributeSetters.put("lastFailedLoginDate", User::setLastFailedLoginDate);
-
+		attributeSetters.put("lastFailedLoginDate", (BiConsumer<User, Date>)User::setLastFailedLoginDate);
 		attributeGetters.put("failedLoginAttempts", User::getFailedLoginAttempts);
-		attributeSetters.put("failedLoginAttempts", User::setFailedLoginAttempts);
-
+		attributeSetters.put("failedLoginAttempts", (BiConsumer<User, Integer>)User::setFailedLoginAttempts);
 		attributeGetters.put("lockout", User::getLockout);
-		attributeSetters.put("lockout", User::setLockout);
-
+		attributeSetters.put("lockout", (BiConsumer<User, Boolean>)User::setLockout);
 		attributeGetters.put("lockoutDate", User::getLockoutDate);
-		attributeSetters.put("lockoutDate", User::setLockoutDate);
-
+		attributeSetters.put("lockoutDate", (BiConsumer<User, Date>)User::setLockoutDate);
 		attributeGetters.put("agreedToTermsOfUse", User::getAgreedToTermsOfUse);
-		attributeSetters.put("agreedToTermsOfUse", User::setAgreedToTermsOfUse);
-
+		attributeSetters.put("agreedToTermsOfUse", (BiConsumer<User, Boolean>)User::setAgreedToTermsOfUse);
 		attributeGetters.put("emailAddressVerified", User::getEmailAddressVerified);
-		attributeSetters.put("emailAddressVerified", User::setEmailAddressVerified);
-
+		attributeSetters.put("emailAddressVerified", (BiConsumer<User, Boolean>)User::setEmailAddressVerified);
 		attributeGetters.put("status", User::getStatus);
-		attributeSetters.put("status", User::setStatus);
+		attributeSetters.put("status", (BiConsumer<User, Integer>)User::setStatus);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

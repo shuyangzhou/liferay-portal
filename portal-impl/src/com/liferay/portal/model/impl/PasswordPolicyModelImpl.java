@@ -296,115 +296,81 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 
 	static {
 		Map<String, Function<PasswordPolicy, Object>> attributeGetters = new LinkedHashMap<String, Function<PasswordPolicy, Object>>();
-		Map<String, BiConsumer<PasswordPolicy, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<PasswordPolicy, Object>>();
+		Map<String, BiConsumer<PasswordPolicy, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<PasswordPolicy, ?>>();
 
 		attributeGetters.put("mvccVersion", PasswordPolicy::getMvccVersion);
-		attributeSetters.put("mvccVersion", PasswordPolicy::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<PasswordPolicy, Long>)PasswordPolicy::setMvccVersion);
 		attributeGetters.put("uuid", PasswordPolicy::getUuid);
-		attributeSetters.put("uuid", PasswordPolicy::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<PasswordPolicy, String>)PasswordPolicy::setUuid);
 		attributeGetters.put("passwordPolicyId", PasswordPolicy::getPasswordPolicyId);
-		attributeSetters.put("passwordPolicyId", PasswordPolicy::setPasswordPolicyId);
-
+		attributeSetters.put("passwordPolicyId", (BiConsumer<PasswordPolicy, Long>)PasswordPolicy::setPasswordPolicyId);
 		attributeGetters.put("companyId", PasswordPolicy::getCompanyId);
-		attributeSetters.put("companyId", PasswordPolicy::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<PasswordPolicy, Long>)PasswordPolicy::setCompanyId);
 		attributeGetters.put("userId", PasswordPolicy::getUserId);
-		attributeSetters.put("userId", PasswordPolicy::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<PasswordPolicy, Long>)PasswordPolicy::setUserId);
 		attributeGetters.put("userName", PasswordPolicy::getUserName);
-		attributeSetters.put("userName", PasswordPolicy::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<PasswordPolicy, String>)PasswordPolicy::setUserName);
 		attributeGetters.put("createDate", PasswordPolicy::getCreateDate);
-		attributeSetters.put("createDate", PasswordPolicy::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<PasswordPolicy, Date>)PasswordPolicy::setCreateDate);
 		attributeGetters.put("modifiedDate", PasswordPolicy::getModifiedDate);
-		attributeSetters.put("modifiedDate", PasswordPolicy::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<PasswordPolicy, Date>)PasswordPolicy::setModifiedDate);
 		attributeGetters.put("defaultPolicy", PasswordPolicy::getDefaultPolicy);
-		attributeSetters.put("defaultPolicy", PasswordPolicy::setDefaultPolicy);
-
+		attributeSetters.put("defaultPolicy", (BiConsumer<PasswordPolicy, Boolean>)PasswordPolicy::setDefaultPolicy);
 		attributeGetters.put("name", PasswordPolicy::getName);
-		attributeSetters.put("name", PasswordPolicy::setName);
-
+		attributeSetters.put("name", (BiConsumer<PasswordPolicy, String>)PasswordPolicy::setName);
 		attributeGetters.put("description", PasswordPolicy::getDescription);
-		attributeSetters.put("description", PasswordPolicy::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<PasswordPolicy, String>)PasswordPolicy::setDescription);
 		attributeGetters.put("changeable", PasswordPolicy::getChangeable);
-		attributeSetters.put("changeable", PasswordPolicy::setChangeable);
-
+		attributeSetters.put("changeable", (BiConsumer<PasswordPolicy, Boolean>)PasswordPolicy::setChangeable);
 		attributeGetters.put("changeRequired", PasswordPolicy::getChangeRequired);
-		attributeSetters.put("changeRequired", PasswordPolicy::setChangeRequired);
-
+		attributeSetters.put("changeRequired", (BiConsumer<PasswordPolicy, Boolean>)PasswordPolicy::setChangeRequired);
 		attributeGetters.put("minAge", PasswordPolicy::getMinAge);
-		attributeSetters.put("minAge", PasswordPolicy::setMinAge);
-
+		attributeSetters.put("minAge", (BiConsumer<PasswordPolicy, Long>)PasswordPolicy::setMinAge);
 		attributeGetters.put("checkSyntax", PasswordPolicy::getCheckSyntax);
-		attributeSetters.put("checkSyntax", PasswordPolicy::setCheckSyntax);
-
+		attributeSetters.put("checkSyntax", (BiConsumer<PasswordPolicy, Boolean>)PasswordPolicy::setCheckSyntax);
 		attributeGetters.put("allowDictionaryWords", PasswordPolicy::getAllowDictionaryWords);
-		attributeSetters.put("allowDictionaryWords", PasswordPolicy::setAllowDictionaryWords);
-
+		attributeSetters.put("allowDictionaryWords", (BiConsumer<PasswordPolicy, Boolean>)PasswordPolicy::setAllowDictionaryWords);
 		attributeGetters.put("minAlphanumeric", PasswordPolicy::getMinAlphanumeric);
-		attributeSetters.put("minAlphanumeric", PasswordPolicy::setMinAlphanumeric);
-
+		attributeSetters.put("minAlphanumeric", (BiConsumer<PasswordPolicy, Integer>)PasswordPolicy::setMinAlphanumeric);
 		attributeGetters.put("minLength", PasswordPolicy::getMinLength);
-		attributeSetters.put("minLength", PasswordPolicy::setMinLength);
-
+		attributeSetters.put("minLength", (BiConsumer<PasswordPolicy, Integer>)PasswordPolicy::setMinLength);
 		attributeGetters.put("minLowerCase", PasswordPolicy::getMinLowerCase);
-		attributeSetters.put("minLowerCase", PasswordPolicy::setMinLowerCase);
-
+		attributeSetters.put("minLowerCase", (BiConsumer<PasswordPolicy, Integer>)PasswordPolicy::setMinLowerCase);
 		attributeGetters.put("minNumbers", PasswordPolicy::getMinNumbers);
-		attributeSetters.put("minNumbers", PasswordPolicy::setMinNumbers);
-
+		attributeSetters.put("minNumbers", (BiConsumer<PasswordPolicy, Integer>)PasswordPolicy::setMinNumbers);
 		attributeGetters.put("minSymbols", PasswordPolicy::getMinSymbols);
-		attributeSetters.put("minSymbols", PasswordPolicy::setMinSymbols);
-
+		attributeSetters.put("minSymbols", (BiConsumer<PasswordPolicy, Integer>)PasswordPolicy::setMinSymbols);
 		attributeGetters.put("minUpperCase", PasswordPolicy::getMinUpperCase);
-		attributeSetters.put("minUpperCase", PasswordPolicy::setMinUpperCase);
-
+		attributeSetters.put("minUpperCase", (BiConsumer<PasswordPolicy, Integer>)PasswordPolicy::setMinUpperCase);
 		attributeGetters.put("regex", PasswordPolicy::getRegex);
-		attributeSetters.put("regex", PasswordPolicy::setRegex);
-
+		attributeSetters.put("regex", (BiConsumer<PasswordPolicy, String>)PasswordPolicy::setRegex);
 		attributeGetters.put("history", PasswordPolicy::getHistory);
-		attributeSetters.put("history", PasswordPolicy::setHistory);
-
+		attributeSetters.put("history", (BiConsumer<PasswordPolicy, Boolean>)PasswordPolicy::setHistory);
 		attributeGetters.put("historyCount", PasswordPolicy::getHistoryCount);
-		attributeSetters.put("historyCount", PasswordPolicy::setHistoryCount);
-
+		attributeSetters.put("historyCount", (BiConsumer<PasswordPolicy, Integer>)PasswordPolicy::setHistoryCount);
 		attributeGetters.put("expireable", PasswordPolicy::getExpireable);
-		attributeSetters.put("expireable", PasswordPolicy::setExpireable);
-
+		attributeSetters.put("expireable", (BiConsumer<PasswordPolicy, Boolean>)PasswordPolicy::setExpireable);
 		attributeGetters.put("maxAge", PasswordPolicy::getMaxAge);
-		attributeSetters.put("maxAge", PasswordPolicy::setMaxAge);
-
+		attributeSetters.put("maxAge", (BiConsumer<PasswordPolicy, Long>)PasswordPolicy::setMaxAge);
 		attributeGetters.put("warningTime", PasswordPolicy::getWarningTime);
-		attributeSetters.put("warningTime", PasswordPolicy::setWarningTime);
-
+		attributeSetters.put("warningTime", (BiConsumer<PasswordPolicy, Long>)PasswordPolicy::setWarningTime);
 		attributeGetters.put("graceLimit", PasswordPolicy::getGraceLimit);
-		attributeSetters.put("graceLimit", PasswordPolicy::setGraceLimit);
-
+		attributeSetters.put("graceLimit", (BiConsumer<PasswordPolicy, Integer>)PasswordPolicy::setGraceLimit);
 		attributeGetters.put("lockout", PasswordPolicy::getLockout);
-		attributeSetters.put("lockout", PasswordPolicy::setLockout);
-
+		attributeSetters.put("lockout", (BiConsumer<PasswordPolicy, Boolean>)PasswordPolicy::setLockout);
 		attributeGetters.put("maxFailure", PasswordPolicy::getMaxFailure);
-		attributeSetters.put("maxFailure", PasswordPolicy::setMaxFailure);
-
+		attributeSetters.put("maxFailure", (BiConsumer<PasswordPolicy, Integer>)PasswordPolicy::setMaxFailure);
 		attributeGetters.put("lockoutDuration", PasswordPolicy::getLockoutDuration);
-		attributeSetters.put("lockoutDuration", PasswordPolicy::setLockoutDuration);
-
+		attributeSetters.put("lockoutDuration", (BiConsumer<PasswordPolicy, Long>)PasswordPolicy::setLockoutDuration);
 		attributeGetters.put("requireUnlock", PasswordPolicy::getRequireUnlock);
-		attributeSetters.put("requireUnlock", PasswordPolicy::setRequireUnlock);
-
+		attributeSetters.put("requireUnlock", (BiConsumer<PasswordPolicy, Boolean>)PasswordPolicy::setRequireUnlock);
 		attributeGetters.put("resetFailureCount", PasswordPolicy::getResetFailureCount);
-		attributeSetters.put("resetFailureCount", PasswordPolicy::setResetFailureCount);
-
+		attributeSetters.put("resetFailureCount", (BiConsumer<PasswordPolicy, Long>)PasswordPolicy::setResetFailureCount);
 		attributeGetters.put("resetTicketMaxAge", PasswordPolicy::getResetTicketMaxAge);
-		attributeSetters.put("resetTicketMaxAge", PasswordPolicy::setResetTicketMaxAge);
+		attributeSetters.put("resetTicketMaxAge", (BiConsumer<PasswordPolicy, Long>)PasswordPolicy::setResetTicketMaxAge);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

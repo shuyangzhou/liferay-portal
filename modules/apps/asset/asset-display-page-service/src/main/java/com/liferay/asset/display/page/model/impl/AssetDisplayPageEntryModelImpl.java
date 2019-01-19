@@ -178,49 +178,37 @@ public class AssetDisplayPageEntryModelImpl extends BaseModelImpl<AssetDisplayPa
 
 	static {
 		Map<String, Function<AssetDisplayPageEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<AssetDisplayPageEntry, Object>>();
-		Map<String, BiConsumer<AssetDisplayPageEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetDisplayPageEntry, Object>>();
+		Map<String, BiConsumer<AssetDisplayPageEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetDisplayPageEntry, ?>>();
 
 		attributeGetters.put("uuid", AssetDisplayPageEntry::getUuid);
-		attributeSetters.put("uuid", AssetDisplayPageEntry::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<AssetDisplayPageEntry, String>)AssetDisplayPageEntry::setUuid);
 		attributeGetters.put("assetDisplayPageEntryId", AssetDisplayPageEntry::getAssetDisplayPageEntryId);
-		attributeSetters.put("assetDisplayPageEntryId", AssetDisplayPageEntry::setAssetDisplayPageEntryId);
-
+		attributeSetters.put("assetDisplayPageEntryId", (BiConsumer<AssetDisplayPageEntry, Long>)AssetDisplayPageEntry::setAssetDisplayPageEntryId);
 		attributeGetters.put("groupId", AssetDisplayPageEntry::getGroupId);
-		attributeSetters.put("groupId", AssetDisplayPageEntry::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<AssetDisplayPageEntry, Long>)AssetDisplayPageEntry::setGroupId);
 		attributeGetters.put("companyId", AssetDisplayPageEntry::getCompanyId);
-		attributeSetters.put("companyId", AssetDisplayPageEntry::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<AssetDisplayPageEntry, Long>)AssetDisplayPageEntry::setCompanyId);
 		attributeGetters.put("userId", AssetDisplayPageEntry::getUserId);
-		attributeSetters.put("userId", AssetDisplayPageEntry::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<AssetDisplayPageEntry, Long>)AssetDisplayPageEntry::setUserId);
 		attributeGetters.put("userName", AssetDisplayPageEntry::getUserName);
-		attributeSetters.put("userName", AssetDisplayPageEntry::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<AssetDisplayPageEntry, String>)AssetDisplayPageEntry::setUserName);
 		attributeGetters.put("createDate", AssetDisplayPageEntry::getCreateDate);
-		attributeSetters.put("createDate", AssetDisplayPageEntry::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<AssetDisplayPageEntry, Date>)AssetDisplayPageEntry::setCreateDate);
 		attributeGetters.put("modifiedDate", AssetDisplayPageEntry::getModifiedDate);
-		attributeSetters.put("modifiedDate", AssetDisplayPageEntry::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<AssetDisplayPageEntry, Date>)AssetDisplayPageEntry::setModifiedDate);
 		attributeGetters.put("classNameId", AssetDisplayPageEntry::getClassNameId);
-		attributeSetters.put("classNameId", AssetDisplayPageEntry::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<AssetDisplayPageEntry, Long>)AssetDisplayPageEntry::setClassNameId);
 		attributeGetters.put("classPK", AssetDisplayPageEntry::getClassPK);
-		attributeSetters.put("classPK", AssetDisplayPageEntry::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<AssetDisplayPageEntry, Long>)AssetDisplayPageEntry::setClassPK);
 		attributeGetters.put("layoutPageTemplateEntryId", AssetDisplayPageEntry::getLayoutPageTemplateEntryId);
-		attributeSetters.put("layoutPageTemplateEntryId", AssetDisplayPageEntry::setLayoutPageTemplateEntryId);
-
+		attributeSetters.put("layoutPageTemplateEntryId", (BiConsumer<AssetDisplayPageEntry, Long>)AssetDisplayPageEntry::setLayoutPageTemplateEntryId);
 		attributeGetters.put("type", AssetDisplayPageEntry::getType);
-		attributeSetters.put("type", AssetDisplayPageEntry::setType);
-
+		attributeSetters.put("type", (BiConsumer<AssetDisplayPageEntry, Integer>)AssetDisplayPageEntry::setType);
 		attributeGetters.put("plid", AssetDisplayPageEntry::getPlid);
-		attributeSetters.put("plid", AssetDisplayPageEntry::setPlid);
+		attributeSetters.put("plid", (BiConsumer<AssetDisplayPageEntry, Long>)AssetDisplayPageEntry::setPlid);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

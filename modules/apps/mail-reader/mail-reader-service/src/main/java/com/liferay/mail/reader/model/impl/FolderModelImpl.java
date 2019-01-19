@@ -163,40 +163,31 @@ public class FolderModelImpl extends BaseModelImpl<Folder>
 
 	static {
 		Map<String, Function<Folder, Object>> attributeGetters = new LinkedHashMap<String, Function<Folder, Object>>();
-		Map<String, BiConsumer<Folder, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Folder, Object>>();
+		Map<String, BiConsumer<Folder, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Folder, ?>>();
 
 		attributeGetters.put("folderId", Folder::getFolderId);
-		attributeSetters.put("folderId", Folder::setFolderId);
-
+		attributeSetters.put("folderId", (BiConsumer<Folder, Long>)Folder::setFolderId);
 		attributeGetters.put("companyId", Folder::getCompanyId);
-		attributeSetters.put("companyId", Folder::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<Folder, Long>)Folder::setCompanyId);
 		attributeGetters.put("userId", Folder::getUserId);
-		attributeSetters.put("userId", Folder::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<Folder, Long>)Folder::setUserId);
 		attributeGetters.put("userName", Folder::getUserName);
-		attributeSetters.put("userName", Folder::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<Folder, String>)Folder::setUserName);
 		attributeGetters.put("createDate", Folder::getCreateDate);
-		attributeSetters.put("createDate", Folder::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<Folder, Date>)Folder::setCreateDate);
 		attributeGetters.put("modifiedDate", Folder::getModifiedDate);
-		attributeSetters.put("modifiedDate", Folder::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<Folder, Date>)Folder::setModifiedDate);
 		attributeGetters.put("accountId", Folder::getAccountId);
-		attributeSetters.put("accountId", Folder::setAccountId);
-
+		attributeSetters.put("accountId", (BiConsumer<Folder, Long>)Folder::setAccountId);
 		attributeGetters.put("fullName", Folder::getFullName);
-		attributeSetters.put("fullName", Folder::setFullName);
-
+		attributeSetters.put("fullName", (BiConsumer<Folder, String>)Folder::setFullName);
 		attributeGetters.put("displayName", Folder::getDisplayName);
-		attributeSetters.put("displayName", Folder::setDisplayName);
-
+		attributeSetters.put("displayName", (BiConsumer<Folder, String>)Folder::setDisplayName);
 		attributeGetters.put("remoteMessageCount", Folder::getRemoteMessageCount);
-		attributeSetters.put("remoteMessageCount", Folder::setRemoteMessageCount);
+		attributeSetters.put("remoteMessageCount", (BiConsumer<Folder, Integer>)Folder::setRemoteMessageCount);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

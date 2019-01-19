@@ -199,31 +199,25 @@ public class ExpandoColumnModelImpl extends BaseModelImpl<ExpandoColumn>
 
 	static {
 		Map<String, Function<ExpandoColumn, Object>> attributeGetters = new LinkedHashMap<String, Function<ExpandoColumn, Object>>();
-		Map<String, BiConsumer<ExpandoColumn, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<ExpandoColumn, Object>>();
+		Map<String, BiConsumer<ExpandoColumn, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<ExpandoColumn, ?>>();
 
 		attributeGetters.put("columnId", ExpandoColumn::getColumnId);
-		attributeSetters.put("columnId", ExpandoColumn::setColumnId);
-
+		attributeSetters.put("columnId", (BiConsumer<ExpandoColumn, Long>)ExpandoColumn::setColumnId);
 		attributeGetters.put("companyId", ExpandoColumn::getCompanyId);
-		attributeSetters.put("companyId", ExpandoColumn::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<ExpandoColumn, Long>)ExpandoColumn::setCompanyId);
 		attributeGetters.put("tableId", ExpandoColumn::getTableId);
-		attributeSetters.put("tableId", ExpandoColumn::setTableId);
-
+		attributeSetters.put("tableId", (BiConsumer<ExpandoColumn, Long>)ExpandoColumn::setTableId);
 		attributeGetters.put("name", ExpandoColumn::getName);
-		attributeSetters.put("name", ExpandoColumn::setName);
-
+		attributeSetters.put("name", (BiConsumer<ExpandoColumn, String>)ExpandoColumn::setName);
 		attributeGetters.put("type", ExpandoColumn::getType);
-		attributeSetters.put("type", ExpandoColumn::setType);
-
+		attributeSetters.put("type", (BiConsumer<ExpandoColumn, Integer>)ExpandoColumn::setType);
 		attributeGetters.put("defaultData", ExpandoColumn::getDefaultData);
-		attributeSetters.put("defaultData", ExpandoColumn::setDefaultData);
-
+		attributeSetters.put("defaultData", (BiConsumer<ExpandoColumn, String>)ExpandoColumn::setDefaultData);
 		attributeGetters.put("typeSettings", ExpandoColumn::getTypeSettings);
-		attributeSetters.put("typeSettings", ExpandoColumn::setTypeSettings);
+		attributeSetters.put("typeSettings", (BiConsumer<ExpandoColumn, String>)ExpandoColumn::setTypeSettings);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

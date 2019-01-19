@@ -241,58 +241,43 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 
 	static {
 		Map<String, Function<Repository, Object>> attributeGetters = new LinkedHashMap<String, Function<Repository, Object>>();
-		Map<String, BiConsumer<Repository, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Repository, Object>>();
+		Map<String, BiConsumer<Repository, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Repository, ?>>();
 
 		attributeGetters.put("mvccVersion", Repository::getMvccVersion);
-		attributeSetters.put("mvccVersion", Repository::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<Repository, Long>)Repository::setMvccVersion);
 		attributeGetters.put("uuid", Repository::getUuid);
-		attributeSetters.put("uuid", Repository::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<Repository, String>)Repository::setUuid);
 		attributeGetters.put("repositoryId", Repository::getRepositoryId);
-		attributeSetters.put("repositoryId", Repository::setRepositoryId);
-
+		attributeSetters.put("repositoryId", (BiConsumer<Repository, Long>)Repository::setRepositoryId);
 		attributeGetters.put("groupId", Repository::getGroupId);
-		attributeSetters.put("groupId", Repository::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<Repository, Long>)Repository::setGroupId);
 		attributeGetters.put("companyId", Repository::getCompanyId);
-		attributeSetters.put("companyId", Repository::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<Repository, Long>)Repository::setCompanyId);
 		attributeGetters.put("userId", Repository::getUserId);
-		attributeSetters.put("userId", Repository::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<Repository, Long>)Repository::setUserId);
 		attributeGetters.put("userName", Repository::getUserName);
-		attributeSetters.put("userName", Repository::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<Repository, String>)Repository::setUserName);
 		attributeGetters.put("createDate", Repository::getCreateDate);
-		attributeSetters.put("createDate", Repository::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<Repository, Date>)Repository::setCreateDate);
 		attributeGetters.put("modifiedDate", Repository::getModifiedDate);
-		attributeSetters.put("modifiedDate", Repository::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<Repository, Date>)Repository::setModifiedDate);
 		attributeGetters.put("classNameId", Repository::getClassNameId);
-		attributeSetters.put("classNameId", Repository::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<Repository, Long>)Repository::setClassNameId);
 		attributeGetters.put("name", Repository::getName);
-		attributeSetters.put("name", Repository::setName);
-
+		attributeSetters.put("name", (BiConsumer<Repository, String>)Repository::setName);
 		attributeGetters.put("description", Repository::getDescription);
-		attributeSetters.put("description", Repository::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<Repository, String>)Repository::setDescription);
 		attributeGetters.put("portletId", Repository::getPortletId);
-		attributeSetters.put("portletId", Repository::setPortletId);
-
+		attributeSetters.put("portletId", (BiConsumer<Repository, String>)Repository::setPortletId);
 		attributeGetters.put("typeSettings", Repository::getTypeSettings);
-		attributeSetters.put("typeSettings", Repository::setTypeSettings);
-
+		attributeSetters.put("typeSettings", (BiConsumer<Repository, String>)Repository::setTypeSettings);
 		attributeGetters.put("dlFolderId", Repository::getDlFolderId);
-		attributeSetters.put("dlFolderId", Repository::setDlFolderId);
-
+		attributeSetters.put("dlFolderId", (BiConsumer<Repository, Long>)Repository::setDlFolderId);
 		attributeGetters.put("lastPublishDate", Repository::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", Repository::setLastPublishDate);
+		attributeSetters.put("lastPublishDate", (BiConsumer<Repository, Date>)Repository::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

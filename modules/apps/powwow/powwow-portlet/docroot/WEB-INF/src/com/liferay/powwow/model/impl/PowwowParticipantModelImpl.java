@@ -229,49 +229,37 @@ public class PowwowParticipantModelImpl extends BaseModelImpl<PowwowParticipant>
 
 	static {
 		Map<String, Function<PowwowParticipant, Object>> attributeGetters = new LinkedHashMap<String, Function<PowwowParticipant, Object>>();
-		Map<String, BiConsumer<PowwowParticipant, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<PowwowParticipant, Object>>();
+		Map<String, BiConsumer<PowwowParticipant, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<PowwowParticipant, ?>>();
 
 		attributeGetters.put("powwowParticipantId", PowwowParticipant::getPowwowParticipantId);
-		attributeSetters.put("powwowParticipantId", PowwowParticipant::setPowwowParticipantId);
-
+		attributeSetters.put("powwowParticipantId", (BiConsumer<PowwowParticipant, Long>)PowwowParticipant::setPowwowParticipantId);
 		attributeGetters.put("groupId", PowwowParticipant::getGroupId);
-		attributeSetters.put("groupId", PowwowParticipant::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<PowwowParticipant, Long>)PowwowParticipant::setGroupId);
 		attributeGetters.put("companyId", PowwowParticipant::getCompanyId);
-		attributeSetters.put("companyId", PowwowParticipant::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<PowwowParticipant, Long>)PowwowParticipant::setCompanyId);
 		attributeGetters.put("userId", PowwowParticipant::getUserId);
-		attributeSetters.put("userId", PowwowParticipant::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<PowwowParticipant, Long>)PowwowParticipant::setUserId);
 		attributeGetters.put("userName", PowwowParticipant::getUserName);
-		attributeSetters.put("userName", PowwowParticipant::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<PowwowParticipant, String>)PowwowParticipant::setUserName);
 		attributeGetters.put("createDate", PowwowParticipant::getCreateDate);
-		attributeSetters.put("createDate", PowwowParticipant::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<PowwowParticipant, Date>)PowwowParticipant::setCreateDate);
 		attributeGetters.put("modifiedDate", PowwowParticipant::getModifiedDate);
-		attributeSetters.put("modifiedDate", PowwowParticipant::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<PowwowParticipant, Date>)PowwowParticipant::setModifiedDate);
 		attributeGetters.put("powwowMeetingId", PowwowParticipant::getPowwowMeetingId);
-		attributeSetters.put("powwowMeetingId", PowwowParticipant::setPowwowMeetingId);
-
+		attributeSetters.put("powwowMeetingId", (BiConsumer<PowwowParticipant, Long>)PowwowParticipant::setPowwowMeetingId);
 		attributeGetters.put("name", PowwowParticipant::getName);
-		attributeSetters.put("name", PowwowParticipant::setName);
-
+		attributeSetters.put("name", (BiConsumer<PowwowParticipant, String>)PowwowParticipant::setName);
 		attributeGetters.put("participantUserId", PowwowParticipant::getParticipantUserId);
-		attributeSetters.put("participantUserId", PowwowParticipant::setParticipantUserId);
-
+		attributeSetters.put("participantUserId", (BiConsumer<PowwowParticipant, Long>)PowwowParticipant::setParticipantUserId);
 		attributeGetters.put("emailAddress", PowwowParticipant::getEmailAddress);
-		attributeSetters.put("emailAddress", PowwowParticipant::setEmailAddress);
-
+		attributeSetters.put("emailAddress", (BiConsumer<PowwowParticipant, String>)PowwowParticipant::setEmailAddress);
 		attributeGetters.put("type", PowwowParticipant::getType);
-		attributeSetters.put("type", PowwowParticipant::setType);
-
+		attributeSetters.put("type", (BiConsumer<PowwowParticipant, Integer>)PowwowParticipant::setType);
 		attributeGetters.put("status", PowwowParticipant::getStatus);
-		attributeSetters.put("status", PowwowParticipant::setStatus);
+		attributeSetters.put("status", (BiConsumer<PowwowParticipant, Integer>)PowwowParticipant::setStatus);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

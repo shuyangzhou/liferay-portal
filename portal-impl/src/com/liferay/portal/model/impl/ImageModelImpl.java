@@ -205,34 +205,27 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 
 	static {
 		Map<String, Function<Image, Object>> attributeGetters = new LinkedHashMap<String, Function<Image, Object>>();
-		Map<String, BiConsumer<Image, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Image, Object>>();
+		Map<String, BiConsumer<Image, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Image, ?>>();
 
 		attributeGetters.put("mvccVersion", Image::getMvccVersion);
-		attributeSetters.put("mvccVersion", Image::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<Image, Long>)Image::setMvccVersion);
 		attributeGetters.put("imageId", Image::getImageId);
-		attributeSetters.put("imageId", Image::setImageId);
-
+		attributeSetters.put("imageId", (BiConsumer<Image, Long>)Image::setImageId);
 		attributeGetters.put("companyId", Image::getCompanyId);
-		attributeSetters.put("companyId", Image::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<Image, Long>)Image::setCompanyId);
 		attributeGetters.put("modifiedDate", Image::getModifiedDate);
-		attributeSetters.put("modifiedDate", Image::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<Image, Date>)Image::setModifiedDate);
 		attributeGetters.put("type", Image::getType);
-		attributeSetters.put("type", Image::setType);
-
+		attributeSetters.put("type", (BiConsumer<Image, String>)Image::setType);
 		attributeGetters.put("height", Image::getHeight);
-		attributeSetters.put("height", Image::setHeight);
-
+		attributeSetters.put("height", (BiConsumer<Image, Integer>)Image::setHeight);
 		attributeGetters.put("width", Image::getWidth);
-		attributeSetters.put("width", Image::setWidth);
-
+		attributeSetters.put("width", (BiConsumer<Image, Integer>)Image::setWidth);
 		attributeGetters.put("size", Image::getSize);
-		attributeSetters.put("size", Image::setSize);
+		attributeSetters.put("size", (BiConsumer<Image, Integer>)Image::setSize);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

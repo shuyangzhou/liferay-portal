@@ -166,7 +166,7 @@ public class TestEntityModelImpl extends BaseModelImpl<TestEntity>
 
 	static {
 		Map<String, Function<TestEntity, Object>> attributeGetters = new LinkedHashMap<String, Function<TestEntity, Object>>();
-		Map<String, BiConsumer<TestEntity, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<TestEntity, Object>>();
+		Map<String, BiConsumer<TestEntity, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<TestEntity, ?>>();
 
 		attributeGetters.put(
 			"id",
@@ -188,7 +188,6 @@ public class TestEntityModelImpl extends BaseModelImpl<TestEntity>
 				}
 
 			});
-
 		attributeGetters.put(
 			"data",
 			new Function<TestEntity, Object>() {
@@ -211,7 +210,7 @@ public class TestEntityModelImpl extends BaseModelImpl<TestEntity>
 			});
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

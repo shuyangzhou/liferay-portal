@@ -202,7 +202,7 @@ public class LVEntryModelImpl extends BaseModelImpl<LVEntry>
 
 	static {
 		Map<String, Function<LVEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<LVEntry, Object>>();
-		Map<String, BiConsumer<LVEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<LVEntry, Object>>();
+		Map<String, BiConsumer<LVEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<LVEntry, ?>>();
 
 		attributeGetters.put(
 			"mvccVersion",
@@ -224,7 +224,6 @@ public class LVEntryModelImpl extends BaseModelImpl<LVEntry>
 				}
 
 			});
-
 		attributeGetters.put(
 			"headId",
 			new Function<LVEntry, Object>() {
@@ -245,7 +244,6 @@ public class LVEntryModelImpl extends BaseModelImpl<LVEntry>
 				}
 
 			});
-
 		attributeGetters.put(
 			"defaultLanguageId",
 			new Function<LVEntry, Object>() {
@@ -266,7 +264,6 @@ public class LVEntryModelImpl extends BaseModelImpl<LVEntry>
 				}
 
 			});
-
 		attributeGetters.put(
 			"lvEntryId",
 			new Function<LVEntry, Object>() {
@@ -287,7 +284,6 @@ public class LVEntryModelImpl extends BaseModelImpl<LVEntry>
 				}
 
 			});
-
 		attributeGetters.put(
 			"groupId",
 			new Function<LVEntry, Object>() {
@@ -310,7 +306,7 @@ public class LVEntryModelImpl extends BaseModelImpl<LVEntry>
 			});
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

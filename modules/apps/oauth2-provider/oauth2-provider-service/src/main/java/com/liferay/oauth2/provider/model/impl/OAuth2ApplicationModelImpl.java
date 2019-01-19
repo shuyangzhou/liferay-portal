@@ -242,64 +242,47 @@ public class OAuth2ApplicationModelImpl extends BaseModelImpl<OAuth2Application>
 
 	static {
 		Map<String, Function<OAuth2Application, Object>> attributeGetters = new LinkedHashMap<String, Function<OAuth2Application, Object>>();
-		Map<String, BiConsumer<OAuth2Application, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<OAuth2Application, Object>>();
+		Map<String, BiConsumer<OAuth2Application, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<OAuth2Application, ?>>();
 
 		attributeGetters.put("oAuth2ApplicationId", OAuth2Application::getOAuth2ApplicationId);
-		attributeSetters.put("oAuth2ApplicationId", OAuth2Application::setOAuth2ApplicationId);
-
+		attributeSetters.put("oAuth2ApplicationId", (BiConsumer<OAuth2Application, Long>)OAuth2Application::setOAuth2ApplicationId);
 		attributeGetters.put("companyId", OAuth2Application::getCompanyId);
-		attributeSetters.put("companyId", OAuth2Application::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<OAuth2Application, Long>)OAuth2Application::setCompanyId);
 		attributeGetters.put("userId", OAuth2Application::getUserId);
-		attributeSetters.put("userId", OAuth2Application::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<OAuth2Application, Long>)OAuth2Application::setUserId);
 		attributeGetters.put("userName", OAuth2Application::getUserName);
-		attributeSetters.put("userName", OAuth2Application::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<OAuth2Application, String>)OAuth2Application::setUserName);
 		attributeGetters.put("createDate", OAuth2Application::getCreateDate);
-		attributeSetters.put("createDate", OAuth2Application::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<OAuth2Application, Date>)OAuth2Application::setCreateDate);
 		attributeGetters.put("modifiedDate", OAuth2Application::getModifiedDate);
-		attributeSetters.put("modifiedDate", OAuth2Application::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<OAuth2Application, Date>)OAuth2Application::setModifiedDate);
 		attributeGetters.put("oAuth2ApplicationScopeAliasesId", OAuth2Application::getOAuth2ApplicationScopeAliasesId);
-		attributeSetters.put("oAuth2ApplicationScopeAliasesId", OAuth2Application::setOAuth2ApplicationScopeAliasesId);
-
+		attributeSetters.put("oAuth2ApplicationScopeAliasesId", (BiConsumer<OAuth2Application, Long>)OAuth2Application::setOAuth2ApplicationScopeAliasesId);
 		attributeGetters.put("allowedGrantTypes", OAuth2Application::getAllowedGrantTypes);
-		attributeSetters.put("allowedGrantTypes", OAuth2Application::setAllowedGrantTypes);
-
+		attributeSetters.put("allowedGrantTypes", (BiConsumer<OAuth2Application, String>)OAuth2Application::setAllowedGrantTypes);
 		attributeGetters.put("clientId", OAuth2Application::getClientId);
-		attributeSetters.put("clientId", OAuth2Application::setClientId);
-
+		attributeSetters.put("clientId", (BiConsumer<OAuth2Application, String>)OAuth2Application::setClientId);
 		attributeGetters.put("clientProfile", OAuth2Application::getClientProfile);
-		attributeSetters.put("clientProfile", OAuth2Application::setClientProfile);
-
+		attributeSetters.put("clientProfile", (BiConsumer<OAuth2Application, Integer>)OAuth2Application::setClientProfile);
 		attributeGetters.put("clientSecret", OAuth2Application::getClientSecret);
-		attributeSetters.put("clientSecret", OAuth2Application::setClientSecret);
-
+		attributeSetters.put("clientSecret", (BiConsumer<OAuth2Application, String>)OAuth2Application::setClientSecret);
 		attributeGetters.put("description", OAuth2Application::getDescription);
-		attributeSetters.put("description", OAuth2Application::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<OAuth2Application, String>)OAuth2Application::setDescription);
 		attributeGetters.put("features", OAuth2Application::getFeatures);
-		attributeSetters.put("features", OAuth2Application::setFeatures);
-
+		attributeSetters.put("features", (BiConsumer<OAuth2Application, String>)OAuth2Application::setFeatures);
 		attributeGetters.put("homePageURL", OAuth2Application::getHomePageURL);
-		attributeSetters.put("homePageURL", OAuth2Application::setHomePageURL);
-
+		attributeSetters.put("homePageURL", (BiConsumer<OAuth2Application, String>)OAuth2Application::setHomePageURL);
 		attributeGetters.put("iconFileEntryId", OAuth2Application::getIconFileEntryId);
-		attributeSetters.put("iconFileEntryId", OAuth2Application::setIconFileEntryId);
-
+		attributeSetters.put("iconFileEntryId", (BiConsumer<OAuth2Application, Long>)OAuth2Application::setIconFileEntryId);
 		attributeGetters.put("name", OAuth2Application::getName);
-		attributeSetters.put("name", OAuth2Application::setName);
-
+		attributeSetters.put("name", (BiConsumer<OAuth2Application, String>)OAuth2Application::setName);
 		attributeGetters.put("privacyPolicyURL", OAuth2Application::getPrivacyPolicyURL);
-		attributeSetters.put("privacyPolicyURL", OAuth2Application::setPrivacyPolicyURL);
-
+		attributeSetters.put("privacyPolicyURL", (BiConsumer<OAuth2Application, String>)OAuth2Application::setPrivacyPolicyURL);
 		attributeGetters.put("redirectURIs", OAuth2Application::getRedirectURIs);
-		attributeSetters.put("redirectURIs", OAuth2Application::setRedirectURIs);
+		attributeSetters.put("redirectURIs", (BiConsumer<OAuth2Application, String>)OAuth2Application::setRedirectURIs);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

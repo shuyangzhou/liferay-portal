@@ -210,37 +210,29 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 
 	static {
 		Map<String, Function<Country, Object>> attributeGetters = new LinkedHashMap<String, Function<Country, Object>>();
-		Map<String, BiConsumer<Country, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Country, Object>>();
+		Map<String, BiConsumer<Country, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Country, ?>>();
 
 		attributeGetters.put("mvccVersion", Country::getMvccVersion);
-		attributeSetters.put("mvccVersion", Country::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<Country, Long>)Country::setMvccVersion);
 		attributeGetters.put("countryId", Country::getCountryId);
-		attributeSetters.put("countryId", Country::setCountryId);
-
+		attributeSetters.put("countryId", (BiConsumer<Country, Long>)Country::setCountryId);
 		attributeGetters.put("name", Country::getName);
-		attributeSetters.put("name", Country::setName);
-
+		attributeSetters.put("name", (BiConsumer<Country, String>)Country::setName);
 		attributeGetters.put("a2", Country::getA2);
-		attributeSetters.put("a2", Country::setA2);
-
+		attributeSetters.put("a2", (BiConsumer<Country, String>)Country::setA2);
 		attributeGetters.put("a3", Country::getA3);
-		attributeSetters.put("a3", Country::setA3);
-
+		attributeSetters.put("a3", (BiConsumer<Country, String>)Country::setA3);
 		attributeGetters.put("number", Country::getNumber);
-		attributeSetters.put("number", Country::setNumber);
-
+		attributeSetters.put("number", (BiConsumer<Country, String>)Country::setNumber);
 		attributeGetters.put("idd", Country::getIdd);
-		attributeSetters.put("idd", Country::setIdd);
-
+		attributeSetters.put("idd", (BiConsumer<Country, String>)Country::setIdd);
 		attributeGetters.put("zipRequired", Country::getZipRequired);
-		attributeSetters.put("zipRequired", Country::setZipRequired);
-
+		attributeSetters.put("zipRequired", (BiConsumer<Country, Boolean>)Country::setZipRequired);
 		attributeGetters.put("active", Country::getActive);
-		attributeSetters.put("active", Country::setActive);
+		attributeSetters.put("active", (BiConsumer<Country, Boolean>)Country::setActive);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

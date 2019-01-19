@@ -240,52 +240,39 @@ public class SegmentsEntryModelImpl extends BaseModelImpl<SegmentsEntry>
 
 	static {
 		Map<String, Function<SegmentsEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<SegmentsEntry, Object>>();
-		Map<String, BiConsumer<SegmentsEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SegmentsEntry, Object>>();
+		Map<String, BiConsumer<SegmentsEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<SegmentsEntry, ?>>();
 
 		attributeGetters.put("segmentsEntryId", SegmentsEntry::getSegmentsEntryId);
-		attributeSetters.put("segmentsEntryId", SegmentsEntry::setSegmentsEntryId);
-
+		attributeSetters.put("segmentsEntryId", (BiConsumer<SegmentsEntry, Long>)SegmentsEntry::setSegmentsEntryId);
 		attributeGetters.put("groupId", SegmentsEntry::getGroupId);
-		attributeSetters.put("groupId", SegmentsEntry::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<SegmentsEntry, Long>)SegmentsEntry::setGroupId);
 		attributeGetters.put("companyId", SegmentsEntry::getCompanyId);
-		attributeSetters.put("companyId", SegmentsEntry::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<SegmentsEntry, Long>)SegmentsEntry::setCompanyId);
 		attributeGetters.put("userId", SegmentsEntry::getUserId);
-		attributeSetters.put("userId", SegmentsEntry::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<SegmentsEntry, Long>)SegmentsEntry::setUserId);
 		attributeGetters.put("userName", SegmentsEntry::getUserName);
-		attributeSetters.put("userName", SegmentsEntry::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<SegmentsEntry, String>)SegmentsEntry::setUserName);
 		attributeGetters.put("createDate", SegmentsEntry::getCreateDate);
-		attributeSetters.put("createDate", SegmentsEntry::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<SegmentsEntry, Date>)SegmentsEntry::setCreateDate);
 		attributeGetters.put("modifiedDate", SegmentsEntry::getModifiedDate);
-		attributeSetters.put("modifiedDate", SegmentsEntry::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<SegmentsEntry, Date>)SegmentsEntry::setModifiedDate);
 		attributeGetters.put("name", SegmentsEntry::getName);
-		attributeSetters.put("name", SegmentsEntry::setName);
-
+		attributeSetters.put("name", (BiConsumer<SegmentsEntry, String>)SegmentsEntry::setName);
 		attributeGetters.put("description", SegmentsEntry::getDescription);
-		attributeSetters.put("description", SegmentsEntry::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<SegmentsEntry, String>)SegmentsEntry::setDescription);
 		attributeGetters.put("active", SegmentsEntry::getActive);
-		attributeSetters.put("active", SegmentsEntry::setActive);
-
+		attributeSetters.put("active", (BiConsumer<SegmentsEntry, Boolean>)SegmentsEntry::setActive);
 		attributeGetters.put("criteria", SegmentsEntry::getCriteria);
-		attributeSetters.put("criteria", SegmentsEntry::setCriteria);
-
+		attributeSetters.put("criteria", (BiConsumer<SegmentsEntry, String>)SegmentsEntry::setCriteria);
 		attributeGetters.put("key", SegmentsEntry::getKey);
-		attributeSetters.put("key", SegmentsEntry::setKey);
-
+		attributeSetters.put("key", (BiConsumer<SegmentsEntry, String>)SegmentsEntry::setKey);
 		attributeGetters.put("source", SegmentsEntry::getSource);
-		attributeSetters.put("source", SegmentsEntry::setSource);
-
+		attributeSetters.put("source", (BiConsumer<SegmentsEntry, String>)SegmentsEntry::setSource);
 		attributeGetters.put("type", SegmentsEntry::getType);
-		attributeSetters.put("type", SegmentsEntry::setType);
+		attributeSetters.put("type", (BiConsumer<SegmentsEntry, String>)SegmentsEntry::setType);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

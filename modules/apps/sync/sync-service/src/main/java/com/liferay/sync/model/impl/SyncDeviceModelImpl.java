@@ -228,46 +228,35 @@ public class SyncDeviceModelImpl extends BaseModelImpl<SyncDevice>
 
 	static {
 		Map<String, Function<SyncDevice, Object>> attributeGetters = new LinkedHashMap<String, Function<SyncDevice, Object>>();
-		Map<String, BiConsumer<SyncDevice, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<SyncDevice, Object>>();
+		Map<String, BiConsumer<SyncDevice, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<SyncDevice, ?>>();
 
 		attributeGetters.put("uuid", SyncDevice::getUuid);
-		attributeSetters.put("uuid", SyncDevice::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<SyncDevice, String>)SyncDevice::setUuid);
 		attributeGetters.put("syncDeviceId", SyncDevice::getSyncDeviceId);
-		attributeSetters.put("syncDeviceId", SyncDevice::setSyncDeviceId);
-
+		attributeSetters.put("syncDeviceId", (BiConsumer<SyncDevice, Long>)SyncDevice::setSyncDeviceId);
 		attributeGetters.put("companyId", SyncDevice::getCompanyId);
-		attributeSetters.put("companyId", SyncDevice::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<SyncDevice, Long>)SyncDevice::setCompanyId);
 		attributeGetters.put("userId", SyncDevice::getUserId);
-		attributeSetters.put("userId", SyncDevice::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<SyncDevice, Long>)SyncDevice::setUserId);
 		attributeGetters.put("userName", SyncDevice::getUserName);
-		attributeSetters.put("userName", SyncDevice::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<SyncDevice, String>)SyncDevice::setUserName);
 		attributeGetters.put("createDate", SyncDevice::getCreateDate);
-		attributeSetters.put("createDate", SyncDevice::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<SyncDevice, Date>)SyncDevice::setCreateDate);
 		attributeGetters.put("modifiedDate", SyncDevice::getModifiedDate);
-		attributeSetters.put("modifiedDate", SyncDevice::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<SyncDevice, Date>)SyncDevice::setModifiedDate);
 		attributeGetters.put("type", SyncDevice::getType);
-		attributeSetters.put("type", SyncDevice::setType);
-
+		attributeSetters.put("type", (BiConsumer<SyncDevice, String>)SyncDevice::setType);
 		attributeGetters.put("buildNumber", SyncDevice::getBuildNumber);
-		attributeSetters.put("buildNumber", SyncDevice::setBuildNumber);
-
+		attributeSetters.put("buildNumber", (BiConsumer<SyncDevice, Long>)SyncDevice::setBuildNumber);
 		attributeGetters.put("featureSet", SyncDevice::getFeatureSet);
-		attributeSetters.put("featureSet", SyncDevice::setFeatureSet);
-
+		attributeSetters.put("featureSet", (BiConsumer<SyncDevice, Integer>)SyncDevice::setFeatureSet);
 		attributeGetters.put("hostname", SyncDevice::getHostname);
-		attributeSetters.put("hostname", SyncDevice::setHostname);
-
+		attributeSetters.put("hostname", (BiConsumer<SyncDevice, String>)SyncDevice::setHostname);
 		attributeGetters.put("status", SyncDevice::getStatus);
-		attributeSetters.put("status", SyncDevice::setStatus);
+		attributeSetters.put("status", (BiConsumer<SyncDevice, Integer>)SyncDevice::setStatus);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

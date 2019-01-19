@@ -179,49 +179,37 @@ public class AssetEntryUsageModelImpl extends BaseModelImpl<AssetEntryUsage>
 
 	static {
 		Map<String, Function<AssetEntryUsage, Object>> attributeGetters = new LinkedHashMap<String, Function<AssetEntryUsage, Object>>();
-		Map<String, BiConsumer<AssetEntryUsage, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetEntryUsage, Object>>();
+		Map<String, BiConsumer<AssetEntryUsage, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetEntryUsage, ?>>();
 
 		attributeGetters.put("uuid", AssetEntryUsage::getUuid);
-		attributeSetters.put("uuid", AssetEntryUsage::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<AssetEntryUsage, String>)AssetEntryUsage::setUuid);
 		attributeGetters.put("assetEntryUsageId", AssetEntryUsage::getAssetEntryUsageId);
-		attributeSetters.put("assetEntryUsageId", AssetEntryUsage::setAssetEntryUsageId);
-
+		attributeSetters.put("assetEntryUsageId", (BiConsumer<AssetEntryUsage, Long>)AssetEntryUsage::setAssetEntryUsageId);
 		attributeGetters.put("groupId", AssetEntryUsage::getGroupId);
-		attributeSetters.put("groupId", AssetEntryUsage::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<AssetEntryUsage, Long>)AssetEntryUsage::setGroupId);
 		attributeGetters.put("companyId", AssetEntryUsage::getCompanyId);
-		attributeSetters.put("companyId", AssetEntryUsage::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<AssetEntryUsage, Long>)AssetEntryUsage::setCompanyId);
 		attributeGetters.put("userId", AssetEntryUsage::getUserId);
-		attributeSetters.put("userId", AssetEntryUsage::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<AssetEntryUsage, Long>)AssetEntryUsage::setUserId);
 		attributeGetters.put("userName", AssetEntryUsage::getUserName);
-		attributeSetters.put("userName", AssetEntryUsage::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<AssetEntryUsage, String>)AssetEntryUsage::setUserName);
 		attributeGetters.put("createDate", AssetEntryUsage::getCreateDate);
-		attributeSetters.put("createDate", AssetEntryUsage::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<AssetEntryUsage, Date>)AssetEntryUsage::setCreateDate);
 		attributeGetters.put("modifiedDate", AssetEntryUsage::getModifiedDate);
-		attributeSetters.put("modifiedDate", AssetEntryUsage::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<AssetEntryUsage, Date>)AssetEntryUsage::setModifiedDate);
 		attributeGetters.put("assetEntryId", AssetEntryUsage::getAssetEntryId);
-		attributeSetters.put("assetEntryId", AssetEntryUsage::setAssetEntryId);
-
+		attributeSetters.put("assetEntryId", (BiConsumer<AssetEntryUsage, Long>)AssetEntryUsage::setAssetEntryId);
 		attributeGetters.put("classNameId", AssetEntryUsage::getClassNameId);
-		attributeSetters.put("classNameId", AssetEntryUsage::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<AssetEntryUsage, Long>)AssetEntryUsage::setClassNameId);
 		attributeGetters.put("classPK", AssetEntryUsage::getClassPK);
-		attributeSetters.put("classPK", AssetEntryUsage::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<AssetEntryUsage, Long>)AssetEntryUsage::setClassPK);
 		attributeGetters.put("portletId", AssetEntryUsage::getPortletId);
-		attributeSetters.put("portletId", AssetEntryUsage::setPortletId);
-
+		attributeSetters.put("portletId", (BiConsumer<AssetEntryUsage, String>)AssetEntryUsage::setPortletId);
 		attributeGetters.put("lastPublishDate", AssetEntryUsage::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", AssetEntryUsage::setLastPublishDate);
+		attributeSetters.put("lastPublishDate", (BiConsumer<AssetEntryUsage, Date>)AssetEntryUsage::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

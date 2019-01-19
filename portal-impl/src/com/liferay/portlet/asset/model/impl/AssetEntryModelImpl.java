@@ -306,91 +306,65 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 
 	static {
 		Map<String, Function<AssetEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<AssetEntry, Object>>();
-		Map<String, BiConsumer<AssetEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetEntry, Object>>();
+		Map<String, BiConsumer<AssetEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<AssetEntry, ?>>();
 
 		attributeGetters.put("entryId", AssetEntry::getEntryId);
-		attributeSetters.put("entryId", AssetEntry::setEntryId);
-
+		attributeSetters.put("entryId", (BiConsumer<AssetEntry, Long>)AssetEntry::setEntryId);
 		attributeGetters.put("groupId", AssetEntry::getGroupId);
-		attributeSetters.put("groupId", AssetEntry::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<AssetEntry, Long>)AssetEntry::setGroupId);
 		attributeGetters.put("companyId", AssetEntry::getCompanyId);
-		attributeSetters.put("companyId", AssetEntry::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<AssetEntry, Long>)AssetEntry::setCompanyId);
 		attributeGetters.put("userId", AssetEntry::getUserId);
-		attributeSetters.put("userId", AssetEntry::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<AssetEntry, Long>)AssetEntry::setUserId);
 		attributeGetters.put("userName", AssetEntry::getUserName);
-		attributeSetters.put("userName", AssetEntry::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<AssetEntry, String>)AssetEntry::setUserName);
 		attributeGetters.put("createDate", AssetEntry::getCreateDate);
-		attributeSetters.put("createDate", AssetEntry::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<AssetEntry, Date>)AssetEntry::setCreateDate);
 		attributeGetters.put("modifiedDate", AssetEntry::getModifiedDate);
-		attributeSetters.put("modifiedDate", AssetEntry::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<AssetEntry, Date>)AssetEntry::setModifiedDate);
 		attributeGetters.put("classNameId", AssetEntry::getClassNameId);
-		attributeSetters.put("classNameId", AssetEntry::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<AssetEntry, Long>)AssetEntry::setClassNameId);
 		attributeGetters.put("classPK", AssetEntry::getClassPK);
-		attributeSetters.put("classPK", AssetEntry::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<AssetEntry, Long>)AssetEntry::setClassPK);
 		attributeGetters.put("classUuid", AssetEntry::getClassUuid);
-		attributeSetters.put("classUuid", AssetEntry::setClassUuid);
-
+		attributeSetters.put("classUuid", (BiConsumer<AssetEntry, String>)AssetEntry::setClassUuid);
 		attributeGetters.put("classTypeId", AssetEntry::getClassTypeId);
-		attributeSetters.put("classTypeId", AssetEntry::setClassTypeId);
-
+		attributeSetters.put("classTypeId", (BiConsumer<AssetEntry, Long>)AssetEntry::setClassTypeId);
 		attributeGetters.put("listable", AssetEntry::getListable);
-		attributeSetters.put("listable", AssetEntry::setListable);
-
+		attributeSetters.put("listable", (BiConsumer<AssetEntry, Boolean>)AssetEntry::setListable);
 		attributeGetters.put("visible", AssetEntry::getVisible);
-		attributeSetters.put("visible", AssetEntry::setVisible);
-
+		attributeSetters.put("visible", (BiConsumer<AssetEntry, Boolean>)AssetEntry::setVisible);
 		attributeGetters.put("startDate", AssetEntry::getStartDate);
-		attributeSetters.put("startDate", AssetEntry::setStartDate);
-
+		attributeSetters.put("startDate", (BiConsumer<AssetEntry, Date>)AssetEntry::setStartDate);
 		attributeGetters.put("endDate", AssetEntry::getEndDate);
-		attributeSetters.put("endDate", AssetEntry::setEndDate);
-
+		attributeSetters.put("endDate", (BiConsumer<AssetEntry, Date>)AssetEntry::setEndDate);
 		attributeGetters.put("publishDate", AssetEntry::getPublishDate);
-		attributeSetters.put("publishDate", AssetEntry::setPublishDate);
-
+		attributeSetters.put("publishDate", (BiConsumer<AssetEntry, Date>)AssetEntry::setPublishDate);
 		attributeGetters.put("expirationDate", AssetEntry::getExpirationDate);
-		attributeSetters.put("expirationDate", AssetEntry::setExpirationDate);
-
+		attributeSetters.put("expirationDate", (BiConsumer<AssetEntry, Date>)AssetEntry::setExpirationDate);
 		attributeGetters.put("mimeType", AssetEntry::getMimeType);
-		attributeSetters.put("mimeType", AssetEntry::setMimeType);
-
+		attributeSetters.put("mimeType", (BiConsumer<AssetEntry, String>)AssetEntry::setMimeType);
 		attributeGetters.put("title", AssetEntry::getTitle);
-		attributeSetters.put("title", AssetEntry::setTitle);
-
+		attributeSetters.put("title", (BiConsumer<AssetEntry, String>)AssetEntry::setTitle);
 		attributeGetters.put("description", AssetEntry::getDescription);
-		attributeSetters.put("description", AssetEntry::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<AssetEntry, String>)AssetEntry::setDescription);
 		attributeGetters.put("summary", AssetEntry::getSummary);
-		attributeSetters.put("summary", AssetEntry::setSummary);
-
+		attributeSetters.put("summary", (BiConsumer<AssetEntry, String>)AssetEntry::setSummary);
 		attributeGetters.put("url", AssetEntry::getUrl);
-		attributeSetters.put("url", AssetEntry::setUrl);
-
+		attributeSetters.put("url", (BiConsumer<AssetEntry, String>)AssetEntry::setUrl);
 		attributeGetters.put("layoutUuid", AssetEntry::getLayoutUuid);
-		attributeSetters.put("layoutUuid", AssetEntry::setLayoutUuid);
-
+		attributeSetters.put("layoutUuid", (BiConsumer<AssetEntry, String>)AssetEntry::setLayoutUuid);
 		attributeGetters.put("height", AssetEntry::getHeight);
-		attributeSetters.put("height", AssetEntry::setHeight);
-
+		attributeSetters.put("height", (BiConsumer<AssetEntry, Integer>)AssetEntry::setHeight);
 		attributeGetters.put("width", AssetEntry::getWidth);
-		attributeSetters.put("width", AssetEntry::setWidth);
-
+		attributeSetters.put("width", (BiConsumer<AssetEntry, Integer>)AssetEntry::setWidth);
 		attributeGetters.put("priority", AssetEntry::getPriority);
-		attributeSetters.put("priority", AssetEntry::setPriority);
-
+		attributeSetters.put("priority", (BiConsumer<AssetEntry, Double>)AssetEntry::setPriority);
 		attributeGetters.put("viewCount", AssetEntry::getViewCount);
-		attributeSetters.put("viewCount", AssetEntry::setViewCount);
+		attributeSetters.put("viewCount", (BiConsumer<AssetEntry, Integer>)AssetEntry::setViewCount);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

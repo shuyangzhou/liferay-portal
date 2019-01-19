@@ -164,37 +164,29 @@ public class ChangesetCollectionModelImpl extends BaseModelImpl<ChangesetCollect
 
 	static {
 		Map<String, Function<ChangesetCollection, Object>> attributeGetters = new LinkedHashMap<String, Function<ChangesetCollection, Object>>();
-		Map<String, BiConsumer<ChangesetCollection, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<ChangesetCollection, Object>>();
+		Map<String, BiConsumer<ChangesetCollection, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<ChangesetCollection, ?>>();
 
 		attributeGetters.put("changesetCollectionId", ChangesetCollection::getChangesetCollectionId);
-		attributeSetters.put("changesetCollectionId", ChangesetCollection::setChangesetCollectionId);
-
+		attributeSetters.put("changesetCollectionId", (BiConsumer<ChangesetCollection, Long>)ChangesetCollection::setChangesetCollectionId);
 		attributeGetters.put("groupId", ChangesetCollection::getGroupId);
-		attributeSetters.put("groupId", ChangesetCollection::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<ChangesetCollection, Long>)ChangesetCollection::setGroupId);
 		attributeGetters.put("companyId", ChangesetCollection::getCompanyId);
-		attributeSetters.put("companyId", ChangesetCollection::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<ChangesetCollection, Long>)ChangesetCollection::setCompanyId);
 		attributeGetters.put("userId", ChangesetCollection::getUserId);
-		attributeSetters.put("userId", ChangesetCollection::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<ChangesetCollection, Long>)ChangesetCollection::setUserId);
 		attributeGetters.put("userName", ChangesetCollection::getUserName);
-		attributeSetters.put("userName", ChangesetCollection::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<ChangesetCollection, String>)ChangesetCollection::setUserName);
 		attributeGetters.put("createDate", ChangesetCollection::getCreateDate);
-		attributeSetters.put("createDate", ChangesetCollection::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<ChangesetCollection, Date>)ChangesetCollection::setCreateDate);
 		attributeGetters.put("modifiedDate", ChangesetCollection::getModifiedDate);
-		attributeSetters.put("modifiedDate", ChangesetCollection::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<ChangesetCollection, Date>)ChangesetCollection::setModifiedDate);
 		attributeGetters.put("name", ChangesetCollection::getName);
-		attributeSetters.put("name", ChangesetCollection::setName);
-
+		attributeSetters.put("name", (BiConsumer<ChangesetCollection, String>)ChangesetCollection::setName);
 		attributeGetters.put("description", ChangesetCollection::getDescription);
-		attributeSetters.put("description", ChangesetCollection::setDescription);
+		attributeSetters.put("description", (BiConsumer<ChangesetCollection, String>)ChangesetCollection::setDescription);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

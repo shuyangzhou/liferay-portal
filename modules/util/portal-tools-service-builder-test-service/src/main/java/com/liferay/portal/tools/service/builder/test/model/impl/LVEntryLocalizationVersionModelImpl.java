@@ -224,8 +224,7 @@ public class LVEntryLocalizationVersionModelImpl extends BaseModelImpl<LVEntryLo
 	static {
 		Map<String, Function<LVEntryLocalizationVersion, Object>> attributeGetters =
 			new LinkedHashMap<String, Function<LVEntryLocalizationVersion, Object>>();
-		Map<String, BiConsumer<LVEntryLocalizationVersion, Object>> attributeSetters =
-			new LinkedHashMap<String, BiConsumer<LVEntryLocalizationVersion, Object>>();
+		Map<String, BiConsumer<LVEntryLocalizationVersion, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<LVEntryLocalizationVersion, ?>>();
 
 		attributeGetters.put(
 			"lvEntryLocalizationVersionId",
@@ -247,7 +246,6 @@ public class LVEntryLocalizationVersionModelImpl extends BaseModelImpl<LVEntryLo
 				}
 
 			});
-
 		attributeGetters.put(
 			"version",
 			new Function<LVEntryLocalizationVersion, Object>() {
@@ -268,7 +266,6 @@ public class LVEntryLocalizationVersionModelImpl extends BaseModelImpl<LVEntryLo
 				}
 
 			});
-
 		attributeGetters.put(
 			"lvEntryLocalizationId",
 			new Function<LVEntryLocalizationVersion, Object>() {
@@ -289,7 +286,6 @@ public class LVEntryLocalizationVersionModelImpl extends BaseModelImpl<LVEntryLo
 				}
 
 			});
-
 		attributeGetters.put(
 			"lvEntryId",
 			new Function<LVEntryLocalizationVersion, Object>() {
@@ -310,7 +306,6 @@ public class LVEntryLocalizationVersionModelImpl extends BaseModelImpl<LVEntryLo
 				}
 
 			});
-
 		attributeGetters.put(
 			"languageId",
 			new Function<LVEntryLocalizationVersion, Object>() {
@@ -331,7 +326,6 @@ public class LVEntryLocalizationVersionModelImpl extends BaseModelImpl<LVEntryLo
 				}
 
 			});
-
 		attributeGetters.put(
 			"title",
 			new Function<LVEntryLocalizationVersion, Object>() {
@@ -352,7 +346,6 @@ public class LVEntryLocalizationVersionModelImpl extends BaseModelImpl<LVEntryLo
 				}
 
 			});
-
 		attributeGetters.put(
 			"content",
 			new Function<LVEntryLocalizationVersion, Object>() {
@@ -375,7 +368,7 @@ public class LVEntryLocalizationVersionModelImpl extends BaseModelImpl<LVEntryLo
 			});
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

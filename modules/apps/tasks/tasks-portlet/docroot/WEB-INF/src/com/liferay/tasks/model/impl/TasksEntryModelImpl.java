@@ -235,52 +235,39 @@ public class TasksEntryModelImpl extends BaseModelImpl<TasksEntry>
 
 	static {
 		Map<String, Function<TasksEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<TasksEntry, Object>>();
-		Map<String, BiConsumer<TasksEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<TasksEntry, Object>>();
+		Map<String, BiConsumer<TasksEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<TasksEntry, ?>>();
 
 		attributeGetters.put("tasksEntryId", TasksEntry::getTasksEntryId);
-		attributeSetters.put("tasksEntryId", TasksEntry::setTasksEntryId);
-
+		attributeSetters.put("tasksEntryId", (BiConsumer<TasksEntry, Long>)TasksEntry::setTasksEntryId);
 		attributeGetters.put("groupId", TasksEntry::getGroupId);
-		attributeSetters.put("groupId", TasksEntry::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<TasksEntry, Long>)TasksEntry::setGroupId);
 		attributeGetters.put("companyId", TasksEntry::getCompanyId);
-		attributeSetters.put("companyId", TasksEntry::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<TasksEntry, Long>)TasksEntry::setCompanyId);
 		attributeGetters.put("userId", TasksEntry::getUserId);
-		attributeSetters.put("userId", TasksEntry::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<TasksEntry, Long>)TasksEntry::setUserId);
 		attributeGetters.put("userName", TasksEntry::getUserName);
-		attributeSetters.put("userName", TasksEntry::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<TasksEntry, String>)TasksEntry::setUserName);
 		attributeGetters.put("createDate", TasksEntry::getCreateDate);
-		attributeSetters.put("createDate", TasksEntry::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<TasksEntry, Date>)TasksEntry::setCreateDate);
 		attributeGetters.put("modifiedDate", TasksEntry::getModifiedDate);
-		attributeSetters.put("modifiedDate", TasksEntry::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<TasksEntry, Date>)TasksEntry::setModifiedDate);
 		attributeGetters.put("title", TasksEntry::getTitle);
-		attributeSetters.put("title", TasksEntry::setTitle);
-
+		attributeSetters.put("title", (BiConsumer<TasksEntry, String>)TasksEntry::setTitle);
 		attributeGetters.put("priority", TasksEntry::getPriority);
-		attributeSetters.put("priority", TasksEntry::setPriority);
-
+		attributeSetters.put("priority", (BiConsumer<TasksEntry, Integer>)TasksEntry::setPriority);
 		attributeGetters.put("assigneeUserId", TasksEntry::getAssigneeUserId);
-		attributeSetters.put("assigneeUserId", TasksEntry::setAssigneeUserId);
-
+		attributeSetters.put("assigneeUserId", (BiConsumer<TasksEntry, Long>)TasksEntry::setAssigneeUserId);
 		attributeGetters.put("resolverUserId", TasksEntry::getResolverUserId);
-		attributeSetters.put("resolverUserId", TasksEntry::setResolverUserId);
-
+		attributeSetters.put("resolverUserId", (BiConsumer<TasksEntry, Long>)TasksEntry::setResolverUserId);
 		attributeGetters.put("dueDate", TasksEntry::getDueDate);
-		attributeSetters.put("dueDate", TasksEntry::setDueDate);
-
+		attributeSetters.put("dueDate", (BiConsumer<TasksEntry, Date>)TasksEntry::setDueDate);
 		attributeGetters.put("finishDate", TasksEntry::getFinishDate);
-		attributeSetters.put("finishDate", TasksEntry::setFinishDate);
-
+		attributeSetters.put("finishDate", (BiConsumer<TasksEntry, Date>)TasksEntry::setFinishDate);
 		attributeGetters.put("status", TasksEntry::getStatus);
-		attributeSetters.put("status", TasksEntry::setStatus);
+		attributeSetters.put("status", (BiConsumer<TasksEntry, Integer>)TasksEntry::setStatus);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

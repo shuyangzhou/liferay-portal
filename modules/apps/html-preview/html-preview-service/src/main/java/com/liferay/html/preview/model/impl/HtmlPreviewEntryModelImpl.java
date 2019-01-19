@@ -167,40 +167,31 @@ public class HtmlPreviewEntryModelImpl extends BaseModelImpl<HtmlPreviewEntry>
 
 	static {
 		Map<String, Function<HtmlPreviewEntry, Object>> attributeGetters = new LinkedHashMap<String, Function<HtmlPreviewEntry, Object>>();
-		Map<String, BiConsumer<HtmlPreviewEntry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<HtmlPreviewEntry, Object>>();
+		Map<String, BiConsumer<HtmlPreviewEntry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<HtmlPreviewEntry, ?>>();
 
 		attributeGetters.put("htmlPreviewEntryId", HtmlPreviewEntry::getHtmlPreviewEntryId);
-		attributeSetters.put("htmlPreviewEntryId", HtmlPreviewEntry::setHtmlPreviewEntryId);
-
+		attributeSetters.put("htmlPreviewEntryId", (BiConsumer<HtmlPreviewEntry, Long>)HtmlPreviewEntry::setHtmlPreviewEntryId);
 		attributeGetters.put("groupId", HtmlPreviewEntry::getGroupId);
-		attributeSetters.put("groupId", HtmlPreviewEntry::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<HtmlPreviewEntry, Long>)HtmlPreviewEntry::setGroupId);
 		attributeGetters.put("companyId", HtmlPreviewEntry::getCompanyId);
-		attributeSetters.put("companyId", HtmlPreviewEntry::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<HtmlPreviewEntry, Long>)HtmlPreviewEntry::setCompanyId);
 		attributeGetters.put("userId", HtmlPreviewEntry::getUserId);
-		attributeSetters.put("userId", HtmlPreviewEntry::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<HtmlPreviewEntry, Long>)HtmlPreviewEntry::setUserId);
 		attributeGetters.put("userName", HtmlPreviewEntry::getUserName);
-		attributeSetters.put("userName", HtmlPreviewEntry::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<HtmlPreviewEntry, String>)HtmlPreviewEntry::setUserName);
 		attributeGetters.put("createDate", HtmlPreviewEntry::getCreateDate);
-		attributeSetters.put("createDate", HtmlPreviewEntry::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<HtmlPreviewEntry, Date>)HtmlPreviewEntry::setCreateDate);
 		attributeGetters.put("modifiedDate", HtmlPreviewEntry::getModifiedDate);
-		attributeSetters.put("modifiedDate", HtmlPreviewEntry::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<HtmlPreviewEntry, Date>)HtmlPreviewEntry::setModifiedDate);
 		attributeGetters.put("classNameId", HtmlPreviewEntry::getClassNameId);
-		attributeSetters.put("classNameId", HtmlPreviewEntry::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<HtmlPreviewEntry, Long>)HtmlPreviewEntry::setClassNameId);
 		attributeGetters.put("classPK", HtmlPreviewEntry::getClassPK);
-		attributeSetters.put("classPK", HtmlPreviewEntry::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<HtmlPreviewEntry, Long>)HtmlPreviewEntry::setClassPK);
 		attributeGetters.put("fileEntryId", HtmlPreviewEntry::getFileEntryId);
-		attributeSetters.put("fileEntryId", HtmlPreviewEntry::setFileEntryId);
+		attributeSetters.put("fileEntryId", (BiConsumer<HtmlPreviewEntry, Long>)HtmlPreviewEntry::setFileEntryId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

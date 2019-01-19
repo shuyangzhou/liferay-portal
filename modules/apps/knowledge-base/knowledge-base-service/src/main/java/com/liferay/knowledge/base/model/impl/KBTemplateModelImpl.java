@@ -225,43 +225,33 @@ public class KBTemplateModelImpl extends BaseModelImpl<KBTemplate>
 
 	static {
 		Map<String, Function<KBTemplate, Object>> attributeGetters = new LinkedHashMap<String, Function<KBTemplate, Object>>();
-		Map<String, BiConsumer<KBTemplate, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<KBTemplate, Object>>();
+		Map<String, BiConsumer<KBTemplate, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<KBTemplate, ?>>();
 
 		attributeGetters.put("uuid", KBTemplate::getUuid);
-		attributeSetters.put("uuid", KBTemplate::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<KBTemplate, String>)KBTemplate::setUuid);
 		attributeGetters.put("kbTemplateId", KBTemplate::getKbTemplateId);
-		attributeSetters.put("kbTemplateId", KBTemplate::setKbTemplateId);
-
+		attributeSetters.put("kbTemplateId", (BiConsumer<KBTemplate, Long>)KBTemplate::setKbTemplateId);
 		attributeGetters.put("groupId", KBTemplate::getGroupId);
-		attributeSetters.put("groupId", KBTemplate::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<KBTemplate, Long>)KBTemplate::setGroupId);
 		attributeGetters.put("companyId", KBTemplate::getCompanyId);
-		attributeSetters.put("companyId", KBTemplate::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<KBTemplate, Long>)KBTemplate::setCompanyId);
 		attributeGetters.put("userId", KBTemplate::getUserId);
-		attributeSetters.put("userId", KBTemplate::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<KBTemplate, Long>)KBTemplate::setUserId);
 		attributeGetters.put("userName", KBTemplate::getUserName);
-		attributeSetters.put("userName", KBTemplate::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<KBTemplate, String>)KBTemplate::setUserName);
 		attributeGetters.put("createDate", KBTemplate::getCreateDate);
-		attributeSetters.put("createDate", KBTemplate::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<KBTemplate, Date>)KBTemplate::setCreateDate);
 		attributeGetters.put("modifiedDate", KBTemplate::getModifiedDate);
-		attributeSetters.put("modifiedDate", KBTemplate::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<KBTemplate, Date>)KBTemplate::setModifiedDate);
 		attributeGetters.put("title", KBTemplate::getTitle);
-		attributeSetters.put("title", KBTemplate::setTitle);
-
+		attributeSetters.put("title", (BiConsumer<KBTemplate, String>)KBTemplate::setTitle);
 		attributeGetters.put("content", KBTemplate::getContent);
-		attributeSetters.put("content", KBTemplate::setContent);
-
+		attributeSetters.put("content", (BiConsumer<KBTemplate, String>)KBTemplate::setContent);
 		attributeGetters.put("lastPublishDate", KBTemplate::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", KBTemplate::setLastPublishDate);
+		attributeSetters.put("lastPublishDate", (BiConsumer<KBTemplate, Date>)KBTemplate::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

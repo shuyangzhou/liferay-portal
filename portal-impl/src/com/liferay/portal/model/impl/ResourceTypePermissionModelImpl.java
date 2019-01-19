@@ -157,32 +157,25 @@ public class ResourceTypePermissionModelImpl extends BaseModelImpl<ResourceTypeP
 
 	static {
 		Map<String, Function<ResourceTypePermission, Object>> attributeGetters = new LinkedHashMap<String, Function<ResourceTypePermission, Object>>();
-		Map<String, BiConsumer<ResourceTypePermission, Object>> attributeSetters =
-			new LinkedHashMap<String, BiConsumer<ResourceTypePermission, Object>>();
+		Map<String, BiConsumer<ResourceTypePermission, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<ResourceTypePermission, ?>>();
 
 		attributeGetters.put("mvccVersion", ResourceTypePermission::getMvccVersion);
-		attributeSetters.put("mvccVersion", ResourceTypePermission::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<ResourceTypePermission, Long>)ResourceTypePermission::setMvccVersion);
 		attributeGetters.put("resourceTypePermissionId", ResourceTypePermission::getResourceTypePermissionId);
-		attributeSetters.put("resourceTypePermissionId", ResourceTypePermission::setResourceTypePermissionId);
-
+		attributeSetters.put("resourceTypePermissionId", (BiConsumer<ResourceTypePermission, Long>)ResourceTypePermission::setResourceTypePermissionId);
 		attributeGetters.put("companyId", ResourceTypePermission::getCompanyId);
-		attributeSetters.put("companyId", ResourceTypePermission::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<ResourceTypePermission, Long>)ResourceTypePermission::setCompanyId);
 		attributeGetters.put("groupId", ResourceTypePermission::getGroupId);
-		attributeSetters.put("groupId", ResourceTypePermission::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<ResourceTypePermission, Long>)ResourceTypePermission::setGroupId);
 		attributeGetters.put("name", ResourceTypePermission::getName);
-		attributeSetters.put("name", ResourceTypePermission::setName);
-
+		attributeSetters.put("name", (BiConsumer<ResourceTypePermission, String>)ResourceTypePermission::setName);
 		attributeGetters.put("roleId", ResourceTypePermission::getRoleId);
-		attributeSetters.put("roleId", ResourceTypePermission::setRoleId);
-
+		attributeSetters.put("roleId", (BiConsumer<ResourceTypePermission, Long>)ResourceTypePermission::setRoleId);
 		attributeGetters.put("actionIds", ResourceTypePermission::getActionIds);
-		attributeSetters.put("actionIds", ResourceTypePermission::setActionIds);
+		attributeSetters.put("actionIds", (BiConsumer<ResourceTypePermission, Long>)ResourceTypePermission::setActionIds);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

@@ -155,28 +155,23 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	static {
 		Map<String, Function<Entry, Object>> attributeGetters = new LinkedHashMap<String, Function<Entry, Object>>();
-		Map<String, BiConsumer<Entry, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Entry, Object>>();
+		Map<String, BiConsumer<Entry, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Entry, ?>>();
 
 		attributeGetters.put("entryId", Entry::getEntryId);
-		attributeSetters.put("entryId", Entry::setEntryId);
-
+		attributeSetters.put("entryId", (BiConsumer<Entry, Long>)Entry::setEntryId);
 		attributeGetters.put("createDate", Entry::getCreateDate);
-		attributeSetters.put("createDate", Entry::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<Entry, Long>)Entry::setCreateDate);
 		attributeGetters.put("fromUserId", Entry::getFromUserId);
-		attributeSetters.put("fromUserId", Entry::setFromUserId);
-
+		attributeSetters.put("fromUserId", (BiConsumer<Entry, Long>)Entry::setFromUserId);
 		attributeGetters.put("toUserId", Entry::getToUserId);
-		attributeSetters.put("toUserId", Entry::setToUserId);
-
+		attributeSetters.put("toUserId", (BiConsumer<Entry, Long>)Entry::setToUserId);
 		attributeGetters.put("content", Entry::getContent);
-		attributeSetters.put("content", Entry::setContent);
-
+		attributeSetters.put("content", (BiConsumer<Entry, String>)Entry::setContent);
 		attributeGetters.put("flag", Entry::getFlag);
-		attributeSetters.put("flag", Entry::setFlag);
+		attributeSetters.put("flag", (BiConsumer<Entry, Integer>)Entry::setFlag);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

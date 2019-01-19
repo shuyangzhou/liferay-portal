@@ -215,37 +215,29 @@ public class GadgetModelImpl extends BaseModelImpl<Gadget>
 
 	static {
 		Map<String, Function<Gadget, Object>> attributeGetters = new LinkedHashMap<String, Function<Gadget, Object>>();
-		Map<String, BiConsumer<Gadget, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<Gadget, Object>>();
+		Map<String, BiConsumer<Gadget, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<Gadget, ?>>();
 
 		attributeGetters.put("uuid", Gadget::getUuid);
-		attributeSetters.put("uuid", Gadget::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<Gadget, String>)Gadget::setUuid);
 		attributeGetters.put("gadgetId", Gadget::getGadgetId);
-		attributeSetters.put("gadgetId", Gadget::setGadgetId);
-
+		attributeSetters.put("gadgetId", (BiConsumer<Gadget, Long>)Gadget::setGadgetId);
 		attributeGetters.put("companyId", Gadget::getCompanyId);
-		attributeSetters.put("companyId", Gadget::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<Gadget, Long>)Gadget::setCompanyId);
 		attributeGetters.put("createDate", Gadget::getCreateDate);
-		attributeSetters.put("createDate", Gadget::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<Gadget, Date>)Gadget::setCreateDate);
 		attributeGetters.put("modifiedDate", Gadget::getModifiedDate);
-		attributeSetters.put("modifiedDate", Gadget::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<Gadget, Date>)Gadget::setModifiedDate);
 		attributeGetters.put("name", Gadget::getName);
-		attributeSetters.put("name", Gadget::setName);
-
+		attributeSetters.put("name", (BiConsumer<Gadget, String>)Gadget::setName);
 		attributeGetters.put("url", Gadget::getUrl);
-		attributeSetters.put("url", Gadget::setUrl);
-
+		attributeSetters.put("url", (BiConsumer<Gadget, String>)Gadget::setUrl);
 		attributeGetters.put("portletCategoryNames", Gadget::getPortletCategoryNames);
-		attributeSetters.put("portletCategoryNames", Gadget::setPortletCategoryNames);
-
+		attributeSetters.put("portletCategoryNames", (BiConsumer<Gadget, String>)Gadget::setPortletCategoryNames);
 		attributeGetters.put("lastPublishDate", Gadget::getLastPublishDate);
-		attributeSetters.put("lastPublishDate", Gadget::setLastPublishDate);
+		attributeSetters.put("lastPublishDate", (BiConsumer<Gadget, Date>)Gadget::setLastPublishDate);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

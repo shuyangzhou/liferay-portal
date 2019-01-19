@@ -174,44 +174,34 @@ public class LayoutPageTemplateStructureModelImpl extends BaseModelImpl<LayoutPa
 	static {
 		Map<String, Function<LayoutPageTemplateStructure, Object>> attributeGetters =
 			new LinkedHashMap<String, Function<LayoutPageTemplateStructure, Object>>();
-		Map<String, BiConsumer<LayoutPageTemplateStructure, Object>> attributeSetters =
-			new LinkedHashMap<String, BiConsumer<LayoutPageTemplateStructure, Object>>();
+		Map<String, BiConsumer<LayoutPageTemplateStructure, ?>> attributeSetters =
+			new LinkedHashMap<String, BiConsumer<LayoutPageTemplateStructure, ?>>();
 
 		attributeGetters.put("uuid", LayoutPageTemplateStructure::getUuid);
-		attributeSetters.put("uuid", LayoutPageTemplateStructure::setUuid);
-
+		attributeSetters.put("uuid", (BiConsumer<LayoutPageTemplateStructure, String>)LayoutPageTemplateStructure::setUuid);
 		attributeGetters.put("layoutPageTemplateStructureId", LayoutPageTemplateStructure::getLayoutPageTemplateStructureId);
-		attributeSetters.put("layoutPageTemplateStructureId", LayoutPageTemplateStructure::setLayoutPageTemplateStructureId);
-
+		attributeSetters.put("layoutPageTemplateStructureId", (BiConsumer<LayoutPageTemplateStructure, Long>)LayoutPageTemplateStructure::setLayoutPageTemplateStructureId);
 		attributeGetters.put("groupId", LayoutPageTemplateStructure::getGroupId);
-		attributeSetters.put("groupId", LayoutPageTemplateStructure::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<LayoutPageTemplateStructure, Long>)LayoutPageTemplateStructure::setGroupId);
 		attributeGetters.put("companyId", LayoutPageTemplateStructure::getCompanyId);
-		attributeSetters.put("companyId", LayoutPageTemplateStructure::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<LayoutPageTemplateStructure, Long>)LayoutPageTemplateStructure::setCompanyId);
 		attributeGetters.put("userId", LayoutPageTemplateStructure::getUserId);
-		attributeSetters.put("userId", LayoutPageTemplateStructure::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<LayoutPageTemplateStructure, Long>)LayoutPageTemplateStructure::setUserId);
 		attributeGetters.put("userName", LayoutPageTemplateStructure::getUserName);
-		attributeSetters.put("userName", LayoutPageTemplateStructure::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<LayoutPageTemplateStructure, String>)LayoutPageTemplateStructure::setUserName);
 		attributeGetters.put("createDate", LayoutPageTemplateStructure::getCreateDate);
-		attributeSetters.put("createDate", LayoutPageTemplateStructure::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<LayoutPageTemplateStructure, Date>)LayoutPageTemplateStructure::setCreateDate);
 		attributeGetters.put("modifiedDate", LayoutPageTemplateStructure::getModifiedDate);
-		attributeSetters.put("modifiedDate", LayoutPageTemplateStructure::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<LayoutPageTemplateStructure, Date>)LayoutPageTemplateStructure::setModifiedDate);
 		attributeGetters.put("classNameId", LayoutPageTemplateStructure::getClassNameId);
-		attributeSetters.put("classNameId", LayoutPageTemplateStructure::setClassNameId);
-
+		attributeSetters.put("classNameId", (BiConsumer<LayoutPageTemplateStructure, Long>)LayoutPageTemplateStructure::setClassNameId);
 		attributeGetters.put("classPK", LayoutPageTemplateStructure::getClassPK);
-		attributeSetters.put("classPK", LayoutPageTemplateStructure::setClassPK);
-
+		attributeSetters.put("classPK", (BiConsumer<LayoutPageTemplateStructure, Long>)LayoutPageTemplateStructure::setClassPK);
 		attributeGetters.put("data", LayoutPageTemplateStructure::getData);
-		attributeSetters.put("data", LayoutPageTemplateStructure::setData);
+		attributeSetters.put("data", (BiConsumer<LayoutPageTemplateStructure, String>)LayoutPageTemplateStructure::setData);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override

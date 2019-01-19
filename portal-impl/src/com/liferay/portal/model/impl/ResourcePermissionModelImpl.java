@@ -221,43 +221,33 @@ public class ResourcePermissionModelImpl extends BaseModelImpl<ResourcePermissio
 
 	static {
 		Map<String, Function<ResourcePermission, Object>> attributeGetters = new LinkedHashMap<String, Function<ResourcePermission, Object>>();
-		Map<String, BiConsumer<ResourcePermission, Object>> attributeSetters = new LinkedHashMap<String, BiConsumer<ResourcePermission, Object>>();
+		Map<String, BiConsumer<ResourcePermission, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<ResourcePermission, ?>>();
 
 		attributeGetters.put("mvccVersion", ResourcePermission::getMvccVersion);
-		attributeSetters.put("mvccVersion", ResourcePermission::setMvccVersion);
-
+		attributeSetters.put("mvccVersion", (BiConsumer<ResourcePermission, Long>)ResourcePermission::setMvccVersion);
 		attributeGetters.put("resourcePermissionId", ResourcePermission::getResourcePermissionId);
-		attributeSetters.put("resourcePermissionId", ResourcePermission::setResourcePermissionId);
-
+		attributeSetters.put("resourcePermissionId", (BiConsumer<ResourcePermission, Long>)ResourcePermission::setResourcePermissionId);
 		attributeGetters.put("companyId", ResourcePermission::getCompanyId);
-		attributeSetters.put("companyId", ResourcePermission::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<ResourcePermission, Long>)ResourcePermission::setCompanyId);
 		attributeGetters.put("name", ResourcePermission::getName);
-		attributeSetters.put("name", ResourcePermission::setName);
-
+		attributeSetters.put("name", (BiConsumer<ResourcePermission, String>)ResourcePermission::setName);
 		attributeGetters.put("scope", ResourcePermission::getScope);
-		attributeSetters.put("scope", ResourcePermission::setScope);
-
+		attributeSetters.put("scope", (BiConsumer<ResourcePermission, Integer>)ResourcePermission::setScope);
 		attributeGetters.put("primKey", ResourcePermission::getPrimKey);
-		attributeSetters.put("primKey", ResourcePermission::setPrimKey);
-
+		attributeSetters.put("primKey", (BiConsumer<ResourcePermission, String>)ResourcePermission::setPrimKey);
 		attributeGetters.put("primKeyId", ResourcePermission::getPrimKeyId);
-		attributeSetters.put("primKeyId", ResourcePermission::setPrimKeyId);
-
+		attributeSetters.put("primKeyId", (BiConsumer<ResourcePermission, Long>)ResourcePermission::setPrimKeyId);
 		attributeGetters.put("roleId", ResourcePermission::getRoleId);
-		attributeSetters.put("roleId", ResourcePermission::setRoleId);
-
+		attributeSetters.put("roleId", (BiConsumer<ResourcePermission, Long>)ResourcePermission::setRoleId);
 		attributeGetters.put("ownerId", ResourcePermission::getOwnerId);
-		attributeSetters.put("ownerId", ResourcePermission::setOwnerId);
-
+		attributeSetters.put("ownerId", (BiConsumer<ResourcePermission, Long>)ResourcePermission::setOwnerId);
 		attributeGetters.put("actionIds", ResourcePermission::getActionIds);
-		attributeSetters.put("actionIds", ResourcePermission::setActionIds);
-
+		attributeSetters.put("actionIds", (BiConsumer<ResourcePermission, Long>)ResourcePermission::setActionIds);
 		attributeGetters.put("viewActionId", ResourcePermission::getViewActionId);
-		attributeSetters.put("viewActionId", ResourcePermission::setViewActionId);
+		attributeSetters.put("viewActionId", (BiConsumer<ResourcePermission, Boolean>)ResourcePermission::setViewActionId);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@JSON

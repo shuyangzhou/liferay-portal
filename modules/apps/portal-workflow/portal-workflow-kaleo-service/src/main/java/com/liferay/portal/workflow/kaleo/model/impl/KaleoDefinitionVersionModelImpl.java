@@ -187,62 +187,45 @@ public class KaleoDefinitionVersionModelImpl extends BaseModelImpl<KaleoDefiniti
 
 	static {
 		Map<String, Function<KaleoDefinitionVersion, Object>> attributeGetters = new LinkedHashMap<String, Function<KaleoDefinitionVersion, Object>>();
-		Map<String, BiConsumer<KaleoDefinitionVersion, Object>> attributeSetters =
-			new LinkedHashMap<String, BiConsumer<KaleoDefinitionVersion, Object>>();
+		Map<String, BiConsumer<KaleoDefinitionVersion, ?>> attributeSetters = new LinkedHashMap<String, BiConsumer<KaleoDefinitionVersion, ?>>();
 
 		attributeGetters.put("kaleoDefinitionVersionId", KaleoDefinitionVersion::getKaleoDefinitionVersionId);
-		attributeSetters.put("kaleoDefinitionVersionId", KaleoDefinitionVersion::setKaleoDefinitionVersionId);
-
+		attributeSetters.put("kaleoDefinitionVersionId", (BiConsumer<KaleoDefinitionVersion, Long>)KaleoDefinitionVersion::setKaleoDefinitionVersionId);
 		attributeGetters.put("groupId", KaleoDefinitionVersion::getGroupId);
-		attributeSetters.put("groupId", KaleoDefinitionVersion::setGroupId);
-
+		attributeSetters.put("groupId", (BiConsumer<KaleoDefinitionVersion, Long>)KaleoDefinitionVersion::setGroupId);
 		attributeGetters.put("companyId", KaleoDefinitionVersion::getCompanyId);
-		attributeSetters.put("companyId", KaleoDefinitionVersion::setCompanyId);
-
+		attributeSetters.put("companyId", (BiConsumer<KaleoDefinitionVersion, Long>)KaleoDefinitionVersion::setCompanyId);
 		attributeGetters.put("userId", KaleoDefinitionVersion::getUserId);
-		attributeSetters.put("userId", KaleoDefinitionVersion::setUserId);
-
+		attributeSetters.put("userId", (BiConsumer<KaleoDefinitionVersion, Long>)KaleoDefinitionVersion::setUserId);
 		attributeGetters.put("userName", KaleoDefinitionVersion::getUserName);
-		attributeSetters.put("userName", KaleoDefinitionVersion::setUserName);
-
+		attributeSetters.put("userName", (BiConsumer<KaleoDefinitionVersion, String>)KaleoDefinitionVersion::setUserName);
 		attributeGetters.put("statusByUserId", KaleoDefinitionVersion::getStatusByUserId);
-		attributeSetters.put("statusByUserId", KaleoDefinitionVersion::setStatusByUserId);
-
+		attributeSetters.put("statusByUserId", (BiConsumer<KaleoDefinitionVersion, Long>)KaleoDefinitionVersion::setStatusByUserId);
 		attributeGetters.put("statusByUserName", KaleoDefinitionVersion::getStatusByUserName);
-		attributeSetters.put("statusByUserName", KaleoDefinitionVersion::setStatusByUserName);
-
+		attributeSetters.put("statusByUserName", (BiConsumer<KaleoDefinitionVersion, String>)KaleoDefinitionVersion::setStatusByUserName);
 		attributeGetters.put("statusDate", KaleoDefinitionVersion::getStatusDate);
-		attributeSetters.put("statusDate", KaleoDefinitionVersion::setStatusDate);
-
+		attributeSetters.put("statusDate", (BiConsumer<KaleoDefinitionVersion, Date>)KaleoDefinitionVersion::setStatusDate);
 		attributeGetters.put("createDate", KaleoDefinitionVersion::getCreateDate);
-		attributeSetters.put("createDate", KaleoDefinitionVersion::setCreateDate);
-
+		attributeSetters.put("createDate", (BiConsumer<KaleoDefinitionVersion, Date>)KaleoDefinitionVersion::setCreateDate);
 		attributeGetters.put("modifiedDate", KaleoDefinitionVersion::getModifiedDate);
-		attributeSetters.put("modifiedDate", KaleoDefinitionVersion::setModifiedDate);
-
+		attributeSetters.put("modifiedDate", (BiConsumer<KaleoDefinitionVersion, Date>)KaleoDefinitionVersion::setModifiedDate);
 		attributeGetters.put("name", KaleoDefinitionVersion::getName);
-		attributeSetters.put("name", KaleoDefinitionVersion::setName);
-
+		attributeSetters.put("name", (BiConsumer<KaleoDefinitionVersion, String>)KaleoDefinitionVersion::setName);
 		attributeGetters.put("title", KaleoDefinitionVersion::getTitle);
-		attributeSetters.put("title", KaleoDefinitionVersion::setTitle);
-
+		attributeSetters.put("title", (BiConsumer<KaleoDefinitionVersion, String>)KaleoDefinitionVersion::setTitle);
 		attributeGetters.put("description", KaleoDefinitionVersion::getDescription);
-		attributeSetters.put("description", KaleoDefinitionVersion::setDescription);
-
+		attributeSetters.put("description", (BiConsumer<KaleoDefinitionVersion, String>)KaleoDefinitionVersion::setDescription);
 		attributeGetters.put("content", KaleoDefinitionVersion::getContent);
-		attributeSetters.put("content", KaleoDefinitionVersion::setContent);
-
+		attributeSetters.put("content", (BiConsumer<KaleoDefinitionVersion, String>)KaleoDefinitionVersion::setContent);
 		attributeGetters.put("version", KaleoDefinitionVersion::getVersion);
-		attributeSetters.put("version", KaleoDefinitionVersion::setVersion);
-
+		attributeSetters.put("version", (BiConsumer<KaleoDefinitionVersion, String>)KaleoDefinitionVersion::setVersion);
 		attributeGetters.put("startKaleoNodeId", KaleoDefinitionVersion::getStartKaleoNodeId);
-		attributeSetters.put("startKaleoNodeId", KaleoDefinitionVersion::setStartKaleoNodeId);
-
+		attributeSetters.put("startKaleoNodeId", (BiConsumer<KaleoDefinitionVersion, Long>)KaleoDefinitionVersion::setStartKaleoNodeId);
 		attributeGetters.put("status", KaleoDefinitionVersion::getStatus);
-		attributeSetters.put("status", KaleoDefinitionVersion::setStatus);
+		attributeSetters.put("status", (BiConsumer<KaleoDefinitionVersion, Integer>)KaleoDefinitionVersion::setStatus);
 
 		_attributeGetters = Collections.unmodifiableMap(attributeGetters);
-		_attributeSetters = Collections.unmodifiableMap(attributeSetters);
+		_attributeSetters = Collections.unmodifiableMap((Map)attributeSetters);
 	}
 
 	@Override
