@@ -305,8 +305,6 @@ public class Arquillian extends BlockJUnit4ClassRunner {
 
 		result = _withMethodRules(frameworkMethod, target, result);
 
-		result = _withTestRules(frameworkMethod, result);
-
 		return result;
 	}
 
@@ -323,13 +321,6 @@ public class Arquillian extends BlockJUnit4ClassRunner {
 	private List<MethodRule> _getMethodRules(Object target) {
 		return rules(target);
 	}
-
-	private Statement _withTestRules(
-		FrameworkMethod frameworkMethod, Statement statement) {
-
-		return statement;
-	}
-
 
 	private static final ThreadLocal<TestRunnerAdaptor>
 		_testRunnerAdaptorThreadLocal = new ThreadLocal<>();
