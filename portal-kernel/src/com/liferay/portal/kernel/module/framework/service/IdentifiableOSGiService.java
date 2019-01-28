@@ -14,9 +14,12 @@
 
 package com.liferay.portal.kernel.module.framework.service;
 
+import com.liferay.portal.kernel.transaction.Transactional;
+
 /**
  * @author Tina Tian
  */
+@Transactional(enabled = false)
 public interface IdentifiableOSGiService {
 
 	public String getOSGiServiceIdentifier();
