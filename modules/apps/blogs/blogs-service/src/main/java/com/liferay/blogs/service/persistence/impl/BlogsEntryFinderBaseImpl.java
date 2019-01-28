@@ -17,10 +17,9 @@ package com.liferay.blogs.service.persistence.impl;
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.service.persistence.BlogsEntryPersistence;
 
-import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+
+import org.osgi.service.component.annotations.Reference;
 
 import java.util.Set;
 
@@ -28,36 +27,16 @@ import java.util.Set;
  * @author Brian Wing Shun Chan
  * @generated
  */
-public class BlogsEntryFinderBaseImpl extends BasePersistenceImpl<BlogsEntry> {
+public abstract class BlogsEntryFinderBaseImpl extends BasePersistenceImpl<BlogsEntry> {
 	public BlogsEntryFinderBaseImpl() {
 		setModelClass(BlogsEntry.class);
 	}
 
 	@Override
 	public Set<String> getBadColumnNames() {
-		return getBlogsEntryPersistence().getBadColumnNames();
+		return blogsEntryPersistence.getBadColumnNames();
 	}
 
-	/**
-	 * Returns the blogs entry persistence.
-	 *
-	 * @return the blogs entry persistence
-	 */
-	public BlogsEntryPersistence getBlogsEntryPersistence() {
-		return blogsEntryPersistence;
-	}
-
-	/**
-	 * Sets the blogs entry persistence.
-	 *
-	 * @param blogsEntryPersistence the blogs entry persistence
-	 */
-	public void setBlogsEntryPersistence(
-		BlogsEntryPersistence blogsEntryPersistence) {
-		this.blogsEntryPersistence = blogsEntryPersistence;
-	}
-
-	@BeanReference(type = BlogsEntryPersistence.class)
+	@Reference
 	protected BlogsEntryPersistence blogsEntryPersistence;
-	private static final Log _log = LogFactoryUtil.getLog(BlogsEntryFinderBaseImpl.class);
 }
