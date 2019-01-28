@@ -16,6 +16,7 @@ package com.liferay.portal.kernel.service.persistence.impl;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -476,6 +477,19 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 		return model;
 	}
 
+	public void setConfiguration(Configuration configuration) {
+		String modelClassName = _modelClass.getName();
+
+		entityCacheEnabled = GetterUtil.getBoolean(
+			configuration.get(
+				"value.object.entity.cache.enabled.".concat(modelClassName)),
+			true);
+		finderCacheEnabled = GetterUtil.getBoolean(
+			configuration.get(
+				"value.object.finder.cache.enabled.".concat(modelClassName)),
+			true);
+	}
+
 	@Override
 	public void setDataSource(DataSource dataSource) {
 		_dataSource = dataSource;
@@ -785,6 +799,8 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 	protected static final NullModel nullModel = new NullModel();
 
 	protected int databaseInMaxParameters;
+	protected boolean entityCacheEnabled;
+	protected boolean finderCacheEnabled;
 
 	/**
 	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement
