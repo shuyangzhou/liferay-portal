@@ -25,6 +25,7 @@ import com.liferay.blogs.exception.EntrySmallImageScaleException;
 import com.liferay.blogs.exception.EntryTitleException;
 import com.liferay.blogs.exception.EntryUrlTitleException;
 import com.liferay.blogs.model.BlogsEntry;
+import com.liferay.blogs.service.BlogsStatsUserLocalService;
 import com.liferay.blogs.service.base.BlogsEntryLocalServiceBaseImpl;
 import com.liferay.blogs.settings.BlogsGroupServiceSettings;
 import com.liferay.blogs.social.BlogsActivityKeys;
@@ -37,6 +38,7 @@ import com.liferay.friendly.url.service.FriendlyURLEntryLocalService;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.comment.CommentManager;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -75,12 +77,11 @@ import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.GroupSubscriptionCheckSubscriptionSender;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -92,7 +93,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 import com.liferay.portal.linkback.LinkbackProducerUtil;
-import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.util.LayoutURLUtil;
 import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portal.util.PropsValues;
@@ -125,6 +125,10 @@ import javax.servlet.http.HttpServletRequest;
 import net.htmlparser.jericho.Source;
 import net.htmlparser.jericho.StartTag;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * Provides the local service for accessing, adding, checking, deleting,
  * subscription handling of, trash handling of, and updating blog entries.
@@ -136,6 +140,7 @@ import net.htmlparser.jericho.StartTag;
  * @author Juan Fernández
  * @author Zsolt Berentey
  */
+@Component(service = AopService.class)
 public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 
 	@Override
@@ -457,7 +462,7 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 
 		User user = userLocalService.getUser(userId);
 
-		Date displayDate = PortalUtil.getDate(
+		Date displayDate = portal.getDate(
 			displayDateMonth, displayDateDay, displayDateYear, displayDateHour,
 			displayDateMinute, user.getTimeZone(),
 			EntryDisplayDateException.class);
@@ -598,7 +603,7 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 				BlogsEntry.class.getName(), PortletProvider.Action.VIEW);
 
 			if (Validator.isNotNull(portletId)) {
-				String layoutFullURL = PortalUtil.getLayoutFullURL(
+				String layoutFullURL = portal.getLayoutFullURL(
 					entry.getGroupId(), portletId);
 
 				serviceContext.setLayoutFullURL(layoutFullURL);
@@ -611,6 +616,11 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 				WorkflowConstants.STATUS_APPROVED, serviceContext,
 				new HashMap<>());
 		}
+	}
+
+	@Deactivate
+	public void deactivate() {
+		super.deactivate();
 	}
 
 	@Override
@@ -664,7 +674,7 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 
 		// Statistics
 
-		blogsStatsUserLocalService.updateStatsUser(
+		_blogsStatsUserLocalService.updateStatsUser(
 			entry.getGroupId(), entry.getUserId(), entry.getDisplayDate());
 
 		// Asset
@@ -1426,7 +1436,7 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 
 		User user = userLocalService.getUser(userId);
 
-		Date displayDate = PortalUtil.getDate(
+		Date displayDate = portal.getDate(
 			displayDateMonth, displayDateDay, displayDateYear, displayDateHour,
 			displayDateMinute, user.getTimeZone(),
 			EntryDisplayDateException.class);
@@ -1523,7 +1533,7 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 
 		// Statistics
 
-		blogsStatsUserLocalService.updateStatsUser(
+		_blogsStatsUserLocalService.updateStatsUser(
 			entry.getGroupId(), entry.getUserId(), entry.getDisplayDate());
 
 		AssetEntry assetEntry = assetEntryLocalService.fetchEntry(
@@ -1822,7 +1832,7 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 			return StringPool.BLANK;
 		}
 
-		PortletURL portletURL = PortalUtil.getControlPanelPortletURL(
+		PortletURL portletURL = portal.getControlPanelPortletURL(
 			request, portletId, PortletRequest.RENDER_PHASE);
 
 		portletURL.setParameter("mvcRenderCommandName", "/blogs/view_entry");
@@ -1836,7 +1846,7 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		throws PortalException {
 
 		if (themeDisplay != null) {
-			return PortalUtil.getLayoutFullURL(themeDisplay);
+			return portal.getLayoutFullURL(themeDisplay);
 		}
 
 		return serviceContext.getLayoutFullURL();
@@ -2025,7 +2035,7 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 			return;
 		}
 
-		String layoutFullURL = PortalUtil.getLayoutFullURL(
+		String layoutFullURL = portal.getLayoutFullURL(
 			serviceContext.getScopeGroupId(), portletId);
 
 		if (Validator.isNull(layoutFullURL)) {
@@ -2064,7 +2074,7 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		}
 
 		try {
-			String response = HttpUtil.URLtoString(sb.toString());
+			String response = http.URLtoString(sb.toString());
 
 			if (_log.isInfoEnabled()) {
 				_log.info("Google ping response: " + response);
@@ -2326,25 +2336,31 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		}
 	}
 
-	@ServiceReference(type = ClassNameLocalService.class)
+	@Reference
 	protected ClassNameLocalService classNameLocalService;
 
-	@ServiceReference(type = CommentManager.class)
+	@Reference
 	protected CommentManager commentManager;
 
-	@ServiceReference(type = FriendlyURLEntryLocalService.class)
+	@Reference
 	protected FriendlyURLEntryLocalService friendlyURLEntryLocalService;
 
-	@ServiceReference(type = SubscriptionLocalService.class)
+	@Reference
+	protected Http http;
+
+	@Reference
+	protected Portal portal;
+
+	@Reference
 	protected SubscriptionLocalService subscriptionLocalService;
 
-	@ServiceReference(type = TrashEntryLocalService.class)
+	@Reference
 	protected TrashEntryLocalService trashEntryLocalService;
 
-	@ServiceReference(type = UniqueFileNameProvider.class)
+	@Reference
 	protected UniqueFileNameProvider uniqueFileNameProvider;
 
-	@ServiceReference(type = UnsubscribeHelper.class)
+	@Reference
 	protected UnsubscribeHelper unsubscribeHelper;
 
 	private boolean _attachmentExists(
@@ -2487,5 +2503,8 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		BlogsEntryLocalServiceImpl.class);
+
+	@Reference
+	private BlogsStatsUserLocalService _blogsStatsUserLocalService;
 
 }
