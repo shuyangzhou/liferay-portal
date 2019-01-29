@@ -320,6 +320,10 @@ public class EntityColumn implements Cloneable, Comparable<EntityColumn> {
 		return _finderPath;
 	}
 
+	public boolean isInterfaceColumn() {
+		return _interfaceColumn;
+	}
+
 	public boolean isJsonEnabled() {
 		return _jsonEnabled;
 	}
@@ -467,6 +471,10 @@ public class EntityColumn implements Cloneable, Comparable<EntityColumn> {
 		_idType = idType;
 	}
 
+	public void setInterfaceColumn(boolean interfaceColumn) {
+		_interfaceColumn = interfaceColumn;
+	}
+
 	public void setLazy(boolean lazy) {
 		_lazy = lazy;
 	}
@@ -580,6 +588,7 @@ public class EntityColumn implements Cloneable, Comparable<EntityColumn> {
 	private final String _humanName;
 	private String _idParam;
 	private String _idType;
+	private boolean _interfaceColumn = true;
 	private final boolean _jsonEnabled;
 	private boolean _lazy;
 	private boolean _localized;
