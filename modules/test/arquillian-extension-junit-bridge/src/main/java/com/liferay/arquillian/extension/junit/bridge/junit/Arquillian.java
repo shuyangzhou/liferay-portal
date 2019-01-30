@@ -47,24 +47,21 @@ import org.junit.internal.runners.statements.FailOnTimeout;
 import org.junit.rules.MethodRule;
 import org.junit.runner.Description;
 import org.junit.runner.Result;
+import org.junit.runner.Runner;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runner.notification.StoppedByUserException;
-import org.junit.runners.ParentRunner;
 import org.junit.runners.model.FrameworkMethod;
-import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 import org.junit.runners.model.TestClass;
 
 /**
  * @author Shuyang Zhou
  */
-public class Arquillian extends ParentRunner<FrameworkMethod> {
+public class Arquillian extends Runner {
 
-	public Arquillian(Class<?> clazz) throws InitializationError {
-		super(clazz);
-
+	public Arquillian(Class<?> clazz) {
 		_testClass = new TestClass(clazz) {
 
 			@Override
@@ -154,7 +151,6 @@ public class Arquillian extends ParentRunner<FrameworkMethod> {
 		}
 	}
 
-	@Override
 	protected Description describeChild(FrameworkMethod frameworkMethod) {
 		return _methodDescriptions.computeIfAbsent(
 			frameworkMethod,
@@ -165,12 +161,10 @@ public class Arquillian extends ParentRunner<FrameworkMethod> {
 			});
 	}
 
-	@Override
 	protected List<FrameworkMethod> getChildren() {
 		return _testClass.getAnnotatedMethods(Test.class);
 	}
 
-	@Override
 	protected boolean isIgnored(FrameworkMethod frameworkMethod) {
 		if (frameworkMethod.getAnnotation(Ignore.class) != null) {
 			return true;
@@ -179,7 +173,6 @@ public class Arquillian extends ParentRunner<FrameworkMethod> {
 		return false;
 	}
 
-	@Override
 	protected void runChild(
 		FrameworkMethod frameworkMethod, RunNotifier runNotifier) {
 
