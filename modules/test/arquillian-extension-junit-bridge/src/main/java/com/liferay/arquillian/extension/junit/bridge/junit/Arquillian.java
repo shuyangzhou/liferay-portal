@@ -84,6 +84,18 @@ public class Arquillian extends ParentRunner<FrameworkMethod> {
 	}
 
 	@Override
+	public Description getDescription() {
+		Description description = Description.createSuiteDescription(
+			_testClass.getName(), _testClass.getAnnotations());
+
+		for (FrameworkMethod frameworkMethod : getChildren()) {
+			description.addChild(describeChild(frameworkMethod));
+		}
+
+		return description;
+	}
+
+	@Override
 	public void run(RunNotifier runNotifier) {
 		_testRunnerAdaptor = _testRunnerAdaptorThreadLocal.get();
 
