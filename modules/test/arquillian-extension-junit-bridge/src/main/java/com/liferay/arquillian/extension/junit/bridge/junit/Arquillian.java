@@ -19,7 +19,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +51,7 @@ import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runner.notification.StoppedByUserException;
+import org.junit.runners.model.FrameworkField;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 import org.junit.runners.model.TestClass;
@@ -65,16 +65,17 @@ public class Arquillian extends Runner {
 		_testClass = new TestClass(clazz) {
 
 			@Override
-			public List<FrameworkMethod> getAnnotatedMethods(
-				Class<? extends Annotation> annotationClass) {
+			protected void scanAnnotatedMembers(
+				Map<Class<? extends Annotation>, List<FrameworkMethod>> methods,
+				Map<Class<? extends Annotation>, List<FrameworkField>> fields) {
 
-				List<FrameworkMethod> frameworkMethods = new ArrayList<>(
-					super.getAnnotatedMethods(annotationClass));
+				super.scanAnnotatedMembers(methods, fields);
+
+				List<FrameworkMethod> frameworkMethods = methods.get(
+					Test.class);
 
 				frameworkMethods.sort(
 					Comparator.comparing(FrameworkMethod::getName));
-
-				return frameworkMethods;
 			}
 
 		};
