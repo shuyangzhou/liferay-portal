@@ -108,11 +108,9 @@ public class Arquillian extends Runner {
 			}
 			catch (Exception e) {
 				runNotifier.fireTestFailure(new Failure(getDescription(), e));
-			}
-		}
 
-		if (_testRunnerAdaptor == null) {
-			return;
+				return;
+			}
 		}
 
 		runNotifier.addListener(
