@@ -85,7 +85,9 @@ public class Arquillian extends Runner {
 		Description description = Description.createSuiteDescription(
 			_testClass.getName(), _testClass.getAnnotations());
 
-		for (FrameworkMethod frameworkMethod : _getChildren()) {
+		for (FrameworkMethod frameworkMethod :
+				_testClass.getAnnotatedMethods(Test.class)) {
+
 			description.addChild(_describeChild(frameworkMethod));
 		}
 
@@ -152,11 +154,14 @@ public class Arquillian extends Runner {
 	}
 
 	private Statement _classBlock(RunNotifier runNotifier) {
+		List<FrameworkMethod> frameworkMethods = _testClass.getAnnotatedMethods(
+			Test.class);
+
 		Statement statement = new Statement() {
 
 			@Override
 			public void evaluate() {
-				for (FrameworkMethod frameworkMethod : _getChildren()) {
+				for (FrameworkMethod frameworkMethod : frameworkMethods) {
 					_runChild(frameworkMethod, runNotifier);
 				}
 			}
@@ -165,7 +170,7 @@ public class Arquillian extends Runner {
 
 		boolean hasTestMethod = false;
 
-		for (FrameworkMethod frameworkMethod : _getChildren()) {
+		for (FrameworkMethod frameworkMethod : frameworkMethods) {
 			if (!_isIgnored(frameworkMethod)) {
 				hasTestMethod = true;
 
@@ -223,10 +228,6 @@ public class Arquillian extends Runner {
 					_testClass.getJavaClass(), keyFrameworkMethod.getName(),
 					keyFrameworkMethod.getAnnotations());
 			});
-	}
-
-	private List<FrameworkMethod> _getChildren() {
-		return _testClass.getAnnotatedMethods(Test.class);
 	}
 
 	private List<MethodRule> _getMethodRules(Object testObject) {
