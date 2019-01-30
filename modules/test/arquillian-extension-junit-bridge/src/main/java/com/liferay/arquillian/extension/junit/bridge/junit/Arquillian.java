@@ -97,15 +97,16 @@ public class Arquillian extends Runner {
 
 	@Override
 	public void run(RunNotifier runNotifier) {
-		_testRunnerAdaptor = _testRunnerAdaptorThreadLocal.get();
+		TestRunnerAdaptor testRunnerAdaptor =
+			_testRunnerAdaptorThreadLocal.get();
 
-		if (_testRunnerAdaptor == null) {
+		if (testRunnerAdaptor == null) {
 			try {
-				_testRunnerAdaptor = TestRunnerAdaptorBuilder.build();
+				testRunnerAdaptor = TestRunnerAdaptorBuilder.build();
 
-				_testRunnerAdaptor.beforeSuite();
+				testRunnerAdaptor.beforeSuite();
 
-				_testRunnerAdaptorThreadLocal.set(_testRunnerAdaptor);
+				_testRunnerAdaptorThreadLocal.set(testRunnerAdaptor);
 			}
 			catch (Exception e) {
 				runNotifier.fireTestFailure(new Failure(getDescription(), e));
@@ -114,17 +115,17 @@ public class Arquillian extends Runner {
 			}
 		}
 
+		final TestRunnerAdaptor finalTestRunnerAdaptor = testRunnerAdaptor;
+
 		runNotifier.addListener(
 			new RunListener() {
 
 				@Override
 				public void testRunFinished(Result result) throws Exception {
 					try {
-						_testRunnerAdaptor.afterSuite();
+						finalTestRunnerAdaptor.afterSuite();
 
-						_testRunnerAdaptor.shutdown();
-
-						_testRunnerAdaptor = null;
+						finalTestRunnerAdaptor.shutdown();
 					}
 					finally {
 						_testRunnerAdaptorThreadLocal.remove();
@@ -136,7 +137,7 @@ public class Arquillian extends Runner {
 		Description description = getDescription();
 
 		try {
-			Statement statement = _classBlock(runNotifier);
+			Statement statement = _classBlock(runNotifier, testRunnerAdaptor);
 
 			statement.evaluate();
 		}
@@ -156,7 +157,9 @@ public class Arquillian extends Runner {
 		}
 	}
 
-	private Statement _classBlock(RunNotifier runNotifier) {
+	private Statement _classBlock(
+		RunNotifier runNotifier, TestRunnerAdaptor testRunnerAdaptor) {
+
 		List<FrameworkMethod> frameworkMethods = _testClass.getAnnotatedMethods(
 			Test.class);
 
@@ -165,7 +168,7 @@ public class Arquillian extends Runner {
 			@Override
 			public void evaluate() {
 				for (FrameworkMethod frameworkMethod : frameworkMethods) {
-					_runChild(frameworkMethod, runNotifier);
+					_runChild(frameworkMethod, runNotifier, testRunnerAdaptor);
 				}
 			}
 
@@ -189,7 +192,7 @@ public class Arquillian extends Runner {
 					Throwable throwable = null;
 
 					try {
-						_testRunnerAdaptor.beforeClass(
+						testRunnerAdaptor.beforeClass(
 							_testClass.getJavaClass(),
 							LifecycleMethodExecutor.NO_OP);
 
@@ -200,7 +203,7 @@ public class Arquillian extends Runner {
 					}
 
 					try {
-						_testRunnerAdaptor.afterClass(
+						testRunnerAdaptor.afterClass(
 							_testClass.getJavaClass(),
 							LifecycleMethodExecutor.NO_OP);
 					}
@@ -252,7 +255,9 @@ public class Arquillian extends Runner {
 		return false;
 	}
 
-	private Statement _methodBlock(FrameworkMethod frameworkMethod) {
+	private Statement _methodBlock(
+		FrameworkMethod frameworkMethod, TestRunnerAdaptor testRunnerAdaptor) {
+
 		Object testObject = null;
 
 		try {
@@ -270,7 +275,8 @@ public class Arquillian extends Runner {
 
 		final Object test = testObject;
 
-		Statement statement = _methodInvoker(frameworkMethod, test);
+		Statement statement = _methodInvoker(
+			frameworkMethod, test, testRunnerAdaptor);
 
 		statement = _possiblyExpectingExceptions(frameworkMethod, statement);
 
@@ -293,7 +299,7 @@ public class Arquillian extends Runner {
 				Throwable throwable = null;
 
 				try {
-					_testRunnerAdaptor.fireCustomLifecycle(
+					testRunnerAdaptor.fireCustomLifecycle(
 						new BeforeTestLifecycleEvent(
 							test, frameworkMethod.getMethod(),
 							() -> {
@@ -311,7 +317,7 @@ public class Arquillian extends Runner {
 				}
 				finally {
 					try {
-						_testRunnerAdaptor.fireCustomLifecycle(
+						testRunnerAdaptor.fireCustomLifecycle(
 							new AfterTestLifecycleEvent(
 								test, frameworkMethod.getMethod(),
 								LifecycleMethodExecutor.NO_OP));
@@ -334,13 +340,14 @@ public class Arquillian extends Runner {
 	}
 
 	private Statement _methodInvoker(
-		FrameworkMethod frameworkMethod, Object testObject) {
+		FrameworkMethod frameworkMethod, Object testObject,
+		TestRunnerAdaptor testRunnerAdaptor) {
 
 		return new Statement() {
 
 			@Override
 			public void evaluate() throws Throwable {
-				TestResult testResult = _testRunnerAdaptor.test(
+				TestResult testResult = testRunnerAdaptor.test(
 					new TestMethodExecutor() {
 
 						public Object getInstance() {
@@ -402,7 +409,8 @@ public class Arquillian extends Runner {
 	}
 
 	private void _runChild(
-		FrameworkMethod frameworkMethod, RunNotifier runNotifier) {
+		FrameworkMethod frameworkMethod, RunNotifier runNotifier,
+		TestRunnerAdaptor testRunnerAdaptor) {
 
 		Description description = _describeChild(frameworkMethod);
 
@@ -410,7 +418,8 @@ public class Arquillian extends Runner {
 			runNotifier.fireTestIgnored(description);
 		}
 		else {
-			Statement statement = _methodBlock(frameworkMethod);
+			Statement statement = _methodBlock(
+				frameworkMethod, testRunnerAdaptor);
 
 			runNotifier.fireTestStarted(description);
 
@@ -457,6 +466,5 @@ public class Arquillian extends Runner {
 	private final Map<FrameworkMethod, Description> _methodDescriptions =
 		new ConcurrentHashMap<>();
 	private final TestClass _testClass;
-	private TestRunnerAdaptor _testRunnerAdaptor;
 
 }
