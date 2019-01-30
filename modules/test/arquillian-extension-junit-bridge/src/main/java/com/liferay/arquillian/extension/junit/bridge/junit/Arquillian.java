@@ -64,6 +64,23 @@ public class Arquillian extends ParentRunner<FrameworkMethod> {
 
 	public Arquillian(Class<?> clazz) throws InitializationError {
 		super(clazz);
+
+		_testClass = new TestClass(clazz) {
+
+			@Override
+			public List<FrameworkMethod> getAnnotatedMethods(
+				Class<? extends Annotation> annotationClass) {
+
+				List<FrameworkMethod> frameworkMethods = new ArrayList<>(
+					super.getAnnotatedMethods(annotationClass));
+
+				frameworkMethods.sort(
+					Comparator.comparing(FrameworkMethod::getName));
+
+				return frameworkMethods;
+			}
+
+		};
 	}
 
 	@Override
@@ -126,41 +143,19 @@ public class Arquillian extends ParentRunner<FrameworkMethod> {
 	}
 
 	@Override
-	protected TestClass createTestClass(Class<?> testClass) {
-		return new TestClass(testClass) {
-
-			@Override
-			public List<FrameworkMethod> getAnnotatedMethods(
-				Class<? extends Annotation> annotationClass) {
-
-				List<FrameworkMethod> frameworkMethods = new ArrayList<>(
-					super.getAnnotatedMethods(annotationClass));
-
-				frameworkMethods.sort(
-					Comparator.comparing(FrameworkMethod::getName));
-
-				return frameworkMethods;
-			}
-
-		};
-	}
-
-	@Override
 	protected Description describeChild(FrameworkMethod frameworkMethod) {
 		return _methodDescriptions.computeIfAbsent(
 			frameworkMethod,
 			keyFrameworkMethod -> {
-				TestClass testClass = getTestClass();
-
 				return Description.createTestDescription(
-					testClass.getJavaClass(), keyFrameworkMethod.getName(),
+					_testClass.getJavaClass(), keyFrameworkMethod.getName(),
 					keyFrameworkMethod.getAnnotations());
 			});
 	}
 
 	@Override
 	protected List<FrameworkMethod> getChildren() {
-		return getTestClass().getAnnotatedMethods(Test.class);
+		return _testClass.getAnnotatedMethods(Test.class);
 	}
 
 	@Override
@@ -231,13 +226,11 @@ public class Arquillian extends ParentRunner<FrameworkMethod> {
 
 				@Override
 				public void evaluate() throws Throwable {
-					TestClass testClass = getTestClass();
-
 					Throwable throwable = null;
 
 					try {
 						_testRunnerAdaptor.beforeClass(
-							testClass.getJavaClass(),
+							_testClass.getJavaClass(),
 							LifecycleMethodExecutor.NO_OP);
 
 						statement.evaluate();
@@ -248,7 +241,7 @@ public class Arquillian extends ParentRunner<FrameworkMethod> {
 
 					try {
 						_testRunnerAdaptor.afterClass(
-							testClass.getJavaClass(),
+							_testClass.getJavaClass(),
 							LifecycleMethodExecutor.NO_OP);
 					}
 					catch (Throwable t) {
@@ -271,13 +264,11 @@ public class Arquillian extends ParentRunner<FrameworkMethod> {
 	}
 
 	private List<MethodRule> _getMethodRules(Object testObject) {
-		TestClass testClass = getTestClass();
-
-		List<MethodRule> methodRules = testClass.getAnnotatedMethodValues(
+		List<MethodRule> methodRules = _testClass.getAnnotatedMethodValues(
 			testObject, Rule.class, MethodRule.class);
 
 		methodRules.addAll(
-			testClass.getAnnotatedFieldValues(
+			_testClass.getAnnotatedFieldValues(
 				testObject, Rule.class, MethodRule.class));
 
 		return methodRules;
@@ -287,9 +278,7 @@ public class Arquillian extends ParentRunner<FrameworkMethod> {
 		Object testObject = null;
 
 		try {
-			TestClass testClass = getTestClass();
-
-			Constructor<?> constructor = testClass.getOnlyConstructor();
+			Constructor<?> constructor = _testClass.getOnlyConstructor();
 
 			testObject = constructor.newInstance();
 		}
@@ -455,6 +444,7 @@ public class Arquillian extends ParentRunner<FrameworkMethod> {
 
 	private final Map<FrameworkMethod, Description> _methodDescriptions =
 		new ConcurrentHashMap<>();
+	private final TestClass _testClass;
 	private TestRunnerAdaptor _testRunnerAdaptor;
 
 }
