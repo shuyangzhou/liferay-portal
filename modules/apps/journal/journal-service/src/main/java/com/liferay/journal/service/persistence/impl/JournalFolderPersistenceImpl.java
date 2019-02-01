@@ -8149,6 +8149,6 @@ public class JournalFolderPersistenceImpl extends BasePersistenceImpl<JournalFol
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No JournalFolder exists with the key {";
 	private static final Log _log = LogFactoryUtil.getLog(JournalFolderPersistenceImpl.class);
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
-				"uuid"
+				"uuid", "description"
 			});
 }

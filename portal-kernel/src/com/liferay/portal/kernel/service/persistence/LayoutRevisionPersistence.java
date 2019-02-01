@@ -2202,4 +2202,7 @@ public interface LayoutRevisionPersistence extends BasePersistence<LayoutRevisio
 	* @return the number of layout revisions
 	*/
 	public int countAll();
+
+	@Override
+	public Set<String> getBadColumnNames();
 }

@@ -12200,6 +12200,6 @@ public class MBCategoryPersistenceImpl extends BasePersistenceImpl<MBCategory>
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No MBCategory exists with the key {";
 	private static final Log _log = LogFactoryUtil.getLog(MBCategoryPersistenceImpl.class);
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
-				"uuid"
+				"uuid", "description"
 			});
 }

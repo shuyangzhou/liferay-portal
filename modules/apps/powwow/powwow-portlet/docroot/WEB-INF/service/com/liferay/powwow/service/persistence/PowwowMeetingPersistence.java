@@ -910,4 +910,7 @@ public interface PowwowMeetingPersistence extends BasePersistence<PowwowMeeting>
 	* @return the number of powwow meetings
 	*/
 	public int countAll();
+
+	@Override
+	public Set<String> getBadColumnNames();
 }

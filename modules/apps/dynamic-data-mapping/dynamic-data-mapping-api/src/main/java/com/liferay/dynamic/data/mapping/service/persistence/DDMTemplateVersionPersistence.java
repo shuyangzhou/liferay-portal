@@ -491,4 +491,7 @@ public interface DDMTemplateVersionPersistence extends BasePersistence<DDMTempla
 	* @return the number of ddm template versions
 	*/
 	public int countAll();
+
+	@Override
+	public Set<String> getBadColumnNames();
 }

@@ -1883,6 +1883,6 @@ public class OAuth2ApplicationPersistenceImpl extends BasePersistenceImpl<OAuth2
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No OAuth2Application exists with the key {";
 	private static final Log _log = LogFactoryUtil.getLog(OAuth2ApplicationPersistenceImpl.class);
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
-				"oAuth2ApplicationScopeAliasesId"
+				"oAuth2ApplicationScopeAliasesId", "description"
 			});
 }

@@ -652,6 +652,10 @@ public class KaleoTimerUtil {
 		return getPersistence().countAll();
 	}
 
+	public static Set<String> getBadColumnNames() {
+		return getPersistence().getBadColumnNames();
+	}
+
 	public static KaleoTimerPersistence getPersistence() {
 		return _serviceTracker.getService();
 	}

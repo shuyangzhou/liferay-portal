@@ -13604,6 +13604,6 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No DLFolder exists with the key {";
 	private static final Log _log = LogFactoryUtil.getLog(DLFolderPersistenceImpl.class);
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
-				"uuid", "hidden"
+				"uuid", "description", "hidden"
 			});
 }

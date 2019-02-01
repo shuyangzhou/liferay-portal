@@ -35074,6 +35074,6 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No KBArticle exists with the key {";
 	private static final Log _log = LogFactoryUtil.getLog(KBArticlePersistenceImpl.class);
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
-				"uuid"
+				"uuid", "description"
 			});
 }

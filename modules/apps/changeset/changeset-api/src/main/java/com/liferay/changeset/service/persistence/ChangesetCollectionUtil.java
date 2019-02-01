@@ -1003,6 +1003,10 @@ public class ChangesetCollectionUtil {
 		return getPersistence().countAll();
 	}
 
+	public static Set<String> getBadColumnNames() {
+		return getPersistence().getBadColumnNames();
+	}
+
 	public static ChangesetCollectionPersistence getPersistence() {
 		return _serviceTracker.getService();
 	}

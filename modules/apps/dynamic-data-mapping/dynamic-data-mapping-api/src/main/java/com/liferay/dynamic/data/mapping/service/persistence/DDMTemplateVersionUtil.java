@@ -667,6 +667,10 @@ public class DDMTemplateVersionUtil {
 		return getPersistence().countAll();
 	}
 
+	public static Set<String> getBadColumnNames() {
+		return getPersistence().getBadColumnNames();
+	}
+
 	public static DDMTemplateVersionPersistence getPersistence() {
 		return _serviceTracker.getService();
 	}

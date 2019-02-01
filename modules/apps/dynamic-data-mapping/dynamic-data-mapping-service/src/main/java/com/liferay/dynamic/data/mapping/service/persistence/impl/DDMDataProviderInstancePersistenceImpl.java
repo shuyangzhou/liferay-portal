@@ -4127,6 +4127,6 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No DDMDataProviderInstance exists with the key {";
 	private static final Log _log = LogFactoryUtil.getLog(DDMDataProviderInstancePersistenceImpl.class);
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
-				"uuid", "type"
+				"uuid", "description", "definition", "type"
 			});
 }

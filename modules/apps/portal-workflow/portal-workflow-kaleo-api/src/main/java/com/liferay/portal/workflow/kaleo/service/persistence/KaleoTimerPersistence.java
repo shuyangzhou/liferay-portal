@@ -474,4 +474,7 @@ public interface KaleoTimerPersistence extends BasePersistence<KaleoTimer> {
 	* @return the number of kaleo timers
 	*/
 	public int countAll();
+
+	@Override
+	public Set<String> getBadColumnNames();
 }

@@ -10460,6 +10460,6 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Role exists with the key {";
 	private static final Log _log = LogFactoryUtil.getLog(RolePersistenceImpl.class);
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
-				"uuid", "type"
+				"uuid", "description", "type"
 			});
 }

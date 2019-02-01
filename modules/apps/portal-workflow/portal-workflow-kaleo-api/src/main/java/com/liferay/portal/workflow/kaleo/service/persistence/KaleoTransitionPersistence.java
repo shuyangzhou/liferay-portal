@@ -665,4 +665,7 @@ public interface KaleoTransitionPersistence extends BasePersistence<KaleoTransit
 	* @return the number of kaleo transitions
 	*/
 	public int countAll();
+
+	@Override
+	public Set<String> getBadColumnNames();
 }

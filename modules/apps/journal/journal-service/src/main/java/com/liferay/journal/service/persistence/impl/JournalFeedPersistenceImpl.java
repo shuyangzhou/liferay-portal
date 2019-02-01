@@ -3338,6 +3338,6 @@ public class JournalFeedPersistenceImpl extends BasePersistenceImpl<JournalFeed>
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No JournalFeed exists with the key {";
 	private static final Log _log = LogFactoryUtil.getLog(JournalFeedPersistenceImpl.class);
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
-				"uuid", "id"
+				"uuid", "id", "description"
 			});
 }
