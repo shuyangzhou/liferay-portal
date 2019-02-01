@@ -354,4 +354,7 @@ public interface JournalArticleLocalizationPersistence extends BasePersistence<J
 	* @return the number of journal article localizations
 	*/
 	public int countAll();
+
+	@Override
+	public Set<String> getBadColumnNames();
 }

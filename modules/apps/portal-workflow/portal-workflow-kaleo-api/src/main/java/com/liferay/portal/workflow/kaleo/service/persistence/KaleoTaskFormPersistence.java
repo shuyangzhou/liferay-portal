@@ -746,4 +746,7 @@ public interface KaleoTaskFormPersistence extends BasePersistence<KaleoTaskForm>
 	* @return the number of kaleo task forms
 	*/
 	public int countAll();
+
+	@Override
+	public Set<String> getBadColumnNames();
 }

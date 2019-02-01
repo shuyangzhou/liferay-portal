@@ -499,4 +499,7 @@ public interface KaleoDefinitionVersionPersistence extends BasePersistence<Kaleo
 	* @return the number of kaleo definition versions
 	*/
 	public int countAll();
+
+	@Override
+	public Set<String> getBadColumnNames();
 }

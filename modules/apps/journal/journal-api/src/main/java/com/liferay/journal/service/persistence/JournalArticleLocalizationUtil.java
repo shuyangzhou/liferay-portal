@@ -508,6 +508,10 @@ public class JournalArticleLocalizationUtil {
 		return getPersistence().countAll();
 	}
 
+	public static Set<String> getBadColumnNames() {
+		return getPersistence().getBadColumnNames();
+	}
+
 	public static JournalArticleLocalizationPersistence getPersistence() {
 		return _serviceTracker.getService();
 	}

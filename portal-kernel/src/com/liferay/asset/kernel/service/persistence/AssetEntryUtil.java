@@ -2156,6 +2156,10 @@ public class AssetEntryUtil {
 		getPersistence().setAssetTags(pk, assetTags);
 	}
 
+	public static Set<String> getBadColumnNames() {
+		return getPersistence().getBadColumnNames();
+	}
+
 	public static AssetEntryPersistence getPersistence() {
 		if (_persistence == null) {
 			_persistence = (AssetEntryPersistence)PortalBeanLocatorUtil.locate(AssetEntryPersistence.class.getName());

@@ -746,4 +746,7 @@ public interface KaleoNotificationPersistence extends BasePersistence<KaleoNotif
 	* @return the number of kaleo notifications
 	*/
 	public int countAll();
+
+	@Override
+	public Set<String> getBadColumnNames();
 }

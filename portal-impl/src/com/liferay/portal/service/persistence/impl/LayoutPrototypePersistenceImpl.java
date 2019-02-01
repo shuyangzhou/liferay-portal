@@ -4547,6 +4547,6 @@ public class LayoutPrototypePersistenceImpl extends BasePersistenceImpl<LayoutPr
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No LayoutPrototype exists with the key {";
 	private static final Log _log = LogFactoryUtil.getLog(LayoutPrototypePersistenceImpl.class);
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
-				"uuid", "settings", "active"
+				"uuid", "description", "settings", "active"
 			});
 }

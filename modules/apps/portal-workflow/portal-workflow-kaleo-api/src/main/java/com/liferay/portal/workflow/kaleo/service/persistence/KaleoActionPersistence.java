@@ -743,4 +743,7 @@ public interface KaleoActionPersistence extends BasePersistence<KaleoAction> {
 	* @return the number of kaleo actions
 	*/
 	public int countAll();
+
+	@Override
+	public Set<String> getBadColumnNames();
 }

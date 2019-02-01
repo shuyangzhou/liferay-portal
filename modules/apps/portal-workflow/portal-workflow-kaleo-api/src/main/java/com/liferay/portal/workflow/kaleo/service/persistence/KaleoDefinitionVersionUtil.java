@@ -681,6 +681,10 @@ public class KaleoDefinitionVersionUtil {
 		return getPersistence().countAll();
 	}
 
+	public static Set<String> getBadColumnNames() {
+		return getPersistence().getBadColumnNames();
+	}
+
 	public static KaleoDefinitionVersionPersistence getPersistence() {
 		return _serviceTracker.getService();
 	}

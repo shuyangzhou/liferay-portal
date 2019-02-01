@@ -768,4 +768,7 @@ public interface ChangesetCollectionPersistence extends BasePersistence<Changese
 	* @return the number of changeset collections
 	*/
 	public int countAll();
+
+	@Override
+	public Set<String> getBadColumnNames();
 }

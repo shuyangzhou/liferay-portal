@@ -5682,6 +5682,6 @@ public class SegmentsEntryPersistenceImpl extends BasePersistenceImpl<SegmentsEn
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No SegmentsEntry exists with the key {";
 	private static final Log _log = LogFactoryUtil.getLog(SegmentsEntryPersistenceImpl.class);
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
-				"active", "key", "type"
+				"description", "active", "key", "type"
 			});
 }

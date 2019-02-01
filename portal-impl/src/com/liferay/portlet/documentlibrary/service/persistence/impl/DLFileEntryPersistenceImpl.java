@@ -15816,6 +15816,6 @@ public class DLFileEntryPersistenceImpl extends BasePersistenceImpl<DLFileEntry>
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No DLFileEntry exists with the key {";
 	private static final Log _log = LogFactoryUtil.getLog(DLFileEntryPersistenceImpl.class);
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
-				"uuid", "size"
+				"uuid", "description", "size"
 			});
 }

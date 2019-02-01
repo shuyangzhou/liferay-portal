@@ -476,4 +476,7 @@ public interface KaleoTaskPersistence extends BasePersistence<KaleoTask> {
 	* @return the number of kaleo tasks
 	*/
 	public int countAll();
+
+	@Override
+	public Set<String> getBadColumnNames();
 }

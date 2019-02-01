@@ -12968,6 +12968,6 @@ public class DDMTemplatePersistenceImpl extends BasePersistenceImpl<DDMTemplate>
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No DDMTemplate exists with the key {";
 	private static final Log _log = LogFactoryUtil.getLog(DDMTemplatePersistenceImpl.class);
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
-				"uuid", "type", "mode"
+				"uuid", "description", "type", "mode"
 			});
 }

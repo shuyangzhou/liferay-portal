@@ -14493,6 +14493,6 @@ public class LayoutPersistenceImpl extends BasePersistenceImpl<Layout>
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Layout exists with the key {";
 	private static final Log _log = LogFactoryUtil.getLog(LayoutPersistenceImpl.class);
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
-				"uuid", "type", "hidden"
+				"uuid", "description", "type", "hidden", "system"
 			});
 }

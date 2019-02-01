@@ -654,4 +654,7 @@ public interface LayoutBranchPersistence extends BasePersistence<LayoutBranch> {
 	* @return the number of layout branchs
 	*/
 	public int countAll();
+
+	@Override
+	public Set<String> getBadColumnNames();
 }

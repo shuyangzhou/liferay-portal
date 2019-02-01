@@ -512,4 +512,7 @@ public interface CTCollectionPersistence extends BasePersistence<CTCollection> {
 	*/
 	public void setCTEntries(long pk,
 		java.util.List<com.liferay.change.tracking.model.CTEntry> ctEntries);
+
+	@Override
+	public Set<String> getBadColumnNames();
 }

@@ -2772,6 +2772,10 @@ public class LayoutRevisionUtil {
 		return getPersistence().countAll();
 	}
 
+	public static Set<String> getBadColumnNames() {
+		return getPersistence().getBadColumnNames();
+	}
+
 	public static LayoutRevisionPersistence getPersistence() {
 		if (_persistence == null) {
 			_persistence = (LayoutRevisionPersistence)PortalBeanLocatorUtil.locate(LayoutRevisionPersistence.class.getName());
