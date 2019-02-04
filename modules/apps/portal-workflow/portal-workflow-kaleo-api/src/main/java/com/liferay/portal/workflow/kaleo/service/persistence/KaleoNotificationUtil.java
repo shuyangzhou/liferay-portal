@@ -1003,10 +1003,6 @@ public class KaleoNotificationUtil {
 		return getPersistence().countAll();
 	}
 
-	public static Set<String> getBadColumnNames() {
-		return getPersistence().getBadColumnNames();
-	}
-
 	public static KaleoNotificationPersistence getPersistence() {
 		return _serviceTracker.getService();
 	}

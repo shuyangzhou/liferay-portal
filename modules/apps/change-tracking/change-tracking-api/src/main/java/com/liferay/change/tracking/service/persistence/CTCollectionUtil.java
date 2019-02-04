@@ -690,10 +690,6 @@ public class CTCollectionUtil {
 		getPersistence().setCTEntries(pk, ctEntries);
 	}
 
-	public static Set<String> getBadColumnNames() {
-		return getPersistence().getBadColumnNames();
-	}
-
 	public static CTCollectionPersistence getPersistence() {
 		return _serviceTracker.getService();
 	}

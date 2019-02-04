@@ -993,10 +993,6 @@ public class KaleoTaskFormUtil {
 		return getPersistence().countAll();
 	}
 
-	public static Set<String> getBadColumnNames() {
-		return getPersistence().getBadColumnNames();
-	}
-
 	public static KaleoTaskFormPersistence getPersistence() {
 		return _serviceTracker.getService();
 	}

@@ -896,10 +896,6 @@ public class KaleoTransitionUtil {
 		return getPersistence().countAll();
 	}
 
-	public static Set<String> getBadColumnNames() {
-		return getPersistence().getBadColumnNames();
-	}
-
 	public static KaleoTransitionPersistence getPersistence() {
 		return _serviceTracker.getService();
 	}
