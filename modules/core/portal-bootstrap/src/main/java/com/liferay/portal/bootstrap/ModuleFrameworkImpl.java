@@ -1449,7 +1449,9 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 		for (Path jarPath : jarPaths) {
 			try (InputStream inputStream = Files.newInputStream(jarPath)) {
-				URI uri = jarPath.toUri();
+				File file = jarPath.toFile();
+
+				URI uri = file.toURI();
 
 				String uriString = uri.toString();
 
