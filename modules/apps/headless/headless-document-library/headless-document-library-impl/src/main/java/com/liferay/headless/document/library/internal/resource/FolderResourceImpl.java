@@ -45,14 +45,12 @@ public class FolderResourceImpl implements FolderResource {
 
 	@Override
 	public Response deleteFolder(Long folderId) throws Exception {
-		Response.ResponseBuilder responseBuilder = Response.ok();
-
-		return responseBuilder.build();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Folder getDocumentsRepository(Long id) throws Exception {
-		return new Folder();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -66,7 +64,7 @@ public class FolderResourceImpl implements FolderResource {
 
 	@Override
 	public Folder getFolder(Long folderId) throws Exception {
-		return new Folder();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -86,7 +84,7 @@ public class FolderResourceImpl implements FolderResource {
 			Long documentsRepositoryId, Folder folder)
 		throws Exception {
 
-		return new Folder();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -94,26 +92,26 @@ public class FolderResourceImpl implements FolderResource {
 			Long documentsRepositoryId, Folder folder)
 		throws Exception {
 
-		return new Folder();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Folder postFolderFolder(Long folderId, Folder folder)
 		throws Exception {
 
-		return new Folder();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Folder postFolderFolderBatchCreate(Long folderId, Folder folder)
 		throws Exception {
 
-		return new Folder();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Folder putFolder(Long folderId, Folder folder) throws Exception {
-		return new Folder();
+		throw new UnsupportedOperationException();
 	}
 
 	protected <T, R> List<R> transform(

@@ -22,7 +22,6 @@ import com.liferay.portal.vulcan.context.Pagination;
 import com.liferay.portal.vulcan.dto.Page;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -45,12 +44,12 @@ public class WorkflowTaskResourceImpl implements WorkflowTaskResource {
 			Long rolesId, Pagination pagination)
 		throws Exception {
 
-		return Page.of(Collections.emptyList());
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public WorkflowTask getWorkflowTask(Long workflowTasksId) throws Exception {
-		return new WorkflowTask();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -58,7 +57,7 @@ public class WorkflowTaskResourceImpl implements WorkflowTaskResource {
 			Object genericParentId, Pagination pagination)
 		throws Exception {
 
-		return Page.of(Collections.emptyList());
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -66,7 +65,7 @@ public class WorkflowTaskResourceImpl implements WorkflowTaskResource {
 			Long workflowTasksId, WorkflowTask workflowTask)
 		throws Exception {
 
-		return new WorkflowTask();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -74,7 +73,7 @@ public class WorkflowTaskResourceImpl implements WorkflowTaskResource {
 			Long workflowTasksId, WorkflowTask workflowTask)
 		throws Exception {
 
-		return new WorkflowTask();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -82,7 +81,7 @@ public class WorkflowTaskResourceImpl implements WorkflowTaskResource {
 			Long workflowTasksId, WorkflowTask workflowTask)
 		throws Exception {
 
-		return new WorkflowTask();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -90,7 +89,7 @@ public class WorkflowTaskResourceImpl implements WorkflowTaskResource {
 			Long workflowTasksId, WorkflowTask workflowTask)
 		throws Exception {
 
-		return new WorkflowTask();
+		throw new UnsupportedOperationException();
 	}
 
 	protected <T, R> List<R> transform(

@@ -44,7 +44,7 @@ public class ImageObjectRepositoryResourceImpl
 			Long imageObjectRepositoryId)
 		throws Exception {
 
-		return new ImageObjectRepository();
+		throw new UnsupportedOperationException();
 	}
 
 	protected <T, R> List<R> transform(

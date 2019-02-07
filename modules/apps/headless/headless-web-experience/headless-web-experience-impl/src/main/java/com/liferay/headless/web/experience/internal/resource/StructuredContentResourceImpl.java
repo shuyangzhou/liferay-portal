@@ -77,7 +77,7 @@ public class StructuredContentResourceImpl
 	public StructuredContent getStructuredContent(Long structuredContentsId)
 		throws Exception {
 
-		return new StructuredContent();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -85,7 +85,7 @@ public class StructuredContentResourceImpl
 			Long contentSpaceId, StructuredContent structuredContent)
 		throws Exception {
 
-		return new StructuredContent();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -93,7 +93,7 @@ public class StructuredContentResourceImpl
 			Long contentSpaceId, StructuredContent structuredContent)
 		throws Exception {
 
-		return new StructuredContent();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -101,7 +101,7 @@ public class StructuredContentResourceImpl
 			Long structuredContentsId, StructuredContent structuredContent)
 		throws Exception {
 
-		return new StructuredContent();
+		throw new UnsupportedOperationException();
 	}
 
 	protected <T, R> List<R> transform(

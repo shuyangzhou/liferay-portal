@@ -126,7 +126,7 @@ public class BlogPostingResourceImpl implements BlogPostingResource {
 			Long contentSpaceId, BlogPosting blogPosting)
 		throws Exception {
 
-		return new BlogPosting();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override

@@ -41,7 +41,7 @@ public class AggregateRatingResourceImpl implements AggregateRatingResource {
 	public AggregateRating getAggregateRating(Long aggregateRatingId)
 		throws Exception {
 
-		return new AggregateRating();
+		throw new UnsupportedOperationException();
 	}
 
 	protected <T, R> List<R> transform(

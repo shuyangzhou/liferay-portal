@@ -22,7 +22,6 @@ import com.liferay.portal.vulcan.context.Pagination;
 import com.liferay.portal.vulcan.dto.Page;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -43,14 +42,12 @@ public class DocumentResourceImpl implements DocumentResource {
 
 	@Override
 	public Response deleteDocument(Long documentId) throws Exception {
-		Response.ResponseBuilder responseBuilder = Response.ok();
-
-		return responseBuilder.build();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Document getDocument(Long documentId) throws Exception {
-		return new Document();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -58,7 +55,7 @@ public class DocumentResourceImpl implements DocumentResource {
 			Long documentsRepositoryId, Pagination pagination)
 		throws Exception {
 
-		return Page.of(Collections.emptyList());
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -66,7 +63,7 @@ public class DocumentResourceImpl implements DocumentResource {
 			Long folderId, Pagination pagination)
 		throws Exception {
 
-		return Page.of(Collections.emptyList());
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -74,7 +71,7 @@ public class DocumentResourceImpl implements DocumentResource {
 			Long documentsRepositoryId, Document document)
 		throws Exception {
 
-		return new Document();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -82,14 +79,14 @@ public class DocumentResourceImpl implements DocumentResource {
 			Long documentsRepositoryId, Document document)
 		throws Exception {
 
-		return new Document();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Document postFolderDocument(Long folderId, Document document)
 		throws Exception {
 
-		return new Document();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -97,7 +94,7 @@ public class DocumentResourceImpl implements DocumentResource {
 			Long folderId, Document document)
 		throws Exception {
 
-		return new Document();
+		throw new UnsupportedOperationException();
 	}
 
 	protected <T, R> List<R> transform(

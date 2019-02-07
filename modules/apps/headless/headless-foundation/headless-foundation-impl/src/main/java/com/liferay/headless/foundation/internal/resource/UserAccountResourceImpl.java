@@ -22,7 +22,6 @@ import com.liferay.portal.vulcan.context.Pagination;
 import com.liferay.portal.vulcan.dto.Page;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -43,21 +42,19 @@ public class UserAccountResourceImpl implements UserAccountResource {
 
 	@Override
 	public Response deleteUserAccount(Long userAccountId) throws Exception {
-		Response.ResponseBuilder responseBuilder = Response.ok();
-
-		return responseBuilder.build();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public UserAccount getMyUserAccount(Long myUserAccountId) throws Exception {
-		return new UserAccount();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Page<UserAccount> getMyUserAccountPage(Pagination pagination)
 		throws Exception {
 
-		return Page.of(Collections.emptyList());
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -65,12 +62,12 @@ public class UserAccountResourceImpl implements UserAccountResource {
 			Long organizationId, Pagination pagination)
 		throws Exception {
 
-		return Page.of(Collections.emptyList());
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public UserAccount getUserAccount(Long userAccountId) throws Exception {
-		return new UserAccount();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -78,7 +75,7 @@ public class UserAccountResourceImpl implements UserAccountResource {
 			String fullnamequery, Pagination pagination)
 		throws Exception {
 
-		return Page.of(Collections.emptyList());
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -86,21 +83,21 @@ public class UserAccountResourceImpl implements UserAccountResource {
 			Long webSiteId, Pagination pagination)
 		throws Exception {
 
-		return Page.of(Collections.emptyList());
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public UserAccount postUserAccount(UserAccount userAccount)
 		throws Exception {
 
-		return new UserAccount();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public UserAccount postUserAccountBatchCreate(UserAccount userAccount)
 		throws Exception {
 
-		return new UserAccount();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -108,7 +105,7 @@ public class UserAccountResourceImpl implements UserAccountResource {
 			Long userAccountId, UserAccount userAccount)
 		throws Exception {
 
-		return new UserAccount();
+		throw new UnsupportedOperationException();
 	}
 
 	protected <T, R> List<R> transform(

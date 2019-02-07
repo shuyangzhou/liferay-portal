@@ -22,7 +22,6 @@ import com.liferay.portal.vulcan.context.Pagination;
 import com.liferay.portal.vulcan.dto.Page;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -45,19 +44,19 @@ public class FormRecordResourceImpl implements FormRecordResource {
 			Long formId, Pagination pagination)
 		throws Exception {
 
-		return Page.of(Collections.emptyList());
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public FormRecord getFormRecord(Long formRecordId) throws Exception {
-		return new FormRecord();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public FormRecord postFormFormRecord(Long formId, FormRecord formRecord)
 		throws Exception {
 
-		return new FormRecord();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -65,14 +64,14 @@ public class FormRecordResourceImpl implements FormRecordResource {
 			Long formId, FormRecord formRecord)
 		throws Exception {
 
-		return new FormRecord();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public FormRecord putFormRecord(Long formRecordId, FormRecord formRecord)
 		throws Exception {
 
-		return new FormRecord();
+		throw new UnsupportedOperationException();
 	}
 
 	protected <T, R> List<R> transform(

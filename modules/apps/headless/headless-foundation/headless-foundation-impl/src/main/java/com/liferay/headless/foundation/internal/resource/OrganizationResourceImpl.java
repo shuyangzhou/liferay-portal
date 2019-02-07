@@ -22,7 +22,6 @@ import com.liferay.portal.vulcan.context.Pagination;
 import com.liferay.portal.vulcan.dto.Page;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -45,12 +44,12 @@ public class OrganizationResourceImpl implements OrganizationResource {
 			Long myUserAccountId, Pagination pagination)
 		throws Exception {
 
-		return Page.of(Collections.emptyList());
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Organization getOrganization(Long organizationId) throws Exception {
-		return new Organization();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -58,14 +57,14 @@ public class OrganizationResourceImpl implements OrganizationResource {
 			Long organizationId, Pagination pagination)
 		throws Exception {
 
-		return Page.of(Collections.emptyList());
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Page<Organization> getOrganizationPage(Pagination pagination)
 		throws Exception {
 
-		return Page.of(Collections.emptyList());
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -73,7 +72,7 @@ public class OrganizationResourceImpl implements OrganizationResource {
 			Long userAccountId, Pagination pagination)
 		throws Exception {
 
-		return Page.of(Collections.emptyList());
+		throw new UnsupportedOperationException();
 	}
 
 	protected <T, R> List<R> transform(

@@ -22,7 +22,6 @@ import com.liferay.portal.vulcan.context.Pagination;
 import com.liferay.portal.vulcan.dto.Page;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -43,14 +42,12 @@ public class ImageObjectResourceImpl implements ImageObjectResource {
 
 	@Override
 	public Response deleteImageObject(Long imageObjectId) throws Exception {
-		Response.ResponseBuilder responseBuilder = Response.ok();
-
-		return responseBuilder.build();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public ImageObject getImageObject(Long imageObjectId) throws Exception {
-		return new ImageObject();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -58,7 +55,7 @@ public class ImageObjectResourceImpl implements ImageObjectResource {
 			Long imageObjectRepositoryId, Pagination pagination)
 		throws Exception {
 
-		return Page.of(Collections.emptyList());
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -66,7 +63,7 @@ public class ImageObjectResourceImpl implements ImageObjectResource {
 			Long imageObjectRepositoryId, ImageObject imageObject)
 		throws Exception {
 
-		return new ImageObject();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -74,7 +71,7 @@ public class ImageObjectResourceImpl implements ImageObjectResource {
 			Long imageObjectRepositoryId, ImageObject imageObject)
 		throws Exception {
 
-		return new ImageObject();
+		throw new UnsupportedOperationException();
 	}
 
 	protected <T, R> List<R> transform(

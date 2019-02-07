@@ -22,7 +22,6 @@ import com.liferay.portal.vulcan.context.Pagination;
 import com.liferay.portal.vulcan.dto.Page;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -45,14 +44,14 @@ public class FormStructureResourceImpl implements FormStructureResource {
 			Long contentSpaceId, Pagination pagination)
 		throws Exception {
 
-		return Page.of(Collections.emptyList());
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public FormStructure getFormStructure(Long formStructuresId)
 		throws Exception {
 
-		return new FormStructure();
+		throw new UnsupportedOperationException();
 	}
 
 	protected <T, R> List<R> transform(

@@ -22,7 +22,6 @@ import com.liferay.portal.vulcan.context.Pagination;
 import com.liferay.portal.vulcan.dto.Page;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -45,19 +44,19 @@ public class KeywordResourceImpl implements KeywordResource {
 			Long contentSpaceId, Pagination pagination)
 		throws Exception {
 
-		return Page.of(Collections.emptyList());
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Keyword getKeyword(Long keywordsId) throws Exception {
-		return new Keyword();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Keyword postContentSpaceKeyword(Long contentSpaceId, Keyword keyword)
 		throws Exception {
 
-		return new Keyword();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -65,14 +64,14 @@ public class KeywordResourceImpl implements KeywordResource {
 			Long contentSpaceId, Keyword keyword)
 		throws Exception {
 
-		return new Keyword();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Keyword putKeyword(Long keywordsId, Keyword keyword)
 		throws Exception {
 
-		return new Keyword();
+		throw new UnsupportedOperationException();
 	}
 
 	protected <T, R> List<R> transform(

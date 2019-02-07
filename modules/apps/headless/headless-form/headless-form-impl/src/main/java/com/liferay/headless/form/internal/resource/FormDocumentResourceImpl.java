@@ -40,14 +40,12 @@ public class FormDocumentResourceImpl implements FormDocumentResource {
 
 	@Override
 	public Response deleteFormDocument(Long formDocumentId) throws Exception {
-		Response.ResponseBuilder responseBuilder = Response.ok();
-
-		return responseBuilder.build();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public FormDocument getFormDocument(Long formDocumentId) throws Exception {
-		return new FormDocument();
+		throw new UnsupportedOperationException();
 	}
 
 	protected <T, R> List<R> transform(

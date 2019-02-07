@@ -22,7 +22,6 @@ import com.liferay.portal.vulcan.context.Pagination;
 import com.liferay.portal.vulcan.dto.Page;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -42,7 +41,7 @@ public class PostalAddressResourceImpl implements PostalAddressResource {
 
 	@Override
 	public PostalAddress getAddresses(Long addressesId) throws Exception {
-		return new PostalAddress();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -50,7 +49,7 @@ public class PostalAddressResourceImpl implements PostalAddressResource {
 			Object genericParentId, Pagination pagination)
 		throws Exception {
 
-		return Page.of(Collections.emptyList());
+		throw new UnsupportedOperationException();
 	}
 
 	protected <T, R> List<R> transform(

@@ -42,16 +42,14 @@ public class ContentDocumentResourceImpl implements ContentDocumentResource {
 	public Response deleteContentDocument(Long contentDocumentId)
 		throws Exception {
 
-		Response.ResponseBuilder responseBuilder = Response.ok();
-
-		return responseBuilder.build();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public ContentDocument getContentDocument(Long contentDocumentId)
 		throws Exception {
 
-		return new ContentDocument();
+		throw new UnsupportedOperationException();
 	}
 
 	protected <T, R> List<R> transform(

@@ -39,7 +39,7 @@ public class CreatorResourceImpl implements CreatorResource {
 
 	@Override
 	public Creator getCreator(Long creatorId) throws Exception {
-		return new Creator();
+		throw new UnsupportedOperationException();
 	}
 
 	protected <T, R> List<R> transform(

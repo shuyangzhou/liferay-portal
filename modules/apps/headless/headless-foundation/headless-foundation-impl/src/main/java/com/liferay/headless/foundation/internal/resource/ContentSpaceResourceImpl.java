@@ -39,7 +39,7 @@ public class ContentSpaceResourceImpl implements ContentSpaceResource {
 
 	@Override
 	public ContentSpace getContentSpace(Long contentSpaceId) throws Exception {
-		return new ContentSpace();
+		throw new UnsupportedOperationException();
 	}
 
 	protected <T, R> List<R> transform(

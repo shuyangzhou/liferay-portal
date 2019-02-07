@@ -22,7 +22,6 @@ import com.liferay.portal.vulcan.context.Pagination;
 import com.liferay.portal.vulcan.dto.Page;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -42,7 +41,7 @@ public class CategoryResourceImpl implements CategoryResource {
 
 	@Override
 	public Category getCategories(Long categoriesId) throws Exception {
-		return new Category();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -50,7 +49,7 @@ public class CategoryResourceImpl implements CategoryResource {
 			Long categoriesId, Pagination pagination)
 		throws Exception {
 
-		return Page.of(Collections.emptyList());
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -58,7 +57,7 @@ public class CategoryResourceImpl implements CategoryResource {
 			Long vocabulariesId, Pagination pagination)
 		throws Exception {
 
-		return Page.of(Collections.emptyList());
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -66,7 +65,7 @@ public class CategoryResourceImpl implements CategoryResource {
 			Long categoriesId, Category category)
 		throws Exception {
 
-		return new Category();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -74,7 +73,7 @@ public class CategoryResourceImpl implements CategoryResource {
 			Long categoriesId, Category category)
 		throws Exception {
 
-		return new Category();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -82,7 +81,7 @@ public class CategoryResourceImpl implements CategoryResource {
 			Long vocabulariesId, Category category)
 		throws Exception {
 
-		return new Category();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -90,14 +89,14 @@ public class CategoryResourceImpl implements CategoryResource {
 			Long vocabulariesId, Category category)
 		throws Exception {
 
-		return new Category();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Category putCategories(Long categoriesId, Category category)
 		throws Exception {
 
-		return new Category();
+		throw new UnsupportedOperationException();
 	}
 
 	protected <T, R> List<R> transform(
