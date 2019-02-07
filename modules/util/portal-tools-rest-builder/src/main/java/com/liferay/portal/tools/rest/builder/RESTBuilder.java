@@ -86,7 +86,6 @@ public class RESTBuilder {
 			context.put("schemaName", schemaName);
 			context.put("schemaPath", CamelCaseUtil.fromCamelCase(schemaName));
 
-			_createBaseResourceImplFile(context, schemaName);
 			_createDTOFile(context, schemaName);
 			_createPropertiesFile(context, schemaName);
 			_createResourceFile(context, schemaName);
@@ -122,29 +121,6 @@ public class RESTBuilder {
 			sb.toString(),
 			FreeMarkerUtil.processTemplate(
 				_copyrightFileName, "application", context));
-	}
-
-	private void _createBaseResourceImplFile(
-			Map<String, Object> context, String schemaName)
-		throws Exception {
-
-		StringBuilder sb = new StringBuilder();
-
-		sb.append(_configYAML.getImplDir());
-		sb.append("/");
-
-		String apiPackagePath = _configYAML.getApiPackagePath();
-
-		sb.append(apiPackagePath.replace('.', '/'));
-
-		sb.append("/internal/resource/Base");
-		sb.append(schemaName);
-		sb.append("ResourceImpl.java");
-
-		FileUtil.write(
-			sb.toString(),
-			FreeMarkerUtil.processTemplate(
-				_copyrightFileName, "base_resource_impl", context));
 	}
 
 	private void _createDTOFile(Map<String, Object> context, String schemaName)
