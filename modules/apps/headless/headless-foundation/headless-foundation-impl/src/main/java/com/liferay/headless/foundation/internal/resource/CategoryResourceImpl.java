@@ -14,7 +14,19 @@
 
 package com.liferay.headless.foundation.internal.resource;
 
+import com.liferay.headless.foundation.dto.Category;
 import com.liferay.headless.foundation.resource.CategoryResource;
+import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.vulcan.context.AcceptLanguage;
+import com.liferay.portal.vulcan.context.Pagination;
+import com.liferay.portal.vulcan.dto.Page;
+import com.liferay.portal.vulcan.util.TransformUtil;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Function;
+
+import javax.ws.rs.core.Context;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ServiceScope;
@@ -26,5 +38,78 @@ import org.osgi.service.component.annotations.ServiceScope;
 	properties = "OSGI-INF/category.properties", scope = ServiceScope.PROTOTYPE,
 	service = CategoryResource.class
 )
-public class CategoryResourceImpl extends BaseCategoryResourceImpl {
+public class CategoryResourceImpl implements CategoryResource {
+
+	@Override
+	public Category getCategories(Long categoriesId) throws Exception {
+		return new Category();
+	}
+
+	@Override
+	public Page<Category> getCategoriesCategoriesPage(
+			Long categoriesId, Pagination pagination)
+		throws Exception {
+
+		return Page.of(Collections.emptyList());
+	}
+
+	@Override
+	public Page<Category> getVocabulariesCategoriesPage(
+			Long vocabulariesId, Pagination pagination)
+		throws Exception {
+
+		return Page.of(Collections.emptyList());
+	}
+
+	@Override
+	public Category postCategoriesCategories(
+			Long categoriesId, Category category)
+		throws Exception {
+
+		return new Category();
+	}
+
+	@Override
+	public Category postCategoriesCategoriesBatchCreate(
+			Long categoriesId, Category category)
+		throws Exception {
+
+		return new Category();
+	}
+
+	@Override
+	public Category postVocabulariesCategories(
+			Long vocabulariesId, Category category)
+		throws Exception {
+
+		return new Category();
+	}
+
+	@Override
+	public Category postVocabulariesCategoriesBatchCreate(
+			Long vocabulariesId, Category category)
+		throws Exception {
+
+		return new Category();
+	}
+
+	@Override
+	public Category putCategories(Long categoriesId, Category category)
+		throws Exception {
+
+		return new Category();
+	}
+
+	protected <T, R> List<R> transform(
+		List<T> list, Function<T, R> transformFunction) {
+
+		return TransformUtil.transform(list, transformFunction);
+	}
+
+	@Context
+	protected AcceptLanguage acceptLanguage;
+
+	@Context
+	protected Company company;
+
 }

@@ -14,7 +14,16 @@
 
 package com.liferay.headless.form.internal.resource;
 
+import com.liferay.headless.form.dto.Creator;
 import com.liferay.headless.form.resource.CreatorResource;
+import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.vulcan.context.AcceptLanguage;
+import com.liferay.portal.vulcan.util.TransformUtil;
+
+import java.util.List;
+import java.util.function.Function;
+
+import javax.ws.rs.core.Context;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ServiceScope;
@@ -26,5 +35,23 @@ import org.osgi.service.component.annotations.ServiceScope;
 	properties = "OSGI-INF/creator.properties", scope = ServiceScope.PROTOTYPE,
 	service = CreatorResource.class
 )
-public class CreatorResourceImpl extends BaseCreatorResourceImpl {
+public class CreatorResourceImpl implements CreatorResource {
+
+	@Override
+	public Creator getCreator(Long creatorId) throws Exception {
+		return new Creator();
+	}
+
+	protected <T, R> List<R> transform(
+		List<T> list, Function<T, R> transformFunction) {
+
+		return TransformUtil.transform(list, transformFunction);
+	}
+
+	@Context
+	protected AcceptLanguage acceptLanguage;
+
+	@Context
+	protected Company company;
+
 }

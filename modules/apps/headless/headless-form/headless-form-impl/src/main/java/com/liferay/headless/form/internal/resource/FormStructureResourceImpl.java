@@ -14,7 +14,19 @@
 
 package com.liferay.headless.form.internal.resource;
 
+import com.liferay.headless.form.dto.FormStructure;
 import com.liferay.headless.form.resource.FormStructureResource;
+import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.vulcan.context.AcceptLanguage;
+import com.liferay.portal.vulcan.context.Pagination;
+import com.liferay.portal.vulcan.dto.Page;
+import com.liferay.portal.vulcan.util.TransformUtil;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Function;
+
+import javax.ws.rs.core.Context;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ServiceScope;
@@ -26,5 +38,33 @@ import org.osgi.service.component.annotations.ServiceScope;
 	properties = "OSGI-INF/form-structure.properties",
 	scope = ServiceScope.PROTOTYPE, service = FormStructureResource.class
 )
-public class FormStructureResourceImpl extends BaseFormStructureResourceImpl {
+public class FormStructureResourceImpl implements FormStructureResource {
+
+	@Override
+	public Page<FormStructure> getContentSpaceFormStructuresPage(
+			Long contentSpaceId, Pagination pagination)
+		throws Exception {
+
+		return Page.of(Collections.emptyList());
+	}
+
+	@Override
+	public FormStructure getFormStructure(Long formStructuresId)
+		throws Exception {
+
+		return new FormStructure();
+	}
+
+	protected <T, R> List<R> transform(
+		List<T> list, Function<T, R> transformFunction) {
+
+		return TransformUtil.transform(list, transformFunction);
+	}
+
+	@Context
+	protected AcceptLanguage acceptLanguage;
+
+	@Context
+	protected Company company;
+
 }

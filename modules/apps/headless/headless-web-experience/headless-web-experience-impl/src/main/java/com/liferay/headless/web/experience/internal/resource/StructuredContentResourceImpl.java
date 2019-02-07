@@ -19,6 +19,7 @@ import com.liferay.headless.web.experience.resource.StructuredContentResource;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleConstants;
 import com.liferay.journal.util.JournalHelper;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
@@ -35,8 +36,15 @@ import com.liferay.portal.kernel.search.SearchResultPermissionFilterSearcher;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.vulcan.context.AcceptLanguage;
 import com.liferay.portal.vulcan.context.Pagination;
 import com.liferay.portal.vulcan.dto.Page;
+import com.liferay.portal.vulcan.util.TransformUtil;
+
+import java.util.List;
+import java.util.function.Function;
+
+import javax.ws.rs.core.Context;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -50,7 +58,7 @@ import org.osgi.service.component.annotations.ServiceScope;
 	scope = ServiceScope.PROTOTYPE, service = StructuredContentResource.class
 )
 public class StructuredContentResourceImpl
-	extends BaseStructuredContentResourceImpl {
+	implements StructuredContentResource {
 
 	@Override
 	public Page<StructuredContent> getContentSpaceStructuredContentsPage(
@@ -64,6 +72,49 @@ public class StructuredContentResourceImpl
 				_journalHelper.getArticles(hits), this::_toStructuredContent),
 			pagination, hits.getLength());
 	}
+
+	@Override
+	public StructuredContent getStructuredContent(Long structuredContentsId)
+		throws Exception {
+
+		return new StructuredContent();
+	}
+
+	@Override
+	public StructuredContent postContentSpaceStructuredContent(
+			Long contentSpaceId, StructuredContent structuredContent)
+		throws Exception {
+
+		return new StructuredContent();
+	}
+
+	@Override
+	public StructuredContent postContentSpaceStructuredContentsBatchCreate(
+			Long contentSpaceId, StructuredContent structuredContent)
+		throws Exception {
+
+		return new StructuredContent();
+	}
+
+	@Override
+	public StructuredContent putStructuredContent(
+			Long structuredContentsId, StructuredContent structuredContent)
+		throws Exception {
+
+		return new StructuredContent();
+	}
+
+	protected <T, R> List<R> transform(
+		List<T> list, Function<T, R> transformFunction) {
+
+		return TransformUtil.transform(list, transformFunction);
+	}
+
+	@Context
+	protected AcceptLanguage acceptLanguage;
+
+	@Context
+	protected Company company;
 
 	private SearchContext _createSearchContext(
 		Group group, Pagination pagination) {

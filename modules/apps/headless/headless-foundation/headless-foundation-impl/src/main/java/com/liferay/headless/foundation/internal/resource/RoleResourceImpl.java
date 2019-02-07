@@ -14,7 +14,19 @@
 
 package com.liferay.headless.foundation.internal.resource;
 
+import com.liferay.headless.foundation.dto.Role;
 import com.liferay.headless.foundation.resource.RoleResource;
+import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.vulcan.context.AcceptLanguage;
+import com.liferay.portal.vulcan.context.Pagination;
+import com.liferay.portal.vulcan.dto.Page;
+import com.liferay.portal.vulcan.util.TransformUtil;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Function;
+
+import javax.ws.rs.core.Context;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ServiceScope;
@@ -26,5 +38,44 @@ import org.osgi.service.component.annotations.ServiceScope;
 	properties = "OSGI-INF/role.properties", scope = ServiceScope.PROTOTYPE,
 	service = RoleResource.class
 )
-public class RoleResourceImpl extends BaseRoleResourceImpl {
+public class RoleResourceImpl implements RoleResource {
+
+	@Override
+	public Page<Role> getMyUserAccountRolesPage(
+			Long myUserAccountId, Pagination pagination)
+		throws Exception {
+
+		return Page.of(Collections.emptyList());
+	}
+
+	@Override
+	public Role getRole(Long rolesId) throws Exception {
+		return new Role();
+	}
+
+	@Override
+	public Page<Role> getRolesPage(Pagination pagination) throws Exception {
+		return Page.of(Collections.emptyList());
+	}
+
+	@Override
+	public Page<Role> getUserAccountRolesPage(
+			Long userAccountId, Pagination pagination)
+		throws Exception {
+
+		return Page.of(Collections.emptyList());
+	}
+
+	protected <T, R> List<R> transform(
+		List<T> list, Function<T, R> transformFunction) {
+
+		return TransformUtil.transform(list, transformFunction);
+	}
+
+	@Context
+	protected AcceptLanguage acceptLanguage;
+
+	@Context
+	protected Company company;
+
 }

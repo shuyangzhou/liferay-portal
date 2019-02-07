@@ -14,7 +14,19 @@
 
 package com.liferay.headless.foundation.internal.resource;
 
+import com.liferay.headless.foundation.dto.Keyword;
 import com.liferay.headless.foundation.resource.KeywordResource;
+import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.vulcan.context.AcceptLanguage;
+import com.liferay.portal.vulcan.context.Pagination;
+import com.liferay.portal.vulcan.dto.Page;
+import com.liferay.portal.vulcan.util.TransformUtil;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Function;
+
+import javax.ws.rs.core.Context;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ServiceScope;
@@ -26,5 +38,53 @@ import org.osgi.service.component.annotations.ServiceScope;
 	properties = "OSGI-INF/keyword.properties", scope = ServiceScope.PROTOTYPE,
 	service = KeywordResource.class
 )
-public class KeywordResourceImpl extends BaseKeywordResourceImpl {
+public class KeywordResourceImpl implements KeywordResource {
+
+	@Override
+	public Page<Keyword> getContentSpaceKeywordsPage(
+			Long contentSpaceId, Pagination pagination)
+		throws Exception {
+
+		return Page.of(Collections.emptyList());
+	}
+
+	@Override
+	public Keyword getKeyword(Long keywordsId) throws Exception {
+		return new Keyword();
+	}
+
+	@Override
+	public Keyword postContentSpaceKeyword(Long contentSpaceId, Keyword keyword)
+		throws Exception {
+
+		return new Keyword();
+	}
+
+	@Override
+	public Keyword postContentSpaceKeywordsBatchCreate(
+			Long contentSpaceId, Keyword keyword)
+		throws Exception {
+
+		return new Keyword();
+	}
+
+	@Override
+	public Keyword putKeyword(Long keywordsId, Keyword keyword)
+		throws Exception {
+
+		return new Keyword();
+	}
+
+	protected <T, R> List<R> transform(
+		List<T> list, Function<T, R> transformFunction) {
+
+		return TransformUtil.transform(list, transformFunction);
+	}
+
+	@Context
+	protected AcceptLanguage acceptLanguage;
+
+	@Context
+	protected Company company;
+
 }

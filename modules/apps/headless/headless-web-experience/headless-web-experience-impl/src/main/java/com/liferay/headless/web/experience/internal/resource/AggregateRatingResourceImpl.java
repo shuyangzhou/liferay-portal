@@ -14,7 +14,16 @@
 
 package com.liferay.headless.web.experience.internal.resource;
 
+import com.liferay.headless.web.experience.dto.AggregateRating;
 import com.liferay.headless.web.experience.resource.AggregateRatingResource;
+import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.vulcan.context.AcceptLanguage;
+import com.liferay.portal.vulcan.util.TransformUtil;
+
+import java.util.List;
+import java.util.function.Function;
+
+import javax.ws.rs.core.Context;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ServiceScope;
@@ -26,6 +35,25 @@ import org.osgi.service.component.annotations.ServiceScope;
 	properties = "OSGI-INF/aggregate-rating.properties",
 	scope = ServiceScope.PROTOTYPE, service = AggregateRatingResource.class
 )
-public class AggregateRatingResourceImpl
-	extends BaseAggregateRatingResourceImpl {
+public class AggregateRatingResourceImpl implements AggregateRatingResource {
+
+	@Override
+	public AggregateRating getAggregateRating(Long aggregateRatingId)
+		throws Exception {
+
+		return new AggregateRating();
+	}
+
+	protected <T, R> List<R> transform(
+		List<T> list, Function<T, R> transformFunction) {
+
+		return TransformUtil.transform(list, transformFunction);
+	}
+
+	@Context
+	protected AcceptLanguage acceptLanguage;
+
+	@Context
+	protected Company company;
+
 }

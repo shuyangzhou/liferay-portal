@@ -22,24 +22,30 @@ import com.liferay.headless.collaboration.dto.BlogPosting;
 import com.liferay.headless.collaboration.dto.ImageObject;
 import com.liferay.headless.collaboration.resource.BlogPostingResource;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.vulcan.context.AcceptLanguage;
 import com.liferay.portal.vulcan.context.Pagination;
 import com.liferay.portal.vulcan.dto.Page;
+import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.sql.Timestamp;
 
 import java.time.LocalDateTime;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.ClientErrorException;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import org.osgi.service.component.annotations.Component;
@@ -53,7 +59,7 @@ import org.osgi.service.component.annotations.ServiceScope;
 	properties = "OSGI-INF/blog-posting.properties",
 	scope = ServiceScope.PROTOTYPE, service = BlogPostingResource.class
 )
-public class BlogPostingResourceImpl extends BaseBlogPostingResourceImpl {
+public class BlogPostingResourceImpl implements BlogPostingResource {
 
 	@Override
 	public Response deleteBlogPosting(Long blogPostingId) throws Exception {
@@ -115,17 +121,12 @@ public class BlogPostingResourceImpl extends BaseBlogPostingResourceImpl {
 		}
 	}
 
-	private LocalDateTime _getLocalDateTime(Date date) {
-		Timestamp timestamp = null;
+	@Override
+	public BlogPosting postContentSpaceBlogPostingBatchCreate(
+			Long contentSpaceId, BlogPosting blogPosting)
+		throws Exception {
 
-		if (date != null) {
-			timestamp = new Timestamp(date.getTime());
-		}
-		else {
-			timestamp = new Timestamp(System.currentTimeMillis());
-		}
-
-		return timestamp.toLocalDateTime();
+		return new BlogPosting();
 	}
 
 	@Override
@@ -158,6 +159,37 @@ public class BlogPostingResourceImpl extends BaseBlogPostingResourceImpl {
 		}
 	}
 
+	protected <T, R> List<R> transform(
+		List<T> list, Function<T, R> transformFunction) {
+
+		return TransformUtil.transform(list, transformFunction);
+	}
+
+	@Context
+	protected AcceptLanguage acceptLanguage;
+
+	@Context
+	protected Company company;
+
+	private ServiceContext _createServiceContext(
+		long groupId, BlogPosting blogPosting) {
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setAddGroupPermissions(true);
+		serviceContext.setAddGuestPermissions(true);
+
+		String[] keywords = blogPosting.getKeywords();
+
+		if (ArrayUtil.isNotEmpty(keywords)) {
+			serviceContext.setAssetTagNames(keywords);
+		}
+
+		serviceContext.setScopeGroupId(groupId);
+
+		return serviceContext;
+	}
+
 	private ImageSelector _getImageSelector(BlogPosting blogPosting) {
 		ImageObject imageObject = blogPosting.getImage();
 
@@ -181,23 +213,17 @@ public class BlogPostingResourceImpl extends BaseBlogPostingResourceImpl {
 		}
 	}
 
-	private ServiceContext _createServiceContext(
-		long groupId, BlogPosting blogPosting) {
+	private LocalDateTime _getLocalDateTime(Date date) {
+		Timestamp timestamp = null;
 
-		ServiceContext serviceContext = new ServiceContext();
-
-		serviceContext.setAddGroupPermissions(true);
-		serviceContext.setAddGuestPermissions(true);
-
-		String[] keywords = blogPosting.getKeywords();
-
-		if (ArrayUtil.isNotEmpty(keywords)) {
-			serviceContext.setAssetTagNames(keywords);
+		if (date != null) {
+			timestamp = new Timestamp(date.getTime());
+		}
+		else {
+			timestamp = new Timestamp(System.currentTimeMillis());
 		}
 
-		serviceContext.setScopeGroupId(groupId);
-
-		return serviceContext;
+		return timestamp.toLocalDateTime();
 	}
 
 	private BlogPosting _toBlogPosting(BlogsEntry blogsEntry) {

@@ -14,7 +14,20 @@
 
 package com.liferay.headless.document.library.internal.resource;
 
+import com.liferay.headless.document.library.dto.Document;
 import com.liferay.headless.document.library.resource.DocumentResource;
+import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.vulcan.context.AcceptLanguage;
+import com.liferay.portal.vulcan.context.Pagination;
+import com.liferay.portal.vulcan.dto.Page;
+import com.liferay.portal.vulcan.util.TransformUtil;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Function;
+
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ServiceScope;
@@ -26,5 +39,77 @@ import org.osgi.service.component.annotations.ServiceScope;
 	properties = "OSGI-INF/document.properties", scope = ServiceScope.PROTOTYPE,
 	service = DocumentResource.class
 )
-public class DocumentResourceImpl extends BaseDocumentResourceImpl {
+public class DocumentResourceImpl implements DocumentResource {
+
+	@Override
+	public Response deleteDocument(Long documentId) throws Exception {
+		Response.ResponseBuilder responseBuilder = Response.ok();
+
+		return responseBuilder.build();
+	}
+
+	@Override
+	public Document getDocument(Long documentId) throws Exception {
+		return new Document();
+	}
+
+	@Override
+	public Page<Document> getDocumentsRepositoryDocumentPage(
+			Long documentsRepositoryId, Pagination pagination)
+		throws Exception {
+
+		return Page.of(Collections.emptyList());
+	}
+
+	@Override
+	public Page<Document> getFolderDocumentPage(
+			Long folderId, Pagination pagination)
+		throws Exception {
+
+		return Page.of(Collections.emptyList());
+	}
+
+	@Override
+	public Document postDocumentsRepositoryDocument(
+			Long documentsRepositoryId, Document document)
+		throws Exception {
+
+		return new Document();
+	}
+
+	@Override
+	public Document postDocumentsRepositoryDocumentBatchCreate(
+			Long documentsRepositoryId, Document document)
+		throws Exception {
+
+		return new Document();
+	}
+
+	@Override
+	public Document postFolderDocument(Long folderId, Document document)
+		throws Exception {
+
+		return new Document();
+	}
+
+	@Override
+	public Document postFolderDocumentBatchCreate(
+			Long folderId, Document document)
+		throws Exception {
+
+		return new Document();
+	}
+
+	protected <T, R> List<R> transform(
+		List<T> list, Function<T, R> transformFunction) {
+
+		return TransformUtil.transform(list, transformFunction);
+	}
+
+	@Context
+	protected AcceptLanguage acceptLanguage;
+
+	@Context
+	protected Company company;
+
 }
