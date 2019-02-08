@@ -37,8 +37,11 @@ import org.junit.Before;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Filter;
 import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceRegistration;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * @author Raymond Augé
@@ -87,6 +90,33 @@ public abstract class BasePortletContainerTestCase {
 				properties);
 
 		serviceRegistrations.add(serviceRegistration);
+
+		String portletName = (String)properties.get("javax.portlet.name");
+
+		try {
+			Filter filter = FrameworkUtil.createFilter(
+				String.format(
+					"(&(objectClass=%s)(javax.portlet.name=%s))",
+					com.liferay.portal.kernel.model.Portlet.class.getName(),
+					portletName));
+
+			ServiceTracker<?, ?> trackInstalledPortlet = new ServiceTracker<>(
+				bundleContext, filter, null);
+
+			trackInstalledPortlet.open();
+
+			trackInstalledPortlet.waitForService(5000);
+		}
+		catch (InvalidSyntaxException ise) {
+
+			// Ignore this
+
+		}
+		catch (InterruptedException ie) {
+			Assert.fail(
+				"Registration of portlet " + portletName +
+					" did not happen in a timely fashion.");
+		}
 	}
 
 	protected void setUpPortlet(
