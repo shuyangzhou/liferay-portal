@@ -27,12 +27,9 @@ import org.jboss.arquillian.core.spi.EventContext;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.arquillian.test.spi.annotation.ClassScoped;
 import org.jboss.arquillian.test.spi.context.ClassContext;
-import org.jboss.arquillian.test.spi.context.SuiteContext;
 import org.jboss.arquillian.test.spi.context.TestContext;
 import org.jboss.arquillian.test.spi.event.suite.AfterClass;
-import org.jboss.arquillian.test.spi.event.suite.AfterSuite;
 import org.jboss.arquillian.test.spi.event.suite.ClassEvent;
-import org.jboss.arquillian.test.spi.event.suite.SuiteEvent;
 import org.jboss.arquillian.test.spi.event.suite.TestEvent;
 
 /**
@@ -80,28 +77,6 @@ public class TestContextHandler {
 		}
 	}
 
-	public void createSuiteContext(
-		@Observes(precedence = 100) EventContext<SuiteEvent>
-			suiteEventContext) {
-
-		SuiteContext suiteContext = _suiteContextInstance.get();
-
-		SuiteEvent suiteEvent = suiteEventContext.getEvent();
-
-		try {
-			suiteContext.activate();
-
-			suiteEventContext.proceed();
-		}
-		finally {
-			suiteContext.deactivate();
-
-			if (suiteEvent instanceof AfterSuite) {
-				suiteContext.destroy();
-			}
-		}
-	}
-
 	public void createTestContext(
 		@Observes(precedence = 100) EventContext<TestEvent> testEventContext) {
 
@@ -138,9 +113,6 @@ public class TestContextHandler {
 
 	@Inject
 	private Instance<ClassContext> _classContextInstance;
-
-	@Inject
-	private Instance<SuiteContext> _suiteContextInstance;
 
 	@ClassScoped
 	@Inject
