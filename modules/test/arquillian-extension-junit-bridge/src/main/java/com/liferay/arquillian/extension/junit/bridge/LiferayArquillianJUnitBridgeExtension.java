@@ -15,7 +15,6 @@
 package com.liferay.arquillian.extension.junit.bridge;
 
 import com.liferay.arquillian.extension.junit.bridge.container.ContainerDeploymentContextHandler;
-import com.liferay.arquillian.extension.junit.bridge.context.ContainerContextImpl;
 import com.liferay.arquillian.extension.junit.bridge.context.DeploymentContextImpl;
 import com.liferay.arquillian.extension.junit.bridge.event.controller.ContainerEventController;
 import com.liferay.arquillian.extension.junit.bridge.protocol.jmx.JMXMethodExecutor;
@@ -44,7 +43,6 @@ public class LiferayArquillianJUnitBridgeExtension
 
 		if (url == null) {
 			extensionBuilder.context(ClassContextImpl.class);
-			extensionBuilder.context(ContainerContextImpl.class);
 			extensionBuilder.context(DeploymentContextImpl.class);
 			extensionBuilder.context(SuiteContextImpl.class);
 			extensionBuilder.context(TestContextImpl.class);

@@ -26,7 +26,6 @@ import org.jboss.arquillian.container.spi.client.container.DeploymentException;
 import org.jboss.arquillian.container.spi.client.container.LifecycleException;
 import org.jboss.arquillian.container.spi.client.deployment.Deployment;
 import org.jboss.arquillian.container.spi.client.deployment.DeploymentDescription;
-import org.jboss.arquillian.container.spi.context.ContainerContext;
 import org.jboss.arquillian.container.spi.context.DeploymentContext;
 import org.jboss.arquillian.container.spi.context.annotation.DeploymentScoped;
 import org.jboss.arquillian.core.api.Injector;
@@ -48,21 +47,15 @@ public class ContainerEventController {
 	public void createAfterContext(
 		@Observes EventContext<TestEvent> eventContext) {
 
-		ContainerContext containerContext = _containerContextInstance.get();
-
 		DeploymentContext deploymentContext = _deploymentContextInstance.get();
 
 		try {
-			containerContext.activate(_container.getName());
-
 			deploymentContext.activate(_deployment);
 
 			eventContext.proceed();
 		}
 		finally {
 			deploymentContext.deactivate();
-
-			containerContext.deactivate();
 		}
 	}
 
@@ -137,10 +130,6 @@ public class ContainerEventController {
 	}
 
 	private Container _container;
-
-	@Inject
-	private Instance<ContainerContext> _containerContextInstance;
-
 	private Deployment _deployment;
 
 	@Inject

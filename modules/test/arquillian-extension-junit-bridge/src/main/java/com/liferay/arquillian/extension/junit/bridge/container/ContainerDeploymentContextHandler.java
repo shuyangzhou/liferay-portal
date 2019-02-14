@@ -14,9 +14,7 @@
 
 package com.liferay.arquillian.extension.junit.bridge.container;
 
-import org.jboss.arquillian.container.spi.context.ContainerContext;
 import org.jboss.arquillian.container.spi.context.DeploymentContext;
-import org.jboss.arquillian.container.spi.event.ContainerControlEvent;
 import org.jboss.arquillian.container.spi.event.DeploymentEvent;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
@@ -27,23 +25,6 @@ import org.jboss.arquillian.core.spi.EventContext;
  * @author Matthew Tambara
  */
 public class ContainerDeploymentContextHandler {
-
-	public void createContainerContext(
-		@Observes EventContext<ContainerControlEvent> eventContext) {
-
-		ContainerContext containerContext = _containerContextInstance.get();
-
-		ContainerControlEvent containerControlEvent = eventContext.getEvent();
-
-		try {
-			containerContext.activate(containerControlEvent.getContainerName());
-
-			eventContext.proceed();
-		}
-		finally {
-			containerContext.deactivate();
-		}
-	}
 
 	public void createDeploymentContext(
 		@Observes EventContext<DeploymentEvent> eventContext) {
@@ -61,9 +42,6 @@ public class ContainerDeploymentContextHandler {
 			deploymentContext.deactivate();
 		}
 	}
-
-	@Inject
-	private Instance<ContainerContext> _containerContextInstance;
 
 	@Inject
 	private Instance<DeploymentContext> _deploymentContextInstance;
