@@ -211,11 +211,6 @@ public class RoleFinderUtil {
 		return getFinder().findByU_G(userId, groupIds);
 	}
 
-	public static java.util.List<com.liferay.portal.kernel.model.Role> findByR_N_A(
-		long resourceBlockId, String className, String actionId) {
-		return getFinder().findByR_N_A(resourceBlockId, className, actionId);
-	}
-
 	public static java.util.List<com.liferay.portal.kernel.model.Role> findByC_N_D_T(
 		long companyId, String name, String description, Integer[] types,
 		java.util.LinkedHashMap<String, Object> params, boolean andOperator,

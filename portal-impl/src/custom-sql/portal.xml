@@ -341,18 +341,6 @@
 				(BITAND(CAST_LONG(ResourcePermission.actionIds), ?) != 0)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.kernel.service.persistence.GroupFinder.joinByRoleResourceTypePermissions">
-		<![CDATA[
-			INNER JOIN
-				ResourceTypePermission ON
-					ResourceTypePermission.groupId = Group_.groupId
-			WHERE
-				(Group_.liveGroupId = 0) AND
-				(ResourceTypePermission.name = ?) AND
-				(ResourceTypePermission.roleId = ?) AND
-				(BITAND(CAST_LONG(ResourceTypePermission.actionIds), ?) != 0)
-		]]>
-	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.GroupFinder.joinBySite">
 		<![CDATA[
 			WHERE
@@ -1278,26 +1266,6 @@
 					Groups_Roles.roleId = Role_.roleId
 			WHERE
 				[$GROUP_ID$]
-		]]>
-	</sql>
-	<sql id="com.liferay.portal.kernel.service.persistence.RoleFinder.findByR_N_A">
-		<![CDATA[
-			SELECT
-				{Role_.*}
-			FROM
-				ResourceBlockPermission
-			INNER JOIN
-				ResourceBlock ON
-					ResourceBlock.resourceBlockId = ResourceBlockPermission.resourceBlockId
-			INNER JOIN
-				Role_ ON
-					Role_.roleId = ResourceBlockPermission.roleId
-			WHERE
-				(ResourceBlock.resourceBlockId = ?) AND
-				(ResourceBlock.name = ?) AND
-				(MOD(INTEGER_DIV(ResourceBlockPermission.actionIds, ?), 2) = 1)
-			ORDER BY
-				Role_.name ASC
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.RoleFinder.findByC_N_D_T">
