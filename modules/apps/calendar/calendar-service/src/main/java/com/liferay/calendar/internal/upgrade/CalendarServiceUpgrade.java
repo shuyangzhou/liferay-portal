@@ -19,7 +19,6 @@ import com.liferay.calendar.internal.upgrade.v1_0_4.UpgradeClassNames;
 import com.liferay.calendar.internal.upgrade.v1_0_5.UpgradeCalendarResource;
 import com.liferay.calendar.internal.upgrade.v1_0_5.UpgradeCompanyId;
 import com.liferay.calendar.internal.upgrade.v1_0_5.UpgradeLastPublishDate;
-import com.liferay.calendar.internal.upgrade.v1_0_6.UpgradeResourcePermission;
 import com.liferay.calendar.internal.upgrade.v2_0_0.UpgradeSchema;
 import com.liferay.calendar.internal.upgrade.v3_0_0.UpgradeCalendarBookingResourceBlock;
 import com.liferay.calendar.internal.upgrade.v3_0_0.UpgradeCalendarResourceBlock;
@@ -32,9 +31,6 @@ import com.liferay.calendar.model.CalendarBooking;
 import com.liferay.comment.upgrade.UpgradeDiscussionSubscriptionClassName;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.CompanyLocalService;
-import com.liferay.portal.kernel.service.ResourceActionLocalService;
-import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
-import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.upgrade.BaseUpgradeSQLServerDatetime;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
@@ -79,11 +75,7 @@ public class CalendarServiceUpgrade implements UpgradeStepRegistrator {
 				_userLocalService),
 			new UpgradeCompanyId(), new UpgradeLastPublishDate());
 
-		registry.register(
-			"1.0.5", "1.0.6",
-			new UpgradeResourcePermission(
-				_resourceActionLocalService, _resourcePermissionLocalService,
-				_roleLocalService));
+		registry.register("1.0.5", "1.0.6", new DummyUpgradeStep());
 
 		registry.register("1.0.6", "1.0.7", new DummyUpgradeStep());
 
@@ -122,15 +114,6 @@ public class CalendarServiceUpgrade implements UpgradeStepRegistrator {
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
-
-	@Reference
-	private ResourceActionLocalService _resourceActionLocalService;
-
-	@Reference
-	private ResourcePermissionLocalService _resourcePermissionLocalService;
-
-	@Reference
-	private RoleLocalService _roleLocalService;
 
 	@Reference
 	private SubscriptionLocalService _subscriptionLocalService;
