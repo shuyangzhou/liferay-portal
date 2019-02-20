@@ -14,7 +14,7 @@
 
 package com.liferay.asset.taglib.servlet.taglib;
 
-import com.liferay.asset.taglib.internal.servlet.ServletContextUtil;
+import com.liferay.asset.taglib.internal.TaglibDependencyResolverUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.servlet.taglib.ui.AssetAddonEntry;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -50,7 +50,7 @@ public class AssetAddonEntrySelectorTag extends IncludeTag {
 	public void setPageContext(PageContext pageContext) {
 		super.setPageContext(pageContext);
 
-		servletContext = ServletContextUtil.getServletContext();
+		servletContext = TaglibDependencyResolverUtil.getServletContext();
 	}
 
 	public void setSelectedAssetAddonEntries(

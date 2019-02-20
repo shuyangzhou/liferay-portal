@@ -14,7 +14,7 @@
 
 package com.liferay.asset.taglib.servlet.taglib;
 
-import com.liferay.asset.taglib.internal.servlet.ServletContextUtil;
+import com.liferay.asset.taglib.internal.TaglibDependencyResolverUtil;
 import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.jsp.PageContext;
@@ -28,7 +28,7 @@ public class AssetTagsErrorTag extends IncludeTag {
 	public void setPageContext(PageContext pageContext) {
 		super.setPageContext(pageContext);
 
-		servletContext = ServletContextUtil.getServletContext();
+		servletContext = TaglibDependencyResolverUtil.getServletContext();
 	}
 
 	@Override

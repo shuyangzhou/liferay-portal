@@ -16,7 +16,7 @@ package com.liferay.asset.taglib.servlet.taglib;
 
 import com.liferay.asset.constants.AssetWebKeys;
 import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
-import com.liferay.asset.taglib.internal.servlet.ServletContextUtil;
+import com.liferay.asset.taglib.internal.TaglibDependencyResolverUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.util.IncludeTag;
@@ -33,7 +33,8 @@ public class AssetAddButtonTag extends IncludeTag {
 	@Override
 	public int doStartTag() throws JspException {
 		request.setAttribute(
-			AssetWebKeys.ASSET_HELPER, ServletContextUtil.getAssetHelper());
+			AssetWebKeys.ASSET_HELPER,
+			TaglibDependencyResolverUtil.getAssetHelper());
 
 		return super.doStartTag();
 	}
@@ -98,7 +99,7 @@ public class AssetAddButtonTag extends IncludeTag {
 	public void setPageContext(PageContext pageContext) {
 		super.setPageContext(pageContext);
 
-		servletContext = ServletContextUtil.getServletContext();
+		servletContext = TaglibDependencyResolverUtil.getServletContext();
 	}
 
 	public void setRedirect(String redirect) {

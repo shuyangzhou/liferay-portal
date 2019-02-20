@@ -24,7 +24,7 @@ import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.model.ClassType;
 import com.liferay.asset.kernel.model.ClassTypeReader;
-import com.liferay.asset.taglib.internal.item.selector.ItemSelectorUtil;
+import com.liferay.asset.taglib.internal.TaglibDependencyResolverUtil;
 import com.liferay.item.selector.ItemSelector;
 import com.liferay.item.selector.ItemSelectorCriterion;
 import com.liferay.item.selector.ItemSelectorReturnType;
@@ -128,7 +128,8 @@ public class SelectAssetDisplayPageDisplayContext {
 	}
 
 	public String getAssetDisplayPageItemSelectorURL() throws PortalException {
-		ItemSelector itemSelector = ItemSelectorUtil.getItemSelector();
+		ItemSelector itemSelector =
+			TaglibDependencyResolverUtil.getItemSelector();
 
 		List<ItemSelectorCriterion> criteria = new ArrayList<>();
 
