@@ -7,7 +7,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.service.Base${sessionTypeName}Service;
-import com.liferay.portal.kernel.service.PermissionedModelLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.PersistedResourcedModelLocalService;
 import com.liferay.portal.kernel.service.version.VersionService;
@@ -92,7 +91,7 @@ public interface ${entity.name}${sessionTypeName}Service
 
 	<#if stringUtil.equals(sessionTypeName, "Local") && entity.hasEntityColumns() && entity.hasPersistence()>
 		<#if entity.isPermissionedModel()>
-			, PermissionedModelLocalService
+			, com.liferay.portal.kernel.service.PermissionedModelLocalService
 		<#elseif entity.isResourcedModel()>
 			, PersistedModelLocalService
 			, PersistedResourcedModelLocalService

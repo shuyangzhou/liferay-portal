@@ -4,7 +4,6 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.annotation.ImplementationClassName;
 import com.liferay.portal.kernel.model.NestedSetsTreeNodeModel;
-import com.liferay.portal.kernel.model.PermissionedModel;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.TreeModel;
 import com.liferay.portal.kernel.util.Accessor;
@@ -38,7 +37,7 @@ public interface ${entity.name} extends
 		</#if>
 
 		<#if entity.isPermissionedModel()>
-			, PermissionedModel
+			, com.liferay.portal.kernel.model.PermissionedModel
 		<#else>
 			, PersistedModel
 		</#if>

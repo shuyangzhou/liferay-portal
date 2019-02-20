@@ -1066,7 +1066,9 @@ public class Entity implements Comparable<Entity> {
 	}
 
 	public boolean isPermissionedModel() {
-		if (hasEntityColumn("resourceBlockId")) {
+		if (_serviceBuilder.isVersionLTE_7_1_0() &&
+			hasEntityColumn("resourceBlockId")) {
+
 			return true;
 		}
 
