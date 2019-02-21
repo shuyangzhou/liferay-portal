@@ -32,12 +32,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import org.jboss.arquillian.test.spi.TestResult;
-import org.jboss.arquillian.test.spi.execution.SkippedTestExecutionException;
 
-import org.junit.AssumptionViolatedException;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.internal.AssumptionViolatedException;
 import org.junit.internal.runners.statements.ExpectException;
 import org.junit.internal.runners.statements.Fail;
 import org.junit.internal.runners.statements.FailOnTimeout;
@@ -126,7 +125,7 @@ public class Arquillian extends Runner implements Filterable {
 
 			statement.evaluate();
 		}
-		catch (org.junit.internal.AssumptionViolatedException ave) {
+		catch (AssumptionViolatedException ave) {
 			runNotifier.fireTestAssumptionFailed(new Failure(description, ave));
 		}
 		catch (MultipleFailureException mfe) {
@@ -299,14 +298,6 @@ public class Arquillian extends Runner implements Filterable {
 					return;
 				}
 
-				if ((testResult.getStatus() == TestResult.Status.SKIPPED) &&
-					(throwable instanceof SkippedTestExecutionException)) {
-
-					testResult.setThrowable(
-						new AssumptionViolatedException(
-							throwable.getMessage()));
-				}
-
 				throw throwable;
 			}
 
@@ -342,7 +333,7 @@ public class Arquillian extends Runner implements Filterable {
 			try {
 				statement.evaluate();
 			}
-			catch (org.junit.internal.AssumptionViolatedException ave) {
+			catch (AssumptionViolatedException ave) {
 				runNotifier.fireTestAssumptionFailed(
 					new Failure(description, ave));
 			}
