@@ -118,12 +118,19 @@ public class Arquillian extends Runner implements Filterable {
 			}
 		}
 
+		final Manager finalManager = manager;
+
 		runNotifier.addListener(
 			new RunListener() {
 
 				@Override
 				public void testRunFinished(Result result) throws Exception {
-					_managerThreadLocal.remove();
+					try {
+						finalManager.shutdown();
+					}
+					finally {
+						_managerThreadLocal.remove();
+					}
 				}
 
 			});
