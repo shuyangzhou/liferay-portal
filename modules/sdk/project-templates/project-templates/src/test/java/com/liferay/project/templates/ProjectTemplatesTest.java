@@ -3150,17 +3150,19 @@ public class ProjectTemplatesTest {
 		_testNotContains(
 			workspaceProjectDir, "build.gradle", true, "^repositories \\{.*");
 
-		_executeGradle(gradleProjectDir, _GRADLE_TASK_PATH_BUILD);
+		if (_isBuildProjects()) {
+			_executeGradle(gradleProjectDir, _GRADLE_TASK_PATH_BUILD);
 
-		File gradleWarFile = _testExists(
-			gradleProjectDir, "build/libs/theme-test.war");
+			File gradleWarFile = _testExists(
+				gradleProjectDir, "build/libs/theme-test.war");
 
-		_executeGradle(workspaceDir, ":wars:theme-test:build");
+			_executeGradle(workspaceDir, ":wars:theme-test:build");
 
-		File workspaceWarFile = _testExists(
-			workspaceProjectDir, "build/libs/theme-test.war");
+			File workspaceWarFile = _testExists(
+				workspaceProjectDir, "build/libs/theme-test.war");
 
-		_testWarsDiff(gradleWarFile, workspaceWarFile);
+			_testWarsDiff(gradleWarFile, workspaceWarFile);
+		}
 	}
 
 	@Test
@@ -4126,14 +4128,8 @@ public class ProjectTemplatesTest {
 			String content = FileUtil.read(buildFilePath);
 
 			if (!content.contains("allprojects")) {
-				StringBuilder sb = new StringBuilder();
-
-				sb.append(content);
-				sb.append("allprojects {\n");
-				sb.append("repositories {");
-				sb.append("mavenLocal()}}");
-
-				content = sb.toString();
+				content +=
+					"allprojects {\n\trepositories {\n\t\tmavenLocal()\n\t}\n}";
 
 				Files.write(
 					buildFilePath, content.getBytes(StandardCharsets.UTF_8));

@@ -27,9 +27,6 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Reader;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-
 import java.net.URL;
 
 import java.util.ArrayList;
@@ -38,11 +35,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
-import org.mockito.Matchers;
-import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 /**
  * @author Marcellus Tavares
@@ -73,7 +65,7 @@ public class SoyTestHelper {
 		return getSoyTemplate(templateResources);
 	}
 
-	public void setUp() throws Exception {
+	public void setUp() {
 		JSONFactoryUtil jsonFactoryUtil = new JSONFactoryUtil();
 
 		jsonFactoryUtil.setJSONFactory(new JSONFactoryImpl());
@@ -131,103 +123,34 @@ public class SoyTestHelper {
 	}
 
 	protected PortalCache mockPortalCache() {
-		PortalCache portalCache = Mockito.mock(PortalCache.class);
-
 		Map<HashSet<TemplateResource>, SoyTofuCacheBag> cache = new HashMap<>();
 
-		Mockito.when(
-			portalCache.get(Matchers.any())
-		).then(
-			new Answer<SoyTofuCacheBag>() {
+		return (PortalCache)ProxyUtil.newProxyInstance(
+			PortalCache.class.getClassLoader(),
+			new Class<?>[] {PortalCache.class},
+			(proxy, method, args) -> {
+				String methodName = method.getName();
 
-				@Override
-				public SoyTofuCacheBag answer(InvocationOnMock invocationOnMock)
-					throws Throwable {
-
-					Object[] args = invocationOnMock.getArguments();
-
-					HashSet<TemplateResource> key =
-						(HashSet<TemplateResource>)args[0];
-
-					return cache.get(key);
+				if (methodName.equals("get")) {
+					return cache.get(args[0]);
+				}
+				else if (methodName.equals("getKeys")) {
+					return new ArrayList<>(cache.keySet());
+				}
+				else if (methodName.equals("put")) {
+					cache.put(
+						(HashSet<TemplateResource>)args[0],
+						(SoyTofuCacheBag)args[1]);
+				}
+				else if (methodName.equals("remove")) {
+					cache.remove(args[0]);
 				}
 
-			}
-		);
-
-		Mockito.when(
-			portalCache.getKeys()
-		).then(
-			new Answer<List<HashSet<TemplateResource>>>() {
-
-				@Override
-				public List<HashSet<TemplateResource>> answer(
-						InvocationOnMock invocationOnMock)
-					throws Throwable {
-
-					List<HashSet<TemplateResource>> list = new ArrayList<>(
-						cache.keySet());
-
-					return list;
-				}
-
-			}
-		);
-
-		Mockito.doAnswer(
-			new Answer<Void>() {
-
-				@Override
-				public Void answer(InvocationOnMock invocationOnMock)
-					throws Throwable {
-
-					Object[] args = invocationOnMock.getArguments();
-
-					HashSet<TemplateResource> key =
-						(HashSet<TemplateResource>)args[0];
-
-					SoyTofuCacheBag value = (SoyTofuCacheBag)args[1];
-
-					cache.put(key, value);
-
-					return null;
-				}
-
-			}
-		).when(
-			portalCache
-		).put(
-			Mockito.any(), Mockito.any()
-		);
-
-		Mockito.doAnswer(
-			new Answer<Void>() {
-
-				@Override
-				public Void answer(InvocationOnMock invocationOnMock)
-					throws Throwable {
-
-					Object[] args = invocationOnMock.getArguments();
-
-					HashSet<TemplateResource> key =
-						(HashSet<TemplateResource>)args[0];
-
-					cache.remove(key);
-
-					return null;
-				}
-
-			}
-		).when(
-			portalCache
-		).remove(
-			Mockito.any()
-		);
-
-		return portalCache;
+				return null;
+			});
 	}
 
-	protected void setUpSoyManager() throws Exception {
+	protected void setUpSoyManager() {
 		_soyManager = new SoyManager();
 
 		_soyManager.setTemplateContextHelper(new SoyTemplateContextHelper());
@@ -236,22 +159,14 @@ public class SoyTestHelper {
 			(SingleVMPool)ProxyUtil.newProxyInstance(
 				SingleVMPool.class.getClassLoader(),
 				new Class<?>[] {SingleVMPool.class},
-				new InvocationHandler() {
-
-					@Override
-					public Object invoke(
-							Object proxy, Method method, Object[] args)
-						throws Throwable {
-
-						if ("getPortalCache".equals(method.getName())) {
-							return mockPortalCache();
-						}
-
-						throw new UnsupportedOperationException(
-							method.toString());
+				(proxy, method, args) -> {
+					if ("getPortalCache".equals(method.getName())) {
+						return mockPortalCache();
 					}
 
-				}));
+					throw new UnsupportedOperationException(method.toString());
+				}
+			));
 	}
 
 	private static final String _TPL_PATH =

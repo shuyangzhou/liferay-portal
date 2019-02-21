@@ -1,37 +1,40 @@
 package ${configYAML.apiPackagePath}.resource.${versionDirName}.test;
 
 <#compress>
-	<#list openAPIYAML.components.schemas?keys as schemaName>
+	<#list allSchemas?keys as schemaName>
 		import ${configYAML.apiPackagePath}.dto.${versionDirName}.${schemaName};
-		import ${configYAML.apiPackagePath}.internal.dto.${versionDirName}.${schemaName}Impl;
 	</#list>
 </#compress>
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.petra.function.UnsafeSupplier;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.util.Base64;
+import com.liferay.portal.kernel.util.ContentTypes;
+import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.vulcan.multipart.MultipartBody;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
-import io.restassured.RestAssured;
-import io.restassured.parsing.Parser;
-import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
-
 import java.net.URL;
+
+import java.util.Date;
 
 import javax.annotation.Generated;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -41,16 +44,12 @@ import org.junit.Test;
 @Generated("")
 public abstract class Base${schemaName}ResourceTestCase {
 
-	@BeforeClass
-	public static void setUpClass() {
-		RestAssured.defaultParser = Parser.JSON;
-	}
-
 	@Before
 	public void setUp() throws Exception {
 		testGroup = GroupTestUtil.addGroup();
 
-		_resourceURL = new URL("http://localhost:8080/o${configYAML.application.baseURI}/${openAPIYAML.info.version}");
+		_resourceURL = new URL(
+			"http://localhost:8080/o${configYAML.application.baseURI}/${openAPIYAML.info.version}");
 	}
 
 	@After
@@ -58,90 +57,113 @@ public abstract class Base${schemaName}ResourceTestCase {
 		GroupTestUtil.deleteGroup(testGroup);
 	}
 
-	<#list javaTool.getJavaSignatures(openAPIYAML, schemaName) as javaSignature>
+	<#list freeMarkerTool.getResourceJavaMethodSignatures(configYAML, openAPIYAML, schemaName, false) as javaMethodSignature>
 		@Test
-		public void test${javaSignature.methodName?cap_first}() throws Exception {
+		public void test${javaMethodSignature.methodName?cap_first}() throws Exception {
 			Assert.assertTrue(true);
 		}
 	</#list>
 
-	<#list javaTool.getJavaSignatures(openAPIYAML, schemaName) as javaSignature>
-		<@compress single_line=true>
-			protected Response invoke${javaSignature.methodName?cap_first}(
-				<#list javaSignature.javaParameters as javaParameter>
-					${javaParameter.parameterType} ${javaParameter.parameterName}
+	<#list freeMarkerTool.getResourceJavaMethodSignatures(configYAML, openAPIYAML, schemaName, false) as javaMethodSignature>
+		protected ${javaMethodSignature.returnType} invoke${javaMethodSignature.methodName?cap_first}(
+				${freeMarkerTool.getResourceParameters(javaMethodSignature.javaParameters, false)})
+			throws Exception {
 
-					<#if javaParameter_has_next>
-						,
-					</#if>
-				</#list>
-			) throws Exception {
-		</@compress>
+			Http.Options options = _createHttpOptions();
 
-		RequestSpecification requestSpecification = _createRequestSpecification();
+			<#assign arguments = freeMarkerTool.getResourceArguments(javaMethodSignature.javaParameters) />
 
-		<#assign parametersContent>
-			<@compress single_line=true>
-				<#list javaSignature.javaParameters as javaParameter>
-					${javaParameter.parameterName}
+			<#if freeMarkerTool.hasHTTPMethod(javaMethodSignature, "post", "put") && arguments?ends_with(",${schemaName?uncap_first}")>
+				options.setBody(_inputObjectMapper.writeValueAsString(${schemaName?uncap_first}), ContentTypes.APPLICATION_JSON, StringPool.UTF8);
+			</#if>
 
-					<#if javaParameter_has_next>
-						,
-					</#if>
-				</#list>
-			</@compress>
-		</#assign>
+			<#if freeMarkerTool.hasHTTPMethod(javaMethodSignature, "delete")>
+				options.setDelete(true);
+			</#if>
 
-		<#if javaTool.hasHTTPMethod(javaSignature, "post", "put") && parametersContent?ends_with(", ${schemaName?uncap_first}")>
-			return requestSpecification.body(
-				${schemaName?uncap_first}
-			).when(
-			).${javaTool.getHTTPMethod(javaSignature.operation)}(
-				_resourceURL + "${javaSignature.path}",
-				${stringUtil.replaceLast(parametersContent, ", ${schemaName?uncap_first}", "")}
-			);
-		<#else>
-			return requestSpecification.when(
-			).${javaTool.getHTTPMethod(javaSignature.operation)}(
-				_resourceURL + "${javaSignature.path}",
-				${stringUtil.replaceLast(parametersContent, ", pagination", "")}
-			);
-		</#if>
+			options.setLocation(_resourceURL + _toPath("${javaMethodSignature.path}", ${stringUtil.replaceLast(arguments, ",pagination", "")}));
 
+			<#if freeMarkerTool.hasHTTPMethod(javaMethodSignature, "post")>
+				options.setPost(true);
+			<#elseif freeMarkerTool.hasHTTPMethod(javaMethodSignature, "put")>
+				options.setPut(true);
+			</#if>
+
+			<#if stringUtil.equals(javaMethodSignature.returnType, "boolean")>
+				return _outputObjectMapper.readValue(HttpUtil.URLtoString(options), Boolean.class);
+			<#elseif javaMethodSignature.returnType?contains("Page<")>
+				return _outputObjectMapper.readValue(HttpUtil.URLtoString(options), Page.class);
+			<#else>
+				return _outputObjectMapper.readValue(HttpUtil.URLtoString(options), ${javaMethodSignature.returnType}Impl.class);
+			</#if>
 		}
 	</#list>
 
 	protected ${schemaName} random${schemaName}() {
 		return new ${schemaName}Impl() {
 			{
-				<#compress>
-					<#list javaTool.getJavaParameters(schema) as javaParameter>
-						<#assign randomDataTypes = ["Boolean", "Double", "Long", "String"] />
+				<#assign randomDataTypes = ["Boolean", "Double", "Long", "String"] />
 
-						<#if randomDataTypes?seq_contains(javaParameter.parameterType)>
-							${javaParameter.parameterName} = RandomTestUtil.random${javaParameter.parameterType}();
-						<#elseif stringUtil.equals(javaParameter.parameterType, "Date")>
-							${javaParameter.parameterName} = RandomTestUtil.nextDate();
-						</#if>
-					</#list>
-				</#compress>
+				<#list freeMarkerTool.getDTOJavaParameters(configYAML, openAPIYAML, schema, false) as javaParameter>
+					<#if randomDataTypes?seq_contains(javaParameter.parameterType)>
+						${javaParameter.parameterName} = RandomTestUtil.random${javaParameter.parameterType}();
+					<#elseif stringUtil.equals(javaParameter.parameterType, "Date")>
+						${javaParameter.parameterName} = RandomTestUtil.nextDate();
+					</#if>
+				</#list>
 			}
 		};
 	}
 
 	protected Group testGroup;
 
-	private RequestSpecification _createRequestSpecification() {
-		return RestAssured.given(
-		).auth(
-		).preemptive(
-		).basic(
-			"test@liferay.com", "test"
-		).header(
-			"Accept", "application/json"
-		).header(
-			"Content-Type", "application/json"
-		);
+	protected static class ${schemaName}Impl implements ${schemaName} {
+
+		<#list freeMarkerTool.getDTOJavaParameters(configYAML, openAPIYAML, schema, false) as javaParameter>
+			public ${javaParameter.parameterType} get${javaParameter.parameterName?cap_first}() {
+				return ${javaParameter.parameterName};
+			}
+
+			public void set${javaParameter.parameterName?cap_first}(${javaParameter.parameterType} ${javaParameter.parameterName}) {
+				this.${javaParameter.parameterName} = ${javaParameter.parameterName};
+			}
+
+			@JsonIgnore
+			public void set${javaParameter.parameterName?cap_first}(
+				UnsafeSupplier<${javaParameter.parameterType}, Throwable> ${javaParameter.parameterName}UnsafeSupplier) {
+
+				try {
+					${javaParameter.parameterName} = ${javaParameter.parameterName}UnsafeSupplier.get();
+				}
+				catch (Throwable t) {
+					throw new RuntimeException(t);
+				}
+			}
+
+			@JsonProperty
+			protected ${javaParameter.parameterType} ${javaParameter.parameterName};
+		</#list>
+
+	}
+
+	private Http.Options _createHttpOptions() {
+		Http.Options options = new Http.Options();
+
+		options.addHeader("Accept", "application/json");
+
+		String userNameAndPassword = "test@liferay.com:test";
+
+		String encodedUserNameAndPassword = Base64.encode(userNameAndPassword.getBytes());
+
+		options.addHeader("Authorization", "Basic " + encodedUserNameAndPassword);
+
+		options.addHeader("Content-Type", "application/json");
+
+		return options;
+	}
+
+	private String _toPath(String template, Object... values) {
+		return template.replaceAll("\\{.*\\}", String.valueOf(values[0]));
 	}
 
 	private final static ObjectMapper _inputObjectMapper = new ObjectMapper() {

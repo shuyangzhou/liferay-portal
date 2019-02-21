@@ -198,31 +198,250 @@ the same results.
 
 ---------------------------------------
 
-### Deprecated NTLM in Portal Distribution
-- **Date:** 2019-Jan-21
-- **JIRA Ticket:** LPS-88300(https://issues.liferay.com/browse/LPS-88300)
+### Move TermsOfUseContentProvider out of kernel.util
+- **Date:** 2019-Jan-07
+- **JIRA Ticket:** [LPS-88869](https://issues.liferay.com/browse/LPS-88869)
 
 #### What changed?
 
-Four NTLM modules have been moved from `portal-security-sso` to a new module
-named `portal-security-sso-ntlm`. This new module is deprecated and will be
-available for download in Liferay's Marketplace.
+Interface `TermsOfUseContentProvider` in package `com.liferay.portal.kernel.util`
+was moved to package `com.liferay.portal.kernel.term.of.use`.
+`TermsOfUseContentProviderRegistryUtil` in package `com.liferay.portal.kernel.util`
+was moved to package `com.liferay.portal.internal.terms.of.use` and renamed to
+`TermsOfUseContentProviderUtil`.
+The logic of getting `TermsOfUseContentProvider` was changed. Instead of always
+returning the first service registered, which is random and depends on the order
+of service registered, we keep track of the `TermsOfUseContentProvider` service
+and update it with `com.liferay.portal.kernel.util.ServiceProxyFactory`. As a
+result, the `TermsOfUseContentProvider` we are getting now respects service
+ranking.
 
 #### Who is affected?
 
-This affects anyone using NTLM as authentication system.
+This affects anyone who used `TermsOfUseContentProviderRegistryUtil` in package
+`com.liferay.portal.kernel.util` to lookup `TermsOfUseContentProvider` service
+originally in package `com.liferay.portal.kernel.util`
 
 #### How should I update my code?
 
-If you want to continue using NTLM as an authentication system,
-you must download the corresponding modules from Liferay's Marketplace.
-Although we recommend the migration to Kerberos (no changes needed and
-compatible with Liferay Portal 7.0 and onwards versions).
+If `com.liferay.portal.kernel.util.TermsOfUseContentProvider` is used, update
+the import package name. If there is any usage in `portal-web`, update
+`com.liferay.portal.kernel.util.TermsOfUseContentProviderRegistryUtil` to
+`com.liferay.portal.kernel.term.of.use.TermsOfUseContentProviderUtil`. Remove
+usages of `com.liferay.portal.kernel.util.TermsOfUseContentProviderRegistryUtil`
+in modules and use @Reference annotation to fetch the
+`com.liferay.portal.kernel.term.of.use.TermsOfUseContentProvider` service
+instead.
 
 #### Why was this change made?
 
-We want to avoid continuing using an old properitary solution (NTLM)
-in favour of the use of Kerberos: a standard protocol and more secure
-method of authentication.
+It's one of several steps to clean up kernel provider interfaces to reduce the
+chance of package version lock down.
+
+---------------------------------------
+
+### Remove HibernateConfigurationConverter and Converter
+- **Date:** 2019-Jan-07
+- **JIRA Ticket:** [LPS-88870](https://issues.liferay.com/browse/LPS-88870)
+
+#### What changed?
+
+Interface `com.liferay.portal.kernel.util.Converter` and its implementation
+`com.liferay.portal.spring.hibernate.HibernateConfigurationConverter` were
+removed.
+
+#### Who is affected?
+
+This removes the support of generating customized `portlet-hbm.xml` implemented
+by `HibernateConfigurationConverter`.
+Please refer to [LPS-5363](https://issues.liferay.com/browse/LPS-5363).
+
+#### How should I update my code?
+
+Remove usages of `HibernateConfigurationConverter`. Make sure the generated
+`portlet-hbm.xml` is accurate.
+
+#### Why was this change made?
+
+It's one of several steps to clean up kernel provider interfaces to reduce the
+chance of package version lock down.
+
+---------------------------------------
+
+### Switch to use JDK Function and Supplier
+- **Date:** 2019-Jan-08
+- **JIRA Ticket:** [LPS-88911](https://issues.liferay.com/browse/LPS-88911)
+
+#### What changed?
+
+`Function` and `Supplier` in package `com.liferay.portal.kernel.util` were
+removed. Their usages were replaced with `java.util.function.Function` and
+`java.util.function.Supplier`.
+
+#### Who is affected?
+
+This affects anyone who used `Function` and `Supplier` in package
+`com.liferay.portal.kernel.util`.
+
+#### How should I update my code?
+
+Replace usages of `com.liferay.portal.kernel.util.Function` with
+`java.util.function.Function`. Replace usages of
+`com.liferay.portal.kernel.util.Supplier` with `java.util.function.Supplier`.
+
+#### Why was this change made?
+
+It's one of several steps to clean up kernel provider interfaces to reduce the
+chance of package version lock down.
+
+---------------------------------------
+
+### Deprecate com.liferay.portal.service.InvokableService
+- **Date:** 2019-Jan-08
+- **JIRA Ticket:** [LPS-88912](https://issues.liferay.com/browse/LPS-88912)
+
+#### What changed?
+
+Interface `InvokableService` and `InvokableLocalService` in package
+`com.liferay.portal.kernel.service` were removed.
+
+#### Who is affected?
+
+This affects anyone who used `InvokableService` and `InvokableLocalService` in
+package `com.liferay.portal.kernel.service`.
+
+#### How should I update my code?
+
+Remove usages of `InvokableService` and `InvokableLocalService`. Make sure to
+use the latest version of `ServiceBuilder` to generate implementations for
+services in case there is any compile error after the removal.
+
+#### Why was this change made?
+
+It's one of several steps to clean up kernel provider interfaces to reduce the
+chance of package version lock down.
+
+---------------------------------------
+
+### Drop support of ServiceLoaderCondition
+- **Date:** 2019-Jan-08
+- **JIRA Ticket:** [LPS-88913](https://issues.liferay.com/browse/LPS-88913)
+
+#### What changed?
+
+Interface `ServiceLoaderCondition` and its implementation
+`DefaultServiceLoaderCondition` in package `com.liferay.portal.kernel.util` were
+removed.
+
+#### Who is affected?
+
+This affects anyone used `ServiceLoaderCondition` and
+`DefaultServiceLoaderCondition`.
+
+#### How should I update my code?
+
+Remove usages of `ServiceLoaderCondition`. Update usages of `load` methods in
+`com.liferay.portal.kernel.util.ServiceLoader` according to the updated method
+signatures.
+
+#### Why was this change made?
+
+It's one of several steps to clean up kernel provider interfaces to reduce the
+chance of package version lock down.
+
+---------------------------------------
+
+### Switch to use JDK Predicate
+- **Date:** 2019-Jan-14
+- **JIRA Ticket:** [LPS-89139](https://issues.liferay.com/browse/LPS-89139)
+
+#### What changed?
+
+Interface `com.liferay.portal.kernel.util.PredicateFilter` was removed and
+replaced with `java.util.function.Predicate`. As a result of that, all
+implementations of the interface: `AggregatePredicateFilter`,
+`PrefixPredicateFilter` in package `com.liferay.portal.kernel.util`,
+`JavaScriptPortletResourcePredicateFilter` in package
+`com.liferay.portal.kernel.portlet` and `DDMFormFieldValuePredicateFilter`
+in package `com.liferay.dynamic.data.mapping.form.values.query.internal.model`
+were removed. `com.liferay.portal.kernel.util.ArrayUtil_IW` was regenerated.
+
+#### Who is affected?
+
+This affects anyone who used `PredicateFilter`, `AggregatePredicateFilter`,
+`PrefixPredicateFilter`, `JavaScriptPortletResourcePredicateFilter` and
+`DDMFormFieldValuePredicateFilter`.
+
+#### How should I update my code?
+
+Replace usages of `com.liferay.portal.kernel.util.PredicateFilter` with
+`java.util.function.Predicate`. Remove usages of `AggregatePredicateFilter`,
+`PrefixPredicateFilter`, `JavaScriptPortletResourcePredicateFilter` and
+`DDMFormFieldValuePredicateFilter`.
+
+#### Why was this change made?
+
+It's one of several steps to clean up kernel provider interfaces to reduce the
+chance of package version lock down.
+
+---------------------------------------
+
+### Remove unsafe functional interfaces in package com.liferay.portal.kernel.util
+- **Date:** 2019-Jan-15
+- **JIRA Ticket:** [LPS-89223](https://issues.liferay.com/browse/LPS-89223)
+
+#### What changed?
+
+`com.liferay.portal.osgi.util.test.OSGiServiceUtil` was removed.
+`UnsafeConsumer`, `UnsafeFunction` and `UnsafeRunnable` in package
+`com.liferay.portal.kernel.util` were removed.
+
+#### Who is affected?
+
+This affects anyone used `com.liferay.portal.osgi.util.test.OSGiServiceUtil` and
+`UnsafeConsumer`, `UnsafeFunction`, `UnsafeRunnable` in package
+`com.liferay.portal.kernel.util`
+
+#### How should I update my code?
+
+`com.liferay.portal.osgi.util.test.OSGiServiceUtil` has been deprecated since
+7.1. If there is still any usage of the class, replace it with its direct
+replacement `com.liferay.osgi.util.service.OSGiServiceUtil`. Replace usages of
+`UnsafeConsumer`, `UnsafeFunction` and `UnsafeRunnable` with corresponding interface
+in package `com.liferay.petra.function`.
+
+#### Why was this change made?
+
+It's one of several steps to clean up kernel provider interfaces to reduce the
+chance of package version lock down.
+
+---------------------------------------
+
+### Deprecated NTLM in Portal Distribution
+- **Date:** 2019-Jan-21
+- **JIRA Ticket:** [LPS-88300](https://issues.liferay.com/browse/LPS-88300)
+
+#### What changed?
+
+Four NTLM modules have been moved from the `portal-security-sso` project to a
+new project named `portal-security-sso-ntlm`. This new project is deprecated and
+is available to download from Liferay Marketplace.
+
+#### Who is affected?
+
+This affects anyone using NTLM as an authentication system.
+
+#### How should I update my code?
+
+If you want to continue using NTLM as an authentication system, you must
+download the corresponding modules from Liferay Marketplace. Alternatively, you
+can migrate to Kerberos (recommended), which requires no changes and is
+compatible with Liferay Portal 7.0+.
+
+#### Why was this change made?
+
+This change was made to avoid using an old proprietary solution (NTLM). Kerberos
+is now recommended, which is a standard protocol and a more secure method of
+authentication compared to NTLM.
 
 ---------------------------------------

@@ -218,7 +218,8 @@ public class JSPortletExtender {
 			new String[] {
 				ManagedService.class.getName(), Portlet.class.getName()
 			},
-			new JSPortlet(packageName, packageVersion), properties);
+			new JSPortlet(_jsonFactory, packageName, packageVersion),
+			properties);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -252,7 +253,7 @@ public class JSPortletExtender {
 							bundleContext, packageJSONObject);
 
 					JSONObject portletPreferencesJSONObject = _parse(
-						bundle.getEntry("features/portlet_preferences.json"));
+						bundle.getEntry("features/preferences.json"));
 
 					if (portletPreferencesJSONObject != null) {
 						_registerConfigurationActionService(

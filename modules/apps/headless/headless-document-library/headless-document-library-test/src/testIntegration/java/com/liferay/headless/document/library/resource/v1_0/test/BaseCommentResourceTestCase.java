@@ -14,29 +14,32 @@
 
 package com.liferay.headless.document.library.resource.v1_0.test;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.headless.document.library.dto.v1_0.Comment;
-import com.liferay.headless.document.library.internal.dto.v1_0.CommentImpl;
+import com.liferay.headless.document.library.dto.v1_0.Creator;
+import com.liferay.petra.function.UnsafeSupplier;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.util.Base64;
+import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
-import io.restassured.RestAssured;
-import io.restassured.parsing.Parser;
-import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
-
 import java.net.URL;
+
+import java.util.Date;
 
 import javax.annotation.Generated;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -46,16 +49,12 @@ import org.junit.Test;
 @Generated("")
 public abstract class BaseCommentResourceTestCase {
 
-	@BeforeClass
-	public static void setUpClass() {
-		RestAssured.defaultParser = Parser.JSON;
-	}
-
 	@Before
 	public void setUp() throws Exception {
 		testGroup = GroupTestUtil.addGroup();
 
-		_resourceURL = new URL("http://localhost:8080/o/headless-document-library/v1.0");
+		_resourceURL = new URL(
+			"http://localhost:8080/o/headless-document-library/v1.0");
 	}
 
 	@After
@@ -76,61 +75,229 @@ public abstract class BaseCommentResourceTestCase {
 			Assert.assertTrue(true);
 	}
 
-	protected Response invokeGetComment( Long commentId ) throws Exception {
-		RequestSpecification requestSpecification = _createRequestSpecification();
+	protected Comment invokeGetComment(
+				Long commentId)
+			throws Exception {
 
-			return requestSpecification.when(
-			).get(
-				_resourceURL + "/comments/{comment-id}",
-				commentId
-			);
+			Http.Options options = _createHttpOptions();
 
+			options.setLocation(_resourceURL + _toPath("/comments/{comment-id}", commentId));
+
+				return _outputObjectMapper.readValue(HttpUtil.URLtoString(options), CommentImpl.class);
 	}
-	protected Response invokeGetCommentCommentsPage( Long commentId , Pagination pagination ) throws Exception {
-		RequestSpecification requestSpecification = _createRequestSpecification();
+	protected Page<Comment> invokeGetCommentCommentsPage(
+				Long commentId,Pagination pagination)
+			throws Exception {
 
-			return requestSpecification.when(
-			).get(
-				_resourceURL + "/comments/{comment-id}/comments",
-				commentId 
-			);
+			Http.Options options = _createHttpOptions();
 
+			options.setLocation(_resourceURL + _toPath("/comments/{comment-id}/comments", commentId));
+
+				return _outputObjectMapper.readValue(HttpUtil.URLtoString(options), Page.class);
 	}
-	protected Response invokeGetDocumentCommentsPage( Long documentId , Pagination pagination ) throws Exception {
-		RequestSpecification requestSpecification = _createRequestSpecification();
+	protected Page<Comment> invokeGetDocumentCommentsPage(
+				Long documentId,Pagination pagination)
+			throws Exception {
 
-			return requestSpecification.when(
-			).get(
-				_resourceURL + "/documents/{document-id}/comments",
-				documentId 
-			);
+			Http.Options options = _createHttpOptions();
 
+			options.setLocation(_resourceURL + _toPath("/documents/{document-id}/comments", documentId));
+
+				return _outputObjectMapper.readValue(HttpUtil.URLtoString(options), Page.class);
 	}
 
 	protected Comment randomComment() {
 		return new CommentImpl() {
 			{
-dateCreated = RandomTestUtil.nextDate();
-dateModified = RandomTestUtil.nextDate();
-hasComments = RandomTestUtil.randomBoolean();
-id = RandomTestUtil.randomLong();
-text = RandomTestUtil.randomString();			}
+
+						dateCreated = RandomTestUtil.nextDate();
+						dateModified = RandomTestUtil.nextDate();
+						hasComments = RandomTestUtil.randomBoolean();
+						id = RandomTestUtil.randomLong();
+						text = RandomTestUtil.randomString();
+	}
 		};
 	}
 
 	protected Group testGroup;
 
-	private RequestSpecification _createRequestSpecification() {
-		return RestAssured.given(
-		).auth(
-		).preemptive(
-		).basic(
-			"test@liferay.com", "test"
-		).header(
-			"Accept", "application/json"
-		).header(
-			"Content-Type", "application/json"
-		);
+	protected static class CommentImpl implements Comment {
+
+	public Comment[] getComments() {
+				return comments;
+	}
+
+	public void setComments(Comment[] comments) {
+				this.comments = comments;
+	}
+
+	@JsonIgnore
+	public void setComments(
+				UnsafeSupplier<Comment[], Throwable> commentsUnsafeSupplier) {
+
+				try {
+					comments = commentsUnsafeSupplier.get();
+	}
+				catch (Throwable t) {
+					throw new RuntimeException(t);
+	}
+	}
+
+	@JsonProperty
+	protected Comment[] comments;
+	public Creator getCreator() {
+				return creator;
+	}
+
+	public void setCreator(Creator creator) {
+				this.creator = creator;
+	}
+
+	@JsonIgnore
+	public void setCreator(
+				UnsafeSupplier<Creator, Throwable> creatorUnsafeSupplier) {
+
+				try {
+					creator = creatorUnsafeSupplier.get();
+	}
+				catch (Throwable t) {
+					throw new RuntimeException(t);
+	}
+	}
+
+	@JsonProperty
+	protected Creator creator;
+	public Date getDateCreated() {
+				return dateCreated;
+	}
+
+	public void setDateCreated(Date dateCreated) {
+				this.dateCreated = dateCreated;
+	}
+
+	@JsonIgnore
+	public void setDateCreated(
+				UnsafeSupplier<Date, Throwable> dateCreatedUnsafeSupplier) {
+
+				try {
+					dateCreated = dateCreatedUnsafeSupplier.get();
+	}
+				catch (Throwable t) {
+					throw new RuntimeException(t);
+	}
+	}
+
+	@JsonProperty
+	protected Date dateCreated;
+	public Date getDateModified() {
+				return dateModified;
+	}
+
+	public void setDateModified(Date dateModified) {
+				this.dateModified = dateModified;
+	}
+
+	@JsonIgnore
+	public void setDateModified(
+				UnsafeSupplier<Date, Throwable> dateModifiedUnsafeSupplier) {
+
+				try {
+					dateModified = dateModifiedUnsafeSupplier.get();
+	}
+				catch (Throwable t) {
+					throw new RuntimeException(t);
+	}
+	}
+
+	@JsonProperty
+	protected Date dateModified;
+	public Boolean getHasComments() {
+				return hasComments;
+	}
+
+	public void setHasComments(Boolean hasComments) {
+				this.hasComments = hasComments;
+	}
+
+	@JsonIgnore
+	public void setHasComments(
+				UnsafeSupplier<Boolean, Throwable> hasCommentsUnsafeSupplier) {
+
+				try {
+					hasComments = hasCommentsUnsafeSupplier.get();
+	}
+				catch (Throwable t) {
+					throw new RuntimeException(t);
+	}
+	}
+
+	@JsonProperty
+	protected Boolean hasComments;
+	public Long getId() {
+				return id;
+	}
+
+	public void setId(Long id) {
+				this.id = id;
+	}
+
+	@JsonIgnore
+	public void setId(
+				UnsafeSupplier<Long, Throwable> idUnsafeSupplier) {
+
+				try {
+					id = idUnsafeSupplier.get();
+	}
+				catch (Throwable t) {
+					throw new RuntimeException(t);
+	}
+	}
+
+	@JsonProperty
+	protected Long id;
+	public String getText() {
+				return text;
+	}
+
+	public void setText(String text) {
+				this.text = text;
+	}
+
+	@JsonIgnore
+	public void setText(
+				UnsafeSupplier<String, Throwable> textUnsafeSupplier) {
+
+				try {
+					text = textUnsafeSupplier.get();
+	}
+				catch (Throwable t) {
+					throw new RuntimeException(t);
+	}
+	}
+
+	@JsonProperty
+	protected String text;
+
+	}
+
+	private Http.Options _createHttpOptions() {
+		Http.Options options = new Http.Options();
+
+		options.addHeader("Accept", "application/json");
+
+		String userNameAndPassword = "test@liferay.com:test";
+
+		String encodedUserNameAndPassword = Base64.encode(userNameAndPassword.getBytes());
+
+		options.addHeader("Authorization", "Basic " + encodedUserNameAndPassword);
+
+		options.addHeader("Content-Type", "application/json");
+
+		return options;
+	}
+
+	private String _toPath(String template, Object... values) {
+		return template.replaceAll("\\{.*\\}", String.valueOf(values[0]));
 	}
 
 	private final static ObjectMapper _inputObjectMapper = new ObjectMapper() {

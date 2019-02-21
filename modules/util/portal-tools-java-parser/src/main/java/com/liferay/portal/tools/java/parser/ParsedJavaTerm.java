@@ -16,7 +16,11 @@ package com.liferay.portal.tools.java.parser;
 
 import antlr.CommonHiddenStreamToken;
 
+import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+
+import java.util.Objects;
 
 /**
  * @author Hugo Huijser
@@ -24,11 +28,13 @@ import com.liferay.portal.kernel.util.StringUtil;
 public class ParsedJavaTerm implements Comparable<ParsedJavaTerm> {
 
 	public ParsedJavaTerm(
-		String content, Position startPosition, Position endPosition) {
+		String content, Position startPosition, Position endPosition,
+		String className) {
 
 		_content = content;
 		_startPosition = startPosition;
 		_endPosition = endPosition;
+		_className = className;
 	}
 
 	@Override
@@ -40,12 +46,26 @@ public class ParsedJavaTerm implements Comparable<ParsedJavaTerm> {
 		return _containsCommentToken;
 	}
 
+	public String getClassName() {
+		return _className;
+	}
+
 	public String getContent() {
 		return _content;
 	}
 
 	public Position getEndPosition() {
 		return _endPosition;
+	}
+
+	public int getFollowingLineAction() {
+		if (_className.equals(JavaMethodDefinition.class.getName()) &&
+			_content.endsWith(StringPool.SEMICOLON)) {
+
+			return DOUBLE_LINE_BREAK_REQUIRED;
+		}
+
+		return NO_ACTION_REQUIRED;
 	}
 
 	public ParsedJavaTerm getNextParsedJavaTerm() {
@@ -56,42 +76,74 @@ public class ParsedJavaTerm implements Comparable<ParsedJavaTerm> {
 		return _precedingCommentToken;
 	}
 
+	public int getPrecedingLineAction() {
+		if (((_precedingCommentToken != null) &&
+			 StringUtil.startsWith(
+				 StringUtil.trim(_precedingCommentToken.getText()),
+				 CharPool.STAR)) ||
+			StringUtil.startsWith(
+				StringUtil.trim(_content), StringPool.CLOSE_CURLY_BRACE)) {
+
+			return NO_ACTION_REQUIRED;
+		}
+
+		ParsedJavaTerm previousParsedJavaTerm = getPreviousParsedJavaTerm();
+
+		if (StringUtil.endsWith(
+				previousParsedJavaTerm.getContent(),
+				CharPool.OPEN_CURLY_BRACE)) {
+
+			return NO_ACTION_REQUIRED;
+		}
+
+		if (_className.equals(JavaAnnotationFieldDefinition.class.getName()) ||
+			_className.equals(JavaBreakStatement.class.getName()) ||
+			_className.equals(JavaConstructorDefinition.class.getName()) ||
+			_className.equals(JavaContinueStatement.class.getName()) ||
+			_className.equals(JavaDoStatement.class.getName()) ||
+			_className.equals(JavaEnhancedForStatement.class.getName()) ||
+			_className.equals(JavaEnumConstantDefinitions.class.getName()) ||
+			_className.equals(JavaForStatement.class.getName()) ||
+			_className.equals(JavaIfStatement.class.getName()) ||
+			_className.equals(JavaMethodDefinition.class.getName()) ||
+			_className.equals(JavaReturnStatement.class.getName()) ||
+			_className.equals(JavaStaticInitialization.class.getName()) ||
+			_className.equals(JavaSynchronizedStatement.class.getName()) ||
+			_className.equals(JavaThrowStatement.class.getName()) ||
+			_className.equals(JavaTryStatement.class.getName())) {
+
+			return DOUBLE_LINE_BREAK_REQUIRED;
+		}
+
+		if (_className.equals(JavaCatchStatement.class.getName()) ||
+			_className.equals(JavaElseStatement.class.getName()) ||
+			_className.equals(JavaFinallyStatement.class.getName())) {
+
+			return SINGLE_LINE_BREAK_REQUIRED;
+		}
+
+		if (_className.equals(JavaWhileStatement.class.getName())) {
+			if (_content.endsWith(StringPool.OPEN_CURLY_BRACE)) {
+				return DOUBLE_LINE_BREAK_REQUIRED;
+			}
+
+			if (Objects.equals(
+					previousParsedJavaTerm.getClassName(),
+					JavaDoStatement.class.getName())) {
+
+				return SINGLE_LINE_BREAK_REQUIRED;
+			}
+		}
+
+		return NO_ACTION_REQUIRED;
+	}
+
 	public ParsedJavaTerm getPreviousParsedJavaTerm() {
 		return _previousParsedJavaTerm;
 	}
 
 	public Position getStartPosition() {
 		return _startPosition;
-	}
-
-	public boolean requireFollowingEmptyLine() {
-		return _requireFollowingEmptyLine;
-	}
-
-	public boolean requireNoFollowingEmptyLine() {
-		return _requireNoFollowingEmptyLine;
-	}
-
-	public boolean requireNoPrecedingEmptyLine() {
-		return _requireNoPrecedingEmptyLine;
-	}
-
-	public boolean requirePrecedingEmptyLine() {
-		if (!_requirePrecedingEmptyLine) {
-			return _requirePrecedingEmptyLine;
-		}
-
-		if (_precedingCommentToken == null) {
-			return true;
-		}
-
-		if (StringUtil.startsWith(
-				StringUtil.trim(_precedingCommentToken.getText()), "*")) {
-
-			return false;
-		}
-
-		return true;
 	}
 
 	public void setContainsCommentToken(boolean containsCommentToken) {
@@ -114,40 +166,19 @@ public class ParsedJavaTerm implements Comparable<ParsedJavaTerm> {
 		_previousParsedJavaTerm = previousParsedJavaTerm;
 	}
 
-	public void setRequireFollowingEmptyLine(
-		boolean requireFollowingEmptyLine) {
+	protected static final int DOUBLE_LINE_BREAK_REQUIRED = 0;
 
-		_requireFollowingEmptyLine = requireFollowingEmptyLine;
-	}
+	protected static final int NO_ACTION_REQUIRED = 1;
 
-	public void setRequireNoFollowingEmptyLine(
-		boolean requireNoFollowingEmptyLine) {
+	protected static final int SINGLE_LINE_BREAK_REQUIRED = 2;
 
-		_requireNoFollowingEmptyLine = requireNoFollowingEmptyLine;
-	}
-
-	public void setRequireNoPrecedingEmptyLine(
-		boolean requireNoPrecedingEmptyLine) {
-
-		_requireNoPrecedingEmptyLine = requireNoPrecedingEmptyLine;
-	}
-
-	public void setRequirePrecedingEmptyLine(
-		boolean requirePrecedingEmptyLine) {
-
-		_requirePrecedingEmptyLine = requirePrecedingEmptyLine;
-	}
-
+	private final String _className;
 	private boolean _containsCommentToken;
 	private final String _content;
 	private final Position _endPosition;
 	private ParsedJavaTerm _nextParsedJavaTerm;
 	private CommonHiddenStreamToken _precedingCommentToken;
 	private ParsedJavaTerm _previousParsedJavaTerm;
-	private boolean _requireFollowingEmptyLine;
-	private boolean _requireNoFollowingEmptyLine;
-	private boolean _requireNoPrecedingEmptyLine;
-	private boolean _requirePrecedingEmptyLine;
 	private final Position _startPosition;
 
 }

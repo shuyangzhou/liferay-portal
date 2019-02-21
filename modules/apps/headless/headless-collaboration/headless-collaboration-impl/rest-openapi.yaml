@@ -32,11 +32,14 @@ components:
               categoryName:
                 type: string
             type: object
+          readOnly: true
           type: array
-        comment:
+        categoryIds:
           items:
-            $ref: "#/components/schemas/Comment"
+            format: int64
+            type: integer
           type: array
+          writeOnly: true
         contentSpace:
           format: int64
           type: integer
@@ -57,6 +60,8 @@ components:
           type: string
         friendlyUrlPath:
           type: string
+        hasComments:
+          type: boolean
         headline:
           type: string
         id:
@@ -173,6 +178,27 @@ paths:
           schema:
             format: int64
             type: integer
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlogPosting"
+          description: ""
+      tags: ["BlogPosting"]
+    patch:
+      parameters:
+        - in: path
+          name: blog-posting-id
+          required: true
+          schema:
+            format: int64
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BlogPosting"
       responses:
         200:
           content:

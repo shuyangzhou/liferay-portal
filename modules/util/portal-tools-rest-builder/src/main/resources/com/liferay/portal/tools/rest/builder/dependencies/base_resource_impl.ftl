@@ -11,9 +11,11 @@ import ${configYAML.apiPackagePath}.resource.${versionDirName}.${schemaName}Reso
 
 import com.liferay.oauth2.provider.scope.RequiresScope;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.multipart.MultipartBody;
 import com.liferay.portal.vulcan.pagination.Page;
@@ -49,34 +51,36 @@ import javax.ws.rs.core.Context;
 @Path("/${openAPIYAML.info.version}")
 public abstract class Base${schemaName}ResourceImpl implements ${schemaName}Resource {
 
-	<#list javaTool.getJavaSignatures(openAPIYAML, schemaName) as javaSignature>
-		<#compress>
-			<#list javaTool.getMethodAnnotations(javaSignature) as methodAnnotation>
-				${methodAnnotation}
-			</#list>
+	<#list freeMarkerTool.getResourceJavaMethodSignatures(configYAML, openAPIYAML, schemaName, false) as javaMethodSignature>
+		@Override
+		${freeMarkerTool.getResourceMethodAnnotations(javaMethodSignature)}
+		public ${javaMethodSignature.returnType} ${javaMethodSignature.methodName}(
+				${freeMarkerTool.getResourceParameters(javaMethodSignature.javaParameters, true)})
+			throws Exception {
 
-			@Override
-			<@compress single_line=true>
-				public ${javaSignature.returnType} ${javaSignature.methodName}(
-					<#list javaSignature.javaParameters as javaParameter>
-						${javaTool.getParameterAnnotation(javaParameter)} ${javaParameter.parameterType} ${javaParameter.parameterName}
+			<#if stringUtil.equals(javaMethodSignature.returnType, "boolean")>
+				return false;
+			<#elseif stringUtil.equals(javaMethodSignature.returnType, "String")>
+				return StringPool.BLANK;
+			<#elseif javaMethodSignature.returnType?contains("Page<")>
+				return Page.of(Collections.emptyList());
+			<#elseif freeMarkerTool.hasHTTPMethod(javaMethodSignature, "patch")>
+				<#assign firstJavaParameter = javaMethodSignature.javaParameters[0] />
 
-						<#if javaParameter_has_next>
-							,
-						</#if>
-					</#list>
-				) throws Exception {
-			</@compress>
-		</#compress>
+				${schemaName} existing${schemaName} = get${schemaName}(${firstJavaParameter.parameterName});
 
-		<#if stringUtil.equals(javaSignature.returnType, "boolean")>
-			return false;
-		<#elseif javaSignature.returnType?contains("Page<")>
-			return Page.of(Collections.emptyList());
-		<#else>
-			return new ${javaSignature.returnType}Impl();
-		</#if>
+				<#list freeMarkerTool.getDTOJavaParameters(configYAML, openAPIYAML, schemaName, false) as javaParameter>
+					<#if !freeMarkerTool.isSchemaParameter(javaParameter, openAPIYAML)>
+						if (Validator.isNotNull(${schemaName?uncap_first}.get${javaParameter.parameterName?cap_first}())) {
+							existing${schemaName}.set${javaParameter.parameterName?cap_first}(${schemaName?uncap_first}.get${javaParameter.parameterName?cap_first}());
+						}
+					</#if>
+				</#list>
 
+				return put${schemaName}(${firstJavaParameter.parameterName}, existing${schemaName});
+			<#else>
+				return new ${javaMethodSignature.returnType}Impl();
+			</#if>
 		}
 	</#list>
 

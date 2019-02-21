@@ -103,7 +103,7 @@ public class KeywordResourceImpl
 
 	@Override
 	public EntityModel getEntityModel(MultivaluedMap multivaluedMap) {
-		return _keywordEntityModel;
+		return _entityModel;
 	}
 
 	@Override
@@ -172,8 +172,7 @@ public class KeywordResourceImpl
 		};
 	}
 
-	private static final KeywordEntityModel _keywordEntityModel =
-		new KeywordEntityModel();
+	private static final EntityModel _entityModel = new KeywordEntityModel();
 
 	@Reference
 	private AssetTagService _assetTagService;

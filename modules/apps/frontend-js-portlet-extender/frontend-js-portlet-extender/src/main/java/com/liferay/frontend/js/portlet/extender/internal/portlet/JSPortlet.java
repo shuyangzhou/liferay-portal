@@ -14,9 +14,8 @@
 
 package com.liferay.frontend.js.portlet.extender.internal.portlet;
 
-import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -38,7 +37,6 @@ import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
-import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
 
 /**
@@ -48,7 +46,10 @@ import org.osgi.service.cm.ManagedService;
  */
 public class JSPortlet extends MVCPortlet implements ManagedService {
 
-	public JSPortlet(String packageName, String packageVersion) {
+	public JSPortlet(
+		JSONFactory jsonFactory, String packageName, String packageVersion) {
+
+		_jsonFactory = jsonFactory;
 		_packageName = packageName;
 		_packageVersion = packageVersion;
 	}
@@ -72,16 +73,16 @@ public class JSPortlet extends MVCPortlet implements ManagedService {
 				StringUtil.replace(
 					_TPL_JAVA_SCRIPT,
 					new String[] {
-						"[$CONFIGURATION]", "[$CONTEXT_PATH$]",
-						"[$PORTLET_ELEMENT_ID$]", "[$PORTLET_NAMESPACE$]",
-						"[$PACKAGE_NAME$]", "[$PACKAGE_VERSION$]",
-						"[$PORTLET_PREFERENCES$]"
+						"[$CONTEXT_PATH$]", "[$PACKAGE_NAME$]",
+						"[$PACKAGE_VERSION$]", "[$PORTLET_ELEMENT_ID$]",
+						"[$PORTLET_NAMESPACE$]", "[$PORTLET_PREFERENCES$]",
+						"[$SETTINGS$]"
 					},
 					new String[] {
-						_getConfiguration(), renderRequest.getContextPath(),
-						portletElementId, renderResponse.getNamespace(),
-						_packageName, _packageVersion,
-						_toJSON(renderRequest.getPreferences())
+						renderRequest.getContextPath(), _packageName,
+						_packageVersion, portletElementId,
+						renderResponse.getNamespace(),
+						_getPortletPreferences(renderRequest), _getSettings()
 					}));
 
 			printWriter.flush();
@@ -92,16 +93,14 @@ public class JSPortlet extends MVCPortlet implements ManagedService {
 	}
 
 	@Override
-	public void updated(Dictionary<String, ?> properties)
-		throws ConfigurationException {
-
+	public void updated(Dictionary<String, ?> properties) {
 		if (properties == null) {
-			_configuration.set(Collections.emptyMap());
+			_settings.set(Collections.emptyMap());
 
 			return;
 		}
 
-		Map<String, String> configuration = new HashMap<>();
+		Map<String, String> settings = new HashMap<>();
 
 		Enumeration<String> keys = properties.keys();
 
@@ -112,10 +111,10 @@ public class JSPortlet extends MVCPortlet implements ManagedService {
 				continue;
 			}
 
-			configuration.put(key, String.valueOf(properties.get(key)));
+			settings.put(key, String.valueOf(properties.get(key)));
 		}
 
-		_configuration.set(configuration);
+		_settings.set(settings);
 	}
 
 	private static String _loadTemplate(String name) {
@@ -131,38 +130,11 @@ public class JSPortlet extends MVCPortlet implements ManagedService {
 		return StringPool.BLANK;
 	}
 
-	private String _escapeQuotes(String value) {
-		return value.replaceAll("'", "\\'");
-	}
+	private String _getPortletPreferences(RenderRequest renderRequest) {
+		PortletPreferences portletPreferences = renderRequest.getPreferences();
 
-	private String _getConfiguration() {
-		Map<String, String> configuration = _configuration.get();
-
-		StringBundler sb = new StringBundler();
-
-		sb.append("{");
-
-		String delimiter = "";
-
-		for (Map.Entry<String, String> entry : configuration.entrySet()) {
-			sb.append(delimiter);
-			sb.append("'");
-			sb.append(_escapeQuotes(entry.getKey()));
-			sb.append("':'");
-			sb.append(_escapeQuotes(entry.getValue()));
-			sb.append("'");
-
-			delimiter = ", ";
-		}
-
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	private String _toJSON(PortletPreferences portletPreferences) {
 		JSONObject portletPreferencesJSONObject =
-			JSONFactoryUtil.createJSONObject();
+			_jsonFactory.createJSONObject();
 
 		Enumeration<String> portletPreferencesNames =
 			portletPreferences.getNames();
@@ -184,6 +156,10 @@ public class JSPortlet extends MVCPortlet implements ManagedService {
 		return portletPreferencesJSONObject.toJSONString();
 	}
 
+	private String _getSettings() {
+		return _jsonFactory.looseSerialize(_settings.get());
+	}
+
 	private static final String _TPL_HTML;
 
 	private static final String _TPL_JAVA_SCRIPT;
@@ -195,9 +171,10 @@ public class JSPortlet extends MVCPortlet implements ManagedService {
 		_TPL_JAVA_SCRIPT = _loadTemplate("bootstrap.js.tpl");
 	}
 
-	private final AtomicReference<Map<String, String>> _configuration =
-		new AtomicReference<>();
+	private final JSONFactory _jsonFactory;
 	private final String _packageName;
 	private final String _packageVersion;
+	private final AtomicReference<Map<String, String>> _settings =
+		new AtomicReference<>();
 
 }

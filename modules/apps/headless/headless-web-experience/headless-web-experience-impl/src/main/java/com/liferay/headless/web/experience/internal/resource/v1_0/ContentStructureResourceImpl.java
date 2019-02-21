@@ -102,7 +102,7 @@ public class ContentStructureResourceImpl
 
 	@Override
 	public EntityModel getEntityModel(MultivaluedMap multivaluedMap) {
-		return _contentStructureEntityModel;
+		return _entityModel;
 	}
 
 	private ContentStructure _toContentStructure(DDMStructure ddmStructure)
@@ -113,8 +113,8 @@ public class ContentStructureResourceImpl
 			_userLocalService);
 	}
 
-	private static final ContentStructureEntityModel
-		_contentStructureEntityModel = new ContentStructureEntityModel();
+	private static final EntityModel _entityModel =
+		new ContentStructureEntityModel();
 
 	@Reference
 	private DDMStructureService _ddmStructureService;

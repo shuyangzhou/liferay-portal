@@ -38,100 +38,72 @@ import org.osgi.util.tracker.ServiceTracker;
 @Generated("")
 public class Query {
 
-	<#assign javaSignatures = javaTool.getGraphQLJavaSignatures(openAPIYAML, true) />
+	<#assign javaMethodSignatures = freeMarkerTool.getGraphQLJavaMethodSignatures(configYAML, openAPIYAML, "query", false) />
 
-	<#list javaSignatures?keys as schemaName>
-		<#list javaSignatures[schemaName] as javaSignature>
-			<#if !stringUtil.startsWith(javaSignature.methodName, "get")>
-				<#continue>
-			</#if>
+	<#list javaMethodSignatures as javaMethodSignature>
+		<#assign schemaName = javaMethodSignature.schemaName />
 
-			<#compress>
-				<#list javaTool.getGraphQLMethodAnnotations(javaSignature) as methodAnnotation>
-					${methodAnnotation}
-				</#list>
+		${freeMarkerTool.getGraphQLMethodAnnotations(javaMethodSignature)}
+		public ${javaMethodSignature.returnType} ${javaMethodSignature.methodName}(
+				${freeMarkerTool.getGraphQLParameters(javaMethodSignature.javaParameters, true)})
+			throws Exception {
 
-				<@compress single_line=true>
-					public ${javaSignature.returnType} ${javaSignature.methodName}(
-						<#list javaSignature.javaParameters as javaParameter>
-							${javaTool.getGraphQLParameterAnnotation(javaParameter)} ${javaParameter.parameterType} ${javaParameter.parameterName}
-
-							<#if javaParameter_has_next>
-								,
-							</#if>
-						</#list>
-					) throws Exception {
-				</@compress>
-			</#compress>
-
-			<#if stringUtil.equals(javaSignature.returnType, "Response")>
+			<#if stringUtil.equals(javaMethodSignature.returnType, "Response")>
 				Response.ResponseBuilder responseBuilder = Response.ok();
 
 				return responseBuilder.build();
-			<#elseif javaSignature.returnType?contains("Collection<")>
+			<#elseif javaMethodSignature.returnType?contains("Collection<")>
 				${schemaName}Resource ${schemaName?uncap_first}Resource = _get${schemaName}Resource();
 
-				${schemaName?uncap_first}Resource.setContextCompany(CompanyLocalServiceUtil.getCompany(CompanyThreadLocal.getCompanyId()));
+				${schemaName?uncap_first}Resource.setContextCompany(
+					CompanyLocalServiceUtil.getCompany(CompanyThreadLocal.getCompanyId()));
 
-				Page paginationPage = ${schemaName?uncap_first}Resource.${javaSignature.methodName}(
-					<#assign parametersContent>
-						<@compress single_line=true>
-							<#list javaSignature.javaParameters as javaParameter>
-								${javaParameter.parameterName}
+				<#assign arguments = freeMarkerTool.getGraphQLArguments(javaMethodSignature.javaParameters) />
 
-								<#if javaParameter_has_next>
-									,
-								</#if>
-							</#list>
-						</@compress>
-					</#assign>
-
-					${parametersContent?replace("pageSize , page", "Pagination.of(pageSize, page)")}
-				);
+				Page paginationPage = ${schemaName?uncap_first}Resource.${javaMethodSignature.methodName}(
+					${arguments?replace("pageSize,page", "Pagination.of(pageSize, page)")});
 
 				return paginationPage.getItems();
 			<#else>
-				<@compress single_line=true>
-					${schemaName}Resource ${schemaName?uncap_first}Resource = _get${schemaName}Resource();
+				${schemaName}Resource ${schemaName?uncap_first}Resource = _get${schemaName}Resource();
 
-					${schemaName?uncap_first}Resource.setContextCompany(CompanyLocalServiceUtil.getCompany(CompanyThreadLocal.getCompanyId()));
+				${schemaName?uncap_first}Resource.setContextCompany(
+					CompanyLocalServiceUtil.getCompany(CompanyThreadLocal.getCompanyId()));
 
-					return ${schemaName?uncap_first}Resource.${javaSignature.methodName}(
-						<#list javaSignature.javaParameters as javaParameter>
-							${javaParameter.parameterName}
-
-							<#if javaParameter_has_next>
-								,
-							</#if>
-						</#list>
-					);
-				</@compress>
+				return ${schemaName?uncap_first}Resource.${javaMethodSignature.methodName}(
+					${freeMarkerTool.getGraphQLArguments(javaMethodSignature.javaParameters)});
 			</#if>
-
-			}
-
-		</#list>
+		}
 	</#list>
 
-	<#list javaSignatures?keys as schemaName>
+	<#assign schemaNames = freeMarkerTool.getGraphQLSchemaNames(javaMethodSignatures) />
+
+	<#list schemaNames as schemaName>
 		private static ${schemaName}Resource _get${schemaName}Resource() {
 			return _${schemaName?uncap_first}ResourceServiceTracker.getService();
 		}
 
-		private static final ServiceTracker<${schemaName}Resource, ${schemaName}Resource> _${schemaName?uncap_first}ResourceServiceTracker;
+		private static final ServiceTracker<${schemaName}Resource, ${schemaName}Resource>
+			_${schemaName?uncap_first}ResourceServiceTracker;
 	</#list>
 
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(Query.class);
+	<#if schemaNames?size != 0>
+		static {
+			Bundle bundle = FrameworkUtil.getBundle(Query.class);
 
-		<#list javaSignatures?keys as schemaName>
-			ServiceTracker<${schemaName}Resource, ${schemaName}Resource> ${schemaName?uncap_first}ResourceServiceTracker =
-				new ServiceTracker<>(bundle.getBundleContext(), ${schemaName}Resource.class, null);
+			<#list schemaNames as schemaName>
+				ServiceTracker<${schemaName}Resource, ${schemaName}Resource>
+					${schemaName?uncap_first}ResourceServiceTracker =
+						new ServiceTracker<>(
+							bundle.getBundleContext(),
+							${schemaName}Resource.class, null);
 
-			${schemaName?uncap_first}ResourceServiceTracker.open();
+				${schemaName?uncap_first}ResourceServiceTracker.open();
 
-			_${schemaName?uncap_first}ResourceServiceTracker = ${schemaName?uncap_first}ResourceServiceTracker;
-		</#list>
-	}
+				_${schemaName?uncap_first}ResourceServiceTracker =
+					${schemaName?uncap_first}ResourceServiceTracker;
+			</#list>
+		}
+	</#if>
 
 }

@@ -14,10 +14,15 @@
 
 package com.liferay.arquillian.extension.junit.bridge.junit;
 
+import com.liferay.arquillian.extension.junit.bridge.event.AfterClassEvent;
+import com.liferay.arquillian.extension.junit.bridge.event.BeforeClassEvent;
+import com.liferay.arquillian.extension.junit.bridge.event.TestEvent;
+import com.liferay.arquillian.extension.junit.bridge.remote.manager.Manager;
+import com.liferay.arquillian.extension.junit.bridge.remote.manager.Registry;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 import java.util.Comparator;
 import java.util.Iterator;
@@ -25,24 +30,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
-import org.jboss.arquillian.core.api.Instance;
-import org.jboss.arquillian.core.api.annotation.Inject;
-import org.jboss.arquillian.core.impl.loadable.LoadableExtensionLoader;
-import org.jboss.arquillian.core.spi.Manager;
-import org.jboss.arquillian.core.spi.ManagerBuilder;
-import org.jboss.arquillian.core.spi.NonManagedObserver;
-import org.jboss.arquillian.test.spi.LifecycleMethodExecutor;
-import org.jboss.arquillian.test.spi.TestMethodExecutor;
 import org.jboss.arquillian.test.spi.TestResult;
-import org.jboss.arquillian.test.spi.event.suite.AfterClass;
-import org.jboss.arquillian.test.spi.event.suite.AfterSuite;
-import org.jboss.arquillian.test.spi.event.suite.AfterTestLifecycleEvent;
-import org.jboss.arquillian.test.spi.event.suite.BeforeClass;
-import org.jboss.arquillian.test.spi.event.suite.BeforeSuite;
-import org.jboss.arquillian.test.spi.event.suite.BeforeTestLifecycleEvent;
 import org.jboss.arquillian.test.spi.execution.SkippedTestExecutionException;
 
 import org.junit.AssumptionViolatedException;
@@ -109,15 +98,7 @@ public class Arquillian extends Runner implements Filterable {
 
 		if (manager == null) {
 			try {
-				ManagerBuilder managerBuilder = ManagerBuilder.from();
-
-				managerBuilder.extension(LoadableExtensionLoader.class);
-
-				manager = managerBuilder.create();
-
-				manager.start();
-
-				manager.fire(new BeforeSuite());
+				manager = new Manager();
 
 				_managerThreadLocal.set(manager);
 			}
@@ -128,21 +109,12 @@ public class Arquillian extends Runner implements Filterable {
 			}
 		}
 
-		final Manager finalManager = manager;
-
 		runNotifier.addListener(
 			new RunListener() {
 
 				@Override
 				public void testRunFinished(Result result) throws Exception {
-					try {
-						finalManager.fire(new AfterSuite());
-
-						finalManager.shutdown();
-					}
-					finally {
-						_managerThreadLocal.remove();
-					}
+					_managerThreadLocal.remove();
 				}
 
 			});
@@ -197,9 +169,7 @@ public class Arquillian extends Runner implements Filterable {
 					Throwable throwable = null;
 
 					try {
-						manager.fire(
-							new BeforeClass(
-								_clazz, LifecycleMethodExecutor.NO_OP));
+						manager.fire(new BeforeClassEvent(_clazz));
 
 						statement.evaluate();
 					}
@@ -208,9 +178,7 @@ public class Arquillian extends Runner implements Filterable {
 					}
 
 					try {
-						manager.fire(
-							new AfterClass(
-								_clazz, LifecycleMethodExecutor.NO_OP));
+						manager.fire(new AfterClassEvent());
 					}
 					catch (Throwable t) {
 						if (throwable != null) {
@@ -304,61 +272,11 @@ public class Arquillian extends Runner implements Filterable {
 
 		statement = _withPotentialTimeout(frameworkMethod, statement);
 
-		final Statement oldStatement = statement;
-
 		for (MethodRule methodRule : _getMethodRules(test)) {
 			statement = methodRule.apply(statement, frameworkMethod, test);
 		}
 
-		final Statement newStatement = statement;
-
-		return new Statement() {
-
-			@Override
-			public void evaluate() throws Throwable {
-				final AtomicBoolean flag = new AtomicBoolean();
-
-				Throwable throwable = null;
-
-				try {
-					manager.fire(
-						new BeforeTestLifecycleEvent(
-							test, frameworkMethod.getMethod(),
-							() -> {
-								flag.set(true);
-
-								newStatement.evaluate();
-							}));
-
-					if (flag.get() == false) {
-						oldStatement.evaluate();
-					}
-				}
-				catch (Throwable t) {
-					throwable = t;
-				}
-				finally {
-					try {
-						manager.fire(
-							new AfterTestLifecycleEvent(
-								test, frameworkMethod.getMethod(),
-								LifecycleMethodExecutor.NO_OP));
-					}
-					catch (Throwable t) {
-						if (throwable != null) {
-							t.addSuppressed(throwable);
-						}
-
-						throwable = t;
-					}
-				}
-
-				if (throwable != null) {
-					throw throwable;
-				}
-			}
-
-		};
+		return statement;
 	}
 
 	private Statement _methodInvoker(
@@ -368,59 +286,12 @@ public class Arquillian extends Runner implements Filterable {
 
 			@Override
 			public void evaluate() throws Throwable {
-				AtomicReference<TestResult> testResultReference =
-					new AtomicReference<>();
-
-				TestMethodExecutor testMethodExecutor =
-					new TestMethodExecutor() {
-
-						@Override
-						public Object getInstance() {
-							return testObject;
-						}
-
-						@Override
-						public Method getMethod() {
-							return frameworkMethod.getMethod();
-						}
-
-						@Override
-						public void invoke(Object... parameters)
-							throws Throwable {
-
-							try {
-								frameworkMethod.invokeExplosively(
-									testObject, parameters);
-							}
-							catch (Throwable t) {
-								State.caughtTestException(t);
-
-								throw t;
-							}
-						}
-
-					};
-
 				manager.fire(
-					new org.jboss.arquillian.test.spi.event.suite.Test(
-						testMethodExecutor),
-					new NonManagedObserver
-						<org.jboss.arquillian.test.spi.event.suite.Test>() {
+					new TestEvent(testObject, frameworkMethod.getMethod()));
 
-						@Override
-						public void fired(
-							org.jboss.arquillian.test.spi.event.suite.Test
-								test) {
+				Registry registry = manager.getRegistry();
 
-							testResultReference.set(_testResult.get());
-						}
-
-						@Inject
-						private Instance<TestResult> _testResult;
-
-					});
-
-				TestResult testResult = testResultReference.get();
+				TestResult testResult = registry.get(TestResult.class);
 
 				Throwable throwable = testResult.getThrowable();
 

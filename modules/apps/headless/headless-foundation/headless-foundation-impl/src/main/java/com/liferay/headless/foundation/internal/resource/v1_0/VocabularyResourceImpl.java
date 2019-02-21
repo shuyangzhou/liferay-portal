@@ -107,7 +107,7 @@ public class VocabularyResourceImpl
 
 	@Override
 	public EntityModel getEntityModel(MultivaluedMap multivaluedMap) {
-		return _vocabularyEntityModel;
+		return _entityModel;
 	}
 
 	@Override
@@ -180,8 +180,7 @@ public class VocabularyResourceImpl
 		};
 	}
 
-	private static final VocabularyEntityModel _vocabularyEntityModel =
-		new VocabularyEntityModel();
+	private static final EntityModel _entityModel = new VocabularyEntityModel();
 
 	@Reference
 	private AssetVocabularyService _assetVocabularyService;

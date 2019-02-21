@@ -36,72 +36,53 @@ import org.osgi.util.tracker.ServiceTracker;
 @Generated("")
 public class Mutation {
 
-	<#assign javaSignatures = javaTool.getGraphQLJavaSignatures(openAPIYAML, false) />
+	<#assign javaMethodSignatures = freeMarkerTool.getGraphQLJavaMethodSignatures(configYAML, openAPIYAML, "mutation", false) />
 
-	<#list javaSignatures?keys as schemaName>
-		<#list javaSignatures[schemaName] as javaSignature>
-			<#compress>
-				<#list javaTool.getGraphQLMethodAnnotations(javaSignature) as methodAnnotation>
-					${methodAnnotation}
-				</#list>
+	<#list javaMethodSignatures as javaMethodSignature>
+		${freeMarkerTool.getGraphQLMethodAnnotations(javaMethodSignature)}
+		public ${javaMethodSignature.returnType} ${javaMethodSignature.methodName}(
+				${freeMarkerTool.getGraphQLParameters(javaMethodSignature.javaParameters, true)})
+			throws Exception {
 
-				<@compress single_line=true>
-					public ${javaSignature.returnType} ${javaSignature.methodName}(
-						<#list javaSignature.javaParameters as javaParameter>
-							${javaTool.getGraphQLParameterAnnotation(javaParameter)} ${javaParameter.parameterType} ${javaParameter.parameterName}
-
-							<#if javaParameter_has_next>
-								,
-							</#if>
-						</#list>
-					) throws Exception {
-				</@compress>
-			</#compress>
-
-			<#if stringUtil.equals(javaSignature.returnType, "Response")>
+			<#if stringUtil.equals(javaMethodSignature.returnType, "Response")>
 				Response.ResponseBuilder responseBuilder = Response.ok();
 
 				return responseBuilder.build();
 			<#else>
-				<@compress single_line=true>
-					return _get${schemaName}Resource().${javaSignature.methodName}(
-						<#list javaSignature.javaParameters as javaParameter>
-							${javaParameter.parameterName}
-
-							<#if javaParameter_has_next>
-								,
-							</#if>
-						</#list>
-					);
-				</@compress>
+				return _get${javaMethodSignature.schemaName}Resource().${javaMethodSignature.methodName}(
+					${freeMarkerTool.getGraphQLArguments(javaMethodSignature.javaParameters)});
 			</#if>
-
-			}
-
-		</#list>
+		}
 	</#list>
 
-	<#list javaSignatures?keys as schemaName>
+	<#assign schemaNames = freeMarkerTool.getGraphQLSchemaNames(javaMethodSignatures) />
+
+	<#list schemaNames as schemaName>
 		private static ${schemaName}Resource _get${schemaName}Resource() {
 			return _${schemaName?uncap_first}ResourceServiceTracker.getService();
 		}
 
-		private static final ServiceTracker<${schemaName}Resource, ${schemaName}Resource> _${schemaName?uncap_first}ResourceServiceTracker;
+		private static final ServiceTracker<${schemaName}Resource, ${schemaName}Resource>
+			_${schemaName?uncap_first}ResourceServiceTracker;
 	</#list>
 
-	static {
-		<#if javaSignatures?size != 0>
+	<#if schemaNames?size != 0>
+		static {
 			Bundle bundle = FrameworkUtil.getBundle(Mutation.class);
-		</#if>
 
-		<#list javaSignatures?keys as schemaName>
-			ServiceTracker<${schemaName}Resource, ${schemaName}Resource> ${schemaName?uncap_first}ResourceServiceTracker =
-				new ServiceTracker<>(bundle.getBundleContext(), ${schemaName}Resource.class, null);
+			<#list schemaNames as schemaName>
+				ServiceTracker<${schemaName}Resource, ${schemaName}Resource>
+					${schemaName?uncap_first}ResourceServiceTracker =
+						new ServiceTracker<>(
+							bundle.getBundleContext(),
+							${schemaName}Resource.class, null);
 
-			${schemaName?uncap_first}ResourceServiceTracker.open();
+				${schemaName?uncap_first}ResourceServiceTracker.open();
 
-			_${schemaName?uncap_first}ResourceServiceTracker = ${schemaName?uncap_first}ResourceServiceTracker;
-		</#list>
-	}
+				_${schemaName?uncap_first}ResourceServiceTracker =
+					${schemaName?uncap_first}ResourceServiceTracker;
+			</#list>
+		}
+	</#if>
 
 }

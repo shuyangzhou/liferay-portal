@@ -20,11 +20,9 @@ import aQute.bnd.build.Workspace;
 import aQute.bnd.osgi.Analyzer;
 import aQute.bnd.osgi.Jar;
 
-import com.liferay.arquillian.extension.junit.bridge.LiferayArquillianJUnitBridgeExtension;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.arquillian.extension.junit.bridge.protocol.jmx.JMXTestRunner;
 import com.liferay.arquillian.extension.junit.bridge.remote.activator.ArquillianBundleActivator;
-import com.liferay.arquillian.extension.junit.bridge.remote.loader.RemoteExtensionLoader;
 import com.liferay.petra.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -46,10 +44,6 @@ import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
-import org.jboss.arquillian.container.spi.client.deployment.DeploymentDescription;
-import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
-import org.jboss.arquillian.core.spi.ExtensionLoader;
-import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.Node;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -64,7 +58,7 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
  */
 public class BndDeploymentDescriptionUtil {
 
-	public static DeploymentDescription create(TestClass testClass) {
+	public static Archive<?> create(Class<?> testClass) {
 		try (Workspace workspace = new Workspace(_buildDir);
 			Project project = new Project(workspace, _buildDir);
 
@@ -88,12 +82,7 @@ public class BndDeploymentDescriptionUtil {
 
 			_process(javaArchive, testClass);
 
-			DeploymentDescription deploymentDescription =
-				new DeploymentDescription(javaArchive.getName(), javaArchive);
-
-			deploymentDescription.setTestableArchive(javaArchive);
-
-			return deploymentDescription;
+			return javaArchive;
 		}
 		catch (Exception e) {
 			throw new RuntimeException(e);
@@ -103,25 +92,17 @@ public class BndDeploymentDescriptionUtil {
 	private static void _addArquillianDependencies(JavaArchive javaArchive) {
 		javaArchive.addPackage(JMXTestRunner.class.getPackage());
 		javaArchive.addPackages(
-			true, "org.jboss.arquillian.config",
-			"org.jboss.arquillian.container.impl",
-			"org.jboss.arquillian.container.spi",
-			"org.jboss.arquillian.container.test.api",
-			"org.jboss.arquillian.container.test.impl",
-			"org.jboss.arquillian.container.test.spi",
-			"org.jboss.arquillian.core", "org.jboss.arquillian.test",
-			"org.jboss.shrinkwrap.api", "org.jboss.shrinkwrap.descriptor.api");
+			true, "org.jboss.arquillian.test.spi", "org.jboss.shrinkwrap.api",
+			"org.jboss.shrinkwrap.descriptor.api");
 	}
 
 	private static void _addTestClass(
-		JavaArchive javaArchive, TestClass testClass) {
+		JavaArchive javaArchive, Class<?> testClass) {
 
-		Class<?> javaClass = testClass.getJavaClass();
+		while (testClass != Object.class) {
+			javaArchive.addClass(testClass);
 
-		while (javaClass != Object.class) {
-			javaArchive.addClass(javaClass);
-
-			javaClass = javaClass.getSuperclass();
+			testClass = testClass.getSuperclass();
 		}
 	}
 
@@ -200,21 +181,17 @@ public class BndDeploymentDescriptionUtil {
 		}
 	}
 
-	private static void _process(JavaArchive javaArchive, TestClass testClass) {
+	private static void _process(JavaArchive javaArchive, Class<?> testClass) {
 		try {
 			_addTestClass(javaArchive, testClass);
 
 			_addArquillianDependencies(javaArchive);
 
 			javaArchive.add(EmptyAsset.INSTANCE, "/arquillian.remote.marker");
-			javaArchive.addAsServiceProvider(
-				ExtensionLoader.class, RemoteExtensionLoader.class);
-			javaArchive.addAsServiceProvider(
-				RemoteLoadableExtension.class,
-				LiferayArquillianJUnitBridgeExtension.class);
-			javaArchive.addClass(LiferayArquillianJUnitBridgeExtension.class);
 			javaArchive.addPackages(
-				true, "com.liferay.arquillian.extension.junit.bridge.remote");
+				true, "com.liferay.arquillian.extension.junit.bridge.remote",
+				"com.liferay.arquillian.extension.junit.bridge.event",
+				"com.liferay.arquillian.extension.junit.bridge.listener");
 
 			Package pkg = Arquillian.class.getPackage();
 

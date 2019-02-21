@@ -22,11 +22,11 @@ import com.liferay.headless.foundation.dto.v1_0.Category;
 import com.liferay.headless.foundation.dto.v1_0.ParentCategory;
 import com.liferay.headless.foundation.internal.dto.v1_0.CategoryImpl;
 import com.liferay.headless.foundation.internal.dto.v1_0.ParentCategoryImpl;
+import com.liferay.headless.foundation.internal.dto.v1_0.ParentVocabularyImpl;
 import com.liferay.headless.foundation.internal.dto.v1_0.util.CreatorUtil;
 import com.liferay.headless.foundation.internal.odata.entity.v1_0.CategoryEntityModel;
 import com.liferay.headless.foundation.resource.v1_0.CategoryResource;
 import com.liferay.portal.kernel.model.ClassName;
-import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.BooleanQuery;
 import com.liferay.portal.kernel.search.Document;
@@ -39,7 +39,6 @@ import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.search.filter.TermFilter;
 import com.liferay.portal.kernel.service.ClassNameService;
-import com.liferay.portal.kernel.service.GroupService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -49,12 +48,13 @@ import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.portal.vulcan.resource.EntityModelResource;
+import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 import com.liferay.portal.vulcan.util.SearchUtil;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 import java.util.function.Consumer;
 
 import javax.ws.rs.core.MultivaluedMap;
@@ -72,6 +72,13 @@ import org.osgi.service.component.annotations.ServiceScope;
 )
 public class CategoryResourceImpl
 	extends BaseCategoryResourceImpl implements EntityModelResource {
+
+	@Override
+	public boolean deleteCategory(Long categoryId) throws Exception {
+		_assetCategoryService.deleteCategory(categoryId);
+
+		return true;
+	}
 
 	@Override
 	public Category getCategory(Long categoryId) throws Exception {
@@ -101,7 +108,7 @@ public class CategoryResourceImpl
 
 	@Override
 	public EntityModel getEntityModel(MultivaluedMap multivaluedMap) {
-		return _categoryEntityModel;
+		return _entityModel;
 	}
 
 	@Override
@@ -133,15 +140,15 @@ public class CategoryResourceImpl
 		AssetCategory assetCategory = _assetCategoryService.getCategory(
 			categoryId);
 
-		Group group = _groupService.getGroup(assetCategory.getGroupId());
-
-		Locale locale = LocaleUtil.fromLanguageId(group.getDefaultLanguageId());
-
 		return _toCategory(
 			_assetCategoryService.addCategory(
-				group.getGroupId(), categoryId,
-				Collections.singletonMap(locale, category.getName()),
-				Collections.singletonMap(locale, category.getDescription()),
+				assetCategory.getGroupId(), categoryId,
+				Collections.singletonMap(
+					contextAcceptLanguage.getPreferredLocale(),
+					category.getName()),
+				Collections.singletonMap(
+					contextAcceptLanguage.getPreferredLocale(),
+					category.getDescription()),
 				assetCategory.getVocabularyId(), null, new ServiceContext()));
 	}
 
@@ -152,16 +159,39 @@ public class CategoryResourceImpl
 		AssetVocabulary assetVocabulary = _assetVocabularyService.getVocabulary(
 			vocabularyId);
 
-		Group group = _groupService.getGroup(assetVocabulary.getGroupId());
-
-		Locale locale = LocaleUtil.fromLanguageId(group.getDefaultLanguageId());
-
 		return _toCategory(
 			_assetCategoryService.addCategory(
 				assetVocabulary.getGroupId(), 0,
-				Collections.singletonMap(locale, category.getName()),
-				Collections.singletonMap(locale, category.getDescription()),
+				Collections.singletonMap(
+					contextAcceptLanguage.getPreferredLocale(),
+					category.getName()),
+				Collections.singletonMap(
+					contextAcceptLanguage.getPreferredLocale(),
+					category.getDescription()),
 				vocabularyId, null, new ServiceContext()));
+	}
+
+	@Override
+	public Category putCategory(Long categoryId, Category category)
+		throws Exception {
+
+		AssetCategory assetCategory = _assetCategoryService.getCategory(
+			categoryId);
+
+		return _toCategory(
+			_assetCategoryService.updateCategory(
+				categoryId, assetCategory.getParentCategoryId(),
+				LocalizedMapUtil.merge(
+					assetCategory.getTitleMap(),
+					new AbstractMap.SimpleEntry<>(
+						contextAcceptLanguage.getPreferredLocale(),
+						category.getName())),
+				LocalizedMapUtil.merge(
+					assetCategory.getTitleMap(),
+					new AbstractMap.SimpleEntry<>(
+						contextAcceptLanguage.getPreferredLocale(),
+						category.getDescription())),
+				assetCategory.getVocabularyId(), null, new ServiceContext()));
 	}
 
 	private Page<Category> _getCategoriesPage(
@@ -222,7 +252,20 @@ public class CategoryResourceImpl
 						assetCategory.getParentCategory());
 				}
 
-				parentVocabularyId = assetCategory.getVocabularyId();
+				parentVocabulary = new ParentVocabularyImpl() {
+					{
+						id = assetCategory.getVocabularyId();
+
+						setName(
+							() -> {
+								AssetVocabulary assetVocabulary =
+									_assetVocabularyService.getVocabulary(
+										assetCategory.getVocabularyId());
+
+								return assetVocabulary.getName();
+							});
+					}
+				};
 			}
 		};
 	}
@@ -237,8 +280,7 @@ public class CategoryResourceImpl
 		};
 	}
 
-	private static final CategoryEntityModel _categoryEntityModel =
-		new CategoryEntityModel();
+	private static final EntityModel _entityModel = new CategoryEntityModel();
 
 	@Reference
 	private AssetCategoryService _assetCategoryService;
@@ -248,9 +290,6 @@ public class CategoryResourceImpl
 
 	@Reference
 	private ClassNameService _classNameService;
-
-	@Reference
-	private GroupService _groupService;
 
 	@Reference
 	private IndexerRegistry _indexerRegistry;

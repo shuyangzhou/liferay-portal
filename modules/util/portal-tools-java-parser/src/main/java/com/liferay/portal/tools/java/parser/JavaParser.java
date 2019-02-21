@@ -55,7 +55,7 @@ public class JavaParser {
 
 	private static ParsedJavaClass _addClosingJavaTerm(
 		ParsedJavaClass parsedJavaClass, DetailAST closingDetailAST,
-		FileContents fileContents) {
+		FileContents fileContents, String className) {
 
 		DetailAST rcurlyDetailAST = null;
 
@@ -77,11 +77,10 @@ public class JavaParser {
 			String content = javaClosingBrace.toString(
 				curlyExpecedIndent, StringPool.BLANK, _maxLineLength);
 
-			parsedJavaClass.addParsedJavaTerm(
-				new ParsedJavaTerm(
-					content, DetailASTUtil.getStartPosition(rcurlyDetailAST),
-					DetailASTUtil.getEndPosition(
-						rcurlyDetailAST, fileContents)));
+			parsedJavaClass.addJavaTerm(
+				content, DetailASTUtil.getStartPosition(rcurlyDetailAST),
+				DetailASTUtil.getEndPosition(rcurlyDetailAST, fileContents),
+				className);
 		}
 
 		return parsedJavaClass;
@@ -95,12 +94,16 @@ public class JavaParser {
 			return parsedJavaClass;
 		}
 
+		Class<?> clazz = javaTerm.getClass();
+
+		String className = clazz.getName();
+
 		DetailAST closingDetailAST = DetailASTUtil.getClosingDetailAST(
 			detailAST);
 
 		if (closingDetailAST != null) {
 			parsedJavaClass = _addClosingJavaTerm(
-				parsedJavaClass, closingDetailAST, fileContents);
+				parsedJavaClass, closingDetailAST, fileContents, className);
 		}
 
 		Position startPosition = DetailASTUtil.getStartPosition(detailAST);
@@ -123,13 +126,8 @@ public class JavaParser {
 					detailAST, fileContents);
 			}
 
-			ParsedJavaTerm parsedJavaTerm = new ParsedJavaTerm(
-				content, startPosition, endPosition);
-
-			parsedJavaTerm = _processSurroundingLineBreaks(
-				parsedJavaTerm, javaTerm);
-
-			parsedJavaClass.addParsedJavaTerm(parsedJavaTerm);
+			parsedJavaClass.addJavaTerm(
+				content, startPosition, endPosition, className);
 
 			return parsedJavaClass;
 		}
@@ -162,9 +160,8 @@ public class JavaParser {
 				partEndPosition = curlyBracePositionList.get(i * 2);
 			}
 
-			parsedJavaClass.addParsedJavaTerm(
-				new ParsedJavaTerm(
-					parts[i], partStartPosition, partEndPosition));
+			parsedJavaClass.addJavaTerm(
+				parts[i], partStartPosition, partEndPosition, className);
 		}
 
 		return parsedJavaClass;
@@ -453,7 +450,7 @@ public class JavaParser {
 			return 0;
 		}
 
-		int x = 0;
+		int x = -1;
 
 		for (int i = 1; i < lineNumber; i++) {
 			x = content.indexOf(CharPool.NEW_LINE, x + 1);
@@ -591,20 +588,49 @@ public class JavaParser {
 			return content;
 		}
 
-		if (parsedJavaTerm.requireFollowingEmptyLine() &&
-			Validator.isNotNull(
-				StringUtil.trim(fileContents.getLine(endLineNumber)))) {
+		int followingLineAction = parsedJavaTerm.getFollowingLineAction();
 
-			return StringUtil.insert(
-				content, "\n", _getLineStartPos(content, endLineNumber + 1));
+		if (followingLineAction != ParsedJavaTerm.NO_ACTION_REQUIRED) {
+			String trimmedFollowingLine = StringUtil.trim(
+				fileContents.getLine(endLineNumber));
+
+			if ((followingLineAction ==
+					ParsedJavaTerm.DOUBLE_LINE_BREAK_REQUIRED) &&
+				Validator.isNotNull(trimmedFollowingLine)) {
+
+				return StringUtil.insert(
+					content, "\n",
+					_getLineStartPos(content, endLineNumber + 1));
+			}
+
+			if ((followingLineAction ==
+					ParsedJavaTerm.SINGLE_LINE_BREAK_REQUIRED) &&
+				Validator.isNull(trimmedFollowingLine)) {
+
+				return _removeLine(content, endLineNumber + 1);
+			}
 		}
 
-		if (parsedJavaTerm.requirePrecedingEmptyLine() &&
-			Validator.isNotNull(
-				StringUtil.trim(fileContents.getLine(startLineNumber - 2)))) {
+		int precedingLineAction = parsedJavaTerm.getPrecedingLineAction();
 
-			return StringUtil.insert(
-				content, "\n", _getLineStartPos(content, startLineNumber));
+		if (precedingLineAction != ParsedJavaTerm.NO_ACTION_REQUIRED) {
+			String trimmedPrecedingLine = StringUtil.trim(
+				fileContents.getLine(startLineNumber - 2));
+
+			if ((precedingLineAction ==
+					ParsedJavaTerm.DOUBLE_LINE_BREAK_REQUIRED) &&
+				Validator.isNotNull(trimmedPrecedingLine)) {
+
+				return StringUtil.insert(
+					content, "\n", _getLineStartPos(content, startLineNumber));
+			}
+
+			if ((precedingLineAction ==
+					ParsedJavaTerm.SINGLE_LINE_BREAK_REQUIRED) &&
+				Validator.isNull(trimmedPrecedingLine)) {
+
+				return _removeLine(content, startLineNumber - 1);
+			}
 		}
 
 		String actualIndent = _getIndent(
@@ -829,19 +855,13 @@ public class JavaParser {
 		return parsedJavaClass;
 	}
 
-	private static ParsedJavaTerm _processSurroundingLineBreaks(
-		ParsedJavaTerm parsedJavaTerm, JavaTerm javaTerm) {
+	private static String _removeLine(String content, int lineNumber) {
+		int x = _getLineStartPos(content, lineNumber);
 
-		if (javaTerm instanceof JavaMethodDefinition) {
-			String javaTermContent = parsedJavaTerm.getContent();
+		int y = content.indexOf(CharPool.NEW_LINE, x);
 
-			if (javaTermContent.endsWith(";")) {
-				parsedJavaTerm.setRequireFollowingEmptyLine(true);
-				parsedJavaTerm.setRequirePrecedingEmptyLine(true);
-			}
-		}
-
-		return parsedJavaTerm;
+		return StringUtil.replaceFirst(
+			content, content.substring(x, y + 1), StringPool.BLANK, x);
 	}
 
 	private static String _trimLine(

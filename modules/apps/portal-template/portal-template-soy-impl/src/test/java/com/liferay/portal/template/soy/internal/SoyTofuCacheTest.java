@@ -14,10 +14,10 @@
 
 package com.liferay.portal.template.soy.internal;
 
-import com.google.template.soy.SoyFileSet;
 import com.google.template.soy.tofu.SoyTofu;
 
 import com.liferay.portal.kernel.template.TemplateResource;
+import com.liferay.portal.kernel.util.ProxyFactory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,8 +26,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import org.mockito.Mockito;
 
 /**
  * @author Bruno Basto
@@ -53,11 +51,9 @@ public class SoyTofuCacheTest {
 			_soyTestHelper.getTemplateResources(
 				Arrays.asList("simple.soy", "context.soy"));
 
-		SoyFileSet soyFileSet = _soyTestHelper.getSoyFileSet(templateResources);
-
-		SoyTofu soyTofu = Mockito.mock(SoyTofu.class);
-
-		_soyTofuCacheHandler.add(templateResources, soyFileSet, soyTofu);
+		_soyTofuCacheHandler.add(
+			templateResources, _soyTestHelper.getSoyFileSet(templateResources),
+			ProxyFactory.newDummyInstance(SoyTofu.class));
 
 		Assert.assertNotNull(_soyTofuCacheHandler.get(templateResources));
 	}
@@ -68,16 +64,14 @@ public class SoyTofuCacheTest {
 			_soyTestHelper.getTemplateResources(
 				Arrays.asList("simple.soy", "context.soy"));
 
-		SoyFileSet soyFileSet = _soyTestHelper.getSoyFileSet(templateResources);
+		_soyTofuCacheHandler.add(
+			templateResources, _soyTestHelper.getSoyFileSet(templateResources),
+			ProxyFactory.newDummyInstance(SoyTofu.class));
 
-		SoyTofu soyTofu = Mockito.mock(SoyTofu.class);
-
-		_soyTofuCacheHandler.add(templateResources, soyFileSet, soyTofu);
-
-		List<TemplateResource> templateResourcesA =
-			_soyTestHelper.getTemplateResources(Arrays.asList("context.soy"));
-
-		Assert.assertNull(_soyTofuCacheHandler.get(templateResourcesA));
+		Assert.assertNull(
+			_soyTofuCacheHandler.get(
+				_soyTestHelper.getTemplateResources(
+					Arrays.asList("context.soy"))));
 	}
 
 	@Test
@@ -87,12 +81,10 @@ public class SoyTofuCacheTest {
 				Arrays.asList(
 					"simple.soy", "context.soy", "multi-context.soy"));
 
-		SoyFileSet soyFileSet = _soyTestHelper.getSoyFileSet(
-			cachedTemplateResources);
-
-		SoyTofu soyTofu = Mockito.mock(SoyTofu.class);
-
-		_soyTofuCacheHandler.add(cachedTemplateResources, soyFileSet, soyTofu);
+		_soyTofuCacheHandler.add(
+			cachedTemplateResources,
+			_soyTestHelper.getSoyFileSet(cachedTemplateResources),
+			ProxyFactory.newDummyInstance(SoyTofu.class));
 
 		List<TemplateResource> templateResources =
 			_soyTestHelper.getTemplateResources(Arrays.asList("context.soy"));
@@ -107,13 +99,10 @@ public class SoyTofuCacheTest {
 		List<TemplateResource> cachedTemplateResourcesA =
 			_soyTestHelper.getTemplateResources(Arrays.asList("simple.soy"));
 
-		SoyFileSet soyFileSetA = _soyTestHelper.getSoyFileSet(
-			cachedTemplateResourcesA);
-
-		SoyTofu soyTofuA = Mockito.mock(SoyTofu.class);
-
 		_soyTofuCacheHandler.add(
-			cachedTemplateResourcesA, soyFileSetA, soyTofuA);
+			cachedTemplateResourcesA,
+			_soyTestHelper.getSoyFileSet(cachedTemplateResourcesA),
+			ProxyFactory.newDummyInstance(SoyTofu.class));
 
 		Assert.assertNotNull(
 			_soyTofuCacheHandler.get(cachedTemplateResourcesA));
@@ -122,18 +111,13 @@ public class SoyTofuCacheTest {
 			_soyTestHelper.getTemplateResources(
 				Arrays.asList("context.soy", "multi-context.soy"));
 
-		SoyFileSet soyFileSetB = _soyTestHelper.getSoyFileSet(
-			cachedTemplateResourcesA);
-
-		SoyTofu soyTofuB = Mockito.mock(SoyTofu.class);
-
 		_soyTofuCacheHandler.add(
-			cachedTemplateResourcesB, soyFileSetB, soyTofuB);
+			cachedTemplateResourcesB,
+			_soyTestHelper.getSoyFileSet(cachedTemplateResourcesA),
+			ProxyFactory.newDummyInstance(SoyTofu.class));
 
-		List<TemplateResource> templateResources =
-			_soyTestHelper.getTemplateResources(Arrays.asList("context.soy"));
-
-		_soyTofuCacheHandler.removeIfAny(templateResources);
+		_soyTofuCacheHandler.removeIfAny(
+			_soyTestHelper.getTemplateResources(Arrays.asList("context.soy")));
 
 		Assert.assertNull(_soyTofuCacheHandler.get(cachedTemplateResourcesB));
 		Assert.assertNotNull(

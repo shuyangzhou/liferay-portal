@@ -28,9 +28,6 @@ import java.io.InputStream;
 
 import java.lang.reflect.Method;
 
-import java.net.URI;
-import java.net.URL;
-
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -128,11 +125,12 @@ public class LPKGDeployerTest {
 			lpkgDeployer.getClass());
 
 		Class<?> clazz = lpkgDeployerBundle.loadClass(
-			"com.liferay.portal.lpkg.deployer.internal." +
-				"LPKGInnerBundleLocationUtil");
+			"com.liferay.portal.lpkg.deployer.internal.LPKGLocationUtil");
 
-		Method method = clazz.getDeclaredMethod(
+		Method generateInnerBundleLocationMethod = clazz.getDeclaredMethod(
 			"generateInnerBundleLocation", Bundle.class, String.class);
+		Method lpkgLocationMethod = clazz.getDeclaredMethod(
+			"getLPKGLocation", File.class);
 
 		serviceTracker.close();
 
@@ -140,12 +138,13 @@ public class LPKGDeployerTest {
 			lpkgDeployer.getDeployedLPKGBundles();
 
 		for (File lpkgFile : lpkgFiles) {
-			Bundle lpkgBundle = bundleContext.getBundle(
-				lpkgFile.getCanonicalPath());
+			String lpkgLocation = (String)lpkgLocationMethod.invoke(
+				null, lpkgFile);
+
+			Bundle lpkgBundle = bundleContext.getBundle(lpkgLocation);
 
 			Assert.assertNotNull(
-				"No matching LPKG bundle for " + lpkgFile.getCanonicalPath(),
-				lpkgBundle);
+				"No matching LPKG bundle for " + lpkgLocation, lpkgBundle);
 
 			List<Bundle> expectedAppBundles = new ArrayList<>(
 				deployedLPKGBundles.get(lpkgBundle));
@@ -176,17 +175,10 @@ public class LPKGDeployerTest {
 							lpkgDeployerDirString + StringPool.SLASH +
 								lpkgFile.getName());
 
-						URI uri = file.toURI();
-
-						URL url = uri.toURL();
-
-						String path = url.getPath();
-
-						path = URLCodec.decodeURL(path);
-
 						String location =
-							name + "?lpkgPath=" + path +
-								"&protocol=lpkg&static=true";
+							name + "?lpkgPath=" +
+								lpkgLocationMethod.invoke(null, file) +
+									"&protocol=lpkg&static=true";
 
 						Bundle bundle = bundleContext.getBundle(location);
 
@@ -195,8 +187,9 @@ public class LPKGDeployerTest {
 							bundle);
 					}
 					else {
-						String location = (String)method.invoke(
-							null, lpkgBundle, name);
+						String location =
+							(String)generateInnerBundleLocationMethod.invoke(
+								null, lpkgBundle, name);
 
 						Bundle bundle = bundleContext.getBundle(location);
 
@@ -208,8 +201,9 @@ public class LPKGDeployerTest {
 				}
 
 				if (name.endsWith(".war")) {
-					String location = (String)method.invoke(
-						null, lpkgBundle, name);
+					String location =
+						(String)generateInnerBundleLocationMethod.invoke(
+							null, lpkgBundle, name);
 
 					Bundle bundle = bundleContext.getBundle(location);
 
