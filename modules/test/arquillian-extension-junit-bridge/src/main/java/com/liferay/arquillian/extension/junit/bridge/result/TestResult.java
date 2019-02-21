@@ -16,8 +16,6 @@ package com.liferay.arquillian.extension.junit.bridge.result;
 
 import java.io.Serializable;
 
-import org.jboss.arquillian.test.spi.ExceptionProxy;
-
 /**
  * @author Matthew Tambara
  */
@@ -28,42 +26,17 @@ public final class TestResult implements Serializable {
 	}
 
 	public static TestResult passed() {
-		return new TestResult(Status.PASSED);
+		return new TestResult(Status.PASSED, null);
 	}
 
 	public static TestResult skipped(Throwable cause) {
 		return new TestResult(Status.SKIPPED, cause);
 	}
 
-	@Deprecated
-	public TestResult() {
-		this(null);
-	}
-
-	@Deprecated
-	public TestResult(Status status) {
-		this(status, null);
-	}
-
-	@Deprecated
 	public TestResult(Status status, Throwable throwable) {
 		_status = status;
 
 		setThrowable(throwable);
-
-		_start = System.currentTimeMillis();
-	}
-
-	public long getEnd() {
-		return _end;
-	}
-
-	public ExceptionProxy getExceptionProxy() {
-		return _exceptionProxy;
-	}
-
-	public long getStart() {
-		return _start;
 	}
 
 	public Status getStatus() {
@@ -71,10 +44,6 @@ public final class TestResult implements Serializable {
 	}
 
 	public Throwable getThrowable() {
-		if ((_throwable == null) && (_exceptionProxy != null)) {
-			_throwable = _exceptionProxy.createException();
-		}
-
 		return _throwable;
 	}
 
@@ -84,23 +53,8 @@ public final class TestResult implements Serializable {
 		return this;
 	}
 
-	public TestResult setStart(long start) {
-		_start = start;
-
-		return this;
-	}
-
-	@Deprecated
-	public TestResult setStatus(Status status) {
-		_status = status;
-
-		return this;
-	}
-
 	public TestResult setThrowable(Throwable throwable) {
 		_throwable = throwable;
-
-		_exceptionProxy = ExceptionProxy.createForException(throwable);
 
 		return this;
 	}
@@ -114,9 +68,7 @@ public final class TestResult implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private long _end;
-	private ExceptionProxy _exceptionProxy;
-	private long _start;
-	private Status _status;
-	private transient Throwable _throwable;
+	private final Status _status;
+	private Throwable _throwable;
 
 }
