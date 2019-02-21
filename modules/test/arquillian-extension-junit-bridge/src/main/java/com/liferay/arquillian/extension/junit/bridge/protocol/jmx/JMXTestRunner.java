@@ -81,8 +81,6 @@ public class JMXTestRunner
 			testResult = TestResult.skipped(throwable);
 		}
 
-		testResult.setEnd(System.currentTimeMillis());
-
 		return _toByteArray(testResult);
 	}
 

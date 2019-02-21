@@ -203,8 +203,6 @@ public class ServerExecutorEventListener implements EventListener {
 					testResult = TestResult.failed(t);
 				}
 				finally {
-					testResult.setEnd(System.currentTimeMillis());
-
 					currentThread.setContextClassLoader(classLoader);
 				}
 

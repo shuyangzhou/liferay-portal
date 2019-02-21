@@ -68,15 +68,11 @@ public class ClientExecutorEventListener implements EventListener {
 
 				TestResult testResult = (TestResult)oos.readObject();
 
-				testResult.setEnd(System.currentTimeMillis());
-
 				_registry.set(TestResult.class, testResult);
 			}
 		}
 		catch (Throwable t) {
 			TestResult testResult = TestResult.failed(t);
-
-			testResult.setEnd(System.currentTimeMillis());
 
 			_registry.set(TestResult.class, testResult);
 		}

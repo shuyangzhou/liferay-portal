@@ -47,12 +47,6 @@ public final class TestResult implements Serializable {
 		return _throwable;
 	}
 
-	public TestResult setEnd(long end) {
-		_end = end;
-
-		return this;
-	}
-
 	public TestResult setThrowable(Throwable throwable) {
 		_throwable = throwable;
 
@@ -67,7 +61,6 @@ public final class TestResult implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private long _end;
 	private final Status _status;
 	private Throwable _throwable;
 
