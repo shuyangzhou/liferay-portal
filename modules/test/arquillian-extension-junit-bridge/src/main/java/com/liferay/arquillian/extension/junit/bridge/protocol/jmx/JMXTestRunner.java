@@ -15,14 +15,13 @@
 package com.liferay.arquillian.extension.junit.bridge.protocol.jmx;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.State;
+import com.liferay.arquillian.extension.junit.bridge.result.TestResult;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
 import javax.management.NotificationBroadcasterSupport;
-
-import org.jboss.arquillian.test.spi.TestResult;
 
 import org.junit.AssumptionViolatedException;
 import org.junit.Test;

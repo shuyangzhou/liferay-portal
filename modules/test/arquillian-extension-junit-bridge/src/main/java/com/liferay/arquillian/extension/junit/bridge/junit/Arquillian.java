@@ -19,6 +19,7 @@ import com.liferay.arquillian.extension.junit.bridge.event.BeforeClassEvent;
 import com.liferay.arquillian.extension.junit.bridge.event.TestEvent;
 import com.liferay.arquillian.extension.junit.bridge.remote.manager.Manager;
 import com.liferay.arquillian.extension.junit.bridge.remote.manager.Registry;
+import com.liferay.arquillian.extension.junit.bridge.result.TestResult;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -30,8 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
-
-import org.jboss.arquillian.test.spi.TestResult;
 
 import org.junit.Ignore;
 import org.junit.Rule;

@@ -18,6 +18,7 @@ import com.liferay.arquillian.extension.junit.bridge.event.Event;
 import com.liferay.arquillian.extension.junit.bridge.event.TestEvent;
 import com.liferay.arquillian.extension.junit.bridge.junit.State;
 import com.liferay.arquillian.extension.junit.bridge.remote.manager.Registry;
+import com.liferay.arquillian.extension.junit.bridge.result.TestResult;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -25,8 +26,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
-import org.jboss.arquillian.test.spi.TestResult;
 
 import org.junit.After;
 import org.junit.AfterClass;

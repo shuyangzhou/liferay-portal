@@ -191,7 +191,8 @@ public class BndDeploymentDescriptionUtil {
 			javaArchive.addPackages(
 				true, "com.liferay.arquillian.extension.junit.bridge.remote",
 				"com.liferay.arquillian.extension.junit.bridge.event",
-				"com.liferay.arquillian.extension.junit.bridge.listener");
+				"com.liferay.arquillian.extension.junit.bridge.listener",
+				"com.liferay.arquillian.extension.junit.bridge.result");
 
 			Package pkg = Arquillian.class.getPackage();
 

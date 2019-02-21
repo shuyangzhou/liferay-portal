@@ -18,6 +18,7 @@ import com.liferay.arquillian.extension.junit.bridge.event.Event;
 import com.liferay.arquillian.extension.junit.bridge.event.TestEvent;
 import com.liferay.arquillian.extension.junit.bridge.protocol.jmx.JMXTestRunnerMBean;
 import com.liferay.arquillian.extension.junit.bridge.remote.manager.Registry;
+import com.liferay.arquillian.extension.junit.bridge.result.TestResult;
 import com.liferay.petra.io.unsync.UnsyncByteArrayInputStream;
 
 import java.io.InputStream;
@@ -29,8 +30,6 @@ import javax.management.MBeanServerConnection;
 import javax.management.MBeanServerInvocationHandler;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
-
-import org.jboss.arquillian.test.spi.TestResult;
 
 /**
  * @author Matthew Tambara
