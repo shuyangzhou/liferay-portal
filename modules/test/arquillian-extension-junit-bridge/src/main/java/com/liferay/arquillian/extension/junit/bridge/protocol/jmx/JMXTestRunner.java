@@ -14,7 +14,6 @@
 
 package com.liferay.arquillian.extension.junit.bridge.protocol.jmx;
 
-import com.liferay.arquillian.extension.junit.bridge.junit.State;
 import com.liferay.arquillian.extension.junit.bridge.result.TestResult;
 
 import java.io.ByteArrayOutputStream;
@@ -24,8 +23,6 @@ import java.io.ObjectOutputStream;
 import javax.management.NotificationBroadcasterSupport;
 
 import org.junit.AssumptionViolatedException;
-import org.junit.Test;
-import org.junit.runner.Description;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Request;
 import org.junit.runner.Result;
@@ -65,10 +62,6 @@ public class JMXTestRunner
 			}
 			else {
 				testResult = TestResult.passed();
-			}
-
-			if (testResult.getThrowable() == null) {
-				testResult.setThrowable(exceptionRunListener.getException());
 			}
 		}
 		catch (Throwable t) {
@@ -122,30 +115,7 @@ public class JMXTestRunner
 
 		@Override
 		public void testFailure(Failure failure) {
-			_throwable = State.getTestException();
-
-			Description description = failure.getDescription();
-
-			Test test = description.getAnnotation(Test.class);
-
-			if ((_throwable == null) &&
-				((test == null) || Test.None.class.equals(test.expected()))) {
-
-				_throwable = failure.getException();
-			}
-		}
-
-		@Override
-		public void testFinished(Description description) {
-			Test test = description.getAnnotation(Test.class);
-
-			if ((_throwable == null) && (test != null) &&
-				!Test.None.class.equals(test.expected())) {
-
-				_throwable = State.getTestException();
-			}
-
-			State.caughtTestException(null);
+			_throwable = failure.getException();
 		}
 
 		private Throwable _throwable;

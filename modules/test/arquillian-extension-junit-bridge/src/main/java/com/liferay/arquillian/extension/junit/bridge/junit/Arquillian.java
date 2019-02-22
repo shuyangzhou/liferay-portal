@@ -36,7 +36,6 @@ import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.internal.AssumptionViolatedException;
-import org.junit.internal.runners.statements.ExpectException;
 import org.junit.internal.runners.statements.Fail;
 import org.junit.internal.runners.statements.FailOnTimeout;
 import org.junit.rules.MethodRule;
@@ -266,8 +265,6 @@ public class Arquillian extends Runner implements Filterable {
 
 		Statement statement = _methodInvoker(frameworkMethod, test, manager);
 
-		statement = _possiblyExpectingExceptions(frameworkMethod, statement);
-
 		statement = _withPotentialTimeout(frameworkMethod, statement);
 
 		for (MethodRule methodRule : _getMethodRules(test)) {
@@ -301,18 +298,6 @@ public class Arquillian extends Runner implements Filterable {
 			}
 
 		};
-	}
-
-	private Statement _possiblyExpectingExceptions(
-		FrameworkMethod frameworkMethod, Statement statement) {
-
-		Test test = frameworkMethod.getAnnotation(Test.class);
-
-		if ((test == null) || (test.expected() == Test.None.class)) {
-			return statement;
-		}
-
-		return new ExpectException(statement, test.expected());
 	}
 
 	private void _runChild(

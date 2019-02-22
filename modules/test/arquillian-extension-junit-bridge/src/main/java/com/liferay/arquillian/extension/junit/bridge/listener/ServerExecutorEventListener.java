@@ -16,7 +16,6 @@ package com.liferay.arquillian.extension.junit.bridge.listener;
 
 import com.liferay.arquillian.extension.junit.bridge.event.Event;
 import com.liferay.arquillian.extension.junit.bridge.event.TestEvent;
-import com.liferay.arquillian.extension.junit.bridge.junit.State;
 import com.liferay.arquillian.extension.junit.bridge.remote.manager.Registry;
 import com.liferay.arquillian.extension.junit.bridge.result.TestResult;
 
@@ -35,6 +34,7 @@ import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.internal.AssumptionViolatedException;
 import org.junit.internal.runners.statements.InvokeMethod;
 import org.junit.internal.runners.statements.RunAfters;
 import org.junit.internal.runners.statements.RunBefores;
@@ -178,7 +178,7 @@ public class ServerExecutorEventListener implements EventListener {
 
 	private void _handleTestEvent(TestEvent testEvent) throws Throwable {
 		Object target = testEvent.getTarget();
-		Method method = testEvent.getMethod();
+		final Method method = testEvent.getMethod();
 
 		Class<?> clazz = target.getClass();
 
@@ -197,10 +197,11 @@ public class ServerExecutorEventListener implements EventListener {
 				try {
 					testEvent.invoke();
 				}
+				catch (AssumptionViolatedException ave) {
+					testResult = TestResult.failed(ave);
+				}
 				catch (Throwable t) {
-					State.caughtTestException(t);
-
-					testResult = TestResult.failed(t);
+					testResult = _processThrowable(t, method);
 				}
 				finally {
 					currentThread.setContextClassLoader(classLoader);
@@ -255,6 +256,32 @@ public class ServerExecutorEventListener implements EventListener {
 		evaluateWithClassRule(
 			statement, testClass, target,
 			Description.createSuiteDescription(clazz), firstMethod, lastMethod);
+	}
+
+	private TestResult _processThrowable(Throwable throwable, Method method) {
+		Test test = method.getAnnotation(Test.class);
+
+		if (test == null) {
+			return TestResult.failed(throwable);
+		}
+
+		Class<?> expected = test.expected();
+
+		if (test.expected() == Test.None.class) {
+			return TestResult.failed(throwable);
+		}
+
+		Class<?> clazz = throwable.getClass();
+
+		if (!expected.isAssignableFrom(clazz)) {
+			String message =
+				"Unexpected exception, expected<" + expected.getName() +
+					"> but was<" + clazz.getName() + ">";
+
+			return TestResult.failed(new Exception(message));
+		}
+
+		return TestResult.passed();
 	}
 
 	private final Registry _registry;
