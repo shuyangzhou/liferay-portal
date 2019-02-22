@@ -93,7 +93,7 @@ public class DeploymentStatement extends Statement {
 		}
 	}
 
-	private static Archive<?> _create() {
+	private static Path _create() {
 		try (Workspace workspace = new Workspace(_buildDir);
 			Project project = new Project(workspace, _buildDir);
 
@@ -117,7 +117,16 @@ public class DeploymentStatement extends Statement {
 
 			_process(javaArchive);
 
-			return javaArchive;
+			Path path = Files.createTempFile(null, ".jar");
+
+			ZipExporter zipExporter = javaArchive.as(ZipExporter.class);
+
+			try (InputStream inputStream = zipExporter.exportAsInputStream()) {
+				Files.copy(
+					inputStream, path, StandardCopyOption.REPLACE_EXISTING);
+			}
+
+			return path;
 		}
 		catch (Exception e) {
 			throw new RuntimeException(e);
@@ -273,29 +282,19 @@ public class DeploymentStatement extends Statement {
 		mainAttributes.put(attributeName, sb.toString());
 	}
 
-	private long _installBundle(
-			FrameworkMBean frameworkMBean, Archive<?> archive)
+	private long _installBundle(FrameworkMBean frameworkMBean, Path path)
 		throws Exception {
 
-		Path tempFilePath = Files.createTempFile(null, ".jar");
-
-		ZipExporter zipExporter = archive.as(ZipExporter.class);
-
-		try (InputStream inputStream = zipExporter.exportAsInputStream()) {
-			Files.copy(
-				inputStream, tempFilePath, StandardCopyOption.REPLACE_EXISTING);
-		}
-
-		URI uri = tempFilePath.toUri();
+		URI uri = path.toUri();
 
 		URL url = uri.toURL();
 
 		try {
 			return frameworkMBean.installBundleFromURL(
-				archive.getName(), url.toExternalForm());
+				url.getPath(), url.toExternalForm());
 		}
 		finally {
-			Files.delete(tempFilePath);
+			Files.delete(path);
 		}
 	}
 
