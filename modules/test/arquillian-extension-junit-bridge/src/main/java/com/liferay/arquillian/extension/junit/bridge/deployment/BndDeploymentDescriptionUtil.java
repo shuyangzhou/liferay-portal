@@ -92,7 +92,7 @@ public class BndDeploymentDescriptionUtil {
 	private static void _addArquillianDependencies(JavaArchive javaArchive) {
 		javaArchive.addPackage(JMXTestRunner.class.getPackage());
 		javaArchive.addPackages(
-			true, "org.jboss.arquillian.test.spi", "org.jboss.shrinkwrap.api",
+			true, "org.jboss.shrinkwrap.api",
 			"org.jboss.shrinkwrap.descriptor.api");
 	}
 
