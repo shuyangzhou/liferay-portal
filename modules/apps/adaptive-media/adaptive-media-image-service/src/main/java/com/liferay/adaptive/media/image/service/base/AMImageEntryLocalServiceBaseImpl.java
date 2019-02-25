@@ -20,7 +20,7 @@ import com.liferay.adaptive.media.image.model.AMImageEntry;
 import com.liferay.adaptive.media.image.service.AMImageEntryLocalService;
 import com.liferay.adaptive.media.image.service.persistence.AMImageEntryPersistence;
 
-import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdate;
@@ -38,11 +38,12 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
-import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
+import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.spring.extender.service.ServiceReference;
+
+import org.osgi.service.component.annotations.Reference;
 
 import java.io.Serializable;
 
@@ -64,7 +65,7 @@ import javax.sql.DataSource;
 @ProviderType
 public abstract class AMImageEntryLocalServiceBaseImpl
 	extends BaseLocalServiceImpl implements AMImageEntryLocalService,
-		IdentifiableOSGiService {
+		AopService, IdentifiableOSGiService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -371,71 +372,17 @@ public abstract class AMImageEntryLocalServiceBaseImpl
 		return amImageEntryPersistence.update(amImageEntry);
 	}
 
-	/**
-	 * Returns the am image entry local service.
-	 *
-	 * @return the am image entry local service
-	 */
-	public AMImageEntryLocalService getAMImageEntryLocalService() {
-		return amImageEntryLocalService;
+	@Override
+	public Class<?>[] getAopInterfaces() {
+		return new Class<?>[] {
+			AMImageEntryLocalService.class, IdentifiableOSGiService.class,
+			PersistedModelLocalService.class
+		};
 	}
 
-	/**
-	 * Sets the am image entry local service.
-	 *
-	 * @param amImageEntryLocalService the am image entry local service
-	 */
-	public void setAMImageEntryLocalService(
-		AMImageEntryLocalService amImageEntryLocalService) {
-		this.amImageEntryLocalService = amImageEntryLocalService;
-	}
-
-	/**
-	 * Returns the am image entry persistence.
-	 *
-	 * @return the am image entry persistence
-	 */
-	public AMImageEntryPersistence getAMImageEntryPersistence() {
-		return amImageEntryPersistence;
-	}
-
-	/**
-	 * Sets the am image entry persistence.
-	 *
-	 * @param amImageEntryPersistence the am image entry persistence
-	 */
-	public void setAMImageEntryPersistence(
-		AMImageEntryPersistence amImageEntryPersistence) {
-		this.amImageEntryPersistence = amImageEntryPersistence;
-	}
-
-	/**
-	 * Returns the counter local service.
-	 *
-	 * @return the counter local service
-	 */
-	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
-		return counterLocalService;
-	}
-
-	/**
-	 * Sets the counter local service.
-	 *
-	 * @param counterLocalService the counter local service
-	 */
-	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
-		this.counterLocalService = counterLocalService;
-	}
-
-	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register("com.liferay.adaptive.media.image.model.AMImageEntry",
-			amImageEntryLocalService);
-	}
-
-	public void destroy() {
-		persistedModelLocalServiceRegistry.unregister(
-			"com.liferay.adaptive.media.image.model.AMImageEntry");
+	@Override
+	public void setAopProxy(Object aopProxy) {
+		amImageEntryLocalService = (AMImageEntryLocalService)aopProxy;
 	}
 
 	/**
@@ -480,12 +427,9 @@ public abstract class AMImageEntryLocalServiceBaseImpl
 		}
 	}
 
-	@BeanReference(type = AMImageEntryLocalService.class)
 	protected AMImageEntryLocalService amImageEntryLocalService;
-	@BeanReference(type = AMImageEntryPersistence.class)
+	@Reference
 	protected AMImageEntryPersistence amImageEntryPersistence;
-	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	@Reference
 	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
-	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
 }
