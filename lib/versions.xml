@@ -58,7 +58,7 @@
 			</library>
 			<library>
 				<file-name>lib/portal/bnd.jar</file-name>
-				<version>3.1.0</version>
+				<version>3.5.0</version>
 				<project-name>Bnd</project-name>
 				<project-url>http://bnd.bndtools.org</project-url>
 				<licenses>
