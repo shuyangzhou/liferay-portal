@@ -17,17 +17,18 @@ package com.liferay.arquillian.extension.junit.bridge.statement;
 import aQute.bnd.build.Project;
 import aQute.bnd.build.ProjectBuilder;
 import aQute.bnd.build.Workspace;
+import aQute.bnd.osgi.AbstractResource;
 import aQute.bnd.osgi.Analyzer;
 import aQute.bnd.osgi.Jar;
+import aQute.bnd.osgi.Resource;
 
 import com.liferay.arquillian.extension.junit.bridge.activator.ArquillianBundleActivator;
 import com.liferay.arquillian.extension.junit.bridge.jmx.JMXProxyUtil;
-import com.liferay.petra.io.unsync.UnsyncByteArrayOutputStream;
+import com.liferay.petra.io.StreamUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.petra.string.StringUtil;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -38,29 +39,24 @@ import java.net.URL;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
+
+import java.security.CodeSource;
+import java.security.ProtectionDomain;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.jar.Attributes;
-import java.util.jar.JarFile;
 import java.util.jar.Manifest;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import javax.management.ObjectName;
-
-import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.Node;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.Asset;
-import org.jboss.shrinkwrap.api.asset.ByteArrayAsset;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.exporter.ZipExporter;
-import org.jboss.shrinkwrap.api.importer.ZipImporter;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
 import org.junit.runners.model.Statement;
 
@@ -71,9 +67,8 @@ import org.osgi.jmx.framework.FrameworkMBean;
  */
 public class DeploymentStatement extends Statement {
 
-	public DeploymentStatement(Statement statement, Class<?> testClass) {
+	public DeploymentStatement(Statement statement) {
 		_statement = statement;
-		_testClass = testClass;
 	}
 
 	@Override
@@ -81,7 +76,7 @@ public class DeploymentStatement extends Statement {
 		FrameworkMBean frameworkMBean = JMXProxyUtil.newProxy(
 			_frameworkObjectName, FrameworkMBean.class);
 
-		long bundleId = _installBundle(frameworkMBean, _create(_testClass));
+		long bundleId = _installBundle(frameworkMBean, _create());
 
 		frameworkMBean.startBundle(bundleId);
 
@@ -93,48 +88,56 @@ public class DeploymentStatement extends Statement {
 		}
 	}
 
-	private static void _addTestClass(
-		JavaArchive javaArchive, Class<?> testClass) {
-
-		while (testClass != Object.class) {
-			javaArchive.addClass(testClass);
-
-			testClass = testClass.getSuperclass();
-		}
-	}
-
-	private static Archive<?> _create(Class<?> testClass) {
+	private static Path _create() {
 		try (Workspace workspace = new Workspace(_buildDir);
 			Project project = new Project(workspace, _buildDir);
 
 			ProjectBuilder projectBuilder = _createProjectBuilder(project);
 
-			Analyzer analyzer = new Analyzer();
+			Jar jar = _createJar(project, projectBuilder)) {
 
-			Jar jar = _createJar(project, projectBuilder, analyzer)) {
+			Path path = Files.createTempFile(null, ".jar");
 
-			ByteArrayOutputStream byteArrayOutputStream =
-				new ByteArrayOutputStream();
+			Map<String, Resource> resources = _getArquillianClasses();
 
-			jar.write(byteArrayOutputStream);
+			for (Map.Entry<String, Resource> entry : resources.entrySet()) {
+				jar.putResource(entry.getKey(), entry.getValue());
+			}
 
-			ZipImporter zipImporter = ShrinkWrap.create(ZipImporter.class);
+			jar.write(path.toFile());
 
-			zipImporter.importFrom(
-				new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
-
-			JavaArchive javaArchive = zipImporter.as(JavaArchive.class);
-
-			_process(javaArchive, testClass);
-
-			return javaArchive;
+			return path;
 		}
 		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	private static Set<String> _createImportPackages(Manifest manifest) {
+	private static Jar _createJar(
+			Project project, ProjectBuilder projectBuilder)
+		throws Exception {
+
+		Jar jar = projectBuilder.build();
+
+		jar.setManifest(_createManifest(jar, project));
+
+		jar.putResource(
+			"/arquillian.remote.marker",
+			new ByteResource(System.currentTimeMillis(), new byte[0]));
+
+		return jar;
+	}
+
+	private static Manifest _createManifest(Jar jar, Project project)
+		throws Exception {
+
+		Analyzer analyzer = new Analyzer();
+
+		analyzer.setProperties(project.getProperties());
+		analyzer.setJar(jar);
+
+		Manifest manifest = analyzer.calcManifest();
+
 		Set<String> importPackages = new HashSet<>();
 
 		Collections.addAll(importPackages, _IMPORTS_PACKAGES);
@@ -144,21 +147,25 @@ public class DeploymentStatement extends Statement {
 		importPackages.addAll(
 			StringUtil.split(mainAttributes.getValue(_importPackageName)));
 
-		return importPackages;
-	}
+		importPackages.remove(
+			"com.liferay.arquillian.extension.junit.bridge.junit");
 
-	private static Jar _createJar(
-			Project project, ProjectBuilder projectBuilder, Analyzer analyzer)
-		throws Exception {
+		StringBundler sb = new StringBundler(importPackages.size() * 2);
 
-		Jar jar = projectBuilder.build();
+		for (String attributeValue : importPackages) {
+			sb.append(attributeValue);
+			sb.append(StringPool.COMMA);
+		}
 
-		analyzer.setProperties(project.getProperties());
-		analyzer.setJar(jar);
+		sb.setIndex(sb.index() - 1);
 
-		jar.setManifest(analyzer.calcManifest());
+		mainAttributes.put(_importPackageName, sb.toString());
 
-		return jar;
+		mainAttributes.put(
+			_bundleActivatorName,
+			ArquillianBundleActivator.class.getCanonicalName());
+
+		return manifest;
 	}
 
 	private static ProjectBuilder _createProjectBuilder(Project project)
@@ -169,6 +176,53 @@ public class DeploymentStatement extends Statement {
 		projectBuilder.addClasspath(_getClassPathFiles());
 
 		return projectBuilder;
+	}
+
+	private static Map<String, Resource> _getArquillianClasses()
+		throws Exception {
+
+		ProtectionDomain protectionDomain =
+			DeploymentStatement.class.getProtectionDomain();
+
+		CodeSource codeSource = protectionDomain.getCodeSource();
+
+		URL url = codeSource.getLocation();
+
+		File file = new File(url.toURI());
+
+		Map<String, Resource> resources = new HashMap<>();
+
+		try (ZipFile zipFile = new ZipFile(file)) {
+			Enumeration<? extends ZipEntry> enumeration = zipFile.entries();
+
+			while (enumeration.hasMoreElements()) {
+				ZipEntry zipEntry = enumeration.nextElement();
+
+				String name = zipEntry.getName();
+
+				if (!name.endsWith(".class")) {
+					continue;
+				}
+
+				try (ByteArrayOutputStream byteArrayOutputStream =
+						new ByteArrayOutputStream();
+					InputStream inputStream = zipFile.getInputStream(
+						zipEntry)) {
+
+					StreamUtil.transfer(
+						inputStream, byteArrayOutputStream, false);
+
+					byte[] bytes = byteArrayOutputStream.toByteArray();
+
+					resources.put(
+						name,
+						new ByteResource(System.currentTimeMillis(), bytes));
+
+				}
+			}
+		}
+
+		return resources;
 	}
 
 	private static List<File> _getClassPathFiles() {
@@ -193,124 +247,28 @@ public class DeploymentStatement extends Statement {
 		return files;
 	}
 
-	private static Manifest _getManifest(Archive<?> archive)
-		throws IOException {
-
-		Node manifestNode = archive.get(JarFile.MANIFEST_NAME);
-
-		if (manifestNode == null) {
-			return null;
-		}
-
-		Asset manifestAsset = manifestNode.getAsset();
-
-		try (InputStream inputStream = manifestAsset.openStream()) {
-			return new Manifest(inputStream);
-		}
-	}
-
-	private static void _process(JavaArchive javaArchive, Class<?> testClass) {
-		try {
-			_addTestClass(javaArchive, testClass);
-
-			javaArchive.add(EmptyAsset.INSTANCE, "/arquillian.remote.marker");
-
-			javaArchive.addPackages(
-				true, "com.liferay.arquillian.extension.junit.bridge",
-				"org.jboss.shrinkwrap.api",
-				"org.jboss.shrinkwrap.descriptor.api");
-
-			Manifest manifest = _getManifest(javaArchive);
-
-			Set<String> importPackages = _createImportPackages(manifest);
-
-			importPackages.remove(
-				"com.liferay.arquillian.extension.junit.bridge.junit");
-
-			_setManifestValues(manifest, _importPackageName, importPackages);
-
-			Attributes mainAttributes = manifest.getMainAttributes();
-
-			mainAttributes.put(
-				_bundleActivatorName,
-				ArquillianBundleActivator.class.getCanonicalName());
-
-			_setManifest(javaArchive, manifest);
-		}
-		catch (IOException ioe) {
-			throw new IllegalArgumentException(
-				"Invalid OSGi bundle: " + javaArchive, ioe);
-		}
-	}
-
-	private static void _setManifest(Archive<?> archive, Manifest manifest)
-		throws IOException {
-
-		archive.delete(JarFile.MANIFEST_NAME);
-
-		UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
-			new UnsyncByteArrayOutputStream();
-
-		manifest.write(unsyncByteArrayOutputStream);
-
-		archive.add(
-			new ByteArrayAsset(unsyncByteArrayOutputStream.toByteArray()),
-			JarFile.MANIFEST_NAME);
-	}
-
-	private static void _setManifestValues(
-		Manifest manifest, Attributes.Name attributeName,
-		Collection<String> attributeValues) {
-
-		Attributes mainAttributes = manifest.getMainAttributes();
-
-		StringBundler sb = new StringBundler(attributeValues.size() * 2);
-
-		for (String attributeValue : attributeValues) {
-			sb.append(attributeValue);
-			sb.append(StringPool.COMMA);
-		}
-
-		sb.setIndex(sb.index() - 1);
-
-		mainAttributes.put(attributeName, sb.toString());
-	}
-
-	private long _installBundle(
-			FrameworkMBean frameworkMBean, Archive<?> archive)
+	private long _installBundle(FrameworkMBean frameworkMBean, Path path)
 		throws Exception {
 
-		Path tempFilePath = Files.createTempFile(null, ".jar");
-
-		ZipExporter zipExporter = archive.as(ZipExporter.class);
-
-		try (InputStream inputStream = zipExporter.exportAsInputStream()) {
-			Files.copy(
-				inputStream, tempFilePath, StandardCopyOption.REPLACE_EXISTING);
-		}
-
-		URI uri = tempFilePath.toUri();
+		URI uri = path.toUri();
 
 		URL url = uri.toURL();
 
 		try {
 			return frameworkMBean.installBundleFromURL(
-				archive.getName(), url.toExternalForm());
+				url.getPath(), url.toExternalForm());
 		}
 		finally {
-			Files.delete(tempFilePath);
+			Files.delete(path);
 		}
 	}
 
 	private static final String[] _IMPORTS_PACKAGES = {
-		"javax.management", "javax.management.*", "javax.naming",
-		"javax.naming.*", "org.junit.internal", "org.junit.internal.runners",
-		"org.junit.internal.runners.model",
+		"javax.management", "javax.management.*",
 		"org.junit.internal.runners.statements", "org.junit.rules",
 		"org.junit.runner.manipulation", "org.junit.runner.notification",
-		"org.junit.runners", "org.junit.runners.model", "org.osgi.framework",
-		"org.osgi.framework.wiring", "org.osgi.service.packageadmin",
-		"org.osgi.service.startlevel", "org.osgi.util.tracker"
+		"org.junit.runners.model", "org.osgi.framework",
+		"org.osgi.framework.wiring"
 	};
 
 	private static final File _buildDir = new File(
@@ -331,6 +289,22 @@ public class DeploymentStatement extends Statement {
 	}
 
 	private final Statement _statement;
-	private final Class<?> _testClass;
+
+	private static class ByteResource extends AbstractResource {
+
+		public ByteResource(long modified, byte[] bytes) {
+			super(modified);
+
+			_bytes = bytes;
+		}
+
+		@Override
+		protected byte[] getBytes() throws Exception {
+			return _bytes;
+		}
+
+		private final byte[] _bytes;
+
+	}
 
 }
