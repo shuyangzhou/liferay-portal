@@ -325,8 +325,10 @@ public class Table {
 	public String getSelectSQL() throws Exception {
 		if (_selectSQL == null) {
 			/*String sql = "select ";
+
 			for (int i = 0; i < _columns.length; i++) {
 				sql += _columns[i][0];
+
 				if ((i + 1) < _columns.length) {
 					sql += ", ";
 				}
@@ -334,6 +336,7 @@ public class Table {
 					sql += " from " + _tableName;
 				}
 			}
+
 			return sql;*/
 
 			return "select * from " + _tableName;

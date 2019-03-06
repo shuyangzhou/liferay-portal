@@ -41,6 +41,11 @@ public class GetterUtil {
 	public static final String[] BOOLEANS = {"true", "t", "y", "on", "1"};
 
 	/**
+	 * The default BigDecimal value is {@value #DEFAULT_BIGDECIMAL}.
+	 */
+	public static final BigDecimal DEFAULT_BIGDECIMAL = BigDecimal.ZERO;
+
+	/**
 	 * The default boolean value is {@value #DEFAULT_BOOLEAN}.
 	 */
 	public static final boolean DEFAULT_BOOLEAN = false;
@@ -310,6 +315,10 @@ public class GetterUtil {
 			catch (NumberFormatException nfe) {
 				return defaultValue;
 			}
+		}
+
+		if (value instanceof BigDecimal) {
+			return (BigDecimal)value;
 		}
 
 		if (value instanceof Byte) {
@@ -636,6 +645,32 @@ public class GetterUtil {
 		}
 
 		return value;
+	}
+
+	/**
+	 * Returns the Object value as a BigDecimal. If the value is <code>null</code>
+	 * or not convertible to a BigDecimal, the {@link #DEFAULT_BIGDECIMAL} is
+	 * returned.
+	 *
+	 * @param  value the value to convert
+	 * @return the value as a BigDecimal
+	 */
+	public static BigDecimal getBigDecimal(Object value) {
+		return (BigDecimal)get(value, DEFAULT_BIGDECIMAL);
+	}
+
+	/**
+	 * Returns the Object value as a BigDecimal. If the value is <code>null</code>
+	 * or not convertible to a BigDecimal, the defaultValue is
+	 * returned.
+	 *
+	 * @param  value the value to convert
+	 * @return the value as a BigDecimal
+	 */
+	public static BigDecimal getBigDecimal(
+		Object value, BigDecimal defaultValue) {
+
+		return (BigDecimal)get(value, defaultValue);
 	}
 
 	/**
