@@ -325,10 +325,8 @@ public class Table {
 	public String getSelectSQL() throws Exception {
 		if (_selectSQL == null) {
 			/*String sql = "select ";
-
 			for (int i = 0; i < _columns.length; i++) {
 				sql += _columns[i][0];
-
 				if ((i + 1) < _columns.length) {
 					sql += ", ";
 				}
@@ -336,7 +334,6 @@ public class Table {
 					sql += " from " + _tableName;
 				}
 			}
-
 			return sql;*/
 
 			return "select * from " + _tableName;
@@ -436,13 +433,11 @@ public class Table {
 		}
 		else if (t == Types.DECIMAL) {
 			try {
-				value = rs.getBigDecimal(name);
+				value = GetterUtil.getNumber(rs.getBigDecimal(name));
 			}
 			catch (SQLException sqle) {
-				value = rs.getString(name);
+				value = GetterUtil.getNumber(rs.getString(name));
 			}
-
-			value = GetterUtil.get(value, BigDecimal.ZERO);
 		}
 		else if (t == Types.DOUBLE) {
 			value = GetterUtil.getDouble(rs.getDouble(name));
@@ -591,7 +586,8 @@ public class Table {
 		}
 		else if (t == Types.DECIMAL) {
 			ps.setBigDecimal(
-				paramIndex, (BigDecimal)GetterUtil.get(value, BigDecimal.ZERO));
+				paramIndex,
+				(BigDecimal)GetterUtil.getNumber(value, BigDecimal.ZERO));
 		}
 		else if (t == Types.DOUBLE) {
 			ps.setDouble(paramIndex, GetterUtil.getDouble(value));
