@@ -46,9 +46,12 @@ import org.junit.runners.model.TestClass;
  */
 public class ServerExecutorStatement extends Statement {
 
-	public ServerExecutorStatement(Object target, Method method) {
+	public ServerExecutorStatement(
+		Object target, Method method, List<String> filteredMethodNames) {
+
 		_target = target;
 		_method = method;
+		_filteredMethodNames = filteredMethodNames;
 	}
 
 	@Override
@@ -101,6 +104,10 @@ public class ServerExecutorStatement extends Statement {
 			testClass.getAnnotatedMethods(Test.class));
 
 		frameworkMethods.removeAll(testClass.getAnnotatedMethods(Ignore.class));
+
+		frameworkMethods.removeIf(
+			frameworkMethod -> _filteredMethodNames.contains(
+				frameworkMethod.getName()));
 
 		frameworkMethods.sort(Comparator.comparing(FrameworkMethod::getName));
 
@@ -273,6 +280,7 @@ public class ServerExecutorStatement extends Statement {
 		}
 	}
 
+	private final List<String> _filteredMethodNames;
 	private final Method _method;
 	private final Object _target;
 

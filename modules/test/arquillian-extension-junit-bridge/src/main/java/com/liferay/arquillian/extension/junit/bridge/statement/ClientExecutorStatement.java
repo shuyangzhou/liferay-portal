@@ -23,6 +23,8 @@ import java.io.ObjectInputStream;
 
 import java.lang.reflect.Method;
 
+import java.util.List;
+
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 
@@ -33,12 +35,16 @@ import org.junit.runners.model.Statement;
  */
 public class ClientExecutorStatement extends Statement {
 
-	public ClientExecutorStatement(Object target, Method method) {
+	public ClientExecutorStatement(
+		Object target, Method method, List<String> filteredMethodNames) {
+
 		Class<?> clazz = target.getClass();
 
 		_className = clazz.getName();
 
 		_methodName = method.getName();
+
+		_filteredMethodNames = filteredMethodNames;
 	}
 
 	@Override
@@ -46,7 +52,8 @@ public class ClientExecutorStatement extends Statement {
 		JMXTestRunnerMBean jmxTestRunnerMBean = JMXProxyUtil.newProxy(
 			_objectName, JMXTestRunnerMBean.class);
 
-		byte[] data = jmxTestRunnerMBean.runTestMethod(_className, _methodName);
+		byte[] data = jmxTestRunnerMBean.runTestMethod(
+			_className, _methodName, _filteredMethodNames);
 
 		try (InputStream inputStream = new UnsyncByteArrayInputStream(data);
 			ObjectInputStream oos = new ObjectInputStream(inputStream)) {
@@ -71,6 +78,7 @@ public class ClientExecutorStatement extends Statement {
 	}
 
 	private final String _className;
+	private final List<String> _filteredMethodNames;
 	private final String _methodName;
 
 }

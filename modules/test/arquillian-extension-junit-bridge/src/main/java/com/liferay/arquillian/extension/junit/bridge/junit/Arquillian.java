@@ -23,6 +23,7 @@ import java.lang.reflect.Method;
 
 import java.net.URL;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -98,6 +99,10 @@ public class Arquillian extends Runner implements Filterable {
 		}
 	}
 
+	public void setFilteredMethodNames(List<String> filteredMethodNames) {
+		_filteredMethodNames.addAll(filteredMethodNames);
+	}
+
 	private Statement _createClassStatement(RunNotifier runNotifier) {
 		Statement statement = new Statement() {
 
@@ -133,10 +138,12 @@ public class Arquillian extends Runner implements Filterable {
 		Method method = frameworkMethod.getMethod();
 
 		if (_REMOTE) {
-			return new ServerExecutorStatement(target, method);
+			return new ServerExecutorStatement(
+				target, method, _filteredMethodNames);
 		}
 
-		return new ClientExecutorStatement(target, method);
+		return new ClientExecutorStatement(
+			target, method, _filteredMethodNames);
 	}
 
 	private Statement _createMethodStatement(FrameworkMethod frameworkMethod) {
@@ -251,6 +258,7 @@ public class Arquillian extends Runner implements Filterable {
 
 	private final Class<?> _clazz;
 	private Filter _filter;
+	private final List<String> _filteredMethodNames = new ArrayList<>();
 	private final Map<FrameworkMethod, Description> _methodDescriptions =
 		new ConcurrentHashMap<>();
 	private TestClass _testClass;
@@ -271,8 +279,19 @@ public class Arquillian extends Runner implements Filterable {
 
 			if (_filter != null) {
 				frameworkMethods.removeIf(
-					frameworkMethod -> !_filter.shouldRun(
-						_describeChild(frameworkMethod)));
+					frameworkMethod -> {
+						if (_filter.shouldRun(
+								_describeChild(frameworkMethod))) {
+
+							return false;
+						}
+
+						if (!_REMOTE) {
+							_filteredMethodNames.add(frameworkMethod.getName());
+						}
+
+						return true;
+					});
 			}
 
 			frameworkMethods.sort(
