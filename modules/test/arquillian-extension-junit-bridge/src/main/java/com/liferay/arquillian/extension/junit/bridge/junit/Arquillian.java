@@ -61,15 +61,15 @@ public class Arquillian extends Runner implements Filterable {
 	public Arquillian(Class<?> clazz) {
 		_clazz = clazz;
 
-		_testClass = new FilteredSortedTestClass(_clazz, null);
+		_filteredSortedTestClass = new FilteredSortedTestClass(_clazz, null);
 	}
 
 	@Override
 	public void filter(Filter filter) throws NoTestsRemainException {
-		_testClass = new FilteredSortedTestClass(_clazz, filter);
+		_filteredSortedTestClass = new FilteredSortedTestClass(_clazz, filter);
 
-		List<FrameworkMethod> frameworkMethods = _testClass.getAnnotatedMethods(
-			Test.class);
+		List<FrameworkMethod> frameworkMethods =
+			_filteredSortedTestClass.getAnnotatedMethods(Test.class);
 
 		if (frameworkMethods.isEmpty()) {
 			throw new NoTestsRemainException();
@@ -85,7 +85,7 @@ public class Arquillian extends Runner implements Filterable {
 	@Override
 	public void run(RunNotifier runNotifier) {
 		List<FrameworkMethod> frameworkMethods = new ArrayList<>(
-			_testClass.getAnnotatedMethods(Test.class));
+			_filteredSortedTestClass.getAnnotatedMethods(Test.class));
 
 		frameworkMethods.removeIf(
 			frameworkMethod -> {
@@ -123,7 +123,8 @@ public class Arquillian extends Runner implements Filterable {
 				runNotifier.fireTestStarted(description);
 
 				byte[] data = jmxTestRunnerMBean.runTestMethod(
-					_clazz.getName(), frameworkMethod.getName());
+					_clazz.getName(), frameworkMethod.getName(),
+					_filteredSortedTestClass._filteredMethodNames);
 
 				try (InputStream inputStream = new UnsyncByteArrayInputStream(
 						data);
@@ -190,7 +191,7 @@ public class Arquillian extends Runner implements Filterable {
 	}
 
 	private final Class<?> _clazz;
-	private TestClass _testClass;
+	private FilteredSortedTestClass _filteredSortedTestClass;
 
 	private class FilteredSortedTestClass extends TestClass {
 
@@ -214,12 +215,24 @@ public class Arquillian extends Runner implements Filterable {
 
 			if (filter != null) {
 				_testFrameworkMethods.removeIf(
-					frameworkMethod -> !filter.shouldRun(
-						Description.createTestDescription(
-							_clazz, frameworkMethod.getName())));
+					frameworkMethod -> {
+						String methodName = frameworkMethod.getName();
+
+						if (filter.shouldRun(
+								Description.createTestDescription(
+									_clazz, methodName))) {
+
+							return false;
+						}
+
+						_filteredMethodNames.add(methodName);
+
+						return true;
+					});
 			}
 		}
 
+		private final List<String> _filteredMethodNames = new ArrayList<>();
 		private List<FrameworkMethod> _testFrameworkMethods;
 
 	}
