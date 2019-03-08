@@ -429,8 +429,9 @@ public class DDMImpl implements DDM {
 		Fields fields = new Fields();
 
 		for (String fieldName : fieldNames) {
-			boolean localizable = GetterUtil.getBoolean(
-				ddmStructure.getFieldProperty(fieldName, "localizable"), true);
+			DDMFormField ddmFormField = ddmStructure.getDDMFormField(fieldName);
+
+			boolean localizable = ddmFormField.isLocalizable();
 
 			if (!localizable && translating &&
 				!fieldName.startsWith(StringPool.UNDERLINE)) {

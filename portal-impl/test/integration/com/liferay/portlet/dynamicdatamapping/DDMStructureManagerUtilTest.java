@@ -81,8 +81,9 @@ public class DDMStructureManagerUtilTest {
 		DDMStructureManagerUtil.addAttributes(
 			structure.getStructureId(), document, createDDMFormValues());
 
-		String fieldProperty = structure.getFieldProperty(
-			"fieldName", "indexType");
+		DDMFormField ddmFormField = structure.getDDMFormField("fieldName");
+
+		String fieldProperty = ddmFormField.getIndexType();
 
 		Assert.assertNotNull(fieldProperty);
 	}

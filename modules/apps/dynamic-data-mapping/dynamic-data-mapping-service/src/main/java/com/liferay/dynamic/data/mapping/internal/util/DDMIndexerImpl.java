@@ -14,6 +14,7 @@
 
 package com.liferay.dynamic.data.mapping.internal.util;
 
+import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldType;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
@@ -75,8 +76,10 @@ public class DDMIndexerImpl implements DDMIndexer {
 
 		for (Field field : fields) {
 			try {
-				String indexType = ddmStructure.getFieldProperty(
-					field.getName(), "indexType");
+				DDMFormField ddmFormField = ddmStructure.getDDMFormField(
+					field.getName());
+
+				String indexType = ddmFormField.getIndexType();
 
 				if (Validator.isNull(indexType)) {
 					continue;
@@ -251,8 +254,10 @@ public class DDMIndexerImpl implements DDMIndexer {
 
 			if (ddmStructure != null) {
 				try {
-					indexType = ddmStructure.getFieldProperty(
-						fieldName, "indexType");
+					DDMFormField ddmFormField = ddmStructure.getDDMFormField(
+						fieldName);
+
+					indexType = ddmFormField.getIndexType();
 				}
 				catch (PortalException pe) {
 					throw new IllegalArgumentException(
@@ -280,8 +285,10 @@ public class DDMIndexerImpl implements DDMIndexer {
 
 		for (Field field : fields) {
 			try {
-				String indexType = ddmStructure.getFieldProperty(
-					field.getName(), "indexType");
+				DDMFormField ddmFormField = ddmStructure.getDDMFormField(
+					field.getName());
+
+				String indexType = ddmFormField.getIndexType();
 
 				if (Validator.isNull(indexType)) {
 					continue;

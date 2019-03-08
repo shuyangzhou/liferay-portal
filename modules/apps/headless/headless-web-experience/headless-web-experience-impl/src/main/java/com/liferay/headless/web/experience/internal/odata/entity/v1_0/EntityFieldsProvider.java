@@ -75,8 +75,10 @@ public class EntityFieldsProvider {
 			DDMStructure ddmStructure, DDMFormField ddmFormField)
 		throws PortalException {
 
-		String indexType = ddmStructure.getFieldProperty(
-			ddmFormField.getName(), "indexType");
+		DDMFormField otherDDMFormField = ddmStructure.getDDMFormField(
+			ddmFormField.getName());
+
+		String indexType = otherDDMFormField.getIndexType();
 
 		if (Validator.isNull(indexType)) {
 			return null;

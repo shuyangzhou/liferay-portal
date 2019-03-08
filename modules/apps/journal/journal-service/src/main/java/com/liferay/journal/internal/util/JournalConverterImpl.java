@@ -15,6 +15,7 @@
 package com.liferay.journal.internal.util;
 
 import com.liferay.document.library.kernel.service.DLAppLocalService;
+import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldType;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
@@ -778,10 +779,11 @@ public class JournalConverterImpl implements JournalConverter {
 		throws Exception {
 
 		String fieldType = ddmStructure.getFieldType(fieldName);
-		String indexType = ddmStructure.getFieldProperty(
-			fieldName, "indexType");
-		boolean multiple = GetterUtil.getBoolean(
-			ddmStructure.getFieldProperty(fieldName, "multiple"));
+
+		DDMFormField ddmFormField = ddmStructure.getDDMFormField(fieldName);
+
+		String indexType = ddmFormField.getIndexType();
+		boolean multiple = ddmFormField.isMultiple();
 
 		String type = _ddmTypesToJournalTypes.get(fieldType);
 

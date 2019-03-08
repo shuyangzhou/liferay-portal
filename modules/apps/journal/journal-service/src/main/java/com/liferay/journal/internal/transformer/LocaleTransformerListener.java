@@ -14,6 +14,7 @@
 
 package com.liferay.journal.internal.transformer;
 
+import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.journal.constants.JournalPortletKeys;
@@ -79,8 +80,9 @@ public class LocaleTransformerListener extends BaseTransformerListener {
 			String name, String defaultLanguageId)
 		throws PortalException {
 
-		boolean localizable = GetterUtil.getBoolean(
-			ddmStructure.getFieldProperty(name, "localizable"));
+		DDMFormField ddmFormField = ddmStructure.getDDMFormField(name);
+
+		boolean localizable = ddmFormField.isLocalizable();
 
 		List<Element> dynamicContentElements = dynamicElementElement.elements(
 			"dynamic-content");
