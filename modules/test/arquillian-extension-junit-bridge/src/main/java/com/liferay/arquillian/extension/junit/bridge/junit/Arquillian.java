@@ -23,8 +23,8 @@ import java.lang.reflect.Method;
 
 import java.net.URL;
 
+import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,11 +32,9 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.AssumptionViolatedException;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.internal.runners.statements.Fail;
 import org.junit.internal.runners.statements.FailOnTimeout;
-import org.junit.rules.MethodRule;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.manipulation.Filter;
@@ -75,14 +73,8 @@ public class Arquillian extends Runner implements Filterable {
 
 	@Override
 	public Description getDescription() {
-		Description description = Description.createSuiteDescription(
+		return Description.createSuiteDescription(
 			_clazz.getName(), _clazz.getAnnotations());
-
-		for (FrameworkMethod frameworkMethod : _getChildren()) {
-			description.addChild(_describeChild(frameworkMethod));
-		}
-
-		return description;
 	}
 
 	@Override
@@ -105,6 +97,10 @@ public class Arquillian extends Runner implements Filterable {
 		catch (Throwable t) {
 			runNotifier.fireTestFailure(new Failure(description, t));
 		}
+	}
+
+	public void setFilteredMethodNames(List<String> filteredMethodNames) {
+		_filteredMethodNames.addAll(filteredMethodNames);
 	}
 
 	private Statement _createClassStatement(RunNotifier runNotifier) {
@@ -142,10 +138,12 @@ public class Arquillian extends Runner implements Filterable {
 		Method method = frameworkMethod.getMethod();
 
 		if (_REMOTE) {
-			return new ServerExecutorStatement(target, method);
+			return new ServerExecutorStatement(
+				target, method, _filteredMethodNames);
 		}
 
-		return new ClientExecutorStatement(target, method);
+		return new ClientExecutorStatement(
+			target, method, _filteredMethodNames);
 	}
 
 	private Statement _createMethodStatement(FrameworkMethod frameworkMethod) {
@@ -160,9 +158,7 @@ public class Arquillian extends Runner implements Filterable {
 
 		Statement statement = _createExecutorStatement(frameworkMethod, target);
 
-		statement = _withTimeout(frameworkMethod, statement);
-
-		return _withMethodRules(statement, frameworkMethod, target);
+		return _withTimeout(frameworkMethod, statement);
 	}
 
 	private Description _describeChild(FrameworkMethod frameworkMethod) {
@@ -231,28 +227,6 @@ public class Arquillian extends Runner implements Filterable {
 		}
 	}
 
-	private Statement _withMethodRules(
-		Statement statement, FrameworkMethod frameworkMethod, Object target) {
-
-		TestClass testClass = _getTestClass();
-
-		for (MethodRule methodRule :
-				testClass.getAnnotatedMethodValues(
-					target, Rule.class, MethodRule.class)) {
-
-			statement = methodRule.apply(statement, frameworkMethod, target);
-		}
-
-		for (MethodRule methodRule :
-				testClass.getAnnotatedFieldValues(
-					target, Rule.class, MethodRule.class)) {
-
-			statement = methodRule.apply(statement, frameworkMethod, target);
-		}
-
-		return statement;
-	}
-
 	private Statement _withTimeout(
 		FrameworkMethod frameworkMethod, Statement statement) {
 
@@ -284,6 +258,7 @@ public class Arquillian extends Runner implements Filterable {
 
 	private final Class<?> _clazz;
 	private Filter _filter;
+	private final List<String> _filteredMethodNames = new ArrayList<>();
 	private final Map<FrameworkMethod, Description> _methodDescriptions =
 		new ConcurrentHashMap<>();
 	private TestClass _testClass;
@@ -303,24 +278,20 @@ public class Arquillian extends Runner implements Filterable {
 				Test.class);
 
 			if (_filter != null) {
-				Iterator<FrameworkMethod> iterator =
-					frameworkMethods.iterator();
+				frameworkMethods.removeIf(
+					frameworkMethod -> {
+						if (_filter.shouldRun(
+								_describeChild(frameworkMethod))) {
 
-				while (iterator.hasNext()) {
-					FrameworkMethod frameworkMethod = iterator.next();
+							return false;
+						}
 
-					if (_filter.shouldRun(_describeChild(frameworkMethod))) {
-						try {
-							_filter.apply(frameworkMethod);
+						if (!_REMOTE) {
+							_filteredMethodNames.add(frameworkMethod.getName());
 						}
-						catch (NoTestsRemainException ntre) {
-							iterator.remove();
-						}
-					}
-					else {
-						iterator.remove();
-					}
-				}
+
+						return true;
+					});
 			}
 
 			frameworkMethods.sort(
