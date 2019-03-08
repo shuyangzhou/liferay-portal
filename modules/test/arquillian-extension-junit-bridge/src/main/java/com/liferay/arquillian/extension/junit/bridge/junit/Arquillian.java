@@ -14,29 +14,31 @@
 
 package com.liferay.arquillian.extension.junit.bridge.junit;
 
-import com.liferay.arquillian.extension.junit.bridge.statement.ClientExecutorStatement;
-import com.liferay.arquillian.extension.junit.bridge.statement.DeploymentStatement;
-import com.liferay.arquillian.extension.junit.bridge.statement.ServerExecutorStatement;
+import com.liferay.arquillian.extension.junit.bridge.client.BndBundleUtil;
+import com.liferay.arquillian.extension.junit.bridge.client.MBeans;
+import com.liferay.arquillian.extension.junit.bridge.jmx.JMXTestRunnerMBean;
+import com.liferay.petra.io.unsync.UnsyncByteArrayInputStream;
+
+import java.io.Closeable;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 
+import java.net.URI;
 import java.net.URL;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.AssumptionViolatedException;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.internal.runners.statements.Fail;
-import org.junit.internal.runners.statements.FailOnTimeout;
-import org.junit.rules.MethodRule;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.manipulation.Filter;
@@ -47,8 +49,9 @@ import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.FrameworkField;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.MultipleFailureException;
-import org.junit.runners.model.Statement;
 import org.junit.runners.model.TestClass;
+
+import org.osgi.jmx.framework.FrameworkMBean;
 
 /**
  * @author Shuyang Zhou
@@ -57,13 +60,13 @@ public class Arquillian extends Runner implements Filterable {
 
 	public Arquillian(Class<?> clazz) {
 		_clazz = clazz;
+
+		_testClass = new FilteredSortedTestClass(_clazz, null);
 	}
 
 	@Override
 	public void filter(Filter filter) throws NoTestsRemainException {
-		_filter = filter;
-
-		_testClass = new FilteredSortedTestClass(_clazz);
+		_testClass = new FilteredSortedTestClass(_clazz, filter);
 
 		List<FrameworkMethod> frameworkMethods = _testClass.getAnnotatedMethods(
 			Test.class);
@@ -75,217 +78,118 @@ public class Arquillian extends Runner implements Filterable {
 
 	@Override
 	public Description getDescription() {
-		Description description = Description.createSuiteDescription(
+		return Description.createSuiteDescription(
 			_clazz.getName(), _clazz.getAnnotations());
-
-		for (FrameworkMethod frameworkMethod : _getChildren()) {
-			description.addChild(_describeChild(frameworkMethod));
-		}
-
-		return description;
 	}
 
 	@Override
 	public void run(RunNotifier runNotifier) {
-		Description description = getDescription();
+		List<FrameworkMethod> frameworkMethods = new ArrayList<>(
+			_testClass.getAnnotatedMethods(Test.class));
+
+		frameworkMethods.removeIf(
+			frameworkMethod -> {
+				if (frameworkMethod.getAnnotation(Ignore.class) != null) {
+					runNotifier.fireTestIgnored(
+						Description.createTestDescription(
+							_clazz, frameworkMethod.getName(),
+							frameworkMethod.getAnnotations()));
+
+					return true;
+				}
+
+				return false;
+			});
+
+		if (frameworkMethods.isEmpty()) {
+			return;
+		}
+
+		try (Closeable closeable = _installBundle()) {
+
+			// Enfore client side test class initialization, in case it has
+			// static blocks to do preparation setup before server tests start.
+
+			Class.forName(_clazz.getName(), true, _clazz.getClassLoader());
+
+			JMXTestRunnerMBean jmxTestRunnerMBean =
+				MBeans.getJmxTestRunnerMBean();
+
+			for (FrameworkMethod frameworkMethod : frameworkMethods) {
+				Description description = Description.createTestDescription(
+					_clazz, frameworkMethod.getName(),
+					frameworkMethod.getAnnotations());
+
+				runNotifier.fireTestStarted(description);
+
+				byte[] data = jmxTestRunnerMBean.runTestMethod(
+					_clazz.getName(), frameworkMethod.getName());
+
+				try (InputStream inputStream = new UnsyncByteArrayInputStream(
+						data);
+					ObjectInputStream oos = new ObjectInputStream(
+						inputStream)) {
+
+					Throwable throwable = (Throwable)oos.readObject();
+
+					if (throwable != null) {
+						_processTestException(
+							runNotifier, description, throwable);
+					}
+				}
+
+				runNotifier.fireTestFinished(description);
+			}
+		}
+		catch (Throwable t) {
+			runNotifier.fireTestFailure(new Failure(getDescription(), t));
+		}
+	}
+
+	private Closeable _installBundle() throws Exception {
+		Path path = BndBundleUtil.createBundle();
+
+		URI uri = path.toUri();
+
+		URL url = uri.toURL();
+
+		FrameworkMBean frameworkMBean = MBeans.getFrameworkMBean();
+
+		long bundleId;
 
 		try {
-			Statement statement = _createClassStatement(runNotifier);
+			bundleId = frameworkMBean.installBundleFromURL(
+				url.getPath(), url.toExternalForm());
+		}
+		finally {
+			Files.delete(path);
+		}
 
-			statement.evaluate();
+		frameworkMBean.startBundle(bundleId);
+
+		return () -> frameworkMBean.uninstallBundle(bundleId);
+	}
+
+	private void _processTestException(
+		RunNotifier runNotifier, Description description, Throwable throwable) {
+
+		if (throwable instanceof AssumptionViolatedException) {
+			runNotifier.fireTestAssumptionFailed(
+				new Failure(description, throwable));
 		}
-		catch (AssumptionViolatedException ave) {
-			runNotifier.fireTestAssumptionFailed(new Failure(description, ave));
-		}
-		catch (MultipleFailureException mfe) {
+		else if (throwable instanceof MultipleFailureException) {
+			MultipleFailureException mfe = (MultipleFailureException)throwable;
+
 			for (Throwable t : mfe.getFailures()) {
 				runNotifier.fireTestFailure(new Failure(description, t));
 			}
 		}
-		catch (Throwable t) {
-			runNotifier.fireTestFailure(new Failure(description, t));
-		}
-	}
-
-	private Statement _createClassStatement(RunNotifier runNotifier) {
-		Statement statement = new Statement() {
-
-			@Override
-			public void evaluate() {
-				for (FrameworkMethod frameworkMethod : _getChildren()) {
-					_runMethod(frameworkMethod, runNotifier);
-				}
-			}
-
-		};
-
-		boolean hasTestMethod = false;
-
-		for (FrameworkMethod frameworkMethod : _getChildren()) {
-			if (!_isIgnored(frameworkMethod)) {
-				hasTestMethod = true;
-
-				break;
-			}
-		}
-
-		if (hasTestMethod && !_REMOTE) {
-			return new DeploymentStatement(statement);
-		}
-
-		return statement;
-	}
-
-	private Statement _createExecutorStatement(
-		FrameworkMethod frameworkMethod, Object target) {
-
-		Method method = frameworkMethod.getMethod();
-
-		if (_REMOTE) {
-			return new ServerExecutorStatement(target, method);
-		}
-
-		return new ClientExecutorStatement(target, method);
-	}
-
-	private Statement _createMethodStatement(FrameworkMethod frameworkMethod) {
-		Object target = null;
-
-		try {
-			target = _clazz.newInstance();
-		}
-		catch (ReflectiveOperationException roe) {
-			return new Fail(roe);
-		}
-
-		Statement statement = _createExecutorStatement(frameworkMethod, target);
-
-		statement = _withTimeout(frameworkMethod, statement);
-
-		return _withMethodRules(statement, frameworkMethod, target);
-	}
-
-	private Description _describeChild(FrameworkMethod frameworkMethod) {
-		return _methodDescriptions.computeIfAbsent(
-			frameworkMethod,
-			keyFrameworkMethod -> {
-				return Description.createTestDescription(
-					_clazz, keyFrameworkMethod.getName(),
-					keyFrameworkMethod.getAnnotations());
-			});
-	}
-
-	private List<FrameworkMethod> _getChildren() {
-		TestClass testClass = _getTestClass();
-
-		return testClass.getAnnotatedMethods(Test.class);
-	}
-
-	private TestClass _getTestClass() {
-		if (_testClass == null) {
-			_testClass = new FilteredSortedTestClass(_clazz);
-		}
-
-		return _testClass;
-	}
-
-	private boolean _isIgnored(FrameworkMethod frameworkMethod) {
-		if (frameworkMethod.getAnnotation(Ignore.class) != null) {
-			return true;
-		}
-
-		return false;
-	}
-
-	private void _runMethod(
-		FrameworkMethod frameworkMethod, RunNotifier runNotifier) {
-
-		Description description = _describeChild(frameworkMethod);
-
-		if (_isIgnored(frameworkMethod)) {
-			runNotifier.fireTestIgnored(description);
-		}
 		else {
-			Statement statement = _createMethodStatement(frameworkMethod);
-
-			runNotifier.fireTestStarted(description);
-
-			try {
-				statement.evaluate();
-			}
-			catch (AssumptionViolatedException ave) {
-				runNotifier.fireTestAssumptionFailed(
-					new Failure(description, ave));
-			}
-			catch (MultipleFailureException mfe) {
-				for (Throwable t : mfe.getFailures()) {
-					runNotifier.fireTestFailure(new Failure(description, t));
-				}
-			}
-			catch (Throwable t) {
-				runNotifier.fireTestFailure(new Failure(description, t));
-			}
-			finally {
-				runNotifier.fireTestFinished(description);
-			}
-		}
-	}
-
-	private Statement _withMethodRules(
-		Statement statement, FrameworkMethod frameworkMethod, Object target) {
-
-		TestClass testClass = _getTestClass();
-
-		for (MethodRule methodRule :
-				testClass.getAnnotatedMethodValues(
-					target, Rule.class, MethodRule.class)) {
-
-			statement = methodRule.apply(statement, frameworkMethod, target);
-		}
-
-		for (MethodRule methodRule :
-				testClass.getAnnotatedFieldValues(
-					target, Rule.class, MethodRule.class)) {
-
-			statement = methodRule.apply(statement, frameworkMethod, target);
-		}
-
-		return statement;
-	}
-
-	private Statement _withTimeout(
-		FrameworkMethod frameworkMethod, Statement statement) {
-
-		Test test = frameworkMethod.getAnnotation(Test.class);
-
-		if ((test == null) || (test.timeout() <= 0)) {
-			return statement;
-		}
-
-		FailOnTimeout.Builder builder = FailOnTimeout.builder();
-
-		builder.withTimeout(test.timeout(), TimeUnit.MILLISECONDS);
-
-		return builder.build(statement);
-	}
-
-	private static final boolean _REMOTE;
-
-	static {
-		URL url = Arquillian.class.getResource("/arquillian.remote.marker");
-
-		if (url == null) {
-			_REMOTE = false;
-		}
-		else {
-			_REMOTE = true;
+			runNotifier.fireTestFailure(new Failure(description, throwable));
 		}
 	}
 
 	private final Class<?> _clazz;
-	private Filter _filter;
-	private final Map<FrameworkMethod, Description> _methodDescriptions =
-		new ConcurrentHashMap<>();
 	private TestClass _testClass;
 
 	private class FilteredSortedTestClass extends TestClass {
@@ -299,37 +203,24 @@ public class Arquillian extends Runner implements Filterable {
 
 			super.scanAnnotatedMembers(frameworkMethodsMap, frameworkFieldsMap);
 
-			List<FrameworkMethod> frameworkMethods = frameworkMethodsMap.get(
-				Test.class);
+			_testFrameworkMethods = frameworkMethodsMap.get(Test.class);
 
-			if (_filter != null) {
-				Iterator<FrameworkMethod> iterator =
-					frameworkMethods.iterator();
-
-				while (iterator.hasNext()) {
-					FrameworkMethod frameworkMethod = iterator.next();
-
-					if (_filter.shouldRun(_describeChild(frameworkMethod))) {
-						try {
-							_filter.apply(frameworkMethod);
-						}
-						catch (NoTestsRemainException ntre) {
-							iterator.remove();
-						}
-					}
-					else {
-						iterator.remove();
-					}
-				}
-			}
-
-			frameworkMethods.sort(
+			_testFrameworkMethods.sort(
 				Comparator.comparing(FrameworkMethod::getName));
 		}
 
-		private FilteredSortedTestClass(Class<?> clazz) {
+		private FilteredSortedTestClass(Class<?> clazz, Filter filter) {
 			super(clazz);
+
+			if (filter != null) {
+				_testFrameworkMethods.removeIf(
+					frameworkMethod -> !filter.shouldRun(
+						Description.createTestDescription(
+							_clazz, frameworkMethod.getName())));
+			}
 		}
+
+		private List<FrameworkMethod> _testFrameworkMethods;
 
 	}
 
