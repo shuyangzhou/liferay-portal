@@ -365,12 +365,8 @@ public class DDMStructureImpl extends DDMStructureBaseImpl {
 
 	@Override
 	public boolean hasField(String fieldName) {
-		try {
-			if (_getDDMFormField(fieldName) != null) {
-				return true;
-			}
-		}
-		catch (PortalException pe) {
+		if (_fetchDDMFormField(fieldName) != null) {
+			return true;
 		}
 
 		return false;
@@ -478,6 +474,16 @@ public class DDMStructureImpl extends DDMStructureBaseImpl {
 	private DDMFormField _getDDMFormField(String fieldName)
 		throws PortalException {
 
+		DDMFormField ddmFormField = _fetchDDMFormField(fieldName);
+
+		if (ddmFormField != null) {
+			return ddmFormField;
+		}
+
+		throw new StructureFieldException("Unable to find field " + fieldName);
+	}
+
+	private DDMFormField _fetchDDMFormField(String fieldName) {
 		try {
 			DDMStructure parentDDMStructure = getParentDDMStructure();
 
@@ -507,7 +513,7 @@ public class DDMStructureImpl extends DDMStructureBaseImpl {
 			_log.error(e, e);
 		}
 
-		throw new StructureFieldException("Unable to find field " + fieldName);
+		return null;
 	}
 
 	private DDMFormField _getNestedDDMFormField(
