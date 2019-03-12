@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.ServiceScope;
 
 /**
  * @author Brian Wing Shun Chan
@@ -37,7 +38,7 @@ import org.osgi.service.component.annotations.Component;
 		"json.web.service.context.name=asset",
 		"json.web.service.context.path=AssetCategoryProperty"
 	},
-	service = AopService.class
+	scope = ServiceScope.SINGLETON, service = AopService.class
 )
 public class AssetCategoryPropertyServiceImpl
 	extends AssetCategoryPropertyServiceBaseImpl {

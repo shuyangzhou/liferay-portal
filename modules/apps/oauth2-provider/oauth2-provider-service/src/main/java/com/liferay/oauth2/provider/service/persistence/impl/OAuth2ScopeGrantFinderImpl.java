@@ -32,11 +32,14 @@ import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ServiceScope;
 
 /**
  * @author Carlos Sierra Andrés
  */
-@Component(service = OAuth2ScopeGrantFinder.class)
+@Component(
+	scope = ServiceScope.SINGLETON, service = OAuth2ScopeGrantFinder.class
+)
 public class OAuth2ScopeGrantFinderImpl
 	extends OAuth2ScopeGrantFinderBaseImpl implements OAuth2ScopeGrantFinder {
 

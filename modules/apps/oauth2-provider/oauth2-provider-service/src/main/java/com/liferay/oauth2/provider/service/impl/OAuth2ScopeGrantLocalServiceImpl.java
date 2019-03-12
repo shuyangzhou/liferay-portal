@@ -31,13 +31,14 @@ import java.util.Objects;
 
 import org.osgi.framework.Bundle;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.ServiceScope;
 
 /**
  * @author Brian Wing Shun Chan
  */
 @Component(
 	property = "model.class.name=com.liferay.oauth2.provider.model.OAuth2ScopeGrant",
-	service = AopService.class
+	scope = ServiceScope.SINGLETON, service = AopService.class
 )
 public class OAuth2ScopeGrantLocalServiceImpl
 	extends OAuth2ScopeGrantLocalServiceBaseImpl {

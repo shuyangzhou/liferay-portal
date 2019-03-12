@@ -81,13 +81,14 @@ import java.util.Set;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ServiceScope;
 
 /**
  * @author Brian Wing Shun Chan
  */
 @Component(
 	property = "model.class.name=com.liferay.oauth2.provider.model.OAuth2Application",
-	service = AopService.class
+	scope = ServiceScope.SINGLETON, service = AopService.class
 )
 public class OAuth2ApplicationLocalServiceImpl
 	extends OAuth2ApplicationLocalServiceBaseImpl {

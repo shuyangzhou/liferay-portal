@@ -27,13 +27,14 @@ import java.util.Date;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.ServiceScope;
 
 /**
  * @author Brian Wing Shun Chan
  */
 @Component(
 	property = "model.class.name=com.liferay.oauth2.provider.model.OAuth2Authorization",
-	service = AopService.class
+	scope = ServiceScope.SINGLETON, service = AopService.class
 )
 public class OAuth2AuthorizationLocalServiceImpl
 	extends OAuth2AuthorizationLocalServiceBaseImpl {

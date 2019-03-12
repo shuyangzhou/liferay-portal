@@ -37,11 +37,12 @@ import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ServiceScope;
 
 /**
  * @author Brian Wing Shun Chan
  */
-@Component(service = BlogsStatsUserFinder.class)
+@Component(scope = ServiceScope.SINGLETON, service = BlogsStatsUserFinder.class)
 public class BlogsStatsUserFinderImpl
 	extends BlogsStatsUserFinderBaseImpl implements BlogsStatsUserFinder {
 

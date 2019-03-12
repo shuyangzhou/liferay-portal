@@ -42,6 +42,7 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ServiceScope;
 
 /**
  * Provides the local service for accessing, adding, and deleting adaptive media
@@ -63,7 +64,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = "model.class.name=com.liferay.adaptive.media.image.model.AMImageEntry",
-	service = AopService.class
+	scope = ServiceScope.SINGLETON, service = AopService.class
 )
 public class AMImageEntryLocalServiceImpl
 	extends AMImageEntryLocalServiceBaseImpl {

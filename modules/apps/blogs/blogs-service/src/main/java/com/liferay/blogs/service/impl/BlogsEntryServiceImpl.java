@@ -64,6 +64,7 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.service.component.annotations.ServiceScope;
 
 /**
  * Provides the remote service for accessing, adding, deleting, subscription
@@ -78,7 +79,7 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 		"json.web.service.context.name=blogs",
 		"json.web.service.context.path=BlogsEntry"
 	},
-	service = AopService.class
+	scope = ServiceScope.SINGLETON, service = AopService.class
 )
 public class BlogsEntryServiceImpl extends BlogsEntryServiceBaseImpl {
 

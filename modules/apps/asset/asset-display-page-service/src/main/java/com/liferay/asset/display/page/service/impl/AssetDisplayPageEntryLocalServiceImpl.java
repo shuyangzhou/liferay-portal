@@ -40,13 +40,14 @@ import java.util.Optional;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ServiceScope;
 
 /**
  * @author Eudaldo Alonso
  */
 @Component(
 	property = "model.class.name=com.liferay.asset.display.page.model.AssetDisplayPageEntry",
-	service = AopService.class
+	scope = ServiceScope.SINGLETON, service = AopService.class
 )
 public class AssetDisplayPageEntryLocalServiceImpl
 	extends AssetDisplayPageEntryLocalServiceBaseImpl {

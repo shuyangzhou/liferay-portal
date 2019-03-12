@@ -41,12 +41,15 @@ import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ServiceScope;
 
 /**
  * @author Eudaldo Alonso
  * @author Alexander Chow
  */
-@Component(service = BookmarksFolderFinder.class)
+@Component(
+	scope = ServiceScope.SINGLETON, service = BookmarksFolderFinder.class
+)
 public class BookmarksFolderFinderImpl
 	extends BookmarksFolderFinderBaseImpl implements BookmarksFolderFinder {
 

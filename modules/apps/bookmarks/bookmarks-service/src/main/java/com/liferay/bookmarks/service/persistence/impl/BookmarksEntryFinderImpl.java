@@ -28,12 +28,13 @@ import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ServiceScope;
 
 /**
  * @author     Brian Wing Shun Chan
  * @deprecated As of Judson (7.1.x), with no direct replacement
  */
-@Component(service = BookmarksEntryFinder.class)
+@Component(scope = ServiceScope.SINGLETON, service = BookmarksEntryFinder.class)
 @Deprecated
 public class BookmarksEntryFinderImpl
 	extends BookmarksEntryFinderBaseImpl implements BookmarksEntryFinder {

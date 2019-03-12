@@ -38,6 +38,7 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.service.component.annotations.ServiceScope;
 
 /**
  * @author Brian Wing Shun Chan
@@ -48,7 +49,7 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 		"json.web.service.context.name=bookmarks",
 		"json.web.service.context.path=BookmarksEntry"
 	},
-	service = AopService.class
+	scope = ServiceScope.SINGLETON, service = AopService.class
 )
 public class BookmarksEntryServiceImpl extends BookmarksEntryServiceBaseImpl {
 

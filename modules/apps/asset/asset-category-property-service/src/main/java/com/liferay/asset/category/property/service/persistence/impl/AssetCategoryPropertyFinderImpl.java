@@ -31,12 +31,15 @@ import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ServiceScope;
 
 /**
  * @author Brian Wing Shun Chan
  * @author Jorge Ferrer
  */
-@Component(service = AssetCategoryPropertyFinder.class)
+@Component(
+	scope = ServiceScope.SINGLETON, service = AssetCategoryPropertyFinder.class
+)
 public class AssetCategoryPropertyFinderImpl
 	extends AssetCategoryPropertyFinderBaseImpl
 	implements AssetCategoryPropertyFinder {
