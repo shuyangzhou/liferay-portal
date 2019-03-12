@@ -119,17 +119,36 @@ public class DDMStructureImpl extends DDMStructureBaseImpl {
 	public DDMFormField getDDMFormField(String fieldName)
 		throws PortalException {
 
-		Map<String, DDMFormField> ddmFormFieldsMap =
-			getFullHierarchyDDMFormFieldsMap(true);
+		try {
+			DDMStructure parentDDMStructure = getParentDDMStructure();
 
-		DDMFormField ddmFormField = ddmFormFieldsMap.get(fieldName);
+			if (parentDDMStructure != null) {
+				return parentDDMStructure.getDDMFormField(fieldName);
+			}
 
-		if (ddmFormField == null) {
-			throw new StructureFieldException(
-				"Unable to find field " + fieldName);
+			DDMForm ddmForm = _getDDMForm();
+
+			for (DDMFormField ddmFormField : ddmForm.getDDMFormFields()) {
+				DDMFormField targetDDMFormField = null;
+
+				if (fieldName.equals(ddmFormField.getName())) {
+					targetDDMFormField = ddmFormField;
+				}
+				else {
+					targetDDMFormField = _getNestedDDMFormField(
+						ddmFormField, fieldName);
+				}
+
+				if (targetDDMFormField != null) {
+					return new DDMFormField(targetDDMFormField);
+				}
+			}
+		}
+		catch (Exception e) {
+			_log.error(e, e);
 		}
 
-		return ddmFormField;
+		throw new StructureFieldException("Unable to find field " + fieldName);
 	}
 
 	@Override
@@ -478,6 +497,30 @@ public class DDMStructureImpl extends DDMStructureBaseImpl {
 		}
 
 		return _ddmForm;
+	}
+
+	private DDMFormField _getNestedDDMFormField(
+		DDMFormField ddmFormField, String fieldName) {
+
+		DDMFormField targetDDMFormField = null;
+
+		for (DDMFormField nestedDDMFormField :
+				ddmFormField.getNestedDDMFormFields()) {
+
+			if (fieldName.equals(nestedDDMFormField.getName())) {
+				targetDDMFormField = nestedDDMFormField;
+			}
+			else {
+				targetDDMFormField = _getNestedDDMFormField(
+					nestedDDMFormField, fieldName);
+			}
+
+			if (targetDDMFormField != null) {
+				break;
+			}
+		}
+
+		return targetDDMFormField;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
