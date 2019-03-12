@@ -6,6 +6,7 @@ import ${packagePath}.service.base.${entity.name}${sessionTypeName}ServiceBaseIm
 import com.liferay.portal.aop.AopService;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.ServiceScope;
 
 <#if stringUtil.equals(sessionTypeName, "Local")>
 /**
@@ -47,7 +48,7 @@ import org.osgi.service.component.annotations.Component;
 				"json.web.service.context.path=${entity.name}"
 			}
 		</#if>,
-		service = AopService.class
+		scope = ServiceScope.SINGLETON, service = AopService.class
 	)
 </#if>
 public class ${entity.name}${sessionTypeName}ServiceImpl extends ${entity.name}${sessionTypeName}ServiceBaseImpl {

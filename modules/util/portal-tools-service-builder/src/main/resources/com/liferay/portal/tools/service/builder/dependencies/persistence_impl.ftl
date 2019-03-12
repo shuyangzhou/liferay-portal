@@ -121,6 +121,7 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ServiceScope;
 
 <#list entity.entityColumns as entityColumn>
 	<#if entityColumn.isCollection() && entityColumn.isMappingManyToMany()>
@@ -157,7 +158,7 @@ import org.osgi.service.component.annotations.Reference;
 />
 
 <#if dependencyInjectorDS>
-	@Component(service = ${entity.name}Persistence.class)
+	@Component(scope = ServiceScope.SINGLETON, service = ${entity.name}Persistence.class)
 
 	<#assign
 		columnBitmaskCacheEnabled = "_columnBitmaskEnabled"
