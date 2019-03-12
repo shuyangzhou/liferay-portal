@@ -455,34 +455,6 @@ public class DDMStructureImpl extends DDMStructureBaseImpl {
 		return parentStructure;
 	}
 
-	private DDMForm _getDDMForm() {
-		if (_ddmForm == null) {
-			try {
-				_ddmForm = DDMStructureLocalServiceUtil.getStructureDDMForm(
-					this);
-			}
-			catch (Exception e) {
-				_log.error(e, e);
-
-				return new DDMForm();
-			}
-		}
-
-		return _ddmForm;
-	}
-
-	private DDMFormField _getDDMFormField(String fieldName)
-		throws PortalException {
-
-		DDMFormField ddmFormField = _fetchDDMFormField(fieldName);
-
-		if (ddmFormField != null) {
-			return ddmFormField;
-		}
-
-		throw new StructureFieldException("Unable to find field " + fieldName);
-	}
-
 	private DDMFormField _fetchDDMFormField(String fieldName) {
 		try {
 			DDMStructure parentDDMStructure = getParentDDMStructure();
@@ -514,6 +486,34 @@ public class DDMStructureImpl extends DDMStructureBaseImpl {
 		}
 
 		return null;
+	}
+
+	private DDMForm _getDDMForm() {
+		if (_ddmForm == null) {
+			try {
+				_ddmForm = DDMStructureLocalServiceUtil.getStructureDDMForm(
+					this);
+			}
+			catch (Exception e) {
+				_log.error(e, e);
+
+				return new DDMForm();
+			}
+		}
+
+		return _ddmForm;
+	}
+
+	private DDMFormField _getDDMFormField(String fieldName)
+		throws PortalException {
+
+		DDMFormField ddmFormField = _fetchDDMFormField(fieldName);
+
+		if (ddmFormField != null) {
+			return ddmFormField;
+		}
+
+		throw new StructureFieldException("Unable to find field " + fieldName);
 	}
 
 	private DDMFormField _getNestedDDMFormField(
