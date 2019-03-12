@@ -17,18 +17,23 @@ package com.liferay.portal.aop.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.function.UnsafeSupplier;
 import com.liferay.portal.aop.AopService;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.spring.aop.AopCacheManager;
+import com.liferay.portal.spring.aop.AopInvocationHandler;
 import com.liferay.portal.spring.transaction.TransactionAttributeAdapter;
 import com.liferay.portal.spring.transaction.TransactionExecutor;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.util.Dictionary;
+import java.util.Set;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -38,6 +43,8 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.PrototypeServiceFactory;
+import org.osgi.framework.ServiceObjects;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 
@@ -54,19 +61,22 @@ public class AopServiceManagerTest {
 	public static final AggregateTestRule aggregateTestRule =
 		new LiferayIntegrationTestRule();
 
-	@Test
-	public void testAopService() {
+	@Before
+	public void setUp() {
 		Bundle bundle = FrameworkUtil.getBundle(AopServiceManagerTest.class);
 
-		BundleContext bundleContext = bundle.getBundleContext();
+		_bundleContext = bundle.getBundleContext();
+	}
 
+	@Test
+	public void testAopService() {
 		Dictionary<String, Object> properties = new HashMapDictionary<>();
 
 		properties.put("key", "value");
 		properties.put(Constants.SERVICE_RANKING, 1);
 
 		ServiceRegistration<AopService> aopServiceServiceRegistration =
-			bundleContext.registerService(
+			_bundleContext.registerService(
 				AopService.class, new TestServiceImpl(), properties);
 
 		TestTransactionExecutor testTransactionExecutor =
@@ -74,16 +84,16 @@ public class AopServiceManagerTest {
 
 		ServiceRegistration<TransactionExecutor>
 			transactionExecutorServiceRegistration =
-				bundleContext.registerService(
+				_bundleContext.registerService(
 					TransactionExecutor.class, testTransactionExecutor,
 					properties);
 
 		ServiceReference<TestService> testServiceServiceReference =
-			bundleContext.getServiceReference(TestService.class);
+			_bundleContext.getServiceReference(TestService.class);
 
 		Assert.assertNotNull(testServiceServiceReference);
 
-		TestService testService = bundleContext.getService(
+		TestService testService = _bundleContext.getService(
 			testServiceServiceReference);
 
 		try {
@@ -106,12 +116,98 @@ public class AopServiceManagerTest {
 				"value2", testServiceServiceReference.getProperty("key"));
 		}
 		finally {
-			bundleContext.ungetService(testServiceServiceReference);
+			_bundleContext.ungetService(testServiceServiceReference);
 		}
 
 		transactionExecutorServiceRegistration.unregister();
 
 		aopServiceServiceRegistration.unregister();
+	}
+
+	@Test
+	public void testAopServiceFactory() {
+		ServiceRegistration<?> aopServiceServiceRegistration =
+			_bundleContext.registerService(
+				AopService.class.getName(), new TestPrototypeServiceFactory(),
+				null);
+
+		ServiceReference<TestService> serviceReference =
+			_bundleContext.getServiceReference(TestService.class);
+
+		ServiceObjects<TestService> serviceObjects =
+			_bundleContext.getServiceObjects(serviceReference);
+
+		TestService testService1 = serviceObjects.getService();
+		TestService testService2 = serviceObjects.getService();
+
+		Assert.assertNotSame(testService1, testService2);
+
+		AopInvocationHandler aopInvocationHandler1 =
+			ProxyUtil.fetchInvocationHandler(
+				testService1, AopInvocationHandler.class);
+
+		AopInvocationHandler aopInvocationHandler2 =
+			ProxyUtil.fetchInvocationHandler(
+				testService2, AopInvocationHandler.class);
+
+		Assert.assertNotNull(aopInvocationHandler1);
+
+		Assert.assertNotNull(aopInvocationHandler2);
+
+		Assert.assertNotSame(
+			aopInvocationHandler1.getTarget(),
+			aopInvocationHandler2.getTarget());
+
+		Set<AopInvocationHandler> aopInvocationHandlers =
+			ReflectionTestUtil.getFieldValue(
+				AopCacheManager.class, "_aopInvocationHandlers");
+
+		Assert.assertTrue(
+			aopInvocationHandlers.toString(),
+			aopInvocationHandlers.contains(aopInvocationHandler1));
+		Assert.assertTrue(
+			aopInvocationHandlers.toString(),
+			aopInvocationHandlers.contains(aopInvocationHandler2));
+
+		serviceObjects.ungetService(testService1);
+
+		Assert.assertFalse(
+			aopInvocationHandlers.toString(),
+			aopInvocationHandlers.contains(aopInvocationHandler1));
+		Assert.assertTrue(
+			aopInvocationHandlers.toString(),
+			aopInvocationHandlers.contains(aopInvocationHandler2));
+
+		serviceObjects.ungetService(testService2);
+
+		Assert.assertFalse(
+			aopInvocationHandlers.toString(),
+			aopInvocationHandlers.contains(aopInvocationHandler2));
+
+		_bundleContext.ungetService(serviceReference);
+
+		aopServiceServiceRegistration.unregister();
+	}
+
+	private BundleContext _bundleContext;
+
+	private static class TestPrototypeServiceFactory
+		implements PrototypeServiceFactory<AopService> {
+
+		@Override
+		public AopService getService(
+			Bundle bundle,
+			ServiceRegistration<AopService> serviceRegistration) {
+
+			return new TestServiceImpl();
+		}
+
+		@Override
+		public void ungetService(
+			Bundle bundle, ServiceRegistration<AopService> serviceRegistration,
+			AopService aopService) {
+		}
+
 	}
 
 	private static class TestServiceImpl implements AopService, TestService {
