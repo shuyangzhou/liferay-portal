@@ -76,6 +76,7 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ServiceScope;
 
 /**
  * The persistence implementation for the blogs entry service.
@@ -87,7 +88,9 @@ import org.osgi.service.component.annotations.Reference;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@Component(service = BlogsEntryPersistence.class)
+@Component(
+	scope = ServiceScope.SINGLETON, service = BlogsEntryPersistence.class
+)
 @ProviderType
 public class BlogsEntryPersistenceImpl
 	extends BasePersistenceImpl<BlogsEntry> implements BlogsEntryPersistence {

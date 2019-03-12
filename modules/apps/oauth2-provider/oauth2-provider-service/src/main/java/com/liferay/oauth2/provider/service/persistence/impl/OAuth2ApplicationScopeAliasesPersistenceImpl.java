@@ -57,6 +57,7 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ServiceScope;
 
 /**
  * The persistence implementation for the o auth2 application scope aliases service.
@@ -68,7 +69,10 @@ import org.osgi.service.component.annotations.Reference;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@Component(service = OAuth2ApplicationScopeAliasesPersistence.class)
+@Component(
+	scope = ServiceScope.SINGLETON,
+	service = OAuth2ApplicationScopeAliasesPersistence.class
+)
 @ProviderType
 public class OAuth2ApplicationScopeAliasesPersistenceImpl
 	extends BasePersistenceImpl<OAuth2ApplicationScopeAliases>

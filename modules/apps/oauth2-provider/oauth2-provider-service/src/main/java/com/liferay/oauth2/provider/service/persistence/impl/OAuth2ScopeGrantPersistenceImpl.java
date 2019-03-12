@@ -65,6 +65,7 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ServiceScope;
 
 /**
  * The persistence implementation for the o auth2 scope grant service.
@@ -76,7 +77,9 @@ import org.osgi.service.component.annotations.Reference;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@Component(service = OAuth2ScopeGrantPersistence.class)
+@Component(
+	scope = ServiceScope.SINGLETON, service = OAuth2ScopeGrantPersistence.class
+)
 @ProviderType
 public class OAuth2ScopeGrantPersistenceImpl
 	extends BasePersistenceImpl<OAuth2ScopeGrant>

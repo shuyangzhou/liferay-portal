@@ -58,6 +58,7 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ServiceScope;
 
 /**
  * The persistence implementation for the asset auto tagger entry service.
@@ -69,7 +70,10 @@ import org.osgi.service.component.annotations.Reference;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@Component(service = AssetAutoTaggerEntryPersistence.class)
+@Component(
+	scope = ServiceScope.SINGLETON,
+	service = AssetAutoTaggerEntryPersistence.class
+)
 @ProviderType
 public class AssetAutoTaggerEntryPersistenceImpl
 	extends BasePersistenceImpl<AssetAutoTaggerEntry>

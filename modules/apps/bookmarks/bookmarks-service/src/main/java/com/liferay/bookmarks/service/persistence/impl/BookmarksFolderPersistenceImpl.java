@@ -65,6 +65,7 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ServiceScope;
 
 /**
  * The persistence implementation for the bookmarks folder service.
@@ -76,7 +77,9 @@ import org.osgi.service.component.annotations.Reference;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@Component(service = BookmarksFolderPersistence.class)
+@Component(
+	scope = ServiceScope.SINGLETON, service = BookmarksFolderPersistence.class
+)
 @ProviderType
 public class BookmarksFolderPersistenceImpl
 	extends BasePersistenceImpl<BookmarksFolder>

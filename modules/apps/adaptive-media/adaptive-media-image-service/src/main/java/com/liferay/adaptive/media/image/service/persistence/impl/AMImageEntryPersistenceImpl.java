@@ -60,6 +60,7 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ServiceScope;
 
 /**
  * The persistence implementation for the am image entry service.
@@ -71,7 +72,9 @@ import org.osgi.service.component.annotations.Reference;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@Component(service = AMImageEntryPersistence.class)
+@Component(
+	scope = ServiceScope.SINGLETON, service = AMImageEntryPersistence.class
+)
 @ProviderType
 public class AMImageEntryPersistenceImpl
 	extends BasePersistenceImpl<AMImageEntry>
