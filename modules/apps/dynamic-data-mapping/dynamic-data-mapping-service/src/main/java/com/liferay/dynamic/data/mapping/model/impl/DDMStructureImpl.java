@@ -365,10 +365,15 @@ public class DDMStructureImpl extends DDMStructureBaseImpl {
 
 	@Override
 	public boolean hasField(String fieldName) {
-		Map<String, DDMFormField> ddmFormFieldsMap =
-			getFullHierarchyDDMFormFieldsMap(true);
+		try {
+			if (_getDDMFormField(fieldName) != null) {
+				return true;
+			}
+		}
+		catch (PortalException pe) {
+		}
 
-		return ddmFormFieldsMap.containsKey(fieldName);
+		return false;
 	}
 
 	@Override
