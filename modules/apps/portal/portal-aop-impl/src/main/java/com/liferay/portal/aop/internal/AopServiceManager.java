@@ -16,7 +16,6 @@ package com.liferay.portal.aop.internal;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.aop.AopService;
-import com.liferay.portal.kernel.monitoring.ServiceMonitoringControl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.spring.transaction.TransactionExecutor;
 
@@ -73,9 +72,6 @@ public class AopServiceManager {
 	@Reference(target = "(original.bean=true)")
 	private TransactionExecutor _portalTransactionExecutor;
 
-	@Reference
-	private ServiceMonitoringControl _serviceMonitoringControl;
-
 	private ServiceTracker<TransactionExecutor, TransactionExecutorHolder>
 		_transactionExecutorServiceTracker;
 
@@ -105,8 +101,7 @@ public class AopServiceManager {
 					serviceReference.getProperty(Constants.SERVICE_BUNDLEID),
 					(bundleId, aopServiceResolver) -> {
 						if (aopServiceResolver == null) {
-							aopServiceResolver = new AopServiceResolver(
-								_serviceMonitoringControl);
+							aopServiceResolver = new AopServiceResolver();
 						}
 
 						aopServiceResolver.addAopServiceRegistrar(
@@ -116,8 +111,7 @@ public class AopServiceManager {
 					});
 			}
 			else {
-				aopServiceRegistrar.register(
-					_portalTransactionExecutor, _serviceMonitoringControl);
+				aopServiceRegistrar.register(_portalTransactionExecutor);
 			}
 
 			return aopServiceRegistrar;
@@ -223,8 +217,7 @@ public class AopServiceManager {
 				serviceReference.getProperty(Constants.SERVICE_BUNDLEID),
 				(bundleId, aopServiceResolver) -> {
 					if (aopServiceResolver == null) {
-						aopServiceResolver = new AopServiceResolver(
-							_serviceMonitoringControl);
+						aopServiceResolver = new AopServiceResolver();
 					}
 
 					aopServiceResolver.addTransactionExecutorHolder(
