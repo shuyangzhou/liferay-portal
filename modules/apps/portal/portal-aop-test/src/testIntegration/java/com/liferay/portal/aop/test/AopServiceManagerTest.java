@@ -34,7 +34,7 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.util.Dictionary;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
 import org.apache.log4j.Level;
@@ -171,31 +171,31 @@ public class AopServiceManagerTest {
 			aopInvocationHandler1.getTarget(),
 			aopInvocationHandler2.getTarget());
 
-		Set<AopInvocationHandler> aopInvocationHandlers =
+		Map<AopInvocationHandler, ?> aopInvocationHandlers =
 			ReflectionTestUtil.getFieldValue(
 				AopCacheManager.class, "_aopInvocationHandlers");
 
 		Assert.assertTrue(
 			aopInvocationHandlers.toString(),
-			aopInvocationHandlers.contains(aopInvocationHandler1));
+			aopInvocationHandlers.containsKey(aopInvocationHandler1));
 		Assert.assertTrue(
 			aopInvocationHandlers.toString(),
-			aopInvocationHandlers.contains(aopInvocationHandler2));
+			aopInvocationHandlers.containsKey(aopInvocationHandler2));
 
 		serviceObjects.ungetService(testService1);
 
 		Assert.assertFalse(
 			aopInvocationHandlers.toString(),
-			aopInvocationHandlers.contains(aopInvocationHandler1));
+			aopInvocationHandlers.containsKey(aopInvocationHandler1));
 		Assert.assertTrue(
 			aopInvocationHandlers.toString(),
-			aopInvocationHandlers.contains(aopInvocationHandler2));
+			aopInvocationHandlers.containsKey(aopInvocationHandler2));
 
 		serviceObjects.ungetService(testService2);
 
 		Assert.assertFalse(
 			aopInvocationHandlers.toString(),
-			aopInvocationHandlers.contains(aopInvocationHandler2));
+			aopInvocationHandlers.containsKey(aopInvocationHandler2));
 
 		_bundleContext.ungetService(serviceReference);
 
