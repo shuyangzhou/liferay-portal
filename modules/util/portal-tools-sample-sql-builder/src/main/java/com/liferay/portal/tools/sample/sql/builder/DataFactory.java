@@ -963,6 +963,11 @@ public class DataFactory {
 						"yyyy-MM-dd HH:mm:ss", timeZone);
 			}
 		}
+		else {
+			TimeZone timeZone = TimeZone.getDefault();
+
+			properties.setProperty("sample.sql.db.time.zone", timeZone.getID());
+		}
 
 		_maxAssetCategoryCount = GetterUtil.getInteger(
 			properties.getProperty("sample.sql.max.asset.category.count"));
