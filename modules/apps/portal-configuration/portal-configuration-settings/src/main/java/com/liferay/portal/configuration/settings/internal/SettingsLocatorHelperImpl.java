@@ -50,6 +50,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import javax.portlet.PortletPreferences;
 
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Activate;
@@ -377,9 +378,11 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 			Class<?> configurationBeanClass =
 				configurationBeanDeclaration.getConfigurationBeanClass();
 
+			Bundle serviceBundle = serviceReference.getBundle();
+
 			ConfigurationBeanManagedService configurationBeanManagedService =
 				new ConfigurationBeanManagedService(
-					context, configurationBeanClass,
+					serviceBundle.getBundleContext(), configurationBeanClass,
 					configurationBean -> {
 						ClassLoader classLoader =
 							configurationBeanClass.getClassLoader();
