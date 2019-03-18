@@ -2806,8 +2806,8 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 
 		sourceSet.setRuntimeClasspath(
 			FileUtil.join(
-				compileClasspathConfiguration, sourceSet.getRuntimeClasspath(),
-				portalTestConfiguration, portalConfiguration));
+				compileClasspathConfiguration, portalConfiguration,
+				sourceSet.getRuntimeClasspath(), portalTestConfiguration));
 	}
 
 	private void _configureSourceSetTestIntegration(
@@ -2831,8 +2831,8 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 
 		sourceSet.setRuntimeClasspath(
 			FileUtil.join(
-				compileOnlyConfiguration, sourceSet.getRuntimeClasspath(),
-				portalTestConfiguration, portalConfiguration));
+				portalConfiguration, compileOnlyConfiguration,
+				sourceSet.getRuntimeClasspath(), portalTestConfiguration));
 	}
 
 	private void _configureTaskBaselineSyncReleaseVersions(
