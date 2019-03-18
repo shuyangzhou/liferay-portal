@@ -92,6 +92,37 @@ public class PortletBagImpl implements PortletBag {
 			"javax.portlet.name", portletName);
 	}
 
+	public PortletBagImpl(
+		String portletId, String portletName, ServletContext servletContext,
+		Portlet portletInstance, String resourceBundleBaseName,
+		FriendlyURLMapperTracker friendlyURLMapperTracker,
+		List<ServiceRegistration<?>> serviceRegistrations) {
+
+		_portletName = portletId;
+		_servletContext = servletContext;
+		_portletInstance = portletInstance;
+		_resourceBundleBaseName = resourceBundleBaseName;
+		_friendlyURLMapperTracker = friendlyURLMapperTracker;
+		_serviceRegistrations = serviceRegistrations;
+
+		Registry registry = RegistryUtil.getRegistry();
+
+		if ((portletId == null ) || (portletId.equals(portletName))) {
+			_filter = registry.getFilter(
+				"(|(javax.portlet.name=" + portletName +
+					")(javax.portlet.name=ALL))");
+		}
+		else {
+			_filter = registry.getFilter(
+				StringBundler.concat(
+					"(|(javax.portlet.name=", portletId,
+					")(javax.portlet.name=", portletName,
+					")(javax.portlet.name=ALL))"));
+		}
+
+		_properties = Collections.singletonMap("javax.portlet.name", portletId);
+	}
+
 	@Override
 	public Object clone() {
 		return new PortletBagImpl(
