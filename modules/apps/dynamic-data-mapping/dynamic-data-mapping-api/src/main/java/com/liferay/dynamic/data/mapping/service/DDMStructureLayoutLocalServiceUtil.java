@@ -413,6 +413,10 @@ public class DDMStructureLayoutLocalServiceUtil {
 		return getService().getStructureLayouts(groupId, start, end);
 	}
 
+	public static int getStructureLayoutsCount(long groupId) {
+		return getService().getStructureLayoutsCount(groupId);
+	}
+
 	/**
 	 * Updates the ddm structure layout in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *

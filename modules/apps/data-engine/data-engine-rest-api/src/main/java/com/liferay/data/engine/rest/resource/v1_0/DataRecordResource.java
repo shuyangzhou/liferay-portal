@@ -37,8 +37,7 @@ public interface DataRecordResource {
 		throws Exception;
 
 	public DataRecord postDataRecordCollectionDataRecord(
-			Long dataRecordCollectionId, Long contentSpaceId,
-			DataRecord dataRecord)
+			Long dataRecordCollectionId, DataRecord dataRecord)
 		throws Exception;
 
 	public boolean deleteDataRecord(Long dataRecordId) throws Exception;

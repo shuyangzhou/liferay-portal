@@ -10,6 +10,8 @@
 	{@param? _handleColumnSpacingOptionMousedown: any}
 	{@param? _handleContainerPaddingOptionChange: any}
 	{@param? _handleContainerTypeOptionChange: any}
+	{@param? _handleNumberOfColumnsOptionChange: any}
+	{@param? _numberOfColumnsOptions: ?}
 	{@param? _paddingSizes: list<string>}
 	{@param? _sectionColumnsCount: number}
 	{@param? _selectedPaddingSizes: [
@@ -18,6 +20,14 @@
 	]}
 
 	<div class="floating-toolbar-spacing-panel">
+		<div class="form-group">
+			{call .numberOfColumnsOptions}
+				{param handleNumberOfColumnsOptionChange: $_handleNumberOfColumnsOptionChange /}
+				{param numberOfColumnsOptions: $_numberOfColumnsOptions /}
+				{param item: $item /}
+			{/call}
+		</div>
+
 		<div class="form-group">
 			{call .containerTypeOptions}
 				{param containerTypes: $_containerTypes /}
@@ -64,6 +74,91 @@
 			</div>
 		{/if}
 	</div>
+{/template}
+
+/**
+ * Columns number
+ */
+{template .numberOfColumnsOptions}
+	{@param item: [
+		columns: list<?>
+	]}
+	{@param? numberOfColumnsOptions: list<[
+		label: string,
+		numberOfColumnId: string
+	]>}
+	{@param? handleNumberOfColumnsOptionChange: any}
+
+	{if $numberOfColumnsOptions}
+		<label for="floatingToolbarSpacingPanelNumberOfColumnsOption">
+			{msg desc=""}number-of-columns{/msg}
+		</label>
+
+		<select
+			class="form-control form-control-sm"
+			data-onchange="{$handleNumberOfColumnsOptionChange}"
+			id="floatingToolbarSpacingPanelNumberOfColumnsOption"
+		>
+			{foreach $numberOfColumnsOption in $numberOfColumnsOptions}
+				{call .numberOfColumnsOption}
+					{param item: $item /}
+					{param key: $numberOfColumnsOption.numberOfColumnId /}
+					{param numberOfColumnsOption: $numberOfColumnsOption /}
+				{/call}
+			{/foreach}
+		</select>
+	{/if}
+{/template}
+
+/**
+ * Columns number option
+ */
+{template .numberOfColumnsOption}
+	{@param numberOfColumnsOption: [
+		label: string,
+		numberOfColumnId: string
+	]}
+	{@param item: [
+		columns: list<?>
+	]}
+
+	{let $optionAttributes kind="attributes"}
+		value="{$numberOfColumnsOption.numberOfColumnId}"
+
+		{if $item.columns and length($item.columns) == $numberOfColumnsOption.numberOfColumnId}
+			selected
+		{/if}
+	{/let}
+
+	<option {$optionAttributes}>
+		{$numberOfColumnsOption.label}
+	</option>
+{/template}
+
+/**
+ * Column spacing options
+ */
+{template .columnSpacingOptions}
+	{@param item: [
+		config: [
+			columnSpacing: bool
+		]
+	]}
+	{@param? handleColumnSpacingOptionChange: any}
+	{@param? handleColumnSpacingOptionMousedown: any}
+
+	{let $spacingCheckboxLabel kind="text"}
+		{msg desc=""}space-between-columns{/msg}
+	{/let}
+
+	{call ClayCheckbox.render}
+		{param checked: ($item.config and $item.config.columnSpacing) ?: true /}
+		{param events: [
+			'change': $handleColumnSpacingOptionChange,
+			'mousedown': $handleColumnSpacingOptionMousedown
+		] /}
+		{param label: $spacingCheckboxLabel /}
+	{/call}
 {/template}
 
 /**
@@ -116,32 +211,6 @@
 	<option {$optionAttributes}>
 		x{$paddingSize}
 	</option>
-{/template}
-
-/**
- * Column spacing options
- */
-{template .columnSpacingOptions}
-	{@param item: [
-		config: [
-			columnSpacing: bool
-		]
-	]}
-	{@param? handleColumnSpacingOptionChange: any}
-	{@param? handleColumnSpacingOptionMousedown: any}
-
-	{let $spacingCheckboxLabel kind="text"}
-		{msg desc=""}space-between-columns{/msg}
-	{/let}
-
-	{call ClayCheckbox.render}
-		{param checked: ($item.config and $item.config.columnSpacing) ?: true /}
-		{param events: [
-			'change': $handleColumnSpacingOptionChange,
-			'mousedown': $handleColumnSpacingOptionMousedown
-		] /}
-		{param label: $spacingCheckboxLabel /}
-	{/call}
 {/template}
 
 /**

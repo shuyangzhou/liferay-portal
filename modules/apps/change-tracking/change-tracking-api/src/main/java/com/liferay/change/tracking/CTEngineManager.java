@@ -212,11 +212,12 @@ public interface CTEngineManager {
 	 * tracking or <code>false</code> if not.
 	 *
 	 * @param  companyId the primary key of the company
-	 * @param  classNameId the class name ID of the model class
+	 * @param  modelClassNameId the class name ID of the model class
 	 * @return <code>true</code> if the given base model supports change
 	 *         tracking; <code>false</code> otherwise.
 	 */
-	public boolean isChangeTrackingSupported(long companyId, long classNameId);
+	public boolean isChangeTrackingSupported(
+		long companyId, long modelClassNameId);
 
 	/**
 	 * Publishes all the change entries from the given change tracking

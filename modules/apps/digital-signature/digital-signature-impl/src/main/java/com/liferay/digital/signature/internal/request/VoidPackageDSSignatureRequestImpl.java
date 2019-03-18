@@ -24,10 +24,12 @@ public class VoidPackageDSSignatureRequestImpl
 	implements VoidPackageDSSignatureRequest {
 
 	public VoidPackageDSSignatureRequestImpl(
-		DSSessionKey dsSessionKey, String dsSignaturePackageKey) {
+		DSSessionKey dsSessionKey, String dsSignaturePackageKey,
+		String voidReason) {
 
 		_dsSessionKey = dsSessionKey;
 		_dsSignaturePackageKey = dsSignaturePackageKey;
+		_voidReason = voidReason;
 	}
 
 	@Override
@@ -54,13 +56,9 @@ public class VoidPackageDSSignatureRequestImpl
 		_externalReferenceKey = externalReferenceKey;
 	}
 
-	public void setVoidReason(String voidReason) {
-		_voidReason = voidReason;
-	}
-
 	private final DSSessionKey _dsSessionKey;
 	private final String _dsSignaturePackageKey;
 	private String _externalReferenceKey;
-	private String _voidReason;
+	private final String _voidReason;
 
 }

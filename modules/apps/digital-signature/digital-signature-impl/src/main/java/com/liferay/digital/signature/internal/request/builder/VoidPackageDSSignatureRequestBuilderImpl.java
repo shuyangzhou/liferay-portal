@@ -33,11 +33,10 @@ public class VoidPackageDSSignatureRequestBuilderImpl
 	public VoidPackageDSSignatureRequest getVoidPackageDSSignatureRequest() {
 		VoidPackageDSSignatureRequestImpl voidPackageDSSignatureRequestImpl =
 			new VoidPackageDSSignatureRequestImpl(
-				_dsSessionKey, _dsSignaturePackageKey);
+				_dsSessionKey, _dsSignaturePackageKey, _voidReason);
 
 		voidPackageDSSignatureRequestImpl.setExternalReferenceKey(
 			_externalReferenceKey);
-		voidPackageDSSignatureRequestImpl.setVoidReason(_voidReason);
 
 		return voidPackageDSSignatureRequestImpl;
 	}

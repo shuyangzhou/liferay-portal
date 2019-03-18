@@ -27,6 +27,7 @@ import java.io.ObjectOutput;
 import java.io.Writer;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -37,6 +38,10 @@ public class JSONArrayImpl implements JSONArray {
 
 	public JSONArrayImpl() {
 		_jsonArray = new org.json.JSONArray();
+	}
+
+	public JSONArrayImpl(Collection<?> collection) {
+		_jsonArray = new org.json.JSONArray(collection);
 	}
 
 	public JSONArrayImpl(org.json.JSONArray jsonArray) {

@@ -15,10 +15,14 @@
 package com.liferay.data.engine.rest.internal.dto.v1_0.util;
 
 import com.liferay.data.engine.rest.dto.v1_0.LocalizedValue;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -27,6 +31,22 @@ import java.util.Map;
  * @author Jeyvison Nascimento
  */
 public class LocalizedValueUtil {
+
+	public static JSONObject toJSONObject(LocalizedValue[] localizedValues)
+		throws Exception {
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		if (ArrayUtil.isEmpty(localizedValues)) {
+			return jsonObject;
+		}
+
+		for (LocalizedValue localizedValue : localizedValues) {
+			jsonObject.put(localizedValue.getKey(), localizedValue.getValue());
+		}
+
+		return jsonObject;
+	}
 
 	public static Map<Locale, String> toLocalizationMap(
 		LocalizedValue[] localizedValues) {
@@ -40,6 +60,26 @@ public class LocalizedValueUtil {
 		}
 
 		return localizationMap;
+	}
+
+	public static LocalizedValue[] toLocalizedValues(JSONObject jsonObject) {
+		List<LocalizedValue> localizedValues = new ArrayList<>();
+
+		Iterator<String> keys = jsonObject.keys();
+
+		while (keys.hasNext()) {
+			LocalizedValue localizedValue = new LocalizedValue();
+
+			String key = keys.next();
+
+			localizedValue.setKey(key);
+			localizedValue.setValue(jsonObject.getString(key));
+
+			localizedValues.add(localizedValue);
+		}
+
+		return localizedValues.toArray(
+			new LocalizedValue[localizedValues.size()]);
 	}
 
 	public static LocalizedValue[] toLocalizedValues(

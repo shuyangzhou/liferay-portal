@@ -22,7 +22,9 @@ import com.liferay.dynamic.data.lists.model.DDLRecordSetConstants;
 import com.liferay.dynamic.data.lists.service.DDLRecordSetLocalService;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMStructureService;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
@@ -40,6 +42,47 @@ import org.osgi.service.component.annotations.ServiceScope;
 )
 public class DataRecordCollectionResourceImpl
 	extends BaseDataRecordCollectionResourceImpl {
+
+	@Override
+	public boolean deleteDataRecordCollection(Long dataRecordCollectionId)
+		throws Exception {
+
+		_ddlRecordSetLocalService.deleteRecordSet(dataRecordCollectionId);
+
+		return true;
+	}
+
+	@Override
+	public Page<DataRecordCollection> getContentSpaceDataRecordCollectionsPage(
+			Long contentSpaceId, String keywords, Pagination pagination)
+		throws Exception {
+
+		if (keywords == null) {
+			return Page.of(
+				transform(
+					_ddlRecordSetLocalService.getRecordSets(
+						contentSpaceId, pagination.getStartPosition(),
+						pagination.getEndPosition()),
+					this::_toDataRecordCollection),
+				pagination,
+				_ddlRecordSetLocalService.getRecordSetsCount(contentSpaceId));
+		}
+
+		Group group = _groupLocalService.getGroup(contentSpaceId);
+
+		return Page.of(
+			transform(
+				_ddlRecordSetLocalService.search(
+					group.getCompanyId(), contentSpaceId, keywords,
+					DDLRecordSetConstants.SCOPE_DATA_ENGINE,
+					pagination.getStartPosition(), pagination.getEndPosition(),
+					null),
+				this::_toDataRecordCollection),
+			pagination,
+			_ddlRecordSetLocalService.searchCount(
+				group.getCompanyId(), contentSpaceId, keywords,
+				DDLRecordSetConstants.SCOPE_DATA_ENGINE));
+	}
 
 	@Override
 	public Page<DataRecordCollection>
@@ -97,7 +140,7 @@ public class DataRecordCollectionResourceImpl
 		return _toDataRecordCollection(
 			_ddlRecordSetLocalService.addRecordSet(
 				PrincipalThreadLocal.getUserId(), ddmStructure.getGroupId(),
-				dataDefinitionId, null,
+				dataRecordCollection.getDataDefinitionId(), null,
 				LocalizedValueUtil.toLocalizationMap(
 					dataRecordCollection.getName()),
 				LocalizedValueUtil.toLocalizationMap(
@@ -145,5 +188,8 @@ public class DataRecordCollectionResourceImpl
 
 	@Reference
 	private DDMStructureService _ddmStructureService;
+
+	@Reference
+	private GroupLocalService _groupLocalService;
 
 }

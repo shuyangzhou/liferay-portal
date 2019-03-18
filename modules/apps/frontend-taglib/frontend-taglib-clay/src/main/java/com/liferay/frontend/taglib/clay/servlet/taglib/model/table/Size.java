@@ -12,28 +12,23 @@
  * details.
  */
 
-package com.liferay.portal.verify;
-
-import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portal.verify.test.BaseVerifyProcessTestCase;
-
-import org.junit.ClassRule;
-import org.junit.Rule;
+package com.liferay.frontend.taglib.clay.servlet.taglib.model.table;
 
 /**
- * @author Manuel de la Peña
+ * @author Iván Zaera Avellón
  */
-public class VerifyRoleTest extends BaseVerifyProcessTestCase {
+public enum Size {
 
-	@ClassRule
-	@Rule
-	public static final AggregateTestRule aggregateTestRule =
-		new LiferayIntegrationTestRule();
+	EXTRA_LARGE("xl"), LARGE("lg"), MEDIUM("md"), SMALL("sm");
 
-	@Override
-	protected VerifyProcess getVerifyProcess() {
-		return new VerifyRole();
+	public String getValue() {
+		return _value;
 	}
+
+	private Size(String value) {
+		_value = value;
+	}
+
+	private final String _value;
 
 }

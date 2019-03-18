@@ -255,7 +255,7 @@ public class CTEngineManagerImpl implements CTEngineManager {
 
 		for (CTEntry ctEntry : sourceCTEntries) {
 			Optional<CTEntry> latestTargetCTEntryOptional = _getLatestCTEntry(
-				targetCTCollectionId, ctEntry.getResourcePrimKey());
+				targetCTCollectionId, ctEntry.getModelResourcePrimKey());
 
 			if (!latestTargetCTEntryOptional.isPresent()) {
 				continue;
@@ -391,12 +391,14 @@ public class CTEngineManagerImpl implements CTEngineManager {
 	}
 
 	@Override
-	public boolean isChangeTrackingSupported(long companyId, long classNameId) {
-		String className = _portal.getClassName(classNameId);
+	public boolean isChangeTrackingSupported(
+		long companyId, long modelClassNameId) {
+
+		String modelClassName = _portal.getClassName(modelClassNameId);
 
 		Optional<CTConfiguration<?, ?>> ctConfigurationOptional =
 			_ctConfigurationRegistry.
-				getCTConfigurationOptionalByVersionClassName(className);
+				getCTConfigurationOptionalByVersionClassName(modelClassName);
 
 		return ctConfigurationOptional.isPresent();
 	}
@@ -677,7 +679,7 @@ public class CTEngineManagerImpl implements CTEngineManager {
 	}
 
 	private boolean _isColliding(CTEntry ctEntry, CTEntry productionCTEntry) {
-		if (ctEntry.getClassPK() < productionCTEntry.getClassPK()) {
+		if (ctEntry.getModelClassPK() < productionCTEntry.getModelClassPK()) {
 			return true;
 		}
 

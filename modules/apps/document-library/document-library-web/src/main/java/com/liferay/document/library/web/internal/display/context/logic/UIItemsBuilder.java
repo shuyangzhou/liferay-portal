@@ -784,9 +784,10 @@ public class UIItemsBuilder {
 			throw new SystemException("Unable to create permissions URL", e);
 		}
 
-		StringBundler sb = new StringBundler(5);
+		StringBundler sb = new StringBundler(6);
 
-		sb.append("Liferay.Util.openWindow({title: '");
+		sb.append("Liferay.Util.openWindow({dialogIframe: {bodyCssClass: ");
+		sb.append("'dialog-with-footer'}, title: '");
 		sb.append(UnicodeLanguageUtil.get(_resourceBundle, "permissions"));
 		sb.append("', uri: '");
 		sb.append(permissionsURL);

@@ -33,6 +33,24 @@ const SAVE_CHANGES_DELAY = 1500;
 class FragmentEditableField extends Component {
 
 	/**
+	 * Checks if the given editable is mapped
+	 * @param {object} editableValues
+	 * @private
+	 * @return {boolean}
+	 * @review
+	 */
+	static _isMapped(editableValues) {
+		return Boolean(
+			editableValues.mappedField ||
+			(
+				editableValues.classNameId &&
+				editableValues.classPK &&
+				editableValues.fieldId
+			)
+		);
+	}
+
+	/**
 	 * @inheritDoc
 	 * @review
 	 */
@@ -82,13 +100,8 @@ class FragmentEditableField extends Component {
 		const translatedValue = segmentedValue[this.languageId] ||
 			segmentedValue[this.defaultLanguageId];
 
-		const mapped = Boolean(
-			this.editableValues.mappedField ||
-			(
-				this.editableValues.classNameId &&
-				this.editableValues.classPK &&
-				this.editableValues.fieldId
-			)
+		const mapped = FragmentEditableField._isMapped(
+			this.editableValues
 		);
 
 		const value = mapped ?
@@ -124,10 +137,9 @@ class FragmentEditableField extends Component {
 	 * @review
 	 */
 	rendered() {
-		if (
-			(`${this.fragmentEntryLinkId}-${this.editableId}` === this.activeItemId) &&
-			(this.activeItemType === FRAGMENTS_EDITOR_ITEM_TYPES.editable)
-		) {
+		if ((`${this.fragmentEntryLinkId}-${this.editableId}` === this.activeItemId) &&
+			(this.activeItemType === FRAGMENTS_EDITOR_ITEM_TYPES.editable)) {
+
 			this._createFloatingToolbar();
 		}
 		else {
@@ -286,13 +298,27 @@ class FragmentEditableField extends Component {
 		event.stopPropagation();
 
 		if (!this._editing) {
-			this.store.dispatchAction(
-				UPDATE_ACTIVE_ITEM,
-				{
-					activeItemId: `${this.fragmentEntryLinkId}-${this.editableId}`,
-					activeItemType: FRAGMENTS_EDITOR_ITEM_TYPES.editable
-				}
+			const mapped = FragmentEditableField._isMapped(
+				this.editableValues
 			);
+
+			if (!mapped &&
+				this.activeItemId === `${this.fragmentEntryLinkId}-${this.editableId}` &&
+				this.activeItemType === FRAGMENTS_EDITOR_ITEM_TYPES.editable) {
+
+				this._enableEditor();
+
+				this._disposeFloatingToolbar();
+			}
+			else {
+				this.store.dispatchAction(
+					UPDATE_ACTIVE_ITEM,
+					{
+						activeItemId: `${this.fragmentEntryLinkId}-${this.editableId}`,
+						activeItemType: FRAGMENTS_EDITOR_ITEM_TYPES.editable
+					}
+				);
+			}
 		}
 	}
 
@@ -352,12 +378,12 @@ class FragmentEditableField extends Component {
 
 			this._disposeFloatingToolbar();
 		}
-		else if (
-			panelId === FLOATING_TOOLBAR_PANELS.map.panelId &&
-			this.mappingFieldsURL &&
-			!this.selectedMappingTypes.subtype
-		) {
+		else if (panelId === FLOATING_TOOLBAR_PANELS.map.panelId &&
+				 this.mappingFieldsURL &&
+				 !this.selectedMappingTypes.type) {
+
 			event.preventDefault();
+
 			this.store.dispatchAction(OPEN_ASSET_TYPE_DIALOG);
 		}
 	}

@@ -102,6 +102,152 @@ public abstract class BaseDataRecordCollectionResourceTestCase {
 	}
 
 	@Test
+	public void testGetContentSpaceDataRecordCollectionsPage()
+		throws Exception {
+
+		Long contentSpaceId =
+			testGetContentSpaceDataRecordCollectionsPage_getContentSpaceId();
+
+		DataRecordCollection dataRecordCollection1 =
+			testGetContentSpaceDataRecordCollectionsPage_addDataRecordCollection(
+				contentSpaceId, randomDataRecordCollection());
+		DataRecordCollection dataRecordCollection2 =
+			testGetContentSpaceDataRecordCollectionsPage_addDataRecordCollection(
+				contentSpaceId, randomDataRecordCollection());
+
+		Page<DataRecordCollection> page =
+			invokeGetContentSpaceDataRecordCollectionsPage(
+				contentSpaceId, null, Pagination.of(1, 2));
+
+		Assert.assertEquals(2, page.getTotalCount());
+
+		assertEqualsIgnoringOrder(
+			Arrays.asList(dataRecordCollection1, dataRecordCollection2),
+			(List<DataRecordCollection>)page.getItems());
+		assertValid(page);
+	}
+
+	@Test
+	public void testGetContentSpaceDataRecordCollectionsPageWithPagination()
+		throws Exception {
+
+		Long contentSpaceId =
+			testGetContentSpaceDataRecordCollectionsPage_getContentSpaceId();
+
+		DataRecordCollection dataRecordCollection1 =
+			testGetContentSpaceDataRecordCollectionsPage_addDataRecordCollection(
+				contentSpaceId, randomDataRecordCollection());
+		DataRecordCollection dataRecordCollection2 =
+			testGetContentSpaceDataRecordCollectionsPage_addDataRecordCollection(
+				contentSpaceId, randomDataRecordCollection());
+		DataRecordCollection dataRecordCollection3 =
+			testGetContentSpaceDataRecordCollectionsPage_addDataRecordCollection(
+				contentSpaceId, randomDataRecordCollection());
+
+		Page<DataRecordCollection> page1 =
+			invokeGetContentSpaceDataRecordCollectionsPage(
+				contentSpaceId, null, Pagination.of(1, 2));
+
+		List<DataRecordCollection> dataRecordCollections1 =
+			(List<DataRecordCollection>)page1.getItems();
+
+		Assert.assertEquals(
+			dataRecordCollections1.toString(), 2,
+			dataRecordCollections1.size());
+
+		Page<DataRecordCollection> page2 =
+			invokeGetContentSpaceDataRecordCollectionsPage(
+				contentSpaceId, null, Pagination.of(2, 2));
+
+		Assert.assertEquals(3, page2.getTotalCount());
+
+		List<DataRecordCollection> dataRecordCollections2 =
+			(List<DataRecordCollection>)page2.getItems();
+
+		Assert.assertEquals(
+			dataRecordCollections2.toString(), 1,
+			dataRecordCollections2.size());
+
+		assertEqualsIgnoringOrder(
+			Arrays.asList(
+				dataRecordCollection1, dataRecordCollection2,
+				dataRecordCollection3),
+			new ArrayList<DataRecordCollection>() {
+				{
+					addAll(dataRecordCollections1);
+					addAll(dataRecordCollections2);
+				}
+			});
+	}
+
+	protected DataRecordCollection
+			testGetContentSpaceDataRecordCollectionsPage_addDataRecordCollection(
+				Long contentSpaceId, DataRecordCollection dataRecordCollection)
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	protected Long
+			testGetContentSpaceDataRecordCollectionsPage_getContentSpaceId()
+		throws Exception {
+
+		return testGroup.getGroupId();
+	}
+
+	protected Page<DataRecordCollection>
+			invokeGetContentSpaceDataRecordCollectionsPage(
+				Long contentSpaceId, String keywords, Pagination pagination)
+		throws Exception {
+
+		Http.Options options = _createHttpOptions();
+
+		String location =
+			_resourceURL +
+				_toPath(
+					"/content-spaces/{content-space-id}/data-record-collections",
+					contentSpaceId);
+
+		location = HttpUtil.addParameter(
+			location, "page", pagination.getPage());
+		location = HttpUtil.addParameter(
+			location, "pageSize", pagination.getPageSize());
+
+		options.setLocation(location);
+
+		return _outputObjectMapper.readValue(
+			HttpUtil.URLtoString(options),
+			new TypeReference<Page<DataRecordCollection>>() {
+			});
+	}
+
+	protected Http.Response
+			invokeGetContentSpaceDataRecordCollectionsPageResponse(
+				Long contentSpaceId, String keywords, Pagination pagination)
+		throws Exception {
+
+		Http.Options options = _createHttpOptions();
+
+		String location =
+			_resourceURL +
+				_toPath(
+					"/content-spaces/{content-space-id}/data-record-collections",
+					contentSpaceId);
+
+		location = HttpUtil.addParameter(
+			location, "page", pagination.getPage());
+		location = HttpUtil.addParameter(
+			location, "pageSize", pagination.getPageSize());
+
+		options.setLocation(location);
+
+		HttpUtil.URLtoString(options);
+
+		return options.getResponse();
+	}
+
+	@Test
 	public void testGetDataDefinitionDataRecordCollectionsPage()
 		throws Exception {
 

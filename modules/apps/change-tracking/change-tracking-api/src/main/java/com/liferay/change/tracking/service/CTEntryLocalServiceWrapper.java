@@ -78,14 +78,14 @@ public class CTEntryLocalServiceWrapper
 
 	@Override
 	public com.liferay.change.tracking.model.CTEntry addCTEntry(
-			long userId, long classNameId, long classPK, long resourcePrimKey,
-			int changeType, long ctCollectionId,
+			long userId, long modelClassNameId, long modelClassPK,
+			long modelResourcePrimKey, int changeType, long ctCollectionId,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _ctEntryLocalService.addCTEntry(
-			userId, classNameId, classPK, resourcePrimKey, changeType,
-			ctCollectionId, serviceContext);
+			userId, modelClassNameId, modelClassPK, modelResourcePrimKey,
+			changeType, ctCollectionId, serviceContext);
 	}
 
 	@Override
@@ -341,12 +341,12 @@ public class CTEntryLocalServiceWrapper
 	@Override
 	public java.util.List<com.liferay.change.tracking.model.CTEntry>
 		fetchCTEntries(
-			long ctCollectionId, long resourcePrimKey,
+			long ctCollectionId, long modelResourcePrimKey,
 			com.liferay.portal.kernel.dao.orm.QueryDefinition
 				<com.liferay.change.tracking.model.CTEntry> queryDefinition) {
 
 		return _ctEntryLocalService.fetchCTEntries(
-			ctCollectionId, resourcePrimKey, queryDefinition);
+			ctCollectionId, modelResourcePrimKey, queryDefinition);
 	}
 
 	@Override
@@ -369,17 +369,18 @@ public class CTEntryLocalServiceWrapper
 
 	@Override
 	public com.liferay.change.tracking.model.CTEntry fetchCTEntry(
-		long classNameId, long classPK) {
+		long modelClassNameId, long modelClassPK) {
 
-		return _ctEntryLocalService.fetchCTEntry(classNameId, classPK);
+		return _ctEntryLocalService.fetchCTEntry(
+			modelClassNameId, modelClassPK);
 	}
 
 	@Override
 	public com.liferay.change.tracking.model.CTEntry fetchCTEntry(
-		long ctCollectionId, long classNameId, long classPK) {
+		long ctCollectionId, long modelClassNameId, long modelClassPK) {
 
 		return _ctEntryLocalService.fetchCTEntry(
-			ctCollectionId, classNameId, classPK);
+			ctCollectionId, modelClassNameId, modelClassPK);
 	}
 
 	@Override
@@ -539,15 +540,6 @@ public class CTEntryLocalServiceWrapper
 	@Override
 	public String getOSGiServiceIdentifier() {
 		return _ctEntryLocalService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public java.util.List
-		<? extends com.liferay.portal.kernel.model.PersistedModel>
-				getPersistedModel(long resourcePrimKey)
-			throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _ctEntryLocalService.getPersistedModel(resourcePrimKey);
 	}
 
 	@Override

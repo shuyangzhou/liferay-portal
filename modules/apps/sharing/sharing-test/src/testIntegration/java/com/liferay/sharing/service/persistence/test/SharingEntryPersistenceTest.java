@@ -130,11 +130,13 @@ public class SharingEntryPersistenceTest {
 
 		newSharingEntry.setCompanyId(RandomTestUtil.nextLong());
 
+		newSharingEntry.setUserId(RandomTestUtil.nextLong());
+
+		newSharingEntry.setUserName(RandomTestUtil.randomString());
+
 		newSharingEntry.setCreateDate(RandomTestUtil.nextDate());
 
 		newSharingEntry.setModifiedDate(RandomTestUtil.nextDate());
-
-		newSharingEntry.setFromUserId(RandomTestUtil.nextLong());
 
 		newSharingEntry.setToUserId(RandomTestUtil.nextLong());
 
@@ -164,14 +166,15 @@ public class SharingEntryPersistenceTest {
 			existingSharingEntry.getCompanyId(),
 			newSharingEntry.getCompanyId());
 		Assert.assertEquals(
+			existingSharingEntry.getUserId(), newSharingEntry.getUserId());
+		Assert.assertEquals(
+			existingSharingEntry.getUserName(), newSharingEntry.getUserName());
+		Assert.assertEquals(
 			Time.getShortTimestamp(existingSharingEntry.getCreateDate()),
 			Time.getShortTimestamp(newSharingEntry.getCreateDate()));
 		Assert.assertEquals(
 			Time.getShortTimestamp(existingSharingEntry.getModifiedDate()),
 			Time.getShortTimestamp(newSharingEntry.getModifiedDate()));
-		Assert.assertEquals(
-			existingSharingEntry.getFromUserId(),
-			newSharingEntry.getFromUserId());
 		Assert.assertEquals(
 			existingSharingEntry.getToUserId(), newSharingEntry.getToUserId());
 		Assert.assertEquals(
@@ -224,13 +227,6 @@ public class SharingEntryPersistenceTest {
 	}
 
 	@Test
-	public void testCountByFromUserId() throws Exception {
-		_persistence.countByFromUserId(RandomTestUtil.nextLong());
-
-		_persistence.countByFromUserId(0L);
-	}
-
-	@Test
 	public void testCountByToUserId() throws Exception {
 		_persistence.countByToUserId(RandomTestUtil.nextLong());
 
@@ -261,30 +257,12 @@ public class SharingEntryPersistenceTest {
 	}
 
 	@Test
-	public void testCountByFU_C_C() throws Exception {
-		_persistence.countByFU_C_C(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
-			RandomTestUtil.nextLong());
-
-		_persistence.countByFU_C_C(0L, 0L, 0L);
-	}
-
-	@Test
 	public void testCountByTU_C_C() throws Exception {
 		_persistence.countByTU_C_C(
 			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
 			RandomTestUtil.nextLong());
 
 		_persistence.countByTU_C_C(0L, 0L, 0L);
-	}
-
-	@Test
-	public void testCountByFU_TU_C_C() throws Exception {
-		_persistence.countByFU_TU_C_C(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
-
-		_persistence.countByFU_TU_C_C(0L, 0L, 0L, 0L);
 	}
 
 	@Test
@@ -313,10 +291,10 @@ public class SharingEntryPersistenceTest {
 	protected OrderByComparator<SharingEntry> getOrderByComparator() {
 		return OrderByComparatorFactoryUtil.create(
 			"SharingEntry", "uuid", true, "sharingEntryId", true, "groupId",
-			true, "companyId", true, "createDate", true, "modifiedDate", true,
-			"fromUserId", true, "toUserId", true, "classNameId", true,
-			"classPK", true, "shareable", true, "actionIds", true,
-			"expirationDate", true);
+			true, "companyId", true, "userId", true, "userName", true,
+			"createDate", true, "modifiedDate", true, "toUserId", true,
+			"classNameId", true, "classPK", true, "shareable", true,
+			"actionIds", true, "expirationDate", true);
 	}
 
 	@Test
@@ -552,11 +530,6 @@ public class SharingEntryPersistenceTest {
 				existingSharingEntry, "getOriginalGroupId", new Class<?>[0]));
 
 		Assert.assertEquals(
-			Long.valueOf(existingSharingEntry.getFromUserId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingSharingEntry, "getOriginalFromUserId",
-				new Class<?>[0]));
-		Assert.assertEquals(
 			Long.valueOf(existingSharingEntry.getToUserId()),
 			ReflectionTestUtil.<Long>invoke(
 				existingSharingEntry, "getOriginalToUserId", new Class<?>[0]));
@@ -582,11 +555,13 @@ public class SharingEntryPersistenceTest {
 
 		sharingEntry.setCompanyId(RandomTestUtil.nextLong());
 
+		sharingEntry.setUserId(RandomTestUtil.nextLong());
+
+		sharingEntry.setUserName(RandomTestUtil.randomString());
+
 		sharingEntry.setCreateDate(RandomTestUtil.nextDate());
 
 		sharingEntry.setModifiedDate(RandomTestUtil.nextDate());
-
-		sharingEntry.setFromUserId(RandomTestUtil.nextLong());
 
 		sharingEntry.setToUserId(RandomTestUtil.nextLong());
 

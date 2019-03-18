@@ -115,6 +115,11 @@ public class ClassLoaderTrackerTest {
 
 			Assert.assertEquals(Bundle.STARTING, bundle.getState());
 
+			BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
+
+			Assert.assertSame(
+				bundleWiring.getClassLoader(), classLoaders.get(contextName));
+
 			// Test 4, load class cause lazy activation
 
 			Assert.assertNotSame(
@@ -122,8 +127,6 @@ public class ClassLoaderTrackerTest {
 				bundle.loadClass(ClassLoaderTrackerTest.class.getName()));
 
 			Assert.assertEquals(Bundle.ACTIVE, bundle.getState());
-
-			BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
 
 			Assert.assertSame(
 				bundleWiring.getClassLoader(), classLoaders.get(contextName));
@@ -149,11 +152,6 @@ public class ClassLoaderTrackerTest {
 			catch (Throwable t) {
 				throw t;
 			}
-
-			// Lazy bundles are not automatically restarted after refresh.
-			// See https://osgi.org/specification/osgi.core/7.0.0/framework.lifecycle.html#i3285256
-
-			bundle.loadClass(ClassLoaderTrackerTest.class.getName());
 
 			BundleWiring newBundleWiring = bundle.adapt(BundleWiring.class);
 

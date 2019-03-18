@@ -215,11 +215,6 @@ class FragmentEntryLinkContent extends Component {
 						editableId: editable.id,
 						editableValues,
 						element: editable,
-
-						events: {
-							mapButtonClicked: this._handleMapButtonClick
-						},
-
 						fragmentEntryLinkId: this.fragmentEntryLinkId,
 
 						processorsOptions: {

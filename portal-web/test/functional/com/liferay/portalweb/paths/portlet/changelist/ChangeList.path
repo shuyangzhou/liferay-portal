@@ -29,8 +29,18 @@
 	<td></td>
 </tr>
 <tr>
+	<td>CHECK_CIRCLE</td>
+	<td>//td[contains(.,'${key_contentTitle}')]//following-sibling::td//span[span/*[name()='svg'][contains(@class,'lexicon-icon')]]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>EMPTY_PRODUCTION_VIEW_TEXT</td>
 	<td>//div[contains(@class,'sheet-text text-center text-strong empty-production-view')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>HISTORY_CHANGE_LIST_STATUS</td>
+	<td>//h4[contains(.,'${key_changeListName}')]//following-sibling::span[contains(@class,'label-success')]//span</td>
 	<td></td>
 </tr>
 <tr>

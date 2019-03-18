@@ -576,7 +576,7 @@ public class DLAdminDisplayContext {
 		return dlSearchContainer;
 	}
 
-	private List _getSearchResults(SearchContainer searchContainer)
+	private Hits _getHits(SearchContainer searchContainer)
 		throws PortalException {
 
 		SearchContext searchContext = SearchContextFactory.getInstance(
@@ -610,16 +610,17 @@ public class DLAdminDisplayContext {
 
 		searchContext.setStart(searchContainer.getStart());
 
-		Hits hits = DLAppServiceUtil.search(searchRepositoryId, searchContext);
+		return DLAppServiceUtil.search(searchRepositoryId, searchContext);
+	}
 
-		List<SearchResult> searchResults = SearchResultUtil.getSearchResults(
-			hits, _request.getLocale());
+	private List<Object> _getSearchResults(Hits hits) throws PortalException {
+		List<Object> searchResults = new ArrayList<>();
 
-		List dlSearchResults = new ArrayList<>();
+		for (SearchResult searchResult :
+				SearchResultUtil.getSearchResults(hits, _request.getLocale())) {
 
-		for (SearchResult searchResult : searchResults) {
 			FileEntry fileEntry = null;
-			Folder curFolder = null;
+			Folder folder = null;
 
 			String className = searchResult.getClassName();
 
@@ -630,7 +631,7 @@ public class DLAdminDisplayContext {
 
 				if (!fileEntryRelatedSearchResults.isEmpty()) {
 					fileEntryRelatedSearchResults.forEach(
-						fileEntryRelatedSearchResult -> dlSearchResults.add(
+						fileEntryRelatedSearchResult -> searchResults.add(
 							fileEntryRelatedSearchResult.getModel()));
 				}
 				else if (className.equals(DLFileEntry.class.getName()) ||
@@ -640,15 +641,15 @@ public class DLAdminDisplayContext {
 					fileEntry = DLAppLocalServiceUtil.getFileEntry(
 						searchResult.getClassPK());
 
-					dlSearchResults.add(fileEntry);
+					searchResults.add(fileEntry);
 				}
 				else if (className.equals(DLFolder.class.getName()) ||
 						 className.equals(Folder.class.getName())) {
 
-					curFolder = DLAppLocalServiceUtil.getFolder(
+					folder = DLAppLocalServiceUtil.getFolder(
 						searchResult.getClassPK());
 
-					dlSearchResults.add(curFolder);
+					searchResults.add(folder);
 				}
 			}
 			catch (ClassNotFoundException cnfe) {
@@ -656,17 +657,17 @@ public class DLAdminDisplayContext {
 			}
 		}
 
-		return dlSearchResults;
+		return searchResults;
 	}
 
 	private SearchContainer _getSearchSearchContainer() throws PortalException {
 		SearchContainer searchContainer = new SearchContainer(
 			_liferayPortletRequest, getSearchSearchContainerURL(), null, null);
 
-		List results = _getSearchResults(searchContainer);
+		Hits hits = _getHits(searchContainer);
 
-		searchContainer.setResults(results);
-		searchContainer.setTotal(results.size());
+		searchContainer.setResults(_getSearchResults(hits));
+		searchContainer.setTotal(hits.getLength());
 
 		return searchContainer;
 	}

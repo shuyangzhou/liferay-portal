@@ -17,17 +17,19 @@ package com.liferay.sharing.service.impl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistry;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
+import com.liferay.sharing.exception.DuplicateSharingEntryException;
 import com.liferay.sharing.exception.InvalidSharingEntryActionException;
 import com.liferay.sharing.exception.InvalidSharingEntryExpirationDateException;
 import com.liferay.sharing.exception.InvalidSharingEntryUserException;
@@ -63,7 +65,7 @@ public class SharingEntryLocalServiceImpl
 	/**
 	 * Adds a new sharing entry in the database or updates an existing one.
 	 *
-	 * @param  fromUserId the ID of the user sharing the resource
+	 * @param  userId the ID of the user sharing the resource
 	 * @param  toUserId the ID of the user the resource is shared with
 	 * @param  classNameId the resource's class name ID
 	 * @param  classPK the class primary key of the resource
@@ -78,21 +80,22 @@ public class SharingEntryLocalServiceImpl
 	 *         empty, don't contain {@code SharingEntryAction#VIEW}, or contain
 	 *         a {@code null} value), if the to/from user IDs are the same, or
 	 *         if the expiration date is a past value
+	 * @review
 	 */
 	@Override
 	public SharingEntry addOrUpdateSharingEntry(
-			long fromUserId, long toUserId, long classNameId, long classPK,
+			long userId, long toUserId, long classNameId, long classPK,
 			long groupId, boolean shareable,
 			Collection<SharingEntryAction> sharingEntryActions,
 			Date expirationDate, ServiceContext serviceContext)
 		throws PortalException {
 
-		SharingEntry sharingEntry = sharingEntryPersistence.fetchByFU_TU_C_C(
-			fromUserId, toUserId, classNameId, classPK);
+		SharingEntry sharingEntry = sharingEntryPersistence.fetchByTU_C_C(
+			toUserId, classNameId, classPK);
 
 		if (sharingEntry == null) {
 			return sharingEntryLocalService.addSharingEntry(
-				fromUserId, toUserId, classNameId, classPK, groupId, shareable,
+				userId, toUserId, classNameId, classPK, groupId, shareable,
 				sharingEntryActions, expirationDate, serviceContext);
 		}
 
@@ -104,7 +107,7 @@ public class SharingEntryLocalServiceImpl
 	/**
 	 * Adds a new sharing entry in the database.
 	 *
-	 * @param  fromUserId the ID of the user sharing the resource
+	 * @param  userId the ID of the user sharing the resource
 	 * @param  toUserId the ID of the user the resource is shared with
 	 * @param  classNameId the resource's class name ID
 	 * @param  classPK the class primary key of the resource
@@ -120,10 +123,11 @@ public class SharingEntryLocalServiceImpl
 	 *         don't contain {@code SharingEntryAction#VIEW}, or contain a
 	 *         {@code null} value), if the to/from user IDs are the same, or if
 	 *         the expiration date is a past value
+	 * @review
 	 */
 	@Override
 	public SharingEntry addSharingEntry(
-			long fromUserId, long toUserId, long classNameId, long classPK,
+			long userId, long toUserId, long classNameId, long classPK,
 			long groupId, boolean shareable,
 			Collection<SharingEntryAction> sharingEntryActions,
 			Date expirationDate, ServiceContext serviceContext)
@@ -131,9 +135,20 @@ public class SharingEntryLocalServiceImpl
 
 		_validateSharingEntryActions(sharingEntryActions);
 
-		_validateUsers(fromUserId, toUserId);
+		_validateUsers(userId, toUserId);
 
 		_validateExpirationDate(expirationDate);
+
+		if (sharingEntryPersistence.fetchByTU_C_C(
+				toUserId, classNameId, classPK) != null) {
+
+			throw new DuplicateSharingEntryException(
+				StringBundler.concat(
+					"A sharing entry already exists for user ",
+					String.valueOf(toUserId), " with classNameId ",
+					String.valueOf(classNameId), " and classPK ",
+					String.valueOf(classPK)));
+		}
 
 		long sharingEntryId = counterLocalService.increment();
 
@@ -141,13 +156,14 @@ public class SharingEntryLocalServiceImpl
 			sharingEntryId);
 
 		sharingEntry.setUuid(serviceContext.getUuid());
-
-		Group group = _groupLocalService.getGroup(groupId);
-
-		sharingEntry.setCompanyId(group.getCompanyId());
-
 		sharingEntry.setGroupId(groupId);
-		sharingEntry.setFromUserId(fromUserId);
+
+		User user = _userLocalService.getUser(userId);
+
+		sharingEntry.setCompanyId(user.getCompanyId());
+		sharingEntry.setUserId(user.getUserId());
+		sharingEntry.setUserName(user.getFullName());
+
 		sharingEntry.setToUserId(toUserId);
 		sharingEntry.setClassNameId(classNameId);
 		sharingEntry.setClassPK(classPK);
@@ -240,7 +256,6 @@ public class SharingEntryLocalServiceImpl
 	 * and class primary key identify the resource's type and instance,
 	 * respectively.
 	 *
-	 * @param  fromUserId the ID of the user sharing the resource
 	 * @param  toUserId the ID of the user the resource is shared with
 	 * @param  classNameId the resource's class name ID
 	 * @param  classPK the class primary key of the resource
@@ -248,11 +263,11 @@ public class SharingEntryLocalServiceImpl
 	 */
 	@Override
 	public SharingEntry deleteSharingEntry(
-			long fromUserId, long toUserId, long classNameId, long classPK)
+			long toUserId, long classNameId, long classPK)
 		throws PortalException {
 
-		SharingEntry sharingEntry = sharingEntryPersistence.findByFU_TU_C_C(
-			fromUserId, toUserId, classNameId, classPK);
+		SharingEntry sharingEntry = sharingEntryPersistence.findByTU_C_C(
+			toUserId, classNameId, classPK);
 
 		return deleteSharingEntry(sharingEntry);
 	}
@@ -308,81 +323,22 @@ public class SharingEntryLocalServiceImpl
 	}
 
 	/**
-	 * Returns the list of sharing entries for resources shared by the user.
+	 * Returns the sharing entry for the resource shared with the user or null
+	 * if there's none. The class name ID and class primary key identify the
+	 * resource's type and instance, respectively.
 	 *
-	 * @param  fromUserId the user's ID
-	 * @return the list of sharing entries
-	 */
-	@Override
-	public List<SharingEntry> getFromUserSharingEntries(long fromUserId) {
-		return sharingEntryPersistence.findByFromUserId(fromUserId);
-	}
-
-	/**
-	 * Returns the list of sharing entries for the resource shared by the user.
-	 * The class name ID and class primary key identify the resource's type and
-	 * instance, respectively.
-	 *
-	 * @param  fromUserId the user's ID
-	 * @param  classNameId the resource's class name ID
-	 * @param  classPK the primary key of the resource
-	 * @return the list of sharing entries
-	 */
-	@Override
-	public List<SharingEntry> getFromUserSharingEntries(
-		long fromUserId, long classNameId, long classPK) {
-
-		return sharingEntryPersistence.findByFU_C_C(
-			fromUserId, classNameId, classPK);
-	}
-
-	/**
-	 * Returns the range of sharing entries for the resource shared by the user.
-	 * The class name ID and class primary key identify the resource's type and
-	 * instance, respectively.
-	 *
-	 * @param  fromUserId the user's ID
-	 * @param  classNameId the resource's class name ID
-	 * @param  classPK the primary key of the resource
-	 * @param  start the range's lower bound
-	 * @param  end the range's upper bound (not inclusive)
-	 * @return the range of sharing entries
-	 */
-	@Override
-	public List<SharingEntry> getFromUserSharingEntries(
-		long fromUserId, long classNameId, long classPK, int start, int end) {
-
-		return sharingEntryPersistence.findByFU_C_C(
-			fromUserId, classNameId, classPK, start, end);
-	}
-
-	/**
-	 * Returns the number of sharing entries for resources shared by the user.
-	 *
-	 * @param  fromUserId the user's ID
-	 * @return the number of sharing entries
-	 */
-	@Override
-	public int getFromUserSharingEntriesCount(long fromUserId) {
-		return sharingEntryPersistence.countByFromUserId(fromUserId);
-	}
-
-	/**
-	 * Returns the number of sharing entries for the resource shared by the
-	 * user. The class name ID and class primary key identify the resource's
-	 * type and instance, respectively.
-	 *
-	 * @param  fromUserId the user's ID
+	 * @param  toUserId the user's ID
 	 * @param  classNameId the resource's class name ID
 	 * @param  classPK the class primary key of the resource
-	 * @return the number of sharing entries
+	 * @return the sharing entry or null if none
+	 * @review
 	 */
 	@Override
-	public int getFromUserSharingEntriesCount(
-		long fromUserId, long classNameId, long classPK) {
+	public SharingEntry fetchSharingEntry(
+		long toUserId, long classNameId, long classPK) {
 
-		return sharingEntryPersistence.countByFU_C_C(
-			fromUserId, classNameId, classPK);
+		return sharingEntryPersistence.fetchByTU_C_C(
+			toUserId, classNameId, classPK);
 	}
 
 	/**
@@ -394,6 +350,17 @@ public class SharingEntryLocalServiceImpl
 	@Override
 	public List<SharingEntry> getGroupSharingEntries(long groupId) {
 		return sharingEntryPersistence.findByGroupId(groupId);
+	}
+
+	/**
+	 * Returns the the group's sharing entries count.
+	 *
+	 * @param  groupId the primary key of the group
+	 * @return the sharing entries count
+	 */
+	@Override
+	public int getGroupSharingEntriesCount(long groupId) {
+		return sharingEntryPersistence.countByGroupId(groupId);
 	}
 
 	/**
@@ -412,36 +379,53 @@ public class SharingEntryLocalServiceImpl
 	}
 
 	/**
-	 * Returns the sharing entries for the resource shared with the user. The
-	 * class name ID and class primary key identify the resource's type and
-	 * instance, respectively.
+	 * Returns the resource's sharing entries. The class name ID and class
+	 * primary key identify the resource's type and instance, respectively.
 	 *
-	 * @param  toUserId the user's ID
 	 * @param  classNameId the resource's class name ID
 	 * @param  classPK the class primary key of the resource
+	 * @param  start the range's lower bound
+	 * @param  end the range's upper bound (not inclusive)
 	 * @return the sharing entries
+	 * @review
 	 */
 	@Override
 	public List<SharingEntry> getSharingEntries(
-		long toUserId, long classNameId, long classPK) {
+		long classNameId, long classPK, int start, int end) {
 
-		return sharingEntryPersistence.findByTU_C_C(
-			toUserId, classNameId, classPK);
+		return sharingEntryPersistence.findByC_C(
+			classNameId, classPK, start, end);
 	}
 
 	/**
-	 * Returns the sharing entries for the resource shared with the user. The
+	 * Returns the resource's sharing entries count. The class name ID and class
+	 * primary key identify the resource's type and instance, respectively.
+	 *
+	 * @param  classNameId the resource's class name ID
+	 * @param  classPK the class primary key of the resource
+	 * @return the sharing entries count
+	 * @review
+	 */
+	@Override
+	public int getSharingEntriesCount(long classNameId, long classPK) {
+		return sharingEntryPersistence.countByC_C(classNameId, classPK);
+	}
+
+	/**
+	 * Returns the sharing entry for the resource shared with the user. The
 	 * class name ID and class primary key identify the resource's type and
 	 * instance, respectively.
 	 *
 	 * @param  toUserId the user's ID
 	 * @param  classNameId the resource's class name ID
 	 * @param  classPK the class primary key of the resource
-	 * @return the sharing entries
+	 * @return the sharing entry
+	 * @review
 	 */
 	@Override
-	public List<SharingEntry> getToUserClassPKSharingEntries(
-		long toUserId, long classNameId, long classPK) {
+	public SharingEntry getSharingEntry(
+			long toUserId, long classNameId, long classPK)
+		throws PortalException {
 
 		return sharingEntryPersistence.findByTU_C_C(
 			toUserId, classNameId, classPK);
@@ -489,6 +473,27 @@ public class SharingEntryLocalServiceImpl
 	}
 
 	/**
+	 * Returns the ordered range of sharing entries for the type of resource
+	 * shared with the user. The class name ID identifies the resource type.
+	 *
+	 * @param  toUserId the user's ID
+	 * @param  classNameId the class name ID of the resources
+	 * @param  start the ordered range's lower bound
+	 * @param  end the ordered range's upper bound (not inclusive)
+	 * @param  orderByComparator the comparator that orders the sharing entries
+	 * @return the ordered range of sharing entries
+	 * @review
+	 */
+	@Override
+	public List<SharingEntry> getToUserSharingEntries(
+		long toUserId, long classNameId, int start, int end,
+		OrderByComparator<SharingEntry> orderByComparator) {
+
+		return sharingEntryFinder.findByToUserId(
+			toUserId, classNameId, start, end, orderByComparator);
+	}
+
+	/**
 	 * Returns the number of sharing entries for resources shared with the user.
 	 *
 	 * @param  toUserId the user's ID
@@ -500,41 +505,16 @@ public class SharingEntryLocalServiceImpl
 	}
 
 	/**
-	 * Returns the ordered range of sharing entries for the type of resource
-	 * shared with the user. Because it's possible for several users to share
-	 * the same resource with the user, this method returns only one sharing
-	 * entry per resource. The class name ID identifies the resource type.
-	 *
-	 * @param  toUserId the user's ID
-	 * @param  classNameId the class name ID of the resources
-	 * @param  start the ordered range's lower bound
-	 * @param  end the ordered range's upper bound (not inclusive)
-	 * @param  orderByComparator the comparator that orders the sharing entries
-	 * @return the ordered range of sharing entries
-	 */
-	@Override
-	public List<SharingEntry> getUniqueToUserSharingEntries(
-		long toUserId, long classNameId, int start, int end,
-		OrderByComparator<SharingEntry> orderByComparator) {
-
-		return sharingEntryFinder.findByToUserId(
-			toUserId, classNameId, start, end, orderByComparator);
-	}
-
-	/**
 	 * Returns the number of sharing entries for the type of resource shared
-	 * with the user. Because it's possible for several users to share the same
-	 * resource with the user, this method counts only one sharing entry per
-	 * resource. The class name ID identifies the resource type.
+	 * with the user. The class name ID identifies the resource type.
 	 *
 	 * @param  toUserId the user's ID
 	 * @param  classNameId the class name ID of the resources
 	 * @return the number of sharing entries
+	 * @review
 	 */
 	@Override
-	public int getUniqueToUserSharingEntriesCount(
-		long toUserId, long classNameId) {
-
+	public int getToUserSharingEntriesCount(long toUserId, long classNameId) {
 		return sharingEntryFinder.countByToUserId(toUserId, classNameId);
 	}
 
@@ -557,18 +537,13 @@ public class SharingEntryLocalServiceImpl
 		long toUserId, long classNameId, long classPK,
 		SharingEntryAction sharingEntryAction) {
 
-		List<SharingEntry> sharingEntries =
-			sharingEntryPersistence.findByTU_C_C(
-				toUserId, classNameId, classPK);
+		SharingEntry sharingEntry = sharingEntryPersistence.fetchByTU_C_C(
+			toUserId, classNameId, classPK);
 
-		for (SharingEntry sharingEntry : sharingEntries) {
-			if (!sharingEntry.isShareable()) {
-				continue;
-			}
+		if ((sharingEntry != null) && sharingEntry.isShareable() &&
+			sharingEntry.hasSharingPermission(sharingEntryAction)) {
 
-			if (sharingEntry.hasSharingPermission(sharingEntryAction)) {
-				return true;
-			}
+			return true;
 		}
 
 		return false;
@@ -591,14 +566,13 @@ public class SharingEntryLocalServiceImpl
 		long toUserId, long classNameId, long classPK,
 		SharingEntryAction sharingEntryAction) {
 
-		List<SharingEntry> sharingEntries =
-			sharingEntryPersistence.findByTU_C_C(
-				toUserId, classNameId, classPK);
+		SharingEntry sharingEntry = sharingEntryPersistence.fetchByTU_C_C(
+			toUserId, classNameId, classPK);
 
-		for (SharingEntry sharingEntry : sharingEntries) {
-			if (sharingEntry.hasSharingPermission(sharingEntryAction)) {
-				return true;
-			}
+		if ((sharingEntry != null) &&
+			sharingEntry.hasSharingPermission(sharingEntryAction)) {
+
+			return true;
 		}
 
 		return false;
@@ -704,5 +678,8 @@ public class SharingEntryLocalServiceImpl
 
 	@ServiceReference(type = Portal.class)
 	private Portal _portal;
+
+	@ServiceReference(type = UserLocalService.class)
+	private UserLocalService _userLocalService;
 
 }

@@ -12,23 +12,31 @@
  * details.
  */
 
-package com.liferay.frontend.taglib.clay.servlet.taglib.display.context.table;
+package com.liferay.sharing.exception;
+
+import aQute.bnd.annotation.ProviderType;
+
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
- * @author Iván Zaera Avellón
+ * @author Brian Wing Shun Chan
  */
-public enum Size {
+@ProviderType
+public class DuplicateSharingEntryException extends PortalException {
 
-	EXTRA_LARGE("xl"), LARGE("lg"), MEDIUM("md"), SMALL("sm");
-
-	public String getValue() {
-		return _value;
+	public DuplicateSharingEntryException() {
 	}
 
-	private Size(String value) {
-		_value = value;
+	public DuplicateSharingEntryException(String msg) {
+		super(msg);
 	}
 
-	private final String _value;
+	public DuplicateSharingEntryException(String msg, Throwable cause) {
+		super(msg, cause);
+	}
+
+	public DuplicateSharingEntryException(Throwable cause) {
+		super(cause);
+	}
 
 }

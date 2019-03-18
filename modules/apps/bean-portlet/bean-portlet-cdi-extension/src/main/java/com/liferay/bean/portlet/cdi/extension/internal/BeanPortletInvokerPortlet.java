@@ -189,9 +189,9 @@ public class BeanPortletInvokerPortlet
 					if (markup != null) {
 						MimeResponse mimeResponse = (MimeResponse)args[1];
 
-						PrintWriter writer = mimeResponse.getWriter();
+						PrintWriter printWriter = mimeResponse.getWriter();
 
-						writer.write(markup);
+						printWriter.write(markup);
 					}
 				}
 				else {
@@ -232,9 +232,9 @@ public class BeanPortletInvokerPortlet
 					String markup = (String)beanMethod.invoke();
 
 					if (Validator.isNotNull(markup)) {
-						PrintWriter writer = resourceResponse.getWriter();
+						PrintWriter printWriter = resourceResponse.getWriter();
 
-						writer.write(markup);
+						printWriter.write(markup);
 					}
 				}
 				else {

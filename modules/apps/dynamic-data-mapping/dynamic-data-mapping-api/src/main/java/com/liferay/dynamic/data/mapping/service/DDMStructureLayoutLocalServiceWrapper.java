@@ -453,6 +453,12 @@ public class DDMStructureLayoutLocalServiceWrapper
 			groupId, start, end);
 	}
 
+	@Override
+	public int getStructureLayoutsCount(long groupId) {
+		return _ddmStructureLayoutLocalService.getStructureLayoutsCount(
+			groupId);
+	}
+
 	/**
 	 * Updates the ddm structure layout in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *

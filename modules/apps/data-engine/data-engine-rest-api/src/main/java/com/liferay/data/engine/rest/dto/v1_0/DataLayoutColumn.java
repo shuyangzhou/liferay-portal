@@ -62,20 +62,20 @@ public class DataLayoutColumn {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Integer columnSize;
 
-	public String[] getFieldsName() {
-		return fieldsName;
+	public String[] getFieldNames() {
+		return fieldNames;
 	}
 
-	public void setFieldsName(String[] fieldsName) {
-		this.fieldsName = fieldsName;
+	public void setFieldNames(String[] fieldNames) {
+		this.fieldNames = fieldNames;
 	}
 
 	@JsonIgnore
-	public void setFieldsName(
-		UnsafeSupplier<String[], Exception> fieldsNameUnsafeSupplier) {
+	public void setFieldNames(
+		UnsafeSupplier<String[], Exception> fieldNamesUnsafeSupplier) {
 
 		try {
-			fieldsName = fieldsNameUnsafeSupplier.get();
+			fieldNames = fieldNamesUnsafeSupplier.get();
 		}
 		catch (Exception e) {
 			throw new RuntimeException(e);
@@ -84,7 +84,7 @@ public class DataLayoutColumn {
 
 	@GraphQLField
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected String[] fieldsName;
+	protected String[] fieldNames;
 
 	public String toString() {
 		StringBundler sb = new StringBundler();
@@ -96,20 +96,20 @@ public class DataLayoutColumn {
 		sb.append(columnSize);
 		sb.append(", ");
 
-		sb.append("\"fieldsName\": ");
+		sb.append("\"fieldNames\": ");
 
-		if (fieldsName == null) {
+		if (fieldNames == null) {
 			sb.append("null");
 		}
 		else {
 			sb.append("[");
 
-			for (int i = 0; i < fieldsName.length; i++) {
+			for (int i = 0; i < fieldNames.length; i++) {
 				sb.append("\"");
-				sb.append(fieldsName[i]);
+				sb.append(fieldNames[i]);
 				sb.append("\"");
 
-				if ((i + 1) < fieldsName.length) {
+				if ((i + 1) < fieldNames.length) {
 					sb.append(", ");
 				}
 			}

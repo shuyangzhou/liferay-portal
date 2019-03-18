@@ -1,4 +1,52 @@
 /**
+ * Available values for buttonType config key
+ */
+export const BUTTON_TYPES = [
+	{
+		buttonTypeId: '',
+		label: '-'
+	},
+	{
+		buttonTypeId: 'primary',
+		label: Liferay.Language.get('primary')
+	},
+	{
+		buttonTypeId: 'secondary',
+		label: Liferay.Language.get('secondary')
+	}
+];
+
+/**
+ * Available values for containerType config key
+ */
+export const NUMBER_OF_COLUMNS_OPTIONS = [
+	{
+		label: '1',
+		numberOfColumnId: '1'
+	},
+	{
+		label: '2',
+		numberOfColumnId: '2'
+	},
+	{
+		label: '3',
+		numberOfColumnId: '3'
+	},
+	{
+		label: '4',
+		numberOfColumnId: '4'
+	},
+	{
+		label: '5',
+		numberOfColumnId: '5'
+	},
+	{
+		label: '6',
+		numberOfColumnId: '6'
+	}
+];
+
+/**
  * List of editable types and their compatibilities
  * with the corresponding mappeable types
  * @review
@@ -43,6 +91,32 @@ export const COMPATIBLE_TYPES = {
 };
 
 /**
+ * Available values for containerType config key
+ */
+export const CONTAINER_TYPES = [
+	{
+		containerTypeId: 'fluid',
+		label: Liferay.Language.get('fluid')
+	},
+
+	{
+		containerTypeId: 'fixed',
+		label: Liferay.Language.get('fixed-width')
+	}
+];
+
+/**
+ * Available editable field config keys
+ */
+export const EDITABLE_FIELD_CONFIG_KEYS = {
+	imageLink: 'imageLink',
+	imageTarget: 'imageTarget',
+	textAlignment: 'textAlignment',
+	textColor: 'textColor',
+	textStyle: 'textStyle'
+};
+
+/**
  * FloatingToolbar panels
  */
 export const FLOATING_TOOLBAR_PANELS = {
@@ -65,7 +139,7 @@ export const FLOATING_TOOLBAR_PANELS = {
 	},
 
 	imageProperties: {
-		icon: 'format',
+		icon: 'pencil',
 		panelId: 'image_properties',
 		title: Liferay.Language.get('image-properties')
 	},
@@ -89,36 +163,11 @@ export const FLOATING_TOOLBAR_PANELS = {
 	},
 
 	textProperties: {
-		icon: 'format',
+		icon: 'pencil',
 		panelId: 'text_properties',
 		title: Liferay.Language.get('text-properties')
 	}
 };
-
-/**
- * Available element config keys
- */
-export const ITEM_CONFIG_KEYS = {
-	backgroundColorCssClass: 'backgroundColorCssClass',
-	columnSpacing: 'columnSpacing',
-	containerType: 'containerType',
-	padding: 'padding'
-};
-
-/**
- * Available values for containerType config key
- */
-export const CONTAINER_TYPES = [
-	{
-		containerTypeId: 'fluid',
-		label: Liferay.Language.get('fluid')
-	},
-
-	{
-		containerTypeId: 'fixed',
-		label: Liferay.Language.get('fixed-width')
-	}
-];
 
 /**
  * Fragments Editor item borders
@@ -144,33 +193,19 @@ export const FRAGMENTS_EDITOR_ITEM_TYPES = {
 };
 
 /**
- * Available editable field config keys
+ * Available element config keys
  */
-export const EDITABLE_FIELD_CONFIG_KEYS = {
-	imageLink: 'imageLink',
-	imageTarget: 'imageTarget',
-	textAlignment: 'textAlignment',
-	textColor: 'textColor',
-	textStyle: 'textStyle'
+export const ITEM_CONFIG_KEYS = {
+	backgroundColorCssClass: 'backgroundColorCssClass',
+	columnSpacing: 'columnSpacing',
+	containerType: 'containerType',
+	padding: 'padding'
 };
 
 /**
- * Available values for buttonType config key
+ * Max section columns
  */
-export const BUTTON_TYPES = [
-	{
-		buttonTypeId: '',
-		label: '-'
-	},
-	{
-		buttonTypeId: 'primary',
-		label: Liferay.Language.get('primary')
-	},
-	{
-		buttonTypeId: 'secondary',
-		label: Liferay.Language.get('secondary')
-	}
-];
+export const MAX_SECTION_COLUMNS = 12;
 
 /**
  * Available attributes for target config key
@@ -195,24 +230,6 @@ export const TARGET_TYPES = [
 ];
 
 /**
- * Available values for textStyle config key
- */
-export const TEXT_STYLES = [
-	{
-		label: Liferay.Language.get('regular'),
-		textStyleId: ''
-	},
-	{
-		label: Liferay.Language.get('small'),
-		textStyleId: 'small'
-	},
-	{
-		label: Liferay.Language.get('Large'),
-		textStyleId: 'lead'
-	}
-];
-
-/**
  * Available values for textAlignmentOptions config key
  */
 export const TEXT_ALIGNMENT_OPTIONS = [
@@ -231,5 +248,23 @@ export const TEXT_ALIGNMENT_OPTIONS = [
 	{
 		label: Liferay.Language.get('right'),
 		textAlignmentId: 'right'
+	}
+];
+
+/**
+ * Available values for textStyle config key
+ */
+export const TEXT_STYLES = [
+	{
+		label: Liferay.Language.get('regular'),
+		textStyleId: ''
+	},
+	{
+		label: Liferay.Language.get('small'),
+		textStyleId: 'small'
+	},
+	{
+		label: Liferay.Language.get('Large'),
+		textStyleId: 'lead'
 	}
 ];

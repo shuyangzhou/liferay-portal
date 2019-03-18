@@ -69,6 +69,26 @@ public abstract class BaseDataRecordCollectionResourceImpl
 			@Parameter(in = ParameterIn.QUERY, name = "pageSize")
 		}
 	)
+	@Path("/content-spaces/{content-space-id}/data-record-collections")
+	@Produces("application/json")
+	@Tags(value = {@Tag(name = "DataRecordCollection")})
+	public Page<DataRecordCollection> getContentSpaceDataRecordCollectionsPage(
+			@NotNull @PathParam("content-space-id") Long contentSpaceId,
+			@QueryParam("keywords") String keywords,
+			@Context Pagination pagination)
+		throws Exception {
+
+		return Page.of(Collections.emptyList());
+	}
+
+	@Override
+	@GET
+	@Parameters(
+		value = {
+			@Parameter(in = ParameterIn.QUERY, name = "page"),
+			@Parameter(in = ParameterIn.QUERY, name = "pageSize")
+		}
+	)
 	@Path("/data-definitions/{data-definition-id}/data-record-collections")
 	@Produces("application/json")
 	@Tags(value = {@Tag(name = "DataRecordCollection")})

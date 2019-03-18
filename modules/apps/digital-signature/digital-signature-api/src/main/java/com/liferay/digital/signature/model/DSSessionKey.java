@@ -16,8 +16,13 @@ package com.liferay.digital.signature.model;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
+import com.liferay.petra.string.StringUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -25,6 +30,22 @@ import java.util.Objects;
  */
 @ProviderType
 public class DSSessionKey {
+
+	public DSSessionKey(String dsSessionKeyString) {
+		List<String> dsSessionKeyTokens = StringUtil.split(
+			dsSessionKeyString, CharPool.UNDERLINE);
+
+		if (dsSessionKeyTokens.size() != 3) {
+			throw new IllegalArgumentException(
+				"Digital signature session key does not match format " +
+					"${accountKey}_${companyId}_${userName}: " +
+						dsSessionKeyString);
+		}
+
+		_accountKey = dsSessionKeyTokens.get(0);
+		_companyId = GetterUtil.getLong(dsSessionKeyTokens.get(1));
+		_userName = dsSessionKeyTokens.get(2);
+	}
 
 	public DSSessionKey(String accountKey, long companyId, String userName) {
 		_accountKey = accountKey;
@@ -73,21 +94,13 @@ public class DSSessionKey {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(9);
+		StringBundler sb = new StringBundler(5);
 
-		sb.append("{accountKey=");
 		sb.append(_accountKey);
-		sb.append(", className=");
-
-		Class<?> clazz = getClass();
-
-		sb.append(clazz.getSimpleName());
-
-		sb.append(", companyId=");
+		sb.append(StringPool.UNDERLINE);
 		sb.append(_companyId);
-		sb.append(", userName=");
+		sb.append(StringPool.UNDERLINE);
 		sb.append(_userName);
-		sb.append("}");
 
 		return sb.toString();
 	}

@@ -163,6 +163,11 @@ public class DDMStructureLayoutLocalServiceImpl
 	}
 
 	@Override
+	public int getStructureLayoutsCount(long groupId) {
+		return ddmStructureLayoutPersistence.countByGroupId(groupId);
+	}
+
+	@Override
 	public DDMStructureLayout updateStructureLayout(
 			long structureLayoutId, DDMFormLayout ddmFormLayout,
 			ServiceContext serviceContext)

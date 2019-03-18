@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
+import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.HashMap;
@@ -91,7 +92,7 @@ public class JournalArticleAssetDisplayContributor
 
 				Value value = ddmFormFieldValue0.getValue();
 
-				String fieldValue = value.getString(locale);
+				String fieldValue = _html.escape(value.getString(locale));
 
 				if (Objects.equals(ddmFormFieldValue0.getType(), "ddm-image")) {
 					fieldValue = _transformFileEntryURL(fieldValue);
@@ -146,6 +147,9 @@ public class JournalArticleAssetDisplayContributor
 
 	@Reference
 	private FieldsToDDMFormValuesConverter _fieldsToDDMFormValuesConverter;
+
+	@Reference
+	private Html _html;
 
 	@Reference
 	private JournalConverter _journalConverter;

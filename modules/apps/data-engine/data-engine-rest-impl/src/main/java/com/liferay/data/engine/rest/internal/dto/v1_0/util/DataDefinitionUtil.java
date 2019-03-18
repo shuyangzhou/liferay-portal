@@ -16,16 +16,10 @@ package com.liferay.data.engine.rest.internal.dto.v1_0.util;
 
 import com.liferay.data.engine.rest.dto.v1_0.DataDefinition;
 import com.liferay.data.engine.rest.dto.v1_0.DataDefinitionField;
-import com.liferay.data.engine.rest.dto.v1_0.LocalizedValue;
-import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.util.Validator;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * @author Jeyvison Nascimento
@@ -39,8 +33,10 @@ public class DataDefinitionUtil {
 			{
 				JSONObject jsonObject = JSONFactoryUtil.createJSONObject(json);
 
-				dataDefinitionFields = _toDataDefinitionFields(
-					jsonObject.getJSONArray("fields"));
+				dataDefinitionFields = JSONUtil.toArray(
+					jsonObject.getJSONArray("fields"),
+					fieldJSONObject -> _toDataDefinitionField(fieldJSONObject),
+					DataDefinitionField.class);
 			}
 		};
 	}
@@ -49,22 +45,11 @@ public class DataDefinitionUtil {
 		throws Exception {
 
 		return JSONUtil.put(
-			"fields", _toJSONArray(dataDefinition.getDataDefinitionFields())
+			"fields",
+			JSONUtil.toJSONArray(
+				dataDefinition.getDataDefinitionFields(),
+				dataDefinitionField -> _toJSONObject(dataDefinitionField))
 		).toString();
-	}
-
-	private static void _put(
-		JSONObject jsonObject, String key, LocalizedValue[] localizedValues) {
-
-		JSONObject localziedValueJSONObject =
-			JSONFactoryUtil.createJSONObject();
-
-		for (LocalizedValue localizedValue : localizedValues) {
-			localziedValueJSONObject.put(
-				localizedValue.getKey(), localizedValue.getValue());
-		}
-
-		jsonObject.put(key, localziedValueJSONObject);
 	}
 
 	private static DataDefinitionField _toDataDefinitionField(
@@ -87,7 +72,8 @@ public class DataDefinitionUtil {
 					throw new Exception("Label is required");
 				}
 
-				label = _toLocalizedValues(jsonObject.getJSONObject("label"));
+				label = LocalizedValueUtil.toLocalizedValues(
+					jsonObject.getJSONObject("label"));
 
 				localizable = jsonObject.getBoolean("localizable", false);
 
@@ -103,40 +89,10 @@ public class DataDefinitionUtil {
 					throw new Exception("Tip is required");
 				}
 
-				tip = _toLocalizedValues(jsonObject.getJSONObject("tip"));
+				tip = LocalizedValueUtil.toLocalizedValues(
+					jsonObject.getJSONObject("tip"));
 			}
 		};
-	}
-
-	private static DataDefinitionField[] _toDataDefinitionFields(
-			JSONArray jsonArray)
-		throws Exception {
-
-		List<DataDefinitionField> dataDefinitionFields = new ArrayList<>(
-			jsonArray.length());
-
-		for (int i = 0; i < jsonArray.length(); i++) {
-			DataDefinitionField dataDefinitionField = _toDataDefinitionField(
-				jsonArray.getJSONObject(i));
-
-			dataDefinitionFields.add(dataDefinitionField);
-		}
-
-		return dataDefinitionFields.toArray(
-			new DataDefinitionField[dataDefinitionFields.size()]);
-	}
-
-	private static JSONArray _toJSONArray(
-			DataDefinitionField[] dataDefinitionFields)
-		throws Exception {
-
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
-
-		for (DataDefinitionField dataDefinitionField : dataDefinitionFields) {
-			jsonArray.put(_toJSONObject(dataDefinitionField));
-		}
-
-		return jsonArray;
 	}
 
 	private static JSONObject _toJSONObject(
@@ -152,13 +108,9 @@ public class DataDefinitionUtil {
 		}
 
 		jsonObject.put("indexable", dataDefinitionField.getIndexable());
-
-		LocalizedValue[] label = dataDefinitionField.getLabel();
-
-		if (label.length > 0) {
-			_put(jsonObject, "label", label);
-		}
-
+		jsonObject.put(
+			"label",
+			LocalizedValueUtil.toJSONObject(dataDefinitionField.getLabel()));
 		jsonObject.put("localizable", dataDefinitionField.getLocalizable());
 
 		String name = dataDefinitionField.getName();
@@ -170,12 +122,9 @@ public class DataDefinitionUtil {
 		jsonObject.put("name", name);
 
 		jsonObject.put("repeatable", dataDefinitionField.getRepeatable());
-
-		LocalizedValue[] tip = dataDefinitionField.getTip();
-
-		if (tip.length > 0) {
-			_put(jsonObject, "tip", tip);
-		}
+		jsonObject.put(
+			"tip",
+			LocalizedValueUtil.toJSONObject(dataDefinitionField.getTip()));
 
 		String type = dataDefinitionField.getFieldType();
 
@@ -186,26 +135,6 @@ public class DataDefinitionUtil {
 		jsonObject.put("type", type);
 
 		return jsonObject;
-	}
-
-	private static LocalizedValue[] _toLocalizedValues(JSONObject jsonObject) {
-		List<LocalizedValue> localizedValues = new ArrayList<>();
-
-		Iterator<String> keys = jsonObject.keys();
-
-		while (keys.hasNext()) {
-			LocalizedValue localizedValue = new LocalizedValue();
-
-			String key = keys.next();
-
-			localizedValue.setKey(key);
-			localizedValue.setValue(jsonObject.getString(key));
-
-			localizedValues.add(localizedValue);
-		}
-
-		return localizedValues.toArray(
-			new LocalizedValue[localizedValues.size()]);
 	}
 
 }

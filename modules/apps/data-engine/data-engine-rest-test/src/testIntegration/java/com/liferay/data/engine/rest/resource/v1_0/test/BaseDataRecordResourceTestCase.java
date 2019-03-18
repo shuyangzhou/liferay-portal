@@ -255,8 +255,7 @@ public abstract class BaseDataRecordResourceTestCase {
 	}
 
 	protected DataRecord invokePostDataRecordCollectionDataRecord(
-			Long dataRecordCollectionId, Long contentSpaceId,
-			DataRecord dataRecord)
+			Long dataRecordCollectionId, DataRecord dataRecord)
 		throws Exception {
 
 		Http.Options options = _createHttpOptions();
@@ -280,8 +279,7 @@ public abstract class BaseDataRecordResourceTestCase {
 	}
 
 	protected Http.Response invokePostDataRecordCollectionDataRecordResponse(
-			Long dataRecordCollectionId, Long contentSpaceId,
-			DataRecord dataRecord)
+			Long dataRecordCollectionId, DataRecord dataRecord)
 		throws Exception {
 
 		Http.Options options = _createHttpOptions();
