@@ -64,6 +64,9 @@ import com.liferay.portal.xsl.XSLURIResolver;
 import com.liferay.taglib.servlet.PipingServletResponse;
 
 import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.io.Reader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -442,11 +445,11 @@ public class JournalTransformer {
 			templateResource = new StringTemplateResource(templateId, script);
 		}
 
-		TemplateResource errorTemplateResource = getErrorTemplateResource(
-			langType, CompanyThreadLocal.getCompanyId());
-
 		return TemplateManagerUtil.getTemplate(
-			langType, templateResource, errorTemplateResource, _restricted);
+			langType, templateResource,
+			new LazyTemplateResource(
+				langType, CompanyThreadLocal.getCompanyId()),
+			_restricted);
 	}
 
 	protected String getTemplateId(
@@ -688,6 +691,10 @@ public class JournalTransformer {
 		}
 	}
 
+	private static final TemplateResource _DUMMY_TEMPLATE_RESOURCE =
+		new StringTemplateResource(
+			"DUMMY_TEMPLATE_RESOURCE", "DUMMY_TEMPLATE_RESOURCE");
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		JournalTransformer.class);
 
@@ -711,5 +718,72 @@ public class JournalTransformer {
 		JournalTransformer.class.getName() + ".XmlBeforeListener");
 
 	private final boolean _restricted;
+
+	private class LazyTemplateResource implements TemplateResource {
+
+		@Override
+		public long getLastModified() {
+			TemplateResource templateResource = _getTemplateResource();
+
+			return templateResource.getLastModified();
+		}
+
+		@Override
+		public Reader getReader() throws IOException {
+			TemplateResource templateResource = _getTemplateResource();
+
+			return templateResource.getReader();
+		}
+
+		@Override
+		public String getTemplateId() {
+			return _langType;
+		}
+
+		@Override
+		public void readExternal(ObjectInput objectInput) throws IOException {
+			_companyId = objectInput.readLong();
+			_langType = objectInput.readUTF();
+		}
+
+		@Override
+		public void writeExternal(ObjectOutput objectOutput)
+			throws IOException {
+
+			objectOutput.writeLong(_companyId);
+			objectOutput.writeUTF(_langType);
+		}
+
+		private LazyTemplateResource(String langType, long companyId) {
+			_langType = langType;
+			_companyId = companyId;
+		}
+
+		private TemplateResource _getTemplateResource() {
+			TemplateResource templateResource = _templateResource;
+
+			if (templateResource == null) {
+				templateResource = getErrorTemplateResource(
+					_langType, _companyId);
+
+				if (templateResource == null) {
+					templateResource = _DUMMY_TEMPLATE_RESOURCE;
+				}
+
+				_templateResource = templateResource;
+			}
+
+			if (templateResource == _DUMMY_TEMPLATE_RESOURCE) {
+				return null;
+			}
+
+			return templateResource;
+		}
+
+		private long _companyId;
+		private String _langType;
+		private transient volatile TemplateResource _templateResource;
+
+	}
 
 }
