@@ -393,10 +393,10 @@ public class JournalTransformer {
 		return UnknownDevice.getInstance();
 	}
 
-	protected TemplateResource getErrorTemplateResource(String langType) {
-		try {
-			long companyId = CompanyThreadLocal.getCompanyId();
+	protected TemplateResource getErrorTemplateResource(
+		String langType, long companyId) {
 
+		try {
 			JournalServiceConfiguration journalServiceConfiguration =
 				ConfigurationProviderUtil.getCompanyConfiguration(
 					JournalServiceConfiguration.class, companyId);
@@ -443,7 +443,7 @@ public class JournalTransformer {
 		}
 
 		TemplateResource errorTemplateResource = getErrorTemplateResource(
-			langType);
+			langType, CompanyThreadLocal.getCompanyId());
 
 		return TemplateManagerUtil.getTemplate(
 			langType, templateResource, errorTemplateResource, _restricted);
