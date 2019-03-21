@@ -15,9 +15,9 @@
 package com.liferay.portal.template;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.PortalCache;
-import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
-import com.liferay.portal.kernel.cache.PortalCacheManagerNames;
+import com.liferay.portal.kernel.cache.SingleVMPool;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
 import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.TemplateConstants;
@@ -41,7 +41,7 @@ public abstract class AbstractSingleResourceTemplate extends AbstractTemplate {
 		TemplateResource templateResource,
 		TemplateResource errorTemplateResource, Map<String, Object> context,
 		TemplateContextHelper templateContextHelper, String templateManagerName,
-		long interval) {
+		long interval, MultiVMPool multiVMPool, SingleVMPool singleVMPool) {
 
 		super(
 			errorTemplateResource, context, templateContextHelper,
@@ -54,7 +54,8 @@ public abstract class AbstractSingleResourceTemplate extends AbstractTemplate {
 		this.templateResource = templateResource;
 
 		if (interval != 0) {
-			cacheTemplateResource(templateManagerName);
+			cacheTemplateResource(
+				templateManagerName, multiVMPool, singleVMPool);
 		}
 	}
 
@@ -90,7 +91,10 @@ public abstract class AbstractSingleResourceTemplate extends AbstractTemplate {
 		write(writer);
 	}
 
-	protected void cacheTemplateResource(String templateManagerName) {
+	protected void cacheTemplateResource(
+		String templateManagerName, MultiVMPool multiVMPool,
+		SingleVMPool singleVMPool) {
+
 		if (templateManagerName.equals(TemplateConstants.LANG_TYPE_VM)) {
 			return;
 		}
@@ -110,7 +114,7 @@ public abstract class AbstractSingleResourceTemplate extends AbstractTemplate {
 		);
 
 		PortalCache<String, Serializable> portalCache = getPortalCache(
-			templateResource, portalCacheName);
+			templateResource, portalCacheName, multiVMPool, singleVMPool);
 
 		Object object = portalCache.get(templateResource.getTemplateId());
 
@@ -133,7 +137,8 @@ public abstract class AbstractSingleResourceTemplate extends AbstractTemplate {
 				errorTemplateResource);
 		}
 
-		portalCache = getPortalCache(errorTemplateResource, portalCacheName);
+		portalCache = getPortalCache(
+			errorTemplateResource, portalCacheName, multiVMPool, singleVMPool);
 
 		object = portalCache.get(errorTemplateResource.getTemplateId());
 
@@ -144,11 +149,12 @@ public abstract class AbstractSingleResourceTemplate extends AbstractTemplate {
 	}
 
 	protected PortalCache<String, Serializable> getPortalCache(
-		TemplateResource templateResource, String portalCacheName) {
+		TemplateResource templateResource, String portalCacheName,
+		MultiVMPool multiVMPool, SingleVMPool singleVMPool) {
 
 		if (!(templateResource instanceof CacheTemplateResource)) {
-			return PortalCacheHelperUtil.getPortalCache(
-				PortalCacheManagerNames.MULTI_VM, portalCacheName);
+			return (PortalCache<String, Serializable>)
+				multiVMPool.getPortalCache(portalCacheName);
 		}
 
 		CacheTemplateResource cacheTemplateResource =
@@ -158,12 +164,12 @@ public abstract class AbstractSingleResourceTemplate extends AbstractTemplate {
 			cacheTemplateResource.getInnerTemplateResource();
 
 		if (innerTemplateResource instanceof URLTemplateResource) {
-			return PortalCacheHelperUtil.getPortalCache(
-				PortalCacheManagerNames.SINGLE_VM, portalCacheName);
+			return (PortalCache<String, Serializable>)
+				singleVMPool.getPortalCache(portalCacheName);
 		}
 
-		return PortalCacheHelperUtil.getPortalCache(
-			PortalCacheManagerNames.MULTI_VM, portalCacheName);
+		return (PortalCache<String, Serializable>)multiVMPool.getPortalCache(
+			portalCacheName);
 	}
 
 	protected abstract void processTemplate(
