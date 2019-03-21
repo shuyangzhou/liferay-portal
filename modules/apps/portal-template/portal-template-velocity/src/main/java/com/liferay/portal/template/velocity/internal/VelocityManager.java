@@ -18,6 +18,7 @@ import com.liferay.petra.lang.ClassLoaderPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.PortalCacheManagerNames;
 import com.liferay.portal.kernel.cache.SingleVMPool;
 import com.liferay.portal.kernel.model.Layout;
@@ -271,7 +272,8 @@ public class VelocityManager extends BaseSingleTemplateManager {
 		Template template = new VelocityTemplate(
 			templateResource, errorTemplateResource, helperUtilities,
 			_velocityEngine, templateContextHelper,
-			_velocityEngineConfiguration.resourceModificationCheckInterval());
+			_velocityEngineConfiguration.resourceModificationCheckInterval(),
+			_multiVMPool, _singleVMPool);
 
 		if (restricted) {
 			template = new RestrictedTemplate(
@@ -319,6 +321,9 @@ public class VelocityManager extends BaseSingleTemplateManager {
 			throw new ExceptionInInitializerError(nsme);
 		}
 	}
+
+	@Reference
+	private MultiVMPool _multiVMPool;
 
 	@Reference
 	private SingleVMPool _singleVMPool;

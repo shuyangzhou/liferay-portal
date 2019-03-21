@@ -14,6 +14,8 @@
 
 package com.liferay.portal.template.velocity.internal;
 
+import com.liferay.portal.kernel.cache.MultiVMPool;
+import com.liferay.portal.kernel.cache.SingleVMPool;
 import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateException;
@@ -41,12 +43,13 @@ public class VelocityTemplate extends AbstractSingleResourceTemplate {
 		TemplateResource errorTemplateResource, Map<String, Object> context,
 		VelocityEngine velocityEngine,
 		TemplateContextHelper templateContextHelper,
-		int resourceModificationCheckInterval) {
+		int resourceModificationCheckInterval, MultiVMPool multiVMPool,
+		SingleVMPool singleVMPool) {
 
 		super(
 			templateResource, errorTemplateResource, context,
 			templateContextHelper, TemplateConstants.LANG_TYPE_VM,
-			resourceModificationCheckInterval);
+			resourceModificationCheckInterval, multiVMPool, singleVMPool);
 
 		_velocityContext = new VelocityContext(super.context);
 		_velocityEngine = velocityEngine;

@@ -21,6 +21,7 @@ import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.SingleVMPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -357,7 +358,8 @@ public class FreeMarkerManager extends BaseSingleTemplateManager {
 		Template template = new FreeMarkerTemplate(
 			templateResource, errorTemplateResource, helperUtilities,
 			_configuration, templateContextHelper,
-			_freeMarkerEngineConfiguration.resourceModificationCheck());
+			_freeMarkerEngineConfiguration.resourceModificationCheck(),
+			_multiVMPool, _singleVMPool);
 
 		if (restricted) {
 			template = new RestrictedTemplate(
@@ -430,6 +432,11 @@ public class FreeMarkerManager extends BaseSingleTemplateManager {
 	}
 
 	@Reference(unbind = "-")
+	protected void setMultiVMPool(MultiVMPool multiVMPool) {
+		_multiVMPool = multiVMPool;
+	}
+
+	@Reference(unbind = "-")
 	protected void setSingleVMPool(SingleVMPool singleVMPool) {
 		_singleVMPool = singleVMPool;
 	}
@@ -479,6 +486,7 @@ public class FreeMarkerManager extends BaseSingleTemplateManager {
 	private volatile FreeMarkerBundleClassloader _freeMarkerBundleClassloader;
 	private volatile FreeMarkerEngineConfiguration
 		_freeMarkerEngineConfiguration;
+	private MultiVMPool _multiVMPool;
 	private SingleVMPool _singleVMPool;
 	private final Map<String, String> _taglibMappings =
 		new ConcurrentHashMap<>();
