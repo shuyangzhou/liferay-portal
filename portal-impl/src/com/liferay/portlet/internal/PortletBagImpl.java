@@ -98,7 +98,8 @@ public class PortletBagImpl implements PortletBag {
 		FriendlyURLMapperTracker friendlyURLMapperTracker,
 		List<ServiceRegistration<?>> serviceRegistrations) {
 
-		_portletName = portletId;
+		_portletId = portletId;
+		_portletName = portletName;
 		_servletContext = servletContext;
 		_portletInstance = portletInstance;
 		_resourceBundleBaseName = resourceBundleBaseName;
@@ -126,8 +127,9 @@ public class PortletBagImpl implements PortletBag {
 	@Override
 	public Object clone() {
 		return new PortletBagImpl(
-			getPortletName(), getServletContext(), getPortletInstance(),
-			getResourceBundleBaseName(), getFriendlyURLMapperTracker(), null);
+			getPortletId(), getPortletName(), getServletContext(),
+			getPortletInstance(), getResourceBundleBaseName(),
+			getFriendlyURLMapperTracker(), null);
 	}
 
 	@Override
@@ -319,6 +321,11 @@ public class PortletBagImpl implements PortletBag {
 		}
 
 		return _portletDataHandlerInstances;
+	}
+
+	@Override
+	public String getPortletId() {
+		return _portletId;
 	}
 
 	@Override
@@ -629,6 +636,7 @@ public class PortletBagImpl implements PortletBag {
 	private volatile List<PollerProcessor> _pollerProcessorInstances;
 	private volatile List<MessageListener> _popMessageListenerInstances;
 	private volatile List<PortletDataHandler> _portletDataHandlerInstances;
+	private String _portletId;
 	private Portlet _portletInstance;
 	private volatile List<PortletLayoutListener>
 		_portletLayoutListenerInstances;
