@@ -2140,6 +2140,7 @@ log.sanitizer.enabled=false</echo>
 		<attribute default="" name="test.portal.bundle.dependencies.zip.url" />
 		<attribute default="" name="test.portal.bundle.osgi.zip.url" />
 		<attribute default="" name="test.portal.bundle.tools.zip.url" />
+		<attribute default="" name="test.portal.bundle.version" />
 		<attribute default="" name="test.portal.bundle.war.url" />
 		<attribute default="" name="test.portal.bundle.zip.url" />
 		<attribute default="" name="test.sql.zip.url" />
@@ -2163,7 +2164,7 @@ log.sanitizer.enabled=false</echo>
 
 							<echo>Executing Gradle task in directory "modules": testIntegration.</echo>
 
-							<setup-test-batch-testable-tomcat />
+							<setup-test-batch-testable-tomcat test.portal.bundle.version="@{test.portal.bundle.version}" />
 
 							<antcall target="start-app-server-preserve-liferay-home" />
 
@@ -4063,6 +4064,7 @@ log.sanitizer.enabled=false</echo>
 			test.portal.bundle.dependencies.zip.url="${test.portal.bundle.dependencies.zip.url}"
 			test.portal.bundle.osgi.zip.url="${test.portal.bundle.osgi.zip.url}"
 			test.portal.bundle.tools.zip.url="${test.portal.bundle.tools.zip.url}"
+			test.portal.bundle.version="${test.portal.bundle.version}"
 			test.portal.bundle.war.url="${test.portal.bundle.war.url}"
 			test.portal.bundle.zip.url="${test.portal.bundle.zip.url}"
 			test.sql.zip.url="${test.sql.zip.url}"
@@ -4080,6 +4082,7 @@ log.sanitizer.enabled=false</echo>
 			test.portal.bundle.dependencies.zip.url="${test.portal.bundle.dependencies.zip.url}"
 			test.portal.bundle.osgi.zip.url="${test.portal.bundle.osgi.zip.url}"
 			test.portal.bundle.tools.zip.url="${test.portal.bundle.tools.zip.url}"
+			test.portal.bundle.version="${test.portal.bundle.version}"
 			test.portal.bundle.war.url="${test.portal.bundle.war.url}"
 			test.portal.bundle.zip.url="${test.portal.bundle.zip.url}"
 			test.sql.zip.url="${test.sql.zip.url}"
@@ -4097,6 +4100,7 @@ log.sanitizer.enabled=false</echo>
 			test.portal.bundle.dependencies.zip.url="${test.portal.bundle.dependencies.zip.url}"
 			test.portal.bundle.osgi.zip.url="${test.portal.bundle.osgi.zip.url}"
 			test.portal.bundle.tools.zip.url="${test.portal.bundle.tools.zip.url}"
+			test.portal.bundle.version="${test.portal.bundle.version}"
 			test.portal.bundle.war.url="${test.portal.bundle.war.url}"
 			test.portal.bundle.zip.url="${test.portal.bundle.zip.url}"
 			test.sql.zip.url="${test.sql.zip.url}"
@@ -4114,6 +4118,7 @@ log.sanitizer.enabled=false</echo>
 			test.license.xml.url="${test.license.xml.url}"
 			test.portal.bundle.dependencies.zip.url="${test.portal.bundle.dependencies.zip.url}"
 			test.portal.bundle.osgi.zip.url="${test.portal.bundle.osgi.zip.url}"
+			test.portal.bundle.version="${test.portal.bundle.version}"
 			test.portal.bundle.tools.zip.url="${test.portal.bundle.tools.zip.url}"
 			test.portal.bundle.war.url="${test.portal.bundle.war.url}"
 			test.portal.bundle.zip.url="${test.portal.bundle.zip.url}"
@@ -4132,6 +4137,7 @@ log.sanitizer.enabled=false</echo>
 			test.portal.bundle.dependencies.zip.url="${test.portal.bundle.dependencies.zip.url}"
 			test.portal.bundle.osgi.zip.url="${test.portal.bundle.osgi.zip.url}"
 			test.portal.bundle.tools.zip.url="${test.portal.bundle.tools.zip.url}"
+			test.portal.bundle.version="${test.portal.bundle.version}"
 			test.portal.bundle.war.url="${test.portal.bundle.war.url}"
 			test.portal.bundle.zip.url="${test.portal.bundle.zip.url}"
 			test.sql.zip.url="${test.sql.zip.url}"
@@ -4149,6 +4155,7 @@ log.sanitizer.enabled=false</echo>
 			test.portal.bundle.dependencies.zip.url="${test.portal.bundle.dependencies.zip.url}"
 			test.portal.bundle.osgi.zip.url="${test.portal.bundle.osgi.zip.url}"
 			test.portal.bundle.tools.zip.url="${test.portal.bundle.tools.zip.url}"
+			test.portal.bundle.version="${test.portal.bundle.version}"
 			test.portal.bundle.war.url="${test.portal.bundle.war.url}"
 			test.portal.bundle.zip.url="${test.portal.bundle.zip.url}"
 			test.sql.zip.url="${test.sql.zip.url}"
@@ -4166,6 +4173,7 @@ log.sanitizer.enabled=false</echo>
 			test.portal.bundle.dependencies.zip.url="${test.portal.bundle.dependencies.zip.url}"
 			test.portal.bundle.osgi.zip.url="${test.portal.bundle.osgi.zip.url}"
 			test.portal.bundle.tools.zip.url="${test.portal.bundle.tools.zip.url}"
+			test.portal.bundle.version="${test.portal.bundle.version}"
 			test.portal.bundle.war.url="${test.portal.bundle.war.url}"
 			test.portal.bundle.zip.url="${test.portal.bundle.zip.url}"
 			test.sql.zip.url="${test.sql.zip.url}"
