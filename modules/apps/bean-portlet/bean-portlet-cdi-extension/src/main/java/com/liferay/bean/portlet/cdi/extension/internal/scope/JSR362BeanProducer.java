@@ -67,6 +67,7 @@ import javax.servlet.http.Cookie;
 /**
  * @author Neil Griffin
  */
+// TODO: Rename to JSR362CDIBeanProducer
 public class JSR362BeanProducer {
 
 	@Named("actionParams")

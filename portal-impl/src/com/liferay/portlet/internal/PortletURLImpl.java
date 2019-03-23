@@ -425,6 +425,15 @@ public class PortletURLImpl
 
 		if (Validator.isNull(paramName)) {
 			paramName = portletSerializableClass.getSimpleName();
+
+			// See com.liferay.test.renderstatescoped.portlet.HelloWorldPortet
+			// doView method that calls renderURL.setBeanParameter(fooBean);
+
+			int pos = paramName.indexOf("$$EnhancerBySpringCGLIB");
+
+			if (pos > 0) {
+				paramName = paramName.substring(0, pos);
+			}
 		}
 
 		MutableRenderParameters mutableRenderParameters = getRenderParameters();
