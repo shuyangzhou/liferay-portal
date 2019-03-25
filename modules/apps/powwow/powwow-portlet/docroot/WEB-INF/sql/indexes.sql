@@ -7,5 +7,4 @@ create unique index IX_E73754B9 on PowwowParticipant (powwowMeetingId, emailAddr
 create index IX_ECA316DC on PowwowParticipant (powwowMeetingId, participantUserId);
 create index IX_CFEF5668 on PowwowParticipant (powwowMeetingId, type_);
 
-create index IX_381E5639 on PowwowServer (active_);
 create index IX_39D6051A on PowwowServer (providerType[$COLUMN_LENGTH:75$], active_);

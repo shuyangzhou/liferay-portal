@@ -17,7 +17,6 @@ create unique index IX_AA9051A2 on DDMFormInstance (uuid_[$COLUMN_LENGTH:75$], g
 
 create index IX_5BC982B on DDMFormInstanceRecord (companyId);
 create index IX_242301EA on DDMFormInstanceRecord (formInstanceId, formInstanceVersion[$COLUMN_LENGTH:75$]);
-create index IX_3C8DBDFF on DDMFormInstanceRecord (formInstanceId, userId);
 create index IX_E1971FF on DDMFormInstanceRecord (userId, formInstanceId);
 create index IX_CF8CF491 on DDMFormInstanceRecord (uuid_[$COLUMN_LENGTH:75$], companyId);
 create unique index IX_AA3B6B53 on DDMFormInstanceRecord (uuid_[$COLUMN_LENGTH:75$], groupId);

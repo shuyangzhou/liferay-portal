@@ -75,12 +75,11 @@ create unique index IX_717B9BA2 on Country (a3[$COLUMN_LENGTH:75$]);
 create index IX_25D734CD on Country (active_);
 create unique index IX_19DA007B on Country (name[$COLUMN_LENGTH:75$]);
 
-create index IX_5444C427 on DLFileEntry (companyId, fileEntryTypeId);
+create index IX_4CB1B2B4 on DLFileEntry (companyId);
 create index IX_B8526DBE on DLFileEntry (custom1ImageId);
 create index IX_AC9BDEDD on DLFileEntry (custom2ImageId);
 create index IX_772ECDE7 on DLFileEntry (fileEntryTypeId);
 create index IX_8F6C75D0 on DLFileEntry (folderId, name[$COLUMN_LENGTH:255$]);
-create index IX_BAF654E5 on DLFileEntry (groupId, fileEntryTypeId);
 create index IX_29D0AF28 on DLFileEntry (groupId, folderId, fileEntryTypeId);
 create unique index IX_DF37D92E on DLFileEntry (groupId, folderId, fileName[$COLUMN_LENGTH:255$]);
 create unique index IX_5391712 on DLFileEntry (groupId, folderId, name[$COLUMN_LENGTH:255$]);
@@ -154,7 +153,6 @@ create index IX_38FA468D on ExportImportConfiguration (groupId, status);
 create index IX_47CC6234 on ExportImportConfiguration (groupId, type_, status);
 
 create index IX_8257E37B on Group_ (classNameId, classPK);
-create index IX_BD3CB13A on Group_ (classNameId, groupId, companyId, parentGroupId);
 create index IX_DDC91A87 on Group_ (companyId, active_);
 create unique index IX_D0D5E397 on Group_ (companyId, classNameId, classPK);
 create unique index IX_A729E3A6 on Group_ (companyId, classNameId, liveGroupId, groupKey[$COLUMN_LENGTH:150$]);
@@ -188,7 +186,6 @@ create index IX_881EABCB on Layout (companyId, layoutPrototypeUuid[$COLUMN_LENGT
 create index IX_D4B8A526 on Layout (groupId, leftPlid, rightPlid, privateLayout);
 create unique index IX_BC2C4231 on Layout (groupId, privateLayout, friendlyURL[$COLUMN_LENGTH:255$]);
 create unique index IX_7162C27C on Layout (groupId, privateLayout, layoutId);
-create index IX_2C89110E on Layout (groupId, privateLayout, leftPlid, rightPlid);
 create index IX_7399B71E on Layout (groupId, privateLayout, parentLayoutId, priority);
 create index IX_8CE8C0D9 on Layout (groupId, privateLayout, sourcePrototypeLayoutUuid[$COLUMN_LENGTH:75$]);
 create index IX_1A1B61D2 on Layout (groupId, privateLayout, type_[$COLUMN_LENGTH:75$]);
@@ -317,12 +314,6 @@ create unique index IX_354AA664 on RepositoryEntry (uuid_[$COLUMN_LENGTH:75$], g
 
 create unique index IX_EDB9986E on ResourceAction (name[$COLUMN_LENGTH:255$], actionId[$COLUMN_LENGTH:75$]);
 
-create unique index IX_AEEA209C on ResourceBlock (companyId, groupId, name[$COLUMN_LENGTH:75$], permissionsHash[$COLUMN_LENGTH:75$]);
-create index IX_2D4CC782 on ResourceBlock (companyId, name[$COLUMN_LENGTH:75$]);
-
-create unique index IX_D63D20BB on ResourceBlockPermission (resourceBlockId, roleId);
-create index IX_20A2E3D9 on ResourceBlockPermission (roleId);
-
 create unique index IX_8D83D0CE on ResourcePermission (companyId, name[$COLUMN_LENGTH:255$], scope, primKey[$COLUMN_LENGTH:255$], roleId);
 create index IX_49AEC6F3 on ResourcePermission (companyId, name[$COLUMN_LENGTH:255$], scope, primKeyId, roleId, viewActionId);
 create index IX_FD06D7C5 on ResourcePermission (companyId, name[$COLUMN_LENGTH:255$], scope, roleId);
@@ -331,10 +322,6 @@ create index IX_F6BAE86A on ResourcePermission (companyId, scope, primKey[$COLUM
 create index IX_D5F1E2A2 on ResourcePermission (name[$COLUMN_LENGTH:255$]);
 create index IX_A37A0588 on ResourcePermission (roleId);
 create index IX_F4555981 on ResourcePermission (scope);
-
-create unique index IX_BA497163 on ResourceTypePermission (companyId, groupId, name[$COLUMN_LENGTH:75$], roleId);
-create index IX_7D81F66F on ResourceTypePermission (companyId, name[$COLUMN_LENGTH:75$], roleId);
-create index IX_A82690E2 on ResourceTypePermission (roleId);
 
 create unique index IX_A88E424E on Role_ (companyId, classNameId, classPK);
 create unique index IX_EBC931B8 on Role_ (companyId, name[$COLUMN_LENGTH:75$]);
@@ -456,7 +443,6 @@ create unique index IX_9782AD88 on User_ (companyId, userId);
 create unique index IX_5ADBE171 on User_ (contactId);
 create index IX_762F63C6 on User_ (emailAddress[$COLUMN_LENGTH:254$]);
 create index IX_A18034A4 on User_ (portraitId);
-create index IX_68931CD4 on User_ (userId, companyId);
 create index IX_405CC0E on User_ (uuid_[$COLUMN_LENGTH:75$], companyId);
 
 create index IX_3499B657 on Users_Groups (companyId);
