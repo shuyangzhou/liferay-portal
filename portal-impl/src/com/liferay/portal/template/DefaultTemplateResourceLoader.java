@@ -360,22 +360,6 @@ public class DefaultTemplateResourceLoader implements TemplateResourceLoader {
 	private class TemplateResourcePortalCacheListener
 		implements PortalCacheListener<String, TemplateResource> {
 
-		public TemplateResourcePortalCacheListener(
-			String templateResourceLoaderName, SingleVMPool singleVMPool) {
-
-			String portalCacheName = TemplateResource.class.getName();
-
-			portalCacheName = portalCacheName.concat(
-				StringPool.POUND
-			).concat(
-				templateResourceLoaderName
-			);
-
-			_portalCache =
-				(PortalCache<TemplateResource, ?>)singleVMPool.getPortalCache(
-					portalCacheName);
-		}
-
 		@Override
 		public void dispose() {
 		}
@@ -437,6 +421,22 @@ public class DefaultTemplateResourceLoader implements TemplateResourceLoader {
 			throws PortalCacheException {
 
 			_portalCache.removeAll();
+		}
+
+		private TemplateResourcePortalCacheListener(
+			String templateResourceLoaderName, SingleVMPool singleVMPool) {
+
+			String portalCacheName = TemplateResource.class.getName();
+
+			portalCacheName = portalCacheName.concat(
+				StringPool.POUND
+			).concat(
+				templateResourceLoaderName
+			);
+
+			_portalCache =
+				(PortalCache<TemplateResource, ?>)singleVMPool.getPortalCache(
+					portalCacheName);
 		}
 
 		private final PortalCache<TemplateResource, ?> _portalCache;
