@@ -17,6 +17,7 @@ package com.liferay.portal.template;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.PortalCache;
+import com.liferay.portal.kernel.cache.PortalCacheException;
 import com.liferay.portal.kernel.cache.PortalCacheListener;
 import com.liferay.portal.kernel.cache.PortalCacheListenerScope;
 import com.liferay.portal.kernel.cache.SingleVMPool;
@@ -353,6 +354,92 @@ public class DefaultTemplateResourceLoader implements TemplateResourceLoader {
 		}
 
 		private long _lastModified = System.currentTimeMillis();
+
+	}
+
+	private class TemplateResourcePortalCacheListener
+		implements PortalCacheListener<String, TemplateResource> {
+
+		public TemplateResourcePortalCacheListener(
+			String templateResourceLoaderName, SingleVMPool singleVMPool) {
+
+			String portalCacheName = TemplateResource.class.getName();
+
+			portalCacheName = portalCacheName.concat(
+				StringPool.POUND
+			).concat(
+				templateResourceLoaderName
+			);
+
+			_portalCache =
+				(PortalCache<TemplateResource, ?>)singleVMPool.getPortalCache(
+					portalCacheName);
+		}
+
+		@Override
+		public void dispose() {
+		}
+
+		@Override
+		public void notifyEntryEvicted(
+				PortalCache<String, TemplateResource> portalCache, String key,
+				TemplateResource templateResource, int timeToLive)
+			throws PortalCacheException {
+
+			if (templateResource != null) {
+				_portalCache.remove(templateResource);
+			}
+		}
+
+		@Override
+		public void notifyEntryExpired(
+				PortalCache<String, TemplateResource> portalCache, String key,
+				TemplateResource templateResource, int timeToLive)
+			throws PortalCacheException {
+
+			if (templateResource != null) {
+				_portalCache.remove(templateResource);
+			}
+		}
+
+		@Override
+		public void notifyEntryPut(
+				PortalCache<String, TemplateResource> portalCache, String key,
+				TemplateResource templateResource, int timeToLive)
+			throws PortalCacheException {
+		}
+
+		@Override
+		public void notifyEntryRemoved(
+				PortalCache<String, TemplateResource> portalCache, String key,
+				TemplateResource templateResource, int timeToLive)
+			throws PortalCacheException {
+
+			if (templateResource != null) {
+				_portalCache.remove(templateResource);
+			}
+		}
+
+		@Override
+		public void notifyEntryUpdated(
+				PortalCache<String, TemplateResource> portalCache, String key,
+				TemplateResource templateResource, int timeToLive)
+			throws PortalCacheException {
+
+			if (templateResource != null) {
+				_portalCache.remove(templateResource);
+			}
+		}
+
+		@Override
+		public void notifyRemoveAll(
+				PortalCache<String, TemplateResource> portalCache)
+			throws PortalCacheException {
+
+			_portalCache.removeAll();
+		}
+
+		private final PortalCache<TemplateResource, ?> _portalCache;
 
 	}
 
