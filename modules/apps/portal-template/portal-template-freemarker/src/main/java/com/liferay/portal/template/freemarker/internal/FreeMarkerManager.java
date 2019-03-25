@@ -300,13 +300,6 @@ public class FreeMarkerManager extends BaseSingleTemplateManager {
 		}
 	}
 
-	@Reference(unbind = "-")
-	public void setTemplateClassResolver(
-		TemplateClassResolver templateClassResolver) {
-
-		_templateClassResolver = templateClassResolver;
-	}
-
 	@Override
 	@Reference(service = FreeMarkerTemplateContextHelper.class, unbind = "-")
 	public void setTemplateContextHelper(
@@ -431,16 +424,6 @@ public class FreeMarkerManager extends BaseSingleTemplateManager {
 		return false;
 	}
 
-	@Reference(unbind = "-")
-	protected void setMultiVMPool(MultiVMPool multiVMPool) {
-		_multiVMPool = multiVMPool;
-	}
-
-	@Reference(unbind = "-")
-	protected void setSingleVMPool(SingleVMPool singleVMPool) {
-		_singleVMPool = singleVMPool;
-	}
-
 	private String _getMacroLibrary() {
 		Class<?> clazz = getClass();
 
@@ -486,11 +469,19 @@ public class FreeMarkerManager extends BaseSingleTemplateManager {
 	private volatile FreeMarkerBundleClassloader _freeMarkerBundleClassloader;
 	private volatile FreeMarkerEngineConfiguration
 		_freeMarkerEngineConfiguration;
+
+	@Reference
 	private MultiVMPool _multiVMPool;
+
+	@Reference
 	private SingleVMPool _singleVMPool;
+
 	private final Map<String, String> _taglibMappings =
 		new ConcurrentHashMap<>();
+
+	@Reference
 	private TemplateClassResolver _templateClassResolver;
+
 	private final Map<String, TemplateModel> _templateModels =
 		new ConcurrentHashMap<>();
 
