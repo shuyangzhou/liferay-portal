@@ -22,7 +22,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * When invoked by an AopInvocationHandler, the transaction advice is configured
+ * by this annotation.
+ *
  * @author Brian Wing Shun Chan
+ * @see Isolation
+ * @see Propagation
+ * @review
  */
 @Documented
 @Inherited
@@ -30,22 +36,45 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD, ElementType.TYPE})
 public @interface Transactional {
 
+	/**
+	 * Transactions can be enabled at a higher scope and disabled at a lower
+	 * scope. For example: enabled for a class but disabled for a method.
+	 */
 	public boolean enabled() default true;
 
 	public Isolation isolation() default Isolation.DEFAULT;
 
+	/**
+	 * Exceptions that should not cause the transaction to be rolled back.
+	 */
 	public Class<? extends Throwable>[] noRollbackFor() default {};
 
+	/**
+	 * Exception names that should not cause the transaction to be rolled back.
+	 */
 	public String[] noRollbackForClassName() default {};
 
 	public Propagation propagation() default Propagation.REQUIRED;
 
+	/**
+	 * A flag that can be set to true if the transaction is effectively
+	 * read-only, allowing for corresponding optimizations at runtime.
+	 */
 	public boolean readOnly() default false;
 
+	/**
+	 * Exceptions that should cause the transaction to be rolled back.
+	 */
 	public Class<? extends Throwable>[] rollbackFor() default {};
 
+	/**
+	 * Exception names that should cause the transaction to be rolled back.
+	 */
 	public String[] rollbackForClassName() default {};
 
+	/**
+	 * The timeout for this transaction in seconds.
+	 */
 	public int timeout() default TransactionDefinition.TIMEOUT_DEFAULT;
 
 }

@@ -21,16 +21,29 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * When invoked by an AopInvocationHandler, Methods annotated with Clusterable
+ * are invoked across the cluster. By default the method is invoked on all
+ * active nodes in the cluster.
+ *
  * @author Shuyang Zhou
+ * @review
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Clusterable {
 
+	/**
+	 * Instead of calling the method on other nodes a ClusterInvokeAcceptor can
+	 * be specified.
+	 */
 	public Class<? extends ClusterInvokeAcceptor> acceptor()
 		default ClusterInvokeAcceptor.class;
 
+	/**
+	 * Indicates if only the master node should be invoked. The result of the
+	 * method invocation is deserialized and returned.
+	 */
 	public boolean onMaster() default false;
 
 }
