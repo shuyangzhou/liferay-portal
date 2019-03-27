@@ -18,8 +18,10 @@ import com.liferay.arquillian.extension.junit.bridge.command.RunNotifierCommand;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.ObjectStreamClass;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -139,6 +141,40 @@ public class TestExecutorRunnable implements Runnable {
 			statement, ClassRule.class, testClass, null, description);
 
 		return statement;
+	}
+
+	private static void _exam(
+			RunNotifierCommand runNotifierCommand,
+			Constructor<ObjectStreamClass> constructor,
+			Method hasWriteReplaceMethod, Method invokeWriteReplaceMethod)
+		throws ReflectiveOperationException {
+
+		ObjectStreamClass objectStreamClass = constructor.newInstance(
+			runNotifierCommand.getClass());
+
+		if (Boolean.TRUE.equals(
+				hasWriteReplaceMethod.invoke(objectStreamClass))) {
+
+			Object replacedObject = invokeWriteReplaceMethod.invoke(
+				objectStreamClass, runNotifierCommand);
+
+			System.out.println(
+				"##########Replaced " + runNotifierCommand + " to " +
+					replacedObject);
+
+			objectStreamClass = constructor.newInstance(
+				replacedObject.getClass());
+
+			System.out.println(
+				"##########Replaced " + runNotifierCommand + " to " +
+					replacedObject + " with a SUID " +
+						objectStreamClass.getSerialVersionUID());
+		}
+		else {
+			System.out.println(
+				"!!!!!" + runNotifierCommand.getClass() +
+					" does not have writeReplace method");
+		}
 	}
 
 	private static void _execute(
@@ -334,6 +370,53 @@ public class TestExecutorRunnable implements Runnable {
 
 	private static final Logger _logger = Logger.getLogger(
 		TestExecutorRunnable.class.getName());
+
+	static {
+		try {
+			synchronized (System.out) {
+				System.out.println("##########From TestExecutorRunnable:");
+				System.out.println(
+					"##########java.home:" + System.getProperty("java.home"));
+				System.out.println(
+					"##########java.version:" +
+						System.getProperty("java.version"));
+
+				Constructor<ObjectStreamClass> constructor =
+					ObjectStreamClass.class.getDeclaredConstructor(Class.class);
+
+				constructor.setAccessible(true);
+
+				Method hasWriteReplaceMethod =
+					ObjectStreamClass.class.getDeclaredMethod(
+						"hasWriteReplaceMethod");
+
+				hasWriteReplaceMethod.setAccessible(true);
+
+				Method invokeWriteReplaceMethod =
+					ObjectStreamClass.class.getDeclaredMethod(
+						"invokeWriteReplace", Object.class);
+
+				invokeWriteReplaceMethod.setAccessible(true);
+
+				_exam(
+					RunNotifierCommand.assumptionFailed(null, null),
+					constructor, hasWriteReplaceMethod,
+					invokeWriteReplaceMethod);
+				_exam(
+					RunNotifierCommand.testFailure(null, null), constructor,
+					hasWriteReplaceMethod, invokeWriteReplaceMethod);
+				_exam(
+					RunNotifierCommand.testFinished(null), constructor,
+					hasWriteReplaceMethod, invokeWriteReplaceMethod);
+				_exam(
+					RunNotifierCommand.testStarted(null), constructor,
+					hasWriteReplaceMethod, invokeWriteReplaceMethod);
+			}
+		}
+		catch (ReflectiveOperationException roe) {
+			throw new ExceptionInInitializerError(roe);
+		}
+	}
 
 	private final Bundle _bundle;
 	private final long _passCode;

@@ -22,8 +22,11 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectStreamClass;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -173,6 +176,36 @@ public class Arquillian extends Runner implements Filterable {
 		}
 	}
 
+	private static void _exam(
+			RunNotifierCommand runNotifierCommand,
+			Constructor<ObjectStreamClass> constructor,
+			Method hasWriteReplaceMethod, Method invokeWriteReplaceMethod)
+		throws ReflectiveOperationException {
+
+		ObjectStreamClass objectStreamClass = constructor.newInstance(
+			runNotifierCommand.getClass());
+
+		if (Boolean.TRUE.equals(
+				hasWriteReplaceMethod.invoke(objectStreamClass))) {
+
+			Object replacedObject = invokeWriteReplaceMethod.invoke(
+				objectStreamClass, runNotifierCommand);
+
+			objectStreamClass = constructor.newInstance(
+				replacedObject.getClass());
+
+			System.out.println(
+				"##########Replaced " + runNotifierCommand + " to " +
+					replacedObject + " with a SUID " +
+						objectStreamClass.getSerialVersionUID());
+		}
+		else {
+			System.out.println(
+				"!!!!!" + runNotifierCommand.getClass() +
+					" does not have writeReplace method");
+		}
+	}
+
 	private static ServerSocket _getServerSocket() throws IOException {
 		ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
 
@@ -219,6 +252,53 @@ public class Arquillian extends Runner implements Filterable {
 
 	private static final InetAddress _inetAddress =
 		InetAddress.getLoopbackAddress();
+
+	static {
+		try {
+			synchronized (System.out) {
+				System.out.println("##########From Arquillian:");
+				System.out.println(
+					"##########java.home:" + System.getProperty("java.home"));
+				System.out.println(
+					"##########java.version:" +
+						System.getProperty("java.version"));
+
+				Constructor<ObjectStreamClass> constructor =
+					ObjectStreamClass.class.getDeclaredConstructor(Class.class);
+
+				constructor.setAccessible(true);
+
+				Method hasWriteReplaceMethod =
+					ObjectStreamClass.class.getDeclaredMethod(
+						"hasWriteReplaceMethod");
+
+				hasWriteReplaceMethod.setAccessible(true);
+
+				Method invokeWriteReplaceMethod =
+					ObjectStreamClass.class.getDeclaredMethod(
+						"invokeWriteReplace", Object.class);
+
+				invokeWriteReplaceMethod.setAccessible(true);
+
+				_exam(
+					RunNotifierCommand.assumptionFailed(null, null),
+					constructor, hasWriteReplaceMethod,
+					invokeWriteReplaceMethod);
+				_exam(
+					RunNotifierCommand.testFailure(null, null), constructor,
+					hasWriteReplaceMethod, invokeWriteReplaceMethod);
+				_exam(
+					RunNotifierCommand.testFinished(null), constructor,
+					hasWriteReplaceMethod, invokeWriteReplaceMethod);
+				_exam(
+					RunNotifierCommand.testStarted(null), constructor,
+					hasWriteReplaceMethod, invokeWriteReplaceMethod);
+			}
+		}
+		catch (ReflectiveOperationException roe) {
+			throw new ExceptionInInitializerError(roe);
+		}
+	}
 
 	private final Class<?> _clazz;
 	private FilteredSortedTestClass _filteredSortedTestClass;
