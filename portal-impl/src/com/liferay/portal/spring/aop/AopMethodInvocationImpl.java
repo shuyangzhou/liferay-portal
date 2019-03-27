@@ -16,6 +16,8 @@ package com.liferay.portal.spring.aop;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.aop.AopMethodInvocation;
+import com.liferay.portal.kernel.aop.ChainableMethodAdvice;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -23,21 +25,25 @@ import java.lang.reflect.Method;
 /**
  * @author Shuyang Zhou
  */
-public class AopMethodInvocation {
+public class AopMethodInvocationImpl implements AopMethodInvocation {
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T getAdviceMethodContext() {
 		return (T)_adviceMethodContext;
 	}
 
+	@Override
 	public Method getMethod() {
 		return _method;
 	}
 
+	@Override
 	public Object getThis() {
 		return _target;
 	}
 
+	@Override
 	public Object proceed(Object[] arguments) throws Throwable {
 		if (_nextChainableMethodAdvice == null) {
 			try {
@@ -93,7 +99,7 @@ public class AopMethodInvocation {
 		return _toString;
 	}
 
-	protected AopMethodInvocation(
+	protected AopMethodInvocationImpl(
 		Object target, Method method, Object adviceMethodContext,
 		ChainableMethodAdvice nextChainableMethodAdvice,
 		AopMethodInvocation nextAopMethodInvocation) {

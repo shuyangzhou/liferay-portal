@@ -16,13 +16,13 @@ package com.liferay.portal.messaging.async;
 
 import com.liferay.portal.internal.messaging.async.AsyncInvokeThreadLocal;
 import com.liferay.portal.internal.messaging.async.AsyncProcessCallable;
+import com.liferay.portal.kernel.aop.AopMethodInvocation;
+import com.liferay.portal.kernel.aop.ChainableMethodAdvice;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.messaging.async.Async;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
-import com.liferay.portal.spring.aop.AopMethodInvocation;
-import com.liferay.portal.spring.aop.ChainableMethodAdvice;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -34,29 +34,6 @@ import java.util.Map;
  * @author Brian Wing Shun Chan
  */
 public class AsyncAdvice extends ChainableMethodAdvice {
-
-	@Override
-	public Object before(
-		AopMethodInvocation aopMethodInvocation, Object[] arguments) {
-
-		if (AsyncInvokeThreadLocal.isEnabled()) {
-			return null;
-		}
-
-		String callbackDestinationName =
-			aopMethodInvocation.getAdviceMethodContext();
-
-		TransactionCommitCallbackUtil.registerCallback(
-			() -> {
-				MessageBusUtil.sendMessage(
-					callbackDestinationName,
-					new AsyncProcessCallable(aopMethodInvocation, arguments));
-
-				return null;
-			});
-
-		return nullResult;
-	}
 
 	@Override
 	public Object createMethodContext(
@@ -102,6 +79,29 @@ public class AsyncAdvice extends ChainableMethodAdvice {
 
 	public void setDestinationNames(Map<Class<?>, String> destinationNames) {
 		_destinationNames = destinationNames;
+	}
+
+	@Override
+	protected Object before(
+		AopMethodInvocation aopMethodInvocation, Object[] arguments) {
+
+		if (AsyncInvokeThreadLocal.isEnabled()) {
+			return null;
+		}
+
+		String callbackDestinationName =
+			aopMethodInvocation.getAdviceMethodContext();
+
+		TransactionCommitCallbackUtil.registerCallback(
+			() -> {
+				MessageBusUtil.sendMessage(
+					callbackDestinationName,
+					new AsyncProcessCallable(aopMethodInvocation, arguments));
+
+				return null;
+			});
+
+		return nullResult;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(AsyncAdvice.class);

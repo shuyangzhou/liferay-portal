@@ -14,13 +14,13 @@
 
 package com.liferay.portal.internal.cluster;
 
+import com.liferay.portal.kernel.aop.AopMethodInvocation;
+import com.liferay.portal.kernel.aop.ChainableMethodAdvice;
 import com.liferay.portal.kernel.cluster.Clusterable;
 import com.liferay.portal.kernel.cluster.ClusterableInvokerUtil;
 import com.liferay.portal.kernel.nio.intraband.rpc.IntrabandRPCUtil;
 import com.liferay.portal.kernel.resiliency.spi.SPI;
 import com.liferay.portal.kernel.resiliency.spi.SPIUtil;
-import com.liferay.portal.spring.aop.AopMethodInvocation;
-import com.liferay.portal.spring.aop.ChainableMethodAdvice;
 
 import java.io.Serializable;
 
@@ -34,24 +34,6 @@ import java.util.concurrent.Future;
  * @author Shuyang Zhou
  */
 public class SPIClusterableAdvice extends ChainableMethodAdvice {
-
-	@Override
-	public void afterReturning(
-			AopMethodInvocation aopMethodInvocation, Object[] arguments,
-			Object result)
-		throws Throwable {
-
-		Clusterable clusterable = aopMethodInvocation.getAdviceMethodContext();
-
-		SPI spi = SPIUtil.getSPI();
-
-		IntrabandRPCUtil.execute(
-			spi.getRegistrationReference(),
-			new MethodHandlerProcessCallable<Serializable>(
-				ClusterableInvokerUtil.createMethodHandler(
-					clusterable.acceptor(), aopMethodInvocation.getThis(),
-					aopMethodInvocation.getMethod(), arguments)));
-	}
 
 	@Override
 	public Object before(
@@ -92,6 +74,24 @@ public class SPIClusterableAdvice extends ChainableMethodAdvice {
 		Map<Class<? extends Annotation>, Annotation> annotations) {
 
 		return annotations.get(Clusterable.class);
+	}
+
+	@Override
+	protected void afterReturning(
+			AopMethodInvocation aopMethodInvocation, Object[] arguments,
+			Object result)
+		throws Throwable {
+
+		Clusterable clusterable = aopMethodInvocation.getAdviceMethodContext();
+
+		SPI spi = SPIUtil.getSPI();
+
+		IntrabandRPCUtil.execute(
+			spi.getRegistrationReference(),
+			new MethodHandlerProcessCallable<Serializable>(
+				ClusterableInvokerUtil.createMethodHandler(
+					clusterable.acceptor(), aopMethodInvocation.getThis(),
+					aopMethodInvocation.getMethod(), arguments)));
 	}
 
 }

@@ -14,12 +14,12 @@
 
 package com.liferay.portal.internal.cluster;
 
+import com.liferay.portal.kernel.aop.AopMethodInvocation;
+import com.liferay.portal.kernel.aop.ChainableMethodAdvice;
 import com.liferay.portal.kernel.cluster.ClusterInvokeThreadLocal;
 import com.liferay.portal.kernel.cluster.ClusterMasterExecutorUtil;
 import com.liferay.portal.kernel.cluster.Clusterable;
 import com.liferay.portal.kernel.cluster.ClusterableInvokerUtil;
-import com.liferay.portal.spring.aop.AopMethodInvocation;
-import com.liferay.portal.spring.aop.ChainableMethodAdvice;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -32,7 +32,15 @@ import java.util.Map;
 public class ClusterableAdvice extends ChainableMethodAdvice {
 
 	@Override
-	public void afterReturning(
+	public Object createMethodContext(
+		Class<?> targetClass, Method method,
+		Map<Class<? extends Annotation>, Annotation> annotations) {
+
+		return annotations.get(Clusterable.class);
+	}
+
+	@Override
+	protected void afterReturning(
 			AopMethodInvocation aopMethodInvocation, Object[] arguments,
 			Object result)
 		throws Throwable {
@@ -49,7 +57,7 @@ public class ClusterableAdvice extends ChainableMethodAdvice {
 	}
 
 	@Override
-	public Object before(
+	protected Object before(
 			AopMethodInvocation aopMethodInvocation, Object[] arguments)
 		throws Throwable {
 
@@ -83,14 +91,6 @@ public class ClusterableAdvice extends ChainableMethodAdvice {
 		}
 
 		return result;
-	}
-
-	@Override
-	public Object createMethodContext(
-		Class<?> targetClass, Method method,
-		Map<Class<? extends Annotation>, Annotation> annotations) {
-
-		return annotations.get(Clusterable.class);
 	}
 
 }

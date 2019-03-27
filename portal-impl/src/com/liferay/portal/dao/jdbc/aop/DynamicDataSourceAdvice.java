@@ -14,12 +14,12 @@
 
 package com.liferay.portal.dao.jdbc.aop;
 
+import com.liferay.portal.kernel.aop.AopMethodInvocation;
+import com.liferay.portal.kernel.aop.ChainableMethodAdvice;
 import com.liferay.portal.kernel.dao.jdbc.aop.DynamicDataSourceTargetSource;
 import com.liferay.portal.kernel.dao.jdbc.aop.MasterDataSource;
 import com.liferay.portal.kernel.dao.jdbc.aop.Operation;
 import com.liferay.portal.kernel.transaction.Transactional;
-import com.liferay.portal.spring.aop.AopMethodInvocation;
-import com.liferay.portal.spring.aop.ChainableMethodAdvice;
 import com.liferay.portal.spring.transaction.TransactionAttributeBuilder;
 
 import java.lang.annotation.Annotation;
@@ -34,17 +34,6 @@ import org.springframework.transaction.interceptor.TransactionAttribute;
  * @author László Csontos
  */
 public class DynamicDataSourceAdvice extends ChainableMethodAdvice {
-
-	@Override
-	public Object before(
-		AopMethodInvocation aopMethodInvocation, Object[] arguments) {
-
-		Operation operation = aopMethodInvocation.getAdviceMethodContext();
-
-		_dynamicDataSourceTargetSource.pushOperation(operation);
-
-		return null;
-	}
 
 	@Override
 	public Object createMethodContext(
@@ -73,17 +62,28 @@ public class DynamicDataSourceAdvice extends ChainableMethodAdvice {
 		return operation;
 	}
 
-	@Override
-	public void duringFinally(
-		AopMethodInvocation aopMethodInvocation, Object[] arguments) {
-
-		_dynamicDataSourceTargetSource.popOperation();
-	}
-
 	public void setDynamicDataSourceTargetSource(
 		DynamicDataSourceTargetSource dynamicDataSourceTargetSource) {
 
 		_dynamicDataSourceTargetSource = dynamicDataSourceTargetSource;
+	}
+
+	@Override
+	protected Object before(
+		AopMethodInvocation aopMethodInvocation, Object[] arguments) {
+
+		Operation operation = aopMethodInvocation.getAdviceMethodContext();
+
+		_dynamicDataSourceTargetSource.pushOperation(operation);
+
+		return null;
+	}
+
+	@Override
+	protected void duringFinally(
+		AopMethodInvocation aopMethodInvocation, Object[] arguments) {
+
+		_dynamicDataSourceTargetSource.popOperation();
 	}
 
 	private DynamicDataSourceTargetSource _dynamicDataSourceTargetSource;

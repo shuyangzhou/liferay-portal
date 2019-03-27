@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.spring.aop;
+package com.liferay.portal.kernel.aop;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -20,37 +20,32 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
+ * Method advice to implement an aspect for services.
+ *
  * @author Shuyang Zhou
  * @author Brian Wing Shun Chan
+ * @review
  */
 public abstract class ChainableMethodAdvice {
 
-	public void afterReturning(
-			AopMethodInvocation aopMethodInvocation, Object[] arguments,
-			Object result)
-		throws Throwable {
-	}
-
-	public void afterThrowing(
-			AopMethodInvocation aopMethodInvocation, Object[] arguments,
-			Throwable throwable)
-		throws Throwable {
-	}
-
-	public Object before(
-			AopMethodInvocation aopMethodInvocation, Object[] arguments)
-		throws Throwable {
-
-		return null;
-	}
-
+	/**
+	 * Creates the context to be used when invoking this advice. The context can
+	 * be useful for caching information derived from reflective calls on the
+	 * method. Returning <code>null</code> disables this advice for all
+	 * invocations on the target class and method. The context object can be
+	 * obtained by calling {@link AopMethodInvocation#getAdviceMethodContext()}.
+	 * The context should be immutable as it is reused by concurrent calls to
+	 * {@link #invoke(AopMethodInvocation, Object[])}
+	 *
+	 * @param targetClass the target class for the context
+	 * @param method the method for the context
+	 * @param annotations a map of the method's annotations
+	 * @return the context object for use during method invocations or
+	 * <code>null</code> to disable this advice for the method.
+	 */
 	public abstract Object createMethodContext(
 		Class<?> targetClass, Method method,
 		Map<Class<? extends Annotation>, Annotation> annotations);
-
-	public void duringFinally(
-		AopMethodInvocation aopMethodInvocation, Object[] arguments) {
-	}
 
 	public Object invoke(
 			AopMethodInvocation aopMethodInvocation, Object[] arguments)
@@ -81,6 +76,29 @@ public abstract class ChainableMethodAdvice {
 		}
 
 		return returnValue;
+	}
+
+	protected void afterReturning(
+			AopMethodInvocation aopMethodInvocation, Object[] arguments,
+			Object result)
+		throws Throwable {
+	}
+
+	protected void afterThrowing(
+			AopMethodInvocation aopMethodInvocation, Object[] arguments,
+			Throwable throwable)
+		throws Throwable {
+	}
+
+	protected Object before(
+			AopMethodInvocation aopMethodInvocation, Object[] arguments)
+		throws Throwable {
+
+		return null;
+	}
+
+	protected void duringFinally(
+		AopMethodInvocation aopMethodInvocation, Object[] arguments) {
 	}
 
 	protected static Object nullResult = new Object();

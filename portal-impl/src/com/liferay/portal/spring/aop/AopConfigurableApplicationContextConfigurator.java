@@ -17,14 +17,12 @@ package com.liferay.portal.spring.aop;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.dao.orm.hibernate.SessionFactoryImpl;
 import com.liferay.portal.dao.orm.hibernate.VerifySessionFactoryWrapper;
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
+import com.liferay.portal.kernel.aop.ChainableMethodAdvice;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
-import com.liferay.portal.kernel.monitoring.ServiceMonitoringControl;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
-import com.liferay.portal.monitoring.statistics.service.ServiceMonitoringControlImpl;
 import com.liferay.portal.spring.bean.BeanReferenceAnnotationBeanPostProcessor;
 import com.liferay.portal.spring.configurator.ConfigurableApplicationContextConfigurator;
 import com.liferay.portal.spring.hibernate.PortletHibernateConfiguration;
@@ -33,6 +31,9 @@ import com.liferay.portal.spring.transaction.TransactionExecutor;
 import com.liferay.portal.spring.transaction.TransactionExecutorFactory;
 import com.liferay.portal.spring.transaction.TransactionInvokerImpl;
 import com.liferay.portal.spring.transaction.TransactionManagerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -127,8 +128,6 @@ public class AopConfigurableApplicationContextConfigurator
 
 			// Portal Spring context only
 
-			ServiceMonitoringControl serviceMonitoringControl = null;
-
 			if (PortalClassLoaderUtil.isPortalClassLoader(_classLoader)) {
 				TransactionInvokerImpl transactionInvokerImpl =
 					new TransactionInvokerImpl();
@@ -142,41 +141,23 @@ public class AopConfigurableApplicationContextConfigurator
 				transactionInvokerUtil.setTransactionInvoker(
 					transactionInvokerImpl);
 
-				ChainableMethodAdvice[] chainableMethodAdvices = {
-					configurableListableBeanFactory.getBean(
-						"counterTransactionAdvice", ChainableMethodAdvice.class)
-				};
-
-				ServiceBeanAutoProxyCreator serviceBeanAutoProxyCreator =
-					new ServiceBeanAutoProxyCreator(
-						new ServiceBeanMatcher(true), _classLoader,
-						chainableMethodAdvices);
-
-				defaultSingletonBeanRegistry.registerDisposableBean(
-					"counterServiceBeanAutoProxyCreatorDestroyer",
-					serviceBeanAutoProxyCreator::destroy);
+				CounterServiceBeanAutoProxyCreator
+					counterServiceBeanAutoProxyCreator =
+						new CounterServiceBeanAutoProxyCreator(
+							_classLoader,
+							configurableListableBeanFactory.getBean(
+								"counterTransactionAdvice",
+								ChainableMethodAdvice.class));
 
 				configurableListableBeanFactory.addBeanPostProcessor(
-					serviceBeanAutoProxyCreator);
-
-				serviceMonitoringControl = new ServiceMonitoringControlImpl();
-
-				configurableListableBeanFactory.registerSingleton(
-					"serviceMonitoringControl", serviceMonitoringControl);
-			}
-			else {
-				serviceMonitoringControl =
-					(ServiceMonitoringControl)PortalBeanLocatorUtil.locate(
-						"serviceMonitoringControl");
+					counterServiceBeanAutoProxyCreator);
 			}
 
 			// Service AOP
 
 			ServiceBeanAutoProxyCreator serviceBeanAutoProxyCreator =
 				new ServiceBeanAutoProxyCreator(
-					new ServiceBeanMatcher(false), _classLoader,
-					AopCacheManager.createChainableMethodAdvices(
-						transactionExecutor, serviceMonitoringControl));
+					_classLoader, transactionExecutor);
 
 			defaultSingletonBeanRegistry.registerDisposableBean(
 				"serviceBeanAutoProxyCreatorDestroyer",
@@ -313,6 +294,63 @@ public class AopConfigurableApplicationContextConfigurator
 
 		private final DataSource _dataSource;
 		private final SessionFactory _sessionFactory;
+
+	}
+
+	private static class CounterServiceBeanAutoProxyCreator
+		extends BaseServiceBeanAutoProxyCreator {
+
+		@Override
+		protected AopInvocationHandler createAopInvocationHandler(Object bean) {
+			return new AopInvocationHandler(
+				bean, new ChainableMethodAdvice[] {_counterTransactionAdvice});
+		}
+
+		private CounterServiceBeanAutoProxyCreator(
+			ClassLoader classLoader,
+			ChainableMethodAdvice counterTransactionAdvice) {
+
+			super(new ServiceBeanMatcher(true), classLoader);
+
+			_counterTransactionAdvice = counterTransactionAdvice;
+		}
+
+		private final ChainableMethodAdvice _counterTransactionAdvice;
+
+	}
+
+	private static class ServiceBeanAutoProxyCreator
+		extends BaseServiceBeanAutoProxyCreator {
+
+		public void destroy() {
+			for (AopInvocationHandler aopInvocationHandler :
+					_aopInvocationHandlers) {
+
+				AopCacheManager.destroy(aopInvocationHandler);
+			}
+		}
+
+		@Override
+		protected AopInvocationHandler createAopInvocationHandler(Object bean) {
+			AopInvocationHandler aopInvocationHandler = AopCacheManager.create(
+				bean, _transactionExecutor);
+
+			_aopInvocationHandlers.add(aopInvocationHandler);
+
+			return aopInvocationHandler;
+		}
+
+		private ServiceBeanAutoProxyCreator(
+			ClassLoader classLoader, TransactionExecutor transactionExecutor) {
+
+			super(new ServiceBeanMatcher(false), classLoader);
+
+			_transactionExecutor = transactionExecutor;
+		}
+
+		private final List<AopInvocationHandler> _aopInvocationHandlers =
+			new ArrayList<>();
+		private final TransactionExecutor _transactionExecutor;
 
 	}
 

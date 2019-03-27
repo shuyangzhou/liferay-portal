@@ -16,6 +16,8 @@ package com.liferay.portal.systemevent;
 
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.aop.AopMethodInvocation;
+import com.liferay.portal.kernel.aop.ChainableMethodAdvice;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.AuditedModel;
@@ -29,8 +31,6 @@ import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.systemevent.SystemEventHierarchyEntry;
 import com.liferay.portal.kernel.systemevent.SystemEventHierarchyEntryThreadLocal;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.spring.aop.AopMethodInvocation;
-import com.liferay.portal.spring.aop.ChainableMethodAdvice;
 
 import java.io.Serializable;
 
@@ -45,7 +45,42 @@ import java.util.Map;
 public class SystemEventAdvice extends ChainableMethodAdvice {
 
 	@Override
-	public void afterReturning(
+	public Object before(
+			AopMethodInvocation aopMethodInvocation, Object[] arguments)
+		throws Throwable {
+
+		SystemEvent systemEvent = aopMethodInvocation.getAdviceMethodContext();
+
+		if (systemEvent.action() != SystemEventConstants.ACTION_NONE) {
+			if (!isValid(aopMethodInvocation, arguments, _PHASE_BEFORE)) {
+				return null;
+			}
+
+			ClassedModel classedModel = (ClassedModel)arguments[0];
+
+			SystemEventHierarchyEntry systemEventHierarchyEntry =
+				SystemEventHierarchyEntryThreadLocal.push(
+					getClassName(classedModel), getClassPK(classedModel),
+					systemEvent.action());
+
+			if (systemEventHierarchyEntry != null) {
+				systemEventHierarchyEntry.setUuid(getUuid(classedModel));
+			}
+		}
+
+		return null;
+	}
+
+	@Override
+	public Object createMethodContext(
+		Class<?> targetClass, Method method,
+		Map<Class<? extends Annotation>, Annotation> annotations) {
+
+		return annotations.get(SystemEvent.class);
+	}
+
+	@Override
+	protected void afterReturning(
 			AopMethodInvocation aopMethodInvocation, Object[] arguments,
 			Object result)
 		throws Throwable {
@@ -112,42 +147,7 @@ public class SystemEventAdvice extends ChainableMethodAdvice {
 	}
 
 	@Override
-	public Object before(
-			AopMethodInvocation aopMethodInvocation, Object[] arguments)
-		throws Throwable {
-
-		SystemEvent systemEvent = aopMethodInvocation.getAdviceMethodContext();
-
-		if (systemEvent.action() != SystemEventConstants.ACTION_NONE) {
-			if (!isValid(aopMethodInvocation, arguments, _PHASE_BEFORE)) {
-				return null;
-			}
-
-			ClassedModel classedModel = (ClassedModel)arguments[0];
-
-			SystemEventHierarchyEntry systemEventHierarchyEntry =
-				SystemEventHierarchyEntryThreadLocal.push(
-					getClassName(classedModel), getClassPK(classedModel),
-					systemEvent.action());
-
-			if (systemEventHierarchyEntry != null) {
-				systemEventHierarchyEntry.setUuid(getUuid(classedModel));
-			}
-		}
-
-		return null;
-	}
-
-	@Override
-	public Object createMethodContext(
-		Class<?> targetClass, Method method,
-		Map<Class<? extends Annotation>, Annotation> annotations) {
-
-		return annotations.get(SystemEvent.class);
-	}
-
-	@Override
-	public void duringFinally(
+	protected void duringFinally(
 		AopMethodInvocation aopMethodInvocation, Object[] arguments) {
 
 		SystemEvent systemEvent = aopMethodInvocation.getAdviceMethodContext();

@@ -14,11 +14,11 @@
 
 package com.liferay.portal.security.access.control;
 
+import com.liferay.portal.kernel.aop.AopMethodInvocation;
+import com.liferay.portal.kernel.aop.ChainableMethodAdvice;
 import com.liferay.portal.kernel.security.access.control.AccessControlUtil;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.security.auth.AccessControlContext;
-import com.liferay.portal.spring.aop.AopMethodInvocation;
-import com.liferay.portal.spring.aop.ChainableMethodAdvice;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -35,7 +35,15 @@ import java.util.Map;
 public class AccessControlAdvice extends ChainableMethodAdvice {
 
 	@Override
-	public Object before(
+	public Object createMethodContext(
+		Class<?> targetClass, Method method,
+		Map<Class<? extends Annotation>, Annotation> annotations) {
+
+		return annotations.get(AccessControlled.class);
+	}
+
+	@Override
+	protected Object before(
 		AopMethodInvocation aopMethodInvocation, Object[] arguments) {
 
 		incrementServiceDepth();
@@ -47,21 +55,6 @@ public class AccessControlAdvice extends ChainableMethodAdvice {
 			aopMethodInvocation.getMethod(), arguments, accessControlled);
 
 		return null;
-	}
-
-	@Override
-	public Object createMethodContext(
-		Class<?> targetClass, Method method,
-		Map<Class<? extends Annotation>, Annotation> annotations) {
-
-		return annotations.get(AccessControlled.class);
-	}
-
-	@Override
-	public void duringFinally(
-		AopMethodInvocation aopMethodInvocation, Object[] arguments) {
-
-		decrementServiceDepth();
 	}
 
 	protected void decrementServiceDepth() {
@@ -86,6 +79,13 @@ public class AccessControlAdvice extends ChainableMethodAdvice {
 		settings.put(
 			AccessControlContext.Settings.SERVICE_DEPTH.toString(),
 			serviceDepth);
+	}
+
+	@Override
+	protected void duringFinally(
+		AopMethodInvocation aopMethodInvocation, Object[] arguments) {
+
+		decrementServiceDepth();
 	}
 
 	protected void incrementServiceDepth() {

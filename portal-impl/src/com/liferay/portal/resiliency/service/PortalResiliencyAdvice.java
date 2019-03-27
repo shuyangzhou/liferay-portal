@@ -15,6 +15,8 @@
 package com.liferay.portal.resiliency.service;
 
 import com.liferay.portal.internal.resiliency.service.ServiceMethodProcessCallable;
+import com.liferay.portal.kernel.aop.AopMethodInvocation;
+import com.liferay.portal.kernel.aop.ChainableMethodAdvice;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServiceInvokerUtil;
 import com.liferay.portal.kernel.nio.intraband.rpc.IntrabandRPCUtil;
 import com.liferay.portal.kernel.resiliency.spi.SPI;
@@ -22,8 +24,6 @@ import com.liferay.portal.kernel.resiliency.spi.SPIRegistryUtil;
 import com.liferay.portal.kernel.security.access.control.AccessControlThreadLocal;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.servlet.ServletContextClassLoaderPool;
-import com.liferay.portal.spring.aop.AopMethodInvocation;
-import com.liferay.portal.spring.aop.ChainableMethodAdvice;
 
 import java.io.Serializable;
 
@@ -39,7 +39,29 @@ import java.util.concurrent.Future;
 public class PortalResiliencyAdvice extends ChainableMethodAdvice {
 
 	@Override
-	public Object before(
+	public Object createMethodContext(
+		Class<?> targetClass, Method method,
+		Map<Class<? extends Annotation>, Annotation> annotations) {
+
+		Annotation annotation = annotations.get(AccessControlled.class);
+
+		if (annotation == null) {
+			return null;
+		}
+
+		String servletContextName =
+			ServletContextClassLoaderPool.getServletContextName(
+				targetClass.getClassLoader());
+
+		if (servletContextName == null) {
+			return null;
+		}
+
+		return SPIRegistryUtil.getServletContextSPI(servletContextName);
+	}
+
+	@Override
+	protected Object before(
 			AopMethodInvocation aopMethodInvocation, Object[] arguments)
 		throws Throwable {
 
@@ -71,28 +93,6 @@ public class PortalResiliencyAdvice extends ChainableMethodAdvice {
 		}
 
 		return result;
-	}
-
-	@Override
-	public Object createMethodContext(
-		Class<?> targetClass, Method method,
-		Map<Class<? extends Annotation>, Annotation> annotations) {
-
-		Annotation annotation = annotations.get(AccessControlled.class);
-
-		if (annotation == null) {
-			return null;
-		}
-
-		String servletContextName =
-			ServletContextClassLoaderPool.getServletContextName(
-				targetClass.getClassLoader());
-
-		if (servletContextName == null) {
-			return null;
-		}
-
-		return SPIRegistryUtil.getServletContextSPI(servletContextName);
 	}
 
 }
