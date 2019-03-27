@@ -122,10 +122,6 @@ public abstract class AbstractSingleResourceTemplate extends AbstractTemplate {
 			return;
 		}
 
-		if (templateManagerName.equals(TemplateConstants.LANG_TYPE_VM)) {
-			return;
-		}
-
 		if (!(errorTemplateResource instanceof CacheTemplateResource) &&
 			!(errorTemplateResource instanceof StringTemplateResource)) {
 
