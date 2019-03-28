@@ -4619,11 +4619,6 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<name>servletContext</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
 			<name>showAddButton</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
