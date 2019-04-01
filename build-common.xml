@@ -92,7 +92,7 @@
 		/>
 		<fileset
 			dir="${project.dir}/lib/portal"
-			includes="bnd.jar"
+			includes="bndlib.jar"
 		/>
 		<path refid="lib.pre.classpath" />
 		<path refid="web-lib.classpath" />
