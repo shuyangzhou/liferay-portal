@@ -137,7 +137,11 @@ public class TestExecutorRunnable implements Runnable {
 			statement, AfterClass.class, testClass, statement);
 		statement = _withRules(
 			statement, ClassRule.class, testClass, null, description);
-		statement = new TestProfilingStatement(statement, testClass.getName());
+
+		if (Boolean.valueOf(System.getProperty("profile.arquillian.test"))) {
+			statement = new TestProfilingStatement(
+				statement, testClass.getName());
+		}
 
 		return statement;
 	}
