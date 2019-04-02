@@ -531,7 +531,15 @@ public class BasicRegistryImpl implements Registry {
 			Dictionary<String, Object> dictionary =
 				new UnmodifiableCaseInsensitiveMapDictionary<>(properties);
 
-			return _filter.match(dictionary);
+			try {
+				return _filter.match(dictionary);
+			}
+			catch (RuntimeException re) {
+				throw re;
+			}
+			catch (Exception e) {
+				throw new RuntimeException(e);
+			}
 		}
 
 		@Override
@@ -543,7 +551,15 @@ public class BasicRegistryImpl implements Registry {
 				new UnmodifiableCaseInsensitiveMapDictionary<>(
 					basicServiceReference._properties);
 
-			return _filter.match(dictionary);
+			try {
+				return _filter.match(dictionary);
+			}
+			catch (RuntimeException re) {
+				throw re;
+			}
+			catch (Exception e) {
+				throw new RuntimeException(e);
+			}
 		}
 
 		@Override
