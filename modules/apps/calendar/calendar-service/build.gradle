@@ -7,7 +7,7 @@ dependencies {
 	compileInclude group: "backport-util-concurrent", name: "backport-util-concurrent", version: "3.1"
 	compileInclude group: "com.liferay", name: "net.fortuna.ical4j", version: "1.0"
 
-	compileOnly group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.1.0"
+	compileOnly group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "4.2.0"
 	compileOnly group: "com.liferay", name: "com.google.ical", version: "20110304"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
