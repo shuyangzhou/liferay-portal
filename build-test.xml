@@ -8958,7 +8958,8 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 	<target name="prepare-system-ext-properties">
 		<echo file="${app.server.classes.portal.dir}/system-ext.properties">com.liferay.portal.kernel.util.ServiceProxyFactory.timeout=600000
 liferay.mode=test
-log.sanitizer.enabled=false</echo>
+log.sanitizer.enabled=false
+profile.arquillian.test=true</echo>
 
 	</target>
 
