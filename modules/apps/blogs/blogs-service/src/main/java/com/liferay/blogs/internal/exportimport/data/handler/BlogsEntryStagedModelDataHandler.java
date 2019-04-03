@@ -52,8 +52,6 @@ import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Zsolt Berentey
@@ -383,11 +381,7 @@ public class BlogsEntryStagedModelDataHandler
 	@Reference
 	private CommentManager _commentManager;
 
-	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(model.class.name=com.liferay.blogs.model.BlogsEntry)"
-	)
+	@Reference(target = "(model.class.name=com.liferay.blogs.model.BlogsEntry)")
 	private volatile ExportImportContentProcessor<String>
 		_exportImportContentProcessor;
 

@@ -35,8 +35,6 @@ import java.text.Format;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Brian Wing Shun Chan
@@ -171,26 +169,16 @@ public class BlogsActivityInterpreter extends BaseSocialActivityInterpreter {
 			permissionChecker, activity.getClassPK(), actionId);
 	}
 
-	@Reference(unbind = "-")
-	protected void setBlogsEntryLocalService(
-		BlogsEntryLocalService blogsEntryLocalService) {
-
-		_blogsEntryLocalService = blogsEntryLocalService;
-	}
-
 	private static final String[] _CLASS_NAMES = {BlogsEntry.class.getName()};
 
+	@Reference
 	private BlogsEntryLocalService _blogsEntryLocalService;
 
 	@Reference(target = "(model.class.name=com.liferay.blogs.model.BlogsEntry)")
 	private ModelResourcePermission<BlogsEntry>
 		_blogsEntryModelResourcePermission;
 
-	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(bundle.symbolic.name=com.liferay.blogs.web)"
-	)
+	@Reference(target = "(bundle.symbolic.name=com.liferay.blogs.web)")
 	private volatile ResourceBundleLoader _resourceBundleLoader;
 
 }

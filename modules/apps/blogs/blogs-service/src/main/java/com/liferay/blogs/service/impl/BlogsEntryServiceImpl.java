@@ -62,8 +62,6 @@ import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * Provides the remote service for accessing, adding, deleting, subscription
@@ -794,22 +792,14 @@ public class BlogsEntryServiceImpl extends BlogsEntryServiceBaseImpl {
 	private static final Log _log = LogFactoryUtil.getLog(
 		BlogsEntryServiceImpl.class);
 
-	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(model.class.name=com.liferay.blogs.model.BlogsEntry)"
-	)
+	@Reference(target = "(model.class.name=com.liferay.blogs.model.BlogsEntry)")
 	private volatile ModelResourcePermission<BlogsEntry>
 		_blogsEntryModelResourcePermission;
 
 	@Reference
 	private Portal _portal;
 
-	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(resource.name=" + BlogsConstants.RESOURCE_NAME + ")"
-	)
+	@Reference(target = "(resource.name=" + BlogsConstants.RESOURCE_NAME + ")")
 	private volatile PortletResourcePermission _portletResourcePermission;
 
 	@Reference
