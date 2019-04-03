@@ -29,8 +29,12 @@ import com.liferay.portal.kernel.model.Image;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutSetBranch;
 import com.liferay.portal.kernel.model.LayoutSetStagingHandler;
+import com.liferay.portal.kernel.model.LayoutSetVersion;
 import com.liferay.portal.kernel.model.VirtualHost;
+import com.liferay.portal.kernel.search.Indexable;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.version.VersionServiceListener;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.ColorSchemeFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
@@ -50,6 +54,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -80,6 +85,25 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 		draftLayoutSet = initLayoutSet(draftLayoutSet);
 
 		return publishDraft(draftLayoutSet);
+	}
+
+	@Override
+	public LayoutSet checkout(LayoutSet layoutSet, int version)
+		throws PortalException {
+
+		throw new UnsupportedOperationException();
+	}
+
+	@Indexable(type = IndexableType.DELETE)
+	@Override
+	public LayoutSet delete(LayoutSet layoutSet) throws PortalException {
+		return layoutSetPersistence.remove(layoutSet);
+	}
+
+	@Indexable(type = IndexableType.DELETE)
+	@Override
+	public LayoutSet deleteDraft(LayoutSet layoutSet) throws PortalException {
+		return layoutSetPersistence.remove(layoutSet);
 	}
 
 	@Override
@@ -150,6 +174,21 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 	}
 
 	@Override
+	public LayoutSet fetchDraft(LayoutSet layoutSet) {
+		return layoutSet;
+	}
+
+	@Override
+	public LayoutSet fetchDraft(long primaryKey) {
+		return layoutSetPersistence.fetchByPrimaryKey(primaryKey);
+	}
+
+	@Override
+	public LayoutSetVersion fetchLatestVersion(LayoutSet layoutSet) {
+		return null;
+	}
+
+	@Override
 	public LayoutSet fetchLayoutSet(long groupId, boolean privateLayout) {
 		return layoutSetPersistence.fetchByG_P_Head(
 			groupId, privateLayout, true);
@@ -177,6 +216,26 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 
 		return layoutSetPersistence.fetchByP_L_Head(
 			privateLayout, logoId, true);
+	}
+
+	@Override
+	public LayoutSet fetchPublished(LayoutSet layoutSet) {
+		return layoutSet;
+	}
+
+	@Override
+	public LayoutSet fetchPublished(long primaryKey) {
+		return layoutSetPersistence.fetchByPrimaryKey(primaryKey);
+	}
+
+	@Override
+	public LayoutSet getDraft(LayoutSet layoutSet) throws PortalException {
+		return layoutSet;
+	}
+
+	@Override
+	public LayoutSet getDraft(long primaryKey) throws PortalException {
+		return layoutSetPersistence.findByPrimaryKey(primaryKey);
 	}
 
 	@Override
@@ -213,6 +272,44 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 
 		return layoutSetPersistence.findByLayoutSetPrototypeUuid_Head(
 			layoutSetPrototypeUuid, true);
+	}
+
+	@Override
+	public LayoutSetVersion getVersion(LayoutSet layoutSet, int version)
+		throws PortalException {
+
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public List<LayoutSetVersion> getVersions(LayoutSet layoutSet) {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public LayoutSet publishDraft(LayoutSet layoutSet) throws PortalException {
+		return layoutSetPersistence.update(layoutSet);
+	}
+
+	@Override
+	public void registerListener(
+		VersionServiceListener<LayoutSet, LayoutSetVersion>
+			versionServiceListener) {
+
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void unregisterListener(
+		VersionServiceListener<LayoutSet, LayoutSetVersion>
+			versionServiceListener) {
+
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public LayoutSet updateDraft(LayoutSet layoutSet) throws PortalException {
+		return layoutSetPersistence.update(layoutSet);
 	}
 
 	@Override

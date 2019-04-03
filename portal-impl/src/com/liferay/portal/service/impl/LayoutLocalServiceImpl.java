@@ -64,6 +64,7 @@ import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.version.VersionServiceListener;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.systemevent.SystemEventHierarchyEntry;
 import com.liferay.portal.kernel.systemevent.SystemEventHierarchyEntryThreadLocal;
@@ -710,6 +711,23 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 		layoutPersistence.update(layout);
 	}
 
+	@Override
+	public Layout checkout(Layout layout, int version) throws PortalException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Indexable(type = IndexableType.DELETE)
+	@Override
+	public Layout delete(Layout layout) throws PortalException {
+		return layoutPersistence.remove(layout);
+	}
+
+	@Indexable(type = IndexableType.DELETE)
+	@Override
+	public Layout deleteDraft(Layout layout) throws PortalException {
+		return layoutPersistence.remove(layout);
+	}
+
 	/**
 	 * Deletes the layout, its child layouts, and its associated resources.
 	 *
@@ -1301,12 +1319,27 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 	}
 
 	@Override
+	public Layout fetchDraft(Layout layout) {
+		return layout;
+	}
+
+	@Override
+	public Layout fetchDraft(long primaryKey) {
+		return layoutPersistence.fetchByPrimaryKey(primaryKey);
+	}
+
+	@Override
 	public Layout fetchFirstLayout(
 		long groupId, boolean privateLayout, long parentLayoutId) {
 
 		return layoutPersistence.fetchByG_P_P_Head_First(
 			groupId, privateLayout, parentLayoutId, true,
 			new LayoutPriorityComparator());
+	}
+
+	@Override
+	public LayoutVersion fetchLatestVersion(Layout layout) {
+		return null;
 	}
 
 	@Override
@@ -1366,6 +1399,16 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 	@Override
 	public LayoutVersion fetchLayoutVersion(long layoutVersionId) {
 		return layoutVersionPersistence.fetchByPrimaryKey(layoutVersionId);
+	}
+
+	@Override
+	public Layout fetchPublished(Layout layout) {
+		return layout;
+	}
+
+	@Override
+	public Layout fetchPublished(long primaryKey) {
+		return layoutPersistence.fetchByPrimaryKey(primaryKey);
 	}
 
 	/**
@@ -1442,6 +1485,16 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 		}
 
 		return LayoutConstants.DEFAULT_PLID;
+	}
+
+	@Override
+	public Layout getDraft(Layout layout) throws PortalException {
+		return layout;
+	}
+
+	@Override
+	public Layout getDraft(long primaryKey) throws PortalException {
+		return layoutPersistence.findByPrimaryKey(primaryKey);
 	}
 
 	/**
@@ -2345,6 +2398,18 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 		return layouts;
 	}
 
+	@Override
+	public LayoutVersion getVersion(Layout layout, int version)
+		throws PortalException {
+
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public List<LayoutVersion> getVersions(Layout layout) {
+		return Collections.emptyList();
+	}
+
 	/**
 	 * Returns <code>true</code> if there is a matching layout with the UUID,
 	 * group, and privacy.
@@ -2926,6 +2991,18 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
+	public Layout publishDraft(Layout layout) throws PortalException {
+		return layoutPersistence.update(layout);
+	}
+
+	@Override
+	public void registerListener(
+		VersionServiceListener<Layout, LayoutVersion> versionServiceListener) {
+
+		throw new UnsupportedOperationException();
+	}
+
 	/**
 	 * Sets the layouts for the group, replacing and prioritizing all layouts of
 	 * the parent layout.
@@ -2999,6 +3076,13 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 	}
 
 	@Override
+	public void unregisterListener(
+		VersionServiceListener<Layout, LayoutVersion> versionServiceListener) {
+
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	public void updateAsset(
 			long userId, Layout layout, long[] assetCategoryIds,
 			String[] assetTagNames)
@@ -3011,6 +3095,11 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 			null, null, null, null, ContentTypes.TEXT_HTML,
 			layout.getName(LocaleUtil.getDefault()), null, null, null, null, 0,
 			0, null);
+	}
+
+	@Override
+	public Layout updateDraft(Layout layout) throws PortalException {
+		return layoutPersistence.update(layout);
 	}
 
 	/**
