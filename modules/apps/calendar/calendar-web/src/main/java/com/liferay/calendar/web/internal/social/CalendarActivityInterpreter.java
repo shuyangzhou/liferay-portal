@@ -39,8 +39,6 @@ import javax.portlet.WindowState;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Marcellus Tavares
@@ -140,17 +138,11 @@ public class CalendarActivityInterpreter extends BaseSocialActivityInterpreter {
 			permissionChecker, calendarBooking.getCalendarId(), actionId);
 	}
 
-	@Reference(unbind = "-")
-	protected void setCalendarBookingLocalService(
-		CalendarBookingLocalService calendarBookingLocalService) {
-
-		_calendarBookingLocalService = calendarBookingLocalService;
-	}
-
 	private static final String[] _CLASS_NAMES = {
 		CalendarBooking.class.getName()
 	};
 
+	@Reference
 	private CalendarBookingLocalService _calendarBookingLocalService;
 
 	@Reference(
@@ -164,11 +156,7 @@ public class CalendarActivityInterpreter extends BaseSocialActivityInterpreter {
 	@Reference
 	private Portal _portal;
 
-	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(bundle.symbolic.name=com.liferay.calendar.web)"
-	)
+	@Reference(target = "(bundle.symbolic.name=com.liferay.calendar.web)")
 	private volatile ResourceBundleLoader _resourceBundleLoader;
 
 }
