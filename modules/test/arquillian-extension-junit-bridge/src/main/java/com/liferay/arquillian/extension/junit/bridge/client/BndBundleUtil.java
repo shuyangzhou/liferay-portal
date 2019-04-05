@@ -14,12 +14,13 @@
 
 package com.liferay.arquillian.extension.junit.bridge.client;
 
-import aQute.bnd.build.Classpath;
 import aQute.bnd.build.Project;
 import aQute.bnd.build.ProjectBuilder;
 import aQute.bnd.build.Workspace;
 import aQute.bnd.osgi.Analyzer;
 import aQute.bnd.osgi.Jar;
+
+import biz.aQute.resolve.Bndrun;
 
 import com.liferay.arquillian.extension.junit.bridge.constants.Headers;
 import com.liferay.arquillian.extension.junit.bridge.server.TestBundleActivator;
@@ -121,6 +122,7 @@ public class BndBundleUtil {
 
 		importPackages.add("!aQute.bnd.build");
 		importPackages.add("!aQute.bnd.osgi");
+		importPackages.add("!biz.aQute.resolve");
 		importPackages.add("*");
 
 		String importPackageString = project.getProperty("Import-Package");
@@ -184,7 +186,7 @@ public class BndBundleUtil {
 			}
 		}
 
-		String resource = Classpath.class.getName();
+		String resource = Bndrun.class.getName();
 
 		resource = resource.replace(CharPool.PERIOD, CharPool.SLASH);
 
