@@ -22,7 +22,9 @@ import org.junit.runners.model.Statement;
 
 /**
  * @author Shuyang Zhou
+ * @deprecated As of Mueller (7.2.x), replaced by {@link AbstractTestRule}
  */
+@Deprecated
 public class BaseTestRule<C, M> implements TestRule {
 
 	public BaseTestRule(TestCallback<C, M> testCallback) {
