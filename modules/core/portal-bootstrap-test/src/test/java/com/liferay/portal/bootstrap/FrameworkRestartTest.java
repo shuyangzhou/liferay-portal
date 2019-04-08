@@ -50,6 +50,7 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 
+import org.osgi.dto.DTO;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
@@ -183,7 +184,7 @@ public class FrameworkRestartTest {
 	public void testFrameworkRestart() throws Exception {
 		ClassLoader classLoader = new URLClassLoader(
 			_getURLS(
-				Assert.class, FrameworkFactory.class,
+				Assert.class, DTO.class,
 				FrameworkRestartTest.class, UnsyncByteArrayOutputStream.class),
 			null);
 
