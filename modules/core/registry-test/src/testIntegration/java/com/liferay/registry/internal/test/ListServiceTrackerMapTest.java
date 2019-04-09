@@ -14,6 +14,7 @@
 
 package com.liferay.registry.internal.test;
 
+import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
 import com.liferay.registry.ServiceReference;
@@ -31,9 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.test.api.ArquillianResource;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -42,7 +40,7 @@ import org.junit.runner.RunWith;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleException;
+import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceRegistration;
 
 /**
@@ -52,16 +50,15 @@ import org.osgi.framework.ServiceRegistration;
 public class ListServiceTrackerMapTest {
 
 	@Before
-	public void setUp() throws BundleException {
-		_bundle.start();
+	public void setUp() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			ListServiceTrackerMapTest.class);
 
-		_bundleContext = _bundle.getBundleContext();
+		_bundleContext = bundle.getBundleContext();
 	}
 
 	@After
-	public void tearDown() throws BundleException {
-		_bundle.stop();
-
+	public void tearDown() {
 		if (_serviceTrackerMap != null) {
 			_serviceTrackerMap.close();
 
@@ -308,9 +305,6 @@ public class ListServiceTrackerMapTest {
 		return _bundleContext.registerService(
 			TrackedOne.class, trackedOne, properties);
 	}
-
-	@ArquillianResource
-	private Bundle _bundle;
 
 	private BundleContext _bundleContext;
 	private ServiceTrackerMap<String, List<TrackedOne>> _serviceTrackerMap;

@@ -14,6 +14,7 @@
 
 package com.liferay.registry.internal.test;
 
+import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
 import com.liferay.registry.ServiceRegistration;
@@ -23,8 +24,6 @@ import com.liferay.registry.collections.ServiceTrackerMap;
 
 import java.util.Hashtable;
 import java.util.Map;
-
-import org.jboss.arquillian.junit.Arquillian;
 
 import org.junit.Assert;
 import org.junit.Test;

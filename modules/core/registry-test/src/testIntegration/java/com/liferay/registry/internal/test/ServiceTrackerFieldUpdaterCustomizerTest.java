@@ -14,11 +14,11 @@
 
 package com.liferay.registry.internal.test;
 
+import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
 import com.liferay.registry.ServiceTracker;
 import com.liferay.registry.ServiceTrackerFieldUpdaterCustomizer;
-import com.liferay.registry.internal.RegistryImpl;
 
 import java.io.Closeable;
 
@@ -26,10 +26,6 @@ import java.lang.reflect.Field;
 
 import java.util.Hashtable;
 
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.test.api.ArquillianResource;
-
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +33,7 @@ import org.junit.runner.RunWith;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleException;
+import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceRegistration;
 
 /**
@@ -47,19 +43,11 @@ import org.osgi.framework.ServiceRegistration;
 public class ServiceTrackerFieldUpdaterCustomizerTest {
 
 	@Before
-	public void setUp() throws BundleException {
-		_bundle.start();
+	public void setUp() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			ServiceTrackerFieldUpdaterCustomizerTest.class);
 
-		_registry = RegistryUtil.getRegistry();
-
-		RegistryUtil.setRegistry(new RegistryImpl(_bundleContext));
-	}
-
-	@After
-	public void tearDown() throws BundleException {
-		RegistryUtil.setRegistry(_registry);
-
-		_bundle.stop();
+		_bundleContext = bundle.getBundleContext();
 	}
 
 	@Test
@@ -79,7 +67,7 @@ public class ServiceTrackerFieldUpdaterCustomizerTest {
 	public void testWrongDeclaration() throws NoSuchFieldException {
 		Field field =
 			ServiceTrackerFieldUpdaterCustomizerTest.class.getDeclaredField(
-				"_bundle");
+				"_bundleContext");
 
 		try {
 			new ServiceTrackerFieldUpdaterCustomizer(field, this, null);
@@ -151,13 +139,7 @@ public class ServiceTrackerFieldUpdaterCustomizerTest {
 	private static final TestService _defaultTestService =
 		new TestServiceDefault();
 
-	@ArquillianResource
-	private Bundle _bundle;
-
-	@ArquillianResource
 	private BundleContext _bundleContext;
-
-	private Registry _registry;
 
 	private static class NonStaticTestServiceUsage implements TestServiceUsage {
 
