@@ -239,7 +239,8 @@ public class OSGiBundleBuilderCommandTest {
 		new HashSet<>(
 			Arrays.asList(
 				"Bnd-LastModified", "Created-By", "Javac-Debug",
-				"Javac-Deprecation", "Javac-Encoding"));
+				"Javac-Deprecation", "Javac-Encoding", "Require-Capability",
+				"Tool"));
 
 	private File _expectedDir;
 	private File _projectDir;
