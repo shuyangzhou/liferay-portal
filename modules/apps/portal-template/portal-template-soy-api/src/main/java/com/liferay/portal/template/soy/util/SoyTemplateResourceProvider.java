@@ -23,7 +23,7 @@ import org.osgi.framework.Bundle;
 /**
  * @author Miguel Pastor
  */
-public interface SoyTemplateResourcesProvider {
+public interface SoyTemplateResourceProvider {
 
 	public TemplateResource getTemplateResource();
 

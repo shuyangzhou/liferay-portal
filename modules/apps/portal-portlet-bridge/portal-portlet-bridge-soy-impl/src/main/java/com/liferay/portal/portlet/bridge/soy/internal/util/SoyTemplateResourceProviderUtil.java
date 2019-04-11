@@ -15,7 +15,7 @@
 package com.liferay.portal.portlet.bridge.soy.internal.util;
 
 import com.liferay.portal.kernel.template.TemplateResource;
-import com.liferay.portal.template.soy.util.SoyTemplateResourcesProvider;
+import com.liferay.portal.template.soy.util.SoyTemplateResourceProvider;
 
 import java.util.List;
 
@@ -27,22 +27,22 @@ import org.osgi.service.component.annotations.Reference;
  * @author Matthew Tambara
  */
 @Component(immediate = true, service = {})
-public class SoyTemplateResourcesProviderUtil {
+public class SoyTemplateResourceProviderUtil {
 
 	public static TemplateResource getTemplateResource(
 		List<Bundle> bundles, String templatePath) {
 
-		return _soyTemplateResourcesProvider.getTemplateResource(
+		return _soyTemplateResourceProvider.getTemplateResource(
 			bundles, templatePath);
 	}
 
 	@Reference(unbind = "-")
-	protected void setSoyTemplateResourcesProvider(
-		SoyTemplateResourcesProvider soyTemplateResourcesProvider) {
+	protected void setSoyTemplateResourceProvider(
+		SoyTemplateResourceProvider soyTemplateResourceProvider) {
 
-		_soyTemplateResourcesProvider = soyTemplateResourcesProvider;
+		_soyTemplateResourceProvider = soyTemplateResourceProvider;
 	}
 
-	private static SoyTemplateResourcesProvider _soyTemplateResourcesProvider;
+	private static SoyTemplateResourceProvider _soyTemplateResourceProvider;
 
 }

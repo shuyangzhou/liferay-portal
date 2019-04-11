@@ -39,7 +39,7 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.template.soy.util.SoyRawData;
-import com.liferay.portal.template.soy.util.SoyTemplateResourcesProvider;
+import com.liferay.portal.template.soy.util.SoyTemplateResourceProvider;
 
 import java.io.Writer;
 
@@ -135,7 +135,7 @@ public class DDMFormRendererImpl implements DDMFormRenderer {
 
 		Template template = TemplateManagerUtil.getTemplate(
 			TemplateConstants.LANG_TYPE_SOY,
-			_soyTemplateResourcesProvider.getTemplateResource(
+			_soyTemplateResourceProvider.getTemplateResource(
 				_templateResources),
 			false);
 
@@ -281,7 +281,7 @@ public class DDMFormRendererImpl implements DDMFormRenderer {
 	private Portal _portal;
 
 	@Reference
-	private SoyTemplateResourcesProvider _soyTemplateResourcesProvider;
+	private SoyTemplateResourceProvider _soyTemplateResourceProvider;
 
 	private final List<TemplateResource> _templateResources =
 		new CopyOnWriteArrayList<>();
