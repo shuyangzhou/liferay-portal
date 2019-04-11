@@ -331,6 +331,10 @@ public class StructuredContentResourceImpl
 		}
 
 		DDMStructure ddmStructure = journalArticle.getDDMStructure();
+
+		_validateContentFields(
+			structuredContent.getContentFields(), ddmStructure);
+
 		LocalDateTime localDateTime = LocalDateTimeUtil.toLocalDateTime(
 			structuredContent.getDatePublished(),
 			journalArticle.getDisplayDate());
@@ -413,6 +417,10 @@ public class StructuredContentResourceImpl
 			structuredContentId);
 
 		DDMStructure ddmStructure = journalArticle.getDDMStructure();
+
+		_validateContentFields(
+			structuredContent.getContentFields(), ddmStructure);
+
 		LocalDateTime localDateTime = LocalDateTimeUtil.toLocalDateTime(
 			structuredContent.getDatePublished(),
 			journalArticle.getDisplayDate());
@@ -489,6 +497,9 @@ public class StructuredContentResourceImpl
 					"language " + w3cLanguageId);
 		}
 
+		_validateContentFields(
+			structuredContent.getContentFields(), ddmStructure);
+
 		return _toStructuredContent(
 			_journalArticleService.addArticle(
 				siteId, parentStructuredContentFolderId, 0, 0, null, true,
@@ -547,7 +558,7 @@ public class StructuredContentResourceImpl
 			DDMFormValues ddmFormValues, DDMStructure ddmStructure)
 		throws Exception {
 
-		_validateFomFieldValues(ddmFormValues);
+		_validateDDMFormValues(ddmFormValues);
 
 		Locale originalSiteDefaultLocale =
 			LocaleThreadLocal.getSiteDefaultLocale();
@@ -757,7 +768,7 @@ public class StructuredContentResourceImpl
 		DDMFormValues ddmFormValues = _journalConverter.getDDMFormValues(
 			ddmStructure, fields);
 
-		_validateFomFieldValues(ddmFormValues);
+		_validateDDMFormValues(ddmFormValues);
 
 		return fields;
 	}
@@ -787,7 +798,31 @@ public class StructuredContentResourceImpl
 				journalArticle.getResourcePrimKey(), contextUriInfo));
 	}
 
-	private void _validateFomFieldValues(DDMFormValues ddmFormValues) {
+	private void _validateContentFields(
+		ContentField[] contentFields, DDMStructure ddmStructure) {
+
+		if (ArrayUtil.isEmpty(contentFields)) {
+			return;
+		}
+
+		for (ContentField contentField : contentFields) {
+			DDMFormField ddmFormField = _getDDMFormField(
+				ddmStructure, contentField.getName());
+
+			if (ddmFormField == null) {
+				throw new BadRequestException(
+					StringBundler.concat(
+						"Unable to get content field value for \"",
+						contentField.getName(), "\" for content structure ",
+						ddmStructure.getStructureId()));
+			}
+
+			_validateContentFields(
+				contentField.getNestedFields(), ddmStructure);
+		}
+	}
+
+	private void _validateDDMFormValues(DDMFormValues ddmFormValues) {
 		try {
 			_ddmFormValuesValidator.validate(ddmFormValues);
 		}

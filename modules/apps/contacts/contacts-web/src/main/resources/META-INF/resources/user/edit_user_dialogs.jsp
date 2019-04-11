@@ -137,7 +137,7 @@ if (extension) {
 								}
 							}
 							else {
-								Liferay.Util.getWindow('<portlet:portletNamespace />Dialog').hide();
+								Liferay.Util.getWindow('<portlet:namespace />Dialog').hide();
 
 								var redirect = responseData.redirect;
 

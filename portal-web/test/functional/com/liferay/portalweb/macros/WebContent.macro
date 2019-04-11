@@ -473,7 +473,7 @@ definition {
 		}
 
 		if (isSet(webContentImage)) {
-			Click(locator1 = "Button#SELECT");
+			Click(locator1 = "WCEditWebContent#IMAGE_FIELD_SELECT");
 
 			ItemSelector.uploadFile(
 				navTab = "Web Content Images",
@@ -854,7 +854,7 @@ definition {
 		WebContent.addCP(webContentTitle = "${webContentTitleEdit}");
 
 		if (isSet(webContentImage)) {
-			Click(locator1 = "Button#SELECT");
+			Click(locator1 = "WCEditWebContent#IMAGE_FIELD_SELECT");
 
 			SelectFrameTop(value1 = "relative=top");
 
@@ -867,6 +867,8 @@ definition {
 		SelectFrame(locator1 = "IFrame#DIALOG");
 
 		PortletEntry.save();
+
+		IFrame.closeFrame();
 	}
 
 	macro editNullCP {

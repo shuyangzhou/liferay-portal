@@ -1648,6 +1648,10 @@ public abstract class BaseBuild implements Build {
 		}
 
 		public boolean isParentOf(StopWatchRecord stopWatchRecord) {
+			if (this == stopWatchRecord) {
+				return false;
+			}
+
 			Long duration = getDuration();
 			Long stopWatchRecordDuration = stopWatchRecord.getDuration();
 
@@ -1668,7 +1672,7 @@ public abstract class BaseBuild implements Build {
 				Long stopWatchRecordEndTimestamp =
 					stopWatchRecordStartTimestamp + stopWatchRecordDuration;
 
-				if (endTimestamp > stopWatchRecordEndTimestamp) {
+				if (endTimestamp >= stopWatchRecordEndTimestamp) {
 					return true;
 				}
 			}

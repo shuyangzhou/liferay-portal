@@ -85,7 +85,12 @@
 	<td>COPY_FROM_LIVE</td>
 	<td>//a/span[contains(.,'Copy from Live')]</td>
 	<td></td>
-</tr>>
+</tr>
+<tr>
+	<td>STAGING_CONTENT_CHECKBOX</td>
+	<td>//input[(@type='checkbox') and contains(@id,'${key_contentName}')]</td>
+	<td></td>
+</tr>
 <tr>
 	<td>STAGING_CONTENT_DELETIONS</td>
 	<td>//span[contains(@class,'badge-warning') and contains(.,'Deletions')]</td>

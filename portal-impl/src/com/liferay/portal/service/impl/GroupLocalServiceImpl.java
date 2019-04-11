@@ -3754,9 +3754,12 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 		}
 
 		if ((nameMap != null) &&
-			Validator.isNotNull(nameMap.get(LocaleUtil.getDefault()))) {
+			Validator.isNotNull(
+				nameMap.get(
+					LocaleUtil.fromLanguageId(group.getDefaultLanguageId())))) {
 
-			groupKey = nameMap.get(LocaleUtil.getDefault());
+			groupKey = nameMap.get(
+				LocaleUtil.fromLanguageId(group.getDefaultLanguageId()));
 		}
 
 		friendlyURL = getFriendlyURL(
@@ -3934,6 +3937,30 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 				"languageId", LocaleUtil.toLanguageId(LocaleUtil.getDefault()));
 
 			validateLanguageIds(defaultLanguageId, newLanguageIds);
+
+			if (!Objects.equals(
+					group.getDefaultLanguageId(), defaultLanguageId)) {
+
+				Locale defaultLocale = LocaleUtil.fromLanguageId(
+					defaultLanguageId);
+
+				Map<Locale, String> oldNameMap = group.getNameMap();
+
+				group.setNameMap(oldNameMap, defaultLocale);
+
+				Map<Locale, String> oldDecriptionMap =
+					group.getDescriptionMap();
+
+				group.setDescriptionMap(oldDecriptionMap, defaultLocale);
+
+				Map<Locale, String> nameMap = group.getNameMap();
+
+				if ((nameMap != null) &&
+					Validator.isNotNull(nameMap.get(defaultLocale))) {
+
+					group.setGroupKey(nameMap.get(defaultLocale));
+				}
+			}
 
 			if (!Objects.equals(oldLanguageIds, newLanguageIds)) {
 				LanguageUtil.resetAvailableGroupLocales(groupId);

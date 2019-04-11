@@ -38,6 +38,27 @@
 	<td>portal/screenshots/foundation/ldap_server_security_credential.png</td>
 	<td></td>
 </tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--ASSETS-->
+<tr>
+	<td>ASSETS_DYNAMIC_EXPORT_CHECKBOX</td>
+	<td>//div[contains(@data-fieldname,'dynamicExportEnabled')]//input[@type='checkbox']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ASSETS_DYNAMIC_EXPORT_LIMIT</td>
+	<td>//div[contains(@data-fieldname,'dynamicExportLimit')]//input[@type='text']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ASSETS_MANUAL_EXPORT_CHECKBOX</td>
+	<td>//div[contains(@data-fieldname,'manualExportEnabled')]//input[@type='checkbox']</td>
+	<td></td>
+</tr>
 </tbody>
 </table>
 </body>

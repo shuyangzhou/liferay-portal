@@ -99,10 +99,6 @@ definition {
 			);
 		}
 
-		Workflow.confirmWorkflowAction();
-
-		Pause(locator1 = "1000");
-
 		Workflow.viewCompletedTask(
 			ddlDataDefinitionName = "${ddlDataDefinitionName}",
 			workflowAssetTitle = "${workflowAssetTitle}",

@@ -6877,57 +6877,67 @@ public class JournalArticleLocalServiceImpl
 			return;
 		}
 
-		for (Element dynamicContentElement :
-				dynamicElementElement.elements("dynamic-content")) {
+		Set<Long> tempFileEntryIds = new HashSet<>();
 
-			String value = dynamicContentElement.getText();
+		try {
+			for (Element dynamicContentElement :
+					dynamicElementElement.elements("dynamic-content")) {
 
-			if (Validator.isNull(value)) {
-				continue;
+				String value = dynamicContentElement.getText();
+
+				if (Validator.isNull(value)) {
+					continue;
+				}
+
+				JSONObject jsonObject = JSONFactoryUtil.createJSONObject(value);
+
+				String uuid = jsonObject.getString("uuid");
+				long groupId = jsonObject.getLong("groupId");
+
+				FileEntry fileEntry =
+					dlAppLocalService.getFileEntryByUuidAndGroupId(
+						uuid, groupId);
+
+				boolean tempFile = fileEntry.isRepositoryCapabilityProvided(
+					TemporaryFileEntriesCapability.class);
+
+				if (tempFile) {
+					FileEntry tempFileEntry = fileEntry;
+
+					Folder folder = article.addImagesFolder();
+
+					String fileEntryName = DLUtil.getUniqueFileName(
+						folder.getGroupId(), folder.getFolderId(),
+						fileEntry.getFileName());
+
+					fileEntry = PortletFileRepositoryUtil.addPortletFileEntry(
+						folder.getGroupId(), fileEntry.getUserId(),
+						JournalArticle.class.getName(),
+						article.getResourcePrimKey(),
+						JournalConstants.SERVICE_NAME, folder.getFolderId(),
+						fileEntry.getContentStream(), fileEntryName,
+						fileEntry.getMimeType(), false);
+
+					tempFileEntryIds.add(tempFileEntry.getFileEntryId());
+				}
+
+				JSONObject cdataJSONObject = JSONFactoryUtil.createJSONObject(
+					dynamicContentElement.getText());
+
+				cdataJSONObject.put("fileEntryId", fileEntry.getFileEntryId());
+				cdataJSONObject.put(
+					"resourcePrimKey", article.getResourcePrimKey());
+				cdataJSONObject.put("uuid", fileEntry.getUuid());
+
+				dynamicContentElement.clearContent();
+
+				dynamicContentElement.addCDATA(cdataJSONObject.toString());
 			}
-
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(value);
-
-			String uuid = jsonObject.getString("uuid");
-			long groupId = jsonObject.getLong("groupId");
-
-			FileEntry fileEntry =
-				dlAppLocalService.getFileEntryByUuidAndGroupId(uuid, groupId);
-
-			boolean tempFile = fileEntry.isRepositoryCapabilityProvided(
-				TemporaryFileEntriesCapability.class);
-
-			if (tempFile) {
-				FileEntry tempFileEntry = fileEntry;
-
-				Folder folder = article.addImagesFolder();
-
-				String fileEntryName = DLUtil.getUniqueFileName(
-					folder.getGroupId(), folder.getFolderId(),
-					fileEntry.getFileName());
-
-				fileEntry = PortletFileRepositoryUtil.addPortletFileEntry(
-					folder.getGroupId(), fileEntry.getUserId(),
-					JournalArticle.class.getName(),
-					article.getResourcePrimKey(), JournalConstants.SERVICE_NAME,
-					folder.getFolderId(), fileEntry.getContentStream(),
-					fileEntryName, fileEntry.getMimeType(), false);
-
-				TempFileEntryUtil.deleteTempFileEntry(
-					tempFileEntry.getFileEntryId());
+		}
+		finally {
+			for (Long tempFileEntryId : tempFileEntryIds) {
+				TempFileEntryUtil.deleteTempFileEntry(tempFileEntryId);
 			}
-
-			JSONObject cdataJSONObject = JSONFactoryUtil.createJSONObject(
-				dynamicContentElement.getText());
-
-			cdataJSONObject.put("fileEntryId", fileEntry.getFileEntryId());
-			cdataJSONObject.put(
-				"resourcePrimKey", article.getResourcePrimKey());
-			cdataJSONObject.put("uuid", fileEntry.getUuid());
-
-			dynamicContentElement.clearContent();
-
-			dynamicContentElement.addCDATA(cdataJSONObject.toString());
 		}
 	}
 

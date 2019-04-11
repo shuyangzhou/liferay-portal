@@ -51,11 +51,15 @@ PluginPackage selPluginPackage = selTheme.getPluginPackage();
 <aui:input name="regularColorSchemeId" type="hidden" value="<%= selColorScheme.getColorSchemeId() %>" />
 
 <aui:row>
-	<aui:col span="<%= 2 %>">
-		<img alt="<%= HtmlUtil.escapeAttribute(selTheme.getName()) %>" class="img-thumbnail theme-screenshot" src="<%= themeDisplay.getCDNBaseURL() %><%= HtmlUtil.escapeAttribute(selTheme.getStaticResourcePath()) %><%= HtmlUtil.escapeAttribute(selTheme.getImagesPath()) %>/thumbnail.png" title="<%= HtmlUtil.escapeAttribute(selTheme.getName()) %>" />
-	</aui:col>
+	<div class="col-6 col-sm-4">
+		<div class="card image-card img-thumbnail">
+			<div class="aspect-ratio aspect-ratio-16-to-9">
+				<img alt="<%= HtmlUtil.escapeAttribute(selTheme.getName()) %>" class="aspect-ratio-item-flush aspect-ratio-item-top-center img-thumbnail theme-screenshot" src="<%= themeDisplay.getCDNBaseURL() %><%= HtmlUtil.escapeAttribute(selTheme.getStaticResourcePath()) %><%= HtmlUtil.escapeAttribute(selTheme.getImagesPath()) %>/thumbnail.png" title="<%= HtmlUtil.escapeAttribute(selTheme.getName()) %>" />
+			</div>
+		</div>
+	</div>
 
-	<aui:col span="<%= 10 %>">
+	<div class="col-6 col-sm-8">
 		<c:if test="<%= Validator.isNotNull(selTheme.getName()) %>">
 			<h4><liferay-ui:message key="name" /></h4>
 
@@ -71,7 +75,7 @@ PluginPackage selPluginPackage = selTheme.getPluginPackage();
 				<aui:a href="<%= HtmlUtil.escapeHREF(selPluginPackage.getPageURL()) %>" target="_blank"><%= HtmlUtil.escape(selPluginPackage.getAuthor()) %></aui:a>
 			</p>
 		</c:if>
-	</aui:col>
+	</div>
 </aui:row>
 
 <c:if test="<%= (selPluginPackage != null) && Validator.isNotNull(selPluginPackage.getShortDescription()) %>">
@@ -90,23 +94,35 @@ List<ColorScheme> colorSchemes = selTheme.getColorSchemes();
 	<h4><liferay-ui:message key="color-schemes" /></h4>
 
 	<div class="clearfix" id="<portlet:namespace />colorSchemesContainer">
+		<aui:row>
 
-		<%
-		String selColorSchemeId = selColorScheme.getColorSchemeId();
+			<%
+			String selColorSchemeId = selColorScheme.getColorSchemeId();
 
-		for (ColorScheme curColorScheme : colorSchemes) {
-		%>
+			for (ColorScheme curColorScheme : colorSchemes) {
+			%>
 
-			<div class="color-scheme-selector img-thumbnail <%= selColorSchemeId.equals(curColorScheme.getColorSchemeId()) ? "selected" : StringPool.BLANK %>" data-color-scheme-id="<%= curColorScheme.getColorSchemeId() %>">
-				<div class="aspect-ratio aspect-ratio-4-to-3 aspect-ratio-middle">
-					<img alt="" src="<%= themeDisplay.getCDNBaseURL() %><%= HtmlUtil.escapeAttribute(selTheme.getStaticResourcePath()) %><%= HtmlUtil.escapeAttribute(curColorScheme.getColorSchemeThumbnailPath()) %>/thumbnail.png" title="<%= HtmlUtil.escapeAttribute(curColorScheme.getName()) %>" />
+				<div class="col-6 col-md-3 col-sm-4">
+					<div class="card card-interactive card-interactive-secondary card-type-asset color-scheme-selector image-card img-thumbnail <%= selColorSchemeId.equals(curColorScheme.getColorSchemeId()) ? "selected" : StringPool.BLANK %>" data-color-scheme-id="<%= curColorScheme.getColorSchemeId() %>" tabindex="0">
+						<div class="aspect-ratio aspect-ratio-16-to-9">
+							<img alt="" class="aspect-ratio-item-flush aspect-ratio-item-top-center" src="<%= themeDisplay.getCDNBaseURL() %><%= HtmlUtil.escapeAttribute(selTheme.getStaticResourcePath()) %><%= HtmlUtil.escapeAttribute(curColorScheme.getColorSchemeThumbnailPath()) %>/thumbnail.png" />
+						</div>
+
+						<div class="card-body p-2">
+							<div class="card-row">
+								<div class="card-title text-truncate">
+									<%= HtmlUtil.escapeAttribute(curColorScheme.getName()) %>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
-			</div>
 
-		<%
-		}
-		%>
+			<%
+			}
+			%>
 
+		</aui:row>
 	</div>
 </c:if>
 
@@ -187,19 +203,23 @@ Map<String, ThemeSetting> configurableSettings = selTheme.getConfigurableSetting
 </c:if>
 
 <c:if test="<%= !colorSchemes.isEmpty() %>">
-	<aui:script use="aui-base">
+	<aui:script use="aui-base,aui-event-key">
 		var colorSchemesContainer = A.one('#<portlet:namespace />colorSchemesContainer');
 
 		colorSchemesContainer.delegate(
-			'click',
+			['click', 'keydown'],
 			function(event) {
-				var currentTarget = event.currentTarget;
+				if (!event.keyCode || event.keyCode === 13 || event.keyCode === 32) {
+					event.preventDefault();
 
-				colorSchemesContainer.all('.color-scheme-selector').removeClass('selected');
+					var currentTarget = event.currentTarget;
 
-				currentTarget.addClass('selected');
+					colorSchemesContainer.all('.color-scheme-selector').removeClass('selected');
 
-				A.one('#<portlet:namespace />regularColorSchemeId').val(currentTarget.attr('data-color-scheme-id'));
+					currentTarget.addClass('selected');
+
+					A.one('#<portlet:namespace />regularColorSchemeId').val(currentTarget.attr('data-color-scheme-id'));
+				}
 			},
 			'.color-scheme-selector'
 		);
