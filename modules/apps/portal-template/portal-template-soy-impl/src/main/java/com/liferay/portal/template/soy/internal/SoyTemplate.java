@@ -65,14 +65,11 @@ import org.osgi.framework.wiring.BundleWiring;
 public class SoyTemplate extends BaseTemplate {
 
 	public SoyTemplate(
-		SoyTemplateResource soyTemplateResource,
-		TemplateResource errorTemplateResource, Map<String, Object> context,
+		SoyTemplateResource soyTemplateResource, Map<String, Object> context,
 		SoyTemplateContextHelper templateContextHelper,
 		SoyTofuCacheHandler soyTofuCacheHandler) {
 
-		super(
-			soyTemplateResource, errorTemplateResource, null,
-			templateContextHelper);
+		super(soyTemplateResource, null, templateContextHelper);
 
 		_soyTemplateResource = soyTemplateResource;
 		_templateContextHelper = templateContextHelper;
