@@ -25,10 +25,10 @@ import org.osgi.framework.Bundle;
  */
 public interface SoyTemplateResourcesProvider {
 
-	public TemplateResource getAllTemplateResources();
-
 	public TemplateResource getBundleTemplateResources(
 		List<Bundle> bundles, String templatePath);
+
+	public TemplateResource getTemplateResource();
 
 	public TemplateResource getTemplateResource(
 		List<TemplateResource> templateResources);

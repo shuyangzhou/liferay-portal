@@ -94,7 +94,7 @@ public class SoyRendererImpl implements SoyRenderer {
 		}
 
 		return _templateManager.getTemplate(
-			_soyTemplateResourcesProvider.getAllTemplateResources(), false);
+			_soyTemplateResourcesProvider.getTemplateResource(), false);
 	}
 
 	@Reference
