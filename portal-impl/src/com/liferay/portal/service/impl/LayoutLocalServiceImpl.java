@@ -2993,6 +2993,8 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 
 	@Override
 	public Layout publishDraft(Layout layout) throws PortalException {
+		layout.setHeadId(-layout.getPrimaryKey());
+
 		return layoutPersistence.update(layout);
 	}
 

@@ -288,6 +288,8 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 
 	@Override
 	public LayoutSet publishDraft(LayoutSet layoutSet) throws PortalException {
+		layoutSet.setHeadId(-layoutSet.getPrimaryKey());
+
 		return layoutSetPersistence.update(layoutSet);
 	}
 
