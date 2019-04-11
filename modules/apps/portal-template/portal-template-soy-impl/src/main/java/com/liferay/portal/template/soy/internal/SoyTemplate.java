@@ -36,7 +36,7 @@ import com.liferay.portal.kernel.util.ProxyFactory;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.template.BaseSingleResourceTemplate;
+import com.liferay.portal.template.BaseTemplate;
 
 import java.io.Reader;
 import java.io.Writer;
@@ -63,7 +63,7 @@ import org.osgi.framework.wiring.BundleWiring;
 /**
  * @author Bruno Basto
  */
-public class SoyTemplate extends BaseSingleResourceTemplate {
+public class SoyTemplate extends BaseTemplate {
 
 	public SoyTemplate(
 		SoyTemplateResource soyTemplateResource,
