@@ -50,32 +50,6 @@ create table LayoutSetVersion (
 
 COMMIT_TRANSACTION;
 
-insert into LayoutSetVersion
-	select
-		layoutSetId as layoutSetVersionId,
-		1 as version,
-		layoutSetId,
-		groupId,
-		companyId,
-		createDate,
-		modifiedDate,
-		privateLayout,
-		logoId,
-		themeId,
-		colorSchemeId,
-		css,
-		pageCount,
-		settings_,
-		layoutSetPrototypeUuid,
-		layoutSetPrototypeLinkEnabled
-	from LayoutSet;
-
-insert into Counter (name, currentId)
-	select
-		'com.liferay.portal.kernel.model.LayoutSetVersion' as name,
-		max(layoutSetVersionId) as currentId
-	from LayoutSetVersion;
-
 create table LayoutVersion (
 	layoutVersionId LONG not null primary key,
 	version INTEGER,
@@ -116,50 +90,3 @@ create table LayoutVersion (
 );
 
 COMMIT_TRANSACTION;
-
-insert into LayoutVersion
-	select
-		plid as layoutVersionId,
-		1 as version,
-		uuid_,
-		plid,
-		groupId,
-		companyId,
-		userId,
-		userName,
-		createDate,
-		modifiedDate,
-		parentPlid,
-		privateLayout,
-		layoutId,
-		parentLayoutId,
-		classNameId,
-		classPK,
-		name,
-		title,
-		description,
-		keywords,
-		robots,
-		type_,
-		typeSettings,
-		hidden_,
-		system_,
-		friendlyURL,
-		iconImageId,
-		themeId,
-		colorSchemeId,
-		css,
-		priority,
-		layoutPrototypeUuid,
-		layoutPrototypeLinkEnabled,
-		sourcePrototypeLayoutUuid,
-		publishDate,
-		lastPublishDate
-	from
-		Layout;
-
-insert into Counter (name, currentId)
-	select
-		'com.liferay.portal.kernel.model.LayoutVersion' as name,
-		max(layoutVersionId) as currentId
-	from LayoutVersion;
