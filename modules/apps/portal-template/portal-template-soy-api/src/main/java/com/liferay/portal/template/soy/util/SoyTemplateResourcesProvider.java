@@ -28,6 +28,6 @@ public interface SoyTemplateResourcesProvider {
 	public List<TemplateResource> getAllTemplateResources();
 
 	public List<TemplateResource> getBundleTemplateResources(
-		Bundle bundle, String templatePath);
+		List<Bundle> bundles, String templatePath);
 
 }

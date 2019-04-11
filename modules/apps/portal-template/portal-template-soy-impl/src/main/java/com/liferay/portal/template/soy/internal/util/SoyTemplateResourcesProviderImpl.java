@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.template.soy.internal.SoyManager;
 import com.liferay.portal.template.soy.util.SoyTemplateResourcesProvider;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -47,24 +48,29 @@ public class SoyTemplateResourcesProviderImpl
 
 	@Override
 	public List<TemplateResource> getBundleTemplateResources(
-		Bundle bundle, String templatePath) {
+		List<Bundle> bundles, String templatePath) {
 
-		try {
-			SoyTemplateResourcesCollector soyTemplateResourcesCollector =
-				new SoyTemplateResourcesCollector(bundle, templatePath);
+		List<TemplateResource> templateResources = new ArrayList<>();
 
-			return soyTemplateResourcesCollector.getTemplateResources();
-		}
-		catch (TemplateException te) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"Unable to get template resources for bundle " +
-						bundle.getBundleId(),
-					te);
+		for (Bundle bundle : bundles) {
+			try {
+				SoyTemplateResourcesCollector soyTemplateResourcesCollector =
+					new SoyTemplateResourcesCollector(bundle, templatePath);
+
+				templateResources.addAll(
+					soyTemplateResourcesCollector.getTemplateResources());
+			}
+			catch (TemplateException te) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						"Unable to get template resources for bundle " +
+							bundle.getBundleId(),
+						te);
+				}
 			}
 		}
 
-		return Collections.emptyList();
+		return templateResources;
 	}
 
 	@Reference(unbind = "-")

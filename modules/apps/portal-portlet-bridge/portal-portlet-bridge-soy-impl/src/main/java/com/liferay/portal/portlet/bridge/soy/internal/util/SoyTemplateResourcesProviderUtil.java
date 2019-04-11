@@ -30,10 +30,10 @@ import org.osgi.service.component.annotations.Reference;
 public class SoyTemplateResourcesProviderUtil {
 
 	public static List<TemplateResource> getBundleTemplateResources(
-		Bundle bundle, String templatePath) {
+		List<Bundle> bundles, String templatePath) {
 
 		return _soyTemplateResourcesProvider.getBundleTemplateResources(
-			bundle, templatePath);
+			bundles, templatePath);
 	}
 
 	@Reference(unbind = "-")

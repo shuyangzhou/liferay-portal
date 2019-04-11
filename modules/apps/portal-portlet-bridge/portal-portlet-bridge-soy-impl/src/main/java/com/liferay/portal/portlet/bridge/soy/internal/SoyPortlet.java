@@ -492,27 +492,23 @@ public class SoyPortlet extends MVCPortlet {
 			return _templateResources;
 		}
 
-		List<TemplateResource> templateResources = new ArrayList<>(
-			SoyTemplateResourcesProviderUtil.getBundleTemplateResources(
-				_bundle, templatePath));
+		List<Bundle> bundles = new ArrayList<>();
+
+		bundles.add(_bundle);
 
 		MVCCommandCache<?> mvcCommandCache = getRenderMVCCommandCache();
 
 		for (String mvcCommandName : mvcCommandCache.getMVCCommandNames()) {
 			MVCCommand mvcCommand = _getMVCRenderCommand(mvcCommandName);
 
-			Bundle curBundle = FrameworkUtil.getBundle(mvcCommand.getClass());
-
-			List<TemplateResource> mvcCommandTemplateResources =
-				SoyTemplateResourcesProviderUtil.getBundleTemplateResources(
-					curBundle, templatePath);
-
-			templateResources.addAll(mvcCommandTemplateResources);
+			bundles.add(FrameworkUtil.getBundle(mvcCommand.getClass()));
 		}
 
-		_templateResources = templateResources;
+		_templateResources =
+			SoyTemplateResourcesProviderUtil.getBundleTemplateResources(
+				bundles, templatePath);
 
-		return templateResources;
+		return _templateResources;
 	}
 
 	private boolean _isPjaxRequest(PortletRequest portletRequest) {
