@@ -130,77 +130,67 @@ public class SanitizerLogWrapperTest {
 
 		Log log = SanitizerLogWrapper.allowCRLF(_log);
 
-		try {
-			log.debug(_message);
-			log.debug(_message, exception);
-			log.error(_message);
-			log.error(_message, exception);
-			log.fatal(_message);
-			log.fatal(_message, exception);
-			log.info(_message);
-			log.info(_message, exception);
-			log.trace(_message);
-			log.trace(_message, exception);
-			log.warn(_message);
-			log.warn(_message, exception);
+		log.debug(_message);
+		log.debug(_message, exception);
+		log.error(_message);
+		log.error(_message, exception);
+		log.fatal(_message);
+		log.fatal(_message, exception);
+		log.info(_message);
+		log.info(_message, exception);
+		log.trace(_message);
+		log.trace(_message, exception);
+		log.warn(_message);
+		log.warn(_message, exception);
 
-			List<LoggingEvent> loggingEvents =
-				_captureAppender.getLoggingEvents();
+		List<LoggingEvent> loggingEvents = _captureAppender.getLoggingEvents();
 
-			Assert.assertNotNull(loggingEvents);
-			Assert.assertEquals(
-				loggingEvents.toString(), 12, loggingEvents.size());
+		Assert.assertNotNull(loggingEvents);
+		Assert.assertEquals(loggingEvents.toString(), 12, loggingEvents.size());
 
-			for (LoggingEvent loggingEvent : loggingEvents) {
-				String message = loggingEvent.getRenderedMessage();
+		for (LoggingEvent loggingEvent : loggingEvents) {
+			String message = loggingEvent.getRenderedMessage();
 
-				Assert.assertTrue(
-					message.startsWith(SanitizerLogWrapper.CRLF_WARNING));
+			Assert.assertTrue(
+				message.startsWith(SanitizerLogWrapper.CRLF_WARNING));
 
-				int messageWithCRLFCharsLength =
-					message.length() -
-						SanitizerLogWrapper.CRLF_WARNING.length();
+			int messageWithCRLFCharsLength =
+				message.length() - SanitizerLogWrapper.CRLF_WARNING.length();
 
-				char[] messageWithCRLFChars =
-					new char[messageWithCRLFCharsLength];
+			char[] messageWithCRLFChars = new char[messageWithCRLFCharsLength];
 
-				message.getChars(
-					SanitizerLogWrapper.CRLF_WARNING.length(), message.length(),
-					messageWithCRLFChars, 0);
+			message.getChars(
+				SanitizerLogWrapper.CRLF_WARNING.length(), message.length(),
+				messageWithCRLFChars, 0);
 
-				Assert.assertArrayEquals(
-					expectedMessageWithCRLFChars, messageWithCRLFChars);
-			}
-
-			loggingEvents.clear();
-
-			_log.debug(_message);
-			_log.debug(_message, exception);
-			_log.error(_message);
-			_log.error(_message, exception);
-			_log.fatal(_message);
-			_log.fatal(_message, exception);
-			_log.info(_message);
-			_log.info(_message, exception);
-			_log.trace(_message);
-			_log.trace(_message, exception);
-			_log.warn(_message);
-			_log.warn(_message, exception);
-
-			Assert.assertNotNull(loggingEvents);
-			Assert.assertEquals(
-				loggingEvents.toString(), 12, loggingEvents.size());
-
-			for (LoggingEvent loggingEvent : loggingEvents) {
-				String message = loggingEvent.getRenderedMessage();
-
-				char[] messageChars = message.toCharArray();
-
-				Assert.assertArrayEquals(_messageChars, messageChars);
-			}
+			Assert.assertArrayEquals(
+				expectedMessageWithCRLFChars, messageWithCRLFChars);
 		}
-		finally {
-			_captureAppender.close();
+
+		loggingEvents.clear();
+
+		_log.debug(_message);
+		_log.debug(_message, exception);
+		_log.error(_message);
+		_log.error(_message, exception);
+		_log.fatal(_message);
+		_log.fatal(_message, exception);
+		_log.info(_message);
+		_log.info(_message, exception);
+		_log.trace(_message);
+		_log.trace(_message, exception);
+		_log.warn(_message);
+		_log.warn(_message, exception);
+
+		Assert.assertNotNull(loggingEvents);
+		Assert.assertEquals(loggingEvents.toString(), 12, loggingEvents.size());
+
+		for (LoggingEvent loggingEvent : loggingEvents) {
+			String message = loggingEvent.getRenderedMessage();
+
+			char[] messageChars = message.toCharArray();
+
+			Assert.assertArrayEquals(_messageChars, messageChars);
 		}
 	}
 
@@ -213,46 +203,39 @@ public class SanitizerLogWrapperTest {
 			"java.lang.Exception: java.lang.RuntimeException: " +
 				"java.lang.NullPointerException: ";
 
-		try {
-			_log.debug(exception);
-			_log.debug(null, exception);
-			_log.error(exception);
-			_log.error(null, exception);
-			_log.fatal(exception);
-			_log.fatal(null, exception);
-			_log.info(exception);
-			_log.info(null, exception);
-			_log.trace(exception);
-			_log.trace(null, exception);
-			_log.warn(exception);
-			_log.warn(null, exception);
+		_log.debug(exception, exception);
+		_log.debug(null, exception);
+		_log.error(exception, exception);
+		_log.error(null, exception);
+		_log.fatal(exception, exception);
+		_log.fatal(null, exception);
+		_log.info(exception, exception);
+		_log.info(null, exception);
+		_log.trace(exception, exception);
+		_log.trace(null, exception);
+		_log.warn(exception, exception);
+		_log.warn(null, exception);
 
-			List<LoggingEvent> loggingEvents =
-				_captureAppender.getLoggingEvents();
+		List<LoggingEvent> loggingEvents = _captureAppender.getLoggingEvents();
 
-			Assert.assertNotNull(loggingEvents);
-			Assert.assertEquals(
-				loggingEvents.toString(), 12, loggingEvents.size());
+		Assert.assertNotNull(loggingEvents);
+		Assert.assertEquals(loggingEvents.toString(), 12, loggingEvents.size());
 
-			for (LoggingEvent loggingEvent : loggingEvents) {
-				ThrowableInformation throwableInformation =
-					loggingEvent.getThrowableInformation();
+		for (LoggingEvent loggingEvent : loggingEvents) {
+			ThrowableInformation throwableInformation =
+				loggingEvent.getThrowableInformation();
 
-				String line = throwableInformation.getThrowableStrRep()[0];
+			String line = throwableInformation.getThrowableStrRep()[0];
 
-				Assert.assertTrue(line.startsWith(exceptionPrefix));
+			Assert.assertTrue(line.startsWith(exceptionPrefix));
 
-				char[] messageChars =
-					new char[line.length() - exceptionPrefix.length()];
+			char[] messageChars =
+				new char[line.length() - exceptionPrefix.length()];
 
-				line.getChars(
-					exceptionPrefix.length(), line.length(), messageChars, 0);
+			line.getChars(
+				exceptionPrefix.length(), line.length(), messageChars, 0);
 
-				Assert.assertArrayEquals(_messageChars, messageChars);
-			}
-		}
-		finally {
-			_captureAppender.close();
+			Assert.assertArrayEquals(_messageChars, messageChars);
 		}
 	}
 
@@ -260,37 +243,30 @@ public class SanitizerLogWrapperTest {
 	public void testInvalidCharactersInLogMessage() {
 		Exception exception = new NullPointerException();
 
-		try {
-			_log.debug(_message);
-			_log.debug(_message, exception);
-			_log.error(_message);
-			_log.error(_message, exception);
-			_log.fatal(_message);
-			_log.fatal(_message, exception);
-			_log.info(_message);
-			_log.info(_message, exception);
-			_log.trace(_message);
-			_log.trace(_message, exception);
-			_log.warn(_message);
-			_log.warn(_message, exception);
+		_log.debug(_message);
+		_log.debug(_message, exception);
+		_log.error(_message);
+		_log.error(_message, exception);
+		_log.fatal(_message);
+		_log.fatal(_message, exception);
+		_log.info(_message);
+		_log.info(_message, exception);
+		_log.trace(_message);
+		_log.trace(_message, exception);
+		_log.warn(_message);
+		_log.warn(_message, exception);
 
-			List<LoggingEvent> loggingEvents =
-				_captureAppender.getLoggingEvents();
+		List<LoggingEvent> loggingEvents = _captureAppender.getLoggingEvents();
 
-			Assert.assertNotNull(loggingEvents);
-			Assert.assertEquals(
-				loggingEvents.toString(), 12, loggingEvents.size());
+		Assert.assertNotNull(loggingEvents);
+		Assert.assertEquals(loggingEvents.toString(), 12, loggingEvents.size());
 
-			for (LoggingEvent loggingEvent : loggingEvents) {
-				String message = loggingEvent.getRenderedMessage();
+		for (LoggingEvent loggingEvent : loggingEvents) {
+			String message = loggingEvent.getRenderedMessage();
 
-				char[] messageChars = message.toCharArray();
+			char[] messageChars = message.toCharArray();
 
-				Assert.assertArrayEquals(_messageChars, messageChars);
-			}
-		}
-		finally {
-			_captureAppender.close();
+			Assert.assertArrayEquals(_messageChars, messageChars);
 		}
 	}
 
