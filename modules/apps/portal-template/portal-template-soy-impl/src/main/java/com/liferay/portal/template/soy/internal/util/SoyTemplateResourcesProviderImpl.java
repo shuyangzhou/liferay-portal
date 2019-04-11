@@ -38,7 +38,18 @@ public class SoyTemplateResourcesProviderImpl
 	implements SoyTemplateResourcesProvider {
 
 	@Override
-	public TemplateResource getBundleTemplateResources(
+	public TemplateResource getTemplateResource() {
+		if (_soyManager == null) {
+			return null;
+		}
+
+		return new SoyTemplateResource(
+			Collections.unmodifiableList(
+				_soyManager.getAllTemplateResources()));
+	}
+
+	@Override
+	public TemplateResource getTemplateResource(
 		List<Bundle> bundles, String templatePath) {
 
 		List<TemplateResource> templateResources = new ArrayList<>();
@@ -62,17 +73,6 @@ public class SoyTemplateResourcesProviderImpl
 		}
 
 		return new SoyTemplateResource(templateResources);
-	}
-
-	@Override
-	public TemplateResource getTemplateResource() {
-		if (_soyManager == null) {
-			return null;
-		}
-
-		return new SoyTemplateResource(
-			Collections.unmodifiableList(
-				_soyManager.getAllTemplateResources()));
 	}
 
 	public TemplateResource getTemplateResource(

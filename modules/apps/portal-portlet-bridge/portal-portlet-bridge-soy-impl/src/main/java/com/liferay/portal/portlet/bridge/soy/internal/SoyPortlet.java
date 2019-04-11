@@ -501,7 +501,7 @@ public class SoyPortlet extends MVCPortlet {
 		}
 
 		_templateResource =
-			SoyTemplateResourcesProviderUtil.getBundleTemplateResources(
+			SoyTemplateResourcesProviderUtil.getTemplateResource(
 				bundles, templatePath);
 
 		return _templateResource;
