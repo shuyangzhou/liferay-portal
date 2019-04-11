@@ -441,10 +441,8 @@ public class SoyPortlet extends MVCPortlet {
 	private Template _createRequestTemplate(PortletRequest portletRequest)
 		throws TemplateException {
 
-		List<TemplateResource> templateResources = _getTemplateResources();
-
 		Template template = TemplateManagerUtil.getTemplate(
-			TemplateConstants.LANG_TYPE_SOY, templateResources, false);
+			TemplateConstants.LANG_TYPE_SOY, _getTemplateResource(), false);
 
 		portletRequest.setAttribute(WebKeys.TEMPLATE, template);
 
@@ -485,11 +483,9 @@ public class SoyPortlet extends MVCPortlet {
 		return sb.toString();
 	}
 
-	private List<TemplateResource> _getTemplateResources()
-		throws TemplateException {
-
-		if (_templateResources != null) {
-			return _templateResources;
+	private TemplateResource _getTemplateResource() throws TemplateException {
+		if (_templateResource != null) {
+			return _templateResource;
 		}
 
 		List<Bundle> bundles = new ArrayList<>();
@@ -504,11 +500,11 @@ public class SoyPortlet extends MVCPortlet {
 			bundles.add(FrameworkUtil.getBundle(mvcCommand.getClass()));
 		}
 
-		_templateResources =
+		_templateResource =
 			SoyTemplateResourcesProviderUtil.getBundleTemplateResources(
 				bundles, templatePath);
 
-		return _templateResources;
+		return _templateResource;
 	}
 
 	private boolean _isPjaxRequest(PortletRequest portletRequest) {
@@ -666,6 +662,6 @@ public class SoyPortlet extends MVCPortlet {
 	private PortletConfig _portletConfig;
 	private SoyPortletHelper _soyPortletHelper;
 	private SoyPortletRegister _soyPortletRegister;
-	private List<TemplateResource> _templateResources;
+	private TemplateResource _templateResource;
 
 }

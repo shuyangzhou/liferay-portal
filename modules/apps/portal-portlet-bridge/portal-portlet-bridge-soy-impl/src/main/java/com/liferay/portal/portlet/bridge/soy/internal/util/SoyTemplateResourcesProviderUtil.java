@@ -29,7 +29,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = {})
 public class SoyTemplateResourcesProviderUtil {
 
-	public static List<TemplateResource> getBundleTemplateResources(
+	public static TemplateResource getBundleTemplateResources(
 		List<Bundle> bundles, String templatePath) {
 
 		return _soyTemplateResourcesProvider.getBundleTemplateResources(

@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.template.TemplateException;
 import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.template.soy.internal.SoyManager;
+import com.liferay.portal.template.soy.internal.SoyTemplateResource;
 import com.liferay.portal.template.soy.util.SoyTemplateResourcesProvider;
 
 import java.util.ArrayList;
@@ -37,17 +38,18 @@ public class SoyTemplateResourcesProviderImpl
 	implements SoyTemplateResourcesProvider {
 
 	@Override
-	public List<TemplateResource> getAllTemplateResources() {
+	public TemplateResource getAllTemplateResources() {
 		if (_soyManager == null) {
-			return Collections.<TemplateResource>emptyList();
+			return null;
 		}
 
-		return Collections.unmodifiableList(
-			_soyManager.getAllTemplateResources());
+		return new SoyTemplateResource(
+			Collections.unmodifiableList(
+				_soyManager.getAllTemplateResources()));
 	}
 
 	@Override
-	public List<TemplateResource> getBundleTemplateResources(
+	public TemplateResource getBundleTemplateResources(
 		List<Bundle> bundles, String templatePath) {
 
 		List<TemplateResource> templateResources = new ArrayList<>();
@@ -70,7 +72,13 @@ public class SoyTemplateResourcesProviderImpl
 			}
 		}
 
-		return templateResources;
+		return new SoyTemplateResource(templateResources);
+	}
+
+	public TemplateResource getTemplateResource(
+		List<TemplateResource> templateResources) {
+
+		return new SoyTemplateResource(templateResources);
 	}
 
 	@Reference(unbind = "-")
