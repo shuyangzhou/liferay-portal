@@ -15,7 +15,7 @@
 package com.liferay.bean.portlet.cdi.extension.internal;
 
 import com.liferay.bean.portlet.cdi.extension.internal.annotated.type.ModifiedAnnotatedType;
-import com.liferay.bean.portlet.cdi.extension.internal.scope.JSR362BeanProducer;
+import com.liferay.bean.portlet.cdi.extension.internal.scope.JSR362CDIBeanProducer;
 import com.liferay.bean.portlet.cdi.extension.internal.scope.PortletRequestBeanContext;
 import com.liferay.bean.portlet.cdi.extension.internal.scope.PortletSessionBeanContext;
 import com.liferay.bean.portlet.cdi.extension.internal.scope.RenderStateBeanContext;
@@ -102,7 +102,7 @@ import org.osgi.framework.ServiceRegistration;
  * @author Neil Griffin
  * @author Raymond Augé
  */
-public class BeanPortletExtension implements Extension {
+public class CDIBeanPortletExtension implements Extension {
 
 	public void step1BeforeBeanDiscovery(
 		@Observes BeforeBeanDiscovery beforeBeanDiscovery,
@@ -122,7 +122,7 @@ public class BeanPortletExtension implements Extension {
 		beforeBeanDiscovery.addScope(RenderStateScoped.class, true, false);
 
 		beforeBeanDiscovery.addAnnotatedType(
-			beanManager.createAnnotatedType(JSR362BeanProducer.class), null);
+			beanManager.createAnnotatedType(JSR362CDIBeanProducer.class), null);
 
 		beforeBeanDiscovery.addAnnotatedType(
 			beanManager.createAnnotatedType(ServletContextProducer.class),
@@ -578,7 +578,7 @@ public class BeanPortletExtension implements Extension {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		BeanPortletExtension.class);
+		CDIBeanPortletExtension.class);
 
 	private static final Annotation _applicationScoped =
 		new ApplicationScoped() {
