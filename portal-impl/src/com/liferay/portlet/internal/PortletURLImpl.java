@@ -425,6 +425,17 @@ public class PortletURLImpl
 
 		if (Validator.isNull(paramName)) {
 			paramName = portletSerializableClass.getSimpleName();
+
+			// If RenderURL.setBeanParameter(PortletSerializable) is called from
+			// within a bean portlet that uses Spring for IoC, and if Spring
+			// dynamically created the bean at runting using CGLib, then the
+			// parameter name will be prefixed by "$$EnhanderBySpringCGLib"
+
+			int pos = paramName.indexOf("$$EnhancerBySpringCGLIB");
+
+			if (pos > 0) {
+				paramName = paramName.substring(0, pos);
+			}
 		}
 
 		MutableRenderParameters mutableRenderParameters = getRenderParameters();
