@@ -12,7 +12,9 @@
  * details.
  */
 
-package com.liferay.bean.portlet.cdi.extension.internal;
+package com.liferay.bean.portlet.extension;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -20,9 +22,6 @@ import com.liferay.portal.kernel.util.Validator;
 import java.lang.reflect.Method;
 
 import java.util.Objects;
-
-import javax.enterprise.inject.spi.Bean;
-import javax.enterprise.inject.spi.BeanManager;
 
 import javax.portlet.PortletMode;
 import javax.portlet.ProcessAction;
@@ -39,14 +38,15 @@ import javax.xml.namespace.QName;
 /**
  * @author Neil Griffin
  */
-public class BeanMethod implements Comparable<BeanMethod> {
+@ProviderType
+public class BaseBeanMethod implements BeanMethod {
 
-	public BeanMethod(
-		BeanManager beanManager, Bean<?> bean, Method method,
+	public BaseBeanMethod(
+		BeanManager beanManager, ManagedBean<?> managedBean, Method method,
 		MethodType methodType) {
 
 		_beanManager = beanManager;
-		_bean = bean;
+		_managedBean = managedBean;
 		_method = method;
 		_methodType = methodType;
 
@@ -55,7 +55,7 @@ public class BeanMethod implements Comparable<BeanMethod> {
 
 	@Override
 	public int compareTo(BeanMethod beanMethod) {
-		return Integer.compare(_ordinal, beanMethod._ordinal);
+		return Integer.compare(_ordinal, beanMethod.getOrdinal());
 	}
 
 	@Override
@@ -64,11 +64,11 @@ public class BeanMethod implements Comparable<BeanMethod> {
 			return true;
 		}
 
-		if (!(obj instanceof BeanMethod)) {
+		if (!(obj instanceof BaseBeanMethod)) {
 			return false;
 		}
 
-		BeanMethod beanMethod = (BeanMethod)obj;
+		BaseBeanMethod beanMethod = (BaseBeanMethod)obj;
 
 		if ((_ordinal == beanMethod._ordinal) &&
 			Objects.equals(_method, beanMethod.getMethod()) &&
@@ -80,6 +80,7 @@ public class BeanMethod implements Comparable<BeanMethod> {
 		return false;
 	}
 
+	@Override
 	public String getActionName() {
 		ActionMethod actionMethod = _method.getAnnotation(ActionMethod.class);
 
@@ -101,14 +102,27 @@ public class BeanMethod implements Comparable<BeanMethod> {
 		return processAction.name();
 	}
 
+	@Override
+	public ManagedBean<?> getManagedBean() {
+		return _managedBean;
+	}
+
+	@Override
 	public Method getMethod() {
 		return _method;
 	}
 
+	@Override
 	public MethodType getMethodType() {
 		return _methodType;
 	}
 
+	@Override
+	public int getOrdinal() {
+		return _ordinal;
+	}
+
+	@Override
 	public PortletMode getPortletMode() {
 		HeaderMethod headerMethod = _method.getAnnotation(HeaderMethod.class);
 
@@ -149,6 +163,7 @@ public class BeanMethod implements Comparable<BeanMethod> {
 		return new PortletMode(name);
 	}
 
+	@Override
 	public String getResourceID() {
 		ServeResourceMethod serveResourceMethod = _method.getAnnotation(
 			ServeResourceMethod.class);
@@ -173,14 +188,14 @@ public class BeanMethod implements Comparable<BeanMethod> {
 		return HashUtil.hash(hashCode, _methodType);
 	}
 
+	@Override
 	public Object invoke(Object... args) throws ReflectiveOperationException {
-		Object beanInstance = _beanManager.getReference(
-			_bean, _bean.getBeanClass(),
-			_beanManager.createCreationalContext(_bean));
+		Object beanInstance = _beanManager.getBeanInstance(_managedBean);
 
 		return _method.invoke(beanInstance, args);
 	}
 
+	@Override
 	public boolean isEventProcessor(QName qName) {
 		EventMethod eventMethod = _method.getAnnotation(EventMethod.class);
 
@@ -205,8 +220,8 @@ public class BeanMethod implements Comparable<BeanMethod> {
 		return false;
 	}
 
-	private final Bean<?> _bean;
 	private final BeanManager _beanManager;
+	private final ManagedBean<?> _managedBean;
 	private final Method _method;
 	private final MethodType _methodType;
 	private final int _ordinal;

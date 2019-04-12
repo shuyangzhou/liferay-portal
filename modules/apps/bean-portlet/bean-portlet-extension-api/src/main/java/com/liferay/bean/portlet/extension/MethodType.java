@@ -12,7 +12,9 @@
  * details.
  */
 
-package com.liferay.bean.portlet.cdi.extension.internal;
+package com.liferay.bean.portlet.extension;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
@@ -30,6 +32,7 @@ import javax.portlet.EventResponse;
 import javax.portlet.HeaderRequest;
 import javax.portlet.HeaderResponse;
 import javax.portlet.PortletConfig;
+import javax.portlet.PortletMode;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
@@ -45,12 +48,13 @@ import javax.portlet.annotations.ServeResourceMethod;
 /**
  * @author Neil Griffin
  */
+@ProviderType
 public enum MethodType {
 
 	ACTION(
 		ActionMethod.class,
-		new Class<?>[] {ActionRequest.class, ActionResponse.class}, false, null,
-		annotation -> null,
+		new Class<?>[] {ActionRequest.class, ActionResponse.class}, false, true,
+		null, annotation -> null, annotation -> null,
 		annotation -> {
 			ActionMethod actionMethod = ActionMethod.class.cast(annotation);
 
@@ -58,7 +62,8 @@ public enum MethodType {
 		},
 		annotation -> 0, annotation -> null),
 	DESTROY(
-		DestroyMethod.class, new Class<?>[0], false, null, annotation -> null,
+		DestroyMethod.class, new Class<?>[0], false, false, null,
+		annotation -> null, annotation -> null,
 		annotation -> {
 			DestroyMethod destroyMethod = DestroyMethod.class.cast(annotation);
 
@@ -67,8 +72,8 @@ public enum MethodType {
 		annotation -> 0, annotation -> null),
 	EVENT(
 		EventMethod.class,
-		new Class<?>[] {EventRequest.class, EventResponse.class}, false, null,
-		annotation -> null,
+		new Class<?>[] {EventRequest.class, EventResponse.class}, false, false,
+		null, annotation -> null, annotation -> null,
 		annotation -> {
 			EventMethod eventMethod = EventMethod.class.cast(annotation);
 
@@ -77,8 +82,13 @@ public enum MethodType {
 		annotation -> 0, annotation -> null),
 	HEADER(
 		HeaderMethod.class,
-		new Class<?>[] {HeaderRequest.class, HeaderResponse.class}, true,
+		new Class<?>[] {HeaderRequest.class, HeaderResponse.class}, true, false,
 		annotation -> null, annotation -> null,
+		annotation -> {
+			HeaderMethod headerMethod = HeaderMethod.class.cast(annotation);
+
+			return new PortletMode(headerMethod.portletMode());
+		},
 		annotation -> {
 			HeaderMethod headerMethod = HeaderMethod.class.cast(annotation);
 
@@ -95,8 +105,8 @@ public enum MethodType {
 			return headerMethod.include();
 		}),
 	INIT(
-		InitMethod.class, new Class<?>[] {PortletConfig.class}, false, null,
-		annotation -> null,
+		InitMethod.class, new Class<?>[] {PortletConfig.class}, false, false,
+		null, annotation -> null, annotation -> null,
 		annotation -> {
 			InitMethod initMethod = InitMethod.class.cast(annotation);
 
@@ -105,8 +115,13 @@ public enum MethodType {
 		annotation -> 0, annotation -> null),
 	RENDER(
 		RenderMethod.class,
-		new Class<?>[] {RenderRequest.class, RenderResponse.class}, true,
+		new Class<?>[] {RenderRequest.class, RenderResponse.class}, true, true,
 		annotation -> null, annotation -> null,
+		annotation -> {
+			RenderMethod renderMethod = RenderMethod.class.cast(annotation);
+
+			return new PortletMode(renderMethod.portletMode());
+		},
 		annotation -> {
 			RenderMethod renderMethod = RenderMethod.class.cast(annotation);
 
@@ -125,6 +140,7 @@ public enum MethodType {
 	SERVE_RESOURCE(
 		ServeResourceMethod.class,
 		new Class<?>[] {ResourceRequest.class, ResourceResponse.class}, true,
+		true,
 		annotation -> {
 			ServeResourceMethod serveResourceMethod =
 				ServeResourceMethod.class.cast(annotation);
@@ -137,6 +153,7 @@ public enum MethodType {
 
 			return serveResourceMethod.contentType();
 		},
+		annotation -> PortletMode.VIEW,
 		annotation -> {
 			ServeResourceMethod serveResourceMethod =
 				ServeResourceMethod.class.cast(annotation);
@@ -196,6 +213,16 @@ public enum MethodType {
 		return _ordinalFunction.apply(annotation);
 	}
 
+	public PortletMode getPortletMode(Method method) {
+		Annotation annotation = method.getAnnotation(_annotation);
+
+		if ((annotation == null) || (_portletModeFunction == null)) {
+			return null;
+		}
+
+		return _portletModeFunction.apply(annotation);
+	}
+
 	public String[] getPortletNames(Method method) {
 		Annotation annotation = method.getAnnotation(_annotation);
 
@@ -229,6 +256,15 @@ public enum MethodType {
 			return true;
 		}
 
+		// Controller match
+
+		if (_controller &&
+			((parameterTypes.length == 0) ||
+			 _isAssignableFrom(parameterTypes))) {
+
+			return true;
+		}
+
 		_log.error(
 			StringBundler.concat(
 				"Method ", method, " does not have a valid signature for @",
@@ -239,8 +275,10 @@ public enum MethodType {
 
 	private MethodType(
 		Class<? extends Annotation> annotation, Class<?>[] parameterTypes,
-		boolean variant, Function<Annotation, String> characterEncodingFunction,
+		boolean variant, boolean controller,
+		Function<Annotation, String> characterEncodingFunction,
 		Function<Annotation, String> contentTypeFunction,
+		Function<Annotation, PortletMode> portletModeFunction,
 		Function<Annotation, String[]> portletNamesFunction,
 		Function<Annotation, Integer> ordinalFunction,
 		Function<Annotation, String> includeFunction) {
@@ -248,8 +286,10 @@ public enum MethodType {
 		_annotation = annotation;
 		_parameterTypes = parameterTypes;
 		_variant = variant;
+		_controller = controller;
 		_characterEncodingFunction = characterEncodingFunction;
 		_contentTypeFunction = contentTypeFunction;
+		_portletModeFunction = portletModeFunction;
 		_portletNamesFunction = portletNamesFunction;
 		_ordinalFunction = ordinalFunction;
 		_includeFunction = includeFunction;
@@ -274,9 +314,11 @@ public enum MethodType {
 	private final Class<? extends Annotation> _annotation;
 	private final Function<Annotation, String> _characterEncodingFunction;
 	private final Function<Annotation, String> _contentTypeFunction;
+	private final boolean _controller;
 	private final Function<Annotation, String> _includeFunction;
 	private final Function<Annotation, Integer> _ordinalFunction;
 	private final Class<?>[] _parameterTypes;
+	private final Function<Annotation, PortletMode> _portletModeFunction;
 	private final Function<Annotation, String[]> _portletNamesFunction;
 	private final boolean _variant;
 
