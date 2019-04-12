@@ -17,12 +17,15 @@ package com.liferay.bean.portlet.spring.extension.internal;
 import com.liferay.bean.portlet.extension.BeanFilterMethod;
 import com.liferay.bean.portlet.extension.BeanFilterMethodInvoker;
 import com.liferay.bean.portlet.extension.BeanMethod;
+import com.liferay.bean.portlet.extension.BeanMethodDecorator;
 import com.liferay.bean.portlet.extension.BeanPortletMethodInvoker;
 import com.liferay.bean.portlet.extension.MethodType;
 import com.liferay.bean.portlet.extension.ScopedBean;
+import com.liferay.bean.portlet.extension.ViewRenderer;
 import com.liferay.bean.portlet.registration.BeanPortletRegistrar;
 import com.liferay.bean.portlet.spring.extension.internal.scope.SpringPortletRequestScope;
 import com.liferay.bean.portlet.spring.extension.internal.scope.SpringPortletSessionScope;
+import com.liferay.bean.portlet.spring.extension.internal.scope.SpringRedirectScope;
 import com.liferay.bean.portlet.spring.extension.internal.scope.SpringRenderStateScope;
 import com.liferay.bean.portlet.spring.extension.internal.scope.SpringScopedBeanManager;
 import com.liferay.bean.portlet.spring.extension.internal.scope.SpringScopedBeanManagerThreadLocal;
@@ -62,6 +65,7 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletRequestDispatcher;
 import javax.portlet.PortletResponse;
 import javax.portlet.PortletSession;
+import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import javax.portlet.ResourceServingPortlet;
@@ -110,6 +114,9 @@ public class SpringBeanPortletExtension {
 
 		configurableBeanFactory.registerScope(
 			"portletRenderState", new SpringRenderStateScope());
+
+		configurableBeanFactory.registerScope(
+			"portletRedirect", new SpringRedirectScope());
 	}
 
 	public void step2ProcessAnnotatedType(String className) {
@@ -248,6 +255,18 @@ public class SpringBeanPortletExtension {
 
 					for (BeanMethod beanMethod : beanMethods) {
 						try {
+
+							// MVC
+
+							BeanMethodDecorator beanMethodDecorator =
+								_applicationContext.getBean(
+									"beanMethodDecorator",
+									BeanMethodDecorator.class);
+
+							beanMethod = beanMethodDecorator.getBeanMethod(
+								portletRequest, portletResponse, portletConfig,
+								beanMethod);
+
 							String include = null;
 							Method method = beanMethod.getMethod();
 
@@ -408,6 +427,19 @@ public class SpringBeanPortletExtension {
 						catch (Exception e) {
 							throw new PortletException(e);
 						}
+					}
+
+					// MVC
+
+					if (portletResponse instanceof RenderResponse ||
+						portletResponse instanceof ResourceResponse) {
+
+						ViewRenderer viewRenderer = _applicationContext.getBean(
+							"viewRenderer", ViewRenderer.class);
+
+						viewRenderer.render(
+							portletRequest, (MimeResponse)portletResponse,
+							portletConfig);
 					}
 				}
 
