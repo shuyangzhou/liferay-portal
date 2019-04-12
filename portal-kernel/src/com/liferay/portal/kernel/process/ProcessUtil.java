@@ -66,6 +66,12 @@ public class ProcessUtil {
 	public static final LoggingOutputProcessor LOGGING_OUTPUT_PROCESSOR =
 		new LoggingOutputProcessor();
 
+	/**
+	 * @deprecated As of Mueller (7.2.x), replaced by {@link
+	 * 			   com.liferay.petra.process.ProcessUtil#execute(
+	 * 			   com.liferay.petra.process.OutputProcessor, List)}
+	 */
+	@Deprecated
 	public static <O, E> NoticeableFuture<ObjectValuePair<O, E>> execute(
 			OutputProcessor<O, E> outputProcessor, List<String> arguments)
 		throws ProcessException {
@@ -101,6 +107,12 @@ public class ProcessUtil {
 		}
 	}
 
+	/**
+	 * @deprecated As of Mueller (7.2.x), replaced by {@link
+	 * 			   com.liferay.petra.process.ProcessUtil#execute(
+	 *		   	   com.liferay.petra.process.OutputProcessor, String...)}
+	 */
+	@Deprecated
 	public static <O, E> NoticeableFuture<ObjectValuePair<O, E>> execute(
 			OutputProcessor<O, E> outputProcessor, String... arguments)
 		throws ProcessException {
