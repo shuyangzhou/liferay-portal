@@ -18,6 +18,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.cache.io.SerializableObjectWrapper;
 import com.liferay.portal.kernel.cache.PortalCache;
+import com.liferay.util.SerializableUtil;
 
 import java.io.Serializable;
 
@@ -68,9 +69,10 @@ public class PortalCacheClusterEvent implements Serializable {
 		_portalCacheManagerName = portalCacheManagerName;
 		_portalCacheName = portalCacheName;
 		_elementKey = new SerializableObjectWrapper(elementKey);
-		_elementValue = new SerializableObjectWrapper(elementValue);
 		_timeToLive = timeToLive;
 		_portalCacheClusterEventType = portalCacheClusterEventType;
+
+		setElementValue(elementValue);
 	}
 
 	public Serializable getElementKey() {
@@ -78,7 +80,7 @@ public class PortalCacheClusterEvent implements Serializable {
 	}
 
 	public Serializable getElementValue() {
-		return SerializableObjectWrapper.unwrap(_elementValue);
+		return (Serializable)SerializableUtil.deserialize(_elementValueBytes);
 	}
 
 	public PortalCacheClusterEventType getEventType() {
@@ -98,7 +100,7 @@ public class PortalCacheClusterEvent implements Serializable {
 	}
 
 	public void setElementValue(Serializable elementValue) {
-		_elementValue = new SerializableObjectWrapper(elementValue);
+		_elementValueBytes = SerializableUtil.serialize(elementValue);
 	}
 
 	public void setTimeToLive(int timeToLive) {
@@ -120,8 +122,8 @@ public class PortalCacheClusterEvent implements Serializable {
 		sb.append(_elementKey);
 		sb.append(StringPool.COLON);
 
-		if (_elementValue != null) {
-			sb.append(_elementValue.toString());
+		if (_elementValueBytes != null) {
+			sb.append(_elementValueBytes.toString());
 			sb.append(StringPool.COLON);
 		}
 
@@ -131,7 +133,7 @@ public class PortalCacheClusterEvent implements Serializable {
 	}
 
 	private final SerializableObjectWrapper _elementKey;
-	private SerializableObjectWrapper _elementValue;
+	private byte[] _elementValueBytes;
 	private final PortalCacheClusterEventType _portalCacheClusterEventType;
 	private final String _portalCacheManagerName;
 	private final String _portalCacheName;
