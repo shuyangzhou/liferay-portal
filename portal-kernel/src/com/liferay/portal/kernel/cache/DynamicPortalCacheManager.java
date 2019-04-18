@@ -92,6 +92,14 @@ public class DynamicPortalCacheManager<K extends Serializable, V>
 		return _portalCacheManagerName;
 	}
 
+	public boolean hasPortalCache(String portalCacheName) {
+		if (_dynamicPortalCaches.get(portalCacheName) != null) {
+			return true;
+		}
+
+		return _portalCacheManager.hasPortalCache(portalCacheName);
+	}
+
 	@Override
 	public boolean isClusterAware() {
 		return _portalCacheManager.isClusterAware();

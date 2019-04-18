@@ -56,6 +56,8 @@ public interface PortalCacheManager<K extends Serializable, V> {
 
 	public String getPortalCacheManagerName();
 
+	public boolean hasPortalCache(String portalCacheName);
+
 	public boolean isClusterAware();
 
 	/**

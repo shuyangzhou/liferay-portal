@@ -153,6 +153,14 @@ public abstract class BasePortalCacheManager<K extends Serializable, V>
 		return _transactionalPortalCacheNames;
 	}
 
+	public boolean hasPortalCache(String portalCacheName) {
+		if (portalCaches.get(portalCacheName) != null) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public boolean isBlockingPortalCacheAllowed() {
 		return _blockingPortalCacheAllowed;
 	}

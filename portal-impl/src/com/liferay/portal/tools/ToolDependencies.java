@@ -431,6 +431,14 @@ public class ToolDependencies {
 			return _portalCacheManagerName;
 		}
 
+		public boolean hasPortalCache(String portalCacheName) {
+			if (_portalCaches.get(portalCacheName) != null) {
+				return true;
+			}
+
+			return false;
+		}
+
 		@Override
 		public boolean isClusterAware() {
 			return false;

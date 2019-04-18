@@ -63,6 +63,14 @@ public abstract class BaseIntrabandPortalCacheManager
 		return portalCache;
 	}
 
+	public boolean hasPortalCache(String portalCacheName) {
+		if (_portalCaches.get(portalCacheName) != null) {
+			return true;
+		}
+
+		return false;
+	}
+
 	@Override
 	public void removePortalCache(String portalCacheName) {
 		_portalCaches.remove(portalCacheName);
