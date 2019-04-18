@@ -94,7 +94,18 @@ public class ClusterLinkPortalCacheClusterListener extends BaseMessageListener {
 					 PortalCacheClusterEventType.UPDATE)) {
 
 			Serializable key = portalCacheClusterEvent.getElementKey();
-			Serializable value = portalCacheClusterEvent.getElementValue();
+
+			Serializable value = null;
+
+			try {
+				value = portalCacheClusterEvent.getElementValue();
+			}
+			catch (RuntimeException re) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Unable to load portal cache value from cluster", re);
+				}
+			}
 
 			if (value == null) {
 				PortalCacheHelperUtil.removeWithoutReplicator(portalCache, key);
