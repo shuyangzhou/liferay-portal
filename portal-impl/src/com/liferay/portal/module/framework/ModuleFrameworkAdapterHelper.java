@@ -65,7 +65,7 @@ public class ModuleFrameworkAdapterHelper {
 			}
 
 			URL[] urls = new URL[files.length];
-			String[] packageNames = new String[files.length];
+			String[] packageNames = new String[files.length + 2];
 
 			for (int i = 0; i < urls.length; i++) {
 				File file = files[i];
@@ -77,21 +77,24 @@ public class ModuleFrameworkAdapterHelper {
 				String name = file.getName();
 
 				if (name.endsWith(".jar")) {
+					name = name.substring(0, name.length() - 3);
+				}
+
+				if (name.endsWith(".api.")) {
 					name = name.substring(0, name.length() - 4);
 				}
 
-				if (name.endsWith(".api")) {
-					name = name.substring(0, name.length() - 4);
-				}
-
-				if (name.endsWith(".impl")) {
+				if (name.endsWith(".impl.")) {
 					name = name.substring(0, name.length() - 5);
 
-					name = name.concat(".internal");
+					name = name.concat("internal.");
 				}
 
 				packageNames[i] = name;
 			}
+
+			packageNames[files.length] = "org.apache.felix.resolver.";
+			packageNames[files.length + 1] = "org.osgi.";
 
 			Arrays.sort(packageNames);
 
