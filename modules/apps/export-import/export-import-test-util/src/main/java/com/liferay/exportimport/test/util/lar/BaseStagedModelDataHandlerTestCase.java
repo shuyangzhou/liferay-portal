@@ -107,7 +107,6 @@ public abstract class BaseStagedModelDataHandlerTestCase {
 		ServiceContextThreadLocal.popServiceContext();
 	}
 
-	@Ignore
 	@Test
 	public void testCleanAssetCategoriesAndTags() throws Exception {
 		Map<String, List<StagedModel>> dependentStagedModelsMap =
