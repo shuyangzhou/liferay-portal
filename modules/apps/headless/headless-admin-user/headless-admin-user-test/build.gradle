@@ -1,7 +1,3 @@
-copyLibs {
-	enabled = true
-}
-
 dependencies {
 	compileOnly project(":apps:headless:headless-admin-user:headless-admin-user-client")
 
