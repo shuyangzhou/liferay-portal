@@ -160,11 +160,8 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 				bundleVersionAttributeValue);
 
 			for (Bundle bundle : bundleContext.getBundles()) {
-				Version curBundleVersion = Version.parseVersion(
-					String.valueOf(bundle.getVersion()));
-
 				if (bundleSymbolicName.equals(bundle.getSymbolicName()) &&
-					bundleVersion.equals(curBundleVersion)) {
+					bundleVersion.equals(bundle.getVersion())) {
 
 					return bundle;
 				}
@@ -1046,10 +1043,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 			for (Bundle bundle : bundleContext.getBundles()) {
 				if (bundleSymbolicName.equals(bundle.getSymbolicName())) {
-					Version curBundleVersion = Version.parseVersion(
-						String.valueOf(bundle.getVersion()));
-
-					if (bundleVersion.equals(curBundleVersion)) {
+					if (bundleVersion.equals(bundle.getVersion())) {
 						return bundle;
 					}
 
