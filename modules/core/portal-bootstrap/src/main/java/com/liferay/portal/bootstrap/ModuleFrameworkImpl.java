@@ -756,24 +756,10 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		Properties extraProperties = PropsUtil.getProperties(
 			PropsKeys.MODULE_FRAMEWORK_PROPERTIES, true);
 
-		Parameters extraCapabilitiesParameters = OSGiHeader.parseHeader(
-			extraProperties.getProperty(
-				Constants.FRAMEWORK_SYSTEMCAPABILITIES_EXTRA));
-
 		Attributes attributes = _getExtraManifestAttributes();
 
 		String provideCapability = attributes.getValue(
 			Constants.PROVIDE_CAPABILITY);
-
-		Parameters provideCapabilityParameters = new Parameters(
-			provideCapability);
-
-		if (!extraCapabilitiesParameters.isEmpty()) {
-			extraCapabilitiesParameters.putAll(provideCapabilityParameters);
-		}
-		else {
-			extraCapabilitiesParameters = provideCapabilityParameters;
-		}
 
 		extraProperties.setProperty(
 			Constants.FRAMEWORK_SYSTEMCAPABILITIES_EXTRA, provideCapability);
