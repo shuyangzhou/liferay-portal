@@ -33,7 +33,6 @@ import java.util.Map;
 
 import org.apache.commons.lang.time.FastDateFormat;
 
-import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.geo.GeoPoint;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
@@ -52,22 +51,6 @@ public class DefaultElasticsearchDocumentFactory
 		"yyyyMMddHHmmss");
 
 	public static final String DATE_MAX_VALUE = "99950812133000";
-
-	/**
-	 * @deprecated As of Mueller (7.2.x)
-	 */
-	@Deprecated
-	@Override
-	public String getElasticsearchDocument(
-		com.liferay.portal.kernel.search.Document legacyDocument) {
-
-		try {
-			return Strings.toString(translate(legacyDocument));
-		}
-		catch (IOException ioe) {
-			throw new RuntimeException(ioe);
-		}
-	}
 
 	@Override
 	public XContentBuilder getElasticsearchDocument(Document document) {

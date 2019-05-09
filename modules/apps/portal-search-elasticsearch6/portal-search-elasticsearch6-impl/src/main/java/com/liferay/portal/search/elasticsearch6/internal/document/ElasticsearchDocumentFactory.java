@@ -23,13 +23,6 @@ import org.elasticsearch.common.xcontent.XContentBuilder;
  */
 public interface ElasticsearchDocumentFactory {
 
-	/**
-	 * @deprecated As of Mueller (7.2.x)
-	 */
-	@Deprecated
-	public String getElasticsearchDocument(
-		com.liferay.portal.kernel.search.Document document);
-
 	public XContentBuilder getElasticsearchDocument(Document document);
 
 }
