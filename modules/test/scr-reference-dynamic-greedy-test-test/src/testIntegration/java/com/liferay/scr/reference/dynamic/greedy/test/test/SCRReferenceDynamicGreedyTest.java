@@ -23,6 +23,7 @@ import com.liferay.scr.reference.dynamic.greedy.test.ComponentController;
 import com.liferay.scr.reference.dynamic.greedy.test.DynamicGreedyComponent;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Dictionary;
 import java.util.List;
 import java.util.function.Consumer;
@@ -65,6 +66,16 @@ public class SCRReferenceDynamicGreedyTest {
 						"unbindAtLeastOneDependency-" + _service1, "step3",
 						"unbindAtLeastOneDependency-" + _service2));
 			});
+	}
+
+	@Test
+	public void testDynamicGreedyFieldReplace() throws Exception {
+		_testDynamicGreedyFieldComponent(false);
+	}
+
+	@Test
+	public void testDynamicGreedyFieldUpdate() throws Exception {
+		_testDynamicGreedyFieldComponent(true);
 	}
 
 	@Test
@@ -182,10 +193,146 @@ public class SCRReferenceDynamicGreedyTest {
 		}
 	}
 
+	private void _testDynamicGreedyFieldComponent(boolean update)
+		throws Exception {
+
+		String name =
+			"com.liferay.scr.reference.dynamic.greedy.test.internal." +
+				"DynamicGreedyFieldReplaceComponent";
+
+		String fieldOption = "replace";
+
+		if (update) {
+			name = "com.liferay.scr.reference.dynamic.greedy.test.internal." +
+				"DynamicGreedyFieldUpdateComponent";
+
+			fieldOption = "update";
+		}
+
+		Bundle bundle = FrameworkUtil.getBundle(
+			SCRReferenceDynamicGreedyTest.class);
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
+		Dictionary<String, Object> properties = new HashMapDictionary<>();
+
+		properties.put("field.option", fieldOption);
+
+		_componentController.enabledComponent(name);
+
+		ServiceRegistration<?> serviceRegistration =
+			bundleContext.registerService(String.class, _service1, properties);
+
+		ServiceTracker<DynamicGreedyComponent, DynamicGreedyComponent>
+			serviceTracker = new ServiceTracker<>(
+				bundleContext,
+				bundleContext.createFilter(
+					"(&(objectClass=" + DynamicGreedyComponent.class.getName() +
+						")(field.option=" + fieldOption +
+							"))"),
+				null);
+
+		serviceTracker.open();
+
+		try {
+			DynamicGreedyComponent dynamicGreedyComponent =
+				serviceTracker.waitForService(0);
+
+			List<String> bindingCalls =
+				dynamicGreedyComponent.getBindingCalls();
+
+			Assert.assertEquals(
+				Collections.singletonList(_service1), bindingCalls);
+
+			properties.put("service.ranking", 1);
+
+			ServiceRegistration<?> serviceRegistration2 =
+				bundleContext.registerService(
+					String.class, _service2, properties);
+
+			if (update) {
+				Assert.assertSame(
+					bindingCalls, dynamicGreedyComponent.getBindingCalls());
+			}
+			else {
+				Assert.assertNotSame(
+					bindingCalls, dynamicGreedyComponent.getBindingCalls());
+
+				bindingCalls = dynamicGreedyComponent.getBindingCalls();
+			}
+
+			Assert.assertEquals(
+				Arrays.asList(_service1, _service2), bindingCalls);
+
+			serviceRegistration.unregister();
+
+			if (update) {
+				Assert.assertSame(
+					bindingCalls, dynamicGreedyComponent.getBindingCalls());
+			}
+			else {
+				Assert.assertNotSame(
+					bindingCalls, dynamicGreedyComponent.getBindingCalls());
+
+				bindingCalls = dynamicGreedyComponent.getBindingCalls();
+			}
+
+			Assert.assertEquals(
+				Collections.singletonList(_service2), bindingCalls);
+
+			properties.remove("service.ranking");
+
+			serviceRegistration = bundleContext.registerService(
+				String.class, _service1, properties);
+
+			if (update) {
+				Assert.assertSame(
+					bindingCalls, dynamicGreedyComponent.getBindingCalls());
+			}
+			else {
+				Assert.assertNotSame(
+					bindingCalls, dynamicGreedyComponent.getBindingCalls());
+
+				bindingCalls = dynamicGreedyComponent.getBindingCalls();
+			}
+
+			if (update) {
+				Assert.assertEquals(
+					Arrays.asList(_service2, _service1), bindingCalls);
+			}
+			else {
+				Assert.assertEquals(
+					Arrays.asList(_service1, _service2), bindingCalls);
+			}
+
+			serviceRegistration.unregister();
+
+			serviceRegistration2.unregister();
+
+			if (update) {
+				Assert.assertSame(
+					bindingCalls, dynamicGreedyComponent.getBindingCalls());
+			}
+			else {
+				Assert.assertNotSame(
+					bindingCalls, dynamicGreedyComponent.getBindingCalls());
+
+				bindingCalls = dynamicGreedyComponent.getBindingCalls();
+			}
+
+			Assert.assertEquals(bindingCalls, Collections.emptyList());
+		}
+		finally {
+			serviceTracker.close();
+
+			_componentController.disableComponent(name);
+		}
+	}
+
 	@Inject
 	private static ComponentController _componentController;
 
-	private static final Object _service1 = "service 1";
-	private static final Object _service2 = "service 2";
+	private static final String _service1 = "service 1";
+	private static final String _service2 = "service 2";
 
 }
