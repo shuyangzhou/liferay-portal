@@ -9,7 +9,7 @@ import ${apiPackagePath}.model.${entity.name};
 import ${serviceBuilder.getCompatJavaClassName("HashUtil")};
 import ${serviceBuilder.getCompatJavaClassName("StringBundler")};
 
-import aQute.bnd.annotation.ProviderType;
+import org.osgi.annotation.versioning.ProviderType;
 
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;

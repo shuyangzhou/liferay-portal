@@ -3,7 +3,7 @@ package ${apiPackagePath}.service.persistence;
 import ${serviceBuilder.getCompatJavaClassName("HashUtil")};
 import ${serviceBuilder.getCompatJavaClassName("StringBundler")};
 
-import aQute.bnd.annotation.ProviderType;
+import org.osgi.annotation.versioning.ProviderType;
 
 import com.liferay.portal.kernel.util.DateUtil;
 

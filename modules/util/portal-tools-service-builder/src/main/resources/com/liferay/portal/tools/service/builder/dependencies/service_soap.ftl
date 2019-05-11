@@ -2,7 +2,7 @@ package ${packagePath}.service.http;
 
 import ${apiPackagePath}.service.${entity.name}ServiceUtil;
 
-import aQute.bnd.annotation.ProviderType;
+import org.osgi.annotation.versioning.ProviderType;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
