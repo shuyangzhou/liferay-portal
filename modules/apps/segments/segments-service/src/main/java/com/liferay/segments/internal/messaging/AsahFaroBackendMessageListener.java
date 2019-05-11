@@ -40,7 +40,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author David Arques
  */
 @Component(
-	configurationPid = "com.liferay.journal.configuration.SegmentsServiceConfiguration",
+	configurationPid = "com.liferay.segments.internal.configuration.SegmentsServiceConfiguration",
 	configurationPolicy = ConfigurationPolicy.OPTIONAL, immediate = true,
 	service = AsahFaroBackendMessageListener.class
 )

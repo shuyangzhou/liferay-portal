@@ -103,26 +103,25 @@ String clientSecret = (oAuth2Application == null) ? "" : oAuth2Application.getCl
 						</div>
 
 						<div class="col-lg-3">
-							<aui:fieldset label="icon">
+							<h3 class="sheet-subtitle"><liferay-ui:message key="icon" /></h3>
 
-								<%
-								String thumbnailURL = oAuth2AdminPortletDisplayContext.getThumbnailURL(oAuth2Application);
-								%>
+							<%
+							String thumbnailURL = oAuth2AdminPortletDisplayContext.getThumbnailURL(oAuth2Application);
+							%>
 
-								<c:choose>
-									<c:when test="<%= oAuth2AdminPortletDisplayContext.hasUpdatePermission(oAuth2Application) %>">
-										<liferay-ui:logo-selector
-											currentLogoURL="<%= thumbnailURL %>"
-											defaultLogo="<%= oAuth2Application.getIconFileEntryId() == 0 %>"
-											defaultLogoURL="<%= oAuth2AdminPortletDisplayContext.getDefaultIconURL() %>"
-											tempImageFileName="<%= String.valueOf(oAuth2Application.getClientId()) %>"
-										/>
-									</c:when>
-									<c:otherwise>
-										<img alt="<liferay-ui:message escapeAttribute="<%= true %>" key="portrait" />" src="<%= HtmlUtil.escapeAttribute(thumbnailURL) %>" />
-									</c:otherwise>
-								</c:choose>
-							</aui:fieldset>
+							<c:choose>
+								<c:when test="<%= oAuth2AdminPortletDisplayContext.hasUpdatePermission(oAuth2Application) %>">
+									<liferay-ui:logo-selector
+										currentLogoURL="<%= thumbnailURL %>"
+										defaultLogo="<%= oAuth2Application.getIconFileEntryId() == 0 %>"
+										defaultLogoURL="<%= oAuth2AdminPortletDisplayContext.getDefaultIconURL() %>"
+										tempImageFileName="<%= String.valueOf(oAuth2Application.getClientId()) %>"
+									/>
+								</c:when>
+								<c:otherwise>
+									<img alt="<liferay-ui:message escapeAttribute="<%= true %>" key="portrait" />" src="<%= HtmlUtil.escapeAttribute(thumbnailURL) %>" />
+								</c:otherwise>
+							</c:choose>
 						</div>
 					</c:when>
 					<c:otherwise>
@@ -231,6 +230,11 @@ String clientSecret = (oAuth2Application == null) ? "" : oAuth2Application.getCl
 
 	<portlet:namespace />getSelectedClientProfile = function() {
 		return A.one('#<portlet:namespace />clientProfile option:selected');
+	}
+
+	<portlet:namespace />isClientCredentialsSectionRequired = function() {
+		var selectedClientProfile = <portlet:namespace />getSelectedClientProfile();
+		return A.all('#<portlet:namespace />allowedGrantTypes .client-profile-' + selectedClientProfile.val() + ' input:checked[name=<%= renderResponse.getNamespace() + "grant-" + GrantType.CLIENT_CREDENTIALS.name() %>]').size() > 0;
 	}
 
 	<portlet:namespace />isConfidentialClientRequired = function() {
@@ -353,6 +357,23 @@ String clientSecret = (oAuth2Application == null) ? "" : oAuth2Application.getCl
 		A.all('#<portlet:namespace />allowedGrantTypes .allowedGrantType.client-profile-' + clientProfile).show();
 
 		<portlet:namespace />requiredRedirectURIs();
+		<portlet:namespace />updateClientCredentialsSection();
+	}
+
+	<portlet:namespace />updateClientCredentialsSection = function() {
+		var clientCredentialsSection = A.one('#<portlet:namespace />clientCredentialsSection');
+		var allowedGrantTypesSection = A.one('#<portlet:namespace />allowedGrantTypesSection');
+
+		if (<portlet:namespace />isClientCredentialsSectionRequired()) {
+			clientCredentialsSection.show();
+			allowedGrantTypesSection.addClass('col-lg-7');
+			allowedGrantTypesSection.removeClass('col-lg-12');
+		}
+		else {
+			clientCredentialsSection.hide();
+			allowedGrantTypesSection.addClass('col-lg-12');
+			allowedGrantTypesSection.removeClass('col-lg-7');
+		}
 	}
 
 	<portlet:namespace />updateComponent = function(component, newValue) {

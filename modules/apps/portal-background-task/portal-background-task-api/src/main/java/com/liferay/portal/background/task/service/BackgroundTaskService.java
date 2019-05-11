@@ -14,7 +14,7 @@
 
 package com.liferay.portal.background.task.service;
 
-import aQute.bnd.annotation.ProviderType;
+import org.osgi.annotation.versioning.ProviderType;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -58,7 +58,11 @@ public interface BackgroundTaskService extends BaseService {
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getBackgroundTasksCount(
-		long groupId, String taskExecutorClassName, String completed);
+		long groupId, String taskExecutorClassName, boolean completed);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getBackgroundTasksCount(
+		long groupId, String name, String taskExecutorClassName);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public String getBackgroundTaskStatusJSON(long backgroundTaskId);

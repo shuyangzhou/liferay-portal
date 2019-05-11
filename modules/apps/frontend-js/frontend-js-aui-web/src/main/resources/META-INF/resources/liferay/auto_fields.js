@@ -99,7 +99,17 @@ AUI.add(
 
 						var visibleRows = contentBox.all('.lfr-form-row:visible');
 
-						if (visibleRows.size() > 1) {
+						var visibleRowsSize = visibleRows.size();
+
+						var deleteRow = visibleRowsSize > 1;
+
+						if (visibleRowsSize === 1) {
+							instance.addRow(node);
+
+							deleteRow = true;
+						}
+
+						if (deleteRow) {
 							var form = node.ancestor('form');
 
 							node.hide();
@@ -646,7 +656,7 @@ AUI.add(
 						var minimumRows = instance.minimumRows;
 
 						if (minimumRows) {
-							var deleteRowButtons = instance._contentBox.all('.lfr-form-row:visible .delete-row');
+							var deleteRowButtons = instance._contentBox.all('.lfr-form-row:not(.hide) .delete-row');
 
 							Liferay.Util.toggleDisabled(deleteRowButtons, deleteRowButtons.size() <= minimumRows);
 						}

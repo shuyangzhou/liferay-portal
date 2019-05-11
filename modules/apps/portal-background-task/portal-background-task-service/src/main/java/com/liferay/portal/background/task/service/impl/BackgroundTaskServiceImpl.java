@@ -23,10 +23,18 @@ public class BackgroundTaskServiceImpl extends BackgroundTaskServiceBaseImpl {
 
 	@Override
 	public int getBackgroundTasksCount(
-		long groupId, String taskExecutorClassName, String completed) {
+		long groupId, String taskExecutorClassName, boolean completed) {
 
 		return backgroundTaskLocalService.getBackgroundTasksCount(
 			groupId, taskExecutorClassName, completed);
+	}
+
+	@Override
+	public int getBackgroundTasksCount(
+		long groupId, String name, String taskExecutorClassName) {
+
+		return backgroundTaskLocalService.getBackgroundTasksCount(
+			groupId, name, taskExecutorClassName);
 	}
 
 	@Override

@@ -43,10 +43,10 @@
 	<property file="${project.dir}/sql/sql.${env.HOSTNAME}.properties" />
 	<property file="${project.dir}/sql/sql.properties" />
 
-	<path id="bnd.classpath">
+	<path id="bnd.invoker.classpath">
 		<fileset
 			dir="${project.dir}/lib/development"
-			includes="biz.aQute.bnd.jar"
+			includes="com.liferay.bnd.invoker.jar"
 		/>
 	</path>
 
@@ -83,7 +83,7 @@
 		<pathelement path="${classpath.full}" />
 		<fileset
 			dir="${project.dir}/lib/development"
-			includes="biz.aQute.bnd.jar,jsp-api.jar,mail.jar,servlet-api.jar"
+			includes="osgi-annotation-versioning.jar,jsp-api.jar,mail.jar,servlet-api.jar"
 		/>
 		<fileset
 			dir="${project.dir}/lib/global"
@@ -94,9 +94,10 @@
 	</path>
 
 	<taskdef
-		classpathref="bnd.classpath"
-		resource="aQute/bnd/ant/taskdef.properties"
+		classpathref="bnd.invoker.classpath"
+		resource="com/liferay/bnd/invoker/taskdef.properties"
 	/>
+
 	<taskdef
 		classpathref="lib.classpath"
 		resource="ise/antelope/tasks/antlib.xml"
@@ -1716,7 +1717,7 @@ artifact.url=${remote.repository.url}/com/liferay/portal/com.liferay.${processed
 				<path refid="lib.pre.classpath" />
 				<fileset
 					dir="${project.dir}/lib/development"
-					excludes="biz.aQute.bnd.jar,jalopy.jar,jetty*.jar,tomcat*.jar"
+					excludes="osgi-annotation-versioning.jar,jalopy.jar,jetty*.jar,tomcat*.jar"
 					includes="*.jar"
 				/>
 				<fileset

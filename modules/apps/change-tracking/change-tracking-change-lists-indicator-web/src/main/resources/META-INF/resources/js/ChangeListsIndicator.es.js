@@ -1,6 +1,5 @@
 import PortletBase from 'frontend-js-web/liferay/PortletBase.es';
 import Soy from 'metal-soy';
-import {ClayIcon} from 'clay-icon';
 import {Config} from 'metal-state';
 import {dom} from 'metal-dom';
 import {EventHandler} from 'metal-events';
@@ -9,8 +8,8 @@ import {openToast} from 'frontend-js-web/liferay/toast/commands/OpenToast.es';
 import templates from './ChangeListsIndicator.soy';
 
 const BLUE_BACKGROUND_TOOLTIP_CSS_CLASS_NAME = 'tooltip-background-blue';
-const GREEN_BACKGROUND_TOOLTIP_CSS_CLASS_NAME = 'tooltip-background-green';
 const CHANGE_LISTS_INDICATOR_QUERY_SELECTOR = '[data-change-lists-indicator]';
+const GREEN_BACKGROUND_TOOLTIP_CSS_CLASS_NAME = 'tooltip-background-green';
 const PRODUCTION_COLLECTION_NAME = 'productionCTCollectionName';
 const TOOLTIP_QUERY_SELECTOR = '.yui3-widget.tooltip';
 
@@ -64,10 +63,9 @@ class ChangeListsIndicator extends PortletBase {
 
 		if (element === null) {
 			return this._rafAsync().then(() => this._checkElement(selector));
-		} else {
-			return Promise.resolve(element);
 		}
 
+		return Promise.resolve(element);
 	}
 
 	/**
@@ -96,9 +94,9 @@ class ChangeListsIndicator extends PortletBase {
 
 		if (element && this._getStyle(element, 'display') != 'none') {
 			return this._rafAsync().then(() => this._checkElementHidden(selector));
-		} else {
-			return Promise.resolve(element);
 		}
+
+		return Promise.resolve(element);
 	}
 
 	/**

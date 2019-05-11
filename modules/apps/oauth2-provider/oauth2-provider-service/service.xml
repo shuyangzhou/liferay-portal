@@ -21,6 +21,8 @@
 
 		<column db-name="oA2AScopeAliasesId" name="oAuth2ApplicationScopeAliasesId" type="long" />
 		<column name="allowedGrantTypes" type="String" />
+		<column name="clientCredentialUserId" type="long" />
+		<column name="clientCredentialUserName" type="String" />
 		<column name="clientId" type="String" />
 		<column name="clientProfile" type="int" />
 		<column name="clientSecret" type="String" />
@@ -168,6 +170,7 @@
 	<exceptions>
 		<exception>DuplicateOAuth2ApplicationClientId</exception>
 		<exception>DuplicateOAuth2ScopeGrant</exception>
+		<exception>OAuth2ApplicationClientCredentialUserId</exception>
 		<exception>OAuth2ApplicationClientGrantType</exception>
 		<exception>OAuth2ApplicationHomePageURL</exception>
 		<exception>OAuth2ApplicationHomePageURLScheme</exception>

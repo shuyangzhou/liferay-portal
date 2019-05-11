@@ -15,7 +15,6 @@
 package com.liferay.asset.info.display.contributor;
 
 import com.liferay.asset.info.display.contributor.util.AssetInfoDisplayContributorFieldUtil;
-import com.liferay.asset.info.display.contributor.util.ContentAccessor;
 import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
 import com.liferay.asset.kernel.exception.NoSuchEntryException;
 import com.liferay.asset.kernel.model.AssetEntry;
@@ -277,12 +276,6 @@ public abstract class BaseAssetInfoDisplayContributor<T>
 
 			Object fieldValue = _getInfoDisplayFieldValue(
 				assetObject, assetEntry, infoDisplayContributorField, locale);
-
-			if (fieldValue instanceof ContentAccessor) {
-				ContentAccessor contentAccessor = (ContentAccessor)fieldValue;
-
-				fieldValue = contentAccessor.getContent();
-			}
 
 			parameterMap.putIfAbsent(
 				infoDisplayContributorField.getKey(), fieldValue);

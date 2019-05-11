@@ -14,7 +14,7 @@
 
 package com.liferay.oauth2.provider.model;
 
-import aQute.bnd.annotation.ProviderType;
+import org.osgi.annotation.versioning.ProviderType;
 
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.wrapper.BaseModelWrapper;
@@ -55,6 +55,9 @@ public class OAuth2ApplicationWrapper
 			"oAuth2ApplicationScopeAliasesId",
 			getOAuth2ApplicationScopeAliasesId());
 		attributes.put("allowedGrantTypes", getAllowedGrantTypes());
+		attributes.put("clientCredentialUserId", getClientCredentialUserId());
+		attributes.put(
+			"clientCredentialUserName", getClientCredentialUserName());
 		attributes.put("clientId", getClientId());
 		attributes.put("clientProfile", getClientProfile());
 		attributes.put("clientSecret", getClientSecret());
@@ -118,6 +121,20 @@ public class OAuth2ApplicationWrapper
 
 		if (allowedGrantTypes != null) {
 			setAllowedGrantTypes(allowedGrantTypes);
+		}
+
+		Long clientCredentialUserId = (Long)attributes.get(
+			"clientCredentialUserId");
+
+		if (clientCredentialUserId != null) {
+			setClientCredentialUserId(clientCredentialUserId);
+		}
+
+		String clientCredentialUserName = (String)attributes.get(
+			"clientCredentialUserName");
+
+		if (clientCredentialUserName != null) {
+			setClientCredentialUserName(clientCredentialUserName);
 		}
 
 		String clientId = (String)attributes.get("clientId");
@@ -196,6 +213,36 @@ public class OAuth2ApplicationWrapper
 		getAllowedGrantTypesList() {
 
 		return model.getAllowedGrantTypesList();
+	}
+
+	/**
+	 * Returns the client credential user ID of this o auth2 application.
+	 *
+	 * @return the client credential user ID of this o auth2 application
+	 */
+	@Override
+	public long getClientCredentialUserId() {
+		return model.getClientCredentialUserId();
+	}
+
+	/**
+	 * Returns the client credential user name of this o auth2 application.
+	 *
+	 * @return the client credential user name of this o auth2 application
+	 */
+	@Override
+	public String getClientCredentialUserName() {
+		return model.getClientCredentialUserName();
+	}
+
+	/**
+	 * Returns the client credential user uuid of this o auth2 application.
+	 *
+	 * @return the client credential user uuid of this o auth2 application
+	 */
+	@Override
+	public String getClientCredentialUserUuid() {
+		return model.getClientCredentialUserUuid();
 	}
 
 	/**
@@ -419,6 +466,36 @@ public class OAuth2ApplicationWrapper
 			allowedGrantTypesList) {
 
 		model.setAllowedGrantTypesList(allowedGrantTypesList);
+	}
+
+	/**
+	 * Sets the client credential user ID of this o auth2 application.
+	 *
+	 * @param clientCredentialUserId the client credential user ID of this o auth2 application
+	 */
+	@Override
+	public void setClientCredentialUserId(long clientCredentialUserId) {
+		model.setClientCredentialUserId(clientCredentialUserId);
+	}
+
+	/**
+	 * Sets the client credential user name of this o auth2 application.
+	 *
+	 * @param clientCredentialUserName the client credential user name of this o auth2 application
+	 */
+	@Override
+	public void setClientCredentialUserName(String clientCredentialUserName) {
+		model.setClientCredentialUserName(clientCredentialUserName);
+	}
+
+	/**
+	 * Sets the client credential user uuid of this o auth2 application.
+	 *
+	 * @param clientCredentialUserUuid the client credential user uuid of this o auth2 application
+	 */
+	@Override
+	public void setClientCredentialUserUuid(String clientCredentialUserUuid) {
+		model.setClientCredentialUserUuid(clientCredentialUserUuid);
 	}
 
 	/**

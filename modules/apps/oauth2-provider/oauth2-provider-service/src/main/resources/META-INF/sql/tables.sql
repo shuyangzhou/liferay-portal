@@ -14,6 +14,8 @@ create table OAuth2Application (
 	modifiedDate DATE null,
 	oA2AScopeAliasesId LONG,
 	allowedGrantTypes VARCHAR(75) null,
+	clientCredentialUserId LONG,
+	clientCredentialUserName VARCHAR(75) null,
 	clientId VARCHAR(75) null,
 	clientProfile INTEGER,
 	clientSecret VARCHAR(75) null,

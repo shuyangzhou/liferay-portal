@@ -14,7 +14,7 @@
 
 package com.liferay.sharing.service;
 
-import aQute.bnd.annotation.ProviderType;
+import org.osgi.annotation.versioning.ProviderType;
 
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
@@ -782,8 +782,8 @@ public class SharingEntryLocalServiceWrapper
 	 *
 	 * @param sharingEntryId the primary key of the sharing entry
 	 * @param sharingEntryActions the sharing entry actions
-	 * @param shareable whether the user the resource is shared with can also
-	 share it
+	 * @param shareable whether the user the resource is shared with can
+	 also share it
 	 * @param expirationDate the date when the sharing entry expires
 	 * @param serviceContext the service context
 	 * @return the sharing entry
@@ -791,7 +791,13 @@ public class SharingEntryLocalServiceWrapper
 	 sharing entry actions are invalid (e.g., empty, don't contain
 	 {@code SharingEntryAction#VIEW}, or contain a {@code null}
 	 value), or if the expiration date is a past value
+	 * @deprecated As of Mueller (7.2.x), replaced by {@link
+	 SharingEntryLocalService#
+	 updateSharingEntry(long, long, Collection, boolean, Date,
+	 ServiceContext)}
+	 * @review
 	 */
+	@Deprecated
 	@Override
 	public com.liferay.sharing.model.SharingEntry updateSharingEntry(
 			long sharingEntryId,
@@ -805,6 +811,38 @@ public class SharingEntryLocalServiceWrapper
 		return _sharingEntryLocalService.updateSharingEntry(
 			sharingEntryId, sharingEntryActions, shareable, expirationDate,
 			serviceContext);
+	}
+
+	/**
+	 * Updates the sharing entry in the database.
+	 *
+	 * @param userId the primary key of the user updating the sharing entry
+	 * @param sharingEntryId the primary key of the sharing entry
+	 * @param sharingEntryActions the sharing entry actions
+	 * @param shareable whether the user the resource is shared with can also
+	 share it
+	 * @param expirationDate the date when the sharing entry expires
+	 * @param serviceContext the service context
+	 * @return the sharing entry
+	 * @throws PortalException if the sharing entry does not exist, if the
+	 sharing entry actions are invalid (e.g., empty, don't contain
+	 {@code SharingEntryAction#VIEW}, or contain a {@code null}
+	 value), or if the expiration date is a past value
+	 * @review
+	 */
+	@Override
+	public com.liferay.sharing.model.SharingEntry updateSharingEntry(
+			long userId, long sharingEntryId,
+			java.util.Collection
+				<com.liferay.sharing.security.permission.SharingEntryAction>
+					sharingEntryActions,
+			boolean shareable, java.util.Date expirationDate,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _sharingEntryLocalService.updateSharingEntry(
+			userId, sharingEntryId, sharingEntryActions, shareable,
+			expirationDate, serviceContext);
 	}
 
 	/**

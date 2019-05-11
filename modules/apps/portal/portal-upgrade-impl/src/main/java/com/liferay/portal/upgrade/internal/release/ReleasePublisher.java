@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.ReleaseLocalService;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Dictionary;
 import java.util.HashMap;
@@ -58,9 +59,11 @@ public final class ReleasePublisher {
 		properties.put("release.state", release.getState());
 
 		try {
-			Version version = new Version(release.getSchemaVersion());
+			if (Validator.isNotNull(release.getSchemaVersion())) {
+				Version version = new Version(release.getSchemaVersion());
 
-			properties.put("release.schema.version", version);
+				properties.put("release.schema.version", version);
+			}
 		}
 		catch (IllegalArgumentException iae) {
 			if (_log.isWarnEnabled()) {

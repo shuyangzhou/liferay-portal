@@ -14,7 +14,7 @@
 
 package com.liferay.oauth2.provider.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
+import org.osgi.annotation.versioning.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
@@ -76,12 +76,14 @@ public class OAuth2ApplicationModelImpl
 		{"userId", Types.BIGINT}, {"userName", Types.VARCHAR},
 		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
 		{"oA2AScopeAliasesId", Types.BIGINT},
-		{"allowedGrantTypes", Types.VARCHAR}, {"clientId", Types.VARCHAR},
-		{"clientProfile", Types.INTEGER}, {"clientSecret", Types.VARCHAR},
-		{"description", Types.VARCHAR}, {"features", Types.VARCHAR},
-		{"homePageURL", Types.VARCHAR}, {"iconFileEntryId", Types.BIGINT},
-		{"name", Types.VARCHAR}, {"privacyPolicyURL", Types.VARCHAR},
-		{"redirectURIs", Types.VARCHAR}
+		{"allowedGrantTypes", Types.VARCHAR},
+		{"clientCredentialUserId", Types.BIGINT},
+		{"clientCredentialUserName", Types.VARCHAR},
+		{"clientId", Types.VARCHAR}, {"clientProfile", Types.INTEGER},
+		{"clientSecret", Types.VARCHAR}, {"description", Types.VARCHAR},
+		{"features", Types.VARCHAR}, {"homePageURL", Types.VARCHAR},
+		{"iconFileEntryId", Types.BIGINT}, {"name", Types.VARCHAR},
+		{"privacyPolicyURL", Types.VARCHAR}, {"redirectURIs", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -96,6 +98,8 @@ public class OAuth2ApplicationModelImpl
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("oA2AScopeAliasesId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("allowedGrantTypes", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("clientCredentialUserId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("clientCredentialUserName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("clientId", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("clientProfile", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("clientSecret", Types.VARCHAR);
@@ -109,7 +113,7 @@ public class OAuth2ApplicationModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table OAuth2Application (oAuth2ApplicationId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,oA2AScopeAliasesId LONG,allowedGrantTypes VARCHAR(75) null,clientId VARCHAR(75) null,clientProfile INTEGER,clientSecret VARCHAR(75) null,description STRING null,features STRING null,homePageURL STRING null,iconFileEntryId LONG,name VARCHAR(75) null,privacyPolicyURL STRING null,redirectURIs STRING null)";
+		"create table OAuth2Application (oAuth2ApplicationId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,oA2AScopeAliasesId LONG,allowedGrantTypes VARCHAR(75) null,clientCredentialUserId LONG,clientCredentialUserName VARCHAR(75) null,clientId VARCHAR(75) null,clientProfile INTEGER,clientSecret VARCHAR(75) null,description STRING null,features STRING null,homePageURL STRING null,iconFileEntryId LONG,name VARCHAR(75) null,privacyPolicyURL STRING null,redirectURIs STRING null)";
 
 	public static final String TABLE_SQL_DROP = "drop table OAuth2Application";
 
@@ -161,6 +165,9 @@ public class OAuth2ApplicationModelImpl
 		model.setOAuth2ApplicationScopeAliasesId(
 			soapModel.getOAuth2ApplicationScopeAliasesId());
 		model.setAllowedGrantTypes(soapModel.getAllowedGrantTypes());
+		model.setClientCredentialUserId(soapModel.getClientCredentialUserId());
+		model.setClientCredentialUserName(
+			soapModel.getClientCredentialUserName());
 		model.setClientId(soapModel.getClientId());
 		model.setClientProfile(soapModel.getClientProfile());
 		model.setClientSecret(soapModel.getClientSecret());
@@ -347,6 +354,20 @@ public class OAuth2ApplicationModelImpl
 			"allowedGrantTypes",
 			(BiConsumer<OAuth2Application, String>)
 				OAuth2Application::setAllowedGrantTypes);
+		attributeGetterFunctions.put(
+			"clientCredentialUserId",
+			OAuth2Application::getClientCredentialUserId);
+		attributeSetterBiConsumers.put(
+			"clientCredentialUserId",
+			(BiConsumer<OAuth2Application, Long>)
+				OAuth2Application::setClientCredentialUserId);
+		attributeGetterFunctions.put(
+			"clientCredentialUserName",
+			OAuth2Application::getClientCredentialUserName);
+		attributeSetterBiConsumers.put(
+			"clientCredentialUserName",
+			(BiConsumer<OAuth2Application, String>)
+				OAuth2Application::setClientCredentialUserName);
 		attributeGetterFunctions.put(
 			"clientId", OAuth2Application::getClientId);
 		attributeSetterBiConsumers.put(
@@ -544,6 +565,50 @@ public class OAuth2ApplicationModelImpl
 	@Override
 	public void setAllowedGrantTypes(String allowedGrantTypes) {
 		_allowedGrantTypes = allowedGrantTypes;
+	}
+
+	@JSON
+	@Override
+	public long getClientCredentialUserId() {
+		return _clientCredentialUserId;
+	}
+
+	@Override
+	public void setClientCredentialUserId(long clientCredentialUserId) {
+		_clientCredentialUserId = clientCredentialUserId;
+	}
+
+	@Override
+	public String getClientCredentialUserUuid() {
+		try {
+			User user = UserLocalServiceUtil.getUserById(
+				getClientCredentialUserId());
+
+			return user.getUuid();
+		}
+		catch (PortalException pe) {
+			return "";
+		}
+	}
+
+	@Override
+	public void setClientCredentialUserUuid(String clientCredentialUserUuid) {
+	}
+
+	@JSON
+	@Override
+	public String getClientCredentialUserName() {
+		if (_clientCredentialUserName == null) {
+			return "";
+		}
+		else {
+			return _clientCredentialUserName;
+		}
+	}
+
+	@Override
+	public void setClientCredentialUserName(String clientCredentialUserName) {
+		_clientCredentialUserName = clientCredentialUserName;
 	}
 
 	@JSON
@@ -748,6 +813,10 @@ public class OAuth2ApplicationModelImpl
 		oAuth2ApplicationImpl.setOAuth2ApplicationScopeAliasesId(
 			getOAuth2ApplicationScopeAliasesId());
 		oAuth2ApplicationImpl.setAllowedGrantTypes(getAllowedGrantTypes());
+		oAuth2ApplicationImpl.setClientCredentialUserId(
+			getClientCredentialUserId());
+		oAuth2ApplicationImpl.setClientCredentialUserName(
+			getClientCredentialUserName());
 		oAuth2ApplicationImpl.setClientId(getClientId());
 		oAuth2ApplicationImpl.setClientProfile(getClientProfile());
 		oAuth2ApplicationImpl.setClientSecret(getClientSecret());
@@ -881,6 +950,21 @@ public class OAuth2ApplicationModelImpl
 
 		if ((allowedGrantTypes != null) && (allowedGrantTypes.length() == 0)) {
 			oAuth2ApplicationCacheModel.allowedGrantTypes = null;
+		}
+
+		oAuth2ApplicationCacheModel.clientCredentialUserId =
+			getClientCredentialUserId();
+
+		oAuth2ApplicationCacheModel.clientCredentialUserName =
+			getClientCredentialUserName();
+
+		String clientCredentialUserName =
+			oAuth2ApplicationCacheModel.clientCredentialUserName;
+
+		if ((clientCredentialUserName != null) &&
+			(clientCredentialUserName.length() == 0)) {
+
+			oAuth2ApplicationCacheModel.clientCredentialUserName = null;
 		}
 
 		oAuth2ApplicationCacheModel.clientId = getClientId();
@@ -1036,6 +1120,8 @@ public class OAuth2ApplicationModelImpl
 	private boolean _setModifiedDate;
 	private long _oAuth2ApplicationScopeAliasesId;
 	private String _allowedGrantTypes;
+	private long _clientCredentialUserId;
+	private String _clientCredentialUserName;
 	private String _clientId;
 	private String _originalClientId;
 	private int _clientProfile;

@@ -1,4 +1,3 @@
-Bundle-SymbolicName: ${ant.project.name}
 Bundle-Vendor: ${release.info.vendor}
 Git-Descriptor: ${system-allow-fail;git describe --dirty --always}
 Git-SHA: ${system-allow-fail;git rev-list -1 HEAD}
@@ -15,6 +14,5 @@ Liferay-Portal-Release-Info: ${release.info.release.info}
 Liferay-Portal-Server-Info: ${release.info.server.info}
 Liferay-Portal-Version: ${release.info.version}
 -donotcopy: (\.touch)
--dsannotations: *
 -fixupmessages.deprecated=annotations are deprecated
 -sources: false

@@ -884,8 +884,9 @@ public class LiferayOAuthDataProvider
 		client.setRedirectUris(oAuth2Application.getRedirectURIsList());
 		client.setSubject(
 			populateUserSubject(
-				oAuth2Application.getCompanyId(), oAuth2Application.getUserId(),
-				oAuth2Application.getUserName()));
+				oAuth2Application.getCompanyId(),
+				oAuth2Application.getClientCredentialUserId(),
+				oAuth2Application.getClientCredentialUserName()));
 
 		Map<String, String> properties = client.getProperties();
 

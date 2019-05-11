@@ -14,7 +14,7 @@
 
 package com.liferay.sharing.service;
 
-import aQute.bnd.annotation.ProviderType;
+import org.osgi.annotation.versioning.ProviderType;
 
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
@@ -613,6 +613,35 @@ public interface SharingEntryLocalService
 	 *
 	 * @param sharingEntryId the primary key of the sharing entry
 	 * @param sharingEntryActions the sharing entry actions
+	 * @param shareable whether the user the resource is shared with can
+	 also share it
+	 * @param expirationDate the date when the sharing entry expires
+	 * @param serviceContext the service context
+	 * @return the sharing entry
+	 * @throws PortalException if the sharing entry does not exist, if the
+	 sharing entry actions are invalid (e.g., empty, don't contain
+	 {@code SharingEntryAction#VIEW}, or contain a {@code null}
+	 value), or if the expiration date is a past value
+	 * @deprecated As of Mueller (7.2.x), replaced by {@link
+	 SharingEntryLocalService#
+	 updateSharingEntry(long, long, Collection, boolean, Date,
+	 ServiceContext)}
+	 * @review
+	 */
+	@Deprecated
+	public SharingEntry updateSharingEntry(
+			long sharingEntryId,
+			Collection<SharingEntryAction> sharingEntryActions,
+			boolean shareable, Date expirationDate,
+			ServiceContext serviceContext)
+		throws PortalException;
+
+	/**
+	 * Updates the sharing entry in the database.
+	 *
+	 * @param userId the primary key of the user updating the sharing entry
+	 * @param sharingEntryId the primary key of the sharing entry
+	 * @param sharingEntryActions the sharing entry actions
 	 * @param shareable whether the user the resource is shared with can also
 	 share it
 	 * @param expirationDate the date when the sharing entry expires
@@ -622,9 +651,10 @@ public interface SharingEntryLocalService
 	 sharing entry actions are invalid (e.g., empty, don't contain
 	 {@code SharingEntryAction#VIEW}, or contain a {@code null}
 	 value), or if the expiration date is a past value
+	 * @review
 	 */
 	public SharingEntry updateSharingEntry(
-			long sharingEntryId,
+			long userId, long sharingEntryId,
 			Collection<SharingEntryAction> sharingEntryActions,
 			boolean shareable, Date expirationDate,
 			ServiceContext serviceContext)

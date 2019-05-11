@@ -1,10 +1,13 @@
 import ClayIcon from '../shared/ClayIcon.es';
 import CriteriaSidebarItem from './CriteriaSidebarItem.es';
+import dateFns from 'date-fns';
 import getCN from 'classnames';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {jsDatetoYYYYMMDD} from '../../utils/utils.es';
 import {PROPERTY_TYPES} from '../../utils/constants.es';
+
+const INPUT_DATE_FORMAT = 'YYYY-MM-DD';
 
 /**
  * Returns a default value for a property provided.
@@ -23,7 +26,9 @@ function getDefaultValue(property) {
 		defaultValue = jsDatetoYYYYMMDD(new Date());
 	}
 	else if (type === PROPERTY_TYPES.DATE_TIME) {
-		defaultValue = new Date().toISOString();
+		const simpleDate = jsDatetoYYYYMMDD(new Date());
+
+		defaultValue = dateFns.parse(simpleDate, INPUT_DATE_FORMAT).toISOString();
 	}
 	else if (type === PROPERTY_TYPES.BOOLEAN) {
 		defaultValue = 'true';

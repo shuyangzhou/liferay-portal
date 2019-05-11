@@ -26,3 +26,35 @@ export function testControlledInput(
 
 	expect(element.value).toBe(value);
 }
+
+export function testControlledDateInput(
+	{
+		element,
+		mockOnChangeFunc,
+		newValue = 'Liferay',
+		newValueExpected,
+		newValueOnChange,
+		value
+	}
+) {
+	expect(element.value).toBe(value);
+
+	fireEvent.change(
+		element,
+		{
+			target: {value: newValue}
+		}
+	);
+
+	expect(mockOnChangeFunc.mock.calls.length).toBe(0);
+
+	fireEvent.blur(element);
+
+	expect(mockOnChangeFunc.mock.calls.length).toBe(1);
+
+	expect(mockOnChangeFunc.mock.calls[0][0]).toMatchObject(
+		{value: newValueOnChange}
+	);
+
+	expect(element.value).toBe(newValueExpected);
+}

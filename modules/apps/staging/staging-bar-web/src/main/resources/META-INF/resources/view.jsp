@@ -317,19 +317,22 @@ if (liveLayout != null) {
 
 					if (incomplete) {
 						if (stagingLink) {
-							stagingLink.classList.remove('hide');
+							stagingLink.classList.add('hide');
 						}
+
 						if (warningMessage) {
-							warningMessage.classList.add('hide');
+							warningMessage.classList.remove('hide');
 						}
+
 						setTimeout(checkBackgroundTasks, 5000);
 					}
 					else {
 						if (stagingLink) {
-							stagingLink.classList.add('hide');
+							stagingLink.classList.remove('hide');
 						}
+
 						if (warningMessage) {
-							warningMessage.classList.remove('hide');
+							warningMessage.classList.add('hide');
 						}
 					}
 				}

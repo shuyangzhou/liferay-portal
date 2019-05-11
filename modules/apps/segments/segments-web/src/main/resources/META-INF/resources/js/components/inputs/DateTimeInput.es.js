@@ -11,35 +11,75 @@ class DateTimeInput extends React.Component {
 		value: propTypes.string
 	};
 
+	state = {}
+
+	static getDerivedStateFromProps(props, state) {
+		let returnVal = null;
+
+		if (props.value != state.initialValue) {
+			returnVal = {
+				initialValue: props.value,
+				value: dateFns.format(new Date(props.value), INPUT_DATE_FORMAT)
+			};
+		}
+		return returnVal;
+	}
+
 	_handleDateChange = event => {
-		const value = event.target.value ||
-			dateFns.format(new Date(), INPUT_DATE_FORMAT);
+		const value = event.target.value;
 
-		const iSOStringValue = dateFns
-			.parse(value, INPUT_DATE_FORMAT)
-			.toISOString();
+		this.setState({value});
+	}
 
-		this.props.onChange(
-			{
-				type: PROPERTY_TYPES.DATE,
-				value: iSOStringValue
-			},
-		);
+	_handleDateBlur = event => {
+		const date = dateFns.format(event.target.value, INPUT_DATE_FORMAT);
+
+		if (date !== 'Invalid Date') {
+			this.setState(
+				{
+					value: date
+				},
+				() => {
+					this.props.onChange(
+						{
+							type: PROPERTY_TYPES.DATE_TIME,
+							value: dateFns.parse(date, INPUT_DATE_FORMAT).toISOString()
+						}
+					);
+				}
+			);
+		}
+		else {
+			const resetDate = dateFns.format(new Date(), INPUT_DATE_FORMAT);
+
+			this.setState(
+				{
+					value: resetDate
+				},
+				() => {
+					this.props.onChange(
+						{
+							type: PROPERTY_TYPES.DATE_TIME,
+							value: dateFns.parse(resetDate, INPUT_DATE_FORMAT).toISOString()
+						}
+					);
+				}
+			);
+		}
 	}
 
 	render() {
-		const date = new Date(this.props.value);
-
-		const domStringDate = dateFns.format(date, INPUT_DATE_FORMAT);
+		const {value} = this.state;
 
 		return (
 			<div className="criterion-input date-input">
 				<input
 					className="form-control"
 					data-testid="date-input"
+					onBlur={this._handleDateBlur}
 					onChange={this._handleDateChange}
 					type="date"
-					value={domStringDate}
+					value={value}
 				/>
 			</div>
 		);

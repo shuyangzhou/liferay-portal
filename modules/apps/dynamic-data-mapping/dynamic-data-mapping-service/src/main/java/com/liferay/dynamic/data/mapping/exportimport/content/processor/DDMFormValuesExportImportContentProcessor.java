@@ -28,6 +28,7 @@ import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerRegistryUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
+import com.liferay.journal.exception.NoSuchArticleException;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.petra.string.StringBundler;
@@ -527,7 +528,7 @@ public class DDMFormValuesExportImportContentProcessor
 					return _journalArticleLocalService.getLatestArticle(
 						newClassPK);
 				}
-				catch (NoSuchFileEntryException nsfee) {
+				catch (NoSuchArticleException nsae) {
 					Element referenceElement =
 						_portletDataContext.getReferenceElement(
 							_stagedModel, JournalArticle.class,
@@ -540,11 +541,11 @@ public class DDMFormValuesExportImportContentProcessor
 							_log.warn(
 								"Unable to find journal article with " +
 									"primaryKey " + newClassPK,
-								nsfee);
+								nsae);
 						}
 					}
 					else {
-						throw nsfee;
+						throw nsae;
 					}
 				}
 			}

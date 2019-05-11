@@ -14,7 +14,7 @@
 
 package com.liferay.oauth2.provider.model;
 
-import aQute.bnd.annotation.ProviderType;
+import org.osgi.annotation.versioning.ProviderType;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.AuditedModel;
@@ -198,6 +198,49 @@ public interface OAuth2ApplicationModel
 	 * @param allowedGrantTypes the allowed grant types of this o auth2 application
 	 */
 	public void setAllowedGrantTypes(String allowedGrantTypes);
+
+	/**
+	 * Returns the client credential user ID of this o auth2 application.
+	 *
+	 * @return the client credential user ID of this o auth2 application
+	 */
+	public long getClientCredentialUserId();
+
+	/**
+	 * Sets the client credential user ID of this o auth2 application.
+	 *
+	 * @param clientCredentialUserId the client credential user ID of this o auth2 application
+	 */
+	public void setClientCredentialUserId(long clientCredentialUserId);
+
+	/**
+	 * Returns the client credential user uuid of this o auth2 application.
+	 *
+	 * @return the client credential user uuid of this o auth2 application
+	 */
+	public String getClientCredentialUserUuid();
+
+	/**
+	 * Sets the client credential user uuid of this o auth2 application.
+	 *
+	 * @param clientCredentialUserUuid the client credential user uuid of this o auth2 application
+	 */
+	public void setClientCredentialUserUuid(String clientCredentialUserUuid);
+
+	/**
+	 * Returns the client credential user name of this o auth2 application.
+	 *
+	 * @return the client credential user name of this o auth2 application
+	 */
+	@AutoEscape
+	public String getClientCredentialUserName();
+
+	/**
+	 * Sets the client credential user name of this o auth2 application.
+	 *
+	 * @param clientCredentialUserName the client credential user name of this o auth2 application
+	 */
+	public void setClientCredentialUserName(String clientCredentialUserName);
 
 	/**
 	 * Returns the client ID of this o auth2 application.

@@ -16,8 +16,10 @@ package com.liferay.oauth2.provider.service.impl;
 
 import com.liferay.oauth2.provider.constants.GrantType;
 import com.liferay.oauth2.provider.constants.OAuth2ProviderActionKeys;
+import com.liferay.oauth2.provider.exception.OAuth2ApplicationClientCredentialUserIdException;
 import com.liferay.oauth2.provider.model.OAuth2Application;
 import com.liferay.oauth2.provider.service.base.OAuth2ApplicationServiceBaseImpl;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -44,6 +46,46 @@ import org.osgi.service.component.annotations.Reference;
 public class OAuth2ApplicationServiceImpl
 	extends OAuth2ApplicationServiceBaseImpl {
 
+	@Override
+	public OAuth2Application addOAuth2Application(
+			List<GrantType> allowedGrantTypesList, long clientCredentialUserId,
+			String clientId, int clientProfile, String clientSecret,
+			String description, List<String> featuresList, String homePageURL,
+			long iconFileEntryId, String name, String privacyPolicyURL,
+			List<String> redirectURIsList, List<String> scopeAliasesList,
+			ServiceContext serviceContext)
+		throws PortalException {
+
+		ModelResourcePermissionHelper.check(
+			_oAuth2ApplicationModelResourcePermission, getPermissionChecker(),
+			0, 0, OAuth2ProviderActionKeys.ACTION_ADD_APPLICATION);
+
+		User user = getUser();
+
+		if ((clientCredentialUserId != user.getUserId()) &&
+			!ModelResourcePermissionHelper.contains(
+				_userModelResourcePermission, getPermissionChecker(), 0,
+				clientCredentialUserId, ActionKeys.IMPERSONATE)) {
+
+			throw new OAuth2ApplicationClientCredentialUserIdException(
+				StringBundler.concat(
+					"User ", user.getUserId(),
+					" is not allowed to impersonate user ",
+					clientCredentialUserId, " via client credentials grant"));
+		}
+
+		return oAuth2ApplicationLocalService.addOAuth2Application(
+			user.getCompanyId(), user.getUserId(), user.getFullName(),
+			allowedGrantTypesList, clientCredentialUserId, clientId,
+			clientProfile, clientSecret, description, featuresList, homePageURL,
+			iconFileEntryId, name, privacyPolicyURL, redirectURIsList,
+			scopeAliasesList, serviceContext);
+	}
+
+	/**
+	 * @deprecated As of Mueller (7.2.x), since 7.2, unused
+	 */
+	@Deprecated
 	@Override
 	public OAuth2Application addOAuth2Application(
 			List<GrantType> allowedGrantTypesList, String clientId,
@@ -161,6 +203,53 @@ public class OAuth2ApplicationServiceImpl
 	@Override
 	public OAuth2Application updateOAuth2Application(
 			long oAuth2ApplicationId, List<GrantType> allowedGrantTypesList,
+			long clientCredentialUserId, String clientId, int clientProfile,
+			String clientSecret, String description, List<String> featuresList,
+			String homePageURL, long iconFileEntryId, String name,
+			String privacyPolicyURL, List<String> redirectURIsList,
+			long auth2ApplicationScopeAliasesId, ServiceContext serviceContext)
+		throws PortalException {
+
+		OAuth2Application oAuth2Application =
+			oAuth2ApplicationLocalService.getOAuth2Application(
+				oAuth2ApplicationId);
+
+		_oAuth2ApplicationModelResourcePermission.check(
+			getPermissionChecker(), oAuth2Application, ActionKeys.UPDATE);
+
+		if (clientCredentialUserId !=
+				oAuth2Application.getClientCredentialUserId()) {
+
+			User user = getUser();
+
+			if ((clientCredentialUserId != user.getUserId()) &&
+				!ModelResourcePermissionHelper.contains(
+					_userModelResourcePermission, getPermissionChecker(), 0,
+					clientCredentialUserId, ActionKeys.IMPERSONATE)) {
+
+				throw new OAuth2ApplicationClientCredentialUserIdException(
+					StringBundler.concat(
+						"User ", user.getUserId(),
+						" is not allowed to impersonate user ",
+						clientCredentialUserId,
+						" via client credentials grant"));
+			}
+		}
+
+		return oAuth2ApplicationLocalService.updateOAuth2Application(
+			oAuth2ApplicationId, allowedGrantTypesList, clientCredentialUserId,
+			clientId, clientProfile, clientSecret, description, featuresList,
+			homePageURL, iconFileEntryId, name, privacyPolicyURL,
+			redirectURIsList, auth2ApplicationScopeAliasesId, serviceContext);
+	}
+
+	/**
+	 * @deprecated As of Mueller (7.2.x), since 7.2, unused
+	 */
+	@Deprecated
+	@Override
+	public OAuth2Application updateOAuth2Application(
+			long oAuth2ApplicationId, List<GrantType> allowedGrantTypesList,
 			String clientId, int clientProfile, String clientSecret,
 			String description, List<String> featuresList, String homePageURL,
 			long iconFileEntryId, String name, String privacyPolicyURL,
@@ -176,8 +265,9 @@ public class OAuth2ApplicationServiceImpl
 			getPermissionChecker(), oAuth2Application, ActionKeys.UPDATE);
 
 		return oAuth2ApplicationLocalService.updateOAuth2Application(
-			oAuth2ApplicationId, allowedGrantTypesList, clientId, clientProfile,
-			clientSecret, description, featuresList, homePageURL,
+			oAuth2ApplicationId, allowedGrantTypesList,
+			oAuth2Application.getClientCredentialUserId(), clientId,
+			clientProfile, clientSecret, description, featuresList, homePageURL,
 			iconFileEntryId, name, privacyPolicyURL, redirectURIsList,
 			auth2ApplicationScopeAliasesId, serviceContext);
 	}
@@ -206,5 +296,10 @@ public class OAuth2ApplicationServiceImpl
 	)
 	private ModelResourcePermission<OAuth2Application>
 		_oAuth2ApplicationModelResourcePermission;
+
+	@Reference(
+		target = "(model.class.name=com.liferay.portal.kernel.model.User)"
+	)
+	private ModelResourcePermission<User> _userModelResourcePermission;
 
 }
