@@ -251,13 +251,21 @@ public class DLURLHelperImpl implements DLURLHelper {
 		String thumbnailQueryString = null;
 
 		if (PropsValues.DL_FILE_ENTRY_THUMBNAIL_ENABLED) {
-			if (ImageProcessorUtil.hasImages(fileVersion)) {
+			String mimeType = fileVersion.getMimeType();
+
+			if (ImageProcessorUtil.isSupported(mimeType) &&
+				ImageProcessorUtil.hasImages(fileVersion)) {
+
 				thumbnailQueryString = "&imageThumbnail=1";
 			}
-			else if (PDFProcessorUtil.hasImages(fileVersion)) {
+			else if (PDFProcessorUtil.isDocumentSupported(mimeType) &&
+					 PDFProcessorUtil.hasImages(fileVersion)) {
+
 				thumbnailQueryString = "&documentThumbnail=1";
 			}
-			else if (VideoProcessorUtil.hasVideo(fileVersion)) {
+			else if (VideoProcessorUtil.isSupported(mimeType) &&
+					 VideoProcessorUtil.hasVideo(fileVersion)) {
+
 				thumbnailQueryString = "&videoThumbnail=1";
 			}
 		}
