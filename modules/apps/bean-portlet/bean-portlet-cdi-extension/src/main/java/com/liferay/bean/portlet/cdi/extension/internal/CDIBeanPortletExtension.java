@@ -105,7 +105,7 @@ import org.osgi.framework.ServiceRegistration;
  * @author Neil Griffin
  * @author Raymond Augé
  */
-public class BeanPortletExtension implements Extension {
+public class CDIBeanPortletExtension implements Extension {
 
 	public void step1BeforeBeanDiscovery(
 		@Observes BeforeBeanDiscovery beforeBeanDiscovery,
@@ -629,7 +629,7 @@ public class BeanPortletExtension implements Extension {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		BeanPortletExtension.class);
+		CDIBeanPortletExtension.class);
 
 	private static final Annotation _applicationScoped =
 		new ApplicationScoped() {
