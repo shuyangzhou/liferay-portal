@@ -73,6 +73,10 @@ public class DLDisplayContextProviderImpl implements DLDisplayContextProvider {
 				httpServletRequest, httpServletResponse, dlFileEntryType,
 				_dlValidator, _storageEngine);
 
+		if (_dlDisplayContextFactories.size() == 0) {
+			return dlEditFileEntryDisplayContext;
+		}
+
 		DLDisplayContextFactory dlDisplayContextFactory =
 			_getDLDisplayContextFactory();
 
@@ -93,6 +97,10 @@ public class DLDisplayContextProviderImpl implements DLDisplayContextProvider {
 			new DefaultDLEditFileEntryDisplayContext(
 				httpServletRequest, httpServletResponse, _dlValidator,
 				fileEntry, _storageEngine);
+
+		if (_dlDisplayContextFactories.size() == 0) {
+			return dlEditFileEntryDisplayContext;
+		}
 
 		DLDisplayContextFactory dlDisplayContextFactory =
 			_getDLDisplayContextFactory();
@@ -124,7 +132,7 @@ public class DLDisplayContextProviderImpl implements DLDisplayContextProvider {
 					httpServletRequest, fileVersion, resourceBundle,
 					_dlTrashUtil, _versioningStrategy, _dlURLHelper);
 
-		if (fileVersion == null) {
+		if ((fileVersion == null) || (_dlDisplayContextFactories.size() == 0)) {
 			return dlViewFileEntryHistoryDisplayContext;
 		}
 
@@ -166,7 +174,7 @@ public class DLDisplayContextProviderImpl implements DLDisplayContextProvider {
 					_dlTrashUtil, dlPreviewRendererProvider,
 					_versioningStrategy, _dlURLHelper);
 
-			if (fileShortcut == null) {
+			if (_dlDisplayContextFactories.size() == 0) {
 				return dlViewFileVersionDisplayContext;
 			}
 
@@ -207,7 +215,7 @@ public class DLDisplayContextProviderImpl implements DLDisplayContextProvider {
 				_dlTrashUtil, dlPreviewRendererProvider, _versioningStrategy,
 				_dlURLHelper);
 
-		if (fileVersion == null) {
+		if (_dlDisplayContextFactories.size() == 0) {
 			return dlViewFileVersionDisplayContext;
 		}
 
