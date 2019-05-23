@@ -24,6 +24,11 @@ import java.util.concurrent.ConcurrentMap;
 public class WebAppPool {
 
 	public static void clear() {
+		synchronized (System.out) {
+			System.out.println("%%%%%%%%%%" + Thread.currentThread() + " is clearing WebAppPool : " + _webAppPool);
+			new Exception().printStackTrace(System.out);
+		}
+
 		_webAppPool.clear();
 	}
 
@@ -51,6 +56,13 @@ public class WebAppPool {
 			}
 		}
 
+		if (key.equals("PORTLET_CATEGORY")) {
+			synchronized (System.out) {
+				System.out.println("^^^^^^^^^^^^^^^^^^^^^" + Thread.currentThread() + " is putting company : " + webAppId + "'s PortletCategory :" + obj);
+				new Exception().printStackTrace(System.out);
+			}
+		}
+
 		map.put(key, obj);
 	}
 
@@ -59,6 +71,13 @@ public class WebAppPool {
 
 		if (map == null) {
 			return null;
+		}
+
+		if (key.equals("PORTLET_CATEGORY")) {
+			synchronized (System.out) {
+				System.out.println("**********************" + Thread.currentThread() + " is removing company : " + webAppId + "'s PortletCategory");
+				new Exception().printStackTrace(System.out);
+			}
 		}
 
 		return map.remove(key);

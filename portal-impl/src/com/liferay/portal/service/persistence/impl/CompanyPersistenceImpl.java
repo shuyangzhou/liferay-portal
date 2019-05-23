@@ -1547,6 +1547,11 @@ public class CompanyPersistenceImpl
 			session = openSession();
 
 			if (company.isNew()) {
+				synchronized (System.out) {
+					System.out.println("@@@@@@@@@@@@@ " + Thread.currentThread() + " is adding company : " + company);
+					new Exception().printStackTrace(System.out);
+				}
+
 				session.save(company);
 
 				company.setNew(false);
