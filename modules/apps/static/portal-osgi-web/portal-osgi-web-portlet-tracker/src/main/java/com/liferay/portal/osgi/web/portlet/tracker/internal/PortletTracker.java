@@ -230,6 +230,10 @@ public class PortletTracker
 			PortletCategory portletCategory = (PortletCategory)WebAppPool.get(
 				company.getCompanyId(), WebKeys.PORTLET_CATEGORY);
 
+			if (portletCategory == null) {
+				System.out.println("########################" + Thread.currentThread() + " company : " + company.getCompanyId() + "'s PortletCategory has been removed");
+			}
+
 			portletCategory.separate(portletModel.getRootPortletId());
 		}
 

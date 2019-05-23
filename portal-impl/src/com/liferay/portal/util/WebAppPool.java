@@ -77,6 +77,13 @@ public class WebAppPool {
 			return null;
 		}
 
+		if (key.equals("PORTLET_CATEGORY")) {
+			synchronized (System.out) {
+				System.out.println("^^^^^^^^^^^^^^^^^^^^^" + Thread.currentThread() + " is removing company : " + webAppId + "'s PortletCategory");
+				new Exception().printStackTrace(System.out);
+			}
+		}
+
 		return map.remove(key);
 	}
 
