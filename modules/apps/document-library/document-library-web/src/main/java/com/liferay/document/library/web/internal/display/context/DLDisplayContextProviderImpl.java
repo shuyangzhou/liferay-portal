@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.WebKeys;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -72,14 +73,13 @@ public class DLDisplayContextProviderImpl implements DLDisplayContextProvider {
 				httpServletRequest, httpServletResponse, dlFileEntryType,
 				_dlValidator, _storageEngine);
 
-		for (DLDisplayContextFactory dlDisplayContextFactory :
-				_dlDisplayContextFactories) {
+		DLDisplayContextFactory dlDisplayContextFactory =
+			_getDLDisplayContextFactory();
 
-			dlEditFileEntryDisplayContext =
-				dlDisplayContextFactory.getDLEditFileEntryDisplayContext(
-					dlEditFileEntryDisplayContext, httpServletRequest,
-					httpServletResponse, dlFileEntryType);
-		}
+		dlEditFileEntryDisplayContext =
+			dlDisplayContextFactory.getDLEditFileEntryDisplayContext(
+				dlEditFileEntryDisplayContext, httpServletRequest,
+				httpServletResponse, dlFileEntryType);
 
 		return dlEditFileEntryDisplayContext;
 	}
@@ -94,14 +94,13 @@ public class DLDisplayContextProviderImpl implements DLDisplayContextProvider {
 				httpServletRequest, httpServletResponse, _dlValidator,
 				fileEntry, _storageEngine);
 
-		for (DLDisplayContextFactory dlDisplayContextFactory :
-				_dlDisplayContextFactories) {
+		DLDisplayContextFactory dlDisplayContextFactory =
+			_getDLDisplayContextFactory();
 
-			dlEditFileEntryDisplayContext =
-				dlDisplayContextFactory.getDLEditFileEntryDisplayContext(
-					dlEditFileEntryDisplayContext, httpServletRequest,
-					httpServletResponse, fileEntry);
-		}
+		dlEditFileEntryDisplayContext =
+			dlDisplayContextFactory.getDLEditFileEntryDisplayContext(
+				dlEditFileEntryDisplayContext, httpServletRequest,
+				httpServletResponse, fileEntry);
 
 		return dlEditFileEntryDisplayContext;
 	}
@@ -129,14 +128,13 @@ public class DLDisplayContextProviderImpl implements DLDisplayContextProvider {
 			return dlViewFileEntryHistoryDisplayContext;
 		}
 
-		for (DLDisplayContextFactory dlDisplayContextFactory :
-				_dlDisplayContextFactories) {
+		DLDisplayContextFactory dlDisplayContextFactory =
+			_getDLDisplayContextFactory();
 
-			dlViewFileEntryHistoryDisplayContext =
-				dlDisplayContextFactory.getDLViewFileEntryHistoryDisplayContext(
-					dlViewFileEntryHistoryDisplayContext, httpServletRequest,
-					httpServletResponse, fileVersion);
-		}
+		dlViewFileEntryHistoryDisplayContext =
+			dlDisplayContextFactory.getDLViewFileEntryHistoryDisplayContext(
+				dlViewFileEntryHistoryDisplayContext, httpServletRequest,
+				httpServletResponse, fileVersion);
 
 		return dlViewFileEntryHistoryDisplayContext;
 	}
@@ -172,14 +170,13 @@ public class DLDisplayContextProviderImpl implements DLDisplayContextProvider {
 				return dlViewFileVersionDisplayContext;
 			}
 
-			for (DLDisplayContextFactory dlDisplayContextFactory :
-					_dlDisplayContextFactories) {
+			DLDisplayContextFactory dlDisplayContextFactory =
+				_getDLDisplayContextFactory();
 
-				dlViewFileVersionDisplayContext =
-					dlDisplayContextFactory.getDLViewFileVersionDisplayContext(
-						dlViewFileVersionDisplayContext, httpServletRequest,
-						httpServletResponse, fileShortcut);
-			}
+			dlViewFileVersionDisplayContext =
+				dlDisplayContextFactory.getDLViewFileVersionDisplayContext(
+					dlViewFileVersionDisplayContext, httpServletRequest,
+					httpServletResponse, fileShortcut);
 
 			return dlViewFileVersionDisplayContext;
 		}
@@ -214,14 +211,13 @@ public class DLDisplayContextProviderImpl implements DLDisplayContextProvider {
 			return dlViewFileVersionDisplayContext;
 		}
 
-		for (DLDisplayContextFactory dlDisplayContextFactory :
-				_dlDisplayContextFactories) {
+		DLDisplayContextFactory dlDisplayContextFactory =
+			_getDLDisplayContextFactory();
 
-			dlViewFileVersionDisplayContext =
-				dlDisplayContextFactory.getDLViewFileVersionDisplayContext(
-					dlViewFileVersionDisplayContext, httpServletRequest,
-					httpServletResponse, fileVersion);
-		}
+		dlViewFileVersionDisplayContext =
+			dlDisplayContextFactory.getDLViewFileVersionDisplayContext(
+				dlViewFileVersionDisplayContext, httpServletRequest,
+				httpServletResponse, fileVersion);
 
 		return dlViewFileVersionDisplayContext;
 	}
@@ -247,6 +243,19 @@ public class DLDisplayContextProviderImpl implements DLDisplayContextProvider {
 	protected void deactivate() {
 		_dlDisplayContextFactories.close();
 		_dlPreviewRendererProviders.close();
+	}
+
+	private DLDisplayContextFactory _getDLDisplayContextFactory() {
+		Iterator<DLDisplayContextFactory> iterator =
+			_dlDisplayContextFactories.iterator();
+
+		DLDisplayContextFactory dlDisplayContextFactory = null;
+
+		while (iterator.hasNext()) {
+			dlDisplayContextFactory = iterator.next();
+		}
+
+		return dlDisplayContextFactory;
 	}
 
 	private ServiceTrackerList<DLDisplayContextFactory, DLDisplayContextFactory>
