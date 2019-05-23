@@ -146,12 +146,12 @@ if (organization != null) {
 					if (result instanceof Organization) {
 						curOrganization = (Organization)result;
 
-						rowData.put("actions", String.join(StringPool.COMMA, viewTreeManagementToolbarDisplayContext.getAvailableActionDropdownItems(curOrganization)));
+						rowData.put("actions", StringUtil.merge(viewTreeManagementToolbarDisplayContext.getAvailableActionDropdownItems(curOrganization)));
 					}
 					else {
 						user2 = (User)result;
 
-						rowData.put("actions", String.join(StringPool.COMMA, viewTreeManagementToolbarDisplayContext.getAvailableActionDropdownItems(user2)));
+						rowData.put("actions", StringUtil.merge(viewTreeManagementToolbarDisplayContext.getAvailableActionDropdownItems(user2)));
 					}
 
 					row.setData(rowData);
