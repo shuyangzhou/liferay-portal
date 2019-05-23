@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.WebKeys;
 
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -240,7 +241,8 @@ public class DLDisplayContextProviderImpl implements DLDisplayContextProvider {
 		BundleContext bundleContext, Map<String, Object> properties) {
 
 		_dlDisplayContextFactories = ServiceTrackerListFactory.open(
-			bundleContext, DLDisplayContextFactory.class);
+			bundleContext, DLDisplayContextFactory.class,
+			Comparator.naturalOrder());
 
 		_dlPreviewRendererProviders =
 			ServiceTrackerMapFactory.openSingleValueMap(
@@ -259,7 +261,7 @@ public class DLDisplayContextProviderImpl implements DLDisplayContextProvider {
 
 		DLDisplayContextFactory dlDisplayContextFactory = null;
 
-		while (iterator.hasNext()) {
+		if (iterator.hasNext()) {
 			dlDisplayContextFactory = iterator.next();
 		}
 
