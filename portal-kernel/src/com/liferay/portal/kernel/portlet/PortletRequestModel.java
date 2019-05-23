@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HttpUtil;
-import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -32,6 +31,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
 
 import javax.portlet.ActionRequest;
@@ -677,17 +677,14 @@ public class PortletRequestModel implements Serializable {
 	protected Map<String, Object> filterInvalidAttributes(
 		Map<String, Object> map) {
 
-		return MapUtil.filter(
-			map,
-			entry -> {
-				if (_isValidAttributeName(entry.getKey()) &&
-					_isValidAttributeValue(entry.getValue())) {
+		Set<Map.Entry<String, Object>> entrySet = map.entrySet();
 
-					return true;
-				}
+		entrySet.removeIf(
+			entry ->
+				!_isValidAttributeName(entry.getKey()) ||
+				!_isValidAttributeValue(entry.getValue()));
 
-				return false;
-			});
+		return map;
 	}
 
 	private static boolean _isValidAttributeName(String name) {

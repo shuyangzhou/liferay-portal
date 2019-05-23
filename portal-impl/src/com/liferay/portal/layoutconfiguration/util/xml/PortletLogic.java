@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.BufferCacheServletResponse;
 import com.liferay.portal.kernel.servlet.DynamicServletRequest;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -35,6 +34,7 @@ import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -94,8 +94,9 @@ public class PortletLogic extends RuntimeLogic {
 			_httpServletRequest.getParameterMap();
 
 		if (!portletId.equals(_httpServletRequest.getParameter("p_p_id"))) {
-			parameterMap = MapUtil.filterByKeys(
-				parameterMap, key -> !key.startsWith("p_p_"));
+			Set<String> keySet = parameterMap.keySet();
+
+			keySet.removeIf(key -> key.startsWith("p_p_"));
 		}
 
 		HttpServletRequest httpServletRequest =
