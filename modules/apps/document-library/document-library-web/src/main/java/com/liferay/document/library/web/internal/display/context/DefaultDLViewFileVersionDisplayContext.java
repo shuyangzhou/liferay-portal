@@ -420,6 +420,22 @@ public class DefaultDLViewFileVersionDisplayContext
 		return menuItems;
 	}
 
+	private void _handleError(
+			HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse, Exception e)
+		throws IOException, ServletException {
+
+		JSPRenderer jspRenderer = new JSPRenderer(
+			"/document_library/view_file_entry_preview_error.jsp");
+
+		jspRenderer.setAttribute(
+			WebKeys.DOCUMENT_LIBRARY_FILE_VERSION, _fileVersion);
+		jspRenderer.setAttribute(
+			DLWebKeys.DOCUMENT_LIBRARY_PREVIEW_EXCEPTION, e);
+
+		jspRenderer.render(httpServletRequest, httpServletResponse);
+	}
+
 	private void _renderPreview(
 			HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse,
@@ -428,7 +444,9 @@ public class DefaultDLViewFileVersionDisplayContext
 
 		try {
 			if (!dlPreviewRendererOptional.isPresent()) {
-				throw new DLFileEntryPreviewNotAvailableException();
+				_handleError(httpServletRequest, httpServletResponse, null);
+
+				return;
 			}
 
 			DLPreviewRenderer dlPreviewRenderer =
@@ -453,15 +471,7 @@ public class DefaultDLViewFileVersionDisplayContext
 					e);
 			}
 
-			JSPRenderer jspRenderer = new JSPRenderer(
-				"/document_library/view_file_entry_preview_error.jsp");
-
-			jspRenderer.setAttribute(
-				WebKeys.DOCUMENT_LIBRARY_FILE_VERSION, _fileVersion);
-			jspRenderer.setAttribute(
-				DLWebKeys.DOCUMENT_LIBRARY_PREVIEW_EXCEPTION, e);
-
-			jspRenderer.render(httpServletRequest, httpServletResponse);
+			_handleError(httpServletRequest, httpServletResponse, e);
 		}
 	}
 
