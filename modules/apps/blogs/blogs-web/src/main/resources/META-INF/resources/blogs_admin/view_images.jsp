@@ -92,7 +92,7 @@ String displayStyle = blogImagesManagementToolbarDisplayContext.getDisplayStyle(
 				<%
 				Map<String, Object> rowData = new HashMap<>();
 
-				rowData.put("actions", String.join(StringPool.COMMA, blogImagesManagementToolbarDisplayContext.getAvailableActionDropdownItems(fileEntry)));
+				rowData.put("actions", StringUtil.merge(blogImagesManagementToolbarDisplayContext.getAvailableActionDropdownItems(fileEntry)));
 
 				row.setData(rowData);
 				%>

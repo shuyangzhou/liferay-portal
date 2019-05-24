@@ -38,7 +38,6 @@ import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.KeyValuePair;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -368,17 +367,18 @@ public class DDMRESTDataProvider implements DDMDataProvider {
 
 		Set<Map.Entry<String, Object>> entrySet = parametersMap.entrySet();
 
-		Stream<Map.Entry<String, Object>> entryStream = entrySet.stream();
-
 		Map<String, String> parameters = new HashMap<>();
 
-		entryStream.forEach(
-			entry -> parameters.put(
-				entry.getKey(), String.valueOf(entry.getValue())));
+		entrySet.forEach(
+			entry -> {
+				String key = entry.getKey();
 
-		return MapUtil.filter(
-			parameters,
-			parameter -> !pathParameters.containsKey(parameter.getKey()));
+				if (!pathParameters.containsKey(key)) {
+					parameters.put(key, String.valueOf(entry.getValue()));
+				}
+			});
+
+		return parameters;
 	}
 
 	protected String normalizePath(String path) {

@@ -44,7 +44,7 @@ KBCommentResultRowSplitter resultRowSplitter = (KBCommentResultRowSplitter)reque
 				<%
 				Map<String, Object> rowData = new HashMap<String, Object>();
 
-				rowData.put("actions", String.join(StringPool.COMMA, kbSuggestionListManagementToolbarDisplayContext.getAvailableActionDropdownItems(kbComment)));
+				rowData.put("actions", StringUtil.merge(kbSuggestionListManagementToolbarDisplayContext.getAvailableActionDropdownItems(kbComment)));
 
 				row.setData(rowData);
 				%>

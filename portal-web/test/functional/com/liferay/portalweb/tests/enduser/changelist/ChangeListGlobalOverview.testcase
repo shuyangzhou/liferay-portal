@@ -15,7 +15,14 @@ definition {
 			panel = "Control Panel",
 			portlet = "Settings");
 
-		ChangeList.enableChangeList(gotoOverview = "true");
+		ChangeList.enableChangeList();
+
+		ChangeList.changeUserSettingsPopuConfirmation(changeUserPopupConfirmation = "disable");
+
+		ProductMenu.gotoPortlet(
+			category = "Change Lists",
+			panel = "Control Panel",
+			portlet = "Overview");
 	}
 
 	tearDown {
@@ -31,6 +38,8 @@ definition {
 				portlet = "Settings");
 
 			ChangeList.disableChangeList();
+
+			ChangeList.changeUserSettingsPopuConfirmation(changeUserPopupConfirmation = "enable");
 		}
 	}
 
