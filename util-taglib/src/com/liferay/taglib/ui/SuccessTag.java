@@ -202,7 +202,7 @@ public class SuccessTag extends IncludeTag implements BodyTag {
 
 	@Override
 	protected boolean isCleanUpSetAttributes() {
-		return _CLEAN_UP_SET_ATTRIBUTES;
+		return super.isCleanUpSetAttributes();
 	}
 
 	@Override
@@ -215,8 +215,6 @@ public class SuccessTag extends IncludeTag implements BodyTag {
 	}
 
 	private static final String _ATTRIBUTE_NAMESPACE = "liferay-ui:success:";
-
-	private static final boolean _CLEAN_UP_SET_ATTRIBUTES = true;
 
 	private static final String _CONTENT_EMBED_TMPL = StringUtil.read(
 		SuccessTag.class, "success/embed.tmpl");

@@ -59,7 +59,7 @@ public class VerticalCardStickerBottomTag
 
 	@Override
 	protected boolean isCleanUpSetAttributes() {
-		return _CLEAN_UP_SET_ATTRIBUTES;
+		return super.isCleanUpSetAttributes();
 	}
 
 	@Override
@@ -69,7 +69,5 @@ public class VerticalCardStickerBottomTag
 
 	private static final String _ATTRIBUTE_NAMESPACE =
 		"liferay-frontend:vertical-card-sticker-bottom:";
-
-	private static final boolean _CLEAN_UP_SET_ATTRIBUTES = true;
 
 }

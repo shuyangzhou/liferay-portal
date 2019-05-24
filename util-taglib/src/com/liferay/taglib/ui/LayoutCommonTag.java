@@ -51,7 +51,7 @@ public class LayoutCommonTag extends IncludeTag {
 
 	@Override
 	protected boolean isCleanUpSetAttributes() {
-		return _CLEAN_UP_SET_ATTRIBUTES;
+		return super.isCleanUpSetAttributes();
 	}
 
 	@Override
@@ -111,8 +111,6 @@ public class LayoutCommonTag extends IncludeTag {
 	@Override
 	protected void setAttributes(HttpServletRequest httpServletRequest) {
 	}
-
-	private static final boolean _CLEAN_UP_SET_ATTRIBUTES = true;
 
 	private static final String[] _LAYOUT_STATIC_PORTLETS_ALL =
 		PropsUtil.getArray(PropsKeys.LAYOUT_STATIC_PORTLETS_ALL);

@@ -64,7 +64,7 @@ public class ManagementBarActionButtonsTag
 
 	@Override
 	protected boolean isCleanUpSetAttributes() {
-		return _CLEAN_UP_SET_ATTRIBUTES;
+		return super.isCleanUpSetAttributes();
 	}
 
 	@Override
@@ -74,8 +74,6 @@ public class ManagementBarActionButtonsTag
 
 	private static final String _ATTRIBUTE_NAMESPACE =
 		"liferay-frontend:management-bar-action-buttons:";
-
-	private static final boolean _CLEAN_UP_SET_ATTRIBUTES = true;
 
 	private static final String _PAGE =
 		"/management_bar_action_buttons/page.jsp";
