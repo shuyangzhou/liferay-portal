@@ -1,0 +1,9 @@
+Bundle-Name: Liferay Portal Security Password API
+Bundle-SymbolicName: com.liferay.portal.security.password.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.portal.security.password.configuration,\
+	com.liferay.portal.security.password.exception,\
+	com.liferay.portal.security.password.model,\
+	com.liferay.portal.security.password.service,\
+	com.liferay.portal.security.password.service.persistence
