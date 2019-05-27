@@ -1,0 +1,6 @@
+Bundle-Name: Liferay Portal Security Password Service
+Bundle-SymbolicName: com.liferay.portal.security.password.service
+Bundle-Version: 1.0.0
+Liferay-Require-SchemaVersion: 3.0.0
+Liferay-Service: true
+-dsannotations-options: inherit

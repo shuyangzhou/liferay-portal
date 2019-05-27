@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_2_0.dtd">
+
+<service-builder auto-namespace-tables="false" mvcc-enabled="true" package-path="com.liferay.portal.security.password">
+	<author>arthurchan35</author>
+	<namespace>Password</namespace>
+	<entity local-service="true" name="HashAlgorithmEntry" remote-service="true" uuid="true">
+
+		<!-- PK fields -->
+
+		<column name="entryId" primary="true" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="name" type="String" />
+		<column name="meta" type="String" />
+	</entity>
+	<entity local-service="true" name="PasswordEntry" remote-service="true" uuid="true">
+
+		<!-- PK fields -->
+
+		<column name="entryId" primary="true" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="hash" type="String" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="modifiedDate" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="UserId" return-type="Collection">
+			<finder-column name="userId" />
+		</finder>
+	</entity>
+	<entity local-service="true" name="PasswordMeta" uuid="true">
+
+		<!-- PK fields -->
+
+		<column name="metaId" primary="true" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="passwordEntryId" type="long" />
+		<column name="hashAlgorithmEntryId" type="long" />
+		<column name="salt" type="String" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="modifiedDate" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="PasswordEntryId" return-type="Collection">
+			<finder-column name="passwordEntryId" />
+		</finder>
+		<finder name="HashAlgorithmEntryId" return-type="Collection">
+			<finder-column name="hashAlgorithmEntryId" />
+		</finder>
+	</entity>
+</service-builder>
