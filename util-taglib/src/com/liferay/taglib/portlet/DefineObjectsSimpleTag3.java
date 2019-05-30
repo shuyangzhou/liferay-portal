@@ -30,19 +30,18 @@ import javax.portlet.ResourceRequest;
 import javax.portlet.StateAwareResponse;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.PageContext;
 
 /**
- * @author Brian Wing Shun Chan
- * @author Neil Griffin
- * @deprecated As of Mueller (7.2.x), replaced by
- *			   {@link DefineObjectsSimpleTag3}
+ * @author Shuyang Zhou
  */
-@Deprecated
-public class DefineObjectsTag3 extends DefineObjectsTag {
+public class DefineObjectsSimpleTag3 extends DefineObjectsSimpleTag {
 
 	@Override
-	public int doStartTag() {
-		super.doStartTag();
+	public void doTag() {
+		super.doTag();
+
+		PageContext pageContext = (PageContext)getJspContext();
 
 		HttpServletRequest httpServletRequest =
 			(HttpServletRequest)pageContext.getRequest();
@@ -111,7 +110,7 @@ public class DefineObjectsTag3 extends DefineObjectsTag {
 				JavaConstants.JAVAX_PORTLET_RESPONSE);
 
 		if (portletResponse == null) {
-			return SKIP_BODY;
+			return;
 		}
 
 		String namespace = AUIUtil.getNamespace(
@@ -135,8 +134,6 @@ public class DefineObjectsTag3 extends DefineObjectsTag {
 				stateAwareResponse.getRenderParameters());
 			pageContext.setAttribute("stateAwareResponse", stateAwareResponse);
 		}
-
-		return SKIP_BODY;
 	}
 
 }

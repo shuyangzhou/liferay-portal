@@ -31,17 +31,18 @@ import javax.portlet.PortletResponse;
 import javax.portlet.PortletSession;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.tagext.TagSupport;
+import javax.servlet.jsp.PageContext;
+import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 /**
- * @author Brian Wing Shun Chan
- * @deprecated As of Mueller (7.2.x), replaced by {@link DefineObjectsSimpleTag}
+ * @author Shuyang Zhou
  */
-@Deprecated
-public class DefineObjectsTag extends TagSupport {
+public class DefineObjectsSimpleTag extends SimpleTagSupport {
 
 	@Override
-	public int doStartTag() {
+	public void doTag() {
+		PageContext pageContext = (PageContext)getJspContext();
+
 		HttpServletRequest httpServletRequest =
 			(HttpServletRequest)pageContext.getRequest();
 
@@ -117,7 +118,7 @@ public class DefineObjectsTag extends TagSupport {
 				JavaConstants.JAVAX_PORTLET_RESPONSE);
 
 		if (portletResponse == null) {
-			return SKIP_BODY;
+			return;
 		}
 
 		pageContext.setAttribute(
@@ -145,8 +146,6 @@ public class DefineObjectsTag extends TagSupport {
 
 			pageContext.setAttribute(portletResponseAttrName, portletResponse);
 		}
-
-		return SKIP_BODY;
 	}
 
 	private static final Function<InvocationHandler, Map<?, ?>>

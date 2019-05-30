@@ -49,7 +49,7 @@
 	</tag>
 	<tag>
 		<name>defineObjects</name>
-		<tag-class>com.liferay.taglib.portlet.DefineObjectsTag</tag-class>
+		<tag-class>com.liferay.taglib.portlet.DefineObjectsSimpleTag</tag-class>
 		<tei-class>com.liferay.taglib.portlet.DefineObjectsTei</tei-class>
 		<body-content>empty</body-content>
 	</tag>
