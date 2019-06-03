@@ -75,7 +75,7 @@
 	</tag>
 	<tag>
 		<name>renderURL</name>
-		<tag-class>com.liferay.taglib.portlet.RenderURLTag</tag-class>
+		<tag-class>com.liferay.taglib.portlet.RenderURLSimpleTag</tag-class>
 		<tei-class>com.liferay.taglib.portlet.RenderURLTei</tei-class>
 		<body-content>JSP</body-content>
 		<attribute>

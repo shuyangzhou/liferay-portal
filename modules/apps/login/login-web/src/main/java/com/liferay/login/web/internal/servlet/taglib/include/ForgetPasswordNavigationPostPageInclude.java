@@ -18,8 +18,10 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.include.PageInclude;
-import com.liferay.taglib.portlet.RenderURLTag;
+import com.liferay.taglib.portlet.RenderURLSimpleTag;
 import com.liferay.taglib.ui.IconTag;
+
+import java.io.IOException;
 
 import java.util.Objects;
 
@@ -65,15 +67,21 @@ public class ForgetPasswordNavigationPostPageInclude implements PageInclude {
 			return;
 		}
 
-		RenderURLTag renderURLTag = new RenderURLTag();
+		RenderURLSimpleTag renderURLSimpleTag = new RenderURLSimpleTag();
 
-		renderURLTag.setPageContext(pageContext);
+		renderURLSimpleTag.setJspContext(pageContext);
 
-		renderURLTag.addParam("mvcRenderCommandName", "/login/forgot_password");
-		renderURLTag.setVar("forgotPasswordURL");
-		renderURLTag.setWindowState(WindowState.MAXIMIZED.toString());
+		renderURLSimpleTag.addParam(
+			"mvcRenderCommandName", "/login/forgot_password");
+		renderURLSimpleTag.setVar("forgotPasswordURL");
+		renderURLSimpleTag.setWindowState(WindowState.MAXIMIZED.toString());
 
-		renderURLTag.doTag(pageContext);
+		try {
+			renderURLSimpleTag.doTag();
+		}
+		catch (IOException ioe) {
+			throw new JspException(ioe);
+		}
 
 		String forgetPasswordURL = (String)pageContext.getAttribute(
 			"forgotPasswordURL");
