@@ -55,7 +55,7 @@
 	</tag>
 	<tag>
 		<name>namespace</name>
-		<tag-class>com.liferay.taglib.portlet.NamespaceTag</tag-class>
+		<tag-class>com.liferay.taglib.portlet.NamespaceSimpleTag</tag-class>
 		<body-content>empty</body-content>
 	</tag>
 	<tag>
