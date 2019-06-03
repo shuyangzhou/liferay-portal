@@ -60,7 +60,7 @@
 	</tag>
 	<tag>
 		<name>param</name>
-		<tag-class>com.liferay.taglib.util.ParamTag</tag-class>
+		<tag-class>com.liferay.taglib.util.ParamSimpleTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
 			<name>name</name>
