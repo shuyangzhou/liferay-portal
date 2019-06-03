@@ -386,7 +386,7 @@
 
 	<tag>
 		<name>resourceURL</name>
-		<tag-class>com.liferay.taglib.portlet.ResourceURLTag</tag-class>
+		<tag-class>com.liferay.taglib.portlet.ResourceURLSimpleTag</tag-class>
 		<tei-class>com.liferay.taglib.portlet.ResourceURLTei</tei-class>
 		<body-content>JSP</body-content>
 		<attribute>
