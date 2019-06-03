@@ -8,9 +8,9 @@
 	<uri>http://java.sun.com/portlet_2_0</uri>
 	<tag>
 		<name>actionURL</name>
-		<tag-class>com.liferay.taglib.portlet.ActionURLTag</tag-class>
+		<tag-class>com.liferay.taglib.portlet.ActionURLSimpleTag</tag-class>
 		<tei-class>com.liferay.taglib.portlet.ActionURLTei</tei-class>
-		<body-content>JSP</body-content>
+		<body-content>scriptless</body-content>
 		<attribute>
 			<name>copyCurrentRenderParameters</name>
 			<required>false</required>
