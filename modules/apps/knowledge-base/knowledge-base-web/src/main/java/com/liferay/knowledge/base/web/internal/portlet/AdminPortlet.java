@@ -105,7 +105,7 @@ import org.osgi.service.component.annotations.Reference;
 		"javax.portlet.init-param.always-send-redirect=true",
 		"javax.portlet.init-param.copy-request-parameters=true",
 		"javax.portlet.init-param.portlet-title-based-navigation=true",
-		"javax.portlet.init-param.template-path=/admin/",
+		"javax.portlet.init-param.template-path=/META-INF/resources/admin/",
 		"javax.portlet.init-param.view-template=/admin/view.jsp",
 		"javax.portlet.name=" + KBPortletKeys.KNOWLEDGE_BASE_ADMIN,
 		"javax.portlet.resource-bundle=content.Language",

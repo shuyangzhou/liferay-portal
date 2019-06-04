@@ -91,7 +91,7 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 		"com.liferay.portlet.render-weight=50",
 		"com.liferay.portlet.use-default-template=true",
 		"javax.portlet.display-name=Forms", "javax.portlet.expiration-cache=0",
-		"javax.portlet.init-param.template-path=/admin/",
+		"javax.portlet.init-param.template-path=/META-INF/resources/admin/",
 		"javax.portlet.init-param.view-template=/admin/view.jsp",
 		"javax.portlet.name=" + DDMPortletKeys.DYNAMIC_DATA_MAPPING_FORM_ADMIN,
 		"javax.portlet.resource-bundle=content.Language",

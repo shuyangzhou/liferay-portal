@@ -34,7 +34,7 @@ import org.osgi.service.component.annotations.Component;
 		"com.liferay.portlet.preferences-company-wide=true",
 		"javax.portlet.display-name=OAuth2 Administration",
 		"javax.portlet.init-param.portlet-title-based-navigation=true",
-		"javax.portlet.init-param.template-path=/admin/",
+		"javax.portlet.init-param.template-path=/META-INF/resources/admin/",
 		"javax.portlet.init-param.view-template=/admin/view.jsp",
 		"javax.portlet.name=" + OAuth2ProviderPortletKeys.OAUTH2_ADMIN,
 		"javax.portlet.preferences=classpath:/META-INF/portlet-preferences/default-portlet-preferences.xml",

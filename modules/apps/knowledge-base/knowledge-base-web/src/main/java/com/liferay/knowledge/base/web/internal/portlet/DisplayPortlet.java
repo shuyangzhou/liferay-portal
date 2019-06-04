@@ -89,7 +89,7 @@ import org.osgi.service.component.annotations.Reference;
 		"javax.portlet.expiration-cache=0",
 		"javax.portlet.init-param.always-send-redirect=true",
 		"javax.portlet.init-param.copy-request-parameters=true",
-		"javax.portlet.init-param.template-path=/display/",
+		"javax.portlet.init-param.template-path=/META-INF/resources/display/",
 		"javax.portlet.init-param.view-template=/display/view.jsp",
 		"javax.portlet.name=" + KBPortletKeys.KNOWLEDGE_BASE_DISPLAY,
 		"javax.portlet.resource-bundle=content.Language",

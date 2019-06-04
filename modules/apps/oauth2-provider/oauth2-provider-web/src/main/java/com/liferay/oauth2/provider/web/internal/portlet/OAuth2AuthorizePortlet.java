@@ -36,7 +36,7 @@ import org.osgi.service.component.annotations.Component;
 		"com.liferay.portlet.preferences-unique-per-layout=false",
 		"javax.portlet.display-name=OAuth2 Authorize Portlet",
 		"javax.portlet.init-param.portlet-title-based-navigation=true",
-		"javax.portlet.init-param.template-path=/authorize/",
+		"javax.portlet.init-param.template-path=/META-INF/resources/authorize/",
 		"javax.portlet.init-param.view-template=/authorize/authorize.jsp",
 		"javax.portlet.name=" + OAuth2ProviderPortletKeys.OAUTH2_AUTHORIZE,
 		"javax.portlet.resource-bundle=content.Language",

@@ -34,7 +34,7 @@ import org.osgi.service.component.annotations.Component;
 		"com.liferay.portlet.preferences-unique-per-layout=false",
 		"javax.portlet.display-name=OAuth2 Connected Applications",
 		"javax.portlet.init-param.portlet-title-based-navigation=true",
-		"javax.portlet.init-param.template-path=/connected_applications/",
+		"javax.portlet.init-param.template-path=/META-INF/resources/connected_applications/",
 		"javax.portlet.init-param.view-template=/connected_applications/view.jsp",
 		"javax.portlet.name=" + OAuth2ProviderPortletKeys.OAUTH2_CONNECTED_APPLICATIONS,
 		"javax.portlet.resource-bundle=content.Language"
