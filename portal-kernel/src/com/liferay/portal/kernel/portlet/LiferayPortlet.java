@@ -482,14 +482,6 @@ public class LiferayPortlet extends GenericPortlet {
 
 		validPaths = getPaths(rootPath, extension);
 
-		if (!rootPath.equals(StringPool.SLASH) &&
-			!rootPath.equals("/META-INF/") &&
-			!rootPath.equals("/META-INF/resources/")) {
-
-			validPaths.addAll(
-				getPaths(_PATH_META_INF_RESOURCES.concat(rootPath), extension));
-		}
-
 		Collections.addAll(
 			validPaths, StringUtil.split(getInitParameter("valid-paths")));
 	}
@@ -605,9 +597,7 @@ public class LiferayPortlet extends GenericPortlet {
 	}
 
 	protected boolean isValidPath(String path) {
-		if (validPaths.contains(path) ||
-			validPaths.contains(_PATH_META_INF_RESOURCES.concat(path))) {
-
+		if (validPaths.contains(_PATH_META_INF_RESOURCES.concat(path))) {
 			return true;
 		}
 
