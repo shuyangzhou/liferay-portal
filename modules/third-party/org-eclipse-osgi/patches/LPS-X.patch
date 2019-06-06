@@ -1,0 +1,191 @@
+diff --git a/org/eclipse/osgi/framework/util/CaseInsensitiveDictionaryMap.java b/org/eclipse/osgi/framework/util/CaseInsensitiveDictionaryMap.java
+index a4700be3e5b6..950059dc81ce 100644
+--- a/org/eclipse/osgi/framework/util/CaseInsensitiveDictionaryMap.java
++++ b/org/eclipse/osgi/framework/util/CaseInsensitiveDictionaryMap.java
+@@ -29,12 +29,14 @@ import org.eclipse.osgi.util.NLS;
+  */
+ public class CaseInsensitiveDictionaryMap<K, V> extends Dictionary<K, V> implements Map<K, V> {
+ 	final Map<Object, V> map;
++	final Map<String, String> keyMap;
+ 
+ 	/**
+ 	 * Create an empty CaseInsensitiveDictionaryMap.
+ 	 */
+ 	public CaseInsensitiveDictionaryMap() {
+ 		map = new HashMap<>();
++		keyMap = new HashMap<>();
+ 	}
+ 
+ 	/**
+@@ -44,6 +46,7 @@ public class CaseInsensitiveDictionaryMap<K, V> extends Dictionary<K, V> impleme
+ 	 */
+ 	public CaseInsensitiveDictionaryMap(int initialCapacity) {
+ 		map = new HashMap<>(initialCapacity);
++		keyMap = new HashMap<>(initialCapacity);
+ 	}
+ 
+ 	/**
+@@ -131,21 +134,17 @@ public class CaseInsensitiveDictionaryMap<K, V> extends Dictionary<K, V> impleme
+ 	 */
+ 	@Override
+ 	public V get(Object key) {
+-		return map.get(keyWrap(key));
+-	}
+-
+-	/**
+-	 * Returns the specified key or, if the key is a String, returns 
+-	 * a case-insensitive wrapping of the key.
+-	 *
+-	 * @param key
+-	 * @return The specified key or a case-insensitive wrapping of the key.
+-	 */
+-	private Object keyWrap(Object key) {
+ 		if (key instanceof String) {
+-			return new CaseInsensitiveKey((String) key);
++			String lowerCaseKey = ((String)key).toLowerCase();
++
++			String originalKey = keyMap.get(lowerCaseKey);
++
++			if (originalKey != null) {
++				return map.get(originalKey);
++			}
+ 		}
+-		return key;
++
++		return map.get(key);
+ 	}
+ 
+ 	/**
+@@ -175,9 +174,19 @@ public class CaseInsensitiveDictionaryMap<K, V> extends Dictionary<K, V> impleme
+ 	public V put(K key, V value) {
+ 		requireNonNull(value);
+ 		if (key instanceof String) {
+-			Object wrappedKey = keyWrap(((String) key).intern());
+-			V previous = map.remove(wrappedKey); // remove so we put key into map
+-			map.put(wrappedKey, value);
++			String lowerCaseKey = ((String)key).toLowerCase();
++
++			String originalKey = keyMap.remove(lowerCaseKey);
++
++			V previous = null;
++
++			if (originalKey != null) {
++				previous = map.remove(originalKey); // remove so we put key into map
++			}
++
++			keyMap.put(lowerCaseKey, (String)key);
++			map.put(key, value);
++
+ 			return previous;
+ 		}
+ 		return map.put(requireNonNull(key), value);
+@@ -190,7 +199,19 @@ public class CaseInsensitiveDictionaryMap<K, V> extends Dictionary<K, V> impleme
+ 	 */
+ 	@Override
+ 	public V remove(Object key) {
+-		return map.remove(keyWrap(key));
++		if (key instanceof String) {
++			String lowerCaseKey = ((String)key).toLowerCase();
++
++			String originalKey = keyMap.remove(lowerCaseKey);
++
++			if (originalKey == null) {
++				return null;
++			}
++
++			return map.remove(originalKey);
++		}
++
++		return map.remove(key);
+ 	}
+ 
+ 	/**
+@@ -216,7 +237,10 @@ public class CaseInsensitiveDictionaryMap<K, V> extends Dictionary<K, V> impleme
+ 	 */
+ 	@Override
+ 	public boolean containsKey(Object key) {
+-		return map.containsKey(keyWrap(key));
++		if (key instanceof String) {
++			return map.containsKey(((String)key).toLowerCase());
++		}
++		return map.containsKey(key);
+ 	}
+ 
+ 	/**
+@@ -385,44 +409,6 @@ public class CaseInsensitiveDictionaryMap<K, V> extends Dictionary<K, V> impleme
+ 		}
+ 	}
+ 
+-	private static final class CaseInsensitiveKey {
+-		final String key;
+-		private transient int hashCode;
+-
+-		CaseInsensitiveKey(String key) {
+-			this.key = key;
+-		}
+-
+-		@Override
+-		public int hashCode() {
+-			int h = hashCode;
+-			if (h != 0) {
+-				return h;
+-			}
+-			h = 1;
+-			for (char c : key.toCharArray()) {
+-				h = 31 * h + Character.toLowerCase(Character.toUpperCase(c));
+-			}
+-			return hashCode = h;
+-		}
+-
+-		@Override
+-		public boolean equals(Object obj) {
+-			if (this == obj) {
+-				return true;
+-			}
+-			if (obj instanceof CaseInsensitiveKey) {
+-				return key.equalsIgnoreCase(((CaseInsensitiveKey) obj).key);
+-			}
+-			return false;
+-		}
+-
+-		@Override
+-		public String toString() {
+-			return key;
+-		}
+-	}
+-
+ 	private final class KeySet extends AbstractSet<K> {
+ 		KeySet() {
+ 		}
+@@ -473,11 +459,7 @@ public class CaseInsensitiveDictionaryMap<K, V> extends Dictionary<K, V> impleme
+ 		@SuppressWarnings("unchecked")
+ 		@Override
+ 		public K next() {
+-			Object k = i.next();
+-			if (k instanceof CaseInsensitiveKey) {
+-				k = ((CaseInsensitiveKey) k).key;
+-			}
+-			return (K) k;
++			return (K)i.next();
+ 		}
+ 
+ 		@Override
+@@ -544,11 +526,7 @@ public class CaseInsensitiveDictionaryMap<K, V> extends Dictionary<K, V> impleme
+ 		@SuppressWarnings("unchecked")
+ 		@Override
+ 		public K getKey() {
+-			Object k = entry.getKey();
+-			if (k instanceof CaseInsensitiveKey) {
+-				k = ((CaseInsensitiveKey) k).key;
+-			}
+-			return (K) k;
++			return (K)entry.getKey();
+ 		}
+ 
+ 		@Override
+@@ -584,3 +562,4 @@ public class CaseInsensitiveDictionaryMap<K, V> extends Dictionary<K, V> impleme
+ 		}
+ 	}
+ }
++/* @generated */
+\ No newline at end of file
