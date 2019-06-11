@@ -30,14 +30,6 @@ liferay {
 			version = project.properties["app.server.jboss.version"] ?: "7.0.0"
 		}
 
-		jetty {
-			deployDir = project.properties["app.server.jetty.deploy.dir"] ?: "${->liferay.appServers.jetty.dir}/webapps"
-			dir = project.properties["app.server.jetty.dir"] ?: "${->liferay.appServerParentDir}/jetty-${->liferay.appServers.jetty.version}"
-			libGlobalDir = project.properties["app.server.jetty.lib.global.dir"] ?: "${->liferay.appServers.jetty.dir}/lib/ext/liferay"
-			portalDir = project.properties["app.server.jetty.portal.dir"] ?: "${->liferay.appServers.jetty.dir}/webapps/root"
-			version = project.properties["app.server.jetty.version"] ?: "8.1.10"
-		}
-
 		jonas {
 			deployDir = project.properties["app.server.jonas.deploy.dir"] ?: "${->liferay.appServers.jonas.dir}/deploy"
 			dir = project.properties["app.server.jonas.dir"] ?: "${->liferay.appServerParentDir}/jonas-${->liferay.appServers.jonas.version}"

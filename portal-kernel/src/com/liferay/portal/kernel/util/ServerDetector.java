@@ -29,8 +29,6 @@ public class ServerDetector {
 
 	public static final String JBOSS_ID = "jboss";
 
-	public static final String JETTY_ID = "jetty";
-
 	public static final String JONAS_ID = "jonas";
 
 	public static final String OC4J_ID = "oc4j";
@@ -101,14 +99,6 @@ public class ServerDetector {
 		return false;
 	}
 
-	public static boolean isJetty() {
-		if (_serverType == ServerType.JETTY) {
-			return true;
-		}
-
-		return false;
-	}
-
 	public static boolean isJOnAS() {
 		if (_serverType == ServerType.JONAS) {
 			return true;
@@ -137,7 +127,6 @@ public class ServerDetector {
 		if (serverType.equals(ServerDetector.GLASSFISH_ID) ||
 			serverType.equals(ServerDetector.JBOSS_ID) ||
 			serverType.equals(ServerDetector.JONAS_ID) ||
-			serverType.equals(ServerDetector.JETTY_ID) ||
 			serverType.equals(ServerDetector.OC4J_ID) ||
 			serverType.equals(ServerDetector.RESIN_ID) ||
 			serverType.equals(ServerDetector.TOMCAT_ID) ||
@@ -259,10 +248,6 @@ public class ServerDetector {
 			return ServerType.WILDFLY;
 		}
 
-		if (_hasSystemProperty("jetty.home")) {
-			return ServerType.JETTY;
-		}
-
 		if (_hasSystemProperty("catalina.base")) {
 			return ServerType.TOMCAT;
 		}
@@ -300,7 +285,7 @@ public class ServerDetector {
 
 	private enum ServerType {
 
-		GLASSFISH, JBOSS, JETTY, JONAS, OC4J, RESIN, TOMCAT, UNKNOWN, WEBLOGIC,
+		GLASSFISH, JBOSS, JONAS, OC4J, RESIN, TOMCAT, UNKNOWN, WEBLOGIC,
 		WEBSPHERE, WILDFLY
 
 	}
