@@ -14,11 +14,13 @@
 
 package com.liferay.portal.search.web.internal.synonyms.index.instant;
 
+import com.liferay.portal.search.elasticsearch6.internal.connection.ElasticsearchClientResolver;
 import com.liferay.portal.search.elasticsearch6.internal.connection.ElasticsearchFixture;
 import com.liferay.portal.search.elasticsearch6.internal.index.IndexDefinitionsHolderImpl;
 import com.liferay.portal.search.elasticsearch6.internal.index.IndexSynchronizationPortalInitializedListener;
 import com.liferay.portal.search.elasticsearch6.internal.index.IndexSynchronizer;
 import com.liferay.portal.search.elasticsearch6.internal.index.IndexSynchronizerImpl;
+import com.liferay.portal.search.elasticsearch6.internal.test.connection.remote.RemoteElasticsearchConnectionFixture;
 import com.liferay.portal.search.elasticsearch6.internal.test.util.microcontainer.Microcontainer;
 import com.liferay.portal.search.elasticsearch6.internal.test.util.microcontainer.MicrocontainerImpl;
 import com.liferay.portal.search.elasticsearch6.spi.index.IndexDefinition;
@@ -40,16 +42,35 @@ import org.junit.Test;
  */
 public class InstantIndexesTest {
 
+	public static final boolean REMOTE_NOT_EMBEDDED = true;
+
 	@Before
 	public void setUp() throws Exception {
-		ElasticsearchFixture elasticsearchFixture = new ElasticsearchFixture(
-			getClass());
+		ElasticsearchClientResolver elasticsearchClientResolver;
+
+		if (REMOTE_NOT_EMBEDDED) {
+			RemoteElasticsearchConnectionFixture
+				remoteElasticsearchConnectionFixture =
+					new RemoteElasticsearchConnectionFixture();
+
+			remoteElasticsearchConnectionFixture.connect();
+
+			elasticsearchClientResolver = remoteElasticsearchConnectionFixture;
+		}
+		else {
+			ElasticsearchFixture elasticsearchFixture =
+				new ElasticsearchFixture(getClass());
+
+			elasticsearchClientResolver = elasticsearchFixture;
+
+			_elasticsearchFixture = elasticsearchFixture;
+		}
 
 		IndexDefinitionsHolderImpl indexDefinitionsHolderImpl =
 			new IndexDefinitionsHolderImpl();
 
 		IndexSynchronizerImpl indexSynchronizerImpl = createIndexSynchronizer(
-			elasticsearchFixture, indexDefinitionsHolderImpl);
+			elasticsearchClientResolver, indexDefinitionsHolderImpl);
 
 		IndexSynchronizationPortalInitializedListener
 			indexSynchronizationPortalInitializedListener =
@@ -67,7 +88,7 @@ public class InstantIndexesTest {
 			IndexRegistrar.class, indexSynchronizerImpl::addIndexRegistrar,
 			indexSynchronizationPortalInitializedListener::addIndexRegistrar);
 
-		_elasticsearchFixture = elasticsearchFixture;
+		_elasticsearchClientResolver = elasticsearchClientResolver;
 		_eventsIndexDefinition = new EventsIndexDefinition();
 		_indexSynchronizationPortalInitializedListener =
 			indexSynchronizationPortalInitializedListener;
@@ -76,12 +97,16 @@ public class InstantIndexesTest {
 		_microcontainer = microcontainer;
 		_tasksIndexDefinition = new TasksIndexDefinition();
 
-		_elasticsearchFixture.setUp();
+		if (_elasticsearchFixture != null) {
+			_elasticsearchFixture.setUp();
+		}
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		_elasticsearchFixture.tearDown();
+		if (_elasticsearchFixture != null) {
+			_elasticsearchFixture.tearDown();
+		}
 	}
 
 	@Test
@@ -158,12 +183,12 @@ public class InstantIndexesTest {
 	}
 
 	protected static IndexSynchronizerImpl createIndexSynchronizer(
-		ElasticsearchFixture elasticsearchFixture,
+		ElasticsearchClientResolver elasticsearchClientResolver,
 		IndexDefinitionsHolderImpl indexDefinitionsHolderImpl) {
 
 		return new IndexSynchronizerImpl() {
 			{
-				setElasticsearchClientResolver(elasticsearchFixture);
+				setElasticsearchClientResolver(elasticsearchClientResolver);
 				setIndexDefinitionsHolder(indexDefinitionsHolderImpl);
 			}
 		};
@@ -172,7 +197,7 @@ public class InstantIndexesTest {
 	protected void assertIndexesExist(String... expectedIndices) {
 		GetIndexRequestBuilder getIndexRequestBuilder =
 			GetIndexAction.INSTANCE.newRequestBuilder(
-				_elasticsearchFixture.getClient());
+				_elasticsearchClientResolver.getClient());
 
 		GetIndexResponse getIndexResponse = getIndexRequestBuilder.addIndices(
 			expectedIndices
@@ -192,6 +217,7 @@ public class InstantIndexesTest {
 		_microcontainer.start();
 	}
 
+	private ElasticsearchClientResolver _elasticsearchClientResolver;
 	private ElasticsearchFixture _elasticsearchFixture;
 	private EventsIndexDefinition _eventsIndexDefinition;
 	private IndexSynchronizationPortalInitializedListener
