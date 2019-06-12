@@ -14,14 +14,6 @@
 
 liferay {
 	appServers {
-		glassfish {
-			deployDir = project.properties["app.server.glassfish.deploy.dir"] ?: "${->liferay.appServers.glassfish.dir}/autodeploy"
-			dir = project.properties["app.server.glassfish.dir"] ?: "${->liferay.appServerParentDir}/glassfish-${->liferay.appServers.glassfish.version}"
-			libGlobalDir = project.properties["app.server.glassfish.lib.global.dir"] ?: "${->liferay.appServers.glassfish.dir}/domains/domain1/lib"
-			portalDir = project.properties["app.server.glassfish.portal.dir"] ?: "${->liferay.appServers.glassfish.dir}/domains/domain1/applications/liferay-portal"
-			version = project.properties["app.server.glassfish.version"] ?: "3.1.2.2"
-		}
-
 		jboss {
 			deployDir = project.properties["app.server.jboss.deploy.dir"] ?: "${->liferay.appServers.jboss.dir}/standalone/deployments"
 			dir = project.properties["app.server.jboss.dir"] ?: "${->liferay.appServerParentDir}/jboss-eap-${->liferay.appServers.jboss.version}"

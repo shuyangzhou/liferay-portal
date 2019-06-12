@@ -25,8 +25,6 @@ import java.lang.reflect.Field;
  */
 public class ServerDetector {
 
-	public static final String GLASSFISH_ID = "glassfish";
-
 	public static final String JBOSS_ID = "jboss";
 
 	public static final String RESIN_ID = "resin";
@@ -79,14 +77,6 @@ public class ServerDetector {
 		}
 	}
 
-	public static boolean isGlassfish() {
-		if (_serverType == ServerType.GLASSFISH) {
-			return true;
-		}
-
-		return false;
-	}
-
 	public static boolean isJBoss() {
 		if (_serverType == ServerType.JBOSS) {
 			return true;
@@ -104,8 +94,7 @@ public class ServerDetector {
 	}
 
 	public static boolean isSupported(String serverType) {
-		if (serverType.equals(ServerDetector.GLASSFISH_ID) ||
-			serverType.equals(ServerDetector.JBOSS_ID) ||
+		if (serverType.equals(ServerDetector.JBOSS_ID) ||
 			serverType.equals(ServerDetector.RESIN_ID) ||
 			serverType.equals(ServerDetector.TOMCAT_ID) ||
 			serverType.equals(ServerDetector.WEBLOGIC_ID) ||
@@ -194,10 +183,6 @@ public class ServerDetector {
 			return ServerType.valueOf(StringUtil.toUpperCase(serverId));
 		}
 
-		if (_hasSystemProperty("com.sun.aas.instanceRoot")) {
-			return ServerType.GLASSFISH;
-		}
-
 		if (_hasSystemProperty("jboss.home.dir")) {
 			return ServerType.JBOSS;
 		}
@@ -255,7 +240,7 @@ public class ServerDetector {
 
 	private enum ServerType {
 
-		GLASSFISH, JBOSS, RESIN, TOMCAT, UNKNOWN, WEBLOGIC, WEBSPHERE, WILDFLY
+		JBOSS, RESIN, TOMCAT, UNKNOWN, WEBLOGIC, WEBSPHERE, WILDFLY
 
 	}
 
