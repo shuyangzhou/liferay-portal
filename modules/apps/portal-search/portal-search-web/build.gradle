@@ -1,5 +1,18 @@
+String elasticsearchVersion = "6.5.0"
+String luceneVersion = "7.5.0"
+
 configJSModules {
 	enabled = false;
+}
+
+configurations {
+	testCompileElasticsearchEmbedded {
+		extendsFrom testCompile
+	}
+	
+	testCompileElasticsearchRemote {
+		extendsFrom testCompile
+	}
 }
 
 dependencies {
@@ -41,7 +54,47 @@ dependencies {
 	testCompile group: "org.slf4j", name: "slf4j-api", version: "1.7.7"
 	testCompile group: "org.springframework", name: "spring-web", version: "4.1.9.RELEASE"
 	testCompile project(":apps:portal-search:portal-search")
+	testCompile project(":apps:portal-search:portal-search-spi")
+	testCompile project(":apps:portal-search-elasticsearch6:portal-search-elasticsearch6-api")
+	testCompile project(":apps:portal-search-elasticsearch6:portal-search-elasticsearch6-impl")
+	testCompile project(":apps:portal-search-elasticsearch6:portal-search-elasticsearch6-spi")
 	testCompile project(":core:petra:petra-concurrent")
 	testCompile project(":core:petra:petra-memory")
 	testCompile project(":core:petra:petra-reflect")
+
+
+
+
+
+
+
+	// Embedded Elasticsearch
+
+
+	testCompile group: "com.liferay", name: "org.elasticsearch.analysis.common", version: elasticsearchVersion
+	testCompile group: "com.liferay", name: "org.elasticsearch.plugin.cli", version: elasticsearchVersion
+	testCompile group: "com.liferay", name: "org.elasticsearch.plugin.classloader", version: elasticsearchVersion
+
+	testCompile group: "io.netty", name: "netty-all", version: "4.1.11.Final"
+	testCompile group: "org.apache.logging.log4j", name: "log4j-api", version: "2.11.2"
+	testCompile group: "org.apache.logging.log4j", name: "log4j-core", version: "2.11.2"
+	testCompile group: "org.bouncycastle", name: "bcpg-jdk15on", version: "1.59"
+	testCompile group: "org.bouncycastle", name: "bcpkix-jdk15on", version: "1.59"
+	testCompile group: "org.bouncycastle", name: "bcprov-jdk15on", version: "1.59"
+
+	testCompile group: "org.elasticsearch", name: "elasticsearch", version: elasticsearchVersion
+	testCompile group: "org.codelibs.elasticsearch.module", name: "lang-painless", version: elasticsearchVersion
+	testCompile group: "org.elasticsearch.plugin", name: "transport-netty4-client", version: elasticsearchVersion
+	testCompile group: "org.elasticsearch.plugin", name: "reindex-client", version: elasticsearchVersion
+
+	testCompileElasticsearchEmbedded group: "org.apache.lucene", name: "lucene-core", version: luceneVersion
+	testCompileElasticsearchEmbedded group: "org.elasticsearch", name: "elasticsearch-cli", version: elasticsearchVersion	
+	testCompileElasticsearchEmbedded group: "org.elasticsearch", name: "elasticsearch-core", version: elasticsearchVersion	
+	testCompileElasticsearchEmbedded group: "org.elasticsearch", name: "elasticsearch-x-content", version: elasticsearchVersion
+	
+	
+	// Remote Elasticsearch
+
+	testCompile group: "com.liferay", name: "org.elasticsearch.client.xpack.transport", version: elasticsearchVersion
+	testCompile group: "org.elasticsearch.client", name: "transport", version: elasticsearchVersion
 }
