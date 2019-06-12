@@ -42,7 +42,7 @@ import org.junit.Test;
  */
 public class InstantIndexesTest {
 
-	public static final boolean REMOTE_NOT_EMBEDDED = true;
+	public static final boolean REMOTE_NOT_EMBEDDED = false;
 
 	@Before
 	public void setUp() throws Exception {
