@@ -1419,7 +1419,9 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 	@Override
 	public ${entity.name} toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = _escapedModelProxyProviderFunction.apply(new AutoEscapeBeanHandler(this));
+			Function<InvocationHandler, ${entity.name}> escapedModelProxyProviderFunction = _escapedModelProxyProviderFunctionHolder.getEscapedModelProxyProviderFunction();
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(new AutoEscapeBeanHandler(this));
 		}
 
 		return _escapedModel;
@@ -1762,7 +1764,29 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 		}
 	</#if>
 
-	private static final Function<InvocationHandler, ${entity.name}> _escapedModelProxyProviderFunction = _getProxyProviderFunction();
+	private static final EscapedModelProxyProviderFunctionHolder _escapedModelProxyProviderFunctionHolder = new EscapedModelProxyProviderFunctionHolder();
+
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		public Function<InvocationHandler, ${entity.name}> getEscapedModelProxyProviderFunction() {
+			Function<InvocationHandler, ${entity.name}> escapedModelProxyProviderFunction = _escapedModelProxyProviderFunction;
+
+			if (escapedModelProxyProviderFunction != null) {
+				return escapedModelProxyProviderFunction;
+			}
+
+			synchronized (this) {
+				if (_escapedModelProxyProviderFunction == null) {
+					_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+				}
+
+				return _escapedModelProxyProviderFunction;
+			}
+		}
+
+		private volatile Function<InvocationHandler, ${entity.name}> _escapedModelProxyProviderFunction;
+
+	}
 
 	<#if dependencyInjectorDS>
 		private static boolean _entityCacheEnabled;
