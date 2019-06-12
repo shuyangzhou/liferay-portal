@@ -15,7 +15,6 @@
 package com.liferay.gradle.plugins.internal.extensions;
 
 import com.liferay.gradle.plugins.extensions.AppServer;
-import com.liferay.gradle.plugins.extensions.JOnASAppServer;
 import com.liferay.gradle.plugins.extensions.TomcatAppServer;
 
 import org.gradle.api.NamedDomainObjectFactory;
@@ -32,10 +31,7 @@ public class AppServerFactory implements NamedDomainObjectFactory<AppServer> {
 
 	@Override
 	public AppServer create(String name) {
-		if (name.equals("jonas")) {
-			return new JOnASAppServer(_project);
-		}
-		else if (name.equals("tomcat")) {
+		if (name.equals("tomcat")) {
 			return new TomcatAppServer(_project);
 		}
 

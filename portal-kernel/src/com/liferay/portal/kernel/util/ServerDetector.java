@@ -29,8 +29,6 @@ public class ServerDetector {
 
 	public static final String JBOSS_ID = "jboss";
 
-	public static final String JONAS_ID = "jonas";
-
 	public static final String OC4J_ID = "oc4j";
 
 	public static final String RESIN_ID = "resin";
@@ -99,14 +97,6 @@ public class ServerDetector {
 		return false;
 	}
 
-	public static boolean isJOnAS() {
-		if (_serverType == ServerType.JONAS) {
-			return true;
-		}
-
-		return false;
-	}
-
 	public static boolean isOC4J() {
 		if (_serverType == ServerType.OC4J) {
 			return true;
@@ -126,7 +116,6 @@ public class ServerDetector {
 	public static boolean isSupported(String serverType) {
 		if (serverType.equals(ServerDetector.GLASSFISH_ID) ||
 			serverType.equals(ServerDetector.JBOSS_ID) ||
-			serverType.equals(ServerDetector.JONAS_ID) ||
 			serverType.equals(ServerDetector.OC4J_ID) ||
 			serverType.equals(ServerDetector.RESIN_ID) ||
 			serverType.equals(ServerDetector.TOMCAT_ID) ||
@@ -224,10 +213,6 @@ public class ServerDetector {
 			return ServerType.JBOSS;
 		}
 
-		if (_hasSystemProperty("jonas.base")) {
-			return ServerType.JONAS;
-		}
-
 		if (_detect("oracle.oc4j.util.ClassUtils")) {
 			return ServerType.OC4J;
 		}
@@ -285,8 +270,8 @@ public class ServerDetector {
 
 	private enum ServerType {
 
-		GLASSFISH, JBOSS, JONAS, OC4J, RESIN, TOMCAT, UNKNOWN, WEBLOGIC,
-		WEBSPHERE, WILDFLY
+		GLASSFISH, JBOSS, OC4J, RESIN, TOMCAT, UNKNOWN, WEBLOGIC, WEBSPHERE,
+		WILDFLY
 
 	}
 
