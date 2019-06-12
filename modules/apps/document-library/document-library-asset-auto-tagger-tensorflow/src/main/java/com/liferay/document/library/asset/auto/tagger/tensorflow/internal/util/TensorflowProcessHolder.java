@@ -19,7 +19,6 @@ import com.liferay.document.library.asset.auto.tagger.tensorflow.internal.petra.
 import com.liferay.petra.process.ProcessCallable;
 import com.liferay.petra.process.ProcessChannel;
 import com.liferay.petra.process.ProcessConfig;
-import com.liferay.petra.process.ProcessException;
 import com.liferay.petra.process.ProcessExecutor;
 import com.liferay.petra.process.ProcessLog;
 import com.liferay.petra.reflect.ReflectionUtil;
@@ -63,23 +62,16 @@ public class TensorflowProcessHolder {
 	}
 
 	public TensorflowProcessHolder(
-			ProcessExecutor processExecutor, Bundle bundle)
-		throws IOException {
+		ProcessExecutor processExecutor, Bundle bundle) {
 
 		_processExecutor = processExecutor;
-
-		_tensorflowWorkDir = bundle.getDataFile("tensorflow-workdir");
-
-		_tensorflowWorkDir.mkdirs();
-
-		_processConfig = _createProcessConfig(
-			bundle, _tensorflowWorkDir.toPath());
+		_processConfigHolder = new ProcessConfigHolder(bundle);
 	}
 
 	public void destroy() {
 		_stop();
 
-		FileUtil.deltree(_tensorflowWorkDir);
+		_processConfigHolder.destroy();
 	}
 
 	public <T extends Serializable> T execute(
@@ -226,11 +218,12 @@ public class TensorflowProcessHolder {
 				_relanuchCounter++;
 
 				_processChannel = processExecutor.execute(
-					_processConfig, new TensorFlowDaemonProcessCallable());
+					_processConfigHolder.getProcessConfig(),
+					new TensorFlowDaemonProcessCallable());
 
 				_lastLaunchTime = System.currentTimeMillis();
 			}
-			catch (ProcessException pe) {
+			catch (Exception pe) {
 				ReflectionUtil.throwException(pe);
 			}
 		}
@@ -257,8 +250,49 @@ public class TensorflowProcessHolder {
 	private static volatile int _relanuchCounter;
 
 	private volatile ProcessChannel<String> _processChannel;
-	private final ProcessConfig _processConfig;
+	private final ProcessConfigHolder _processConfigHolder;
 	private final ProcessExecutor _processExecutor;
-	private final File _tensorflowWorkDir;
+
+	private static class ProcessConfigHolder {
+
+		public void destroy() {
+			File tensorflowWorkDir = _tensorflowWorkDir;
+
+			if (tensorflowWorkDir != null) {
+				FileUtil.deltree(tensorflowWorkDir);
+			}
+		}
+
+		public ProcessConfig getProcessConfig() throws IOException {
+			ProcessConfig processConfig = _processConfig;
+
+			if (processConfig != null) {
+				return processConfig;
+			}
+
+			synchronized (this) {
+				if (_processConfig == null) {
+					_tensorflowWorkDir = _bundle.getDataFile(
+						"tensorflow-workdir");
+
+					_tensorflowWorkDir.mkdirs();
+
+					_processConfig = _createProcessConfig(
+						_bundle, _tensorflowWorkDir.toPath());
+				}
+
+				return _processConfig;
+			}
+		}
+
+		private ProcessConfigHolder(Bundle bundle) {
+			_bundle = bundle;
+		}
+
+		private final Bundle _bundle;
+		private volatile ProcessConfig _processConfig;
+		private volatile File _tensorflowWorkDir;
+
+	}
 
 }
