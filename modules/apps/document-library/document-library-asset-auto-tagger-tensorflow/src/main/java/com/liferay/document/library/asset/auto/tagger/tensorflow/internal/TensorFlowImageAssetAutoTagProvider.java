@@ -104,10 +104,7 @@ public class TensorFlowImageAssetAutoTagProvider
 
 		Bundle bundle = bundleContext.getBundle();
 
-		URL url = bundle.getResource(
-			"META-INF/tensorflow/imagenet_comp_graph_label_strings.txt");
-
-		_labels = StringUtil.splitLines(StringUtil.read(url.openStream()));
+		_labelsHolder = new LabelsHolder(bundle);
 
 		modified(properties);
 
@@ -129,13 +126,13 @@ public class TensorFlowImageAssetAutoTagProvider
 	}
 
 	private Stream<Integer> _getBestIndexesStream(
-		float[] probabilities, float confidenceThreshold) {
+		String[] labels, float[] probabilities, float confidenceThreshold) {
 
 		List<Integer> bestIndexes = new ArrayList<>();
 
 		for (int i = 0; i < probabilities.length; i++) {
 			if ((probabilities[i] >= confidenceThreshold) &&
-				(i < _labels.length)) {
+				(i < labels.length)) {
 
 				bestIndexes.add(i);
 			}
@@ -154,7 +151,8 @@ public class TensorFlowImageAssetAutoTagProvider
 	}
 
 	private List<String> _label(
-		byte[] imageBytes, String mimeType, float confidenceThreshold) {
+			byte[] imageBytes, String mimeType, float confidenceThreshold)
+		throws IOException {
 
 		float[] labelProbabilities = _tensorflowProcessHolder.execute(
 			new GetLabelProbabilitiesProcessCallable(imageBytes, mimeType),
@@ -163,11 +161,13 @@ public class TensorFlowImageAssetAutoTagProvider
 			_tensorFlowImageAssetAutoTagProviderProcessConfiguration.
 				maximumNumberOfRelaunchesTimeout() * 1000);
 
+		String[] labels = _labelsHolder.getLabels();
+
 		Stream<Integer> stream = _getBestIndexesStream(
-			labelProbabilities, confidenceThreshold);
+			labels, labelProbabilities, confidenceThreshold);
 
 		return stream.map(
-			i -> _labels[i]
+			i -> labels[i]
 		).collect(
 			Collectors.toList()
 		);
@@ -184,7 +184,7 @@ public class TensorFlowImageAssetAutoTagProvider
 	@Reference
 	private ConfigurationProvider _configurationProvider;
 
-	private String[] _labels;
+	private LabelsHolder _labelsHolder;
 
 	@Reference
 	private ProcessExecutor _processExecutor;
@@ -192,5 +192,37 @@ public class TensorFlowImageAssetAutoTagProvider
 	private volatile TensorFlowImageAssetAutoTagProviderProcessConfiguration
 		_tensorFlowImageAssetAutoTagProviderProcessConfiguration;
 	private TensorflowProcessHolder _tensorflowProcessHolder;
+
+	private static class LabelsHolder {
+
+		public String[] getLabels() throws IOException {
+			String[] labels = _labels;
+
+			if (labels != null) {
+				return labels;
+			}
+
+			synchronized (this) {
+				if (_labels == null) {
+					URL url = _bundle.getResource(
+						"META-INF/tensorflow/imagenet_comp_graph_label_" +
+							"strings.txt");
+
+					_labels = StringUtil.splitLines(
+						StringUtil.read(url.openStream()));
+				}
+
+				return _labels;
+			}
+		}
+
+		private LabelsHolder(Bundle bundle) {
+			_bundle = bundle;
+		}
+
+		private final Bundle _bundle;
+		private volatile String[] _labels;
+
+	}
 
 }
