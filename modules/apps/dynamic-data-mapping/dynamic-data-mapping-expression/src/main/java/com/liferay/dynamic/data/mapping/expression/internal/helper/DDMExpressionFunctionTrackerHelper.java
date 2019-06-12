@@ -19,10 +19,12 @@ import com.liferay.dynamic.data.mapping.expression.internal.pool.DDMExpressionFu
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.commons.pool2.impl.GenericObjectPool;
 
@@ -37,13 +39,7 @@ public class DDMExpressionFunctionTrackerHelper {
 		GenericObjectPool<DDMExpressionFunction> ddmExpressionFunctionPool =
 			createDDMExpressionFunctionPool(componentFactory);
 
-		DDMExpressionFunction ddmExpressionFunction = _getDDMExpressionFunction(
-			ddmExpressionFunctionPool);
-
-		ddmExpressionFunctionComponentFactoryMap.put(
-			ddmExpressionFunction.getName(), ddmExpressionFunctionPool);
-
-		ungetDDMExpressionFunction(ddmExpressionFunction);
+		_genericObjectPools.add(ddmExpressionFunctionPool);
 	}
 
 	public void clear() {
@@ -60,9 +56,21 @@ public class DDMExpressionFunctionTrackerHelper {
 		}
 
 		ddmExpressionFunctionComponentFactoryMap.clear();
+
+		for (GenericObjectPool<DDMExpressionFunction> genericObjectPool :
+				_genericObjectPools) {
+
+			genericObjectPool.close();
+		}
+
+		_genericObjectPools.clear();
 	}
 
 	public DDMExpressionFunction getDDMExpressionFunction(String functionName) {
+		if (ddmExpressionFunctionComponentFactoryMap.isEmpty()) {
+			_populate();
+		}
+
 		GenericObjectPool<DDMExpressionFunction> ddmExpressionFunctionPool =
 			ddmExpressionFunctionComponentFactoryMap.get(functionName);
 
@@ -142,7 +150,26 @@ public class DDMExpressionFunctionTrackerHelper {
 		return null;
 	}
 
+	private void _populate() {
+		for (GenericObjectPool<DDMExpressionFunction> genericObjectPool :
+				_genericObjectPools) {
+
+			DDMExpressionFunction ddmExpressionFunction =
+				_getDDMExpressionFunction(genericObjectPool);
+
+			ddmExpressionFunctionComponentFactoryMap.put(
+				ddmExpressionFunction.getName(), genericObjectPool);
+
+			ungetDDMExpressionFunction(ddmExpressionFunction);
+		}
+
+		_genericObjectPools.clear();
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		DDMExpressionFunctionTrackerHelper.class);
+
+	private final List<GenericObjectPool<DDMExpressionFunction>>
+		_genericObjectPools = new CopyOnWriteArrayList<>();
 
 }
