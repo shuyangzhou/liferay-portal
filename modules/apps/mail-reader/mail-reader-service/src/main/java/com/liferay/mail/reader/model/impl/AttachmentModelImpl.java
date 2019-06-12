@@ -444,7 +444,12 @@ public class AttachmentModelImpl
 	@Override
 	public Attachment toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = _escapedModelProxyProviderFunction.apply(
+			Function<InvocationHandler, Attachment>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunctionHolder.
+						getEscapedModelProxyProviderFunction();
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -633,8 +638,37 @@ public class AttachmentModelImpl
 		return sb.toString();
 	}
 
-	private static final Function<InvocationHandler, Attachment>
-		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+	private static final EscapedModelProxyProviderFunctionHolder
+		_escapedModelProxyProviderFunctionHolder =
+			new EscapedModelProxyProviderFunctionHolder();
+
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		public Function<InvocationHandler, Attachment>
+			getEscapedModelProxyProviderFunction() {
+
+			Function<InvocationHandler, Attachment>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunction;
+
+			if (escapedModelProxyProviderFunction != null) {
+				return escapedModelProxyProviderFunction;
+			}
+
+			synchronized (this) {
+				if (_escapedModelProxyProviderFunction == null) {
+					_escapedModelProxyProviderFunction =
+						_getProxyProviderFunction();
+				}
+
+				return _escapedModelProxyProviderFunction;
+			}
+		}
+
+		private volatile Function<InvocationHandler, Attachment>
+			_escapedModelProxyProviderFunction;
+
+	}
 
 	private long _attachmentId;
 	private long _companyId;

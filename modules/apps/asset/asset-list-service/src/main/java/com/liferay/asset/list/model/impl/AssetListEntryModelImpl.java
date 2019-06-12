@@ -648,7 +648,12 @@ public class AssetListEntryModelImpl
 	@Override
 	public AssetListEntry toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = _escapedModelProxyProviderFunction.apply(
+			Function<InvocationHandler, AssetListEntry>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunctionHolder.
+						getEscapedModelProxyProviderFunction();
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -900,8 +905,38 @@ public class AssetListEntryModelImpl
 		return sb.toString();
 	}
 
-	private static final Function<InvocationHandler, AssetListEntry>
-		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+	private static final EscapedModelProxyProviderFunctionHolder
+		_escapedModelProxyProviderFunctionHolder =
+			new EscapedModelProxyProviderFunctionHolder();
+
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		public Function<InvocationHandler, AssetListEntry>
+			getEscapedModelProxyProviderFunction() {
+
+			Function<InvocationHandler, AssetListEntry>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunction;
+
+			if (escapedModelProxyProviderFunction != null) {
+				return escapedModelProxyProviderFunction;
+			}
+
+			synchronized (this) {
+				if (_escapedModelProxyProviderFunction == null) {
+					_escapedModelProxyProviderFunction =
+						_getProxyProviderFunction();
+				}
+
+				return _escapedModelProxyProviderFunction;
+			}
+		}
+
+		private volatile Function<InvocationHandler, AssetListEntry>
+			_escapedModelProxyProviderFunction;
+
+	}
+
 	private static boolean _entityCacheEnabled;
 	private static boolean _finderCacheEnabled;
 

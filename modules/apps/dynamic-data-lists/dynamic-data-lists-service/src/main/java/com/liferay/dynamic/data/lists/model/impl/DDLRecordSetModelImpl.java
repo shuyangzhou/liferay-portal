@@ -1078,7 +1078,12 @@ public class DDLRecordSetModelImpl
 	@Override
 	public DDLRecordSet toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = _escapedModelProxyProviderFunction.apply(
+			Function<InvocationHandler, DDLRecordSet>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunctionHolder.
+						getEscapedModelProxyProviderFunction();
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -1374,8 +1379,38 @@ public class DDLRecordSetModelImpl
 		return sb.toString();
 	}
 
-	private static final Function<InvocationHandler, DDLRecordSet>
-		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+	private static final EscapedModelProxyProviderFunctionHolder
+		_escapedModelProxyProviderFunctionHolder =
+			new EscapedModelProxyProviderFunctionHolder();
+
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		public Function<InvocationHandler, DDLRecordSet>
+			getEscapedModelProxyProviderFunction() {
+
+			Function<InvocationHandler, DDLRecordSet>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunction;
+
+			if (escapedModelProxyProviderFunction != null) {
+				return escapedModelProxyProviderFunction;
+			}
+
+			synchronized (this) {
+				if (_escapedModelProxyProviderFunction == null) {
+					_escapedModelProxyProviderFunction =
+						_getProxyProviderFunction();
+				}
+
+				return _escapedModelProxyProviderFunction;
+			}
+		}
+
+		private volatile Function<InvocationHandler, DDLRecordSet>
+			_escapedModelProxyProviderFunction;
+
+	}
+
 	private static boolean _entityCacheEnabled;
 	private static boolean _finderCacheEnabled;
 

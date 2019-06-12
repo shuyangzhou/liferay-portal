@@ -533,7 +533,12 @@ public class KaleoTaskModelImpl
 	@Override
 	public KaleoTask toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = _escapedModelProxyProviderFunction.apply(
+			Function<InvocationHandler, KaleoTask>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunctionHolder.
+						getEscapedModelProxyProviderFunction();
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -771,8 +776,37 @@ public class KaleoTaskModelImpl
 		return sb.toString();
 	}
 
-	private static final Function<InvocationHandler, KaleoTask>
-		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+	private static final EscapedModelProxyProviderFunctionHolder
+		_escapedModelProxyProviderFunctionHolder =
+			new EscapedModelProxyProviderFunctionHolder();
+
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		public Function<InvocationHandler, KaleoTask>
+			getEscapedModelProxyProviderFunction() {
+
+			Function<InvocationHandler, KaleoTask>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunction;
+
+			if (escapedModelProxyProviderFunction != null) {
+				return escapedModelProxyProviderFunction;
+			}
+
+			synchronized (this) {
+				if (_escapedModelProxyProviderFunction == null) {
+					_escapedModelProxyProviderFunction =
+						_getProxyProviderFunction();
+				}
+
+				return _escapedModelProxyProviderFunction;
+			}
+		}
+
+		private volatile Function<InvocationHandler, KaleoTask>
+			_escapedModelProxyProviderFunction;
+
+	}
 
 	private long _mvccVersion;
 	private long _kaleoTaskId;

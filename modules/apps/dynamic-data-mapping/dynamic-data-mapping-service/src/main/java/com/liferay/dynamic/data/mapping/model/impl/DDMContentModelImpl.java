@@ -690,7 +690,12 @@ public class DDMContentModelImpl
 	@Override
 	public DDMContent toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = _escapedModelProxyProviderFunction.apply(
+			Function<InvocationHandler, DDMContent>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunctionHolder.
+						getEscapedModelProxyProviderFunction();
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -925,8 +930,37 @@ public class DDMContentModelImpl
 		return sb.toString();
 	}
 
-	private static final Function<InvocationHandler, DDMContent>
-		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+	private static final EscapedModelProxyProviderFunctionHolder
+		_escapedModelProxyProviderFunctionHolder =
+			new EscapedModelProxyProviderFunctionHolder();
+
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		public Function<InvocationHandler, DDMContent>
+			getEscapedModelProxyProviderFunction() {
+
+			Function<InvocationHandler, DDMContent>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunction;
+
+			if (escapedModelProxyProviderFunction != null) {
+				return escapedModelProxyProviderFunction;
+			}
+
+			synchronized (this) {
+				if (_escapedModelProxyProviderFunction == null) {
+					_escapedModelProxyProviderFunction =
+						_getProxyProviderFunction();
+				}
+
+				return _escapedModelProxyProviderFunction;
+			}
+		}
+
+		private volatile Function<InvocationHandler, DDMContent>
+			_escapedModelProxyProviderFunction;
+
+	}
 
 	private String _uuid;
 	private String _originalUuid;

@@ -495,7 +495,12 @@ public class RecentLayoutBranchModelImpl
 	@Override
 	public RecentLayoutBranch toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = _escapedModelProxyProviderFunction.apply(
+			Function<InvocationHandler, RecentLayoutBranch>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunctionHolder.
+						getEscapedModelProxyProviderFunction();
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -694,8 +699,37 @@ public class RecentLayoutBranchModelImpl
 		return sb.toString();
 	}
 
-	private static final Function<InvocationHandler, RecentLayoutBranch>
-		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+	private static final EscapedModelProxyProviderFunctionHolder
+		_escapedModelProxyProviderFunctionHolder =
+			new EscapedModelProxyProviderFunctionHolder();
+
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		public Function<InvocationHandler, RecentLayoutBranch>
+			getEscapedModelProxyProviderFunction() {
+
+			Function<InvocationHandler, RecentLayoutBranch>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunction;
+
+			if (escapedModelProxyProviderFunction != null) {
+				return escapedModelProxyProviderFunction;
+			}
+
+			synchronized (this) {
+				if (_escapedModelProxyProviderFunction == null) {
+					_escapedModelProxyProviderFunction =
+						_getProxyProviderFunction();
+				}
+
+				return _escapedModelProxyProviderFunction;
+			}
+		}
+
+		private volatile Function<InvocationHandler, RecentLayoutBranch>
+			_escapedModelProxyProviderFunction;
+
+	}
 
 	private long _mvccVersion;
 	private long _recentLayoutBranchId;

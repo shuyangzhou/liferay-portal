@@ -521,7 +521,12 @@ public class AnnouncementsDeliveryModelImpl
 	@Override
 	public AnnouncementsDelivery toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = _escapedModelProxyProviderFunction.apply(
+			Function<InvocationHandler, AnnouncementsDelivery>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunctionHolder.
+						getEscapedModelProxyProviderFunction();
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -707,8 +712,37 @@ public class AnnouncementsDeliveryModelImpl
 		return sb.toString();
 	}
 
-	private static final Function<InvocationHandler, AnnouncementsDelivery>
-		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+	private static final EscapedModelProxyProviderFunctionHolder
+		_escapedModelProxyProviderFunctionHolder =
+			new EscapedModelProxyProviderFunctionHolder();
+
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		public Function<InvocationHandler, AnnouncementsDelivery>
+			getEscapedModelProxyProviderFunction() {
+
+			Function<InvocationHandler, AnnouncementsDelivery>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunction;
+
+			if (escapedModelProxyProviderFunction != null) {
+				return escapedModelProxyProviderFunction;
+			}
+
+			synchronized (this) {
+				if (_escapedModelProxyProviderFunction == null) {
+					_escapedModelProxyProviderFunction =
+						_getProxyProviderFunction();
+				}
+
+				return _escapedModelProxyProviderFunction;
+			}
+		}
+
+		private volatile Function<InvocationHandler, AnnouncementsDelivery>
+			_escapedModelProxyProviderFunction;
+
+	}
 
 	private long _deliveryId;
 	private long _companyId;

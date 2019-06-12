@@ -452,7 +452,12 @@ public class SyncDLFileVersionDiffModelImpl
 	@Override
 	public SyncDLFileVersionDiff toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = _escapedModelProxyProviderFunction.apply(
+			Function<InvocationHandler, SyncDLFileVersionDiff>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunctionHolder.
+						getEscapedModelProxyProviderFunction();
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -656,8 +661,37 @@ public class SyncDLFileVersionDiffModelImpl
 		return sb.toString();
 	}
 
-	private static final Function<InvocationHandler, SyncDLFileVersionDiff>
-		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+	private static final EscapedModelProxyProviderFunctionHolder
+		_escapedModelProxyProviderFunctionHolder =
+			new EscapedModelProxyProviderFunctionHolder();
+
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		public Function<InvocationHandler, SyncDLFileVersionDiff>
+			getEscapedModelProxyProviderFunction() {
+
+			Function<InvocationHandler, SyncDLFileVersionDiff>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunction;
+
+			if (escapedModelProxyProviderFunction != null) {
+				return escapedModelProxyProviderFunction;
+			}
+
+			synchronized (this) {
+				if (_escapedModelProxyProviderFunction == null) {
+					_escapedModelProxyProviderFunction =
+						_getProxyProviderFunction();
+				}
+
+				return _escapedModelProxyProviderFunction;
+			}
+		}
+
+		private volatile Function<InvocationHandler, SyncDLFileVersionDiff>
+			_escapedModelProxyProviderFunction;
+
+	}
 
 	private long _syncDLFileVersionDiffId;
 	private long _fileEntryId;

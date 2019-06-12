@@ -412,7 +412,12 @@ public class DDMTemplateLinkModelImpl
 	@Override
 	public DDMTemplateLink toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = _escapedModelProxyProviderFunction.apply(
+			Function<InvocationHandler, DDMTemplateLink>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunctionHolder.
+						getEscapedModelProxyProviderFunction();
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -589,8 +594,37 @@ public class DDMTemplateLinkModelImpl
 		return sb.toString();
 	}
 
-	private static final Function<InvocationHandler, DDMTemplateLink>
-		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+	private static final EscapedModelProxyProviderFunctionHolder
+		_escapedModelProxyProviderFunctionHolder =
+			new EscapedModelProxyProviderFunctionHolder();
+
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		public Function<InvocationHandler, DDMTemplateLink>
+			getEscapedModelProxyProviderFunction() {
+
+			Function<InvocationHandler, DDMTemplateLink>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunction;
+
+			if (escapedModelProxyProviderFunction != null) {
+				return escapedModelProxyProviderFunction;
+			}
+
+			synchronized (this) {
+				if (_escapedModelProxyProviderFunction == null) {
+					_escapedModelProxyProviderFunction =
+						_getProxyProviderFunction();
+				}
+
+				return _escapedModelProxyProviderFunction;
+			}
+		}
+
+		private volatile Function<InvocationHandler, DDMTemplateLink>
+			_escapedModelProxyProviderFunction;
+
+	}
 
 	private long _templateLinkId;
 	private long _companyId;

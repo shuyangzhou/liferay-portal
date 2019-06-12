@@ -607,7 +607,12 @@ public class SegmentsEntryRelModelImpl
 	@Override
 	public SegmentsEntryRel toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = _escapedModelProxyProviderFunction.apply(
+			Function<InvocationHandler, SegmentsEntryRel>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunctionHolder.
+						getEscapedModelProxyProviderFunction();
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -826,8 +831,37 @@ public class SegmentsEntryRelModelImpl
 		return sb.toString();
 	}
 
-	private static final Function<InvocationHandler, SegmentsEntryRel>
-		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+	private static final EscapedModelProxyProviderFunctionHolder
+		_escapedModelProxyProviderFunctionHolder =
+			new EscapedModelProxyProviderFunctionHolder();
+
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		public Function<InvocationHandler, SegmentsEntryRel>
+			getEscapedModelProxyProviderFunction() {
+
+			Function<InvocationHandler, SegmentsEntryRel>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunction;
+
+			if (escapedModelProxyProviderFunction != null) {
+				return escapedModelProxyProviderFunction;
+			}
+
+			synchronized (this) {
+				if (_escapedModelProxyProviderFunction == null) {
+					_escapedModelProxyProviderFunction =
+						_getProxyProviderFunction();
+				}
+
+				return _escapedModelProxyProviderFunction;
+			}
+		}
+
+		private volatile Function<InvocationHandler, SegmentsEntryRel>
+			_escapedModelProxyProviderFunction;
+
+	}
 
 	private long _segmentsEntryRelId;
 	private long _groupId;

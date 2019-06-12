@@ -1096,7 +1096,12 @@ public class LayoutPageTemplateEntryModelImpl
 	@Override
 	public LayoutPageTemplateEntry toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = _escapedModelProxyProviderFunction.apply(
+			Function<InvocationHandler, LayoutPageTemplateEntry>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunctionHolder.
+						getEscapedModelProxyProviderFunction();
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -1437,8 +1442,37 @@ public class LayoutPageTemplateEntryModelImpl
 		return sb.toString();
 	}
 
-	private static final Function<InvocationHandler, LayoutPageTemplateEntry>
-		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+	private static final EscapedModelProxyProviderFunctionHolder
+		_escapedModelProxyProviderFunctionHolder =
+			new EscapedModelProxyProviderFunctionHolder();
+
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		public Function<InvocationHandler, LayoutPageTemplateEntry>
+			getEscapedModelProxyProviderFunction() {
+
+			Function<InvocationHandler, LayoutPageTemplateEntry>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunction;
+
+			if (escapedModelProxyProviderFunction != null) {
+				return escapedModelProxyProviderFunction;
+			}
+
+			synchronized (this) {
+				if (_escapedModelProxyProviderFunction == null) {
+					_escapedModelProxyProviderFunction =
+						_getProxyProviderFunction();
+				}
+
+				return _escapedModelProxyProviderFunction;
+			}
+		}
+
+		private volatile Function<InvocationHandler, LayoutPageTemplateEntry>
+			_escapedModelProxyProviderFunction;
+
+	}
 
 	private String _uuid;
 	private String _originalUuid;

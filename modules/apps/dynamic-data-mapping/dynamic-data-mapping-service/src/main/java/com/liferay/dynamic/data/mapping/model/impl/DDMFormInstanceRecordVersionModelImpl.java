@@ -841,7 +841,12 @@ public class DDMFormInstanceRecordVersionModelImpl
 	@Override
 	public DDMFormInstanceRecordVersion toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = _escapedModelProxyProviderFunction.apply(
+			Function<InvocationHandler, DDMFormInstanceRecordVersion>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunctionHolder.
+						getEscapedModelProxyProviderFunction();
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -1125,9 +1130,38 @@ public class DDMFormInstanceRecordVersionModelImpl
 		return sb.toString();
 	}
 
-	private static final Function
-		<InvocationHandler, DDMFormInstanceRecordVersion>
-			_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+	private static final EscapedModelProxyProviderFunctionHolder
+		_escapedModelProxyProviderFunctionHolder =
+			new EscapedModelProxyProviderFunctionHolder();
+
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		public Function<InvocationHandler, DDMFormInstanceRecordVersion>
+			getEscapedModelProxyProviderFunction() {
+
+			Function<InvocationHandler, DDMFormInstanceRecordVersion>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunction;
+
+			if (escapedModelProxyProviderFunction != null) {
+				return escapedModelProxyProviderFunction;
+			}
+
+			synchronized (this) {
+				if (_escapedModelProxyProviderFunction == null) {
+					_escapedModelProxyProviderFunction =
+						_getProxyProviderFunction();
+				}
+
+				return _escapedModelProxyProviderFunction;
+			}
+		}
+
+		private volatile Function
+			<InvocationHandler, DDMFormInstanceRecordVersion>
+				_escapedModelProxyProviderFunction;
+
+	}
 
 	private long _formInstanceRecordVersionId;
 	private long _groupId;

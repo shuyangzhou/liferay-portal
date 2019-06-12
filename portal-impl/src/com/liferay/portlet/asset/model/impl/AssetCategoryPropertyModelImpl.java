@@ -574,7 +574,12 @@ public class AssetCategoryPropertyModelImpl
 	@Override
 	public AssetCategoryProperty toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = _escapedModelProxyProviderFunction.apply(
+			Function<InvocationHandler, AssetCategoryProperty>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunctionHolder.
+						getEscapedModelProxyProviderFunction();
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -800,8 +805,37 @@ public class AssetCategoryPropertyModelImpl
 		return sb.toString();
 	}
 
-	private static final Function<InvocationHandler, AssetCategoryProperty>
-		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+	private static final EscapedModelProxyProviderFunctionHolder
+		_escapedModelProxyProviderFunctionHolder =
+			new EscapedModelProxyProviderFunctionHolder();
+
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		public Function<InvocationHandler, AssetCategoryProperty>
+			getEscapedModelProxyProviderFunction() {
+
+			Function<InvocationHandler, AssetCategoryProperty>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunction;
+
+			if (escapedModelProxyProviderFunction != null) {
+				return escapedModelProxyProviderFunction;
+			}
+
+			synchronized (this) {
+				if (_escapedModelProxyProviderFunction == null) {
+					_escapedModelProxyProviderFunction =
+						_getProxyProviderFunction();
+				}
+
+				return _escapedModelProxyProviderFunction;
+			}
+		}
+
+		private volatile Function<InvocationHandler, AssetCategoryProperty>
+			_escapedModelProxyProviderFunction;
+
+	}
 
 	private long _categoryPropertyId;
 	private long _companyId;

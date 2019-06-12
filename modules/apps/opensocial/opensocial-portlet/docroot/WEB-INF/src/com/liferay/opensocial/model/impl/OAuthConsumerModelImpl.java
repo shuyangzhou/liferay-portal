@@ -466,7 +466,12 @@ public class OAuthConsumerModelImpl
 	@Override
 	public OAuthConsumer toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = _escapedModelProxyProviderFunction.apply(
+			Function<InvocationHandler, OAuthConsumer>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunctionHolder.
+						getEscapedModelProxyProviderFunction();
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -690,8 +695,37 @@ public class OAuthConsumerModelImpl
 		return sb.toString();
 	}
 
-	private static final Function<InvocationHandler, OAuthConsumer>
-		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+	private static final EscapedModelProxyProviderFunctionHolder
+		_escapedModelProxyProviderFunctionHolder =
+			new EscapedModelProxyProviderFunctionHolder();
+
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		public Function<InvocationHandler, OAuthConsumer>
+			getEscapedModelProxyProviderFunction() {
+
+			Function<InvocationHandler, OAuthConsumer>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunction;
+
+			if (escapedModelProxyProviderFunction != null) {
+				return escapedModelProxyProviderFunction;
+			}
+
+			synchronized (this) {
+				if (_escapedModelProxyProviderFunction == null) {
+					_escapedModelProxyProviderFunction =
+						_getProxyProviderFunction();
+				}
+
+				return _escapedModelProxyProviderFunction;
+			}
+		}
+
+		private volatile Function<InvocationHandler, OAuthConsumer>
+			_escapedModelProxyProviderFunction;
+
+	}
 
 	private long _oAuthConsumerId;
 	private long _companyId;

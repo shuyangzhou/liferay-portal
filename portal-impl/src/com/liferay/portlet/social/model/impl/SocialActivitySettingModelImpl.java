@@ -540,7 +540,12 @@ public class SocialActivitySettingModelImpl
 	@Override
 	public SocialActivitySetting toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = _escapedModelProxyProviderFunction.apply(
+			Function<InvocationHandler, SocialActivitySetting>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunctionHolder.
+						getEscapedModelProxyProviderFunction();
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -743,8 +748,37 @@ public class SocialActivitySettingModelImpl
 		return sb.toString();
 	}
 
-	private static final Function<InvocationHandler, SocialActivitySetting>
-		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+	private static final EscapedModelProxyProviderFunctionHolder
+		_escapedModelProxyProviderFunctionHolder =
+			new EscapedModelProxyProviderFunctionHolder();
+
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		public Function<InvocationHandler, SocialActivitySetting>
+			getEscapedModelProxyProviderFunction() {
+
+			Function<InvocationHandler, SocialActivitySetting>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunction;
+
+			if (escapedModelProxyProviderFunction != null) {
+				return escapedModelProxyProviderFunction;
+			}
+
+			synchronized (this) {
+				if (_escapedModelProxyProviderFunction == null) {
+					_escapedModelProxyProviderFunction =
+						_getProxyProviderFunction();
+				}
+
+				return _escapedModelProxyProviderFunction;
+			}
+		}
+
+		private volatile Function<InvocationHandler, SocialActivitySetting>
+			_escapedModelProxyProviderFunction;
+
+	}
 
 	private long _activitySettingId;
 	private long _groupId;

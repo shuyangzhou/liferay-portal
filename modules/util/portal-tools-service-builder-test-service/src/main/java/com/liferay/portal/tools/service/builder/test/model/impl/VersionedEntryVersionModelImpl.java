@@ -491,7 +491,12 @@ public class VersionedEntryVersionModelImpl
 	@Override
 	public VersionedEntryVersion toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = _escapedModelProxyProviderFunction.apply(
+			Function<InvocationHandler, VersionedEntryVersion>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunctionHolder.
+						getEscapedModelProxyProviderFunction();
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -680,8 +685,37 @@ public class VersionedEntryVersionModelImpl
 		return sb.toString();
 	}
 
-	private static final Function<InvocationHandler, VersionedEntryVersion>
-		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+	private static final EscapedModelProxyProviderFunctionHolder
+		_escapedModelProxyProviderFunctionHolder =
+			new EscapedModelProxyProviderFunctionHolder();
+
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		public Function<InvocationHandler, VersionedEntryVersion>
+			getEscapedModelProxyProviderFunction() {
+
+			Function<InvocationHandler, VersionedEntryVersion>
+				escapedModelProxyProviderFunction =
+					_escapedModelProxyProviderFunction;
+
+			if (escapedModelProxyProviderFunction != null) {
+				return escapedModelProxyProviderFunction;
+			}
+
+			synchronized (this) {
+				if (_escapedModelProxyProviderFunction == null) {
+					_escapedModelProxyProviderFunction =
+						_getProxyProviderFunction();
+				}
+
+				return _escapedModelProxyProviderFunction;
+			}
+		}
+
+		private volatile Function<InvocationHandler, VersionedEntryVersion>
+			_escapedModelProxyProviderFunction;
+
+	}
 
 	private long _versionedEntryVersionId;
 	private int _version;
