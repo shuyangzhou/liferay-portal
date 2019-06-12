@@ -22,14 +22,6 @@ liferay {
 			version = project.properties["app.server.jboss.version"] ?: "7.0.0"
 		}
 
-		resin {
-			deployDir = project.properties["app.server.resin.deploy.dir"] ?: "${->liferay.appServers.resin.dir}/webapps"
-			dir = project.properties["app.server.resin.dir"] ?: "${->liferay.appServerParentDir}/resin-${->liferay.appServers.resin.version}"
-			libGlobalDir = project.properties["app.server.resin.lib.global.dir"] ?: "${->liferay.appServers.resin.dir}/ext-lib"
-			portalDir = project.properties["app.server.resin.portal.dir"] ?: "${->liferay.appServers.resin.dir}/webapps/ROOT"
-			version = project.properties["app.server.resin.version"] ?: "4.0.44"
-		}
-
 		tcserver {
 			deployDir = project.properties["app.server.tcserver.deploy.dir"] ?: "${->liferay.appServers.tcserver.dir}/liferay/webapps"
 			dir = project.properties["app.server.tcserver.dir"] ?: "${->liferay.appServerParentDir}/tcserver-${->liferay.appServers.tcserver.version}"

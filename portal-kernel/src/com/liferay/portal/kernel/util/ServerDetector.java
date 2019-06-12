@@ -27,8 +27,6 @@ public class ServerDetector {
 
 	public static final String JBOSS_ID = "jboss";
 
-	public static final String RESIN_ID = "resin";
-
 	public static final String SYSTEM_PROPERTY_KEY_SERVER_DETECTOR_SERVER_ID =
 		"server.detector.server.id";
 
@@ -85,17 +83,8 @@ public class ServerDetector {
 		return false;
 	}
 
-	public static boolean isResin() {
-		if (_serverType == ServerType.RESIN) {
-			return true;
-		}
-
-		return false;
-	}
-
 	public static boolean isSupported(String serverType) {
 		if (serverType.equals(ServerDetector.JBOSS_ID) ||
-			serverType.equals(ServerDetector.RESIN_ID) ||
 			serverType.equals(ServerDetector.TOMCAT_ID) ||
 			serverType.equals(ServerDetector.WEBLOGIC_ID) ||
 			serverType.equals(ServerDetector.WEBSPHERE_ID) ||
@@ -187,10 +176,6 @@ public class ServerDetector {
 			return ServerType.JBOSS;
 		}
 
-		if (_hasSystemProperty("resin.home")) {
-			return ServerType.RESIN;
-		}
-
 		if (_detect("/weblogic/Server.class")) {
 			return ServerType.WEBLOGIC;
 		}
@@ -240,7 +225,7 @@ public class ServerDetector {
 
 	private enum ServerType {
 
-		JBOSS, RESIN, TOMCAT, UNKNOWN, WEBLOGIC, WEBSPHERE, WILDFLY
+		JBOSS, TOMCAT, UNKNOWN, WEBLOGIC, WEBSPHERE, WILDFLY
 
 	}
 
