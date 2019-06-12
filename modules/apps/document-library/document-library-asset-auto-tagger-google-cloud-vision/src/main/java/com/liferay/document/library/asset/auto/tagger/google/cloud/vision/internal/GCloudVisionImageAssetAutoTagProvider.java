@@ -49,6 +49,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Alejandro Tardín
  */
 @Component(
+	immediate = false,
 	property = "model.class.name=com.liferay.document.library.kernel.model.DLFileEntry",
 	service = AssetAutoTagProvider.class
 )

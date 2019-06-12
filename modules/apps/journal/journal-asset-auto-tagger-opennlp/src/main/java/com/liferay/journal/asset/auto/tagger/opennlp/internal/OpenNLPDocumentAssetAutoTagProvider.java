@@ -45,6 +45,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Alicia García
  */
 @Component(
+	immediate = false,
 	property = "model.class.name=com.liferay.journal.model.JournalArticle",
 	service = AssetAutoTagProvider.class
 )
