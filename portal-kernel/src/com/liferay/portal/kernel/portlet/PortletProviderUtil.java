@@ -98,22 +98,40 @@ public class PortletProviderUtil {
 		String className, PortletProvider.Action action) {
 
 		if (action.equals(PortletProvider.Action.ADD)) {
-			return getPortletProvider(className, _addServiceTrackerMap);
+			return getPortletProvider(
+				className,
+				AddPortletProviderServiceTrackerMapHolder.
+					_addServiceTrackerMap);
 		}
 		else if (action.equals(PortletProvider.Action.BROWSE)) {
-			return getPortletProvider(className, _browseServiceTrackerMap);
+			return getPortletProvider(
+				className,
+				BrowsePortletProviderServiceTrackerMapHoler.
+					_browseServiceTrackerMap);
 		}
 		else if (action.equals(PortletProvider.Action.EDIT)) {
-			return getPortletProvider(className, _editServiceTrackerMap);
+			return getPortletProvider(
+				className,
+				EditPortletProviderServiceTrackerMapHolder.
+					_editServiceTrackerMap);
 		}
 		else if (action.equals(PortletProvider.Action.MANAGE)) {
-			return getPortletProvider(className, _manageServiceTrackerMap);
+			return getPortletProvider(
+				className,
+				ManagePortletProviderServiceTrackerMapHolder.
+					_manageServiceTrackerMap);
 		}
 		else if (action.equals(PortletProvider.Action.PREVIEW)) {
-			return getPortletProvider(className, _previewServiceTrackerMap);
+			return getPortletProvider(
+				className,
+				PreviewPortletProviderServiceTrackerMapHolder.
+					_previewServiceTrackerMap);
 		}
 		else if (action.equals(PortletProvider.Action.VIEW)) {
-			return getPortletProvider(className, _viewServiceTrackerMap);
+			return getPortletProvider(
+				className,
+				ViewPortletProviderServiceTrackerMapHolder.
+					_viewServiceTrackerMap);
 		}
 
 		return null;
@@ -147,24 +165,58 @@ public class PortletProviderUtil {
 		return false;
 	}
 
-	private static final ServiceTrackerMap<String, AddPortletProvider>
-		_addServiceTrackerMap = ServiceTrackerCollections.openSingleValueMap(
-			AddPortletProvider.class, "model.class.name");
-	private static final ServiceTrackerMap<String, BrowsePortletProvider>
-		_browseServiceTrackerMap = ServiceTrackerCollections.openSingleValueMap(
-			BrowsePortletProvider.class, "model.class.name");
-	private static final ServiceTrackerMap<String, EditPortletProvider>
-		_editServiceTrackerMap = ServiceTrackerCollections.openSingleValueMap(
-			EditPortletProvider.class, "model.class.name");
-	private static final ServiceTrackerMap<String, ManagePortletProvider>
-		_manageServiceTrackerMap = ServiceTrackerCollections.openSingleValueMap(
-			ManagePortletProvider.class, "model.class.name");
-	private static final ServiceTrackerMap<String, PreviewPortletProvider>
-		_previewServiceTrackerMap =
-			ServiceTrackerCollections.openSingleValueMap(
-				PreviewPortletProvider.class, "model.class.name");
-	private static final ServiceTrackerMap<String, ViewPortletProvider>
-		_viewServiceTrackerMap = ServiceTrackerCollections.openSingleValueMap(
-			ViewPortletProvider.class, "model.class.name");
+	private static class AddPortletProviderServiceTrackerMapHolder {
+
+		private static final ServiceTrackerMap<String, AddPortletProvider>
+			_addServiceTrackerMap =
+				ServiceTrackerCollections.openSingleValueMap(
+					AddPortletProvider.class, "model.class.name");
+
+	}
+
+	private static class BrowsePortletProviderServiceTrackerMapHoler {
+
+		private static final ServiceTrackerMap<String, BrowsePortletProvider>
+			_browseServiceTrackerMap =
+				ServiceTrackerCollections.openSingleValueMap(
+					BrowsePortletProvider.class, "model.class.name");
+
+	}
+
+	private static class EditPortletProviderServiceTrackerMapHolder {
+
+		private static final ServiceTrackerMap<String, EditPortletProvider>
+			_editServiceTrackerMap =
+				ServiceTrackerCollections.openSingleValueMap(
+					EditPortletProvider.class, "model.class.name");
+
+	}
+
+	private static class ManagePortletProviderServiceTrackerMapHolder {
+
+		private static final ServiceTrackerMap<String, ManagePortletProvider>
+			_manageServiceTrackerMap =
+				ServiceTrackerCollections.openSingleValueMap(
+					ManagePortletProvider.class, "model.class.name");
+
+	}
+
+	private static class PreviewPortletProviderServiceTrackerMapHolder {
+
+		private static final ServiceTrackerMap<String, PreviewPortletProvider>
+			_previewServiceTrackerMap =
+				ServiceTrackerCollections.openSingleValueMap(
+					PreviewPortletProvider.class, "model.class.name");
+
+	}
+
+	private static class ViewPortletProviderServiceTrackerMapHolder {
+
+		private static final ServiceTrackerMap<String, ViewPortletProvider>
+			_viewServiceTrackerMap =
+				ServiceTrackerCollections.openSingleValueMap(
+					ViewPortletProvider.class, "model.class.name");
+
+	}
 
 }
