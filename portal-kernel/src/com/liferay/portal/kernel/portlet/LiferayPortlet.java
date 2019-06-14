@@ -461,11 +461,28 @@ public class LiferayPortlet extends GenericPortlet {
 	}
 
 	protected void initValidPaths(String rootPath, String extension) {
-		if (rootPath.equals(StringPool.SLASH)) {
-			PortletContext portletContext = getPortletContext();
+		PortletContext portletContext = getPortletContext();
 
+		String portletContextName = portletContext.getPortletContextName();
+
+		Map<String, Set<String>> validPathsMap = _validPathsMaps.get(
+			portletContextName);
+
+		if (validPathsMap != null) {
+			validPaths = validPathsMap.get(rootPath);
+
+			if (validPaths != null) {
+				return;
+			}
+		}
+		else {
+			validPathsMap = _validPathsMaps.computeIfAbsent(
+				portletContextName, key -> new ConcurrentHashMap<>());
+		}
+
+		if (rootPath.equals(StringPool.SLASH)) {
 			PortletApp portletApp = PortletLocalServiceUtil.getPortletApp(
-				portletContext.getPortletContextName());
+				portletContextName);
 
 			if (!portletApp.isWARFile()) {
 				_log.error(
@@ -474,24 +491,27 @@ public class LiferayPortlet extends GenericPortlet {
 						" because root path is configured to have access to ",
 						"all portal paths"));
 
-				validPaths = new HashSet<>();
+				validPaths = validPathsMap.computeIfAbsent(
+					rootPath, key -> new HashSet<>());
 
 				return;
 			}
 		}
 
-		validPaths = getPaths(rootPath, extension);
+		Set<String> paths = getPaths(rootPath, extension);
 
 		if (!rootPath.equals(StringPool.SLASH) &&
 			!rootPath.equals("/META-INF/") &&
 			!rootPath.equals("/META-INF/resources/")) {
 
-			validPaths.addAll(
+			paths.addAll(
 				getPaths(_PATH_META_INF_RESOURCES.concat(rootPath), extension));
 		}
 
 		Collections.addAll(
-			validPaths, StringUtil.split(getInitParameter("valid-paths")));
+			paths, StringUtil.split(getInitParameter("valid-paths")));
+
+		validPaths = validPathsMap.computeIfAbsent(rootPath, key -> paths);
 	}
 
 	protected boolean isAddSuccessMessage(ActionRequest actionRequest) {
@@ -698,6 +718,9 @@ public class LiferayPortlet extends GenericPortlet {
 	private static final boolean _PROCESS_PORTLET_REQUEST = true;
 
 	private static final Log _log = LogFactoryUtil.getLog(LiferayPortlet.class);
+
+	private static final Map<String, Map<String, Set<String>>> _validPathsMaps =
+		new ConcurrentHashMap<>();
 
 	private final Map<String, Method> _actionMethods =
 		new ConcurrentHashMap<>();
