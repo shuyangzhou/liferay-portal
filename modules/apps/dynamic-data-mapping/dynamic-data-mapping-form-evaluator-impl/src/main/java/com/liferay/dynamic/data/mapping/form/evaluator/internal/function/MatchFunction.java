@@ -29,7 +29,9 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(
 	property = "name=" + DDMExpressionFunctionNames.MATCH,
-	service = DDMExpressionFunction.Function2.class
+	service = {
+		DDMExpressionFunction.class, DDMExpressionFunction.Function2.class
+	}
 )
 public class MatchFunction
 	implements DDMExpressionFunction.Function2<String, String, Boolean> {

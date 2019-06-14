@@ -44,7 +44,8 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	property = "name=" + DDMExpressionFunctionNames.SET_OPTIONS,
 	service = {
-		DDMExpressionFunction.Function2.class, DDMExpressionObserverAware.class,
+		DDMExpressionFunction.class, DDMExpressionFunction.Function2.class,
+		DDMExpressionObserverAware.class,
 		DDMExpressionParameterAccessorAware.class
 	}
 )

@@ -25,7 +25,9 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(
 	property = "name=" + DDMExpressionFunctionNames.IS_URL,
-	service = DDMExpressionFunction.Function1.class
+	service = {
+		DDMExpressionFunction.class, DDMExpressionFunction.Function1.class
+	}
 )
 public class IsURLFunction
 	implements DDMExpressionFunction.Function1<Object, Boolean> {

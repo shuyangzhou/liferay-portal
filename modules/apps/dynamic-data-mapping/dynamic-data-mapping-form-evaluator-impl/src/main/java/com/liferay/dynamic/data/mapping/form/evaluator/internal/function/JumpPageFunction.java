@@ -29,7 +29,7 @@ import org.osgi.service.component.annotations.Component;
 @Component(
 	property = "name=" + DDMExpressionFunctionNames.JUMP_PAGE,
 	service = {
-		DDMExpressionActionHandlerAware.class,
+		DDMExpressionActionHandlerAware.class, DDMExpressionFunction.class,
 		DDMExpressionFunction.Function2.class
 	}
 )

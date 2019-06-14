@@ -28,7 +28,9 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(
 	property = "name=" + DDMExpressionFunctionNames.IS_EMPTY,
-	service = DDMExpressionFunction.Function1.class
+	service = {
+		DDMExpressionFunction.class, DDMExpressionFunction.Function1.class
+	}
 )
 public class IsEmptyFunction
 	implements DDMExpressionFunction.Function1<Object, Boolean> {

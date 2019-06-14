@@ -28,7 +28,8 @@ import org.osgi.service.component.annotations.Component;
 @Component(
 	property = "name=" + DDMExpressionFunctionNames.SET_INVALID,
 	service = {
-		DDMExpressionFunction.Function2.class, DDMExpressionObserverAware.class
+		DDMExpressionFunction.class, DDMExpressionFunction.Function2.class,
+		DDMExpressionObserverAware.class
 	}
 )
 public class SetInvalidFunction

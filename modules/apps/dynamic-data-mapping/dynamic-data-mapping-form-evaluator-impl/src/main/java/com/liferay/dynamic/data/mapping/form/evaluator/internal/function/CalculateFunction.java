@@ -15,6 +15,7 @@
 package com.liferay.dynamic.data.mapping.form.evaluator.internal.function;
 
 import com.liferay.dynamic.data.mapping.constants.DDMExpressionFunctionNames;
+import com.liferay.dynamic.data.mapping.expression.DDMExpressionFunction;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -22,7 +23,8 @@ import org.osgi.service.component.annotations.Component;
  * @author Rafael Praxedes
  */
 @Component(
-	property = "name=" + DDMExpressionFunctionNames.CALCULATE, service = {}
+	property = "name=" + DDMExpressionFunctionNames.CALCULATE,
+	service = DDMExpressionFunction.class
 )
 public class CalculateFunction extends SetPropertyFunction<String> {
 

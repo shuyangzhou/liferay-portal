@@ -29,7 +29,9 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(
 	property = "name=" + DDMExpressionFunctionNames.SUM,
-	service = DDMExpressionFunction.Function1.class
+	service = {
+		DDMExpressionFunction.class, DDMExpressionFunction.Function1.class
+	}
 )
 public class SumFunction
 	implements DDMExpressionFunction.Function1<BigDecimal[], BigDecimal> {

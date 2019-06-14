@@ -26,7 +26,9 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(
 	property = "name=" + DDMExpressionFunctionNames.IS_INTEGER,
-	service = DDMExpressionFunction.Function1.class
+	service = {
+		DDMExpressionFunction.class, DDMExpressionFunction.Function1.class
+	}
 )
 public class IsIntegerFunction
 	implements DDMExpressionFunction.Function1<Object, Boolean> {

@@ -27,7 +27,9 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(
 	property = "name=" + DDMExpressionFunctionNames.CONTAINS,
-	service = DDMExpressionFunction.Function2.class
+	service = {
+		DDMExpressionFunction.class, DDMExpressionFunction.Function2.class
+	}
 )
 public class ContainsFunction
 	implements DDMExpressionFunction.Function2<Object, String, Boolean> {

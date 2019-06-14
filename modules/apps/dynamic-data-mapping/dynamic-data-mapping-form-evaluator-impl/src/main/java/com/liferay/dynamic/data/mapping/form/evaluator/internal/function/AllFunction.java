@@ -33,7 +33,9 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = "name=" + DDMExpressionFunctionNames.ALL,
-	service = DDMExpressionFunction.Function2.class
+	service = {
+		DDMExpressionFunction.class, DDMExpressionFunction.Function2.class
+	}
 )
 public class AllFunction
 	implements DDMExpressionFunction.Function2<String, Object, Boolean> {

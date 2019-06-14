@@ -29,7 +29,9 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(
 	property = "name=" + DDMExpressionFunctionNames.MIN,
-	service = DDMExpressionFunction.Function1.class
+	service = {
+		DDMExpressionFunction.class, DDMExpressionFunction.Function1.class
+	}
 )
 public class MinFunction
 	implements DDMExpressionFunction.Function1<BigDecimal[], BigDecimal> {

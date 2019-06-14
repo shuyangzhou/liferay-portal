@@ -26,7 +26,9 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(
 	property = "name=" + DDMExpressionFunctionNames.BETWEEN,
-	service = DDMExpressionFunction.Function3.class
+	service = {
+		DDMExpressionFunction.class, DDMExpressionFunction.Function3.class
+	}
 )
 public class BetweenFunction
 	implements DDMExpressionFunction.Function3

@@ -27,7 +27,9 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(
 	property = "name=" + DDMExpressionFunctionNames.EQUALS,
-	service = DDMExpressionFunction.Function2.class
+	service = {
+		DDMExpressionFunction.class, DDMExpressionFunction.Function2.class
+	}
 )
 public class EqualsFunction
 	implements DDMExpressionFunction.Function2<Object, Object, Boolean> {

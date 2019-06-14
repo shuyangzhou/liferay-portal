@@ -36,7 +36,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	property = "name=belongsTo",
 	service = {
-		DDMExpressionFunction.Function1.class,
+		DDMExpressionFunction.class, DDMExpressionFunction.Function1.class,
 		DDMExpressionParameterAccessorAware.class
 	}
 )

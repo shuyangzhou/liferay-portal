@@ -30,7 +30,7 @@ import org.osgi.service.component.annotations.Component;
 @Component(
 	property = "name=" + DDMExpressionFunctionNames.GET_VALUE,
 	service = {
-		DDMExpressionFieldAccessorAware.class,
+		DDMExpressionFieldAccessorAware.class, DDMExpressionFunction.class,
 		DDMExpressionFunction.Function1.class
 	}
 )
