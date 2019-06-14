@@ -14,6 +14,7 @@
 
 package com.liferay.dynamic.data.mapping.form.evaluator.internal.function;
 
+import com.liferay.dynamic.data.mapping.constants.DDMExpressionFunctionNames;
 import com.liferay.dynamic.data.mapping.expression.DDMExpressionFunction;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -24,7 +25,10 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Leonardo Barros
  */
-@Component(service = DDMExpressionFunction.Function2.class)
+@Component(
+	property = "name=" + DDMExpressionFunctionNames.CONTAINS,
+	service = DDMExpressionFunction.Function2.class
+)
 public class ContainsFunction
 	implements DDMExpressionFunction.Function2<Object, String, Boolean> {
 
@@ -47,7 +51,7 @@ public class ContainsFunction
 
 	@Override
 	public String getName() {
-		return "contains";
+		return DDMExpressionFunctionNames.CONTAINS;
 	}
 
 	protected Boolean apply(String string1, String string2) {

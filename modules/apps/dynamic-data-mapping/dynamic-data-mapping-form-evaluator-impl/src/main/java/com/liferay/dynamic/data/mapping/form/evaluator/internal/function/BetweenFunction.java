@@ -14,6 +14,7 @@
 
 package com.liferay.dynamic.data.mapping.form.evaluator.internal.function;
 
+import com.liferay.dynamic.data.mapping.constants.DDMExpressionFunctionNames;
 import com.liferay.dynamic.data.mapping.expression.DDMExpressionFunction;
 
 import java.math.BigDecimal;
@@ -23,7 +24,10 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Leonardo Barros
  */
-@Component(service = DDMExpressionFunction.Function3.class)
+@Component(
+	property = "name=" + DDMExpressionFunctionNames.BETWEEN,
+	service = DDMExpressionFunction.Function3.class
+)
 public class BetweenFunction
 	implements DDMExpressionFunction.Function3
 		<BigDecimal, BigDecimal, BigDecimal, Boolean> {
@@ -44,7 +48,7 @@ public class BetweenFunction
 
 	@Override
 	public String getName() {
-		return "between";
+		return DDMExpressionFunctionNames.BETWEEN;
 	}
 
 }

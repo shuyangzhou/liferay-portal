@@ -14,17 +14,22 @@
 
 package com.liferay.dynamic.data.mapping.form.evaluator.internal.function;
 
+import com.liferay.dynamic.data.mapping.constants.DDMExpressionFunctionNames;
+
 import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Leonardo Barros
  */
-@Component(service = {})
+@Component(
+	property = "name=" + DDMExpressionFunctionNames.SET_VALIDATION_DATA_TYPE,
+	service = {}
+)
 public class SetValidationDataTypeFunction extends SetPropertyFunction<String> {
 
 	@Override
 	public String getName() {
-		return "setValidationDataType";
+		return DDMExpressionFunctionNames.SET_VALIDATION_DATA_TYPE;
 	}
 
 	@Override

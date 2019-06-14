@@ -14,6 +14,7 @@
 
 package com.liferay.dynamic.data.mapping.form.evaluator.internal.function;
 
+import com.liferay.dynamic.data.mapping.constants.DDMExpressionFunctionNames;
 import com.liferay.dynamic.data.mapping.expression.DDMExpressionFunction;
 
 import java.math.BigDecimal;
@@ -26,7 +27,10 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Leonardo Barros
  */
-@Component(service = DDMExpressionFunction.Function1.class)
+@Component(
+	property = "name=" + DDMExpressionFunctionNames.MIN,
+	service = DDMExpressionFunction.Function1.class
+)
 public class MinFunction
 	implements DDMExpressionFunction.Function1<BigDecimal[], BigDecimal> {
 
@@ -43,7 +47,7 @@ public class MinFunction
 
 	@Override
 	public String getName() {
-		return "min";
+		return DDMExpressionFunctionNames.MIN;
 	}
 
 }

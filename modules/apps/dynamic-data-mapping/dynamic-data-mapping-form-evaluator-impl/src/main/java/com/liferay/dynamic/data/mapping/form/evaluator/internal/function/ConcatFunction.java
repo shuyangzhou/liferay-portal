@@ -14,6 +14,7 @@
 
 package com.liferay.dynamic.data.mapping.form.evaluator.internal.function;
 
+import com.liferay.dynamic.data.mapping.constants.DDMExpressionFunctionNames;
 import com.liferay.dynamic.data.mapping.expression.DDMExpressionFunction;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -25,7 +26,10 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Leonardo Barros
  */
-@Component(service = DDMExpressionFunction.Function1.class)
+@Component(
+	property = "name=" + DDMExpressionFunctionNames.CONCAT,
+	service = DDMExpressionFunction.Function1.class
+)
 public class ConcatFunction
 	implements DDMExpressionFunction.Function1<String[], String> {
 
@@ -42,7 +46,7 @@ public class ConcatFunction
 
 	@Override
 	public String getName() {
-		return "concat";
+		return DDMExpressionFunctionNames.CONCAT;
 	}
 
 }

@@ -14,17 +14,21 @@
 
 package com.liferay.dynamic.data.mapping.form.evaluator.internal.function;
 
+import com.liferay.dynamic.data.mapping.constants.DDMExpressionFunctionNames;
+
 import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Leonardo Barros
  */
-@Component(service = {})
+@Component(
+	property = "name=" + DDMExpressionFunctionNames.SET_VISIBLE, service = {}
+)
 public class SetVisibleFunction extends SetPropertyFunction<Boolean> {
 
 	@Override
 	public String getName() {
-		return "setVisible";
+		return DDMExpressionFunctionNames.SET_VISIBLE;
 	}
 
 	@Override

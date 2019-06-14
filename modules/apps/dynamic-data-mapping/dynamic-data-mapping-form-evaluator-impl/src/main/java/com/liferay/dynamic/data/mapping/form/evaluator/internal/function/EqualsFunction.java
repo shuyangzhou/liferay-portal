@@ -14,6 +14,7 @@
 
 package com.liferay.dynamic.data.mapping.form.evaluator.internal.function;
 
+import com.liferay.dynamic.data.mapping.constants.DDMExpressionFunctionNames;
 import com.liferay.dynamic.data.mapping.expression.DDMExpressionFunction;
 import com.liferay.portal.kernel.json.JSONArray;
 
@@ -24,7 +25,10 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Leonardo Barros
  */
-@Component(service = DDMExpressionFunction.Function2.class)
+@Component(
+	property = "name=" + DDMExpressionFunctionNames.EQUALS,
+	service = DDMExpressionFunction.Function2.class
+)
 public class EqualsFunction
 	implements DDMExpressionFunction.Function2<Object, Object, Boolean> {
 
@@ -47,7 +51,7 @@ public class EqualsFunction
 
 	@Override
 	public String getName() {
-		return "equals";
+		return DDMExpressionFunctionNames.EQUALS;
 	}
 
 	private Object _getValue(JSONArray jsonArray) {

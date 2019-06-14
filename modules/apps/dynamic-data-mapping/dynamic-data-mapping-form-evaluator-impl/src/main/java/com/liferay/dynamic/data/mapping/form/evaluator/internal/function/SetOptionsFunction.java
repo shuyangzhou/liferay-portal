@@ -14,6 +14,7 @@
 
 package com.liferay.dynamic.data.mapping.form.evaluator.internal.function;
 
+import com.liferay.dynamic.data.mapping.constants.DDMExpressionFunctionNames;
 import com.liferay.dynamic.data.mapping.expression.DDMExpressionFunction;
 import com.liferay.dynamic.data.mapping.expression.DDMExpressionObserver;
 import com.liferay.dynamic.data.mapping.expression.DDMExpressionObserverAware;
@@ -41,6 +42,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Leonardo Barros
  */
 @Component(
+	property = "name=" + DDMExpressionFunctionNames.SET_OPTIONS,
 	service = {
 		DDMExpressionFunction.Function2.class, DDMExpressionObserverAware.class,
 		DDMExpressionParameterAccessorAware.class
@@ -71,7 +73,7 @@ public class SetOptionsFunction
 
 	@Override
 	public String getName() {
-		return "setOptions";
+		return DDMExpressionFunctionNames.SET_OPTIONS;
 	}
 
 	@Override

@@ -14,6 +14,7 @@
 
 package com.liferay.dynamic.data.mapping.form.evaluator.internal.function;
 
+import com.liferay.dynamic.data.mapping.constants.DDMExpressionFunctionNames;
 import com.liferay.dynamic.data.mapping.expression.DDMExpressionFunction;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.util.Validator;
@@ -25,7 +26,10 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Leonardo Barros
  */
-@Component(service = DDMExpressionFunction.Function1.class)
+@Component(
+	property = "name=" + DDMExpressionFunctionNames.IS_EMPTY,
+	service = DDMExpressionFunction.Function1.class
+)
 public class IsEmptyFunction
 	implements DDMExpressionFunction.Function1<Object, Boolean> {
 
@@ -56,7 +60,7 @@ public class IsEmptyFunction
 
 	@Override
 	public String getName() {
-		return "isEmpty";
+		return DDMExpressionFunctionNames.IS_EMPTY;
 	}
 
 	protected boolean isArray(Object parameter) {

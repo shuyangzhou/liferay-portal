@@ -14,6 +14,7 @@
 
 package com.liferay.dynamic.data.mapping.form.evaluator.internal.function;
 
+import com.liferay.dynamic.data.mapping.constants.DDMExpressionFunctionNames;
 import com.liferay.dynamic.data.mapping.expression.DDMExpressionFunction;
 import com.liferay.dynamic.data.mapping.expression.DDMExpressionParameterAccessor;
 import com.liferay.dynamic.data.mapping.expression.DDMExpressionParameterAccessorAware;
@@ -33,6 +34,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Leonardo Barros
  */
 @Component(
+	property = "name=belongsTo",
 	service = {
 		DDMExpressionFunction.Function1.class,
 		DDMExpressionParameterAccessorAware.class
@@ -95,7 +97,7 @@ public class BelongsToRoleFunction
 
 	@Override
 	public String getName() {
-		return "belongsTo";
+		return DDMExpressionFunctionNames.BELONGS_TO;
 	}
 
 	@Override

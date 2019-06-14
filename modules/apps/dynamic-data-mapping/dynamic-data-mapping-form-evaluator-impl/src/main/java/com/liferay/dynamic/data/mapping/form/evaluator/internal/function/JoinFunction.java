@@ -14,6 +14,7 @@
 
 package com.liferay.dynamic.data.mapping.form.evaluator.internal.function;
 
+import com.liferay.dynamic.data.mapping.constants.DDMExpressionFunctionNames;
 import com.liferay.dynamic.data.mapping.expression.DDMExpressionFunction;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
@@ -25,7 +26,10 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Leonardo Barros
  */
-@Component(service = DDMExpressionFunction.Function1.class)
+@Component(
+	property = "name=" + DDMExpressionFunctionNames.JOIN,
+	service = DDMExpressionFunction.Function1.class
+)
 public class JoinFunction
 	implements DDMExpressionFunction.Function1<JSONArray, String> {
 
@@ -46,7 +50,7 @@ public class JoinFunction
 
 	@Override
 	public String getName() {
-		return "join";
+		return DDMExpressionFunctionNames.JOIN;
 	}
 
 }

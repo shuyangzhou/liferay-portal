@@ -14,17 +14,21 @@
 
 package com.liferay.dynamic.data.mapping.form.evaluator.internal.function;
 
+import com.liferay.dynamic.data.mapping.constants.DDMExpressionFunctionNames;
+
 import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Leonardo Barros
  */
-@Component(service = {})
+@Component(
+	property = "name=" + DDMExpressionFunctionNames.SET_VALUE, service = {}
+)
 public class SetValueFunction extends SetPropertyFunction<Object> {
 
 	@Override
 	public String getName() {
-		return "setValue";
+		return DDMExpressionFunctionNames.SET_VALUE;
 	}
 
 	@Override

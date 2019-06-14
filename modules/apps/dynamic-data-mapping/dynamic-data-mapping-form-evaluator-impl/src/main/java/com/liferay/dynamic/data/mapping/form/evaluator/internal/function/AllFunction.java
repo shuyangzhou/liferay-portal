@@ -14,6 +14,7 @@
 
 package com.liferay.dynamic.data.mapping.form.evaluator.internal.function;
 
+import com.liferay.dynamic.data.mapping.constants.DDMExpressionFunctionNames;
 import com.liferay.dynamic.data.mapping.expression.CreateExpressionRequest;
 import com.liferay.dynamic.data.mapping.expression.DDMExpression;
 import com.liferay.dynamic.data.mapping.expression.DDMExpressionException;
@@ -30,7 +31,10 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Leonardo Barros
  */
-@Component(service = DDMExpressionFunction.Function2.class)
+@Component(
+	property = "name=" + DDMExpressionFunctionNames.ALL,
+	service = DDMExpressionFunction.Function2.class
+)
 public class AllFunction
 	implements DDMExpressionFunction.Function2<String, Object, Boolean> {
 
@@ -62,7 +66,7 @@ public class AllFunction
 
 	@Override
 	public String getName() {
-		return "all";
+		return DDMExpressionFunctionNames.ALL;
 	}
 
 	protected boolean accept(String expression, Object value) {

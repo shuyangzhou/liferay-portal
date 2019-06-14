@@ -14,6 +14,7 @@
 
 package com.liferay.dynamic.data.mapping.form.evaluator.internal.function;
 
+import com.liferay.dynamic.data.mapping.constants.DDMExpressionFunctionNames;
 import com.liferay.dynamic.data.mapping.data.provider.DDMDataProviderInvoker;
 import com.liferay.dynamic.data.mapping.data.provider.DDMDataProviderRequest;
 import com.liferay.dynamic.data.mapping.data.provider.DDMDataProviderResponse;
@@ -51,6 +52,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Leonardo Barros
  */
 @Component(
+	property = "name=" + DDMExpressionFunctionNames.CALL,
 	service = {
 		DDMExpressionFieldAccessorAware.class,
 		DDMExpressionFunction.Function3.class, DDMExpressionObserverAware.class
@@ -105,7 +107,7 @@ public class CallFunction
 
 	@Override
 	public String getName() {
-		return "call";
+		return DDMExpressionFunctionNames.CALL;
 	}
 
 	@Override

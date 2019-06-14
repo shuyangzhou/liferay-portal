@@ -14,6 +14,7 @@
 
 package com.liferay.dynamic.data.mapping.form.evaluator.internal.function;
 
+import com.liferay.dynamic.data.mapping.constants.DDMExpressionFunctionNames;
 import com.liferay.dynamic.data.mapping.expression.DDMExpressionFunction;
 import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -26,7 +27,10 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Leonardo Barros
  */
-@Component(service = DDMExpressionFunction.Function1.class)
+@Component(
+	property = "name=" + DDMExpressionFunctionNames.IS_EMAIL_ADDRESS,
+	service = DDMExpressionFunction.Function1.class
+)
 public class IsEmailAddressFunction
 	implements DDMExpressionFunction.Function1<String, Boolean> {
 
@@ -43,7 +47,7 @@ public class IsEmailAddressFunction
 
 	@Override
 	public String getName() {
-		return "isEmailAddress";
+		return DDMExpressionFunctionNames.IS_EMAIL_ADDRESS;
 	}
 
 }
