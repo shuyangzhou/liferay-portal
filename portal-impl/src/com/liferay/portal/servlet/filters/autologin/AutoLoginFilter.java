@@ -37,12 +37,14 @@ import com.liferay.portal.util.PortalInstances;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceRankingUtil;
 import com.liferay.registry.ServiceReference;
 import com.liferay.registry.ServiceTracker;
 import com.liferay.registry.ServiceTrackerCustomizer;
 
+import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
@@ -192,9 +194,9 @@ public class AutoLoginFilter extends BasePortalFilter {
 		if (!PropsValues.AUTH_LOGIN_DISABLED && (remoteUser == null) &&
 			(jUserName == null)) {
 
-			for (AutoLogin autoLogin : _autoLogins) {
+			for (AutoLoginService autoLoginService : _autoLoginServices) {
 				try {
-					String[] credentials = autoLogin.login(
+					String[] credentials = autoLoginService._autoLogin.login(
 						httpServletRequest, httpServletResponse);
 
 					String redirect = (String)httpServletRequest.getAttribute(
@@ -273,9 +275,42 @@ public class AutoLoginFilter extends BasePortalFilter {
 	private static final Log _log = LogFactoryUtil.getLog(
 		AutoLoginFilter.class);
 
-	private static final Set<AutoLogin> _autoLogins =
-		new CopyOnWriteArraySet<>();
+	private static final Set<AutoLoginService> _autoLoginServices =
+		new ConcurrentSkipListSet<>();
 	private static final ServiceTracker<?, AutoLogin> _serviceTracker;
+
+	private static class AutoLoginService
+		implements Comparable<AutoLoginService> {
+
+		public AutoLoginService(
+			AutoLogin autoLogin, ServiceReference<AutoLogin> serviceReference) {
+
+			_autoLogin = autoLogin;
+			_serviceReference = serviceReference;
+		}
+
+		@Override
+		public int compareTo(AutoLoginService other) {
+			return ServiceRankingUtil.compare(
+				other._serviceReference, _serviceReference);
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			AutoLoginService autoLoginService = (AutoLoginService)o;
+
+			return Objects.equals(_autoLogin, autoLoginService._autoLogin);
+		}
+
+		@Override
+		public int hashCode() {
+			return _autoLogin.hashCode();
+		}
+
+		private final AutoLogin _autoLogin;
+		private final ServiceReference<AutoLogin> _serviceReference;
+
+	}
 
 	private static class AutoLoginServiceTrackerCustomizer
 		implements ServiceTrackerCustomizer<AutoLogin, AutoLogin> {
@@ -298,7 +333,8 @@ public class AutoLoginFilter extends BasePortalFilter {
 				return null;
 			}
 
-			_autoLogins.add(autoLogin);
+			_autoLoginServices.add(
+				new AutoLoginService(autoLogin, serviceReference));
 
 			return autoLogin;
 		}
@@ -316,7 +352,8 @@ public class AutoLoginFilter extends BasePortalFilter {
 
 			registry.ungetService(serviceReference);
 
-			_autoLogins.remove(autoLogin);
+			_autoLoginServices.remove(
+				new AutoLoginService(autoLogin, serviceReference));
 		}
 
 	}
