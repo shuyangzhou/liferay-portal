@@ -265,7 +265,7 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 		if (PropsValues.MODULE_FRAMEWORK_CONCURRENT_STARTUP_ENABLED) {
 			springInitTask = new FutureTask<>(
 				() -> {
-					_initSpring(servletContextEvent);
+					_initSpring(servletContextEvent, portalClassLoader);
 
 					return null;
 				});
@@ -291,7 +291,7 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 		}
 
 		if (springInitTask == null) {
-			_initSpring(servletContextEvent);
+			_initSpring(servletContextEvent, portalClassLoader);
 		}
 		else {
 			try {
@@ -300,41 +300,6 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 			catch (Exception e) {
 				throw new RuntimeException(e);
 			}
-		}
-
-		InitUtil.registerSpringInitialized();
-
-		ApplicationContext applicationContext =
-			ContextLoader.getCurrentWebApplicationContext();
-
-		BeanLocatorImpl beanLocatorImpl = new BeanLocatorImpl(
-			portalClassLoader, applicationContext);
-
-		PortalBeanLocatorUtil.setBeanLocator(beanLocatorImpl);
-
-		ClassLoader classLoader = portalClassLoader;
-
-		while (classLoader != null) {
-			CachedIntrospectionResults.clearClassLoader(classLoader);
-
-			classLoader = classLoader.getParent();
-		}
-
-		AutowireCapableBeanFactory autowireCapableBeanFactory =
-			applicationContext.getAutowireCapableBeanFactory();
-
-		clearFilteredPropertyDescriptorsCache(autowireCapableBeanFactory);
-
-		DynamicProxyCreator dynamicProxyCreator =
-			DynamicProxyCreator.getDynamicProxyCreator();
-
-		dynamicProxyCreator.clear();
-
-		try {
-			ModuleFrameworkUtilAdapter.registerContext(applicationContext);
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
 		}
 
 		CustomJspBagRegistryUtil.getCustomJspBags();
@@ -399,8 +364,46 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 		servletContext.addListener(PortletSessionListenerManager.class);
 	}
 
-	private void _initSpring(ServletContextEvent servletContextEvent) {
+	private void _initSpring(
+		ServletContextEvent servletContextEvent,
+		ClassLoader portalClassLoader) {
+
 		super.contextInitialized(servletContextEvent);
+
+		InitUtil.registerSpringInitialized();
+
+		ApplicationContext applicationContext =
+			ContextLoader.getCurrentWebApplicationContext();
+
+		BeanLocatorImpl beanLocatorImpl = new BeanLocatorImpl(
+			portalClassLoader, applicationContext);
+
+		PortalBeanLocatorUtil.setBeanLocator(beanLocatorImpl);
+
+		ClassLoader classLoader = portalClassLoader;
+
+		while (classLoader != null) {
+			CachedIntrospectionResults.clearClassLoader(classLoader);
+
+			classLoader = classLoader.getParent();
+		}
+
+		AutowireCapableBeanFactory autowireCapableBeanFactory =
+			applicationContext.getAutowireCapableBeanFactory();
+
+		clearFilteredPropertyDescriptorsCache(autowireCapableBeanFactory);
+
+		DynamicProxyCreator dynamicProxyCreator =
+			DynamicProxyCreator.getDynamicProxyCreator();
+
+		dynamicProxyCreator.clear();
+
+		try {
+			ModuleFrameworkUtilAdapter.registerContext(applicationContext);
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	private void _logJVMArguments() {
