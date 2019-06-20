@@ -182,8 +182,9 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 
 		FieldInterceptionHelperUtil.initialize();
 
-		final ServletContext servletContext =
-			servletContextEvent.getServletContext();
+		ServletContext servletContext = servletContextEvent.getServletContext();
+
+		ServletContextPool.put(_portalServletContextName, servletContext);
 
 		String portalLibDir = servletContext.getRealPath("/WEB-INF/lib");
 
@@ -302,8 +303,6 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 		}
 
 		InitUtil.registerSpringInitialized();
-
-		ServletContextPool.put(_portalServletContextName, servletContext);
 
 		ApplicationContext applicationContext =
 			ContextLoader.getCurrentWebApplicationContext();
