@@ -65,8 +65,6 @@ public class WebBundleDeployer {
 			"/WEB-INF", "liferay-plugin-package.properties", false);
 
 		if ((enumeration == null) || !enumeration.hasMoreElements()) {
-			_initWabBundle(bundle);
-
 			return null;
 		}
 
