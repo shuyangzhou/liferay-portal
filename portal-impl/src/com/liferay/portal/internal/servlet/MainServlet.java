@@ -215,6 +215,8 @@ public class MainServlet extends HttpServlet {
 
 	@Override
 	public void init() throws ServletException {
+		long startTime = System.currentTimeMillis();
+
 		if (_log.isDebugEnabled()) {
 			_log.debug("Initialize");
 		}
@@ -288,6 +290,8 @@ public class MainServlet extends HttpServlet {
 			_log.debug("Process startup events");
 		}
 
+		long startTime2 = System.currentTimeMillis();
+
 		try {
 			StartupAction startupAction = new StartupAction();
 
@@ -301,6 +305,9 @@ public class MainServlet extends HttpServlet {
 
 			System.exit(0);
 		}
+
+		System.out.println(
+			"###StartupAction : " + (System.currentTimeMillis() - startTime2));
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Initialize plugin package");
@@ -446,9 +453,16 @@ public class MainServlet extends HttpServlet {
 
 		StartupHelperUtil.setStartupFinished(true);
 
+		System.out.println(
+			"###MainServlet init before publishing " +
+				(System.currentTimeMillis() - startTime));
 		_registerPortalInitialized();
 
 		ThreadLocalCacheManager.clearAll(Lifecycle.REQUEST);
+
+		System.out.println(
+			"###MainServlet init : " +
+				(System.currentTimeMillis() - startTime));
 	}
 
 	@Override
