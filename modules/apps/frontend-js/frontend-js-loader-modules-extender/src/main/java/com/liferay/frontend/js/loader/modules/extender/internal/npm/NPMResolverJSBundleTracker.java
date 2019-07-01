@@ -17,8 +17,10 @@ package com.liferay.frontend.js.loader.modules.extender.internal.npm;
 import com.liferay.frontend.js.loader.modules.extender.npm.JSBundle;
 import com.liferay.frontend.js.loader.modules.extender.npm.JSBundleTracker;
 import com.liferay.frontend.js.loader.modules.extender.npm.NPMRegistry;
+import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolvedPackageNameUtil;
 import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
 import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolverUtil;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -27,13 +29,12 @@ import com.liferay.portal.kernel.util.StringUtil;
 
 import java.net.URL;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Dictionary;
+
+import javax.servlet.ServletContext;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -59,22 +60,19 @@ public class NPMResolverJSBundleTracker implements JSBundleTracker {
 			return;
 		}
 
-		try {
-			NPMResolvedPackageNameRegistrar npmResolvedPackageNameRegistrar =
-				new NPMResolvedPackageNameRegistrar(
-					_bundleContext, bundle, npmResolvedPackageName);
+		Dictionary<String, String> headers = bundle.getHeaders(
+			StringPool.BLANK);
 
-			_npmResolvedPackageNameRegistrarMap.put(
-				bundle, npmResolvedPackageNameRegistrar);
+		if (headers.get("Web-ContextPath") == null) {
+			return;
+		}
 
-			npmResolvedPackageNameRegistrar.open();
-		}
-		catch (InvalidSyntaxException ise) {
-			_log.error(
-				"Unable to track servlet context for bundle " +
-					bundle.getBundleId(),
-				ise);
-		}
+		BundleContext bundleContext = bundle.getBundleContext();
+
+		ServletContext servletContext = bundleContext.getService(
+			bundleContext.getServiceReference(ServletContext.class));
+
+		NPMResolvedPackageNameUtil.set(servletContext, npmResolvedPackageName);
 	}
 
 	@Override
@@ -82,18 +80,6 @@ public class NPMResolverJSBundleTracker implements JSBundleTracker {
 		JSBundle jsBundle, Bundle bundle, NPMRegistry npmRegistry) {
 
 		NPMResolverUtil.set(bundle, null);
-
-		NPMResolvedPackageNameRegistrar npmResolvedPackageNameRegistrar =
-			_npmResolvedPackageNameRegistrarMap.remove(bundle);
-
-		if (npmResolvedPackageNameRegistrar != null) {
-			npmResolvedPackageNameRegistrar.close();
-		}
-	}
-
-	@Activate
-	protected void activate(BundleContext bundleContext) {
-		_bundleContext = bundleContext;
 	}
 
 	private String _getNPMResolvedPackageName(
@@ -123,12 +109,7 @@ public class NPMResolverJSBundleTracker implements JSBundleTracker {
 	private static final Log _log = LogFactoryUtil.getLog(
 		NPMResolverJSBundleTracker.class);
 
-	private BundleContext _bundleContext;
-
 	@Reference
 	private JSONFactory _jsonFactory;
-
-	private final Map<Bundle, NPMResolvedPackageNameRegistrar>
-		_npmResolvedPackageNameRegistrarMap = new ConcurrentHashMap<>();
 
 }
