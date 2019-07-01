@@ -20,4 +20,5 @@ patch {
 	fileNames "aQute/bnd/classfile/ConstantPool.java"
 
 	originalLibModuleName = "biz.aQute.bndlib"
+	originalLibSrcBaseUrl = "https://repository-cdn.liferay.com/nexus/content/groups/public/com/liferay/"
 }
