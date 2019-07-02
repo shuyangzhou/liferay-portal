@@ -35,6 +35,7 @@ import javax.servlet.ServletContext;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -69,10 +70,19 @@ public class NPMResolverJSBundleTracker implements JSBundleTracker {
 
 		BundleContext bundleContext = bundle.getBundleContext();
 
-		ServletContext servletContext = bundleContext.getService(
-			bundleContext.getServiceReference(ServletContext.class));
+		ServiceReference<ServletContext> serviceReference =
+			bundleContext.getServiceReference(ServletContext.class);
 
-		NPMResolvedPackageNameUtil.set(servletContext, npmResolvedPackageName);
+		try {
+			ServletContext servletContext = bundleContext.getService(
+				serviceReference);
+
+			NPMResolvedPackageNameUtil.set(
+				servletContext, npmResolvedPackageName);
+		}
+		finally {
+			bundleContext.ungetService(serviceReference);
+		}
 	}
 
 	@Override
