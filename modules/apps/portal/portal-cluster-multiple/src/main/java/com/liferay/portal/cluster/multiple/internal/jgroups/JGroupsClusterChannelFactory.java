@@ -36,7 +36,6 @@ import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.SocketUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.File;
@@ -51,7 +50,6 @@ import java.net.NetworkInterface;
 import java.net.URL;
 
 import java.util.Map;
-import java.util.Properties;
 import java.util.concurrent.ConcurrentMap;
 
 import org.jgroups.conf.ConfiguratorFactory;
@@ -298,20 +296,47 @@ public class JGroupsClusterChannelFactory implements ClusterChannelFactory {
 
 			String configXML = StreamUtil.toString(inputStream);
 
-			Properties properties = _props.getProperties();
+			int index = 0;
 
-			for (Map.Entry<Object, Object> entry : properties.entrySet()) {
-				if (!(entry.getValue() instanceof String)) {
-					continue;
+			StringBundler sb = new StringBundler();
+
+			while (index < configXML.length()) {
+				int startIndex = configXML.indexOf(
+					StringPool.CLOSE_CURLY_BRACE, index);
+
+				if (startIndex < 0) {
+					break;
 				}
 
-				configXML = StringUtil.replace(
-					configXML,
-					StringBundler.concat(
-						StringPool.DOLLAR_AND_OPEN_CURLY_BRACE,
-						_html.escapeAttribute((String)entry.getKey()),
-						StringPool.CLOSE_CURLY_BRACE),
-					_html.escapeAttribute((String)entry.getValue()));
+				int endIndex = configXML.indexOf(
+					StringPool.CLOSE_CURLY_BRACE, startIndex);
+
+				if (endIndex < 0) {
+					break;
+				}
+
+				String propertyKey = configXML.substring(
+					startIndex + 2, endIndex);
+
+				Object value = _props.get(_html.escapeAttribute(propertyKey));
+
+				if (value instanceof String) {
+					sb.append(configXML.substring(index, startIndex));
+					sb.append(_html.escapeAttribute((String)value));
+				}
+				else {
+					sb.append(configXML.substring(index, endIndex + 1));
+				}
+
+				index = endIndex + 1;
+			}
+
+			if (sb.length() > 0) {
+				if (index < configXML.length()) {
+					sb.append(configXML.substring(index));
+				}
+
+				configXML = sb.toString();
 			}
 
 			return ConfiguratorFactory.getStackConfigurator(
