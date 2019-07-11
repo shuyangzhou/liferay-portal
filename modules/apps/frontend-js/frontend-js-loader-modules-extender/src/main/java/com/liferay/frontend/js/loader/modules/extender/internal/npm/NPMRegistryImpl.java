@@ -225,7 +225,12 @@ public class NPMRegistryImpl implements NPMRegistry {
 			_bundleContext, Bundle.ACTIVE,
 			new NPMRegistryBundleTrackerCustomizer());
 
+		long startTime = System.currentTimeMillis();
+
 		_bundleTracker.open();
+
+		System.out.println(
+			"########" + (System.currentTimeMillis() - startTime) + "ms");
 	}
 
 	@Deactivate
