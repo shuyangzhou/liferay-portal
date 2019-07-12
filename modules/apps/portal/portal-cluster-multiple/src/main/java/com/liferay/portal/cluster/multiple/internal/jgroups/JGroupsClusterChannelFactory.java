@@ -263,8 +263,8 @@ public class JGroupsClusterChannelFactory implements ClusterChannelFactory {
 
 			if (inputStream == null) {
 				throw new FileNotFoundException(
-					"Config file not found: ".concat(
-						channelPropertiesLocation));
+					"Unable to load channel properties from " +
+						channelPropertiesLocation);
 			}
 
 			String configXML = StreamUtil.toString(inputStream);
