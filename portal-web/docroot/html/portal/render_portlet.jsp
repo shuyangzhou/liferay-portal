@@ -146,6 +146,20 @@ catch (RuntimeException re) {
 
 LiferayRenderRequest liferayRenderRequest = RenderRequestFactory.create(request, portlet, invokerPortlet, portletCtx, windowState, portletMode, portletPreferences, plid);
 
+String responseContentType = liferayRenderRequest.getResponseContentType();
+
+boolean supportsMimeType = portlet.hasPortletMode(responseContentType, portletMode);
+
+if (!supportsMimeType) {
+	supportsMimeType = true;
+	portletMode = PortletMode.VIEW;
+	liferayRenderRequest = RenderRequestFactory.create(request, portlet, invokerPortlet, portletCtx, windowState, portletMode, portletPreferences, plid);
+}
+
+if (responseContentType.equals(ContentTypes.XHTML_MP) && portlet.hasMultipleMimeTypes()) {
+	supportsMimeType = GetterUtil.getBoolean(portletSetup.getValue("portletSetupSupportedClientsMobileDevices_" + portletMode, String.valueOf(supportsMimeType)));
+}
+
 BufferCacheServletResponse bufferCacheServletResponse = new BufferCacheServletResponse(response);
 
 LiferayRenderResponse liferayRenderResponse = RenderResponseFactory.create(liferayRenderRequest, bufferCacheServletResponse);
@@ -155,8 +169,6 @@ if (stateMin) {
 }
 
 liferayRenderRequest.defineObjects(portletConfig, liferayRenderResponse);
-
-String responseContentType = liferayRenderRequest.getResponseContentType();
 
 String currentURL = PortalUtil.getCurrentURL(request);
 
@@ -248,12 +260,6 @@ if (portlet.hasPortletMode(responseContentType, PortletMode.HELP)) {
 	if (PortletPermissionUtil.contains(permissionChecker, layout, portletId, ActionKeys.HELP)) {
 		showHelpIcon = true;
 	}
-}
-
-boolean supportsMimeType = portlet.hasPortletMode(responseContentType, portletMode);
-
-if (responseContentType.equals(ContentTypes.XHTML_MP) && portlet.hasMultipleMimeTypes()) {
-	supportsMimeType = GetterUtil.getBoolean(portletSetup.getValue("portletSetupSupportedClientsMobileDevices_" + portletMode, String.valueOf(supportsMimeType)));
 }
 
 // Only authenticated with the correct permissions can update a layout. If
