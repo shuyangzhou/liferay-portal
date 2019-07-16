@@ -21,12 +21,17 @@ import com.liferay.petra.memory.FinalizeManager;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.osgi.web.servlet.jsp.compiler.internal.util.ClassPathUtil;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import java.net.URI;
 import java.net.URL;
@@ -85,6 +90,36 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		throws JasperException {
 
 		classFiles = new ArrayList<>();
+
+		String classNamePath = className.replace(
+			CharPool.PERIOD, CharPool.SLASH);
+
+		classNamePath = classNamePath.concat(".class");
+
+		ClassLoader classLoader = rtctxt.getParentClassLoader();
+
+		try (InputStream inputStream = classLoader.getResourceAsStream(
+				classNamePath)) {
+
+			if (inputStream != null) {
+				try (UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
+						new UnsyncByteArrayOutputStream()) {
+
+					StreamUtil.transfer(
+						inputStream, unsyncByteArrayOutputStream, false);
+
+					rtctxt.setBytecode(
+						className, unsyncByteArrayOutputStream.toByteArray());
+
+					_jarClassNames.add(className);
+
+					return null;
+				}
+			}
+		}
+		catch (IOException ioe) {
+			throw new JasperException(ioe);
+		}
 
 		JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
 
@@ -154,6 +189,41 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		}
 
 		return javacErrorDetails;
+	}
+
+	@Override
+	public void doJavaFile(boolean keep) throws JasperException {
+		if (_jarClassNames.isEmpty()) {
+			super.doJavaFile(keep);
+
+			return;
+		}
+
+		if (!keep) {
+			charArrayWriter = null;
+
+			return;
+		}
+
+		Bundle bundle = _allParticipatingBundles[0];
+
+		String bundleKey =
+			bundle.getSymbolicName() + StringPool.DASH + bundle.getVersion();
+
+		String javaFilePath = javaFileName.substring(
+			javaFileName.indexOf(bundleKey) + bundleKey.length());
+
+		ClassLoader classLoader = rtctxt.getParentClassLoader();
+
+		try (OutputStream outputStream = new FileOutputStream(javaFileName);
+			InputStream inputStream = classLoader.getResourceAsStream(
+				javaFilePath)) {
+
+			StreamUtil.transfer(inputStream, outputStream, false);
+		}
+		catch (IOException ioe) {
+			throw new JasperException(ioe);
+		}
 	}
 
 	@Override
@@ -240,6 +310,16 @@ public class JspCompiler extends Jsr199JavaCompiler {
 			servletContext, jspCompilationContext.getTagFileJarUrls());
 
 		super.init(jspCompilationContext, errorDispatcher, suppressLogging);
+	}
+
+	@Override
+	public void saveClassFile(String className, String classFileName) {
+		if (_jarClassNames.contains(className)) {
+			rtctxt.saveBytecode(className, classFileName);
+		}
+		else {
+			super.saveClassFile(className, classFileName);
+		}
 	}
 
 	protected void addDependenciesToClassPath() {
@@ -512,6 +592,7 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		new HashMap<>(_jspBundleWiringPackageNames);
 	private ClassLoader _classLoader;
 	private final List<File> _classPath = new ArrayList<>();
+	private final Set<String> _jarClassNames = new HashSet<>();
 	private final List<JavaFileObjectResolver> _javaFileObjectResolvers =
 		new ArrayList<>();
 
