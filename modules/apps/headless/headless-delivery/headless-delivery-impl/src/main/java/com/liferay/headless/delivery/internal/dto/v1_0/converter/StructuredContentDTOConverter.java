@@ -24,6 +24,7 @@ import com.liferay.document.library.util.DLURLHelper;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldType;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.storage.Fields;
@@ -191,6 +192,13 @@ public class StructuredContentDTOConverter implements DTOConverter {
 				value = _toValue(
 					ddmFormFieldValue, dlAppService, dlURLHelper,
 					journalArticleService, layoutLocalService, locale);
+
+				setLabel(
+					() -> {
+						LocalizedValue localizedValue = ddmFormField.getLabel();
+
+						return localizedValue.getString(locale);
+					});
 			}
 		};
 	}

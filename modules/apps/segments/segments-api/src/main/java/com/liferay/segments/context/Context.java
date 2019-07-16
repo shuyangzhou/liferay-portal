@@ -22,10 +22,9 @@ import java.util.Map;
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
- * Represents a Context.
+ * Represents a context to segment users based on their session criteria.
  *
  * @author Eduardo García
- * @review
  */
 @ProviderType
 public class Context {

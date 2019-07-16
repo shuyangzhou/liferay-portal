@@ -12,9 +12,9 @@
  * details.
  */
 
+import {cleanup, render} from '@testing-library/react';
 import EmptyDropZone from 'components/criteria_builder/EmptyDropZone.es';
 import React from 'react';
-import {cleanup, render} from 'react-testing-library';
 
 const connectDnd = jest.fn(el => el);
 
@@ -29,7 +29,7 @@ describe('EmptyDropZone', () => {
 				connectDropTarget={connectDnd}
 				emptyContributors={false}
 				onCriterionAdd={jest.fn()}
-				propertyKey='user'
+				propertyKey="user"
 			/>
 		);
 
@@ -44,7 +44,7 @@ describe('EmptyDropZone', () => {
 				connectDropTarget={connectDnd}
 				emptyContributors={true}
 				onCriterionAdd={jest.fn()}
-				propertyKey='user'
+				propertyKey="user"
 			/>
 		);
 

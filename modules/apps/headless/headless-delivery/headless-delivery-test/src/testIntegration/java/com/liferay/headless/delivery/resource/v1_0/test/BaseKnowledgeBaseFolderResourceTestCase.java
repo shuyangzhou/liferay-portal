@@ -358,6 +358,11 @@ public abstract class BaseKnowledgeBaseFolderResourceTestCase {
 			Arrays.asList(knowledgeBaseFolder1, knowledgeBaseFolder2),
 			(List<KnowledgeBaseFolder>)page.getItems());
 		assertValid(page);
+
+		knowledgeBaseFolderResource.deleteKnowledgeBaseFolder(
+			knowledgeBaseFolder1.getId());
+		knowledgeBaseFolderResource.deleteKnowledgeBaseFolder(
+			knowledgeBaseFolder2.getId());
 	}
 
 	@Test
@@ -513,6 +518,11 @@ public abstract class BaseKnowledgeBaseFolderResourceTestCase {
 			Arrays.asList(knowledgeBaseFolder1, knowledgeBaseFolder2),
 			(List<KnowledgeBaseFolder>)page.getItems());
 		assertValid(page);
+
+		knowledgeBaseFolderResource.deleteKnowledgeBaseFolder(
+			knowledgeBaseFolder1.getId());
+		knowledgeBaseFolderResource.deleteKnowledgeBaseFolder(
+			knowledgeBaseFolder2.getId());
 	}
 
 	@Test

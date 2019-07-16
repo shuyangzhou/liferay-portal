@@ -77,7 +77,7 @@ public class MBThreadIndexerIndexedFieldsTest {
 	@Test
 	public void testIndexedFields() throws Exception {
 		MBMessage mbMessage = mbFixture.createMBMessageWithCategory(
-			RandomTestUtil.randomString(), _user.getUserId());
+			RandomTestUtil.randomString());
 
 		MBThread mbThread = mbMessage.getThread();
 

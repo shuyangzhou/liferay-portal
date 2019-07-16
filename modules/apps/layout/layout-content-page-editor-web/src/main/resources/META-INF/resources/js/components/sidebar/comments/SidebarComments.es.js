@@ -14,10 +14,38 @@
 
 /* eslint no-unused-vars: "warn" */
 
+import PropTypes from 'prop-types';
 import React from 'react';
+
 import {NoCommentsMessage} from './NoCommentsMessage.es';
+import {FRAGMENTS_EDITOR_ITEM_TYPES} from '../../../utils/constants';
+import {ConnectedFragmentComments} from './FragmentComments.es';
+import {getConnectedReactComponent} from '../../../store/ConnectedComponent.es';
 
-const SidebarComments = () => <NoCommentsMessage />;
+const SidebarComments = props => {
+	const fragmentIsSelected =
+		props.activeItemType === FRAGMENTS_EDITOR_ITEM_TYPES.fragment &&
+		props.activeItemId;
 
-export {SidebarComments};
-export default SidebarComments;
+	return fragmentIsSelected ? (
+		<ConnectedFragmentComments fragmentEntryLinkId={props.activeItemId} />
+	) : (
+		<NoCommentsMessage />
+	);
+};
+
+SidebarComments.propTypes = {
+	activeItemId: PropTypes.string,
+	activeItemType: PropTypes.string
+};
+
+const ConnectedSidebarComments = getConnectedReactComponent(
+	state => ({
+		activeItemId: state.activeItemId,
+		activeItemType: state.activeItemType
+	}),
+	() => ({})
+)(SidebarComments);
+
+export {ConnectedSidebarComments, SidebarComments};
+export default ConnectedSidebarComments;

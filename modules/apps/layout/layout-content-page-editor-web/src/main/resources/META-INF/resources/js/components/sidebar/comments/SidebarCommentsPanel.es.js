@@ -18,10 +18,9 @@ import ReactDOM from 'react-dom';
 import Soy from 'metal-soy';
 
 import {getConnectedComponent} from '../../../store/ConnectedComponent.es';
-import {SidebarComments} from './SidebarComments.es';
+import {ConnectedSidebarComments} from './SidebarComments.es';
+import {StoreContext} from '../../../store/StoreContext.es';
 import templates from './SidebarCommentsPanel.soy';
-
-/* eslint no-unused-vars: "warn" */
 
 class SidebarCommentsPanel extends Component {
 	disposed() {
@@ -36,7 +35,13 @@ class SidebarCommentsPanel extends Component {
 
 	_mountApp() {
 		ReactDOM.unmountComponentAtNode(this.refs.app);
-		ReactDOM.render(<SidebarComments />, this.refs.app);
+
+		ReactDOM.render(
+			<StoreContext.Provider value={this.store}>
+				<ConnectedSidebarComments />
+			</StoreContext.Provider>,
+			this.refs.app
+		);
 	}
 }
 

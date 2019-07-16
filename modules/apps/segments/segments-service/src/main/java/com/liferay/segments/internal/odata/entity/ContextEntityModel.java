@@ -32,10 +32,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Provides the entity data model for the Context.
+ * Provides the entity data model for the context that segments users.
  *
  * @author Eduardo García
- * @review
  */
 public class ContextEntityModel implements EntityModel {
 

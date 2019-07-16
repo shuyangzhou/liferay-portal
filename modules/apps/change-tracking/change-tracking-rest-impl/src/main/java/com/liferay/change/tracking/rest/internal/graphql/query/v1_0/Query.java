@@ -126,7 +126,7 @@ public class Query {
 			@GraphQLName("userId") Long userId,
 			@GraphQLName("pageSize") int pageSize,
 			@GraphQLName("page") int page,
-			@GraphQLName("sorts") String sortsString)
+			@GraphQLName("sort") String sortsString)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
@@ -163,7 +163,7 @@ public class Query {
 			@GraphQLName("userIdsFilter") String[] userIdsFilter,
 			@GraphQLName("pageSize") int pageSize,
 			@GraphQLName("page") int page,
-			@GraphQLName("sorts") String sortsString)
+			@GraphQLName("sort") String sortsString)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
@@ -197,7 +197,7 @@ public class Query {
 			@GraphQLName("userId") Long userId,
 			@GraphQLName("pageSize") int pageSize,
 			@GraphQLName("page") int page,
-			@GraphQLName("sorts") String sortsString)
+			@GraphQLName("sort") String sortsString)
 		throws Exception {
 
 		return _applyComponentServiceObjects(

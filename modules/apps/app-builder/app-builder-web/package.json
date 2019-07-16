@@ -6,20 +6,29 @@
 		"@clayui/loading-indicator": "^3.0.0-milestone.1",
 		"@clayui/pagination": "^3.0.0-milestone.1",
 		"@clayui/table": "^3.0.0-milestone.1",
-		"axios": "^0.19.0",
 		"moment": "^2.24.0",
 		"react": "^16.8.6",
 		"react-dom": "^16.8.6",
 		"react-router-dom": "^5.0.1"
 	},
 	"description": "",
+	"jest": {
+		"setupFiles": [
+			"./test/js/setup.es.js"
+		],
+		"testPathIgnorePatterns": [
+			"<rootDir>/test/js/[^/]+\\.js"
+		]
+	},
 	"main": "js/index.es.js",
 	"name": "app-builder-web",
 	"private": true,
 	"scripts": {
 		"build": "liferay-npm-scripts build",
 		"checkFormat": "liferay-npm-scripts check",
-		"format": "liferay-npm-scripts fix"
+		"format": "liferay-npm-scripts fix",
+		"test": "env TZ=utc liferay-npm-scripts test",
+		"test:watch": "env TZ=utc liferay-npm-scripts test --watch"
 	},
 	"version": "1.0.0"
 }

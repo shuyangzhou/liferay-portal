@@ -15,7 +15,7 @@
 import ClayDropDown, {Align} from '@clayui/drop-down';
 import ClayIcon from '@clayui/icon';
 import React, {Fragment, useState} from 'react';
-import {sub} from '../../utils/lang.es';
+import lang from '../../utils/lang.es';
 
 const {Item, ItemList} = ClayDropDown;
 
@@ -33,14 +33,14 @@ export default function PageSize(props) {
 			<ClayDropDown
 				active={active}
 				alignmentPosition={Align.RightCenter}
-				className='pagination-items-per-page'
+				className="pagination-items-per-page"
 				onActiveChange={newVal => setActive(newVal)}
 				trigger={
-					<button className='page-link' type='button'>
+					<button className="page-link" type="button">
 						{`${pageSize} Entries`}
 						<ClayIcon
 							spritemap={`${Liferay.ThemeDisplay.getPathThemeImages()}/lexicon/icons.svg`}
-							symbol='caret-double-l'
+							symbol="caret-double-l"
 						/>
 					</button>
 				}
@@ -60,8 +60,8 @@ export default function PageSize(props) {
 				</ItemList>
 			</ClayDropDown>
 
-			<p className='pagination-results'>
-				{sub(Liferay.Language.get('showing-x-to-x-of-x-entries'), [
+			<p className="pagination-results">
+				{lang.sub(Liferay.Language.get('showing-x-to-x-of-x-entries'), [
 					firstEntry,
 					lastEntry,
 					totalCount

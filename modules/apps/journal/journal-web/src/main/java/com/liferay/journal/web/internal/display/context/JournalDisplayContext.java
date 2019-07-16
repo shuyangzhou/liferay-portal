@@ -644,8 +644,14 @@ public class JournalDisplayContext {
 		_orderByCol = ParamUtil.getString(_httpServletRequest, "orderByCol");
 
 		if (Validator.isNull(_orderByCol)) {
+			String defaultOrderByCol = "modified-date";
+
+			if (isSearch()) {
+				defaultOrderByCol = "relevance";
+			}
+
 			_orderByCol = _portalPreferences.getValue(
-				JournalPortletKeys.JOURNAL, "order-by-col", "modified-date");
+				JournalPortletKeys.JOURNAL, "order-by-col", defaultOrderByCol);
 		}
 		else {
 			boolean saveOrderBy = ParamUtil.getBoolean(
@@ -665,7 +671,9 @@ public class JournalDisplayContext {
 			return _orderByType;
 		}
 
-		if (isNavigationRecent()) {
+		if (isNavigationRecent() ||
+			Objects.equals(getOrderByCol(), "relevance")) {
+
 			return "desc";
 		}
 
@@ -690,6 +698,10 @@ public class JournalDisplayContext {
 
 	public String[] getOrderColumns() {
 		String[] orderColumns = {"display-date", "modified-date", "title"};
+
+		if (isSearch()) {
+			orderColumns = ArrayUtil.append(orderColumns, "relevance");
+		}
 
 		if (!_journalWebConfiguration.journalArticleForceAutogenerateId()) {
 			orderColumns = ArrayUtil.append(orderColumns, "id");
@@ -919,6 +931,9 @@ public class JournalDisplayContext {
 			else if (Objects.equals(getOrderByCol(), "modified-date")) {
 				sort = new Sort(
 					Field.MODIFIED_DATE, Sort.LONG_TYPE, !orderByAsc);
+			}
+			else if (Objects.equals(getOrderByCol(), "relevance")) {
+				sort = new Sort(null, Sort.SCORE_TYPE, false);
 			}
 			else if (Objects.equals(getOrderByCol(), "title")) {
 				sort = new Sort("title", Sort.STRING_TYPE, !orderByAsc);

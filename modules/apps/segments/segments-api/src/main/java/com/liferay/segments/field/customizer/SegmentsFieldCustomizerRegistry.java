@@ -23,7 +23,6 @@ import org.osgi.annotation.versioning.ProviderType;
  * SegmentsFieldCustomizer} implementations.
  *
  * @author Eduardo García
- * @review
  */
 @ProviderType
 public interface SegmentsFieldCustomizerRegistry {

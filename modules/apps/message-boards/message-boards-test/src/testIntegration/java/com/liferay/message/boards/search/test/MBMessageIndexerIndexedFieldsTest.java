@@ -80,20 +80,20 @@ public class MBMessageIndexerIndexedFieldsTest {
 	public void testIndexedFields() throws Exception {
 		Locale locale = LocaleUtil.JAPAN;
 
-		String title = "新規";
+		String searchTerm = "新規";
 
 		mbMessageFixture.updateDisplaySettings(locale);
 
 		MBMessage mbMessage = mbMessageFixture.createMBMessageWithCategory(
-			title, _user.getUserId());
+			searchTerm);
 
 		Document document = mbMessageIndexerFixture.searchOnlyOne(
-			title, locale);
+			searchTerm, locale);
 
 		indexedFieldsFixture.postProcessDocument(document);
 
 		FieldValuesAssert.assertFieldValues(
-			_expectedFieldValues(mbMessage), document, title);
+			_expectedFieldValues(mbMessage), document, searchTerm);
 	}
 
 	protected void setUpIndexedFieldsFixture() {

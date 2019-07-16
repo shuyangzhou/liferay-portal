@@ -14,7 +14,7 @@
 
 package com.liferay.organizations.service.internal.configuration.definition;
 
-import com.liferay.organizations.api.configuration.OrganizationLinkConfiguration;
+import com.liferay.organizations.configuration.OrganizationLinkConfiguration;
 import com.liferay.portal.kernel.settings.definition.ConfigurationBeanDeclaration;
 
 import org.osgi.service.component.annotations.Component;

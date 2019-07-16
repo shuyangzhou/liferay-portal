@@ -102,12 +102,9 @@ public class ReturnPoshiElement extends PoshiElement {
 	protected String createPoshiScriptSnippet(String content) {
 		StringBuilder sb = new StringBuilder();
 
-		String blockName = getBlockName();
-		String pad = getPad();
-
 		sb.append("\n\n");
-		sb.append(pad);
-		sb.append(blockName);
+		sb.append(getPad());
+		sb.append(getBlockName());
 		sb.append(content.trim());
 
 		return sb.toString();

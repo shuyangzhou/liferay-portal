@@ -379,6 +379,11 @@ public abstract class Base${schemaName}ResourceTestCase {
 
 					assertEqualsIgnoringOrder(Arrays.asList(${schemaVarName}1, ${schemaVarName}2), (List<${schemaName}>)page.getItems());
 					assertValid(page);
+
+					<#if freeMarkerTool.hasJavaMethodSignature(javaMethodSignatures, "delete" + schemaName) && properties?keys?seq_contains("id")>
+						${schemaVarName}Resource.delete${schemaName}(${schemaVarName}1.getId());
+						${schemaVarName}Resource.delete${schemaName}(${schemaVarName}2.getId());
+					</#if>
 				}
 
 				<#if parameters?contains("Filter filter")>
@@ -579,7 +584,7 @@ public abstract class Base${schemaName}ResourceTestCase {
 
 						);
 
-					assertEqualsIgnoringOrder(
+						assertEqualsIgnoringOrder(
 							Arrays.asList(${schemaVarName}1, ${schemaVarName}2, ${schemaVarName}3),
 							(List<${schemaName}>)page3.getItems());
 					}

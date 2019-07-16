@@ -17,10 +17,16 @@ package com.liferay.fragment.renderer;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 /**
  * @author Jorge Ferrer
  */
+@ProviderType
 public interface FragmentRendererController {
+
+	public String getConfiguration(
+		FragmentRendererContext fragmentRendererContext);
 
 	public String render(
 		FragmentRendererContext fragmentRendererContext,

@@ -25,7 +25,6 @@ import org.osgi.annotation.versioning.ProviderType;
  * Represents a segments criteria field.
  *
  * @author Eduardo García
- * @review
  */
 @ProviderType
 public final class Field implements Comparable<Field>, Serializable {

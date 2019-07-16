@@ -29,10 +29,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Provides the entity data model from the Indexed Entity (Organization).
+ * Provides the entity data model from the Organization.
  *
  * @author David Arques
- * @review
  */
 public class OrganizationEntityModel implements EntityModel {
 

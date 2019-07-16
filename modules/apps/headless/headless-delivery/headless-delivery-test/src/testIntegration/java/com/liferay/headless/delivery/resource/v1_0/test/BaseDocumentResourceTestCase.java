@@ -243,6 +243,9 @@ public abstract class BaseDocumentResourceTestCase {
 			Arrays.asList(document1, document2),
 			(List<Document>)page.getItems());
 		assertValid(page);
+
+		documentResource.deleteDocument(document1.getId());
+		documentResource.deleteDocument(document2.getId());
 	}
 
 	@Test
@@ -677,6 +680,9 @@ public abstract class BaseDocumentResourceTestCase {
 			Arrays.asList(document1, document2),
 			(List<Document>)page.getItems());
 		assertValid(page);
+
+		documentResource.deleteDocument(document1.getId());
+		documentResource.deleteDocument(document2.getId());
 	}
 
 	@Test

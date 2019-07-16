@@ -246,6 +246,11 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 			Arrays.asList(taxonomyCategory1, taxonomyCategory2),
 			(List<TaxonomyCategory>)page.getItems());
 		assertValid(page);
+
+		taxonomyCategoryResource.deleteTaxonomyCategory(
+			taxonomyCategory1.getId());
+		taxonomyCategoryResource.deleteTaxonomyCategory(
+			taxonomyCategory2.getId());
 	}
 
 	@Test
@@ -701,6 +706,11 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 			Arrays.asList(taxonomyCategory1, taxonomyCategory2),
 			(List<TaxonomyCategory>)page.getItems());
 		assertValid(page);
+
+		taxonomyCategoryResource.deleteTaxonomyCategory(
+			taxonomyCategory1.getId());
+		taxonomyCategoryResource.deleteTaxonomyCategory(
+			taxonomyCategory2.getId());
 	}
 
 	@Test

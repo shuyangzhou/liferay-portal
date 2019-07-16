@@ -12,10 +12,10 @@
  * details.
  */
 
-import 'jest-dom/extend-expect';
-import React from 'react';
+import '@testing-library/jest-dom/extend-expect';
+import {cleanup, render} from '@testing-library/react';
 import SegmentEdit from 'components/segment_edit/SegmentEdit.es';
-import {cleanup, render} from 'react-testing-library';
+import React from 'react';
 import {SOURCES} from 'utils/constants.es';
 
 const SOURCE_ICON_TESTID = 'source-icon';
@@ -29,12 +29,12 @@ describe('SegmentEdit', () => {
 				availableLocales={{
 					en_US: ''
 				}}
-				defaultLanguageId='en_US'
+				defaultLanguageId="en_US"
 				initialSegmentName={{
 					en_US: 'Segment title'
 				}}
-				locale='en_US'
-				redirect='/test-url'
+				locale="en_US"
+				redirect="/test-url"
 			/>
 		);
 
@@ -49,12 +49,12 @@ describe('SegmentEdit', () => {
 				availableLocales={{
 					en_US: ''
 				}}
-				defaultLanguageId='en_US'
+				defaultLanguageId="en_US"
 				initialSegmentName={{
 					en_US: 'Segment title'
 				}}
-				locale='en_US'
-				redirect='/test-url'
+				locale="en_US"
+				redirect="/test-url"
 				source={name}
 			/>
 		);
@@ -72,12 +72,12 @@ describe('SegmentEdit', () => {
 				availableLocales={{
 					en_US: ''
 				}}
-				defaultLanguageId='en_US'
+				defaultLanguageId="en_US"
 				initialSegmentName={{
 					en_US: 'Segment title'
 				}}
-				locale='en_US'
-				redirect='/test-url'
+				locale="en_US"
+				redirect="/test-url"
 				source={name}
 			/>
 		);
@@ -95,13 +95,13 @@ describe('SegmentEdit', () => {
 				availableLocales={{
 					en_US: ''
 				}}
-				defaultLanguageId='en_US'
+				defaultLanguageId="en_US"
 				hasUpdatePermission={hasUpdatePermission}
 				initialSegmentName={{
 					en_US: 'Segment title'
 				}}
-				locale='en_US'
-				redirect='/test-url'
+				locale="en_US"
+				redirect="/test-url"
 			/>
 		);
 
@@ -116,13 +116,13 @@ describe('SegmentEdit', () => {
 				availableLocales={{
 					en_US: ''
 				}}
-				defaultLanguageId='en_US'
+				defaultLanguageId="en_US"
 				hasUpdatePermission={hasUpdatePermission}
 				initialSegmentName={{
 					en_US: 'Segment title'
 				}}
-				locale='en_US'
-				redirect='/test-url'
+				locale="en_US"
+				redirect="/test-url"
 			/>
 		);
 
@@ -164,14 +164,14 @@ describe('SegmentEdit', () => {
 					en_US: ''
 				}}
 				contributors={contributors}
-				defaultLanguageId='en_US'
+				defaultLanguageId="en_US"
 				hasUpdatePermission={hasUpdatePermission}
 				initialSegmentName={{
 					en_US: 'Segment title'
 				}}
-				locale='en_US'
+				locale="en_US"
 				propertyGroups={propertyGroups}
-				redirect='/test-url'
+				redirect="/test-url"
 				showInEditMode={true}
 			/>
 		);

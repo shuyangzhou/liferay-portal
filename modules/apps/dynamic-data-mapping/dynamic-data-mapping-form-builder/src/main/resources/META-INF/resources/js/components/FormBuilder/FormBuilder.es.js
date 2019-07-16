@@ -149,8 +149,8 @@ class FormBuilderBase extends Component {
 
 		return (
 			<div>
-				<div class='container ddm-form-builder'>
-					<div class='sheet'>
+				<div class="container ddm-form-builder">
+					<div class="sheet">
 						<FormRenderer
 							activePage={activePage}
 							editable={true}
@@ -159,7 +159,7 @@ class FormBuilderBase extends Component {
 							pages={this.preparePagesForRender(pages)}
 							paginationMode={paginationMode}
 							portletNamespace={portletNamespace}
-							ref='FormRenderer'
+							ref="FormRenderer"
 							spritemap={spritemap}
 						/>
 
@@ -185,8 +185,8 @@ class FormBuilderBase extends Component {
 									type: 'button'
 								}
 							]}
-							ref='cancelChangesModal'
-							size='sm'
+							ref="cancelChangesModal"
+							size="sm"
 							spritemap={spritemap}
 							title={Liferay.Language.get(
 								'cancel-field-changes-question'
@@ -203,7 +203,7 @@ class FormBuilderBase extends Component {
 					fieldTypes={fieldTypes}
 					focusedField={focusedField}
 					portletNamespace={portletNamespace}
-					ref='sidebar'
+					ref="sidebar"
 					rules={rules}
 					spritemap={spritemap}
 					visible={visible}
@@ -335,7 +335,10 @@ class FormBuilderBase extends Component {
 
 	_handleFieldAdded(event) {
 		const {dispatch} = this.context;
-		const {fieldType} = event;
+		const {
+			fieldType,
+			data: {target}
+		} = event;
 		const {editingLanguageId} = this.props;
 		const {settingsContext} = fieldType;
 		const {pages} = settingsContext;
@@ -359,8 +362,8 @@ class FormBuilderBase extends Component {
 			}
 		};
 
-		const addedToPlaceholder = !event.data.target.parentElement.parentElement.classList.contains(
-			'position-relative'
+		const addedToPlaceholder = target.parentElement.parentElement.classList.contains(
+			'placeholder'
 		);
 
 		dispatch('fieldAdded', {

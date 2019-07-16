@@ -32,7 +32,6 @@ import org.osgi.annotation.versioning.ProviderType;
  * Represents a segment criteria as a composition of {@link Criterion} objects.
  *
  * @author Eduardo García
- * @review
  */
 @ProviderType
 public final class Criteria implements Serializable {

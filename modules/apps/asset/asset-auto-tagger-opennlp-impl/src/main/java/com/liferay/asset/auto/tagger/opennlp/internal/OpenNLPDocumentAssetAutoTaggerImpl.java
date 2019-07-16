@@ -14,7 +14,7 @@
 
 package com.liferay.asset.auto.tagger.opennlp.internal;
 
-import com.liferay.asset.auto.tagger.opennlp.api.OpenNLPDocumentAssetAutoTagger;
+import com.liferay.asset.auto.tagger.opennlp.OpenNLPDocumentAssetAutoTagger;
 import com.liferay.asset.auto.tagger.opennlp.internal.configuration.OpenNLPDocumentAssetAutoTaggerCompanyConfiguration;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.util.ContentTypes;

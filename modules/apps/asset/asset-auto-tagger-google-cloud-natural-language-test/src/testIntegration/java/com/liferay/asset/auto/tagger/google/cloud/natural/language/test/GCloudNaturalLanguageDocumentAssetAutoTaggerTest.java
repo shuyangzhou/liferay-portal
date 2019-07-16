@@ -15,7 +15,7 @@
 package com.liferay.asset.auto.tagger.google.cloud.natural.language.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.asset.auto.tagger.google.cloud.natural.language.api.GCloudNaturalLanguageDocumentAssetAutoTagger;
+import com.liferay.asset.auto.tagger.google.cloud.natural.language.GCloudNaturalLanguageDocumentAssetAutoTagger;
 import com.liferay.petra.function.UnsafeRunnable;
 import com.liferay.portal.configuration.test.util.ConfigurationTemporarySwapper;
 import com.liferay.portal.kernel.exception.PortalException;

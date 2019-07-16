@@ -29,10 +29,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Provides the entity data model from the Indexed Entity (User).
+ * Provides the entity data model from the User.
  *
  * @author David Arques
- * @review
  */
 public class UserEntityModel implements EntityModel {
 

@@ -365,6 +365,11 @@ public abstract class BaseMessageBoardSectionResourceTestCase {
 			Arrays.asList(messageBoardSection1, messageBoardSection2),
 			(List<MessageBoardSection>)page.getItems());
 		assertValid(page);
+
+		messageBoardSectionResource.deleteMessageBoardSection(
+			messageBoardSection1.getId());
+		messageBoardSectionResource.deleteMessageBoardSection(
+			messageBoardSection2.getId());
 	}
 
 	@Test
@@ -710,6 +715,11 @@ public abstract class BaseMessageBoardSectionResourceTestCase {
 			Arrays.asList(messageBoardSection1, messageBoardSection2),
 			(List<MessageBoardSection>)page.getItems());
 		assertValid(page);
+
+		messageBoardSectionResource.deleteMessageBoardSection(
+			messageBoardSection1.getId());
+		messageBoardSectionResource.deleteMessageBoardSection(
+			messageBoardSection2.getId());
 	}
 
 	@Test

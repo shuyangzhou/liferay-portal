@@ -307,7 +307,7 @@ public class JSPTagAttributesCheck extends TagAttributesCheck {
 
 						srcDir =
 							srcDir.substring(0, srcDir.lastIndexOf("/src/")) +
-								"/src/main/java/";
+								"/src/";
 					}
 					else {
 						srcDir = utilTaglibSrcDirName;

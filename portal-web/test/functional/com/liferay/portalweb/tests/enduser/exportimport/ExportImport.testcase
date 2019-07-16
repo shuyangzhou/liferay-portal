@@ -87,7 +87,7 @@ definition {
 			larFileName = "${larFileName}",
 			siteName = "Site Name");
 
-		ProductMenu.gotoSite(site = "Site Name");
+		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -139,7 +139,7 @@ definition {
 			larFileName = "${larFileName}",
 			siteName = "Site Name");
 
-		ProductMenu.gotoSite(site = "Site Name");
+		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -269,7 +269,7 @@ definition {
 
 		SitePages.addPublicPage(pageName = "Test Page");
 
-		ProductMenu.gotoSite(site = "Global");
+		Navigator.openSiteURL(siteName = "Global");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -287,7 +287,7 @@ definition {
 
 		DDLDataDefinition.save();
 
-		ProductMenu.gotoSite(site = "Global");
+		Navigator.openSiteURL(siteName = "Global");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -314,7 +314,7 @@ definition {
 
 		PortletEntry.publish();
 
-		ProductMenu.gotoSite(site = "Global");
+		Navigator.openSiteURL(siteName = "Global");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -325,7 +325,7 @@ definition {
 			larFileName = "DDL.portlet.lar",
 			siteScopeName = "Global");
 
-		ProductMenu.gotoSite(site = "Site Name");
+		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -338,7 +338,7 @@ definition {
 
 		Navigator.openURL();
 
-		ProductMenu.gotoSite(site = "Site Name");
+		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -422,7 +422,7 @@ definition {
 		property portal.release = "false";
 		property test.name.skip.portal.instance = "ExportImport#ExportImportGlobalDDMStructureViaInstances";
 
-		ProductMenu.gotoSite(site = "Global");
+		SitePages.openPagesAdmin(siteURLKey = "global");
 
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
@@ -464,7 +464,7 @@ definition {
 			userEmailAddress = "test@www.able.com",
 			virtualHostsURL = "http://www.able.com:8080");
 
-		ProductMenu.gotoSite(site = "Global");
+		SitePages.openPagesAdmin(siteURLKey = "global");
 
 		LAR.importSiteCP(
 			larFileName = "${larFileName}",
@@ -479,7 +479,7 @@ definition {
 		property test.name.skip.portal.instance = "ExportImport#ExportImportGlobalPagesViaInstances";
 		property portal.release = "false";
 
-		ProductMenu.gotoSite(site = "Global");
+		SitePages.openPagesAdmin(siteURLKey = "global");
 
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
@@ -523,7 +523,7 @@ definition {
 			userEmailAddress = "test@www.able.com",
 			virtualHostsURL = "http://www.able.com:8080");
 
-		ProductMenu.gotoSite(site = "Global");
+		SitePages.openPagesAdmin(siteURLKey = "global");
 
 		LAR.importSiteCP(
 			larFileName = "${larFileName}",
@@ -723,7 +723,7 @@ definition {
 			groupName = "Site Name A",
 			title = "Web Content Title");
 
-		ProductMenu.gotoSite(site = "Site Name A");
+		Navigator.openSiteURL(siteName = "Site Name A");
 
 		LAR.exportSiteCP();
 

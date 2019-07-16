@@ -224,6 +224,9 @@ public abstract class BaseDataRecordResourceTestCase {
 			Arrays.asList(dataRecord1, dataRecord2),
 			(List<DataRecord>)page.getItems());
 		assertValid(page);
+
+		dataRecordResource.deleteDataRecord(dataRecord1.getId());
+		dataRecordResource.deleteDataRecord(dataRecord2.getId());
 	}
 
 	@Test
@@ -362,6 +365,9 @@ public abstract class BaseDataRecordResourceTestCase {
 			Arrays.asList(dataRecord1, dataRecord2),
 			(List<DataRecord>)page.getItems());
 		assertValid(page);
+
+		dataRecordResource.deleteDataRecord(dataRecord1.getId());
+		dataRecordResource.deleteDataRecord(dataRecord2.getId());
 	}
 
 	@Test

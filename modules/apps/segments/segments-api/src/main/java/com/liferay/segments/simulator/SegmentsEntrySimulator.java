@@ -16,10 +16,9 @@ package com.liferay.segments.simulator;
 
 /**
  * Provides methods to simulate the membership of an entity to a {@link
- * SegmentsEntry}
+ * com.liferay.segments.model.SegmentsEntry SegmentsEntry}.
  *
  * @author Eduardo García
- * @review
  */
 public interface SegmentsEntrySimulator {
 

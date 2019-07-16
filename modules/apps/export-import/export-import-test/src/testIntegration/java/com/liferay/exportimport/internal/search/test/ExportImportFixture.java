@@ -45,6 +45,12 @@ public class ExportImportFixture {
 	}
 
 	public ExportImportConfiguration createExportImport() throws Exception {
+		return createExportImport(RandomTestUtil.randomString());
+	}
+
+	public ExportImportConfiguration createExportImport(String name)
+		throws Exception {
+
 		long[] layoutIds = ExportImportHelperUtil.getAllLayoutIds(
 			_group.getGroupId(), false);
 
@@ -60,8 +66,7 @@ public class ExportImportFixture {
 		ExportImportConfiguration exportImportConfiguration =
 			ExportImportConfigurationLocalServiceUtil.
 				addExportImportConfiguration(
-					TestPropsValues.getUserId(), _group.getGroupId(),
-					RandomTestUtil.randomString(),
+					TestPropsValues.getUserId(), _group.getGroupId(), name,
 					RandomTestUtil.randomString(),
 					ExportImportConfigurationConstants.TYPE_IMPORT_PORTLET,
 					settingsMap, getServiceContext());

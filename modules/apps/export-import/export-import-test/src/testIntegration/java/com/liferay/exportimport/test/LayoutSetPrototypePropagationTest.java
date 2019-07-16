@@ -130,6 +130,52 @@ public class LayoutSetPrototypePropagationTest
 	}
 
 	@Test
+	public void testLayoutDeleteAndReaddWithSameFriendlyURL() throws Exception {
+		setLinkEnabled(true);
+
+		Layout layout = LayoutTestUtil.addLayout(
+			_layoutSetPrototypeGroup.getGroupId(), "test", true);
+
+		String friendlyURL = layout.getFriendlyURL();
+
+		Assert.assertEquals(
+			_initialPrototypeLayoutCount, getGroupLayoutCount());
+
+		propagateChanges(group);
+
+		Assert.assertEquals(
+			_initialPrototypeLayoutCount + 1, getGroupLayoutCount());
+
+		LayoutLocalServiceUtil.deleteLayout(
+			layout, true, ServiceContextTestUtil.getServiceContext());
+
+		Layout newLayout = LayoutTestUtil.addLayout(
+			_layoutSetPrototypeGroup.getGroupId(), "test", true);
+
+		Assert.assertEquals(friendlyURL, newLayout.getFriendlyURL());
+
+		Assert.assertEquals(
+			_initialPrototypeLayoutCount + 1, getGroupLayoutCount());
+
+		propagateChanges(group);
+
+		Assert.assertEquals(
+			_initialPrototypeLayoutCount + 1, getGroupLayoutCount());
+
+		Layout propagatedLayout =
+			LayoutLocalServiceUtil.fetchLayoutByUuidAndGroupId(
+				newLayout.getUuid(), group.getGroupId(), false);
+
+		Assert.assertNotNull(
+			"Deleted and readded layout could not be found on propagated site",
+			propagatedLayout);
+
+		Assert.assertEquals(
+			"Friendly URLs of the source and target layouts should match",
+			friendlyURL, propagatedLayout.getFriendlyURL());
+	}
+
+	@Test
 	public void testLayoutPermissionPropagationWithLinkEnabled()
 		throws Exception {
 

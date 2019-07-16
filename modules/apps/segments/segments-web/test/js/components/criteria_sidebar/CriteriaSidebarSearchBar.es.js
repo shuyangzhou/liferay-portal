@@ -12,10 +12,10 @@
  * details.
  */
 
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import CriteriaSidebarSearchBar from 'components/criteria_sidebar/CriteriaSidebarSearchBar.es';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import {cleanup, fireEvent, render} from 'react-testing-library';
 
 const SEARCH_BUTTON_TESTID = 'search-button';
 
@@ -97,7 +97,7 @@ describe('CriteriaSidebarSearchBar', () => {
 	});
 
 	it('clears the input when the times icon is clicked', () => {
-		const {getByTestId} = render(<TestComponent initialValue='test' />);
+		const {getByTestId} = render(<TestComponent initialValue="test" />);
 
 		const searchButton = getByTestId(SEARCH_BUTTON_TESTID);
 		const searchInput = getByTestId(SEARCH_INPUT_TESTID);

@@ -31,7 +31,6 @@ import javax.portlet.PortletRequest;
  * Provides an interface for customizing a {@link Field}.
  *
  * @author Eduardo García
- * @review
  */
 public interface SegmentsFieldCustomizer {
 

@@ -291,6 +291,11 @@ public abstract class BaseBlogPostingImageResourceTestCase {
 			Arrays.asList(blogPostingImage1, blogPostingImage2),
 			(List<BlogPostingImage>)page.getItems());
 		assertValid(page);
+
+		blogPostingImageResource.deleteBlogPostingImage(
+			blogPostingImage1.getId());
+		blogPostingImageResource.deleteBlogPostingImage(
+			blogPostingImage2.getId());
 	}
 
 	@Test

@@ -346,6 +346,9 @@ public abstract class BaseDocumentFolderResourceTestCase {
 			Arrays.asList(documentFolder1, documentFolder2),
 			(List<DocumentFolder>)page.getItems());
 		assertValid(page);
+
+		documentFolderResource.deleteDocumentFolder(documentFolder1.getId());
+		documentFolderResource.deleteDocumentFolder(documentFolder2.getId());
 	}
 
 	@Test
@@ -671,6 +674,9 @@ public abstract class BaseDocumentFolderResourceTestCase {
 			Arrays.asList(documentFolder1, documentFolder2),
 			(List<DocumentFolder>)page.getItems());
 		assertValid(page);
+
+		documentFolderResource.deleteDocumentFolder(documentFolder1.getId());
+		documentFolderResource.deleteDocumentFolder(documentFolder2.getId());
 	}
 
 	@Test

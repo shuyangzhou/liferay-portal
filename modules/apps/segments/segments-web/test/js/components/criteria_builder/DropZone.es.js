@@ -12,9 +12,9 @@
  * details.
  */
 
+import {cleanup, render} from '@testing-library/react';
 import DropZone from 'components/criteria_builder/DropZone.es';
 import React from 'react';
-import {cleanup, render} from 'react-testing-library';
 
 const connectDnd = jest.fn(el => el);
 
@@ -28,10 +28,10 @@ describe('DropZone', () => {
 			<OriginalDropZone
 				connectDropTarget={connectDnd}
 				dropIndex={0}
-				groupId='group_01'
+				groupId="group_01"
 				onCriterionAdd={jest.fn()}
 				onMove={jest.fn()}
-				propertyKey='user'
+				propertyKey="user"
 			/>
 		);
 

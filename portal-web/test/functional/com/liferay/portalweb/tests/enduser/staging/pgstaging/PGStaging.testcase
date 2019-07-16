@@ -35,10 +35,7 @@ definition {
 		property database.types = "db2,hypersonic,mariadb,mysql,oracle,postgresql,sqlserver,sybase";
 		property environment.acceptance = "true";
 
-		Staging.remoteStagingSetUp(
-			remotePort = "9080",
-			remoteStaging = "true",
-			siteName = "Site Name");
+		Staging.remoteStagingSetUp(siteName = "Site Name");
 
 		JSONLayout.addWidgetToPublicLayout(
 			groupName = "Site Name",
@@ -656,7 +653,7 @@ definition {
 			groupName = "Site Name",
 			title = "Web Content Title");
 
-		ProductMenu.gotoSite(site = "Site Name");
+		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -671,7 +668,7 @@ definition {
 
 		PortletEntry.publish();
 
-		ProductMenu.gotoSite(site = "Site Name");
+		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
@@ -754,7 +751,17 @@ definition {
 
 		Staging.publishToLive();
 
+		User.logoutPG(
+			password = "test",
+			userEmailAddress = "test@liferay.com");
+
+		User.loginPG(
+			nodePort = "9080",
+			password = "test",
+			userEmailAddress = "test@liferay.com");
+
 		Navigator.gotoSitePage(
+			baseURL = "http://localhost:9080",
 			pageName = "Staging Test Page",
 			siteName = "Remote Site");
 
@@ -879,7 +886,7 @@ definition {
 			sitePagesVariationMenulistName = "Test Site Pages Variation",
 			sitePagesVariationName = "Main Variation");
 
-		ProductMenu.gotoSite(site = "Site Name");
+		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Site Builder",
@@ -935,13 +942,24 @@ definition {
 
 		Staging.publishToLive();
 
+		User.logoutPG(
+			password = "test",
+			userEmailAddress = "test@liferay.com");
+
+		User.loginPG(
+			nodePort = "9080",
+			password = "test",
+			userEmailAddress = "test@liferay.com");
+
 		Navigator.gotoSitePage(
+			baseURL = "http://localhost:9080",
 			pageName = "Staging Test Page",
 			siteName = "Remote Site");
 
 		WebContent.viewPGViaWCD(webContentContent = "Web Content Content");
 
 		Navigator.gotoSitePage(
+			baseURL = "http://localhost:9080",
 			pageName = "Test Variation Page",
 			siteName = "Remote Site");
 

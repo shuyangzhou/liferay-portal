@@ -252,6 +252,11 @@ public abstract class BaseStructuredContentResourceTestCase {
 			Arrays.asList(structuredContent1, structuredContent2),
 			(List<StructuredContent>)page.getItems());
 		assertValid(page);
+
+		structuredContentResource.deleteStructuredContent(
+			structuredContent1.getId());
+		structuredContentResource.deleteStructuredContent(
+			structuredContent2.getId());
 	}
 
 	@Test
@@ -561,6 +566,11 @@ public abstract class BaseStructuredContentResourceTestCase {
 			Arrays.asList(structuredContent1, structuredContent2),
 			(List<StructuredContent>)page.getItems());
 		assertValid(page);
+
+		structuredContentResource.deleteStructuredContent(
+			structuredContent1.getId());
+		structuredContentResource.deleteStructuredContent(
+			structuredContent2.getId());
 	}
 
 	@Test
@@ -935,6 +945,11 @@ public abstract class BaseStructuredContentResourceTestCase {
 			Arrays.asList(structuredContent1, structuredContent2),
 			(List<StructuredContent>)page.getItems());
 		assertValid(page);
+
+		structuredContentResource.deleteStructuredContent(
+			structuredContent1.getId());
+		structuredContentResource.deleteStructuredContent(
+			structuredContent2.getId());
 	}
 
 	@Test

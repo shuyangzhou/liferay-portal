@@ -27,21 +27,19 @@ import java.util.ResourceBundle;
 import javax.portlet.PortletRequest;
 
 /**
- * Provides an interface for extending the segment {@link Criteria} by adding
+ * Provides an interface for extending the segment's {@link Criteria} by adding
  * more filters.
  *
  * @author Eduardo García
- * @review
  */
 public interface SegmentsCriteriaContributor {
 
 	/**
-	 * Contributes a criterion to a segment criteria.
+	 * Contributes the criterion to a segment's criteria.
 	 *
-	 * @param  criteria the criteria
-	 * @param  filterString the filter of the criterion as a string
-	 * @param  conjunction the conjunction of the criterion
-	 * @review
+	 * @param criteria the segment's criteria
+	 * @param filterString the criterion's filter as a string
+	 * @param conjunction the criterion's conjunction
 	 */
 	public default void contribute(
 		Criteria criteria, String filterString,
@@ -52,29 +50,26 @@ public interface SegmentsCriteriaContributor {
 	}
 
 	/**
-	 * Returns the contributed criterion from a criteria.
+	 * Returns the contributed criterion from the criteria.
 	 *
-	 * @param  criteria the criteria
-	 * @return the contributed criterion.
-	 * @review
+	 * @param  criteria the segment's criteria
+	 * @return the contributed criterion
 	 */
 	public default Criteria.Criterion getCriterion(Criteria criteria) {
 		return criteria.getCriterion(getKey());
 	}
 
 	/**
-	 * Returns the entity model associated to the contributor.
+	 * Returns the entity model associated with the contributor.
 	 *
-	 * @return
-	 * @review
+	 * @return the entity model associated with the contributor
 	 */
 	public EntityModel getEntityModel();
 
 	/**
-	 * Returns the name of the entity model associated to the contributor.
+	 * Returns the name of the entity model associated with the contributor.
 	 *
-	 * @return the name of the entity model associated to the contributor
-	 * @review
+	 * @return the name of the entity model associated with the contributor
 	 */
 	public String getEntityName();
 
@@ -83,23 +78,21 @@ public interface SegmentsCriteriaContributor {
 	 *
 	 * @param  portletRequest the portlet request
 	 * @return the list of fields that are supported by this contributor
-	 * @review
 	 */
 	public List<Field> getFields(PortletRequest portletRequest);
 
 	/**
-	 * Returns the contributor's key. This key must be unique.
+	 * Returns the contributor's unique key.
 	 *
-	 * @return the contributor's key
-	 * @review
+	 * @return the contributor's unique key
 	 */
 	public String getKey();
 
 	/**
-	 * Returns the label displayed in the user interface.
+	 * Returns the label displayed in the user interface based on the locale.
 	 *
-	 * @return the label
-	 * @review
+	 * @param  locale the locale to apply for the label
+	 * @return the label displayed in the user interface
 	 */
 	public default String getLabel(Locale locale) {
 		ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
@@ -109,10 +102,10 @@ public interface SegmentsCriteriaContributor {
 	}
 
 	/**
-	 * Returns the contributor's type. See {@link Criteria.Type}.
+	 * Returns the contributor's type.
 	 *
 	 * @return the contributor's type
-	 * @review
+	 * @see    Criteria.Type
 	 */
 	public Criteria.Type getType();
 

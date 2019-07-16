@@ -61,11 +61,8 @@ public class MBThreadIndexerReindexTest {
 
 	@Test
 	public void testReindexMBThread() throws Exception {
-		User user = userSearchFixture.addUser(
-			RandomTestUtil.randomString(), _group);
-
 		MBMessage mbMessage = mbFixture.createMBMessageWithCategory(
-			RandomTestUtil.randomString(), user.getUserId());
+			RandomTestUtil.randomString());
 
 		MBThread thread = mbMessage.getThread();
 
@@ -86,11 +83,8 @@ public class MBThreadIndexerReindexTest {
 
 	@Test
 	public void testReindexMBThreadWithDefaultCategory() throws Exception {
-		User user = userSearchFixture.addUser(
-			RandomTestUtil.randomString(), _group);
-
 		MBMessage mbMessage = mbFixture.createMBMessage(
-			user.getUserId(), MBCategoryConstants.DEFAULT_PARENT_CATEGORY_ID,
+			MBCategoryConstants.DEFAULT_PARENT_CATEGORY_ID,
 			RandomTestUtil.randomString());
 
 		MBThread mbThread = mbMessage.getThread();
@@ -112,11 +106,8 @@ public class MBThreadIndexerReindexTest {
 
 	@Test
 	public void testReindexMBThreadWithDiscussion() throws Exception {
-		User user = userSearchFixture.addUser(
-			RandomTestUtil.randomString(), _group);
-
 		MBMessage mbMessage = mbFixture.createMBMessage(
-			user.getUserId(), MBCategoryConstants.DISCUSSION_CATEGORY_ID,
+			MBCategoryConstants.DISCUSSION_CATEGORY_ID,
 			RandomTestUtil.randomString());
 
 		MBThread mbThread = mbMessage.getThread();
@@ -136,7 +127,7 @@ public class MBThreadIndexerReindexTest {
 		mbThreadIndexerFixture.searchOnlyOne(searchTerm);
 	}
 
-	protected void setUpMBFixture() throws Exception {
+	protected void setUpMBFixture() {
 		mbFixture = new MBFixture(_group, _user);
 
 		_mbMessages = mbFixture.getMbMessages();

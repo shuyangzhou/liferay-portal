@@ -12,9 +12,9 @@
  * details.
  */
 
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import LocalizedInput from 'components/title_editor/LocalizedInput.es';
 import React from 'react';
-import {cleanup, fireEvent, render} from 'react-testing-library';
 
 const LOCALIZED_DROPDOWN_BUTTON = 'localized-dropdown-button';
 
@@ -47,7 +47,7 @@ describe('LocalizedInput', () => {
 						en_US: '',
 						es_ES: ''
 					}}
-					initialLanguageId='en_US'
+					initialLanguageId="en_US"
 				/>
 			);
 			return {asFragment, getByTestId};
@@ -98,7 +98,7 @@ describe('LocalizedInput', () => {
 						en_US: '',
 						es_ES: ''
 					}}
-					initialLanguageId='en_US'
+					initialLanguageId="en_US"
 					initialValues={{
 						en_US: PRE_EXISTING_VALUE,
 						es_ES: PRE_EXISTING_VALUE_ALT

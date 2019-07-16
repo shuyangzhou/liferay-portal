@@ -14,11 +14,14 @@
 
 package com.liferay.layout.content.page.editor.web.internal.portlet.action;
 
+import com.liferay.fragment.constants.FragmentEntryLinkConstants;
 import com.liferay.fragment.contributor.FragmentCollectionContributorTracker;
 import com.liferay.fragment.exception.NoSuchEntryException;
 import com.liferay.fragment.model.FragmentEntry;
 import com.liferay.fragment.model.FragmentEntryLink;
+import com.liferay.fragment.renderer.DefaultFragmentRendererContext;
 import com.liferay.fragment.renderer.FragmentRenderer;
+import com.liferay.fragment.renderer.FragmentRendererController;
 import com.liferay.fragment.renderer.FragmentRendererTracker;
 import com.liferay.fragment.service.FragmentEntryLinkService;
 import com.liferay.fragment.service.FragmentEntryLocalService;
@@ -145,14 +148,24 @@ public class AddFragmentEntryLinkMVCActionCommand extends BaseMVCActionCommand {
 			FragmentEntryLink fragmentEntryLink = TransactionInvokerUtil.invoke(
 				_transactionConfig, callable);
 
+			DefaultFragmentRendererContext defaultFragmentRendererContext =
+				new DefaultFragmentRendererContext(fragmentEntryLink);
+
+			defaultFragmentRendererContext.setLocale(themeDisplay.getLocale());
+			defaultFragmentRendererContext.setMode(
+				FragmentEntryLinkConstants.EDIT);
+			defaultFragmentRendererContext.setSegmentsExperienceIds(
+				new long[] {SegmentsConstants.SEGMENTS_EXPERIENCE_ID_DEFAULT});
+
+			String configuration = _fragmentRendererController.getConfiguration(
+				defaultFragmentRendererContext);
+
 			jsonObject.put(
-				"configuration",
-				JSONFactoryUtil.createJSONObject(
-					fragmentEntryLink.getConfiguration())
+				"configuration", JSONFactoryUtil.createJSONObject(configuration)
 			).put(
 				"defaultConfigurationValues",
 				FragmentEntryConfigUtil.getConfigurationDefaultValuesJSONObject(
-					fragmentEntryLink.getConfiguration())
+					configuration)
 			).put(
 				"editableValues", fragmentEntryLink.getEditableValues()
 			).put(
@@ -223,6 +236,9 @@ public class AddFragmentEntryLinkMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private FragmentEntryLocalService _fragmentEntryLocalService;
+
+	@Reference
+	private FragmentRendererController _fragmentRendererController;
 
 	@Reference
 	private FragmentRendererTracker _fragmentRendererTracker;

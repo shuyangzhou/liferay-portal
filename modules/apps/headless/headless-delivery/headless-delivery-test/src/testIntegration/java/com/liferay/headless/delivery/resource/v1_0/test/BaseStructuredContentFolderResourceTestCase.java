@@ -249,6 +249,11 @@ public abstract class BaseStructuredContentFolderResourceTestCase {
 			Arrays.asList(structuredContentFolder1, structuredContentFolder2),
 			(List<StructuredContentFolder>)page.getItems());
 		assertValid(page);
+
+		structuredContentFolderResource.deleteStructuredContentFolder(
+			structuredContentFolder1.getId());
+		structuredContentFolderResource.deleteStructuredContentFolder(
+			structuredContentFolder2.getId());
 	}
 
 	@Test
@@ -599,6 +604,11 @@ public abstract class BaseStructuredContentFolderResourceTestCase {
 			Arrays.asList(structuredContentFolder1, structuredContentFolder2),
 			(List<StructuredContentFolder>)page.getItems());
 		assertValid(page);
+
+		structuredContentFolderResource.deleteStructuredContentFolder(
+			structuredContentFolder1.getId());
+		structuredContentFolderResource.deleteStructuredContentFolder(
+			structuredContentFolder2.getId());
 	}
 
 	@Test

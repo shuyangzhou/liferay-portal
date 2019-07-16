@@ -1,0 +1,43 @@
+{namespace com.liferay.layout.content.page.editor.web.SelectField}
+
+/**
+ * Field Select variation
+ */
+{template .render}
+	{@param configurationValues: ?}
+	{@param field: [
+		name: string,
+		label: string,
+		type: string,
+		typeOptions: [
+			validValues: list<string>
+		]
+	]}
+
+	{@param? _handleSelectValueChanged: any}
+
+	{if $field.typeOptions and $field.typeOptions.validValues}
+		<div class="form-group">
+			<label for="{$field.name}">{$field.label}</label>
+
+			<select
+				class="form-control form-control-sm"
+				data-onchange="{$_handleSelectValueChanged}"
+				data-field-type="{$field.type}"
+				id="{$field.name}"
+			>
+				{foreach $option in $field.typeOptions.validValues}
+					{let $optionAttributes kind="attributes"}
+						value="{$option}"
+
+						{if $configurationValues[$field.name] == $option}
+							selected
+						{/if}
+					{/let}
+
+					<option {$optionAttributes}>{$option}</option>
+				{/foreach}
+			</select>
+		</div>
+	{/if}
+{/template}

@@ -254,6 +254,11 @@ public abstract class BaseMessageBoardThreadResourceTestCase {
 			Arrays.asList(messageBoardThread1, messageBoardThread2),
 			(List<MessageBoardThread>)page.getItems());
 		assertValid(page);
+
+		messageBoardThreadResource.deleteMessageBoardThread(
+			messageBoardThread1.getId());
+		messageBoardThreadResource.deleteMessageBoardThread(
+			messageBoardThread2.getId());
 	}
 
 	@Test
@@ -757,6 +762,11 @@ public abstract class BaseMessageBoardThreadResourceTestCase {
 			Arrays.asList(messageBoardThread1, messageBoardThread2),
 			(List<MessageBoardThread>)page.getItems());
 		assertValid(page);
+
+		messageBoardThreadResource.deleteMessageBoardThread(
+			messageBoardThread1.getId());
+		messageBoardThreadResource.deleteMessageBoardThread(
+			messageBoardThread2.getId());
 	}
 
 	@Test

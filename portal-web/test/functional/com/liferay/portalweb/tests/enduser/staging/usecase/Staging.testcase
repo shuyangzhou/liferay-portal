@@ -60,7 +60,7 @@ definition {
 	@description = "This is a use case for LPS-88197."
 	@priority = "3"
 	test ActivateStagingOnGlobalSiteWithDDMStructure {
-		ProductMenu.gotoSite(site = "Global");
+		SitePages.openPagesAdmin(siteURLKey = "global");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -84,7 +84,7 @@ definition {
 			structureDescription = "Structure Description",
 			structureName = "Structure Name");
 
-		ProductMenu.gotoSite(site = "Global");
+		SitePages.openPagesAdmin(siteURLKey = "global");
 
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
@@ -137,6 +137,77 @@ definition {
 		Staging.activateStagingCP(
 			pageVersioningEnabled = "true",
 			siteName = "Site Name");
+	}
+
+	@description = "This is a use case for LPS-94325."
+	@priority = "3"
+	test ActivateStagingWithWCDOnFragment {
+		JSONFragment.addFragmentCollection(
+			groupName = "Site Name",
+			name = "Collection Name");
+
+		FragmentsAdmin.openFragmentsAdmin(siteURLKey = "site-name");
+
+		Navigator.gotoNavNested(navNested = "Collection Name");
+
+		FragmentsAdmin.addSection(fragmentName = "Fragment Name");
+
+		var fragmentHTML = '''<lfr-widget-web-content>''';
+
+		FragmentsAdmin.autocompleteFragmentHTML(
+			autocompleteField = "lfr-widget-web-content",
+			fragmentHTML = "${fragmentHTML}");
+
+		PortletEntry.publish();
+
+		WebContent.openWebContentAdmin(siteURLKey = "site-name");
+
+		WebContentNavigator.gotoAddCP();
+
+		WebContent.addCP(
+			webContentContent = "WC WebContent Content",
+			webContentTitle = "WC WebContent Title");
+
+		PortletEntry.publish();
+
+		SitePages.openPagesAdmin(siteURLKey = "site-name");
+
+		ContentPages.addPage(pageName = "Test Content Page Name");
+
+		PageEditor.addFragment(
+			collectionName = "Collection Name",
+			fragmentName = "Fragment Name");
+
+		WebContentDisplayPortlet.selectWebContent(
+			contentPage = "true",
+			webContentTitle = "WC WebContent Title");
+
+		PageEditor.clickPublish();
+
+		Navigator.openWithAppendToBaseURL(urlAppend = "web/site-name/test-content-page-name");
+
+		WebContent.viewPGViaWCD(webContentContent = "WC WebContent Content");
+
+		Navigator.openSiteURL(siteName = "Site Name");
+
+		ProductMenu.gotoPortlet(
+			category = "Publishing",
+			panel = "Site Administration",
+			portlet = "Staging");
+
+		Staging.activateStagingCP(siteName = "Site Name");
+
+		Navigator.gotoStagedSitePage(
+			pageName = "Test Content Page Name",
+			siteName = "Site Name");
+
+		WebContent.viewPGViaWCD(webContentContent = "WC WebContent Content");
+
+		Navigator.gotoSitePage(
+			pageName = "Test Content Page Name",
+			siteName = "Site Name");
+
+		WebContent.viewPGViaWCD(webContentContent = "WC WebContent Content");
 	}
 
 	@description = "This is a use case for LPS-92039 and LPS-92636."
@@ -308,7 +379,7 @@ definition {
 			remoteStaging = "true",
 			siteName = "Child SiteName");
 
-		ProductMenu.gotoSite(site = "Site Name");
+		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -328,7 +399,7 @@ definition {
 
 		WebContentStructures.saveCP(structureName = "Structure Name");
 
-		ProductMenu.gotoSite(site = "Site Name");
+		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -343,7 +414,7 @@ definition {
 			templateFieldNames = "Text",
 			templateName = "Template Name");
 
-		ProductMenu.gotoSite(site = "Child SiteName");
+		Navigator.openSiteURL(siteName = "Child SiteName");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -463,7 +534,7 @@ definition {
 			customFieldType = "Input Field",
 			resourceName = "Document");
 
-		ProductMenu.gotoSite(site = "Site Name");
+		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -484,7 +555,17 @@ definition {
 
 		Staging.publishToLive();
 
+		User.logoutPG(
+			password = "test",
+			userEmailAddress = "test@liferay.com");
+
+		User.loginPG(
+			nodePort = "9080",
+			password = "test",
+			userEmailAddress = "test@liferay.com");
+
 		Navigator.gotoSitePage(
+			baseURL = "http://localhost:9080",
 			pageName = "Staging Test Page",
 			siteName = "Remote Site");
 
@@ -509,7 +590,16 @@ definition {
 			customFieldName = "Text Field",
 			resourceName = "Document");
 
-		ProductMenu.gotoSite(site = "Site Name");
+		User.logoutPG(
+			nodePort = "9080",
+			password = "test",
+			userEmailAddress = "test@liferay.com");
+
+		User.loginPG(
+			password = "test",
+			userEmailAddress = "test@liferay.com");
+
+		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -531,7 +621,17 @@ definition {
 
 		Staging.publishToLive();
 
+		User.logoutPG(
+			password = "test",
+			userEmailAddress = "test@liferay.com");
+
+		User.loginPG(
+			nodePort = "9080",
+			password = "test",
+			userEmailAddress = "test@liferay.com");
+
 		Navigator.gotoSitePage(
+			baseURL = "http://localhost:9080",
 			pageName = "Staging Test Page",
 			siteName = "Remote Site");
 
@@ -562,7 +662,7 @@ definition {
 			pageVersioningEnabled = "true",
 			siteName = "Site Name");
 
-		ProductMenu.gotoSite(site = "Site Name");
+		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -788,7 +888,7 @@ definition {
 			pageVersioningEnabled = "true",
 			siteName = "Site Name");
 
-		ProductMenu.gotoSite(site = "Site Name");
+		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -1012,7 +1112,7 @@ definition {
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
-		ProductMenu.gotoSite(site = "Global");
+		SitePages.openPagesAdmin(siteURLKey = "global");
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -1034,7 +1134,7 @@ definition {
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
-		ProductMenu.gotoSite(site = "Global");
+		SitePages.openPagesAdmin(siteURLKey = "global");
 
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
@@ -1060,7 +1160,7 @@ definition {
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
-		ProductMenu.gotoSite(site = "Global");
+		SitePages.openPagesAdmin(siteURLKey = "global");
 
 		ProductMenu.gotoPortlet(
 			category = "Categorization",
@@ -1091,7 +1191,7 @@ definition {
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
-		ProductMenu.gotoSite(site = "Global");
+		SitePages.openPagesAdmin(siteURLKey = "global");
 
 		ProductMenu.gotoPortlet(
 			category = "Categorization",
@@ -1524,7 +1624,7 @@ definition {
 
 		Portlet.addPG(portletName = "Message Boards");
 
-		ProductMenu.gotoSite(site = "Community Site Name");
+		Navigator.openSiteURL(siteName = "Community Site Name");
 
 		JSONLayout.addPublicLayout(
 			groupName = "Community Site Name",
@@ -1536,7 +1636,7 @@ definition {
 
 		Portlet.addPG(portletName = "Wiki");
 
-		ProductMenu.gotoSite(site = "Community Site Name");
+		Navigator.openSiteURL(siteName = "Community Site Name");
 
 		JSONLayout.addPublicLayout(
 			groupName = "Community Site Name",
@@ -1548,7 +1648,7 @@ definition {
 
 		Portlet.addPG(portletName = "Language Selector");
 
-		ProductMenu.gotoSite(site = "Community Site Name");
+		Navigator.openSiteURL(siteName = "Community Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -1585,7 +1685,7 @@ definition {
 
 	@priority = "3"
 	test StagingKaleoWebContentLinkingUnapprovedContent {
-		ProductMenu.gotoSite(site = "Site Name");
+		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -1596,7 +1696,7 @@ definition {
 			workflowDefinition = "Single Approver",
 			workflowResourceValue = "Page Revision");
 
-		ProductMenu.gotoSite(site = "Site Name");
+		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -1757,7 +1857,7 @@ definition {
 			layoutName = "Staging Test Page 2",
 			widgetName = "Web Content Display");
 
-		ProductMenu.gotoSite(site = "Site Name");
+		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -1929,7 +2029,7 @@ definition {
 			remoteStaging = "true",
 			siteName = "Site Name");
 
-		ProductMenu.gotoSite(site = "Site Name");
+		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -1975,7 +2075,17 @@ definition {
 
 		Staging.publishToLive();
 
+		User.logoutPG(
+			password = "test",
+			userEmailAddress = "test@liferay.com");
+
+		User.loginPG(
+			nodePort = "9080",
+			password = "test",
+			userEmailAddress = "test@liferay.com");
+
 		Navigator.gotoSitePage(
+			baseURL = "http://localhost:9080",
 			pageName = "Staging Test Page",
 			siteName = "Remote Site");
 
@@ -1987,6 +2097,15 @@ definition {
 		DMNavigator.gotoDocumentCP(dmDocumentTitle = "DM Document Type Title");
 
 		DMDocument.viewCP(dmDocumentTitle = "DM Document Type Title");
+
+		User.logoutPG(
+			nodePort = "9080",
+			password = "test",
+			userEmailAddress = "test@liferay.com");
+
+		User.loginPG(
+			password = "test",
+			userEmailAddress = "test@liferay.com");
 
 		Navigator.gotoSitePage(
 			pageName = "Staging Test Page",
@@ -2048,7 +2167,17 @@ definition {
 
 		Staging.publishToLive();
 
+		User.logoutPG(
+			password = "test",
+			userEmailAddress = "test@liferay.com");
+
+		User.loginPG(
+			nodePort = "9080",
+			password = "test",
+			userEmailAddress = "test@liferay.com");
+
 		Navigator.gotoSitePage(
+			baseURL = "http://localhost:9080",
 			pageName = "Staging Test Page",
 			siteName = "Remote Site");
 
@@ -2076,7 +2205,7 @@ definition {
 			layoutName = "Staging Test Page",
 			widgetName = "Web Content Display");
 
-		ProductMenu.gotoSite(site = "Site Name");
+		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -2098,7 +2227,7 @@ definition {
 
 		WebContentStructures.saveCP(structureName = "Structure Name");
 
-		ProductMenu.gotoSite(site = "Site Name");
+		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -2115,7 +2244,7 @@ definition {
 
 		Navigator.openURL();
 
-		ProductMenu.gotoSite(site = "Site Name");
+		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -2163,7 +2292,19 @@ definition {
 
 		Staging.publishToLive();
 
-		ProductMenu.gotoSite(site = "Remote Site");
+		User.logoutPG(
+			password = "test",
+			userEmailAddress = "test@liferay.com");
+
+		User.loginPG(
+			nodePort = "9080",
+			password = "test",
+			userEmailAddress = "test@liferay.com");
+
+		Navigator.gotoSitePage(
+			baseURL = "http://localhost:9080",
+			pageName = "Staging Test Page",
+			siteName = "Remote Site");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -2196,7 +2337,7 @@ definition {
 			remoteStaging = "true",
 			siteName = "Site Name");
 
-		ProductMenu.gotoSite(site = "Site Name");
+		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -2220,12 +2361,18 @@ definition {
 
 		Staging.publishToLiveNowViaPortletCP();
 
-		ProductMenu.gotoSite(site = "Remote Site");
+		User.logoutPG(
+			password = "test",
+			userEmailAddress = "test@liferay.com");
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			panel = "Site Administration",
-			portlet = "Web Content");
+		User.loginPG(
+			nodePort = "9080",
+			password = "test",
+			userEmailAddress = "test@liferay.com");
+
+		WebContent.openWebContentAdmin(
+			baseURL = "http://localhost:9080",
+			siteURLKey = "remote-site");
 
 		WebContent.viewTitle(
 			onLive = "true",
@@ -2288,7 +2435,17 @@ definition {
 
 		Staging.publishToLiveNowViaPortletPG();
 
+		User.logoutPG(
+			password = "test",
+			userEmailAddress = "test@liferay.com");
+
+		User.loginPG(
+			nodePort = "9080",
+			password = "test",
+			userEmailAddress = "test@liferay.com");
+
 		Navigator.gotoSitePage(
+			baseURL = "http://localhost:9080",
 			pageName = "Staging Test Page",
 			siteName = "Remote Site");
 
@@ -2322,7 +2479,7 @@ definition {
 
 		SystemSettings.saveConfiguration();
 
-		ProductMenu.gotoSite(site = "Site Name");
+		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -2338,13 +2495,23 @@ definition {
 
 		PortletEntry.publish();
 
-		ProductMenu.gotoSite(site = "Site Name");
+		Navigator.openSiteURL(siteName = "Site Name");
 
 		Staging.gotoPublishToLive();
 
 		Staging.publishToLive();
 
+		User.logoutPG(
+			password = "test",
+			userEmailAddress = "test@liferay.com");
+
+		User.loginPG(
+			nodePort = "9080",
+			password = "test",
+			userEmailAddress = "test@liferay.com");
+
 		Navigator.gotoSitePage(
+			baseURL = "http://localhost:9080",
 			pageName = "Staging Test Page",
 			siteName = "Remote Site");
 
@@ -2447,7 +2614,17 @@ definition {
 
 		Staging.publishToRemoteUncheckContentViaCustomPublication(contentName = "Blogs");
 
+		User.logoutPG(
+			password = "test",
+			userEmailAddress = "test@liferay.com");
+
+		User.loginPG(
+			nodePort = "9080",
+			password = "test",
+			userEmailAddress = "test@liferay.com");
+
 		Navigator.gotoSitePage(
+			baseURL = "http://localhost:9080",
 			pageName = "Staging Test Page",
 			siteName = "Remote Site");
 
@@ -2540,7 +2717,7 @@ definition {
 
 		WebContent.viewPGViaWCD(webContentContent = "Web Content Content");
 
-		ProductMenu.gotoSite(site = "Site Name");
+		Navigator.openSiteURL(siteName = "Site Name");
 
 		Navigator.gotoStagedView();
 
@@ -2566,7 +2743,7 @@ definition {
 			pageName = "Test Page 1",
 			siteName = "Site Name");
 
-		ProductMenu.gotoSite(site = "Site Name");
+		Navigator.openSiteURL(siteName = "Site Name");
 
 		Navigator.gotoStagedView();
 
@@ -2623,7 +2800,7 @@ definition {
 			userEmailAddress = "userea@liferay.com",
 			userScreenName = "usersn");
 
-		ProductMenu.gotoSite(site = "Site Name");
+		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "People",
@@ -2717,7 +2894,7 @@ definition {
 	test ViewLastPublishDateBehaviourAfterInitialPublication {
 		property portal.release = "false";
 
-		ProductMenu.gotoSite(site = "Site Name");
+		Navigator.openSiteURL(siteName = "Site Name");
 
 		JSONWebcontent.addWebContent(
 			content = "Web Content Content",
@@ -3200,7 +3377,7 @@ definition {
 	@description = "This is a use case for LPS-77935."
 	@priority = "4"
 	test ViewSimplePublicationAfterDeleteDocumentInGlobal {
-		ProductMenu.gotoSite(site = "Global");
+		SitePages.openPagesAdmin(siteURLKey = "global");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -3233,7 +3410,7 @@ definition {
 
 		Staging.activateStagingCP(siteName = "Site Name");
 
-		ProductMenu.gotoSite(site = "Global");
+		SitePages.openPagesAdmin(siteURLKey = "global");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -3341,7 +3518,7 @@ definition {
 			confirmMessage = "Are you sure you want to publish the selected document?",
 			entry = "DM Document Title");
 
-		ProductMenu.gotoSite(site = "Site Name");
+		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",

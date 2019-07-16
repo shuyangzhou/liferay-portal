@@ -16,89 +16,43 @@ import Component from 'metal-component';
 import {Config} from 'metal-state';
 import Soy from 'metal-soy';
 
-import './field_types/ColorPalette.soy';
-import './field_types/Checkbox.soy';
-import './field_types/Select.soy';
+import './field_types/ColorPaletteField.es';
+import './field_types/CheckboxField.es';
+import './field_types/SelectField.es';
 import './FloatingToolbarFragmentConfigurationPanelDelegateTemplate.soy';
-import {getCheckboxData} from './field_types/Checkbox.es';
-import {getColorPaletteData} from './field_types/ColorPalette.es';
 import {getConnectedComponent} from '../../../store/ConnectedComponent.es';
-import {getSelectData} from './field_types/Select.es';
-import {setIn} from '../../../utils/FragmentsEditorUpdateUtils.es';
+import {deleteIn, setIn} from '../../../utils/FragmentsEditorUpdateUtils.es';
 import templates from './FloatingToolbarFragmentConfigurationPanel.soy';
 import {updateConfigurationValueAction} from '../../../actions/updateEditableValue.es';
-
-/**
- * @type { function(Event): { fieldName: string, fieldValue: any }}
- */
-const GET_DATA_FUNCTIONS = {
-	checkbox: getCheckboxData,
-	select: getSelectData,
-	colorPalette: getColorPaletteData
-};
 
 /**
  * FloatingToolbarFragmentConfigurationPanel
  */
 class FloatingToolbarFragmentConfigurationPanel extends Component {
 	/**
-	 * @inheritdoc
-	 * @review
-	 */
-	prepareStateForRender(state) {
-		const newState = this._injectThemeColorsToColorPaletteFields(state);
-
-		return newState;
-	}
-
-	/**
-	 * Injects the theme colors from the store to be used in the color palette component
-	 * @param {object} state
-	 */
-	_injectThemeColorsToColorPaletteFields(state) {
-		const {item} = state;
-
-		const fieldSets = item.configuration.fieldSets;
-
-		const newFieldSets = fieldSets.map(fieldSet => {
-			const fields = fieldSet.fields.map(field => {
-				if (field.type === 'colorPalette') {
-					return setIn(field, ['typeOptions'], {
-						validValues: this.themeColorsCssClasses
-					});
-				} else {
-					return field;
-				}
-			});
-
-			return {...fieldSet, fields};
-		});
-
-		const newState = setIn(
-			state,
-			['item', 'configuration', 'fieldSets'],
-			newFieldSets
-		);
-		return newState;
-	}
-
-	/**
 	 * Handles Configuration change
 	 * @private
 	 * @review
 	 */
 	_handleChangeConfiguration(event) {
-		const element = event.delegateTarget.closest('[data-field-type]');
+		const {name: fieldName, value: fieldValue} = event;
 
-		const fieldType = element.dataset.fieldType;
-
-		const fieldData = GET_DATA_FUNCTIONS[fieldType](event);
-
-		const nextConfigurationValues = setIn(
+		let nextConfigurationValues = setIn(
 			this.item.configurationValues,
-			[fieldData.fieldName],
-			fieldData.fieldValue
+			[fieldName],
+			fieldValue
 		);
+
+		Object.keys(nextConfigurationValues).forEach(key => {
+			if (
+				nextConfigurationValues[key] ===
+				this.item.defaultConfigurationValues[key]
+			) {
+				nextConfigurationValues = deleteIn(nextConfigurationValues, [
+					key
+				]);
+			}
+		});
 
 		this._sendConfiguration(nextConfigurationValues);
 	}
@@ -155,12 +109,7 @@ FloatingToolbarFragmentConfigurationPanel.STATE = {
 
 const ConnectedFloatingToolbarFragmentConfigurationPanel = getConnectedComponent(
 	FloatingToolbarFragmentConfigurationPanel,
-	[
-		'defaultSegmentsExperienceId',
-		'segmentsExperienceId',
-		'spritemap',
-		'themeColorsCssClasses'
-	]
+	['defaultSegmentsExperienceId', 'segmentsExperienceId', 'spritemap']
 );
 
 Soy.register(ConnectedFloatingToolbarFragmentConfigurationPanel, templates);

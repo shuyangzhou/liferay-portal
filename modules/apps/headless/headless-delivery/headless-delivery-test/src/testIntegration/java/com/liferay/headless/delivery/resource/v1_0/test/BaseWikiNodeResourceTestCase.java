@@ -231,6 +231,9 @@ public abstract class BaseWikiNodeResourceTestCase {
 			Arrays.asList(wikiNode1, wikiNode2),
 			(List<WikiNode>)page.getItems());
 		assertValid(page);
+
+		wikiNodeResource.deleteWikiNode(wikiNode1.getId());
+		wikiNodeResource.deleteWikiNode(wikiNode2.getId());
 	}
 
 	@Test

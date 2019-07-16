@@ -376,6 +376,9 @@ public abstract class BaseBlogPostingResourceTestCase {
 			Arrays.asList(blogPosting1, blogPosting2),
 			(List<BlogPosting>)page.getItems());
 		assertValid(page);
+
+		blogPostingResource.deleteBlogPosting(blogPosting1.getId());
+		blogPostingResource.deleteBlogPosting(blogPosting2.getId());
 	}
 
 	@Test

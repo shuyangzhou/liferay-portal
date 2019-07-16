@@ -54,7 +54,7 @@ public class UpgradeMVCCVersionTest extends UpgradeMVCCVersion {
 		doUpgrade();
 
 		DBAssertionUtil.assertColumns(
-			_HIBERNATE_MAPPING_TABLE_NAME, "_id", "_userId", "mvccVersion");
+			_HIBERNATE_MAPPING_TABLE_NAME, "id", "userId", "mvccVersion");
 	}
 
 	@Test
@@ -66,7 +66,7 @@ public class UpgradeMVCCVersionTest extends UpgradeMVCCVersion {
 		doUpgrade();
 
 		DBAssertionUtil.assertColumns(
-			_TABLE_NAME, "_id", "_userId", "mvccversion");
+			_TABLE_NAME, "id", "userId", "mvccversion");
 	}
 
 	@Override
@@ -81,8 +81,8 @@ public class UpgradeMVCCVersionTest extends UpgradeMVCCVersion {
 
 	private void _createTable(String tableName) throws Exception {
 		runSQL(
-			"create table " + tableName + "(_id LONG not null primary key, " +
-				"_userId LONG)");
+			"create table " + tableName + "(id LONG not null primary key, " +
+				"userId LONG)");
 	}
 
 	private void _dropTable(String tableName) throws Exception {
@@ -90,7 +90,7 @@ public class UpgradeMVCCVersionTest extends UpgradeMVCCVersion {
 	}
 
 	private static final String _HIBERNATE_MAPPING_TABLE_NAME =
-		"UpgradeMVCCVersionHibernateMappingTest";
+		"UpgradeMVCCVersionHBMTest";
 
 	private static final String _TABLE_NAME = "UpgradeMVCCVersionTest";
 

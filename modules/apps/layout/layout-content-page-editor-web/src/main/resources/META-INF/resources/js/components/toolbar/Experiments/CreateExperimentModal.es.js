@@ -12,8 +12,6 @@
  * details.
  */
 
-/* eslint no-unused-vars: "warn" */
-
 import React, {useState, useContext} from 'react';
 import PropTypes from 'prop-types';
 import ClayButton from '@clayui/button';
@@ -37,43 +35,43 @@ function CreateExperimentModal({setVisible, visible, onCreateExperiment}) {
 	const formId = `${portletNamespace}_createExperiement`;
 
 	return (
-		<>
+		<React.Fragment>
 			{visible && (
-				<ClayModal onClose={_closeModal} size='lg'>
+				<ClayModal onClose={_closeModal} size="lg">
 					{onClose => (
-						<>
+						<React.Fragment>
 							<ClayModal.Header>
 								{Liferay.Language.get('test-settings')}
 							</ClayModal.Header>
 							<ClayModal.Body>
 								<form id={formId} onSubmit={_handleSaveAction}>
-									<div className='form-group'>
+									<div className="form-group">
 										<label>
 											{Liferay.Language.get('name')}
 										</label>
 										<input
-											className='form-control'
-											name='name'
-											value={name}
+											className="form-control"
+											name="name"
 											onChange={_inputValueGetter(
 												setName
 											)}
+											value={name}
 										/>
 									</div>
 
-									<div className='form-group'>
+									<div className="form-group">
 										<label>
 											{Liferay.Language.get(
 												'description'
 											)}
 										</label>
 										<textarea
-											className='form-control'
-											name='description'
-											value={description}
+											className="form-control"
+											name="description"
 											onChange={_inputValueGetter(
 												setDescription
 											)}
+											value={description}
 										/>
 									</div>
 								</form>
@@ -82,9 +80,9 @@ function CreateExperimentModal({setVisible, visible, onCreateExperiment}) {
 								first={
 									<ClayButton.Group spaced>
 										<ClayButton
-											name='cancel'
+											displayType="secondary"
+											name="cancel"
 											onClick={onClose}
-											displayType='secondary'
 										>
 											{Liferay.Language.get('cancel')}
 										</ClayButton>
@@ -92,19 +90,19 @@ function CreateExperimentModal({setVisible, visible, onCreateExperiment}) {
 								}
 								last={
 									<ClayButton
-										name='save'
 										form={formId}
+										name="save"
 										onClick={_handleSaveAction}
 									>
 										{Liferay.Language.get('save')}
 									</ClayButton>
 								}
 							/>
-						</>
+						</React.Fragment>
 					)}
 				</ClayModal>
 			)}
-		</>
+		</React.Fragment>
 	);
 
 	function _closeModal() {

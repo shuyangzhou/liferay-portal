@@ -1561,9 +1561,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public boolean isConfirmation(String pattern) {
-		String confirmation = getConfirmation();
-
-		return pattern.equals(confirmation);
+		return pattern.equals(getConfirmation());
 	}
 
 	@Override

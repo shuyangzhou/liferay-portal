@@ -422,6 +422,11 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 			Arrays.asList(knowledgeBaseArticle1, knowledgeBaseArticle2),
 			(List<KnowledgeBaseArticle>)page.getItems());
 		assertValid(page);
+
+		knowledgeBaseArticleResource.deleteKnowledgeBaseArticle(
+			knowledgeBaseArticle1.getId());
+		knowledgeBaseArticleResource.deleteKnowledgeBaseArticle(
+			knowledgeBaseArticle2.getId());
 	}
 
 	@Test
@@ -784,6 +789,11 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 			Arrays.asList(knowledgeBaseArticle1, knowledgeBaseArticle2),
 			(List<KnowledgeBaseArticle>)page.getItems());
 		assertValid(page);
+
+		knowledgeBaseArticleResource.deleteKnowledgeBaseArticle(
+			knowledgeBaseArticle1.getId());
+		knowledgeBaseArticleResource.deleteKnowledgeBaseArticle(
+			knowledgeBaseArticle2.getId());
 	}
 
 	@Test
@@ -1136,6 +1146,11 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 			Arrays.asList(knowledgeBaseArticle1, knowledgeBaseArticle2),
 			(List<KnowledgeBaseArticle>)page.getItems());
 		assertValid(page);
+
+		knowledgeBaseArticleResource.deleteKnowledgeBaseArticle(
+			knowledgeBaseArticle1.getId());
+		knowledgeBaseArticleResource.deleteKnowledgeBaseArticle(
+			knowledgeBaseArticle2.getId());
 	}
 
 	@Test

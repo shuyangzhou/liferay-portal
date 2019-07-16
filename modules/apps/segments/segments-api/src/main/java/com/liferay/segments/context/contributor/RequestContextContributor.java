@@ -23,16 +23,14 @@ import javax.servlet.http.HttpServletRequest;
  * the request.
  *
  * @author Eduardo García
- * @review
  */
 public interface RequestContextContributor {
 
 	/**
 	 * Contributes additional information to the context.
 	 *
-	 * @param  context the context
-	 * @param  httpServletRequest the current request
-	 * @review
+	 * @param context the context that segments users
+	 * @param httpServletRequest the current request
 	 */
 	public void contribute(
 		Context context, HttpServletRequest httpServletRequest);

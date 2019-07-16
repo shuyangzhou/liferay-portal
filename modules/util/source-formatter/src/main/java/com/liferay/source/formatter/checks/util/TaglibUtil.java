@@ -100,22 +100,26 @@ public class TaglibUtil {
 			return tldFileNames;
 		}
 
-		String tldDirLocation = "portal-web/docroot/WEB-INF/tld/";
+		String[] tldDirLocations = {
+			"portal-web/docroot/WEB-INF/tld/", "util-taglib/src/META-INF/"
+		};
 
-		for (int i = 0; i < (ToolsUtil.PORTAL_MAX_DIR_LEVEL - 1); i++) {
-			File file = new File(baseDirName + tldDirLocation);
+		for (String tldDirLocation : tldDirLocations) {
+			for (int i = 0; i < (ToolsUtil.PORTAL_MAX_DIR_LEVEL - 1); i++) {
+				File file = new File(baseDirName + tldDirLocation);
 
-			if (file.exists()) {
-				tldFileNames.addAll(
-					SourceFormatterUtil.scanForFiles(
-						baseDirName + tldDirLocation, new String[0],
-						new String[] {"**/*.tld"}, sourceFormatterExcludes,
-						true));
+				if (file.exists()) {
+					tldFileNames.addAll(
+						SourceFormatterUtil.scanForFiles(
+							baseDirName + tldDirLocation, new String[0],
+							new String[] {"**/*.tld"}, sourceFormatterExcludes,
+							true));
 
-				break;
+					break;
+				}
+
+				tldDirLocation = "../" + tldDirLocation;
 			}
-
-			tldDirLocation = "../" + tldDirLocation;
 		}
 
 		return tldFileNames;

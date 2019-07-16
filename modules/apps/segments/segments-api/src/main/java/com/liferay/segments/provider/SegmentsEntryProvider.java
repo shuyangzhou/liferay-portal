@@ -20,68 +20,62 @@ import com.liferay.segments.context.Context;
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
- * Provides methods for obtaining {@link SegmentsEntry} objects and their
- * related entities.
+ * Provides methods for obtaining {@link
+ * com.liferay.segments.model.SegmentsEntry SegmentsEntry}s and their related
+ * entities.
  *
  * @author Eduardo García
- * @review
  */
 @ProviderType
 public interface SegmentsEntryProvider {
 
 	/**
-	 * Returns the primary keys of the entities related with the segment.
+	 * Returns the primary keys of the entities related to the segment.
 	 *
-	 * @param  segmentsEntryId the ID of the segment
+	 * @param  segmentsEntryId the segment's ID
 	 * @param  start the lower bound of the range of primary keys
 	 * @param  end the upper bound of the range of primary keys (not inclusive)
-	 * @return the primary keys of the entities related with the segment
-	 * @throws PortalException
-	 * @review
+	 * @return the primary keys of the entities related to the segment
+	 * @throws PortalException if a portal exception occurred
 	 */
 	public long[] getSegmentsEntryClassPKs(
 			long segmentsEntryId, int start, int end)
 		throws PortalException;
 
 	/**
-	 * Returns the number of entities related with the segment.
+	 * Returns the number of entities related to the segment.
 	 *
-	 * @param  segmentsEntryId the ID of the segment
-	 * @return the number of entities related with the segment
-	 * @throws PortalException
-	 * @review
+	 * @param  segmentsEntryId the segment's ID
+	 * @return the number of entities related to the segment
+	 * @throws PortalException if a portal exception occurred
 	 */
 	public int getSegmentsEntryClassPKsCount(long segmentsEntryId)
 		throws PortalException;
 
 	/**
-	 * Returns IDs of the active {@link SegmentsEntry} objects of a group that
-	 * are related with the entity.
+	 * Returns IDs of the group's active segments entries that are related to
+	 * the entity.
 	 *
 	 * @param  groupId the primary key of the group
-	 * @param  className the class name of the entity
+	 * @param  className the entity's class name
 	 * @param  classPK the primary key of the entity
-	 * @return the IDs the of active {@link SegmentsEntry} objects related to
-	 *         the entity
-	 * @throws PortalException
-	 * @review
+	 * @return the IDs of the active segments entries related to the entity
+	 * @throws PortalException if a portal exception occurred
 	 */
 	public long[] getSegmentsEntryIds(
 			long groupId, String className, long classPK)
 		throws PortalException;
 
 	/**
-	 * Returns IDs of the active {@link SegmentsEntry} objects of a group that
-	 * related with the entity under the given context.
+	 * Returns IDs of the group's active segments entries that are related to
+	 * the entity under the given context.
 	 *
 	 * @param  groupId the primary key of the group
-	 * @param  className the class name of the entity
+	 * @param  className the entity's class name
 	 * @param  classPK the primary key of the entity
 	 * @param  context the context
-	 * @return the IDs the of active {@link SegmentsEntry} objects related to
-	 *         the entity
-	 * @throws PortalException
-	 * @review
+	 * @return the IDs of the active segments entries related to the entity
+	 * @throws PortalException if a portal exception occurred
 	 */
 	public long[] getSegmentsEntryIds(
 			long groupId, String className, long classPK, Context context)

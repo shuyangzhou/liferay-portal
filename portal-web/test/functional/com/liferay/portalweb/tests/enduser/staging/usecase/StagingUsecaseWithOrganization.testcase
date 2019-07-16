@@ -107,7 +107,7 @@ definition {
 			password = "test",
 			userEmailAddress = "userea@liferay.com");
 
-		ProductMenu.gotoSite(site = "Staging Organization Name");
+		Navigator.openSiteURL(siteName = "Staging Organization Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Publishing",

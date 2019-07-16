@@ -24,10 +24,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Provides the entity data model from the Indexed Entity (KBArticle).
+ * Provides the entity data model from the KB Article.
  *
  * @author Eduardo García
- * @review
  */
 public class KBArticleEntityModel implements EntityModel {
 

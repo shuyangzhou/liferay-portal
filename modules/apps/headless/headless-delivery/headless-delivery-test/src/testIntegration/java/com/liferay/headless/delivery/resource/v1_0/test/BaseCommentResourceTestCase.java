@@ -230,6 +230,9 @@ public abstract class BaseCommentResourceTestCase {
 		assertEqualsIgnoringOrder(
 			Arrays.asList(comment1, comment2), (List<Comment>)page.getItems());
 		assertValid(page);
+
+		commentResource.deleteComment(comment1.getId());
+		commentResource.deleteComment(comment2.getId());
 	}
 
 	@Test
@@ -573,6 +576,9 @@ public abstract class BaseCommentResourceTestCase {
 		assertEqualsIgnoringOrder(
 			Arrays.asList(comment1, comment2), (List<Comment>)page.getItems());
 		assertValid(page);
+
+		commentResource.deleteComment(comment1.getId());
+		commentResource.deleteComment(comment2.getId());
 	}
 
 	@Test
@@ -849,6 +855,9 @@ public abstract class BaseCommentResourceTestCase {
 		assertEqualsIgnoringOrder(
 			Arrays.asList(comment1, comment2), (List<Comment>)page.getItems());
 		assertValid(page);
+
+		commentResource.deleteComment(comment1.getId());
+		commentResource.deleteComment(comment2.getId());
 	}
 
 	@Test
@@ -1124,6 +1133,9 @@ public abstract class BaseCommentResourceTestCase {
 		assertEqualsIgnoringOrder(
 			Arrays.asList(comment1, comment2), (List<Comment>)page.getItems());
 		assertValid(page);
+
+		commentResource.deleteComment(comment1.getId());
+		commentResource.deleteComment(comment2.getId());
 	}
 
 	@Test

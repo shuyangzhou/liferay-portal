@@ -238,6 +238,11 @@ public abstract class BaseTaxonomyVocabularyResourceTestCase {
 			Arrays.asList(taxonomyVocabulary1, taxonomyVocabulary2),
 			(List<TaxonomyVocabulary>)page.getItems());
 		assertValid(page);
+
+		taxonomyVocabularyResource.deleteTaxonomyVocabulary(
+			taxonomyVocabulary1.getId());
+		taxonomyVocabularyResource.deleteTaxonomyVocabulary(
+			taxonomyVocabulary2.getId());
 	}
 
 	@Test

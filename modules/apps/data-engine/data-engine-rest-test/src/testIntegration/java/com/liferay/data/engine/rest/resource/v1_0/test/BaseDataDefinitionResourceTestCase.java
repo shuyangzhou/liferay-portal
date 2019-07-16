@@ -323,6 +323,9 @@ public abstract class BaseDataDefinitionResourceTestCase {
 			Arrays.asList(dataDefinition1, dataDefinition2),
 			(List<DataDefinition>)page.getItems());
 		assertValid(page);
+
+		dataDefinitionResource.deleteDataDefinition(dataDefinition1.getId());
+		dataDefinitionResource.deleteDataDefinition(dataDefinition2.getId());
 	}
 
 	@Test

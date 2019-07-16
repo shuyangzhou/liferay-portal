@@ -237,6 +237,9 @@ public abstract class BaseWikiPageResourceTestCase {
 			Arrays.asList(wikiPage1, wikiPage2),
 			(List<WikiPage>)page.getItems());
 		assertValid(page);
+
+		wikiPageResource.deleteWikiPage(wikiPage1.getId());
+		wikiPageResource.deleteWikiPage(wikiPage2.getId());
 	}
 
 	@Test

@@ -76,6 +76,8 @@ public class DDMStructureLayoutModelDocumentContributor
 				ddmStructureLayout.getDefaultLanguageId(),
 				ddmStructureLayout.getGroupId()),
 			true, true);
+		document.addKeyword(
+			"structureVersionId", ddmStructureLayout.getStructureVersionId());
 	}
 
 	protected String[] getLanguageIds(

@@ -28,29 +28,21 @@ public class FragmentEntryTable {
 	public static final String TABLE_NAME = "FragmentEntry";
 
 	public static final Object[][] TABLE_COLUMNS = {
-		{"uuid_", Types.VARCHAR},
-		{"fragmentEntryId", Types.BIGINT},
-		{"groupId", Types.BIGINT},
-		{"companyId", Types.BIGINT},
-		{"userId", Types.BIGINT},
-		{"userName", Types.VARCHAR},
-		{"createDate", Types.TIMESTAMP},
-		{"modifiedDate", Types.TIMESTAMP},
+		{"uuid_", Types.VARCHAR}, {"fragmentEntryId", Types.BIGINT},
+		{"groupId", Types.BIGINT}, {"companyId", Types.BIGINT},
+		{"userId", Types.BIGINT}, {"userName", Types.VARCHAR},
+		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
 		{"fragmentCollectionId", Types.BIGINT},
-		{"fragmentEntryKey", Types.VARCHAR},
-		{"name", Types.VARCHAR},
-		{"css", Types.VARCHAR},
-		{"html", Types.VARCHAR},
-		{"js", Types.VARCHAR},
+		{"fragmentEntryKey", Types.VARCHAR}, {"name", Types.VARCHAR},
+		{"css", Types.CLOB}, {"html", Types.CLOB}, {"js", Types.CLOB},
 		{"previewFileEntryId", Types.BIGINT},
-		{"lastPublishDate", Types.TIMESTAMP},
-		{"status", Types.INTEGER},
-		{"statusByUserId", Types.BIGINT},
-		{"statusByUserName", Types.VARCHAR},
+		{"lastPublishDate", Types.TIMESTAMP}, {"status", Types.INTEGER},
+		{"statusByUserId", Types.BIGINT}, {"statusByUserName", Types.VARCHAR},
 		{"statusDate", Types.TIMESTAMP}
 	};
 
-	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
+	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
+new HashMap<String, Integer>();
 
 static {
 TABLE_COLUMNS_MAP.put("uuid_", Types.VARCHAR);
@@ -75,11 +67,11 @@ TABLE_COLUMNS_MAP.put("fragmentEntryKey", Types.VARCHAR);
 
 TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 
-TABLE_COLUMNS_MAP.put("css", Types.VARCHAR);
+TABLE_COLUMNS_MAP.put("css", Types.CLOB);
 
-TABLE_COLUMNS_MAP.put("html", Types.VARCHAR);
+TABLE_COLUMNS_MAP.put("html", Types.CLOB);
 
-TABLE_COLUMNS_MAP.put("js", Types.VARCHAR);
+TABLE_COLUMNS_MAP.put("js", Types.CLOB);
 
 TABLE_COLUMNS_MAP.put("previewFileEntryId", Types.BIGINT);
 
@@ -94,7 +86,8 @@ TABLE_COLUMNS_MAP.put("statusByUserName", Types.VARCHAR);
 TABLE_COLUMNS_MAP.put("statusDate", Types.TIMESTAMP);
 
 }
-	public static final String TABLE_SQL_CREATE = "create table FragmentEntry (uuid_ VARCHAR(75) null,fragmentEntryId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,fragmentCollectionId LONG,fragmentEntryKey VARCHAR(75) null,name VARCHAR(75) null,css STRING null,html STRING null,js STRING null,previewFileEntryId LONG,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null)";
+	public static final String TABLE_SQL_CREATE =
+"create table FragmentEntry (uuid_ VARCHAR(75) null,fragmentEntryId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,fragmentCollectionId LONG,fragmentEntryKey VARCHAR(75) null,name VARCHAR(75) null,css TEXT null,html TEXT null,js TEXT null,previewFileEntryId LONG,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null)";
 
 	public static final String TABLE_SQL_DROP = "drop table FragmentEntry";
 

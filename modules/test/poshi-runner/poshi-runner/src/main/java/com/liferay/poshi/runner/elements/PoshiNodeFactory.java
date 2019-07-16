@@ -100,9 +100,8 @@ public abstract class PoshiNodeFactory {
 			if (content.startsWith("<definition")) {
 				Document document = Dom4JUtil.parse(content);
 
-				Element rootElement = document.getRootElement();
-
-				return _definitionPoshiElement.clone(rootElement, url);
+				return _definitionPoshiElement.clone(
+					document.getRootElement(), url);
 			}
 
 			if (_definitionPoshiElement.isBalancedPoshiScript(content, true)) {

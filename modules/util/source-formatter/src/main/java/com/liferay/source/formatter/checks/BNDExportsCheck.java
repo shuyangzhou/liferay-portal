@@ -28,6 +28,7 @@ import java.io.FileFilter;
 import java.io.IOException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -60,15 +61,15 @@ public class BNDExportsCheck extends BaseFileCheck {
 		}
 
 		if (absolutePath.contains("/modules/apps/")) {
-			_checkExportPackage(fileName, absolutePath, content);
+			_checkAllowedExportPackages(fileName, absolutePath, content);
 		}
 
-		_checkExportPackageinfo(fileName, content);
+		_checkExportPackages(fileName, content);
 
 		return content;
 	}
 
-	private void _checkExportPackage(
+	private void _checkAllowedExportPackages(
 		String fileName, String absolutePath, String content) {
 
 		List<String> allowedExportPackageDirNames = getAttributeValues(
@@ -104,41 +105,32 @@ public class BNDExportsCheck extends BaseFileCheck {
 			"bnd_exports.markdown");
 	}
 
-	private void _checkExportPackageinfo(String fileName, String content)
+	private void _checkExportPackages(String fileName, String content)
 		throws IOException {
 
-		Matcher matcher = _exportsPattern.matcher(content);
+		List<String> exportPackages = _getExportPackages(content);
 
-		if (!matcher.find()) {
+		if (exportPackages.isEmpty()) {
 			return;
-		}
-
-		List<String> exportPackages = new ArrayList<>();
-
-		for (String line : StringUtil.splitLines(matcher.group(3))) {
-			line = StringUtil.trim(line);
-
-			if (Validator.isNull(line) || line.equals("\\")) {
-				continue;
-			}
-
-			line = StringUtil.removeSubstring(line, ",\\");
-
-			if (line.indexOf(StringPool.SEMICOLON) != -1) {
-				line = line.substring(0, line.indexOf(StringPool.SEMICOLON));
-			}
-
-			exportPackages.add(line.replace(CharPool.PERIOD, CharPool.SLASH));
 		}
 
 		int i = fileName.lastIndexOf("/");
 
-		for (String exportPackage : exportPackages) {
-			String resourcesPathname = StringBundler.concat(
-				fileName.substring(0, i), "/src/main/resources/",
-				exportPackage);
+		String srcMainDirLocation = fileName.substring(0, i) + "/src/main/";
 
-			File resourcesDir = new File(resourcesPathname);
+		File srcMainDir = new File(srcMainDirLocation);
+
+		if (!srcMainDir.exists()) {
+			return;
+		}
+
+		for (String exportPackage : exportPackages) {
+			String exportPackagePath = StringUtil.replace(
+				exportPackage, CharPool.PERIOD, CharPool.SLASH);
+
+			File resourcesDir = new File(
+				StringBundler.concat(
+					srcMainDirLocation, "resources/", exportPackagePath));
 
 			File[] resourcesFiles = resourcesDir.listFiles(
 				new FileFilter() {
@@ -147,7 +139,9 @@ public class BNDExportsCheck extends BaseFileCheck {
 					public boolean accept(File pathname) {
 						String fileName = pathname.getName();
 
-						if (fileName.startsWith(".lfrbuild-")) {
+						if (fileName.startsWith(".lfrbuild-") ||
+							fileName.equals("packageinfo")) {
+
 							return false;
 						}
 
@@ -156,10 +150,9 @@ public class BNDExportsCheck extends BaseFileCheck {
 
 				});
 
-			String srcPathname = StringBundler.concat(
-				fileName.substring(0, i), "/src/main/java/", exportPackage);
-
-			File srcDir = new File(srcPathname);
+			File srcDir = new File(
+				StringBundler.concat(
+					srcMainDirLocation, "java/", exportPackagePath));
 
 			File[] srcFiles = srcDir.listFiles(
 				new FileFilter() {
@@ -171,19 +164,30 @@ public class BNDExportsCheck extends BaseFileCheck {
 
 				});
 
-			String packageinfoPathname = StringBundler.concat(
-				fileName.substring(0, i), "/src/main/resources/", exportPackage,
-				"/packageinfo");
+			File packageinfoFile = new File(
+				StringBundler.concat(
+					srcMainDirLocation, "resources/", exportPackagePath,
+					"/packageinfo"));
 
-			File packageinfoFile = new File(packageinfoPathname);
+			if (ArrayUtil.isNotEmpty(resourcesFiles) ||
+				ArrayUtil.isNotEmpty(srcFiles)) {
 
-			if ((ArrayUtil.isNotEmpty(resourcesFiles) ||
-				 ArrayUtil.isNotEmpty(srcFiles)) &&
-				!packageinfoFile.exists()) {
+				if (!packageinfoFile.exists()) {
+					addMessage(
+						fileName, "Added packageinfo for " + exportPackage);
 
-				addMessage(fileName, "Added packageinfo for " + exportPackage);
+					FileUtil.write(packageinfoFile, "version 1.0.0");
+				}
+			}
+			else if (exportPackage.startsWith("com.liferay.")) {
+				File importedFilesPropertiesFile = new File(
+					fileName.substring(0, i) + "/imported-files.properties");
 
-				FileUtil.write(packageinfoFile, "version 1.0.0");
+				if (!importedFilesPropertiesFile.exists()) {
+					addMessage(
+						fileName,
+						"Unneeded/incorrect Export-Package: " + exportPackage);
+				}
 			}
 		}
 	}
@@ -237,6 +241,34 @@ public class BNDExportsCheck extends BaseFileCheck {
 				fileName, sb.toString(),
 				getLineNumber(content, matcher.start(2)) + i);
 		}
+	}
+
+	private List<String> _getExportPackages(String content) {
+		Matcher matcher = _exportsPattern.matcher(content);
+
+		if (!matcher.find()) {
+			return Collections.emptyList();
+		}
+
+		List<String> exportPackages = new ArrayList<>();
+
+		for (String line : StringUtil.splitLines(matcher.group(3))) {
+			line = StringUtil.trim(line);
+
+			if (Validator.isNull(line) || line.equals("\\")) {
+				continue;
+			}
+
+			line = StringUtil.removeSubstring(line, ",\\");
+
+			if (line.indexOf(StringPool.SEMICOLON) != -1) {
+				line = line.substring(0, line.indexOf(StringPool.SEMICOLON));
+			}
+
+			exportPackages.add(line);
+		}
+
+		return exportPackages;
 	}
 
 	private static final String _ALLOWED_EXPORT_PACKAGE_DIR_NAMES_KEY =

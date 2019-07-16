@@ -413,6 +413,11 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 			Arrays.asList(messageBoardMessage1, messageBoardMessage2),
 			(List<MessageBoardMessage>)page.getItems());
 		assertValid(page);
+
+		messageBoardMessageResource.deleteMessageBoardMessage(
+			messageBoardMessage1.getId());
+		messageBoardMessageResource.deleteMessageBoardMessage(
+			messageBoardMessage2.getId());
 	}
 
 	@Test
@@ -770,6 +775,11 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 			Arrays.asList(messageBoardMessage1, messageBoardMessage2),
 			(List<MessageBoardMessage>)page.getItems());
 		assertValid(page);
+
+		messageBoardMessageResource.deleteMessageBoardMessage(
+			messageBoardMessage1.getId());
+		messageBoardMessageResource.deleteMessageBoardMessage(
+			messageBoardMessage2.getId());
 	}
 
 	@Test

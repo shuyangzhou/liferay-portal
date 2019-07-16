@@ -480,8 +480,6 @@ public class SiteAdministrationPanelCategoryDisplayContext {
 		HttpServletRequest httpServletRequest =
 			PortalUtil.getHttpServletRequest(_portletRequest);
 
-		_recentGroupManager.addRecentGroup(httpServletRequest, groupId);
-
 		_groupProvider.setGroup(httpServletRequest, _group);
 	}
 

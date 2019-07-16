@@ -6038,14 +6038,34 @@ go</echo>
 				/>
 			</then>
 			<elseif>
-				<equals arg1="${project.templates}" arg2="simple" />
+				<equals arg1="${project.templates}" arg2="rest" />
 				<then>
-					<gradle-execute dir="${project.dir}/modules/sdk/project-templates/project-templates-npm-portlet" task="generateSampleProject" />
+					<gradle-execute dir="${project.dir}/modules/sdk/project-templates/project-templates-${project.templates}" task="generateSampleProject" />
 
-					<gradle-execute dir="${project.dir}/modules/sdk/project-templates/project-templates-npm-portlet/build/npm-simple-portlet" task="assemble" />
+					<gradle-execute dir="${project.dir}/modules/sdk/project-templates/project-templates-${project.templates}/build/samplerest" task="assemble" />
 
 					<copy
-						file="${project.dir}/modules/sdk/project-templates/project-templates-npm-portlet/build/npm-simple-portlet/build/libs/npm.simple.portlet-1.0.0.jar"
+						file="${project.dir}/modules/sdk/project-templates/project-templates-${project.templates}/build/samplerest/build/libs/samplerest-1.0.0.jar"
+						todir="${liferay.home}/deploy"
+					/>
+				</then>
+			</elseif>
+			<elseif>
+				<equals arg1="${project.templates}" arg2="service-builder" />
+				<then>
+					<gradle-execute dir="${project.dir}/modules/sdk/project-templates/project-templates-${project.templates}" task="generateSampleProject" />
+
+					<gradle-execute dir="${project.dir}/modules/sdk/project-templates/project-templates-${project.templates}/build/foo" task="buildService" />
+
+					<gradle-execute dir="${project.dir}/modules/sdk/project-templates/project-templates-${project.templates}/build/foo" task="assemble" />
+
+					<copy
+						file="${project.dir}/modules/sdk/project-templates/project-templates-${project.templates}/build/foo/foo-api/build/libs/foo.api-1.0.0.jar"
+						todir="${liferay.home}/deploy"
+					/>
+
+					<copy
+						file="${project.dir}/modules/sdk/project-templates/project-templates-${project.templates}/build/foo/foo-service/build/libs/foo.service-1.0.0.jar"
 						todir="${liferay.home}/deploy"
 					/>
 				</then>
@@ -6063,16 +6083,19 @@ go</echo>
 					/>
 				</then>
 			</elseif>
-			<else>
-				<gradle-execute dir="${project.dir}/modules/sdk/project-templates/project-templates-npm-${project.templates}-portlet" task="generateSampleProject" />
+			<elseif>
+				<equals arg1="${project.templates}" arg2="war-mvc-portlet" />
+				<then>
+					<gradle-execute dir="${project.dir}/modules/sdk/project-templates/project-templates-${project.templates}" task="generateSampleProject" />
 
-				<gradle-execute dir="${project.dir}/modules/sdk/project-templates/project-templates-npm-${project.templates}-portlet/build/npm-${project.templates}-portlet" task="assemble" />
+					<gradle-execute dir="${project.dir}/modules/sdk/project-templates/project-templates-${project.templates}/build/samplewarmvcportlet" task="assemble" />
 
-				<copy
-					file="${project.dir}/modules/sdk/project-templates/project-templates-npm-${project.templates}-portlet/build/npm-${project.templates}-portlet/build/libs/npm.${project.templates}.portlet-1.0.0.jar"
-					todir="${liferay.home}/deploy"
-				/>
-			</else>
+					<copy
+						file="${project.dir}/modules/sdk/project-templates/project-templates-${project.templates}/build/samplewarmvcportlet/build/libs/samplewarmvcportlet.war"
+						todir="${liferay.home}/deploy"
+					/>
+				</then>
+			</elseif>
 		</if>
 	</target>
 
@@ -9497,20 +9520,11 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 
 							<propertycopy from="${database.type}.executable" name="database.executable" override="true" />
 
-							<trycatch property="fail.message">
-								<try>
-									<retry retrycount="3" retrydelay="30000">
-										<exec executable="${database.executable}" failonerror="true" input="create.sql">
-											<arg line="${arg.line}" />
-										</exec>
-									</retry>
-								</try>
-								<catch>
-									<echo>${fail.message}</echo>
-
-									<fail message="Unable to create database on Kubernetes database pod." />
-								</catch>
-							</trycatch>
+							<retry retrycount="3" retrydelay="60000">
+								<exec executable="${database.executable}" failonerror="true" input="create.sql">
+									<arg line="${arg.line}" />
+								</exec>
+							</retry>
 						</then>
 					</elseif>
 					<elseif>
@@ -9530,11 +9544,14 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 									</exec>
 								</then>
 								<else>
-									<exec executable="su" failonerror="true">
-										<arg value="-c" />
-										<arg value="${oracle.sqlplus.executable} ${oracle.admin.user}/${oracle.admin.password} as sysdba @create.sql ${database.username} ${database.password}" />
-										<arg value="oracle" />
-									</exec>
+									<retry retrycount="3" retrydelay="60000">
+										<exec executable="${oracle.sqlplus.executable}" failonerror="true">
+											<arg value="${oracle.admin.user}/${oracle.admin.password}" />
+											<arg value="@create.sql" />
+											<arg value="${database.username}" />
+											<arg value="${database.password}" />
+										</exec>
+									</retry>
 								</else>
 							</if>
 						</then>
@@ -9544,12 +9561,14 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 						<then>
 							<get-database-property property.name="database.username" />
 
-							<exec executable="${postgresql.executable}" failonerror="true">
-								<arg value="-f" />
-								<arg value="create.sql" />
-								<arg value="-U" />
-								<arg value="${database.username}" />
-							</exec>
+							<retry retrycount="3" retrydelay="60000">
+								<exec executable="${postgresql.executable}" failonerror="true">
+									<arg value="-f" />
+									<arg value="create.sql" />
+									<arg value="-U" />
+									<arg value="${database.username}" />
+								</exec>
+							</retry>
 						</then>
 					</elseif>
 					<elseif>
@@ -9577,16 +9596,18 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 
 							<echo>${sybase.executable} -i create.sql -P ${database.password} -S ${database.schema} -U ${database.username}</echo>
 
-							<exec executable="${sybase.executable}" failonerror="true">
-								<arg value="-i" />
-								<arg value="create.sql" />
-								<arg value="-P" />
-								<arg value="${database.password}" />
-								<arg value="-S" />
-								<arg value="${database.schema}" />
-								<arg value="-U" />
-								<arg value="${database.username}" />
-							</exec>
+							<retry retrycount="3" retrydelay="60000">
+								<exec executable="${sybase.executable}" failonerror="true">
+									<arg value="-i" />
+									<arg value="create.sql" />
+									<arg value="-P" />
+									<arg value="${database.password}" />
+									<arg value="-S" />
+									<arg value="${database.schema}" />
+									<arg value="-U" />
+									<arg value="${database.username}" />
+								</exec>
+							</retry>
 						</then>
 					</elseif>
 				</if>

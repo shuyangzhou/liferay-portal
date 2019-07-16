@@ -15,7 +15,6 @@
 package com.liferay.message.boards.search.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.message.boards.constants.MBCategoryConstants;
 import com.liferay.message.boards.model.MBMessage;
 import com.liferay.message.boards.model.MBThread;
@@ -62,10 +61,9 @@ public class MBMessageIndexerReindexTest {
 
 	@Test
 	public void testReindexMBMessage() throws Exception {
-		MBMessage mbMessage = mbFixture.createMBMessageWithCategory(
-			RandomTestUtil.randomString(), _user.getUserId());
+		String searchTerm = RandomTestUtil.randomString();
 
-		String searchTerm = mbMessage.getSubject();
+		MBMessage mbMessage = mbFixture.createMBMessageWithCategory(searchTerm);
 
 		mbMessageIndexerFixture.searchOnlyOne(searchTerm);
 
@@ -82,11 +80,10 @@ public class MBMessageIndexerReindexTest {
 
 	@Test
 	public void testReindexMBMessageWithDefaultCategory() throws Exception {
-		MBMessage mbMessage = mbFixture.createMBMessage(
-			_user.getUserId(), MBCategoryConstants.DEFAULT_PARENT_CATEGORY_ID,
-			RandomTestUtil.randomString());
+		String searchTerm = RandomTestUtil.randomString();
 
-		String searchTerm = mbMessage.getSubject();
+		MBMessage mbMessage = mbFixture.createMBMessage(
+			MBCategoryConstants.DEFAULT_PARENT_CATEGORY_ID, searchTerm);
 
 		mbMessageIndexerFixture.searchOnlyOne(searchTerm);
 
@@ -103,16 +100,15 @@ public class MBMessageIndexerReindexTest {
 
 	@Test
 	public void testReindexMBMessageWithDiscussion() throws Exception {
-		MBMessage mbMessage = mbFixture.createMBMessage(
-			_user.getUserId(), MBCategoryConstants.DISCUSSION_CATEGORY_ID,
-			RandomTestUtil.randomString());
+		String searchTerm = RandomTestUtil.randomString();
 
-		String searchTerm = mbMessage.getSubject();
+		mbFixture.createMBMessage(
+			MBCategoryConstants.DISCUSSION_CATEGORY_ID, searchTerm);
 
 		mbMessageIndexerFixture.searchNoOne(searchTerm);
 	}
 
-	protected void setUpMBFixture() throws Exception {
+	protected void setUpMBFixture() {
 		mbFixture = new MBFixture(_group, _user);
 
 		_mbMessages = mbFixture.getMbMessages();
@@ -139,7 +135,6 @@ public class MBMessageIndexerReindexTest {
 		_users = userSearchFixture.getUsers();
 	}
 
-	protected IndexerFixture<DLFileEntry> dlFileEntryIndexerFixture;
 	protected MBFixture mbFixture;
 	protected IndexerFixture<MBMessage> mbMessageIndexerFixture;
 	protected UserSearchFixture userSearchFixture;

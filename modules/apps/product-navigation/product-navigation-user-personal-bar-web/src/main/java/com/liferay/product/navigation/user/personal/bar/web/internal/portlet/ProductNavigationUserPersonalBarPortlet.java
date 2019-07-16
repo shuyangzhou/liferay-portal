@@ -21,9 +21,11 @@ import com.liferay.portal.kernel.model.UserNotificationDeliveryConstants;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.service.UserNotificationEventLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.product.navigation.user.personal.bar.web.internal.contants.ProductNavigationUserPersonalBarPortletKeys;
 import com.liferay.product.navigation.user.personal.bar.web.internal.contants.ProductNavigationUserPersonalBarWebKeys;
+import com.liferay.site.util.RecentGroupManager;
 
 import java.io.IOException;
 
@@ -77,6 +79,10 @@ public class ProductNavigationUserPersonalBarPortlet extends MVCPortlet {
 				getNotificationsCount(themeDisplay));
 		}
 
+		_recentGroupManager.addRecentGroup(
+			_portal.getHttpServletRequest(renderRequest),
+			themeDisplay.getScopeGroupId());
+
 		super.doDispatch(renderRequest, renderResponse);
 	}
 
@@ -105,6 +111,12 @@ public class ProductNavigationUserPersonalBarPortlet extends MVCPortlet {
 
 	private PanelAppRegistry _panelAppRegistry;
 	private PanelCategoryRegistry _panelCategoryRegistry;
+
+	@Reference
+	private Portal _portal;
+
+	@Reference
+	private RecentGroupManager _recentGroupManager;
 
 	@Reference
 	private UserNotificationEventLocalService

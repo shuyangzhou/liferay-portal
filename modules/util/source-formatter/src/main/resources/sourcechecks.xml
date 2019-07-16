@@ -7,6 +7,10 @@
 		<check name="NonbreakingSpaceCheck" />
 		<check name="ReturnCharacterCheck" />
 		<check name="SlantedQuotesCheck" />
+
+		<!-- Liferay Source Checks -->
+
+		<check name="NewFileCheck" />
 	</source-processor>
 	<source-processor name="BNDRunSourceProcessor">
 		<check name="BNDRunInstructionsOrderCheck" />
@@ -437,7 +441,9 @@
 		<check name="XMLIndentationCheck" />
 	</source-processor>
 	<source-processor name="TSSourceProcessor">
-		<check name="WhitespaceCheck" />
+		<check name="WhitespaceCheck">
+			<property name="allowTrailingEmptyLines" value="true" />
+		</check>
 	</source-processor>
 	<source-processor name="XMLSourceProcessor">
 		<check name="XMLBuildFileCheck" />

@@ -22,6 +22,10 @@ import java.util.Map;
  */
 public interface NPMRegistry {
 
+	/**
+	 * @deprecated As of Mueller (7.2.x), with no direct replacement
+	 */
+	@Deprecated
 	public void addJSBundleTracker(JSBundleTracker jsBundleTracker);
 
 	public Map<String, String> getGlobalAliases();
@@ -40,6 +44,12 @@ public interface NPMRegistry {
 
 	public Collection<JSPackage> getResolvedJSPackages();
 
+	public String mapModuleName(String moduleName);
+
+	/**
+	 * @deprecated As of Mueller (7.2.x), with no direct replacement
+	 */
+	@Deprecated
 	public void removeJSBundleTracker(JSBundleTracker jsBundleTracker);
 
 	public JSPackage resolveJSPackageDependency(

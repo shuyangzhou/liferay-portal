@@ -302,6 +302,11 @@ public abstract class BaseMessageBoardAttachmentResourceTestCase {
 			Arrays.asList(messageBoardAttachment1, messageBoardAttachment2),
 			(List<MessageBoardAttachment>)page.getItems());
 		assertValid(page);
+
+		messageBoardAttachmentResource.deleteMessageBoardAttachment(
+			messageBoardAttachment1.getId());
+		messageBoardAttachmentResource.deleteMessageBoardAttachment(
+			messageBoardAttachment2.getId());
 	}
 
 	protected MessageBoardAttachment
@@ -416,6 +421,11 @@ public abstract class BaseMessageBoardAttachmentResourceTestCase {
 			Arrays.asList(messageBoardAttachment1, messageBoardAttachment2),
 			(List<MessageBoardAttachment>)page.getItems());
 		assertValid(page);
+
+		messageBoardAttachmentResource.deleteMessageBoardAttachment(
+			messageBoardAttachment1.getId());
+		messageBoardAttachmentResource.deleteMessageBoardAttachment(
+			messageBoardAttachment2.getId());
 	}
 
 	protected MessageBoardAttachment

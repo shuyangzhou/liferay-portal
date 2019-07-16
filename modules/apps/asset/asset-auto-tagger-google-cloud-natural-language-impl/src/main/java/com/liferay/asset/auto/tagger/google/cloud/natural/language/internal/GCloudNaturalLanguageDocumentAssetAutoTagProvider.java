@@ -15,7 +15,7 @@
 package com.liferay.asset.auto.tagger.google.cloud.natural.language.internal;
 
 import com.liferay.asset.auto.tagger.AssetAutoTagProvider;
-import com.liferay.asset.auto.tagger.google.cloud.natural.language.api.GCloudNaturalLanguageDocumentAssetAutoTagger;
+import com.liferay.asset.auto.tagger.google.cloud.natural.language.GCloudNaturalLanguageDocumentAssetAutoTagger;
 import com.liferay.asset.auto.tagger.google.cloud.natural.language.internal.configuration.GCloudNaturalLanguageAssetAutoTaggerCompanyConfiguration;
 import com.liferay.asset.auto.tagger.text.extractor.TextExtractor;
 import com.liferay.asset.auto.tagger.text.extractor.TextExtractorTracker;

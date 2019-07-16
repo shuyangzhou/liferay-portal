@@ -250,6 +250,11 @@ public abstract class BaseKnowledgeBaseAttachmentResourceTestCase {
 			Arrays.asList(knowledgeBaseAttachment1, knowledgeBaseAttachment2),
 			(List<KnowledgeBaseAttachment>)page.getItems());
 		assertValid(page);
+
+		knowledgeBaseAttachmentResource.deleteKnowledgeBaseAttachment(
+			knowledgeBaseAttachment1.getId());
+		knowledgeBaseAttachmentResource.deleteKnowledgeBaseAttachment(
+			knowledgeBaseAttachment2.getId());
 	}
 
 	protected KnowledgeBaseAttachment
