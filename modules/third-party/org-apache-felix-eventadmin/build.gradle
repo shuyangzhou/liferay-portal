@@ -1,0 +1,17 @@
+import com.liferay.gradle.plugins.patcher.PatchTask
+
+apply plugin: "com.liferay.patcher"
+
+task patch(type: PatchTask)
+
+dependencies {
+	compileOnly group: "org.apache.felix", name: "org.apache.felix.eventadmin", transitive: false, version: "1.5.0"
+}
+
+liferay {
+	deployDir = file("${liferayHome}/osgi/static")
+}
+
+patch {
+	originalLibModuleName = "org.apache.felix.eventadmin"
+}
