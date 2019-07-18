@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<metatype:MetaData localization="content/Language" xmlns:metatype="http://www.osgi.org/xmlns/metatype/v1.0.0">
+	<OCD description="org-apache-felix-eventadmin-ocd-help" id="org.apache.felix.eventadmin.impl.EventAdmin" name="org-apache-felix-eventadmin-ocd-name">
+		<AD default="20" description="thread-pool-size-help" id="org.apache.felix.eventadmin.ThreadPoolSize" min="2" name="thread-pool-size" type="Integer" />
+		<AD default="0.5" description="async-to-sync-threadRatio-help" id="org.apache.felix.eventadmin.AsyncToSyncThreadRatio" min="0.0" name="async-to-sync-threadRatio" type="Double" />
+		<AD default="5000" description="timeout-help" id="org.apache.felix.eventadmin.Timeout" name="timeout" type="Integer" />
+		<AD default="true" description="require-topic-help" id="org.apache.felix.eventadmin.RequireTopic" name="require-topic" required="false" type="Boolean" />
+		<AD cardinality="2147483647" default="" description="ignore-timeout-help" id="org.apache.felix.eventadmin.IgnoreTimeout" name="ignore-timeout" type="String" />
+		<AD cardinality="2147483647" default="" description="ignore-topic-help" id="org.apache.felix.eventadmin.IgnoreTopic" name="ignore-topic" type="String" />
+	</OCD>
+	<Designate pid="org.apache.felix.eventadmin.impl.EventAdmin">
+		<Object ocdref="org.apache.felix.eventadmin.impl.EventAdmin" />
+	</Designate>
+</metatype:MetaData>
