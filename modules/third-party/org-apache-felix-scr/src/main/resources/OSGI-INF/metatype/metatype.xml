@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<metatype:MetaData localization="content/Language" xmlns:metatype="http://www.osgi.org/xmlns/metatype/v1.0.0">
+	<OCD description="org-apache-felix-scr-scrservice-ocd-help" id="org.apache.felix.scr.ScrService" name="org-apache-felix-scr-scrservice-ocd-name">
+		<AD default="1" description="log-level-help" id="ds.loglevel" name="log-level" type="Integer">
+			<Option label="Debug" value="4" />
+			<Option label="Information" value="3" />
+			<Option label="Warnings" value="2" />
+			<Option label="Error" value="1" />
+		</AD>
+		<AD default="false" description="factory-enabled-help" id="ds.factory.enabled" name="factory-enabled" required="false" type="Boolean" />
+		<AD default="false" description="delayed-keep-instances-help" id="ds.delayed.keepInstances" name="delayed-keep-instances" required="false" type="Boolean" />
+		<AD default="5000" description="lock-timeout-milliseconds-help" id="ds.lock.timeout.milliseconds" name="lock-timeout-milliseconds" type="Integer" />
+		<AD default="60000" description="stop-timeout-milliseconds-help" id="ds.stop.timeout.milliseconds" name="stop-timeout-milliseconds" type="Integer" />
+		<AD default="false" description="global-extender-help" id="ds.global.extender" name="global-extender" required="false" type="Boolean" />
+	</OCD>
+	<Designate pid="org.apache.felix.scr.ScrService">
+		<Object ocdref="org.apache.felix.scr.ScrService" />
+	</Designate>
+</metatype:MetaData>
