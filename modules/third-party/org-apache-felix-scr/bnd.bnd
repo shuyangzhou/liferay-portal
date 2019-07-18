@@ -1,2 +1,31 @@
 Bundle-SymbolicName: org.apache.felix.scr
 Bundle-Version: 2.1.14.LIFERAY-PATCHED-2
+Import-Package:\
+	org.apache.felix.scr.component;version="[1.1,1.2)",\
+	org.apache.felix.scr.info;version="[1.0,1.1)",\
+	org.apache.felix.service.command;resolution:=optional;version="[1.0,2)",\
+	org.apache.felix.shell;resolution:=optional;version="[1.0,1.1)",\
+	\
+	org.osgi.dto;version="[1.0,2)",\
+	org.osgi.framework;version="[1.8,2)",\
+	org.osgi.framework.dto;version="[1.8,2)",\
+	org.osgi.framework.startlevel;version="[1.0,2)",\
+	org.osgi.framework.wiring;version="[1.2,2)",\
+	org.osgi.service.cm;version="[1.6,2)";resolution:=optional,\
+	org.osgi.service.component;version="[1.4,1.5)",\
+	org.osgi.service.component.runtime;version="[1.4,1.5)",\
+	org.osgi.service.component.runtime.dto;version="[1.4,1.5)",\
+	org.osgi.service.log;version="[1.3,2)";resolution:=optional,\
+	org.osgi.service.metatype;version="[1.2,2)";resolution:=optional,\
+	org.osgi.service.packageadmin;version="[1.2,2)";resolution:=optional,\
+	org.osgi.util.function;version="[1.0,2)",\
+	org.osgi.util.promise;version="[1.0,2)",\
+	org.osgi.util.tracker;version="[1.5,2)"
+Provide-Capability:\
+	osgi.extender;\
+		osgi.extender="osgi.component";\
+		uses:="org.osgi.service.component";\
+		version:Version="1.4",\
+	osgi.service;\
+		objectClass:List<String>="org.osgi.service.component.runtime.ServiceComponentRuntime";\
+		uses:="org.osgi.service.component.runtime"
