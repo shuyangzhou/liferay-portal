@@ -45,6 +45,10 @@ public class ConfigurationIndexingExtender {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
+		if (!_clusterMasterExecutor.isMaster()) {
+			return;
+		}
+
 		_bundleTracker = new BundleTracker<>(
 			bundleContext, Bundle.ACTIVE,
 			new ConfigurationModelsBundleTrackerCustomizer());
@@ -94,10 +98,6 @@ public class ConfigurationIndexingExtender {
 		public ConfigurationModelIterator addingBundle(
 			Bundle bundle, BundleEvent bundleEvent) {
 
-			if (!_clusterMasterExecutor.isMaster()) {
-				return null;
-			}
-
 			Map<String, ConfigurationModel> configurationModels =
 				_configurationModelRetriever.getConfigurationModels(
 					bundle, ExtendedObjectClassDefinition.Scope.SYSTEM, null);
@@ -127,10 +127,6 @@ public class ConfigurationIndexingExtender {
 		public void removedBundle(
 			Bundle bundle, BundleEvent bundleEvent,
 			ConfigurationModelIterator configurationModelIterator) {
-
-			if (!_clusterMasterExecutor.isMaster()) {
-				return;
-			}
 
 			for (ConfigurationModel configurationModel :
 					configurationModelIterator.getResults()) {
