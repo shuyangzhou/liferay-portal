@@ -25,7 +25,9 @@ import com.liferay.portal.kernel.search.IndexWriterHelper;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.SearchException;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -53,6 +55,8 @@ public class ConfigurationIndexingExtender {
 
 		Bundle[] bundles = bundleContext.getBundles();
 
+		List<ConfigurationModel> configurationModelList = new ArrayList<>();
+
 		for (Bundle bundle : bundles) {
 			if (bundle.getState() != Bundle.ACTIVE) {
 				continue;
@@ -62,11 +66,13 @@ public class ConfigurationIndexingExtender {
 				_configurationModelRetriever.getConfigurationModels(
 					bundle, ExtendedObjectClassDefinition.Scope.SYSTEM, null);
 
-			_configurationModelIndexer.reindex(configurationModels.values());
+			configurationModelList.addAll(configurationModels.values());
 
 			_configurationModelsMap.put(
 				bundle.getSymbolicName(), configurationModels.values());
 		}
+
+		_configurationModelIndexer.reindex(configurationModelList);
 
 		commit(_configurationModelIndexer);
 
