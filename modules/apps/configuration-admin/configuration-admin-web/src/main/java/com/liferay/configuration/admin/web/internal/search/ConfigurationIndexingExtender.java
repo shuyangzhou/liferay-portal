@@ -53,11 +53,9 @@ public class ConfigurationIndexingExtender {
 			return;
 		}
 
-		Bundle[] bundles = bundleContext.getBundles();
-
 		List<ConfigurationModel> configurationModelList = new ArrayList<>();
 
-		for (Bundle bundle : bundles) {
+		for (Bundle bundle : bundleContext.getBundles()) {
 			if (bundle.getState() != Bundle.ACTIVE) {
 				continue;
 			}
