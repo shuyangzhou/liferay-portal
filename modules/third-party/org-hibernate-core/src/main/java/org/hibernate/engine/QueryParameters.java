@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.StringTokenizer;
 
 import org.slf4j.Logger;
@@ -520,7 +521,11 @@ public final class QueryParameters {
 	}
 
 	public String getFilteredSQL() {
-		return processedSQL;
+		if (_QUERY_SQL_TRANSFORMER == null) {
+			return processedSQL;
+		}
+
+		return _QUERY_SQL_TRANSFORMER.transform(processedSQL);
 	}
 
 	public Object[] getFilteredPositionalParameterValues() {
@@ -567,5 +572,22 @@ public final class QueryParameters {
 		return copy;
 	}
 
+	private static final QuerySQLTransformer _QUERY_SQL_TRANSFORMER;
+
+	static {
+		QuerySQLTransformer querySQLTransformer = null;
+
+		ServiceLoader<QuerySQLTransformer> serviceLoader = ServiceLoader.load(
+			QuerySQLTransformer.class);
+
+		Iterator<QuerySQLTransformer> iterator = serviceLoader.iterator();
+
+		if (iterator.hasNext()) {
+			querySQLTransformer = iterator.next();
+		}
+
+		_QUERY_SQL_TRANSFORMER = querySQLTransformer;
+	}
 
 }
+/* @generated */
