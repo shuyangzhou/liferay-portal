@@ -199,6 +199,10 @@ public class JspServlet extends HttpServlet {
 		defaults.put("httpMethods", "GET,POST,HEAD");
 		defaults.put("keepgenerated", "false");
 		defaults.put("logVerbosityLevel", "NONE");
+		defaults.put(
+			"mainCompilerClassName",
+			"com.liferay.portal.osgi.web.servlet.jsp.compiler.internal." +
+				"MainCompilerWrapper");
 		defaults.put("saveBytecode", "true");
 
 		StringBundler sb = new StringBundler(4);
