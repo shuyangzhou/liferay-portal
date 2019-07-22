@@ -1,0 +1,81 @@
+diff --git a/org/hibernate/engine/QueryParameters.java b/org/hibernate/engine/QueryParameters.java
+index a2ca492..58f6fb6 100644
+--- a/org/hibernate/engine/QueryParameters.java
++++ b/org/hibernate/engine/QueryParameters.java
+@@ -30,6 +30,7 @@ import java.util.Collection;
+ import java.util.Iterator;
+ import java.util.List;
+ import java.util.Map;
++import java.util.ServiceLoader;
+ import java.util.StringTokenizer;
+ 
+ import org.slf4j.Logger;
+@@ -520,7 +521,11 @@ public final class QueryParameters {
+ 	}
+ 
+ 	public String getFilteredSQL() {
+-		return processedSQL;
++		if (_QUERY_SQL_TRANSFORMER == null) {
++			return processedSQL;
++		}
++
++		return _QUERY_SQL_TRANSFORMER.transform(processedSQL);
+ 	}
+ 
+ 	public Object[] getFilteredPositionalParameterValues() {
+@@ -567,5 +572,22 @@ public final class QueryParameters {
+ 		return copy;
+ 	}
+ 
++	private static final QuerySQLTransformer _QUERY_SQL_TRANSFORMER;
++
++	static {
++		QuerySQLTransformer querySQLTransformer = null;
++
++		ServiceLoader<QuerySQLTransformer> serviceLoader = ServiceLoader.load(
++			QuerySQLTransformer.class);
++
++		Iterator<QuerySQLTransformer> iterator = serviceLoader.iterator();
++
++		if (iterator.hasNext()) {
++			querySQLTransformer = iterator.next();
++		}
++
++		_QUERY_SQL_TRANSFORMER = querySQLTransformer;
++	}
+ 
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hibernate/engine/QuerySQLTransformer.java b/org/hibernate/engine/QuerySQLTransformer.java
+new file mode 100644
+index 0000000..580911f
+--- /dev/null
++++ b/org/hibernate/engine/QuerySQLTransformer.java
+@@ -0,0 +1,25 @@
++/**
++ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
++ *
++ * This library is free software; you can redistribute it and/or modify it under
++ * the terms of the GNU Lesser General Public License as published by the Free
++ * Software Foundation; either version 2.1 of the License, or (at your option)
++ * any later version.
++ *
++ * This library is distributed in the hope that it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
++ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
++ * details.
++ */
++
++package org.hibernate.engine;
++
++/**
++ * @author Preston Crary
++ */
++public interface QuerySQLTransformer {
++
++	public String transform(String sql);
++
++}
++/* @generated */
+\ No newline at end of file
