@@ -358,6 +358,12 @@ public class CTEntryLocalServiceUtil {
 		return getService().getCTEntries(start, end);
 	}
 
+	public static java.util.List<com.liferay.change.tracking.model.CTEntry>
+		getCTEntries(long ctCollectionId, long modelClassNameId) {
+
+		return getService().getCTEntries(ctCollectionId, modelClassNameId);
+	}
+
 	/**
 	 * Returns the number of ct entries.
 	 *

@@ -385,6 +385,14 @@ public class CTEntryLocalServiceWrapper
 		return _ctEntryLocalService.getCTEntries(start, end);
 	}
 
+	@Override
+	public java.util.List<com.liferay.change.tracking.model.CTEntry>
+		getCTEntries(long ctCollectionId, long modelClassNameId) {
+
+		return _ctEntryLocalService.getCTEntries(
+			ctCollectionId, modelClassNameId);
+	}
+
 	/**
 	 * Returns the number of ct entries.
 	 *

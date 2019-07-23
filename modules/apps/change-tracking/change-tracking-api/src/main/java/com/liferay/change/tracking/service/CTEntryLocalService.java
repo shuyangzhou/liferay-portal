@@ -263,6 +263,10 @@ public interface CTEntryLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<CTEntry> getCTEntries(int start, int end);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<CTEntry> getCTEntries(
+		long ctCollectionId, long modelClassNameId);
+
 	/**
 	 * Returns the number of ct entries.
 	 *
