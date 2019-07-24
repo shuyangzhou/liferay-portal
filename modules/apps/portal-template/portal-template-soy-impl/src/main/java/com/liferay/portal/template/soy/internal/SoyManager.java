@@ -102,7 +102,13 @@ public class SoyManager extends BaseTemplateManager {
 		_bundleTracker = new BundleTracker<>(
 			bundleContext, stateMask, _soyCapabilityBundleTrackerCustomizer);
 
+		long startTime = System.currentTimeMillis();
+
 		_bundleTracker.open();
+
+		System.out.println(
+			"#####SoyManager : " + (System.currentTimeMillis() - startTime) +
+				"ms");
 	}
 
 	@Deactivate
