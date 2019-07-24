@@ -211,6 +211,14 @@ public class CTEntryLocalServiceImpl extends CTEntryLocalServiceBaseImpl {
 	}
 
 	@Override
+	public List<CTEntry> getCTEntries(
+		long ctCollectionId, long modelClassNameId) {
+
+		return ctEntryPersistence.findByC_MCNI(
+			ctCollectionId, modelClassNameId);
+	}
+
+	@Override
 	public int getCTEntriesCount(
 		long ctCollectionId, QueryDefinition<CTEntry> queryDefinition) {
 
