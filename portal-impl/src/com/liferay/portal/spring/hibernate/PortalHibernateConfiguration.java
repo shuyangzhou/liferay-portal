@@ -18,6 +18,8 @@ import com.liferay.petra.concurrent.ConcurrentReferenceKeyHashMap;
 import com.liferay.petra.memory.FinalizeManager;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.asm.ASMWrapperUtil;
+import com.liferay.portal.change.tracking.registry.CTModelRegistration;
+import com.liferay.portal.change.tracking.registry.CTModelRegistry;
 import com.liferay.portal.dao.orm.hibernate.event.MVCCSynchronizerPostUpdateEventListener;
 import com.liferay.portal.dao.orm.hibernate.event.NestableAutoFlushEventListener;
 import com.liferay.portal.dao.orm.hibernate.event.NestableFlushEventListener;
@@ -25,6 +27,9 @@ import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.change.tracking.ChangeTrackedModel;
+import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PreloadClassLoader;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -48,6 +53,7 @@ import java.util.regex.Pattern;
 
 import javassist.util.proxy.ProxyFactory;
 
+import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -59,6 +65,8 @@ import org.hibernate.event.AutoFlushEventListener;
 import org.hibernate.event.EventListeners;
 import org.hibernate.event.FlushEventListener;
 import org.hibernate.event.PostUpdateEventListener;
+import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.persister.entity.OuterJoinLoadable;
 
 import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
 
@@ -80,13 +88,82 @@ public class PortalHibernateConfiguration extends LocalSessionFactoryBean {
 
 	@Override
 	public SessionFactory buildSessionFactory() throws Exception {
-		setBeanClassLoader(getConfigurationClassLoader());
+		ClassLoader classLoader = getConfigurationClassLoader();
 
-		return super.buildSessionFactory();
+		setBeanClassLoader(classLoader);
+
+		SessionFactory sessionFactory = super.buildSessionFactory();
+
+		Map<String, ClassMetadata> classMetadatas =
+			sessionFactory.getAllClassMetadata();
+
+		for (ClassMetadata classMetadata : classMetadatas.values()) {
+			Class<?> mappedClass = classMetadata.getMappedClass(
+				EntityMode.POJO);
+
+			if (!ChangeTrackedModel.class.isAssignableFrom(mappedClass)) {
+				continue;
+			}
+
+			Class<?> modelClass = mappedClass.getSuperclass();
+
+			while (BaseModelImpl.class != modelClass) {
+				for (Class<?> interfaceClazz : modelClass.getInterfaces()) {
+					if (BaseModel.class.isAssignableFrom(interfaceClazz)) {
+						modelClass = interfaceClazz;
+
+						OuterJoinLoadable outerJoinLoadable =
+							(OuterJoinLoadable)classMetadata;
+
+						String[] identifierColumnNames =
+							outerJoinLoadable.getPropertyColumnNames(
+								outerJoinLoadable.getIdentifierPropertyName());
+
+						CTModelRegistry.registerCTModel(
+							outerJoinLoadable.getTableName(),
+							new CTModelRegistration(
+								modelClass, identifierColumnNames[0]));
+
+						return sessionFactory;
+					}
+				}
+
+				modelClass = modelClass.getSuperclass();
+			}
+
+			if (_log.isWarnEnabled()) {
+				_log.warn("Failed to find model class for " + mappedClass);
+			}
+		}
+
+		return sessionFactory;
 	}
 
 	@Override
 	public void destroy() throws HibernateException {
+		ClassLoader classLoader = getConfigurationClassLoader();
+
+		if (classLoader.getResource("/META-INF/.lfr-ct-ignore") == null) {
+			SessionFactory sessionFactory = getSessionFactory();
+
+			Map<String, ClassMetadata> classMetadatas =
+				sessionFactory.getAllClassMetadata();
+
+			for (ClassMetadata classMetadata : classMetadatas.values()) {
+				Class<?> clazz = classMetadata.getMappedClass(EntityMode.POJO);
+
+				if (!ChangeTrackedModel.class.isAssignableFrom(clazz)) {
+					continue;
+				}
+
+				OuterJoinLoadable outerJoinLoadable =
+					(OuterJoinLoadable)classMetadata;
+
+				CTModelRegistry.unregisterCTModel(
+					outerJoinLoadable.getTableName());
+			}
+		}
+
 		setBeanClassLoader(null);
 
 		super.destroy();
