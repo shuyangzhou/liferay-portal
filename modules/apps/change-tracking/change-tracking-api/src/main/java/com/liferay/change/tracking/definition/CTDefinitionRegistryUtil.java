@@ -56,6 +56,10 @@ public class CTDefinitionRegistryUtil {
 		return ctDefinition.getContentTypeLanguageKey();
 	}
 
+	/**
+	 * @deprecated As of Mueller (7.2.x), with no direct replacement
+	 */
+	@Deprecated
 	@SuppressWarnings("unchecked")
 	public static long getVersionEntityGroupId(long classNameId, long classPK) {
 		CTDefinition<?, ?> ctDefinition = _getCTDefinition(classNameId);

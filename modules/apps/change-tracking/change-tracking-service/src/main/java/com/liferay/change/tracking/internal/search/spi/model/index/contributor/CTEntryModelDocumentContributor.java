@@ -14,17 +14,11 @@
 
 package com.liferay.change.tracking.internal.search.spi.model.index.contributor;
 
-import com.liferay.change.tracking.definition.CTDefinitionRegistryUtil;
 import com.liferay.change.tracking.model.CTEntry;
-import com.liferay.change.tracking.model.CTEntryAggregate;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.search.spi.model.index.contributor.ModelDocumentContributor;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -43,12 +37,8 @@ public class CTEntryModelDocumentContributor
 	@Override
 	public void contribute(Document document, CTEntry ctEntry) {
 		document.addDate(Field.CREATE_DATE, ctEntry.getCreateDate());
-		document.addKeyword(Field.GROUP_ID, _getGroupId(ctEntry));
 		document.addDate(Field.MODIFIED_DATE, ctEntry.getModifiedDate());
 		document.addKeyword(Field.STATUS, ctEntry.getStatus());
-		document.addText(Field.TITLE, _getTitle(ctEntry));
-		document.addKeyword(
-			"affectedByCTEntryIds", _getAffectedByCTEntryIds(ctEntry));
 		document.addKeyword("changeType", ctEntry.getChangeType());
 		document.addKeyword("collision", ctEntry.isCollision());
 		document.addKeyword("ctCollectionId", ctEntry.getCtCollectionId());
@@ -61,35 +51,6 @@ public class CTEntryModelDocumentContributor
 			"modelResourcePrimKey", ctEntry.getModelResourcePrimKey());
 		document.addKeyword(
 			"originalCTCollectionId", ctEntry.getOriginalCTCollectionId());
-	}
-
-	private long[] _getAffectedByCTEntryIds(CTEntry ctEntry) {
-		List<CTEntryAggregate> ctEntryAggregates =
-			ctEntry.getCTEntryAggregates();
-
-		Stream<CTEntryAggregate> ctEntryAggregateStream =
-			ctEntryAggregates.stream();
-
-		return ctEntryAggregateStream.map(
-			CTEntryAggregate::getRelatedCTEntries
-		).flatMap(
-			Collection::stream
-		).map(
-			CTEntry::getCtEntryId
-		).distinct(
-		).mapToLong(
-			Long::valueOf
-		).toArray();
-	}
-
-	private long _getGroupId(CTEntry ctEntry) {
-		return CTDefinitionRegistryUtil.getVersionEntityGroupId(
-			ctEntry.getModelClassNameId(), ctEntry.getModelClassPK());
-	}
-
-	private String _getTitle(CTEntry ctEntry) {
-		return CTDefinitionRegistryUtil.getVersionEntityTitle(
-			ctEntry.getModelClassNameId(), ctEntry.getModelClassPK());
 	}
 
 	@Reference
