@@ -18,12 +18,15 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.StreamUtil;
+import com.liferay.portal.util.PropsValues;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -32,6 +35,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.jasper.JasperException;
 import org.apache.jasper.JspCompilationContext;
+import org.apache.jasper.Options;
 import org.apache.jasper.compiler.Compiler;
 import org.apache.jasper.compiler.JspRuntimeContext;
 import org.apache.jasper.servlet.JspServletWrapper;
@@ -53,13 +57,12 @@ public class CompilerWrapper extends Compiler {
 	public void compile(boolean compileClass) throws Exception {
 		String className = ctxt.getFullClassName();
 
-		ObjectValuePair<Long, byte[]> objectValuePair = _bytes.get(className);
+		JSPClassInfo jspClassInfo = _jspClassInfos.get(className);
 
-		if (objectValuePair != null) {
+		if (jspClassInfo != null) {
 			JspRuntimeContext jspRuntimeContext = ctxt.getRuntimeContext();
 
-			jspRuntimeContext.setBytecode(
-				className, objectValuePair.getValue());
+			jspRuntimeContext.setBytecode(className, jspClassInfo.getBytes());
 
 			return;
 		}
@@ -71,16 +74,7 @@ public class CompilerWrapper extends Compiler {
 	public boolean isOutDated() {
 		String className = ctxt.getFullClassName();
 
-		String classNamePath = className.replace(
-			CharPool.PERIOD, CharPool.SLASH);
-
-		classNamePath = classNamePath.concat(".class");
-
-		JspRuntimeContext jspRuntimeContext = ctxt.getRuntimeContext();
-
-		ClassLoader classLoader = jspRuntimeContext.getParentClassLoader();
-
-		URL url = classLoader.getResource(classNamePath);
+		URL url = _getClassURL(className);
 
 		if (url == null) {
 			return super.isOutDated();
@@ -91,29 +85,31 @@ public class CompilerWrapper extends Compiler {
 
 			long lastModified = urlConnection.getLastModified();
 
-			ObjectValuePair<Long, byte[]> objectValuePair = _bytes.get(
-				className);
+			JSPClassInfo jSPClassInfo = _jspClassInfos.get(className);
 
-			if (objectValuePair != null) {
-				if (lastModified <= objectValuePair.getKey()) {
-					return false;
-				}
+			if ((jSPClassInfo != null) &&
+				(lastModified <= jSPClassInfo.getLastModified())) {
+
+				return false;
 			}
 
-			try (InputStream inputStream = urlConnection.getInputStream()) {
-				try (UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
-						new UnsyncByteArrayOutputStream()) {
+			try (InputStream inputStream = urlConnection.getInputStream();
+				UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
+					new UnsyncByteArrayOutputStream()) {
 
-					StreamUtil.transfer(
-						inputStream, unsyncByteArrayOutputStream, false);
+				StreamUtil.transfer(
+					inputStream, unsyncByteArrayOutputStream, false);
 
-					byte[] bytes = unsyncByteArrayOutputStream.toByteArray();
+				byte[] bytes = unsyncByteArrayOutputStream.toByteArray();
 
-					_bytes.put(
-						className, new ObjectValuePair<>(lastModified, bytes));
+				String protocol = url.getProtocol();
 
-					return true;
-				}
+				_jspClassInfos.put(
+					className,
+					new JSPClassInfo(
+						bytes, protocol.equals("file"), lastModified));
+
+				return true;
 			}
 		}
 		catch (IOException ioe) {
@@ -124,10 +120,82 @@ public class CompilerWrapper extends Compiler {
 		return super.isOutDated();
 	}
 
+	private URL _getClassURL(String className) {
+		String classNamePath = className.replace(
+			CharPool.PERIOD, CharPool.SLASH);
+
+		classNamePath = classNamePath.concat(".class");
+
+		URL url = null;
+
+		if (PropsValues.WORK_FOLDER_OVERRIDE) {
+			Options options = ctxt.getOptions();
+
+			File scratchDir = options.getScratchDir();
+
+			File classFile = new File(scratchDir, classNamePath);
+
+			if (classFile.exists()) {
+				URI uri = classFile.toURI();
+
+				try {
+					url = uri.toURL();
+				}
+				catch (MalformedURLException murle) {
+					if (_log.isWarnEnabled()) {
+						_log.warn(murle, murle);
+					}
+				}
+			}
+		}
+
+		if (url == null) {
+			JSPClassInfo jspClassInfo = _jspClassInfos.get(className);
+
+			if ((jspClassInfo != null) && jspClassInfo.isOverride()) {
+				_jspClassInfos.remove(className);
+			}
+
+			JspRuntimeContext jspRuntimeContext = ctxt.getRuntimeContext();
+
+			ClassLoader classLoader = jspRuntimeContext.getParentClassLoader();
+
+			url = classLoader.getResource(classNamePath);
+		}
+
+		return url;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		CompilerWrapper.class);
 
-	private final Map<String, ObjectValuePair<Long, byte[]>> _bytes =
+	private final Map<String, JSPClassInfo> _jspClassInfos =
 		new ConcurrentHashMap<>();
+
+	private class JSPClassInfo {
+
+		public JSPClassInfo(byte[] bytes, boolean override, long lastModified) {
+			_bytes = bytes;
+			_override = override;
+			_lastModified = lastModified;
+		}
+
+		public byte[] getBytes() {
+			return _bytes;
+		}
+
+		public long getLastModified() {
+			return _lastModified;
+		}
+
+		public boolean isOverride() {
+			return _override;
+		}
+
+		private final byte[] _bytes;
+		private final long _lastModified;
+		private final boolean _override;
+
+	}
 
 }

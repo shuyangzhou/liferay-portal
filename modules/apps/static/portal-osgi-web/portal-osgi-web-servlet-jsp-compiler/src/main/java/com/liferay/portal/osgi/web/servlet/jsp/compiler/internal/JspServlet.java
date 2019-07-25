@@ -195,7 +195,8 @@ public class JspServlet extends HttpServlet {
 				"JspCompiler");
 		defaults.put("compilerSourceVM", "1.8");
 		defaults.put("compilerTargetVM", "1.8");
-		defaults.put("development", "false");
+		defaults.put(
+			"development", String.valueOf(PropsValues.WORK_FOLDER_OVERRIDE));
 		defaults.put("httpMethods", "GET,POST,HEAD");
 		defaults.put(
 			"jspCompilerClassName",
@@ -203,7 +204,8 @@ public class JspServlet extends HttpServlet {
 				"CompilerWrapper");
 		defaults.put("keepgenerated", "false");
 		defaults.put("logVerbosityLevel", "NONE");
-		defaults.put("saveBytecode", "true");
+		defaults.put(
+			"saveBytecode", String.valueOf(!PropsValues.WORK_FOLDER_OVERRIDE));
 
 		StringBundler sb = new StringBundler(4);
 
