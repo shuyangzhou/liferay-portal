@@ -16,44 +16,23 @@ package com.liferay.counter.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
-import com.liferay.petra.process.ClassPathUtil;
-import com.liferay.portal.cache.key.SimpleCacheKeyGenerator;
-import com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.process.ProcessCallable;
-import com.liferay.portal.kernel.process.ProcessChannel;
-import com.liferay.portal.kernel.process.ProcessConfig;
-import com.liferay.portal.kernel.process.ProcessException;
-import com.liferay.portal.kernel.process.ProcessExecutor;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.kernel.test.rule.ClassTestRule;
-import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
-import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.test.rule.HypersonicServerClassTestRule;
-import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portal.util.InitUtil;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.registry.BasicRegistryImpl;
-import com.liferay.registry.RegistryUtil;
-
-import java.lang.management.ManagementFactory;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 
-import javax.management.MBeanServer;
-import javax.management.ObjectName;
-
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 
 /**
@@ -65,100 +44,43 @@ public class CounterLocalServiceTest {
 	@ClassRule
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
-		new AggregateTestRule(
-			false, new LiferayIntegrationTestRule(),
-			new ClassTestRule<Void>() {
+		new LiferayIntegrationTestRule();
 
-				@Override
-				public void afterClass(Description description, Void v) {
-					CounterLocalServiceUtil.reset(_COUNTER_NAME);
-				}
+	@Before
+	public void setUp() {
+		CounterLocalServiceUtil.reset(_COUNTER_NAME);
 
-				@Override
-				public Void beforeClass(Description description)
-					throws Exception {
+		CounterLocalServiceUtil.reset(_COUNTER_NAME, 0);
+	}
 
-					CounterLocalServiceUtil.reset(_COUNTER_NAME);
-
-					CounterLocalServiceUtil.reset(_COUNTER_NAME, 0);
-
-					MBeanServer mBeanServer =
-						ManagementFactory.getPlatformMBeanServer();
-
-					// HikariCP
-
-					for (ObjectName objectName :
-							mBeanServer.queryNames(
-								null,
-								new ObjectName(
-									"com.zaxxer.hikari:type=Pool (*"))) {
-
-						mBeanServer.invoke(
-							objectName, "softEvictConnections", null, null);
-					}
-
-					// Tomcat
-
-					for (ObjectName objectName :
-							mBeanServer.queryNames(
-								null,
-								new ObjectName(
-									"TomcatJDBCPool:type=ConnectionPool," +
-										"name=*"))) {
-
-						mBeanServer.invoke(objectName, "purge", null, null);
-					}
-
-					return null;
-				}
-
-			},
-			HypersonicServerClassTestRule.INSTANCE);
+	@After
+	public void tearDown() {
+		CounterLocalServiceUtil.reset(_COUNTER_NAME);
+	}
 
 	@Test
 	public void testConcurrentIncrement() throws Exception {
-		String classPath = ClassPathUtil.getJVMClassPath(true);
-
-		List<String> arguments = new ArrayList<>();
-
-		arguments.add("-Dliferay.mode=test");
-		arguments.add("-Dsun.zip.disableMemoryMapping=true");
-
-		for (String property :
-				HypersonicServerClassTestRule.INSTANCE.getJdbcProperties()) {
-
-			arguments.add("-D" + property);
-		}
-
-		arguments.add("-Xmx1024m");
-		arguments.add("-XX:MaxPermSize=200m");
-
-		ProcessConfig.Builder builder = new ProcessConfig.Builder();
-
-		builder.setArguments(arguments);
-		builder.setBootstrapClassPath(classPath);
-		builder.setReactClassLoader(PortalClassLoaderUtil.getClassLoader());
-		builder.setRuntimeClassPath(classPath);
-
-		ProcessConfig processConfig = builder.build();
-
 		List<Future<Long[]>> futuresList = new ArrayList<>();
 
-		for (int i = 0; i < _PROCESS_COUNT; i++) {
-			ProcessCallable<Long[]> processCallable =
-				new IncrementProcessCallable(
-					"Increment Process-" + i, _COUNTER_NAME, _INCREMENT_COUNT);
+		for (int i = 0; i < _THREAD_COUNT; i++) {
+			FutureTask<Long[]> futureTask = new FutureTask<>(
+				() -> {
+					List<Long> ids = new ArrayList<>();
 
-			ProcessChannel<Long[]> processChannel = _processExecutor.execute(
-				processConfig, processCallable);
+					for (int j = 0; j < _INCREMENT_COUNT; j++) {
+						ids.add(
+							CounterLocalServiceUtil.increment(_COUNTER_NAME));
+					}
 
-			Future<Long[]> futures =
-				processChannel.getProcessNoticeableFuture();
+					return ids.toArray(new Long[0]);
+				});
 
-			futuresList.add(futures);
+			_startThread(futureTask, "Increment Thread-" + i);
+
+			futuresList.add(futureTask);
 		}
 
-		int total = _PROCESS_COUNT * _INCREMENT_COUNT;
+		int total = _THREAD_COUNT * _INCREMENT_COUNT;
 
 		List<Long> ids = new ArrayList<>(total);
 
@@ -178,89 +100,16 @@ public class CounterLocalServiceTest {
 		}
 	}
 
+	private void _startThread(FutureTask<Long[]> futureTask, String name) {
+		Thread thread = new Thread(futureTask, name);
+
+		thread.start();
+	}
+
 	private static final String _COUNTER_NAME = StringUtil.randomString();
 
 	private static final int _INCREMENT_COUNT = 10000;
 
-	private static final int _PROCESS_COUNT = 4;
-
-	@Inject
-	private static final ProcessExecutor _processExecutor = null;
-
-	private static class IncrementProcessCallable
-		implements ProcessCallable<Long[]> {
-
-		public IncrementProcessCallable(
-			String processName, String counterName, int incrementCount) {
-
-			_processName = processName;
-			_counterName = counterName;
-			_incrementCount = incrementCount;
-		}
-
-		@Override
-		public Long[] call() throws ProcessException {
-			RegistryUtil.setRegistry(new BasicRegistryImpl());
-
-			System.setProperty(
-				PropsKeys.COUNTER_INCREMENT + "." + _counterName, "1");
-
-			System.setProperty("catalina.base", ".");
-			System.setProperty("external-properties", "portal-test.properties");
-
-			// C3PO
-
-			System.setProperty("portal:jdbc.default.maxPoolSize", "1");
-			System.setProperty("portal:jdbc.default.minPoolSize", "0");
-
-			// HikariCP
-
-			System.setProperty("portal:jdbc.default.maximumPoolSize", "1");
-			System.setProperty("portal:jdbc.default.minimumIdle", "0");
-
-			// Tomcat
-
-			System.setProperty("portal:jdbc.default.initialSize", "0");
-			System.setProperty("portal:jdbc.default.maxActive", "1");
-			System.setProperty("portal:jdbc.default.maxIdle", "0");
-			System.setProperty("portal:jdbc.default.minIdle", "0");
-
-			CacheKeyGeneratorUtil cacheKeyGeneratorUtil =
-				new CacheKeyGeneratorUtil();
-
-			cacheKeyGeneratorUtil.setDefaultCacheKeyGenerator(
-				new SimpleCacheKeyGenerator());
-
-			InitUtil.initWithSpring(
-				Arrays.asList(
-					"META-INF/base-spring.xml", "META-INF/counter-spring.xml"),
-				false, true);
-
-			List<Long> ids = new ArrayList<>();
-
-			try {
-				for (int i = 0; i < _incrementCount; i++) {
-					ids.add(CounterLocalServiceUtil.increment(_counterName));
-				}
-			}
-			catch (SystemException se) {
-				throw new ProcessException(se);
-			}
-
-			return ids.toArray(new Long[0]);
-		}
-
-		@Override
-		public String toString() {
-			return _processName;
-		}
-
-		private static final long serialVersionUID = 1L;
-
-		private final String _counterName;
-		private final int _incrementCount;
-		private final String _processName;
-
-	}
+	private static final int _THREAD_COUNT = 4;
 
 }
