@@ -25,7 +25,6 @@ import com.liferay.portal.util.PropsUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
 import org.junit.Assert;
@@ -53,7 +52,7 @@ public class CounterLocalServiceTest {
 
 			_counterLocalService.reset(_COUNTER_NAME, 0);
 
-			List<Future<List<Long>>> futuresList = new ArrayList<>();
+			List<FutureTask<List<Long>>> futureTasks = new ArrayList<>();
 
 			for (int i = 0; i < _THREAD_COUNT; i++) {
 				FutureTask<List<Long>> futureTask = new FutureTask<>(
@@ -72,15 +71,15 @@ public class CounterLocalServiceTest {
 
 				thread.start();
 
-				futuresList.add(futureTask);
+				futureTasks.add(futureTask);
 			}
 
 			int total = _THREAD_COUNT * _INCREMENT_COUNT;
 
 			List<Long> allIds = new ArrayList<>(total);
 
-			for (Future<List<Long>> future : futuresList) {
-				allIds.addAll(future.get());
+			for (FutureTask<List<Long>> futureTask : futureTasks) {
+				allIds.addAll(futureTask.get());
 			}
 
 			Assert.assertEquals(allIds.toString(), total, allIds.size());
