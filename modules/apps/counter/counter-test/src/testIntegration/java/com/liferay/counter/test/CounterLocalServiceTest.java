@@ -28,9 +28,7 @@ import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -47,61 +45,59 @@ public class CounterLocalServiceTest {
 	public static final AggregateTestRule aggregateTestRule =
 		new LiferayIntegrationTestRule();
 
-	@Before
-	public void setUp() {
-		PropsUtil.set(PropsKeys.COUNTER_INCREMENT_PREFIX + _COUNTER_NAME, "1");
-
-		_counterLocalService.reset(_COUNTER_NAME);
-
-		_counterLocalService.reset(_COUNTER_NAME, 0);
-	}
-
-	@After
-	public void tearDown() {
-		_counterLocalService.reset(_COUNTER_NAME);
-
-		PropsUtil.set(PropsKeys.COUNTER_INCREMENT_PREFIX + _COUNTER_NAME, null);
-	}
-
 	@Test
 	public void testConcurrentIncrement() throws Exception {
-		List<Future<List<Long>>> futuresList = new ArrayList<>();
+		try {
+			PropsUtil.set(
+				PropsKeys.COUNTER_INCREMENT_PREFIX + _COUNTER_NAME, "1");
 
-		for (int i = 0; i < _THREAD_COUNT; i++) {
-			FutureTask<List<Long>> futureTask = new FutureTask<>(
-				() -> {
-					List<Long> ids = new ArrayList<>();
+			_counterLocalService.reset(_COUNTER_NAME, 0);
 
-					for (int j = 0; j < _INCREMENT_COUNT; j++) {
-						ids.add(_counterLocalService.increment(_COUNTER_NAME));
-					}
+			List<Future<List<Long>>> futuresList = new ArrayList<>();
 
-					return ids;
-				});
+			for (int i = 0; i < _THREAD_COUNT; i++) {
+				FutureTask<List<Long>> futureTask = new FutureTask<>(
+					() -> {
+						List<Long> ids = new ArrayList<>();
 
-			Thread thread = new Thread(futureTask, "Increment Thread-" + i);
+						for (int j = 0; j < _INCREMENT_COUNT; j++) {
+							ids.add(
+								_counterLocalService.increment(_COUNTER_NAME));
+						}
 
-			thread.start();
+						return ids;
+					});
 
-			futuresList.add(futureTask);
+				Thread thread = new Thread(futureTask, "Increment Thread-" + i);
+
+				thread.start();
+
+				futuresList.add(futureTask);
+			}
+
+			int total = _THREAD_COUNT * _INCREMENT_COUNT;
+
+			List<Long> allIds = new ArrayList<>(total);
+
+			for (Future<List<Long>> future : futuresList) {
+				allIds.addAll(future.get());
+			}
+
+			Assert.assertEquals(allIds.toString(), total, allIds.size());
+
+			Collections.sort(allIds);
+
+			for (int i = 0; i < total; i++) {
+				Long id = allIds.get(i);
+
+				Assert.assertEquals(i + 1, id.intValue());
+			}
 		}
+		finally {
+			_counterLocalService.reset(_COUNTER_NAME);
 
-		int total = _THREAD_COUNT * _INCREMENT_COUNT;
-
-		List<Long> allIds = new ArrayList<>(total);
-
-		for (Future<List<Long>> future : futuresList) {
-			allIds.addAll(future.get());
-		}
-
-		Assert.assertEquals(allIds.toString(), total, allIds.size());
-
-		Collections.sort(allIds);
-
-		for (int i = 0; i < total; i++) {
-			Long id = allIds.get(i);
-
-			Assert.assertEquals(i + 1, id.intValue());
+			PropsUtil.set(
+				PropsKeys.COUNTER_INCREMENT_PREFIX + _COUNTER_NAME, null);
 		}
 	}
 
