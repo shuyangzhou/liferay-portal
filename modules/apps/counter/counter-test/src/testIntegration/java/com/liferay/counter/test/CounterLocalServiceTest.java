@@ -66,10 +66,10 @@ public class CounterLocalServiceTest {
 
 	@Test
 	public void testConcurrentIncrement() throws Exception {
-		List<Future<Long[]>> futuresList = new ArrayList<>();
+		List<Future<List<Long>>> futuresList = new ArrayList<>();
 
 		for (int i = 0; i < _THREAD_COUNT; i++) {
-			FutureTask<Long[]> futureTask = new FutureTask<>(
+			FutureTask<List<Long>> futureTask = new FutureTask<>(
 				() -> {
 					List<Long> ids = new ArrayList<>();
 
@@ -77,7 +77,7 @@ public class CounterLocalServiceTest {
 						ids.add(_counterLocalService.increment(_COUNTER_NAME));
 					}
 
-					return ids.toArray(new Long[0]);
+					return ids;
 				});
 
 			_startThread(futureTask, "Increment Thread-" + i);
@@ -87,24 +87,24 @@ public class CounterLocalServiceTest {
 
 		int total = _THREAD_COUNT * _INCREMENT_COUNT;
 
-		List<Long> ids = new ArrayList<>(total);
+		List<Long> allIds = new ArrayList<>(total);
 
-		for (Future<Long[]> futures : futuresList) {
-			Collections.addAll(ids, futures.get());
+		for (Future<List<Long>> future : futuresList) {
+			allIds.addAll(future.get());
 		}
 
-		Assert.assertEquals(ids.toString(), total, ids.size());
+		Assert.assertEquals(allIds.toString(), total, allIds.size());
 
-		Collections.sort(ids);
+		Collections.sort(allIds);
 
 		for (int i = 0; i < total; i++) {
-			Long id = ids.get(i);
+			Long id = allIds.get(i);
 
 			Assert.assertEquals(i + 1, id.intValue());
 		}
 	}
 
-	private void _startThread(FutureTask<Long[]> futureTask, String name) {
+	private void _startThread(FutureTask<List<Long>> futureTask, String name) {
 		Thread thread = new Thread(futureTask, name);
 
 		thread.start();
