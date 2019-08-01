@@ -80,7 +80,9 @@ public class CounterLocalServiceTest {
 					return ids;
 				});
 
-			_startThread(futureTask, "Increment Thread-" + i);
+			Thread thread = new Thread(futureTask, "Increment Thread-" + i);
+
+			thread.start();
 
 			futuresList.add(futureTask);
 		}
@@ -102,12 +104,6 @@ public class CounterLocalServiceTest {
 
 			Assert.assertEquals(i + 1, id.intValue());
 		}
-	}
-
-	private void _startThread(FutureTask<List<Long>> futureTask, String name) {
-		Thread thread = new Thread(futureTask, name);
-
-		thread.start();
 	}
 
 	private static final String _COUNTER_NAME = StringUtil.randomString();
