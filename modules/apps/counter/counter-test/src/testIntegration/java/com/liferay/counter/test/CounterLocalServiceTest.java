@@ -16,14 +16,21 @@ package com.liferay.counter.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
+import com.liferay.counter.kernel.service.persistence.CounterFinder;
+import com.liferay.counter.model.CounterRegister;
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PropsValues;
+
+import java.lang.reflect.Field;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
@@ -60,6 +67,22 @@ public class CounterLocalServiceTest {
 
 	@Test
 	public void testConcurrentIncrement() throws Exception {
+		Field field = ReflectionUtil.getDeclaredField(
+			_counterFinder.getClass(), "_counterRegisterMap");
+
+		Map<String, CounterRegister> counterRegisterMap =
+			(Map<String, CounterRegister>)field.get(_counterFinder);
+
+		counterRegisterMap.remove(_COUNTER_NAME);
+
+		field = ReflectionUtil.getDeclaredField(
+			_counterFinder.getClass(), "_rangeSizeMap");
+
+		Map<String, Integer> rangeSizeMap = (Map<String, Integer>)field.get(
+			_counterFinder);
+
+		rangeSizeMap.put(_COUNTER_NAME, 1);
+
 		List<Future<Long[]>> futuresList = new ArrayList<>();
 
 		for (int i = 0; i < _THREAD_COUNT; i++) {
@@ -111,5 +134,8 @@ public class CounterLocalServiceTest {
 	private static final int _INCREMENT_COUNT = 10000;
 
 	private static final int _THREAD_COUNT = 4;
+
+	@Inject
+	private CounterFinder _counterFinder;
 
 }
