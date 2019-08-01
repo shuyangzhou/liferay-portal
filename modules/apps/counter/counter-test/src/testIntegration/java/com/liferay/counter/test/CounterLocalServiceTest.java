@@ -18,7 +18,6 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.counter.kernel.service.CounterLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PropsUtil;
@@ -106,7 +105,8 @@ public class CounterLocalServiceTest {
 		}
 	}
 
-	private static final String _COUNTER_NAME = StringUtil.randomString();
+	private static final String _COUNTER_NAME =
+		CounterLocalServiceTest.class.getName();
 
 	private static final int _INCREMENT_COUNT = 10000;
 
