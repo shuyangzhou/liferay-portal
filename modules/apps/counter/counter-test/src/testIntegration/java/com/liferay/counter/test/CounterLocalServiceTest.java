@@ -87,9 +87,7 @@ public class CounterLocalServiceTest {
 			Collections.sort(allIds);
 
 			for (int i = 0; i < total; i++) {
-				Long id = allIds.get(i);
-
-				Assert.assertEquals(i + 1, id.intValue());
+				Assert.assertEquals(i, allIds.get(i) - 1);
 			}
 		}
 		finally {
