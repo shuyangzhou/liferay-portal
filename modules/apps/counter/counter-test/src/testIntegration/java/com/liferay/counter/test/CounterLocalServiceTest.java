@@ -74,19 +74,19 @@ public class CounterLocalServiceTest {
 				futureTasks.add(futureTask);
 			}
 
-			int total = _THREAD_COUNT * _INCREMENT_COUNT;
-
-			List<Long> allIds = new ArrayList<>(total);
+			List<Long> allIds = new ArrayList<>();
 
 			for (FutureTask<List<Long>> futureTask : futureTasks) {
 				allIds.addAll(futureTask.get());
 			}
 
-			Assert.assertEquals(allIds.toString(), total, allIds.size());
+			Assert.assertEquals(
+				allIds.toString(), _THREAD_COUNT * _INCREMENT_COUNT,
+				allIds.size());
 
 			Collections.sort(allIds);
 
-			for (int i = 0; i < total; i++) {
+			for (int i = 0; i < allIds.size(); i++) {
 				Assert.assertEquals(i, allIds.get(i) - 1);
 			}
 		}
