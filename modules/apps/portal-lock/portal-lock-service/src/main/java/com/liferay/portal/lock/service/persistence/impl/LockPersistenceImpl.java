@@ -149,13 +149,13 @@ public class LockPersistenceImpl
 	 * @param start the lower bound of the range of locks
 	 * @param end the upper bound of the range of locks (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching locks
 	 */
 	@Override
 	public List<Lock> findByUuid(
 		String uuid, int start, int end,
-		OrderByComparator<Lock> orderByComparator, boolean retrieveFromCache) {
+		OrderByComparator<Lock> orderByComparator, boolean useFinderCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -167,17 +167,20 @@ public class LockPersistenceImpl
 			(orderByComparator == null)) {
 
 			pagination = false;
-			finderPath = _finderPathWithoutPaginationFindByUuid;
-			finderArgs = new Object[] {uuid};
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByUuid;
+				finderArgs = new Object[] {uuid};
+			}
 		}
-		else {
+		else if (useFinderCache) {
 			finderPath = _finderPathWithPaginationFindByUuid;
 			finderArgs = new Object[] {uuid, start, end, orderByComparator};
 		}
 
 		List<Lock> list = null;
 
-		if (retrieveFromCache) {
+		if (useFinderCache) {
 			list = (List<Lock>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -254,10 +257,14 @@ public class LockPersistenceImpl
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
 				throw processException(e);
 			}
@@ -694,13 +701,13 @@ public class LockPersistenceImpl
 	 * @param start the lower bound of the range of locks
 	 * @param end the upper bound of the range of locks (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching locks
 	 */
 	@Override
 	public List<Lock> findByUuid_C(
 		String uuid, long companyId, int start, int end,
-		OrderByComparator<Lock> orderByComparator, boolean retrieveFromCache) {
+		OrderByComparator<Lock> orderByComparator, boolean useFinderCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -712,10 +719,13 @@ public class LockPersistenceImpl
 			(orderByComparator == null)) {
 
 			pagination = false;
-			finderPath = _finderPathWithoutPaginationFindByUuid_C;
-			finderArgs = new Object[] {uuid, companyId};
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByUuid_C;
+				finderArgs = new Object[] {uuid, companyId};
+			}
 		}
-		else {
+		else if (useFinderCache) {
 			finderPath = _finderPathWithPaginationFindByUuid_C;
 			finderArgs = new Object[] {
 				uuid, companyId, start, end, orderByComparator
@@ -724,7 +734,7 @@ public class LockPersistenceImpl
 
 		List<Lock> list = null;
 
-		if (retrieveFromCache) {
+		if (useFinderCache) {
 			list = (List<Lock>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -807,10 +817,14 @@ public class LockPersistenceImpl
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
 				throw processException(e);
 			}
@@ -1274,13 +1288,13 @@ public class LockPersistenceImpl
 	 * @param start the lower bound of the range of locks
 	 * @param end the upper bound of the range of locks (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching locks
 	 */
 	@Override
 	public List<Lock> findByClassName(
 		String className, int start, int end,
-		OrderByComparator<Lock> orderByComparator, boolean retrieveFromCache) {
+		OrderByComparator<Lock> orderByComparator, boolean useFinderCache) {
 
 		className = Objects.toString(className, "");
 
@@ -1292,10 +1306,13 @@ public class LockPersistenceImpl
 			(orderByComparator == null)) {
 
 			pagination = false;
-			finderPath = _finderPathWithoutPaginationFindByClassName;
-			finderArgs = new Object[] {className};
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByClassName;
+				finderArgs = new Object[] {className};
+			}
 		}
-		else {
+		else if (useFinderCache) {
 			finderPath = _finderPathWithPaginationFindByClassName;
 			finderArgs = new Object[] {
 				className, start, end, orderByComparator
@@ -1304,7 +1321,7 @@ public class LockPersistenceImpl
 
 		List<Lock> list = null;
 
-		if (retrieveFromCache) {
+		if (useFinderCache) {
 			list = (List<Lock>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -1381,10 +1398,14 @@ public class LockPersistenceImpl
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
 				throw processException(e);
 			}
@@ -1820,13 +1841,13 @@ public class LockPersistenceImpl
 	 * @param start the lower bound of the range of locks
 	 * @param end the upper bound of the range of locks (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching locks
 	 */
 	@Override
 	public List<Lock> findByLtExpirationDate(
 		Date expirationDate, int start, int end,
-		OrderByComparator<Lock> orderByComparator, boolean retrieveFromCache) {
+		OrderByComparator<Lock> orderByComparator, boolean useFinderCache) {
 
 		boolean pagination = true;
 		FinderPath finderPath = null;
@@ -1839,7 +1860,7 @@ public class LockPersistenceImpl
 
 		List<Lock> list = null;
 
-		if (retrieveFromCache) {
+		if (useFinderCache) {
 			list = (List<Lock>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -1918,10 +1939,14 @@ public class LockPersistenceImpl
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
 				throw processException(e);
 			}
@@ -2350,21 +2375,25 @@ public class LockPersistenceImpl
 	 *
 	 * @param className the class name
 	 * @param key the key
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching lock, or <code>null</code> if a matching lock could not be found
 	 */
 	@Override
 	public Lock fetchByC_K(
-		String className, String key, boolean retrieveFromCache) {
+		String className, String key, boolean useFinderCache) {
 
 		className = Objects.toString(className, "");
 		key = Objects.toString(key, "");
 
-		Object[] finderArgs = new Object[] {className, key};
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {className, key};
+		}
 
 		Object result = null;
 
-		if (retrieveFromCache) {
+		if (useFinderCache) {
 			result = finderCache.getResult(
 				_finderPathFetchByC_K, finderArgs, this);
 		}
@@ -2428,8 +2457,10 @@ public class LockPersistenceImpl
 				List<Lock> list = q.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(
-						_finderPathFetchByC_K, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByC_K, finderArgs, list);
+					}
 				}
 				else {
 					Lock lock = list.get(0);
@@ -2440,7 +2471,9 @@ public class LockPersistenceImpl
 				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(_finderPathFetchByC_K, finderArgs);
+				if (useFinderCache) {
+					finderCache.removeResult(_finderPathFetchByC_K, finderArgs);
+				}
 
 				throw processException(e);
 			}
@@ -3059,13 +3092,13 @@ public class LockPersistenceImpl
 	 * @param start the lower bound of the range of locks
 	 * @param end the upper bound of the range of locks (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of locks
 	 */
 	@Override
 	public List<Lock> findAll(
 		int start, int end, OrderByComparator<Lock> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		boolean pagination = true;
 		FinderPath finderPath = null;
@@ -3075,17 +3108,20 @@ public class LockPersistenceImpl
 			(orderByComparator == null)) {
 
 			pagination = false;
-			finderPath = _finderPathWithoutPaginationFindAll;
-			finderArgs = FINDER_ARGS_EMPTY;
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindAll;
+				finderArgs = FINDER_ARGS_EMPTY;
+			}
 		}
-		else {
+		else if (useFinderCache) {
 			finderPath = _finderPathWithPaginationFindAll;
 			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<Lock> list = null;
 
-		if (retrieveFromCache) {
+		if (useFinderCache) {
 			list = (List<Lock>)finderCache.getResult(
 				finderPath, finderArgs, this);
 		}
@@ -3135,10 +3171,14 @@ public class LockPersistenceImpl
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
 				throw processException(e);
 			}
