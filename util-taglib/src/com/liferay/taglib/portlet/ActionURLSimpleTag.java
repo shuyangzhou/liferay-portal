@@ -29,8 +29,10 @@ import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.taglib.util.ParamAndPropertyAncestorTagImpl;
+import com.liferay.taglib.util.ParamAndPropertyAncestorSimpleTagImpl;
 import com.liferay.taglib.util.TypedParamAccessorTag;
+
+import java.io.IOException;
 
 import java.util.Map;
 import java.util.Objects;
@@ -45,15 +47,15 @@ import javax.portlet.PortletURL;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.PageContext;
+import javax.servlet.jsp.tagext.JspFragment;
 
 /**
- * @author Brian Wing Shun Chan
- * @author Neil Griffin
- * @deprecated As of Mueller (7.2.x), replaced by {@link ActionURLSimpleTag}
+ * @author Shuyang Zhou
  */
-@Deprecated
-public class ActionURLTag
-	extends ParamAndPropertyAncestorTagImpl implements TypedParamAccessorTag {
+public class ActionURLSimpleTag
+	extends ParamAndPropertyAncestorSimpleTagImpl
+	implements TypedParamAccessorTag {
 
 	public static PortletURL doTag(
 			String lifecycle, String windowState, String portletMode,
@@ -222,7 +224,15 @@ public class ActionURLTag
 	}
 
 	@Override
-	public int doEndTag() throws JspException {
+	public void doTag() throws IOException, JspException {
+		JspFragment jspFragment = getJspBody();
+
+		if (jspFragment != null) {
+			jspFragment.invoke(null);
+		}
+
+		PageContext pageContext = (PageContext)getJspContext();
+
 		try {
 			PortletURL portletURL = doTag(
 				getLifecycle(), _windowState, _portletMode, _secure,
@@ -243,8 +253,6 @@ public class ActionURLTag
 
 				jspWriter.write(portletURL.toString());
 			}
-
-			return EVAL_PAGE;
 		}
 		catch (Exception e) {
 			throw new JspException(e);
@@ -255,11 +263,6 @@ public class ActionURLTag
 
 			_plid = LayoutConstants.DEFAULT_PLID;
 		}
-	}
-
-	@Override
-	public int doStartTag() {
-		return EVAL_BODY_INCLUDE;
 	}
 
 	public String getLifecycle() {
@@ -395,7 +398,8 @@ public class ActionURLTag
 
 	private static final String _ACTION_PARAMETER_NAMESPACE = "p_action_p_";
 
-	private static final Log _log = LogFactoryUtil.getLog(ActionURLTag.class);
+	private static final Log _log = LogFactoryUtil.getLog(
+		ActionURLSimpleTag.class);
 
 	private Boolean _anchor;
 	private String _cacheability;

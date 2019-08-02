@@ -14,20 +14,16 @@
 
 package com.liferay.taglib.util;
 
-import com.liferay.taglib.TagSupport;
-
 import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 /**
- * @author Brian Wing Shun Chan
- * @author Neil Griffin
- * @deprecated As of Mueller (7.2.x), replaced by {@link ParamSimpleTag}
+ * @author Shuyang Zhou
  */
-@Deprecated
-public class ParamTag extends TagSupport {
+public class ParamSimpleTag extends SimpleTagSupport {
 
 	@Override
-	public int doStartTag() throws JspException {
+	public void doTag() throws JspException {
 		ParamAncestorTag paramAncestorTag =
 			(ParamAncestorTag)findAncestorWithClass(
 				this, ParamAncestorTag.class);
@@ -45,8 +41,6 @@ public class ParamTag extends TagSupport {
 		else {
 			paramAncestorTag.addParam(_name, _value);
 		}
-
-		return SKIP_BODY;
 	}
 
 	public void setName(String name) {

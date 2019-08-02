@@ -8,9 +8,9 @@
 	<uri>http://java.sun.com/portlet</uri>
 	<tag>
 		<name>actionURL</name>
-		<tag-class>com.liferay.taglib.portlet.ActionURLTag</tag-class>
+		<tag-class>com.liferay.taglib.portlet.ActionURLSimpleTag</tag-class>
 		<tei-class>com.liferay.taglib.portlet.ActionURLTei</tei-class>
-		<body-content>JSP</body-content>
+		<body-content>scriptless</body-content>
 		<attribute>
 			<name>copyCurrentRenderParameters</name>
 			<required>false</required>
@@ -49,18 +49,18 @@
 	</tag>
 	<tag>
 		<name>defineObjects</name>
-		<tag-class>com.liferay.taglib.portlet.DefineObjectsTag</tag-class>
+		<tag-class>com.liferay.taglib.portlet.DefineObjectsSimpleTag</tag-class>
 		<tei-class>com.liferay.taglib.portlet.DefineObjectsTei</tei-class>
 		<body-content>empty</body-content>
 	</tag>
 	<tag>
 		<name>namespace</name>
-		<tag-class>com.liferay.taglib.portlet.NamespaceTag</tag-class>
+		<tag-class>com.liferay.taglib.portlet.NamespaceSimpleTag</tag-class>
 		<body-content>empty</body-content>
 	</tag>
 	<tag>
 		<name>param</name>
-		<tag-class>com.liferay.taglib.util.ParamTag</tag-class>
+		<tag-class>com.liferay.taglib.util.ParamSimpleTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
 			<name>name</name>
@@ -75,7 +75,7 @@
 	</tag>
 	<tag>
 		<name>renderURL</name>
-		<tag-class>com.liferay.taglib.portlet.RenderURLTag</tag-class>
+		<tag-class>com.liferay.taglib.portlet.RenderURLSimpleTag</tag-class>
 		<tei-class>com.liferay.taglib.portlet.RenderURLTei</tei-class>
 		<body-content>JSP</body-content>
 		<attribute>

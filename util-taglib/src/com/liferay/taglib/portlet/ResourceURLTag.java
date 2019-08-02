@@ -18,7 +18,9 @@ import javax.portlet.PortletRequest;
 
 /**
  * @author Brian Wing Shun Chan
+ * @deprecated As of Mueller (7.2.x), replaced by {@link ResourceURLSimpleTag}
  */
+@Deprecated
 public class ResourceURLTag extends ActionURLTag {
 
 	@Override

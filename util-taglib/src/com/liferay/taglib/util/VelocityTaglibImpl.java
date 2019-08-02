@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.TagSupport;
+import com.liferay.taglib.portlet.ActionURLSimpleTag;
 import com.liferay.taglib.portlet.ActionURLTag;
 import com.liferay.taglib.portletext.IconOptionsTag;
 import com.liferay.taglib.portletext.IconPortletTag;
@@ -122,7 +123,7 @@ public class VelocityTaglibImpl implements VelocityTaglib {
 			queryString);
 		Set<String> removedParameterNames = null;
 
-		PortletURL portletURL = ActionURLTag.doTag(
+		PortletURL portletURL = ActionURLSimpleTag.doTag(
 			PortletRequest.ACTION_PHASE, windowState, portletMode, secure,
 			copyCurrentRenderParameters, escapeXml, name, resourceID,
 			cacheability, plid, refererPlid, portletName, anchor, encrypt,

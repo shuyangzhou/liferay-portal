@@ -15,23 +15,26 @@
 package com.liferay.taglib.portlet;
 
 import com.liferay.portal.kernel.util.JavaConstants;
-import com.liferay.taglib.TagSupport;
+
+import java.io.IOException;
 
 import javax.portlet.PortletResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.PageContext;
+import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 /**
- * @author Brian Wing Shun Chan
- * @deprecated As of Mueller (7.2.x), replaced by {@link NamespaceSimpleTag}
+ * @author Shuyang Zhou
  */
-@Deprecated
-public class NamespaceTag extends TagSupport {
+public class NamespaceSimpleTag extends SimpleTagSupport {
 
 	@Override
-	public int doStartTag() throws JspException {
+	public void doTag() throws IOException, JspException {
+		PageContext pageContext = (PageContext)getJspContext();
+
 		try {
 			HttpServletRequest httpServletRequest =
 				(HttpServletRequest)pageContext.getRequest();
@@ -51,8 +54,6 @@ public class NamespaceTag extends TagSupport {
 		catch (Exception e) {
 			throw new JspException(e);
 		}
-
-		return SKIP_BODY;
 	}
 
 }

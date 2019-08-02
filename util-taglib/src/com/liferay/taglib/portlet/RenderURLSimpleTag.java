@@ -17,11 +17,9 @@ package com.liferay.taglib.portlet;
 import javax.portlet.PortletRequest;
 
 /**
- * @author Brian Wing Shun Chan
- * @deprecated As of Mueller (7.2.x), replaced by {@link RenderURLSimpleTag}
+ * @author Shuyang Zhou
  */
-@Deprecated
-public class RenderURLTag extends ActionURLTag {
+public class RenderURLSimpleTag extends ActionURLSimpleTag {
 
 	@Override
 	public String getLifecycle() {

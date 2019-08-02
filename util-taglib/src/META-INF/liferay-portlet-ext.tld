@@ -35,7 +35,7 @@
 
 	<tag>
 		<name>actionURL</name>
-		<tag-class>com.liferay.taglib.portlet.ActionURLTag</tag-class>
+		<tag-class>com.liferay.taglib.portlet.ActionURLSimpleTag</tag-class>
 		<tei-class>com.liferay.taglib.portlet.ActionURLTei</tei-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -186,7 +186,7 @@
 	</tag>
 	<tag>
 		<name>param</name>
-		<tag-class>com.liferay.taglib.util.ParamTag</tag-class>
+		<tag-class>com.liferay.taglib.util.ParamSimpleTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
 			<name>name</name>
@@ -253,7 +253,7 @@
 
 	<tag>
 		<name>renderURL</name>
-		<tag-class>com.liferay.taglib.portlet.RenderURLTag</tag-class>
+		<tag-class>com.liferay.taglib.portlet.RenderURLSimpleTag</tag-class>
 		<tei-class>com.liferay.taglib.portlet.RenderURLTei</tei-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -386,7 +386,7 @@
 
 	<tag>
 		<name>resourceURL</name>
-		<tag-class>com.liferay.taglib.portlet.ResourceURLTag</tag-class>
+		<tag-class>com.liferay.taglib.portlet.ResourceURLSimpleTag</tag-class>
 		<tei-class>com.liferay.taglib.portlet.ResourceURLTei</tei-class>
 		<body-content>JSP</body-content>
 		<attribute>

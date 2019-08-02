@@ -17,8 +17,10 @@ package com.liferay.login.web.internal.servlet.taglib.include;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.taglib.include.PageInclude;
-import com.liferay.taglib.portlet.RenderURLTag;
+import com.liferay.taglib.portlet.RenderURLSimpleTag;
 import com.liferay.taglib.ui.IconTag;
+
+import java.io.IOException;
 
 import javax.portlet.PortletConfig;
 import javax.portlet.WindowState;
@@ -66,16 +68,21 @@ public class AnonymousNavigationPrePageInclude implements PageInclude {
 			return;
 		}
 
-		RenderURLTag renderURLTag = new RenderURLTag();
+		RenderURLSimpleTag renderURLSimpleTag = new RenderURLSimpleTag();
 
-		renderURLTag.setPageContext(pageContext);
+		renderURLSimpleTag.setJspContext(pageContext);
 
-		renderURLTag.addParam(
+		renderURLSimpleTag.addParam(
 			"mvcRenderCommandName", "/login/create_anonymous_account");
-		renderURLTag.setVar("anonymousURL");
-		renderURLTag.setWindowState(WindowState.MAXIMIZED.toString());
+		renderURLSimpleTag.setVar("anonymousURL");
+		renderURLSimpleTag.setWindowState(WindowState.MAXIMIZED.toString());
 
-		renderURLTag.doTag(pageContext);
+		try {
+			renderURLSimpleTag.doTag();
+		}
+		catch (IOException ioe) {
+			throw new JspException(ioe);
+		}
 
 		String anonymousURL = (String)pageContext.getAttribute("anonymousURL");
 
