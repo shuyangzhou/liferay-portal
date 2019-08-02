@@ -41,9 +41,8 @@ import java.util.concurrent.Callable;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.LockAcquisitionException;
 
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkUtil;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 
@@ -351,7 +350,8 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 
 		Lock lock = locks.get(0);
 
-		LockListener lockListener = _getLockListener(lock.getClassName());
+		LockListener lockListener = _serviceTrackerMap.getService(
+			lock.getClassName());
 
 		String key = lock.getKey();
 
@@ -444,15 +444,26 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 		}
 	}
 
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, LockListener.class, null,
+			(serviceReference, emitter) -> {
+				LockListener lockListener = bundleContext.getService(
+					serviceReference);
+
+				emitter.emit(lockListener.getClassName());
+			});
+	}
+
 	@Deactivate
 	protected void deactivate() {
-		if (_serviceTrackerMap != null) {
-			_serviceTrackerMap.close();
-		}
+		_serviceTrackerMap.close();
 	}
 
 	protected void expireLock(Lock lock) {
-		LockListener lockListener = _getLockListener(lock.getClassName());
+		LockListener lockListener = _serviceTrackerMap.getService(
+			lock.getClassName());
 
 		String key = lock.getKey();
 
@@ -470,25 +481,6 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 				lockListener.onAfterExpire(key);
 			}
 		}
-	}
-
-	private LockListener _getLockListener(String className) {
-		if (_serviceTrackerMap == null) {
-			Bundle bundle = FrameworkUtil.getBundle(LockLocalServiceImpl.class);
-
-			BundleContext bundleContext = bundle.getBundleContext();
-
-			_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-				bundleContext, LockListener.class, null,
-				(serviceReference, emitter) -> {
-					LockListener lockListener = bundleContext.getService(
-						serviceReference);
-
-					emitter.emit(lockListener.getClassName());
-				});
-		}
-
-		return _serviceTrackerMap.getService(className);
 	}
 
 	private ServiceTrackerMap<String, LockListener> _serviceTrackerMap;
