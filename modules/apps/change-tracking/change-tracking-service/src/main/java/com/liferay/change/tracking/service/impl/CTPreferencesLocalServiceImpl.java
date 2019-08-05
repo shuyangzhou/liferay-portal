@@ -65,4 +65,15 @@ public class CTPreferencesLocalServiceImpl
 		return ctPreferences;
 	}
 
+	@Override
+	public boolean hasCTPreferences(long companyId, long userId) {
+		int count = ctPreferencesPersistence.countByC_U(companyId, userId);
+
+		if (count > 0) {
+			return true;
+		}
+
+		return false;
+	}
+
 }
