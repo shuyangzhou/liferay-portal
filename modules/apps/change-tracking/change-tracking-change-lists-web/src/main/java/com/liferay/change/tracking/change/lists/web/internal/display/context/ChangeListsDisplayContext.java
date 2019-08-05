@@ -16,7 +16,6 @@ package com.liferay.change.tracking.change.lists.web.internal.display.context;
 
 import com.liferay.change.tracking.constants.CTConstants;
 import com.liferay.change.tracking.constants.CTPortletKeys;
-import com.liferay.change.tracking.definition.CTDefinitionRegistryUtil;
 import com.liferay.change.tracking.engine.CTEngineManager;
 import com.liferay.change.tracking.model.CTCollection;
 import com.liferay.change.tracking.model.CTEntry;
@@ -29,17 +28,18 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.ViewTypeItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.ViewTypeItemList;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.dao.search.DisplayTerms;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
+import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
@@ -424,72 +424,30 @@ public class ChangeListsDisplayContext {
 			changeTypeKey = "modified";
 		}
 
-		String contentType =
-			CTDefinitionRegistryUtil.getVersionEntityContentTypeLanguageKey(
-				ctEntry.getModelClassNameId());
 		Format format = FastDateFormatFactoryUtil.getDateTime(
 			_themeDisplay.getLocale());
+
+		ClassName className = ClassNameLocalServiceUtil.getClassName(
+			ctEntry.getModelClassNameId());
 
 		return jsonObject.put(
 			"changeType",
 			LanguageUtil.get(_themeDisplay.getLocale(), changeTypeKey)
 		).put(
-			"contentType", _getEntityNameTranslation(contentType)
+			"contentType",
+			ResourceActionsUtil.getModelResource(
+				_httpServletRequest, className.getClassName())
 		).put(
 			"lastEdited", format.format(ctEntry.getModifiedDate())
 		).put(
-			"site",
-			CTDefinitionRegistryUtil.getVersionEntitySiteName(
-				ctEntry.getModelClassNameId(), ctEntry.getModelClassPK())
+			"site", "site"
 		).put(
-			"title",
-			CTDefinitionRegistryUtil.getVersionEntityTitle(
-				ctEntry.getModelClassNameId(), ctEntry.getModelClassPK())
+			"title", "title"
 		).put(
 			"userName", ctEntry.getUserName()
 		).put(
-			"version",
-			String.valueOf(
-				CTDefinitionRegistryUtil.getVersionEntityVersion(
-					ctEntry.getModelClassNameId(), ctEntry.getModelClassPK()))
+			"version", "version"
 		);
-	}
-
-	private String _getEntityNameTranslation(String contentType)
-		throws Exception {
-
-		JSONArray entityNameTranslationsJSONArray =
-			_getEntityNameTranslationsJSONArray();
-
-		for (int i = 0; i < entityNameTranslationsJSONArray.length(); i++) {
-			JSONObject entityNameTranslationJSONObject =
-				entityNameTranslationsJSONArray.getJSONObject(i);
-
-			if (contentType.equals(
-					entityNameTranslationJSONObject.getString("key"))) {
-
-				return entityNameTranslationJSONObject.getString("translation");
-			}
-		}
-
-		return StringPool.BLANK;
-	}
-
-	private JSONArray _getEntityNameTranslationsJSONArray() throws Exception {
-		if (_entityNameTranslationsJSONArray != null) {
-			return _entityNameTranslationsJSONArray;
-		}
-
-		_entityNameTranslationsJSONArray = JSONUtil.toJSONArray(
-			CTDefinitionRegistryUtil.getContentTypeLanguageKeys(),
-			contentTypeLanguageKey -> JSONUtil.put(
-				"key", contentTypeLanguageKey
-			).put(
-				"translation",
-				LanguageUtil.get(_httpServletRequest, contentTypeLanguageKey)
-			));
-
-		return _entityNameTranslationsJSONArray;
 	}
 
 	private String _getFilterByStatus() {
@@ -624,7 +582,6 @@ public class ChangeListsDisplayContext {
 	private final CTEntryLocalService _ctEntryLocalService;
 	private final CTPreferencesLocalService _ctPreferencesLocalService;
 	private String _displayStyle;
-	private JSONArray _entityNameTranslationsJSONArray;
 	private String _filterByStatus;
 	private final HttpServletRequest _httpServletRequest;
 	private String _orderByCol;
