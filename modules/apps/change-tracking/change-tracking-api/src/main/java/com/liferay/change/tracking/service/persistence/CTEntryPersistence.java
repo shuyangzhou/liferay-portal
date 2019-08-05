@@ -92,14 +92,14 @@ public interface CTEntryPersistence extends BasePersistence<CTEntry> {
 	 * @param start the lower bound of the range of ct entries
 	 * @param end the upper bound of the range of ct entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching ct entries
 	 */
 	public java.util.List<CTEntry> findByCTCollectionId(
 		long ctCollectionId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<CTEntry>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Returns the first ct entry in the ordered set where ctCollectionId = &#63;.
@@ -236,14 +236,14 @@ public interface CTEntryPersistence extends BasePersistence<CTEntry> {
 	 * @param start the lower bound of the range of ct entries
 	 * @param end the upper bound of the range of ct entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching ct entries
 	 */
 	public java.util.List<CTEntry> findByModelClassNameId(
 		long modelClassNameId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<CTEntry>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Returns the first ct entry in the ordered set where modelClassNameId = &#63;.
@@ -384,14 +384,14 @@ public interface CTEntryPersistence extends BasePersistence<CTEntry> {
 	 * @param start the lower bound of the range of ct entries
 	 * @param end the upper bound of the range of ct entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching ct entries
 	 */
 	public java.util.List<CTEntry> findByC_MCNI(
 		long ctCollectionId, long modelClassNameId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<CTEntry>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Returns the first ct entry in the ordered set where ctCollectionId = &#63; and modelClassNameId = &#63;.
@@ -539,14 +539,14 @@ public interface CTEntryPersistence extends BasePersistence<CTEntry> {
 	 * @param start the lower bound of the range of ct entries
 	 * @param end the upper bound of the range of ct entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching ct entries
 	 */
 	public java.util.List<CTEntry> findByC_MRPK(
 		long ctCollectionId, long modelResourcePrimKey, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<CTEntry>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Returns the first ct entry in the ordered set where ctCollectionId = &#63; and modelResourcePrimKey = &#63;.
@@ -693,14 +693,14 @@ public interface CTEntryPersistence extends BasePersistence<CTEntry> {
 	 * @param start the lower bound of the range of ct entries
 	 * @param end the upper bound of the range of ct entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching ct entries
 	 */
 	public java.util.List<CTEntry> findByC_S(
 		long ctCollectionId, int status, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<CTEntry>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Returns the first ct entry in the ordered set where ctCollectionId = &#63; and status = &#63;.
@@ -848,14 +848,14 @@ public interface CTEntryPersistence extends BasePersistence<CTEntry> {
 	 * @param start the lower bound of the range of ct entries
 	 * @param end the upper bound of the range of ct entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching ct entries
 	 */
 	public java.util.List<CTEntry> findByMCNI_MCPK(
 		long modelClassNameId, long modelClassPK, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<CTEntry>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Returns the first ct entry in the ordered set where modelClassNameId = &#63; and modelClassPK = &#63;.
@@ -976,12 +976,12 @@ public interface CTEntryPersistence extends BasePersistence<CTEntry> {
 	 * @param ctCollectionId the ct collection ID
 	 * @param modelClassNameId the model class name ID
 	 * @param modelClassPK the model class pk
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching ct entry, or <code>null</code> if a matching ct entry could not be found
 	 */
 	public CTEntry fetchByC_MCNI_MCPK(
 		long ctCollectionId, long modelClassNameId, long modelClassPK,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Removes the ct entry where ctCollectionId = &#63; and modelClassNameId = &#63; and modelClassPK = &#63; from the database.
@@ -1069,7 +1069,7 @@ public interface CTEntryPersistence extends BasePersistence<CTEntry> {
 	 * @param start the lower bound of the range of ct entries
 	 * @param end the upper bound of the range of ct entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching ct entries
 	 */
 	public java.util.List<CTEntry> findByC_MCNI_S(
@@ -1077,7 +1077,7 @@ public interface CTEntryPersistence extends BasePersistence<CTEntry> {
 		int end,
 		com.liferay.portal.kernel.util.OrderByComparator<CTEntry>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Returns the first ct entry in the ordered set where ctCollectionId = &#63; and modelClassNameId = &#63; and status = &#63;.
@@ -1241,7 +1241,7 @@ public interface CTEntryPersistence extends BasePersistence<CTEntry> {
 	 * @param start the lower bound of the range of ct entries
 	 * @param end the upper bound of the range of ct entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching ct entries
 	 */
 	public java.util.List<CTEntry> findByC_MRPK_S(
@@ -1249,7 +1249,7 @@ public interface CTEntryPersistence extends BasePersistence<CTEntry> {
 		int end,
 		com.liferay.portal.kernel.util.OrderByComparator<CTEntry>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Returns the first ct entry in the ordered set where ctCollectionId = &#63; and modelResourcePrimKey = &#63; and status = &#63;.
@@ -1447,14 +1447,14 @@ public interface CTEntryPersistence extends BasePersistence<CTEntry> {
 	 * @param start the lower bound of the range of ct entries
 	 * @param end the upper bound of the range of ct entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of ct entries
 	 */
 	public java.util.List<CTEntry> findAll(
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<CTEntry>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Removes all the ct entries from the database.
@@ -1467,179 +1467,5 @@ public interface CTEntryPersistence extends BasePersistence<CTEntry> {
 	 * @return the number of ct entries
 	 */
 	public int countAll();
-
-	/**
-	 * Returns the primaryKeys of ct entry aggregates associated with the ct entry.
-	 *
-	 * @param pk the primary key of the ct entry
-	 * @return long[] of the primaryKeys of ct entry aggregates associated with the ct entry
-	 */
-	public long[] getCTEntryAggregatePrimaryKeys(long pk);
-
-	/**
-	 * Returns all the ct entry associated with the ct entry aggregate.
-	 *
-	 * @param pk the primary key of the ct entry aggregate
-	 * @return the ct entries associated with the ct entry aggregate
-	 */
-	public java.util.List<CTEntry> getCTEntryAggregateCTEntries(long pk);
-
-	/**
-	 * Returns all the ct entry associated with the ct entry aggregate.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>CTEntryModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	 * </p>
-	 *
-	 * @param pk the primary key of the ct entry aggregate
-	 * @param start the lower bound of the range of ct entry aggregates
-	 * @param end the upper bound of the range of ct entry aggregates (not inclusive)
-	 * @return the range of ct entries associated with the ct entry aggregate
-	 */
-	public java.util.List<CTEntry> getCTEntryAggregateCTEntries(
-		long pk, int start, int end);
-
-	/**
-	 * Returns all the ct entry associated with the ct entry aggregate.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>CTEntryModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	 * </p>
-	 *
-	 * @param pk the primary key of the ct entry aggregate
-	 * @param start the lower bound of the range of ct entry aggregates
-	 * @param end the upper bound of the range of ct entry aggregates (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of ct entries associated with the ct entry aggregate
-	 */
-	public java.util.List<CTEntry> getCTEntryAggregateCTEntries(
-		long pk, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<CTEntry>
-			orderByComparator);
-
-	/**
-	 * Returns the number of ct entry aggregates associated with the ct entry.
-	 *
-	 * @param pk the primary key of the ct entry
-	 * @return the number of ct entry aggregates associated with the ct entry
-	 */
-	public int getCTEntryAggregatesSize(long pk);
-
-	/**
-	 * Returns <code>true</code> if the ct entry aggregate is associated with the ct entry.
-	 *
-	 * @param pk the primary key of the ct entry
-	 * @param ctEntryAggregatePK the primary key of the ct entry aggregate
-	 * @return <code>true</code> if the ct entry aggregate is associated with the ct entry; <code>false</code> otherwise
-	 */
-	public boolean containsCTEntryAggregate(long pk, long ctEntryAggregatePK);
-
-	/**
-	 * Returns <code>true</code> if the ct entry has any ct entry aggregates associated with it.
-	 *
-	 * @param pk the primary key of the ct entry to check for associations with ct entry aggregates
-	 * @return <code>true</code> if the ct entry has any ct entry aggregates associated with it; <code>false</code> otherwise
-	 */
-	public boolean containsCTEntryAggregates(long pk);
-
-	/**
-	 * Adds an association between the ct entry and the ct entry aggregate. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the ct entry
-	 * @param ctEntryAggregatePK the primary key of the ct entry aggregate
-	 */
-	public void addCTEntryAggregate(long pk, long ctEntryAggregatePK);
-
-	/**
-	 * Adds an association between the ct entry and the ct entry aggregate. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the ct entry
-	 * @param ctEntryAggregate the ct entry aggregate
-	 */
-	public void addCTEntryAggregate(
-		long pk,
-		com.liferay.change.tracking.model.CTEntryAggregate ctEntryAggregate);
-
-	/**
-	 * Adds an association between the ct entry and the ct entry aggregates. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the ct entry
-	 * @param ctEntryAggregatePKs the primary keys of the ct entry aggregates
-	 */
-	public void addCTEntryAggregates(long pk, long[] ctEntryAggregatePKs);
-
-	/**
-	 * Adds an association between the ct entry and the ct entry aggregates. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the ct entry
-	 * @param ctEntryAggregates the ct entry aggregates
-	 */
-	public void addCTEntryAggregates(
-		long pk,
-		java.util.List<com.liferay.change.tracking.model.CTEntryAggregate>
-			ctEntryAggregates);
-
-	/**
-	 * Clears all associations between the ct entry and its ct entry aggregates. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the ct entry to clear the associated ct entry aggregates from
-	 */
-	public void clearCTEntryAggregates(long pk);
-
-	/**
-	 * Removes the association between the ct entry and the ct entry aggregate. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the ct entry
-	 * @param ctEntryAggregatePK the primary key of the ct entry aggregate
-	 */
-	public void removeCTEntryAggregate(long pk, long ctEntryAggregatePK);
-
-	/**
-	 * Removes the association between the ct entry and the ct entry aggregate. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the ct entry
-	 * @param ctEntryAggregate the ct entry aggregate
-	 */
-	public void removeCTEntryAggregate(
-		long pk,
-		com.liferay.change.tracking.model.CTEntryAggregate ctEntryAggregate);
-
-	/**
-	 * Removes the association between the ct entry and the ct entry aggregates. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the ct entry
-	 * @param ctEntryAggregatePKs the primary keys of the ct entry aggregates
-	 */
-	public void removeCTEntryAggregates(long pk, long[] ctEntryAggregatePKs);
-
-	/**
-	 * Removes the association between the ct entry and the ct entry aggregates. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the ct entry
-	 * @param ctEntryAggregates the ct entry aggregates
-	 */
-	public void removeCTEntryAggregates(
-		long pk,
-		java.util.List<com.liferay.change.tracking.model.CTEntryAggregate>
-			ctEntryAggregates);
-
-	/**
-	 * Sets the ct entry aggregates associated with the ct entry, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the ct entry
-	 * @param ctEntryAggregatePKs the primary keys of the ct entry aggregates to be associated with the ct entry
-	 */
-	public void setCTEntryAggregates(long pk, long[] ctEntryAggregatePKs);
-
-	/**
-	 * Sets the ct entry aggregates associated with the ct entry, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the ct entry
-	 * @param ctEntryAggregates the ct entry aggregates to be associated with the ct entry
-	 */
-	public void setCTEntryAggregates(
-		long pk,
-		java.util.List<com.liferay.change.tracking.model.CTEntryAggregate>
-			ctEntryAggregates);
 
 }
