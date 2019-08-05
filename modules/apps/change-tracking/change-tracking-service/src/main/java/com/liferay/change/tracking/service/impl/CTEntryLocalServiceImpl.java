@@ -16,14 +16,20 @@ package com.liferay.change.tracking.service.impl;
 
 import com.liferay.change.tracking.constants.CTConstants;
 import com.liferay.change.tracking.exception.DuplicateCTEntryException;
+import com.liferay.change.tracking.internal.CTPersistenceHelperThreadLocal;
+import com.liferay.change.tracking.internal.CTServiceRegistry;
 import com.liferay.change.tracking.model.CTCollection;
 import com.liferay.change.tracking.model.CTEntry;
 import com.liferay.change.tracking.service.base.CTEntryLocalServiceBaseImpl;
+import com.liferay.petra.lang.SafeClosable;
 import com.liferay.portal.aop.AopService;
+import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.change.tracking.CTModel;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.change.tracking.CTService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -32,6 +38,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -42,6 +49,30 @@ import org.osgi.service.component.annotations.Component;
 	service = AopService.class
 )
 public class CTEntryLocalServiceImpl extends CTEntryLocalServiceBaseImpl {
+
+	@Override
+	public CTEntry addCTEntry(
+			long ctCollectionId, long modelClassNameId, CTModel<?> ctModel,
+			long userId, int changeType)
+		throws PortalException {
+
+		CTCollection ctCollection = ctCollectionPersistence.findByPrimaryKey(
+			ctCollectionId);
+
+		long ctEntryId = counterLocalService.increment(CTEntry.class.getName());
+
+		CTEntry ctEntry = ctEntryPersistence.create(ctEntryId);
+
+		ctEntry.setCompanyId(ctCollection.getCompanyId());
+		ctEntry.setUserId(userId);
+		ctEntry.setCtCollectionId(ctCollectionId);
+		ctEntry.setModelClassNameId(modelClassNameId);
+		ctEntry.setModelClassPK(ctModel.getPrimaryKey());
+		ctEntry.setModelMvccVersion(ctModel.getMvccVersion());
+		ctEntry.setChangeType(changeType);
+
+		return ctEntryPersistence.update(ctEntry);
+	}
 
 	@Override
 	public CTEntry addCTEntry(
@@ -79,6 +110,18 @@ public class CTEntryLocalServiceImpl extends CTEntryLocalServiceBaseImpl {
 		ctEntry.setChangeType(changeType);
 
 		return ctEntryPersistence.update(ctEntry);
+	}
+
+	@Override
+	public CTEntry deleteCTEntry(CTEntry ctEntry) {
+		CTService<?> ctService = _ctServiceRegistry.getCTService(
+			ctEntry.getModelClassNameId());
+
+		if (ctService != null) {
+			_removeCTModel(ctService, ctEntry);
+		}
+
+		return ctEntryPersistence.remove(ctEntry);
 	}
 
 	@Override
@@ -185,6 +228,14 @@ public class CTEntryLocalServiceImpl extends CTEntryLocalServiceBaseImpl {
 	}
 
 	@Override
+	public List<CTEntry> getCTEntries(
+		long ctCollectionId, long modelClassNameId) {
+
+		return ctEntryPersistence.findByC_MCNI(
+			ctCollectionId, modelClassNameId);
+	}
+
+	@Override
 	public int getCTEntriesCount(
 		long ctCollectionId, QueryDefinition<CTEntry> queryDefinition) {
 
@@ -194,6 +245,18 @@ public class CTEntryLocalServiceImpl extends CTEntryLocalServiceBaseImpl {
 
 		return ctEntryPersistence.countByC_S(
 			ctCollectionId, queryDefinition.getStatus());
+	}
+
+	@Override
+	public boolean hasCTEntries(long ctCollectionId, long modelClassNameId) {
+		int count = ctEntryPersistence.countByC_MCNI(
+			ctCollectionId, modelClassNameId);
+
+		if (count == 0) {
+			return false;
+		}
+
+		return true;
 	}
 
 	@Override
@@ -221,6 +284,29 @@ public class CTEntryLocalServiceImpl extends CTEntryLocalServiceBaseImpl {
 		return ctEntryPersistence.update(ctEntry);
 	}
 
+	private <T extends CTModel<T>> void _removeCTModel(
+		CTService<T> ctService, CTEntry ctEntry) {
+
+		try (SafeClosable safeClosable1 =
+				CTPersistenceHelperThreadLocal.setEnabled(false);
+			SafeClosable safeClosable2 =
+				CTCollectionThreadLocal.setCTCollectionId(
+					ctEntry.getCtCollectionId())) {
+
+			ctService.updateWithUnsafeFunction(
+				ctPersistence -> {
+					T ctModel = ctPersistence.fetchByPrimaryKey(
+						ctEntry.getModelClassPK());
+
+					if (ctModel != null) {
+						ctPersistence.removeCTModel(ctModel, true);
+					}
+
+					return null;
+				});
+		}
+	}
+
 	private void _validate(CTEntry ctEntry, int changeType, boolean force)
 		throws PortalException {
 
@@ -235,5 +321,8 @@ public class CTEntryLocalServiceImpl extends CTEntryLocalServiceBaseImpl {
 			throw new IllegalArgumentException("Change type value is invalid");
 		}
 	}
+
+	@Reference
+	private CTServiceRegistry _ctServiceRegistry;
 
 }
