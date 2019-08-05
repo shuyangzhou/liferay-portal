@@ -29,7 +29,9 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.security.permission.ResourceActions;
 import com.liferay.portal.kernel.security.permission.UserBag;
+import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -103,11 +105,11 @@ public class ChangeListsPortlet extends MVCPortlet {
 
 		ChangeListsDisplayContext changeListsDisplayContext =
 			new ChangeListsDisplayContext(
-				_ctCollectionLocalService, _ctEntryLocalService,
-				_ctEngineManager, _ctPreferencesLocalService,
-				_ctProcessLocalService,
-				_portal.getHttpServletRequest(renderRequest), renderRequest,
-				renderResponse, _userLocalService);
+				_classNameLocalService, _ctCollectionLocalService,
+				_ctEntryLocalService, _ctEngineManager,
+				_ctPreferencesLocalService, _ctProcessLocalService,
+				_resourceActions, _portal.getHttpServletRequest(renderRequest),
+				renderRequest, renderResponse, _userLocalService);
 
 		renderRequest.setAttribute(
 			CTWebConstants.CHANGE_LISTS_DISPLAY_CONTEXT,
@@ -157,6 +159,9 @@ public class ChangeListsPortlet extends MVCPortlet {
 	private Set<String> _administratorRoleNames;
 
 	@Reference
+	private ClassNameLocalService _classNameLocalService;
+
+	@Reference
 	private CTCollectionLocalService _ctCollectionLocalService;
 
 	@Reference
@@ -173,6 +178,9 @@ public class ChangeListsPortlet extends MVCPortlet {
 
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private ResourceActions _resourceActions;
 
 	@Reference
 	private UserLocalService _userLocalService;
