@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.service.Base${sessionTypeName}Service;
 import com.liferay.portal.kernel.service.PermissionedModelLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.PersistedResourcedModelLocalService;
+import com.liferay.portal.kernel.service.change.tracking.CTService;
 import com.liferay.portal.kernel.service.version.VersionService;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.transaction.Isolation;
@@ -93,6 +94,10 @@ public interface ${entity.name}${sessionTypeName}Service
 	<#assign overrideMethodNames = [] />
 
 	<#if stringUtil.equals(sessionTypeName, "Local") && entity.hasEntityColumns() && entity.hasPersistence()>
+		<#if entity.isChangeTrackingEnabled()>
+			, CTService<${entity.name}>
+		</#if>
+
 		<#if entity.isPermissionedModel()>
 			, PermissionedModelLocalService
 		<#elseif entity.isResourcedModel()>

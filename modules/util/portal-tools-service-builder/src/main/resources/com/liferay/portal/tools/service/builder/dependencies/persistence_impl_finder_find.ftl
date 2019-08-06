@@ -165,13 +165,23 @@ that may or may not be enforced with a unique index at the database level. Case
 	</#list>
 
 	int start, int end, OrderByComparator<${entity.name}> orderByComparator) {
-		return findBy${entityFinder.name}(
+		<#if entity.isChangeTrackingEnabled() && !stringUtil.equals(entityFinder.name, "CTCollectionId")>
+			return findBy${entityFinder.name}(
 
-		<#list entityColumns as entityColumn>
-			${entityColumn.name},
-		</#list>
+			<#list entityColumns as entityColumn>
+				${entityColumn.name},
+			</#list>
 
-		start, end, orderByComparator, true);
+			start, end, orderByComparator, ${ctPersistenceHelper}.isCTMode(${entity.name}.class));
+		<#else>
+			return findBy${entityFinder.name}(
+
+			<#list entityColumns as entityColumn>
+				${entityColumn.name},
+			</#list>
+
+			start, end, orderByComparator, true);
+		</#if>
 	}
 
 	/**
@@ -1494,17 +1504,31 @@ that may or may not be enforced with a unique index at the database level. Case
 	</#list>
 
 	int start, int end, OrderByComparator<${entity.name}> orderByComparator) {
-		return findBy${entityFinder.name}(
+		<#if entity.isChangeTrackingEnabled()>
+			return findBy${entityFinder.name}(
 
-		<#list entityColumns as entityColumn>
-			<#if entityColumn.hasArrayableOperator()>
-				${entityColumn.names},
-			<#else>
-				${entityColumn.name},
-			</#if>
-		</#list>
+			<#list entityColumns as entityColumn>
+				<#if entityColumn.hasArrayableOperator()>
+					${entityColumn.names},
+				<#else>
+					${entityColumn.name},
+				</#if>
+			</#list>
 
-		start, end, orderByComparator, true);
+			start, end, orderByComparator, ${ctPersistenceHelper}.isCTMode(${entity.name}.class));
+		<#else>
+			return findBy${entityFinder.name}(
+
+			<#list entityColumns as entityColumn>
+				<#if entityColumn.hasArrayableOperator()>
+					${entityColumn.names},
+				<#else>
+					${entityColumn.name},
+				</#if>
+			</#list>
+
+			start, end, orderByComparator, true);
+		</#if>
 	}
 
 	/**
@@ -1865,17 +1889,31 @@ that may or may not be enforced with a unique index at the database level. Case
 	</#list>
 
 	int start, int end, OrderByComparator<${entity.name}> orderByComparator) {
-		return findBy${entityFinder.name}(
+		<#if entity.isChangeTrackingEnabled()>
+			return findBy${entityFinder.name}(
 
-		<#list entityColumns as entityColumn>
-			<#if entityColumn.hasArrayableOperator()>
-				${entityColumn.names},
-			<#else>
-				${entityColumn.name},
-			</#if>
-		</#list>
+			<#list entityColumns as entityColumn>
+				<#if entityColumn.hasArrayableOperator()>
+					${entityColumn.names},
+				<#else>
+					${entityColumn.name},
+				</#if>
+			</#list>
 
-		start, end, orderByComparator, true);
+			start, end, orderByComparator, ${ctPersistenceHelper}.isCTMode(${entity.name}.class));
+		<#else>
+			return findBy${entityFinder.name}(
+
+			<#list entityColumns as entityColumn>
+				<#if entityColumn.hasArrayableOperator()>
+					${entityColumn.names},
+				<#else>
+					${entityColumn.name},
+				</#if>
+			</#list>
+
+			start, end, orderByComparator, true);
+		</#if>
 	}
 
 	/**
@@ -2264,13 +2302,23 @@ that may or may not be enforced with a unique index at the database level. Case
 	</#list>
 
 	) {
-		return fetchBy${entityFinder.name}(
+		<#if entity.isChangeTrackingEnabled()>
+			return fetchBy${entityFinder.name}(
 
-		<#list entityColumns as entityColumn>
-			${entityColumn.name},
-		</#list>
+			<#list entityColumns as entityColumn>
+				${entityColumn.name},
+			</#list>
 
-		true);
+			${ctPersistenceHelper}.isCTMode(${entity.name}.class));
+		<#else>
+			return fetchBy${entityFinder.name}(
+
+			<#list entityColumns as entityColumn>
+				${entityColumn.name},
+			</#list>
+
+			true);
+		</#if>
 	}
 
 	/**
