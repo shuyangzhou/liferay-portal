@@ -295,6 +295,11 @@ public class CTPreferencesLocalServiceWrapper
 		return _ctPreferencesLocalService.getPersistedModel(primaryKeyObj);
 	}
 
+	@Override
+	public boolean hasCTPreferences(long companyId, long userId) {
+		return _ctPreferencesLocalService.hasCTPreferences(companyId, userId);
+	}
+
 	/**
 	 * Updates the ct preferences in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *

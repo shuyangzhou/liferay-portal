@@ -54,6 +54,7 @@ public class CTEntryWrapper
 		attributes.put("ctCollectionId", getCtCollectionId());
 		attributes.put("modelClassNameId", getModelClassNameId());
 		attributes.put("modelClassPK", getModelClassPK());
+		attributes.put("modelMvccVersion", getModelMvccVersion());
 		attributes.put("modelResourcePrimKey", getModelResourcePrimKey());
 		attributes.put("changeType", getChangeType());
 		attributes.put("collision", isCollision());
@@ -116,6 +117,12 @@ public class CTEntryWrapper
 
 		if (modelClassPK != null) {
 			setModelClassPK(modelClassPK);
+		}
+
+		Long modelMvccVersion = (Long)attributes.get("modelMvccVersion");
+
+		if (modelMvccVersion != null) {
+			setModelMvccVersion(modelMvccVersion);
 		}
 
 		Long modelResourcePrimKey = (Long)attributes.get(
@@ -222,6 +229,16 @@ public class CTEntryWrapper
 	@Override
 	public long getModelClassPK() {
 		return model.getModelClassPK();
+	}
+
+	/**
+	 * Returns the model mvcc version of this ct entry.
+	 *
+	 * @return the model mvcc version of this ct entry
+	 */
+	@Override
+	public long getModelMvccVersion() {
+		return model.getModelMvccVersion();
 	}
 
 	/**
@@ -392,6 +409,16 @@ public class CTEntryWrapper
 	@Override
 	public void setModelClassPK(long modelClassPK) {
 		model.setModelClassPK(modelClassPK);
+	}
+
+	/**
+	 * Sets the model mvcc version of this ct entry.
+	 *
+	 * @param modelMvccVersion the model mvcc version of this ct entry
+	 */
+	@Override
+	public void setModelMvccVersion(long modelMvccVersion) {
+		model.setModelMvccVersion(modelMvccVersion);
 	}
 
 	/**

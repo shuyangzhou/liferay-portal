@@ -73,9 +73,9 @@ public class CTEntryModelImpl
 		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
 		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
 		{"ctCollectionId", Types.BIGINT}, {"modelClassNameId", Types.BIGINT},
-		{"modelClassPK", Types.BIGINT}, {"modelResourcePrimKey", Types.BIGINT},
-		{"changeType", Types.INTEGER}, {"collision", Types.BOOLEAN},
-		{"status", Types.INTEGER}
+		{"modelClassPK", Types.BIGINT}, {"modelMvccVersion", Types.BIGINT},
+		{"modelResourcePrimKey", Types.BIGINT}, {"changeType", Types.INTEGER},
+		{"collision", Types.BOOLEAN}, {"status", Types.INTEGER}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -91,6 +91,7 @@ public class CTEntryModelImpl
 		TABLE_COLUMNS_MAP.put("ctCollectionId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("modelClassNameId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("modelClassPK", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("modelMvccVersion", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("modelResourcePrimKey", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("changeType", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("collision", Types.BOOLEAN);
@@ -98,7 +99,7 @@ public class CTEntryModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table CTEntry (mvccVersion LONG default 0 not null,ctEntryId LONG not null primary key,companyId LONG,userId LONG,createDate DATE null,modifiedDate DATE null,ctCollectionId LONG,modelClassNameId LONG,modelClassPK LONG,modelResourcePrimKey LONG,changeType INTEGER,collision BOOLEAN,status INTEGER)";
+		"create table CTEntry (mvccVersion LONG default 0 not null,ctEntryId LONG not null primary key,companyId LONG,userId LONG,createDate DATE null,modifiedDate DATE null,ctCollectionId LONG,modelClassNameId LONG,modelClassPK LONG,modelMvccVersion LONG,modelResourcePrimKey LONG,changeType INTEGER,collision BOOLEAN,status INTEGER)";
 
 	public static final String TABLE_SQL_DROP = "drop table CTEntry";
 
@@ -290,6 +291,11 @@ public class CTEntryModelImpl
 			"modelClassPK",
 			(BiConsumer<CTEntry, Long>)CTEntry::setModelClassPK);
 		attributeGetterFunctions.put(
+			"modelMvccVersion", CTEntry::getModelMvccVersion);
+		attributeSetterBiConsumers.put(
+			"modelMvccVersion",
+			(BiConsumer<CTEntry, Long>)CTEntry::setModelMvccVersion);
+		attributeGetterFunctions.put(
 			"modelResourcePrimKey", CTEntry::getModelResourcePrimKey);
 		attributeSetterBiConsumers.put(
 			"modelResourcePrimKey",
@@ -459,6 +465,16 @@ public class CTEntryModelImpl
 	}
 
 	@Override
+	public long getModelMvccVersion() {
+		return _modelMvccVersion;
+	}
+
+	@Override
+	public void setModelMvccVersion(long modelMvccVersion) {
+		_modelMvccVersion = modelMvccVersion;
+	}
+
+	@Override
 	public long getModelResourcePrimKey() {
 		return _modelResourcePrimKey;
 	}
@@ -572,6 +588,7 @@ public class CTEntryModelImpl
 		ctEntryImpl.setCtCollectionId(getCtCollectionId());
 		ctEntryImpl.setModelClassNameId(getModelClassNameId());
 		ctEntryImpl.setModelClassPK(getModelClassPK());
+		ctEntryImpl.setModelMvccVersion(getModelMvccVersion());
 		ctEntryImpl.setModelResourcePrimKey(getModelResourcePrimKey());
 		ctEntryImpl.setChangeType(getChangeType());
 		ctEntryImpl.setCollision(isCollision());
@@ -702,6 +719,8 @@ public class CTEntryModelImpl
 
 		ctEntryCacheModel.modelClassPK = getModelClassPK();
 
+		ctEntryCacheModel.modelMvccVersion = getModelMvccVersion();
+
 		ctEntryCacheModel.modelResourcePrimKey = getModelResourcePrimKey();
 
 		ctEntryCacheModel.changeType = getChangeType();
@@ -802,6 +821,7 @@ public class CTEntryModelImpl
 	private long _modelClassPK;
 	private long _originalModelClassPK;
 	private boolean _setOriginalModelClassPK;
+	private long _modelMvccVersion;
 	private long _modelResourcePrimKey;
 	private long _originalModelResourcePrimKey;
 	private boolean _setOriginalModelResourcePrimKey;
