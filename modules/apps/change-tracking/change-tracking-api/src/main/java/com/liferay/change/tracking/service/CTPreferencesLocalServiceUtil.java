@@ -281,6 +281,10 @@ public class CTPreferencesLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
+	public static boolean hasCTPreferences(long companyId, long userId) {
+		return getService().hasCTPreferences(companyId, userId);
+	}
+
 	/**
 	 * Updates the ct preferences in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *

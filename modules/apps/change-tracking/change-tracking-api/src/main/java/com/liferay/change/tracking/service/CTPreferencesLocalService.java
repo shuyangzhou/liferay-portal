@@ -233,6 +233,9 @@ public interface CTPreferencesLocalService
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasCTPreferences(long companyId, long userId);
+
 	/**
 	 * Updates the ct preferences in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
