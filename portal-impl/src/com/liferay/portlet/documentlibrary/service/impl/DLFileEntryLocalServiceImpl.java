@@ -2072,6 +2072,14 @@ public class DLFileEntryLocalServiceImpl
 			String title)
 		throws PortalException {
 
+		_validateFile(groupId, folderId, fileEntryId, fileName, title);
+	}
+
+	private void _validateFile(
+			long groupId, long folderId, long fileEntryId, String fileName,
+			String title)
+		throws PortalException {
+
 		if (folderId != DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
 			DLFolder parentDLFolder = dlFolderPersistence.findByPrimaryKey(
 				folderId);
