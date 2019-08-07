@@ -2075,7 +2075,7 @@ public class DLFileEntryLocalServiceImpl
 		_validateFile(groupId, folderId, fileEntryId, fileName, title);
 	}
 
-	private void _validateFile(
+	private DLFileEntry _validateFile(
 			long groupId, long folderId, long fileEntryId, String fileName,
 			String title)
 		throws PortalException {
@@ -2116,6 +2116,8 @@ public class DLFileEntryLocalServiceImpl
 			throw new DuplicateFileEntryException(
 				"A file entry already exists with file name " + title);
 		}
+
+		return dlFileEntry;
 	}
 
 	@Override
@@ -2463,16 +2465,14 @@ public class DLFileEntryLocalServiceImpl
 
 		long oldDataRepositoryId = dlFileEntry.getDataRepositoryId();
 
-		validateFile(
+		dlFileEntry = _validateFile(
 			dlFileEntry.getGroupId(), newFolderId, dlFileEntry.getFileEntryId(),
 			dlFileEntry.getFileName(), dlFileEntry.getTitle());
-
-		dlFileEntry = dlFileEntryPersistence.findByPrimaryKey(fileEntryId);
 
 		dlFileEntry.setFolderId(newFolderId);
 		dlFileEntry.setTreePath(dlFileEntry.buildTreePath());
 
-		dlFileEntryPersistence.update(dlFileEntry);
+		dlFileEntry = dlFileEntryPersistence.update(dlFileEntry);
 
 		// File version
 
