@@ -2075,51 +2075,6 @@ public class DLFileEntryLocalServiceImpl
 		_validateFile(groupId, folderId, fileEntryId, fileName, title);
 	}
 
-	private DLFileEntry _validateFile(
-			long groupId, long folderId, long fileEntryId, String fileName,
-			String title)
-		throws PortalException {
-
-		if (folderId != DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
-			DLFolder parentDLFolder = dlFolderPersistence.findByPrimaryKey(
-				folderId);
-
-			if (groupId != parentDLFolder.getGroupId()) {
-				throw new NoSuchFolderException();
-			}
-		}
-
-		DLFolder dlFolder = dlFolderPersistence.fetchByG_P_N(
-			groupId, folderId, title);
-
-		if (dlFolder != null) {
-			throw new DuplicateFolderNameException(
-				"A folder already exists with name " + title);
-		}
-
-		DLFileEntry dlFileEntry = dlFileEntryPersistence.fetchByG_F_T(
-			groupId, folderId, title);
-
-		if ((dlFileEntry != null) &&
-			(dlFileEntry.getFileEntryId() != fileEntryId)) {
-
-			throw new DuplicateFileEntryException(
-				"A file entry already exists with title " + title);
-		}
-
-		dlFileEntry = dlFileEntryPersistence.fetchByG_F_FN(
-			groupId, folderId, fileName);
-
-		if ((dlFileEntry != null) &&
-			(dlFileEntry.getFileEntryId() != fileEntryId)) {
-
-			throw new DuplicateFileEntryException(
-				"A file entry already exists with file name " + title);
-		}
-
-		return dlFileEntry;
-	}
-
 	@Override
 	public boolean verifyFileEntryCheckOut(long fileEntryId, String lockUuid)
 		throws PortalException {
@@ -3066,6 +3021,51 @@ public class DLFileEntryLocalServiceImpl
 		// Latest file version
 
 		removeFileVersion(dlFileEntry, latestDLFileVersion);
+	}
+
+	private DLFileEntry _validateFile(
+			long groupId, long folderId, long fileEntryId, String fileName,
+			String title)
+		throws PortalException {
+
+		if (folderId != DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
+			DLFolder parentDLFolder = dlFolderPersistence.findByPrimaryKey(
+				folderId);
+
+			if (groupId != parentDLFolder.getGroupId()) {
+				throw new NoSuchFolderException();
+			}
+		}
+
+		DLFolder dlFolder = dlFolderPersistence.fetchByG_P_N(
+			groupId, folderId, title);
+
+		if (dlFolder != null) {
+			throw new DuplicateFolderNameException(
+				"A folder already exists with name " + title);
+		}
+
+		DLFileEntry dlFileEntry = dlFileEntryPersistence.fetchByG_F_T(
+			groupId, folderId, title);
+
+		if ((dlFileEntry != null) &&
+			(dlFileEntry.getFileEntryId() != fileEntryId)) {
+
+			throw new DuplicateFileEntryException(
+				"A file entry already exists with title " + title);
+		}
+
+		dlFileEntry = dlFileEntryPersistence.fetchByG_F_FN(
+			groupId, folderId, fileName);
+
+		if ((dlFileEntry != null) &&
+			(dlFileEntry.getFileEntryId() != fileEntryId)) {
+
+			throw new DuplicateFileEntryException(
+				"A file entry already exists with file name " + title);
+		}
+
+		return dlFileEntry;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
