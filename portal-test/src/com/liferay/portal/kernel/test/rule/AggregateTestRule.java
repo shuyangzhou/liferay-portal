@@ -21,6 +21,7 @@ import java.util.Set;
 
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
+import org.junit.runners.model.MultipleFailureException;
 import org.junit.runners.model.Statement;
 
 /**
@@ -55,7 +56,27 @@ public class AggregateTestRule implements TestRule {
 			statement = _testRules[i].apply(statement, description);
 		}
 
-		return statement;
+		return new StatementWrapper(statement) {
+
+			@Override
+			public void evaluate() throws Throwable {
+				try {
+					statement.evaluate();
+				}
+				catch (Throwable t) {
+					if (t instanceof CollectingThrowable) {
+						CollectingThrowable collectingThrowable =
+							(CollectingThrowable)t;
+
+						throw new MultipleFailureException(
+							collectingThrowable.getThrowables());
+					}
+
+					throw t;
+				}
+			}
+
+		};
 	}
 
 	private static final String[] _ORDERED_RULE_CLASS_NAMES = {

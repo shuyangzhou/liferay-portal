@@ -329,6 +329,17 @@ public class TestExecutorRunnable implements Runnable {
 			Throwable t)
 		throws IOException {
 
+		if (t instanceof MultipleFailureException) {
+			MultipleFailureException multipleFailureException =
+				(MultipleFailureException)t;
+
+			for (Throwable throwable : multipleFailureException.getFailures()) {
+				_processThrowable(objectOutputStream, description, throwable);
+			}
+
+			return;
+		}
+
 		try {
 			objectOutputStream.writeObject(
 				RunNotifierCommand.testFailure(description, t));

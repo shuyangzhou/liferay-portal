@@ -53,11 +53,27 @@ public abstract class AbstractTestRule<C, M> implements TestRule {
 			public void evaluate() throws Throwable {
 				C c = beforeClass(description);
 
+				CollectingThrowable collectingThrowable = null;
+
 				try {
 					statement.evaluate();
 				}
+				catch (Throwable t) {
+					collectingThrowable = _collectThrowable(
+						collectingThrowable, t);
+				}
 				finally {
-					afterClass(description, c);
+					try {
+						afterClass(description, c);
+					}
+					catch (Throwable t) {
+						collectingThrowable = _collectThrowable(
+							collectingThrowable, t);
+					}
+				}
+
+				if (collectingThrowable != null) {
+					throw collectingThrowable;
 				}
 			}
 
@@ -75,15 +91,51 @@ public abstract class AbstractTestRule<C, M> implements TestRule {
 
 				M m = beforeMethod(description, target);
 
+				CollectingThrowable collectingThrowable = null;
+
 				try {
 					statement.evaluate();
 				}
+				catch (Throwable t) {
+					collectingThrowable = _collectThrowable(
+						collectingThrowable, t);
+				}
 				finally {
-					afterMethod(description, m, target);
+					try {
+						afterMethod(description, m, target);
+					}
+					catch (Throwable t) {
+						collectingThrowable = _collectThrowable(
+							collectingThrowable, t);
+					}
+				}
+
+				if (collectingThrowable != null) {
+					throw collectingThrowable;
 				}
 			}
 
 		};
+	}
+
+	private CollectingThrowable _collectThrowable(
+		CollectingThrowable collectingThrowable, Throwable throwable) {
+
+		if (throwable instanceof CollectingThrowable) {
+			return (CollectingThrowable)throwable;
+		}
+		else if (collectingThrowable != null) {
+			collectingThrowable.addThrowable(throwable);
+
+			return collectingThrowable;
+		}
+		else {
+			collectingThrowable = new CollectingThrowable();
+
+			collectingThrowable.addThrowable(throwable);
+
+			return collectingThrowable;
+		}
 	}
 
 }
