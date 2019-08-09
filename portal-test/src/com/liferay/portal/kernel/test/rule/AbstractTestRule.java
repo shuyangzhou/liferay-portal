@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.test.rule;
 
+import org.junit.AssumptionViolatedException;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
@@ -58,6 +59,9 @@ public abstract class AbstractTestRule<C, M> implements TestRule {
 				try {
 					statement.evaluate();
 				}
+				catch (AssumptionViolatedException ave) {
+					throw ave;
+				}
 				catch (Throwable t) {
 					collectingThrowable = _collectThrowable(
 						collectingThrowable, t);
@@ -95,6 +99,9 @@ public abstract class AbstractTestRule<C, M> implements TestRule {
 
 				try {
 					statement.evaluate();
+				}
+				catch (AssumptionViolatedException ave) {
+					throw ave;
 				}
 				catch (Throwable t) {
 					collectingThrowable = _collectThrowable(
