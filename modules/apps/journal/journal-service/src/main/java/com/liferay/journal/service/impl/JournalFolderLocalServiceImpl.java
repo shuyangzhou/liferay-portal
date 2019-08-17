@@ -1089,7 +1089,7 @@ public class JournalFolderLocalServiceImpl
 		folder.setRestrictionType(restrictionType);
 		folder.setExpandoBridgeAttributes(serviceContext);
 
-		journalFolderPersistence.update(folder);
+		folder = journalFolderPersistence.update(folder);
 
 		// Asset
 
@@ -1108,6 +1108,11 @@ public class JournalFolderLocalServiceImpl
 		if (oldParentFolderId != parentFolderId) {
 			rebuildTree(
 				folder.getCompanyId(), folderId, folder.getTreePath(), true);
+
+			journalFolderPersistence.flush();
+
+			folder = journalFolderPersistence.findByPrimaryKey(
+				folder.getPrimaryKey());
 		}
 
 		return folder;
