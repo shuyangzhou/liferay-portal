@@ -20,6 +20,7 @@ import com.liferay.petra.concurrent.ConcurrentReferenceKeyHashMap;
 import com.liferay.petra.memory.FinalizeManager;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringBundler;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -60,13 +61,9 @@ public class ConfigurableUtil {
 			_snapshotClassConstructorCache.computeIfAbsent(
 				interfaceClass,
 				key -> {
-					String interfaceClassName = interfaceClass.getName();
-
-					String snapshotClassName = interfaceClassName.concat(
-						"Snapshot");
-
-					snapshotClassName = snapshotClassName.concat(
-						String.valueOf(_counter.getAndIncrement()));
+					String snapshotClassName = StringBundler.concat(
+						interfaceClass.getName(), "Snapshot",
+						_counter.getAndIncrement());
 
 					byte[] snapshotClassData = _generateSnapshotClassData(
 						interfaceClass, snapshotClassName);
