@@ -17,6 +17,8 @@ package com.liferay.portal.configuration.metatype.bnd.util;
 import aQute.bnd.annotation.metatype.Meta;
 
 import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
 import com.liferay.portal.kernel.test.rule.NewEnv;
@@ -25,8 +27,11 @@ import com.liferay.portal.test.aspects.ReflectionUtilAdvice;
 import com.liferay.portal.test.rule.AdviseWith;
 import com.liferay.portal.test.rule.AspectJNewEnvTestRule;
 
+import java.lang.reflect.Method;
+
 import java.util.Collections;
 import java.util.Dictionary;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -95,7 +100,11 @@ public class ConfigurableUtilTest {
 	@Test
 	public void testMisc() {
 
-		// Exception
+		// Exception 1
+
+		Map<?, ?> snapshotClassConstructorCache =
+			ReflectionTestUtil.getFieldValue(
+				ConfigurableUtil.class, "_snapshotClassConstructorCache");
 
 		try {
 			ConfigurableUtil.createConfigurable(
@@ -105,7 +114,7 @@ public class ConfigurableUtilTest {
 		}
 		catch (RuntimeException re) {
 			Assert.assertEquals(
-				"Unable to create snapshot class for " +
+				"Unable to create snapshot class instance for " +
 					TestConfiguration.class,
 				re.getMessage());
 
@@ -113,10 +122,52 @@ public class ConfigurableUtilTest {
 
 			throwable = throwable.getCause();
 
-			Assert.assertTrue(throwable instanceof IllegalStateException);
+			Assert.assertTrue(
+				throwable + " should be a IllegalStateException",
+				throwable instanceof IllegalStateException);
 			Assert.assertEquals(
 				"Attribute is required but not set testReqiredString",
 				throwable.getMessage());
+		}
+		finally {
+			snapshotClassConstructorCache.clear();
+		}
+
+		// Exception 2
+
+		Method defineClassMethod = ReflectionTestUtil.getFieldValue(
+			ConfigurableUtil.class, "_defineClassMethod");
+
+		defineClassMethod.setAccessible(false);
+
+		try {
+			ConfigurableUtil.createConfigurable(
+				TestConfiguration.class, Collections.emptyMap());
+
+			Assert.fail();
+		}
+		catch (RuntimeException re) {
+			Assert.assertEquals(
+				"Unable to create snapshot class constructor for " +
+					TestConfiguration.class,
+				re.getMessage());
+
+			Throwable throwable = re.getCause();
+
+			Assert.assertTrue(
+				throwable + " should be a IllegalAccessException",
+				throwable instanceof IllegalAccessException);
+			Assert.assertEquals(
+				StringBundler.concat(
+					"Class ", ConfigurableUtil.class.getName(),
+					" can not access a member of class java.lang.ClassLoader ",
+					"with modifiers \"protected final\""),
+				throwable.getMessage());
+		}
+		finally {
+			defineClassMethod.setAccessible(true);
+
+			snapshotClassConstructorCache.clear();
 		}
 
 		// Constructor
