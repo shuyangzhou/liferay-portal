@@ -16,6 +16,8 @@ package com.liferay.portal.configuration.metatype.bnd.util;
 
 import aQute.bnd.annotation.metatype.Configurable;
 
+import com.liferay.petra.concurrent.ConcurrentReferenceKeyHashMap;
+import com.liferay.petra.memory.FinalizeManager;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.CharPool;
 
@@ -54,29 +56,46 @@ public class ConfigurableUtil {
 	private static <T> T _createConfigurableSnapshot(
 		Class<T> interfaceClass, T configurable) {
 
-		String interfaceClassName = interfaceClass.getName();
+		Constructor<?> snapshotClassConstructor =
+			_snapshotClassConstructorCache.computeIfAbsent(
+				interfaceClass,
+				key -> {
+					String interfaceClassName = interfaceClass.getName();
 
-		String snapshotClassName = interfaceClassName.concat("Snapshot");
+					String snapshotClassName = interfaceClassName.concat(
+						"Snapshot");
 
-		snapshotClassName = snapshotClassName.concat(
-			String.valueOf(_counter.getAndIncrement()));
+					snapshotClassName = snapshotClassName.concat(
+						String.valueOf(_counter.getAndIncrement()));
+
+					byte[] snapshotClassData = _generateSnapshotClassData(
+						interfaceClass, snapshotClassName);
+
+					try {
+						Class<?> snapshotClass =
+							(Class<?>)_defineClassMethod.invoke(
+								interfaceClass.getClassLoader(),
+								snapshotClassName, snapshotClassData, 0,
+								snapshotClassData.length);
+
+						return snapshotClass.getConstructor(interfaceClass);
+					}
+					catch (Throwable t) {
+						throw new RuntimeException(
+							"Unable to create snapshot class constructor for " +
+								interfaceClass,
+							t);
+					}
+				});
 
 		try {
-			byte[] snapshotClassData = _generateSnapshotClassData(
-				interfaceClass, snapshotClassName);
-
-			Class<T> snapshotClass = (Class<T>)_defineClassMethod.invoke(
-				interfaceClass.getClassLoader(), snapshotClassName,
-				snapshotClassData, 0, snapshotClassData.length);
-
-			Constructor<T> snapshotClassConstructor =
-				snapshotClass.getConstructor(interfaceClass);
-
-			return snapshotClassConstructor.newInstance(configurable);
+			return (T)snapshotClassConstructor.newInstance(configurable);
 		}
 		catch (Throwable t) {
 			throw new RuntimeException(
-				"Unable to create snapshot class for " + interfaceClass, t);
+				"Unable to create snapshot class instance for " +
+					interfaceClass,
+				t);
 		}
 	}
 
@@ -191,6 +210,9 @@ public class ConfigurableUtil {
 
 	private static final AtomicLong _counter = new AtomicLong();
 	private static final Method _defineClassMethod;
+	private static final Map<Class<?>, Constructor<?>>
+		_snapshotClassConstructorCache = new ConcurrentReferenceKeyHashMap<>(
+			FinalizeManager.WEAK_REFERENCE_FACTORY);
 
 	static {
 		try {
