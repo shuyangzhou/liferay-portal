@@ -19,7 +19,7 @@ import com.liferay.change.tracking.model.CTEntry;
 import com.liferay.change.tracking.service.CTEntryLocalService;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.change.tracking.CTSQLHelper;
-import com.liferay.portal.kernel.dao.jdbc.CurrentConnectionUtil;
+import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.change.tracking.CTModel;
@@ -89,21 +89,26 @@ public class CTSQLHelperImpl implements CTSQLHelper {
 			return added;
 		}
 
-		_visitConflictingExcludes(
-			ctCollectionId, ctService, tableName, primaryColumnName,
-			excludeVisitor);
+		CTPersistence<?> ctPersistence = ctService.getCTPersistence();
+
+		Session session = ctPersistence.getCurrentSession();
+
+		org.hibernate.Session wrappedSession =
+			(org.hibernate.Session)session.getWrappedSession();
+
+		wrappedSession.doWork(
+			connection -> _visitConflictingExcludes(
+				ctCollectionId, tableName, primaryColumnName, excludeVisitor,
+				ctPersistence, connection));
 
 		return added;
 	}
 
 	private <T extends CTModel<T>> void _visitConflictingExcludes(
-		long ctCollectionId, CTService<T> ctService, String tableName,
-		String primaryColumnName, ExcludeVisitor excludeVisitor) {
-
-		CTPersistence<T> ctPersistence = ctService.getCTPersistence();
-
-		Connection connection = CurrentConnectionUtil.getConnection(
-			ctPersistence.getDataSource());
+			long ctCollectionId, String tableName, String primaryColumnName,
+			ExcludeVisitor excludeVisitor, CTPersistence<T> ctPersistence,
+			Connection connection)
+		throws SQLException {
 
 		for (String[] uniqueColumns : ctPersistence.getUniqueColumnNames()) {
 			StringBundler sb = new StringBundler(4 * uniqueColumns.length + 12);
@@ -137,9 +142,6 @@ public class CTSQLHelperImpl implements CTSQLHelper {
 					excludeVisitor.acceptExclude(
 						rs.getLong(1), ExcludeType.CONFLICT);
 				}
-			}
-			catch (SQLException sqle) {
-				throw new RuntimeException(sqle);
 			}
 		}
 	}
