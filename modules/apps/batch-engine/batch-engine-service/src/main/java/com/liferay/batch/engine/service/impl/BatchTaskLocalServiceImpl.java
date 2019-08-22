@@ -14,18 +14,19 @@
 
 package com.liferay.batch.engine.service.impl;
 
-import com.liferay.batch.engine.BatchContentType;
 import com.liferay.batch.engine.BatchOperation;
 import com.liferay.batch.engine.BatchStatus;
 import com.liferay.batch.engine.model.BatchTask;
 import com.liferay.batch.engine.service.base.BatchTaskLocalServiceBaseImpl;
-import com.liferay.petra.io.unsync.UnsyncByteArrayInputStream;
+import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.portal.aop.AopService;
-import com.liferay.portal.kernel.dao.jdbc.OutputBlob;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Shuyang Zhou
@@ -38,9 +39,8 @@ public class BatchTaskLocalServiceImpl extends BatchTaskLocalServiceBaseImpl {
 
 	@Override
 	public BatchTask addBatchTask(
-		String className, String version, byte[] batchContent,
-		BatchContentType batchContentType, BatchOperation batchOperation,
-		long batchSize) {
+		long fileEntryId, String className, String version, String contentType,
+		BatchOperation batchOperation) {
 
 		BatchTask batchTask = batchTaskPersistence.create(
 			counterLocalService.increment(BatchTask.class.getName()));
@@ -50,23 +50,38 @@ public class BatchTaskLocalServiceImpl extends BatchTaskLocalServiceBaseImpl {
 
 		batchTask.setCompanyId(serviceContext.getCompanyId());
 
+		batchTask.setFileEntryId(fileEntryId);
 		batchTask.setClassName(className);
 		batchTask.setVersion(version);
-
-		UnsyncByteArrayInputStream unsyncByteArrayInputStream =
-			new UnsyncByteArrayInputStream(batchContent);
-
-		OutputBlob outputBlob = new OutputBlob(
-			unsyncByteArrayInputStream, batchContent.length);
-
-		batchTask.setContent(outputBlob);
-
-		batchTask.setContentType(batchContentType.toString());
+		batchTask.setContentType(contentType);
 		batchTask.setOperation(batchOperation.toString());
-		batchTask.setBatchSize(batchSize);
 		batchTask.setStatus(BatchStatus.INITIAL.toString());
 
 		return batchTaskPersistence.update(batchTask);
 	}
+
+	@Override
+	public BatchTask deleteBatchTask(BatchTask batchTask) {
+		try {
+			_dlAppLocalService.deleteFileEntry(batchTask.getFileEntryId());
+		}
+		catch (PortalException pe) {
+			throw new SystemException(pe);
+		}
+
+		return super.deleteBatchTask(batchTask);
+	}
+
+	@Override
+	public BatchTask deleteBatchTask(long batchTaskId) throws PortalException {
+		BatchTask batchTask = getBatchTask(batchTaskId);
+
+		_dlAppLocalService.deleteFileEntry(batchTask.getFileEntryId());
+
+		return super.deleteBatchTask(batchTaskId);
+	}
+
+	@Reference
+	private DLAppLocalService _dlAppLocalService;
 
 }
