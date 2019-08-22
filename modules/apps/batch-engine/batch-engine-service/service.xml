@@ -18,12 +18,11 @@
 
 		<!-- Other fields -->
 
+		<column name="fileEntryId" type="long" />
 		<column name="className" type="String" />
 		<column name="version" type="String" />
-		<column name="content" type="Blob" />
 		<column name="contentType" type="String" />
 		<column name="operation" type="String" />
-		<column name="batchSize" type="long" />
 		<column name="startTime" type="Date" />
 		<column name="endTime" type="Date" />
 		<column name="status" type="String" />
