@@ -14,10 +14,8 @@
 
 package com.liferay.batch.engine.service;
 
-import com.liferay.batch.engine.BatchContentType;
 import com.liferay.batch.engine.BatchOperation;
 import com.liferay.batch.engine.model.BatchTask;
-import com.liferay.batch.engine.model.BatchTaskContentBlobModel;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -76,9 +74,8 @@ public interface BatchTaskLocalService
 	public BatchTask addBatchTask(BatchTask batchTask);
 
 	public BatchTask addBatchTask(
-		String className, String version, byte[] batchContent,
-		BatchContentType batchContentType, BatchOperation batchOperation,
-		long batchSize);
+		long fileEntryId, String className, String version, String contentType,
+		BatchOperation batchOperation);
 
 	/**
 	 * Creates a new batch task with the primary key. Does not add the batch task to the database.
@@ -241,10 +238,6 @@ public interface BatchTaskLocalService
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getBatchTasksCount();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public BatchTaskContentBlobModel getContentBlobModel(
-		Serializable primaryKey);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ExportActionableDynamicQuery getExportActionableDynamicQuery(

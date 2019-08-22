@@ -18,8 +18,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.wrapper.BaseModelWrapper;
 
-import java.sql.Blob;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,12 +52,11 @@ public class BatchTaskWrapper
 		attributes.put("companyId", getCompanyId());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
+		attributes.put("fileEntryId", getFileEntryId());
 		attributes.put("className", getClassName());
 		attributes.put("version", getVersion());
-		attributes.put("content", getContent());
 		attributes.put("contentType", getContentType());
 		attributes.put("operation", getOperation());
-		attributes.put("batchSize", getBatchSize());
 		attributes.put("startTime", getStartTime());
 		attributes.put("endTime", getEndTime());
 		attributes.put("status", getStatus());
@@ -106,6 +103,12 @@ public class BatchTaskWrapper
 			setModifiedDate(modifiedDate);
 		}
 
+		Long fileEntryId = (Long)attributes.get("fileEntryId");
+
+		if (fileEntryId != null) {
+			setFileEntryId(fileEntryId);
+		}
+
 		String className = (String)attributes.get("className");
 
 		if (className != null) {
@@ -118,12 +121,6 @@ public class BatchTaskWrapper
 			setVersion(version);
 		}
 
-		Blob content = (Blob)attributes.get("content");
-
-		if (content != null) {
-			setContent(content);
-		}
-
 		String contentType = (String)attributes.get("contentType");
 
 		if (contentType != null) {
@@ -134,12 +131,6 @@ public class BatchTaskWrapper
 
 		if (operation != null) {
 			setOperation(operation);
-		}
-
-		Long batchSize = (Long)attributes.get("batchSize");
-
-		if (batchSize != null) {
-			setBatchSize(batchSize);
 		}
 
 		Date startTime = (Date)attributes.get("startTime");
@@ -165,16 +156,6 @@ public class BatchTaskWrapper
 		if (errorMessage != null) {
 			setErrorMessage(errorMessage);
 		}
-	}
-
-	/**
-	 * Returns the batch size of this batch task.
-	 *
-	 * @return the batch size of this batch task
-	 */
-	@Override
-	public long getBatchSize() {
-		return model.getBatchSize();
 	}
 
 	/**
@@ -205,16 +186,6 @@ public class BatchTaskWrapper
 	@Override
 	public long getCompanyId() {
 		return model.getCompanyId();
-	}
-
-	/**
-	 * Returns the content of this batch task.
-	 *
-	 * @return the content of this batch task
-	 */
-	@Override
-	public Blob getContent() {
-		return model.getContent();
 	}
 
 	/**
@@ -255,6 +226,16 @@ public class BatchTaskWrapper
 	@Override
 	public String getErrorMessage() {
 		return model.getErrorMessage();
+	}
+
+	/**
+	 * Returns the file entry ID of this batch task.
+	 *
+	 * @return the file entry ID of this batch task
+	 */
+	@Override
+	public long getFileEntryId() {
+		return model.getFileEntryId();
 	}
 
 	/**
@@ -343,16 +324,6 @@ public class BatchTaskWrapper
 	}
 
 	/**
-	 * Sets the batch size of this batch task.
-	 *
-	 * @param batchSize the batch size of this batch task
-	 */
-	@Override
-	public void setBatchSize(long batchSize) {
-		model.setBatchSize(batchSize);
-	}
-
-	/**
 	 * Sets the batch task ID of this batch task.
 	 *
 	 * @param batchTaskId the batch task ID of this batch task
@@ -380,16 +351,6 @@ public class BatchTaskWrapper
 	@Override
 	public void setCompanyId(long companyId) {
 		model.setCompanyId(companyId);
-	}
-
-	/**
-	 * Sets the content of this batch task.
-	 *
-	 * @param content the content of this batch task
-	 */
-	@Override
-	public void setContent(Blob content) {
-		model.setContent(content);
 	}
 
 	/**
@@ -430,6 +391,16 @@ public class BatchTaskWrapper
 	@Override
 	public void setErrorMessage(String errorMessage) {
 		model.setErrorMessage(errorMessage);
+	}
+
+	/**
+	 * Sets the file entry ID of this batch task.
+	 *
+	 * @param fileEntryId the file entry ID of this batch task
+	 */
+	@Override
+	public void setFileEntryId(long fileEntryId) {
+		model.setFileEntryId(fileEntryId);
 	}
 
 	/**

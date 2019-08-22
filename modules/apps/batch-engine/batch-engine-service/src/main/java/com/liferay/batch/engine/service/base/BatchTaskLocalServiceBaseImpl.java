@@ -15,7 +15,6 @@
 package com.liferay.batch.engine.service.base;
 
 import com.liferay.batch.engine.model.BatchTask;
-import com.liferay.batch.engine.model.BatchTaskContentBlobModel;
 import com.liferay.batch.engine.service.BatchTaskLocalService;
 import com.liferay.batch.engine.service.persistence.BatchTaskPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
@@ -35,7 +34,6 @@ import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
-import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.PersistedModel;
@@ -424,26 +422,6 @@ public abstract class BatchTaskLocalServiceBaseImpl
 	@Override
 	public BatchTask updateBatchTask(BatchTask batchTask) {
 		return batchTaskPersistence.update(batchTask);
-	}
-
-	@Override
-	public BatchTaskContentBlobModel getContentBlobModel(
-		Serializable primaryKey) {
-
-		Session session = null;
-
-		try {
-			session = batchTaskPersistence.openSession();
-
-			return (BatchTaskContentBlobModel)session.get(
-				BatchTaskContentBlobModel.class, primaryKey);
-		}
-		catch (Exception e) {
-			throw batchTaskPersistence.processException(e);
-		}
-		finally {
-			batchTaskPersistence.closeSession(session);
-		}
 	}
 
 	@Override

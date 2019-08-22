@@ -17,6 +17,7 @@ package com.liferay.batch.engine.service.persistence;
 import com.liferay.batch.engine.exception.NoSuchTaskException;
 import com.liferay.batch.engine.model.BatchTask;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
+import com.liferay.portal.kernel.util.OrderByComparator;
 
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -70,16 +71,18 @@ public interface BatchTaskPersistence extends BasePersistence<BatchTask> {
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>BatchTaskModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
+	 * @deprecated As of Mueller (7.2.x), replaced by {@link #findByUuid(String, int, int, OrderByComparator)}
 	 * @param uuid the uuid
 	 * @param start the lower bound of the range of batch tasks
 	 * @param end the upper bound of the range of batch tasks (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching batch tasks
 	 */
+	@Deprecated
 	public java.util.List<BatchTask> findByUuid(
 		String uuid, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<BatchTask>
-			orderByComparator);
+		OrderByComparator<BatchTask> orderByComparator, boolean useFinderCache);
 
 	/**
 	 * Returns an ordered range of all the batch tasks where uuid = &#63;.
@@ -92,14 +95,11 @@ public interface BatchTaskPersistence extends BasePersistence<BatchTask> {
 	 * @param start the lower bound of the range of batch tasks
 	 * @param end the upper bound of the range of batch tasks (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching batch tasks
 	 */
 	public java.util.List<BatchTask> findByUuid(
 		String uuid, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<BatchTask>
-			orderByComparator,
-		boolean useFinderCache);
+		OrderByComparator<BatchTask> orderByComparator);
 
 	/**
 	 * Returns the first batch task in the ordered set where uuid = &#63;.
@@ -110,9 +110,7 @@ public interface BatchTaskPersistence extends BasePersistence<BatchTask> {
 	 * @throws NoSuchTaskException if a matching batch task could not be found
 	 */
 	public BatchTask findByUuid_First(
-			String uuid,
-			com.liferay.portal.kernel.util.OrderByComparator<BatchTask>
-				orderByComparator)
+			String uuid, OrderByComparator<BatchTask> orderByComparator)
 		throws NoSuchTaskException;
 
 	/**
@@ -123,9 +121,7 @@ public interface BatchTaskPersistence extends BasePersistence<BatchTask> {
 	 * @return the first matching batch task, or <code>null</code> if a matching batch task could not be found
 	 */
 	public BatchTask fetchByUuid_First(
-		String uuid,
-		com.liferay.portal.kernel.util.OrderByComparator<BatchTask>
-			orderByComparator);
+		String uuid, OrderByComparator<BatchTask> orderByComparator);
 
 	/**
 	 * Returns the last batch task in the ordered set where uuid = &#63;.
@@ -136,9 +132,7 @@ public interface BatchTaskPersistence extends BasePersistence<BatchTask> {
 	 * @throws NoSuchTaskException if a matching batch task could not be found
 	 */
 	public BatchTask findByUuid_Last(
-			String uuid,
-			com.liferay.portal.kernel.util.OrderByComparator<BatchTask>
-				orderByComparator)
+			String uuid, OrderByComparator<BatchTask> orderByComparator)
 		throws NoSuchTaskException;
 
 	/**
@@ -149,9 +143,7 @@ public interface BatchTaskPersistence extends BasePersistence<BatchTask> {
 	 * @return the last matching batch task, or <code>null</code> if a matching batch task could not be found
 	 */
 	public BatchTask fetchByUuid_Last(
-		String uuid,
-		com.liferay.portal.kernel.util.OrderByComparator<BatchTask>
-			orderByComparator);
+		String uuid, OrderByComparator<BatchTask> orderByComparator);
 
 	/**
 	 * Returns the batch tasks before and after the current batch task in the ordered set where uuid = &#63;.
@@ -164,8 +156,7 @@ public interface BatchTaskPersistence extends BasePersistence<BatchTask> {
 	 */
 	public BatchTask[] findByUuid_PrevAndNext(
 			long batchTaskId, String uuid,
-			com.liferay.portal.kernel.util.OrderByComparator<BatchTask>
-				orderByComparator)
+			OrderByComparator<BatchTask> orderByComparator)
 		throws NoSuchTaskException;
 
 	/**
@@ -215,17 +206,19 @@ public interface BatchTaskPersistence extends BasePersistence<BatchTask> {
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>BatchTaskModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
+	 * @deprecated As of Mueller (7.2.x), replaced by {@link #findByUuid_C(String,long, int, int, OrderByComparator)}
 	 * @param uuid the uuid
 	 * @param companyId the company ID
 	 * @param start the lower bound of the range of batch tasks
 	 * @param end the upper bound of the range of batch tasks (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching batch tasks
 	 */
+	@Deprecated
 	public java.util.List<BatchTask> findByUuid_C(
 		String uuid, long companyId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<BatchTask>
-			orderByComparator);
+		OrderByComparator<BatchTask> orderByComparator, boolean useFinderCache);
 
 	/**
 	 * Returns an ordered range of all the batch tasks where uuid = &#63; and companyId = &#63;.
@@ -239,14 +232,11 @@ public interface BatchTaskPersistence extends BasePersistence<BatchTask> {
 	 * @param start the lower bound of the range of batch tasks
 	 * @param end the upper bound of the range of batch tasks (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching batch tasks
 	 */
 	public java.util.List<BatchTask> findByUuid_C(
 		String uuid, long companyId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<BatchTask>
-			orderByComparator,
-		boolean useFinderCache);
+		OrderByComparator<BatchTask> orderByComparator);
 
 	/**
 	 * Returns the first batch task in the ordered set where uuid = &#63; and companyId = &#63;.
@@ -259,8 +249,7 @@ public interface BatchTaskPersistence extends BasePersistence<BatchTask> {
 	 */
 	public BatchTask findByUuid_C_First(
 			String uuid, long companyId,
-			com.liferay.portal.kernel.util.OrderByComparator<BatchTask>
-				orderByComparator)
+			OrderByComparator<BatchTask> orderByComparator)
 		throws NoSuchTaskException;
 
 	/**
@@ -273,8 +262,7 @@ public interface BatchTaskPersistence extends BasePersistence<BatchTask> {
 	 */
 	public BatchTask fetchByUuid_C_First(
 		String uuid, long companyId,
-		com.liferay.portal.kernel.util.OrderByComparator<BatchTask>
-			orderByComparator);
+		OrderByComparator<BatchTask> orderByComparator);
 
 	/**
 	 * Returns the last batch task in the ordered set where uuid = &#63; and companyId = &#63;.
@@ -287,8 +275,7 @@ public interface BatchTaskPersistence extends BasePersistence<BatchTask> {
 	 */
 	public BatchTask findByUuid_C_Last(
 			String uuid, long companyId,
-			com.liferay.portal.kernel.util.OrderByComparator<BatchTask>
-				orderByComparator)
+			OrderByComparator<BatchTask> orderByComparator)
 		throws NoSuchTaskException;
 
 	/**
@@ -301,8 +288,7 @@ public interface BatchTaskPersistence extends BasePersistence<BatchTask> {
 	 */
 	public BatchTask fetchByUuid_C_Last(
 		String uuid, long companyId,
-		com.liferay.portal.kernel.util.OrderByComparator<BatchTask>
-			orderByComparator);
+		OrderByComparator<BatchTask> orderByComparator);
 
 	/**
 	 * Returns the batch tasks before and after the current batch task in the ordered set where uuid = &#63; and companyId = &#63;.
@@ -316,8 +302,7 @@ public interface BatchTaskPersistence extends BasePersistence<BatchTask> {
 	 */
 	public BatchTask[] findByUuid_C_PrevAndNext(
 			long batchTaskId, String uuid, long companyId,
-			com.liferay.portal.kernel.util.OrderByComparator<BatchTask>
-				orderByComparator)
+			OrderByComparator<BatchTask> orderByComparator)
 		throws NoSuchTaskException;
 
 	/**
@@ -415,15 +400,17 @@ public interface BatchTaskPersistence extends BasePersistence<BatchTask> {
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>BatchTaskModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
+	 * @deprecated As of Mueller (7.2.x), replaced by {@link #findAll(int, int, OrderByComparator)}
 	 * @param start the lower bound of the range of batch tasks
 	 * @param end the upper bound of the range of batch tasks (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of batch tasks
 	 */
+	@Deprecated
 	public java.util.List<BatchTask> findAll(
-		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<BatchTask>
-			orderByComparator);
+		int start, int end, OrderByComparator<BatchTask> orderByComparator,
+		boolean useFinderCache);
 
 	/**
 	 * Returns an ordered range of all the batch tasks.
@@ -435,14 +422,10 @@ public interface BatchTaskPersistence extends BasePersistence<BatchTask> {
 	 * @param start the lower bound of the range of batch tasks
 	 * @param end the upper bound of the range of batch tasks (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of batch tasks
 	 */
 	public java.util.List<BatchTask> findAll(
-		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<BatchTask>
-			orderByComparator,
-		boolean useFinderCache);
+		int start, int end, OrderByComparator<BatchTask> orderByComparator);
 
 	/**
 	 * Removes all the batch tasks from the database.

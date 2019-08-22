@@ -20,8 +20,6 @@ import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.model.StagedModel;
 
-import java.sql.Blob;
-
 import java.util.Date;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -157,6 +155,20 @@ public interface BatchTaskModel
 	public void setModifiedDate(Date modifiedDate);
 
 	/**
+	 * Returns the file entry ID of this batch task.
+	 *
+	 * @return the file entry ID of this batch task
+	 */
+	public long getFileEntryId();
+
+	/**
+	 * Sets the file entry ID of this batch task.
+	 *
+	 * @param fileEntryId the file entry ID of this batch task
+	 */
+	public void setFileEntryId(long fileEntryId);
+
+	/**
 	 * Returns the class name of this batch task.
 	 *
 	 * @return the class name of this batch task
@@ -187,20 +199,6 @@ public interface BatchTaskModel
 	public void setVersion(String version);
 
 	/**
-	 * Returns the content of this batch task.
-	 *
-	 * @return the content of this batch task
-	 */
-	public Blob getContent();
-
-	/**
-	 * Sets the content of this batch task.
-	 *
-	 * @param content the content of this batch task
-	 */
-	public void setContent(Blob content);
-
-	/**
 	 * Returns the content type of this batch task.
 	 *
 	 * @return the content type of this batch task
@@ -229,20 +227,6 @@ public interface BatchTaskModel
 	 * @param operation the operation of this batch task
 	 */
 	public void setOperation(String operation);
-
-	/**
-	 * Returns the batch size of this batch task.
-	 *
-	 * @return the batch size of this batch task
-	 */
-	public long getBatchSize();
-
-	/**
-	 * Sets the batch size of this batch task.
-	 *
-	 * @param batchSize the batch size of this batch task
-	 */
-	public void setBatchSize(long batchSize);
 
 	/**
 	 * Returns the start time of this batch task.

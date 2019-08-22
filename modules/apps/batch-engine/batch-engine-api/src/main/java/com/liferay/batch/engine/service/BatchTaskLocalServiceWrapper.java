@@ -50,14 +50,11 @@ public class BatchTaskLocalServiceWrapper
 
 	@Override
 	public com.liferay.batch.engine.model.BatchTask addBatchTask(
-		String className, String version, byte[] batchContent,
-		com.liferay.batch.engine.BatchContentType batchContentType,
-		com.liferay.batch.engine.BatchOperation batchOperation,
-		long batchSize) {
+		long fileEntryId, String className, String version, String contentType,
+		com.liferay.batch.engine.BatchOperation batchOperation) {
 
 		return _batchTaskLocalService.addBatchTask(
-			className, version, batchContent, batchContentType, batchOperation,
-			batchSize);
+			fileEntryId, className, version, contentType, batchOperation);
 	}
 
 	/**
@@ -289,13 +286,6 @@ public class BatchTaskLocalServiceWrapper
 	@Override
 	public int getBatchTasksCount() {
 		return _batchTaskLocalService.getBatchTasksCount();
-	}
-
-	@Override
-	public com.liferay.batch.engine.model.BatchTaskContentBlobModel
-		getContentBlobModel(java.io.Serializable primaryKey) {
-
-		return _batchTaskLocalService.getContentBlobModel(primaryKey);
 	}
 
 	@Override

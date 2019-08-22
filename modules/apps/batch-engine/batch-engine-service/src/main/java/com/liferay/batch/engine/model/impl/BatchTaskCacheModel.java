@@ -93,6 +93,8 @@ public class BatchTaskCacheModel
 		sb.append(createDate);
 		sb.append(", modifiedDate=");
 		sb.append(modifiedDate);
+		sb.append(", fileEntryId=");
+		sb.append(fileEntryId);
 		sb.append(", className=");
 		sb.append(className);
 		sb.append(", version=");
@@ -101,8 +103,6 @@ public class BatchTaskCacheModel
 		sb.append(contentType);
 		sb.append(", operation=");
 		sb.append(operation);
-		sb.append(", batchSize=");
-		sb.append(batchSize);
 		sb.append(", startTime=");
 		sb.append(startTime);
 		sb.append(", endTime=");
@@ -146,6 +146,8 @@ public class BatchTaskCacheModel
 			batchTaskImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
+		batchTaskImpl.setFileEntryId(fileEntryId);
+
 		if (className == null) {
 			batchTaskImpl.setClassName("");
 		}
@@ -173,8 +175,6 @@ public class BatchTaskCacheModel
 		else {
 			batchTaskImpl.setOperation(operation);
 		}
-
-		batchTaskImpl.setBatchSize(batchSize);
 
 		if (startTime == Long.MIN_VALUE) {
 			batchTaskImpl.setStartTime(null);
@@ -219,12 +219,12 @@ public class BatchTaskCacheModel
 		companyId = objectInput.readLong();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
+		fileEntryId = objectInput.readLong();
 		className = objectInput.readUTF();
 		version = objectInput.readUTF();
 		contentType = objectInput.readUTF();
 		operation = objectInput.readUTF();
-
-		batchSize = objectInput.readLong();
 		startTime = objectInput.readLong();
 		endTime = objectInput.readLong();
 		status = objectInput.readUTF();
@@ -247,6 +247,8 @@ public class BatchTaskCacheModel
 		objectOutput.writeLong(companyId);
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
+		objectOutput.writeLong(fileEntryId);
 
 		if (className == null) {
 			objectOutput.writeUTF("");
@@ -276,7 +278,6 @@ public class BatchTaskCacheModel
 			objectOutput.writeUTF(operation);
 		}
 
-		objectOutput.writeLong(batchSize);
 		objectOutput.writeLong(startTime);
 		objectOutput.writeLong(endTime);
 
@@ -301,11 +302,11 @@ public class BatchTaskCacheModel
 	public long companyId;
 	public long createDate;
 	public long modifiedDate;
+	public long fileEntryId;
 	public String className;
 	public String version;
 	public String contentType;
 	public String operation;
-	public long batchSize;
 	public long startTime;
 	public long endTime;
 	public String status;

@@ -15,9 +15,7 @@
 package com.liferay.batch.engine.model.impl;
 
 import com.liferay.batch.engine.model.BatchTask;
-import com.liferay.batch.engine.model.BatchTaskContentBlobModel;
 import com.liferay.batch.engine.model.BatchTaskModel;
-import com.liferay.batch.engine.service.BatchTaskLocalServiceUtil;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
@@ -36,7 +34,6 @@ import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 
-import java.sql.Blob;
 import java.sql.Types;
 
 import java.util.Collections;
@@ -75,11 +72,11 @@ public class BatchTaskModelImpl
 		{"mvccVersion", Types.BIGINT}, {"uuid_", Types.VARCHAR},
 		{"batchTaskId", Types.BIGINT}, {"companyId", Types.BIGINT},
 		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
-		{"className", Types.VARCHAR}, {"version", Types.VARCHAR},
-		{"content", Types.BLOB}, {"contentType", Types.VARCHAR},
-		{"operation", Types.VARCHAR}, {"batchSize", Types.BIGINT},
-		{"startTime", Types.TIMESTAMP}, {"endTime", Types.TIMESTAMP},
-		{"status", Types.VARCHAR}, {"errorMessage", Types.VARCHAR}
+		{"fileEntryId", Types.BIGINT}, {"className", Types.VARCHAR},
+		{"version", Types.VARCHAR}, {"contentType", Types.VARCHAR},
+		{"operation", Types.VARCHAR}, {"startTime", Types.TIMESTAMP},
+		{"endTime", Types.TIMESTAMP}, {"status", Types.VARCHAR},
+		{"errorMessage", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -92,12 +89,11 @@ public class BatchTaskModelImpl
 		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
+		TABLE_COLUMNS_MAP.put("fileEntryId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("className", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("version", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("content", Types.BLOB);
 		TABLE_COLUMNS_MAP.put("contentType", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("operation", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("batchSize", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("startTime", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("endTime", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("status", Types.VARCHAR);
@@ -105,7 +101,7 @@ public class BatchTaskModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table BatchTask (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,batchTaskId LONG not null primary key,companyId LONG,createDate DATE null,modifiedDate DATE null,className VARCHAR(75) null,version VARCHAR(75) null,content BLOB,contentType VARCHAR(75) null,operation VARCHAR(75) null,batchSize LONG,startTime DATE null,endTime DATE null,status VARCHAR(75) null,errorMessage VARCHAR(75) null)";
+		"create table BatchTask (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,batchTaskId LONG not null primary key,companyId LONG,createDate DATE null,modifiedDate DATE null,fileEntryId LONG,className VARCHAR(75) null,version VARCHAR(75) null,contentType VARCHAR(75) null,operation VARCHAR(75) null,startTime DATE null,endTime DATE null,status VARCHAR(75) null,errorMessage VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table BatchTask";
 
@@ -282,6 +278,10 @@ public class BatchTaskModelImpl
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
 			(BiConsumer<BatchTask, Date>)BatchTask::setModifiedDate);
+		attributeGetterFunctions.put("fileEntryId", BatchTask::getFileEntryId);
+		attributeSetterBiConsumers.put(
+			"fileEntryId",
+			(BiConsumer<BatchTask, Long>)BatchTask::setFileEntryId);
 		attributeGetterFunctions.put("className", BatchTask::getClassName);
 		attributeSetterBiConsumers.put(
 			"className",
@@ -289,9 +289,6 @@ public class BatchTaskModelImpl
 		attributeGetterFunctions.put("version", BatchTask::getVersion);
 		attributeSetterBiConsumers.put(
 			"version", (BiConsumer<BatchTask, String>)BatchTask::setVersion);
-		attributeGetterFunctions.put("content", BatchTask::getContent);
-		attributeSetterBiConsumers.put(
-			"content", (BiConsumer<BatchTask, Blob>)BatchTask::setContent);
 		attributeGetterFunctions.put("contentType", BatchTask::getContentType);
 		attributeSetterBiConsumers.put(
 			"contentType",
@@ -300,9 +297,6 @@ public class BatchTaskModelImpl
 		attributeSetterBiConsumers.put(
 			"operation",
 			(BiConsumer<BatchTask, String>)BatchTask::setOperation);
-		attributeGetterFunctions.put("batchSize", BatchTask::getBatchSize);
-		attributeSetterBiConsumers.put(
-			"batchSize", (BiConsumer<BatchTask, Long>)BatchTask::setBatchSize);
 		attributeGetterFunctions.put("startTime", BatchTask::getStartTime);
 		attributeSetterBiConsumers.put(
 			"startTime", (BiConsumer<BatchTask, Date>)BatchTask::setStartTime);
@@ -418,6 +412,16 @@ public class BatchTaskModelImpl
 	}
 
 	@Override
+	public long getFileEntryId() {
+		return _fileEntryId;
+	}
+
+	@Override
+	public void setFileEntryId(long fileEntryId) {
+		_fileEntryId = fileEntryId;
+	}
+
+	@Override
 	public String getClassName() {
 		if (_className == null) {
 			return "";
@@ -448,38 +452,6 @@ public class BatchTaskModelImpl
 	}
 
 	@Override
-	public Blob getContent() {
-		if (_contentBlobModel == null) {
-			try {
-				_contentBlobModel =
-					BatchTaskLocalServiceUtil.getContentBlobModel(
-						getPrimaryKey());
-			}
-			catch (Exception e) {
-			}
-		}
-
-		Blob blob = null;
-
-		if (_contentBlobModel != null) {
-			blob = _contentBlobModel.getContentBlob();
-		}
-
-		return blob;
-	}
-
-	@Override
-	public void setContent(Blob content) {
-		if (_contentBlobModel == null) {
-			_contentBlobModel = new BatchTaskContentBlobModel(
-				getPrimaryKey(), content);
-		}
-		else {
-			_contentBlobModel.setContentBlob(content);
-		}
-	}
-
-	@Override
 	public String getContentType() {
 		if (_contentType == null) {
 			return "";
@@ -507,16 +479,6 @@ public class BatchTaskModelImpl
 	@Override
 	public void setOperation(String operation) {
 		_operation = operation;
-	}
-
-	@Override
-	public long getBatchSize() {
-		return _batchSize;
-	}
-
-	@Override
-	public void setBatchSize(long batchSize) {
-		_batchSize = batchSize;
 	}
 
 	@Override
@@ -617,11 +579,11 @@ public class BatchTaskModelImpl
 		batchTaskImpl.setCompanyId(getCompanyId());
 		batchTaskImpl.setCreateDate(getCreateDate());
 		batchTaskImpl.setModifiedDate(getModifiedDate());
+		batchTaskImpl.setFileEntryId(getFileEntryId());
 		batchTaskImpl.setClassName(getClassName());
 		batchTaskImpl.setVersion(getVersion());
 		batchTaskImpl.setContentType(getContentType());
 		batchTaskImpl.setOperation(getOperation());
-		batchTaskImpl.setBatchSize(getBatchSize());
 		batchTaskImpl.setStartTime(getStartTime());
 		batchTaskImpl.setEndTime(getEndTime());
 		batchTaskImpl.setStatus(getStatus());
@@ -696,8 +658,6 @@ public class BatchTaskModelImpl
 
 		batchTaskModelImpl._setModifiedDate = false;
 
-		batchTaskModelImpl._contentBlobModel = null;
-
 		batchTaskModelImpl._columnBitmask = 0;
 	}
 
@@ -737,6 +697,8 @@ public class BatchTaskModelImpl
 			batchTaskCacheModel.modifiedDate = Long.MIN_VALUE;
 		}
 
+		batchTaskCacheModel.fileEntryId = getFileEntryId();
+
 		batchTaskCacheModel.className = getClassName();
 
 		String className = batchTaskCacheModel.className;
@@ -768,8 +730,6 @@ public class BatchTaskModelImpl
 		if ((operation != null) && (operation.length() == 0)) {
 			batchTaskCacheModel.operation = null;
 		}
-
-		batchTaskCacheModel.batchSize = getBatchSize();
 
 		Date startTime = getStartTime();
 
@@ -810,38 +770,31 @@ public class BatchTaskModelImpl
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(33);
+		Map<String, Function<BatchTask, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		sb.append("{mvccVersion=");
-		sb.append(getMvccVersion());
-		sb.append(", uuid=");
-		sb.append(getUuid());
-		sb.append(", batchTaskId=");
-		sb.append(getBatchTaskId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", className=");
-		sb.append(getClassName());
-		sb.append(", version=");
-		sb.append(getVersion());
-		sb.append(", contentType=");
-		sb.append(getContentType());
-		sb.append(", operation=");
-		sb.append(getOperation());
-		sb.append(", batchSize=");
-		sb.append(getBatchSize());
-		sb.append(", startTime=");
-		sb.append(getStartTime());
-		sb.append(", endTime=");
-		sb.append(getEndTime());
-		sb.append(", status=");
-		sb.append(getStatus());
-		sb.append(", errorMessage=");
-		sb.append(getErrorMessage());
+		StringBundler sb = new StringBundler(
+			4 * attributeGetterFunctions.size() + 2);
+
+		sb.append("{");
+
+		for (Map.Entry<String, Function<BatchTask, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
+			String attributeName = entry.getKey();
+			Function<BatchTask, Object> attributeGetterFunction =
+				entry.getValue();
+
+			sb.append(attributeName);
+			sb.append("=");
+			sb.append(attributeGetterFunction.apply((BatchTask)this));
+			sb.append(", ");
+		}
+
+		if (sb.index() > 1) {
+			sb.setIndex(sb.index() - 1);
+		}
+
 		sb.append("}");
 
 		return sb.toString();
@@ -849,72 +802,29 @@ public class BatchTaskModelImpl
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(52);
+		Map<String, Function<BatchTask, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
+
+		StringBundler sb = new StringBundler(
+			5 * attributeGetterFunctions.size() + 4);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.batch.engine.model.BatchTask");
+		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		sb.append(
-			"<column><column-name>mvccVersion</column-name><column-value><![CDATA[");
-		sb.append(getMvccVersion());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>batchTaskId</column-name><column-value><![CDATA[");
-		sb.append(getBatchTaskId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>className</column-name><column-value><![CDATA[");
-		sb.append(getClassName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>version</column-name><column-value><![CDATA[");
-		sb.append(getVersion());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>contentType</column-name><column-value><![CDATA[");
-		sb.append(getContentType());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>operation</column-name><column-value><![CDATA[");
-		sb.append(getOperation());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>batchSize</column-name><column-value><![CDATA[");
-		sb.append(getBatchSize());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>startTime</column-name><column-value><![CDATA[");
-		sb.append(getStartTime());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>endTime</column-name><column-value><![CDATA[");
-		sb.append(getEndTime());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>status</column-name><column-value><![CDATA[");
-		sb.append(getStatus());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>errorMessage</column-name><column-value><![CDATA[");
-		sb.append(getErrorMessage());
-		sb.append("]]></column-value></column>");
+		for (Map.Entry<String, Function<BatchTask, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
+			String attributeName = entry.getKey();
+			Function<BatchTask, Object> attributeGetterFunction =
+				entry.getValue();
+
+			sb.append("<column><column-name>");
+			sb.append(attributeName);
+			sb.append("</column-name><column-value><![CDATA[");
+			sb.append(attributeGetterFunction.apply((BatchTask)this));
+			sb.append("]]></column-value></column>");
+		}
 
 		sb.append("</model>");
 
@@ -941,12 +851,11 @@ public class BatchTaskModelImpl
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
+	private long _fileEntryId;
 	private String _className;
 	private String _version;
-	private BatchTaskContentBlobModel _contentBlobModel;
 	private String _contentType;
 	private String _operation;
-	private long _batchSize;
 	private Date _startTime;
 	private Date _endTime;
 	private String _status;

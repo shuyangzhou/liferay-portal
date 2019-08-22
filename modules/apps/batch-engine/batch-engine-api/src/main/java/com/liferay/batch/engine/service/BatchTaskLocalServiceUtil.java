@@ -53,14 +53,11 @@ public class BatchTaskLocalServiceUtil {
 	}
 
 	public static com.liferay.batch.engine.model.BatchTask addBatchTask(
-		String className, String version, byte[] batchContent,
-		com.liferay.batch.engine.BatchContentType batchContentType,
-		com.liferay.batch.engine.BatchOperation batchOperation,
-		long batchSize) {
+		long fileEntryId, String className, String version, String contentType,
+		com.liferay.batch.engine.BatchOperation batchOperation) {
 
 		return getService().addBatchTask(
-			className, version, batchContent, batchContentType, batchOperation,
-			batchSize);
+			fileEntryId, className, version, contentType, batchOperation);
 	}
 
 	/**
@@ -275,12 +272,6 @@ public class BatchTaskLocalServiceUtil {
 	 */
 	public static int getBatchTasksCount() {
 		return getService().getBatchTasksCount();
-	}
-
-	public static com.liferay.batch.engine.model.BatchTaskContentBlobModel
-		getContentBlobModel(java.io.Serializable primaryKey) {
-
-		return getService().getContentBlobModel(primaryKey);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery

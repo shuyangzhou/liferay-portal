@@ -16,8 +16,6 @@ package com.liferay.batch.engine.model;
 
 import java.io.Serializable;
 
-import java.sql.Blob;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,12 +40,11 @@ public class BatchTaskSoap implements Serializable {
 		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
+		soapModel.setFileEntryId(model.getFileEntryId());
 		soapModel.setClassName(model.getClassName());
 		soapModel.setVersion(model.getVersion());
-		soapModel.setContent(model.getContent());
 		soapModel.setContentType(model.getContentType());
 		soapModel.setOperation(model.getOperation());
-		soapModel.setBatchSize(model.getBatchSize());
 		soapModel.setStartTime(model.getStartTime());
 		soapModel.setEndTime(model.getEndTime());
 		soapModel.setStatus(model.getStatus());
@@ -153,6 +150,14 @@ public class BatchTaskSoap implements Serializable {
 		_modifiedDate = modifiedDate;
 	}
 
+	public long getFileEntryId() {
+		return _fileEntryId;
+	}
+
+	public void setFileEntryId(long fileEntryId) {
+		_fileEntryId = fileEntryId;
+	}
+
 	public String getClassName() {
 		return _className;
 	}
@@ -169,14 +174,6 @@ public class BatchTaskSoap implements Serializable {
 		_version = version;
 	}
 
-	public Blob getContent() {
-		return _content;
-	}
-
-	public void setContent(Blob content) {
-		_content = content;
-	}
-
 	public String getContentType() {
 		return _contentType;
 	}
@@ -191,14 +188,6 @@ public class BatchTaskSoap implements Serializable {
 
 	public void setOperation(String operation) {
 		_operation = operation;
-	}
-
-	public long getBatchSize() {
-		return _batchSize;
-	}
-
-	public void setBatchSize(long batchSize) {
-		_batchSize = batchSize;
 	}
 
 	public Date getStartTime() {
@@ -239,12 +228,11 @@ public class BatchTaskSoap implements Serializable {
 	private long _companyId;
 	private Date _createDate;
 	private Date _modifiedDate;
+	private long _fileEntryId;
 	private String _className;
 	private String _version;
-	private Blob _content;
 	private String _contentType;
 	private String _operation;
-	private long _batchSize;
 	private Date _startTime;
 	private Date _endTime;
 	private String _status;
