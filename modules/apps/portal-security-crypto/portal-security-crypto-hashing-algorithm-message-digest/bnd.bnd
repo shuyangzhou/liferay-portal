@@ -1,0 +1,3 @@
+Bundle-Name: Liferay Portal Security Crypto Hashing Algorithm Message Digest
+Bundle-SymbolicName: com.liferay.portal.security.crypto.hashing.algorithm.message.digest
+Bundle-Version: 1.0.0
