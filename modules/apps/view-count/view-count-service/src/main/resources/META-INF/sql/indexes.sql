@@ -1,0 +1,1 @@
+create unique index IX_1134FF2F on ViewCountEntry (companyId, classNameId, classPK);
