@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.view.count.model.ViewCountEntry;
 import com.liferay.view.count.service.ViewCountEntryLocalService;
+import com.liferay.view.count.service.persistence.ViewCountEntryFinder;
 import com.liferay.view.count.service.persistence.ViewCountEntryPersistence;
 
 import java.io.Serializable;
@@ -387,6 +388,9 @@ public abstract class ViewCountEntryLocalServiceBaseImpl
 
 	@Reference
 	protected ViewCountEntryPersistence viewCountEntryPersistence;
+
+	@Reference
+	protected ViewCountEntryFinder viewCountEntryFinder;
 
 	@Reference
 	protected com.liferay.counter.kernel.service.CounterLocalService

@@ -36,6 +36,14 @@ public class ViewCountEntryLocalServiceWrapper
 		_viewCountEntryLocalService = viewCountEntryLocalService;
 	}
 
+	@Override
+	public com.liferay.view.count.model.ViewCountEntry addViewCountEntry(
+		long companyId, long classNameId, long classPK) {
+
+		return _viewCountEntryLocalService.addViewCountEntry(
+			companyId, classNameId, classPK);
+	}
+
 	/**
 	 * Adds the view count entry to the database. Also notifies the appropriate model listeners.
 	 *
@@ -234,6 +242,12 @@ public class ViewCountEntryLocalServiceWrapper
 		return _viewCountEntryLocalService.getPersistedModel(primaryKeyObj);
 	}
 
+	@Override
+	public long getViewCount(long companyId, long classNameId, long classPK) {
+		return _viewCountEntryLocalService.getViewCount(
+			companyId, classNameId, classPK);
+	}
+
 	/**
 	 * Returns a range of all the view count entries.
 	 *
@@ -252,6 +266,17 @@ public class ViewCountEntryLocalServiceWrapper
 		return _viewCountEntryLocalService.getViewCountEntries(start, end);
 	}
 
+	@Override
+	public java.util.List<com.liferay.view.count.model.ViewCountEntry>
+		getViewCountEntries(
+			long companyId, long[] classNameIds, int start, int end,
+			com.liferay.portal.kernel.util.OrderByComparator
+				<com.liferay.view.count.model.ViewCountEntry> obc) {
+
+		return _viewCountEntryLocalService.getViewCountEntries(
+			companyId, classNameIds, start, end, obc);
+	}
+
 	/**
 	 * Returns the number of view count entries.
 	 *
@@ -260,6 +285,12 @@ public class ViewCountEntryLocalServiceWrapper
 	@Override
 	public int getViewCountEntriesCount() {
 		return _viewCountEntryLocalService.getViewCountEntriesCount();
+	}
+
+	@Override
+	public int getViewCountEntriesCount(long companyId, long[] classNameIds) {
+		return _viewCountEntryLocalService.getViewCountEntriesCount(
+			companyId, classNameIds);
 	}
 
 	/**
@@ -275,6 +306,30 @@ public class ViewCountEntryLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _viewCountEntryLocalService.getViewCountEntry(viewCountEntryId);
+	}
+
+	@Override
+	public void incrementViewCount(
+		long companyId, long classNameId, long classPK) {
+
+		_viewCountEntryLocalService.incrementViewCount(
+			companyId, classNameId, classPK);
+	}
+
+	@Override
+	public void incrementViewCount(
+		long companyId, long classNameId, long classPK, int increment) {
+
+		_viewCountEntryLocalService.incrementViewCount(
+			companyId, classNameId, classPK, increment);
+	}
+
+	@Override
+	public void removeViewCount(long companyId, long classNameId, long classPK)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_viewCountEntryLocalService.removeViewCount(
+			companyId, classNameId, classPK);
 	}
 
 	/**
