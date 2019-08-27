@@ -17,10 +17,6 @@ package com.liferay.document.library.internal.instance.lifecycle;
 import com.liferay.document.library.configuration.DLConfiguration;
 import com.liferay.document.library.kernel.service.DLFileEntryTypeLocalService;
 import com.liferay.document.library.kernel.util.RawMetadataProcessor;
-import com.liferay.dynamic.data.mapping.io.DDMFormSerializer;
-import com.liferay.dynamic.data.mapping.io.DDMFormSerializerSerializeRequest;
-import com.liferay.dynamic.data.mapping.io.DDMFormSerializerSerializeResponse;
-import com.liferay.dynamic.data.mapping.io.DDMFormSerializerTracker;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldOptions;
@@ -119,9 +115,7 @@ public class AddDefaultDocumentLibraryStructuresPortalInstanceLifecycleListener
 					_portal.getClassNameId(RawMetadataProcessor.class), name);
 
 			if (ddmStructure != null) {
-				String definition = _serializeJSONDDMForm(ddmForm);
-
-				if (!definition.equals(ddmStructure.getDefinition())) {
+				if (!ddmForm.equals(ddmStructure.getDDMForm())) {
 					ddmStructure.setDDMForm(ddmForm);
 
 					_ddmStructureLocalService.updateDDMStructure(ddmStructure);
@@ -245,24 +239,7 @@ public class AddDefaultDocumentLibraryStructuresPortalInstanceLifecycleListener
 		return ddmForm;
 	}
 
-	private String _serializeJSONDDMForm(DDMForm ddmForm) {
-		DDMFormSerializer ddmFormSerializer =
-			_ddmFormSerializerTracker.getDDMFormSerializer("json");
-
-		DDMFormSerializerSerializeRequest.Builder builder =
-			DDMFormSerializerSerializeRequest.Builder.newBuilder(ddmForm);
-
-		DDMFormSerializerSerializeResponse ddmFormSerializerSerializeResponse =
-			ddmFormSerializer.serialize(builder.build());
-
-		return ddmFormSerializerSerializeResponse.getContent();
-	}
-
 	private DDM _ddm;
-
-	@Reference
-	private DDMFormSerializerTracker _ddmFormSerializerTracker;
-
 	private DDMStructureLocalService _ddmStructureLocalService;
 
 	@Reference
