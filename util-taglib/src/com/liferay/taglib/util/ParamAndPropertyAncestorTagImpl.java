@@ -130,6 +130,10 @@ public class ParamAndPropertyAncestorTagImpl
 		}
 	}
 
+	public void clearRequest() {
+		request = null;
+	}
+
 	public Map<String, String[]> getParams() {
 		if (_dynamicServletRequest != null) {
 			return _dynamicServletRequest.getDynamicParameterMap();
@@ -184,6 +188,8 @@ public class ParamAndPropertyAncestorTagImpl
 		if (servletContext == null) {
 			servletContext = pageContext.getServletContext();
 		}
+
+		ClearRequestUtil.registerTag(this);
 	}
 
 	public void setServletContext(ServletContext servletContext) {
