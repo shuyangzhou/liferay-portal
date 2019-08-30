@@ -107,6 +107,11 @@ public class ParamAndPropertyAncestorTagImpl
 		_properties.put(name, values);
 	}
 
+	public void clear() {
+		request = null;
+		servletContext = null;
+	}
+
 	public void clearParams() {
 		if (_dynamicServletRequest != null) {
 			Map<String, String[]> params =
@@ -184,6 +189,8 @@ public class ParamAndPropertyAncestorTagImpl
 		if (servletContext == null) {
 			servletContext = pageContext.getServletContext();
 		}
+
+		ClearTagUtil.registerTag(this);
 	}
 
 	public void setServletContext(ServletContext servletContext) {
