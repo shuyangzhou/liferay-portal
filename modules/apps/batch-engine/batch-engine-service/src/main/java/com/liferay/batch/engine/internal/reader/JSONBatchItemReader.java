@@ -46,7 +46,7 @@ public class JSONBatchItemReader<T> implements BatchItemReader<T> {
 	}
 
 	@Override
-	public T read() throws IOException {
+	public T read() throws Exception {
 		if (_jsonParser.nextToken() == JsonToken.START_OBJECT) {
 			return _OBJECT_MAPPER.readValue(_jsonParser, _domainClass);
 		}

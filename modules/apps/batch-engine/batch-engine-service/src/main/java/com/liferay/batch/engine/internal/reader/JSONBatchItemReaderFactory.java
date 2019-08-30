@@ -14,13 +14,28 @@
 
 package com.liferay.batch.engine.internal.reader;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Shuyang Zhou
  * @author Ivica Cardic
  */
-public interface BatchItemReaderFactory {
+@Component(
+	immediate = true, property = "content.type=JSON",
+	service = BatchItemReaderFactory.class
+)
+public class JSONBatchItemReaderFactory implements BatchItemReaderFactory {
 
-	public <T> BatchItemReader<T> create(Class<T> domainClass, long fileEntryID)
-		throws Exception;
+	@Override
+	public <T> BatchItemReader<T> create(Class<T> domainClass, long fileEntryId)
+		throws Exception {
+
+		return new JSONBatchItemReader<>(
+			domainClass, _fileEntryReader.getInputStream(fileEntryId));
+	}
+
+	@Reference
+	private FileEntryReader _fileEntryReader;
 
 }

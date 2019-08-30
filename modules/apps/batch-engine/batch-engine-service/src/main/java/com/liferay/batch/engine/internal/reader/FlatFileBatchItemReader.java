@@ -32,15 +32,20 @@ import java.util.Map;
 public class FlatFileBatchItemReader<T> implements BatchItemReader<T> {
 
 	public FlatFileBatchItemReader(
-			Class<? extends T> domainClass, InputStream inputStream)
+			String delimiter, Class<? extends T> domainClass,
+			InputStream inputStream, int linesToSkip)
 		throws IOException {
 
+		_delimiter = delimiter;
 		_domainClass = domainClass;
 		_inputStream = inputStream;
+		_linesToSkip = linesToSkip;
 
 		_reader = new UnsyncBufferedReader(new InputStreamReader(_inputStream));
 
-		_columnNames = StringUtil.split(_reader.readLine());
+		_columnNames = StringUtil.split(_reader.readLine(), _delimiter);
+
+		_linesToSkip--;
 	}
 
 	@Override
@@ -49,7 +54,11 @@ public class FlatFileBatchItemReader<T> implements BatchItemReader<T> {
 	}
 
 	@Override
-	public T read() throws IOException {
+	public T read() throws Exception {
+		while (_linesToSkip-- > 0) {
+			_reader.readLine();
+		}
+
 		String line = _reader.readLine();
 
 		if (line == null) {
@@ -58,7 +67,7 @@ public class FlatFileBatchItemReader<T> implements BatchItemReader<T> {
 
 		Map<String, Object> columnNameValueMap = new HashMap<>();
 
-		String[] values = StringUtil.split(line);
+		String[] values = StringUtil.split(line, _delimiter);
 
 		for (int i = 0; i < values.length; i++) {
 			String columnName = _columnNames[i];
@@ -86,8 +95,10 @@ public class FlatFileBatchItemReader<T> implements BatchItemReader<T> {
 	private static final ObjectMapper _OBJECT_MAPPER = new ObjectMapper();
 
 	private final String[] _columnNames;
+	private final String _delimiter;
 	private final Class<? extends T> _domainClass;
 	private final InputStream _inputStream;
+	private int _linesToSkip;
 	private final UnsyncBufferedReader _reader;
 
 }

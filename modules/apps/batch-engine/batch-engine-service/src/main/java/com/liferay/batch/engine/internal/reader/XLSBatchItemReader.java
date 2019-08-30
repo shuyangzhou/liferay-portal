@@ -39,11 +39,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class XLSBatchItemReader<T> implements BatchItemReader<T> {
 
 	public XLSBatchItemReader(
-			Class<? extends T> itemType, InputStream inputStream)
+			Class<? extends T> itemType, InputStream inputStream,
+			int linesToSkip)
 		throws IOException {
 
 		_itemType = itemType;
 		_inputStream = inputStream;
+		_linesToSkip = linesToSkip;
 
 		_workbook = new XSSFWorkbook(_inputStream);
 
@@ -60,6 +62,8 @@ public class XLSBatchItemReader<T> implements BatchItemReader<T> {
 		}
 
 		_columnNames = columnNames.toArray(new String[0]);
+
+		_linesToSkip--;
 	}
 
 	@Override
@@ -69,7 +73,15 @@ public class XLSBatchItemReader<T> implements BatchItemReader<T> {
 	}
 
 	@Override
-	public T read() {
+	public T read() throws Exception {
+		while (_linesToSkip-- > 0) {
+			if (!_rowIterator.hasNext()) {
+				return null;
+			}
+
+			_rowIterator.next();
+		}
+
 		if (!_rowIterator.hasNext()) {
 			return null;
 		}
@@ -123,6 +135,7 @@ public class XLSBatchItemReader<T> implements BatchItemReader<T> {
 	private final String[] _columnNames;
 	private final InputStream _inputStream;
 	private final Class<? extends T> _itemType;
+	private int _linesToSkip;
 	private final Iterator<Row> _rowIterator;
 	private final Workbook _workbook;
 
