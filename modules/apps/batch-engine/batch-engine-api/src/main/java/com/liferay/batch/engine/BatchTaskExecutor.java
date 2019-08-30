@@ -14,13 +14,11 @@
 
 package com.liferay.batch.engine;
 
-import com.liferay.batch.engine.model.BatchTask;
-
 /**
  * @author Shuyang Zhou
  */
 public interface BatchTaskExecutor {
 
-	public void execute(BatchTask batchTask);
+	public void execute(long batchTaskId);
 
 }
