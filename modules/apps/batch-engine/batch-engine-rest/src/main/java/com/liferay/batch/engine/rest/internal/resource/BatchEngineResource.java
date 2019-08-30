@@ -16,7 +16,6 @@ package com.liferay.batch.engine.rest.internal.resource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.batch.engine.BatchContentType;
 import com.liferay.batch.engine.BatchOperation;
 import com.liferay.batch.engine.BatchTaskExecutor;
 import com.liferay.batch.engine.BatchTaskExecutorFactory;
@@ -25,20 +24,27 @@ import com.liferay.batch.engine.model.BatchTask;
 import com.liferay.batch.engine.service.BatchTaskLocalService;
 import com.liferay.oauth2.provider.scope.RequiresScope;
 import com.liferay.petra.executor.PortalExecutorManager;
-import com.liferay.petra.io.StreamUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.File;
-import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+
 import java.util.Collections;
-import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import javax.activation.DataHandler;
 
@@ -59,7 +65,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ServiceScope;
@@ -69,7 +74,6 @@ import org.osgi.service.component.annotations.ServiceScope;
  */
 @Component(
 	property = {
-		"batch.size=100",
 		"osgi.jaxrs.application.select=(osgi.jaxrs.name=Liferay.Headless.Batch)",
 		"osgi.jaxrs.resource=true"
 	},
@@ -77,15 +81,6 @@ import org.osgi.service.component.annotations.ServiceScope;
 )
 @Path("/batch-engine")
 public class BatchEngineResource {
-
-	@Activate
-	public void activate(Map<String, Object> properties) {
-		_batchSize = GetterUtil.getLong(properties.get("batch.size"));
-
-		if (_batchSize <= 0) {
-			_batchSize = 1;
-		}
-	}
 
 	@DELETE
 	@Path("/{version}/{className}")
@@ -154,6 +149,40 @@ public class BatchEngineResource {
 			BatchOperation.UPDATE, callbackURL);
 	}
 
+	private FileEntry _addFileEntry(String fileName, InputStream inputStream)
+		throws Exception {
+
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
+		return TempFileEntryUtil.addTempFileEntry(
+			serviceContext.getScopeGroupId(), serviceContext.getUserId(),
+			"batch-import", _getUniqueFileName(fileName), inputStream,
+			MimeTypesUtil.getContentType(fileName));
+	}
+
+	private String _getContentType(String fileName, InputStream inputStream)
+		throws Exception {
+
+		if (Objects.equals(
+				ContentTypes.APPLICATION_ZIP,
+				MimeTypesUtil.getContentType(fileName))) {
+
+			ZipInputStream zipInputStream = new ZipInputStream(
+				new BufferedInputStream(inputStream));
+
+			ZipEntry zipEntry = zipInputStream.getNextEntry();
+
+			fileName = zipEntry.getName();
+		}
+
+		return StringUtil.upperCase(_file.getExtension(fileName));
+	}
+
+	private String _getUniqueFileName(String fileName) {
+		return System.currentTimeMillis() + "_" + fileName;
+	}
+
 	private Response _process(
 			Attachment attachment, String className, String version,
 			BatchOperation operation, String callbackURL)
@@ -168,13 +197,14 @@ public class BatchEngineResource {
 
 		DataHandler dataHandler = attachment.getDataHandler();
 
+		FileEntry fileEntry = _addFileEntry(
+			dataHandler.getName(), dataHandler.getInputStream());
+
 		BatchTask batchTask = _batchTaskLocalService.addBatchTask(
-			className, version,
-			StreamUtil.toByteArray(dataHandler.getInputStream()),
-			BatchContentType.valueOf(
-				StringUtil.upperCase(
-					_file.getExtension(dataHandler.getName()))),
-			operation, _batchSize);
+			fileEntry.getFileEntryId(), className, version,
+			_getContentType(
+				dataHandler.getName(), dataHandler.getInputStream()),
+			operation);
 
 		ExecutorService executorService =
 			_portalExecutorManager.getPortalExecutor(
@@ -189,9 +219,10 @@ public class BatchEngineResource {
 				ServiceContextThreadLocal.pushServiceContext(serviceContext);
 
 				try {
-					BatchTaskExecutor batchJob = _batchJobFactory.create(clazz);
+					BatchTaskExecutor batchTaskExecutor =
+						_batchTaskExecutorFactory.create(clazz);
 
-					batchJob.execute(batchTask);
+					batchTaskExecutor.execute(batchTask.getBatchTaskId());
 
 					if (!Validator.isBlank(callbackURL)) {
 						HttpClientBuilder httpClientBuilder =
@@ -241,9 +272,7 @@ public class BatchEngineResource {
 		BatchEngineResource.class);
 
 	@Reference
-	private BatchTaskExecutorFactory _batchJobFactory;
-
-	private long _batchSize;
+	private BatchTaskExecutorFactory _batchTaskExecutorFactory;
 
 	@Reference
 	private BatchTaskLocalService _batchTaskLocalService;
