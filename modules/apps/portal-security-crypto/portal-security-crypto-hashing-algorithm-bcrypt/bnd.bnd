@@ -1,0 +1,3 @@
+Bundle-Name: Liferay Portal Security Crypto Hashing Algorithm BCrypt
+Bundle-SymbolicName: com.liferay.portal.security.crypto.hashing.algorithm.bcrypt
+Bundle-Version: 1.0.0
