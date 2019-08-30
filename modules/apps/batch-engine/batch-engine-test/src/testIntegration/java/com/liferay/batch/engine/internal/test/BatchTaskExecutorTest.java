@@ -177,14 +177,14 @@ public class BatchTaskExecutorTest {
 			MimeTypesUtil.getContentType(fileName));
 	}
 
-	private void _importBlogPosting(String fileName, String readerType)
+	private void _importBlogPosting(String fileName, String contentType)
 		throws Exception {
 
 		FileEntry fileEntry = _addFileEntry(fileName);
 
 		_batchTask = _batchTaskLocalService.addBatchTask(
 			fileEntry.getFileEntryId(), BlogPosting.class.getName(), "v1.0",
-			BatchOperation.CREATE, readerType);
+			contentType, BatchOperation.CREATE);
 
 		BatchTaskExecutor batchTaskExecutor = _batchTaskExecutorFactory.create(
 			BlogPosting.class);
