@@ -68,7 +68,6 @@ public class BatchItemWriterRegistry {
 		return batchItemWriter;
 	}
 
-	@SuppressWarnings("unchecked")
 	private ServiceTrackerMap<String, BatchItemWriter> _serviceTrackerMap;
 
 }
