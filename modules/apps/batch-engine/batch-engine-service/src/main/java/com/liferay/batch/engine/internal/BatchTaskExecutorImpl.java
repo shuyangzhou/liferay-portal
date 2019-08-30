@@ -14,7 +14,6 @@
 
 package com.liferay.batch.engine.internal;
 
-import com.liferay.batch.engine.BatchContentType;
 import com.liferay.batch.engine.BatchItemWriter;
 import com.liferay.batch.engine.BatchOperation;
 import com.liferay.batch.engine.BatchStatus;
@@ -29,8 +28,6 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 
-import java.sql.Blob;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,17 +38,25 @@ import java.util.List;
 public class BatchTaskExecutorImpl<T> implements BatchTaskExecutor {
 
 	public BatchTaskExecutorImpl(
-		Class<T> domainClass, BatchItemWriterRegistry batchItemWriterRegistry,
+		Class<T> domainClass,
+		BatchItemReaderFactoryRegistry batchItemReaderFactoryRegistry,
+		BatchItemWriterRegistry batchItemWriterRegistry, int batchSize,
 		BatchTaskLocalService batchTaskLocalService) {
 
 		_domainClass = domainClass;
+		_batchItemReaderFactoryRegistry = batchItemReaderFactoryRegistry;
 		_batchItemWriterRegistry = batchItemWriterRegistry;
+		_batchSize = batchSize;
 		_batchTaskLocalService = batchTaskLocalService;
 	}
 
 	@Override
-	public void execute(BatchTask batchTask) {
+	public void execute(long batchTaskId) {
+		BatchTask batchTask = null;
+
 		try {
+			batchTask = _batchTaskLocalService.getBatchTask(batchTaskId);
+
 			batchTask.setStartTime(new Date());
 			batchTask.setStatus(BatchStatus.STARTED.toString());
 
@@ -59,13 +64,20 @@ public class BatchTaskExecutorImpl<T> implements BatchTaskExecutor {
 
 			_execute(batchTask);
 
+			batchTask = _batchTaskLocalService.getBatchTask(
+				batchTask.getBatchTaskId());
+
 			batchTask.setEndTime(new Date());
 			batchTask.setStatus(BatchStatus.COMPLETED.toString());
 
 			_batchTaskLocalService.updateBatchTask(batchTask);
 		}
 		catch (Throwable t) {
-			_log.error("Batch job failed : " + batchTask, t);
+			_log.error("Batch task with id " + batchTaskId + " failed: ", t);
+
+			if (batchTask == null) {
+				return;
+			}
 
 			batchTask.setErrorMessage(t.getMessage());
 
@@ -86,12 +98,10 @@ public class BatchTaskExecutorImpl<T> implements BatchTaskExecutor {
 		return null;
 	}
 
-	private Void _execute(BatchTask batchTask) throws Throwable {
+	private void _execute(BatchTask batchTask) throws Throwable {
 		List<T> items = new ArrayList<>();
 
 		T item = null;
-
-		Blob content = batchTask.getContent();
 
 		BatchItemWriter<T> batchItemWriter = _batchItemWriterRegistry.get(
 			batchTask.getClassName(), batchTask.getVersion());
@@ -99,16 +109,18 @@ public class BatchTaskExecutorImpl<T> implements BatchTaskExecutor {
 		BatchOperation batchOperation = BatchOperation.valueOf(
 			batchTask.getOperation());
 
-		try (BatchItemReader<T> batchItemReader = BatchItemReaderFactory.create(
-				_domainClass,
-				BatchContentType.valueOf(batchTask.getContentType()),
-				content.getBinaryStream())) {
+		BatchItemReaderFactory batchItemReaderFactory =
+			_batchItemReaderFactoryRegistry.get(batchTask.getContentType());
+
+		try (BatchItemReader<T> batchItemReader = batchItemReaderFactory.create(
+				_domainClass, batchTask.getFileEntryId())) {
 
 			while ((item = batchItemReader.read()) != null) {
-				if (items.size() < batchTask.getBatchSize()) {
+				if (items.size() < _batchSize) {
 					items.add(item);
 				}
-				else {
+
+				if (items.size() == _batchSize) {
 					TransactionInvokerUtil.invoke(
 						_transactionConfig,
 						() -> _commitItems(
@@ -124,8 +136,6 @@ public class BatchTaskExecutorImpl<T> implements BatchTaskExecutor {
 				_transactionConfig,
 				() -> _commitItems(batchItemWriter, items, batchOperation));
 		}
-
-		return null;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -135,7 +145,10 @@ public class BatchTaskExecutorImpl<T> implements BatchTaskExecutor {
 		TransactionConfig.Factory.create(
 			Propagation.REQUIRES_NEW, new Class<?>[] {Exception.class});
 
+	private final BatchItemReaderFactoryRegistry
+		_batchItemReaderFactoryRegistry;
 	private final BatchItemWriterRegistry _batchItemWriterRegistry;
+	private final long _batchSize;
 	private final BatchTaskLocalService _batchTaskLocalService;
 	private final Class<T> _domainClass;
 

@@ -17,24 +17,46 @@ package com.liferay.batch.engine.internal;
 import com.liferay.batch.engine.BatchTaskExecutor;
 import com.liferay.batch.engine.BatchTaskExecutorFactory;
 import com.liferay.batch.engine.service.BatchTaskLocalService;
+import com.liferay.portal.kernel.util.GetterUtil;
 
+import java.util.Map;
+
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Shuyang Zhou
+ * @author Ivica Cardic
  */
-@Component(service = BatchTaskExecutorFactory.class)
+@Component(
+	property = "batch.size=100", service = BatchTaskExecutorFactory.class
+)
 public class BatchTaskExecutorFactoryImpl implements BatchTaskExecutorFactory {
+
+	@Activate
+	public void activate(Map<String, Object> properties) {
+		_batchSize = GetterUtil.getInteger(properties.get("batch.size"));
+
+		if (_batchSize <= 0) {
+			_batchSize = 1;
+		}
+	}
 
 	@Override
 	public BatchTaskExecutor create(Class<?> domainClass) {
 		return new BatchTaskExecutorImpl<>(
-			domainClass, _batchItemWriterRegistry, _batchTaskLocalService);
+			domainClass, _batchItemReaderFactoryRegistry,
+			_batchItemWriterRegistry, _batchSize, _batchTaskLocalService);
 	}
 
 	@Reference
+	private BatchItemReaderFactoryRegistry _batchItemReaderFactoryRegistry;
+
+	@Reference
 	private BatchItemWriterRegistry _batchItemWriterRegistry;
+
+	private int _batchSize;
 
 	@Reference
 	private BatchTaskLocalService _batchTaskLocalService;
