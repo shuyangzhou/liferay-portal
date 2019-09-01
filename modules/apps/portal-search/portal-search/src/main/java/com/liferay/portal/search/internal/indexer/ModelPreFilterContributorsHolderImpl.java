@@ -18,9 +18,8 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.search.spi.model.query.contributor.ModelPreFilterContributor;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.function.Consumer;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -35,13 +34,17 @@ public class ModelPreFilterContributorsHolderImpl
 	implements ModelPreFilterContributorsHolder {
 
 	@Override
-	public Stream<ModelPreFilterContributor> getByModel(String entryClassName) {
-		List<ModelPreFilterContributor> list = new ArrayList<>();
+	public void forEach(
+		String entryClassName, Consumer<ModelPreFilterContributor> consumer) {
 
-		_addAll(list, _serviceTrackerMap.getService("ALL"));
-		_addAll(list, _serviceTrackerMap.getService(entryClassName));
+		List<ModelPreFilterContributor> list = _serviceTrackerMap.getService(
+			"ALL");
 
-		return list.stream();
+		list.forEach(consumer);
+
+		list = _serviceTrackerMap.getService(entryClassName);
+
+		list.forEach(consumer);
 	}
 
 	@Activate
