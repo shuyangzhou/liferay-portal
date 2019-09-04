@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portlet.documentlibrary.store.test;
+package com.liferay.portal.store.test.util;
 
 import com.liferay.document.library.kernel.exception.DuplicateFileException;
 import com.liferay.document.library.kernel.exception.NoSuchFileException;
