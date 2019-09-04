@@ -48,7 +48,7 @@ public class ParamAndPropertyAncestorTagImpl
 		}
 
 		if (_dynamicServletRequest == null) {
-			_dynamicServletRequest = new DynamicServletRequest(request);
+			_dynamicServletRequest = new DynamicServletRequest(getRequest());
 
 			request = _dynamicServletRequest;
 		}
@@ -160,6 +160,15 @@ public class ParamAndPropertyAncestorTagImpl
 		return _removedParameterNames;
 	}
 
+	@Override
+	public HttpServletRequest getRequest() {
+		if (_dynamicServletRequest != null) {
+			return _dynamicServletRequest;
+		}
+
+		return super.getRequest();
+	}
+
 	public boolean isAllowEmptyParam() {
 		return _allowEmptyParam;
 	}
@@ -224,7 +233,20 @@ public class ParamAndPropertyAncestorTagImpl
 		this.servletContext = servletContext;
 	}
 
+	protected ServletContext getServletContext() {
+		return servletContext;
+	}
+
+	/**
+	 * @deprecated As of Mueller (7.2.x), replaced by {@link #getRequest()}
+	 */
+	@Deprecated
 	protected HttpServletRequest request;
+
+	/**
+	 * @deprecated As of Mueller (7.2.x), replaced by {@link #getServletContext()}
+	 */
+	@Deprecated
 	protected ServletContext servletContext;
 
 	private boolean _allowEmptyParam;
