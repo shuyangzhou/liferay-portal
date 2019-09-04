@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceReference;
 import com.liferay.registry.ServiceTracker;
 import com.liferay.registry.ServiceTrackerCustomizer;
 import com.liferay.registry.ServiceTrackerFieldUpdaterCustomizer;
@@ -213,6 +214,58 @@ public class ServiceProxyFactory {
 		return serviceTracker;
 	}
 
+	private static void _runSystemCheckers() {
+		Registry registry = RegistryUtil.getRegistry();
+
+		try {
+			ServiceReference<?>[] serviceReferences =
+				registry.getAllServiceReferences(
+					"com.liferay.portal.osgi.debug.SystemChecker", null);
+
+			if (serviceReferences == null) {
+				if (_log.isWarnEnabled()) {
+					_log.warn("No system checkers available");
+				}
+
+				return;
+			}
+
+			for (ServiceReference<?> serviceReference : serviceReferences) {
+				Object systemChecker = registry.getService(serviceReference);
+
+				StringBundler sb = new StringBundler(4);
+
+				sb.append("Running \"");
+				sb.append(systemChecker);
+				sb.append("\" check result: ");
+
+				Class<?> clazz = systemChecker.getClass();
+
+				Method method = clazz.getMethod("check");
+
+				Object result = method.invoke(systemChecker);
+
+				if (Validator.isNull(result)) {
+					sb.append("No issues were found.");
+
+					if (_log.isInfoEnabled()) {
+						_log.info(sb.toString());
+					}
+				}
+				else if (_log.isWarnEnabled()) {
+					sb.append(result);
+
+					_log.warn(sb.toString());
+				}
+
+				registry.ungetService(serviceReference);
+			}
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+		}
+	}
+
 	private static final long _TIMEOUT = GetterUtil.getLong(
 		System.getProperty(ServiceProxyFactory.class.getName() + ".timeout"),
 		60000);
@@ -226,6 +279,8 @@ public class ServiceProxyFactory {
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] arguments)
 			throws Throwable {
+
+			boolean calledSystemCheckers = false;
 
 			while (true) {
 				_lock.lock();
@@ -271,6 +326,12 @@ public class ServiceProxyFactory {
 						sb.append("\", will retry...");
 
 						_log.error(sb.toString());
+
+						if (!calledSystemCheckers) {
+							_runSystemCheckers();
+
+							calledSystemCheckers = true;
+						}
 					}
 				}
 				finally {
