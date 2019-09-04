@@ -18,6 +18,9 @@ import com.liferay.portal.kernel.servlet.DynamicServletRequest;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.BaseBodyTagSupport;
+import com.liferay.taglib.servlet.AutoClosePageContextWrapper;
+
+import java.io.Closeable;
 
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -34,7 +37,7 @@ import javax.servlet.jsp.PageContext;
  */
 public class ParamAndPropertyAncestorTagImpl
 	extends BaseBodyTagSupport
-	implements ParamAncestorTag, PropertyAncestorTag {
+	implements Closeable, ParamAncestorTag, PropertyAncestorTag {
 
 	@Override
 	public void addParam(String name, String value) {
@@ -130,6 +133,13 @@ public class ParamAndPropertyAncestorTagImpl
 		}
 	}
 
+	@Override
+	public void close() {
+		request = null;
+
+		servletContext = null;
+	}
+
 	public Map<String, String[]> getParams() {
 		if (_dynamicServletRequest != null) {
 			return _dynamicServletRequest.getDynamicParameterMap();
@@ -183,6 +193,13 @@ public class ParamAndPropertyAncestorTagImpl
 
 		if (servletContext == null) {
 			servletContext = pageContext.getServletContext();
+		}
+
+		if (pageContext instanceof AutoClosePageContextWrapper) {
+			AutoClosePageContextWrapper autoClosePageContextWrapper =
+				(AutoClosePageContextWrapper)pageContext;
+
+			autoClosePageContextWrapper.registerCloseCallback(this::close);
 		}
 	}
 
