@@ -317,7 +317,7 @@ public class AppResourceImpl
 					"engine data list view");
 		}
 
-		if (dataLayoutId == null) {
+		if (dataLayoutId != null) {
 			DDMStructureLayout ddmStructureLayout =
 				_ddmStructureLayoutLocalService.fetchStructureLayout(
 					dataLayoutId);
@@ -328,7 +328,7 @@ public class AppResourceImpl
 			}
 		}
 
-		if (dataListViewId == null) {
+		if (dataListViewId != null) {
 			String sessionId = CookieKeys.getCookie(
 				contextHttpServletRequest, CookieKeys.JSESSIONID);
 
@@ -349,8 +349,7 @@ public class AppResourceImpl
 			}
 			catch (Exception e) {
 				throw new NoSuchDataListViewException(
-					"Data data list view " + dataListViewId + " does not exist",
-					e);
+					"Data list view " + dataListViewId + " does not exist", e);
 			}
 		}
 

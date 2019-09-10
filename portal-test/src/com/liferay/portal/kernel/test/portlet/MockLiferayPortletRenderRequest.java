@@ -12,30 +12,27 @@
  * details.
  */
 
-package com.liferay.blogs.web.test.util;
+package com.liferay.portal.kernel.test.portlet;
 
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 
-import java.util.Collection;
 import java.util.Map;
 
-import javax.portlet.ActionParameters;
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletContext;
 import javax.portlet.PortletResponse;
 import javax.portlet.RenderParameters;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
 
-import org.springframework.mock.web.portlet.MockActionRequest;
+import org.springframework.mock.web.portlet.MockRenderRequest;
 
 /**
- * @author Alicia García
+ * @author Jürgen Kappler
  */
-public class MockLiferayPortletRequest
-	extends MockActionRequest implements LiferayPortletRequest {
+public class MockLiferayPortletRenderRequest
+	extends MockRenderRequest implements LiferayPortletRequest {
 
 	@Override
 	public void cleanUp() {
@@ -52,16 +49,6 @@ public class MockLiferayPortletRequest
 	}
 
 	@Override
-	public ActionParameters getActionParameters() {
-		return null;
-	}
-
-	@Override
-	public long getContentLengthLong() {
-		return 0;
-	}
-
-	@Override
 	public HttpServletRequest getHttpServletRequest() {
 		return null;
 	}
@@ -73,16 +60,6 @@ public class MockLiferayPortletRequest
 
 	@Override
 	public HttpServletRequest getOriginalHttpServletRequest() {
-		return null;
-	}
-
-	@Override
-	public Part getPart(String name) {
-		return null;
-	}
-
-	@Override
-	public Collection<Part> getParts() {
 		return null;
 	}
 
@@ -129,8 +106,5 @@ public class MockLiferayPortletRequest
 	public void setPortletRequestDispatcherRequest(
 		HttpServletRequest httpServletRequest) {
 	}
-
-	protected long entryId;
-	protected HttpServletRequest httpServletRequest;
 
 }
