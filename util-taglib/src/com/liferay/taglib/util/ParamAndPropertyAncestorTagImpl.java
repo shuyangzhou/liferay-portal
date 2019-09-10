@@ -224,7 +224,7 @@ public class ParamAndPropertyAncestorTagImpl
 
 		servletContext = (ServletContext)getRequest().getAttribute(WebKeys.CTX);
 
-		if (getServletContext() == null) {
+		if (servletContext == null) {
 			servletContext = pageContext.getServletContext();
 		}
 	}
