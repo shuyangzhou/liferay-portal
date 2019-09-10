@@ -55,6 +55,7 @@ import java.util.function.Function;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -459,6 +460,12 @@ public class InputEditorTag extends BaseValidatorTagSupport {
 		return RequestBackedPortletURLFactoryUtil.create(portletRequest);
 	}
 
+	@Override
+	protected ServletContext getServletContext() {
+		return PortalWebResourcesUtil.getServletContext(
+			getEditorResourceType());
+	}
+
 	protected String getToolbarSet() {
 		if (Validator.isNotNull(_toolbarSet)) {
 			return _toolbarSet;
@@ -471,9 +478,6 @@ public class InputEditorTag extends BaseValidatorTagSupport {
 	protected void includePage(
 			String page, HttpServletResponse httpServletResponse)
 		throws IOException, ServletException {
-
-		servletContext = PortalWebResourcesUtil.getServletContext(
-			getEditorResourceType());
 
 		super.includePage(page, httpServletResponse);
 	}
