@@ -14,6 +14,7 @@
 
 package com.liferay.taglib.util;
 
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.kernel.servlet.DynamicServletRequest;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -26,6 +27,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -138,6 +140,8 @@ public class ParamAndPropertyAncestorTagImpl
 		request = null;
 
 		servletContext = null;
+
+		_countDownLatch.countDown();
 	}
 
 	public Map<String, String[]> getParams() {
@@ -185,6 +189,26 @@ public class ParamAndPropertyAncestorTagImpl
 
 	@Override
 	public void setPageContext(PageContext pageContext) {
+		if ((_countDownLatch != null) &&
+			!pageContext.equals(this.pageContext)) {
+
+			try {
+				_countDownLatch.await();
+			}
+			catch (InterruptedException ie) {
+				ReflectionUtil.throwException(ie);
+			}
+		}
+
+		if (pageContext instanceof AutoClosePageContextWrapper) {
+			_countDownLatch = new CountDownLatch(1);
+
+			AutoClosePageContextWrapper autoClosePageContextWrapper =
+				(AutoClosePageContextWrapper)pageContext;
+
+			autoClosePageContextWrapper.registerCloseCallback(this::close);
+		}
+
 		super.setPageContext(pageContext);
 
 		request = (HttpServletRequest)pageContext.getRequest();
@@ -193,13 +217,6 @@ public class ParamAndPropertyAncestorTagImpl
 
 		if (servletContext == null) {
 			servletContext = pageContext.getServletContext();
-		}
-
-		if (pageContext instanceof AutoClosePageContextWrapper) {
-			AutoClosePageContextWrapper autoClosePageContextWrapper =
-				(AutoClosePageContextWrapper)pageContext;
-
-			autoClosePageContextWrapper.registerCloseCallback(this::close);
 		}
 	}
 
@@ -212,6 +229,7 @@ public class ParamAndPropertyAncestorTagImpl
 
 	private boolean _allowEmptyParam;
 	private boolean _copyCurrentRenderParameters = true;
+	private CountDownLatch _countDownLatch;
 	private DynamicServletRequest _dynamicServletRequest;
 	private Map<String, String[]> _properties;
 	private Set<String> _removedParameterNames;
