@@ -14,10 +14,17 @@
 
 package com.liferay.portal.dependencymanager.component.executor.factory.internal;
 
+import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.NamedThreadFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -27,6 +34,8 @@ import org.apache.felix.dm.ComponentExecutorFactory;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceRegistration;
 
 /**
@@ -36,31 +45,73 @@ public class ComponentExecutorFactoryBundleActivator
 	implements BundleActivator {
 
 	@Override
-	public void start(BundleContext bundleContext) {
+	public void start(BundleContext bundleContext)
+		throws InvalidSyntaxException {
+
 		Runtime runtime = Runtime.getRuntime();
 
 		int threadPoolSize = GetterUtil.getInteger(
 			bundleContext.getProperty("dependencymanager.threadpool.size"),
 			runtime.availableProcessors());
 
+		_executorService = new ThreadPoolExecutor(
+			threadPoolSize, threadPoolSize, 0, TimeUnit.MILLISECONDS,
+			new LinkedBlockingDeque<>(),
+			new NamedThreadFactory(
+				"Portal Dependencymanager Component Executor-",
+				Thread.NORM_PRIORITY,
+				ComponentExecutorFactory.class.getClassLoader()));
+
+		_serviceListener = serviceEvent -> _flushPendingJobs(
+			_executorService, threadPoolSize);
+
+		bundleContext.addServiceListener(
+			_serviceListener,
+			StringBundler.concat(
+				"(&(objectClass=", ModuleServiceLifecycle.class.getName(), ")",
+				ModuleServiceLifecycle.DM_SYNC, ")"));
+
 		_serviceRegistration = bundleContext.registerService(
 			ComponentExecutorFactory.class,
-			new ComponentExecutorFactoryImpl(
-				new ThreadPoolExecutor(
-					0, threadPoolSize, 0, TimeUnit.MILLISECONDS,
-					new LinkedBlockingDeque<>(),
-					new NamedThreadFactory(
-						"Portal Dependencymanager Component Executor-",
-						Thread.NORM_PRIORITY,
-						ComponentExecutorFactory.class.getClassLoader()))),
-			null);
+			new ComponentExecutorFactoryImpl(_executorService), null);
 	}
 
 	@Override
 	public void stop(BundleContext bundleContext) {
 		_serviceRegistration.unregister();
+
+		bundleContext.removeServiceListener(_serviceListener);
+
+		_executorService.shutdownNow();
 	}
 
+	private static void _flushPendingJobs(
+		ExecutorService executorService, int maxSize) {
+
+		CyclicBarrier cyclicBarrier = new CyclicBarrier(maxSize);
+
+		Callable<Void> placeHolderJob = () -> {
+			cyclicBarrier.await();
+
+			return null;
+		};
+
+		List<Callable<Void>> placeHolderJobs = new ArrayList<>();
+
+		for (int i = 0; i < maxSize; i++) {
+			placeHolderJobs.add(placeHolderJob);
+		}
+
+		try {
+			executorService.invokeAll(placeHolderJobs);
+		}
+		catch (InterruptedException ie) {
+			executorService.shutdownNow();
+		}
+	}
+
+	private ExecutorService _executorService;
+	private ServiceListener _serviceListener;
 	private ServiceRegistration<ComponentExecutorFactory> _serviceRegistration;
 
 	private static class ComponentExecutorFactoryImpl

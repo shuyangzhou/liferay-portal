@@ -378,6 +378,9 @@ public class UpgradeClient {
 				" your upgrades have failed, have not started, or are still " +
 					"running.");
 
+			System.out.println("#####" + upgradeCheck);
+			System.out.println("*****" + upgradeSteps);
+
 			return false;
 		}
 
