@@ -18,7 +18,12 @@ import javax.annotation.Generated;
 
 import javax.ws.rs.core.Application;
 
+import com.liferay.batch.engine.BatchEngineTaskItemClassRegistry;
+import com.liferay.headless.delivery.dto.v1_0.BlogPosting;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Javier Gamarra
@@ -34,4 +39,18 @@ import org.osgi.service.component.annotations.Component;
 )
 @Generated("")
 public class HeadlessDeliveryApplication extends Application {
+
+	@Activate
+	public void activate() {
+		_batchEngineTaskItemClassRegistry.register(BlogPosting.class);
+	}
+
+	@Deactivate
+	public void deactivate() {
+		_batchEngineTaskItemClassRegistry.unregister(BlogPosting.class);
+	}
+
+	@Reference
+	private BatchEngineTaskItemClassRegistry _batchEngineTaskItemClassRegistry;
+
 }
