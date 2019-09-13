@@ -14,6 +14,9 @@
 
 package com.liferay.headless.delivery.internal.resource.v1_0;
 
+import com.liferay.batch.engine.BatchEngineTaskField;
+import com.liferay.batch.engine.BatchEngineTaskMethod;
+import com.liferay.batch.engine.BatchEngineTaskOperation;
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.service.BlogsEntryService;
 import com.liferay.document.library.kernel.service.DLAppService;
@@ -75,7 +78,11 @@ public class BlogPostingResourceImpl
 	extends BaseBlogPostingResourceImpl implements EntityModelResource {
 
 	@Override
-	public void deleteBlogPosting(Long blogPostingId) throws Exception {
+	@BatchEngineTaskMethod(
+		batchEngineTaskOperation = BatchEngineTaskOperation.DELETE,
+		itemClass = BlogPosting.class)
+	public void deleteBlogPosting(
+			@BatchEngineTaskField("id") Long blogPostingId) throws Exception {
 		_blogsEntryService.deleteEntry(blogPostingId);
 	}
 
@@ -144,6 +151,9 @@ public class BlogPostingResourceImpl
 	}
 
 	@Override
+	@BatchEngineTaskMethod(
+		batchEngineTaskOperation = BatchEngineTaskOperation.CREATE,
+		itemClass = BlogPosting.class)
 	public BlogPosting postSiteBlogPosting(Long siteId, BlogPosting blogPosting)
 		throws Exception {
 
