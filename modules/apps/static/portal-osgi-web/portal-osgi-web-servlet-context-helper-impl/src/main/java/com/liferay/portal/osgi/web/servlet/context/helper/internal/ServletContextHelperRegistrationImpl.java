@@ -53,6 +53,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+import javax.management.InstanceNotFoundException;
 import javax.management.JMException;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
@@ -268,6 +269,11 @@ public class ServletContextHelperRegistrationImpl
 
 					mBeanServer.unregisterMBean(objectName);
 				}
+			}
+			catch (InstanceNotFoundException infe) {
+
+				// Concurrent unregisteration, no need to do anything.
+
 			}
 			catch (JMException jme) {
 				_log.error(jme, jme);

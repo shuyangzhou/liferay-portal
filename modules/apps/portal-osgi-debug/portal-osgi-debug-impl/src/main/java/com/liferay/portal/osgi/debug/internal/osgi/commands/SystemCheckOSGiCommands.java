@@ -19,14 +19,18 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapDictionary;
+import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.osgi.debug.SystemChecker;
 
 import java.util.Collection;
+import java.util.Dictionary;
 import java.util.Map;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -60,6 +64,19 @@ public class SystemCheckOSGiCommands {
 				bundleContext.getProperty("initial.system.check.enabled"),
 				true)) {
 
+			Dictionary<String, String> properties = new HashMapDictionary<>();
+
+			properties.put("module.service.lifecycle", "dm.sync");
+			properties.put("service.vendor", ReleaseInfo.getVendor());
+			properties.put("service.version", ReleaseInfo.getVersion());
+
+			_dmSyncModuleServiceLifecycleServiceRegistration =
+				bundleContext.registerService(
+					ModuleServiceLifecycle.class,
+					new ModuleServiceLifecycle() {
+					},
+					properties);
+
 			if (_log.isInfoEnabled()) {
 				_log.info("Running system check");
 			}
@@ -74,6 +91,10 @@ public class SystemCheckOSGiCommands {
 
 	@Deactivate
 	protected void deactivate() {
+		if (_dmSyncModuleServiceLifecycleServiceRegistration != null) {
+			_dmSyncModuleServiceLifecycleServiceRegistration.unregister();
+		}
+
 		_serviceTracker.close();
 	}
 
@@ -141,6 +162,8 @@ public class SystemCheckOSGiCommands {
 	private static final Log _log = LogFactoryUtil.getLog(
 		SystemCheckOSGiCommands.class);
 
+	private ServiceRegistration<ModuleServiceLifecycle>
+		_dmSyncModuleServiceLifecycleServiceRegistration;
 	private ServiceTracker<SystemChecker, SystemChecker> _serviceTracker;
 
 }
