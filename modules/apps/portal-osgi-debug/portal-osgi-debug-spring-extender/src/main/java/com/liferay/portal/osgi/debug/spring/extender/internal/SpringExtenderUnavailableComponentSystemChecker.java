@@ -14,6 +14,7 @@
 
 package com.liferay.portal.osgi.debug.spring.extender.internal;
 
+import com.liferay.portal.kernel.dependency.DependencyManagerSyncUtil;
 import com.liferay.portal.osgi.debug.SystemChecker;
 
 import org.osgi.service.component.annotations.Component;
@@ -27,6 +28,8 @@ public class SpringExtenderUnavailableComponentSystemChecker
 
 	@Override
 	public String check() {
+		DependencyManagerSyncUtil.sync();
+
 		return UnavailableComponentUtil.scanUnavailableComponents();
 	}
 
