@@ -14,6 +14,9 @@
 
 package com.liferay.headless.delivery.internal.resource.v1_0;
 
+import com.liferay.batch.engine.BatchEngineTaskField;
+import com.liferay.batch.engine.BatchEngineTaskMethod;
+import com.liferay.batch.engine.BatchEngineTaskOperation;
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.service.BlogsEntryService;
 import com.liferay.document.library.kernel.service.DLAppService;
@@ -74,8 +77,15 @@ import org.osgi.service.component.annotations.ServiceScope;
 public class BlogPostingResourceImpl
 	extends BaseBlogPostingResourceImpl implements EntityModelResource {
 
+	@BatchEngineTaskMethod(
+		batchEngineTaskOperation = BatchEngineTaskOperation.DELETE,
+		itemClass = BlogPosting.class
+	)
 	@Override
-	public void deleteBlogPosting(Long blogPostingId) throws Exception {
+	public void deleteBlogPosting(
+			@BatchEngineTaskField("id") Long blogPostingId)
+		throws Exception {
+
 		_blogsEntryService.deleteEntry(blogPostingId);
 	}
 
@@ -143,6 +153,10 @@ public class BlogPostingResourceImpl
 			rating.getRatingValue(), blogPostingId);
 	}
 
+	@BatchEngineTaskMethod(
+		batchEngineTaskOperation = BatchEngineTaskOperation.CREATE,
+		itemClass = BlogPosting.class
+	)
 	@Override
 	public BlogPosting postSiteBlogPosting(Long siteId, BlogPosting blogPosting)
 		throws Exception {

@@ -451,7 +451,7 @@ public class BlogPosting {
 	}
 
 	@GraphQLField
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Long id;
 
 	@Schema(description = "The blog post's cover image.")
@@ -592,7 +592,7 @@ public class BlogPosting {
 	}
 
 	@GraphQLField
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Long siteId;
 
 	@Schema(description = "The categories associated with this blog post.")
