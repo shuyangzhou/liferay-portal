@@ -22,6 +22,8 @@ public interface ModuleServiceLifecycle {
 	public String DATABASE_INITIALIZED =
 		"(module.service.lifecycle=database.initialized)";
 
+	public String DM_SYNC = "(module.service.lifecycle=dm.sync)";
+
 	public String PORTAL_INITIALIZED =
 		"(module.service.lifecycle=portal.initialized)";
 

@@ -115,6 +115,8 @@ public class DBUpgrader {
 
 			_registerModuleServiceLifecycle("portlets.initialized");
 
+			_registerModuleServiceLifecycle("dm.sync");
+
 			System.out.println(
 				"\nCompleted Liferay core upgrade and verify processes in " +
 					(stopWatch.getTime() / Time.SECOND) + " seconds");
