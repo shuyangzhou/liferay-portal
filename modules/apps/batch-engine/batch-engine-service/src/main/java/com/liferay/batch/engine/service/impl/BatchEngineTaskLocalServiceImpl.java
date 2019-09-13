@@ -17,16 +17,21 @@ package com.liferay.batch.engine.service.impl;
 import com.liferay.batch.engine.BatchEngineTaskContentType;
 import com.liferay.batch.engine.BatchEngineTaskExecuteStatus;
 import com.liferay.batch.engine.BatchEngineTaskOperation;
+import com.liferay.batch.engine.internal.BatchEngineTaskResourceRegistry;
 import com.liferay.batch.engine.model.BatchEngineTask;
 import com.liferay.batch.engine.service.base.BatchEngineTaskLocalServiceBaseImpl;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.jdbc.OutputBlob;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Shuyang Zhou
+ * @author Ivica Cardic
  */
 @Component(
 	property = "model.class.name=com.liferay.batch.engine.model.BatchEngineTask",
@@ -41,6 +46,20 @@ public class BatchEngineTaskLocalServiceImpl
 		BatchEngineTaskContentType batchEngineTaskContentType,
 		BatchEngineTaskOperation batchEngineTaskOperation, long batchSize,
 		String className, byte[] content, String version) {
+
+		if (!_batchEngineTaskResourceRegistry.isResourceMethodRegistered(
+				batchEngineTaskOperation, className)) {
+
+			StringBundler sb = new StringBundler(4);
+
+			sb.append(
+				"No resource method available for batchEngineTaskOperation ");
+			sb.append(batchEngineTaskOperation);
+			sb.append(" and className ");
+			sb.append(className);
+
+			throw new SystemException(sb.toString());
+		}
 
 		BatchEngineTask batchEngineTask = batchEngineTaskPersistence.create(
 			counterLocalService.increment(BatchEngineTask.class.getName()));
@@ -60,5 +79,8 @@ public class BatchEngineTaskLocalServiceImpl
 
 		return batchEngineTaskPersistence.update(batchEngineTask);
 	}
+
+	@Reference
+	private BatchEngineTaskResourceRegistry _batchEngineTaskResourceRegistry;
 
 }
