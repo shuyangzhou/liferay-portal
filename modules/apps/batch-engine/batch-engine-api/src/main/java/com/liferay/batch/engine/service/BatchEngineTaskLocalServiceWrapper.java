@@ -60,6 +60,14 @@ public class BatchEngineTaskLocalServiceWrapper
 			batchEngineTaskOperation, batchSize, className, content, version);
 	}
 
+	@Override
+	public int countBatchEngineTasks(
+		com.liferay.batch.engine.BatchEngineTaskExecuteStatus executeStatus) {
+
+		return _batchEngineTaskLocalService.countBatchEngineTasks(
+			executeStatus);
+	}
+
 	/**
 	 * Creates a new batch engine task with the primary key. Does not add the batch engine task to the database.
 	 *
@@ -270,6 +278,15 @@ public class BatchEngineTaskLocalServiceWrapper
 			getBatchEngineTaskByUuidAndCompanyId(uuid, companyId);
 	}
 
+	@Override
+	public java.util.List<com.liferay.batch.engine.model.BatchEngineTask>
+		getBatchEngineTasks(
+			com.liferay.batch.engine.BatchEngineTaskExecuteStatus
+				executeStatus) {
+
+		return _batchEngineTaskLocalService.getBatchEngineTasks(executeStatus);
+	}
+
 	/**
 	 * Returns a range of all the batch engine tasks.
 	 *
@@ -313,6 +330,16 @@ public class BatchEngineTaskLocalServiceWrapper
 
 		return _batchEngineTaskLocalService.getExportActionableDynamicQuery(
 			portletDataContext);
+	}
+
+	@Override
+	public java.util.List<com.liferay.batch.engine.model.BatchEngineTask>
+		getFirstBatchEngineTasks(
+			com.liferay.batch.engine.BatchEngineTaskExecuteStatus executeStatus,
+			int size) {
+
+		return _batchEngineTaskLocalService.getFirstBatchEngineTasks(
+			executeStatus, size);
 	}
 
 	@Override
