@@ -15,6 +15,7 @@
 package com.liferay.batch.engine.service;
 
 import com.liferay.batch.engine.BatchEngineTaskContentType;
+import com.liferay.batch.engine.BatchEngineTaskExecuteStatus;
 import com.liferay.batch.engine.BatchEngineTaskOperation;
 import com.liferay.batch.engine.model.BatchEngineTask;
 import com.liferay.batch.engine.model.BatchEngineTaskContentBlobModel;
@@ -80,6 +81,9 @@ public interface BatchEngineTaskLocalService
 		BatchEngineTaskContentType batchEngineTaskContentType,
 		BatchEngineTaskOperation batchEngineTaskOperation, long batchSize,
 		String className, byte[] content, String version);
+
+	public int countBatchEngineTasks(
+		BatchEngineTaskExecuteStatus executeStatus);
 
 	/**
 	 * Creates a new batch engine task with the primary key. Does not add the batch engine task to the database.
@@ -225,6 +229,10 @@ public interface BatchEngineTaskLocalService
 			String uuid, long companyId)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<BatchEngineTask> getBatchEngineTasks(
+		BatchEngineTaskExecuteStatus executeStatus);
+
 	/**
 	 * Returns a range of all the batch engine tasks.
 	 *
@@ -254,6 +262,10 @@ public interface BatchEngineTaskLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
 		PortletDataContext portletDataContext);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<BatchEngineTask> getFirstBatchEngineTasks(
+		BatchEngineTaskExecuteStatus executeStatus, int size);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
