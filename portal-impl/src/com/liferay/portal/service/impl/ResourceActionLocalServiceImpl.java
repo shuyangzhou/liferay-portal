@@ -89,7 +89,7 @@ public class ResourceActionLocalServiceImpl
 	}
 
 	@Override
-	public void checkResourceActions(
+	public synchronized void checkResourceActions(
 		String name, List<String> actionIds, boolean addDefaultActions) {
 
 		if ((actionIds.size() > Long.SIZE) ||
