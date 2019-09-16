@@ -17,11 +17,14 @@ package com.liferay.batch.engine.service.impl;
 import com.liferay.batch.engine.BatchEngineTaskContentType;
 import com.liferay.batch.engine.BatchEngineTaskExecuteStatus;
 import com.liferay.batch.engine.BatchEngineTaskOperation;
+import com.liferay.batch.engine.internal.order.comparator.BatchEngineTaskIdComparator;
 import com.liferay.batch.engine.model.BatchEngineTask;
 import com.liferay.batch.engine.service.base.BatchEngineTaskLocalServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.jdbc.OutputBlob;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
+
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -59,6 +62,28 @@ public class BatchEngineTaskLocalServiceImpl
 		batchEngineTask.setVersion(version);
 
 		return batchEngineTaskPersistence.update(batchEngineTask);
+	}
+
+	public int countBatchEngineTasks(
+		BatchEngineTaskExecuteStatus executeStatus) {
+
+		return batchEngineTaskPersistence.countByexecuteStatus(
+			executeStatus.toString());
+	}
+
+	public List<BatchEngineTask> getBatchEngineTasks(
+		BatchEngineTaskExecuteStatus executeStatus) {
+
+		return batchEngineTaskPersistence.findByexecuteStatus(
+			executeStatus.toString());
+	}
+
+	public List<BatchEngineTask> getFirstBatchEngineTasks(
+		BatchEngineTaskExecuteStatus executeStatus, int size) {
+
+		return batchEngineTaskPersistence.findByexecuteStatus(
+			executeStatus.toString(), 0, size,
+			new BatchEngineTaskIdComparator(true));
 	}
 
 }
