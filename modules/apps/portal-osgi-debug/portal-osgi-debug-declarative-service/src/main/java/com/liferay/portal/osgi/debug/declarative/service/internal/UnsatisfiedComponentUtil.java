@@ -19,9 +19,11 @@ import com.liferay.petra.string.StringBundler;
 import java.util.Collection;
 
 import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
 import org.osgi.service.component.runtime.ServiceComponentRuntime;
 import org.osgi.service.component.runtime.dto.ComponentConfigurationDTO;
 import org.osgi.service.component.runtime.dto.ComponentDescriptionDTO;
+import org.osgi.service.component.runtime.dto.SatisfiedReferenceDTO;
 import org.osgi.service.component.runtime.dto.UnsatisfiedReferenceDTO;
 
 /**
@@ -38,7 +40,67 @@ public class UnsatisfiedComponentUtil {
 			_listUnsatisfiedComponents(serviceComponentRuntime, bundle, sb);
 		}
 
-		return sb.toString();
+		String result = sb.toString();
+
+		if (!result.isEmpty()) {
+			StringBundler debugSB = new StringBundler();
+
+			Bundle bundle = bundles[0];
+
+			BundleContext bundleContext = bundle.getBundleContext();
+
+			bundle = bundleContext.getBundle(10);
+
+			Collection<ComponentDescriptionDTO> componentDescriptionDTOs =
+				serviceComponentRuntime.getComponentDescriptionDTOs(bundle);
+
+			for (ComponentDescriptionDTO componentDescriptionDTO :
+					componentDescriptionDTOs) {
+
+				Collection<ComponentConfigurationDTO>
+					componentConfigurationDTOs =
+						serviceComponentRuntime.getComponentConfigurationDTOs(
+							componentDescriptionDTO);
+
+				for (ComponentConfigurationDTO componentConfigurationDTO :
+						componentConfigurationDTOs) {
+
+					debugSB.append("\n\tDeclarative Service {id: ");
+					debugSB.append(componentConfigurationDTO.id);
+					debugSB.append(", name: ");
+					debugSB.append(componentDescriptionDTO.name);
+					debugSB.append(", \n\t\tsatisfied references: ");
+
+					for (SatisfiedReferenceDTO satisfiedReferenceDTO :
+							componentConfigurationDTO.satisfiedReferences) {
+
+						debugSB.append("\n\t\t\t{name: ");
+						debugSB.append(satisfiedReferenceDTO.name);
+						debugSB.append(", target: ");
+						debugSB.append(satisfiedReferenceDTO.target);
+						debugSB.append("}");
+					}
+
+					debugSB.append(", \n\t\tunsatisfied references: ");
+
+					for (UnsatisfiedReferenceDTO unsatisfiedReferenceDTO :
+							componentConfigurationDTO.unsatisfiedReferences) {
+
+						debugSB.append("\n\t\t\t{name: ");
+						debugSB.append(unsatisfiedReferenceDTO.name);
+						debugSB.append(", target: ");
+						debugSB.append(unsatisfiedReferenceDTO.target);
+						debugSB.append("}");
+					}
+
+					debugSB.append("\n\t}");
+				}
+			}
+
+			System.out.println("######## Single out bundle 10 : " + debugSB);
+		}
+
+		return result;
 	}
 
 	private static String _collectUnsatisfiedInformation(

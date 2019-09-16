@@ -37,7 +37,9 @@ import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.cm.Configuration;
 import org.osgi.service.cm.ConfigurationAdmin;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -45,6 +47,11 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, service = BundleBlacklistManager.class)
 public class BundleBlacklistManagerImpl implements BundleBlacklistManager {
+
+	@Activate
+	public void activate() {
+		System.out.println("######## Activating BundleBlacklistManagerImpl");
+	}
 
 	@Override
 	public void addToBlacklistAndUninstall(String... bundleSymbolicNames)
@@ -64,6 +71,11 @@ public class BundleBlacklistManagerImpl implements BundleBlacklistManager {
 
 				return blacklistBundleSymbolicNamesSet.toArray(new String[0]);
 			});
+	}
+
+	@Deactivate
+	public void deactivate() {
+		System.out.println("######## Deactivating BundleBlacklistManagerImpl");
 	}
 
 	@Override

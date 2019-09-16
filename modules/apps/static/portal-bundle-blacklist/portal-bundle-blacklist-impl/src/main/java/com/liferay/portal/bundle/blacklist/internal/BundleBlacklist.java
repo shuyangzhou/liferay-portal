@@ -47,6 +47,7 @@ import org.osgi.framework.startlevel.BundleStartLevel;
 import org.osgi.framework.wiring.FrameworkWiring;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
@@ -59,6 +60,11 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class BundleBlacklist {
 
+	@Deactivate
+	public void deactivate() {
+		System.out.println("######## Deactivating BundleBlacklist");
+	}
+
 	public List<String> getBlacklistBundleSymbolicNames() {
 		return new ArrayList<>(_uninstalledBundles.keySet());
 	}
@@ -68,6 +74,8 @@ public class BundleBlacklist {
 	protected void activate(
 			BundleContext bundleContext, Map<String, String> properties)
 		throws Exception {
+
+		System.out.println("######## Activating/Modifying BundleBlacklist");
 
 		Bundle bundle = bundleContext.getBundle();
 
