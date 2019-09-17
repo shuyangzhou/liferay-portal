@@ -4496,6 +4496,36 @@ war.path=${app.server.portal.dir}/</echo>
 			</if>
 
 			<echo>${app.server.waiting.url} has loaded</echo>
+
+			<echo> CURL 1 ${app.server.waiting.url} </echo>
+
+			<exec executable="curl" outputproperty="curl.output">
+				<arg line="${app.server.waiting.url}" />
+			</exec>
+
+			<echo>${curl.output}</echo>
+
+			<echo> CURL 2 ${app.server.waiting.url} </echo>
+
+			<exec executable="curl" outputproperty="curl.output2">
+				<arg line="${app.server.waiting.url}" />
+			</exec>
+
+			<echo> CURL 3 http://localhost:8080 </echo>
+
+			<exec executable="curl" outputproperty="curl.output3">
+				<arg line="http://localhost:8080" />
+			</exec>
+
+			<echo>${curl.output3}</echo>
+
+			<echo> CURL 4 http://localhost:8080/web/guest/home </echo>
+
+			<exec executable="curl" outputproperty="curl.output4">
+				<arg line="http://localhost:8080/web/guest/home" />
+			</exec>
+
+			<echo>${curl.output4}</echo>
 		</sequential>
 	</macrodef>
 
