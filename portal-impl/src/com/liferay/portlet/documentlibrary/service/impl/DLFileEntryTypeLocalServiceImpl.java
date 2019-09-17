@@ -199,10 +199,18 @@ public class DLFileEntryTypeLocalServiceImpl
 	}
 
 	@Override
-	public DLFileEntryType createBasicDocumentDLFileEntryType()
+	public synchronized DLFileEntryType createBasicDocumentDLFileEntryType()
 		throws NoSuchFileEntryTypeException {
 
-		DLFileEntryType dlFileEntryType = dlFileEntryTypePersistence.create(
+		DLFileEntryType dlFileEntryType =
+			dlFileEntryTypePersistence.fetchByPrimaryKey(
+				DLFileEntryTypeConstants.FILE_ENTRY_TYPE_ID_BASIC_DOCUMENT);
+
+		if (dlFileEntryType != null) {
+			return dlFileEntryType;
+		}
+
+		dlFileEntryType = dlFileEntryTypePersistence.create(
 			DLFileEntryTypeConstants.FILE_ENTRY_TYPE_ID_BASIC_DOCUMENT);
 
 		dlFileEntryType.setCompanyId(CompanyConstants.SYSTEM);
