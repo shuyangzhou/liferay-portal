@@ -184,13 +184,15 @@ public class ParamAndPropertyAncestorTagImpl
 	}
 
 	@Override
-	public synchronized void setPageContext(PageContext pageContext) {
+	public void setPageContext(PageContext pageContext) {
 		super.setPageContext(pageContext);
 
 		HttpServletRequest httpServletRequest =
 			(HttpServletRequest)pageContext.getRequest();
 
-		request = httpServletRequest;
+		synchronized (this) {
+			request = httpServletRequest;
+		}
 
 		servletContext = (ServletContext)getRequest().getAttribute(WebKeys.CTX);
 
