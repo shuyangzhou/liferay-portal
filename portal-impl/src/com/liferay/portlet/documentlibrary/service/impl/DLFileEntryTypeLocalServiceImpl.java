@@ -46,6 +46,8 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.permission.ModelPermissions;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
+import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -199,10 +201,19 @@ public class DLFileEntryTypeLocalServiceImpl
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public DLFileEntryType createBasicDocumentDLFileEntryType()
 		throws NoSuchFileEntryTypeException {
 
-		DLFileEntryType dlFileEntryType = dlFileEntryTypePersistence.create(
+		DLFileEntryType dlFileEntryType =
+			dlFileEntryTypePersistence.fetchByPrimaryKey(
+				DLFileEntryTypeConstants.FILE_ENTRY_TYPE_ID_BASIC_DOCUMENT);
+
+		if (dlFileEntryType != null) {
+			return dlFileEntryType;
+		}
+
+		dlFileEntryType = dlFileEntryTypePersistence.create(
 			DLFileEntryTypeConstants.FILE_ENTRY_TYPE_ID_BASIC_DOCUMENT);
 
 		dlFileEntryType.setCompanyId(CompanyConstants.SYSTEM);
@@ -307,7 +318,10 @@ public class DLFileEntryTypeLocalServiceImpl
 			return dlFileEntryType;
 		}
 
-		return dlFileEntryTypeLocalService.createBasicDocumentDLFileEntryType();
+		synchronized (this) {
+			return dlFileEntryTypeLocalService.
+				createBasicDocumentDLFileEntryType();
+		}
 	}
 
 	@Override

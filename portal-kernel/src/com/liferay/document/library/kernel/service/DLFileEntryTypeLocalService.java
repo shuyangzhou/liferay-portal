@@ -110,6 +110,7 @@ public interface DLFileEntryTypeLocalService
 
 	public void clearDLFolderDLFileEntryTypes(long folderId);
 
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public DLFileEntryType createBasicDocumentDLFileEntryType()
 		throws NoSuchFileEntryTypeException;
 
