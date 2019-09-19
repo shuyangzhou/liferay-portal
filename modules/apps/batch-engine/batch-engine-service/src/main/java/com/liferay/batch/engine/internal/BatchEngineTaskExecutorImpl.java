@@ -67,6 +67,16 @@ public class BatchEngineTaskExecutorImpl<T> implements BatchEngineTaskExecutor {
 	}
 
 	@Override
+	public synchronized void disable() {
+		_disabled = true;
+	}
+
+	@Override
+	public void enable() {
+		_disabled = false;
+	}
+
+	@Override
 	public void execute(BatchEngineTask batchEngineTask) {
 		try {
 			batchEngineTask.setExecuteStatus(
@@ -94,6 +104,11 @@ public class BatchEngineTaskExecutorImpl<T> implements BatchEngineTaskExecutor {
 
 			_batchEngineTaskLocalService.updateBatchEngineTask(batchEngineTask);
 		}
+	}
+
+	@Override
+	public synchronized boolean isDisabled() {
+		return _disabled;
 	}
 
 	private void _commitItems(
@@ -134,6 +149,10 @@ public class BatchEngineTaskExecutorImpl<T> implements BatchEngineTaskExecutor {
 			T item = null;
 
 			while ((item = batchEngineTaskItemReader.read()) != null) {
+				if (_disabled) {
+					return;
+				}
+
 				items.add(item);
 
 				if (items.size() == batchEngineTask.getBatchSize()) {
@@ -173,6 +192,8 @@ public class BatchEngineTaskExecutorImpl<T> implements BatchEngineTaskExecutor {
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
+
+	private volatile boolean _disabled = true;
 
 	@Reference
 	private UserLocalService _userLocalService;

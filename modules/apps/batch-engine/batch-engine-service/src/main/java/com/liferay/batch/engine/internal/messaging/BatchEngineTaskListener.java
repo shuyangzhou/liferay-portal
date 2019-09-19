@@ -20,6 +20,8 @@ import com.liferay.batch.engine.model.BatchEngineTask;
 import com.liferay.batch.engine.service.BatchEngineTaskLocalService;
 import com.liferay.petra.executor.PortalExecutorManager;
 import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.Message;
@@ -59,23 +61,38 @@ public class BatchEngineTaskListener extends BaseMessageListener {
 			return;
 		}
 
+		_parallelExecutions = GetterUtil.getInteger(
+			properties.get("parallel.executions"));
+
 		_checkUnfinishedBatchEngineTasks();
+
+		_batchEngineTaskExecutor.enable();
 
 		_activateSchedulerEngine(
 			GetterUtil.getInteger(properties.get("interval")));
-
-		_parallelExecutions = GetterUtil.getInteger(
-			properties.get("parallel.executions"));
 	}
 
 	@Deactivate
 	protected void deactivate() {
 		_schedulerEngineHelper.unregister(this);
+
+		_batchEngineTaskExecutor.disable();
+
+		try {
+			_latch.awaitZero();
+		}
+		catch (InterruptedException ie) {
+			_log.error(ie.getMessage(), ie);
+		}
 	}
 
 	@Override
 	protected void doReceive(Message message) throws Exception {
-		_startBatchEngineTasks(_parallelExecutions);
+		if (_batchEngineTaskExecutor.isDisabled()) {
+			return;
+		}
+
+		_startBatchEngineTasks();
 	}
 
 	private void _activateSchedulerEngine(int interval) {
@@ -106,13 +123,13 @@ public class BatchEngineTaskListener extends BaseMessageListener {
 		}
 	}
 
-	private void _startBatchEngineTasks(int parallelExecutions) {
+	private void _startBatchEngineTasks() {
 		int startedBatchEngineTaskCount =
 			_batchEngineTaskLocalService.countBatchEngineTasks(
 				BatchEngineTaskExecuteStatus.STARTED);
 
 		int availableBatchEngineTaskCount =
-			parallelExecutions - startedBatchEngineTaskCount;
+			_parallelExecutions - startedBatchEngineTaskCount;
 
 		if (availableBatchEngineTaskCount == 0) {
 			return;
@@ -129,9 +146,21 @@ public class BatchEngineTaskListener extends BaseMessageListener {
 
 		for (BatchEngineTask batchEngineTask : batchEngineTasks) {
 			executorService.submit(
-				() -> _batchEngineTaskExecutor.execute(batchEngineTask));
+				() -> {
+					_latch.increment();
+
+					try {
+						_batchEngineTaskExecutor.execute(batchEngineTask);
+					}
+					finally {
+						_latch.decrement();
+					}
+				});
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		BatchEngineTaskListener.class);
 
 	@Reference
 	private BatchEngineTaskExecutor _batchEngineTaskExecutor;
@@ -141,6 +170,8 @@ public class BatchEngineTaskListener extends BaseMessageListener {
 
 	@Reference
 	private ClusterMasterExecutor _clusterMasterExecutor;
+
+	private final Latch _latch = new Latch();
 
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED)
 	private ModuleServiceLifecycle _moduleServiceLifecycle;
@@ -155,5 +186,34 @@ public class BatchEngineTaskListener extends BaseMessageListener {
 
 	@Reference
 	private TriggerFactory _triggerFactory;
+
+	private static class Latch {
+
+		public void awaitZero() throws InterruptedException {
+			synchronized (_monitor) {
+				while (_count > 0) {
+					_monitor.wait();
+				}
+			}
+		}
+
+		public void decrement() {
+			synchronized (_monitor) {
+				if (--_count <= 0) {
+					_monitor.notifyAll();
+				}
+			}
+		}
+
+		public void increment() {
+			synchronized (_monitor) {
+				_count++;
+			}
+		}
+
+		private int _count;
+		private final Object _monitor = new Object();
+
+	}
 
 }
