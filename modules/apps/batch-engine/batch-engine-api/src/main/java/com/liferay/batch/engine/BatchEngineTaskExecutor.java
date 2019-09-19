@@ -21,6 +21,12 @@ import com.liferay.batch.engine.model.BatchEngineTask;
  */
 public interface BatchEngineTaskExecutor {
 
+	public void disable();
+
+	public void enable();
+
 	public void execute(BatchEngineTask batchEngineTask);
+
+	public boolean isDisabled();
 
 }
