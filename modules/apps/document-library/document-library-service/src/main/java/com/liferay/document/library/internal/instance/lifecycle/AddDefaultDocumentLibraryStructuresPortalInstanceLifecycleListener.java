@@ -77,8 +77,6 @@ public class AddDefaultDocumentLibraryStructuresPortalInstanceLifecycleListener
 			return;
 		}
 
-		_dlFileEntryTypeLocalService.getBasicDocumentDLFileEntryType();
-
 		addDLRawMetadataStructures(company.getCompanyId());
 	}
 
