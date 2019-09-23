@@ -86,6 +86,7 @@ dependencies {
 	testCompile project(":core:petra:petra-lang")
 	testCompile project(":core:petra:petra-memory")
 	testCompile project(":core:petra:petra-nio")
+	testCompile project(":core:petra:petra-string")
 	testCompile project(":core:registry-api")
 }
 
