@@ -151,6 +151,10 @@ public class BatchEngineTaskExecutorImpl implements BatchEngineTaskExecutor {
 			Object item = null;
 
 			while ((item = batchEngineTaskItemReader.read()) != null) {
+				if (Thread.interrupted()) {
+					return;
+				}
+
 				items.add(item);
 
 				if (items.size() == batchEngineTask.getBatchSize()) {
