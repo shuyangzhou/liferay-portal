@@ -30,6 +30,8 @@ public @interface Property {
 
 	public String name();
 
-	public String value();
+	public String value() default "";
+
+	public String[] values() default {};
 
 }

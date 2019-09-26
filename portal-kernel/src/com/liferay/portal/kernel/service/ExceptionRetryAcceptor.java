@@ -14,6 +14,10 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringUtil;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,6 +38,8 @@ public class ExceptionRetryAcceptor implements RetryAcceptor {
 				"Missing property " + EXCEPTION_NAME);
 		}
 
+		List<String> names = StringUtil.split(name, CharPool.COMMA);
+
 		while (true) {
 			Class<?> clazz = t.getClass();
 
@@ -44,10 +50,13 @@ public class ExceptionRetryAcceptor implements RetryAcceptor {
 			}
 
 			try {
-				Class<?> exceptionClass = classLoader.loadClass(name);
+				for (String exceptionName : names) {
+					Class<?> exceptionClass = classLoader.loadClass(
+						exceptionName);
 
-				if (exceptionClass.isInstance(t)) {
-					return true;
+					if (exceptionClass.isInstance(t)) {
+						return true;
+					}
 				}
 			}
 			catch (ClassNotFoundException cnfe) {

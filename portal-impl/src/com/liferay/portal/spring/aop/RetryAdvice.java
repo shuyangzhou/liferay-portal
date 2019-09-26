@@ -15,6 +15,8 @@
 package com.liferay.portal.spring.aop;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
+import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.kernel.aop.AopMethodInvocation;
 import com.liferay.portal.kernel.aop.ChainableMethodAdvice;
 import com.liferay.portal.kernel.log.Log;
@@ -55,7 +57,15 @@ public class RetryAdvice extends ChainableMethodAdvice {
 		Map<String, String> properties = new HashMap<>();
 
 		for (Property property : retry.properties()) {
-			properties.put(property.name(), property.value());
+			String value = property.value();
+
+			String[] values = property.values();
+
+			if (values.length != 0) {
+				value = StringUtil.merge(values, StringPool.COMMA);
+			}
+
+			properties.put(property.name(), value);
 		}
 
 		Class<? extends RetryAcceptor> clazz = retry.acceptor();
