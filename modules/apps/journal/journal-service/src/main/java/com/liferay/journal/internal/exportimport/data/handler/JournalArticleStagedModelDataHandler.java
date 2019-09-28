@@ -1383,33 +1383,8 @@ public class JournalArticleStagedModelDataHandler
 			article.getResourcePrimKey(), importedArticle.getResourcePrimKey());
 
 		for (Element friendlyURLEntryElement : friendlyURLEntryElements) {
-			String path = friendlyURLEntryElement.attributeValue("path");
-
-			FriendlyURLEntry friendlyURLEntry =
-				(FriendlyURLEntry)portletDataContext.getZipEntryAsObject(path);
-
 			StagedModelDataHandlerUtil.importStagedModel(
 				portletDataContext, friendlyURLEntryElement);
-
-			Map<Long, Long> friendlyURLEntries =
-				(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
-					FriendlyURLEntry.class);
-
-			long friendlyURLEntryId = MapUtil.getLong(
-				friendlyURLEntries, friendlyURLEntry.getFriendlyURLEntryId(),
-				friendlyURLEntry.getFriendlyURLEntryId());
-
-			FriendlyURLEntry existingFriendlyURLEntry =
-				_friendlyURLEntryLocalService.fetchFriendlyURLEntry(
-					friendlyURLEntryId);
-
-			if (existingFriendlyURLEntry != null) {
-				existingFriendlyURLEntry.setClassPK(
-					importedArticle.getResourcePrimKey());
-
-				_friendlyURLEntryLocalService.updateFriendlyURLEntry(
-					existingFriendlyURLEntry);
-			}
 		}
 	}
 
