@@ -17,6 +17,7 @@ package com.liferay.batch.engine.internal.reader;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.petra.io.unsync.UnsyncBufferedReader;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.IOException;
@@ -25,6 +26,7 @@ import java.io.InputStreamReader;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Ivica Cardic
@@ -59,7 +61,7 @@ public class CSVBatchEngineTaskItemReader implements BatchEngineTaskItemReader {
 
 		Map<String, Object> columnValues = new HashMap<>();
 
-		String[] values = StringUtil.split(line);
+		String[] values = line.split(_ROW_REGEX);
 
 		for (int i = 0; i < values.length; i++) {
 			String columnName = _columnNames[i];
@@ -68,7 +70,7 @@ public class CSVBatchEngineTaskItemReader implements BatchEngineTaskItemReader {
 				continue;
 			}
 
-			String value = values[i].trim();
+			String value = _cleanUpValue(values[i]);
 
 			int lastDelimiterIndex = columnName.lastIndexOf('_');
 
@@ -83,6 +85,27 @@ public class CSVBatchEngineTaskItemReader implements BatchEngineTaskItemReader {
 
 		return _objectMapper.convertValue(columnValues, _itemClass);
 	}
+
+	private String _cleanUpValue(String value) {
+		value = value.trim();
+
+		if (value.startsWith(StringPool.QUOTE)) {
+			value = value.substring(1);
+		}
+
+		if (value.endsWith(StringPool.QUOTE)) {
+			value = value.substring(0, value.length() - 1);
+		}
+
+		if (Objects.equals(value, StringPool.BLANK)) {
+			value = null;
+		}
+
+		return value;
+	}
+
+	private static final String _ROW_REGEX =
+		",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
 
 	private static final ObjectMapper _objectMapper = new ObjectMapper();
 
