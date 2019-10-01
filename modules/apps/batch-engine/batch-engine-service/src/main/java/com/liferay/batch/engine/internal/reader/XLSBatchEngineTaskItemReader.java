@@ -16,6 +16,8 @@ package com.liferay.batch.engine.internal.reader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.petra.string.StringPool;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -24,6 +26,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -99,7 +102,7 @@ public class XLSBatchEngineTaskItemReader implements BatchEngineTaskItemReader {
 				}
 			}
 			else {
-				String value = cell.getStringCellValue();
+				String value = _cleanUpValue(cell.getStringCellValue());
 
 				int lastDelimiterIndex = columnName.lastIndexOf('_');
 
@@ -114,6 +117,16 @@ public class XLSBatchEngineTaskItemReader implements BatchEngineTaskItemReader {
 		}
 
 		return _objectMapper.convertValue(columnValues, _itemClass);
+	}
+
+	private String _cleanUpValue(String value) {
+		value = value.trim();
+
+		if (Objects.equals(value, StringPool.BLANK)) {
+			value = null;
+		}
+
+		return value;
 	}
 
 	private static final ObjectMapper _objectMapper = new ObjectMapper();
