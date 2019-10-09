@@ -34,6 +34,8 @@ import com.liferay.registry.ServiceTracker;
 import com.liferay.registry.ServiceTrackerCustomizer;
 
 import java.util.Map;
+import java.util.NavigableMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -80,8 +82,11 @@ public class DefaultSynchronousMessageSenderTest {
 
 		_messageBus = new DefaultMessageBus();
 
-		_destinations = ReflectionTestUtil.getFieldValue(
-			_messageBus, "_destinations");
+		_destinationMaps = ReflectionTestUtil.getFieldValue(
+			_messageBus, "_destinationMaps");
+
+		NavigableMap<Integer, Destination> destinationMap =
+			new ConcurrentSkipListMap<>();
 
 		SynchronousDestination synchronousDestination =
 			new SynchronousDestination();
@@ -89,8 +94,9 @@ public class DefaultSynchronousMessageSenderTest {
 		synchronousDestination.setName(
 			DestinationNames.MESSAGE_BUS_DEFAULT_RESPONSE);
 
-		_destinations.put(
-			synchronousDestination.getName(), synchronousDestination);
+		destinationMap.put(0, synchronousDestination);
+
+		_destinationMaps.put(synchronousDestination.getName(), destinationMap);
 
 		_defaultSynchronousMessageSender =
 			new DefaultSynchronousMessageSender();
@@ -163,7 +169,12 @@ public class DefaultSynchronousMessageSenderTest {
 
 		destination.register(new ReplayMessageListener(response));
 
-		_destinations.put(destination.getName(), destination);
+		NavigableMap<Integer, Destination> destinationMap =
+			new ConcurrentSkipListMap<>();
+
+		destinationMap.put(0, destination);
+
+		_destinationMaps.put(destination.getName(), destinationMap);
 
 		try {
 			Assert.assertSame(
@@ -172,14 +183,14 @@ public class DefaultSynchronousMessageSenderTest {
 					destination.getName(), new Message()));
 		}
 		finally {
-			_destinations.remove(destination.getName());
+			_destinationMaps.remove(destination.getName());
 
 			destination.destroy();
 		}
 	}
 
 	private DefaultSynchronousMessageSender _defaultSynchronousMessageSender;
-	private Map<String, Destination> _destinations;
+	private Map<String, NavigableMap<Integer, Destination>> _destinationMaps;
 	private MessageBus _messageBus;
 	private PortalExecutorManager _portalExecutorManager;
 
