@@ -42,9 +42,12 @@ import com.liferay.registry.RegistryUtil;
 import com.liferay.registry.dependency.ServiceDependencyManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableMap;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.CountDownLatch;
 
 import org.junit.runner.Description;
@@ -151,8 +154,8 @@ public class SynchronousDestinationTestRule
 
 			serviceDependencyManager.waitForDependencies();
 
-			_destinations = ReflectionTestUtil.getFieldValue(
-				MessageBusUtil.getMessageBus(), "_destinations");
+			_destinationMaps = ReflectionTestUtil.getFieldValue(
+				MessageBusUtil.getMessageBus(), "_destinationMaps");
 
 			_forceSyncSafeClosable = ProxyModeThreadLocal.setWithSafeClosable(
 				true);
@@ -191,7 +194,7 @@ public class SynchronousDestinationTestRule
 						searchEngineId));
 			}
 
-			Destination schedulerDestination = _destinations.get(
+			Destination schedulerDestination = MessageBusUtil.getDestination(
 				DestinationNames.SCHEDULER_DISPATCH);
 
 			if (schedulerDestination == null) {
@@ -254,7 +257,17 @@ public class SynchronousDestinationTestRule
 		}
 
 		public void replaceDestination(String destinationName) {
-			Destination destination = _destinations.get(destinationName);
+			NavigableMap<Integer, Destination> destinationMap =
+				_destinationMaps.get(destinationName);
+
+			Destination destination = null;
+
+			if (destinationMap != null) {
+				Map.Entry<Integer, Destination> lastEntry =
+					destinationMap.lastEntry();
+
+				destination = lastEntry.getValue();
+			}
 
 			boolean asyncDestination = false;
 
@@ -266,29 +279,29 @@ public class SynchronousDestinationTestRule
 					asyncDestination = true;
 				}
 				catch (Exception e) {
+					return;
 				}
 			}
 
-			if (asyncDestination) {
-				_asyncServiceDestinations.add(destination);
+			Destination synchronousDestination = createSynchronousDestination(
+				destinationName);
 
-				Destination synchronousDestination =
-					createSynchronousDestination(destinationName);
+			if (asyncDestination) {
+				_asyncServiceDestinations.put(destinationName, destinationMap);
 
 				destination.copyDestinationEventListeners(
 					synchronousDestination);
 				destination.copyMessageListeners(synchronousDestination);
-
-				_destinations.put(destinationName, synchronousDestination);
 			}
-
-			if (destination == null) {
+			else {
 				_absentDestinationNames.add(destinationName);
-
-				_destinations.put(
-					destinationName,
-					createSynchronousDestination(destinationName));
 			}
+
+			destinationMap = new ConcurrentSkipListMap<>();
+
+			destinationMap.put(0, synchronousDestination);
+
+			_destinationMaps.put(destinationName, destinationMap);
 		}
 
 		public void restorePreviousSync() {
@@ -296,22 +309,25 @@ public class SynchronousDestinationTestRule
 				_forceSyncSafeClosable.close();
 			}
 
-			for (Destination destination : _asyncServiceDestinations) {
-				_destinations.put(destination.getName(), destination);
-			}
+			_destinationMaps.putAll(_asyncServiceDestinations);
 
 			_asyncServiceDestinations.clear();
 
 			for (String absentDestinationName : _absentDestinationNames) {
-				_destinations.remove(absentDestinationName);
+				_destinationMaps.remove(absentDestinationName);
 			}
 
-			Destination destination = _destinations.get(
-				DestinationNames.SCHEDULER_DISPATCH);
+			NavigableMap<Integer, Destination> destinationMap =
+				_destinationMaps.get(DestinationNames.SCHEDULER_DISPATCH);
 
-			if (destination == null) {
+			if (destinationMap == null) {
 				return;
 			}
+
+			Map.Entry<Integer, Destination> lastEntry =
+				destinationMap.lastEntry();
+
+			Destination destination = lastEntry.getValue();
 
 			for (InvokerMessageListener invokerMessageListener :
 					_schedulerInvokerMessageListeners) {
@@ -343,9 +359,10 @@ public class SynchronousDestinationTestRule
 		}
 
 		private final List<String> _absentDestinationNames = new ArrayList<>();
-		private final List<Destination> _asyncServiceDestinations =
-			new ArrayList<>();
-		private Map<String, Destination> _destinations;
+		private final Map<String, NavigableMap<Integer, Destination>>
+			_asyncServiceDestinations = new HashMap<>();
+		private Map<String, NavigableMap<Integer, Destination>>
+			_destinationMaps;
 		private SafeClosable _forceSyncSafeClosable;
 		private final List<InvokerMessageListener>
 			_schedulerInvokerMessageListeners = new ArrayList<>();

@@ -54,6 +54,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableMap;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -1231,21 +1232,22 @@ public class SharingEntryLocalServiceTest {
 	private final class DisableSchedulerDestination implements AutoCloseable {
 
 		public DisableSchedulerDestination() {
-			_destinations = ReflectionTestUtil.getFieldValue(
-				_messageBus, "_destinations");
+			_destinationMaps = ReflectionTestUtil.getFieldValue(
+				_messageBus, "_destinationMaps");
 
-			_destination = _destinations.remove(
+			_destinationMap = _destinationMaps.remove(
 				DestinationNames.SCHEDULER_DISPATCH);
 		}
 
 		@Override
 		public void close() {
-			_destinations.put(
-				DestinationNames.SCHEDULER_DISPATCH, _destination);
+			_destinationMaps.put(
+				DestinationNames.SCHEDULER_DISPATCH, _destinationMap);
 		}
 
-		private final Destination _destination;
-		private final Map<String, Destination> _destinations;
+		private final NavigableMap<Integer, Destination> _destinationMap;
+		private final Map<String, NavigableMap<Integer, Destination>>
+			_destinationMaps;
 
 	}
 
