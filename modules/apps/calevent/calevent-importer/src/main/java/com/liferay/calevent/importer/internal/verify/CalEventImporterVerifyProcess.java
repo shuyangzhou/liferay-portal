@@ -91,6 +91,7 @@ import com.liferay.social.kernel.model.SocialActivity;
 import com.liferay.social.kernel.service.SocialActivityLocalService;
 import com.liferay.subscription.model.Subscription;
 import com.liferay.subscription.service.SubscriptionLocalService;
+import com.liferay.view.count.service.ViewCountEntryLocalService;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -220,9 +221,12 @@ public class CalEventImporterVerifyProcess extends VerifyProcess {
 		assetEntry.setHeight(height);
 		assetEntry.setWidth(width);
 		assetEntry.setPriority(priority);
-		assetEntry.setViewCount(viewCount);
 
 		_assetEntryLocalService.updateAssetEntry(assetEntry);
+
+		_viewCountEntryLocalService.incrementViewCount(
+			companyId, _classNameLocalService.getClassNameId(AssetEntry.class),
+			entryId, viewCount);
 	}
 
 	private void _addAssetLink(
@@ -1421,5 +1425,8 @@ public class CalEventImporterVerifyProcess extends VerifyProcess {
 
 	@Reference
 	private UserLocalService _userLocalService;
+
+	@Reference
+	private ViewCountEntryLocalService _viewCountEntryLocalService;
 
 }
