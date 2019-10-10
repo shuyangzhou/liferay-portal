@@ -16,6 +16,7 @@ package com.liferay.view.count.service.persistence.impl;
 
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.LockMode;
+import com.liferay.portal.kernel.dao.orm.ORMException;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.view.count.model.ViewCountEntry;
 import com.liferay.view.count.model.impl.ViewCountEntryImpl;
@@ -38,29 +39,54 @@ public class ViewCountEntryFinderImpl
 
 		Session session = null;
 
-		try {
-			session = openSession();
+		while (true) {
+			try {
+				session = openSession();
 
-			ViewCountEntryPK viewCountEntryPK = new ViewCountEntryPK(
-				companyId, classNameId, classPK);
+				ViewCountEntryPK viewCountEntryPK = new ViewCountEntryPK(
+					companyId, classNameId, classPK);
 
-			ViewCountEntry viewCountEntry = (ViewCountEntry)session.get(
-				ViewCountEntryImpl.class, viewCountEntryPK, LockMode.UPGRADE);
+				ViewCountEntry viewCountEntry = (ViewCountEntry)session.get(
+					ViewCountEntryImpl.class, viewCountEntryPK,
+					LockMode.UPGRADE);
 
-			viewCountEntry.setViewCount(
-				viewCountEntry.getViewCount() + increment);
+				if (viewCountEntry == null) {
+					viewCountEntry = new ViewCountEntryImpl();
 
-			session.saveOrUpdate(viewCountEntry);
+					viewCountEntry.setPrimaryKey(viewCountEntryPK);
 
-			_entityCache.putResult(
-				entityCacheEnabled, ViewCountEntryImpl.class, viewCountEntryPK,
-				viewCountEntry);
-		}
-		catch (Exception e) {
-			throw processException(e);
-		}
-		finally {
-			closeSession(session);
+					viewCountEntry.setViewCount(increment);
+
+					session.save(viewCountEntry);
+
+					try {
+						session.flush();
+					}
+					catch (ORMException orme) {
+						session.clear();
+
+						continue;
+					}
+				}
+				else {
+					viewCountEntry.setViewCount(
+						viewCountEntry.getViewCount() + increment);
+
+					session.saveOrUpdate(viewCountEntry);
+				}
+
+				_entityCache.putResult(
+					entityCacheEnabled, ViewCountEntryImpl.class,
+					viewCountEntryPK, viewCountEntry);
+
+				break;
+			}
+			catch (Exception e) {
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
 		}
 	}
 
