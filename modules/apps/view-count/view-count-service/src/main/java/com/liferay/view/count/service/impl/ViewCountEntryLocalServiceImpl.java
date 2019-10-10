@@ -41,18 +41,6 @@ public class ViewCountEntryLocalServiceImpl
 	extends ViewCountEntryLocalServiceBaseImpl implements ViewCountService {
 
 	@Override
-	public void addViewCountEntry(
-		long companyId, long classNameId, long classPK) {
-
-		ViewCountEntry viewCountEntry = viewCountEntryPersistence.create(
-			new ViewCountEntryPK(companyId, classNameId, classPK));
-
-		viewCountEntry.setCompanyId(companyId);
-
-		viewCountEntryPersistence.update(viewCountEntry);
-	}
-
-	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			ViewCountService.class, ViewCountEntryLocalService.class,
