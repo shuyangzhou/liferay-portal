@@ -1186,12 +1186,13 @@ public class AssetPublisherDisplayContext {
 
 		if (isEnablePermissions()) {
 			return AssetEntryServiceUtil.incrementViewCounter(
-				assetEntry.getClassName(), assetEntry.getClassPK());
+				assetEntry.getCompanyId(), assetEntry.getClassName(),
+				assetEntry.getClassPK());
 		}
 
 		return AssetEntryLocalServiceUtil.incrementViewCounter(
-			_themeDisplay.getUserId(), assetEntry.getClassName(),
-			assetEntry.getClassPK());
+			assetEntry.getCompanyId(), _themeDisplay.getUserId(),
+			assetEntry.getClassName(), assetEntry.getClassPK());
 	}
 
 	public Boolean isAnyAssetType() {

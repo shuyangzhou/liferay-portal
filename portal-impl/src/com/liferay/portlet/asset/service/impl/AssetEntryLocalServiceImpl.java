@@ -31,8 +31,6 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.increment.BufferedIncrement;
-import com.liferay.portal.kernel.increment.NumberIncrement;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Field;
@@ -45,12 +43,14 @@ import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.service.view.count.ViewCountService;
 import com.liferay.portal.kernel.social.SocialActivityManagerUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portlet.asset.service.base.AssetEntryLocalServiceBaseImpl;
@@ -75,6 +75,16 @@ import java.util.List;
 public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 
 	@Override
+	public AssetEntry addAssetEntry(AssetEntry assetEntry) {
+		_viewCountService.addViewCountEntry(
+			assetEntry.getCompanyId(),
+			classNameLocalService.getClassNameId(AssetEntry.class),
+			assetEntry.getPrimaryKey());
+
+		return super.addAssetEntry(assetEntry);
+	}
+
+	@Override
 	public void deleteEntry(AssetEntry entry) throws PortalException {
 
 		// Entry
@@ -96,6 +106,13 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 					tag.getTagId(), entry.getClassNameId());
 			}
 		}
+
+		// View count
+
+		_viewCountService.removeViewCount(
+			entry.getCompanyId(),
+			classNameLocalService.getClassNameId(AssetEntry.class),
+			entry.getPrimaryKey());
 
 		// Social
 
@@ -419,8 +436,8 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 		User user = userLocalService.getUser(userId);
 
 		assetEntryLocalService.incrementViewCounter(
-			user.getUserId(), assetEntry.getClassName(),
-			assetEntry.getClassPK(), 1);
+			assetEntry.getCompanyId(), user.getUserId(),
+			assetEntry.getClassName(), assetEntry.getClassPK(), 1);
 
 		if (!user.isDefaultUser()) {
 			SocialActivityManagerUtil.addActivity(
@@ -432,13 +449,13 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AssetEntry incrementViewCounter(
-			long userId, String className, long classPK)
+			long companyId, long userId, String className, long classPK)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
 
 		assetEntryLocalService.incrementViewCounter(
-			user.getUserId(), className, classPK, 1);
+			companyId, user.getUserId(), className, classPK, 1);
 
 		AssetEntry assetEntry = getEntry(className, classPK);
 
@@ -451,28 +468,19 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 		return assetEntry;
 	}
 
-	@BufferedIncrement(
-		configuration = "AssetEntry", incrementClass = NumberIncrement.class
-	)
 	@Override
+	@Transactional(enabled = false)
 	public void incrementViewCounter(
-		long userId, String className, long classPK, int increment) {
+		long companyId, long userId, String className, long classPK,
+		int increment) {
 
 		if (ExportImportThreadLocal.isImportInProcess() || (classPK <= 0)) {
 			return;
 		}
 
-		AssetEntry entry = assetEntryPersistence.fetchByC_C(
-			classNameLocalService.getClassNameId(className), classPK);
-
-		if (entry == null) {
-			return;
-		}
-
-		entry.setModifiedDate(entry.getModifiedDate());
-		entry.setViewCount(entry.getViewCount() + increment);
-
-		assetEntryPersistence.update(entry);
+		_viewCountService.incrementViewCount(
+			companyId, classNameLocalService.getClassNameId(className),
+			classPK);
 	}
 
 	@Override
@@ -835,7 +843,10 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 				entry.setPriority(0);
 			}
 
-			entry.setViewCount(0);
+			_viewCountService.addViewCountEntry(
+				group.getCompanyId(),
+				classNameLocalService.getClassNameId(AssetEntry.class),
+				entryId);
 		}
 		else {
 			entry = assetEntryPersistence.findByPrimaryKey(entryId);
@@ -1462,6 +1473,11 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 			}
 		}
 	}
+
+	private static volatile ViewCountService _viewCountService =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			ViewCountService.class, AssetEntryLocalServiceImpl.class,
+			"_viewCountService", false, true);
 
 	private final ServiceTrackerMap
 		<String, List<AssetEntryValidatorExclusionRule>>
