@@ -39,10 +39,10 @@ public class ViewCountEntryLocalServiceWrapper
 	 * Never modify or reference this interface directly. Always use {@link ViewCountEntryLocalServiceUtil} to access the view count entry local service. Add custom service methods to <code>com.liferay.view.count.service.impl.ViewCountEntryLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	@Override
-	public com.liferay.view.count.model.ViewCountEntry addViewCountEntry(
+	public void addViewCountEntry(
 		long companyId, long classNameId, long classPK) {
 
-		return _viewCountEntryLocalService.addViewCountEntry(
+		_viewCountEntryLocalService.addViewCountEntry(
 			companyId, classNameId, classPK);
 	}
 
