@@ -141,8 +141,7 @@ create table AssetEntry (
 	layoutUuid VARCHAR(75) null,
 	height INTEGER,
 	width INTEGER,
-	priority DOUBLE,
-	viewCount INTEGER
+	priority DOUBLE
 );
 
 create table AssetLink (
