@@ -25,9 +25,9 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.spring.aop.AopInvocationHandler;
-import com.liferay.portal.spring.transaction.DefaultTransactionExecutor;
 import com.liferay.portal.spring.transaction.TransactionAttributeAdapter;
 import com.liferay.portal.spring.transaction.TransactionAttributeBuilder;
+import com.liferay.portal.spring.transaction.TransactionExecutor;
 import com.liferay.portal.spring.transaction.TransactionInterceptor;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -43,9 +43,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -62,33 +62,8 @@ public class ViewCountEntryFinderTest {
 	public static final AggregateTestRule aggregateTestRule =
 		new LiferayIntegrationTestRule();
 
-	@Before
-	public void setUp() throws Exception {
-		_className = _classNameLocalService.getClassName(
-			ViewCountEntryFinderTest.class.getName());
-
-		_viewCountEntry = _viewCountEntryLocalService.createViewCountEntry(
-			new ViewCountEntryPK(
-				TestPropsValues.getCompanyId(), _className.getClassNameId(),
-				-1));
-
-		_viewCountEntry.setCompanyId(TestPropsValues.getCompanyId());
-
-		_viewCountEntryLocalService.addViewCountEntry(_viewCountEntry);
-
-		Runtime runtime = Runtime.getRuntime();
-
-		_executorService = Executors.newFixedThreadPool(
-			runtime.availableProcessors());
-	}
-
-	@After
-	public void tearDown() {
-		_executorService.shutdownNow();
-	}
-
-	@Test
-	public void testIncrementViewCount() throws Exception {
+	@BeforeClass
+	public static void setUpClass() throws Exception {
 		AopInvocationHandler aopInvocationHandler =
 			ProxyUtil.fetchInvocationHandler(
 				_viewCountEntryLocalService, AopInvocationHandler.class);
@@ -99,9 +74,26 @@ public class ViewCountEntryFinderTest {
 			ReflectionTestUtil.getFieldValue(
 				aopInvocationHandler, "_transactionInterceptor");
 
-		DefaultTransactionExecutor transactionExecutor =
-			ReflectionTestUtil.getFieldValue(
-				transactionInterceptor, "_transactionHandler");
+		_transactionExecutor = ReflectionTestUtil.getFieldValue(
+			transactionInterceptor, "_transactionHandler");
+	}
+
+	@Before
+	public void setUp() {
+		_className = _classNameLocalService.getClassName(
+			ViewCountEntryFinderTest.class.getName());
+	}
+
+	@Test
+	public void testIncrementViewCount() throws Exception {
+		_viewCountEntry = _viewCountEntryLocalService.createViewCountEntry(
+			new ViewCountEntryPK(
+				TestPropsValues.getCompanyId(), _className.getClassNameId(),
+				-1));
+
+		_viewCountEntry.setCompanyId(TestPropsValues.getCompanyId());
+
+		_viewCountEntryLocalService.addViewCountEntry(_viewCountEntry);
 
 		List<Callable<Void>> callables = new ArrayList<>(_INCREMENTS_COUNT);
 
@@ -109,7 +101,7 @@ public class ViewCountEntryFinderTest {
 			callables.add(
 				() -> {
 					try {
-						return transactionExecutor.execute(
+						return _transactionExecutor.execute(
 							_transactionAttributeAdapter,
 							() -> {
 								_viewCountEntryFinder.incrementViewCount(
@@ -126,23 +118,36 @@ public class ViewCountEntryFinderTest {
 				});
 		}
 
-		List<Future<Void>> futures = _executorService.invokeAll(callables);
+		Runtime runtime = Runtime.getRuntime();
 
-		for (Future<Void> future : futures) {
-			future.get();
+		ExecutorService executorService = Executors.newFixedThreadPool(
+			runtime.availableProcessors());
+
+		try {
+			List<Future<Void>> futures = executorService.invokeAll(callables);
+
+			for (Future<Void> future : futures) {
+				future.get();
+			}
+
+			ViewCountEntry reloadedViewCountEntry =
+				_viewCountEntryLocalService.fetchViewCountEntry(
+					_viewCountEntry.getPrimaryKey());
+
+			Assert.assertNotNull(reloadedViewCountEntry);
+
+			Assert.assertEquals(
+				_INCREMENTS_COUNT, reloadedViewCountEntry.getViewCount());
 		}
-
-		ViewCountEntry reloadedViewCountEntry =
-			_viewCountEntryLocalService.fetchViewCountEntry(
-				_viewCountEntry.getPrimaryKey());
-
-		Assert.assertNotNull(reloadedViewCountEntry);
-
-		Assert.assertEquals(
-			_INCREMENTS_COUNT, reloadedViewCountEntry.getViewCount());
+		finally {
+			executorService.shutdownNow();
+		}
 	}
 
 	private static final int _INCREMENTS_COUNT = 1000;
+
+	@DeleteAfterTestRun
+	private static ClassName _className;
 
 	@Inject
 	private static ClassNameLocalService _classNameLocalService;
@@ -151,17 +156,13 @@ public class ViewCountEntryFinderTest {
 		_transactionAttributeAdapter = new TransactionAttributeAdapter(
 			TransactionAttributeBuilder.build(
 				Propagation.REQUIRES_NEW, new Class<?>[] {Exception.class}));
+	private static TransactionExecutor _transactionExecutor;
 
 	@Inject
 	private static ViewCountEntryFinder _viewCountEntryFinder;
 
 	@Inject
 	private static ViewCountEntryLocalService _viewCountEntryLocalService;
-
-	@DeleteAfterTestRun
-	private ClassName _className;
-
-	private ExecutorService _executorService;
 
 	@DeleteAfterTestRun
 	private ViewCountEntry _viewCountEntry;
