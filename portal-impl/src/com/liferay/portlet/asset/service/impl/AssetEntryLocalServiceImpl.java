@@ -76,11 +76,6 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 
 	@Override
 	public AssetEntry addAssetEntry(AssetEntry assetEntry) {
-		_viewCountService.addViewCountEntry(
-			assetEntry.getCompanyId(),
-			classNameLocalService.getClassNameId(AssetEntry.class),
-			assetEntry.getPrimaryKey());
-
 		return super.addAssetEntry(assetEntry);
 	}
 
@@ -842,11 +837,6 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 			if (priority == null) {
 				entry.setPriority(0);
 			}
-
-			_viewCountService.addViewCountEntry(
-				group.getCompanyId(),
-				classNameLocalService.getClassNameId(AssetEntry.class),
-				entryId);
 		}
 		else {
 			entry = assetEntryPersistence.findByPrimaryKey(entryId);
