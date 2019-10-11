@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.messaging.MessageBusEventListener;
 import com.liferay.portal.kernel.messaging.MessageListener;
+import com.liferay.portal.kernel.messaging.async.AsyncDestinationInterrupter;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
@@ -300,6 +301,24 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 
 		message.setDestinationName(destinationName);
 
+		if (destination instanceof BaseAsyncDestination) {
+			AsyncDestinationInterrupter asyncDestinationInterrupter =
+				_asyncDestinationInterrupter;
+
+			if ((asyncDestinationInterrupter != null) &&
+				asyncDestinationInterrupter.interrupt(message)) {
+
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						StringBundler.concat(
+							"Interrupt message ", message,
+							" sent to async destination ", destinationName));
+				}
+
+				return;
+			}
+		}
+
 		destination.send(message);
 	}
 
@@ -559,6 +578,13 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DefaultMessageBus.class);
+
+	@Reference(
+		cardinality = ReferenceCardinality.OPTIONAL,
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY
+	)
+	private volatile AsyncDestinationInterrupter _asyncDestinationInterrupter;
 
 	private final Map<String, Destination> _destinations =
 		new ConcurrentHashMap<>();
