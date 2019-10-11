@@ -127,6 +127,8 @@ public class CTPublishBackgroundTaskExecutor
 
 		_ctServiceRegistry.onAfterPublish(ctCollectionId);
 
+		_ctMessagePublisher.publish(ctCollectionId);
+
 		Date modifiedDate = new Date();
 
 		ctCollection.setModifiedDate(modifiedDate);
@@ -164,6 +166,9 @@ public class CTPublishBackgroundTaskExecutor
 
 	@Reference
 	private CTEntryLocalService _ctEntryLocalService;
+
+	@Reference
+	private CTMessagePublisher _ctMessagePublisher;
 
 	@Reference
 	private CTProcessLocalService _ctProcessLocalService;
