@@ -26,6 +26,16 @@ create table CTEntry (
 	changeType INTEGER
 );
 
+create table CTMessage (
+	mvccVersion LONG default 0 not null,
+	ctMessageId LONG not null primary key,
+	companyId LONG,
+	userId LONG,
+	ctCollectionId LONG,
+	destinationName VARCHAR(75) null,
+	messageContent TEXT null
+);
+
 create table CTPreferences (
 	mvccVersion LONG default 0 not null,
 	ctPreferencesId LONG not null primary key,
