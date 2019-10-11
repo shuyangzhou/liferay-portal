@@ -29,6 +29,19 @@ public class ViewCountServiceUtil {
 	}
 
 	public static void incrementViewCount(
+		long companyId, Class<?> clazz, long classPK) {
+
+		_viewCountService.incrementViewCount(companyId, clazz, classPK);
+	}
+
+	public static void incrementViewCount(
+		long companyId, Class<?> clazz, long classPK, int increment) {
+
+		_viewCountService.incrementViewCount(
+			companyId, clazz, classPK, increment);
+	}
+
+	public static void incrementViewCount(
 		long companyId, long classNameId, long classPK) {
 
 		_viewCountService.incrementViewCount(companyId, classNameId, classPK);
@@ -39,6 +52,13 @@ public class ViewCountServiceUtil {
 
 		_viewCountService.incrementViewCount(
 			companyId, classNameId, classPK, increment);
+	}
+
+	public static void removeViewCount(
+			long companyId, Class<?> clazz, long classPK)
+		throws PortalException {
+
+		_viewCountService.removeViewCount(companyId, clazz, classPK);
 	}
 
 	public static void removeViewCount(
