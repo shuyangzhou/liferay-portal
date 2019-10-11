@@ -2362,9 +2362,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			_assetEntryLocalService.updateAssetEntry(assetEntry);
 
 			ViewCountServiceUtil.incrementViewCount(
-				companyId,
-				_classNameLocalService.getClassNameId(AssetEntry.class),
-				entryId, viewCount);
+				companyId, AssetEntry.class, entryId, viewCount);
 		}
 
 		protected long addDDMDLFolder() throws Exception {
