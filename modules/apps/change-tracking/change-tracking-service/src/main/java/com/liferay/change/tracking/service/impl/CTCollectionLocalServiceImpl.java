@@ -20,8 +20,10 @@ import com.liferay.change.tracking.internal.CTPersistenceHelperThreadLocal;
 import com.liferay.change.tracking.internal.CTServiceRegistry;
 import com.liferay.change.tracking.model.CTCollection;
 import com.liferay.change.tracking.model.CTEntry;
+import com.liferay.change.tracking.model.CTMessage;
 import com.liferay.change.tracking.model.CTProcess;
 import com.liferay.change.tracking.service.CTEntryLocalService;
+import com.liferay.change.tracking.service.CTMessageLocalService;
 import com.liferay.change.tracking.service.CTProcessLocalService;
 import com.liferay.change.tracking.service.base.CTCollectionLocalServiceBaseImpl;
 import com.liferay.petra.lang.SafeClosable;
@@ -125,6 +127,13 @@ public class CTCollectionLocalServiceImpl
 			_ctProcessLocalService.deleteCTProcess(ctProcess);
 		}
 
+		List<CTMessage> ctMessages = ctMessagePersistence.findByCTCollectionId(
+			ctCollection.getCtCollectionId());
+
+		for (CTMessage ctMessage : ctMessages) {
+			_ctMessageLocalService.deleteCTMessage(ctMessage);
+		}
+
 		return ctCollectionPersistence.remove(ctCollection);
 	}
 
@@ -226,6 +235,9 @@ public class CTCollectionLocalServiceImpl
 
 	@Reference
 	private CTEntryLocalService _ctEntryLocalService;
+
+	@Reference
+	private CTMessageLocalService _ctMessageLocalService;
 
 	@Reference
 	private CTProcessLocalService _ctProcessLocalService;
