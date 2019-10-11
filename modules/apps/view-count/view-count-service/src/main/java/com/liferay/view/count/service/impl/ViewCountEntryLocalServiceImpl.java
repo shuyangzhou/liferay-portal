@@ -15,7 +15,6 @@
 package com.liferay.view.count.service.impl;
 
 import com.liferay.portal.aop.AopService;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.increment.BufferedIncrement;
 import com.liferay.portal.kernel.increment.NumberIncrement;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
@@ -103,19 +102,22 @@ public class ViewCountEntryLocalServiceImpl
 	}
 
 	@Override
-	public void removeViewCount(long companyId, Class<?> clazz, long classPK)
-		throws PortalException {
-
+	public void removeViewCount(long companyId, Class<?> clazz, long classPK) {
 		viewCountEntryLocalService.removeViewCount(
 			companyId, _classNameLocalService.getClassNameId(clazz), classPK);
 	}
 
 	@Override
-	public void removeViewCount(long companyId, long classNameId, long classPK)
-		throws PortalException {
+	public void removeViewCount(
+		long companyId, long classNameId, long classPK) {
 
-		viewCountEntryPersistence.remove(
-			new ViewCountEntryPK(companyId, classNameId, classPK));
+		ViewCountEntry viewCountEntry =
+			viewCountEntryPersistence.fetchByPrimaryKey(
+				new ViewCountEntryPK(companyId, classNameId, classPK));
+
+		if (viewCountEntry != null) {
+			viewCountEntryPersistence.remove(viewCountEntry);
+		}
 	}
 
 	@Reference
