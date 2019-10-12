@@ -18,8 +18,8 @@ import com.liferay.batch.engine.BatchEngineTaskExecuteStatus;
 import com.liferay.batch.engine.BatchEngineTaskExecutor;
 import com.liferay.batch.engine.internal.reader.BatchEngineTaskItemReader;
 import com.liferay.batch.engine.internal.reader.BatchEngineTaskItemReaderFactory;
-import com.liferay.batch.engine.internal.writer.BatchEngineTaskItemWriter;
-import com.liferay.batch.engine.internal.writer.BatchEngineTaskItemWriterFactory;
+import com.liferay.batch.engine.internal.writer.ItemBatchEngineTaskItemWriter;
+import com.liferay.batch.engine.internal.writer.ItemBatchEngineTaskItemWriterFactory;
 import com.liferay.batch.engine.model.BatchEngineTask;
 import com.liferay.batch.engine.service.BatchEngineTaskLocalService;
 import com.liferay.portal.kernel.log.Log;
@@ -56,8 +56,8 @@ public class BatchEngineTaskExecutorImpl implements BatchEngineTaskExecutor {
 			new BatchEngineTaskItemReaderFactory(
 				_batchEngineTaskMethodServiceRegistry);
 
-		_batchEngineTaskItemWriterFactory =
-			new BatchEngineTaskItemWriterFactory(
+		_itemBatchEngineTaskItemWriterFactory =
+			new ItemBatchEngineTaskItemWriterFactory(
 				_batchEngineTaskMethodServiceRegistry, _companyLocalService,
 				_userLocalService);
 	}
@@ -98,14 +98,14 @@ public class BatchEngineTaskExecutorImpl implements BatchEngineTaskExecutor {
 
 	private void _commitItems(
 			BatchEngineTask batchEngineTask,
-			BatchEngineTaskItemWriter batchEngineTaskItemWriter,
+			ItemBatchEngineTaskItemWriter itemBatchEngineTaskItemWriter,
 			List<Object> items)
 		throws Throwable {
 
 		TransactionInvokerUtil.invoke(
 			_transactionConfig,
 			() -> {
-				batchEngineTaskItemWriter.write(items);
+				itemBatchEngineTaskItemWriter.write(items);
 
 				_batchEngineTaskLocalService.updateBatchEngineTask(
 					batchEngineTask);
@@ -129,8 +129,8 @@ public class BatchEngineTaskExecutorImpl implements BatchEngineTaskExecutor {
 
 		try (BatchEngineTaskItemReader batchEngineTaskItemReader =
 				_batchEngineTaskItemReaderFactory.create(batchEngineTask);
-			BatchEngineTaskItemWriter batchEngineTaskItemWriter =
-				_batchEngineTaskItemWriterFactory.create(batchEngineTask)) {
+			ItemBatchEngineTaskItemWriter itemBatchEngineTaskItemWriter =
+				_itemBatchEngineTaskItemWriterFactory.create(batchEngineTask)) {
 
 			List<Object> items = new ArrayList<>();
 
@@ -145,14 +145,15 @@ public class BatchEngineTaskExecutorImpl implements BatchEngineTaskExecutor {
 
 				if (items.size() == batchEngineTask.getBatchSize()) {
 					_commitItems(
-						batchEngineTask, batchEngineTaskItemWriter, items);
+						batchEngineTask, itemBatchEngineTaskItemWriter, items);
 
 					items.clear();
 				}
 			}
 
 			if (!items.isEmpty()) {
-				_commitItems(batchEngineTask, batchEngineTaskItemWriter, items);
+				_commitItems(
+					batchEngineTask, itemBatchEngineTaskItemWriter, items);
 			}
 		}
 		finally {
@@ -169,7 +170,6 @@ public class BatchEngineTaskExecutorImpl implements BatchEngineTaskExecutor {
 			Propagation.REQUIRES_NEW, new Class<?>[] {Exception.class});
 
 	private BatchEngineTaskItemReaderFactory _batchEngineTaskItemReaderFactory;
-	private BatchEngineTaskItemWriterFactory _batchEngineTaskItemWriterFactory;
 
 	@Reference
 	private BatchEngineTaskLocalService _batchEngineTaskLocalService;
@@ -179,6 +179,9 @@ public class BatchEngineTaskExecutorImpl implements BatchEngineTaskExecutor {
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
+
+	private ItemBatchEngineTaskItemWriterFactory
+		_itemBatchEngineTaskItemWriterFactory;
 
 	@Reference
 	private UserLocalService _userLocalService;

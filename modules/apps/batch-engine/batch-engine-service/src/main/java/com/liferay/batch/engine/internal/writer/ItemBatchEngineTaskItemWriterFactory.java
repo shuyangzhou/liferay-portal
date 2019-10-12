@@ -27,9 +27,9 @@ import com.liferay.portal.kernel.service.UserLocalService;
 /**
  * @author Ivica cardic
  */
-public class BatchEngineTaskItemWriterFactory {
+public class ItemBatchEngineTaskItemWriterFactory {
 
-	public BatchEngineTaskItemWriterFactory(
+	public ItemBatchEngineTaskItemWriterFactory(
 		BatchEngineTaskMethodRegistry batchEngineTaskMethodRegistry,
 		CompanyLocalService companyLocalService,
 		UserLocalService userLocalService) {
@@ -39,14 +39,14 @@ public class BatchEngineTaskItemWriterFactory {
 		_userLocalService = userLocalService;
 	}
 
-	public BatchEngineTaskItemWriter create(BatchEngineTask batchEngineTask)
+	public ItemBatchEngineTaskItemWriter create(BatchEngineTask batchEngineTask)
 		throws Exception {
 
 		BatchEngineTaskOperation batchEngineTaskOperation =
 			BatchEngineTaskOperation.valueOf(batchEngineTask.getOperation());
 
 		UnsafeBiFunction
-			<Company, User, BatchEngineTaskItemWriter,
+			<Company, User, ItemBatchEngineTaskItemWriter,
 			 ReflectiveOperationException> unsafeBiFunction =
 				_batchEngineTaskMethodRegistry.getUnsafeBiFunction(
 					batchEngineTask.getVersion(), batchEngineTaskOperation,
