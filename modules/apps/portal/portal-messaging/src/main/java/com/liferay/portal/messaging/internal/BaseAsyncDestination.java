@@ -245,8 +245,8 @@ public abstract class BaseAsyncDestination extends BaseDestination {
 			message.put("companyId", CompanyThreadLocal.getCompanyId());
 		}
 
-		if (!ClusterInvokeThreadLocal.isEnabled()) {
-			message.put("clusterInvoke", Boolean.FALSE);
+		if (!message.contains("clusterInvoke")) {
+			message.put("clusterInvoke", ClusterInvokeThreadLocal.isEnabled());
 		}
 
 		if (!message.contains("defaultLocale")) {
