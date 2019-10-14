@@ -59,7 +59,7 @@ public class CSVBatchEngineTaskItemReader implements BatchEngineTaskItemReader {
 			return null;
 		}
 
-		Map<String, Object> columnValues = new HashMap<>();
+		Map<String, Object> columnNameValueMap = new HashMap<>();
 
 		String[] values = StringUtil.split(line, _delimiter);
 
@@ -79,15 +79,15 @@ public class CSVBatchEngineTaskItemReader implements BatchEngineTaskItemReader {
 			int lastDelimiterIndex = columnName.lastIndexOf('_');
 
 			if (lastDelimiterIndex == -1) {
-				columnValues.put(columnName, value);
+				columnNameValueMap.put(columnName, value);
 			}
 			else {
 				ColumnUtil.handleLocalizationColumn(
-					columnName, columnValues, lastDelimiterIndex, value);
+					columnName, columnNameValueMap, lastDelimiterIndex, value);
 			}
 		}
 
-		return _objectMapper.convertValue(columnValues, _itemClass);
+		return _objectMapper.convertValue(columnNameValueMap, _itemClass);
 	}
 
 	private static final ObjectMapper _objectMapper = new ObjectMapper();

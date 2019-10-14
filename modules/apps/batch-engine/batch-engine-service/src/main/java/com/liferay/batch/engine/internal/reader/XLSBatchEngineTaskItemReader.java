@@ -76,7 +76,7 @@ public class XLSBatchEngineTaskItemReader implements BatchEngineTaskItemReader {
 
 		Row row = _iterator.next();
 
-		Map<String, Object> columnValues = new HashMap<>();
+		Map<String, Object> columnNameValueMap = new HashMap<>();
 
 		int index = 0;
 
@@ -88,14 +88,15 @@ public class XLSBatchEngineTaskItemReader implements BatchEngineTaskItemReader {
 			}
 
 			if (CellType.BOOLEAN == cell.getCellType()) {
-				columnValues.put(columnName, cell.getBooleanCellValue());
+				columnNameValueMap.put(columnName, cell.getBooleanCellValue());
 			}
 			else if (CellType.NUMERIC == cell.getCellType()) {
 				if (DateUtil.isCellDateFormatted(cell)) {
-					columnValues.put(columnName, cell.getDateCellValue());
+					columnNameValueMap.put(columnName, cell.getDateCellValue());
 				}
 				else {
-					columnValues.put(columnName, cell.getNumericCellValue());
+					columnNameValueMap.put(
+						columnName, cell.getNumericCellValue());
 				}
 			}
 			else {
@@ -110,16 +111,17 @@ public class XLSBatchEngineTaskItemReader implements BatchEngineTaskItemReader {
 				int lastDelimiterIndex = columnName.lastIndexOf('_');
 
 				if (lastDelimiterIndex == -1) {
-					columnValues.put(columnName, value);
+					columnNameValueMap.put(columnName, value);
 				}
 				else {
 					ColumnUtil.handleLocalizationColumn(
-						columnName, columnValues, lastDelimiterIndex, value);
+						columnName, columnNameValueMap, lastDelimiterIndex,
+						value);
 				}
 			}
 		}
 
-		return _objectMapper.convertValue(columnValues, _itemClass);
+		return _objectMapper.convertValue(columnNameValueMap, _itemClass);
 	}
 
 	private static final ObjectMapper _objectMapper = new ObjectMapper();

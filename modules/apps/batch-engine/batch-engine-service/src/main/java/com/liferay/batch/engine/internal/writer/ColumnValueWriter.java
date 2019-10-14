@@ -42,13 +42,13 @@ public class ColumnValueWriter {
 	public void write(Object item, Consumer<List<?>> consumer)
 		throws Exception {
 
-		Map<String, Object> nameValueMap = _getNameValueMap(item);
+		Map<String, Object> columnNameValueMap = _getColumnNameValueMap(item);
 
-		Set<Map.Entry<String, Object>> entries = nameValueMap.entrySet();
+		Set<Map.Entry<String, Object>> entries = columnNameValueMap.entrySet();
 
 		Stream<Map.Entry<String, Object>> stream = entries.stream();
 
-		nameValueMap = stream.filter(
+		columnNameValueMap = stream.filter(
 			entry -> _isFieldEligibleForWrite(item, entry.getKey())
 		).flatMap(
 			this::_getEntryStreams
@@ -64,7 +64,7 @@ public class ColumnValueWriter {
 				})
 		);
 
-		List<String> columnNames = new ArrayList<>(nameValueMap.keySet());
+		List<String> columnNames = new ArrayList<>(columnNameValueMap.keySet());
 
 		columnNames.sort(Comparator.naturalOrder());
 
@@ -74,7 +74,7 @@ public class ColumnValueWriter {
 			_firstLineWritten = true;
 		}
 
-		Set<Map.Entry<String, Object>> entrySet = nameValueMap.entrySet();
+		Set<Map.Entry<String, Object>> entrySet = columnNameValueMap.entrySet();
 
 		Stream<Map.Entry<String, Object>> entryStream = entrySet.stream();
 
@@ -87,6 +87,30 @@ public class ColumnValueWriter {
 		);
 
 		consumer.accept(values);
+	}
+
+	private Map<String, Object> _getColumnNameValueMap(Object item)
+		throws IllegalAccessException {
+
+		Map<String, Object> columnNameValueMap = new HashMap<>();
+
+		Class<?> itemClass = item.getClass();
+
+		Field[] fields = itemClass.getDeclaredFields();
+
+		for (Field field : fields) {
+			field.setAccessible(true);
+
+			String name = field.getName();
+
+			if (name.startsWith(StringPool.UNDERLINE)) {
+				name = name.substring(1);
+			}
+
+			columnNameValueMap.put(name, field.get(item));
+		}
+
+		return columnNameValueMap;
 	}
 
 	private String _getEntryKey(String entryKey, String entryValueEntryKey) {
@@ -122,30 +146,6 @@ public class ColumnValueWriter {
 		}
 
 		return Stream.of(entry);
-	}
-
-	private Map<String, Object> _getNameValueMap(Object item)
-		throws IllegalAccessException {
-
-		Map<String, Object> nameValueMap = new HashMap<>();
-
-		Class<?> itemClass = item.getClass();
-
-		Field[] fields = itemClass.getDeclaredFields();
-
-		for (Field field : fields) {
-			field.setAccessible(true);
-
-			String name = field.getName();
-
-			if (name.startsWith(StringPool.UNDERLINE)) {
-				name = name.substring(1);
-			}
-
-			nameValueMap.put(name, field.get(item));
-		}
-
-		return nameValueMap;
 	}
 
 	private boolean _isFieldEligibleForWrite(Object item, String name) {
