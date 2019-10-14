@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.messaging.DestinationStatistics;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.messaging.MessageRunnable;
+import com.liferay.portal.kernel.messaging.async.AsyncDestinationInterceptor;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
@@ -165,6 +166,18 @@ public abstract class BaseAsyncDestination extends BaseDestination {
 				StringBundler.concat(
 					"Sending message ", message, " from destination ",
 					getName(), " to message listeners ", messageListeners));
+		}
+
+		AsyncDestinationInterceptor asyncDestinationInterceptor =
+			(AsyncDestinationInterceptor)message.get(
+				AsyncDestinationInterceptor.class.getName());
+
+		if (asyncDestinationInterceptor != null) {
+			message.remove(AsyncDestinationInterceptor.class.getName());
+
+			if (asyncDestinationInterceptor.intercept(message)) {
+				return;
+			}
 		}
 
 		dispatch(messageListeners, message);
