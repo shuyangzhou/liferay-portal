@@ -63,8 +63,6 @@ public interface ViewCountEntryLocalService
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ViewCountEntryLocalServiceUtil} to access the view count entry local service. Add custom service methods to <code>com.liferay.view.count.service.impl.ViewCountEntryLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public ViewCountEntry addViewCountEntry(
-		long companyId, long classNameId, long classPK);
 
 	/**
 	 * Adds the view count entry to the database. Also notifies the appropriate model listeners.
@@ -239,6 +237,14 @@ public interface ViewCountEntryLocalService
 
 	@Transactional(enabled = false)
 	public void incrementViewCount(
+		long companyId, Class<?> clazz, long classPK);
+
+	@Transactional(enabled = false)
+	public void incrementViewCount(
+		long companyId, Class<?> clazz, long classPK, int increment);
+
+	@Transactional(enabled = false)
+	public void incrementViewCount(
 		long companyId, long classNameId, long classPK);
 
 	@BufferedIncrement(incrementClass = NumberIncrement.class)
@@ -246,8 +252,9 @@ public interface ViewCountEntryLocalService
 	public void incrementViewCount(
 		long companyId, long classNameId, long classPK, int increment);
 
-	public void removeViewCount(long companyId, long classNameId, long classPK)
-		throws PortalException;
+	public void removeViewCount(long companyId, Class<?> clazz, long classPK);
+
+	public void removeViewCount(long companyId, long classNameId, long classPK);
 
 	/**
 	 * Updates the view count entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
