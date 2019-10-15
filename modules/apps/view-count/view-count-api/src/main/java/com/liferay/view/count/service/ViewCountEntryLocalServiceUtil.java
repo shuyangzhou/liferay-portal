@@ -39,17 +39,6 @@ public class ViewCountEntryLocalServiceUtil {
 	 */
 
 	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this interface directly. Always use {@link ViewCountEntryLocalServiceUtil} to access the view count entry local service. Add custom service methods to <code>com.liferay.view.count.service.impl.ViewCountEntryLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
-	 */
-	public static void addViewCountEntry(
-		long companyId, long classNameId, long classPK) {
-
-		getService().addViewCountEntry(companyId, classNameId, classPK);
-	}
-
-	/**
 	 * Adds the view count entry to the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param viewCountEntry the view count entry
