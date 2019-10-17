@@ -15,16 +15,24 @@
 package com.liferay.view.count.service.impl;
 
 import com.liferay.portal.aop.AopService;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.increment.BufferedIncrement;
 import com.liferay.portal.kernel.increment.NumberIncrement;
+import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
+import com.liferay.portal.kernel.service.ClassNameLocalService;
+import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.service.SQLStateAcceptor;
+import com.liferay.portal.kernel.service.view.count.ViewCountService;
+import com.liferay.portal.kernel.spring.aop.Property;
+import com.liferay.portal.kernel.spring.aop.Retry;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.view.count.model.ViewCountEntry;
+import com.liferay.view.count.service.ViewCountEntryLocalService;
 import com.liferay.view.count.service.base.ViewCountEntryLocalServiceBaseImpl;
 import com.liferay.view.count.service.persistence.ViewCountEntryPK;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Preston Crary
@@ -34,16 +42,20 @@ import org.osgi.service.component.annotations.Component;
 	service = AopService.class
 )
 public class ViewCountEntryLocalServiceImpl
-	extends ViewCountEntryLocalServiceBaseImpl {
+	extends ViewCountEntryLocalServiceBaseImpl implements ViewCountService {
 
 	@Override
-	public ViewCountEntry addViewCountEntry(
-		long companyId, long classNameId, long classPK) {
+	public Class<?>[] getAopInterfaces() {
+		return new Class<?>[] {
+			ViewCountService.class, ViewCountEntryLocalService.class,
+			IdentifiableOSGiService.class, PersistedModelLocalService.class
+		};
+	}
 
-		ViewCountEntry viewCountEntry = viewCountEntryPersistence.create(
-			new ViewCountEntryPK(companyId, classNameId, classPK));
-
-		return viewCountEntryPersistence.update(viewCountEntry);
+	@Override
+	public long getViewCount(long companyId, Class<?> clazz, long classPK) {
+		return viewCountEntryLocalService.getViewCount(
+			companyId, _classNameLocalService.getClassNameId(clazz), classPK);
 	}
 
 	@Override
@@ -62,6 +74,26 @@ public class ViewCountEntryLocalServiceImpl
 	@Override
 	@Transactional(enabled = false)
 	public void incrementViewCount(
+		long companyId, Class<?> clazz, long classPK) {
+
+		viewCountEntryLocalService.incrementViewCount(
+			companyId, _classNameLocalService.getClassNameId(clazz), classPK,
+			1);
+	}
+
+	@Override
+	@Transactional(enabled = false)
+	public void incrementViewCount(
+		long companyId, Class<?> clazz, long classPK, int increment) {
+
+		viewCountEntryLocalService.incrementViewCount(
+			companyId, _classNameLocalService.getClassNameId(clazz), classPK,
+			increment);
+	}
+
+	@Override
+	@Transactional(enabled = false)
+	public void incrementViewCount(
 		long companyId, long classNameId, long classPK) {
 
 		viewCountEntryLocalService.incrementViewCount(
@@ -70,6 +102,15 @@ public class ViewCountEntryLocalServiceImpl
 
 	@BufferedIncrement(incrementClass = NumberIncrement.class)
 	@Override
+	@Retry(
+		acceptor = SQLStateAcceptor.class,
+		properties = {
+			@Property(
+				name = SQLStateAcceptor.SQLSTATE,
+				value = SQLStateAcceptor.SQLSTATE_INTEGRITY_CONSTRAINT_VIOLATION + "," + SQLStateAcceptor.SQLSTATE_TRANSACTION_ROLLBACK
+			)
+		}
+	)
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void incrementViewCount(
 		long companyId, long classNameId, long classPK, int increment) {
@@ -79,11 +120,27 @@ public class ViewCountEntryLocalServiceImpl
 	}
 
 	@Override
-	public void removeViewCount(long companyId, long classNameId, long classPK)
-		throws PortalException {
-
-		viewCountEntryPersistence.remove(
-			new ViewCountEntryPK(companyId, classNameId, classPK));
+	public void removeViewCount(long companyId, Class<?> clazz, long classPK) {
+		viewCountEntryLocalService.removeViewCount(
+			companyId, _classNameLocalService.getClassNameId(clazz), classPK);
 	}
+
+	@Override
+	public void removeViewCount(
+		long companyId, long classNameId, long classPK) {
+
+		ViewCountEntryPK viewCountEntryPK = new ViewCountEntryPK(
+			companyId, classNameId, classPK);
+
+		ViewCountEntry viewCountEntry =
+			viewCountEntryPersistence.fetchByPrimaryKey(viewCountEntryPK);
+
+		if (viewCountEntry != null) {
+			viewCountEntryPersistence.remove(viewCountEntry);
+		}
+	}
+
+	@Reference
+	private ClassNameLocalService _classNameLocalService;
 
 }
