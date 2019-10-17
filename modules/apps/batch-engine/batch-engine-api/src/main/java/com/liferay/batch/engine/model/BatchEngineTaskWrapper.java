@@ -64,6 +64,7 @@ public class BatchEngineTaskWrapper
 		attributes.put("executeStatus", getExecuteStatus());
 		attributes.put("fieldNameMapping", getFieldNameMapping());
 		attributes.put("operation", getOperation());
+		attributes.put("parameters", getParameters());
 		attributes.put("startTime", getStartTime());
 		attributes.put("version", getVersion());
 
@@ -173,6 +174,13 @@ public class BatchEngineTaskWrapper
 
 		if (operation != null) {
 			setOperation(operation);
+		}
+
+		Map<String, Serializable> parameters =
+			(Map<String, Serializable>)attributes.get("parameters");
+
+		if (parameters != null) {
+			setParameters(parameters);
 		}
 
 		Date startTime = (Date)attributes.get("startTime");
@@ -336,6 +344,16 @@ public class BatchEngineTaskWrapper
 	@Override
 	public String getOperation() {
 		return model.getOperation();
+	}
+
+	/**
+	 * Returns the parameters of this batch engine task.
+	 *
+	 * @return the parameters of this batch engine task
+	 */
+	@Override
+	public Map<String, Serializable> getParameters() {
+		return model.getParameters();
 	}
 
 	/**
@@ -558,6 +576,16 @@ public class BatchEngineTaskWrapper
 	@Override
 	public void setOperation(String operation) {
 		model.setOperation(operation);
+	}
+
+	/**
+	 * Sets the parameters of this batch engine task.
+	 *
+	 * @param parameters the parameters of this batch engine task
+	 */
+	@Override
+	public void setParameters(Map<String, Serializable> parameters) {
+		model.setParameters(parameters);
 	}
 
 	/**

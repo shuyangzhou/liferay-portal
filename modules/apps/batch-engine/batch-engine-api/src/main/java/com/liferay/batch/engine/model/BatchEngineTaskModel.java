@@ -334,6 +334,20 @@ public interface BatchEngineTaskModel
 	public void setOperation(String operation);
 
 	/**
+	 * Returns the parameters of this batch engine task.
+	 *
+	 * @return the parameters of this batch engine task
+	 */
+	public Map<String, Serializable> getParameters();
+
+	/**
+	 * Sets the parameters of this batch engine task.
+	 *
+	 * @param parameters the parameters of this batch engine task
+	 */
+	public void setParameters(Map<String, Serializable> parameters);
+
+	/**
 	 * Returns the start time of this batch engine task.
 	 *
 	 * @return the start time of this batch engine task
