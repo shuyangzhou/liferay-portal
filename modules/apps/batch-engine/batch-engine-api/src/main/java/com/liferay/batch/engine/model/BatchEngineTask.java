@@ -58,4 +58,9 @@ public interface BatchEngineTask extends BatchEngineTaskModel, PersistedModel {
 
 		};
 
+	public java.util.List<String> getExportFieldNamesList();
+
+	public void setExportFieldNamesList(
+		java.util.List<String> exportFieldsList);
+
 }

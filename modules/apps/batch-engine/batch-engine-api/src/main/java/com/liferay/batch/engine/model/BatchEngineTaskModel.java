@@ -305,18 +305,34 @@ public interface BatchEngineTaskModel
 	public void setExecuteStatus(String executeStatus);
 
 	/**
-	 * Returns the field name mapping of this batch engine task.
+	 * Returns the export field names of this batch engine task.
 	 *
-	 * @return the field name mapping of this batch engine task
+	 * @return the export field names of this batch engine task
 	 */
-	public Map<String, Serializable> getFieldNameMapping();
+	@AutoEscape
+	public String getExportFieldNames();
 
 	/**
-	 * Sets the field name mapping of this batch engine task.
+	 * Sets the export field names of this batch engine task.
 	 *
-	 * @param fieldNameMapping the field name mapping of this batch engine task
+	 * @param exportFieldNames the export field names of this batch engine task
 	 */
-	public void setFieldNameMapping(Map<String, Serializable> fieldNameMapping);
+	public void setExportFieldNames(String exportFieldNames);
+
+	/**
+	 * Returns the import field name mapping of this batch engine task.
+	 *
+	 * @return the import field name mapping of this batch engine task
+	 */
+	public Map<String, Serializable> getImportFieldNameMapping();
+
+	/**
+	 * Sets the import field name mapping of this batch engine task.
+	 *
+	 * @param importFieldNameMapping the import field name mapping of this batch engine task
+	 */
+	public void setImportFieldNameMapping(
+		Map<String, Serializable> importFieldNameMapping);
 
 	/**
 	 * Returns the operation of this batch engine task.
@@ -332,6 +348,20 @@ public interface BatchEngineTaskModel
 	 * @param operation the operation of this batch engine task
 	 */
 	public void setOperation(String operation);
+
+	/**
+	 * Returns the parameters of this batch engine task.
+	 *
+	 * @return the parameters of this batch engine task
+	 */
+	public Map<String, Serializable> getParameters();
+
+	/**
+	 * Sets the parameters of this batch engine task.
+	 *
+	 * @param parameters the parameters of this batch engine task
+	 */
+	public void setParameters(Map<String, Serializable> parameters);
 
 	/**
 	 * Returns the start time of this batch engine task.

@@ -80,7 +80,7 @@ public class BatchEngineTaskCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(37);
+		StringBundler sb = new StringBundler(41);
 
 		sb.append("{mvccVersion=");
 		sb.append(mvccVersion);
@@ -110,10 +110,14 @@ public class BatchEngineTaskCacheModel
 		sb.append(errorMessage);
 		sb.append(", executeStatus=");
 		sb.append(executeStatus);
-		sb.append(", fieldNameMapping=");
-		sb.append(fieldNameMapping);
+		sb.append(", exportFieldNames=");
+		sb.append(exportFieldNames);
+		sb.append(", importFieldNameMapping=");
+		sb.append(importFieldNameMapping);
 		sb.append(", operation=");
 		sb.append(operation);
+		sb.append(", parameters=");
+		sb.append(parameters);
 		sb.append(", startTime=");
 		sb.append(startTime);
 		sb.append(", version=");
@@ -198,7 +202,14 @@ public class BatchEngineTaskCacheModel
 			batchEngineTaskImpl.setExecuteStatus(executeStatus);
 		}
 
-		batchEngineTaskImpl.setFieldNameMapping(fieldNameMapping);
+		if (exportFieldNames == null) {
+			batchEngineTaskImpl.setExportFieldNames("");
+		}
+		else {
+			batchEngineTaskImpl.setExportFieldNames(exportFieldNames);
+		}
+
+		batchEngineTaskImpl.setImportFieldNameMapping(importFieldNameMapping);
 
 		if (operation == null) {
 			batchEngineTaskImpl.setOperation("");
@@ -206,6 +217,8 @@ public class BatchEngineTaskCacheModel
 		else {
 			batchEngineTaskImpl.setOperation(operation);
 		}
+
+		batchEngineTaskImpl.setParameters(parameters);
 
 		if (startTime == Long.MIN_VALUE) {
 			batchEngineTaskImpl.setStartTime(null);
@@ -248,8 +261,11 @@ public class BatchEngineTaskCacheModel
 		endTime = objectInput.readLong();
 		errorMessage = objectInput.readUTF();
 		executeStatus = objectInput.readUTF();
-		fieldNameMapping = (Map<String, Serializable>)objectInput.readObject();
+		exportFieldNames = objectInput.readUTF();
+		importFieldNameMapping =
+			(Map<String, Serializable>)objectInput.readObject();
 		operation = objectInput.readUTF();
+		parameters = (Map<String, Serializable>)objectInput.readObject();
 		startTime = objectInput.readLong();
 		version = objectInput.readUTF();
 	}
@@ -312,7 +328,14 @@ public class BatchEngineTaskCacheModel
 			objectOutput.writeUTF(executeStatus);
 		}
 
-		objectOutput.writeObject(fieldNameMapping);
+		if (exportFieldNames == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(exportFieldNames);
+		}
+
+		objectOutput.writeObject(importFieldNameMapping);
 
 		if (operation == null) {
 			objectOutput.writeUTF("");
@@ -321,6 +344,7 @@ public class BatchEngineTaskCacheModel
 			objectOutput.writeUTF(operation);
 		}
 
+		objectOutput.writeObject(parameters);
 		objectOutput.writeLong(startTime);
 
 		if (version == null) {
@@ -345,8 +369,10 @@ public class BatchEngineTaskCacheModel
 	public long endTime;
 	public String errorMessage;
 	public String executeStatus;
-	public Map<String, Serializable> fieldNameMapping;
+	public String exportFieldNames;
+	public Map<String, Serializable> importFieldNameMapping;
 	public String operation;
+	public Map<String, Serializable> parameters;
 	public long startTime;
 	public String version;
 

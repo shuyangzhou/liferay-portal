@@ -50,13 +50,16 @@ public class BatchEngineTaskLocalServiceWrapper
 	public com.liferay.batch.engine.model.BatchEngineTask addBatchEngineTask(
 		long companyId, long userId, long batchSize, String callbackURL,
 		String className, byte[] content, String contentType,
-		String executeStatus, java.util.Map<String, String> fieldNameMappingMap,
-		String operation, String version) {
+		String executeStatus, java.util.List<String> exportFieldNamesList,
+		java.util.Map<String, String> importFieldNameMappingMap,
+		String operation,
+		java.util.Map<String, java.io.Serializable> parameters,
+		String version) {
 
 		return _batchEngineTaskLocalService.addBatchEngineTask(
 			companyId, userId, batchSize, callbackURL, className, content,
-			contentType, executeStatus, fieldNameMappingMap, operation,
-			version);
+			contentType, executeStatus, exportFieldNamesList,
+			importFieldNameMappingMap, operation, parameters, version);
 	}
 
 	/**

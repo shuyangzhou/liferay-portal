@@ -62,8 +62,10 @@ public class BatchEngineTaskWrapper
 		attributes.put("endTime", getEndTime());
 		attributes.put("errorMessage", getErrorMessage());
 		attributes.put("executeStatus", getExecuteStatus());
-		attributes.put("fieldNameMapping", getFieldNameMapping());
+		attributes.put("exportFieldNames", getExportFieldNames());
+		attributes.put("importFieldNameMapping", getImportFieldNameMapping());
 		attributes.put("operation", getOperation());
+		attributes.put("parameters", getParameters());
 		attributes.put("startTime", getStartTime());
 		attributes.put("version", getVersion());
 
@@ -162,17 +164,30 @@ public class BatchEngineTaskWrapper
 			setExecuteStatus(executeStatus);
 		}
 
-		Map<String, Serializable> fieldNameMapping =
-			(Map<String, Serializable>)attributes.get("fieldNameMapping");
+		String exportFieldNames = (String)attributes.get("exportFieldNames");
 
-		if (fieldNameMapping != null) {
-			setFieldNameMapping(fieldNameMapping);
+		if (exportFieldNames != null) {
+			setExportFieldNames(exportFieldNames);
+		}
+
+		Map<String, Serializable> importFieldNameMapping =
+			(Map<String, Serializable>)attributes.get("importFieldNameMapping");
+
+		if (importFieldNameMapping != null) {
+			setImportFieldNameMapping(importFieldNameMapping);
 		}
 
 		String operation = (String)attributes.get("operation");
 
 		if (operation != null) {
 			setOperation(operation);
+		}
+
+		Map<String, Serializable> parameters =
+			(Map<String, Serializable>)attributes.get("parameters");
+
+		if (parameters != null) {
+			setParameters(parameters);
 		}
 
 		Date startTime = (Date)attributes.get("startTime");
@@ -299,13 +314,28 @@ public class BatchEngineTaskWrapper
 	}
 
 	/**
-	 * Returns the field name mapping of this batch engine task.
+	 * Returns the export field names of this batch engine task.
 	 *
-	 * @return the field name mapping of this batch engine task
+	 * @return the export field names of this batch engine task
 	 */
 	@Override
-	public Map<String, Serializable> getFieldNameMapping() {
-		return model.getFieldNameMapping();
+	public String getExportFieldNames() {
+		return model.getExportFieldNames();
+	}
+
+	@Override
+	public java.util.List<String> getExportFieldNamesList() {
+		return model.getExportFieldNamesList();
+	}
+
+	/**
+	 * Returns the import field name mapping of this batch engine task.
+	 *
+	 * @return the import field name mapping of this batch engine task
+	 */
+	@Override
+	public Map<String, Serializable> getImportFieldNameMapping() {
+		return model.getImportFieldNameMapping();
 	}
 
 	/**
@@ -336,6 +366,16 @@ public class BatchEngineTaskWrapper
 	@Override
 	public String getOperation() {
 		return model.getOperation();
+	}
+
+	/**
+	 * Returns the parameters of this batch engine task.
+	 *
+	 * @return the parameters of this batch engine task
+	 */
+	@Override
+	public Map<String, Serializable> getParameters() {
+		return model.getParameters();
 	}
 
 	/**
@@ -519,15 +559,32 @@ public class BatchEngineTaskWrapper
 	}
 
 	/**
-	 * Sets the field name mapping of this batch engine task.
+	 * Sets the export field names of this batch engine task.
 	 *
-	 * @param fieldNameMapping the field name mapping of this batch engine task
+	 * @param exportFieldNames the export field names of this batch engine task
 	 */
 	@Override
-	public void setFieldNameMapping(
-		Map<String, Serializable> fieldNameMapping) {
+	public void setExportFieldNames(String exportFieldNames) {
+		model.setExportFieldNames(exportFieldNames);
+	}
 
-		model.setFieldNameMapping(fieldNameMapping);
+	@Override
+	public void setExportFieldNamesList(
+		java.util.List<String> exportFieldsList) {
+
+		model.setExportFieldNamesList(exportFieldsList);
+	}
+
+	/**
+	 * Sets the import field name mapping of this batch engine task.
+	 *
+	 * @param importFieldNameMapping the import field name mapping of this batch engine task
+	 */
+	@Override
+	public void setImportFieldNameMapping(
+		Map<String, Serializable> importFieldNameMapping) {
+
+		model.setImportFieldNameMapping(importFieldNameMapping);
 	}
 
 	/**
@@ -558,6 +615,16 @@ public class BatchEngineTaskWrapper
 	@Override
 	public void setOperation(String operation) {
 		model.setOperation(operation);
+	}
+
+	/**
+	 * Sets the parameters of this batch engine task.
+	 *
+	 * @param parameters the parameters of this batch engine task
+	 */
+	@Override
+	public void setParameters(Map<String, Serializable> parameters) {
+		model.setParameters(parameters);
 	}
 
 	/**

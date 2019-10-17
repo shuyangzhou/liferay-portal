@@ -77,8 +77,9 @@ public interface BatchEngineTaskLocalService
 	public BatchEngineTask addBatchEngineTask(
 		long companyId, long userId, long batchSize, String callbackURL,
 		String className, byte[] content, String contentType,
-		String executeStatus, Map<String, String> fieldNameMappingMap,
-		String operation, String version);
+		String executeStatus, List<String> exportFieldNamesList,
+		Map<String, String> importFieldNameMappingMap, String operation,
+		Map<String, Serializable> parameters, String version);
 
 	/**
 	 * Creates a new batch engine task with the primary key. Does not add the batch engine task to the database.

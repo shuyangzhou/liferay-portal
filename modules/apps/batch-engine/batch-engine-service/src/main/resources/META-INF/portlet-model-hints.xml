@@ -19,8 +19,10 @@
 			<hint name="max-length">1000</hint>
 		</field>
 		<field name="executeStatus" type="String" />
-		<field name="fieldNameMapping" type="Map" />
+		<field name="exportFieldNames" type="String" />
+		<field name="importFieldNameMapping" type="Map" />
 		<field name="operation" type="String" />
+		<field name="parameters" type="Map" />
 		<field name="startTime" type="Date" />
 		<field name="version" type="String" />
 	</model>

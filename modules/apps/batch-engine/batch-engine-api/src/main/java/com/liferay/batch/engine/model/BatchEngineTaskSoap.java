@@ -49,8 +49,10 @@ public class BatchEngineTaskSoap implements Serializable {
 		soapModel.setEndTime(model.getEndTime());
 		soapModel.setErrorMessage(model.getErrorMessage());
 		soapModel.setExecuteStatus(model.getExecuteStatus());
-		soapModel.setFieldNameMapping(model.getFieldNameMapping());
+		soapModel.setExportFieldNames(model.getExportFieldNames());
+		soapModel.setImportFieldNameMapping(model.getImportFieldNameMapping());
 		soapModel.setOperation(model.getOperation());
+		soapModel.setParameters(model.getParameters());
 		soapModel.setStartTime(model.getStartTime());
 		soapModel.setVersion(model.getVersion());
 
@@ -232,14 +234,22 @@ public class BatchEngineTaskSoap implements Serializable {
 		_executeStatus = executeStatus;
 	}
 
-	public Map<String, Serializable> getFieldNameMapping() {
-		return _fieldNameMapping;
+	public String getExportFieldNames() {
+		return _exportFieldNames;
 	}
 
-	public void setFieldNameMapping(
-		Map<String, Serializable> fieldNameMapping) {
+	public void setExportFieldNames(String exportFieldNames) {
+		_exportFieldNames = exportFieldNames;
+	}
 
-		_fieldNameMapping = fieldNameMapping;
+	public Map<String, Serializable> getImportFieldNameMapping() {
+		return _importFieldNameMapping;
+	}
+
+	public void setImportFieldNameMapping(
+		Map<String, Serializable> importFieldNameMapping) {
+
+		_importFieldNameMapping = importFieldNameMapping;
 	}
 
 	public String getOperation() {
@@ -248,6 +258,14 @@ public class BatchEngineTaskSoap implements Serializable {
 
 	public void setOperation(String operation) {
 		_operation = operation;
+	}
+
+	public Map<String, Serializable> getParameters() {
+		return _parameters;
+	}
+
+	public void setParameters(Map<String, Serializable> parameters) {
+		_parameters = parameters;
 	}
 
 	public Date getStartTime() {
@@ -281,8 +299,10 @@ public class BatchEngineTaskSoap implements Serializable {
 	private Date _endTime;
 	private String _errorMessage;
 	private String _executeStatus;
-	private Map<String, Serializable> _fieldNameMapping;
+	private String _exportFieldNames;
+	private Map<String, Serializable> _importFieldNameMapping;
 	private String _operation;
+	private Map<String, Serializable> _parameters;
 	private Date _startTime;
 	private String _version;
 
