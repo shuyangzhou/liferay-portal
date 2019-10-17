@@ -14,12 +14,34 @@
 
 package com.liferay.batch.engine.model.impl;
 
+import com.liferay.petra.string.StringPool;
+import com.liferay.petra.string.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
+
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Shuyang Zhou
  */
 public class BatchEngineTaskImpl extends BatchEngineTaskBaseImpl {
 
 	public BatchEngineTaskImpl() {
+	}
+
+	@Override
+	public List<String> getExportFieldNamesList() {
+		if (Validator.isNull(getExportFieldNames())) {
+			return Collections.emptyList();
+		}
+
+		return StringUtil.split(getExportFieldNames(), ',');
+	}
+
+	@Override
+	public void setExportFieldNamesList(List<String> exportFieldsList) {
+		setExportFieldNames(
+			StringUtil.merge(exportFieldsList, StringPool.COMMA));
 	}
 
 }
