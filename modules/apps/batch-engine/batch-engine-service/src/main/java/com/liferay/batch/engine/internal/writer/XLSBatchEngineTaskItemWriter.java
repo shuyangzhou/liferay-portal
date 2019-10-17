@@ -17,6 +17,7 @@ package com.liferay.batch.engine.internal.writer;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class XLSBatchEngineTaskItemWriter implements BatchEngineTaskItemWriter {
 	}
 
 	@Override
-	public void write(List<?> items) throws Exception {
+	public void write(Collection<?> items) throws Exception {
 		for (Object item : items) {
 			_columnValueWriter.write(item, this::_write);
 		}

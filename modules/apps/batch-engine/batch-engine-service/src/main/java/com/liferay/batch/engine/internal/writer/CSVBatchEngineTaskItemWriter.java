@@ -24,6 +24,7 @@ import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class CSVBatchEngineTaskItemWriter implements BatchEngineTaskItemWriter {
 	}
 
 	@Override
-	public void write(List<?> items) throws Exception {
+	public void write(Collection<?> items) throws Exception {
 		DateFormat dateFormat = new SimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
