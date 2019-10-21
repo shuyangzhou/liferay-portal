@@ -19,10 +19,15 @@ import com.liferay.batch.engine.BatchEngineTaskMethod;
 import com.liferay.batch.engine.BatchEngineTaskOperation;
 import com.liferay.batch.engine.ItemClassRegistry;
 import com.liferay.batch.engine.internal.item.BatchEngineTaskItemResourceDelegate;
-import com.liferay.petra.function.UnsafeBiFunction;
+import com.liferay.petra.function.UnsafeTriFunction;
 import com.liferay.petra.lang.HashUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.vulcan.pagination.Pagination;
+
+import java.io.Serializable;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -36,6 +41,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
@@ -88,26 +94,31 @@ public class BatchEngineTaskMethodRegistryImpl
 	}
 
 	@Override
-	public UnsafeBiFunction
-		<Company, User, BatchEngineTaskItemResourceDelegate,
-		 ReflectiveOperationException> getUnsafeBiFunction(
-			String apiVersion,
-			BatchEngineTaskOperation batchEngineTaskOperation,
-			String itemClassName) {
+	public UnsafeTriFunction
+		<Company, Map<String, Serializable>, User,
+		 BatchEngineTaskItemResourceDelegate, ReflectiveOperationException>
+			getUnsafeTriFunction(
+				String apiVersion,
+				BatchEngineTaskOperation batchEngineTaskOperation,
+				String itemClassName) {
 
-		return _unsafeBiFunctions.get(
+		return _unsafeTriFunctions.get(
 			new FactoryKey(
 				apiVersion, batchEngineTaskOperation, itemClassName));
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		BatchEngineTaskMethodRegistryImpl.class);
 
 	private final Map<String, Map.Entry<Class<?>, AtomicInteger>> _itemClasses =
 		new ConcurrentHashMap<>();
 	private ServiceTracker<Object, List<FactoryKey>> _serviceTracker;
 	private final Map
 		<FactoryKey,
-		 UnsafeBiFunction
-			 <Company, User, BatchEngineTaskItemResourceDelegate,
-			  ReflectiveOperationException>> _unsafeBiFunctions =
+		 UnsafeTriFunction
+			 <Company, Map<String, Serializable>, User,
+			  BatchEngineTaskItemResourceDelegate,
+			  ReflectiveOperationException>> _unsafeTriFunctions =
 				new ConcurrentHashMap<>();
 
 	private static class FactoryKey {
@@ -182,23 +193,19 @@ public class BatchEngineTaskMethodRegistryImpl
 					batchEngineTaskMethod.batchEngineTaskOperation(),
 					itemClass.getName());
 
-				try {
-					String[] itemClassFieldNames = _getItemClassFieldNames(
+				Map.Entry<String, Class<?>>[] resourceMethodArgNameTypes =
+					_getResourceMethodArgNameTypes(
 						resourceClass, resourceMethod);
 
-					ServiceObjects<Object> serviceObjects =
-						_bundleContext.getServiceObjects(serviceReference);
+				ServiceObjects<Object> serviceObjects =
+					_bundleContext.getServiceObjects(serviceReference);
 
-					_unsafeBiFunctions.put(
-						factoryKey,
-						(company, user) ->
-							new BatchEngineTaskItemResourceDelegate(
-								company, itemClassFieldNames, resourceMethod,
-								serviceObjects, user));
-				}
-				catch (NoSuchMethodException nsme) {
-					throw new IllegalStateException(nsme);
-				}
+				_unsafeTriFunctions.put(
+					factoryKey,
+					(company, parameters, user) ->
+						new BatchEngineTaskItemResourceDelegate(
+							company, parameters, resourceMethod,
+							resourceMethodArgNameTypes, serviceObjects, user));
 
 				if (factoryKeys == null) {
 					factoryKeys = new ArrayList<>();
@@ -237,7 +244,7 @@ public class BatchEngineTaskMethodRegistryImpl
 			List<FactoryKey> factoryKeys) {
 
 			for (FactoryKey factoryKey : factoryKeys) {
-				_unsafeBiFunctions.remove(factoryKey);
+				_unsafeTriFunctions.remove(factoryKey);
 
 				_itemClasses.compute(
 					factoryKey._itemClassName,
@@ -265,23 +272,33 @@ public class BatchEngineTaskMethodRegistryImpl
 			_bundleContext = bundleContext;
 		}
 
-		private String[] _getItemClassFieldNames(
-				Class<?> resourceClass, Method resourceMethod)
-			throws NoSuchMethodException {
+		private Map.Entry<String, Class<?>>[] _getResourceMethodArgNameTypes(
+			Class<?> resourceClass, Method resourceMethod) {
 
 			Parameter[] resourceMethodParameters =
 				resourceMethod.getParameters();
 
-			String[] itemClassFieldNames =
-				new String[resourceMethodParameters.length];
+			@SuppressWarnings("unchecked")
+			Map.Entry<String, Class<?>>[] resourceMethodArgNameTypes =
+				new Map.Entry[resourceMethodParameters.length];
 
-			Class<?> parentResourceClass = resourceClass.getSuperclass();
+			Parameter[] parentResourceMethodParameters = null;
 
-			Method parentResourceMethod = parentResourceClass.getMethod(
-				resourceMethod.getName(), resourceMethod.getParameterTypes());
+			try {
+				Class<?> parentResourceClass = resourceClass.getSuperclass();
 
-			Parameter[] parentResourceMethodParameters =
-				parentResourceMethod.getParameters();
+				Method parentResourceMethod = parentResourceClass.getMethod(
+					resourceMethod.getName(),
+					resourceMethod.getParameterTypes());
+
+				parentResourceMethodParameters =
+					parentResourceMethod.getParameters();
+			}
+			catch (NoSuchMethodException nsme) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(nsme.getMessage());
+				}
+			}
 
 			for (int i = 0; i < resourceMethodParameters.length; i++) {
 				Parameter parameter = resourceMethodParameters[i];
@@ -289,22 +306,47 @@ public class BatchEngineTaskMethodRegistryImpl
 				BatchEngineTaskField batchEngineTaskField =
 					parameter.getAnnotation(BatchEngineTaskField.class);
 
+				Class<?> parameterType = parameter.getType();
+
 				if (batchEngineTaskField == null) {
+					if (parentResourceMethodParameters == null) {
+						continue;
+					}
+
 					parameter = parentResourceMethodParameters[i];
+
+					if (parameterType == Pagination.class) {
+						resourceMethodArgNameTypes[i] =
+							new AbstractMap.SimpleImmutableEntry<>(
+								parameter.getName(), parameterType);
+					}
 
 					PathParam pathParam = parameter.getAnnotation(
 						PathParam.class);
 
 					if (pathParam != null) {
-						itemClassFieldNames[i] = pathParam.value();
+						resourceMethodArgNameTypes[i] =
+							new AbstractMap.SimpleImmutableEntry<>(
+								pathParam.value(), parameterType);
+					}
+
+					QueryParam queryParam = parameter.getAnnotation(
+						QueryParam.class);
+
+					if (queryParam != null) {
+						resourceMethodArgNameTypes[i] =
+							new AbstractMap.SimpleImmutableEntry<>(
+								queryParam.value(), parameterType);
 					}
 				}
 				else {
-					itemClassFieldNames[i] = batchEngineTaskField.value();
+					resourceMethodArgNameTypes[i] =
+						new AbstractMap.SimpleImmutableEntry<>(
+							batchEngineTaskField.value(), parameterType);
 				}
 			}
 
-			return itemClassFieldNames;
+			return resourceMethodArgNameTypes;
 		}
 
 		private final BundleContext _bundleContext;

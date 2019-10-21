@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 
 import java.io.Closeable;
+import java.io.Serializable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -27,6 +28,7 @@ import java.lang.reflect.Parameter;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.osgi.framework.ServiceObjects;
 
@@ -36,14 +38,16 @@ import org.osgi.framework.ServiceObjects;
 public class BatchEngineTaskItemResourceDelegate implements Closeable {
 
 	public BatchEngineTaskItemResourceDelegate(
-			Company company, String[] itemClassFieldNames,
+			Company company, Map<String, Serializable> parameters,
 			Method resourceMethod,
+			Map.Entry<String, Class<?>>[] resourceMethodArgNameTypes,
 			ServiceObjects<Object> resourceServiceObjects, User user)
 		throws ReflectiveOperationException {
 
 		_company = company;
-		_itemClassFieldNames = itemClassFieldNames;
+		_parameters = parameters;
 		_resourceMethod = resourceMethod;
+		_resourceMethodArgNameTypes = resourceMethodArgNameTypes;
 		_resourceServiceObjects = resourceServiceObjects;
 		_user = user;
 
@@ -63,15 +67,18 @@ public class BatchEngineTaskItemResourceDelegate implements Closeable {
 					args[i] = item;
 				}
 				else {
-					if (_itemClassFieldNames[i] == null) {
+					if (_resourceMethodArgNameTypes[i] == null) {
 						throw new IllegalArgumentException(
 							"Unable to find method argument name");
 					}
 
 					Class<?> itemClass = item.getClass();
 
+					Map.Entry<String, Class<?>> resourceMethodArgNameType =
+						_resourceMethodArgNameTypes[i];
+
 					Field field = itemClass.getDeclaredField(
-						_itemClassFieldNames[i]);
+						resourceMethodArgNameType.getKey());
 
 					field.setAccessible(true);
 
@@ -132,9 +139,10 @@ public class BatchEngineTaskItemResourceDelegate implements Closeable {
 	}
 
 	private final Company _company;
-	private final String[] _itemClassFieldNames;
+	private final Map<String, Serializable> _parameters;
 	private final Object _resource;
 	private final Method _resourceMethod;
+	private final Map.Entry<String, Class<?>>[] _resourceMethodArgNameTypes;
 	private final ServiceObjects<Object> _resourceServiceObjects;
 	private final User _user;
 

@@ -17,12 +17,16 @@ package com.liferay.batch.engine.internal.item;
 import com.liferay.batch.engine.BatchEngineTaskOperation;
 import com.liferay.batch.engine.internal.BatchEngineTaskMethodRegistry;
 import com.liferay.batch.engine.model.BatchEngineTask;
-import com.liferay.petra.function.UnsafeBiFunction;
+import com.liferay.petra.function.UnsafeTriFunction;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
+
+import java.io.Serializable;
+
+import java.util.Map;
 
 /**
  * @author Ivica cardic
@@ -46,14 +50,15 @@ public class BatchEngineTaskItemResourceDelegateFactory {
 		BatchEngineTaskOperation batchEngineTaskOperation =
 			BatchEngineTaskOperation.valueOf(batchEngineTask.getOperation());
 
-		UnsafeBiFunction
-			<Company, User, BatchEngineTaskItemResourceDelegate,
-			 ReflectiveOperationException> unsafeBiFunction =
-				_batchEngineTaskMethodRegistry.getUnsafeBiFunction(
-					batchEngineTask.getVersion(), batchEngineTaskOperation,
-					batchEngineTask.getClassName());
+		UnsafeTriFunction
+			<Company, Map<String, Serializable>, User,
+			 BatchEngineTaskItemResourceDelegate, ReflectiveOperationException>
+				unsafeTriFunction =
+					_batchEngineTaskMethodRegistry.getUnsafeTriFunction(
+						batchEngineTask.getVersion(), batchEngineTaskOperation,
+						batchEngineTask.getClassName());
 
-		if (unsafeBiFunction == null) {
+		if (unsafeTriFunction == null) {
 			StringBundler sb = new StringBundler(4);
 
 			sb.append("No resource available for batch engine task operation ");
@@ -64,8 +69,9 @@ public class BatchEngineTaskItemResourceDelegateFactory {
 			throw new IllegalStateException(sb.toString());
 		}
 
-		return unsafeBiFunction.apply(
+		return unsafeTriFunction.apply(
 			_companyLocalService.getCompany(batchEngineTask.getCompanyId()),
+			batchEngineTask.getParameters(),
 			_userLocalService.getUser(batchEngineTask.getUserId()));
 	}
 
