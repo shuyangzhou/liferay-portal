@@ -33,7 +33,7 @@ import com.documentum.fc.common.IDfLoginInfo;
 import com.documentum.operations.IDfCopyOperation;
 import com.documentum.operations.IDfOperationError;
 
-import com.liferay.document.library.kernel.exception.DuplicateFileException;
+import com.liferay.document.library.kernel.exception.DuplicateFileEntryException;
 import com.liferay.document.library.kernel.exception.DuplicateFolderNameException;
 import com.liferay.document.library.kernel.exception.FileExtensionException;
 import com.liferay.document.library.kernel.exception.NoSuchFileEntryException;
@@ -1441,7 +1441,7 @@ public class DocumentumRepository
 			ExtRepositoryObjectType.FILE, title);
 
 		if (idfId != null) {
-			throw new DuplicateFileException(title);
+			throw new DuplicateFileEntryException(title);
 		}
 
 		idfId = getIDfId(

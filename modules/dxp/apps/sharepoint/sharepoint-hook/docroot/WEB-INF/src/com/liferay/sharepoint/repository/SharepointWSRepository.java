@@ -14,7 +14,7 @@
 
 package com.liferay.sharepoint.repository;
 
-import com.liferay.document.library.kernel.exception.DuplicateFileException;
+import com.liferay.document.library.kernel.exception.DuplicateFileEntryException;
 import com.liferay.document.library.kernel.exception.DuplicateFolderNameException;
 import com.liferay.document.library.kernel.exception.NoSuchFileEntryException;
 import com.liferay.document.library.kernel.exception.NoSuchFolderException;
@@ -971,7 +971,7 @@ public class SharepointWSRepository
 				throw new DuplicateFolderNameException(name);
 			}
 
-			throw new DuplicateFileException(name);
+			throw new DuplicateFileEntryException(name);
 		}
 		catch (SharepointException se) {
 
