@@ -107,7 +107,6 @@ import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
 import com.liferay.portal.kernel.portlet.PortletRequestModel;
 import com.liferay.portal.kernel.portletfilerepository.PortletFileRepository;
-import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil;
 import com.liferay.portal.kernel.repository.capabilities.TemporaryFileEntriesCapability;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
@@ -1364,7 +1363,7 @@ public class JournalArticleLocalServiceImpl
 			long folderId = article.getImagesFolderId();
 
 			if (folderId != DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
-				PortletFileRepositoryUtil.deletePortletFolder(folderId);
+				_portletFileRepository.deletePortletFolder(folderId);
 			}
 
 			// Ratings
@@ -4169,7 +4168,7 @@ public class JournalArticleLocalServiceImpl
 			// Attachments
 
 			for (FileEntry fileEntry : article.getImagesFileEntries()) {
-				PortletFileRepositoryUtil.restorePortletFileEntryFromTrash(
+				_portletFileRepository.restorePortletFileEntryFromTrash(
 					userId, fileEntry.getFileEntryId());
 			}
 
@@ -4276,7 +4275,7 @@ public class JournalArticleLocalServiceImpl
 		// Attachments
 
 		for (FileEntry fileEntry : article.getImagesFileEntries()) {
-			PortletFileRepositoryUtil.movePortletFileEntryToTrash(
+			_portletFileRepository.movePortletFileEntryToTrash(
 				userId, fileEntry.getFileEntryId());
 		}
 
@@ -7121,7 +7120,7 @@ public class JournalArticleLocalServiceImpl
 						folder.getGroupId(), folder.getFolderId(),
 						fileEntry.getFileName());
 
-					fileEntry = PortletFileRepositoryUtil.addPortletFileEntry(
+					fileEntry = _portletFileRepository.addPortletFileEntry(
 						folder.getGroupId(), fileEntry.getUserId(),
 						JournalArticle.class.getName(),
 						article.getResourcePrimKey(),
@@ -7545,7 +7544,7 @@ public class JournalArticleLocalServiceImpl
 		Folder folder = newArticle.addImagesFolder();
 
 		for (FileEntry fileEntry : oldArticle.getImagesFileEntries()) {
-			PortletFileRepositoryUtil.addPortletFileEntry(
+			_portletFileRepository.addPortletFileEntry(
 				oldArticle.getGroupId(), newArticle.getUserId(),
 				JournalArticle.class.getName(), newArticle.getResourcePrimKey(),
 				JournalConstants.SERVICE_NAME, folder.getFolderId(),
@@ -7572,7 +7571,7 @@ public class JournalArticleLocalServiceImpl
 				String fileName = dynamicContentEl.attributeValue("name");
 
 				FileEntry fileEntry =
-					PortletFileRepositoryUtil.getPortletFileEntry(
+					_portletFileRepository.getPortletFileEntry(
 						newArticle.getGroupId(), folder.getFolderId(),
 						fileName);
 
