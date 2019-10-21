@@ -562,8 +562,6 @@
 	</entity>
 	<exceptions>
 		<exception>DirectoryName</exception>
-		<exception>DuplicateDirectory</exception>
-		<exception>DuplicateFile</exception>
 		<exception>DuplicateFileEntry</exception>
 		<exception>DuplicateFileEntryType</exception>
 		<exception>DuplicateFolderName</exception>
@@ -579,7 +577,6 @@
 		<exception>InvalidFileEntryType</exception>
 		<exception>InvalidFileVersion</exception>
 		<exception>InvalidFolder</exception>
-		<exception>NoSuchDirectory</exception>
 		<exception>NoSuchFile</exception>
 		<exception>NoSuchMetadataSet</exception>
 		<exception>RepositoryName</exception>
