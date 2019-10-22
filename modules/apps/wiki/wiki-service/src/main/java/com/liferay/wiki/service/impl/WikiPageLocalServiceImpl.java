@@ -449,22 +449,6 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		addPageResources(page, addGroupPermissions, addGuestPermissions);
 	}
 
-	/**
-	 * @deprecated As of Judson (7.1.x), replaced by {@link
-	 *             #addPageResources(WikiPage, ModelPermissions)}
-	 */
-	@Deprecated
-	@Override
-	public void addPageResources(
-			long nodeId, String title, String[] groupPermissions,
-			String[] guestPermissions)
-		throws PortalException {
-
-		WikiPage page = getPage(nodeId, title);
-
-		addPageResources(page, groupPermissions, guestPermissions);
-	}
-
 	@Override
 	public void addPageResources(
 			WikiPage page, boolean addGroupPermissions,
@@ -488,22 +472,6 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 			modelPermissions);
 	}
 
-	/**
-	 * @deprecated As of Judson (7.1.x), replaced by {@link
-	 *             #addPageResources(WikiPage, ModelPermissions)}
-	 */
-	@Deprecated
-	@Override
-	public void addPageResources(
-			WikiPage page, String[] groupPermissions, String[] guestPermissions)
-		throws PortalException {
-
-		resourceLocalService.addModelResources(
-			page.getCompanyId(), page.getGroupId(), page.getUserId(),
-			WikiPage.class.getName(), page.getResourcePrimKey(),
-			groupPermissions, guestPermissions);
-	}
-
 	@Override
 	public FileEntry addTempFileEntry(
 			long groupId, long userId, String folderName, String fileName,
@@ -512,22 +480,6 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 
 		return TempFileEntryUtil.addTempFileEntry(
 			groupId, userId, folderName, fileName, inputStream, mimeType);
-	}
-
-	/**
-	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 *             #addTempFileEntry(long, long, String, String, InputStream,
-	 *             String)}
-	 */
-	@Deprecated
-	@Override
-	public void addTempPageAttachment(
-			long groupId, long userId, String fileName, String tempFolderName,
-			InputStream inputStream, String mimeType)
-		throws PortalException {
-
-		addTempFileEntry(
-			groupId, userId, tempFolderName, fileName, inputStream, mimeType);
 	}
 
 	@Override
@@ -1162,15 +1114,6 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		throw new NoSuchPageException(sb.toString());
 	}
 
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	@Override
-	public List<WikiPage> getNoAssetPages() {
-		return wikiPageFinder.findByNoAssets();
-	}
-
 	@Override
 	public List<WikiPage> getOrphans(List<WikiPage> pages)
 		throws PortalException {
@@ -1593,20 +1536,6 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		throws PortalException {
 
 		_moveDependentToTrash(page, trashEntryId, false);
-	}
-
-	/**
-	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 *             #renamePage(long, long, String, String, ServiceContext)}
-	 */
-	@Deprecated
-	@Override
-	public void movePage(
-			long userId, long nodeId, String title, String newTitle,
-			ServiceContext serviceContext)
-		throws PortalException {
-
-		renamePage(userId, nodeId, title, newTitle, true, serviceContext);
 	}
 
 	@Override
@@ -2132,21 +2061,6 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 			userId, page, status, serviceContext, new HashMap<>());
 	}
 
-	/**
-	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 *             #updateStatus(long, WikiPage, int, ServiceContext, Map)}
-	 */
-	@Deprecated
-	@Override
-	public WikiPage updateStatus(
-			long userId, WikiPage page, int status,
-			ServiceContext serviceContext)
-		throws PortalException {
-
-		return updateStatus(
-			userId, page, status, serviceContext, new HashMap<>());
-	}
-
 	@Override
 	public WikiPage updateStatus(
 			long userId, WikiPage page, int status,
@@ -2333,16 +2247,6 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		indexer.reindex(page);
 
 		return wikiPagePersistence.update(page);
-	}
-
-	/**
-	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 *             WikiPageTitleValidator#validate(String)}
-	 */
-	@Deprecated
-	@Override
-	public void validateTitle(String title) throws PortalException {
-		_wikiPageTitleValidator.validate(title);
 	}
 
 	protected void clearPageCache(WikiPage page) {
