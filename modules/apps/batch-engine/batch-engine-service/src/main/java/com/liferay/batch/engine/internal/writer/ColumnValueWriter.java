@@ -49,9 +49,7 @@ public class ColumnValueWriter {
 
 		Stream<Map.Entry<String, Object>> stream = entries.stream();
 
-		columnNameValueMap = stream.filter(
-			entry -> _isFieldEligibleForWrite(item, entry.getKey())
-		).flatMap(
+		columnNameValueMap = stream.flatMap(
 			this::_getEntryStreams
 		).collect(
 			Collectors.toMap(
@@ -97,18 +95,26 @@ public class ColumnValueWriter {
 
 		Class<?> itemClass = item.getClass();
 
-		Field[] fields = itemClass.getDeclaredFields();
+		while (itemClass != Object.class) {
+			Field[] fields = itemClass.getDeclaredFields();
 
-		for (Field field : fields) {
-			field.setAccessible(true);
+			for (Field field : fields) {
+				if (!_isFieldEligibleForWrite(field)) {
+					continue;
+				}
 
-			String name = field.getName();
+				field.setAccessible(true);
 
-			if (StringUtil.startsWith(name, StringPool.UNDERLINE)) {
-				name = name.substring(1);
+				String name = field.getName();
+
+				if (StringUtil.startsWith(name, StringPool.UNDERLINE)) {
+					name = name.substring(1);
+				}
+
+				columnNameValueMap.put(name, field.get(item));
 			}
 
-			columnNameValueMap.put(name, field.get(item));
+			itemClass = itemClass.getSuperclass();
 		}
 
 		return columnNameValueMap;
@@ -149,23 +155,7 @@ public class ColumnValueWriter {
 		return Stream.of(entry);
 	}
 
-	private boolean _isFieldEligibleForWrite(Object item, String name) {
-		Class<?> itemClass = item.getClass();
-
-		Field field = null;
-
-		try {
-			field = itemClass.getDeclaredField(StringPool.UNDERLINE + name);
-		}
-		catch (NoSuchFieldException nfe) {
-			try {
-				itemClass.getDeclaredField(name);
-			}
-			catch (NoSuchFieldException nfe2) {
-				throw new RuntimeException(nfe2);
-			}
-		}
-
+	private boolean _isFieldEligibleForWrite(Field field) {
 		Class<?> valueClass = field.getType();
 
 		if (valueClass.isPrimitive()) {
