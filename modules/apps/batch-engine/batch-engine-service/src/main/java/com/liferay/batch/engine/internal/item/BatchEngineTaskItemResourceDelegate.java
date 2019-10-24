@@ -14,10 +14,14 @@
 
 package com.liferay.batch.engine.internal.item;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
+import com.liferay.portal.vulcan.pagination.Page;
+import com.liferay.portal.vulcan.pagination.Pagination;
 
 import java.io.Closeable;
 import java.io.Serializable;
@@ -95,6 +99,41 @@ public class BatchEngineTaskItemResourceDelegate implements Closeable {
 		_resourceServiceObjects.ungetService(_resource);
 	}
 
+	public Page<?> getItems(int page, int pageSize) throws Exception {
+		Object[] args = new Object[_resourceMethod.getParameterCount()];
+
+		for (int i = 0; i < _resourceMethodArgNameTypes.length; i++) {
+			args[i] = _getMethodArgValue(
+				page, pageSize, _resourceMethodArgNameTypes[i]);
+		}
+
+		return (Page<?>)_resourceMethod.invoke(_resource, args);
+	}
+
+	private Object _getMethodArgValue(
+		int page, int pageSize,
+		Map.Entry<String, Class<?>> resourceMethodArgNameType) {
+
+		if (resourceMethodArgNameType == null) {
+			return null;
+		}
+
+		Object argValue = null;
+
+		Class<?> resourceMethodArgType = resourceMethodArgNameType.getValue();
+
+		if (resourceMethodArgType == Pagination.class) {
+			argValue = Pagination.of(page, pageSize);
+		}
+		else {
+			argValue = _objectMapper.convertValue(
+				_parameters.get(resourceMethodArgNameType.getKey()),
+				resourceMethodArgNameType.getValue());
+		}
+
+		return argValue;
+	}
+
 	private Object _getResource() throws ReflectiveOperationException {
 		Object resource = _resourceServiceObjects.getService();
 
@@ -137,6 +176,8 @@ public class BatchEngineTaskItemResourceDelegate implements Closeable {
 
 		field.set(resource, value);
 	}
+
+	private static final ObjectMapper _objectMapper = new ObjectMapper();
 
 	private final Company _company;
 	private final Map<String, Serializable> _parameters;
