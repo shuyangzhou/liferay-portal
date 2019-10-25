@@ -1702,6 +1702,7 @@ public class ServiceBuilder {
 			methodName.equals("getClass") ||
 			methodName.equals("getModelClass") ||
 			methodName.equals("getService") ||
+			methodName.equals("getCTIgnoredAttributeNames") ||
 			methodName.equals("getUniqueIndexColumnNames") ||
 			methodName.equals("getWrappedService") ||
 			methodName.equals("hashCode") || methodName.equals("notify") ||
@@ -5829,8 +5830,19 @@ public class ServiceBuilder {
 				}
 			}
 
+			boolean changeTrackingIgnore = false;
+
+			if (columnName.equals("modifiedDate") &&
+				columnType.equals("Date")) {
+
+				changeTrackingIgnore = true;
+			}
+
 			String idType = columnElement.attributeValue("id-type");
 			String idParam = columnElement.attributeValue("id-param");
+			changeTrackingIgnore = GetterUtil.getBoolean(
+				columnElement.attributeValue("change-tracking-ignore"),
+				changeTrackingIgnore);
 			boolean convertNull = GetterUtil.getBoolean(
 				columnElement.attributeValue("convert-null"), true);
 			boolean lazy = GetterUtil.getBoolean(
@@ -5862,8 +5874,8 @@ public class ServiceBuilder {
 				columnName, columnDBName, columnType, primary, accessor,
 				filterPrimary, columnEntityName, mappingTableName, idType,
 				idParam, convertNull, lazy, localized, colJsonEnabled,
-				containerModel, parentContainerModel, uadAnonymizeFieldName,
-				uadNonanonymizable);
+				changeTrackingIgnore, containerModel, parentContainerModel,
+				uadAnonymizeFieldName, uadNonanonymizable);
 
 			if (primary) {
 				if (!columnType.equals("int") && !columnType.equals("long") &&
@@ -6336,8 +6348,8 @@ public class ServiceBuilder {
 		if (versioned) {
 			EntityColumn headEntityColumn = new EntityColumn(
 				"head", "head", "boolean", false, false, false, null, null,
-				null, null, true, false, false, false, false, false, null,
-				false);
+				null, null, true, false, false, false, false, false, false,
+				null, false);
 
 			headEntityColumn.setComparator("=");
 			headEntityColumn.setFinderPath(true);
