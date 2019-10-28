@@ -123,7 +123,7 @@ public class SiteNavigationMenuExportImportPortletPreferencesProcessor
 			if (importedSiteNavigationMenuId > 0) {
 				StagedModelDataHandlerUtil.importReferenceStagedModel(
 					portletDataContext, SiteNavigationMenu.class,
-					importedSiteNavigationMenuId);
+					Long.valueOf(importedSiteNavigationMenuId));
 
 				Map<Long, Long> siteNavigationMenuIds =
 					(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(

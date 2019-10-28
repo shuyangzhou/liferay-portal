@@ -45,7 +45,8 @@ public class AMEmbeddedReferenceSet {
 		long classPK = _embeddedReferences.get(path);
 
 		StagedModelDataHandlerUtil.importReferenceStagedModel(
-			_portletDataContext, _stagedModel, DLFileEntry.class, classPK);
+			_portletDataContext, _stagedModel, DLFileEntry.class,
+			Long.valueOf(classPK));
 
 		Map<Long, Long> dlFileEntryIds =
 			(Map<Long, Long>)_portletDataContext.getNewPrimaryKeysMap(

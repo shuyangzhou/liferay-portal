@@ -227,7 +227,8 @@ public class LayoutPageTemplateEntryStagedModelDataHandler
 		StagedModelDataHandlerUtil.importReferenceStagedModel(
 			portletDataContext, layoutPageTemplateEntry,
 			LayoutPageTemplateCollection.class,
-			layoutPageTemplateEntry.getLayoutPageTemplateCollectionId());
+			Long.valueOf(
+				layoutPageTemplateEntry.getLayoutPageTemplateCollectionId()));
 
 		Map<Long, Long> layoutPageTemplateCollectionIds =
 			(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
