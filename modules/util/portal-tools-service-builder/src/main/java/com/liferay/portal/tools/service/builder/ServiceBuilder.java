@@ -1703,6 +1703,7 @@ public class ServiceBuilder {
 			methodName.equals("getModelClass") ||
 			methodName.equals("getService") ||
 			methodName.equals("getCTIgnoredAttributeNames") ||
+			methodName.equals("getCTMergeableAttributeNames") ||
 			methodName.equals("getUniqueIndexColumnNames") ||
 			methodName.equals("getWrappedService") ||
 			methodName.equals("hashCode") || methodName.equals("notify") ||
@@ -5830,19 +5831,19 @@ public class ServiceBuilder {
 				}
 			}
 
-			boolean changeTrackingIgnore = false;
+			String changeTrackingMode = "strict";
 
 			if (columnName.equals("modifiedDate") &&
 				columnType.equals("Date")) {
 
-				changeTrackingIgnore = true;
+				changeTrackingMode = "ignore";
 			}
 
 			String idType = columnElement.attributeValue("id-type");
 			String idParam = columnElement.attributeValue("id-param");
-			changeTrackingIgnore = GetterUtil.getBoolean(
-				columnElement.attributeValue("change-tracking-ignore"),
-				changeTrackingIgnore);
+			changeTrackingMode = GetterUtil.getString(
+				columnElement.attributeValue("change-tracking-mode"),
+				changeTrackingMode);
 			boolean convertNull = GetterUtil.getBoolean(
 				columnElement.attributeValue("convert-null"), true);
 			boolean lazy = GetterUtil.getBoolean(
@@ -5874,7 +5875,7 @@ public class ServiceBuilder {
 				columnName, columnDBName, columnType, primary, accessor,
 				filterPrimary, columnEntityName, mappingTableName, idType,
 				idParam, convertNull, lazy, localized, colJsonEnabled,
-				changeTrackingIgnore, containerModel, parentContainerModel,
+				changeTrackingMode, containerModel, parentContainerModel,
 				uadAnonymizeFieldName, uadNonanonymizable);
 
 			if (primary) {
@@ -5888,6 +5889,17 @@ public class ServiceBuilder {
 				}
 
 				pkEntityColumns.add(entityColumn);
+			}
+
+			if (!changeTrackingMode.equals("strict") &&
+				(primary ||
+				 (!changeTrackingMode.equals("ignore") &&
+				  !changeTrackingMode.equals("merge")))) {
+
+				throw new ServiceBuilderException(
+					StringBundler.concat(
+						"Illegal change-tracking-mode ", changeTrackingMode,
+						" for entity ", entityName, " on column ", columnName));
 			}
 
 			if (columnType.equals("Collection")) {
@@ -6348,7 +6360,7 @@ public class ServiceBuilder {
 		if (versioned) {
 			EntityColumn headEntityColumn = new EntityColumn(
 				"head", "head", "boolean", false, false, false, null, null,
-				null, null, true, false, false, false, false, false, false,
+				null, null, true, false, false, false, "strict", false, false,
 				null, false);
 
 			headEntityColumn.setComparator("=");
