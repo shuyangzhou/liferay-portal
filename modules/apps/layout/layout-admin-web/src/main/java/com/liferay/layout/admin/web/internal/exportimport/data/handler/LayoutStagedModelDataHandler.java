@@ -1312,9 +1312,9 @@ public class LayoutStagedModelDataHandler
 		long userId = portletDataContext.getUserId(layout.getUserUuid());
 
 		long[] assetCategoryIds = portletDataContext.getAssetCategoryIds(
-			Layout.class, layout.getPlid());
+			Layout.class, Long.valueOf(layout.getPlid()));
 		String[] assetTagNames = portletDataContext.getAssetTagNames(
-			Layout.class, layout.getPlid());
+			Layout.class, Long.valueOf(layout.getPlid()));
 
 		_layoutLocalService.updateAsset(
 			userId, importedLayout, assetCategoryIds, assetTagNames);

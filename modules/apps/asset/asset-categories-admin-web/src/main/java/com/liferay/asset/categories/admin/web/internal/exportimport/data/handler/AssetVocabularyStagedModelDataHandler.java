@@ -166,7 +166,7 @@ public class AssetVocabularyStagedModelDataHandler
 			PortletDataContext.REFERENCE_TYPE_DEPENDENCY, false);
 
 		portletDataContext.addPermissions(
-			AssetVocabulary.class, vocabulary.getVocabularyId());
+			AssetVocabulary.class, Long.valueOf(vocabulary.getVocabularyId()));
 
 		portletDataContext.addZipEntry(vocabularyPath, vocabulary);
 	}
@@ -244,8 +244,8 @@ public class AssetVocabularyStagedModelDataHandler
 			vocabulary.getVocabularyId(), importedVocabulary.getVocabularyId());
 
 		portletDataContext.importPermissions(
-			AssetVocabulary.class, vocabulary.getVocabularyId(),
-			importedVocabulary.getVocabularyId());
+			AssetVocabulary.class, Long.valueOf(vocabulary.getVocabularyId()),
+			Long.valueOf(importedVocabulary.getVocabularyId()));
 	}
 
 	protected void exportSettingsMetadata(

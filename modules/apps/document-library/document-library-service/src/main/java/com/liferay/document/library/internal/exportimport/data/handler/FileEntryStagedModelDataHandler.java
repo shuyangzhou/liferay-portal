@@ -393,9 +393,9 @@ public class FileEntryStagedModelDataHandler
 			folderIds, fileEntry.getFolderId(), fileEntry.getFolderId());
 
 		long[] assetCategoryIds = portletDataContext.getAssetCategoryIds(
-			DLFileEntry.class, fileEntry.getFileEntryId());
+			DLFileEntry.class, Long.valueOf(fileEntry.getFileEntryId()));
 		String[] assetTagNames = portletDataContext.getAssetTagNames(
-			DLFileEntry.class, fileEntry.getFileEntryId());
+			DLFileEntry.class, Long.valueOf(fileEntry.getFileEntryId()));
 
 		ServiceContext serviceContext = portletDataContext.createServiceContext(
 			fileEntry, DLFileEntry.class);

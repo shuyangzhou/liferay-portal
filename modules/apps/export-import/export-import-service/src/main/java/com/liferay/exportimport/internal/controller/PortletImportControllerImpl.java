@@ -755,7 +755,8 @@ public class PortletImportControllerImpl implements PortletImportController {
 					expandoColumn.getColumnId(), typeSettings);
 
 				portletDataContext.importPermissions(
-					ExpandoColumn.class, columnId, expandoColumn.getColumnId());
+					ExpandoColumn.class, Long.valueOf(columnId),
+					Long.valueOf(expandoColumn.getColumnId()));
 			}
 		}
 	}

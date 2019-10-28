@@ -169,7 +169,7 @@ public class AssetCategoryStagedModelDataHandler
 			PortletDataContext.REFERENCE_TYPE_DEPENDENCY, false);
 
 		portletDataContext.addPermissions(
-			AssetCategory.class, category.getCategoryId());
+			AssetCategory.class, Long.valueOf(category.getCategoryId()));
 
 		portletDataContext.addZipEntry(categoryPath, category);
 	}
@@ -281,8 +281,8 @@ public class AssetCategoryStagedModelDataHandler
 		categoryUuids.put(category.getUuid(), importedCategory.getUuid());
 
 		portletDataContext.importPermissions(
-			AssetCategory.class, category.getCategoryId(),
-			importedCategory.getCategoryId());
+			AssetCategory.class, Long.valueOf(category.getCategoryId()),
+			Long.valueOf(importedCategory.getCategoryId()));
 	}
 
 	protected String getCategoryName(
