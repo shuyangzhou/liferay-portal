@@ -44,14 +44,14 @@ public class BatchEngineTaskItemResourceDelegate implements Closeable {
 	public BatchEngineTaskItemResourceDelegate(
 			Company company, Map<String, Serializable> parameters,
 			Method resourceMethod,
-			Map.Entry<String, Class<?>>[] resourceMethodArgNameTypes,
+			Map.Entry<String, Class<?>>[] resourceMethodArgNameTypeEntries,
 			ServiceObjects<Object> resourceServiceObjects, User user)
 		throws ReflectiveOperationException {
 
 		_company = company;
 		_parameters = parameters;
 		_resourceMethod = resourceMethod;
-		_resourceMethodArgNameTypes = resourceMethodArgNameTypes;
+		_resourceMethodArgNameTypeEntries = resourceMethodArgNameTypeEntries;
 		_resourceServiceObjects = resourceServiceObjects;
 		_user = user;
 
@@ -71,18 +71,18 @@ public class BatchEngineTaskItemResourceDelegate implements Closeable {
 					args[i] = item;
 				}
 				else {
-					if (_resourceMethodArgNameTypes[i] == null) {
+					if (_resourceMethodArgNameTypeEntries[i] == null) {
 						throw new IllegalArgumentException(
 							"Unable to find method argument name");
 					}
 
 					Class<?> itemClass = item.getClass();
 
-					Map.Entry<String, Class<?>> resourceMethodArgNameType =
-						_resourceMethodArgNameTypes[i];
+					Map.Entry<String, Class<?>> resourceMethodArgNameTypeEntry =
+						_resourceMethodArgNameTypeEntries[i];
 
 					Field field = itemClass.getDeclaredField(
-						resourceMethodArgNameType.getKey());
+						resourceMethodArgNameTypeEntry.getKey());
 
 					field.setAccessible(true);
 
@@ -102,9 +102,9 @@ public class BatchEngineTaskItemResourceDelegate implements Closeable {
 	public Page<?> getItems(int page, int pageSize) throws Exception {
 		Object[] args = new Object[_resourceMethod.getParameterCount()];
 
-		for (int i = 0; i < _resourceMethodArgNameTypes.length; i++) {
+		for (int i = 0; i < _resourceMethodArgNameTypeEntries.length; i++) {
 			args[i] = _getMethodArgValue(
-				page, pageSize, _resourceMethodArgNameTypes[i]);
+				page, pageSize, _resourceMethodArgNameTypeEntries[i]);
 		}
 
 		return (Page<?>)_resourceMethod.invoke(_resource, args);
@@ -112,23 +112,24 @@ public class BatchEngineTaskItemResourceDelegate implements Closeable {
 
 	private Object _getMethodArgValue(
 		int page, int pageSize,
-		Map.Entry<String, Class<?>> resourceMethodArgNameType) {
+		Map.Entry<String, Class<?>> resourceMethodArgNameTypeEntry) {
 
-		if (resourceMethodArgNameType == null) {
+		if (resourceMethodArgNameTypeEntry == null) {
 			return null;
 		}
 
 		Object argValue = null;
 
-		Class<?> resourceMethodArgType = resourceMethodArgNameType.getValue();
+		Class<?> resourceMethodArgType =
+			resourceMethodArgNameTypeEntry.getValue();
 
 		if (resourceMethodArgType == Pagination.class) {
 			argValue = Pagination.of(page, pageSize);
 		}
 		else {
 			argValue = _objectMapper.convertValue(
-				_parameters.get(resourceMethodArgNameType.getKey()),
-				resourceMethodArgNameType.getValue());
+				_parameters.get(resourceMethodArgNameTypeEntry.getKey()),
+				resourceMethodArgNameTypeEntry.getValue());
 		}
 
 		return argValue;
@@ -183,7 +184,8 @@ public class BatchEngineTaskItemResourceDelegate implements Closeable {
 	private final Map<String, Serializable> _parameters;
 	private final Object _resource;
 	private final Method _resourceMethod;
-	private final Map.Entry<String, Class<?>>[] _resourceMethodArgNameTypes;
+	private final Map.Entry<String, Class<?>>[]
+		_resourceMethodArgNameTypeEntries;
 	private final ServiceObjects<Object> _resourceServiceObjects;
 	private final User _user;
 

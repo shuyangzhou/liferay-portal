@@ -193,8 +193,8 @@ public class BatchEngineTaskMethodRegistryImpl
 					batchEngineTaskMethod.batchEngineTaskOperation(),
 					itemClass.getName());
 
-				Map.Entry<String, Class<?>>[] resourceMethodArgNameTypes =
-					_getResourceMethodArgNameTypes(
+				Map.Entry<String, Class<?>>[] resourceMethodArgNameTypeEntries =
+					_getResourceMethodArgNameTypeEntries(
 						resourceClass, resourceMethod);
 
 				ServiceObjects<Object> serviceObjects =
@@ -205,7 +205,8 @@ public class BatchEngineTaskMethodRegistryImpl
 					(company, parameters, user) ->
 						new BatchEngineTaskItemResourceDelegate(
 							company, parameters, resourceMethod,
-							resourceMethodArgNameTypes, serviceObjects, user));
+							resourceMethodArgNameTypeEntries, serviceObjects,
+							user));
 
 				if (factoryKeys == null) {
 					factoryKeys = new ArrayList<>();
@@ -272,14 +273,15 @@ public class BatchEngineTaskMethodRegistryImpl
 			_bundleContext = bundleContext;
 		}
 
-		private Map.Entry<String, Class<?>>[] _getResourceMethodArgNameTypes(
-			Class<?> resourceClass, Method resourceMethod) {
+		private Map.Entry<String, Class<?>>[]
+			_getResourceMethodArgNameTypeEntries(
+				Class<?> resourceClass, Method resourceMethod) {
 
 			Parameter[] resourceMethodParameters =
 				resourceMethod.getParameters();
 
 			@SuppressWarnings("unchecked")
-			Map.Entry<String, Class<?>>[] resourceMethodArgNameTypes =
+			Map.Entry<String, Class<?>>[] resourceMethodArgNameTypeEntries =
 				new Map.Entry[resourceMethodParameters.length];
 
 			Parameter[] parentResourceMethodParameters = null;
@@ -316,7 +318,7 @@ public class BatchEngineTaskMethodRegistryImpl
 					parameter = parentResourceMethodParameters[i];
 
 					if (parameterType == Pagination.class) {
-						resourceMethodArgNameTypes[i] =
+						resourceMethodArgNameTypeEntries[i] =
 							new AbstractMap.SimpleImmutableEntry<>(
 								parameter.getName(), parameterType);
 					}
@@ -325,7 +327,7 @@ public class BatchEngineTaskMethodRegistryImpl
 						PathParam.class);
 
 					if (pathParam != null) {
-						resourceMethodArgNameTypes[i] =
+						resourceMethodArgNameTypeEntries[i] =
 							new AbstractMap.SimpleImmutableEntry<>(
 								pathParam.value(), parameterType);
 					}
@@ -334,19 +336,19 @@ public class BatchEngineTaskMethodRegistryImpl
 						QueryParam.class);
 
 					if (queryParam != null) {
-						resourceMethodArgNameTypes[i] =
+						resourceMethodArgNameTypeEntries[i] =
 							new AbstractMap.SimpleImmutableEntry<>(
 								queryParam.value(), parameterType);
 					}
 				}
 				else {
-					resourceMethodArgNameTypes[i] =
+					resourceMethodArgNameTypeEntries[i] =
 						new AbstractMap.SimpleImmutableEntry<>(
 							batchEngineTaskField.value(), parameterType);
 				}
 			}
 
-			return resourceMethodArgNameTypes;
+			return resourceMethodArgNameTypeEntries;
 		}
 
 		private final BundleContext _bundleContext;
