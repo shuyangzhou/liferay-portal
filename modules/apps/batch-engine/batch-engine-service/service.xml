@@ -27,7 +27,8 @@
 		<column name="endTime" type="Date" />
 		<column name="errorMessage" type="String" />
 		<column name="executeStatus" type="String" />
-		<column name="fieldNameMapping" type="Map" />
+		<column name="exportFieldNames" type="String" />
+		<column name="importFieldNameMapping" type="Map" />
 		<column name="operation" type="String" />
 		<column name="parameters" type="Map" />
 		<column name="startTime" type="Date" />
