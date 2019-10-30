@@ -63,11 +63,12 @@ public class ColumnValueWriter {
 				})
 		);
 
-		List<String> columnNames = new ArrayList<>(columnNameValueMap.keySet());
-
-		columnNames.sort(Comparator.naturalOrder());
-
 		if (!_firstLineWritten) {
+			List<String> columnNames = new ArrayList<>(
+				columnNameValueMap.keySet());
+
+			columnNames.sort(Comparator.naturalOrder());
+
 			consumer.accept(columnNames);
 
 			_firstLineWritten = true;
