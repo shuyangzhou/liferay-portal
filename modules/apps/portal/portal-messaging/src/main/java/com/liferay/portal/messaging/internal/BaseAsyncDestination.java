@@ -146,8 +146,6 @@ public abstract class BaseAsyncDestination extends BaseDestination {
 					"receive more messages"));
 		}
 
-		messageBusThreadLocalHelper.populateMessageFromThreadLocals(message);
-
 		if (_log.isDebugEnabled()) {
 			_log.debug(
 				StringBundler.concat(
