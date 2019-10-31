@@ -24,8 +24,10 @@ import com.liferay.portal.kernel.messaging.DestinationConfiguration;
 public class ParallelDestinationPrototype implements DestinationPrototype {
 
 	public ParallelDestinationPrototype(
+		MessageBusThreadLocalHelper messageBusThreadLocalHelper,
 		PortalExecutorManager portalExecutorManager) {
 
+		_messageBusThreadLocalHelper = messageBusThreadLocalHelper;
 		_portalExecutorManager = portalExecutorManager;
 	}
 
@@ -39,6 +41,8 @@ public class ParallelDestinationPrototype implements DestinationPrototype {
 			destinationConfiguration.getDestinationName());
 		parallelDestination.setMaximumQueueSize(
 			destinationConfiguration.getMaximumQueueSize());
+		parallelDestination.setMessageBusThreadLocalHelper(
+			_messageBusThreadLocalHelper);
 		parallelDestination.setPortalExecutorManager(_portalExecutorManager);
 		parallelDestination.setRejectedExecutionHandler(
 			destinationConfiguration.getRejectedExecutionHandler());
@@ -52,6 +56,7 @@ public class ParallelDestinationPrototype implements DestinationPrototype {
 		return parallelDestination;
 	}
 
+	private final MessageBusThreadLocalHelper _messageBusThreadLocalHelper;
 	private final PortalExecutorManager _portalExecutorManager;
 
 }
