@@ -80,8 +80,8 @@ public class BatchEngineTaskModelImpl
 		{"content", Types.BLOB}, {"contentType", Types.VARCHAR},
 		{"endTime", Types.TIMESTAMP}, {"errorMessage", Types.VARCHAR},
 		{"executeStatus", Types.VARCHAR}, {"fieldNameMapping", Types.CLOB},
-		{"operation", Types.VARCHAR}, {"startTime", Types.TIMESTAMP},
-		{"version", Types.VARCHAR}
+		{"operation", Types.VARCHAR}, {"parameters", Types.CLOB},
+		{"startTime", Types.TIMESTAMP}, {"version", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -105,12 +105,13 @@ public class BatchEngineTaskModelImpl
 		TABLE_COLUMNS_MAP.put("executeStatus", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("fieldNameMapping", Types.CLOB);
 		TABLE_COLUMNS_MAP.put("operation", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("parameters", Types.CLOB);
 		TABLE_COLUMNS_MAP.put("startTime", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("version", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table BatchEngineTask (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,batchEngineTaskId LONG not null primary key,companyId LONG,userId LONG,createDate DATE null,modifiedDate DATE null,batchSize LONG,callbackURL VARCHAR(75) null,className VARCHAR(75) null,content BLOB,contentType VARCHAR(75) null,endTime DATE null,errorMessage VARCHAR(75) null,executeStatus VARCHAR(75) null,fieldNameMapping TEXT null,operation VARCHAR(75) null,startTime DATE null,version VARCHAR(75) null)";
+		"create table BatchEngineTask (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,batchEngineTaskId LONG not null primary key,companyId LONG,userId LONG,createDate DATE null,modifiedDate DATE null,batchSize LONG,callbackURL VARCHAR(75) null,className VARCHAR(75) null,content BLOB,contentType VARCHAR(75) null,endTime DATE null,errorMessage VARCHAR(75) null,executeStatus VARCHAR(75) null,fieldNameMapping TEXT null,operation VARCHAR(75) null,parameters TEXT null,startTime DATE null,version VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table BatchEngineTask";
 
@@ -356,6 +357,12 @@ public class BatchEngineTaskModelImpl
 		attributeSetterBiConsumers.put(
 			"operation",
 			(BiConsumer<BatchEngineTask, String>)BatchEngineTask::setOperation);
+		attributeGetterFunctions.put(
+			"parameters", BatchEngineTask::getParameters);
+		attributeSetterBiConsumers.put(
+			"parameters",
+			(BiConsumer<BatchEngineTask, Map<String, Serializable>>)
+				BatchEngineTask::setParameters);
 		attributeGetterFunctions.put(
 			"startTime", BatchEngineTask::getStartTime);
 		attributeSetterBiConsumers.put(
@@ -656,6 +663,16 @@ public class BatchEngineTaskModelImpl
 	}
 
 	@Override
+	public Map<String, Serializable> getParameters() {
+		return _parameters;
+	}
+
+	@Override
+	public void setParameters(Map<String, Serializable> parameters) {
+		_parameters = parameters;
+	}
+
+	@Override
 	public Date getStartTime() {
 		return _startTime;
 	}
@@ -738,6 +755,7 @@ public class BatchEngineTaskModelImpl
 		batchEngineTaskImpl.setExecuteStatus(getExecuteStatus());
 		batchEngineTaskImpl.setFieldNameMapping(getFieldNameMapping());
 		batchEngineTaskImpl.setOperation(getOperation());
+		batchEngineTaskImpl.setParameters(getParameters());
 		batchEngineTaskImpl.setStartTime(getStartTime());
 		batchEngineTaskImpl.setVersion(getVersion());
 
@@ -919,6 +937,8 @@ public class BatchEngineTaskModelImpl
 			batchEngineTaskCacheModel.operation = null;
 		}
 
+		batchEngineTaskCacheModel.parameters = getParameters();
+
 		Date startTime = getStartTime();
 
 		if (startTime != null) {
@@ -941,7 +961,7 @@ public class BatchEngineTaskModelImpl
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(39);
+		StringBundler sb = new StringBundler(41);
 
 		sb.append("{mvccVersion=");
 		sb.append(getMvccVersion());
@@ -975,6 +995,8 @@ public class BatchEngineTaskModelImpl
 		sb.append(getFieldNameMapping());
 		sb.append(", operation=");
 		sb.append(getOperation());
+		sb.append(", parameters=");
+		sb.append(getParameters());
 		sb.append(", startTime=");
 		sb.append(getStartTime());
 		sb.append(", version=");
@@ -986,7 +1008,7 @@ public class BatchEngineTaskModelImpl
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(61);
+		StringBundler sb = new StringBundler(64);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.batch.engine.model.BatchEngineTask");
@@ -1057,6 +1079,10 @@ public class BatchEngineTaskModelImpl
 		sb.append(getOperation());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>parameters</column-name><column-value><![CDATA[");
+		sb.append(getParameters());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>startTime</column-name><column-value><![CDATA[");
 		sb.append(getStartTime());
 		sb.append("]]></column-value></column>");
@@ -1102,6 +1128,7 @@ public class BatchEngineTaskModelImpl
 	private String _originalExecuteStatus;
 	private Map<String, Serializable> _fieldNameMapping;
 	private String _operation;
+	private Map<String, Serializable> _parameters;
 	private Date _startTime;
 	private String _version;
 	private long _columnBitmask;

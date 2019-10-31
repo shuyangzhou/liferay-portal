@@ -180,7 +180,7 @@ public class ImportTaskResourceImpl extends BaseImportTaskResourceImpl {
 				StringUtil.upperCase(extension),
 				BatchEngineTaskExecuteStatus.INITIAL.name(),
 				_toMap(fieldNameMappingString), batchEngineTaskOperation.name(),
-				version);
+				Collections.emptyMap(), version);
 
 		executorService.submit(
 			() -> _batchEngineTaskExecutor.execute(batchEngineTask));

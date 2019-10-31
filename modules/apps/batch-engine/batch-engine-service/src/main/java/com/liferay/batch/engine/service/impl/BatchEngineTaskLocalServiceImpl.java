@@ -42,7 +42,8 @@ public class BatchEngineTaskLocalServiceImpl
 		long companyId, long userId, long batchSize, String callbackURL,
 		String className, byte[] content, String contentType,
 		String executeStatus, Map<String, String> fieldNameMappingMap,
-		String operation, String version) {
+		String operation, Map<String, Serializable> parameters,
+		String version) {
 
 		BatchEngineTask batchEngineTask = batchEngineTaskPersistence.create(
 			counterLocalService.increment(BatchEngineTask.class.getName()));
@@ -52,14 +53,23 @@ public class BatchEngineTaskLocalServiceImpl
 		batchEngineTask.setBatchSize(batchSize);
 		batchEngineTask.setCallbackURL(callbackURL);
 		batchEngineTask.setClassName(className);
-		batchEngineTask.setContent(
-			new OutputBlob(
-				new UnsyncByteArrayInputStream(content), content.length));
+
+		if (content == null) {
+			batchEngineTask.setContent(
+				new OutputBlob(new UnsyncByteArrayInputStream(new byte[0]), 0));
+		}
+		else {
+			batchEngineTask.setContent(
+				new OutputBlob(
+					new UnsyncByteArrayInputStream(content), content.length));
+		}
+
 		batchEngineTask.setContentType(contentType);
 		batchEngineTask.setExecuteStatus(executeStatus);
 		batchEngineTask.setFieldNameMapping(
 			(Map<String, Serializable>)(Map)fieldNameMappingMap);
 		batchEngineTask.setOperation(operation);
+		batchEngineTask.setParameters(parameters);
 		batchEngineTask.setVersion(version);
 
 		return batchEngineTaskPersistence.update(batchEngineTask);

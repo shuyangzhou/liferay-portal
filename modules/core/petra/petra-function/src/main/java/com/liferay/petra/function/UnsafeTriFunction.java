@@ -12,13 +12,14 @@
  * details.
  */
 
-package com.liferay.batch.engine;
+package com.liferay.petra.function;
 
 /**
  * @author Ivica Cardic
  */
-public enum BatchEngineTaskOperation {
+@FunctionalInterface
+public interface UnsafeTriFunction<A, B, C, R, E extends Throwable> {
 
-	CREATE, DELETE, READ, UPDATE
+	public R apply(A a, B b, C c) throws E;
 
 }

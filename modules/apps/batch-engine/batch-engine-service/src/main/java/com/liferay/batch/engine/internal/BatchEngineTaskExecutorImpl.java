@@ -14,18 +14,25 @@
 
 package com.liferay.batch.engine.internal;
 
+import com.liferay.batch.engine.BatchEngineTaskContentType;
 import com.liferay.batch.engine.BatchEngineTaskExecuteStatus;
 import com.liferay.batch.engine.BatchEngineTaskExecutor;
+import com.liferay.batch.engine.BatchEngineTaskOperation;
 import com.liferay.batch.engine.configuration.BatchEngineTaskConfiguration;
 import com.liferay.batch.engine.internal.item.BatchEngineTaskItemResourceDelegate;
 import com.liferay.batch.engine.internal.item.BatchEngineTaskItemResourceDelegateFactory;
 import com.liferay.batch.engine.internal.reader.BatchEngineTaskItemReader;
 import com.liferay.batch.engine.internal.reader.BatchEngineTaskItemReaderFactory;
 import com.liferay.batch.engine.internal.reader.BatchEngineTaskItemReaderUtil;
+import com.liferay.batch.engine.internal.writer.BatchEngineTaskItemWriter;
+import com.liferay.batch.engine.internal.writer.BatchEngineTaskItemWriterFactory;
 import com.liferay.batch.engine.model.BatchEngineTask;
 import com.liferay.batch.engine.service.BatchEngineTaskLocalService;
+import com.liferay.petra.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.dao.jdbc.OutputBlob;
+import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
@@ -39,8 +46,10 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.vulcan.pagination.Page;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -77,6 +86,12 @@ public class BatchEngineTaskExecutorImpl implements BatchEngineTaskExecutor {
 			new BatchEngineTaskItemResourceDelegateFactory(
 				_batchEngineTaskMethodRegistry, _companyLocalService,
 				_userLocalService);
+
+		_batchEngineTaskItemWriterFactory =
+			new BatchEngineTaskItemWriterFactory(
+				GetterUtil.getString(
+					batchEngineTaskConfiguration.csvFileColumnDelimiter(),
+					StringPool.COMMA));
 	}
 
 	@Override
@@ -145,6 +160,74 @@ public class BatchEngineTaskExecutorImpl implements BatchEngineTaskExecutor {
 
 		PrincipalThreadLocal.setName(user.getUserId());
 
+		BatchEngineTaskOperation batchEngineTaskOperation =
+			BatchEngineTaskOperation.valueOf(batchEngineTask.getOperation());
+
+		try {
+			if (batchEngineTaskOperation == BatchEngineTaskOperation.READ) {
+				_exportItems(batchEngineTask);
+			}
+			else {
+				_importItems(batchEngineTask);
+			}
+		}
+		finally {
+			PermissionThreadLocal.setPermissionChecker(permissionChecker);
+			PrincipalThreadLocal.setName(name);
+		}
+	}
+
+	private void _exportItems(BatchEngineTask batchEngineTask)
+		throws Exception {
+
+		UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
+			new UnsyncByteArrayOutputStream();
+
+		try (BatchEngineTaskItemResourceDelegate
+				batchEngineTaskItemResourceDelegate =
+					_batchEngineTaskItemResourceDelegateFactory.create(
+						batchEngineTask);
+			BatchEngineTaskItemWriter batchEngineTaskItemWriter =
+				_batchEngineTaskItemWriterFactory.create(
+					BatchEngineTaskContentType.valueOf(
+						batchEngineTask.getContentType()),
+					unsyncByteArrayOutputStream)) {
+
+			int pageIndex = 1;
+
+			Page<?> page = null;
+
+			do {
+				page = batchEngineTaskItemResourceDelegate.getItems(
+					pageIndex++, (int)batchEngineTask.getBatchSize());
+
+				Collection<?> items = page.getItems();
+
+				if (items.isEmpty()) {
+					break;
+				}
+
+				batchEngineTaskItemWriter.write(page.getItems());
+
+				_batchEngineTaskLocalService.updateBatchEngineTask(
+					batchEngineTask);
+			}
+			while ((page.getPage() * page.getPageSize()) <
+						page.getTotalCount());
+		}
+
+		byte[] content = unsyncByteArrayOutputStream.toByteArray();
+
+		batchEngineTask.setContent(
+			new OutputBlob(
+				new UnsyncByteArrayInputStream(content), content.length));
+
+		_batchEngineTaskLocalService.updateBatchEngineTask(batchEngineTask);
+	}
+
+	private void _importItems(BatchEngineTask batchEngineTask)
+		throws Throwable {
+
 		try (BatchEngineTaskItemReader batchEngineTaskItemReader =
 				_batchEngineTaskItemReaderFactory.create(batchEngineTask);
 			BatchEngineTaskItemResourceDelegate
@@ -189,10 +272,6 @@ public class BatchEngineTaskExecutorImpl implements BatchEngineTaskExecutor {
 					items);
 			}
 		}
-		finally {
-			PermissionThreadLocal.setPermissionChecker(permissionChecker);
-			PrincipalThreadLocal.setName(name);
-		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -205,6 +284,7 @@ public class BatchEngineTaskExecutorImpl implements BatchEngineTaskExecutor {
 	private BatchEngineTaskItemReaderFactory _batchEngineTaskItemReaderFactory;
 	private BatchEngineTaskItemResourceDelegateFactory
 		_batchEngineTaskItemResourceDelegateFactory;
+	private BatchEngineTaskItemWriterFactory _batchEngineTaskItemWriterFactory;
 
 	@Reference
 	private BatchEngineTaskLocalService _batchEngineTaskLocalService;

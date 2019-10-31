@@ -78,7 +78,7 @@ public interface BatchEngineTaskLocalService
 		long companyId, long userId, long batchSize, String callbackURL,
 		String className, byte[] content, String contentType,
 		String executeStatus, Map<String, String> fieldNameMappingMap,
-		String operation, String version);
+		String operation, Map<String, Serializable> parameters, String version);
 
 	/**
 	 * Creates a new batch engine task with the primary key. Does not add the batch engine task to the database.

@@ -80,7 +80,7 @@ public class BatchEngineTaskCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(37);
+		StringBundler sb = new StringBundler(39);
 
 		sb.append("{mvccVersion=");
 		sb.append(mvccVersion);
@@ -114,6 +114,8 @@ public class BatchEngineTaskCacheModel
 		sb.append(fieldNameMapping);
 		sb.append(", operation=");
 		sb.append(operation);
+		sb.append(", parameters=");
+		sb.append(parameters);
 		sb.append(", startTime=");
 		sb.append(startTime);
 		sb.append(", version=");
@@ -207,6 +209,8 @@ public class BatchEngineTaskCacheModel
 			batchEngineTaskImpl.setOperation(operation);
 		}
 
+		batchEngineTaskImpl.setParameters(parameters);
+
 		if (startTime == Long.MIN_VALUE) {
 			batchEngineTaskImpl.setStartTime(null);
 		}
@@ -250,6 +254,7 @@ public class BatchEngineTaskCacheModel
 		executeStatus = objectInput.readUTF();
 		fieldNameMapping = (Map<String, Serializable>)objectInput.readObject();
 		operation = objectInput.readUTF();
+		parameters = (Map<String, Serializable>)objectInput.readObject();
 		startTime = objectInput.readLong();
 		version = objectInput.readUTF();
 	}
@@ -321,6 +326,7 @@ public class BatchEngineTaskCacheModel
 			objectOutput.writeUTF(operation);
 		}
 
+		objectOutput.writeObject(parameters);
 		objectOutput.writeLong(startTime);
 
 		if (version == null) {
@@ -347,6 +353,7 @@ public class BatchEngineTaskCacheModel
 	public String executeStatus;
 	public Map<String, Serializable> fieldNameMapping;
 	public String operation;
+	public Map<String, Serializable> parameters;
 	public long startTime;
 	public String version;
 

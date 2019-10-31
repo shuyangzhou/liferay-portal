@@ -12,13 +12,17 @@
  * details.
  */
 
-package com.liferay.batch.engine;
+package com.liferay.batch.engine.internal.writer;
+
+import java.io.Closeable;
+
+import java.util.Collection;
 
 /**
- * @author Ivica Cardic
+ * @author Ivica cardic
  */
-public enum BatchEngineTaskOperation {
+public interface BatchEngineTaskItemWriter extends Closeable {
 
-	CREATE, DELETE, READ, UPDATE
+	public void write(Collection<?> items) throws Exception;
 
 }
