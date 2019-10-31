@@ -18,7 +18,9 @@ import com.liferay.petra.string.StringPool;
 
 import java.lang.reflect.Field;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Consumer;
@@ -29,15 +31,19 @@ import java.util.function.Consumer;
 public class ColumnValueWriter {
 
 	public void write(
-			Object item, Map<String, Field> fieldMap,
+			Object item, Map<String, Field> fieldMap, List<String> fieldNames,
 			Consumer<Collection<?>> consumer)
 		throws IllegalAccessException {
 
 		Map<String, Object> columnNameValueMap = _getColumnNameValueMap(
-			item, fieldMap);
+			item, fieldMap, fieldNames);
 
 		if (!_firstLineWritten) {
-			consumer.accept(columnNameValueMap.keySet());
+			if (fieldNames.isEmpty()) {
+				fieldNames = new ArrayList<>(columnNameValueMap.keySet());
+			}
+
+			consumer.accept(fieldNames);
 
 			_firstLineWritten = true;
 		}
@@ -46,7 +52,7 @@ public class ColumnValueWriter {
 	}
 
 	private Map<String, Object> _getColumnNameValueMap(
-			Object item, Map<String, Field> fieldMap)
+			Object item, Map<String, Field> fieldMap, List<String> fieldNames)
 		throws IllegalAccessException {
 
 		Map<String, Object> columnNameValueMap = new TreeMap<>();
@@ -76,8 +82,11 @@ public class ColumnValueWriter {
 						innerValue = StringPool.BLANK;
 					}
 
-					columnNameValueMap.put(
-						key.concat(valueEntry.getKey()), innerValue);
+					String name = key.concat(valueEntry.getKey());
+
+					if (fieldNames.isEmpty() || fieldNames.contains(name)) {
+						columnNameValueMap.put(name, innerValue);
+					}
 				}
 			}
 			else {
@@ -85,7 +94,9 @@ public class ColumnValueWriter {
 					value = StringPool.BLANK;
 				}
 
-				columnNameValueMap.put(key, value);
+				if (fieldNames.isEmpty() || fieldNames.contains(key)) {
+					columnNameValueMap.put(key, value);
+				}
 			}
 		}
 
