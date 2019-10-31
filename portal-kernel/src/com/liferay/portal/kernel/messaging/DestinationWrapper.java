@@ -63,6 +63,10 @@ public class DestinationWrapper implements Destination {
 		return destination.getDestinationStatistics();
 	}
 
+	public String getDestinationType() {
+		return destination.getDestinationType();
+	}
+
 	@Override
 	public int getMessageListenerCount() {
 		return destination.getMessageListenerCount();
