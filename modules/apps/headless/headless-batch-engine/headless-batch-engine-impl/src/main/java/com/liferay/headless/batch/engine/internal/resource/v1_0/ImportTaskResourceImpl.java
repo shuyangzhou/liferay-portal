@@ -36,15 +36,20 @@ import com.liferay.portal.vulcan.multipart.MultipartBody;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 
 import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import javax.ws.rs.core.MultivaluedMap;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -178,9 +183,9 @@ public class ImportTaskResourceImpl extends BaseImportTaskResourceImpl {
 				_itemClassBatchSizeMap.getOrDefault(className, _batchSize),
 				callbackURL, className, content,
 				StringUtil.upperCase(extension),
-				BatchEngineTaskExecuteStatus.INITIAL.name(),
+				BatchEngineTaskExecuteStatus.INITIAL.name(), null,
 				_toMap(fieldNameMappingString), batchEngineTaskOperation.name(),
-				version);
+				_toParameters(), version);
 
 		executorService.submit(
 			() -> _batchEngineTaskExecutor.execute(batchEngineTask));
@@ -223,6 +228,31 @@ public class ImportTaskResourceImpl extends BaseImportTaskResourceImpl {
 		}
 
 		return fieldNameMappingMap;
+	}
+
+	private Map<String, Serializable> _toParameters() {
+		Map<String, Serializable> parameters = new HashMap<>();
+
+		MultivaluedMap<String, String> queryParameters =
+			contextUriInfo.getQueryParameters();
+
+		for (Map.Entry<String, List<String>> entry :
+				queryParameters.entrySet()) {
+
+			if (Objects.equals(entry.getKey(), "callbackURL") ||
+				Objects.equals(entry.getKey(), "fieldNameMapping")) {
+
+				continue;
+			}
+
+			List<String> values = entry.getValue();
+
+			if (!values.isEmpty()) {
+				parameters.put(entry.getKey(), values.get(0));
+			}
+		}
+
+		return parameters;
 	}
 
 	@Reference
