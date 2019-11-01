@@ -47,6 +47,7 @@
 		<!-- References -->
 
 		<reference entity="CTEntry" package-path="com.liferay.change.tracking" />
+		<reference entity="CTMessage" package-path="com.liferay.change.tracking" />
 		<reference entity="CTPreferences" package-path="com.liferay.change.tracking" />
 		<reference entity="CTProcess" package-path="com.liferay.change.tracking" />
 	</entity>
@@ -84,6 +85,32 @@
 			<finder-column name="ctCollectionId" />
 			<finder-column name="modelClassNameId" />
 			<finder-column name="modelClassPK" />
+		</finder>
+
+		<!-- References -->
+
+		<reference entity="CTCollection" package-path="com.liferay.change.tracking" />
+	</entity>
+	<entity local-service="true" name="CTMessage" remote-service="false" trash-enabled="false" uuid="false">
+
+		<!-- PK fields -->
+
+		<column name="ctMessageId" primary="true" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+
+		<!-- Other fields -->
+
+		<column name="ctCollectionId" type="long" />
+		<column name="messageContent" type="String" />
+
+		<!-- Finder methods -->
+
+		<finder name="CTCollectionId" return-type="Collection">
+			<finder-column name="ctCollectionId" />
 		</finder>
 
 		<!-- References -->
