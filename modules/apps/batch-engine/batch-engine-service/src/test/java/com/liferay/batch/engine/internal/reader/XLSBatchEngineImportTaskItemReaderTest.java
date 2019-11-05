@@ -36,12 +36,12 @@ import org.junit.Test;
 /**
  * @author Ivica Cardic
  */
-public class XLSBatchEngineTaskItemReaderTest
-	extends BaseBatchEngineTaskItemReaderTestCase {
+public class XLSBatchEngineImportTaskItemReaderTest
+	extends BaseBatchEngineImportTaskItemReaderTestCase {
 
 	@Test
 	public void testColumnMapping() throws Exception {
-		try (XLSBatchEngineTaskItemReader xlsBatchEngineTaskItemReader =
+		try (XLSBatchEngineImportTaskItemReader xlsBatchEngineTaskItemReader =
 				_getXLSBatchEngineTaskItemReader(
 					new String[] {
 						"createDate1", "description1", "id1", "name1_en",
@@ -76,7 +76,7 @@ public class XLSBatchEngineTaskItemReaderTest
 
 	@Test
 	public void testColumnMappingWitUndefinedColumn() throws Exception {
-		try (XLSBatchEngineTaskItemReader xlsBatchEngineTaskItemReader =
+		try (XLSBatchEngineImportTaskItemReader xlsBatchEngineTaskItemReader =
 				_getXLSBatchEngineTaskItemReader(
 					new String[] {
 						"createDate1", "description1", "id1", "name1_en",
@@ -104,7 +104,7 @@ public class XLSBatchEngineTaskItemReaderTest
 
 	@Test
 	public void testColumnMappingWitUndefinedTargetColumn() throws Exception {
-		try (XLSBatchEngineTaskItemReader xlsBatchEngineTaskItemReader =
+		try (XLSBatchEngineImportTaskItemReader xlsBatchEngineTaskItemReader =
 				_getXLSBatchEngineTaskItemReader(
 					new String[] {
 						"createDate1", "description1", "id1", "name1_en",
@@ -133,7 +133,7 @@ public class XLSBatchEngineTaskItemReaderTest
 
 	@Test
 	public void testInvalidColumnMapping() throws Exception {
-		try (XLSBatchEngineTaskItemReader xlsBatchEngineTaskItemReader =
+		try (XLSBatchEngineImportTaskItemReader xlsBatchEngineTaskItemReader =
 				_getXLSBatchEngineTaskItemReader(
 					new String[] {
 						"createDate1", "description1", "id1", "name1_en",
@@ -174,7 +174,7 @@ public class XLSBatchEngineTaskItemReaderTest
 
 	@Test
 	public void testReadInvalidRow() throws Exception {
-		try (XLSBatchEngineTaskItemReader xlsBatchEngineTaskItemReader =
+		try (XLSBatchEngineImportTaskItemReader xlsBatchEngineTaskItemReader =
 				_getXLSBatchEngineTaskItemReader(
 					FIELD_NAMES,
 					new Object[][] {
@@ -196,7 +196,7 @@ public class XLSBatchEngineTaskItemReaderTest
 
 	@Test
 	public void testReadMultipleRows() throws Exception {
-		try (XLSBatchEngineTaskItemReader xlsBatchEngineTaskItemReader =
+		try (XLSBatchEngineImportTaskItemReader xlsBatchEngineTaskItemReader =
 				_getXLSBatchEngineTaskItemReader(
 					FIELD_NAMES,
 					new Object[][] {
@@ -229,7 +229,7 @@ public class XLSBatchEngineTaskItemReaderTest
 
 	@Test
 	public void testReadRowsWithCommaInsideQuotes() throws Exception {
-		try (XLSBatchEngineTaskItemReader xlsBatchEngineTaskItemReader =
+		try (XLSBatchEngineImportTaskItemReader xlsBatchEngineTaskItemReader =
 				_getXLSBatchEngineTaskItemReader(
 					FIELD_NAMES,
 					new Object[][] {
@@ -253,7 +253,7 @@ public class XLSBatchEngineTaskItemReaderTest
 
 	@Test
 	public void testReadRowsWithLessValues() throws Exception {
-		try (XLSBatchEngineTaskItemReader xlsBatchEngineTaskItemReader =
+		try (XLSBatchEngineImportTaskItemReader xlsBatchEngineTaskItemReader =
 				_getXLSBatchEngineTaskItemReader(
 					FIELD_NAMES, new Object[][] {{null, null, 1}})) {
 
@@ -265,7 +265,7 @@ public class XLSBatchEngineTaskItemReaderTest
 
 	@Test
 	public void testReadRowsWithNullValues() throws Exception {
-		try (XLSBatchEngineTaskItemReader xlsBatchEngineTaskItemReader =
+		try (XLSBatchEngineImportTaskItemReader xlsBatchEngineTaskItemReader =
 				_getXLSBatchEngineTaskItemReader(
 					FIELD_NAMES,
 					new Object[][] {
@@ -320,11 +320,11 @@ public class XLSBatchEngineTaskItemReaderTest
 		}
 	}
 
-	private XLSBatchEngineTaskItemReader _getXLSBatchEngineTaskItemReader(
+	private XLSBatchEngineImportTaskItemReader _getXLSBatchEngineTaskItemReader(
 			String[] cellNames, Object[][] rowValues)
 		throws IOException {
 
-		return new XLSBatchEngineTaskItemReader(
+		return new XLSBatchEngineImportTaskItemReader(
 			new ByteArrayInputStream(_getContent(cellNames, rowValues)));
 	}
 

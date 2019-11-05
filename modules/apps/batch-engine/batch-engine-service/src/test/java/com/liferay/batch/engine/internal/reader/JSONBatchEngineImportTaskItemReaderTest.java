@@ -28,12 +28,12 @@ import org.junit.Test;
 /**
  * @author Ivica Cardic
  */
-public class JSONBatchEngineTaskItemReaderTest
-	extends BaseBatchEngineTaskItemReaderTestCase {
+public class JSONBatchEngineImportTaskItemReaderTest
+	extends BaseBatchEngineImportTaskItemReaderTestCase {
 
 	@Test
 	public void testColumnMapping() throws Exception {
-		try (JSONBatchEngineTaskItemReader jsonBatchEngineTaskItemReader =
+		try (JSONBatchEngineImportTaskItemReader jsonBatchEngineTaskItemReader =
 				_getJSONBatchEngineTaskItemReader(
 					new String[] {
 						"createDate1", "description1", "id1", "name1"
@@ -68,7 +68,7 @@ public class JSONBatchEngineTaskItemReaderTest
 
 	@Test
 	public void testColumnMappingWithUndefinedColumn() throws Exception {
-		try (JSONBatchEngineTaskItemReader jsonBatchEngineTaskItemReader =
+		try (JSONBatchEngineImportTaskItemReader jsonBatchEngineTaskItemReader =
 				_getJSONBatchEngineTaskItemReader(
 					new String[] {
 						"createDate1", "description1", "id1", "name1"
@@ -96,7 +96,7 @@ public class JSONBatchEngineTaskItemReaderTest
 
 	@Test
 	public void testColumnMappingWithUndefinedTargetColumn() throws Exception {
-		try (JSONBatchEngineTaskItemReader jsonBatchEngineTaskItemReader =
+		try (JSONBatchEngineImportTaskItemReader jsonBatchEngineTaskItemReader =
 				_getJSONBatchEngineTaskItemReader(
 					new String[] {
 						"createDate1", "description1", "id1", "name1"
@@ -125,7 +125,7 @@ public class JSONBatchEngineTaskItemReaderTest
 
 	@Test
 	public void testInvalidColumnMapping() throws Exception {
-		try (JSONBatchEngineTaskItemReader jsonBatchEngineTaskItemReader =
+		try (JSONBatchEngineImportTaskItemReader jsonBatchEngineTaskItemReader =
 				_getJSONBatchEngineTaskItemReader(
 					new String[] {
 						"createDate1", "description1", "id1", "name1"
@@ -166,7 +166,7 @@ public class JSONBatchEngineTaskItemReaderTest
 
 	@Test
 	public void testReadInvalidRow() throws Exception {
-		try (JSONBatchEngineTaskItemReader jsonBatchEngineTaskItemReader =
+		try (JSONBatchEngineImportTaskItemReader jsonBatchEngineTaskItemReader =
 				_getJSONBatchEngineTaskItemReader(
 					_FIELD_NAMES,
 					new Object[][] {
@@ -198,7 +198,7 @@ public class JSONBatchEngineTaskItemReaderTest
 
 	@Test
 	public void testReadMultipleRows() throws Exception {
-		try (JSONBatchEngineTaskItemReader jsonBatchEngineTaskItemReader =
+		try (JSONBatchEngineImportTaskItemReader jsonBatchEngineTaskItemReader =
 				_getJSONBatchEngineTaskItemReader(
 					_FIELD_NAMES,
 					new Object[][] {
@@ -233,7 +233,7 @@ public class JSONBatchEngineTaskItemReaderTest
 
 	@Test
 	public void testReadRowsWithCommaInsideQuotes() throws Exception {
-		try (JSONBatchEngineTaskItemReader jsonBatchEngineTaskItemReader =
+		try (JSONBatchEngineImportTaskItemReader jsonBatchEngineTaskItemReader =
 				_getJSONBatchEngineTaskItemReader(
 					_FIELD_NAMES,
 					new Object[][] {
@@ -258,7 +258,7 @@ public class JSONBatchEngineTaskItemReaderTest
 
 	@Test
 	public void testReadRowsWithLessValues() throws Exception {
-		try (JSONBatchEngineTaskItemReader jsonBatchEngineTaskItemReader =
+		try (JSONBatchEngineImportTaskItemReader jsonBatchEngineTaskItemReader =
 				_getJSONBatchEngineTaskItemReader(
 					_FIELD_NAMES, new Object[][] {{"null", "null", 1}})) {
 
@@ -270,7 +270,7 @@ public class JSONBatchEngineTaskItemReaderTest
 
 	@Test
 	public void testReadRowsWithNullValues() throws Exception {
-		try (JSONBatchEngineTaskItemReader jsonBatchEngineTaskItemReader =
+		try (JSONBatchEngineImportTaskItemReader jsonBatchEngineTaskItemReader =
 				_getJSONBatchEngineTaskItemReader(
 					_FIELD_NAMES,
 					new Object[][] {
@@ -336,11 +336,12 @@ public class JSONBatchEngineTaskItemReaderTest
 		return content.getBytes();
 	}
 
-	private JSONBatchEngineTaskItemReader _getJSONBatchEngineTaskItemReader(
-			String[] cellNames, Object[][] rowValues)
+	private JSONBatchEngineImportTaskItemReader
+			_getJSONBatchEngineTaskItemReader(
+				String[] cellNames, Object[][] rowValues)
 		throws IOException {
 
-		return new JSONBatchEngineTaskItemReader(
+		return new JSONBatchEngineImportTaskItemReader(
 			new ByteArrayInputStream(_getContent(cellNames, rowValues)));
 	}
 

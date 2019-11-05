@@ -15,8 +15,11 @@
 package com.liferay.batch.engine.internal.reader;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
+import com.liferay.petra.string.StringUtil;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,21 +30,22 @@ import org.junit.Test;
 /**
  * @author Ivica Cardic
  */
-public class JSONLBatchEngineTaskItemReaderTest
-	extends BaseBatchEngineTaskItemReaderTestCase {
+public class CSVBatchEngineImportTaskItemReaderTest
+	extends BaseBatchEngineImportTaskItemReaderTestCase {
 
 	@Test
 	public void testColumnMapping() throws Exception {
-		try (JSONLBatchEngineTaskItemReader jsonlBatchEngineTaskItemReader =
-				_getJSONLBatchEngineTaskItemReader(
+		try (CSVBatchEngineImportTaskItemReader csvBatchEngineTaskItemReader =
+				_getCSVBatchEngineTaskItemReader(
 					new String[] {
-						"createDate1", "description1", "id1", "name1"
+						"createDate1", "description1", "id1", "name1_en",
+						"name1_hr"
 					},
+					StringPool.SEMICOLON,
 					new Object[][] {
 						{
-							"\"" + createDateString + "\"",
-							"\"sample description\"", 1,
-							"{\"en\": \"sample name\", \"hr\": \"naziv\"}"
+							createDateString, "sample description", 1,
+							"sample name", "naziv"
 						}
 					})) {
 
@@ -55,7 +59,7 @@ public class JSONLBatchEngineTaskItemReaderTest
 						put("name1", "name");
 					}
 				},
-				jsonlBatchEngineTaskItemReader.read(),
+				csvBatchEngineTaskItemReader.read(),
 				new HashMap<String, String>() {
 					{
 						put("en", "sample name");
@@ -67,16 +71,17 @@ public class JSONLBatchEngineTaskItemReaderTest
 
 	@Test
 	public void testColumnMappingWithUndefinedColumn() throws Exception {
-		try (JSONLBatchEngineTaskItemReader jsonlBatchEngineTaskItemReader =
-				_getJSONLBatchEngineTaskItemReader(
+		try (CSVBatchEngineImportTaskItemReader csvBatchEngineTaskItemReader =
+				_getCSVBatchEngineTaskItemReader(
 					new String[] {
-						"createDate1", "description1", "id1", "name1"
+						"createDate1", "description1", "id1", "name1_en",
+						"name1_hr"
 					},
+					StringPool.SEMICOLON,
 					new Object[][] {
 						{
-							"\"" + createDateString + "\"",
-							"\"sample description\"", 1,
-							"{\"en\": \"sample name\", \"hr\": \"naziv\"}"
+							createDateString, "sample description", 1,
+							"sample name", "naziv"
 						}
 					})) {
 
@@ -89,22 +94,23 @@ public class JSONLBatchEngineTaskItemReaderTest
 						put("id1", "id");
 					}
 				},
-				jsonlBatchEngineTaskItemReader.read(), null);
+				csvBatchEngineTaskItemReader.read(), null);
 		}
 	}
 
 	@Test
 	public void testColumnMappingWithUndefinedTargetColumn() throws Exception {
-		try (JSONLBatchEngineTaskItemReader jsonlBatchEngineTaskItemReader =
-				_getJSONLBatchEngineTaskItemReader(
+		try (CSVBatchEngineImportTaskItemReader csvBatchEngineTaskItemReader =
+				_getCSVBatchEngineTaskItemReader(
 					new String[] {
-						"createDate1", "description1", "id1", "name1"
+						"createDate1", "description1", "id1", "name1_en",
+						"name1_hr"
 					},
+					StringPool.SEMICOLON,
 					new Object[][] {
 						{
-							"\"" + createDateString + "\"",
-							"\"sample description\"", 1,
-							"{\"en\": \"sample name\", \"hr\": \"naziv\"}"
+							createDateString, "sample description", 1,
+							"sample name", "naziv"
 						}
 					})) {
 
@@ -118,22 +124,23 @@ public class JSONLBatchEngineTaskItemReaderTest
 						put("name1", null);
 					}
 				},
-				jsonlBatchEngineTaskItemReader.read(), null);
+				csvBatchEngineTaskItemReader.read(), null);
 		}
 	}
 
 	@Test
 	public void testInvalidColumnMapping() throws Exception {
-		try (JSONLBatchEngineTaskItemReader jsonlBatchEngineTaskItemReader =
-				_getJSONLBatchEngineTaskItemReader(
+		try (CSVBatchEngineImportTaskItemReader csvBatchEngineTaskItemReader =
+				_getCSVBatchEngineTaskItemReader(
 					new String[] {
-						"createDate1", "description1", "id1", "name1"
+						"createDate1", "description1", "id1", "name1_en",
+						"name1_hr"
 					},
+					StringPool.SEMICOLON,
 					new Object[][] {
 						{
-							"\"" + createDateString + "\"",
-							"\"sample description\"", 1,
-							"{\"en\": \"sample name\", \"hr\": \"naziv\"}"
+							createDateString, "sample description", 1,
+							"sample name", "naziv"
 						}
 					})) {
 
@@ -148,7 +155,7 @@ public class JSONLBatchEngineTaskItemReaderTest
 							put("name1", "name");
 						}
 					},
-					jsonlBatchEngineTaskItemReader.read(),
+					csvBatchEngineTaskItemReader.read(),
 					new HashMap<String, String>() {
 						{
 							put("en", "sample name");
@@ -165,51 +172,39 @@ public class JSONLBatchEngineTaskItemReaderTest
 
 	@Test
 	public void testReadInvalidRow() throws Exception {
-		try (JSONLBatchEngineTaskItemReader jsonlBatchEngineTaskItemReader =
-				_getJSONLBatchEngineTaskItemReader(
-					_FIELD_NAMES,
+		try (CSVBatchEngineImportTaskItemReader csvBatchEngineTaskItemReader =
+				_getCSVBatchEngineTaskItemReader(
+					FIELD_NAMES, StringPool.COMMA,
 					new Object[][] {
 						{
-							null, "\"sample description\"", 1,
-							"{\"en\": \"sample name\", \"hr\": \"naziv\"}",
-							"\"unknown column\""
+							"", "sample description", 1, "sample name", "naziv",
+							"unknown column"
 						}
 					})) {
 
 			try {
-				validate(
-					createDateString, "sample description", null,
-					Collections.emptyMap(),
-					jsonlBatchEngineTaskItemReader.read(),
-					new HashMap<String, String>() {
-						{
-							put("en", "sample name");
-							put("hr", "naziv");
-						}
-					});
+				csvBatchEngineTaskItemReader.read();
 
 				Assert.fail();
 			}
-			catch (NoSuchFieldException nsfe) {
+			catch (ArrayIndexOutOfBoundsException aioobe) {
 			}
 		}
 	}
 
 	@Test
 	public void testReadMultipleRows() throws Exception {
-		try (JSONLBatchEngineTaskItemReader jsonlBatchEngineTaskItemReader =
-				_getJSONLBatchEngineTaskItemReader(
-					_FIELD_NAMES,
+		try (CSVBatchEngineImportTaskItemReader csvBatchEngineTaskItemReader =
+				_getCSVBatchEngineTaskItemReader(
+					FIELD_NAMES, StringPool.COMMA,
 					new Object[][] {
 						{
-							"\"" + createDateString + "\"",
-							"\"sample description 1\"", 1,
-							"{\"en\": \"sample name 1\", \"hr\": \"naziv 1\"}"
+							createDateString, "sample description 1", 1,
+							"sample name 1", "naziv 1"
 						},
 						{
-							"\"" + createDateString + "\"",
-							"\"sample description 2\"", 2,
-							"{\"en\": \"sample name 2\", \"hr\": \"naziv 2\"}"
+							createDateString, "sample description 2", 2,
+							"sample name 2", "naziv 2"
 						}
 					})) {
 
@@ -219,7 +214,7 @@ public class JSONLBatchEngineTaskItemReaderTest
 				validate(
 					createDateString, "sample description " + rowCount,
 					rowCount, Collections.emptyMap(),
-					jsonlBatchEngineTaskItemReader.read(),
+					csvBatchEngineTaskItemReader.read(),
 					new HashMap<String, String>() {
 						{
 							put("en", "sample name " + rowCount);
@@ -232,20 +227,19 @@ public class JSONLBatchEngineTaskItemReaderTest
 
 	@Test
 	public void testReadRowsWithCommaInsideQuotes() throws Exception {
-		try (JSONLBatchEngineTaskItemReader jsonlBatchEngineTaskItemReader =
-				_getJSONLBatchEngineTaskItemReader(
-					_FIELD_NAMES,
+		try (CSVBatchEngineImportTaskItemReader csvBatchEngineTaskItemReader =
+				_getCSVBatchEngineTaskItemReader(
+					FIELD_NAMES, StringPool.SEMICOLON,
 					new Object[][] {
 						{
-							"\"" + createDateString + "\"",
-							"\"hey, here is comma inside\"", 1,
-							"{\"en\": \"sample name\", \"hr\": \"naziv\"}"
+							createDateString, "hey, here is comma inside", 1,
+							"sample name", "naziv"
 						}
 					})) {
 
 			validate(
 				createDateString, "hey, here is comma inside", 1L,
-				Collections.emptyMap(), jsonlBatchEngineTaskItemReader.read(),
+				Collections.emptyMap(), csvBatchEngineTaskItemReader.read(),
 				new HashMap<String, String>() {
 					{
 						put("en", "sample name");
@@ -257,45 +251,43 @@ public class JSONLBatchEngineTaskItemReaderTest
 
 	@Test
 	public void testReadRowsWithLessValues() throws Exception {
-		try (JSONLBatchEngineTaskItemReader jsonlBatchEngineTaskItemReader =
-				_getJSONLBatchEngineTaskItemReader(
-					_FIELD_NAMES, new Object[][] {{"null", "null", 1}})) {
+		try (CSVBatchEngineImportTaskItemReader csvBatchEngineTaskItemReader =
+				_getCSVBatchEngineTaskItemReader(
+					FIELD_NAMES, StringPool.COMMA,
+					new Object[][] {{"", "", 1}})) {
 
 			validate(
 				null, null, 1L, Collections.emptyMap(),
-				jsonlBatchEngineTaskItemReader.read(), null);
+				csvBatchEngineTaskItemReader.read(), null);
 		}
 	}
 
 	@Test
 	public void testReadRowsWithNullValues() throws Exception {
-		try (JSONLBatchEngineTaskItemReader jsonlBatchEngineTaskItemReader =
-				_getJSONLBatchEngineTaskItemReader(
-					_FIELD_NAMES,
+		try (CSVBatchEngineImportTaskItemReader csvBatchEngineTaskItemReader =
+				_getCSVBatchEngineTaskItemReader(
+					FIELD_NAMES, StringPool.COMMA,
 					new Object[][] {
+						{createDateString, "", 1, "", "naziv 1"},
 						{
-							"\"" + createDateString + "\"", "null", 1,
-							"{\"hr\": \"naziv 1\"}"
-						},
-						{
-							"\"" + createDateString + "\"",
-							"\"sample description 2\"", 2,
-							"{\"en\": \"sample name 2\", \"hr\": \"naziv 2\"}"
+							createDateString, "sample description 2", 2,
+							"sample name 2", "naziv 2"
 						}
 					})) {
 
 			validate(
 				createDateString, null, 1L, Collections.emptyMap(),
-				jsonlBatchEngineTaskItemReader.read(),
+				csvBatchEngineTaskItemReader.read(),
 				new HashMap<String, String>() {
 					{
+						put("en", null);
 						put("hr", "naziv 1");
 					}
 				});
 
 			validate(
 				createDateString, "sample description 2", 2L,
-				Collections.emptyMap(), jsonlBatchEngineTaskItemReader.read(),
+				Collections.emptyMap(), csvBatchEngineTaskItemReader.read(),
 				new HashMap<String, String>() {
 					{
 						put("en", "sample name 2");
@@ -305,43 +297,32 @@ public class JSONLBatchEngineTaskItemReaderTest
 		}
 	}
 
-	private byte[] _getContent(String[] cellNames, Object[][] rowValues) {
+	private byte[] _getContent(
+		String[] cellNames, String delimiter, Object[][] rowValues) {
+
 		StringBundler sb = new StringBundler();
 
-		for (Object[] singleRowValues : rowValues) {
-			sb.append("{");
+		sb.append(StringUtil.merge(cellNames, delimiter));
+		sb.append("\n");
 
-			for (int j = 0; j < singleRowValues.length; j++) {
-				if (singleRowValues[j] != null) {
-					sb.append("\"");
-					sb.append(cellNames[j]);
-					sb.append("\": ");
-					sb.append(singleRowValues[j]);
-					sb.append(",");
-				}
-			}
-
-			sb.setIndex(sb.index() - 1);
-			sb.append("}\n");
+		for (Object[] cellValues : rowValues) {
+			sb.append(StringUtil.merge(cellValues, delimiter));
+			sb.append("\n");
 		}
-
-		sb.setIndex(sb.index() - 1);
-		sb.append("}");
 
 		String content = sb.toString();
 
 		return content.getBytes();
 	}
 
-	private JSONLBatchEngineTaskItemReader _getJSONLBatchEngineTaskItemReader(
-		String[] cellNames, Object[][] rowValues) {
+	private CSVBatchEngineImportTaskItemReader _getCSVBatchEngineTaskItemReader(
+			String[] cellNames, String delimiter, Object[][] rowValues)
+		throws IOException {
 
-		return new JSONLBatchEngineTaskItemReader(
-			new ByteArrayInputStream(_getContent(cellNames, rowValues)));
+		return new CSVBatchEngineImportTaskItemReader(
+			delimiter,
+			new ByteArrayInputStream(
+				_getContent(cellNames, delimiter, rowValues)));
 	}
-
-	private static final String[] _FIELD_NAMES = {
-		"createDate", "description", "id", "name", "unknownColumn"
-	};
 
 }
