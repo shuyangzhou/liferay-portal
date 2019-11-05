@@ -1,3 +1,25 @@
+create table BatchEngineImportTask (
+	mvccVersion LONG default 0 not null,
+	uuid_ VARCHAR(75) null,
+	batchEngineImportTaskId LONG not null primary key,
+	companyId LONG,
+	userId LONG,
+	createDate DATE null,
+	modifiedDate DATE null,
+	batchSize LONG,
+	callbackURL VARCHAR(75) null,
+	className VARCHAR(75) null,
+	content BLOB,
+	contentType VARCHAR(75) null,
+	endTime DATE null,
+	errorMessage VARCHAR(75) null,
+	executeStatus VARCHAR(75) null,
+	fieldNameMapping TEXT null,
+	operation VARCHAR(75) null,
+	startTime DATE null,
+	version VARCHAR(75) null
+);
+
 create table BatchEngineTask (
 	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
