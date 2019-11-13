@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
@@ -48,6 +49,7 @@ import org.apache.felix.fileinstall.ArtifactInstaller;
 import org.apache.felix.fileinstall.ArtifactListener;
 import org.apache.felix.fileinstall.ArtifactTransformer;
 import org.apache.felix.fileinstall.ArtifactUrlTransformer;
+import org.apache.felix.fileinstall.PostInstallAction;
 import org.apache.felix.fileinstall.internal.Util.Logger;
 import org.apache.felix.utils.manifest.Clause;
 import org.apache.felix.utils.manifest.Parser;
@@ -59,10 +61,12 @@ import org.osgi.framework.BundleEvent;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.BundleListener;
 import org.osgi.framework.Constants;
+import org.osgi.framework.ServiceReference;
 import org.osgi.framework.Version;
 import org.osgi.framework.startlevel.BundleStartLevel;
 import org.osgi.framework.startlevel.FrameworkStartLevel;
 import org.osgi.framework.wiring.BundleRevision;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * -DirectoryWatcher-
@@ -163,6 +167,11 @@ public class DirectoryWatcher extends Thread implements BundleListener
     // which may result in an attempt to start the watched bundles
     private AtomicBoolean stateChanged = new AtomicBoolean();
 
+	private final List<PostInstallAction> _postInstallActions =
+		new CopyOnWriteArrayList<>();
+
+	private final ServiceTracker<PostInstallAction, PostInstallAction> _serviceTracker;
+
     public DirectoryWatcher(FileInstall fileInstall, Map<String, String> properties, BundleContext context)
     {
         super("fileinstall-" + getThreadName(properties));
@@ -199,6 +208,42 @@ public class DirectoryWatcher extends Thread implements BundleListener
                 scanner = new Scanner(watchedDirectory, filter, properties.get(SUBDIR_MODE));
             }
         }
+
+		_serviceTracker = new ServiceTracker<PostInstallAction, PostInstallAction>(context, PostInstallAction.class, null) {
+
+			@Override
+			public PostInstallAction addingService(
+				ServiceReference<PostInstallAction> reference) {
+
+				PostInstallAction postInstallAction = context.getService(
+					reference);
+
+				_postInstallActions.add(postInstallAction);
+
+				return postInstallAction;
+			}
+
+			@Override
+			public void modifiedService(
+				ServiceReference<PostInstallAction> reference,
+				PostInstallAction postInstallAction) {
+
+				removedService(reference, postInstallAction);
+
+				addingService(reference);
+			}
+
+			@Override
+			public void removedService(
+				ServiceReference<PostInstallAction> reference,
+				PostInstallAction postInstallAction) {
+
+				_postInstallActions.remove(postInstallAction);
+			}
+
+		};
+
+		_serviceTracker.open();
     }
 
     private void verifyWatchedDir()
@@ -778,6 +823,11 @@ public class DirectoryWatcher extends Thread implements BundleListener
     public void close()
     {
         this.context.removeBundleListener(this);
+
+		_serviceTracker.close();
+
+		_postInstallActions.clear();
+
         interrupt();
         for (Artifact artifact : getArtifacts()) {
             deleteTransformedFile(artifact);
@@ -1067,6 +1117,10 @@ public class DirectoryWatcher extends Thread implements BundleListener
             if (startLevel != 0) {
                 b.adapt(BundleStartLevel.class).setStartLevel(startLevel);
             }
+
+			for (PostInstallAction postInstallAction : _postInstallActions) {
+				postInstallAction.run(b);
+			}
 
             return b;
         }
