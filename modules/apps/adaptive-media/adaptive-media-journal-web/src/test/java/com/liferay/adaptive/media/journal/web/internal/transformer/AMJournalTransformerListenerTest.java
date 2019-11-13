@@ -50,7 +50,8 @@ public class AMJournalTransformerListenerTest {
 
 	@Test
 	public void testOnActivationClearsJournalCache() throws Exception {
-		_amJournalTransformerListener.activate();
+		ReflectionTestUtil.invoke(
+			_amJournalTransformerListener, "activate", null);
 
 		Mockito.verify(
 			_journalContent, Mockito.times(1)
@@ -59,7 +60,8 @@ public class AMJournalTransformerListenerTest {
 
 	@Test
 	public void testOnDeactivationClearsJournalCache() throws Exception {
-		_amJournalTransformerListener.deactivate();
+		ReflectionTestUtil.invoke(
+			_amJournalTransformerListener, "deactivate", null);
 
 		Mockito.verify(
 			_journalContent, Mockito.times(1)

@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistry;
 import com.liferay.portal.kernel.search.Sort;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.PropsTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -59,7 +60,7 @@ public class SortFieldBuilderImplTest {
 				"title"
 			});
 
-		_sortFieldBuilderImpl.activate();
+		ReflectionTestUtil.invoke(_sortFieldBuilderImpl, "activate", null);
 	}
 
 	@Test

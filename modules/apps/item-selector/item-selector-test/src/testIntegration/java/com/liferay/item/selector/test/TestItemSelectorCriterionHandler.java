@@ -15,6 +15,7 @@
 package com.liferay.item.selector.test;
 
 import com.liferay.item.selector.BaseItemSelectorCriterionHandler;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -42,7 +43,7 @@ public class TestItemSelectorCriterionHandler
 	@Deactivate
 	@Override
 	protected void deactivate() {
-		super.deactivate();
+		ReflectionTestUtil.invoke(super, "deactivate", null);
 	}
 
 }

@@ -15,6 +15,7 @@
 package com.liferay.dynamic.data.mapping.internal.io.exporter;
 
 import com.liferay.dynamic.data.mapping.io.exporter.DDMFormInstanceRecordWriter;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 
 import java.util.Map;
@@ -36,7 +37,8 @@ public class DDMFormInstanceRecordWriterTrackerImplTest {
 		addDDMFormInstanceRecordCSVWriter(
 			ddmFormInstanceRecordWriterTrackerImpl);
 
-		ddmFormInstanceRecordWriterTrackerImpl.deactivate();
+		ReflectionTestUtil.invoke(
+			ddmFormInstanceRecordWriterTrackerImpl, "deactivate", null);
 
 		Map<String, String> ddmFormInstanceRecordWriterExtensions =
 			ddmFormInstanceRecordWriterTrackerImpl.

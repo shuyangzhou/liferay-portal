@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.cluster.ClusterNodeResponse;
 import com.liferay.portal.kernel.cluster.ClusterNodeResponses;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.cluster.FutureClusterResponses;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.test.rule.NewEnvTestRule;
 import com.liferay.portal.kernel.test.util.PropsTestUtil;
@@ -122,7 +123,7 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 
 		Assert.assertFalse(clusterChannel.isClosed());
 
-		clusterExecutorImpl.deactivate();
+		ReflectionTestUtil.invoke(clusterExecutorImpl, "deactivate", null);
 
 		Assert.assertTrue(clusterChannel.isClosed());
 		Assert.assertTrue(executorService.isShutdown());

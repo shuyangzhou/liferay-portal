@@ -17,6 +17,7 @@ package com.liferay.dynamic.data.mapping.internal.storage;
 import com.liferay.dynamic.data.mapping.storage.DDMStorageAdapter;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -73,7 +74,8 @@ public class DDMStorageAdapterTrackerImplTest extends PowerMockito {
 		ddmStorageAdapterTrackerImpl.ddmStorageAdapterServiceTrackerMap =
 			_ddmStorageAdapterServiceTrackerMap;
 
-		ddmStorageAdapterTrackerImpl.deactivate();
+		ReflectionTestUtil.invoke(
+			ddmStorageAdapterTrackerImpl, "deactivate", null);
 
 		Mockito.verify(
 			_ddmStorageAdapterServiceTrackerMap, Mockito.times(1)

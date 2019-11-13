@@ -119,7 +119,8 @@ public class QuartzSchedulerEngineTest {
 	@After
 	public void tearDown() {
 		if (_quartzSchedulerEngine != null) {
-			_quartzSchedulerEngine.deactivate();
+			ReflectionTestUtil.invoke(
+				_quartzSchedulerEngine, "deactivate", null);
 		}
 	}
 

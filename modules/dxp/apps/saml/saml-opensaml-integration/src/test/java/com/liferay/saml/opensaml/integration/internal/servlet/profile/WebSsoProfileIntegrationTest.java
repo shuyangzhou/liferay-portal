@@ -603,7 +603,7 @@ public class WebSsoProfileIntegrationTest extends BaseSamlTestCase {
 		metadataManagerImpl.setSamlProviderConfigurationHelper(
 			samlProviderConfigurationHelper);
 
-		metadataManagerImpl.activate();
+		ReflectionTestUtil.invoke(metadataManagerImpl, "activate", null);
 
 		_webSsoProfileImpl.setMetadataManager(metadataManagerImpl);
 

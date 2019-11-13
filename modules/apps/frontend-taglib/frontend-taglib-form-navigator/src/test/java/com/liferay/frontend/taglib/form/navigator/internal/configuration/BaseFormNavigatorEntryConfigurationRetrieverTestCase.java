@@ -15,6 +15,7 @@
 package com.liferay.frontend.taglib.form.navigator.internal.configuration;
 
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 
 import java.util.ArrayList;
@@ -40,7 +41,8 @@ public abstract class BaseFormNavigatorEntryConfigurationRetrieverTestCase {
 
 	@After
 	public final void tearDown() {
-		formNavigatorEntryConfigurationRetriever.deactivate();
+		ReflectionTestUtil.invoke(
+			formNavigatorEntryConfigurationRetriever, "deactivate", null);
 	}
 
 	protected void createConfiguration(
