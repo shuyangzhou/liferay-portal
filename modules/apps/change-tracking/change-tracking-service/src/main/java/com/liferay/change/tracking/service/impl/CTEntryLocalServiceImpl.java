@@ -149,7 +149,11 @@ public class CTEntryLocalServiceImpl extends CTEntryLocalServiceBaseImpl {
 			throw new SystemException("No CTCollection exists for " + ctEntry);
 		}
 
-		if (ctCollection.getStatus() != WorkflowConstants.STATUS_DRAFT) {
+		int status = ctCollection.getStatus();
+
+		if ((status != WorkflowConstants.STATUS_DRAFT) &&
+			(status != WorkflowConstants.STATUS_PENDING)) {
+
 			throw new SystemException(
 				"CTCollection " + ctCollection + " is read only");
 		}
