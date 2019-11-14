@@ -16,6 +16,7 @@ package com.liferay.portal.search.elasticsearch6.internal;
 
 import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.search.SearchException;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.search.elasticsearch6.internal.connection.ElasticsearchConnection;
 import com.liferay.portal.search.elasticsearch6.internal.connection.ElasticsearchConnectionManager;
@@ -59,7 +60,9 @@ public class ElasticsearchSearchEngineTest {
 		_elasticsearchConnectionManager = createElasticsearchConnectionManager(
 			_elasticsearchFixture.getEmbeddedElasticsearchConnection());
 
-		_elasticsearchConnectionManager.activate(OperationMode.EMBEDDED);
+		ReflectionTestUtil.invoke(
+			_elasticsearchConnectionManager, "activate",
+			new Class<?>[] {OperationMode.class}, OperationMode.EMBEDDED);
 
 		ElasticsearchEngineAdapterFixture elasticsearchEngineAdapterFixture =
 			new ElasticsearchEngineAdapterFixture() {

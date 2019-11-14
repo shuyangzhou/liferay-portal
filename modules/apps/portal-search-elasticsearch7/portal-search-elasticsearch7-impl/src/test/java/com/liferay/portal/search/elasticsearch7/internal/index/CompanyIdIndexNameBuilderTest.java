@@ -16,11 +16,13 @@ package com.liferay.portal.search.elasticsearch7.internal.index;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.json.JSONFactoryImpl;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
 
 import java.util.Collections;
+import java.util.Map;
 
 import org.elasticsearch.ElasticsearchStatusException;
 import org.elasticsearch.action.admin.indices.get.GetIndexResponse;
@@ -54,7 +56,8 @@ public class CompanyIdIndexNameBuilderTest {
 		CompanyIdIndexNameBuilder companyIdIndexNameBuilder =
 			new CompanyIdIndexNameBuilder();
 
-		companyIdIndexNameBuilder.activate(
+		ReflectionTestUtil.invoke(
+			companyIdIndexNameBuilder, "activate", new Class<?>[] {Map.class},
 			Collections.singletonMap("indexNamePrefix", (Object)"UPPERCASE"));
 
 		Assert.assertEquals(

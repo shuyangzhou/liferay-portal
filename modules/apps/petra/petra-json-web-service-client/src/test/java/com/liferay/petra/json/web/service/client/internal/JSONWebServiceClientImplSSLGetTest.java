@@ -131,7 +131,7 @@ public class JSONWebServiceClientImplSSLGetTest
 
 		properties.put("protocol", "https");
 
-		jsonWebServiceClientImpl.activate(properties);
+		activateJsonWebServiceClientImpl(properties, jsonWebServiceClientImpl);
 
 		return jsonWebServiceClientImpl;
 	}

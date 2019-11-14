@@ -14,6 +14,7 @@
 
 package com.liferay.saml.opensaml.integration.internal.servlet.profile;
 
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.saml.constants.SamlWebKeys;
@@ -47,6 +48,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -152,7 +154,9 @@ public class WebSsoProfileIntegrationTest extends BaseSamlTestCase {
 		_webSsoProfileImpl.setSamlSpIdpConnectionLocalService(
 			samlSpIdpConnectionLocalService);
 
-		_webSsoProfileImpl.activate(new HashMap<String, Object>());
+		ReflectionTestUtil.invoke(
+			_webSsoProfileImpl, "activate", new Class<?>[] {String.class},
+			new HashMap<String, Object>());
 
 		prepareServiceProvider(SP_ENTITY_ID);
 	}
@@ -210,7 +214,9 @@ public class WebSsoProfileIntegrationTest extends BaseSamlTestCase {
 		SecurityConfigurationBootstrap securityConfigurationBootstrap =
 			new SecurityConfigurationBootstrap();
 
-		securityConfigurationBootstrap.activate(
+		ReflectionTestUtil.invoke(
+			securityConfigurationBootstrap, "activate",
+			new Class<?>[] {Map.class},
 			HashMapBuilder.<String, Object>put(
 				"blacklisted.algorithms",
 				new String[] {
@@ -603,7 +609,8 @@ public class WebSsoProfileIntegrationTest extends BaseSamlTestCase {
 		metadataManagerImpl.setSamlProviderConfigurationHelper(
 			samlProviderConfigurationHelper);
 
-		ReflectionTestUtil.invoke(metadataManagerImpl, "activate", new Class<?>[0]);
+		ReflectionTestUtil.invoke(
+			metadataManagerImpl, "activate", new Class<?>[0]);
 
 		_webSsoProfileImpl.setMetadataManager(metadataManagerImpl);
 

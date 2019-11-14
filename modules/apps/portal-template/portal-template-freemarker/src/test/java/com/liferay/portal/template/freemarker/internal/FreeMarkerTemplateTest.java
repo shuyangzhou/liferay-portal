@@ -70,7 +70,9 @@ public class FreeMarkerTemplateTest {
 			_freeMarkerTemplateResourceLoader,
 			"_freeMarkerTemplateResourceCache", _templateResourceCache);
 
-		_freeMarkerTemplateResourceLoader.activate(Collections.emptyMap());
+		ReflectionTestUtil.invoke(
+			_freeMarkerTemplateResourceLoader, "activate",
+			new Class<?>[] {Map.class}, Collections.emptyMap());
 	}
 
 	@Before

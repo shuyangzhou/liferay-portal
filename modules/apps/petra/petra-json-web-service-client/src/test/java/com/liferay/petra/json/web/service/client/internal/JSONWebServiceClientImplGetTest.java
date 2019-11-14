@@ -60,7 +60,7 @@ public class JSONWebServiceClientImplGetTest
 			"headers", "headerKey1=headerValue1;Accept=application/json;");
 		properties.put("protocol", "http");
 
-		jsonWebServiceClientImpl.activate(properties);
+		activateJsonWebServiceClientImpl(properties, jsonWebServiceClientImpl);
 
 		jsonWebServiceClientImpl.doGet(
 			"/", Collections.<String, String>emptyMap());
@@ -78,7 +78,7 @@ public class JSONWebServiceClientImplGetTest
 		properties.put("hostPort", 5555);
 		properties.put("maxAttempts", 5);
 
-		jsonWebServiceClientImpl.activate(properties);
+		activateJsonWebServiceClientImpl(properties, jsonWebServiceClientImpl);
 
 		jsonWebServiceClientImpl.doGet(
 			"/testGet/", new HashMap<String, String>());
@@ -95,7 +95,7 @@ public class JSONWebServiceClientImplGetTest
 			"headers", "headerKey1=headerValue1;Accept=application/json;");
 		properties.put("protocol", "http");
 
-		jsonWebServiceClientImpl.activate(properties);
+		activateJsonWebServiceClientImpl(properties, jsonWebServiceClientImpl);
 
 		Map<String, String> params = new HashMap<String, String>();
 
@@ -123,7 +123,7 @@ public class JSONWebServiceClientImplGetTest
 			"headers", "headerKey1=headerValue1;Accept=application/json;");
 		properties.put("protocol", "http");
 
-		jsonWebServiceClientImpl.activate(properties);
+		activateJsonWebServiceClientImpl(properties, jsonWebServiceClientImpl);
 
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 
@@ -158,7 +158,7 @@ public class JSONWebServiceClientImplGetTest
 			"headers", "headerKey1=headerValue1;Accept=application/json;");
 		properties.put("maxAttempts", 5);
 
-		jsonWebServiceClientImpl.activate(properties);
+		activateJsonWebServiceClientImpl(properties, jsonWebServiceClientImpl);
 
 		Map<String, String> params = new HashMap<String, String>();
 
@@ -186,7 +186,7 @@ public class JSONWebServiceClientImplGetTest
 			"headers", "headerKey1=headerValue1;Accept=application/json;");
 		properties.put("protocol", "http");
 
-		jsonWebServiceClientImpl.activate(properties);
+		activateJsonWebServiceClientImpl(properties, jsonWebServiceClientImpl);
 
 		Map<String, String> params = new HashMap<String, String>();
 
@@ -211,7 +211,7 @@ public class JSONWebServiceClientImplGetTest
 			"headers", "Accept=application/json;headerKey2=headerValue2");
 		properties.put("protocol", "http");
 
-		jsonWebServiceClientImpl.activate(properties);
+		activateJsonWebServiceClientImpl(properties, jsonWebServiceClientImpl);
 
 		Map<String, String> params = new HashMap<String, String>();
 

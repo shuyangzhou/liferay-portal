@@ -492,7 +492,9 @@ public abstract class BaseSamlTestCase extends PowerMockito {
 				"/credential/dependencies/keystore.jks"
 		).build();
 
-		keyStoreManager.activate(properties);
+		ReflectionTestUtil.invoke(
+			keyStoreManager, "activate", new Class<?>[] {Map.class},
+			properties);
 
 		credentialResolver = new KeyStoreCredentialResolver();
 
@@ -516,7 +518,8 @@ public abstract class BaseSamlTestCase extends PowerMockito {
 
 		metadataManagerImpl.setLocalEntityManager(credentialResolver);
 
-		ReflectionTestUtil.invoke(metadataManagerImpl, "activate", new Class<?>[0]);
+		ReflectionTestUtil.invoke(
+			metadataManagerImpl, "activate", new Class<?>[0]);
 	}
 
 	protected void setupParserPool() {

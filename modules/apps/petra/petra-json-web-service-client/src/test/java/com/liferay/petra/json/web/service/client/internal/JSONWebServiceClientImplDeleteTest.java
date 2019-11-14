@@ -52,7 +52,7 @@ public class JSONWebServiceClientImplDeleteTest
 
 		properties.put("protocol", "http");
 
-		jsonWebServiceClientImpl.activate(properties);
+		activateJsonWebServiceClientImpl(properties, jsonWebServiceClientImpl);
 
 		jsonWebServiceClientImpl.doDelete(
 			"/", Collections.<String, String>emptyMap());
@@ -69,7 +69,7 @@ public class JSONWebServiceClientImplDeleteTest
 			"headers", "headerKey1=headerValue1;Accept=application/json;");
 		properties.put("protocol", "http");
 
-		jsonWebServiceClientImpl.activate(properties);
+		activateJsonWebServiceClientImpl(properties, jsonWebServiceClientImpl);
 
 		Map<String, String> params = new HashMap<String, String>();
 
@@ -97,7 +97,7 @@ public class JSONWebServiceClientImplDeleteTest
 			"headers", "headerKey1=headerValue1;Accept=application/json;");
 		properties.put("protocol", "http");
 
-		jsonWebServiceClientImpl.activate(properties);
+		activateJsonWebServiceClientImpl(properties, jsonWebServiceClientImpl);
 
 		Map<String, String> params = new HashMap<String, String>();
 
@@ -122,7 +122,7 @@ public class JSONWebServiceClientImplDeleteTest
 			"headers", "Accept=application/json;headerKey1=headerValue1");
 		properties.put("protocol", "http");
 
-		jsonWebServiceClientImpl.activate(properties);
+		activateJsonWebServiceClientImpl(properties, jsonWebServiceClientImpl);
 
 		Map<String, String> params = new HashMap<String, String>();
 
@@ -147,7 +147,7 @@ public class JSONWebServiceClientImplDeleteTest
 			"headers", "Accept=application/json;headerKey1=headerValue1");
 		properties.put("protocol", "http");
 
-		jsonWebServiceClientImpl.activate(properties);
+		activateJsonWebServiceClientImpl(properties, jsonWebServiceClientImpl);
 
 		Map<String, String> params = new HashMap<String, String>();
 

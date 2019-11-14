@@ -123,7 +123,8 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 
 		Assert.assertFalse(clusterChannel.isClosed());
 
-		ReflectionTestUtil.invoke(clusterExecutorImpl, "deactivate", new Class<?>[0]);
+		ReflectionTestUtil.invoke(
+			clusterExecutorImpl, "deactivate", new Class<?>[0]);
 
 		Assert.assertTrue(clusterChannel.isClosed());
 		Assert.assertTrue(executorService.isShutdown());
@@ -391,7 +392,9 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 		clusterExecutorImpl.setPortalExecutorManager(
 			new MockPortalExecutorManager());
 
-		clusterExecutorImpl.activate(
+		ReflectionTestUtil.invoke(
+			clusterExecutorImpl, "activate",
+			new Class<?>[] {MockComponentContext.class},
 			new MockComponentContext(new HashMapDictionary<>()));
 
 		return clusterExecutorImpl;

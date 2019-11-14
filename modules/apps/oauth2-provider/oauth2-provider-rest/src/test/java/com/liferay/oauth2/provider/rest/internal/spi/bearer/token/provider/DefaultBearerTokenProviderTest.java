@@ -16,6 +16,7 @@ package com.liferay.oauth2.provider.rest.internal.spi.bearer.token.provider;
 
 import com.liferay.oauth2.provider.rest.spi.bearer.token.provider.BearerTokenProvider;
 import com.liferay.portal.kernel.security.SecureRandomUtil;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 
 import java.util.Map;
@@ -50,7 +51,9 @@ public class DefaultBearerTokenProviderTest extends PowerMockito {
 
 		_defaultBearerTokenProvider = new DefaultBearerTokenProvider();
 
-		_defaultBearerTokenProvider.activate(properties);
+		ReflectionTestUtil.invoke(
+			_defaultBearerTokenProvider, "activate", new Class<?>[] {Map.class},
+			properties);
 
 		mockStatic(SecureRandomUtil.class);
 

@@ -82,7 +82,9 @@ public class VelocityTemplateTest {
 		_velocityTemplateResourceLoader.setTemplateResourceParser(
 			new ClassLoaderResourceParser());
 
-		_velocityTemplateResourceLoader.activate(Collections.emptyMap());
+		ReflectionTestUtil.invoke(
+			_velocityTemplateResourceLoader, "activate",
+			new Class<?>[] {Map.class}, Collections.emptyMap());
 	}
 
 	@Before
