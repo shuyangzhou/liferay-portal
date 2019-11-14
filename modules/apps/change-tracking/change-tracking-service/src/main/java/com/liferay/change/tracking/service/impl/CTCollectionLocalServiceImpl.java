@@ -14,22 +14,30 @@
 
 package com.liferay.change.tracking.service.impl;
 
+import com.liferay.change.tracking.conflict.ConflictInfo;
 import com.liferay.change.tracking.constants.CTConstants;
 import com.liferay.change.tracking.exception.CTCollectionDescriptionException;
 import com.liferay.change.tracking.exception.CTCollectionNameException;
 import com.liferay.change.tracking.internal.CTServiceCopier;
 import com.liferay.change.tracking.internal.CTServiceRegistry;
+import com.liferay.change.tracking.internal.conflict.CTConflictChecker;
+import com.liferay.change.tracking.internal.resolver.ConstraintResolverKey;
 import com.liferay.change.tracking.model.CTCollection;
 import com.liferay.change.tracking.model.CTEntry;
 import com.liferay.change.tracking.model.CTPreferences;
 import com.liferay.change.tracking.model.CTProcess;
+import com.liferay.change.tracking.resolver.ConstraintResolver;
 import com.liferay.change.tracking.service.CTPreferencesLocalService;
 import com.liferay.change.tracking.service.CTProcessLocalService;
 import com.liferay.change.tracking.service.base.CTCollectionLocalServiceBaseImpl;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.petra.lang.SafeClosable;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.change.tracking.registry.CTModelRegistration;
 import com.liferay.portal.change.tracking.registry.CTModelRegistry;
+import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.dao.jdbc.CurrentConnectionUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -51,7 +59,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -86,6 +97,59 @@ public class CTCollectionLocalServiceImpl
 		ctCollection.setStatus(WorkflowConstants.STATUS_DRAFT);
 
 		return ctCollectionPersistence.update(ctCollection);
+	}
+
+	@Override
+	public Map<Long, List<ConflictInfo>> checkConflicts(
+			CTCollection ctCollection)
+		throws PortalException {
+
+		Map<Long, List<ConflictInfo>> conflictInfoMap = new HashMap<>();
+
+		List<CTEntry> ctEntries = ctEntryPersistence.findByCTCollectionId(
+			ctCollection.getCtCollectionId());
+
+		Map<Long, CTConflictChecker<?>> ctConflictCheckers = new HashMap<>();
+
+		for (CTEntry ctEntry : ctEntries) {
+			ctConflictCheckers.computeIfAbsent(
+				ctEntry.getModelClassNameId(),
+				modelClassNameId -> {
+					CTService<?> ctService = _ctServiceRegistry.getCTService(
+						modelClassNameId);
+
+					if (ctService != null) {
+						return new CTConflictChecker<>(
+							ctCollection.getCtCollectionId(), ctService,
+							_serviceTrackerMap);
+					}
+
+					throw new SystemException(
+						StringBundler.concat(
+							"Unable to check conflicts for ", ctCollection,
+							" because service for ", modelClassNameId,
+							" is missing"));
+				});
+		}
+
+		try (SafeClosable safeClosable =
+				CTCollectionThreadLocal.setCTCollectionId(
+					ctCollection.getCtCollectionId())) {
+
+			for (Map.Entry<Long, CTConflictChecker<?>> entry :
+					ctConflictCheckers.entrySet()) {
+
+				CTConflictChecker<?> ctConflictChecker = entry.getValue();
+
+				List<ConflictInfo> conflictInfos = ctConflictChecker.check();
+
+				if (!conflictInfos.isEmpty()) {
+					conflictInfoMap.put(entry.getKey(), conflictInfos);
+				}
+			}
+		}
+
+		return conflictInfoMap;
 	}
 
 	@Override
@@ -314,6 +378,26 @@ public class CTCollectionLocalServiceImpl
 		return ctCollectionPersistence.update(ctCollection);
 	}
 
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, ConstraintResolver.class, null,
+			(serviceReference, emitter) -> {
+				ConstraintResolver<?> constraintResolver =
+					bundleContext.getService(serviceReference);
+
+				emitter.emit(
+					new ConstraintResolverKey(
+						constraintResolver.getModelClass(),
+						constraintResolver.getUniqueIndexColumnNames()));
+			});
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerMap.close();
+	}
+
 	private void _validate(String name, String description)
 		throws PortalException {
 
@@ -350,5 +434,8 @@ public class CTCollectionLocalServiceImpl
 
 	@Reference
 	private CTServiceRegistry _ctServiceRegistry;
+
+	private ServiceTrackerMap<ConstraintResolverKey, ConstraintResolver>
+		_serviceTrackerMap;
 
 }

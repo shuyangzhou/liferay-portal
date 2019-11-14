@@ -123,6 +123,43 @@ public class CTRowUtil {
 		}
 	}
 
+	public static String getConstraintConflictsSQL(
+		long ctCollectionId, String tableName, String primaryColumnName,
+		String[] uniqueIndexColumnNames, boolean includeCTPrimaryKey) {
+
+		StringBundler sb = new StringBundler(
+			4 * uniqueIndexColumnNames.length + 15);
+
+		sb.append("select ct1.");
+		sb.append(primaryColumnName);
+
+		if (includeCTPrimaryKey) {
+			sb.append(" as productionPK, ct2.");
+			sb.append(primaryColumnName);
+			sb.append(" as ctPK");
+		}
+
+		sb.append(" from ");
+		sb.append(tableName);
+		sb.append(" ct1 inner join ");
+		sb.append(tableName);
+		sb.append(" ct2 on ct1.");
+		sb.append(primaryColumnName);
+		sb.append(" != ct2.");
+		sb.append(primaryColumnName);
+		sb.append(" and ct1.ctCollectionId = 0 and ct2.ctCollectionId = ");
+		sb.append(ctCollectionId);
+
+		for (String column : uniqueIndexColumnNames) {
+			sb.append(" and ct1.");
+			sb.append(column);
+			sb.append(" = ct2.");
+			sb.append(column);
+		}
+
+		return sb.toString();
+	}
+
 	private static boolean _isPostgresBlobTable(
 		Map<String, Integer> tableColumnsMap) {
 
