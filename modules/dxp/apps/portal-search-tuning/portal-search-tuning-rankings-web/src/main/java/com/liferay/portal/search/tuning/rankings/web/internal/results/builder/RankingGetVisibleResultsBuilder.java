@@ -14,10 +14,12 @@
 
 package com.liferay.portal.search.tuning.rankings.web.internal.results.builder;
 
+import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.kernel.security.permission.ResourceActions;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -47,14 +49,18 @@ public class RankingGetVisibleResultsBuilder {
 
 	public RankingGetVisibleResultsBuilder(
 		ComplexQueryPartBuilderFactory complexQueryPartBuilderFactory,
+		DLAppLocalService dlAppLocalService,
 		RankingIndexReader rankingIndexReader,
 		RankingSearchRequestHelper rankingSearchRequestHelper,
-		ResourceRequest resourceRequest, Queries queries, Searcher searcher,
+		ResourceActions resourceActions, ResourceRequest resourceRequest,
+		Queries queries, Searcher searcher,
 		SearchRequestBuilderFactory searchRequestBuilderFactory) {
 
 		_complexQueryPartBuilderFactory = complexQueryPartBuilderFactory;
+		_dlAppLocalService = dlAppLocalService;
 		_rankingIndexReader = rankingIndexReader;
 		_rankingSearchRequestHelper = rankingSearchRequestHelper;
+		_resourceActions = resourceActions;
 		_resourceRequest = resourceRequest;
 		_queries = queries;
 		_searcher = searcher;
@@ -155,7 +161,8 @@ public class RankingGetVisibleResultsBuilder {
 	protected JSONObject translate(
 		Document document, Ranking ranking, Locale locale) {
 
-		RankingJSONBuilder rankingJSONBuilder = new RankingJSONBuilder();
+		RankingJSONBuilder rankingJSONBuilder = new RankingJSONBuilder(
+			_dlAppLocalService, _resourceActions);
 
 		return rankingJSONBuilder.document(
 			document
@@ -169,12 +176,14 @@ public class RankingGetVisibleResultsBuilder {
 	private long _companyId;
 	private final ComplexQueryPartBuilderFactory
 		_complexQueryPartBuilderFactory;
+	private final DLAppLocalService _dlAppLocalService;
 	private int _from;
 	private final Queries _queries;
 	private String _queryString;
 	private String _rankingId;
 	private final RankingIndexReader _rankingIndexReader;
 	private final RankingSearchRequestHelper _rankingSearchRequestHelper;
+	private final ResourceActions _resourceActions;
 	private final ResourceRequest _resourceRequest;
 	private final Searcher _searcher;
 	private final SearchRequestBuilderFactory _searchRequestBuilderFactory;

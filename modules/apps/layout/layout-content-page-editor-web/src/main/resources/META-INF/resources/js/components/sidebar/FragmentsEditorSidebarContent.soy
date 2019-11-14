@@ -6,6 +6,7 @@
 {template .render}
 	{@param? _handleLookAndFeeldButtonClick: any}
 	{@param? _handlePanelButtonClick: any}
+	{@param? lockedSegmentsExperience: bool }
 	{@param? selectedSidebarPanel: [
 		icon: string,
 		label: string,
@@ -64,6 +65,10 @@
 							{sp}text-center
 							{sp}fragments-editor-sidebar-sections-buttons__btn
 
+							{if $lockedSegmentsExperience}
+								{sp}disabled
+							{/if}
+
 							{if $selectedSidebarPanel and ($sidebarPanel.sidebarPanelId == $selectedSidebarPanel.sidebarPanelId)}
 								{sp}fragments-editor-sidebar-sections-buttons__btn--active
 							{/if}
@@ -72,13 +77,22 @@
 						{let $sectionButtonAttributes kind="attributes"}
 							class="{$sectionButtonClasses}"
 							data-sidebar-panel-id="{$sidebarPanel.sidebarPanelId}"
-							data-title="{$sidebarPanel.label}"
+							{if $lockedSegmentsExperience}
+								data-title="{msg desc=""}edit-is-not-allowed-for-this-experience{/msg}"
+							{else}
+								data-title="{$sidebarPanel.label}"
+							{/if}
+
 							type="button"
 
-							{if $sidebarPanel.sidebarPanelId == 'lookAndFeel'}
-								data-onclick="{$_handleLookAndFeeldButtonClick}"
+							{if $lockedSegmentsExperience}
+								aria-disabled="true"
 							{else}
-								data-onclick="{$_handlePanelButtonClick}"
+								{if $sidebarPanel.sidebarPanelId == 'lookAndFeel'}
+									data-onclick="{$_handleLookAndFeeldButtonClick}"
+								{else}
+									data-onclick="{$_handlePanelButtonClick}"
+								{/if}
 							{/if}
 						{/let}
 

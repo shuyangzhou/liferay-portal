@@ -52,6 +52,11 @@ definition {
 				layoutName = "Test URL",
 				type = "url");
 
+			JSONLayout.addPrivateLayout(
+				groupName = "Test Site Name",
+				layoutName = "Test Private Page",
+				type = "portlet");
+
 			for (var i : list "1,2,3,4") {
 				JSONLayout.addPublicLayout(
 					groupName = "Test Site Name",
@@ -73,6 +78,19 @@ definition {
 		else {
 			JSONGroup.deleteGroupByName(groupName = "Test Site Name");
 		}
+	}
+
+	@description = "This is a test for LPS-102544. Can navigate to both public and private pages from pages finder."
+	test NavigateToBothPageTypesViaPageFinder {
+		PagesFinder.goToFindAPage();
+
+		PagesFinder.selectPageType(optionValue = "Private Pages");
+
+		PagesFinder.navigateToPage(pageName = "Test Private Page");
+
+		PagesFinder.selectPageType(optionValue = "Public Pages");
+
+		PagesFinder.navigateToPage(pageName = "Test Portlet Page");
 	}
 
 	@description = "This is a test for LPS-90363. Assert that all page types can be found and counted in the pages finder."

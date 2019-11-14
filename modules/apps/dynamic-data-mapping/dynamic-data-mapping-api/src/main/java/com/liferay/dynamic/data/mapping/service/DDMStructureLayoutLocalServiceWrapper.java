@@ -506,6 +506,16 @@ public class DDMStructureLayoutLocalServiceWrapper
 	public java.util.List
 		<com.liferay.dynamic.data.mapping.model.DDMStructureLayout>
 			getStructureLayouts(
+				long groupId, long classNameId, long structureVersionId) {
+
+		return _ddmStructureLayoutLocalService.getStructureLayouts(
+			groupId, classNameId, structureVersionId);
+	}
+
+	@Override
+	public java.util.List
+		<com.liferay.dynamic.data.mapping.model.DDMStructureLayout>
+			getStructureLayouts(
 				long groupId, long classNameId, long structureVersionId,
 				int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator

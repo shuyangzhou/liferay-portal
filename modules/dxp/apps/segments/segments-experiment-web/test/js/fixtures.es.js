@@ -9,14 +9,25 @@
  * distribution rights of the Software.
  */
 
+export const controlVariant = [
+	{
+		control: true,
+		name: 'Control',
+		segmentsExperienceId: '0',
+		segmentsExperimentId: '0',
+		segmentsExperimentRelId: '123',
+		split: 0.0
+	}
+];
+
 export const segmentsExperiment = {
 	confidenceLevel: 0,
 	description: 'Experiment 1 description',
 	editable: true,
 	goal: {
-		label: 'Time On Page',
+		label: 'Bounce Rate',
 		target: '',
-		value: 'time-on-page'
+		value: 'bounce-rate'
 	},
 	name: 'Experiment 1',
 	segmentsEntryName: 'Segment name',

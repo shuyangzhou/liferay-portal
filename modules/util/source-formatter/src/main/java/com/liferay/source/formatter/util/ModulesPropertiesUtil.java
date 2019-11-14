@@ -14,9 +14,11 @@
 
 package com.liferay.source.formatter.util;
 
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.source.formatter.checks.util.BNDSourceUtil;
 import com.liferay.source.formatter.checks.util.SourceUtil;
@@ -46,11 +48,11 @@ public class ModulesPropertiesUtil {
 	public static String getContent(File portalDir) throws IOException {
 		StringBundler sb = new StringBundler();
 
-		Map<String, String> bundleInformationMap = getBundleInformationMap(
+		Map<String, String> moduleInformationMap = _getModuleInformationMap(
 			portalDir);
 
 		for (Map.Entry<String, String> entry :
-				bundleInformationMap.entrySet()) {
+				moduleInformationMap.entrySet()) {
 
 			sb.append(entry.getKey());
 			sb.append(StringPool.EQUAL);
@@ -58,89 +60,11 @@ public class ModulesPropertiesUtil {
 			sb.append(StringPool.NEW_LINE);
 		}
 
-		if (!bundleInformationMap.isEmpty()) {
+		if (!moduleInformationMap.isEmpty()) {
 			sb.setIndex(sb.index() - 1);
 		}
 
 		return sb.toString();
-	}
-
-	protected static Map<String, String> getBundleInformationMap(File portalDir)
-		throws IOException {
-
-		if (portalDir == null) {
-			return Collections.emptyMap();
-		}
-
-		final Map<String, String> bundleInformationMap = new TreeMap<>();
-
-		Files.walkFileTree(
-			portalDir.toPath(), EnumSet.noneOf(FileVisitOption.class), 15,
-			new SimpleFileVisitor<Path>() {
-
-				@Override
-				public FileVisitResult preVisitDirectory(
-						Path dirPath, BasicFileAttributes basicFileAttributes)
-					throws IOException {
-
-					String dirName = String.valueOf(dirPath.getFileName());
-
-					if (ArrayUtil.contains(_SKIP_DIR_NAMES, dirName)) {
-						return FileVisitResult.SKIP_SUBTREE;
-					}
-
-					Path path = dirPath.resolve(".gitrepo");
-
-					if (Files.exists(path)) {
-						return FileVisitResult.SKIP_SUBTREE;
-					}
-
-					Path bndPath = dirPath.resolve("bnd.bnd");
-
-					if (!Files.exists(bndPath)) {
-						return FileVisitResult.CONTINUE;
-					}
-
-					String bndContent = FileUtil.read(bndPath.toFile());
-
-					String bundleSymbolicName = _getBundleSymbolicName(
-						bndContent, SourceUtil.getAbsolutePath(bndPath));
-
-					if (bundleSymbolicName == null) {
-						return FileVisitResult.SKIP_SUBTREE;
-					}
-
-					String bundleVersion = BNDSourceUtil.getDefinitionValue(
-						bndContent, "Bundle-Version");
-
-					if (Validator.isNotNull(bundleVersion)) {
-						bundleInformationMap.put(
-							"bundle.version[" + bundleSymbolicName + "]",
-							bundleVersion);
-					}
-
-					Path packageJSONPath = dirPath.resolve("package.json");
-
-					if (!Files.exists(packageJSONPath)) {
-						return FileVisitResult.SKIP_SUBTREE;
-					}
-
-					JSONObject jsonObject = new JSONObject(
-						FileUtil.read(packageJSONPath.toFile()));
-
-					if (!jsonObject.isNull("name")) {
-						bundleInformationMap.put(
-							"bundle.symbolic.name[" +
-								jsonObject.getString("name") + "]",
-							bundleSymbolicName);
-					}
-
-					return FileVisitResult.SKIP_SUBTREE;
-				}
-
-			});
-
-		return bundleInformationMap;
 	}
 
 	private static String _getBundleSymbolicName(
@@ -192,6 +116,96 @@ public class ModulesPropertiesUtil {
 		}
 
 		return null;
+	}
+
+	private static Map<String, String> _getModuleInformationMap(File portalDir)
+		throws IOException {
+
+		if (portalDir == null) {
+			return Collections.emptyMap();
+		}
+
+		final Map<String, String> moduleInformationMap = new TreeMap<>();
+
+		Files.walkFileTree(
+			portalDir.toPath(), EnumSet.noneOf(FileVisitOption.class), 15,
+			new SimpleFileVisitor<Path>() {
+
+				@Override
+				public FileVisitResult preVisitDirectory(
+						Path dirPath, BasicFileAttributes basicFileAttributes)
+					throws IOException {
+
+					String dirName = String.valueOf(dirPath.getFileName());
+
+					if (ArrayUtil.contains(_SKIP_DIR_NAMES, dirName)) {
+						return FileVisitResult.SKIP_SUBTREE;
+					}
+
+					Path path = dirPath.resolve(".gitrepo");
+
+					if (Files.exists(path)) {
+						return FileVisitResult.SKIP_SUBTREE;
+					}
+
+					Path bndPath = dirPath.resolve("bnd.bnd");
+
+					if (!Files.exists(bndPath)) {
+						return FileVisitResult.CONTINUE;
+					}
+
+					String bndContent = FileUtil.read(bndPath.toFile());
+
+					String bundleSymbolicName = _getBundleSymbolicName(
+						bndContent, SourceUtil.getAbsolutePath(bndPath));
+
+					if (bundleSymbolicName == null) {
+						return FileVisitResult.SKIP_SUBTREE;
+					}
+
+					String bundleVersion = BNDSourceUtil.getDefinitionValue(
+						bndContent, "Bundle-Version");
+
+					if (Validator.isNotNull(bundleVersion)) {
+						moduleInformationMap.put(
+							"bundle.version[" + bundleSymbolicName + "]",
+							bundleVersion);
+					}
+
+					String absolutePath = SourceUtil.getAbsolutePath(dirPath);
+
+					int x = absolutePath.indexOf("/modules/");
+
+					if (x != -1) {
+						moduleInformationMap.put(
+							"project.name[" + bundleSymbolicName + "]",
+							StringUtil.replace(
+								absolutePath.substring(x + 8), CharPool.SLASH,
+								CharPool.COLON));
+					}
+
+					Path packageJSONPath = dirPath.resolve("package.json");
+
+					if (!Files.exists(packageJSONPath)) {
+						return FileVisitResult.SKIP_SUBTREE;
+					}
+
+					JSONObject jsonObject = new JSONObject(
+						FileUtil.read(packageJSONPath.toFile()));
+
+					if (!jsonObject.isNull("name")) {
+						moduleInformationMap.put(
+							"bundle.symbolic.name[" +
+								jsonObject.getString("name") + "]",
+							bundleSymbolicName);
+					}
+
+					return FileVisitResult.SKIP_SUBTREE;
+				}
+
+			});
+
+		return moduleInformationMap;
 	}
 
 	private static final String[] _SKIP_DIR_NAMES = {

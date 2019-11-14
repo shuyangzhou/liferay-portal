@@ -34,7 +34,6 @@
 							'aui-sortable-list',
 							'json',
 							'liferay-form',
-							'liferay-item-selector-dialog',
 							'liferay-layouts-tree',
 							'liferay-layouts-tree-radio',
 							'liferay-layouts-tree-selectable',

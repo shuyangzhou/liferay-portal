@@ -351,6 +351,10 @@ public interface DDMStructureLayoutLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DDMStructureLayout> getStructureLayouts(
+		long groupId, long classNameId, long structureVersionId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DDMStructureLayout> getStructureLayouts(
 		long groupId, long classNameId, long structureVersionId, int start,
 		int end, OrderByComparator<DDMStructureLayout> orderByComparator);
 

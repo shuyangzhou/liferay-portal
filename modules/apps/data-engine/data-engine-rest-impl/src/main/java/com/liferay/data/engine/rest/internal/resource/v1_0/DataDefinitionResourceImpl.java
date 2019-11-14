@@ -18,10 +18,15 @@ import com.liferay.data.engine.field.type.util.LocalizedValueUtil;
 import com.liferay.data.engine.model.DEDataListView;
 import com.liferay.data.engine.rest.dto.v1_0.DataDefinition;
 import com.liferay.data.engine.rest.dto.v1_0.DataDefinitionPermission;
+import com.liferay.data.engine.rest.dto.v1_0.DataLayout;
+import com.liferay.data.engine.rest.dto.v1_0.DataLayoutColumn;
+import com.liferay.data.engine.rest.dto.v1_0.DataLayoutPage;
+import com.liferay.data.engine.rest.dto.v1_0.DataLayoutRow;
 import com.liferay.data.engine.rest.dto.v1_0.DataRecordCollection;
 import com.liferay.data.engine.rest.internal.constants.DataActionKeys;
 import com.liferay.data.engine.rest.internal.constants.DataDefinitionConstants;
 import com.liferay.data.engine.rest.internal.dto.v1_0.util.DataDefinitionUtil;
+import com.liferay.data.engine.rest.internal.dto.v1_0.util.DataLayoutUtil;
 import com.liferay.data.engine.rest.internal.dto.v1_0.util.DataRecordCollectionUtil;
 import com.liferay.data.engine.rest.internal.model.InternalDataDefinition;
 import com.liferay.data.engine.rest.internal.model.InternalDataLayout;
@@ -38,10 +43,14 @@ import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldTypeServices
 import com.liferay.dynamic.data.mapping.form.renderer.DDMFormRenderingContext;
 import com.liferay.dynamic.data.mapping.form.renderer.DDMFormTemplateContextFactory;
 import com.liferay.dynamic.data.mapping.form.values.factory.DDMFormValuesFactory;
+import com.liferay.dynamic.data.mapping.io.DDMFormLayoutSerializer;
+import com.liferay.dynamic.data.mapping.io.DDMFormLayoutSerializerSerializeRequest;
+import com.liferay.dynamic.data.mapping.io.DDMFormLayoutSerializerSerializeResponse;
 import com.liferay.dynamic.data.mapping.io.DDMFormSerializer;
 import com.liferay.dynamic.data.mapping.io.DDMFormSerializerSerializeRequest;
 import com.liferay.dynamic.data.mapping.io.DDMFormSerializerSerializeResponse;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
+import com.liferay.dynamic.data.mapping.model.DDMFormLayout;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMStructureConstants;
 import com.liferay.dynamic.data.mapping.model.DDMStructureLayout;
@@ -59,6 +68,7 @@ import com.liferay.dynamic.data.mapping.util.comparator.StructureModifiedDateCom
 import com.liferay.dynamic.data.mapping.util.comparator.StructureNameComparator;
 import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -97,6 +107,8 @@ import com.liferay.portal.vulcan.resource.EntityModelResource;
 import com.liferay.portal.vulcan.util.SearchUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -461,6 +473,8 @@ public class DataDefinitionResourceImpl
 			PermissionThreadLocal.getPermissionChecker(), dataDefinitionId,
 			ActionKeys.UPDATE);
 
+		_updateFieldNames(dataDefinitionId, dataDefinition);
+
 		DDMFormSerializerSerializeRequest.Builder builder =
 			DDMFormSerializerSerializeRequest.Builder.newBuilder(
 				DataDefinitionUtil.toDDMForm(
@@ -599,11 +613,37 @@ public class DataDefinitionResourceImpl
 		);
 	}
 
+	private String[] _getRemovedFieldNames(
+		DataDefinition dataDefinition, DDMStructure ddmStructure) {
+
+		DataDefinition existingDataDefinition =
+			DataDefinitionUtil.toDataDefinition(
+				_ddmFormFieldTypeServicesTracker, ddmStructure);
+
+		return _removeFieldNames(
+			transform(
+				existingDataDefinition.getDataDefinitionFields(),
+				dataDefinitionField -> dataDefinitionField.getName(),
+				String.class),
+			transform(
+				dataDefinition.getDataDefinitionFields(),
+				dataDefinitionField -> dataDefinitionField.getName(),
+				String.class));
+	}
+
 	private ResourceBundle _getResourceBundle(Locale locale) {
 		return new AggregateResourceBundle(
 			ResourceBundleUtil.getBundle(
 				"content.Language", locale, getClass()),
 			_portal.getResourceBundle(locale));
+	}
+
+	private String[] _removeFieldNames(
+		String[] currentFieldNames, String[] removedFieldNames) {
+
+		return ArrayUtil.filter(
+			currentFieldNames,
+			fieldName -> !ArrayUtil.contains(removedFieldNames, fieldName));
 	}
 
 	private String _resolveModuleName(String moduleName) {
@@ -659,6 +699,141 @@ public class DataDefinitionResourceImpl
 			ResourceBundleUtil.getString(resourceBundle, key), key);
 	}
 
+	private void _updateDataLayoutFieldNames(
+		DataLayout dataLayout, String[] removedFieldNames) {
+
+		Stream<DataLayoutPage> dataLayoutPages = Arrays.stream(
+			dataLayout.getDataLayoutPages());
+
+		dataLayoutPages.forEach(
+			dataLayoutPage -> {
+				Stream<DataLayoutRow> dataLayoutRows = Arrays.stream(
+					dataLayoutPage.getDataLayoutRows());
+
+				dataLayoutRows.forEach(
+					dataLayoutRow -> {
+						Stream<DataLayoutColumn> dataLayoutColumns =
+							Arrays.stream(dataLayoutRow.getDataLayoutColumns());
+
+						dataLayoutColumns.forEach(
+							dataLayoutColumn -> dataLayoutColumn.setFieldNames(
+								_removeFieldNames(
+									dataLayoutColumn.getFieldNames(),
+									removedFieldNames)));
+
+						dataLayoutRow.setDataLayoutColumns(
+							ArrayUtil.filter(
+								dataLayoutRow.getDataLayoutColumns(),
+								column -> !ArrayUtil.isEmpty(
+									column.getFieldNames())));
+					});
+
+				dataLayoutPage.setDataLayoutRows(
+					ArrayUtil.filter(
+						dataLayoutPage.getDataLayoutRows(),
+						row -> !ArrayUtil.isEmpty(row.getDataLayoutColumns())));
+			});
+	}
+
+	private void _updateDataLayouts(
+			Set<Long> ddmStructureLayoutIds, String[] removedFieldNames)
+		throws Exception {
+
+		for (Long ddmStructureLayoutId : ddmStructureLayoutIds) {
+			DDMStructureLayout ddmStructureLayout =
+				_ddmStructureLayoutLocalService.getStructureLayout(
+					ddmStructureLayoutId);
+
+			DataLayout dataLayout = DataLayoutUtil.toDataLayout(
+				ddmStructureLayout.getDDMFormLayout());
+
+			_updateDataLayoutFieldNames(dataLayout, removedFieldNames);
+
+			DDMFormLayout ddmFormLayout = DataLayoutUtil.toDDMFormLayout(
+				dataLayout);
+
+			DDMFormLayoutSerializerSerializeRequest.Builder builder =
+				DDMFormLayoutSerializerSerializeRequest.Builder.newBuilder(
+					ddmFormLayout);
+
+			DDMFormLayoutSerializerSerializeResponse
+				ddmFormLayoutSerializerSerializeResponse =
+					_ddmFormLayoutSerializer.serialize(builder.build());
+
+			ddmStructureLayout.setDefinition(
+				ddmFormLayoutSerializerSerializeResponse.getContent());
+
+			_ddmStructureLayoutLocalService.updateDDMStructureLayout(
+				ddmStructureLayout);
+		}
+	}
+
+	private void _updateDataListViews(
+			Set<Long> deDataListViewIds, String[] removedFieldNames)
+		throws PortalException {
+
+		for (Long deDataListViewId : deDataListViewIds) {
+			DEDataListView deDataListView =
+				_deDataListViewLocalService.getDEDataListView(deDataListViewId);
+
+			String[] fieldNames = JSONUtil.toStringArray(
+				_jsonFactory.createJSONArray(deDataListView.getFieldNames()));
+
+			deDataListView.setFieldNames(
+				Arrays.toString(
+					_removeFieldNames(fieldNames, removedFieldNames)));
+
+			_deDataListViewLocalService.updateDEDataListView(deDataListView);
+		}
+	}
+
+	private void _updateFieldNames(
+			Long dataDefinitionId, DataDefinition dataDefinition)
+		throws Exception {
+
+		DDMStructure ddmStructure = _ddmStructureLocalService.getStructure(
+			dataDefinitionId);
+
+		String[] removedFieldNames = _getRemovedFieldNames(
+			dataDefinition, ddmStructure);
+
+		Set<Long> ddmStructureLayoutIds = new HashSet<>();
+		Set<Long> deDataListViewIds = new HashSet<>();
+
+		for (String removedFieldName : removedFieldNames) {
+			ddmStructureLayoutIds.addAll(
+				transform(
+					_deDataDefinitionFieldLinkLocalService.
+						getDEDataDefinitionFieldLinks(
+							_portal.getClassNameId(InternalDataLayout.class),
+							ddmStructure.getStructureId(), removedFieldName),
+					deDataDefinitionFieldLink ->
+						deDataDefinitionFieldLink.getClassPK()));
+
+			deDataListViewIds.addAll(
+				transform(
+					_deDataDefinitionFieldLinkLocalService.
+						getDEDataDefinitionFieldLinks(
+							_portal.getClassNameId(DEDataListView.class),
+							ddmStructure.getStructureId(), removedFieldName),
+					deDataDefinitionFieldLink ->
+						deDataDefinitionFieldLink.getClassPK()));
+
+			_deDataDefinitionFieldLinkLocalService.
+				deleteDEDataDefinitionFieldLinks(
+					_portal.getClassNameId(InternalDataLayout.class),
+					ddmStructure.getStructureId(), removedFieldName);
+
+			_deDataDefinitionFieldLinkLocalService.
+				deleteDEDataDefinitionFieldLinks(
+					_portal.getClassNameId(DEDataListView.class),
+					ddmStructure.getStructureId(), removedFieldName);
+		}
+
+		_updateDataLayouts(ddmStructureLayoutIds, removedFieldNames);
+		_updateDataListViews(deDataListViewIds, removedFieldNames);
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		DataDefinitionResourceImpl.class);
 
@@ -676,6 +851,9 @@ public class DataDefinitionResourceImpl
 
 	@Reference
 	private DDMFormFieldTypeServicesTracker _ddmFormFieldTypeServicesTracker;
+
+	@Reference(target = "(ddm.form.layout.serializer.type=json)")
+	private DDMFormLayoutSerializer _ddmFormLayoutSerializer;
 
 	@Reference(target = "(ddm.form.serializer.type=json)")
 	private DDMFormSerializer _ddmFormSerializer;

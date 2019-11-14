@@ -79,7 +79,7 @@ export function getIndexesFromFieldName({dataLayoutPages}, fieldName) {
 
 	dataLayoutPages.some(({dataLayoutRows}, pageIndex) => {
 		return dataLayoutRows.some(({dataLayoutColumns}, rowIndex) => {
-			return dataLayoutColumns.some(({fieldNames}, columnIndex) => {
+			return dataLayoutColumns.some(({fieldNames = []}, columnIndex) => {
 				return fieldNames.some(name => {
 					if (name === fieldName) {
 						indexes = {

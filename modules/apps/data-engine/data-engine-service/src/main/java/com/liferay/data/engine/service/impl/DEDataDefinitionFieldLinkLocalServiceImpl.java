@@ -65,6 +65,14 @@ public class DEDataDefinitionFieldLinkLocalServiceImpl
 	}
 
 	@Override
+	public void deleteDEDataDefinitionFieldLinks(
+		long classNameId, long ddmStructureId, String fieldName) {
+
+		deDataDefinitionFieldLinkPersistence.removeByC_DDMSI_F(
+			classNameId, ddmStructureId, fieldName);
+	}
+
+	@Override
 	public List<DEDataDefinitionFieldLink> getDEDataDefinitionFieldLinks(
 		long classNameId, long ddmStructureId, String fieldName) {
 

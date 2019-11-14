@@ -37,9 +37,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Alejandro Tardín
  */
-@Component(
-	immediate = true, service = VideoDLPreviewRendererProviderFactory.class
-)
+@Component(service = VideoDLPreviewRendererProviderFactory.class)
 public class VideoDLPreviewRendererProviderFactory {
 
 	@Activate

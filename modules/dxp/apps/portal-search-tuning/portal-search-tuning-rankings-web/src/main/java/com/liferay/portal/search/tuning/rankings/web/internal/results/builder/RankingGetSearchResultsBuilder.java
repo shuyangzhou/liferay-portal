@@ -14,9 +14,11 @@
 
 package com.liferay.portal.search.tuning.rankings.web.internal.results.builder;
 
+import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.security.permission.ResourceActions;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.document.Document;
@@ -40,11 +42,15 @@ public class RankingGetSearchResultsBuilder {
 
 	public RankingGetSearchResultsBuilder(
 		ComplexQueryPartBuilderFactory complexQueryPartBuilderFactory,
-		Queries queries, ResourceRequest resourceRequest, Searcher searcher,
+		DLAppLocalService dlAppLocalService, Queries queries,
+		ResourceActions resourceActions, ResourceRequest resourceRequest,
+		Searcher searcher,
 		SearchRequestBuilderFactory searchRequestBuilderFactory) {
 
 		_complexQueryPartBuilderFactory = complexQueryPartBuilderFactory;
+		_dlAppLocalService = dlAppLocalService;
 		_queries = queries;
+		_resourceActions = resourceActions;
 		_resourceRequest = resourceRequest;
 		_searcher = searcher;
 		_searchRequestBuilderFactory = searchRequestBuilderFactory;
@@ -117,7 +123,8 @@ public class RankingGetSearchResultsBuilder {
 	}
 
 	protected JSONObject translate(Document document, Locale locale) {
-		RankingJSONBuilder rankingJSONBuilder = new RankingJSONBuilder();
+		RankingJSONBuilder rankingJSONBuilder = new RankingJSONBuilder(
+			_dlAppLocalService, _resourceActions);
 
 		return rankingJSONBuilder.document(
 			document
@@ -129,9 +136,11 @@ public class RankingGetSearchResultsBuilder {
 	private long _companyId;
 	private final ComplexQueryPartBuilderFactory
 		_complexQueryPartBuilderFactory;
+	private final DLAppLocalService _dlAppLocalService;
 	private int _from;
 	private final Queries _queries;
 	private String _queryString;
+	private final ResourceActions _resourceActions;
 	private final ResourceRequest _resourceRequest;
 	private final Searcher _searcher;
 	private final SearchRequestBuilderFactory _searchRequestBuilderFactory;

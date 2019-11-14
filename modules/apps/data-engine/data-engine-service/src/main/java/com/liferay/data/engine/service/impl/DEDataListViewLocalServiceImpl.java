@@ -79,6 +79,11 @@ public class DEDataListViewLocalServiceImpl
 	}
 
 	@Override
+	public List<DEDataListView> getDEDataListViews(long ddmStructureId) {
+		return deDataListViewPersistence.findByDDMStructureId(ddmStructureId);
+	}
+
+	@Override
 	public List<DEDataListView> getDEDataListViews(
 		long groupId, long companyId, long ddmStructureId, int start, int end,
 		OrderByComparator<DEDataListView> orderByComparator) {

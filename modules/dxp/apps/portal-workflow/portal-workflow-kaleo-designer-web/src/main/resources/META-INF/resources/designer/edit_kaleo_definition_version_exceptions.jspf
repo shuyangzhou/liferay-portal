@@ -14,6 +14,15 @@
  */
 --%>
 
+<liferay-ui:error exception="<%= IllegalArgumentException.class %>">
+
+	<%
+	IllegalArgumentException iae = (IllegalArgumentException)errorException;
+	%>
+
+	<liferay-ui:message key="<%= iae.getMessage() %>" />
+</liferay-ui:error>
+
 <liferay-ui:error exception="<%= KaleoDefinitionValidationException.class %>" message="please-enter-valid-content" />
 
 <liferay-ui:error exception="<%= KaleoDefinitionValidationException.EmptyNotificationTemplate.class %>">
@@ -138,13 +147,14 @@
 </liferay-ui:error>
 
 <liferay-ui:error exception="<%= KaleoDefinitionValidationException.UnbalancedForkAndJoinNodes.class %>" message="each-fork-node-requires-a-join-node-make-sure-all-forks-and-joins-are-properly-paired" />
+<liferay-ui:error exception="<%= NoSuchRoleException.class %>" message="the-role-could-not-be-found" />
 
 <liferay-ui:error exception="<%= RequiredWorkflowDefinitionException.class %>">
 	<liferay-ui:message arguments="<%= kaleoDesignerDisplayContext.getMessageArguments((RequiredWorkflowDefinitionException)errorException) %>" key="<%= kaleoDesignerDisplayContext.getMessageKey((RequiredWorkflowDefinitionException)errorException) %>" translateArguments="<%= false %>" />
 </liferay-ui:error>
 
 <liferay-ui:error exception="<%= WorkflowDefinitionFileException.class %>" message="please-enter-valid-content" />
-
 <liferay-ui:error exception="<%= WorkflowDefinitionTitleException.class %>" message="name-workflow-before-publish" />
-
 <liferay-ui:error exception="<%= WorkflowException.class %>" message="an-error-occurred-in-the-workflow-engine" />
+
+<liferay-ui:error-principal />

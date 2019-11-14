@@ -78,11 +78,11 @@ DepotEntry depotEntry = (DepotEntry)request.getAttribute(DepotAdminWebKeys.DEPOT
 			<liferay-ui:search-container-column-text>
 
 				<%
-				Map<String, String> data = new HashMap<>();
-
 				ActionURL disconnectSiteActionURL = DepotEntryURLUtil.getDisconnectSiteActionURL(depotEntryGroupRel.getDepotEntryGroupRelId(), currentURL, liferayPortletResponse);
 
-				data.put("href", disconnectSiteActionURL.toString());
+				Map<String, String> data = HashMapBuilder.put(
+					"href", disconnectSiteActionURL.toString()
+				).build();
 				%>
 
 				<clay:button
@@ -152,7 +152,16 @@ DepotEntry depotEntry = (DepotEntry)request.getAttribute(DepotAdminWebKeys.DEPOT
 		dom.delegate(document.body, 'click', '.disconnect-site-button', function(
 			event
 		) {
-			submitForm(document.hrefFm, event.delegateTarget.getAttribute('data-href'));
+			if (
+				confirm(
+					'<liferay-ui:message key="removing-this-site-connection-will-not-allow-the-site-to-consume-data-from-this-repository-directly" />'
+				)
+			) {
+				submitForm(
+					document.hrefFm,
+					event.delegateTarget.getAttribute('data-href')
+				);
+			}
 		});
 	</aui:script>
 </div>

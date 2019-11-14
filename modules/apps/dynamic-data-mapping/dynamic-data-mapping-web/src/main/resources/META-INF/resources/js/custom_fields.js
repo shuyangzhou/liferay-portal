@@ -402,29 +402,40 @@ AUI.add(
 
 					var portletNamespace = instance.get('portletNamespace');
 
-					var itemSelectorDialog = new A.LiferayItemSelectorDialog({
-						eventName: portletNamespace + 'selectDocumentLibrary',
-						on: {
-							selectedItemChange(event) {
-								var selectedItem = event.newVal;
-
-								if (selectedItem) {
-									var itemValue = JSON.parse(
-										selectedItem.value
-									);
-
-									instance._selectFileEntry(
-										itemValue.groupId,
-										itemValue.title,
-										itemValue.uuid
-									);
+					Liferay.Loader.require(
+						'frontend-js-web/liferay/ItemSelectorDialog.es',
+						ItemSelectorDialog => {
+							var itemSelectorDialog = new ItemSelectorDialog.default(
+								{
+									eventName:
+										portletNamespace +
+										'selectDocumentLibrary',
+									url: instance._getDocumentLibrarySelectorURL()
 								}
-							}
-						},
-						url: instance._getDocumentLibrarySelectorURL()
-					});
+							);
 
-					itemSelectorDialog.open();
+							itemSelectorDialog.on(
+								'selectedItemChange',
+								event => {
+									var selectedItem = event.selectedItem;
+
+									if (selectedItem) {
+										var itemValue = JSON.parse(
+											selectedItem.value
+										);
+
+										instance._selectFileEntry(
+											itemValue.groupId,
+											itemValue.title,
+											itemValue.uuid
+										);
+									}
+								}
+							);
+
+							itemSelectorDialog.open();
+						}
+					);
 				},
 
 				_onClickClear() {

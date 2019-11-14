@@ -26,6 +26,7 @@ export function reducer(state, action) {
 		case 'ARCHIVE_EXPERIMENT':
 			return {
 				...state,
+				errors: {},
 				experiment: null,
 				experimentHistory: [
 					{...state.experiment, status: action.payload.status},
@@ -59,6 +60,9 @@ export function reducer(state, action) {
 				)
 			};
 
+		case 'EDIT_EXPERIMENT':
+			return _editExperiment(state, action.payload);
+
 		case 'EDIT_EXPERIMENT_FINISH':
 			return {
 				...state,
@@ -70,8 +74,28 @@ export function reducer(state, action) {
 		case 'EDIT_EXPERIMENT_START':
 			return _editExperienceStart(state, action.payload);
 
-		case 'UPDATE_EXPERIMENT':
-			return _updateExperiment(state, action.payload);
+		case 'REVIEW_AND_RUN_EXPERIMENT':
+			return _reviewAndRunExperiment(state);
+
+		case 'REVIEW_AND_RUN_EXPERIMENT_FINISH':
+			return {
+				...state,
+				reviewExperimentModal: {
+					active: false
+				}
+			};
+
+		case 'REVIEW_CLICK_TARGET_ELEMENT':
+			return _reviewClickTargetElement(state);
+
+		case 'REVIEW_VARIANTS':
+			return _reviewVariants(state);
+
+		case 'UPDATE_SEGMENTS_EXPERIMENT_TARGET':
+			return _editExperiment(state, action.payload);
+
+		case 'UPDATE_EXPERIMENT_STATUS':
+			return _updateExperimentStatus(state, action.payload);
 
 		case 'UPDATE_VARIANT':
 			return {
@@ -124,6 +148,13 @@ function _createExperimentStart(state, experimentModalState = {}) {
 	};
 }
 
+function _editExperiment(state, updatedValues) {
+	return {
+		...state,
+		experiment: {...state.experiment, ...updatedValues}
+	};
+}
+
 function _editExperienceStart(state, experiementModalState = {}) {
 	const {experiment} = state;
 
@@ -162,9 +193,68 @@ function _editExperienceStart(state, experiementModalState = {}) {
 	};
 }
 
-function _updateExperiment(state, updatedValues) {
+function _reviewAndRunExperiment(state) {
+	const newState = {...state};
+
+	newState.errors = {
+		...newState.errors,
+		clickTargetError:
+			state.experiment.goal.value === 'click' &&
+			!state.experiment.goal.target,
+		variantsError: newState.variants.length <= 1
+	};
+
+	const errors = Object.entries(newState.errors);
+
+	for (let i = 0; i < errors.length; i++) {
+		const [, hasError] = errors[i];
+
+		if (hasError) {
+			return {
+				...newState,
+				reviewExperimentModal: {
+					active: false
+				}
+			};
+		}
+	}
+
+	return {
+		...newState,
+		reviewExperimentModal: {
+			active: true
+		}
+	};
+}
+
+function _reviewClickTargetElement(state) {
+	const newState = {...state};
+
+	newState.errors = {
+		...newState.errors,
+		clickTargetError:
+			state.experiment.goal.value === 'click' &&
+			!state.experiment.goal.target
+	};
+
+	return newState;
+}
+
+function _reviewVariants(state) {
+	const newState = {...state};
+
+	newState.errors = {
+		...newState.errors,
+		variantsError: state.variants.length <= 1
+	};
+
+	return newState;
+}
+
+function _updateExperimentStatus(state, updatedValues) {
 	return {
 		...state,
+		errors: {},
 		experiment: {...state.experiment, ...updatedValues}
 	};
 }

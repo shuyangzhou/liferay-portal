@@ -14,9 +14,11 @@
 
 package com.liferay.portal.search.tuning.rankings.web.internal.results.builder;
 
+import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.security.permission.ResourceActions;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -44,12 +46,15 @@ import javax.portlet.ResourceRequest;
 public class RankingGetHiddenResultsBuilder {
 
 	public RankingGetHiddenResultsBuilder(
-		Queries queries, RankingIndexReader rankingIndexReader,
+		DLAppLocalService dlAppLocalService, Queries queries,
+		RankingIndexReader rankingIndexReader, ResourceActions resourceActions,
 		ResourceRequest resourceRequest,
 		SearchEngineAdapter searchEngineAdapter) {
 
+		_dlAppLocalService = dlAppLocalService;
 		_queries = queries;
 		_rankingIndexReader = rankingIndexReader;
+		_resourceActions = resourceActions;
 		_resourceRequest = resourceRequest;
 		_searchEngineAdapter = searchEngineAdapter;
 	}
@@ -121,7 +126,8 @@ public class RankingGetHiddenResultsBuilder {
 	}
 
 	protected JSONObject translate(Document document, Locale locale) {
-		RankingJSONBuilder rankingJSONBuilder = new RankingJSONBuilder();
+		RankingJSONBuilder rankingJSONBuilder = new RankingJSONBuilder(
+			_dlAppLocalService, _resourceActions);
 
 		return rankingJSONBuilder.document(
 			document
@@ -134,9 +140,11 @@ public class RankingGetHiddenResultsBuilder {
 
 	protected static final String LIFERAY_DOCUMENT_TYPE = "LiferayDocumentType";
 
+	private final DLAppLocalService _dlAppLocalService;
 	private final Queries _queries;
 	private String _rankingId;
 	private final RankingIndexReader _rankingIndexReader;
+	private final ResourceActions _resourceActions;
 	private final ResourceRequest _resourceRequest;
 	private final SearchEngineAdapter _searchEngineAdapter;
 

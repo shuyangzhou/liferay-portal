@@ -192,6 +192,7 @@ class List extends PureComponent {
 				extension={item.extension}
 				focus={index === focusIndex}
 				hidden={item.hidden}
+				icon={item.icon}
 				id={item.id}
 				index={index}
 				key={item.id}

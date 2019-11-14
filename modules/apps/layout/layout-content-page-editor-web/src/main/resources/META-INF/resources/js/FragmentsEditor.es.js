@@ -96,6 +96,49 @@ class FragmentsEditor extends Component {
 	}
 
 	/**
+	 * Adds edition listeners
+	 * @review
+	 */
+	_addEditionListeners() {
+		if (!this._activeEditionListeners) {
+			this._activeEditionListeners = true;
+
+			document.addEventListener('click', this._handleDocumentClick, true);
+			document.addEventListener('keydown', this._handleDocumentKeyDown);
+			document.addEventListener('keyup', this._handleDocumentKeyUp);
+			document.addEventListener(
+				'mouseover',
+				this._handleDocumentMouseOver
+			);
+		}
+	}
+
+	/**
+	 * Removes edition listeners
+	 * @review
+	 */
+	_removeEditionListeners() {
+		if (this._activeEditionListeners) {
+			this._activeEditionListeners = false;
+
+			document.removeEventListener(
+				'click',
+				this._handleDocumentClick,
+				true
+			);
+			document.removeEventListener(
+				'keydown',
+				this._handleDocumentKeyDown
+			);
+			document.removeEventListener('keyup', this._handleDocumentKeyUp);
+			document.removeEventListener(
+				'mouseover',
+				this._handleDocumentMouseOver
+			);
+		}
+	}
+
+	/**
 	 * @inheritdoc
 	 * @review
 	 */
@@ -107,10 +150,9 @@ class FragmentsEditor extends Component {
 			this
 		);
 
-		document.addEventListener('click', this._handleDocumentClick, true);
-		document.addEventListener('keydown', this._handleDocumentKeyDown);
-		document.addEventListener('keyup', this._handleDocumentKeyUp);
-		document.addEventListener('mouseover', this._handleDocumentMouseOver);
+		if (!this.lockedSegmentsExperience) {
+			this._addEditionListeners();
+		}
 	}
 
 	/**
@@ -118,15 +160,28 @@ class FragmentsEditor extends Component {
 	 * @review
 	 */
 	disposed() {
-		document.removeEventListener('click', this._handleDocumentClick, true);
-		document.removeEventListener('keydown', this._handleDocumentKeyDown);
-		document.removeEventListener('keyup', this._handleDocumentKeyUp);
-		document.removeEventListener(
-			'mouseover',
-			this._handleDocumentMouseOver
-		);
+		this._removeEditionListeners();
 
 		stopListeningWidgetConfigurationChange();
+	}
+
+	/**
+	 * Listens for changes in the Experience lock status to hide edition features
+	 * @inheritdoc
+	 * @review
+	 */
+	syncLockedSegmentsExperience(value, previousValue) {
+		if (value && value !== previousValue) {
+			if (this.store) {
+				this.store.dispatch({
+					type: CLEAR_ACTIVE_ITEM
+				});
+			}
+
+			this._removeEditionListeners();
+		} else if (value !== previousValue) {
+			this._addEditionListeners();
+		}
 	}
 
 	/**

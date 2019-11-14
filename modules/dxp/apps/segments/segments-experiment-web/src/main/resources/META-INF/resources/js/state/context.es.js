@@ -14,9 +14,11 @@ import {createContext} from 'react';
 const DEFAULT_STATE = {
 	createExperimentModal: {active: false},
 	editExperimentModal: {active: false},
+	errors: {},
 	experiences: [],
 	experiment: null,
 	experimentHistory: [],
+	reviewExperimentModal: {active: false},
 	selectedExperienceId: null,
 	variants: []
 };

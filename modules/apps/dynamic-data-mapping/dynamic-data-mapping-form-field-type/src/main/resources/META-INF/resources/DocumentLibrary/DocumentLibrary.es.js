@@ -16,7 +16,11 @@ import '../FieldBase/FieldBase.es';
 
 import './DocumentLibraryRegister.soy.js';
 
-import {createActionURL, createPortletURL} from 'frontend-js-web';
+import {
+	createActionURL,
+	createPortletURL,
+	ItemSelectorDialog
+} from 'frontend-js-web';
 import Component from 'metal-component';
 import Soy from 'metal-soy';
 import {Config} from 'metal-state';
@@ -24,12 +28,6 @@ import {Config} from 'metal-state';
 import templates from './DocumentLibrary.soy.js';
 
 class DocumentLibrary extends Component {
-	created() {
-		AUI().use('liferay-item-selector-dialog', A => {
-			this.A = A;
-		});
-	}
-
 	prepareStateForRender(state) {
 		let {fileEntryTitle, fileEntryURL, value} = state;
 
@@ -116,7 +114,7 @@ class DocumentLibrary extends Component {
 	}
 
 	_handleFieldChanged(event) {
-		var selectedItem = event.newVal;
+		var selectedItem = event.selectedItem;
 
 		if (selectedItem) {
 			const {value} = selectedItem;
@@ -137,22 +135,27 @@ class DocumentLibrary extends Component {
 	}
 
 	_handleSelectButtonClicked() {
-		var {A, portletNamespace} = this;
+		var {portletNamespace} = this;
 
-		var itemSelectorDialog = new A.LiferayItemSelectorDialog({
+		const itemSelectorDialog = new ItemSelectorDialog({
 			eventName: `${portletNamespace}selectDocumentLibrary`,
-			on: {
-				selectedItemChange: this._handleFieldChanged.bind(this),
-				visibleChange: this._handleVisibleChange.bind(this)
-			},
 			url: this.getDocumentLibrarySelectorURL()
 		});
+
+		itemSelectorDialog.on(
+			'selectedItemChange',
+			this._handleFieldChanged.bind(this)
+		);
+		itemSelectorDialog.on(
+			'visibleChange',
+			this._handleVisibleChange.bind(this)
+		);
 
 		itemSelectorDialog.open();
 	}
 
 	_handleVisibleChange(event) {
-		if (event.newVal) {
+		if (event.selectedItem) {
 			this.emit('fieldFocused', {
 				fieldInstance: this,
 				originalEvent: event

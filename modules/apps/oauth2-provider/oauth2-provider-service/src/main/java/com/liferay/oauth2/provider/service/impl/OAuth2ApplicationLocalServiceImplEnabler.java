@@ -16,11 +16,13 @@ package com.liferay.oauth2.provider.service.impl;
 
 import com.liferay.document.library.kernel.store.Store;
 import com.liferay.osgi.util.ComponentUtil;
+import com.liferay.portal.change.tracking.store.CTStoreFactory;
 import com.liferay.portal.util.PropsValues;
 
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Shuyang Zhou
@@ -34,5 +36,8 @@ public class OAuth2ApplicationLocalServiceImplEnabler {
 			Store.class, "(store.type=" + PropsValues.DL_STORE_IMPL + ")",
 			componentContext, OAuth2ApplicationLocalServiceImpl.class);
 	}
+
+	@Reference
+	private CTStoreFactory _ctStoreFactory;
 
 }

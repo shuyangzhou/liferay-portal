@@ -29,6 +29,7 @@ import {
 	STATUS_FINISHED_NO_WINNER
 } from '../../../src/main/resources/META-INF/resources/js/util/statuses.es';
 import {
+	controlVariant,
 	segmentsExperiment,
 	segmentsExperiences,
 	segmentsVariants
@@ -83,10 +84,7 @@ describe('SegmentsExperimentsSidebar', () => {
 		expect(defaultExperience).not.toBe(null);
 
 		getByText(segmentsExperiment.name);
-
-		const createTestHelpMessage = getByText('review-and-run-test');
-		expect(createTestHelpMessage).toHaveAttribute('disabled');
-
+		getByText('review-and-run-test');
 		getByText('edit');
 	});
 
@@ -229,10 +227,9 @@ describe('Review and Run test', () => {
 
 		getByText(segmentsExperiment.name);
 
-		const createTestHelpMessage = getByText('review-and-run-test');
-		expect(createTestHelpMessage).not.toHaveAttribute('disabled');
+		const reviewAndRunTestButton = getByText('review-and-run-test');
 
-		userEvent.click(createTestHelpMessage);
+		userEvent.click(reviewAndRunTestButton);
 
 		await waitForElement(() => getByText('traffic-split'));
 
@@ -243,6 +240,49 @@ describe('Review and Run test', () => {
 
 		expect(confidenceSlider.length).toBe(1);
 		expect(splitSliders.length).toBe(2);
+	});
+
+	it('Error messages appears when the user clicks in review and run and there is no click target element selected', async () => {
+		const experiment = {
+			...segmentsExperiment,
+			goal: {
+				label: 'Click',
+				value: 'click'
+			}
+		};
+
+		const {getByDisplayValue, getByText} = renderApp({
+			initialSegmentsExperiences: segmentsExperiences,
+			initialSegmentsExperiment: experiment
+		});
+
+		getByDisplayValue(segmentsExperiences[0].name);
+
+		getByText(experiment.name);
+
+		const reviewAndRunTestButton = getByText('review-and-run-test');
+
+		userEvent.click(reviewAndRunTestButton);
+
+		getByText('an-element-needs-to-be-set');
+	});
+
+	it('Error messages appears when the user clicks in review and run and there is only the control variant created', async () => {
+		const {getByDisplayValue, getByText} = renderApp({
+			initialSegmentsExperiences: segmentsExperiences,
+			initialSegmentsExperiment: segmentsExperiment,
+			initialSegmentsVariants: controlVariant
+		});
+
+		getByDisplayValue(segmentsExperiences[0].name);
+
+		getByText(segmentsExperiment.name);
+
+		const reviewAndRunTestButton = getByText('review-and-run-test');
+
+		userEvent.click(reviewAndRunTestButton);
+
+		getByText('a-variant-needs-to-be-created');
 	});
 
 	it("Can run test that won't be editable", async () => {
@@ -260,9 +300,9 @@ describe('Review and Run test', () => {
 		 */
 		expect(actionButtons.length).toBe(2);
 
-		const runTestButton = getByText('review-and-run-test');
+		const reviewAndRunTestButton = getByText('review-and-run-test');
 
-		userEvent.click(runTestButton);
+		userEvent.click(reviewAndRunTestButton);
 
 		await waitForElement(() => getByText('traffic-split'));
 

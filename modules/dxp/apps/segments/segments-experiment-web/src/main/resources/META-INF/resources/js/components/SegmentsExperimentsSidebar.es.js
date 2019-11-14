@@ -21,9 +21,12 @@ import {
 	closeCreationModal,
 	closeEditionModal,
 	deleteArchivedExperiment,
+	editSegmentsExperiment,
 	openCreationModal,
 	openEditionModal,
-	updateSegmentsExperiment
+	reviewClickTargetElement,
+	updateSegmentsExperimentStatus,
+	updateSegmentsExperimentTarget
 } from '../state/actions.es';
 import {
 	getInitialState,
@@ -265,7 +268,7 @@ function SegmentsExperimentsSidebar({
 					);
 				} else {
 					dispatch(
-						updateSegmentsExperiment({
+						updateSegmentsExperimentStatus({
 							editable,
 							status
 						})
@@ -321,7 +324,7 @@ function SegmentsExperimentsSidebar({
 				dispatch(closeEditionModal());
 
 				dispatch(
-					updateSegmentsExperiment({
+					editSegmentsExperiment({
 						confidenceLevel,
 						description,
 						editable,
@@ -370,10 +373,11 @@ function SegmentsExperimentsSidebar({
 				openSuccessToast();
 
 				dispatch(
-					updateSegmentsExperiment({
+					updateSegmentsExperimentTarget({
 						goal: {...experiment.goal, target: selector}
 					})
 				);
+				dispatch(reviewClickTargetElement());
 			})
 			.catch(_error => {
 				openErrorToast();

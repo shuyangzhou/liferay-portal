@@ -42,6 +42,7 @@ import com.liferay.segments.constants.SegmentsExperimentConstants;
 import com.liferay.segments.constants.SegmentsPortletKeys;
 import com.liferay.segments.exception.LockedSegmentsExperimentException;
 import com.liferay.segments.exception.NoSuchExperimentException;
+import com.liferay.segments.exception.RunSegmentsExperimentException;
 import com.liferay.segments.exception.SegmentsExperimentConfidenceLevelException;
 import com.liferay.segments.exception.SegmentsExperimentGoalException;
 import com.liferay.segments.exception.SegmentsExperimentNameException;
@@ -320,10 +321,15 @@ public class SegmentsExperimentLocalServiceImpl
 		_validateEditableStatus(segmentsExperiment.getStatus());
 
 		_validateConfidenceLevel(confidenceLevel);
+		_validateSegmentsExperimentRels(segmentsExperienceIdSplitMap);
 		_validateSplit(segmentsExperienceIdSplitMap);
 
 		UnicodeProperties typeSettingsProperties =
 			segmentsExperiment.getTypeSettingsProperties();
+
+		_validateGoalTarget(
+			typeSettingsProperties.get("goal"),
+			typeSettingsProperties.get("goalTarget"));
 
 		typeSettingsProperties.setProperty(
 			"confidenceLevel", String.valueOf(confidenceLevel));
@@ -565,9 +571,32 @@ public class SegmentsExperimentLocalServiceImpl
 		}
 	}
 
+	private void _validateGoalTarget(String goal, String goalTarget)
+		throws PortalException {
+
+		if (goal.equals(
+				SegmentsExperimentConstants.Goal.CLICK_RATE.getLabel()) &&
+			Validator.isNull(goalTarget)) {
+
+			throw new RunSegmentsExperimentException(
+				"Target element needs to be set in click goal");
+		}
+	}
+
 	private void _validateName(String name) throws PortalException {
 		if (Validator.isNull(name)) {
 			throw new SegmentsExperimentNameException();
+		}
+	}
+
+	private void _validateSegmentsExperimentRels(
+			Map<Long, Double> segmentsExperienceIdSplitMap)
+		throws PortalException {
+
+		if (segmentsExperienceIdSplitMap.size() <= 1) {
+			throw new RunSegmentsExperimentException(
+				"Segments experiment rels must be more than 1 to test " +
+					"against control");
 		}
 	}
 

@@ -111,7 +111,7 @@
 
 <aui:input name="assetLinkEntryIds" type="hidden" />
 
-<aui:script use="aui-base,escape,liferay-search-container">
+<aui:script use="aui-base,liferay-search-container">
 	var assetSelectorHandle = A.getBody().delegate(
 		'click',
 		function(event) {
@@ -160,11 +160,17 @@
 
 									var entryHtml =
 										'<h4 class="list-group-title">' +
-										encodeURI(assetEntry.assettitle) +
+										Liferay.Util.escapeHTML(
+											assetEntry.assettitle
+										) +
 										'</h4><p class="list-group-subtitle">' +
-										encodeURI(assetEntry.assettype) +
+										Liferay.Util.escapeHTML(
+											assetEntry.assettype
+										) +
 										'</p><p class="list-group-subtitle">' +
-										encodeURI(assetEntry.groupdescriptivename) +
+										Liferay.Util.escapeHTML(
+											assetEntry.groupdescriptivename
+										) +
 										'</p>';
 
 									searchContainer.addRow(

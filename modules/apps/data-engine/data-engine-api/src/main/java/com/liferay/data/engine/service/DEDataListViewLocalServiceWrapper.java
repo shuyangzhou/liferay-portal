@@ -290,6 +290,13 @@ public class DEDataListViewLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.data.engine.model.DEDataListView>
+		getDEDataListViews(long ddmStructureId) {
+
+		return _deDataListViewLocalService.getDEDataListViews(ddmStructureId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.data.engine.model.DEDataListView>
 		getDEDataListViews(
 			long groupId, long companyId, long ddmStructureId, int start,
 			int end,

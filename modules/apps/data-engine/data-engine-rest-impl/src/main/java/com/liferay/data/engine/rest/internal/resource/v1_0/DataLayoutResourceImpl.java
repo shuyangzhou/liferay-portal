@@ -128,8 +128,7 @@ public class DataLayoutResourceImpl
 			return Page.of(
 				transform(
 					_ddmStructureLayoutLocalService.getStructureLayouts(
-						ddmStructure.getGroupId(),
-						_portal.getClassNameId(InternalDataLayout.class),
+						ddmStructure.getGroupId(), _getClassNameId(),
 						_getDDMStructureVersionId(dataDefinitionId),
 						pagination.getStartPosition(),
 						pagination.getEndPosition(),
@@ -138,8 +137,7 @@ public class DataLayoutResourceImpl
 					this::_toDataLayout),
 				pagination,
 				_ddmStructureLayoutLocalService.getStructureLayoutsCount(
-					ddmStructure.getGroupId(),
-					_portal.getClassNameId(InternalDataLayout.class),
+					ddmStructure.getGroupId(), _getClassNameId(),
 					_getDDMStructureVersionId(dataDefinitionId)));
 		}
 
@@ -151,8 +149,7 @@ public class DataLayoutResourceImpl
 				Field.ENTRY_CLASS_PK),
 			searchContext -> {
 				searchContext.setAttribute(
-					Field.CLASS_NAME_ID,
-					_portal.getClassNameId(InternalDataLayout.class));
+					Field.CLASS_NAME_ID, _getClassNameId());
 				searchContext.setAttribute(Field.DESCRIPTION, keywords);
 				searchContext.setAttribute(Field.NAME, keywords);
 				searchContext.setAttribute(
@@ -219,8 +216,7 @@ public class DataLayoutResourceImpl
 			return Page.of(
 				transform(
 					_ddmStructureLayoutLocalService.getStructureLayouts(
-						siteId,
-						_portal.getClassNameId(InternalDataLayout.class),
+						siteId, _getClassNameId(),
 						pagination.getStartPosition(),
 						pagination.getEndPosition(),
 						_toOrderByComparator(
@@ -228,7 +224,7 @@ public class DataLayoutResourceImpl
 					this::_toDataLayout),
 				pagination,
 				_ddmStructureLayoutLocalService.getStructureLayoutsCount(
-					siteId, _portal.getClassNameId(InternalDataLayout.class)));
+					siteId, _getClassNameId()));
 		}
 
 		return SearchUtil.search(
@@ -239,8 +235,7 @@ public class DataLayoutResourceImpl
 				Field.ENTRY_CLASS_PK),
 			searchContext -> {
 				searchContext.setAttribute(
-					Field.CLASS_NAME_ID,
-					_portal.getClassNameId(InternalDataLayout.class));
+					Field.CLASS_NAME_ID, _getClassNameId());
 				searchContext.setAttribute(Field.DESCRIPTION, keywords);
 				searchContext.setAttribute(Field.NAME, keywords);
 				searchContext.setCompanyId(contextCompany.getCompanyId());

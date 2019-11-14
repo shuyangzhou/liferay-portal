@@ -13,9 +13,15 @@
  */
 
 import PropTypes from 'prop-types';
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 
 function PageTypeSelector(props) {
+	useEffect(() => {
+		return () => {
+			Liferay.destroyComponent(`${props.namespace}pagesTree`);
+		};
+	}, [props.namespace]);
+
 	const handleOnChange = useCallback(
 		event => {
 			const pageType = event.target.value;

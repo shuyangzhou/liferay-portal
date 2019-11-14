@@ -14,11 +14,13 @@
 
 package com.liferay.portal.search.tuning.rankings.web.internal.portlet.action;
 
+import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
+import com.liferay.portal.kernel.security.permission.ResourceActions;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
@@ -83,8 +85,8 @@ public class RankingMVCResourceCommand implements MVCResourceCommand {
 	protected JSONObject getHiddenResults(ResourceRequest resourceRequest) {
 		RankingGetHiddenResultsBuilder rankingGetHiddenResultsBuilder =
 			new RankingGetHiddenResultsBuilder(
-				queries, rankingIndexReader, resourceRequest,
-				searchEngineAdapter);
+				dlAppLocalService, queries, rankingIndexReader, resourceActions,
+				resourceRequest, searchEngineAdapter);
 
 		RankingMVCResourceRequest rankingMVCResourceRequest =
 			new RankingMVCResourceRequest(resourceRequest);
@@ -116,8 +118,9 @@ public class RankingMVCResourceCommand implements MVCResourceCommand {
 	protected JSONObject getSearchResults(ResourceRequest resourceRequest) {
 		RankingGetSearchResultsBuilder rankingGetSearchResultsBuilder =
 			new RankingGetSearchResultsBuilder(
-				complexQueryPartBuilderFactory, queries, resourceRequest,
-				searcher, searchRequestBuilderFactory);
+				complexQueryPartBuilderFactory, dlAppLocalService, queries,
+				resourceActions, resourceRequest, searcher,
+				searchRequestBuilderFactory);
 
 		RankingMVCResourceRequest rankingMVCResourceRequest =
 			new RankingMVCResourceRequest(resourceRequest);
@@ -137,8 +140,9 @@ public class RankingMVCResourceCommand implements MVCResourceCommand {
 	protected JSONObject getVisibleResults(ResourceRequest resourceRequest) {
 		RankingGetVisibleResultsBuilder rankingGetVisibleResultsBuilder =
 			new RankingGetVisibleResultsBuilder(
-				complexQueryPartBuilderFactory, rankingIndexReader,
-				rankingSearchRequestHelper, resourceRequest, queries, searcher,
+				complexQueryPartBuilderFactory, dlAppLocalService,
+				rankingIndexReader, rankingSearchRequestHelper, resourceActions,
+				resourceRequest, queries, searcher,
 				searchRequestBuilderFactory);
 
 		RankingMVCResourceRequest rankingMVCResourceRequest =
@@ -179,6 +183,9 @@ public class RankingMVCResourceCommand implements MVCResourceCommand {
 	protected ComplexQueryPartBuilderFactory complexQueryPartBuilderFactory;
 
 	@Reference
+	protected DLAppLocalService dlAppLocalService;
+
+	@Reference
 	protected Queries queries;
 
 	@Reference
@@ -186,6 +193,9 @@ public class RankingMVCResourceCommand implements MVCResourceCommand {
 
 	@Reference
 	protected RankingSearchRequestHelper rankingSearchRequestHelper;
+
+	@Reference
+	protected ResourceActions resourceActions;
 
 	@Reference
 	protected SearchEngineAdapter searchEngineAdapter;

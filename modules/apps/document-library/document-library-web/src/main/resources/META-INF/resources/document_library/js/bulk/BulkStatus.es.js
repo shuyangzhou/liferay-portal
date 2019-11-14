@@ -12,201 +12,103 @@
  * details.
  */
 
+import ClayLoadingIndicator from '@clayui/loading-indicator';
+import {useTimeout} from 'frontend-js-react-web';
 import {fetch, openToast} from 'frontend-js-web';
-import Component from 'metal-component';
-import Soy from 'metal-soy';
-import {Config} from 'metal-state';
+import PropTypes from 'prop-types';
+import React, {useCallback, useEffect, useReducer} from 'react';
 
-import templates from './BulkStatus.soy';
+import reducer, {STATES} from './reducer.es';
 
 /**
  * Shows the bulk actions status
- *
- * @abstract
- * @extends {Component}
  */
+function BulkStatus({
+	bulkComponentId,
+	bulkInProgress,
+	bulkStatusUrl = '/bulk/v1.0/status',
+	intervalSpeed = 1000,
+	pathModule,
+	waitingTime = 1000
+}) {
+	const delay = useTimeout();
 
-class BulkStatus extends Component {
-	/**
-	 * @inheritDoc
-	 */
-	attached() {
-		Liferay.component(this.portletNamespace + 'BulkStatus', this);
+	const [state, dispatch] = useReducer(
+		reducer,
+		bulkInProgress ? {current: STATES.LONG_POLLING} : {current: STATES.IDLE}
+	);
 
-		if (this.bulkInProgress) {
-			this.startWatch();
+	const statusCallback = useCallback(() => {
+		return delay(() => {
+			fetch(
+				`${Liferay.ThemeDisplay.getPortalURL()}${pathModule}${bulkStatusUrl}`
+			)
+				.then(response => response.json())
+				.then(response => {
+					if (response.actionInProgress) {
+						dispatch({type: 'check'});
+					} else {
+						dispatch({type: 'success'});
+					}
+				})
+				.catch(() => dispatch({type: 'error'}));
+		}, intervalSpeed);
+	}, [bulkStatusUrl, delay, pathModule, intervalSpeed]);
+
+	useEffect(() => {
+		let dispose;
+
+		if (state.current === STATES.SHORT_POLLING) {
+			statusCallback();
+
+			dispose = delay(
+				() => dispatch({type: 'initialDelayCompleted'}),
+				waitingTime
+			);
+		} else if (state.current === STATES.LONG_POLLING) {
+			statusCallback();
+		} else if (state.current === STATES.NOTIFY) {
+			openToast(state.toast);
+
+			dispatch({type: 'notificationCompleted'});
 		}
-	}
 
-	/**
-	 * Clears the interval to stop sending ajax requests.
-	 *
-	 * @protected
-	 */
-	_clearInterval() {
-		if (this.intervalId_) {
-			clearInterval(this.intervalId_);
-		}
-	}
+		return dispose;
+	}, [delay, state, statusCallback, waitingTime]);
 
-	/**
-	 * Clears the timeout that shows the component.
-	 *
-	 * @protected
-	 */
-	_clearTimeout() {
-		if (this.visibleTimeOut) {
-			clearTimeout(this.visibleTimeOut);
-		}
-	}
-
-	/**
-	 * Sends a request to get the status
-	 * of bulk actions.
-	 *
-	 * @protected
-	 */
-	_getBulkStatus() {
-		fetch(this.pathModule + this.bulkStatusUrl)
-			.then(response => response.json())
-			.then(response => {
-				if (!response.actionInProgress) {
-					this._onBulkFinish(false);
+	if (!Liferay.component(bulkComponentId)) {
+		Liferay.component(
+			bulkComponentId,
+			{
+				startWatch: () => {
+					dispatch({type: 'start'});
 				}
-			})
-			.catch(() => {
-				this._onBulkFinish(true);
-			});
-	}
-
-	/**
-	 * Stops sending ajax request and hides the component.
-	 *
-	 * @protected
-	 */
-	_onBulkFinish(error) {
-		this._clearInterval();
-		this._clearTimeout();
-		this.bulkInProgress = false;
-
-		this._showNotification(error);
-	}
-
-	/**
-	 * Shows a toast notification.
-	 *
-	 * @param {boolean} error Flag indicating if is an error or not
-	 * @protected
-	 * @review
-	 */
-	_showNotification(error) {
-		let message;
-
-		if (error) {
-			message = Liferay.Language.get('an-unexpected-error-occurred');
-		} else {
-			message = Liferay.Language.get('changes-saved');
-		}
-
-		const openToastParams = {
-			message
-		};
-
-		if (error) {
-			openToastParams.title = Liferay.Language.get('error');
-			openToastParams.type = 'danger';
-		}
-
-		openToast(openToastParams);
-	}
-
-	/**
-	 * Watch the status of bulk actions.
-	 * It shows the component if it takes
-	 * longer than 'waitingTime'.
-	 */
-	startWatch() {
-		this._clearInterval();
-
-		this._getBulkStatus();
-
-		this.intervalId_ = setInterval(
-			this._getBulkStatus.bind(this),
-			this.intervalSpeed
+			},
+			{
+				destroyOnNavigate: true
+			}
 		);
-
-		if (!this.bulkInProgress) {
-			this.visibleTimeOut = setTimeout(() => {
-				this.bulkInProgress = true;
-			}, this.waitingTime);
-		}
 	}
+
+	return (
+		<div className="bulk-status-container">
+			<div className={`bulk-status ${!state.current.show && 'closed'}`}>
+				<div className="bulk-status-content">
+					<ClayLoadingIndicator light small />
+
+					<span>{Liferay.Language.get('processing-actions')}</span>
+				</div>
+			</div>
+		</div>
+	);
 }
 
-/**
- * BulkStatus State definition.
- * @ignore
- * @static
- * @type {!Object}
- */
-BulkStatus.STATE = {
-	/**
-	 * Wether to show the component or not
-	 * @type {Boolean}
-	 */
-	bulkInProgress: Config.bool().value(false),
-
-	/**
-	 * Uri to send the bulk status fetch request.
-	 * @instance
-	 * @memberof BulkStatus
-	 * @type {String}
-	 */
-	bulkStatusUrl: Config.string().value('/bulk/v1.0/status'),
-
-	/**
-	 * The interval (in milliseconds) on how often
-	 * we will check if there are bulk actions in progress.
-	 *
-	 * @instance
-	 * @memberof BulkStatus
-	 * @type {Number}
-	 */
-	intervalSpeed: Config.number().value(1000),
-
-	/**
-	 * PathModule
-	 *
-	 * @instance
-	 * @memberof EditTags
-	 * @review
-	 * @type {String}
-	 */
-	pathModule: Config.string().required(),
-
-	/**
-	 * Portlet's namespace
-	 *
-	 * @instance
-	 * @memberof BulkStatus
-	 * @review
-	 * @type {string}
-	 */
-	portletNamespace: Config.string().required(),
-
-	/**
-	 * The time (in milliseconds) we have to wait to
-	 * show the component.
-	 *
-	 * @instance
-	 * @memberof BulkStatus
-	 * @type {Number}
-	 */
-	waitingTime: Config.number().value(1000)
+BulkStatus.propTypes = {
+	bulkInProgress: PropTypes.bool,
+	bulkStatusUrl: PropTypes.string,
+	intervalSpeed: PropTypes.number,
+	pathModule: PropTypes.string.isRequired,
+	waitingTime: PropTypes.number
 };
 
-// Register component
-
-Soy.register(BulkStatus, templates);
-
-export default BulkStatus;
+export default props => <BulkStatus {...props} />;

@@ -122,6 +122,14 @@ public class DEDataDefinitionFieldLinkLocalServiceWrapper
 			classNameId, classPK);
 	}
 
+	@Override
+	public void deleteDEDataDefinitionFieldLinks(
+		long classNameId, long ddmStructureId, String fieldName) {
+
+		_deDataDefinitionFieldLinkLocalService.deleteDEDataDefinitionFieldLinks(
+			classNameId, ddmStructureId, fieldName);
+	}
+
 	/**
 	 * @throws PortalException
 	 */

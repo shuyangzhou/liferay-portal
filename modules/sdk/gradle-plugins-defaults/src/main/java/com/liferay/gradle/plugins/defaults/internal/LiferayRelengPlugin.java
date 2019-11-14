@@ -325,7 +325,7 @@ public class LiferayRelengPlugin implements Plugin<Project> {
 					Project project = task.getProject();
 
 					if (!GradlePluginsDefaultsUtil.isTestProject(project) &&
-						_hasProjectDependencies(project)) {
+						_hasStaleProjectDependencies(project)) {
 
 						return true;
 					}
@@ -547,7 +547,7 @@ public class LiferayRelengPlugin implements Plugin<Project> {
 
 					@Override
 					public boolean isSatisfiedBy(Task task) {
-						if (_hasProjectDependencies(task.getProject())) {
+						if (_hasStaleProjectDependencies(task.getProject())) {
 							return false;
 						}
 
@@ -774,21 +774,11 @@ public class LiferayRelengPlugin implements Plugin<Project> {
 
 				@Override
 				public boolean isSatisfiedBy(Task task) {
-					Properties artifactProperties;
-
-					File artifactPropertiesFile =
-						recordArtifactTask.getOutputFile();
-
-					if (artifactPropertiesFile.exists()) {
-						artifactProperties = GUtil.loadProperties(
-							artifactPropertiesFile);
-					}
-					else {
-						artifactProperties = new Properties();
-					}
+					Project project = recordArtifactTask.getProject();
 
 					return _isStale(
-						recordArtifactTask.getProject(), artifactProperties);
+						project, project.getProjectDir(),
+						recordArtifactTask.getOutputFile());
 				}
 
 			});
@@ -925,9 +915,40 @@ public class LiferayRelengPlugin implements Plugin<Project> {
 		return sb.toString();
 	}
 
-	private boolean _hasProjectDependencies(Project project) {
-		Logger logger = project.getLogger();
+	private File _getPortalProjectDir(Project project, Dependency dependency) {
+		File portalRootDir = GradleUtil.getRootDir(
+			project.getRootProject(), "portal-impl");
 
+		if (portalRootDir == null) {
+			return null;
+		}
+
+		String dependencyGroup = dependency.getGroup();
+
+		if (!Objects.equals(dependencyGroup, "com.liferay.portal")) {
+			return null;
+		}
+
+		String dependencyName = dependency.getName();
+
+		if ((dependencyName == null) ||
+			!dependencyName.startsWith("com.liferay.")) {
+
+			return null;
+		}
+
+		String s = dependencyName.substring(12);
+
+		File portalProjectDir = new File(portalRootDir, s.replace('.', '-'));
+
+		if (!portalProjectDir.exists()) {
+			return null;
+		}
+
+		return portalProjectDir;
+	}
+
+	private boolean _hasStaleProjectDependencies(Project project) {
 		for (Configuration configuration : project.getConfigurations()) {
 			String name = configuration.getName();
 
@@ -941,22 +962,8 @@ public class LiferayRelengPlugin implements Plugin<Project> {
 			}
 
 			for (Dependency dependency : configuration.getDependencies()) {
-				if (dependency instanceof ProjectDependency) {
-					return true;
-				}
-
-				if (!name.startsWith("compile")) {
-					continue;
-				}
-
-				String version = dependency.getVersion();
-
-				if ((version != null) && version.equals("default")) {
-					if (logger.isQuietEnabled()) {
-						logger.quiet(
-							"{} has version \"default\" in {}.", project,
-							dependency);
-					}
+				if (_isStaleProjectDependency(
+						project, configuration, dependency)) {
 
 					return true;
 				}
@@ -967,23 +974,30 @@ public class LiferayRelengPlugin implements Plugin<Project> {
 	}
 
 	private boolean _isStale(
-		final Project project, Properties artifactProperties) {
+		Project project, File artifactProjectDir, File artifactPropertiesFile) {
 
 		Logger logger = project.getLogger();
 
-		final String artifactGitId = artifactProperties.getProperty(
+		Properties artifactProperties = new Properties();
+
+		if (artifactPropertiesFile.exists()) {
+			artifactProperties = GUtil.loadProperties(artifactPropertiesFile);
+		}
+
+		String artifactGitId = artifactProperties.getProperty(
 			"artifact.git.id");
 
 		if (Validator.isNull(artifactGitId)) {
 			if (logger.isInfoEnabled()) {
-				logger.info("{} has never been published", project);
+				logger.info("{} has never been published", artifactProjectDir);
 			}
 
 			return true;
 		}
 
 		String result = GitUtil.getGitResult(
-			project, "log", "--format=%s", artifactGitId + "..HEAD", ".");
+			project, artifactProjectDir, "log", "--format=%s",
+			artifactGitId + "..HEAD", ".");
 
 		String[] lines = result.split("\\r?\\n");
 
@@ -1021,6 +1035,70 @@ public class LiferayRelengPlugin implements Plugin<Project> {
 
 			if (!Objects.equals(digest, oldDigest)) {
 				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private boolean _isStaleProjectDependency(
+		Project project, Configuration configuration, Dependency dependency) {
+
+		if (dependency instanceof ProjectDependency) {
+			ProjectDependency projectDependency = (ProjectDependency)dependency;
+
+			Project dependencyProject =
+				projectDependency.getDependencyProject();
+
+			File artifactPropertiesFile = new File(
+				getRelengDir(dependencyProject), "artifact.properties");
+
+			if (_isStale(
+					project, dependencyProject.getProjectDir(),
+					artifactPropertiesFile)) {
+
+				Logger logger = project.getLogger();
+
+				if (logger.isQuietEnabled()) {
+					logger.quiet(
+						"{} has stale project dependency {}.", project,
+						dependencyProject.getName());
+				}
+
+				return true;
+			}
+		}
+
+		String configurationName = configuration.getName();
+
+		if (configurationName.startsWith("compile") &&
+			Objects.equals(dependency.getVersion(), "default")) {
+
+			File dir = _getPortalProjectDir(project, dependency);
+
+			if (dir != null) {
+				StringBuilder sb = new StringBuilder();
+
+				sb.append("modules/");
+				sb.append(_RELENG_DIR_NAME);
+				sb.append('/');
+				sb.append(dir.getName());
+				sb.append(".properties");
+
+				File artifactPropertiesFile = new File(
+					dir.getParent(), sb.toString());
+
+				if (_isStale(project, dir, artifactPropertiesFile)) {
+					Logger logger = project.getLogger();
+
+					if (logger.isQuietEnabled()) {
+						logger.quiet(
+							"{} has stale portal project dependency {}.",
+							project, dir.getName());
+					}
+
+					return true;
+				}
 			}
 		}
 

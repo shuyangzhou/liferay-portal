@@ -80,39 +80,40 @@ $product-menu-pages-administration-link-height: 72px;
 			font-size: 14px;
 		}
 	}
-}
 
-.tree-view {
-	.tree-node {
-		.tree-label a {
-			color: #cdced9;
+	.tree-view {
+		.tree-node {
+			.tree-label a {
+				color: #cdced9;
+			}
+
+			font-size: 14px;
+			margin-bottom: 4px;
+			margin-top: 4px;
+
+			.tree-node-selected .tree-label a {
+				color: white;
+			}
 		}
 
-		font-size: 14px;
-		margin-bottom: 4px;
-		margin-top: 4px;
-
-		.tree-node-selected .tree-label a {
-			color: white;
+		a.tree-node-paginator {
+			color: white !important;
 		}
-	}
 
-	a.tree-node-paginator {
-		color: white !important;
-	}
+		.tree-view-content {
+			padding-top: 1rem;
+		}
 
-	.tree-view-content {
-		padding-top: 1rem;
-	}
+		.tree-hitarea:focus:before {
+			box-shadow: 0 0 0 0.125rem #fff,
+				0 0 0 0.25rem rgba(11, 95, 255, 0.5);
+		}
 
-	.tree-hitarea:focus:before {
-		box-shadow: 0 0 0 0.125rem #fff, 0 0 0 0.25rem rgba(11, 95, 255, 0.5);
-	}
-
-	.tree-view-content {
-		margin-bottom: calc(
-			#{$product-menu-pages-administration-link-height} + #{$spacer}
-		);
+		.tree-view-content {
+			margin-bottom: calc(
+				#{$product-menu-pages-administration-link-height} + #{$spacer}
+			);
+		}
 	}
 }
 

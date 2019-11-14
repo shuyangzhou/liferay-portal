@@ -10,6 +10,7 @@
  */
 
 import ClayButton from '@clayui/button';
+import ClayIcon from '@clayui/icon';
 import ClayModal, {useModal} from '@clayui/modal';
 import PropTypes from 'prop-types';
 import React, {useContext, useState} from 'react';
@@ -17,9 +18,10 @@ import React, {useContext, useState} from 'react';
 import SegmentsExperimentsContext from '../../context.es';
 import {
 	addVariant,
+	archiveExperiment,
+	reviewVariants,
 	updateVariant,
-	updateVariants,
-	archiveExperiment
+	updateVariants
 } from '../../state/actions.es';
 import {DispatchContext, StateContext} from '../../state/context.es';
 import {navigateToExperience} from '../../util/navigation.es';
@@ -34,7 +36,7 @@ import VariantList from './internal/VariantList.es';
 
 function Variants({selectedSegmentsExperienceId}) {
 	const dispatch = useContext(DispatchContext);
-	const {experiment, variants} = useContext(StateContext);
+	const {errors, experiment, variants} = useContext(StateContext);
 	const {APIService, page} = useContext(SegmentsExperimentsContext);
 
 	const {
@@ -71,10 +73,20 @@ function Variants({selectedSegmentsExperienceId}) {
 							)}
 						</b>
 					</p>
-
 					<p className="mb-2 text-secondary">
 						{Liferay.Language.get('variants-help')}
 					</p>
+					{errors.variantsError && (
+						<div className="font-weight-bold mb-3 text-danger">
+							<ClayIcon
+								className="mr-2"
+								symbol="exclamation-full"
+							/>
+							{Liferay.Language.get(
+								'a-variant-needs-to-be-created'
+							)}
+						</div>
+					)}
 				</>
 			)}
 
@@ -154,6 +166,7 @@ function Variants({selectedSegmentsExperienceId}) {
 					navigateToExperience(experiment.segmentsExperienceId);
 				} else {
 					dispatch(updateVariants(newVariants));
+					dispatch(reviewVariants());
 				}
 			})
 			.catch(_error => {

@@ -1366,31 +1366,42 @@ AUI.add(
 
 					var portletNamespace = instance.get('portletNamespace');
 
-					var itemSelectorDialog = new A.LiferayItemSelectorDialog({
-						eventName: portletNamespace + 'selectDocumentLibrary',
-						on: {
-							selectedItemChange(event) {
-								var selectedItem = event.newVal;
-
-								if (selectedItem) {
-									var itemValue = JSON.parse(
-										selectedItem.value
-									);
-
-									instance.setValue({
-										classPK: itemValue.fileEntryId,
-										groupId: itemValue.groupId,
-										title: itemValue.title,
-										type: itemValue.type,
-										uuid: itemValue.uuid
-									});
+					Liferay.Loader.require(
+						'frontend-js-web/liferay/ItemSelectorDialog.es',
+						ItemSelectorDialog => {
+							var itemSelectorDialog = new ItemSelectorDialog.default(
+								{
+									eventName:
+										portletNamespace +
+										'selectDocumentLibrary',
+									url: instance.getDocumentLibrarySelectorURL()
 								}
-							}
-						},
-						url: instance.getDocumentLibrarySelectorURL()
-					});
+							);
 
-					itemSelectorDialog.open();
+							itemSelectorDialog.on(
+								'selectedItemChange',
+								event => {
+									var selectedItem = event.selectedItem;
+
+									if (selectedItem) {
+										var itemValue = JSON.parse(
+											selectedItem.value
+										);
+
+										instance.setValue({
+											classPK: itemValue.fileEntryId,
+											groupId: itemValue.groupId,
+											title: itemValue.title,
+											type: itemValue.type,
+											uuid: itemValue.uuid
+										});
+									}
+								}
+							);
+
+							itemSelectorDialog.open();
+						}
+					);
 				},
 
 				_validateField(fieldNode) {
@@ -4351,7 +4362,6 @@ AUI.add(
 			'aui-sortable-list',
 			'json',
 			'liferay-form',
-			'liferay-item-selector-dialog',
 			'liferay-layouts-tree',
 			'liferay-layouts-tree-radio',
 			'liferay-layouts-tree-selectable',

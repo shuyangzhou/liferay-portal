@@ -241,6 +241,9 @@ public interface DEDataListViewLocalService
 	public List<DEDataListView> getDEDataListViews(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DEDataListView> getDEDataListViews(long ddmStructureId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DEDataListView> getDEDataListViews(
 		long groupId, long companyId, long ddmStructureId, int start, int end,
 		OrderByComparator<DEDataListView> orderByComparator);

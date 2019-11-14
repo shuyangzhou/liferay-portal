@@ -20,9 +20,8 @@ import com.liferay.change.tracking.service.CTEntryLocalService;
 import com.liferay.change.tracking.service.CTPreferencesLocalService;
 import com.liferay.change.tracking.service.CTProcessLocalService;
 import com.liferay.change.tracking.web.internal.constants.CTWebKeys;
+import com.liferay.change.tracking.web.internal.display.CTDisplayRendererRegistry;
 import com.liferay.change.tracking.web.internal.display.context.ChangeListsDisplayContext;
-import com.liferay.portal.kernel.security.permission.ResourceActions;
-import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -84,11 +83,10 @@ public class ChangeListsPortlet extends BaseChangeListsPortlet {
 
 		ChangeListsDisplayContext changeListsDisplayContext =
 			new ChangeListsDisplayContext(
-				_classNameLocalService, _ctCollectionLocalService,
+				_ctCollectionLocalService, _ctDisplayRendererRegistry,
 				_ctEntryLocalService, _ctPreferencesLocalService,
-				_ctProcessLocalService,
-				_portal.getHttpServletRequest(renderRequest), renderRequest,
-				renderResponse, _resourceActions, _userLocalService);
+				_ctProcessLocalService, _portal, renderRequest, renderResponse,
+				_userLocalService);
 
 		renderRequest.setAttribute(
 			CTWebKeys.CHANGE_LISTS_DISPLAY_CONTEXT, changeListsDisplayContext);
@@ -97,10 +95,10 @@ public class ChangeListsPortlet extends BaseChangeListsPortlet {
 	}
 
 	@Reference
-	private ClassNameLocalService _classNameLocalService;
+	private CTCollectionLocalService _ctCollectionLocalService;
 
 	@Reference
-	private CTCollectionLocalService _ctCollectionLocalService;
+	private CTDisplayRendererRegistry _ctDisplayRendererRegistry;
 
 	@Reference
 	private CTEntryLocalService _ctEntryLocalService;
@@ -113,9 +111,6 @@ public class ChangeListsPortlet extends BaseChangeListsPortlet {
 
 	@Reference
 	private Portal _portal;
-
-	@Reference
-	private ResourceActions _resourceActions;
 
 	@Reference
 	private UserLocalService _userLocalService;

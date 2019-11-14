@@ -19,6 +19,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import {StateContext as GlobalStateContext} from './../../state/context.es';
 import {getInitialState, reducer, StateContext} from './reducer.es';
 import {
 	GeometryType,
@@ -57,6 +58,8 @@ function ClickGoalPicker({allowEdit = true, onSelectClickGoalTarget, target}) {
 	const [state, dispatch] = useReducer(reducer, target, getInitialState);
 
 	const {selectedTarget} = state;
+
+	const {errors} = useContext(GlobalStateContext);
 
 	const ref = useRef(state.selectedTarget);
 
@@ -114,28 +117,48 @@ function ClickGoalPicker({allowEdit = true, onSelectClickGoalTarget, target}) {
 					{Liferay.Language.get('click-goal')}
 				</h4>
 
-				<dl className="mb-0">
-					<div className="d-flex">
-						<dt>{Liferay.Language.get('element')}:</dt>
-						{state.selectedTarget ? (
-							<dd className="ml-2 text-truncate">
-								<ClayLink
-									href={state.selectedTarget}
-									onClick={scrollIntoView}
-									title={state.selectedTarget}
-								>
-									{state.selectedTarget}
-								</ClayLink>
-							</dd>
-						) : (
-							<dd className="ml-2 text-secondary">
-								{Liferay.Language.get(
-									'select-element-to-be-measured'
-								)}
-							</dd>
-						)}
-					</div>
-				</dl>
+				{state.selectedTarget && (
+					<dl className="autofit-row">
+						<dt className="autofit-col">
+							{Liferay.Language.get('element')}:
+						</dt>
+
+						<dd className="autofit-col autofit-col-expand mb-0 ml-2 text-truncate-inline">
+							<ClayLink
+								className="text-truncate"
+								href={state.selectedTarget}
+								onClick={scrollIntoView}
+								title={state.selectedTarget}
+							>
+								{state.selectedTarget}
+							</ClayLink>
+						</dd>
+					</dl>
+				)}
+
+				{!state.selectedTarget && (
+					<dl>
+						<dt className="d-inline">
+							{Liferay.Language.get('element')}:
+						</dt>
+						<dd className="d-inline ml-2 text-secondary">
+							{Liferay.Language.get(
+								'a-clickable-element-on-the-page-must-be-selected-to-be-measured'
+							)}
+							{errors.clickTargetError && (
+								<div className="font-weight-bold mt-2 text-danger">
+									<ClayIcon
+										className="mr-2"
+										symbol="exclamation-full"
+									/>
+									{Liferay.Language.get(
+										'an-element-needs-to-be-set'
+									)}
+								</div>
+							)}
+						</dd>
+					</dl>
+				)}
 
 				{allowEdit && (
 					<ClayButton

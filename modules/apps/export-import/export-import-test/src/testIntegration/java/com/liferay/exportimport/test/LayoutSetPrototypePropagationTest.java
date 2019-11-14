@@ -74,7 +74,6 @@ import javax.portlet.PortletPreferences;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -176,7 +175,6 @@ public class LayoutSetPrototypePropagationTest
 			friendlyURL, propagatedLayout.getFriendlyURL());
 	}
 
-	@Ignore
 	@Test
 	public void testLayoutPermissionPropagationWithLinkEnabled()
 		throws Exception {
@@ -229,7 +227,6 @@ public class LayoutSetPrototypePropagationTest
 			_initialPrototypeLayoutCount + 1, getGroupLayoutCount());
 	}
 
-	@Ignore
 	@Test
 	public void testLayoutPropagationWithFriendlyURLConflict()
 		throws Exception {
@@ -259,7 +256,6 @@ public class LayoutSetPrototypePropagationTest
 			mergeFailFriendlyURLLayouts.size());
 	}
 
-	@Ignore
 	@Test
 	public void testLayoutPropagationWithLayoutPrototypeLinkDisabled()
 		throws Exception {
@@ -267,7 +263,6 @@ public class LayoutSetPrototypePropagationTest
 		doTestLayoutPropagationWithLayoutPrototype(false);
 	}
 
-	@Ignore
 	@Test
 	public void testLayoutPropagationWithLayoutPrototypeLinkEnabled()
 		throws Exception {
@@ -283,12 +278,6 @@ public class LayoutSetPrototypePropagationTest
 	@Test
 	public void testLayoutPropagationWithLinkEnabled() throws Exception {
 		doTestLayoutPropagation(true);
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testLayoutTypePropagationWithLinkEnabled() throws Exception {
 	}
 
 	@Test
@@ -315,7 +304,6 @@ public class LayoutSetPrototypePropagationTest
 		doTestPortletPreferencesPropagation(true, true);
 	}
 
-	@Ignore
 	@Test
 	public void testPortletPreferencesPropagationWithPreferencesUniquePerLayoutEnabled()
 		throws Exception {

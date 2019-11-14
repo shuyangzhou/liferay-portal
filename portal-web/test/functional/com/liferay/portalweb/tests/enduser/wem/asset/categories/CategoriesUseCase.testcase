@@ -248,12 +248,13 @@ definition {
 			required = "true",
 			vocabularyName = "Vocabulary Name");
 
-		JSONCategory.addCategory(
+		var categoryId = JSONCategory.addCategory(
 			groupName = "Test Site Name",
 			title = "Category Name",
 			vocabularyName = "Vocabulary Name");
 
 		JSONLayout.addPublicLayout(
+			assetCategoryIds = "${categoryId}",
 			groupName = "Test Site Name",
 			layoutName = "Test Page Name");
 

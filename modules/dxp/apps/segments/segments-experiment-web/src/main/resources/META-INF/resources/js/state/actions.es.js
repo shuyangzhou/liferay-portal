@@ -32,11 +32,20 @@ export const closeEditionModal = () => ({
 	type: 'EDIT_EXPERIMENT_FINISH'
 });
 
+export const closeReviewAndRunExperiment = () => ({
+	type: 'REVIEW_AND_RUN_EXPERIMENT_FINISH'
+});
+
 export const deleteArchivedExperiment = experimentId => ({
 	payload: {
 		experimentId
 	},
 	type: 'DELETE_ARCHIVED_EXPERIMENT'
+});
+
+export const editSegmentsExperiment = payload => ({
+	payload,
+	type: 'EDIT_EXPERIMENT'
 });
 
 export const openCreationModal = payload => ({
@@ -49,9 +58,26 @@ export const openEditionModal = payload => ({
 	type: 'EDIT_EXPERIMENT_START'
 });
 
-export const updateSegmentsExperiment = payload => ({
+export const reviewAndRunExperiment = () => ({
+	type: 'REVIEW_AND_RUN_EXPERIMENT'
+});
+
+export const reviewVariants = () => ({
+	type: 'REVIEW_VARIANTS'
+});
+
+export const reviewClickTargetElement = () => ({
+	type: 'REVIEW_CLICK_TARGET_ELEMENT'
+});
+
+export const updateSegmentsExperimentTarget = payload => ({
 	payload,
-	type: 'UPDATE_EXPERIMENT'
+	type: 'UPDATE_SEGMENTS_EXPERIMENT_TARGET'
+});
+
+export const updateSegmentsExperimentStatus = payload => ({
+	payload,
+	type: 'UPDATE_EXPERIMENT_STATUS'
 });
 
 export const updateVariant = payload => ({

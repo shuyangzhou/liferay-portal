@@ -25,6 +25,8 @@ import {sub} from '../../utils/language.es';
 import {isNil} from '../../utils/util.es';
 import ItemDropdown from './ItemDropdown.es';
 
+const DEFAULT_ICON = 'web-content';
+
 const HOVER_TYPES = {
 	BOTTOM: 'bottom',
 	TOP: 'top'
@@ -226,6 +228,7 @@ class Item extends PureComponent {
 		extension: PropTypes.string,
 		focus: PropTypes.bool,
 		hidden: PropTypes.bool,
+		icon: PropTypes.string,
 		id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 		index: PropTypes.number,
 		initialPinned: PropTypes.number,
@@ -391,6 +394,7 @@ class Item extends PureComponent {
 			extension,
 			focus,
 			hidden,
+			icon,
 			id,
 			onClickHide,
 			onClickPin,
@@ -476,7 +480,7 @@ class Item extends PureComponent {
 						{extension ? (
 							extension.toUpperCase()
 						) : (
-							<ClayIcon symbol="web-content" />
+							<ClayIcon symbol={icon ? icon : DEFAULT_ICON} />
 						)}
 					</span>
 				</div>

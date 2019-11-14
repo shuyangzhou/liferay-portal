@@ -84,74 +84,82 @@ class Form extends Component {
 
 				return editor;
 			}),
-			this._createEditor('descriptionEditor')
+			this._createEditor('descriptionEditor'),
+			Liferay.componentReady('translationManager')
 		];
-
-		dependencies.push(this._getTranslationManager());
 
 		if (this.isFormBuilderView()) {
 			dependencies.push(this._getSettingsDDMForm());
 		}
 
-		Promise.all(dependencies).then(results => {
-			const translationManager = results[2];
+		Promise.all(dependencies).then(
+			([
+				nameEditor,
+				descriptionEditor,
+				translationManager,
+				settingsDDMForm
+			]) => {
+				if (translationManager) {
+					this.props.defaultLanguageId = translationManager.get(
+						'defaultLocale'
+					);
 
-			if (translationManager) {
-				this.props.defaultLanguageId = translationManager.get(
-					'defaultLocale'
+					this.props.editingLanguageId = translationManager.get(
+						'editingLocale'
+					);
+
+					this._translationManagerHandles = [
+						translationManager.on('editingLocale', ({newValue}) => {
+							this.props.editingLanguageId = newValue;
+
+							if (
+								translationManager.get('defaultLocale') ===
+								newValue
+							) {
+								this.showAddButton();
+							} else {
+								this.hideAddButton();
+							}
+						}),
+						translationManager.on(
+							'availableLocales',
+							this.onAvailableLocalesRemoved.bind(this)
+						)
+					];
+				}
+
+				this._stateSyncronizer = new StateSyncronizer(
+					{
+						descriptionEditor,
+						localizedDescription,
+						localizedName,
+						nameEditor,
+						namespace,
+						paginationMode,
+						published,
+						settingsDDMForm,
+						store,
+						translationManager
+					},
+					this.element
 				);
-				this.props.editingLanguageId = translationManager.get(
-					'editingLocale'
+
+				this._autoSave = new AutoSave(
+					{
+						form: document.querySelector(`#${namespace}editForm`),
+						interval: Liferay.DDM.FormSettings.autosaveInterval,
+						namespace,
+						stateSyncronizer: this._stateSyncronizer,
+						url: Liferay.DDM.FormSettings.autosaveURL
+					},
+					this.element
 				);
 
-				translationManager.on('editingLocaleChange', event => {
-					this.props.editingLanguageId = event.newVal;
-
-					if (
-						translationManager.get('defaultLocale') === event.newVal
-					) {
-						this.showAddButton();
-					} else {
-						this.hideAddButton();
-					}
-				});
-
-				translationManager.on('deleteAvailableLocale', event => {
-					store.emit('languageIdDeleted', event);
-				});
+				this._eventHandler.add(
+					this._autoSave.on('autosaved', this._updateAutoSaveMessage)
+				);
 			}
-
-			this._stateSyncronizer = new StateSyncronizer(
-				{
-					descriptionEditor: results[1],
-					localizedDescription,
-					localizedName,
-					nameEditor: results[0],
-					namespace,
-					paginationMode,
-					published,
-					settingsDDMForm: results[3],
-					store,
-					translationManager
-				},
-				this.element
-			);
-
-			this._autoSave = new AutoSave(
-				{
-					form: document.querySelector(`#${namespace}editForm`),
-					interval: Liferay.DDM.FormSettings.autosaveInterval,
-					namespace,
-					stateSyncronizer: this._stateSyncronizer,
-					url: Liferay.DDM.FormSettings.autosaveURL
-				},
-				this.element
-			);
-
-			this._eventHandler.add(
-				this._autoSave.on('autosaved', this._updateAutoSaveMessage)
-			);
-		});
+		);
 
 		this._eventHandler.add(
 			dom.on(
@@ -253,15 +261,21 @@ class Form extends Component {
 	}
 
 	disposed() {
-		super.disposed();
-
 		if (this._autoSave) {
 			this._autoSave.dispose();
+		}
+
+		if (this._stateSyncronizer) {
+			this._stateSyncronizer.dispose();
 		}
 
 		Notifications.closeAlert();
 
 		this._eventHandler.removeAllListeners();
+
+		if (this._translationManagerHandles) {
+			this._translationManagerHandles.forEach(handle => handle.detach());
+		}
 	}
 
 	hideAddButton() {
@@ -295,6 +309,24 @@ class Form extends Component {
 		const {ruleBuilderVisible} = this.state;
 
 		return ruleBuilderVisible && this.isFormBuilderView();
+	}
+
+	onAvailableLocalesRemoved({newValue, previousValue}) {
+		const {store} = this.refs;
+
+		const removedItems = new Map();
+
+		previousValue.forEach((value, key) => {
+			if (!newValue.has(key)) {
+				removedItems.set(key, value);
+			}
+		});
+
+		if (removedItems.size > 0) {
+			store.emit('languageIdDeleted', {
+				locale: removedItems.keys().next().value
+			});
+		}
 	}
 
 	openSidebar() {
@@ -662,20 +694,6 @@ class Form extends Component {
 			promise = Promise.resolve(settingsDDMForm);
 		} else {
 			promise = Liferay.componentReady('settingsDDMForm');
-		}
-
-		return promise;
-	}
-
-	_getTranslationManager() {
-		let promise;
-
-		const translationManager = Liferay.component('translationManager');
-
-		if (translationManager) {
-			promise = Promise.resolve(translationManager);
-		} else {
-			promise = Liferay.componentReady('translationManager');
 		}
 
 		return promise;

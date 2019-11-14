@@ -112,6 +112,9 @@ public interface DEDataDefinitionFieldLinkLocalService
 	public void deleteDEDataDefinitionFieldLinks(
 		long classNameId, long classPK);
 
+	public void deleteDEDataDefinitionFieldLinks(
+		long classNameId, long ddmStructureId, String fieldName);
+
 	/**
 	 * @throws PortalException
 	 */
