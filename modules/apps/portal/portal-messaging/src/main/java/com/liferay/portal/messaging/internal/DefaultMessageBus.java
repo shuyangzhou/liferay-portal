@@ -213,7 +213,8 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 	public void sendMessage(String destinationName, Message message) {
 		MessageBusThreadLocalUtil.populateMessageFromThreadLocals(message);
 
-		MessageBusInterceptor messageBusInterceptor = _messageBusInterceptor;
+		MessageBusInterceptor messageBusInterceptor =
+			_messageBusInterceptorServiceTracker.getService();
 
 		if ((messageBusInterceptor != null) &&
 			messageBusInterceptor.intercept(destinationName, message)) {
@@ -292,6 +293,11 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
+		_messageBusInterceptorServiceTracker = new ServiceTracker<>(
+			bundleContext, MessageBusInterceptor.class, null);
+
+		_messageBusInterceptorServiceTracker.open();
+
 		_messageListenerServiceTracker = new ServiceTracker<>(
 			bundleContext, MessageListener.class,
 			new ServiceTrackerCustomizer
@@ -369,6 +375,7 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 
 	@Deactivate
 	protected void deactivate() {
+		_messageBusInterceptorServiceTracker.close();
 		_messageListenerServiceTracker.close();
 
 		shutdown(true);
@@ -579,14 +586,8 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 		new ConcurrentHashMap<>();
 	private final Set<MessageBusEventListener> _messageBusEventListeners =
 		Collections.newSetFromMap(new ConcurrentHashMap<>());
-
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	private volatile MessageBusInterceptor _messageBusInterceptor;
-
+	private ServiceTracker<MessageBusInterceptor, MessageBusInterceptor>
+		_messageBusInterceptorServiceTracker;
 	private ServiceTracker
 		<MessageListener, ObjectValuePair<String, MessageListener>>
 			_messageListenerServiceTracker;
