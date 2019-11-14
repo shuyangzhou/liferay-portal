@@ -1,0 +1,3 @@
+Bundle-Name: Liferay Portal Web Start Level Controller
+Bundle-SymbolicName: com.liferay.portal.web.start.level.controller
+Bundle-Version: 1.0.0
