@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.elasticsearch6.internal.connection;
 
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 
 import java.util.HashMap;
@@ -47,7 +48,7 @@ public class ElasticsearchConnectionManagerTest {
 			"operationMode", OperationMode.EMBEDDED.name()
 		).build();
 
-		_elasticsearchConnectionManager.activate(properties);
+		activateElasticSearchConnectionManager(properties);
 
 		verifyNeverCloseNeverConnect(_embeddedElasticsearchConnection);
 		verifyNeverCloseNeverConnect(_remoteElasticsearchConnection);
@@ -59,7 +60,7 @@ public class ElasticsearchConnectionManagerTest {
 			"operationMode", OperationMode.EMBEDDED.name()
 		).build();
 
-		_elasticsearchConnectionManager.activate(properties);
+		activateElasticSearchConnectionManager(properties);
 
 		_elasticsearchConnectionManager.connect();
 
@@ -103,7 +104,7 @@ public class ElasticsearchConnectionManagerTest {
 			"operationMode", OperationMode.EMBEDDED.name()
 		).build();
 
-		_elasticsearchConnectionManager.activate(properties);
+		activateElasticSearchConnectionManager(properties);
 
 		resetMockConnections();
 
@@ -224,6 +225,14 @@ public class ElasticsearchConnectionManagerTest {
 
 		verifyConnectNeverClose(_remoteElasticsearchConnection);
 		verifyNeverCloseNeverConnect(_embeddedElasticsearchConnection);
+	}
+
+	protected void activateElasticSearchConnectionManager(
+		HashMap<String, Object> properties) {
+
+		ReflectionTestUtil.invoke(
+			_elasticsearchConnectionManager, "activate",
+			new Class<?>[] {HashMap.class}, properties);
 	}
 
 	protected ElasticsearchConnectionManager

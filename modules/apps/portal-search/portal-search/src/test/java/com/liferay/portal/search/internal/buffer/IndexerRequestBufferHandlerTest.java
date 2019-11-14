@@ -15,6 +15,7 @@
 package com.liferay.portal.search.internal.buffer;
 
 import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.search.buffer.IndexerRequest;
 import com.liferay.portal.search.buffer.IndexerRequestBuffer;
@@ -26,6 +27,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -93,8 +95,9 @@ public class IndexerRequestBufferHandlerTest {
 			indexerRequestBufferExecutorWatcher =
 				new IndexerRequestBufferExecutorWatcher();
 
-		indexerRequestBufferExecutorWatcher.activate(
-			Collections.<String, Object>emptyMap());
+		ReflectionTestUtil.invoke(
+			indexerRequestBufferExecutorWatcher, "activate",
+			new Class<?>[] {Map.class}, Collections.<String, Object>emptyMap());
 
 		indexerRequestBufferExecutorWatcher.addIndexerRequestBufferExecutor(
 			new DefaultIndexerRequestBufferExecutor(),

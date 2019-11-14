@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.connection;
 
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.PropsTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -21,6 +22,7 @@ import com.liferay.portal.search.elasticsearch7.configuration.OperationMode;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.http.HttpHost;
 
@@ -56,7 +58,9 @@ public class RemoteElasticsearchConnectionTest {
 			"operationMode", OperationMode.REMOTE.name()
 		).build();
 
-		_remoteElasticsearchConnection.activate(properties);
+		ReflectionTestUtil.invoke(
+			_remoteElasticsearchConnection, "activate",
+			new Class<?>[] {Map.class}, properties);
 
 		Assert.assertFalse(_remoteElasticsearchConnection.isConnected());
 

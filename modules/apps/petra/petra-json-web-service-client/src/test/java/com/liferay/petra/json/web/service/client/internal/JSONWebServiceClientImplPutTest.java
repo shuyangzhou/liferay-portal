@@ -53,7 +53,7 @@ public class JSONWebServiceClientImplPutTest
 
 		properties.put("protocol", "http");
 
-		jsonWebServiceClientImpl.activate(properties);
+		activateJsonWebServiceClientImpl(properties, jsonWebServiceClientImpl);
 
 		jsonWebServiceClientImpl.doPut(
 			"/", Collections.<String, String>emptyMap());
@@ -70,7 +70,7 @@ public class JSONWebServiceClientImplPutTest
 			"headers", "headerKey1=headerValue1;Accept=application/json;");
 		properties.put("protocol", "http");
 
-		jsonWebServiceClientImpl.activate(properties);
+		activateJsonWebServiceClientImpl(properties, jsonWebServiceClientImpl);
 
 		Map<String, String> params = new HashMap<String, String>();
 
@@ -98,7 +98,7 @@ public class JSONWebServiceClientImplPutTest
 			"headers", "headerKey1=headerValue1;Accept=application/json;");
 		properties.put("protocol", "http");
 
-		jsonWebServiceClientImpl.activate(properties);
+		activateJsonWebServiceClientImpl(properties, jsonWebServiceClientImpl);
 
 		Map<String, String> params = new HashMap<String, String>();
 
@@ -131,7 +131,7 @@ public class JSONWebServiceClientImplPutTest
 			"headers", "headerKey1=headerValue1;Accept=application/json;");
 		properties.put("protocol", "http");
 
-		jsonWebServiceClientImpl.activate(properties);
+		activateJsonWebServiceClientImpl(properties, jsonWebServiceClientImpl);
 
 		ResponseBody responseBody = jsonWebServiceClientImpl.doPutToObject(
 			ResponseBody.class, "/testPut/",
@@ -156,7 +156,7 @@ public class JSONWebServiceClientImplPutTest
 			"headers", "headerKey1=headerValue1;Accept=application/json;");
 		properties.put("protocol", "http");
 
-		jsonWebServiceClientImpl.activate(properties);
+		activateJsonWebServiceClientImpl(properties, jsonWebServiceClientImpl);
 
 		Map<String, String> params = new HashMap<String, String>();
 
@@ -181,7 +181,7 @@ public class JSONWebServiceClientImplPutTest
 			"headers", "Accept=application/json;headerKey1=headerValue1");
 		properties.put("protocol", "http");
 
-		jsonWebServiceClientImpl.activate(properties);
+		activateJsonWebServiceClientImpl(properties, jsonWebServiceClientImpl);
 
 		Map<String, String> params = new HashMap<String, String>();
 

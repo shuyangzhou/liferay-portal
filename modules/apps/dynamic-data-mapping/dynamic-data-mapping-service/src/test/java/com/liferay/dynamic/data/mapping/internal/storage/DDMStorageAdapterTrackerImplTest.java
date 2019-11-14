@@ -60,7 +60,9 @@ public class DDMStorageAdapterTrackerImplTest extends PowerMockito {
 			_ddmStorageAdapterServiceTrackerMap
 		);
 
-		ddmStorageAdapterTrackerImpl.activate(bundleContext);
+		ReflectionTestUtil.invoke(
+			ddmStorageAdapterTrackerImpl, "activate",
+			new Class<?>[] {BundleContext.class}, bundleContext);
 
 		Assert.assertNotNull(
 			ddmStorageAdapterTrackerImpl.ddmStorageAdapterServiceTrackerMap);

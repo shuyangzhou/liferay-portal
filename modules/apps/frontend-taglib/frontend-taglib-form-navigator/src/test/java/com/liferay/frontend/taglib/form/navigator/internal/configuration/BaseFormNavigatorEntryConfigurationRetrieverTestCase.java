@@ -42,7 +42,8 @@ public abstract class BaseFormNavigatorEntryConfigurationRetrieverTestCase {
 	@After
 	public final void tearDown() {
 		ReflectionTestUtil.invoke(
-			formNavigatorEntryConfigurationRetriever, "deactivate", new Class<?>[0]);
+			formNavigatorEntryConfigurationRetriever, "deactivate",
+			new Class<?>[0]);
 	}
 
 	protected void createConfiguration(
@@ -58,7 +59,9 @@ public abstract class BaseFormNavigatorEntryConfigurationRetrieverTestCase {
 			formNavigatorEntryConfigurationParser =
 				new FormNavigatorEntryConfigurationParser();
 
-		formNavigatorEntryConfigurationParser.activate(properties);
+		ReflectionTestUtil.invoke(
+			formNavigatorEntryConfigurationParser, "activate",
+			new Class<?>[] {Map.class}, properties);
 
 		_serviceTrackerMap.register(
 			formNavigatorId, formNavigatorEntryConfigurationParser);

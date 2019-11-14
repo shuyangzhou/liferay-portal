@@ -15,6 +15,7 @@
 package com.liferay.petra.json.web.service.client.internal;
 
 import com.liferay.petra.json.web.service.client.server.simulator.HTTPServerSimulator;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +24,15 @@ import java.util.Map;
  * @author Igor Beslic
  */
 public abstract class BaseJSONWebServiceClientTestCase {
+
+	protected void activateJsonWebServiceClientImpl(
+		Map<String, Object> properties,
+		JSONWebServiceClientImpl jsonWebServiceClientImpl) {
+
+		ReflectionTestUtil.invoke(
+			jsonWebServiceClientImpl, "activate", new Class<?>[] {Map.class},
+			properties);
+	}
 
 	protected Map<String, Object> getBaseProperties() {
 		Map<String, Object> properties = new HashMap<String, Object>();

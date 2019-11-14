@@ -15,6 +15,7 @@
 package com.liferay.portal.search.elasticsearch7.internal.index;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -131,14 +132,14 @@ public class CompanyIndexFactoryTest {
 			"indexNumberOfShards", StringPool.SPACE
 		).build();
 
-		_companyIndexFactory.activate(properties);
+		activateCompanyIndexFactory(properties);
 
 		createIndices();
 	}
 
 	@Test
 	public void testCreateIndicesWithEmptyConfiguration() throws Exception {
-		_companyIndexFactory.activate(new HashMap<String, Object>());
+		activateCompanyIndexFactory(new HashMap<String, Object>());
 
 		createIndices();
 	}
@@ -155,7 +156,7 @@ public class CompanyIndexFactoryTest {
 
 	@Test
 	public void testDefaultIndices() throws Exception {
-		_companyIndexFactory.activate(Collections.emptyMap());
+		activateCompanyIndexFactory(Collections.emptyMap());
 
 		createIndices();
 
@@ -240,7 +241,7 @@ public class CompanyIndexFactoryTest {
 
 	@Test
 	public void testOverrideTypeMappingsHonorDefaultIndices() throws Exception {
-		_companyIndexFactory.activate(Collections.emptyMap());
+		activateCompanyIndexFactory(Collections.emptyMap());
 
 		_companyIndexFactory.setAdditionalIndexConfigurations(
 			loadAdditionalAnalyzers());
@@ -278,6 +279,12 @@ public class CompanyIndexFactoryTest {
 
 	@Rule
 	public TestName testName = new TestName();
+
+	protected void activateCompanyIndexFactory(Map<String, Object> properties) {
+		ReflectionTestUtil.invoke(
+			_companyIndexFactory, "activate", new Class<?>[] {Map.class},
+			properties);
+	}
 
 	protected void addIndexSettingsContributor(String mappings) {
 		_companyIndexFactory.addIndexSettingsContributor(

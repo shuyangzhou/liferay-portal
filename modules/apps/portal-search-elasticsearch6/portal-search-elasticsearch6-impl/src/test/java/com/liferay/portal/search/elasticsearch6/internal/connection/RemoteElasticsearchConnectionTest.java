@@ -16,6 +16,7 @@ package com.liferay.portal.search.elasticsearch6.internal.connection;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.PropsTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -58,7 +59,7 @@ public class RemoteElasticsearchConnectionTest {
 			"operationMode", OperationMode.REMOTE.name()
 		).build();
 
-		_remoteElasticsearchConnection.activate(properties);
+		activateRemoteElasticSearchConnection(properties);
 
 		Assert.assertFalse(_remoteElasticsearchConnection.isConnected());
 
@@ -83,7 +84,7 @@ public class RemoteElasticsearchConnectionTest {
 			"operationMode", OperationMode.REMOTE.name()
 		).build();
 
-		_remoteElasticsearchConnection.activate(properties);
+		activateRemoteElasticSearchConnection(properties);
 
 		_remoteElasticsearchConnection.connect();
 
@@ -121,6 +122,14 @@ public class RemoteElasticsearchConnectionTest {
 		_remoteElasticsearchConnection.modified(properties);
 
 		Assert.assertTrue(_remoteElasticsearchConnection.isConnected());
+	}
+
+	protected void activateRemoteElasticSearchConnection(
+		HashMap<String, Object> properties) {
+
+		ReflectionTestUtil.invoke(
+			_remoteElasticsearchConnection, "activate",
+			new Class<?>[] {HashMap.class}, properties);
 	}
 
 	protected void assertTransportAddress(String hostString, int port) {

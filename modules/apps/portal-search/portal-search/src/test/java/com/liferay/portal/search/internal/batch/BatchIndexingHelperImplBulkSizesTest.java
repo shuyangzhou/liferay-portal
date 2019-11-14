@@ -15,10 +15,12 @@
 package com.liferay.portal.search.internal.batch;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -70,13 +72,16 @@ public class BatchIndexingHelperImplBulkSizesTest {
 	}
 
 	protected void activate(String... indexingBatchSizes) {
-		_batchIndexingHelperImpl.activate(
+		ReflectionTestUtil.invoke(
+			_batchIndexingHelperImpl, "activate", new Class<?>[] {Map.class},
 			Collections.singletonMap(
 				"indexingBatchSizes", Arrays.asList(indexingBatchSizes)));
 	}
 
 	protected void activateWithoutConfiguration() {
-		_batchIndexingHelperImpl.activate(Collections.emptyMap());
+		ReflectionTestUtil.invoke(
+			_batchIndexingHelperImpl, "activate", new Class<?>[] {Map.class},
+			Collections.emptyMap());
 	}
 
 	protected void assertBulkSize(int bulkSize, String entryClassName) {
