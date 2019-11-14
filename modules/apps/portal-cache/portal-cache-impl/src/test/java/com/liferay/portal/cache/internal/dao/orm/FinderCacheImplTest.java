@@ -98,7 +98,7 @@ public class FinderCacheImplTest {
 				new MultiVMPoolInvocationHandler(_classLoader, true)));
 		finderCacheImpl.setProps(PropsTestUtil.setProps(_properties));
 
-		finderCacheImpl.activate();
+		ReflectionTestUtil.invoke(finderCacheImpl, "activate", new Class<?>[0]);
 
 		PortalCache<Serializable, Serializable> portalCache =
 			ReflectionTestUtil.invoke(
@@ -181,7 +181,7 @@ public class FinderCacheImplTest {
 
 		finderCacheImpl.setProps(PropsTestUtil.setProps(_properties));
 
-		finderCacheImpl.activate();
+		ReflectionTestUtil.invoke(finderCacheImpl, "activate", new Class<?>[0]);
 
 		return finderCacheImpl;
 	}

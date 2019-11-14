@@ -18,6 +18,7 @@ import com.liferay.adaptive.media.content.transformer.ContentTransformer;
 import com.liferay.adaptive.media.content.transformer.ContentTransformerContentType;
 import com.liferay.adaptive.media.exception.AMException;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 
 import java.util.ArrayList;
@@ -49,7 +50,8 @@ public class ContentTransformerHandlerImplTest {
 
 	@After
 	public final void tearDown() throws Exception {
-		_contentTransformerHandlerImpl.deactivate();
+		ReflectionTestUtil.invoke(
+			_contentTransformerHandlerImpl, "deactivate", new Class<?>[0]);
 	}
 
 	@Test

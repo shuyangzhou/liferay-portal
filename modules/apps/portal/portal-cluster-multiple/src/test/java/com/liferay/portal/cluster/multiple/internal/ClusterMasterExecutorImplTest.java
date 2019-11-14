@@ -88,7 +88,8 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 
 		clusterMasterExecutorImpl.setClusterExecutorImpl(mockClusterExecutor);
 
-		clusterMasterExecutorImpl.activate();
+		ReflectionTestUtil.invoke(
+			clusterMasterExecutorImpl, "activate", new Class<?>[0]);
 
 		mockClusterExecutor.addClusterNode(
 			_TEST_ADDRESS,
@@ -148,7 +149,8 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 
 		clusterMasterExecutorImpl.setClusterExecutorImpl(mockClusterExecutor);
 
-		clusterMasterExecutorImpl.activate();
+		ReflectionTestUtil.invoke(
+			clusterMasterExecutorImpl, "activate", new Class<?>[0]);
 
 		Set<ClusterMasterTokenTransitionListener>
 			clusterMasterTokenTransitionListeners =
@@ -198,7 +200,8 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 
 		clusterMasterExecutorImpl.setClusterExecutorImpl(mockClusterExecutor);
 
-		clusterMasterExecutorImpl.activate();
+		ReflectionTestUtil.invoke(
+			clusterMasterExecutorImpl, "activate", new Class<?>[0]);
 
 		List<ClusterEventListener> clusterEventListeners =
 			mockClusterExecutor.getClusterEventListeners();
@@ -206,7 +209,8 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 		Assert.assertEquals(
 			clusterEventListeners.toString(), 1, clusterEventListeners.size());
 
-		clusterMasterExecutorImpl.deactivate();
+		ReflectionTestUtil.invoke(
+			clusterMasterExecutorImpl, "deactivate", new Class<?>[0]);
 
 		Assert.assertTrue(
 			clusterEventListeners.toString(), clusterEventListeners.isEmpty());
@@ -218,9 +222,11 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 		clusterMasterExecutorImpl.setClusterExecutorImpl(
 			new MockClusterExecutor(false));
 
-		clusterMasterExecutorImpl.activate();
+		ReflectionTestUtil.invoke(
+			clusterMasterExecutorImpl, "activate", new Class<?>[0]);
 
-		clusterMasterExecutorImpl.deactivate();
+		ReflectionTestUtil.invoke(
+			clusterMasterExecutorImpl, "deactivate", new Class<?>[0]);
 	}
 
 	@Test
@@ -234,7 +240,8 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 		clusterMasterExecutorImpl.setClusterExecutorImpl(
 			new MockClusterExecutor(false));
 
-		clusterMasterExecutorImpl.activate();
+		ReflectionTestUtil.invoke(
+			clusterMasterExecutorImpl, "activate", new Class<?>[0]);
 
 		Assert.assertFalse(clusterMasterExecutorImpl.isEnabled());
 
@@ -324,7 +331,8 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 
 		clusterMasterExecutorImpl.setClusterExecutorImpl(mockClusterExecutor);
 
-		clusterMasterExecutorImpl.activate();
+		ReflectionTestUtil.invoke(
+			clusterMasterExecutorImpl, "activate", new Class<?>[0]);
 
 		Assert.assertTrue(clusterMasterExecutorImpl.isEnabled());
 
@@ -363,7 +371,8 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 
 		clusterMasterExecutorImpl.setClusterExecutorImpl(mockClusterExecutor);
 
-		clusterMasterExecutorImpl.activate();
+		ReflectionTestUtil.invoke(
+			clusterMasterExecutorImpl, "activate", new Class<?>[0]);
 
 		Assert.assertEquals(
 			mockClusterExecutor.getLocalClusterNodeId(),
@@ -421,7 +430,8 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 
 		clusterMasterExecutorImpl.setClusterExecutorImpl(mockClusterExecutor);
 
-		clusterMasterExecutorImpl.activate();
+		ReflectionTestUtil.invoke(
+			clusterMasterExecutorImpl, "activate", new Class<?>[0]);
 
 		mockClusterExecutor.setCoordinatorAddress(_TEST_ADDRESS);
 
@@ -541,7 +551,8 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 		clusterMasterExecutorImpl.setClusterExecutorImpl(
 			new MockClusterExecutor(false));
 
-		clusterMasterExecutorImpl.activate();
+		ReflectionTestUtil.invoke(
+			clusterMasterExecutorImpl, "activate", new Class<?>[0]);
 
 		Assert.assertFalse(clusterMasterExecutorImpl.isEnabled());
 		Assert.assertTrue(clusterMasterExecutorImpl.isMaster());
@@ -553,7 +564,8 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 		clusterMasterExecutorImpl.setClusterExecutorImpl(
 			new MockClusterExecutor(true));
 
-		clusterMasterExecutorImpl.activate();
+		ReflectionTestUtil.invoke(
+			clusterMasterExecutorImpl, "activate", new Class<?>[0]);
 
 		Assert.assertTrue(clusterMasterExecutorImpl.isEnabled());
 		Assert.assertTrue(clusterMasterExecutorImpl.isMaster());
@@ -573,7 +585,8 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 
 		clusterMasterExecutorImpl.setClusterExecutorImpl(mockClusterExecutor);
 
-		clusterMasterExecutorImpl.activate();
+		ReflectionTestUtil.invoke(
+			clusterMasterExecutorImpl, "activate", new Class<?>[0]);
 
 		Assert.assertTrue(clusterMasterExecutorImpl.isEnabled());
 		Assert.assertFalse(clusterMasterExecutorImpl.isMaster());
@@ -589,12 +602,14 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 		clusterMasterExecutorImpl.setClusterExecutorImpl(
 			new MockClusterExecutor(false));
 
-		clusterMasterExecutorImpl.activate();
+		ReflectionTestUtil.invoke(
+			clusterMasterExecutorImpl, "activate", new Class<?>[0]);
 
 		clusterMasterExecutorImpl.setClusterExecutorImpl(
 			new MockClusterExecutor(true));
 
-		clusterMasterExecutorImpl.activate();
+		ReflectionTestUtil.invoke(
+			clusterMasterExecutorImpl, "activate", new Class<?>[0]);
 	}
 
 	@Test

@@ -72,7 +72,7 @@ public class EntityCacheImplTest {
 				new MultiVMPoolInvocationHandler(_classLoader, true)));
 		entityCacheImpl.setProps(_props);
 
-		entityCacheImpl.activate();
+		ReflectionTestUtil.invoke(entityCacheImpl, "activate", new Class<?>[0]);
 
 		PortalCache<?, ?> portalCache = entityCacheImpl.getPortalCache(
 			EntityCacheImplTest.class);
@@ -105,7 +105,7 @@ public class EntityCacheImplTest {
 				new MultiVMPoolInvocationHandler(_classLoader, serialized)));
 		entityCacheImpl.setProps(_props);
 
-		entityCacheImpl.activate();
+		ReflectionTestUtil.invoke(entityCacheImpl, "activate", new Class<?>[0]);
 
 		entityCacheImpl.putResult(
 			true, EntityCacheImplTest.class, 12345, _nullModel);

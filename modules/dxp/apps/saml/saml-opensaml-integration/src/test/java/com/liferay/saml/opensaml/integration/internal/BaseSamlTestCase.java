@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HttpUtil;
@@ -515,7 +516,7 @@ public abstract class BaseSamlTestCase extends PowerMockito {
 
 		metadataManagerImpl.setLocalEntityManager(credentialResolver);
 
-		metadataManagerImpl.activate();
+		ReflectionTestUtil.invoke(metadataManagerImpl, "activate", new Class<?>[0]);
 	}
 
 	protected void setupParserPool() {

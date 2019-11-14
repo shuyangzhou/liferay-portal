@@ -66,7 +66,8 @@ public class ClusterLinkImplTest extends BaseClusterTestCase {
 		Assert.assertFalse(clusterChannel.isClosed());
 		Assert.assertFalse(executorService.isShutdown());
 
-		clusterLinkImpl.deactivate();
+		ReflectionTestUtil.invoke(
+			clusterLinkImpl, "deactivate", new Class<?>[0]);
 
 		Assert.assertTrue(clusterChannel.isClosed());
 		Assert.assertTrue(executorService.isShutdown());
@@ -281,7 +282,7 @@ public class ClusterLinkImplTest extends BaseClusterTestCase {
 		clusterLinkImpl.setPortalExecutorManager(
 			new MockPortalExecutorManager());
 
-		clusterLinkImpl.activate();
+		ReflectionTestUtil.invoke(clusterLinkImpl, "activate", new Class<?>[0]);
 
 		return clusterLinkImpl;
 	}
