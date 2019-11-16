@@ -374,8 +374,8 @@ function AddResultModal({
 								author={result.author}
 								clicks={result.clicks}
 								date={result.date}
-								extension={result.extension}
 								hidden={result.hidden}
+								icon={result.icon}
 								id={result.id}
 								index={index}
 								key={result.id}

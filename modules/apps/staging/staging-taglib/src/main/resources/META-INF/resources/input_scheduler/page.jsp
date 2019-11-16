@@ -64,6 +64,7 @@
 
 		int[] monthIds = CalendarUtil.getMonthIds();
 		String[] months = CalendarUtil.getMonths(locale);
+		String timeZoneID = timeZone.getID();
 		%>
 
 		<table class="staging-publish-schedule">
@@ -104,6 +105,17 @@
 								name="schedulerStartTime"
 							/>
 						</div>
+					</td>
+				</tr>
+			</tbody>
+
+			<tbody>
+				<tr>
+					<th class="staging-scheduler-title">
+						<liferay-ui:message key="time-zone" />:
+					</th>
+					<td class="staging-scheduler-content">
+						<aui:input cssClass="calendar-portlet-time-zone-field" label="" name="timeZoneId" type="timeZone" value="<%= timeZoneID %>" />
 					</td>
 				</tr>
 			</tbody>

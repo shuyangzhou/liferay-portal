@@ -19,9 +19,8 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.security.permission.ResourceActions;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.search.document.Document;
 import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
 import com.liferay.portal.search.engine.adapter.document.GetDocumentRequest;
@@ -33,7 +32,6 @@ import com.liferay.portal.search.tuning.rankings.web.internal.index.Ranking;
 import com.liferay.portal.search.tuning.rankings.web.internal.index.RankingIndexReader;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -46,12 +44,14 @@ import javax.portlet.ResourceRequest;
 public class RankingGetHiddenResultsBuilder {
 
 	public RankingGetHiddenResultsBuilder(
-		DLAppLocalService dlAppLocalService, Queries queries,
+		DLAppLocalService dlAppLocalService,
+		FastDateFormatFactory fastDateFormatFactory, Queries queries,
 		RankingIndexReader rankingIndexReader, ResourceActions resourceActions,
 		ResourceRequest resourceRequest,
 		SearchEngineAdapter searchEngineAdapter) {
 
 		_dlAppLocalService = dlAppLocalService;
+		_fastDateFormatFactory = fastDateFormatFactory;
 		_queries = queries;
 		_rankingIndexReader = rankingIndexReader;
 		_resourceActions = resourceActions;
@@ -105,15 +105,12 @@ public class RankingGetHiddenResultsBuilder {
 
 		Stream<String> stream = ids.stream();
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)_resourceRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
 		return stream.map(
 			id -> getDocument(ranking.getIndex(), id, LIFERAY_DOCUMENT_TYPE)
 		).filter(
 			document -> document != null
 		).map(
-			document -> translate(document, themeDisplay.getLocale())
+			this::translate
 		);
 	}
 
@@ -125,22 +122,22 @@ public class RankingGetHiddenResultsBuilder {
 		return idsQuery;
 	}
 
-	protected JSONObject translate(Document document, Locale locale) {
+	protected JSONObject translate(Document document) {
 		RankingJSONBuilder rankingJSONBuilder = new RankingJSONBuilder(
-			_dlAppLocalService, _resourceActions);
+			_dlAppLocalService, _fastDateFormatFactory, _resourceActions,
+			_resourceRequest);
 
 		return rankingJSONBuilder.document(
 			document
 		).hidden(
 			true
-		).locale(
-			locale
 		).build();
 	}
 
 	protected static final String LIFERAY_DOCUMENT_TYPE = "LiferayDocumentType";
 
 	private final DLAppLocalService _dlAppLocalService;
+	private final FastDateFormatFactory _fastDateFormatFactory;
 	private final Queries _queries;
 	private String _rankingId;
 	private final RankingIndexReader _rankingIndexReader;

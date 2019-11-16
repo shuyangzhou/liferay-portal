@@ -30,11 +30,6 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
-import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
-import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.transaction.Propagation;
@@ -72,37 +67,23 @@ public class BatchEngineImportTaskExecutorImpl
 			_batchEngineImportTaskLocalService.updateBatchEngineImportTask(
 				batchEngineImportTask);
 
-			_execute(batchEngineImportTask);
+			BatchEngineTaskExecutorUtil.execute(
+				() -> _importItems(batchEngineImportTask),
+				_userLocalService.getUser(batchEngineImportTask.getUserId()));
 
-			batchEngineImportTask.setEndTime(new Date());
-			batchEngineImportTask.setExecuteStatus(
-				BatchEngineTaskExecuteStatus.COMPLETED.toString());
-
-			_batchEngineImportTaskLocalService.updateBatchEngineImportTask(
-				batchEngineImportTask);
-
-			BatchEngineTaskCallbackUtil.sendCallback(
-				batchEngineImportTask.getCallbackURL(),
-				batchEngineImportTask.getExecuteStatus(),
-				batchEngineImportTask.getBatchEngineImportTaskId());
+			_updateBatchEngineImportTask(
+				BatchEngineTaskExecuteStatus.COMPLETED, batchEngineImportTask,
+				null);
 		}
 		catch (Throwable t) {
 			_log.error(
-				"Unable to update batch engine task " + batchEngineImportTask,
+				"Unable to update batch engine import task " +
+					batchEngineImportTask,
 				t);
 
-			batchEngineImportTask.setEndTime(new Date());
-			batchEngineImportTask.setErrorMessage(t.getMessage());
-			batchEngineImportTask.setExecuteStatus(
-				BatchEngineTaskExecuteStatus.FAILED.toString());
-
-			_batchEngineImportTaskLocalService.updateBatchEngineImportTask(
-				batchEngineImportTask);
-
-			BatchEngineTaskCallbackUtil.sendCallback(
-				batchEngineImportTask.getCallbackURL(),
-				batchEngineImportTask.getExecuteStatus(),
-				batchEngineImportTask.getBatchEngineImportTaskId());
+			_updateBatchEngineImportTask(
+				BatchEngineTaskExecuteStatus.FAILED, batchEngineImportTask,
+				t.getMessage());
 		}
 	}
 
@@ -145,21 +126,8 @@ public class BatchEngineImportTaskExecutorImpl
 			});
 	}
 
-	private void _execute(BatchEngineImportTask batchEngineImportTask)
+	private void _importItems(BatchEngineImportTask batchEngineImportTask)
 		throws Throwable {
-
-		PermissionChecker permissionChecker =
-			PermissionThreadLocal.getPermissionChecker();
-
-		User user = _userLocalService.getUser(
-			batchEngineImportTask.getUserId());
-
-		PermissionThreadLocal.setPermissionChecker(
-			PermissionCheckerFactoryUtil.create(user));
-
-		String name = PrincipalThreadLocal.getName();
-
-		PrincipalThreadLocal.setName(user.getUserId());
 
 		try (BatchEngineImportTaskItemReader batchEngineImportTaskItemReader =
 				_batchEngineImportTaskItemReaderFactory.create(
@@ -214,10 +182,24 @@ public class BatchEngineImportTaskExecutorImpl
 					items);
 			}
 		}
-		finally {
-			PermissionThreadLocal.setPermissionChecker(permissionChecker);
-			PrincipalThreadLocal.setName(name);
-		}
+	}
+
+	private void _updateBatchEngineImportTask(
+		BatchEngineTaskExecuteStatus batchEngineTaskExecuteStatus,
+		BatchEngineImportTask batchEngineImportTask, String errorMessage) {
+
+		batchEngineImportTask.setEndTime(new Date());
+		batchEngineImportTask.setErrorMessage(errorMessage);
+		batchEngineImportTask.setExecuteStatus(
+			batchEngineTaskExecuteStatus.toString());
+
+		_batchEngineImportTaskLocalService.updateBatchEngineImportTask(
+			batchEngineImportTask);
+
+		BatchEngineTaskCallbackUtil.sendCallback(
+			batchEngineImportTask.getCallbackURL(),
+			batchEngineImportTask.getExecuteStatus(),
+			batchEngineImportTask.getBatchEngineImportTaskId());
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

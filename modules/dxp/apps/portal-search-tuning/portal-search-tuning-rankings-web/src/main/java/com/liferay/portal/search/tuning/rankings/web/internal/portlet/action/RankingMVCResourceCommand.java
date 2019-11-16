@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.security.permission.ResourceActions;
 import com.liferay.portal.kernel.util.Constants;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
 import com.liferay.portal.search.filter.ComplexQueryPartBuilderFactory;
@@ -85,8 +86,9 @@ public class RankingMVCResourceCommand implements MVCResourceCommand {
 	protected JSONObject getHiddenResults(ResourceRequest resourceRequest) {
 		RankingGetHiddenResultsBuilder rankingGetHiddenResultsBuilder =
 			new RankingGetHiddenResultsBuilder(
-				dlAppLocalService, queries, rankingIndexReader, resourceActions,
-				resourceRequest, searchEngineAdapter);
+				dlAppLocalService, fastDateFormatFactory, queries,
+				rankingIndexReader, resourceActions, resourceRequest,
+				searchEngineAdapter);
 
 		RankingMVCResourceRequest rankingMVCResourceRequest =
 			new RankingMVCResourceRequest(resourceRequest);
@@ -118,9 +120,9 @@ public class RankingMVCResourceCommand implements MVCResourceCommand {
 	protected JSONObject getSearchResults(ResourceRequest resourceRequest) {
 		RankingGetSearchResultsBuilder rankingGetSearchResultsBuilder =
 			new RankingGetSearchResultsBuilder(
-				complexQueryPartBuilderFactory, dlAppLocalService, queries,
-				resourceActions, resourceRequest, searcher,
-				searchRequestBuilderFactory);
+				complexQueryPartBuilderFactory, dlAppLocalService,
+				fastDateFormatFactory, queries, resourceActions,
+				resourceRequest, searcher, searchRequestBuilderFactory);
 
 		RankingMVCResourceRequest rankingMVCResourceRequest =
 			new RankingMVCResourceRequest(resourceRequest);
@@ -141,9 +143,9 @@ public class RankingMVCResourceCommand implements MVCResourceCommand {
 		RankingGetVisibleResultsBuilder rankingGetVisibleResultsBuilder =
 			new RankingGetVisibleResultsBuilder(
 				complexQueryPartBuilderFactory, dlAppLocalService,
-				rankingIndexReader, rankingSearchRequestHelper, resourceActions,
-				resourceRequest, queries, searcher,
-				searchRequestBuilderFactory);
+				fastDateFormatFactory, rankingIndexReader,
+				rankingSearchRequestHelper, resourceActions, resourceRequest,
+				queries, searcher, searchRequestBuilderFactory);
 
 		RankingMVCResourceRequest rankingMVCResourceRequest =
 			new RankingMVCResourceRequest(resourceRequest);
@@ -184,6 +186,9 @@ public class RankingMVCResourceCommand implements MVCResourceCommand {
 
 	@Reference
 	protected DLAppLocalService dlAppLocalService;
+
+	@Reference
+	protected FastDateFormatFactory fastDateFormatFactory;
 
 	@Reference
 	protected Queries queries;

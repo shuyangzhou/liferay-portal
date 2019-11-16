@@ -20,9 +20,8 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.security.permission.ResourceActions;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.document.Document;
 import com.liferay.portal.search.filter.ComplexQueryPartBuilderFactory;
 import com.liferay.portal.search.query.Queries;
@@ -35,7 +34,6 @@ import com.liferay.portal.search.tuning.rankings.web.internal.index.Ranking;
 import com.liferay.portal.search.tuning.rankings.web.internal.index.RankingIndexReader;
 import com.liferay.portal.search.tuning.rankings.web.internal.searcher.RankingSearchRequestHelper;
 
-import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -50,6 +48,7 @@ public class RankingGetVisibleResultsBuilder {
 	public RankingGetVisibleResultsBuilder(
 		ComplexQueryPartBuilderFactory complexQueryPartBuilderFactory,
 		DLAppLocalService dlAppLocalService,
+		FastDateFormatFactory fastDateFormatFactory,
 		RankingIndexReader rankingIndexReader,
 		RankingSearchRequestHelper rankingSearchRequestHelper,
 		ResourceActions resourceActions, ResourceRequest resourceRequest,
@@ -58,6 +57,7 @@ public class RankingGetVisibleResultsBuilder {
 
 		_complexQueryPartBuilderFactory = complexQueryPartBuilderFactory;
 		_dlAppLocalService = dlAppLocalService;
+		_fastDateFormatFactory = fastDateFormatFactory;
 		_rankingIndexReader = rankingIndexReader;
 		_rankingSearchRequestHelper = rankingSearchRequestHelper;
 		_resourceActions = resourceActions;
@@ -151,23 +151,16 @@ public class RankingGetVisibleResultsBuilder {
 
 		Stream<Document> stream = searchResponse.getDocumentsStream();
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)_resourceRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		return stream.map(
-			document -> translate(document, ranking, themeDisplay.getLocale()));
+		return stream.map(document -> translate(document, ranking));
 	}
 
-	protected JSONObject translate(
-		Document document, Ranking ranking, Locale locale) {
-
+	protected JSONObject translate(Document document, Ranking ranking) {
 		RankingJSONBuilder rankingJSONBuilder = new RankingJSONBuilder(
-			_dlAppLocalService, _resourceActions);
+			_dlAppLocalService, _fastDateFormatFactory, _resourceActions,
+			_resourceRequest);
 
 		return rankingJSONBuilder.document(
 			document
-		).locale(
-			locale
 		).pinned(
 			ranking.isPinned(document.getString(Field.UID))
 		).build();
@@ -177,6 +170,7 @@ public class RankingGetVisibleResultsBuilder {
 	private final ComplexQueryPartBuilderFactory
 		_complexQueryPartBuilderFactory;
 	private final DLAppLocalService _dlAppLocalService;
+	private final FastDateFormatFactory _fastDateFormatFactory;
 	private int _from;
 	private final Queries _queries;
 	private String _queryString;

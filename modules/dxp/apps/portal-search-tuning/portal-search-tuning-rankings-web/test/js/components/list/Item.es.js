@@ -42,8 +42,8 @@ function renderTestItem() {
 			description={
 				'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod'
 			}
-			extension={''}
 			hidden={false}
+			icon={'web-content'}
 			id={101}
 			index={1}
 			key={101}
@@ -94,7 +94,7 @@ describe('Item', () => {
 		expect(
 			container.querySelector('.list-item-description')
 		).toHaveTextContent(
-			'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ips...'
+			'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod'
 		);
 	});
 

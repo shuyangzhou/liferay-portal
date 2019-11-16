@@ -25,6 +25,7 @@ const RESULTS_LIST = [
 		date: 'Apr 18 2018, 11:04 AM',
 		description:
 			'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod',
+		icon: 'web-content',
 		id: 102,
 		title: 'This is a Web Content Example with Long Title',
 		type: 'Web Content'
@@ -33,7 +34,7 @@ const RESULTS_LIST = [
 		author: 'Test Test',
 		clicks: 8,
 		date: 'Apr 18 2018, 11:04 AM',
-		extension: 'png',
+		icon: 'documents-and-media',
 		id: 103,
 		title: 'This is an Image Example',
 		type: 'Document'

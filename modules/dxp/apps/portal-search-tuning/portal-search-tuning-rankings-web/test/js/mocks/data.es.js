@@ -35,6 +35,7 @@ export function getMockResultsData(
 	}
 
 	for (let i = 0; i < size; i++) {
+		const icon = i % 2 === 0 ? 'documents-and-media' : 'web-content';
 		const typeOfItem = i % 2 === 0 ? 'Document' : 'Web Content';
 
 		const k = i + startId;
@@ -45,8 +46,8 @@ export function getMockResultsData(
 			date: 'Apr 18 2018, 11:04 AM',
 			description:
 				'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod',
-			extension: typeOfItem === 'Document' ? 'pdf' : null,
 			hidden,
+			icon,
 			id: k + LEVEL,
 			pinned: hidden ? false : k < PINNED_AMOUNT,
 			title: `${k + LEVEL} This is a ${typeOfItem} Example`,
@@ -73,8 +74,8 @@ export function mockDocument(id = 1, properties) {
 		clicks: 123,
 		date: 'Apr 18 2018, 11:04 AM',
 		description: 'This is a test description.',
-		extension: 'pdf',
 		hidden: false,
+		icon: 'documents-and-media',
 		id,
 		pinned: false,
 		title: 'Test Title',

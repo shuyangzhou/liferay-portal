@@ -24,8 +24,11 @@ import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.headless.delivery.dto.v1_0.BlogPosting;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Time;
+import com.liferay.portal.test.log.CaptureAppender;
+import com.liferay.portal.test.log.Log4JLoggerTestUtil;
 import com.liferay.portal.test.rule.Inject;
 
 import java.io.ByteArrayOutputStream;
@@ -34,19 +37,20 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.spi.LoggingEvent;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -57,12 +61,27 @@ import org.junit.runner.RunWith;
 public class BatchEngineImportTaskExecutorTest
 	extends BaseBatchEngineTaskExecutorTest {
 
+	@BeforeClass
+	public static void setUpClass() {
+		_fieldNamesMappingMap = HashMapBuilder.put(
+			"alternativeHeadline1", "alternativeHeadline"
+		).put(
+			"articleBody1", "articleBody"
+		).put(
+			"datePublished1", "datePublished"
+		).put(
+			"headline1", "headline"
+		).put(
+			"siteId1", "siteId"
+		).build();
+	}
+
 	@Test
 	public void testCreateBlogPostingsFromCSVFile() {
 		_importBlogPostings(
 			BatchEngineTaskOperation.CREATE,
 			_getBlogPostingsCSVCreateContent(group.getGroupId(), FIELD_NAMES),
-			"CSV", Collections.emptyMap());
+			"CSV", null);
 
 		_assertCreatedBlogPostings();
 	}
@@ -93,15 +112,16 @@ public class BatchEngineImportTaskExecutorTest
 
 		String content = sb.toString();
 
-		try {
+		try (CaptureAppender captureAppender =
+				Log4JLoggerTestUtil.configureLog4JLogger(
+					_CLASS_NAME_BATCH_ENGINE_IMPORT_TASK_EXECUTOR_IMPL,
+					Level.ERROR)) {
+
 			_importBlogPostings(
 				BatchEngineTaskOperation.CREATE,
-				content.getBytes(StandardCharsets.UTF_8), "CSV",
-				Collections.emptyMap());
+				content.getBytes(StandardCharsets.UTF_8), "CSV", null);
 
-			Assert.fail();
-		}
-		catch (AssertionError ae) {
+			_assertInvalidFile(captureAppender);
 		}
 	}
 
@@ -123,15 +143,16 @@ public class BatchEngineImportTaskExecutorTest
 
 		String content = sb.toString();
 
-		try {
+		try (CaptureAppender captureAppender =
+				Log4JLoggerTestUtil.configureLog4JLogger(
+					_CLASS_NAME_BATCH_ENGINE_IMPORT_TASK_EXECUTOR_IMPL,
+					Level.ERROR)) {
+
 			_importBlogPostings(
 				BatchEngineTaskOperation.CREATE,
-				content.getBytes(StandardCharsets.UTF_8), "JSON",
-				Collections.emptyMap());
+				content.getBytes(StandardCharsets.UTF_8), "JSON", null);
 
-			Assert.fail();
-		}
-		catch (AssertionError ae) {
+			_assertInvalidFile(captureAppender);
 		}
 	}
 
@@ -149,15 +170,16 @@ public class BatchEngineImportTaskExecutorTest
 
 		String content = sb.toString();
 
-		try {
+		try (CaptureAppender captureAppender =
+				Log4JLoggerTestUtil.configureLog4JLogger(
+					_CLASS_NAME_BATCH_ENGINE_IMPORT_TASK_EXECUTOR_IMPL,
+					Level.ERROR)) {
+
 			_importBlogPostings(
 				BatchEngineTaskOperation.CREATE,
-				content.getBytes(StandardCharsets.UTF_8), "JSONL",
-				Collections.emptyMap());
+				content.getBytes(StandardCharsets.UTF_8), "JSONL", null);
 
-			Assert.fail();
-		}
-		catch (AssertionError ae) {
+			_assertInvalidFile(captureAppender);
 		}
 	}
 
@@ -176,14 +198,16 @@ public class BatchEngineImportTaskExecutorTest
 			dateFormat.format(new Date(baseDate.getTime())), "headline",
 			group.getGroupId(), "unknownValue");
 
-		try {
+		try (CaptureAppender captureAppender =
+				Log4JLoggerTestUtil.configureLog4JLogger(
+					_CLASS_NAME_BATCH_ENGINE_IMPORT_TASK_EXECUTOR_IMPL,
+					Level.ERROR)) {
+
 			_importBlogPostings(
 				BatchEngineTaskOperation.CREATE, _toContent(xssfWorkbook),
-				"XLS", Collections.emptyMap());
+				"XLS", null);
 
-			Assert.fail();
-		}
-		catch (AssertionError ae) {
+			_assertInvalidFile(captureAppender);
 		}
 	}
 
@@ -192,7 +216,7 @@ public class BatchEngineImportTaskExecutorTest
 		_importBlogPostings(
 			BatchEngineTaskOperation.CREATE,
 			_getBlogPostingsJSONCreateContent(group.getGroupId(), FIELD_NAMES),
-			"JSON", Collections.emptyMap());
+			"JSON", null);
 
 		_assertCreatedBlogPostings();
 	}
@@ -213,7 +237,7 @@ public class BatchEngineImportTaskExecutorTest
 		_importBlogPostings(
 			BatchEngineTaskOperation.CREATE,
 			_getBlogPostingsJSONLCreateContent(group.getGroupId(), FIELD_NAMES),
-			"JSONL", Collections.emptyMap());
+			"JSONL", null);
 
 		_assertCreatedBlogPostings();
 	}
@@ -234,7 +258,7 @@ public class BatchEngineImportTaskExecutorTest
 		_importBlogPostings(
 			BatchEngineTaskOperation.CREATE,
 			_getBlogPostingsXLSCreateContent(group.getGroupId(), FIELD_NAMES),
-			"XLS", Collections.emptyMap());
+			"XLS", null);
 
 		_assertCreatedBlogPostings();
 	}
@@ -261,8 +285,7 @@ public class BatchEngineImportTaskExecutorTest
 
 		_importBlogPostings(
 			BatchEngineTaskOperation.DELETE,
-			_getBlogPostingsCSVDeleteContent(blogsEntries), "CSV",
-			Collections.emptyMap());
+			_getBlogPostingsCSVDeleteContent(blogsEntries), "CSV", null);
 
 		Assert.assertEquals(0, blogsEntryLocalService.getBlogsEntriesCount());
 	}
@@ -276,8 +299,7 @@ public class BatchEngineImportTaskExecutorTest
 
 		_importBlogPostings(
 			BatchEngineTaskOperation.DELETE,
-			_getBlogPostingsJSONDeleteContent(blogsEntries), "JSON",
-			Collections.emptyMap());
+			_getBlogPostingsJSONDeleteContent(blogsEntries), "JSON", null);
 
 		Assert.assertEquals(0, blogsEntryLocalService.getBlogsEntriesCount());
 	}
@@ -291,8 +313,7 @@ public class BatchEngineImportTaskExecutorTest
 
 		_importBlogPostings(
 			BatchEngineTaskOperation.DELETE,
-			_getBlogPostingsJSONLDeleteContent(blogsEntries), "JSONL",
-			Collections.emptyMap());
+			_getBlogPostingsJSONLDeleteContent(blogsEntries), "JSONL", null);
 
 		Assert.assertEquals(0, blogsEntryLocalService.getBlogsEntriesCount());
 	}
@@ -306,8 +327,7 @@ public class BatchEngineImportTaskExecutorTest
 
 		_importBlogPostings(
 			BatchEngineTaskOperation.DELETE,
-			_getBlogPostingsXLSDeleteContent(blogsEntries), "XLS",
-			Collections.emptyMap());
+			_getBlogPostingsXLSDeleteContent(blogsEntries), "XLS", null);
 
 		Assert.assertEquals(0, blogsEntryLocalService.getBlogsEntriesCount());
 	}
@@ -321,8 +341,7 @@ public class BatchEngineImportTaskExecutorTest
 
 		_importBlogPostings(
 			BatchEngineTaskOperation.UPDATE,
-			_getBlogPostingsCSVUpdateContent(blogsEntries), "CSV",
-			Collections.emptyMap());
+			_getBlogPostingsCSVUpdateContent(blogsEntries), "CSV", null);
 
 		_assertUpdatedBlogPostings();
 	}
@@ -336,8 +355,7 @@ public class BatchEngineImportTaskExecutorTest
 
 		_importBlogPostings(
 			BatchEngineTaskOperation.UPDATE,
-			_getBlogPostingsJSONUpdateContent(blogsEntries), "JSON",
-			Collections.emptyMap());
+			_getBlogPostingsJSONUpdateContent(blogsEntries), "JSON", null);
 
 		_assertUpdatedBlogPostings();
 	}
@@ -351,8 +369,7 @@ public class BatchEngineImportTaskExecutorTest
 
 		_importBlogPostings(
 			BatchEngineTaskOperation.UPDATE,
-			_getBlogPostingsJSONLUpdateContent(blogsEntries), "JSONL",
-			Collections.emptyMap());
+			_getBlogPostingsJSONLUpdateContent(blogsEntries), "JSONL", null);
 
 		_assertUpdatedBlogPostings();
 	}
@@ -366,8 +383,7 @@ public class BatchEngineImportTaskExecutorTest
 
 		_importBlogPostings(
 			BatchEngineTaskOperation.UPDATE,
-			_getBlogPostingsXLSUpdateContent(blogsEntries), "XLS",
-			Collections.emptyMap());
+			_getBlogPostingsXLSUpdateContent(blogsEntries), "XLS", null);
 
 		_assertUpdatedBlogPostings();
 	}
@@ -392,6 +408,23 @@ public class BatchEngineImportTaskExecutorTest
 				_toTime(baseDate, i), _toTime(blogsEntry.getDisplayDate(), 0));
 			Assert.assertEquals("headline" + i, blogsEntry.getTitle());
 		}
+	}
+
+	private void _assertInvalidFile(CaptureAppender captureAppender) {
+		Assert.assertEquals(0, blogsEntryLocalService.getBlogsEntriesCount());
+
+		List<LoggingEvent> loggingEvents = captureAppender.getLoggingEvents();
+
+		Assert.assertEquals(loggingEvents.toString(), 1, loggingEvents.size());
+
+		LoggingEvent loggingEvent = loggingEvents.get(0);
+
+		Assert.assertEquals(Level.ERROR, loggingEvent.getLevel());
+
+		String message = (String)loggingEvent.getMessage();
+
+		Assert.assertTrue(
+			message.startsWith("Unable to update batch engine import task"));
 	}
 
 	private void _assertUpdatedBlogPostings() {
@@ -734,8 +767,8 @@ public class BatchEngineImportTaskExecutorTest
 				user.getCompanyId(), user.getUserId(), 10, null,
 				BlogPosting.class.getName(), content, contentType,
 				BatchEngineTaskExecuteStatus.INITIAL.name(),
-				fieldNameMappingMap, batchEngineTaskOperation.name(),
-				Collections.emptyMap(), "v1.0");
+				fieldNameMappingMap, batchEngineTaskOperation.name(), null,
+				"v1.0");
 
 		_batchEngineImportTaskExecutor.execute(_batchEngineImportTask);
 	}
@@ -775,16 +808,12 @@ public class BatchEngineImportTaskExecutorTest
 		"siteId1"
 	};
 
-	private static final Map<String, String> _fieldNamesMappingMap =
-		new HashMap<String, String>() {
-			{
-				put("alternativeHeadline1", "alternativeHeadline");
-				put("articleBody1", "articleBody");
-				put("datePublished1", "datePublished");
-				put("headline1", "headline");
-				put("siteId1", "siteId");
-			}
-		};
+	private static final String
+		_CLASS_NAME_BATCH_ENGINE_IMPORT_TASK_EXECUTOR_IMPL =
+			"com.liferay.batch.engine.internal." +
+				"BatchEngineImportTaskExecutorImpl";
+
+	private static Map<String, String> _fieldNamesMappingMap;
 
 	@DeleteAfterTestRun
 	private BatchEngineImportTask _batchEngineImportTask;

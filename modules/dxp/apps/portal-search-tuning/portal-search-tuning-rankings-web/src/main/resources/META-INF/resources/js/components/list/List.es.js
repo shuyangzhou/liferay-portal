@@ -189,7 +189,6 @@ class List extends PureComponent {
 				clicks={item.clicks}
 				date={item.date}
 				description={item.description}
-				extension={item.extension}
 				focus={index === focusIndex}
 				hidden={item.hidden}
 				icon={item.icon}

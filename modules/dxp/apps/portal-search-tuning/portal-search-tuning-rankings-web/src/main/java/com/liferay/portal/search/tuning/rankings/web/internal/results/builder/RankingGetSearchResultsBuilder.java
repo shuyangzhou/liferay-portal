@@ -19,8 +19,7 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.security.permission.ResourceActions;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.search.document.Document;
 import com.liferay.portal.search.filter.ComplexQueryPartBuilderFactory;
 import com.liferay.portal.search.query.Queries;
@@ -29,7 +28,6 @@ import com.liferay.portal.search.searcher.SearchRequestBuilderFactory;
 import com.liferay.portal.search.searcher.SearchResponse;
 import com.liferay.portal.search.searcher.Searcher;
 
-import java.util.Locale;
 import java.util.stream.Stream;
 
 import javax.portlet.ResourceRequest;
@@ -42,13 +40,15 @@ public class RankingGetSearchResultsBuilder {
 
 	public RankingGetSearchResultsBuilder(
 		ComplexQueryPartBuilderFactory complexQueryPartBuilderFactory,
-		DLAppLocalService dlAppLocalService, Queries queries,
+		DLAppLocalService dlAppLocalService,
+		FastDateFormatFactory fastDateFormatFactory, Queries queries,
 		ResourceActions resourceActions, ResourceRequest resourceRequest,
 		Searcher searcher,
 		SearchRequestBuilderFactory searchRequestBuilderFactory) {
 
 		_complexQueryPartBuilderFactory = complexQueryPartBuilderFactory;
 		_dlAppLocalService = dlAppLocalService;
+		_fastDateFormatFactory = fastDateFormatFactory;
 		_queries = queries;
 		_resourceActions = resourceActions;
 		_resourceRequest = resourceRequest;
@@ -115,21 +115,16 @@ public class RankingGetSearchResultsBuilder {
 
 		Stream<Document> stream = searchResponse.getDocumentsStream();
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)_resourceRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		return stream.map(
-			document -> translate(document, themeDisplay.getLocale()));
+		return stream.map(this::translate);
 	}
 
-	protected JSONObject translate(Document document, Locale locale) {
+	protected JSONObject translate(Document document) {
 		RankingJSONBuilder rankingJSONBuilder = new RankingJSONBuilder(
-			_dlAppLocalService, _resourceActions);
+			_dlAppLocalService, _fastDateFormatFactory, _resourceActions,
+			_resourceRequest);
 
 		return rankingJSONBuilder.document(
 			document
-		).locale(
-			locale
 		).build();
 	}
 
@@ -137,6 +132,7 @@ public class RankingGetSearchResultsBuilder {
 	private final ComplexQueryPartBuilderFactory
 		_complexQueryPartBuilderFactory;
 	private final DLAppLocalService _dlAppLocalService;
+	private final FastDateFormatFactory _fastDateFormatFactory;
 	private int _from;
 	private final Queries _queries;
 	private String _queryString;
