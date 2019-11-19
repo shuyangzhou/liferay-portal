@@ -165,9 +165,7 @@ public class AspectJNewEnvTestRule extends NewEnvTestRule {
 
 			serializer.writeObject(processCallable);
 
-			ByteBuffer byteBuffer = serializer.toByteBuffer();
-
-			_encodedProcessCallable = byteBuffer.array();
+			_encodedProcessCallable = serializer.toByteBuffer();
 
 			_toString = processCallable.toString();
 		}
@@ -200,7 +198,7 @@ public class AspectJNewEnvTestRule extends NewEnvTestRule {
 				currentThread.setContextClassLoader(weavingClassLoader);
 
 				Deserializer deserializer = new Deserializer(
-					ByteBuffer.wrap(_encodedProcessCallable));
+					_encodedProcessCallable);
 
 				return ReflectionTestUtil.invoke(
 					(ProcessCallable)deserializer.readObject(), "call",
@@ -222,7 +220,7 @@ public class AspectJNewEnvTestRule extends NewEnvTestRule {
 		private static final long serialVersionUID = 1L;
 
 		private final File _dumpDir;
-		private final byte[] _encodedProcessCallable;
+		private final ByteBuffer _encodedProcessCallable;
 		private final String _toString;
 
 	}
