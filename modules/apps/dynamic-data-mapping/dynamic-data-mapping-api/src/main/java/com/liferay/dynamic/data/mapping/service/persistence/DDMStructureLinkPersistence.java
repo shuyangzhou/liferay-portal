@@ -17,6 +17,7 @@ package com.liferay.dynamic.data.mapping.service.persistence;
 import com.liferay.dynamic.data.mapping.exception.NoSuchStructureLinkException;
 import com.liferay.dynamic.data.mapping.model.DDMStructureLink;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
+import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -33,13 +34,158 @@ import org.osgi.annotation.versioning.ProviderType;
  */
 @ProviderType
 public interface DDMStructureLinkPersistence
-	extends BasePersistence<DDMStructureLink> {
+	extends BasePersistence<DDMStructureLink>, CTPersistence<DDMStructureLink> {
 
 	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link DDMStructureLinkUtil} to access the ddm structure link persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+
+	/**
+	 * Returns all the ddm structure links where ctCollectionId = &#63;.
+	 *
+	 * @param ctCollectionId the ct collection ID
+	 * @return the matching ddm structure links
+	 */
+	@Override
+	public java.util.List<DDMStructureLink> findByCTCollectionId(
+		long ctCollectionId);
+
+	/**
+	 * Returns a range of all the ddm structure links where ctCollectionId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DDMStructureLinkModelImpl</code>.
+	 * </p>
+	 *
+	 * @param ctCollectionId the ct collection ID
+	 * @param start the lower bound of the range of ddm structure links
+	 * @param end the upper bound of the range of ddm structure links (not inclusive)
+	 * @return the range of matching ddm structure links
+	 */
+	public java.util.List<DDMStructureLink> findByCTCollectionId(
+		long ctCollectionId, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the ddm structure links where ctCollectionId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DDMStructureLinkModelImpl</code>.
+	 * </p>
+	 *
+	 * @param ctCollectionId the ct collection ID
+	 * @param start the lower bound of the range of ddm structure links
+	 * @param end the upper bound of the range of ddm structure links (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching ddm structure links
+	 */
+	public java.util.List<DDMStructureLink> findByCTCollectionId(
+		long ctCollectionId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DDMStructureLink>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the ddm structure links where ctCollectionId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DDMStructureLinkModelImpl</code>.
+	 * </p>
+	 *
+	 * @param ctCollectionId the ct collection ID
+	 * @param start the lower bound of the range of ddm structure links
+	 * @param end the upper bound of the range of ddm structure links (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching ddm structure links
+	 */
+	public java.util.List<DDMStructureLink> findByCTCollectionId(
+		long ctCollectionId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DDMStructureLink>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first ddm structure link in the ordered set where ctCollectionId = &#63;.
+	 *
+	 * @param ctCollectionId the ct collection ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching ddm structure link
+	 * @throws NoSuchStructureLinkException if a matching ddm structure link could not be found
+	 */
+	public DDMStructureLink findByCTCollectionId_First(
+			long ctCollectionId,
+			com.liferay.portal.kernel.util.OrderByComparator<DDMStructureLink>
+				orderByComparator)
+		throws NoSuchStructureLinkException;
+
+	/**
+	 * Returns the first ddm structure link in the ordered set where ctCollectionId = &#63;.
+	 *
+	 * @param ctCollectionId the ct collection ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching ddm structure link, or <code>null</code> if a matching ddm structure link could not be found
+	 */
+	public DDMStructureLink fetchByCTCollectionId_First(
+		long ctCollectionId,
+		com.liferay.portal.kernel.util.OrderByComparator<DDMStructureLink>
+			orderByComparator);
+
+	/**
+	 * Returns the last ddm structure link in the ordered set where ctCollectionId = &#63;.
+	 *
+	 * @param ctCollectionId the ct collection ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching ddm structure link
+	 * @throws NoSuchStructureLinkException if a matching ddm structure link could not be found
+	 */
+	public DDMStructureLink findByCTCollectionId_Last(
+			long ctCollectionId,
+			com.liferay.portal.kernel.util.OrderByComparator<DDMStructureLink>
+				orderByComparator)
+		throws NoSuchStructureLinkException;
+
+	/**
+	 * Returns the last ddm structure link in the ordered set where ctCollectionId = &#63;.
+	 *
+	 * @param ctCollectionId the ct collection ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching ddm structure link, or <code>null</code> if a matching ddm structure link could not be found
+	 */
+	public DDMStructureLink fetchByCTCollectionId_Last(
+		long ctCollectionId,
+		com.liferay.portal.kernel.util.OrderByComparator<DDMStructureLink>
+			orderByComparator);
+
+	/**
+	 * Returns the ddm structure links before and after the current ddm structure link in the ordered set where ctCollectionId = &#63;.
+	 *
+	 * @param structureLinkId the primary key of the current ddm structure link
+	 * @param ctCollectionId the ct collection ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next ddm structure link
+	 * @throws NoSuchStructureLinkException if a ddm structure link with the primary key could not be found
+	 */
+	public DDMStructureLink[] findByCTCollectionId_PrevAndNext(
+			long structureLinkId, long ctCollectionId,
+			com.liferay.portal.kernel.util.OrderByComparator<DDMStructureLink>
+				orderByComparator)
+		throws NoSuchStructureLinkException;
+
+	/**
+	 * Removes all the ddm structure links where ctCollectionId = &#63; from the database.
+	 *
+	 * @param ctCollectionId the ct collection ID
+	 */
+	public void removeByCTCollectionId(long ctCollectionId);
+
+	/**
+	 * Returns the number of ddm structure links where ctCollectionId = &#63;.
+	 *
+	 * @param ctCollectionId the ct collection ID
+	 * @return the number of matching ddm structure links
+	 */
+	public int countByCTCollectionId(long ctCollectionId);
 
 	/**
 	 * Returns all the ddm structure links where classNameId = &#63;.

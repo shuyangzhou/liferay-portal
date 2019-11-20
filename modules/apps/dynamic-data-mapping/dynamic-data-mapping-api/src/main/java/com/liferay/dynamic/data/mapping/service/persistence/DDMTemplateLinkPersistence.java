@@ -17,6 +17,7 @@ package com.liferay.dynamic.data.mapping.service.persistence;
 import com.liferay.dynamic.data.mapping.exception.NoSuchTemplateLinkException;
 import com.liferay.dynamic.data.mapping.model.DDMTemplateLink;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
+import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -33,13 +34,158 @@ import org.osgi.annotation.versioning.ProviderType;
  */
 @ProviderType
 public interface DDMTemplateLinkPersistence
-	extends BasePersistence<DDMTemplateLink> {
+	extends BasePersistence<DDMTemplateLink>, CTPersistence<DDMTemplateLink> {
 
 	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link DDMTemplateLinkUtil} to access the ddm template link persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+
+	/**
+	 * Returns all the ddm template links where ctCollectionId = &#63;.
+	 *
+	 * @param ctCollectionId the ct collection ID
+	 * @return the matching ddm template links
+	 */
+	@Override
+	public java.util.List<DDMTemplateLink> findByCTCollectionId(
+		long ctCollectionId);
+
+	/**
+	 * Returns a range of all the ddm template links where ctCollectionId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DDMTemplateLinkModelImpl</code>.
+	 * </p>
+	 *
+	 * @param ctCollectionId the ct collection ID
+	 * @param start the lower bound of the range of ddm template links
+	 * @param end the upper bound of the range of ddm template links (not inclusive)
+	 * @return the range of matching ddm template links
+	 */
+	public java.util.List<DDMTemplateLink> findByCTCollectionId(
+		long ctCollectionId, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the ddm template links where ctCollectionId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DDMTemplateLinkModelImpl</code>.
+	 * </p>
+	 *
+	 * @param ctCollectionId the ct collection ID
+	 * @param start the lower bound of the range of ddm template links
+	 * @param end the upper bound of the range of ddm template links (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching ddm template links
+	 */
+	public java.util.List<DDMTemplateLink> findByCTCollectionId(
+		long ctCollectionId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DDMTemplateLink>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the ddm template links where ctCollectionId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DDMTemplateLinkModelImpl</code>.
+	 * </p>
+	 *
+	 * @param ctCollectionId the ct collection ID
+	 * @param start the lower bound of the range of ddm template links
+	 * @param end the upper bound of the range of ddm template links (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching ddm template links
+	 */
+	public java.util.List<DDMTemplateLink> findByCTCollectionId(
+		long ctCollectionId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<DDMTemplateLink>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first ddm template link in the ordered set where ctCollectionId = &#63;.
+	 *
+	 * @param ctCollectionId the ct collection ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching ddm template link
+	 * @throws NoSuchTemplateLinkException if a matching ddm template link could not be found
+	 */
+	public DDMTemplateLink findByCTCollectionId_First(
+			long ctCollectionId,
+			com.liferay.portal.kernel.util.OrderByComparator<DDMTemplateLink>
+				orderByComparator)
+		throws NoSuchTemplateLinkException;
+
+	/**
+	 * Returns the first ddm template link in the ordered set where ctCollectionId = &#63;.
+	 *
+	 * @param ctCollectionId the ct collection ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching ddm template link, or <code>null</code> if a matching ddm template link could not be found
+	 */
+	public DDMTemplateLink fetchByCTCollectionId_First(
+		long ctCollectionId,
+		com.liferay.portal.kernel.util.OrderByComparator<DDMTemplateLink>
+			orderByComparator);
+
+	/**
+	 * Returns the last ddm template link in the ordered set where ctCollectionId = &#63;.
+	 *
+	 * @param ctCollectionId the ct collection ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching ddm template link
+	 * @throws NoSuchTemplateLinkException if a matching ddm template link could not be found
+	 */
+	public DDMTemplateLink findByCTCollectionId_Last(
+			long ctCollectionId,
+			com.liferay.portal.kernel.util.OrderByComparator<DDMTemplateLink>
+				orderByComparator)
+		throws NoSuchTemplateLinkException;
+
+	/**
+	 * Returns the last ddm template link in the ordered set where ctCollectionId = &#63;.
+	 *
+	 * @param ctCollectionId the ct collection ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching ddm template link, or <code>null</code> if a matching ddm template link could not be found
+	 */
+	public DDMTemplateLink fetchByCTCollectionId_Last(
+		long ctCollectionId,
+		com.liferay.portal.kernel.util.OrderByComparator<DDMTemplateLink>
+			orderByComparator);
+
+	/**
+	 * Returns the ddm template links before and after the current ddm template link in the ordered set where ctCollectionId = &#63;.
+	 *
+	 * @param templateLinkId the primary key of the current ddm template link
+	 * @param ctCollectionId the ct collection ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next ddm template link
+	 * @throws NoSuchTemplateLinkException if a ddm template link with the primary key could not be found
+	 */
+	public DDMTemplateLink[] findByCTCollectionId_PrevAndNext(
+			long templateLinkId, long ctCollectionId,
+			com.liferay.portal.kernel.util.OrderByComparator<DDMTemplateLink>
+				orderByComparator)
+		throws NoSuchTemplateLinkException;
+
+	/**
+	 * Removes all the ddm template links where ctCollectionId = &#63; from the database.
+	 *
+	 * @param ctCollectionId the ct collection ID
+	 */
+	public void removeByCTCollectionId(long ctCollectionId);
+
+	/**
+	 * Returns the number of ddm template links where ctCollectionId = &#63;.
+	 *
+	 * @param ctCollectionId the ct collection ID
+	 * @return the number of matching ddm template links
+	 */
+	public int countByCTCollectionId(long ctCollectionId);
 
 	/**
 	 * Returns all the ddm template links where classNameId = &#63;.

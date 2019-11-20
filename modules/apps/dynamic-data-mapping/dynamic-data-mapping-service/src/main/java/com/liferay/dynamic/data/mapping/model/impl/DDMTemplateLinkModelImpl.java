@@ -64,9 +64,10 @@ public class DDMTemplateLinkModelImpl
 	public static final String TABLE_NAME = "DDMTemplateLink";
 
 	public static final Object[][] TABLE_COLUMNS = {
-		{"mvccVersion", Types.BIGINT}, {"templateLinkId", Types.BIGINT},
-		{"companyId", Types.BIGINT}, {"classNameId", Types.BIGINT},
-		{"classPK", Types.BIGINT}, {"templateId", Types.BIGINT}
+		{"mvccVersion", Types.BIGINT}, {"ctCollectionId", Types.BIGINT},
+		{"templateLinkId", Types.BIGINT}, {"companyId", Types.BIGINT},
+		{"classNameId", Types.BIGINT}, {"classPK", Types.BIGINT},
+		{"templateId", Types.BIGINT}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -74,6 +75,7 @@ public class DDMTemplateLinkModelImpl
 
 	static {
 		TABLE_COLUMNS_MAP.put("mvccVersion", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("ctCollectionId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("templateLinkId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("classNameId", Types.BIGINT);
@@ -82,7 +84,7 @@ public class DDMTemplateLinkModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table DDMTemplateLink (mvccVersion LONG default 0 not null,templateLinkId LONG not null primary key,companyId LONG,classNameId LONG,classPK LONG,templateId LONG)";
+		"create table DDMTemplateLink (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,templateLinkId LONG not null,companyId LONG,classNameId LONG,classPK LONG,templateId LONG,primary key (templateLinkId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP = "drop table DDMTemplateLink";
 
@@ -102,9 +104,11 @@ public class DDMTemplateLinkModelImpl
 
 	public static final long CLASSPK_COLUMN_BITMASK = 2L;
 
-	public static final long TEMPLATEID_COLUMN_BITMASK = 4L;
+	public static final long CTCOLLECTIONID_COLUMN_BITMASK = 4L;
 
-	public static final long TEMPLATELINKID_COLUMN_BITMASK = 8L;
+	public static final long TEMPLATEID_COLUMN_BITMASK = 8L;
+
+	public static final long TEMPLATELINKID_COLUMN_BITMASK = 16L;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -246,6 +250,12 @@ public class DDMTemplateLinkModelImpl
 			"mvccVersion",
 			(BiConsumer<DDMTemplateLink, Long>)DDMTemplateLink::setMvccVersion);
 		attributeGetterFunctions.put(
+			"ctCollectionId", DDMTemplateLink::getCtCollectionId);
+		attributeSetterBiConsumers.put(
+			"ctCollectionId",
+			(BiConsumer<DDMTemplateLink, Long>)
+				DDMTemplateLink::setCtCollectionId);
+		attributeGetterFunctions.put(
 			"templateLinkId", DDMTemplateLink::getTemplateLinkId);
 		attributeSetterBiConsumers.put(
 			"templateLinkId",
@@ -285,6 +295,28 @@ public class DDMTemplateLinkModelImpl
 	@Override
 	public void setMvccVersion(long mvccVersion) {
 		_mvccVersion = mvccVersion;
+	}
+
+	@Override
+	public long getCtCollectionId() {
+		return _ctCollectionId;
+	}
+
+	@Override
+	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= CTCOLLECTIONID_COLUMN_BITMASK;
+
+		if (!_setOriginalCtCollectionId) {
+			_setOriginalCtCollectionId = true;
+
+			_originalCtCollectionId = _ctCollectionId;
+		}
+
+		_ctCollectionId = ctCollectionId;
+	}
+
+	public long getOriginalCtCollectionId() {
+		return _originalCtCollectionId;
 	}
 
 	@Override
@@ -430,6 +462,7 @@ public class DDMTemplateLinkModelImpl
 		DDMTemplateLinkImpl ddmTemplateLinkImpl = new DDMTemplateLinkImpl();
 
 		ddmTemplateLinkImpl.setMvccVersion(getMvccVersion());
+		ddmTemplateLinkImpl.setCtCollectionId(getCtCollectionId());
 		ddmTemplateLinkImpl.setTemplateLinkId(getTemplateLinkId());
 		ddmTemplateLinkImpl.setCompanyId(getCompanyId());
 		ddmTemplateLinkImpl.setClassNameId(getClassNameId());
@@ -497,6 +530,11 @@ public class DDMTemplateLinkModelImpl
 	public void resetOriginalValues() {
 		DDMTemplateLinkModelImpl ddmTemplateLinkModelImpl = this;
 
+		ddmTemplateLinkModelImpl._originalCtCollectionId =
+			ddmTemplateLinkModelImpl._ctCollectionId;
+
+		ddmTemplateLinkModelImpl._setOriginalCtCollectionId = false;
+
 		ddmTemplateLinkModelImpl._originalClassNameId =
 			ddmTemplateLinkModelImpl._classNameId;
 
@@ -521,6 +559,8 @@ public class DDMTemplateLinkModelImpl
 			new DDMTemplateLinkCacheModel();
 
 		ddmTemplateLinkCacheModel.mvccVersion = getMvccVersion();
+
+		ddmTemplateLinkCacheModel.ctCollectionId = getCtCollectionId();
 
 		ddmTemplateLinkCacheModel.templateLinkId = getTemplateLinkId();
 
@@ -609,6 +649,9 @@ public class DDMTemplateLinkModelImpl
 	private static boolean _finderCacheEnabled;
 
 	private long _mvccVersion;
+	private long _ctCollectionId;
+	private long _originalCtCollectionId;
+	private boolean _setOriginalCtCollectionId;
 	private long _templateLinkId;
 	private long _companyId;
 	private long _classNameId;

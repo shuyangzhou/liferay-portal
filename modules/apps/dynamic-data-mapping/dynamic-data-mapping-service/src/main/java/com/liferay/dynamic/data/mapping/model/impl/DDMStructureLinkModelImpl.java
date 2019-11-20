@@ -64,9 +64,10 @@ public class DDMStructureLinkModelImpl
 	public static final String TABLE_NAME = "DDMStructureLink";
 
 	public static final Object[][] TABLE_COLUMNS = {
-		{"mvccVersion", Types.BIGINT}, {"structureLinkId", Types.BIGINT},
-		{"companyId", Types.BIGINT}, {"classNameId", Types.BIGINT},
-		{"classPK", Types.BIGINT}, {"structureId", Types.BIGINT}
+		{"mvccVersion", Types.BIGINT}, {"ctCollectionId", Types.BIGINT},
+		{"structureLinkId", Types.BIGINT}, {"companyId", Types.BIGINT},
+		{"classNameId", Types.BIGINT}, {"classPK", Types.BIGINT},
+		{"structureId", Types.BIGINT}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -74,6 +75,7 @@ public class DDMStructureLinkModelImpl
 
 	static {
 		TABLE_COLUMNS_MAP.put("mvccVersion", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("ctCollectionId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("structureLinkId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("classNameId", Types.BIGINT);
@@ -82,7 +84,7 @@ public class DDMStructureLinkModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table DDMStructureLink (mvccVersion LONG default 0 not null,structureLinkId LONG not null primary key,companyId LONG,classNameId LONG,classPK LONG,structureId LONG)";
+		"create table DDMStructureLink (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,structureLinkId LONG not null,companyId LONG,classNameId LONG,classPK LONG,structureId LONG,primary key (structureLinkId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP = "drop table DDMStructureLink";
 
@@ -102,9 +104,11 @@ public class DDMStructureLinkModelImpl
 
 	public static final long CLASSPK_COLUMN_BITMASK = 2L;
 
-	public static final long STRUCTUREID_COLUMN_BITMASK = 4L;
+	public static final long CTCOLLECTIONID_COLUMN_BITMASK = 4L;
 
-	public static final long STRUCTURELINKID_COLUMN_BITMASK = 8L;
+	public static final long STRUCTUREID_COLUMN_BITMASK = 8L;
+
+	public static final long STRUCTURELINKID_COLUMN_BITMASK = 16L;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -248,6 +252,12 @@ public class DDMStructureLinkModelImpl
 			(BiConsumer<DDMStructureLink, Long>)
 				DDMStructureLink::setMvccVersion);
 		attributeGetterFunctions.put(
+			"ctCollectionId", DDMStructureLink::getCtCollectionId);
+		attributeSetterBiConsumers.put(
+			"ctCollectionId",
+			(BiConsumer<DDMStructureLink, Long>)
+				DDMStructureLink::setCtCollectionId);
+		attributeGetterFunctions.put(
 			"structureLinkId", DDMStructureLink::getStructureLinkId);
 		attributeSetterBiConsumers.put(
 			"structureLinkId",
@@ -289,6 +299,28 @@ public class DDMStructureLinkModelImpl
 	@Override
 	public void setMvccVersion(long mvccVersion) {
 		_mvccVersion = mvccVersion;
+	}
+
+	@Override
+	public long getCtCollectionId() {
+		return _ctCollectionId;
+	}
+
+	@Override
+	public void setCtCollectionId(long ctCollectionId) {
+		_columnBitmask |= CTCOLLECTIONID_COLUMN_BITMASK;
+
+		if (!_setOriginalCtCollectionId) {
+			_setOriginalCtCollectionId = true;
+
+			_originalCtCollectionId = _ctCollectionId;
+		}
+
+		_ctCollectionId = ctCollectionId;
+	}
+
+	public long getOriginalCtCollectionId() {
+		return _originalCtCollectionId;
 	}
 
 	@Override
@@ -434,6 +466,7 @@ public class DDMStructureLinkModelImpl
 		DDMStructureLinkImpl ddmStructureLinkImpl = new DDMStructureLinkImpl();
 
 		ddmStructureLinkImpl.setMvccVersion(getMvccVersion());
+		ddmStructureLinkImpl.setCtCollectionId(getCtCollectionId());
 		ddmStructureLinkImpl.setStructureLinkId(getStructureLinkId());
 		ddmStructureLinkImpl.setCompanyId(getCompanyId());
 		ddmStructureLinkImpl.setClassNameId(getClassNameId());
@@ -501,6 +534,11 @@ public class DDMStructureLinkModelImpl
 	public void resetOriginalValues() {
 		DDMStructureLinkModelImpl ddmStructureLinkModelImpl = this;
 
+		ddmStructureLinkModelImpl._originalCtCollectionId =
+			ddmStructureLinkModelImpl._ctCollectionId;
+
+		ddmStructureLinkModelImpl._setOriginalCtCollectionId = false;
+
 		ddmStructureLinkModelImpl._originalClassNameId =
 			ddmStructureLinkModelImpl._classNameId;
 
@@ -525,6 +563,8 @@ public class DDMStructureLinkModelImpl
 			new DDMStructureLinkCacheModel();
 
 		ddmStructureLinkCacheModel.mvccVersion = getMvccVersion();
+
+		ddmStructureLinkCacheModel.ctCollectionId = getCtCollectionId();
 
 		ddmStructureLinkCacheModel.structureLinkId = getStructureLinkId();
 
@@ -613,6 +653,9 @@ public class DDMStructureLinkModelImpl
 	private static boolean _finderCacheEnabled;
 
 	private long _mvccVersion;
+	private long _ctCollectionId;
+	private long _originalCtCollectionId;
+	private boolean _setOriginalCtCollectionId;
 	private long _structureLinkId;
 	private long _companyId;
 	private long _classNameId;
