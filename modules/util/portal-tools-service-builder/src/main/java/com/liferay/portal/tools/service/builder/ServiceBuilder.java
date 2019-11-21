@@ -17,6 +17,7 @@ package com.liferay.portal.tools.service.builder;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.petra.xml.Dom4jUtil;
+import com.liferay.portal.kernel.change.tracking.CTMode;
 import com.liferay.portal.kernel.dao.db.IndexMetadata;
 import com.liferay.portal.kernel.dao.db.IndexMetadataFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -1699,8 +1700,7 @@ public class ServiceBuilder {
 			methodName.equals("deactivate") || methodName.equals("destroy") ||
 			methodName.equals("equals") ||
 			methodName.equals("getAopInterfaces") ||
-			methodName.equals("getCTIgnoredAttributeNames") ||
-			methodName.equals("getCTMergeableAttributeNames") ||
+			methodName.equals("getCTAttributeNames") ||
 			methodName.equals("getCTPersistence") ||
 			methodName.equals("getClass") ||
 			methodName.equals("getModelClass") ||
@@ -5869,17 +5869,20 @@ public class ServiceBuilder {
 			boolean colJsonEnabled = GetterUtil.getBoolean(
 				columnElement.attributeValue("json-enabled"), jsonEnabled);
 
-			String changeTrackingMode = "strict";
+			String changeTrackingMode = "STRICT";
 
 			if (columnName.equals("modifiedDate") &&
 				columnType.equals("Date")) {
 
-				changeTrackingMode = "ignore";
+				changeTrackingMode = "IGNORE";
 			}
 
-			changeTrackingMode = GetterUtil.getString(
-				columnElement.attributeValue("change-tracking-mode"),
-				changeTrackingMode);
+			changeTrackingMode = StringUtil.toUpperCase(
+				GetterUtil.getString(
+					columnElement.attributeValue("change-tracking-mode"),
+					changeTrackingMode));
+
+			CTMode ctMode = CTMode.valueOf(changeTrackingMode);
 
 			boolean containerModel = GetterUtil.getBoolean(
 				columnElement.attributeValue("container-model"));
@@ -5903,9 +5906,9 @@ public class ServiceBuilder {
 			EntityColumn entityColumn = new EntityColumn(
 				columnName, columnDBName, columnType, primary, accessor,
 				filterPrimary, columnEntityName, mappingTableName, idType,
-				idParam, convertNull, lazy, localized, colJsonEnabled,
-				changeTrackingMode, containerModel, parentContainerModel,
-				uadAnonymizeFieldName, uadNonanonymizable);
+				idParam, convertNull, lazy, localized, colJsonEnabled, ctMode,
+				containerModel, parentContainerModel, uadAnonymizeFieldName,
+				uadNonanonymizable);
 
 			if (primary) {
 				if (!columnType.equals("int") && !columnType.equals("long") &&
@@ -5920,11 +5923,7 @@ public class ServiceBuilder {
 				pkEntityColumns.add(entityColumn);
 			}
 
-			if (!changeTrackingMode.equals("strict") &&
-				(primary ||
-				 (!changeTrackingMode.equals("ignore") &&
-				  !changeTrackingMode.equals("merge")))) {
-
+			if (primary && (ctMode != CTMode.STRICT)) {
 				throw new ServiceBuilderException(
 					StringBundler.concat(
 						"Illegal change-tracking-mode ", changeTrackingMode,
@@ -6389,8 +6388,8 @@ public class ServiceBuilder {
 		if (versioned) {
 			EntityColumn headEntityColumn = new EntityColumn(
 				"head", "head", "boolean", false, false, false, null, null,
-				null, null, true, false, false, false, "strict", false, false,
-				null, false);
+				null, null, true, false, false, false, CTMode.STRICT, false,
+				false, null, false);
 
 			headEntityColumn.setComparator("=");
 			headEntityColumn.setFinderPath(true);

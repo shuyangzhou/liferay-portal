@@ -52,6 +52,7 @@ import ${apiPackagePath}.service.persistence.${entity.name}Persistence;
 </#if>
 
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.change.tracking.CTMode;
 import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -115,6 +116,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -1829,13 +1831,8 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 	<#if entity.isChangeTrackingEnabled()>
 		@Override
-		public Set<String> getCTIgnoredAttributeNames() {
-			return _ctIgnoredAttributeNames;
-		}
-
-		@Override
-		public Set<String> getCTMergeableAttributeNames() {
-			return _ctMergeableAttributeNames;
+		public Set<String> getCTAttributeNames(CTMode ctMode) {
+			return _ctModeAttributeNames.get(ctMode);
 		}
 
 		@Override
@@ -1861,22 +1858,29 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			return update(${entity.varName});
 		}
 
-		private static final Set<String> _ctIgnoredAttributeNames = new HashSet<String>();
-		private static final Set<String> _ctMergeableAttributeNames = new HashSet<String>();
+		private static final Map<CTMode, Set<String>> _ctModeAttributeNames = new EnumMap<CTMode, Set<String>>(CTMode.class);
 		private static final List<String[]> _uniqueIndexColumnNames = new ArrayList<String[]>();
 
 		static {
+			Set<String> ignoreCTModeAttributeNames = new HashSet<String>();
+
 			<#list entity.entityColumns as entityColumn>
 				<#if entityColumn.isChangeTrackingIgnore()>
-					_ctIgnoredAttributeNames.add("${entityColumn.name}");
+					ignoreCTModeAttributeNames.add("${entityColumn.DBName}");
 				</#if>
 			</#list>
 
+			_ctModeAttributeNames.put(CTMode.IGNORE, ignoreCTModeAttributeNames);
+
+			Set<String> mergeCTModeAttributeNames = new HashSet<String>();
+
 			<#list entity.entityColumns as entityColumn>
 				<#if entityColumn.isChangeTrackingMerge()>
-					_ctMergeableAttributeNames.add("${entityColumn.name}");
+					mergeCTModeAttributeNames.add("${entityColumn.DBName}");
 				</#if>
 			</#list>
+
+			_ctModeAttributeNames.put(CTMode.MERGE, mergeCTModeAttributeNames);
 
 			<#list entity.entityFinders as entityFinder>
 				<#if entityFinder.isUnique()>

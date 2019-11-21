@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.service.persistence.change.tracking;
 
+import com.liferay.portal.kernel.change.tracking.CTMode;
 import com.liferay.portal.kernel.model.change.tracking.CTModel;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
@@ -29,11 +30,7 @@ public interface CTPersistence<T extends CTModel<T>>
 
 	public List<T> findByCTCollectionId(long ctCollectionId);
 
-	public default Set<String> getCTIgnoredAttributeNames() {
-		return Collections.emptySet();
-	}
-
-	public default Set<String> getCTMergeableAttributeNames() {
+	public default Set<String> getCTAttributeNames(CTMode ctMode) {
 		return Collections.emptySet();
 	}
 
