@@ -15,6 +15,7 @@
 package com.liferay.portal.service.persistence.impl;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.change.tracking.CTMode;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -52,6 +53,7 @@ import java.lang.reflect.InvocationHandler;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -17507,13 +17509,8 @@ public class LayoutPersistenceImpl
 	}
 
 	@Override
-	public Set<String> getCTIgnoredAttributeNames() {
-		return _ctIgnoredAttributeNames;
-	}
-
-	@Override
-	public Set<String> getCTMergeableAttributeNames() {
-		return _ctMergeableAttributeNames;
+	public Set<String> getCTAttributeNames(CTMode ctMode) {
+		return _ctModeAttributeNames.get(ctMode);
 	}
 
 	@Override
@@ -17539,19 +17536,25 @@ public class LayoutPersistenceImpl
 		return update(layout);
 	}
 
-	private static final Set<String> _ctIgnoredAttributeNames =
-		new HashSet<String>();
-	private static final Set<String> _ctMergeableAttributeNames =
-		new HashSet<String>();
+	private static final Map<CTMode, Set<String>> _ctModeAttributeNames =
+		new EnumMap<CTMode, Set<String>>(CTMode.class);
 	private static final List<String[]> _uniqueIndexColumnNames =
 		new ArrayList<String[]>();
 
 	static {
-		_ctIgnoredAttributeNames.add("modifiedDate");
+		Set<String> ignoreCTModeAttributeNames = new HashSet<String>();
 
-		_ctMergeableAttributeNames.add("name");
-		_ctMergeableAttributeNames.add("title");
-		_ctMergeableAttributeNames.add("description");
+		ignoreCTModeAttributeNames.add("modifiedDate");
+
+		_ctModeAttributeNames.put(CTMode.IGNORE, ignoreCTModeAttributeNames);
+
+		Set<String> mergeCTModeAttributeNames = new HashSet<String>();
+
+		mergeCTModeAttributeNames.add("name");
+		mergeCTModeAttributeNames.add("title");
+		mergeCTModeAttributeNames.add("description");
+
+		_ctModeAttributeNames.put(CTMode.MERGE, mergeCTModeAttributeNames);
 
 		_uniqueIndexColumnNames.add(
 			new String[] {"uuid_", "groupId", "privateLayout"});

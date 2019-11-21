@@ -21,6 +21,7 @@ import com.liferay.journal.model.impl.JournalArticleLocalizationModelImpl;
 import com.liferay.journal.service.persistence.JournalArticleLocalizationPersistence;
 import com.liferay.journal.service.persistence.impl.constants.JournalPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.change.tracking.CTMode;
 import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -45,6 +46,7 @@ import java.lang.reflect.InvocationHandler;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -2320,13 +2322,8 @@ public class JournalArticleLocalizationPersistenceImpl
 	}
 
 	@Override
-	public Set<String> getCTIgnoredAttributeNames() {
-		return _ctIgnoredAttributeNames;
-	}
-
-	@Override
-	public Set<String> getCTMergeableAttributeNames() {
-		return _ctMergeableAttributeNames;
+	public Set<String> getCTAttributeNames(CTMode ctMode) {
+		return _ctModeAttributeNames.get(ctMode);
 	}
 
 	@Override
@@ -2356,14 +2353,20 @@ public class JournalArticleLocalizationPersistenceImpl
 		return update(journalArticleLocalization);
 	}
 
-	private static final Set<String> _ctIgnoredAttributeNames =
-		new HashSet<String>();
-	private static final Set<String> _ctMergeableAttributeNames =
-		new HashSet<String>();
+	private static final Map<CTMode, Set<String>> _ctModeAttributeNames =
+		new EnumMap<CTMode, Set<String>>(CTMode.class);
 	private static final List<String[]> _uniqueIndexColumnNames =
 		new ArrayList<String[]>();
 
 	static {
+		Set<String> ignoreCTModeAttributeNames = new HashSet<String>();
+
+		_ctModeAttributeNames.put(CTMode.IGNORE, ignoreCTModeAttributeNames);
+
+		Set<String> mergeCTModeAttributeNames = new HashSet<String>();
+
+		_ctModeAttributeNames.put(CTMode.MERGE, mergeCTModeAttributeNames);
+
 		_uniqueIndexColumnNames.add(new String[] {"articlePK", "languageId"});
 	}
 
