@@ -6198,7 +6198,6 @@ go</echo>
 						/>
 
 						<gradle-execute dir="@{osgi.module.path}" forcedcacheenabled="false" task="deploy">
-							<arg value="-Dbuild.profile=${build.profile}" />
 							<arg value="clean" />
 						</gradle-execute>
 
@@ -10991,7 +10990,6 @@ if (ppstate.equals("normal")) {
 				<dirname file="@{osgi.module.path}" property="module.base.dir" />
 
 				<gradle-execute dir="@{osgi.module.path}" forcedcacheenabled="false" task="deploy">
-					<arg value="-Dbuild.profile=${build.profile}" />
 					<arg value="clean" />
 				</gradle-execute>
 			</sequential>
