@@ -24,7 +24,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.template.soy.util.SoyHTMLSanitizer;
+import com.liferay.portal.template.soy.data.SoyDataFactory;
+import com.liferay.portal.template.soy.util.SoyRawData;
 import com.liferay.taglib.servlet.PageContextFactoryUtil;
 import com.liferay.taglib.servlet.PipingServletResponse;
 
@@ -55,17 +56,23 @@ public class CaptchaDDMFormFieldTemplateContextContributor
 		DDMFormField ddmFormField,
 		DDMFormFieldRenderingContext ddmFormFieldRenderingContext) {
 
-		String html = StringPool.BLANK;
-
-		try {
-			html = renderCaptchaTag(ddmFormField, ddmFormFieldRenderingContext);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-
 		return HashMapBuilder.<String, Object>put(
-			"html", _soyHTMLSanitizer.sanitize(html)
+			"html",
+			() -> {
+				String html = StringPool.BLANK;
+
+				try {
+					html = renderCaptchaTag(
+						ddmFormField, ddmFormFieldRenderingContext);
+				}
+				catch (Exception e) {
+					_log.error(e, e);
+				}
+
+				SoyRawData soyRawData = _soyDataFactory.createSoyRawData(html);
+
+				return soyRawData.getValue();
+			}
 		).build();
 	}
 
@@ -101,6 +108,6 @@ public class CaptchaDDMFormFieldTemplateContextContributor
 		CaptchaDDMFormFieldTemplateContextContributor.class);
 
 	@Reference
-	private SoyHTMLSanitizer _soyHTMLSanitizer;
+	private SoyDataFactory _soyDataFactory;
 
 }
