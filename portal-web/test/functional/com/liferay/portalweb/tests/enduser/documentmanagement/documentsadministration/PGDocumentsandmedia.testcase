@@ -50,6 +50,7 @@ definition {
 
 	@priority = "5"
 	test AddDocuments {
+		property environment.acceptance = "true";
 		property testray.component.names = "Training";
 
 		Navigator.gotoPage(pageName = "Documents and Media Page");
