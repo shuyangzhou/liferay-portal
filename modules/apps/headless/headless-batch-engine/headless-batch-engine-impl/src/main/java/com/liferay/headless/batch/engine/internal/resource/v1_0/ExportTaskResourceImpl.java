@@ -24,6 +24,9 @@ import com.liferay.headless.batch.engine.internal.resource.v1_0.util.ParametersU
 import com.liferay.headless.batch.engine.resource.v1_0.ExportTaskResource;
 import com.liferay.petra.executor.PortalExecutorManager;
 import com.liferay.petra.io.StreamUtil;
+import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.transaction.TransactionConfig;
+import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -110,20 +113,38 @@ public class ExportTaskResourceImpl extends BaseExportTaskResourceImpl {
 			_portalExecutorManager.getPortalExecutor(
 				ExportTaskResourceImpl.class.getName());
 
-		BatchEngineExportTask batchEngineExportTask =
-			_batchEngineExportTaskLocalService.addBatchEngineExportTask(
-				contextCompany.getCompanyId(), contextUser.getUserId(),
-				callbackURL, className, StringUtil.upperCase(contentType),
-				BatchEngineTaskExecuteStatus.INITIAL.name(),
-				_toList(fieldNames),
-				ParametersUtil.toParameters(contextUriInfo, _ignoredParameters),
-				version);
+		BatchEngineExportTask batchEngineExportTask = _addBatchEngineExportTask(
+			callbackURL, className, contentType, fieldNames, version);
 
 		executorService.submit(
 			() -> _batchEngineExportTaskExecutor.execute(
 				batchEngineExportTask));
 
 		return _toExportTask(batchEngineExportTask);
+	}
+
+	private BatchEngineExportTask _addBatchEngineExportTask(
+			String callbackURL, String className, String contentType,
+			String fieldNames, String version)
+		throws Exception {
+
+		try {
+			return TransactionInvokerUtil.invoke(
+				_transactionConfig,
+				() ->
+					_batchEngineExportTaskLocalService.addBatchEngineExportTask(
+						contextCompany.getCompanyId(), contextUser.getUserId(),
+						callbackURL, className,
+						StringUtil.upperCase(contentType),
+						BatchEngineTaskExecuteStatus.INITIAL.name(),
+						_toList(fieldNames),
+						ParametersUtil.toParameters(
+							contextUriInfo, _ignoredParameters),
+						version));
+		}
+		catch (Throwable throwable) {
+			throw new Exception(throwable);
+		}
 	}
 
 	private ExportTask _toExportTask(
@@ -154,6 +175,9 @@ public class ExportTaskResourceImpl extends BaseExportTaskResourceImpl {
 
 	private static final Set<String> _ignoredParameters = new HashSet<>(
 		Arrays.asList("callbackURL", "fieldNames"));
+	private static final TransactionConfig _transactionConfig =
+		TransactionConfig.Factory.create(
+			Propagation.REQUIRES_NEW, new Class<?>[] {Exception.class});
 
 	@Reference
 	private BatchEngineExportTaskExecutor _batchEngineExportTaskExecutor;

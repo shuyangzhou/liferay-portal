@@ -27,6 +27,9 @@ import com.liferay.headless.batch.engine.resource.v1_0.ImportTaskResource;
 import com.liferay.petra.executor.PortalExecutorManager;
 import com.liferay.petra.io.StreamUtil;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.transaction.TransactionConfig;
+import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -131,6 +134,34 @@ public class ImportTaskResourceImpl extends BaseImportTaskResourceImpl {
 		}
 	}
 
+	private BatchEngineImportTask _addBatchEngineImportTask(
+			BatchEngineTaskOperation batchEngineTaskOperation,
+			String callbackURL, String className, byte[] content,
+			String extension, String fieldNameMappingString, String version)
+		throws Exception {
+
+		try {
+			return TransactionInvokerUtil.invoke(
+				_transactionConfig,
+				() ->
+					_batchEngineImportTaskLocalService.addBatchEngineImportTask(
+						contextCompany.getCompanyId(), contextUser.getUserId(),
+						_itemClassBatchSizeMap.getOrDefault(
+							className, _batchSize),
+						callbackURL, className, content,
+						StringUtil.upperCase(extension),
+						BatchEngineTaskExecuteStatus.INITIAL.name(),
+						_toMap(fieldNameMappingString),
+						batchEngineTaskOperation.name(),
+						ParametersUtil.toParameters(
+							contextUriInfo, _ignoredParameters),
+						version));
+		}
+		catch (Throwable throwable) {
+			throw new Exception(throwable);
+		}
+	}
+
 	private Map.Entry<byte[], String> _getContentAndExtensionFromCompressedFile(
 			InputStream inputStream)
 		throws IOException {
@@ -177,16 +208,9 @@ public class ImportTaskResourceImpl extends BaseImportTaskResourceImpl {
 			extension = _file.getExtension(binaryFile.getFileName());
 		}
 
-		BatchEngineImportTask batchEngineImportTask =
-			_batchEngineImportTaskLocalService.addBatchEngineImportTask(
-				contextCompany.getCompanyId(), contextUser.getUserId(),
-				_itemClassBatchSizeMap.getOrDefault(className, _batchSize),
-				callbackURL, className, content,
-				StringUtil.upperCase(extension),
-				BatchEngineTaskExecuteStatus.INITIAL.name(),
-				_toMap(fieldNameMappingString), batchEngineTaskOperation.name(),
-				ParametersUtil.toParameters(contextUriInfo, _ignoredParameters),
-				version);
+		BatchEngineImportTask batchEngineImportTask = _addBatchEngineImportTask(
+			batchEngineTaskOperation, callbackURL, className, content,
+			extension, fieldNameMappingString, version);
 
 		executorService.submit(
 			() -> _batchEngineImportTaskExecutor.execute(
@@ -236,6 +260,9 @@ public class ImportTaskResourceImpl extends BaseImportTaskResourceImpl {
 
 	private static final Set<String> _ignoredParameters = new HashSet<>(
 		Arrays.asList("callbackURL", "fieldNameMapping"));
+	private static final TransactionConfig _transactionConfig =
+		TransactionConfig.Factory.create(
+			Propagation.REQUIRES_NEW, new Class<?>[] {Exception.class});
 
 	@Reference
 	private BatchEngineImportTaskExecutor _batchEngineImportTaskExecutor;
