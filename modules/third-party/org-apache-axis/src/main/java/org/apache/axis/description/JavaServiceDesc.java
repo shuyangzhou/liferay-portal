@@ -811,7 +811,14 @@ public class JavaServiceDesc implements ServiceDesc {
             }
             return (Method[])methodsList.toArray(new Method[]{}); 
         } else {
-            return implClass.getDeclaredMethods();
+            Method[] methods = implClass.getDeclaredMethods();
+            Arrays.sort(methods, new Comparator<Method>() {
+                @Override
+                public int compare(Method m1, Method m2) {
+                    return m2.toString().compareTo(m1.toString());
+                }
+            });
+        	return methods;
         }
     }
 
