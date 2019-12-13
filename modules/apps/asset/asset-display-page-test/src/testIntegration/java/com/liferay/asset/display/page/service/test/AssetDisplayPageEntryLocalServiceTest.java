@@ -110,10 +110,10 @@ public class AssetDisplayPageEntryLocalServiceTest {
 			_layoutPageTemplateEntryLocalService.getLayoutPageTemplateEntry(
 				_layoutPageTemplateEntry.getLayoutPageTemplateEntryId());
 
-		Assert.assertFalse(
-			DateUtil.equals(
-				originalModifiedDate,
-				layoutPageTemplateEntry.getModifiedDate()));
+		Date updatedModifiedDate = layoutPageTemplateEntry.getModifiedDate();
+
+		Assert.assertNotEquals(
+			originalModifiedDate.getTime(), updatedModifiedDate.getTime());
 	}
 
 	@Test
@@ -317,10 +317,10 @@ public class AssetDisplayPageEntryLocalServiceTest {
 			_layoutPageTemplateEntryLocalService.getLayoutPageTemplateEntry(
 				layoutPageTemplateEntry.getLayoutPageTemplateEntryId());
 
-		Assert.assertFalse(
-			DateUtil.equals(
-				originalModifiedDate,
-				layoutPageTemplateEntry.getModifiedDate()));
+		Date updatedModifiedDate = layoutPageTemplateEntry.getModifiedDate();
+
+		Assert.assertNotEquals(
+			originalModifiedDate.getTime(), updatedModifiedDate.getTime());
 	}
 
 	@Inject
