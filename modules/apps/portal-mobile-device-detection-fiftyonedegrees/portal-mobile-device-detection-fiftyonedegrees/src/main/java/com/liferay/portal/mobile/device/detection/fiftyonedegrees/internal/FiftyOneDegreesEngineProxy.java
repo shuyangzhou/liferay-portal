@@ -80,6 +80,8 @@ public class FiftyOneDegreesEngineProxy {
 		_fiftyOneDegreesConfiguration = ConfigurableUtil.createConfigurable(
 			FiftyOneDegreesConfiguration.class, properties);
 
+		System.out.println("#################" + _dataFileProvider.getClass());
+
 		try (InputStream inputStream =
 				_dataFileProvider.getDataFileInputStream()) {
 
