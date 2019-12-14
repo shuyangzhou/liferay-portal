@@ -101,7 +101,8 @@ public class LocalProcessExecutor implements ProcessExecutor {
 			AsyncBroker<Long, Serializable> asyncBroker = new AsyncBroker<>();
 
 			SubprocessReactor<T> subprocessReactor = new SubprocessReactor<>(
-				process, processConfig.getProcessLogConsumer(),
+				process, processConfig.getPingbackMessageConsumer(),
+				processConfig.getProcessLogConsumer(),
 				processConfig.getReactClassLoader(), asyncBroker);
 
 			NoticeableFuture<T> noticeableFuture = _submit(
@@ -252,6 +253,12 @@ public class LocalProcessExecutor implements ProcessExecutor {
 					try {
 						Serializable returnValue = processCallable.call();
 
+						if (processCallable instanceof
+								PingbackProcessCallable) {
+
+							_pingbackMessageConsumer.accept(returnValue);
+						}
+
 						_processLogConsumer.accept(
 							new LocalProcessLog(
 								ProcessLog.Level.DEBUG,
@@ -326,17 +333,20 @@ public class LocalProcessExecutor implements ProcessExecutor {
 		}
 
 		private SubprocessReactor(
-			Process process, Consumer<ProcessLog> processLogConsumer,
+			Process process, Consumer<Serializable> pingbackMessageConsumer,
+			Consumer<ProcessLog> processLogConsumer,
 			ClassLoader reactClassLoader,
 			AsyncBroker<Long, Serializable> asyncBroker) {
 
 			_process = process;
+			_pingbackMessageConsumer = pingbackMessageConsumer;
 			_processLogConsumer = processLogConsumer;
 			_reactClassLoader = reactClassLoader;
 			_asyncBroker = asyncBroker;
 		}
 
 		private final AsyncBroker<Long, Serializable> _asyncBroker;
+		private final Consumer<Serializable> _pingbackMessageConsumer;
 		private final Process _process;
 		private final Consumer<ProcessLog> _processLogConsumer;
 		private final ClassLoader _reactClassLoader;

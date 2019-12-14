@@ -50,6 +50,10 @@ public class ProcessConfig implements Serializable {
 		return _javaExecutable;
 	}
 
+	public Consumer<Serializable> getPingbackMessageConsumer() {
+		return _pingbackMessageConsumer;
+	}
+
 	public Consumer<ProcessLog> getProcessLogConsumer() {
 		return _processLogConsumer;
 	}
@@ -96,6 +100,14 @@ public class ProcessConfig implements Serializable {
 			return this;
 		}
 
+		public Builder setPingbackMessageConsumer(
+			Consumer<Serializable> pingbackMessageConsumer) {
+
+			_pingbackMessageConsumer = pingbackMessageConsumer;
+
+			return this;
+		}
+
 		public Builder setProcessLogConsumer(
 			Consumer<ProcessLog> processLogConsumer) {
 
@@ -121,6 +133,9 @@ public class ProcessConfig implements Serializable {
 			"java.class.path");
 		private Map<String, String> _environment;
 		private String _javaExecutable = "java";
+		private Consumer<Serializable> _pingbackMessageConsumer =
+			serializable -> {
+			};
 		private Consumer<ProcessLog> _processLogConsumer = processLog -> {
 		};
 		private ClassLoader _reactClassLoader =
@@ -136,6 +151,7 @@ public class ProcessConfig implements Serializable {
 		_environment = builder._environment;
 		_javaExecutable = builder._javaExecutable;
 		_processLogConsumer = builder._processLogConsumer;
+		_pingbackMessageConsumer = builder._pingbackMessageConsumer;
 		_reactClassLoader = builder._reactClassLoader;
 
 		_runtimeClassPathHolders = _toPathHolders(builder._runtimeClassPath);
@@ -175,6 +191,7 @@ public class ProcessConfig implements Serializable {
 	private final PathHolder[] _bootstrapClassPathHolders;
 	private final Map<String, String> _environment;
 	private final String _javaExecutable;
+	private final transient Consumer<Serializable> _pingbackMessageConsumer;
 	private final transient Consumer<ProcessLog> _processLogConsumer;
 	private final transient ClassLoader _reactClassLoader;
 	private final PathHolder[] _runtimeClassPathHolders;
