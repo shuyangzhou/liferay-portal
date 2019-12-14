@@ -48,6 +48,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 /**
  * @author Shuyang Zhou
@@ -168,8 +169,15 @@ public class LocalProcessLauncher {
 		public static boolean attach(
 			String message, long interval, ShutdownHook shutdownHook) {
 
+			return attach(() -> message, interval, shutdownHook);
+		}
+
+		public static boolean attach(
+			Supplier<String> messageSupplier, long interval,
+			ShutdownHook shutdownHook) {
+
 			HeartbeatThread heartbeatThread = new HeartbeatThread(
-				message, interval, shutdownHook);
+				messageSupplier, interval, shutdownHook);
 
 			boolean value = _heartbeatThreadAtomicReference.compareAndSet(
 				null, heartbeatThread);
@@ -273,7 +281,7 @@ public class LocalProcessLauncher {
 					sleep(_interval);
 
 					ProcessContext.writeProcessCallable(
-						_pringBackProcessCallable);
+						new PingbackProcessCallable(_messageSupplier.get()));
 				}
 				catch (InterruptedException ie) {
 					if (_detach) {
@@ -308,16 +316,20 @@ public class LocalProcessLauncher {
 		}
 
 		private HeartbeatThread(
-			String message, long interval, ShutdownHook shutdownHook) {
+			Supplier<String> messageSupplier, long interval,
+			ShutdownHook shutdownHook) {
+
+			if (messageSupplier == null) {
+				throw new IllegalArgumentException("Message supplier is null");
+			}
 
 			if (shutdownHook == null) {
 				throw new IllegalArgumentException("Shutdown hook is null");
 			}
 
+			_messageSupplier = messageSupplier;
 			_interval = interval;
 			_shutdownHook = shutdownHook;
-
-			_pringBackProcessCallable = new PingbackProcessCallable(message);
 
 			setDaemon(true);
 			setName(HeartbeatThread.class.getSimpleName());
@@ -331,7 +343,7 @@ public class LocalProcessLauncher {
 
 		private volatile boolean _detach;
 		private final long _interval;
-		private final ProcessCallable<String> _pringBackProcessCallable;
+		private final Supplier<String> _messageSupplier;
 		private final ShutdownHook _shutdownHook;
 
 	}
