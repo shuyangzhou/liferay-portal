@@ -173,7 +173,7 @@ public class LocalProcessLauncher {
 		}
 
 		public static boolean attach(
-			Supplier<String> messageSupplier, long interval,
+			Supplier<Serializable> messageSupplier, long interval,
 			ShutdownHook shutdownHook) {
 
 			HeartbeatThread heartbeatThread = new HeartbeatThread(
@@ -316,7 +316,7 @@ public class LocalProcessLauncher {
 		}
 
 		private HeartbeatThread(
-			Supplier<String> messageSupplier, long interval,
+			Supplier<Serializable> messageSupplier, long interval,
 			ShutdownHook shutdownHook) {
 
 			if (messageSupplier == null) {
@@ -343,7 +343,7 @@ public class LocalProcessLauncher {
 
 		private volatile boolean _detach;
 		private final long _interval;
-		private final Supplier<String> _messageSupplier;
+		private final Supplier<Serializable> _messageSupplier;
 		private final ShutdownHook _shutdownHook;
 
 	}
@@ -376,20 +376,20 @@ public class LocalProcessLauncher {
 	}
 
 	private static class PingbackProcessCallable
-		implements ProcessCallable<String> {
+		implements ProcessCallable<Serializable> {
 
 		@Override
-		public String call() {
+		public Serializable call() {
 			return _message;
 		}
 
-		private PingbackProcessCallable(String message) {
+		private PingbackProcessCallable(Serializable message) {
 			_message = message;
 		}
 
 		private static final long serialVersionUID = 1L;
 
-		private final String _message;
+		private final Serializable _message;
 
 	}
 
