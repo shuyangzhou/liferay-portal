@@ -375,24 +375,6 @@ public class LocalProcessLauncher {
 
 	}
 
-	private static class PingbackProcessCallable
-		implements ProcessCallable<Serializable> {
-
-		@Override
-		public Serializable call() {
-			return _message;
-		}
-
-		private PingbackProcessCallable(Serializable message) {
-			_message = message;
-		}
-
-		private static final long serialVersionUID = 1L;
-
-		private final Serializable _message;
-
-	}
-
 	private static class ProcessCallableDispatcher implements Runnable {
 
 		@Override
