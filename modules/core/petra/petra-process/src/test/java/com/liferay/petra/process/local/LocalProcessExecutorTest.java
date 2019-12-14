@@ -343,6 +343,65 @@ public class LocalProcessExecutorTest {
 	}
 
 	@Test
+	public void testProcessContextAttachWithNullPingbackMessageSupplier()
+		throws Exception {
+
+		ProcessChannel<String> processChannel = _localProcessExecutor.execute(
+			_createJPDAProcessConfig(_JPDA_OPTIONS1),
+			Operations.asControllable(Operations.SLEEP));
+
+		Future<Controller> future = processChannel.write(
+			Operations.GET_CONTROLLER);
+
+		Controller parentController = future.get();
+
+		Assert.assertTrue(parentController.isAlive());
+
+		Controller childController = parentController.invoke(
+			Operations.asNewJVM(_JPDA_OPTIONS2, Operations.SLEEP));
+
+		Assert.assertTrue(childController.isAlive());
+
+		// Attach with null ping back message suppiler
+
+		Assert.assertEquals(
+			"DONE",
+			childController.invoke(
+				() -> {
+					try {
+						LocalProcessLauncher.ProcessContext.attach(
+							(Supplier<Serializable>)null, 1,
+							(shutdownCode, shutdownThrowable) -> true);
+
+						return "NULL_MESSAGE_SUPPLIER_ACCEPTED";
+					}
+					catch (IllegalArgumentException iae) {
+						if (!Objects.equals(
+								iae.getMessage(), "Message supplier is null")) {
+
+							return iae.getMessage();
+						}
+					}
+
+					return "DONE";
+				}));
+
+		Assert.assertFalse(childController.invoke(Operations.IS_ATTACHED));
+
+		// Kill parent
+
+		parentController.invoke(Operations.TERMINATE);
+
+		Assert.assertFalse(parentController.isAlive());
+
+		// Kill child
+
+		childController.invoke(Operations.TERMINATE);
+
+		Assert.assertFalse(childController.isAlive());
+	}
+
+	@Test
 	public void testProcessContextAttachWithNullShutdownHook()
 		throws Exception {
 
@@ -507,7 +566,7 @@ public class LocalProcessExecutorTest {
 		ProcessChannel<Serializable> processChannel =
 			_localProcessExecutor.execute(
 				_createJPDAProcessConfig(
-					_JPDA_OPTIONS1,
+					_JPDA_OPTIONS1, null,
 					processLog -> {
 						if (processLog.getLevel() == ProcessLog.Level.ERROR) {
 							processLogs.add(processLog);
@@ -629,7 +688,7 @@ public class LocalProcessExecutorTest {
 
 		ProcessChannel<String> processChannel = _localProcessExecutor.execute(
 			_createJPDAProcessConfig(
-				_JPDA_OPTIONS1,
+				_JPDA_OPTIONS1, null,
 				processLog -> {
 					if (processLog.getLevel() == ProcessLog.Level.ERROR) {
 						processLogs.add(processLog);
@@ -814,7 +873,7 @@ public class LocalProcessExecutorTest {
 		// Warn level
 
 		ProcessChannel<String> processChannel = _localProcessExecutor.execute(
-			_createJPDAProcessConfig(_JPDA_OPTIONS1, processLogConsumer),
+			_createJPDAProcessConfig(_JPDA_OPTIONS1, null, processLogConsumer),
 			Operations.LEADING_LOG);
 
 		Future<String> future = processChannel.getProcessNoticeableFuture();
@@ -833,7 +892,7 @@ public class LocalProcessExecutorTest {
 		levelReference.set(ProcessLog.Level.DEBUG);
 
 		processChannel = _localProcessExecutor.execute(
-			_createJPDAProcessConfig(_JPDA_OPTIONS1, processLogConsumer),
+			_createJPDAProcessConfig(_JPDA_OPTIONS1, null, processLogConsumer),
 			Operations.LEADING_LOG);
 
 		future = processChannel.getProcessNoticeableFuture();
@@ -866,7 +925,7 @@ public class LocalProcessExecutorTest {
 		levelReference.set(ProcessLog.Level.ERROR);
 
 		processChannel = _localProcessExecutor.execute(
-			_createJPDAProcessConfig(_JPDA_OPTIONS1, processLogConsumer),
+			_createJPDAProcessConfig(_JPDA_OPTIONS1, null, processLogConsumer),
 			Operations.LEADING_LOG);
 
 		future = processChannel.getProcessNoticeableFuture();
@@ -885,7 +944,7 @@ public class LocalProcessExecutorTest {
 		ProcessChannel<Serializable> processChannel =
 			_localProcessExecutor.execute(
 				_createJPDAProcessConfig(
-					_JPDA_OPTIONS1,
+					_JPDA_OPTIONS1, null,
 					processLog -> {
 						if (processLog.getLevel() == ProcessLog.Level.ERROR) {
 							processLogs.add(processLog);
@@ -914,6 +973,42 @@ public class LocalProcessExecutorTest {
 	}
 
 	@Test
+	public void testSubprocessReactorPipingBackMessageConsumer()
+		throws Exception {
+
+		List<ProcessLog> processLogs = new ArrayList<>();
+
+		Serializable[] pingbackMessage = new Serializable[1];
+
+		ProcessChannel<Serializable> processChannel =
+			_localProcessExecutor.execute(
+				_createJPDAProcessConfig(
+					_JPDA_OPTIONS1,
+					serializable -> pingbackMessage[0] = serializable,
+					processLog -> {
+						if (processLog.getLevel() == ProcessLog.Level.DEBUG) {
+							processLogs.add(processLog);
+						}
+					}),
+				Operations.PIPING_BACK_PROCESS_CALLABLE);
+
+		NoticeableFuture<Serializable> noticeableFuture =
+			processChannel.getProcessNoticeableFuture();
+
+		Assert.assertEquals(noticeableFuture.get(), pingbackMessage[0]);
+
+		Assert.assertEquals(processLogs.toString(), 1, processLogs.size());
+
+		ProcessLog processLog = processLogs.get(0);
+
+		String message = processLog.getMessage();
+
+		Assert.assertTrue(
+			message,
+			message.contains("with return value " + pingbackMessage[0]));
+	}
+
+	@Test
 	public void testSubprocessReactorPipingBackNonprocessCallable()
 		throws Exception {
 
@@ -922,7 +1017,7 @@ public class LocalProcessExecutorTest {
 		ProcessChannel<Serializable> processChannel =
 			_localProcessExecutor.execute(
 				_createJPDAProcessConfig(
-					_JPDA_OPTIONS1,
+					_JPDA_OPTIONS1, null,
 					processLog -> {
 						if (processLog.getLevel() == ProcessLog.Level.INFO) {
 							processLogs.add(processLog);
@@ -952,7 +1047,7 @@ public class LocalProcessExecutorTest {
 		ProcessChannel<Serializable> processChannel =
 			_localProcessExecutor.execute(
 				_createJPDAProcessConfig(
-					_JPDA_OPTIONS1,
+					_JPDA_OPTIONS1, null,
 					processLog -> {
 						if (processLog.getLevel() == ProcessLog.Level.WARN) {
 							processLogs.add(processLog);
@@ -1031,16 +1126,21 @@ public class LocalProcessExecutorTest {
 	}
 
 	private static ProcessConfig _createJPDAProcessConfig(String jpdaOption) {
-		return _createJPDAProcessConfig(jpdaOption, null);
+		return _createJPDAProcessConfig(jpdaOption, null, null);
 	}
 
 	private static ProcessConfig _createJPDAProcessConfig(
-		String jpdaOption, Consumer<ProcessLog> processLogConsumer) {
+		String jpdaOption, Consumer<Serializable> pingbackMessageConsumer,
+		Consumer<ProcessLog> processLogConsumer) {
 
 		ProcessConfig.Builder builder = new ProcessConfig.Builder();
 
 		builder.setArguments(_createArguments(jpdaOption));
 		builder.setBootstrapClassPath(System.getProperty("java.class.path"));
+
+		if (pingbackMessageConsumer != null) {
+			builder.setPingbackMessageConsumer(pingbackMessageConsumer);
+		}
 
 		if (processLogConsumer != null) {
 			builder.setProcessLogConsumer(processLogConsumer);
@@ -1461,6 +1561,21 @@ public class LocalProcessExecutorTest {
 				}
 
 				return null;
+			};
+
+		public static final ProcessCallable<Serializable>
+			PIPING_BACK_PROCESS_CALLABLE = () -> {
+				String pingbackMessage = "PING_BACK_MESSAGE";
+
+				try {
+					LocalProcessLauncher.ProcessContext.writeProcessCallable(
+						new PingbackProcessCallable(pingbackMessage));
+				}
+				catch (IOException ioe) {
+					throw new ProcessException(ioe);
+				}
+
+				return pingbackMessage;
 			};
 
 		public static final ProcessCallable<Serializable>
