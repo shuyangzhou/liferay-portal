@@ -704,9 +704,7 @@ public class JournalExportImportTest extends BasePortletExportImportTestCase {
 		Date date = stagedModel.getCreateDate();
 		Date importedDate = importedStagedModel.getCreateDate();
 
-		if ((date != null) && (importedDate != null)) {
-			Assert.assertEquals(date.getTime(), importedDate.getTime());
-		}
+		_assertDateEquals(date, importedDate);
 
 		Assert.assertEquals(
 			stagedModel.getUuid(), importedStagedModel.getUuid());
@@ -727,36 +725,24 @@ public class JournalExportImportTest extends BasePortletExportImportTestCase {
 		Assert.assertEquals(article.getStatus(), importedArticle.getStatus());
 
 		date = article.getDisplayDate();
-
 		importedDate = importedArticle.getDisplayDate();
 
-		if ((date != null) && (importedDate != null)) {
-			Assert.assertEquals(date.getTime(), importedDate.getTime());
-		}
+		_assertDateEquals(date, importedDate);
 
 		date = article.getExpirationDate();
-
 		importedDate = importedArticle.getExpirationDate();
 
-		if ((date != null) && (importedDate != null)) {
-			Assert.assertEquals(date.getTime(), importedDate.getTime());
-		}
+		_assertDateEquals(date, importedDate);
 
 		date = article.getReviewDate();
-
 		importedDate = importedArticle.getReviewDate();
 
-		if ((date != null) && (importedDate != null)) {
-			Assert.assertEquals(date.getTime(), importedDate.getTime());
-		}
+		_assertDateEquals(date, importedDate);
 
 		date = article.getStatusDate();
-
 		importedDate = importedArticle.getStatusDate();
 
-		if ((date != null) && (importedDate != null)) {
-			Assert.assertEquals(date.getTime(), importedDate.getTime());
-		}
+		_assertDateEquals(date, importedDate);
 
 		JournalArticleResource articleResource = article.getArticleResource();
 		JournalArticleResource importedArticleArticleResource =
@@ -783,6 +769,18 @@ public class JournalExportImportTest extends BasePortletExportImportTestCase {
 	}
 
 	protected String larFilePath;
+
+	private static void _assertDateEquals(Date expectedDate, Date actualDate) {
+		if ((expectedDate == null) && (actualDate == null)) {
+			return;
+		}
+
+		Assert.assertNotNull(expectedDate);
+
+		Assert.assertNotNull(actualDate);
+
+		Assert.assertEquals(expectedDate.getTime(), actualDate.getTime());
+	}
 
 	@Inject(filter = "javax.portlet.name=" + JournalPortletKeys.JOURNAL)
 	private PortletDataHandler _journalPortletDataHandler;
