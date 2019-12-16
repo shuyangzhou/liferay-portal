@@ -429,6 +429,16 @@ public class PortalInstances {
 		getWebIds();
 
 		WebAppPool.remove(companyId, WebKeys.PORTLET_CATEGORY);
+
+		synchronized (System.out) {
+			System.out.println(
+				"##########" + Thread.currentThread() + " : " +
+					Thread.currentThread(
+					).getId() + " removed " + WebKeys.PORTLET_CATEGORY +
+						" for company : " + companyId);
+
+			new Exception().printStackTrace(System.out);
+		}
 	}
 
 	private static long _getCompanyIdByVirtualHosts(

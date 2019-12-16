@@ -1586,6 +1586,15 @@ public class CompanyPersistenceImpl
 				session.save(company);
 
 				company.setNew(false);
+
+				synchronized (System.out) {
+					System.out.println(
+						"##########" + Thread.currentThread() + " : " +
+							Thread.currentThread(
+							).getId() + " is creating company " + company);
+
+					new Exception().printStackTrace(System.out);
+				}
 			}
 			else {
 				company = (Company)session.merge(company);
