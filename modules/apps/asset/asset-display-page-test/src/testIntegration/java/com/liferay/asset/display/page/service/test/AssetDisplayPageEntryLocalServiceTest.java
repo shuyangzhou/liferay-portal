@@ -107,8 +107,7 @@ public class AssetDisplayPageEntryLocalServiceTest {
 
 		Date updatedModifiedDate = layoutPageTemplateEntry.getModifiedDate();
 
-		Assert.assertNotEquals(
-			originalModifiedDate.getTime(), updatedModifiedDate.getTime());
+		_assertDateNotEquals(originalModifiedDate, updatedModifiedDate);
 	}
 
 	@Test
@@ -310,8 +309,20 @@ public class AssetDisplayPageEntryLocalServiceTest {
 
 		Date updatedModifiedDate = layoutPageTemplateEntry.getModifiedDate();
 
-		Assert.assertNotEquals(
-			originalModifiedDate.getTime(), updatedModifiedDate.getTime());
+		_assertDateNotEquals(originalModifiedDate, updatedModifiedDate);
+	}
+
+	private static void _assertDateNotEquals(
+		Date expectedDate, Date actualDate) {
+
+		if ((expectedDate == null) && (actualDate == null)) {
+			Assert.fail("Values should be different, but both are null");
+		}
+		else if ((expectedDate == null) || (actualDate == null)) {
+			return;
+		}
+
+		Assert.assertNotEquals(expectedDate.getTime(), actualDate.getTime());
 	}
 
 	private LayoutPageTemplateEntry _getLayoutPageTemplateEntry()
