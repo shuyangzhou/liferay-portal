@@ -16,7 +16,7 @@ package com.liferay.portal.security.crypto.generator.registry.internal;
 
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
-import com.liferay.portal.security.crypto.generator.registry.HashGeneratorRegistry;
+import com.liferay.portal.security.crypto.generator.registry.HashGeneratorFactoryRegistry;
 import com.liferay.portal.security.crypto.generator.spi.hashing.HashGenerator;
 import com.liferay.portal.security.crypto.generator.spi.hashing.factory.HashGeneratorFactory;
 
@@ -32,11 +32,12 @@ import org.osgi.service.component.annotations.Deactivate;
 /**
  * @author Arthur Chan
  */
-@Component(service = HashGeneratorRegistry.class)
-public class HashGeneratorRegistryImpl implements HashGeneratorRegistry {
+@Component(service = HashGeneratorFactoryRegistry.class)
+public class HashGeneratorFactoryRegistryImpl
+	implements HashGeneratorFactoryRegistry {
 
 	@Override
-	public HashGenerator getHashGenerator(
+	public HashGenerator createHashGenerator(
 			String generatorName, JSONObject generatorMeta)
 		throws Exception {
 
@@ -52,7 +53,7 @@ public class HashGeneratorRegistryImpl implements HashGeneratorRegistry {
 	}
 
 	@Override
-	public Set<String> getSupportedHashGeneratorNames() {
+	public Set<String> getRegisteredHashGeneratorFactoryNames() {
 		return _hashGeneratorFactories.keySet();
 	}
 
