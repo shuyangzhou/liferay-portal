@@ -14,11 +14,11 @@
 
 package com.liferay.portal.security.crypto.generator.spi.hashing.factory;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.security.crypto.generator.spi.hashing.HashGenerator;
 
 import org.json.JSONObject;
+
+import org.osgi.annotation.versioning.ProviderType;
 
 /**
  * @author Arthur Chan

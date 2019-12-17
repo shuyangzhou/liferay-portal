@@ -14,7 +14,7 @@
 
 package com.liferay.portal.security.crypto.generator.spi;
 
-import aQute.bnd.annotation.ProviderType;
+import org.osgi.annotation.versioning.ProviderType;
 
 /**
  * @author Arthur Chan
