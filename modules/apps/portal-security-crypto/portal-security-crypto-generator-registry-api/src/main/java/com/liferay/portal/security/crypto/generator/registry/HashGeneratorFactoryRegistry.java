@@ -26,12 +26,12 @@ import org.osgi.annotation.versioning.ProviderType;
  * @author Arthur Chan
  */
 @ProviderType
-public interface HashGeneratorRegistry {
+public interface HashGeneratorFactoryRegistry {
 
-	public HashGenerator getHashGenerator(
+	public HashGenerator createHashGenerator(
 			String generatorName, JSONObject generatorMeta)
 		throws Exception;
 
-	public Set<String> getSupportedHashGeneratorNames();
+	public Set<String> getRegisteredHashGeneratorFactoryNames();
 
 }
