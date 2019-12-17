@@ -19,6 +19,7 @@ package com.liferay.portal.security.crypto.generator.spi.hashing;
  */
 public abstract class AbstractHashGenerator implements HashGenerator {
 
+	@Override
 	public HashGenerator withPepper(byte[] pepper) throws Exception {
 		if (pepper == null) {
 			throw new IllegalArgumentException("pepper can not be null");
@@ -29,6 +30,7 @@ public abstract class AbstractHashGenerator implements HashGenerator {
 		return this;
 	}
 
+	@Override
 	public HashGenerator withSalt(byte[] salt) throws Exception {
 		if (salt == null) {
 			throw new IllegalArgumentException("salt can not be null");
