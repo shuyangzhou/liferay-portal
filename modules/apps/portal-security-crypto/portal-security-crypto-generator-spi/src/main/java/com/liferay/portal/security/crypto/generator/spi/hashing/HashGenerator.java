@@ -14,10 +14,10 @@
 
 package com.liferay.portal.security.crypto.generator.spi.hashing;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.security.crypto.generator.spi.Generator;
 import com.liferay.portal.security.crypto.generator.spi.hashing.salt.SaltGenerator;
+
+import org.osgi.annotation.versioning.ProviderType;
 
 /**
  * @author Arthur Chan

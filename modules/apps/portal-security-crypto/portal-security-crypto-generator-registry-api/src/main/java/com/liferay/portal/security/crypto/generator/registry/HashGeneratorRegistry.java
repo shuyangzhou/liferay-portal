@@ -14,13 +14,13 @@
 
 package com.liferay.portal.security.crypto.generator.registry;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.security.crypto.generator.spi.hashing.HashGenerator;
 
 import java.util.Set;
 
 import org.json.JSONObject;
+
+import org.osgi.annotation.versioning.ProviderType;
 
 /**
  * @author Arthur Chan
