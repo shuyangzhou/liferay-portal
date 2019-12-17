@@ -32,10 +32,6 @@ public interface HashGeneratorRegistry {
 			String generatorName, JSONObject generatorMeta)
 		throws Exception;
 
-	public HashGenerator getHashGenerator(
-			String generatorName, String generatorMetaJSON)
-		throws Exception;
-
 	public Set<String> getSupportedHashGeneratorNames();
 
 }

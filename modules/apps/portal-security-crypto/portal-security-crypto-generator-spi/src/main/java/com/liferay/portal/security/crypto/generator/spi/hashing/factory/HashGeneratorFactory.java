@@ -36,20 +36,4 @@ public interface HashGeneratorFactory {
 	public HashGenerator create(String generatorName, JSONObject generatorMeta)
 		throws Exception;
 
-	/**
-	 * Construct a {@link com.liferay.portal.security.crypto.generator.spi.hashing.HasherGenerator} from given algorithm.
-	 *
-	 * @param generatorName The name of algorithm this generator is associated with
-	 * @param generatorMetaJSON A JSON Object formatted String of meta info required by some algorithms
-	 * @return An instance of HashGenerator
-	 */
-	public default HashGenerator create(
-			String generatorName, String generatorMetaJSON)
-		throws Exception {
-
-		JSONObject generatorMetaJSONObject = new JSONObject(generatorMetaJSON);
-
-		return create(generatorName, generatorMetaJSONObject);
-	}
-
 }
