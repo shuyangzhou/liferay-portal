@@ -44,7 +44,7 @@ public class HashGeneratorRegistryImpl implements HashGeneratorRegistry {
 			_hashGeneratorFactories.getService(generatorName);
 
 		if (hashGeneratorFactory == null) {
-			throw new IllegalStateException(
+			throw new IllegalArgumentException(
 				"There is no generator for algorithm: " + generatorName);
 		}
 
