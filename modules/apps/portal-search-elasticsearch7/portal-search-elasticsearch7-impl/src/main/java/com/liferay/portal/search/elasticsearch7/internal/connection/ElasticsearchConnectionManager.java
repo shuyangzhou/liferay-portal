@@ -104,6 +104,19 @@ public class ElasticsearchConnectionManager
 			elasticsearchConnection);
 	}
 
+	@Reference(
+		cardinality = ReferenceCardinality.MANDATORY,
+		target = "(operation.mode=SIDECAR)",
+		unbind = "unsetElasticsearchConnection"
+	)
+	public void setSidecarElasticsearchConnection(
+		ElasticsearchConnection elasticsearchConnection) {
+
+		_elasticsearchConnections.put(
+			elasticsearchConnection.getOperationMode(),
+			elasticsearchConnection);
+	}
+
 	public synchronized void unregisterCompanyId(long companyId) {
 		_companyIds.remove(companyId);
 	}

@@ -19,6 +19,6 @@ package com.liferay.portal.search.elasticsearch7.internal.connection;
  */
 public enum OperationMode {
 
-	EMBEDDED, REMOTE
+	EMBEDDED, REMOTE, SIDECAR
 
 }

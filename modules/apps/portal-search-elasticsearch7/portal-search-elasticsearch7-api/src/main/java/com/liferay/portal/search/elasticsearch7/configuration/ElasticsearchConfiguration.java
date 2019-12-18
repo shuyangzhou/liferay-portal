@@ -30,6 +30,12 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 public interface ElasticsearchConfiguration {
 
 	@Meta.AD(
+		deflt = "elasticsearch-7.4.1-1", description = "sidecar-home-help",
+		name = "sidecar-home", required = false
+	)
+	public String sideCarHome();
+
+	@Meta.AD(
 		deflt = "EMBEDDED", description = "operation-mode-help",
 		name = "operation-mode", required = false
 	)
