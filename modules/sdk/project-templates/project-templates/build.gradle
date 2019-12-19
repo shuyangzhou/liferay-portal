@@ -87,7 +87,7 @@ dependencies {
 	projectTemplates group: "com.liferay", name: "com.liferay.project.templates.service.wrapper", version: "1.0.63"
 	projectTemplates group: "com.liferay", name: "com.liferay.project.templates.simulation.panel.entry", version: "1.0.63"
 	projectTemplates group: "com.liferay", name: "com.liferay.project.templates.social.bookmark", version: "1.0.56"
-	projectTemplates group: "com.liferay", name: "com.liferay.project.templates.spring.mvc.portlet", version: "1.0.60"
+	projectTemplates group: "com.liferay", name: "com.liferay.project.templates.spring.mvc.portlet", version: "1.0.61"
 	projectTemplates group: "com.liferay", name: "com.liferay.project.templates.template.context.contributor", version: "1.0.63"
 	projectTemplates group: "com.liferay", name: "com.liferay.project.templates.theme", version: "1.0.64"
 	projectTemplates group: "com.liferay", name: "com.liferay.project.templates.theme.contributor", version: "1.0.62"
