@@ -37,9 +37,6 @@ import org.osgi.service.component.annotations.Component;
 )
 public class MessageDigestHashGenerator extends AbstractHashGenerator {
 
-	public MessageDigestHashGenerator() {
-	}
-
 	public MessageDigestHashGenerator(String generatorName) {
 		_chosenGenerator = generatorName;
 	}
@@ -72,6 +69,6 @@ public class MessageDigestHashGenerator extends AbstractHashGenerator {
 		return messageDigest.digest(combined);
 	}
 
-	private String _chosenGenerator;
+	private final String _chosenGenerator;
 
 }
