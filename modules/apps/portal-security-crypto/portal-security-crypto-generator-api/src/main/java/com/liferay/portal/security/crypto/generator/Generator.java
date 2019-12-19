@@ -12,22 +12,16 @@
  * details.
  */
 
-package com.liferay.portal.security.crypto.generator.spi.hashing.salt;
+package com.liferay.portal.security.crypto.generator;
 
-import com.liferay.portal.kernel.io.BigEndianCodec;
-import com.liferay.portal.kernel.security.SecureRandomUtil;
+import org.osgi.annotation.versioning.ProviderType;
 
 /**
- * @author Carlos Sierra Andrés
+ * @author Arthur Chan
  */
-public interface VariableLengthSaltGenerator extends SaltGenerator {
+@ProviderType
+public interface Generator {
 
-	public default byte[] generateSalt(int size) {
-		byte[] saltBytes = new byte[size];
-
-		BigEndianCodec.putLong(saltBytes, 0, SecureRandomUtil.nextLong());
-
-		return saltBytes;
-	}
+	public String[] getGeneratorNames();
 
 }

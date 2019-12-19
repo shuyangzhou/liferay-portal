@@ -14,7 +14,7 @@
 
 package com.liferay.portal.security.crypto.generator.registry;
 
-import com.liferay.portal.security.crypto.generator.spi.hashing.HashGenerator;
+import com.liferay.portal.security.crypto.generator.hashing.HashGenerator;
 
 import java.util.Set;
 
