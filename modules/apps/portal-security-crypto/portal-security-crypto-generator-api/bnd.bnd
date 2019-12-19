@@ -1,0 +1,7 @@
+Bundle-Name: Liferay Portal Security Crypto Generator API
+Bundle-SymbolicName: com.liferay.portal.security.crypto.generator.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.portal.security.crypto.generator,\
+	com.liferay.portal.security.crypto.generator.hashing,\
+	com.liferay.portal.security.crypto.generator.hashing.salt

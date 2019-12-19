@@ -16,8 +16,8 @@ package com.liferay.portal.security.crypto.generator.registry.internal;
 
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.portal.security.crypto.generator.hashing.HashGenerator;
 import com.liferay.portal.security.crypto.generator.registry.HashGeneratorFactoryRegistry;
-import com.liferay.portal.security.crypto.generator.spi.hashing.HashGenerator;
 import com.liferay.portal.security.crypto.generator.spi.hashing.factory.HashGeneratorFactory;
 
 import java.util.Set;

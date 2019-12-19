@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.security.crypto.generator.spi.hashing.salt;
+package com.liferay.portal.security.crypto.generator.hashing.salt;
 
 import com.liferay.portal.kernel.io.BigEndianCodec;
 import com.liferay.portal.kernel.security.SecureRandomUtil;

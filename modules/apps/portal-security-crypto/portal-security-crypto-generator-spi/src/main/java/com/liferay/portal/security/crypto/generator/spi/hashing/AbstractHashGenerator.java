@@ -14,6 +14,8 @@
 
 package com.liferay.portal.security.crypto.generator.spi.hashing;
 
+import com.liferay.portal.security.crypto.generator.hashing.HashGenerator;
+
 /**
  * @author Arthur Chan
  */
