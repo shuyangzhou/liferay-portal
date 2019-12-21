@@ -157,14 +157,11 @@ public class RemoteElasticsearchConnection extends BaseElasticsearchConnection {
 		elasticsearchConfiguration = ConfigurableUtil.createConfigurable(
 			ElasticsearchConfiguration.class, properties);
 
-		if (isConnected()) {
-			close();
-		}
+		close();
 
-		if (!isConnected() &&
-			(elasticsearchConfiguration.operationMode() ==
+		if (elasticsearchConfiguration.operationMode() ==
 				com.liferay.portal.search.elasticsearch7.configuration.
-					OperationMode.REMOTE)) {
+					OperationMode.REMOTE) {
 
 			connect();
 		}
