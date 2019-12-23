@@ -14,11 +14,17 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.connection;
 
+import com.liferay.petra.process.ProcessExecutor;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.cluster.ClusterExecutor;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConfiguration;
+import com.liferay.portal.search.elasticsearch7.internal.sidecar.Sidecar;
+import com.liferay.portal.search.elasticsearch7.internal.sidecar.SidecarConfig;
 import com.liferay.portal.search.elasticsearch7.internal.util.ClassLoaderUtil;
+import com.liferay.portal.util.PropsValues;
 
+import java.io.File;
 import java.io.InputStream;
 
 import java.nio.file.Files;
@@ -27,7 +33,9 @@ import java.nio.file.Paths;
 
 import java.security.KeyStore;
 
+import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.net.ssl.SSLContext;
 
@@ -68,6 +76,43 @@ public class RemoteElasticsearchConnection extends BaseElasticsearchConnection {
 	protected void activate(Map<String, Object> properties) {
 		elasticsearchConfiguration = ConfigurableUtil.createConfigurable(
 			ElasticsearchConfiguration.class, properties);
+
+		if ((elasticsearchConfiguration.operationMode() !=
+				com.liferay.portal.search.elasticsearch7.configuration.
+					OperationMode.REMOTE) ||
+			!Arrays.equals(
+				elasticsearchConfiguration.networkHostAddresses(),
+				new String[] {"http://localhost:9200"}) ||
+			!Objects.equals(
+				elasticsearchConfiguration.clusterName(),
+				"LiferayElasticsearchCluster")) {
+
+			return;
+		}
+
+		String sidecarHome = elasticsearchConfiguration.sidecarHome();
+
+		File sidecarHomeFolder = new File(
+			PropsValues.LIFERAY_HOME, sidecarHome);
+
+		if (!sidecarHomeFolder.exists()) {
+			sidecarHomeFolder = new File(sidecarHome);
+
+			if (!sidecarHomeFolder.exists()) {
+				throw new IllegalStateException(
+					"Sidecar home " + sidecarHome + " does not exist");
+			}
+		}
+
+		_sidecar = new Sidecar(
+			_processExecutor,
+			new SidecarConfig(
+				sidecarHomeFolder,
+				elasticsearchConfiguration.sidecarHeartbeatInterval(),
+				elasticsearchConfiguration.sidecarJVMOptions(),
+				_clusterExecutor));
+
+		_sidecar.start();
 	}
 
 	protected void configureSecurity(RestClientBuilder restClientBuilder) {
@@ -99,8 +144,23 @@ public class RemoteElasticsearchConnection extends BaseElasticsearchConnection {
 
 	@Override
 	protected RestHighLevelClient createRestHighLevelClient() {
-		String[] networkHostAddresses =
-			elasticsearchConfiguration.networkHostAddresses();
+		String[] networkHostAddresses;
+
+		if (_sidecar == null) {
+			networkHostAddresses =
+				elasticsearchConfiguration.networkHostAddresses();
+		}
+		else {
+			try {
+				networkHostAddresses = new String[] {
+					_sidecar.getNetworkHostAddress()
+				};
+			}
+			catch (Exception e) {
+				throw new RuntimeException(
+					"Unable to get network host address", e);
+			}
+		}
 
 		HttpHost[] httpHosts = new HttpHost[networkHostAddresses.length];
 
@@ -150,21 +210,25 @@ public class RemoteElasticsearchConnection extends BaseElasticsearchConnection {
 	@Deactivate
 	protected void deactivate(Map<String, Object> properties) {
 		close();
+
+		if (_sidecar != null) {
+			_sidecar.stop();
+		}
 	}
 
 	@Modified
 	protected synchronized void modified(Map<String, Object> properties) {
-		elasticsearchConfiguration = ConfigurableUtil.createConfigurable(
-			ElasticsearchConfiguration.class, properties);
+		deactivate(properties);
 
-		if (isConnected()) {
-			close();
-		}
+		activate(properties);
 
-		if (!isConnected() &&
-			(elasticsearchConfiguration.operationMode() ==
+		ElasticsearchConfiguration elasticsearchConfiguration =
+			ConfigurableUtil.createConfigurable(
+				ElasticsearchConfiguration.class, properties);
+
+		if (elasticsearchConfiguration.operationMode() ==
 				com.liferay.portal.search.elasticsearch7.configuration.
-					OperationMode.REMOTE)) {
+					OperationMode.REMOTE) {
 
 			connect();
 		}
@@ -172,5 +236,13 @@ public class RemoteElasticsearchConnection extends BaseElasticsearchConnection {
 
 	@Reference
 	protected Props props;
+
+	@Reference
+	private ClusterExecutor _clusterExecutor;
+
+	@Reference
+	private ProcessExecutor _processExecutor;
+
+	private volatile Sidecar _sidecar;
 
 }
