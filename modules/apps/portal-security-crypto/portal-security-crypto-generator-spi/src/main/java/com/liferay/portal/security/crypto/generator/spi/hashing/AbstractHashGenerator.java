@@ -22,7 +22,7 @@ import com.liferay.portal.security.crypto.generator.hashing.HashGenerator;
 public abstract class AbstractHashGenerator implements HashGenerator {
 
 	@Override
-	public HashGenerator withPepper(byte[] pepper) throws Exception {
+	public HashGenerator withPepper(byte[] pepper) {
 		if (pepper == null) {
 			throw new IllegalArgumentException("pepper can not be null");
 		}
@@ -33,7 +33,7 @@ public abstract class AbstractHashGenerator implements HashGenerator {
 	}
 
 	@Override
-	public HashGenerator withSalt(byte[] salt) throws Exception {
+	public HashGenerator withSalt(byte[] salt) {
 		if (salt == null) {
 			throw new IllegalArgumentException("salt can not be null");
 		}
