@@ -22,6 +22,10 @@ import com.liferay.portal.kernel.security.SecureRandomUtil;
  */
 public interface VariableLengthSaltGenerator extends SaltGenerator {
 
+	public static VariableLengthSaltGenerator DEFAULT =
+		new VariableLengthSaltGenerator() {
+		};
+
 	public default byte[] generateSalt(int size) {
 		byte[] saltBytes = new byte[size];
 
