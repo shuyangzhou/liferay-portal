@@ -22,6 +22,9 @@ import com.liferay.portal.kernel.security.SecureRandomUtil;
  */
 public interface SaltGenerator {
 
+	public static SaltGenerator DEFAULT = new SaltGenerator() {
+	};
+
 	public default byte[] generateSalt() {
 		byte[] saltBytes = new byte[Long.BYTES];
 
