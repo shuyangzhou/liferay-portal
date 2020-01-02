@@ -192,7 +192,6 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 			"**/com/liferay/portal/kernel/service/ServiceContext*.java",
 			"**/model/BaseModel.java", "**/model/impl/BaseModelImpl.java",
 			"**/portal-test/**/portal/service/**/*.java",
-			"**/portal-test-integration/**/portal/service/**/*.java",
 			"**/service/*.java", "**/service/configuration/**/*.java",
 			"**/service/http/*HttpTest.java", "**/service/http/*SoapTest.java",
 			"**/service/http/TunnelUtil.java", "**/service/impl/*.java",
