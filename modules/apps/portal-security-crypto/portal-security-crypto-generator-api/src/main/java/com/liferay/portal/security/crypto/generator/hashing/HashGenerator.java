@@ -25,12 +25,12 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface HashGenerator extends Generator {
 
-	public SaltGenerator getSaltGenerator() throws Exception;
+	public SaltGenerator getSaltGenerator();
 
 	public byte[] hash(byte[] toBeHashed) throws Exception;
 
-	public HashGenerator withPepper(byte[] pepper) throws Exception;
+	public HashGenerator withPepper(byte[] pepper);
 
-	public HashGenerator withSalt(byte[] salt) throws Exception;
+	public HashGenerator withSalt(byte[] salt);
 
 }
