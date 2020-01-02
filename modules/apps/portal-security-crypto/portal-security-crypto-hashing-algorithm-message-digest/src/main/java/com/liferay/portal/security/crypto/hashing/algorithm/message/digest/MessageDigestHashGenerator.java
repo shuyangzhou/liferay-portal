@@ -52,7 +52,7 @@ public class MessageDigestHashGenerator extends AbstractHashGenerator {
 	}
 
 	@Override
-	public SaltGenerator getSaltGenerator() throws Exception {
+	public SaltGenerator getSaltGenerator() {
 
 		// TODO Auto-generated method stub
 
