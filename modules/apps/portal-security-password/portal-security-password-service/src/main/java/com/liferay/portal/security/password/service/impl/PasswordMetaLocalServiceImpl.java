@@ -18,6 +18,8 @@ import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.security.crypto.generator.hashing.HashGenerator;
 import com.liferay.portal.security.crypto.generator.hashing.salt.SaltGenerator;
+import com.liferay.portal.security.crypto.generator.hashing.salt.VariableSizeSaltGenerator;
+import com.liferay.portal.security.crypto.generator.hashing.salt.FixedSizeSaltGenerator;
 import com.liferay.portal.security.crypto.generator.registry.HashGeneratorFactoryRegistry;
 import com.liferay.portal.security.password.model.HashAlgorithmEntry;
 import com.liferay.portal.security.password.model.PasswordEntry;
@@ -82,7 +84,22 @@ public class PasswordMetaLocalServiceImpl
 
 			meta.setPasswordEntryId(passwordEntry.getEntryId());
 			meta.setHashAlgorithmEntryId(currentAlgorithm.getEntryId());
-			meta.setSalt(new String(saltGenerator.generateSalt()));
+
+			if (saltGenerator instanceof VariableSizeSaltGenerator) {
+				VariableSizeSaltGenerator vSaltGenerator =
+					(VariableSizeSaltGenerator)saltGenerator;
+
+				meta.setSalt(new String(vSaltGenerator.generateSalt(generatorMeta.getInt("saltSize"))));
+			}
+			else if (saltGenerator instanceof FixedSizeSaltGenerator) {
+				FixedSizeSaltGenerator fSaltGenerator =
+					(FixedSizeSaltGenerator)saltGenerator;
+
+				meta.setSalt(new String(fSaltGenerator.generateSalt()));
+			}
+			else {
+				throw new PortalException("Unknown type");
+			}
 
 			return passwordMetaPersistence.update(meta);
 		}
@@ -222,7 +239,21 @@ public class PasswordMetaLocalServiceImpl
 
 			SaltGenerator saltGenerator = hashGenerator.getSaltGenerator();
 
-			meta.setSalt(new String(saltGenerator.generateSalt()));
+			if (saltGenerator instanceof VariableSizeSaltGenerator) {
+				VariableSizeSaltGenerator vSaltGenerator =
+					(VariableSizeSaltGenerator)saltGenerator;
+
+				meta.setSalt(new String(vSaltGenerator.generateSalt(generatorMeta.getInt("saltSize"))));
+			}
+			else if (saltGenerator instanceof FixedSizeSaltGenerator) {
+				FixedSizeSaltGenerator fSaltGenerator =
+					(FixedSizeSaltGenerator)saltGenerator;
+
+				meta.setSalt(new String(fSaltGenerator.generateSalt()));
+			}
+			else {
+				throw new PortalException("Unknown type");
+			}
 		}
 		catch (Exception e) {
 			throw new PortalException(e.getMessage());
