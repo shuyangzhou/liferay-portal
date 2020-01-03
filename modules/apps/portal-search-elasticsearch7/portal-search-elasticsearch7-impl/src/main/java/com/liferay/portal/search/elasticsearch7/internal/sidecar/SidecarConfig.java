@@ -39,12 +39,15 @@ public class SidecarConfig {
 		_jvmOptions = jvmOptions;
 
 		if (!clusterExecutor.isEnabled()) {
+			_clustered = false;
 			_localNodeName = null;
 			_localHostAddress = null;
 			_initialMasterNodes = null;
 			_discoverySeedHosts = null;
 		}
 		else {
+			_clustered = true;
+
 			ClusterNode localClusterNode =
 				clusterExecutor.getLocalClusterNode();
 
@@ -102,6 +105,10 @@ public class SidecarConfig {
 		return _localNodeName;
 	}
 
+	public boolean isClustered() {
+		return _clustered;
+	}
+
 	private String _generateNodeName(ClusterNode clusterNode) {
 		return _NODE_NAME_PREFIX.concat(clusterNode.getClusterNodeId());
 	}
@@ -114,6 +121,7 @@ public class SidecarConfig {
 
 	private static final String _NODE_NAME_PREFIX = "NODE_";
 
+	private final boolean _clustered;
 	private final String _discoverySeedHosts;
 	private final long _heartbeatInterval;
 	private final File _homeFolder;

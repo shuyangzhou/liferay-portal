@@ -20,6 +20,7 @@ import com.liferay.petra.process.ProcessChannel;
 import com.liferay.petra.process.ProcessConfig;
 import com.liferay.petra.process.ProcessExecutor;
 import com.liferay.petra.process.ProcessLog;
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -30,7 +31,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.net.URL;
+
+import java.nio.file.Path;
 
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
@@ -39,6 +44,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.elasticsearch.cluster.ClusterModule;
+import org.elasticsearch.cluster.coordination.CoordinationMetaData;
+import org.elasticsearch.cluster.metadata.Manifest;
+import org.elasticsearch.cluster.metadata.MetaData;
+import org.elasticsearch.common.xcontent.NamedXContentRegistry;
+import org.elasticsearch.env.NodeEnvironment;
+import org.elasticsearch.gateway.MetaDataStateFormat;
 
 /**
  * @author Tina Tian
@@ -72,6 +85,15 @@ public class Sidecar {
 			return;
 		}
 
+		if (_sidecarConfig.isClustered()) {
+			try {
+				_cleanUpClusterMetaData();
+			}
+			catch (Exception e) {
+				_log.error("Unable to clean up cluster meta data", e);
+			}
+		}
+
 		try {
 			_processChannel = _processExecutor.execute(
 				_createProcessConfig(),
@@ -102,6 +124,73 @@ public class Sidecar {
 		noticeableFuture.cancel(true);
 
 		_processChannel = null;
+	}
+
+	private void _cleanUpClusterMetaData() throws Exception {
+		File homeFolder = _sidecarConfig.getHomeFolder();
+
+		Path homePath = homeFolder.toPath();
+
+		Path nodePath = NodeEnvironment.resolveNodePath(
+			homePath.resolve("data"), 0);
+
+		Path statePath = nodePath.resolve(MetaDataStateFormat.STATE_DIR_NAME);
+
+		File stateFolder = statePath.toFile();
+
+		if (!stateFolder.exists()) {
+			return;
+		}
+
+		MetaDataStateFormat<MetaData> metaDataMetaDataStateFormat =
+			MetaData.FORMAT;
+		MetaDataStateFormat<Manifest> manifestMetaDataStateFormat =
+			Manifest.FORMAT;
+
+		File globalFile = null;
+		File manifestFile = null;
+
+		for (File file : stateFolder.listFiles()) {
+			String fileName = file.getName();
+
+			if (fileName.startsWith(metaDataMetaDataStateFormat.getPrefix())) {
+				globalFile = file;
+			}
+			else if (fileName.startsWith(
+						manifestMetaDataStateFormat.getPrefix())) {
+
+				manifestFile = file;
+			}
+		}
+
+		if ((globalFile == null) || (manifestFile == null)) {
+			return;
+		}
+
+		NamedXContentRegistry namedXContentRegistry = new NamedXContentRegistry(
+			ClusterModule.getNamedXWriteables());
+
+		MetaData metaData = metaDataMetaDataStateFormat.read(
+			namedXContentRegistry, globalFile.toPath());
+
+		CoordinationMetaData coordinationMetaData =
+			metaData.coordinationMetaData();
+
+		_setFieldValue(
+			coordinationMetaData, "lastCommittedConfiguration",
+			CoordinationMetaData.VotingConfiguration.EMPTY_CONFIG);
+		_setFieldValue(
+			coordinationMetaData, "lastAcceptedConfiguration",
+			CoordinationMetaData.VotingConfiguration.EMPTY_CONFIG);
+
+		Manifest manifest = manifestMetaDataStateFormat.read(
+			namedXContentRegistry, manifestFile.toPath());
+
+		_setFieldValue(
+			manifest, "globalGeneration",
+			metaDataMetaDataStateFormat.write(metaData, nodePath));
+
+		manifestMetaDataStateFormat.write(manifest, nodePath);
 	}
 
 	private String _createClasspath() throws Exception {
@@ -277,6 +366,15 @@ public class Sidecar {
 		}
 
 		return arguments.toArray(new String[0]);
+	}
+
+	private void _setFieldValue(Object target, String filedName, Object value)
+		throws Exception {
+
+		Field field = ReflectionUtil.getDeclaredField(
+			target.getClass(), filedName);
+
+		field.set(target, value);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(Sidecar.class);
