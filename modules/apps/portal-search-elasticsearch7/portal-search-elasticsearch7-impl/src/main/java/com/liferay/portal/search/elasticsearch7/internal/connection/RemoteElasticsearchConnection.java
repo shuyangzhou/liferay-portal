@@ -14,8 +14,8 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.connection;
 
-import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConnectionConfiguration;
+import com.liferay.portal.search.elasticsearch7.internal.sidecar.Sidecar;
 import com.liferay.portal.search.elasticsearch7.internal.util.ClassLoaderUtil;
 
 import java.io.InputStream;
@@ -25,8 +25,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import java.security.KeyStore;
-
-import java.util.Map;
 
 import javax.net.ssl.SSLContext;
 
@@ -42,24 +40,37 @@ import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
 
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Modified;
-
 /**
  * @author Michael C. Han
  */
-@Component(
-	configurationPid = "com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConnectionConfiguration",
-	immediate = true, property = "operation.mode=REMOTE",
-	service = ElasticsearchConnection.class
-)
 public class RemoteElasticsearchConnection extends BaseElasticsearchConnection {
+
+	public RemoteElasticsearchConnection(
+		Sidecar sidecar,
+		ElasticsearchConnectionConfiguration
+			elasticsearchConnectionConfiguration) {
+
+		_sidecar = sidecar;
+		_elasticsearchConnectionConfiguration =
+			elasticsearchConnectionConfiguration;
+	}
+
+	@Override
+	public void close() {
+		super.close();
+
+		if (_sidecar != null) {
+			_sidecar.stop();
+		}
+	}
 
 	@Override
 	public void connect() {
 		if (_elasticsearchConnectionConfiguration.active()) {
+			if (_sidecar != null) {
+				_sidecar.start();
+			}
+
 			super.connect();
 		}
 	}
@@ -72,14 +83,6 @@ public class RemoteElasticsearchConnection extends BaseElasticsearchConnection {
 	@Override
 	public OperationMode getOperationMode() {
 		return OperationMode.REMOTE;
-	}
-
-	@Activate
-	@Modified
-	protected void activate(Map<String, Object> properties) {
-		_elasticsearchConnectionConfiguration =
-			ConfigurableUtil.createConfigurable(
-				ElasticsearchConnectionConfiguration.class, properties);
 	}
 
 	protected void configureSecurity(RestClientBuilder restClientBuilder) {
@@ -111,8 +114,23 @@ public class RemoteElasticsearchConnection extends BaseElasticsearchConnection {
 
 	@Override
 	protected RestHighLevelClient createRestHighLevelClient() {
-		String[] networkHostAddresses =
-			_elasticsearchConnectionConfiguration.networkHostAddresses();
+		String[] networkHostAddresses;
+
+		if (_sidecar == null) {
+			networkHostAddresses =
+				_elasticsearchConnectionConfiguration.networkHostAddresses();
+		}
+		else {
+			try {
+				networkHostAddresses = new String[] {
+					_sidecar.getNetworkHostAddress()
+				};
+			}
+			catch (Exception e) {
+				throw new RuntimeException(
+					"Unable to get network host address", e);
+			}
+		}
 
 		HttpHost[] httpHosts = new HttpHost[networkHostAddresses.length];
 
@@ -159,12 +177,8 @@ public class RemoteElasticsearchConnection extends BaseElasticsearchConnection {
 		}
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		close();
-	}
-
-	private volatile ElasticsearchConnectionConfiguration
+	private final ElasticsearchConnectionConfiguration
 		_elasticsearchConnectionConfiguration;
+	private final Sidecar _sidecar;
 
 }
