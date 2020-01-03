@@ -18,6 +18,7 @@ import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.security.crypto.generator.hashing.HashGenerator;
 import com.liferay.portal.security.crypto.generator.hashing.salt.SaltGenerator;
+import com.liferay.portal.security.crypto.generator.hashing.salt.VariableLengthSaltGenerator;
 import com.liferay.portal.security.crypto.generator.registry.HashGeneratorFactoryRegistry;
 import com.liferay.portal.security.password.model.HashAlgorithmEntry;
 import com.liferay.portal.security.password.model.PasswordEntry;
@@ -82,7 +83,16 @@ public class PasswordMetaLocalServiceImpl
 
 			meta.setPasswordEntryId(passwordEntry.getEntryId());
 			meta.setHashAlgorithmEntryId(currentAlgorithm.getEntryId());
-			meta.setSalt(new String(saltGenerator.generateSalt()));
+
+			if (saltGenerator instanceof VariableLengthSaltGenerator) {
+				VariableLengthSaltGenerator vSaltGenerator =
+					(VariableLengthSaltGenerator)saltGenerator;
+
+				meta.setSalt(new String(vSaltGenerator.generateSalt(generatorMeta.getInt("saltSize"))));
+			}
+			else {
+				meta.setSalt(new String(saltGenerator.generateSalt()));
+			}
 
 			return passwordMetaPersistence.update(meta);
 		}
@@ -222,7 +232,15 @@ public class PasswordMetaLocalServiceImpl
 
 			SaltGenerator saltGenerator = hashGenerator.getSaltGenerator();
 
-			meta.setSalt(new String(saltGenerator.generateSalt()));
+			if (saltGenerator instanceof VariableLengthSaltGenerator) {
+				VariableLengthSaltGenerator vSaltGenerator =
+					(VariableLengthSaltGenerator)saltGenerator;
+
+				meta.setSalt(new String(vSaltGenerator.generateSalt(generatorMeta.getInt("saltSize"))));
+			}
+			else {
+				meta.setSalt(new String(saltGenerator.generateSalt()));
+			}
 		}
 		catch (Exception e) {
 			throw new PortalException(e.getMessage());
