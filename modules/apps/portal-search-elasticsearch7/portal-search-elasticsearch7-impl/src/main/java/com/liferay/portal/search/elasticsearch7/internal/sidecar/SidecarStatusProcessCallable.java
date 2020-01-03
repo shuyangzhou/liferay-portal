@@ -20,9 +20,12 @@ import com.liferay.petra.reflect.ReflectionUtil;
 
 import java.lang.reflect.Field;
 
+import org.elasticsearch.cluster.coordination.ClusterFormationFailureHelper;
+import org.elasticsearch.cluster.coordination.Coordinator;
 import org.elasticsearch.common.inject.Injector;
 import org.elasticsearch.common.transport.BoundTransportAddress;
 import org.elasticsearch.common.transport.TransportAddress;
+import org.elasticsearch.discovery.Discovery;
 import org.elasticsearch.http.HttpServerTransport;
 import org.elasticsearch.node.Node;
 
@@ -31,12 +34,24 @@ import org.elasticsearch.node.Node;
  */
 public class SidecarStatusProcessCallable implements ProcessCallable<String> {
 
+	public SidecarStatusProcessCallable() {
+		this(0);
+	}
+
+	public SidecarStatusProcessCallable(long checkInterval) {
+		_checkInterval = checkInterval;
+	}
+
 	@Override
 	public String call() throws ProcessException {
 		try {
 			Node node = _waitForNodeStarted();
 
 			Injector injector = node.injector();
+
+			if (_checkInterval > 0) {
+				_monitorClusterStatus(injector);
+			}
 
 			HttpServerTransport httpServerTransport = injector.getInstance(
 				HttpServerTransport.class);
@@ -52,6 +67,47 @@ public class SidecarStatusProcessCallable implements ProcessCallable<String> {
 		catch (Exception e) {
 			throw new ProcessException("Unable to get published address ", e);
 		}
+	}
+
+	private void _monitorClusterStatus(Injector injector) {
+		Thread thread = new Thread(
+			() -> {
+				try {
+					Coordinator coordinator = (Coordinator)injector.getInstance(
+						Discovery.class);
+
+					Field clusterFormationFailureHelperField =
+						ReflectionUtil.getDeclaredField(
+							coordinator.getClass(),
+							"clusterFormationFailureHelper");
+
+					ClusterFormationFailureHelper
+						clusterFormationFailureHelper =
+							(ClusterFormationFailureHelper)
+								clusterFormationFailureHelperField.get(
+									coordinator);
+
+					while (true) {
+						if (clusterFormationFailureHelper.isRunning() == true) {
+							System.setSecurityManager(null);
+
+							System.exit(0);
+
+							return;
+						}
+
+						Thread.sleep(_checkInterval);
+					}
+				}
+				catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			},
+			"Sidecar Cluster Status Monitor");
+
+		thread.setDaemon(true);
+
+		thread.start();
 	}
 
 	private Node _waitForNodeStarted() throws Exception {
@@ -83,5 +139,7 @@ public class SidecarStatusProcessCallable implements ProcessCallable<String> {
 	}
 
 	private static final long serialVersionUID = 1L;
+
+	private final long _checkInterval;
 
 }
