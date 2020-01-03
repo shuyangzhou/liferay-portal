@@ -22,8 +22,11 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConnectionConfiguration;
+import com.liferay.portal.search.elasticsearch7.internal.settings.BaseIndexSettingsContributor;
 import com.liferay.portal.search.elasticsearch7.internal.sidecar.Sidecar;
 import com.liferay.portal.search.elasticsearch7.internal.sidecar.SidecarConfig;
+import com.liferay.portal.search.elasticsearch7.settings.IndexSettingsContributor;
+import com.liferay.portal.search.elasticsearch7.settings.IndexSettingsHelper;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
@@ -94,6 +97,23 @@ public class RemoteElasticsearchConnectionRegister {
 						sidecarHeartbeatInterval(),
 					elasticsearchConnectionConfiguration.sidecarJVMOptions(),
 					_clusterExecutor));
+
+			if (_clusterExecutor.isEnabled()) {
+				bundleContext.registerService(
+					IndexSettingsContributor.class,
+					new BaseIndexSettingsContributor(Integer.MAX_VALUE) {
+
+						@Override
+						public void populate(
+							IndexSettingsHelper indexSettingsHelper) {
+
+							indexSettingsHelper.put(
+								"index.auto_expand_replicas", "0-all");
+						}
+
+					},
+					null);
+			}
 		}
 
 		_serviceRegistration = bundleContext.registerService(
