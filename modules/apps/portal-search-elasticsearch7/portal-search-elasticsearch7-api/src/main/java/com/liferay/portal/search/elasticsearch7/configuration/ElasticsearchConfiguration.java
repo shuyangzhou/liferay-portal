@@ -164,4 +164,23 @@ public interface ElasticsearchConfiguration {
 	)
 	public String httpCORSConfigurations();
 
+	@Meta.AD(
+		deflt = "10000", description = "sidecar-heartbeat-interval-help",
+		name = "sidecar-heartbeat-interval", required = false
+	)
+	public long sidecarHeartbeatInterval();
+
+	@Meta.AD(
+		deflt = "elasticsearch7", description = "sidecar-home-help",
+		name = "sidecar-home", required = false
+	)
+	public String sidecarHome();
+
+	@Meta.AD(
+		deflt = "-Xms1g|-Xmx1g|-XX:+AlwaysPreTouch",
+		description = "sidecar-jvm-options-help", name = "sidecar-jvm-options",
+		required = false
+	)
+	public String[] sidecarJVMOptions();
+
 }
