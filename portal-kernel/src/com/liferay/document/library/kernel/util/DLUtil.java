@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -408,10 +409,16 @@ public class DLUtil {
 			userId, dlFileVersion, syncEventType, serviceContext);
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public void setDL(DL dl) {
 		_dl = dl;
 	}
 
-	private static DL _dl;
+	private static volatile DL _dl =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			DL.class, DLUtil.class, "_dl", false);
 
 }
