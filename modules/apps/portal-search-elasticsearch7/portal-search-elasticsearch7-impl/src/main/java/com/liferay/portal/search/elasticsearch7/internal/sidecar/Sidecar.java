@@ -40,6 +40,8 @@ import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.URL;
 
+import java.nio.file.Path;
+
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
 
@@ -48,7 +50,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.elasticsearch.cluster.ClusterModule;
+import org.elasticsearch.cluster.coordination.CoordinationMetaData;
+import org.elasticsearch.cluster.metadata.Manifest;
+import org.elasticsearch.cluster.metadata.MetaData;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.xcontent.NamedXContentRegistry;
+import org.elasticsearch.env.NodeEnvironment;
+import org.elasticsearch.gateway.MetaDataStateFormat;
 
 /**
  * @author Tina Tian
@@ -107,6 +116,13 @@ public class Sidecar {
 
 	public void start() {
 		try {
+			_cleanUpClusterMetaData();
+		}
+		catch (Exception e) {
+			_log.error("Unable to clean up cluster meta data", e);
+		}
+
+		try {
 			_processChannel = _processExecutor.execute(
 				_createProcessConfig(),
 				new SidecarProcessCallable(
@@ -138,6 +154,77 @@ public class Sidecar {
 		noticeableFuture.removeFutureListener(_restartFutureListener);
 
 		noticeableFuture.cancel(true);
+	}
+
+	private void _cleanUpClusterMetaData() throws Exception {
+		if (!_clusterExecutor.isEnabled()) {
+			return;
+		}
+
+		Path nodePath = NodeEnvironment.resolveNodePath(_pathData.toPath(), 0);
+
+		Path statePath = nodePath.resolve(MetaDataStateFormat.STATE_DIR_NAME);
+
+		File stateFolder = statePath.toFile();
+
+		if (!stateFolder.exists()) {
+			return;
+		}
+
+		MetaDataStateFormat<MetaData> metaDataMetaDataStateFormat =
+			MetaData.FORMAT;
+		MetaDataStateFormat<Manifest> manifestMetaDataStateFormat =
+			Manifest.FORMAT;
+
+		File globalFile = null;
+		File manifestFile = null;
+
+		for (File file : stateFolder.listFiles()) {
+			String fileName = file.getName();
+
+			if (fileName.startsWith(metaDataMetaDataStateFormat.getPrefix())) {
+				globalFile = file;
+			}
+			else if (fileName.startsWith(
+						manifestMetaDataStateFormat.getPrefix())) {
+
+				manifestFile = file;
+			}
+		}
+
+		if ((globalFile == null) || (manifestFile == null)) {
+			return;
+		}
+
+		NamedXContentRegistry namedXContentRegistry = new NamedXContentRegistry(
+			ClusterModule.getNamedXWriteables());
+
+		MetaData metaData = metaDataMetaDataStateFormat.read(
+			namedXContentRegistry, globalFile.toPath());
+
+		CoordinationMetaData coordinationMetaData =
+			metaData.coordinationMetaData();
+
+		CoordinationMetaData.Builder coordinationMetaDataBuilder =
+			CoordinationMetaData.builder();
+
+		coordinationMetaDataBuilder.term(coordinationMetaData.term());
+
+		MetaData.Builder metaDataBuilder = MetaData.builder(metaData);
+
+		metaDataBuilder.coordinationMetaData(
+			coordinationMetaDataBuilder.build());
+
+		Manifest manifest = manifestMetaDataStateFormat.read(
+			namedXContentRegistry, manifestFile.toPath());
+
+		manifestMetaDataStateFormat.write(
+			new Manifest(
+				manifest.getCurrentTerm(), manifest.getClusterStateVersion(),
+				metaDataMetaDataStateFormat.write(
+					metaDataBuilder.build(), nodePath),
+				manifest.getIndexGenerations()),
+			nodePath);
 	}
 
 	private File _copyResourceToFolder(File targetFolder, String resourceName) {
