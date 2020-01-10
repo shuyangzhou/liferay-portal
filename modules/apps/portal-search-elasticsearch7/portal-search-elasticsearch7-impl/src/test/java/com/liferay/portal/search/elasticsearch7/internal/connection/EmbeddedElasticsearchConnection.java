@@ -19,29 +19,17 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.File;
-import com.liferay.portal.kernel.util.PortalRunMode;
-import com.liferay.portal.kernel.util.Props;
-import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConfiguration;
-import com.liferay.portal.search.elasticsearch7.internal.cluster.ClusterSettingsContext;
 import com.liferay.portal.search.elasticsearch7.internal.settings.SettingsBuilder;
 import com.liferay.portal.search.elasticsearch7.internal.util.ClassLoaderUtil;
 import com.liferay.portal.search.elasticsearch7.internal.util.LogUtil;
-import com.liferay.portal.search.elasticsearch7.internal.util.ResourceUtil;
-import com.liferay.portal.search.elasticsearch7.settings.ClientSettingsHelper;
-import com.liferay.portal.search.elasticsearch7.settings.SettingsContributor;
 
 import io.netty.buffer.ByteBufUtil;
 
 import java.io.IOException;
 
-import java.net.InetAddress;
-
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -59,28 +47,18 @@ import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeValidationException;
 import org.elasticsearch.threadpool.ThreadPool;
 
-import org.osgi.framework.BundleContext;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Modified;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
-
 /**
  * @author Michael C. Han
  */
-@Component(
-	configurationPid = "com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConfiguration",
-	immediate = true, property = "operation.mode=EMBEDDED",
-	service = ElasticsearchConnection.class
-)
 public class EmbeddedElasticsearchConnection
 	extends BaseElasticsearchConnection {
 
-	public static final String CONNECTION_ID = "EMBEDDED";
+	public EmbeddedElasticsearchConnection(
+		String liferayHome, String jnaTmpDirName) {
+
+		_liferayHome = liferayHome;
+		_jnaTmpDirName = jnaTmpDirName;
+	}
 
 	@Override
 	public void close() {
@@ -104,31 +82,29 @@ public class EmbeddedElasticsearchConnection
 			}
 		}
 
-		if (PortalRunMode.isTestMode()) {
-			Injector injector = _node.injector();
+		Injector injector = _node.injector();
 
-			ThreadPool threadPool = injector.getInstance(ThreadPool.class);
+		ThreadPool threadPool = injector.getInstance(ThreadPool.class);
 
-			ScheduledExecutorService scheduledExecutorService =
-				threadPool.scheduler();
+		ScheduledExecutorService scheduledExecutorService =
+			threadPool.scheduler();
 
-			if (scheduledExecutorService instanceof ThreadPoolExecutor) {
-				ThreadPoolExecutor threadPoolExecutor =
-					(ThreadPoolExecutor)scheduledExecutorService;
+		if (scheduledExecutorService instanceof ThreadPoolExecutor) {
+			ThreadPoolExecutor threadPoolExecutor =
+				(ThreadPoolExecutor)scheduledExecutorService;
 
-				threadPoolExecutor.setRejectedExecutionHandler(
-					_REJECTED_EXECUTION_HANDLER);
-			}
+			threadPoolExecutor.setRejectedExecutionHandler(
+				_REJECTED_EXECUTION_HANDLER);
+		}
 
-			scheduledExecutorService.shutdown();
+		scheduledExecutorService.shutdown();
 
-			try {
-				scheduledExecutorService.awaitTermination(1, TimeUnit.HOURS);
-			}
-			catch (InterruptedException ie) {
-				if (_log.isWarnEnabled()) {
-					_log.warn("Thread pool shutdown wait was interrupted", ie);
-				}
+		try {
+			scheduledExecutorService.awaitTermination(1, TimeUnit.HOURS);
+		}
+		catch (InterruptedException ie) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Thread pool shutdown wait was interrupted", ie);
 			}
 		}
 
@@ -140,17 +116,11 @@ public class EmbeddedElasticsearchConnection
 		}
 
 		_node = null;
-
-		_file.deltree(_jnaTmpDirName);
 	}
 
 	@Override
 	public String getConnectionId() {
-		return CONNECTION_ID;
-	}
-
-	public Node getNode() {
-		return _node;
+		return String.valueOf(OperationMode.EMBEDDED);
 	}
 
 	@Override
@@ -158,17 +128,9 @@ public class EmbeddedElasticsearchConnection
 		return OperationMode.EMBEDDED;
 	}
 
-	@Activate
-	@Modified
-	protected void activate(
-		BundleContext bundleContext, Map<String, Object> properties) {
-
+	protected void activate(Map<String, Object> properties) {
 		elasticsearchConfiguration = ConfigurableUtil.createConfigurable(
 			ElasticsearchConfiguration.class, properties);
-
-		java.io.File tempDir = bundleContext.getDataFile(JNA_TMP_DIR);
-
-		_jnaTmpDirName = tempDir.getAbsolutePath();
 
 		close();
 
@@ -180,23 +142,13 @@ public class EmbeddedElasticsearchConnection
 		}
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(operation.mode=EMBEDDED)"
-	)
-	protected void addSettingsContributor(
-		SettingsContributor settingsContributor) {
-
-		_settingsContributors.add(settingsContributor);
-	}
-
 	protected void configureClustering() {
 		settingsBuilder.put(
 			"cluster.name", elasticsearchConfiguration.clusterName());
 		settingsBuilder.put(
 			"cluster.routing.allocation.disk.threshold_enabled", false);
+		settingsBuilder.put(
+			"cluster.service.slow_task_logging_threshold", "600s");
 		settingsBuilder.put("discovery.type", "single-node");
 	}
 
@@ -229,18 +181,6 @@ public class EmbeddedElasticsearchConnection
 
 		String networkHost = elasticsearchConfiguration.networkHost();
 
-		if (Validator.isNull(networkBindHost) &&
-			Validator.isNull(networkHost) &&
-			Validator.isNull(elasticsearchConfiguration.networkPublishHost())) {
-
-			InetAddress localBindInetAddress =
-				clusterSettingsContext.getLocalBindInetAddress();
-
-			if (localBindInetAddress != null) {
-				networkHost = localBindInetAddress.getHostAddress();
-			}
-		}
-
 		if (Validator.isNotNull(networkHost)) {
 			settingsBuilder.put("network.host", networkHost);
 		}
@@ -262,23 +202,13 @@ public class EmbeddedElasticsearchConnection
 	}
 
 	protected void configurePaths() {
-		String liferayHome = props.get(PropsKeys.LIFERAY_HOME);
-
 		settingsBuilder.put(
-			"path.data", liferayHome.concat("/data/elasticsearch7/indices"));
+			"path.data", _liferayHome.concat("/data/elasticsearch7/indices"));
 		settingsBuilder.put(
-			"path.home", liferayHome.concat("/data/elasticsearch7"));
-		settingsBuilder.put("path.logs", liferayHome.concat("/logs"));
+			"path.home", _liferayHome.concat("/data/elasticsearch7"));
+		settingsBuilder.put("path.logs", _liferayHome.concat("/logs"));
 		settingsBuilder.put(
-			"path.repo", liferayHome.concat("/data/elasticsearch7/repo"));
-	}
-
-	protected void configureTestMode() {
-		if (!PortalRunMode.isTestMode()) {
-			return;
-		}
-
-		settingsBuilder.put("monitor.jvm.gc.enabled", StringPool.FALSE);
+			"path.repo", _liferayHome.concat("/data/elasticsearch7/repo"));
 	}
 
 	protected EmbeddedElasticsearchPluginManager
@@ -286,8 +216,7 @@ public class EmbeddedElasticsearchConnection
 			String name, Settings settings) {
 
 		return new EmbeddedElasticsearchPluginManager(
-			name,
-			props.get(PropsKeys.LIFERAY_HOME) + "/data/elasticsearch7/plugins",
+			name, _liferayHome + "/data/elasticsearch7/plugins",
 			new PluginManagerFactoryImpl(settings), new PluginZipFactoryImpl());
 	}
 
@@ -340,11 +269,6 @@ public class EmbeddedElasticsearchConnection
 			clazz);
 	}
 
-	@Deactivate
-	protected void deactivate(Map<String, Object> properties) {
-		close();
-	}
-
 	protected void installPlugin(String name, Settings settings) {
 		EmbeddedElasticsearchPluginManager embeddedElasticsearchPluginManager =
 			createEmbeddedElasticsearchPluginManager(name, settings);
@@ -381,10 +305,9 @@ public class EmbeddedElasticsearchConnection
 	}
 
 	protected void loadDefaultConfigurations() {
-		String defaultConfigurations = ResourceUtil.getResourceAsString(
-			getClass(), "/META-INF/elasticsearch-optional-defaults.yml");
-
-		settingsBuilder.loadFromSource(defaultConfigurations);
+		settingsBuilder.put("http.host", "_local_");
+		settingsBuilder.put("monitor.jvm.gc.enabled", "false");
+		settingsBuilder.put("thread_pool.write.queue_size", "100");
 
 		settingsBuilder.put("action.auto_create_index", false);
 		settingsBuilder.put(
@@ -404,27 +327,7 @@ public class EmbeddedElasticsearchConnection
 
 		configurePaths();
 
-		configureTestMode();
-	}
-
-	protected void loadSettingsContributors() {
-		ClientSettingsHelper clientSettingsHelper = new ClientSettingsHelper() {
-
-			@Override
-			public void put(String setting, String value) {
-				settingsBuilder.put(setting, value);
-			}
-
-			@Override
-			public void putArray(String setting, String... values) {
-				settingsBuilder.putList(setting, values);
-			}
-
-		};
-
-		for (SettingsContributor settingsContributor : _settingsContributors) {
-			settingsContributor.populate(clientSettingsHelper);
-		}
+		settingsBuilder.put("monitor.jvm.gc.enabled", StringPool.FALSE);
 	}
 
 	protected void removeObsoletePlugin(String name, Settings settings) {
@@ -440,18 +343,10 @@ public class EmbeddedElasticsearchConnection
 		}
 	}
 
-	protected void removeSettingsContributor(
-		SettingsContributor settingsContributor) {
-
-		_settingsContributors.remove(settingsContributor);
-	}
-
 	protected void startNode() {
 		loadDefaultConfigurations();
 
 		loadAdditionalConfigurations();
-
-		loadSettingsContributors();
 
 		StopWatch stopWatch = new StopWatch();
 
@@ -499,16 +394,7 @@ public class EmbeddedElasticsearchConnection
 		}
 	}
 
-	protected static final String JNA_TMP_DIR = "elasticSearch-tmpDir";
-
-	@Reference
-	protected ClusterSettingsContext clusterSettingsContext;
-
-	protected volatile ElasticsearchConfiguration elasticsearchConfiguration;
-
-	@Reference
-	protected Props props;
-
+	protected ElasticsearchConfiguration elasticsearchConfiguration;
 	protected SettingsBuilder settingsBuilder = new SettingsBuilder(
 		Settings.builder());
 
@@ -536,13 +422,8 @@ public class EmbeddedElasticsearchConnection
 	private static final Log _log = LogFactoryUtil.getLog(
 		EmbeddedElasticsearchConnection.class);
 
-	private static String _jnaTmpDirName;
-
-	@Reference
-	private File _file;
-
+	private final String _jnaTmpDirName;
+	private final String _liferayHome;
 	private Node _node;
-	private final Set<SettingsContributor> _settingsContributors =
-		new ConcurrentSkipListSet<>();
 
 }
