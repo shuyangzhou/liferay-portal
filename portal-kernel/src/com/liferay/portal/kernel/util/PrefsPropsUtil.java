@@ -314,10 +314,16 @@ public class PrefsPropsUtil {
 		return getPrefsProps().getStringFromNames(companyId, names);
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public void setPrefsProps(PrefsProps prefsProps) {
 		_prefsProps = prefsProps;
 	}
 
-	private static PrefsProps _prefsProps;
+	private static volatile PrefsProps _prefsProps =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			PrefsProps.class, PrefsPropsUtil.class, "_prefsProps", false);
 
 }
