@@ -11,6 +11,7 @@ dependencies {
 	compileOnly group: "org.apache.felix", name: "org.apache.felix.http.servlet-api", version: "1.1.2"
 	compileOnly project(":apps:portal-odata:portal-odata-api")
 	compileOnly project(":core:petra:petra-function")
+	compileOnly project(":core:petra:petra-sql-dsl")
 	compileOnly project(":core:petra:petra-string")
 
 	testCompile group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
