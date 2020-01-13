@@ -15,6 +15,7 @@
 package com.liferay.portal.kernel.notifications;
 
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
 /**
  * @author Edward Han
@@ -33,12 +34,19 @@ public class NotificationEventFactoryUtil {
 		return _notificationEventFactory;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public void setNotificationEventFactory(
 		NotificationEventFactory notificationEventFactory) {
 
 		_notificationEventFactory = notificationEventFactory;
 	}
 
-	private static NotificationEventFactory _notificationEventFactory;
+	private static volatile NotificationEventFactory _notificationEventFactory =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			NotificationEventFactory.class, NotificationEventFactoryUtil.class,
+			"_notificationEventFactory", false);
 
 }

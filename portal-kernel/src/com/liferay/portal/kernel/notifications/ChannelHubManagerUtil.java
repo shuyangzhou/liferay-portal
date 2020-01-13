@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.notifications;
 
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -245,10 +247,17 @@ public class ChannelHubManagerUtil {
 			companyId, userId, channelListener);
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public void setChannelHubManager(ChannelHubManager channelHubManager) {
 		_channelHubManager = channelHubManager;
 	}
 
-	private static ChannelHubManager _channelHubManager;
+	private static volatile ChannelHubManager _channelHubManager =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			ChannelHubManager.class, ChannelHubManagerUtil.class,
+			"_channelHubManager", false);
 
 }
