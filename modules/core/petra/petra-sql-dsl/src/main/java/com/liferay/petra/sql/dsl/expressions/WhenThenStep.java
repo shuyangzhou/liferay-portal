@@ -15,6 +15,8 @@
 package com.liferay.petra.sql.dsl.expressions;
 
 import com.liferay.petra.sql.dsl.ast.ASTNode;
+import com.liferay.petra.sql.dsl.expressions.impl.Scalar;
+import com.liferay.petra.sql.dsl.expressions.impl.WhenThen;
 
 /**
  * @author Preston Crary

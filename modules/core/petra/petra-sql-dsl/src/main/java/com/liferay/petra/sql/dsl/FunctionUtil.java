@@ -14,12 +14,12 @@
 
 package com.liferay.petra.sql.dsl;
 
-import com.liferay.petra.sql.dsl.expressions.CaseWhenThen;
 import com.liferay.petra.sql.dsl.expressions.Expression;
 import com.liferay.petra.sql.dsl.expressions.Predicate;
-import com.liferay.petra.sql.dsl.expressions.Scalar;
-import com.liferay.petra.sql.dsl.functions.Function;
-import com.liferay.petra.sql.dsl.functions.FunctionType;
+import com.liferay.petra.sql.dsl.expressions.impl.CaseWhenThen;
+import com.liferay.petra.sql.dsl.expressions.impl.Function;
+import com.liferay.petra.sql.dsl.expressions.impl.FunctionType;
+import com.liferay.petra.sql.dsl.expressions.impl.Scalar;
 
 /**
  * @author Preston Crary
