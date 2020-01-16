@@ -17,9 +17,12 @@ package com.liferay.portal.search.elasticsearch7.internal.sidecar;
 import com.liferay.petra.process.ProcessCallable;
 import com.liferay.petra.process.ProcessException;
 import com.liferay.petra.process.local.LocalProcessLauncher;
+import com.liferay.petra.reflect.ReflectionUtil;
 
 import java.io.IOException;
 import java.io.Serializable;
+
+import java.lang.reflect.Method;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,11 +35,14 @@ import org.elasticsearch.node.Node;
 public class SidecarProcessCallable implements ProcessCallable<Serializable> {
 
 	public SidecarProcessCallable(
-		String[] arguments, long heartbeatInterval, boolean clustered) {
+		String[] arguments, long heartbeatInterval, boolean clustered,
+		String modifiedClassName, byte[] modifiedClassBytes) {
 
 		_arguments = arguments;
 		_heartbeatInterval = heartbeatInterval;
 		_clustered = clustered;
+		_modifiedClassName = modifiedClassName;
+		_modifiedClassBytes = modifiedClassBytes;
 	}
 
 	@Override
@@ -59,6 +65,16 @@ public class SidecarProcessCallable implements ProcessCallable<Serializable> {
 			}
 		}
 
+		try {
+			_loadModifiedClass();
+		}
+		catch (Exception e) {
+			if (_logger.isWarnEnabled()) {
+				_logger.warn(
+					"Unable to load modified class " + _modifiedClassName, e);
+			}
+		}
+
 		Thread thread = new Thread(
 			new ElasticsearchServerStatusMonitor(),
 			"Elasticsearch Server Status Monitor");
@@ -78,6 +94,31 @@ public class SidecarProcessCallable implements ProcessCallable<Serializable> {
 		return null;
 	}
 
+	private void _loadModifiedClass() throws Exception {
+		Thread thread = Thread.currentThread();
+
+		ClassLoader classLoader = thread.getContextClassLoader();
+
+		Method findLoadedClassMethod = ReflectionUtil.getDeclaredMethod(
+			ClassLoader.class, "findLoadedClass", String.class);
+
+		Class<?> clazz = (Class<?>)findLoadedClassMethod.invoke(
+			classLoader, _modifiedClassName);
+
+		if (clazz != null) {
+			throw new IllegalStateException(
+				_modifiedClassName + " has been loaded");
+		}
+
+		Method defineClassMethod = ReflectionUtil.getDeclaredMethod(
+			ClassLoader.class, "defineClass", String.class, byte[].class,
+			int.class, int.class);
+
+		defineClassMethod.invoke(
+			classLoader, _modifiedClassName, _modifiedClassBytes, 0,
+			_modifiedClassBytes.length);
+	}
+
 	private static final Logger _logger = LogManager.getLogger(
 		ElasticsearchServerStatusMonitor.class);
 
@@ -86,6 +127,8 @@ public class SidecarProcessCallable implements ProcessCallable<Serializable> {
 	private final String[] _arguments;
 	private final boolean _clustered;
 	private final long _heartbeatInterval;
+	private final byte[] _modifiedClassBytes;
+	private final String _modifiedClassName;
 
 	private class ElasticsearchServerStatusMonitor implements Runnable {
 
