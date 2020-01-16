@@ -6408,7 +6408,7 @@ public class PortalImpl implements Portal {
 			return true;
 		}
 
-		if (resourceId.contains("%")) {
+		while (resourceId.contains("%")) {
 			resourceId = HttpUtil.decodePath(resourceId);
 		}
 
