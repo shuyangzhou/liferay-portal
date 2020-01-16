@@ -26,6 +26,8 @@ create table DispatchTrigger (
 	cronExpression VARCHAR(75) null,
 	endDate DATE null,
 	name VARCHAR(75) null,
+	nextFireDate DATE null,
+	previousFireDate DATE null,
 	startDate DATE null,
 	system_ BOOLEAN,
 	type_ VARCHAR(75) null,

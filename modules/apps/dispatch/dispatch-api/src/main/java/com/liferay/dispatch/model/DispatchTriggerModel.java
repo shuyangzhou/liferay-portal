@@ -252,6 +252,34 @@ public interface DispatchTriggerModel
 	public void setName(String name);
 
 	/**
+	 * Returns the next fire date of this dispatch trigger.
+	 *
+	 * @return the next fire date of this dispatch trigger
+	 */
+	public Date getNextFireDate();
+
+	/**
+	 * Sets the next fire date of this dispatch trigger.
+	 *
+	 * @param nextFireDate the next fire date of this dispatch trigger
+	 */
+	public void setNextFireDate(Date nextFireDate);
+
+	/**
+	 * Returns the previous fire date of this dispatch trigger.
+	 *
+	 * @return the previous fire date of this dispatch trigger
+	 */
+	public Date getPreviousFireDate();
+
+	/**
+	 * Sets the previous fire date of this dispatch trigger.
+	 *
+	 * @param previousFireDate the previous fire date of this dispatch trigger
+	 */
+	public void setPreviousFireDate(Date previousFireDate);
+
+	/**
 	 * Returns the start date of this dispatch trigger.
 	 *
 	 * @return the start date of this dispatch trigger

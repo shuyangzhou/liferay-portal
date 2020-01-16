@@ -53,6 +53,8 @@ public class DispatchTriggerWrapper
 		attributes.put("cronExpression", getCronExpression());
 		attributes.put("endDate", getEndDate());
 		attributes.put("name", getName());
+		attributes.put("nextFireDate", getNextFireDate());
+		attributes.put("previousFireDate", getPreviousFireDate());
 		attributes.put("startDate", getStartDate());
 		attributes.put("system", isSystem());
 		attributes.put("type", getType());
@@ -127,6 +129,18 @@ public class DispatchTriggerWrapper
 
 		if (name != null) {
 			setName(name);
+		}
+
+		Date nextFireDate = (Date)attributes.get("nextFireDate");
+
+		if (nextFireDate != null) {
+			setNextFireDate(nextFireDate);
+		}
+
+		Date previousFireDate = (Date)attributes.get("previousFireDate");
+
+		if (previousFireDate != null) {
+			setPreviousFireDate(previousFireDate);
 		}
 
 		Date startDate = (Date)attributes.get("startDate");
@@ -242,6 +256,26 @@ public class DispatchTriggerWrapper
 	@Override
 	public String getName() {
 		return model.getName();
+	}
+
+	/**
+	 * Returns the next fire date of this dispatch trigger.
+	 *
+	 * @return the next fire date of this dispatch trigger
+	 */
+	@Override
+	public Date getNextFireDate() {
+		return model.getNextFireDate();
+	}
+
+	/**
+	 * Returns the previous fire date of this dispatch trigger.
+	 *
+	 * @return the previous fire date of this dispatch trigger
+	 */
+	@Override
+	public Date getPreviousFireDate() {
+		return model.getPreviousFireDate();
 	}
 
 	/**
@@ -444,6 +478,26 @@ public class DispatchTriggerWrapper
 	@Override
 	public void setName(String name) {
 		model.setName(name);
+	}
+
+	/**
+	 * Sets the next fire date of this dispatch trigger.
+	 *
+	 * @param nextFireDate the next fire date of this dispatch trigger
+	 */
+	@Override
+	public void setNextFireDate(Date nextFireDate) {
+		model.setNextFireDate(nextFireDate);
+	}
+
+	/**
+	 * Sets the previous fire date of this dispatch trigger.
+	 *
+	 * @param previousFireDate the previous fire date of this dispatch trigger
+	 */
+	@Override
+	public void setPreviousFireDate(Date previousFireDate) {
+		model.setPreviousFireDate(previousFireDate);
 	}
 
 	/**

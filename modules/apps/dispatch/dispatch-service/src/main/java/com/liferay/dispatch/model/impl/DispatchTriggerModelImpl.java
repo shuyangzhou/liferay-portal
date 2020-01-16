@@ -78,7 +78,8 @@ public class DispatchTriggerModelImpl
 		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
 		{"modifiedDate", Types.TIMESTAMP}, {"active_", Types.BOOLEAN},
 		{"cronExpression", Types.VARCHAR}, {"endDate", Types.TIMESTAMP},
-		{"name", Types.VARCHAR}, {"startDate", Types.TIMESTAMP},
+		{"name", Types.VARCHAR}, {"nextFireDate", Types.TIMESTAMP},
+		{"previousFireDate", Types.TIMESTAMP}, {"startDate", Types.TIMESTAMP},
 		{"system_", Types.BOOLEAN}, {"type_", Types.VARCHAR},
 		{"typeSettings", Types.CLOB}
 	};
@@ -98,6 +99,8 @@ public class DispatchTriggerModelImpl
 		TABLE_COLUMNS_MAP.put("cronExpression", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("endDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("nextFireDate", Types.TIMESTAMP);
+		TABLE_COLUMNS_MAP.put("previousFireDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("startDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("system_", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("type_", Types.VARCHAR);
@@ -105,7 +108,7 @@ public class DispatchTriggerModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table DispatchTrigger (mvccVersion LONG default 0 not null,dispatchTriggerId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,active_ BOOLEAN,cronExpression VARCHAR(75) null,endDate DATE null,name VARCHAR(75) null,startDate DATE null,system_ BOOLEAN,type_ VARCHAR(75) null,typeSettings TEXT null)";
+		"create table DispatchTrigger (mvccVersion LONG default 0 not null,dispatchTriggerId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,active_ BOOLEAN,cronExpression VARCHAR(75) null,endDate DATE null,name VARCHAR(75) null,nextFireDate DATE null,previousFireDate DATE null,startDate DATE null,system_ BOOLEAN,type_ VARCHAR(75) null,typeSettings TEXT null)";
 
 	public static final String TABLE_SQL_DROP = "drop table DispatchTrigger";
 
@@ -161,6 +164,8 @@ public class DispatchTriggerModelImpl
 		model.setCronExpression(soapModel.getCronExpression());
 		model.setEndDate(soapModel.getEndDate());
 		model.setName(soapModel.getName());
+		model.setNextFireDate(soapModel.getNextFireDate());
+		model.setPreviousFireDate(soapModel.getPreviousFireDate());
 		model.setStartDate(soapModel.getStartDate());
 		model.setSystem(soapModel.isSystem());
 		model.setType(soapModel.getType());
@@ -371,6 +376,18 @@ public class DispatchTriggerModelImpl
 		attributeSetterBiConsumers.put(
 			"name",
 			(BiConsumer<DispatchTrigger, String>)DispatchTrigger::setName);
+		attributeGetterFunctions.put(
+			"nextFireDate", DispatchTrigger::getNextFireDate);
+		attributeSetterBiConsumers.put(
+			"nextFireDate",
+			(BiConsumer<DispatchTrigger, Date>)
+				DispatchTrigger::setNextFireDate);
+		attributeGetterFunctions.put(
+			"previousFireDate", DispatchTrigger::getPreviousFireDate);
+		attributeSetterBiConsumers.put(
+			"previousFireDate",
+			(BiConsumer<DispatchTrigger, Date>)
+				DispatchTrigger::setPreviousFireDate);
 		attributeGetterFunctions.put(
 			"startDate", DispatchTrigger::getStartDate);
 		attributeSetterBiConsumers.put(
@@ -587,6 +604,28 @@ public class DispatchTriggerModelImpl
 
 	@JSON
 	@Override
+	public Date getNextFireDate() {
+		return _nextFireDate;
+	}
+
+	@Override
+	public void setNextFireDate(Date nextFireDate) {
+		_nextFireDate = nextFireDate;
+	}
+
+	@JSON
+	@Override
+	public Date getPreviousFireDate() {
+		return _previousFireDate;
+	}
+
+	@Override
+	public void setPreviousFireDate(Date previousFireDate) {
+		_previousFireDate = previousFireDate;
+	}
+
+	@JSON
+	@Override
 	public Date getStartDate() {
 		return _startDate;
 	}
@@ -702,6 +741,8 @@ public class DispatchTriggerModelImpl
 		dispatchTriggerImpl.setCronExpression(getCronExpression());
 		dispatchTriggerImpl.setEndDate(getEndDate());
 		dispatchTriggerImpl.setName(getName());
+		dispatchTriggerImpl.setNextFireDate(getNextFireDate());
+		dispatchTriggerImpl.setPreviousFireDate(getPreviousFireDate());
 		dispatchTriggerImpl.setStartDate(getStartDate());
 		dispatchTriggerImpl.setSystem(isSystem());
 		dispatchTriggerImpl.setType(getType());
@@ -849,6 +890,25 @@ public class DispatchTriggerModelImpl
 			dispatchTriggerCacheModel.name = null;
 		}
 
+		Date nextFireDate = getNextFireDate();
+
+		if (nextFireDate != null) {
+			dispatchTriggerCacheModel.nextFireDate = nextFireDate.getTime();
+		}
+		else {
+			dispatchTriggerCacheModel.nextFireDate = Long.MIN_VALUE;
+		}
+
+		Date previousFireDate = getPreviousFireDate();
+
+		if (previousFireDate != null) {
+			dispatchTriggerCacheModel.previousFireDate =
+				previousFireDate.getTime();
+		}
+		else {
+			dispatchTriggerCacheModel.previousFireDate = Long.MIN_VALUE;
+		}
+
 		Date startDate = getStartDate();
 
 		if (startDate != null) {
@@ -967,6 +1027,8 @@ public class DispatchTriggerModelImpl
 	private Date _endDate;
 	private String _name;
 	private String _originalName;
+	private Date _nextFireDate;
+	private Date _previousFireDate;
 	private Date _startDate;
 	private boolean _system;
 	private String _type;

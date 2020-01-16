@@ -78,7 +78,7 @@ public class DispatchTriggerCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(31);
+		StringBundler sb = new StringBundler(35);
 
 		sb.append("{mvccVersion=");
 		sb.append(mvccVersion);
@@ -102,6 +102,10 @@ public class DispatchTriggerCacheModel
 		sb.append(endDate);
 		sb.append(", name=");
 		sb.append(name);
+		sb.append(", nextFireDate=");
+		sb.append(nextFireDate);
+		sb.append(", previousFireDate=");
+		sb.append(previousFireDate);
 		sb.append(", startDate=");
 		sb.append(startDate);
 		sb.append(", system=");
@@ -168,6 +172,20 @@ public class DispatchTriggerCacheModel
 			dispatchTriggerImpl.setName(name);
 		}
 
+		if (nextFireDate == Long.MIN_VALUE) {
+			dispatchTriggerImpl.setNextFireDate(null);
+		}
+		else {
+			dispatchTriggerImpl.setNextFireDate(new Date(nextFireDate));
+		}
+
+		if (previousFireDate == Long.MIN_VALUE) {
+			dispatchTriggerImpl.setPreviousFireDate(null);
+		}
+		else {
+			dispatchTriggerImpl.setPreviousFireDate(new Date(previousFireDate));
+		}
+
 		if (startDate == Long.MIN_VALUE) {
 			dispatchTriggerImpl.setStartDate(null);
 		}
@@ -213,6 +231,8 @@ public class DispatchTriggerCacheModel
 		cronExpression = objectInput.readUTF();
 		endDate = objectInput.readLong();
 		name = objectInput.readUTF();
+		nextFireDate = objectInput.readLong();
+		previousFireDate = objectInput.readLong();
 		startDate = objectInput.readLong();
 
 		system = objectInput.readBoolean();
@@ -258,6 +278,8 @@ public class DispatchTriggerCacheModel
 			objectOutput.writeUTF(name);
 		}
 
+		objectOutput.writeLong(nextFireDate);
+		objectOutput.writeLong(previousFireDate);
 		objectOutput.writeLong(startDate);
 
 		objectOutput.writeBoolean(system);
@@ -288,6 +310,8 @@ public class DispatchTriggerCacheModel
 	public String cronExpression;
 	public long endDate;
 	public String name;
+	public long nextFireDate;
+	public long previousFireDate;
 	public long startDate;
 	public boolean system;
 	public String type;

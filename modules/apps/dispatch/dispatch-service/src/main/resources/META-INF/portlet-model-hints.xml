@@ -32,6 +32,8 @@
 		<field name="cronExpression" type="String" />
 		<field name="endDate" type="Date" />
 		<field name="name" type="String" />
+		<field name="nextFireDate" type="Date" />
+		<field name="previousFireDate" type="Date" />
 		<field name="startDate" type="Date" />
 		<field name="system" type="boolean" />
 		<field name="type" type="String" />

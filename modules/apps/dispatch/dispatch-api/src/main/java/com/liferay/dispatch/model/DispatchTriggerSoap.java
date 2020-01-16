@@ -42,6 +42,8 @@ public class DispatchTriggerSoap implements Serializable {
 		soapModel.setCronExpression(model.getCronExpression());
 		soapModel.setEndDate(model.getEndDate());
 		soapModel.setName(model.getName());
+		soapModel.setNextFireDate(model.getNextFireDate());
+		soapModel.setPreviousFireDate(model.getPreviousFireDate());
 		soapModel.setStartDate(model.getStartDate());
 		soapModel.setSystem(model.isSystem());
 		soapModel.setType(model.getType());
@@ -197,6 +199,22 @@ public class DispatchTriggerSoap implements Serializable {
 		_name = name;
 	}
 
+	public Date getNextFireDate() {
+		return _nextFireDate;
+	}
+
+	public void setNextFireDate(Date nextFireDate) {
+		_nextFireDate = nextFireDate;
+	}
+
+	public Date getPreviousFireDate() {
+		return _previousFireDate;
+	}
+
+	public void setPreviousFireDate(Date previousFireDate) {
+		_previousFireDate = previousFireDate;
+	}
+
 	public Date getStartDate() {
 		return _startDate;
 	}
@@ -244,6 +262,8 @@ public class DispatchTriggerSoap implements Serializable {
 	private String _cronExpression;
 	private Date _endDate;
 	private String _name;
+	private Date _nextFireDate;
+	private Date _previousFireDate;
 	private Date _startDate;
 	private boolean _system;
 	private String _type;
