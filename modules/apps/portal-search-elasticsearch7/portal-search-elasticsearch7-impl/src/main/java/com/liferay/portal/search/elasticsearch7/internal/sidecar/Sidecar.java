@@ -35,9 +35,11 @@ import com.liferay.portal.search.elasticsearch7.internal.util.ResourceUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 
 import java.net.InetAddress;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 
@@ -60,6 +62,12 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.NamedXContentRegistry;
 import org.elasticsearch.env.NodeEnvironment;
 import org.elasticsearch.gateway.MetaDataStateFormat;
+
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 /**
  * @author Tina Tian
@@ -131,7 +139,8 @@ public class Sidecar {
 				new SidecarProcessCallable(
 					_getSidecarArguments(),
 					_elasticsearchConfiguration.sidecarHeartbeatInterval(),
-					_clusterExecutor.isEnabled()));
+					_clusterExecutor.isEnabled(), _MODIFIED_CLASS_NAME,
+					_getModifiedClassBytes()));
 
 			NoticeableFuture<Serializable> noticeableFuture =
 				_processChannel.getProcessNoticeableFuture();
@@ -407,6 +416,69 @@ public class Sidecar {
 		return arguments;
 	}
 
+	private byte[] _getModifiedClassBytes() throws Exception {
+		List<URL> urls = new ArrayList<>();
+
+		File libFolder = new File(_sidecarHome, "lib");
+
+		for (File libFile : libFolder.listFiles()) {
+			URI uri = libFile.toURI();
+
+			urls.add(uri.toURL());
+		}
+
+		ClassLoader classLoader = new URLClassLoader(
+			urls.toArray(new URL[0]), null);
+
+		Class<?> clazz = classLoader.loadClass(_MODIFIED_CLASS_NAME);
+
+		try (InputStream inputStream = clazz.getResourceAsStream(
+				clazz.getSimpleName() + ".class")) {
+
+			ClassReader classReader = new ClassReader(inputStream);
+
+			ClassWriter classWriter = new ClassWriter(
+				classReader, ClassWriter.COMPUTE_MAXS);
+
+			classReader.accept(
+				new ClassVisitor(Opcodes.ASM5, classWriter) {
+
+					@Override
+					public MethodVisitor visitMethod(
+						int access, String name, String description,
+						String signature, String[] exceptions) {
+
+						MethodVisitor methodVisitor = super.visitMethod(
+							access, name, description, signature, exceptions);
+
+						if (!name.equals("definitelyRunningAsRoot")) {
+							return methodVisitor;
+						}
+
+						return new MethodVisitor(Opcodes.ASM5) {
+
+							@Override
+							public void visitCode() {
+								methodVisitor.visitCode();
+								methodVisitor.visitInsn(Opcodes.ICONST_0);
+								methodVisitor.visitInsn(Opcodes.IRETURN);
+							}
+
+							@Override
+							public void visitMaxs(int maxStack, int maxLocals) {
+								methodVisitor.visitMaxs(0, 0);
+							}
+
+						};
+					}
+
+				},
+				0);
+
+			return classWriter.toByteArray();
+		}
+	}
+
 	private String[] _getSidecarArguments() {
 		List<String> properties = new ArrayList<>();
 
@@ -515,6 +587,9 @@ public class Sidecar {
 	}
 
 	private static final String _DEFAULT_NODE_NAME = "liferay";
+
+	private static final String _MODIFIED_CLASS_NAME =
+		"org.elasticsearch.bootstrap.Natives";
 
 	private static final Log _log = LogFactoryUtil.getLog(Sidecar.class);
 
