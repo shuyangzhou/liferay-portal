@@ -71,7 +71,7 @@ xpack.security.transport.ssl.verification_mode: certificate</echo>
 			<property name="elastic.kibana.tar.url.mac" value="https://artifacts.elastic.co/downloads/kibana/${elastic.kibana.tar.name.mac}" />
 			<property name="elastic.kibana.zip.name.windows" value="kibana-${elasticsearch.version}-windows-x86_64.zip" />
 			<property name="elastic.kibana.zip.url.windows" value="https://artifacts.elastic.co/downloads/kibana/${elastic.kibana.zip.name.windows}" />
-			<property name="elasticsearch.dir" value="${app.server.parent.dir}/elasticsearch-${elasticsearch.version}" />
+			<property name="elasticsearch.dir" value="${app.server.parent.dir}/elasticsearch7" />
 			<property name="elasticsearch.analysis-icu.zip.name" value="analysis-icu-${elasticsearch.version}.zip" />
 			<property name="elasticsearch.analysis-icu.zip.url" value="https://artifacts.elastic.co/downloads/elasticsearch-plugins/analysis-icu/${elasticsearch.analysis-icu.zip.name}" />
 			<property name="elasticsearch.analysis-kuromoji.zip.name" value="analysis-kuromoji-${elasticsearch.version}.zip" />
@@ -621,6 +621,11 @@ ${line.separator}CATALINA_OPTS="${CATALINA_OPTS} -Djavax.net.ssl.trustStore=${el
 					</then>
 				</elseif>
 			</if>
+
+			<move
+				file="${app.server.parent.dir}/elasticsearch-${elasticsearch.version}"
+				tofile="${elasticsearch.dir}"
+			/>
 		</sequential>
 	</macrodef>
 
@@ -856,6 +861,14 @@ xpack.monitoring.collection.enabled: true</echo>
 		</exec>
 
 		<echo>Restoring snapshot.${line.separator}${curl.output}</echo>
+	</target>
+
+	<target name="unzip-elasticsearch-basic">
+		<configure-elasticsearch7-test-properties />
+
+		<unzip-elasticsearch />
+
+		<prepare-elasticsearch-analyzers />
 	</target>
 
 	<target name="start-elasticsearch">

@@ -126,8 +126,8 @@ public class SidecarManager {
 				future.get();
 			}
 			catch (Exception e) {
-				if (_log.isDebugEnabled()) {
-					_log.debug("Sidecar process is aborted", e);
+				if (_log.isWarnEnabled()) {
+					_log.warn("Sidecar process is aborted", e);
 				}
 			}
 
