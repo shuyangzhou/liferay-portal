@@ -14,24 +14,12 @@
 
 package com.liferay.portal.security.crypto.generator.hashing.salt;
 
-import com.liferay.portal.kernel.io.BigEndianCodec;
-import com.liferay.portal.kernel.security.SecureRandomUtil;
-
 /**
  * @author Carlos Sierra Andrés
+ * @author Arthur Chan
  */
-public interface VariableLengthSaltGenerator extends SaltGenerator {
+public interface FixedSizeSaltGenerator extends SaltGenerator {
 
-	public static VariableLengthSaltGenerator DEFAULT =
-		new VariableLengthSaltGenerator() {
-		};
-
-	public default byte[] generateSalt(int size) {
-		byte[] saltBytes = new byte[size];
-
-		BigEndianCodec.putLong(saltBytes, 0, SecureRandomUtil.nextLong());
-
-		return saltBytes;
-	}
+	public byte[] generateSalt();
 
 }

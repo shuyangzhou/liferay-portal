@@ -14,8 +14,26 @@
 
 package com.liferay.portal.security.crypto.generator.hashing.salt;
 
+import com.liferay.portal.kernel.security.SecureRandomUtil;
+
 /**
+ * @author Carlos Sierra Andrés
  * @author Arthur Chan
  */
-public interface SaltGenerator {
+public interface VariableSizeSaltGenerator extends SaltGenerator {
+
+	public static VariableSizeSaltGenerator DEFAULT =
+		new VariableSizeSaltGenerator() {
+		};
+
+	public default byte[] generateSalt(int size) {
+		byte[] saltBytes = new byte[size];
+
+		for (int i = 0; i < size; ++i) {
+			saltBytes[i] = SecureRandomUtil.nextByte();
+		}
+
+		return saltBytes;
+	}
+
 }
