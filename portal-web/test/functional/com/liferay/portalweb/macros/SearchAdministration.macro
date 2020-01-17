@@ -25,17 +25,9 @@ definition {
 			locator1 = "Portlet#HEADER",
 			value1 = "Search");
 
-		var searchClientVersion = selenium.getText("//div[contains(@class,'alert alert-info')]//strong[2]");
 		var searchEngineVendor = selenium.getText("//div[contains(@class,'alert alert-info')]//strong[1]");
 
-		if (contains("${searchEngineVendor}", "Elasticsearch")) {
-			if (contains("${searchClientVersion}", "7.") && contains("${searchEngineVendor}", "Embedded")) {
-				var curl = "http://localhost:9201/_tasks";
-			}
-			else {
-				var curl = "http://localhost:9200/_tasks";
-			}
-		}
+		var curl = "http://localhost:9200/_tasks";
 
 		Panel.expandPanel(panel = "Index Actions");
 
