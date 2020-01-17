@@ -221,7 +221,7 @@ definition {
 		property osgi.module.configurations = "clusterName=&quot;LiferayElasticsearchCluster1&quot;:blacklistBundleSymbolicNames=&quot;com.liferay.portal.mobile.device.detection.fiftyonedegrees.api,com.liferay.portal.mobile.device.detection.fiftyonedegrees.enterprise,com.liferay.portal.mobile.device.detection.fiftyonedegrees.enterprise.test.data,com.liferay.portal.mobile.device.detection.fiftyonedegrees,com.liferay.portal.search.elasticsearch6.impl,com.liferay.portal.search.elasticsearch6.spi,com.liferay.portal.search.elasticsearch6.api,com.liferay.portal.search.elasticsearch6.xpack.security.impl,com.liferay.portal.search.elasticsearch6.xpack.monitoring.web&quot;";
 		property portal.acceptance = "true";
 
-		Navigator.openSpecificURL(url = "http://localhost:9201");
+		Navigator.openSpecificURL(url = "http://localhost:9200");
 
 		Elasticsearch.viewClusterStatus(clusterStatus = "&quot;cluster_name&quot; : &quot;LiferayElasticsearchCluster1&quot;");
 	}
@@ -229,20 +229,11 @@ definition {
 	test SearchWithNonLiferayIndex {
 		property test.name.skip.portal.instance = "Elasticsearch7#SearchWithNonLiferayIndex";
 
-		Navigator.openSpecificURL(url = "http://localhost:9201");
+		Navigator.openSpecificURL(url = "http://localhost:9200");
 
-		if (IsTextEqual.isPartialText(locator1 = "//body", value1 = "&quot;number&quot; : &quot;7")) {
-			AntCommand(
-				locator1 = "build-test-elasticsearch7.xml",
-				value1 = "add-boston-dataset-index -Dbackup.index=boston311 -Delasticsearch.port=9201");
-		}
-		else {
-			Navigator.openSpecificURL(url = "http://localhost:9200");
-
-			AntCommand(
-				locator1 = "build-test-elasticsearch6.xml",
-				value1 = "add-boston-dataset-index -Dbackup.index=boston311 -Delasticsearch.port=9200");
-		}
+		AntCommand(
+			locator1 = "build-test-elasticsearch7.xml",
+			value1 = "add-boston-dataset-index -Dbackup.index=boston311 -Delasticsearch.port=9200");
 
 		Navigator.openURL();
 
