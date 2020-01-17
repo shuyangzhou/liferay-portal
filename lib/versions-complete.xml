@@ -6273,7 +6273,7 @@
 				<file-name>lib/portal/jackson-databind.jar</file-name>
 				<version>2.10.0</version>
 				<project-name>Jackson Databind</project-name>
-				<project-url>https://github.com/FasterXML/jackson-databind</project-url>
+				<project-url>https://github.com/FasterXML/jackson-databind.LIFERAY-PATCHED-1</project-url>
 				<licenses>
 					<license>
 						<license-name>Apache License 2.0</license-name>
