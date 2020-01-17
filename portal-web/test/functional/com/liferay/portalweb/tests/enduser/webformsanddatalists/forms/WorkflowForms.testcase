@@ -11,7 +11,7 @@ definition {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
 		if ("${testPortalInstance}" == "true") {
-			SignIn.signInPortalInstanceSetUp();
+			SignIn.portalInstanceSetUp();
 		}
 
 		User.firstLoginPG();

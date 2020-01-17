@@ -5448,6 +5448,10 @@ go</echo>
 		</delete>
 	</target>
 
+	<target name="clean-osgi-module">
+		<gradle-execute dir="${module.base.dir}" forcedcacheenabled="false" task="clean" />
+	</target>
+
 	<target name="clean-up-bundles">
 		<delete file="test.${user.name}.properties" />
 
@@ -6398,6 +6402,10 @@ go</echo>
 				</for>
 			</then>
 		</if>
+	</target>
+
+	<target name="deploy-osgi-module">
+		<gradle-execute dir="${module.base.dir}" forcedcacheenabled="false" task="deploy" />
 	</target>
 
 	<target name="deploy-osgi-module-configurations">
