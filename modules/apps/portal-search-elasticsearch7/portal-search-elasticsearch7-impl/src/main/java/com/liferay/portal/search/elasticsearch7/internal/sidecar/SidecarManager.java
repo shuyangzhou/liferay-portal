@@ -1,0 +1,125 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+package com.liferay.portal.search.elasticsearch7.internal.sidecar;
+
+import com.liferay.petra.concurrent.FutureListener;
+import com.liferay.petra.process.ProcessExecutor;
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.cluster.ClusterExecutor;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.File;
+import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.Props;
+import com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConfiguration;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnection;
+import com.liferay.portal.search.elasticsearch7.internal.connection.OperationMode;
+import com.liferay.portal.search.elasticsearch7.internal.connection.SidecarElasticsearchConnection;
+
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.concurrent.Future;
+
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
+
+/**
+ * @author Tina Tian
+ */
+@Component(
+	configurationPid = "com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConfiguration",
+	immediate = true, service = {}
+)
+public class SidecarManager {
+
+	@Activate
+	protected void activate(
+		BundleContext bundleContext, Map<String, Object> properties) {
+
+		_serviceRegistration = bundleContext.registerService(
+			ElasticsearchConnection.class,
+			new SidecarElasticsearchConnection(
+				new Sidecar(
+					_clusterExecutor, _processExecutor, _file, _props,
+					ConfigurableUtil.createConfigurable(
+						ElasticsearchConfiguration.class, properties),
+					new RestartFutureListener(bundleContext, properties))),
+			MapUtil.singletonDictionary(
+				"operation.mode", String.valueOf(OperationMode.EMBEDDED)));
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_serviceRegistration.unregister();
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(SidecarManager.class);
+
+	@Reference
+	private ClusterExecutor _clusterExecutor;
+
+	@Reference
+	private File _file;
+
+	@Reference
+	private ProcessExecutor _processExecutor;
+
+	@Reference
+	private Props _props;
+
+	private volatile ServiceRegistration<ElasticsearchConnection>
+		_serviceRegistration;
+
+	private class RestartFutureListener
+		implements FutureListener<Serializable> {
+
+		@Override
+		public void complete(Future<Serializable> future) {
+			try {
+				future.get();
+			}
+			catch (Exception e) {
+				if (_log.isWarnEnabled()) {
+					_log.warn("Sidecar process is aborted", e);
+				}
+			}
+
+			deactivate();
+
+			if (_log.isInfoEnabled()) {
+				_log.info("Sidecar process exited, will restart");
+			}
+
+			activate(_bundleContext, _properties);
+		}
+
+		private RestartFutureListener(
+			BundleContext bundleContext, Map<String, Object> properties) {
+
+			_bundleContext = bundleContext;
+			_properties = properties;
+		}
+
+		private final BundleContext _bundleContext;
+		private final Map<String, Object> _properties;
+
+	}
+
+}
