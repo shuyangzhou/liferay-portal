@@ -1,0 +1,9 @@
+grant {
+	permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
+	permission java.lang.RuntimePermission "accessDeclaredMembers";
+	permission java.lang.RuntimePermission "createClassLoader";
+	permission java.lang.RuntimePermission "setContextClassLoader";
+	permission java.lang.RuntimePermission "setSecurityManager";
+	permission org.elasticsearch.secure_sm.ThreadPermission "modifyArbitraryThread";
+	permission org.elasticsearch.secure_sm.ThreadPermission "modifyArbitraryThreadGroup";
+};
