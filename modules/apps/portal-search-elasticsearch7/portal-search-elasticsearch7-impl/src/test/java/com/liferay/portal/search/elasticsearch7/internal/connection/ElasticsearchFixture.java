@@ -14,17 +14,8 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.connection;
 
-import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.Props;
-import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConfiguration;
-import com.liferay.portal.search.elasticsearch7.internal.cluster.ClusterSettingsContext;
-import com.liferay.portal.search.elasticsearch7.internal.cluster.UnicastSettingsContributor;
-import com.liferay.portal.search.elasticsearch7.internal.settings.BaseSettingsContributor;
-import com.liferay.portal.search.elasticsearch7.settings.ClientSettingsHelper;
-import com.liferay.portal.util.FileImpl;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,10 +36,6 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.cluster.health.ClusterHealthStatus;
 import org.elasticsearch.common.unit.TimeValue;
-
-import org.mockito.Mockito;
-
-import org.osgi.framework.BundleContext;
 
 /**
  * @author André de Oliveira
@@ -78,9 +65,6 @@ public class ElasticsearchFixture implements ElasticsearchClientResolver {
 		deleteTmpDir();
 
 		_embeddedElasticsearchConnection = createElasticsearchConnection();
-
-		ReflectionTestUtil.setFieldValue(
-			_embeddedElasticsearchConnection, "_file", new FileImpl());
 	}
 
 	public void destroyNode() throws Exception {
@@ -112,8 +96,8 @@ public class ElasticsearchFixture implements ElasticsearchClientResolver {
 			return clusterClient.health(
 				clusterHealthRequest, RequestOptions.DEFAULT);
 		}
-		catch (IOException ioException) {
-			throw new RuntimeException(ioException);
+		catch (IOException ioe) {
+			throw new RuntimeException(ioe);
 		}
 	}
 
@@ -139,8 +123,8 @@ public class ElasticsearchFixture implements ElasticsearchClientResolver {
 		try {
 			return indicesClient.get(getIndexRequest, RequestOptions.DEFAULT);
 		}
-		catch (IOException ioException) {
-			throw new RuntimeException(ioException);
+		catch (IOException ioe) {
+			throw new RuntimeException(ioe);
 		}
 	}
 
@@ -159,12 +143,6 @@ public class ElasticsearchFixture implements ElasticsearchClientResolver {
 		String connectionId, boolean preferLocalCluster) {
 
 		return _embeddedElasticsearchConnection.getRestHighLevelClient();
-	}
-
-	public void setClusterSettingsContext(
-		ClusterSettingsContext clusterSettingsContext) {
-
-		_clusterSettingsContext = clusterSettingsContext;
 	}
 
 	public void setUp() throws Exception {
@@ -197,61 +175,6 @@ public class ElasticsearchFixture implements ElasticsearchClientResolver {
 		return clazz.getSimpleName();
 	}
 
-	protected void addClusterLoggingThresholdContributor(
-		EmbeddedElasticsearchConnection embeddedElasticsearchConnection) {
-
-		embeddedElasticsearchConnection.addSettingsContributor(
-			new BaseSettingsContributor(0) {
-
-				@Override
-				public void populate(
-					ClientSettingsHelper clientSettingsHelper) {
-
-					clientSettingsHelper.put(
-						"cluster.service.slow_task_logging_threshold", "600s");
-				}
-
-			});
-	}
-
-	protected void addDiskThresholdSettingsContributor(
-		EmbeddedElasticsearchConnection embeddedElasticsearchConnection) {
-
-		embeddedElasticsearchConnection.addSettingsContributor(
-			new BaseSettingsContributor(0) {
-
-				@Override
-				public void populate(
-					ClientSettingsHelper clientSettingsHelper) {
-
-					clientSettingsHelper.put(
-						"cluster.routing.allocation.disk.threshold_enabled",
-						"false");
-				}
-
-			});
-	}
-
-	protected void addUnicastSettingsContributor(
-		EmbeddedElasticsearchConnection embeddedElasticsearchConnection) {
-
-		if (_clusterSettingsContext == null) {
-			return;
-		}
-
-		UnicastSettingsContributor unicastSettingsContributor =
-			new UnicastSettingsContributor() {
-				{
-					setClusterSettingsContext(_clusterSettingsContext);
-
-					activate(_elasticsearchConfigurationProperties);
-				}
-			};
-
-		embeddedElasticsearchConnection.addSettingsContributor(
-			unicastSettingsContributor);
-	}
-
 	protected Map<String, Object> createElasticsearchConfigurationProperties(
 		Map<String, Object> elasticsearchConfigurationProperties) {
 
@@ -270,44 +193,11 @@ public class ElasticsearchFixture implements ElasticsearchClientResolver {
 
 	protected EmbeddedElasticsearchConnection createElasticsearchConnection() {
 		EmbeddedElasticsearchConnection embeddedElasticsearchConnection =
-			new EmbeddedElasticsearchConnection();
-
-		addClusterLoggingThresholdContributor(embeddedElasticsearchConnection);
-		addDiskThresholdSettingsContributor(embeddedElasticsearchConnection);
-		addUnicastSettingsContributor(embeddedElasticsearchConnection);
-
-		Props props = Mockito.mock(Props.class);
-
-		Mockito.when(
-			props.get(PropsKeys.LIFERAY_HOME)
-		).thenReturn(
-			_tmpDirName
-		);
-
-		ClusterSettingsContext clusterSettingsContext = _clusterSettingsContext;
-
-		if (clusterSettingsContext == null) {
-			clusterSettingsContext = Mockito.mock(ClusterSettingsContext.class);
-		}
-
-		embeddedElasticsearchConnection.clusterSettingsContext =
-			clusterSettingsContext;
-
-		embeddedElasticsearchConnection.props = props;
-
-		BundleContext bundleContext = Mockito.mock(BundleContext.class);
-
-		Mockito.when(
-			bundleContext.getDataFile(
-				EmbeddedElasticsearchConnection.JNA_TMP_DIR)
-		).thenReturn(
-			new File(
-				SystemProperties.get(SystemProperties.TMP_DIR) + "/" +
-					EmbeddedElasticsearchConnection.JNA_TMP_DIR)
-		);
+			new EmbeddedElasticsearchConnection(
+				_tmpDirName, _tmpDirName + "/elasticSearch-tmpDir");
 
 		embeddedElasticsearchConnection.activate(
-			bundleContext, _elasticsearchConfigurationProperties);
+			_elasticsearchConfigurationProperties);
 
 		return embeddedElasticsearchConnection;
 	}
@@ -316,7 +206,6 @@ public class ElasticsearchFixture implements ElasticsearchClientResolver {
 		FileUtils.deleteDirectory(new File(_tmpDirName));
 	}
 
-	private ClusterSettingsContext _clusterSettingsContext;
 	private final Map<String, Object> _elasticsearchConfigurationProperties;
 	private EmbeddedElasticsearchConnection _embeddedElasticsearchConnection;
 	private final String _tmpDirName;
