@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
+import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserGroupRoleLocalServiceUtil;
@@ -73,7 +74,14 @@ public class UserTestUtil {
 	public static User addGroupUser(Group group, String roleName)
 		throws Exception {
 
-		User groupUser = addUser(group.getGroupId());
+		User groupUser = addUser(
+			group.getCompanyId(), TestPropsValues.getUserId(),
+			RandomTestUtil.randomString(
+				NumericStringRandomizerBumper.INSTANCE,
+				UniqueStringRandomizerBumper.INSTANCE),
+			LocaleUtil.getDefault(), RandomTestUtil.randomString(),
+			RandomTestUtil.randomString(), new long[] {group.getGroupId()},
+			ServiceContextTestUtil.getServiceContext());
 
 		Role role = RoleLocalServiceUtil.getRole(
 			group.getCompanyId(), roleName);
@@ -199,8 +207,16 @@ public class UserTestUtil {
 	}
 
 	public static User addUser(long... groupIds) throws Exception {
+		long companyId = TestPropsValues.getCompanyId();
+
+		if ((groupIds != null) || (groupIds.length > 0)) {
+			Group group = GroupLocalServiceUtil.getGroup(groupIds[0]);
+
+			companyId = group.getCompanyId();
+		}
+
 		return addUser(
-			TestPropsValues.getCompanyId(), TestPropsValues.getUserId(),
+			companyId, TestPropsValues.getUserId(),
 			RandomTestUtil.randomString(
 				NumericStringRandomizerBumper.INSTANCE,
 				UniqueStringRandomizerBumper.INSTANCE),
@@ -210,8 +226,10 @@ public class UserTestUtil {
 	}
 
 	public static User addUser(long groupId, Locale locale) throws Exception {
+		Group group = GroupLocalServiceUtil.getGroup(groupId);
+
 		return addUser(
-			TestPropsValues.getCompanyId(), TestPropsValues.getUserId(),
+			group.getCompanyId(), TestPropsValues.getUserId(),
 			RandomTestUtil.randomString(
 				NumericStringRandomizerBumper.INSTANCE,
 				UniqueStringRandomizerBumper.INSTANCE),
@@ -279,18 +297,34 @@ public class UserTestUtil {
 			long[] groupIds)
 		throws Exception {
 
+		long companyId = TestPropsValues.getCompanyId();
+
+		if ((groupIds != null) || (groupIds.length > 0)) {
+			Group group = GroupLocalServiceUtil.getGroup(groupIds[0]);
+
+			companyId = group.getCompanyId();
+		}
+
 		return addUser(
-			TestPropsValues.getCompanyId(), TestPropsValues.getUserId(),
-			screenName, locale, firstName, lastName, groupIds,
+			companyId, TestPropsValues.getUserId(), screenName, locale,
+			firstName, lastName, groupIds,
 			ServiceContextTestUtil.getServiceContext());
 	}
 
 	public static User addUser(String screenName, long... groupIds)
 		throws Exception {
 
+		long companyId = TestPropsValues.getCompanyId();
+
+		if ((groupIds != null) || (groupIds.length > 0)) {
+			Group group = GroupLocalServiceUtil.getGroup(groupIds[0]);
+
+			companyId = group.getCompanyId();
+		}
+
 		return addUser(
-			TestPropsValues.getCompanyId(), TestPropsValues.getUserId(),
-			screenName, LocaleUtil.getDefault(), RandomTestUtil.randomString(),
+			companyId, TestPropsValues.getUserId(), screenName,
+			LocaleUtil.getDefault(), RandomTestUtil.randomString(),
 			RandomTestUtil.randomString(), groupIds,
 			ServiceContextTestUtil.getServiceContext());
 	}
@@ -299,8 +333,10 @@ public class UserTestUtil {
 			long userId, long groupId, String roleName)
 		throws Exception {
 
+		Group group = GroupLocalServiceUtil.getGroup(groupId);
+
 		Role role = RoleLocalServiceUtil.getRole(
-			TestPropsValues.getCompanyId(), roleName);
+			group.getCompanyId(), roleName);
 
 		UserGroupRoleLocalServiceUtil.addUserGroupRoles(
 			new long[] {userId}, groupId, role.getRoleId());
