@@ -25,7 +25,7 @@ package com.liferay.change.tracking.model.impl;
  */
 public class CTAutoResolutionInfoImpl extends CTAutoResolutionInfoBaseImpl {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this class directly. All methods that expect a ct auto resolution info model instance should use the {@link com.liferay.change.tracking.model.CTAutoResolutionInfo} interface instead.
