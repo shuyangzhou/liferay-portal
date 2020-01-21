@@ -1,0 +1,11 @@
+bootstrap.system_call_filter: false
+cluster:
+    routing:
+        allocation:
+            disk:
+                threshold_enabled: false
+node:
+    data: true
+    ingest: true
+    master: true
+    store.allow_mmap: false
