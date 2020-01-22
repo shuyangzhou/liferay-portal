@@ -1,3 +1,6 @@
 Bundle-Name: Liferay Portal OSGi Web Portlet Tracker
 Bundle-SymbolicName: com.liferay.portal.osgi.web.portlet.tracker
 Bundle-Version: 5.0.3
+-provider-policy:\
+	${range;[==,\
+	+)}
