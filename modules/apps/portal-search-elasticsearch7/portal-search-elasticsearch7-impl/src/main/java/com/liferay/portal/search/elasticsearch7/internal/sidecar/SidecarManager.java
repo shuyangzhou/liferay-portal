@@ -27,6 +27,9 @@ import com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConfi
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnection;
 import com.liferay.portal.search.elasticsearch7.internal.connection.OperationMode;
 import com.liferay.portal.search.elasticsearch7.internal.connection.SidecarElasticsearchConnection;
+import com.liferay.portal.search.elasticsearch7.internal.settings.BaseIndexSettingsContributor;
+import com.liferay.portal.search.elasticsearch7.settings.IndexSettingsContributor;
+import com.liferay.portal.search.elasticsearch7.settings.IndexSettingsHelper;
 
 import java.io.Serializable;
 
@@ -66,21 +69,44 @@ public class SidecarManager {
 				com.liferay.portal.search.elasticsearch7.configuration.
 					OperationMode.EMBEDDED) {
 
+			if (_clusterExecutor.isEnabled()) {
+				_indexSettingsContributorServiceRegistration =
+					bundleContext.registerService(
+						IndexSettingsContributor.class,
+						new BaseIndexSettingsContributor(Integer.MAX_VALUE) {
+
+							@Override
+							public void populate(
+								IndexSettingsHelper indexSettingsHelper) {
+
+								indexSettingsHelper.put(
+									"index.auto_expand_replicas", "0-all");
+							}
+
+						},
+						null);
+			}
+
 			_sidecar.start();
 		}
 
-		_serviceRegistration = bundleContext.registerService(
-			ElasticsearchConnection.class,
-			new SidecarElasticsearchConnection(_sidecar),
-			MapUtil.singletonDictionary(
-				"operation.mode", String.valueOf(OperationMode.EMBEDDED)));
+		_elasticsearchConnectionServiceRegistration =
+			bundleContext.registerService(
+				ElasticsearchConnection.class,
+				new SidecarElasticsearchConnection(_sidecar),
+				MapUtil.singletonDictionary(
+					"operation.mode", String.valueOf(OperationMode.EMBEDDED)));
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		_serviceRegistration.unregister();
+		_elasticsearchConnectionServiceRegistration.unregister();
 
 		_sidecar.stop();
+
+		if (_indexSettingsContributorServiceRegistration != null) {
+			_indexSettingsContributorServiceRegistration.unregister();
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(SidecarManager.class);
@@ -88,8 +114,14 @@ public class SidecarManager {
 	@Reference
 	private ClusterExecutor _clusterExecutor;
 
+	private volatile ServiceRegistration<ElasticsearchConnection>
+		_elasticsearchConnectionServiceRegistration;
+
 	@Reference
 	private File _file;
+
+	private volatile ServiceRegistration<IndexSettingsContributor>
+		_indexSettingsContributorServiceRegistration;
 
 	@Reference
 	private ProcessExecutor _processExecutor;
@@ -97,8 +129,6 @@ public class SidecarManager {
 	@Reference
 	private Props _props;
 
-	private volatile ServiceRegistration<ElasticsearchConnection>
-		_serviceRegistration;
 	private volatile Sidecar _sidecar;
 
 	private class RestartFutureListener
