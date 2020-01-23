@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConfiguration;
 import com.liferay.portal.search.elasticsearch7.internal.settings.SettingsBuilder;
@@ -387,7 +388,13 @@ public class Sidecar {
 		}
 
 		if (_elasticsearchConfiguration.sidecarDebug()) {
-			arguments.add(_elasticsearchConfiguration.sidecarDebugSettings());
+			String debugSetings =
+				_elasticsearchConfiguration.sidecarDebugSettings();
+
+			debugSetings = StringUtil.replace(debugSetings, "\\=", "=");
+			debugSetings = StringUtil.replace(debugSetings, "\\,", ",");
+
+			arguments.add(debugSetings);
 		}
 
 		arguments.add("-Des.distribution.flavor=default");
