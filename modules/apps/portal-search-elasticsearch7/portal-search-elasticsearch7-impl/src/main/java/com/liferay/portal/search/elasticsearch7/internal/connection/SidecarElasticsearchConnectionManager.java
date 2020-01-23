@@ -25,7 +25,10 @@ import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.ProxyFactory;
 import com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConfiguration;
+import com.liferay.portal.search.elasticsearch7.internal.settings.BaseIndexSettingsContributor;
 import com.liferay.portal.search.elasticsearch7.internal.sidecar.Sidecar;
+import com.liferay.portal.search.elasticsearch7.settings.IndexSettingsContributor;
+import com.liferay.portal.search.elasticsearch7.settings.IndexSettingsHelper;
 
 import java.io.Serializable;
 
@@ -63,6 +66,24 @@ public class SidecarElasticsearchConnectionManager {
 				com.liferay.portal.search.elasticsearch7.configuration.
 					OperationMode.EMBEDDED) {
 
+			if (_clusterExecutor.isEnabled()) {
+				_indexSettingsContributorServiceRegistration =
+					bundleContext.registerService(
+						IndexSettingsContributor.class,
+						new BaseIndexSettingsContributor(Integer.MAX_VALUE) {
+
+							@Override
+							public void populate(
+								IndexSettingsHelper indexSettingsHelper) {
+
+								indexSettingsHelper.put(
+									"index.auto_expand_replicas", "0-all");
+							}
+
+						},
+						null);
+			}
+
 			elasticsearchConnection = new SidecarElasticsearchConnection(
 				new Sidecar(
 					_clusterExecutor, _processExecutor, _file, _props,
@@ -73,15 +94,20 @@ public class SidecarElasticsearchConnectionManager {
 				ElasticsearchConnection.class);
 		}
 
-		_serviceRegistration = bundleContext.registerService(
-			ElasticsearchConnection.class, elasticsearchConnection,
-			MapUtil.singletonDictionary(
-				"operation.mode", String.valueOf(OperationMode.EMBEDDED)));
+		_elasticsearchConnectionServiceRegistration =
+			bundleContext.registerService(
+				ElasticsearchConnection.class, elasticsearchConnection,
+				MapUtil.singletonDictionary(
+					"operation.mode", String.valueOf(OperationMode.EMBEDDED)));
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		_serviceRegistration.unregister();
+		_elasticsearchConnectionServiceRegistration.unregister();
+
+		if (_indexSettingsContributorServiceRegistration != null) {
+			_indexSettingsContributorServiceRegistration.unregister();
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -93,18 +119,20 @@ public class SidecarElasticsearchConnectionManager {
 	private ClusterExecutor _clusterExecutor;
 
 	private ElasticsearchConfiguration _elasticsearchConfiguration;
+	private volatile ServiceRegistration<ElasticsearchConnection>
+		_elasticsearchConnectionServiceRegistration;
 
 	@Reference
 	private File _file;
+
+	private ServiceRegistration<IndexSettingsContributor>
+		_indexSettingsContributorServiceRegistration;
 
 	@Reference
 	private ProcessExecutor _processExecutor;
 
 	@Reference
 	private Props _props;
-
-	private volatile ServiceRegistration<ElasticsearchConnection>
-		_serviceRegistration;
 
 	private class RestartFutureListener
 		implements FutureListener<Serializable> {
@@ -121,7 +149,7 @@ public class SidecarElasticsearchConnectionManager {
 			}
 
 			ServiceRegistration<ElasticsearchConnection> serviceRegistration =
-				_serviceRegistration;
+				_elasticsearchConnectionServiceRegistration;
 
 			if (serviceRegistration == null) {
 				throw new RuntimeException("Sidecar process is not started");
@@ -133,15 +161,17 @@ public class SidecarElasticsearchConnectionManager {
 				_log.info("Sidecar process exited, will restart");
 			}
 
-			_serviceRegistration = _bundleContext.registerService(
-				ElasticsearchConnection.class,
-				new SidecarElasticsearchConnection(
-					new Sidecar(
-						_clusterExecutor, _processExecutor, _file, _props,
-						_elasticsearchConfiguration,
-						new RestartFutureListener())),
-				MapUtil.singletonDictionary(
-					"operation.mode", String.valueOf(OperationMode.EMBEDDED)));
+			_elasticsearchConnectionServiceRegistration =
+				_bundleContext.registerService(
+					ElasticsearchConnection.class,
+					new SidecarElasticsearchConnection(
+						new Sidecar(
+							_clusterExecutor, _processExecutor, _file, _props,
+							_elasticsearchConfiguration,
+							new RestartFutureListener())),
+					MapUtil.singletonDictionary(
+						"operation.mode",
+						String.valueOf(OperationMode.EMBEDDED)));
 		}
 
 	}
