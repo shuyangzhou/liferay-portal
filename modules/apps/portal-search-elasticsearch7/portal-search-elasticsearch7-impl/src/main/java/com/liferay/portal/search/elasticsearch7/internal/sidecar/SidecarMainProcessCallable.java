@@ -17,8 +17,11 @@ package com.liferay.portal.search.elasticsearch7.internal.sidecar;
 import com.liferay.petra.process.ProcessCallable;
 import com.liferay.petra.process.ProcessException;
 import com.liferay.petra.process.local.LocalProcessLauncher;
+import com.liferay.petra.reflect.ReflectionUtil;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Method;
 
 /**
  * @author Tina Tian
@@ -26,8 +29,13 @@ import java.io.Serializable;
 public class SidecarMainProcessCallable
 	implements ProcessCallable<Serializable> {
 
-	public SidecarMainProcessCallable(long heartbeatInterval) {
+	public SidecarMainProcessCallable(
+		long heartbeatInterval, String modifiedClassName,
+		byte[] modifiedClassBytes) {
+
 		_heartbeatInterval = heartbeatInterval;
+		_modifiedClassName = modifiedClassName;
+		_modifiedClassBytes = modifiedClassBytes;
 	}
 
 	@Override
@@ -41,6 +49,15 @@ public class SidecarMainProcessCallable
 			});
 
 		try {
+			_loadModifiedClass();
+		}
+		catch (Exception exception) {
+			throw new ProcessException(
+				"Unable to load modified class " + _modifiedClassName,
+				exception);
+		}
+
+		try {
 			ElasticsearchServerUtil.waitForShutdown();
 		}
 		catch (InterruptedException interruptedException) {
@@ -51,8 +68,35 @@ public class SidecarMainProcessCallable
 		return null;
 	}
 
+	private void _loadModifiedClass() throws Exception {
+		Thread thread = Thread.currentThread();
+
+		ClassLoader classLoader = thread.getContextClassLoader();
+
+		Method findLoadedClassMethod = ReflectionUtil.getDeclaredMethod(
+			ClassLoader.class, "findLoadedClass", String.class);
+
+		Class<?> clazz = (Class<?>)findLoadedClassMethod.invoke(
+			classLoader, _modifiedClassName);
+
+		if (clazz != null) {
+			throw new IllegalStateException(
+				_modifiedClassName + " has been loaded");
+		}
+
+		Method defineClassMethod = ReflectionUtil.getDeclaredMethod(
+			ClassLoader.class, "defineClass", String.class, byte[].class,
+			int.class, int.class);
+
+		defineClassMethod.invoke(
+			classLoader, _modifiedClassName, _modifiedClassBytes, 0,
+			_modifiedClassBytes.length);
+	}
+
 	private static final long serialVersionUID = 1L;
 
 	private final long _heartbeatInterval;
+	private final byte[] _modifiedClassBytes;
+	private final String _modifiedClassName;
 
 }
