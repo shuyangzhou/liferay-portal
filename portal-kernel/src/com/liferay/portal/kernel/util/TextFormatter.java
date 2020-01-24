@@ -193,6 +193,12 @@ public class TextFormatter {
 	public static String formatStorageSize(double size, Locale locale) {
 		String suffix = LanguageUtil.get(locale, "storage.size.suffix.b");
 
+		NumberFormat numberFormat = NumberFormat.getInstance(locale);
+
+		numberFormat.setMaximumFractionDigits(0);
+
+		numberFormat.setMinimumFractionDigits(0);
+
 		if (size >= _STORAGE_SIZE_DENOMINATOR) {
 			suffix = LanguageUtil.get(locale, "storage.size.suffix.kb");
 
@@ -203,26 +209,17 @@ public class TextFormatter {
 			suffix = LanguageUtil.get(locale, "storage.size.suffix.mb");
 
 			size = size / _STORAGE_SIZE_DENOMINATOR;
+
+			numberFormat.setMaximumFractionDigits(1);
 		}
 
 		if (size >= _STORAGE_SIZE_DENOMINATOR) {
 			suffix = LanguageUtil.get(locale, "storage.size.suffix.gb");
 
 			size = size / _STORAGE_SIZE_DENOMINATOR;
-		}
 
-		NumberFormat numberFormat = NumberFormat.getInstance(locale);
-
-		if (suffix.equals(LanguageUtil.get(locale, "storage.size.suffix.b")) ||
-			suffix.equals(LanguageUtil.get(locale, "storage.size.suffix.kb"))) {
-
-			numberFormat.setMaximumFractionDigits(0);
-		}
-		else {
 			numberFormat.setMaximumFractionDigits(1);
 		}
-
-		numberFormat.setMinimumFractionDigits(0);
 
 		return numberFormat.format(size) + StringPool.SPACE + suffix;
 	}
