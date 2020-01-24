@@ -184,6 +184,7 @@ public class CTCollectionLocalServiceImpl
 				ctAutoResolutionInfo.setCreateDate(new Date());
 				ctAutoResolutionInfo.setCtCollectionId(
 					ctCollection.getCtCollectionId());
+				ctAutoResolutionInfo.setModelClassNameId(entry.getKey());
 				ctAutoResolutionInfo.setSourceModelClassPK(
 					conflictInfo.getSourcePrimaryKey());
 				ctAutoResolutionInfo.setTargetModelClassPK(
