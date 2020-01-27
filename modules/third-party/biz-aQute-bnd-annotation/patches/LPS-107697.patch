@@ -1,0 +1,19 @@
+diff --git a/aQute/bnd/annotation/metatype/Configurable.java b/aQute/bnd/annotation/metatype/Configurable.java
+index 6742c39..b8ce64b 100644
+--- a/aQute/bnd/annotation/metatype/Configurable.java
++++ b/aQute/bnd/annotation/metatype/Configurable.java
+@@ -121,8 +121,13 @@ public class Configurable<T> {
+ 			}
+
+ 			Class<?> actualType = o.getClass();
+-			if (actualType.isAssignableFrom(resultType))
++			if (actualType.isAssignableFrom(resultType)) {
++				if (resultType == String.class) {
++					return ((String)o).replaceAll("\\\\([,|=])", "$1");
++				}
++
+ 				return o;
++			}
+
+ 			if (resultType == boolean.class || resultType == Boolean.class) {
+ 				if (actualType == boolean.class || actualType == Boolean.class)
