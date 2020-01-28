@@ -121,8 +121,13 @@ public class Configurable<T> {
 			}
 
 			Class<?> actualType = o.getClass();
-			if (actualType.isAssignableFrom(resultType))
+			if (actualType.isAssignableFrom(resultType)) {
+				if (resultType == String.class) {
+					return unescape((String)o);
+				}
+
 				return o;
+			}
 
 			if (resultType == boolean.class || resultType == Boolean.class) {
 				if (actualType == boolean.class || actualType == Boolean.class)
@@ -322,11 +327,14 @@ public class Configurable<T> {
 
 			if (o instanceof String) {
 				String s = (String) o;
+
+				s = s.replace("\\\\", _BACK_SLASH_PLACE_HOLDER);
+
 				if (SPLITTER_P.matcher(s)
 					.find())
 					return Arrays.asList(s.split("\\|"));
 				else
-					return unescape(s);
+					return Arrays.asList(s.split("(?<!\\\\),"));
 
 			}
 			return Arrays.asList(o);
@@ -358,19 +366,15 @@ public class Configurable<T> {
 		return sb.toString();
 	}
 
-	public static List<String> unescape(String s) {
+	public static String unescape(String s) {
 		// do it the OSGi way
-		List<String> tokens = new ArrayList<>();
+		s = s.replace("\\\\", _BACK_SLASH_PLACE_HOLDER);
 
-		String[] parts = s.split("(?<!\\\\),");
+		s = s.replaceAll("^\\s*", "");
+		s = s.replaceAll("(?!<\\\\)\\s*$", "");
+		s = s.replaceAll("\\\\([\\s,=\\\\|])", "$1");
 
-		for (String p : parts) {
-			p = p.replaceAll("^\\s*", "");
-			p = p.replaceAll("(?!<\\\\)\\s*$", "");
-			p = p.replaceAll("\\\\([\\s,\\\\|])", "$1");
-			tokens.add(p);
-		}
-		return tokens;
+		return s.replace(_BACK_SLASH_PLACE_HOLDER, "\\");
 	}
 
 	private static final MethodType defaultConstructor = methodType(void.class);
@@ -399,4 +403,7 @@ public class Configurable<T> {
 		}
 	}
 
+	private static final String _BACK_SLASH_PLACE_HOLDER = "BACK_SLASH_PLACE_HOLDER";
+
 }
+/* @generated */
