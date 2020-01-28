@@ -221,9 +221,15 @@ public class ConfigurableUtilTest {
 			requiredString, testConfiguration.testReqiredString());
 		Assert.assertEquals(1, testConfiguration.testShort());
 		Assert.assertEquals("test_string", testConfiguration.testString());
+		Assert.assertEquals(
+			"key=value\\1\\,value2",
+			testConfiguration.testStringBackslashEscape());
 		Assert.assertArrayEquals(
 			new String[] {"test_string_1", "test_string_2"},
 			testConfiguration.testStringArray());
+		Assert.assertArrayEquals(
+			new String[] {"key1=value\\1\\,value2", "key2=value1,value2"},
+			testConfiguration.testStringArrayBackslashEscape());
 
 		TestClass testClass = testConfiguration.testClass();
 
@@ -286,6 +292,15 @@ public class ConfigurableUtilTest {
 
 		@Meta.AD(deflt = "test_string_1|test_string_2", required = false)
 		public String[] testStringArray();
+
+		@Meta.AD(
+			deflt = "key1\\=value\\1\\\\,value2,key2\\=value1\\,value2",
+			required = false
+		)
+		public String[] testStringArrayBackslashEscape();
+
+		@Meta.AD(deflt = "key\\=value\\1\\\\,value2", required = false)
+		public String testStringBackslashEscape();
 
 	}
 
