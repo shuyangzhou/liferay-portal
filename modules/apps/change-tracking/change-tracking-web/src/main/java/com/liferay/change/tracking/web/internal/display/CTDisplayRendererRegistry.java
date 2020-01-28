@@ -89,6 +89,34 @@ public class CTDisplayRendererRegistry {
 		}
 	}
 
+	public String getEntryTitle(
+		CTEntry ctEntry, HttpServletRequest httpServletRequest) {
+
+		String languageKey = "x-modified-a-x-x-ago";
+
+		if (ctEntry.getChangeType() == CTConstants.CT_CHANGE_TYPE_ADDITION) {
+			languageKey = "x-added-a-x-x-ago";
+		}
+		else if (ctEntry.getChangeType() ==
+					CTConstants.CT_CHANGE_TYPE_DELETION) {
+
+			languageKey = "x-deleted-a-x-x-ago";
+		}
+
+		Date modifiedDate = ctEntry.getModifiedDate();
+
+		return _language.format(
+			httpServletRequest, languageKey,
+			new Object[] {
+				ctEntry.getUserName(),
+				getTypeName(httpServletRequest.getLocale(), ctEntry),
+				_language.getTimeDescription(
+					httpServletRequest.getLocale(),
+					System.currentTimeMillis() - modifiedDate.getTime(), true)
+			},
+			false);
+	}
+
 	public String getTypeName(Locale locale, CTEntry ctEntry) {
 		CTDisplayRenderer<?> ctDisplayRenderer =
 			_ctDisplayServiceTrackerMap.getService(
@@ -117,14 +145,6 @@ public class CTDisplayRendererRegistry {
 		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse, CTEntry ctEntry) {
 
-		CTDisplayRenderer<T> ctDisplayRenderer =
-			_ctDisplayServiceTrackerMap.getService(
-				ctEntry.getModelClassNameId());
-
-		if (ctDisplayRenderer == null) {
-			return null;
-		}
-
 		CTService<T> ctService = _ctServiceServiceTrackerMap.getService(
 			ctEntry.getModelClassNameId());
 
@@ -139,31 +159,6 @@ public class CTDisplayRendererRegistry {
 			if (ctModel == null) {
 				return null;
 			}
-
-			Date modifiedDate = ctEntry.getModifiedDate();
-
-			String age = _language.format(
-				liferayPortletRequest.getLocale(), "x-ago",
-				_language.getTimeDescription(
-					liferayPortletRequest.getLocale(),
-					System.currentTimeMillis() - modifiedDate.getTime(), true));
-
-			String changeTypeName = "modified";
-
-			if (ctEntry.getChangeType() ==
-					CTConstants.CT_CHANGE_TYPE_ADDITION) {
-
-				changeTypeName = "added";
-			}
-			else if (ctEntry.getChangeType() ==
-						CTConstants.CT_CHANGE_TYPE_DELETION) {
-
-				changeTypeName = "deleted";
-			}
-
-			String title = StringBundler.concat(
-				getTypeName(liferayPortletRequest.getLocale(), ctEntry), " ",
-				changeTypeName, " by ", ctEntry.getUserName(), " ", age);
 
 			PortletURL portletURL = liferayPortletResponse.createRenderURL();
 
@@ -180,8 +175,10 @@ public class CTDisplayRendererRegistry {
 
 			return StringBundler.concat(
 				"javascript:Liferay.Util.openWindow({dialog:{destroyOnHide:",
-				"true},title:'", title, "',uri:'", portletURL.toString(),
-				"'});");
+				"true},title:'",
+				getEntryTitle(
+					ctEntry, liferayPortletRequest.getHttpServletRequest()),
+				"',uri:'", portletURL.toString(), "'});");
 		}
 	}
 
