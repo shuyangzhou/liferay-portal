@@ -46,7 +46,7 @@ definition {
 
 		var testName = selenium.getTestName();
 
-		var customActivationMessage = "Virtual Instance is ready for ${testName}";
+		var customActivationMessage = "Virtual Instance is ready for ${testName}.";
 
 		OSGIConfig.deployOSGIConfigs(
 			OSGIConfigFileName = "com.liferay.company.generator.CompanyGeneratorConfiguration.config",
