@@ -59,8 +59,7 @@ import org.osgi.service.component.annotations.Reference;
 public class CTDisplayRendererRegistry {
 
 	public <T extends CTModel<T>> String getEditURL(
-			HttpServletRequest httpServletRequest, CTEntry ctEntry)
-		throws Exception {
+		HttpServletRequest httpServletRequest, CTEntry ctEntry) {
 
 		CTDisplayRenderer<T> ctDisplayRenderer =
 			_ctDisplayServiceTrackerMap.getService(
@@ -86,6 +85,13 @@ public class CTDisplayRendererRegistry {
 			}
 
 			return ctDisplayRenderer.getEditURL(httpServletRequest, ctModel);
+		}
+		catch (Exception exception) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(exception, exception);
+			}
+
+			return null;
 		}
 	}
 
