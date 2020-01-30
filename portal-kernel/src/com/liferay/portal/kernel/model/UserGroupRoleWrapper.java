@@ -41,10 +41,11 @@ public class UserGroupRoleWrapper
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("mvccVersion", getMvccVersion());
+		attributes.put("userGroupRoleId", getUserGroupRoleId());
+		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("groupId", getGroupId());
 		attributes.put("roleId", getRoleId());
-		attributes.put("companyId", getCompanyId());
 
 		return attributes;
 	}
@@ -55,6 +56,18 @@ public class UserGroupRoleWrapper
 
 		if (mvccVersion != null) {
 			setMvccVersion(mvccVersion);
+		}
+
+		Long userGroupRoleId = (Long)attributes.get("userGroupRoleId");
+
+		if (userGroupRoleId != null) {
+			setUserGroupRoleId(userGroupRoleId);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
 		}
 
 		Long userId = (Long)attributes.get("userId");
@@ -73,12 +86,6 @@ public class UserGroupRoleWrapper
 
 		if (roleId != null) {
 			setRoleId(roleId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
 		}
 	}
 
@@ -125,9 +132,7 @@ public class UserGroupRoleWrapper
 	 * @return the primary key of this user group role
 	 */
 	@Override
-	public com.liferay.portal.kernel.service.persistence.UserGroupRolePK
-		getPrimaryKey() {
-
+	public long getPrimaryKey() {
 		return model.getPrimaryKey();
 	}
 
@@ -153,6 +158,16 @@ public class UserGroupRoleWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return model.getUser();
+	}
+
+	/**
+	 * Returns the user group role ID of this user group role.
+	 *
+	 * @return the user group role ID of this user group role
+	 */
+	@Override
+	public long getUserGroupRoleId() {
+		return model.getUserGroupRoleId();
 	}
 
 	/**
@@ -216,10 +231,7 @@ public class UserGroupRoleWrapper
 	 * @param primaryKey the primary key of this user group role
 	 */
 	@Override
-	public void setPrimaryKey(
-		com.liferay.portal.kernel.service.persistence.UserGroupRolePK
-			primaryKey) {
-
+	public void setPrimaryKey(long primaryKey) {
 		model.setPrimaryKey(primaryKey);
 	}
 
@@ -231,6 +243,16 @@ public class UserGroupRoleWrapper
 	@Override
 	public void setRoleId(long roleId) {
 		model.setRoleId(roleId);
+	}
+
+	/**
+	 * Sets the user group role ID of this user group role.
+	 *
+	 * @param userGroupRoleId the user group role ID of this user group role
+	 */
+	@Override
+	public void setUserGroupRoleId(long userGroupRoleId) {
+		model.setUserGroupRoleId(userGroupRoleId);
 	}
 
 	/**

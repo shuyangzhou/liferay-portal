@@ -439,6 +439,7 @@ create index IX_1CDF88C on UserGroupGroupRole (roleId);
 
 create index IX_871412DF on UserGroupRole (groupId, roleId);
 create index IX_887A2C95 on UserGroupRole (roleId);
+create unique index IX_EF9125E5 on UserGroupRole (userId, groupId, roleId);
 
 create index IX_2AC5356C on UserGroups_Teams (companyId);
 create index IX_7F187E63 on UserGroups_Teams (userGroupId);

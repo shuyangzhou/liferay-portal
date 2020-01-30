@@ -64,15 +64,13 @@ public class UserGroupRoleLocalServiceUtil {
 	/**
 	 * Creates a new user group role with the primary key. Does not add the user group role to the database.
 	 *
-	 * @param userGroupRolePK the primary key for the new user group role
+	 * @param userGroupRoleId the primary key for the new user group role
 	 * @return the new user group role
 	 */
 	public static com.liferay.portal.kernel.model.UserGroupRole
-		createUserGroupRole(
-			com.liferay.portal.kernel.service.persistence.UserGroupRolePK
-				userGroupRolePK) {
+		createUserGroupRole(long userGroupRoleId) {
 
-		return getService().createUserGroupRole(userGroupRolePK);
+		return getService().createUserGroupRole(userGroupRoleId);
 	}
 
 	/**
@@ -87,6 +85,20 @@ public class UserGroupRoleLocalServiceUtil {
 	}
 
 	/**
+	 * Deletes the user group role with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param userGroupRoleId the primary key of the user group role
+	 * @return the user group role that was removed
+	 * @throws PortalException if a user group role with the primary key could not be found
+	 */
+	public static com.liferay.portal.kernel.model.UserGroupRole
+			deleteUserGroupRole(long userGroupRoleId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().deleteUserGroupRole(userGroupRoleId);
+	}
+
+	/**
 	 * Deletes the user group role from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param userGroupRole the user group role
@@ -97,22 +109,6 @@ public class UserGroupRoleLocalServiceUtil {
 			com.liferay.portal.kernel.model.UserGroupRole userGroupRole) {
 
 		return getService().deleteUserGroupRole(userGroupRole);
-	}
-
-	/**
-	 * Deletes the user group role with the primary key from the database. Also notifies the appropriate model listeners.
-	 *
-	 * @param userGroupRolePK the primary key of the user group role
-	 * @return the user group role that was removed
-	 * @throws PortalException if a user group role with the primary key could not be found
-	 */
-	public static com.liferay.portal.kernel.model.UserGroupRole
-			deleteUserGroupRole(
-				com.liferay.portal.kernel.service.persistence.UserGroupRolePK
-					userGroupRolePK)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return getService().deleteUserGroupRole(userGroupRolePK);
 	}
 
 	public static void deleteUserGroupRoles(long groupId, int roleType) {
@@ -243,11 +239,9 @@ public class UserGroupRoleLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.UserGroupRole
-		fetchUserGroupRole(
-			com.liferay.portal.kernel.service.persistence.UserGroupRolePK
-				userGroupRolePK) {
+		fetchUserGroupRole(long userGroupRoleId) {
 
-		return getService().fetchUserGroupRole(userGroupRolePK);
+		return getService().fetchUserGroupRole(userGroupRoleId);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
@@ -282,17 +276,15 @@ public class UserGroupRoleLocalServiceUtil {
 	/**
 	 * Returns the user group role with the primary key.
 	 *
-	 * @param userGroupRolePK the primary key of the user group role
+	 * @param userGroupRoleId the primary key of the user group role
 	 * @return the user group role
 	 * @throws PortalException if a user group role with the primary key could not be found
 	 */
 	public static com.liferay.portal.kernel.model.UserGroupRole
-			getUserGroupRole(
-				com.liferay.portal.kernel.service.persistence.UserGroupRolePK
-					userGroupRolePK)
+			getUserGroupRole(long userGroupRoleId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		return getService().getUserGroupRole(userGroupRolePK);
+		return getService().getUserGroupRole(userGroupRoleId);
 	}
 
 	/**
