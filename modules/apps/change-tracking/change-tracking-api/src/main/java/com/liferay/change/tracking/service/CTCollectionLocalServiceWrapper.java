@@ -84,6 +84,12 @@ public class CTCollectionLocalServiceWrapper
 		_ctCollectionLocalService.deleteCompanyCTCollections(companyId);
 	}
 
+	@Override
+	public void deleteCTAutoResolutionInfo(long ctAutoResolutionInfoId) {
+		_ctCollectionLocalService.deleteCTAutoResolutionInfo(
+			ctAutoResolutionInfoId);
+	}
+
 	/**
 	 * Deletes the ct collection from the database. Also notifies the appropriate model listeners.
 	 *

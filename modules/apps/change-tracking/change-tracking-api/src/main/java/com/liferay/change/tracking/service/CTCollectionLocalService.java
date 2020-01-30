@@ -91,6 +91,8 @@ public interface CTCollectionLocalService
 
 	public void deleteCompanyCTCollections(long companyId);
 
+	public void deleteCTAutoResolutionInfo(long ctAutoResolutionInfoId);
+
 	/**
 	 * Deletes the ct collection from the database. Also notifies the appropriate model listeners.
 	 *
