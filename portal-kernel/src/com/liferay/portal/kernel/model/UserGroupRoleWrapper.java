@@ -89,6 +89,11 @@ public class UserGroupRoleWrapper
 		}
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		return model.equals(obj);
+	}
+
 	/**
 	 * Returns the company ID of this user group role.
 	 *
@@ -188,6 +193,11 @@ public class UserGroupRoleWrapper
 	@Override
 	public String getUserUuid() {
 		return model.getUserUuid();
+	}
+
+	@Override
+	public int hashCode() {
+		return model.hashCode();
 	}
 
 	@Override

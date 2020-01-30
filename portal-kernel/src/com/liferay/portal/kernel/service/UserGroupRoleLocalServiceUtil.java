@@ -35,6 +35,11 @@ public class UserGroupRoleLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.portal.service.impl.UserGroupRoleLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.portal.kernel.model.UserGroupRole
+		addUserGroupRole(long userId, long groupId, long roleId) {
+
+		return getService().addUserGroupRole(userId, groupId, roleId);
+	}
 
 	/**
 	 * Adds the user group role to the database. Also notifies the appropriate model listeners.
@@ -242,6 +247,12 @@ public class UserGroupRoleLocalServiceUtil {
 		fetchUserGroupRole(long userGroupRoleId) {
 
 		return getService().fetchUserGroupRole(userGroupRoleId);
+	}
+
+	public static com.liferay.portal.kernel.model.UserGroupRole
+		fetchUserGroupRole(long userId, long groupId, long roleId) {
+
+		return getService().fetchUserGroupRole(userId, groupId, roleId);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery

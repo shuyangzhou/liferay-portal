@@ -58,6 +58,8 @@ public interface UserGroupRoleLocalService
 	 *
 	 * Never modify or reference this interface directly. Always use {@link UserGroupRoleLocalServiceUtil} to access the user group role local service. Add custom service methods to <code>com.liferay.portal.service.impl.UserGroupRoleLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	public UserGroupRole addUserGroupRole(
+		long userId, long groupId, long roleId);
 
 	/**
 	 * Adds the user group role to the database. Also notifies the appropriate model listeners.
@@ -197,6 +199,10 @@ public interface UserGroupRoleLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public UserGroupRole fetchUserGroupRole(long userGroupRoleId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public UserGroupRole fetchUserGroupRole(
+		long userId, long groupId, long roleId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();

@@ -112,6 +112,9 @@ public interface UserGroupRole extends PersistedModel, UserGroupRoleModel {
 
 		};
 
+	@Override
+	public boolean equals(Object obj);
+
 	public Group getGroup()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
@@ -120,5 +123,7 @@ public interface UserGroupRole extends PersistedModel, UserGroupRoleModel {
 
 	public User getUser()
 		throws com.liferay.portal.kernel.exception.PortalException;
+
+	public int hashCode();
 
 }

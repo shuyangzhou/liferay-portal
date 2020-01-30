@@ -31,6 +31,14 @@ public class UserGroupRoleLocalServiceWrapper
 		_userGroupRoleLocalService = userGroupRoleLocalService;
 	}
 
+	@Override
+	public com.liferay.portal.kernel.model.UserGroupRole addUserGroupRole(
+		long userId, long groupId, long roleId) {
+
+		return _userGroupRoleLocalService.addUserGroupRole(
+			userId, groupId, roleId);
+	}
+
 	/**
 	 * Adds the user group role to the database. Also notifies the appropriate model listeners.
 	 *
@@ -262,6 +270,14 @@ public class UserGroupRoleLocalServiceWrapper
 		long userGroupRoleId) {
 
 		return _userGroupRoleLocalService.fetchUserGroupRole(userGroupRoleId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.UserGroupRole fetchUserGroupRole(
+		long userId, long groupId, long roleId) {
+
+		return _userGroupRoleLocalService.fetchUserGroupRole(
+			userId, groupId, roleId);
 	}
 
 	@Override
