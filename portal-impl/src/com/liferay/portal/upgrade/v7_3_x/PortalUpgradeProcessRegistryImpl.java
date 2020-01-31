@@ -57,6 +57,8 @@ public class PortalUpgradeProcessRegistryImpl
 			new Version(8, 1, 0),
 			new UpgradeCTModel(
 				"AssetEntries_AssetCategories", "AssetEntries_AssetTags"));
+
+		upgradeProcesses.put(new Version(8, 2, 0), new UpgradeUserGroupRole());
 	}
 
 }
