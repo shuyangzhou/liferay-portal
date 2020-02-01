@@ -31,7 +31,10 @@ import com.liferay.configuration.admin.web.internal.util.ConfigurationModelItera
 import com.liferay.configuration.admin.web.internal.util.ConfigurationModelRetriever;
 import com.liferay.configuration.admin.web.internal.util.ResourceBundleLoaderProvider;
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
+import com.liferay.portal.kernel.cluster.ClusterExecutor;
 import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
+import com.liferay.portal.kernel.cluster.ClusterMasterTokenTransitionListener;
+import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.concurrent.NoticeableFuture;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -220,13 +223,24 @@ public class SearchMVCRenderCommand
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
+
+		if (_clusterExecutor.isEnabled()) {
+			_configurationModelsClusterMasterTokenTransitionListener =
+				new ConfigurationModelsClusterMasterTokenTransitionListener();
+
+			_clusterMasterExecutor.addClusterMasterTokenTransitionListener(
+				_configurationModelsClusterMasterTokenTransitionListener);
+		}
 	}
 
 	@Deactivate
-	protected synchronized void deactivate() {
-		if (_bundleTracker != null) {
-			_bundleTracker.close();
+	protected void deactivate() {
+		if (_configurationModelsClusterMasterTokenTransitionListener != null) {
+			_clusterMasterExecutor.removeClusterMasterTokenTransitionListener(
+				_configurationModelsClusterMasterTokenTransitionListener);
 		}
+
+		_stopBundleTracker();
 	}
 
 	private static void _initialize(String osgiServiceIdentifier)
@@ -240,6 +254,15 @@ public class SearchMVCRenderCommand
 		if (!searchMVCRenderCommand._initialized) {
 			searchMVCRenderCommand._initialize();
 		}
+	}
+
+	private static void _reset(String osgiServiceIdentifier) {
+		SearchMVCRenderCommand searchMVCRenderCommand =
+			(SearchMVCRenderCommand)
+				IdentifiableOSGiServiceUtil.getIdentifiableOSGiService(
+					osgiServiceIdentifier);
+
+		searchMVCRenderCommand._reset();
 	}
 
 	private void _commit(Indexer<ConfigurationModel> indexer) {
@@ -302,14 +325,31 @@ public class SearchMVCRenderCommand
 		_initialized = true;
 	}
 
+	private synchronized void _reset() {
+		_initialized = false;
+	}
+
+	private synchronized void _stopBundleTracker() {
+		if (_bundleTracker != null) {
+			_bundleTracker.close();
+
+			_bundleTracker = null;
+		}
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		SearchMVCRenderCommand.class);
 
 	private static final MethodKey _initializeMethodKey = new MethodKey(
 		SearchMVCRenderCommand.class, "_initialize", String.class);
+	private static final MethodKey _resetMethodKey = new MethodKey(
+		SearchMVCRenderCommand.class, "_reset", String.class);
 
 	private BundleContext _bundleContext;
 	private BundleTracker<ConfigurationModelIterator> _bundleTracker;
+
+	@Reference
+	private ClusterExecutor _clusterExecutor;
 
 	@Reference
 	private ClusterMasterExecutor _clusterMasterExecutor;
@@ -323,6 +363,8 @@ public class SearchMVCRenderCommand
 	@Reference
 	private ConfigurationModelRetriever _configurationModelRetriever;
 
+	private ConfigurationModelsClusterMasterTokenTransitionListener
+		_configurationModelsClusterMasterTokenTransitionListener;
 	private final Map<String, Collection<ConfigurationModel>>
 		_configurationModelsMap = new ConcurrentHashMap<>();
 
@@ -400,6 +442,31 @@ public class SearchMVCRenderCommand
 			}
 
 			_commit(_configurationModelIndexer);
+		}
+
+	}
+
+	private class ConfigurationModelsClusterMasterTokenTransitionListener
+		implements ClusterMasterTokenTransitionListener {
+
+		@Override
+		public void masterTokenAcquired() {
+			_reset();
+
+			ClusterRequest clusterRequest =
+				ClusterRequest.createMulticastRequest(
+					new MethodHandler(
+						_resetMethodKey, getOSGiServiceIdentifier()),
+					true);
+
+			clusterRequest.setFireAndForget(true);
+
+			_clusterExecutor.execute(clusterRequest);
+		}
+
+		@Override
+		public void masterTokenReleased() {
+			_stopBundleTracker();
 		}
 
 	}
