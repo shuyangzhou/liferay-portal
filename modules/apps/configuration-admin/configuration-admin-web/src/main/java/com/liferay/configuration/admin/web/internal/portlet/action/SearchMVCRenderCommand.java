@@ -30,6 +30,7 @@ import com.liferay.configuration.admin.web.internal.util.ConfigurationEntryRetri
 import com.liferay.configuration.admin.web.internal.util.ConfigurationModelIterator;
 import com.liferay.configuration.admin.web.internal.util.ConfigurationModelRetriever;
 import com.liferay.configuration.admin.web.internal.util.ResourceBundleLoaderProvider;
+import com.liferay.petra.lang.SafeClosable;
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 import com.liferay.portal.kernel.cluster.ClusterExecutor;
 import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
@@ -38,6 +39,7 @@ import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.concurrent.NoticeableFuture;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.messaging.proxy.ProxyModeThreadLocal;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServiceUtil;
@@ -303,9 +305,13 @@ public class SearchMVCRenderCommand
 					bundle.getSymbolicName(), configurationModels.values());
 			}
 
-			_configurationModelIndexer.reindex(configurationModelsList);
+			try (SafeClosable safeClosable =
+					ProxyModeThreadLocal.setWithSafeClosable(true)) {
 
-			_commit(_configurationModelIndexer);
+				_configurationModelIndexer.reindex(configurationModelsList);
+
+				_commit(_configurationModelIndexer);
+			}
 
 			_bundleTracker = new BundleTracker<>(
 				_bundleContext, Bundle.ACTIVE,
@@ -331,7 +337,11 @@ public class SearchMVCRenderCommand
 
 	private synchronized void _stopBundleTracker() {
 		if (_bundleTracker != null) {
-			_bundleTracker.close();
+			try (SafeClosable safeClosable =
+					ProxyModeThreadLocal.setWithSafeClosable(true)) {
+
+				_bundleTracker.close();
+			}
 
 			_bundleTracker = null;
 		}
