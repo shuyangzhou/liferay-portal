@@ -14,14 +14,35 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.language.LanguageUtil;
+
+import java.util.Locale;
+
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import org.mockito.Matchers;
+import org.mockito.Mock;
+
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 /**
  * @author Shuyang Zhou
  * @author Hugo Huijser
  */
-public class TextFormatterTest {
+@PrepareForTest(LanguageUtil.class)
+@RunWith(PowerMockRunner.class)
+public class TextFormatterTest extends PowerMockito {
+
+	@Before
+	public void setUp() {
+		setUpLanguageUtil();
+	}
 
 	@Test
 	public void testFormatA() {
@@ -123,7 +144,7 @@ public class TextFormatterTest {
 		long bytes = 1;
 
 		Assert.assertEquals(
-			"1 B", TextFormatter.formatStorageSize(bytes, LocaleUtil.SPAIN));
+			"1 o", TextFormatter.formatStorageSize(bytes, LocaleUtil.FRENCH));
 		Assert.assertEquals(
 			"1 B", TextFormatter.formatStorageSize(bytes, LocaleUtil.US));
 	}
@@ -133,7 +154,7 @@ public class TextFormatterTest {
 		long bytes = 1024 * 1024 * 1024;
 
 		Assert.assertEquals(
-			"1 GB", TextFormatter.formatStorageSize(bytes, LocaleUtil.SPAIN));
+			"1 Go", TextFormatter.formatStorageSize(bytes, LocaleUtil.FRENCH));
 		Assert.assertEquals(
 			"1 GB", TextFormatter.formatStorageSize(bytes, LocaleUtil.US));
 	}
@@ -143,7 +164,7 @@ public class TextFormatterTest {
 		long bytes = 1024;
 
 		Assert.assertEquals(
-			"1 KB", TextFormatter.formatStorageSize(bytes, LocaleUtil.SPAIN));
+			"1 Ko", TextFormatter.formatStorageSize(bytes, LocaleUtil.FRENCH));
 		Assert.assertEquals(
 			"1 KB", TextFormatter.formatStorageSize(bytes, LocaleUtil.US));
 	}
@@ -153,10 +174,39 @@ public class TextFormatterTest {
 		long bytes = 1024 * 1024;
 
 		Assert.assertEquals(
-			"1 MB", TextFormatter.formatStorageSize(bytes, LocaleUtil.SPAIN));
+			"1 Mo", TextFormatter.formatStorageSize(bytes, LocaleUtil.FRENCH));
 		Assert.assertEquals(
 			"1 MB", TextFormatter.formatStorageSize(bytes, LocaleUtil.US));
 	}
+
+	protected void setUpLanguageUtil() {
+		whenLanguageGet(LocaleUtil.FRENCH, "storage.size.suffix.b", "o");
+		whenLanguageGet(LocaleUtil.FRENCH, "storage.size.suffix.kb", "Ko");
+		whenLanguageGet(LocaleUtil.FRENCH, "storage.size.suffix.mb", "Mo");
+		whenLanguageGet(LocaleUtil.FRENCH, "storage.size.suffix.gb", "Go");
+
+		whenLanguageGet(LocaleUtil.US, "storage.size.suffix.b", "B");
+		whenLanguageGet(LocaleUtil.US, "storage.size.suffix.kb", "KB");
+		whenLanguageGet(LocaleUtil.US, "storage.size.suffix.mb", "MB");
+		whenLanguageGet(LocaleUtil.US, "storage.size.suffix.gb", "GB");
+
+		LanguageUtil languageUtil = new LanguageUtil();
+
+		languageUtil.setLanguage(language);
+	}
+
+	protected void whenLanguageGet(
+		Locale locale, String key, String returnValue) {
+
+		when(
+			language.get(Matchers.eq(locale), Matchers.eq(key))
+		).thenReturn(
+			returnValue
+		);
+	}
+
+	@Mock
+	protected Language language;
 
 	private void _testFormat(String original, String expected, int style) {
 		String actual = TextFormatter.format(original, style);
