@@ -328,29 +328,33 @@ public abstract class BaseDB implements DB {
 			for (String sql : sqls) {
 				sql = buildSQL(applyMaxStringIndexLengthLimitation(sql));
 
-				sql = SQLTransformer.transform(sql.trim());
+				String[] splitSqls = splitAlterTableCommands(sql);
 
-				if (sql.endsWith(";")) {
-					sql = sql.substring(0, sql.length() - 1);
-				}
+				for (String splitSql : splitSqls) {
+					sql = SQLTransformer.transform(splitSql.trim());
 
-				if (sql.endsWith("\ngo")) {
-					sql = sql.substring(0, sql.length() - 3);
-				}
+					if (sql.endsWith(";")) {
+						sql = sql.substring(0, sql.length() - 1);
+					}
 
-				if (sql.endsWith("\n/")) {
-					sql = sql.substring(0, sql.length() - 2);
-				}
+					if (sql.endsWith("\ngo")) {
+						sql = sql.substring(0, sql.length() - 3);
+					}
 
-				if (_log.isDebugEnabled()) {
-					_log.debug(sql);
-				}
+					if (sql.endsWith("\n/")) {
+						sql = sql.substring(0, sql.length() - 2);
+					}
 
-				try {
-					s.executeUpdate(sql);
-				}
-				catch (SQLException sqlException) {
-					handleSQLException(sql, sqlException);
+					if (_log.isDebugEnabled()) {
+						_log.debug(sql);
+					}
+
+					try {
+						s.executeUpdate(sql);
+					}
+					catch (SQLException sqlException) {
+						handleSQLException(sql, sqlException);
+					}
 				}
 			}
 		}
@@ -1217,6 +1221,16 @@ public abstract class BaseDB implements DB {
 
 	protected abstract String reword(String data) throws IOException;
 
+	protected String[] splitAlterTableCommands(String sql) {
+		Matcher matcher = _concatenatedAlterTablesPattern.matcher(sql);
+
+		if (!matcher.lookingAt()) {
+			return new String[] {sql};
+		}
+
+		return new String[] {matcher.group(1), matcher.group(2)};
+	}
+
 	protected static final String ALTER_COLUMN_NAME = "alter_column_name ";
 
 	protected static final String ALTER_COLUMN_TYPE = "alter_column_type ";
@@ -1259,6 +1273,8 @@ public abstract class BaseDB implements DB {
 
 	private static final Pattern _columnLengthPattern = Pattern.compile(
 		"\\[\\$COLUMN_LENGTH:(\\d+)\\$\\]");
+	private static final Pattern _concatenatedAlterTablesPattern =
+		Pattern.compile("(^alter table.+;)(alter table.+)");
 	private static final Pattern _templatePattern;
 	private static final Pattern _timestampPattern = Pattern.compile(
 		"SPECIFIC_TIMESTAMP_\\d+");
