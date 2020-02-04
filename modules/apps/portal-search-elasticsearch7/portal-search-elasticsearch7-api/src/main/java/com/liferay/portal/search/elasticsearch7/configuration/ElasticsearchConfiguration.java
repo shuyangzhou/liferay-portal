@@ -103,43 +103,6 @@ public interface ElasticsearchConfiguration {
 	public boolean bootstrapMlockAll();
 
 	@Meta.AD(
-		deflt = "9201", description = "embedded-http-port-help",
-		name = "embedded-http-port", required = false
-	)
-	public int embeddedHttpPort();
-
-	@Meta.AD(
-		deflt = "9300-9400",
-		description = "discovery-zen-ping-unicast-hosts-port-help",
-		name = "discovery-zen-ping-unicast-hosts-port", required = false
-	)
-	public String discoveryZenPingUnicastHostsPort();
-
-	@Meta.AD(
-		deflt = "", description = "network-host-help", name = "network-host",
-		required = false
-	)
-	public String networkHost();
-
-	@Meta.AD(
-		deflt = "", description = "network-bind-host-help",
-		name = "network-bind-host", required = false
-	)
-	public String networkBindHost();
-
-	@Meta.AD(
-		deflt = "", description = "network-publish-host-help",
-		name = "network-publish-host", required = false
-	)
-	public String networkPublishHost();
-
-	@Meta.AD(
-		deflt = "", description = "transport-tcp-port-help",
-		name = "transport-tcp-port", required = false
-	)
-	public String transportTcpPort();
-
-	@Meta.AD(
 		description = "additional-configurations-help",
 		name = "additional-configurations", required = false
 	)
