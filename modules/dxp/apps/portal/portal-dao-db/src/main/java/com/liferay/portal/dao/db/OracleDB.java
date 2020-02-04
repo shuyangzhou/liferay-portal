@@ -102,13 +102,12 @@ public class OracleDB extends BaseDB {
 
 	@Override
 	public String getPopulateSQL(String databaseName, String sqlContent) {
-		StringBundler sb = new StringBundler(5);
+		StringBundler sb = new StringBundler(4);
 
 		sb.append("connect &1/&2;\n");
 		sb.append("set define off;\n");
 		sb.append("\n");
 		sb.append(sqlContent);
-		sb.append("quit");
 
 		return sb.toString();
 	}
@@ -116,7 +115,7 @@ public class OracleDB extends BaseDB {
 	@Override
 	public String getRecreateSQL(String databaseName) {
 		return "drop user &1 cascade;\ncreate user &1 identified by &2;\n" +
-			"grant connect,resource to &1;\nquit";
+			"grant connect,resource to &1;";
 	}
 
 	@Override
