@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConfiguration;
 import com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConnectionConfiguration;
+import com.liferay.portal.search.elasticsearch7.configuration.OperationMode;
 
 import java.util.Dictionary;
 
@@ -67,16 +68,17 @@ public class UpgradeElasticsearchConfiguration extends UpgradeProcess {
 		elasticsearchConnectionConfigurationProperties.put(
 			"authenticationEnabled",
 			GetterUtil.getBoolean(
-				elasticsearchConfigurationProperties.get(
+				elasticsearchConfigurationProperties.remove(
 					"authenticationEnabled")));
 
 		elasticsearchConnectionConfigurationProperties.put(
 			"httpSSLEnabled",
 			GetterUtil.getBoolean(
-				elasticsearchConfigurationProperties.get("httpSSLEnabled")));
+				elasticsearchConfigurationProperties.remove("httpSSLEnabled")));
 
 		String[] networkHostAddresses = GetterUtil.getStringValues(
-			elasticsearchConfigurationProperties.get("networkHostAddresses"));
+			elasticsearchConfigurationProperties.remove(
+				"networkHostAddresses"));
 
 		if (ArrayUtil.isNotEmpty(networkHostAddresses)) {
 			elasticsearchConnectionConfigurationProperties.put(
@@ -84,7 +86,7 @@ public class UpgradeElasticsearchConfiguration extends UpgradeProcess {
 		}
 
 		String password = GetterUtil.getString(
-			elasticsearchConfigurationProperties.get("password"));
+			elasticsearchConfigurationProperties.remove("password"));
 
 		if (!Validator.isBlank(password)) {
 			elasticsearchConnectionConfigurationProperties.put(
@@ -92,7 +94,7 @@ public class UpgradeElasticsearchConfiguration extends UpgradeProcess {
 		}
 
 		String truststorePassword = GetterUtil.getString(
-			elasticsearchConfigurationProperties.get("truststorePassword"));
+			elasticsearchConfigurationProperties.remove("truststorePassword"));
 
 		if (!Validator.isBlank(truststorePassword)) {
 			elasticsearchConnectionConfigurationProperties.put(
@@ -100,7 +102,7 @@ public class UpgradeElasticsearchConfiguration extends UpgradeProcess {
 		}
 
 		String truststorePath = GetterUtil.getString(
-			elasticsearchConfigurationProperties.get("truststorePath"));
+			elasticsearchConfigurationProperties.remove("truststorePath"));
 
 		if (!Validator.isBlank(truststorePath)) {
 			elasticsearchConnectionConfigurationProperties.put(
@@ -108,7 +110,7 @@ public class UpgradeElasticsearchConfiguration extends UpgradeProcess {
 		}
 
 		String truststoreType = GetterUtil.getString(
-			elasticsearchConfigurationProperties.get("truststoreType"));
+			elasticsearchConfigurationProperties.remove("truststoreType"));
 
 		if (!Validator.isBlank(truststoreType)) {
 			elasticsearchConnectionConfigurationProperties.put(
@@ -116,7 +118,7 @@ public class UpgradeElasticsearchConfiguration extends UpgradeProcess {
 		}
 
 		String username = GetterUtil.getString(
-			elasticsearchConfigurationProperties.get("username"));
+			elasticsearchConfigurationProperties.remove("username"));
 
 		if (!Validator.isBlank(username)) {
 			elasticsearchConnectionConfigurationProperties.put(
@@ -125,6 +127,34 @@ public class UpgradeElasticsearchConfiguration extends UpgradeProcess {
 
 		elasticsearchConnectionConfiguration.update(
 			elasticsearchConnectionConfigurationProperties);
+
+		OperationMode operationMode =
+			(OperationMode)elasticsearchConfigurationProperties.get(
+				"operationMode");
+
+		if ((operationMode == null) ||
+			(operationMode == OperationMode.EMBEDDED)) {
+
+			elasticsearchConfigurationProperties.put(
+				"remoteClusterConnectionId",
+				String.valueOf(OperationMode.EMBEDDED));
+		}
+		else {
+			elasticsearchConfigurationProperties.put(
+				"remoteClusterConnectionId",
+				GetterUtil.getString(
+					elasticsearchConfigurationProperties.get("connectionId")));
+		}
+
+		elasticsearchConfigurationProperties.remove("embeddedHttpPort");
+		elasticsearchConfigurationProperties.remove(
+			"discoveryZenPingUnicastHostsPort");
+		elasticsearchConfigurationProperties.remove("networkHost");
+		elasticsearchConfigurationProperties.remove("networkBindHost");
+		elasticsearchConfigurationProperties.remove("networkPublishHost");
+		elasticsearchConfigurationProperties.remove("transportTcpPort");
+
+		elasticsearchConfiguration.update(elasticsearchConfigurationProperties);
 	}
 
 	private Configuration _getConfiguration(String className) throws Exception {
