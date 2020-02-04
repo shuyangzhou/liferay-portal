@@ -45,6 +45,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
+import com.liferay.portal.util.PropsValues;
 import com.liferay.util.SimpleCounter;
 
 import java.io.File;
@@ -328,29 +329,34 @@ public abstract class BaseDB implements DB {
 			for (String sql : sqls) {
 				sql = buildSQL(applyMaxStringIndexLengthLimitation(sql));
 
-				sql = SQLTransformer.transform(sql.trim());
+				String[] splitSqls = StringUtil.split(
+					sql, PropsValues.DATABASE_SQL_COMMAND_SEPARATOR);
 
-				if (sql.endsWith(";")) {
-					sql = sql.substring(0, sql.length() - 1);
-				}
+				for (String splitSql : splitSqls) {
+					sql = SQLTransformer.transform(splitSql.trim());
 
-				if (sql.endsWith("\ngo")) {
-					sql = sql.substring(0, sql.length() - 3);
-				}
+					if (sql.endsWith(";")) {
+						sql = sql.substring(0, sql.length() - 1);
+					}
 
-				if (sql.endsWith("\n/")) {
-					sql = sql.substring(0, sql.length() - 2);
-				}
+					if (sql.endsWith("\ngo")) {
+						sql = sql.substring(0, sql.length() - 3);
+					}
 
-				if (_log.isDebugEnabled()) {
-					_log.debug(sql);
-				}
+					if (sql.endsWith("\n/")) {
+						sql = sql.substring(0, sql.length() - 2);
+					}
 
-				try {
-					s.executeUpdate(sql);
-				}
-				catch (SQLException sqlException) {
-					handleSQLException(sql, sqlException);
+					if (_log.isDebugEnabled()) {
+						_log.debug(sql);
+					}
+
+					try {
+						s.executeUpdate(sql);
+					}
+					catch (SQLException sqlException) {
+						handleSQLException(sql, sqlException);
+					}
 				}
 			}
 		}

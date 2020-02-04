@@ -16,6 +16,7 @@ package com.liferay.portal.dao.db;
 
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.test.BaseDBTestCase;
+import com.liferay.portal.util.PropsValues;
 
 import java.io.IOException;
 
@@ -47,7 +48,10 @@ public class DB2DBTest extends BaseDBTestCase {
 	@Test
 	public void testRewordAlterColumnTypeNotNull() throws IOException {
 		Assert.assertEquals(
-			"alter table DLFolder alter column userName set not null;\n",
+			"alter table DLFolder alter column userName set data type " +
+				"varchar(75);" + PropsValues.DATABASE_SQL_COMMAND_SEPARATOR +
+					"alter table DLFolder alter column userName set not " +
+						"null;\n",
 			buildSQL(
 				"alter_column_type DLFolder userName VARCHAR(75) not null;"));
 	}
@@ -55,7 +59,10 @@ public class DB2DBTest extends BaseDBTestCase {
 	@Test
 	public void testRewordAlterColumnTypeNull() throws IOException {
 		Assert.assertEquals(
-			"alter table DLFolder alter column userName drop not null;\n",
+			"alter table DLFolder alter column userName set data type " +
+				"varchar(75);" + PropsValues.DATABASE_SQL_COMMAND_SEPARATOR +
+					"alter table DLFolder alter column userName drop not " +
+						"null;\n",
 			buildSQL("alter_column_type DLFolder userName VARCHAR(75) null;"));
 	}
 
