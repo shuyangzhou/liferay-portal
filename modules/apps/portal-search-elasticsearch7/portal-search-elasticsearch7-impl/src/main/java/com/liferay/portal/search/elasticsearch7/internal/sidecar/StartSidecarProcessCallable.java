@@ -28,8 +28,12 @@ import org.elasticsearch.node.Node;
  */
 public class StartSidecarProcessCallable implements ProcessCallable<String> {
 
-	public StartSidecarProcessCallable(String[] arguments) {
+	public StartSidecarProcessCallable(
+		String[] arguments, long heartbeatInterval, boolean clustered) {
+
 		_arguments = arguments;
+		_heartbeatInterval = heartbeatInterval;
+		_clustered = clustered;
 	}
 
 	@Override
@@ -42,6 +46,17 @@ public class StartSidecarProcessCallable implements ProcessCallable<String> {
 		catch (Exception exception) {
 			throw new ProcessException(
 				"Unable to start elasticsearch server", exception);
+		}
+
+		if (_clustered) {
+			try {
+				ElasticsearchServerUtil.monitorClusterStatus(
+					node, _heartbeatInterval);
+			}
+			catch (Exception exception) {
+				throw new ProcessException(
+					"Unable to monitor cluster status", exception);
+			}
 		}
 
 		try {
@@ -69,5 +84,7 @@ public class StartSidecarProcessCallable implements ProcessCallable<String> {
 	private static final long serialVersionUID = 1L;
 
 	private final String[] _arguments;
+	private final boolean _clustered;
+	private final long _heartbeatInterval;
 
 }
