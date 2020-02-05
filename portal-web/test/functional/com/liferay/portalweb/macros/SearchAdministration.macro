@@ -45,14 +45,7 @@ definition {
 			var searchEngineVendor = selenium.getText("SearchAdmin#SEARCH_ENGINE_VENDOR");
 		}
 
-		if (contains("${searchEngineVendor}", "Elasticsearch")) {
-			if (contains("${searchClientVersion}", "7.") && contains("${searchEngineVendor}", "Embedded")) {
-				var curl = "http://localhost:9201/_tasks";
-			}
-			else {
-				var curl = "http://localhost:9200/_tasks";
-			}
-		}
+		var curl = "http://localhost:9200/_tasks";
 
 		Navigator.gotoNavItem(navItem = "Index Actions");
 
