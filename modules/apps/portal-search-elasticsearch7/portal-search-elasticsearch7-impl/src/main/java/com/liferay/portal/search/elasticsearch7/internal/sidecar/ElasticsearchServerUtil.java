@@ -28,6 +28,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import org.elasticsearch.cli.ExitCodes;
+import org.elasticsearch.cluster.coordination.ClusterFormationFailureHelper;
+import org.elasticsearch.cluster.coordination.Coordinator;
+import org.elasticsearch.common.inject.Injector;
+import org.elasticsearch.discovery.Discovery;
 import org.elasticsearch.node.Node;
 
 /**
@@ -74,6 +78,36 @@ public class ElasticsearchServerUtil {
 		}
 	}
 
+	public static void monitorClusterStatus(Node node, long checkInterval)
+		throws Exception {
+
+		Injector injector = node.injector();
+
+		ClusterFormationFailureHelper clusterFormationFailureHelper =
+			(ClusterFormationFailureHelper)
+				_clusterFormationFailureHelperField.get(
+					injector.getInstance(Discovery.class));
+
+		Thread thread = new Thread(
+			() -> {
+				while (!clusterFormationFailureHelper.isRunning()) {
+					try {
+						Thread.sleep(checkInterval);
+					}
+					catch (InterruptedException interruptedException) {
+						break;
+					}
+				}
+
+				shutdown();
+			},
+			"Elasticsearch Server Cluster Status Monitor");
+
+		thread.setDaemon(true);
+
+		thread.start();
+	}
+
 	public static void shutdown() {
 		try {
 			_stopMethod.invoke(null);
@@ -104,6 +138,7 @@ public class ElasticsearchServerUtil {
 	private static final Logger _logger = LogManager.getLogger(
 		ElasticsearchServerUtil.class);
 
+	private static final Field _clusterFormationFailureHelperField;
 	private static final Field _hooksField;
 	private static final Field _instanceField;
 	private static final Method _mainMethod;
@@ -114,6 +149,10 @@ public class ElasticsearchServerUtil {
 
 	static {
 		try {
+			_clusterFormationFailureHelperField =
+				ReflectionUtil.getDeclaredField(
+					Coordinator.class, "clusterFormationFailureHelper");
+
 			Thread currentThread = Thread.currentThread();
 
 			ClassLoader classLoader = currentThread.getContextClassLoader();
