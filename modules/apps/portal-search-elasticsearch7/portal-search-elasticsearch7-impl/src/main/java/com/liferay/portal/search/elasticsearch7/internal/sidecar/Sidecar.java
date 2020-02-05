@@ -186,7 +186,10 @@ public class Sidecar {
 
 			NoticeableFuture<String> startNoticeableFuture =
 				_processChannel.write(
-					new StartSidecarProcessCallable(_getSidecarArguments()));
+					new StartSidecarProcessCallable(
+						_getSidecarArguments(),
+						_elasticsearchConfiguration.sidecarHeartbeatInterval(),
+						_clusterExecutor.isEnabled()));
 
 			startNoticeableFuture.addFutureListener(
 				future -> {
