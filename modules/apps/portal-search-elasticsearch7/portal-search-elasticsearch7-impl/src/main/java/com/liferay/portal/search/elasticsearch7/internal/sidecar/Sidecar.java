@@ -22,7 +22,6 @@ import com.liferay.petra.process.ProcessChannel;
 import com.liferay.petra.process.ProcessConfig;
 import com.liferay.petra.process.ProcessExecutor;
 import com.liferay.petra.process.ProcessLog;
-import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.cluster.ClusterExecutor;
@@ -602,13 +601,9 @@ public class Sidecar {
 
 		Settings settings = settingsBuilder.build();
 
-		if (_log.isInfoEnabled()) {
-			_log.info(
-				StringBundler.concat(
-					"Sidecar properties : {",
-					settings.toDelimitedString(CharPool.COMMA),
-					StringPool.CLOSE_CURLY_BRACE));
-		}
+		StringBundler sb = new StringBundler(2 * settings.size() + 1);
+
+		sb.append("Sidecar properties : {");
 
 		List<String> arguments = new ArrayList<>();
 
@@ -618,9 +613,21 @@ public class Sidecar {
 			String value = settings.get(key);
 
 			if (Validator.isNotNull(value)) {
-				arguments.add(
-					StringBundler.concat(key, StringPool.EQUAL, value));
+				String keyValue = StringBundler.concat(
+					key, StringPool.EQUAL, value);
+
+				arguments.add(keyValue);
+
+				sb.append(keyValue);
+
+				sb.append(StringPool.COMMA);
 			}
+		}
+
+		sb.setStringAt(StringPool.CLOSE_CURLY_BRACE, sb.index() - 1);
+
+		if (_log.isInfoEnabled()) {
+			_log.info(sb.toString());
 		}
 
 		return arguments.toArray(new String[0]);
