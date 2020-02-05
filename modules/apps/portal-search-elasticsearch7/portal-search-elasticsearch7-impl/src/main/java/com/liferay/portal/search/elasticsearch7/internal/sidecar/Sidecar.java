@@ -194,11 +194,15 @@ public class Sidecar {
 			startNoticeableFuture.addFutureListener(
 				future -> {
 					try {
-						_addressNoticeableFuture.set(future.get());
+						String address = future.get();
 
 						if (_log.isInfoEnabled()) {
-							_log.info("Started sidecar");
+							_log.info(
+								"Started sidecar with binding address " +
+									address);
 						}
+
+						_addressNoticeableFuture.set(address);
 					}
 					catch (Exception exception) {
 						_log.error(
