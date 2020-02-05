@@ -50,6 +50,7 @@ import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.TextFormatter;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
@@ -798,6 +799,25 @@ public class LanguageImpl implements Language, Serializable {
 		}
 
 		return value;
+	}
+
+	/**
+	 * Returns the translated and formatted storage size
+	 *
+	 * @param  size the storage size
+	 * @param  locale the locale to translate to
+	 * @return the translated storage size
+	 */
+	@Override
+	public String formatStorageSize(double size, Locale locale) {
+		String formattedStorageSize = TextFormatter.formatStorageSize(
+			size, locale);
+
+		String[] split = formattedStorageSize.split(StringPool.SPACE);
+		String suffix = split[split.length - 1].toLowerCase();
+		split[split.length - 1] = get(locale, "storage.size.suffix." + suffix);
+
+		return String.join(StringPool.SPACE, split);
 	}
 
 	/**
