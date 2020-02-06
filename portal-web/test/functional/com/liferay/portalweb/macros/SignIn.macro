@@ -54,6 +54,10 @@ definition {
 
 		AntCommand(
 			locator1 = "build-test.xml",
+			value1 = "clean-osgi-module -Dmodule.base.dir=modules/test/company-generator");
+
+		AntCommand(
+			locator1 = "build-test.xml",
 			value1 = "deploy-osgi-module -Dmodule.base.dir=modules/test/company-generator");
 
 		WaitForConsoleTextPresent(value1 = "${customActivationMessage}");

@@ -5449,7 +5449,7 @@ go</echo>
 	</target>
 
 	<target name="clean-osgi-module">
-		<gradle-execute dir="${module.base.dir}" forcedcacheenabled="false" task="clean" />
+		<gradle-execute dir="${module.base.dir}" task="clean" />
 	</target>
 
 	<target name="clean-up-bundles">
@@ -6405,7 +6405,7 @@ go</echo>
 	</target>
 
 	<target name="deploy-osgi-module">
-		<gradle-execute dir="${module.base.dir}" forcedcacheenabled="false" task="deploy" />
+		<gradle-execute dir="${module.base.dir}" task="deploy" />
 	</target>
 
 	<target name="deploy-osgi-module-configurations">
