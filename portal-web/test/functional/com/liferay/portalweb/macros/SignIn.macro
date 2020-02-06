@@ -44,13 +44,19 @@ definition {
 		var portalURL = StringUtil.replace("${portalURL}", "http://", "");
 		var portalURL = StringUtil.replace("${portalURL}", ":8080", "");
 
-		AntCommand(
-			locator1 = "build-test.xml",
-			value1 = "deploy-osgi-module-configurations -Dosgi.module.configurations=virtualHostName=&quot;${portalURL}&quot; -Dosgi.module.configuration.file.names=com.liferay.company.generator.CompanyGeneratorConfiguration.config");
+		var testName = selenium.getTestName();
+
+		var customActivationMessage = "Virtual Instance is ready for ${testName}";
+
+		OSGIConfig.deployOSGIConfigs(
+			OSGIConfigFileName = "com.liferay.company.generator.CompanyGeneratorConfiguration.config",
+			OSGIConfigs = "customActivationMessage=${customActivationMessage},virtualHostName=${portalURL}");
 
 		AntCommand(
 			locator1 = "build-test.xml",
 			value1 = "deploy-osgi-module -Dmodule.base.dir=modules/test/company-generator");
+
+		WaitForConsoleTextPresent(value1 = "${customActivationMessage}");
 	}
 
 	@summary = "Enter '${userPasswordReminderAnswer}' as password reminder"
