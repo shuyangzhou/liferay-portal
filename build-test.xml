@@ -5092,7 +5092,7 @@ create database lportal${databases.size} encoding = 'UNICODE';</echo>
 									<elseif>
 										<equals arg1="${database.type}" arg2="sqlserver" />
 										<then>
-											<property name="sql.file" value="create${database.create.suffix}-sql-server.sql" />
+											<property name="sql.file" value="create${database.create.suffix}-sqlserver.sql" />
 										</then>
 									</elseif>
 									<else>
