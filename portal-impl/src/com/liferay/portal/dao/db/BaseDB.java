@@ -31,14 +31,12 @@ import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -134,59 +132,13 @@ public abstract class BaseDB implements DB {
 	@Override
 	public abstract String buildSQL(String template) throws IOException;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public void buildSQLFile(String sqlDir, String fileName)
 		throws IOException {
-
-		String template = _readFile(
-			StringBundler.concat(sqlDir, "/", fileName, ".sql"));
-
-		if (fileName.equals("portal")) {
-			StringBundler sb = new StringBundler();
-
-			try (UnsyncBufferedReader unsyncBufferedReader =
-					new UnsyncBufferedReader(
-						new UnsyncStringReader(template))) {
-
-				String line = null;
-
-				while ((line = unsyncBufferedReader.readLine()) != null) {
-					if (line.startsWith("@include ")) {
-						int pos = line.indexOf(" ");
-
-						String includeFileName = line.substring(pos + 1);
-
-						File includeFile = new File(
-							sqlDir + "/" + includeFileName);
-
-						if (!includeFile.exists()) {
-							continue;
-						}
-
-						sb.append(FileUtil.read(includeFile));
-
-						sb.append("\n\n");
-					}
-					else {
-						sb.append(line);
-						sb.append("\n");
-					}
-				}
-			}
-
-			template = sb.toString();
-		}
-
-		if (Validator.isNull(template)) {
-			return;
-		}
-
-		template = buildSQL(template);
-
-		FileUtil.write(
-			StringBundler.concat(
-				sqlDir, "/", fileName, "/", fileName, "-", _dbType, ".sql"),
-			template);
 	}
 
 	@Override
@@ -912,14 +864,6 @@ public abstract class BaseDB implements DB {
 		matcher.appendTail(sb);
 
 		return sb.toString();
-	}
-
-	private String _readFile(String fileName) throws IOException {
-		if (FileUtil.exists(fileName)) {
-			return FileUtil.read(fileName);
-		}
-
-		return StringPool.BLANK;
 	}
 
 	private static final boolean _SUPPORTS_ALTER_COLUMN_NAME = true;
