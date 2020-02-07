@@ -867,7 +867,7 @@ public abstract class BaseDB implements DB {
 	protected abstract String[] getTemplate();
 
 	protected String replaceTemplate(String template) {
-		if ((template == null) || (TEMPLATE == null)) {
+		if (template == null) {
 			return null;
 		}
 
