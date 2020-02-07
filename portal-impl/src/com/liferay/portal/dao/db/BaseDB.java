@@ -321,7 +321,7 @@ public abstract class BaseDB implements DB {
 			s = con.createStatement();
 
 			for (String sql : sqls) {
-				sql = buildSQL(applyMaxStringIndexLengthLimitation(sql));
+				sql = buildSQL(sql);
 
 				sql = SQLTransformer.transform(sql.trim());
 
@@ -439,8 +439,6 @@ public abstract class BaseDB implements DB {
 		if (!template.endsWith(StringPool.SEMICOLON)) {
 			template += StringPool.SEMICOLON;
 		}
-
-		template = applyMaxStringIndexLengthLimitation(template);
 
 		try (UnsyncBufferedReader unsyncBufferedReader =
 				new UnsyncBufferedReader(new UnsyncStringReader(template))) {
@@ -770,10 +768,6 @@ public abstract class BaseDB implements DB {
 			template = sb.toString();
 		}
 
-		if (fileName.equals("indexes")) {
-			template = applyMaxStringIndexLengthLimitation(template);
-		}
-
 		return template;
 	}
 
@@ -901,7 +895,7 @@ public abstract class BaseDB implements DB {
 			sb.append(template.substring(endIndex));
 		}
 
-		return sb.toString();
+		return applyMaxStringIndexLengthLimitation(sb.toString());
 	}
 
 	protected abstract String reword(String data) throws IOException;
