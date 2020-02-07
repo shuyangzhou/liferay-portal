@@ -50,7 +50,7 @@ public class OracleDB extends BaseDB {
 
 	@Override
 	public String buildSQL(String template) throws IOException {
-		template = replaceTemplate(template, getTemplate());
+		template = replaceTemplate(template);
 		template = reword(template);
 		template = StringUtil.replace(
 			template, new String[] {"\\\\", "\\'", "\\\""},
@@ -155,7 +155,7 @@ public class OracleDB extends BaseDB {
 	}
 
 	@Override
-	protected String replaceTemplate(String template, String[] actual) {
+	protected String replaceTemplate(String template) {
 
 		// LPS-12048
 
@@ -177,7 +177,7 @@ public class OracleDB extends BaseDB {
 
 		template = sb.toString();
 
-		return super.replaceTemplate(template, actual);
+		return super.replaceTemplate(template);
 	}
 
 	@Override
