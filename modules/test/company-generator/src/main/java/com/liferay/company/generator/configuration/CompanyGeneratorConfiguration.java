@@ -25,10 +25,10 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 @Meta.OCD(id = "com.liferay.company.generator.CompanyGeneratorConfiguration")
 public abstract interface CompanyGeneratorConfiguration {
 
-	@Meta.AD(deflt = "", required = false)
+	@Meta.AD
 	public String virtualHostName();
 
-	@Meta.AD(deflt = "", required = false)
+	@Meta.AD
 	public String customActivationMessage();
 
 }
