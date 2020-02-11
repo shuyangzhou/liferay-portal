@@ -18,7 +18,6 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.sharepoint.soap.connector.SharepointConnectionInfo;
 import com.liferay.sharepoint.soap.connector.SharepointObject;
-import com.liferay.sharepoint.soap.connector.schema.XMLHelper;
 
 import com.microsoft.schemas.sharepoint.soap.CopySoap;
 import com.microsoft.schemas.sharepoint.soap.ListsSoap;
@@ -66,11 +65,11 @@ public abstract class BaseOperation implements Operation {
 	}
 
 	public URL toURL(String path) {
-		pathHelper.validatePath(path);
+		PathUtil.validatePath(path);
 
 		URL serviceURL = sharepointConnectionInfo.getServiceURL();
 
-		return urlHelper.toURL(
+		return URLUtil.toURL(
 			serviceURL.toString() + sharepointConnectionInfo.getLibraryPath() +
 				path);
 	}
@@ -90,7 +89,7 @@ public abstract class BaseOperation implements Operation {
 	}
 
 	protected String toFullPath(String path) {
-		pathHelper.validatePath(path);
+		PathUtil.validatePath(path);
 
 		StringBundler sb = new StringBundler(4);
 
@@ -104,10 +103,6 @@ public abstract class BaseOperation implements Operation {
 
 		return sb.toString();
 	}
-
-	protected static PathHelper pathHelper = new PathHelper();
-	protected static URLHelper urlHelper = new URLHelper();
-	protected static XMLHelper xmlHelper = new XMLHelper();
 
 	protected CopySoap copySoap;
 	protected ListsSoap listsSoap;

@@ -95,6 +95,12 @@ public interface KBCommentLocalService
 	public KBComment createKBComment(long kbCommentId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the kb comment from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param kbComment the kb comment
@@ -347,6 +353,9 @@ public interface KBCommentLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

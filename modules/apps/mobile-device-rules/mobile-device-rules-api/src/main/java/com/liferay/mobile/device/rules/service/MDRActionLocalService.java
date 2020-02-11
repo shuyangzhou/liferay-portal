@@ -99,6 +99,12 @@ public interface MDRActionLocalService
 	@Transactional(enabled = false)
 	public MDRAction createMDRAction(long actionId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteAction(long actionId);
 
 	@SystemEvent(type = SystemEventConstants.TYPE_DELETE)
@@ -319,6 +325,9 @@ public interface MDRActionLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

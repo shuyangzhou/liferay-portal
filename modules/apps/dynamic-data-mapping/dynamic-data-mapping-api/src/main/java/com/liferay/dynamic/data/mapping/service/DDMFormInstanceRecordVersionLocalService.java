@@ -82,6 +82,12 @@ public interface DDMFormInstanceRecordVersionLocalService
 		long formInstanceRecordVersionId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the ddm form instance record version from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param ddmFormInstanceRecordVersion the ddm form instance record version
@@ -256,6 +262,9 @@ public interface DDMFormInstanceRecordVersionLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

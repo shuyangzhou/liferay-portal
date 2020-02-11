@@ -96,6 +96,12 @@ public interface TeamLocalService
 	public void clearUserTeams(long userId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new team with the primary key. Does not add the team to the database.
 	 *
 	 * @param teamId the primary key for the new team
@@ -254,6 +260,9 @@ public interface TeamLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

@@ -92,6 +92,17 @@ public class MDRRuleGroupLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _mdrRuleGroupLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the mdr rule group with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param ruleGroupId the primary key of the mdr rule group
@@ -398,6 +409,9 @@ public class MDRRuleGroupLocalServiceWrapper
 		return _mdrRuleGroupLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

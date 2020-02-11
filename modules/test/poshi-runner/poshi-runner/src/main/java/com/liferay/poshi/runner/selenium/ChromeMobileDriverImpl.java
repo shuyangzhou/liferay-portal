@@ -41,8 +41,8 @@ public class ChromeMobileDriverImpl extends BaseMobileDriverImpl {
 		try {
 			keyboardVisible = isKeyboardVisible();
 		}
-		catch (Exception e) {
-			e.printStackTrace();
+		catch (Exception exception) {
+			exception.printStackTrace();
 		}
 
 		if (keyboardVisible) {

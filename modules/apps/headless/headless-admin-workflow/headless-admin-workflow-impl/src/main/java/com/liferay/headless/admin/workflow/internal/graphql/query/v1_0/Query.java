@@ -396,7 +396,7 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {workflowTasks(andOperator: ___, assetPrimaryKeys: ___, assetTitle: ___, assetTypes: ___, assigneeUserIds: ___, completed: ___, dateDueEnd: ___, dateDueStart: ___, page: ___, pageSize: ___, searchByUserRoles: ___, sorts: ___, taskNames: ___, workflowDefinitionId: ___, workflowInstanceIds: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {workflowTasks(andOperator: ___, assetPrimaryKeys: ___, assetTitle: ___, assetTypes: ___, assigneeIds: ___, completed: ___, dateDueEnd: ___, dateDueStart: ___, page: ___, pageSize: ___, searchByRoles: ___, searchByUserRoles: ___, sorts: ___, taskNames: ___, workflowDefinitionId: ___, workflowInstanceIds: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField
 	public WorkflowTaskPage workflowTasks(
@@ -404,10 +404,11 @@ public class Query {
 			@GraphQLName("assetPrimaryKeys") Long[] assetPrimaryKeys,
 			@GraphQLName("assetTitle") String assetTitle,
 			@GraphQLName("assetTypes") String[] assetTypes,
-			@GraphQLName("assigneeUserIds") Long[] assigneeUserIds,
+			@GraphQLName("assigneeIds") Long[] assigneeIds,
 			@GraphQLName("completed") Boolean completed,
 			@GraphQLName("dateDueEnd") Date dateDueEnd,
 			@GraphQLName("dateDueStart") Date dateDueStart,
+			@GraphQLName("searchByRoles") Boolean searchByRoles,
 			@GraphQLName("searchByUserRoles") Boolean searchByUserRoles,
 			@GraphQLName("taskNames") String[] taskNames,
 			@GraphQLName("workflowDefinitionId") Long workflowDefinitionId,
@@ -423,9 +424,10 @@ public class Query {
 			workflowTaskResource -> new WorkflowTaskPage(
 				workflowTaskResource.getWorkflowTasksPage(
 					andOperator, assetPrimaryKeys, assetTitle, assetTypes,
-					assigneeUserIds, completed, dateDueEnd, dateDueStart,
-					searchByUserRoles, taskNames, workflowDefinitionId,
-					workflowInstanceIds, Pagination.of(page, pageSize),
+					assigneeIds, completed, dateDueEnd, dateDueStart,
+					searchByRoles, searchByUserRoles, taskNames,
+					workflowDefinitionId, workflowInstanceIds,
+					Pagination.of(page, pageSize),
 					_sortsBiFunction.apply(
 						workflowTaskResource, sortsString))));
 	}

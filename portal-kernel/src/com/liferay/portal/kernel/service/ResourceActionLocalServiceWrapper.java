@@ -74,6 +74,17 @@ public class ResourceActionLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _resourceActionLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new resource action with the primary key. Does not add the resource action to the database.
 	 *
 	 * @param resourceActionId the primary key for the new resource action
@@ -257,6 +268,9 @@ public class ResourceActionLocalServiceWrapper
 		return _resourceActionLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

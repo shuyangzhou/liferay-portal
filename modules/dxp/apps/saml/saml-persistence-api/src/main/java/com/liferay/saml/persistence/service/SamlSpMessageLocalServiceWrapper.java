@@ -58,6 +58,17 @@ public class SamlSpMessageLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _samlSpMessageLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new saml sp message with the primary key. Does not add the saml sp message to the database.
 	 *
 	 * @param samlSpMessageId the primary key for the new saml sp message
@@ -244,6 +255,9 @@ public class SamlSpMessageLocalServiceWrapper
 		return _samlSpMessageLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

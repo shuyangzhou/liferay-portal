@@ -76,6 +76,12 @@ public interface WorkflowDefinitionLinkLocalService
 		WorkflowDefinitionLink workflowDefinitionLink);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new workflow definition link with the primary key. Does not add the workflow definition link to the database.
 	 *
 	 * @param workflowDefinitionLinkId the primary key for the new workflow definition link
@@ -224,6 +230,9 @@ public interface WorkflowDefinitionLinkLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

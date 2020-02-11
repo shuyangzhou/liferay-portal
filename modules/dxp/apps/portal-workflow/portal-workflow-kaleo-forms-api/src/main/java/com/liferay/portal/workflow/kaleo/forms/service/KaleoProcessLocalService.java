@@ -118,6 +118,12 @@ public interface KaleoProcessLocalService
 	public KaleoProcess createKaleoProcess(long kaleoProcessId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the kaleo process from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param kaleoProcess the kaleo process
@@ -368,6 +374,9 @@ public interface KaleoProcessLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

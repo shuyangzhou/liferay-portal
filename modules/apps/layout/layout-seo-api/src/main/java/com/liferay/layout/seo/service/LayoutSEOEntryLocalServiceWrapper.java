@@ -61,6 +61,17 @@ public class LayoutSEOEntryLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _layoutSEOEntryLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the layout seo entry from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param layoutSEOEntry the layout seo entry
@@ -370,6 +381,9 @@ public class LayoutSEOEntryLocalServiceWrapper
 		return _layoutSEOEntryLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

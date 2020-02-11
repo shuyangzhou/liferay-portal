@@ -85,6 +85,18 @@ public class AccountEntryOrganizationRelLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _accountEntryOrganizationRelLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the account entry organization rel from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param accountEntryOrganizationRel the account entry organization rel
@@ -343,6 +355,9 @@ public class AccountEntryOrganizationRelLocalServiceWrapper
 			getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

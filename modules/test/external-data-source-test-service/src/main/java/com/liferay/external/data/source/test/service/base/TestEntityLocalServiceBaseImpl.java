@@ -267,6 +267,15 @@ public abstract class TestEntityLocalServiceBaseImpl
 	/**
 	 * @throws PortalException
 	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
+
+		return testEntityPersistence.create(primaryKeyObj);
+	}
+
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
@@ -275,6 +284,9 @@ public abstract class TestEntityLocalServiceBaseImpl
 			(TestEntity)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

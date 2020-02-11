@@ -271,6 +271,15 @@ public abstract class MBStatsUserLocalServiceBaseImpl
 	/**
 	 * @throws PortalException
 	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
+
+		return mbStatsUserPersistence.create(primaryKeyObj);
+	}
+
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
@@ -279,6 +288,9 @@ public abstract class MBStatsUserLocalServiceBaseImpl
 			(MBStatsUser)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

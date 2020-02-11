@@ -85,6 +85,12 @@ public interface AppBuilderAppDeploymentLocalService
 		long appBuilderAppDeploymentId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the app builder app deployment from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param appBuilderAppDeployment the app builder app deployment
@@ -240,6 +246,9 @@ public interface AppBuilderAppDeploymentLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

@@ -89,6 +89,12 @@ public interface AddressLocalService
 	public Address createAddress(long addressId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the address from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param address the address
@@ -267,6 +273,9 @@ public interface AddressLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

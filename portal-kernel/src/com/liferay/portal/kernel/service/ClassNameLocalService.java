@@ -83,6 +83,12 @@ public interface ClassNameLocalService
 	public ClassName createClassName(long classNameId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the class name from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param className the class name
@@ -237,6 +243,9 @@ public interface ClassNameLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

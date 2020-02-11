@@ -81,6 +81,12 @@ public interface DDLRecordVersionLocalService
 	public DDLRecordVersion createDDLRecordVersion(long recordVersionId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the ddl record version from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param ddlRecordVersion the ddl record version
@@ -248,6 +254,9 @@ public interface DDLRecordVersionLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

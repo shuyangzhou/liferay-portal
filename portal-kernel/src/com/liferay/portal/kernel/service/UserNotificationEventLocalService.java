@@ -121,6 +121,12 @@ public interface UserNotificationEventLocalService
 		throws PortalException;
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new user notification event with the primary key. Does not add the user notification event to the database.
 	 *
 	 * @param userNotificationEventId the primary key for the new user notification event
@@ -395,6 +401,9 @@ public interface UserNotificationEventLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

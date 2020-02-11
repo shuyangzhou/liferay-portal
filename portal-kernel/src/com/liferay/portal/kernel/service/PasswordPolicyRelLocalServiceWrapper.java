@@ -79,6 +79,18 @@ public class PasswordPolicyRelLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _passwordPolicyRelLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the password policy rel with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param passwordPolicyRelId the primary key of the password policy rel
@@ -347,6 +359,9 @@ public class PasswordPolicyRelLocalServiceWrapper
 		return _passwordPolicyRelLocalService.getPasswordPolicyRelsCount();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

@@ -83,6 +83,12 @@ public interface JournalContentSearchLocalService
 	public JournalContentSearch createJournalContentSearch(
 		long contentSearchId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteArticleContentSearch(
 		long groupId, boolean privateLayout, long layoutId, String portletId);
 
@@ -263,6 +269,9 @@ public interface JournalContentSearchLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

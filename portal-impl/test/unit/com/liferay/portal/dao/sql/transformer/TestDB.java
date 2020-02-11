@@ -35,15 +35,12 @@ public class TestDB extends BaseDB {
 	}
 
 	@Override
-	protected String buildCreateFileContent(
-			String sqlDir, String databaseName, String createContent)
-		throws IOException {
-
+	public String getPopulateSQL(String databaseName, String sqlContent) {
 		return StringPool.BLANK;
 	}
 
 	@Override
-	protected String getServerName() {
+	public String getRecreateSQL(String databaseName) {
 		return StringPool.BLANK;
 	}
 

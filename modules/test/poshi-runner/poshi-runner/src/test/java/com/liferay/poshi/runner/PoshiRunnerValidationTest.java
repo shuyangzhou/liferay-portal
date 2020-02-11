@@ -17,6 +17,7 @@ package com.liferay.poshi.runner;
 import com.liferay.poshi.runner.util.FileUtil;
 import com.liferay.poshi.runner.util.OSDetector;
 import com.liferay.poshi.runner.util.PropsValues;
+import com.liferay.poshi.runner.util.StringUtil;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -1493,7 +1494,7 @@ public class PoshiRunnerValidationTest extends TestCase {
 					fileName);
 
 		if (OSDetector.isWindows()) {
-			filePath = filePath.replace("/", "\\");
+			filePath = StringUtil.replace(filePath, "/", "\\");
 		}
 
 		return filePath;

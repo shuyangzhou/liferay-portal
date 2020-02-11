@@ -102,7 +102,7 @@ public class PostgreSQLDB extends BaseDB {
 
 	@Override
 	public String buildSQL(String template) throws IOException {
-		template = replaceTemplate(template, getTemplate());
+		template = replaceTemplate(template);
 
 		template = reword(template);
 
@@ -152,16 +152,20 @@ public class PostgreSQLDB extends BaseDB {
 	}
 
 	@Override
-	public boolean isSupportsQueryingAfterException() {
-		return _SUPPORTS_QUERYING_AFTER_EXCEPTION;
+	public String getPopulateSQL(String databaseName, String sqlContent) {
+		StringBundler sb = new StringBundler(4);
+
+		sb.append("\\c ");
+		sb.append(databaseName);
+		sb.append(";\n\n");
+		sb.append(sqlContent);
+
+		return sb.toString();
 	}
 
 	@Override
-	protected String buildCreateFileContent(
-			String sqlDir, String databaseName, String createContent)
-		throws IOException {
-
-		StringBundler sb = new StringBundler(10);
+	public String getRecreateSQL(String databaseName) {
+		StringBundler sb = new StringBundler(6);
 
 		sb.append("drop database ");
 		sb.append(databaseName);
@@ -170,19 +174,12 @@ public class PostgreSQLDB extends BaseDB {
 		sb.append(databaseName);
 		sb.append(" encoding = 'UNICODE';\n");
 
-		if (createContent != null) {
-			sb.append("\\c ");
-			sb.append(databaseName);
-			sb.append(";\n\n");
-			sb.append(createContent);
-		}
-
 		return sb.toString();
 	}
 
 	@Override
-	protected String getServerName() {
-		return "postgresql";
+	public boolean isSupportsQueryingAfterException() {
+		return _SUPPORTS_QUERYING_AFTER_EXCEPTION;
 	}
 
 	@Override

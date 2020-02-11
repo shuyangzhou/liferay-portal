@@ -65,6 +65,17 @@ public class LayoutSetLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _layoutSetLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the layout set from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param layoutSet the layout set
@@ -329,6 +340,9 @@ public class LayoutSetLocalServiceWrapper
 		return _layoutSetLocalService.getPageCount(groupId, privateLayout);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

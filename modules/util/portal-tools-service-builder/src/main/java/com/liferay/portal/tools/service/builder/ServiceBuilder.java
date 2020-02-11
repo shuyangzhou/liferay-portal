@@ -1956,6 +1956,16 @@ public class ServiceBuilder {
 		return false;
 	}
 
+	public boolean isVersionGTE_7_4_0() {
+		if (_dtdVersion.isLaterVersionThan("7.4.0") ||
+			_dtdVersion.isSameVersionAs("7.4.0")) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 	public boolean isVersionLTE_7_1_0() {
 		if (_dtdVersion.isPreviousVersionThan("7.1.0") ||
 			_dtdVersion.isSameVersionAs("7.1.0")) {

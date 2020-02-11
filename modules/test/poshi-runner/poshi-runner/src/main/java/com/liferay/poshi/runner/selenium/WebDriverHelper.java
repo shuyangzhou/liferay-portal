@@ -16,6 +16,7 @@ package com.liferay.poshi.runner.selenium;
 
 import com.liferay.poshi.runner.util.FileUtil;
 import com.liferay.poshi.runner.util.PropsValues;
+import com.liferay.poshi.runner.util.StringUtil;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -108,7 +109,9 @@ public class WebDriverHelper {
 		sb.append(getCSSSource(htmlSource));
 		sb.append("</style></html>");
 
-		FileUtil.write(fileName, htmlSource.replace("<\\html>", sb.toString()));
+		FileUtil.write(
+			fileName,
+			StringUtil.replace(htmlSource, "<\\html>", sb.toString()));
 	}
 
 }

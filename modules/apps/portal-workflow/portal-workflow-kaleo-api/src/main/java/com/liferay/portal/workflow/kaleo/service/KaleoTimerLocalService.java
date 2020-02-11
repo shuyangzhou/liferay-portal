@@ -88,6 +88,12 @@ public interface KaleoTimerLocalService
 	public KaleoTimer createKaleoTimer(long kaleoTimerId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the kaleo timer from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param kaleoTimer the kaleo timer
@@ -236,6 +242,9 @@ public interface KaleoTimerLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

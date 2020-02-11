@@ -80,6 +80,16 @@ public class DDMDataProviderInstanceLocalServiceUtil {
 			dataProviderInstanceId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	public static com.liferay.portal.kernel.model.PersistedModel
+			createPersistedModel(java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().createPersistedModel(primaryKeyObj);
+	}
+
 	public static void deleteDataProviderInstance(
 			com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance
 				dataProviderInstance)
@@ -426,6 +436,9 @@ public class DDMDataProviderInstanceLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	public static com.liferay.portal.kernel.model.PersistedModel
 			getPersistedModel(java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {

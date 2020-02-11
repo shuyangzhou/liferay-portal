@@ -15,11 +15,11 @@
 package com.liferay.portal.dao.db;
 
 import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.IOException;
@@ -43,7 +43,7 @@ public class SybaseDB extends BaseDB {
 
 	@Override
 	public String buildSQL(String template) throws IOException {
-		template = replaceTemplate(template, getTemplate());
+		template = replaceTemplate(template);
 
 		template = reword(template);
 		template = StringUtil.replace(template, ");\n", ")\ngo\n");
@@ -61,6 +61,35 @@ public class SybaseDB extends BaseDB {
 	}
 
 	@Override
+	public String getPopulateSQL(String databaseName, String sqlContent) {
+		StringBundler sb = new StringBundler(4);
+
+		sb.append("use ");
+		sb.append(databaseName);
+		sb.append("\n\n");
+		sb.append(sqlContent);
+
+		return sb.toString();
+	}
+
+	@Override
+	public String getRecreateSQL(String databaseName) {
+		StringBundler sb = new StringBundler(9);
+
+		sb.append("use master\n");
+		sb.append("exec sp_dboption '");
+		sb.append(databaseName);
+		sb.append("', 'allow nulls by default' , true\n");
+		sb.append("go\n\n");
+		sb.append("exec sp_dboption '");
+		sb.append(databaseName);
+		sb.append("', 'select into/bulkcopy/pllsort' , true\n");
+		sb.append("go\n\n");
+
+		return sb.toString();
+	}
+
+	@Override
 	public boolean isSupportsInlineDistinct() {
 		return _SUPPORTS_INLINE_DISTINCT;
 	}
@@ -71,9 +100,23 @@ public class SybaseDB extends BaseDB {
 	}
 
 	@Override
-	protected String applyMaxStringIndexLengthLimitation(String template) {
+	protected int[] getSQLTypes() {
+		return _SQL_TYPES;
+	}
+
+	@Override
+	protected String[] getTemplate() {
+		return _SYBASE;
+	}
+
+	@Override
+	protected String replaceTemplate(String template) {
+		if (template == null) {
+			return null;
+		}
+
 		if (!template.contains("[$COLUMN_LENGTH:")) {
-			return template;
+			return super.replaceTemplate(template);
 		}
 
 		String[] strings = StringUtil.split(template, CharPool.NEW_LINE);
@@ -94,50 +137,8 @@ public class SybaseDB extends BaseDB {
 			}
 		}
 
-		return super.applyMaxStringIndexLengthLimitation(
+		return super.replaceTemplate(
 			StringUtil.merge(strings, StringPool.NEW_LINE));
-	}
-
-	@Override
-	protected String buildCreateFileContent(
-			String sqlDir, String databaseName, String createContent)
-		throws IOException {
-
-		StringBundler sb = new StringBundler(13);
-
-		sb.append("use master\n");
-		sb.append("exec sp_dboption '");
-		sb.append(databaseName);
-		sb.append("', 'allow nulls by default' , true\n");
-		sb.append("go\n\n");
-		sb.append("exec sp_dboption '");
-		sb.append(databaseName);
-		sb.append("', 'select into/bulkcopy/pllsort' , true\n");
-		sb.append("go\n\n");
-
-		if (createContent != null) {
-			sb.append("use ");
-			sb.append(databaseName);
-			sb.append("\n\n");
-			sb.append(createContent);
-		}
-
-		return sb.toString();
-	}
-
-	@Override
-	protected String getServerName() {
-		return "sybase";
-	}
-
-	@Override
-	protected int[] getSQLTypes() {
-		return _SQL_TYPES;
-	}
-
-	@Override
-	protected String[] getTemplate() {
-		return _SYBASE;
 	}
 
 	@Override

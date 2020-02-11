@@ -266,6 +266,15 @@ public abstract class ReleaseLocalServiceBaseImpl
 	/**
 	 * @throws PortalException
 	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
+
+		return releasePersistence.create(primaryKeyObj);
+	}
+
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
@@ -273,6 +282,9 @@ public abstract class ReleaseLocalServiceBaseImpl
 		return releaseLocalService.deleteRelease((Release)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

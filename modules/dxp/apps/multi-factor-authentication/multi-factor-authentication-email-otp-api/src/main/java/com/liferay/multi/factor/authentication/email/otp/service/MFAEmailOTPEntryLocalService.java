@@ -83,6 +83,12 @@ public interface MFAEmailOTPEntryLocalService
 	public MFAEmailOTPEntry createMFAEmailOTPEntry(long mfaEmailOTPEntryId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the mfa email otp entry with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param mfaEmailOTPEntryId the primary key of the mfa email otp entry
@@ -228,6 +234,9 @@ public interface MFAEmailOTPEntryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

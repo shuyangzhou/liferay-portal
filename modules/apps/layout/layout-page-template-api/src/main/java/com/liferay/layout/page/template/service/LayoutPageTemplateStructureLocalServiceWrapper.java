@@ -79,6 +79,18 @@ public class LayoutPageTemplateStructureLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _layoutPageTemplateStructureLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the layout page template structure from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param layoutPageTemplateStructure the layout page template structure
@@ -414,6 +426,9 @@ public class LayoutPageTemplateStructureLocalServiceWrapper
 			getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

@@ -112,7 +112,24 @@ public class EqualsPoshiElement extends PoshiElement {
 	private boolean _isElementType(
 		PoshiElement parentPoshiElement, String poshiScript) {
 
-		return isConditionElementType(parentPoshiElement, poshiScript);
+		if (isConditionElementType(parentPoshiElement, poshiScript)) {
+			List<String> nestedConditions = getNestedConditions(
+				poshiScript, "||");
+
+			if (nestedConditions.size() > 1) {
+				return false;
+			}
+
+			nestedConditions = getNestedConditions(poshiScript, "&&");
+
+			if (nestedConditions.size() > 1) {
+				return false;
+			}
+
+			return true;
+		}
+
+		return false;
 	}
 
 	private static final String _ELEMENT_NAME = "equals";

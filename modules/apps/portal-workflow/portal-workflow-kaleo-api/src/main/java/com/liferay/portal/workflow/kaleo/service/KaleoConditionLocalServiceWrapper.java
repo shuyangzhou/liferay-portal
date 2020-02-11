@@ -75,6 +75,17 @@ public class KaleoConditionLocalServiceWrapper
 			kaleoConditionId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _kaleoConditionLocalService.createPersistedModel(primaryKeyObj);
+	}
+
 	@Override
 	public void deleteCompanyKaleoConditions(long companyId) {
 		_kaleoConditionLocalService.deleteCompanyKaleoConditions(companyId);
@@ -306,6 +317,9 @@ public class KaleoConditionLocalServiceWrapper
 		return _kaleoConditionLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

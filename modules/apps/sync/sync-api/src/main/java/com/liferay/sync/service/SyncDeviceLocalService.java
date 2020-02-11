@@ -77,6 +77,12 @@ public interface SyncDeviceLocalService
 	public SyncDevice addSyncDevice(SyncDevice syncDevice);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new sync device with the primary key. Does not add the sync device to the database.
 	 *
 	 * @param syncDeviceId the primary key for the new sync device
@@ -209,6 +215,9 @@ public interface SyncDeviceLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

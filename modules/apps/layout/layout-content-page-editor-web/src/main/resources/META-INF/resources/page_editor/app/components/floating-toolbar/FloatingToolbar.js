@@ -78,7 +78,7 @@ export default function FloatingToolbar({
 
 	const handleButtonClick = useCallback(
 		(buttonId, newPanelId) => {
-			onButtonClick(buttonId);
+			onButtonClick(buttonId, itemRef);
 
 			if (newPanelId) {
 				if (newPanelId === panelId) {
@@ -89,7 +89,7 @@ export default function FloatingToolbar({
 				}
 			}
 		},
-		[onButtonClick, panelId]
+		[itemRef, onButtonClick, panelId]
 	);
 
 	useEffect(() => {

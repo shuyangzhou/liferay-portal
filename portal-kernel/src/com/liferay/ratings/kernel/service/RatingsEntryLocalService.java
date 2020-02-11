@@ -77,6 +77,12 @@ public interface RatingsEntryLocalService
 	public RatingsEntry addRatingsEntry(RatingsEntry ratingsEntry);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new ratings entry with the primary key. Does not add the ratings entry to the database.
 	 *
 	 * @param entryId the primary key for the new ratings entry
@@ -237,6 +243,9 @@ public interface RatingsEntryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

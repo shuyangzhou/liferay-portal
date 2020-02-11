@@ -149,6 +149,12 @@ public interface AssetTagLocalService
 	public AssetTag createAssetTag(long tagId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Decrements the number of assets to which the asset tag has been applied.
 	 *
 	 * @param tagId the primary key of the asset tag
@@ -466,6 +472,9 @@ public interface AssetTagLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

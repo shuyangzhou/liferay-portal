@@ -82,6 +82,12 @@ public interface DLFileVersionLocalService
 	public DLFileVersion createDLFileVersion(long fileVersionId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the document library file version from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param dlFileVersion the document library file version
@@ -308,6 +314,9 @@ public interface DLFileVersionLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

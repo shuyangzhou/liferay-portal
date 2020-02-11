@@ -66,6 +66,18 @@ public class ReadingTimeEntryLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _readingTimeEntryLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new reading time entry with the primary key. Does not add the reading time entry to the database.
 	 *
 	 * @param readingTimeEntryId the primary key for the new reading time entry
@@ -314,6 +326,9 @@ public class ReadingTimeEntryLocalServiceWrapper
 		return _readingTimeEntryLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

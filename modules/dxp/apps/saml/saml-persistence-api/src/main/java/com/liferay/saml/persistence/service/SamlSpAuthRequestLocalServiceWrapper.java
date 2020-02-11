@@ -60,6 +60,18 @@ public class SamlSpAuthRequestLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _samlSpAuthRequestLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new saml sp auth request with the primary key. Does not add the saml sp auth request to the database.
 	 *
 	 * @param samlSpAuthnRequestId the primary key for the new saml sp auth request
@@ -255,6 +267,9 @@ public class SamlSpAuthRequestLocalServiceWrapper
 		return _samlSpAuthRequestLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

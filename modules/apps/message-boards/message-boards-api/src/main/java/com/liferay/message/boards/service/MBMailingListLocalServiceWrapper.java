@@ -78,6 +78,17 @@ public class MBMailingListLocalServiceWrapper
 		return _mbMailingListLocalService.createMBMailingList(mailingListId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _mbMailingListLocalService.createPersistedModel(primaryKeyObj);
+	}
+
 	@Override
 	public void deleteCategoryMailingList(long groupId, long categoryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -401,6 +412,9 @@ public class MBMailingListLocalServiceWrapper
 		return _mbMailingListLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

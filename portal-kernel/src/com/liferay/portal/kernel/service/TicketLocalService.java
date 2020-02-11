@@ -77,6 +77,12 @@ public interface TicketLocalService
 	public Ticket addTicket(Ticket ticket);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new ticket with the primary key. Does not add the ticket to the database.
 	 *
 	 * @param ticketId the primary key for the new ticket
@@ -196,6 +202,9 @@ public interface TicketLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

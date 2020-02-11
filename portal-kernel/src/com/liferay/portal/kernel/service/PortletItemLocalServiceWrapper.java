@@ -55,6 +55,17 @@ public class PortletItemLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _portletItemLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new portlet item with the primary key. Does not add the portlet item to the database.
 	 *
 	 * @param portletItemId the primary key for the new portlet item
@@ -227,6 +238,9 @@ public class PortletItemLocalServiceWrapper
 		return _portletItemLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

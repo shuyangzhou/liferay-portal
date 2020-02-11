@@ -74,6 +74,12 @@ public interface WikiPageResourceLocalService
 		WikiPageResource wikiPageResource);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new wiki page resource with the primary key. Does not add the wiki page resource to the database.
 	 *
 	 * @param resourcePrimKey the primary key for the new wiki page resource
@@ -223,6 +229,9 @@ public interface WikiPageResourceLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public long getPageResourcePrimKey(long groupId, long nodeId, String title);
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

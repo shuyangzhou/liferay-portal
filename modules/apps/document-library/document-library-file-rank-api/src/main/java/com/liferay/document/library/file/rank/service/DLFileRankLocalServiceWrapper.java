@@ -75,6 +75,17 @@ public class DLFileRankLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _dlFileRankLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the document library file rank from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param dlFileRank the document library file rank
@@ -336,6 +347,9 @@ public class DLFileRankLocalServiceWrapper
 		return _dlFileRankLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

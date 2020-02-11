@@ -120,6 +120,12 @@ public interface OAuth2ApplicationLocalService
 	public OAuth2Application createOAuth2Application(long oAuth2ApplicationId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the o auth2 application with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param oAuth2ApplicationId the primary key of the o auth2 application
@@ -276,6 +282,9 @@ public interface OAuth2ApplicationLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

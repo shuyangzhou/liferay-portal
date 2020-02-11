@@ -55,6 +55,18 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _workflowMetricsSLADefinitionVersionLocalService.
+			createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new workflow metrics sla definition version with the primary key. Does not add the workflow metrics sla definition version to the database.
 	 *
 	 * @param workflowMetricsSLADefinitionVersionId the primary key for the new workflow metrics sla definition version
@@ -280,6 +292,9 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceWrapper
 			getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

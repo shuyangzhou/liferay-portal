@@ -88,6 +88,16 @@ public class PasswordPolicyLocalServiceUtil {
 		return getService().createPasswordPolicy(passwordPolicyId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	public static com.liferay.portal.kernel.model.PersistedModel
+			createPersistedModel(java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().createPersistedModel(primaryKeyObj);
+	}
+
 	public static void deleteNondefaultPasswordPolicies(long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -366,6 +376,9 @@ public class PasswordPolicyLocalServiceUtil {
 			uuid, companyId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	public static com.liferay.portal.kernel.model.PersistedModel
 			getPersistedModel(java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {

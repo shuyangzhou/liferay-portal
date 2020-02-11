@@ -69,6 +69,17 @@ public class OAuthUserLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _oAuthUserLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the o auth user with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param oAuthUserId the primary key of the o auth user
@@ -325,6 +336,9 @@ public class OAuthUserLocalServiceWrapper
 		return _oAuthUserLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

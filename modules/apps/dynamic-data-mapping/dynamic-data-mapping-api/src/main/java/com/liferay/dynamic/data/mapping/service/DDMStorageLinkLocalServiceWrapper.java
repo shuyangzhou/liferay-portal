@@ -70,6 +70,17 @@ public class DDMStorageLinkLocalServiceWrapper
 		return _ddmStorageLinkLocalService.createDDMStorageLink(storageLinkId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _ddmStorageLinkLocalService.createPersistedModel(primaryKeyObj);
+	}
+
 	@Override
 	public void deleteClassStorageLink(long classPK) {
 		_ddmStorageLinkLocalService.deleteClassStorageLink(classPK);
@@ -338,6 +349,9 @@ public class DDMStorageLinkLocalServiceWrapper
 		return _ddmStorageLinkLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

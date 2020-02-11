@@ -92,6 +92,12 @@ public interface DDMDataProviderInstanceLocalService
 	public DDMDataProviderInstance createDDMDataProviderInstance(
 		long dataProviderInstanceId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteDataProviderInstance(
 			DDMDataProviderInstance dataProviderInstance)
 		throws PortalException;
@@ -334,6 +340,9 @@ public interface DDMDataProviderInstanceLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

@@ -92,6 +92,12 @@ public interface MBThreadLocalService
 	public MBThread createMBThread(long threadId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the message boards thread with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param threadId the primary key of the message boards thread
@@ -341,6 +347,9 @@ public interface MBThreadLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

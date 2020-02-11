@@ -95,6 +95,18 @@ public class SamlSpIdpConnectionLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _samlSpIdpConnectionLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new saml sp idp connection with the primary key. Does not add the saml sp idp connection to the database.
 	 *
 	 * @param samlSpIdpConnectionId the primary key for the new saml sp idp connection
@@ -276,6 +288,9 @@ public class SamlSpIdpConnectionLocalServiceWrapper
 		return _samlSpIdpConnectionLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

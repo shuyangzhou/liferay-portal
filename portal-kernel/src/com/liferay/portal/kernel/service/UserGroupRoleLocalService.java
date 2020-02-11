@@ -76,6 +76,12 @@ public interface UserGroupRoleLocalService
 		long[] userIds, long groupId, long roleId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new user group role with the primary key. Does not add the user group role to the database.
 	 *
 	 * @param userGroupRolePK the primary key for the new user group role
@@ -212,6 +218,9 @@ public interface UserGroupRoleLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

@@ -84,6 +84,12 @@ public interface AuditEventLocalService
 	public AuditEvent createAuditEvent(long auditEventId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the audit event from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param auditEvent the audit event
@@ -257,6 +263,9 @@ public interface AuditEventLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

@@ -80,6 +80,12 @@ public interface ImageLocalService
 	public Image createImage(long imageId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the image from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param image the image
@@ -231,6 +237,9 @@ public interface ImageLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

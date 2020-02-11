@@ -78,6 +78,17 @@ public class LayoutRevisionLocalServiceWrapper
 			layoutRevisionId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _layoutRevisionLocalService.createPersistedModel(primaryKeyObj);
+	}
+
 	@Override
 	public void deleteLayoutLayoutRevisions(long plid)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -477,6 +488,9 @@ public class LayoutRevisionLocalServiceWrapper
 		return _layoutRevisionLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

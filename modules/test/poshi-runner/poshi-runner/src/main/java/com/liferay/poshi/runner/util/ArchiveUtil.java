@@ -50,8 +50,18 @@ public class ArchiveUtil {
 
 		parentFile.mkdirs();
 
+		File tmpDir = new File(sourceFile.getParentFile(), "tmp");
+
+		tmpDir.mkdir();
+
+		tmpDir.deleteOnExit();
+
+		File tmpFile = new File(tmpDir, targetFileName);
+
+		tmpFile.delete();
+
 		try (ZipOutputStream zipOutputStream = new ZipOutputStream(
-				new FileOutputStream(targetFile))) {
+				new FileOutputStream(tmpFile))) {
 
 			Path sourceFilePath = Paths.get(sourceFile.getCanonicalPath());
 
@@ -70,8 +80,8 @@ public class ArchiveUtil {
 							String targetFilePathString =
 								targetFilePath.toString();
 
-							targetFilePathString = targetFilePathString.replace(
-								"\\", "/");
+							targetFilePathString = StringUtil.replace(
+								targetFilePathString, "\\", "/");
 
 							zipOutputStream.putNextEntry(
 								new ZipEntry(targetFilePathString));
@@ -82,18 +92,23 @@ public class ArchiveUtil {
 
 							zipOutputStream.closeEntry();
 						}
-						catch (IOException ioe) {
-							ioe.printStackTrace();
+						catch (IOException ioException) {
+							ioException.printStackTrace();
 						}
 
 						return FileVisitResult.CONTINUE;
 					}
 
 				});
+
+			Files.move(
+				Paths.get(tmpFile.getCanonicalPath()),
+				Paths.get(targetFile.getCanonicalPath()));
 		}
-		catch (IOException ioe) {
+		catch (IOException ioException) {
 			throw new RuntimeException(
-				"Unable to archive " + sourceFile + " to " + targetFile, ioe);
+				"Unable to archive " + sourceFile + " to " + targetFile,
+				ioException);
 		}
 	}
 

@@ -72,6 +72,17 @@ public class DispatchTriggerLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _dispatchTriggerLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the dispatch trigger from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param dispatchTrigger the dispatch trigger
@@ -309,6 +320,9 @@ public class DispatchTriggerLocalServiceWrapper
 		return _dispatchTriggerLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

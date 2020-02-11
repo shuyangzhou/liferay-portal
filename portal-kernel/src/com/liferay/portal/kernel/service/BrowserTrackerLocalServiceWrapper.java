@@ -59,6 +59,17 @@ public class BrowserTrackerLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _browserTrackerLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the browser tracker from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param browserTracker the browser tracker
@@ -277,6 +288,9 @@ public class BrowserTrackerLocalServiceWrapper
 		return _browserTrackerLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

@@ -97,6 +97,12 @@ public interface AccountEntryUserRelLocalService
 		long accountEntryUserRelId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the account entry user rel from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param accountEntryUserRel the account entry user rel
@@ -259,6 +265,9 @@ public interface AccountEntryUserRelLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

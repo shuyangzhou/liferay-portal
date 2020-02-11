@@ -87,6 +87,12 @@ public interface MBDiscussionLocalService
 	public MBDiscussion createMBDiscussion(long discussionId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the message boards discussion with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param discussionId the primary key of the message boards discussion
@@ -304,6 +310,9 @@ public interface MBDiscussionLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

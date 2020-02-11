@@ -197,6 +197,17 @@ public class DDMStructureLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _ddmStructureLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the ddm structure from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param ddmStructure the ddm structure
@@ -692,6 +703,9 @@ public class DDMStructureLocalServiceWrapper
 		return _ddmStructureLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

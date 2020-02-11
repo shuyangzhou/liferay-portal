@@ -77,6 +77,12 @@ public interface SamlSpAuthRequestLocalService
 		ServiceContext serviceContext);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new saml sp auth request with the primary key. Does not add the saml sp auth request to the database.
 	 *
 	 * @param samlSpAuthnRequestId the primary key for the new saml sp auth request
@@ -201,6 +207,9 @@ public interface SamlSpAuthRequestLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

@@ -85,6 +85,12 @@ public interface JournalArticleResourceLocalService
 	public JournalArticleResource createJournalArticleResource(
 		long resourcePrimKey);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteArticleResource(long groupId, String articleId)
 		throws PortalException;
 
@@ -310,6 +316,9 @@ public interface JournalArticleResourceLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

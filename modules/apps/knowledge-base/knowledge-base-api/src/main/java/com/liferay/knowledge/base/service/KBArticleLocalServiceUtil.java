@@ -133,6 +133,16 @@ public class KBArticleLocalServiceUtil {
 		return getService().createKBArticle(kbArticleId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	public static com.liferay.portal.kernel.model.PersistedModel
+			createPersistedModel(java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().createPersistedModel(primaryKeyObj);
+	}
+
 	public static void deleteGroupKBArticles(long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -633,6 +643,9 @@ public class KBArticleLocalServiceUtil {
 		return getService().getPersistedModel(resourcePrimKey);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	public static com.liferay.portal.kernel.model.PersistedModel
 			getPersistedModel(java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {

@@ -75,6 +75,12 @@ public interface WorkflowInstanceLinkLocalService
 		WorkflowInstanceLink workflowInstanceLink);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new workflow instance link with the primary key. Does not add the workflow instance link to the database.
 	 *
 	 * @param workflowInstanceLinkId the primary key for the new workflow instance link
@@ -210,6 +216,9 @@ public interface WorkflowInstanceLinkLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

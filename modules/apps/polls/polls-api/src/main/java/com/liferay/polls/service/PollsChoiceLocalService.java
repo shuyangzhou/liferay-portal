@@ -78,6 +78,12 @@ public interface PollsChoiceLocalService
 	public PollsChoice addPollsChoice(PollsChoice pollsChoice);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new polls choice with the primary key. Does not add the polls choice to the database.
 	 *
 	 * @param choiceId the primary key for the new polls choice
@@ -218,6 +224,9 @@ public interface PollsChoiceLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

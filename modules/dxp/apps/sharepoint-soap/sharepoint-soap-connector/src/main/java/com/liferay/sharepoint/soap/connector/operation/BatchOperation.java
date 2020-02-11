@@ -17,7 +17,8 @@ package com.liferay.sharepoint.soap.connector.operation;
 import com.liferay.petra.string.StringPool;
 import com.liferay.sharepoint.soap.connector.SharepointException;
 import com.liferay.sharepoint.soap.connector.SharepointResultException;
-import com.liferay.sharepoint.soap.connector.internal.util.RemoteExceptionUtil;
+import com.liferay.sharepoint.soap.connector.internal.util.RemoteExceptionSharepointExceptionMapper;
+import com.liferay.sharepoint.soap.connector.schema.XMLUtil;
 import com.liferay.sharepoint.soap.connector.schema.batch.Batch;
 
 import com.microsoft.schemas.sharepoint.soap.UpdateListItemsResponseUpdateListItemsResult;
@@ -32,13 +33,13 @@ import org.w3c.dom.Element;
 /**
  * @author Iván Zaera
  */
-public class BatchOperation extends BaseOperation {
+public final class BatchOperation extends BaseOperation {
 
 	public void execute(Batch batch) throws SharepointException {
 		UpdateListItemsUpdates updateListItemsUpdates =
 			new UpdateListItemsUpdates();
 
-		Element element = xmlHelper.toElement(batch);
+		Element element = XMLUtil.toElement(batch);
 
 		MessageElement messageElement = new MessageElement(element);
 
@@ -54,31 +55,31 @@ public class BatchOperation extends BaseOperation {
 					updateListItemsUpdates);
 		}
 		catch (RemoteException remoteException) {
-			RemoteExceptionUtil.handleRemoteException(remoteException);
+			throw RemoteExceptionSharepointExceptionMapper.map(remoteException);
 		}
 
-		parseUpdateListItemsResponseUpdateListItemsResult(
+		_parseUpdateListItemsResponseUpdateListItemsResult(
 			updateListItemsResponseUpdateListItemsResult);
 	}
 
-	protected void parseUpdateListItemsResponseUpdateListItemsResult(
+	private void _parseUpdateListItemsResponseUpdateListItemsResult(
 			UpdateListItemsResponseUpdateListItemsResult
 				updateListItemsResponseUpdateListItemsResult)
 		throws SharepointException {
 
 		Element updateListItemsResponseUpdateListItemsResultElement =
-			xmlHelper.getElement(updateListItemsResponseUpdateListItemsResult);
+			XMLUtil.getElement(updateListItemsResponseUpdateListItemsResult);
 
-		Element resultElement = xmlHelper.getElement(
+		Element resultElement = XMLUtil.getElement(
 			"Result", updateListItemsResponseUpdateListItemsResultElement);
 
-		Element errorCodeElement = xmlHelper.getElement(
+		Element errorCodeElement = XMLUtil.getElement(
 			"ErrorCode", resultElement);
 
 		String errorCode = errorCodeElement.getTextContent();
 
 		if (!errorCode.equals(SharepointConstants.NUMERIC_STATUS_SUCCESS)) {
-			Element errorTextElement = xmlHelper.getElement(
+			Element errorTextElement = XMLUtil.getElement(
 				"ErrorText", resultElement);
 
 			String errorText = errorTextElement.getTextContent();

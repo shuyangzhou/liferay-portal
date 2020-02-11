@@ -111,6 +111,17 @@ public class DLFolderLocalServiceWrapper
 		return _dlFolderLocalService.createDLFolder(folderId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _dlFolderLocalService.createPersistedModel(primaryKeyObj);
+	}
+
 	@Override
 	public void deleteAllByGroup(long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -778,6 +789,9 @@ public class DLFolderLocalServiceWrapper
 		return _dlFolderLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

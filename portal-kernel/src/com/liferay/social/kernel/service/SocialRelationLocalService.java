@@ -82,6 +82,12 @@ public interface SocialRelationLocalService
 	public SocialRelation addSocialRelation(SocialRelation socialRelation);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new social relation with the primary key. Does not add the social relation to the database.
 	 *
 	 * @param relationId the primary key for the new social relation
@@ -288,6 +294,9 @@ public interface SocialRelationLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

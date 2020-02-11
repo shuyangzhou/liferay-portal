@@ -69,6 +69,12 @@ public interface UserIdMapperLocalService
 	public UserIdMapper addUserIdMapper(UserIdMapper userIdMapper);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new user ID mapper with the primary key. Does not add the user ID mapper to the database.
 	 *
 	 * @param userIdMapperId the primary key for the new user ID mapper
@@ -188,6 +194,9 @@ public interface UserIdMapperLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

@@ -106,6 +106,17 @@ public class KaleoDefinitionLocalServiceWrapper
 			kaleoDefinitionId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _kaleoDefinitionLocalService.createPersistedModel(primaryKeyObj);
+	}
+
 	@Override
 	public void deactivateKaleoDefinition(
 			String name, int version,
@@ -430,6 +441,9 @@ public class KaleoDefinitionLocalServiceWrapper
 		return _kaleoDefinitionLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

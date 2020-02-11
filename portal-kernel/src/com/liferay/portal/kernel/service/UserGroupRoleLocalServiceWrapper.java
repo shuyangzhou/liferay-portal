@@ -61,6 +61,17 @@ public class UserGroupRoleLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _userGroupRoleLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new user group role with the primary key. Does not add the user group role to the database.
 	 *
 	 * @param userGroupRolePK the primary key for the new user group role
@@ -291,6 +302,9 @@ public class UserGroupRoleLocalServiceWrapper
 		return _userGroupRoleLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

@@ -71,6 +71,12 @@ public interface UADPartialEntryLocalService
 	public UADPartialEntry addUADPartialEntry(UADPartialEntry uadPartialEntry);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new uad partial entry with the primary key. Does not add the uad partial entry to the database.
 	 *
 	 * @param uadPartialEntryId the primary key for the new uad partial entry
@@ -189,6 +195,9 @@ public interface UADPartialEntryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

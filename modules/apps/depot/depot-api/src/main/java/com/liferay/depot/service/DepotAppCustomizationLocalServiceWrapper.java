@@ -64,6 +64,18 @@ public class DepotAppCustomizationLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _depotAppCustomizationLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the depot app customization from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param depotAppCustomization the depot app customization
@@ -286,6 +298,9 @@ public class DepotAppCustomizationLocalServiceWrapper
 		return _depotAppCustomizationLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

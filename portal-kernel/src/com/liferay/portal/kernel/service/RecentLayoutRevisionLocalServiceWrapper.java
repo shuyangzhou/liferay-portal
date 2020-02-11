@@ -59,6 +59,18 @@ public class RecentLayoutRevisionLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _recentLayoutRevisionLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new recent layout revision with the primary key. Does not add the recent layout revision to the database.
 	 *
 	 * @param recentLayoutRevisionId the primary key for the new recent layout revision
@@ -262,6 +274,9 @@ public class RecentLayoutRevisionLocalServiceWrapper
 		return _recentLayoutRevisionLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

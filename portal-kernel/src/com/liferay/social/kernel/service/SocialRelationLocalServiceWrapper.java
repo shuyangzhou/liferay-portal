@@ -63,6 +63,17 @@ public class SocialRelationLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _socialRelationLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new social relation with the primary key. Does not add the social relation to the database.
 	 *
 	 * @param relationId the primary key for the new social relation
@@ -358,6 +369,9 @@ public class SocialRelationLocalServiceWrapper
 		return _socialRelationLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

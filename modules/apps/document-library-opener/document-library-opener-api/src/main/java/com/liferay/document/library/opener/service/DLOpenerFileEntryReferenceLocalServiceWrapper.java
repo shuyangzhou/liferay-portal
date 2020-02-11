@@ -129,6 +129,18 @@ public class DLOpenerFileEntryReferenceLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _dlOpenerFileEntryReferenceLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the dl opener file entry reference from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param dlOpenerFileEntryReference the dl opener file entry reference
@@ -421,6 +433,9 @@ public class DLOpenerFileEntryReferenceLocalServiceWrapper
 			getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

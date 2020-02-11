@@ -133,6 +133,18 @@ public class OAuth2ScopeGrantLocalServiceWrapper
 			bundleSymbolicName, scope, scopeAliases);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _oAuth2ScopeGrantLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
 	@Override
 	public void deleteOAuth2AuthorizationOAuth2ScopeGrant(
 		long oAuth2AuthorizationId, long oAuth2ScopeGrantId) {
@@ -470,6 +482,9 @@ public class OAuth2ScopeGrantLocalServiceWrapper
 		return _oAuth2ScopeGrantLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

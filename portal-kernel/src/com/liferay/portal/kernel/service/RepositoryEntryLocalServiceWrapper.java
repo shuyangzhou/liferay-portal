@@ -55,6 +55,17 @@ public class RepositoryEntryLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _repositoryEntryLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new repository entry with the primary key. Does not add the repository entry to the database.
 	 *
 	 * @param repositoryEntryId the primary key for the new repository entry
@@ -279,6 +290,9 @@ public class RepositoryEntryLocalServiceWrapper
 		return _repositoryEntryLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

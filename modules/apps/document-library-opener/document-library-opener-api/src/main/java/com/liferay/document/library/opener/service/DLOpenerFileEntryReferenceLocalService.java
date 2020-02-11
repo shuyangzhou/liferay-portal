@@ -112,6 +112,12 @@ public interface DLOpenerFileEntryReferenceLocalService
 		long dlOpenerFileEntryReferenceId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the dl opener file entry reference from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param dlOpenerFileEntryReference the dl opener file entry reference
@@ -298,6 +304,9 @@ public interface DLOpenerFileEntryReferenceLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

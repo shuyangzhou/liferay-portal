@@ -94,6 +94,12 @@ public interface OAuth2ApplicationScopeAliasesLocalService
 		long oAuth2ApplicationScopeAliasesId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the o auth2 application scope aliases with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param oAuth2ApplicationScopeAliasesId the primary key of the o auth2 application scope aliases
@@ -250,6 +256,9 @@ public interface OAuth2ApplicationScopeAliasesLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

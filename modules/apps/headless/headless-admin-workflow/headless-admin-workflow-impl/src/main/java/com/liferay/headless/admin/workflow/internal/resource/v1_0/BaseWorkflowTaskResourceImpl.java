@@ -179,10 +179,11 @@ public abstract class BaseWorkflowTaskResourceImpl
 			@Parameter(in = ParameterIn.QUERY, name = "assetPrimaryKeys"),
 			@Parameter(in = ParameterIn.QUERY, name = "assetTitle"),
 			@Parameter(in = ParameterIn.QUERY, name = "assetTypes"),
-			@Parameter(in = ParameterIn.QUERY, name = "assigneeUserIds"),
+			@Parameter(in = ParameterIn.QUERY, name = "assigneeIds"),
 			@Parameter(in = ParameterIn.QUERY, name = "completed"),
 			@Parameter(in = ParameterIn.QUERY, name = "dateDueEnd"),
 			@Parameter(in = ParameterIn.QUERY, name = "dateDueStart"),
+			@Parameter(in = ParameterIn.QUERY, name = "searchByRoles"),
 			@Parameter(in = ParameterIn.QUERY, name = "searchByUserRoles"),
 			@Parameter(in = ParameterIn.QUERY, name = "taskNames"),
 			@Parameter(in = ParameterIn.QUERY, name = "workflowDefinitionId"),
@@ -204,14 +205,16 @@ public abstract class BaseWorkflowTaskResourceImpl
 				assetTitle,
 			@Parameter(hidden = true) @QueryParam("assetTypes") String[]
 				assetTypes,
-			@Parameter(hidden = true) @QueryParam("assigneeUserIds") Long[]
-				assigneeUserIds,
+			@Parameter(hidden = true) @QueryParam("assigneeIds") Long[]
+				assigneeIds,
 			@Parameter(hidden = true) @QueryParam("completed") Boolean
 				completed,
 			@Parameter(hidden = true) @QueryParam("dateDueEnd") java.util.Date
 				dateDueEnd,
 			@Parameter(hidden = true) @QueryParam("dateDueStart") java.util.Date
 				dateDueStart,
+			@Parameter(hidden = true) @QueryParam("searchByRoles") Boolean
+				searchByRoles,
 			@Parameter(hidden = true) @QueryParam("searchByUserRoles") Boolean
 				searchByUserRoles,
 			@Parameter(hidden = true) @QueryParam("taskNames") String[]

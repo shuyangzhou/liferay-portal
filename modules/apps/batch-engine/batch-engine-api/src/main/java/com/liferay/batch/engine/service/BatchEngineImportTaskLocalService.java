@@ -94,6 +94,12 @@ public interface BatchEngineImportTaskLocalService
 		long batchEngineImportTaskId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the batch engine import task from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param batchEngineImportTask the batch engine import task
@@ -276,6 +282,9 @@ public interface BatchEngineImportTaskLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

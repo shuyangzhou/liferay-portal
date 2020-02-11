@@ -87,6 +87,12 @@ public interface HtmlPreviewEntryLocalService
 	public HtmlPreviewEntry createHtmlPreviewEntry(long htmlPreviewEntryId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the html preview entry from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param htmlPreviewEntry the html preview entry
@@ -231,6 +237,9 @@ public interface HtmlPreviewEntryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

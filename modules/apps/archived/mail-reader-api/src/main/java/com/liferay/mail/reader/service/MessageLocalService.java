@@ -86,6 +86,12 @@ public interface MessageLocalService
 	public Message createMessage(long messageId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the message with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param messageId the primary key of the message
@@ -250,6 +256,9 @@ public interface MessageLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

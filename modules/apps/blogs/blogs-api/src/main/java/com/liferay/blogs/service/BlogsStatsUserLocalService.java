@@ -81,6 +81,12 @@ public interface BlogsStatsUserLocalService
 	public BlogsStatsUser createBlogsStatsUser(long statsUserId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the blogs stats user from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param blogsStatsUser the blogs stats user
@@ -273,6 +279,9 @@ public interface BlogsStatsUserLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

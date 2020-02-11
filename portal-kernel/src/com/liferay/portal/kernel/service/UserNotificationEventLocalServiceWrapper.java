@@ -155,6 +155,18 @@ public class UserNotificationEventLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _userNotificationEventLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new user notification event with the primary key. Does not add the user notification event to the database.
 	 *
 	 * @param userNotificationEventId the primary key for the new user notification event
@@ -678,6 +690,9 @@ public class UserNotificationEventLocalServiceWrapper
 		return _userNotificationEventLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

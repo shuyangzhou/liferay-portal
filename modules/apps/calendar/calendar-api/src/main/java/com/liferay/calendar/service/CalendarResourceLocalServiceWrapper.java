@@ -77,6 +77,18 @@ public class CalendarResourceLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _calendarResourceLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the calendar resource from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param calendarResource the calendar resource
@@ -398,6 +410,9 @@ public class CalendarResourceLocalServiceWrapper
 		return _calendarResourceLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

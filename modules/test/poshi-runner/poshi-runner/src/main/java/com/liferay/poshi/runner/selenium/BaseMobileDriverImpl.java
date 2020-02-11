@@ -15,6 +15,7 @@
 package com.liferay.poshi.runner.selenium;
 
 import com.liferay.poshi.runner.util.PropsValues;
+import com.liferay.poshi.runner.util.StringUtil;
 
 import io.appium.java_client.MobileDriver;
 import io.appium.java_client.MultiTouchAction;
@@ -55,7 +56,7 @@ public abstract class BaseMobileDriverImpl
 		try {
 			tap(locator);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			if (!isInViewport(locator)) {
 				swipeWebElementIntoView(locator);
 			}
@@ -217,7 +218,7 @@ public abstract class BaseMobileDriverImpl
 
 		text = text.trim();
 
-		return text.replace("\n", " ");
+		return StringUtil.replace(text, "\n", " ");
 	}
 
 	public void hideKeyboard() {

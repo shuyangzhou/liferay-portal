@@ -78,6 +78,12 @@ public interface PasswordTrackerLocalService
 	public PasswordTracker createPasswordTracker(long passwordTrackerId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the password tracker with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param passwordTrackerId the primary key of the password tracker
@@ -222,6 +228,9 @@ public interface PasswordTrackerLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getPasswordTrackersCount();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

@@ -70,6 +70,18 @@ public class JournalContentSearchLocalServiceWrapper
 			contentSearchId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _journalContentSearchLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
 	@Override
 	public void deleteArticleContentSearch(
 		long groupId, boolean privateLayout, long layoutId, String portletId) {
@@ -368,6 +380,9 @@ public class JournalContentSearchLocalServiceWrapper
 		return _journalContentSearchLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

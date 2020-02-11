@@ -69,6 +69,12 @@ public interface WebDAVPropsLocalService
 	public WebDAVProps addWebDAVProps(WebDAVProps webDAVProps);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new web dav props with the primary key. Does not add the web dav props to the database.
 	 *
 	 * @param webDavPropsId the primary key for the new web dav props
@@ -188,6 +194,9 @@ public interface WebDAVPropsLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

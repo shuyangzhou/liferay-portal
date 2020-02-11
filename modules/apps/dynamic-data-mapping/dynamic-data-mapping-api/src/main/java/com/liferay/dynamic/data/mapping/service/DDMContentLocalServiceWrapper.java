@@ -69,6 +69,17 @@ public class DDMContentLocalServiceWrapper
 		return _ddmContentLocalService.createDDMContent(contentId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _ddmContentLocalService.createPersistedModel(primaryKeyObj);
+	}
+
 	@Override
 	public void deleteContent(
 		com.liferay.dynamic.data.mapping.model.DDMContent content) {
@@ -397,6 +408,9 @@ public class DDMContentLocalServiceWrapper
 		return _ddmContentLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

@@ -37,7 +37,7 @@ import org.apache.commons.httpclient.params.HttpClientParams;
 /**
  * @author Iván Zaera
  */
-public class GetInputStreamOperation extends BaseOperation {
+public final class GetInputStreamOperation extends BaseOperation {
 
 	public InputStream execute(SharepointObject sharepointObject)
 		throws SharepointException {
@@ -70,7 +70,7 @@ public class GetInputStreamOperation extends BaseOperation {
 	}
 
 	protected InputStream execute(URL url) throws SharepointException {
-		url = urlHelper.escapeURL(url);
+		url = URLUtil.escapeURL(url);
 
 		HttpClient httpClient = new HttpClient();
 
@@ -84,19 +84,8 @@ public class GetInputStreamOperation extends BaseOperation {
 			int status = httpClient.executeMethod(getMethod);
 
 			if (status == HttpStatus.SC_OK) {
-				InputStream inputStream = getMethod.getResponseBodyAsStream();
-
-				byte[] bytes = null;
-
-				try {
-					bytes = FileUtil.getBytes(inputStream);
-				}
-				catch (IOException ioException) {
-					throw new SharepointException(
-						"Unable to read input stream", ioException);
-				}
-
-				return new ByteArrayInputStream(bytes);
+				return new ByteArrayInputStream(
+					_getBytes(getMethod.getResponseBodyAsStream()));
 			}
 
 			throw new SharepointException(
@@ -110,6 +99,18 @@ public class GetInputStreamOperation extends BaseOperation {
 		}
 		finally {
 			getMethod.releaseConnection();
+		}
+	}
+
+	private byte[] _getBytes(InputStream inputStream)
+		throws SharepointException {
+
+		try {
+			return FileUtil.getBytes(inputStream);
+		}
+		catch (IOException ioException) {
+			throw new SharepointException(
+				"Unable to read input stream", ioException);
 		}
 	}
 

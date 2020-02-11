@@ -18,7 +18,7 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.sharepoint.soap.connector.SharepointConnection;
 import com.liferay.sharepoint.soap.connector.SharepointException;
 import com.liferay.sharepoint.soap.connector.SharepointResultException;
-import com.liferay.sharepoint.soap.connector.internal.util.RemoteExceptionUtil;
+import com.liferay.sharepoint.soap.connector.internal.util.RemoteExceptionSharepointExceptionMapper;
 
 import com.microsoft.schemas.sharepoint.soap.CopyErrorCode;
 import com.microsoft.schemas.sharepoint.soap.CopyResult;
@@ -37,7 +37,7 @@ import org.apache.axis.holders.UnsignedIntHolder;
 /**
  * @author Iván Zaera
  */
-public class AddOrUpdateFileOperation extends BaseOperation {
+public final class AddOrUpdateFileOperation extends BaseOperation {
 
 	@Override
 	public void afterPropertiesSet() {
@@ -50,16 +50,6 @@ public class AddOrUpdateFileOperation extends BaseOperation {
 
 		URL filePathURL = toURL(filePath);
 
-		byte[] bytes = null;
-
-		try {
-			bytes = FileUtil.getBytes(inputStream);
-		}
-		catch (IOException ioException) {
-			throw new SharepointException(
-				"Unable to read input stream", ioException);
-		}
-
 		CopyResultCollectionHolder copyResultCollectionHolder =
 			new CopyResultCollectionHolder();
 
@@ -67,11 +57,11 @@ public class AddOrUpdateFileOperation extends BaseOperation {
 			copySoap.copyIntoItems(
 				SharepointConstants.URL_SOURCE_NONE,
 				new String[] {filePathURL.toString()},
-				_EMPTY_FIELD_INFORMATIONS, bytes, new UnsignedIntHolder(),
-				copyResultCollectionHolder);
+				_EMPTY_FIELD_INFORMATIONS, _getBytes(inputStream),
+				new UnsignedIntHolder(), copyResultCollectionHolder);
 		}
 		catch (RemoteException remoteException) {
-			RemoteExceptionUtil.handleRemoteException(remoteException);
+			throw RemoteExceptionSharepointExceptionMapper.map(remoteException);
 		}
 
 		CopyResult copyResult = copyResultCollectionHolder.value[0];
@@ -86,6 +76,18 @@ public class AddOrUpdateFileOperation extends BaseOperation {
 		if (changeLog != null) {
 			_checkInFileOperation.execute(
 				filePath, changeLog, SharepointConnection.CheckInType.MAJOR);
+		}
+	}
+
+	private byte[] _getBytes(InputStream inputStream)
+		throws SharepointException {
+
+		try {
+			return FileUtil.getBytes(inputStream);
+		}
+		catch (IOException ioException) {
+			throw new SharepointException(
+				"Unable to read input stream", ioException);
 		}
 	}
 

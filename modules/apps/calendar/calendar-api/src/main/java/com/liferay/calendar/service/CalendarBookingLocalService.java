@@ -100,6 +100,12 @@ public interface CalendarBookingLocalService
 	public CalendarBooking createCalendarBooking(long calendarBookingId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the calendar booking from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param calendarBooking the calendar booking
@@ -401,6 +407,9 @@ public interface CalendarBookingLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

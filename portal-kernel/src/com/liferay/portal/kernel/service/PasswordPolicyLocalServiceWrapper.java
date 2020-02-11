@@ -88,6 +88,17 @@ public class PasswordPolicyLocalServiceWrapper
 			passwordPolicyId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _passwordPolicyLocalService.createPersistedModel(primaryKeyObj);
+	}
+
 	@Override
 	public void deleteNondefaultPasswordPolicies(long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -396,6 +407,9 @@ public class PasswordPolicyLocalServiceWrapper
 			uuid, companyId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

@@ -64,6 +64,17 @@ public class TicketLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _ticketLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new ticket with the primary key. Does not add the ticket to the database.
 	 *
 	 * @param ticketId the primary key for the new ticket
@@ -237,6 +248,9 @@ public class TicketLocalServiceWrapper
 		return _ticketLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

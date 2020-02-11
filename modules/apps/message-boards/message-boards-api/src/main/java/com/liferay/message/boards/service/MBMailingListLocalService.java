@@ -91,6 +91,12 @@ public interface MBMailingListLocalService
 	@Transactional(enabled = false)
 	public MBMailingList createMBMailingList(long mailingListId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteCategoryMailingList(long groupId, long categoryId)
 		throws PortalException;
 
@@ -303,6 +309,9 @@ public interface MBMailingListLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

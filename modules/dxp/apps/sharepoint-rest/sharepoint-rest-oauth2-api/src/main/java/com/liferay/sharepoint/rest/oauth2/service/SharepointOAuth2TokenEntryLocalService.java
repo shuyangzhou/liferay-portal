@@ -77,6 +77,12 @@ public interface SharepointOAuth2TokenEntryLocalService
 		SharepointOAuth2TokenEntry sharepointOAuth2TokenEntry);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new sharepoint o auth2 token entry with the primary key. Does not add the sharepoint o auth2 token entry to the database.
 	 *
 	 * @param sharepointOAuth2TokenEntryId the primary key for the new sharepoint o auth2 token entry
@@ -208,6 +214,9 @@ public interface SharepointOAuth2TokenEntryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

@@ -69,6 +69,17 @@ public class AuditEventLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _auditEventLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the audit event from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param auditEvent the audit event
@@ -349,6 +360,9 @@ public class AuditEventLocalServiceWrapper
 		return _auditEventLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

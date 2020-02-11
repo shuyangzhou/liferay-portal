@@ -69,6 +69,17 @@ public class SAPEntryLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _sapEntryLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new sap entry with the primary key. Does not add the sap entry to the database.
 	 *
 	 * @param sapEntryId the primary key for the new sap entry
@@ -313,6 +324,9 @@ public class SAPEntryLocalServiceWrapper
 		return _sapEntryLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

@@ -61,6 +61,18 @@ public class SocialActivityLimitLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _socialActivityLimitLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new social activity limit with the primary key. Does not add the social activity limit to the database.
 	 *
 	 * @param activityLimitId the primary key for the new social activity limit
@@ -253,6 +265,9 @@ public class SocialActivityLimitLocalServiceWrapper
 		return _socialActivityLimitLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

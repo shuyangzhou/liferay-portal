@@ -108,6 +108,12 @@ public interface JournalFeedLocalService
 	@Transactional(enabled = false)
 	public JournalFeed createJournalFeed(long id);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	@SystemEvent(type = SystemEventConstants.TYPE_DELETE)
 	public void deleteFeed(JournalFeed feed) throws PortalException;
 
@@ -330,6 +336,9 @@ public interface JournalFeedLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

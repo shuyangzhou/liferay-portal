@@ -69,6 +69,17 @@ public class ClassNameLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _classNameLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the class name from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param className the class name
@@ -302,6 +313,9 @@ public class ClassNameLocalServiceWrapper
 		return _classNameLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

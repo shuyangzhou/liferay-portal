@@ -103,6 +103,12 @@ public interface DDMStructureLayoutLocalService
 	public DDMStructureLayout createDDMStructureLayout(long structureLayoutId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the ddm structure layout from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param ddmStructureLayout the ddm structure layout
@@ -316,6 +322,9 @@ public interface DDMStructureLayoutLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

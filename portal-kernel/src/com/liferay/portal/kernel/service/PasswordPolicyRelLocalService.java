@@ -84,6 +84,12 @@ public interface PasswordPolicyRelLocalService
 	public PasswordPolicyRel createPasswordPolicyRel(long passwordPolicyRelId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the password policy rel with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param passwordPolicyRelId the primary key of the password policy rel
@@ -250,6 +256,9 @@ public interface PasswordPolicyRelLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getPasswordPolicyRelsCount();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

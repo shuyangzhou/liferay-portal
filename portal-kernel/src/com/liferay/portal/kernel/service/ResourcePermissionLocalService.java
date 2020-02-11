@@ -212,6 +212,12 @@ public interface ResourcePermissionLocalService
 		throws PortalException;
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new resource permission with the primary key. Does not add the resource permission to the database.
 	 *
 	 * @param resourcePermissionId the primary key for the new resource permission
@@ -412,6 +418,9 @@ public interface ResourcePermissionLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

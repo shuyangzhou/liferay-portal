@@ -63,6 +63,17 @@ public class PowwowServerLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _powwowServerLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new powwow server with the primary key. Does not add the powwow server to the database.
 	 *
 	 * @param powwowServerId the primary key for the new powwow server
@@ -235,6 +246,9 @@ public class PowwowServerLocalServiceWrapper
 		return _powwowServerLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

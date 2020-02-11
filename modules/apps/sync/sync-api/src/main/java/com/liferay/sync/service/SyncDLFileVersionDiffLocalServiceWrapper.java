@@ -61,6 +61,18 @@ public class SyncDLFileVersionDiffLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _syncDLFileVersionDiffLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new sync dl file version diff with the primary key. Does not add the sync dl file version diff to the database.
 	 *
 	 * @param syncDLFileVersionDiffId the primary key for the new sync dl file version diff
@@ -271,6 +283,9 @@ public class SyncDLFileVersionDiffLocalServiceWrapper
 		return _syncDLFileVersionDiffLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

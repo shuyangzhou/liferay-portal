@@ -61,6 +61,18 @@ public class SegmentsExperimentRelLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _segmentsExperimentRelLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new segments experiment rel with the primary key. Does not add the segments experiment rel to the database.
 	 *
 	 * @param segmentsExperimentRelId the primary key for the new segments experiment rel
@@ -275,6 +287,9 @@ public class SegmentsExperimentRelLocalServiceWrapper
 		return _segmentsExperimentRelLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

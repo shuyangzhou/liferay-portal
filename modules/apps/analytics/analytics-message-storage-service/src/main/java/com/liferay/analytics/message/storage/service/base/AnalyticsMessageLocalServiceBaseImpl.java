@@ -299,6 +299,9 @@ public abstract class AnalyticsMessageLocalServiceBaseImpl
 			(AnalyticsMessage)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

@@ -87,6 +87,12 @@ public interface LayoutRevisionLocalService
 	@Transactional(enabled = false)
 	public LayoutRevision createLayoutRevision(long layoutRevisionId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteLayoutLayoutRevisions(long plid) throws PortalException;
 
 	/**
@@ -316,6 +322,9 @@ public interface LayoutRevisionLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

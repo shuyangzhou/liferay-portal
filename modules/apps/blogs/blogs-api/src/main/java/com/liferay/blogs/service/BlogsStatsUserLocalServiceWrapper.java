@@ -60,6 +60,17 @@ public class BlogsStatsUserLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _blogsStatsUserLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the blogs stats user from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param blogsStatsUser the blogs stats user
@@ -375,6 +386,9 @@ public class BlogsStatsUserLocalServiceWrapper
 		return _blogsStatsUserLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

@@ -106,6 +106,12 @@ public interface KaleoTaskInstanceTokenLocalService
 	public KaleoTaskInstanceToken createKaleoTaskInstanceToken(
 		long kaleoTaskInstanceTokenId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteCompanyKaleoTaskInstanceTokens(long companyId);
 
 	public void deleteKaleoDefinitionVersionKaleoTaskInstanceTokens(
@@ -315,6 +321,9 @@ public interface KaleoTaskInstanceTokenLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
@@ -370,17 +379,17 @@ public interface KaleoTaskInstanceTokenLocalService
 	public List<KaleoTaskInstanceToken> search(
 		String assetTitle, String[] taskNames, String[] assetTypes,
 		Long[] assetPrimaryKeys, Long[] assigneeClassPKs, Date dueDateGT,
-		Date dueDateLT, Boolean completed, Long kaleoDefinitionId,
-		Long[] kaleoInstanceIds, Boolean searchByUserRoles, boolean andOperator,
-		int start, int end,
+		Date dueDateLT, Boolean completed, Long[] kaleoInstanceIds,
+		Boolean searchByUserRoles, boolean andOperator, int start, int end,
 		OrderByComparator<KaleoTaskInstanceToken> orderByComparator,
 		ServiceContext serviceContext);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<KaleoTaskInstanceToken> search(
 		String assetTitle, String[] taskNames, String[] assetTypes,
-		Long[] assetPrimaryKeys, Long[] assigneeClassPKs, Date dueDateGT,
-		Date dueDateLT, Boolean completed, Long[] kaleoInstanceIds,
+		Long[] assetPrimaryKeys, String assigneeClassName,
+		Long[] assigneeClassPKs, Date dueDateGT, Date dueDateLT,
+		Boolean completed, Long kaleoDefinitionId, Long[] kaleoInstanceIds,
 		Boolean searchByUserRoles, boolean andOperator, int start, int end,
 		OrderByComparator<KaleoTaskInstanceToken> orderByComparator,
 		ServiceContext serviceContext);
@@ -418,15 +427,16 @@ public interface KaleoTaskInstanceTokenLocalService
 	public int searchCount(
 		String assetTitle, String[] taskNames, String[] assetTypes,
 		Long[] assetPrimaryKeys, Long[] assigneeClassPKs, Date dueDateGT,
-		Date dueDateLT, Boolean completed, Long kaleoDefinitionId,
-		Long[] kaleoInstanceIds, Boolean searchByUserRoles, boolean andOperator,
+		Date dueDateLT, Boolean completed, Long[] kaleoInstanceIds,
+		Boolean searchByUserRoles, boolean andOperator,
 		ServiceContext serviceContext);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(
 		String assetTitle, String[] taskNames, String[] assetTypes,
-		Long[] assetPrimaryKeys, Long[] assigneeClassPKs, Date dueDateGT,
-		Date dueDateLT, Boolean completed, Long[] kaleoInstanceIds,
+		Long[] assetPrimaryKeys, String assigneeClassName,
+		Long[] assigneeClassPKs, Date dueDateGT, Date dueDateLT,
+		Boolean completed, Long kaleoDefinitionId, Long[] kaleoInstanceIds,
 		Boolean searchByUserRoles, boolean andOperator,
 		ServiceContext serviceContext);
 

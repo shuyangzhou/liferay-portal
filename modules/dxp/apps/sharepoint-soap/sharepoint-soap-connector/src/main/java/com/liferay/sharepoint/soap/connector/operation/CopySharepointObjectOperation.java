@@ -20,13 +20,11 @@ import com.liferay.sharepoint.soap.connector.SharepointConnection;
 import com.liferay.sharepoint.soap.connector.SharepointException;
 import com.liferay.sharepoint.soap.connector.SharepointObject;
 import com.liferay.sharepoint.soap.connector.SharepointResultException;
-import com.liferay.sharepoint.soap.connector.internal.util.RemoteExceptionUtil;
+import com.liferay.sharepoint.soap.connector.internal.util.RemoteExceptionSharepointExceptionMapper;
 
 import com.microsoft.schemas.sharepoint.soap.CopyErrorCode;
 import com.microsoft.schemas.sharepoint.soap.CopyResult;
 import com.microsoft.schemas.sharepoint.soap.holders.CopyResultCollectionHolder;
-
-import java.net.URL;
 
 import java.rmi.RemoteException;
 
@@ -37,7 +35,7 @@ import org.apache.axis.holders.UnsignedIntHolder;
 /**
  * @author Iván Zaera
  */
-public class CopySharepointObjectOperation extends BaseOperation {
+public final class CopySharepointObjectOperation extends BaseOperation {
 
 	@Override
 	public void afterPropertiesSet() {
@@ -60,29 +58,27 @@ public class CopySharepointObjectOperation extends BaseOperation {
 		}
 
 		if (sharepointObject.isFile()) {
-			copyFile(path, newPath);
+			_copyFile(path, newPath);
 		}
 		else {
-			copyFolder(path, newPath);
+			_copyFolder(path, newPath);
 		}
 	}
 
-	protected void copyFile(String path, String newPath)
+	private void _copyFile(String path, String newPath)
 		throws SharepointException {
-
-		URL pathURL = toURL(path);
-		URL newPathURL = toURL(newPath);
 
 		CopyResultCollectionHolder copyResultCollectionHolder =
 			new CopyResultCollectionHolder();
 
 		try {
 			copySoap.copyIntoItemsLocal(
-				pathURL.toString(), new String[] {newPathURL.toString()},
+				String.valueOf(toURL(path)),
+				new String[] {String.valueOf(toURL(newPath))},
 				new UnsignedIntHolder(), copyResultCollectionHolder);
 		}
 		catch (RemoteException remoteException) {
-			RemoteExceptionUtil.handleRemoteException(remoteException);
+			throw RemoteExceptionSharepointExceptionMapper.map(remoteException);
 		}
 
 		CopyResult copyResult = copyResultCollectionHolder.value[0];
@@ -95,37 +91,36 @@ public class CopySharepointObjectOperation extends BaseOperation {
 		}
 	}
 
-	protected void copyFolder(String path, String newPath)
+	private void _copyFolder(String path, String newPath)
 		throws SharepointException {
 
-		createFolder(newPath);
+		_createFolder(newPath);
 
 		List<SharepointObject> sharepointObjects =
 			_getSharepointObjectsByFolderOperation.execute(
 				path, SharepointConnection.ObjectTypeFilter.ALL);
 
 		for (SharepointObject sharepointObject : sharepointObjects) {
-			String sharepointObjectPath = pathHelper.buildPath(
+			String sharepointObjectPath = PathUtil.buildPath(
 				path, sharepointObject.getName());
 
-			String newSharepointObjectPath = pathHelper.buildPath(
+			String newSharepointObjectPath = PathUtil.buildPath(
 				newPath, sharepointObject.getName());
 
 			if (sharepointObject.isFile()) {
-				copyFile(sharepointObjectPath, newSharepointObjectPath);
+				_copyFile(sharepointObjectPath, newSharepointObjectPath);
 			}
 			else {
-				copyFolder(sharepointObjectPath, newSharepointObjectPath);
+				_copyFolder(sharepointObjectPath, newSharepointObjectPath);
 			}
 		}
 	}
 
-	protected void createFolder(String folderPath) {
+	private void _createFolder(String folderPath) {
 		try {
-			String parentFolderPath = pathHelper.getParentFolderPath(
-				folderPath);
+			String parentFolderPath = PathUtil.getParentFolderPath(folderPath);
 
-			String folderName = pathHelper.getName(folderPath);
+			String folderName = PathUtil.getName(folderPath);
 
 			_addFolderOperation.execute(parentFolderPath, folderName);
 		}

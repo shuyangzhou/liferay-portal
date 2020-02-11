@@ -83,6 +83,12 @@ public interface SAPEntryLocalService
 	public void checkSystemSAPEntries(long companyId) throws PortalException;
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new sap entry with the primary key. Does not add the sap entry to the database.
 	 *
 	 * @param sapEntryId the primary key for the new sap entry
@@ -233,6 +239,9 @@ public interface SAPEntryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

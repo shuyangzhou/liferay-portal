@@ -73,6 +73,17 @@ public class DEDataListViewLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _deDataListViewLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the de data list view from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param deDataListView the de data list view
@@ -390,6 +401,9 @@ public class DEDataListViewLocalServiceWrapper
 		return _deDataListViewLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

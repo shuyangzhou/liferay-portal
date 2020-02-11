@@ -106,6 +106,17 @@ public class PollsQuestionLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _pollsQuestionLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new polls question with the primary key. Does not add the polls question to the database.
 	 *
 	 * @param questionId the primary key for the new polls question
@@ -325,6 +336,9 @@ public class PollsQuestionLocalServiceWrapper
 		return _pollsQuestionLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

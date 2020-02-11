@@ -90,6 +90,12 @@ public interface LayoutPageTemplateCollectionLocalService
 		long layoutPageTemplateCollectionId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the layout page template collection from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param layoutPageTemplateCollection the layout page template collection
@@ -310,6 +316,9 @@ public interface LayoutPageTemplateCollectionLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

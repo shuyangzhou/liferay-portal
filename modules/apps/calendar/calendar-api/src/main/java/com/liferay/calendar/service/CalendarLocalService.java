@@ -96,6 +96,12 @@ public interface CalendarLocalService
 	public Calendar createCalendar(long calendarId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the calendar from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param calendar the calendar
@@ -306,6 +312,9 @@ public interface CalendarLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

@@ -17,6 +17,7 @@ package com.liferay.asset.auto.tagger.service.base;
 import com.liferay.asset.auto.tagger.model.AssetAutoTaggerEntry;
 import com.liferay.asset.auto.tagger.service.AssetAutoTaggerEntryLocalService;
 import com.liferay.asset.auto.tagger.service.persistence.AssetAutoTaggerEntryPersistence;
+import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -36,6 +37,8 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.service.change.tracking.CTService;
+import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -293,6 +296,15 @@ public abstract class AssetAutoTaggerEntryLocalServiceBaseImpl
 	/**
 	 * @throws PortalException
 	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
+
+		return assetAutoTaggerEntryPersistence.create(primaryKeyObj);
+	}
+
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
@@ -301,6 +313,9 @@ public abstract class AssetAutoTaggerEntryLocalServiceBaseImpl
 			(AssetAutoTaggerEntry)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
@@ -354,7 +369,8 @@ public abstract class AssetAutoTaggerEntryLocalServiceBaseImpl
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			AssetAutoTaggerEntryLocalService.class,
-			IdentifiableOSGiService.class, PersistedModelLocalService.class
+			IdentifiableOSGiService.class, CTService.class,
+			PersistedModelLocalService.class
 		};
 	}
 
@@ -374,8 +390,23 @@ public abstract class AssetAutoTaggerEntryLocalServiceBaseImpl
 		return AssetAutoTaggerEntryLocalService.class.getName();
 	}
 
-	protected Class<?> getModelClass() {
+	@Override
+	public CTPersistence<AssetAutoTaggerEntry> getCTPersistence() {
+		return assetAutoTaggerEntryPersistence;
+	}
+
+	@Override
+	public Class<AssetAutoTaggerEntry> getModelClass() {
 		return AssetAutoTaggerEntry.class;
+	}
+
+	@Override
+	public <R, E extends Throwable> R updateWithUnsafeFunction(
+			UnsafeFunction<CTPersistence<AssetAutoTaggerEntry>, R, E>
+				updateUnsafeFunction)
+		throws E {
+
+		return updateUnsafeFunction.apply(assetAutoTaggerEntryPersistence);
 	}
 
 	protected String getModelClassName() {

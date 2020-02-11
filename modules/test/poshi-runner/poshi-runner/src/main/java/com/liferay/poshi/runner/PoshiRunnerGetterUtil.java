@@ -492,9 +492,11 @@ public class PoshiRunnerGetterUtil {
 		try {
 			document = saxReader.read(inputStream);
 		}
-		catch (DocumentException de) {
+		catch (DocumentException documentException) {
 			throw new Exception(
-				de.getMessage() + "\nInvalid syntax in " + filePath, de);
+				documentException.getMessage() + "\nInvalid syntax in " +
+					filePath,
+				documentException);
 		}
 
 		return document.getRootElement();
@@ -610,8 +612,8 @@ public class PoshiRunnerGetterUtil {
 						put(classInfo.getSimpleName(), classInfo.getName());
 					}
 				}
-				catch (IOException ioe) {
-					throw new RuntimeException(ioe);
+				catch (IOException ioException) {
+					throw new RuntimeException(ioException);
 				}
 			}
 		};

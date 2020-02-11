@@ -71,6 +71,17 @@ public class LayoutPrototypeLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _layoutPrototypeLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the layout prototype from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param layoutPrototype the layout prototype
@@ -368,6 +379,9 @@ public class LayoutPrototypeLocalServiceWrapper
 		return _layoutPrototypeLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

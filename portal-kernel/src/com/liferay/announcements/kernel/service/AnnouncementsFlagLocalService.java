@@ -83,6 +83,12 @@ public interface AnnouncementsFlagLocalService
 	public AnnouncementsFlag createAnnouncementsFlag(long flagId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the announcements flag from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param announcementsFlag the announcements flag
@@ -235,6 +241,9 @@ public interface AnnouncementsFlagLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

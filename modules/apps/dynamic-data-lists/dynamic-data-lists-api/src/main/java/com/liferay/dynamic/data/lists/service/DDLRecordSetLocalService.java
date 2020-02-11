@@ -145,6 +145,12 @@ public interface DDLRecordSetLocalService
 	public DDLRecordSet createDDLRecordSet(long recordSetId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the ddl record set from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param ddlRecordSet the ddl record set
@@ -410,6 +416,9 @@ public interface DDLRecordSetLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

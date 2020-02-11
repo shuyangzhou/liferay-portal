@@ -70,6 +70,17 @@ public class BookmarksFolderLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _bookmarksFolderLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the bookmarks folder from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param bookmarksFolder the bookmarks folder
@@ -509,6 +520,9 @@ public class BookmarksFolderLocalServiceWrapper
 		return _bookmarksFolderLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

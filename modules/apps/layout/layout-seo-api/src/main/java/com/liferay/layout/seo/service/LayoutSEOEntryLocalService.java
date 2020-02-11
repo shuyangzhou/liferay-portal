@@ -86,6 +86,12 @@ public interface LayoutSEOEntryLocalService
 	public LayoutSEOEntry createLayoutSEOEntry(long layoutSEOEntryId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the layout seo entry from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param layoutSEOEntry the layout seo entry
@@ -292,6 +298,9 @@ public interface LayoutSEOEntryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

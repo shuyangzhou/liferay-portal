@@ -44,6 +44,17 @@ public class StatusLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _statusLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new status with the primary key. Does not add the status to the database.
 	 *
 	 * @param statusId the primary key for the new status
@@ -227,6 +238,9 @@ public class StatusLocalServiceWrapper
 		return _statusLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

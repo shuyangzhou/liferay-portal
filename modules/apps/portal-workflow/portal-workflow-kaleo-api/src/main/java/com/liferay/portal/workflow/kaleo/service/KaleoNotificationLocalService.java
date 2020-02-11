@@ -88,6 +88,12 @@ public interface KaleoNotificationLocalService
 	@Transactional(enabled = false)
 	public KaleoNotification createKaleoNotification(long kaleoNotificationId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteCompanyKaleoNotifications(long companyId);
 
 	public void deleteKaleoDefinitionVersionKaleoNotifications(
@@ -244,6 +250,9 @@ public interface KaleoNotificationLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

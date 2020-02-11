@@ -218,6 +218,8 @@ public interface LiferaySelenium {
 
 	public String getTestDependenciesDirName();
 
+	public String getTestName();
+
 	public String getText(String locator) throws Exception;
 
 	public String getTitle();

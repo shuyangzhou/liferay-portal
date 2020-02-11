@@ -82,6 +82,17 @@ public class AssetLinkLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _assetLinkLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the asset link from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param assetLink the asset link
@@ -421,6 +432,9 @@ public class AssetLinkLocalServiceWrapper
 		return _assetLinkLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

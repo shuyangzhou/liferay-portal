@@ -150,8 +150,9 @@ public class ForPoshiElement extends PoshiElement {
 			throw new IllegalArgumentException(
 				"Invalid 'for' element " + Dom4JUtil.format(element));
 		}
-		catch (IOException ioe) {
-			throw new IllegalArgumentException("Invalid 'for' element", ioe);
+		catch (IOException ioException) {
+			throw new IllegalArgumentException(
+				"Invalid 'for' element", ioException);
 		}
 	}
 

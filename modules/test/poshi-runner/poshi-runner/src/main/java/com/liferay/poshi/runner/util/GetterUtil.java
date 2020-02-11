@@ -176,7 +176,7 @@ public class GetterUtil {
 			try {
 				return new BigDecimal(valueString.trim());
 			}
-			catch (NumberFormatException nfe) {
+			catch (NumberFormatException numberFormatException) {
 				return defaultValue;
 			}
 		}
@@ -270,7 +270,7 @@ public class GetterUtil {
 				return date;
 			}
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 		}
 
 		return defaultValue;
@@ -281,7 +281,7 @@ public class GetterUtil {
 			try {
 				return Double.parseDouble(value.trim());
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 			}
 		}
 
@@ -296,7 +296,7 @@ public class GetterUtil {
 		try {
 			return Float.parseFloat(value.trim());
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 		}
 
 		return defaultValue;

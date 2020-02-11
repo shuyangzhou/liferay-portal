@@ -74,6 +74,18 @@ public class NestedSetsTreeEntryLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _nestedSetsTreeEntryLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the nested sets tree entry with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param nestedSetsTreeEntryId the primary key of the nested sets tree entry
@@ -291,6 +303,9 @@ public class NestedSetsTreeEntryLocalServiceWrapper
 		return _nestedSetsTreeEntryLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

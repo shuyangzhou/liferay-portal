@@ -146,6 +146,12 @@ public interface WikiPageLocalService
 		throws PortalException;
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new wiki page with the primary key. Does not add the wiki page to the database.
 	 *
 	 * @param pageId the primary key for the new wiki page
@@ -518,6 +524,9 @@ public interface WikiPageLocalService
 			long resourcePrimKey)
 		throws PortalException;
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

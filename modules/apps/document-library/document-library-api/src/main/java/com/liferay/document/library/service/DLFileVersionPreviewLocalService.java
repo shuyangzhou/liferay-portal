@@ -85,6 +85,12 @@ public interface DLFileVersionPreviewLocalService
 	public DLFileVersionPreview createDLFileVersionPreview(
 		long dlFileVersionPreviewId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteDLFileEntryFileVersionPreviews(long fileEntryId);
 
 	/**
@@ -256,6 +262,9 @@ public interface DLFileVersionPreviewLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

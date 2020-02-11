@@ -89,6 +89,16 @@ public class AssetListEntryAssetEntryRelLocalServiceUtil {
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	public static com.liferay.portal.kernel.model.PersistedModel
+			createPersistedModel(java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the asset list entry asset entry rel from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param assetListEntryAssetEntryRel the asset list entry asset entry rel
@@ -413,6 +423,9 @@ public class AssetListEntryAssetEntryRelLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	public static com.liferay.portal.kernel.model.PersistedModel
 			getPersistedModel(java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {

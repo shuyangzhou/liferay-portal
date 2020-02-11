@@ -73,6 +73,17 @@ public class LazyBlobEntityLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _lazyBlobEntityLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the lazy blob entity from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param lazyBlobEntity the lazy blob entity
@@ -329,6 +340,9 @@ public class LazyBlobEntityLocalServiceWrapper
 		return _lazyBlobEntityLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

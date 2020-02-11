@@ -106,6 +106,12 @@ public interface AMImageEntryLocalService
 	public AMImageEntry createAMImageEntry(long amImageEntryId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes all the adaptive media images generated for the configuration in
 	 * the company. This method deletes both the adaptive media image entry from
 	 * the database and the bytes from the file store.
@@ -402,6 +408,9 @@ public interface AMImageEntryLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getPercentage(long companyId, String configurationUuid);
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

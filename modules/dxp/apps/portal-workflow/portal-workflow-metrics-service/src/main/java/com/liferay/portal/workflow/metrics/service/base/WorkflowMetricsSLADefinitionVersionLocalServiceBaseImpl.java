@@ -446,6 +446,16 @@ public abstract class WorkflowMetricsSLADefinitionVersionLocalServiceBaseImpl
 	/**
 	 * @throws PortalException
 	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
+
+		return workflowMetricsSLADefinitionVersionPersistence.create(
+			primaryKeyObj);
+	}
+
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
@@ -455,6 +465,9 @@ public abstract class WorkflowMetricsSLADefinitionVersionLocalServiceBaseImpl
 				(WorkflowMetricsSLADefinitionVersion)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

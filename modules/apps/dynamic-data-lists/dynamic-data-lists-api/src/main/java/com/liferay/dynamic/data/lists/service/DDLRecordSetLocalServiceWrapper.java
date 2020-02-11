@@ -134,6 +134,17 @@ public class DDLRecordSetLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _ddlRecordSetLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the ddl record set from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param ddlRecordSet the ddl record set
@@ -518,6 +529,9 @@ public class DDLRecordSetLocalServiceWrapper
 		return _ddlRecordSetLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

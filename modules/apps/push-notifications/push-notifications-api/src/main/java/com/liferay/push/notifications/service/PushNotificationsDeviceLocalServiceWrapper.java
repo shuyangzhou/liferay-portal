@@ -62,6 +62,18 @@ public class PushNotificationsDeviceLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _pushNotificationsDeviceLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new push notifications device with the primary key. Does not add the push notifications device to the database.
 	 *
 	 * @param pushNotificationsDeviceId the primary key for the new push notifications device
@@ -253,6 +265,9 @@ public class PushNotificationsDeviceLocalServiceWrapper
 		return _pushNotificationsDeviceLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

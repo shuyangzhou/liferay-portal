@@ -78,6 +78,12 @@ public interface BrowserTrackerLocalService
 	public BrowserTracker createBrowserTracker(long browserTrackerId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the browser tracker from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param browserTracker the browser tracker
@@ -224,6 +230,9 @@ public interface BrowserTrackerLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

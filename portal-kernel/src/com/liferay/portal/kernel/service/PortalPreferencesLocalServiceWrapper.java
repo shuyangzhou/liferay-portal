@@ -57,6 +57,18 @@ public class PortalPreferencesLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _portalPreferencesLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new portal preferences with the primary key. Does not add the portal preferences to the database.
 	 *
 	 * @param portalPreferencesId the primary key for the new portal preferences
@@ -246,6 +258,9 @@ public class PortalPreferencesLocalServiceWrapper
 		return _portalPreferencesLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

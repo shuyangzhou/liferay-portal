@@ -122,6 +122,12 @@ public interface BackgroundTaskLocalService
 	public BackgroundTask createBackgroundTask(long backgroundTaskId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the background task from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param backgroundTask the background task
@@ -419,6 +425,9 @@ public interface BackgroundTaskLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

@@ -17,6 +17,7 @@ package com.liferay.poshi.runner.elements;
 import com.liferay.poshi.runner.PoshiRunnerContext;
 import com.liferay.poshi.runner.script.PoshiScriptParserException;
 import com.liferay.poshi.runner.util.RegexUtil;
+import com.liferay.poshi.runner.util.StringUtil;
 import com.liferay.poshi.runner.util.Validator;
 
 import java.util.ArrayList;
@@ -115,15 +116,17 @@ public class ExecutePoshiElement extends PoshiElement {
 
 			String namespace = executeCommandName.substring(0, index);
 
-			executeCommandName = executeCommandName.replace(
-				namespace + ".", "");
+			executeCommandName = StringUtil.replace(
+				executeCommandName, namespace + ".", "");
 
-			executeCommandName = executeCommandName.replace('.', '#');
+			executeCommandName = StringUtil.replace(
+				executeCommandName, '.', '#');
 
 			executeCommandName = namespace + "." + executeCommandName;
 		}
 		else {
-			executeCommandName = executeCommandName.replace('.', '#');
+			executeCommandName = StringUtil.replace(
+				executeCommandName, '.', '#');
 		}
 
 		if (fileExtension.equals("function") ||
@@ -281,7 +284,7 @@ public class ExecutePoshiElement extends PoshiElement {
 
 		sb.append("\n\n");
 		sb.append(pad);
-		sb.append(blockName.replace('#', '.'));
+		sb.append(StringUtil.replace(blockName, '#', '.'));
 		sb.append("(");
 
 		boolean multilineSnippet = false;

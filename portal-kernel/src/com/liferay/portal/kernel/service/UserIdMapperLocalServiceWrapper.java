@@ -45,6 +45,17 @@ public class UserIdMapperLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _userIdMapperLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new user ID mapper with the primary key. Does not add the user ID mapper to the database.
 	 *
 	 * @param userIdMapperId the primary key for the new user ID mapper
@@ -222,6 +233,9 @@ public class UserIdMapperLocalServiceWrapper
 		return _userIdMapperLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

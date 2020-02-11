@@ -244,6 +244,17 @@ public class GroupLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _groupLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the group from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param group the group
@@ -1293,6 +1304,9 @@ public class GroupLocalServiceWrapper
 		return _groupLocalService.getParentGroups(groupId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

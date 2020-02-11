@@ -100,6 +100,17 @@ public class FragmentEntryLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _fragmentEntryLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the fragment entry from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param fragmentEntry the fragment entry
@@ -451,6 +462,9 @@ public class FragmentEntryLocalServiceWrapper
 		return _fragmentEntryLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

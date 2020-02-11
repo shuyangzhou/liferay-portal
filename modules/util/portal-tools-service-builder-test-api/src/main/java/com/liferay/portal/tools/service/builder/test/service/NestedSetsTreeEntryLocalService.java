@@ -83,6 +83,12 @@ public interface NestedSetsTreeEntryLocalService
 		long nestedSetsTreeEntryId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the nested sets tree entry with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param nestedSetsTreeEntryId the primary key of the nested sets tree entry
@@ -229,6 +235,9 @@ public interface NestedSetsTreeEntryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

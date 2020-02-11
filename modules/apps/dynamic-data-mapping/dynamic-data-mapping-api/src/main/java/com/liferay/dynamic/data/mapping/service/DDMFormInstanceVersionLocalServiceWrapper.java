@@ -64,6 +64,18 @@ public class DDMFormInstanceVersionLocalServiceWrapper
 			formInstanceVersionId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _ddmFormInstanceVersionLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
 	@Override
 	public void deleteByFormInstanceId(long ddmFormInstanceId) {
 		_ddmFormInstanceVersionLocalService.deleteByFormInstanceId(
@@ -350,6 +362,9 @@ public class DDMFormInstanceVersionLocalServiceWrapper
 		return _ddmFormInstanceVersionLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

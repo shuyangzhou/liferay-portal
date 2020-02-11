@@ -73,6 +73,12 @@ public interface RecentLayoutBranchLocalService
 		RecentLayoutBranch recentLayoutBranch);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new recent layout branch with the primary key. Does not add the recent layout branch to the database.
 	 *
 	 * @param recentLayoutBranchId the primary key for the new recent layout branch
@@ -202,6 +208,9 @@ public interface RecentLayoutBranchLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

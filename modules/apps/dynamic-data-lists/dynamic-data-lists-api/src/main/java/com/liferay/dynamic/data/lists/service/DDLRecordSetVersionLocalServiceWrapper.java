@@ -63,6 +63,18 @@ public class DDLRecordSetVersionLocalServiceWrapper
 			recordSetVersionId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _ddlRecordSetVersionLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
 	@Override
 	public void deleteByRecordSetId(long recordSetId) {
 		_ddlRecordSetVersionLocalService.deleteByRecordSetId(recordSetId);
@@ -291,6 +303,9 @@ public class DDLRecordSetVersionLocalServiceWrapper
 		return _ddlRecordSetVersionLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

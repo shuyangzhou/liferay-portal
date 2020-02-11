@@ -90,6 +90,12 @@ public interface KBTemplateLocalService
 	@Transactional(enabled = false)
 	public KBTemplate createKBTemplate(long kbTemplateId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteGroupKBTemplates(long groupId) throws PortalException;
 
 	/**
@@ -302,6 +308,9 @@ public interface KBTemplateLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

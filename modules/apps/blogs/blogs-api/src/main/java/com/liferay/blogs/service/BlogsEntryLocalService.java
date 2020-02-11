@@ -184,6 +184,12 @@ public interface BlogsEntryLocalService
 	public BlogsEntry createBlogsEntry(long entryId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the blogs entry from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param blogsEntry the blogs entry
@@ -454,6 +460,9 @@ public interface BlogsEntryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

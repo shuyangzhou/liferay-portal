@@ -41,14 +41,14 @@ public class EdgeWebDriverImpl extends BaseWebDriverImpl {
 
 				webElement.click();
 			}
-			catch (Exception e) {
-				String message = e.getMessage();
+			catch (Exception exception) {
+				String message = exception.getMessage();
 
 				if (message.contains("Element is obscured")) {
 					javaScriptClick(locator);
 				}
 				else {
-					throw e;
+					throw exception;
 				}
 			}
 		}

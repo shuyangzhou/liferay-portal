@@ -59,8 +59,8 @@ public class PropsUtil {
 
 			_printProperties(false);
 		}
-		catch (Exception e) {
-			e.printStackTrace();
+		catch (Exception exception) {
+			exception.printStackTrace();
 		}
 	}
 

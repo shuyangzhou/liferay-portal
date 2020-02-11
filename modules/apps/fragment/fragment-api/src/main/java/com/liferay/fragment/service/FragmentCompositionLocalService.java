@@ -94,6 +94,12 @@ public interface FragmentCompositionLocalService
 		long fragmentCompositionId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the fragment composition from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param fragmentComposition the fragment composition
@@ -328,6 +334,9 @@ public interface FragmentCompositionLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

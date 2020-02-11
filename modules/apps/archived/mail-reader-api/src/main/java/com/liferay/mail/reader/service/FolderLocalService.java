@@ -85,6 +85,12 @@ public interface FolderLocalService
 	public Folder createFolder(long folderId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the folder from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param folder the folder
@@ -240,6 +246,9 @@ public interface FolderLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getPercentDownloaded(long folderId) throws PortalException;
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

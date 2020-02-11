@@ -71,6 +71,16 @@ public class JournalFolderLocalServiceUtil {
 		return getService().createJournalFolder(folderId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	public static com.liferay.portal.kernel.model.PersistedModel
+			createPersistedModel(java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().createPersistedModel(primaryKeyObj);
+	}
+
 	public static com.liferay.journal.model.JournalFolder deleteFolder(
 			com.liferay.journal.model.JournalFolder folder)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -516,6 +526,9 @@ public class JournalFolderLocalServiceUtil {
 		return getService().getOverridedDDMStructuresFolderId(folderId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	public static com.liferay.portal.kernel.model.PersistedModel
 			getPersistedModel(java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {

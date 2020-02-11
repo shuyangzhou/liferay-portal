@@ -48,7 +48,7 @@ public class SQLServerDB extends BaseDB {
 
 	@Override
 	public String buildSQL(String template) throws IOException {
-		template = replaceTemplate(template, getTemplate());
+		template = replaceTemplate(template);
 
 		template = reword(template);
 		template = StringUtil.replace(template, "\ngo;\n", "\ngo\n");
@@ -111,21 +111,20 @@ public class SQLServerDB extends BaseDB {
 	}
 
 	@Override
-	public boolean isSupportsAlterColumnType() {
-		return _SUPPORTS_ALTER_COLUMN_TYPE;
+	public String getPopulateSQL(String databaseName, String sqlContent) {
+		StringBundler sb = new StringBundler(4);
+
+		sb.append("use ");
+		sb.append(databaseName);
+		sb.append(";\n\n");
+		sb.append(sqlContent);
+
+		return sb.toString();
 	}
 
 	@Override
-	public boolean isSupportsNewUuidFunction() {
-		return _SUPPORTS_NEW_UUID_FUNCTION;
-	}
-
-	@Override
-	protected String buildCreateFileContent(
-			String sqlDir, String databaseName, String createContent)
-		throws IOException {
-
-		StringBundler sb = new StringBundler(13);
+	public String getRecreateSQL(String databaseName) {
+		StringBundler sb = new StringBundler(9);
 
 		sb.append("drop database ");
 		sb.append(databaseName);
@@ -137,19 +136,17 @@ public class SQLServerDB extends BaseDB {
 		sb.append("go\n");
 		sb.append("\n");
 
-		if (createContent != null) {
-			sb.append("use ");
-			sb.append(databaseName);
-			sb.append(";\n\n");
-			sb.append(createContent);
-		}
-
 		return sb.toString();
 	}
 
 	@Override
-	protected String getServerName() {
-		return "sql-server";
+	public boolean isSupportsAlterColumnType() {
+		return _SUPPORTS_ALTER_COLUMN_TYPE;
+	}
+
+	@Override
+	public boolean isSupportsNewUuidFunction() {
+		return _SUPPORTS_NEW_UUID_FUNCTION;
 	}
 
 	@Override

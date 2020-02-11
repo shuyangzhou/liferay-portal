@@ -131,6 +131,17 @@ public class MBCategoryLocalServiceWrapper
 		return _mbCategoryLocalService.createMBCategory(categoryId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _mbCategoryLocalService.createPersistedModel(primaryKeyObj);
+	}
+
 	@Override
 	public void deleteCategories(long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -631,6 +642,9 @@ public class MBCategoryLocalServiceWrapper
 		return _mbCategoryLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

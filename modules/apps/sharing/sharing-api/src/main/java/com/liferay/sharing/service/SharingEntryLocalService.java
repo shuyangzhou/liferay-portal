@@ -132,6 +132,12 @@ public interface SharingEntryLocalService
 	public SharingEntry addSharingEntry(SharingEntry sharingEntry);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new sharing entry with the primary key. Does not add the sharing entry to the database.
 	 *
 	 * @param sharingEntryId the primary key for the new sharing entry
@@ -370,6 +376,9 @@ public interface SharingEntryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

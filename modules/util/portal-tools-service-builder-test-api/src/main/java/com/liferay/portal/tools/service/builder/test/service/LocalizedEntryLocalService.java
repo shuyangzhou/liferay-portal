@@ -82,6 +82,12 @@ public interface LocalizedEntryLocalService
 	public LocalizedEntry createLocalizedEntry(long localizedEntryId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the localized entry from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param localizedEntry the localized entry
@@ -236,6 +242,9 @@ public interface LocalizedEntryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

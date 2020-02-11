@@ -197,10 +197,10 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		try {
 			future.get(150, TimeUnit.SECONDS);
 		}
-		catch (ExecutionException ee) {
-			throw ee;
+		catch (ExecutionException executionException) {
+			throw executionException;
 		}
-		catch (TimeoutException te) {
+		catch (TimeoutException timeoutException) {
 		}
 	}
 
@@ -393,7 +393,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		try {
 			pageSource = getPageSource();
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			WebDriver.TargetLocator targetLocator = switchTo();
 
 			targetLocator.window(_defaultWindowHandle);
@@ -423,7 +423,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 			javaScriptErrors.addAll(
 				JavaScriptError.readErrors(wrappedWebDriver));
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 		}
 
 		List<Exception> exceptions = new ArrayList<>();
@@ -765,7 +765,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 			try {
 				webElement.click();
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				scrollWebElementIntoView(webElement);
 
 				webElement.click();
@@ -841,7 +841,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 				robot.delay(1500);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 			}
 		}
 	}
@@ -960,7 +960,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 			action.perform();
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 		}
 	}
 
@@ -1065,8 +1065,8 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 			return confirmation;
 		}
-		catch (Exception e) {
-			throw new WebDriverException(e);
+		catch (Exception exception) {
+			throw new WebDriverException(exception);
 		}
 	}
 
@@ -1204,8 +1204,8 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 			return nodeList.item(0);
 		}
-		catch (Exception e) {
-			e.printStackTrace();
+		catch (Exception exception) {
+			exception.printStackTrace();
 		}
 
 		return null;
@@ -1269,17 +1269,17 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 				return futureTask.get(
 					PropsValues.GET_LOCATION_TIMEOUT, TimeUnit.SECONDS);
 			}
-			catch (CancellationException ce) {
-				exceptions.add(ce);
+			catch (CancellationException cancellationException) {
+				exceptions.add(cancellationException);
 			}
-			catch (ExecutionException ee) {
-				exceptions.add(ee);
+			catch (ExecutionException executionException) {
+				exceptions.add(executionException);
 			}
-			catch (InterruptedException ie) {
-				exceptions.add(ie);
+			catch (InterruptedException interruptedException) {
+				exceptions.add(interruptedException);
 			}
-			catch (TimeoutException te) {
-				exceptions.add(te);
+			catch (TimeoutException timeoutException) {
+				exceptions.add(timeoutException);
 			}
 			finally {
 				thread.interrupt();
@@ -1344,7 +1344,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 			return firstSelectedOptionWebElement.getText();
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			return null;
 		}
 	}
@@ -1383,6 +1383,11 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	}
 
 	@Override
+	public String getTestName() {
+		return PoshiRunnerContext.getTestCaseNamespacedClassCommandName();
+	}
+
+	@Override
 	public String getText(String locator) throws Exception {
 		return getText(locator, null);
 	}
@@ -1400,7 +1405,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		text = text.trim();
 
-		return text.replace("\n", " ");
+		return StringUtil.replace(text, "\n", " ");
 	}
 
 	public String getTextAceEditor(String locator) throws Exception {
@@ -1416,7 +1421,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		text = text.trim();
 
-		return text.replace("\n", "");
+		return StringUtil.replace(text, "\n", "");
 	}
 
 	@Override
@@ -1458,7 +1463,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 			alertPresent = true;
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			alertPresent = false;
 		}
 
@@ -1826,7 +1831,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		text = text.trim();
 
-		return text.replace("\n", " ");
+		return StringUtil.replace(text, "\n", " ");
 	}
 
 	@Override
@@ -2904,7 +2909,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		sb.append("ace.edit(");
 		sb.append(getAttribute(locator + "@id"));
 		sb.append(").setValue(\"");
-		sb.append(HtmlUtil.escapeJS(value.replace("\\", "\\\\")));
+		sb.append(HtmlUtil.escapeJS(StringUtil.replace(value, "\\", "\\\\")));
 		sb.append("\");");
 
 		javascriptExecutor.executeScript(sb.toString());
@@ -2938,7 +2943,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		sb.append(titleAttribute.substring(x + 2, y));
 
 		sb.append("\"].setData(\"");
-		sb.append(HtmlUtil.escapeJS(value.replace("\\", "\\\\")));
+		sb.append(HtmlUtil.escapeJS(StringUtil.replace(value, "\\", "\\\\")));
 		sb.append("\");");
 
 		javascriptExecutor.executeScript(sb.toString());
@@ -2961,7 +2966,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		sb.append(idAttribute.substring(x + 4, y));
 
 		sb.append(".setHTML(\"");
-		sb.append(HtmlUtil.escapeJS(value.replace("\\", "\\\\")));
+		sb.append(HtmlUtil.escapeJS(StringUtil.replace(value, "\\", "\\\\")));
 		sb.append("\")");
 
 		runScript(sb.toString());
@@ -2979,7 +2984,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		sb.append("CKEDITOR.instances[\"");
 		sb.append(getEditorName(locator));
 		sb.append("\"].setData(\"");
-		sb.append(HtmlUtil.escapeJS(value.replace("\\", "\\\\")));
+		sb.append(HtmlUtil.escapeJS(StringUtil.replace(value, "\\", "\\\\")));
 		sb.append("\");");
 
 		javascriptExecutor.executeScript(sb.toString());
@@ -3284,7 +3289,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 				try {
 					Thread.sleep(1000);
 				}
-				catch (Exception e) {
+				catch (Exception exception) {
 				}
 			}
 		}
@@ -3311,7 +3316,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 				try {
 					Thread.sleep(1000);
 				}
-				catch (Exception e) {
+				catch (Exception exception) {
 				}
 			}
 		}
@@ -3884,7 +3889,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 				String text = webElement.getText();
 
-				text = text.replace("\n", "");
+				text = StringUtil.replace(text, "\n", "");
 
 				return text.contains(value);
 			}
@@ -4325,7 +4330,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		sb.append(getCSSSource(htmlSource));
 		sb.append("</style></html>");
 
-		FileUtil.write(fileName, htmlSource.replace("<\\html>", sb.toString()));
+		FileUtil.write(
+			fileName,
+			StringUtil.replace(htmlSource, "<\\html>", sb.toString()));
 	}
 
 	protected void scrollWebElementIntoView(WebElement webElement) {
@@ -4437,7 +4444,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 						return;
 					}
 				}
-				catch (Exception e) {
+				catch (Exception exception) {
 				}
 
 				Thread.sleep(1000);

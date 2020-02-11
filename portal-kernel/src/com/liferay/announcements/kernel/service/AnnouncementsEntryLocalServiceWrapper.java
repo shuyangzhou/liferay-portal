@@ -90,6 +90,18 @@ public class AnnouncementsEntryLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _announcementsEntryLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the announcements entry from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param announcementsEntry the announcements entry
@@ -497,6 +509,9 @@ public class AnnouncementsEntryLocalServiceWrapper
 		return _announcementsEntryLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

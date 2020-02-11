@@ -50,6 +50,13 @@ public class TrashVersionLocalServiceWrapper implements TrashVersionLocalService
 		return _trashVersionLocalService.getIndexableActionableDynamicQuery();
 	}
 
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _trashVersionLocalService.createPersistedModel(primaryKeyObj);
+	}
+
 	/**
 	* @throws PortalException
 	*/

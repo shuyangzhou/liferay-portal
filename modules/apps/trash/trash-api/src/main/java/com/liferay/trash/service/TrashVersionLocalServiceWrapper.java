@@ -57,6 +57,17 @@ public class TrashVersionLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _trashVersionLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new trash version with the primary key. Does not add the trash version to the database.
 	 *
 	 * @param versionId the primary key for the new trash version
@@ -243,6 +254,9 @@ public class TrashVersionLocalServiceWrapper
 		return _trashVersionLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

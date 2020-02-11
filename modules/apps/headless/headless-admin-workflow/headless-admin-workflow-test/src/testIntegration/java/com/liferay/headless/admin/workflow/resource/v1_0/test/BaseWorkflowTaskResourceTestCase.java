@@ -601,7 +601,7 @@ public abstract class BaseWorkflowTaskResourceTestCase {
 		Page<WorkflowTask> page = workflowTaskResource.getWorkflowTasksPage(
 			null, null, RandomTestUtil.randomString(), null, null, null,
 			RandomTestUtil.nextDate(), RandomTestUtil.nextDate(), null, null,
-			null, null, Pagination.of(1, 2), null);
+			null, null, null, Pagination.of(1, 2), null);
 
 		Assert.assertEquals(0, page.getTotalCount());
 
@@ -613,7 +613,7 @@ public abstract class BaseWorkflowTaskResourceTestCase {
 
 		page = workflowTaskResource.getWorkflowTasksPage(
 			null, null, null, null, null, null, null, null, null, null, null,
-			null, Pagination.of(1, 2), null);
+			null, null, Pagination.of(1, 2), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -636,7 +636,7 @@ public abstract class BaseWorkflowTaskResourceTestCase {
 
 		Page<WorkflowTask> page1 = workflowTaskResource.getWorkflowTasksPage(
 			null, null, null, null, null, null, null, null, null, null, null,
-			null, Pagination.of(1, 2), null);
+			null, null, Pagination.of(1, 2), null);
 
 		List<WorkflowTask> workflowTasks1 =
 			(List<WorkflowTask>)page1.getItems();
@@ -646,7 +646,7 @@ public abstract class BaseWorkflowTaskResourceTestCase {
 
 		Page<WorkflowTask> page2 = workflowTaskResource.getWorkflowTasksPage(
 			null, null, null, null, null, null, null, null, null, null, null,
-			null, Pagination.of(2, 2), null);
+			null, null, Pagination.of(2, 2), null);
 
 		Assert.assertEquals(3, page2.getTotalCount());
 
@@ -658,7 +658,7 @@ public abstract class BaseWorkflowTaskResourceTestCase {
 
 		Page<WorkflowTask> page3 = workflowTaskResource.getWorkflowTasksPage(
 			null, null, null, null, null, null, null, null, null, null, null,
-			null, Pagination.of(1, 3), null);
+			null, null, Pagination.of(1, 3), null);
 
 		assertEqualsIgnoringOrder(
 			Arrays.asList(workflowTask1, workflowTask2, workflowTask3),
@@ -744,7 +744,7 @@ public abstract class BaseWorkflowTaskResourceTestCase {
 			Page<WorkflowTask> ascPage =
 				workflowTaskResource.getWorkflowTasksPage(
 					null, null, null, null, null, null, null, null, null, null,
-					null, null, Pagination.of(1, 2),
+					null, null, null, Pagination.of(1, 2),
 					entityField.getName() + ":asc");
 
 			assertEquals(
@@ -754,7 +754,7 @@ public abstract class BaseWorkflowTaskResourceTestCase {
 			Page<WorkflowTask> descPage =
 				workflowTaskResource.getWorkflowTasksPage(
 					null, null, null, null, null, null, null, null, null, null,
-					null, null, Pagination.of(1, 2),
+					null, null, null, Pagination.of(1, 2),
 					entityField.getName() + ":desc");
 
 			assertEquals(

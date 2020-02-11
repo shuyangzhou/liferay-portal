@@ -119,6 +119,17 @@ public class DLFileShortcutLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _dlFileShortcutLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the document library file shortcut from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param dlFileShortcut the document library file shortcut
@@ -497,6 +508,9 @@ public class DLFileShortcutLocalServiceWrapper
 		return _dlFileShortcutLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

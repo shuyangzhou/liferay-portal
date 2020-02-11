@@ -75,6 +75,12 @@ public interface TrashVersionLocalService
 	public TrashVersion addTrashVersion(TrashVersion trashVersion);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new trash version with the primary key. Does not add the trash version to the database.
 	 *
 	 * @param versionId the primary key for the new trash version
@@ -197,6 +203,9 @@ public interface TrashVersionLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

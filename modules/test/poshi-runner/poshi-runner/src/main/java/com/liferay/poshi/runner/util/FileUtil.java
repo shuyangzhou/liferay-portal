@@ -104,8 +104,8 @@ public class FileUtil {
 
 			return file.getCanonicalPath();
 		}
-		catch (IOException ioe) {
-			ioe.printStackTrace();
+		catch (IOException ioException) {
+			ioException.printStackTrace();
 		}
 
 		return filePath;

@@ -101,6 +101,12 @@ public interface WikiNodeLocalService
 	public WikiNode addWikiNode(WikiNode wikiNode);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new wiki node with the primary key. Does not add the wiki node to the database.
 	 *
 	 * @param nodeId the primary key for the new wiki node
@@ -288,6 +294,9 @@ public interface WikiNodeLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

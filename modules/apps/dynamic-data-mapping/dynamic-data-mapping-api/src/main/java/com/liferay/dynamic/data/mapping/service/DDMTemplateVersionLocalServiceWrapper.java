@@ -63,6 +63,18 @@ public class DDMTemplateVersionLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _ddmTemplateVersionLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the ddm template version from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param ddmTemplateVersion the ddm template version
@@ -282,6 +294,9 @@ public class DDMTemplateVersionLocalServiceWrapper
 		return _ddmTemplateVersionLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

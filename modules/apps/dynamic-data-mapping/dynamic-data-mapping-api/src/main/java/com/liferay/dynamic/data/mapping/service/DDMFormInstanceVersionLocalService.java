@@ -81,6 +81,12 @@ public interface DDMFormInstanceVersionLocalService
 	public DDMFormInstanceVersion createDDMFormInstanceVersion(
 		long formInstanceVersionId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteByFormInstanceId(long ddmFormInstanceId);
 
 	/**
@@ -262,6 +268,9 @@ public interface DDMFormInstanceVersionLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

@@ -15,31 +15,41 @@
 package com.liferay.document.library.web.internal.portlet.action;
 
 import com.liferay.document.library.constants.DLPortletKeys;
+import com.liferay.document.library.web.internal.configuration.FFDocumentLibraryDDMEditorConfiguration;
 import com.liferay.document.library.web.internal.constants.DLWebKeys;
 import com.liferay.document.library.web.internal.display.context.DLEditFileEntryTypeDisplayContext;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMStorageLinkLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.util.DDM;
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
+
+import java.util.Map;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Cristina González
  */
 @Component(
+	configurationPid = "com.liferay.document.library.configuration.FFDocumentLibraryDDMEditorConfiguration",
 	property = {
 		"javax.portlet.name=" + DLPortletKeys.DOCUMENT_LIBRARY,
 		"javax.portlet.name=" + DLPortletKeys.DOCUMENT_LIBRARY_ADMIN,
@@ -61,7 +71,8 @@ public class EditDDMStructureMVCRenderCommand implements MVCRenderCommand {
 					DOCUMENT_LIBRARY_EDIT_EDIT_FILE_ENTRY_TYPE_DISPLAY_CONTEXT,
 				new DLEditFileEntryTypeDisplayContext(
 					_ddm, _ddmStorageLinkLocalService,
-					_ddmStructureLocalService, _language,
+					_ddmStructureLocalService,
+					_ffDocumentLibraryDDMEditorConfiguration, _language,
 					_portal.getLiferayPortletRequest(renderRequest)));
 
 			renderRequest.setAttribute(
@@ -77,11 +88,30 @@ public class EditDDMStructureMVCRenderCommand implements MVCRenderCommand {
 		return "/document_library/ddm/edit_ddm_structure.jsp";
 	}
 
+	@Activate
+	@Modified
+	protected void activate(Map<String, Object> properties) {
+		_ffDocumentLibraryDDMEditorConfiguration =
+			ConfigurableUtil.createConfigurable(
+				FFDocumentLibraryDDMEditorConfiguration.class, properties);
+	}
+
 	private DDMStructure _getDDMStructure(RenderRequest renderRequest)
 		throws PortalException {
 
-		return _ddmStructureLocalService.fetchDDMStructure(
+		DDMStructure ddmStructure = _ddmStructureLocalService.fetchDDMStructure(
 			ParamUtil.getLong(renderRequest, "ddmStructureId"));
+
+		if (ddmStructure != null) {
+			ThemeDisplay themeDisplay =
+				(ThemeDisplay)renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
+
+			_ddmStructureModelResourcePermission.check(
+				themeDisplay.getPermissionChecker(), ddmStructure,
+				ActionKeys.UPDATE);
+		}
+
+		return ddmStructure;
 	}
 
 	@Reference
@@ -92,6 +122,15 @@ public class EditDDMStructureMVCRenderCommand implements MVCRenderCommand {
 
 	@Reference
 	private DDMStructureLocalService _ddmStructureLocalService;
+
+	@Reference(
+		target = "(model.class.name=com.liferay.dynamic.data.mapping.model.DDMStructure)"
+	)
+	private ModelResourcePermission<DDMStructure>
+		_ddmStructureModelResourcePermission;
+
+	private volatile FFDocumentLibraryDDMEditorConfiguration
+		_ffDocumentLibraryDDMEditorConfiguration;
 
 	@Reference
 	private Language _language;

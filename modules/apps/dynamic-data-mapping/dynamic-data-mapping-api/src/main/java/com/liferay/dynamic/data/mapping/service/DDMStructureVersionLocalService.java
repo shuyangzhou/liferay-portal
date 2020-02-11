@@ -87,6 +87,12 @@ public interface DDMStructureVersionLocalService
 		long structureVersionId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the ddm structure version from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param ddmStructureVersion the ddm structure version
@@ -236,6 +242,9 @@ public interface DDMStructureVersionLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

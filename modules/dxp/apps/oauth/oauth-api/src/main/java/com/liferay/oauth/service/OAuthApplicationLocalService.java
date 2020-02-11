@@ -101,6 +101,12 @@ public interface OAuthApplicationLocalService
 	@Transactional(enabled = false)
 	public OAuthApplication createOAuthApplication(long oAuthApplicationId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteLogo(long oAuthApplicationId) throws PortalException;
 
 	/**
@@ -263,6 +269,9 @@ public interface OAuthApplicationLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

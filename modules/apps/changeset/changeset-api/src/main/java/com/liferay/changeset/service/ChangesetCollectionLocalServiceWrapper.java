@@ -74,6 +74,18 @@ public class ChangesetCollectionLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _changesetCollectionLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the changeset collection from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param changesetCollection the changeset collection
@@ -312,6 +324,9 @@ public class ChangesetCollectionLocalServiceWrapper
 		return _changesetCollectionLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

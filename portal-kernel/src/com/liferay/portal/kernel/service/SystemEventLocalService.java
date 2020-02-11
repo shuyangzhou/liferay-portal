@@ -81,6 +81,12 @@ public interface SystemEventLocalService
 	public void checkSystemEvents() throws PortalException;
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new system event with the primary key. Does not add the system event to the database.
 	 *
 	 * @param systemEventId the primary key for the new system event
@@ -206,6 +212,9 @@ public interface SystemEventLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

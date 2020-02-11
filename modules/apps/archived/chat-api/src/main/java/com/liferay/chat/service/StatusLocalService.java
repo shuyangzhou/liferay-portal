@@ -71,6 +71,12 @@ public interface StatusLocalService
 	public Status addStatus(Status status);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new status with the primary key. Does not add the status to the database.
 	 *
 	 * @param statusId the primary key for the new status
@@ -196,6 +202,9 @@ public interface StatusLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

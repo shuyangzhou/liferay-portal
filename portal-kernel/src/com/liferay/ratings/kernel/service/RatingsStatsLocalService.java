@@ -74,6 +74,12 @@ public interface RatingsStatsLocalService
 	public RatingsStats addStats(long classNameId, long classPK);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new ratings stats with the primary key. Does not add the ratings stats to the database.
 	 *
 	 * @param statsId the primary key for the new ratings stats
@@ -195,6 +201,9 @@ public interface RatingsStatsLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

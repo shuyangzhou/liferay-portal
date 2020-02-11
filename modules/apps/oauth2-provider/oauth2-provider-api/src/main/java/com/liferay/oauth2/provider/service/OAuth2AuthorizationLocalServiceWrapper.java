@@ -153,6 +153,18 @@ public class OAuth2AuthorizationLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _oAuth2AuthorizationLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the o auth2 authorization with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param oAuth2AuthorizationId the primary key of the o auth2 authorization
@@ -523,6 +535,9 @@ public class OAuth2AuthorizationLocalServiceWrapper
 		return _oAuth2AuthorizationLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

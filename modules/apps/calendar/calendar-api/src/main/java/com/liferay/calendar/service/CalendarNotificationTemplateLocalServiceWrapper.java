@@ -86,6 +86,18 @@ public class CalendarNotificationTemplateLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _calendarNotificationTemplateLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the calendar notification template from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param calendarNotificationTemplate the calendar notification template
@@ -409,6 +421,9 @@ public class CalendarNotificationTemplateLocalServiceWrapper
 			getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

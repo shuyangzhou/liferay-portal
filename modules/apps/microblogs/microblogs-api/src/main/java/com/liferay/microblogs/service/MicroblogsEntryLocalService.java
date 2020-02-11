@@ -90,6 +90,12 @@ public interface MicroblogsEntryLocalService
 	@Transactional(enabled = false)
 	public MicroblogsEntry createMicroblogsEntry(long microblogsEntryId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteMicroblogsEntries(
 			long creatorClassNameId, long creatorClassPK)
 		throws PortalException;
@@ -298,6 +304,9 @@ public interface MicroblogsEntryLocalService
 	public int getParentMicroblogsEntryMicroblogsEntriesCount(
 		int type, long parentMicroblogsEntryId);
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

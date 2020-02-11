@@ -287,5 +287,9 @@ definition {
 	@ignore = "true"
 	test GotoLinkToPageChildPages {
 		var key_pageName = "${parentPage}";
+
+		if (!(("true" == "true") || ("true" == "false"))) {
+			fail("Allowed values are 'true' or 'false'.");
+		}
 	}
 }

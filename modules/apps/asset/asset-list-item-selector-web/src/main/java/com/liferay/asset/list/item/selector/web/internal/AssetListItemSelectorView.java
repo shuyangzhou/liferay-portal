@@ -14,8 +14,7 @@
 
 package com.liferay.asset.list.item.selector.web.internal;
 
-import com.liferay.asset.list.item.selector.AssetListItemSelectorReturnType;
-import com.liferay.asset.list.item.selector.criterion.AssetListItemSelectorCriterion;
+import com.liferay.asset.list.constants.AssetListWebKeys;
 import com.liferay.asset.list.model.AssetListEntry;
 import com.liferay.asset.list.service.AssetListEntryService;
 import com.liferay.asset.list.util.AssetListPortletUtil;
@@ -23,6 +22,8 @@ import com.liferay.item.selector.ItemSelectorReturnType;
 import com.liferay.item.selector.ItemSelectorView;
 import com.liferay.item.selector.ItemSelectorViewDescriptor;
 import com.liferay.item.selector.ItemSelectorViewDescriptorRenderer;
+import com.liferay.item.selector.criteria.InfoListItemSelectorReturnType;
+import com.liferay.item.selector.criteria.info.item.criterion.InfoListItemSelectorCriterion;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -33,6 +34,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.Validator;
@@ -63,13 +65,13 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(service = ItemSelectorView.class)
 public class AssetListItemSelectorView
-	implements ItemSelectorView<AssetListItemSelectorCriterion> {
+	implements ItemSelectorView<InfoListItemSelectorCriterion> {
 
 	@Override
-	public Class<? extends AssetListItemSelectorCriterion>
+	public Class<? extends InfoListItemSelectorCriterion>
 		getItemSelectorCriterionClass() {
 
-		return AssetListItemSelectorCriterion.class;
+		return InfoListItemSelectorCriterion.class;
 	}
 
 	@Override
@@ -79,7 +81,7 @@ public class AssetListItemSelectorView
 
 	@Override
 	public String getTitle(Locale locale) {
-		return _language.get(locale, "asset-list");
+		return _language.get(locale, "content-sets");
 	}
 
 	@Override
@@ -90,7 +92,7 @@ public class AssetListItemSelectorView
 	@Override
 	public void renderHTML(
 			ServletRequest servletRequest, ServletResponse servletResponse,
-			AssetListItemSelectorCriterion itemSelectorCriterion,
+			InfoListItemSelectorCriterion itemSelectorCriterion,
 			PortletURL portletURL, String itemSelectedEventName, boolean search)
 		throws IOException, ServletException {
 
@@ -103,13 +105,13 @@ public class AssetListItemSelectorView
 
 	private static final List<ItemSelectorReturnType>
 		_supportedItemSelectorReturnTypes = Collections.singletonList(
-			new AssetListItemSelectorReturnType());
+			new InfoListItemSelectorReturnType());
 
 	@Reference
 	private AssetListEntryService _assetListEntryService;
 
 	@Reference
-	private ItemSelectorViewDescriptorRenderer<AssetListItemSelectorCriterion>
+	private ItemSelectorViewDescriptorRenderer<InfoListItemSelectorCriterion>
 		_itemSelectorViewDescriptorRenderer;
 
 	@Reference
@@ -155,9 +157,15 @@ public class AssetListItemSelectorView
 				@Override
 				public String getPayload() {
 					return JSONUtil.put(
-						"assetListEntryId", assetListEntry.getAssetListEntryId()
+						"classNameId",
+						_portal.getClassNameId(AssetListEntry.class)
 					).put(
-						"assetListEntryTitle", assetListEntry.getTitle()
+						"classPK", assetListEntry.getAssetListEntryId()
+					).put(
+						"infoListProviderKey",
+						AssetListWebKeys.ASSET_LIST_INFO_LIST_PROVIDER_KEY
+					).put(
+						"title", assetListEntry.getTitle()
 					).toString();
 				}
 
@@ -195,7 +203,7 @@ public class AssetListItemSelectorView
 
 		@Override
 		public ItemSelectorReturnType getItemSelectorReturnType() {
-			return new AssetListItemSelectorReturnType();
+			return new InfoListItemSelectorReturnType();
 		}
 
 		@Override
@@ -291,6 +299,10 @@ public class AssetListItemSelectorView
 		}
 
 		private final HttpServletRequest _httpServletRequest;
+
+		@Reference
+		private Portal _portal;
+
 		private final PortletURL _portletURL;
 
 	}

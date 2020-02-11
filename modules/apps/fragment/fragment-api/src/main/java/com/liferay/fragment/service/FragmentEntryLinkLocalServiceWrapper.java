@@ -77,6 +77,18 @@ public class FragmentEntryLinkLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _fragmentEntryLinkLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the fragment entry link from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param fragmentEntryLink the fragment entry link
@@ -493,6 +505,9 @@ public class FragmentEntryLinkLocalServiceWrapper
 		return _fragmentEntryLinkLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

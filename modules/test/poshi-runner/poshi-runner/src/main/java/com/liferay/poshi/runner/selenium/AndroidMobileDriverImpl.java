@@ -56,8 +56,8 @@ public class AndroidMobileDriverImpl extends BaseMobileDriverImpl {
 		try {
 			runtime.exec(sb.toString());
 		}
-		catch (IOException ioe) {
-			ioe.printStackTrace();
+		catch (IOException ioException) {
+			ioException.printStackTrace();
 		}
 	}
 
@@ -83,8 +83,8 @@ public class AndroidMobileDriverImpl extends BaseMobileDriverImpl {
 
 					runtime.exec(sb.toString());
 				}
-				catch (IOException ioe) {
-					ioe.printStackTrace();
+				catch (IOException ioException) {
+					ioException.printStackTrace();
 				}
 			}
 			else if (elementPositionCenterY <= viewportPositionTop) {
@@ -96,8 +96,8 @@ public class AndroidMobileDriverImpl extends BaseMobileDriverImpl {
 
 					runtime.exec(sb.toString());
 				}
-				catch (IOException ioe) {
-					ioe.printStackTrace();
+				catch (IOException ioException) {
+					ioException.printStackTrace();
 				}
 			}
 			else {
@@ -107,7 +107,7 @@ public class AndroidMobileDriverImpl extends BaseMobileDriverImpl {
 			try {
 				LiferaySeleniumHelper.pause("1000");
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 			}
 		}
 	}
@@ -143,8 +143,8 @@ public class AndroidMobileDriverImpl extends BaseMobileDriverImpl {
 
 			runtime.exec(sb.toString());
 		}
-		catch (IOException ioe) {
-			ioe.printStackTrace();
+		catch (IOException ioException) {
+			ioException.printStackTrace();
 		}
 	}
 

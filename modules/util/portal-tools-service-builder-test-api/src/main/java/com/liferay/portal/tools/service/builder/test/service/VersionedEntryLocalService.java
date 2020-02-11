@@ -96,6 +96,12 @@ public interface VersionedEntryLocalService
 	@Transactional(enabled = false)
 	public VersionedEntry create();
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public VersionedEntry delete(VersionedEntry publishedVersionedEntry)
@@ -250,6 +256,9 @@ public interface VersionedEntryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

@@ -60,6 +60,17 @@ public class AppLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _appLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the app from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param app the app
@@ -323,6 +334,9 @@ public class AppLocalServiceWrapper
 		return _appLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

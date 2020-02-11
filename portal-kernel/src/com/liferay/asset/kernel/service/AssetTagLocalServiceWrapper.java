@@ -148,6 +148,17 @@ public class AssetTagLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _assetTagLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Decrements the number of assets to which the asset tag has been applied.
 	 *
 	 * @param tagId the primary key of the asset tag
@@ -600,6 +611,9 @@ public class AssetTagLocalServiceWrapper
 		return _assetTagLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

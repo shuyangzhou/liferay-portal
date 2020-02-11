@@ -90,6 +90,12 @@ public interface MBBanLocalService
 	@Transactional(enabled = false)
 	public MBBan createMBBan(long banId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteBan(long banId) throws PortalException;
 
 	public void deleteBan(long banUserId, ServiceContext serviceContext);
@@ -300,6 +306,9 @@ public interface MBBanLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

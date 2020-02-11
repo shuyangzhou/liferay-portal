@@ -80,6 +80,17 @@ public class KBCommentLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _kbCommentLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the kb comment from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param kbComment the kb comment
@@ -489,6 +500,9 @@ public class KBCommentLocalServiceWrapper
 		return _kbCommentLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

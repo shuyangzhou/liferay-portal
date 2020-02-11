@@ -102,7 +102,7 @@ public class ExecUtil {
 
 				break;
 			}
-			catch (IllegalThreadStateException itse) {
+			catch (IllegalThreadStateException illegalThreadStateException) {
 				duration = System.currentTimeMillis() - start;
 
 				if (duration >= timeout) {
@@ -110,7 +110,7 @@ public class ExecUtil {
 						"Timeout occurred while executing commands: " +
 							Arrays.toString(commands));
 
-					throw itse;
+					throw illegalThreadStateException;
 				}
 
 				sleep(100);
@@ -181,8 +181,8 @@ public class ExecUtil {
 		try {
 			Thread.sleep(duration);
 		}
-		catch (InterruptedException ie) {
-			throw new RuntimeException(ie);
+		catch (InterruptedException interruptedException) {
+			throw new RuntimeException(interruptedException);
 		}
 	}
 

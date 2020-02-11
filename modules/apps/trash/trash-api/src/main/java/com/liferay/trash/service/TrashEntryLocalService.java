@@ -102,6 +102,12 @@ public interface TrashEntryLocalService
 	public void checkEntries() throws PortalException;
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new trash entry with the primary key. Does not add the trash entry to the database.
 	 *
 	 * @param entryId the primary key for the new trash entry
@@ -330,6 +336,9 @@ public interface TrashEntryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

@@ -161,6 +161,12 @@ public interface MBMessageLocalService
 	@Transactional(enabled = false)
 	public MBMessage createMBMessage(long messageId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	@Indexable(type = IndexableType.DELETE)
 	public MBMessage deleteDiscussionMessage(long messageId)
 		throws PortalException;
@@ -507,6 +513,9 @@ public interface MBMessageLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

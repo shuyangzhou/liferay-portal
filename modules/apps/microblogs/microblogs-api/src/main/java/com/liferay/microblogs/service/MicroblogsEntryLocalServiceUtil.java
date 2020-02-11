@@ -87,6 +87,16 @@ public class MicroblogsEntryLocalServiceUtil {
 		return getService().createMicroblogsEntry(microblogsEntryId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	public static com.liferay.portal.kernel.model.PersistedModel
+			createPersistedModel(java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().createPersistedModel(primaryKeyObj);
+	}
+
 	public static void deleteMicroblogsEntries(
 			long creatorClassNameId, long creatorClassPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -398,6 +408,9 @@ public class MicroblogsEntryLocalServiceUtil {
 			type, parentMicroblogsEntryId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	public static com.liferay.portal.kernel.model.PersistedModel
 			getPersistedModel(java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {

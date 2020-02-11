@@ -78,6 +78,12 @@ public interface PowwowParticipantLocalService
 		PowwowParticipant powwowParticipant);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new powwow participant with the primary key. Does not add the powwow participant to the database.
 	 *
 	 * @param powwowParticipantId the primary key for the new powwow participant
@@ -204,6 +210,9 @@ public interface PowwowParticipantLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

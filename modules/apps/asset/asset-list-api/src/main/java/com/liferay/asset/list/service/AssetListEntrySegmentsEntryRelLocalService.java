@@ -16,6 +16,7 @@ package com.liferay.asset.list.service;
 
 import com.liferay.asset.list.model.AssetListEntrySegmentsEntryRel;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
+import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
@@ -30,6 +31,8 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.change.tracking.CTService;
+import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
@@ -58,7 +61,8 @@ import org.osgi.annotation.versioning.ProviderType;
 	rollbackFor = {PortalException.class, SystemException.class}
 )
 public interface AssetListEntrySegmentsEntryRelLocalService
-	extends BaseLocalService, PersistedModelLocalService {
+	extends BaseLocalService, CTService<AssetListEntrySegmentsEntryRel>,
+			PersistedModelLocalService {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -91,6 +95,12 @@ public interface AssetListEntrySegmentsEntryRelLocalService
 	@Transactional(enabled = false)
 	public AssetListEntrySegmentsEntryRel createAssetListEntrySegmentsEntryRel(
 		long assetListEntrySegmentsEntryRelId);
+
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
 
 	/**
 	 * Deletes the asset list entry segments entry rel from the database. Also notifies the appropriate model listeners.
@@ -326,6 +336,9 @@ public interface AssetListEntrySegmentsEntryRelLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
@@ -344,5 +357,20 @@ public interface AssetListEntrySegmentsEntryRelLocalService
 	public AssetListEntrySegmentsEntryRel
 		updateAssetListEntrySegmentsEntryRelTypeSettings(
 			long assetListEntryId, long segmentsEntryId, String typeSettings);
+
+	@Override
+	@Transactional(enabled = false)
+	public CTPersistence<AssetListEntrySegmentsEntryRel> getCTPersistence();
+
+	@Override
+	@Transactional(enabled = false)
+	public Class<AssetListEntrySegmentsEntryRel> getModelClass();
+
+	@Override
+	@Transactional(rollbackFor = Throwable.class)
+	public <R, E extends Throwable> R updateWithUnsafeFunction(
+			UnsafeFunction<CTPersistence<AssetListEntrySegmentsEntryRel>, R, E>
+				updateUnsafeFunction)
+		throws E;
 
 }

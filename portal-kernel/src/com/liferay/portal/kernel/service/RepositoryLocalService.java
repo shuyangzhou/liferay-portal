@@ -82,6 +82,12 @@ public interface RepositoryLocalService
 	public void checkRepository(long repositoryId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new repository with the primary key. Does not add the repository to the database.
 	 *
 	 * @param repositoryId the primary key for the new repository
@@ -230,6 +236,9 @@ public interface RepositoryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

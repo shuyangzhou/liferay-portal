@@ -75,6 +75,18 @@ public class MFAEmailOTPEntryLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _mfaEmailOTPEntryLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the mfa email otp entry with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param mfaEmailOTPEntryId the primary key of the mfa email otp entry
@@ -300,6 +312,9 @@ public class MFAEmailOTPEntryLocalServiceWrapper
 		return _mfaEmailOTPEntryLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

@@ -79,6 +79,12 @@ public interface SegmentsExperimentRelLocalService
 		SegmentsExperimentRel segmentsExperimentRel);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new segments experiment rel with the primary key. Does not add the segments experiment rel to the database.
 	 *
 	 * @param segmentsExperimentRelId the primary key for the new segments experiment rel
@@ -215,6 +221,9 @@ public interface SegmentsExperimentRelLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

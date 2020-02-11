@@ -38,8 +38,8 @@ public class ChromeWebDriverImpl extends BaseWebDriverImpl {
 		try {
 			super.click(locator);
 		}
-		catch (WebDriverException wde) {
-			String message = wde.getMessage();
+		catch (WebDriverException webDriverException) {
+			String message = webDriverException.getMessage();
 
 			Matcher matcher = _elementNotClickableErrorPattern.matcher(message);
 
@@ -49,7 +49,8 @@ public class ChromeWebDriverImpl extends BaseWebDriverImpl {
 				return;
 			}
 
-			throw new ElementNotInteractableException(message, wde);
+			throw new ElementNotInteractableException(
+				message, webDriverException);
 		}
 	}
 
@@ -60,8 +61,8 @@ public class ChromeWebDriverImpl extends BaseWebDriverImpl {
 		try {
 			super.clickAt(locator, coordString, scrollIntoView);
 		}
-		catch (WebDriverException wde) {
-			String message = wde.getMessage();
+		catch (WebDriverException webDriverException) {
+			String message = webDriverException.getMessage();
 
 			Matcher matcher = _elementNotClickableErrorPattern.matcher(message);
 
@@ -71,7 +72,8 @@ public class ChromeWebDriverImpl extends BaseWebDriverImpl {
 				return;
 			}
 
-			throw new ElementNotInteractableException(message, wde);
+			throw new ElementNotInteractableException(
+				message, webDriverException);
 		}
 	}
 
@@ -105,8 +107,8 @@ public class ChromeWebDriverImpl extends BaseWebDriverImpl {
 		try {
 			super.typeKeys(locator, value);
 		}
-		catch (WebDriverException wde) {
-			String message = wde.getMessage();
+		catch (WebDriverException webDriverException) {
+			String message = webDriverException.getMessage();
 
 			Matcher matcher = _cannotFocusElementErrorPattern.matcher(message);
 
@@ -118,7 +120,8 @@ public class ChromeWebDriverImpl extends BaseWebDriverImpl {
 				return;
 			}
 
-			throw new ElementNotInteractableException(message, wde);
+			throw new ElementNotInteractableException(
+				message, webDriverException);
 		}
 	}
 
@@ -126,10 +129,10 @@ public class ChromeWebDriverImpl extends BaseWebDriverImpl {
 		try {
 			return super.getWebElement(locator, timeout);
 		}
-		catch (RuntimeException re) {
+		catch (RuntimeException runtimeException) {
 			_refreshFrameWebElements();
 
-			throw re;
+			throw runtimeException;
 		}
 	}
 

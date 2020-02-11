@@ -147,6 +147,17 @@ public class BackgroundTaskLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _backgroundTaskLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the background task from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param backgroundTask the background task
@@ -719,6 +730,9 @@ public class BackgroundTaskLocalServiceWrapper
 		return _backgroundTaskLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

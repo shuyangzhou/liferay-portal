@@ -94,6 +94,12 @@ public interface KaleoProcessLinkLocalService
 	public KaleoProcessLink createKaleoProcessLink(long kaleoProcessLinkId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the kaleo process link from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param kaleoProcessLink the kaleo process link
@@ -273,6 +279,9 @@ public interface KaleoProcessLinkLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

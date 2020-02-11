@@ -135,6 +135,12 @@ public interface SocialActivityCounterLocalService
 		SocialActivityCounter socialActivityCounter);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new social activity counter with the primary key. Does not add the social activity counter to the database.
 	 *
 	 * @param activityCounterId the primary key for the new social activity counter
@@ -479,6 +485,9 @@ public interface SocialActivityCounterLocalService
 	public List<SocialActivityCounter> getPeriodDistributionActivityCounters(
 		long groupId, String name, int startPeriod, int endPeriod);
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

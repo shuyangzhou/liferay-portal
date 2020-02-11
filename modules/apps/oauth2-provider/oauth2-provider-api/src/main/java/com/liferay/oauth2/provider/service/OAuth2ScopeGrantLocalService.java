@@ -108,6 +108,12 @@ public interface OAuth2ScopeGrantLocalService
 			List<String> scopeAliases)
 		throws DuplicateOAuth2ScopeGrantException;
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteOAuth2AuthorizationOAuth2ScopeGrant(
 		long oAuth2AuthorizationId, long oAuth2ScopeGrantId);
 
@@ -304,6 +310,9 @@ public interface OAuth2ScopeGrantLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

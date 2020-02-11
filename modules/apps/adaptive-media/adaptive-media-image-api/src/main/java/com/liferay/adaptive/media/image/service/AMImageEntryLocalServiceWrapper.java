@@ -90,6 +90,17 @@ public class AMImageEntryLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _amImageEntryLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes all the adaptive media images generated for the configuration in
 	 * the company. This method deletes both the adaptive media image entry from
 	 * the database and the bytes from the file store.
@@ -504,6 +515,9 @@ public class AMImageEntryLocalServiceWrapper
 			companyId, configurationUuid);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

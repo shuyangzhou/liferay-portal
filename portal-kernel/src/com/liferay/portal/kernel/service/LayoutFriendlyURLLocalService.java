@@ -101,6 +101,12 @@ public interface LayoutFriendlyURLLocalService
 	public LayoutFriendlyURL createLayoutFriendlyURL(long layoutFriendlyURLId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the layout friendly url from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param layoutFriendlyURL the layout friendly url
@@ -338,6 +344,9 @@ public interface LayoutFriendlyURLLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

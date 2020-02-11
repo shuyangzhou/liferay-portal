@@ -16,16 +16,14 @@ package com.liferay.sharepoint.soap.connector.operation;
 
 import com.liferay.sharepoint.soap.connector.SharepointConnection;
 import com.liferay.sharepoint.soap.connector.SharepointException;
-import com.liferay.sharepoint.soap.connector.internal.util.RemoteExceptionUtil;
-
-import java.net.URL;
+import com.liferay.sharepoint.soap.connector.internal.util.RemoteExceptionSharepointExceptionMapper;
 
 import java.rmi.RemoteException;
 
 /**
  * @author Iván Zaera
  */
-public class CheckInFileOperation extends BaseOperation {
+public final class CheckInFileOperation extends BaseOperation {
 
 	public boolean execute(
 			String filePath, String comment,
@@ -33,18 +31,12 @@ public class CheckInFileOperation extends BaseOperation {
 		throws SharepointException {
 
 		try {
-			URL filePathURL = toURL(filePath);
-
-			String protocolValue = String.valueOf(
-				checkInType.getProtocolValue());
-
 			return listsSoap.checkInFile(
-				filePathURL.toString(), comment, protocolValue);
+				String.valueOf(toURL(filePath)), comment,
+				String.valueOf(checkInType.getProtocolValue()));
 		}
 		catch (RemoteException remoteException) {
-			RemoteExceptionUtil.handleRemoteException(remoteException);
-
-			throw new IllegalStateException();
+			throw RemoteExceptionSharepointExceptionMapper.map(remoteException);
 		}
 	}
 

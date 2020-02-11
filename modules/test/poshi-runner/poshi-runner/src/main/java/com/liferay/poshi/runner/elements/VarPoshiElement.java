@@ -124,7 +124,7 @@ public class VarPoshiElement extends PoshiElement {
 		if (value.startsWith("new ")) {
 			addAttribute("from", getDoubleQuotedContent(value));
 
-			value = value.replace("new ", "");
+			value = StringUtil.replace(value, "new ", "");
 
 			int index = value.indexOf("(");
 
@@ -181,8 +181,8 @@ public class VarPoshiElement extends PoshiElement {
 			String content = getParentheticalContent(value);
 
 			if (!content.equals("")) {
-				value = value.replace(
-					content, swapParameterQuotations(content));
+				value = StringUtil.replace(
+					value, content, swapParameterQuotations(content));
 			}
 
 			addAttribute("method", value);
@@ -245,7 +245,8 @@ public class VarPoshiElement extends PoshiElement {
 					String newInnerValue = StringUtil.combine(
 						innerValue, ".hash('", attributeValue("hash"), "')");
 
-					value = value.replace(innerValue, newInnerValue);
+					value = StringUtil.replace(
+						value, innerValue, newInnerValue);
 
 					value = doubleQuoteContent(value);
 				}
@@ -255,7 +256,8 @@ public class VarPoshiElement extends PoshiElement {
 					String newInnerValue = StringUtil.combine(
 						innerValue, "[", attributeValue("index"), "]");
 
-					value = value.replace(innerValue, newInnerValue);
+					value = StringUtil.replace(
+						value, innerValue, newInnerValue);
 
 					value = doubleQuoteContent(value);
 				}
@@ -273,8 +275,8 @@ public class VarPoshiElement extends PoshiElement {
 					String content = getParentheticalContent(value);
 
 					if (!content.equals("")) {
-						value = value.replace(
-							content, swapParameterQuotations(content));
+						value = StringUtil.replace(
+							value, content, swapParameterQuotations(content));
 					}
 				}
 			}
@@ -365,8 +367,9 @@ public class VarPoshiElement extends PoshiElement {
 			throw new IllegalArgumentException(
 				"Invalid variable element " + Dom4JUtil.format(element));
 		}
-		catch (IOException ioe) {
-			throw new IllegalArgumentException("Invalid variable element", ioe);
+		catch (IOException ioException) {
+			throw new IllegalArgumentException(
+				"Invalid variable element", ioException);
 		}
 	}
 
@@ -389,16 +392,16 @@ public class VarPoshiElement extends PoshiElement {
 			if (singleQuote) {
 				parameter = getSingleQuotedContent(parameter);
 
-				parameter = parameter.replace("\\\'", "'");
-				parameter = parameter.replace("\"", "&quot;");
+				parameter = StringUtil.replace(parameter, "\\\'", "'");
+				parameter = StringUtil.replace(parameter, "\"", "&quot;");
 
 				parameter = doubleQuoteContent(parameter);
 			}
 			else {
 				parameter = getDoubleQuotedContent(parameter);
 
-				parameter = parameter.replace("'", "\\\'");
-				parameter = parameter.replace("&quot;", "\"");
+				parameter = StringUtil.replace(parameter, "'", "\\\'");
+				parameter = StringUtil.replace(parameter, "&quot;", "\"");
 
 				parameter = singleQuoteContent(parameter);
 			}

@@ -83,6 +83,12 @@ public interface SourceLocalService
 	public Source addSource(Source source);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new source with the primary key. Does not add the source to the database.
 	 *
 	 * @param sourceId the primary key for the new source
@@ -217,6 +223,9 @@ public interface SourceLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

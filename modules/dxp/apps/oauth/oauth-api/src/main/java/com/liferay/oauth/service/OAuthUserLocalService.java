@@ -85,6 +85,12 @@ public interface OAuthUserLocalService
 	public OAuthUser createOAuthUser(long oAuthUserId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the o auth user with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param oAuthUserId the primary key of the o auth user
@@ -250,6 +256,9 @@ public interface OAuthUserLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

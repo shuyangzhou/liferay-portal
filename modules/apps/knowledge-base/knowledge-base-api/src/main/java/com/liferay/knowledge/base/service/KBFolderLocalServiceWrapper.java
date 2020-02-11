@@ -71,6 +71,17 @@ public class KBFolderLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _kbFolderLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the kb folder from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param kbFolder the kb folder
@@ -439,6 +450,9 @@ public class KBFolderLocalServiceWrapper
 		return _kbFolderLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

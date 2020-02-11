@@ -71,6 +71,17 @@ public class LayoutSetBranchLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _layoutSetBranchLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the layout set branch from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param layoutSetBranch the layout set branch
@@ -345,6 +356,9 @@ public class LayoutSetBranchLocalServiceWrapper
 		return _layoutSetBranchLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

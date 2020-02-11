@@ -16,29 +16,23 @@ package com.liferay.sharepoint.soap.connector.operation;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.sharepoint.soap.connector.SharepointException;
-import com.liferay.sharepoint.soap.connector.internal.util.RemoteExceptionUtil;
-
-import java.net.URL;
+import com.liferay.sharepoint.soap.connector.internal.util.RemoteExceptionSharepointExceptionMapper;
 
 import java.rmi.RemoteException;
 
 /**
  * @author Iván Zaera
  */
-public class CheckOutFileOperation extends BaseOperation {
+public final class CheckOutFileOperation extends BaseOperation {
 
 	public boolean execute(String filePath) throws SharepointException {
 		try {
-			URL filePathURL = toURL(filePath);
-
 			return listsSoap.checkOutFile(
-				filePathURL.toString(), Boolean.FALSE.toString(),
+				String.valueOf(toURL(filePath)), Boolean.FALSE.toString(),
 				StringPool.BLANK);
 		}
 		catch (RemoteException remoteException) {
-			RemoteExceptionUtil.handleRemoteException(remoteException);
-
-			throw new IllegalStateException();
+			throw RemoteExceptionSharepointExceptionMapper.map(remoteException);
 		}
 	}
 

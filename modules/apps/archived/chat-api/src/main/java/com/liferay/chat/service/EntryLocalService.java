@@ -84,6 +84,12 @@ public interface EntryLocalService
 	@Transactional(enabled = false)
 	public Entry createEntry(long entryId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteEntries(long userId);
 
 	/**
@@ -233,6 +239,9 @@ public interface EntryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

@@ -109,6 +109,12 @@ public interface MDRRuleLocalService
 	public MDRRule createMDRRule(long ruleId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the mdr rule with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param ruleId the primary key of the mdr rule
@@ -310,6 +316,9 @@ public interface MDRRuleLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

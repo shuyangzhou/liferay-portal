@@ -78,6 +78,12 @@ public interface PowwowServerLocalService
 	public void checkPowwowServers();
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new powwow server with the primary key. Does not add the powwow server to the database.
 	 *
 	 * @param powwowServerId the primary key for the new powwow server
@@ -195,6 +201,9 @@ public interface PowwowServerLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

@@ -80,6 +80,12 @@ public interface ListTypeLocalService
 	public ListType createListType(long listTypeId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the list type from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param listType the list type
@@ -225,6 +231,9 @@ public interface ListTypeLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

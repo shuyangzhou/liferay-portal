@@ -92,6 +92,12 @@ public interface LayoutSetPrototypeLocalService
 		long layoutSetPrototypeId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the layout set prototype from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param layoutSetPrototype the layout set prototype
@@ -278,6 +284,9 @@ public interface LayoutSetPrototypeLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

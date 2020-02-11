@@ -74,6 +74,17 @@ public class ContactLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _contactLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the contact from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param contact the contact
@@ -300,6 +311,9 @@ public class ContactLocalServiceWrapper
 		return _contactLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

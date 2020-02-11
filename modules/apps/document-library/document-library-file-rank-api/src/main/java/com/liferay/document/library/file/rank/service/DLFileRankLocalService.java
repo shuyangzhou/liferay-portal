@@ -89,6 +89,12 @@ public interface DLFileRankLocalService
 	public DLFileRank createDLFileRank(long fileRankId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the document library file rank from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param dlFileRank the document library file rank
@@ -249,6 +255,9 @@ public interface DLFileRankLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

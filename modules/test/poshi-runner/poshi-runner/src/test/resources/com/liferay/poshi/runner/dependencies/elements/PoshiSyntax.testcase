@@ -356,5 +356,17 @@
 
 	<command ignore="true" name="GotoLinkToPageChildPages">
 		<var name="key_pageName" value="${parentPage}" />
+
+		<if>
+			<not>
+				<or>
+					<equals arg1="true" arg2="true"/>
+					<equals arg1="true" arg2="false"/>
+				</or>
+			</not>
+			<then>
+				<fail message="Allowed values are 'true' or 'false'."/>
+			</then>
+		</if>
 	</command>
 </definition>

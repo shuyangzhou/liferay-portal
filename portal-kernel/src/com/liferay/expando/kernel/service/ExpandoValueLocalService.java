@@ -211,6 +211,12 @@ public interface ExpandoValueLocalService
 	@Transactional(enabled = false)
 	public ExpandoValue createExpandoValue(long valueId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteColumnValues(long columnId);
 
 	/**
@@ -572,6 +578,9 @@ public interface ExpandoValueLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

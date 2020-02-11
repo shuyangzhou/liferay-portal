@@ -67,6 +67,17 @@ public class DLSyncEventLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _dlSyncEventLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the dl sync event from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param dlSyncEvent the dl sync event
@@ -289,6 +300,9 @@ public class DLSyncEventLocalServiceWrapper
 		return _dlSyncEventLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

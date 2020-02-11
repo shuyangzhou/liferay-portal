@@ -93,6 +93,12 @@ public interface LayoutPageTemplateStructureRelLocalService
 		long layoutPageTemplateStructureRelId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the layout page template structure rel from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param layoutPageTemplateStructureRel the layout page template structure rel
@@ -322,6 +328,9 @@ public interface LayoutPageTemplateStructureRelLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

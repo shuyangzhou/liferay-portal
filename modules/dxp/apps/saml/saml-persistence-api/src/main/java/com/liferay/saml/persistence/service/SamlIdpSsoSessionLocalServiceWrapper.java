@@ -61,6 +61,18 @@ public class SamlIdpSsoSessionLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _samlIdpSsoSessionLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new saml idp sso session with the primary key. Does not add the saml idp sso session to the database.
 	 *
 	 * @param samlIdpSsoSessionId the primary key for the new saml idp sso session
@@ -255,6 +267,9 @@ public class SamlIdpSsoSessionLocalServiceWrapper
 		return _samlIdpSsoSessionLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

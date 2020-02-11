@@ -54,6 +54,17 @@ public class RatingsStatsLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _ratingsStatsLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new ratings stats with the primary key. Does not add the ratings stats to the database.
 	 *
 	 * @param statsId the primary key for the new ratings stats
@@ -238,6 +249,9 @@ public class RatingsStatsLocalServiceWrapper
 		return _ratingsStatsLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

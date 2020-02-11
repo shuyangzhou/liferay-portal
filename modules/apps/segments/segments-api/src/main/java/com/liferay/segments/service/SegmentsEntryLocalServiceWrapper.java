@@ -85,6 +85,17 @@ public class SegmentsEntryLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _segmentsEntryLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new segments entry with the primary key. Does not add the segments entry to the database.
 	 *
 	 * @param segmentsEntryId the primary key for the new segments entry
@@ -317,6 +328,9 @@ public class SegmentsEntryLocalServiceWrapper
 		return _segmentsEntryLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

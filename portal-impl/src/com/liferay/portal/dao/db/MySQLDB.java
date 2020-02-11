@@ -47,7 +47,7 @@ public class MySQLDB extends BaseDB {
 
 	@Override
 	public String buildSQL(String template) throws IOException {
-		template = replaceTemplate(template, getTemplate());
+		template = replaceTemplate(template);
 
 		template = reword(template);
 		template = StringUtil.replace(template, "\\'", "''");
@@ -97,6 +97,32 @@ public class MySQLDB extends BaseDB {
 	}
 
 	@Override
+	public String getPopulateSQL(String databaseName, String sqlContent) {
+		StringBundler sb = new StringBundler(4);
+
+		sb.append("use ");
+		sb.append(databaseName);
+		sb.append(";\n\n");
+		sb.append(sqlContent);
+
+		return sb.toString();
+	}
+
+	@Override
+	public String getRecreateSQL(String databaseName) {
+		StringBundler sb = new StringBundler(6);
+
+		sb.append("drop database if exists ");
+		sb.append(databaseName);
+		sb.append(";\n");
+		sb.append("create database ");
+		sb.append(databaseName);
+		sb.append(" character set utf8;\n");
+
+		return sb.toString();
+	}
+
+	@Override
 	public boolean isSupportsNewUuidFunction() {
 		return _SUPPORTS_NEW_UUID_FUNCTION;
 	}
@@ -108,36 +134,6 @@ public class MySQLDB extends BaseDB {
 
 	protected MySQLDB(DBType dbType, int majorVersion, int minorVersion) {
 		super(dbType, majorVersion, minorVersion);
-	}
-
-	@Override
-	protected String buildCreateFileContent(
-			String sqlDir, String databaseName, String createContent)
-		throws IOException {
-
-		StringBundler sb = new StringBundler(10);
-
-		sb.append("drop database if exists ");
-		sb.append(databaseName);
-		sb.append(";\n");
-		sb.append("create database ");
-		sb.append(databaseName);
-		sb.append(" character set utf8;\n");
-
-		if (createContent != null) {
-			sb.append("use ");
-			sb.append(databaseName);
-			sb.append(";\n\n");
-
-			sb.append(createContent);
-		}
-
-		return sb.toString();
-	}
-
-	@Override
-	protected String getServerName() {
-		return "mysql";
 	}
 
 	@Override

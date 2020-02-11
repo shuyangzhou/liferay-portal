@@ -75,6 +75,12 @@ public interface UserTrackerLocalService
 	public UserTracker addUserTracker(UserTracker userTracker);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new user tracker with the primary key. Does not add the user tracker to the database.
 	 *
 	 * @param userTrackerId the primary key for the new user tracker
@@ -192,6 +198,9 @@ public interface UserTrackerLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

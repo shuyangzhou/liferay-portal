@@ -56,6 +56,18 @@ public class WikiPageResourceLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _wikiPageResourceLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new wiki page resource with the primary key. Does not add the wiki page resource to the database.
 	 *
 	 * @param resourcePrimKey the primary key for the new wiki page resource
@@ -296,6 +308,9 @@ public class WikiPageResourceLocalServiceWrapper
 			groupId, nodeId, title);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

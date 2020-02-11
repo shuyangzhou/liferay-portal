@@ -91,6 +91,12 @@ public interface GadgetLocalService
 	public Gadget createGadget(long gadgetId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the gadget from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param gadget the gadget
@@ -280,6 +286,9 @@ public interface GadgetLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

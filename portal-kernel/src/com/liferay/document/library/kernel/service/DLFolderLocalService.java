@@ -108,6 +108,12 @@ public interface DLFolderLocalService
 	@Transactional(enabled = false)
 	public DLFolder createDLFolder(long folderId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteAllByGroup(long groupId) throws PortalException;
 
 	public void deleteAllByRepository(long repositoryId) throws PortalException;
@@ -488,6 +494,9 @@ public interface DLFolderLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

@@ -75,6 +75,17 @@ public class KaleoTaskFormLocalServiceWrapper
 		return _kaleoTaskFormLocalService.createKaleoTaskForm(kaleoTaskFormId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _kaleoTaskFormLocalService.createPersistedModel(primaryKeyObj);
+	}
+
 	@Override
 	public void deleteCompanyKaleoTaskForms(long companyId) {
 		_kaleoTaskFormLocalService.deleteCompanyKaleoTaskForms(companyId);
@@ -302,6 +313,9 @@ public class KaleoTaskFormLocalServiceWrapper
 		return _kaleoTaskFormLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

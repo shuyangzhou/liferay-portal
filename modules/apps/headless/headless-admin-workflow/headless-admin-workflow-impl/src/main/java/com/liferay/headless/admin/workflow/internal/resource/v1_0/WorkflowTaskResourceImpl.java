@@ -23,7 +23,6 @@ import com.liferay.headless.admin.workflow.dto.v1_0.WorkflowTaskAssignToUser;
 import com.liferay.headless.admin.workflow.internal.dto.v1_0.util.CreatorUtil;
 import com.liferay.headless.admin.workflow.internal.dto.v1_0.util.ObjectReviewedUtil;
 import com.liferay.headless.admin.workflow.internal.dto.v1_0.util.RoleUtil;
-import com.liferay.headless.admin.workflow.internal.resource.v1_0.helper.ResourceHelper;
 import com.liferay.headless.admin.workflow.resource.v1_0.WorkflowTaskResource;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
@@ -34,6 +33,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowTaskAssignee;
 import com.liferay.portal.kernel.workflow.WorkflowTaskManager;
@@ -220,19 +220,27 @@ public class WorkflowTaskResourceImpl extends BaseWorkflowTaskResourceImpl {
 	@Override
 	public Page<WorkflowTask> getWorkflowTasksPage(
 			Boolean andOperator, Long[] assetPrimaryKeys, String assetTitle,
-			String[] assetTypes, Long[] assigneeUserIds, Boolean completed,
-			Date dateDueEnd, Date dateDueStart, Boolean searchByUserRoles,
-			String[] taskNames, Long workflowDefinitionId,
-			Long[] workflowInstanceIds, Pagination pagination, Sort[] sorts)
+			String[] assetTypes, Long[] assigneeIds, Boolean completed,
+			Date dateDueEnd, Date dateDueStart, Boolean searchByRoles,
+			Boolean searchByUserRoles, String[] taskNames,
+			Long workflowDefinitionId, Long[] workflowInstanceIds,
+			Pagination pagination, Sort[] sorts)
 		throws Exception {
+
+		String assigneeClassName = null;
+
+		if (GetterUtil.getBoolean(searchByRoles)) {
+			assigneeClassName =
+				com.liferay.portal.kernel.model.Role.class.getName();
+		}
 
 		return Page.of(
 			transform(
 				_workflowTaskManager.search(
 					contextCompany.getCompanyId(), contextUser.getUserId(),
 					assetTitle, taskNames, assetTypes, assetPrimaryKeys,
-					assigneeUserIds, dateDueStart, dateDueEnd, completed,
-					searchByUserRoles, workflowDefinitionId,
+					assigneeClassName, assigneeIds, dateDueStart, dateDueEnd,
+					completed, searchByUserRoles, workflowDefinitionId,
 					workflowInstanceIds,
 					GetterUtil.getBoolean(andOperator, true),
 					pagination.getStartPosition(), pagination.getEndPosition(),
@@ -242,9 +250,9 @@ public class WorkflowTaskResourceImpl extends BaseWorkflowTaskResourceImpl {
 			_workflowTaskManager.searchCount(
 				contextCompany.getCompanyId(), contextUser.getUserId(),
 				assetTitle, taskNames, assetTypes, assetPrimaryKeys,
-				assigneeUserIds, dateDueStart, dateDueEnd, completed,
-				searchByUserRoles, workflowDefinitionId, workflowInstanceIds,
-				GetterUtil.getBoolean(andOperator, true)));
+				assigneeClassName, assigneeIds, dateDueStart, dateDueEnd,
+				completed, searchByUserRoles, workflowDefinitionId,
+				workflowInstanceIds, GetterUtil.getBoolean(andOperator, true)));
 	}
 
 	@Override
@@ -449,8 +457,9 @@ public class WorkflowTaskResourceImpl extends BaseWorkflowTaskResourceImpl {
 				description = workflowTask.getDescription();
 				id = workflowTask.getWorkflowTaskId();
 				label = _language.get(
-					_resourceHelper.getResourceBundle(
-						contextAcceptLanguage.getPreferredLocale()),
+					ResourceBundleUtil.getModuleAndPortalResourceBundle(
+						contextAcceptLanguage.getPreferredLocale(),
+						WorkflowTaskResourceImpl.class),
 					workflowTask.getName());
 				name = workflowTask.getName();
 				objectReviewed = ObjectReviewedUtil.toObjectReviewed(
@@ -471,9 +480,6 @@ public class WorkflowTaskResourceImpl extends BaseWorkflowTaskResourceImpl {
 
 	@Reference
 	private Portal _portal;
-
-	@Reference
-	private ResourceHelper _resourceHelper;
 
 	@Reference
 	private RoleLocalService _roleLocalService;

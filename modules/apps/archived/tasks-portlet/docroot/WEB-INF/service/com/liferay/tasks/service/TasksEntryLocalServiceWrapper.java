@@ -60,6 +60,17 @@ public class TasksEntryLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _tasksEntryLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new tasks entry with the primary key. Does not add the tasks entry to the database.
 	 *
 	 * @param tasksEntryId the primary key for the new tasks entry
@@ -297,6 +308,9 @@ public class TasksEntryLocalServiceWrapper
 		return _tasksEntryLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

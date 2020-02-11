@@ -70,6 +70,16 @@ public class JournalContentSearchLocalServiceUtil {
 		return getService().createJournalContentSearch(contentSearchId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	public static com.liferay.portal.kernel.model.PersistedModel
+			createPersistedModel(java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().createPersistedModel(primaryKeyObj);
+	}
+
 	public static void deleteArticleContentSearch(
 		long groupId, boolean privateLayout, long layoutId, String portletId) {
 
@@ -331,6 +341,9 @@ public class JournalContentSearchLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	public static com.liferay.portal.kernel.model.PersistedModel
 			getPersistedModel(java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {

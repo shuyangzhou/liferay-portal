@@ -83,6 +83,12 @@ public interface CTProcessLocalService
 	public CTProcess createCTProcess(long ctProcessId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the ct process from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param ctProcess the ct process
@@ -233,6 +239,9 @@ public interface CTProcessLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

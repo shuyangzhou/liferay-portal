@@ -85,6 +85,12 @@ public interface PowwowMeetingLocalService
 	public void checkPowwowMeetings() throws PortalException;
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new powwow meeting with the primary key. Does not add the powwow meeting to the database.
 	 *
 	 * @param powwowMeetingId the primary key for the new powwow meeting
@@ -212,6 +218,9 @@ public interface PowwowMeetingLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getParticipantPowwowMeetingsCount(long userId, int[] statuses);
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

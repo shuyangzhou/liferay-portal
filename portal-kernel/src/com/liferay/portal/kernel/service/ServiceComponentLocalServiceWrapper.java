@@ -46,6 +46,18 @@ public class ServiceComponentLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _serviceComponentLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new service component with the primary key. Does not add the service component to the database.
 	 *
 	 * @param serviceComponentId the primary key for the new service component
@@ -243,6 +255,9 @@ public class ServiceComponentLocalServiceWrapper
 		return _serviceComponentLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

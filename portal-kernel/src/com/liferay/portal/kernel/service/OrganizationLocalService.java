@@ -180,6 +180,12 @@ public interface OrganizationLocalService
 	@Transactional(enabled = false)
 	public Organization createOrganization(long organizationId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteGroupOrganization(long groupId, long organizationId);
 
 	public void deleteGroupOrganization(
@@ -583,6 +589,9 @@ public interface OrganizationLocalService
 	public List<Organization> getParentOrganizations(long organizationId)
 		throws PortalException;
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

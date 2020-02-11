@@ -87,6 +87,12 @@ public interface WeDeployAuthTokenLocalService
 		WeDeployAuthToken weDeployAuthToken);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new we deploy auth token with the primary key. Does not add the we deploy auth token to the database.
 	 *
 	 * @param weDeployAuthTokenId the primary key for the new we deploy auth token
@@ -205,6 +211,9 @@ public interface WeDeployAuthTokenLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

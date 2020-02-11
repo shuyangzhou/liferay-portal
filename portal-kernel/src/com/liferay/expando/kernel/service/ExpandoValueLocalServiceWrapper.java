@@ -315,6 +315,17 @@ public class ExpandoValueLocalServiceWrapper
 		return _expandoValueLocalService.createExpandoValue(valueId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoValueLocalService.createPersistedModel(primaryKeyObj);
+	}
+
 	@Override
 	public void deleteColumnValues(long columnId) {
 		_expandoValueLocalService.deleteColumnValues(columnId);
@@ -927,6 +938,9 @@ public class ExpandoValueLocalServiceWrapper
 		return _expandoValueLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

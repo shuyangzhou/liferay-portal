@@ -78,6 +78,12 @@ public interface SamlIdpSpSessionLocalService
 		SamlIdpSpSession samlIdpSpSession);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new saml idp sp session with the primary key. Does not add the saml idp sp session to the database.
 	 *
 	 * @param samlIdpSpSessionId the primary key for the new saml idp sp session
@@ -196,6 +202,9 @@ public interface SamlIdpSpSessionLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

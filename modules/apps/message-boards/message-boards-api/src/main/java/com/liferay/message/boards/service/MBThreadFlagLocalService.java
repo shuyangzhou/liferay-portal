@@ -91,6 +91,12 @@ public interface MBThreadFlagLocalService
 	public MBThreadFlag createMBThreadFlag(long threadFlagId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the message boards thread flag with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param threadFlagId the primary key of the message boards thread flag
@@ -295,6 +301,9 @@ public interface MBThreadFlagLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

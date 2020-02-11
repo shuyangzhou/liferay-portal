@@ -348,8 +348,8 @@ public class PQLEntityFactoryTest extends TestCase {
 
 			pqlEntity.getPQLResult(properties);
 		}
-		catch (Exception e) {
-			actualError = e.getMessage();
+		catch (Exception exception) {
+			actualError = exception.getMessage();
 
 			if (!actualError.equals(expectedError)) {
 				StringBuilder sb = new StringBuilder();
@@ -361,7 +361,7 @@ public class PQLEntityFactoryTest extends TestCase {
 				sb.append("\n* Expected: ");
 				sb.append(expectedError);
 
-				throw new Exception(sb.toString(), e);
+				throw new Exception(sb.toString(), exception);
 			}
 		}
 		finally {

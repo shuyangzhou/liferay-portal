@@ -50,6 +50,18 @@ public class SocialActivitySettingLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _socialActivitySettingLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new social activity setting with the primary key. Does not add the social activity setting to the database.
 	 *
 	 * @param activitySettingId the primary key for the new social activity setting
@@ -270,6 +282,9 @@ public class SocialActivitySettingLocalServiceWrapper
 		return _socialActivitySettingLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

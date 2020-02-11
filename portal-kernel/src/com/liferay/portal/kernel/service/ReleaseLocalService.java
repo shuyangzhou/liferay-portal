@@ -76,6 +76,12 @@ public interface ReleaseLocalService
 	public Release addRelease(String servletContextName, String schemaVersion);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new release with the primary key. Does not add the release to the database.
 	 *
 	 * @param releaseId the primary key for the new release
@@ -208,6 +214,9 @@ public interface ReleaseLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

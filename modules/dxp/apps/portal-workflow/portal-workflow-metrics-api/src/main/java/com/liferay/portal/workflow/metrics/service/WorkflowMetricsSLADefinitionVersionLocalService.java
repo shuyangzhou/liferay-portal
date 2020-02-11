@@ -78,6 +78,12 @@ public interface WorkflowMetricsSLADefinitionVersionLocalService
 				workflowMetricsSLADefinitionVersion);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new workflow metrics sla definition version with the primary key. Does not add the workflow metrics sla definition version to the database.
 	 *
 	 * @param workflowMetricsSLADefinitionVersionId the primary key for the new workflow metrics sla definition version
@@ -220,6 +226,9 @@ public interface WorkflowMetricsSLADefinitionVersionLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

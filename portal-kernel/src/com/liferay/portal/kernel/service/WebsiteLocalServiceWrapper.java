@@ -53,6 +53,17 @@ public class WebsiteLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _websiteLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new website with the primary key. Does not add the website to the database.
 	 *
 	 * @param websiteId the primary key for the new website
@@ -255,6 +266,9 @@ public class WebsiteLocalServiceWrapper
 		return _websiteLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

@@ -62,6 +62,17 @@ public class SamlSpSessionLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _samlSpSessionLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new saml sp session with the primary key. Does not add the saml sp session to the database.
 	 *
 	 * @param samlSpSessionId the primary key for the new saml sp session
@@ -259,6 +270,9 @@ public class SamlSpSessionLocalServiceWrapper
 		return _samlSpSessionLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

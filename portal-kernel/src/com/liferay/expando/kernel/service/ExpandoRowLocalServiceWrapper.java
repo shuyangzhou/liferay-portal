@@ -67,6 +67,17 @@ public class ExpandoRowLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _expandoRowLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the expando row from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param expandoRow the expando row
@@ -347,6 +358,9 @@ public class ExpandoRowLocalServiceWrapper
 		return _expandoRowLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

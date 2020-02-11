@@ -47,6 +47,17 @@ public class ViewCountEntryLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _viewCountEntryLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new view count entry with the primary key. Does not add the view count entry to the database.
 	 *
 	 * @param viewCountEntryPK the primary key for the new view count entry
@@ -234,6 +245,9 @@ public class ViewCountEntryLocalServiceWrapper
 		return _viewCountEntryLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

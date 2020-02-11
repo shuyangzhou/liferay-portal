@@ -71,6 +71,17 @@ public class SiteFriendlyURLLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _siteFriendlyURLLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new site friendly url with the primary key. Does not add the site friendly url to the database.
 	 *
 	 * @param siteFriendlyURLId the primary key for the new site friendly url
@@ -305,6 +316,9 @@ public class SiteFriendlyURLLocalServiceWrapper
 		return _siteFriendlyURLLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

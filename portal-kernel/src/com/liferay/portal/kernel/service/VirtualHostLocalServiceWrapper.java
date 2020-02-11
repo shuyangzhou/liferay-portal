@@ -45,6 +45,17 @@ public class VirtualHostLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _virtualHostLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new virtual host with the primary key. Does not add the virtual host to the database.
 	 *
 	 * @param virtualHostId the primary key for the new virtual host
@@ -237,6 +248,9 @@ public class VirtualHostLocalServiceWrapper
 		return _virtualHostLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

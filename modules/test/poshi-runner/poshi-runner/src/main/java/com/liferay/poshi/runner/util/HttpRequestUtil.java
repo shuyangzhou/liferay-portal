@@ -215,11 +215,11 @@ public class HttpRequestUtil {
 					return new HttpResponse(null, errorMessage, responseCode);
 				}
 			}
-			catch (IOException ioe) {
+			catch (IOException ioException) {
 				retryCount++;
 
 				if ((maxRetries >= 0) && (retryCount >= maxRetries)) {
-					throw ioe;
+					throw ioException;
 				}
 
 				System.out.println(
@@ -328,12 +328,12 @@ public class HttpRequestUtil {
 	}
 
 	private static String _fixURL(String url) {
-		url = url.replace(" ", "%20");
-		url = url.replace("#", "%23");
-		url = url.replace("(", "%28");
-		url = url.replace(")", "%29");
-		url = url.replace("[", "%5B");
-		url = url.replace("]", "%5D");
+		url = StringUtil.replace(url, " ", "%20");
+		url = StringUtil.replace(url, "#", "%23");
+		url = StringUtil.replace(url, "(", "%28");
+		url = StringUtil.replace(url, ")", "%29");
+		url = StringUtil.replace(url, "[", "%5B");
+		url = StringUtil.replace(url, "]", "%5D");
 
 		return url;
 	}

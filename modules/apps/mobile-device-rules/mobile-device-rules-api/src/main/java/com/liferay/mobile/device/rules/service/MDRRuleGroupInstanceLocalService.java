@@ -96,6 +96,12 @@ public interface MDRRuleGroupInstanceLocalService
 	public MDRRuleGroupInstance createMDRRuleGroupInstance(
 		long ruleGroupInstanceId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteGroupRuleGroupInstances(long groupId);
 
 	/**
@@ -318,6 +324,9 @@ public interface MDRRuleGroupInstanceLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

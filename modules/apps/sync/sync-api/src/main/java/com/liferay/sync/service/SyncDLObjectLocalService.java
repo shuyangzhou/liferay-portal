@@ -81,6 +81,12 @@ public interface SyncDLObjectLocalService
 	public SyncDLObject addSyncDLObject(SyncDLObject syncDLObject);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new sync dl object with the primary key. Does not add the sync dl object to the database.
 	 *
 	 * @param syncDLObjectId the primary key for the new sync dl object
@@ -206,6 +212,9 @@ public interface SyncDLObjectLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

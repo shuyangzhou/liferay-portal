@@ -82,6 +82,12 @@ public interface ExpandoRowLocalService
 	public ExpandoRow createExpandoRow(long rowId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the expando row from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param expandoRow the expando row
@@ -254,6 +260,9 @@ public interface ExpandoRowLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

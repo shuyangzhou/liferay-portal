@@ -90,6 +90,12 @@ public interface SegmentsExperienceLocalService
 		SegmentsExperience segmentsExperience);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new segments experience with the primary key. Does not add the segments experience to the database.
 	 *
 	 * @param segmentsExperienceId the primary key for the new segments experience
@@ -240,6 +246,9 @@ public interface SegmentsExperienceLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

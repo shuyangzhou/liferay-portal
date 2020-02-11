@@ -60,6 +60,17 @@ public class WeDeployAuthAppLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _weDeployAuthAppLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new we deploy auth app with the primary key. Does not add the we deploy auth app to the database.
 	 *
 	 * @param weDeployAuthAppId the primary key for the new we deploy auth app
@@ -249,6 +260,9 @@ public class WeDeployAuthAppLocalServiceWrapper
 		return _weDeployAuthAppLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

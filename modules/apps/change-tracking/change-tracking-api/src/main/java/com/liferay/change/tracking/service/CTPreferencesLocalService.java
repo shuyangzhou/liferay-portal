@@ -81,6 +81,12 @@ public interface CTPreferencesLocalService
 	public CTPreferences createCTPreferences(long ctPreferencesId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the ct preferences from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param ctPreferences the ct preferences
@@ -228,6 +234,9 @@ public interface CTPreferencesLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

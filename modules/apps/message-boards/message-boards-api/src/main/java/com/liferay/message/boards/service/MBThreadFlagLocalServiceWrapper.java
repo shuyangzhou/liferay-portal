@@ -70,6 +70,17 @@ public class MBThreadFlagLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _mbThreadFlagLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the message boards thread flag with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param threadFlagId the primary key of the message boards thread flag
@@ -375,6 +386,9 @@ public class MBThreadFlagLocalServiceWrapper
 		return _mbThreadFlagLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

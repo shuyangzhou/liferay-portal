@@ -87,6 +87,12 @@ public interface AttachmentLocalService
 	public Attachment createAttachment(long attachmentId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the attachment from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param attachment the attachment
@@ -239,6 +245,9 @@ public interface AttachmentLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

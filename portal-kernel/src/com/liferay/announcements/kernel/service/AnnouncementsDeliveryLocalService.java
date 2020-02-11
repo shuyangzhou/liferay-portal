@@ -84,6 +84,12 @@ public interface AnnouncementsDeliveryLocalService
 	public AnnouncementsDelivery createAnnouncementsDelivery(long deliveryId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the announcements delivery from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param announcementsDelivery the announcements delivery
@@ -239,6 +245,9 @@ public interface AnnouncementsDeliveryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

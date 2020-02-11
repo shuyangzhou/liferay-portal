@@ -97,7 +97,6 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -252,10 +251,6 @@ public class ContentPageEditorDisplayContext {
 				"availableSegmentsEntries",
 				editorSoyContext.get("availableSegmentsEntries")
 			).put(
-				"classNameId", editorSoyContext.get("classNameId")
-			).put(
-				"classPK", editorSoyContext.get("classPK")
-			).put(
 				"collections", _getFragmentCollectionsSoyContexts(true, false)
 			).put(
 				"defaultEditorConfigurations", _getDefaultConfigurations()
@@ -334,6 +329,8 @@ public class ContentPageEditorDisplayContext {
 			).put(
 				"pageType", editorSoyContext.get("pageType")
 			).put(
+				"pending", editorSoyContext.get("pending")
+			).put(
 				"pluginsRootPath",
 				npmResolvedPackageName + "/page_editor/plugins"
 			).put(
@@ -374,6 +371,8 @@ public class ContentPageEditorDisplayContext {
 				"updateSegmentsExperienceURL",
 				getFragmentEntryActionURL(
 					"/content_layout/update_segments_experience")
+			).put(
+				"workflowEnabled", editorSoyContext.get("workflowEnabled")
 			).build()
 		).put(
 			"state",
@@ -412,10 +411,6 @@ public class ContentPageEditorDisplayContext {
 			).put(
 				"segmentsExperimentStatus",
 				editorSoyContext.get("segmentsExperimentStatus")
-			).put(
-				"showResolvedComments",
-				GetterUtil.getBoolean(
-					editorSoyContext.get("showResolvedComments"))
 			).put(
 				"widgets", editorSoyContext.get("widgets")
 			).build()
@@ -563,10 +558,7 @@ public class ContentPageEditorDisplayContext {
 		).put(
 			"widgets", _getWidgetsSoyContexts()
 		).put(
-			"workflowEnabled",
-			WorkflowDefinitionLinkLocalServiceUtil.hasWorkflowDefinitionLink(
-				_publishedLayout.getCompanyId(), _publishedLayout.getGroupId(),
-				Layout.class.getName())
+			"workflowEnabled", isWorkflowEnabled()
 		);
 
 		_editorSoyContext = soyContext;
@@ -640,6 +632,12 @@ public class ContentPageEditorDisplayContext {
 
 	public boolean isSingleSegmentsExperienceMode() {
 		return false;
+	}
+
+	public boolean isWorkflowEnabled() {
+		return WorkflowDefinitionLinkLocalServiceUtil.hasWorkflowDefinitionLink(
+			_publishedLayout.getCompanyId(), _publishedLayout.getGroupId(),
+			Layout.class.getName());
 	}
 
 	protected String getFragmentEntryActionURL(String action) {
@@ -786,7 +784,7 @@ public class ContentPageEditorDisplayContext {
 			return _defaultConfigurations;
 		}
 
-		Map<String, Object> configurations = HashMapBuilder.<String, Object>put(
+		_defaultConfigurations = HashMapBuilder.<String, Object>put(
 			"comment",
 			() -> {
 				EditorConfiguration commentEditorConfiguration =
@@ -829,8 +827,6 @@ public class ContentPageEditorDisplayContext {
 				return editorConfiguration.getData();
 			}
 		).build();
-
-		_defaultConfigurations = configurations;
 
 		return _defaultConfigurations;
 	}

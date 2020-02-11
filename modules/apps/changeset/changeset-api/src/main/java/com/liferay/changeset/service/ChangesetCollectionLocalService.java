@@ -87,6 +87,12 @@ public interface ChangesetCollectionLocalService
 		long changesetCollectionId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the changeset collection from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param changesetCollection the changeset collection
@@ -246,6 +252,9 @@ public interface ChangesetCollectionLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

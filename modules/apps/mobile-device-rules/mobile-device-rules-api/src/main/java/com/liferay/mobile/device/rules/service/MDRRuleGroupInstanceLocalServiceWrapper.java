@@ -86,6 +86,18 @@ public class MDRRuleGroupInstanceLocalServiceWrapper
 			ruleGroupInstanceId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _mdrRuleGroupInstanceLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
 	@Override
 	public void deleteGroupRuleGroupInstances(long groupId) {
 		_mdrRuleGroupInstanceLocalService.deleteGroupRuleGroupInstances(
@@ -428,6 +440,9 @@ public class MDRRuleGroupInstanceLocalServiceWrapper
 		return _mdrRuleGroupInstanceLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

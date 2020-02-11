@@ -86,6 +86,12 @@ public interface CTEntryLocalService
 	public CTEntry createCTEntry(long ctEntryId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the ct entry from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param ctEntry the ct entry
@@ -249,6 +255,9 @@ public interface CTEntryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

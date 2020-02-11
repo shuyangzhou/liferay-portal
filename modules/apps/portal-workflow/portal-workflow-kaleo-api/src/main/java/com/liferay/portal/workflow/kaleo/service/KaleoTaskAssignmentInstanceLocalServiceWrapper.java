@@ -128,6 +128,18 @@ public class KaleoTaskAssignmentInstanceLocalServiceWrapper
 			createKaleoTaskAssignmentInstance(kaleoTaskAssignmentInstanceId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _kaleoTaskAssignmentInstanceLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
 	@Override
 	public void deleteCompanyKaleoTaskAssignmentInstances(long companyId) {
 		_kaleoTaskAssignmentInstanceLocalService.
@@ -423,6 +435,9 @@ public class KaleoTaskAssignmentInstanceLocalServiceWrapper
 			getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

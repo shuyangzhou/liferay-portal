@@ -100,6 +100,12 @@ public interface SegmentsEntryLocalService
 		throws PortalException;
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new segments entry with the primary key. Does not add the segments entry to the database.
 	 *
 	 * @param segmentsEntryId the primary key for the new segments entry
@@ -248,6 +254,9 @@ public interface SegmentsEntryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

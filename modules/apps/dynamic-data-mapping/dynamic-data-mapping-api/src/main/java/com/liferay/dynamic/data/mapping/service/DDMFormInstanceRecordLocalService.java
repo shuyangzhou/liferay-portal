@@ -98,6 +98,12 @@ public interface DDMFormInstanceRecordLocalService
 		long formInstanceRecordId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the ddm form instance record from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param ddmFormInstanceRecord the ddm form instance record
@@ -363,6 +369,9 @@ public interface DDMFormInstanceRecordLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

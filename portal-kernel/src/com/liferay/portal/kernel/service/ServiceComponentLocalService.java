@@ -71,6 +71,12 @@ public interface ServiceComponentLocalService
 		ServiceComponent serviceComponent);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new service component with the primary key. Does not add the service component to the database.
 	 *
 	 * @param serviceComponentId the primary key for the new service component
@@ -196,6 +202,9 @@ public interface ServiceComponentLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

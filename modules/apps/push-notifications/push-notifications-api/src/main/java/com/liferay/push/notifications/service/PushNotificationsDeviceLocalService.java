@@ -76,6 +76,12 @@ public interface PushNotificationsDeviceLocalService
 		PushNotificationsDevice pushNotificationsDevice);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new push notifications device with the primary key. Does not add the push notifications device to the database.
 	 *
 	 * @param pushNotificationsDeviceId the primary key for the new push notifications device
@@ -200,6 +206,9 @@ public interface PushNotificationsDeviceLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

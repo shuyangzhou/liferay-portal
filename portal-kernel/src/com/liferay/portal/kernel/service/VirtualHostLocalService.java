@@ -70,6 +70,12 @@ public interface VirtualHostLocalService
 	public VirtualHost addVirtualHost(VirtualHost virtualHost);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new virtual host with the primary key. Does not add the virtual host to the database.
 	 *
 	 * @param virtualHostId the primary key for the new virtual host
@@ -198,6 +204,9 @@ public interface VirtualHostLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

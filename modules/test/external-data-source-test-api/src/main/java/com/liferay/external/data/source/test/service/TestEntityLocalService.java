@@ -71,6 +71,12 @@ public interface TestEntityLocalService
 	public TestEntity addTestEntity(TestEntity testEntity);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new test entity with the primary key. Does not add the test entity to the database.
 	 *
 	 * @param id the primary key for the new test entity
@@ -187,6 +193,9 @@ public interface TestEntityLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

@@ -131,21 +131,21 @@ public class PoshiRunner {
 
 			_runSetUp();
 		}
-		catch (WebDriverException wde) {
-			wde.printStackTrace();
+		catch (WebDriverException webDriverException) {
+			webDriverException.printStackTrace();
 
-			throw wde;
+			throw webDriverException;
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			LiferaySeleniumHelper.printJavaProcessStacktrace();
 
-			PoshiRunnerStackTraceUtil.printStackTrace(e.getMessage());
+			PoshiRunnerStackTraceUtil.printStackTrace(exception.getMessage());
 
 			PoshiRunnerStackTraceUtil.emptyStackTrace();
 
-			e.printStackTrace();
+			exception.printStackTrace();
 
-			throw e;
+			throw exception;
 		}
 	}
 
@@ -160,8 +160,8 @@ public class PoshiRunner {
 				_runTearDown();
 			}
 		}
-		catch (Exception e) {
-			PoshiRunnerStackTraceUtil.printStackTrace(e.getMessage());
+		catch (Exception exception) {
+			PoshiRunnerStackTraceUtil.printStackTrace(exception.getMessage());
 
 			PoshiRunnerStackTraceUtil.emptyStackTrace();
 		}
@@ -181,16 +181,16 @@ public class PoshiRunner {
 
 			LiferaySeleniumHelper.assertNoPoshiWarnings();
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			LiferaySeleniumHelper.printJavaProcessStacktrace();
 
-			PoshiRunnerStackTraceUtil.printStackTrace(e.getMessage());
+			PoshiRunnerStackTraceUtil.printStackTrace(exception.getMessage());
 
 			PoshiRunnerStackTraceUtil.emptyStackTrace();
 
-			e.printStackTrace();
+			exception.printStackTrace();
 
-			throw e;
+			throw exception;
 		}
 	}
 
@@ -321,10 +321,10 @@ public class PoshiRunner {
 				List<Throwable> throwables = null;
 
 				if (throwable instanceof MultipleFailureException) {
-					MultipleFailureException mfe =
+					MultipleFailureException multipleFailureException =
 						(MultipleFailureException)throwable;
 
-					throwables = mfe.getFailures();
+					throwables = multipleFailureException.getFailures();
 				}
 				else {
 					throwables = Arrays.asList(throwable);

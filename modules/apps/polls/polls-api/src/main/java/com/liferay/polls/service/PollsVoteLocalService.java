@@ -79,6 +79,12 @@ public interface PollsVoteLocalService
 		throws PortalException;
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new polls vote with the primary key. Does not add the polls vote to the database.
 	 *
 	 * @param voteId the primary key for the new polls vote
@@ -218,6 +224,9 @@ public interface PollsVoteLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

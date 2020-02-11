@@ -87,6 +87,12 @@ public interface EmailAddressLocalService
 	public EmailAddress createEmailAddress(long emailAddressId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the email address from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param emailAddress the email address
@@ -270,6 +276,9 @@ public interface EmailAddressLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

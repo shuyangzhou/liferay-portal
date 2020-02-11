@@ -69,6 +69,17 @@ public class EntryLocalServiceWrapper
 		return _entryLocalService.createEntry(entryId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _entryLocalService.createPersistedModel(primaryKeyObj);
+	}
+
 	@Override
 	public void deleteEntries(long userId) {
 		_entryLocalService.deleteEntries(userId);
@@ -286,6 +297,9 @@ public class EntryLocalServiceWrapper
 		return _entryLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

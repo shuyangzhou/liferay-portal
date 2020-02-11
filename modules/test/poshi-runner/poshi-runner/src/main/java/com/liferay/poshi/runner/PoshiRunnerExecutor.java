@@ -242,12 +242,12 @@ public class PoshiRunnerExecutor {
 		try {
 			varValue = _getVarValue(element);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			if (updateLoggerStatus) {
 				_poshiLogger.updateStatus(element, "fail");
 			}
 
-			throw e;
+			throw exception;
 		}
 
 		if (varValue instanceof String) {
@@ -327,12 +327,12 @@ public class PoshiRunnerExecutor {
 		try {
 			varValue = _getVarValue(element);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			if (updateLoggerStatus) {
 				_poshiLogger.updateStatus(element, "fail");
 			}
 
-			throw e;
+			throw exception;
 		}
 
 		if (varValue instanceof String) {
@@ -427,8 +427,8 @@ public class PoshiRunnerExecutor {
 		try {
 			parseElement(commandElement);
 		}
-		catch (Exception e) {
-			throw e;
+		catch (Exception exception) {
+			throw exception;
 		}
 		finally {
 			PoshiRunnerVariablesUtil.popCommandMap();
@@ -805,12 +805,12 @@ public class PoshiRunnerExecutor {
 				_macroReturnValue = null;
 			}
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			SummaryLogger.failSummary(
-				executeElement, e.getMessage(),
+				executeElement, exception.getMessage(),
 				_poshiLogger.getDetailsLinkId());
 
-			throw e;
+			throw exception;
 		}
 
 		SummaryLogger.passSummary(executeElement);
@@ -882,12 +882,12 @@ public class PoshiRunnerExecutor {
 		try {
 			varValue = _getVarValue(element);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			if (updateLoggerStatus) {
 				_poshiLogger.updateStatus(element, "fail");
 			}
 
-			throw e;
+			throw exception;
 		}
 
 		if (varValue instanceof String) {
@@ -1039,11 +1039,12 @@ public class PoshiRunnerExecutor {
 
 			parseElement(element);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			SummaryLogger.failSummary(
-				element, e.getMessage(), _poshiLogger.getDetailsLinkId());
+				element, exception.getMessage(),
+				_poshiLogger.getDetailsLinkId());
 
-			throw e;
+			throw exception;
 		}
 
 		SummaryLogger.passSummary(element);
@@ -1151,15 +1152,17 @@ public class PoshiRunnerExecutor {
 
 		Future<?> future = executorService.submit(callable);
 
+		executorService.shutdown();
+
 		try {
 			return future.get(timeoutSeconds, TimeUnit.SECONDS);
 		}
-		catch (ExecutionException ee) {
+		catch (ExecutionException executionException) {
 			if (PropsValues.DEBUG_STACKTRACE) {
-				throw ee;
+				throw executionException;
 			}
 
-			Throwable throwable = ee.getCause();
+			Throwable throwable = executionException.getCause();
 
 			if (throwable instanceof Error) {
 				throw (Error)throwable;
@@ -1167,17 +1170,17 @@ public class PoshiRunnerExecutor {
 
 			throw (Exception)throwable;
 		}
-		catch (InterruptedException | TimeoutException e) {
+		catch (InterruptedException | TimeoutException exception) {
 			future.cancel(true);
 
-			if (e instanceof TimeoutException) {
+			if (exception instanceof TimeoutException) {
 				System.out.println(
 					"Timed out after " + timeoutSeconds +
 						" seconds while executing " + description);
 			}
 
 			throw new Exception(
-				"An error occurred while executing " + description, e);
+				"An error occurred while executing " + description, exception);
 		}
 	}
 
@@ -1194,8 +1197,8 @@ public class PoshiRunnerExecutor {
 				try {
 					return method.invoke(liferaySelenium, args);
 				}
-				catch (InvocationTargetException ite) {
-					Throwable throwable = ite.getCause();
+				catch (InvocationTargetException invocationTargetException) {
+					Throwable throwable = invocationTargetException.getCause();
 
 					if (throwable instanceof StaleElementReferenceException) {
 						StringBuilder sb = new StringBuilder();
@@ -1211,11 +1214,12 @@ public class PoshiRunnerExecutor {
 						try {
 							return method.invoke(liferaySelenium, args);
 						}
-						catch (Exception e) {
-							throwable = e.getCause();
+						catch (Exception exception) {
+							throwable = exception.getCause();
 
 							if (PropsValues.DEBUG_STACKTRACE) {
-								throw new Exception(throwable.getMessage(), e);
+								throw new Exception(
+									throwable.getMessage(), exception);
 							}
 
 							if (throwable instanceof Error) {
@@ -1227,7 +1231,9 @@ public class PoshiRunnerExecutor {
 					}
 					else {
 						if (PropsValues.DEBUG_STACKTRACE) {
-							throw new Exception(throwable.getMessage(), ite);
+							throw new Exception(
+								throwable.getMessage(),
+								invocationTargetException);
 						}
 
 						if (throwable instanceof Error) {
@@ -1262,16 +1268,16 @@ public class PoshiRunnerExecutor {
 						methodName,
 						PoshiRunnerStackTraceUtil.getCurrentNamespace());
 				}
-				catch (Exception e) {
-					Throwable throwable = e.getCause();
+				catch (Exception exception) {
+					Throwable throwable = exception.getCause();
 
 					if ((throwable != null) &&
 						(throwable.getMessage() != null)) {
 
-						throw new Exception(throwable.getMessage(), e);
+						throw new Exception(throwable.getMessage(), exception);
 					}
 
-					throw e;
+					throw exception;
 				}
 			}
 			else if (element.attributeValue("type") != null) {

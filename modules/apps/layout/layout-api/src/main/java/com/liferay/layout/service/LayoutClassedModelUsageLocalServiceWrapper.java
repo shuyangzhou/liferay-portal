@@ -89,6 +89,18 @@ public class LayoutClassedModelUsageLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _layoutClassedModelUsageLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the layout classed model usage from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param layoutClassedModelUsage the layout classed model usage
@@ -473,6 +485,9 @@ public class LayoutClassedModelUsageLocalServiceWrapper
 		return _layoutClassedModelUsageLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

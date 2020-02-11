@@ -135,6 +135,18 @@ public class KaleoTimerInstanceTokenLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _kaleoTimerInstanceTokenLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the kaleo timer instance token from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param kaleoTimerInstanceToken the kaleo timer instance token
@@ -397,6 +409,9 @@ public class KaleoTimerInstanceTokenLocalServiceWrapper
 		return _kaleoTimerInstanceTokenLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

@@ -80,6 +80,12 @@ public interface EagerBlobEntityLocalService
 	public EagerBlobEntity createEagerBlobEntity(long eagerBlobEntityId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the eager blob entity from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param eagerBlobEntity the eager blob entity
@@ -246,6 +252,9 @@ public interface EagerBlobEntityLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

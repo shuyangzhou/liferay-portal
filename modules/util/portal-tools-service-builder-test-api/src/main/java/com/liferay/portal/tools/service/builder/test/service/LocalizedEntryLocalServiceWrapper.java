@@ -63,6 +63,17 @@ public class LocalizedEntryLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _localizedEntryLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the localized entry from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param localizedEntry the localized entry
@@ -300,6 +311,9 @@ public class LocalizedEntryLocalServiceWrapper
 		return _localizedEntryLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

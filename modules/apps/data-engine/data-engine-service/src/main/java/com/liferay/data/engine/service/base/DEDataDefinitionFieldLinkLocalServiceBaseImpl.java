@@ -313,6 +313,15 @@ public abstract class DEDataDefinitionFieldLinkLocalServiceBaseImpl
 	/**
 	 * @throws PortalException
 	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
+
+		return deDataDefinitionFieldLinkPersistence.create(primaryKeyObj);
+	}
+
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
@@ -322,6 +331,9 @@ public abstract class DEDataDefinitionFieldLinkLocalServiceBaseImpl
 				(DEDataDefinitionFieldLink)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

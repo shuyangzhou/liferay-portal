@@ -86,6 +86,12 @@ public interface ChangesetEntryLocalService
 	@Transactional(enabled = false)
 	public ChangesetEntry createChangesetEntry(long changesetEntryId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteChangesetEntries(long changesetCollectionId)
 		throws PortalException;
 
@@ -265,6 +271,9 @@ public interface ChangesetEntryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

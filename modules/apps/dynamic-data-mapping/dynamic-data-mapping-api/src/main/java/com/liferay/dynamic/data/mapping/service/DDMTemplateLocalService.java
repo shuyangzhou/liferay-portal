@@ -240,6 +240,12 @@ public interface DDMTemplateLocalService
 	public DDMTemplate createDDMTemplate(long templateId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the ddm template from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param ddmTemplate the ddm template
@@ -514,6 +520,9 @@ public interface DDMTemplateLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

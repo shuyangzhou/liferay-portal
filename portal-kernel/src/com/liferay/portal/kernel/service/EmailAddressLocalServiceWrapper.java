@@ -70,6 +70,17 @@ public class EmailAddressLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _emailAddressLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the email address from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param emailAddress the email address
@@ -340,6 +351,9 @@ public class EmailAddressLocalServiceWrapper
 		return _emailAddressLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

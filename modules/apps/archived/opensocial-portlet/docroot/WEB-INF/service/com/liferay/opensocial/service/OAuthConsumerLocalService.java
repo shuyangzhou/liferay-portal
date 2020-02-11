@@ -83,6 +83,12 @@ public interface OAuthConsumerLocalService
 	public OAuthConsumer createOAuthConsumer(long oAuthConsumerId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the o auth consumer with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param oAuthConsumerId the primary key of the o auth consumer
@@ -244,6 +250,9 @@ public interface OAuthConsumerLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

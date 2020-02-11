@@ -109,6 +109,12 @@ public interface AssetEntryLocalService
 	@Transactional(enabled = false)
 	public AssetEntry createAssetEntry(long entryId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteAssetCategoryAssetEntries(
 		long categoryId, List<AssetEntry> assetEntries);
 
@@ -413,6 +419,9 @@ public interface AssetEntryLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AssetEntry getParentEntry(long entryId) throws PortalException;
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

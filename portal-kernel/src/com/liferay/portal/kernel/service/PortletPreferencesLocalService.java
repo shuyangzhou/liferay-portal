@@ -85,6 +85,12 @@ public interface PortletPreferencesLocalService
 		PortletPreferences portletPreferences);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new portlet preferences with the primary key. Does not add the portlet preferences to the database.
 	 *
 	 * @param portletPreferencesId the primary key for the new portlet preferences
@@ -234,6 +240,9 @@ public interface PortletPreferencesLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

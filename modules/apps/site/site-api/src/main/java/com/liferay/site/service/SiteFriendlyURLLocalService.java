@@ -85,6 +85,12 @@ public interface SiteFriendlyURLLocalService
 		throws PortalException;
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new site friendly url with the primary key. Does not add the site friendly url to the database.
 	 *
 	 * @param siteFriendlyURLId the primary key for the new site friendly url
@@ -232,6 +238,9 @@ public interface SiteFriendlyURLLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

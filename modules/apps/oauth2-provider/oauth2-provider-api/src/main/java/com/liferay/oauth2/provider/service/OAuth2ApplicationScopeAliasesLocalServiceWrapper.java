@@ -98,6 +98,18 @@ public class OAuth2ApplicationScopeAliasesLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _oAuth2ApplicationScopeAliasesLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the o auth2 application scope aliases with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param oAuth2ApplicationScopeAliasesId the primary key of the o auth2 application scope aliases
@@ -344,6 +356,9 @@ public class OAuth2ApplicationScopeAliasesLocalServiceWrapper
 			getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

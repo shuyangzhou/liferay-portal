@@ -1066,7 +1066,7 @@ paths:
                           type: string
                       type: array
                 - in: query
-                  name: assigneeUserIds
+                  name: assigneeIds
                   schema:
                       items:
                           format: int64
@@ -1086,6 +1086,10 @@ paths:
                   schema:
                       format: date-time
                       type: string
+                - in: query
+                  name: searchByRoles
+                  schema:
+                      type: boolean
                 - in: query
                   name: searchByUserRoles
                   schema:

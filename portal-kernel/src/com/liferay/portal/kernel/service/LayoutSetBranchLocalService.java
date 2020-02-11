@@ -84,6 +84,12 @@ public interface LayoutSetBranchLocalService
 	public LayoutSetBranch createLayoutSetBranch(long layoutSetBranchId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the layout set branch from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param layoutSetBranch the layout set branch
@@ -257,6 +263,9 @@ public interface LayoutSetBranchLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

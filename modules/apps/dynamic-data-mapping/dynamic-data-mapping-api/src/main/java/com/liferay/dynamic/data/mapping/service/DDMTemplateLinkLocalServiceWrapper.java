@@ -68,6 +68,17 @@ public class DDMTemplateLinkLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _ddmTemplateLinkLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the ddm template link from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param ddmTemplateLink the ddm template link
@@ -295,6 +306,9 @@ public class DDMTemplateLinkLocalServiceWrapper
 		return _ddmTemplateLinkLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

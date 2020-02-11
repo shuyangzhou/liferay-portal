@@ -83,6 +83,12 @@ public interface ReadingTimeEntryLocalService
 		ReadingTimeEntry readingTimeEntry);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new reading time entry with the primary key. Does not add the reading time entry to the database.
 	 *
 	 * @param readingTimeEntryId the primary key for the new reading time entry
@@ -232,6 +238,9 @@ public interface ReadingTimeEntryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

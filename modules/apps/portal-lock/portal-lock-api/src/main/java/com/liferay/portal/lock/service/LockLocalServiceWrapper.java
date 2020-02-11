@@ -60,6 +60,17 @@ public class LockLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _lockLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the lock from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param lock the lock
@@ -317,6 +328,9 @@ public class LockLocalServiceWrapper
 		return _lockLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

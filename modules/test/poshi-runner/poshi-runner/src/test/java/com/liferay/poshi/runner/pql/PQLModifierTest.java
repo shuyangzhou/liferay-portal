@@ -129,8 +129,8 @@ public class PQLModifierTest extends TestCase {
 		try {
 			pqlModifier.getPQLResult(pqlObject);
 		}
-		catch (Exception e) {
-			actualError = e.getMessage();
+		catch (Exception exception) {
+			actualError = exception.getMessage();
 
 			if (!actualError.equals(expectedError)) {
 				StringBuilder sb = new StringBuilder();
@@ -142,7 +142,7 @@ public class PQLModifierTest extends TestCase {
 				sb.append(expectedError);
 				sb.append("\"");
 
-				throw new Exception(sb.toString(), e);
+				throw new Exception(sb.toString(), exception);
 			}
 		}
 		finally {
@@ -161,8 +161,8 @@ public class PQLModifierTest extends TestCase {
 		try {
 			PQLModifier.validateModifier(modifier);
 		}
-		catch (Exception e) {
-			actualError = e.getMessage();
+		catch (Exception exception) {
+			actualError = exception.getMessage();
 
 			if (!actualError.equals(expectedError)) {
 				StringBuilder sb = new StringBuilder();
@@ -173,7 +173,7 @@ public class PQLModifierTest extends TestCase {
 				sb.append("\n* Expected: ");
 				sb.append(expectedError);
 
-				throw new Exception(sb.toString(), e);
+				throw new Exception(sb.toString(), exception);
 			}
 		}
 		finally {

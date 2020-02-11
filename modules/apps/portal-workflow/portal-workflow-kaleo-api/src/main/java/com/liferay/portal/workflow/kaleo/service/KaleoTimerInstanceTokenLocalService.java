@@ -116,6 +116,12 @@ public interface KaleoTimerInstanceTokenLocalService
 		long kaleoTimerInstanceTokenId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the kaleo timer instance token from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param kaleoTimerInstanceToken the kaleo timer instance token
@@ -283,6 +289,9 @@ public interface KaleoTimerInstanceTokenLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

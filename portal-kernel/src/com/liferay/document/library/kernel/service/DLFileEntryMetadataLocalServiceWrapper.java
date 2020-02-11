@@ -64,6 +64,18 @@ public class DLFileEntryMetadataLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _dlFileEntryMetadataLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the document library file entry metadata from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param dlFileEntryMetadata the document library file entry metadata
@@ -403,6 +415,9 @@ public class DLFileEntryMetadataLocalServiceWrapper
 		return _dlFileEntryMetadataLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

@@ -105,6 +105,17 @@ public class JournalFeedLocalServiceWrapper
 		return _journalFeedLocalService.createJournalFeed(id);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _journalFeedLocalService.createPersistedModel(primaryKeyObj);
+	}
+
 	@Override
 	public void deleteFeed(com.liferay.journal.model.JournalFeed feed)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -449,6 +460,9 @@ public class JournalFeedLocalServiceWrapper
 		return _journalFeedLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

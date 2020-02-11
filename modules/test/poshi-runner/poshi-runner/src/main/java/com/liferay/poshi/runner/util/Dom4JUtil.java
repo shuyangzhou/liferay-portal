@@ -176,7 +176,8 @@ public class Dom4JUtil {
 
 			String text = attribute.getValue();
 
-			attribute.setValue(text.replace(targetText, replacementText));
+			attribute.setValue(
+				StringUtil.replace(text, targetText, replacementText));
 		}
 
 		Iterator<?> nodeIterator = element.nodeIterator();
@@ -190,7 +191,8 @@ public class Dom4JUtil {
 				String text = textNode.getText();
 
 				if (text.contains(targetText)) {
-					text = text.replace(targetText, replacementText);
+					text = StringUtil.replace(
+						text, targetText, replacementText);
 
 					textNode.setText(text);
 				}

@@ -66,6 +66,18 @@ public class DDMFormInstanceRecordVersionLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _ddmFormInstanceRecordVersionLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the ddm form instance record version from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param ddmFormInstanceRecordVersion the ddm form instance record version
@@ -344,6 +356,9 @@ public class DDMFormInstanceRecordVersionLocalServiceWrapper
 			getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

@@ -484,6 +484,12 @@ public interface JournalArticleLocalService
 	public JournalArticle createJournalArticle(long id);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the web content article and its resources.
 	 *
 	 * @param article the web content article
@@ -1913,6 +1919,9 @@ public interface JournalArticleLocalService
 			long resourcePrimKey)
 		throws PortalException;
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

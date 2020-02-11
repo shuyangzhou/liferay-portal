@@ -86,6 +86,12 @@ public interface DDMContentLocalService
 	@Transactional(enabled = false)
 	public DDMContent createDDMContent(long contentId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteContent(DDMContent content);
 
 	public void deleteContents(long groupId);
@@ -298,6 +304,9 @@ public interface DDMContentLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

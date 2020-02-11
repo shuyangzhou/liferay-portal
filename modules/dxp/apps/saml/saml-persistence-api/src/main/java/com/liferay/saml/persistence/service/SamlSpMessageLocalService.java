@@ -77,6 +77,12 @@ public interface SamlSpMessageLocalService
 		ServiceContext serviceContext);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new saml sp message with the primary key. Does not add the saml sp message to the database.
 	 *
 	 * @param samlSpMessageId the primary key for the new saml sp message
@@ -200,6 +206,9 @@ public interface SamlSpMessageLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

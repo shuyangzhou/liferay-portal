@@ -97,6 +97,12 @@ public interface PasswordPolicyLocalService
 	@Transactional(enabled = false)
 	public PasswordPolicy createPasswordPolicy(long passwordPolicyId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteNondefaultPasswordPolicies(long companyId)
 		throws PortalException;
 
@@ -302,6 +308,9 @@ public interface PasswordPolicyLocalService
 			String uuid, long companyId)
 		throws PortalException;
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

@@ -88,6 +88,12 @@ public interface KaleoDefinitionVersionLocalService
 		long kaleoDefinitionVersionId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the kaleo definition version from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param kaleoDefinitionVersion the kaleo definition version
@@ -317,6 +323,9 @@ public interface KaleoDefinitionVersionLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

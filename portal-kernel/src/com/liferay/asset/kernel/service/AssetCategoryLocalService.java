@@ -130,6 +130,12 @@ public interface AssetCategoryLocalService
 	public AssetCategory createAssetCategory(long categoryId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the asset category from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param assetCategory the asset category
@@ -446,6 +452,9 @@ public interface AssetCategoryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

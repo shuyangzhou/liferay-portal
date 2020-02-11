@@ -83,6 +83,12 @@ public interface MBStatsUserLocalService
 	public MBStatsUser createMBStatsUser(long statsUserId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the message boards stats user with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param statsUserId the primary key of the message boards stats user
@@ -240,6 +246,9 @@ public interface MBStatsUserLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

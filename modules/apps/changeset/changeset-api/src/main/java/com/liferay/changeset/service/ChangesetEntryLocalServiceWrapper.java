@@ -70,6 +70,17 @@ public class ChangesetEntryLocalServiceWrapper
 			changesetEntryId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _changesetEntryLocalService.createPersistedModel(primaryKeyObj);
+	}
+
 	@Override
 	public void deleteChangesetEntries(long changesetCollectionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -354,6 +365,9 @@ public class ChangesetEntryLocalServiceWrapper
 		return _changesetEntryLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

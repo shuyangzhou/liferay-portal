@@ -85,6 +85,12 @@ public interface DDMTemplateVersionLocalService
 	public DDMTemplateVersion createDDMTemplateVersion(long templateVersionId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the ddm template version from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param ddmTemplateVersion the ddm template version
@@ -233,6 +239,9 @@ public interface DDMTemplateVersionLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

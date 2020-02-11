@@ -78,6 +78,12 @@ public interface TasksEntryLocalService
 	public TasksEntry addTasksEntry(TasksEntry tasksEntry);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new tasks entry with the primary key. Does not add the tasks entry to the database.
 	 *
 	 * @param tasksEntryId the primary key for the new tasks entry
@@ -227,6 +233,9 @@ public interface TasksEntryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

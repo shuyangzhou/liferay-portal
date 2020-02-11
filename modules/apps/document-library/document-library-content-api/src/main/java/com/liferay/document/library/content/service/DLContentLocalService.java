@@ -107,6 +107,12 @@ public interface DLContentLocalService
 	@Transactional(enabled = false)
 	public DLContent createDLContent(long contentId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteContent(
 		long companyId, long repositoryId, String path, String version);
 
@@ -292,6 +298,9 @@ public interface DLContentLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

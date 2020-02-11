@@ -14,6 +14,7 @@
 
 package com.liferay.portal.dao.db;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.dao.db.Index;
@@ -21,7 +22,6 @@ import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.IOException;
@@ -50,7 +50,7 @@ public class OracleDB extends BaseDB {
 
 	@Override
 	public String buildSQL(String template) throws IOException {
-		template = replaceTemplate(template, getTemplate());
+		template = replaceTemplate(template);
 		template = reword(template);
 		template = StringUtil.replace(
 			template, new String[] {"\\\\", "\\'", "\\\""},
@@ -101,6 +101,25 @@ public class OracleDB extends BaseDB {
 	}
 
 	@Override
+	public String getPopulateSQL(String databaseName, String sqlContent) {
+		StringBundler sb = new StringBundler(5);
+
+		sb.append("connect &1/&2;\n");
+		sb.append("set define off;\n");
+		sb.append("\n");
+		sb.append(sqlContent);
+		sb.append("quit");
+
+		return sb.toString();
+	}
+
+	@Override
+	public String getRecreateSQL(String databaseName) {
+		return "drop user &1 cascade;\ncreate user &1 identified by &2;\n" +
+			"grant connect,resource to &1;\nquit";
+	}
+
+	@Override
 	public boolean isSupportsInlineDistinct() {
 		return _SUPPORTS_INLINE_DISTINCT;
 	}
@@ -126,34 +145,6 @@ public class OracleDB extends BaseDB {
 	}
 
 	@Override
-	protected String buildCreateFileContent(
-			String sqlDir, String databaseName, String createContent)
-		throws IOException {
-
-		StringBundler sb = new StringBundler(8);
-
-		sb.append("drop user &1 cascade;\n");
-		sb.append("create user &1 identified by &2;\n");
-		sb.append("grant connect,resource to &1;\n");
-
-		if (createContent != null) {
-			sb.append("connect &1/&2;\n");
-			sb.append("set define off;\n");
-			sb.append("\n");
-			sb.append(createContent);
-		}
-
-		sb.append("quit");
-
-		return sb.toString();
-	}
-
-	@Override
-	protected String getServerName() {
-		return "oracle";
-	}
-
-	@Override
 	protected int[] getSQLTypes() {
 		return _SQL_TYPES;
 	}
@@ -164,7 +155,7 @@ public class OracleDB extends BaseDB {
 	}
 
 	@Override
-	protected String replaceTemplate(String template, String[] actual) {
+	protected String replaceTemplate(String template) {
 
 		// LPS-12048
 
@@ -186,7 +177,7 @@ public class OracleDB extends BaseDB {
 
 		template = sb.toString();
 
-		return super.replaceTemplate(template, actual);
+		return super.replaceTemplate(template);
 	}
 
 	@Override

@@ -120,6 +120,17 @@ public class SharingEntryLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _sharingEntryLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new sharing entry with the primary key. Does not add the sharing entry to the database.
 	 *
 	 * @param sharingEntryId the primary key for the new sharing entry
@@ -460,6 +471,9 @@ public class SharingEntryLocalServiceWrapper
 		return _sharingEntryLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

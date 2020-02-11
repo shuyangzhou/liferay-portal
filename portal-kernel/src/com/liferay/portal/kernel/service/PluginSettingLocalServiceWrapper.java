@@ -54,6 +54,17 @@ public class PluginSettingLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _pluginSettingLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new plugin setting with the primary key. Does not add the plugin setting to the database.
 	 *
 	 * @param pluginSettingId the primary key for the new plugin setting
@@ -234,6 +245,9 @@ public class PluginSettingLocalServiceWrapper
 		return _pluginSettingLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

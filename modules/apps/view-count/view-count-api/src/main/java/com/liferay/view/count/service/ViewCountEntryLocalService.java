@@ -77,6 +77,12 @@ public interface ViewCountEntryLocalService
 	public ViewCountEntry addViewCountEntry(ViewCountEntry viewCountEntry);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new view count entry with the primary key. Does not add the view count entry to the database.
 	 *
 	 * @param viewCountEntryPK the primary key for the new view count entry
@@ -199,6 +205,9 @@ public interface ViewCountEntryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

@@ -75,6 +75,18 @@ public class AppBuilderAppDeploymentLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _appBuilderAppDeploymentLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the app builder app deployment from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param appBuilderAppDeployment the app builder app deployment
@@ -306,6 +318,9 @@ public class AppBuilderAppDeploymentLocalServiceWrapper
 		return _appBuilderAppDeploymentLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

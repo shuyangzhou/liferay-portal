@@ -78,6 +78,12 @@ public interface PhoneLocalService
 	public Phone addPhone(Phone phone);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new phone with the primary key. Does not add the phone to the database.
 	 *
 	 * @param phoneId the primary key for the new phone
@@ -214,6 +220,9 @@ public interface PhoneLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

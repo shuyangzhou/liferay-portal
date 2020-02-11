@@ -94,6 +94,17 @@ public class DLContentLocalServiceWrapper
 		return _dlContentLocalService.createDLContent(contentId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _dlContentLocalService.createPersistedModel(primaryKeyObj);
+	}
+
 	@Override
 	public void deleteContent(
 		long companyId, long repositoryId, String path, String version) {
@@ -372,6 +383,9 @@ public class DLContentLocalServiceWrapper
 		return _dlContentLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

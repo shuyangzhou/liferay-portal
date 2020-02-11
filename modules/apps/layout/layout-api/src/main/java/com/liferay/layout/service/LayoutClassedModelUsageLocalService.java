@@ -92,6 +92,12 @@ public interface LayoutClassedModelUsageLocalService
 		long layoutClassedModelUsageId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the layout classed model usage from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param layoutClassedModelUsage the layout classed model usage
@@ -331,6 +337,9 @@ public interface LayoutClassedModelUsageLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

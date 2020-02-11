@@ -79,20 +79,22 @@ public interface WorkflowTaskResource {
 
 	public Page<WorkflowTask> getWorkflowTasksPage(
 			Boolean andOperator, Long[] assetPrimaryKeys, String assetTitle,
-			String[] assetTypes, Long[] assigneeUserIds, Boolean completed,
+			String[] assetTypes, Long[] assigneeIds, Boolean completed,
 			java.util.Date dateDueEnd, java.util.Date dateDueStart,
-			Boolean searchByUserRoles, String[] taskNames,
-			Long workflowDefinitionId, Long[] workflowInstanceIds,
-			Pagination pagination, String sortString)
+			Boolean searchByRoles, Boolean searchByUserRoles,
+			String[] taskNames, Long workflowDefinitionId,
+			Long[] workflowInstanceIds, Pagination pagination,
+			String sortString)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse getWorkflowTasksPageHttpResponse(
 			Boolean andOperator, Long[] assetPrimaryKeys, String assetTitle,
-			String[] assetTypes, Long[] assigneeUserIds, Boolean completed,
+			String[] assetTypes, Long[] assigneeIds, Boolean completed,
 			java.util.Date dateDueEnd, java.util.Date dateDueStart,
-			Boolean searchByUserRoles, String[] taskNames,
-			Long workflowDefinitionId, Long[] workflowInstanceIds,
-			Pagination pagination, String sortString)
+			Boolean searchByRoles, Boolean searchByUserRoles,
+			String[] taskNames, Long workflowDefinitionId,
+			Long[] workflowInstanceIds, Pagination pagination,
+			String sortString)
 		throws Exception;
 
 	public void patchWorkflowTaskAssignToUser(
@@ -544,19 +546,21 @@ public interface WorkflowTaskResource {
 
 		public Page<WorkflowTask> getWorkflowTasksPage(
 				Boolean andOperator, Long[] assetPrimaryKeys, String assetTitle,
-				String[] assetTypes, Long[] assigneeUserIds, Boolean completed,
+				String[] assetTypes, Long[] assigneeIds, Boolean completed,
 				java.util.Date dateDueEnd, java.util.Date dateDueStart,
-				Boolean searchByUserRoles, String[] taskNames,
-				Long workflowDefinitionId, Long[] workflowInstanceIds,
-				Pagination pagination, String sortString)
+				Boolean searchByRoles, Boolean searchByUserRoles,
+				String[] taskNames, Long workflowDefinitionId,
+				Long[] workflowInstanceIds, Pagination pagination,
+				String sortString)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
 				getWorkflowTasksPageHttpResponse(
 					andOperator, assetPrimaryKeys, assetTitle, assetTypes,
-					assigneeUserIds, completed, dateDueEnd, dateDueStart,
-					searchByUserRoles, taskNames, workflowDefinitionId,
-					workflowInstanceIds, pagination, sortString);
+					assigneeIds, completed, dateDueEnd, dateDueStart,
+					searchByRoles, searchByUserRoles, taskNames,
+					workflowDefinitionId, workflowInstanceIds, pagination,
+					sortString);
 
 			String content = httpResponse.getContent();
 
@@ -580,11 +584,12 @@ public interface WorkflowTaskResource {
 
 		public HttpInvoker.HttpResponse getWorkflowTasksPageHttpResponse(
 				Boolean andOperator, Long[] assetPrimaryKeys, String assetTitle,
-				String[] assetTypes, Long[] assigneeUserIds, Boolean completed,
+				String[] assetTypes, Long[] assigneeIds, Boolean completed,
 				java.util.Date dateDueEnd, java.util.Date dateDueStart,
-				Boolean searchByUserRoles, String[] taskNames,
-				Long workflowDefinitionId, Long[] workflowInstanceIds,
-				Pagination pagination, String sortString)
+				Boolean searchByRoles, Boolean searchByUserRoles,
+				String[] taskNames, Long workflowDefinitionId,
+				Long[] workflowInstanceIds, Pagination pagination,
+				String sortString)
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
@@ -635,10 +640,10 @@ public interface WorkflowTaskResource {
 				}
 			}
 
-			if (assigneeUserIds != null) {
-				for (int i = 0; i < assigneeUserIds.length; i++) {
+			if (assigneeIds != null) {
+				for (int i = 0; i < assigneeIds.length; i++) {
 					httpInvoker.parameter(
-						"assigneeUserIds", String.valueOf(assigneeUserIds[i]));
+						"assigneeIds", String.valueOf(assigneeIds[i]));
 				}
 			}
 
@@ -655,6 +660,11 @@ public interface WorkflowTaskResource {
 				httpInvoker.parameter(
 					"dateDueStart",
 					liferayToJSONDateFormat.format(dateDueStart));
+			}
+
+			if (searchByRoles != null) {
+				httpInvoker.parameter(
+					"searchByRoles", String.valueOf(searchByRoles));
 			}
 
 			if (searchByUserRoles != null) {

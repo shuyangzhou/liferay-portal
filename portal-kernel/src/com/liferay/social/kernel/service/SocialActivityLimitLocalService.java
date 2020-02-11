@@ -77,6 +77,12 @@ public interface SocialActivityLimitLocalService
 		SocialActivityLimit socialActivityLimit);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new social activity limit with the primary key. Does not add the social activity limit to the database.
 	 *
 	 * @param activityLimitId the primary key for the new social activity limit
@@ -200,6 +206,9 @@ public interface SocialActivityLimitLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

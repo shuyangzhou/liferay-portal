@@ -85,6 +85,12 @@ public interface OAuthTokenLocalService
 	public OAuthToken createOAuthToken(long oAuthTokenId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the o auth token with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param oAuthTokenId the primary key of the o auth token
@@ -247,6 +253,9 @@ public interface OAuthTokenLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

@@ -111,6 +111,12 @@ public interface LVEntryLocalService
 	@Transactional(enabled = false)
 	public LVEntry create();
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public LVEntry delete(LVEntry publishedLVEntry) throws PortalException;
@@ -352,6 +358,9 @@ public interface LVEntryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

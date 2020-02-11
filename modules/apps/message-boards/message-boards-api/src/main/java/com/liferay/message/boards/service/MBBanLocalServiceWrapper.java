@@ -70,6 +70,17 @@ public class MBBanLocalServiceWrapper
 		return _mbBanLocalService.createMBBan(banId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _mbBanLocalService.createPersistedModel(primaryKeyObj);
+	}
+
 	@Override
 	public void deleteBan(long banId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -390,6 +401,9 @@ public class MBBanLocalServiceWrapper
 		return _mbBanLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

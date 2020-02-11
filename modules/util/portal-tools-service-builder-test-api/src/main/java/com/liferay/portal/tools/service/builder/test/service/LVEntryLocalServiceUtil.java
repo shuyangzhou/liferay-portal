@@ -104,6 +104,16 @@ public class LVEntryLocalServiceUtil {
 		return getService().create();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	public static com.liferay.portal.kernel.model.PersistedModel
+			createPersistedModel(java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().createPersistedModel(primaryKeyObj);
+	}
+
 	public static com.liferay.portal.tools.service.builder.test.model.LVEntry
 			delete(
 				com.liferay.portal.tools.service.builder.test.model.LVEntry
@@ -498,6 +508,9 @@ public class LVEntryLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	public static com.liferay.portal.kernel.model.PersistedModel
 			getPersistedModel(java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {

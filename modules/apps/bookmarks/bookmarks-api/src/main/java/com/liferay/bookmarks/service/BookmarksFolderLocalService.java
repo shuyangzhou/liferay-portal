@@ -90,6 +90,12 @@ public interface BookmarksFolderLocalService
 	public BookmarksFolder createBookmarksFolder(long folderId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the bookmarks folder from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param bookmarksFolder the bookmarks folder
@@ -366,6 +372,9 @@ public interface BookmarksFolderLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

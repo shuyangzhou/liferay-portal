@@ -87,6 +87,12 @@ public interface ContactLocalService
 	public Contact createContact(long contactId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the contact from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param contact the contact
@@ -240,6 +246,9 @@ public interface ContactLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

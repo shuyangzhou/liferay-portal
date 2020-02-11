@@ -78,6 +78,18 @@ public class KaleoNotificationLocalServiceWrapper
 			kaleoNotificationId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _kaleoNotificationLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
 	@Override
 	public void deleteCompanyKaleoNotifications(long companyId) {
 		_kaleoNotificationLocalService.deleteCompanyKaleoNotifications(
@@ -326,6 +338,9 @@ public class KaleoNotificationLocalServiceWrapper
 		return _kaleoNotificationLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

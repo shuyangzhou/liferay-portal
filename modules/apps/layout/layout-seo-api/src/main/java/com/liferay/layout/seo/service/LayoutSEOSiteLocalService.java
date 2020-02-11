@@ -85,6 +85,12 @@ public interface LayoutSEOSiteLocalService
 	public LayoutSEOSite createLayoutSEOSite(long layoutSEOSiteId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the layout seo site from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param layoutSEOSite the layout seo site
@@ -283,6 +289,9 @@ public interface LayoutSEOSiteLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

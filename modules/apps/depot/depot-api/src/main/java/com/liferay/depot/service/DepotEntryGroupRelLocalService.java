@@ -89,6 +89,12 @@ public interface DepotEntryGroupRelLocalService
 		long depotEntryGroupRelId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the depot entry group rel from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param depotEntryGroupRel the depot entry group rel
@@ -246,6 +252,9 @@ public interface DepotEntryGroupRelLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

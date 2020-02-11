@@ -65,6 +65,18 @@ public class JournalArticleResourceLocalServiceWrapper
 			resourcePrimKey);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _journalArticleResourceLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
 	@Override
 	public void deleteArticleResource(long groupId, String articleId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -402,6 +414,9 @@ public class JournalArticleResourceLocalServiceWrapper
 		return _journalArticleResourceLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

@@ -68,6 +68,17 @@ public class KBTemplateLocalServiceWrapper
 		return _kbTemplateLocalService.createKBTemplate(kbTemplateId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _kbTemplateLocalService.createPersistedModel(primaryKeyObj);
+	}
+
 	@Override
 	public void deleteGroupKBTemplates(long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -383,6 +394,9 @@ public class KBTemplateLocalServiceWrapper
 		return _kbTemplateLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

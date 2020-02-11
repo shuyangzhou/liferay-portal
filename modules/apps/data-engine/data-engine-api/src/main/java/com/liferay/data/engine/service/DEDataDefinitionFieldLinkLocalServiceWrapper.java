@@ -77,6 +77,18 @@ public class DEDataDefinitionFieldLinkLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _deDataDefinitionFieldLinkLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the de data definition field link from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param deDataDefinitionFieldLink the de data definition field link
@@ -403,6 +415,9 @@ public class DEDataDefinitionFieldLinkLocalServiceWrapper
 			getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

@@ -74,6 +74,12 @@ public interface RecentLayoutRevisionLocalService
 		RecentLayoutRevision recentLayoutRevision);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new recent layout revision with the primary key. Does not add the recent layout revision to the database.
 	 *
 	 * @param recentLayoutRevisionId the primary key for the new recent layout revision
@@ -203,6 +209,9 @@ public interface RecentLayoutRevisionLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

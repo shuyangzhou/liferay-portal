@@ -71,6 +71,17 @@ public class PowwowMeetingLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _powwowMeetingLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new powwow meeting with the primary key. Does not add the powwow meeting to the database.
 	 *
 	 * @param powwowMeetingId the primary key for the new powwow meeting
@@ -263,6 +274,9 @@ public class PowwowMeetingLocalServiceWrapper
 			userId, statuses);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

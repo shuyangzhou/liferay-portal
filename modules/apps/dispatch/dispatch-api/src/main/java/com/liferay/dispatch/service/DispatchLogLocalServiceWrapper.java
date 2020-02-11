@@ -60,6 +60,17 @@ public class DispatchLogLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _dispatchLogLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the dispatch log from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param dispatchLog the dispatch log
@@ -262,6 +273,9 @@ public class DispatchLogLocalServiceWrapper
 		return _dispatchLogLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

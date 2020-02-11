@@ -73,6 +73,12 @@ public interface PortletItemLocalService
 	public PortletItem addPortletItem(PortletItem portletItem);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new portlet item with the primary key. Does not add the portlet item to the database.
 	 *
 	 * @param portletItemId the primary key for the new portlet item
@@ -190,6 +196,9 @@ public interface PortletItemLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

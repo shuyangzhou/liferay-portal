@@ -108,6 +108,17 @@ public class SubscriptionLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _subscriptionLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new subscription with the primary key. Does not add the subscription to the database.
 	 *
 	 * @param subscriptionId the primary key for the new subscription
@@ -346,6 +357,9 @@ public class SubscriptionLocalServiceWrapper
 		return _subscriptionLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

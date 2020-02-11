@@ -49,6 +49,17 @@ public class UADPartialEntryLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _uadPartialEntryLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new uad partial entry with the primary key. Does not add the uad partial entry to the database.
 	 *
 	 * @param uadPartialEntryId the primary key for the new uad partial entry
@@ -230,6 +241,9 @@ public class UADPartialEntryLocalServiceWrapper
 		return _uadPartialEntryLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

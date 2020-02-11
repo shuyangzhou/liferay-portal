@@ -74,6 +74,12 @@ public interface UserNotificationDeliveryLocalService
 		UserNotificationDelivery userNotificationDelivery);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new user notification delivery with the primary key. Does not add the user notification delivery to the database.
 	 *
 	 * @param userNotificationDeliveryId the primary key for the new user notification delivery
@@ -206,6 +212,9 @@ public interface UserNotificationDeliveryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

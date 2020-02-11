@@ -78,6 +78,17 @@ public class SocialRequestLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _socialRequestLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new social request with the primary key. Does not add the social request to the database.
 	 *
 	 * @param requestId the primary key for the new social request
@@ -316,6 +327,9 @@ public class SocialRequestLocalServiceWrapper
 		return _socialRequestLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

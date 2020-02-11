@@ -23,12 +23,10 @@ import com.liferay.sharepoint.soap.connector.schema.batch.Batch;
 import com.liferay.sharepoint.soap.connector.schema.batch.BatchField;
 import com.liferay.sharepoint.soap.connector.schema.batch.BatchMethod;
 
-import java.net.URL;
-
 /**
  * @author Iván Zaera
  */
-public class MoveSharepointObjectOperation extends BaseOperation {
+public final class MoveSharepointObjectOperation extends BaseOperation {
 
 	@Override
 	public void afterPropertiesSet() {
@@ -49,18 +47,15 @@ public class MoveSharepointObjectOperation extends BaseOperation {
 		SharepointObject sharepointObject =
 			_getSharepointObjectByPathOperation.execute(path);
 
-		if (isRename(path, newPath)) {
-			String oldExtension = pathHelper.getExtension(path);
+		if (_isRename(path, newPath)) {
+			String oldExtension = PathUtil.getExtension(path);
 
-			String newExtension = pathHelper.getExtension(newPath);
+			String newExtension = PathUtil.getExtension(newPath);
 
 			if (!oldExtension.equals(newExtension)) {
 				throw new SharepointException(
 					"Sharepoint does not support changing file extensions");
 			}
-
-			URL url = sharepointObject.getURL();
-			String newName = pathHelper.getNameWithoutExtension(newPath);
 
 			_batchOperation.execute(
 				new Batch(
@@ -70,8 +65,12 @@ public class MoveSharepointObjectOperation extends BaseOperation {
 						BatchMethod.Command.UPDATE,
 						new BatchField(
 							"ID", sharepointObject.getSharepointObjectId()),
-						new BatchField("FileRef", url.toString()),
-						new BatchField("BaseName", newName))));
+						new BatchField(
+							"FileRef",
+							String.valueOf(sharepointObject.getURL())),
+						new BatchField(
+							"BaseName",
+							PathUtil.getNameWithoutExtension(newPath)))));
 		}
 		else {
 			_copySharepointObjectOperation.execute(path, newPath);
@@ -87,9 +86,9 @@ public class MoveSharepointObjectOperation extends BaseOperation {
 		}
 	}
 
-	protected boolean isRename(String path, String newPath) {
-		String parentFolderPath = pathHelper.getParentFolderPath(path);
-		String newParentFolderPath = pathHelper.getParentFolderPath(newPath);
+	private boolean _isRename(String path, String newPath) {
+		String parentFolderPath = PathUtil.getParentFolderPath(path);
+		String newParentFolderPath = PathUtil.getParentFolderPath(newPath);
 
 		return parentFolderPath.equals(newParentFolderPath);
 	}

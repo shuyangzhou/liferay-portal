@@ -112,6 +112,17 @@ public class TeamLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _teamLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new team with the primary key. Does not add the team to the database.
 	 *
 	 * @param teamId the primary key for the new team
@@ -380,6 +391,9 @@ public class TeamLocalServiceWrapper
 		return _teamLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

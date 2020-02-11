@@ -88,6 +88,12 @@ public interface SiteNavigationMenuItemLocalService
 		SiteNavigationMenuItem siteNavigationMenuItem);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new site navigation menu item with the primary key. Does not add the site navigation menu item to the database.
 	 *
 	 * @param siteNavigationMenuItemId the primary key for the new site navigation menu item
@@ -229,6 +235,9 @@ public interface SiteNavigationMenuItemLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

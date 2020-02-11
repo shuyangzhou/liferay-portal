@@ -89,9 +89,17 @@ public class KaleoTaskInstanceTokenModelPreFilterContributor
 			return;
 		}
 
+		BooleanFilter innerBooleanFilter = new BooleanFilter();
+
 		appendAssigneeClassIdsNameTerm(
-			booleanFilter, kaleoTaskInstanceTokenQuery);
-		appendAssigneeClassPKsTerm(booleanFilter, kaleoTaskInstanceTokenQuery);
+			innerBooleanFilter, kaleoTaskInstanceTokenQuery);
+		appendAssigneeClassPKsTerm(
+			innerBooleanFilter, kaleoTaskInstanceTokenQuery);
+
+		if (innerBooleanFilter.hasClauses()) {
+			booleanFilter.add(innerBooleanFilter, BooleanClauseOccur.MUST);
+		}
+
 		appendCompletedTerm(booleanFilter, kaleoTaskInstanceTokenQuery);
 		appendKaleoDefinitionIdTerm(booleanFilter, kaleoTaskInstanceTokenQuery);
 		appendKaleoInstanceIdsTerm(booleanFilter, kaleoTaskInstanceTokenQuery);
@@ -137,7 +145,7 @@ public class KaleoTaskInstanceTokenModelPreFilterContributor
 			String.valueOf(portal.getClassNameId(assigneeClassName)));
 
 		booleanFilter.add(
-			assigneeClassNameIdsTermFilter, BooleanClauseOccur.MUST);
+			assigneeClassNameIdsTermFilter, BooleanClauseOccur.SHOULD);
 	}
 
 	protected void appendAssigneeClassPKsTerm(
@@ -163,7 +171,8 @@ public class KaleoTaskInstanceTokenModelPreFilterContributor
 				String[]::new
 			));
 
-		booleanFilter.add(assigneeClassPKsTermsFilter, BooleanClauseOccur.MUST);
+		booleanFilter.add(
+			assigneeClassPKsTermsFilter, BooleanClauseOccur.SHOULD);
 	}
 
 	protected void appendCompletedTerm(

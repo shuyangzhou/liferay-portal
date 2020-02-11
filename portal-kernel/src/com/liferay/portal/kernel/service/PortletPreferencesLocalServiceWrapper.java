@@ -61,6 +61,18 @@ public class PortletPreferencesLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _portletPreferencesLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new portlet preferences with the primary key. Does not add the portlet preferences to the database.
 	 *
 	 * @param portletPreferencesId the primary key for the new portlet preferences
@@ -302,6 +314,9 @@ public class PortletPreferencesLocalServiceWrapper
 		return _portletPreferencesLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

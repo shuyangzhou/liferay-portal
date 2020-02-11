@@ -93,6 +93,12 @@ public interface BatchEngineExportTaskLocalService
 		long batchEngineExportTaskId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the batch engine export task from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param batchEngineExportTask the batch engine export task
@@ -275,6 +281,9 @@ public interface BatchEngineExportTaskLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

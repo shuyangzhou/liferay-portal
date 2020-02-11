@@ -58,6 +58,18 @@ public class RecentLayoutSetBranchLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _recentLayoutSetBranchLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new recent layout set branch with the primary key. Does not add the recent layout set branch to the database.
 	 *
 	 * @param recentLayoutSetBranchId the primary key for the new recent layout set branch
@@ -260,6 +272,9 @@ public class RecentLayoutSetBranchLocalServiceWrapper
 		return _recentLayoutSetBranchLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

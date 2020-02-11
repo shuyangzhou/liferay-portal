@@ -32,23 +32,43 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface DB {
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public static final int BARE = 0;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public static final int DEFAULT = 1;
 
 	public void addIndexes(
 			Connection con, String indexesSQL, Set<String> validIndexNames)
 		throws IOException;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public void buildCreateFile(String sqlDir, String databaseName)
 		throws IOException;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public void buildCreateFile(
 			String sqlDir, String databaseName, int population)
 		throws IOException;
 
 	public String buildSQL(String template) throws IOException;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	public void buildSQLFile(String sqlDir, String fileName) throws IOException;
 
 	public DBType getDBType();
@@ -62,6 +82,10 @@ public interface DB {
 	public default String getNewUuidFunctionName() {
 		return null;
 	}
+
+	public String getPopulateSQL(String databaseName, String sqlContent);
+
+	public String getRecreateSQL(String databaseName);
 
 	public Integer getSQLType(String templateType);
 
@@ -138,9 +162,19 @@ public interface DB {
 
 	public void runSQL(String[] sqls) throws IOException, SQLException;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             DBProcess#runSQLTemplate(String)}
+	 */
+	@Deprecated
 	public void runSQLTemplate(String path)
 		throws IOException, NamingException, SQLException;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             DBProcess#runSQLTemplate(String, boolean)}
+	 */
+	@Deprecated
 	public void runSQLTemplate(String path, boolean failOnError)
 		throws IOException, NamingException, SQLException;
 

@@ -101,6 +101,12 @@ public interface MDRRuleGroupLocalService
 	public MDRRuleGroup createMDRRuleGroup(long ruleGroupId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the mdr rule group with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param ruleGroupId the primary key of the mdr rule group
@@ -309,6 +315,9 @@ public interface MDRRuleGroupLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

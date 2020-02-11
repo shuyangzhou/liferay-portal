@@ -82,6 +82,18 @@ public class DDMDataProviderInstanceLocalServiceWrapper
 			createDDMDataProviderInstance(dataProviderInstanceId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _ddmDataProviderInstanceLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
 	@Override
 	public void deleteDataProviderInstance(
 			com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance
@@ -474,6 +486,9 @@ public class DDMDataProviderInstanceLocalServiceWrapper
 		return _ddmDataProviderInstanceLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

@@ -57,6 +57,17 @@ public class ReleaseLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _releaseLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new release with the primary key. Does not add the release to the database.
 	 *
 	 * @param releaseId the primary key for the new release
@@ -254,6 +265,9 @@ public class ReleaseLocalServiceWrapper
 		return _releaseLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

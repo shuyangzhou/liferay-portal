@@ -77,6 +77,12 @@ public interface WebsiteLocalService
 	public Website addWebsite(Website website);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new website with the primary key. Does not add the website to the database.
 	 *
 	 * @param websiteId the primary key for the new website
@@ -213,6 +219,9 @@ public interface WebsiteLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

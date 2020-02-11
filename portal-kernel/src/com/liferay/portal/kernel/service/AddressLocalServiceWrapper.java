@@ -69,6 +69,17 @@ public class AddressLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _addressLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the address from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param address the address
@@ -331,6 +342,9 @@ public class AddressLocalServiceWrapper
 		return _addressLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

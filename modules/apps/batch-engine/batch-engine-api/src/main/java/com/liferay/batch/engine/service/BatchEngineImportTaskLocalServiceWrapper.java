@@ -79,6 +79,18 @@ public class BatchEngineImportTaskLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _batchEngineImportTaskLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the batch engine import task from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param batchEngineImportTask the batch engine import task
@@ -353,6 +365,9 @@ public class BatchEngineImportTaskLocalServiceWrapper
 		return _batchEngineImportTaskLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

@@ -334,8 +334,8 @@ public class PQLOperatorTest extends TestCase {
 		try {
 			pqlOperator.getPQLResult(pqlEntity1, pqlEntity2, new Properties());
 		}
-		catch (Exception e) {
-			actualError = e.getMessage();
+		catch (Exception exception) {
+			actualError = exception.getMessage();
 
 			if (!actualError.equals(expectedError)) {
 				StringBuilder sb = new StringBuilder();
@@ -348,7 +348,7 @@ public class PQLOperatorTest extends TestCase {
 				sb.append("\n* Expected: ");
 				sb.append(expectedError);
 
-				throw new Exception(sb.toString(), e);
+				throw new Exception(sb.toString(), exception);
 			}
 		}
 		finally {
@@ -368,8 +368,8 @@ public class PQLOperatorTest extends TestCase {
 		try {
 			PQLOperator.validateOperator(operator);
 		}
-		catch (Exception e) {
-			actualError = e.getMessage();
+		catch (Exception exception) {
+			actualError = exception.getMessage();
 
 			if (!actualError.equals(expectedError)) {
 				StringBuilder sb = new StringBuilder();
@@ -380,7 +380,7 @@ public class PQLOperatorTest extends TestCase {
 				sb.append("\n* Expected: ");
 				sb.append(expectedError);
 
-				throw new Exception(sb.toString(), e);
+				throw new Exception(sb.toString(), exception);
 			}
 		}
 		finally {

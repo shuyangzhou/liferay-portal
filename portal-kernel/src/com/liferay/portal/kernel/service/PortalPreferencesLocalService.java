@@ -74,6 +74,12 @@ public interface PortalPreferencesLocalService
 		PortalPreferences portalPreferences);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new portal preferences with the primary key. Does not add the portal preferences to the database.
 	 *
 	 * @param portalPreferencesId the primary key for the new portal preferences
@@ -196,6 +202,9 @@ public interface PortalPreferencesLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

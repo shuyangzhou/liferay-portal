@@ -76,6 +76,12 @@ public interface WeDeployAuthAppLocalService
 	public WeDeployAuthApp addWeDeployAuthApp(WeDeployAuthApp weDeployAuthApp);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new we deploy auth app with the primary key. Does not add the we deploy auth app to the database.
 	 *
 	 * @param weDeployAuthAppId the primary key for the new we deploy auth app
@@ -198,6 +204,9 @@ public interface WeDeployAuthAppLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

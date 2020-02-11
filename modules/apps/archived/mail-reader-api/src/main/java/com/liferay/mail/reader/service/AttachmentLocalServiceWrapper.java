@@ -69,6 +69,17 @@ public class AttachmentLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _attachmentLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the attachment from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param attachment the attachment
@@ -299,6 +310,9 @@ public class AttachmentLocalServiceWrapper
 		return _attachmentLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

@@ -78,6 +78,18 @@ public class DepotEntryGroupRelLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _depotEntryGroupRelLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the depot entry group rel from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param depotEntryGroupRel the depot entry group rel
@@ -316,6 +328,9 @@ public class DepotEntryGroupRelLocalServiceWrapper
 		return _depotEntryGroupRelLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

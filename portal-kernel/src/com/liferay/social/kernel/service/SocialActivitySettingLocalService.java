@@ -74,6 +74,12 @@ public interface SocialActivitySettingLocalService
 		SocialActivitySetting socialActivitySetting);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new social activity setting with the primary key. Does not add the social activity setting to the database.
 	 *
 	 * @param activitySettingId the primary key for the new social activity setting
@@ -211,6 +217,9 @@ public interface SocialActivitySettingLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

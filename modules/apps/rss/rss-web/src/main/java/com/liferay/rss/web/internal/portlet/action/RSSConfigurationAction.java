@@ -82,7 +82,7 @@ public class RSSConfigurationAction extends DefaultConfigurationAction {
 		long expandedEntriesPerFeed = GetterUtil.getLong(
 			properties.getProperty("expandedEntriesPerFeed"));
 
-		if ((entriesPerFeed < 0) || (expandedEntriesPerFeed < 0)) {
+		if ((entriesPerFeed < 1) || (expandedEntriesPerFeed < 1)) {
 			throw new ConfigurationException();
 		}
 

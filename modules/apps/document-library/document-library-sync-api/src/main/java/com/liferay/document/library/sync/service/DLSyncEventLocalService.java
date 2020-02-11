@@ -82,6 +82,12 @@ public interface DLSyncEventLocalService
 	public DLSyncEvent createDLSyncEvent(long syncEventId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the dl sync event from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param dlSyncEvent the dl sync event
@@ -230,6 +236,9 @@ public interface DLSyncEventLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

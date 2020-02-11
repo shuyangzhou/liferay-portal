@@ -50,11 +50,13 @@ public class PoshiLogger {
 
 		String indexHTMLContent = FileUtil.read(url);
 
-		indexHTMLContent = indexHTMLContent.replace(
+		indexHTMLContent = StringUtil.replace(
+			indexHTMLContent,
 			"<ul class=\"command-log\" data-logid=\"01\" " +
 				"id=\"commandLog\"></ul>",
 			_commandLogger.getCommandLogText());
-		indexHTMLContent = indexHTMLContent.replace(
+		indexHTMLContent = StringUtil.replace(
+			indexHTMLContent,
 			"<ul class=\"syntax-log-container\" id=\"syntaxLogContainer\"" +
 				"></ul>",
 			_syntaxLogger.getSyntaxLogText());

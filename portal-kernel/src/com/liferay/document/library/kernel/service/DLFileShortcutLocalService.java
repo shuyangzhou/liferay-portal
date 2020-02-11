@@ -109,6 +109,12 @@ public interface DLFileShortcutLocalService
 	public DLFileShortcut createDLFileShortcut(long fileShortcutId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the document library file shortcut from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param dlFileShortcut the document library file shortcut
@@ -342,6 +348,9 @@ public interface DLFileShortcutLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

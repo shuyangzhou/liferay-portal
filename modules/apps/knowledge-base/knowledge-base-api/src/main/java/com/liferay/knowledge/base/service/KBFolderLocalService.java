@@ -89,6 +89,12 @@ public interface KBFolderLocalService
 	public KBFolder createKBFolder(long kbFolderId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the kb folder from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param kbFolder the kb folder
@@ -322,6 +328,9 @@ public interface KBFolderLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

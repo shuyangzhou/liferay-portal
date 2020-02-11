@@ -69,6 +69,12 @@ public interface UserTrackerPathLocalService
 	public UserTrackerPath addUserTrackerPath(UserTrackerPath userTrackerPath);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new user tracker path with the primary key. Does not add the user tracker path to the database.
 	 *
 	 * @param userTrackerPathId the primary key for the new user tracker path
@@ -187,6 +193,9 @@ public interface UserTrackerPathLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

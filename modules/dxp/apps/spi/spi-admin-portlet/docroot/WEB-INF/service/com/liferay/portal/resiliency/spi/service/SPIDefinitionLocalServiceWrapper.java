@@ -65,6 +65,17 @@ public class SPIDefinitionLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _spiDefinitionLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new spi definition with the primary key. Does not add the spi definition to the database.
 	 *
 	 * @param spiDefinitionId the primary key for the new spi definition
@@ -242,6 +253,9 @@ public class SPIDefinitionLocalServiceWrapper
 		return _spiDefinitionLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

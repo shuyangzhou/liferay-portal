@@ -50,6 +50,13 @@ public class TrashEntryLocalServiceWrapper implements TrashEntryLocalService,
 		return _trashEntryLocalService.getIndexableActionableDynamicQuery();
 	}
 
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _trashEntryLocalService.createPersistedModel(primaryKeyObj);
+	}
+
 	/**
 	* @throws PortalException
 	*/

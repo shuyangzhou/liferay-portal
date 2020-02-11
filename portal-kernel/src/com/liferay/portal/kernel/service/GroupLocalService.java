@@ -167,6 +167,12 @@ public interface GroupLocalService
 	public Group createGroup(long groupId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the group from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param group the group
@@ -881,6 +887,9 @@ public interface GroupLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Group> getParentGroups(long groupId) throws PortalException;
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

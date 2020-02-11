@@ -96,6 +96,12 @@ public interface CalendarNotificationTemplateLocalService
 		long calendarNotificationTemplateId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the calendar notification template from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param calendarNotificationTemplate the calendar notification template
@@ -308,6 +314,9 @@ public interface CalendarNotificationTemplateLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

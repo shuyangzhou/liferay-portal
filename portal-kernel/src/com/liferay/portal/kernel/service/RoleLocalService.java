@@ -157,6 +157,12 @@ public interface RoleLocalService
 	public void clearUserRoles(long userId) throws PortalException;
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new role with the primary key. Does not add the role to the database.
 	 *
 	 * @param roleId the primary key for the new role
@@ -396,6 +402,9 @@ public interface RoleLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

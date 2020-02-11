@@ -78,6 +78,12 @@ public interface AccountLocalService
 	public Account createAccount(long accountId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the account from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param account the account
@@ -221,6 +227,9 @@ public interface AccountLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

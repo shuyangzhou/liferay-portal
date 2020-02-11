@@ -105,6 +105,18 @@ public class FriendlyURLEntryLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _friendlyURLEntryLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the friendly url entry from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param friendlyURLEntry the friendly url entry
@@ -489,6 +501,9 @@ public class FriendlyURLEntryLocalServiceWrapper
 		return _friendlyURLEntryLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

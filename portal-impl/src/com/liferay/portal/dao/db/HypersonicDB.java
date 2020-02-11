@@ -15,6 +15,7 @@
 package com.liferay.portal.dao.db;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
@@ -37,7 +38,7 @@ public class HypersonicDB extends BaseDB {
 
 	@Override
 	public String buildSQL(String template) throws IOException {
-		template = replaceTemplate(template, getTemplate());
+		template = replaceTemplate(template);
 
 		template = reword(template);
 		template = StringUtil.replace(template, "\\'", "''");
@@ -46,15 +47,13 @@ public class HypersonicDB extends BaseDB {
 	}
 
 	@Override
-	protected String buildCreateFileContent(
-		String sqlDir, String databaseName, String createContent) {
-
-		return null;
+	public String getPopulateSQL(String databaseName, String sqlContent) {
+		return StringPool.BLANK;
 	}
 
 	@Override
-	protected String getServerName() {
-		return "hypersonic";
+	public String getRecreateSQL(String databaseName) {
+		return StringPool.BLANK;
 	}
 
 	@Override

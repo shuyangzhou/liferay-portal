@@ -95,6 +95,17 @@ public class WikiNodeLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _wikiNodeLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new wiki node with the primary key. Does not add the wiki node to the database.
 	 *
 	 * @param nodeId the primary key for the new wiki node
@@ -404,6 +415,9 @@ public class WikiNodeLocalServiceWrapper
 		return _wikiNodeLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

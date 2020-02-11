@@ -101,6 +101,12 @@ public interface EntryLocalService
 	@Transactional(enabled = false)
 	public Entry createEntry(long entryId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteAttachment(long companyId, String fileName)
 		throws PortalException;
 
@@ -261,6 +267,9 @@ public interface EntryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

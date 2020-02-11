@@ -139,6 +139,12 @@ public interface KaleoLogLocalService
 	@Transactional(enabled = false)
 	public KaleoLog createKaleoLog(long kaleoLogId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteCompanyKaleoLogs(long companyId);
 
 	public void deleteKaleoDefinitionVersionKaleoLogs(
@@ -344,6 +350,9 @@ public interface KaleoLogLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

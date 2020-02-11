@@ -81,6 +81,12 @@ public interface DDLRecordSetVersionLocalService
 	public DDLRecordSetVersion createDDLRecordSetVersion(
 		long recordSetVersionId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteByRecordSetId(long recordSetId);
 
 	/**
@@ -233,6 +239,9 @@ public interface DDLRecordSetVersionLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

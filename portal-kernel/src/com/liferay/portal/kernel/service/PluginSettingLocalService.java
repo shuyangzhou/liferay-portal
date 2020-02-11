@@ -72,6 +72,12 @@ public interface PluginSettingLocalService
 		throws PortalException;
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new plugin setting with the primary key. Does not add the plugin setting to the database.
 	 *
 	 * @param pluginSettingId the primary key for the new plugin setting
@@ -192,6 +198,9 @@ public interface PluginSettingLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

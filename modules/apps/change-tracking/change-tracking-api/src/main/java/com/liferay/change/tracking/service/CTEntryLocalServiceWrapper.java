@@ -68,6 +68,17 @@ public class CTEntryLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _ctEntryLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the ct entry from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param ctEntry the ct entry
@@ -318,6 +329,9 @@ public class CTEntryLocalServiceWrapper
 		return _ctEntryLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

@@ -88,6 +88,12 @@ public interface KaleoTaskFormLocalService
 	@Transactional(enabled = false)
 	public KaleoTaskForm createKaleoTaskForm(long kaleoTaskFormId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteCompanyKaleoTaskForms(long companyId);
 
 	public void deleteKaleoDefinitionVersionKaleoTaskForms(
@@ -239,6 +245,9 @@ public interface KaleoTaskFormLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

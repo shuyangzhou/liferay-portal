@@ -80,6 +80,12 @@ public interface SPIDefinitionLocalService
 	public SPIDefinition addSPIDefinition(SPIDefinition spiDefinition);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new spi definition with the primary key. Does not add the spi definition to the database.
 	 *
 	 * @param spiDefinitionId the primary key for the new spi definition
@@ -199,6 +205,9 @@ public interface SPIDefinitionLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

@@ -83,6 +83,12 @@ public interface CTMessageLocalService
 	public CTMessage createCTMessage(long ctMessageId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the ct message from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param ctMessage the ct message
@@ -225,6 +231,9 @@ public interface CTMessageLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

@@ -84,6 +84,17 @@ public class KaleoInstanceLocalServiceWrapper
 		return _kaleoInstanceLocalService.createKaleoInstance(kaleoInstanceId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _kaleoInstanceLocalService.createPersistedModel(primaryKeyObj);
+	}
+
 	@Override
 	public void deleteCompanyKaleoInstances(long companyId) {
 		_kaleoInstanceLocalService.deleteCompanyKaleoInstances(companyId);
@@ -386,6 +397,9 @@ public class KaleoInstanceLocalServiceWrapper
 		return _kaleoInstanceLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

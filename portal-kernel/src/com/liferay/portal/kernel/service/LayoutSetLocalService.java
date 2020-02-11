@@ -84,6 +84,12 @@ public interface LayoutSetLocalService
 	public LayoutSet createLayoutSet(long layoutSetId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the layout set from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param layoutSet the layout set
@@ -252,6 +258,9 @@ public interface LayoutSetLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getPageCount(long groupId, boolean privateLayout);
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

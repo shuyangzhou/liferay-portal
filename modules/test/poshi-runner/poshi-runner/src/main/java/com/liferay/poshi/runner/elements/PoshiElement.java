@@ -269,9 +269,9 @@ public abstract class PoshiElement
 				validatePoshiScript();
 			}
 		}
-		catch (PoshiScriptParserException pspe) {
+		catch (PoshiScriptParserException poshiScriptParserException) {
 			if (PoshiNodeFactory.getValidatePoshiScript()) {
-				System.out.println(pspe.getMessage());
+				System.out.println(poshiScriptParserException.getMessage());
 			}
 		}
 
@@ -439,8 +439,8 @@ public abstract class PoshiElement
 		try {
 			return getMethodParameters(content, null);
 		}
-		catch (PoshiScriptParserException pspe) {
-			pspe.printStackTrace();
+		catch (PoshiScriptParserException poshiScriptParserException) {
+			poshiScriptParserException.printStackTrace();
 
 			return new ArrayList<>();
 		}
@@ -502,10 +502,10 @@ public abstract class PoshiElement
 		String name = assignment.split("=")[0];
 
 		name = name.trim();
-		name = name.replace("@", "");
-		name = name.replace("property ", "");
+		name = StringUtil.replace(name, "@", "");
+		name = StringUtil.replace(name, "property ", "");
 
-		return name.replace("var ", "");
+		return StringUtil.replace(name, "var ", "");
 	}
 
 	protected List<String> getNestedConditions(
@@ -731,7 +731,7 @@ public abstract class PoshiElement
 		try {
 			return isBalancedPoshiScript(poshiScript, false);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			return false;
 		}
 	}
@@ -914,7 +914,7 @@ public abstract class PoshiElement
 				return true;
 			}
 		}
-		catch (IllegalArgumentException iae) {
+		catch (IllegalArgumentException illegalArgumentException) {
 			return false;
 		}
 
@@ -942,12 +942,13 @@ public abstract class PoshiElement
 			!poshiScriptSnippet.contains("/*") &&
 			!poshiScriptSnippet.contains("*/")) {
 
-			poshiScriptSnippet = poshiScriptSnippet.replace(
-				"\n", "\n" + getPad());
+			poshiScriptSnippet = StringUtil.replace(
+				poshiScriptSnippet, "\n", "\n" + getPad());
 
-			poshiScriptSnippet = poshiScriptSnippet.replace("\n\t\n", "\n\n");
+			poshiScriptSnippet = StringUtil.replace(
+				poshiScriptSnippet, "\n\t\n", "\n\n");
 
-			return poshiScriptSnippet.replace("\n\n\n", "\n\n");
+			return StringUtil.replace(poshiScriptSnippet, "\n\n\n", "\n\n");
 		}
 
 		Stack<String> stack = new Stack<>();

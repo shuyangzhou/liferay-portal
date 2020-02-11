@@ -221,6 +221,17 @@ public class OrganizationLocalServiceWrapper
 		return _organizationLocalService.createOrganization(organizationId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _organizationLocalService.createPersistedModel(primaryKeyObj);
+	}
+
 	@Override
 	public void deleteGroupOrganization(long groupId, long organizationId) {
 		_organizationLocalService.deleteGroupOrganization(
@@ -840,6 +851,9 @@ public class OrganizationLocalServiceWrapper
 		return _organizationLocalService.getParentOrganizations(organizationId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

@@ -86,6 +86,12 @@ public interface AppLocalService
 	public App createApp(long appId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the app from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param app the app
@@ -263,6 +269,9 @@ public interface AppLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

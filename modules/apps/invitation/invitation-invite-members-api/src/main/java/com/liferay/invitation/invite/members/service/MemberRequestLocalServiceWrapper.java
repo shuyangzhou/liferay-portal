@@ -100,6 +100,17 @@ public class MemberRequestLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _memberRequestLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the member request with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param memberRequestId the primary key of the member request
@@ -315,6 +326,9 @@ public class MemberRequestLocalServiceWrapper
 		return _memberRequestLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

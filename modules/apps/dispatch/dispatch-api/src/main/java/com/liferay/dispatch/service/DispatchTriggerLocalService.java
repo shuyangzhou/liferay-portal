@@ -89,6 +89,12 @@ public interface DispatchTriggerLocalService
 	public DispatchTrigger createDispatchTrigger(long dispatchTriggerId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the dispatch trigger from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param dispatchTrigger the dispatch trigger
@@ -247,6 +253,9 @@ public interface DispatchTriggerLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

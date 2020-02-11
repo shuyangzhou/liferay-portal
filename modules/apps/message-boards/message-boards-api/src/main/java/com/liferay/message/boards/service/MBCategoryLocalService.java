@@ -118,6 +118,12 @@ public interface MBCategoryLocalService
 	@Transactional(enabled = false)
 	public MBCategory createMBCategory(long categoryId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteCategories(long groupId) throws PortalException;
 
 	public void deleteCategory(long categoryId) throws PortalException;
@@ -415,6 +421,9 @@ public interface MBCategoryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

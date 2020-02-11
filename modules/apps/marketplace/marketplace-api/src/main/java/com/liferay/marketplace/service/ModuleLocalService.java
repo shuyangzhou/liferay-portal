@@ -84,6 +84,12 @@ public interface ModuleLocalService
 	public Module createModule(long moduleId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the module with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param moduleId the primary key of the module
@@ -255,6 +261,9 @@ public interface ModuleLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

@@ -92,6 +92,17 @@ public class AccountEntryLocalServiceWrapper
 		return _accountEntryLocalService.createAccountEntry(accountEntryId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _accountEntryLocalService.createPersistedModel(primaryKeyObj);
+	}
+
 	@Override
 	public void deactivateAccountEntries(long[] accountEntryIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -343,6 +354,9 @@ public class AccountEntryLocalServiceWrapper
 		return _accountEntryLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

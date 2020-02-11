@@ -107,6 +107,12 @@ public interface FriendlyURLEntryLocalService
 	public FriendlyURLEntry createFriendlyURLEntry(long friendlyURLEntryId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the friendly url entry from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param friendlyURLEntry the friendly url entry
@@ -348,6 +354,9 @@ public interface FriendlyURLEntryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

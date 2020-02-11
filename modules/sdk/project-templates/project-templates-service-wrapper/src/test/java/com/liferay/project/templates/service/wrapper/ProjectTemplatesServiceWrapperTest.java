@@ -149,7 +149,7 @@ public class ProjectTemplatesServiceWrapperTest
 
 		testContains(
 			gradleProjectDir, "build.gradle",
-			DEPENDENCY_PORTAL_KERNEL + ", version: \"5.3.0");
+			DEPENDENCY_PORTAL_KERNEL + ", version: \"5.4.0");
 
 		File mavenProjectDir = buildTemplateWithMaven(
 			temporaryFolder, "service-wrapper", "serviceoverride", "com.test",
@@ -166,9 +166,9 @@ public class ProjectTemplatesServiceWrapperTest
 
 	@Test
 	public void testBuildTemplateServiceWrapperInWorkspace() throws Exception {
-		File workspaceDir = buildWorkspace(temporaryFolder);
+		File workspaceDir = buildWorkspace(temporaryFolder, "7.3.0");
 
-		enableTargetPlatformInWorkspace(workspaceDir, "7.2.1");
+		enableTargetPlatformInWorkspace(workspaceDir, "7.3.0");
 
 		File modulesDir = new File(workspaceDir, "modules");
 

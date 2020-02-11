@@ -130,6 +130,12 @@ public interface UserGroupLocalService
 	public void clearUserUserGroups(long userId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new user group with the primary key. Does not add the user group to the database.
 	 *
 	 * @param userGroupId the primary key for the new user group
@@ -334,6 +340,9 @@ public interface UserGroupLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

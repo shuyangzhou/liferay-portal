@@ -744,6 +744,17 @@ public class UserLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _userLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new user with the primary key. Does not add the user to the database.
 	 *
 	 * @param userId the primary key for the new user
@@ -1587,6 +1598,9 @@ public class UserLocalServiceWrapper
 		return _userLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

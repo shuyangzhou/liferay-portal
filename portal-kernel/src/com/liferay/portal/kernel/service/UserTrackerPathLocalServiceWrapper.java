@@ -45,6 +45,17 @@ public class UserTrackerPathLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _userTrackerPathLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new user tracker path with the primary key. Does not add the user tracker path to the database.
 	 *
 	 * @param userTrackerPathId the primary key for the new user tracker path
@@ -225,6 +236,9 @@ public class UserTrackerPathLocalServiceWrapper
 		return _userTrackerPathLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

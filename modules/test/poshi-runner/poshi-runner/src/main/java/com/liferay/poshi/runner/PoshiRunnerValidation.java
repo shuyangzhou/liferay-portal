@@ -69,7 +69,7 @@ public class PoshiRunnerValidation {
 	public static void validate() throws Exception {
 		for (String filePath : PoshiRunnerContext.getFilePaths()) {
 			if (OSDetector.isWindows()) {
-				filePath = filePath.replace("/", "\\");
+				filePath = StringUtil.replace(filePath, "/", "\\");
 			}
 
 			String className = PoshiRunnerGetterUtil.getClassNameFromFilePath(
@@ -1063,7 +1063,7 @@ public class PoshiRunnerValidation {
 		try {
 			clazz = Class.forName(className);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			_exceptions.add(
 				new ValidationException(
 					element, "Unable to find class ", className, "\n",
@@ -1075,8 +1075,8 @@ public class PoshiRunnerValidation {
 		try {
 			validateUtilityClassName(element, filePath, className);
 		}
-		catch (Exception e) {
-			_exceptions.add(e);
+		catch (Exception exception) {
+			_exceptions.add(exception);
 
 			return;
 		}
@@ -1634,9 +1634,10 @@ public class PoshiRunnerValidation {
 					className = PoshiRunnerGetterUtil.getUtilityClassName(
 						className);
 				}
-				catch (IllegalArgumentException iae) {
+				catch (IllegalArgumentException illegalArgumentException) {
 					throw new ValidationException(
-						element, iae.getMessage(), "\n", filePath);
+						element, illegalArgumentException.getMessage(), "\n",
+						filePath);
 				}
 			}
 
@@ -1707,8 +1708,8 @@ public class PoshiRunnerValidation {
 			try {
 				validateUtilityClassName(element, filePath, className);
 			}
-			catch (Exception e) {
-				_exceptions.add(e);
+			catch (Exception exception) {
+				_exceptions.add(exception);
 			}
 
 			int expectedAttributeCount = 1;

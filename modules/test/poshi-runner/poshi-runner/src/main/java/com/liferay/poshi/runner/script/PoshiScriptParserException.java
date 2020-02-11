@@ -131,7 +131,7 @@ public class PoshiScriptParserException extends Exception {
 
 			String line = lines[currentLineNumber - 1];
 
-			sb.append(line.replace("\t", "    "));
+			sb.append(StringUtil.replace(line, "\t", "    "));
 
 			sb.append("\n");
 

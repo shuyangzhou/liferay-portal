@@ -177,14 +177,14 @@ public class LiferaySeleniumHelper {
 			System.out.println("##");
 
 			for (int i = 0; i < _javaScriptExceptions.size(); i++) {
-				Exception liferayException = _javaScriptExceptions.get(i);
+				Exception exception = _javaScriptExceptions.get(i);
 
 				System.out.println();
 				System.out.println("##");
 				System.out.println("## Javascript Exception #" + (i + 1));
 				System.out.println("##");
 				System.out.println();
-				System.out.println(liferayException.getMessage());
+				System.out.println(exception.getMessage());
 				System.out.println();
 			}
 
@@ -214,14 +214,14 @@ public class LiferaySeleniumHelper {
 			System.out.println("##");
 
 			for (int i = 0; i < _liferayExceptions.size(); i++) {
-				Exception liferayException = _liferayExceptions.get(i);
+				Exception exception = _liferayExceptions.get(i);
 
 				System.out.println();
 				System.out.println("##");
 				System.out.println("## Liferay Exception #" + (i + 1));
 				System.out.println("##");
 				System.out.println();
-				System.out.println(liferayException.getMessage());
+				System.out.println(exception.getMessage());
 				System.out.println();
 			}
 

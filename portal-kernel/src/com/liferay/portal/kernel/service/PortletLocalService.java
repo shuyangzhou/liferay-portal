@@ -96,6 +96,12 @@ public interface PortletLocalService
 	public Portlet clonePortlet(String portletId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new portlet with the primary key. Does not add the portlet to the database.
 	 *
 	 * @param id the primary key for the new portlet
@@ -252,6 +258,9 @@ public interface PortletLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

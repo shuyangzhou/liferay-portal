@@ -78,6 +78,12 @@ public interface CompanyInfoLocalService
 	public CompanyInfo createCompanyInfo(long companyInfoId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the company info from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param companyInfo the company info
@@ -222,6 +228,9 @@ public interface CompanyInfoLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

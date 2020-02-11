@@ -209,6 +209,18 @@ public class ResourcePermissionLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _resourcePermissionLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new resource permission with the primary key. Does not add the resource permission to the database.
 	 *
 	 * @param resourcePermissionId the primary key for the new resource permission
@@ -492,6 +504,9 @@ public class ResourcePermissionLocalServiceWrapper
 		return _resourcePermissionLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

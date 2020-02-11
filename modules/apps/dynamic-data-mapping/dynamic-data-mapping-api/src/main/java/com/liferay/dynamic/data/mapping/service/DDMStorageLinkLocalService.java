@@ -84,6 +84,12 @@ public interface DDMStorageLinkLocalService
 	@Transactional(enabled = false)
 	public DDMStorageLink createDDMStorageLink(long storageLinkId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteClassStorageLink(long classPK);
 
 	/**
@@ -262,6 +268,9 @@ public interface DDMStorageLinkLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

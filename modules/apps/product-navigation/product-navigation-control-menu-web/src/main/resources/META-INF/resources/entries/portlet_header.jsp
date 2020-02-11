@@ -17,14 +17,9 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String portletDescription = (String)request.getAttribute(ProductNavigationControlMenuWebKeys.PORTLET_DESCRIPTION);
 String portletTitle = (String)request.getAttribute(ProductNavigationControlMenuWebKeys.PORTLET_TITLE);
 %>
 
 <li class="control-menu-nav-item control-menu-nav-item-content">
 	<span class="control-menu-level-1-heading text-truncate" data-qa-id="headerTitle"><%= HtmlUtil.escape(portletTitle) %></span>
-
-	<c:if test="<%= Validator.isNotNull(portletDescription) %>">
-		<liferay-ui:icon-help message="<%= portletDescription %>" />
-	</c:if>
 </li>

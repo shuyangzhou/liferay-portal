@@ -15,6 +15,7 @@
 package com.liferay.asset.category.property.service;
 
 import com.liferay.asset.category.property.model.AssetCategoryProperty;
+import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
@@ -26,6 +27,8 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.service.change.tracking.CTService;
+import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -53,7 +56,8 @@ import org.osgi.annotation.versioning.ProviderType;
 	rollbackFor = {PortalException.class, SystemException.class}
 )
 public interface AssetCategoryPropertyLocalService
-	extends BaseLocalService, PersistedModelLocalService {
+	extends BaseLocalService, CTService<AssetCategoryProperty>,
+			PersistedModelLocalService {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -84,6 +88,12 @@ public interface AssetCategoryPropertyLocalService
 	@Transactional(enabled = false)
 	public AssetCategoryProperty createAssetCategoryProperty(
 		long categoryPropertyId);
+
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
 
 	/**
 	 * Deletes the asset category property from the database. Also notifies the appropriate model listeners.
@@ -262,6 +272,9 @@ public interface AssetCategoryPropertyLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
@@ -284,5 +297,20 @@ public interface AssetCategoryPropertyLocalService
 	public AssetCategoryProperty updateCategoryProperty(
 			long categoryPropertyId, String key, String value)
 		throws PortalException;
+
+	@Override
+	@Transactional(enabled = false)
+	public CTPersistence<AssetCategoryProperty> getCTPersistence();
+
+	@Override
+	@Transactional(enabled = false)
+	public Class<AssetCategoryProperty> getModelClass();
+
+	@Override
+	@Transactional(rollbackFor = Throwable.class)
+	public <R, E extends Throwable> R updateWithUnsafeFunction(
+			UnsafeFunction<CTPersistence<AssetCategoryProperty>, R, E>
+				updateUnsafeFunction)
+		throws E;
 
 }

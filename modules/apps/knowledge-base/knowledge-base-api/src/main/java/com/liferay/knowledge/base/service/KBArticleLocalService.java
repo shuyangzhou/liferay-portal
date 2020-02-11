@@ -128,6 +128,12 @@ public interface KBArticleLocalService
 	@Transactional(enabled = false)
 	public KBArticle createKBArticle(long kbArticleId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	public void deleteGroupKBArticles(long groupId) throws PortalException;
 
 	/**
@@ -448,6 +454,9 @@ public interface KBArticleLocalService
 			long resourcePrimKey)
 		throws PortalException;
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

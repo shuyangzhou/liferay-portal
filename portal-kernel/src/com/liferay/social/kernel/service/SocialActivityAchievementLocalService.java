@@ -76,6 +76,12 @@ public interface SocialActivityAchievementLocalService
 		SocialActivityAchievement socialActivityAchievement);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new social activity achievement with the primary key. Does not add the social activity achievement to the database.
 	 *
 	 * @param activityAchievementId the primary key for the new social activity achievement
@@ -221,6 +227,9 @@ public interface SocialActivityAchievementLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

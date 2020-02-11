@@ -172,6 +172,12 @@ public interface DDMStructureLocalService
 	public DDMStructure createDDMStructure(long structureId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the ddm structure from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param ddmStructure the ddm structure
@@ -538,6 +544,9 @@ public interface DDMStructureLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

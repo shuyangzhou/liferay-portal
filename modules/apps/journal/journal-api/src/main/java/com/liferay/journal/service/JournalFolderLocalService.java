@@ -94,6 +94,12 @@ public interface JournalFolderLocalService
 	@Transactional(enabled = false)
 	public JournalFolder createJournalFolder(long folderId);
 
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	@Indexable(type = IndexableType.DELETE)
 	@SystemEvent(
 		action = SystemEventConstants.ACTION_SKIP,
@@ -404,6 +410,9 @@ public interface JournalFolderLocalService
 	public long getOverridedDDMStructuresFolderId(long folderId)
 		throws NoSuchFolderException;
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

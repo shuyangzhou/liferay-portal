@@ -77,6 +77,12 @@ public interface SyncDLFileVersionDiffLocalService
 		SyncDLFileVersionDiff syncDLFileVersionDiff);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new sync dl file version diff with the primary key. Does not add the sync dl file version diff to the database.
 	 *
 	 * @param syncDLFileVersionDiffId the primary key for the new sync dl file version diff
@@ -209,6 +215,9 @@ public interface SyncDLFileVersionDiffLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

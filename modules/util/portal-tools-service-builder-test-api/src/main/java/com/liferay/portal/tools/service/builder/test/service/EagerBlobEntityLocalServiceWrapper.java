@@ -63,6 +63,17 @@ public class EagerBlobEntityLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _eagerBlobEntityLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the eager blob entity from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param eagerBlobEntity the eager blob entity
@@ -307,6 +318,9 @@ public class EagerBlobEntityLocalServiceWrapper
 		return _eagerBlobEntityLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

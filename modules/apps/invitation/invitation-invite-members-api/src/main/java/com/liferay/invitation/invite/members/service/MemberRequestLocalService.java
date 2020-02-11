@@ -98,6 +98,12 @@ public interface MemberRequestLocalService
 	public MemberRequest createMemberRequest(long memberRequestId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the member request with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param memberRequestId the primary key of the member request
@@ -244,6 +250,9 @@ public interface MemberRequestLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

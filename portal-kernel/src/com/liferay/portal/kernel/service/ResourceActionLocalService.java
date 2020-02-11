@@ -80,6 +80,12 @@ public interface ResourceActionLocalService
 		String name, List<String> actionIds, boolean addDefaultActions);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Creates a new resource action with the primary key. Does not add the resource action to the database.
 	 *
 	 * @param resourceActionId the primary key for the new resource action
@@ -200,6 +206,9 @@ public interface ResourceActionLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

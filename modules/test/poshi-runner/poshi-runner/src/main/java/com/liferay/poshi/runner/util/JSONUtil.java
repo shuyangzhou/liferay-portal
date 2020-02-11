@@ -97,7 +97,7 @@ public class JSONUtil {
 		try {
 			return new JSONArray(json);
 		}
-		catch (JSONException jsone) {
+		catch (JSONException jsonException) {
 			throw new RuntimeException("Invalid JSON: '" + json + "'");
 		}
 	}
@@ -106,7 +106,7 @@ public class JSONUtil {
 		try {
 			return new JSONObject(json);
 		}
-		catch (JSONException jsone) {
+		catch (JSONException jsonException) {
 			throw new RuntimeException("Invalid JSON: '" + json + "'");
 		}
 	}

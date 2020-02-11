@@ -56,14 +56,14 @@ public class SafariWebDriverImpl extends BaseWebDriverImpl {
 
 				webElement.click();
 			}
-			catch (ElementNotVisibleException enve) {
+			catch (ElementNotVisibleException elementNotVisibleException) {
 				if (isVisible(locator)) {
 					javaScriptClick(locator);
 
 					return;
 				}
 
-				throw enve;
+				throw elementNotVisibleException;
 			}
 		}
 	}

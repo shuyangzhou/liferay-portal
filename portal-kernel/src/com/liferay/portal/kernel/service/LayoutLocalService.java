@@ -507,6 +507,12 @@ public interface LayoutLocalService
 	public Layout createLayout(long plid);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the layout from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param layout the layout
@@ -1142,6 +1148,9 @@ public interface LayoutLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Layout getParentLayout(Layout layout) throws PortalException;
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

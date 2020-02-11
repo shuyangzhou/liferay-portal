@@ -103,6 +103,12 @@ public interface FragmentEntryLocalService
 	public FragmentEntry createFragmentEntry(long fragmentEntryId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the fragment entry from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param fragmentEntry the fragment entry
@@ -331,6 +337,9 @@ public interface FragmentEntryLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

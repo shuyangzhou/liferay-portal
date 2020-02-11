@@ -87,6 +87,17 @@ public class MDRActionLocalServiceWrapper
 		return _mdrActionLocalService.createMDRAction(actionId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _mdrActionLocalService.createPersistedModel(primaryKeyObj);
+	}
+
 	@Override
 	public void deleteAction(long actionId) {
 		_mdrActionLocalService.deleteAction(actionId);
@@ -432,6 +443,9 @@ public class MDRActionLocalServiceWrapper
 		return _mdrActionLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

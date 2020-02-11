@@ -122,6 +122,12 @@ public interface DLFileEntryTypeLocalService
 	public DLFileEntryType createDLFileEntryType(long fileEntryTypeId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the document library file entry type from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param dlFileEntryType the document library file entry type
@@ -401,6 +407,9 @@ public interface DLFileEntryTypeLocalService
 	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

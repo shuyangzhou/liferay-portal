@@ -77,6 +77,18 @@ public class AssetCategoryPropertyLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _assetCategoryPropertyLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the asset category property from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param assetCategoryProperty the asset category property
@@ -346,6 +358,9 @@ public class AssetCategoryPropertyLocalServiceWrapper
 		return _assetCategoryPropertyLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

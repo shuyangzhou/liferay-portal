@@ -72,6 +72,16 @@ public class DLFileVersionPreviewLocalServiceUtil {
 		return getService().createDLFileVersionPreview(dlFileVersionPreviewId);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
+	public static com.liferay.portal.kernel.model.PersistedModel
+			createPersistedModel(java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().createPersistedModel(primaryKeyObj);
+	}
+
 	public static void deleteDLFileEntryFileVersionPreviews(long fileEntryId) {
 		getService().deleteDLFileEntryFileVersionPreviews(fileEntryId);
 	}
@@ -307,6 +317,9 @@ public class DLFileVersionPreviewLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	public static com.liferay.portal.kernel.model.PersistedModel
 			getPersistedModel(java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {

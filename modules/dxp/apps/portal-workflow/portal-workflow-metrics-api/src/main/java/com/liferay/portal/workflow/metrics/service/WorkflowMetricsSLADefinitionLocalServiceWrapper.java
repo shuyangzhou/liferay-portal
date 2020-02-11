@@ -70,6 +70,18 @@ public class WorkflowMetricsSLADefinitionLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _workflowMetricsSLADefinitionLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Creates a new workflow metrics sla definition with the primary key. Does not add the workflow metrics sla definition to the database.
 	 *
 	 * @param workflowMetricsSLADefinitionId the primary key for the new workflow metrics sla definition
@@ -300,6 +312,9 @@ public class WorkflowMetricsSLADefinitionLocalServiceWrapper
 			getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

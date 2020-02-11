@@ -51,8 +51,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			_webElement.clear();
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			_webElement.clear();
 		}
@@ -63,8 +63,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			_webElement.click();
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			_webElement.click();
 		}
@@ -75,8 +75,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			return _remoteWebElement.equals(obj);
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			return _remoteWebElement.equals(obj);
 		}
@@ -87,8 +87,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			return _webElement.findElement(by);
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			return _webElement.findElement(by);
 		}
@@ -99,8 +99,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			return _remoteWebElement.findElementByClassName(using);
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			return _remoteWebElement.findElementByClassName(using);
 		}
@@ -111,8 +111,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			return _remoteWebElement.findElementByCssSelector(using);
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			return _remoteWebElement.findElementByCssSelector(using);
 		}
@@ -123,8 +123,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			return _remoteWebElement.findElementByPartialLinkText(using);
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			return _remoteWebElement.findElementByPartialLinkText(using);
 		}
@@ -135,8 +135,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			return _remoteWebElement.findElementByTagName(using);
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			return _remoteWebElement.findElementByTagName(using);
 		}
@@ -147,8 +147,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			return _remoteWebElement.findElementByXPath(using);
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			return _remoteWebElement.findElementByXPath(using);
 		}
@@ -159,8 +159,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			return _webElement.findElements(by);
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			return _webElement.findElements(by);
 		}
@@ -171,8 +171,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			return _remoteWebElement.findElementsByClassName(using);
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			return _remoteWebElement.findElementsByClassName(using);
 		}
@@ -183,8 +183,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			return _remoteWebElement.findElementsByCssSelector(using);
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			return _remoteWebElement.findElementsByCssSelector(using);
 		}
@@ -195,8 +195,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			return _remoteWebElement.findElementsByPartialLinkText(using);
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			return _remoteWebElement.findElementsByPartialLinkText(using);
 		}
@@ -207,8 +207,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			return _remoteWebElement.findElementsByTagName(using);
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			return _remoteWebElement.findElementsByTagName(using);
 		}
@@ -219,8 +219,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			return _remoteWebElement.findElementsByXPath(using);
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			return _remoteWebElement.findElementsByXPath(using);
 		}
@@ -231,8 +231,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			return _webElement.getAttribute(name);
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			return _webElement.getAttribute(name);
 		}
@@ -245,8 +245,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 
 			return locatable.getCoordinates();
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			Locatable locatable = (Locatable)_webElement;
 
@@ -259,8 +259,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			return _webElement.getCssValue(propertyName);
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			return _webElement.getCssValue(propertyName);
 		}
@@ -271,8 +271,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			return _remoteWebElement.getId();
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			return _remoteWebElement.getId();
 		}
@@ -283,8 +283,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			return _webElement.getLocation();
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			return _webElement.getLocation();
 		}
@@ -297,8 +297,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			return _webElement.getScreenshotAs(target);
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			return _webElement.getScreenshotAs(target);
 		}
@@ -309,8 +309,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			return _webElement.getSize();
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			return _webElement.getSize();
 		}
@@ -321,8 +321,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			return _webElement.getTagName();
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			return _webElement.getTagName();
 		}
@@ -333,8 +333,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			return _webElement.getText();
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			return _webElement.getText();
 		}
@@ -350,8 +350,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			return _remoteWebElement.hashCode();
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			return _remoteWebElement.hashCode();
 		}
@@ -362,8 +362,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			return _webElement.isDisplayed();
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			return _webElement.isDisplayed();
 		}
@@ -374,8 +374,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			return _webElement.isEnabled();
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			return _webElement.isEnabled();
 		}
@@ -386,8 +386,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			return _webElement.isSelected();
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			return _webElement.isSelected();
 		}
@@ -397,8 +397,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			_webElement.sendKeys(keys);
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			_webElement.sendKeys(keys);
 		}
@@ -409,8 +409,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			_remoteWebElement.setFileDetector(fileDetector);
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			_remoteWebElement.setFileDetector(fileDetector);
 		}
@@ -421,8 +421,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			_remoteWebElement.setId(id);
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			_remoteWebElement.setId(id);
 		}
@@ -433,8 +433,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			_remoteWebElement.setParent(remoteWebDriver);
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			_remoteWebElement.setParent(remoteWebDriver);
 		}
@@ -445,8 +445,8 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			_webElement.submit();
 		}
-		catch (StaleElementReferenceException sere) {
-			_refreshWebElement(sere);
+		catch (StaleElementReferenceException staleElementReferenceException) {
+			_refreshWebElement(staleElementReferenceException);
 
 			_webElement.submit();
 		}
@@ -464,7 +464,7 @@ public class RetryWebElementImpl extends RemoteWebElement {
 		try {
 			Thread.sleep(_RETRY_WAIT_TIME * 1000);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 		}
 
 		WebDriver webDriver = WebDriverUtil.getWebDriver();

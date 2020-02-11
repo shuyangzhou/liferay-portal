@@ -83,6 +83,18 @@ public class KaleoProcessLinkLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _kaleoProcessLinkLocalService.createPersistedModel(
+			primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the kaleo process link from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param kaleoProcessLink the kaleo process link
@@ -345,6 +357,9 @@ public class KaleoProcessLinkLocalServiceWrapper
 		return _kaleoProcessLinkLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

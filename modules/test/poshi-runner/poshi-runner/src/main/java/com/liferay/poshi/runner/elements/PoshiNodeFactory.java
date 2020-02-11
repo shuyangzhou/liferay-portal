@@ -68,7 +68,7 @@ public abstract class PoshiNodeFactory {
 		try {
 			nodeContent = Dom4JUtil.format(node);
 		}
-		catch (IOException ioe) {
+		catch (IOException ioException) {
 			nodeContent = node.toString();
 		}
 
@@ -113,17 +113,17 @@ public abstract class PoshiNodeFactory {
 				return _definitionPoshiElement.clone(content, url);
 			}
 		}
-		catch (DocumentException de) {
+		catch (DocumentException documentException) {
 			throw new RuntimeException(
 				"Unable to parse Poshi XML file: " + url.getFile(),
-				de.getCause());
+				documentException.getCause());
 		}
-		catch (PoshiScriptParserException pspe) {
-			if (pspe instanceof UnbalancedCodeException) {
-				pspe.setFilePath(url.getFile());
+		catch (PoshiScriptParserException poshiScriptParserException) {
+			if (poshiScriptParserException instanceof UnbalancedCodeException) {
+				poshiScriptParserException.setFilePath(url.getFile());
 			}
 
-			System.out.println(pspe.getMessage());
+			System.out.println(poshiScriptParserException.getMessage());
 		}
 
 		return null;
@@ -135,9 +135,10 @@ public abstract class PoshiNodeFactory {
 
 			return newPoshiNode(content, url);
 		}
-		catch (IOException ioe) {
+		catch (IOException ioException) {
 			throw new RuntimeException(
-				"Unable to read file: " + url.getFile(), ioe.getCause());
+				"Unable to read file: " + url.getFile(),
+				ioException.getCause());
 		}
 	}
 
@@ -171,11 +172,12 @@ public abstract class PoshiNodeFactory {
 		poshiScript = poshiScript.replaceAll("\\s+", "");
 
 		if (!poshiScript.equals(newPoshiScript.replaceAll("\\s+", ""))) {
-			PoshiScriptParserException pspe = new PoshiScriptParserException(
-				"Data loss has occurred while parsing Poshi Script",
-				newPoshiElement);
+			PoshiScriptParserException poshiScriptParserException =
+				new PoshiScriptParserException(
+					"Data loss has occurred while parsing Poshi Script",
+					newPoshiElement);
 
-			throw pspe;
+			throw poshiScriptParserException;
 		}
 	}
 
@@ -301,9 +303,9 @@ public abstract class PoshiNodeFactory {
 			_definitionPoshiElement = _getDefinitionPoshiElement();
 		}
 		catch (IllegalAccessException | InstantiationException | IOException
-					e) {
+					exception) {
 
-			throw new RuntimeException(e);
+			throw new RuntimeException(exception);
 		}
 	}
 

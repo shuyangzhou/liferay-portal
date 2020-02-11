@@ -71,6 +71,17 @@ public class BookmarksEntryLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _bookmarksEntryLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the bookmarks entry from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param bookmarksEntry the bookmarks entry
@@ -478,6 +489,9 @@ public class BookmarksEntryLocalServiceWrapper
 		return _bookmarksEntryLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)
