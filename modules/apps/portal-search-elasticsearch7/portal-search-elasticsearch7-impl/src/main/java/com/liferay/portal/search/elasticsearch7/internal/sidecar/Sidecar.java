@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.cluster.ClusterExecutor;
 import com.liferay.portal.kernel.cluster.ClusterNode;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -45,6 +46,8 @@ import java.io.InputStream;
 import java.io.Serializable;
 
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.net.URL;
 import java.net.URLClassLoader;
 
@@ -727,6 +730,21 @@ public class Sidecar {
 				return;
 			}
 
+			String address = getNetworkHostAddress();
+
+			if (!_isReachable(address)) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						StringBundler.concat(
+							"Unable to connect to sidecar at address ", address,
+							", there might be a network issue causing cluster ",
+							"node leaving, wait for sidecar recovered by ",
+							"itself"));
+				}
+
+				return;
+			}
+
 			for (ClusterNode clusterNode : clusterEvent.getClusterNodes()) {
 				if (!_bootstrapClusterNodes.contains(clusterNode)) {
 					continue;
@@ -744,6 +762,33 @@ public class Sidecar {
 
 				break;
 			}
+		}
+
+		private boolean _isReachable(String address) {
+			int index = address.indexOf(StringPool.COLON);
+
+			if (index == -1) {
+				throw new IllegalStateException(
+					"Unable to parse address " + address);
+			}
+
+			try (Socket socket = new Socket()) {
+				socket.connect(
+					new InetSocketAddress(
+						InetAddress.getByName(address.substring(0, index)),
+						GetterUtil.getInteger(address.substring(index + 1))),
+					5000);
+
+				return true;
+			}
+			catch (IOException ioException) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						"Unable to access address " + address, ioException);
+				}
+			}
+
+			return false;
 		}
 
 	}
