@@ -24,6 +24,7 @@ import com.liferay.petra.process.ProcessExecutor;
 import com.liferay.petra.process.ProcessLog;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.cluster.ClusterEventType;
 import com.liferay.portal.kernel.cluster.ClusterExecutor;
 import com.liferay.portal.kernel.cluster.ClusterNode;
 import com.liferay.portal.kernel.log.Log;
@@ -223,6 +224,35 @@ public class Sidecar {
 							"Unable to start elasticsearch server", exception);
 
 						_processChannel.write(new StopSidecarProcessCallable());
+					}
+				});
+
+			_clusterExecutor.addClusterEventListener(
+				clusterEvent -> {
+					if (clusterEvent.getClusterEventType() !=
+							ClusterEventType.DEPART) {
+
+						return;
+					}
+
+					for (ClusterNode clusterNode :
+							clusterEvent.getClusterNodes()) {
+
+						if (!_bootstrapClusterNodes.contains(clusterNode)) {
+							continue;
+						}
+
+						if (_log.isInfoEnabled()) {
+							_log.info(
+								StringBundler.concat(
+									"Cluster node ", clusterNode, " used to ",
+									"initialize sidecar is removed, will ",
+									"restart sidecar"));
+						}
+
+						_processChannel.write(new StopSidecarProcessCallable());
+
+						break;
 					}
 				});
 		}
@@ -609,14 +639,14 @@ public class Sidecar {
 				"network.host",
 				_getHostAddress(_clusterExecutor.getLocalClusterNode()));
 
-			List<ClusterNode> clusterNodes = _clusterExecutor.getClusterNodes();
+			_bootstrapClusterNodes = _clusterExecutor.getClusterNodes();
 
 			StringBundler discoverySeedHostsSB = new StringBundler(
-				2 * clusterNodes.size() - 1);
+				2 * _bootstrapClusterNodes.size() - 1);
 			StringBundler initialMasterNodesSB = new StringBundler(
-				2 * clusterNodes.size() - 1);
+				2 * _bootstrapClusterNodes.size() - 1);
 
-			for (ClusterNode clusterNode : clusterNodes) {
+			for (ClusterNode clusterNode : _bootstrapClusterNodes) {
 				if (discoverySeedHostsSB.index() > 0) {
 					discoverySeedHostsSB.append(StringPool.COMMA);
 				}
@@ -694,6 +724,7 @@ public class Sidecar {
 	private static final Log _log = LogFactoryUtil.getLog(Sidecar.class);
 
 	private DefaultNoticeableFuture<String> _addressNoticeableFuture;
+	private List<ClusterNode> _bootstrapClusterNodes;
 	private final ClusterExecutor _clusterExecutor;
 	private final ElasticsearchConfiguration _elasticsearchConfiguration;
 	private final com.liferay.portal.kernel.util.File _file;
