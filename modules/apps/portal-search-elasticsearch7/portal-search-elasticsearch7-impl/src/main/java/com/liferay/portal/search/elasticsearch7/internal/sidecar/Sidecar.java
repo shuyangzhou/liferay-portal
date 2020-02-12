@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConfiguration;
 import com.liferay.portal.search.elasticsearch7.internal.settings.SettingsBuilder;
@@ -55,6 +56,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import org.apache.http.HttpHost;
+import org.apache.http.util.EntityUtils;
+
+import org.elasticsearch.client.Request;
+import org.elasticsearch.client.Response;
+import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.cluster.ClusterModule;
 import org.elasticsearch.cluster.coordination.CoordinationMetaData;
 import org.elasticsearch.cluster.metadata.Manifest;
@@ -230,6 +238,41 @@ public class Sidecar {
 
 		if (_processChannel == null) {
 			return;
+		}
+
+		List<ClusterNode> clusterNodes = _clusterExecutor.getClusterNodes();
+
+		if ((clusterNodes != null) && (clusterNodes.size() == 2)) {
+			RestClientBuilder restClientBuilder = RestClient.builder(
+				HttpHost.create(getNetworkHostAddress()));
+
+			try (RestClient restClient = restClientBuilder.build()) {
+				while (true) {
+					Response response = restClient.performRequest(
+						new Request("GET", "_cat/master?h=node"));
+
+					String nodeName = EntityUtils.toString(
+						response.getEntity());
+
+					nodeName = StringUtil.removeSubstring(nodeName, "\n");
+
+					if (!nodeName.equals(_nodeName)) {
+						break;
+					}
+
+					restClient.performRequest(
+						new Request(
+							"POST",
+							"/_cluster/voting_config_exclusions/" + nodeName));
+				}
+			}
+			catch (Exception exception) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Unable to add master node to voting exclusions",
+						exception);
+				}
+			}
 		}
 
 		NoticeableFuture<Serializable> noticeableFuture =
