@@ -22,8 +22,11 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.service.CompanyLocalService;
+import com.liferay.portal.kernel.util.ProxyFactory;
 
 import java.util.Map;
+
+import javax.servlet.ServletContext;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -57,7 +60,8 @@ public class CompanyGenerator {
 				false, 0, true);
 
 			_portalInstancesLocalService.initializePortalInstance(
-				new MockServletContext(), company.getWebId());
+				ProxyFactory.newDummyInstance(ServletContext.class),
+				company.getWebId());
 
 			_portalInstancesLocalService.synchronizePortalInstances();
 
