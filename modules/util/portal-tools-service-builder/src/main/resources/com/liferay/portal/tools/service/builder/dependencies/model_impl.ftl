@@ -219,8 +219,6 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 
 			public static final boolean FINDER_CACHE_ENABLED = false;
 		</#if>
-
-		<#assign columnBitmaskEnabled = false />
 	<#else>
 		<#if !dependencyInjectorDS>
 			public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(${propsUtil}.get("value.object.entity.cache.enabled.${apiPackagePath}.model.${entity.name}"),
@@ -244,24 +242,6 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 			);
 		</#if>
 
-		<#assign columnBitmaskEnabled = true />
-
-		<#if entity.finderEntityColumns?size == 0>
-			<#if !dependencyInjectorDS>
-				public static final boolean COLUMN_BITMASK_ENABLED = false;
-			</#if>
-
-			<#assign columnBitmaskEnabled = false />
-		</#if>
-
-		<#if entity.finderEntityColumns?size &gt; 64>
-			<#if !dependencyInjectorDS>
-				public static final boolean COLUMN_BITMASK_ENABLED = false;
-			</#if>
-
-			<#assign columnBitmaskEnabled = false />
-		</#if>
-
 		<#if columnBitmaskEnabled>
 			<#if !dependencyInjectorDS>
 				public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(${propsUtil}.get("value.object.column.bitmask.enabled.${apiPackagePath}.model.${entity.name}"), true);
@@ -282,6 +262,8 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 					<#assign columnBitmask = columnBitmask * 2 />
 				</#if>
 			</#list>
+		<#elseif !dependencyInjectorDS>
+			public static final boolean COLUMN_BITMASK_ENABLED = false;
 		</#if>
 	</#if>
 

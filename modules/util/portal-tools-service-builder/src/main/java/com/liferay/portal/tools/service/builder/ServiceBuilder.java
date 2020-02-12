@@ -2926,6 +2926,24 @@ public class ServiceBuilder {
 		context.put("entity", entity);
 		context.put("hasClassNameCacheField", hasClassNameCacheField);
 
+		boolean columnBitmaskEnabled = true;
+
+		if (entity.hasEagerBlobColumn()) {
+			columnBitmaskEnabled = false;
+		}
+		else {
+			List<EntityColumn> finderEntityColumns =
+				entity.getFinderEntityColumns();
+
+			if (finderEntityColumns.isEmpty() ||
+				(finderEntityColumns.size() > 64)) {
+
+				columnBitmaskEnabled = false;
+			}
+		}
+
+		context.put("columnBitmaskEnabled", columnBitmaskEnabled);
+
 		context = _putDeprecatedKeys(context, modelImplJavaClass);
 
 		String content = _processTemplate(_tplModelImpl, context);
