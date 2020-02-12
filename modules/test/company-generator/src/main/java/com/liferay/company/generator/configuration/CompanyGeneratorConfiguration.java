@@ -23,7 +23,7 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
  */
 @ExtendedObjectClassDefinition(generateUI = false)
 @Meta.OCD(id = "com.liferay.company.generator.CompanyGeneratorConfiguration")
-public abstract interface CompanyGeneratorConfiguration {
+public interface CompanyGeneratorConfiguration {
 
 	@Meta.AD
 	public String virtualHostName();
