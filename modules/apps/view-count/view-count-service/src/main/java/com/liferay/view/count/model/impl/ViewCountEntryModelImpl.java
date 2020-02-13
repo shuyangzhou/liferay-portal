@@ -93,6 +93,22 @@ public class ViewCountEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 2L;
+
+	public static final long CLASSPK_COLUMN_BITMASK = 4L;
+
+	public static final long VIEWCOUNT_COLUMN_BITMASK = 8L;
+
+	public static final int COMPANYID_COLUMN_INDEX = 0;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 1;
+
+	public static final int CLASSPK_COLUMN_INDEX = 2;
+
+	public static final int VIEWCOUNT_COLUMN_INDEX = 3;
+
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
 	}
@@ -261,6 +277,8 @@ public class ViewCountEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
+
 		_companyId = companyId;
 	}
 
@@ -291,6 +309,8 @@ public class ViewCountEntryModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
+		_setOriginalValue(CLASSNAMEID_COLUMN_INDEX, _classNameId);
+
 		_classNameId = classNameId;
 	}
 
@@ -301,6 +321,8 @@ public class ViewCountEntryModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
+		_setOriginalValue(CLASSPK_COLUMN_INDEX, _classPK);
+
 		_classPK = classPK;
 	}
 
@@ -311,7 +333,13 @@ public class ViewCountEntryModelImpl
 
 	@Override
 	public void setViewCount(long viewCount) {
+		_setOriginalValue(VIEWCOUNT_COLUMN_INDEX, _viewCount);
+
 		_viewCount = viewCount;
+	}
+
+	public long getColumnBitmask() {
+		return _columnBitmask;
 	}
 
 	@Override
@@ -389,6 +417,9 @@ public class ViewCountEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
+		_columnBitmask = 0;
+
+		_originalValues = null;
 	}
 
 	@Override
@@ -472,6 +503,37 @@ public class ViewCountEntryModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[4];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, ViewCountEntry>
@@ -486,6 +548,11 @@ public class ViewCountEntryModelImpl
 	private long _classNameId;
 	private long _classPK;
 	private long _viewCount;
+	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private ViewCountEntry _escapedModel;
 
 }

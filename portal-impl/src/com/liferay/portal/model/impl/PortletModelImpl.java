@@ -115,11 +115,29 @@ public class PortletModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.Portlet"),
 		true);
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long PORTLETID_COLUMN_BITMASK = 2L;
+	public static final long ID_COLUMN_BITMASK = 2L;
 
-	public static final long ID_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
+
+	public static final long PORTLETID_COLUMN_BITMASK = 8L;
+
+	public static final long ROLES_COLUMN_BITMASK = 16L;
+
+	public static final long ACTIVE_COLUMN_BITMASK = 32L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int ID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int PORTLETID_COLUMN_INDEX = 3;
+
+	public static final int ROLES_COLUMN_INDEX = 4;
+
+	public static final int ACTIVE_COLUMN_INDEX = 5;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -326,6 +344,8 @@ public class PortletModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -337,6 +357,8 @@ public class PortletModelImpl
 
 	@Override
 	public void setId(long id) {
+		_setOriginalValue(ID_COLUMN_INDEX, _id);
+
 		_id = id;
 	}
 
@@ -348,19 +370,13 @@ public class PortletModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return _getOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 	}
 
 	@JSON
@@ -376,17 +392,14 @@ public class PortletModelImpl
 
 	@Override
 	public void setPortletId(String portletId) {
-		_columnBitmask |= PORTLETID_COLUMN_BITMASK;
-
-		if (_originalPortletId == null) {
-			_originalPortletId = _portletId;
-		}
+		_setOriginalValue(PORTLETID_COLUMN_INDEX, _portletId);
 
 		_portletId = portletId;
 	}
 
 	public String getOriginalPortletId() {
-		return GetterUtil.getString(_originalPortletId);
+		return GetterUtil.getString(
+			_getOriginalValue(PORTLETID_COLUMN_INDEX, _portletId));
 	}
 
 	@JSON
@@ -402,6 +415,8 @@ public class PortletModelImpl
 
 	@Override
 	public void setRoles(String roles) {
+		_setOriginalValue(ROLES_COLUMN_INDEX, _roles);
+
 		_roles = roles;
 	}
 
@@ -419,6 +434,8 @@ public class PortletModelImpl
 
 	@Override
 	public void setActive(boolean active) {
+		_setOriginalValue(ACTIVE_COLUMN_INDEX, _active);
+
 		_active = active;
 	}
 
@@ -524,15 +541,9 @@ public class PortletModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		PortletModelImpl portletModelImpl = this;
+		_columnBitmask = 0;
 
-		portletModelImpl._originalCompanyId = portletModelImpl._companyId;
-
-		portletModelImpl._setOriginalCompanyId = false;
-
-		portletModelImpl._originalPortletId = portletModelImpl._portletId;
-
-		portletModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -629,6 +640,37 @@ public class PortletModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[6];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, Portlet>
@@ -639,13 +681,14 @@ public class PortletModelImpl
 	private long _mvccVersion;
 	private long _id;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private String _portletId;
-	private String _originalPortletId;
 	private String _roles;
 	private boolean _active;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private Portlet _escapedModel;
 
 }

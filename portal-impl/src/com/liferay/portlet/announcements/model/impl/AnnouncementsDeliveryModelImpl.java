@@ -125,13 +125,37 @@ public class AnnouncementsDeliveryModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.announcements.kernel.model.AnnouncementsDelivery"),
 		true);
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long TYPE_COLUMN_BITMASK = 2L;
+	public static final long DELIVERYID_COLUMN_BITMASK = 2L;
 
-	public static final long USERID_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
-	public static final long DELIVERYID_COLUMN_BITMASK = 8L;
+	public static final long USERID_COLUMN_BITMASK = 8L;
+
+	public static final long TYPE_COLUMN_BITMASK = 16L;
+
+	public static final long EMAIL_COLUMN_BITMASK = 32L;
+
+	public static final long SMS_COLUMN_BITMASK = 64L;
+
+	public static final long WEBSITE_COLUMN_BITMASK = 128L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int DELIVERYID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int USERID_COLUMN_INDEX = 3;
+
+	public static final int TYPE_COLUMN_INDEX = 4;
+
+	public static final int EMAIL_COLUMN_INDEX = 5;
+
+	public static final int SMS_COLUMN_INDEX = 6;
+
+	public static final int WEBSITE_COLUMN_INDEX = 7;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -379,6 +403,8 @@ public class AnnouncementsDeliveryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -390,6 +416,8 @@ public class AnnouncementsDeliveryModelImpl
 
 	@Override
 	public void setDeliveryId(long deliveryId) {
+		_setOriginalValue(DELIVERYID_COLUMN_INDEX, _deliveryId);
+
 		_deliveryId = deliveryId;
 	}
 
@@ -401,19 +429,13 @@ public class AnnouncementsDeliveryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return _getOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 	}
 
 	@JSON
@@ -424,13 +446,7 @@ public class AnnouncementsDeliveryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_setOriginalValue(USERID_COLUMN_INDEX, _userId);
 
 		_userId = userId;
 	}
@@ -452,7 +468,7 @@ public class AnnouncementsDeliveryModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return _getOriginalValue(USERID_COLUMN_INDEX, _userId);
 	}
 
 	@JSON
@@ -468,17 +484,14 @@ public class AnnouncementsDeliveryModelImpl
 
 	@Override
 	public void setType(String type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
-
-		if (_originalType == null) {
-			_originalType = _type;
-		}
+		_setOriginalValue(TYPE_COLUMN_INDEX, _type);
 
 		_type = type;
 	}
 
 	public String getOriginalType() {
-		return GetterUtil.getString(_originalType);
+		return GetterUtil.getString(
+			_getOriginalValue(TYPE_COLUMN_INDEX, _type));
 	}
 
 	@JSON
@@ -495,6 +508,8 @@ public class AnnouncementsDeliveryModelImpl
 
 	@Override
 	public void setEmail(boolean email) {
+		_setOriginalValue(EMAIL_COLUMN_INDEX, _email);
+
 		_email = email;
 	}
 
@@ -512,6 +527,8 @@ public class AnnouncementsDeliveryModelImpl
 
 	@Override
 	public void setSms(boolean sms) {
+		_setOriginalValue(SMS_COLUMN_INDEX, _sms);
+
 		_sms = sms;
 	}
 
@@ -529,6 +546,8 @@ public class AnnouncementsDeliveryModelImpl
 
 	@Override
 	public void setWebsite(boolean website) {
+		_setOriginalValue(WEBSITE_COLUMN_INDEX, _website);
+
 		_website = website;
 	}
 
@@ -639,22 +658,9 @@ public class AnnouncementsDeliveryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AnnouncementsDeliveryModelImpl announcementsDeliveryModelImpl = this;
+		_columnBitmask = 0;
 
-		announcementsDeliveryModelImpl._originalCompanyId =
-			announcementsDeliveryModelImpl._companyId;
-
-		announcementsDeliveryModelImpl._setOriginalCompanyId = false;
-
-		announcementsDeliveryModelImpl._originalUserId =
-			announcementsDeliveryModelImpl._userId;
-
-		announcementsDeliveryModelImpl._setOriginalUserId = false;
-
-		announcementsDeliveryModelImpl._originalType =
-			announcementsDeliveryModelImpl._type;
-
-		announcementsDeliveryModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -752,6 +758,37 @@ public class AnnouncementsDeliveryModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[8];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, AnnouncementsDelivery>
@@ -762,17 +799,16 @@ public class AnnouncementsDeliveryModelImpl
 	private long _mvccVersion;
 	private long _deliveryId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _type;
-	private String _originalType;
 	private boolean _email;
 	private boolean _sms;
 	private boolean _website;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private AnnouncementsDelivery _escapedModel;
 
 }

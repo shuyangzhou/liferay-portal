@@ -102,19 +102,37 @@ public class JournalContentSearchModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long ARTICLEID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long COMPANYID_COLUMN_BITMASK = 2L;
+	public static final long CONTENTSEARCHID_COLUMN_BITMASK = 2L;
 
 	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
-	public static final long LAYOUTID_COLUMN_BITMASK = 8L;
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
 
-	public static final long PORTLETID_COLUMN_BITMASK = 16L;
+	public static final long PRIVATELAYOUT_COLUMN_BITMASK = 16L;
 
-	public static final long PRIVATELAYOUT_COLUMN_BITMASK = 32L;
+	public static final long LAYOUTID_COLUMN_BITMASK = 32L;
 
-	public static final long CONTENTSEARCHID_COLUMN_BITMASK = 64L;
+	public static final long PORTLETID_COLUMN_BITMASK = 64L;
+
+	public static final long ARTICLEID_COLUMN_BITMASK = 128L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int CONTENTSEARCHID_COLUMN_INDEX = 1;
+
+	public static final int GROUPID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int PRIVATELAYOUT_COLUMN_INDEX = 4;
+
+	public static final int LAYOUTID_COLUMN_INDEX = 5;
+
+	public static final int PORTLETID_COLUMN_INDEX = 6;
+
+	public static final int ARTICLEID_COLUMN_INDEX = 7;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -317,6 +335,8 @@ public class JournalContentSearchModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -327,6 +347,8 @@ public class JournalContentSearchModelImpl
 
 	@Override
 	public void setContentSearchId(long contentSearchId) {
+		_setOriginalValue(CONTENTSEARCHID_COLUMN_INDEX, _contentSearchId);
+
 		_contentSearchId = contentSearchId;
 	}
 
@@ -337,19 +359,13 @@ public class JournalContentSearchModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_setOriginalValue(GROUPID_COLUMN_INDEX, _groupId);
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return _getOriginalValue(GROUPID_COLUMN_INDEX, _groupId);
 	}
 
 	@Override
@@ -359,19 +375,13 @@ public class JournalContentSearchModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return _getOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 	}
 
 	@Override
@@ -386,19 +396,13 @@ public class JournalContentSearchModelImpl
 
 	@Override
 	public void setPrivateLayout(boolean privateLayout) {
-		_columnBitmask |= PRIVATELAYOUT_COLUMN_BITMASK;
-
-		if (!_setOriginalPrivateLayout) {
-			_setOriginalPrivateLayout = true;
-
-			_originalPrivateLayout = _privateLayout;
-		}
+		_setOriginalValue(PRIVATELAYOUT_COLUMN_INDEX, _privateLayout);
 
 		_privateLayout = privateLayout;
 	}
 
 	public boolean getOriginalPrivateLayout() {
-		return _originalPrivateLayout;
+		return _getOriginalValue(PRIVATELAYOUT_COLUMN_INDEX, _privateLayout);
 	}
 
 	@Override
@@ -408,19 +412,13 @@ public class JournalContentSearchModelImpl
 
 	@Override
 	public void setLayoutId(long layoutId) {
-		_columnBitmask |= LAYOUTID_COLUMN_BITMASK;
-
-		if (!_setOriginalLayoutId) {
-			_setOriginalLayoutId = true;
-
-			_originalLayoutId = _layoutId;
-		}
+		_setOriginalValue(LAYOUTID_COLUMN_INDEX, _layoutId);
 
 		_layoutId = layoutId;
 	}
 
 	public long getOriginalLayoutId() {
-		return _originalLayoutId;
+		return _getOriginalValue(LAYOUTID_COLUMN_INDEX, _layoutId);
 	}
 
 	@Override
@@ -435,17 +433,14 @@ public class JournalContentSearchModelImpl
 
 	@Override
 	public void setPortletId(String portletId) {
-		_columnBitmask |= PORTLETID_COLUMN_BITMASK;
-
-		if (_originalPortletId == null) {
-			_originalPortletId = _portletId;
-		}
+		_setOriginalValue(PORTLETID_COLUMN_INDEX, _portletId);
 
 		_portletId = portletId;
 	}
 
 	public String getOriginalPortletId() {
-		return GetterUtil.getString(_originalPortletId);
+		return GetterUtil.getString(
+			_getOriginalValue(PORTLETID_COLUMN_INDEX, _portletId));
 	}
 
 	@Override
@@ -460,17 +455,14 @@ public class JournalContentSearchModelImpl
 
 	@Override
 	public void setArticleId(String articleId) {
-		_columnBitmask |= ARTICLEID_COLUMN_BITMASK;
-
-		if (_originalArticleId == null) {
-			_originalArticleId = _articleId;
-		}
+		_setOriginalValue(ARTICLEID_COLUMN_INDEX, _articleId);
 
 		_articleId = articleId;
 	}
 
 	public String getOriginalArticleId() {
-		return GetterUtil.getString(_originalArticleId);
+		return GetterUtil.getString(
+			_getOriginalValue(ARTICLEID_COLUMN_INDEX, _articleId));
 	}
 
 	public long getColumnBitmask() {
@@ -579,35 +571,9 @@ public class JournalContentSearchModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		JournalContentSearchModelImpl journalContentSearchModelImpl = this;
+		_columnBitmask = 0;
 
-		journalContentSearchModelImpl._originalGroupId =
-			journalContentSearchModelImpl._groupId;
-
-		journalContentSearchModelImpl._setOriginalGroupId = false;
-
-		journalContentSearchModelImpl._originalCompanyId =
-			journalContentSearchModelImpl._companyId;
-
-		journalContentSearchModelImpl._setOriginalCompanyId = false;
-
-		journalContentSearchModelImpl._originalPrivateLayout =
-			journalContentSearchModelImpl._privateLayout;
-
-		journalContentSearchModelImpl._setOriginalPrivateLayout = false;
-
-		journalContentSearchModelImpl._originalLayoutId =
-			journalContentSearchModelImpl._layoutId;
-
-		journalContentSearchModelImpl._setOriginalLayoutId = false;
-
-		journalContentSearchModelImpl._originalPortletId =
-			journalContentSearchModelImpl._portletId;
-
-		journalContentSearchModelImpl._originalArticleId =
-			journalContentSearchModelImpl._articleId;
-
-		journalContentSearchModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -711,6 +677,37 @@ public class JournalContentSearchModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[8];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, JournalContentSearch>
@@ -724,22 +721,16 @@ public class JournalContentSearchModelImpl
 	private long _mvccVersion;
 	private long _contentSearchId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private boolean _privateLayout;
-	private boolean _originalPrivateLayout;
-	private boolean _setOriginalPrivateLayout;
 	private long _layoutId;
-	private long _originalLayoutId;
-	private boolean _setOriginalLayoutId;
 	private String _portletId;
-	private String _originalPortletId;
 	private String _articleId;
-	private String _originalArticleId;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private JournalContentSearch _escapedModel;
 
 }

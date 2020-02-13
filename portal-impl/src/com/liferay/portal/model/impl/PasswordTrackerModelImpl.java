@@ -117,9 +117,29 @@ public class PasswordTrackerModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.PasswordTracker"),
 		true);
 
-	public static final long USERID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long CREATEDATE_COLUMN_BITMASK = 2L;
+	public static final long PASSWORDTRACKERID_COLUMN_BITMASK = 2L;
+
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
+
+	public static final long USERID_COLUMN_BITMASK = 8L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 16L;
+
+	public static final long PASSWORD_COLUMN_BITMASK = 32L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int PASSWORDTRACKERID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int USERID_COLUMN_INDEX = 3;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 4;
+
+	public static final int PASSWORD_COLUMN_INDEX = 5;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -296,6 +316,8 @@ public class PasswordTrackerModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -306,6 +328,8 @@ public class PasswordTrackerModelImpl
 
 	@Override
 	public void setPasswordTrackerId(long passwordTrackerId) {
+		_setOriginalValue(PASSWORDTRACKERID_COLUMN_INDEX, _passwordTrackerId);
+
 		_passwordTrackerId = passwordTrackerId;
 	}
 
@@ -316,6 +340,8 @@ public class PasswordTrackerModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
+
 		_companyId = companyId;
 	}
 
@@ -326,13 +352,7 @@ public class PasswordTrackerModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask = -1L;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_setOriginalValue(USERID_COLUMN_INDEX, _userId);
 
 		_userId = userId;
 	}
@@ -354,7 +374,7 @@ public class PasswordTrackerModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return _getOriginalValue(USERID_COLUMN_INDEX, _userId);
 	}
 
 	@Override
@@ -364,7 +384,7 @@ public class PasswordTrackerModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
+		_setOriginalValue(CREATEDATE_COLUMN_INDEX, _createDate);
 
 		_createDate = createDate;
 	}
@@ -381,6 +401,8 @@ public class PasswordTrackerModelImpl
 
 	@Override
 	public void setPassword(String password) {
+		_setOriginalValue(PASSWORD_COLUMN_INDEX, _password);
+
 		_password = password;
 	}
 
@@ -503,14 +525,9 @@ public class PasswordTrackerModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		PasswordTrackerModelImpl passwordTrackerModelImpl = this;
+		_columnBitmask = 0;
 
-		passwordTrackerModelImpl._originalUserId =
-			passwordTrackerModelImpl._userId;
-
-		passwordTrackerModelImpl._setOriginalUserId = false;
-
-		passwordTrackerModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -609,6 +626,37 @@ public class PasswordTrackerModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[6];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, PasswordTracker>
@@ -620,11 +668,13 @@ public class PasswordTrackerModelImpl
 	private long _passwordTrackerId;
 	private long _companyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private Date _createDate;
 	private String _password;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private PasswordTracker _escapedModel;
 
 }

@@ -99,7 +99,18 @@ public class TestEntityModelImpl
 			"value.object.finder.cache.enabled.com.liferay.external.data.source.test.model.TestEntity"),
 		true);
 
-	public static final boolean COLUMN_BITMASK_ENABLED = false;
+	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(
+		com.liferay.external.data.source.test.service.util.ServiceProps.get(
+			"value.object.column.bitmask.enabled.com.liferay.external.data.source.test.model.TestEntity"),
+		true);
+
+	public static final long ID_COLUMN_BITMASK = 1L;
+
+	public static final long DATA_COLUMN_BITMASK = 2L;
+
+	public static final int ID_COLUMN_INDEX = 0;
+
+	public static final int DATA_COLUMN_INDEX = 1;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.external.data.source.test.service.util.ServiceProps.get(
@@ -251,6 +262,8 @@ public class TestEntityModelImpl
 
 	@Override
 	public void setId(long id) {
+		_setOriginalValue(ID_COLUMN_INDEX, _id);
+
 		_id = id;
 	}
 
@@ -266,7 +279,13 @@ public class TestEntityModelImpl
 
 	@Override
 	public void setData(String data) {
+		_setOriginalValue(DATA_COLUMN_INDEX, _data);
+
 		_data = data;
+	}
+
+	public long getColumnBitmask() {
+		return _columnBitmask;
 	}
 
 	@Override
@@ -363,6 +382,9 @@ public class TestEntityModelImpl
 
 	@Override
 	public void resetOriginalValues() {
+		_columnBitmask = 0;
+
+		_originalValues = null;
 	}
 
 	@Override
@@ -445,6 +467,37 @@ public class TestEntityModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[2];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, TestEntity>
@@ -454,6 +507,11 @@ public class TestEntityModelImpl
 
 	private long _id;
 	private String _data;
+	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private TestEntity _escapedModel;
 
 }

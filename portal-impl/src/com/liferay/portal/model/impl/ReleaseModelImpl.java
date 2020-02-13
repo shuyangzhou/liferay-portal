@@ -121,9 +121,49 @@ public class ReleaseModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.Release"),
 		true);
 
-	public static final long SERVLETCONTEXTNAME_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
 	public static final long RELEASEID_COLUMN_BITMASK = 2L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 4L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 8L;
+
+	public static final long SERVLETCONTEXTNAME_COLUMN_BITMASK = 16L;
+
+	public static final long SCHEMAVERSION_COLUMN_BITMASK = 32L;
+
+	public static final long BUILDNUMBER_COLUMN_BITMASK = 64L;
+
+	public static final long BUILDDATE_COLUMN_BITMASK = 128L;
+
+	public static final long VERIFIED_COLUMN_BITMASK = 256L;
+
+	public static final long STATE_COLUMN_BITMASK = 512L;
+
+	public static final long TESTSTRING_COLUMN_BITMASK = 1024L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int RELEASEID_COLUMN_INDEX = 1;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 2;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 3;
+
+	public static final int SERVLETCONTEXTNAME_COLUMN_INDEX = 4;
+
+	public static final int SCHEMAVERSION_COLUMN_INDEX = 5;
+
+	public static final int BUILDNUMBER_COLUMN_INDEX = 6;
+
+	public static final int BUILDDATE_COLUMN_INDEX = 7;
+
+	public static final int VERIFIED_COLUMN_INDEX = 8;
+
+	public static final int STATE_COLUMN_INDEX = 9;
+
+	public static final int TESTSTRING_COLUMN_INDEX = 10;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -307,6 +347,8 @@ public class ReleaseModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -317,6 +359,8 @@ public class ReleaseModelImpl
 
 	@Override
 	public void setReleaseId(long releaseId) {
+		_setOriginalValue(RELEASEID_COLUMN_INDEX, _releaseId);
+
 		_releaseId = releaseId;
 	}
 
@@ -327,6 +371,8 @@ public class ReleaseModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_setOriginalValue(CREATEDATE_COLUMN_INDEX, _createDate);
+
 		_createDate = createDate;
 	}
 
@@ -336,12 +382,12 @@ public class ReleaseModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		_setOriginalValue(MODIFIEDDATE_COLUMN_INDEX, _modifiedDate);
 
 		_modifiedDate = modifiedDate;
 	}
@@ -358,17 +404,15 @@ public class ReleaseModelImpl
 
 	@Override
 	public void setServletContextName(String servletContextName) {
-		_columnBitmask |= SERVLETCONTEXTNAME_COLUMN_BITMASK;
-
-		if (_originalServletContextName == null) {
-			_originalServletContextName = _servletContextName;
-		}
+		_setOriginalValue(SERVLETCONTEXTNAME_COLUMN_INDEX, _servletContextName);
 
 		_servletContextName = servletContextName;
 	}
 
 	public String getOriginalServletContextName() {
-		return GetterUtil.getString(_originalServletContextName);
+		return GetterUtil.getString(
+			_getOriginalValue(
+				SERVLETCONTEXTNAME_COLUMN_INDEX, _servletContextName));
 	}
 
 	@Override
@@ -383,6 +427,8 @@ public class ReleaseModelImpl
 
 	@Override
 	public void setSchemaVersion(String schemaVersion) {
+		_setOriginalValue(SCHEMAVERSION_COLUMN_INDEX, _schemaVersion);
+
 		_schemaVersion = schemaVersion;
 	}
 
@@ -393,6 +439,8 @@ public class ReleaseModelImpl
 
 	@Override
 	public void setBuildNumber(int buildNumber) {
+		_setOriginalValue(BUILDNUMBER_COLUMN_INDEX, _buildNumber);
+
 		_buildNumber = buildNumber;
 	}
 
@@ -403,6 +451,8 @@ public class ReleaseModelImpl
 
 	@Override
 	public void setBuildDate(Date buildDate) {
+		_setOriginalValue(BUILDDATE_COLUMN_INDEX, _buildDate);
+
 		_buildDate = buildDate;
 	}
 
@@ -418,6 +468,8 @@ public class ReleaseModelImpl
 
 	@Override
 	public void setVerified(boolean verified) {
+		_setOriginalValue(VERIFIED_COLUMN_INDEX, _verified);
+
 		_verified = verified;
 	}
 
@@ -428,6 +480,8 @@ public class ReleaseModelImpl
 
 	@Override
 	public void setState(int state) {
+		_setOriginalValue(STATE_COLUMN_INDEX, _state);
+
 		_state = state;
 	}
 
@@ -443,6 +497,8 @@ public class ReleaseModelImpl
 
 	@Override
 	public void setTestString(String testString) {
+		_setOriginalValue(TESTSTRING_COLUMN_INDEX, _testString);
+
 		_testString = testString;
 	}
 
@@ -553,14 +609,9 @@ public class ReleaseModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ReleaseModelImpl releaseModelImpl = this;
+		_columnBitmask = 0;
 
-		releaseModelImpl._setModifiedDate = false;
-
-		releaseModelImpl._originalServletContextName =
-			releaseModelImpl._servletContextName;
-
-		releaseModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -696,6 +747,37 @@ public class ReleaseModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[11];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, Release>
@@ -707,9 +789,7 @@ public class ReleaseModelImpl
 	private long _releaseId;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private String _servletContextName;
-	private String _originalServletContextName;
 	private String _schemaVersion;
 	private int _buildNumber;
 	private Date _buildDate;
@@ -717,6 +797,10 @@ public class ReleaseModelImpl
 	private int _state;
 	private String _testString;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private Release _escapedModel;
 
 }

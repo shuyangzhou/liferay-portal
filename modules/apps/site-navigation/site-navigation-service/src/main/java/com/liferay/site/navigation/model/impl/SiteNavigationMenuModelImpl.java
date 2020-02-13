@@ -120,19 +120,57 @@ public class SiteNavigationMenuModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long AUTO_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long COMPANYID_COLUMN_BITMASK = 2L;
+	public static final long UUID_COLUMN_BITMASK = 2L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 4L;
+	public static final long SITENAVIGATIONMENUID_COLUMN_BITMASK = 4L;
 
-	public static final long NAME_COLUMN_BITMASK = 8L;
+	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
-	public static final long TYPE_COLUMN_BITMASK = 16L;
+	public static final long COMPANYID_COLUMN_BITMASK = 16L;
 
-	public static final long UUID_COLUMN_BITMASK = 32L;
+	public static final long USERID_COLUMN_BITMASK = 32L;
 
-	public static final long SITENAVIGATIONMENUID_COLUMN_BITMASK = 64L;
+	public static final long USERNAME_COLUMN_BITMASK = 64L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 128L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 256L;
+
+	public static final long NAME_COLUMN_BITMASK = 512L;
+
+	public static final long TYPE_COLUMN_BITMASK = 1024L;
+
+	public static final long AUTO_COLUMN_BITMASK = 2048L;
+
+	public static final long LASTPUBLISHDATE_COLUMN_BITMASK = 4096L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int UUID_COLUMN_INDEX = 1;
+
+	public static final int SITENAVIGATIONMENUID_COLUMN_INDEX = 2;
+
+	public static final int GROUPID_COLUMN_INDEX = 3;
+
+	public static final int COMPANYID_COLUMN_INDEX = 4;
+
+	public static final int USERID_COLUMN_INDEX = 5;
+
+	public static final int USERNAME_COLUMN_INDEX = 6;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 7;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 8;
+
+	public static final int NAME_COLUMN_INDEX = 9;
+
+	public static final int TYPE_COLUMN_INDEX = 10;
+
+	public static final int AUTO_COLUMN_INDEX = 11;
+
+	public static final int LASTPUBLISHDATE_COLUMN_INDEX = 12;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -413,6 +451,8 @@ public class SiteNavigationMenuModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -429,17 +469,14 @@ public class SiteNavigationMenuModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_setOriginalValue(UUID_COLUMN_INDEX, _uuid);
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return GetterUtil.getString(
+			_getOriginalValue(UUID_COLUMN_INDEX, _uuid));
 	}
 
 	@JSON
@@ -450,6 +487,9 @@ public class SiteNavigationMenuModelImpl
 
 	@Override
 	public void setSiteNavigationMenuId(long siteNavigationMenuId) {
+		_setOriginalValue(
+			SITENAVIGATIONMENUID_COLUMN_INDEX, _siteNavigationMenuId);
+
 		_siteNavigationMenuId = siteNavigationMenuId;
 	}
 
@@ -461,19 +501,13 @@ public class SiteNavigationMenuModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_setOriginalValue(GROUPID_COLUMN_INDEX, _groupId);
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return _getOriginalValue(GROUPID_COLUMN_INDEX, _groupId);
 	}
 
 	@JSON
@@ -484,19 +518,13 @@ public class SiteNavigationMenuModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return _getOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 	}
 
 	@JSON
@@ -507,6 +535,8 @@ public class SiteNavigationMenuModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_setOriginalValue(USERID_COLUMN_INDEX, _userId);
+
 		_userId = userId;
 	}
 
@@ -539,6 +569,8 @@ public class SiteNavigationMenuModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_setOriginalValue(USERNAME_COLUMN_INDEX, _userName);
+
 		_userName = userName;
 	}
 
@@ -550,6 +582,8 @@ public class SiteNavigationMenuModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_setOriginalValue(CREATEDATE_COLUMN_INDEX, _createDate);
+
 		_createDate = createDate;
 	}
 
@@ -560,12 +594,12 @@ public class SiteNavigationMenuModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		_setOriginalValue(MODIFIEDDATE_COLUMN_INDEX, _modifiedDate);
 
 		_modifiedDate = modifiedDate;
 	}
@@ -583,17 +617,14 @@ public class SiteNavigationMenuModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask |= NAME_COLUMN_BITMASK;
-
-		if (_originalName == null) {
-			_originalName = _name;
-		}
+		_setOriginalValue(NAME_COLUMN_INDEX, _name);
 
 		_name = name;
 	}
 
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return GetterUtil.getString(
+			_getOriginalValue(NAME_COLUMN_INDEX, _name));
 	}
 
 	@JSON
@@ -604,19 +635,13 @@ public class SiteNavigationMenuModelImpl
 
 	@Override
 	public void setType(int type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
-
-		if (!_setOriginalType) {
-			_setOriginalType = true;
-
-			_originalType = _type;
-		}
+		_setOriginalValue(TYPE_COLUMN_INDEX, _type);
 
 		_type = type;
 	}
 
 	public int getOriginalType() {
-		return _originalType;
+		return _getOriginalValue(TYPE_COLUMN_INDEX, _type);
 	}
 
 	@JSON
@@ -633,19 +658,13 @@ public class SiteNavigationMenuModelImpl
 
 	@Override
 	public void setAuto(boolean auto) {
-		_columnBitmask |= AUTO_COLUMN_BITMASK;
-
-		if (!_setOriginalAuto) {
-			_setOriginalAuto = true;
-
-			_originalAuto = _auto;
-		}
+		_setOriginalValue(AUTO_COLUMN_INDEX, _auto);
 
 		_auto = auto;
 	}
 
 	public boolean getOriginalAuto() {
-		return _originalAuto;
+		return _getOriginalValue(AUTO_COLUMN_INDEX, _auto);
 	}
 
 	@JSON
@@ -656,6 +675,8 @@ public class SiteNavigationMenuModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_setOriginalValue(LASTPUBLISHDATE_COLUMN_INDEX, _lastPublishDate);
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -777,37 +798,9 @@ public class SiteNavigationMenuModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SiteNavigationMenuModelImpl siteNavigationMenuModelImpl = this;
+		_columnBitmask = 0;
 
-		siteNavigationMenuModelImpl._originalUuid =
-			siteNavigationMenuModelImpl._uuid;
-
-		siteNavigationMenuModelImpl._originalGroupId =
-			siteNavigationMenuModelImpl._groupId;
-
-		siteNavigationMenuModelImpl._setOriginalGroupId = false;
-
-		siteNavigationMenuModelImpl._originalCompanyId =
-			siteNavigationMenuModelImpl._companyId;
-
-		siteNavigationMenuModelImpl._setOriginalCompanyId = false;
-
-		siteNavigationMenuModelImpl._setModifiedDate = false;
-
-		siteNavigationMenuModelImpl._originalName =
-			siteNavigationMenuModelImpl._name;
-
-		siteNavigationMenuModelImpl._originalType =
-			siteNavigationMenuModelImpl._type;
-
-		siteNavigationMenuModelImpl._setOriginalType = false;
-
-		siteNavigationMenuModelImpl._originalAuto =
-			siteNavigationMenuModelImpl._auto;
-
-		siteNavigationMenuModelImpl._setOriginalAuto = false;
-
-		siteNavigationMenuModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -948,6 +941,37 @@ public class SiteNavigationMenuModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[13];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, SiteNavigationMenu>
@@ -960,29 +984,22 @@ public class SiteNavigationMenuModelImpl
 
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _siteNavigationMenuId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private String _name;
-	private String _originalName;
 	private int _type;
-	private int _originalType;
-	private boolean _setOriginalType;
 	private boolean _auto;
-	private boolean _originalAuto;
-	private boolean _setOriginalAuto;
 	private Date _lastPublishDate;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private SiteNavigationMenu _escapedModel;
 
 }

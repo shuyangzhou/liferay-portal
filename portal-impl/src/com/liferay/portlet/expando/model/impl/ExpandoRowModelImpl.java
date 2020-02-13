@@ -107,11 +107,25 @@ public class ExpandoRowModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.expando.kernel.model.ExpandoRow"),
 		true);
 
-	public static final long CLASSPK_COLUMN_BITMASK = 1L;
+	public static final long ROWID_COLUMN_BITMASK = 1L;
 
-	public static final long TABLEID_COLUMN_BITMASK = 2L;
+	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
-	public static final long ROWID_COLUMN_BITMASK = 4L;
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 4L;
+
+	public static final long TABLEID_COLUMN_BITMASK = 8L;
+
+	public static final long CLASSPK_COLUMN_BITMASK = 16L;
+
+	public static final int ROWID_COLUMN_INDEX = 0;
+
+	public static final int COMPANYID_COLUMN_INDEX = 1;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 2;
+
+	public static final int TABLEID_COLUMN_INDEX = 3;
+
+	public static final int CLASSPK_COLUMN_INDEX = 4;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -275,6 +289,8 @@ public class ExpandoRowModelImpl
 
 	@Override
 	public void setRowId(long rowId) {
+		_setOriginalValue(ROWID_COLUMN_INDEX, _rowId);
+
 		_rowId = rowId;
 	}
 
@@ -285,6 +301,8 @@ public class ExpandoRowModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
+
 		_companyId = companyId;
 	}
 
@@ -295,6 +313,8 @@ public class ExpandoRowModelImpl
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		_setOriginalValue(MODIFIEDDATE_COLUMN_INDEX, _modifiedDate);
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -305,19 +325,13 @@ public class ExpandoRowModelImpl
 
 	@Override
 	public void setTableId(long tableId) {
-		_columnBitmask |= TABLEID_COLUMN_BITMASK;
-
-		if (!_setOriginalTableId) {
-			_setOriginalTableId = true;
-
-			_originalTableId = _tableId;
-		}
+		_setOriginalValue(TABLEID_COLUMN_INDEX, _tableId);
 
 		_tableId = tableId;
 	}
 
 	public long getOriginalTableId() {
-		return _originalTableId;
+		return _getOriginalValue(TABLEID_COLUMN_INDEX, _tableId);
 	}
 
 	@Override
@@ -327,19 +341,13 @@ public class ExpandoRowModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
-
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
-
-			_originalClassPK = _classPK;
-		}
+		_setOriginalValue(CLASSPK_COLUMN_INDEX, _classPK);
 
 		_classPK = classPK;
 	}
 
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return _getOriginalValue(CLASSPK_COLUMN_INDEX, _classPK);
 	}
 
 	public long getColumnBitmask() {
@@ -430,17 +438,9 @@ public class ExpandoRowModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ExpandoRowModelImpl expandoRowModelImpl = this;
+		_columnBitmask = 0;
 
-		expandoRowModelImpl._originalTableId = expandoRowModelImpl._tableId;
-
-		expandoRowModelImpl._setOriginalTableId = false;
-
-		expandoRowModelImpl._originalClassPK = expandoRowModelImpl._classPK;
-
-		expandoRowModelImpl._setOriginalClassPK = false;
-
-		expandoRowModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -530,6 +530,37 @@ public class ExpandoRowModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[5];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, ExpandoRow>
@@ -541,12 +572,12 @@ public class ExpandoRowModelImpl
 	private long _companyId;
 	private Date _modifiedDate;
 	private long _tableId;
-	private long _originalTableId;
-	private boolean _setOriginalTableId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private ExpandoRow _escapedModel;
 
 }

@@ -120,19 +120,61 @@ public class KBFolderModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 2L;
+	public static final long UUID_COLUMN_BITMASK = 2L;
 
-	public static final long NAME_COLUMN_BITMASK = 4L;
+	public static final long KBFOLDERID_COLUMN_BITMASK = 4L;
 
-	public static final long PARENTKBFOLDERID_COLUMN_BITMASK = 8L;
+	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
-	public static final long URLTITLE_COLUMN_BITMASK = 16L;
+	public static final long COMPANYID_COLUMN_BITMASK = 16L;
 
-	public static final long UUID_COLUMN_BITMASK = 32L;
+	public static final long USERID_COLUMN_BITMASK = 32L;
 
-	public static final long KBFOLDERID_COLUMN_BITMASK = 64L;
+	public static final long USERNAME_COLUMN_BITMASK = 64L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 128L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 256L;
+
+	public static final long PARENTKBFOLDERID_COLUMN_BITMASK = 512L;
+
+	public static final long NAME_COLUMN_BITMASK = 1024L;
+
+	public static final long URLTITLE_COLUMN_BITMASK = 2048L;
+
+	public static final long DESCRIPTION_COLUMN_BITMASK = 4096L;
+
+	public static final long LASTPUBLISHDATE_COLUMN_BITMASK = 8192L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int UUID_COLUMN_INDEX = 1;
+
+	public static final int KBFOLDERID_COLUMN_INDEX = 2;
+
+	public static final int GROUPID_COLUMN_INDEX = 3;
+
+	public static final int COMPANYID_COLUMN_INDEX = 4;
+
+	public static final int USERID_COLUMN_INDEX = 5;
+
+	public static final int USERNAME_COLUMN_INDEX = 6;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 7;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 8;
+
+	public static final int PARENTKBFOLDERID_COLUMN_INDEX = 9;
+
+	public static final int NAME_COLUMN_INDEX = 10;
+
+	public static final int URLTITLE_COLUMN_INDEX = 11;
+
+	public static final int DESCRIPTION_COLUMN_INDEX = 12;
+
+	public static final int LASTPUBLISHDATE_COLUMN_INDEX = 13;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -383,6 +425,8 @@ public class KBFolderModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -399,17 +443,14 @@ public class KBFolderModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_setOriginalValue(UUID_COLUMN_INDEX, _uuid);
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return GetterUtil.getString(
+			_getOriginalValue(UUID_COLUMN_INDEX, _uuid));
 	}
 
 	@JSON
@@ -420,6 +461,8 @@ public class KBFolderModelImpl
 
 	@Override
 	public void setKbFolderId(long kbFolderId) {
+		_setOriginalValue(KBFOLDERID_COLUMN_INDEX, _kbFolderId);
+
 		_kbFolderId = kbFolderId;
 	}
 
@@ -431,19 +474,13 @@ public class KBFolderModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_setOriginalValue(GROUPID_COLUMN_INDEX, _groupId);
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return _getOriginalValue(GROUPID_COLUMN_INDEX, _groupId);
 	}
 
 	@JSON
@@ -454,19 +491,13 @@ public class KBFolderModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return _getOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 	}
 
 	@JSON
@@ -477,6 +508,8 @@ public class KBFolderModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_setOriginalValue(USERID_COLUMN_INDEX, _userId);
+
 		_userId = userId;
 	}
 
@@ -509,6 +542,8 @@ public class KBFolderModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_setOriginalValue(USERNAME_COLUMN_INDEX, _userName);
+
 		_userName = userName;
 	}
 
@@ -520,6 +555,8 @@ public class KBFolderModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_setOriginalValue(CREATEDATE_COLUMN_INDEX, _createDate);
+
 		_createDate = createDate;
 	}
 
@@ -530,12 +567,12 @@ public class KBFolderModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		_setOriginalValue(MODIFIEDDATE_COLUMN_INDEX, _modifiedDate);
 
 		_modifiedDate = modifiedDate;
 	}
@@ -548,19 +585,14 @@ public class KBFolderModelImpl
 
 	@Override
 	public void setParentKBFolderId(long parentKBFolderId) {
-		_columnBitmask |= PARENTKBFOLDERID_COLUMN_BITMASK;
-
-		if (!_setOriginalParentKBFolderId) {
-			_setOriginalParentKBFolderId = true;
-
-			_originalParentKBFolderId = _parentKBFolderId;
-		}
+		_setOriginalValue(PARENTKBFOLDERID_COLUMN_INDEX, _parentKBFolderId);
 
 		_parentKBFolderId = parentKBFolderId;
 	}
 
 	public long getOriginalParentKBFolderId() {
-		return _originalParentKBFolderId;
+		return _getOriginalValue(
+			PARENTKBFOLDERID_COLUMN_INDEX, _parentKBFolderId);
 	}
 
 	@JSON
@@ -576,17 +608,14 @@ public class KBFolderModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask |= NAME_COLUMN_BITMASK;
-
-		if (_originalName == null) {
-			_originalName = _name;
-		}
+		_setOriginalValue(NAME_COLUMN_INDEX, _name);
 
 		_name = name;
 	}
 
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return GetterUtil.getString(
+			_getOriginalValue(NAME_COLUMN_INDEX, _name));
 	}
 
 	@JSON
@@ -602,17 +631,14 @@ public class KBFolderModelImpl
 
 	@Override
 	public void setUrlTitle(String urlTitle) {
-		_columnBitmask |= URLTITLE_COLUMN_BITMASK;
-
-		if (_originalUrlTitle == null) {
-			_originalUrlTitle = _urlTitle;
-		}
+		_setOriginalValue(URLTITLE_COLUMN_INDEX, _urlTitle);
 
 		_urlTitle = urlTitle;
 	}
 
 	public String getOriginalUrlTitle() {
-		return GetterUtil.getString(_originalUrlTitle);
+		return GetterUtil.getString(
+			_getOriginalValue(URLTITLE_COLUMN_INDEX, _urlTitle));
 	}
 
 	@JSON
@@ -628,6 +654,8 @@ public class KBFolderModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_setOriginalValue(DESCRIPTION_COLUMN_INDEX, _description);
+
 		_description = description;
 	}
 
@@ -639,6 +667,8 @@ public class KBFolderModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_setOriginalValue(LASTPUBLISHDATE_COLUMN_INDEX, _lastPublishDate);
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -758,30 +788,9 @@ public class KBFolderModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		KBFolderModelImpl kbFolderModelImpl = this;
+		_columnBitmask = 0;
 
-		kbFolderModelImpl._originalUuid = kbFolderModelImpl._uuid;
-
-		kbFolderModelImpl._originalGroupId = kbFolderModelImpl._groupId;
-
-		kbFolderModelImpl._setOriginalGroupId = false;
-
-		kbFolderModelImpl._originalCompanyId = kbFolderModelImpl._companyId;
-
-		kbFolderModelImpl._setOriginalCompanyId = false;
-
-		kbFolderModelImpl._setModifiedDate = false;
-
-		kbFolderModelImpl._originalParentKBFolderId =
-			kbFolderModelImpl._parentKBFolderId;
-
-		kbFolderModelImpl._setOriginalParentKBFolderId = false;
-
-		kbFolderModelImpl._originalName = kbFolderModelImpl._name;
-
-		kbFolderModelImpl._originalUrlTitle = kbFolderModelImpl._urlTitle;
-
-		kbFolderModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -933,6 +942,37 @@ public class KBFolderModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[14];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, KBFolder>
@@ -945,29 +985,23 @@ public class KBFolderModelImpl
 
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _kbFolderId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _parentKBFolderId;
-	private long _originalParentKBFolderId;
-	private boolean _setOriginalParentKBFolderId;
 	private String _name;
-	private String _originalName;
 	private String _urlTitle;
-	private String _originalUrlTitle;
 	private String _description;
 	private Date _lastPublishDate;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private KBFolder _escapedModel;
 
 }

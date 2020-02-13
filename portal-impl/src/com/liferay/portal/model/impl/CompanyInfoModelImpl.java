@@ -109,9 +109,21 @@ public class CompanyInfoModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.CompanyInfo"),
 		true);
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
 	public static final long COMPANYINFOID_COLUMN_BITMASK = 2L;
+
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
+
+	public static final long KEY_COLUMN_BITMASK = 8L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int COMPANYINFOID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int KEY_COLUMN_INDEX = 3;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -275,6 +287,8 @@ public class CompanyInfoModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -285,6 +299,8 @@ public class CompanyInfoModelImpl
 
 	@Override
 	public void setCompanyInfoId(long companyInfoId) {
+		_setOriginalValue(COMPANYINFOID_COLUMN_INDEX, _companyInfoId);
+
 		_companyInfoId = companyInfoId;
 	}
 
@@ -295,19 +311,13 @@ public class CompanyInfoModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return _getOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 	}
 
 	@Override
@@ -322,6 +332,8 @@ public class CompanyInfoModelImpl
 
 	@Override
 	public void setKey(String key) {
+		_setOriginalValue(KEY_COLUMN_INDEX, _key);
+
 		_key = key;
 	}
 
@@ -425,14 +437,9 @@ public class CompanyInfoModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		CompanyInfoModelImpl companyInfoModelImpl = this;
+		_columnBitmask = 0;
 
-		companyInfoModelImpl._originalCompanyId =
-			companyInfoModelImpl._companyId;
-
-		companyInfoModelImpl._setOriginalCompanyId = false;
-
-		companyInfoModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -520,6 +527,37 @@ public class CompanyInfoModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[4];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, CompanyInfo>
@@ -530,10 +568,12 @@ public class CompanyInfoModelImpl
 	private long _mvccVersion;
 	private long _companyInfoId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private String _key;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private CompanyInfo _escapedModel;
 
 }

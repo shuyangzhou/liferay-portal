@@ -104,9 +104,41 @@ public class AttachmentModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long MESSAGEID_COLUMN_BITMASK = 1L;
+	public static final long ATTACHMENTID_COLUMN_BITMASK = 1L;
 
-	public static final long ATTACHMENTID_COLUMN_BITMASK = 2L;
+	public static final long COMPANYID_COLUMN_BITMASK = 2L;
+
+	public static final long USERID_COLUMN_BITMASK = 4L;
+
+	public static final long ACCOUNTID_COLUMN_BITMASK = 8L;
+
+	public static final long FOLDERID_COLUMN_BITMASK = 16L;
+
+	public static final long MESSAGEID_COLUMN_BITMASK = 32L;
+
+	public static final long CONTENTPATH_COLUMN_BITMASK = 64L;
+
+	public static final long FILENAME_COLUMN_BITMASK = 128L;
+
+	public static final long SIZE_COLUMN_BITMASK = 256L;
+
+	public static final int ATTACHMENTID_COLUMN_INDEX = 0;
+
+	public static final int COMPANYID_COLUMN_INDEX = 1;
+
+	public static final int USERID_COLUMN_INDEX = 2;
+
+	public static final int ACCOUNTID_COLUMN_INDEX = 3;
+
+	public static final int FOLDERID_COLUMN_INDEX = 4;
+
+	public static final int MESSAGEID_COLUMN_INDEX = 5;
+
+	public static final int CONTENTPATH_COLUMN_INDEX = 6;
+
+	public static final int FILENAME_COLUMN_INDEX = 7;
+
+	public static final int SIZE_COLUMN_INDEX = 8;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -290,6 +322,8 @@ public class AttachmentModelImpl
 
 	@Override
 	public void setAttachmentId(long attachmentId) {
+		_setOriginalValue(ATTACHMENTID_COLUMN_INDEX, _attachmentId);
+
 		_attachmentId = attachmentId;
 	}
 
@@ -300,6 +334,8 @@ public class AttachmentModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
+
 		_companyId = companyId;
 	}
 
@@ -310,6 +346,8 @@ public class AttachmentModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_setOriginalValue(USERID_COLUMN_INDEX, _userId);
+
 		_userId = userId;
 	}
 
@@ -336,6 +374,8 @@ public class AttachmentModelImpl
 
 	@Override
 	public void setAccountId(long accountId) {
+		_setOriginalValue(ACCOUNTID_COLUMN_INDEX, _accountId);
+
 		_accountId = accountId;
 	}
 
@@ -346,6 +386,8 @@ public class AttachmentModelImpl
 
 	@Override
 	public void setFolderId(long folderId) {
+		_setOriginalValue(FOLDERID_COLUMN_INDEX, _folderId);
+
 		_folderId = folderId;
 	}
 
@@ -356,19 +398,13 @@ public class AttachmentModelImpl
 
 	@Override
 	public void setMessageId(long messageId) {
-		_columnBitmask |= MESSAGEID_COLUMN_BITMASK;
-
-		if (!_setOriginalMessageId) {
-			_setOriginalMessageId = true;
-
-			_originalMessageId = _messageId;
-		}
+		_setOriginalValue(MESSAGEID_COLUMN_INDEX, _messageId);
 
 		_messageId = messageId;
 	}
 
 	public long getOriginalMessageId() {
-		return _originalMessageId;
+		return _getOriginalValue(MESSAGEID_COLUMN_INDEX, _messageId);
 	}
 
 	@Override
@@ -383,6 +419,8 @@ public class AttachmentModelImpl
 
 	@Override
 	public void setContentPath(String contentPath) {
+		_setOriginalValue(CONTENTPATH_COLUMN_INDEX, _contentPath);
+
 		_contentPath = contentPath;
 	}
 
@@ -398,6 +436,8 @@ public class AttachmentModelImpl
 
 	@Override
 	public void setFileName(String fileName) {
+		_setOriginalValue(FILENAME_COLUMN_INDEX, _fileName);
+
 		_fileName = fileName;
 	}
 
@@ -408,6 +448,8 @@ public class AttachmentModelImpl
 
 	@Override
 	public void setSize(long size) {
+		_setOriginalValue(SIZE_COLUMN_INDEX, _size);
+
 		_size = size;
 	}
 
@@ -516,13 +558,9 @@ public class AttachmentModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AttachmentModelImpl attachmentModelImpl = this;
+		_columnBitmask = 0;
 
-		attachmentModelImpl._originalMessageId = attachmentModelImpl._messageId;
-
-		attachmentModelImpl._setOriginalMessageId = false;
-
-		attachmentModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -625,6 +663,37 @@ public class AttachmentModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[9];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, Attachment>
@@ -641,12 +710,14 @@ public class AttachmentModelImpl
 	private long _accountId;
 	private long _folderId;
 	private long _messageId;
-	private long _originalMessageId;
-	private boolean _setOriginalMessageId;
 	private String _contentPath;
 	private String _fileName;
 	private long _size;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private Attachment _escapedModel;
 
 }

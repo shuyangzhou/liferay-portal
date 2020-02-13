@@ -115,11 +115,21 @@ public class VersionedEntryVersionModelImpl
 				"value.object.column.bitmask.enabled.com.liferay.portal.tools.service.builder.test.model.VersionedEntryVersion"),
 		true);
 
-	public static final long GROUPID_COLUMN_BITMASK = 1L;
+	public static final long VERSIONEDENTRYVERSIONID_COLUMN_BITMASK = 1L;
 
 	public static final long VERSION_COLUMN_BITMASK = 2L;
 
 	public static final long VERSIONEDENTRYID_COLUMN_BITMASK = 4L;
+
+	public static final long GROUPID_COLUMN_BITMASK = 8L;
+
+	public static final int VERSIONEDENTRYVERSIONID_COLUMN_INDEX = 0;
+
+	public static final int VERSION_COLUMN_INDEX = 1;
+
+	public static final int VERSIONEDENTRYID_COLUMN_INDEX = 2;
+
+	public static final int GROUPID_COLUMN_INDEX = 3;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.tools.service.builder.test.service.util.ServiceProps.
@@ -324,6 +334,9 @@ public class VersionedEntryVersionModelImpl
 
 	@Override
 	public void setVersionedEntryVersionId(long versionedEntryVersionId) {
+		_setOriginalValue(
+			VERSIONEDENTRYVERSIONID_COLUMN_INDEX, _versionedEntryVersionId);
+
 		_versionedEntryVersionId = versionedEntryVersionId;
 	}
 
@@ -334,19 +347,13 @@ public class VersionedEntryVersionModelImpl
 
 	@Override
 	public void setVersion(int version) {
-		_columnBitmask = -1L;
-
-		if (!_setOriginalVersion) {
-			_setOriginalVersion = true;
-
-			_originalVersion = _version;
-		}
+		_setOriginalValue(VERSION_COLUMN_INDEX, _version);
 
 		_version = version;
 	}
 
 	public int getOriginalVersion() {
-		return _originalVersion;
+		return _getOriginalValue(VERSION_COLUMN_INDEX, _version);
 	}
 
 	@Override
@@ -356,19 +363,14 @@ public class VersionedEntryVersionModelImpl
 
 	@Override
 	public void setVersionedEntryId(long versionedEntryId) {
-		_columnBitmask |= VERSIONEDENTRYID_COLUMN_BITMASK;
-
-		if (!_setOriginalVersionedEntryId) {
-			_setOriginalVersionedEntryId = true;
-
-			_originalVersionedEntryId = _versionedEntryId;
-		}
+		_setOriginalValue(VERSIONEDENTRYID_COLUMN_INDEX, _versionedEntryId);
 
 		_versionedEntryId = versionedEntryId;
 	}
 
 	public long getOriginalVersionedEntryId() {
-		return _originalVersionedEntryId;
+		return _getOriginalValue(
+			VERSIONEDENTRYID_COLUMN_INDEX, _versionedEntryId);
 	}
 
 	@Override
@@ -378,19 +380,13 @@ public class VersionedEntryVersionModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_setOriginalValue(GROUPID_COLUMN_INDEX, _groupId);
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return _getOriginalValue(GROUPID_COLUMN_INDEX, _groupId);
 	}
 
 	public long getColumnBitmask() {
@@ -504,24 +500,9 @@ public class VersionedEntryVersionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		VersionedEntryVersionModelImpl versionedEntryVersionModelImpl = this;
+		_columnBitmask = 0;
 
-		versionedEntryVersionModelImpl._originalVersion =
-			versionedEntryVersionModelImpl._version;
-
-		versionedEntryVersionModelImpl._setOriginalVersion = false;
-
-		versionedEntryVersionModelImpl._originalVersionedEntryId =
-			versionedEntryVersionModelImpl._versionedEntryId;
-
-		versionedEntryVersionModelImpl._setOriginalVersionedEntryId = false;
-
-		versionedEntryVersionModelImpl._originalGroupId =
-			versionedEntryVersionModelImpl._groupId;
-
-		versionedEntryVersionModelImpl._setOriginalGroupId = false;
-
-		versionedEntryVersionModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -607,6 +588,37 @@ public class VersionedEntryVersionModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[4];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, VersionedEntryVersion>
@@ -616,15 +628,13 @@ public class VersionedEntryVersionModelImpl
 
 	private long _versionedEntryVersionId;
 	private int _version;
-	private int _originalVersion;
-	private boolean _setOriginalVersion;
 	private long _versionedEntryId;
-	private long _originalVersionedEntryId;
-	private boolean _setOriginalVersionedEntryId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private VersionedEntryVersion _escapedModel;
 
 }

@@ -143,19 +143,81 @@ public class OrganizationModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.Organization"),
 		true);
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long EXTERNALREFERENCECODE_COLUMN_BITMASK = 2L;
+	public static final long UUID_COLUMN_BITMASK = 2L;
 
-	public static final long NAME_COLUMN_BITMASK = 4L;
+	public static final long EXTERNALREFERENCECODE_COLUMN_BITMASK = 4L;
 
 	public static final long ORGANIZATIONID_COLUMN_BITMASK = 8L;
 
-	public static final long PARENTORGANIZATIONID_COLUMN_BITMASK = 16L;
+	public static final long COMPANYID_COLUMN_BITMASK = 16L;
 
-	public static final long TREEPATH_COLUMN_BITMASK = 32L;
+	public static final long USERID_COLUMN_BITMASK = 32L;
 
-	public static final long UUID_COLUMN_BITMASK = 64L;
+	public static final long USERNAME_COLUMN_BITMASK = 64L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 128L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 256L;
+
+	public static final long PARENTORGANIZATIONID_COLUMN_BITMASK = 512L;
+
+	public static final long TREEPATH_COLUMN_BITMASK = 1024L;
+
+	public static final long NAME_COLUMN_BITMASK = 2048L;
+
+	public static final long TYPE_COLUMN_BITMASK = 4096L;
+
+	public static final long RECURSABLE_COLUMN_BITMASK = 8192L;
+
+	public static final long REGIONID_COLUMN_BITMASK = 16384L;
+
+	public static final long COUNTRYID_COLUMN_BITMASK = 32768L;
+
+	public static final long STATUSID_COLUMN_BITMASK = 65536L;
+
+	public static final long COMMENTS_COLUMN_BITMASK = 131072L;
+
+	public static final long LOGOID_COLUMN_BITMASK = 262144L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int UUID_COLUMN_INDEX = 1;
+
+	public static final int EXTERNALREFERENCECODE_COLUMN_INDEX = 2;
+
+	public static final int ORGANIZATIONID_COLUMN_INDEX = 3;
+
+	public static final int COMPANYID_COLUMN_INDEX = 4;
+
+	public static final int USERID_COLUMN_INDEX = 5;
+
+	public static final int USERNAME_COLUMN_INDEX = 6;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 7;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 8;
+
+	public static final int PARENTORGANIZATIONID_COLUMN_INDEX = 9;
+
+	public static final int TREEPATH_COLUMN_INDEX = 10;
+
+	public static final int NAME_COLUMN_INDEX = 11;
+
+	public static final int TYPE_COLUMN_INDEX = 12;
+
+	public static final int RECURSABLE_COLUMN_INDEX = 13;
+
+	public static final int REGIONID_COLUMN_INDEX = 14;
+
+	public static final int COUNTRYID_COLUMN_INDEX = 15;
+
+	public static final int STATUSID_COLUMN_INDEX = 16;
+
+	public static final int COMMENTS_COLUMN_INDEX = 17;
+
+	public static final int LOGOID_COLUMN_INDEX = 18;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -470,6 +532,8 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -486,17 +550,14 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_setOriginalValue(UUID_COLUMN_INDEX, _uuid);
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return GetterUtil.getString(
+			_getOriginalValue(UUID_COLUMN_INDEX, _uuid));
 	}
 
 	@JSON
@@ -512,17 +573,16 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setExternalReferenceCode(String externalReferenceCode) {
-		_columnBitmask |= EXTERNALREFERENCECODE_COLUMN_BITMASK;
-
-		if (_originalExternalReferenceCode == null) {
-			_originalExternalReferenceCode = _externalReferenceCode;
-		}
+		_setOriginalValue(
+			EXTERNALREFERENCECODE_COLUMN_INDEX, _externalReferenceCode);
 
 		_externalReferenceCode = externalReferenceCode;
 	}
 
 	public String getOriginalExternalReferenceCode() {
-		return GetterUtil.getString(_originalExternalReferenceCode);
+		return GetterUtil.getString(
+			_getOriginalValue(
+				EXTERNALREFERENCECODE_COLUMN_INDEX, _externalReferenceCode));
 	}
 
 	@JSON
@@ -533,19 +593,13 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setOrganizationId(long organizationId) {
-		_columnBitmask |= ORGANIZATIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalOrganizationId) {
-			_setOriginalOrganizationId = true;
-
-			_originalOrganizationId = _organizationId;
-		}
+		_setOriginalValue(ORGANIZATIONID_COLUMN_INDEX, _organizationId);
 
 		_organizationId = organizationId;
 	}
 
 	public long getOriginalOrganizationId() {
-		return _originalOrganizationId;
+		return _getOriginalValue(ORGANIZATIONID_COLUMN_INDEX, _organizationId);
 	}
 
 	@JSON
@@ -556,19 +610,13 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return _getOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 	}
 
 	@JSON
@@ -579,6 +627,8 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_setOriginalValue(USERID_COLUMN_INDEX, _userId);
+
 		_userId = userId;
 	}
 
@@ -611,6 +661,8 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_setOriginalValue(USERNAME_COLUMN_INDEX, _userName);
+
 		_userName = userName;
 	}
 
@@ -622,6 +674,8 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_setOriginalValue(CREATEDATE_COLUMN_INDEX, _createDate);
+
 		_createDate = createDate;
 	}
 
@@ -632,12 +686,12 @@ public class OrganizationModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		_setOriginalValue(MODIFIEDDATE_COLUMN_INDEX, _modifiedDate);
 
 		_modifiedDate = modifiedDate;
 	}
@@ -650,19 +704,15 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setParentOrganizationId(long parentOrganizationId) {
-		_columnBitmask |= PARENTORGANIZATIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalParentOrganizationId) {
-			_setOriginalParentOrganizationId = true;
-
-			_originalParentOrganizationId = _parentOrganizationId;
-		}
+		_setOriginalValue(
+			PARENTORGANIZATIONID_COLUMN_INDEX, _parentOrganizationId);
 
 		_parentOrganizationId = parentOrganizationId;
 	}
 
 	public long getOriginalParentOrganizationId() {
-		return _originalParentOrganizationId;
+		return _getOriginalValue(
+			PARENTORGANIZATIONID_COLUMN_INDEX, _parentOrganizationId);
 	}
 
 	@JSON
@@ -678,17 +728,14 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setTreePath(String treePath) {
-		_columnBitmask |= TREEPATH_COLUMN_BITMASK;
-
-		if (_originalTreePath == null) {
-			_originalTreePath = _treePath;
-		}
+		_setOriginalValue(TREEPATH_COLUMN_INDEX, _treePath);
 
 		_treePath = treePath;
 	}
 
 	public String getOriginalTreePath() {
-		return GetterUtil.getString(_originalTreePath);
+		return GetterUtil.getString(
+			_getOriginalValue(TREEPATH_COLUMN_INDEX, _treePath));
 	}
 
 	@JSON
@@ -704,17 +751,14 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
-
-		if (_originalName == null) {
-			_originalName = _name;
-		}
+		_setOriginalValue(NAME_COLUMN_INDEX, _name);
 
 		_name = name;
 	}
 
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return GetterUtil.getString(
+			_getOriginalValue(NAME_COLUMN_INDEX, _name));
 	}
 
 	@JSON
@@ -730,6 +774,8 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setType(String type) {
+		_setOriginalValue(TYPE_COLUMN_INDEX, _type);
+
 		_type = type;
 	}
 
@@ -747,6 +793,8 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setRecursable(boolean recursable) {
+		_setOriginalValue(RECURSABLE_COLUMN_INDEX, _recursable);
+
 		_recursable = recursable;
 	}
 
@@ -758,6 +806,8 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setRegionId(long regionId) {
+		_setOriginalValue(REGIONID_COLUMN_INDEX, _regionId);
+
 		_regionId = regionId;
 	}
 
@@ -769,6 +819,8 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setCountryId(long countryId) {
+		_setOriginalValue(COUNTRYID_COLUMN_INDEX, _countryId);
+
 		_countryId = countryId;
 	}
 
@@ -780,6 +832,8 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setStatusId(long statusId) {
+		_setOriginalValue(STATUSID_COLUMN_INDEX, _statusId);
+
 		_statusId = statusId;
 	}
 
@@ -796,6 +850,8 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setComments(String comments) {
+		_setOriginalValue(COMMENTS_COLUMN_INDEX, _comments);
+
 		_comments = comments;
 	}
 
@@ -807,6 +863,8 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setLogoId(long logoId) {
+		_setOriginalValue(LOGOID_COLUMN_INDEX, _logoId);
+
 		_logoId = logoId;
 	}
 
@@ -929,36 +987,9 @@ public class OrganizationModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		OrganizationModelImpl organizationModelImpl = this;
+		_columnBitmask = 0;
 
-		organizationModelImpl._originalUuid = organizationModelImpl._uuid;
-
-		organizationModelImpl._originalExternalReferenceCode =
-			organizationModelImpl._externalReferenceCode;
-
-		organizationModelImpl._originalOrganizationId =
-			organizationModelImpl._organizationId;
-
-		organizationModelImpl._setOriginalOrganizationId = false;
-
-		organizationModelImpl._originalCompanyId =
-			organizationModelImpl._companyId;
-
-		organizationModelImpl._setOriginalCompanyId = false;
-
-		organizationModelImpl._setModifiedDate = false;
-
-		organizationModelImpl._originalParentOrganizationId =
-			organizationModelImpl._parentOrganizationId;
-
-		organizationModelImpl._setOriginalParentOrganizationId = false;
-
-		organizationModelImpl._originalTreePath =
-			organizationModelImpl._treePath;
-
-		organizationModelImpl._originalName = organizationModelImpl._name;
-
-		organizationModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -1130,6 +1161,37 @@ public class OrganizationModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[19];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, Organization>
@@ -1139,27 +1201,16 @@ public class OrganizationModelImpl
 
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private String _externalReferenceCode;
-	private String _originalExternalReferenceCode;
 	private long _organizationId;
-	private long _originalOrganizationId;
-	private boolean _setOriginalOrganizationId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _parentOrganizationId;
-	private long _originalParentOrganizationId;
-	private boolean _setOriginalParentOrganizationId;
 	private String _treePath;
-	private String _originalTreePath;
 	private String _name;
-	private String _originalName;
 	private String _type;
 	private boolean _recursable;
 	private long _regionId;
@@ -1168,6 +1219,10 @@ public class OrganizationModelImpl
 	private String _comments;
 	private long _logoId;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private Organization _escapedModel;
 
 }

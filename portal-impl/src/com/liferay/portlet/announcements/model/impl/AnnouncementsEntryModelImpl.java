@@ -144,21 +144,77 @@ public class AnnouncementsEntryModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.announcements.kernel.model.AnnouncementsEntry"),
 		true);
 
-	public static final long ALERT_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long CLASSNAMEID_COLUMN_BITMASK = 2L;
+	public static final long UUID_COLUMN_BITMASK = 2L;
 
-	public static final long CLASSPK_COLUMN_BITMASK = 4L;
+	public static final long ENTRYID_COLUMN_BITMASK = 4L;
 
 	public static final long COMPANYID_COLUMN_BITMASK = 8L;
 
 	public static final long USERID_COLUMN_BITMASK = 16L;
 
-	public static final long UUID_COLUMN_BITMASK = 32L;
+	public static final long USERNAME_COLUMN_BITMASK = 32L;
 
-	public static final long PRIORITY_COLUMN_BITMASK = 64L;
+	public static final long CREATEDATE_COLUMN_BITMASK = 64L;
 
 	public static final long MODIFIEDDATE_COLUMN_BITMASK = 128L;
+
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 256L;
+
+	public static final long CLASSPK_COLUMN_BITMASK = 512L;
+
+	public static final long TITLE_COLUMN_BITMASK = 1024L;
+
+	public static final long CONTENT_COLUMN_BITMASK = 2048L;
+
+	public static final long URL_COLUMN_BITMASK = 4096L;
+
+	public static final long TYPE_COLUMN_BITMASK = 8192L;
+
+	public static final long DISPLAYDATE_COLUMN_BITMASK = 16384L;
+
+	public static final long EXPIRATIONDATE_COLUMN_BITMASK = 32768L;
+
+	public static final long PRIORITY_COLUMN_BITMASK = 65536L;
+
+	public static final long ALERT_COLUMN_BITMASK = 131072L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int UUID_COLUMN_INDEX = 1;
+
+	public static final int ENTRYID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int USERID_COLUMN_INDEX = 4;
+
+	public static final int USERNAME_COLUMN_INDEX = 5;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 6;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 7;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 8;
+
+	public static final int CLASSPK_COLUMN_INDEX = 9;
+
+	public static final int TITLE_COLUMN_INDEX = 10;
+
+	public static final int CONTENT_COLUMN_INDEX = 11;
+
+	public static final int URL_COLUMN_INDEX = 12;
+
+	public static final int TYPE_COLUMN_INDEX = 13;
+
+	public static final int DISPLAYDATE_COLUMN_INDEX = 14;
+
+	public static final int EXPIRATIONDATE_COLUMN_INDEX = 15;
+
+	public static final int PRIORITY_COLUMN_INDEX = 16;
+
+	public static final int ALERT_COLUMN_INDEX = 17;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -465,6 +521,8 @@ public class AnnouncementsEntryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -481,17 +539,14 @@ public class AnnouncementsEntryModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_setOriginalValue(UUID_COLUMN_INDEX, _uuid);
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return GetterUtil.getString(
+			_getOriginalValue(UUID_COLUMN_INDEX, _uuid));
 	}
 
 	@JSON
@@ -502,6 +557,8 @@ public class AnnouncementsEntryModelImpl
 
 	@Override
 	public void setEntryId(long entryId) {
+		_setOriginalValue(ENTRYID_COLUMN_INDEX, _entryId);
+
 		_entryId = entryId;
 	}
 
@@ -513,19 +570,13 @@ public class AnnouncementsEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return _getOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 	}
 
 	@JSON
@@ -536,13 +587,7 @@ public class AnnouncementsEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_setOriginalValue(USERID_COLUMN_INDEX, _userId);
 
 		_userId = userId;
 	}
@@ -564,7 +609,7 @@ public class AnnouncementsEntryModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return _getOriginalValue(USERID_COLUMN_INDEX, _userId);
 	}
 
 	@JSON
@@ -580,6 +625,8 @@ public class AnnouncementsEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_setOriginalValue(USERNAME_COLUMN_INDEX, _userName);
+
 		_userName = userName;
 	}
 
@@ -591,6 +638,8 @@ public class AnnouncementsEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_setOriginalValue(CREATEDATE_COLUMN_INDEX, _createDate);
+
 		_createDate = createDate;
 	}
 
@@ -601,14 +650,12 @@ public class AnnouncementsEntryModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
-
-		_columnBitmask = -1L;
+		_setOriginalValue(MODIFIEDDATE_COLUMN_INDEX, _modifiedDate);
 
 		_modifiedDate = modifiedDate;
 	}
@@ -641,19 +688,13 @@ public class AnnouncementsEntryModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
-
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
-		}
+		_setOriginalValue(CLASSNAMEID_COLUMN_INDEX, _classNameId);
 
 		_classNameId = classNameId;
 	}
 
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return _getOriginalValue(CLASSNAMEID_COLUMN_INDEX, _classNameId);
 	}
 
 	@JSON
@@ -664,19 +705,13 @@ public class AnnouncementsEntryModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
-
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
-
-			_originalClassPK = _classPK;
-		}
+		_setOriginalValue(CLASSPK_COLUMN_INDEX, _classPK);
 
 		_classPK = classPK;
 	}
 
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return _getOriginalValue(CLASSPK_COLUMN_INDEX, _classPK);
 	}
 
 	@JSON
@@ -692,6 +727,8 @@ public class AnnouncementsEntryModelImpl
 
 	@Override
 	public void setTitle(String title) {
+		_setOriginalValue(TITLE_COLUMN_INDEX, _title);
+
 		_title = title;
 	}
 
@@ -708,6 +745,8 @@ public class AnnouncementsEntryModelImpl
 
 	@Override
 	public void setContent(String content) {
+		_setOriginalValue(CONTENT_COLUMN_INDEX, _content);
+
 		_content = content;
 	}
 
@@ -724,6 +763,8 @@ public class AnnouncementsEntryModelImpl
 
 	@Override
 	public void setUrl(String url) {
+		_setOriginalValue(URL_COLUMN_INDEX, _url);
+
 		_url = url;
 	}
 
@@ -740,6 +781,8 @@ public class AnnouncementsEntryModelImpl
 
 	@Override
 	public void setType(String type) {
+		_setOriginalValue(TYPE_COLUMN_INDEX, _type);
+
 		_type = type;
 	}
 
@@ -751,6 +794,8 @@ public class AnnouncementsEntryModelImpl
 
 	@Override
 	public void setDisplayDate(Date displayDate) {
+		_setOriginalValue(DISPLAYDATE_COLUMN_INDEX, _displayDate);
+
 		_displayDate = displayDate;
 	}
 
@@ -762,6 +807,8 @@ public class AnnouncementsEntryModelImpl
 
 	@Override
 	public void setExpirationDate(Date expirationDate) {
+		_setOriginalValue(EXPIRATIONDATE_COLUMN_INDEX, _expirationDate);
+
 		_expirationDate = expirationDate;
 	}
 
@@ -773,7 +820,7 @@ public class AnnouncementsEntryModelImpl
 
 	@Override
 	public void setPriority(int priority) {
-		_columnBitmask = -1L;
+		_setOriginalValue(PRIORITY_COLUMN_INDEX, _priority);
 
 		_priority = priority;
 	}
@@ -792,19 +839,13 @@ public class AnnouncementsEntryModelImpl
 
 	@Override
 	public void setAlert(boolean alert) {
-		_columnBitmask |= ALERT_COLUMN_BITMASK;
-
-		if (!_setOriginalAlert) {
-			_setOriginalAlert = true;
-
-			_originalAlert = _alert;
-		}
+		_setOriginalValue(ALERT_COLUMN_INDEX, _alert);
 
 		_alert = alert;
 	}
 
 	public boolean getOriginalAlert() {
-		return _originalAlert;
+		return _getOriginalValue(ALERT_COLUMN_INDEX, _alert);
 	}
 
 	@Override
@@ -943,39 +984,9 @@ public class AnnouncementsEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AnnouncementsEntryModelImpl announcementsEntryModelImpl = this;
+		_columnBitmask = 0;
 
-		announcementsEntryModelImpl._originalUuid =
-			announcementsEntryModelImpl._uuid;
-
-		announcementsEntryModelImpl._originalCompanyId =
-			announcementsEntryModelImpl._companyId;
-
-		announcementsEntryModelImpl._setOriginalCompanyId = false;
-
-		announcementsEntryModelImpl._originalUserId =
-			announcementsEntryModelImpl._userId;
-
-		announcementsEntryModelImpl._setOriginalUserId = false;
-
-		announcementsEntryModelImpl._setModifiedDate = false;
-
-		announcementsEntryModelImpl._originalClassNameId =
-			announcementsEntryModelImpl._classNameId;
-
-		announcementsEntryModelImpl._setOriginalClassNameId = false;
-
-		announcementsEntryModelImpl._originalClassPK =
-			announcementsEntryModelImpl._classPK;
-
-		announcementsEntryModelImpl._setOriginalClassPK = false;
-
-		announcementsEntryModelImpl._originalAlert =
-			announcementsEntryModelImpl._alert;
-
-		announcementsEntryModelImpl._setOriginalAlert = false;
-
-		announcementsEntryModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -1150,6 +1161,37 @@ public class AnnouncementsEntryModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[18];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, AnnouncementsEntry>
@@ -1159,24 +1201,14 @@ public class AnnouncementsEntryModelImpl
 
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _entryId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private String _title;
 	private String _content;
 	private String _url;
@@ -1185,9 +1217,11 @@ public class AnnouncementsEntryModelImpl
 	private Date _expirationDate;
 	private int _priority;
 	private boolean _alert;
-	private boolean _originalAlert;
-	private boolean _setOriginalAlert;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private AnnouncementsEntry _escapedModel;
 
 }

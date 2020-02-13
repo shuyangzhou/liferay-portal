@@ -111,11 +111,25 @@ public class PortalPreferencesModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.PortalPreferences"),
 		true);
 
-	public static final long OWNERID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long OWNERTYPE_COLUMN_BITMASK = 2L;
+	public static final long PORTALPREFERENCESID_COLUMN_BITMASK = 2L;
 
-	public static final long PORTALPREFERENCESID_COLUMN_BITMASK = 4L;
+	public static final long OWNERID_COLUMN_BITMASK = 4L;
+
+	public static final long OWNERTYPE_COLUMN_BITMASK = 8L;
+
+	public static final long PREFERENCES_COLUMN_BITMASK = 16L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int PORTALPREFERENCESID_COLUMN_INDEX = 1;
+
+	public static final int OWNERID_COLUMN_INDEX = 2;
+
+	public static final int OWNERTYPE_COLUMN_INDEX = 3;
+
+	public static final int PREFERENCES_COLUMN_INDEX = 4;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -293,6 +307,8 @@ public class PortalPreferencesModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -303,6 +319,9 @@ public class PortalPreferencesModelImpl
 
 	@Override
 	public void setPortalPreferencesId(long portalPreferencesId) {
+		_setOriginalValue(
+			PORTALPREFERENCESID_COLUMN_INDEX, _portalPreferencesId);
+
 		_portalPreferencesId = portalPreferencesId;
 	}
 
@@ -313,19 +332,13 @@ public class PortalPreferencesModelImpl
 
 	@Override
 	public void setOwnerId(long ownerId) {
-		_columnBitmask |= OWNERID_COLUMN_BITMASK;
-
-		if (!_setOriginalOwnerId) {
-			_setOriginalOwnerId = true;
-
-			_originalOwnerId = _ownerId;
-		}
+		_setOriginalValue(OWNERID_COLUMN_INDEX, _ownerId);
 
 		_ownerId = ownerId;
 	}
 
 	public long getOriginalOwnerId() {
-		return _originalOwnerId;
+		return _getOriginalValue(OWNERID_COLUMN_INDEX, _ownerId);
 	}
 
 	@Override
@@ -335,19 +348,13 @@ public class PortalPreferencesModelImpl
 
 	@Override
 	public void setOwnerType(int ownerType) {
-		_columnBitmask |= OWNERTYPE_COLUMN_BITMASK;
-
-		if (!_setOriginalOwnerType) {
-			_setOriginalOwnerType = true;
-
-			_originalOwnerType = _ownerType;
-		}
+		_setOriginalValue(OWNERTYPE_COLUMN_INDEX, _ownerType);
 
 		_ownerType = ownerType;
 	}
 
 	public int getOriginalOwnerType() {
-		return _originalOwnerType;
+		return _getOriginalValue(OWNERTYPE_COLUMN_INDEX, _ownerType);
 	}
 
 	@Override
@@ -362,6 +369,8 @@ public class PortalPreferencesModelImpl
 
 	@Override
 	public void setPreferences(String preferences) {
+		_setOriginalValue(PREFERENCES_COLUMN_INDEX, _preferences);
+
 		_preferences = preferences;
 	}
 
@@ -467,19 +476,9 @@ public class PortalPreferencesModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		PortalPreferencesModelImpl portalPreferencesModelImpl = this;
+		_columnBitmask = 0;
 
-		portalPreferencesModelImpl._originalOwnerId =
-			portalPreferencesModelImpl._ownerId;
-
-		portalPreferencesModelImpl._setOriginalOwnerId = false;
-
-		portalPreferencesModelImpl._originalOwnerType =
-			portalPreferencesModelImpl._ownerType;
-
-		portalPreferencesModelImpl._setOriginalOwnerType = false;
-
-		portalPreferencesModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -570,6 +569,37 @@ public class PortalPreferencesModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[5];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, PortalPreferences>
@@ -580,13 +610,13 @@ public class PortalPreferencesModelImpl
 	private long _mvccVersion;
 	private long _portalPreferencesId;
 	private long _ownerId;
-	private long _originalOwnerId;
-	private boolean _setOriginalOwnerId;
 	private int _ownerType;
-	private int _originalOwnerType;
-	private boolean _setOriginalOwnerType;
 	private String _preferences;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private PortalPreferences _escapedModel;
 
 }

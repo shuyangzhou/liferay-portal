@@ -124,11 +124,53 @@ public class PowwowServerModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.powwow.model.PowwowServer"),
 		true);
 
-	public static final long ACTIVE_COLUMN_BITMASK = 1L;
+	public static final long POWWOWSERVERID_COLUMN_BITMASK = 1L;
 
-	public static final long PROVIDERTYPE_COLUMN_BITMASK = 2L;
+	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
-	public static final long NAME_COLUMN_BITMASK = 4L;
+	public static final long USERID_COLUMN_BITMASK = 4L;
+
+	public static final long USERNAME_COLUMN_BITMASK = 8L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 16L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 32L;
+
+	public static final long NAME_COLUMN_BITMASK = 64L;
+
+	public static final long PROVIDERTYPE_COLUMN_BITMASK = 128L;
+
+	public static final long URL_COLUMN_BITMASK = 256L;
+
+	public static final long APIKEY_COLUMN_BITMASK = 512L;
+
+	public static final long SECRET_COLUMN_BITMASK = 1024L;
+
+	public static final long ACTIVE_COLUMN_BITMASK = 2048L;
+
+	public static final int POWWOWSERVERID_COLUMN_INDEX = 0;
+
+	public static final int COMPANYID_COLUMN_INDEX = 1;
+
+	public static final int USERID_COLUMN_INDEX = 2;
+
+	public static final int USERNAME_COLUMN_INDEX = 3;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 4;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 5;
+
+	public static final int NAME_COLUMN_INDEX = 6;
+
+	public static final int PROVIDERTYPE_COLUMN_INDEX = 7;
+
+	public static final int URL_COLUMN_INDEX = 8;
+
+	public static final int APIKEY_COLUMN_INDEX = 9;
+
+	public static final int SECRET_COLUMN_INDEX = 10;
+
+	public static final int ACTIVE_COLUMN_INDEX = 11;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.util.service.ServiceProps.get(
@@ -323,6 +365,8 @@ public class PowwowServerModelImpl
 
 	@Override
 	public void setPowwowServerId(long powwowServerId) {
+		_setOriginalValue(POWWOWSERVERID_COLUMN_INDEX, _powwowServerId);
+
 		_powwowServerId = powwowServerId;
 	}
 
@@ -333,6 +377,8 @@ public class PowwowServerModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
+
 		_companyId = companyId;
 	}
 
@@ -343,6 +389,8 @@ public class PowwowServerModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_setOriginalValue(USERID_COLUMN_INDEX, _userId);
+
 		_userId = userId;
 	}
 
@@ -374,6 +422,8 @@ public class PowwowServerModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_setOriginalValue(USERNAME_COLUMN_INDEX, _userName);
+
 		_userName = userName;
 	}
 
@@ -384,6 +434,8 @@ public class PowwowServerModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_setOriginalValue(CREATEDATE_COLUMN_INDEX, _createDate);
+
 		_createDate = createDate;
 	}
 
@@ -393,12 +445,12 @@ public class PowwowServerModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		_setOriginalValue(MODIFIEDDATE_COLUMN_INDEX, _modifiedDate);
 
 		_modifiedDate = modifiedDate;
 	}
@@ -415,7 +467,7 @@ public class PowwowServerModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
+		_setOriginalValue(NAME_COLUMN_INDEX, _name);
 
 		_name = name;
 	}
@@ -432,17 +484,14 @@ public class PowwowServerModelImpl
 
 	@Override
 	public void setProviderType(String providerType) {
-		_columnBitmask |= PROVIDERTYPE_COLUMN_BITMASK;
-
-		if (_originalProviderType == null) {
-			_originalProviderType = _providerType;
-		}
+		_setOriginalValue(PROVIDERTYPE_COLUMN_INDEX, _providerType);
 
 		_providerType = providerType;
 	}
 
 	public String getOriginalProviderType() {
-		return GetterUtil.getString(_originalProviderType);
+		return GetterUtil.getString(
+			_getOriginalValue(PROVIDERTYPE_COLUMN_INDEX, _providerType));
 	}
 
 	@Override
@@ -457,6 +506,8 @@ public class PowwowServerModelImpl
 
 	@Override
 	public void setUrl(String url) {
+		_setOriginalValue(URL_COLUMN_INDEX, _url);
+
 		_url = url;
 	}
 
@@ -472,6 +523,8 @@ public class PowwowServerModelImpl
 
 	@Override
 	public void setApiKey(String apiKey) {
+		_setOriginalValue(APIKEY_COLUMN_INDEX, _apiKey);
+
 		_apiKey = apiKey;
 	}
 
@@ -487,6 +540,8 @@ public class PowwowServerModelImpl
 
 	@Override
 	public void setSecret(String secret) {
+		_setOriginalValue(SECRET_COLUMN_INDEX, _secret);
+
 		_secret = secret;
 	}
 
@@ -502,19 +557,13 @@ public class PowwowServerModelImpl
 
 	@Override
 	public void setActive(boolean active) {
-		_columnBitmask |= ACTIVE_COLUMN_BITMASK;
-
-		if (!_setOriginalActive) {
-			_setOriginalActive = true;
-
-			_originalActive = _active;
-		}
+		_setOriginalValue(ACTIVE_COLUMN_INDEX, _active);
 
 		_active = active;
 	}
 
 	public boolean getOriginalActive() {
-		return _originalActive;
+		return _getOriginalValue(ACTIVE_COLUMN_INDEX, _active);
 	}
 
 	public long getColumnBitmask() {
@@ -623,18 +672,9 @@ public class PowwowServerModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		PowwowServerModelImpl powwowServerModelImpl = this;
+		_columnBitmask = 0;
 
-		powwowServerModelImpl._setModifiedDate = false;
-
-		powwowServerModelImpl._originalProviderType =
-			powwowServerModelImpl._providerType;
-
-		powwowServerModelImpl._originalActive = powwowServerModelImpl._active;
-
-		powwowServerModelImpl._setOriginalActive = false;
-
-		powwowServerModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -782,6 +822,37 @@ public class PowwowServerModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[12];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, PowwowServer>
@@ -795,17 +866,17 @@ public class PowwowServerModelImpl
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private String _name;
 	private String _providerType;
-	private String _originalProviderType;
 	private String _url;
 	private String _apiKey;
 	private String _secret;
 	private boolean _active;
-	private boolean _originalActive;
-	private boolean _setOriginalActive;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private PowwowServer _escapedModel;
 
 }

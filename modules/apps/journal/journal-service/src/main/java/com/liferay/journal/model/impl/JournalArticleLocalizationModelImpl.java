@@ -102,11 +102,37 @@ public class JournalArticleLocalizationModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long ARTICLEPK_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long LANGUAGEID_COLUMN_BITMASK = 2L;
+	public static final long CTCOLLECTIONID_COLUMN_BITMASK = 2L;
 
 	public static final long ARTICLELOCALIZATIONID_COLUMN_BITMASK = 4L;
+
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
+
+	public static final long ARTICLEPK_COLUMN_BITMASK = 16L;
+
+	public static final long TITLE_COLUMN_BITMASK = 32L;
+
+	public static final long DESCRIPTION_COLUMN_BITMASK = 64L;
+
+	public static final long LANGUAGEID_COLUMN_BITMASK = 128L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int CTCOLLECTIONID_COLUMN_INDEX = 1;
+
+	public static final int ARTICLELOCALIZATIONID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int ARTICLEPK_COLUMN_INDEX = 4;
+
+	public static final int TITLE_COLUMN_INDEX = 5;
+
+	public static final int DESCRIPTION_COLUMN_INDEX = 6;
+
+	public static final int LANGUAGEID_COLUMN_INDEX = 7;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -314,6 +340,8 @@ public class JournalArticleLocalizationModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -324,6 +352,8 @@ public class JournalArticleLocalizationModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_setOriginalValue(CTCOLLECTIONID_COLUMN_INDEX, _ctCollectionId);
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -334,6 +364,9 @@ public class JournalArticleLocalizationModelImpl
 
 	@Override
 	public void setArticleLocalizationId(long articleLocalizationId) {
+		_setOriginalValue(
+			ARTICLELOCALIZATIONID_COLUMN_INDEX, _articleLocalizationId);
+
 		_articleLocalizationId = articleLocalizationId;
 	}
 
@@ -344,6 +377,8 @@ public class JournalArticleLocalizationModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
+
 		_companyId = companyId;
 	}
 
@@ -354,19 +389,13 @@ public class JournalArticleLocalizationModelImpl
 
 	@Override
 	public void setArticlePK(long articlePK) {
-		_columnBitmask |= ARTICLEPK_COLUMN_BITMASK;
-
-		if (!_setOriginalArticlePK) {
-			_setOriginalArticlePK = true;
-
-			_originalArticlePK = _articlePK;
-		}
+		_setOriginalValue(ARTICLEPK_COLUMN_INDEX, _articlePK);
 
 		_articlePK = articlePK;
 	}
 
 	public long getOriginalArticlePK() {
-		return _originalArticlePK;
+		return _getOriginalValue(ARTICLEPK_COLUMN_INDEX, _articlePK);
 	}
 
 	@Override
@@ -381,6 +410,8 @@ public class JournalArticleLocalizationModelImpl
 
 	@Override
 	public void setTitle(String title) {
+		_setOriginalValue(TITLE_COLUMN_INDEX, _title);
+
 		_title = title;
 	}
 
@@ -396,6 +427,8 @@ public class JournalArticleLocalizationModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_setOriginalValue(DESCRIPTION_COLUMN_INDEX, _description);
+
 		_description = description;
 	}
 
@@ -411,17 +444,14 @@ public class JournalArticleLocalizationModelImpl
 
 	@Override
 	public void setLanguageId(String languageId) {
-		_columnBitmask |= LANGUAGEID_COLUMN_BITMASK;
-
-		if (_originalLanguageId == null) {
-			_originalLanguageId = _languageId;
-		}
+		_setOriginalValue(LANGUAGEID_COLUMN_INDEX, _languageId);
 
 		_languageId = languageId;
 	}
 
 	public String getOriginalLanguageId() {
-		return GetterUtil.getString(_originalLanguageId);
+		return GetterUtil.getString(
+			_getOriginalValue(LANGUAGEID_COLUMN_INDEX, _languageId));
 	}
 
 	public long getColumnBitmask() {
@@ -534,18 +564,9 @@ public class JournalArticleLocalizationModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		JournalArticleLocalizationModelImpl
-			journalArticleLocalizationModelImpl = this;
+		_columnBitmask = 0;
 
-		journalArticleLocalizationModelImpl._originalArticlePK =
-			journalArticleLocalizationModelImpl._articlePK;
-
-		journalArticleLocalizationModelImpl._setOriginalArticlePK = false;
-
-		journalArticleLocalizationModelImpl._originalLanguageId =
-			journalArticleLocalizationModelImpl._languageId;
-
-		journalArticleLocalizationModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -660,6 +681,37 @@ public class JournalArticleLocalizationModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[8];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function
@@ -677,13 +729,14 @@ public class JournalArticleLocalizationModelImpl
 	private long _articleLocalizationId;
 	private long _companyId;
 	private long _articlePK;
-	private long _originalArticlePK;
-	private boolean _setOriginalArticlePK;
 	private String _title;
 	private String _description;
 	private String _languageId;
-	private String _originalLanguageId;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private JournalArticleLocalization _escapedModel;
 
 }

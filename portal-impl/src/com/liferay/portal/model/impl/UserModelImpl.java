@@ -176,35 +176,178 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.User"),
 		true);
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long CONTACTID_COLUMN_BITMASK = 2L;
+	public static final long UUID_COLUMN_BITMASK = 2L;
 
-	public static final long CREATEDATE_COLUMN_BITMASK = 4L;
+	public static final long EXTERNALREFERENCECODE_COLUMN_BITMASK = 4L;
 
-	public static final long DEFAULTUSER_COLUMN_BITMASK = 8L;
+	public static final long USERID_COLUMN_BITMASK = 8L;
 
-	public static final long EMAILADDRESS_COLUMN_BITMASK = 16L;
+	public static final long COMPANYID_COLUMN_BITMASK = 16L;
 
-	public static final long EXTERNALREFERENCECODE_COLUMN_BITMASK = 32L;
+	public static final long CREATEDATE_COLUMN_BITMASK = 32L;
 
-	public static final long FACEBOOKID_COLUMN_BITMASK = 64L;
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 64L;
 
-	public static final long GOOGLEUSERID_COLUMN_BITMASK = 128L;
+	public static final long DEFAULTUSER_COLUMN_BITMASK = 128L;
 
-	public static final long MODIFIEDDATE_COLUMN_BITMASK = 256L;
+	public static final long CONTACTID_COLUMN_BITMASK = 256L;
 
-	public static final long OPENID_COLUMN_BITMASK = 512L;
+	public static final long PASSWORD_COLUMN_BITMASK = 512L;
 
-	public static final long PORTRAITID_COLUMN_BITMASK = 1024L;
+	public static final long PASSWORDENCRYPTED_COLUMN_BITMASK = 1024L;
 
-	public static final long SCREENNAME_COLUMN_BITMASK = 2048L;
+	public static final long PASSWORDRESET_COLUMN_BITMASK = 2048L;
 
-	public static final long STATUS_COLUMN_BITMASK = 4096L;
+	public static final long PASSWORDMODIFIEDDATE_COLUMN_BITMASK = 4096L;
 
-	public static final long USERID_COLUMN_BITMASK = 8192L;
+	public static final long DIGEST_COLUMN_BITMASK = 8192L;
 
-	public static final long UUID_COLUMN_BITMASK = 16384L;
+	public static final long REMINDERQUERYQUESTION_COLUMN_BITMASK = 16384L;
+
+	public static final long REMINDERQUERYANSWER_COLUMN_BITMASK = 32768L;
+
+	public static final long GRACELOGINCOUNT_COLUMN_BITMASK = 65536L;
+
+	public static final long SCREENNAME_COLUMN_BITMASK = 131072L;
+
+	public static final long EMAILADDRESS_COLUMN_BITMASK = 262144L;
+
+	public static final long FACEBOOKID_COLUMN_BITMASK = 524288L;
+
+	public static final long GOOGLEUSERID_COLUMN_BITMASK = 1048576L;
+
+	public static final long LDAPSERVERID_COLUMN_BITMASK = 2097152L;
+
+	public static final long OPENID_COLUMN_BITMASK = 4194304L;
+
+	public static final long PORTRAITID_COLUMN_BITMASK = 8388608L;
+
+	public static final long LANGUAGEID_COLUMN_BITMASK = 16777216L;
+
+	public static final long TIMEZONEID_COLUMN_BITMASK = 33554432L;
+
+	public static final long GREETING_COLUMN_BITMASK = 67108864L;
+
+	public static final long COMMENTS_COLUMN_BITMASK = 134217728L;
+
+	public static final long FIRSTNAME_COLUMN_BITMASK = 268435456L;
+
+	public static final long MIDDLENAME_COLUMN_BITMASK = 536870912L;
+
+	public static final long LASTNAME_COLUMN_BITMASK = 1073741824L;
+
+	public static final long JOBTITLE_COLUMN_BITMASK = 2147483648L;
+
+	public static final long LOGINDATE_COLUMN_BITMASK = 4294967296L;
+
+	public static final long LOGINIP_COLUMN_BITMASK = 8589934592L;
+
+	public static final long LASTLOGINDATE_COLUMN_BITMASK = 17179869184L;
+
+	public static final long LASTLOGINIP_COLUMN_BITMASK = 34359738368L;
+
+	public static final long LASTFAILEDLOGINDATE_COLUMN_BITMASK = 68719476736L;
+
+	public static final long FAILEDLOGINATTEMPTS_COLUMN_BITMASK = 137438953472L;
+
+	public static final long LOCKOUT_COLUMN_BITMASK = 274877906944L;
+
+	public static final long LOCKOUTDATE_COLUMN_BITMASK = 549755813888L;
+
+	public static final long AGREEDTOTERMSOFUSE_COLUMN_BITMASK = 1099511627776L;
+
+	public static final long EMAILADDRESSVERIFIED_COLUMN_BITMASK =
+		2199023255552L;
+
+	public static final long STATUS_COLUMN_BITMASK = 4398046511104L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int UUID_COLUMN_INDEX = 1;
+
+	public static final int EXTERNALREFERENCECODE_COLUMN_INDEX = 2;
+
+	public static final int USERID_COLUMN_INDEX = 3;
+
+	public static final int COMPANYID_COLUMN_INDEX = 4;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 5;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 6;
+
+	public static final int DEFAULTUSER_COLUMN_INDEX = 7;
+
+	public static final int CONTACTID_COLUMN_INDEX = 8;
+
+	public static final int PASSWORD_COLUMN_INDEX = 9;
+
+	public static final int PASSWORDENCRYPTED_COLUMN_INDEX = 10;
+
+	public static final int PASSWORDRESET_COLUMN_INDEX = 11;
+
+	public static final int PASSWORDMODIFIEDDATE_COLUMN_INDEX = 12;
+
+	public static final int DIGEST_COLUMN_INDEX = 13;
+
+	public static final int REMINDERQUERYQUESTION_COLUMN_INDEX = 14;
+
+	public static final int REMINDERQUERYANSWER_COLUMN_INDEX = 15;
+
+	public static final int GRACELOGINCOUNT_COLUMN_INDEX = 16;
+
+	public static final int SCREENNAME_COLUMN_INDEX = 17;
+
+	public static final int EMAILADDRESS_COLUMN_INDEX = 18;
+
+	public static final int FACEBOOKID_COLUMN_INDEX = 19;
+
+	public static final int GOOGLEUSERID_COLUMN_INDEX = 20;
+
+	public static final int LDAPSERVERID_COLUMN_INDEX = 21;
+
+	public static final int OPENID_COLUMN_INDEX = 22;
+
+	public static final int PORTRAITID_COLUMN_INDEX = 23;
+
+	public static final int LANGUAGEID_COLUMN_INDEX = 24;
+
+	public static final int TIMEZONEID_COLUMN_INDEX = 25;
+
+	public static final int GREETING_COLUMN_INDEX = 26;
+
+	public static final int COMMENTS_COLUMN_INDEX = 27;
+
+	public static final int FIRSTNAME_COLUMN_INDEX = 28;
+
+	public static final int MIDDLENAME_COLUMN_INDEX = 29;
+
+	public static final int LASTNAME_COLUMN_INDEX = 30;
+
+	public static final int JOBTITLE_COLUMN_INDEX = 31;
+
+	public static final int LOGINDATE_COLUMN_INDEX = 32;
+
+	public static final int LOGINIP_COLUMN_INDEX = 33;
+
+	public static final int LASTLOGINDATE_COLUMN_INDEX = 34;
+
+	public static final int LASTLOGINIP_COLUMN_INDEX = 35;
+
+	public static final int LASTFAILEDLOGINDATE_COLUMN_INDEX = 36;
+
+	public static final int FAILEDLOGINATTEMPTS_COLUMN_INDEX = 37;
+
+	public static final int LOCKOUT_COLUMN_INDEX = 38;
+
+	public static final int LOCKOUTDATE_COLUMN_INDEX = 39;
+
+	public static final int AGREEDTOTERMSOFUSE_COLUMN_INDEX = 40;
+
+	public static final int EMAILADDRESSVERIFIED_COLUMN_INDEX = 41;
+
+	public static final int STATUS_COLUMN_INDEX = 42;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -656,6 +799,8 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -672,17 +817,14 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_setOriginalValue(UUID_COLUMN_INDEX, _uuid);
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return GetterUtil.getString(
+			_getOriginalValue(UUID_COLUMN_INDEX, _uuid));
 	}
 
 	@JSON
@@ -698,17 +840,16 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setExternalReferenceCode(String externalReferenceCode) {
-		_columnBitmask |= EXTERNALREFERENCECODE_COLUMN_BITMASK;
-
-		if (_originalExternalReferenceCode == null) {
-			_originalExternalReferenceCode = _externalReferenceCode;
-		}
+		_setOriginalValue(
+			EXTERNALREFERENCECODE_COLUMN_INDEX, _externalReferenceCode);
 
 		_externalReferenceCode = externalReferenceCode;
 	}
 
 	public String getOriginalExternalReferenceCode() {
-		return GetterUtil.getString(_originalExternalReferenceCode);
+		return GetterUtil.getString(
+			_getOriginalValue(
+				EXTERNALREFERENCECODE_COLUMN_INDEX, _externalReferenceCode));
 	}
 
 	@JSON
@@ -719,13 +860,7 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_setOriginalValue(USERID_COLUMN_INDEX, _userId);
 
 		_userId = userId;
 	}
@@ -747,7 +882,7 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return _getOriginalValue(USERID_COLUMN_INDEX, _userId);
 	}
 
 	@JSON
@@ -758,19 +893,13 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return _getOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 	}
 
 	@JSON
@@ -781,17 +910,13 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
-
-		if (_originalCreateDate == null) {
-			_originalCreateDate = _createDate;
-		}
+		_setOriginalValue(CREATEDATE_COLUMN_INDEX, _createDate);
 
 		_createDate = createDate;
 	}
 
 	public Date getOriginalCreateDate() {
-		return _originalCreateDate;
+		return _getOriginalValue(CREATEDATE_COLUMN_INDEX, _createDate);
 	}
 
 	@JSON
@@ -801,24 +926,18 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
-
-		_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
-
-		if (_originalModifiedDate == null) {
-			_originalModifiedDate = _modifiedDate;
-		}
+		_setOriginalValue(MODIFIEDDATE_COLUMN_INDEX, _modifiedDate);
 
 		_modifiedDate = modifiedDate;
 	}
 
 	public Date getOriginalModifiedDate() {
-		return _originalModifiedDate;
+		return _getOriginalValue(MODIFIEDDATE_COLUMN_INDEX, _modifiedDate);
 	}
 
 	@JSON
@@ -835,19 +954,13 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setDefaultUser(boolean defaultUser) {
-		_columnBitmask |= DEFAULTUSER_COLUMN_BITMASK;
-
-		if (!_setOriginalDefaultUser) {
-			_setOriginalDefaultUser = true;
-
-			_originalDefaultUser = _defaultUser;
-		}
+		_setOriginalValue(DEFAULTUSER_COLUMN_INDEX, _defaultUser);
 
 		_defaultUser = defaultUser;
 	}
 
 	public boolean getOriginalDefaultUser() {
-		return _originalDefaultUser;
+		return _getOriginalValue(DEFAULTUSER_COLUMN_INDEX, _defaultUser);
 	}
 
 	@JSON
@@ -858,19 +971,13 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setContactId(long contactId) {
-		_columnBitmask |= CONTACTID_COLUMN_BITMASK;
-
-		if (!_setOriginalContactId) {
-			_setOriginalContactId = true;
-
-			_originalContactId = _contactId;
-		}
+		_setOriginalValue(CONTACTID_COLUMN_INDEX, _contactId);
 
 		_contactId = contactId;
 	}
 
 	public long getOriginalContactId() {
-		return _originalContactId;
+		return _getOriginalValue(CONTACTID_COLUMN_INDEX, _contactId);
 	}
 
 	@JSON(include = false)
@@ -886,6 +993,8 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setPassword(String password) {
+		_setOriginalValue(PASSWORD_COLUMN_INDEX, _password);
+
 		_password = password;
 	}
 
@@ -902,6 +1011,8 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setPasswordEncrypted(boolean passwordEncrypted) {
+		_setOriginalValue(PASSWORDENCRYPTED_COLUMN_INDEX, _passwordEncrypted);
+
 		_passwordEncrypted = passwordEncrypted;
 	}
 
@@ -918,6 +1029,8 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setPasswordReset(boolean passwordReset) {
+		_setOriginalValue(PASSWORDRESET_COLUMN_INDEX, _passwordReset);
+
 		_passwordReset = passwordReset;
 	}
 
@@ -929,6 +1042,9 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setPasswordModifiedDate(Date passwordModifiedDate) {
+		_setOriginalValue(
+			PASSWORDMODIFIEDDATE_COLUMN_INDEX, _passwordModifiedDate);
+
 		_passwordModifiedDate = passwordModifiedDate;
 	}
 
@@ -945,6 +1061,8 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setDigest(String digest) {
+		_setOriginalValue(DIGEST_COLUMN_INDEX, _digest);
+
 		_digest = digest;
 	}
 
@@ -961,6 +1079,9 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setReminderQueryQuestion(String reminderQueryQuestion) {
+		_setOriginalValue(
+			REMINDERQUERYQUESTION_COLUMN_INDEX, _reminderQueryQuestion);
+
 		_reminderQueryQuestion = reminderQueryQuestion;
 	}
 
@@ -977,6 +1098,9 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setReminderQueryAnswer(String reminderQueryAnswer) {
+		_setOriginalValue(
+			REMINDERQUERYANSWER_COLUMN_INDEX, _reminderQueryAnswer);
+
 		_reminderQueryAnswer = reminderQueryAnswer;
 	}
 
@@ -988,6 +1112,8 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setGraceLoginCount(int graceLoginCount) {
+		_setOriginalValue(GRACELOGINCOUNT_COLUMN_INDEX, _graceLoginCount);
+
 		_graceLoginCount = graceLoginCount;
 	}
 
@@ -1004,17 +1130,14 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setScreenName(String screenName) {
-		_columnBitmask |= SCREENNAME_COLUMN_BITMASK;
-
-		if (_originalScreenName == null) {
-			_originalScreenName = _screenName;
-		}
+		_setOriginalValue(SCREENNAME_COLUMN_INDEX, _screenName);
 
 		_screenName = screenName;
 	}
 
 	public String getOriginalScreenName() {
-		return GetterUtil.getString(_originalScreenName);
+		return GetterUtil.getString(
+			_getOriginalValue(SCREENNAME_COLUMN_INDEX, _screenName));
 	}
 
 	@JSON
@@ -1030,17 +1153,14 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setEmailAddress(String emailAddress) {
-		_columnBitmask |= EMAILADDRESS_COLUMN_BITMASK;
-
-		if (_originalEmailAddress == null) {
-			_originalEmailAddress = _emailAddress;
-		}
+		_setOriginalValue(EMAILADDRESS_COLUMN_INDEX, _emailAddress);
 
 		_emailAddress = emailAddress;
 	}
 
 	public String getOriginalEmailAddress() {
-		return GetterUtil.getString(_originalEmailAddress);
+		return GetterUtil.getString(
+			_getOriginalValue(EMAILADDRESS_COLUMN_INDEX, _emailAddress));
 	}
 
 	@JSON
@@ -1051,19 +1171,13 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setFacebookId(long facebookId) {
-		_columnBitmask |= FACEBOOKID_COLUMN_BITMASK;
-
-		if (!_setOriginalFacebookId) {
-			_setOriginalFacebookId = true;
-
-			_originalFacebookId = _facebookId;
-		}
+		_setOriginalValue(FACEBOOKID_COLUMN_INDEX, _facebookId);
 
 		_facebookId = facebookId;
 	}
 
 	public long getOriginalFacebookId() {
-		return _originalFacebookId;
+		return _getOriginalValue(FACEBOOKID_COLUMN_INDEX, _facebookId);
 	}
 
 	@JSON
@@ -1079,17 +1193,14 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setGoogleUserId(String googleUserId) {
-		_columnBitmask |= GOOGLEUSERID_COLUMN_BITMASK;
-
-		if (_originalGoogleUserId == null) {
-			_originalGoogleUserId = _googleUserId;
-		}
+		_setOriginalValue(GOOGLEUSERID_COLUMN_INDEX, _googleUserId);
 
 		_googleUserId = googleUserId;
 	}
 
 	public String getOriginalGoogleUserId() {
-		return GetterUtil.getString(_originalGoogleUserId);
+		return GetterUtil.getString(
+			_getOriginalValue(GOOGLEUSERID_COLUMN_INDEX, _googleUserId));
 	}
 
 	@JSON
@@ -1100,6 +1211,8 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setLdapServerId(long ldapServerId) {
+		_setOriginalValue(LDAPSERVERID_COLUMN_INDEX, _ldapServerId);
+
 		_ldapServerId = ldapServerId;
 	}
 
@@ -1116,17 +1229,14 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setOpenId(String openId) {
-		_columnBitmask |= OPENID_COLUMN_BITMASK;
-
-		if (_originalOpenId == null) {
-			_originalOpenId = _openId;
-		}
+		_setOriginalValue(OPENID_COLUMN_INDEX, _openId);
 
 		_openId = openId;
 	}
 
 	public String getOriginalOpenId() {
-		return GetterUtil.getString(_originalOpenId);
+		return GetterUtil.getString(
+			_getOriginalValue(OPENID_COLUMN_INDEX, _openId));
 	}
 
 	@JSON
@@ -1137,19 +1247,13 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setPortraitId(long portraitId) {
-		_columnBitmask |= PORTRAITID_COLUMN_BITMASK;
-
-		if (!_setOriginalPortraitId) {
-			_setOriginalPortraitId = true;
-
-			_originalPortraitId = _portraitId;
-		}
+		_setOriginalValue(PORTRAITID_COLUMN_INDEX, _portraitId);
 
 		_portraitId = portraitId;
 	}
 
 	public long getOriginalPortraitId() {
-		return _originalPortraitId;
+		return _getOriginalValue(PORTRAITID_COLUMN_INDEX, _portraitId);
 	}
 
 	@JSON
@@ -1165,6 +1269,8 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setLanguageId(String languageId) {
+		_setOriginalValue(LANGUAGEID_COLUMN_INDEX, _languageId);
+
 		_languageId = languageId;
 	}
 
@@ -1181,6 +1287,8 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setTimeZoneId(String timeZoneId) {
+		_setOriginalValue(TIMEZONEID_COLUMN_INDEX, _timeZoneId);
+
 		_timeZoneId = timeZoneId;
 	}
 
@@ -1197,6 +1305,8 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setGreeting(String greeting) {
+		_setOriginalValue(GREETING_COLUMN_INDEX, _greeting);
+
 		_greeting = greeting;
 	}
 
@@ -1213,6 +1323,8 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setComments(String comments) {
+		_setOriginalValue(COMMENTS_COLUMN_INDEX, _comments);
+
 		_comments = comments;
 	}
 
@@ -1229,6 +1341,8 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setFirstName(String firstName) {
+		_setOriginalValue(FIRSTNAME_COLUMN_INDEX, _firstName);
+
 		_firstName = firstName;
 	}
 
@@ -1245,6 +1359,8 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setMiddleName(String middleName) {
+		_setOriginalValue(MIDDLENAME_COLUMN_INDEX, _middleName);
+
 		_middleName = middleName;
 	}
 
@@ -1261,6 +1377,8 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setLastName(String lastName) {
+		_setOriginalValue(LASTNAME_COLUMN_INDEX, _lastName);
+
 		_lastName = lastName;
 	}
 
@@ -1277,6 +1395,8 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setJobTitle(String jobTitle) {
+		_setOriginalValue(JOBTITLE_COLUMN_INDEX, _jobTitle);
+
 		_jobTitle = jobTitle;
 	}
 
@@ -1288,6 +1408,8 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setLoginDate(Date loginDate) {
+		_setOriginalValue(LOGINDATE_COLUMN_INDEX, _loginDate);
+
 		_loginDate = loginDate;
 	}
 
@@ -1304,6 +1426,8 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setLoginIP(String loginIP) {
+		_setOriginalValue(LOGINIP_COLUMN_INDEX, _loginIP);
+
 		_loginIP = loginIP;
 	}
 
@@ -1315,6 +1439,8 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setLastLoginDate(Date lastLoginDate) {
+		_setOriginalValue(LASTLOGINDATE_COLUMN_INDEX, _lastLoginDate);
+
 		_lastLoginDate = lastLoginDate;
 	}
 
@@ -1331,6 +1457,8 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setLastLoginIP(String lastLoginIP) {
+		_setOriginalValue(LASTLOGINIP_COLUMN_INDEX, _lastLoginIP);
+
 		_lastLoginIP = lastLoginIP;
 	}
 
@@ -1342,6 +1470,9 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setLastFailedLoginDate(Date lastFailedLoginDate) {
+		_setOriginalValue(
+			LASTFAILEDLOGINDATE_COLUMN_INDEX, _lastFailedLoginDate);
+
 		_lastFailedLoginDate = lastFailedLoginDate;
 	}
 
@@ -1353,6 +1484,9 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setFailedLoginAttempts(int failedLoginAttempts) {
+		_setOriginalValue(
+			FAILEDLOGINATTEMPTS_COLUMN_INDEX, _failedLoginAttempts);
+
 		_failedLoginAttempts = failedLoginAttempts;
 	}
 
@@ -1370,6 +1504,8 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setLockout(boolean lockout) {
+		_setOriginalValue(LOCKOUT_COLUMN_INDEX, _lockout);
+
 		_lockout = lockout;
 	}
 
@@ -1381,6 +1517,8 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setLockoutDate(Date lockoutDate) {
+		_setOriginalValue(LOCKOUTDATE_COLUMN_INDEX, _lockoutDate);
+
 		_lockoutDate = lockoutDate;
 	}
 
@@ -1398,6 +1536,8 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setAgreedToTermsOfUse(boolean agreedToTermsOfUse) {
+		_setOriginalValue(AGREEDTOTERMSOFUSE_COLUMN_INDEX, _agreedToTermsOfUse);
+
 		_agreedToTermsOfUse = agreedToTermsOfUse;
 	}
 
@@ -1415,6 +1555,9 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setEmailAddressVerified(boolean emailAddressVerified) {
+		_setOriginalValue(
+			EMAILADDRESSVERIFIED_COLUMN_INDEX, _emailAddressVerified);
+
 		_emailAddressVerified = emailAddressVerified;
 	}
 
@@ -1426,19 +1569,13 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
-
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
-
-			_originalStatus = _status;
-		}
+		_setOriginalValue(STATUS_COLUMN_INDEX, _status);
 
 		_status = status;
 	}
 
 	public int getOriginalStatus() {
-		return _originalStatus;
+		return _getOriginalValue(STATUS_COLUMN_INDEX, _status);
 	}
 
 	@Override
@@ -1586,56 +1723,9 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	@Override
 	public void resetOriginalValues() {
-		UserModelImpl userModelImpl = this;
+		_columnBitmask = 0;
 
-		userModelImpl._originalUuid = userModelImpl._uuid;
-
-		userModelImpl._originalExternalReferenceCode =
-			userModelImpl._externalReferenceCode;
-
-		userModelImpl._originalUserId = userModelImpl._userId;
-
-		userModelImpl._setOriginalUserId = false;
-
-		userModelImpl._originalCompanyId = userModelImpl._companyId;
-
-		userModelImpl._setOriginalCompanyId = false;
-
-		userModelImpl._originalCreateDate = userModelImpl._createDate;
-
-		userModelImpl._originalModifiedDate = userModelImpl._modifiedDate;
-
-		userModelImpl._setModifiedDate = false;
-
-		userModelImpl._originalDefaultUser = userModelImpl._defaultUser;
-
-		userModelImpl._setOriginalDefaultUser = false;
-
-		userModelImpl._originalContactId = userModelImpl._contactId;
-
-		userModelImpl._setOriginalContactId = false;
-
-		userModelImpl._originalScreenName = userModelImpl._screenName;
-
-		userModelImpl._originalEmailAddress = userModelImpl._emailAddress;
-
-		userModelImpl._originalFacebookId = userModelImpl._facebookId;
-
-		userModelImpl._setOriginalFacebookId = false;
-
-		userModelImpl._originalGoogleUserId = userModelImpl._googleUserId;
-
-		userModelImpl._originalOpenId = userModelImpl._openId;
-
-		userModelImpl._originalPortraitId = userModelImpl._portraitId;
-
-		userModelImpl._setOriginalPortraitId = false;
-
-		userModelImpl._originalStatus = userModelImpl._status;
-
-		userModelImpl._setOriginalStatus = false;
-
-		userModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -1968,6 +2058,37 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[43];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, User>
@@ -1977,26 +2098,13 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private String _externalReferenceCode;
-	private String _originalExternalReferenceCode;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private Date _createDate;
-	private Date _originalCreateDate;
 	private Date _modifiedDate;
-	private Date _originalModifiedDate;
-	private boolean _setModifiedDate;
 	private boolean _defaultUser;
-	private boolean _originalDefaultUser;
-	private boolean _setOriginalDefaultUser;
 	private long _contactId;
-	private long _originalContactId;
-	private boolean _setOriginalContactId;
 	private String _password;
 	private boolean _passwordEncrypted;
 	private boolean _passwordReset;
@@ -2006,20 +2114,12 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 	private String _reminderQueryAnswer;
 	private int _graceLoginCount;
 	private String _screenName;
-	private String _originalScreenName;
 	private String _emailAddress;
-	private String _originalEmailAddress;
 	private long _facebookId;
-	private long _originalFacebookId;
-	private boolean _setOriginalFacebookId;
 	private String _googleUserId;
-	private String _originalGoogleUserId;
 	private long _ldapServerId;
 	private String _openId;
-	private String _originalOpenId;
 	private long _portraitId;
-	private long _originalPortraitId;
-	private boolean _setOriginalPortraitId;
 	private String _languageId;
 	private String _timeZoneId;
 	private String _greeting;
@@ -2039,9 +2139,11 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 	private boolean _agreedToTermsOfUse;
 	private boolean _emailAddressVerified;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private User _escapedModel;
 
 }

@@ -96,9 +96,29 @@ public class DLSyncEventModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long MODIFIEDTIME_COLUMN_BITMASK = 1L;
+	public static final long SYNCEVENTID_COLUMN_BITMASK = 1L;
 
-	public static final long TYPEPK_COLUMN_BITMASK = 2L;
+	public static final long COMPANYID_COLUMN_BITMASK = 2L;
+
+	public static final long MODIFIEDTIME_COLUMN_BITMASK = 4L;
+
+	public static final long EVENT_COLUMN_BITMASK = 8L;
+
+	public static final long TYPE_COLUMN_BITMASK = 16L;
+
+	public static final long TYPEPK_COLUMN_BITMASK = 32L;
+
+	public static final int SYNCEVENTID_COLUMN_INDEX = 0;
+
+	public static final int COMPANYID_COLUMN_INDEX = 1;
+
+	public static final int MODIFIEDTIME_COLUMN_INDEX = 2;
+
+	public static final int EVENT_COLUMN_INDEX = 3;
+
+	public static final int TYPE_COLUMN_INDEX = 4;
+
+	public static final int TYPEPK_COLUMN_INDEX = 5;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -272,6 +292,8 @@ public class DLSyncEventModelImpl
 
 	@Override
 	public void setSyncEventId(long syncEventId) {
+		_setOriginalValue(SYNCEVENTID_COLUMN_INDEX, _syncEventId);
+
 		_syncEventId = syncEventId;
 	}
 
@@ -282,6 +304,8 @@ public class DLSyncEventModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
+
 		_companyId = companyId;
 	}
 
@@ -292,19 +316,13 @@ public class DLSyncEventModelImpl
 
 	@Override
 	public void setModifiedTime(long modifiedTime) {
-		_columnBitmask = -1L;
-
-		if (!_setOriginalModifiedTime) {
-			_setOriginalModifiedTime = true;
-
-			_originalModifiedTime = _modifiedTime;
-		}
+		_setOriginalValue(MODIFIEDTIME_COLUMN_INDEX, _modifiedTime);
 
 		_modifiedTime = modifiedTime;
 	}
 
 	public long getOriginalModifiedTime() {
-		return _originalModifiedTime;
+		return _getOriginalValue(MODIFIEDTIME_COLUMN_INDEX, _modifiedTime);
 	}
 
 	@Override
@@ -319,6 +337,8 @@ public class DLSyncEventModelImpl
 
 	@Override
 	public void setEvent(String event) {
+		_setOriginalValue(EVENT_COLUMN_INDEX, _event);
+
 		_event = event;
 	}
 
@@ -334,6 +354,8 @@ public class DLSyncEventModelImpl
 
 	@Override
 	public void setType(String type) {
+		_setOriginalValue(TYPE_COLUMN_INDEX, _type);
+
 		_type = type;
 	}
 
@@ -344,19 +366,13 @@ public class DLSyncEventModelImpl
 
 	@Override
 	public void setTypePK(long typePK) {
-		_columnBitmask |= TYPEPK_COLUMN_BITMASK;
-
-		if (!_setOriginalTypePK) {
-			_setOriginalTypePK = true;
-
-			_originalTypePK = _typePK;
-		}
+		_setOriginalValue(TYPEPK_COLUMN_INDEX, _typePK);
 
 		_typePK = typePK;
 	}
 
 	public long getOriginalTypePK() {
-		return _originalTypePK;
+		return _getOriginalValue(TYPEPK_COLUMN_INDEX, _typePK);
 	}
 
 	public long getColumnBitmask() {
@@ -467,18 +483,9 @@ public class DLSyncEventModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DLSyncEventModelImpl dlSyncEventModelImpl = this;
+		_columnBitmask = 0;
 
-		dlSyncEventModelImpl._originalModifiedTime =
-			dlSyncEventModelImpl._modifiedTime;
-
-		dlSyncEventModelImpl._setOriginalModifiedTime = false;
-
-		dlSyncEventModelImpl._originalTypePK = dlSyncEventModelImpl._typePK;
-
-		dlSyncEventModelImpl._setOriginalTypePK = false;
-
-		dlSyncEventModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -576,6 +583,37 @@ public class DLSyncEventModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[6];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, DLSyncEvent>
@@ -589,14 +627,14 @@ public class DLSyncEventModelImpl
 	private long _syncEventId;
 	private long _companyId;
 	private long _modifiedTime;
-	private long _originalModifiedTime;
-	private boolean _setOriginalModifiedTime;
 	private String _event;
 	private String _type;
 	private long _typePK;
-	private long _originalTypePK;
-	private boolean _setOriginalTypePK;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private DLSyncEvent _escapedModel;
 
 }

@@ -98,19 +98,33 @@ public class ModuleModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long APPID_COLUMN_BITMASK = 1L;
+	public static final long UUID_COLUMN_BITMASK = 1L;
 
-	public static final long BUNDLESYMBOLICNAME_COLUMN_BITMASK = 2L;
+	public static final long MODULEID_COLUMN_BITMASK = 2L;
 
-	public static final long BUNDLEVERSION_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
-	public static final long COMPANYID_COLUMN_BITMASK = 8L;
+	public static final long APPID_COLUMN_BITMASK = 8L;
 
-	public static final long CONTEXTNAME_COLUMN_BITMASK = 16L;
+	public static final long BUNDLESYMBOLICNAME_COLUMN_BITMASK = 16L;
 
-	public static final long UUID_COLUMN_BITMASK = 32L;
+	public static final long BUNDLEVERSION_COLUMN_BITMASK = 32L;
 
-	public static final long MODULEID_COLUMN_BITMASK = 64L;
+	public static final long CONTEXTNAME_COLUMN_BITMASK = 64L;
+
+	public static final int UUID_COLUMN_INDEX = 0;
+
+	public static final int MODULEID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int APPID_COLUMN_INDEX = 3;
+
+	public static final int BUNDLESYMBOLICNAME_COLUMN_INDEX = 4;
+
+	public static final int BUNDLEVERSION_COLUMN_INDEX = 5;
+
+	public static final int CONTEXTNAME_COLUMN_INDEX = 6;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -285,17 +299,14 @@ public class ModuleModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_setOriginalValue(UUID_COLUMN_INDEX, _uuid);
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return GetterUtil.getString(
+			_getOriginalValue(UUID_COLUMN_INDEX, _uuid));
 	}
 
 	@Override
@@ -305,6 +316,8 @@ public class ModuleModelImpl
 
 	@Override
 	public void setModuleId(long moduleId) {
+		_setOriginalValue(MODULEID_COLUMN_INDEX, _moduleId);
+
 		_moduleId = moduleId;
 	}
 
@@ -315,19 +328,13 @@ public class ModuleModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return _getOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 	}
 
 	@Override
@@ -337,19 +344,13 @@ public class ModuleModelImpl
 
 	@Override
 	public void setAppId(long appId) {
-		_columnBitmask |= APPID_COLUMN_BITMASK;
-
-		if (!_setOriginalAppId) {
-			_setOriginalAppId = true;
-
-			_originalAppId = _appId;
-		}
+		_setOriginalValue(APPID_COLUMN_INDEX, _appId);
 
 		_appId = appId;
 	}
 
 	public long getOriginalAppId() {
-		return _originalAppId;
+		return _getOriginalValue(APPID_COLUMN_INDEX, _appId);
 	}
 
 	@Override
@@ -364,17 +365,15 @@ public class ModuleModelImpl
 
 	@Override
 	public void setBundleSymbolicName(String bundleSymbolicName) {
-		_columnBitmask |= BUNDLESYMBOLICNAME_COLUMN_BITMASK;
-
-		if (_originalBundleSymbolicName == null) {
-			_originalBundleSymbolicName = _bundleSymbolicName;
-		}
+		_setOriginalValue(BUNDLESYMBOLICNAME_COLUMN_INDEX, _bundleSymbolicName);
 
 		_bundleSymbolicName = bundleSymbolicName;
 	}
 
 	public String getOriginalBundleSymbolicName() {
-		return GetterUtil.getString(_originalBundleSymbolicName);
+		return GetterUtil.getString(
+			_getOriginalValue(
+				BUNDLESYMBOLICNAME_COLUMN_INDEX, _bundleSymbolicName));
 	}
 
 	@Override
@@ -389,17 +388,14 @@ public class ModuleModelImpl
 
 	@Override
 	public void setBundleVersion(String bundleVersion) {
-		_columnBitmask |= BUNDLEVERSION_COLUMN_BITMASK;
-
-		if (_originalBundleVersion == null) {
-			_originalBundleVersion = _bundleVersion;
-		}
+		_setOriginalValue(BUNDLEVERSION_COLUMN_INDEX, _bundleVersion);
 
 		_bundleVersion = bundleVersion;
 	}
 
 	public String getOriginalBundleVersion() {
-		return GetterUtil.getString(_originalBundleVersion);
+		return GetterUtil.getString(
+			_getOriginalValue(BUNDLEVERSION_COLUMN_INDEX, _bundleVersion));
 	}
 
 	@Override
@@ -414,17 +410,14 @@ public class ModuleModelImpl
 
 	@Override
 	public void setContextName(String contextName) {
-		_columnBitmask |= CONTEXTNAME_COLUMN_BITMASK;
-
-		if (_originalContextName == null) {
-			_originalContextName = _contextName;
-		}
+		_setOriginalValue(CONTEXTNAME_COLUMN_INDEX, _contextName);
 
 		_contextName = contextName;
 	}
 
 	public String getOriginalContextName() {
-		return GetterUtil.getString(_originalContextName);
+		return GetterUtil.getString(
+			_getOriginalValue(CONTEXTNAME_COLUMN_INDEX, _contextName));
 	}
 
 	public long getColumnBitmask() {
@@ -530,26 +523,9 @@ public class ModuleModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ModuleModelImpl moduleModelImpl = this;
+		_columnBitmask = 0;
 
-		moduleModelImpl._originalUuid = moduleModelImpl._uuid;
-
-		moduleModelImpl._originalCompanyId = moduleModelImpl._companyId;
-
-		moduleModelImpl._setOriginalCompanyId = false;
-
-		moduleModelImpl._originalAppId = moduleModelImpl._appId;
-
-		moduleModelImpl._setOriginalAppId = false;
-
-		moduleModelImpl._originalBundleSymbolicName =
-			moduleModelImpl._bundleSymbolicName;
-
-		moduleModelImpl._originalBundleVersion = moduleModelImpl._bundleVersion;
-
-		moduleModelImpl._originalContextName = moduleModelImpl._contextName;
-
-		moduleModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -660,6 +636,37 @@ public class ModuleModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[7];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, Module>
@@ -671,21 +678,17 @@ public class ModuleModelImpl
 	private static boolean _finderCacheEnabled;
 
 	private String _uuid;
-	private String _originalUuid;
 	private long _moduleId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _appId;
-	private long _originalAppId;
-	private boolean _setOriginalAppId;
 	private String _bundleSymbolicName;
-	private String _originalBundleSymbolicName;
 	private String _bundleVersion;
-	private String _originalBundleVersion;
 	private String _contextName;
-	private String _originalContextName;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private Module _escapedModel;
 
 }

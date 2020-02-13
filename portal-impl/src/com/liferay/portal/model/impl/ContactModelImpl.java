@@ -158,15 +158,121 @@ public class ContactModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.Contact"),
 		true);
 
-	public static final long ACCOUNTID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long CLASSNAMEID_COLUMN_BITMASK = 2L;
+	public static final long CONTACTID_COLUMN_BITMASK = 2L;
 
-	public static final long CLASSPK_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
-	public static final long COMPANYID_COLUMN_BITMASK = 8L;
+	public static final long USERID_COLUMN_BITMASK = 8L;
 
-	public static final long CONTACTID_COLUMN_BITMASK = 16L;
+	public static final long USERNAME_COLUMN_BITMASK = 16L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 32L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 64L;
+
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 128L;
+
+	public static final long CLASSPK_COLUMN_BITMASK = 256L;
+
+	public static final long ACCOUNTID_COLUMN_BITMASK = 512L;
+
+	public static final long PARENTCONTACTID_COLUMN_BITMASK = 1024L;
+
+	public static final long EMAILADDRESS_COLUMN_BITMASK = 2048L;
+
+	public static final long FIRSTNAME_COLUMN_BITMASK = 4096L;
+
+	public static final long MIDDLENAME_COLUMN_BITMASK = 8192L;
+
+	public static final long LASTNAME_COLUMN_BITMASK = 16384L;
+
+	public static final long PREFIXID_COLUMN_BITMASK = 32768L;
+
+	public static final long SUFFIXID_COLUMN_BITMASK = 65536L;
+
+	public static final long MALE_COLUMN_BITMASK = 131072L;
+
+	public static final long BIRTHDAY_COLUMN_BITMASK = 262144L;
+
+	public static final long SMSSN_COLUMN_BITMASK = 524288L;
+
+	public static final long FACEBOOKSN_COLUMN_BITMASK = 1048576L;
+
+	public static final long JABBERSN_COLUMN_BITMASK = 2097152L;
+
+	public static final long SKYPESN_COLUMN_BITMASK = 4194304L;
+
+	public static final long TWITTERSN_COLUMN_BITMASK = 8388608L;
+
+	public static final long EMPLOYEESTATUSID_COLUMN_BITMASK = 16777216L;
+
+	public static final long EMPLOYEENUMBER_COLUMN_BITMASK = 33554432L;
+
+	public static final long JOBTITLE_COLUMN_BITMASK = 67108864L;
+
+	public static final long JOBCLASS_COLUMN_BITMASK = 134217728L;
+
+	public static final long HOURSOFOPERATION_COLUMN_BITMASK = 268435456L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int CONTACTID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int USERID_COLUMN_INDEX = 3;
+
+	public static final int USERNAME_COLUMN_INDEX = 4;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 5;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 6;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 7;
+
+	public static final int CLASSPK_COLUMN_INDEX = 8;
+
+	public static final int ACCOUNTID_COLUMN_INDEX = 9;
+
+	public static final int PARENTCONTACTID_COLUMN_INDEX = 10;
+
+	public static final int EMAILADDRESS_COLUMN_INDEX = 11;
+
+	public static final int FIRSTNAME_COLUMN_INDEX = 12;
+
+	public static final int MIDDLENAME_COLUMN_INDEX = 13;
+
+	public static final int LASTNAME_COLUMN_INDEX = 14;
+
+	public static final int PREFIXID_COLUMN_INDEX = 15;
+
+	public static final int SUFFIXID_COLUMN_INDEX = 16;
+
+	public static final int MALE_COLUMN_INDEX = 17;
+
+	public static final int BIRTHDAY_COLUMN_INDEX = 18;
+
+	public static final int SMSSN_COLUMN_INDEX = 19;
+
+	public static final int FACEBOOKSN_COLUMN_INDEX = 20;
+
+	public static final int JABBERSN_COLUMN_INDEX = 21;
+
+	public static final int SKYPESN_COLUMN_INDEX = 22;
+
+	public static final int TWITTERSN_COLUMN_INDEX = 23;
+
+	public static final int EMPLOYEESTATUSID_COLUMN_INDEX = 24;
+
+	public static final int EMPLOYEENUMBER_COLUMN_INDEX = 25;
+
+	public static final int JOBTITLE_COLUMN_INDEX = 26;
+
+	public static final int JOBCLASS_COLUMN_INDEX = 27;
+
+	public static final int HOURSOFOPERATION_COLUMN_INDEX = 28;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -475,6 +581,8 @@ public class ContactModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -486,7 +594,7 @@ public class ContactModelImpl
 
 	@Override
 	public void setContactId(long contactId) {
-		_columnBitmask = -1L;
+		_setOriginalValue(CONTACTID_COLUMN_INDEX, _contactId);
 
 		_contactId = contactId;
 	}
@@ -499,19 +607,13 @@ public class ContactModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return _getOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 	}
 
 	@JSON
@@ -522,6 +624,8 @@ public class ContactModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_setOriginalValue(USERID_COLUMN_INDEX, _userId);
+
 		_userId = userId;
 	}
 
@@ -554,6 +658,8 @@ public class ContactModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_setOriginalValue(USERNAME_COLUMN_INDEX, _userName);
+
 		_userName = userName;
 	}
 
@@ -565,6 +671,8 @@ public class ContactModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_setOriginalValue(CREATEDATE_COLUMN_INDEX, _createDate);
+
 		_createDate = createDate;
 	}
 
@@ -575,12 +683,12 @@ public class ContactModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		_setOriginalValue(MODIFIEDDATE_COLUMN_INDEX, _modifiedDate);
 
 		_modifiedDate = modifiedDate;
 	}
@@ -613,19 +721,13 @@ public class ContactModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
-
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
-		}
+		_setOriginalValue(CLASSNAMEID_COLUMN_INDEX, _classNameId);
 
 		_classNameId = classNameId;
 	}
 
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return _getOriginalValue(CLASSNAMEID_COLUMN_INDEX, _classNameId);
 	}
 
 	@JSON
@@ -636,19 +738,13 @@ public class ContactModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
-
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
-
-			_originalClassPK = _classPK;
-		}
+		_setOriginalValue(CLASSPK_COLUMN_INDEX, _classPK);
 
 		_classPK = classPK;
 	}
 
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return _getOriginalValue(CLASSPK_COLUMN_INDEX, _classPK);
 	}
 
 	@JSON
@@ -659,19 +755,13 @@ public class ContactModelImpl
 
 	@Override
 	public void setAccountId(long accountId) {
-		_columnBitmask |= ACCOUNTID_COLUMN_BITMASK;
-
-		if (!_setOriginalAccountId) {
-			_setOriginalAccountId = true;
-
-			_originalAccountId = _accountId;
-		}
+		_setOriginalValue(ACCOUNTID_COLUMN_INDEX, _accountId);
 
 		_accountId = accountId;
 	}
 
 	public long getOriginalAccountId() {
-		return _originalAccountId;
+		return _getOriginalValue(ACCOUNTID_COLUMN_INDEX, _accountId);
 	}
 
 	@JSON
@@ -682,6 +772,8 @@ public class ContactModelImpl
 
 	@Override
 	public void setParentContactId(long parentContactId) {
+		_setOriginalValue(PARENTCONTACTID_COLUMN_INDEX, _parentContactId);
+
 		_parentContactId = parentContactId;
 	}
 
@@ -698,6 +790,8 @@ public class ContactModelImpl
 
 	@Override
 	public void setEmailAddress(String emailAddress) {
+		_setOriginalValue(EMAILADDRESS_COLUMN_INDEX, _emailAddress);
+
 		_emailAddress = emailAddress;
 	}
 
@@ -714,6 +808,8 @@ public class ContactModelImpl
 
 	@Override
 	public void setFirstName(String firstName) {
+		_setOriginalValue(FIRSTNAME_COLUMN_INDEX, _firstName);
+
 		_firstName = firstName;
 	}
 
@@ -730,6 +826,8 @@ public class ContactModelImpl
 
 	@Override
 	public void setMiddleName(String middleName) {
+		_setOriginalValue(MIDDLENAME_COLUMN_INDEX, _middleName);
+
 		_middleName = middleName;
 	}
 
@@ -746,6 +844,8 @@ public class ContactModelImpl
 
 	@Override
 	public void setLastName(String lastName) {
+		_setOriginalValue(LASTNAME_COLUMN_INDEX, _lastName);
+
 		_lastName = lastName;
 	}
 
@@ -757,6 +857,8 @@ public class ContactModelImpl
 
 	@Override
 	public void setPrefixId(long prefixId) {
+		_setOriginalValue(PREFIXID_COLUMN_INDEX, _prefixId);
+
 		_prefixId = prefixId;
 	}
 
@@ -768,6 +870,8 @@ public class ContactModelImpl
 
 	@Override
 	public void setSuffixId(long suffixId) {
+		_setOriginalValue(SUFFIXID_COLUMN_INDEX, _suffixId);
+
 		_suffixId = suffixId;
 	}
 
@@ -785,6 +889,8 @@ public class ContactModelImpl
 
 	@Override
 	public void setMale(boolean male) {
+		_setOriginalValue(MALE_COLUMN_INDEX, _male);
+
 		_male = male;
 	}
 
@@ -796,6 +902,8 @@ public class ContactModelImpl
 
 	@Override
 	public void setBirthday(Date birthday) {
+		_setOriginalValue(BIRTHDAY_COLUMN_INDEX, _birthday);
+
 		_birthday = birthday;
 	}
 
@@ -812,6 +920,8 @@ public class ContactModelImpl
 
 	@Override
 	public void setSmsSn(String smsSn) {
+		_setOriginalValue(SMSSN_COLUMN_INDEX, _smsSn);
+
 		_smsSn = smsSn;
 	}
 
@@ -828,6 +938,8 @@ public class ContactModelImpl
 
 	@Override
 	public void setFacebookSn(String facebookSn) {
+		_setOriginalValue(FACEBOOKSN_COLUMN_INDEX, _facebookSn);
+
 		_facebookSn = facebookSn;
 	}
 
@@ -844,6 +956,8 @@ public class ContactModelImpl
 
 	@Override
 	public void setJabberSn(String jabberSn) {
+		_setOriginalValue(JABBERSN_COLUMN_INDEX, _jabberSn);
+
 		_jabberSn = jabberSn;
 	}
 
@@ -860,6 +974,8 @@ public class ContactModelImpl
 
 	@Override
 	public void setSkypeSn(String skypeSn) {
+		_setOriginalValue(SKYPESN_COLUMN_INDEX, _skypeSn);
+
 		_skypeSn = skypeSn;
 	}
 
@@ -876,6 +992,8 @@ public class ContactModelImpl
 
 	@Override
 	public void setTwitterSn(String twitterSn) {
+		_setOriginalValue(TWITTERSN_COLUMN_INDEX, _twitterSn);
+
 		_twitterSn = twitterSn;
 	}
 
@@ -892,6 +1010,8 @@ public class ContactModelImpl
 
 	@Override
 	public void setEmployeeStatusId(String employeeStatusId) {
+		_setOriginalValue(EMPLOYEESTATUSID_COLUMN_INDEX, _employeeStatusId);
+
 		_employeeStatusId = employeeStatusId;
 	}
 
@@ -908,6 +1028,8 @@ public class ContactModelImpl
 
 	@Override
 	public void setEmployeeNumber(String employeeNumber) {
+		_setOriginalValue(EMPLOYEENUMBER_COLUMN_INDEX, _employeeNumber);
+
 		_employeeNumber = employeeNumber;
 	}
 
@@ -924,6 +1046,8 @@ public class ContactModelImpl
 
 	@Override
 	public void setJobTitle(String jobTitle) {
+		_setOriginalValue(JOBTITLE_COLUMN_INDEX, _jobTitle);
+
 		_jobTitle = jobTitle;
 	}
 
@@ -940,6 +1064,8 @@ public class ContactModelImpl
 
 	@Override
 	public void setJobClass(String jobClass) {
+		_setOriginalValue(JOBCLASS_COLUMN_INDEX, _jobClass);
+
 		_jobClass = jobClass;
 	}
 
@@ -956,6 +1082,8 @@ public class ContactModelImpl
 
 	@Override
 	public void setHoursOfOperation(String hoursOfOperation) {
+		_setOriginalValue(HOURSOFOPERATION_COLUMN_INDEX, _hoursOfOperation);
+
 		_hoursOfOperation = hoursOfOperation;
 	}
 
@@ -1090,27 +1218,9 @@ public class ContactModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ContactModelImpl contactModelImpl = this;
+		_columnBitmask = 0;
 
-		contactModelImpl._originalCompanyId = contactModelImpl._companyId;
-
-		contactModelImpl._setOriginalCompanyId = false;
-
-		contactModelImpl._setModifiedDate = false;
-
-		contactModelImpl._originalClassNameId = contactModelImpl._classNameId;
-
-		contactModelImpl._setOriginalClassNameId = false;
-
-		contactModelImpl._originalClassPK = contactModelImpl._classPK;
-
-		contactModelImpl._setOriginalClassPK = false;
-
-		contactModelImpl._originalAccountId = contactModelImpl._accountId;
-
-		contactModelImpl._setOriginalAccountId = false;
-
-		contactModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -1352,6 +1462,37 @@ public class ContactModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[29];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, Contact>
@@ -1362,22 +1503,13 @@ public class ContactModelImpl
 	private long _mvccVersion;
 	private long _contactId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private long _accountId;
-	private long _originalAccountId;
-	private boolean _setOriginalAccountId;
 	private long _parentContactId;
 	private String _emailAddress;
 	private String _firstName;
@@ -1398,6 +1530,10 @@ public class ContactModelImpl
 	private String _jobClass;
 	private String _hoursOfOperation;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private Contact _escapedModel;
 
 }

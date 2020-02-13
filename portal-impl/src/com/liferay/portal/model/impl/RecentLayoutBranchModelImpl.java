@@ -119,17 +119,37 @@ public class RecentLayoutBranchModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.RecentLayoutBranch"),
 		true);
 
-	public static final long GROUPID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long LAYOUTBRANCHID_COLUMN_BITMASK = 2L;
+	public static final long RECENTLAYOUTBRANCHID_COLUMN_BITMASK = 2L;
 
-	public static final long LAYOUTSETBRANCHID_COLUMN_BITMASK = 4L;
+	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
-	public static final long PLID_COLUMN_BITMASK = 8L;
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
 
 	public static final long USERID_COLUMN_BITMASK = 16L;
 
-	public static final long RECENTLAYOUTBRANCHID_COLUMN_BITMASK = 32L;
+	public static final long LAYOUTBRANCHID_COLUMN_BITMASK = 32L;
+
+	public static final long LAYOUTSETBRANCHID_COLUMN_BITMASK = 64L;
+
+	public static final long PLID_COLUMN_BITMASK = 128L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int RECENTLAYOUTBRANCHID_COLUMN_INDEX = 1;
+
+	public static final int GROUPID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int USERID_COLUMN_INDEX = 4;
+
+	public static final int LAYOUTBRANCHID_COLUMN_INDEX = 5;
+
+	public static final int LAYOUTSETBRANCHID_COLUMN_INDEX = 6;
+
+	public static final int PLID_COLUMN_INDEX = 7;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -324,6 +344,8 @@ public class RecentLayoutBranchModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -334,6 +356,9 @@ public class RecentLayoutBranchModelImpl
 
 	@Override
 	public void setRecentLayoutBranchId(long recentLayoutBranchId) {
+		_setOriginalValue(
+			RECENTLAYOUTBRANCHID_COLUMN_INDEX, _recentLayoutBranchId);
+
 		_recentLayoutBranchId = recentLayoutBranchId;
 	}
 
@@ -344,19 +369,13 @@ public class RecentLayoutBranchModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_setOriginalValue(GROUPID_COLUMN_INDEX, _groupId);
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return _getOriginalValue(GROUPID_COLUMN_INDEX, _groupId);
 	}
 
 	@Override
@@ -366,6 +385,8 @@ public class RecentLayoutBranchModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
+
 		_companyId = companyId;
 	}
 
@@ -376,13 +397,7 @@ public class RecentLayoutBranchModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_setOriginalValue(USERID_COLUMN_INDEX, _userId);
 
 		_userId = userId;
 	}
@@ -404,7 +419,7 @@ public class RecentLayoutBranchModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return _getOriginalValue(USERID_COLUMN_INDEX, _userId);
 	}
 
 	@Override
@@ -414,19 +429,13 @@ public class RecentLayoutBranchModelImpl
 
 	@Override
 	public void setLayoutBranchId(long layoutBranchId) {
-		_columnBitmask |= LAYOUTBRANCHID_COLUMN_BITMASK;
-
-		if (!_setOriginalLayoutBranchId) {
-			_setOriginalLayoutBranchId = true;
-
-			_originalLayoutBranchId = _layoutBranchId;
-		}
+		_setOriginalValue(LAYOUTBRANCHID_COLUMN_INDEX, _layoutBranchId);
 
 		_layoutBranchId = layoutBranchId;
 	}
 
 	public long getOriginalLayoutBranchId() {
-		return _originalLayoutBranchId;
+		return _getOriginalValue(LAYOUTBRANCHID_COLUMN_INDEX, _layoutBranchId);
 	}
 
 	@Override
@@ -436,19 +445,14 @@ public class RecentLayoutBranchModelImpl
 
 	@Override
 	public void setLayoutSetBranchId(long layoutSetBranchId) {
-		_columnBitmask |= LAYOUTSETBRANCHID_COLUMN_BITMASK;
-
-		if (!_setOriginalLayoutSetBranchId) {
-			_setOriginalLayoutSetBranchId = true;
-
-			_originalLayoutSetBranchId = _layoutSetBranchId;
-		}
+		_setOriginalValue(LAYOUTSETBRANCHID_COLUMN_INDEX, _layoutSetBranchId);
 
 		_layoutSetBranchId = layoutSetBranchId;
 	}
 
 	public long getOriginalLayoutSetBranchId() {
-		return _originalLayoutSetBranchId;
+		return _getOriginalValue(
+			LAYOUTSETBRANCHID_COLUMN_INDEX, _layoutSetBranchId);
 	}
 
 	@Override
@@ -458,19 +462,13 @@ public class RecentLayoutBranchModelImpl
 
 	@Override
 	public void setPlid(long plid) {
-		_columnBitmask |= PLID_COLUMN_BITMASK;
-
-		if (!_setOriginalPlid) {
-			_setOriginalPlid = true;
-
-			_originalPlid = _plid;
-		}
+		_setOriginalValue(PLID_COLUMN_INDEX, _plid);
 
 		_plid = plid;
 	}
 
 	public long getOriginalPlid() {
-		return _originalPlid;
+		return _getOriginalValue(PLID_COLUMN_INDEX, _plid);
 	}
 
 	public long getColumnBitmask() {
@@ -580,34 +578,9 @@ public class RecentLayoutBranchModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		RecentLayoutBranchModelImpl recentLayoutBranchModelImpl = this;
+		_columnBitmask = 0;
 
-		recentLayoutBranchModelImpl._originalGroupId =
-			recentLayoutBranchModelImpl._groupId;
-
-		recentLayoutBranchModelImpl._setOriginalGroupId = false;
-
-		recentLayoutBranchModelImpl._originalUserId =
-			recentLayoutBranchModelImpl._userId;
-
-		recentLayoutBranchModelImpl._setOriginalUserId = false;
-
-		recentLayoutBranchModelImpl._originalLayoutBranchId =
-			recentLayoutBranchModelImpl._layoutBranchId;
-
-		recentLayoutBranchModelImpl._setOriginalLayoutBranchId = false;
-
-		recentLayoutBranchModelImpl._originalLayoutSetBranchId =
-			recentLayoutBranchModelImpl._layoutSetBranchId;
-
-		recentLayoutBranchModelImpl._setOriginalLayoutSetBranchId = false;
-
-		recentLayoutBranchModelImpl._originalPlid =
-			recentLayoutBranchModelImpl._plid;
-
-		recentLayoutBranchModelImpl._setOriginalPlid = false;
-
-		recentLayoutBranchModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -698,6 +671,37 @@ public class RecentLayoutBranchModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[8];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, RecentLayoutBranch>
@@ -708,22 +712,16 @@ public class RecentLayoutBranchModelImpl
 	private long _mvccVersion;
 	private long _recentLayoutBranchId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private long _layoutBranchId;
-	private long _originalLayoutBranchId;
-	private boolean _setOriginalLayoutBranchId;
 	private long _layoutSetBranchId;
-	private long _originalLayoutSetBranchId;
-	private boolean _setOriginalLayoutSetBranchId;
 	private long _plid;
-	private long _originalPlid;
-	private boolean _setOriginalPlid;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private RecentLayoutBranch _escapedModel;
 
 }

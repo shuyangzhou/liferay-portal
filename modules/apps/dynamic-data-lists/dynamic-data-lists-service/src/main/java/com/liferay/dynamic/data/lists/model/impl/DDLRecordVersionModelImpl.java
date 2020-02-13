@@ -124,19 +124,73 @@ public class DDLRecordVersionModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long RECORDID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long RECORDSETID_COLUMN_BITMASK = 2L;
+	public static final long RECORDVERSIONID_COLUMN_BITMASK = 2L;
 
-	public static final long RECORDSETVERSION_COLUMN_BITMASK = 4L;
+	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
-	public static final long STATUS_COLUMN_BITMASK = 8L;
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
 
 	public static final long USERID_COLUMN_BITMASK = 16L;
 
-	public static final long VERSION_COLUMN_BITMASK = 32L;
+	public static final long USERNAME_COLUMN_BITMASK = 32L;
 
-	public static final long RECORDVERSIONID_COLUMN_BITMASK = 64L;
+	public static final long CREATEDATE_COLUMN_BITMASK = 64L;
+
+	public static final long DDMSTORAGEID_COLUMN_BITMASK = 128L;
+
+	public static final long RECORDSETID_COLUMN_BITMASK = 256L;
+
+	public static final long RECORDSETVERSION_COLUMN_BITMASK = 512L;
+
+	public static final long RECORDID_COLUMN_BITMASK = 1024L;
+
+	public static final long VERSION_COLUMN_BITMASK = 2048L;
+
+	public static final long DISPLAYINDEX_COLUMN_BITMASK = 4096L;
+
+	public static final long STATUS_COLUMN_BITMASK = 8192L;
+
+	public static final long STATUSBYUSERID_COLUMN_BITMASK = 16384L;
+
+	public static final long STATUSBYUSERNAME_COLUMN_BITMASK = 32768L;
+
+	public static final long STATUSDATE_COLUMN_BITMASK = 65536L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int RECORDVERSIONID_COLUMN_INDEX = 1;
+
+	public static final int GROUPID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int USERID_COLUMN_INDEX = 4;
+
+	public static final int USERNAME_COLUMN_INDEX = 5;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 6;
+
+	public static final int DDMSTORAGEID_COLUMN_INDEX = 7;
+
+	public static final int RECORDSETID_COLUMN_INDEX = 8;
+
+	public static final int RECORDSETVERSION_COLUMN_INDEX = 9;
+
+	public static final int RECORDID_COLUMN_INDEX = 10;
+
+	public static final int VERSION_COLUMN_INDEX = 11;
+
+	public static final int DISPLAYINDEX_COLUMN_INDEX = 12;
+
+	public static final int STATUS_COLUMN_INDEX = 13;
+
+	public static final int STATUSBYUSERID_COLUMN_INDEX = 14;
+
+	public static final int STATUSBYUSERNAME_COLUMN_INDEX = 15;
+
+	public static final int STATUSDATE_COLUMN_INDEX = 16;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -437,6 +491,8 @@ public class DDLRecordVersionModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -448,6 +504,8 @@ public class DDLRecordVersionModelImpl
 
 	@Override
 	public void setRecordVersionId(long recordVersionId) {
+		_setOriginalValue(RECORDVERSIONID_COLUMN_INDEX, _recordVersionId);
+
 		_recordVersionId = recordVersionId;
 	}
 
@@ -459,6 +517,8 @@ public class DDLRecordVersionModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
+		_setOriginalValue(GROUPID_COLUMN_INDEX, _groupId);
+
 		_groupId = groupId;
 	}
 
@@ -470,6 +530,8 @@ public class DDLRecordVersionModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
+
 		_companyId = companyId;
 	}
 
@@ -481,13 +543,7 @@ public class DDLRecordVersionModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_setOriginalValue(USERID_COLUMN_INDEX, _userId);
 
 		_userId = userId;
 	}
@@ -509,7 +565,7 @@ public class DDLRecordVersionModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return _getOriginalValue(USERID_COLUMN_INDEX, _userId);
 	}
 
 	@JSON
@@ -525,6 +581,8 @@ public class DDLRecordVersionModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_setOriginalValue(USERNAME_COLUMN_INDEX, _userName);
+
 		_userName = userName;
 	}
 
@@ -536,6 +594,8 @@ public class DDLRecordVersionModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_setOriginalValue(CREATEDATE_COLUMN_INDEX, _createDate);
+
 		_createDate = createDate;
 	}
 
@@ -547,6 +607,8 @@ public class DDLRecordVersionModelImpl
 
 	@Override
 	public void setDDMStorageId(long DDMStorageId) {
+		_setOriginalValue(DDMSTORAGEID_COLUMN_INDEX, _DDMStorageId);
+
 		_DDMStorageId = DDMStorageId;
 	}
 
@@ -558,19 +620,13 @@ public class DDLRecordVersionModelImpl
 
 	@Override
 	public void setRecordSetId(long recordSetId) {
-		_columnBitmask |= RECORDSETID_COLUMN_BITMASK;
-
-		if (!_setOriginalRecordSetId) {
-			_setOriginalRecordSetId = true;
-
-			_originalRecordSetId = _recordSetId;
-		}
+		_setOriginalValue(RECORDSETID_COLUMN_INDEX, _recordSetId);
 
 		_recordSetId = recordSetId;
 	}
 
 	public long getOriginalRecordSetId() {
-		return _originalRecordSetId;
+		return _getOriginalValue(RECORDSETID_COLUMN_INDEX, _recordSetId);
 	}
 
 	@JSON
@@ -586,17 +642,15 @@ public class DDLRecordVersionModelImpl
 
 	@Override
 	public void setRecordSetVersion(String recordSetVersion) {
-		_columnBitmask |= RECORDSETVERSION_COLUMN_BITMASK;
-
-		if (_originalRecordSetVersion == null) {
-			_originalRecordSetVersion = _recordSetVersion;
-		}
+		_setOriginalValue(RECORDSETVERSION_COLUMN_INDEX, _recordSetVersion);
 
 		_recordSetVersion = recordSetVersion;
 	}
 
 	public String getOriginalRecordSetVersion() {
-		return GetterUtil.getString(_originalRecordSetVersion);
+		return GetterUtil.getString(
+			_getOriginalValue(
+				RECORDSETVERSION_COLUMN_INDEX, _recordSetVersion));
 	}
 
 	@JSON
@@ -607,19 +661,13 @@ public class DDLRecordVersionModelImpl
 
 	@Override
 	public void setRecordId(long recordId) {
-		_columnBitmask |= RECORDID_COLUMN_BITMASK;
-
-		if (!_setOriginalRecordId) {
-			_setOriginalRecordId = true;
-
-			_originalRecordId = _recordId;
-		}
+		_setOriginalValue(RECORDID_COLUMN_INDEX, _recordId);
 
 		_recordId = recordId;
 	}
 
 	public long getOriginalRecordId() {
-		return _originalRecordId;
+		return _getOriginalValue(RECORDID_COLUMN_INDEX, _recordId);
 	}
 
 	@JSON
@@ -635,17 +683,14 @@ public class DDLRecordVersionModelImpl
 
 	@Override
 	public void setVersion(String version) {
-		_columnBitmask |= VERSION_COLUMN_BITMASK;
-
-		if (_originalVersion == null) {
-			_originalVersion = _version;
-		}
+		_setOriginalValue(VERSION_COLUMN_INDEX, _version);
 
 		_version = version;
 	}
 
 	public String getOriginalVersion() {
-		return GetterUtil.getString(_originalVersion);
+		return GetterUtil.getString(
+			_getOriginalValue(VERSION_COLUMN_INDEX, _version));
 	}
 
 	@JSON
@@ -656,6 +701,8 @@ public class DDLRecordVersionModelImpl
 
 	@Override
 	public void setDisplayIndex(int displayIndex) {
+		_setOriginalValue(DISPLAYINDEX_COLUMN_INDEX, _displayIndex);
+
 		_displayIndex = displayIndex;
 	}
 
@@ -667,19 +714,13 @@ public class DDLRecordVersionModelImpl
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
-
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
-
-			_originalStatus = _status;
-		}
+		_setOriginalValue(STATUS_COLUMN_INDEX, _status);
 
 		_status = status;
 	}
 
 	public int getOriginalStatus() {
-		return _originalStatus;
+		return _getOriginalValue(STATUS_COLUMN_INDEX, _status);
 	}
 
 	@JSON
@@ -690,6 +731,8 @@ public class DDLRecordVersionModelImpl
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		_setOriginalValue(STATUSBYUSERID_COLUMN_INDEX, _statusByUserId);
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -722,6 +765,8 @@ public class DDLRecordVersionModelImpl
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		_setOriginalValue(STATUSBYUSERNAME_COLUMN_INDEX, _statusByUserName);
+
 		_statusByUserName = statusByUserName;
 	}
 
@@ -733,6 +778,8 @@ public class DDLRecordVersionModelImpl
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		_setOriginalValue(STATUSDATE_COLUMN_INDEX, _statusDate);
+
 		_statusDate = statusDate;
 	}
 
@@ -929,35 +976,9 @@ public class DDLRecordVersionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DDLRecordVersionModelImpl ddlRecordVersionModelImpl = this;
+		_columnBitmask = 0;
 
-		ddlRecordVersionModelImpl._originalUserId =
-			ddlRecordVersionModelImpl._userId;
-
-		ddlRecordVersionModelImpl._setOriginalUserId = false;
-
-		ddlRecordVersionModelImpl._originalRecordSetId =
-			ddlRecordVersionModelImpl._recordSetId;
-
-		ddlRecordVersionModelImpl._setOriginalRecordSetId = false;
-
-		ddlRecordVersionModelImpl._originalRecordSetVersion =
-			ddlRecordVersionModelImpl._recordSetVersion;
-
-		ddlRecordVersionModelImpl._originalRecordId =
-			ddlRecordVersionModelImpl._recordId;
-
-		ddlRecordVersionModelImpl._setOriginalRecordId = false;
-
-		ddlRecordVersionModelImpl._originalVersion =
-			ddlRecordVersionModelImpl._version;
-
-		ddlRecordVersionModelImpl._originalStatus =
-			ddlRecordVersionModelImpl._status;
-
-		ddlRecordVersionModelImpl._setOriginalStatus = false;
-
-		ddlRecordVersionModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -1103,6 +1124,37 @@ public class DDLRecordVersionModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[17];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, DDLRecordVersion>
@@ -1118,29 +1170,23 @@ public class DDLRecordVersionModelImpl
 	private long _groupId;
 	private long _companyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
 	private long _DDMStorageId;
 	private long _recordSetId;
-	private long _originalRecordSetId;
-	private boolean _setOriginalRecordSetId;
 	private String _recordSetVersion;
-	private String _originalRecordSetVersion;
 	private long _recordId;
-	private long _originalRecordId;
-	private boolean _setOriginalRecordId;
 	private String _version;
-	private String _originalVersion;
 	private int _displayIndex;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private DDLRecordVersion _escapedModel;
 
 }

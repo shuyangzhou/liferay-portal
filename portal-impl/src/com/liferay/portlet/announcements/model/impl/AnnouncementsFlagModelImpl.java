@@ -124,15 +124,33 @@ public class AnnouncementsFlagModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.announcements.kernel.model.AnnouncementsFlag"),
 		true);
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long ENTRYID_COLUMN_BITMASK = 2L;
+	public static final long FLAGID_COLUMN_BITMASK = 2L;
 
-	public static final long USERID_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
-	public static final long VALUE_COLUMN_BITMASK = 8L;
+	public static final long USERID_COLUMN_BITMASK = 8L;
 
 	public static final long CREATEDATE_COLUMN_BITMASK = 16L;
+
+	public static final long ENTRYID_COLUMN_BITMASK = 32L;
+
+	public static final long VALUE_COLUMN_BITMASK = 64L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int FLAGID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int USERID_COLUMN_INDEX = 3;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 4;
+
+	public static final int ENTRYID_COLUMN_INDEX = 5;
+
+	public static final int VALUE_COLUMN_INDEX = 6;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -365,6 +383,8 @@ public class AnnouncementsFlagModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -376,6 +396,8 @@ public class AnnouncementsFlagModelImpl
 
 	@Override
 	public void setFlagId(long flagId) {
+		_setOriginalValue(FLAGID_COLUMN_INDEX, _flagId);
+
 		_flagId = flagId;
 	}
 
@@ -387,19 +409,13 @@ public class AnnouncementsFlagModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return _getOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 	}
 
 	@JSON
@@ -410,13 +426,7 @@ public class AnnouncementsFlagModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask = -1L;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_setOriginalValue(USERID_COLUMN_INDEX, _userId);
 
 		_userId = userId;
 	}
@@ -438,7 +448,7 @@ public class AnnouncementsFlagModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return _getOriginalValue(USERID_COLUMN_INDEX, _userId);
 	}
 
 	@JSON
@@ -449,7 +459,7 @@ public class AnnouncementsFlagModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
+		_setOriginalValue(CREATEDATE_COLUMN_INDEX, _createDate);
 
 		_createDate = createDate;
 	}
@@ -462,19 +472,13 @@ public class AnnouncementsFlagModelImpl
 
 	@Override
 	public void setEntryId(long entryId) {
-		_columnBitmask |= ENTRYID_COLUMN_BITMASK;
-
-		if (!_setOriginalEntryId) {
-			_setOriginalEntryId = true;
-
-			_originalEntryId = _entryId;
-		}
+		_setOriginalValue(ENTRYID_COLUMN_INDEX, _entryId);
 
 		_entryId = entryId;
 	}
 
 	public long getOriginalEntryId() {
-		return _originalEntryId;
+		return _getOriginalValue(ENTRYID_COLUMN_INDEX, _entryId);
 	}
 
 	@JSON
@@ -485,19 +489,13 @@ public class AnnouncementsFlagModelImpl
 
 	@Override
 	public void setValue(int value) {
-		_columnBitmask |= VALUE_COLUMN_BITMASK;
-
-		if (!_setOriginalValue) {
-			_setOriginalValue = true;
-
-			_originalValue = _value;
-		}
+		_setOriginalValue(VALUE_COLUMN_INDEX, _value);
 
 		_value = value;
 	}
 
 	public int getOriginalValue() {
-		return _originalValue;
+		return _getOriginalValue(VALUE_COLUMN_INDEX, _value);
 	}
 
 	public long getColumnBitmask() {
@@ -617,29 +615,9 @@ public class AnnouncementsFlagModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AnnouncementsFlagModelImpl announcementsFlagModelImpl = this;
+		_columnBitmask = 0;
 
-		announcementsFlagModelImpl._originalCompanyId =
-			announcementsFlagModelImpl._companyId;
-
-		announcementsFlagModelImpl._setOriginalCompanyId = false;
-
-		announcementsFlagModelImpl._originalUserId =
-			announcementsFlagModelImpl._userId;
-
-		announcementsFlagModelImpl._setOriginalUserId = false;
-
-		announcementsFlagModelImpl._originalEntryId =
-			announcementsFlagModelImpl._entryId;
-
-		announcementsFlagModelImpl._setOriginalEntryId = false;
-
-		announcementsFlagModelImpl._originalValue =
-			announcementsFlagModelImpl._value;
-
-		announcementsFlagModelImpl._setOriginalValue = false;
-
-		announcementsFlagModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -734,6 +712,37 @@ public class AnnouncementsFlagModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[7];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, AnnouncementsFlag>
@@ -744,19 +753,15 @@ public class AnnouncementsFlagModelImpl
 	private long _mvccVersion;
 	private long _flagId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private Date _createDate;
 	private long _entryId;
-	private long _originalEntryId;
-	private boolean _setOriginalEntryId;
 	private int _value;
-	private int _originalValue;
-	private boolean _setOriginalValue;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private AnnouncementsFlag _escapedModel;
 
 }

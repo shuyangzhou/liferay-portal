@@ -124,19 +124,41 @@ public class LVEntryModelImpl
 				"value.object.column.bitmask.enabled.com.liferay.portal.tools.service.builder.test.model.LVEntry"),
 		true);
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 2L;
+	public static final long UUID_COLUMN_BITMASK = 2L;
 
-	public static final long HEAD_COLUMN_BITMASK = 4L;
+	public static final long HEADID_COLUMN_BITMASK = 4L;
 
-	public static final long HEADID_COLUMN_BITMASK = 8L;
+	public static final long HEAD_COLUMN_BITMASK = 8L;
 
-	public static final long UNIQUEGROUPKEY_COLUMN_BITMASK = 16L;
+	public static final long DEFAULTLANGUAGEID_COLUMN_BITMASK = 16L;
 
-	public static final long UUID_COLUMN_BITMASK = 32L;
+	public static final long LVENTRYID_COLUMN_BITMASK = 32L;
 
-	public static final long LVENTRYID_COLUMN_BITMASK = 64L;
+	public static final long COMPANYID_COLUMN_BITMASK = 64L;
+
+	public static final long GROUPID_COLUMN_BITMASK = 128L;
+
+	public static final long UNIQUEGROUPKEY_COLUMN_BITMASK = 256L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int UUID_COLUMN_INDEX = 1;
+
+	public static final int HEADID_COLUMN_INDEX = 2;
+
+	public static final int HEAD_COLUMN_INDEX = 3;
+
+	public static final int DEFAULTLANGUAGEID_COLUMN_INDEX = 4;
+
+	public static final int LVENTRYID_COLUMN_INDEX = 5;
+
+	public static final int COMPANYID_COLUMN_INDEX = 6;
+
+	public static final int GROUPID_COLUMN_INDEX = 7;
+
+	public static final int UNIQUEGROUPKEY_COLUMN_INDEX = 8;
 
 	public static final String MAPPING_TABLE_BIGDECIMALENTRIES_LVENTRIES_NAME =
 		"BigDecimalEntries_LVEntries";
@@ -477,17 +499,11 @@ public class LVEntryModelImpl
 	}
 
 	public boolean getOriginalHead() {
-		return _originalHead;
+		return _getOriginalValue(HEAD_COLUMN_INDEX, _head);
 	}
 
 	public void setHead(boolean head) {
-		_columnBitmask |= HEAD_COLUMN_BITMASK;
-
-		if (!_setOriginalHead) {
-			_setOriginalHead = true;
-
-			_originalHead = _head;
-		}
+		_setOriginalValue(HEAD_COLUMN_INDEX, _head);
 
 		_head = head;
 	}
@@ -508,6 +524,8 @@ public class LVEntryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -523,17 +541,14 @@ public class LVEntryModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_setOriginalValue(UUID_COLUMN_INDEX, _uuid);
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return GetterUtil.getString(
+			_getOriginalValue(UUID_COLUMN_INDEX, _uuid));
 	}
 
 	@Override
@@ -543,13 +558,7 @@ public class LVEntryModelImpl
 
 	@Override
 	public void setHeadId(long headId) {
-		_columnBitmask |= HEADID_COLUMN_BITMASK;
-
-		if (!_setOriginalHeadId) {
-			_setOriginalHeadId = true;
-
-			_originalHeadId = _headId;
-		}
+		_setOriginalValue(HEADID_COLUMN_INDEX, _headId);
 
 		if (headId >= 0) {
 			setHead(false);
@@ -562,7 +571,7 @@ public class LVEntryModelImpl
 	}
 
 	public long getOriginalHeadId() {
-		return _originalHeadId;
+		return _getOriginalValue(HEADID_COLUMN_INDEX, _headId);
 	}
 
 	@Override
@@ -577,6 +586,8 @@ public class LVEntryModelImpl
 
 	@Override
 	public void setDefaultLanguageId(String defaultLanguageId) {
+		_setOriginalValue(DEFAULTLANGUAGEID_COLUMN_INDEX, _defaultLanguageId);
+
 		_defaultLanguageId = defaultLanguageId;
 	}
 
@@ -587,6 +598,8 @@ public class LVEntryModelImpl
 
 	@Override
 	public void setLvEntryId(long lvEntryId) {
+		_setOriginalValue(LVENTRYID_COLUMN_INDEX, _lvEntryId);
+
 		_lvEntryId = lvEntryId;
 	}
 
@@ -597,19 +610,13 @@ public class LVEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return _getOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 	}
 
 	@Override
@@ -619,19 +626,13 @@ public class LVEntryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_setOriginalValue(GROUPID_COLUMN_INDEX, _groupId);
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return _getOriginalValue(GROUPID_COLUMN_INDEX, _groupId);
 	}
 
 	@Override
@@ -646,17 +647,14 @@ public class LVEntryModelImpl
 
 	@Override
 	public void setUniqueGroupKey(String uniqueGroupKey) {
-		_columnBitmask |= UNIQUEGROUPKEY_COLUMN_BITMASK;
-
-		if (_originalUniqueGroupKey == null) {
-			_originalUniqueGroupKey = _uniqueGroupKey;
-		}
+		_setOriginalValue(UNIQUEGROUPKEY_COLUMN_INDEX, _uniqueGroupKey);
 
 		_uniqueGroupKey = uniqueGroupKey;
 	}
 
 	public String getOriginalUniqueGroupKey() {
-		return GetterUtil.getString(_originalUniqueGroupKey);
+		return GetterUtil.getString(
+			_getOriginalValue(UNIQUEGROUPKEY_COLUMN_INDEX, _uniqueGroupKey));
 	}
 
 	public long getColumnBitmask() {
@@ -763,30 +761,9 @@ public class LVEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LVEntryModelImpl lvEntryModelImpl = this;
+		_columnBitmask = 0;
 
-		lvEntryModelImpl._originalUuid = lvEntryModelImpl._uuid;
-
-		lvEntryModelImpl._originalHeadId = lvEntryModelImpl._headId;
-
-		lvEntryModelImpl._setOriginalHeadId = false;
-
-		lvEntryModelImpl._originalHead = lvEntryModelImpl._head;
-
-		lvEntryModelImpl._setOriginalHead = false;
-
-		lvEntryModelImpl._originalCompanyId = lvEntryModelImpl._companyId;
-
-		lvEntryModelImpl._setOriginalCompanyId = false;
-
-		lvEntryModelImpl._originalGroupId = lvEntryModelImpl._groupId;
-
-		lvEntryModelImpl._setOriginalGroupId = false;
-
-		lvEntryModelImpl._originalUniqueGroupKey =
-			lvEntryModelImpl._uniqueGroupKey;
-
-		lvEntryModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -895,6 +872,37 @@ public class LVEntryModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[9];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, LVEntry>
@@ -904,24 +912,18 @@ public class LVEntryModelImpl
 
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _headId;
-	private long _originalHeadId;
-	private boolean _setOriginalHeadId;
 	private boolean _head;
-	private boolean _originalHead;
-	private boolean _setOriginalHead;
 	private String _defaultLanguageId;
 	private long _lvEntryId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private String _uniqueGroupKey;
-	private String _originalUniqueGroupKey;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private LVEntry _escapedModel;
 
 }

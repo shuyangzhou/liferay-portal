@@ -101,13 +101,37 @@ public class StatusModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long MODIFIEDDATE_COLUMN_BITMASK = 1L;
+	public static final long STATUSID_COLUMN_BITMASK = 1L;
 
-	public static final long ONLINE_COLUMN_BITMASK = 2L;
+	public static final long USERID_COLUMN_BITMASK = 2L;
 
-	public static final long USERID_COLUMN_BITMASK = 4L;
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 4L;
 
-	public static final long STATUSID_COLUMN_BITMASK = 8L;
+	public static final long ONLINE_COLUMN_BITMASK = 8L;
+
+	public static final long AWAKE_COLUMN_BITMASK = 16L;
+
+	public static final long ACTIVEPANELIDS_COLUMN_BITMASK = 32L;
+
+	public static final long MESSAGE_COLUMN_BITMASK = 64L;
+
+	public static final long PLAYSOUND_COLUMN_BITMASK = 128L;
+
+	public static final int STATUSID_COLUMN_INDEX = 0;
+
+	public static final int USERID_COLUMN_INDEX = 1;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 2;
+
+	public static final int ONLINE_COLUMN_INDEX = 3;
+
+	public static final int AWAKE_COLUMN_INDEX = 4;
+
+	public static final int ACTIVEPANELIDS_COLUMN_INDEX = 5;
+
+	public static final int MESSAGE_COLUMN_INDEX = 6;
+
+	public static final int PLAYSOUND_COLUMN_INDEX = 7;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -279,6 +303,8 @@ public class StatusModelImpl
 
 	@Override
 	public void setStatusId(long statusId) {
+		_setOriginalValue(STATUSID_COLUMN_INDEX, _statusId);
+
 		_statusId = statusId;
 	}
 
@@ -289,13 +315,7 @@ public class StatusModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_setOriginalValue(USERID_COLUMN_INDEX, _userId);
 
 		_userId = userId;
 	}
@@ -317,7 +337,7 @@ public class StatusModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return _getOriginalValue(USERID_COLUMN_INDEX, _userId);
 	}
 
 	@Override
@@ -327,19 +347,13 @@ public class StatusModelImpl
 
 	@Override
 	public void setModifiedDate(long modifiedDate) {
-		_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
-
-		if (!_setOriginalModifiedDate) {
-			_setOriginalModifiedDate = true;
-
-			_originalModifiedDate = _modifiedDate;
-		}
+		_setOriginalValue(MODIFIEDDATE_COLUMN_INDEX, _modifiedDate);
 
 		_modifiedDate = modifiedDate;
 	}
 
 	public long getOriginalModifiedDate() {
-		return _originalModifiedDate;
+		return _getOriginalValue(MODIFIEDDATE_COLUMN_INDEX, _modifiedDate);
 	}
 
 	@Override
@@ -354,19 +368,13 @@ public class StatusModelImpl
 
 	@Override
 	public void setOnline(boolean online) {
-		_columnBitmask |= ONLINE_COLUMN_BITMASK;
-
-		if (!_setOriginalOnline) {
-			_setOriginalOnline = true;
-
-			_originalOnline = _online;
-		}
+		_setOriginalValue(ONLINE_COLUMN_INDEX, _online);
 
 		_online = online;
 	}
 
 	public boolean getOriginalOnline() {
-		return _originalOnline;
+		return _getOriginalValue(ONLINE_COLUMN_INDEX, _online);
 	}
 
 	@Override
@@ -381,6 +389,8 @@ public class StatusModelImpl
 
 	@Override
 	public void setAwake(boolean awake) {
+		_setOriginalValue(AWAKE_COLUMN_INDEX, _awake);
+
 		_awake = awake;
 	}
 
@@ -396,6 +406,8 @@ public class StatusModelImpl
 
 	@Override
 	public void setActivePanelIds(String activePanelIds) {
+		_setOriginalValue(ACTIVEPANELIDS_COLUMN_INDEX, _activePanelIds);
+
 		_activePanelIds = activePanelIds;
 	}
 
@@ -411,6 +423,8 @@ public class StatusModelImpl
 
 	@Override
 	public void setMessage(String message) {
+		_setOriginalValue(MESSAGE_COLUMN_INDEX, _message);
+
 		_message = message;
 	}
 
@@ -426,6 +440,8 @@ public class StatusModelImpl
 
 	@Override
 	public void setPlaySound(boolean playSound) {
+		_setOriginalValue(PLAYSOUND_COLUMN_INDEX, _playSound);
+
 		_playSound = playSound;
 	}
 
@@ -533,21 +549,9 @@ public class StatusModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		StatusModelImpl statusModelImpl = this;
+		_columnBitmask = 0;
 
-		statusModelImpl._originalUserId = statusModelImpl._userId;
-
-		statusModelImpl._setOriginalUserId = false;
-
-		statusModelImpl._originalModifiedDate = statusModelImpl._modifiedDate;
-
-		statusModelImpl._setOriginalModifiedDate = false;
-
-		statusModelImpl._originalOnline = statusModelImpl._online;
-
-		statusModelImpl._setOriginalOnline = false;
-
-		statusModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -646,6 +650,37 @@ public class StatusModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[8];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, Status>
@@ -658,19 +693,17 @@ public class StatusModelImpl
 
 	private long _statusId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private long _modifiedDate;
-	private long _originalModifiedDate;
-	private boolean _setOriginalModifiedDate;
 	private boolean _online;
-	private boolean _originalOnline;
-	private boolean _setOriginalOnline;
 	private boolean _awake;
 	private String _activePanelIds;
 	private String _message;
 	private boolean _playSound;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private Status _escapedModel;
 
 }

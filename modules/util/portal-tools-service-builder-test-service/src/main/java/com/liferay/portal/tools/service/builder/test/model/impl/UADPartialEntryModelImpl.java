@@ -114,7 +114,27 @@ public class UADPartialEntryModelImpl
 				"value.object.finder.cache.enabled.com.liferay.portal.tools.service.builder.test.model.UADPartialEntry"),
 		true);
 
-	public static final boolean COLUMN_BITMASK_ENABLED = false;
+	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(
+		com.liferay.portal.tools.service.builder.test.service.util.ServiceProps.
+			get(
+				"value.object.column.bitmask.enabled.com.liferay.portal.tools.service.builder.test.model.UADPartialEntry"),
+		true);
+
+	public static final long UADPARTIALENTRYID_COLUMN_BITMASK = 1L;
+
+	public static final long USERID_COLUMN_BITMASK = 2L;
+
+	public static final long USERNAME_COLUMN_BITMASK = 4L;
+
+	public static final long MESSAGE_COLUMN_BITMASK = 8L;
+
+	public static final int UADPARTIALENTRYID_COLUMN_INDEX = 0;
+
+	public static final int USERID_COLUMN_INDEX = 1;
+
+	public static final int USERNAME_COLUMN_INDEX = 2;
+
+	public static final int MESSAGE_COLUMN_INDEX = 3;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -326,6 +346,8 @@ public class UADPartialEntryModelImpl
 
 	@Override
 	public void setUadPartialEntryId(long uadPartialEntryId) {
+		_setOriginalValue(UADPARTIALENTRYID_COLUMN_INDEX, _uadPartialEntryId);
+
 		_uadPartialEntryId = uadPartialEntryId;
 	}
 
@@ -337,6 +359,8 @@ public class UADPartialEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_setOriginalValue(USERID_COLUMN_INDEX, _userId);
+
 		_userId = userId;
 	}
 
@@ -369,6 +393,8 @@ public class UADPartialEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_setOriginalValue(USERNAME_COLUMN_INDEX, _userName);
+
 		_userName = userName;
 	}
 
@@ -385,7 +411,13 @@ public class UADPartialEntryModelImpl
 
 	@Override
 	public void setMessage(String message) {
+		_setOriginalValue(MESSAGE_COLUMN_INDEX, _message);
+
 		_message = message;
+	}
+
+	public long getColumnBitmask() {
+		return _columnBitmask;
 	}
 
 	@Override
@@ -484,6 +516,9 @@ public class UADPartialEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
+		_columnBitmask = 0;
+
+		_originalValues = null;
 	}
 
 	@Override
@@ -577,6 +612,37 @@ public class UADPartialEntryModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[4];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, UADPartialEntry>
@@ -588,6 +654,11 @@ public class UADPartialEntryModelImpl
 	private long _userId;
 	private String _userName;
 	private String _message;
+	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private UADPartialEntry _escapedModel;
 
 }

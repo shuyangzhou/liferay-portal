@@ -137,9 +137,81 @@ public class OrgLaborModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.OrgLabor"),
 		true);
 
-	public static final long ORGANIZATIONID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long TYPEID_COLUMN_BITMASK = 2L;
+	public static final long ORGLABORID_COLUMN_BITMASK = 2L;
+
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
+
+	public static final long ORGANIZATIONID_COLUMN_BITMASK = 8L;
+
+	public static final long TYPEID_COLUMN_BITMASK = 16L;
+
+	public static final long SUNOPEN_COLUMN_BITMASK = 32L;
+
+	public static final long SUNCLOSE_COLUMN_BITMASK = 64L;
+
+	public static final long MONOPEN_COLUMN_BITMASK = 128L;
+
+	public static final long MONCLOSE_COLUMN_BITMASK = 256L;
+
+	public static final long TUEOPEN_COLUMN_BITMASK = 512L;
+
+	public static final long TUECLOSE_COLUMN_BITMASK = 1024L;
+
+	public static final long WEDOPEN_COLUMN_BITMASK = 2048L;
+
+	public static final long WEDCLOSE_COLUMN_BITMASK = 4096L;
+
+	public static final long THUOPEN_COLUMN_BITMASK = 8192L;
+
+	public static final long THUCLOSE_COLUMN_BITMASK = 16384L;
+
+	public static final long FRIOPEN_COLUMN_BITMASK = 32768L;
+
+	public static final long FRICLOSE_COLUMN_BITMASK = 65536L;
+
+	public static final long SATOPEN_COLUMN_BITMASK = 131072L;
+
+	public static final long SATCLOSE_COLUMN_BITMASK = 262144L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int ORGLABORID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int ORGANIZATIONID_COLUMN_INDEX = 3;
+
+	public static final int TYPEID_COLUMN_INDEX = 4;
+
+	public static final int SUNOPEN_COLUMN_INDEX = 5;
+
+	public static final int SUNCLOSE_COLUMN_INDEX = 6;
+
+	public static final int MONOPEN_COLUMN_INDEX = 7;
+
+	public static final int MONCLOSE_COLUMN_INDEX = 8;
+
+	public static final int TUEOPEN_COLUMN_INDEX = 9;
+
+	public static final int TUECLOSE_COLUMN_INDEX = 10;
+
+	public static final int WEDOPEN_COLUMN_INDEX = 11;
+
+	public static final int WEDCLOSE_COLUMN_INDEX = 12;
+
+	public static final int THUOPEN_COLUMN_INDEX = 13;
+
+	public static final int THUCLOSE_COLUMN_INDEX = 14;
+
+	public static final int FRIOPEN_COLUMN_INDEX = 15;
+
+	public static final int FRICLOSE_COLUMN_INDEX = 16;
+
+	public static final int SATOPEN_COLUMN_INDEX = 17;
+
+	public static final int SATCLOSE_COLUMN_INDEX = 18;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -402,6 +474,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -413,6 +487,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setOrgLaborId(long orgLaborId) {
+		_setOriginalValue(ORGLABORID_COLUMN_INDEX, _orgLaborId);
+
 		_orgLaborId = orgLaborId;
 	}
 
@@ -424,6 +500,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
+
 		_companyId = companyId;
 	}
 
@@ -435,19 +513,13 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setOrganizationId(long organizationId) {
-		_columnBitmask = -1L;
-
-		if (!_setOriginalOrganizationId) {
-			_setOriginalOrganizationId = true;
-
-			_originalOrganizationId = _organizationId;
-		}
+		_setOriginalValue(ORGANIZATIONID_COLUMN_INDEX, _organizationId);
 
 		_organizationId = organizationId;
 	}
 
 	public long getOriginalOrganizationId() {
-		return _originalOrganizationId;
+		return _getOriginalValue(ORGANIZATIONID_COLUMN_INDEX, _organizationId);
 	}
 
 	@JSON
@@ -458,7 +530,7 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setTypeId(long typeId) {
-		_columnBitmask = -1L;
+		_setOriginalValue(TYPEID_COLUMN_INDEX, _typeId);
 
 		_typeId = typeId;
 	}
@@ -471,6 +543,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setSunOpen(int sunOpen) {
+		_setOriginalValue(SUNOPEN_COLUMN_INDEX, _sunOpen);
+
 		_sunOpen = sunOpen;
 	}
 
@@ -482,6 +556,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setSunClose(int sunClose) {
+		_setOriginalValue(SUNCLOSE_COLUMN_INDEX, _sunClose);
+
 		_sunClose = sunClose;
 	}
 
@@ -493,6 +569,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setMonOpen(int monOpen) {
+		_setOriginalValue(MONOPEN_COLUMN_INDEX, _monOpen);
+
 		_monOpen = monOpen;
 	}
 
@@ -504,6 +582,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setMonClose(int monClose) {
+		_setOriginalValue(MONCLOSE_COLUMN_INDEX, _monClose);
+
 		_monClose = monClose;
 	}
 
@@ -515,6 +595,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setTueOpen(int tueOpen) {
+		_setOriginalValue(TUEOPEN_COLUMN_INDEX, _tueOpen);
+
 		_tueOpen = tueOpen;
 	}
 
@@ -526,6 +608,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setTueClose(int tueClose) {
+		_setOriginalValue(TUECLOSE_COLUMN_INDEX, _tueClose);
+
 		_tueClose = tueClose;
 	}
 
@@ -537,6 +621,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setWedOpen(int wedOpen) {
+		_setOriginalValue(WEDOPEN_COLUMN_INDEX, _wedOpen);
+
 		_wedOpen = wedOpen;
 	}
 
@@ -548,6 +634,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setWedClose(int wedClose) {
+		_setOriginalValue(WEDCLOSE_COLUMN_INDEX, _wedClose);
+
 		_wedClose = wedClose;
 	}
 
@@ -559,6 +647,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setThuOpen(int thuOpen) {
+		_setOriginalValue(THUOPEN_COLUMN_INDEX, _thuOpen);
+
 		_thuOpen = thuOpen;
 	}
 
@@ -570,6 +660,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setThuClose(int thuClose) {
+		_setOriginalValue(THUCLOSE_COLUMN_INDEX, _thuClose);
+
 		_thuClose = thuClose;
 	}
 
@@ -581,6 +673,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setFriOpen(int friOpen) {
+		_setOriginalValue(FRIOPEN_COLUMN_INDEX, _friOpen);
+
 		_friOpen = friOpen;
 	}
 
@@ -592,6 +686,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setFriClose(int friClose) {
+		_setOriginalValue(FRICLOSE_COLUMN_INDEX, _friClose);
+
 		_friClose = friClose;
 	}
 
@@ -603,6 +699,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setSatOpen(int satOpen) {
+		_setOriginalValue(SATOPEN_COLUMN_INDEX, _satOpen);
+
 		_satOpen = satOpen;
 	}
 
@@ -614,6 +712,8 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void setSatClose(int satClose) {
+		_setOriginalValue(SATCLOSE_COLUMN_INDEX, _satClose);
+
 		_satClose = satClose;
 	}
 
@@ -752,14 +852,9 @@ public class OrgLaborModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		OrgLaborModelImpl orgLaborModelImpl = this;
+		_columnBitmask = 0;
 
-		orgLaborModelImpl._originalOrganizationId =
-			orgLaborModelImpl._organizationId;
-
-		orgLaborModelImpl._setOriginalOrganizationId = false;
-
-		orgLaborModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -870,6 +965,37 @@ public class OrgLaborModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[19];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, OrgLabor>
@@ -881,8 +1007,6 @@ public class OrgLaborModelImpl
 	private long _orgLaborId;
 	private long _companyId;
 	private long _organizationId;
-	private long _originalOrganizationId;
-	private boolean _setOriginalOrganizationId;
 	private long _typeId;
 	private int _sunOpen;
 	private int _sunClose;
@@ -899,6 +1023,10 @@ public class OrgLaborModelImpl
 	private int _satOpen;
 	private int _satClose;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private OrgLabor _escapedModel;
 
 }

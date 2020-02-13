@@ -119,13 +119,33 @@ public class PluginSettingModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.PluginSetting"),
 		true);
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long PLUGINID_COLUMN_BITMASK = 2L;
+	public static final long PLUGINSETTINGID_COLUMN_BITMASK = 2L;
 
-	public static final long PLUGINTYPE_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
-	public static final long PLUGINSETTINGID_COLUMN_BITMASK = 8L;
+	public static final long PLUGINID_COLUMN_BITMASK = 8L;
+
+	public static final long PLUGINTYPE_COLUMN_BITMASK = 16L;
+
+	public static final long ROLES_COLUMN_BITMASK = 32L;
+
+	public static final long ACTIVE_COLUMN_BITMASK = 64L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int PLUGINSETTINGID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int PLUGINID_COLUMN_INDEX = 3;
+
+	public static final int PLUGINTYPE_COLUMN_INDEX = 4;
+
+	public static final int ROLES_COLUMN_INDEX = 5;
+
+	public static final int ACTIVE_COLUMN_INDEX = 6;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -349,6 +369,8 @@ public class PluginSettingModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -360,6 +382,8 @@ public class PluginSettingModelImpl
 
 	@Override
 	public void setPluginSettingId(long pluginSettingId) {
+		_setOriginalValue(PLUGINSETTINGID_COLUMN_INDEX, _pluginSettingId);
+
 		_pluginSettingId = pluginSettingId;
 	}
 
@@ -371,19 +395,13 @@ public class PluginSettingModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return _getOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 	}
 
 	@JSON
@@ -399,17 +417,14 @@ public class PluginSettingModelImpl
 
 	@Override
 	public void setPluginId(String pluginId) {
-		_columnBitmask |= PLUGINID_COLUMN_BITMASK;
-
-		if (_originalPluginId == null) {
-			_originalPluginId = _pluginId;
-		}
+		_setOriginalValue(PLUGINID_COLUMN_INDEX, _pluginId);
 
 		_pluginId = pluginId;
 	}
 
 	public String getOriginalPluginId() {
-		return GetterUtil.getString(_originalPluginId);
+		return GetterUtil.getString(
+			_getOriginalValue(PLUGINID_COLUMN_INDEX, _pluginId));
 	}
 
 	@JSON
@@ -425,17 +440,14 @@ public class PluginSettingModelImpl
 
 	@Override
 	public void setPluginType(String pluginType) {
-		_columnBitmask |= PLUGINTYPE_COLUMN_BITMASK;
-
-		if (_originalPluginType == null) {
-			_originalPluginType = _pluginType;
-		}
+		_setOriginalValue(PLUGINTYPE_COLUMN_INDEX, _pluginType);
 
 		_pluginType = pluginType;
 	}
 
 	public String getOriginalPluginType() {
-		return GetterUtil.getString(_originalPluginType);
+		return GetterUtil.getString(
+			_getOriginalValue(PLUGINTYPE_COLUMN_INDEX, _pluginType));
 	}
 
 	@JSON
@@ -451,6 +463,8 @@ public class PluginSettingModelImpl
 
 	@Override
 	public void setRoles(String roles) {
+		_setOriginalValue(ROLES_COLUMN_INDEX, _roles);
+
 		_roles = roles;
 	}
 
@@ -468,6 +482,8 @@ public class PluginSettingModelImpl
 
 	@Override
 	public void setActive(boolean active) {
+		_setOriginalValue(ACTIVE_COLUMN_INDEX, _active);
+
 		_active = active;
 	}
 
@@ -574,20 +590,9 @@ public class PluginSettingModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		PluginSettingModelImpl pluginSettingModelImpl = this;
+		_columnBitmask = 0;
 
-		pluginSettingModelImpl._originalCompanyId =
-			pluginSettingModelImpl._companyId;
-
-		pluginSettingModelImpl._setOriginalCompanyId = false;
-
-		pluginSettingModelImpl._originalPluginId =
-			pluginSettingModelImpl._pluginId;
-
-		pluginSettingModelImpl._originalPluginType =
-			pluginSettingModelImpl._pluginType;
-
-		pluginSettingModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -693,6 +698,37 @@ public class PluginSettingModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[7];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, PluginSetting>
@@ -703,15 +739,15 @@ public class PluginSettingModelImpl
 	private long _mvccVersion;
 	private long _pluginSettingId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private String _pluginId;
-	private String _originalPluginId;
 	private String _pluginType;
-	private String _originalPluginType;
 	private String _roles;
 	private boolean _active;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private PluginSetting _escapedModel;
 
 }

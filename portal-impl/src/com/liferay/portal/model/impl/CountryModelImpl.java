@@ -119,13 +119,41 @@ public class CountryModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.Country"),
 		true);
 
-	public static final long A2_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long A3_COLUMN_BITMASK = 2L;
+	public static final long COUNTRYID_COLUMN_BITMASK = 2L;
 
-	public static final long ACTIVE_COLUMN_BITMASK = 4L;
+	public static final long NAME_COLUMN_BITMASK = 4L;
 
-	public static final long NAME_COLUMN_BITMASK = 8L;
+	public static final long A2_COLUMN_BITMASK = 8L;
+
+	public static final long A3_COLUMN_BITMASK = 16L;
+
+	public static final long NUMBER_COLUMN_BITMASK = 32L;
+
+	public static final long IDD_COLUMN_BITMASK = 64L;
+
+	public static final long ZIPREQUIRED_COLUMN_BITMASK = 128L;
+
+	public static final long ACTIVE_COLUMN_BITMASK = 256L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int COUNTRYID_COLUMN_INDEX = 1;
+
+	public static final int NAME_COLUMN_INDEX = 2;
+
+	public static final int A2_COLUMN_INDEX = 3;
+
+	public static final int A3_COLUMN_INDEX = 4;
+
+	public static final int NUMBER_COLUMN_INDEX = 5;
+
+	public static final int IDD_COLUMN_INDEX = 6;
+
+	public static final int ZIPREQUIRED_COLUMN_INDEX = 7;
+
+	public static final int ACTIVE_COLUMN_INDEX = 8;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -345,6 +373,8 @@ public class CountryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -356,6 +386,8 @@ public class CountryModelImpl
 
 	@Override
 	public void setCountryId(long countryId) {
+		_setOriginalValue(COUNTRYID_COLUMN_INDEX, _countryId);
+
 		_countryId = countryId;
 	}
 
@@ -372,17 +404,14 @@ public class CountryModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
-
-		if (_originalName == null) {
-			_originalName = _name;
-		}
+		_setOriginalValue(NAME_COLUMN_INDEX, _name);
 
 		_name = name;
 	}
 
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return GetterUtil.getString(
+			_getOriginalValue(NAME_COLUMN_INDEX, _name));
 	}
 
 	@JSON
@@ -398,17 +427,13 @@ public class CountryModelImpl
 
 	@Override
 	public void setA2(String a2) {
-		_columnBitmask |= A2_COLUMN_BITMASK;
-
-		if (_originalA2 == null) {
-			_originalA2 = _a2;
-		}
+		_setOriginalValue(A2_COLUMN_INDEX, _a2);
 
 		_a2 = a2;
 	}
 
 	public String getOriginalA2() {
-		return GetterUtil.getString(_originalA2);
+		return GetterUtil.getString(_getOriginalValue(A2_COLUMN_INDEX, _a2));
 	}
 
 	@JSON
@@ -424,17 +449,13 @@ public class CountryModelImpl
 
 	@Override
 	public void setA3(String a3) {
-		_columnBitmask |= A3_COLUMN_BITMASK;
-
-		if (_originalA3 == null) {
-			_originalA3 = _a3;
-		}
+		_setOriginalValue(A3_COLUMN_INDEX, _a3);
 
 		_a3 = a3;
 	}
 
 	public String getOriginalA3() {
-		return GetterUtil.getString(_originalA3);
+		return GetterUtil.getString(_getOriginalValue(A3_COLUMN_INDEX, _a3));
 	}
 
 	@JSON
@@ -450,6 +471,8 @@ public class CountryModelImpl
 
 	@Override
 	public void setNumber(String number) {
+		_setOriginalValue(NUMBER_COLUMN_INDEX, _number);
+
 		_number = number;
 	}
 
@@ -466,6 +489,8 @@ public class CountryModelImpl
 
 	@Override
 	public void setIdd(String idd) {
+		_setOriginalValue(IDD_COLUMN_INDEX, _idd);
+
 		_idd = idd;
 	}
 
@@ -483,6 +508,8 @@ public class CountryModelImpl
 
 	@Override
 	public void setZipRequired(boolean zipRequired) {
+		_setOriginalValue(ZIPREQUIRED_COLUMN_INDEX, _zipRequired);
+
 		_zipRequired = zipRequired;
 	}
 
@@ -500,19 +527,13 @@ public class CountryModelImpl
 
 	@Override
 	public void setActive(boolean active) {
-		_columnBitmask |= ACTIVE_COLUMN_BITMASK;
-
-		if (!_setOriginalActive) {
-			_setOriginalActive = true;
-
-			_originalActive = _active;
-		}
+		_setOriginalValue(ACTIVE_COLUMN_INDEX, _active);
 
 		_active = active;
 	}
 
 	public boolean getOriginalActive() {
-		return _originalActive;
+		return _getOriginalValue(ACTIVE_COLUMN_INDEX, _active);
 	}
 
 	public long getColumnBitmask() {
@@ -618,19 +639,9 @@ public class CountryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		CountryModelImpl countryModelImpl = this;
+		_columnBitmask = 0;
 
-		countryModelImpl._originalName = countryModelImpl._name;
-
-		countryModelImpl._originalA2 = countryModelImpl._a2;
-
-		countryModelImpl._originalA3 = countryModelImpl._a3;
-
-		countryModelImpl._originalActive = countryModelImpl._active;
-
-		countryModelImpl._setOriginalActive = false;
-
-		countryModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -751,6 +762,37 @@ public class CountryModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[9];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, Country>
@@ -761,18 +803,17 @@ public class CountryModelImpl
 	private long _mvccVersion;
 	private long _countryId;
 	private String _name;
-	private String _originalName;
 	private String _a2;
-	private String _originalA2;
 	private String _a3;
-	private String _originalA3;
 	private String _number;
 	private String _idd;
 	private boolean _zipRequired;
 	private boolean _active;
-	private boolean _originalActive;
-	private boolean _setOriginalActive;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private Country _escapedModel;
 
 }

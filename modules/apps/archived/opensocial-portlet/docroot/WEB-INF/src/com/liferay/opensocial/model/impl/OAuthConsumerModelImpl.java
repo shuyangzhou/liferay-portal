@@ -119,9 +119,41 @@ public class OAuthConsumerModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.opensocial.model.OAuthConsumer"),
 		true);
 
-	public static final long GADGETKEY_COLUMN_BITMASK = 1L;
+	public static final long OAUTHCONSUMERID_COLUMN_BITMASK = 1L;
 
-	public static final long SERVICENAME_COLUMN_BITMASK = 2L;
+	public static final long COMPANYID_COLUMN_BITMASK = 2L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 4L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 8L;
+
+	public static final long GADGETKEY_COLUMN_BITMASK = 16L;
+
+	public static final long SERVICENAME_COLUMN_BITMASK = 32L;
+
+	public static final long CONSUMERKEY_COLUMN_BITMASK = 64L;
+
+	public static final long CONSUMERSECRET_COLUMN_BITMASK = 128L;
+
+	public static final long KEYTYPE_COLUMN_BITMASK = 256L;
+
+	public static final int OAUTHCONSUMERID_COLUMN_INDEX = 0;
+
+	public static final int COMPANYID_COLUMN_INDEX = 1;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 2;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 3;
+
+	public static final int GADGETKEY_COLUMN_INDEX = 4;
+
+	public static final int SERVICENAME_COLUMN_INDEX = 5;
+
+	public static final int CONSUMERKEY_COLUMN_INDEX = 6;
+
+	public static final int CONSUMERSECRET_COLUMN_INDEX = 7;
+
+	public static final int KEYTYPE_COLUMN_INDEX = 8;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.util.service.ServiceProps.get(
@@ -311,6 +343,8 @@ public class OAuthConsumerModelImpl
 
 	@Override
 	public void setOAuthConsumerId(long oAuthConsumerId) {
+		_setOriginalValue(OAUTHCONSUMERID_COLUMN_INDEX, _oAuthConsumerId);
+
 		_oAuthConsumerId = oAuthConsumerId;
 	}
 
@@ -321,6 +355,8 @@ public class OAuthConsumerModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
+
 		_companyId = companyId;
 	}
 
@@ -331,6 +367,8 @@ public class OAuthConsumerModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_setOriginalValue(CREATEDATE_COLUMN_INDEX, _createDate);
+
 		_createDate = createDate;
 	}
 
@@ -340,12 +378,12 @@ public class OAuthConsumerModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		_setOriginalValue(MODIFIEDDATE_COLUMN_INDEX, _modifiedDate);
 
 		_modifiedDate = modifiedDate;
 	}
@@ -362,17 +400,14 @@ public class OAuthConsumerModelImpl
 
 	@Override
 	public void setGadgetKey(String gadgetKey) {
-		_columnBitmask |= GADGETKEY_COLUMN_BITMASK;
-
-		if (_originalGadgetKey == null) {
-			_originalGadgetKey = _gadgetKey;
-		}
+		_setOriginalValue(GADGETKEY_COLUMN_INDEX, _gadgetKey);
 
 		_gadgetKey = gadgetKey;
 	}
 
 	public String getOriginalGadgetKey() {
-		return GetterUtil.getString(_originalGadgetKey);
+		return GetterUtil.getString(
+			_getOriginalValue(GADGETKEY_COLUMN_INDEX, _gadgetKey));
 	}
 
 	@Override
@@ -387,17 +422,14 @@ public class OAuthConsumerModelImpl
 
 	@Override
 	public void setServiceName(String serviceName) {
-		_columnBitmask = -1L;
-
-		if (_originalServiceName == null) {
-			_originalServiceName = _serviceName;
-		}
+		_setOriginalValue(SERVICENAME_COLUMN_INDEX, _serviceName);
 
 		_serviceName = serviceName;
 	}
 
 	public String getOriginalServiceName() {
-		return GetterUtil.getString(_originalServiceName);
+		return GetterUtil.getString(
+			_getOriginalValue(SERVICENAME_COLUMN_INDEX, _serviceName));
 	}
 
 	@Override
@@ -412,6 +444,8 @@ public class OAuthConsumerModelImpl
 
 	@Override
 	public void setConsumerKey(String consumerKey) {
+		_setOriginalValue(CONSUMERKEY_COLUMN_INDEX, _consumerKey);
+
 		_consumerKey = consumerKey;
 	}
 
@@ -427,6 +461,8 @@ public class OAuthConsumerModelImpl
 
 	@Override
 	public void setConsumerSecret(String consumerSecret) {
+		_setOriginalValue(CONSUMERSECRET_COLUMN_INDEX, _consumerSecret);
+
 		_consumerSecret = consumerSecret;
 	}
 
@@ -442,6 +478,8 @@ public class OAuthConsumerModelImpl
 
 	@Override
 	public void setKeyType(String keyType) {
+		_setOriginalValue(KEYTYPE_COLUMN_INDEX, _keyType);
+
 		_keyType = keyType;
 	}
 
@@ -548,17 +586,9 @@ public class OAuthConsumerModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		OAuthConsumerModelImpl oAuthConsumerModelImpl = this;
+		_columnBitmask = 0;
 
-		oAuthConsumerModelImpl._setModifiedDate = false;
-
-		oAuthConsumerModelImpl._originalGadgetKey =
-			oAuthConsumerModelImpl._gadgetKey;
-
-		oAuthConsumerModelImpl._originalServiceName =
-			oAuthConsumerModelImpl._serviceName;
-
-		oAuthConsumerModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -694,6 +724,37 @@ public class OAuthConsumerModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[9];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, OAuthConsumer>
@@ -705,15 +766,16 @@ public class OAuthConsumerModelImpl
 	private long _companyId;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private String _gadgetKey;
-	private String _originalGadgetKey;
 	private String _serviceName;
-	private String _originalServiceName;
 	private String _consumerKey;
 	private String _consumerSecret;
 	private String _keyType;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private OAuthConsumer _escapedModel;
 
 }

@@ -136,21 +136,97 @@ public class FragmentEntryLinkModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long CLASSPK_COLUMN_BITMASK = 2L;
+	public static final long UUID_COLUMN_BITMASK = 2L;
 
-	public static final long COMPANYID_COLUMN_BITMASK = 4L;
+	public static final long FRAGMENTENTRYLINKID_COLUMN_BITMASK = 4L;
 
-	public static final long FRAGMENTENTRYID_COLUMN_BITMASK = 8L;
+	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 16L;
+	public static final long COMPANYID_COLUMN_BITMASK = 16L;
 
-	public static final long RENDERERKEY_COLUMN_BITMASK = 32L;
+	public static final long USERID_COLUMN_BITMASK = 32L;
 
-	public static final long UUID_COLUMN_BITMASK = 64L;
+	public static final long USERNAME_COLUMN_BITMASK = 64L;
 
-	public static final long POSITION_COLUMN_BITMASK = 128L;
+	public static final long CREATEDATE_COLUMN_BITMASK = 128L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 256L;
+
+	public static final long ORIGINALFRAGMENTENTRYLINKID_COLUMN_BITMASK = 512L;
+
+	public static final long FRAGMENTENTRYID_COLUMN_BITMASK = 1024L;
+
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 2048L;
+
+	public static final long CLASSPK_COLUMN_BITMASK = 4096L;
+
+	public static final long CSS_COLUMN_BITMASK = 8192L;
+
+	public static final long HTML_COLUMN_BITMASK = 16384L;
+
+	public static final long JS_COLUMN_BITMASK = 32768L;
+
+	public static final long CONFIGURATION_COLUMN_BITMASK = 65536L;
+
+	public static final long EDITABLEVALUES_COLUMN_BITMASK = 131072L;
+
+	public static final long NAMESPACE_COLUMN_BITMASK = 262144L;
+
+	public static final long POSITION_COLUMN_BITMASK = 524288L;
+
+	public static final long RENDERERKEY_COLUMN_BITMASK = 1048576L;
+
+	public static final long LASTPROPAGATIONDATE_COLUMN_BITMASK = 2097152L;
+
+	public static final long LASTPUBLISHDATE_COLUMN_BITMASK = 4194304L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int UUID_COLUMN_INDEX = 1;
+
+	public static final int FRAGMENTENTRYLINKID_COLUMN_INDEX = 2;
+
+	public static final int GROUPID_COLUMN_INDEX = 3;
+
+	public static final int COMPANYID_COLUMN_INDEX = 4;
+
+	public static final int USERID_COLUMN_INDEX = 5;
+
+	public static final int USERNAME_COLUMN_INDEX = 6;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 7;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 8;
+
+	public static final int ORIGINALFRAGMENTENTRYLINKID_COLUMN_INDEX = 9;
+
+	public static final int FRAGMENTENTRYID_COLUMN_INDEX = 10;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 11;
+
+	public static final int CLASSPK_COLUMN_INDEX = 12;
+
+	public static final int CSS_COLUMN_INDEX = 13;
+
+	public static final int HTML_COLUMN_INDEX = 14;
+
+	public static final int JS_COLUMN_INDEX = 15;
+
+	public static final int CONFIGURATION_COLUMN_INDEX = 16;
+
+	public static final int EDITABLEVALUES_COLUMN_INDEX = 17;
+
+	public static final int NAMESPACE_COLUMN_INDEX = 18;
+
+	public static final int POSITION_COLUMN_INDEX = 19;
+
+	public static final int RENDERERKEY_COLUMN_INDEX = 20;
+
+	public static final int LASTPROPAGATIONDATE_COLUMN_INDEX = 21;
+
+	public static final int LASTPUBLISHDATE_COLUMN_INDEX = 22;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -494,6 +570,8 @@ public class FragmentEntryLinkModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -510,17 +588,14 @@ public class FragmentEntryLinkModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_setOriginalValue(UUID_COLUMN_INDEX, _uuid);
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return GetterUtil.getString(
+			_getOriginalValue(UUID_COLUMN_INDEX, _uuid));
 	}
 
 	@JSON
@@ -531,6 +606,9 @@ public class FragmentEntryLinkModelImpl
 
 	@Override
 	public void setFragmentEntryLinkId(long fragmentEntryLinkId) {
+		_setOriginalValue(
+			FRAGMENTENTRYLINKID_COLUMN_INDEX, _fragmentEntryLinkId);
+
 		_fragmentEntryLinkId = fragmentEntryLinkId;
 	}
 
@@ -542,19 +620,13 @@ public class FragmentEntryLinkModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_setOriginalValue(GROUPID_COLUMN_INDEX, _groupId);
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return _getOriginalValue(GROUPID_COLUMN_INDEX, _groupId);
 	}
 
 	@JSON
@@ -565,19 +637,13 @@ public class FragmentEntryLinkModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return _getOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 	}
 
 	@JSON
@@ -588,6 +654,8 @@ public class FragmentEntryLinkModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_setOriginalValue(USERID_COLUMN_INDEX, _userId);
+
 		_userId = userId;
 	}
 
@@ -620,6 +688,8 @@ public class FragmentEntryLinkModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_setOriginalValue(USERNAME_COLUMN_INDEX, _userName);
+
 		_userName = userName;
 	}
 
@@ -631,6 +701,8 @@ public class FragmentEntryLinkModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_setOriginalValue(CREATEDATE_COLUMN_INDEX, _createDate);
+
 		_createDate = createDate;
 	}
 
@@ -641,12 +713,12 @@ public class FragmentEntryLinkModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		_setOriginalValue(MODIFIEDDATE_COLUMN_INDEX, _modifiedDate);
 
 		_modifiedDate = modifiedDate;
 	}
@@ -661,6 +733,10 @@ public class FragmentEntryLinkModelImpl
 	public void setOriginalFragmentEntryLinkId(
 		long originalFragmentEntryLinkId) {
 
+		_setOriginalValue(
+			ORIGINALFRAGMENTENTRYLINKID_COLUMN_INDEX,
+			_originalFragmentEntryLinkId);
+
 		_originalFragmentEntryLinkId = originalFragmentEntryLinkId;
 	}
 
@@ -672,19 +748,14 @@ public class FragmentEntryLinkModelImpl
 
 	@Override
 	public void setFragmentEntryId(long fragmentEntryId) {
-		_columnBitmask |= FRAGMENTENTRYID_COLUMN_BITMASK;
-
-		if (!_setOriginalFragmentEntryId) {
-			_setOriginalFragmentEntryId = true;
-
-			_originalFragmentEntryId = _fragmentEntryId;
-		}
+		_setOriginalValue(FRAGMENTENTRYID_COLUMN_INDEX, _fragmentEntryId);
 
 		_fragmentEntryId = fragmentEntryId;
 	}
 
 	public long getOriginalFragmentEntryId() {
-		return _originalFragmentEntryId;
+		return _getOriginalValue(
+			FRAGMENTENTRYID_COLUMN_INDEX, _fragmentEntryId);
 	}
 
 	@Override
@@ -715,19 +786,13 @@ public class FragmentEntryLinkModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask = -1L;
-
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
-		}
+		_setOriginalValue(CLASSNAMEID_COLUMN_INDEX, _classNameId);
 
 		_classNameId = classNameId;
 	}
 
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return _getOriginalValue(CLASSNAMEID_COLUMN_INDEX, _classNameId);
 	}
 
 	@JSON
@@ -738,19 +803,13 @@ public class FragmentEntryLinkModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask = -1L;
-
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
-
-			_originalClassPK = _classPK;
-		}
+		_setOriginalValue(CLASSPK_COLUMN_INDEX, _classPK);
 
 		_classPK = classPK;
 	}
 
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return _getOriginalValue(CLASSPK_COLUMN_INDEX, _classPK);
 	}
 
 	@JSON
@@ -766,6 +825,8 @@ public class FragmentEntryLinkModelImpl
 
 	@Override
 	public void setCss(String css) {
+		_setOriginalValue(CSS_COLUMN_INDEX, _css);
+
 		_css = css;
 	}
 
@@ -782,6 +843,8 @@ public class FragmentEntryLinkModelImpl
 
 	@Override
 	public void setHtml(String html) {
+		_setOriginalValue(HTML_COLUMN_INDEX, _html);
+
 		_html = html;
 	}
 
@@ -798,6 +861,8 @@ public class FragmentEntryLinkModelImpl
 
 	@Override
 	public void setJs(String js) {
+		_setOriginalValue(JS_COLUMN_INDEX, _js);
+
 		_js = js;
 	}
 
@@ -814,6 +879,8 @@ public class FragmentEntryLinkModelImpl
 
 	@Override
 	public void setConfiguration(String configuration) {
+		_setOriginalValue(CONFIGURATION_COLUMN_INDEX, _configuration);
+
 		_configuration = configuration;
 	}
 
@@ -830,6 +897,8 @@ public class FragmentEntryLinkModelImpl
 
 	@Override
 	public void setEditableValues(String editableValues) {
+		_setOriginalValue(EDITABLEVALUES_COLUMN_INDEX, _editableValues);
+
 		_editableValues = editableValues;
 	}
 
@@ -846,6 +915,8 @@ public class FragmentEntryLinkModelImpl
 
 	@Override
 	public void setNamespace(String namespace) {
+		_setOriginalValue(NAMESPACE_COLUMN_INDEX, _namespace);
+
 		_namespace = namespace;
 	}
 
@@ -857,7 +928,7 @@ public class FragmentEntryLinkModelImpl
 
 	@Override
 	public void setPosition(int position) {
-		_columnBitmask = -1L;
+		_setOriginalValue(POSITION_COLUMN_INDEX, _position);
 
 		_position = position;
 	}
@@ -875,17 +946,14 @@ public class FragmentEntryLinkModelImpl
 
 	@Override
 	public void setRendererKey(String rendererKey) {
-		_columnBitmask |= RENDERERKEY_COLUMN_BITMASK;
-
-		if (_originalRendererKey == null) {
-			_originalRendererKey = _rendererKey;
-		}
+		_setOriginalValue(RENDERERKEY_COLUMN_INDEX, _rendererKey);
 
 		_rendererKey = rendererKey;
 	}
 
 	public String getOriginalRendererKey() {
-		return GetterUtil.getString(_originalRendererKey);
+		return GetterUtil.getString(
+			_getOriginalValue(RENDERERKEY_COLUMN_INDEX, _rendererKey));
 	}
 
 	@JSON
@@ -896,6 +964,9 @@ public class FragmentEntryLinkModelImpl
 
 	@Override
 	public void setLastPropagationDate(Date lastPropagationDate) {
+		_setOriginalValue(
+			LASTPROPAGATIONDATE_COLUMN_INDEX, _lastPropagationDate);
+
 		_lastPropagationDate = lastPropagationDate;
 	}
 
@@ -907,6 +978,8 @@ public class FragmentEntryLinkModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_setOriginalValue(LASTPUBLISHDATE_COLUMN_INDEX, _lastPublishDate);
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -1072,42 +1145,9 @@ public class FragmentEntryLinkModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl = this;
+		_columnBitmask = 0;
 
-		fragmentEntryLinkModelImpl._originalUuid =
-			fragmentEntryLinkModelImpl._uuid;
-
-		fragmentEntryLinkModelImpl._originalGroupId =
-			fragmentEntryLinkModelImpl._groupId;
-
-		fragmentEntryLinkModelImpl._setOriginalGroupId = false;
-
-		fragmentEntryLinkModelImpl._originalCompanyId =
-			fragmentEntryLinkModelImpl._companyId;
-
-		fragmentEntryLinkModelImpl._setOriginalCompanyId = false;
-
-		fragmentEntryLinkModelImpl._setModifiedDate = false;
-
-		fragmentEntryLinkModelImpl._originalFragmentEntryId =
-			fragmentEntryLinkModelImpl._fragmentEntryId;
-
-		fragmentEntryLinkModelImpl._setOriginalFragmentEntryId = false;
-
-		fragmentEntryLinkModelImpl._originalClassNameId =
-			fragmentEntryLinkModelImpl._classNameId;
-
-		fragmentEntryLinkModelImpl._setOriginalClassNameId = false;
-
-		fragmentEntryLinkModelImpl._originalClassPK =
-			fragmentEntryLinkModelImpl._classPK;
-
-		fragmentEntryLinkModelImpl._setOriginalClassPK = false;
-
-		fragmentEntryLinkModelImpl._originalRendererKey =
-			fragmentEntryLinkModelImpl._rendererKey;
-
-		fragmentEntryLinkModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -1313,6 +1353,37 @@ public class FragmentEntryLinkModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[23];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, FragmentEntryLink>
@@ -1325,29 +1396,17 @@ public class FragmentEntryLinkModelImpl
 
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _fragmentEntryLinkId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _originalFragmentEntryLinkId;
 	private long _fragmentEntryId;
-	private long _originalFragmentEntryId;
-	private boolean _setOriginalFragmentEntryId;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private String _css;
 	private String _html;
 	private String _js;
@@ -1356,10 +1415,13 @@ public class FragmentEntryLinkModelImpl
 	private String _namespace;
 	private int _position;
 	private String _rendererKey;
-	private String _originalRendererKey;
 	private Date _lastPropagationDate;
 	private Date _lastPublishDate;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private FragmentEntryLink _escapedModel;
 
 }

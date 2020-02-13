@@ -107,7 +107,19 @@ public class LocalizedEntryModelImpl
 				"value.object.finder.cache.enabled.com.liferay.portal.tools.service.builder.test.model.LocalizedEntry"),
 		true);
 
-	public static final boolean COLUMN_BITMASK_ENABLED = false;
+	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(
+		com.liferay.portal.tools.service.builder.test.service.util.ServiceProps.
+			get(
+				"value.object.column.bitmask.enabled.com.liferay.portal.tools.service.builder.test.model.LocalizedEntry"),
+		true);
+
+	public static final long DEFAULTLANGUAGEID_COLUMN_BITMASK = 1L;
+
+	public static final long LOCALIZEDENTRYID_COLUMN_BITMASK = 2L;
+
+	public static final int DEFAULTLANGUAGEID_COLUMN_INDEX = 0;
+
+	public static final int LOCALIZEDENTRYID_COLUMN_INDEX = 1;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.tools.service.builder.test.service.util.ServiceProps.
@@ -424,6 +436,8 @@ public class LocalizedEntryModelImpl
 
 	@Override
 	public void setDefaultLanguageId(String defaultLanguageId) {
+		_setOriginalValue(DEFAULTLANGUAGEID_COLUMN_INDEX, _defaultLanguageId);
+
 		_defaultLanguageId = defaultLanguageId;
 	}
 
@@ -434,7 +448,13 @@ public class LocalizedEntryModelImpl
 
 	@Override
 	public void setLocalizedEntryId(long localizedEntryId) {
+		_setOriginalValue(LOCALIZEDENTRYID_COLUMN_INDEX, _localizedEntryId);
+
 		_localizedEntryId = localizedEntryId;
+	}
+
+	public long getColumnBitmask() {
+		return _columnBitmask;
 	}
 
 	@Override
@@ -531,6 +551,9 @@ public class LocalizedEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
+		_columnBitmask = 0;
+
+		_originalValues = null;
 	}
 
 	@Override
@@ -614,6 +637,37 @@ public class LocalizedEntryModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[2];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, LocalizedEntry>
@@ -623,6 +677,11 @@ public class LocalizedEntryModelImpl
 
 	private String _defaultLanguageId;
 	private long _localizedEntryId;
+	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private LocalizedEntry _escapedModel;
 
 }

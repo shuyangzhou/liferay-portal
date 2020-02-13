@@ -106,13 +106,45 @@ public class DLContentModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long PATH_COLUMN_BITMASK = 2L;
+	public static final long CTCOLLECTIONID_COLUMN_BITMASK = 2L;
 
-	public static final long REPOSITORYID_COLUMN_BITMASK = 4L;
+	public static final long CONTENTID_COLUMN_BITMASK = 4L;
 
-	public static final long VERSION_COLUMN_BITMASK = 8L;
+	public static final long GROUPID_COLUMN_BITMASK = 8L;
+
+	public static final long COMPANYID_COLUMN_BITMASK = 16L;
+
+	public static final long REPOSITORYID_COLUMN_BITMASK = 32L;
+
+	public static final long PATH_COLUMN_BITMASK = 64L;
+
+	public static final long VERSION_COLUMN_BITMASK = 128L;
+
+	public static final long DATA_COLUMN_BITMASK = 256L;
+
+	public static final long SIZE_COLUMN_BITMASK = 512L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int CTCOLLECTIONID_COLUMN_INDEX = 1;
+
+	public static final int CONTENTID_COLUMN_INDEX = 2;
+
+	public static final int GROUPID_COLUMN_INDEX = 3;
+
+	public static final int COMPANYID_COLUMN_INDEX = 4;
+
+	public static final int REPOSITORYID_COLUMN_INDEX = 5;
+
+	public static final int PATH_COLUMN_INDEX = 6;
+
+	public static final int VERSION_COLUMN_INDEX = 7;
+
+	public static final int DATA_COLUMN_INDEX = 8;
+
+	public static final int SIZE_COLUMN_INDEX = 9;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -297,6 +329,8 @@ public class DLContentModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -307,6 +341,8 @@ public class DLContentModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_setOriginalValue(CTCOLLECTIONID_COLUMN_INDEX, _ctCollectionId);
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -317,6 +353,8 @@ public class DLContentModelImpl
 
 	@Override
 	public void setContentId(long contentId) {
+		_setOriginalValue(CONTENTID_COLUMN_INDEX, _contentId);
+
 		_contentId = contentId;
 	}
 
@@ -327,6 +365,8 @@ public class DLContentModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
+		_setOriginalValue(GROUPID_COLUMN_INDEX, _groupId);
+
 		_groupId = groupId;
 	}
 
@@ -337,19 +377,13 @@ public class DLContentModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return _getOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 	}
 
 	@Override
@@ -359,19 +393,13 @@ public class DLContentModelImpl
 
 	@Override
 	public void setRepositoryId(long repositoryId) {
-		_columnBitmask |= REPOSITORYID_COLUMN_BITMASK;
-
-		if (!_setOriginalRepositoryId) {
-			_setOriginalRepositoryId = true;
-
-			_originalRepositoryId = _repositoryId;
-		}
+		_setOriginalValue(REPOSITORYID_COLUMN_INDEX, _repositoryId);
 
 		_repositoryId = repositoryId;
 	}
 
 	public long getOriginalRepositoryId() {
-		return _originalRepositoryId;
+		return _getOriginalValue(REPOSITORYID_COLUMN_INDEX, _repositoryId);
 	}
 
 	@Override
@@ -386,17 +414,14 @@ public class DLContentModelImpl
 
 	@Override
 	public void setPath(String path) {
-		_columnBitmask |= PATH_COLUMN_BITMASK;
-
-		if (_originalPath == null) {
-			_originalPath = _path;
-		}
+		_setOriginalValue(PATH_COLUMN_INDEX, _path);
 
 		_path = path;
 	}
 
 	public String getOriginalPath() {
-		return GetterUtil.getString(_originalPath);
+		return GetterUtil.getString(
+			_getOriginalValue(PATH_COLUMN_INDEX, _path));
 	}
 
 	@Override
@@ -411,17 +436,14 @@ public class DLContentModelImpl
 
 	@Override
 	public void setVersion(String version) {
-		_columnBitmask = -1L;
-
-		if (_originalVersion == null) {
-			_originalVersion = _version;
-		}
+		_setOriginalValue(VERSION_COLUMN_INDEX, _version);
 
 		_version = version;
 	}
 
 	public String getOriginalVersion() {
-		return GetterUtil.getString(_originalVersion);
+		return GetterUtil.getString(
+			_getOriginalValue(VERSION_COLUMN_INDEX, _version));
 	}
 
 	@Override
@@ -461,6 +483,8 @@ public class DLContentModelImpl
 
 	@Override
 	public void setSize(long size) {
+		_setOriginalValue(SIZE_COLUMN_INDEX, _size);
+
 		_size = size;
 	}
 
@@ -569,24 +593,11 @@ public class DLContentModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DLContentModelImpl dlContentModelImpl = this;
+		_dataBlobModel = null;
 
-		dlContentModelImpl._originalCompanyId = dlContentModelImpl._companyId;
+		_columnBitmask = 0;
 
-		dlContentModelImpl._setOriginalCompanyId = false;
-
-		dlContentModelImpl._originalRepositoryId =
-			dlContentModelImpl._repositoryId;
-
-		dlContentModelImpl._setOriginalRepositoryId = false;
-
-		dlContentModelImpl._originalPath = dlContentModelImpl._path;
-
-		dlContentModelImpl._originalVersion = dlContentModelImpl._version;
-
-		dlContentModelImpl._dataBlobModel = null;
-
-		dlContentModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -703,6 +714,37 @@ public class DLContentModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[10];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, DLContent>
@@ -718,18 +760,16 @@ public class DLContentModelImpl
 	private long _contentId;
 	private long _groupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _repositoryId;
-	private long _originalRepositoryId;
-	private boolean _setOriginalRepositoryId;
 	private String _path;
-	private String _originalPath;
 	private String _version;
-	private String _originalVersion;
 	private DLContentDataBlobModel _dataBlobModel;
 	private long _size;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private DLContent _escapedModel;
 
 }

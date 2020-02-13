@@ -130,13 +130,49 @@ public class MembershipRequestModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.MembershipRequest"),
 		true);
 
-	public static final long GROUPID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long STATUSID_COLUMN_BITMASK = 2L;
+	public static final long MEMBERSHIPREQUESTID_COLUMN_BITMASK = 2L;
 
-	public static final long USERID_COLUMN_BITMASK = 4L;
+	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
-	public static final long CREATEDATE_COLUMN_BITMASK = 8L;
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
+
+	public static final long USERID_COLUMN_BITMASK = 16L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 32L;
+
+	public static final long COMMENTS_COLUMN_BITMASK = 64L;
+
+	public static final long REPLYCOMMENTS_COLUMN_BITMASK = 128L;
+
+	public static final long REPLYDATE_COLUMN_BITMASK = 256L;
+
+	public static final long REPLIERUSERID_COLUMN_BITMASK = 512L;
+
+	public static final long STATUSID_COLUMN_BITMASK = 1024L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int MEMBERSHIPREQUESTID_COLUMN_INDEX = 1;
+
+	public static final int GROUPID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int USERID_COLUMN_INDEX = 4;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 5;
+
+	public static final int COMMENTS_COLUMN_INDEX = 6;
+
+	public static final int REPLYCOMMENTS_COLUMN_INDEX = 7;
+
+	public static final int REPLYDATE_COLUMN_INDEX = 8;
+
+	public static final int REPLIERUSERID_COLUMN_INDEX = 9;
+
+	public static final int STATUSID_COLUMN_INDEX = 10;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -400,6 +436,8 @@ public class MembershipRequestModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -411,6 +449,9 @@ public class MembershipRequestModelImpl
 
 	@Override
 	public void setMembershipRequestId(long membershipRequestId) {
+		_setOriginalValue(
+			MEMBERSHIPREQUESTID_COLUMN_INDEX, _membershipRequestId);
+
 		_membershipRequestId = membershipRequestId;
 	}
 
@@ -422,19 +463,13 @@ public class MembershipRequestModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_setOriginalValue(GROUPID_COLUMN_INDEX, _groupId);
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return _getOriginalValue(GROUPID_COLUMN_INDEX, _groupId);
 	}
 
 	@JSON
@@ -445,6 +480,8 @@ public class MembershipRequestModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
+
 		_companyId = companyId;
 	}
 
@@ -456,13 +493,7 @@ public class MembershipRequestModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_setOriginalValue(USERID_COLUMN_INDEX, _userId);
 
 		_userId = userId;
 	}
@@ -484,7 +515,7 @@ public class MembershipRequestModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return _getOriginalValue(USERID_COLUMN_INDEX, _userId);
 	}
 
 	@JSON
@@ -495,7 +526,7 @@ public class MembershipRequestModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
+		_setOriginalValue(CREATEDATE_COLUMN_INDEX, _createDate);
 
 		_createDate = createDate;
 	}
@@ -513,6 +544,8 @@ public class MembershipRequestModelImpl
 
 	@Override
 	public void setComments(String comments) {
+		_setOriginalValue(COMMENTS_COLUMN_INDEX, _comments);
+
 		_comments = comments;
 	}
 
@@ -529,6 +562,8 @@ public class MembershipRequestModelImpl
 
 	@Override
 	public void setReplyComments(String replyComments) {
+		_setOriginalValue(REPLYCOMMENTS_COLUMN_INDEX, _replyComments);
+
 		_replyComments = replyComments;
 	}
 
@@ -540,6 +575,8 @@ public class MembershipRequestModelImpl
 
 	@Override
 	public void setReplyDate(Date replyDate) {
+		_setOriginalValue(REPLYDATE_COLUMN_INDEX, _replyDate);
+
 		_replyDate = replyDate;
 	}
 
@@ -551,6 +588,8 @@ public class MembershipRequestModelImpl
 
 	@Override
 	public void setReplierUserId(long replierUserId) {
+		_setOriginalValue(REPLIERUSERID_COLUMN_INDEX, _replierUserId);
+
 		_replierUserId = replierUserId;
 	}
 
@@ -578,19 +617,13 @@ public class MembershipRequestModelImpl
 
 	@Override
 	public void setStatusId(long statusId) {
-		_columnBitmask |= STATUSID_COLUMN_BITMASK;
-
-		if (!_setOriginalStatusId) {
-			_setOriginalStatusId = true;
-
-			_originalStatusId = _statusId;
-		}
+		_setOriginalValue(STATUSID_COLUMN_INDEX, _statusId);
 
 		_statusId = statusId;
 	}
 
 	public long getOriginalStatusId() {
-		return _originalStatusId;
+		return _getOriginalValue(STATUSID_COLUMN_INDEX, _statusId);
 	}
 
 	public long getColumnBitmask() {
@@ -702,24 +735,9 @@ public class MembershipRequestModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		MembershipRequestModelImpl membershipRequestModelImpl = this;
+		_columnBitmask = 0;
 
-		membershipRequestModelImpl._originalGroupId =
-			membershipRequestModelImpl._groupId;
-
-		membershipRequestModelImpl._setOriginalGroupId = false;
-
-		membershipRequestModelImpl._originalUserId =
-			membershipRequestModelImpl._userId;
-
-		membershipRequestModelImpl._setOriginalUserId = false;
-
-		membershipRequestModelImpl._originalStatusId =
-			membershipRequestModelImpl._statusId;
-
-		membershipRequestModelImpl._setOriginalStatusId = false;
-
-		membershipRequestModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -842,6 +860,37 @@ public class MembershipRequestModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[11];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, MembershipRequest>
@@ -852,21 +901,19 @@ public class MembershipRequestModelImpl
 	private long _mvccVersion;
 	private long _membershipRequestId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private Date _createDate;
 	private String _comments;
 	private String _replyComments;
 	private Date _replyDate;
 	private long _replierUserId;
 	private long _statusId;
-	private long _originalStatusId;
-	private boolean _setOriginalStatusId;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private MembershipRequest _escapedModel;
 
 }

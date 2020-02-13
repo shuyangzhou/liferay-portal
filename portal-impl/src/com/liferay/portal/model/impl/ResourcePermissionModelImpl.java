@@ -127,21 +127,53 @@ public class ResourcePermissionModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.ResourcePermission"),
 		true);
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long NAME_COLUMN_BITMASK = 2L;
+	public static final long CTCOLLECTIONID_COLUMN_BITMASK = 2L;
 
-	public static final long PRIMKEY_COLUMN_BITMASK = 4L;
+	public static final long RESOURCEPERMISSIONID_COLUMN_BITMASK = 4L;
 
-	public static final long PRIMKEYID_COLUMN_BITMASK = 8L;
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
 
-	public static final long ROLEID_COLUMN_BITMASK = 16L;
+	public static final long NAME_COLUMN_BITMASK = 16L;
 
 	public static final long SCOPE_COLUMN_BITMASK = 32L;
 
-	public static final long VIEWACTIONID_COLUMN_BITMASK = 64L;
+	public static final long PRIMKEY_COLUMN_BITMASK = 64L;
 
-	public static final long RESOURCEPERMISSIONID_COLUMN_BITMASK = 128L;
+	public static final long PRIMKEYID_COLUMN_BITMASK = 128L;
+
+	public static final long ROLEID_COLUMN_BITMASK = 256L;
+
+	public static final long OWNERID_COLUMN_BITMASK = 512L;
+
+	public static final long ACTIONIDS_COLUMN_BITMASK = 1024L;
+
+	public static final long VIEWACTIONID_COLUMN_BITMASK = 2048L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int CTCOLLECTIONID_COLUMN_INDEX = 1;
+
+	public static final int RESOURCEPERMISSIONID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int NAME_COLUMN_INDEX = 4;
+
+	public static final int SCOPE_COLUMN_INDEX = 5;
+
+	public static final int PRIMKEY_COLUMN_INDEX = 6;
+
+	public static final int PRIMKEYID_COLUMN_INDEX = 7;
+
+	public static final int ROLEID_COLUMN_INDEX = 8;
+
+	public static final int OWNERID_COLUMN_INDEX = 9;
+
+	public static final int ACTIONIDS_COLUMN_INDEX = 10;
+
+	public static final int VIEWACTIONID_COLUMN_INDEX = 11;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -412,6 +444,8 @@ public class ResourcePermissionModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -423,6 +457,8 @@ public class ResourcePermissionModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_setOriginalValue(CTCOLLECTIONID_COLUMN_INDEX, _ctCollectionId);
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -434,6 +470,9 @@ public class ResourcePermissionModelImpl
 
 	@Override
 	public void setResourcePermissionId(long resourcePermissionId) {
+		_setOriginalValue(
+			RESOURCEPERMISSIONID_COLUMN_INDEX, _resourcePermissionId);
+
 		_resourcePermissionId = resourcePermissionId;
 	}
 
@@ -445,19 +484,13 @@ public class ResourcePermissionModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return _getOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 	}
 
 	@JSON
@@ -473,17 +506,14 @@ public class ResourcePermissionModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask |= NAME_COLUMN_BITMASK;
-
-		if (_originalName == null) {
-			_originalName = _name;
-		}
+		_setOriginalValue(NAME_COLUMN_INDEX, _name);
 
 		_name = name;
 	}
 
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return GetterUtil.getString(
+			_getOriginalValue(NAME_COLUMN_INDEX, _name));
 	}
 
 	@JSON
@@ -494,19 +524,13 @@ public class ResourcePermissionModelImpl
 
 	@Override
 	public void setScope(int scope) {
-		_columnBitmask |= SCOPE_COLUMN_BITMASK;
-
-		if (!_setOriginalScope) {
-			_setOriginalScope = true;
-
-			_originalScope = _scope;
-		}
+		_setOriginalValue(SCOPE_COLUMN_INDEX, _scope);
 
 		_scope = scope;
 	}
 
 	public int getOriginalScope() {
-		return _originalScope;
+		return _getOriginalValue(SCOPE_COLUMN_INDEX, _scope);
 	}
 
 	@JSON
@@ -522,17 +546,14 @@ public class ResourcePermissionModelImpl
 
 	@Override
 	public void setPrimKey(String primKey) {
-		_columnBitmask |= PRIMKEY_COLUMN_BITMASK;
-
-		if (_originalPrimKey == null) {
-			_originalPrimKey = _primKey;
-		}
+		_setOriginalValue(PRIMKEY_COLUMN_INDEX, _primKey);
 
 		_primKey = primKey;
 	}
 
 	public String getOriginalPrimKey() {
-		return GetterUtil.getString(_originalPrimKey);
+		return GetterUtil.getString(
+			_getOriginalValue(PRIMKEY_COLUMN_INDEX, _primKey));
 	}
 
 	@JSON
@@ -543,19 +564,13 @@ public class ResourcePermissionModelImpl
 
 	@Override
 	public void setPrimKeyId(long primKeyId) {
-		_columnBitmask |= PRIMKEYID_COLUMN_BITMASK;
-
-		if (!_setOriginalPrimKeyId) {
-			_setOriginalPrimKeyId = true;
-
-			_originalPrimKeyId = _primKeyId;
-		}
+		_setOriginalValue(PRIMKEYID_COLUMN_INDEX, _primKeyId);
 
 		_primKeyId = primKeyId;
 	}
 
 	public long getOriginalPrimKeyId() {
-		return _originalPrimKeyId;
+		return _getOriginalValue(PRIMKEYID_COLUMN_INDEX, _primKeyId);
 	}
 
 	@JSON
@@ -566,19 +581,13 @@ public class ResourcePermissionModelImpl
 
 	@Override
 	public void setRoleId(long roleId) {
-		_columnBitmask |= ROLEID_COLUMN_BITMASK;
-
-		if (!_setOriginalRoleId) {
-			_setOriginalRoleId = true;
-
-			_originalRoleId = _roleId;
-		}
+		_setOriginalValue(ROLEID_COLUMN_INDEX, _roleId);
 
 		_roleId = roleId;
 	}
 
 	public long getOriginalRoleId() {
-		return _originalRoleId;
+		return _getOriginalValue(ROLEID_COLUMN_INDEX, _roleId);
 	}
 
 	@JSON
@@ -589,6 +598,8 @@ public class ResourcePermissionModelImpl
 
 	@Override
 	public void setOwnerId(long ownerId) {
+		_setOriginalValue(OWNERID_COLUMN_INDEX, _ownerId);
+
 		_ownerId = ownerId;
 	}
 
@@ -600,6 +611,8 @@ public class ResourcePermissionModelImpl
 
 	@Override
 	public void setActionIds(long actionIds) {
+		_setOriginalValue(ACTIONIDS_COLUMN_INDEX, _actionIds);
+
 		_actionIds = actionIds;
 	}
 
@@ -617,19 +630,13 @@ public class ResourcePermissionModelImpl
 
 	@Override
 	public void setViewActionId(boolean viewActionId) {
-		_columnBitmask |= VIEWACTIONID_COLUMN_BITMASK;
-
-		if (!_setOriginalViewActionId) {
-			_setOriginalViewActionId = true;
-
-			_originalViewActionId = _viewActionId;
-		}
+		_setOriginalValue(VIEWACTIONID_COLUMN_INDEX, _viewActionId);
 
 		_viewActionId = viewActionId;
 	}
 
 	public boolean getOriginalViewActionId() {
-		return _originalViewActionId;
+		return _getOriginalValue(VIEWACTIONID_COLUMN_INDEX, _viewActionId);
 	}
 
 	public long getColumnBitmask() {
@@ -743,40 +750,9 @@ public class ResourcePermissionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ResourcePermissionModelImpl resourcePermissionModelImpl = this;
+		_columnBitmask = 0;
 
-		resourcePermissionModelImpl._originalCompanyId =
-			resourcePermissionModelImpl._companyId;
-
-		resourcePermissionModelImpl._setOriginalCompanyId = false;
-
-		resourcePermissionModelImpl._originalName =
-			resourcePermissionModelImpl._name;
-
-		resourcePermissionModelImpl._originalScope =
-			resourcePermissionModelImpl._scope;
-
-		resourcePermissionModelImpl._setOriginalScope = false;
-
-		resourcePermissionModelImpl._originalPrimKey =
-			resourcePermissionModelImpl._primKey;
-
-		resourcePermissionModelImpl._originalPrimKeyId =
-			resourcePermissionModelImpl._primKeyId;
-
-		resourcePermissionModelImpl._setOriginalPrimKeyId = false;
-
-		resourcePermissionModelImpl._originalRoleId =
-			resourcePermissionModelImpl._roleId;
-
-		resourcePermissionModelImpl._setOriginalRoleId = false;
-
-		resourcePermissionModelImpl._originalViewActionId =
-			resourcePermissionModelImpl._viewActionId;
-
-		resourcePermissionModelImpl._setOriginalViewActionId = false;
-
-		resourcePermissionModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -887,6 +863,37 @@ public class ResourcePermissionModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[12];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, ResourcePermission>
@@ -898,27 +905,19 @@ public class ResourcePermissionModelImpl
 	private long _ctCollectionId;
 	private long _resourcePermissionId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private String _name;
-	private String _originalName;
 	private int _scope;
-	private int _originalScope;
-	private boolean _setOriginalScope;
 	private String _primKey;
-	private String _originalPrimKey;
 	private long _primKeyId;
-	private long _originalPrimKeyId;
-	private boolean _setOriginalPrimKeyId;
 	private long _roleId;
-	private long _originalRoleId;
-	private boolean _setOriginalRoleId;
 	private long _ownerId;
 	private long _actionIds;
 	private boolean _viewActionId;
-	private boolean _originalViewActionId;
-	private boolean _setOriginalViewActionId;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private ResourcePermission _escapedModel;
 
 }

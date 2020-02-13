@@ -134,17 +134,65 @@ public class SystemEventModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.SystemEvent"),
 		true);
 
-	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long CLASSPK_COLUMN_BITMASK = 2L;
+	public static final long SYSTEMEVENTID_COLUMN_BITMASK = 2L;
 
 	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
-	public static final long SYSTEMEVENTSETKEY_COLUMN_BITMASK = 8L;
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
 
-	public static final long TYPE_COLUMN_BITMASK = 16L;
+	public static final long USERID_COLUMN_BITMASK = 16L;
 
-	public static final long CREATEDATE_COLUMN_BITMASK = 32L;
+	public static final long USERNAME_COLUMN_BITMASK = 32L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 64L;
+
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 128L;
+
+	public static final long CLASSPK_COLUMN_BITMASK = 256L;
+
+	public static final long CLASSUUID_COLUMN_BITMASK = 512L;
+
+	public static final long REFERRERCLASSNAMEID_COLUMN_BITMASK = 1024L;
+
+	public static final long PARENTSYSTEMEVENTID_COLUMN_BITMASK = 2048L;
+
+	public static final long SYSTEMEVENTSETKEY_COLUMN_BITMASK = 4096L;
+
+	public static final long TYPE_COLUMN_BITMASK = 8192L;
+
+	public static final long EXTRADATA_COLUMN_BITMASK = 16384L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int SYSTEMEVENTID_COLUMN_INDEX = 1;
+
+	public static final int GROUPID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int USERID_COLUMN_INDEX = 4;
+
+	public static final int USERNAME_COLUMN_INDEX = 5;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 6;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 7;
+
+	public static final int CLASSPK_COLUMN_INDEX = 8;
+
+	public static final int CLASSUUID_COLUMN_INDEX = 9;
+
+	public static final int REFERRERCLASSNAMEID_COLUMN_INDEX = 10;
+
+	public static final int PARENTSYSTEMEVENTID_COLUMN_INDEX = 11;
+
+	public static final int SYSTEMEVENTSETKEY_COLUMN_INDEX = 12;
+
+	public static final int TYPE_COLUMN_INDEX = 13;
+
+	public static final int EXTRADATA_COLUMN_INDEX = 14;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -353,6 +401,8 @@ public class SystemEventModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -363,6 +413,8 @@ public class SystemEventModelImpl
 
 	@Override
 	public void setSystemEventId(long systemEventId) {
+		_setOriginalValue(SYSTEMEVENTID_COLUMN_INDEX, _systemEventId);
+
 		_systemEventId = systemEventId;
 	}
 
@@ -373,19 +425,13 @@ public class SystemEventModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_setOriginalValue(GROUPID_COLUMN_INDEX, _groupId);
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return _getOriginalValue(GROUPID_COLUMN_INDEX, _groupId);
 	}
 
 	@Override
@@ -395,6 +441,8 @@ public class SystemEventModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
+
 		_companyId = companyId;
 	}
 
@@ -405,6 +453,8 @@ public class SystemEventModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_setOriginalValue(USERID_COLUMN_INDEX, _userId);
+
 		_userId = userId;
 	}
 
@@ -436,6 +486,8 @@ public class SystemEventModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_setOriginalValue(USERNAME_COLUMN_INDEX, _userName);
+
 		_userName = userName;
 	}
 
@@ -446,7 +498,7 @@ public class SystemEventModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
+		_setOriginalValue(CREATEDATE_COLUMN_INDEX, _createDate);
 
 		_createDate = createDate;
 	}
@@ -478,19 +530,13 @@ public class SystemEventModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
-
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
-		}
+		_setOriginalValue(CLASSNAMEID_COLUMN_INDEX, _classNameId);
 
 		_classNameId = classNameId;
 	}
 
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return _getOriginalValue(CLASSNAMEID_COLUMN_INDEX, _classNameId);
 	}
 
 	@Override
@@ -500,19 +546,13 @@ public class SystemEventModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
-
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
-
-			_originalClassPK = _classPK;
-		}
+		_setOriginalValue(CLASSPK_COLUMN_INDEX, _classPK);
 
 		_classPK = classPK;
 	}
 
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return _getOriginalValue(CLASSPK_COLUMN_INDEX, _classPK);
 	}
 
 	@Override
@@ -527,6 +567,8 @@ public class SystemEventModelImpl
 
 	@Override
 	public void setClassUuid(String classUuid) {
+		_setOriginalValue(CLASSUUID_COLUMN_INDEX, _classUuid);
+
 		_classUuid = classUuid;
 	}
 
@@ -537,6 +579,9 @@ public class SystemEventModelImpl
 
 	@Override
 	public void setReferrerClassNameId(long referrerClassNameId) {
+		_setOriginalValue(
+			REFERRERCLASSNAMEID_COLUMN_INDEX, _referrerClassNameId);
+
 		_referrerClassNameId = referrerClassNameId;
 	}
 
@@ -547,6 +592,9 @@ public class SystemEventModelImpl
 
 	@Override
 	public void setParentSystemEventId(long parentSystemEventId) {
+		_setOriginalValue(
+			PARENTSYSTEMEVENTID_COLUMN_INDEX, _parentSystemEventId);
+
 		_parentSystemEventId = parentSystemEventId;
 	}
 
@@ -557,19 +605,14 @@ public class SystemEventModelImpl
 
 	@Override
 	public void setSystemEventSetKey(long systemEventSetKey) {
-		_columnBitmask |= SYSTEMEVENTSETKEY_COLUMN_BITMASK;
-
-		if (!_setOriginalSystemEventSetKey) {
-			_setOriginalSystemEventSetKey = true;
-
-			_originalSystemEventSetKey = _systemEventSetKey;
-		}
+		_setOriginalValue(SYSTEMEVENTSETKEY_COLUMN_INDEX, _systemEventSetKey);
 
 		_systemEventSetKey = systemEventSetKey;
 	}
 
 	public long getOriginalSystemEventSetKey() {
-		return _originalSystemEventSetKey;
+		return _getOriginalValue(
+			SYSTEMEVENTSETKEY_COLUMN_INDEX, _systemEventSetKey);
 	}
 
 	@Override
@@ -579,19 +622,13 @@ public class SystemEventModelImpl
 
 	@Override
 	public void setType(int type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
-
-		if (!_setOriginalType) {
-			_setOriginalType = true;
-
-			_originalType = _type;
-		}
+		_setOriginalValue(TYPE_COLUMN_INDEX, _type);
 
 		_type = type;
 	}
 
 	public int getOriginalType() {
-		return _originalType;
+		return _getOriginalValue(TYPE_COLUMN_INDEX, _type);
 	}
 
 	@Override
@@ -606,6 +643,8 @@ public class SystemEventModelImpl
 
 	@Override
 	public void setExtraData(String extraData) {
+		_setOriginalValue(EXTRADATA_COLUMN_INDEX, _extraData);
+
 		_extraData = extraData;
 	}
 
@@ -721,31 +760,9 @@ public class SystemEventModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SystemEventModelImpl systemEventModelImpl = this;
+		_columnBitmask = 0;
 
-		systemEventModelImpl._originalGroupId = systemEventModelImpl._groupId;
-
-		systemEventModelImpl._setOriginalGroupId = false;
-
-		systemEventModelImpl._originalClassNameId =
-			systemEventModelImpl._classNameId;
-
-		systemEventModelImpl._setOriginalClassNameId = false;
-
-		systemEventModelImpl._originalClassPK = systemEventModelImpl._classPK;
-
-		systemEventModelImpl._setOriginalClassPK = false;
-
-		systemEventModelImpl._originalSystemEventSetKey =
-			systemEventModelImpl._systemEventSetKey;
-
-		systemEventModelImpl._setOriginalSystemEventSetKey = false;
-
-		systemEventModelImpl._originalType = systemEventModelImpl._type;
-
-		systemEventModelImpl._setOriginalType = false;
-
-		systemEventModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -874,6 +891,37 @@ public class SystemEventModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[15];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, SystemEvent>
@@ -884,29 +932,23 @@ public class SystemEventModelImpl
 	private long _mvccVersion;
 	private long _systemEventId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private String _classUuid;
 	private long _referrerClassNameId;
 	private long _parentSystemEventId;
 	private long _systemEventSetKey;
-	private long _originalSystemEventSetKey;
-	private boolean _setOriginalSystemEventSetKey;
 	private int _type;
-	private int _originalType;
-	private boolean _setOriginalType;
 	private String _extraData;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private SystemEvent _escapedModel;
 
 }

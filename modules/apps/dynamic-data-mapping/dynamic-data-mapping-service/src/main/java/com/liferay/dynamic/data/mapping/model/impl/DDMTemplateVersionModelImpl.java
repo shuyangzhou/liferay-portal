@@ -137,13 +137,85 @@ public class DDMTemplateVersionModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long STATUS_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long TEMPLATEID_COLUMN_BITMASK = 2L;
+	public static final long CTCOLLECTIONID_COLUMN_BITMASK = 2L;
 
-	public static final long VERSION_COLUMN_BITMASK = 4L;
+	public static final long TEMPLATEVERSIONID_COLUMN_BITMASK = 4L;
 
-	public static final long TEMPLATEVERSIONID_COLUMN_BITMASK = 8L;
+	public static final long GROUPID_COLUMN_BITMASK = 8L;
+
+	public static final long COMPANYID_COLUMN_BITMASK = 16L;
+
+	public static final long USERID_COLUMN_BITMASK = 32L;
+
+	public static final long USERNAME_COLUMN_BITMASK = 64L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 128L;
+
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 256L;
+
+	public static final long CLASSPK_COLUMN_BITMASK = 512L;
+
+	public static final long TEMPLATEID_COLUMN_BITMASK = 1024L;
+
+	public static final long VERSION_COLUMN_BITMASK = 2048L;
+
+	public static final long NAME_COLUMN_BITMASK = 4096L;
+
+	public static final long DESCRIPTION_COLUMN_BITMASK = 8192L;
+
+	public static final long LANGUAGE_COLUMN_BITMASK = 16384L;
+
+	public static final long SCRIPT_COLUMN_BITMASK = 32768L;
+
+	public static final long STATUS_COLUMN_BITMASK = 65536L;
+
+	public static final long STATUSBYUSERID_COLUMN_BITMASK = 131072L;
+
+	public static final long STATUSBYUSERNAME_COLUMN_BITMASK = 262144L;
+
+	public static final long STATUSDATE_COLUMN_BITMASK = 524288L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int CTCOLLECTIONID_COLUMN_INDEX = 1;
+
+	public static final int TEMPLATEVERSIONID_COLUMN_INDEX = 2;
+
+	public static final int GROUPID_COLUMN_INDEX = 3;
+
+	public static final int COMPANYID_COLUMN_INDEX = 4;
+
+	public static final int USERID_COLUMN_INDEX = 5;
+
+	public static final int USERNAME_COLUMN_INDEX = 6;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 7;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 8;
+
+	public static final int CLASSPK_COLUMN_INDEX = 9;
+
+	public static final int TEMPLATEID_COLUMN_INDEX = 10;
+
+	public static final int VERSION_COLUMN_INDEX = 11;
+
+	public static final int NAME_COLUMN_INDEX = 12;
+
+	public static final int DESCRIPTION_COLUMN_INDEX = 13;
+
+	public static final int LANGUAGE_COLUMN_INDEX = 14;
+
+	public static final int SCRIPT_COLUMN_INDEX = 15;
+
+	public static final int STATUS_COLUMN_INDEX = 16;
+
+	public static final int STATUSBYUSERID_COLUMN_INDEX = 17;
+
+	public static final int STATUSBYUSERNAME_COLUMN_INDEX = 18;
+
+	public static final int STATUSDATE_COLUMN_INDEX = 19;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -471,6 +543,8 @@ public class DDMTemplateVersionModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -482,6 +556,8 @@ public class DDMTemplateVersionModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		_setOriginalValue(CTCOLLECTIONID_COLUMN_INDEX, _ctCollectionId);
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -493,6 +569,8 @@ public class DDMTemplateVersionModelImpl
 
 	@Override
 	public void setTemplateVersionId(long templateVersionId) {
+		_setOriginalValue(TEMPLATEVERSIONID_COLUMN_INDEX, _templateVersionId);
+
 		_templateVersionId = templateVersionId;
 	}
 
@@ -504,6 +582,8 @@ public class DDMTemplateVersionModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
+		_setOriginalValue(GROUPID_COLUMN_INDEX, _groupId);
+
 		_groupId = groupId;
 	}
 
@@ -515,6 +595,8 @@ public class DDMTemplateVersionModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
+
 		_companyId = companyId;
 	}
 
@@ -526,6 +608,8 @@ public class DDMTemplateVersionModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_setOriginalValue(USERID_COLUMN_INDEX, _userId);
+
 		_userId = userId;
 	}
 
@@ -558,6 +642,8 @@ public class DDMTemplateVersionModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_setOriginalValue(USERNAME_COLUMN_INDEX, _userName);
+
 		_userName = userName;
 	}
 
@@ -569,6 +655,8 @@ public class DDMTemplateVersionModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_setOriginalValue(CREATEDATE_COLUMN_INDEX, _createDate);
+
 		_createDate = createDate;
 	}
 
@@ -600,6 +688,8 @@ public class DDMTemplateVersionModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
+		_setOriginalValue(CLASSNAMEID_COLUMN_INDEX, _classNameId);
+
 		_classNameId = classNameId;
 	}
 
@@ -611,6 +701,8 @@ public class DDMTemplateVersionModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
+		_setOriginalValue(CLASSPK_COLUMN_INDEX, _classPK);
+
 		_classPK = classPK;
 	}
 
@@ -622,19 +714,13 @@ public class DDMTemplateVersionModelImpl
 
 	@Override
 	public void setTemplateId(long templateId) {
-		_columnBitmask |= TEMPLATEID_COLUMN_BITMASK;
-
-		if (!_setOriginalTemplateId) {
-			_setOriginalTemplateId = true;
-
-			_originalTemplateId = _templateId;
-		}
+		_setOriginalValue(TEMPLATEID_COLUMN_INDEX, _templateId);
 
 		_templateId = templateId;
 	}
 
 	public long getOriginalTemplateId() {
-		return _originalTemplateId;
+		return _getOriginalValue(TEMPLATEID_COLUMN_INDEX, _templateId);
 	}
 
 	@JSON
@@ -650,17 +736,14 @@ public class DDMTemplateVersionModelImpl
 
 	@Override
 	public void setVersion(String version) {
-		_columnBitmask |= VERSION_COLUMN_BITMASK;
-
-		if (_originalVersion == null) {
-			_originalVersion = _version;
-		}
+		_setOriginalValue(VERSION_COLUMN_INDEX, _version);
 
 		_version = version;
 	}
 
 	public String getOriginalVersion() {
-		return GetterUtil.getString(_originalVersion);
+		return GetterUtil.getString(
+			_getOriginalValue(VERSION_COLUMN_INDEX, _version));
 	}
 
 	@JSON
@@ -719,6 +802,8 @@ public class DDMTemplateVersionModelImpl
 
 	@Override
 	public void setName(String name) {
+		_setOriginalValue(NAME_COLUMN_INDEX, _name);
+
 		_name = name;
 	}
 
@@ -822,6 +907,8 @@ public class DDMTemplateVersionModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_setOriginalValue(DESCRIPTION_COLUMN_INDEX, _description);
+
 		_description = description;
 	}
 
@@ -887,6 +974,8 @@ public class DDMTemplateVersionModelImpl
 
 	@Override
 	public void setLanguage(String language) {
+		_setOriginalValue(LANGUAGE_COLUMN_INDEX, _language);
+
 		_language = language;
 	}
 
@@ -903,6 +992,8 @@ public class DDMTemplateVersionModelImpl
 
 	@Override
 	public void setScript(String script) {
+		_setOriginalValue(SCRIPT_COLUMN_INDEX, _script);
+
 		_script = script;
 	}
 
@@ -914,19 +1005,13 @@ public class DDMTemplateVersionModelImpl
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
-
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
-
-			_originalStatus = _status;
-		}
+		_setOriginalValue(STATUS_COLUMN_INDEX, _status);
 
 		_status = status;
 	}
 
 	public int getOriginalStatus() {
-		return _originalStatus;
+		return _getOriginalValue(STATUS_COLUMN_INDEX, _status);
 	}
 
 	@JSON
@@ -937,6 +1022,8 @@ public class DDMTemplateVersionModelImpl
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		_setOriginalValue(STATUSBYUSERID_COLUMN_INDEX, _statusByUserId);
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -969,6 +1056,8 @@ public class DDMTemplateVersionModelImpl
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		_setOriginalValue(STATUSBYUSERNAME_COLUMN_INDEX, _statusByUserName);
+
 		_statusByUserName = statusByUserName;
 	}
 
@@ -980,6 +1069,8 @@ public class DDMTemplateVersionModelImpl
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		_setOriginalValue(STATUSDATE_COLUMN_INDEX, _statusDate);
+
 		_statusDate = statusDate;
 	}
 
@@ -1269,22 +1360,9 @@ public class DDMTemplateVersionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DDMTemplateVersionModelImpl ddmTemplateVersionModelImpl = this;
+		_columnBitmask = 0;
 
-		ddmTemplateVersionModelImpl._originalTemplateId =
-			ddmTemplateVersionModelImpl._templateId;
-
-		ddmTemplateVersionModelImpl._setOriginalTemplateId = false;
-
-		ddmTemplateVersionModelImpl._originalVersion =
-			ddmTemplateVersionModelImpl._version;
-
-		ddmTemplateVersionModelImpl._originalStatus =
-			ddmTemplateVersionModelImpl._status;
-
-		ddmTemplateVersionModelImpl._setOriginalStatus = false;
-
-		ddmTemplateVersionModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -1454,6 +1532,37 @@ public class DDMTemplateVersionModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[20];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, DDMTemplateVersion>
@@ -1475,10 +1584,7 @@ public class DDMTemplateVersionModelImpl
 	private long _classNameId;
 	private long _classPK;
 	private long _templateId;
-	private long _originalTemplateId;
-	private boolean _setOriginalTemplateId;
 	private String _version;
-	private String _originalVersion;
 	private String _name;
 	private String _nameCurrentLanguageId;
 	private String _description;
@@ -1486,12 +1592,14 @@ public class DDMTemplateVersionModelImpl
 	private String _language;
 	private String _script;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private DDMTemplateVersion _escapedModel;
 
 }

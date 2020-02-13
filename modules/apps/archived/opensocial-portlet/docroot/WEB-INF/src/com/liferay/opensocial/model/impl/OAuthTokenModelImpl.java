@@ -129,17 +129,61 @@ public class OAuthTokenModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.opensocial.model.OAuthToken"),
 		true);
 
-	public static final long GADGETKEY_COLUMN_BITMASK = 1L;
+	public static final long OAUTHTOKENID_COLUMN_BITMASK = 1L;
 
-	public static final long MODULEID_COLUMN_BITMASK = 2L;
+	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
-	public static final long SERVICENAME_COLUMN_BITMASK = 4L;
+	public static final long USERID_COLUMN_BITMASK = 4L;
 
-	public static final long TOKENNAME_COLUMN_BITMASK = 8L;
+	public static final long USERNAME_COLUMN_BITMASK = 8L;
 
-	public static final long USERID_COLUMN_BITMASK = 16L;
+	public static final long CREATEDATE_COLUMN_BITMASK = 16L;
 
-	public static final long OAUTHTOKENID_COLUMN_BITMASK = 32L;
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 32L;
+
+	public static final long GADGETKEY_COLUMN_BITMASK = 64L;
+
+	public static final long SERVICENAME_COLUMN_BITMASK = 128L;
+
+	public static final long MODULEID_COLUMN_BITMASK = 256L;
+
+	public static final long ACCESSTOKEN_COLUMN_BITMASK = 512L;
+
+	public static final long TOKENNAME_COLUMN_BITMASK = 1024L;
+
+	public static final long TOKENSECRET_COLUMN_BITMASK = 2048L;
+
+	public static final long SESSIONHANDLE_COLUMN_BITMASK = 4096L;
+
+	public static final long EXPIRATION_COLUMN_BITMASK = 8192L;
+
+	public static final int OAUTHTOKENID_COLUMN_INDEX = 0;
+
+	public static final int COMPANYID_COLUMN_INDEX = 1;
+
+	public static final int USERID_COLUMN_INDEX = 2;
+
+	public static final int USERNAME_COLUMN_INDEX = 3;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 4;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 5;
+
+	public static final int GADGETKEY_COLUMN_INDEX = 6;
+
+	public static final int SERVICENAME_COLUMN_INDEX = 7;
+
+	public static final int MODULEID_COLUMN_INDEX = 8;
+
+	public static final int ACCESSTOKEN_COLUMN_INDEX = 9;
+
+	public static final int TOKENNAME_COLUMN_INDEX = 10;
+
+	public static final int TOKENSECRET_COLUMN_INDEX = 11;
+
+	public static final int SESSIONHANDLE_COLUMN_INDEX = 12;
+
+	public static final int EXPIRATION_COLUMN_INDEX = 13;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.util.service.ServiceProps.get(
@@ -342,6 +386,8 @@ public class OAuthTokenModelImpl
 
 	@Override
 	public void setOAuthTokenId(long oAuthTokenId) {
+		_setOriginalValue(OAUTHTOKENID_COLUMN_INDEX, _oAuthTokenId);
+
 		_oAuthTokenId = oAuthTokenId;
 	}
 
@@ -352,6 +398,8 @@ public class OAuthTokenModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
+
 		_companyId = companyId;
 	}
 
@@ -362,13 +410,7 @@ public class OAuthTokenModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_setOriginalValue(USERID_COLUMN_INDEX, _userId);
 
 		_userId = userId;
 	}
@@ -390,7 +432,7 @@ public class OAuthTokenModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return _getOriginalValue(USERID_COLUMN_INDEX, _userId);
 	}
 
 	@Override
@@ -405,6 +447,8 @@ public class OAuthTokenModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_setOriginalValue(USERNAME_COLUMN_INDEX, _userName);
+
 		_userName = userName;
 	}
 
@@ -415,6 +459,8 @@ public class OAuthTokenModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_setOriginalValue(CREATEDATE_COLUMN_INDEX, _createDate);
+
 		_createDate = createDate;
 	}
 
@@ -424,12 +470,12 @@ public class OAuthTokenModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		_setOriginalValue(MODIFIEDDATE_COLUMN_INDEX, _modifiedDate);
 
 		_modifiedDate = modifiedDate;
 	}
@@ -446,17 +492,14 @@ public class OAuthTokenModelImpl
 
 	@Override
 	public void setGadgetKey(String gadgetKey) {
-		_columnBitmask |= GADGETKEY_COLUMN_BITMASK;
-
-		if (_originalGadgetKey == null) {
-			_originalGadgetKey = _gadgetKey;
-		}
+		_setOriginalValue(GADGETKEY_COLUMN_INDEX, _gadgetKey);
 
 		_gadgetKey = gadgetKey;
 	}
 
 	public String getOriginalGadgetKey() {
-		return GetterUtil.getString(_originalGadgetKey);
+		return GetterUtil.getString(
+			_getOriginalValue(GADGETKEY_COLUMN_INDEX, _gadgetKey));
 	}
 
 	@Override
@@ -471,17 +514,14 @@ public class OAuthTokenModelImpl
 
 	@Override
 	public void setServiceName(String serviceName) {
-		_columnBitmask |= SERVICENAME_COLUMN_BITMASK;
-
-		if (_originalServiceName == null) {
-			_originalServiceName = _serviceName;
-		}
+		_setOriginalValue(SERVICENAME_COLUMN_INDEX, _serviceName);
 
 		_serviceName = serviceName;
 	}
 
 	public String getOriginalServiceName() {
-		return GetterUtil.getString(_originalServiceName);
+		return GetterUtil.getString(
+			_getOriginalValue(SERVICENAME_COLUMN_INDEX, _serviceName));
 	}
 
 	@Override
@@ -491,19 +531,13 @@ public class OAuthTokenModelImpl
 
 	@Override
 	public void setModuleId(long moduleId) {
-		_columnBitmask |= MODULEID_COLUMN_BITMASK;
-
-		if (!_setOriginalModuleId) {
-			_setOriginalModuleId = true;
-
-			_originalModuleId = _moduleId;
-		}
+		_setOriginalValue(MODULEID_COLUMN_INDEX, _moduleId);
 
 		_moduleId = moduleId;
 	}
 
 	public long getOriginalModuleId() {
-		return _originalModuleId;
+		return _getOriginalValue(MODULEID_COLUMN_INDEX, _moduleId);
 	}
 
 	@Override
@@ -518,6 +552,8 @@ public class OAuthTokenModelImpl
 
 	@Override
 	public void setAccessToken(String accessToken) {
+		_setOriginalValue(ACCESSTOKEN_COLUMN_INDEX, _accessToken);
+
 		_accessToken = accessToken;
 	}
 
@@ -533,17 +569,14 @@ public class OAuthTokenModelImpl
 
 	@Override
 	public void setTokenName(String tokenName) {
-		_columnBitmask |= TOKENNAME_COLUMN_BITMASK;
-
-		if (_originalTokenName == null) {
-			_originalTokenName = _tokenName;
-		}
+		_setOriginalValue(TOKENNAME_COLUMN_INDEX, _tokenName);
 
 		_tokenName = tokenName;
 	}
 
 	public String getOriginalTokenName() {
-		return GetterUtil.getString(_originalTokenName);
+		return GetterUtil.getString(
+			_getOriginalValue(TOKENNAME_COLUMN_INDEX, _tokenName));
 	}
 
 	@Override
@@ -558,6 +591,8 @@ public class OAuthTokenModelImpl
 
 	@Override
 	public void setTokenSecret(String tokenSecret) {
+		_setOriginalValue(TOKENSECRET_COLUMN_INDEX, _tokenSecret);
+
 		_tokenSecret = tokenSecret;
 	}
 
@@ -573,6 +608,8 @@ public class OAuthTokenModelImpl
 
 	@Override
 	public void setSessionHandle(String sessionHandle) {
+		_setOriginalValue(SESSIONHANDLE_COLUMN_INDEX, _sessionHandle);
+
 		_sessionHandle = sessionHandle;
 	}
 
@@ -583,6 +620,8 @@ public class OAuthTokenModelImpl
 
 	@Override
 	public void setExpiration(long expiration) {
+		_setOriginalValue(EXPIRATION_COLUMN_INDEX, _expiration);
+
 		_expiration = expiration;
 	}
 
@@ -696,26 +735,9 @@ public class OAuthTokenModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		OAuthTokenModelImpl oAuthTokenModelImpl = this;
+		_columnBitmask = 0;
 
-		oAuthTokenModelImpl._originalUserId = oAuthTokenModelImpl._userId;
-
-		oAuthTokenModelImpl._setOriginalUserId = false;
-
-		oAuthTokenModelImpl._setModifiedDate = false;
-
-		oAuthTokenModelImpl._originalGadgetKey = oAuthTokenModelImpl._gadgetKey;
-
-		oAuthTokenModelImpl._originalServiceName =
-			oAuthTokenModelImpl._serviceName;
-
-		oAuthTokenModelImpl._originalModuleId = oAuthTokenModelImpl._moduleId;
-
-		oAuthTokenModelImpl._setOriginalModuleId = false;
-
-		oAuthTokenModelImpl._originalTokenName = oAuthTokenModelImpl._tokenName;
-
-		oAuthTokenModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -872,6 +894,37 @@ public class OAuthTokenModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[14];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, OAuthToken>
@@ -882,26 +935,22 @@ public class OAuthTokenModelImpl
 	private long _oAuthTokenId;
 	private long _companyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private String _gadgetKey;
-	private String _originalGadgetKey;
 	private String _serviceName;
-	private String _originalServiceName;
 	private long _moduleId;
-	private long _originalModuleId;
-	private boolean _setOriginalModuleId;
 	private String _accessToken;
 	private String _tokenName;
-	private String _originalTokenName;
 	private String _tokenSecret;
 	private String _sessionHandle;
 	private long _expiration;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private OAuthToken _escapedModel;
 
 }

@@ -165,35 +165,125 @@ public class DLFileEntryModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.document.library.kernel.model.DLFileEntry"),
 		true);
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long CUSTOM1IMAGEID_COLUMN_BITMASK = 2L;
+	public static final long UUID_COLUMN_BITMASK = 2L;
 
-	public static final long CUSTOM2IMAGEID_COLUMN_BITMASK = 4L;
+	public static final long FILEENTRYID_COLUMN_BITMASK = 4L;
 
-	public static final long FILEENTRYTYPEID_COLUMN_BITMASK = 8L;
+	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
-	public static final long FILENAME_COLUMN_BITMASK = 16L;
+	public static final long COMPANYID_COLUMN_BITMASK = 16L;
 
-	public static final long FOLDERID_COLUMN_BITMASK = 32L;
+	public static final long USERID_COLUMN_BITMASK = 32L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 64L;
+	public static final long USERNAME_COLUMN_BITMASK = 64L;
 
-	public static final long LARGEIMAGEID_COLUMN_BITMASK = 128L;
+	public static final long CREATEDATE_COLUMN_BITMASK = 128L;
 
-	public static final long MIMETYPE_COLUMN_BITMASK = 256L;
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 256L;
 
-	public static final long NAME_COLUMN_BITMASK = 512L;
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 512L;
 
-	public static final long REPOSITORYID_COLUMN_BITMASK = 1024L;
+	public static final long CLASSPK_COLUMN_BITMASK = 1024L;
 
-	public static final long SMALLIMAGEID_COLUMN_BITMASK = 2048L;
+	public static final long REPOSITORYID_COLUMN_BITMASK = 2048L;
 
-	public static final long TITLE_COLUMN_BITMASK = 4096L;
+	public static final long FOLDERID_COLUMN_BITMASK = 4096L;
 
-	public static final long USERID_COLUMN_BITMASK = 8192L;
+	public static final long TREEPATH_COLUMN_BITMASK = 8192L;
 
-	public static final long UUID_COLUMN_BITMASK = 16384L;
+	public static final long NAME_COLUMN_BITMASK = 16384L;
+
+	public static final long FILENAME_COLUMN_BITMASK = 32768L;
+
+	public static final long EXTENSION_COLUMN_BITMASK = 65536L;
+
+	public static final long MIMETYPE_COLUMN_BITMASK = 131072L;
+
+	public static final long TITLE_COLUMN_BITMASK = 262144L;
+
+	public static final long DESCRIPTION_COLUMN_BITMASK = 524288L;
+
+	public static final long EXTRASETTINGS_COLUMN_BITMASK = 1048576L;
+
+	public static final long FILEENTRYTYPEID_COLUMN_BITMASK = 2097152L;
+
+	public static final long VERSION_COLUMN_BITMASK = 4194304L;
+
+	public static final long SIZE_COLUMN_BITMASK = 8388608L;
+
+	public static final long SMALLIMAGEID_COLUMN_BITMASK = 16777216L;
+
+	public static final long LARGEIMAGEID_COLUMN_BITMASK = 33554432L;
+
+	public static final long CUSTOM1IMAGEID_COLUMN_BITMASK = 67108864L;
+
+	public static final long CUSTOM2IMAGEID_COLUMN_BITMASK = 134217728L;
+
+	public static final long MANUALCHECKINREQUIRED_COLUMN_BITMASK = 268435456L;
+
+	public static final long LASTPUBLISHDATE_COLUMN_BITMASK = 536870912L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int UUID_COLUMN_INDEX = 1;
+
+	public static final int FILEENTRYID_COLUMN_INDEX = 2;
+
+	public static final int GROUPID_COLUMN_INDEX = 3;
+
+	public static final int COMPANYID_COLUMN_INDEX = 4;
+
+	public static final int USERID_COLUMN_INDEX = 5;
+
+	public static final int USERNAME_COLUMN_INDEX = 6;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 7;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 8;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 9;
+
+	public static final int CLASSPK_COLUMN_INDEX = 10;
+
+	public static final int REPOSITORYID_COLUMN_INDEX = 11;
+
+	public static final int FOLDERID_COLUMN_INDEX = 12;
+
+	public static final int TREEPATH_COLUMN_INDEX = 13;
+
+	public static final int NAME_COLUMN_INDEX = 14;
+
+	public static final int FILENAME_COLUMN_INDEX = 15;
+
+	public static final int EXTENSION_COLUMN_INDEX = 16;
+
+	public static final int MIMETYPE_COLUMN_INDEX = 17;
+
+	public static final int TITLE_COLUMN_INDEX = 18;
+
+	public static final int DESCRIPTION_COLUMN_INDEX = 19;
+
+	public static final int EXTRASETTINGS_COLUMN_INDEX = 20;
+
+	public static final int FILEENTRYTYPEID_COLUMN_INDEX = 21;
+
+	public static final int VERSION_COLUMN_INDEX = 22;
+
+	public static final int SIZE_COLUMN_INDEX = 23;
+
+	public static final int SMALLIMAGEID_COLUMN_INDEX = 24;
+
+	public static final int LARGEIMAGEID_COLUMN_INDEX = 25;
+
+	public static final int CUSTOM1IMAGEID_COLUMN_INDEX = 26;
+
+	public static final int CUSTOM2IMAGEID_COLUMN_INDEX = 27;
+
+	public static final int MANUALCHECKINREQUIRED_COLUMN_INDEX = 28;
+
+	public static final int LASTPUBLISHDATE_COLUMN_INDEX = 29;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -537,6 +627,8 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -553,17 +645,14 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_setOriginalValue(UUID_COLUMN_INDEX, _uuid);
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return GetterUtil.getString(
+			_getOriginalValue(UUID_COLUMN_INDEX, _uuid));
 	}
 
 	@JSON
@@ -574,6 +663,8 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setFileEntryId(long fileEntryId) {
+		_setOriginalValue(FILEENTRYID_COLUMN_INDEX, _fileEntryId);
+
 		_fileEntryId = fileEntryId;
 	}
 
@@ -585,19 +676,13 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_setOriginalValue(GROUPID_COLUMN_INDEX, _groupId);
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return _getOriginalValue(GROUPID_COLUMN_INDEX, _groupId);
 	}
 
 	@JSON
@@ -608,19 +693,13 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return _getOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 	}
 
 	@JSON
@@ -631,13 +710,7 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_setOriginalValue(USERID_COLUMN_INDEX, _userId);
 
 		_userId = userId;
 	}
@@ -659,7 +732,7 @@ public class DLFileEntryModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return _getOriginalValue(USERID_COLUMN_INDEX, _userId);
 	}
 
 	@JSON
@@ -675,6 +748,8 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_setOriginalValue(USERNAME_COLUMN_INDEX, _userName);
+
 		_userName = userName;
 	}
 
@@ -686,6 +761,8 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_setOriginalValue(CREATEDATE_COLUMN_INDEX, _createDate);
+
 		_createDate = createDate;
 	}
 
@@ -696,12 +773,12 @@ public class DLFileEntryModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		_setOriginalValue(MODIFIEDDATE_COLUMN_INDEX, _modifiedDate);
 
 		_modifiedDate = modifiedDate;
 	}
@@ -734,6 +811,8 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
+		_setOriginalValue(CLASSNAMEID_COLUMN_INDEX, _classNameId);
+
 		_classNameId = classNameId;
 	}
 
@@ -745,6 +824,8 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
+		_setOriginalValue(CLASSPK_COLUMN_INDEX, _classPK);
+
 		_classPK = classPK;
 	}
 
@@ -756,19 +837,13 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setRepositoryId(long repositoryId) {
-		_columnBitmask |= REPOSITORYID_COLUMN_BITMASK;
-
-		if (!_setOriginalRepositoryId) {
-			_setOriginalRepositoryId = true;
-
-			_originalRepositoryId = _repositoryId;
-		}
+		_setOriginalValue(REPOSITORYID_COLUMN_INDEX, _repositoryId);
 
 		_repositoryId = repositoryId;
 	}
 
 	public long getOriginalRepositoryId() {
-		return _originalRepositoryId;
+		return _getOriginalValue(REPOSITORYID_COLUMN_INDEX, _repositoryId);
 	}
 
 	@JSON
@@ -779,19 +854,13 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setFolderId(long folderId) {
-		_columnBitmask = -1L;
-
-		if (!_setOriginalFolderId) {
-			_setOriginalFolderId = true;
-
-			_originalFolderId = _folderId;
-		}
+		_setOriginalValue(FOLDERID_COLUMN_INDEX, _folderId);
 
 		_folderId = folderId;
 	}
 
 	public long getOriginalFolderId() {
-		return _originalFolderId;
+		return _getOriginalValue(FOLDERID_COLUMN_INDEX, _folderId);
 	}
 
 	@JSON
@@ -807,6 +876,8 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setTreePath(String treePath) {
+		_setOriginalValue(TREEPATH_COLUMN_INDEX, _treePath);
+
 		_treePath = treePath;
 	}
 
@@ -823,17 +894,14 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
-
-		if (_originalName == null) {
-			_originalName = _name;
-		}
+		_setOriginalValue(NAME_COLUMN_INDEX, _name);
 
 		_name = name;
 	}
 
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return GetterUtil.getString(
+			_getOriginalValue(NAME_COLUMN_INDEX, _name));
 	}
 
 	@JSON
@@ -849,17 +917,14 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setFileName(String fileName) {
-		_columnBitmask |= FILENAME_COLUMN_BITMASK;
-
-		if (_originalFileName == null) {
-			_originalFileName = _fileName;
-		}
+		_setOriginalValue(FILENAME_COLUMN_INDEX, _fileName);
 
 		_fileName = fileName;
 	}
 
 	public String getOriginalFileName() {
-		return GetterUtil.getString(_originalFileName);
+		return GetterUtil.getString(
+			_getOriginalValue(FILENAME_COLUMN_INDEX, _fileName));
 	}
 
 	@JSON
@@ -875,6 +940,8 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setExtension(String extension) {
+		_setOriginalValue(EXTENSION_COLUMN_INDEX, _extension);
+
 		_extension = extension;
 	}
 
@@ -891,17 +958,14 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setMimeType(String mimeType) {
-		_columnBitmask |= MIMETYPE_COLUMN_BITMASK;
-
-		if (_originalMimeType == null) {
-			_originalMimeType = _mimeType;
-		}
+		_setOriginalValue(MIMETYPE_COLUMN_INDEX, _mimeType);
 
 		_mimeType = mimeType;
 	}
 
 	public String getOriginalMimeType() {
-		return GetterUtil.getString(_originalMimeType);
+		return GetterUtil.getString(
+			_getOriginalValue(MIMETYPE_COLUMN_INDEX, _mimeType));
 	}
 
 	@JSON
@@ -917,17 +981,14 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setTitle(String title) {
-		_columnBitmask |= TITLE_COLUMN_BITMASK;
-
-		if (_originalTitle == null) {
-			_originalTitle = _title;
-		}
+		_setOriginalValue(TITLE_COLUMN_INDEX, _title);
 
 		_title = title;
 	}
 
 	public String getOriginalTitle() {
-		return GetterUtil.getString(_originalTitle);
+		return GetterUtil.getString(
+			_getOriginalValue(TITLE_COLUMN_INDEX, _title));
 	}
 
 	@JSON
@@ -943,6 +1004,8 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_setOriginalValue(DESCRIPTION_COLUMN_INDEX, _description);
+
 		_description = description;
 	}
 
@@ -959,6 +1022,8 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setExtraSettings(String extraSettings) {
+		_setOriginalValue(EXTRASETTINGS_COLUMN_INDEX, _extraSettings);
+
 		_extraSettings = extraSettings;
 	}
 
@@ -970,19 +1035,14 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setFileEntryTypeId(long fileEntryTypeId) {
-		_columnBitmask |= FILEENTRYTYPEID_COLUMN_BITMASK;
-
-		if (!_setOriginalFileEntryTypeId) {
-			_setOriginalFileEntryTypeId = true;
-
-			_originalFileEntryTypeId = _fileEntryTypeId;
-		}
+		_setOriginalValue(FILEENTRYTYPEID_COLUMN_INDEX, _fileEntryTypeId);
 
 		_fileEntryTypeId = fileEntryTypeId;
 	}
 
 	public long getOriginalFileEntryTypeId() {
-		return _originalFileEntryTypeId;
+		return _getOriginalValue(
+			FILEENTRYTYPEID_COLUMN_INDEX, _fileEntryTypeId);
 	}
 
 	@JSON
@@ -998,6 +1058,8 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setVersion(String version) {
+		_setOriginalValue(VERSION_COLUMN_INDEX, _version);
+
 		_version = version;
 	}
 
@@ -1009,6 +1071,8 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setSize(long size) {
+		_setOriginalValue(SIZE_COLUMN_INDEX, _size);
+
 		_size = size;
 	}
 
@@ -1020,19 +1084,13 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setSmallImageId(long smallImageId) {
-		_columnBitmask |= SMALLIMAGEID_COLUMN_BITMASK;
-
-		if (!_setOriginalSmallImageId) {
-			_setOriginalSmallImageId = true;
-
-			_originalSmallImageId = _smallImageId;
-		}
+		_setOriginalValue(SMALLIMAGEID_COLUMN_INDEX, _smallImageId);
 
 		_smallImageId = smallImageId;
 	}
 
 	public long getOriginalSmallImageId() {
-		return _originalSmallImageId;
+		return _getOriginalValue(SMALLIMAGEID_COLUMN_INDEX, _smallImageId);
 	}
 
 	@JSON
@@ -1043,19 +1101,13 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setLargeImageId(long largeImageId) {
-		_columnBitmask |= LARGEIMAGEID_COLUMN_BITMASK;
-
-		if (!_setOriginalLargeImageId) {
-			_setOriginalLargeImageId = true;
-
-			_originalLargeImageId = _largeImageId;
-		}
+		_setOriginalValue(LARGEIMAGEID_COLUMN_INDEX, _largeImageId);
 
 		_largeImageId = largeImageId;
 	}
 
 	public long getOriginalLargeImageId() {
-		return _originalLargeImageId;
+		return _getOriginalValue(LARGEIMAGEID_COLUMN_INDEX, _largeImageId);
 	}
 
 	@JSON
@@ -1066,19 +1118,13 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setCustom1ImageId(long custom1ImageId) {
-		_columnBitmask |= CUSTOM1IMAGEID_COLUMN_BITMASK;
-
-		if (!_setOriginalCustom1ImageId) {
-			_setOriginalCustom1ImageId = true;
-
-			_originalCustom1ImageId = _custom1ImageId;
-		}
+		_setOriginalValue(CUSTOM1IMAGEID_COLUMN_INDEX, _custom1ImageId);
 
 		_custom1ImageId = custom1ImageId;
 	}
 
 	public long getOriginalCustom1ImageId() {
-		return _originalCustom1ImageId;
+		return _getOriginalValue(CUSTOM1IMAGEID_COLUMN_INDEX, _custom1ImageId);
 	}
 
 	@JSON
@@ -1089,19 +1135,13 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setCustom2ImageId(long custom2ImageId) {
-		_columnBitmask |= CUSTOM2IMAGEID_COLUMN_BITMASK;
-
-		if (!_setOriginalCustom2ImageId) {
-			_setOriginalCustom2ImageId = true;
-
-			_originalCustom2ImageId = _custom2ImageId;
-		}
+		_setOriginalValue(CUSTOM2IMAGEID_COLUMN_INDEX, _custom2ImageId);
 
 		_custom2ImageId = custom2ImageId;
 	}
 
 	public long getOriginalCustom2ImageId() {
-		return _originalCustom2ImageId;
+		return _getOriginalValue(CUSTOM2IMAGEID_COLUMN_INDEX, _custom2ImageId);
 	}
 
 	@JSON
@@ -1118,6 +1158,9 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setManualCheckInRequired(boolean manualCheckInRequired) {
+		_setOriginalValue(
+			MANUALCHECKINREQUIRED_COLUMN_INDEX, _manualCheckInRequired);
+
 		_manualCheckInRequired = manualCheckInRequired;
 	}
 
@@ -1129,6 +1172,8 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		_setOriginalValue(LASTPUBLISHDATE_COLUMN_INDEX, _lastPublishDate);
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -1427,68 +1472,9 @@ public class DLFileEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DLFileEntryModelImpl dlFileEntryModelImpl = this;
+		_columnBitmask = 0;
 
-		dlFileEntryModelImpl._originalUuid = dlFileEntryModelImpl._uuid;
-
-		dlFileEntryModelImpl._originalGroupId = dlFileEntryModelImpl._groupId;
-
-		dlFileEntryModelImpl._setOriginalGroupId = false;
-
-		dlFileEntryModelImpl._originalCompanyId =
-			dlFileEntryModelImpl._companyId;
-
-		dlFileEntryModelImpl._setOriginalCompanyId = false;
-
-		dlFileEntryModelImpl._originalUserId = dlFileEntryModelImpl._userId;
-
-		dlFileEntryModelImpl._setOriginalUserId = false;
-
-		dlFileEntryModelImpl._setModifiedDate = false;
-
-		dlFileEntryModelImpl._originalRepositoryId =
-			dlFileEntryModelImpl._repositoryId;
-
-		dlFileEntryModelImpl._setOriginalRepositoryId = false;
-
-		dlFileEntryModelImpl._originalFolderId = dlFileEntryModelImpl._folderId;
-
-		dlFileEntryModelImpl._setOriginalFolderId = false;
-
-		dlFileEntryModelImpl._originalName = dlFileEntryModelImpl._name;
-
-		dlFileEntryModelImpl._originalFileName = dlFileEntryModelImpl._fileName;
-
-		dlFileEntryModelImpl._originalMimeType = dlFileEntryModelImpl._mimeType;
-
-		dlFileEntryModelImpl._originalTitle = dlFileEntryModelImpl._title;
-
-		dlFileEntryModelImpl._originalFileEntryTypeId =
-			dlFileEntryModelImpl._fileEntryTypeId;
-
-		dlFileEntryModelImpl._setOriginalFileEntryTypeId = false;
-
-		dlFileEntryModelImpl._originalSmallImageId =
-			dlFileEntryModelImpl._smallImageId;
-
-		dlFileEntryModelImpl._setOriginalSmallImageId = false;
-
-		dlFileEntryModelImpl._originalLargeImageId =
-			dlFileEntryModelImpl._largeImageId;
-
-		dlFileEntryModelImpl._setOriginalLargeImageId = false;
-
-		dlFileEntryModelImpl._originalCustom1ImageId =
-			dlFileEntryModelImpl._custom1ImageId;
-
-		dlFileEntryModelImpl._setOriginalCustom1ImageId = false;
-
-		dlFileEntryModelImpl._originalCustom2ImageId =
-			dlFileEntryModelImpl._custom2ImageId;
-
-		dlFileEntryModelImpl._setOriginalCustom2ImageId = false;
-
-		dlFileEntryModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -1709,6 +1695,37 @@ public class DLFileEntryModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[30];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, DLFileEntry>
@@ -1718,61 +1735,39 @@ public class DLFileEntryModelImpl
 
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _fileEntryId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _classNameId;
 	private long _classPK;
 	private long _repositoryId;
-	private long _originalRepositoryId;
-	private boolean _setOriginalRepositoryId;
 	private long _folderId;
-	private long _originalFolderId;
-	private boolean _setOriginalFolderId;
 	private String _treePath;
 	private String _name;
-	private String _originalName;
 	private String _fileName;
-	private String _originalFileName;
 	private String _extension;
 	private String _mimeType;
-	private String _originalMimeType;
 	private String _title;
-	private String _originalTitle;
 	private String _description;
 	private String _extraSettings;
 	private long _fileEntryTypeId;
-	private long _originalFileEntryTypeId;
-	private boolean _setOriginalFileEntryTypeId;
 	private String _version;
 	private long _size;
 	private long _smallImageId;
-	private long _originalSmallImageId;
-	private boolean _setOriginalSmallImageId;
 	private long _largeImageId;
-	private long _originalLargeImageId;
-	private boolean _setOriginalLargeImageId;
 	private long _custom1ImageId;
-	private long _originalCustom1ImageId;
-	private boolean _setOriginalCustom1ImageId;
 	private long _custom2ImageId;
-	private long _originalCustom2ImageId;
-	private boolean _setOriginalCustom2ImageId;
 	private boolean _manualCheckInRequired;
 	private Date _lastPublishDate;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private DLFileEntry _escapedModel;
 
 }

@@ -116,21 +116,53 @@ public class MicroblogsEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MICROBLOGSENTRYID_COLUMN_BITMASK = 1L;
 
-	public static final long CREATEDATE_COLUMN_BITMASK = 2L;
+	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
-	public static final long CREATORCLASSNAMEID_COLUMN_BITMASK = 4L;
+	public static final long USERID_COLUMN_BITMASK = 4L;
 
-	public static final long CREATORCLASSPK_COLUMN_BITMASK = 8L;
+	public static final long USERNAME_COLUMN_BITMASK = 8L;
 
-	public static final long PARENTMICROBLOGSENTRYID_COLUMN_BITMASK = 16L;
+	public static final long CREATEDATE_COLUMN_BITMASK = 16L;
 
-	public static final long SOCIALRELATIONTYPE_COLUMN_BITMASK = 32L;
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 32L;
 
-	public static final long TYPE_COLUMN_BITMASK = 64L;
+	public static final long CREATORCLASSNAMEID_COLUMN_BITMASK = 64L;
 
-	public static final long USERID_COLUMN_BITMASK = 128L;
+	public static final long CREATORCLASSPK_COLUMN_BITMASK = 128L;
+
+	public static final long CONTENT_COLUMN_BITMASK = 256L;
+
+	public static final long TYPE_COLUMN_BITMASK = 512L;
+
+	public static final long PARENTMICROBLOGSENTRYID_COLUMN_BITMASK = 1024L;
+
+	public static final long SOCIALRELATIONTYPE_COLUMN_BITMASK = 2048L;
+
+	public static final int MICROBLOGSENTRYID_COLUMN_INDEX = 0;
+
+	public static final int COMPANYID_COLUMN_INDEX = 1;
+
+	public static final int USERID_COLUMN_INDEX = 2;
+
+	public static final int USERNAME_COLUMN_INDEX = 3;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 4;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 5;
+
+	public static final int CREATORCLASSNAMEID_COLUMN_INDEX = 6;
+
+	public static final int CREATORCLASSPK_COLUMN_INDEX = 7;
+
+	public static final int CONTENT_COLUMN_INDEX = 8;
+
+	public static final int TYPE_COLUMN_INDEX = 9;
+
+	public static final int PARENTMICROBLOGSENTRYID_COLUMN_INDEX = 10;
+
+	public static final int SOCIALRELATIONTYPE_COLUMN_INDEX = 11;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -399,6 +431,8 @@ public class MicroblogsEntryModelImpl
 
 	@Override
 	public void setMicroblogsEntryId(long microblogsEntryId) {
+		_setOriginalValue(MICROBLOGSENTRYID_COLUMN_INDEX, _microblogsEntryId);
+
 		_microblogsEntryId = microblogsEntryId;
 	}
 
@@ -410,19 +444,13 @@ public class MicroblogsEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return _getOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 	}
 
 	@JSON
@@ -433,13 +461,7 @@ public class MicroblogsEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_setOriginalValue(USERID_COLUMN_INDEX, _userId);
 
 		_userId = userId;
 	}
@@ -461,7 +483,7 @@ public class MicroblogsEntryModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return _getOriginalValue(USERID_COLUMN_INDEX, _userId);
 	}
 
 	@JSON
@@ -477,6 +499,8 @@ public class MicroblogsEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		_setOriginalValue(USERNAME_COLUMN_INDEX, _userName);
+
 		_userName = userName;
 	}
 
@@ -488,17 +512,13 @@ public class MicroblogsEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
-
-		if (_originalCreateDate == null) {
-			_originalCreateDate = _createDate;
-		}
+		_setOriginalValue(CREATEDATE_COLUMN_INDEX, _createDate);
 
 		_createDate = createDate;
 	}
 
 	public Date getOriginalCreateDate() {
-		return _originalCreateDate;
+		return _getOriginalValue(CREATEDATE_COLUMN_INDEX, _createDate);
 	}
 
 	@JSON
@@ -508,12 +528,12 @@ public class MicroblogsEntryModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		_setOriginalValue(MODIFIEDDATE_COLUMN_INDEX, _modifiedDate);
 
 		_modifiedDate = modifiedDate;
 	}
@@ -526,19 +546,14 @@ public class MicroblogsEntryModelImpl
 
 	@Override
 	public void setCreatorClassNameId(long creatorClassNameId) {
-		_columnBitmask |= CREATORCLASSNAMEID_COLUMN_BITMASK;
-
-		if (!_setOriginalCreatorClassNameId) {
-			_setOriginalCreatorClassNameId = true;
-
-			_originalCreatorClassNameId = _creatorClassNameId;
-		}
+		_setOriginalValue(CREATORCLASSNAMEID_COLUMN_INDEX, _creatorClassNameId);
 
 		_creatorClassNameId = creatorClassNameId;
 	}
 
 	public long getOriginalCreatorClassNameId() {
-		return _originalCreatorClassNameId;
+		return _getOriginalValue(
+			CREATORCLASSNAMEID_COLUMN_INDEX, _creatorClassNameId);
 	}
 
 	@JSON
@@ -549,19 +564,13 @@ public class MicroblogsEntryModelImpl
 
 	@Override
 	public void setCreatorClassPK(long creatorClassPK) {
-		_columnBitmask |= CREATORCLASSPK_COLUMN_BITMASK;
-
-		if (!_setOriginalCreatorClassPK) {
-			_setOriginalCreatorClassPK = true;
-
-			_originalCreatorClassPK = _creatorClassPK;
-		}
+		_setOriginalValue(CREATORCLASSPK_COLUMN_INDEX, _creatorClassPK);
 
 		_creatorClassPK = creatorClassPK;
 	}
 
 	public long getOriginalCreatorClassPK() {
-		return _originalCreatorClassPK;
+		return _getOriginalValue(CREATORCLASSPK_COLUMN_INDEX, _creatorClassPK);
 	}
 
 	@JSON
@@ -577,6 +586,8 @@ public class MicroblogsEntryModelImpl
 
 	@Override
 	public void setContent(String content) {
+		_setOriginalValue(CONTENT_COLUMN_INDEX, _content);
+
 		_content = content;
 	}
 
@@ -588,19 +599,13 @@ public class MicroblogsEntryModelImpl
 
 	@Override
 	public void setType(int type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
-
-		if (!_setOriginalType) {
-			_setOriginalType = true;
-
-			_originalType = _type;
-		}
+		_setOriginalValue(TYPE_COLUMN_INDEX, _type);
 
 		_type = type;
 	}
 
 	public int getOriginalType() {
-		return _originalType;
+		return _getOriginalValue(TYPE_COLUMN_INDEX, _type);
 	}
 
 	@JSON
@@ -611,19 +616,15 @@ public class MicroblogsEntryModelImpl
 
 	@Override
 	public void setParentMicroblogsEntryId(long parentMicroblogsEntryId) {
-		_columnBitmask |= PARENTMICROBLOGSENTRYID_COLUMN_BITMASK;
-
-		if (!_setOriginalParentMicroblogsEntryId) {
-			_setOriginalParentMicroblogsEntryId = true;
-
-			_originalParentMicroblogsEntryId = _parentMicroblogsEntryId;
-		}
+		_setOriginalValue(
+			PARENTMICROBLOGSENTRYID_COLUMN_INDEX, _parentMicroblogsEntryId);
 
 		_parentMicroblogsEntryId = parentMicroblogsEntryId;
 	}
 
 	public long getOriginalParentMicroblogsEntryId() {
-		return _originalParentMicroblogsEntryId;
+		return _getOriginalValue(
+			PARENTMICROBLOGSENTRYID_COLUMN_INDEX, _parentMicroblogsEntryId);
 	}
 
 	@JSON
@@ -634,19 +635,14 @@ public class MicroblogsEntryModelImpl
 
 	@Override
 	public void setSocialRelationType(int socialRelationType) {
-		_columnBitmask |= SOCIALRELATIONTYPE_COLUMN_BITMASK;
-
-		if (!_setOriginalSocialRelationType) {
-			_setOriginalSocialRelationType = true;
-
-			_originalSocialRelationType = _socialRelationType;
-		}
+		_setOriginalValue(SOCIALRELATIONTYPE_COLUMN_INDEX, _socialRelationType);
 
 		_socialRelationType = socialRelationType;
 	}
 
 	public int getOriginalSocialRelationType() {
-		return _originalSocialRelationType;
+		return _getOriginalValue(
+			SOCIALRELATIONTYPE_COLUMN_INDEX, _socialRelationType);
 	}
 
 	public long getColumnBitmask() {
@@ -759,48 +755,9 @@ public class MicroblogsEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		MicroblogsEntryModelImpl microblogsEntryModelImpl = this;
+		_columnBitmask = 0;
 
-		microblogsEntryModelImpl._originalCompanyId =
-			microblogsEntryModelImpl._companyId;
-
-		microblogsEntryModelImpl._setOriginalCompanyId = false;
-
-		microblogsEntryModelImpl._originalUserId =
-			microblogsEntryModelImpl._userId;
-
-		microblogsEntryModelImpl._setOriginalUserId = false;
-
-		microblogsEntryModelImpl._originalCreateDate =
-			microblogsEntryModelImpl._createDate;
-
-		microblogsEntryModelImpl._setModifiedDate = false;
-
-		microblogsEntryModelImpl._originalCreatorClassNameId =
-			microblogsEntryModelImpl._creatorClassNameId;
-
-		microblogsEntryModelImpl._setOriginalCreatorClassNameId = false;
-
-		microblogsEntryModelImpl._originalCreatorClassPK =
-			microblogsEntryModelImpl._creatorClassPK;
-
-		microblogsEntryModelImpl._setOriginalCreatorClassPK = false;
-
-		microblogsEntryModelImpl._originalType = microblogsEntryModelImpl._type;
-
-		microblogsEntryModelImpl._setOriginalType = false;
-
-		microblogsEntryModelImpl._originalParentMicroblogsEntryId =
-			microblogsEntryModelImpl._parentMicroblogsEntryId;
-
-		microblogsEntryModelImpl._setOriginalParentMicroblogsEntryId = false;
-
-		microblogsEntryModelImpl._originalSocialRelationType =
-			microblogsEntryModelImpl._socialRelationType;
-
-		microblogsEntryModelImpl._setOriginalSocialRelationType = false;
-
-		microblogsEntryModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -925,6 +882,37 @@ public class MicroblogsEntryModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[12];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, MicroblogsEntry>
@@ -937,33 +925,21 @@ public class MicroblogsEntryModelImpl
 
 	private long _microblogsEntryId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
-	private Date _originalCreateDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _creatorClassNameId;
-	private long _originalCreatorClassNameId;
-	private boolean _setOriginalCreatorClassNameId;
 	private long _creatorClassPK;
-	private long _originalCreatorClassPK;
-	private boolean _setOriginalCreatorClassPK;
 	private String _content;
 	private int _type;
-	private int _originalType;
-	private boolean _setOriginalType;
 	private long _parentMicroblogsEntryId;
-	private long _originalParentMicroblogsEntryId;
-	private boolean _setOriginalParentMicroblogsEntryId;
 	private int _socialRelationType;
-	private int _originalSocialRelationType;
-	private boolean _setOriginalSocialRelationType;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private MicroblogsEntry _escapedModel;
 
 }

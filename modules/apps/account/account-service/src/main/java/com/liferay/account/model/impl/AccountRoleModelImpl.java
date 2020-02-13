@@ -100,13 +100,25 @@ public class AccountRoleModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long ACCOUNTENTRYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long COMPANYID_COLUMN_BITMASK = 2L;
+	public static final long ACCOUNTROLEID_COLUMN_BITMASK = 2L;
 
-	public static final long ROLEID_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
-	public static final long ACCOUNTROLEID_COLUMN_BITMASK = 8L;
+	public static final long ACCOUNTENTRYID_COLUMN_BITMASK = 8L;
+
+	public static final long ROLEID_COLUMN_BITMASK = 16L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int ACCOUNTROLEID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int ACCOUNTENTRYID_COLUMN_INDEX = 3;
+
+	public static final int ROLEID_COLUMN_INDEX = 4;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -323,6 +335,8 @@ public class AccountRoleModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -334,6 +348,8 @@ public class AccountRoleModelImpl
 
 	@Override
 	public void setAccountRoleId(long accountRoleId) {
+		_setOriginalValue(ACCOUNTROLEID_COLUMN_INDEX, _accountRoleId);
+
 		_accountRoleId = accountRoleId;
 	}
 
@@ -345,19 +361,13 @@ public class AccountRoleModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return _getOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 	}
 
 	@JSON
@@ -368,19 +378,13 @@ public class AccountRoleModelImpl
 
 	@Override
 	public void setAccountEntryId(long accountEntryId) {
-		_columnBitmask |= ACCOUNTENTRYID_COLUMN_BITMASK;
-
-		if (!_setOriginalAccountEntryId) {
-			_setOriginalAccountEntryId = true;
-
-			_originalAccountEntryId = _accountEntryId;
-		}
+		_setOriginalValue(ACCOUNTENTRYID_COLUMN_INDEX, _accountEntryId);
 
 		_accountEntryId = accountEntryId;
 	}
 
 	public long getOriginalAccountEntryId() {
-		return _originalAccountEntryId;
+		return _getOriginalValue(ACCOUNTENTRYID_COLUMN_INDEX, _accountEntryId);
 	}
 
 	@JSON
@@ -391,19 +395,13 @@ public class AccountRoleModelImpl
 
 	@Override
 	public void setRoleId(long roleId) {
-		_columnBitmask |= ROLEID_COLUMN_BITMASK;
-
-		if (!_setOriginalRoleId) {
-			_setOriginalRoleId = true;
-
-			_originalRoleId = _roleId;
-		}
+		_setOriginalValue(ROLEID_COLUMN_INDEX, _roleId);
 
 		_roleId = roleId;
 	}
 
 	public long getOriginalRoleId() {
-		return _originalRoleId;
+		return _getOriginalValue(ROLEID_COLUMN_INDEX, _roleId);
 	}
 
 	public long getColumnBitmask() {
@@ -507,23 +505,9 @@ public class AccountRoleModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AccountRoleModelImpl accountRoleModelImpl = this;
+		_columnBitmask = 0;
 
-		accountRoleModelImpl._originalCompanyId =
-			accountRoleModelImpl._companyId;
-
-		accountRoleModelImpl._setOriginalCompanyId = false;
-
-		accountRoleModelImpl._originalAccountEntryId =
-			accountRoleModelImpl._accountEntryId;
-
-		accountRoleModelImpl._setOriginalAccountEntryId = false;
-
-		accountRoleModelImpl._originalRoleId = accountRoleModelImpl._roleId;
-
-		accountRoleModelImpl._setOriginalRoleId = false;
-
-		accountRoleModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -607,6 +591,37 @@ public class AccountRoleModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[5];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, AccountRole>
@@ -620,15 +635,13 @@ public class AccountRoleModelImpl
 	private long _mvccVersion;
 	private long _accountRoleId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _accountEntryId;
-	private long _originalAccountEntryId;
-	private boolean _setOriginalAccountEntryId;
 	private long _roleId;
-	private long _originalRoleId;
-	private boolean _setOriginalRoleId;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private AccountRole _escapedModel;
 
 }

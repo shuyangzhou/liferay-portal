@@ -118,9 +118,37 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.Image"),
 		true);
 
-	public static final long SIZE_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
 	public static final long IMAGEID_COLUMN_BITMASK = 2L;
+
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 8L;
+
+	public static final long TYPE_COLUMN_BITMASK = 16L;
+
+	public static final long HEIGHT_COLUMN_BITMASK = 32L;
+
+	public static final long WIDTH_COLUMN_BITMASK = 64L;
+
+	public static final long SIZE_COLUMN_BITMASK = 128L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int IMAGEID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 3;
+
+	public static final int TYPE_COLUMN_INDEX = 4;
+
+	public static final int HEIGHT_COLUMN_INDEX = 5;
+
+	public static final int WIDTH_COLUMN_INDEX = 6;
+
+	public static final int SIZE_COLUMN_INDEX = 7;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -331,6 +359,8 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -342,7 +372,7 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 
 	@Override
 	public void setImageId(long imageId) {
-		_columnBitmask = -1L;
+		_setOriginalValue(IMAGEID_COLUMN_INDEX, _imageId);
 
 		_imageId = imageId;
 	}
@@ -355,6 +385,8 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
+
 		_companyId = companyId;
 	}
 
@@ -366,6 +398,8 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		_setOriginalValue(MODIFIEDDATE_COLUMN_INDEX, _modifiedDate);
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -382,6 +416,8 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 
 	@Override
 	public void setType(String type) {
+		_setOriginalValue(TYPE_COLUMN_INDEX, _type);
+
 		_type = type;
 	}
 
@@ -393,6 +429,8 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 
 	@Override
 	public void setHeight(int height) {
+		_setOriginalValue(HEIGHT_COLUMN_INDEX, _height);
+
 		_height = height;
 	}
 
@@ -404,6 +442,8 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 
 	@Override
 	public void setWidth(int width) {
+		_setOriginalValue(WIDTH_COLUMN_INDEX, _width);
+
 		_width = width;
 	}
 
@@ -415,19 +455,13 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 
 	@Override
 	public void setSize(int size) {
-		_columnBitmask |= SIZE_COLUMN_BITMASK;
-
-		if (!_setOriginalSize) {
-			_setOriginalSize = true;
-
-			_originalSize = _size;
-		}
+		_setOriginalValue(SIZE_COLUMN_INDEX, _size);
 
 		_size = size;
 	}
 
 	public int getOriginalSize() {
-		return _originalSize;
+		return _getOriginalValue(SIZE_COLUMN_INDEX, _size);
 	}
 
 	public long getColumnBitmask() {
@@ -540,13 +574,9 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 
 	@Override
 	public void resetOriginalValues() {
-		ImageModelImpl imageModelImpl = this;
+		_columnBitmask = 0;
 
-		imageModelImpl._originalSize = imageModelImpl._size;
-
-		imageModelImpl._setOriginalSize = false;
-
-		imageModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -646,6 +676,37 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[8];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, Image>
@@ -661,9 +722,11 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 	private int _height;
 	private int _width;
 	private int _size;
-	private int _originalSize;
-	private boolean _setOriginalSize;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private Image _escapedModel;
 
 }

@@ -150,35 +150,93 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.Group"),
 		true);
 
-	public static final long ACTIVE_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long CLASSNAMEID_COLUMN_BITMASK = 2L;
+	public static final long UUID_COLUMN_BITMASK = 2L;
 
-	public static final long CLASSPK_COLUMN_BITMASK = 4L;
+	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
 	public static final long COMPANYID_COLUMN_BITMASK = 8L;
 
-	public static final long FRIENDLYURL_COLUMN_BITMASK = 16L;
+	public static final long CREATORUSERID_COLUMN_BITMASK = 16L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 32L;
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 32L;
 
-	public static final long GROUPKEY_COLUMN_BITMASK = 64L;
+	public static final long CLASSPK_COLUMN_BITMASK = 64L;
 
-	public static final long INHERITCONTENT_COLUMN_BITMASK = 128L;
+	public static final long PARENTGROUPID_COLUMN_BITMASK = 128L;
 
 	public static final long LIVEGROUPID_COLUMN_BITMASK = 256L;
 
-	public static final long NAME_COLUMN_BITMASK = 512L;
+	public static final long TREEPATH_COLUMN_BITMASK = 512L;
 
-	public static final long PARENTGROUPID_COLUMN_BITMASK = 1024L;
+	public static final long GROUPKEY_COLUMN_BITMASK = 1024L;
 
-	public static final long SITE_COLUMN_BITMASK = 2048L;
+	public static final long NAME_COLUMN_BITMASK = 2048L;
 
-	public static final long TREEPATH_COLUMN_BITMASK = 4096L;
+	public static final long DESCRIPTION_COLUMN_BITMASK = 4096L;
 
 	public static final long TYPE_COLUMN_BITMASK = 8192L;
 
-	public static final long UUID_COLUMN_BITMASK = 16384L;
+	public static final long TYPESETTINGS_COLUMN_BITMASK = 16384L;
+
+	public static final long MANUALMEMBERSHIP_COLUMN_BITMASK = 32768L;
+
+	public static final long MEMBERSHIPRESTRICTION_COLUMN_BITMASK = 65536L;
+
+	public static final long FRIENDLYURL_COLUMN_BITMASK = 131072L;
+
+	public static final long SITE_COLUMN_BITMASK = 262144L;
+
+	public static final long REMOTESTAGINGGROUPCOUNT_COLUMN_BITMASK = 524288L;
+
+	public static final long INHERITCONTENT_COLUMN_BITMASK = 1048576L;
+
+	public static final long ACTIVE_COLUMN_BITMASK = 2097152L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int UUID_COLUMN_INDEX = 1;
+
+	public static final int GROUPID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int CREATORUSERID_COLUMN_INDEX = 4;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 5;
+
+	public static final int CLASSPK_COLUMN_INDEX = 6;
+
+	public static final int PARENTGROUPID_COLUMN_INDEX = 7;
+
+	public static final int LIVEGROUPID_COLUMN_INDEX = 8;
+
+	public static final int TREEPATH_COLUMN_INDEX = 9;
+
+	public static final int GROUPKEY_COLUMN_INDEX = 10;
+
+	public static final int NAME_COLUMN_INDEX = 11;
+
+	public static final int DESCRIPTION_COLUMN_INDEX = 12;
+
+	public static final int TYPE_COLUMN_INDEX = 13;
+
+	public static final int TYPESETTINGS_COLUMN_INDEX = 14;
+
+	public static final int MANUALMEMBERSHIP_COLUMN_INDEX = 15;
+
+	public static final int MEMBERSHIPRESTRICTION_COLUMN_INDEX = 16;
+
+	public static final int FRIENDLYURL_COLUMN_INDEX = 17;
+
+	public static final int SITE_COLUMN_INDEX = 18;
+
+	public static final int REMOTESTAGINGGROUPCOUNT_COLUMN_INDEX = 19;
+
+	public static final int INHERITCONTENT_COLUMN_INDEX = 20;
+
+	public static final int ACTIVE_COLUMN_INDEX = 21;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -519,6 +577,8 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -535,17 +595,14 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
-
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
+		_setOriginalValue(UUID_COLUMN_INDEX, _uuid);
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		return GetterUtil.getString(
+			_getOriginalValue(UUID_COLUMN_INDEX, _uuid));
 	}
 
 	@JSON
@@ -556,19 +613,13 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_setOriginalValue(GROUPID_COLUMN_INDEX, _groupId);
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return _getOriginalValue(GROUPID_COLUMN_INDEX, _groupId);
 	}
 
 	@JSON
@@ -579,19 +630,13 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return _getOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 	}
 
 	@JSON
@@ -602,6 +647,8 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setCreatorUserId(long creatorUserId) {
+		_setOriginalValue(CREATORUSERID_COLUMN_INDEX, _creatorUserId);
+
 		_creatorUserId = creatorUserId;
 	}
 
@@ -649,19 +696,13 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
-
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
-		}
+		_setOriginalValue(CLASSNAMEID_COLUMN_INDEX, _classNameId);
 
 		_classNameId = classNameId;
 	}
 
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return _getOriginalValue(CLASSNAMEID_COLUMN_INDEX, _classNameId);
 	}
 
 	@JSON
@@ -672,19 +713,13 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
-
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
-
-			_originalClassPK = _classPK;
-		}
+		_setOriginalValue(CLASSPK_COLUMN_INDEX, _classPK);
 
 		_classPK = classPK;
 	}
 
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return _getOriginalValue(CLASSPK_COLUMN_INDEX, _classPK);
 	}
 
 	@JSON
@@ -695,19 +730,13 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setParentGroupId(long parentGroupId) {
-		_columnBitmask |= PARENTGROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalParentGroupId) {
-			_setOriginalParentGroupId = true;
-
-			_originalParentGroupId = _parentGroupId;
-		}
+		_setOriginalValue(PARENTGROUPID_COLUMN_INDEX, _parentGroupId);
 
 		_parentGroupId = parentGroupId;
 	}
 
 	public long getOriginalParentGroupId() {
-		return _originalParentGroupId;
+		return _getOriginalValue(PARENTGROUPID_COLUMN_INDEX, _parentGroupId);
 	}
 
 	@JSON
@@ -718,19 +747,13 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setLiveGroupId(long liveGroupId) {
-		_columnBitmask |= LIVEGROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalLiveGroupId) {
-			_setOriginalLiveGroupId = true;
-
-			_originalLiveGroupId = _liveGroupId;
-		}
+		_setOriginalValue(LIVEGROUPID_COLUMN_INDEX, _liveGroupId);
 
 		_liveGroupId = liveGroupId;
 	}
 
 	public long getOriginalLiveGroupId() {
-		return _originalLiveGroupId;
+		return _getOriginalValue(LIVEGROUPID_COLUMN_INDEX, _liveGroupId);
 	}
 
 	@JSON
@@ -746,17 +769,14 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setTreePath(String treePath) {
-		_columnBitmask |= TREEPATH_COLUMN_BITMASK;
-
-		if (_originalTreePath == null) {
-			_originalTreePath = _treePath;
-		}
+		_setOriginalValue(TREEPATH_COLUMN_INDEX, _treePath);
 
 		_treePath = treePath;
 	}
 
 	public String getOriginalTreePath() {
-		return GetterUtil.getString(_originalTreePath);
+		return GetterUtil.getString(
+			_getOriginalValue(TREEPATH_COLUMN_INDEX, _treePath));
 	}
 
 	@JSON
@@ -772,17 +792,14 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setGroupKey(String groupKey) {
-		_columnBitmask |= GROUPKEY_COLUMN_BITMASK;
-
-		if (_originalGroupKey == null) {
-			_originalGroupKey = _groupKey;
-		}
+		_setOriginalValue(GROUPKEY_COLUMN_INDEX, _groupKey);
 
 		_groupKey = groupKey;
 	}
 
 	public String getOriginalGroupKey() {
-		return GetterUtil.getString(_originalGroupKey);
+		return GetterUtil.getString(
+			_getOriginalValue(GROUPKEY_COLUMN_INDEX, _groupKey));
 	}
 
 	@JSON
@@ -841,11 +858,7 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
-
-		if (_originalName == null) {
-			_originalName = _name;
-		}
+		_setOriginalValue(NAME_COLUMN_INDEX, _name);
 
 		_name = name;
 	}
@@ -895,7 +908,8 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 	}
 
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		return GetterUtil.getString(
+			_getOriginalValue(NAME_COLUMN_INDEX, _name));
 	}
 
 	@JSON
@@ -954,6 +968,8 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setDescription(String description) {
+		_setOriginalValue(DESCRIPTION_COLUMN_INDEX, _description);
+
 		_description = description;
 	}
 
@@ -1014,19 +1030,13 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setType(int type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
-
-		if (!_setOriginalType) {
-			_setOriginalType = true;
-
-			_originalType = _type;
-		}
+		_setOriginalValue(TYPE_COLUMN_INDEX, _type);
 
 		_type = type;
 	}
 
 	public int getOriginalType() {
-		return _originalType;
+		return _getOriginalValue(TYPE_COLUMN_INDEX, _type);
 	}
 
 	@JSON
@@ -1042,6 +1052,8 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setTypeSettings(String typeSettings) {
+		_setOriginalValue(TYPESETTINGS_COLUMN_INDEX, _typeSettings);
+
 		_typeSettings = typeSettings;
 	}
 
@@ -1059,6 +1071,8 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setManualMembership(boolean manualMembership) {
+		_setOriginalValue(MANUALMEMBERSHIP_COLUMN_INDEX, _manualMembership);
+
 		_manualMembership = manualMembership;
 	}
 
@@ -1070,6 +1084,9 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setMembershipRestriction(int membershipRestriction) {
+		_setOriginalValue(
+			MEMBERSHIPRESTRICTION_COLUMN_INDEX, _membershipRestriction);
+
 		_membershipRestriction = membershipRestriction;
 	}
 
@@ -1086,17 +1103,14 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setFriendlyURL(String friendlyURL) {
-		_columnBitmask |= FRIENDLYURL_COLUMN_BITMASK;
-
-		if (_originalFriendlyURL == null) {
-			_originalFriendlyURL = _friendlyURL;
-		}
+		_setOriginalValue(FRIENDLYURL_COLUMN_INDEX, _friendlyURL);
 
 		_friendlyURL = friendlyURL;
 	}
 
 	public String getOriginalFriendlyURL() {
-		return GetterUtil.getString(_originalFriendlyURL);
+		return GetterUtil.getString(
+			_getOriginalValue(FRIENDLYURL_COLUMN_INDEX, _friendlyURL));
 	}
 
 	@JSON
@@ -1113,19 +1127,13 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setSite(boolean site) {
-		_columnBitmask |= SITE_COLUMN_BITMASK;
-
-		if (!_setOriginalSite) {
-			_setOriginalSite = true;
-
-			_originalSite = _site;
-		}
+		_setOriginalValue(SITE_COLUMN_INDEX, _site);
 
 		_site = site;
 	}
 
 	public boolean getOriginalSite() {
-		return _originalSite;
+		return _getOriginalValue(SITE_COLUMN_INDEX, _site);
 	}
 
 	@JSON
@@ -1136,6 +1144,9 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setRemoteStagingGroupCount(int remoteStagingGroupCount) {
+		_setOriginalValue(
+			REMOTESTAGINGGROUPCOUNT_COLUMN_INDEX, _remoteStagingGroupCount);
+
 		_remoteStagingGroupCount = remoteStagingGroupCount;
 	}
 
@@ -1153,19 +1164,13 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setInheritContent(boolean inheritContent) {
-		_columnBitmask |= INHERITCONTENT_COLUMN_BITMASK;
-
-		if (!_setOriginalInheritContent) {
-			_setOriginalInheritContent = true;
-
-			_originalInheritContent = _inheritContent;
-		}
+		_setOriginalValue(INHERITCONTENT_COLUMN_INDEX, _inheritContent);
 
 		_inheritContent = inheritContent;
 	}
 
 	public boolean getOriginalInheritContent() {
-		return _originalInheritContent;
+		return _getOriginalValue(INHERITCONTENT_COLUMN_INDEX, _inheritContent);
 	}
 
 	@JSON
@@ -1182,19 +1187,13 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void setActive(boolean active) {
-		_columnBitmask |= ACTIVE_COLUMN_BITMASK;
-
-		if (!_setOriginalActive) {
-			_setOriginalActive = true;
-
-			_originalActive = _active;
-		}
+		_setOriginalValue(ACTIVE_COLUMN_INDEX, _active);
 
 		_active = active;
 	}
 
 	public boolean getOriginalActive() {
-		return _originalActive;
+		return _getOriginalValue(ACTIVE_COLUMN_INDEX, _active);
 	}
 
 	public long getColumnBitmask() {
@@ -1401,59 +1400,9 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public void resetOriginalValues() {
-		GroupModelImpl groupModelImpl = this;
+		_columnBitmask = 0;
 
-		groupModelImpl._originalUuid = groupModelImpl._uuid;
-
-		groupModelImpl._originalGroupId = groupModelImpl._groupId;
-
-		groupModelImpl._setOriginalGroupId = false;
-
-		groupModelImpl._originalCompanyId = groupModelImpl._companyId;
-
-		groupModelImpl._setOriginalCompanyId = false;
-
-		groupModelImpl._originalClassNameId = groupModelImpl._classNameId;
-
-		groupModelImpl._setOriginalClassNameId = false;
-
-		groupModelImpl._originalClassPK = groupModelImpl._classPK;
-
-		groupModelImpl._setOriginalClassPK = false;
-
-		groupModelImpl._originalParentGroupId = groupModelImpl._parentGroupId;
-
-		groupModelImpl._setOriginalParentGroupId = false;
-
-		groupModelImpl._originalLiveGroupId = groupModelImpl._liveGroupId;
-
-		groupModelImpl._setOriginalLiveGroupId = false;
-
-		groupModelImpl._originalTreePath = groupModelImpl._treePath;
-
-		groupModelImpl._originalGroupKey = groupModelImpl._groupKey;
-
-		groupModelImpl._originalName = groupModelImpl._name;
-
-		groupModelImpl._originalType = groupModelImpl._type;
-
-		groupModelImpl._setOriginalType = false;
-
-		groupModelImpl._originalFriendlyURL = groupModelImpl._friendlyURL;
-
-		groupModelImpl._originalSite = groupModelImpl._site;
-
-		groupModelImpl._setOriginalSite = false;
-
-		groupModelImpl._originalInheritContent = groupModelImpl._inheritContent;
-
-		groupModelImpl._setOriginalInheritContent = false;
-
-		groupModelImpl._originalActive = groupModelImpl._active;
-
-		groupModelImpl._setOriginalActive = false;
-
-		groupModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -1610,6 +1559,37 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[22];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, Group>
@@ -1619,54 +1599,33 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _creatorUserId;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private long _parentGroupId;
-	private long _originalParentGroupId;
-	private boolean _setOriginalParentGroupId;
 	private long _liveGroupId;
-	private long _originalLiveGroupId;
-	private boolean _setOriginalLiveGroupId;
 	private String _treePath;
-	private String _originalTreePath;
 	private String _groupKey;
-	private String _originalGroupKey;
 	private String _name;
 	private String _nameCurrentLanguageId;
-	private String _originalName;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
 	private int _type;
-	private int _originalType;
-	private boolean _setOriginalType;
 	private String _typeSettings;
 	private boolean _manualMembership;
 	private int _membershipRestriction;
 	private String _friendlyURL;
-	private String _originalFriendlyURL;
 	private boolean _site;
-	private boolean _originalSite;
-	private boolean _setOriginalSite;
 	private int _remoteStagingGroupCount;
 	private boolean _inheritContent;
-	private boolean _originalInheritContent;
-	private boolean _setOriginalInheritContent;
 	private boolean _active;
-	private boolean _originalActive;
-	private boolean _setOriginalActive;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private Group _escapedModel;
 
 }

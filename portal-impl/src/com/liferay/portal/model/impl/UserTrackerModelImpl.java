@@ -121,13 +121,41 @@ public class UserTrackerModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.UserTracker"),
 		true);
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long SESSIONID_COLUMN_BITMASK = 2L;
+	public static final long USERTRACKERID_COLUMN_BITMASK = 2L;
 
-	public static final long USERID_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
-	public static final long USERTRACKERID_COLUMN_BITMASK = 8L;
+	public static final long USERID_COLUMN_BITMASK = 8L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 16L;
+
+	public static final long SESSIONID_COLUMN_BITMASK = 32L;
+
+	public static final long REMOTEADDR_COLUMN_BITMASK = 64L;
+
+	public static final long REMOTEHOST_COLUMN_BITMASK = 128L;
+
+	public static final long USERAGENT_COLUMN_BITMASK = 256L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int USERTRACKERID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int USERID_COLUMN_INDEX = 3;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 4;
+
+	public static final int SESSIONID_COLUMN_INDEX = 5;
+
+	public static final int REMOTEADDR_COLUMN_INDEX = 6;
+
+	public static final int REMOTEHOST_COLUMN_INDEX = 7;
+
+	public static final int USERAGENT_COLUMN_INDEX = 8;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -312,6 +340,8 @@ public class UserTrackerModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		_setOriginalValue(MVCCVERSION_COLUMN_INDEX, _mvccVersion);
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -322,6 +352,8 @@ public class UserTrackerModelImpl
 
 	@Override
 	public void setUserTrackerId(long userTrackerId) {
+		_setOriginalValue(USERTRACKERID_COLUMN_INDEX, _userTrackerId);
+
 		_userTrackerId = userTrackerId;
 	}
 
@@ -332,19 +364,13 @@ public class UserTrackerModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		return _getOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
 	}
 
 	@Override
@@ -354,13 +380,7 @@ public class UserTrackerModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_setOriginalValue(USERID_COLUMN_INDEX, _userId);
 
 		_userId = userId;
 	}
@@ -382,7 +402,7 @@ public class UserTrackerModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return _getOriginalValue(USERID_COLUMN_INDEX, _userId);
 	}
 
 	@Override
@@ -392,6 +412,8 @@ public class UserTrackerModelImpl
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		_setOriginalValue(MODIFIEDDATE_COLUMN_INDEX, _modifiedDate);
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -407,17 +429,14 @@ public class UserTrackerModelImpl
 
 	@Override
 	public void setSessionId(String sessionId) {
-		_columnBitmask |= SESSIONID_COLUMN_BITMASK;
-
-		if (_originalSessionId == null) {
-			_originalSessionId = _sessionId;
-		}
+		_setOriginalValue(SESSIONID_COLUMN_INDEX, _sessionId);
 
 		_sessionId = sessionId;
 	}
 
 	public String getOriginalSessionId() {
-		return GetterUtil.getString(_originalSessionId);
+		return GetterUtil.getString(
+			_getOriginalValue(SESSIONID_COLUMN_INDEX, _sessionId));
 	}
 
 	@Override
@@ -432,6 +451,8 @@ public class UserTrackerModelImpl
 
 	@Override
 	public void setRemoteAddr(String remoteAddr) {
+		_setOriginalValue(REMOTEADDR_COLUMN_INDEX, _remoteAddr);
+
 		_remoteAddr = remoteAddr;
 	}
 
@@ -447,6 +468,8 @@ public class UserTrackerModelImpl
 
 	@Override
 	public void setRemoteHost(String remoteHost) {
+		_setOriginalValue(REMOTEHOST_COLUMN_INDEX, _remoteHost);
+
 		_remoteHost = remoteHost;
 	}
 
@@ -462,6 +485,8 @@ public class UserTrackerModelImpl
 
 	@Override
 	public void setUserAgent(String userAgent) {
+		_setOriginalValue(USERAGENT_COLUMN_INDEX, _userAgent);
+
 		_userAgent = userAgent;
 	}
 
@@ -570,21 +595,9 @@ public class UserTrackerModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		UserTrackerModelImpl userTrackerModelImpl = this;
+		_columnBitmask = 0;
 
-		userTrackerModelImpl._originalCompanyId =
-			userTrackerModelImpl._companyId;
-
-		userTrackerModelImpl._setOriginalCompanyId = false;
-
-		userTrackerModelImpl._originalUserId = userTrackerModelImpl._userId;
-
-		userTrackerModelImpl._setOriginalUserId = false;
-
-		userTrackerModelImpl._originalSessionId =
-			userTrackerModelImpl._sessionId;
-
-		userTrackerModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -707,6 +720,37 @@ public class UserTrackerModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[9];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, UserTracker>
@@ -717,18 +761,17 @@ public class UserTrackerModelImpl
 	private long _mvccVersion;
 	private long _userTrackerId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private Date _modifiedDate;
 	private String _sessionId;
-	private String _originalSessionId;
 	private String _remoteAddr;
 	private String _remoteHost;
 	private String _userAgent;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private UserTracker _escapedModel;
 
 }

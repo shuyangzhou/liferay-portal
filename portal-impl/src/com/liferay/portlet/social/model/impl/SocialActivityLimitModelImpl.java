@@ -124,19 +124,41 @@ public class SocialActivityLimitModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.social.kernel.model.SocialActivityLimit"),
 		true);
 
-	public static final long ACTIVITYCOUNTERNAME_COLUMN_BITMASK = 1L;
+	public static final long ACTIVITYLIMITID_COLUMN_BITMASK = 1L;
 
-	public static final long ACTIVITYTYPE_COLUMN_BITMASK = 2L;
+	public static final long GROUPID_COLUMN_BITMASK = 2L;
 
-	public static final long CLASSNAMEID_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
-	public static final long CLASSPK_COLUMN_BITMASK = 8L;
+	public static final long USERID_COLUMN_BITMASK = 8L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 16L;
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 16L;
 
-	public static final long USERID_COLUMN_BITMASK = 32L;
+	public static final long CLASSPK_COLUMN_BITMASK = 32L;
 
-	public static final long ACTIVITYLIMITID_COLUMN_BITMASK = 64L;
+	public static final long ACTIVITYTYPE_COLUMN_BITMASK = 64L;
+
+	public static final long ACTIVITYCOUNTERNAME_COLUMN_BITMASK = 128L;
+
+	public static final long VALUE_COLUMN_BITMASK = 256L;
+
+	public static final int ACTIVITYLIMITID_COLUMN_INDEX = 0;
+
+	public static final int GROUPID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int USERID_COLUMN_INDEX = 3;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 4;
+
+	public static final int CLASSPK_COLUMN_INDEX = 5;
+
+	public static final int ACTIVITYTYPE_COLUMN_INDEX = 6;
+
+	public static final int ACTIVITYCOUNTERNAME_COLUMN_INDEX = 7;
+
+	public static final int VALUE_COLUMN_INDEX = 8;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -338,6 +360,8 @@ public class SocialActivityLimitModelImpl
 
 	@Override
 	public void setActivityLimitId(long activityLimitId) {
+		_setOriginalValue(ACTIVITYLIMITID_COLUMN_INDEX, _activityLimitId);
+
 		_activityLimitId = activityLimitId;
 	}
 
@@ -348,19 +372,13 @@ public class SocialActivityLimitModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
+		_setOriginalValue(GROUPID_COLUMN_INDEX, _groupId);
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		return _getOriginalValue(GROUPID_COLUMN_INDEX, _groupId);
 	}
 
 	@Override
@@ -370,6 +388,8 @@ public class SocialActivityLimitModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_setOriginalValue(COMPANYID_COLUMN_INDEX, _companyId);
+
 		_companyId = companyId;
 	}
 
@@ -380,13 +400,7 @@ public class SocialActivityLimitModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
+		_setOriginalValue(USERID_COLUMN_INDEX, _userId);
 
 		_userId = userId;
 	}
@@ -408,7 +422,7 @@ public class SocialActivityLimitModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		return _getOriginalValue(USERID_COLUMN_INDEX, _userId);
 	}
 
 	@Override
@@ -438,19 +452,13 @@ public class SocialActivityLimitModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
-
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
-
-			_originalClassNameId = _classNameId;
-		}
+		_setOriginalValue(CLASSNAMEID_COLUMN_INDEX, _classNameId);
 
 		_classNameId = classNameId;
 	}
 
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		return _getOriginalValue(CLASSNAMEID_COLUMN_INDEX, _classNameId);
 	}
 
 	@Override
@@ -460,19 +468,13 @@ public class SocialActivityLimitModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
-
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
-
-			_originalClassPK = _classPK;
-		}
+		_setOriginalValue(CLASSPK_COLUMN_INDEX, _classPK);
 
 		_classPK = classPK;
 	}
 
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		return _getOriginalValue(CLASSPK_COLUMN_INDEX, _classPK);
 	}
 
 	@Override
@@ -482,19 +484,13 @@ public class SocialActivityLimitModelImpl
 
 	@Override
 	public void setActivityType(int activityType) {
-		_columnBitmask |= ACTIVITYTYPE_COLUMN_BITMASK;
-
-		if (!_setOriginalActivityType) {
-			_setOriginalActivityType = true;
-
-			_originalActivityType = _activityType;
-		}
+		_setOriginalValue(ACTIVITYTYPE_COLUMN_INDEX, _activityType);
 
 		_activityType = activityType;
 	}
 
 	public int getOriginalActivityType() {
-		return _originalActivityType;
+		return _getOriginalValue(ACTIVITYTYPE_COLUMN_INDEX, _activityType);
 	}
 
 	@Override
@@ -509,17 +505,16 @@ public class SocialActivityLimitModelImpl
 
 	@Override
 	public void setActivityCounterName(String activityCounterName) {
-		_columnBitmask |= ACTIVITYCOUNTERNAME_COLUMN_BITMASK;
-
-		if (_originalActivityCounterName == null) {
-			_originalActivityCounterName = _activityCounterName;
-		}
+		_setOriginalValue(
+			ACTIVITYCOUNTERNAME_COLUMN_INDEX, _activityCounterName);
 
 		_activityCounterName = activityCounterName;
 	}
 
 	public String getOriginalActivityCounterName() {
-		return GetterUtil.getString(_originalActivityCounterName);
+		return GetterUtil.getString(
+			_getOriginalValue(
+				ACTIVITYCOUNTERNAME_COLUMN_INDEX, _activityCounterName));
 	}
 
 	@Override
@@ -534,6 +529,8 @@ public class SocialActivityLimitModelImpl
 
 	@Override
 	public void setValue(String value) {
+		_setOriginalValue(VALUE_COLUMN_INDEX, _value);
+
 		_value = value;
 	}
 
@@ -645,37 +642,9 @@ public class SocialActivityLimitModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SocialActivityLimitModelImpl socialActivityLimitModelImpl = this;
+		_columnBitmask = 0;
 
-		socialActivityLimitModelImpl._originalGroupId =
-			socialActivityLimitModelImpl._groupId;
-
-		socialActivityLimitModelImpl._setOriginalGroupId = false;
-
-		socialActivityLimitModelImpl._originalUserId =
-			socialActivityLimitModelImpl._userId;
-
-		socialActivityLimitModelImpl._setOriginalUserId = false;
-
-		socialActivityLimitModelImpl._originalClassNameId =
-			socialActivityLimitModelImpl._classNameId;
-
-		socialActivityLimitModelImpl._setOriginalClassNameId = false;
-
-		socialActivityLimitModelImpl._originalClassPK =
-			socialActivityLimitModelImpl._classPK;
-
-		socialActivityLimitModelImpl._setOriginalClassPK = false;
-
-		socialActivityLimitModelImpl._originalActivityType =
-			socialActivityLimitModelImpl._activityType;
-
-		socialActivityLimitModelImpl._setOriginalActivityType = false;
-
-		socialActivityLimitModelImpl._originalActivityCounterName =
-			socialActivityLimitModelImpl._activityCounterName;
-
-		socialActivityLimitModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -783,6 +752,37 @@ public class SocialActivityLimitModelImpl
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
+		if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
+			return defaultValue;
+		}
+
+		Object originalValue = _originalValues[columnIndex];
+
+		if (originalValue == null) {
+			return defaultValue;
+		}
+
+		return (T)originalValue;
+	}
+
+	private void _setOriginalValue(int columnIndex, Object value) {
+		if (_originalValues == _INITIAL_MARKER) {
+			return;
+		}
+
+		_columnBitmask |= 1L << columnIndex;
+
+		if (_originalValues == null) {
+			_originalValues = new Object[9];
+		}
+
+		if (_originalValues[columnIndex] == null) {
+			_originalValues[columnIndex] = value;
+		}
+	}
+
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, SocialActivityLimit>
@@ -792,25 +792,18 @@ public class SocialActivityLimitModelImpl
 
 	private long _activityLimitId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private int _activityType;
-	private int _originalActivityType;
-	private boolean _setOriginalActivityType;
 	private String _activityCounterName;
-	private String _originalActivityCounterName;
 	private String _value;
 	private long _columnBitmask;
+
+	private static final Object[] _INITIAL_MARKER = new Object[0];
+
+	private Object[] _originalValues = _INITIAL_MARKER;
 	private SocialActivityLimit _escapedModel;
 
 }
