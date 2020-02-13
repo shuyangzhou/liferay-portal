@@ -3,7 +3,7 @@ definition {
 
 	property app.server.bundles.size = "1";
 	property cluster.enabled = "true";
-	property remote.elasticsearch.enabled = "true";
+	property remote.elasticsearch.enabled = "false";
 	property test.assert.warning.exceptions = "true";
 	property test.ignore.tomcat.ext.environment = "true";
 	property test.run.environment = "EE";
