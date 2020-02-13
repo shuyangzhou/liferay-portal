@@ -111,15 +111,53 @@ public class MemberRequestModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long GROUPID_COLUMN_BITMASK = 1L;
+	public static final long MEMBERREQUESTID_COLUMN_BITMASK = 1L;
 
-	public static final long KEY_COLUMN_BITMASK = 2L;
+	public static final long GROUPID_COLUMN_BITMASK = 2L;
 
-	public static final long RECEIVERUSERID_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
-	public static final long STATUS_COLUMN_BITMASK = 8L;
+	public static final long USERID_COLUMN_BITMASK = 8L;
 
-	public static final long CREATEDATE_COLUMN_BITMASK = 16L;
+	public static final long USERNAME_COLUMN_BITMASK = 16L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 32L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 64L;
+
+	public static final long KEY_COLUMN_BITMASK = 128L;
+
+	public static final long RECEIVERUSERID_COLUMN_BITMASK = 256L;
+
+	public static final long INVITEDROLEID_COLUMN_BITMASK = 512L;
+
+	public static final long INVITEDTEAMID_COLUMN_BITMASK = 1024L;
+
+	public static final long STATUS_COLUMN_BITMASK = 2048L;
+
+	public static final int MEMBERREQUESTID_COLUMN_INDEX = 0;
+
+	public static final int GROUPID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int USERID_COLUMN_INDEX = 3;
+
+	public static final int USERNAME_COLUMN_INDEX = 4;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 5;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 6;
+
+	public static final int KEY_COLUMN_INDEX = 7;
+
+	public static final int RECEIVERUSERID_COLUMN_INDEX = 8;
+
+	public static final int INVITEDROLEID_COLUMN_INDEX = 9;
+
+	public static final int INVITEDTEAMID_COLUMN_INDEX = 10;
+
+	public static final int STATUS_COLUMN_INDEX = 11;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -323,6 +361,16 @@ public class MemberRequestModelImpl
 
 	@Override
 	public void setMemberRequestId(long memberRequestId) {
+		if ((_columnBitmask & MEMBERREQUESTID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MEMBERREQUESTID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[MEMBERREQUESTID_COLUMN_INDEX] = _memberRequestId;
+		}
+
 		_memberRequestId = memberRequestId;
 	}
 
@@ -333,19 +381,29 @@ public class MemberRequestModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@Override
@@ -355,6 +413,16 @@ public class MemberRequestModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -365,6 +433,16 @@ public class MemberRequestModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -396,6 +474,16 @@ public class MemberRequestModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -406,7 +494,15 @@ public class MemberRequestModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
 
 		_createDate = createDate;
 	}
@@ -417,12 +513,20 @@ public class MemberRequestModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -439,17 +543,29 @@ public class MemberRequestModelImpl
 
 	@Override
 	public void setKey(String key) {
-		_columnBitmask |= KEY_COLUMN_BITMASK;
+		if ((_columnBitmask & KEY_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= KEY_COLUMN_BITMASK;
 
-		if (_originalKey == null) {
-			_originalKey = _key;
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[KEY_COLUMN_INDEX] = _key;
 		}
 
 		_key = key;
 	}
 
 	public String getOriginalKey() {
-		return GetterUtil.getString(_originalKey);
+		if (_originalValues != null) {
+			Object originalKey = _originalValues[KEY_COLUMN_INDEX];
+
+			if (originalKey != null) {
+				return GetterUtil.getString((String)originalKey);
+			}
+		}
+
+		return GetterUtil.getString(_key);
 	}
 
 	@Override
@@ -459,12 +575,14 @@ public class MemberRequestModelImpl
 
 	@Override
 	public void setReceiverUserId(long receiverUserId) {
-		_columnBitmask |= RECEIVERUSERID_COLUMN_BITMASK;
+		if ((_columnBitmask & RECEIVERUSERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= RECEIVERUSERID_COLUMN_BITMASK;
 
-		if (!_setOriginalReceiverUserId) {
-			_setOriginalReceiverUserId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
 
-			_originalReceiverUserId = _receiverUserId;
+			_originalValues[RECEIVERUSERID_COLUMN_INDEX] = _receiverUserId;
 		}
 
 		_receiverUserId = receiverUserId;
@@ -487,7 +605,16 @@ public class MemberRequestModelImpl
 	}
 
 	public long getOriginalReceiverUserId() {
-		return _originalReceiverUserId;
+		if (_originalValues != null) {
+			Object originalReceiverUserId =
+				_originalValues[RECEIVERUSERID_COLUMN_INDEX];
+
+			if (originalReceiverUserId != null) {
+				return (long)originalReceiverUserId;
+			}
+		}
+
+		return _receiverUserId;
 	}
 
 	@Override
@@ -497,6 +624,16 @@ public class MemberRequestModelImpl
 
 	@Override
 	public void setInvitedRoleId(long invitedRoleId) {
+		if ((_columnBitmask & INVITEDROLEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= INVITEDROLEID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[INVITEDROLEID_COLUMN_INDEX] = _invitedRoleId;
+		}
+
 		_invitedRoleId = invitedRoleId;
 	}
 
@@ -507,6 +644,16 @@ public class MemberRequestModelImpl
 
 	@Override
 	public void setInvitedTeamId(long invitedTeamId) {
+		if ((_columnBitmask & INVITEDTEAMID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= INVITEDTEAMID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[INVITEDTEAMID_COLUMN_INDEX] = _invitedTeamId;
+		}
+
 		_invitedTeamId = invitedTeamId;
 	}
 
@@ -517,19 +664,29 @@ public class MemberRequestModelImpl
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
+		if ((_columnBitmask & STATUS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUS_COLUMN_BITMASK;
 
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
 
-			_originalStatus = _status;
+			_originalValues[STATUS_COLUMN_INDEX] = _status;
 		}
 
 		_status = status;
 	}
 
 	public int getOriginalStatus() {
-		return _originalStatus;
+		if (_originalValues != null) {
+			Object originalStatus = _originalValues[STATUS_COLUMN_INDEX];
+
+			if (originalStatus != null) {
+				return (int)originalStatus;
+			}
+		}
+
+		return _status;
 	}
 
 	public long getColumnBitmask() {
@@ -641,27 +798,9 @@ public class MemberRequestModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		MemberRequestModelImpl memberRequestModelImpl = this;
+		_columnBitmask = 0;
 
-		memberRequestModelImpl._originalGroupId =
-			memberRequestModelImpl._groupId;
-
-		memberRequestModelImpl._setOriginalGroupId = false;
-
-		memberRequestModelImpl._setModifiedDate = false;
-
-		memberRequestModelImpl._originalKey = memberRequestModelImpl._key;
-
-		memberRequestModelImpl._originalReceiverUserId =
-			memberRequestModelImpl._receiverUserId;
-
-		memberRequestModelImpl._setOriginalReceiverUserId = false;
-
-		memberRequestModelImpl._originalStatus = memberRequestModelImpl._status;
-
-		memberRequestModelImpl._setOriginalStatus = false;
-
-		memberRequestModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -797,25 +936,18 @@ public class MemberRequestModelImpl
 
 	private long _memberRequestId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private String _key;
-	private String _originalKey;
 	private long _receiverUserId;
-	private long _originalReceiverUserId;
-	private boolean _setOriginalReceiverUserId;
 	private long _invitedRoleId;
 	private long _invitedTeamId;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private MemberRequest _escapedModel;
 
 }

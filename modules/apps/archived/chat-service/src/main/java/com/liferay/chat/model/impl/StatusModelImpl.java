@@ -101,13 +101,37 @@ public class StatusModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long MODIFIEDDATE_COLUMN_BITMASK = 1L;
+	public static final long STATUSID_COLUMN_BITMASK = 1L;
 
-	public static final long ONLINE_COLUMN_BITMASK = 2L;
+	public static final long USERID_COLUMN_BITMASK = 2L;
 
-	public static final long USERID_COLUMN_BITMASK = 4L;
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 4L;
 
-	public static final long STATUSID_COLUMN_BITMASK = 8L;
+	public static final long ONLINE_COLUMN_BITMASK = 8L;
+
+	public static final long AWAKE_COLUMN_BITMASK = 16L;
+
+	public static final long ACTIVEPANELIDS_COLUMN_BITMASK = 32L;
+
+	public static final long MESSAGE_COLUMN_BITMASK = 64L;
+
+	public static final long PLAYSOUND_COLUMN_BITMASK = 128L;
+
+	public static final int STATUSID_COLUMN_INDEX = 0;
+
+	public static final int USERID_COLUMN_INDEX = 1;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 2;
+
+	public static final int ONLINE_COLUMN_INDEX = 3;
+
+	public static final int AWAKE_COLUMN_INDEX = 4;
+
+	public static final int ACTIVEPANELIDS_COLUMN_INDEX = 5;
+
+	public static final int MESSAGE_COLUMN_INDEX = 6;
+
+	public static final int PLAYSOUND_COLUMN_INDEX = 7;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -279,6 +303,16 @@ public class StatusModelImpl
 
 	@Override
 	public void setStatusId(long statusId) {
+		if ((_columnBitmask & STATUSID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUSID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
+
+			_originalValues[STATUSID_COLUMN_INDEX] = _statusId;
+		}
+
 		_statusId = statusId;
 	}
 
@@ -289,12 +323,14 @@ public class StatusModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
 
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
 
-			_originalUserId = _userId;
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
 		}
 
 		_userId = userId;
@@ -317,7 +353,15 @@ public class StatusModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		if (_originalValues != null) {
+			Object originalUserId = _originalValues[USERID_COLUMN_INDEX];
+
+			if (originalUserId != null) {
+				return (long)originalUserId;
+			}
+		}
+
+		return _userId;
 	}
 
 	@Override
@@ -327,19 +371,30 @@ public class StatusModelImpl
 
 	@Override
 	public void setModifiedDate(long modifiedDate) {
-		_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
 
-		if (!_setOriginalModifiedDate) {
-			_setOriginalModifiedDate = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
 
-			_originalModifiedDate = _modifiedDate;
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
 		}
 
 		_modifiedDate = modifiedDate;
 	}
 
 	public long getOriginalModifiedDate() {
-		return _originalModifiedDate;
+		if (_originalValues != null) {
+			Object originalModifiedDate =
+				_originalValues[MODIFIEDDATE_COLUMN_INDEX];
+
+			if (originalModifiedDate != null) {
+				return (long)originalModifiedDate;
+			}
+		}
+
+		return _modifiedDate;
 	}
 
 	@Override
@@ -354,19 +409,29 @@ public class StatusModelImpl
 
 	@Override
 	public void setOnline(boolean online) {
-		_columnBitmask |= ONLINE_COLUMN_BITMASK;
+		if ((_columnBitmask & ONLINE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ONLINE_COLUMN_BITMASK;
 
-		if (!_setOriginalOnline) {
-			_setOriginalOnline = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
 
-			_originalOnline = _online;
+			_originalValues[ONLINE_COLUMN_INDEX] = _online;
 		}
 
 		_online = online;
 	}
 
 	public boolean getOriginalOnline() {
-		return _originalOnline;
+		if (_originalValues != null) {
+			Object originalOnline = _originalValues[ONLINE_COLUMN_INDEX];
+
+			if (originalOnline != null) {
+				return (boolean)originalOnline;
+			}
+		}
+
+		return _online;
 	}
 
 	@Override
@@ -381,6 +446,16 @@ public class StatusModelImpl
 
 	@Override
 	public void setAwake(boolean awake) {
+		if ((_columnBitmask & AWAKE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= AWAKE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
+
+			_originalValues[AWAKE_COLUMN_INDEX] = _awake;
+		}
+
 		_awake = awake;
 	}
 
@@ -396,6 +471,16 @@ public class StatusModelImpl
 
 	@Override
 	public void setActivePanelIds(String activePanelIds) {
+		if ((_columnBitmask & ACTIVEPANELIDS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ACTIVEPANELIDS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
+
+			_originalValues[ACTIVEPANELIDS_COLUMN_INDEX] = _activePanelIds;
+		}
+
 		_activePanelIds = activePanelIds;
 	}
 
@@ -411,6 +496,16 @@ public class StatusModelImpl
 
 	@Override
 	public void setMessage(String message) {
+		if ((_columnBitmask & MESSAGE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MESSAGE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
+
+			_originalValues[MESSAGE_COLUMN_INDEX] = _message;
+		}
+
 		_message = message;
 	}
 
@@ -426,6 +521,16 @@ public class StatusModelImpl
 
 	@Override
 	public void setPlaySound(boolean playSound) {
+		if ((_columnBitmask & PLAYSOUND_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PLAYSOUND_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
+
+			_originalValues[PLAYSOUND_COLUMN_INDEX] = _playSound;
+		}
+
 		_playSound = playSound;
 	}
 
@@ -533,21 +638,9 @@ public class StatusModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		StatusModelImpl statusModelImpl = this;
+		_columnBitmask = 0;
 
-		statusModelImpl._originalUserId = statusModelImpl._userId;
-
-		statusModelImpl._setOriginalUserId = false;
-
-		statusModelImpl._originalModifiedDate = statusModelImpl._modifiedDate;
-
-		statusModelImpl._setOriginalModifiedDate = false;
-
-		statusModelImpl._originalOnline = statusModelImpl._online;
-
-		statusModelImpl._setOriginalOnline = false;
-
-		statusModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -658,19 +751,14 @@ public class StatusModelImpl
 
 	private long _statusId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private long _modifiedDate;
-	private long _originalModifiedDate;
-	private boolean _setOriginalModifiedDate;
 	private boolean _online;
-	private boolean _originalOnline;
-	private boolean _setOriginalOnline;
 	private boolean _awake;
 	private String _activePanelIds;
 	private String _message;
 	private boolean _playSound;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private Status _escapedModel;
 
 }

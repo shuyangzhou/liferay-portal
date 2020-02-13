@@ -134,19 +134,85 @@ public class FragmentCompositionModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long FRAGMENTCOLLECTIONID_COLUMN_BITMASK = 2L;
+	public static final long UUID_COLUMN_BITMASK = 2L;
 
-	public static final long FRAGMENTCOMPOSITIONKEY_COLUMN_BITMASK = 4L;
+	public static final long FRAGMENTCOMPOSITIONID_COLUMN_BITMASK = 4L;
 
 	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
-	public static final long NAME_COLUMN_BITMASK = 16L;
+	public static final long COMPANYID_COLUMN_BITMASK = 16L;
 
-	public static final long STATUS_COLUMN_BITMASK = 32L;
+	public static final long USERID_COLUMN_BITMASK = 32L;
 
-	public static final long UUID_COLUMN_BITMASK = 64L;
+	public static final long USERNAME_COLUMN_BITMASK = 64L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 128L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 256L;
+
+	public static final long FRAGMENTCOLLECTIONID_COLUMN_BITMASK = 512L;
+
+	public static final long FRAGMENTCOMPOSITIONKEY_COLUMN_BITMASK = 1024L;
+
+	public static final long NAME_COLUMN_BITMASK = 2048L;
+
+	public static final long DESCRIPTION_COLUMN_BITMASK = 4096L;
+
+	public static final long DATA_COLUMN_BITMASK = 8192L;
+
+	public static final long PREVIEWFILEENTRYID_COLUMN_BITMASK = 16384L;
+
+	public static final long LASTPUBLISHDATE_COLUMN_BITMASK = 32768L;
+
+	public static final long STATUS_COLUMN_BITMASK = 65536L;
+
+	public static final long STATUSBYUSERID_COLUMN_BITMASK = 131072L;
+
+	public static final long STATUSBYUSERNAME_COLUMN_BITMASK = 262144L;
+
+	public static final long STATUSDATE_COLUMN_BITMASK = 524288L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int UUID_COLUMN_INDEX = 1;
+
+	public static final int FRAGMENTCOMPOSITIONID_COLUMN_INDEX = 2;
+
+	public static final int GROUPID_COLUMN_INDEX = 3;
+
+	public static final int COMPANYID_COLUMN_INDEX = 4;
+
+	public static final int USERID_COLUMN_INDEX = 5;
+
+	public static final int USERNAME_COLUMN_INDEX = 6;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 7;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 8;
+
+	public static final int FRAGMENTCOLLECTIONID_COLUMN_INDEX = 9;
+
+	public static final int FRAGMENTCOMPOSITIONKEY_COLUMN_INDEX = 10;
+
+	public static final int NAME_COLUMN_INDEX = 11;
+
+	public static final int DESCRIPTION_COLUMN_INDEX = 12;
+
+	public static final int DATA_COLUMN_INDEX = 13;
+
+	public static final int PREVIEWFILEENTRYID_COLUMN_INDEX = 14;
+
+	public static final int LASTPUBLISHDATE_COLUMN_INDEX = 15;
+
+	public static final int STATUS_COLUMN_INDEX = 16;
+
+	public static final int STATUSBYUSERID_COLUMN_INDEX = 17;
+
+	public static final int STATUSBYUSERNAME_COLUMN_INDEX = 18;
+
+	public static final int STATUSDATE_COLUMN_INDEX = 19;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -481,6 +547,16 @@ public class FragmentCompositionModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -497,17 +573,29 @@ public class FragmentCompositionModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		if ((_columnBitmask & UUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= UUID_COLUMN_BITMASK;
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[UUID_COLUMN_INDEX] = _uuid;
 		}
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		if (_originalValues != null) {
+			Object originalUuid = _originalValues[UUID_COLUMN_INDEX];
+
+			if (originalUuid != null) {
+				return GetterUtil.getString((String)originalUuid);
+			}
+		}
+
+		return GetterUtil.getString(_uuid);
 	}
 
 	@JSON
@@ -518,6 +606,17 @@ public class FragmentCompositionModelImpl
 
 	@Override
 	public void setFragmentCompositionId(long fragmentCompositionId) {
+		if ((_columnBitmask & FRAGMENTCOMPOSITIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= FRAGMENTCOMPOSITIONID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[FRAGMENTCOMPOSITIONID_COLUMN_INDEX] =
+				_fragmentCompositionId;
+		}
+
 		_fragmentCompositionId = fragmentCompositionId;
 	}
 
@@ -529,19 +628,29 @@ public class FragmentCompositionModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@JSON
@@ -552,19 +661,29 @@ public class FragmentCompositionModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@JSON
@@ -575,6 +694,16 @@ public class FragmentCompositionModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -607,6 +736,16 @@ public class FragmentCompositionModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -618,6 +757,16 @@ public class FragmentCompositionModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -628,12 +777,20 @@ public class FragmentCompositionModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -646,19 +803,31 @@ public class FragmentCompositionModelImpl
 
 	@Override
 	public void setFragmentCollectionId(long fragmentCollectionId) {
-		_columnBitmask |= FRAGMENTCOLLECTIONID_COLUMN_BITMASK;
+		if ((_columnBitmask & FRAGMENTCOLLECTIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= FRAGMENTCOLLECTIONID_COLUMN_BITMASK;
 
-		if (!_setOriginalFragmentCollectionId) {
-			_setOriginalFragmentCollectionId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
 
-			_originalFragmentCollectionId = _fragmentCollectionId;
+			_originalValues[FRAGMENTCOLLECTIONID_COLUMN_INDEX] =
+				_fragmentCollectionId;
 		}
 
 		_fragmentCollectionId = fragmentCollectionId;
 	}
 
 	public long getOriginalFragmentCollectionId() {
-		return _originalFragmentCollectionId;
+		if (_originalValues != null) {
+			Object originalFragmentCollectionId =
+				_originalValues[FRAGMENTCOLLECTIONID_COLUMN_INDEX];
+
+			if (originalFragmentCollectionId != null) {
+				return (long)originalFragmentCollectionId;
+			}
+		}
+
+		return _fragmentCollectionId;
 	}
 
 	@JSON
@@ -674,17 +843,32 @@ public class FragmentCompositionModelImpl
 
 	@Override
 	public void setFragmentCompositionKey(String fragmentCompositionKey) {
-		_columnBitmask |= FRAGMENTCOMPOSITIONKEY_COLUMN_BITMASK;
+		if ((_columnBitmask & FRAGMENTCOMPOSITIONKEY_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= FRAGMENTCOMPOSITIONKEY_COLUMN_BITMASK;
 
-		if (_originalFragmentCompositionKey == null) {
-			_originalFragmentCompositionKey = _fragmentCompositionKey;
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[FRAGMENTCOMPOSITIONKEY_COLUMN_INDEX] =
+				_fragmentCompositionKey;
 		}
 
 		_fragmentCompositionKey = fragmentCompositionKey;
 	}
 
 	public String getOriginalFragmentCompositionKey() {
-		return GetterUtil.getString(_originalFragmentCompositionKey);
+		if (_originalValues != null) {
+			Object originalFragmentCompositionKey =
+				_originalValues[FRAGMENTCOMPOSITIONKEY_COLUMN_INDEX];
+
+			if (originalFragmentCompositionKey != null) {
+				return GetterUtil.getString(
+					(String)originalFragmentCompositionKey);
+			}
+		}
+
+		return GetterUtil.getString(_fragmentCompositionKey);
 	}
 
 	@JSON
@@ -700,17 +884,29 @@ public class FragmentCompositionModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & NAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= NAME_COLUMN_BITMASK;
 
-		if (_originalName == null) {
-			_originalName = _name;
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[NAME_COLUMN_INDEX] = _name;
 		}
 
 		_name = name;
 	}
 
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		if (_originalValues != null) {
+			Object originalName = _originalValues[NAME_COLUMN_INDEX];
+
+			if (originalName != null) {
+				return GetterUtil.getString((String)originalName);
+			}
+		}
+
+		return GetterUtil.getString(_name);
 	}
 
 	@JSON
@@ -726,6 +922,16 @@ public class FragmentCompositionModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		if ((_columnBitmask & DESCRIPTION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DESCRIPTION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[DESCRIPTION_COLUMN_INDEX] = _description;
+		}
+
 		_description = description;
 	}
 
@@ -742,6 +948,16 @@ public class FragmentCompositionModelImpl
 
 	@Override
 	public void setData(String data) {
+		if ((_columnBitmask & DATA_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DATA_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[DATA_COLUMN_INDEX] = _data;
+		}
+
 		_data = data;
 	}
 
@@ -753,6 +969,17 @@ public class FragmentCompositionModelImpl
 
 	@Override
 	public void setPreviewFileEntryId(long previewFileEntryId) {
+		if ((_columnBitmask & PREVIEWFILEENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PREVIEWFILEENTRYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[PREVIEWFILEENTRYID_COLUMN_INDEX] =
+				_previewFileEntryId;
+		}
+
 		_previewFileEntryId = previewFileEntryId;
 	}
 
@@ -764,6 +991,16 @@ public class FragmentCompositionModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		if ((_columnBitmask & LASTPUBLISHDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LASTPUBLISHDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[LASTPUBLISHDATE_COLUMN_INDEX] = _lastPublishDate;
+		}
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -775,19 +1012,29 @@ public class FragmentCompositionModelImpl
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
+		if ((_columnBitmask & STATUS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUS_COLUMN_BITMASK;
 
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
 
-			_originalStatus = _status;
+			_originalValues[STATUS_COLUMN_INDEX] = _status;
 		}
 
 		_status = status;
 	}
 
 	public int getOriginalStatus() {
-		return _originalStatus;
+		if (_originalValues != null) {
+			Object originalStatus = _originalValues[STATUS_COLUMN_INDEX];
+
+			if (originalStatus != null) {
+				return (int)originalStatus;
+			}
+		}
+
+		return _status;
 	}
 
 	@JSON
@@ -798,6 +1045,16 @@ public class FragmentCompositionModelImpl
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		if ((_columnBitmask & STATUSBYUSERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUSBYUSERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[STATUSBYUSERID_COLUMN_INDEX] = _statusByUserId;
+		}
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -830,6 +1087,16 @@ public class FragmentCompositionModelImpl
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		if ((_columnBitmask & STATUSBYUSERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUSBYUSERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[STATUSBYUSERNAME_COLUMN_INDEX] = _statusByUserName;
+		}
+
 		_statusByUserName = statusByUserName;
 	}
 
@@ -841,6 +1108,16 @@ public class FragmentCompositionModelImpl
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		if ((_columnBitmask & STATUSDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUSDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[STATUSDATE_COLUMN_INDEX] = _statusDate;
+		}
+
 		_statusDate = statusDate;
 	}
 
@@ -1049,40 +1326,9 @@ public class FragmentCompositionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		FragmentCompositionModelImpl fragmentCompositionModelImpl = this;
+		_columnBitmask = 0;
 
-		fragmentCompositionModelImpl._originalUuid =
-			fragmentCompositionModelImpl._uuid;
-
-		fragmentCompositionModelImpl._originalGroupId =
-			fragmentCompositionModelImpl._groupId;
-
-		fragmentCompositionModelImpl._setOriginalGroupId = false;
-
-		fragmentCompositionModelImpl._originalCompanyId =
-			fragmentCompositionModelImpl._companyId;
-
-		fragmentCompositionModelImpl._setOriginalCompanyId = false;
-
-		fragmentCompositionModelImpl._setModifiedDate = false;
-
-		fragmentCompositionModelImpl._originalFragmentCollectionId =
-			fragmentCompositionModelImpl._fragmentCollectionId;
-
-		fragmentCompositionModelImpl._setOriginalFragmentCollectionId = false;
-
-		fragmentCompositionModelImpl._originalFragmentCompositionKey =
-			fragmentCompositionModelImpl._fragmentCompositionKey;
-
-		fragmentCompositionModelImpl._originalName =
-			fragmentCompositionModelImpl._name;
-
-		fragmentCompositionModelImpl._originalStatus =
-			fragmentCompositionModelImpl._status;
-
-		fragmentCompositionModelImpl._setOriginalStatus = false;
-
-		fragmentCompositionModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -1287,37 +1533,26 @@ public class FragmentCompositionModelImpl
 
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _fragmentCompositionId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _fragmentCollectionId;
-	private long _originalFragmentCollectionId;
-	private boolean _setOriginalFragmentCollectionId;
 	private String _fragmentCompositionKey;
-	private String _originalFragmentCompositionKey;
 	private String _name;
-	private String _originalName;
 	private String _description;
 	private String _data;
 	private long _previewFileEntryId;
 	private Date _lastPublishDate;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private FragmentComposition _escapedModel;
 
 }

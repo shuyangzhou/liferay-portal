@@ -108,15 +108,41 @@ public class ChangesetCollectionModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long CHANGESETCOLLECTIONID_COLUMN_BITMASK = 1L;
 
 	public static final long GROUPID_COLUMN_BITMASK = 2L;
 
-	public static final long NAME_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
 	public static final long USERID_COLUMN_BITMASK = 8L;
 
-	public static final long CHANGESETCOLLECTIONID_COLUMN_BITMASK = 16L;
+	public static final long USERNAME_COLUMN_BITMASK = 16L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 32L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 64L;
+
+	public static final long NAME_COLUMN_BITMASK = 128L;
+
+	public static final long DESCRIPTION_COLUMN_BITMASK = 256L;
+
+	public static final int CHANGESETCOLLECTIONID_COLUMN_INDEX = 0;
+
+	public static final int GROUPID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int USERID_COLUMN_INDEX = 3;
+
+	public static final int USERNAME_COLUMN_INDEX = 4;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 5;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 6;
+
+	public static final int NAME_COLUMN_INDEX = 7;
+
+	public static final int DESCRIPTION_COLUMN_INDEX = 8;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -323,6 +349,17 @@ public class ChangesetCollectionModelImpl
 
 	@Override
 	public void setChangesetCollectionId(long changesetCollectionId) {
+		if ((_columnBitmask & CHANGESETCOLLECTIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CHANGESETCOLLECTIONID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[CHANGESETCOLLECTIONID_COLUMN_INDEX] =
+				_changesetCollectionId;
+		}
+
 		_changesetCollectionId = changesetCollectionId;
 	}
 
@@ -333,19 +370,29 @@ public class ChangesetCollectionModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@Override
@@ -355,19 +402,29 @@ public class ChangesetCollectionModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@Override
@@ -377,12 +434,14 @@ public class ChangesetCollectionModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
 
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
 
-			_originalUserId = _userId;
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
 		}
 
 		_userId = userId;
@@ -405,7 +464,15 @@ public class ChangesetCollectionModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		if (_originalValues != null) {
+			Object originalUserId = _originalValues[USERID_COLUMN_INDEX];
+
+			if (originalUserId != null) {
+				return (long)originalUserId;
+			}
+		}
+
+		return _userId;
 	}
 
 	@Override
@@ -420,6 +487,16 @@ public class ChangesetCollectionModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -430,6 +507,16 @@ public class ChangesetCollectionModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -439,12 +526,20 @@ public class ChangesetCollectionModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -461,17 +556,29 @@ public class ChangesetCollectionModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask |= NAME_COLUMN_BITMASK;
+		if ((_columnBitmask & NAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= NAME_COLUMN_BITMASK;
 
-		if (_originalName == null) {
-			_originalName = _name;
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[NAME_COLUMN_INDEX] = _name;
 		}
 
 		_name = name;
 	}
 
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		if (_originalValues != null) {
+			Object originalName = _originalValues[NAME_COLUMN_INDEX];
+
+			if (originalName != null) {
+				return GetterUtil.getString((String)originalName);
+			}
+		}
+
+		return GetterUtil.getString(_name);
 	}
 
 	@Override
@@ -486,6 +593,16 @@ public class ChangesetCollectionModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		if ((_columnBitmask & DESCRIPTION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DESCRIPTION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[DESCRIPTION_COLUMN_INDEX] = _description;
+		}
+
 		_description = description;
 	}
 
@@ -597,29 +714,9 @@ public class ChangesetCollectionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ChangesetCollectionModelImpl changesetCollectionModelImpl = this;
+		_columnBitmask = 0;
 
-		changesetCollectionModelImpl._originalGroupId =
-			changesetCollectionModelImpl._groupId;
-
-		changesetCollectionModelImpl._setOriginalGroupId = false;
-
-		changesetCollectionModelImpl._originalCompanyId =
-			changesetCollectionModelImpl._companyId;
-
-		changesetCollectionModelImpl._setOriginalCompanyId = false;
-
-		changesetCollectionModelImpl._originalUserId =
-			changesetCollectionModelImpl._userId;
-
-		changesetCollectionModelImpl._setOriginalUserId = false;
-
-		changesetCollectionModelImpl._setModifiedDate = false;
-
-		changesetCollectionModelImpl._originalName =
-			changesetCollectionModelImpl._name;
-
-		changesetCollectionModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -756,22 +853,15 @@ public class ChangesetCollectionModelImpl
 
 	private long _changesetCollectionId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private String _name;
-	private String _originalName;
 	private String _description;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private ChangesetCollection _escapedModel;
 
 }

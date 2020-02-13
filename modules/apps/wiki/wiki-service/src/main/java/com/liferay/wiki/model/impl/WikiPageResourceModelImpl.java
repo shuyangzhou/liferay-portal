@@ -99,17 +99,33 @@ public class WikiPageResourceModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 2L;
+	public static final long UUID_COLUMN_BITMASK = 2L;
 
-	public static final long NODEID_COLUMN_BITMASK = 4L;
+	public static final long RESOURCEPRIMKEY_COLUMN_BITMASK = 4L;
 
-	public static final long TITLE_COLUMN_BITMASK = 8L;
+	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
-	public static final long UUID_COLUMN_BITMASK = 16L;
+	public static final long COMPANYID_COLUMN_BITMASK = 16L;
 
-	public static final long RESOURCEPRIMKEY_COLUMN_BITMASK = 32L;
+	public static final long NODEID_COLUMN_BITMASK = 32L;
+
+	public static final long TITLE_COLUMN_BITMASK = 64L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int UUID_COLUMN_INDEX = 1;
+
+	public static final int RESOURCEPRIMKEY_COLUMN_INDEX = 2;
+
+	public static final int GROUPID_COLUMN_INDEX = 3;
+
+	public static final int COMPANYID_COLUMN_INDEX = 4;
+
+	public static final int NODEID_COLUMN_INDEX = 5;
+
+	public static final int TITLE_COLUMN_INDEX = 6;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -295,6 +311,16 @@ public class WikiPageResourceModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -310,17 +336,29 @@ public class WikiPageResourceModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		if ((_columnBitmask & UUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= UUID_COLUMN_BITMASK;
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
+
+			_originalValues[UUID_COLUMN_INDEX] = _uuid;
 		}
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		if (_originalValues != null) {
+			Object originalUuid = _originalValues[UUID_COLUMN_INDEX];
+
+			if (originalUuid != null) {
+				return GetterUtil.getString((String)originalUuid);
+			}
+		}
+
+		return GetterUtil.getString(_uuid);
 	}
 
 	@Override
@@ -330,6 +368,16 @@ public class WikiPageResourceModelImpl
 
 	@Override
 	public void setResourcePrimKey(long resourcePrimKey) {
+		if ((_columnBitmask & RESOURCEPRIMKEY_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= RESOURCEPRIMKEY_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
+
+			_originalValues[RESOURCEPRIMKEY_COLUMN_INDEX] = _resourcePrimKey;
+		}
+
 		_resourcePrimKey = resourcePrimKey;
 	}
 
@@ -340,19 +388,29 @@ public class WikiPageResourceModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@Override
@@ -362,19 +420,29 @@ public class WikiPageResourceModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@Override
@@ -384,19 +452,29 @@ public class WikiPageResourceModelImpl
 
 	@Override
 	public void setNodeId(long nodeId) {
-		_columnBitmask |= NODEID_COLUMN_BITMASK;
+		if ((_columnBitmask & NODEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= NODEID_COLUMN_BITMASK;
 
-		if (!_setOriginalNodeId) {
-			_setOriginalNodeId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
 
-			_originalNodeId = _nodeId;
+			_originalValues[NODEID_COLUMN_INDEX] = _nodeId;
 		}
 
 		_nodeId = nodeId;
 	}
 
 	public long getOriginalNodeId() {
-		return _originalNodeId;
+		if (_originalValues != null) {
+			Object originalNodeId = _originalValues[NODEID_COLUMN_INDEX];
+
+			if (originalNodeId != null) {
+				return (long)originalNodeId;
+			}
+		}
+
+		return _nodeId;
 	}
 
 	@Override
@@ -411,17 +489,29 @@ public class WikiPageResourceModelImpl
 
 	@Override
 	public void setTitle(String title) {
-		_columnBitmask |= TITLE_COLUMN_BITMASK;
+		if ((_columnBitmask & TITLE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TITLE_COLUMN_BITMASK;
 
-		if (_originalTitle == null) {
-			_originalTitle = _title;
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
+
+			_originalValues[TITLE_COLUMN_INDEX] = _title;
 		}
 
 		_title = title;
 	}
 
 	public String getOriginalTitle() {
-		return GetterUtil.getString(_originalTitle);
+		if (_originalValues != null) {
+			Object originalTitle = _originalValues[TITLE_COLUMN_INDEX];
+
+			if (originalTitle != null) {
+				return GetterUtil.getString((String)originalTitle);
+			}
+		}
+
+		return GetterUtil.getString(_title);
 	}
 
 	public long getColumnBitmask() {
@@ -527,30 +617,9 @@ public class WikiPageResourceModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WikiPageResourceModelImpl wikiPageResourceModelImpl = this;
+		_columnBitmask = 0;
 
-		wikiPageResourceModelImpl._originalUuid =
-			wikiPageResourceModelImpl._uuid;
-
-		wikiPageResourceModelImpl._originalGroupId =
-			wikiPageResourceModelImpl._groupId;
-
-		wikiPageResourceModelImpl._setOriginalGroupId = false;
-
-		wikiPageResourceModelImpl._originalCompanyId =
-			wikiPageResourceModelImpl._companyId;
-
-		wikiPageResourceModelImpl._setOriginalCompanyId = false;
-
-		wikiPageResourceModelImpl._originalNodeId =
-			wikiPageResourceModelImpl._nodeId;
-
-		wikiPageResourceModelImpl._setOriginalNodeId = false;
-
-		wikiPageResourceModelImpl._originalTitle =
-			wikiPageResourceModelImpl._title;
-
-		wikiPageResourceModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -662,20 +731,13 @@ public class WikiPageResourceModelImpl
 
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _resourcePrimKey;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _nodeId;
-	private long _originalNodeId;
-	private boolean _setOriginalNodeId;
 	private String _title;
-	private String _originalTitle;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private WikiPageResource _escapedModel;
 
 }

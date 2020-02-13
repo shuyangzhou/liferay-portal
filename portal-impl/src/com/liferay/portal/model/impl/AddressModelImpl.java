@@ -146,21 +146,85 @@ public class AddressModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.Address"),
 		true);
 
-	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long CLASSPK_COLUMN_BITMASK = 2L;
+	public static final long UUID_COLUMN_BITMASK = 2L;
 
-	public static final long COMPANYID_COLUMN_BITMASK = 4L;
+	public static final long ADDRESSID_COLUMN_BITMASK = 4L;
 
-	public static final long MAILING_COLUMN_BITMASK = 8L;
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
 
-	public static final long PRIMARY_COLUMN_BITMASK = 16L;
+	public static final long USERID_COLUMN_BITMASK = 16L;
 
-	public static final long USERID_COLUMN_BITMASK = 32L;
+	public static final long USERNAME_COLUMN_BITMASK = 32L;
 
-	public static final long UUID_COLUMN_BITMASK = 64L;
+	public static final long CREATEDATE_COLUMN_BITMASK = 64L;
 
-	public static final long CREATEDATE_COLUMN_BITMASK = 128L;
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 128L;
+
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 256L;
+
+	public static final long CLASSPK_COLUMN_BITMASK = 512L;
+
+	public static final long STREET1_COLUMN_BITMASK = 1024L;
+
+	public static final long STREET2_COLUMN_BITMASK = 2048L;
+
+	public static final long STREET3_COLUMN_BITMASK = 4096L;
+
+	public static final long CITY_COLUMN_BITMASK = 8192L;
+
+	public static final long ZIP_COLUMN_BITMASK = 16384L;
+
+	public static final long REGIONID_COLUMN_BITMASK = 32768L;
+
+	public static final long COUNTRYID_COLUMN_BITMASK = 65536L;
+
+	public static final long TYPEID_COLUMN_BITMASK = 131072L;
+
+	public static final long MAILING_COLUMN_BITMASK = 262144L;
+
+	public static final long PRIMARY_COLUMN_BITMASK = 524288L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int UUID_COLUMN_INDEX = 1;
+
+	public static final int ADDRESSID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int USERID_COLUMN_INDEX = 4;
+
+	public static final int USERNAME_COLUMN_INDEX = 5;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 6;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 7;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 8;
+
+	public static final int CLASSPK_COLUMN_INDEX = 9;
+
+	public static final int STREET1_COLUMN_INDEX = 10;
+
+	public static final int STREET2_COLUMN_INDEX = 11;
+
+	public static final int STREET3_COLUMN_INDEX = 12;
+
+	public static final int CITY_COLUMN_INDEX = 13;
+
+	public static final int ZIP_COLUMN_INDEX = 14;
+
+	public static final int REGIONID_COLUMN_INDEX = 15;
+
+	public static final int COUNTRYID_COLUMN_INDEX = 16;
+
+	public static final int TYPEID_COLUMN_INDEX = 17;
+
+	public static final int MAILING_COLUMN_INDEX = 18;
+
+	public static final int PRIMARY_COLUMN_INDEX = 19;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -424,6 +488,16 @@ public class AddressModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -440,17 +514,29 @@ public class AddressModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		if ((_columnBitmask & UUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= UUID_COLUMN_BITMASK;
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[UUID_COLUMN_INDEX] = _uuid;
 		}
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		if (_originalValues != null) {
+			Object originalUuid = _originalValues[UUID_COLUMN_INDEX];
+
+			if (originalUuid != null) {
+				return GetterUtil.getString((String)originalUuid);
+			}
+		}
+
+		return GetterUtil.getString(_uuid);
 	}
 
 	@JSON
@@ -461,6 +547,16 @@ public class AddressModelImpl
 
 	@Override
 	public void setAddressId(long addressId) {
+		if ((_columnBitmask & ADDRESSID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ADDRESSID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[ADDRESSID_COLUMN_INDEX] = _addressId;
+		}
+
 		_addressId = addressId;
 	}
 
@@ -472,19 +568,29 @@ public class AddressModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@JSON
@@ -495,12 +601,14 @@ public class AddressModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
 
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
 
-			_originalUserId = _userId;
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
 		}
 
 		_userId = userId;
@@ -523,7 +631,15 @@ public class AddressModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		if (_originalValues != null) {
+			Object originalUserId = _originalValues[USERID_COLUMN_INDEX];
+
+			if (originalUserId != null) {
+				return (long)originalUserId;
+			}
+		}
+
+		return _userId;
 	}
 
 	@JSON
@@ -539,6 +655,16 @@ public class AddressModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -550,7 +676,15 @@ public class AddressModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
 
 		_createDate = createDate;
 	}
@@ -562,12 +696,20 @@ public class AddressModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -600,19 +742,30 @@ public class AddressModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSNAMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
 
-			_originalClassNameId = _classNameId;
+			_originalValues[CLASSNAMEID_COLUMN_INDEX] = _classNameId;
 		}
 
 		_classNameId = classNameId;
 	}
 
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		if (_originalValues != null) {
+			Object originalClassNameId =
+				_originalValues[CLASSNAMEID_COLUMN_INDEX];
+
+			if (originalClassNameId != null) {
+				return (long)originalClassNameId;
+			}
+		}
+
+		return _classNameId;
 	}
 
 	@JSON
@@ -623,19 +776,29 @@ public class AddressModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSPK_COLUMN_BITMASK;
 
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
 
-			_originalClassPK = _classPK;
+			_originalValues[CLASSPK_COLUMN_INDEX] = _classPK;
 		}
 
 		_classPK = classPK;
 	}
 
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		if (_originalValues != null) {
+			Object originalClassPK = _originalValues[CLASSPK_COLUMN_INDEX];
+
+			if (originalClassPK != null) {
+				return (long)originalClassPK;
+			}
+		}
+
+		return _classPK;
 	}
 
 	@JSON
@@ -651,6 +814,16 @@ public class AddressModelImpl
 
 	@Override
 	public void setStreet1(String street1) {
+		if ((_columnBitmask & STREET1_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STREET1_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[STREET1_COLUMN_INDEX] = _street1;
+		}
+
 		_street1 = street1;
 	}
 
@@ -667,6 +840,16 @@ public class AddressModelImpl
 
 	@Override
 	public void setStreet2(String street2) {
+		if ((_columnBitmask & STREET2_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STREET2_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[STREET2_COLUMN_INDEX] = _street2;
+		}
+
 		_street2 = street2;
 	}
 
@@ -683,6 +866,16 @@ public class AddressModelImpl
 
 	@Override
 	public void setStreet3(String street3) {
+		if ((_columnBitmask & STREET3_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STREET3_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[STREET3_COLUMN_INDEX] = _street3;
+		}
+
 		_street3 = street3;
 	}
 
@@ -699,6 +892,16 @@ public class AddressModelImpl
 
 	@Override
 	public void setCity(String city) {
+		if ((_columnBitmask & CITY_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CITY_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[CITY_COLUMN_INDEX] = _city;
+		}
+
 		_city = city;
 	}
 
@@ -715,6 +918,16 @@ public class AddressModelImpl
 
 	@Override
 	public void setZip(String zip) {
+		if ((_columnBitmask & ZIP_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ZIP_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[ZIP_COLUMN_INDEX] = _zip;
+		}
+
 		_zip = zip;
 	}
 
@@ -726,6 +939,16 @@ public class AddressModelImpl
 
 	@Override
 	public void setRegionId(long regionId) {
+		if ((_columnBitmask & REGIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= REGIONID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[REGIONID_COLUMN_INDEX] = _regionId;
+		}
+
 		_regionId = regionId;
 	}
 
@@ -737,6 +960,16 @@ public class AddressModelImpl
 
 	@Override
 	public void setCountryId(long countryId) {
+		if ((_columnBitmask & COUNTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COUNTRYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[COUNTRYID_COLUMN_INDEX] = _countryId;
+		}
+
 		_countryId = countryId;
 	}
 
@@ -748,6 +981,16 @@ public class AddressModelImpl
 
 	@Override
 	public void setTypeId(long typeId) {
+		if ((_columnBitmask & TYPEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TYPEID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[TYPEID_COLUMN_INDEX] = _typeId;
+		}
+
 		_typeId = typeId;
 	}
 
@@ -765,19 +1008,29 @@ public class AddressModelImpl
 
 	@Override
 	public void setMailing(boolean mailing) {
-		_columnBitmask |= MAILING_COLUMN_BITMASK;
+		if ((_columnBitmask & MAILING_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MAILING_COLUMN_BITMASK;
 
-		if (!_setOriginalMailing) {
-			_setOriginalMailing = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
 
-			_originalMailing = _mailing;
+			_originalValues[MAILING_COLUMN_INDEX] = _mailing;
 		}
 
 		_mailing = mailing;
 	}
 
 	public boolean getOriginalMailing() {
-		return _originalMailing;
+		if (_originalValues != null) {
+			Object originalMailing = _originalValues[MAILING_COLUMN_INDEX];
+
+			if (originalMailing != null) {
+				return (boolean)originalMailing;
+			}
+		}
+
+		return _mailing;
 	}
 
 	@JSON
@@ -794,19 +1047,29 @@ public class AddressModelImpl
 
 	@Override
 	public void setPrimary(boolean primary) {
-		_columnBitmask |= PRIMARY_COLUMN_BITMASK;
+		if ((_columnBitmask & PRIMARY_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PRIMARY_COLUMN_BITMASK;
 
-		if (!_setOriginalPrimary) {
-			_setOriginalPrimary = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
 
-			_originalPrimary = _primary;
+			_originalValues[PRIMARY_COLUMN_INDEX] = _primary;
 		}
 
 		_primary = primary;
 	}
 
 	public boolean getOriginalPrimary() {
-		return _originalPrimary;
+		if (_originalValues != null) {
+			Object originalPrimary = _originalValues[PRIMARY_COLUMN_INDEX];
+
+			if (originalPrimary != null) {
+				return (boolean)originalPrimary;
+			}
+		}
+
+		return _primary;
 	}
 
 	@Override
@@ -930,37 +1193,9 @@ public class AddressModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AddressModelImpl addressModelImpl = this;
+		_columnBitmask = 0;
 
-		addressModelImpl._originalUuid = addressModelImpl._uuid;
-
-		addressModelImpl._originalCompanyId = addressModelImpl._companyId;
-
-		addressModelImpl._setOriginalCompanyId = false;
-
-		addressModelImpl._originalUserId = addressModelImpl._userId;
-
-		addressModelImpl._setOriginalUserId = false;
-
-		addressModelImpl._setModifiedDate = false;
-
-		addressModelImpl._originalClassNameId = addressModelImpl._classNameId;
-
-		addressModelImpl._setOriginalClassNameId = false;
-
-		addressModelImpl._originalClassPK = addressModelImpl._classPK;
-
-		addressModelImpl._setOriginalClassPK = false;
-
-		addressModelImpl._originalMailing = addressModelImpl._mailing;
-
-		addressModelImpl._setOriginalMailing = false;
-
-		addressModelImpl._originalPrimary = addressModelImpl._primary;
-
-		addressModelImpl._setOriginalPrimary = false;
-
-		addressModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -1138,24 +1373,14 @@ public class AddressModelImpl
 
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _addressId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private String _street1;
 	private String _street2;
 	private String _street3;
@@ -1165,12 +1390,9 @@ public class AddressModelImpl
 	private long _countryId;
 	private long _typeId;
 	private boolean _mailing;
-	private boolean _originalMailing;
-	private boolean _setOriginalMailing;
 	private boolean _primary;
-	private boolean _originalPrimary;
-	private boolean _setOriginalPrimary;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private Address _escapedModel;
 
 }

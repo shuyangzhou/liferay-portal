@@ -133,7 +133,78 @@ public class AccountModelImpl
 			"value.object.finder.cache.enabled.com.liferay.portal.kernel.model.Account"),
 		true);
 
-	public static final boolean COLUMN_BITMASK_ENABLED = false;
+	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(
+		com.liferay.portal.util.PropsUtil.get(
+			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.Account"),
+		true);
+
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
+
+	public static final long ACCOUNTID_COLUMN_BITMASK = 2L;
+
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
+
+	public static final long USERID_COLUMN_BITMASK = 8L;
+
+	public static final long USERNAME_COLUMN_BITMASK = 16L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 32L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 64L;
+
+	public static final long PARENTACCOUNTID_COLUMN_BITMASK = 128L;
+
+	public static final long NAME_COLUMN_BITMASK = 256L;
+
+	public static final long LEGALNAME_COLUMN_BITMASK = 512L;
+
+	public static final long LEGALID_COLUMN_BITMASK = 1024L;
+
+	public static final long LEGALTYPE_COLUMN_BITMASK = 2048L;
+
+	public static final long SICCODE_COLUMN_BITMASK = 4096L;
+
+	public static final long TICKERSYMBOL_COLUMN_BITMASK = 8192L;
+
+	public static final long INDUSTRY_COLUMN_BITMASK = 16384L;
+
+	public static final long TYPE_COLUMN_BITMASK = 32768L;
+
+	public static final long SIZE_COLUMN_BITMASK = 65536L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int ACCOUNTID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int USERID_COLUMN_INDEX = 3;
+
+	public static final int USERNAME_COLUMN_INDEX = 4;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 5;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 6;
+
+	public static final int PARENTACCOUNTID_COLUMN_INDEX = 7;
+
+	public static final int NAME_COLUMN_INDEX = 8;
+
+	public static final int LEGALNAME_COLUMN_INDEX = 9;
+
+	public static final int LEGALID_COLUMN_INDEX = 10;
+
+	public static final int LEGALTYPE_COLUMN_INDEX = 11;
+
+	public static final int SICCODE_COLUMN_INDEX = 12;
+
+	public static final int TICKERSYMBOL_COLUMN_INDEX = 13;
+
+	public static final int INDUSTRY_COLUMN_INDEX = 14;
+
+	public static final int TYPE_COLUMN_INDEX = 15;
+
+	public static final int SIZE_COLUMN_INDEX = 16;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -388,6 +459,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -399,6 +480,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setAccountId(long accountId) {
+		if ((_columnBitmask & ACCOUNTID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ACCOUNTID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[ACCOUNTID_COLUMN_INDEX] = _accountId;
+		}
+
 		_accountId = accountId;
 	}
 
@@ -410,6 +501,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -421,6 +522,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -453,6 +564,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -464,6 +585,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -474,12 +605,20 @@ public class AccountModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -492,6 +631,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setParentAccountId(long parentAccountId) {
+		if ((_columnBitmask & PARENTACCOUNTID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PARENTACCOUNTID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[PARENTACCOUNTID_COLUMN_INDEX] = _parentAccountId;
+		}
+
 		_parentAccountId = parentAccountId;
 	}
 
@@ -508,6 +657,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setName(String name) {
+		if ((_columnBitmask & NAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= NAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[NAME_COLUMN_INDEX] = _name;
+		}
+
 		_name = name;
 	}
 
@@ -524,6 +683,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setLegalName(String legalName) {
+		if ((_columnBitmask & LEGALNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LEGALNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[LEGALNAME_COLUMN_INDEX] = _legalName;
+		}
+
 		_legalName = legalName;
 	}
 
@@ -540,6 +709,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setLegalId(String legalId) {
+		if ((_columnBitmask & LEGALID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LEGALID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[LEGALID_COLUMN_INDEX] = _legalId;
+		}
+
 		_legalId = legalId;
 	}
 
@@ -556,6 +735,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setLegalType(String legalType) {
+		if ((_columnBitmask & LEGALTYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LEGALTYPE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[LEGALTYPE_COLUMN_INDEX] = _legalType;
+		}
+
 		_legalType = legalType;
 	}
 
@@ -572,6 +761,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setSicCode(String sicCode) {
+		if ((_columnBitmask & SICCODE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SICCODE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[SICCODE_COLUMN_INDEX] = _sicCode;
+		}
+
 		_sicCode = sicCode;
 	}
 
@@ -588,6 +787,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setTickerSymbol(String tickerSymbol) {
+		if ((_columnBitmask & TICKERSYMBOL_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TICKERSYMBOL_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[TICKERSYMBOL_COLUMN_INDEX] = _tickerSymbol;
+		}
+
 		_tickerSymbol = tickerSymbol;
 	}
 
@@ -604,6 +813,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setIndustry(String industry) {
+		if ((_columnBitmask & INDUSTRY_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= INDUSTRY_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[INDUSTRY_COLUMN_INDEX] = _industry;
+		}
+
 		_industry = industry;
 	}
 
@@ -620,6 +839,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setType(String type) {
+		if ((_columnBitmask & TYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TYPE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[TYPE_COLUMN_INDEX] = _type;
+		}
+
 		_type = type;
 	}
 
@@ -636,7 +865,21 @@ public class AccountModelImpl
 
 	@Override
 	public void setSize(String size) {
+		if ((_columnBitmask & SIZE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SIZE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[SIZE_COLUMN_INDEX] = _size;
+		}
+
 		_size = size;
+	}
+
+	public long getColumnBitmask() {
+		return _columnBitmask;
 	}
 
 	@Override
@@ -748,9 +991,9 @@ public class AccountModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AccountModelImpl accountModelImpl = this;
+		_columnBitmask = 0;
 
-		accountModelImpl._setModifiedDate = false;
+		_originalValues = null;
 	}
 
 	@Override
@@ -945,7 +1188,6 @@ public class AccountModelImpl
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _parentAccountId;
 	private String _name;
 	private String _legalName;
@@ -956,6 +1198,8 @@ public class AccountModelImpl
 	private String _industry;
 	private String _type;
 	private String _size;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private Account _escapedModel;
 
 }

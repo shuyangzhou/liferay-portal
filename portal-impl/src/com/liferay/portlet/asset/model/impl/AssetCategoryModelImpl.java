@@ -148,21 +148,77 @@ public class AssetCategoryModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.asset.kernel.model.AssetCategory"),
 		true);
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long EXTERNALREFERENCECODE_COLUMN_BITMASK = 2L;
+	public static final long CTCOLLECTIONID_COLUMN_BITMASK = 2L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 4L;
+	public static final long UUID_COLUMN_BITMASK = 4L;
 
-	public static final long NAME_COLUMN_BITMASK = 8L;
+	public static final long EXTERNALREFERENCECODE_COLUMN_BITMASK = 8L;
 
-	public static final long PARENTCATEGORYID_COLUMN_BITMASK = 16L;
+	public static final long CATEGORYID_COLUMN_BITMASK = 16L;
 
-	public static final long TREEPATH_COLUMN_BITMASK = 32L;
+	public static final long GROUPID_COLUMN_BITMASK = 32L;
 
-	public static final long UUID_COLUMN_BITMASK = 64L;
+	public static final long COMPANYID_COLUMN_BITMASK = 64L;
 
-	public static final long VOCABULARYID_COLUMN_BITMASK = 128L;
+	public static final long USERID_COLUMN_BITMASK = 128L;
+
+	public static final long USERNAME_COLUMN_BITMASK = 256L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 512L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 1024L;
+
+	public static final long PARENTCATEGORYID_COLUMN_BITMASK = 2048L;
+
+	public static final long TREEPATH_COLUMN_BITMASK = 4096L;
+
+	public static final long NAME_COLUMN_BITMASK = 8192L;
+
+	public static final long TITLE_COLUMN_BITMASK = 16384L;
+
+	public static final long DESCRIPTION_COLUMN_BITMASK = 32768L;
+
+	public static final long VOCABULARYID_COLUMN_BITMASK = 65536L;
+
+	public static final long LASTPUBLISHDATE_COLUMN_BITMASK = 131072L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int CTCOLLECTIONID_COLUMN_INDEX = 1;
+
+	public static final int UUID_COLUMN_INDEX = 2;
+
+	public static final int EXTERNALREFERENCECODE_COLUMN_INDEX = 3;
+
+	public static final int CATEGORYID_COLUMN_INDEX = 4;
+
+	public static final int GROUPID_COLUMN_INDEX = 5;
+
+	public static final int COMPANYID_COLUMN_INDEX = 6;
+
+	public static final int USERID_COLUMN_INDEX = 7;
+
+	public static final int USERNAME_COLUMN_INDEX = 8;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 9;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 10;
+
+	public static final int PARENTCATEGORYID_COLUMN_INDEX = 11;
+
+	public static final int TREEPATH_COLUMN_INDEX = 12;
+
+	public static final int NAME_COLUMN_INDEX = 13;
+
+	public static final int TITLE_COLUMN_INDEX = 14;
+
+	public static final int DESCRIPTION_COLUMN_INDEX = 15;
+
+	public static final int VOCABULARYID_COLUMN_INDEX = 16;
+
+	public static final int LASTPUBLISHDATE_COLUMN_INDEX = 17;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -468,6 +524,16 @@ public class AssetCategoryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -479,6 +545,16 @@ public class AssetCategoryModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		if ((_columnBitmask & CTCOLLECTIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CTCOLLECTIONID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[CTCOLLECTIONID_COLUMN_INDEX] = _ctCollectionId;
+		}
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -495,17 +571,29 @@ public class AssetCategoryModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		if ((_columnBitmask & UUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= UUID_COLUMN_BITMASK;
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[UUID_COLUMN_INDEX] = _uuid;
 		}
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		if (_originalValues != null) {
+			Object originalUuid = _originalValues[UUID_COLUMN_INDEX];
+
+			if (originalUuid != null) {
+				return GetterUtil.getString((String)originalUuid);
+			}
+		}
+
+		return GetterUtil.getString(_uuid);
 	}
 
 	@JSON
@@ -521,17 +609,32 @@ public class AssetCategoryModelImpl
 
 	@Override
 	public void setExternalReferenceCode(String externalReferenceCode) {
-		_columnBitmask |= EXTERNALREFERENCECODE_COLUMN_BITMASK;
+		if ((_columnBitmask & EXTERNALREFERENCECODE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= EXTERNALREFERENCECODE_COLUMN_BITMASK;
 
-		if (_originalExternalReferenceCode == null) {
-			_originalExternalReferenceCode = _externalReferenceCode;
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[EXTERNALREFERENCECODE_COLUMN_INDEX] =
+				_externalReferenceCode;
 		}
 
 		_externalReferenceCode = externalReferenceCode;
 	}
 
 	public String getOriginalExternalReferenceCode() {
-		return GetterUtil.getString(_originalExternalReferenceCode);
+		if (_originalValues != null) {
+			Object originalExternalReferenceCode =
+				_originalValues[EXTERNALREFERENCECODE_COLUMN_INDEX];
+
+			if (originalExternalReferenceCode != null) {
+				return GetterUtil.getString(
+					(String)originalExternalReferenceCode);
+			}
+		}
+
+		return GetterUtil.getString(_externalReferenceCode);
 	}
 
 	@JSON
@@ -542,6 +645,16 @@ public class AssetCategoryModelImpl
 
 	@Override
 	public void setCategoryId(long categoryId) {
+		if ((_columnBitmask & CATEGORYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CATEGORYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[CATEGORYID_COLUMN_INDEX] = _categoryId;
+		}
+
 		_categoryId = categoryId;
 	}
 
@@ -553,19 +666,29 @@ public class AssetCategoryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@JSON
@@ -576,19 +699,29 @@ public class AssetCategoryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@JSON
@@ -599,6 +732,16 @@ public class AssetCategoryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -631,6 +774,16 @@ public class AssetCategoryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -642,6 +795,16 @@ public class AssetCategoryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -652,12 +815,20 @@ public class AssetCategoryModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -670,19 +841,30 @@ public class AssetCategoryModelImpl
 
 	@Override
 	public void setParentCategoryId(long parentCategoryId) {
-		_columnBitmask |= PARENTCATEGORYID_COLUMN_BITMASK;
+		if ((_columnBitmask & PARENTCATEGORYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PARENTCATEGORYID_COLUMN_BITMASK;
 
-		if (!_setOriginalParentCategoryId) {
-			_setOriginalParentCategoryId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
 
-			_originalParentCategoryId = _parentCategoryId;
+			_originalValues[PARENTCATEGORYID_COLUMN_INDEX] = _parentCategoryId;
 		}
 
 		_parentCategoryId = parentCategoryId;
 	}
 
 	public long getOriginalParentCategoryId() {
-		return _originalParentCategoryId;
+		if (_originalValues != null) {
+			Object originalParentCategoryId =
+				_originalValues[PARENTCATEGORYID_COLUMN_INDEX];
+
+			if (originalParentCategoryId != null) {
+				return (long)originalParentCategoryId;
+			}
+		}
+
+		return _parentCategoryId;
 	}
 
 	@JSON
@@ -698,17 +880,29 @@ public class AssetCategoryModelImpl
 
 	@Override
 	public void setTreePath(String treePath) {
-		_columnBitmask |= TREEPATH_COLUMN_BITMASK;
+		if ((_columnBitmask & TREEPATH_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TREEPATH_COLUMN_BITMASK;
 
-		if (_originalTreePath == null) {
-			_originalTreePath = _treePath;
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[TREEPATH_COLUMN_INDEX] = _treePath;
 		}
 
 		_treePath = treePath;
 	}
 
 	public String getOriginalTreePath() {
-		return GetterUtil.getString(_originalTreePath);
+		if (_originalValues != null) {
+			Object originalTreePath = _originalValues[TREEPATH_COLUMN_INDEX];
+
+			if (originalTreePath != null) {
+				return GetterUtil.getString((String)originalTreePath);
+			}
+		}
+
+		return GetterUtil.getString(_treePath);
 	}
 
 	@JSON
@@ -724,17 +918,29 @@ public class AssetCategoryModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & NAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= NAME_COLUMN_BITMASK;
 
-		if (_originalName == null) {
-			_originalName = _name;
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[NAME_COLUMN_INDEX] = _name;
 		}
 
 		_name = name;
 	}
 
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		if (_originalValues != null) {
+			Object originalName = _originalValues[NAME_COLUMN_INDEX];
+
+			if (originalName != null) {
+				return GetterUtil.getString((String)originalName);
+			}
+		}
+
+		return GetterUtil.getString(_name);
 	}
 
 	@JSON
@@ -793,6 +999,16 @@ public class AssetCategoryModelImpl
 
 	@Override
 	public void setTitle(String title) {
+		if ((_columnBitmask & TITLE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TITLE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[TITLE_COLUMN_INDEX] = _title;
+		}
+
 		_title = title;
 	}
 
@@ -898,6 +1114,16 @@ public class AssetCategoryModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		if ((_columnBitmask & DESCRIPTION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DESCRIPTION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[DESCRIPTION_COLUMN_INDEX] = _description;
+		}
+
 		_description = description;
 	}
 
@@ -958,19 +1184,30 @@ public class AssetCategoryModelImpl
 
 	@Override
 	public void setVocabularyId(long vocabularyId) {
-		_columnBitmask |= VOCABULARYID_COLUMN_BITMASK;
+		if ((_columnBitmask & VOCABULARYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= VOCABULARYID_COLUMN_BITMASK;
 
-		if (!_setOriginalVocabularyId) {
-			_setOriginalVocabularyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
 
-			_originalVocabularyId = _vocabularyId;
+			_originalValues[VOCABULARYID_COLUMN_INDEX] = _vocabularyId;
 		}
 
 		_vocabularyId = vocabularyId;
 	}
 
 	public long getOriginalVocabularyId() {
-		return _originalVocabularyId;
+		if (_originalValues != null) {
+			Object originalVocabularyId =
+				_originalValues[VOCABULARYID_COLUMN_INDEX];
+
+			if (originalVocabularyId != null) {
+				return (long)originalVocabularyId;
+			}
+		}
+
+		return _vocabularyId;
 	}
 
 	@JSON
@@ -981,6 +1218,16 @@ public class AssetCategoryModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		if ((_columnBitmask & LASTPUBLISHDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LASTPUBLISHDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[LASTPUBLISHDATE_COLUMN_INDEX] = _lastPublishDate;
+		}
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -1190,41 +1437,9 @@ public class AssetCategoryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AssetCategoryModelImpl assetCategoryModelImpl = this;
+		_columnBitmask = 0;
 
-		assetCategoryModelImpl._originalUuid = assetCategoryModelImpl._uuid;
-
-		assetCategoryModelImpl._originalExternalReferenceCode =
-			assetCategoryModelImpl._externalReferenceCode;
-
-		assetCategoryModelImpl._originalGroupId =
-			assetCategoryModelImpl._groupId;
-
-		assetCategoryModelImpl._setOriginalGroupId = false;
-
-		assetCategoryModelImpl._originalCompanyId =
-			assetCategoryModelImpl._companyId;
-
-		assetCategoryModelImpl._setOriginalCompanyId = false;
-
-		assetCategoryModelImpl._setModifiedDate = false;
-
-		assetCategoryModelImpl._originalParentCategoryId =
-			assetCategoryModelImpl._parentCategoryId;
-
-		assetCategoryModelImpl._setOriginalParentCategoryId = false;
-
-		assetCategoryModelImpl._originalTreePath =
-			assetCategoryModelImpl._treePath;
-
-		assetCategoryModelImpl._originalName = assetCategoryModelImpl._name;
-
-		assetCategoryModelImpl._originalVocabularyId =
-			assetCategoryModelImpl._vocabularyId;
-
-		assetCategoryModelImpl._setOriginalVocabularyId = false;
-
-		assetCategoryModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -1411,37 +1626,25 @@ public class AssetCategoryModelImpl
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private String _uuid;
-	private String _originalUuid;
 	private String _externalReferenceCode;
-	private String _originalExternalReferenceCode;
 	private long _categoryId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _parentCategoryId;
-	private long _originalParentCategoryId;
-	private boolean _setOriginalParentCategoryId;
 	private String _treePath;
-	private String _originalTreePath;
 	private String _name;
-	private String _originalName;
 	private String _title;
 	private String _titleCurrentLanguageId;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
 	private long _vocabularyId;
-	private long _originalVocabularyId;
-	private boolean _setOriginalVocabularyId;
 	private Date _lastPublishDate;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private AssetCategory _escapedModel;
 
 }

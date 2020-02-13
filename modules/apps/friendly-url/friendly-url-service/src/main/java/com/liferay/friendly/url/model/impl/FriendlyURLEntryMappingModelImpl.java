@@ -101,11 +101,29 @@ public class FriendlyURLEntryMappingModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long CLASSPK_COLUMN_BITMASK = 2L;
+	public static final long FRIENDLYURLENTRYMAPPINGID_COLUMN_BITMASK = 2L;
 
-	public static final long FRIENDLYURLENTRYMAPPINGID_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
+
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 8L;
+
+	public static final long CLASSPK_COLUMN_BITMASK = 16L;
+
+	public static final long FRIENDLYURLENTRYID_COLUMN_BITMASK = 32L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int FRIENDLYURLENTRYMAPPINGID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 3;
+
+	public static final int CLASSPK_COLUMN_INDEX = 4;
+
+	public static final int FRIENDLYURLENTRYID_COLUMN_INDEX = 5;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -300,6 +318,16 @@ public class FriendlyURLEntryMappingModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -310,6 +338,17 @@ public class FriendlyURLEntryMappingModelImpl
 
 	@Override
 	public void setFriendlyURLEntryMappingId(long friendlyURLEntryMappingId) {
+		if ((_columnBitmask & FRIENDLYURLENTRYMAPPINGID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= FRIENDLYURLENTRYMAPPINGID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[FRIENDLYURLENTRYMAPPINGID_COLUMN_INDEX] =
+				_friendlyURLEntryMappingId;
+		}
+
 		_friendlyURLEntryMappingId = friendlyURLEntryMappingId;
 	}
 
@@ -320,6 +359,16 @@ public class FriendlyURLEntryMappingModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -350,19 +399,30 @@ public class FriendlyURLEntryMappingModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSNAMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
 
-			_originalClassNameId = _classNameId;
+			_originalValues[CLASSNAMEID_COLUMN_INDEX] = _classNameId;
 		}
 
 		_classNameId = classNameId;
 	}
 
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		if (_originalValues != null) {
+			Object originalClassNameId =
+				_originalValues[CLASSNAMEID_COLUMN_INDEX];
+
+			if (originalClassNameId != null) {
+				return (long)originalClassNameId;
+			}
+		}
+
+		return _classNameId;
 	}
 
 	@Override
@@ -372,19 +432,29 @@ public class FriendlyURLEntryMappingModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSPK_COLUMN_BITMASK;
 
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
 
-			_originalClassPK = _classPK;
+			_originalValues[CLASSPK_COLUMN_INDEX] = _classPK;
 		}
 
 		_classPK = classPK;
 	}
 
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		if (_originalValues != null) {
+			Object originalClassPK = _originalValues[CLASSPK_COLUMN_INDEX];
+
+			if (originalClassPK != null) {
+				return (long)originalClassPK;
+			}
+		}
+
+		return _classPK;
 	}
 
 	@Override
@@ -394,6 +464,17 @@ public class FriendlyURLEntryMappingModelImpl
 
 	@Override
 	public void setFriendlyURLEntryId(long friendlyURLEntryId) {
+		if ((_columnBitmask & FRIENDLYURLENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= FRIENDLYURLENTRYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[FRIENDLYURLENTRYID_COLUMN_INDEX] =
+				_friendlyURLEntryId;
+		}
+
 		_friendlyURLEntryId = friendlyURLEntryId;
 	}
 
@@ -504,20 +585,9 @@ public class FriendlyURLEntryMappingModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		FriendlyURLEntryMappingModelImpl friendlyURLEntryMappingModelImpl =
-			this;
+		_columnBitmask = 0;
 
-		friendlyURLEntryMappingModelImpl._originalClassNameId =
-			friendlyURLEntryMappingModelImpl._classNameId;
-
-		friendlyURLEntryMappingModelImpl._setOriginalClassNameId = false;
-
-		friendlyURLEntryMappingModelImpl._originalClassPK =
-			friendlyURLEntryMappingModelImpl._classPK;
-
-		friendlyURLEntryMappingModelImpl._setOriginalClassPK = false;
-
-		friendlyURLEntryMappingModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -623,13 +693,10 @@ public class FriendlyURLEntryMappingModelImpl
 	private long _friendlyURLEntryMappingId;
 	private long _companyId;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private long _friendlyURLEntryId;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private FriendlyURLEntryMapping _escapedModel;
 
 }

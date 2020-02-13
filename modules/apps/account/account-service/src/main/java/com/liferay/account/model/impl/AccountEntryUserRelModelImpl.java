@@ -105,11 +105,25 @@ public class AccountEntryUserRelModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long ACCOUNTENTRYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long ACCOUNTUSERID_COLUMN_BITMASK = 2L;
+	public static final long ACCOUNTENTRYUSERRELID_COLUMN_BITMASK = 2L;
 
-	public static final long ACCOUNTENTRYUSERRELID_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
+
+	public static final long ACCOUNTENTRYID_COLUMN_BITMASK = 8L;
+
+	public static final long ACCOUNTUSERID_COLUMN_BITMASK = 16L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int ACCOUNTENTRYUSERRELID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int ACCOUNTENTRYID_COLUMN_INDEX = 3;
+
+	public static final int ACCOUNTUSERID_COLUMN_INDEX = 4;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -342,6 +356,16 @@ public class AccountEntryUserRelModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -353,6 +377,17 @@ public class AccountEntryUserRelModelImpl
 
 	@Override
 	public void setAccountEntryUserRelId(long accountEntryUserRelId) {
+		if ((_columnBitmask & ACCOUNTENTRYUSERRELID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ACCOUNTENTRYUSERRELID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[ACCOUNTENTRYUSERRELID_COLUMN_INDEX] =
+				_accountEntryUserRelId;
+		}
+
 		_accountEntryUserRelId = accountEntryUserRelId;
 	}
 
@@ -364,6 +399,16 @@ public class AccountEntryUserRelModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -375,19 +420,30 @@ public class AccountEntryUserRelModelImpl
 
 	@Override
 	public void setAccountEntryId(long accountEntryId) {
-		_columnBitmask |= ACCOUNTENTRYID_COLUMN_BITMASK;
+		if ((_columnBitmask & ACCOUNTENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ACCOUNTENTRYID_COLUMN_BITMASK;
 
-		if (!_setOriginalAccountEntryId) {
-			_setOriginalAccountEntryId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
 
-			_originalAccountEntryId = _accountEntryId;
+			_originalValues[ACCOUNTENTRYID_COLUMN_INDEX] = _accountEntryId;
 		}
 
 		_accountEntryId = accountEntryId;
 	}
 
 	public long getOriginalAccountEntryId() {
-		return _originalAccountEntryId;
+		if (_originalValues != null) {
+			Object originalAccountEntryId =
+				_originalValues[ACCOUNTENTRYID_COLUMN_INDEX];
+
+			if (originalAccountEntryId != null) {
+				return (long)originalAccountEntryId;
+			}
+		}
+
+		return _accountEntryId;
 	}
 
 	@JSON
@@ -398,12 +454,14 @@ public class AccountEntryUserRelModelImpl
 
 	@Override
 	public void setAccountUserId(long accountUserId) {
-		_columnBitmask |= ACCOUNTUSERID_COLUMN_BITMASK;
+		if ((_columnBitmask & ACCOUNTUSERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ACCOUNTUSERID_COLUMN_BITMASK;
 
-		if (!_setOriginalAccountUserId) {
-			_setOriginalAccountUserId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
 
-			_originalAccountUserId = _accountUserId;
+			_originalValues[ACCOUNTUSERID_COLUMN_INDEX] = _accountUserId;
 		}
 
 		_accountUserId = accountUserId;
@@ -426,7 +484,16 @@ public class AccountEntryUserRelModelImpl
 	}
 
 	public long getOriginalAccountUserId() {
-		return _originalAccountUserId;
+		if (_originalValues != null) {
+			Object originalAccountUserId =
+				_originalValues[ACCOUNTUSERID_COLUMN_INDEX];
+
+			if (originalAccountUserId != null) {
+				return (long)originalAccountUserId;
+			}
+		}
+
+		return _accountUserId;
 	}
 
 	public long getColumnBitmask() {
@@ -533,19 +600,9 @@ public class AccountEntryUserRelModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AccountEntryUserRelModelImpl accountEntryUserRelModelImpl = this;
+		_columnBitmask = 0;
 
-		accountEntryUserRelModelImpl._originalAccountEntryId =
-			accountEntryUserRelModelImpl._accountEntryId;
-
-		accountEntryUserRelModelImpl._setOriginalAccountEntryId = false;
-
-		accountEntryUserRelModelImpl._originalAccountUserId =
-			accountEntryUserRelModelImpl._accountUserId;
-
-		accountEntryUserRelModelImpl._setOriginalAccountUserId = false;
-
-		accountEntryUserRelModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -644,12 +701,9 @@ public class AccountEntryUserRelModelImpl
 	private long _accountEntryUserRelId;
 	private long _companyId;
 	private long _accountEntryId;
-	private long _originalAccountEntryId;
-	private boolean _setOriginalAccountEntryId;
 	private long _accountUserId;
-	private long _originalAccountUserId;
-	private boolean _setOriginalAccountUserId;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private AccountEntryUserRel _escapedModel;
 
 }

@@ -115,18 +115,55 @@ public class LayoutPageTemplateStructureRelModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 2L;
-
-	public static final long LAYOUTPAGETEMPLATESTRUCTUREID_COLUMN_BITMASK = 4L;
-
-	public static final long SEGMENTSEXPERIENCEID_COLUMN_BITMASK = 8L;
-
-	public static final long UUID_COLUMN_BITMASK = 16L;
+	public static final long UUID_COLUMN_BITMASK = 2L;
 
 	public static final long LAYOUTPAGETEMPLATESTRUCTURERELID_COLUMN_BITMASK =
-		32L;
+		4L;
+
+	public static final long GROUPID_COLUMN_BITMASK = 8L;
+
+	public static final long COMPANYID_COLUMN_BITMASK = 16L;
+
+	public static final long USERID_COLUMN_BITMASK = 32L;
+
+	public static final long USERNAME_COLUMN_BITMASK = 64L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 128L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 256L;
+
+	public static final long LAYOUTPAGETEMPLATESTRUCTUREID_COLUMN_BITMASK =
+		512L;
+
+	public static final long SEGMENTSEXPERIENCEID_COLUMN_BITMASK = 1024L;
+
+	public static final long DATA_COLUMN_BITMASK = 2048L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int UUID_COLUMN_INDEX = 1;
+
+	public static final int LAYOUTPAGETEMPLATESTRUCTURERELID_COLUMN_INDEX = 2;
+
+	public static final int GROUPID_COLUMN_INDEX = 3;
+
+	public static final int COMPANYID_COLUMN_INDEX = 4;
+
+	public static final int USERID_COLUMN_INDEX = 5;
+
+	public static final int USERNAME_COLUMN_INDEX = 6;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 7;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 8;
+
+	public static final int LAYOUTPAGETEMPLATESTRUCTUREID_COLUMN_INDEX = 9;
+
+	public static final int SEGMENTSEXPERIENCEID_COLUMN_INDEX = 10;
+
+	public static final int DATA_COLUMN_INDEX = 11;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -364,6 +401,16 @@ public class LayoutPageTemplateStructureRelModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -379,17 +426,29 @@ public class LayoutPageTemplateStructureRelModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		if ((_columnBitmask & UUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= UUID_COLUMN_BITMASK;
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[UUID_COLUMN_INDEX] = _uuid;
 		}
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		if (_originalValues != null) {
+			Object originalUuid = _originalValues[UUID_COLUMN_INDEX];
+
+			if (originalUuid != null) {
+				return GetterUtil.getString((String)originalUuid);
+			}
+		}
+
+		return GetterUtil.getString(_uuid);
 	}
 
 	@Override
@@ -401,6 +460,19 @@ public class LayoutPageTemplateStructureRelModelImpl
 	public void setLayoutPageTemplateStructureRelId(
 		long layoutPageTemplateStructureRelId) {
 
+		if ((_columnBitmask &
+			 LAYOUTPAGETEMPLATESTRUCTURERELID_COLUMN_BITMASK) == 0) {
+
+			_columnBitmask |= LAYOUTPAGETEMPLATESTRUCTURERELID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[LAYOUTPAGETEMPLATESTRUCTURERELID_COLUMN_INDEX] =
+				_layoutPageTemplateStructureRelId;
+		}
+
 		_layoutPageTemplateStructureRelId = layoutPageTemplateStructureRelId;
 	}
 
@@ -411,19 +483,29 @@ public class LayoutPageTemplateStructureRelModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@Override
@@ -433,19 +515,29 @@ public class LayoutPageTemplateStructureRelModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@Override
@@ -455,6 +547,16 @@ public class LayoutPageTemplateStructureRelModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -486,6 +588,16 @@ public class LayoutPageTemplateStructureRelModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -496,6 +608,16 @@ public class LayoutPageTemplateStructureRelModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -505,12 +627,20 @@ public class LayoutPageTemplateStructureRelModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -524,12 +654,16 @@ public class LayoutPageTemplateStructureRelModelImpl
 	public void setLayoutPageTemplateStructureId(
 		long layoutPageTemplateStructureId) {
 
-		_columnBitmask |= LAYOUTPAGETEMPLATESTRUCTUREID_COLUMN_BITMASK;
+		if ((_columnBitmask & LAYOUTPAGETEMPLATESTRUCTUREID_COLUMN_BITMASK) ==
+				0) {
 
-		if (!_setOriginalLayoutPageTemplateStructureId) {
-			_setOriginalLayoutPageTemplateStructureId = true;
+			_columnBitmask |= LAYOUTPAGETEMPLATESTRUCTUREID_COLUMN_BITMASK;
 
-			_originalLayoutPageTemplateStructureId =
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[LAYOUTPAGETEMPLATESTRUCTUREID_COLUMN_INDEX] =
 				_layoutPageTemplateStructureId;
 		}
 
@@ -537,7 +671,16 @@ public class LayoutPageTemplateStructureRelModelImpl
 	}
 
 	public long getOriginalLayoutPageTemplateStructureId() {
-		return _originalLayoutPageTemplateStructureId;
+		if (_originalValues != null) {
+			Object originalLayoutPageTemplateStructureId =
+				_originalValues[LAYOUTPAGETEMPLATESTRUCTUREID_COLUMN_INDEX];
+
+			if (originalLayoutPageTemplateStructureId != null) {
+				return (long)originalLayoutPageTemplateStructureId;
+			}
+		}
+
+		return _layoutPageTemplateStructureId;
 	}
 
 	@Override
@@ -547,19 +690,31 @@ public class LayoutPageTemplateStructureRelModelImpl
 
 	@Override
 	public void setSegmentsExperienceId(long segmentsExperienceId) {
-		_columnBitmask |= SEGMENTSEXPERIENCEID_COLUMN_BITMASK;
+		if ((_columnBitmask & SEGMENTSEXPERIENCEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SEGMENTSEXPERIENCEID_COLUMN_BITMASK;
 
-		if (!_setOriginalSegmentsExperienceId) {
-			_setOriginalSegmentsExperienceId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
 
-			_originalSegmentsExperienceId = _segmentsExperienceId;
+			_originalValues[SEGMENTSEXPERIENCEID_COLUMN_INDEX] =
+				_segmentsExperienceId;
 		}
 
 		_segmentsExperienceId = segmentsExperienceId;
 	}
 
 	public long getOriginalSegmentsExperienceId() {
-		return _originalSegmentsExperienceId;
+		if (_originalValues != null) {
+			Object originalSegmentsExperienceId =
+				_originalValues[SEGMENTSEXPERIENCEID_COLUMN_INDEX];
+
+			if (originalSegmentsExperienceId != null) {
+				return (long)originalSegmentsExperienceId;
+			}
+		}
+
+		return _segmentsExperienceId;
 	}
 
 	@Override
@@ -574,6 +729,16 @@ public class LayoutPageTemplateStructureRelModelImpl
 
 	@Override
 	public void setData(String data) {
+		if ((_columnBitmask & DATA_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DATA_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[DATA_COLUMN_INDEX] = _data;
+		}
+
 		_data = data;
 	}
 
@@ -700,39 +865,9 @@ public class LayoutPageTemplateStructureRelModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LayoutPageTemplateStructureRelModelImpl
-			layoutPageTemplateStructureRelModelImpl = this;
+		_columnBitmask = 0;
 
-		layoutPageTemplateStructureRelModelImpl._originalUuid =
-			layoutPageTemplateStructureRelModelImpl._uuid;
-
-		layoutPageTemplateStructureRelModelImpl._originalGroupId =
-			layoutPageTemplateStructureRelModelImpl._groupId;
-
-		layoutPageTemplateStructureRelModelImpl._setOriginalGroupId = false;
-
-		layoutPageTemplateStructureRelModelImpl._originalCompanyId =
-			layoutPageTemplateStructureRelModelImpl._companyId;
-
-		layoutPageTemplateStructureRelModelImpl._setOriginalCompanyId = false;
-
-		layoutPageTemplateStructureRelModelImpl._setModifiedDate = false;
-
-		layoutPageTemplateStructureRelModelImpl.
-			_originalLayoutPageTemplateStructureId =
-				layoutPageTemplateStructureRelModelImpl.
-					_layoutPageTemplateStructureId;
-
-		layoutPageTemplateStructureRelModelImpl.
-			_setOriginalLayoutPageTemplateStructureId = false;
-
-		layoutPageTemplateStructureRelModelImpl._originalSegmentsExperienceId =
-			layoutPageTemplateStructureRelModelImpl._segmentsExperienceId;
-
-		layoutPageTemplateStructureRelModelImpl.
-			_setOriginalSegmentsExperienceId = false;
-
-		layoutPageTemplateStructureRelModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -889,27 +1024,18 @@ public class LayoutPageTemplateStructureRelModelImpl
 
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _layoutPageTemplateStructureRelId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _layoutPageTemplateStructureId;
-	private long _originalLayoutPageTemplateStructureId;
-	private boolean _setOriginalLayoutPageTemplateStructureId;
 	private long _segmentsExperienceId;
-	private long _originalSegmentsExperienceId;
-	private boolean _setOriginalSegmentsExperienceId;
 	private String _data;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private LayoutPageTemplateStructureRel _escapedModel;
 
 }

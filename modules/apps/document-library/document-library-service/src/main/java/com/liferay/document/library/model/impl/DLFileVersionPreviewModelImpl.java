@@ -98,13 +98,29 @@ public class DLFileVersionPreviewModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long FILEENTRYID_COLUMN_BITMASK = 1L;
+	public static final long DLFILEVERSIONPREVIEWID_COLUMN_BITMASK = 1L;
 
-	public static final long FILEVERSIONID_COLUMN_BITMASK = 2L;
+	public static final long GROUPID_COLUMN_BITMASK = 2L;
 
-	public static final long PREVIEWSTATUS_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
-	public static final long DLFILEVERSIONPREVIEWID_COLUMN_BITMASK = 8L;
+	public static final long FILEENTRYID_COLUMN_BITMASK = 8L;
+
+	public static final long FILEVERSIONID_COLUMN_BITMASK = 16L;
+
+	public static final long PREVIEWSTATUS_COLUMN_BITMASK = 32L;
+
+	public static final int DLFILEVERSIONPREVIEWID_COLUMN_INDEX = 0;
+
+	public static final int GROUPID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int FILEENTRYID_COLUMN_INDEX = 3;
+
+	public static final int FILEVERSIONID_COLUMN_INDEX = 4;
+
+	public static final int PREVIEWSTATUS_COLUMN_INDEX = 5;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -296,7 +312,16 @@ public class DLFileVersionPreviewModelImpl
 
 	@Override
 	public void setDlFileVersionPreviewId(long dlFileVersionPreviewId) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & DLFILEVERSIONPREVIEWID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DLFILEVERSIONPREVIEWID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[DLFILEVERSIONPREVIEWID_COLUMN_INDEX] =
+				_dlFileVersionPreviewId;
+		}
 
 		_dlFileVersionPreviewId = dlFileVersionPreviewId;
 	}
@@ -308,6 +333,16 @@ public class DLFileVersionPreviewModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
+		}
+
 		_groupId = groupId;
 	}
 
@@ -318,6 +353,16 @@ public class DLFileVersionPreviewModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -328,19 +373,30 @@ public class DLFileVersionPreviewModelImpl
 
 	@Override
 	public void setFileEntryId(long fileEntryId) {
-		_columnBitmask |= FILEENTRYID_COLUMN_BITMASK;
+		if ((_columnBitmask & FILEENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= FILEENTRYID_COLUMN_BITMASK;
 
-		if (!_setOriginalFileEntryId) {
-			_setOriginalFileEntryId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
 
-			_originalFileEntryId = _fileEntryId;
+			_originalValues[FILEENTRYID_COLUMN_INDEX] = _fileEntryId;
 		}
 
 		_fileEntryId = fileEntryId;
 	}
 
 	public long getOriginalFileEntryId() {
-		return _originalFileEntryId;
+		if (_originalValues != null) {
+			Object originalFileEntryId =
+				_originalValues[FILEENTRYID_COLUMN_INDEX];
+
+			if (originalFileEntryId != null) {
+				return (long)originalFileEntryId;
+			}
+		}
+
+		return _fileEntryId;
 	}
 
 	@Override
@@ -350,19 +406,30 @@ public class DLFileVersionPreviewModelImpl
 
 	@Override
 	public void setFileVersionId(long fileVersionId) {
-		_columnBitmask |= FILEVERSIONID_COLUMN_BITMASK;
+		if ((_columnBitmask & FILEVERSIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= FILEVERSIONID_COLUMN_BITMASK;
 
-		if (!_setOriginalFileVersionId) {
-			_setOriginalFileVersionId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
 
-			_originalFileVersionId = _fileVersionId;
+			_originalValues[FILEVERSIONID_COLUMN_INDEX] = _fileVersionId;
 		}
 
 		_fileVersionId = fileVersionId;
 	}
 
 	public long getOriginalFileVersionId() {
-		return _originalFileVersionId;
+		if (_originalValues != null) {
+			Object originalFileVersionId =
+				_originalValues[FILEVERSIONID_COLUMN_INDEX];
+
+			if (originalFileVersionId != null) {
+				return (long)originalFileVersionId;
+			}
+		}
+
+		return _fileVersionId;
 	}
 
 	@Override
@@ -372,19 +439,30 @@ public class DLFileVersionPreviewModelImpl
 
 	@Override
 	public void setPreviewStatus(int previewStatus) {
-		_columnBitmask |= PREVIEWSTATUS_COLUMN_BITMASK;
+		if ((_columnBitmask & PREVIEWSTATUS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PREVIEWSTATUS_COLUMN_BITMASK;
 
-		if (!_setOriginalPreviewStatus) {
-			_setOriginalPreviewStatus = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
 
-			_originalPreviewStatus = _previewStatus;
+			_originalValues[PREVIEWSTATUS_COLUMN_INDEX] = _previewStatus;
 		}
 
 		_previewStatus = previewStatus;
 	}
 
 	public int getOriginalPreviewStatus() {
-		return _originalPreviewStatus;
+		if (_originalValues != null) {
+			Object originalPreviewStatus =
+				_originalValues[PREVIEWSTATUS_COLUMN_INDEX];
+
+			if (originalPreviewStatus != null) {
+				return (int)originalPreviewStatus;
+			}
+		}
+
+		return _previewStatus;
 	}
 
 	public long getColumnBitmask() {
@@ -504,24 +582,9 @@ public class DLFileVersionPreviewModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DLFileVersionPreviewModelImpl dlFileVersionPreviewModelImpl = this;
+		_columnBitmask = 0;
 
-		dlFileVersionPreviewModelImpl._originalFileEntryId =
-			dlFileVersionPreviewModelImpl._fileEntryId;
-
-		dlFileVersionPreviewModelImpl._setOriginalFileEntryId = false;
-
-		dlFileVersionPreviewModelImpl._originalFileVersionId =
-			dlFileVersionPreviewModelImpl._fileVersionId;
-
-		dlFileVersionPreviewModelImpl._setOriginalFileVersionId = false;
-
-		dlFileVersionPreviewModelImpl._originalPreviewStatus =
-			dlFileVersionPreviewModelImpl._previewStatus;
-
-		dlFileVersionPreviewModelImpl._setOriginalPreviewStatus = false;
-
-		dlFileVersionPreviewModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -624,15 +687,10 @@ public class DLFileVersionPreviewModelImpl
 	private long _groupId;
 	private long _companyId;
 	private long _fileEntryId;
-	private long _originalFileEntryId;
-	private boolean _setOriginalFileEntryId;
 	private long _fileVersionId;
-	private long _originalFileVersionId;
-	private boolean _setOriginalFileVersionId;
 	private int _previewStatus;
-	private int _originalPreviewStatus;
-	private boolean _setOriginalPreviewStatus;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private DLFileVersionPreview _escapedModel;
 
 }

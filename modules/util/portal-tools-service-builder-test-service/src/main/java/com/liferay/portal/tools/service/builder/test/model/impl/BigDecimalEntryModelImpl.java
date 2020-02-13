@@ -113,7 +113,17 @@ public class BigDecimalEntryModelImpl
 				"value.object.column.bitmask.enabled.com.liferay.portal.tools.service.builder.test.model.BigDecimalEntry"),
 		true);
 
-	public static final long BIGDECIMALVALUE_COLUMN_BITMASK = 1L;
+	public static final long BIGDECIMALENTRYID_COLUMN_BITMASK = 1L;
+
+	public static final long COMPANYID_COLUMN_BITMASK = 2L;
+
+	public static final long BIGDECIMALVALUE_COLUMN_BITMASK = 4L;
+
+	public static final int BIGDECIMALENTRYID_COLUMN_INDEX = 0;
+
+	public static final int COMPANYID_COLUMN_INDEX = 1;
+
+	public static final int BIGDECIMALVALUE_COLUMN_INDEX = 2;
 
 	public static final String MAPPING_TABLE_BIGDECIMALENTRIES_LVENTRIES_NAME =
 		"BigDecimalEntries_LVEntries";
@@ -300,6 +310,17 @@ public class BigDecimalEntryModelImpl
 
 	@Override
 	public void setBigDecimalEntryId(long bigDecimalEntryId) {
+		if ((_columnBitmask & BIGDECIMALENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= BIGDECIMALENTRYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[3];
+			}
+
+			_originalValues[BIGDECIMALENTRYID_COLUMN_INDEX] =
+				_bigDecimalEntryId;
+		}
+
 		_bigDecimalEntryId = bigDecimalEntryId;
 	}
 
@@ -310,6 +331,16 @@ public class BigDecimalEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[3];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -320,17 +351,30 @@ public class BigDecimalEntryModelImpl
 
 	@Override
 	public void setBigDecimalValue(BigDecimal bigDecimalValue) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & BIGDECIMALVALUE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= BIGDECIMALVALUE_COLUMN_BITMASK;
 
-		if (_originalBigDecimalValue == null) {
-			_originalBigDecimalValue = _bigDecimalValue;
+			if (_originalValues == null) {
+				_originalValues = new Object[3];
+			}
+
+			_originalValues[BIGDECIMALVALUE_COLUMN_INDEX] = _bigDecimalValue;
 		}
 
 		_bigDecimalValue = bigDecimalValue;
 	}
 
 	public BigDecimal getOriginalBigDecimalValue() {
-		return _originalBigDecimalValue;
+		if (_originalValues != null) {
+			Object originalBigDecimalValue =
+				_originalValues[BIGDECIMALVALUE_COLUMN_INDEX];
+
+			if (originalBigDecimalValue != null) {
+				return (BigDecimal)originalBigDecimalValue;
+			}
+		}
+
+		return _bigDecimalValue;
 	}
 
 	public long getColumnBitmask() {
@@ -431,12 +475,9 @@ public class BigDecimalEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		BigDecimalEntryModelImpl bigDecimalEntryModelImpl = this;
+		_columnBitmask = 0;
 
-		bigDecimalEntryModelImpl._originalBigDecimalValue =
-			bigDecimalEntryModelImpl._bigDecimalValue;
-
-		bigDecimalEntryModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -526,8 +567,8 @@ public class BigDecimalEntryModelImpl
 	private long _bigDecimalEntryId;
 	private long _companyId;
 	private BigDecimal _bigDecimalValue;
-	private BigDecimal _originalBigDecimalValue;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private BigDecimalEntry _escapedModel;
 
 }

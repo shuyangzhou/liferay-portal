@@ -98,11 +98,25 @@ public class AppBuilderAppDeploymentModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long APPBUILDERAPPID_COLUMN_BITMASK = 1L;
+	public static final long APPBUILDERAPPDEPLOYMENTID_COLUMN_BITMASK = 1L;
 
-	public static final long TYPE_COLUMN_BITMASK = 2L;
+	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
-	public static final long APPBUILDERAPPDEPLOYMENTID_COLUMN_BITMASK = 4L;
+	public static final long APPBUILDERAPPID_COLUMN_BITMASK = 4L;
+
+	public static final long SETTINGS_COLUMN_BITMASK = 8L;
+
+	public static final long TYPE_COLUMN_BITMASK = 16L;
+
+	public static final int APPBUILDERAPPDEPLOYMENTID_COLUMN_INDEX = 0;
+
+	public static final int COMPANYID_COLUMN_INDEX = 1;
+
+	public static final int APPBUILDERAPPID_COLUMN_INDEX = 2;
+
+	public static final int SETTINGS_COLUMN_INDEX = 3;
+
+	public static final int TYPE_COLUMN_INDEX = 4;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -289,6 +303,17 @@ public class AppBuilderAppDeploymentModelImpl
 
 	@Override
 	public void setAppBuilderAppDeploymentId(long appBuilderAppDeploymentId) {
+		if ((_columnBitmask & APPBUILDERAPPDEPLOYMENTID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= APPBUILDERAPPDEPLOYMENTID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[APPBUILDERAPPDEPLOYMENTID_COLUMN_INDEX] =
+				_appBuilderAppDeploymentId;
+		}
+
 		_appBuilderAppDeploymentId = appBuilderAppDeploymentId;
 	}
 
@@ -299,6 +324,16 @@ public class AppBuilderAppDeploymentModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -309,19 +344,30 @@ public class AppBuilderAppDeploymentModelImpl
 
 	@Override
 	public void setAppBuilderAppId(long appBuilderAppId) {
-		_columnBitmask |= APPBUILDERAPPID_COLUMN_BITMASK;
+		if ((_columnBitmask & APPBUILDERAPPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= APPBUILDERAPPID_COLUMN_BITMASK;
 
-		if (!_setOriginalAppBuilderAppId) {
-			_setOriginalAppBuilderAppId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
 
-			_originalAppBuilderAppId = _appBuilderAppId;
+			_originalValues[APPBUILDERAPPID_COLUMN_INDEX] = _appBuilderAppId;
 		}
 
 		_appBuilderAppId = appBuilderAppId;
 	}
 
 	public long getOriginalAppBuilderAppId() {
-		return _originalAppBuilderAppId;
+		if (_originalValues != null) {
+			Object originalAppBuilderAppId =
+				_originalValues[APPBUILDERAPPID_COLUMN_INDEX];
+
+			if (originalAppBuilderAppId != null) {
+				return (long)originalAppBuilderAppId;
+			}
+		}
+
+		return _appBuilderAppId;
 	}
 
 	@Override
@@ -336,6 +382,16 @@ public class AppBuilderAppDeploymentModelImpl
 
 	@Override
 	public void setSettings(String settings) {
+		if ((_columnBitmask & SETTINGS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SETTINGS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[SETTINGS_COLUMN_INDEX] = _settings;
+		}
+
 		_settings = settings;
 	}
 
@@ -351,17 +407,29 @@ public class AppBuilderAppDeploymentModelImpl
 
 	@Override
 	public void setType(String type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
+		if ((_columnBitmask & TYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TYPE_COLUMN_BITMASK;
 
-		if (_originalType == null) {
-			_originalType = _type;
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[TYPE_COLUMN_INDEX] = _type;
 		}
 
 		_type = type;
 	}
 
 	public String getOriginalType() {
-		return GetterUtil.getString(_originalType);
+		if (_originalValues != null) {
+			Object originalType = _originalValues[TYPE_COLUMN_INDEX];
+
+			if (originalType != null) {
+				return GetterUtil.getString((String)originalType);
+			}
+		}
+
+		return GetterUtil.getString(_type);
 	}
 
 	public long getColumnBitmask() {
@@ -469,18 +537,9 @@ public class AppBuilderAppDeploymentModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AppBuilderAppDeploymentModelImpl appBuilderAppDeploymentModelImpl =
-			this;
+		_columnBitmask = 0;
 
-		appBuilderAppDeploymentModelImpl._originalAppBuilderAppId =
-			appBuilderAppDeploymentModelImpl._appBuilderAppId;
-
-		appBuilderAppDeploymentModelImpl._setOriginalAppBuilderAppId = false;
-
-		appBuilderAppDeploymentModelImpl._originalType =
-			appBuilderAppDeploymentModelImpl._type;
-
-		appBuilderAppDeploymentModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -595,12 +654,10 @@ public class AppBuilderAppDeploymentModelImpl
 	private long _appBuilderAppDeploymentId;
 	private long _companyId;
 	private long _appBuilderAppId;
-	private long _originalAppBuilderAppId;
-	private boolean _setOriginalAppBuilderAppId;
 	private String _settings;
 	private String _type;
-	private String _originalType;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private AppBuilderAppDeployment _escapedModel;
 
 }

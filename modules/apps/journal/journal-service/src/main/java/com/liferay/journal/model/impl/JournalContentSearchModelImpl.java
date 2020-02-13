@@ -102,19 +102,37 @@ public class JournalContentSearchModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long ARTICLEID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long COMPANYID_COLUMN_BITMASK = 2L;
+	public static final long CONTENTSEARCHID_COLUMN_BITMASK = 2L;
 
 	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
-	public static final long LAYOUTID_COLUMN_BITMASK = 8L;
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
 
-	public static final long PORTLETID_COLUMN_BITMASK = 16L;
+	public static final long PRIVATELAYOUT_COLUMN_BITMASK = 16L;
 
-	public static final long PRIVATELAYOUT_COLUMN_BITMASK = 32L;
+	public static final long LAYOUTID_COLUMN_BITMASK = 32L;
 
-	public static final long CONTENTSEARCHID_COLUMN_BITMASK = 64L;
+	public static final long PORTLETID_COLUMN_BITMASK = 64L;
+
+	public static final long ARTICLEID_COLUMN_BITMASK = 128L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int CONTENTSEARCHID_COLUMN_INDEX = 1;
+
+	public static final int GROUPID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int PRIVATELAYOUT_COLUMN_INDEX = 4;
+
+	public static final int LAYOUTID_COLUMN_INDEX = 5;
+
+	public static final int PORTLETID_COLUMN_INDEX = 6;
+
+	public static final int ARTICLEID_COLUMN_INDEX = 7;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -317,6 +335,16 @@ public class JournalContentSearchModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -327,6 +355,16 @@ public class JournalContentSearchModelImpl
 
 	@Override
 	public void setContentSearchId(long contentSearchId) {
+		if ((_columnBitmask & CONTENTSEARCHID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CONTENTSEARCHID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
+
+			_originalValues[CONTENTSEARCHID_COLUMN_INDEX] = _contentSearchId;
+		}
+
 		_contentSearchId = contentSearchId;
 	}
 
@@ -337,19 +375,29 @@ public class JournalContentSearchModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@Override
@@ -359,19 +407,29 @@ public class JournalContentSearchModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@Override
@@ -386,19 +444,30 @@ public class JournalContentSearchModelImpl
 
 	@Override
 	public void setPrivateLayout(boolean privateLayout) {
-		_columnBitmask |= PRIVATELAYOUT_COLUMN_BITMASK;
+		if ((_columnBitmask & PRIVATELAYOUT_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PRIVATELAYOUT_COLUMN_BITMASK;
 
-		if (!_setOriginalPrivateLayout) {
-			_setOriginalPrivateLayout = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
 
-			_originalPrivateLayout = _privateLayout;
+			_originalValues[PRIVATELAYOUT_COLUMN_INDEX] = _privateLayout;
 		}
 
 		_privateLayout = privateLayout;
 	}
 
 	public boolean getOriginalPrivateLayout() {
-		return _originalPrivateLayout;
+		if (_originalValues != null) {
+			Object originalPrivateLayout =
+				_originalValues[PRIVATELAYOUT_COLUMN_INDEX];
+
+			if (originalPrivateLayout != null) {
+				return (boolean)originalPrivateLayout;
+			}
+		}
+
+		return _privateLayout;
 	}
 
 	@Override
@@ -408,19 +477,29 @@ public class JournalContentSearchModelImpl
 
 	@Override
 	public void setLayoutId(long layoutId) {
-		_columnBitmask |= LAYOUTID_COLUMN_BITMASK;
+		if ((_columnBitmask & LAYOUTID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LAYOUTID_COLUMN_BITMASK;
 
-		if (!_setOriginalLayoutId) {
-			_setOriginalLayoutId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
 
-			_originalLayoutId = _layoutId;
+			_originalValues[LAYOUTID_COLUMN_INDEX] = _layoutId;
 		}
 
 		_layoutId = layoutId;
 	}
 
 	public long getOriginalLayoutId() {
-		return _originalLayoutId;
+		if (_originalValues != null) {
+			Object originalLayoutId = _originalValues[LAYOUTID_COLUMN_INDEX];
+
+			if (originalLayoutId != null) {
+				return (long)originalLayoutId;
+			}
+		}
+
+		return _layoutId;
 	}
 
 	@Override
@@ -435,17 +514,29 @@ public class JournalContentSearchModelImpl
 
 	@Override
 	public void setPortletId(String portletId) {
-		_columnBitmask |= PORTLETID_COLUMN_BITMASK;
+		if ((_columnBitmask & PORTLETID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PORTLETID_COLUMN_BITMASK;
 
-		if (_originalPortletId == null) {
-			_originalPortletId = _portletId;
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
+
+			_originalValues[PORTLETID_COLUMN_INDEX] = _portletId;
 		}
 
 		_portletId = portletId;
 	}
 
 	public String getOriginalPortletId() {
-		return GetterUtil.getString(_originalPortletId);
+		if (_originalValues != null) {
+			Object originalPortletId = _originalValues[PORTLETID_COLUMN_INDEX];
+
+			if (originalPortletId != null) {
+				return GetterUtil.getString((String)originalPortletId);
+			}
+		}
+
+		return GetterUtil.getString(_portletId);
 	}
 
 	@Override
@@ -460,17 +551,29 @@ public class JournalContentSearchModelImpl
 
 	@Override
 	public void setArticleId(String articleId) {
-		_columnBitmask |= ARTICLEID_COLUMN_BITMASK;
+		if ((_columnBitmask & ARTICLEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ARTICLEID_COLUMN_BITMASK;
 
-		if (_originalArticleId == null) {
-			_originalArticleId = _articleId;
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
+
+			_originalValues[ARTICLEID_COLUMN_INDEX] = _articleId;
 		}
 
 		_articleId = articleId;
 	}
 
 	public String getOriginalArticleId() {
-		return GetterUtil.getString(_originalArticleId);
+		if (_originalValues != null) {
+			Object originalArticleId = _originalValues[ARTICLEID_COLUMN_INDEX];
+
+			if (originalArticleId != null) {
+				return GetterUtil.getString((String)originalArticleId);
+			}
+		}
+
+		return GetterUtil.getString(_articleId);
 	}
 
 	public long getColumnBitmask() {
@@ -579,35 +682,9 @@ public class JournalContentSearchModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		JournalContentSearchModelImpl journalContentSearchModelImpl = this;
+		_columnBitmask = 0;
 
-		journalContentSearchModelImpl._originalGroupId =
-			journalContentSearchModelImpl._groupId;
-
-		journalContentSearchModelImpl._setOriginalGroupId = false;
-
-		journalContentSearchModelImpl._originalCompanyId =
-			journalContentSearchModelImpl._companyId;
-
-		journalContentSearchModelImpl._setOriginalCompanyId = false;
-
-		journalContentSearchModelImpl._originalPrivateLayout =
-			journalContentSearchModelImpl._privateLayout;
-
-		journalContentSearchModelImpl._setOriginalPrivateLayout = false;
-
-		journalContentSearchModelImpl._originalLayoutId =
-			journalContentSearchModelImpl._layoutId;
-
-		journalContentSearchModelImpl._setOriginalLayoutId = false;
-
-		journalContentSearchModelImpl._originalPortletId =
-			journalContentSearchModelImpl._portletId;
-
-		journalContentSearchModelImpl._originalArticleId =
-			journalContentSearchModelImpl._articleId;
-
-		journalContentSearchModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -724,22 +801,13 @@ public class JournalContentSearchModelImpl
 	private long _mvccVersion;
 	private long _contentSearchId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private boolean _privateLayout;
-	private boolean _originalPrivateLayout;
-	private boolean _setOriginalPrivateLayout;
 	private long _layoutId;
-	private long _originalLayoutId;
-	private boolean _setOriginalLayoutId;
 	private String _portletId;
-	private String _originalPortletId;
 	private String _articleId;
-	private String _originalArticleId;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private JournalContentSearch _escapedModel;
 
 }

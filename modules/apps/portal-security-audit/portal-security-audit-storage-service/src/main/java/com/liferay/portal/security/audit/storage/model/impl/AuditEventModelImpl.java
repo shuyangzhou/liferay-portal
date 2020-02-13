@@ -120,9 +120,65 @@ public class AuditEventModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long AUDITEVENTID_COLUMN_BITMASK = 1L;
 
-	public static final long CREATEDATE_COLUMN_BITMASK = 2L;
+	public static final long COMPANYID_COLUMN_BITMASK = 2L;
+
+	public static final long USERID_COLUMN_BITMASK = 4L;
+
+	public static final long USERNAME_COLUMN_BITMASK = 8L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 16L;
+
+	public static final long EVENTTYPE_COLUMN_BITMASK = 32L;
+
+	public static final long CLASSNAME_COLUMN_BITMASK = 64L;
+
+	public static final long CLASSPK_COLUMN_BITMASK = 128L;
+
+	public static final long MESSAGE_COLUMN_BITMASK = 256L;
+
+	public static final long CLIENTHOST_COLUMN_BITMASK = 512L;
+
+	public static final long CLIENTIP_COLUMN_BITMASK = 1024L;
+
+	public static final long SERVERNAME_COLUMN_BITMASK = 2048L;
+
+	public static final long SERVERPORT_COLUMN_BITMASK = 4096L;
+
+	public static final long SESSIONID_COLUMN_BITMASK = 8192L;
+
+	public static final long ADDITIONALINFO_COLUMN_BITMASK = 16384L;
+
+	public static final int AUDITEVENTID_COLUMN_INDEX = 0;
+
+	public static final int COMPANYID_COLUMN_INDEX = 1;
+
+	public static final int USERID_COLUMN_INDEX = 2;
+
+	public static final int USERNAME_COLUMN_INDEX = 3;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 4;
+
+	public static final int EVENTTYPE_COLUMN_INDEX = 5;
+
+	public static final int CLASSNAME_COLUMN_INDEX = 6;
+
+	public static final int CLASSPK_COLUMN_INDEX = 7;
+
+	public static final int MESSAGE_COLUMN_INDEX = 8;
+
+	public static final int CLIENTHOST_COLUMN_INDEX = 9;
+
+	public static final int CLIENTIP_COLUMN_INDEX = 10;
+
+	public static final int SERVERNAME_COLUMN_INDEX = 11;
+
+	public static final int SERVERPORT_COLUMN_INDEX = 12;
+
+	public static final int SESSIONID_COLUMN_INDEX = 13;
+
+	public static final int ADDITIONALINFO_COLUMN_INDEX = 14;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -384,6 +440,16 @@ public class AuditEventModelImpl
 
 	@Override
 	public void setAuditEventId(long auditEventId) {
+		if ((_columnBitmask & AUDITEVENTID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= AUDITEVENTID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[AUDITEVENTID_COLUMN_INDEX] = _auditEventId;
+		}
+
 		_auditEventId = auditEventId;
 	}
 
@@ -395,19 +461,29 @@ public class AuditEventModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@JSON
@@ -418,6 +494,16 @@ public class AuditEventModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -450,6 +536,16 @@ public class AuditEventModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -461,7 +557,15 @@ public class AuditEventModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
 
 		_createDate = createDate;
 	}
@@ -479,6 +583,16 @@ public class AuditEventModelImpl
 
 	@Override
 	public void setEventType(String eventType) {
+		if ((_columnBitmask & EVENTTYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= EVENTTYPE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[EVENTTYPE_COLUMN_INDEX] = _eventType;
+		}
+
 		_eventType = eventType;
 	}
 
@@ -495,6 +609,16 @@ public class AuditEventModelImpl
 
 	@Override
 	public void setClassName(String className) {
+		if ((_columnBitmask & CLASSNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[CLASSNAME_COLUMN_INDEX] = _className;
+		}
+
 		_className = className;
 	}
 
@@ -511,6 +635,16 @@ public class AuditEventModelImpl
 
 	@Override
 	public void setClassPK(String classPK) {
+		if ((_columnBitmask & CLASSPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSPK_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[CLASSPK_COLUMN_INDEX] = _classPK;
+		}
+
 		_classPK = classPK;
 	}
 
@@ -527,6 +661,16 @@ public class AuditEventModelImpl
 
 	@Override
 	public void setMessage(String message) {
+		if ((_columnBitmask & MESSAGE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MESSAGE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[MESSAGE_COLUMN_INDEX] = _message;
+		}
+
 		_message = message;
 	}
 
@@ -543,6 +687,16 @@ public class AuditEventModelImpl
 
 	@Override
 	public void setClientHost(String clientHost) {
+		if ((_columnBitmask & CLIENTHOST_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLIENTHOST_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[CLIENTHOST_COLUMN_INDEX] = _clientHost;
+		}
+
 		_clientHost = clientHost;
 	}
 
@@ -559,6 +713,16 @@ public class AuditEventModelImpl
 
 	@Override
 	public void setClientIP(String clientIP) {
+		if ((_columnBitmask & CLIENTIP_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLIENTIP_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[CLIENTIP_COLUMN_INDEX] = _clientIP;
+		}
+
 		_clientIP = clientIP;
 	}
 
@@ -575,6 +739,16 @@ public class AuditEventModelImpl
 
 	@Override
 	public void setServerName(String serverName) {
+		if ((_columnBitmask & SERVERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SERVERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[SERVERNAME_COLUMN_INDEX] = _serverName;
+		}
+
 		_serverName = serverName;
 	}
 
@@ -586,6 +760,16 @@ public class AuditEventModelImpl
 
 	@Override
 	public void setServerPort(int serverPort) {
+		if ((_columnBitmask & SERVERPORT_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SERVERPORT_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[SERVERPORT_COLUMN_INDEX] = _serverPort;
+		}
+
 		_serverPort = serverPort;
 	}
 
@@ -602,6 +786,16 @@ public class AuditEventModelImpl
 
 	@Override
 	public void setSessionID(String sessionID) {
+		if ((_columnBitmask & SESSIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SESSIONID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[SESSIONID_COLUMN_INDEX] = _sessionID;
+		}
+
 		_sessionID = sessionID;
 	}
 
@@ -618,6 +812,16 @@ public class AuditEventModelImpl
 
 	@Override
 	public void setAdditionalInfo(String additionalInfo) {
+		if ((_columnBitmask & ADDITIONALINFO_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ADDITIONALINFO_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[ADDITIONALINFO_COLUMN_INDEX] = _additionalInfo;
+		}
+
 		_additionalInfo = additionalInfo;
 	}
 
@@ -732,13 +936,9 @@ public class AuditEventModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AuditEventModelImpl auditEventModelImpl = this;
+		_columnBitmask = 0;
 
-		auditEventModelImpl._originalCompanyId = auditEventModelImpl._companyId;
-
-		auditEventModelImpl._setOriginalCompanyId = false;
-
-		auditEventModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -920,8 +1120,6 @@ public class AuditEventModelImpl
 
 	private long _auditEventId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
@@ -935,7 +1133,8 @@ public class AuditEventModelImpl
 	private int _serverPort;
 	private String _sessionID;
 	private String _additionalInfo;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private AuditEvent _escapedModel;
 
 }

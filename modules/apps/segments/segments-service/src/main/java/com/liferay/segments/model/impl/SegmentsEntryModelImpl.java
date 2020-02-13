@@ -133,21 +133,73 @@ public class SegmentsEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long ACTIVE_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long COMPANYID_COLUMN_BITMASK = 2L;
+	public static final long UUID_COLUMN_BITMASK = 2L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 4L;
+	public static final long SEGMENTSENTRYID_COLUMN_BITMASK = 4L;
 
-	public static final long SEGMENTSENTRYKEY_COLUMN_BITMASK = 8L;
+	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
-	public static final long SOURCE_COLUMN_BITMASK = 16L;
+	public static final long COMPANYID_COLUMN_BITMASK = 16L;
 
-	public static final long TYPE_COLUMN_BITMASK = 32L;
+	public static final long USERID_COLUMN_BITMASK = 32L;
 
-	public static final long UUID_COLUMN_BITMASK = 64L;
+	public static final long USERNAME_COLUMN_BITMASK = 64L;
 
-	public static final long MODIFIEDDATE_COLUMN_BITMASK = 128L;
+	public static final long CREATEDATE_COLUMN_BITMASK = 128L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 256L;
+
+	public static final long SEGMENTSENTRYKEY_COLUMN_BITMASK = 512L;
+
+	public static final long NAME_COLUMN_BITMASK = 1024L;
+
+	public static final long DESCRIPTION_COLUMN_BITMASK = 2048L;
+
+	public static final long ACTIVE_COLUMN_BITMASK = 4096L;
+
+	public static final long CRITERIA_COLUMN_BITMASK = 8192L;
+
+	public static final long SOURCE_COLUMN_BITMASK = 16384L;
+
+	public static final long TYPE_COLUMN_BITMASK = 32768L;
+
+	public static final long LASTPUBLISHDATE_COLUMN_BITMASK = 65536L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int UUID_COLUMN_INDEX = 1;
+
+	public static final int SEGMENTSENTRYID_COLUMN_INDEX = 2;
+
+	public static final int GROUPID_COLUMN_INDEX = 3;
+
+	public static final int COMPANYID_COLUMN_INDEX = 4;
+
+	public static final int USERID_COLUMN_INDEX = 5;
+
+	public static final int USERNAME_COLUMN_INDEX = 6;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 7;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 8;
+
+	public static final int SEGMENTSENTRYKEY_COLUMN_INDEX = 9;
+
+	public static final int NAME_COLUMN_INDEX = 10;
+
+	public static final int DESCRIPTION_COLUMN_INDEX = 11;
+
+	public static final int ACTIVE_COLUMN_INDEX = 12;
+
+	public static final int CRITERIA_COLUMN_INDEX = 13;
+
+	public static final int SOURCE_COLUMN_INDEX = 14;
+
+	public static final int TYPE_COLUMN_INDEX = 15;
+
+	public static final int LASTPUBLISHDATE_COLUMN_INDEX = 16;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -427,6 +479,16 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -443,17 +505,29 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		if ((_columnBitmask & UUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= UUID_COLUMN_BITMASK;
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[UUID_COLUMN_INDEX] = _uuid;
 		}
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		if (_originalValues != null) {
+			Object originalUuid = _originalValues[UUID_COLUMN_INDEX];
+
+			if (originalUuid != null) {
+				return GetterUtil.getString((String)originalUuid);
+			}
+		}
+
+		return GetterUtil.getString(_uuid);
 	}
 
 	@JSON
@@ -464,6 +538,16 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setSegmentsEntryId(long segmentsEntryId) {
+		if ((_columnBitmask & SEGMENTSENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SEGMENTSENTRYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[SEGMENTSENTRYID_COLUMN_INDEX] = _segmentsEntryId;
+		}
+
 		_segmentsEntryId = segmentsEntryId;
 	}
 
@@ -475,19 +559,29 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@JSON
@@ -498,19 +592,29 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@JSON
@@ -521,6 +625,16 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -553,6 +667,16 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -564,6 +688,16 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -574,14 +708,20 @@ public class SegmentsEntryModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
 
-		_columnBitmask = -1L;
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -599,17 +739,30 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setSegmentsEntryKey(String segmentsEntryKey) {
-		_columnBitmask |= SEGMENTSENTRYKEY_COLUMN_BITMASK;
+		if ((_columnBitmask & SEGMENTSENTRYKEY_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SEGMENTSENTRYKEY_COLUMN_BITMASK;
 
-		if (_originalSegmentsEntryKey == null) {
-			_originalSegmentsEntryKey = _segmentsEntryKey;
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[SEGMENTSENTRYKEY_COLUMN_INDEX] = _segmentsEntryKey;
 		}
 
 		_segmentsEntryKey = segmentsEntryKey;
 	}
 
 	public String getOriginalSegmentsEntryKey() {
-		return GetterUtil.getString(_originalSegmentsEntryKey);
+		if (_originalValues != null) {
+			Object originalSegmentsEntryKey =
+				_originalValues[SEGMENTSENTRYKEY_COLUMN_INDEX];
+
+			if (originalSegmentsEntryKey != null) {
+				return GetterUtil.getString((String)originalSegmentsEntryKey);
+			}
+		}
+
+		return GetterUtil.getString(_segmentsEntryKey);
 	}
 
 	@JSON
@@ -668,6 +821,16 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setName(String name) {
+		if ((_columnBitmask & NAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= NAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[NAME_COLUMN_INDEX] = _name;
+		}
+
 		_name = name;
 	}
 
@@ -771,6 +934,16 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		if ((_columnBitmask & DESCRIPTION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DESCRIPTION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[DESCRIPTION_COLUMN_INDEX] = _description;
+		}
+
 		_description = description;
 	}
 
@@ -837,19 +1010,29 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setActive(boolean active) {
-		_columnBitmask |= ACTIVE_COLUMN_BITMASK;
+		if ((_columnBitmask & ACTIVE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ACTIVE_COLUMN_BITMASK;
 
-		if (!_setOriginalActive) {
-			_setOriginalActive = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
 
-			_originalActive = _active;
+			_originalValues[ACTIVE_COLUMN_INDEX] = _active;
 		}
 
 		_active = active;
 	}
 
 	public boolean getOriginalActive() {
-		return _originalActive;
+		if (_originalValues != null) {
+			Object originalActive = _originalValues[ACTIVE_COLUMN_INDEX];
+
+			if (originalActive != null) {
+				return (boolean)originalActive;
+			}
+		}
+
+		return _active;
 	}
 
 	@JSON
@@ -865,6 +1048,16 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setCriteria(String criteria) {
+		if ((_columnBitmask & CRITERIA_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CRITERIA_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[CRITERIA_COLUMN_INDEX] = _criteria;
+		}
+
 		_criteria = criteria;
 	}
 
@@ -881,17 +1074,29 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setSource(String source) {
-		_columnBitmask |= SOURCE_COLUMN_BITMASK;
+		if ((_columnBitmask & SOURCE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SOURCE_COLUMN_BITMASK;
 
-		if (_originalSource == null) {
-			_originalSource = _source;
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[SOURCE_COLUMN_INDEX] = _source;
 		}
 
 		_source = source;
 	}
 
 	public String getOriginalSource() {
-		return GetterUtil.getString(_originalSource);
+		if (_originalValues != null) {
+			Object originalSource = _originalValues[SOURCE_COLUMN_INDEX];
+
+			if (originalSource != null) {
+				return GetterUtil.getString((String)originalSource);
+			}
+		}
+
+		return GetterUtil.getString(_source);
 	}
 
 	@JSON
@@ -907,17 +1112,29 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setType(String type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
+		if ((_columnBitmask & TYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TYPE_COLUMN_BITMASK;
 
-		if (_originalType == null) {
-			_originalType = _type;
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[TYPE_COLUMN_INDEX] = _type;
 		}
 
 		_type = type;
 	}
 
 	public String getOriginalType() {
-		return GetterUtil.getString(_originalType);
+		if (_originalValues != null) {
+			Object originalType = _originalValues[TYPE_COLUMN_INDEX];
+
+			if (originalType != null) {
+				return GetterUtil.getString((String)originalType);
+			}
+		}
+
+		return GetterUtil.getString(_type);
 	}
 
 	@JSON
@@ -928,6 +1145,16 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		if ((_columnBitmask & LASTPUBLISHDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LASTPUBLISHDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[LASTPUBLISHDATE_COLUMN_INDEX] = _lastPublishDate;
+		}
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -1139,34 +1366,9 @@ public class SegmentsEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SegmentsEntryModelImpl segmentsEntryModelImpl = this;
+		_columnBitmask = 0;
 
-		segmentsEntryModelImpl._originalUuid = segmentsEntryModelImpl._uuid;
-
-		segmentsEntryModelImpl._originalGroupId =
-			segmentsEntryModelImpl._groupId;
-
-		segmentsEntryModelImpl._setOriginalGroupId = false;
-
-		segmentsEntryModelImpl._originalCompanyId =
-			segmentsEntryModelImpl._companyId;
-
-		segmentsEntryModelImpl._setOriginalCompanyId = false;
-
-		segmentsEntryModelImpl._setModifiedDate = false;
-
-		segmentsEntryModelImpl._originalSegmentsEntryKey =
-			segmentsEntryModelImpl._segmentsEntryKey;
-
-		segmentsEntryModelImpl._originalActive = segmentsEntryModelImpl._active;
-
-		segmentsEntryModelImpl._setOriginalActive = false;
-
-		segmentsEntryModelImpl._originalSource = segmentsEntryModelImpl._source;
-
-		segmentsEntryModelImpl._originalType = segmentsEntryModelImpl._type;
-
-		segmentsEntryModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -1355,35 +1557,25 @@ public class SegmentsEntryModelImpl
 
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _segmentsEntryId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private String _segmentsEntryKey;
-	private String _originalSegmentsEntryKey;
 	private String _name;
 	private String _nameCurrentLanguageId;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
 	private boolean _active;
-	private boolean _originalActive;
-	private boolean _setOriginalActive;
 	private String _criteria;
 	private String _source;
-	private String _originalSource;
 	private String _type;
-	private String _originalType;
 	private Date _lastPublishDate;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private SegmentsEntry _escapedModel;
 
 }

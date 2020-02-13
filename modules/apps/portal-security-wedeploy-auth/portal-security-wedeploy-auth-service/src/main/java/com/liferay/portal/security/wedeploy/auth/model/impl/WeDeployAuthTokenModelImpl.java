@@ -107,13 +107,41 @@ public class WeDeployAuthTokenModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long CLIENTID_COLUMN_BITMASK = 1L;
+	public static final long WEDEPLOYAUTHTOKENID_COLUMN_BITMASK = 1L;
 
-	public static final long TOKEN_COLUMN_BITMASK = 2L;
+	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
-	public static final long TYPE_COLUMN_BITMASK = 4L;
+	public static final long USERID_COLUMN_BITMASK = 4L;
 
-	public static final long WEDEPLOYAUTHTOKENID_COLUMN_BITMASK = 8L;
+	public static final long USERNAME_COLUMN_BITMASK = 8L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 16L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 32L;
+
+	public static final long CLIENTID_COLUMN_BITMASK = 64L;
+
+	public static final long TOKEN_COLUMN_BITMASK = 128L;
+
+	public static final long TYPE_COLUMN_BITMASK = 256L;
+
+	public static final int WEDEPLOYAUTHTOKENID_COLUMN_INDEX = 0;
+
+	public static final int COMPANYID_COLUMN_INDEX = 1;
+
+	public static final int USERID_COLUMN_INDEX = 2;
+
+	public static final int USERNAME_COLUMN_INDEX = 3;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 4;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 5;
+
+	public static final int CLIENTID_COLUMN_INDEX = 6;
+
+	public static final int TOKEN_COLUMN_INDEX = 7;
+
+	public static final int TYPE_COLUMN_INDEX = 8;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -315,6 +343,17 @@ public class WeDeployAuthTokenModelImpl
 
 	@Override
 	public void setWeDeployAuthTokenId(long weDeployAuthTokenId) {
+		if ((_columnBitmask & WEDEPLOYAUTHTOKENID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= WEDEPLOYAUTHTOKENID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[WEDEPLOYAUTHTOKENID_COLUMN_INDEX] =
+				_weDeployAuthTokenId;
+		}
+
 		_weDeployAuthTokenId = weDeployAuthTokenId;
 	}
 
@@ -325,6 +364,16 @@ public class WeDeployAuthTokenModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -335,6 +384,16 @@ public class WeDeployAuthTokenModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -366,6 +425,16 @@ public class WeDeployAuthTokenModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -376,6 +445,16 @@ public class WeDeployAuthTokenModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -385,12 +464,20 @@ public class WeDeployAuthTokenModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -407,17 +494,29 @@ public class WeDeployAuthTokenModelImpl
 
 	@Override
 	public void setClientId(String clientId) {
-		_columnBitmask |= CLIENTID_COLUMN_BITMASK;
+		if ((_columnBitmask & CLIENTID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLIENTID_COLUMN_BITMASK;
 
-		if (_originalClientId == null) {
-			_originalClientId = _clientId;
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[CLIENTID_COLUMN_INDEX] = _clientId;
 		}
 
 		_clientId = clientId;
 	}
 
 	public String getOriginalClientId() {
-		return GetterUtil.getString(_originalClientId);
+		if (_originalValues != null) {
+			Object originalClientId = _originalValues[CLIENTID_COLUMN_INDEX];
+
+			if (originalClientId != null) {
+				return GetterUtil.getString((String)originalClientId);
+			}
+		}
+
+		return GetterUtil.getString(_clientId);
 	}
 
 	@Override
@@ -432,17 +531,29 @@ public class WeDeployAuthTokenModelImpl
 
 	@Override
 	public void setToken(String token) {
-		_columnBitmask |= TOKEN_COLUMN_BITMASK;
+		if ((_columnBitmask & TOKEN_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TOKEN_COLUMN_BITMASK;
 
-		if (_originalToken == null) {
-			_originalToken = _token;
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[TOKEN_COLUMN_INDEX] = _token;
 		}
 
 		_token = token;
 	}
 
 	public String getOriginalToken() {
-		return GetterUtil.getString(_originalToken);
+		if (_originalValues != null) {
+			Object originalToken = _originalValues[TOKEN_COLUMN_INDEX];
+
+			if (originalToken != null) {
+				return GetterUtil.getString((String)originalToken);
+			}
+		}
+
+		return GetterUtil.getString(_token);
 	}
 
 	@Override
@@ -452,19 +563,29 @@ public class WeDeployAuthTokenModelImpl
 
 	@Override
 	public void setType(int type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
+		if ((_columnBitmask & TYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TYPE_COLUMN_BITMASK;
 
-		if (!_setOriginalType) {
-			_setOriginalType = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
 
-			_originalType = _type;
+			_originalValues[TYPE_COLUMN_INDEX] = _type;
 		}
 
 		_type = type;
 	}
 
 	public int getOriginalType() {
-		return _originalType;
+		if (_originalValues != null) {
+			Object originalType = _originalValues[TYPE_COLUMN_INDEX];
+
+			if (originalType != null) {
+				return (int)originalType;
+			}
+		}
+
+		return _type;
 	}
 
 	public long getColumnBitmask() {
@@ -573,22 +694,9 @@ public class WeDeployAuthTokenModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WeDeployAuthTokenModelImpl weDeployAuthTokenModelImpl = this;
+		_columnBitmask = 0;
 
-		weDeployAuthTokenModelImpl._setModifiedDate = false;
-
-		weDeployAuthTokenModelImpl._originalClientId =
-			weDeployAuthTokenModelImpl._clientId;
-
-		weDeployAuthTokenModelImpl._originalToken =
-			weDeployAuthTokenModelImpl._token;
-
-		weDeployAuthTokenModelImpl._originalType =
-			weDeployAuthTokenModelImpl._type;
-
-		weDeployAuthTokenModelImpl._setOriginalType = false;
-
-		weDeployAuthTokenModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -729,15 +837,11 @@ public class WeDeployAuthTokenModelImpl
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private String _clientId;
-	private String _originalClientId;
 	private String _token;
-	private String _originalToken;
 	private int _type;
-	private int _originalType;
-	private boolean _setOriginalType;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private WeDeployAuthToken _escapedModel;
 
 }

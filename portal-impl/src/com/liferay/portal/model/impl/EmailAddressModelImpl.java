@@ -136,19 +136,57 @@ public class EmailAddressModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.EmailAddress"),
 		true);
 
-	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long CLASSPK_COLUMN_BITMASK = 2L;
+	public static final long UUID_COLUMN_BITMASK = 2L;
 
-	public static final long COMPANYID_COLUMN_BITMASK = 4L;
+	public static final long EMAILADDRESSID_COLUMN_BITMASK = 4L;
 
-	public static final long PRIMARY_COLUMN_BITMASK = 8L;
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
 
 	public static final long USERID_COLUMN_BITMASK = 16L;
 
-	public static final long UUID_COLUMN_BITMASK = 32L;
+	public static final long USERNAME_COLUMN_BITMASK = 32L;
 
 	public static final long CREATEDATE_COLUMN_BITMASK = 64L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 128L;
+
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 256L;
+
+	public static final long CLASSPK_COLUMN_BITMASK = 512L;
+
+	public static final long ADDRESS_COLUMN_BITMASK = 1024L;
+
+	public static final long TYPEID_COLUMN_BITMASK = 2048L;
+
+	public static final long PRIMARY_COLUMN_BITMASK = 4096L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int UUID_COLUMN_INDEX = 1;
+
+	public static final int EMAILADDRESSID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int USERID_COLUMN_INDEX = 4;
+
+	public static final int USERNAME_COLUMN_INDEX = 5;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 6;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 7;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 8;
+
+	public static final int CLASSPK_COLUMN_INDEX = 9;
+
+	public static final int ADDRESS_COLUMN_INDEX = 10;
+
+	public static final int TYPEID_COLUMN_INDEX = 11;
+
+	public static final int PRIMARY_COLUMN_INDEX = 12;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -400,6 +438,16 @@ public class EmailAddressModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -416,17 +464,29 @@ public class EmailAddressModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		if ((_columnBitmask & UUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= UUID_COLUMN_BITMASK;
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[UUID_COLUMN_INDEX] = _uuid;
 		}
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		if (_originalValues != null) {
+			Object originalUuid = _originalValues[UUID_COLUMN_INDEX];
+
+			if (originalUuid != null) {
+				return GetterUtil.getString((String)originalUuid);
+			}
+		}
+
+		return GetterUtil.getString(_uuid);
 	}
 
 	@JSON
@@ -437,6 +497,16 @@ public class EmailAddressModelImpl
 
 	@Override
 	public void setEmailAddressId(long emailAddressId) {
+		if ((_columnBitmask & EMAILADDRESSID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= EMAILADDRESSID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[EMAILADDRESSID_COLUMN_INDEX] = _emailAddressId;
+		}
+
 		_emailAddressId = emailAddressId;
 	}
 
@@ -448,19 +518,29 @@ public class EmailAddressModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@JSON
@@ -471,12 +551,14 @@ public class EmailAddressModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
 
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalUserId = _userId;
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
 		}
 
 		_userId = userId;
@@ -499,7 +581,15 @@ public class EmailAddressModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		if (_originalValues != null) {
+			Object originalUserId = _originalValues[USERID_COLUMN_INDEX];
+
+			if (originalUserId != null) {
+				return (long)originalUserId;
+			}
+		}
+
+		return _userId;
 	}
 
 	@JSON
@@ -515,6 +605,16 @@ public class EmailAddressModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -526,7 +626,15 @@ public class EmailAddressModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
 
 		_createDate = createDate;
 	}
@@ -538,12 +646,20 @@ public class EmailAddressModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -576,19 +692,30 @@ public class EmailAddressModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSNAMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalClassNameId = _classNameId;
+			_originalValues[CLASSNAMEID_COLUMN_INDEX] = _classNameId;
 		}
 
 		_classNameId = classNameId;
 	}
 
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		if (_originalValues != null) {
+			Object originalClassNameId =
+				_originalValues[CLASSNAMEID_COLUMN_INDEX];
+
+			if (originalClassNameId != null) {
+				return (long)originalClassNameId;
+			}
+		}
+
+		return _classNameId;
 	}
 
 	@JSON
@@ -599,19 +726,29 @@ public class EmailAddressModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSPK_COLUMN_BITMASK;
 
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalClassPK = _classPK;
+			_originalValues[CLASSPK_COLUMN_INDEX] = _classPK;
 		}
 
 		_classPK = classPK;
 	}
 
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		if (_originalValues != null) {
+			Object originalClassPK = _originalValues[CLASSPK_COLUMN_INDEX];
+
+			if (originalClassPK != null) {
+				return (long)originalClassPK;
+			}
+		}
+
+		return _classPK;
 	}
 
 	@JSON
@@ -627,6 +764,16 @@ public class EmailAddressModelImpl
 
 	@Override
 	public void setAddress(String address) {
+		if ((_columnBitmask & ADDRESS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ADDRESS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[ADDRESS_COLUMN_INDEX] = _address;
+		}
+
 		_address = address;
 	}
 
@@ -638,6 +785,16 @@ public class EmailAddressModelImpl
 
 	@Override
 	public void setTypeId(long typeId) {
+		if ((_columnBitmask & TYPEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TYPEID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[TYPEID_COLUMN_INDEX] = _typeId;
+		}
+
 		_typeId = typeId;
 	}
 
@@ -655,19 +812,29 @@ public class EmailAddressModelImpl
 
 	@Override
 	public void setPrimary(boolean primary) {
-		_columnBitmask |= PRIMARY_COLUMN_BITMASK;
+		if ((_columnBitmask & PRIMARY_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PRIMARY_COLUMN_BITMASK;
 
-		if (!_setOriginalPrimary) {
-			_setOriginalPrimary = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalPrimary = _primary;
+			_originalValues[PRIMARY_COLUMN_INDEX] = _primary;
 		}
 
 		_primary = primary;
 	}
 
 	public boolean getOriginalPrimary() {
-		return _originalPrimary;
+		if (_originalValues != null) {
+			Object originalPrimary = _originalValues[PRIMARY_COLUMN_INDEX];
+
+			if (originalPrimary != null) {
+				return (boolean)originalPrimary;
+			}
+		}
+
+		return _primary;
 	}
 
 	@Override
@@ -785,35 +952,9 @@ public class EmailAddressModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		EmailAddressModelImpl emailAddressModelImpl = this;
+		_columnBitmask = 0;
 
-		emailAddressModelImpl._originalUuid = emailAddressModelImpl._uuid;
-
-		emailAddressModelImpl._originalCompanyId =
-			emailAddressModelImpl._companyId;
-
-		emailAddressModelImpl._setOriginalCompanyId = false;
-
-		emailAddressModelImpl._originalUserId = emailAddressModelImpl._userId;
-
-		emailAddressModelImpl._setOriginalUserId = false;
-
-		emailAddressModelImpl._setModifiedDate = false;
-
-		emailAddressModelImpl._originalClassNameId =
-			emailAddressModelImpl._classNameId;
-
-		emailAddressModelImpl._setOriginalClassNameId = false;
-
-		emailAddressModelImpl._originalClassPK = emailAddressModelImpl._classPK;
-
-		emailAddressModelImpl._setOriginalClassPK = false;
-
-		emailAddressModelImpl._originalPrimary = emailAddressModelImpl._primary;
-
-		emailAddressModelImpl._setOriginalPrimary = false;
-
-		emailAddressModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -954,30 +1095,19 @@ public class EmailAddressModelImpl
 
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _emailAddressId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private String _address;
 	private long _typeId;
 	private boolean _primary;
-	private boolean _originalPrimary;
-	private boolean _setOriginalPrimary;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private EmailAddress _escapedModel;
 
 }

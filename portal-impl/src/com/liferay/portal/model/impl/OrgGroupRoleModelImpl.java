@@ -111,11 +111,25 @@ public class OrgGroupRoleModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.OrgGroupRole"),
 		true);
 
-	public static final long GROUPID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long ROLEID_COLUMN_BITMASK = 2L;
+	public static final long ORGANIZATIONID_COLUMN_BITMASK = 2L;
 
-	public static final long ORGANIZATIONID_COLUMN_BITMASK = 4L;
+	public static final long GROUPID_COLUMN_BITMASK = 4L;
+
+	public static final long ROLEID_COLUMN_BITMASK = 8L;
+
+	public static final long COMPANYID_COLUMN_BITMASK = 16L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int ORGANIZATIONID_COLUMN_INDEX = 1;
+
+	public static final int GROUPID_COLUMN_INDEX = 2;
+
+	public static final int ROLEID_COLUMN_INDEX = 3;
+
+	public static final int COMPANYID_COLUMN_INDEX = 4;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -285,6 +299,16 @@ public class OrgGroupRoleModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -295,6 +319,16 @@ public class OrgGroupRoleModelImpl
 
 	@Override
 	public void setOrganizationId(long organizationId) {
+		if ((_columnBitmask & ORGANIZATIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ORGANIZATIONID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[ORGANIZATIONID_COLUMN_INDEX] = _organizationId;
+		}
+
 		_organizationId = organizationId;
 	}
 
@@ -305,19 +339,29 @@ public class OrgGroupRoleModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@Override
@@ -327,19 +371,29 @@ public class OrgGroupRoleModelImpl
 
 	@Override
 	public void setRoleId(long roleId) {
-		_columnBitmask |= ROLEID_COLUMN_BITMASK;
+		if ((_columnBitmask & ROLEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ROLEID_COLUMN_BITMASK;
 
-		if (!_setOriginalRoleId) {
-			_setOriginalRoleId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
 
-			_originalRoleId = _roleId;
+			_originalValues[ROLEID_COLUMN_INDEX] = _roleId;
 		}
 
 		_roleId = roleId;
 	}
 
 	public long getOriginalRoleId() {
-		return _originalRoleId;
+		if (_originalValues != null) {
+			Object originalRoleId = _originalValues[ROLEID_COLUMN_INDEX];
+
+			if (originalRoleId != null) {
+				return (long)originalRoleId;
+			}
+		}
+
+		return _roleId;
 	}
 
 	@Override
@@ -349,6 +403,16 @@ public class OrgGroupRoleModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -432,17 +496,9 @@ public class OrgGroupRoleModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		OrgGroupRoleModelImpl orgGroupRoleModelImpl = this;
+		_columnBitmask = 0;
 
-		orgGroupRoleModelImpl._originalGroupId = orgGroupRoleModelImpl._groupId;
-
-		orgGroupRoleModelImpl._setOriginalGroupId = false;
-
-		orgGroupRoleModelImpl._originalRoleId = orgGroupRoleModelImpl._roleId;
-
-		orgGroupRoleModelImpl._setOriginalRoleId = false;
-
-		orgGroupRoleModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -538,13 +594,10 @@ public class OrgGroupRoleModelImpl
 	private long _mvccVersion;
 	private long _organizationId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _roleId;
-	private long _originalRoleId;
-	private boolean _setOriginalRoleId;
 	private long _companyId;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private OrgGroupRole _escapedModel;
 
 }

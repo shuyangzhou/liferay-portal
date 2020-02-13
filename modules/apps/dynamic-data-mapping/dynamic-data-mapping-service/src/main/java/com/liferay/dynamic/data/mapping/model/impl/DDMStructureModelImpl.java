@@ -139,23 +139,93 @@ public class DDMStructureModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long COMPANYID_COLUMN_BITMASK = 2L;
+	public static final long CTCOLLECTIONID_COLUMN_BITMASK = 2L;
 
-	public static final long DESCRIPTION_COLUMN_BITMASK = 4L;
+	public static final long UUID_COLUMN_BITMASK = 4L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 8L;
+	public static final long STRUCTUREID_COLUMN_BITMASK = 8L;
 
-	public static final long NAME_COLUMN_BITMASK = 16L;
+	public static final long GROUPID_COLUMN_BITMASK = 16L;
 
-	public static final long PARENTSTRUCTUREID_COLUMN_BITMASK = 32L;
+	public static final long COMPANYID_COLUMN_BITMASK = 32L;
 
-	public static final long STRUCTUREKEY_COLUMN_BITMASK = 64L;
+	public static final long USERID_COLUMN_BITMASK = 64L;
 
-	public static final long UUID_COLUMN_BITMASK = 128L;
+	public static final long USERNAME_COLUMN_BITMASK = 128L;
 
-	public static final long STRUCTUREID_COLUMN_BITMASK = 256L;
+	public static final long VERSIONUSERID_COLUMN_BITMASK = 256L;
+
+	public static final long VERSIONUSERNAME_COLUMN_BITMASK = 512L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 1024L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 2048L;
+
+	public static final long PARENTSTRUCTUREID_COLUMN_BITMASK = 4096L;
+
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 8192L;
+
+	public static final long STRUCTUREKEY_COLUMN_BITMASK = 16384L;
+
+	public static final long VERSION_COLUMN_BITMASK = 32768L;
+
+	public static final long NAME_COLUMN_BITMASK = 65536L;
+
+	public static final long DESCRIPTION_COLUMN_BITMASK = 131072L;
+
+	public static final long DEFINITION_COLUMN_BITMASK = 262144L;
+
+	public static final long STORAGETYPE_COLUMN_BITMASK = 524288L;
+
+	public static final long TYPE_COLUMN_BITMASK = 1048576L;
+
+	public static final long LASTPUBLISHDATE_COLUMN_BITMASK = 2097152L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int CTCOLLECTIONID_COLUMN_INDEX = 1;
+
+	public static final int UUID_COLUMN_INDEX = 2;
+
+	public static final int STRUCTUREID_COLUMN_INDEX = 3;
+
+	public static final int GROUPID_COLUMN_INDEX = 4;
+
+	public static final int COMPANYID_COLUMN_INDEX = 5;
+
+	public static final int USERID_COLUMN_INDEX = 6;
+
+	public static final int USERNAME_COLUMN_INDEX = 7;
+
+	public static final int VERSIONUSERID_COLUMN_INDEX = 8;
+
+	public static final int VERSIONUSERNAME_COLUMN_INDEX = 9;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 10;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 11;
+
+	public static final int PARENTSTRUCTUREID_COLUMN_INDEX = 12;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 13;
+
+	public static final int STRUCTUREKEY_COLUMN_INDEX = 14;
+
+	public static final int VERSION_COLUMN_INDEX = 15;
+
+	public static final int NAME_COLUMN_INDEX = 16;
+
+	public static final int DESCRIPTION_COLUMN_INDEX = 17;
+
+	public static final int DEFINITION_COLUMN_INDEX = 18;
+
+	public static final int STORAGETYPE_COLUMN_INDEX = 19;
+
+	public static final int TYPE_COLUMN_INDEX = 20;
+
+	public static final int LASTPUBLISHDATE_COLUMN_INDEX = 21;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -463,6 +533,16 @@ public class DDMStructureModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[22];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -474,6 +554,16 @@ public class DDMStructureModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		if ((_columnBitmask & CTCOLLECTIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CTCOLLECTIONID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[22];
+			}
+
+			_originalValues[CTCOLLECTIONID_COLUMN_INDEX] = _ctCollectionId;
+		}
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -490,17 +580,29 @@ public class DDMStructureModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		if ((_columnBitmask & UUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= UUID_COLUMN_BITMASK;
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[22];
+			}
+
+			_originalValues[UUID_COLUMN_INDEX] = _uuid;
 		}
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		if (_originalValues != null) {
+			Object originalUuid = _originalValues[UUID_COLUMN_INDEX];
+
+			if (originalUuid != null) {
+				return GetterUtil.getString((String)originalUuid);
+			}
+		}
+
+		return GetterUtil.getString(_uuid);
 	}
 
 	@JSON
@@ -511,6 +613,16 @@ public class DDMStructureModelImpl
 
 	@Override
 	public void setStructureId(long structureId) {
+		if ((_columnBitmask & STRUCTUREID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STRUCTUREID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[22];
+			}
+
+			_originalValues[STRUCTUREID_COLUMN_INDEX] = _structureId;
+		}
+
 		_structureId = structureId;
 	}
 
@@ -522,19 +634,29 @@ public class DDMStructureModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[22];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@JSON
@@ -545,19 +667,29 @@ public class DDMStructureModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[22];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@JSON
@@ -568,6 +700,16 @@ public class DDMStructureModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[22];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -600,6 +742,16 @@ public class DDMStructureModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[22];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -611,6 +763,16 @@ public class DDMStructureModelImpl
 
 	@Override
 	public void setVersionUserId(long versionUserId) {
+		if ((_columnBitmask & VERSIONUSERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= VERSIONUSERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[22];
+			}
+
+			_originalValues[VERSIONUSERID_COLUMN_INDEX] = _versionUserId;
+		}
+
 		_versionUserId = versionUserId;
 	}
 
@@ -643,6 +805,16 @@ public class DDMStructureModelImpl
 
 	@Override
 	public void setVersionUserName(String versionUserName) {
+		if ((_columnBitmask & VERSIONUSERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= VERSIONUSERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[22];
+			}
+
+			_originalValues[VERSIONUSERNAME_COLUMN_INDEX] = _versionUserName;
+		}
+
 		_versionUserName = versionUserName;
 	}
 
@@ -654,6 +826,16 @@ public class DDMStructureModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[22];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -664,12 +846,20 @@ public class DDMStructureModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[22];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -682,19 +872,31 @@ public class DDMStructureModelImpl
 
 	@Override
 	public void setParentStructureId(long parentStructureId) {
-		_columnBitmask |= PARENTSTRUCTUREID_COLUMN_BITMASK;
+		if ((_columnBitmask & PARENTSTRUCTUREID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PARENTSTRUCTUREID_COLUMN_BITMASK;
 
-		if (!_setOriginalParentStructureId) {
-			_setOriginalParentStructureId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[22];
+			}
 
-			_originalParentStructureId = _parentStructureId;
+			_originalValues[PARENTSTRUCTUREID_COLUMN_INDEX] =
+				_parentStructureId;
 		}
 
 		_parentStructureId = parentStructureId;
 	}
 
 	public long getOriginalParentStructureId() {
-		return _originalParentStructureId;
+		if (_originalValues != null) {
+			Object originalParentStructureId =
+				_originalValues[PARENTSTRUCTUREID_COLUMN_INDEX];
+
+			if (originalParentStructureId != null) {
+				return (long)originalParentStructureId;
+			}
+		}
+
+		return _parentStructureId;
 	}
 
 	@JSON
@@ -705,19 +907,30 @@ public class DDMStructureModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSNAMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[22];
+			}
 
-			_originalClassNameId = _classNameId;
+			_originalValues[CLASSNAMEID_COLUMN_INDEX] = _classNameId;
 		}
 
 		_classNameId = classNameId;
 	}
 
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		if (_originalValues != null) {
+			Object originalClassNameId =
+				_originalValues[CLASSNAMEID_COLUMN_INDEX];
+
+			if (originalClassNameId != null) {
+				return (long)originalClassNameId;
+			}
+		}
+
+		return _classNameId;
 	}
 
 	@JSON
@@ -733,17 +946,30 @@ public class DDMStructureModelImpl
 
 	@Override
 	public void setStructureKey(String structureKey) {
-		_columnBitmask |= STRUCTUREKEY_COLUMN_BITMASK;
+		if ((_columnBitmask & STRUCTUREKEY_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STRUCTUREKEY_COLUMN_BITMASK;
 
-		if (_originalStructureKey == null) {
-			_originalStructureKey = _structureKey;
+			if (_originalValues == null) {
+				_originalValues = new Object[22];
+			}
+
+			_originalValues[STRUCTUREKEY_COLUMN_INDEX] = _structureKey;
 		}
 
 		_structureKey = structureKey;
 	}
 
 	public String getOriginalStructureKey() {
-		return GetterUtil.getString(_originalStructureKey);
+		if (_originalValues != null) {
+			Object originalStructureKey =
+				_originalValues[STRUCTUREKEY_COLUMN_INDEX];
+
+			if (originalStructureKey != null) {
+				return GetterUtil.getString((String)originalStructureKey);
+			}
+		}
+
+		return GetterUtil.getString(_structureKey);
 	}
 
 	@JSON
@@ -759,6 +985,16 @@ public class DDMStructureModelImpl
 
 	@Override
 	public void setVersion(String version) {
+		if ((_columnBitmask & VERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= VERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[22];
+			}
+
+			_originalValues[VERSION_COLUMN_INDEX] = _version;
+		}
+
 		_version = version;
 	}
 
@@ -818,10 +1054,14 @@ public class DDMStructureModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask |= NAME_COLUMN_BITMASK;
+		if ((_columnBitmask & NAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= NAME_COLUMN_BITMASK;
 
-		if (_originalName == null) {
-			_originalName = _name;
+			if (_originalValues == null) {
+				_originalValues = new Object[22];
+			}
+
+			_originalValues[NAME_COLUMN_INDEX] = _name;
 		}
 
 		_name = name;
@@ -872,7 +1112,15 @@ public class DDMStructureModelImpl
 	}
 
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		if (_originalValues != null) {
+			Object originalName = _originalValues[NAME_COLUMN_INDEX];
+
+			if (originalName != null) {
+				return GetterUtil.getString((String)originalName);
+			}
+		}
+
+		return GetterUtil.getString(_name);
 	}
 
 	@JSON
@@ -931,10 +1179,14 @@ public class DDMStructureModelImpl
 
 	@Override
 	public void setDescription(String description) {
-		_columnBitmask |= DESCRIPTION_COLUMN_BITMASK;
+		if ((_columnBitmask & DESCRIPTION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DESCRIPTION_COLUMN_BITMASK;
 
-		if (_originalDescription == null) {
-			_originalDescription = _description;
+			if (_originalValues == null) {
+				_originalValues = new Object[22];
+			}
+
+			_originalValues[DESCRIPTION_COLUMN_INDEX] = _description;
 		}
 
 		_description = description;
@@ -990,7 +1242,16 @@ public class DDMStructureModelImpl
 	}
 
 	public String getOriginalDescription() {
-		return GetterUtil.getString(_originalDescription);
+		if (_originalValues != null) {
+			Object originalDescription =
+				_originalValues[DESCRIPTION_COLUMN_INDEX];
+
+			if (originalDescription != null) {
+				return GetterUtil.getString((String)originalDescription);
+			}
+		}
+
+		return GetterUtil.getString(_description);
 	}
 
 	@JSON
@@ -1006,6 +1267,16 @@ public class DDMStructureModelImpl
 
 	@Override
 	public void setDefinition(String definition) {
+		if ((_columnBitmask & DEFINITION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DEFINITION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[22];
+			}
+
+			_originalValues[DEFINITION_COLUMN_INDEX] = _definition;
+		}
+
 		_definition = definition;
 	}
 
@@ -1022,6 +1293,16 @@ public class DDMStructureModelImpl
 
 	@Override
 	public void setStorageType(String storageType) {
+		if ((_columnBitmask & STORAGETYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STORAGETYPE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[22];
+			}
+
+			_originalValues[STORAGETYPE_COLUMN_INDEX] = _storageType;
+		}
+
 		_storageType = storageType;
 	}
 
@@ -1033,6 +1314,16 @@ public class DDMStructureModelImpl
 
 	@Override
 	public void setType(int type) {
+		if ((_columnBitmask & TYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TYPE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[22];
+			}
+
+			_originalValues[TYPE_COLUMN_INDEX] = _type;
+		}
+
 		_type = type;
 	}
 
@@ -1044,6 +1335,16 @@ public class DDMStructureModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		if ((_columnBitmask & LASTPUBLISHDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LASTPUBLISHDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[22];
+			}
+
+			_originalValues[LASTPUBLISHDATE_COLUMN_INDEX] = _lastPublishDate;
+		}
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -1275,44 +1576,13 @@ public class DDMStructureModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DDMStructureModelImpl ddmStructureModelImpl = this;
-
-		ddmStructureModelImpl._originalUuid = ddmStructureModelImpl._uuid;
-
-		ddmStructureModelImpl._originalGroupId = ddmStructureModelImpl._groupId;
-
-		ddmStructureModelImpl._setOriginalGroupId = false;
-
-		ddmStructureModelImpl._originalCompanyId =
-			ddmStructureModelImpl._companyId;
-
-		ddmStructureModelImpl._setOriginalCompanyId = false;
-
-		ddmStructureModelImpl._setModifiedDate = false;
-
-		ddmStructureModelImpl._originalParentStructureId =
-			ddmStructureModelImpl._parentStructureId;
-
-		ddmStructureModelImpl._setOriginalParentStructureId = false;
-
-		ddmStructureModelImpl._originalClassNameId =
-			ddmStructureModelImpl._classNameId;
-
-		ddmStructureModelImpl._setOriginalClassNameId = false;
-
-		ddmStructureModelImpl._originalStructureKey =
-			ddmStructureModelImpl._structureKey;
-
-		ddmStructureModelImpl._originalName = ddmStructureModelImpl._name;
-
-		ddmStructureModelImpl._originalDescription =
-			ddmStructureModelImpl._description;
-
 		setClassName(null);
 
 		setDDMForm(null);
 
-		ddmStructureModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
+
+		_originalValues = null;
 	}
 
 	@Override
@@ -1522,41 +1792,29 @@ public class DDMStructureModelImpl
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private String _uuid;
-	private String _originalUuid;
 	private long _structureId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private long _versionUserId;
 	private String _versionUserName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _parentStructureId;
-	private long _originalParentStructureId;
-	private boolean _setOriginalParentStructureId;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private String _structureKey;
-	private String _originalStructureKey;
 	private String _version;
 	private String _name;
 	private String _nameCurrentLanguageId;
-	private String _originalName;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
-	private String _originalDescription;
 	private String _definition;
 	private String _storageType;
 	private int _type;
 	private Date _lastPublishDate;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private DDMStructure _escapedModel;
 
 }

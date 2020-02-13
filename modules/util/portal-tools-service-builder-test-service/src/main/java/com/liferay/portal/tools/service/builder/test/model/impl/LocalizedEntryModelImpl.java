@@ -107,7 +107,19 @@ public class LocalizedEntryModelImpl
 				"value.object.finder.cache.enabled.com.liferay.portal.tools.service.builder.test.model.LocalizedEntry"),
 		true);
 
-	public static final boolean COLUMN_BITMASK_ENABLED = false;
+	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(
+		com.liferay.portal.tools.service.builder.test.service.util.ServiceProps.
+			get(
+				"value.object.column.bitmask.enabled.com.liferay.portal.tools.service.builder.test.model.LocalizedEntry"),
+		true);
+
+	public static final long DEFAULTLANGUAGEID_COLUMN_BITMASK = 1L;
+
+	public static final long LOCALIZEDENTRYID_COLUMN_BITMASK = 2L;
+
+	public static final int DEFAULTLANGUAGEID_COLUMN_INDEX = 0;
+
+	public static final int LOCALIZEDENTRYID_COLUMN_INDEX = 1;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.tools.service.builder.test.service.util.ServiceProps.
@@ -424,6 +436,17 @@ public class LocalizedEntryModelImpl
 
 	@Override
 	public void setDefaultLanguageId(String defaultLanguageId) {
+		if ((_columnBitmask & DEFAULTLANGUAGEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DEFAULTLANGUAGEID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[2];
+			}
+
+			_originalValues[DEFAULTLANGUAGEID_COLUMN_INDEX] =
+				_defaultLanguageId;
+		}
+
 		_defaultLanguageId = defaultLanguageId;
 	}
 
@@ -434,7 +457,21 @@ public class LocalizedEntryModelImpl
 
 	@Override
 	public void setLocalizedEntryId(long localizedEntryId) {
+		if ((_columnBitmask & LOCALIZEDENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LOCALIZEDENTRYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[2];
+			}
+
+			_originalValues[LOCALIZEDENTRYID_COLUMN_INDEX] = _localizedEntryId;
+		}
+
 		_localizedEntryId = localizedEntryId;
+	}
+
+	public long getColumnBitmask() {
+		return _columnBitmask;
 	}
 
 	@Override
@@ -531,6 +568,9 @@ public class LocalizedEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
+		_columnBitmask = 0;
+
+		_originalValues = null;
 	}
 
 	@Override
@@ -623,6 +663,8 @@ public class LocalizedEntryModelImpl
 
 	private String _defaultLanguageId;
 	private long _localizedEntryId;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private LocalizedEntry _escapedModel;
 
 }

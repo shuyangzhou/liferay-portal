@@ -167,15 +167,145 @@ public class PasswordPolicyModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.PasswordPolicy"),
 		true);
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long DEFAULTPOLICY_COLUMN_BITMASK = 2L;
+	public static final long UUID_COLUMN_BITMASK = 2L;
 
-	public static final long NAME_COLUMN_BITMASK = 4L;
+	public static final long PASSWORDPOLICYID_COLUMN_BITMASK = 4L;
 
-	public static final long UUID_COLUMN_BITMASK = 8L;
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
 
-	public static final long PASSWORDPOLICYID_COLUMN_BITMASK = 16L;
+	public static final long USERID_COLUMN_BITMASK = 16L;
+
+	public static final long USERNAME_COLUMN_BITMASK = 32L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 64L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 128L;
+
+	public static final long DEFAULTPOLICY_COLUMN_BITMASK = 256L;
+
+	public static final long NAME_COLUMN_BITMASK = 512L;
+
+	public static final long DESCRIPTION_COLUMN_BITMASK = 1024L;
+
+	public static final long CHANGEABLE_COLUMN_BITMASK = 2048L;
+
+	public static final long CHANGEREQUIRED_COLUMN_BITMASK = 4096L;
+
+	public static final long MINAGE_COLUMN_BITMASK = 8192L;
+
+	public static final long CHECKSYNTAX_COLUMN_BITMASK = 16384L;
+
+	public static final long ALLOWDICTIONARYWORDS_COLUMN_BITMASK = 32768L;
+
+	public static final long MINALPHANUMERIC_COLUMN_BITMASK = 65536L;
+
+	public static final long MINLENGTH_COLUMN_BITMASK = 131072L;
+
+	public static final long MINLOWERCASE_COLUMN_BITMASK = 262144L;
+
+	public static final long MINNUMBERS_COLUMN_BITMASK = 524288L;
+
+	public static final long MINSYMBOLS_COLUMN_BITMASK = 1048576L;
+
+	public static final long MINUPPERCASE_COLUMN_BITMASK = 2097152L;
+
+	public static final long REGEX_COLUMN_BITMASK = 4194304L;
+
+	public static final long HISTORY_COLUMN_BITMASK = 8388608L;
+
+	public static final long HISTORYCOUNT_COLUMN_BITMASK = 16777216L;
+
+	public static final long EXPIREABLE_COLUMN_BITMASK = 33554432L;
+
+	public static final long MAXAGE_COLUMN_BITMASK = 67108864L;
+
+	public static final long WARNINGTIME_COLUMN_BITMASK = 134217728L;
+
+	public static final long GRACELIMIT_COLUMN_BITMASK = 268435456L;
+
+	public static final long LOCKOUT_COLUMN_BITMASK = 536870912L;
+
+	public static final long MAXFAILURE_COLUMN_BITMASK = 1073741824L;
+
+	public static final long LOCKOUTDURATION_COLUMN_BITMASK = 2147483648L;
+
+	public static final long REQUIREUNLOCK_COLUMN_BITMASK = 4294967296L;
+
+	public static final long RESETFAILURECOUNT_COLUMN_BITMASK = 8589934592L;
+
+	public static final long RESETTICKETMAXAGE_COLUMN_BITMASK = 17179869184L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int UUID_COLUMN_INDEX = 1;
+
+	public static final int PASSWORDPOLICYID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int USERID_COLUMN_INDEX = 4;
+
+	public static final int USERNAME_COLUMN_INDEX = 5;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 6;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 7;
+
+	public static final int DEFAULTPOLICY_COLUMN_INDEX = 8;
+
+	public static final int NAME_COLUMN_INDEX = 9;
+
+	public static final int DESCRIPTION_COLUMN_INDEX = 10;
+
+	public static final int CHANGEABLE_COLUMN_INDEX = 11;
+
+	public static final int CHANGEREQUIRED_COLUMN_INDEX = 12;
+
+	public static final int MINAGE_COLUMN_INDEX = 13;
+
+	public static final int CHECKSYNTAX_COLUMN_INDEX = 14;
+
+	public static final int ALLOWDICTIONARYWORDS_COLUMN_INDEX = 15;
+
+	public static final int MINALPHANUMERIC_COLUMN_INDEX = 16;
+
+	public static final int MINLENGTH_COLUMN_INDEX = 17;
+
+	public static final int MINLOWERCASE_COLUMN_INDEX = 18;
+
+	public static final int MINNUMBERS_COLUMN_INDEX = 19;
+
+	public static final int MINSYMBOLS_COLUMN_INDEX = 20;
+
+	public static final int MINUPPERCASE_COLUMN_INDEX = 21;
+
+	public static final int REGEX_COLUMN_INDEX = 22;
+
+	public static final int HISTORY_COLUMN_INDEX = 23;
+
+	public static final int HISTORYCOUNT_COLUMN_INDEX = 24;
+
+	public static final int EXPIREABLE_COLUMN_INDEX = 25;
+
+	public static final int MAXAGE_COLUMN_INDEX = 26;
+
+	public static final int WARNINGTIME_COLUMN_INDEX = 27;
+
+	public static final int GRACELIMIT_COLUMN_INDEX = 28;
+
+	public static final int LOCKOUT_COLUMN_INDEX = 29;
+
+	public static final int MAXFAILURE_COLUMN_INDEX = 30;
+
+	public static final int LOCKOUTDURATION_COLUMN_INDEX = 31;
+
+	public static final int REQUIREUNLOCK_COLUMN_INDEX = 32;
+
+	public static final int RESETFAILURECOUNT_COLUMN_INDEX = 33;
+
+	public static final int RESETTICKETMAXAGE_COLUMN_INDEX = 34;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -575,6 +705,16 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -591,17 +731,29 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		if ((_columnBitmask & UUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= UUID_COLUMN_BITMASK;
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[UUID_COLUMN_INDEX] = _uuid;
 		}
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		if (_originalValues != null) {
+			Object originalUuid = _originalValues[UUID_COLUMN_INDEX];
+
+			if (originalUuid != null) {
+				return GetterUtil.getString((String)originalUuid);
+			}
+		}
+
+		return GetterUtil.getString(_uuid);
 	}
 
 	@JSON
@@ -612,6 +764,16 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setPasswordPolicyId(long passwordPolicyId) {
+		if ((_columnBitmask & PASSWORDPOLICYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PASSWORDPOLICYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[PASSWORDPOLICYID_COLUMN_INDEX] = _passwordPolicyId;
+		}
+
 		_passwordPolicyId = passwordPolicyId;
 	}
 
@@ -623,19 +785,29 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@JSON
@@ -646,6 +818,16 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -678,6 +860,16 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -689,6 +881,16 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -699,12 +901,20 @@ public class PasswordPolicyModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -723,19 +933,30 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setDefaultPolicy(boolean defaultPolicy) {
-		_columnBitmask |= DEFAULTPOLICY_COLUMN_BITMASK;
+		if ((_columnBitmask & DEFAULTPOLICY_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DEFAULTPOLICY_COLUMN_BITMASK;
 
-		if (!_setOriginalDefaultPolicy) {
-			_setOriginalDefaultPolicy = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
 
-			_originalDefaultPolicy = _defaultPolicy;
+			_originalValues[DEFAULTPOLICY_COLUMN_INDEX] = _defaultPolicy;
 		}
 
 		_defaultPolicy = defaultPolicy;
 	}
 
 	public boolean getOriginalDefaultPolicy() {
-		return _originalDefaultPolicy;
+		if (_originalValues != null) {
+			Object originalDefaultPolicy =
+				_originalValues[DEFAULTPOLICY_COLUMN_INDEX];
+
+			if (originalDefaultPolicy != null) {
+				return (boolean)originalDefaultPolicy;
+			}
+		}
+
+		return _defaultPolicy;
 	}
 
 	@JSON
@@ -751,17 +972,29 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask |= NAME_COLUMN_BITMASK;
+		if ((_columnBitmask & NAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= NAME_COLUMN_BITMASK;
 
-		if (_originalName == null) {
-			_originalName = _name;
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[NAME_COLUMN_INDEX] = _name;
 		}
 
 		_name = name;
 	}
 
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		if (_originalValues != null) {
+			Object originalName = _originalValues[NAME_COLUMN_INDEX];
+
+			if (originalName != null) {
+				return GetterUtil.getString((String)originalName);
+			}
+		}
+
+		return GetterUtil.getString(_name);
 	}
 
 	@JSON
@@ -777,6 +1010,16 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		if ((_columnBitmask & DESCRIPTION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DESCRIPTION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[DESCRIPTION_COLUMN_INDEX] = _description;
+		}
+
 		_description = description;
 	}
 
@@ -794,6 +1037,16 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setChangeable(boolean changeable) {
+		if ((_columnBitmask & CHANGEABLE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CHANGEABLE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[CHANGEABLE_COLUMN_INDEX] = _changeable;
+		}
+
 		_changeable = changeable;
 	}
 
@@ -811,6 +1064,16 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setChangeRequired(boolean changeRequired) {
+		if ((_columnBitmask & CHANGEREQUIRED_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CHANGEREQUIRED_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[CHANGEREQUIRED_COLUMN_INDEX] = _changeRequired;
+		}
+
 		_changeRequired = changeRequired;
 	}
 
@@ -822,6 +1085,16 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setMinAge(long minAge) {
+		if ((_columnBitmask & MINAGE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MINAGE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[MINAGE_COLUMN_INDEX] = _minAge;
+		}
+
 		_minAge = minAge;
 	}
 
@@ -839,6 +1112,16 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setCheckSyntax(boolean checkSyntax) {
+		if ((_columnBitmask & CHECKSYNTAX_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CHECKSYNTAX_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[CHECKSYNTAX_COLUMN_INDEX] = _checkSyntax;
+		}
+
 		_checkSyntax = checkSyntax;
 	}
 
@@ -856,6 +1139,17 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setAllowDictionaryWords(boolean allowDictionaryWords) {
+		if ((_columnBitmask & ALLOWDICTIONARYWORDS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ALLOWDICTIONARYWORDS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[ALLOWDICTIONARYWORDS_COLUMN_INDEX] =
+				_allowDictionaryWords;
+		}
+
 		_allowDictionaryWords = allowDictionaryWords;
 	}
 
@@ -867,6 +1161,16 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setMinAlphanumeric(int minAlphanumeric) {
+		if ((_columnBitmask & MINALPHANUMERIC_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MINALPHANUMERIC_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[MINALPHANUMERIC_COLUMN_INDEX] = _minAlphanumeric;
+		}
+
 		_minAlphanumeric = minAlphanumeric;
 	}
 
@@ -878,6 +1182,16 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setMinLength(int minLength) {
+		if ((_columnBitmask & MINLENGTH_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MINLENGTH_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[MINLENGTH_COLUMN_INDEX] = _minLength;
+		}
+
 		_minLength = minLength;
 	}
 
@@ -889,6 +1203,16 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setMinLowerCase(int minLowerCase) {
+		if ((_columnBitmask & MINLOWERCASE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MINLOWERCASE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[MINLOWERCASE_COLUMN_INDEX] = _minLowerCase;
+		}
+
 		_minLowerCase = minLowerCase;
 	}
 
@@ -900,6 +1224,16 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setMinNumbers(int minNumbers) {
+		if ((_columnBitmask & MINNUMBERS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MINNUMBERS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[MINNUMBERS_COLUMN_INDEX] = _minNumbers;
+		}
+
 		_minNumbers = minNumbers;
 	}
 
@@ -911,6 +1245,16 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setMinSymbols(int minSymbols) {
+		if ((_columnBitmask & MINSYMBOLS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MINSYMBOLS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[MINSYMBOLS_COLUMN_INDEX] = _minSymbols;
+		}
+
 		_minSymbols = minSymbols;
 	}
 
@@ -922,6 +1266,16 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setMinUpperCase(int minUpperCase) {
+		if ((_columnBitmask & MINUPPERCASE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MINUPPERCASE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[MINUPPERCASE_COLUMN_INDEX] = _minUpperCase;
+		}
+
 		_minUpperCase = minUpperCase;
 	}
 
@@ -938,6 +1292,16 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setRegex(String regex) {
+		if ((_columnBitmask & REGEX_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= REGEX_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[REGEX_COLUMN_INDEX] = _regex;
+		}
+
 		_regex = regex;
 	}
 
@@ -955,6 +1319,16 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setHistory(boolean history) {
+		if ((_columnBitmask & HISTORY_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= HISTORY_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[HISTORY_COLUMN_INDEX] = _history;
+		}
+
 		_history = history;
 	}
 
@@ -966,6 +1340,16 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setHistoryCount(int historyCount) {
+		if ((_columnBitmask & HISTORYCOUNT_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= HISTORYCOUNT_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[HISTORYCOUNT_COLUMN_INDEX] = _historyCount;
+		}
+
 		_historyCount = historyCount;
 	}
 
@@ -983,6 +1367,16 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setExpireable(boolean expireable) {
+		if ((_columnBitmask & EXPIREABLE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= EXPIREABLE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[EXPIREABLE_COLUMN_INDEX] = _expireable;
+		}
+
 		_expireable = expireable;
 	}
 
@@ -994,6 +1388,16 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setMaxAge(long maxAge) {
+		if ((_columnBitmask & MAXAGE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MAXAGE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[MAXAGE_COLUMN_INDEX] = _maxAge;
+		}
+
 		_maxAge = maxAge;
 	}
 
@@ -1005,6 +1409,16 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setWarningTime(long warningTime) {
+		if ((_columnBitmask & WARNINGTIME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= WARNINGTIME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[WARNINGTIME_COLUMN_INDEX] = _warningTime;
+		}
+
 		_warningTime = warningTime;
 	}
 
@@ -1016,6 +1430,16 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setGraceLimit(int graceLimit) {
+		if ((_columnBitmask & GRACELIMIT_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GRACELIMIT_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[GRACELIMIT_COLUMN_INDEX] = _graceLimit;
+		}
+
 		_graceLimit = graceLimit;
 	}
 
@@ -1033,6 +1457,16 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setLockout(boolean lockout) {
+		if ((_columnBitmask & LOCKOUT_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LOCKOUT_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[LOCKOUT_COLUMN_INDEX] = _lockout;
+		}
+
 		_lockout = lockout;
 	}
 
@@ -1044,6 +1478,16 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setMaxFailure(int maxFailure) {
+		if ((_columnBitmask & MAXFAILURE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MAXFAILURE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[MAXFAILURE_COLUMN_INDEX] = _maxFailure;
+		}
+
 		_maxFailure = maxFailure;
 	}
 
@@ -1055,6 +1499,16 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setLockoutDuration(long lockoutDuration) {
+		if ((_columnBitmask & LOCKOUTDURATION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LOCKOUTDURATION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[LOCKOUTDURATION_COLUMN_INDEX] = _lockoutDuration;
+		}
+
 		_lockoutDuration = lockoutDuration;
 	}
 
@@ -1072,6 +1526,16 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setRequireUnlock(boolean requireUnlock) {
+		if ((_columnBitmask & REQUIREUNLOCK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= REQUIREUNLOCK_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[REQUIREUNLOCK_COLUMN_INDEX] = _requireUnlock;
+		}
+
 		_requireUnlock = requireUnlock;
 	}
 
@@ -1083,6 +1547,17 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setResetFailureCount(long resetFailureCount) {
+		if ((_columnBitmask & RESETFAILURECOUNT_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= RESETFAILURECOUNT_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[RESETFAILURECOUNT_COLUMN_INDEX] =
+				_resetFailureCount;
+		}
+
 		_resetFailureCount = resetFailureCount;
 	}
 
@@ -1094,6 +1569,17 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void setResetTicketMaxAge(long resetTicketMaxAge) {
+		if ((_columnBitmask & RESETTICKETMAXAGE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= RESETTICKETMAXAGE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[35];
+			}
+
+			_originalValues[RESETTICKETMAXAGE_COLUMN_INDEX] =
+				_resetTicketMaxAge;
+		}
+
 		_resetTicketMaxAge = resetTicketMaxAge;
 	}
 
@@ -1234,25 +1720,9 @@ public class PasswordPolicyModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		PasswordPolicyModelImpl passwordPolicyModelImpl = this;
+		_columnBitmask = 0;
 
-		passwordPolicyModelImpl._originalUuid = passwordPolicyModelImpl._uuid;
-
-		passwordPolicyModelImpl._originalCompanyId =
-			passwordPolicyModelImpl._companyId;
-
-		passwordPolicyModelImpl._setOriginalCompanyId = false;
-
-		passwordPolicyModelImpl._setModifiedDate = false;
-
-		passwordPolicyModelImpl._originalDefaultPolicy =
-			passwordPolicyModelImpl._defaultPolicy;
-
-		passwordPolicyModelImpl._setOriginalDefaultPolicy = false;
-
-		passwordPolicyModelImpl._originalName = passwordPolicyModelImpl._name;
-
-		passwordPolicyModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -1450,21 +1920,14 @@ public class PasswordPolicyModelImpl
 
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _passwordPolicyId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private boolean _defaultPolicy;
-	private boolean _originalDefaultPolicy;
-	private boolean _setOriginalDefaultPolicy;
 	private String _name;
-	private String _originalName;
 	private String _description;
 	private boolean _changeable;
 	private boolean _changeRequired;
@@ -1490,7 +1953,8 @@ public class PasswordPolicyModelImpl
 	private boolean _requireUnlock;
 	private long _resetFailureCount;
 	private long _resetTicketMaxAge;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private PasswordPolicy _escapedModel;
 
 }

@@ -123,17 +123,78 @@ public class KaleoTaskAssignmentModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long ASSIGNEECLASSNAME_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long COMPANYID_COLUMN_BITMASK = 2L;
+	public static final long KALEOTASKASSIGNMENTID_COLUMN_BITMASK = 2L;
 
-	public static final long KALEOCLASSNAME_COLUMN_BITMASK = 4L;
+	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
-	public static final long KALEOCLASSPK_COLUMN_BITMASK = 8L;
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
 
-	public static final long KALEODEFINITIONVERSIONID_COLUMN_BITMASK = 16L;
+	public static final long USERID_COLUMN_BITMASK = 16L;
 
-	public static final long KALEOTASKASSIGNMENTID_COLUMN_BITMASK = 32L;
+	public static final long USERNAME_COLUMN_BITMASK = 32L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 64L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 128L;
+
+	public static final long KALEOCLASSNAME_COLUMN_BITMASK = 256L;
+
+	public static final long KALEOCLASSPK_COLUMN_BITMASK = 512L;
+
+	public static final long KALEODEFINITIONVERSIONID_COLUMN_BITMASK = 1024L;
+
+	public static final long KALEONODEID_COLUMN_BITMASK = 2048L;
+
+	public static final long ASSIGNEECLASSNAME_COLUMN_BITMASK = 4096L;
+
+	public static final long ASSIGNEECLASSPK_COLUMN_BITMASK = 8192L;
+
+	public static final long ASSIGNEEACTIONID_COLUMN_BITMASK = 16384L;
+
+	public static final long ASSIGNEESCRIPT_COLUMN_BITMASK = 32768L;
+
+	public static final long ASSIGNEESCRIPTLANGUAGE_COLUMN_BITMASK = 65536L;
+
+	public static final long ASSIGNEESCRIPTREQUIREDCONTEXTS_COLUMN_BITMASK =
+		131072L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int KALEOTASKASSIGNMENTID_COLUMN_INDEX = 1;
+
+	public static final int GROUPID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int USERID_COLUMN_INDEX = 4;
+
+	public static final int USERNAME_COLUMN_INDEX = 5;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 6;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 7;
+
+	public static final int KALEOCLASSNAME_COLUMN_INDEX = 8;
+
+	public static final int KALEOCLASSPK_COLUMN_INDEX = 9;
+
+	public static final int KALEODEFINITIONVERSIONID_COLUMN_INDEX = 10;
+
+	public static final int KALEONODEID_COLUMN_INDEX = 11;
+
+	public static final int ASSIGNEECLASSNAME_COLUMN_INDEX = 12;
+
+	public static final int ASSIGNEECLASSPK_COLUMN_INDEX = 13;
+
+	public static final int ASSIGNEEACTIONID_COLUMN_INDEX = 14;
+
+	public static final int ASSIGNEESCRIPT_COLUMN_INDEX = 15;
+
+	public static final int ASSIGNEESCRIPTLANGUAGE_COLUMN_INDEX = 16;
+
+	public static final int ASSIGNEESCRIPTREQUIREDCONTEXTS_COLUMN_INDEX = 17;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -398,6 +459,16 @@ public class KaleoTaskAssignmentModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -408,7 +479,16 @@ public class KaleoTaskAssignmentModelImpl
 
 	@Override
 	public void setKaleoTaskAssignmentId(long kaleoTaskAssignmentId) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & KALEOTASKASSIGNMENTID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= KALEOTASKASSIGNMENTID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[KALEOTASKASSIGNMENTID_COLUMN_INDEX] =
+				_kaleoTaskAssignmentId;
+		}
 
 		_kaleoTaskAssignmentId = kaleoTaskAssignmentId;
 	}
@@ -420,6 +500,16 @@ public class KaleoTaskAssignmentModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
+		}
+
 		_groupId = groupId;
 	}
 
@@ -430,19 +520,29 @@ public class KaleoTaskAssignmentModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@Override
@@ -452,6 +552,16 @@ public class KaleoTaskAssignmentModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -483,6 +593,16 @@ public class KaleoTaskAssignmentModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -493,6 +613,16 @@ public class KaleoTaskAssignmentModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -502,12 +632,20 @@ public class KaleoTaskAssignmentModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -524,17 +662,30 @@ public class KaleoTaskAssignmentModelImpl
 
 	@Override
 	public void setKaleoClassName(String kaleoClassName) {
-		_columnBitmask |= KALEOCLASSNAME_COLUMN_BITMASK;
+		if ((_columnBitmask & KALEOCLASSNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= KALEOCLASSNAME_COLUMN_BITMASK;
 
-		if (_originalKaleoClassName == null) {
-			_originalKaleoClassName = _kaleoClassName;
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[KALEOCLASSNAME_COLUMN_INDEX] = _kaleoClassName;
 		}
 
 		_kaleoClassName = kaleoClassName;
 	}
 
 	public String getOriginalKaleoClassName() {
-		return GetterUtil.getString(_originalKaleoClassName);
+		if (_originalValues != null) {
+			Object originalKaleoClassName =
+				_originalValues[KALEOCLASSNAME_COLUMN_INDEX];
+
+			if (originalKaleoClassName != null) {
+				return GetterUtil.getString((String)originalKaleoClassName);
+			}
+		}
+
+		return GetterUtil.getString(_kaleoClassName);
 	}
 
 	@Override
@@ -544,19 +695,30 @@ public class KaleoTaskAssignmentModelImpl
 
 	@Override
 	public void setKaleoClassPK(long kaleoClassPK) {
-		_columnBitmask |= KALEOCLASSPK_COLUMN_BITMASK;
+		if ((_columnBitmask & KALEOCLASSPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= KALEOCLASSPK_COLUMN_BITMASK;
 
-		if (!_setOriginalKaleoClassPK) {
-			_setOriginalKaleoClassPK = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
 
-			_originalKaleoClassPK = _kaleoClassPK;
+			_originalValues[KALEOCLASSPK_COLUMN_INDEX] = _kaleoClassPK;
 		}
 
 		_kaleoClassPK = kaleoClassPK;
 	}
 
 	public long getOriginalKaleoClassPK() {
-		return _originalKaleoClassPK;
+		if (_originalValues != null) {
+			Object originalKaleoClassPK =
+				_originalValues[KALEOCLASSPK_COLUMN_INDEX];
+
+			if (originalKaleoClassPK != null) {
+				return (long)originalKaleoClassPK;
+			}
+		}
+
+		return _kaleoClassPK;
 	}
 
 	@Override
@@ -566,19 +728,31 @@ public class KaleoTaskAssignmentModelImpl
 
 	@Override
 	public void setKaleoDefinitionVersionId(long kaleoDefinitionVersionId) {
-		_columnBitmask |= KALEODEFINITIONVERSIONID_COLUMN_BITMASK;
+		if ((_columnBitmask & KALEODEFINITIONVERSIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= KALEODEFINITIONVERSIONID_COLUMN_BITMASK;
 
-		if (!_setOriginalKaleoDefinitionVersionId) {
-			_setOriginalKaleoDefinitionVersionId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
 
-			_originalKaleoDefinitionVersionId = _kaleoDefinitionVersionId;
+			_originalValues[KALEODEFINITIONVERSIONID_COLUMN_INDEX] =
+				_kaleoDefinitionVersionId;
 		}
 
 		_kaleoDefinitionVersionId = kaleoDefinitionVersionId;
 	}
 
 	public long getOriginalKaleoDefinitionVersionId() {
-		return _originalKaleoDefinitionVersionId;
+		if (_originalValues != null) {
+			Object originalKaleoDefinitionVersionId =
+				_originalValues[KALEODEFINITIONVERSIONID_COLUMN_INDEX];
+
+			if (originalKaleoDefinitionVersionId != null) {
+				return (long)originalKaleoDefinitionVersionId;
+			}
+		}
+
+		return _kaleoDefinitionVersionId;
 	}
 
 	@Override
@@ -588,6 +762,16 @@ public class KaleoTaskAssignmentModelImpl
 
 	@Override
 	public void setKaleoNodeId(long kaleoNodeId) {
+		if ((_columnBitmask & KALEONODEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= KALEONODEID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[KALEONODEID_COLUMN_INDEX] = _kaleoNodeId;
+		}
+
 		_kaleoNodeId = kaleoNodeId;
 	}
 
@@ -603,17 +787,31 @@ public class KaleoTaskAssignmentModelImpl
 
 	@Override
 	public void setAssigneeClassName(String assigneeClassName) {
-		_columnBitmask |= ASSIGNEECLASSNAME_COLUMN_BITMASK;
+		if ((_columnBitmask & ASSIGNEECLASSNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ASSIGNEECLASSNAME_COLUMN_BITMASK;
 
-		if (_originalAssigneeClassName == null) {
-			_originalAssigneeClassName = _assigneeClassName;
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[ASSIGNEECLASSNAME_COLUMN_INDEX] =
+				_assigneeClassName;
 		}
 
 		_assigneeClassName = assigneeClassName;
 	}
 
 	public String getOriginalAssigneeClassName() {
-		return GetterUtil.getString(_originalAssigneeClassName);
+		if (_originalValues != null) {
+			Object originalAssigneeClassName =
+				_originalValues[ASSIGNEECLASSNAME_COLUMN_INDEX];
+
+			if (originalAssigneeClassName != null) {
+				return GetterUtil.getString((String)originalAssigneeClassName);
+			}
+		}
+
+		return GetterUtil.getString(_assigneeClassName);
 	}
 
 	@Override
@@ -623,6 +821,16 @@ public class KaleoTaskAssignmentModelImpl
 
 	@Override
 	public void setAssigneeClassPK(long assigneeClassPK) {
+		if ((_columnBitmask & ASSIGNEECLASSPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ASSIGNEECLASSPK_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[ASSIGNEECLASSPK_COLUMN_INDEX] = _assigneeClassPK;
+		}
+
 		_assigneeClassPK = assigneeClassPK;
 	}
 
@@ -638,6 +846,16 @@ public class KaleoTaskAssignmentModelImpl
 
 	@Override
 	public void setAssigneeActionId(String assigneeActionId) {
+		if ((_columnBitmask & ASSIGNEEACTIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ASSIGNEEACTIONID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[ASSIGNEEACTIONID_COLUMN_INDEX] = _assigneeActionId;
+		}
+
 		_assigneeActionId = assigneeActionId;
 	}
 
@@ -653,6 +871,16 @@ public class KaleoTaskAssignmentModelImpl
 
 	@Override
 	public void setAssigneeScript(String assigneeScript) {
+		if ((_columnBitmask & ASSIGNEESCRIPT_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ASSIGNEESCRIPT_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[ASSIGNEESCRIPT_COLUMN_INDEX] = _assigneeScript;
+		}
+
 		_assigneeScript = assigneeScript;
 	}
 
@@ -668,6 +896,17 @@ public class KaleoTaskAssignmentModelImpl
 
 	@Override
 	public void setAssigneeScriptLanguage(String assigneeScriptLanguage) {
+		if ((_columnBitmask & ASSIGNEESCRIPTLANGUAGE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ASSIGNEESCRIPTLANGUAGE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[ASSIGNEESCRIPTLANGUAGE_COLUMN_INDEX] =
+				_assigneeScriptLanguage;
+		}
+
 		_assigneeScriptLanguage = assigneeScriptLanguage;
 	}
 
@@ -684,6 +923,19 @@ public class KaleoTaskAssignmentModelImpl
 	@Override
 	public void setAssigneeScriptRequiredContexts(
 		String assigneeScriptRequiredContexts) {
+
+		if ((_columnBitmask & ASSIGNEESCRIPTREQUIREDCONTEXTS_COLUMN_BITMASK) ==
+				0) {
+
+			_columnBitmask |= ASSIGNEESCRIPTREQUIREDCONTEXTS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[ASSIGNEESCRIPTREQUIREDCONTEXTS_COLUMN_INDEX] =
+				_assigneeScriptRequiredContexts;
+		}
 
 		_assigneeScriptRequiredContexts = assigneeScriptRequiredContexts;
 	}
@@ -818,33 +1070,9 @@ public class KaleoTaskAssignmentModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		KaleoTaskAssignmentModelImpl kaleoTaskAssignmentModelImpl = this;
+		_columnBitmask = 0;
 
-		kaleoTaskAssignmentModelImpl._originalCompanyId =
-			kaleoTaskAssignmentModelImpl._companyId;
-
-		kaleoTaskAssignmentModelImpl._setOriginalCompanyId = false;
-
-		kaleoTaskAssignmentModelImpl._setModifiedDate = false;
-
-		kaleoTaskAssignmentModelImpl._originalKaleoClassName =
-			kaleoTaskAssignmentModelImpl._kaleoClassName;
-
-		kaleoTaskAssignmentModelImpl._originalKaleoClassPK =
-			kaleoTaskAssignmentModelImpl._kaleoClassPK;
-
-		kaleoTaskAssignmentModelImpl._setOriginalKaleoClassPK = false;
-
-		kaleoTaskAssignmentModelImpl._originalKaleoDefinitionVersionId =
-			kaleoTaskAssignmentModelImpl._kaleoDefinitionVersionId;
-
-		kaleoTaskAssignmentModelImpl._setOriginalKaleoDefinitionVersionId =
-			false;
-
-		kaleoTaskAssignmentModelImpl._originalAssigneeClassName =
-			kaleoTaskAssignmentModelImpl._assigneeClassName;
-
-		kaleoTaskAssignmentModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -1037,30 +1265,22 @@ public class KaleoTaskAssignmentModelImpl
 	private long _kaleoTaskAssignmentId;
 	private long _groupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private String _kaleoClassName;
-	private String _originalKaleoClassName;
 	private long _kaleoClassPK;
-	private long _originalKaleoClassPK;
-	private boolean _setOriginalKaleoClassPK;
 	private long _kaleoDefinitionVersionId;
-	private long _originalKaleoDefinitionVersionId;
-	private boolean _setOriginalKaleoDefinitionVersionId;
 	private long _kaleoNodeId;
 	private String _assigneeClassName;
-	private String _originalAssigneeClassName;
 	private long _assigneeClassPK;
 	private String _assigneeActionId;
 	private String _assigneeScript;
 	private String _assigneeScriptLanguage;
 	private String _assigneeScriptRequiredContexts;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private KaleoTaskAssignment _escapedModel;
 
 }

@@ -100,11 +100,29 @@ public class DepotAppCustomizationModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long DEPOTENTRYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long PORTLETID_COLUMN_BITMASK = 2L;
+	public static final long DEPOTAPPCUSTOMIZATIONID_COLUMN_BITMASK = 2L;
 
-	public static final long DEPOTAPPCUSTOMIZATIONID_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
+
+	public static final long DEPOTENTRYID_COLUMN_BITMASK = 8L;
+
+	public static final long ENABLED_COLUMN_BITMASK = 16L;
+
+	public static final long PORTLETID_COLUMN_BITMASK = 32L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int DEPOTAPPCUSTOMIZATIONID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int DEPOTENTRYID_COLUMN_INDEX = 3;
+
+	public static final int ENABLED_COLUMN_INDEX = 4;
+
+	public static final int PORTLETID_COLUMN_INDEX = 5;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -297,6 +315,16 @@ public class DepotAppCustomizationModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -307,6 +335,17 @@ public class DepotAppCustomizationModelImpl
 
 	@Override
 	public void setDepotAppCustomizationId(long depotAppCustomizationId) {
+		if ((_columnBitmask & DEPOTAPPCUSTOMIZATIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DEPOTAPPCUSTOMIZATIONID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[DEPOTAPPCUSTOMIZATIONID_COLUMN_INDEX] =
+				_depotAppCustomizationId;
+		}
+
 		_depotAppCustomizationId = depotAppCustomizationId;
 	}
 
@@ -317,6 +356,16 @@ public class DepotAppCustomizationModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -327,19 +376,30 @@ public class DepotAppCustomizationModelImpl
 
 	@Override
 	public void setDepotEntryId(long depotEntryId) {
-		_columnBitmask |= DEPOTENTRYID_COLUMN_BITMASK;
+		if ((_columnBitmask & DEPOTENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DEPOTENTRYID_COLUMN_BITMASK;
 
-		if (!_setOriginalDepotEntryId) {
-			_setOriginalDepotEntryId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
 
-			_originalDepotEntryId = _depotEntryId;
+			_originalValues[DEPOTENTRYID_COLUMN_INDEX] = _depotEntryId;
 		}
 
 		_depotEntryId = depotEntryId;
 	}
 
 	public long getOriginalDepotEntryId() {
-		return _originalDepotEntryId;
+		if (_originalValues != null) {
+			Object originalDepotEntryId =
+				_originalValues[DEPOTENTRYID_COLUMN_INDEX];
+
+			if (originalDepotEntryId != null) {
+				return (long)originalDepotEntryId;
+			}
+		}
+
+		return _depotEntryId;
 	}
 
 	@Override
@@ -354,6 +414,16 @@ public class DepotAppCustomizationModelImpl
 
 	@Override
 	public void setEnabled(boolean enabled) {
+		if ((_columnBitmask & ENABLED_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ENABLED_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[ENABLED_COLUMN_INDEX] = _enabled;
+		}
+
 		_enabled = enabled;
 	}
 
@@ -369,17 +439,29 @@ public class DepotAppCustomizationModelImpl
 
 	@Override
 	public void setPortletId(String portletId) {
-		_columnBitmask |= PORTLETID_COLUMN_BITMASK;
+		if ((_columnBitmask & PORTLETID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PORTLETID_COLUMN_BITMASK;
 
-		if (_originalPortletId == null) {
-			_originalPortletId = _portletId;
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[PORTLETID_COLUMN_INDEX] = _portletId;
 		}
 
 		_portletId = portletId;
 	}
 
 	public String getOriginalPortletId() {
-		return GetterUtil.getString(_originalPortletId);
+		if (_originalValues != null) {
+			Object originalPortletId = _originalValues[PORTLETID_COLUMN_INDEX];
+
+			if (originalPortletId != null) {
+				return GetterUtil.getString((String)originalPortletId);
+			}
+		}
+
+		return GetterUtil.getString(_portletId);
 	}
 
 	public long getColumnBitmask() {
@@ -488,17 +570,9 @@ public class DepotAppCustomizationModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DepotAppCustomizationModelImpl depotAppCustomizationModelImpl = this;
+		_columnBitmask = 0;
 
-		depotAppCustomizationModelImpl._originalDepotEntryId =
-			depotAppCustomizationModelImpl._depotEntryId;
-
-		depotAppCustomizationModelImpl._setOriginalDepotEntryId = false;
-
-		depotAppCustomizationModelImpl._originalPortletId =
-			depotAppCustomizationModelImpl._portletId;
-
-		depotAppCustomizationModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -607,12 +681,10 @@ public class DepotAppCustomizationModelImpl
 	private long _depotAppCustomizationId;
 	private long _companyId;
 	private long _depotEntryId;
-	private long _originalDepotEntryId;
-	private boolean _setOriginalDepotEntryId;
 	private boolean _enabled;
 	private String _portletId;
-	private String _originalPortletId;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private DepotAppCustomization _escapedModel;
 
 }

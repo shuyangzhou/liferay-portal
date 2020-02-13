@@ -118,15 +118,61 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long CATEGORY_COLUMN_BITMASK = 1L;
+	public static final long UUID_COLUMN_BITMASK = 1L;
 
-	public static final long COMPANYID_COLUMN_BITMASK = 2L;
+	public static final long APPID_COLUMN_BITMASK = 2L;
 
-	public static final long REMOTEAPPID_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
-	public static final long UUID_COLUMN_BITMASK = 8L;
+	public static final long USERID_COLUMN_BITMASK = 8L;
 
-	public static final long APPID_COLUMN_BITMASK = 16L;
+	public static final long USERNAME_COLUMN_BITMASK = 16L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 32L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 64L;
+
+	public static final long REMOTEAPPID_COLUMN_BITMASK = 128L;
+
+	public static final long TITLE_COLUMN_BITMASK = 256L;
+
+	public static final long DESCRIPTION_COLUMN_BITMASK = 512L;
+
+	public static final long CATEGORY_COLUMN_BITMASK = 1024L;
+
+	public static final long ICONURL_COLUMN_BITMASK = 2048L;
+
+	public static final long VERSION_COLUMN_BITMASK = 4096L;
+
+	public static final long REQUIRED_COLUMN_BITMASK = 8192L;
+
+	public static final int UUID_COLUMN_INDEX = 0;
+
+	public static final int APPID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int USERID_COLUMN_INDEX = 3;
+
+	public static final int USERNAME_COLUMN_INDEX = 4;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 5;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 6;
+
+	public static final int REMOTEAPPID_COLUMN_INDEX = 7;
+
+	public static final int TITLE_COLUMN_INDEX = 8;
+
+	public static final int DESCRIPTION_COLUMN_INDEX = 9;
+
+	public static final int CATEGORY_COLUMN_INDEX = 10;
+
+	public static final int ICONURL_COLUMN_INDEX = 11;
+
+	public static final int VERSION_COLUMN_INDEX = 12;
+
+	public static final int REQUIRED_COLUMN_INDEX = 13;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -370,17 +416,29 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		if ((_columnBitmask & UUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= UUID_COLUMN_BITMASK;
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
+
+			_originalValues[UUID_COLUMN_INDEX] = _uuid;
 		}
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		if (_originalValues != null) {
+			Object originalUuid = _originalValues[UUID_COLUMN_INDEX];
+
+			if (originalUuid != null) {
+				return GetterUtil.getString((String)originalUuid);
+			}
+		}
+
+		return GetterUtil.getString(_uuid);
 	}
 
 	@JSON
@@ -391,6 +449,16 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 
 	@Override
 	public void setAppId(long appId) {
+		if ((_columnBitmask & APPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= APPID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
+
+			_originalValues[APPID_COLUMN_INDEX] = _appId;
+		}
+
 		_appId = appId;
 	}
 
@@ -402,19 +470,29 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@JSON
@@ -425,6 +503,16 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -457,6 +545,16 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -468,6 +566,16 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -478,12 +586,20 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -496,19 +612,30 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 
 	@Override
 	public void setRemoteAppId(long remoteAppId) {
-		_columnBitmask |= REMOTEAPPID_COLUMN_BITMASK;
+		if ((_columnBitmask & REMOTEAPPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= REMOTEAPPID_COLUMN_BITMASK;
 
-		if (!_setOriginalRemoteAppId) {
-			_setOriginalRemoteAppId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
 
-			_originalRemoteAppId = _remoteAppId;
+			_originalValues[REMOTEAPPID_COLUMN_INDEX] = _remoteAppId;
 		}
 
 		_remoteAppId = remoteAppId;
 	}
 
 	public long getOriginalRemoteAppId() {
-		return _originalRemoteAppId;
+		if (_originalValues != null) {
+			Object originalRemoteAppId =
+				_originalValues[REMOTEAPPID_COLUMN_INDEX];
+
+			if (originalRemoteAppId != null) {
+				return (long)originalRemoteAppId;
+			}
+		}
+
+		return _remoteAppId;
 	}
 
 	@JSON
@@ -524,6 +651,16 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 
 	@Override
 	public void setTitle(String title) {
+		if ((_columnBitmask & TITLE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TITLE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
+
+			_originalValues[TITLE_COLUMN_INDEX] = _title;
+		}
+
 		_title = title;
 	}
 
@@ -540,6 +677,16 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 
 	@Override
 	public void setDescription(String description) {
+		if ((_columnBitmask & DESCRIPTION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DESCRIPTION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
+
+			_originalValues[DESCRIPTION_COLUMN_INDEX] = _description;
+		}
+
 		_description = description;
 	}
 
@@ -556,17 +703,29 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 
 	@Override
 	public void setCategory(String category) {
-		_columnBitmask |= CATEGORY_COLUMN_BITMASK;
+		if ((_columnBitmask & CATEGORY_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CATEGORY_COLUMN_BITMASK;
 
-		if (_originalCategory == null) {
-			_originalCategory = _category;
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
+
+			_originalValues[CATEGORY_COLUMN_INDEX] = _category;
 		}
 
 		_category = category;
 	}
 
 	public String getOriginalCategory() {
-		return GetterUtil.getString(_originalCategory);
+		if (_originalValues != null) {
+			Object originalCategory = _originalValues[CATEGORY_COLUMN_INDEX];
+
+			if (originalCategory != null) {
+				return GetterUtil.getString((String)originalCategory);
+			}
+		}
+
+		return GetterUtil.getString(_category);
 	}
 
 	@JSON
@@ -582,6 +741,16 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 
 	@Override
 	public void setIconURL(String iconURL) {
+		if ((_columnBitmask & ICONURL_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ICONURL_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
+
+			_originalValues[ICONURL_COLUMN_INDEX] = _iconURL;
+		}
+
 		_iconURL = iconURL;
 	}
 
@@ -598,6 +767,16 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 
 	@Override
 	public void setVersion(String version) {
+		if ((_columnBitmask & VERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= VERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
+
+			_originalValues[VERSION_COLUMN_INDEX] = _version;
+		}
+
 		_version = version;
 	}
 
@@ -615,6 +794,16 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 
 	@Override
 	public void setRequired(boolean required) {
+		if ((_columnBitmask & REQUIRED_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= REQUIRED_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
+
+			_originalValues[REQUIRED_COLUMN_INDEX] = _required;
+		}
+
 		_required = required;
 	}
 
@@ -733,23 +922,9 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 
 	@Override
 	public void resetOriginalValues() {
-		AppModelImpl appModelImpl = this;
+		_columnBitmask = 0;
 
-		appModelImpl._originalUuid = appModelImpl._uuid;
-
-		appModelImpl._originalCompanyId = appModelImpl._companyId;
-
-		appModelImpl._setOriginalCompanyId = false;
-
-		appModelImpl._setModifiedDate = false;
-
-		appModelImpl._originalRemoteAppId = appModelImpl._remoteAppId;
-
-		appModelImpl._setOriginalRemoteAppId = false;
-
-		appModelImpl._originalCategory = appModelImpl._category;
-
-		appModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -915,27 +1090,21 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 	private static boolean _finderCacheEnabled;
 
 	private String _uuid;
-	private String _originalUuid;
 	private long _appId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _remoteAppId;
-	private long _originalRemoteAppId;
-	private boolean _setOriginalRemoteAppId;
 	private String _title;
 	private String _description;
 	private String _category;
-	private String _originalCategory;
 	private String _iconURL;
 	private String _version;
 	private boolean _required;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private App _escapedModel;
 
 }

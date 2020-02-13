@@ -114,13 +114,29 @@ public class PasswordPolicyRelModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.PasswordPolicyRel"),
 		true);
 
-	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long CLASSPK_COLUMN_BITMASK = 2L;
+	public static final long PASSWORDPOLICYRELID_COLUMN_BITMASK = 2L;
 
-	public static final long PASSWORDPOLICYID_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
-	public static final long PASSWORDPOLICYRELID_COLUMN_BITMASK = 8L;
+	public static final long PASSWORDPOLICYID_COLUMN_BITMASK = 8L;
+
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 16L;
+
+	public static final long CLASSPK_COLUMN_BITMASK = 32L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int PASSWORDPOLICYRELID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int PASSWORDPOLICYID_COLUMN_INDEX = 3;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 4;
+
+	public static final int CLASSPK_COLUMN_INDEX = 5;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -304,6 +320,16 @@ public class PasswordPolicyRelModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -314,6 +340,17 @@ public class PasswordPolicyRelModelImpl
 
 	@Override
 	public void setPasswordPolicyRelId(long passwordPolicyRelId) {
+		if ((_columnBitmask & PASSWORDPOLICYRELID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PASSWORDPOLICYRELID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[PASSWORDPOLICYRELID_COLUMN_INDEX] =
+				_passwordPolicyRelId;
+		}
+
 		_passwordPolicyRelId = passwordPolicyRelId;
 	}
 
@@ -324,6 +361,16 @@ public class PasswordPolicyRelModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -334,19 +381,30 @@ public class PasswordPolicyRelModelImpl
 
 	@Override
 	public void setPasswordPolicyId(long passwordPolicyId) {
-		_columnBitmask |= PASSWORDPOLICYID_COLUMN_BITMASK;
+		if ((_columnBitmask & PASSWORDPOLICYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PASSWORDPOLICYID_COLUMN_BITMASK;
 
-		if (!_setOriginalPasswordPolicyId) {
-			_setOriginalPasswordPolicyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
 
-			_originalPasswordPolicyId = _passwordPolicyId;
+			_originalValues[PASSWORDPOLICYID_COLUMN_INDEX] = _passwordPolicyId;
 		}
 
 		_passwordPolicyId = passwordPolicyId;
 	}
 
 	public long getOriginalPasswordPolicyId() {
-		return _originalPasswordPolicyId;
+		if (_originalValues != null) {
+			Object originalPasswordPolicyId =
+				_originalValues[PASSWORDPOLICYID_COLUMN_INDEX];
+
+			if (originalPasswordPolicyId != null) {
+				return (long)originalPasswordPolicyId;
+			}
+		}
+
+		return _passwordPolicyId;
 	}
 
 	@Override
@@ -376,19 +434,30 @@ public class PasswordPolicyRelModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSNAMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
 
-			_originalClassNameId = _classNameId;
+			_originalValues[CLASSNAMEID_COLUMN_INDEX] = _classNameId;
 		}
 
 		_classNameId = classNameId;
 	}
 
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		if (_originalValues != null) {
+			Object originalClassNameId =
+				_originalValues[CLASSNAMEID_COLUMN_INDEX];
+
+			if (originalClassNameId != null) {
+				return (long)originalClassNameId;
+			}
+		}
+
+		return _classNameId;
 	}
 
 	@Override
@@ -398,19 +467,29 @@ public class PasswordPolicyRelModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSPK_COLUMN_BITMASK;
 
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
 
-			_originalClassPK = _classPK;
+			_originalValues[CLASSPK_COLUMN_INDEX] = _classPK;
 		}
 
 		_classPK = classPK;
 	}
 
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		if (_originalValues != null) {
+			Object originalClassPK = _originalValues[CLASSPK_COLUMN_INDEX];
+
+			if (originalClassPK != null) {
+				return (long)originalClassPK;
+			}
+		}
+
+		return _classPK;
 	}
 
 	public long getColumnBitmask() {
@@ -516,24 +595,9 @@ public class PasswordPolicyRelModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		PasswordPolicyRelModelImpl passwordPolicyRelModelImpl = this;
+		_columnBitmask = 0;
 
-		passwordPolicyRelModelImpl._originalPasswordPolicyId =
-			passwordPolicyRelModelImpl._passwordPolicyId;
-
-		passwordPolicyRelModelImpl._setOriginalPasswordPolicyId = false;
-
-		passwordPolicyRelModelImpl._originalClassNameId =
-			passwordPolicyRelModelImpl._classNameId;
-
-		passwordPolicyRelModelImpl._setOriginalClassNameId = false;
-
-		passwordPolicyRelModelImpl._originalClassPK =
-			passwordPolicyRelModelImpl._classPK;
-
-		passwordPolicyRelModelImpl._setOriginalClassPK = false;
-
-		passwordPolicyRelModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -631,15 +695,10 @@ public class PasswordPolicyRelModelImpl
 	private long _passwordPolicyRelId;
 	private long _companyId;
 	private long _passwordPolicyId;
-	private long _originalPasswordPolicyId;
-	private boolean _setOriginalPasswordPolicyId;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private PasswordPolicyRel _escapedModel;
 
 }

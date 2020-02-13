@@ -112,9 +112,21 @@ public class ListTypeModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.ListType"),
 		true);
 
-	public static final long NAME_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long TYPE_COLUMN_BITMASK = 2L;
+	public static final long LISTTYPEID_COLUMN_BITMASK = 2L;
+
+	public static final long NAME_COLUMN_BITMASK = 4L;
+
+	public static final long TYPE_COLUMN_BITMASK = 8L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int LISTTYPEID_COLUMN_INDEX = 1;
+
+	public static final int NAME_COLUMN_INDEX = 2;
+
+	public static final int TYPE_COLUMN_INDEX = 3;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -315,6 +327,16 @@ public class ListTypeModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[4];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -326,6 +348,16 @@ public class ListTypeModelImpl
 
 	@Override
 	public void setListTypeId(long listTypeId) {
+		if ((_columnBitmask & LISTTYPEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LISTTYPEID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[4];
+			}
+
+			_originalValues[LISTTYPEID_COLUMN_INDEX] = _listTypeId;
+		}
+
 		_listTypeId = listTypeId;
 	}
 
@@ -342,17 +374,29 @@ public class ListTypeModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & NAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= NAME_COLUMN_BITMASK;
 
-		if (_originalName == null) {
-			_originalName = _name;
+			if (_originalValues == null) {
+				_originalValues = new Object[4];
+			}
+
+			_originalValues[NAME_COLUMN_INDEX] = _name;
 		}
 
 		_name = name;
 	}
 
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		if (_originalValues != null) {
+			Object originalName = _originalValues[NAME_COLUMN_INDEX];
+
+			if (originalName != null) {
+				return GetterUtil.getString((String)originalName);
+			}
+		}
+
+		return GetterUtil.getString(_name);
 	}
 
 	@JSON
@@ -368,17 +412,29 @@ public class ListTypeModelImpl
 
 	@Override
 	public void setType(String type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
+		if ((_columnBitmask & TYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TYPE_COLUMN_BITMASK;
 
-		if (_originalType == null) {
-			_originalType = _type;
+			if (_originalValues == null) {
+				_originalValues = new Object[4];
+			}
+
+			_originalValues[TYPE_COLUMN_INDEX] = _type;
 		}
 
 		_type = type;
 	}
 
 	public String getOriginalType() {
-		return GetterUtil.getString(_originalType);
+		if (_originalValues != null) {
+			Object originalType = _originalValues[TYPE_COLUMN_INDEX];
+
+			if (originalType != null) {
+				return GetterUtil.getString((String)originalType);
+			}
+		}
+
+		return GetterUtil.getString(_type);
 	}
 
 	public long getColumnBitmask() {
@@ -479,13 +535,9 @@ public class ListTypeModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ListTypeModelImpl listTypeModelImpl = this;
+		_columnBitmask = 0;
 
-		listTypeModelImpl._originalName = listTypeModelImpl._name;
-
-		listTypeModelImpl._originalType = listTypeModelImpl._type;
-
-		listTypeModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -588,10 +640,9 @@ public class ListTypeModelImpl
 	private long _mvccVersion;
 	private long _listTypeId;
 	private String _name;
-	private String _originalName;
 	private String _type;
-	private String _originalType;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private ListType _escapedModel;
 
 }

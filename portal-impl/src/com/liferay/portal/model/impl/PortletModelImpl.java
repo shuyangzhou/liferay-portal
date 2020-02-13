@@ -115,11 +115,29 @@ public class PortletModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.Portlet"),
 		true);
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long PORTLETID_COLUMN_BITMASK = 2L;
+	public static final long ID_COLUMN_BITMASK = 2L;
 
-	public static final long ID_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
+
+	public static final long PORTLETID_COLUMN_BITMASK = 8L;
+
+	public static final long ROLES_COLUMN_BITMASK = 16L;
+
+	public static final long ACTIVE_COLUMN_BITMASK = 32L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int ID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int PORTLETID_COLUMN_INDEX = 3;
+
+	public static final int ROLES_COLUMN_INDEX = 4;
+
+	public static final int ACTIVE_COLUMN_INDEX = 5;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -326,6 +344,16 @@ public class PortletModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -337,6 +365,16 @@ public class PortletModelImpl
 
 	@Override
 	public void setId(long id) {
+		if ((_columnBitmask & ID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[ID_COLUMN_INDEX] = _id;
+		}
+
 		_id = id;
 	}
 
@@ -348,19 +386,29 @@ public class PortletModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@JSON
@@ -376,17 +424,29 @@ public class PortletModelImpl
 
 	@Override
 	public void setPortletId(String portletId) {
-		_columnBitmask |= PORTLETID_COLUMN_BITMASK;
+		if ((_columnBitmask & PORTLETID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PORTLETID_COLUMN_BITMASK;
 
-		if (_originalPortletId == null) {
-			_originalPortletId = _portletId;
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[PORTLETID_COLUMN_INDEX] = _portletId;
 		}
 
 		_portletId = portletId;
 	}
 
 	public String getOriginalPortletId() {
-		return GetterUtil.getString(_originalPortletId);
+		if (_originalValues != null) {
+			Object originalPortletId = _originalValues[PORTLETID_COLUMN_INDEX];
+
+			if (originalPortletId != null) {
+				return GetterUtil.getString((String)originalPortletId);
+			}
+		}
+
+		return GetterUtil.getString(_portletId);
 	}
 
 	@JSON
@@ -402,6 +462,16 @@ public class PortletModelImpl
 
 	@Override
 	public void setRoles(String roles) {
+		if ((_columnBitmask & ROLES_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ROLES_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[ROLES_COLUMN_INDEX] = _roles;
+		}
+
 		_roles = roles;
 	}
 
@@ -419,6 +489,16 @@ public class PortletModelImpl
 
 	@Override
 	public void setActive(boolean active) {
+		if ((_columnBitmask & ACTIVE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ACTIVE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[ACTIVE_COLUMN_INDEX] = _active;
+		}
+
 		_active = active;
 	}
 
@@ -524,15 +604,9 @@ public class PortletModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		PortletModelImpl portletModelImpl = this;
+		_columnBitmask = 0;
 
-		portletModelImpl._originalCompanyId = portletModelImpl._companyId;
-
-		portletModelImpl._setOriginalCompanyId = false;
-
-		portletModelImpl._originalPortletId = portletModelImpl._portletId;
-
-		portletModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -639,13 +713,11 @@ public class PortletModelImpl
 	private long _mvccVersion;
 	private long _id;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private String _portletId;
-	private String _originalPortletId;
 	private String _roles;
 	private boolean _active;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private Portlet _escapedModel;
 
 }

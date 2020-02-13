@@ -117,15 +117,53 @@ public class SyncDeviceModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long UUID_COLUMN_BITMASK = 1L;
 
-	public static final long USERID_COLUMN_BITMASK = 2L;
+	public static final long SYNCDEVICEID_COLUMN_BITMASK = 2L;
 
-	public static final long USERNAME_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
-	public static final long UUID_COLUMN_BITMASK = 8L;
+	public static final long USERID_COLUMN_BITMASK = 8L;
 
-	public static final long SYNCDEVICEID_COLUMN_BITMASK = 16L;
+	public static final long USERNAME_COLUMN_BITMASK = 16L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 32L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 64L;
+
+	public static final long TYPE_COLUMN_BITMASK = 128L;
+
+	public static final long BUILDNUMBER_COLUMN_BITMASK = 256L;
+
+	public static final long FEATURESET_COLUMN_BITMASK = 512L;
+
+	public static final long HOSTNAME_COLUMN_BITMASK = 1024L;
+
+	public static final long STATUS_COLUMN_BITMASK = 2048L;
+
+	public static final int UUID_COLUMN_INDEX = 0;
+
+	public static final int SYNCDEVICEID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int USERID_COLUMN_INDEX = 3;
+
+	public static final int USERNAME_COLUMN_INDEX = 4;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 5;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 6;
+
+	public static final int TYPE_COLUMN_INDEX = 7;
+
+	public static final int BUILDNUMBER_COLUMN_INDEX = 8;
+
+	public static final int FEATURESET_COLUMN_INDEX = 9;
+
+	public static final int HOSTNAME_COLUMN_INDEX = 10;
+
+	public static final int STATUS_COLUMN_INDEX = 11;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -376,17 +414,29 @@ public class SyncDeviceModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		if ((_columnBitmask & UUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= UUID_COLUMN_BITMASK;
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[UUID_COLUMN_INDEX] = _uuid;
 		}
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		if (_originalValues != null) {
+			Object originalUuid = _originalValues[UUID_COLUMN_INDEX];
+
+			if (originalUuid != null) {
+				return GetterUtil.getString((String)originalUuid);
+			}
+		}
+
+		return GetterUtil.getString(_uuid);
 	}
 
 	@JSON
@@ -397,6 +447,16 @@ public class SyncDeviceModelImpl
 
 	@Override
 	public void setSyncDeviceId(long syncDeviceId) {
+		if ((_columnBitmask & SYNCDEVICEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SYNCDEVICEID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[SYNCDEVICEID_COLUMN_INDEX] = _syncDeviceId;
+		}
+
 		_syncDeviceId = syncDeviceId;
 	}
 
@@ -408,19 +468,29 @@ public class SyncDeviceModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@JSON
@@ -431,12 +501,14 @@ public class SyncDeviceModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
 
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
 
-			_originalUserId = _userId;
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
 		}
 
 		_userId = userId;
@@ -459,7 +531,15 @@ public class SyncDeviceModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		if (_originalValues != null) {
+			Object originalUserId = _originalValues[USERID_COLUMN_INDEX];
+
+			if (originalUserId != null) {
+				return (long)originalUserId;
+			}
+		}
+
+		return _userId;
 	}
 
 	@JSON
@@ -475,17 +555,29 @@ public class SyncDeviceModelImpl
 
 	@Override
 	public void setUserName(String userName) {
-		_columnBitmask |= USERNAME_COLUMN_BITMASK;
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
 
-		if (_originalUserName == null) {
-			_originalUserName = _userName;
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
 		}
 
 		_userName = userName;
 	}
 
 	public String getOriginalUserName() {
-		return GetterUtil.getString(_originalUserName);
+		if (_originalValues != null) {
+			Object originalUserName = _originalValues[USERNAME_COLUMN_INDEX];
+
+			if (originalUserName != null) {
+				return GetterUtil.getString((String)originalUserName);
+			}
+		}
+
+		return GetterUtil.getString(_userName);
 	}
 
 	@JSON
@@ -496,6 +588,16 @@ public class SyncDeviceModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -506,12 +608,20 @@ public class SyncDeviceModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -529,6 +639,16 @@ public class SyncDeviceModelImpl
 
 	@Override
 	public void setType(String type) {
+		if ((_columnBitmask & TYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TYPE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[TYPE_COLUMN_INDEX] = _type;
+		}
+
 		_type = type;
 	}
 
@@ -540,6 +660,16 @@ public class SyncDeviceModelImpl
 
 	@Override
 	public void setBuildNumber(long buildNumber) {
+		if ((_columnBitmask & BUILDNUMBER_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= BUILDNUMBER_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[BUILDNUMBER_COLUMN_INDEX] = _buildNumber;
+		}
+
 		_buildNumber = buildNumber;
 	}
 
@@ -551,6 +681,16 @@ public class SyncDeviceModelImpl
 
 	@Override
 	public void setFeatureSet(int featureSet) {
+		if ((_columnBitmask & FEATURESET_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= FEATURESET_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[FEATURESET_COLUMN_INDEX] = _featureSet;
+		}
+
 		_featureSet = featureSet;
 	}
 
@@ -567,6 +707,16 @@ public class SyncDeviceModelImpl
 
 	@Override
 	public void setHostname(String hostname) {
+		if ((_columnBitmask & HOSTNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= HOSTNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[HOSTNAME_COLUMN_INDEX] = _hostname;
+		}
+
 		_hostname = hostname;
 	}
 
@@ -578,6 +728,16 @@ public class SyncDeviceModelImpl
 
 	@Override
 	public void setStatus(int status) {
+		if ((_columnBitmask & STATUS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[STATUS_COLUMN_INDEX] = _status;
+		}
+
 		_status = status;
 	}
 
@@ -695,23 +855,9 @@ public class SyncDeviceModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SyncDeviceModelImpl syncDeviceModelImpl = this;
+		_columnBitmask = 0;
 
-		syncDeviceModelImpl._originalUuid = syncDeviceModelImpl._uuid;
-
-		syncDeviceModelImpl._originalCompanyId = syncDeviceModelImpl._companyId;
-
-		syncDeviceModelImpl._setOriginalCompanyId = false;
-
-		syncDeviceModelImpl._originalUserId = syncDeviceModelImpl._userId;
-
-		syncDeviceModelImpl._setOriginalUserId = false;
-
-		syncDeviceModelImpl._originalUserName = syncDeviceModelImpl._userName;
-
-		syncDeviceModelImpl._setModifiedDate = false;
-
-		syncDeviceModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -857,25 +1003,19 @@ public class SyncDeviceModelImpl
 	private static boolean _finderCacheEnabled;
 
 	private String _uuid;
-	private String _originalUuid;
 	private long _syncDeviceId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
-	private String _originalUserName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private String _type;
 	private long _buildNumber;
 	private int _featureSet;
 	private String _hostname;
 	private int _status;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private SyncDevice _escapedModel;
 
 }

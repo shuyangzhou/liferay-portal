@@ -106,9 +106,45 @@ public class FolderModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long ACCOUNTID_COLUMN_BITMASK = 1L;
+	public static final long FOLDERID_COLUMN_BITMASK = 1L;
 
-	public static final long FULLNAME_COLUMN_BITMASK = 2L;
+	public static final long COMPANYID_COLUMN_BITMASK = 2L;
+
+	public static final long USERID_COLUMN_BITMASK = 4L;
+
+	public static final long USERNAME_COLUMN_BITMASK = 8L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 16L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 32L;
+
+	public static final long ACCOUNTID_COLUMN_BITMASK = 64L;
+
+	public static final long FULLNAME_COLUMN_BITMASK = 128L;
+
+	public static final long DISPLAYNAME_COLUMN_BITMASK = 256L;
+
+	public static final long REMOTEMESSAGECOUNT_COLUMN_BITMASK = 512L;
+
+	public static final int FOLDERID_COLUMN_INDEX = 0;
+
+	public static final int COMPANYID_COLUMN_INDEX = 1;
+
+	public static final int USERID_COLUMN_INDEX = 2;
+
+	public static final int USERNAME_COLUMN_INDEX = 3;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 4;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 5;
+
+	public static final int ACCOUNTID_COLUMN_INDEX = 6;
+
+	public static final int FULLNAME_COLUMN_INDEX = 7;
+
+	public static final int DISPLAYNAME_COLUMN_INDEX = 8;
+
+	public static final int REMOTEMESSAGECOUNT_COLUMN_INDEX = 9;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -286,6 +322,16 @@ public class FolderModelImpl
 
 	@Override
 	public void setFolderId(long folderId) {
+		if ((_columnBitmask & FOLDERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= FOLDERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[FOLDERID_COLUMN_INDEX] = _folderId;
+		}
+
 		_folderId = folderId;
 	}
 
@@ -296,6 +342,16 @@ public class FolderModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -306,6 +362,16 @@ public class FolderModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -337,6 +403,16 @@ public class FolderModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -347,6 +423,16 @@ public class FolderModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -356,12 +442,20 @@ public class FolderModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -373,19 +467,29 @@ public class FolderModelImpl
 
 	@Override
 	public void setAccountId(long accountId) {
-		_columnBitmask |= ACCOUNTID_COLUMN_BITMASK;
+		if ((_columnBitmask & ACCOUNTID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ACCOUNTID_COLUMN_BITMASK;
 
-		if (!_setOriginalAccountId) {
-			_setOriginalAccountId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
 
-			_originalAccountId = _accountId;
+			_originalValues[ACCOUNTID_COLUMN_INDEX] = _accountId;
 		}
 
 		_accountId = accountId;
 	}
 
 	public long getOriginalAccountId() {
-		return _originalAccountId;
+		if (_originalValues != null) {
+			Object originalAccountId = _originalValues[ACCOUNTID_COLUMN_INDEX];
+
+			if (originalAccountId != null) {
+				return (long)originalAccountId;
+			}
+		}
+
+		return _accountId;
 	}
 
 	@Override
@@ -400,17 +504,29 @@ public class FolderModelImpl
 
 	@Override
 	public void setFullName(String fullName) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & FULLNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= FULLNAME_COLUMN_BITMASK;
 
-		if (_originalFullName == null) {
-			_originalFullName = _fullName;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[FULLNAME_COLUMN_INDEX] = _fullName;
 		}
 
 		_fullName = fullName;
 	}
 
 	public String getOriginalFullName() {
-		return GetterUtil.getString(_originalFullName);
+		if (_originalValues != null) {
+			Object originalFullName = _originalValues[FULLNAME_COLUMN_INDEX];
+
+			if (originalFullName != null) {
+				return GetterUtil.getString((String)originalFullName);
+			}
+		}
+
+		return GetterUtil.getString(_fullName);
 	}
 
 	@Override
@@ -425,6 +541,16 @@ public class FolderModelImpl
 
 	@Override
 	public void setDisplayName(String displayName) {
+		if ((_columnBitmask & DISPLAYNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DISPLAYNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[DISPLAYNAME_COLUMN_INDEX] = _displayName;
+		}
+
 		_displayName = displayName;
 	}
 
@@ -435,6 +561,17 @@ public class FolderModelImpl
 
 	@Override
 	public void setRemoteMessageCount(int remoteMessageCount) {
+		if ((_columnBitmask & REMOTEMESSAGECOUNT_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= REMOTEMESSAGECOUNT_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[REMOTEMESSAGECOUNT_COLUMN_INDEX] =
+				_remoteMessageCount;
+		}
+
 		_remoteMessageCount = remoteMessageCount;
 	}
 
@@ -542,17 +679,9 @@ public class FolderModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		FolderModelImpl folderModelImpl = this;
+		_columnBitmask = 0;
 
-		folderModelImpl._setModifiedDate = false;
-
-		folderModelImpl._originalAccountId = folderModelImpl._accountId;
-
-		folderModelImpl._setOriginalAccountId = false;
-
-		folderModelImpl._originalFullName = folderModelImpl._fullName;
-
-		folderModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -691,15 +820,12 @@ public class FolderModelImpl
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _accountId;
-	private long _originalAccountId;
-	private boolean _setOriginalAccountId;
 	private String _fullName;
-	private String _originalFullName;
 	private String _displayName;
 	private int _remoteMessageCount;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private Folder _escapedModel;
 
 }

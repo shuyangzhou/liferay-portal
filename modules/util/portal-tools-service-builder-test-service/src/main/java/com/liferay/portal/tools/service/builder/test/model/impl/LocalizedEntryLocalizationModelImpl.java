@@ -118,11 +118,29 @@ public class LocalizedEntryLocalizationModelImpl
 				"value.object.column.bitmask.enabled.com.liferay.portal.tools.service.builder.test.model.LocalizedEntryLocalization"),
 		true);
 
-	public static final long LANGUAGEID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long LOCALIZEDENTRYID_COLUMN_BITMASK = 2L;
+	public static final long LOCALIZEDENTRYLOCALIZATIONID_COLUMN_BITMASK = 2L;
 
-	public static final long LOCALIZEDENTRYLOCALIZATIONID_COLUMN_BITMASK = 4L;
+	public static final long LOCALIZEDENTRYID_COLUMN_BITMASK = 4L;
+
+	public static final long LANGUAGEID_COLUMN_BITMASK = 8L;
+
+	public static final long TITLE_COLUMN_BITMASK = 16L;
+
+	public static final long CONTENT_COLUMN_BITMASK = 32L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int LOCALIZEDENTRYLOCALIZATIONID_COLUMN_INDEX = 1;
+
+	public static final int LOCALIZEDENTRYID_COLUMN_INDEX = 2;
+
+	public static final int LANGUAGEID_COLUMN_INDEX = 3;
+
+	public static final int TITLE_COLUMN_INDEX = 4;
+
+	public static final int CONTENT_COLUMN_INDEX = 5;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.tools.service.builder.test.service.util.ServiceProps.
@@ -316,6 +334,16 @@ public class LocalizedEntryLocalizationModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -328,6 +356,19 @@ public class LocalizedEntryLocalizationModelImpl
 	public void setLocalizedEntryLocalizationId(
 		long localizedEntryLocalizationId) {
 
+		if ((_columnBitmask & LOCALIZEDENTRYLOCALIZATIONID_COLUMN_BITMASK) ==
+				0) {
+
+			_columnBitmask |= LOCALIZEDENTRYLOCALIZATIONID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[LOCALIZEDENTRYLOCALIZATIONID_COLUMN_INDEX] =
+				_localizedEntryLocalizationId;
+		}
+
 		_localizedEntryLocalizationId = localizedEntryLocalizationId;
 	}
 
@@ -338,19 +379,30 @@ public class LocalizedEntryLocalizationModelImpl
 
 	@Override
 	public void setLocalizedEntryId(long localizedEntryId) {
-		_columnBitmask |= LOCALIZEDENTRYID_COLUMN_BITMASK;
+		if ((_columnBitmask & LOCALIZEDENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LOCALIZEDENTRYID_COLUMN_BITMASK;
 
-		if (!_setOriginalLocalizedEntryId) {
-			_setOriginalLocalizedEntryId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
 
-			_originalLocalizedEntryId = _localizedEntryId;
+			_originalValues[LOCALIZEDENTRYID_COLUMN_INDEX] = _localizedEntryId;
 		}
 
 		_localizedEntryId = localizedEntryId;
 	}
 
 	public long getOriginalLocalizedEntryId() {
-		return _originalLocalizedEntryId;
+		if (_originalValues != null) {
+			Object originalLocalizedEntryId =
+				_originalValues[LOCALIZEDENTRYID_COLUMN_INDEX];
+
+			if (originalLocalizedEntryId != null) {
+				return (long)originalLocalizedEntryId;
+			}
+		}
+
+		return _localizedEntryId;
 	}
 
 	@Override
@@ -365,17 +417,30 @@ public class LocalizedEntryLocalizationModelImpl
 
 	@Override
 	public void setLanguageId(String languageId) {
-		_columnBitmask |= LANGUAGEID_COLUMN_BITMASK;
+		if ((_columnBitmask & LANGUAGEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LANGUAGEID_COLUMN_BITMASK;
 
-		if (_originalLanguageId == null) {
-			_originalLanguageId = _languageId;
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[LANGUAGEID_COLUMN_INDEX] = _languageId;
 		}
 
 		_languageId = languageId;
 	}
 
 	public String getOriginalLanguageId() {
-		return GetterUtil.getString(_originalLanguageId);
+		if (_originalValues != null) {
+			Object originalLanguageId =
+				_originalValues[LANGUAGEID_COLUMN_INDEX];
+
+			if (originalLanguageId != null) {
+				return GetterUtil.getString((String)originalLanguageId);
+			}
+		}
+
+		return GetterUtil.getString(_languageId);
 	}
 
 	@Override
@@ -390,6 +455,16 @@ public class LocalizedEntryLocalizationModelImpl
 
 	@Override
 	public void setTitle(String title) {
+		if ((_columnBitmask & TITLE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TITLE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[TITLE_COLUMN_INDEX] = _title;
+		}
+
 		_title = title;
 	}
 
@@ -405,6 +480,16 @@ public class LocalizedEntryLocalizationModelImpl
 
 	@Override
 	public void setContent(String content) {
+		if ((_columnBitmask & CONTENT_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CONTENT_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[CONTENT_COLUMN_INDEX] = _content;
+		}
+
 		_content = content;
 	}
 
@@ -516,19 +601,9 @@ public class LocalizedEntryLocalizationModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LocalizedEntryLocalizationModelImpl
-			localizedEntryLocalizationModelImpl = this;
+		_columnBitmask = 0;
 
-		localizedEntryLocalizationModelImpl._originalLocalizedEntryId =
-			localizedEntryLocalizationModelImpl._localizedEntryId;
-
-		localizedEntryLocalizationModelImpl._setOriginalLocalizedEntryId =
-			false;
-
-		localizedEntryLocalizationModelImpl._originalLanguageId =
-			localizedEntryLocalizationModelImpl._languageId;
-
-		localizedEntryLocalizationModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -651,13 +726,11 @@ public class LocalizedEntryLocalizationModelImpl
 	private long _mvccVersion;
 	private long _localizedEntryLocalizationId;
 	private long _localizedEntryId;
-	private long _originalLocalizedEntryId;
-	private boolean _setOriginalLocalizedEntryId;
 	private String _languageId;
-	private String _originalLanguageId;
 	private String _title;
 	private String _content;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private LocalizedEntryLocalization _escapedModel;
 
 }

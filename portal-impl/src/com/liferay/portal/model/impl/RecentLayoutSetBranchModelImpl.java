@@ -119,15 +119,33 @@ public class RecentLayoutSetBranchModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.RecentLayoutSetBranch"),
 		true);
 
-	public static final long GROUPID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long LAYOUTSETBRANCHID_COLUMN_BITMASK = 2L;
+	public static final long RECENTLAYOUTSETBRANCHID_COLUMN_BITMASK = 2L;
 
-	public static final long LAYOUTSETID_COLUMN_BITMASK = 4L;
+	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
-	public static final long USERID_COLUMN_BITMASK = 8L;
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
 
-	public static final long RECENTLAYOUTSETBRANCHID_COLUMN_BITMASK = 16L;
+	public static final long USERID_COLUMN_BITMASK = 16L;
+
+	public static final long LAYOUTSETBRANCHID_COLUMN_BITMASK = 32L;
+
+	public static final long LAYOUTSETID_COLUMN_BITMASK = 64L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int RECENTLAYOUTSETBRANCHID_COLUMN_INDEX = 1;
+
+	public static final int GROUPID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int USERID_COLUMN_INDEX = 4;
+
+	public static final int LAYOUTSETBRANCHID_COLUMN_INDEX = 5;
+
+	public static final int LAYOUTSETID_COLUMN_INDEX = 6;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -322,6 +340,16 @@ public class RecentLayoutSetBranchModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -332,6 +360,17 @@ public class RecentLayoutSetBranchModelImpl
 
 	@Override
 	public void setRecentLayoutSetBranchId(long recentLayoutSetBranchId) {
+		if ((_columnBitmask & RECENTLAYOUTSETBRANCHID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= RECENTLAYOUTSETBRANCHID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
+
+			_originalValues[RECENTLAYOUTSETBRANCHID_COLUMN_INDEX] =
+				_recentLayoutSetBranchId;
+		}
+
 		_recentLayoutSetBranchId = recentLayoutSetBranchId;
 	}
 
@@ -342,19 +381,29 @@ public class RecentLayoutSetBranchModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@Override
@@ -364,6 +413,16 @@ public class RecentLayoutSetBranchModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -374,12 +433,14 @@ public class RecentLayoutSetBranchModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
 
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
 
-			_originalUserId = _userId;
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
 		}
 
 		_userId = userId;
@@ -402,7 +463,15 @@ public class RecentLayoutSetBranchModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		if (_originalValues != null) {
+			Object originalUserId = _originalValues[USERID_COLUMN_INDEX];
+
+			if (originalUserId != null) {
+				return (long)originalUserId;
+			}
+		}
+
+		return _userId;
 	}
 
 	@Override
@@ -412,19 +481,31 @@ public class RecentLayoutSetBranchModelImpl
 
 	@Override
 	public void setLayoutSetBranchId(long layoutSetBranchId) {
-		_columnBitmask |= LAYOUTSETBRANCHID_COLUMN_BITMASK;
+		if ((_columnBitmask & LAYOUTSETBRANCHID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LAYOUTSETBRANCHID_COLUMN_BITMASK;
 
-		if (!_setOriginalLayoutSetBranchId) {
-			_setOriginalLayoutSetBranchId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
 
-			_originalLayoutSetBranchId = _layoutSetBranchId;
+			_originalValues[LAYOUTSETBRANCHID_COLUMN_INDEX] =
+				_layoutSetBranchId;
 		}
 
 		_layoutSetBranchId = layoutSetBranchId;
 	}
 
 	public long getOriginalLayoutSetBranchId() {
-		return _originalLayoutSetBranchId;
+		if (_originalValues != null) {
+			Object originalLayoutSetBranchId =
+				_originalValues[LAYOUTSETBRANCHID_COLUMN_INDEX];
+
+			if (originalLayoutSetBranchId != null) {
+				return (long)originalLayoutSetBranchId;
+			}
+		}
+
+		return _layoutSetBranchId;
 	}
 
 	@Override
@@ -434,19 +515,30 @@ public class RecentLayoutSetBranchModelImpl
 
 	@Override
 	public void setLayoutSetId(long layoutSetId) {
-		_columnBitmask |= LAYOUTSETID_COLUMN_BITMASK;
+		if ((_columnBitmask & LAYOUTSETID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LAYOUTSETID_COLUMN_BITMASK;
 
-		if (!_setOriginalLayoutSetId) {
-			_setOriginalLayoutSetId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
 
-			_originalLayoutSetId = _layoutSetId;
+			_originalValues[LAYOUTSETID_COLUMN_INDEX] = _layoutSetId;
 		}
 
 		_layoutSetId = layoutSetId;
 	}
 
 	public long getOriginalLayoutSetId() {
-		return _originalLayoutSetId;
+		if (_originalValues != null) {
+			Object originalLayoutSetId =
+				_originalValues[LAYOUTSETID_COLUMN_INDEX];
+
+			if (originalLayoutSetId != null) {
+				return (long)originalLayoutSetId;
+			}
+		}
+
+		return _layoutSetId;
 	}
 
 	public long getColumnBitmask() {
@@ -556,29 +648,9 @@ public class RecentLayoutSetBranchModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		RecentLayoutSetBranchModelImpl recentLayoutSetBranchModelImpl = this;
+		_columnBitmask = 0;
 
-		recentLayoutSetBranchModelImpl._originalGroupId =
-			recentLayoutSetBranchModelImpl._groupId;
-
-		recentLayoutSetBranchModelImpl._setOriginalGroupId = false;
-
-		recentLayoutSetBranchModelImpl._originalUserId =
-			recentLayoutSetBranchModelImpl._userId;
-
-		recentLayoutSetBranchModelImpl._setOriginalUserId = false;
-
-		recentLayoutSetBranchModelImpl._originalLayoutSetBranchId =
-			recentLayoutSetBranchModelImpl._layoutSetBranchId;
-
-		recentLayoutSetBranchModelImpl._setOriginalLayoutSetBranchId = false;
-
-		recentLayoutSetBranchModelImpl._originalLayoutSetId =
-			recentLayoutSetBranchModelImpl._layoutSetId;
-
-		recentLayoutSetBranchModelImpl._setOriginalLayoutSetId = false;
-
-		recentLayoutSetBranchModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -680,19 +752,12 @@ public class RecentLayoutSetBranchModelImpl
 	private long _mvccVersion;
 	private long _recentLayoutSetBranchId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private long _layoutSetBranchId;
-	private long _originalLayoutSetBranchId;
-	private boolean _setOriginalLayoutSetBranchId;
 	private long _layoutSetId;
-	private long _originalLayoutSetId;
-	private boolean _setOriginalLayoutSetId;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private RecentLayoutSetBranch _escapedModel;
 
 }

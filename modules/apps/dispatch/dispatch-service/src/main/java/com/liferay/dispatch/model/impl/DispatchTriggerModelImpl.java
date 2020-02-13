@@ -121,13 +121,65 @@ public class DispatchTriggerModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long NAME_COLUMN_BITMASK = 2L;
+	public static final long DISPATCHTRIGGERID_COLUMN_BITMASK = 2L;
 
-	public static final long TYPE_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
-	public static final long MODIFIEDDATE_COLUMN_BITMASK = 8L;
+	public static final long USERID_COLUMN_BITMASK = 8L;
+
+	public static final long USERNAME_COLUMN_BITMASK = 16L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 32L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 64L;
+
+	public static final long ACTIVE_COLUMN_BITMASK = 128L;
+
+	public static final long CRONEXPRESSION_COLUMN_BITMASK = 256L;
+
+	public static final long ENDDATE_COLUMN_BITMASK = 512L;
+
+	public static final long NAME_COLUMN_BITMASK = 1024L;
+
+	public static final long STARTDATE_COLUMN_BITMASK = 2048L;
+
+	public static final long SYSTEM_COLUMN_BITMASK = 4096L;
+
+	public static final long TYPE_COLUMN_BITMASK = 8192L;
+
+	public static final long TYPESETTINGS_COLUMN_BITMASK = 16384L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int DISPATCHTRIGGERID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int USERID_COLUMN_INDEX = 3;
+
+	public static final int USERNAME_COLUMN_INDEX = 4;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 5;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 6;
+
+	public static final int ACTIVE_COLUMN_INDEX = 7;
+
+	public static final int CRONEXPRESSION_COLUMN_INDEX = 8;
+
+	public static final int ENDDATE_COLUMN_INDEX = 9;
+
+	public static final int NAME_COLUMN_INDEX = 10;
+
+	public static final int STARTDATE_COLUMN_INDEX = 11;
+
+	public static final int SYSTEM_COLUMN_INDEX = 12;
+
+	public static final int TYPE_COLUMN_INDEX = 13;
+
+	public static final int TYPESETTINGS_COLUMN_INDEX = 14;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -407,6 +459,16 @@ public class DispatchTriggerModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -418,6 +480,17 @@ public class DispatchTriggerModelImpl
 
 	@Override
 	public void setDispatchTriggerId(long dispatchTriggerId) {
+		if ((_columnBitmask & DISPATCHTRIGGERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DISPATCHTRIGGERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[DISPATCHTRIGGERID_COLUMN_INDEX] =
+				_dispatchTriggerId;
+		}
+
 		_dispatchTriggerId = dispatchTriggerId;
 	}
 
@@ -429,19 +502,29 @@ public class DispatchTriggerModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@JSON
@@ -452,6 +535,16 @@ public class DispatchTriggerModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -484,6 +577,16 @@ public class DispatchTriggerModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -495,6 +598,16 @@ public class DispatchTriggerModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -505,14 +618,20 @@ public class DispatchTriggerModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
 
-		_columnBitmask = -1L;
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -531,6 +650,16 @@ public class DispatchTriggerModelImpl
 
 	@Override
 	public void setActive(boolean active) {
+		if ((_columnBitmask & ACTIVE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ACTIVE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[ACTIVE_COLUMN_INDEX] = _active;
+		}
+
 		_active = active;
 	}
 
@@ -547,6 +676,16 @@ public class DispatchTriggerModelImpl
 
 	@Override
 	public void setCronExpression(String cronExpression) {
+		if ((_columnBitmask & CRONEXPRESSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CRONEXPRESSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[CRONEXPRESSION_COLUMN_INDEX] = _cronExpression;
+		}
+
 		_cronExpression = cronExpression;
 	}
 
@@ -558,6 +697,16 @@ public class DispatchTriggerModelImpl
 
 	@Override
 	public void setEndDate(Date endDate) {
+		if ((_columnBitmask & ENDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ENDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[ENDDATE_COLUMN_INDEX] = _endDate;
+		}
+
 		_endDate = endDate;
 	}
 
@@ -574,17 +723,29 @@ public class DispatchTriggerModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask |= NAME_COLUMN_BITMASK;
+		if ((_columnBitmask & NAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= NAME_COLUMN_BITMASK;
 
-		if (_originalName == null) {
-			_originalName = _name;
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[NAME_COLUMN_INDEX] = _name;
 		}
 
 		_name = name;
 	}
 
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		if (_originalValues != null) {
+			Object originalName = _originalValues[NAME_COLUMN_INDEX];
+
+			if (originalName != null) {
+				return GetterUtil.getString((String)originalName);
+			}
+		}
+
+		return GetterUtil.getString(_name);
 	}
 
 	@JSON
@@ -595,6 +756,16 @@ public class DispatchTriggerModelImpl
 
 	@Override
 	public void setStartDate(Date startDate) {
+		if ((_columnBitmask & STARTDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STARTDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[STARTDATE_COLUMN_INDEX] = _startDate;
+		}
+
 		_startDate = startDate;
 	}
 
@@ -612,6 +783,16 @@ public class DispatchTriggerModelImpl
 
 	@Override
 	public void setSystem(boolean system) {
+		if ((_columnBitmask & SYSTEM_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SYSTEM_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[SYSTEM_COLUMN_INDEX] = _system;
+		}
+
 		_system = system;
 	}
 
@@ -628,17 +809,29 @@ public class DispatchTriggerModelImpl
 
 	@Override
 	public void setType(String type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
+		if ((_columnBitmask & TYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TYPE_COLUMN_BITMASK;
 
-		if (_originalType == null) {
-			_originalType = _type;
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[TYPE_COLUMN_INDEX] = _type;
 		}
 
 		_type = type;
 	}
 
 	public String getOriginalType() {
-		return GetterUtil.getString(_originalType);
+		if (_originalValues != null) {
+			Object originalType = _originalValues[TYPE_COLUMN_INDEX];
+
+			if (originalType != null) {
+				return GetterUtil.getString((String)originalType);
+			}
+		}
+
+		return GetterUtil.getString(_type);
 	}
 
 	@JSON
@@ -654,6 +847,16 @@ public class DispatchTriggerModelImpl
 
 	@Override
 	public void setTypeSettings(String typeSettings) {
+		if ((_columnBitmask & TYPESETTINGS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TYPESETTINGS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[TYPESETTINGS_COLUMN_INDEX] = _typeSettings;
+		}
+
 		_typeSettings = typeSettings;
 	}
 
@@ -769,20 +972,9 @@ public class DispatchTriggerModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DispatchTriggerModelImpl dispatchTriggerModelImpl = this;
+		_columnBitmask = 0;
 
-		dispatchTriggerModelImpl._originalCompanyId =
-			dispatchTriggerModelImpl._companyId;
-
-		dispatchTriggerModelImpl._setOriginalCompanyId = false;
-
-		dispatchTriggerModelImpl._setModifiedDate = false;
-
-		dispatchTriggerModelImpl._originalName = dispatchTriggerModelImpl._name;
-
-		dispatchTriggerModelImpl._originalType = dispatchTriggerModelImpl._type;
-
-		dispatchTriggerModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -957,24 +1149,20 @@ public class DispatchTriggerModelImpl
 	private long _mvccVersion;
 	private long _dispatchTriggerId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private boolean _active;
 	private String _cronExpression;
 	private Date _endDate;
 	private String _name;
-	private String _originalName;
 	private Date _startDate;
 	private boolean _system;
 	private String _type;
-	private String _originalType;
 	private String _typeSettings;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private DispatchTrigger _escapedModel;
 
 }

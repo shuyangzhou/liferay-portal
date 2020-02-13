@@ -112,13 +112,57 @@ public class KaleoConditionModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long KALEODEFINITIONVERSIONID_COLUMN_BITMASK = 2L;
+	public static final long KALEOCONDITIONID_COLUMN_BITMASK = 2L;
 
-	public static final long KALEONODEID_COLUMN_BITMASK = 4L;
+	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
-	public static final long KALEOCONDITIONID_COLUMN_BITMASK = 8L;
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
+
+	public static final long USERID_COLUMN_BITMASK = 16L;
+
+	public static final long USERNAME_COLUMN_BITMASK = 32L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 64L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 128L;
+
+	public static final long KALEODEFINITIONVERSIONID_COLUMN_BITMASK = 256L;
+
+	public static final long KALEONODEID_COLUMN_BITMASK = 512L;
+
+	public static final long SCRIPT_COLUMN_BITMASK = 1024L;
+
+	public static final long SCRIPTLANGUAGE_COLUMN_BITMASK = 2048L;
+
+	public static final long SCRIPTREQUIREDCONTEXTS_COLUMN_BITMASK = 4096L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int KALEOCONDITIONID_COLUMN_INDEX = 1;
+
+	public static final int GROUPID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int USERID_COLUMN_INDEX = 4;
+
+	public static final int USERNAME_COLUMN_INDEX = 5;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 6;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 7;
+
+	public static final int KALEODEFINITIONVERSIONID_COLUMN_INDEX = 8;
+
+	public static final int KALEONODEID_COLUMN_INDEX = 9;
+
+	public static final int SCRIPT_COLUMN_INDEX = 10;
+
+	public static final int SCRIPTLANGUAGE_COLUMN_INDEX = 11;
+
+	public static final int SCRIPTREQUIREDCONTEXTS_COLUMN_INDEX = 12;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -335,6 +379,16 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -345,7 +399,15 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void setKaleoConditionId(long kaleoConditionId) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & KALEOCONDITIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= KALEOCONDITIONID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[KALEOCONDITIONID_COLUMN_INDEX] = _kaleoConditionId;
+		}
 
 		_kaleoConditionId = kaleoConditionId;
 	}
@@ -357,6 +419,16 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
+		}
+
 		_groupId = groupId;
 	}
 
@@ -367,19 +439,29 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@Override
@@ -389,6 +471,16 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -420,6 +512,16 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -430,6 +532,16 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -439,12 +551,20 @@ public class KaleoConditionModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -456,19 +576,31 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void setKaleoDefinitionVersionId(long kaleoDefinitionVersionId) {
-		_columnBitmask |= KALEODEFINITIONVERSIONID_COLUMN_BITMASK;
+		if ((_columnBitmask & KALEODEFINITIONVERSIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= KALEODEFINITIONVERSIONID_COLUMN_BITMASK;
 
-		if (!_setOriginalKaleoDefinitionVersionId) {
-			_setOriginalKaleoDefinitionVersionId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalKaleoDefinitionVersionId = _kaleoDefinitionVersionId;
+			_originalValues[KALEODEFINITIONVERSIONID_COLUMN_INDEX] =
+				_kaleoDefinitionVersionId;
 		}
 
 		_kaleoDefinitionVersionId = kaleoDefinitionVersionId;
 	}
 
 	public long getOriginalKaleoDefinitionVersionId() {
-		return _originalKaleoDefinitionVersionId;
+		if (_originalValues != null) {
+			Object originalKaleoDefinitionVersionId =
+				_originalValues[KALEODEFINITIONVERSIONID_COLUMN_INDEX];
+
+			if (originalKaleoDefinitionVersionId != null) {
+				return (long)originalKaleoDefinitionVersionId;
+			}
+		}
+
+		return _kaleoDefinitionVersionId;
 	}
 
 	@Override
@@ -478,19 +610,30 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void setKaleoNodeId(long kaleoNodeId) {
-		_columnBitmask |= KALEONODEID_COLUMN_BITMASK;
+		if ((_columnBitmask & KALEONODEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= KALEONODEID_COLUMN_BITMASK;
 
-		if (!_setOriginalKaleoNodeId) {
-			_setOriginalKaleoNodeId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalKaleoNodeId = _kaleoNodeId;
+			_originalValues[KALEONODEID_COLUMN_INDEX] = _kaleoNodeId;
 		}
 
 		_kaleoNodeId = kaleoNodeId;
 	}
 
 	public long getOriginalKaleoNodeId() {
-		return _originalKaleoNodeId;
+		if (_originalValues != null) {
+			Object originalKaleoNodeId =
+				_originalValues[KALEONODEID_COLUMN_INDEX];
+
+			if (originalKaleoNodeId != null) {
+				return (long)originalKaleoNodeId;
+			}
+		}
+
+		return _kaleoNodeId;
 	}
 
 	@Override
@@ -505,6 +648,16 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void setScript(String script) {
+		if ((_columnBitmask & SCRIPT_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SCRIPT_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[SCRIPT_COLUMN_INDEX] = _script;
+		}
+
 		_script = script;
 	}
 
@@ -520,6 +673,16 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void setScriptLanguage(String scriptLanguage) {
+		if ((_columnBitmask & SCRIPTLANGUAGE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SCRIPTLANGUAGE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[SCRIPTLANGUAGE_COLUMN_INDEX] = _scriptLanguage;
+		}
+
 		_scriptLanguage = scriptLanguage;
 	}
 
@@ -535,6 +698,17 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void setScriptRequiredContexts(String scriptRequiredContexts) {
+		if ((_columnBitmask & SCRIPTREQUIREDCONTEXTS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SCRIPTREQUIREDCONTEXTS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[SCRIPTREQUIREDCONTEXTS_COLUMN_INDEX] =
+				_scriptRequiredContexts;
+		}
+
 		_scriptRequiredContexts = scriptRequiredContexts;
 	}
 
@@ -655,26 +829,9 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		KaleoConditionModelImpl kaleoConditionModelImpl = this;
+		_columnBitmask = 0;
 
-		kaleoConditionModelImpl._originalCompanyId =
-			kaleoConditionModelImpl._companyId;
-
-		kaleoConditionModelImpl._setOriginalCompanyId = false;
-
-		kaleoConditionModelImpl._setModifiedDate = false;
-
-		kaleoConditionModelImpl._originalKaleoDefinitionVersionId =
-			kaleoConditionModelImpl._kaleoDefinitionVersionId;
-
-		kaleoConditionModelImpl._setOriginalKaleoDefinitionVersionId = false;
-
-		kaleoConditionModelImpl._originalKaleoNodeId =
-			kaleoConditionModelImpl._kaleoNodeId;
-
-		kaleoConditionModelImpl._setOriginalKaleoNodeId = false;
-
-		kaleoConditionModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -831,23 +988,17 @@ public class KaleoConditionModelImpl
 	private long _kaleoConditionId;
 	private long _groupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _kaleoDefinitionVersionId;
-	private long _originalKaleoDefinitionVersionId;
-	private boolean _setOriginalKaleoDefinitionVersionId;
 	private long _kaleoNodeId;
-	private long _originalKaleoNodeId;
-	private boolean _setOriginalKaleoNodeId;
 	private String _script;
 	private String _scriptLanguage;
 	private String _scriptRequiredContexts;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private KaleoCondition _escapedModel;
 
 }

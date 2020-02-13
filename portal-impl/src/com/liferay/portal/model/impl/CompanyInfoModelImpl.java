@@ -109,9 +109,21 @@ public class CompanyInfoModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.CompanyInfo"),
 		true);
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
 	public static final long COMPANYINFOID_COLUMN_BITMASK = 2L;
+
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
+
+	public static final long KEY_COLUMN_BITMASK = 8L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int COMPANYINFOID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int KEY_COLUMN_INDEX = 3;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -275,6 +287,16 @@ public class CompanyInfoModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[4];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -285,6 +307,16 @@ public class CompanyInfoModelImpl
 
 	@Override
 	public void setCompanyInfoId(long companyInfoId) {
+		if ((_columnBitmask & COMPANYINFOID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYINFOID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[4];
+			}
+
+			_originalValues[COMPANYINFOID_COLUMN_INDEX] = _companyInfoId;
+		}
+
 		_companyInfoId = companyInfoId;
 	}
 
@@ -295,19 +327,29 @@ public class CompanyInfoModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[4];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@Override
@@ -322,6 +364,16 @@ public class CompanyInfoModelImpl
 
 	@Override
 	public void setKey(String key) {
+		if ((_columnBitmask & KEY_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= KEY_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[4];
+			}
+
+			_originalValues[KEY_COLUMN_INDEX] = _key;
+		}
+
 		_key = key;
 	}
 
@@ -425,14 +477,9 @@ public class CompanyInfoModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		CompanyInfoModelImpl companyInfoModelImpl = this;
+		_columnBitmask = 0;
 
-		companyInfoModelImpl._originalCompanyId =
-			companyInfoModelImpl._companyId;
-
-		companyInfoModelImpl._setOriginalCompanyId = false;
-
-		companyInfoModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -530,10 +577,9 @@ public class CompanyInfoModelImpl
 	private long _mvccVersion;
 	private long _companyInfoId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private String _key;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private CompanyInfo _escapedModel;
 
 }

@@ -125,19 +125,65 @@ public class AssetDisplayPageEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long CLASSPK_COLUMN_BITMASK = 2L;
+	public static final long CTCOLLECTIONID_COLUMN_BITMASK = 2L;
 
-	public static final long COMPANYID_COLUMN_BITMASK = 4L;
+	public static final long UUID_COLUMN_BITMASK = 4L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 8L;
+	public static final long ASSETDISPLAYPAGEENTRYID_COLUMN_BITMASK = 8L;
 
-	public static final long LAYOUTPAGETEMPLATEENTRYID_COLUMN_BITMASK = 16L;
+	public static final long GROUPID_COLUMN_BITMASK = 16L;
 
-	public static final long UUID_COLUMN_BITMASK = 32L;
+	public static final long COMPANYID_COLUMN_BITMASK = 32L;
 
-	public static final long ASSETDISPLAYPAGEENTRYID_COLUMN_BITMASK = 64L;
+	public static final long USERID_COLUMN_BITMASK = 64L;
+
+	public static final long USERNAME_COLUMN_BITMASK = 128L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 256L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 512L;
+
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 1024L;
+
+	public static final long CLASSPK_COLUMN_BITMASK = 2048L;
+
+	public static final long LAYOUTPAGETEMPLATEENTRYID_COLUMN_BITMASK = 4096L;
+
+	public static final long TYPE_COLUMN_BITMASK = 8192L;
+
+	public static final long PLID_COLUMN_BITMASK = 16384L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int CTCOLLECTIONID_COLUMN_INDEX = 1;
+
+	public static final int UUID_COLUMN_INDEX = 2;
+
+	public static final int ASSETDISPLAYPAGEENTRYID_COLUMN_INDEX = 3;
+
+	public static final int GROUPID_COLUMN_INDEX = 4;
+
+	public static final int COMPANYID_COLUMN_INDEX = 5;
+
+	public static final int USERID_COLUMN_INDEX = 6;
+
+	public static final int USERNAME_COLUMN_INDEX = 7;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 8;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 9;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 10;
+
+	public static final int CLASSPK_COLUMN_INDEX = 11;
+
+	public static final int LAYOUTPAGETEMPLATEENTRYID_COLUMN_INDEX = 12;
+
+	public static final int TYPE_COLUMN_INDEX = 13;
+
+	public static final int PLID_COLUMN_INDEX = 14;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -442,6 +488,16 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -453,6 +509,16 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		if ((_columnBitmask & CTCOLLECTIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CTCOLLECTIONID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[CTCOLLECTIONID_COLUMN_INDEX] = _ctCollectionId;
+		}
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -469,17 +535,29 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		if ((_columnBitmask & UUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= UUID_COLUMN_BITMASK;
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[UUID_COLUMN_INDEX] = _uuid;
 		}
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		if (_originalValues != null) {
+			Object originalUuid = _originalValues[UUID_COLUMN_INDEX];
+
+			if (originalUuid != null) {
+				return GetterUtil.getString((String)originalUuid);
+			}
+		}
+
+		return GetterUtil.getString(_uuid);
 	}
 
 	@JSON
@@ -490,6 +568,17 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void setAssetDisplayPageEntryId(long assetDisplayPageEntryId) {
+		if ((_columnBitmask & ASSETDISPLAYPAGEENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ASSETDISPLAYPAGEENTRYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[ASSETDISPLAYPAGEENTRYID_COLUMN_INDEX] =
+				_assetDisplayPageEntryId;
+		}
+
 		_assetDisplayPageEntryId = assetDisplayPageEntryId;
 	}
 
@@ -501,19 +590,29 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@JSON
@@ -524,19 +623,29 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@JSON
@@ -547,6 +656,16 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -579,6 +698,16 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -590,6 +719,16 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -600,12 +739,20 @@ public class AssetDisplayPageEntryModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -638,19 +785,30 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSNAMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
 
-			_originalClassNameId = _classNameId;
+			_originalValues[CLASSNAMEID_COLUMN_INDEX] = _classNameId;
 		}
 
 		_classNameId = classNameId;
 	}
 
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		if (_originalValues != null) {
+			Object originalClassNameId =
+				_originalValues[CLASSNAMEID_COLUMN_INDEX];
+
+			if (originalClassNameId != null) {
+				return (long)originalClassNameId;
+			}
+		}
+
+		return _classNameId;
 	}
 
 	@JSON
@@ -661,19 +819,29 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSPK_COLUMN_BITMASK;
 
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
 
-			_originalClassPK = _classPK;
+			_originalValues[CLASSPK_COLUMN_INDEX] = _classPK;
 		}
 
 		_classPK = classPK;
 	}
 
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		if (_originalValues != null) {
+			Object originalClassPK = _originalValues[CLASSPK_COLUMN_INDEX];
+
+			if (originalClassPK != null) {
+				return (long)originalClassPK;
+			}
+		}
+
+		return _classPK;
 	}
 
 	@JSON
@@ -684,19 +852,31 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void setLayoutPageTemplateEntryId(long layoutPageTemplateEntryId) {
-		_columnBitmask |= LAYOUTPAGETEMPLATEENTRYID_COLUMN_BITMASK;
+		if ((_columnBitmask & LAYOUTPAGETEMPLATEENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LAYOUTPAGETEMPLATEENTRYID_COLUMN_BITMASK;
 
-		if (!_setOriginalLayoutPageTemplateEntryId) {
-			_setOriginalLayoutPageTemplateEntryId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
 
-			_originalLayoutPageTemplateEntryId = _layoutPageTemplateEntryId;
+			_originalValues[LAYOUTPAGETEMPLATEENTRYID_COLUMN_INDEX] =
+				_layoutPageTemplateEntryId;
 		}
 
 		_layoutPageTemplateEntryId = layoutPageTemplateEntryId;
 	}
 
 	public long getOriginalLayoutPageTemplateEntryId() {
-		return _originalLayoutPageTemplateEntryId;
+		if (_originalValues != null) {
+			Object originalLayoutPageTemplateEntryId =
+				_originalValues[LAYOUTPAGETEMPLATEENTRYID_COLUMN_INDEX];
+
+			if (originalLayoutPageTemplateEntryId != null) {
+				return (long)originalLayoutPageTemplateEntryId;
+			}
+		}
+
+		return _layoutPageTemplateEntryId;
 	}
 
 	@JSON
@@ -707,6 +887,16 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void setType(int type) {
+		if ((_columnBitmask & TYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TYPE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[TYPE_COLUMN_INDEX] = _type;
+		}
+
 		_type = type;
 	}
 
@@ -718,6 +908,16 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void setPlid(long plid) {
+		if ((_columnBitmask & PLID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PLID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[PLID_COLUMN_INDEX] = _plid;
+		}
+
 		_plid = plid;
 	}
 
@@ -844,40 +1044,9 @@ public class AssetDisplayPageEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AssetDisplayPageEntryModelImpl assetDisplayPageEntryModelImpl = this;
+		_columnBitmask = 0;
 
-		assetDisplayPageEntryModelImpl._originalUuid =
-			assetDisplayPageEntryModelImpl._uuid;
-
-		assetDisplayPageEntryModelImpl._originalGroupId =
-			assetDisplayPageEntryModelImpl._groupId;
-
-		assetDisplayPageEntryModelImpl._setOriginalGroupId = false;
-
-		assetDisplayPageEntryModelImpl._originalCompanyId =
-			assetDisplayPageEntryModelImpl._companyId;
-
-		assetDisplayPageEntryModelImpl._setOriginalCompanyId = false;
-
-		assetDisplayPageEntryModelImpl._setModifiedDate = false;
-
-		assetDisplayPageEntryModelImpl._originalClassNameId =
-			assetDisplayPageEntryModelImpl._classNameId;
-
-		assetDisplayPageEntryModelImpl._setOriginalClassNameId = false;
-
-		assetDisplayPageEntryModelImpl._originalClassPK =
-			assetDisplayPageEntryModelImpl._classPK;
-
-		assetDisplayPageEntryModelImpl._setOriginalClassPK = false;
-
-		assetDisplayPageEntryModelImpl._originalLayoutPageTemplateEntryId =
-			assetDisplayPageEntryModelImpl._layoutPageTemplateEntryId;
-
-		assetDisplayPageEntryModelImpl._setOriginalLayoutPageTemplateEntryId =
-			false;
-
-		assetDisplayPageEntryModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -1025,31 +1194,20 @@ public class AssetDisplayPageEntryModelImpl
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private String _uuid;
-	private String _originalUuid;
 	private long _assetDisplayPageEntryId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private long _layoutPageTemplateEntryId;
-	private long _originalLayoutPageTemplateEntryId;
-	private boolean _setOriginalLayoutPageTemplateEntryId;
 	private int _type;
 	private long _plid;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private AssetDisplayPageEntry _escapedModel;
 
 }

@@ -119,13 +119,77 @@ public class KaleoTimerModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long BLOCKING_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long KALEOCLASSNAME_COLUMN_BITMASK = 2L;
+	public static final long KALEOTIMERID_COLUMN_BITMASK = 2L;
 
-	public static final long KALEOCLASSPK_COLUMN_BITMASK = 4L;
+	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
-	public static final long KALEOTIMERID_COLUMN_BITMASK = 8L;
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
+
+	public static final long USERID_COLUMN_BITMASK = 16L;
+
+	public static final long USERNAME_COLUMN_BITMASK = 32L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 64L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 128L;
+
+	public static final long KALEOCLASSNAME_COLUMN_BITMASK = 256L;
+
+	public static final long KALEOCLASSPK_COLUMN_BITMASK = 512L;
+
+	public static final long KALEODEFINITIONVERSIONID_COLUMN_BITMASK = 1024L;
+
+	public static final long NAME_COLUMN_BITMASK = 2048L;
+
+	public static final long BLOCKING_COLUMN_BITMASK = 4096L;
+
+	public static final long DESCRIPTION_COLUMN_BITMASK = 8192L;
+
+	public static final long DURATION_COLUMN_BITMASK = 16384L;
+
+	public static final long SCALE_COLUMN_BITMASK = 32768L;
+
+	public static final long RECURRENCEDURATION_COLUMN_BITMASK = 65536L;
+
+	public static final long RECURRENCESCALE_COLUMN_BITMASK = 131072L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int KALEOTIMERID_COLUMN_INDEX = 1;
+
+	public static final int GROUPID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int USERID_COLUMN_INDEX = 4;
+
+	public static final int USERNAME_COLUMN_INDEX = 5;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 6;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 7;
+
+	public static final int KALEOCLASSNAME_COLUMN_INDEX = 8;
+
+	public static final int KALEOCLASSPK_COLUMN_INDEX = 9;
+
+	public static final int KALEODEFINITIONVERSIONID_COLUMN_INDEX = 10;
+
+	public static final int NAME_COLUMN_INDEX = 11;
+
+	public static final int BLOCKING_COLUMN_INDEX = 12;
+
+	public static final int DESCRIPTION_COLUMN_INDEX = 13;
+
+	public static final int DURATION_COLUMN_INDEX = 14;
+
+	public static final int SCALE_COLUMN_INDEX = 15;
+
+	public static final int RECURRENCEDURATION_COLUMN_INDEX = 16;
+
+	public static final int RECURRENCESCALE_COLUMN_INDEX = 17;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -352,6 +416,16 @@ public class KaleoTimerModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -362,7 +436,15 @@ public class KaleoTimerModelImpl
 
 	@Override
 	public void setKaleoTimerId(long kaleoTimerId) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & KALEOTIMERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= KALEOTIMERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[KALEOTIMERID_COLUMN_INDEX] = _kaleoTimerId;
+		}
 
 		_kaleoTimerId = kaleoTimerId;
 	}
@@ -374,6 +456,16 @@ public class KaleoTimerModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
+		}
+
 		_groupId = groupId;
 	}
 
@@ -384,6 +476,16 @@ public class KaleoTimerModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -394,6 +496,16 @@ public class KaleoTimerModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -425,6 +537,16 @@ public class KaleoTimerModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -435,6 +557,16 @@ public class KaleoTimerModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -444,12 +576,20 @@ public class KaleoTimerModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -466,17 +606,30 @@ public class KaleoTimerModelImpl
 
 	@Override
 	public void setKaleoClassName(String kaleoClassName) {
-		_columnBitmask |= KALEOCLASSNAME_COLUMN_BITMASK;
+		if ((_columnBitmask & KALEOCLASSNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= KALEOCLASSNAME_COLUMN_BITMASK;
 
-		if (_originalKaleoClassName == null) {
-			_originalKaleoClassName = _kaleoClassName;
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[KALEOCLASSNAME_COLUMN_INDEX] = _kaleoClassName;
 		}
 
 		_kaleoClassName = kaleoClassName;
 	}
 
 	public String getOriginalKaleoClassName() {
-		return GetterUtil.getString(_originalKaleoClassName);
+		if (_originalValues != null) {
+			Object originalKaleoClassName =
+				_originalValues[KALEOCLASSNAME_COLUMN_INDEX];
+
+			if (originalKaleoClassName != null) {
+				return GetterUtil.getString((String)originalKaleoClassName);
+			}
+		}
+
+		return GetterUtil.getString(_kaleoClassName);
 	}
 
 	@Override
@@ -486,19 +639,30 @@ public class KaleoTimerModelImpl
 
 	@Override
 	public void setKaleoClassPK(long kaleoClassPK) {
-		_columnBitmask |= KALEOCLASSPK_COLUMN_BITMASK;
+		if ((_columnBitmask & KALEOCLASSPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= KALEOCLASSPK_COLUMN_BITMASK;
 
-		if (!_setOriginalKaleoClassPK) {
-			_setOriginalKaleoClassPK = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
 
-			_originalKaleoClassPK = _kaleoClassPK;
+			_originalValues[KALEOCLASSPK_COLUMN_INDEX] = _kaleoClassPK;
 		}
 
 		_kaleoClassPK = kaleoClassPK;
 	}
 
 	public long getOriginalKaleoClassPK() {
-		return _originalKaleoClassPK;
+		if (_originalValues != null) {
+			Object originalKaleoClassPK =
+				_originalValues[KALEOCLASSPK_COLUMN_INDEX];
+
+			if (originalKaleoClassPK != null) {
+				return (long)originalKaleoClassPK;
+			}
+		}
+
+		return _kaleoClassPK;
 	}
 
 	@Override
@@ -508,6 +672,17 @@ public class KaleoTimerModelImpl
 
 	@Override
 	public void setKaleoDefinitionVersionId(long kaleoDefinitionVersionId) {
+		if ((_columnBitmask & KALEODEFINITIONVERSIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= KALEODEFINITIONVERSIONID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[KALEODEFINITIONVERSIONID_COLUMN_INDEX] =
+				_kaleoDefinitionVersionId;
+		}
+
 		_kaleoDefinitionVersionId = kaleoDefinitionVersionId;
 	}
 
@@ -523,6 +698,16 @@ public class KaleoTimerModelImpl
 
 	@Override
 	public void setName(String name) {
+		if ((_columnBitmask & NAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= NAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[NAME_COLUMN_INDEX] = _name;
+		}
+
 		_name = name;
 	}
 
@@ -538,19 +723,29 @@ public class KaleoTimerModelImpl
 
 	@Override
 	public void setBlocking(boolean blocking) {
-		_columnBitmask |= BLOCKING_COLUMN_BITMASK;
+		if ((_columnBitmask & BLOCKING_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= BLOCKING_COLUMN_BITMASK;
 
-		if (!_setOriginalBlocking) {
-			_setOriginalBlocking = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
 
-			_originalBlocking = _blocking;
+			_originalValues[BLOCKING_COLUMN_INDEX] = _blocking;
 		}
 
 		_blocking = blocking;
 	}
 
 	public boolean getOriginalBlocking() {
-		return _originalBlocking;
+		if (_originalValues != null) {
+			Object originalBlocking = _originalValues[BLOCKING_COLUMN_INDEX];
+
+			if (originalBlocking != null) {
+				return (boolean)originalBlocking;
+			}
+		}
+
+		return _blocking;
 	}
 
 	@Override
@@ -565,6 +760,16 @@ public class KaleoTimerModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		if ((_columnBitmask & DESCRIPTION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DESCRIPTION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[DESCRIPTION_COLUMN_INDEX] = _description;
+		}
+
 		_description = description;
 	}
 
@@ -575,6 +780,16 @@ public class KaleoTimerModelImpl
 
 	@Override
 	public void setDuration(double duration) {
+		if ((_columnBitmask & DURATION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DURATION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[DURATION_COLUMN_INDEX] = _duration;
+		}
+
 		_duration = duration;
 	}
 
@@ -590,6 +805,16 @@ public class KaleoTimerModelImpl
 
 	@Override
 	public void setScale(String scale) {
+		if ((_columnBitmask & SCALE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SCALE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[SCALE_COLUMN_INDEX] = _scale;
+		}
+
 		_scale = scale;
 	}
 
@@ -600,6 +825,17 @@ public class KaleoTimerModelImpl
 
 	@Override
 	public void setRecurrenceDuration(double recurrenceDuration) {
+		if ((_columnBitmask & RECURRENCEDURATION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= RECURRENCEDURATION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[RECURRENCEDURATION_COLUMN_INDEX] =
+				_recurrenceDuration;
+		}
+
 		_recurrenceDuration = recurrenceDuration;
 	}
 
@@ -615,6 +851,16 @@ public class KaleoTimerModelImpl
 
 	@Override
 	public void setRecurrenceScale(String recurrenceScale) {
+		if ((_columnBitmask & RECURRENCESCALE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= RECURRENCESCALE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[RECURRENCESCALE_COLUMN_INDEX] = _recurrenceScale;
+		}
+
 		_recurrenceScale = recurrenceScale;
 	}
 
@@ -739,23 +985,9 @@ public class KaleoTimerModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		KaleoTimerModelImpl kaleoTimerModelImpl = this;
+		_columnBitmask = 0;
 
-		kaleoTimerModelImpl._setModifiedDate = false;
-
-		kaleoTimerModelImpl._originalKaleoClassName =
-			kaleoTimerModelImpl._kaleoClassName;
-
-		kaleoTimerModelImpl._originalKaleoClassPK =
-			kaleoTimerModelImpl._kaleoClassPK;
-
-		kaleoTimerModelImpl._setOriginalKaleoClassPK = false;
-
-		kaleoTimerModelImpl._originalBlocking = kaleoTimerModelImpl._blocking;
-
-		kaleoTimerModelImpl._setOriginalBlocking = false;
-
-		kaleoTimerModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -933,23 +1165,18 @@ public class KaleoTimerModelImpl
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private String _kaleoClassName;
-	private String _originalKaleoClassName;
 	private long _kaleoClassPK;
-	private long _originalKaleoClassPK;
-	private boolean _setOriginalKaleoClassPK;
 	private long _kaleoDefinitionVersionId;
 	private String _name;
 	private boolean _blocking;
-	private boolean _originalBlocking;
-	private boolean _setOriginalBlocking;
 	private String _description;
 	private double _duration;
 	private String _scale;
 	private double _recurrenceDuration;
 	private String _recurrenceScale;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private KaleoTimer _escapedModel;
 
 }

@@ -128,13 +128,81 @@ public class BatchEngineImportTaskModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long EXECUTESTATUS_COLUMN_BITMASK = 2L;
+	public static final long UUID_COLUMN_BITMASK = 2L;
 
-	public static final long UUID_COLUMN_BITMASK = 4L;
+	public static final long BATCHENGINEIMPORTTASKID_COLUMN_BITMASK = 4L;
 
-	public static final long BATCHENGINEIMPORTTASKID_COLUMN_BITMASK = 8L;
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
+
+	public static final long USERID_COLUMN_BITMASK = 16L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 32L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 64L;
+
+	public static final long BATCHSIZE_COLUMN_BITMASK = 128L;
+
+	public static final long CALLBACKURL_COLUMN_BITMASK = 256L;
+
+	public static final long CLASSNAME_COLUMN_BITMASK = 512L;
+
+	public static final long CONTENT_COLUMN_BITMASK = 1024L;
+
+	public static final long CONTENTTYPE_COLUMN_BITMASK = 2048L;
+
+	public static final long ENDTIME_COLUMN_BITMASK = 4096L;
+
+	public static final long ERRORMESSAGE_COLUMN_BITMASK = 8192L;
+
+	public static final long EXECUTESTATUS_COLUMN_BITMASK = 16384L;
+
+	public static final long FIELDNAMEMAPPING_COLUMN_BITMASK = 32768L;
+
+	public static final long OPERATION_COLUMN_BITMASK = 65536L;
+
+	public static final long PARAMETERS_COLUMN_BITMASK = 131072L;
+
+	public static final long STARTTIME_COLUMN_BITMASK = 262144L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int UUID_COLUMN_INDEX = 1;
+
+	public static final int BATCHENGINEIMPORTTASKID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int USERID_COLUMN_INDEX = 4;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 5;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 6;
+
+	public static final int BATCHSIZE_COLUMN_INDEX = 7;
+
+	public static final int CALLBACKURL_COLUMN_INDEX = 8;
+
+	public static final int CLASSNAME_COLUMN_INDEX = 9;
+
+	public static final int CONTENT_COLUMN_INDEX = 10;
+
+	public static final int CONTENTTYPE_COLUMN_INDEX = 11;
+
+	public static final int ENDTIME_COLUMN_INDEX = 12;
+
+	public static final int ERRORMESSAGE_COLUMN_INDEX = 13;
+
+	public static final int EXECUTESTATUS_COLUMN_INDEX = 14;
+
+	public static final int FIELDNAMEMAPPING_COLUMN_INDEX = 15;
+
+	public static final int OPERATION_COLUMN_INDEX = 16;
+
+	public static final int PARAMETERS_COLUMN_INDEX = 17;
+
+	public static final int STARTTIME_COLUMN_INDEX = 18;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -404,6 +472,16 @@ public class BatchEngineImportTaskModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -419,17 +497,29 @@ public class BatchEngineImportTaskModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		if ((_columnBitmask & UUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= UUID_COLUMN_BITMASK;
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[UUID_COLUMN_INDEX] = _uuid;
 		}
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		if (_originalValues != null) {
+			Object originalUuid = _originalValues[UUID_COLUMN_INDEX];
+
+			if (originalUuid != null) {
+				return GetterUtil.getString((String)originalUuid);
+			}
+		}
+
+		return GetterUtil.getString(_uuid);
 	}
 
 	@Override
@@ -439,6 +529,17 @@ public class BatchEngineImportTaskModelImpl
 
 	@Override
 	public void setBatchEngineImportTaskId(long batchEngineImportTaskId) {
+		if ((_columnBitmask & BATCHENGINEIMPORTTASKID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= BATCHENGINEIMPORTTASKID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[BATCHENGINEIMPORTTASKID_COLUMN_INDEX] =
+				_batchEngineImportTaskId;
+		}
+
 		_batchEngineImportTaskId = batchEngineImportTaskId;
 	}
 
@@ -449,19 +550,29 @@ public class BatchEngineImportTaskModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@Override
@@ -471,6 +582,16 @@ public class BatchEngineImportTaskModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -497,6 +618,16 @@ public class BatchEngineImportTaskModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -506,12 +637,20 @@ public class BatchEngineImportTaskModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -523,6 +662,16 @@ public class BatchEngineImportTaskModelImpl
 
 	@Override
 	public void setBatchSize(long batchSize) {
+		if ((_columnBitmask & BATCHSIZE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= BATCHSIZE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[BATCHSIZE_COLUMN_INDEX] = _batchSize;
+		}
+
 		_batchSize = batchSize;
 	}
 
@@ -538,6 +687,16 @@ public class BatchEngineImportTaskModelImpl
 
 	@Override
 	public void setCallbackURL(String callbackURL) {
+		if ((_columnBitmask & CALLBACKURL_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CALLBACKURL_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[CALLBACKURL_COLUMN_INDEX] = _callbackURL;
+		}
+
 		_callbackURL = callbackURL;
 	}
 
@@ -553,6 +712,16 @@ public class BatchEngineImportTaskModelImpl
 
 	@Override
 	public void setClassName(String className) {
+		if ((_columnBitmask & CLASSNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[CLASSNAME_COLUMN_INDEX] = _className;
+		}
+
 		_className = className;
 	}
 
@@ -600,6 +769,16 @@ public class BatchEngineImportTaskModelImpl
 
 	@Override
 	public void setContentType(String contentType) {
+		if ((_columnBitmask & CONTENTTYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CONTENTTYPE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[CONTENTTYPE_COLUMN_INDEX] = _contentType;
+		}
+
 		_contentType = contentType;
 	}
 
@@ -610,6 +789,16 @@ public class BatchEngineImportTaskModelImpl
 
 	@Override
 	public void setEndTime(Date endTime) {
+		if ((_columnBitmask & ENDTIME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ENDTIME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[ENDTIME_COLUMN_INDEX] = _endTime;
+		}
+
 		_endTime = endTime;
 	}
 
@@ -625,6 +814,16 @@ public class BatchEngineImportTaskModelImpl
 
 	@Override
 	public void setErrorMessage(String errorMessage) {
+		if ((_columnBitmask & ERRORMESSAGE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ERRORMESSAGE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[ERRORMESSAGE_COLUMN_INDEX] = _errorMessage;
+		}
+
 		_errorMessage = errorMessage;
 	}
 
@@ -640,17 +839,30 @@ public class BatchEngineImportTaskModelImpl
 
 	@Override
 	public void setExecuteStatus(String executeStatus) {
-		_columnBitmask |= EXECUTESTATUS_COLUMN_BITMASK;
+		if ((_columnBitmask & EXECUTESTATUS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= EXECUTESTATUS_COLUMN_BITMASK;
 
-		if (_originalExecuteStatus == null) {
-			_originalExecuteStatus = _executeStatus;
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[EXECUTESTATUS_COLUMN_INDEX] = _executeStatus;
 		}
 
 		_executeStatus = executeStatus;
 	}
 
 	public String getOriginalExecuteStatus() {
-		return GetterUtil.getString(_originalExecuteStatus);
+		if (_originalValues != null) {
+			Object originalExecuteStatus =
+				_originalValues[EXECUTESTATUS_COLUMN_INDEX];
+
+			if (originalExecuteStatus != null) {
+				return GetterUtil.getString((String)originalExecuteStatus);
+			}
+		}
+
+		return GetterUtil.getString(_executeStatus);
 	}
 
 	@Override
@@ -661,6 +873,16 @@ public class BatchEngineImportTaskModelImpl
 	@Override
 	public void setFieldNameMapping(
 		Map<String, Serializable> fieldNameMapping) {
+
+		if ((_columnBitmask & FIELDNAMEMAPPING_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= FIELDNAMEMAPPING_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[FIELDNAMEMAPPING_COLUMN_INDEX] = _fieldNameMapping;
+		}
 
 		_fieldNameMapping = fieldNameMapping;
 	}
@@ -677,6 +899,16 @@ public class BatchEngineImportTaskModelImpl
 
 	@Override
 	public void setOperation(String operation) {
+		if ((_columnBitmask & OPERATION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= OPERATION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[OPERATION_COLUMN_INDEX] = _operation;
+		}
+
 		_operation = operation;
 	}
 
@@ -687,6 +919,16 @@ public class BatchEngineImportTaskModelImpl
 
 	@Override
 	public void setParameters(Map<String, Serializable> parameters) {
+		if ((_columnBitmask & PARAMETERS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PARAMETERS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[PARAMETERS_COLUMN_INDEX] = _parameters;
+		}
+
 		_parameters = parameters;
 	}
 
@@ -697,6 +939,16 @@ public class BatchEngineImportTaskModelImpl
 
 	@Override
 	public void setStartTime(Date startTime) {
+		if ((_columnBitmask & STARTTIME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STARTTIME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[STARTTIME_COLUMN_INDEX] = _startTime;
+		}
+
 		_startTime = startTime;
 	}
 
@@ -824,24 +1076,11 @@ public class BatchEngineImportTaskModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		BatchEngineImportTaskModelImpl batchEngineImportTaskModelImpl = this;
+		_contentBlobModel = null;
 
-		batchEngineImportTaskModelImpl._originalUuid =
-			batchEngineImportTaskModelImpl._uuid;
+		_columnBitmask = 0;
 
-		batchEngineImportTaskModelImpl._originalCompanyId =
-			batchEngineImportTaskModelImpl._companyId;
-
-		batchEngineImportTaskModelImpl._setOriginalCompanyId = false;
-
-		batchEngineImportTaskModelImpl._setModifiedDate = false;
-
-		batchEngineImportTaskModelImpl._contentBlobModel = null;
-
-		batchEngineImportTaskModelImpl._originalExecuteStatus =
-			batchEngineImportTaskModelImpl._executeStatus;
-
-		batchEngineImportTaskModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -1104,15 +1343,11 @@ public class BatchEngineImportTaskModelImpl
 
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _batchEngineImportTaskId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _batchSize;
 	private String _callbackURL;
 	private String _className;
@@ -1121,12 +1356,12 @@ public class BatchEngineImportTaskModelImpl
 	private Date _endTime;
 	private String _errorMessage;
 	private String _executeStatus;
-	private String _originalExecuteStatus;
 	private Map<String, Serializable> _fieldNameMapping;
 	private String _operation;
 	private Map<String, Serializable> _parameters;
 	private Date _startTime;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private BatchEngineImportTask _escapedModel;
 
 }

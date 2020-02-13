@@ -114,7 +114,27 @@ public class UADPartialEntryModelImpl
 				"value.object.finder.cache.enabled.com.liferay.portal.tools.service.builder.test.model.UADPartialEntry"),
 		true);
 
-	public static final boolean COLUMN_BITMASK_ENABLED = false;
+	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(
+		com.liferay.portal.tools.service.builder.test.service.util.ServiceProps.
+			get(
+				"value.object.column.bitmask.enabled.com.liferay.portal.tools.service.builder.test.model.UADPartialEntry"),
+		true);
+
+	public static final long UADPARTIALENTRYID_COLUMN_BITMASK = 1L;
+
+	public static final long USERID_COLUMN_BITMASK = 2L;
+
+	public static final long USERNAME_COLUMN_BITMASK = 4L;
+
+	public static final long MESSAGE_COLUMN_BITMASK = 8L;
+
+	public static final int UADPARTIALENTRYID_COLUMN_INDEX = 0;
+
+	public static final int USERID_COLUMN_INDEX = 1;
+
+	public static final int USERNAME_COLUMN_INDEX = 2;
+
+	public static final int MESSAGE_COLUMN_INDEX = 3;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -326,6 +346,17 @@ public class UADPartialEntryModelImpl
 
 	@Override
 	public void setUadPartialEntryId(long uadPartialEntryId) {
+		if ((_columnBitmask & UADPARTIALENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= UADPARTIALENTRYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[4];
+			}
+
+			_originalValues[UADPARTIALENTRYID_COLUMN_INDEX] =
+				_uadPartialEntryId;
+		}
+
 		_uadPartialEntryId = uadPartialEntryId;
 	}
 
@@ -337,6 +368,16 @@ public class UADPartialEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[4];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -369,6 +410,16 @@ public class UADPartialEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[4];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -385,7 +436,21 @@ public class UADPartialEntryModelImpl
 
 	@Override
 	public void setMessage(String message) {
+		if ((_columnBitmask & MESSAGE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MESSAGE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[4];
+			}
+
+			_originalValues[MESSAGE_COLUMN_INDEX] = _message;
+		}
+
 		_message = message;
+	}
+
+	public long getColumnBitmask() {
+		return _columnBitmask;
 	}
 
 	@Override
@@ -484,6 +549,9 @@ public class UADPartialEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
+		_columnBitmask = 0;
+
+		_originalValues = null;
 	}
 
 	@Override
@@ -588,6 +656,8 @@ public class UADPartialEntryModelImpl
 	private long _userId;
 	private String _userName;
 	private String _message;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private UADPartialEntry _escapedModel;
 
 }

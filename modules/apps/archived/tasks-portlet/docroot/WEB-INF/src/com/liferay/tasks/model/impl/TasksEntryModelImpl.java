@@ -134,21 +134,61 @@ public class TasksEntryModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.tasks.model.TasksEntry"),
 		true);
 
-	public static final long ASSIGNEEUSERID_COLUMN_BITMASK = 1L;
+	public static final long TASKSENTRYID_COLUMN_BITMASK = 1L;
 
 	public static final long GROUPID_COLUMN_BITMASK = 2L;
 
-	public static final long RESOLVERUSERID_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
-	public static final long STATUS_COLUMN_BITMASK = 8L;
+	public static final long USERID_COLUMN_BITMASK = 8L;
 
-	public static final long USERID_COLUMN_BITMASK = 16L;
+	public static final long USERNAME_COLUMN_BITMASK = 16L;
 
-	public static final long PRIORITY_COLUMN_BITMASK = 32L;
+	public static final long CREATEDATE_COLUMN_BITMASK = 32L;
 
-	public static final long DUEDATE_COLUMN_BITMASK = 64L;
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 64L;
 
-	public static final long CREATEDATE_COLUMN_BITMASK = 128L;
+	public static final long TITLE_COLUMN_BITMASK = 128L;
+
+	public static final long PRIORITY_COLUMN_BITMASK = 256L;
+
+	public static final long ASSIGNEEUSERID_COLUMN_BITMASK = 512L;
+
+	public static final long RESOLVERUSERID_COLUMN_BITMASK = 1024L;
+
+	public static final long DUEDATE_COLUMN_BITMASK = 2048L;
+
+	public static final long FINISHDATE_COLUMN_BITMASK = 4096L;
+
+	public static final long STATUS_COLUMN_BITMASK = 8192L;
+
+	public static final int TASKSENTRYID_COLUMN_INDEX = 0;
+
+	public static final int GROUPID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int USERID_COLUMN_INDEX = 3;
+
+	public static final int USERNAME_COLUMN_INDEX = 4;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 5;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 6;
+
+	public static final int TITLE_COLUMN_INDEX = 7;
+
+	public static final int PRIORITY_COLUMN_INDEX = 8;
+
+	public static final int ASSIGNEEUSERID_COLUMN_INDEX = 9;
+
+	public static final int RESOLVERUSERID_COLUMN_INDEX = 10;
+
+	public static final int DUEDATE_COLUMN_INDEX = 11;
+
+	public static final int FINISHDATE_COLUMN_INDEX = 12;
+
+	public static final int STATUS_COLUMN_INDEX = 13;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -401,6 +441,16 @@ public class TasksEntryModelImpl
 
 	@Override
 	public void setTasksEntryId(long tasksEntryId) {
+		if ((_columnBitmask & TASKSENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TASKSENTRYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
+
+			_originalValues[TASKSENTRYID_COLUMN_INDEX] = _tasksEntryId;
+		}
+
 		_tasksEntryId = tasksEntryId;
 	}
 
@@ -412,19 +462,29 @@ public class TasksEntryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@JSON
@@ -435,6 +495,16 @@ public class TasksEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -446,12 +516,14 @@ public class TasksEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
 
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
 
-			_originalUserId = _userId;
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
 		}
 
 		_userId = userId;
@@ -474,7 +546,15 @@ public class TasksEntryModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		if (_originalValues != null) {
+			Object originalUserId = _originalValues[USERID_COLUMN_INDEX];
+
+			if (originalUserId != null) {
+				return (long)originalUserId;
+			}
+		}
+
+		return _userId;
 	}
 
 	@JSON
@@ -490,6 +570,16 @@ public class TasksEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -501,7 +591,15 @@ public class TasksEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
 
 		_createDate = createDate;
 	}
@@ -513,12 +611,20 @@ public class TasksEntryModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -536,6 +642,16 @@ public class TasksEntryModelImpl
 
 	@Override
 	public void setTitle(String title) {
+		if ((_columnBitmask & TITLE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TITLE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
+
+			_originalValues[TITLE_COLUMN_INDEX] = _title;
+		}
+
 		_title = title;
 	}
 
@@ -547,7 +663,15 @@ public class TasksEntryModelImpl
 
 	@Override
 	public void setPriority(int priority) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & PRIORITY_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PRIORITY_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
+
+			_originalValues[PRIORITY_COLUMN_INDEX] = _priority;
+		}
 
 		_priority = priority;
 	}
@@ -560,12 +684,14 @@ public class TasksEntryModelImpl
 
 	@Override
 	public void setAssigneeUserId(long assigneeUserId) {
-		_columnBitmask |= ASSIGNEEUSERID_COLUMN_BITMASK;
+		if ((_columnBitmask & ASSIGNEEUSERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ASSIGNEEUSERID_COLUMN_BITMASK;
 
-		if (!_setOriginalAssigneeUserId) {
-			_setOriginalAssigneeUserId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
 
-			_originalAssigneeUserId = _assigneeUserId;
+			_originalValues[ASSIGNEEUSERID_COLUMN_INDEX] = _assigneeUserId;
 		}
 
 		_assigneeUserId = assigneeUserId;
@@ -588,7 +714,16 @@ public class TasksEntryModelImpl
 	}
 
 	public long getOriginalAssigneeUserId() {
-		return _originalAssigneeUserId;
+		if (_originalValues != null) {
+			Object originalAssigneeUserId =
+				_originalValues[ASSIGNEEUSERID_COLUMN_INDEX];
+
+			if (originalAssigneeUserId != null) {
+				return (long)originalAssigneeUserId;
+			}
+		}
+
+		return _assigneeUserId;
 	}
 
 	@JSON
@@ -599,12 +734,14 @@ public class TasksEntryModelImpl
 
 	@Override
 	public void setResolverUserId(long resolverUserId) {
-		_columnBitmask |= RESOLVERUSERID_COLUMN_BITMASK;
+		if ((_columnBitmask & RESOLVERUSERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= RESOLVERUSERID_COLUMN_BITMASK;
 
-		if (!_setOriginalResolverUserId) {
-			_setOriginalResolverUserId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
 
-			_originalResolverUserId = _resolverUserId;
+			_originalValues[RESOLVERUSERID_COLUMN_INDEX] = _resolverUserId;
 		}
 
 		_resolverUserId = resolverUserId;
@@ -627,7 +764,16 @@ public class TasksEntryModelImpl
 	}
 
 	public long getOriginalResolverUserId() {
-		return _originalResolverUserId;
+		if (_originalValues != null) {
+			Object originalResolverUserId =
+				_originalValues[RESOLVERUSERID_COLUMN_INDEX];
+
+			if (originalResolverUserId != null) {
+				return (long)originalResolverUserId;
+			}
+		}
+
+		return _resolverUserId;
 	}
 
 	@JSON
@@ -638,7 +784,15 @@ public class TasksEntryModelImpl
 
 	@Override
 	public void setDueDate(Date dueDate) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & DUEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DUEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
+
+			_originalValues[DUEDATE_COLUMN_INDEX] = _dueDate;
+		}
 
 		_dueDate = dueDate;
 	}
@@ -651,6 +805,16 @@ public class TasksEntryModelImpl
 
 	@Override
 	public void setFinishDate(Date finishDate) {
+		if ((_columnBitmask & FINISHDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= FINISHDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
+
+			_originalValues[FINISHDATE_COLUMN_INDEX] = _finishDate;
+		}
+
 		_finishDate = finishDate;
 	}
 
@@ -662,19 +826,29 @@ public class TasksEntryModelImpl
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
+		if ((_columnBitmask & STATUS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUS_COLUMN_BITMASK;
 
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
 
-			_originalStatus = _status;
+			_originalValues[STATUS_COLUMN_INDEX] = _status;
 		}
 
 		_status = status;
 	}
 
 	public int getOriginalStatus() {
-		return _originalStatus;
+		if (_originalValues != null) {
+			Object originalStatus = _originalValues[STATUS_COLUMN_INDEX];
+
+			if (originalStatus != null) {
+				return (int)originalStatus;
+			}
+		}
+
+		return _status;
 	}
 
 	public long getColumnBitmask() {
@@ -805,33 +979,9 @@ public class TasksEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		TasksEntryModelImpl tasksEntryModelImpl = this;
+		_columnBitmask = 0;
 
-		tasksEntryModelImpl._originalGroupId = tasksEntryModelImpl._groupId;
-
-		tasksEntryModelImpl._setOriginalGroupId = false;
-
-		tasksEntryModelImpl._originalUserId = tasksEntryModelImpl._userId;
-
-		tasksEntryModelImpl._setOriginalUserId = false;
-
-		tasksEntryModelImpl._setModifiedDate = false;
-
-		tasksEntryModelImpl._originalAssigneeUserId =
-			tasksEntryModelImpl._assigneeUserId;
-
-		tasksEntryModelImpl._setOriginalAssigneeUserId = false;
-
-		tasksEntryModelImpl._originalResolverUserId =
-			tasksEntryModelImpl._resolverUserId;
-
-		tasksEntryModelImpl._setOriginalResolverUserId = false;
-
-		tasksEntryModelImpl._originalStatus = tasksEntryModelImpl._status;
-
-		tasksEntryModelImpl._setOriginalStatus = false;
-
-		tasksEntryModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -981,30 +1131,20 @@ public class TasksEntryModelImpl
 
 	private long _tasksEntryId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private String _title;
 	private int _priority;
 	private long _assigneeUserId;
-	private long _originalAssigneeUserId;
-	private boolean _setOriginalAssigneeUserId;
 	private long _resolverUserId;
-	private long _originalResolverUserId;
-	private boolean _setOriginalResolverUserId;
 	private Date _dueDate;
 	private Date _finishDate;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private TasksEntry _escapedModel;
 
 }

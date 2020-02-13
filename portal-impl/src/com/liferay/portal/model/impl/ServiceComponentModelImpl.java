@@ -112,9 +112,29 @@ public class ServiceComponentModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.ServiceComponent"),
 		true);
 
-	public static final long BUILDNAMESPACE_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long BUILDNUMBER_COLUMN_BITMASK = 2L;
+	public static final long SERVICECOMPONENTID_COLUMN_BITMASK = 2L;
+
+	public static final long BUILDNAMESPACE_COLUMN_BITMASK = 4L;
+
+	public static final long BUILDNUMBER_COLUMN_BITMASK = 8L;
+
+	public static final long BUILDDATE_COLUMN_BITMASK = 16L;
+
+	public static final long DATA_COLUMN_BITMASK = 32L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int SERVICECOMPONENTID_COLUMN_INDEX = 1;
+
+	public static final int BUILDNAMESPACE_COLUMN_INDEX = 2;
+
+	public static final int BUILDNUMBER_COLUMN_INDEX = 3;
+
+	public static final int BUILDDATE_COLUMN_INDEX = 4;
+
+	public static final int DATA_COLUMN_INDEX = 5;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -296,6 +316,16 @@ public class ServiceComponentModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -306,6 +336,17 @@ public class ServiceComponentModelImpl
 
 	@Override
 	public void setServiceComponentId(long serviceComponentId) {
+		if ((_columnBitmask & SERVICECOMPONENTID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SERVICECOMPONENTID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[SERVICECOMPONENTID_COLUMN_INDEX] =
+				_serviceComponentId;
+		}
+
 		_serviceComponentId = serviceComponentId;
 	}
 
@@ -321,17 +362,30 @@ public class ServiceComponentModelImpl
 
 	@Override
 	public void setBuildNamespace(String buildNamespace) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & BUILDNAMESPACE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= BUILDNAMESPACE_COLUMN_BITMASK;
 
-		if (_originalBuildNamespace == null) {
-			_originalBuildNamespace = _buildNamespace;
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[BUILDNAMESPACE_COLUMN_INDEX] = _buildNamespace;
 		}
 
 		_buildNamespace = buildNamespace;
 	}
 
 	public String getOriginalBuildNamespace() {
-		return GetterUtil.getString(_originalBuildNamespace);
+		if (_originalValues != null) {
+			Object originalBuildNamespace =
+				_originalValues[BUILDNAMESPACE_COLUMN_INDEX];
+
+			if (originalBuildNamespace != null) {
+				return GetterUtil.getString((String)originalBuildNamespace);
+			}
+		}
+
+		return GetterUtil.getString(_buildNamespace);
 	}
 
 	@Override
@@ -341,19 +395,30 @@ public class ServiceComponentModelImpl
 
 	@Override
 	public void setBuildNumber(long buildNumber) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & BUILDNUMBER_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= BUILDNUMBER_COLUMN_BITMASK;
 
-		if (!_setOriginalBuildNumber) {
-			_setOriginalBuildNumber = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
 
-			_originalBuildNumber = _buildNumber;
+			_originalValues[BUILDNUMBER_COLUMN_INDEX] = _buildNumber;
 		}
 
 		_buildNumber = buildNumber;
 	}
 
 	public long getOriginalBuildNumber() {
-		return _originalBuildNumber;
+		if (_originalValues != null) {
+			Object originalBuildNumber =
+				_originalValues[BUILDNUMBER_COLUMN_INDEX];
+
+			if (originalBuildNumber != null) {
+				return (long)originalBuildNumber;
+			}
+		}
+
+		return _buildNumber;
 	}
 
 	@Override
@@ -363,6 +428,16 @@ public class ServiceComponentModelImpl
 
 	@Override
 	public void setBuildDate(long buildDate) {
+		if ((_columnBitmask & BUILDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= BUILDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[BUILDDATE_COLUMN_INDEX] = _buildDate;
+		}
+
 		_buildDate = buildDate;
 	}
 
@@ -378,6 +453,16 @@ public class ServiceComponentModelImpl
 
 	@Override
 	public void setData(String data) {
+		if ((_columnBitmask & DATA_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DATA_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[DATA_COLUMN_INDEX] = _data;
+		}
+
 		_data = data;
 	}
 
@@ -500,17 +585,9 @@ public class ServiceComponentModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ServiceComponentModelImpl serviceComponentModelImpl = this;
+		_columnBitmask = 0;
 
-		serviceComponentModelImpl._originalBuildNamespace =
-			serviceComponentModelImpl._buildNamespace;
-
-		serviceComponentModelImpl._originalBuildNumber =
-			serviceComponentModelImpl._buildNumber;
-
-		serviceComponentModelImpl._setOriginalBuildNumber = false;
-
-		serviceComponentModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -618,13 +695,11 @@ public class ServiceComponentModelImpl
 	private long _mvccVersion;
 	private long _serviceComponentId;
 	private String _buildNamespace;
-	private String _originalBuildNamespace;
 	private long _buildNumber;
-	private long _originalBuildNumber;
-	private boolean _setOriginalBuildNumber;
 	private long _buildDate;
 	private String _data;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private ServiceComponent _escapedModel;
 
 }

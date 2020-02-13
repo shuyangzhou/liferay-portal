@@ -119,17 +119,37 @@ public class ExpandoValueModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.expando.kernel.model.ExpandoValue"),
 		true);
 
-	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
+	public static final long VALUEID_COLUMN_BITMASK = 1L;
 
-	public static final long CLASSPK_COLUMN_BITMASK = 2L;
+	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
-	public static final long COLUMNID_COLUMN_BITMASK = 4L;
+	public static final long TABLEID_COLUMN_BITMASK = 4L;
 
-	public static final long DATA_COLUMN_BITMASK = 8L;
+	public static final long COLUMNID_COLUMN_BITMASK = 8L;
 
 	public static final long ROWID_COLUMN_BITMASK = 16L;
 
-	public static final long TABLEID_COLUMN_BITMASK = 32L;
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 32L;
+
+	public static final long CLASSPK_COLUMN_BITMASK = 64L;
+
+	public static final long DATA_COLUMN_BITMASK = 128L;
+
+	public static final int VALUEID_COLUMN_INDEX = 0;
+
+	public static final int COMPANYID_COLUMN_INDEX = 1;
+
+	public static final int TABLEID_COLUMN_INDEX = 2;
+
+	public static final int COLUMNID_COLUMN_INDEX = 3;
+
+	public static final int ROWID_COLUMN_INDEX = 4;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 5;
+
+	public static final int CLASSPK_COLUMN_INDEX = 6;
+
+	public static final int DATA_COLUMN_INDEX = 7;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -354,6 +374,16 @@ public class ExpandoValueModelImpl
 
 	@Override
 	public void setValueId(long valueId) {
+		if ((_columnBitmask & VALUEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= VALUEID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
+
+			_originalValues[VALUEID_COLUMN_INDEX] = _valueId;
+		}
+
 		_valueId = valueId;
 	}
 
@@ -365,6 +395,16 @@ public class ExpandoValueModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -376,19 +416,29 @@ public class ExpandoValueModelImpl
 
 	@Override
 	public void setTableId(long tableId) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & TABLEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TABLEID_COLUMN_BITMASK;
 
-		if (!_setOriginalTableId) {
-			_setOriginalTableId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
 
-			_originalTableId = _tableId;
+			_originalValues[TABLEID_COLUMN_INDEX] = _tableId;
 		}
 
 		_tableId = tableId;
 	}
 
 	public long getOriginalTableId() {
-		return _originalTableId;
+		if (_originalValues != null) {
+			Object originalTableId = _originalValues[TABLEID_COLUMN_INDEX];
+
+			if (originalTableId != null) {
+				return (long)originalTableId;
+			}
+		}
+
+		return _tableId;
 	}
 
 	@JSON
@@ -399,19 +449,29 @@ public class ExpandoValueModelImpl
 
 	@Override
 	public void setColumnId(long columnId) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & COLUMNID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COLUMNID_COLUMN_BITMASK;
 
-		if (!_setOriginalColumnId) {
-			_setOriginalColumnId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
 
-			_originalColumnId = _columnId;
+			_originalValues[COLUMNID_COLUMN_INDEX] = _columnId;
 		}
 
 		_columnId = columnId;
 	}
 
 	public long getOriginalColumnId() {
-		return _originalColumnId;
+		if (_originalValues != null) {
+			Object originalColumnId = _originalValues[COLUMNID_COLUMN_INDEX];
+
+			if (originalColumnId != null) {
+				return (long)originalColumnId;
+			}
+		}
+
+		return _columnId;
 	}
 
 	@JSON
@@ -422,19 +482,29 @@ public class ExpandoValueModelImpl
 
 	@Override
 	public void setRowId(long rowId) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & ROWID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ROWID_COLUMN_BITMASK;
 
-		if (!_setOriginalRowId) {
-			_setOriginalRowId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
 
-			_originalRowId = _rowId;
+			_originalValues[ROWID_COLUMN_INDEX] = _rowId;
 		}
 
 		_rowId = rowId;
 	}
 
 	public long getOriginalRowId() {
-		return _originalRowId;
+		if (_originalValues != null) {
+			Object originalRowId = _originalValues[ROWID_COLUMN_INDEX];
+
+			if (originalRowId != null) {
+				return (long)originalRowId;
+			}
+		}
+
+		return _rowId;
 	}
 
 	@Override
@@ -465,19 +535,30 @@ public class ExpandoValueModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSNAMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
 
-			_originalClassNameId = _classNameId;
+			_originalValues[CLASSNAMEID_COLUMN_INDEX] = _classNameId;
 		}
 
 		_classNameId = classNameId;
 	}
 
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		if (_originalValues != null) {
+			Object originalClassNameId =
+				_originalValues[CLASSNAMEID_COLUMN_INDEX];
+
+			if (originalClassNameId != null) {
+				return (long)originalClassNameId;
+			}
+		}
+
+		return _classNameId;
 	}
 
 	@JSON
@@ -488,19 +569,29 @@ public class ExpandoValueModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSPK_COLUMN_BITMASK;
 
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
 
-			_originalClassPK = _classPK;
+			_originalValues[CLASSPK_COLUMN_INDEX] = _classPK;
 		}
 
 		_classPK = classPK;
 	}
 
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		if (_originalValues != null) {
+			Object originalClassPK = _originalValues[CLASSPK_COLUMN_INDEX];
+
+			if (originalClassPK != null) {
+				return (long)originalClassPK;
+			}
+		}
+
+		return _classPK;
 	}
 
 	@JSON
@@ -516,17 +607,29 @@ public class ExpandoValueModelImpl
 
 	@Override
 	public void setData(String data) {
-		_columnBitmask |= DATA_COLUMN_BITMASK;
+		if ((_columnBitmask & DATA_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DATA_COLUMN_BITMASK;
 
-		if (_originalData == null) {
-			_originalData = _data;
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
+
+			_originalValues[DATA_COLUMN_INDEX] = _data;
 		}
 
 		_data = data;
 	}
 
 	public String getOriginalData() {
-		return GetterUtil.getString(_originalData);
+		if (_originalValues != null) {
+			Object originalData = _originalValues[DATA_COLUMN_INDEX];
+
+			if (originalData != null) {
+				return GetterUtil.getString((String)originalData);
+			}
+		}
+
+		return GetterUtil.getString(_data);
 	}
 
 	public long getColumnBitmask() {
@@ -654,33 +757,9 @@ public class ExpandoValueModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ExpandoValueModelImpl expandoValueModelImpl = this;
+		_columnBitmask = 0;
 
-		expandoValueModelImpl._originalTableId = expandoValueModelImpl._tableId;
-
-		expandoValueModelImpl._setOriginalTableId = false;
-
-		expandoValueModelImpl._originalColumnId =
-			expandoValueModelImpl._columnId;
-
-		expandoValueModelImpl._setOriginalColumnId = false;
-
-		expandoValueModelImpl._originalRowId = expandoValueModelImpl._rowId;
-
-		expandoValueModelImpl._setOriginalRowId = false;
-
-		expandoValueModelImpl._originalClassNameId =
-			expandoValueModelImpl._classNameId;
-
-		expandoValueModelImpl._setOriginalClassNameId = false;
-
-		expandoValueModelImpl._originalClassPK = expandoValueModelImpl._classPK;
-
-		expandoValueModelImpl._setOriginalClassPK = false;
-
-		expandoValueModelImpl._originalData = expandoValueModelImpl._data;
-
-		expandoValueModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -786,23 +865,13 @@ public class ExpandoValueModelImpl
 	private long _valueId;
 	private long _companyId;
 	private long _tableId;
-	private long _originalTableId;
-	private boolean _setOriginalTableId;
 	private long _columnId;
-	private long _originalColumnId;
-	private boolean _setOriginalColumnId;
 	private long _rowId;
-	private long _originalRowId;
-	private boolean _setOriginalRowId;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private String _data;
-	private String _originalData;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private ExpandoValue _escapedModel;
 
 }

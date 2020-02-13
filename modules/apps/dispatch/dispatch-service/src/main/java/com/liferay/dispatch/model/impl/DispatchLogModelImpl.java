@@ -117,11 +117,57 @@ public class DispatchLogModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long DISPATCHTRIGGERID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long STATUS_COLUMN_BITMASK = 2L;
+	public static final long DISPATCHLOGID_COLUMN_BITMASK = 2L;
 
-	public static final long MODIFIEDDATE_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
+
+	public static final long USERID_COLUMN_BITMASK = 8L;
+
+	public static final long USERNAME_COLUMN_BITMASK = 16L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 32L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 64L;
+
+	public static final long DISPATCHTRIGGERID_COLUMN_BITMASK = 128L;
+
+	public static final long ENDDATE_COLUMN_BITMASK = 256L;
+
+	public static final long ERROR_COLUMN_BITMASK = 512L;
+
+	public static final long OUTPUT_COLUMN_BITMASK = 1024L;
+
+	public static final long STARTDATE_COLUMN_BITMASK = 2048L;
+
+	public static final long STATUS_COLUMN_BITMASK = 4096L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int DISPATCHLOGID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int USERID_COLUMN_INDEX = 3;
+
+	public static final int USERNAME_COLUMN_INDEX = 4;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 5;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 6;
+
+	public static final int DISPATCHTRIGGERID_COLUMN_INDEX = 7;
+
+	public static final int ENDDATE_COLUMN_INDEX = 8;
+
+	public static final int ERROR_COLUMN_INDEX = 9;
+
+	public static final int OUTPUT_COLUMN_INDEX = 10;
+
+	public static final int STARTDATE_COLUMN_INDEX = 11;
+
+	public static final int STATUS_COLUMN_INDEX = 12;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -375,6 +421,16 @@ public class DispatchLogModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -386,6 +442,16 @@ public class DispatchLogModelImpl
 
 	@Override
 	public void setDispatchLogId(long dispatchLogId) {
+		if ((_columnBitmask & DISPATCHLOGID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DISPATCHLOGID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[DISPATCHLOGID_COLUMN_INDEX] = _dispatchLogId;
+		}
+
 		_dispatchLogId = dispatchLogId;
 	}
 
@@ -397,6 +463,16 @@ public class DispatchLogModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -408,6 +484,16 @@ public class DispatchLogModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -440,6 +526,16 @@ public class DispatchLogModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -451,6 +547,16 @@ public class DispatchLogModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -461,14 +567,20 @@ public class DispatchLogModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
 
-		_columnBitmask = -1L;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -481,19 +593,31 @@ public class DispatchLogModelImpl
 
 	@Override
 	public void setDispatchTriggerId(long dispatchTriggerId) {
-		_columnBitmask |= DISPATCHTRIGGERID_COLUMN_BITMASK;
+		if ((_columnBitmask & DISPATCHTRIGGERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DISPATCHTRIGGERID_COLUMN_BITMASK;
 
-		if (!_setOriginalDispatchTriggerId) {
-			_setOriginalDispatchTriggerId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalDispatchTriggerId = _dispatchTriggerId;
+			_originalValues[DISPATCHTRIGGERID_COLUMN_INDEX] =
+				_dispatchTriggerId;
 		}
 
 		_dispatchTriggerId = dispatchTriggerId;
 	}
 
 	public long getOriginalDispatchTriggerId() {
-		return _originalDispatchTriggerId;
+		if (_originalValues != null) {
+			Object originalDispatchTriggerId =
+				_originalValues[DISPATCHTRIGGERID_COLUMN_INDEX];
+
+			if (originalDispatchTriggerId != null) {
+				return (long)originalDispatchTriggerId;
+			}
+		}
+
+		return _dispatchTriggerId;
 	}
 
 	@JSON
@@ -504,6 +628,16 @@ public class DispatchLogModelImpl
 
 	@Override
 	public void setEndDate(Date endDate) {
+		if ((_columnBitmask & ENDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ENDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[ENDDATE_COLUMN_INDEX] = _endDate;
+		}
+
 		_endDate = endDate;
 	}
 
@@ -520,6 +654,16 @@ public class DispatchLogModelImpl
 
 	@Override
 	public void setError(String error) {
+		if ((_columnBitmask & ERROR_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ERROR_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[ERROR_COLUMN_INDEX] = _error;
+		}
+
 		_error = error;
 	}
 
@@ -536,6 +680,16 @@ public class DispatchLogModelImpl
 
 	@Override
 	public void setOutput(String output) {
+		if ((_columnBitmask & OUTPUT_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= OUTPUT_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[OUTPUT_COLUMN_INDEX] = _output;
+		}
+
 		_output = output;
 	}
 
@@ -547,6 +701,16 @@ public class DispatchLogModelImpl
 
 	@Override
 	public void setStartDate(Date startDate) {
+		if ((_columnBitmask & STARTDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STARTDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[STARTDATE_COLUMN_INDEX] = _startDate;
+		}
+
 		_startDate = startDate;
 	}
 
@@ -558,19 +722,29 @@ public class DispatchLogModelImpl
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
+		if ((_columnBitmask & STATUS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUS_COLUMN_BITMASK;
 
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalStatus = _status;
+			_originalValues[STATUS_COLUMN_INDEX] = _status;
 		}
 
 		_status = status;
 	}
 
 	public int getOriginalStatus() {
-		return _originalStatus;
+		if (_originalValues != null) {
+			Object originalStatus = _originalValues[STATUS_COLUMN_INDEX];
+
+			if (originalStatus != null) {
+				return (int)originalStatus;
+			}
+		}
+
+		return _status;
 	}
 
 	public long getColumnBitmask() {
@@ -683,20 +857,9 @@ public class DispatchLogModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DispatchLogModelImpl dispatchLogModelImpl = this;
+		_columnBitmask = 0;
 
-		dispatchLogModelImpl._setModifiedDate = false;
-
-		dispatchLogModelImpl._originalDispatchTriggerId =
-			dispatchLogModelImpl._dispatchTriggerId;
-
-		dispatchLogModelImpl._setOriginalDispatchTriggerId = false;
-
-		dispatchLogModelImpl._originalStatus = dispatchLogModelImpl._status;
-
-		dispatchLogModelImpl._setOriginalStatus = false;
-
-		dispatchLogModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -859,18 +1022,14 @@ public class DispatchLogModelImpl
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _dispatchTriggerId;
-	private long _originalDispatchTriggerId;
-	private boolean _setOriginalDispatchTriggerId;
 	private Date _endDate;
 	private String _error;
 	private String _output;
 	private Date _startDate;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private DispatchLog _escapedModel;
 
 }

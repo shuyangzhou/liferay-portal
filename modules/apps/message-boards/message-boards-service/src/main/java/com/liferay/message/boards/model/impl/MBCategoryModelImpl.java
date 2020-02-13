@@ -134,19 +134,85 @@ public class MBCategoryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long CATEGORYID_COLUMN_BITMASK = 1L;
+	public static final long UUID_COLUMN_BITMASK = 1L;
 
-	public static final long COMPANYID_COLUMN_BITMASK = 2L;
+	public static final long CATEGORYID_COLUMN_BITMASK = 2L;
 
 	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
-	public static final long PARENTCATEGORYID_COLUMN_BITMASK = 8L;
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
 
-	public static final long STATUS_COLUMN_BITMASK = 16L;
+	public static final long USERID_COLUMN_BITMASK = 16L;
 
-	public static final long UUID_COLUMN_BITMASK = 32L;
+	public static final long USERNAME_COLUMN_BITMASK = 32L;
 
-	public static final long NAME_COLUMN_BITMASK = 64L;
+	public static final long CREATEDATE_COLUMN_BITMASK = 64L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 128L;
+
+	public static final long PARENTCATEGORYID_COLUMN_BITMASK = 256L;
+
+	public static final long NAME_COLUMN_BITMASK = 512L;
+
+	public static final long DESCRIPTION_COLUMN_BITMASK = 1024L;
+
+	public static final long DISPLAYSTYLE_COLUMN_BITMASK = 2048L;
+
+	public static final long THREADCOUNT_COLUMN_BITMASK = 4096L;
+
+	public static final long MESSAGECOUNT_COLUMN_BITMASK = 8192L;
+
+	public static final long LASTPOSTDATE_COLUMN_BITMASK = 16384L;
+
+	public static final long LASTPUBLISHDATE_COLUMN_BITMASK = 32768L;
+
+	public static final long STATUS_COLUMN_BITMASK = 65536L;
+
+	public static final long STATUSBYUSERID_COLUMN_BITMASK = 131072L;
+
+	public static final long STATUSBYUSERNAME_COLUMN_BITMASK = 262144L;
+
+	public static final long STATUSDATE_COLUMN_BITMASK = 524288L;
+
+	public static final int UUID_COLUMN_INDEX = 0;
+
+	public static final int CATEGORYID_COLUMN_INDEX = 1;
+
+	public static final int GROUPID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int USERID_COLUMN_INDEX = 4;
+
+	public static final int USERNAME_COLUMN_INDEX = 5;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 6;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 7;
+
+	public static final int PARENTCATEGORYID_COLUMN_INDEX = 8;
+
+	public static final int NAME_COLUMN_INDEX = 9;
+
+	public static final int DESCRIPTION_COLUMN_INDEX = 10;
+
+	public static final int DISPLAYSTYLE_COLUMN_INDEX = 11;
+
+	public static final int THREADCOUNT_COLUMN_INDEX = 12;
+
+	public static final int MESSAGECOUNT_COLUMN_INDEX = 13;
+
+	public static final int LASTPOSTDATE_COLUMN_INDEX = 14;
+
+	public static final int LASTPUBLISHDATE_COLUMN_INDEX = 15;
+
+	public static final int STATUS_COLUMN_INDEX = 16;
+
+	public static final int STATUSBYUSERID_COLUMN_INDEX = 17;
+
+	public static final int STATUSBYUSERNAME_COLUMN_INDEX = 18;
+
+	public static final int STATUSDATE_COLUMN_INDEX = 19;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -442,17 +508,29 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		if ((_columnBitmask & UUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= UUID_COLUMN_BITMASK;
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[UUID_COLUMN_INDEX] = _uuid;
 		}
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		if (_originalValues != null) {
+			Object originalUuid = _originalValues[UUID_COLUMN_INDEX];
+
+			if (originalUuid != null) {
+				return GetterUtil.getString((String)originalUuid);
+			}
+		}
+
+		return GetterUtil.getString(_uuid);
 	}
 
 	@JSON
@@ -463,19 +541,30 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setCategoryId(long categoryId) {
-		_columnBitmask |= CATEGORYID_COLUMN_BITMASK;
+		if ((_columnBitmask & CATEGORYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CATEGORYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCategoryId) {
-			_setOriginalCategoryId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
 
-			_originalCategoryId = _categoryId;
+			_originalValues[CATEGORYID_COLUMN_INDEX] = _categoryId;
 		}
 
 		_categoryId = categoryId;
 	}
 
 	public long getOriginalCategoryId() {
-		return _originalCategoryId;
+		if (_originalValues != null) {
+			Object originalCategoryId =
+				_originalValues[CATEGORYID_COLUMN_INDEX];
+
+			if (originalCategoryId != null) {
+				return (long)originalCategoryId;
+			}
+		}
+
+		return _categoryId;
 	}
 
 	@JSON
@@ -486,19 +575,29 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@JSON
@@ -509,19 +608,29 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@JSON
@@ -532,6 +641,16 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -564,6 +683,16 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -575,6 +704,16 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -585,12 +724,20 @@ public class MBCategoryModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -603,19 +750,30 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setParentCategoryId(long parentCategoryId) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & PARENTCATEGORYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PARENTCATEGORYID_COLUMN_BITMASK;
 
-		if (!_setOriginalParentCategoryId) {
-			_setOriginalParentCategoryId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
 
-			_originalParentCategoryId = _parentCategoryId;
+			_originalValues[PARENTCATEGORYID_COLUMN_INDEX] = _parentCategoryId;
 		}
 
 		_parentCategoryId = parentCategoryId;
 	}
 
 	public long getOriginalParentCategoryId() {
-		return _originalParentCategoryId;
+		if (_originalValues != null) {
+			Object originalParentCategoryId =
+				_originalValues[PARENTCATEGORYID_COLUMN_INDEX];
+
+			if (originalParentCategoryId != null) {
+				return (long)originalParentCategoryId;
+			}
+		}
+
+		return _parentCategoryId;
 	}
 
 	@JSON
@@ -631,7 +789,15 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & NAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= NAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[NAME_COLUMN_INDEX] = _name;
+		}
 
 		_name = name;
 	}
@@ -649,6 +815,16 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		if ((_columnBitmask & DESCRIPTION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DESCRIPTION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[DESCRIPTION_COLUMN_INDEX] = _description;
+		}
+
 		_description = description;
 	}
 
@@ -665,6 +841,16 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setDisplayStyle(String displayStyle) {
+		if ((_columnBitmask & DISPLAYSTYLE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DISPLAYSTYLE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[DISPLAYSTYLE_COLUMN_INDEX] = _displayStyle;
+		}
+
 		_displayStyle = displayStyle;
 	}
 
@@ -676,6 +862,16 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setThreadCount(int threadCount) {
+		if ((_columnBitmask & THREADCOUNT_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= THREADCOUNT_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[THREADCOUNT_COLUMN_INDEX] = _threadCount;
+		}
+
 		_threadCount = threadCount;
 	}
 
@@ -687,6 +883,16 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setMessageCount(int messageCount) {
+		if ((_columnBitmask & MESSAGECOUNT_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MESSAGECOUNT_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[MESSAGECOUNT_COLUMN_INDEX] = _messageCount;
+		}
+
 		_messageCount = messageCount;
 	}
 
@@ -698,6 +904,16 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setLastPostDate(Date lastPostDate) {
+		if ((_columnBitmask & LASTPOSTDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LASTPOSTDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[LASTPOSTDATE_COLUMN_INDEX] = _lastPostDate;
+		}
+
 		_lastPostDate = lastPostDate;
 	}
 
@@ -709,6 +925,16 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		if ((_columnBitmask & LASTPUBLISHDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LASTPUBLISHDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[LASTPUBLISHDATE_COLUMN_INDEX] = _lastPublishDate;
+		}
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -720,19 +946,29 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
+		if ((_columnBitmask & STATUS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUS_COLUMN_BITMASK;
 
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
 
-			_originalStatus = _status;
+			_originalValues[STATUS_COLUMN_INDEX] = _status;
 		}
 
 		_status = status;
 	}
 
 	public int getOriginalStatus() {
-		return _originalStatus;
+		if (_originalValues != null) {
+			Object originalStatus = _originalValues[STATUS_COLUMN_INDEX];
+
+			if (originalStatus != null) {
+				return (int)originalStatus;
+			}
+		}
+
+		return _status;
 	}
 
 	@JSON
@@ -743,6 +979,16 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		if ((_columnBitmask & STATUSBYUSERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUSBYUSERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[STATUSBYUSERID_COLUMN_INDEX] = _statusByUserId;
+		}
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -775,6 +1021,16 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		if ((_columnBitmask & STATUSBYUSERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUSBYUSERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[STATUSBYUSERNAME_COLUMN_INDEX] = _statusByUserName;
+		}
+
 		_statusByUserName = statusByUserName;
 	}
 
@@ -786,6 +1042,16 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		if ((_columnBitmask & STATUSDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUSDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[STATUSDATE_COLUMN_INDEX] = _statusDate;
+		}
+
 		_statusDate = statusDate;
 	}
 
@@ -1173,35 +1439,9 @@ public class MBCategoryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		MBCategoryModelImpl mbCategoryModelImpl = this;
+		_columnBitmask = 0;
 
-		mbCategoryModelImpl._originalUuid = mbCategoryModelImpl._uuid;
-
-		mbCategoryModelImpl._originalCategoryId =
-			mbCategoryModelImpl._categoryId;
-
-		mbCategoryModelImpl._setOriginalCategoryId = false;
-
-		mbCategoryModelImpl._originalGroupId = mbCategoryModelImpl._groupId;
-
-		mbCategoryModelImpl._setOriginalGroupId = false;
-
-		mbCategoryModelImpl._originalCompanyId = mbCategoryModelImpl._companyId;
-
-		mbCategoryModelImpl._setOriginalCompanyId = false;
-
-		mbCategoryModelImpl._setModifiedDate = false;
-
-		mbCategoryModelImpl._originalParentCategoryId =
-			mbCategoryModelImpl._parentCategoryId;
-
-		mbCategoryModelImpl._setOriginalParentCategoryId = false;
-
-		mbCategoryModelImpl._originalStatus = mbCategoryModelImpl._status;
-
-		mbCategoryModelImpl._setOriginalStatus = false;
-
-		mbCategoryModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -1396,24 +1636,14 @@ public class MBCategoryModelImpl
 	private static boolean _finderCacheEnabled;
 
 	private String _uuid;
-	private String _originalUuid;
 	private long _categoryId;
-	private long _originalCategoryId;
-	private boolean _setOriginalCategoryId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _parentCategoryId;
-	private long _originalParentCategoryId;
-	private boolean _setOriginalParentCategoryId;
 	private String _name;
 	private String _description;
 	private String _displayStyle;
@@ -1422,12 +1652,11 @@ public class MBCategoryModelImpl
 	private Date _lastPostDate;
 	private Date _lastPublishDate;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private MBCategory _escapedModel;
 
 }

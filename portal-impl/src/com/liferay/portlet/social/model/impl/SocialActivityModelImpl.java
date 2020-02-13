@@ -134,25 +134,61 @@ public class SocialActivityModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.social.kernel.model.SocialActivity"),
 		true);
 
-	public static final long ACTIVITYSETID_COLUMN_BITMASK = 1L;
+	public static final long ACTIVITYID_COLUMN_BITMASK = 1L;
 
-	public static final long CLASSNAMEID_COLUMN_BITMASK = 2L;
+	public static final long GROUPID_COLUMN_BITMASK = 2L;
 
-	public static final long CLASSPK_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
-	public static final long COMPANYID_COLUMN_BITMASK = 8L;
+	public static final long USERID_COLUMN_BITMASK = 8L;
 
 	public static final long CREATEDATE_COLUMN_BITMASK = 16L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 32L;
+	public static final long ACTIVITYSETID_COLUMN_BITMASK = 32L;
 
 	public static final long MIRRORACTIVITYID_COLUMN_BITMASK = 64L;
 
-	public static final long RECEIVERUSERID_COLUMN_BITMASK = 128L;
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 128L;
 
-	public static final long TYPE_COLUMN_BITMASK = 256L;
+	public static final long CLASSPK_COLUMN_BITMASK = 256L;
 
-	public static final long USERID_COLUMN_BITMASK = 512L;
+	public static final long PARENTCLASSNAMEID_COLUMN_BITMASK = 512L;
+
+	public static final long PARENTCLASSPK_COLUMN_BITMASK = 1024L;
+
+	public static final long TYPE_COLUMN_BITMASK = 2048L;
+
+	public static final long EXTRADATA_COLUMN_BITMASK = 4096L;
+
+	public static final long RECEIVERUSERID_COLUMN_BITMASK = 8192L;
+
+	public static final int ACTIVITYID_COLUMN_INDEX = 0;
+
+	public static final int GROUPID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int USERID_COLUMN_INDEX = 3;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 4;
+
+	public static final int ACTIVITYSETID_COLUMN_INDEX = 5;
+
+	public static final int MIRRORACTIVITYID_COLUMN_INDEX = 6;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 7;
+
+	public static final int CLASSPK_COLUMN_INDEX = 8;
+
+	public static final int PARENTCLASSNAMEID_COLUMN_INDEX = 9;
+
+	public static final int PARENTCLASSPK_COLUMN_INDEX = 10;
+
+	public static final int TYPE_COLUMN_INDEX = 11;
+
+	public static final int EXTRADATA_COLUMN_INDEX = 12;
+
+	public static final int RECEIVERUSERID_COLUMN_INDEX = 13;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -421,6 +457,16 @@ public class SocialActivityModelImpl
 
 	@Override
 	public void setActivityId(long activityId) {
+		if ((_columnBitmask & ACTIVITYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ACTIVITYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
+
+			_originalValues[ACTIVITYID_COLUMN_INDEX] = _activityId;
+		}
+
 		_activityId = activityId;
 	}
 
@@ -432,19 +478,29 @@ public class SocialActivityModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@JSON
@@ -455,19 +511,29 @@ public class SocialActivityModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@JSON
@@ -478,12 +544,14 @@ public class SocialActivityModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
 
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
 
-			_originalUserId = _userId;
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
 		}
 
 		_userId = userId;
@@ -506,7 +574,15 @@ public class SocialActivityModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		if (_originalValues != null) {
+			Object originalUserId = _originalValues[USERID_COLUMN_INDEX];
+
+			if (originalUserId != null) {
+				return (long)originalUserId;
+			}
+		}
+
+		return _userId;
 	}
 
 	@JSON
@@ -517,19 +593,30 @@ public class SocialActivityModelImpl
 
 	@Override
 	public void setCreateDate(long createDate) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
 
-		if (!_setOriginalCreateDate) {
-			_setOriginalCreateDate = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
 
-			_originalCreateDate = _createDate;
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
 		}
 
 		_createDate = createDate;
 	}
 
 	public long getOriginalCreateDate() {
-		return _originalCreateDate;
+		if (_originalValues != null) {
+			Object originalCreateDate =
+				_originalValues[CREATEDATE_COLUMN_INDEX];
+
+			if (originalCreateDate != null) {
+				return (long)originalCreateDate;
+			}
+		}
+
+		return _createDate;
 	}
 
 	@JSON
@@ -540,19 +627,30 @@ public class SocialActivityModelImpl
 
 	@Override
 	public void setActivitySetId(long activitySetId) {
-		_columnBitmask |= ACTIVITYSETID_COLUMN_BITMASK;
+		if ((_columnBitmask & ACTIVITYSETID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ACTIVITYSETID_COLUMN_BITMASK;
 
-		if (!_setOriginalActivitySetId) {
-			_setOriginalActivitySetId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
 
-			_originalActivitySetId = _activitySetId;
+			_originalValues[ACTIVITYSETID_COLUMN_INDEX] = _activitySetId;
 		}
 
 		_activitySetId = activitySetId;
 	}
 
 	public long getOriginalActivitySetId() {
-		return _originalActivitySetId;
+		if (_originalValues != null) {
+			Object originalActivitySetId =
+				_originalValues[ACTIVITYSETID_COLUMN_INDEX];
+
+			if (originalActivitySetId != null) {
+				return (long)originalActivitySetId;
+			}
+		}
+
+		return _activitySetId;
 	}
 
 	@JSON
@@ -563,19 +661,30 @@ public class SocialActivityModelImpl
 
 	@Override
 	public void setMirrorActivityId(long mirrorActivityId) {
-		_columnBitmask |= MIRRORACTIVITYID_COLUMN_BITMASK;
+		if ((_columnBitmask & MIRRORACTIVITYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MIRRORACTIVITYID_COLUMN_BITMASK;
 
-		if (!_setOriginalMirrorActivityId) {
-			_setOriginalMirrorActivityId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
 
-			_originalMirrorActivityId = _mirrorActivityId;
+			_originalValues[MIRRORACTIVITYID_COLUMN_INDEX] = _mirrorActivityId;
 		}
 
 		_mirrorActivityId = mirrorActivityId;
 	}
 
 	public long getOriginalMirrorActivityId() {
-		return _originalMirrorActivityId;
+		if (_originalValues != null) {
+			Object originalMirrorActivityId =
+				_originalValues[MIRRORACTIVITYID_COLUMN_INDEX];
+
+			if (originalMirrorActivityId != null) {
+				return (long)originalMirrorActivityId;
+			}
+		}
+
+		return _mirrorActivityId;
 	}
 
 	@Override
@@ -606,19 +715,30 @@ public class SocialActivityModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSNAMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
 
-			_originalClassNameId = _classNameId;
+			_originalValues[CLASSNAMEID_COLUMN_INDEX] = _classNameId;
 		}
 
 		_classNameId = classNameId;
 	}
 
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		if (_originalValues != null) {
+			Object originalClassNameId =
+				_originalValues[CLASSNAMEID_COLUMN_INDEX];
+
+			if (originalClassNameId != null) {
+				return (long)originalClassNameId;
+			}
+		}
+
+		return _classNameId;
 	}
 
 	@JSON
@@ -629,19 +749,29 @@ public class SocialActivityModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSPK_COLUMN_BITMASK;
 
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
 
-			_originalClassPK = _classPK;
+			_originalValues[CLASSPK_COLUMN_INDEX] = _classPK;
 		}
 
 		_classPK = classPK;
 	}
 
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		if (_originalValues != null) {
+			Object originalClassPK = _originalValues[CLASSPK_COLUMN_INDEX];
+
+			if (originalClassPK != null) {
+				return (long)originalClassPK;
+			}
+		}
+
+		return _classPK;
 	}
 
 	@JSON
@@ -652,6 +782,17 @@ public class SocialActivityModelImpl
 
 	@Override
 	public void setParentClassNameId(long parentClassNameId) {
+		if ((_columnBitmask & PARENTCLASSNAMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PARENTCLASSNAMEID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
+
+			_originalValues[PARENTCLASSNAMEID_COLUMN_INDEX] =
+				_parentClassNameId;
+		}
+
 		_parentClassNameId = parentClassNameId;
 	}
 
@@ -663,6 +804,16 @@ public class SocialActivityModelImpl
 
 	@Override
 	public void setParentClassPK(long parentClassPK) {
+		if ((_columnBitmask & PARENTCLASSPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PARENTCLASSPK_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
+
+			_originalValues[PARENTCLASSPK_COLUMN_INDEX] = _parentClassPK;
+		}
+
 		_parentClassPK = parentClassPK;
 	}
 
@@ -674,19 +825,29 @@ public class SocialActivityModelImpl
 
 	@Override
 	public void setType(int type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
+		if ((_columnBitmask & TYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TYPE_COLUMN_BITMASK;
 
-		if (!_setOriginalType) {
-			_setOriginalType = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
 
-			_originalType = _type;
+			_originalValues[TYPE_COLUMN_INDEX] = _type;
 		}
 
 		_type = type;
 	}
 
 	public int getOriginalType() {
-		return _originalType;
+		if (_originalValues != null) {
+			Object originalType = _originalValues[TYPE_COLUMN_INDEX];
+
+			if (originalType != null) {
+				return (int)originalType;
+			}
+		}
+
+		return _type;
 	}
 
 	@JSON
@@ -702,6 +863,16 @@ public class SocialActivityModelImpl
 
 	@Override
 	public void setExtraData(String extraData) {
+		if ((_columnBitmask & EXTRADATA_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= EXTRADATA_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
+
+			_originalValues[EXTRADATA_COLUMN_INDEX] = _extraData;
+		}
+
 		_extraData = extraData;
 	}
 
@@ -713,12 +884,14 @@ public class SocialActivityModelImpl
 
 	@Override
 	public void setReceiverUserId(long receiverUserId) {
-		_columnBitmask |= RECEIVERUSERID_COLUMN_BITMASK;
+		if ((_columnBitmask & RECEIVERUSERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= RECEIVERUSERID_COLUMN_BITMASK;
 
-		if (!_setOriginalReceiverUserId) {
-			_setOriginalReceiverUserId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[14];
+			}
 
-			_originalReceiverUserId = _receiverUserId;
+			_originalValues[RECEIVERUSERID_COLUMN_INDEX] = _receiverUserId;
 		}
 
 		_receiverUserId = receiverUserId;
@@ -741,7 +914,16 @@ public class SocialActivityModelImpl
 	}
 
 	public long getOriginalReceiverUserId() {
-		return _originalReceiverUserId;
+		if (_originalValues != null) {
+			Object originalReceiverUserId =
+				_originalValues[RECEIVERUSERID_COLUMN_INDEX];
+
+			if (originalReceiverUserId != null) {
+				return (long)originalReceiverUserId;
+			}
+		}
+
+		return _receiverUserId;
 	}
 
 	public long getColumnBitmask() {
@@ -862,58 +1044,9 @@ public class SocialActivityModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SocialActivityModelImpl socialActivityModelImpl = this;
+		_columnBitmask = 0;
 
-		socialActivityModelImpl._originalGroupId =
-			socialActivityModelImpl._groupId;
-
-		socialActivityModelImpl._setOriginalGroupId = false;
-
-		socialActivityModelImpl._originalCompanyId =
-			socialActivityModelImpl._companyId;
-
-		socialActivityModelImpl._setOriginalCompanyId = false;
-
-		socialActivityModelImpl._originalUserId =
-			socialActivityModelImpl._userId;
-
-		socialActivityModelImpl._setOriginalUserId = false;
-
-		socialActivityModelImpl._originalCreateDate =
-			socialActivityModelImpl._createDate;
-
-		socialActivityModelImpl._setOriginalCreateDate = false;
-
-		socialActivityModelImpl._originalActivitySetId =
-			socialActivityModelImpl._activitySetId;
-
-		socialActivityModelImpl._setOriginalActivitySetId = false;
-
-		socialActivityModelImpl._originalMirrorActivityId =
-			socialActivityModelImpl._mirrorActivityId;
-
-		socialActivityModelImpl._setOriginalMirrorActivityId = false;
-
-		socialActivityModelImpl._originalClassNameId =
-			socialActivityModelImpl._classNameId;
-
-		socialActivityModelImpl._setOriginalClassNameId = false;
-
-		socialActivityModelImpl._originalClassPK =
-			socialActivityModelImpl._classPK;
-
-		socialActivityModelImpl._setOriginalClassPK = false;
-
-		socialActivityModelImpl._originalType = socialActivityModelImpl._type;
-
-		socialActivityModelImpl._setOriginalType = false;
-
-		socialActivityModelImpl._originalReceiverUserId =
-			socialActivityModelImpl._receiverUserId;
-
-		socialActivityModelImpl._setOriginalReceiverUserId = false;
-
-		socialActivityModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -1030,39 +1163,20 @@ public class SocialActivityModelImpl
 
 	private long _activityId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private long _createDate;
-	private long _originalCreateDate;
-	private boolean _setOriginalCreateDate;
 	private long _activitySetId;
-	private long _originalActivitySetId;
-	private boolean _setOriginalActivitySetId;
 	private long _mirrorActivityId;
-	private long _originalMirrorActivityId;
-	private boolean _setOriginalMirrorActivityId;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private long _parentClassNameId;
 	private long _parentClassPK;
 	private int _type;
-	private int _originalType;
-	private boolean _setOriginalType;
 	private String _extraData;
 	private long _receiverUserId;
-	private long _originalReceiverUserId;
-	private boolean _setOriginalReceiverUserId;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private SocialActivity _escapedModel;
 
 }

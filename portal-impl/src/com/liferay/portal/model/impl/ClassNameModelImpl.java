@@ -115,9 +115,17 @@ public class ClassNameModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.ClassName"),
 		true);
 
-	public static final long VALUE_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 2L;
+
+	public static final long VALUE_COLUMN_BITMASK = 4L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 1;
+
+	public static final int VALUE_COLUMN_INDEX = 2;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -315,6 +323,16 @@ public class ClassNameModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[3];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -346,6 +364,16 @@ public class ClassNameModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
+		if ((_columnBitmask & CLASSNAMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[3];
+			}
+
+			_originalValues[CLASSNAMEID_COLUMN_INDEX] = _classNameId;
+		}
+
 		_classNameId = classNameId;
 	}
 
@@ -362,17 +390,29 @@ public class ClassNameModelImpl
 
 	@Override
 	public void setValue(String value) {
-		_columnBitmask |= VALUE_COLUMN_BITMASK;
+		if ((_columnBitmask & VALUE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= VALUE_COLUMN_BITMASK;
 
-		if (_originalValue == null) {
-			_originalValue = _value;
+			if (_originalValues == null) {
+				_originalValues = new Object[3];
+			}
+
+			_originalValues[VALUE_COLUMN_INDEX] = _value;
 		}
 
 		_value = value;
 	}
 
 	public String getOriginalValue() {
-		return GetterUtil.getString(_originalValue);
+		if (_originalValues != null) {
+			Object originalValue = _originalValues[VALUE_COLUMN_INDEX];
+
+			if (originalValue != null) {
+				return GetterUtil.getString((String)originalValue);
+			}
+		}
+
+		return GetterUtil.getString(_value);
 	}
 
 	public long getColumnBitmask() {
@@ -474,11 +514,9 @@ public class ClassNameModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ClassNameModelImpl classNameModelImpl = this;
+		_columnBitmask = 0;
 
-		classNameModelImpl._originalValue = classNameModelImpl._value;
-
-		classNameModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -573,8 +611,8 @@ public class ClassNameModelImpl
 	private long _mvccVersion;
 	private long _classNameId;
 	private String _value;
-	private String _originalValue;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private ClassName _escapedModel;
 
 }

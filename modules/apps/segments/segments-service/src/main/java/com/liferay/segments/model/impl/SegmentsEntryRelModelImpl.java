@@ -115,15 +115,49 @@ public class SegmentsEntryRelModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long CLASSPK_COLUMN_BITMASK = 2L;
+	public static final long SEGMENTSENTRYRELID_COLUMN_BITMASK = 2L;
 
 	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
-	public static final long SEGMENTSENTRYID_COLUMN_BITMASK = 8L;
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
 
-	public static final long SEGMENTSENTRYRELID_COLUMN_BITMASK = 16L;
+	public static final long USERID_COLUMN_BITMASK = 16L;
+
+	public static final long USERNAME_COLUMN_BITMASK = 32L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 64L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 128L;
+
+	public static final long SEGMENTSENTRYID_COLUMN_BITMASK = 256L;
+
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 512L;
+
+	public static final long CLASSPK_COLUMN_BITMASK = 1024L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int SEGMENTSENTRYRELID_COLUMN_INDEX = 1;
+
+	public static final int GROUPID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int USERID_COLUMN_INDEX = 4;
+
+	public static final int USERNAME_COLUMN_INDEX = 5;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 6;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 7;
+
+	public static final int SEGMENTSENTRYID_COLUMN_INDEX = 8;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 9;
+
+	public static final int CLASSPK_COLUMN_INDEX = 10;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -386,6 +420,16 @@ public class SegmentsEntryRelModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -397,6 +441,17 @@ public class SegmentsEntryRelModelImpl
 
 	@Override
 	public void setSegmentsEntryRelId(long segmentsEntryRelId) {
+		if ((_columnBitmask & SEGMENTSENTRYRELID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SEGMENTSENTRYRELID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[SEGMENTSENTRYRELID_COLUMN_INDEX] =
+				_segmentsEntryRelId;
+		}
+
 		_segmentsEntryRelId = segmentsEntryRelId;
 	}
 
@@ -408,19 +463,29 @@ public class SegmentsEntryRelModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@JSON
@@ -431,6 +496,16 @@ public class SegmentsEntryRelModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -442,6 +517,16 @@ public class SegmentsEntryRelModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -474,6 +559,16 @@ public class SegmentsEntryRelModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -485,6 +580,16 @@ public class SegmentsEntryRelModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -495,12 +600,20 @@ public class SegmentsEntryRelModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -513,19 +626,30 @@ public class SegmentsEntryRelModelImpl
 
 	@Override
 	public void setSegmentsEntryId(long segmentsEntryId) {
-		_columnBitmask |= SEGMENTSENTRYID_COLUMN_BITMASK;
+		if ((_columnBitmask & SEGMENTSENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SEGMENTSENTRYID_COLUMN_BITMASK;
 
-		if (!_setOriginalSegmentsEntryId) {
-			_setOriginalSegmentsEntryId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
 
-			_originalSegmentsEntryId = _segmentsEntryId;
+			_originalValues[SEGMENTSENTRYID_COLUMN_INDEX] = _segmentsEntryId;
 		}
 
 		_segmentsEntryId = segmentsEntryId;
 	}
 
 	public long getOriginalSegmentsEntryId() {
-		return _originalSegmentsEntryId;
+		if (_originalValues != null) {
+			Object originalSegmentsEntryId =
+				_originalValues[SEGMENTSENTRYID_COLUMN_INDEX];
+
+			if (originalSegmentsEntryId != null) {
+				return (long)originalSegmentsEntryId;
+			}
+		}
+
+		return _segmentsEntryId;
 	}
 
 	@Override
@@ -556,19 +680,30 @@ public class SegmentsEntryRelModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSNAMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
 
-			_originalClassNameId = _classNameId;
+			_originalValues[CLASSNAMEID_COLUMN_INDEX] = _classNameId;
 		}
 
 		_classNameId = classNameId;
 	}
 
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		if (_originalValues != null) {
+			Object originalClassNameId =
+				_originalValues[CLASSNAMEID_COLUMN_INDEX];
+
+			if (originalClassNameId != null) {
+				return (long)originalClassNameId;
+			}
+		}
+
+		return _classNameId;
 	}
 
 	@JSON
@@ -579,19 +714,29 @@ public class SegmentsEntryRelModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSPK_COLUMN_BITMASK;
 
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
 
-			_originalClassPK = _classPK;
+			_originalValues[CLASSPK_COLUMN_INDEX] = _classPK;
 		}
 
 		_classPK = classPK;
 	}
 
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		if (_originalValues != null) {
+			Object originalClassPK = _originalValues[CLASSPK_COLUMN_INDEX];
+
+			if (originalClassPK != null) {
+				return (long)originalClassPK;
+			}
+		}
+
+		return _classPK;
 	}
 
 	public long getColumnBitmask() {
@@ -701,31 +846,9 @@ public class SegmentsEntryRelModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SegmentsEntryRelModelImpl segmentsEntryRelModelImpl = this;
+		_columnBitmask = 0;
 
-		segmentsEntryRelModelImpl._originalGroupId =
-			segmentsEntryRelModelImpl._groupId;
-
-		segmentsEntryRelModelImpl._setOriginalGroupId = false;
-
-		segmentsEntryRelModelImpl._setModifiedDate = false;
-
-		segmentsEntryRelModelImpl._originalSegmentsEntryId =
-			segmentsEntryRelModelImpl._segmentsEntryId;
-
-		segmentsEntryRelModelImpl._setOriginalSegmentsEntryId = false;
-
-		segmentsEntryRelModelImpl._originalClassNameId =
-			segmentsEntryRelModelImpl._classNameId;
-
-		segmentsEntryRelModelImpl._setOriginalClassNameId = false;
-
-		segmentsEntryRelModelImpl._originalClassPK =
-			segmentsEntryRelModelImpl._classPK;
-
-		segmentsEntryRelModelImpl._setOriginalClassPK = false;
-
-		segmentsEntryRelModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -854,24 +977,16 @@ public class SegmentsEntryRelModelImpl
 	private long _mvccVersion;
 	private long _segmentsEntryRelId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _segmentsEntryId;
-	private long _originalSegmentsEntryId;
-	private boolean _setOriginalSegmentsEntryId;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private SegmentsEntryRel _escapedModel;
 
 }

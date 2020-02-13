@@ -104,21 +104,37 @@ public class DEDataDefinitionFieldLinkModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
+	public static final long UUID_COLUMN_BITMASK = 1L;
 
-	public static final long CLASSPK_COLUMN_BITMASK = 2L;
+	public static final long DEDATADEFINITIONFIELDLINKID_COLUMN_BITMASK = 2L;
 
-	public static final long COMPANYID_COLUMN_BITMASK = 4L;
+	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
-	public static final long DDMSTRUCTUREID_COLUMN_BITMASK = 8L;
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
 
-	public static final long FIELDNAME_COLUMN_BITMASK = 16L;
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 16L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 32L;
+	public static final long CLASSPK_COLUMN_BITMASK = 32L;
 
-	public static final long UUID_COLUMN_BITMASK = 64L;
+	public static final long DDMSTRUCTUREID_COLUMN_BITMASK = 64L;
 
-	public static final long DEDATADEFINITIONFIELDLINKID_COLUMN_BITMASK = 128L;
+	public static final long FIELDNAME_COLUMN_BITMASK = 128L;
+
+	public static final int UUID_COLUMN_INDEX = 0;
+
+	public static final int DEDATADEFINITIONFIELDLINKID_COLUMN_INDEX = 1;
+
+	public static final int GROUPID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 4;
+
+	public static final int CLASSPK_COLUMN_INDEX = 5;
+
+	public static final int DDMSTRUCTUREID_COLUMN_INDEX = 6;
+
+	public static final int FIELDNAME_COLUMN_INDEX = 7;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -330,17 +346,29 @@ public class DEDataDefinitionFieldLinkModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		if ((_columnBitmask & UUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= UUID_COLUMN_BITMASK;
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
+
+			_originalValues[UUID_COLUMN_INDEX] = _uuid;
 		}
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		if (_originalValues != null) {
+			Object originalUuid = _originalValues[UUID_COLUMN_INDEX];
+
+			if (originalUuid != null) {
+				return GetterUtil.getString((String)originalUuid);
+			}
+		}
+
+		return GetterUtil.getString(_uuid);
 	}
 
 	@Override
@@ -352,6 +380,19 @@ public class DEDataDefinitionFieldLinkModelImpl
 	public void setDeDataDefinitionFieldLinkId(
 		long deDataDefinitionFieldLinkId) {
 
+		if ((_columnBitmask & DEDATADEFINITIONFIELDLINKID_COLUMN_BITMASK) ==
+				0) {
+
+			_columnBitmask |= DEDATADEFINITIONFIELDLINKID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
+
+			_originalValues[DEDATADEFINITIONFIELDLINKID_COLUMN_INDEX] =
+				_deDataDefinitionFieldLinkId;
+		}
+
 		_deDataDefinitionFieldLinkId = deDataDefinitionFieldLinkId;
 	}
 
@@ -362,19 +403,29 @@ public class DEDataDefinitionFieldLinkModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@Override
@@ -384,19 +435,29 @@ public class DEDataDefinitionFieldLinkModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@Override
@@ -426,19 +487,30 @@ public class DEDataDefinitionFieldLinkModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSNAMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
 
-			_originalClassNameId = _classNameId;
+			_originalValues[CLASSNAMEID_COLUMN_INDEX] = _classNameId;
 		}
 
 		_classNameId = classNameId;
 	}
 
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		if (_originalValues != null) {
+			Object originalClassNameId =
+				_originalValues[CLASSNAMEID_COLUMN_INDEX];
+
+			if (originalClassNameId != null) {
+				return (long)originalClassNameId;
+			}
+		}
+
+		return _classNameId;
 	}
 
 	@Override
@@ -448,19 +520,29 @@ public class DEDataDefinitionFieldLinkModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSPK_COLUMN_BITMASK;
 
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
 
-			_originalClassPK = _classPK;
+			_originalValues[CLASSPK_COLUMN_INDEX] = _classPK;
 		}
 
 		_classPK = classPK;
 	}
 
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		if (_originalValues != null) {
+			Object originalClassPK = _originalValues[CLASSPK_COLUMN_INDEX];
+
+			if (originalClassPK != null) {
+				return (long)originalClassPK;
+			}
+		}
+
+		return _classPK;
 	}
 
 	@Override
@@ -470,19 +552,30 @@ public class DEDataDefinitionFieldLinkModelImpl
 
 	@Override
 	public void setDdmStructureId(long ddmStructureId) {
-		_columnBitmask |= DDMSTRUCTUREID_COLUMN_BITMASK;
+		if ((_columnBitmask & DDMSTRUCTUREID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DDMSTRUCTUREID_COLUMN_BITMASK;
 
-		if (!_setOriginalDdmStructureId) {
-			_setOriginalDdmStructureId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
 
-			_originalDdmStructureId = _ddmStructureId;
+			_originalValues[DDMSTRUCTUREID_COLUMN_INDEX] = _ddmStructureId;
 		}
 
 		_ddmStructureId = ddmStructureId;
 	}
 
 	public long getOriginalDdmStructureId() {
-		return _originalDdmStructureId;
+		if (_originalValues != null) {
+			Object originalDdmStructureId =
+				_originalValues[DDMSTRUCTUREID_COLUMN_INDEX];
+
+			if (originalDdmStructureId != null) {
+				return (long)originalDdmStructureId;
+			}
+		}
+
+		return _ddmStructureId;
 	}
 
 	@Override
@@ -497,17 +590,29 @@ public class DEDataDefinitionFieldLinkModelImpl
 
 	@Override
 	public void setFieldName(String fieldName) {
-		_columnBitmask |= FIELDNAME_COLUMN_BITMASK;
+		if ((_columnBitmask & FIELDNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= FIELDNAME_COLUMN_BITMASK;
 
-		if (_originalFieldName == null) {
-			_originalFieldName = _fieldName;
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
+
+			_originalValues[FIELDNAME_COLUMN_INDEX] = _fieldName;
 		}
 
 		_fieldName = fieldName;
 	}
 
 	public String getOriginalFieldName() {
-		return GetterUtil.getString(_originalFieldName);
+		if (_originalValues != null) {
+			Object originalFieldName = _originalValues[FIELDNAME_COLUMN_INDEX];
+
+			if (originalFieldName != null) {
+				return GetterUtil.getString((String)originalFieldName);
+			}
+		}
+
+		return GetterUtil.getString(_fieldName);
 	}
 
 	public long getColumnBitmask() {
@@ -618,41 +723,9 @@ public class DEDataDefinitionFieldLinkModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DEDataDefinitionFieldLinkModelImpl deDataDefinitionFieldLinkModelImpl =
-			this;
+		_columnBitmask = 0;
 
-		deDataDefinitionFieldLinkModelImpl._originalUuid =
-			deDataDefinitionFieldLinkModelImpl._uuid;
-
-		deDataDefinitionFieldLinkModelImpl._originalGroupId =
-			deDataDefinitionFieldLinkModelImpl._groupId;
-
-		deDataDefinitionFieldLinkModelImpl._setOriginalGroupId = false;
-
-		deDataDefinitionFieldLinkModelImpl._originalCompanyId =
-			deDataDefinitionFieldLinkModelImpl._companyId;
-
-		deDataDefinitionFieldLinkModelImpl._setOriginalCompanyId = false;
-
-		deDataDefinitionFieldLinkModelImpl._originalClassNameId =
-			deDataDefinitionFieldLinkModelImpl._classNameId;
-
-		deDataDefinitionFieldLinkModelImpl._setOriginalClassNameId = false;
-
-		deDataDefinitionFieldLinkModelImpl._originalClassPK =
-			deDataDefinitionFieldLinkModelImpl._classPK;
-
-		deDataDefinitionFieldLinkModelImpl._setOriginalClassPK = false;
-
-		deDataDefinitionFieldLinkModelImpl._originalDdmStructureId =
-			deDataDefinitionFieldLinkModelImpl._ddmStructureId;
-
-		deDataDefinitionFieldLinkModelImpl._setOriginalDdmStructureId = false;
-
-		deDataDefinitionFieldLinkModelImpl._originalFieldName =
-			deDataDefinitionFieldLinkModelImpl._fieldName;
-
-		deDataDefinitionFieldLinkModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -772,26 +845,15 @@ public class DEDataDefinitionFieldLinkModelImpl
 	private static boolean _finderCacheEnabled;
 
 	private String _uuid;
-	private String _originalUuid;
 	private long _deDataDefinitionFieldLinkId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private long _ddmStructureId;
-	private long _originalDdmStructureId;
-	private boolean _setOriginalDdmStructureId;
 	private String _fieldName;
-	private String _originalFieldName;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private DEDataDefinitionFieldLink _escapedModel;
 
 }

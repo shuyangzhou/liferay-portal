@@ -125,13 +125,37 @@ public class AnnouncementsDeliveryModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.announcements.kernel.model.AnnouncementsDelivery"),
 		true);
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long TYPE_COLUMN_BITMASK = 2L;
+	public static final long DELIVERYID_COLUMN_BITMASK = 2L;
 
-	public static final long USERID_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
-	public static final long DELIVERYID_COLUMN_BITMASK = 8L;
+	public static final long USERID_COLUMN_BITMASK = 8L;
+
+	public static final long TYPE_COLUMN_BITMASK = 16L;
+
+	public static final long EMAIL_COLUMN_BITMASK = 32L;
+
+	public static final long SMS_COLUMN_BITMASK = 64L;
+
+	public static final long WEBSITE_COLUMN_BITMASK = 128L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int DELIVERYID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int USERID_COLUMN_INDEX = 3;
+
+	public static final int TYPE_COLUMN_INDEX = 4;
+
+	public static final int EMAIL_COLUMN_INDEX = 5;
+
+	public static final int SMS_COLUMN_INDEX = 6;
+
+	public static final int WEBSITE_COLUMN_INDEX = 7;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -379,6 +403,16 @@ public class AnnouncementsDeliveryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -390,6 +424,16 @@ public class AnnouncementsDeliveryModelImpl
 
 	@Override
 	public void setDeliveryId(long deliveryId) {
+		if ((_columnBitmask & DELIVERYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DELIVERYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
+
+			_originalValues[DELIVERYID_COLUMN_INDEX] = _deliveryId;
+		}
+
 		_deliveryId = deliveryId;
 	}
 
@@ -401,19 +445,29 @@ public class AnnouncementsDeliveryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@JSON
@@ -424,12 +478,14 @@ public class AnnouncementsDeliveryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
 
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
 
-			_originalUserId = _userId;
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
 		}
 
 		_userId = userId;
@@ -452,7 +508,15 @@ public class AnnouncementsDeliveryModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		if (_originalValues != null) {
+			Object originalUserId = _originalValues[USERID_COLUMN_INDEX];
+
+			if (originalUserId != null) {
+				return (long)originalUserId;
+			}
+		}
+
+		return _userId;
 	}
 
 	@JSON
@@ -468,17 +532,29 @@ public class AnnouncementsDeliveryModelImpl
 
 	@Override
 	public void setType(String type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
+		if ((_columnBitmask & TYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TYPE_COLUMN_BITMASK;
 
-		if (_originalType == null) {
-			_originalType = _type;
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
+
+			_originalValues[TYPE_COLUMN_INDEX] = _type;
 		}
 
 		_type = type;
 	}
 
 	public String getOriginalType() {
-		return GetterUtil.getString(_originalType);
+		if (_originalValues != null) {
+			Object originalType = _originalValues[TYPE_COLUMN_INDEX];
+
+			if (originalType != null) {
+				return GetterUtil.getString((String)originalType);
+			}
+		}
+
+		return GetterUtil.getString(_type);
 	}
 
 	@JSON
@@ -495,6 +571,16 @@ public class AnnouncementsDeliveryModelImpl
 
 	@Override
 	public void setEmail(boolean email) {
+		if ((_columnBitmask & EMAIL_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= EMAIL_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
+
+			_originalValues[EMAIL_COLUMN_INDEX] = _email;
+		}
+
 		_email = email;
 	}
 
@@ -512,6 +598,16 @@ public class AnnouncementsDeliveryModelImpl
 
 	@Override
 	public void setSms(boolean sms) {
+		if ((_columnBitmask & SMS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SMS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
+
+			_originalValues[SMS_COLUMN_INDEX] = _sms;
+		}
+
 		_sms = sms;
 	}
 
@@ -529,6 +625,16 @@ public class AnnouncementsDeliveryModelImpl
 
 	@Override
 	public void setWebsite(boolean website) {
+		if ((_columnBitmask & WEBSITE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= WEBSITE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
+
+			_originalValues[WEBSITE_COLUMN_INDEX] = _website;
+		}
+
 		_website = website;
 	}
 
@@ -639,22 +745,9 @@ public class AnnouncementsDeliveryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AnnouncementsDeliveryModelImpl announcementsDeliveryModelImpl = this;
+		_columnBitmask = 0;
 
-		announcementsDeliveryModelImpl._originalCompanyId =
-			announcementsDeliveryModelImpl._companyId;
-
-		announcementsDeliveryModelImpl._setOriginalCompanyId = false;
-
-		announcementsDeliveryModelImpl._originalUserId =
-			announcementsDeliveryModelImpl._userId;
-
-		announcementsDeliveryModelImpl._setOriginalUserId = false;
-
-		announcementsDeliveryModelImpl._originalType =
-			announcementsDeliveryModelImpl._type;
-
-		announcementsDeliveryModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -762,17 +855,13 @@ public class AnnouncementsDeliveryModelImpl
 	private long _mvccVersion;
 	private long _deliveryId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _type;
-	private String _originalType;
 	private boolean _email;
 	private boolean _sms;
 	private boolean _website;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private AnnouncementsDelivery _escapedModel;
 
 }

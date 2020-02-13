@@ -123,17 +123,41 @@ public class PortletPreferencesModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.PortletPreferences"),
 		true);
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long OWNERID_COLUMN_BITMASK = 2L;
+	public static final long CTCOLLECTIONID_COLUMN_BITMASK = 2L;
 
-	public static final long OWNERTYPE_COLUMN_BITMASK = 4L;
+	public static final long PORTLETPREFERENCESID_COLUMN_BITMASK = 4L;
 
-	public static final long PLID_COLUMN_BITMASK = 8L;
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
 
-	public static final long PORTLETID_COLUMN_BITMASK = 16L;
+	public static final long OWNERID_COLUMN_BITMASK = 16L;
 
-	public static final long PORTLETPREFERENCESID_COLUMN_BITMASK = 32L;
+	public static final long OWNERTYPE_COLUMN_BITMASK = 32L;
+
+	public static final long PLID_COLUMN_BITMASK = 64L;
+
+	public static final long PORTLETID_COLUMN_BITMASK = 128L;
+
+	public static final long PREFERENCES_COLUMN_BITMASK = 256L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int CTCOLLECTIONID_COLUMN_INDEX = 1;
+
+	public static final int PORTLETPREFERENCESID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int OWNERID_COLUMN_INDEX = 4;
+
+	public static final int OWNERTYPE_COLUMN_INDEX = 5;
+
+	public static final int PLID_COLUMN_INDEX = 6;
+
+	public static final int PORTLETID_COLUMN_INDEX = 7;
+
+	public static final int PREFERENCES_COLUMN_INDEX = 8;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -385,6 +409,16 @@ public class PortletPreferencesModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -396,6 +430,16 @@ public class PortletPreferencesModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		if ((_columnBitmask & CTCOLLECTIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CTCOLLECTIONID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[CTCOLLECTIONID_COLUMN_INDEX] = _ctCollectionId;
+		}
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -407,6 +451,17 @@ public class PortletPreferencesModelImpl
 
 	@Override
 	public void setPortletPreferencesId(long portletPreferencesId) {
+		if ((_columnBitmask & PORTLETPREFERENCESID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PORTLETPREFERENCESID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[PORTLETPREFERENCESID_COLUMN_INDEX] =
+				_portletPreferencesId;
+		}
+
 		_portletPreferencesId = portletPreferencesId;
 	}
 
@@ -418,19 +473,29 @@ public class PortletPreferencesModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@JSON
@@ -441,19 +506,29 @@ public class PortletPreferencesModelImpl
 
 	@Override
 	public void setOwnerId(long ownerId) {
-		_columnBitmask |= OWNERID_COLUMN_BITMASK;
+		if ((_columnBitmask & OWNERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= OWNERID_COLUMN_BITMASK;
 
-		if (!_setOriginalOwnerId) {
-			_setOriginalOwnerId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
 
-			_originalOwnerId = _ownerId;
+			_originalValues[OWNERID_COLUMN_INDEX] = _ownerId;
 		}
 
 		_ownerId = ownerId;
 	}
 
 	public long getOriginalOwnerId() {
-		return _originalOwnerId;
+		if (_originalValues != null) {
+			Object originalOwnerId = _originalValues[OWNERID_COLUMN_INDEX];
+
+			if (originalOwnerId != null) {
+				return (long)originalOwnerId;
+			}
+		}
+
+		return _ownerId;
 	}
 
 	@JSON
@@ -464,19 +539,29 @@ public class PortletPreferencesModelImpl
 
 	@Override
 	public void setOwnerType(int ownerType) {
-		_columnBitmask |= OWNERTYPE_COLUMN_BITMASK;
+		if ((_columnBitmask & OWNERTYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= OWNERTYPE_COLUMN_BITMASK;
 
-		if (!_setOriginalOwnerType) {
-			_setOriginalOwnerType = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
 
-			_originalOwnerType = _ownerType;
+			_originalValues[OWNERTYPE_COLUMN_INDEX] = _ownerType;
 		}
 
 		_ownerType = ownerType;
 	}
 
 	public int getOriginalOwnerType() {
-		return _originalOwnerType;
+		if (_originalValues != null) {
+			Object originalOwnerType = _originalValues[OWNERTYPE_COLUMN_INDEX];
+
+			if (originalOwnerType != null) {
+				return (int)originalOwnerType;
+			}
+		}
+
+		return _ownerType;
 	}
 
 	@JSON
@@ -487,19 +572,29 @@ public class PortletPreferencesModelImpl
 
 	@Override
 	public void setPlid(long plid) {
-		_columnBitmask |= PLID_COLUMN_BITMASK;
+		if ((_columnBitmask & PLID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PLID_COLUMN_BITMASK;
 
-		if (!_setOriginalPlid) {
-			_setOriginalPlid = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
 
-			_originalPlid = _plid;
+			_originalValues[PLID_COLUMN_INDEX] = _plid;
 		}
 
 		_plid = plid;
 	}
 
 	public long getOriginalPlid() {
-		return _originalPlid;
+		if (_originalValues != null) {
+			Object originalPlid = _originalValues[PLID_COLUMN_INDEX];
+
+			if (originalPlid != null) {
+				return (long)originalPlid;
+			}
+		}
+
+		return _plid;
 	}
 
 	@JSON
@@ -515,17 +610,29 @@ public class PortletPreferencesModelImpl
 
 	@Override
 	public void setPortletId(String portletId) {
-		_columnBitmask |= PORTLETID_COLUMN_BITMASK;
+		if ((_columnBitmask & PORTLETID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PORTLETID_COLUMN_BITMASK;
 
-		if (_originalPortletId == null) {
-			_originalPortletId = _portletId;
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[PORTLETID_COLUMN_INDEX] = _portletId;
 		}
 
 		_portletId = portletId;
 	}
 
 	public String getOriginalPortletId() {
-		return GetterUtil.getString(_originalPortletId);
+		if (_originalValues != null) {
+			Object originalPortletId = _originalValues[PORTLETID_COLUMN_INDEX];
+
+			if (originalPortletId != null) {
+				return GetterUtil.getString((String)originalPortletId);
+			}
+		}
+
+		return GetterUtil.getString(_portletId);
 	}
 
 	@JSON
@@ -541,6 +648,16 @@ public class PortletPreferencesModelImpl
 
 	@Override
 	public void setPreferences(String preferences) {
+		if ((_columnBitmask & PREFERENCES_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PREFERENCES_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[PREFERENCES_COLUMN_INDEX] = _preferences;
+		}
+
 		_preferences = preferences;
 	}
 
@@ -652,32 +769,9 @@ public class PortletPreferencesModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		PortletPreferencesModelImpl portletPreferencesModelImpl = this;
+		_columnBitmask = 0;
 
-		portletPreferencesModelImpl._originalCompanyId =
-			portletPreferencesModelImpl._companyId;
-
-		portletPreferencesModelImpl._setOriginalCompanyId = false;
-
-		portletPreferencesModelImpl._originalOwnerId =
-			portletPreferencesModelImpl._ownerId;
-
-		portletPreferencesModelImpl._setOriginalOwnerId = false;
-
-		portletPreferencesModelImpl._originalOwnerType =
-			portletPreferencesModelImpl._ownerType;
-
-		portletPreferencesModelImpl._setOriginalOwnerType = false;
-
-		portletPreferencesModelImpl._originalPlid =
-			portletPreferencesModelImpl._plid;
-
-		portletPreferencesModelImpl._setOriginalPlid = false;
-
-		portletPreferencesModelImpl._originalPortletId =
-			portletPreferencesModelImpl._portletId;
-
-		portletPreferencesModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -793,21 +887,13 @@ public class PortletPreferencesModelImpl
 	private long _ctCollectionId;
 	private long _portletPreferencesId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _ownerId;
-	private long _originalOwnerId;
-	private boolean _setOriginalOwnerId;
 	private int _ownerType;
-	private int _originalOwnerType;
-	private boolean _setOriginalOwnerType;
 	private long _plid;
-	private long _originalPlid;
-	private boolean _setOriginalPlid;
 	private String _portletId;
-	private String _originalPortletId;
 	private String _preferences;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private PortletPreferences _escapedModel;
 
 }

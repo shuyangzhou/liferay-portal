@@ -104,9 +104,41 @@ public class AttachmentModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long MESSAGEID_COLUMN_BITMASK = 1L;
+	public static final long ATTACHMENTID_COLUMN_BITMASK = 1L;
 
-	public static final long ATTACHMENTID_COLUMN_BITMASK = 2L;
+	public static final long COMPANYID_COLUMN_BITMASK = 2L;
+
+	public static final long USERID_COLUMN_BITMASK = 4L;
+
+	public static final long ACCOUNTID_COLUMN_BITMASK = 8L;
+
+	public static final long FOLDERID_COLUMN_BITMASK = 16L;
+
+	public static final long MESSAGEID_COLUMN_BITMASK = 32L;
+
+	public static final long CONTENTPATH_COLUMN_BITMASK = 64L;
+
+	public static final long FILENAME_COLUMN_BITMASK = 128L;
+
+	public static final long SIZE_COLUMN_BITMASK = 256L;
+
+	public static final int ATTACHMENTID_COLUMN_INDEX = 0;
+
+	public static final int COMPANYID_COLUMN_INDEX = 1;
+
+	public static final int USERID_COLUMN_INDEX = 2;
+
+	public static final int ACCOUNTID_COLUMN_INDEX = 3;
+
+	public static final int FOLDERID_COLUMN_INDEX = 4;
+
+	public static final int MESSAGEID_COLUMN_INDEX = 5;
+
+	public static final int CONTENTPATH_COLUMN_INDEX = 6;
+
+	public static final int FILENAME_COLUMN_INDEX = 7;
+
+	public static final int SIZE_COLUMN_INDEX = 8;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -290,6 +322,16 @@ public class AttachmentModelImpl
 
 	@Override
 	public void setAttachmentId(long attachmentId) {
+		if ((_columnBitmask & ATTACHMENTID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ATTACHMENTID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[ATTACHMENTID_COLUMN_INDEX] = _attachmentId;
+		}
+
 		_attachmentId = attachmentId;
 	}
 
@@ -300,6 +342,16 @@ public class AttachmentModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -310,6 +362,16 @@ public class AttachmentModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -336,6 +398,16 @@ public class AttachmentModelImpl
 
 	@Override
 	public void setAccountId(long accountId) {
+		if ((_columnBitmask & ACCOUNTID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ACCOUNTID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[ACCOUNTID_COLUMN_INDEX] = _accountId;
+		}
+
 		_accountId = accountId;
 	}
 
@@ -346,6 +418,16 @@ public class AttachmentModelImpl
 
 	@Override
 	public void setFolderId(long folderId) {
+		if ((_columnBitmask & FOLDERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= FOLDERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[FOLDERID_COLUMN_INDEX] = _folderId;
+		}
+
 		_folderId = folderId;
 	}
 
@@ -356,19 +438,29 @@ public class AttachmentModelImpl
 
 	@Override
 	public void setMessageId(long messageId) {
-		_columnBitmask |= MESSAGEID_COLUMN_BITMASK;
+		if ((_columnBitmask & MESSAGEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MESSAGEID_COLUMN_BITMASK;
 
-		if (!_setOriginalMessageId) {
-			_setOriginalMessageId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
 
-			_originalMessageId = _messageId;
+			_originalValues[MESSAGEID_COLUMN_INDEX] = _messageId;
 		}
 
 		_messageId = messageId;
 	}
 
 	public long getOriginalMessageId() {
-		return _originalMessageId;
+		if (_originalValues != null) {
+			Object originalMessageId = _originalValues[MESSAGEID_COLUMN_INDEX];
+
+			if (originalMessageId != null) {
+				return (long)originalMessageId;
+			}
+		}
+
+		return _messageId;
 	}
 
 	@Override
@@ -383,6 +475,16 @@ public class AttachmentModelImpl
 
 	@Override
 	public void setContentPath(String contentPath) {
+		if ((_columnBitmask & CONTENTPATH_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CONTENTPATH_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[CONTENTPATH_COLUMN_INDEX] = _contentPath;
+		}
+
 		_contentPath = contentPath;
 	}
 
@@ -398,6 +500,16 @@ public class AttachmentModelImpl
 
 	@Override
 	public void setFileName(String fileName) {
+		if ((_columnBitmask & FILENAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= FILENAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[FILENAME_COLUMN_INDEX] = _fileName;
+		}
+
 		_fileName = fileName;
 	}
 
@@ -408,6 +520,16 @@ public class AttachmentModelImpl
 
 	@Override
 	public void setSize(long size) {
+		if ((_columnBitmask & SIZE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SIZE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[SIZE_COLUMN_INDEX] = _size;
+		}
+
 		_size = size;
 	}
 
@@ -516,13 +638,9 @@ public class AttachmentModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AttachmentModelImpl attachmentModelImpl = this;
+		_columnBitmask = 0;
 
-		attachmentModelImpl._originalMessageId = attachmentModelImpl._messageId;
-
-		attachmentModelImpl._setOriginalMessageId = false;
-
-		attachmentModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -641,12 +759,11 @@ public class AttachmentModelImpl
 	private long _accountId;
 	private long _folderId;
 	private long _messageId;
-	private long _originalMessageId;
-	private boolean _setOriginalMessageId;
 	private String _contentPath;
 	private String _fileName;
 	private long _size;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private Attachment _escapedModel;
 
 }

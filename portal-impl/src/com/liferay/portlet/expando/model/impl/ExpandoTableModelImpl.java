@@ -110,13 +110,21 @@ public class ExpandoTableModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.expando.kernel.model.ExpandoTable"),
 		true);
 
-	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
+	public static final long TABLEID_COLUMN_BITMASK = 1L;
 
 	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
-	public static final long NAME_COLUMN_BITMASK = 4L;
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 4L;
 
-	public static final long TABLEID_COLUMN_BITMASK = 8L;
+	public static final long NAME_COLUMN_BITMASK = 8L;
+
+	public static final int TABLEID_COLUMN_INDEX = 0;
+
+	public static final int COMPANYID_COLUMN_INDEX = 1;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 2;
+
+	public static final int NAME_COLUMN_INDEX = 3;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -280,6 +288,16 @@ public class ExpandoTableModelImpl
 
 	@Override
 	public void setTableId(long tableId) {
+		if ((_columnBitmask & TABLEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TABLEID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[4];
+			}
+
+			_originalValues[TABLEID_COLUMN_INDEX] = _tableId;
+		}
+
 		_tableId = tableId;
 	}
 
@@ -291,19 +309,29 @@ public class ExpandoTableModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[4];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@Override
@@ -334,19 +362,30 @@ public class ExpandoTableModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSNAMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[4];
+			}
 
-			_originalClassNameId = _classNameId;
+			_originalValues[CLASSNAMEID_COLUMN_INDEX] = _classNameId;
 		}
 
 		_classNameId = classNameId;
 	}
 
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		if (_originalValues != null) {
+			Object originalClassNameId =
+				_originalValues[CLASSNAMEID_COLUMN_INDEX];
+
+			if (originalClassNameId != null) {
+				return (long)originalClassNameId;
+			}
+		}
+
+		return _classNameId;
 	}
 
 	@JSON
@@ -362,17 +401,29 @@ public class ExpandoTableModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask |= NAME_COLUMN_BITMASK;
+		if ((_columnBitmask & NAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= NAME_COLUMN_BITMASK;
 
-		if (_originalName == null) {
-			_originalName = _name;
+			if (_originalValues == null) {
+				_originalValues = new Object[4];
+			}
+
+			_originalValues[NAME_COLUMN_INDEX] = _name;
 		}
 
 		_name = name;
 	}
 
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		if (_originalValues != null) {
+			Object originalName = _originalValues[NAME_COLUMN_INDEX];
+
+			if (originalName != null) {
+				return GetterUtil.getString((String)originalName);
+			}
+		}
+
+		return GetterUtil.getString(_name);
 	}
 
 	public long getColumnBitmask() {
@@ -462,21 +513,9 @@ public class ExpandoTableModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ExpandoTableModelImpl expandoTableModelImpl = this;
+		_columnBitmask = 0;
 
-		expandoTableModelImpl._originalCompanyId =
-			expandoTableModelImpl._companyId;
-
-		expandoTableModelImpl._setOriginalCompanyId = false;
-
-		expandoTableModelImpl._originalClassNameId =
-			expandoTableModelImpl._classNameId;
-
-		expandoTableModelImpl._setOriginalClassNameId = false;
-
-		expandoTableModelImpl._originalName = expandoTableModelImpl._name;
-
-		expandoTableModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -573,14 +612,10 @@ public class ExpandoTableModelImpl
 
 	private long _tableId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private String _name;
-	private String _originalName;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private ExpandoTable _escapedModel;
 
 }

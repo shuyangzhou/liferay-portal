@@ -120,13 +120,85 @@ public class MessageModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MESSAGEID_COLUMN_BITMASK = 1L;
 
-	public static final long FOLDERID_COLUMN_BITMASK = 2L;
+	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
-	public static final long REMOTEMESSAGEID_COLUMN_BITMASK = 4L;
+	public static final long USERID_COLUMN_BITMASK = 4L;
 
-	public static final long SENTDATE_COLUMN_BITMASK = 8L;
+	public static final long USERNAME_COLUMN_BITMASK = 8L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 16L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 32L;
+
+	public static final long ACCOUNTID_COLUMN_BITMASK = 64L;
+
+	public static final long FOLDERID_COLUMN_BITMASK = 128L;
+
+	public static final long SENDER_COLUMN_BITMASK = 256L;
+
+	public static final long TO_COLUMN_BITMASK = 512L;
+
+	public static final long CC_COLUMN_BITMASK = 1024L;
+
+	public static final long BCC_COLUMN_BITMASK = 2048L;
+
+	public static final long SENTDATE_COLUMN_BITMASK = 4096L;
+
+	public static final long SUBJECT_COLUMN_BITMASK = 8192L;
+
+	public static final long PREVIEW_COLUMN_BITMASK = 16384L;
+
+	public static final long BODY_COLUMN_BITMASK = 32768L;
+
+	public static final long FLAGS_COLUMN_BITMASK = 65536L;
+
+	public static final long SIZE_COLUMN_BITMASK = 131072L;
+
+	public static final long REMOTEMESSAGEID_COLUMN_BITMASK = 262144L;
+
+	public static final long CONTENTTYPE_COLUMN_BITMASK = 524288L;
+
+	public static final int MESSAGEID_COLUMN_INDEX = 0;
+
+	public static final int COMPANYID_COLUMN_INDEX = 1;
+
+	public static final int USERID_COLUMN_INDEX = 2;
+
+	public static final int USERNAME_COLUMN_INDEX = 3;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 4;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 5;
+
+	public static final int ACCOUNTID_COLUMN_INDEX = 6;
+
+	public static final int FOLDERID_COLUMN_INDEX = 7;
+
+	public static final int SENDER_COLUMN_INDEX = 8;
+
+	public static final int TO_COLUMN_INDEX = 9;
+
+	public static final int CC_COLUMN_INDEX = 10;
+
+	public static final int BCC_COLUMN_INDEX = 11;
+
+	public static final int SENTDATE_COLUMN_INDEX = 12;
+
+	public static final int SUBJECT_COLUMN_INDEX = 13;
+
+	public static final int PREVIEW_COLUMN_INDEX = 14;
+
+	public static final int BODY_COLUMN_INDEX = 15;
+
+	public static final int FLAGS_COLUMN_INDEX = 16;
+
+	public static final int SIZE_COLUMN_INDEX = 17;
+
+	public static final int REMOTEMESSAGEID_COLUMN_INDEX = 18;
+
+	public static final int CONTENTTYPE_COLUMN_INDEX = 19;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -339,6 +411,16 @@ public class MessageModelImpl
 
 	@Override
 	public void setMessageId(long messageId) {
+		if ((_columnBitmask & MESSAGEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MESSAGEID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[MESSAGEID_COLUMN_INDEX] = _messageId;
+		}
+
 		_messageId = messageId;
 	}
 
@@ -349,19 +431,29 @@ public class MessageModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@Override
@@ -371,6 +463,16 @@ public class MessageModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -402,6 +504,16 @@ public class MessageModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -412,6 +524,16 @@ public class MessageModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -421,12 +543,20 @@ public class MessageModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -438,6 +568,16 @@ public class MessageModelImpl
 
 	@Override
 	public void setAccountId(long accountId) {
+		if ((_columnBitmask & ACCOUNTID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ACCOUNTID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[ACCOUNTID_COLUMN_INDEX] = _accountId;
+		}
+
 		_accountId = accountId;
 	}
 
@@ -448,19 +588,29 @@ public class MessageModelImpl
 
 	@Override
 	public void setFolderId(long folderId) {
-		_columnBitmask |= FOLDERID_COLUMN_BITMASK;
+		if ((_columnBitmask & FOLDERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= FOLDERID_COLUMN_BITMASK;
 
-		if (!_setOriginalFolderId) {
-			_setOriginalFolderId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
 
-			_originalFolderId = _folderId;
+			_originalValues[FOLDERID_COLUMN_INDEX] = _folderId;
 		}
 
 		_folderId = folderId;
 	}
 
 	public long getOriginalFolderId() {
-		return _originalFolderId;
+		if (_originalValues != null) {
+			Object originalFolderId = _originalValues[FOLDERID_COLUMN_INDEX];
+
+			if (originalFolderId != null) {
+				return (long)originalFolderId;
+			}
+		}
+
+		return _folderId;
 	}
 
 	@Override
@@ -475,6 +625,16 @@ public class MessageModelImpl
 
 	@Override
 	public void setSender(String sender) {
+		if ((_columnBitmask & SENDER_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SENDER_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[SENDER_COLUMN_INDEX] = _sender;
+		}
+
 		_sender = sender;
 	}
 
@@ -490,6 +650,16 @@ public class MessageModelImpl
 
 	@Override
 	public void setTo(String to) {
+		if ((_columnBitmask & TO_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TO_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[TO_COLUMN_INDEX] = _to;
+		}
+
 		_to = to;
 	}
 
@@ -505,6 +675,16 @@ public class MessageModelImpl
 
 	@Override
 	public void setCc(String cc) {
+		if ((_columnBitmask & CC_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CC_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[CC_COLUMN_INDEX] = _cc;
+		}
+
 		_cc = cc;
 	}
 
@@ -520,6 +700,16 @@ public class MessageModelImpl
 
 	@Override
 	public void setBcc(String bcc) {
+		if ((_columnBitmask & BCC_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= BCC_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[BCC_COLUMN_INDEX] = _bcc;
+		}
+
 		_bcc = bcc;
 	}
 
@@ -530,7 +720,15 @@ public class MessageModelImpl
 
 	@Override
 	public void setSentDate(Date sentDate) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & SENTDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SENTDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[SENTDATE_COLUMN_INDEX] = _sentDate;
+		}
 
 		_sentDate = sentDate;
 	}
@@ -547,6 +745,16 @@ public class MessageModelImpl
 
 	@Override
 	public void setSubject(String subject) {
+		if ((_columnBitmask & SUBJECT_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SUBJECT_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[SUBJECT_COLUMN_INDEX] = _subject;
+		}
+
 		_subject = subject;
 	}
 
@@ -562,6 +770,16 @@ public class MessageModelImpl
 
 	@Override
 	public void setPreview(String preview) {
+		if ((_columnBitmask & PREVIEW_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PREVIEW_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[PREVIEW_COLUMN_INDEX] = _preview;
+		}
+
 		_preview = preview;
 	}
 
@@ -577,6 +795,16 @@ public class MessageModelImpl
 
 	@Override
 	public void setBody(String body) {
+		if ((_columnBitmask & BODY_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= BODY_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[BODY_COLUMN_INDEX] = _body;
+		}
+
 		_body = body;
 	}
 
@@ -592,6 +820,16 @@ public class MessageModelImpl
 
 	@Override
 	public void setFlags(String flags) {
+		if ((_columnBitmask & FLAGS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= FLAGS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[FLAGS_COLUMN_INDEX] = _flags;
+		}
+
 		_flags = flags;
 	}
 
@@ -602,6 +840,16 @@ public class MessageModelImpl
 
 	@Override
 	public void setSize(long size) {
+		if ((_columnBitmask & SIZE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SIZE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[SIZE_COLUMN_INDEX] = _size;
+		}
+
 		_size = size;
 	}
 
@@ -612,19 +860,30 @@ public class MessageModelImpl
 
 	@Override
 	public void setRemoteMessageId(long remoteMessageId) {
-		_columnBitmask |= REMOTEMESSAGEID_COLUMN_BITMASK;
+		if ((_columnBitmask & REMOTEMESSAGEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= REMOTEMESSAGEID_COLUMN_BITMASK;
 
-		if (!_setOriginalRemoteMessageId) {
-			_setOriginalRemoteMessageId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
 
-			_originalRemoteMessageId = _remoteMessageId;
+			_originalValues[REMOTEMESSAGEID_COLUMN_INDEX] = _remoteMessageId;
 		}
 
 		_remoteMessageId = remoteMessageId;
 	}
 
 	public long getOriginalRemoteMessageId() {
-		return _originalRemoteMessageId;
+		if (_originalValues != null) {
+			Object originalRemoteMessageId =
+				_originalValues[REMOTEMESSAGEID_COLUMN_INDEX];
+
+			if (originalRemoteMessageId != null) {
+				return (long)originalRemoteMessageId;
+			}
+		}
+
+		return _remoteMessageId;
 	}
 
 	@Override
@@ -639,6 +898,16 @@ public class MessageModelImpl
 
 	@Override
 	public void setContentType(String contentType) {
+		if ((_columnBitmask & CONTENTTYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CONTENTTYPE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[20];
+			}
+
+			_originalValues[CONTENTTYPE_COLUMN_INDEX] = _contentType;
+		}
+
 		_contentType = contentType;
 	}
 
@@ -756,24 +1025,9 @@ public class MessageModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		MessageModelImpl messageModelImpl = this;
+		_columnBitmask = 0;
 
-		messageModelImpl._originalCompanyId = messageModelImpl._companyId;
-
-		messageModelImpl._setOriginalCompanyId = false;
-
-		messageModelImpl._setModifiedDate = false;
-
-		messageModelImpl._originalFolderId = messageModelImpl._folderId;
-
-		messageModelImpl._setOriginalFolderId = false;
-
-		messageModelImpl._originalRemoteMessageId =
-			messageModelImpl._remoteMessageId;
-
-		messageModelImpl._setOriginalRemoteMessageId = false;
-
-		messageModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -979,17 +1233,12 @@ public class MessageModelImpl
 
 	private long _messageId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _accountId;
 	private long _folderId;
-	private long _originalFolderId;
-	private boolean _setOriginalFolderId;
 	private String _sender;
 	private String _to;
 	private String _cc;
@@ -1001,10 +1250,9 @@ public class MessageModelImpl
 	private String _flags;
 	private long _size;
 	private long _remoteMessageId;
-	private long _originalRemoteMessageId;
-	private boolean _setOriginalRemoteMessageId;
 	private String _contentType;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private Message _escapedModel;
 
 }

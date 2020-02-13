@@ -98,11 +98,25 @@ public class DDMDataProviderInstanceLinkModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long DATAPROVIDERINSTANCEID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long STRUCTUREID_COLUMN_BITMASK = 2L;
+	public static final long DATAPROVIDERINSTANCELINKID_COLUMN_BITMASK = 2L;
 
-	public static final long DATAPROVIDERINSTANCELINKID_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
+
+	public static final long DATAPROVIDERINSTANCEID_COLUMN_BITMASK = 8L;
+
+	public static final long STRUCTUREID_COLUMN_BITMASK = 16L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int DATAPROVIDERINSTANCELINKID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int DATAPROVIDERINSTANCEID_COLUMN_INDEX = 3;
+
+	public static final int STRUCTUREID_COLUMN_INDEX = 4;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -293,6 +307,16 @@ public class DDMDataProviderInstanceLinkModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -303,6 +327,17 @@ public class DDMDataProviderInstanceLinkModelImpl
 
 	@Override
 	public void setDataProviderInstanceLinkId(long dataProviderInstanceLinkId) {
+		if ((_columnBitmask & DATAPROVIDERINSTANCELINKID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DATAPROVIDERINSTANCELINKID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[DATAPROVIDERINSTANCELINKID_COLUMN_INDEX] =
+				_dataProviderInstanceLinkId;
+		}
+
 		_dataProviderInstanceLinkId = dataProviderInstanceLinkId;
 	}
 
@@ -313,6 +348,16 @@ public class DDMDataProviderInstanceLinkModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -323,19 +368,31 @@ public class DDMDataProviderInstanceLinkModelImpl
 
 	@Override
 	public void setDataProviderInstanceId(long dataProviderInstanceId) {
-		_columnBitmask |= DATAPROVIDERINSTANCEID_COLUMN_BITMASK;
+		if ((_columnBitmask & DATAPROVIDERINSTANCEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DATAPROVIDERINSTANCEID_COLUMN_BITMASK;
 
-		if (!_setOriginalDataProviderInstanceId) {
-			_setOriginalDataProviderInstanceId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
 
-			_originalDataProviderInstanceId = _dataProviderInstanceId;
+			_originalValues[DATAPROVIDERINSTANCEID_COLUMN_INDEX] =
+				_dataProviderInstanceId;
 		}
 
 		_dataProviderInstanceId = dataProviderInstanceId;
 	}
 
 	public long getOriginalDataProviderInstanceId() {
-		return _originalDataProviderInstanceId;
+		if (_originalValues != null) {
+			Object originalDataProviderInstanceId =
+				_originalValues[DATAPROVIDERINSTANCEID_COLUMN_INDEX];
+
+			if (originalDataProviderInstanceId != null) {
+				return (long)originalDataProviderInstanceId;
+			}
+		}
+
+		return _dataProviderInstanceId;
 	}
 
 	@Override
@@ -345,19 +402,30 @@ public class DDMDataProviderInstanceLinkModelImpl
 
 	@Override
 	public void setStructureId(long structureId) {
-		_columnBitmask |= STRUCTUREID_COLUMN_BITMASK;
+		if ((_columnBitmask & STRUCTUREID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STRUCTUREID_COLUMN_BITMASK;
 
-		if (!_setOriginalStructureId) {
-			_setOriginalStructureId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
 
-			_originalStructureId = _structureId;
+			_originalValues[STRUCTUREID_COLUMN_INDEX] = _structureId;
 		}
 
 		_structureId = structureId;
 	}
 
 	public long getOriginalStructureId() {
-		return _originalStructureId;
+		if (_originalValues != null) {
+			Object originalStructureId =
+				_originalValues[STRUCTUREID_COLUMN_INDEX];
+
+			if (originalStructureId != null) {
+				return (long)originalStructureId;
+			}
+		}
+
+		return _structureId;
 	}
 
 	public long getColumnBitmask() {
@@ -468,21 +536,9 @@ public class DDMDataProviderInstanceLinkModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DDMDataProviderInstanceLinkModelImpl
-			ddmDataProviderInstanceLinkModelImpl = this;
+		_columnBitmask = 0;
 
-		ddmDataProviderInstanceLinkModelImpl._originalDataProviderInstanceId =
-			ddmDataProviderInstanceLinkModelImpl._dataProviderInstanceId;
-
-		ddmDataProviderInstanceLinkModelImpl.
-			_setOriginalDataProviderInstanceId = false;
-
-		ddmDataProviderInstanceLinkModelImpl._originalStructureId =
-			ddmDataProviderInstanceLinkModelImpl._structureId;
-
-		ddmDataProviderInstanceLinkModelImpl._setOriginalStructureId = false;
-
-		ddmDataProviderInstanceLinkModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -589,12 +645,9 @@ public class DDMDataProviderInstanceLinkModelImpl
 	private long _dataProviderInstanceLinkId;
 	private long _companyId;
 	private long _dataProviderInstanceId;
-	private long _originalDataProviderInstanceId;
-	private boolean _setOriginalDataProviderInstanceId;
 	private long _structureId;
-	private long _originalStructureId;
-	private boolean _setOriginalStructureId;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private DDMDataProviderInstanceLink _escapedModel;
 
 }

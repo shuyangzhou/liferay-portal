@@ -132,19 +132,57 @@ public class WorkflowDefinitionLinkModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.WorkflowDefinitionLink"),
 		true);
 
-	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long CLASSPK_COLUMN_BITMASK = 2L;
+	public static final long WORKFLOWDEFINITIONLINKID_COLUMN_BITMASK = 2L;
 
-	public static final long COMPANYID_COLUMN_BITMASK = 4L;
+	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 8L;
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
 
-	public static final long TYPEPK_COLUMN_BITMASK = 16L;
+	public static final long USERID_COLUMN_BITMASK = 16L;
 
-	public static final long WORKFLOWDEFINITIONNAME_COLUMN_BITMASK = 32L;
+	public static final long USERNAME_COLUMN_BITMASK = 32L;
 
-	public static final long WORKFLOWDEFINITIONVERSION_COLUMN_BITMASK = 64L;
+	public static final long CREATEDATE_COLUMN_BITMASK = 64L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 128L;
+
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 256L;
+
+	public static final long CLASSPK_COLUMN_BITMASK = 512L;
+
+	public static final long TYPEPK_COLUMN_BITMASK = 1024L;
+
+	public static final long WORKFLOWDEFINITIONNAME_COLUMN_BITMASK = 2048L;
+
+	public static final long WORKFLOWDEFINITIONVERSION_COLUMN_BITMASK = 4096L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int WORKFLOWDEFINITIONLINKID_COLUMN_INDEX = 1;
+
+	public static final int GROUPID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int USERID_COLUMN_INDEX = 4;
+
+	public static final int USERNAME_COLUMN_INDEX = 5;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 6;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 7;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 8;
+
+	public static final int CLASSPK_COLUMN_INDEX = 9;
+
+	public static final int TYPEPK_COLUMN_INDEX = 10;
+
+	public static final int WORKFLOWDEFINITIONNAME_COLUMN_INDEX = 11;
+
+	public static final int WORKFLOWDEFINITIONVERSION_COLUMN_INDEX = 12;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -377,6 +415,16 @@ public class WorkflowDefinitionLinkModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -387,6 +435,17 @@ public class WorkflowDefinitionLinkModelImpl
 
 	@Override
 	public void setWorkflowDefinitionLinkId(long workflowDefinitionLinkId) {
+		if ((_columnBitmask & WORKFLOWDEFINITIONLINKID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= WORKFLOWDEFINITIONLINKID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[WORKFLOWDEFINITIONLINKID_COLUMN_INDEX] =
+				_workflowDefinitionLinkId;
+		}
+
 		_workflowDefinitionLinkId = workflowDefinitionLinkId;
 	}
 
@@ -397,19 +456,29 @@ public class WorkflowDefinitionLinkModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@Override
@@ -419,19 +488,29 @@ public class WorkflowDefinitionLinkModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@Override
@@ -441,6 +520,16 @@ public class WorkflowDefinitionLinkModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -472,6 +561,16 @@ public class WorkflowDefinitionLinkModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -482,6 +581,16 @@ public class WorkflowDefinitionLinkModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -491,12 +600,20 @@ public class WorkflowDefinitionLinkModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -528,19 +645,30 @@ public class WorkflowDefinitionLinkModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSNAMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalClassNameId = _classNameId;
+			_originalValues[CLASSNAMEID_COLUMN_INDEX] = _classNameId;
 		}
 
 		_classNameId = classNameId;
 	}
 
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		if (_originalValues != null) {
+			Object originalClassNameId =
+				_originalValues[CLASSNAMEID_COLUMN_INDEX];
+
+			if (originalClassNameId != null) {
+				return (long)originalClassNameId;
+			}
+		}
+
+		return _classNameId;
 	}
 
 	@Override
@@ -550,19 +678,29 @@ public class WorkflowDefinitionLinkModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSPK_COLUMN_BITMASK;
 
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalClassPK = _classPK;
+			_originalValues[CLASSPK_COLUMN_INDEX] = _classPK;
 		}
 
 		_classPK = classPK;
 	}
 
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		if (_originalValues != null) {
+			Object originalClassPK = _originalValues[CLASSPK_COLUMN_INDEX];
+
+			if (originalClassPK != null) {
+				return (long)originalClassPK;
+			}
+		}
+
+		return _classPK;
 	}
 
 	@Override
@@ -572,19 +710,29 @@ public class WorkflowDefinitionLinkModelImpl
 
 	@Override
 	public void setTypePK(long typePK) {
-		_columnBitmask |= TYPEPK_COLUMN_BITMASK;
+		if ((_columnBitmask & TYPEPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TYPEPK_COLUMN_BITMASK;
 
-		if (!_setOriginalTypePK) {
-			_setOriginalTypePK = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalTypePK = _typePK;
+			_originalValues[TYPEPK_COLUMN_INDEX] = _typePK;
 		}
 
 		_typePK = typePK;
 	}
 
 	public long getOriginalTypePK() {
-		return _originalTypePK;
+		if (_originalValues != null) {
+			Object originalTypePK = _originalValues[TYPEPK_COLUMN_INDEX];
+
+			if (originalTypePK != null) {
+				return (long)originalTypePK;
+			}
+		}
+
+		return _typePK;
 	}
 
 	@Override
@@ -599,17 +747,32 @@ public class WorkflowDefinitionLinkModelImpl
 
 	@Override
 	public void setWorkflowDefinitionName(String workflowDefinitionName) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & WORKFLOWDEFINITIONNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= WORKFLOWDEFINITIONNAME_COLUMN_BITMASK;
 
-		if (_originalWorkflowDefinitionName == null) {
-			_originalWorkflowDefinitionName = _workflowDefinitionName;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[WORKFLOWDEFINITIONNAME_COLUMN_INDEX] =
+				_workflowDefinitionName;
 		}
 
 		_workflowDefinitionName = workflowDefinitionName;
 	}
 
 	public String getOriginalWorkflowDefinitionName() {
-		return GetterUtil.getString(_originalWorkflowDefinitionName);
+		if (_originalValues != null) {
+			Object originalWorkflowDefinitionName =
+				_originalValues[WORKFLOWDEFINITIONNAME_COLUMN_INDEX];
+
+			if (originalWorkflowDefinitionName != null) {
+				return GetterUtil.getString(
+					(String)originalWorkflowDefinitionName);
+			}
+		}
+
+		return GetterUtil.getString(_workflowDefinitionName);
 	}
 
 	@Override
@@ -619,19 +782,31 @@ public class WorkflowDefinitionLinkModelImpl
 
 	@Override
 	public void setWorkflowDefinitionVersion(int workflowDefinitionVersion) {
-		_columnBitmask |= WORKFLOWDEFINITIONVERSION_COLUMN_BITMASK;
+		if ((_columnBitmask & WORKFLOWDEFINITIONVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= WORKFLOWDEFINITIONVERSION_COLUMN_BITMASK;
 
-		if (!_setOriginalWorkflowDefinitionVersion) {
-			_setOriginalWorkflowDefinitionVersion = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalWorkflowDefinitionVersion = _workflowDefinitionVersion;
+			_originalValues[WORKFLOWDEFINITIONVERSION_COLUMN_INDEX] =
+				_workflowDefinitionVersion;
 		}
 
 		_workflowDefinitionVersion = workflowDefinitionVersion;
 	}
 
 	public int getOriginalWorkflowDefinitionVersion() {
-		return _originalWorkflowDefinitionVersion;
+		if (_originalValues != null) {
+			Object originalWorkflowDefinitionVersion =
+				_originalValues[WORKFLOWDEFINITIONVERSION_COLUMN_INDEX];
+
+			if (originalWorkflowDefinitionVersion != null) {
+				return (int)originalWorkflowDefinitionVersion;
+			}
+		}
+
+		return _workflowDefinitionVersion;
 	}
 
 	public long getColumnBitmask() {
@@ -748,45 +923,9 @@ public class WorkflowDefinitionLinkModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WorkflowDefinitionLinkModelImpl workflowDefinitionLinkModelImpl = this;
+		_columnBitmask = 0;
 
-		workflowDefinitionLinkModelImpl._originalGroupId =
-			workflowDefinitionLinkModelImpl._groupId;
-
-		workflowDefinitionLinkModelImpl._setOriginalGroupId = false;
-
-		workflowDefinitionLinkModelImpl._originalCompanyId =
-			workflowDefinitionLinkModelImpl._companyId;
-
-		workflowDefinitionLinkModelImpl._setOriginalCompanyId = false;
-
-		workflowDefinitionLinkModelImpl._setModifiedDate = false;
-
-		workflowDefinitionLinkModelImpl._originalClassNameId =
-			workflowDefinitionLinkModelImpl._classNameId;
-
-		workflowDefinitionLinkModelImpl._setOriginalClassNameId = false;
-
-		workflowDefinitionLinkModelImpl._originalClassPK =
-			workflowDefinitionLinkModelImpl._classPK;
-
-		workflowDefinitionLinkModelImpl._setOriginalClassPK = false;
-
-		workflowDefinitionLinkModelImpl._originalTypePK =
-			workflowDefinitionLinkModelImpl._typePK;
-
-		workflowDefinitionLinkModelImpl._setOriginalTypePK = false;
-
-		workflowDefinitionLinkModelImpl._originalWorkflowDefinitionName =
-			workflowDefinitionLinkModelImpl._workflowDefinitionName;
-
-		workflowDefinitionLinkModelImpl._originalWorkflowDefinitionVersion =
-			workflowDefinitionLinkModelImpl._workflowDefinitionVersion;
-
-		workflowDefinitionLinkModelImpl._setOriginalWorkflowDefinitionVersion =
-			false;
-
-		workflowDefinitionLinkModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -931,31 +1070,18 @@ public class WorkflowDefinitionLinkModelImpl
 	private long _mvccVersion;
 	private long _workflowDefinitionLinkId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private long _typePK;
-	private long _originalTypePK;
-	private boolean _setOriginalTypePK;
 	private String _workflowDefinitionName;
-	private String _originalWorkflowDefinitionName;
 	private int _workflowDefinitionVersion;
-	private int _originalWorkflowDefinitionVersion;
-	private boolean _setOriginalWorkflowDefinitionVersion;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private WorkflowDefinitionLink _escapedModel;
 
 }

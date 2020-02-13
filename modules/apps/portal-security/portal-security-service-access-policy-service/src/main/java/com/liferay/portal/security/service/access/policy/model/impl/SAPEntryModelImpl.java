@@ -125,15 +125,53 @@ public class SAPEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long UUID_COLUMN_BITMASK = 1L;
 
-	public static final long DEFAULTSAPENTRY_COLUMN_BITMASK = 2L;
+	public static final long SAPENTRYID_COLUMN_BITMASK = 2L;
 
-	public static final long NAME_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
-	public static final long UUID_COLUMN_BITMASK = 8L;
+	public static final long USERID_COLUMN_BITMASK = 8L;
 
-	public static final long SAPENTRYID_COLUMN_BITMASK = 16L;
+	public static final long USERNAME_COLUMN_BITMASK = 16L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 32L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 64L;
+
+	public static final long ALLOWEDSERVICESIGNATURES_COLUMN_BITMASK = 128L;
+
+	public static final long DEFAULTSAPENTRY_COLUMN_BITMASK = 256L;
+
+	public static final long ENABLED_COLUMN_BITMASK = 512L;
+
+	public static final long NAME_COLUMN_BITMASK = 1024L;
+
+	public static final long TITLE_COLUMN_BITMASK = 2048L;
+
+	public static final int UUID_COLUMN_INDEX = 0;
+
+	public static final int SAPENTRYID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int USERID_COLUMN_INDEX = 3;
+
+	public static final int USERNAME_COLUMN_INDEX = 4;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 5;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 6;
+
+	public static final int ALLOWEDSERVICESIGNATURES_COLUMN_INDEX = 7;
+
+	public static final int DEFAULTSAPENTRY_COLUMN_INDEX = 8;
+
+	public static final int ENABLED_COLUMN_INDEX = 9;
+
+	public static final int NAME_COLUMN_INDEX = 10;
+
+	public static final int TITLE_COLUMN_INDEX = 11;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -381,17 +419,29 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		if ((_columnBitmask & UUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= UUID_COLUMN_BITMASK;
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[UUID_COLUMN_INDEX] = _uuid;
 		}
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		if (_originalValues != null) {
+			Object originalUuid = _originalValues[UUID_COLUMN_INDEX];
+
+			if (originalUuid != null) {
+				return GetterUtil.getString((String)originalUuid);
+			}
+		}
+
+		return GetterUtil.getString(_uuid);
 	}
 
 	@JSON
@@ -402,6 +452,16 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setSapEntryId(long sapEntryId) {
+		if ((_columnBitmask & SAPENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SAPENTRYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[SAPENTRYID_COLUMN_INDEX] = _sapEntryId;
+		}
+
 		_sapEntryId = sapEntryId;
 	}
 
@@ -413,19 +473,29 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@JSON
@@ -436,6 +506,16 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -468,6 +548,16 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -479,6 +569,16 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -489,12 +589,20 @@ public class SAPEntryModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -512,6 +620,17 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setAllowedServiceSignatures(String allowedServiceSignatures) {
+		if ((_columnBitmask & ALLOWEDSERVICESIGNATURES_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ALLOWEDSERVICESIGNATURES_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[ALLOWEDSERVICESIGNATURES_COLUMN_INDEX] =
+				_allowedServiceSignatures;
+		}
+
 		_allowedServiceSignatures = allowedServiceSignatures;
 	}
 
@@ -529,19 +648,30 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setDefaultSAPEntry(boolean defaultSAPEntry) {
-		_columnBitmask |= DEFAULTSAPENTRY_COLUMN_BITMASK;
+		if ((_columnBitmask & DEFAULTSAPENTRY_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DEFAULTSAPENTRY_COLUMN_BITMASK;
 
-		if (!_setOriginalDefaultSAPEntry) {
-			_setOriginalDefaultSAPEntry = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
 
-			_originalDefaultSAPEntry = _defaultSAPEntry;
+			_originalValues[DEFAULTSAPENTRY_COLUMN_INDEX] = _defaultSAPEntry;
 		}
 
 		_defaultSAPEntry = defaultSAPEntry;
 	}
 
 	public boolean getOriginalDefaultSAPEntry() {
-		return _originalDefaultSAPEntry;
+		if (_originalValues != null) {
+			Object originalDefaultSAPEntry =
+				_originalValues[DEFAULTSAPENTRY_COLUMN_INDEX];
+
+			if (originalDefaultSAPEntry != null) {
+				return (boolean)originalDefaultSAPEntry;
+			}
+		}
+
+		return _defaultSAPEntry;
 	}
 
 	@JSON
@@ -558,6 +688,16 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setEnabled(boolean enabled) {
+		if ((_columnBitmask & ENABLED_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ENABLED_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[ENABLED_COLUMN_INDEX] = _enabled;
+		}
+
 		_enabled = enabled;
 	}
 
@@ -574,17 +714,29 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask |= NAME_COLUMN_BITMASK;
+		if ((_columnBitmask & NAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= NAME_COLUMN_BITMASK;
 
-		if (_originalName == null) {
-			_originalName = _name;
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[NAME_COLUMN_INDEX] = _name;
 		}
 
 		_name = name;
 	}
 
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		if (_originalValues != null) {
+			Object originalName = _originalValues[NAME_COLUMN_INDEX];
+
+			if (originalName != null) {
+				return GetterUtil.getString((String)originalName);
+			}
+		}
+
+		return GetterUtil.getString(_name);
 	}
 
 	@JSON
@@ -643,6 +795,16 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void setTitle(String title) {
+		if ((_columnBitmask & TITLE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TITLE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[12];
+			}
+
+			_originalValues[TITLE_COLUMN_INDEX] = _title;
+		}
+
 		_title = title;
 	}
 
@@ -872,24 +1034,9 @@ public class SAPEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SAPEntryModelImpl sapEntryModelImpl = this;
+		_columnBitmask = 0;
 
-		sapEntryModelImpl._originalUuid = sapEntryModelImpl._uuid;
-
-		sapEntryModelImpl._originalCompanyId = sapEntryModelImpl._companyId;
-
-		sapEntryModelImpl._setOriginalCompanyId = false;
-
-		sapEntryModelImpl._setModifiedDate = false;
-
-		sapEntryModelImpl._originalDefaultSAPEntry =
-			sapEntryModelImpl._defaultSAPEntry;
-
-		sapEntryModelImpl._setOriginalDefaultSAPEntry = false;
-
-		sapEntryModelImpl._originalName = sapEntryModelImpl._name;
-
-		sapEntryModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -1045,26 +1192,20 @@ public class SAPEntryModelImpl
 	private static boolean _finderCacheEnabled;
 
 	private String _uuid;
-	private String _originalUuid;
 	private long _sapEntryId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private String _allowedServiceSignatures;
 	private boolean _defaultSAPEntry;
-	private boolean _originalDefaultSAPEntry;
-	private boolean _setOriginalDefaultSAPEntry;
 	private boolean _enabled;
 	private String _name;
-	private String _originalName;
 	private String _title;
 	private String _titleCurrentLanguageId;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private SAPEntry _escapedModel;
 
 }

@@ -106,17 +106,49 @@ public class AMImageEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long UUID_COLUMN_BITMASK = 1L;
 
-	public static final long CONFIGURATIONUUID_COLUMN_BITMASK = 2L;
+	public static final long AMIMAGEENTRYID_COLUMN_BITMASK = 2L;
 
-	public static final long FILEVERSIONID_COLUMN_BITMASK = 4L;
+	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 8L;
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
 
-	public static final long UUID_COLUMN_BITMASK = 16L;
+	public static final long CREATEDATE_COLUMN_BITMASK = 16L;
 
-	public static final long AMIMAGEENTRYID_COLUMN_BITMASK = 32L;
+	public static final long CONFIGURATIONUUID_COLUMN_BITMASK = 32L;
+
+	public static final long FILEVERSIONID_COLUMN_BITMASK = 64L;
+
+	public static final long MIMETYPE_COLUMN_BITMASK = 128L;
+
+	public static final long HEIGHT_COLUMN_BITMASK = 256L;
+
+	public static final long WIDTH_COLUMN_BITMASK = 512L;
+
+	public static final long SIZE_COLUMN_BITMASK = 1024L;
+
+	public static final int UUID_COLUMN_INDEX = 0;
+
+	public static final int AMIMAGEENTRYID_COLUMN_INDEX = 1;
+
+	public static final int GROUPID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 4;
+
+	public static final int CONFIGURATIONUUID_COLUMN_INDEX = 5;
+
+	public static final int FILEVERSIONID_COLUMN_INDEX = 6;
+
+	public static final int MIMETYPE_COLUMN_INDEX = 7;
+
+	public static final int HEIGHT_COLUMN_INDEX = 8;
+
+	public static final int WIDTH_COLUMN_INDEX = 9;
+
+	public static final int SIZE_COLUMN_INDEX = 10;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -317,17 +349,29 @@ public class AMImageEntryModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		if ((_columnBitmask & UUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= UUID_COLUMN_BITMASK;
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[UUID_COLUMN_INDEX] = _uuid;
 		}
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		if (_originalValues != null) {
+			Object originalUuid = _originalValues[UUID_COLUMN_INDEX];
+
+			if (originalUuid != null) {
+				return GetterUtil.getString((String)originalUuid);
+			}
+		}
+
+		return GetterUtil.getString(_uuid);
 	}
 
 	@Override
@@ -337,6 +381,16 @@ public class AMImageEntryModelImpl
 
 	@Override
 	public void setAmImageEntryId(long amImageEntryId) {
+		if ((_columnBitmask & AMIMAGEENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= AMIMAGEENTRYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[AMIMAGEENTRYID_COLUMN_INDEX] = _amImageEntryId;
+		}
+
 		_amImageEntryId = amImageEntryId;
 	}
 
@@ -347,19 +401,29 @@ public class AMImageEntryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@Override
@@ -369,19 +433,29 @@ public class AMImageEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@Override
@@ -391,6 +465,16 @@ public class AMImageEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -406,17 +490,31 @@ public class AMImageEntryModelImpl
 
 	@Override
 	public void setConfigurationUuid(String configurationUuid) {
-		_columnBitmask |= CONFIGURATIONUUID_COLUMN_BITMASK;
+		if ((_columnBitmask & CONFIGURATIONUUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CONFIGURATIONUUID_COLUMN_BITMASK;
 
-		if (_originalConfigurationUuid == null) {
-			_originalConfigurationUuid = _configurationUuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[CONFIGURATIONUUID_COLUMN_INDEX] =
+				_configurationUuid;
 		}
 
 		_configurationUuid = configurationUuid;
 	}
 
 	public String getOriginalConfigurationUuid() {
-		return GetterUtil.getString(_originalConfigurationUuid);
+		if (_originalValues != null) {
+			Object originalConfigurationUuid =
+				_originalValues[CONFIGURATIONUUID_COLUMN_INDEX];
+
+			if (originalConfigurationUuid != null) {
+				return GetterUtil.getString((String)originalConfigurationUuid);
+			}
+		}
+
+		return GetterUtil.getString(_configurationUuid);
 	}
 
 	@Override
@@ -426,19 +524,30 @@ public class AMImageEntryModelImpl
 
 	@Override
 	public void setFileVersionId(long fileVersionId) {
-		_columnBitmask |= FILEVERSIONID_COLUMN_BITMASK;
+		if ((_columnBitmask & FILEVERSIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= FILEVERSIONID_COLUMN_BITMASK;
 
-		if (!_setOriginalFileVersionId) {
-			_setOriginalFileVersionId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
 
-			_originalFileVersionId = _fileVersionId;
+			_originalValues[FILEVERSIONID_COLUMN_INDEX] = _fileVersionId;
 		}
 
 		_fileVersionId = fileVersionId;
 	}
 
 	public long getOriginalFileVersionId() {
-		return _originalFileVersionId;
+		if (_originalValues != null) {
+			Object originalFileVersionId =
+				_originalValues[FILEVERSIONID_COLUMN_INDEX];
+
+			if (originalFileVersionId != null) {
+				return (long)originalFileVersionId;
+			}
+		}
+
+		return _fileVersionId;
 	}
 
 	@Override
@@ -453,6 +562,16 @@ public class AMImageEntryModelImpl
 
 	@Override
 	public void setMimeType(String mimeType) {
+		if ((_columnBitmask & MIMETYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MIMETYPE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[MIMETYPE_COLUMN_INDEX] = _mimeType;
+		}
+
 		_mimeType = mimeType;
 	}
 
@@ -463,6 +582,16 @@ public class AMImageEntryModelImpl
 
 	@Override
 	public void setHeight(int height) {
+		if ((_columnBitmask & HEIGHT_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= HEIGHT_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[HEIGHT_COLUMN_INDEX] = _height;
+		}
+
 		_height = height;
 	}
 
@@ -473,6 +602,16 @@ public class AMImageEntryModelImpl
 
 	@Override
 	public void setWidth(int width) {
+		if ((_columnBitmask & WIDTH_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= WIDTH_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[WIDTH_COLUMN_INDEX] = _width;
+		}
+
 		_width = width;
 	}
 
@@ -483,6 +622,16 @@ public class AMImageEntryModelImpl
 
 	@Override
 	public void setSize(long size) {
+		if ((_columnBitmask & SIZE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SIZE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[SIZE_COLUMN_INDEX] = _size;
+		}
+
 		_size = size;
 	}
 
@@ -593,28 +742,9 @@ public class AMImageEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AMImageEntryModelImpl amImageEntryModelImpl = this;
+		_columnBitmask = 0;
 
-		amImageEntryModelImpl._originalUuid = amImageEntryModelImpl._uuid;
-
-		amImageEntryModelImpl._originalGroupId = amImageEntryModelImpl._groupId;
-
-		amImageEntryModelImpl._setOriginalGroupId = false;
-
-		amImageEntryModelImpl._originalCompanyId =
-			amImageEntryModelImpl._companyId;
-
-		amImageEntryModelImpl._setOriginalCompanyId = false;
-
-		amImageEntryModelImpl._originalConfigurationUuid =
-			amImageEntryModelImpl._configurationUuid;
-
-		amImageEntryModelImpl._originalFileVersionId =
-			amImageEntryModelImpl._fileVersionId;
-
-		amImageEntryModelImpl._setOriginalFileVersionId = false;
-
-		amImageEntryModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -746,25 +876,18 @@ public class AMImageEntryModelImpl
 	private static boolean _finderCacheEnabled;
 
 	private String _uuid;
-	private String _originalUuid;
 	private long _amImageEntryId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private Date _createDate;
 	private String _configurationUuid;
-	private String _originalConfigurationUuid;
 	private long _fileVersionId;
-	private long _originalFileVersionId;
-	private boolean _setOriginalFileVersionId;
 	private String _mimeType;
 	private int _height;
 	private int _width;
 	private long _size;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private AMImageEntry _escapedModel;
 
 }

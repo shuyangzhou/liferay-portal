@@ -148,21 +148,81 @@ public class DLFileShortcutModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.document.library.kernel.model.DLFileShortcut"),
 		true);
 
-	public static final long ACTIVE_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long COMPANYID_COLUMN_BITMASK = 2L;
+	public static final long UUID_COLUMN_BITMASK = 2L;
 
-	public static final long FOLDERID_COLUMN_BITMASK = 4L;
+	public static final long FILESHORTCUTID_COLUMN_BITMASK = 4L;
 
 	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
-	public static final long STATUS_COLUMN_BITMASK = 16L;
+	public static final long COMPANYID_COLUMN_BITMASK = 16L;
 
-	public static final long TOFILEENTRYID_COLUMN_BITMASK = 32L;
+	public static final long USERID_COLUMN_BITMASK = 32L;
 
-	public static final long UUID_COLUMN_BITMASK = 64L;
+	public static final long USERNAME_COLUMN_BITMASK = 64L;
 
-	public static final long FILESHORTCUTID_COLUMN_BITMASK = 128L;
+	public static final long CREATEDATE_COLUMN_BITMASK = 128L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 256L;
+
+	public static final long REPOSITORYID_COLUMN_BITMASK = 512L;
+
+	public static final long FOLDERID_COLUMN_BITMASK = 1024L;
+
+	public static final long TOFILEENTRYID_COLUMN_BITMASK = 2048L;
+
+	public static final long TREEPATH_COLUMN_BITMASK = 4096L;
+
+	public static final long ACTIVE_COLUMN_BITMASK = 8192L;
+
+	public static final long LASTPUBLISHDATE_COLUMN_BITMASK = 16384L;
+
+	public static final long STATUS_COLUMN_BITMASK = 32768L;
+
+	public static final long STATUSBYUSERID_COLUMN_BITMASK = 65536L;
+
+	public static final long STATUSBYUSERNAME_COLUMN_BITMASK = 131072L;
+
+	public static final long STATUSDATE_COLUMN_BITMASK = 262144L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int UUID_COLUMN_INDEX = 1;
+
+	public static final int FILESHORTCUTID_COLUMN_INDEX = 2;
+
+	public static final int GROUPID_COLUMN_INDEX = 3;
+
+	public static final int COMPANYID_COLUMN_INDEX = 4;
+
+	public static final int USERID_COLUMN_INDEX = 5;
+
+	public static final int USERNAME_COLUMN_INDEX = 6;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 7;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 8;
+
+	public static final int REPOSITORYID_COLUMN_INDEX = 9;
+
+	public static final int FOLDERID_COLUMN_INDEX = 10;
+
+	public static final int TOFILEENTRYID_COLUMN_INDEX = 11;
+
+	public static final int TREEPATH_COLUMN_INDEX = 12;
+
+	public static final int ACTIVE_COLUMN_INDEX = 13;
+
+	public static final int LASTPUBLISHDATE_COLUMN_INDEX = 14;
+
+	public static final int STATUS_COLUMN_INDEX = 15;
+
+	public static final int STATUSBYUSERID_COLUMN_INDEX = 16;
+
+	public static final int STATUSBYUSERNAME_COLUMN_INDEX = 17;
+
+	public static final int STATUSDATE_COLUMN_INDEX = 18;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -459,6 +519,16 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -475,17 +545,29 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		if ((_columnBitmask & UUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= UUID_COLUMN_BITMASK;
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[UUID_COLUMN_INDEX] = _uuid;
 		}
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		if (_originalValues != null) {
+			Object originalUuid = _originalValues[UUID_COLUMN_INDEX];
+
+			if (originalUuid != null) {
+				return GetterUtil.getString((String)originalUuid);
+			}
+		}
+
+		return GetterUtil.getString(_uuid);
 	}
 
 	@JSON
@@ -496,6 +578,16 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setFileShortcutId(long fileShortcutId) {
+		if ((_columnBitmask & FILESHORTCUTID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= FILESHORTCUTID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[FILESHORTCUTID_COLUMN_INDEX] = _fileShortcutId;
+		}
+
 		_fileShortcutId = fileShortcutId;
 	}
 
@@ -507,19 +599,29 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@JSON
@@ -530,19 +632,29 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@JSON
@@ -553,6 +665,16 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -585,6 +707,16 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -596,6 +728,16 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -606,12 +748,20 @@ public class DLFileShortcutModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -624,6 +774,16 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setRepositoryId(long repositoryId) {
+		if ((_columnBitmask & REPOSITORYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= REPOSITORYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[REPOSITORYID_COLUMN_INDEX] = _repositoryId;
+		}
+
 		_repositoryId = repositoryId;
 	}
 
@@ -635,19 +795,29 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setFolderId(long folderId) {
-		_columnBitmask |= FOLDERID_COLUMN_BITMASK;
+		if ((_columnBitmask & FOLDERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= FOLDERID_COLUMN_BITMASK;
 
-		if (!_setOriginalFolderId) {
-			_setOriginalFolderId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
 
-			_originalFolderId = _folderId;
+			_originalValues[FOLDERID_COLUMN_INDEX] = _folderId;
 		}
 
 		_folderId = folderId;
 	}
 
 	public long getOriginalFolderId() {
-		return _originalFolderId;
+		if (_originalValues != null) {
+			Object originalFolderId = _originalValues[FOLDERID_COLUMN_INDEX];
+
+			if (originalFolderId != null) {
+				return (long)originalFolderId;
+			}
+		}
+
+		return _folderId;
 	}
 
 	@JSON
@@ -658,19 +828,30 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setToFileEntryId(long toFileEntryId) {
-		_columnBitmask |= TOFILEENTRYID_COLUMN_BITMASK;
+		if ((_columnBitmask & TOFILEENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TOFILEENTRYID_COLUMN_BITMASK;
 
-		if (!_setOriginalToFileEntryId) {
-			_setOriginalToFileEntryId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
 
-			_originalToFileEntryId = _toFileEntryId;
+			_originalValues[TOFILEENTRYID_COLUMN_INDEX] = _toFileEntryId;
 		}
 
 		_toFileEntryId = toFileEntryId;
 	}
 
 	public long getOriginalToFileEntryId() {
-		return _originalToFileEntryId;
+		if (_originalValues != null) {
+			Object originalToFileEntryId =
+				_originalValues[TOFILEENTRYID_COLUMN_INDEX];
+
+			if (originalToFileEntryId != null) {
+				return (long)originalToFileEntryId;
+			}
+		}
+
+		return _toFileEntryId;
 	}
 
 	@JSON
@@ -686,6 +867,16 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setTreePath(String treePath) {
+		if ((_columnBitmask & TREEPATH_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TREEPATH_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[TREEPATH_COLUMN_INDEX] = _treePath;
+		}
+
 		_treePath = treePath;
 	}
 
@@ -703,19 +894,29 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setActive(boolean active) {
-		_columnBitmask |= ACTIVE_COLUMN_BITMASK;
+		if ((_columnBitmask & ACTIVE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ACTIVE_COLUMN_BITMASK;
 
-		if (!_setOriginalActive) {
-			_setOriginalActive = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
 
-			_originalActive = _active;
+			_originalValues[ACTIVE_COLUMN_INDEX] = _active;
 		}
 
 		_active = active;
 	}
 
 	public boolean getOriginalActive() {
-		return _originalActive;
+		if (_originalValues != null) {
+			Object originalActive = _originalValues[ACTIVE_COLUMN_INDEX];
+
+			if (originalActive != null) {
+				return (boolean)originalActive;
+			}
+		}
+
+		return _active;
 	}
 
 	@JSON
@@ -726,6 +927,16 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		if ((_columnBitmask & LASTPUBLISHDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LASTPUBLISHDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[LASTPUBLISHDATE_COLUMN_INDEX] = _lastPublishDate;
+		}
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -737,19 +948,29 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
+		if ((_columnBitmask & STATUS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUS_COLUMN_BITMASK;
 
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
 
-			_originalStatus = _status;
+			_originalValues[STATUS_COLUMN_INDEX] = _status;
 		}
 
 		_status = status;
 	}
 
 	public int getOriginalStatus() {
-		return _originalStatus;
+		if (_originalValues != null) {
+			Object originalStatus = _originalValues[STATUS_COLUMN_INDEX];
+
+			if (originalStatus != null) {
+				return (int)originalStatus;
+			}
+		}
+
+		return _status;
 	}
 
 	@JSON
@@ -760,6 +981,16 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		if ((_columnBitmask & STATUSBYUSERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUSBYUSERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[STATUSBYUSERID_COLUMN_INDEX] = _statusByUserId;
+		}
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -792,6 +1023,16 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		if ((_columnBitmask & STATUSBYUSERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUSBYUSERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[STATUSBYUSERNAME_COLUMN_INDEX] = _statusByUserName;
+		}
+
 		_statusByUserName = statusByUserName;
 	}
 
@@ -803,6 +1044,16 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		if ((_columnBitmask & STATUSDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUSDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[STATUSDATE_COLUMN_INDEX] = _statusDate;
+		}
+
 		_statusDate = statusDate;
 	}
 
@@ -1152,43 +1403,9 @@ public class DLFileShortcutModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DLFileShortcutModelImpl dlFileShortcutModelImpl = this;
+		_columnBitmask = 0;
 
-		dlFileShortcutModelImpl._originalUuid = dlFileShortcutModelImpl._uuid;
-
-		dlFileShortcutModelImpl._originalGroupId =
-			dlFileShortcutModelImpl._groupId;
-
-		dlFileShortcutModelImpl._setOriginalGroupId = false;
-
-		dlFileShortcutModelImpl._originalCompanyId =
-			dlFileShortcutModelImpl._companyId;
-
-		dlFileShortcutModelImpl._setOriginalCompanyId = false;
-
-		dlFileShortcutModelImpl._setModifiedDate = false;
-
-		dlFileShortcutModelImpl._originalFolderId =
-			dlFileShortcutModelImpl._folderId;
-
-		dlFileShortcutModelImpl._setOriginalFolderId = false;
-
-		dlFileShortcutModelImpl._originalToFileEntryId =
-			dlFileShortcutModelImpl._toFileEntryId;
-
-		dlFileShortcutModelImpl._setOriginalToFileEntryId = false;
-
-		dlFileShortcutModelImpl._originalActive =
-			dlFileShortcutModelImpl._active;
-
-		dlFileShortcutModelImpl._setOriginalActive = false;
-
-		dlFileShortcutModelImpl._originalStatus =
-			dlFileShortcutModelImpl._status;
-
-		dlFileShortcutModelImpl._setOriginalStatus = false;
-
-		dlFileShortcutModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -1362,38 +1579,25 @@ public class DLFileShortcutModelImpl
 
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _fileShortcutId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _repositoryId;
 	private long _folderId;
-	private long _originalFolderId;
-	private boolean _setOriginalFolderId;
 	private long _toFileEntryId;
-	private long _originalToFileEntryId;
-	private boolean _setOriginalToFileEntryId;
 	private String _treePath;
 	private boolean _active;
-	private boolean _originalActive;
-	private boolean _setOriginalActive;
 	private Date _lastPublishDate;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private DLFileShortcut _escapedModel;
 
 }

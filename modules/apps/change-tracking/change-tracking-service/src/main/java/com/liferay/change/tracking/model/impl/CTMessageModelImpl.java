@@ -93,9 +93,21 @@ public class CTMessageModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long CTCOLLECTIONID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
 	public static final long CTMESSAGEID_COLUMN_BITMASK = 2L;
+
+	public static final long CTCOLLECTIONID_COLUMN_BITMASK = 4L;
+
+	public static final long MESSAGECONTENT_COLUMN_BITMASK = 8L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int CTMESSAGEID_COLUMN_INDEX = 1;
+
+	public static final int CTCOLLECTIONID_COLUMN_INDEX = 2;
+
+	public static final int MESSAGECONTENT_COLUMN_INDEX = 3;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -263,6 +275,16 @@ public class CTMessageModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[4];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -273,6 +295,16 @@ public class CTMessageModelImpl
 
 	@Override
 	public void setCtMessageId(long ctMessageId) {
+		if ((_columnBitmask & CTMESSAGEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CTMESSAGEID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[4];
+			}
+
+			_originalValues[CTMESSAGEID_COLUMN_INDEX] = _ctMessageId;
+		}
+
 		_ctMessageId = ctMessageId;
 	}
 
@@ -283,19 +315,30 @@ public class CTMessageModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
-		_columnBitmask |= CTCOLLECTIONID_COLUMN_BITMASK;
+		if ((_columnBitmask & CTCOLLECTIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CTCOLLECTIONID_COLUMN_BITMASK;
 
-		if (!_setOriginalCtCollectionId) {
-			_setOriginalCtCollectionId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[4];
+			}
 
-			_originalCtCollectionId = _ctCollectionId;
+			_originalValues[CTCOLLECTIONID_COLUMN_INDEX] = _ctCollectionId;
 		}
 
 		_ctCollectionId = ctCollectionId;
 	}
 
 	public long getOriginalCtCollectionId() {
-		return _originalCtCollectionId;
+		if (_originalValues != null) {
+			Object originalCtCollectionId =
+				_originalValues[CTCOLLECTIONID_COLUMN_INDEX];
+
+			if (originalCtCollectionId != null) {
+				return (long)originalCtCollectionId;
+			}
+		}
+
+		return _ctCollectionId;
 	}
 
 	@Override
@@ -310,6 +353,16 @@ public class CTMessageModelImpl
 
 	@Override
 	public void setMessageContent(String messageContent) {
+		if ((_columnBitmask & MESSAGECONTENT_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MESSAGECONTENT_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[4];
+			}
+
+			_originalValues[MESSAGECONTENT_COLUMN_INDEX] = _messageContent;
+		}
+
 		_messageContent = messageContent;
 	}
 
@@ -413,14 +466,9 @@ public class CTMessageModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		CTMessageModelImpl ctMessageModelImpl = this;
+		_columnBitmask = 0;
 
-		ctMessageModelImpl._originalCtCollectionId =
-			ctMessageModelImpl._ctCollectionId;
-
-		ctMessageModelImpl._setOriginalCtCollectionId = false;
-
-		ctMessageModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -520,10 +568,9 @@ public class CTMessageModelImpl
 	private long _mvccVersion;
 	private long _ctMessageId;
 	private long _ctCollectionId;
-	private long _originalCtCollectionId;
-	private boolean _setOriginalCtCollectionId;
 	private String _messageContent;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private CTMessage _escapedModel;
 
 }

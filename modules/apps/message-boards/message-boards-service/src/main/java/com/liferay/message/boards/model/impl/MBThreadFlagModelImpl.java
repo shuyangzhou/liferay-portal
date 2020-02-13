@@ -109,17 +109,45 @@ public class MBThreadFlagModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long UUID_COLUMN_BITMASK = 1L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 2L;
+	public static final long THREADFLAGID_COLUMN_BITMASK = 2L;
 
-	public static final long THREADID_COLUMN_BITMASK = 4L;
+	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
-	public static final long USERID_COLUMN_BITMASK = 8L;
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
 
-	public static final long UUID_COLUMN_BITMASK = 16L;
+	public static final long USERID_COLUMN_BITMASK = 16L;
 
-	public static final long THREADFLAGID_COLUMN_BITMASK = 32L;
+	public static final long USERNAME_COLUMN_BITMASK = 32L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 64L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 128L;
+
+	public static final long THREADID_COLUMN_BITMASK = 256L;
+
+	public static final long LASTPUBLISHDATE_COLUMN_BITMASK = 512L;
+
+	public static final int UUID_COLUMN_INDEX = 0;
+
+	public static final int THREADFLAGID_COLUMN_INDEX = 1;
+
+	public static final int GROUPID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int USERID_COLUMN_INDEX = 4;
+
+	public static final int USERNAME_COLUMN_INDEX = 5;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 6;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 7;
+
+	public static final int THREADID_COLUMN_INDEX = 8;
+
+	public static final int LASTPUBLISHDATE_COLUMN_INDEX = 9;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -316,17 +344,29 @@ public class MBThreadFlagModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		if ((_columnBitmask & UUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= UUID_COLUMN_BITMASK;
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[UUID_COLUMN_INDEX] = _uuid;
 		}
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		if (_originalValues != null) {
+			Object originalUuid = _originalValues[UUID_COLUMN_INDEX];
+
+			if (originalUuid != null) {
+				return GetterUtil.getString((String)originalUuid);
+			}
+		}
+
+		return GetterUtil.getString(_uuid);
 	}
 
 	@Override
@@ -336,6 +376,16 @@ public class MBThreadFlagModelImpl
 
 	@Override
 	public void setThreadFlagId(long threadFlagId) {
+		if ((_columnBitmask & THREADFLAGID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= THREADFLAGID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[THREADFLAGID_COLUMN_INDEX] = _threadFlagId;
+		}
+
 		_threadFlagId = threadFlagId;
 	}
 
@@ -346,19 +396,29 @@ public class MBThreadFlagModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@Override
@@ -368,19 +428,29 @@ public class MBThreadFlagModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@Override
@@ -390,12 +460,14 @@ public class MBThreadFlagModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
 
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
 
-			_originalUserId = _userId;
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
 		}
 
 		_userId = userId;
@@ -418,7 +490,15 @@ public class MBThreadFlagModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		if (_originalValues != null) {
+			Object originalUserId = _originalValues[USERID_COLUMN_INDEX];
+
+			if (originalUserId != null) {
+				return (long)originalUserId;
+			}
+		}
+
+		return _userId;
 	}
 
 	@Override
@@ -433,6 +513,16 @@ public class MBThreadFlagModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -443,6 +533,16 @@ public class MBThreadFlagModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -452,12 +552,20 @@ public class MBThreadFlagModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -469,19 +577,29 @@ public class MBThreadFlagModelImpl
 
 	@Override
 	public void setThreadId(long threadId) {
-		_columnBitmask |= THREADID_COLUMN_BITMASK;
+		if ((_columnBitmask & THREADID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= THREADID_COLUMN_BITMASK;
 
-		if (!_setOriginalThreadId) {
-			_setOriginalThreadId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
 
-			_originalThreadId = _threadId;
+			_originalValues[THREADID_COLUMN_INDEX] = _threadId;
 		}
 
 		_threadId = threadId;
 	}
 
 	public long getOriginalThreadId() {
-		return _originalThreadId;
+		if (_originalValues != null) {
+			Object originalThreadId = _originalValues[THREADID_COLUMN_INDEX];
+
+			if (originalThreadId != null) {
+				return (long)originalThreadId;
+			}
+		}
+
+		return _threadId;
 	}
 
 	@Override
@@ -491,6 +609,16 @@ public class MBThreadFlagModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		if ((_columnBitmask & LASTPUBLISHDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LASTPUBLISHDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[LASTPUBLISHDATE_COLUMN_INDEX] = _lastPublishDate;
+		}
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -606,31 +734,9 @@ public class MBThreadFlagModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		MBThreadFlagModelImpl mbThreadFlagModelImpl = this;
+		_columnBitmask = 0;
 
-		mbThreadFlagModelImpl._originalUuid = mbThreadFlagModelImpl._uuid;
-
-		mbThreadFlagModelImpl._originalGroupId = mbThreadFlagModelImpl._groupId;
-
-		mbThreadFlagModelImpl._setOriginalGroupId = false;
-
-		mbThreadFlagModelImpl._originalCompanyId =
-			mbThreadFlagModelImpl._companyId;
-
-		mbThreadFlagModelImpl._setOriginalCompanyId = false;
-
-		mbThreadFlagModelImpl._originalUserId = mbThreadFlagModelImpl._userId;
-
-		mbThreadFlagModelImpl._setOriginalUserId = false;
-
-		mbThreadFlagModelImpl._setModifiedDate = false;
-
-		mbThreadFlagModelImpl._originalThreadId =
-			mbThreadFlagModelImpl._threadId;
-
-		mbThreadFlagModelImpl._setOriginalThreadId = false;
-
-		mbThreadFlagModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -768,26 +874,17 @@ public class MBThreadFlagModelImpl
 	private static boolean _finderCacheEnabled;
 
 	private String _uuid;
-	private String _originalUuid;
 	private long _threadFlagId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _threadId;
-	private long _originalThreadId;
-	private boolean _setOriginalThreadId;
 	private Date _lastPublishDate;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private MBThreadFlag _escapedModel;
 
 }

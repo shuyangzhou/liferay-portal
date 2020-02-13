@@ -185,39 +185,171 @@ public class LayoutModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.Layout"),
 		true);
 
-	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long CLASSPK_COLUMN_BITMASK = 2L;
+	public static final long CTCOLLECTIONID_COLUMN_BITMASK = 2L;
 
-	public static final long COMPANYID_COLUMN_BITMASK = 4L;
+	public static final long UUID_COLUMN_BITMASK = 4L;
 
-	public static final long FRIENDLYURL_COLUMN_BITMASK = 8L;
+	public static final long PLID_COLUMN_BITMASK = 8L;
 
 	public static final long GROUPID_COLUMN_BITMASK = 16L;
 
-	public static final long HIDDEN_COLUMN_BITMASK = 32L;
+	public static final long COMPANYID_COLUMN_BITMASK = 32L;
 
-	public static final long ICONIMAGEID_COLUMN_BITMASK = 64L;
+	public static final long USERID_COLUMN_BITMASK = 64L;
 
-	public static final long LAYOUTID_COLUMN_BITMASK = 128L;
+	public static final long USERNAME_COLUMN_BITMASK = 128L;
 
-	public static final long LAYOUTPROTOTYPEUUID_COLUMN_BITMASK = 256L;
+	public static final long CREATEDATE_COLUMN_BITMASK = 256L;
 
-	public static final long MASTERLAYOUTPLID_COLUMN_BITMASK = 512L;
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 512L;
 
-	public static final long PARENTLAYOUTID_COLUMN_BITMASK = 1024L;
+	public static final long PARENTPLID_COLUMN_BITMASK = 1024L;
 
-	public static final long PARENTPLID_COLUMN_BITMASK = 2048L;
+	public static final long PRIVATELAYOUT_COLUMN_BITMASK = 2048L;
 
-	public static final long PRIORITY_COLUMN_BITMASK = 4096L;
+	public static final long LAYOUTID_COLUMN_BITMASK = 4096L;
 
-	public static final long PRIVATELAYOUT_COLUMN_BITMASK = 8192L;
+	public static final long PARENTLAYOUTID_COLUMN_BITMASK = 8192L;
 
-	public static final long SOURCEPROTOTYPELAYOUTUUID_COLUMN_BITMASK = 16384L;
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 16384L;
 
-	public static final long TYPE_COLUMN_BITMASK = 32768L;
+	public static final long CLASSPK_COLUMN_BITMASK = 32768L;
 
-	public static final long UUID_COLUMN_BITMASK = 65536L;
+	public static final long NAME_COLUMN_BITMASK = 65536L;
+
+	public static final long TITLE_COLUMN_BITMASK = 131072L;
+
+	public static final long DESCRIPTION_COLUMN_BITMASK = 262144L;
+
+	public static final long KEYWORDS_COLUMN_BITMASK = 524288L;
+
+	public static final long ROBOTS_COLUMN_BITMASK = 1048576L;
+
+	public static final long TYPE_COLUMN_BITMASK = 2097152L;
+
+	public static final long TYPESETTINGS_COLUMN_BITMASK = 4194304L;
+
+	public static final long HIDDEN_COLUMN_BITMASK = 8388608L;
+
+	public static final long SYSTEM_COLUMN_BITMASK = 16777216L;
+
+	public static final long FRIENDLYURL_COLUMN_BITMASK = 33554432L;
+
+	public static final long ICONIMAGEID_COLUMN_BITMASK = 67108864L;
+
+	public static final long THEMEID_COLUMN_BITMASK = 134217728L;
+
+	public static final long COLORSCHEMEID_COLUMN_BITMASK = 268435456L;
+
+	public static final long CSS_COLUMN_BITMASK = 536870912L;
+
+	public static final long PRIORITY_COLUMN_BITMASK = 1073741824L;
+
+	public static final long MASTERLAYOUTPLID_COLUMN_BITMASK = 2147483648L;
+
+	public static final long LAYOUTPROTOTYPEUUID_COLUMN_BITMASK = 4294967296L;
+
+	public static final long LAYOUTPROTOTYPELINKENABLED_COLUMN_BITMASK =
+		8589934592L;
+
+	public static final long SOURCEPROTOTYPELAYOUTUUID_COLUMN_BITMASK =
+		17179869184L;
+
+	public static final long PUBLISHDATE_COLUMN_BITMASK = 34359738368L;
+
+	public static final long LASTPUBLISHDATE_COLUMN_BITMASK = 68719476736L;
+
+	public static final long STATUS_COLUMN_BITMASK = 137438953472L;
+
+	public static final long STATUSBYUSERID_COLUMN_BITMASK = 274877906944L;
+
+	public static final long STATUSBYUSERNAME_COLUMN_BITMASK = 549755813888L;
+
+	public static final long STATUSDATE_COLUMN_BITMASK = 1099511627776L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int CTCOLLECTIONID_COLUMN_INDEX = 1;
+
+	public static final int UUID_COLUMN_INDEX = 2;
+
+	public static final int PLID_COLUMN_INDEX = 3;
+
+	public static final int GROUPID_COLUMN_INDEX = 4;
+
+	public static final int COMPANYID_COLUMN_INDEX = 5;
+
+	public static final int USERID_COLUMN_INDEX = 6;
+
+	public static final int USERNAME_COLUMN_INDEX = 7;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 8;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 9;
+
+	public static final int PARENTPLID_COLUMN_INDEX = 10;
+
+	public static final int PRIVATELAYOUT_COLUMN_INDEX = 11;
+
+	public static final int LAYOUTID_COLUMN_INDEX = 12;
+
+	public static final int PARENTLAYOUTID_COLUMN_INDEX = 13;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 14;
+
+	public static final int CLASSPK_COLUMN_INDEX = 15;
+
+	public static final int NAME_COLUMN_INDEX = 16;
+
+	public static final int TITLE_COLUMN_INDEX = 17;
+
+	public static final int DESCRIPTION_COLUMN_INDEX = 18;
+
+	public static final int KEYWORDS_COLUMN_INDEX = 19;
+
+	public static final int ROBOTS_COLUMN_INDEX = 20;
+
+	public static final int TYPE_COLUMN_INDEX = 21;
+
+	public static final int TYPESETTINGS_COLUMN_INDEX = 22;
+
+	public static final int HIDDEN_COLUMN_INDEX = 23;
+
+	public static final int SYSTEM_COLUMN_INDEX = 24;
+
+	public static final int FRIENDLYURL_COLUMN_INDEX = 25;
+
+	public static final int ICONIMAGEID_COLUMN_INDEX = 26;
+
+	public static final int THEMEID_COLUMN_INDEX = 27;
+
+	public static final int COLORSCHEMEID_COLUMN_INDEX = 28;
+
+	public static final int CSS_COLUMN_INDEX = 29;
+
+	public static final int PRIORITY_COLUMN_INDEX = 30;
+
+	public static final int MASTERLAYOUTPLID_COLUMN_INDEX = 31;
+
+	public static final int LAYOUTPROTOTYPEUUID_COLUMN_INDEX = 32;
+
+	public static final int LAYOUTPROTOTYPELINKENABLED_COLUMN_INDEX = 33;
+
+	public static final int SOURCEPROTOTYPELAYOUTUUID_COLUMN_INDEX = 34;
+
+	public static final int PUBLISHDATE_COLUMN_INDEX = 35;
+
+	public static final int LASTPUBLISHDATE_COLUMN_INDEX = 36;
+
+	public static final int STATUS_COLUMN_INDEX = 37;
+
+	public static final int STATUSBYUSERID_COLUMN_INDEX = 38;
+
+	public static final int STATUSBYUSERNAME_COLUMN_INDEX = 39;
+
+	public static final int STATUSDATE_COLUMN_INDEX = 40;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -585,6 +717,16 @@ public class LayoutModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -596,6 +738,16 @@ public class LayoutModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		if ((_columnBitmask & CTCOLLECTIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CTCOLLECTIONID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[CTCOLLECTIONID_COLUMN_INDEX] = _ctCollectionId;
+		}
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -612,17 +764,29 @@ public class LayoutModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		if ((_columnBitmask & UUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= UUID_COLUMN_BITMASK;
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[UUID_COLUMN_INDEX] = _uuid;
 		}
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		if (_originalValues != null) {
+			Object originalUuid = _originalValues[UUID_COLUMN_INDEX];
+
+			if (originalUuid != null) {
+				return GetterUtil.getString((String)originalUuid);
+			}
+		}
+
+		return GetterUtil.getString(_uuid);
 	}
 
 	@JSON
@@ -633,6 +797,16 @@ public class LayoutModelImpl
 
 	@Override
 	public void setPlid(long plid) {
+		if ((_columnBitmask & PLID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PLID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[PLID_COLUMN_INDEX] = _plid;
+		}
+
 		_plid = plid;
 	}
 
@@ -644,19 +818,29 @@ public class LayoutModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@JSON
@@ -667,19 +851,29 @@ public class LayoutModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@JSON
@@ -690,6 +884,16 @@ public class LayoutModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -722,6 +926,16 @@ public class LayoutModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -733,6 +947,16 @@ public class LayoutModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -743,12 +967,20 @@ public class LayoutModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -761,19 +993,30 @@ public class LayoutModelImpl
 
 	@Override
 	public void setParentPlid(long parentPlid) {
-		_columnBitmask |= PARENTPLID_COLUMN_BITMASK;
+		if ((_columnBitmask & PARENTPLID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PARENTPLID_COLUMN_BITMASK;
 
-		if (!_setOriginalParentPlid) {
-			_setOriginalParentPlid = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
 
-			_originalParentPlid = _parentPlid;
+			_originalValues[PARENTPLID_COLUMN_INDEX] = _parentPlid;
 		}
 
 		_parentPlid = parentPlid;
 	}
 
 	public long getOriginalParentPlid() {
-		return _originalParentPlid;
+		if (_originalValues != null) {
+			Object originalParentPlid =
+				_originalValues[PARENTPLID_COLUMN_INDEX];
+
+			if (originalParentPlid != null) {
+				return (long)originalParentPlid;
+			}
+		}
+
+		return _parentPlid;
 	}
 
 	@JSON
@@ -790,19 +1033,30 @@ public class LayoutModelImpl
 
 	@Override
 	public void setPrivateLayout(boolean privateLayout) {
-		_columnBitmask |= PRIVATELAYOUT_COLUMN_BITMASK;
+		if ((_columnBitmask & PRIVATELAYOUT_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PRIVATELAYOUT_COLUMN_BITMASK;
 
-		if (!_setOriginalPrivateLayout) {
-			_setOriginalPrivateLayout = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
 
-			_originalPrivateLayout = _privateLayout;
+			_originalValues[PRIVATELAYOUT_COLUMN_INDEX] = _privateLayout;
 		}
 
 		_privateLayout = privateLayout;
 	}
 
 	public boolean getOriginalPrivateLayout() {
-		return _originalPrivateLayout;
+		if (_originalValues != null) {
+			Object originalPrivateLayout =
+				_originalValues[PRIVATELAYOUT_COLUMN_INDEX];
+
+			if (originalPrivateLayout != null) {
+				return (boolean)originalPrivateLayout;
+			}
+		}
+
+		return _privateLayout;
 	}
 
 	@JSON
@@ -813,19 +1067,29 @@ public class LayoutModelImpl
 
 	@Override
 	public void setLayoutId(long layoutId) {
-		_columnBitmask |= LAYOUTID_COLUMN_BITMASK;
+		if ((_columnBitmask & LAYOUTID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LAYOUTID_COLUMN_BITMASK;
 
-		if (!_setOriginalLayoutId) {
-			_setOriginalLayoutId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
 
-			_originalLayoutId = _layoutId;
+			_originalValues[LAYOUTID_COLUMN_INDEX] = _layoutId;
 		}
 
 		_layoutId = layoutId;
 	}
 
 	public long getOriginalLayoutId() {
-		return _originalLayoutId;
+		if (_originalValues != null) {
+			Object originalLayoutId = _originalValues[LAYOUTID_COLUMN_INDEX];
+
+			if (originalLayoutId != null) {
+				return (long)originalLayoutId;
+			}
+		}
+
+		return _layoutId;
 	}
 
 	@JSON
@@ -836,19 +1100,30 @@ public class LayoutModelImpl
 
 	@Override
 	public void setParentLayoutId(long parentLayoutId) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & PARENTLAYOUTID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PARENTLAYOUTID_COLUMN_BITMASK;
 
-		if (!_setOriginalParentLayoutId) {
-			_setOriginalParentLayoutId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
 
-			_originalParentLayoutId = _parentLayoutId;
+			_originalValues[PARENTLAYOUTID_COLUMN_INDEX] = _parentLayoutId;
 		}
 
 		_parentLayoutId = parentLayoutId;
 	}
 
 	public long getOriginalParentLayoutId() {
-		return _originalParentLayoutId;
+		if (_originalValues != null) {
+			Object originalParentLayoutId =
+				_originalValues[PARENTLAYOUTID_COLUMN_INDEX];
+
+			if (originalParentLayoutId != null) {
+				return (long)originalParentLayoutId;
+			}
+		}
+
+		return _parentLayoutId;
 	}
 
 	@Override
@@ -879,19 +1154,30 @@ public class LayoutModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSNAMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
 
-			_originalClassNameId = _classNameId;
+			_originalValues[CLASSNAMEID_COLUMN_INDEX] = _classNameId;
 		}
 
 		_classNameId = classNameId;
 	}
 
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		if (_originalValues != null) {
+			Object originalClassNameId =
+				_originalValues[CLASSNAMEID_COLUMN_INDEX];
+
+			if (originalClassNameId != null) {
+				return (long)originalClassNameId;
+			}
+		}
+
+		return _classNameId;
 	}
 
 	@JSON
@@ -902,19 +1188,29 @@ public class LayoutModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSPK_COLUMN_BITMASK;
 
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
 
-			_originalClassPK = _classPK;
+			_originalValues[CLASSPK_COLUMN_INDEX] = _classPK;
 		}
 
 		_classPK = classPK;
 	}
 
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		if (_originalValues != null) {
+			Object originalClassPK = _originalValues[CLASSPK_COLUMN_INDEX];
+
+			if (originalClassPK != null) {
+				return (long)originalClassPK;
+			}
+		}
+
+		return _classPK;
 	}
 
 	@JSON
@@ -973,6 +1269,16 @@ public class LayoutModelImpl
 
 	@Override
 	public void setName(String name) {
+		if ((_columnBitmask & NAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= NAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[NAME_COLUMN_INDEX] = _name;
+		}
+
 		_name = name;
 	}
 
@@ -1076,6 +1382,16 @@ public class LayoutModelImpl
 
 	@Override
 	public void setTitle(String title) {
+		if ((_columnBitmask & TITLE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TITLE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[TITLE_COLUMN_INDEX] = _title;
+		}
+
 		_title = title;
 	}
 
@@ -1181,6 +1497,16 @@ public class LayoutModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		if ((_columnBitmask & DESCRIPTION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DESCRIPTION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[DESCRIPTION_COLUMN_INDEX] = _description;
+		}
+
 		_description = description;
 	}
 
@@ -1289,6 +1615,16 @@ public class LayoutModelImpl
 
 	@Override
 	public void setKeywords(String keywords) {
+		if ((_columnBitmask & KEYWORDS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= KEYWORDS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[KEYWORDS_COLUMN_INDEX] = _keywords;
+		}
+
 		_keywords = keywords;
 	}
 
@@ -1397,6 +1733,16 @@ public class LayoutModelImpl
 
 	@Override
 	public void setRobots(String robots) {
+		if ((_columnBitmask & ROBOTS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ROBOTS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[ROBOTS_COLUMN_INDEX] = _robots;
+		}
+
 		_robots = robots;
 	}
 
@@ -1460,17 +1806,29 @@ public class LayoutModelImpl
 
 	@Override
 	public void setType(String type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
+		if ((_columnBitmask & TYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TYPE_COLUMN_BITMASK;
 
-		if (_originalType == null) {
-			_originalType = _type;
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[TYPE_COLUMN_INDEX] = _type;
 		}
 
 		_type = type;
 	}
 
 	public String getOriginalType() {
-		return GetterUtil.getString(_originalType);
+		if (_originalValues != null) {
+			Object originalType = _originalValues[TYPE_COLUMN_INDEX];
+
+			if (originalType != null) {
+				return GetterUtil.getString((String)originalType);
+			}
+		}
+
+		return GetterUtil.getString(_type);
 	}
 
 	@JSON
@@ -1486,6 +1844,16 @@ public class LayoutModelImpl
 
 	@Override
 	public void setTypeSettings(String typeSettings) {
+		if ((_columnBitmask & TYPESETTINGS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TYPESETTINGS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[TYPESETTINGS_COLUMN_INDEX] = _typeSettings;
+		}
+
 		_typeSettings = typeSettings;
 	}
 
@@ -1503,19 +1871,29 @@ public class LayoutModelImpl
 
 	@Override
 	public void setHidden(boolean hidden) {
-		_columnBitmask |= HIDDEN_COLUMN_BITMASK;
+		if ((_columnBitmask & HIDDEN_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= HIDDEN_COLUMN_BITMASK;
 
-		if (!_setOriginalHidden) {
-			_setOriginalHidden = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
 
-			_originalHidden = _hidden;
+			_originalValues[HIDDEN_COLUMN_INDEX] = _hidden;
 		}
 
 		_hidden = hidden;
 	}
 
 	public boolean getOriginalHidden() {
-		return _originalHidden;
+		if (_originalValues != null) {
+			Object originalHidden = _originalValues[HIDDEN_COLUMN_INDEX];
+
+			if (originalHidden != null) {
+				return (boolean)originalHidden;
+			}
+		}
+
+		return _hidden;
 	}
 
 	@JSON
@@ -1532,6 +1910,16 @@ public class LayoutModelImpl
 
 	@Override
 	public void setSystem(boolean system) {
+		if ((_columnBitmask & SYSTEM_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SYSTEM_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[SYSTEM_COLUMN_INDEX] = _system;
+		}
+
 		_system = system;
 	}
 
@@ -1548,17 +1936,30 @@ public class LayoutModelImpl
 
 	@Override
 	public void setFriendlyURL(String friendlyURL) {
-		_columnBitmask |= FRIENDLYURL_COLUMN_BITMASK;
+		if ((_columnBitmask & FRIENDLYURL_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= FRIENDLYURL_COLUMN_BITMASK;
 
-		if (_originalFriendlyURL == null) {
-			_originalFriendlyURL = _friendlyURL;
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[FRIENDLYURL_COLUMN_INDEX] = _friendlyURL;
 		}
 
 		_friendlyURL = friendlyURL;
 	}
 
 	public String getOriginalFriendlyURL() {
-		return GetterUtil.getString(_originalFriendlyURL);
+		if (_originalValues != null) {
+			Object originalFriendlyURL =
+				_originalValues[FRIENDLYURL_COLUMN_INDEX];
+
+			if (originalFriendlyURL != null) {
+				return GetterUtil.getString((String)originalFriendlyURL);
+			}
+		}
+
+		return GetterUtil.getString(_friendlyURL);
 	}
 
 	@JSON
@@ -1569,19 +1970,30 @@ public class LayoutModelImpl
 
 	@Override
 	public void setIconImageId(long iconImageId) {
-		_columnBitmask |= ICONIMAGEID_COLUMN_BITMASK;
+		if ((_columnBitmask & ICONIMAGEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ICONIMAGEID_COLUMN_BITMASK;
 
-		if (!_setOriginalIconImageId) {
-			_setOriginalIconImageId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
 
-			_originalIconImageId = _iconImageId;
+			_originalValues[ICONIMAGEID_COLUMN_INDEX] = _iconImageId;
 		}
 
 		_iconImageId = iconImageId;
 	}
 
 	public long getOriginalIconImageId() {
-		return _originalIconImageId;
+		if (_originalValues != null) {
+			Object originalIconImageId =
+				_originalValues[ICONIMAGEID_COLUMN_INDEX];
+
+			if (originalIconImageId != null) {
+				return (long)originalIconImageId;
+			}
+		}
+
+		return _iconImageId;
 	}
 
 	@JSON
@@ -1597,6 +2009,16 @@ public class LayoutModelImpl
 
 	@Override
 	public void setThemeId(String themeId) {
+		if ((_columnBitmask & THEMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= THEMEID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[THEMEID_COLUMN_INDEX] = _themeId;
+		}
+
 		_themeId = themeId;
 	}
 
@@ -1613,6 +2035,16 @@ public class LayoutModelImpl
 
 	@Override
 	public void setColorSchemeId(String colorSchemeId) {
+		if ((_columnBitmask & COLORSCHEMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COLORSCHEMEID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[COLORSCHEMEID_COLUMN_INDEX] = _colorSchemeId;
+		}
+
 		_colorSchemeId = colorSchemeId;
 	}
 
@@ -1629,6 +2061,16 @@ public class LayoutModelImpl
 
 	@Override
 	public void setCss(String css) {
+		if ((_columnBitmask & CSS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CSS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[CSS_COLUMN_INDEX] = _css;
+		}
+
 		_css = css;
 	}
 
@@ -1640,19 +2082,29 @@ public class LayoutModelImpl
 
 	@Override
 	public void setPriority(int priority) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & PRIORITY_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PRIORITY_COLUMN_BITMASK;
 
-		if (!_setOriginalPriority) {
-			_setOriginalPriority = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
 
-			_originalPriority = _priority;
+			_originalValues[PRIORITY_COLUMN_INDEX] = _priority;
 		}
 
 		_priority = priority;
 	}
 
 	public int getOriginalPriority() {
-		return _originalPriority;
+		if (_originalValues != null) {
+			Object originalPriority = _originalValues[PRIORITY_COLUMN_INDEX];
+
+			if (originalPriority != null) {
+				return (int)originalPriority;
+			}
+		}
+
+		return _priority;
 	}
 
 	@JSON
@@ -1663,19 +2115,30 @@ public class LayoutModelImpl
 
 	@Override
 	public void setMasterLayoutPlid(long masterLayoutPlid) {
-		_columnBitmask |= MASTERLAYOUTPLID_COLUMN_BITMASK;
+		if ((_columnBitmask & MASTERLAYOUTPLID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MASTERLAYOUTPLID_COLUMN_BITMASK;
 
-		if (!_setOriginalMasterLayoutPlid) {
-			_setOriginalMasterLayoutPlid = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
 
-			_originalMasterLayoutPlid = _masterLayoutPlid;
+			_originalValues[MASTERLAYOUTPLID_COLUMN_INDEX] = _masterLayoutPlid;
 		}
 
 		_masterLayoutPlid = masterLayoutPlid;
 	}
 
 	public long getOriginalMasterLayoutPlid() {
-		return _originalMasterLayoutPlid;
+		if (_originalValues != null) {
+			Object originalMasterLayoutPlid =
+				_originalValues[MASTERLAYOUTPLID_COLUMN_INDEX];
+
+			if (originalMasterLayoutPlid != null) {
+				return (long)originalMasterLayoutPlid;
+			}
+		}
+
+		return _masterLayoutPlid;
 	}
 
 	@JSON
@@ -1691,17 +2154,32 @@ public class LayoutModelImpl
 
 	@Override
 	public void setLayoutPrototypeUuid(String layoutPrototypeUuid) {
-		_columnBitmask |= LAYOUTPROTOTYPEUUID_COLUMN_BITMASK;
+		if ((_columnBitmask & LAYOUTPROTOTYPEUUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LAYOUTPROTOTYPEUUID_COLUMN_BITMASK;
 
-		if (_originalLayoutPrototypeUuid == null) {
-			_originalLayoutPrototypeUuid = _layoutPrototypeUuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[LAYOUTPROTOTYPEUUID_COLUMN_INDEX] =
+				_layoutPrototypeUuid;
 		}
 
 		_layoutPrototypeUuid = layoutPrototypeUuid;
 	}
 
 	public String getOriginalLayoutPrototypeUuid() {
-		return GetterUtil.getString(_originalLayoutPrototypeUuid);
+		if (_originalValues != null) {
+			Object originalLayoutPrototypeUuid =
+				_originalValues[LAYOUTPROTOTYPEUUID_COLUMN_INDEX];
+
+			if (originalLayoutPrototypeUuid != null) {
+				return GetterUtil.getString(
+					(String)originalLayoutPrototypeUuid);
+			}
+		}
+
+		return GetterUtil.getString(_layoutPrototypeUuid);
 	}
 
 	@JSON
@@ -1720,6 +2198,17 @@ public class LayoutModelImpl
 	public void setLayoutPrototypeLinkEnabled(
 		boolean layoutPrototypeLinkEnabled) {
 
+		if ((_columnBitmask & LAYOUTPROTOTYPELINKENABLED_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LAYOUTPROTOTYPELINKENABLED_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[LAYOUTPROTOTYPELINKENABLED_COLUMN_INDEX] =
+				_layoutPrototypeLinkEnabled;
+		}
+
 		_layoutPrototypeLinkEnabled = layoutPrototypeLinkEnabled;
 	}
 
@@ -1736,17 +2225,32 @@ public class LayoutModelImpl
 
 	@Override
 	public void setSourcePrototypeLayoutUuid(String sourcePrototypeLayoutUuid) {
-		_columnBitmask |= SOURCEPROTOTYPELAYOUTUUID_COLUMN_BITMASK;
+		if ((_columnBitmask & SOURCEPROTOTYPELAYOUTUUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SOURCEPROTOTYPELAYOUTUUID_COLUMN_BITMASK;
 
-		if (_originalSourcePrototypeLayoutUuid == null) {
-			_originalSourcePrototypeLayoutUuid = _sourcePrototypeLayoutUuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[SOURCEPROTOTYPELAYOUTUUID_COLUMN_INDEX] =
+				_sourcePrototypeLayoutUuid;
 		}
 
 		_sourcePrototypeLayoutUuid = sourcePrototypeLayoutUuid;
 	}
 
 	public String getOriginalSourcePrototypeLayoutUuid() {
-		return GetterUtil.getString(_originalSourcePrototypeLayoutUuid);
+		if (_originalValues != null) {
+			Object originalSourcePrototypeLayoutUuid =
+				_originalValues[SOURCEPROTOTYPELAYOUTUUID_COLUMN_INDEX];
+
+			if (originalSourcePrototypeLayoutUuid != null) {
+				return GetterUtil.getString(
+					(String)originalSourcePrototypeLayoutUuid);
+			}
+		}
+
+		return GetterUtil.getString(_sourcePrototypeLayoutUuid);
 	}
 
 	@JSON
@@ -1757,6 +2261,16 @@ public class LayoutModelImpl
 
 	@Override
 	public void setPublishDate(Date publishDate) {
+		if ((_columnBitmask & PUBLISHDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PUBLISHDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[PUBLISHDATE_COLUMN_INDEX] = _publishDate;
+		}
+
 		_publishDate = publishDate;
 	}
 
@@ -1768,6 +2282,16 @@ public class LayoutModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		if ((_columnBitmask & LASTPUBLISHDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LASTPUBLISHDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[LASTPUBLISHDATE_COLUMN_INDEX] = _lastPublishDate;
+		}
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -1779,6 +2303,16 @@ public class LayoutModelImpl
 
 	@Override
 	public void setStatus(int status) {
+		if ((_columnBitmask & STATUS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[STATUS_COLUMN_INDEX] = _status;
+		}
+
 		_status = status;
 	}
 
@@ -1790,6 +2324,16 @@ public class LayoutModelImpl
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		if ((_columnBitmask & STATUSBYUSERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUSBYUSERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[STATUSBYUSERID_COLUMN_INDEX] = _statusByUserId;
+		}
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -1822,6 +2366,16 @@ public class LayoutModelImpl
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		if ((_columnBitmask & STATUSBYUSERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUSBYUSERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[STATUSBYUSERNAME_COLUMN_INDEX] = _statusByUserName;
+		}
+
 		_statusByUserName = statusByUserName;
 	}
 
@@ -1833,6 +2387,16 @@ public class LayoutModelImpl
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		if ((_columnBitmask & STATUSDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUSDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[41];
+			}
+
+			_originalValues[STATUSDATE_COLUMN_INDEX] = _statusDate;
+		}
+
 		_statusDate = statusDate;
 	}
 
@@ -2230,73 +2794,9 @@ public class LayoutModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LayoutModelImpl layoutModelImpl = this;
+		_columnBitmask = 0;
 
-		layoutModelImpl._originalUuid = layoutModelImpl._uuid;
-
-		layoutModelImpl._originalGroupId = layoutModelImpl._groupId;
-
-		layoutModelImpl._setOriginalGroupId = false;
-
-		layoutModelImpl._originalCompanyId = layoutModelImpl._companyId;
-
-		layoutModelImpl._setOriginalCompanyId = false;
-
-		layoutModelImpl._setModifiedDate = false;
-
-		layoutModelImpl._originalParentPlid = layoutModelImpl._parentPlid;
-
-		layoutModelImpl._setOriginalParentPlid = false;
-
-		layoutModelImpl._originalPrivateLayout = layoutModelImpl._privateLayout;
-
-		layoutModelImpl._setOriginalPrivateLayout = false;
-
-		layoutModelImpl._originalLayoutId = layoutModelImpl._layoutId;
-
-		layoutModelImpl._setOriginalLayoutId = false;
-
-		layoutModelImpl._originalParentLayoutId =
-			layoutModelImpl._parentLayoutId;
-
-		layoutModelImpl._setOriginalParentLayoutId = false;
-
-		layoutModelImpl._originalClassNameId = layoutModelImpl._classNameId;
-
-		layoutModelImpl._setOriginalClassNameId = false;
-
-		layoutModelImpl._originalClassPK = layoutModelImpl._classPK;
-
-		layoutModelImpl._setOriginalClassPK = false;
-
-		layoutModelImpl._originalType = layoutModelImpl._type;
-
-		layoutModelImpl._originalHidden = layoutModelImpl._hidden;
-
-		layoutModelImpl._setOriginalHidden = false;
-
-		layoutModelImpl._originalFriendlyURL = layoutModelImpl._friendlyURL;
-
-		layoutModelImpl._originalIconImageId = layoutModelImpl._iconImageId;
-
-		layoutModelImpl._setOriginalIconImageId = false;
-
-		layoutModelImpl._originalPriority = layoutModelImpl._priority;
-
-		layoutModelImpl._setOriginalPriority = false;
-
-		layoutModelImpl._originalMasterLayoutPlid =
-			layoutModelImpl._masterLayoutPlid;
-
-		layoutModelImpl._setOriginalMasterLayoutPlid = false;
-
-		layoutModelImpl._originalLayoutPrototypeUuid =
-			layoutModelImpl._layoutPrototypeUuid;
-
-		layoutModelImpl._originalSourcePrototypeLayoutUuid =
-			layoutModelImpl._sourcePrototypeLayoutUuid;
-
-		layoutModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -2597,37 +3097,19 @@ public class LayoutModelImpl
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private String _uuid;
-	private String _originalUuid;
 	private long _plid;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _parentPlid;
-	private long _originalParentPlid;
-	private boolean _setOriginalParentPlid;
 	private boolean _privateLayout;
-	private boolean _originalPrivateLayout;
-	private boolean _setOriginalPrivateLayout;
 	private long _layoutId;
-	private long _originalLayoutId;
-	private boolean _setOriginalLayoutId;
 	private long _parentLayoutId;
-	private long _originalParentLayoutId;
-	private boolean _setOriginalParentLayoutId;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private String _name;
 	private String _nameCurrentLanguageId;
 	private String _title;
@@ -2639,38 +3121,27 @@ public class LayoutModelImpl
 	private String _robots;
 	private String _robotsCurrentLanguageId;
 	private String _type;
-	private String _originalType;
 	private String _typeSettings;
 	private boolean _hidden;
-	private boolean _originalHidden;
-	private boolean _setOriginalHidden;
 	private boolean _system;
 	private String _friendlyURL;
-	private String _originalFriendlyURL;
 	private long _iconImageId;
-	private long _originalIconImageId;
-	private boolean _setOriginalIconImageId;
 	private String _themeId;
 	private String _colorSchemeId;
 	private String _css;
 	private int _priority;
-	private int _originalPriority;
-	private boolean _setOriginalPriority;
 	private long _masterLayoutPlid;
-	private long _originalMasterLayoutPlid;
-	private boolean _setOriginalMasterLayoutPlid;
 	private String _layoutPrototypeUuid;
-	private String _originalLayoutPrototypeUuid;
 	private boolean _layoutPrototypeLinkEnabled;
 	private String _sourcePrototypeLayoutUuid;
-	private String _originalSourcePrototypeLayoutUuid;
 	private Date _publishDate;
 	private Date _lastPublishDate;
 	private int _status;
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private Layout _escapedModel;
 
 }

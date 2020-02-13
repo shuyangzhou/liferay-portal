@@ -119,17 +119,45 @@ public class TicketModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.Ticket"),
 		true);
 
-	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long CLASSPK_COLUMN_BITMASK = 2L;
+	public static final long TICKETID_COLUMN_BITMASK = 2L;
 
 	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
-	public static final long KEY_COLUMN_BITMASK = 8L;
+	public static final long CREATEDATE_COLUMN_BITMASK = 8L;
 
-	public static final long TYPE_COLUMN_BITMASK = 16L;
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 16L;
 
-	public static final long TICKETID_COLUMN_BITMASK = 32L;
+	public static final long CLASSPK_COLUMN_BITMASK = 32L;
+
+	public static final long KEY_COLUMN_BITMASK = 64L;
+
+	public static final long TYPE_COLUMN_BITMASK = 128L;
+
+	public static final long EXTRAINFO_COLUMN_BITMASK = 256L;
+
+	public static final long EXPIRATIONDATE_COLUMN_BITMASK = 512L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int TICKETID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 3;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 4;
+
+	public static final int CLASSPK_COLUMN_INDEX = 5;
+
+	public static final int KEY_COLUMN_INDEX = 6;
+
+	public static final int TYPE_COLUMN_INDEX = 7;
+
+	public static final int EXTRAINFO_COLUMN_INDEX = 8;
+
+	public static final int EXPIRATIONDATE_COLUMN_INDEX = 9;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -303,6 +331,16 @@ public class TicketModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -313,7 +351,15 @@ public class TicketModelImpl
 
 	@Override
 	public void setTicketId(long ticketId) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & TICKETID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TICKETID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[TICKETID_COLUMN_INDEX] = _ticketId;
+		}
 
 		_ticketId = ticketId;
 	}
@@ -325,19 +371,29 @@ public class TicketModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@Override
@@ -347,6 +403,16 @@ public class TicketModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -377,19 +443,30 @@ public class TicketModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSNAMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
 
-			_originalClassNameId = _classNameId;
+			_originalValues[CLASSNAMEID_COLUMN_INDEX] = _classNameId;
 		}
 
 		_classNameId = classNameId;
 	}
 
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		if (_originalValues != null) {
+			Object originalClassNameId =
+				_originalValues[CLASSNAMEID_COLUMN_INDEX];
+
+			if (originalClassNameId != null) {
+				return (long)originalClassNameId;
+			}
+		}
+
+		return _classNameId;
 	}
 
 	@Override
@@ -399,19 +476,29 @@ public class TicketModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSPK_COLUMN_BITMASK;
 
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
 
-			_originalClassPK = _classPK;
+			_originalValues[CLASSPK_COLUMN_INDEX] = _classPK;
 		}
 
 		_classPK = classPK;
 	}
 
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		if (_originalValues != null) {
+			Object originalClassPK = _originalValues[CLASSPK_COLUMN_INDEX];
+
+			if (originalClassPK != null) {
+				return (long)originalClassPK;
+			}
+		}
+
+		return _classPK;
 	}
 
 	@Override
@@ -426,17 +513,29 @@ public class TicketModelImpl
 
 	@Override
 	public void setKey(String key) {
-		_columnBitmask |= KEY_COLUMN_BITMASK;
+		if ((_columnBitmask & KEY_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= KEY_COLUMN_BITMASK;
 
-		if (_originalKey == null) {
-			_originalKey = _key;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[KEY_COLUMN_INDEX] = _key;
 		}
 
 		_key = key;
 	}
 
 	public String getOriginalKey() {
-		return GetterUtil.getString(_originalKey);
+		if (_originalValues != null) {
+			Object originalKey = _originalValues[KEY_COLUMN_INDEX];
+
+			if (originalKey != null) {
+				return GetterUtil.getString((String)originalKey);
+			}
+		}
+
+		return GetterUtil.getString(_key);
 	}
 
 	@Override
@@ -446,19 +545,29 @@ public class TicketModelImpl
 
 	@Override
 	public void setType(int type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
+		if ((_columnBitmask & TYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TYPE_COLUMN_BITMASK;
 
-		if (!_setOriginalType) {
-			_setOriginalType = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
 
-			_originalType = _type;
+			_originalValues[TYPE_COLUMN_INDEX] = _type;
 		}
 
 		_type = type;
 	}
 
 	public int getOriginalType() {
-		return _originalType;
+		if (_originalValues != null) {
+			Object originalType = _originalValues[TYPE_COLUMN_INDEX];
+
+			if (originalType != null) {
+				return (int)originalType;
+			}
+		}
+
+		return _type;
 	}
 
 	@Override
@@ -473,6 +582,16 @@ public class TicketModelImpl
 
 	@Override
 	public void setExtraInfo(String extraInfo) {
+		if ((_columnBitmask & EXTRAINFO_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= EXTRAINFO_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[EXTRAINFO_COLUMN_INDEX] = _extraInfo;
+		}
+
 		_extraInfo = extraInfo;
 	}
 
@@ -483,6 +602,16 @@ public class TicketModelImpl
 
 	@Override
 	public void setExpirationDate(Date expirationDate) {
+		if ((_columnBitmask & EXPIRATIONDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= EXPIRATIONDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[EXPIRATIONDATE_COLUMN_INDEX] = _expirationDate;
+		}
+
 		_expirationDate = expirationDate;
 	}
 
@@ -598,27 +727,9 @@ public class TicketModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		TicketModelImpl ticketModelImpl = this;
+		_columnBitmask = 0;
 
-		ticketModelImpl._originalCompanyId = ticketModelImpl._companyId;
-
-		ticketModelImpl._setOriginalCompanyId = false;
-
-		ticketModelImpl._originalClassNameId = ticketModelImpl._classNameId;
-
-		ticketModelImpl._setOriginalClassNameId = false;
-
-		ticketModelImpl._originalClassPK = ticketModelImpl._classPK;
-
-		ticketModelImpl._setOriginalClassPK = false;
-
-		ticketModelImpl._originalKey = ticketModelImpl._key;
-
-		ticketModelImpl._originalType = ticketModelImpl._type;
-
-		ticketModelImpl._setOriginalType = false;
-
-		ticketModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -745,23 +856,15 @@ public class TicketModelImpl
 	private long _mvccVersion;
 	private long _ticketId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private Date _createDate;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private String _key;
-	private String _originalKey;
 	private int _type;
-	private int _originalType;
-	private boolean _setOriginalType;
 	private String _extraInfo;
 	private Date _expirationDate;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private Ticket _escapedModel;
 
 }

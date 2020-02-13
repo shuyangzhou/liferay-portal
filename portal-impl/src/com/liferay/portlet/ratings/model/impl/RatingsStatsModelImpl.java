@@ -120,11 +120,41 @@ public class RatingsStatsModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.ratings.kernel.model.RatingsStats"),
 		true);
 
-	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
+	public static final long STATSID_COLUMN_BITMASK = 1L;
 
-	public static final long CLASSPK_COLUMN_BITMASK = 2L;
+	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
-	public static final long STATSID_COLUMN_BITMASK = 4L;
+	public static final long CREATEDATE_COLUMN_BITMASK = 4L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 8L;
+
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 16L;
+
+	public static final long CLASSPK_COLUMN_BITMASK = 32L;
+
+	public static final long TOTALENTRIES_COLUMN_BITMASK = 64L;
+
+	public static final long TOTALSCORE_COLUMN_BITMASK = 128L;
+
+	public static final long AVERAGESCORE_COLUMN_BITMASK = 256L;
+
+	public static final int STATSID_COLUMN_INDEX = 0;
+
+	public static final int COMPANYID_COLUMN_INDEX = 1;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 2;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 3;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 4;
+
+	public static final int CLASSPK_COLUMN_INDEX = 5;
+
+	public static final int TOTALENTRIES_COLUMN_INDEX = 6;
+
+	public static final int TOTALSCORE_COLUMN_INDEX = 7;
+
+	public static final int AVERAGESCORE_COLUMN_INDEX = 8;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -311,6 +341,16 @@ public class RatingsStatsModelImpl
 
 	@Override
 	public void setStatsId(long statsId) {
+		if ((_columnBitmask & STATSID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATSID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[STATSID_COLUMN_INDEX] = _statsId;
+		}
+
 		_statsId = statsId;
 	}
 
@@ -321,6 +361,16 @@ public class RatingsStatsModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -331,6 +381,16 @@ public class RatingsStatsModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -340,12 +400,20 @@ public class RatingsStatsModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -377,19 +445,30 @@ public class RatingsStatsModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSNAMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
 
-			_originalClassNameId = _classNameId;
+			_originalValues[CLASSNAMEID_COLUMN_INDEX] = _classNameId;
 		}
 
 		_classNameId = classNameId;
 	}
 
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		if (_originalValues != null) {
+			Object originalClassNameId =
+				_originalValues[CLASSNAMEID_COLUMN_INDEX];
+
+			if (originalClassNameId != null) {
+				return (long)originalClassNameId;
+			}
+		}
+
+		return _classNameId;
 	}
 
 	@Override
@@ -399,19 +478,29 @@ public class RatingsStatsModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSPK_COLUMN_BITMASK;
 
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
 
-			_originalClassPK = _classPK;
+			_originalValues[CLASSPK_COLUMN_INDEX] = _classPK;
 		}
 
 		_classPK = classPK;
 	}
 
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		if (_originalValues != null) {
+			Object originalClassPK = _originalValues[CLASSPK_COLUMN_INDEX];
+
+			if (originalClassPK != null) {
+				return (long)originalClassPK;
+			}
+		}
+
+		return _classPK;
 	}
 
 	@Override
@@ -421,6 +510,16 @@ public class RatingsStatsModelImpl
 
 	@Override
 	public void setTotalEntries(int totalEntries) {
+		if ((_columnBitmask & TOTALENTRIES_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TOTALENTRIES_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[TOTALENTRIES_COLUMN_INDEX] = _totalEntries;
+		}
+
 		_totalEntries = totalEntries;
 	}
 
@@ -431,6 +530,16 @@ public class RatingsStatsModelImpl
 
 	@Override
 	public void setTotalScore(double totalScore) {
+		if ((_columnBitmask & TOTALSCORE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TOTALSCORE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[TOTALSCORE_COLUMN_INDEX] = _totalScore;
+		}
+
 		_totalScore = totalScore;
 	}
 
@@ -441,6 +550,16 @@ public class RatingsStatsModelImpl
 
 	@Override
 	public void setAverageScore(double averageScore) {
+		if ((_columnBitmask & AVERAGESCORE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= AVERAGESCORE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[AVERAGESCORE_COLUMN_INDEX] = _averageScore;
+		}
+
 		_averageScore = averageScore;
 	}
 
@@ -549,20 +668,9 @@ public class RatingsStatsModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		RatingsStatsModelImpl ratingsStatsModelImpl = this;
+		_columnBitmask = 0;
 
-		ratingsStatsModelImpl._setModifiedDate = false;
-
-		ratingsStatsModelImpl._originalClassNameId =
-			ratingsStatsModelImpl._classNameId;
-
-		ratingsStatsModelImpl._setOriginalClassNameId = false;
-
-		ratingsStatsModelImpl._originalClassPK = ratingsStatsModelImpl._classPK;
-
-		ratingsStatsModelImpl._setOriginalClassPK = false;
-
-		ratingsStatsModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -679,17 +787,13 @@ public class RatingsStatsModelImpl
 	private long _companyId;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private int _totalEntries;
 	private double _totalScore;
 	private double _averageScore;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private RatingsStats _escapedModel;
 
 }

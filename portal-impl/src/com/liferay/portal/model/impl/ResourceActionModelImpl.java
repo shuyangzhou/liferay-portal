@@ -111,11 +111,25 @@ public class ResourceActionModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.ResourceAction"),
 		true);
 
-	public static final long ACTIONID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long NAME_COLUMN_BITMASK = 2L;
+	public static final long RESOURCEACTIONID_COLUMN_BITMASK = 2L;
 
-	public static final long BITWISEVALUE_COLUMN_BITMASK = 4L;
+	public static final long NAME_COLUMN_BITMASK = 4L;
+
+	public static final long ACTIONID_COLUMN_BITMASK = 8L;
+
+	public static final long BITWISEVALUE_COLUMN_BITMASK = 16L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int RESOURCEACTIONID_COLUMN_INDEX = 1;
+
+	public static final int NAME_COLUMN_INDEX = 2;
+
+	public static final int ACTIONID_COLUMN_INDEX = 3;
+
+	public static final int BITWISEVALUE_COLUMN_INDEX = 4;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -286,6 +300,16 @@ public class ResourceActionModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -296,6 +320,16 @@ public class ResourceActionModelImpl
 
 	@Override
 	public void setResourceActionId(long resourceActionId) {
+		if ((_columnBitmask & RESOURCEACTIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= RESOURCEACTIONID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[RESOURCEACTIONID_COLUMN_INDEX] = _resourceActionId;
+		}
+
 		_resourceActionId = resourceActionId;
 	}
 
@@ -311,17 +345,29 @@ public class ResourceActionModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & NAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= NAME_COLUMN_BITMASK;
 
-		if (_originalName == null) {
-			_originalName = _name;
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[NAME_COLUMN_INDEX] = _name;
 		}
 
 		_name = name;
 	}
 
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		if (_originalValues != null) {
+			Object originalName = _originalValues[NAME_COLUMN_INDEX];
+
+			if (originalName != null) {
+				return GetterUtil.getString((String)originalName);
+			}
+		}
+
+		return GetterUtil.getString(_name);
 	}
 
 	@Override
@@ -336,17 +382,29 @@ public class ResourceActionModelImpl
 
 	@Override
 	public void setActionId(String actionId) {
-		_columnBitmask |= ACTIONID_COLUMN_BITMASK;
+		if ((_columnBitmask & ACTIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ACTIONID_COLUMN_BITMASK;
 
-		if (_originalActionId == null) {
-			_originalActionId = _actionId;
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[ACTIONID_COLUMN_INDEX] = _actionId;
 		}
 
 		_actionId = actionId;
 	}
 
 	public String getOriginalActionId() {
-		return GetterUtil.getString(_originalActionId);
+		if (_originalValues != null) {
+			Object originalActionId = _originalValues[ACTIONID_COLUMN_INDEX];
+
+			if (originalActionId != null) {
+				return GetterUtil.getString((String)originalActionId);
+			}
+		}
+
+		return GetterUtil.getString(_actionId);
 	}
 
 	@Override
@@ -356,7 +414,15 @@ public class ResourceActionModelImpl
 
 	@Override
 	public void setBitwiseValue(long bitwiseValue) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & BITWISEVALUE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= BITWISEVALUE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[BITWISEVALUE_COLUMN_INDEX] = _bitwiseValue;
+		}
 
 		_bitwiseValue = bitwiseValue;
 	}
@@ -474,14 +540,9 @@ public class ResourceActionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ResourceActionModelImpl resourceActionModelImpl = this;
+		_columnBitmask = 0;
 
-		resourceActionModelImpl._originalName = resourceActionModelImpl._name;
-
-		resourceActionModelImpl._originalActionId =
-			resourceActionModelImpl._actionId;
-
-		resourceActionModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -587,11 +648,10 @@ public class ResourceActionModelImpl
 	private long _mvccVersion;
 	private long _resourceActionId;
 	private String _name;
-	private String _originalName;
 	private String _actionId;
-	private String _originalActionId;
 	private long _bitwiseValue;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private ResourceAction _escapedModel;
 
 }

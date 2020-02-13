@@ -127,21 +127,57 @@ public class SocialActivityCounterModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.social.kernel.model.SocialActivityCounter"),
 		true);
 
-	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
+	public static final long ACTIVITYCOUNTERID_COLUMN_BITMASK = 1L;
 
-	public static final long CLASSPK_COLUMN_BITMASK = 2L;
+	public static final long GROUPID_COLUMN_BITMASK = 2L;
 
-	public static final long ENDPERIOD_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 8L;
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 8L;
 
-	public static final long NAME_COLUMN_BITMASK = 16L;
+	public static final long CLASSPK_COLUMN_BITMASK = 16L;
 
-	public static final long OWNERTYPE_COLUMN_BITMASK = 32L;
+	public static final long NAME_COLUMN_BITMASK = 32L;
 
-	public static final long STARTPERIOD_COLUMN_BITMASK = 64L;
+	public static final long OWNERTYPE_COLUMN_BITMASK = 64L;
 
-	public static final long ACTIVITYCOUNTERID_COLUMN_BITMASK = 128L;
+	public static final long CURRENTVALUE_COLUMN_BITMASK = 128L;
+
+	public static final long TOTALVALUE_COLUMN_BITMASK = 256L;
+
+	public static final long GRACEVALUE_COLUMN_BITMASK = 512L;
+
+	public static final long STARTPERIOD_COLUMN_BITMASK = 1024L;
+
+	public static final long ENDPERIOD_COLUMN_BITMASK = 2048L;
+
+	public static final long ACTIVE_COLUMN_BITMASK = 4096L;
+
+	public static final int ACTIVITYCOUNTERID_COLUMN_INDEX = 0;
+
+	public static final int GROUPID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 3;
+
+	public static final int CLASSPK_COLUMN_INDEX = 4;
+
+	public static final int NAME_COLUMN_INDEX = 5;
+
+	public static final int OWNERTYPE_COLUMN_INDEX = 6;
+
+	public static final int CURRENTVALUE_COLUMN_INDEX = 7;
+
+	public static final int TOTALVALUE_COLUMN_INDEX = 8;
+
+	public static final int GRACEVALUE_COLUMN_INDEX = 9;
+
+	public static final int STARTPERIOD_COLUMN_INDEX = 10;
+
+	public static final int ENDPERIOD_COLUMN_INDEX = 11;
+
+	public static final int ACTIVE_COLUMN_INDEX = 12;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -370,6 +406,17 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void setActivityCounterId(long activityCounterId) {
+		if ((_columnBitmask & ACTIVITYCOUNTERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ACTIVITYCOUNTERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[ACTIVITYCOUNTERID_COLUMN_INDEX] =
+				_activityCounterId;
+		}
+
 		_activityCounterId = activityCounterId;
 	}
 
@@ -380,19 +427,29 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@Override
@@ -402,6 +459,16 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -432,19 +499,30 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSNAMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalClassNameId = _classNameId;
+			_originalValues[CLASSNAMEID_COLUMN_INDEX] = _classNameId;
 		}
 
 		_classNameId = classNameId;
 	}
 
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		if (_originalValues != null) {
+			Object originalClassNameId =
+				_originalValues[CLASSNAMEID_COLUMN_INDEX];
+
+			if (originalClassNameId != null) {
+				return (long)originalClassNameId;
+			}
+		}
+
+		return _classNameId;
 	}
 
 	@Override
@@ -454,19 +532,29 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSPK_COLUMN_BITMASK;
 
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalClassPK = _classPK;
+			_originalValues[CLASSPK_COLUMN_INDEX] = _classPK;
 		}
 
 		_classPK = classPK;
 	}
 
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		if (_originalValues != null) {
+			Object originalClassPK = _originalValues[CLASSPK_COLUMN_INDEX];
+
+			if (originalClassPK != null) {
+				return (long)originalClassPK;
+			}
+		}
+
+		return _classPK;
 	}
 
 	@Override
@@ -481,17 +569,29 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask |= NAME_COLUMN_BITMASK;
+		if ((_columnBitmask & NAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= NAME_COLUMN_BITMASK;
 
-		if (_originalName == null) {
-			_originalName = _name;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[NAME_COLUMN_INDEX] = _name;
 		}
 
 		_name = name;
 	}
 
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		if (_originalValues != null) {
+			Object originalName = _originalValues[NAME_COLUMN_INDEX];
+
+			if (originalName != null) {
+				return GetterUtil.getString((String)originalName);
+			}
+		}
+
+		return GetterUtil.getString(_name);
 	}
 
 	@Override
@@ -501,19 +601,29 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void setOwnerType(int ownerType) {
-		_columnBitmask |= OWNERTYPE_COLUMN_BITMASK;
+		if ((_columnBitmask & OWNERTYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= OWNERTYPE_COLUMN_BITMASK;
 
-		if (!_setOriginalOwnerType) {
-			_setOriginalOwnerType = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalOwnerType = _ownerType;
+			_originalValues[OWNERTYPE_COLUMN_INDEX] = _ownerType;
 		}
 
 		_ownerType = ownerType;
 	}
 
 	public int getOriginalOwnerType() {
-		return _originalOwnerType;
+		if (_originalValues != null) {
+			Object originalOwnerType = _originalValues[OWNERTYPE_COLUMN_INDEX];
+
+			if (originalOwnerType != null) {
+				return (int)originalOwnerType;
+			}
+		}
+
+		return _ownerType;
 	}
 
 	@Override
@@ -523,6 +633,16 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void setCurrentValue(int currentValue) {
+		if ((_columnBitmask & CURRENTVALUE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CURRENTVALUE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[CURRENTVALUE_COLUMN_INDEX] = _currentValue;
+		}
+
 		_currentValue = currentValue;
 	}
 
@@ -533,6 +653,16 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void setTotalValue(int totalValue) {
+		if ((_columnBitmask & TOTALVALUE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TOTALVALUE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[TOTALVALUE_COLUMN_INDEX] = _totalValue;
+		}
+
 		_totalValue = totalValue;
 	}
 
@@ -543,6 +673,16 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void setGraceValue(int graceValue) {
+		if ((_columnBitmask & GRACEVALUE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GRACEVALUE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[GRACEVALUE_COLUMN_INDEX] = _graceValue;
+		}
+
 		_graceValue = graceValue;
 	}
 
@@ -553,19 +693,30 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void setStartPeriod(int startPeriod) {
-		_columnBitmask |= STARTPERIOD_COLUMN_BITMASK;
+		if ((_columnBitmask & STARTPERIOD_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STARTPERIOD_COLUMN_BITMASK;
 
-		if (!_setOriginalStartPeriod) {
-			_setOriginalStartPeriod = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalStartPeriod = _startPeriod;
+			_originalValues[STARTPERIOD_COLUMN_INDEX] = _startPeriod;
 		}
 
 		_startPeriod = startPeriod;
 	}
 
 	public int getOriginalStartPeriod() {
-		return _originalStartPeriod;
+		if (_originalValues != null) {
+			Object originalStartPeriod =
+				_originalValues[STARTPERIOD_COLUMN_INDEX];
+
+			if (originalStartPeriod != null) {
+				return (int)originalStartPeriod;
+			}
+		}
+
+		return _startPeriod;
 	}
 
 	@Override
@@ -575,19 +726,29 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void setEndPeriod(int endPeriod) {
-		_columnBitmask |= ENDPERIOD_COLUMN_BITMASK;
+		if ((_columnBitmask & ENDPERIOD_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ENDPERIOD_COLUMN_BITMASK;
 
-		if (!_setOriginalEndPeriod) {
-			_setOriginalEndPeriod = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalEndPeriod = _endPeriod;
+			_originalValues[ENDPERIOD_COLUMN_INDEX] = _endPeriod;
 		}
 
 		_endPeriod = endPeriod;
 	}
 
 	public int getOriginalEndPeriod() {
-		return _originalEndPeriod;
+		if (_originalValues != null) {
+			Object originalEndPeriod = _originalValues[ENDPERIOD_COLUMN_INDEX];
+
+			if (originalEndPeriod != null) {
+				return (int)originalEndPeriod;
+			}
+		}
+
+		return _endPeriod;
 	}
 
 	@Override
@@ -602,6 +763,16 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void setActive(boolean active) {
+		if ((_columnBitmask & ACTIVE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ACTIVE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[ACTIVE_COLUMN_INDEX] = _active;
+		}
+
 		_active = active;
 	}
 
@@ -717,42 +888,9 @@ public class SocialActivityCounterModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SocialActivityCounterModelImpl socialActivityCounterModelImpl = this;
+		_columnBitmask = 0;
 
-		socialActivityCounterModelImpl._originalGroupId =
-			socialActivityCounterModelImpl._groupId;
-
-		socialActivityCounterModelImpl._setOriginalGroupId = false;
-
-		socialActivityCounterModelImpl._originalClassNameId =
-			socialActivityCounterModelImpl._classNameId;
-
-		socialActivityCounterModelImpl._setOriginalClassNameId = false;
-
-		socialActivityCounterModelImpl._originalClassPK =
-			socialActivityCounterModelImpl._classPK;
-
-		socialActivityCounterModelImpl._setOriginalClassPK = false;
-
-		socialActivityCounterModelImpl._originalName =
-			socialActivityCounterModelImpl._name;
-
-		socialActivityCounterModelImpl._originalOwnerType =
-			socialActivityCounterModelImpl._ownerType;
-
-		socialActivityCounterModelImpl._setOriginalOwnerType = false;
-
-		socialActivityCounterModelImpl._originalStartPeriod =
-			socialActivityCounterModelImpl._startPeriod;
-
-		socialActivityCounterModelImpl._setOriginalStartPeriod = false;
-
-		socialActivityCounterModelImpl._originalEndPeriod =
-			socialActivityCounterModelImpl._endPeriod;
-
-		socialActivityCounterModelImpl._setOriginalEndPeriod = false;
-
-		socialActivityCounterModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -870,31 +1008,19 @@ public class SocialActivityCounterModelImpl
 
 	private long _activityCounterId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private String _name;
-	private String _originalName;
 	private int _ownerType;
-	private int _originalOwnerType;
-	private boolean _setOriginalOwnerType;
 	private int _currentValue;
 	private int _totalValue;
 	private int _graceValue;
 	private int _startPeriod;
-	private int _originalStartPeriod;
-	private boolean _setOriginalStartPeriod;
 	private int _endPeriod;
-	private int _originalEndPeriod;
-	private boolean _setOriginalEndPeriod;
 	private boolean _active;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private SocialActivityCounter _escapedModel;
 
 }

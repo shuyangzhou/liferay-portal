@@ -118,13 +118,29 @@ public class UserGroupGroupRoleModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.UserGroupGroupRole"),
 		true);
 
-	public static final long GROUPID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long ROLEID_COLUMN_BITMASK = 2L;
+	public static final long USERGROUPGROUPROLEID_COLUMN_BITMASK = 2L;
 
-	public static final long USERGROUPID_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
-	public static final long USERGROUPGROUPROLEID_COLUMN_BITMASK = 8L;
+	public static final long USERGROUPID_COLUMN_BITMASK = 8L;
+
+	public static final long GROUPID_COLUMN_BITMASK = 16L;
+
+	public static final long ROLEID_COLUMN_BITMASK = 32L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int USERGROUPGROUPROLEID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int USERGROUPID_COLUMN_INDEX = 3;
+
+	public static final int GROUPID_COLUMN_INDEX = 4;
+
+	public static final int ROLEID_COLUMN_INDEX = 5;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -356,6 +372,16 @@ public class UserGroupGroupRoleModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -367,6 +393,17 @@ public class UserGroupGroupRoleModelImpl
 
 	@Override
 	public void setUserGroupGroupRoleId(long userGroupGroupRoleId) {
+		if ((_columnBitmask & USERGROUPGROUPROLEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERGROUPGROUPROLEID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[USERGROUPGROUPROLEID_COLUMN_INDEX] =
+				_userGroupGroupRoleId;
+		}
+
 		_userGroupGroupRoleId = userGroupGroupRoleId;
 	}
 
@@ -378,6 +415,16 @@ public class UserGroupGroupRoleModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -389,19 +436,30 @@ public class UserGroupGroupRoleModelImpl
 
 	@Override
 	public void setUserGroupId(long userGroupId) {
-		_columnBitmask |= USERGROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & USERGROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERGROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalUserGroupId) {
-			_setOriginalUserGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
 
-			_originalUserGroupId = _userGroupId;
+			_originalValues[USERGROUPID_COLUMN_INDEX] = _userGroupId;
 		}
 
 		_userGroupId = userGroupId;
 	}
 
 	public long getOriginalUserGroupId() {
-		return _originalUserGroupId;
+		if (_originalValues != null) {
+			Object originalUserGroupId =
+				_originalValues[USERGROUPID_COLUMN_INDEX];
+
+			if (originalUserGroupId != null) {
+				return (long)originalUserGroupId;
+			}
+		}
+
+		return _userGroupId;
 	}
 
 	@JSON
@@ -412,19 +470,29 @@ public class UserGroupGroupRoleModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@JSON
@@ -435,19 +503,29 @@ public class UserGroupGroupRoleModelImpl
 
 	@Override
 	public void setRoleId(long roleId) {
-		_columnBitmask |= ROLEID_COLUMN_BITMASK;
+		if ((_columnBitmask & ROLEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ROLEID_COLUMN_BITMASK;
 
-		if (!_setOriginalRoleId) {
-			_setOriginalRoleId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
 
-			_originalRoleId = _roleId;
+			_originalValues[ROLEID_COLUMN_INDEX] = _roleId;
 		}
 
 		_roleId = roleId;
 	}
 
 	public long getOriginalRoleId() {
-		return _originalRoleId;
+		if (_originalValues != null) {
+			Object originalRoleId = _originalValues[ROLEID_COLUMN_INDEX];
+
+			if (originalRoleId != null) {
+				return (long)originalRoleId;
+			}
+		}
+
+		return _roleId;
 	}
 
 	public long getColumnBitmask() {
@@ -555,24 +633,9 @@ public class UserGroupGroupRoleModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		UserGroupGroupRoleModelImpl userGroupGroupRoleModelImpl = this;
+		_columnBitmask = 0;
 
-		userGroupGroupRoleModelImpl._originalUserGroupId =
-			userGroupGroupRoleModelImpl._userGroupId;
-
-		userGroupGroupRoleModelImpl._setOriginalUserGroupId = false;
-
-		userGroupGroupRoleModelImpl._originalGroupId =
-			userGroupGroupRoleModelImpl._groupId;
-
-		userGroupGroupRoleModelImpl._setOriginalGroupId = false;
-
-		userGroupGroupRoleModelImpl._originalRoleId =
-			userGroupGroupRoleModelImpl._roleId;
-
-		userGroupGroupRoleModelImpl._setOriginalRoleId = false;
-
-		userGroupGroupRoleModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -670,15 +733,10 @@ public class UserGroupGroupRoleModelImpl
 	private long _userGroupGroupRoleId;
 	private long _companyId;
 	private long _userGroupId;
-	private long _originalUserGroupId;
-	private boolean _setOriginalUserGroupId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _roleId;
-	private long _originalRoleId;
-	private boolean _setOriginalRoleId;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private UserGroupGroupRole _escapedModel;
 
 }

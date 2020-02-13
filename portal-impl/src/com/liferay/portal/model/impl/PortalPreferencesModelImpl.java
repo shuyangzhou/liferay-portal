@@ -111,11 +111,25 @@ public class PortalPreferencesModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.PortalPreferences"),
 		true);
 
-	public static final long OWNERID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long OWNERTYPE_COLUMN_BITMASK = 2L;
+	public static final long PORTALPREFERENCESID_COLUMN_BITMASK = 2L;
 
-	public static final long PORTALPREFERENCESID_COLUMN_BITMASK = 4L;
+	public static final long OWNERID_COLUMN_BITMASK = 4L;
+
+	public static final long OWNERTYPE_COLUMN_BITMASK = 8L;
+
+	public static final long PREFERENCES_COLUMN_BITMASK = 16L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int PORTALPREFERENCESID_COLUMN_INDEX = 1;
+
+	public static final int OWNERID_COLUMN_INDEX = 2;
+
+	public static final int OWNERTYPE_COLUMN_INDEX = 3;
+
+	public static final int PREFERENCES_COLUMN_INDEX = 4;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -293,6 +307,16 @@ public class PortalPreferencesModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -303,6 +327,17 @@ public class PortalPreferencesModelImpl
 
 	@Override
 	public void setPortalPreferencesId(long portalPreferencesId) {
+		if ((_columnBitmask & PORTALPREFERENCESID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PORTALPREFERENCESID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[PORTALPREFERENCESID_COLUMN_INDEX] =
+				_portalPreferencesId;
+		}
+
 		_portalPreferencesId = portalPreferencesId;
 	}
 
@@ -313,19 +348,29 @@ public class PortalPreferencesModelImpl
 
 	@Override
 	public void setOwnerId(long ownerId) {
-		_columnBitmask |= OWNERID_COLUMN_BITMASK;
+		if ((_columnBitmask & OWNERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= OWNERID_COLUMN_BITMASK;
 
-		if (!_setOriginalOwnerId) {
-			_setOriginalOwnerId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
 
-			_originalOwnerId = _ownerId;
+			_originalValues[OWNERID_COLUMN_INDEX] = _ownerId;
 		}
 
 		_ownerId = ownerId;
 	}
 
 	public long getOriginalOwnerId() {
-		return _originalOwnerId;
+		if (_originalValues != null) {
+			Object originalOwnerId = _originalValues[OWNERID_COLUMN_INDEX];
+
+			if (originalOwnerId != null) {
+				return (long)originalOwnerId;
+			}
+		}
+
+		return _ownerId;
 	}
 
 	@Override
@@ -335,19 +380,29 @@ public class PortalPreferencesModelImpl
 
 	@Override
 	public void setOwnerType(int ownerType) {
-		_columnBitmask |= OWNERTYPE_COLUMN_BITMASK;
+		if ((_columnBitmask & OWNERTYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= OWNERTYPE_COLUMN_BITMASK;
 
-		if (!_setOriginalOwnerType) {
-			_setOriginalOwnerType = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
 
-			_originalOwnerType = _ownerType;
+			_originalValues[OWNERTYPE_COLUMN_INDEX] = _ownerType;
 		}
 
 		_ownerType = ownerType;
 	}
 
 	public int getOriginalOwnerType() {
-		return _originalOwnerType;
+		if (_originalValues != null) {
+			Object originalOwnerType = _originalValues[OWNERTYPE_COLUMN_INDEX];
+
+			if (originalOwnerType != null) {
+				return (int)originalOwnerType;
+			}
+		}
+
+		return _ownerType;
 	}
 
 	@Override
@@ -362,6 +417,16 @@ public class PortalPreferencesModelImpl
 
 	@Override
 	public void setPreferences(String preferences) {
+		if ((_columnBitmask & PREFERENCES_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PREFERENCES_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[PREFERENCES_COLUMN_INDEX] = _preferences;
+		}
+
 		_preferences = preferences;
 	}
 
@@ -467,19 +532,9 @@ public class PortalPreferencesModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		PortalPreferencesModelImpl portalPreferencesModelImpl = this;
+		_columnBitmask = 0;
 
-		portalPreferencesModelImpl._originalOwnerId =
-			portalPreferencesModelImpl._ownerId;
-
-		portalPreferencesModelImpl._setOriginalOwnerId = false;
-
-		portalPreferencesModelImpl._originalOwnerType =
-			portalPreferencesModelImpl._ownerType;
-
-		portalPreferencesModelImpl._setOriginalOwnerType = false;
-
-		portalPreferencesModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -580,13 +635,10 @@ public class PortalPreferencesModelImpl
 	private long _mvccVersion;
 	private long _portalPreferencesId;
 	private long _ownerId;
-	private long _originalOwnerId;
-	private boolean _setOriginalOwnerId;
 	private int _ownerType;
-	private int _originalOwnerType;
-	private boolean _setOriginalOwnerType;
 	private String _preferences;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private PortalPreferences _escapedModel;
 
 }

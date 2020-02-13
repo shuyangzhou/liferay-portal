@@ -108,15 +108,45 @@ public class BlogsStatsUserModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long ENTRYCOUNT_COLUMN_BITMASK = 2L;
+	public static final long STATSUSERID_COLUMN_BITMASK = 2L;
 
 	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
-	public static final long LASTPOSTDATE_COLUMN_BITMASK = 8L;
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
 
 	public static final long USERID_COLUMN_BITMASK = 16L;
+
+	public static final long ENTRYCOUNT_COLUMN_BITMASK = 32L;
+
+	public static final long LASTPOSTDATE_COLUMN_BITMASK = 64L;
+
+	public static final long RATINGSTOTALENTRIES_COLUMN_BITMASK = 128L;
+
+	public static final long RATINGSTOTALSCORE_COLUMN_BITMASK = 256L;
+
+	public static final long RATINGSAVERAGESCORE_COLUMN_BITMASK = 512L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int STATSUSERID_COLUMN_INDEX = 1;
+
+	public static final int GROUPID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int USERID_COLUMN_INDEX = 4;
+
+	public static final int ENTRYCOUNT_COLUMN_INDEX = 5;
+
+	public static final int LASTPOSTDATE_COLUMN_INDEX = 6;
+
+	public static final int RATINGSTOTALENTRIES_COLUMN_INDEX = 7;
+
+	public static final int RATINGSTOTALSCORE_COLUMN_INDEX = 8;
+
+	public static final int RATINGSAVERAGESCORE_COLUMN_INDEX = 9;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -317,6 +347,16 @@ public class BlogsStatsUserModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -327,6 +367,16 @@ public class BlogsStatsUserModelImpl
 
 	@Override
 	public void setStatsUserId(long statsUserId) {
+		if ((_columnBitmask & STATSUSERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATSUSERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[STATSUSERID_COLUMN_INDEX] = _statsUserId;
+		}
+
 		_statsUserId = statsUserId;
 	}
 
@@ -353,19 +403,29 @@ public class BlogsStatsUserModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@Override
@@ -375,19 +435,29 @@ public class BlogsStatsUserModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@Override
@@ -397,12 +467,14 @@ public class BlogsStatsUserModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
 
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
 
-			_originalUserId = _userId;
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
 		}
 
 		_userId = userId;
@@ -425,7 +497,15 @@ public class BlogsStatsUserModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		if (_originalValues != null) {
+			Object originalUserId = _originalValues[USERID_COLUMN_INDEX];
+
+			if (originalUserId != null) {
+				return (long)originalUserId;
+			}
+		}
+
+		return _userId;
 	}
 
 	@Override
@@ -435,19 +515,30 @@ public class BlogsStatsUserModelImpl
 
 	@Override
 	public void setEntryCount(int entryCount) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & ENTRYCOUNT_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ENTRYCOUNT_COLUMN_BITMASK;
 
-		if (!_setOriginalEntryCount) {
-			_setOriginalEntryCount = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
 
-			_originalEntryCount = _entryCount;
+			_originalValues[ENTRYCOUNT_COLUMN_INDEX] = _entryCount;
 		}
 
 		_entryCount = entryCount;
 	}
 
 	public int getOriginalEntryCount() {
-		return _originalEntryCount;
+		if (_originalValues != null) {
+			Object originalEntryCount =
+				_originalValues[ENTRYCOUNT_COLUMN_INDEX];
+
+			if (originalEntryCount != null) {
+				return (int)originalEntryCount;
+			}
+		}
+
+		return _entryCount;
 	}
 
 	@Override
@@ -457,17 +548,30 @@ public class BlogsStatsUserModelImpl
 
 	@Override
 	public void setLastPostDate(Date lastPostDate) {
-		_columnBitmask |= LASTPOSTDATE_COLUMN_BITMASK;
+		if ((_columnBitmask & LASTPOSTDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LASTPOSTDATE_COLUMN_BITMASK;
 
-		if (_originalLastPostDate == null) {
-			_originalLastPostDate = _lastPostDate;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[LASTPOSTDATE_COLUMN_INDEX] = _lastPostDate;
 		}
 
 		_lastPostDate = lastPostDate;
 	}
 
 	public Date getOriginalLastPostDate() {
-		return _originalLastPostDate;
+		if (_originalValues != null) {
+			Object originalLastPostDate =
+				_originalValues[LASTPOSTDATE_COLUMN_INDEX];
+
+			if (originalLastPostDate != null) {
+				return (Date)originalLastPostDate;
+			}
+		}
+
+		return _lastPostDate;
 	}
 
 	@Override
@@ -477,6 +581,17 @@ public class BlogsStatsUserModelImpl
 
 	@Override
 	public void setRatingsTotalEntries(int ratingsTotalEntries) {
+		if ((_columnBitmask & RATINGSTOTALENTRIES_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= RATINGSTOTALENTRIES_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[RATINGSTOTALENTRIES_COLUMN_INDEX] =
+				_ratingsTotalEntries;
+		}
+
 		_ratingsTotalEntries = ratingsTotalEntries;
 	}
 
@@ -487,6 +602,17 @@ public class BlogsStatsUserModelImpl
 
 	@Override
 	public void setRatingsTotalScore(double ratingsTotalScore) {
+		if ((_columnBitmask & RATINGSTOTALSCORE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= RATINGSTOTALSCORE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[RATINGSTOTALSCORE_COLUMN_INDEX] =
+				_ratingsTotalScore;
+		}
+
 		_ratingsTotalScore = ratingsTotalScore;
 	}
 
@@ -497,6 +623,17 @@ public class BlogsStatsUserModelImpl
 
 	@Override
 	public void setRatingsAverageScore(double ratingsAverageScore) {
+		if ((_columnBitmask & RATINGSAVERAGESCORE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= RATINGSAVERAGESCORE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[RATINGSAVERAGESCORE_COLUMN_INDEX] =
+				_ratingsAverageScore;
+		}
+
 		_ratingsAverageScore = ratingsAverageScore;
 	}
 
@@ -614,32 +751,9 @@ public class BlogsStatsUserModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		BlogsStatsUserModelImpl blogsStatsUserModelImpl = this;
+		_columnBitmask = 0;
 
-		blogsStatsUserModelImpl._originalGroupId =
-			blogsStatsUserModelImpl._groupId;
-
-		blogsStatsUserModelImpl._setOriginalGroupId = false;
-
-		blogsStatsUserModelImpl._originalCompanyId =
-			blogsStatsUserModelImpl._companyId;
-
-		blogsStatsUserModelImpl._setOriginalCompanyId = false;
-
-		blogsStatsUserModelImpl._originalUserId =
-			blogsStatsUserModelImpl._userId;
-
-		blogsStatsUserModelImpl._setOriginalUserId = false;
-
-		blogsStatsUserModelImpl._originalEntryCount =
-			blogsStatsUserModelImpl._entryCount;
-
-		blogsStatsUserModelImpl._setOriginalEntryCount = false;
-
-		blogsStatsUserModelImpl._originalLastPostDate =
-			blogsStatsUserModelImpl._lastPostDate;
-
-		blogsStatsUserModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -753,23 +867,15 @@ public class BlogsStatsUserModelImpl
 	private long _mvccVersion;
 	private long _statsUserId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private int _entryCount;
-	private int _originalEntryCount;
-	private boolean _setOriginalEntryCount;
 	private Date _lastPostDate;
-	private Date _originalLastPostDate;
 	private int _ratingsTotalEntries;
 	private double _ratingsTotalScore;
 	private double _ratingsAverageScore;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private BlogsStatsUser _escapedModel;
 
 }

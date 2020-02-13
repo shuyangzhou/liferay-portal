@@ -120,17 +120,65 @@ public class AssetListEntryAssetEntryRelModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long ASSETLISTENTRYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long COMPANYID_COLUMN_BITMASK = 2L;
+	public static final long CTCOLLECTIONID_COLUMN_BITMASK = 2L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 4L;
+	public static final long UUID_COLUMN_BITMASK = 4L;
 
-	public static final long POSITION_COLUMN_BITMASK = 8L;
+	public static final long ASSETLISTENTRYASSETENTRYRELID_COLUMN_BITMASK = 8L;
 
-	public static final long SEGMENTSENTRYID_COLUMN_BITMASK = 16L;
+	public static final long GROUPID_COLUMN_BITMASK = 16L;
 
-	public static final long UUID_COLUMN_BITMASK = 32L;
+	public static final long COMPANYID_COLUMN_BITMASK = 32L;
+
+	public static final long USERID_COLUMN_BITMASK = 64L;
+
+	public static final long USERNAME_COLUMN_BITMASK = 128L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 256L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 512L;
+
+	public static final long ASSETLISTENTRYID_COLUMN_BITMASK = 1024L;
+
+	public static final long ASSETENTRYID_COLUMN_BITMASK = 2048L;
+
+	public static final long SEGMENTSENTRYID_COLUMN_BITMASK = 4096L;
+
+	public static final long POSITION_COLUMN_BITMASK = 8192L;
+
+	public static final long LASTPUBLISHDATE_COLUMN_BITMASK = 16384L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int CTCOLLECTIONID_COLUMN_INDEX = 1;
+
+	public static final int UUID_COLUMN_INDEX = 2;
+
+	public static final int ASSETLISTENTRYASSETENTRYRELID_COLUMN_INDEX = 3;
+
+	public static final int GROUPID_COLUMN_INDEX = 4;
+
+	public static final int COMPANYID_COLUMN_INDEX = 5;
+
+	public static final int USERID_COLUMN_INDEX = 6;
+
+	public static final int USERNAME_COLUMN_INDEX = 7;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 8;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 9;
+
+	public static final int ASSETLISTENTRYID_COLUMN_INDEX = 10;
+
+	public static final int ASSETENTRYID_COLUMN_INDEX = 11;
+
+	public static final int SEGMENTSENTRYID_COLUMN_INDEX = 12;
+
+	public static final int POSITION_COLUMN_INDEX = 13;
+
+	public static final int LASTPUBLISHDATE_COLUMN_INDEX = 14;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -381,6 +429,16 @@ public class AssetListEntryAssetEntryRelModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -391,6 +449,16 @@ public class AssetListEntryAssetEntryRelModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		if ((_columnBitmask & CTCOLLECTIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CTCOLLECTIONID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[CTCOLLECTIONID_COLUMN_INDEX] = _ctCollectionId;
+		}
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -406,17 +474,29 @@ public class AssetListEntryAssetEntryRelModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		if ((_columnBitmask & UUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= UUID_COLUMN_BITMASK;
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[UUID_COLUMN_INDEX] = _uuid;
 		}
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		if (_originalValues != null) {
+			Object originalUuid = _originalValues[UUID_COLUMN_INDEX];
+
+			if (originalUuid != null) {
+				return GetterUtil.getString((String)originalUuid);
+			}
+		}
+
+		return GetterUtil.getString(_uuid);
 	}
 
 	@Override
@@ -428,6 +508,19 @@ public class AssetListEntryAssetEntryRelModelImpl
 	public void setAssetListEntryAssetEntryRelId(
 		long assetListEntryAssetEntryRelId) {
 
+		if ((_columnBitmask & ASSETLISTENTRYASSETENTRYRELID_COLUMN_BITMASK) ==
+				0) {
+
+			_columnBitmask |= ASSETLISTENTRYASSETENTRYRELID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[ASSETLISTENTRYASSETENTRYRELID_COLUMN_INDEX] =
+				_assetListEntryAssetEntryRelId;
+		}
+
 		_assetListEntryAssetEntryRelId = assetListEntryAssetEntryRelId;
 	}
 
@@ -438,19 +531,29 @@ public class AssetListEntryAssetEntryRelModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@Override
@@ -460,19 +563,29 @@ public class AssetListEntryAssetEntryRelModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@Override
@@ -482,6 +595,16 @@ public class AssetListEntryAssetEntryRelModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -513,6 +636,16 @@ public class AssetListEntryAssetEntryRelModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -523,6 +656,16 @@ public class AssetListEntryAssetEntryRelModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -532,12 +675,20 @@ public class AssetListEntryAssetEntryRelModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -549,19 +700,30 @@ public class AssetListEntryAssetEntryRelModelImpl
 
 	@Override
 	public void setAssetListEntryId(long assetListEntryId) {
-		_columnBitmask |= ASSETLISTENTRYID_COLUMN_BITMASK;
+		if ((_columnBitmask & ASSETLISTENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ASSETLISTENTRYID_COLUMN_BITMASK;
 
-		if (!_setOriginalAssetListEntryId) {
-			_setOriginalAssetListEntryId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
 
-			_originalAssetListEntryId = _assetListEntryId;
+			_originalValues[ASSETLISTENTRYID_COLUMN_INDEX] = _assetListEntryId;
 		}
 
 		_assetListEntryId = assetListEntryId;
 	}
 
 	public long getOriginalAssetListEntryId() {
-		return _originalAssetListEntryId;
+		if (_originalValues != null) {
+			Object originalAssetListEntryId =
+				_originalValues[ASSETLISTENTRYID_COLUMN_INDEX];
+
+			if (originalAssetListEntryId != null) {
+				return (long)originalAssetListEntryId;
+			}
+		}
+
+		return _assetListEntryId;
 	}
 
 	@Override
@@ -571,6 +733,16 @@ public class AssetListEntryAssetEntryRelModelImpl
 
 	@Override
 	public void setAssetEntryId(long assetEntryId) {
+		if ((_columnBitmask & ASSETENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ASSETENTRYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[ASSETENTRYID_COLUMN_INDEX] = _assetEntryId;
+		}
+
 		_assetEntryId = assetEntryId;
 	}
 
@@ -581,19 +753,30 @@ public class AssetListEntryAssetEntryRelModelImpl
 
 	@Override
 	public void setSegmentsEntryId(long segmentsEntryId) {
-		_columnBitmask |= SEGMENTSENTRYID_COLUMN_BITMASK;
+		if ((_columnBitmask & SEGMENTSENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SEGMENTSENTRYID_COLUMN_BITMASK;
 
-		if (!_setOriginalSegmentsEntryId) {
-			_setOriginalSegmentsEntryId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
 
-			_originalSegmentsEntryId = _segmentsEntryId;
+			_originalValues[SEGMENTSENTRYID_COLUMN_INDEX] = _segmentsEntryId;
 		}
 
 		_segmentsEntryId = segmentsEntryId;
 	}
 
 	public long getOriginalSegmentsEntryId() {
-		return _originalSegmentsEntryId;
+		if (_originalValues != null) {
+			Object originalSegmentsEntryId =
+				_originalValues[SEGMENTSENTRYID_COLUMN_INDEX];
+
+			if (originalSegmentsEntryId != null) {
+				return (long)originalSegmentsEntryId;
+			}
+		}
+
+		return _segmentsEntryId;
 	}
 
 	@Override
@@ -603,19 +786,29 @@ public class AssetListEntryAssetEntryRelModelImpl
 
 	@Override
 	public void setPosition(int position) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & POSITION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= POSITION_COLUMN_BITMASK;
 
-		if (!_setOriginalPosition) {
-			_setOriginalPosition = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
 
-			_originalPosition = _position;
+			_originalValues[POSITION_COLUMN_INDEX] = _position;
 		}
 
 		_position = position;
 	}
 
 	public int getOriginalPosition() {
-		return _originalPosition;
+		if (_originalValues != null) {
+			Object originalPosition = _originalValues[POSITION_COLUMN_INDEX];
+
+			if (originalPosition != null) {
+				return (int)originalPosition;
+			}
+		}
+
+		return _position;
 	}
 
 	@Override
@@ -625,6 +818,16 @@ public class AssetListEntryAssetEntryRelModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		if ((_columnBitmask & LASTPUBLISHDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LASTPUBLISHDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[15];
+			}
+
+			_originalValues[LASTPUBLISHDATE_COLUMN_INDEX] = _lastPublishDate;
+		}
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -761,42 +964,9 @@ public class AssetListEntryAssetEntryRelModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AssetListEntryAssetEntryRelModelImpl
-			assetListEntryAssetEntryRelModelImpl = this;
+		_columnBitmask = 0;
 
-		assetListEntryAssetEntryRelModelImpl._originalUuid =
-			assetListEntryAssetEntryRelModelImpl._uuid;
-
-		assetListEntryAssetEntryRelModelImpl._originalGroupId =
-			assetListEntryAssetEntryRelModelImpl._groupId;
-
-		assetListEntryAssetEntryRelModelImpl._setOriginalGroupId = false;
-
-		assetListEntryAssetEntryRelModelImpl._originalCompanyId =
-			assetListEntryAssetEntryRelModelImpl._companyId;
-
-		assetListEntryAssetEntryRelModelImpl._setOriginalCompanyId = false;
-
-		assetListEntryAssetEntryRelModelImpl._setModifiedDate = false;
-
-		assetListEntryAssetEntryRelModelImpl._originalAssetListEntryId =
-			assetListEntryAssetEntryRelModelImpl._assetListEntryId;
-
-		assetListEntryAssetEntryRelModelImpl._setOriginalAssetListEntryId =
-			false;
-
-		assetListEntryAssetEntryRelModelImpl._originalSegmentsEntryId =
-			assetListEntryAssetEntryRelModelImpl._segmentsEntryId;
-
-		assetListEntryAssetEntryRelModelImpl._setOriginalSegmentsEntryId =
-			false;
-
-		assetListEntryAssetEntryRelModelImpl._originalPosition =
-			assetListEntryAssetEntryRelModelImpl._position;
-
-		assetListEntryAssetEntryRelModelImpl._setOriginalPosition = false;
-
-		assetListEntryAssetEntryRelModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -961,31 +1131,20 @@ public class AssetListEntryAssetEntryRelModelImpl
 	private long _mvccVersion;
 	private long _ctCollectionId;
 	private String _uuid;
-	private String _originalUuid;
 	private long _assetListEntryAssetEntryRelId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _assetListEntryId;
-	private long _originalAssetListEntryId;
-	private boolean _setOriginalAssetListEntryId;
 	private long _assetEntryId;
 	private long _segmentsEntryId;
-	private long _originalSegmentsEntryId;
-	private boolean _setOriginalSegmentsEntryId;
 	private int _position;
-	private int _originalPosition;
-	private boolean _setOriginalPosition;
 	private Date _lastPublishDate;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private AssetListEntryAssetEntryRel _escapedModel;
 
 }

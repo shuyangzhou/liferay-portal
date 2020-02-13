@@ -122,15 +122,45 @@ public class CompanyModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.Company"),
 		true);
 
-	public static final long LOGOID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long MX_COLUMN_BITMASK = 2L;
+	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
-	public static final long SYSTEM_COLUMN_BITMASK = 4L;
+	public static final long ACCOUNTID_COLUMN_BITMASK = 4L;
 
 	public static final long WEBID_COLUMN_BITMASK = 8L;
 
-	public static final long COMPANYID_COLUMN_BITMASK = 16L;
+	public static final long MX_COLUMN_BITMASK = 16L;
+
+	public static final long HOMEURL_COLUMN_BITMASK = 32L;
+
+	public static final long LOGOID_COLUMN_BITMASK = 64L;
+
+	public static final long SYSTEM_COLUMN_BITMASK = 128L;
+
+	public static final long MAXUSERS_COLUMN_BITMASK = 256L;
+
+	public static final long ACTIVE_COLUMN_BITMASK = 512L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int COMPANYID_COLUMN_INDEX = 1;
+
+	public static final int ACCOUNTID_COLUMN_INDEX = 2;
+
+	public static final int WEBID_COLUMN_INDEX = 3;
+
+	public static final int MX_COLUMN_INDEX = 4;
+
+	public static final int HOMEURL_COLUMN_INDEX = 5;
+
+	public static final int LOGOID_COLUMN_INDEX = 6;
+
+	public static final int SYSTEM_COLUMN_INDEX = 7;
+
+	public static final int MAXUSERS_COLUMN_INDEX = 8;
+
+	public static final int ACTIVE_COLUMN_INDEX = 9;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -353,6 +383,16 @@ public class CompanyModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -364,6 +404,16 @@ public class CompanyModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -375,6 +425,16 @@ public class CompanyModelImpl
 
 	@Override
 	public void setAccountId(long accountId) {
+		if ((_columnBitmask & ACCOUNTID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ACCOUNTID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[ACCOUNTID_COLUMN_INDEX] = _accountId;
+		}
+
 		_accountId = accountId;
 	}
 
@@ -391,17 +451,29 @@ public class CompanyModelImpl
 
 	@Override
 	public void setWebId(String webId) {
-		_columnBitmask |= WEBID_COLUMN_BITMASK;
+		if ((_columnBitmask & WEBID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= WEBID_COLUMN_BITMASK;
 
-		if (_originalWebId == null) {
-			_originalWebId = _webId;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[WEBID_COLUMN_INDEX] = _webId;
 		}
 
 		_webId = webId;
 	}
 
 	public String getOriginalWebId() {
-		return GetterUtil.getString(_originalWebId);
+		if (_originalValues != null) {
+			Object originalWebId = _originalValues[WEBID_COLUMN_INDEX];
+
+			if (originalWebId != null) {
+				return GetterUtil.getString((String)originalWebId);
+			}
+		}
+
+		return GetterUtil.getString(_webId);
 	}
 
 	@JSON
@@ -417,17 +489,29 @@ public class CompanyModelImpl
 
 	@Override
 	public void setMx(String mx) {
-		_columnBitmask |= MX_COLUMN_BITMASK;
+		if ((_columnBitmask & MX_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MX_COLUMN_BITMASK;
 
-		if (_originalMx == null) {
-			_originalMx = _mx;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[MX_COLUMN_INDEX] = _mx;
 		}
 
 		_mx = mx;
 	}
 
 	public String getOriginalMx() {
-		return GetterUtil.getString(_originalMx);
+		if (_originalValues != null) {
+			Object originalMx = _originalValues[MX_COLUMN_INDEX];
+
+			if (originalMx != null) {
+				return GetterUtil.getString((String)originalMx);
+			}
+		}
+
+		return GetterUtil.getString(_mx);
 	}
 
 	@JSON
@@ -443,6 +527,16 @@ public class CompanyModelImpl
 
 	@Override
 	public void setHomeURL(String homeURL) {
+		if ((_columnBitmask & HOMEURL_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= HOMEURL_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[HOMEURL_COLUMN_INDEX] = _homeURL;
+		}
+
 		_homeURL = homeURL;
 	}
 
@@ -454,19 +548,29 @@ public class CompanyModelImpl
 
 	@Override
 	public void setLogoId(long logoId) {
-		_columnBitmask |= LOGOID_COLUMN_BITMASK;
+		if ((_columnBitmask & LOGOID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LOGOID_COLUMN_BITMASK;
 
-		if (!_setOriginalLogoId) {
-			_setOriginalLogoId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
 
-			_originalLogoId = _logoId;
+			_originalValues[LOGOID_COLUMN_INDEX] = _logoId;
 		}
 
 		_logoId = logoId;
 	}
 
 	public long getOriginalLogoId() {
-		return _originalLogoId;
+		if (_originalValues != null) {
+			Object originalLogoId = _originalValues[LOGOID_COLUMN_INDEX];
+
+			if (originalLogoId != null) {
+				return (long)originalLogoId;
+			}
+		}
+
+		return _logoId;
 	}
 
 	@JSON
@@ -483,19 +587,29 @@ public class CompanyModelImpl
 
 	@Override
 	public void setSystem(boolean system) {
-		_columnBitmask |= SYSTEM_COLUMN_BITMASK;
+		if ((_columnBitmask & SYSTEM_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SYSTEM_COLUMN_BITMASK;
 
-		if (!_setOriginalSystem) {
-			_setOriginalSystem = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
 
-			_originalSystem = _system;
+			_originalValues[SYSTEM_COLUMN_INDEX] = _system;
 		}
 
 		_system = system;
 	}
 
 	public boolean getOriginalSystem() {
-		return _originalSystem;
+		if (_originalValues != null) {
+			Object originalSystem = _originalValues[SYSTEM_COLUMN_INDEX];
+
+			if (originalSystem != null) {
+				return (boolean)originalSystem;
+			}
+		}
+
+		return _system;
 	}
 
 	@JSON
@@ -506,6 +620,16 @@ public class CompanyModelImpl
 
 	@Override
 	public void setMaxUsers(int maxUsers) {
+		if ((_columnBitmask & MAXUSERS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MAXUSERS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[MAXUSERS_COLUMN_INDEX] = _maxUsers;
+		}
+
 		_maxUsers = maxUsers;
 	}
 
@@ -523,6 +647,16 @@ public class CompanyModelImpl
 
 	@Override
 	public void setActive(boolean active) {
+		if ((_columnBitmask & ACTIVE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ACTIVE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[ACTIVE_COLUMN_INDEX] = _active;
+		}
+
 		_active = active;
 	}
 
@@ -662,20 +796,6 @@ public class CompanyModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		CompanyModelImpl companyModelImpl = this;
-
-		companyModelImpl._originalWebId = companyModelImpl._webId;
-
-		companyModelImpl._originalMx = companyModelImpl._mx;
-
-		companyModelImpl._originalLogoId = companyModelImpl._logoId;
-
-		companyModelImpl._setOriginalLogoId = false;
-
-		companyModelImpl._originalSystem = companyModelImpl._system;
-
-		companyModelImpl._setOriginalSystem = false;
-
 		setCompanyInfo(null);
 
 		setCompanySecurityBag(null);
@@ -684,7 +804,9 @@ public class CompanyModelImpl
 
 		setVirtualHostname(null);
 
-		companyModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
+
+		_originalValues = null;
 	}
 
 	@Override
@@ -814,19 +936,14 @@ public class CompanyModelImpl
 	private long _companyId;
 	private long _accountId;
 	private String _webId;
-	private String _originalWebId;
 	private String _mx;
-	private String _originalMx;
 	private String _homeURL;
 	private long _logoId;
-	private long _originalLogoId;
-	private boolean _setOriginalLogoId;
 	private boolean _system;
-	private boolean _originalSystem;
-	private boolean _setOriginalSystem;
 	private int _maxUsers;
 	private boolean _active;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private Company _escapedModel;
 
 }

@@ -102,12 +102,30 @@ public class OAuth2ApplicationScopeAliasesModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
-
-	public static final long OAUTH2APPLICATIONID_COLUMN_BITMASK = 2L;
-
 	public static final long OAUTH2APPLICATIONSCOPEALIASESID_COLUMN_BITMASK =
-		4L;
+		1L;
+
+	public static final long COMPANYID_COLUMN_BITMASK = 2L;
+
+	public static final long USERID_COLUMN_BITMASK = 4L;
+
+	public static final long USERNAME_COLUMN_BITMASK = 8L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 16L;
+
+	public static final long OAUTH2APPLICATIONID_COLUMN_BITMASK = 32L;
+
+	public static final int OAUTH2APPLICATIONSCOPEALIASESID_COLUMN_INDEX = 0;
+
+	public static final int COMPANYID_COLUMN_INDEX = 1;
+
+	public static final int USERID_COLUMN_INDEX = 2;
+
+	public static final int USERNAME_COLUMN_INDEX = 3;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 4;
+
+	public static final int OAUTH2APPLICATIONID_COLUMN_INDEX = 5;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -307,6 +325,19 @@ public class OAuth2ApplicationScopeAliasesModelImpl
 	public void setOAuth2ApplicationScopeAliasesId(
 		long oAuth2ApplicationScopeAliasesId) {
 
+		if ((_columnBitmask & OAUTH2APPLICATIONSCOPEALIASESID_COLUMN_BITMASK) ==
+				0) {
+
+			_columnBitmask |= OAUTH2APPLICATIONSCOPEALIASESID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[OAUTH2APPLICATIONSCOPEALIASESID_COLUMN_INDEX] =
+				_oAuth2ApplicationScopeAliasesId;
+		}
+
 		_oAuth2ApplicationScopeAliasesId = oAuth2ApplicationScopeAliasesId;
 	}
 
@@ -317,19 +348,29 @@ public class OAuth2ApplicationScopeAliasesModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@Override
@@ -339,6 +380,16 @@ public class OAuth2ApplicationScopeAliasesModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -370,6 +421,16 @@ public class OAuth2ApplicationScopeAliasesModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -380,6 +441,16 @@ public class OAuth2ApplicationScopeAliasesModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -390,19 +461,31 @@ public class OAuth2ApplicationScopeAliasesModelImpl
 
 	@Override
 	public void setOAuth2ApplicationId(long oAuth2ApplicationId) {
-		_columnBitmask |= OAUTH2APPLICATIONID_COLUMN_BITMASK;
+		if ((_columnBitmask & OAUTH2APPLICATIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= OAUTH2APPLICATIONID_COLUMN_BITMASK;
 
-		if (!_setOriginalOAuth2ApplicationId) {
-			_setOriginalOAuth2ApplicationId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
 
-			_originalOAuth2ApplicationId = _oAuth2ApplicationId;
+			_originalValues[OAUTH2APPLICATIONID_COLUMN_INDEX] =
+				_oAuth2ApplicationId;
 		}
 
 		_oAuth2ApplicationId = oAuth2ApplicationId;
 	}
 
 	public long getOriginalOAuth2ApplicationId() {
-		return _originalOAuth2ApplicationId;
+		if (_originalValues != null) {
+			Object originalOAuth2ApplicationId =
+				_originalValues[OAUTH2APPLICATIONID_COLUMN_INDEX];
+
+			if (originalOAuth2ApplicationId != null) {
+				return (long)originalOAuth2ApplicationId;
+			}
+		}
+
+		return _oAuth2ApplicationId;
 	}
 
 	public long getColumnBitmask() {
@@ -514,21 +597,9 @@ public class OAuth2ApplicationScopeAliasesModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		OAuth2ApplicationScopeAliasesModelImpl
-			oAuth2ApplicationScopeAliasesModelImpl = this;
+		_columnBitmask = 0;
 
-		oAuth2ApplicationScopeAliasesModelImpl._originalCompanyId =
-			oAuth2ApplicationScopeAliasesModelImpl._companyId;
-
-		oAuth2ApplicationScopeAliasesModelImpl._setOriginalCompanyId = false;
-
-		oAuth2ApplicationScopeAliasesModelImpl._originalOAuth2ApplicationId =
-			oAuth2ApplicationScopeAliasesModelImpl._oAuth2ApplicationId;
-
-		oAuth2ApplicationScopeAliasesModelImpl._setOriginalOAuth2ApplicationId =
-			false;
-
-		oAuth2ApplicationScopeAliasesModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -650,15 +721,12 @@ public class OAuth2ApplicationScopeAliasesModelImpl
 
 	private long _oAuth2ApplicationScopeAliasesId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private long _oAuth2ApplicationId;
-	private long _originalOAuth2ApplicationId;
-	private boolean _setOriginalOAuth2ApplicationId;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private OAuth2ApplicationScopeAliases _escapedModel;
 
 }

@@ -130,23 +130,77 @@ public class SegmentsExperimentModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long CLASSPK_COLUMN_BITMASK = 2L;
+	public static final long UUID_COLUMN_BITMASK = 2L;
 
-	public static final long COMPANYID_COLUMN_BITMASK = 4L;
+	public static final long SEGMENTSEXPERIMENTID_COLUMN_BITMASK = 4L;
 
 	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
-	public static final long SEGMENTSEXPERIENCEID_COLUMN_BITMASK = 16L;
+	public static final long COMPANYID_COLUMN_BITMASK = 16L;
 
-	public static final long SEGMENTSEXPERIMENTKEY_COLUMN_BITMASK = 32L;
+	public static final long USERID_COLUMN_BITMASK = 32L;
 
-	public static final long STATUS_COLUMN_BITMASK = 64L;
+	public static final long USERNAME_COLUMN_BITMASK = 64L;
 
-	public static final long UUID_COLUMN_BITMASK = 128L;
+	public static final long CREATEDATE_COLUMN_BITMASK = 128L;
 
-	public static final long CREATEDATE_COLUMN_BITMASK = 256L;
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 256L;
+
+	public static final long SEGMENTSENTRYID_COLUMN_BITMASK = 512L;
+
+	public static final long SEGMENTSEXPERIENCEID_COLUMN_BITMASK = 1024L;
+
+	public static final long SEGMENTSEXPERIMENTKEY_COLUMN_BITMASK = 2048L;
+
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 4096L;
+
+	public static final long CLASSPK_COLUMN_BITMASK = 8192L;
+
+	public static final long NAME_COLUMN_BITMASK = 16384L;
+
+	public static final long DESCRIPTION_COLUMN_BITMASK = 32768L;
+
+	public static final long TYPESETTINGS_COLUMN_BITMASK = 65536L;
+
+	public static final long STATUS_COLUMN_BITMASK = 131072L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int UUID_COLUMN_INDEX = 1;
+
+	public static final int SEGMENTSEXPERIMENTID_COLUMN_INDEX = 2;
+
+	public static final int GROUPID_COLUMN_INDEX = 3;
+
+	public static final int COMPANYID_COLUMN_INDEX = 4;
+
+	public static final int USERID_COLUMN_INDEX = 5;
+
+	public static final int USERNAME_COLUMN_INDEX = 6;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 7;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 8;
+
+	public static final int SEGMENTSENTRYID_COLUMN_INDEX = 9;
+
+	public static final int SEGMENTSEXPERIENCEID_COLUMN_INDEX = 10;
+
+	public static final int SEGMENTSEXPERIMENTKEY_COLUMN_INDEX = 11;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 12;
+
+	public static final int CLASSPK_COLUMN_INDEX = 13;
+
+	public static final int NAME_COLUMN_INDEX = 14;
+
+	public static final int DESCRIPTION_COLUMN_INDEX = 15;
+
+	public static final int TYPESETTINGS_COLUMN_INDEX = 16;
+
+	public static final int STATUS_COLUMN_INDEX = 17;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -464,6 +518,16 @@ public class SegmentsExperimentModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -480,17 +544,29 @@ public class SegmentsExperimentModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		if ((_columnBitmask & UUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= UUID_COLUMN_BITMASK;
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[UUID_COLUMN_INDEX] = _uuid;
 		}
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		if (_originalValues != null) {
+			Object originalUuid = _originalValues[UUID_COLUMN_INDEX];
+
+			if (originalUuid != null) {
+				return GetterUtil.getString((String)originalUuid);
+			}
+		}
+
+		return GetterUtil.getString(_uuid);
 	}
 
 	@JSON
@@ -501,6 +577,17 @@ public class SegmentsExperimentModelImpl
 
 	@Override
 	public void setSegmentsExperimentId(long segmentsExperimentId) {
+		if ((_columnBitmask & SEGMENTSEXPERIMENTID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SEGMENTSEXPERIMENTID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[SEGMENTSEXPERIMENTID_COLUMN_INDEX] =
+				_segmentsExperimentId;
+		}
+
 		_segmentsExperimentId = segmentsExperimentId;
 	}
 
@@ -512,19 +599,29 @@ public class SegmentsExperimentModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@JSON
@@ -535,19 +632,29 @@ public class SegmentsExperimentModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@JSON
@@ -558,6 +665,16 @@ public class SegmentsExperimentModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -590,6 +707,16 @@ public class SegmentsExperimentModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -601,7 +728,15 @@ public class SegmentsExperimentModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
 
 		_createDate = createDate;
 	}
@@ -613,12 +748,20 @@ public class SegmentsExperimentModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -631,6 +774,16 @@ public class SegmentsExperimentModelImpl
 
 	@Override
 	public void setSegmentsEntryId(long segmentsEntryId) {
+		if ((_columnBitmask & SEGMENTSENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SEGMENTSENTRYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[SEGMENTSENTRYID_COLUMN_INDEX] = _segmentsEntryId;
+		}
+
 		_segmentsEntryId = segmentsEntryId;
 	}
 
@@ -642,19 +795,31 @@ public class SegmentsExperimentModelImpl
 
 	@Override
 	public void setSegmentsExperienceId(long segmentsExperienceId) {
-		_columnBitmask |= SEGMENTSEXPERIENCEID_COLUMN_BITMASK;
+		if ((_columnBitmask & SEGMENTSEXPERIENCEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SEGMENTSEXPERIENCEID_COLUMN_BITMASK;
 
-		if (!_setOriginalSegmentsExperienceId) {
-			_setOriginalSegmentsExperienceId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
 
-			_originalSegmentsExperienceId = _segmentsExperienceId;
+			_originalValues[SEGMENTSEXPERIENCEID_COLUMN_INDEX] =
+				_segmentsExperienceId;
 		}
 
 		_segmentsExperienceId = segmentsExperienceId;
 	}
 
 	public long getOriginalSegmentsExperienceId() {
-		return _originalSegmentsExperienceId;
+		if (_originalValues != null) {
+			Object originalSegmentsExperienceId =
+				_originalValues[SEGMENTSEXPERIENCEID_COLUMN_INDEX];
+
+			if (originalSegmentsExperienceId != null) {
+				return (long)originalSegmentsExperienceId;
+			}
+		}
+
+		return _segmentsExperienceId;
 	}
 
 	@JSON
@@ -670,17 +835,32 @@ public class SegmentsExperimentModelImpl
 
 	@Override
 	public void setSegmentsExperimentKey(String segmentsExperimentKey) {
-		_columnBitmask |= SEGMENTSEXPERIMENTKEY_COLUMN_BITMASK;
+		if ((_columnBitmask & SEGMENTSEXPERIMENTKEY_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SEGMENTSEXPERIMENTKEY_COLUMN_BITMASK;
 
-		if (_originalSegmentsExperimentKey == null) {
-			_originalSegmentsExperimentKey = _segmentsExperimentKey;
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[SEGMENTSEXPERIMENTKEY_COLUMN_INDEX] =
+				_segmentsExperimentKey;
 		}
 
 		_segmentsExperimentKey = segmentsExperimentKey;
 	}
 
 	public String getOriginalSegmentsExperimentKey() {
-		return GetterUtil.getString(_originalSegmentsExperimentKey);
+		if (_originalValues != null) {
+			Object originalSegmentsExperimentKey =
+				_originalValues[SEGMENTSEXPERIMENTKEY_COLUMN_INDEX];
+
+			if (originalSegmentsExperimentKey != null) {
+				return GetterUtil.getString(
+					(String)originalSegmentsExperimentKey);
+			}
+		}
+
+		return GetterUtil.getString(_segmentsExperimentKey);
 	}
 
 	@Override
@@ -711,19 +891,30 @@ public class SegmentsExperimentModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSNAMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
 
-			_originalClassNameId = _classNameId;
+			_originalValues[CLASSNAMEID_COLUMN_INDEX] = _classNameId;
 		}
 
 		_classNameId = classNameId;
 	}
 
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		if (_originalValues != null) {
+			Object originalClassNameId =
+				_originalValues[CLASSNAMEID_COLUMN_INDEX];
+
+			if (originalClassNameId != null) {
+				return (long)originalClassNameId;
+			}
+		}
+
+		return _classNameId;
 	}
 
 	@JSON
@@ -734,19 +925,29 @@ public class SegmentsExperimentModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSPK_COLUMN_BITMASK;
 
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
 
-			_originalClassPK = _classPK;
+			_originalValues[CLASSPK_COLUMN_INDEX] = _classPK;
 		}
 
 		_classPK = classPK;
 	}
 
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		if (_originalValues != null) {
+			Object originalClassPK = _originalValues[CLASSPK_COLUMN_INDEX];
+
+			if (originalClassPK != null) {
+				return (long)originalClassPK;
+			}
+		}
+
+		return _classPK;
 	}
 
 	@JSON
@@ -762,6 +963,16 @@ public class SegmentsExperimentModelImpl
 
 	@Override
 	public void setName(String name) {
+		if ((_columnBitmask & NAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= NAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[NAME_COLUMN_INDEX] = _name;
+		}
+
 		_name = name;
 	}
 
@@ -778,6 +989,16 @@ public class SegmentsExperimentModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		if ((_columnBitmask & DESCRIPTION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DESCRIPTION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[DESCRIPTION_COLUMN_INDEX] = _description;
+		}
+
 		_description = description;
 	}
 
@@ -794,6 +1015,16 @@ public class SegmentsExperimentModelImpl
 
 	@Override
 	public void setTypeSettings(String typeSettings) {
+		if ((_columnBitmask & TYPESETTINGS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TYPESETTINGS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
+
+			_originalValues[TYPESETTINGS_COLUMN_INDEX] = _typeSettings;
+		}
+
 		_typeSettings = typeSettings;
 	}
 
@@ -805,19 +1036,29 @@ public class SegmentsExperimentModelImpl
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
+		if ((_columnBitmask & STATUS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUS_COLUMN_BITMASK;
 
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[18];
+			}
 
-			_originalStatus = _status;
+			_originalValues[STATUS_COLUMN_INDEX] = _status;
 		}
 
 		_status = status;
 	}
 
 	public int getOriginalStatus() {
-		return _originalStatus;
+		if (_originalValues != null) {
+			Object originalStatus = _originalValues[STATUS_COLUMN_INDEX];
+
+			if (originalStatus != null) {
+				return (int)originalStatus;
+			}
+		}
+
+		return _status;
 	}
 
 	@Override
@@ -947,47 +1188,9 @@ public class SegmentsExperimentModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SegmentsExperimentModelImpl segmentsExperimentModelImpl = this;
+		_columnBitmask = 0;
 
-		segmentsExperimentModelImpl._originalUuid =
-			segmentsExperimentModelImpl._uuid;
-
-		segmentsExperimentModelImpl._originalGroupId =
-			segmentsExperimentModelImpl._groupId;
-
-		segmentsExperimentModelImpl._setOriginalGroupId = false;
-
-		segmentsExperimentModelImpl._originalCompanyId =
-			segmentsExperimentModelImpl._companyId;
-
-		segmentsExperimentModelImpl._setOriginalCompanyId = false;
-
-		segmentsExperimentModelImpl._setModifiedDate = false;
-
-		segmentsExperimentModelImpl._originalSegmentsExperienceId =
-			segmentsExperimentModelImpl._segmentsExperienceId;
-
-		segmentsExperimentModelImpl._setOriginalSegmentsExperienceId = false;
-
-		segmentsExperimentModelImpl._originalSegmentsExperimentKey =
-			segmentsExperimentModelImpl._segmentsExperimentKey;
-
-		segmentsExperimentModelImpl._originalClassNameId =
-			segmentsExperimentModelImpl._classNameId;
-
-		segmentsExperimentModelImpl._setOriginalClassNameId = false;
-
-		segmentsExperimentModelImpl._originalClassPK =
-			segmentsExperimentModelImpl._classPK;
-
-		segmentsExperimentModelImpl._setOriginalClassPK = false;
-
-		segmentsExperimentModelImpl._originalStatus =
-			segmentsExperimentModelImpl._status;
-
-		segmentsExperimentModelImpl._setOriginalStatus = false;
-
-		segmentsExperimentModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -1165,38 +1368,24 @@ public class SegmentsExperimentModelImpl
 
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _segmentsExperimentId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _segmentsEntryId;
 	private long _segmentsExperienceId;
-	private long _originalSegmentsExperienceId;
-	private boolean _setOriginalSegmentsExperienceId;
 	private String _segmentsExperimentKey;
-	private String _originalSegmentsExperimentKey;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private String _name;
 	private String _description;
 	private String _typeSettings;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private SegmentsExperiment _escapedModel;
 
 }

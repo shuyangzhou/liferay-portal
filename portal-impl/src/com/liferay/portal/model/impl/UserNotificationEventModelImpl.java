@@ -128,23 +128,57 @@ public class UserNotificationEventModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.UserNotificationEvent"),
 		true);
 
-	public static final long ACTIONREQUIRED_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long ARCHIVED_COLUMN_BITMASK = 2L;
+	public static final long UUID_COLUMN_BITMASK = 2L;
 
-	public static final long COMPANYID_COLUMN_BITMASK = 4L;
+	public static final long USERNOTIFICATIONEVENTID_COLUMN_BITMASK = 4L;
 
-	public static final long DELIVERED_COLUMN_BITMASK = 8L;
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
 
-	public static final long DELIVERYTYPE_COLUMN_BITMASK = 16L;
+	public static final long USERID_COLUMN_BITMASK = 16L;
 
 	public static final long TYPE_COLUMN_BITMASK = 32L;
 
-	public static final long USERID_COLUMN_BITMASK = 64L;
+	public static final long TIMESTAMP_COLUMN_BITMASK = 64L;
 
-	public static final long UUID_COLUMN_BITMASK = 128L;
+	public static final long DELIVERYTYPE_COLUMN_BITMASK = 128L;
 
-	public static final long TIMESTAMP_COLUMN_BITMASK = 256L;
+	public static final long DELIVERBY_COLUMN_BITMASK = 256L;
+
+	public static final long DELIVERED_COLUMN_BITMASK = 512L;
+
+	public static final long PAYLOAD_COLUMN_BITMASK = 1024L;
+
+	public static final long ACTIONREQUIRED_COLUMN_BITMASK = 2048L;
+
+	public static final long ARCHIVED_COLUMN_BITMASK = 4096L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int UUID_COLUMN_INDEX = 1;
+
+	public static final int USERNOTIFICATIONEVENTID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int USERID_COLUMN_INDEX = 4;
+
+	public static final int TYPE_COLUMN_INDEX = 5;
+
+	public static final int TIMESTAMP_COLUMN_INDEX = 6;
+
+	public static final int DELIVERYTYPE_COLUMN_INDEX = 7;
+
+	public static final int DELIVERBY_COLUMN_INDEX = 8;
+
+	public static final int DELIVERED_COLUMN_INDEX = 9;
+
+	public static final int PAYLOAD_COLUMN_INDEX = 10;
+
+	public static final int ACTIONREQUIRED_COLUMN_INDEX = 11;
+
+	public static final int ARCHIVED_COLUMN_INDEX = 12;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -373,6 +407,16 @@ public class UserNotificationEventModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -388,17 +432,29 @@ public class UserNotificationEventModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		if ((_columnBitmask & UUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= UUID_COLUMN_BITMASK;
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[UUID_COLUMN_INDEX] = _uuid;
 		}
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		if (_originalValues != null) {
+			Object originalUuid = _originalValues[UUID_COLUMN_INDEX];
+
+			if (originalUuid != null) {
+				return GetterUtil.getString((String)originalUuid);
+			}
+		}
+
+		return GetterUtil.getString(_uuid);
 	}
 
 	@Override
@@ -408,6 +464,17 @@ public class UserNotificationEventModelImpl
 
 	@Override
 	public void setUserNotificationEventId(long userNotificationEventId) {
+		if ((_columnBitmask & USERNOTIFICATIONEVENTID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNOTIFICATIONEVENTID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[USERNOTIFICATIONEVENTID_COLUMN_INDEX] =
+				_userNotificationEventId;
+		}
+
 		_userNotificationEventId = userNotificationEventId;
 	}
 
@@ -418,19 +485,29 @@ public class UserNotificationEventModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@Override
@@ -440,12 +517,14 @@ public class UserNotificationEventModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
 
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalUserId = _userId;
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
 		}
 
 		_userId = userId;
@@ -468,7 +547,15 @@ public class UserNotificationEventModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		if (_originalValues != null) {
+			Object originalUserId = _originalValues[USERID_COLUMN_INDEX];
+
+			if (originalUserId != null) {
+				return (long)originalUserId;
+			}
+		}
+
+		return _userId;
 	}
 
 	@Override
@@ -483,17 +570,29 @@ public class UserNotificationEventModelImpl
 
 	@Override
 	public void setType(String type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
+		if ((_columnBitmask & TYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TYPE_COLUMN_BITMASK;
 
-		if (_originalType == null) {
-			_originalType = _type;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[TYPE_COLUMN_INDEX] = _type;
 		}
 
 		_type = type;
 	}
 
 	public String getOriginalType() {
-		return GetterUtil.getString(_originalType);
+		if (_originalValues != null) {
+			Object originalType = _originalValues[TYPE_COLUMN_INDEX];
+
+			if (originalType != null) {
+				return GetterUtil.getString((String)originalType);
+			}
+		}
+
+		return GetterUtil.getString(_type);
 	}
 
 	@Override
@@ -503,7 +602,15 @@ public class UserNotificationEventModelImpl
 
 	@Override
 	public void setTimestamp(long timestamp) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & TIMESTAMP_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TIMESTAMP_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[TIMESTAMP_COLUMN_INDEX] = _timestamp;
+		}
 
 		_timestamp = timestamp;
 	}
@@ -515,19 +622,30 @@ public class UserNotificationEventModelImpl
 
 	@Override
 	public void setDeliveryType(int deliveryType) {
-		_columnBitmask |= DELIVERYTYPE_COLUMN_BITMASK;
+		if ((_columnBitmask & DELIVERYTYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DELIVERYTYPE_COLUMN_BITMASK;
 
-		if (!_setOriginalDeliveryType) {
-			_setOriginalDeliveryType = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalDeliveryType = _deliveryType;
+			_originalValues[DELIVERYTYPE_COLUMN_INDEX] = _deliveryType;
 		}
 
 		_deliveryType = deliveryType;
 	}
 
 	public int getOriginalDeliveryType() {
-		return _originalDeliveryType;
+		if (_originalValues != null) {
+			Object originalDeliveryType =
+				_originalValues[DELIVERYTYPE_COLUMN_INDEX];
+
+			if (originalDeliveryType != null) {
+				return (int)originalDeliveryType;
+			}
+		}
+
+		return _deliveryType;
 	}
 
 	@Override
@@ -537,6 +655,16 @@ public class UserNotificationEventModelImpl
 
 	@Override
 	public void setDeliverBy(long deliverBy) {
+		if ((_columnBitmask & DELIVERBY_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DELIVERBY_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[DELIVERBY_COLUMN_INDEX] = _deliverBy;
+		}
+
 		_deliverBy = deliverBy;
 	}
 
@@ -552,19 +680,29 @@ public class UserNotificationEventModelImpl
 
 	@Override
 	public void setDelivered(boolean delivered) {
-		_columnBitmask |= DELIVERED_COLUMN_BITMASK;
+		if ((_columnBitmask & DELIVERED_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DELIVERED_COLUMN_BITMASK;
 
-		if (!_setOriginalDelivered) {
-			_setOriginalDelivered = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalDelivered = _delivered;
+			_originalValues[DELIVERED_COLUMN_INDEX] = _delivered;
 		}
 
 		_delivered = delivered;
 	}
 
 	public boolean getOriginalDelivered() {
-		return _originalDelivered;
+		if (_originalValues != null) {
+			Object originalDelivered = _originalValues[DELIVERED_COLUMN_INDEX];
+
+			if (originalDelivered != null) {
+				return (boolean)originalDelivered;
+			}
+		}
+
+		return _delivered;
 	}
 
 	@Override
@@ -579,6 +717,16 @@ public class UserNotificationEventModelImpl
 
 	@Override
 	public void setPayload(String payload) {
+		if ((_columnBitmask & PAYLOAD_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PAYLOAD_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[PAYLOAD_COLUMN_INDEX] = _payload;
+		}
+
 		_payload = payload;
 	}
 
@@ -594,19 +742,30 @@ public class UserNotificationEventModelImpl
 
 	@Override
 	public void setActionRequired(boolean actionRequired) {
-		_columnBitmask |= ACTIONREQUIRED_COLUMN_BITMASK;
+		if ((_columnBitmask & ACTIONREQUIRED_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ACTIONREQUIRED_COLUMN_BITMASK;
 
-		if (!_setOriginalActionRequired) {
-			_setOriginalActionRequired = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalActionRequired = _actionRequired;
+			_originalValues[ACTIONREQUIRED_COLUMN_INDEX] = _actionRequired;
 		}
 
 		_actionRequired = actionRequired;
 	}
 
 	public boolean getOriginalActionRequired() {
-		return _originalActionRequired;
+		if (_originalValues != null) {
+			Object originalActionRequired =
+				_originalValues[ACTIONREQUIRED_COLUMN_INDEX];
+
+			if (originalActionRequired != null) {
+				return (boolean)originalActionRequired;
+			}
+		}
+
+		return _actionRequired;
 	}
 
 	@Override
@@ -621,19 +780,29 @@ public class UserNotificationEventModelImpl
 
 	@Override
 	public void setArchived(boolean archived) {
-		_columnBitmask |= ARCHIVED_COLUMN_BITMASK;
+		if ((_columnBitmask & ARCHIVED_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ARCHIVED_COLUMN_BITMASK;
 
-		if (!_setOriginalArchived) {
-			_setOriginalArchived = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalArchived = _archived;
+			_originalValues[ARCHIVED_COLUMN_INDEX] = _archived;
 		}
 
 		_archived = archived;
 	}
 
 	public boolean getOriginalArchived() {
-		return _originalArchived;
+		if (_originalValues != null) {
+			Object originalArchived = _originalValues[ARCHIVED_COLUMN_INDEX];
+
+			if (originalArchived != null) {
+				return (boolean)originalArchived;
+			}
+		}
+
+		return _archived;
 	}
 
 	public long getColumnBitmask() {
@@ -757,45 +926,9 @@ public class UserNotificationEventModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		UserNotificationEventModelImpl userNotificationEventModelImpl = this;
+		_columnBitmask = 0;
 
-		userNotificationEventModelImpl._originalUuid =
-			userNotificationEventModelImpl._uuid;
-
-		userNotificationEventModelImpl._originalCompanyId =
-			userNotificationEventModelImpl._companyId;
-
-		userNotificationEventModelImpl._setOriginalCompanyId = false;
-
-		userNotificationEventModelImpl._originalUserId =
-			userNotificationEventModelImpl._userId;
-
-		userNotificationEventModelImpl._setOriginalUserId = false;
-
-		userNotificationEventModelImpl._originalType =
-			userNotificationEventModelImpl._type;
-
-		userNotificationEventModelImpl._originalDeliveryType =
-			userNotificationEventModelImpl._deliveryType;
-
-		userNotificationEventModelImpl._setOriginalDeliveryType = false;
-
-		userNotificationEventModelImpl._originalDelivered =
-			userNotificationEventModelImpl._delivered;
-
-		userNotificationEventModelImpl._setOriginalDelivered = false;
-
-		userNotificationEventModelImpl._originalActionRequired =
-			userNotificationEventModelImpl._actionRequired;
-
-		userNotificationEventModelImpl._setOriginalActionRequired = false;
-
-		userNotificationEventModelImpl._originalArchived =
-			userNotificationEventModelImpl._archived;
-
-		userNotificationEventModelImpl._setOriginalArchived = false;
-
-		userNotificationEventModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -925,32 +1058,19 @@ public class UserNotificationEventModelImpl
 
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _userNotificationEventId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _type;
-	private String _originalType;
 	private long _timestamp;
 	private int _deliveryType;
-	private int _originalDeliveryType;
-	private boolean _setOriginalDeliveryType;
 	private long _deliverBy;
 	private boolean _delivered;
-	private boolean _originalDelivered;
-	private boolean _setOriginalDelivered;
 	private String _payload;
 	private boolean _actionRequired;
-	private boolean _originalActionRequired;
-	private boolean _setOriginalActionRequired;
 	private boolean _archived;
-	private boolean _originalArchived;
-	private boolean _setOriginalArchived;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private UserNotificationEvent _escapedModel;
 
 }

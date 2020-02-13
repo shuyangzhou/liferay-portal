@@ -141,13 +141,82 @@ public class LayoutSetBranchModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.LayoutSetBranch"),
 		true);
 
-	public static final long GROUPID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long MASTER_COLUMN_BITMASK = 2L;
+	public static final long LAYOUTSETBRANCHID_COLUMN_BITMASK = 2L;
 
-	public static final long NAME_COLUMN_BITMASK = 4L;
+	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
-	public static final long PRIVATELAYOUT_COLUMN_BITMASK = 8L;
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
+
+	public static final long USERID_COLUMN_BITMASK = 16L;
+
+	public static final long USERNAME_COLUMN_BITMASK = 32L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 64L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 128L;
+
+	public static final long PRIVATELAYOUT_COLUMN_BITMASK = 256L;
+
+	public static final long NAME_COLUMN_BITMASK = 512L;
+
+	public static final long DESCRIPTION_COLUMN_BITMASK = 1024L;
+
+	public static final long MASTER_COLUMN_BITMASK = 2048L;
+
+	public static final long LOGOID_COLUMN_BITMASK = 4096L;
+
+	public static final long THEMEID_COLUMN_BITMASK = 8192L;
+
+	public static final long COLORSCHEMEID_COLUMN_BITMASK = 16384L;
+
+	public static final long CSS_COLUMN_BITMASK = 32768L;
+
+	public static final long SETTINGS_COLUMN_BITMASK = 65536L;
+
+	public static final long LAYOUTSETPROTOTYPEUUID_COLUMN_BITMASK = 131072L;
+
+	public static final long LAYOUTSETPROTOTYPELINKENABLED_COLUMN_BITMASK =
+		262144L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int LAYOUTSETBRANCHID_COLUMN_INDEX = 1;
+
+	public static final int GROUPID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int USERID_COLUMN_INDEX = 4;
+
+	public static final int USERNAME_COLUMN_INDEX = 5;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 6;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 7;
+
+	public static final int PRIVATELAYOUT_COLUMN_INDEX = 8;
+
+	public static final int NAME_COLUMN_INDEX = 9;
+
+	public static final int DESCRIPTION_COLUMN_INDEX = 10;
+
+	public static final int MASTER_COLUMN_INDEX = 11;
+
+	public static final int LOGOID_COLUMN_INDEX = 12;
+
+	public static final int THEMEID_COLUMN_INDEX = 13;
+
+	public static final int COLORSCHEMEID_COLUMN_INDEX = 14;
+
+	public static final int CSS_COLUMN_INDEX = 15;
+
+	public static final int SETTINGS_COLUMN_INDEX = 16;
+
+	public static final int LAYOUTSETPROTOTYPEUUID_COLUMN_INDEX = 17;
+
+	public static final int LAYOUTSETPROTOTYPELINKENABLED_COLUMN_INDEX = 18;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -451,6 +520,16 @@ public class LayoutSetBranchModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -462,6 +541,17 @@ public class LayoutSetBranchModelImpl
 
 	@Override
 	public void setLayoutSetBranchId(long layoutSetBranchId) {
+		if ((_columnBitmask & LAYOUTSETBRANCHID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LAYOUTSETBRANCHID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[LAYOUTSETBRANCHID_COLUMN_INDEX] =
+				_layoutSetBranchId;
+		}
+
 		_layoutSetBranchId = layoutSetBranchId;
 	}
 
@@ -473,19 +563,29 @@ public class LayoutSetBranchModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@JSON
@@ -496,6 +596,16 @@ public class LayoutSetBranchModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -507,6 +617,16 @@ public class LayoutSetBranchModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -539,6 +659,16 @@ public class LayoutSetBranchModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -550,6 +680,16 @@ public class LayoutSetBranchModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -560,12 +700,20 @@ public class LayoutSetBranchModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -584,19 +732,30 @@ public class LayoutSetBranchModelImpl
 
 	@Override
 	public void setPrivateLayout(boolean privateLayout) {
-		_columnBitmask |= PRIVATELAYOUT_COLUMN_BITMASK;
+		if ((_columnBitmask & PRIVATELAYOUT_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PRIVATELAYOUT_COLUMN_BITMASK;
 
-		if (!_setOriginalPrivateLayout) {
-			_setOriginalPrivateLayout = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
 
-			_originalPrivateLayout = _privateLayout;
+			_originalValues[PRIVATELAYOUT_COLUMN_INDEX] = _privateLayout;
 		}
 
 		_privateLayout = privateLayout;
 	}
 
 	public boolean getOriginalPrivateLayout() {
-		return _originalPrivateLayout;
+		if (_originalValues != null) {
+			Object originalPrivateLayout =
+				_originalValues[PRIVATELAYOUT_COLUMN_INDEX];
+
+			if (originalPrivateLayout != null) {
+				return (boolean)originalPrivateLayout;
+			}
+		}
+
+		return _privateLayout;
 	}
 
 	@JSON
@@ -612,17 +771,29 @@ public class LayoutSetBranchModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & NAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= NAME_COLUMN_BITMASK;
 
-		if (_originalName == null) {
-			_originalName = _name;
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[NAME_COLUMN_INDEX] = _name;
 		}
 
 		_name = name;
 	}
 
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		if (_originalValues != null) {
+			Object originalName = _originalValues[NAME_COLUMN_INDEX];
+
+			if (originalName != null) {
+				return GetterUtil.getString((String)originalName);
+			}
+		}
+
+		return GetterUtil.getString(_name);
 	}
 
 	@JSON
@@ -638,6 +809,16 @@ public class LayoutSetBranchModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		if ((_columnBitmask & DESCRIPTION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DESCRIPTION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[DESCRIPTION_COLUMN_INDEX] = _description;
+		}
+
 		_description = description;
 	}
 
@@ -655,19 +836,29 @@ public class LayoutSetBranchModelImpl
 
 	@Override
 	public void setMaster(boolean master) {
-		_columnBitmask |= MASTER_COLUMN_BITMASK;
+		if ((_columnBitmask & MASTER_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MASTER_COLUMN_BITMASK;
 
-		if (!_setOriginalMaster) {
-			_setOriginalMaster = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
 
-			_originalMaster = _master;
+			_originalValues[MASTER_COLUMN_INDEX] = _master;
 		}
 
 		_master = master;
 	}
 
 	public boolean getOriginalMaster() {
-		return _originalMaster;
+		if (_originalValues != null) {
+			Object originalMaster = _originalValues[MASTER_COLUMN_INDEX];
+
+			if (originalMaster != null) {
+				return (boolean)originalMaster;
+			}
+		}
+
+		return _master;
 	}
 
 	@JSON
@@ -678,6 +869,16 @@ public class LayoutSetBranchModelImpl
 
 	@Override
 	public void setLogoId(long logoId) {
+		if ((_columnBitmask & LOGOID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LOGOID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[LOGOID_COLUMN_INDEX] = _logoId;
+		}
+
 		_logoId = logoId;
 	}
 
@@ -694,6 +895,16 @@ public class LayoutSetBranchModelImpl
 
 	@Override
 	public void setThemeId(String themeId) {
+		if ((_columnBitmask & THEMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= THEMEID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[THEMEID_COLUMN_INDEX] = _themeId;
+		}
+
 		_themeId = themeId;
 	}
 
@@ -710,6 +921,16 @@ public class LayoutSetBranchModelImpl
 
 	@Override
 	public void setColorSchemeId(String colorSchemeId) {
+		if ((_columnBitmask & COLORSCHEMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COLORSCHEMEID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[COLORSCHEMEID_COLUMN_INDEX] = _colorSchemeId;
+		}
+
 		_colorSchemeId = colorSchemeId;
 	}
 
@@ -726,6 +947,16 @@ public class LayoutSetBranchModelImpl
 
 	@Override
 	public void setCss(String css) {
+		if ((_columnBitmask & CSS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CSS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[CSS_COLUMN_INDEX] = _css;
+		}
+
 		_css = css;
 	}
 
@@ -742,6 +973,16 @@ public class LayoutSetBranchModelImpl
 
 	@Override
 	public void setSettings(String settings) {
+		if ((_columnBitmask & SETTINGS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SETTINGS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[SETTINGS_COLUMN_INDEX] = _settings;
+		}
+
 		_settings = settings;
 	}
 
@@ -758,6 +999,17 @@ public class LayoutSetBranchModelImpl
 
 	@Override
 	public void setLayoutSetPrototypeUuid(String layoutSetPrototypeUuid) {
+		if ((_columnBitmask & LAYOUTSETPROTOTYPEUUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LAYOUTSETPROTOTYPEUUID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[LAYOUTSETPROTOTYPEUUID_COLUMN_INDEX] =
+				_layoutSetPrototypeUuid;
+		}
+
 		_layoutSetPrototypeUuid = layoutSetPrototypeUuid;
 	}
 
@@ -776,6 +1028,19 @@ public class LayoutSetBranchModelImpl
 	@Override
 	public void setLayoutSetPrototypeLinkEnabled(
 		boolean layoutSetPrototypeLinkEnabled) {
+
+		if ((_columnBitmask & LAYOUTSETPROTOTYPELINKENABLED_COLUMN_BITMASK) ==
+				0) {
+
+			_columnBitmask |= LAYOUTSETPROTOTYPELINKENABLED_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[19];
+			}
+
+			_originalValues[LAYOUTSETPROTOTYPELINKENABLED_COLUMN_INDEX] =
+				_layoutSetPrototypeLinkEnabled;
+		}
 
 		_layoutSetPrototypeLinkEnabled = layoutSetPrototypeLinkEnabled;
 	}
@@ -895,28 +1160,9 @@ public class LayoutSetBranchModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LayoutSetBranchModelImpl layoutSetBranchModelImpl = this;
+		_columnBitmask = 0;
 
-		layoutSetBranchModelImpl._originalGroupId =
-			layoutSetBranchModelImpl._groupId;
-
-		layoutSetBranchModelImpl._setOriginalGroupId = false;
-
-		layoutSetBranchModelImpl._setModifiedDate = false;
-
-		layoutSetBranchModelImpl._originalPrivateLayout =
-			layoutSetBranchModelImpl._privateLayout;
-
-		layoutSetBranchModelImpl._setOriginalPrivateLayout = false;
-
-		layoutSetBranchModelImpl._originalName = layoutSetBranchModelImpl._name;
-
-		layoutSetBranchModelImpl._originalMaster =
-			layoutSetBranchModelImpl._master;
-
-		layoutSetBranchModelImpl._setOriginalMaster = false;
-
-		layoutSetBranchModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -1105,23 +1351,15 @@ public class LayoutSetBranchModelImpl
 	private long _mvccVersion;
 	private long _layoutSetBranchId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private boolean _privateLayout;
-	private boolean _originalPrivateLayout;
-	private boolean _setOriginalPrivateLayout;
 	private String _name;
-	private String _originalName;
 	private String _description;
 	private boolean _master;
-	private boolean _originalMaster;
-	private boolean _setOriginalMaster;
 	private long _logoId;
 	private String _themeId;
 	private String _colorSchemeId;
@@ -1129,7 +1367,8 @@ public class LayoutSetBranchModelImpl
 	private String _settings;
 	private String _layoutSetPrototypeUuid;
 	private boolean _layoutSetPrototypeLinkEnabled;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private LayoutSetBranch _escapedModel;
 
 }

@@ -109,13 +109,29 @@ public class PushNotificationsDeviceModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long PLATFORM_COLUMN_BITMASK = 1L;
+	public static final long PUSHNOTIFICATIONSDEVICEID_COLUMN_BITMASK = 1L;
 
-	public static final long TOKEN_COLUMN_BITMASK = 2L;
+	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
 	public static final long USERID_COLUMN_BITMASK = 4L;
 
-	public static final long PUSHNOTIFICATIONSDEVICEID_COLUMN_BITMASK = 8L;
+	public static final long CREATEDATE_COLUMN_BITMASK = 8L;
+
+	public static final long PLATFORM_COLUMN_BITMASK = 16L;
+
+	public static final long TOKEN_COLUMN_BITMASK = 32L;
+
+	public static final int PUSHNOTIFICATIONSDEVICEID_COLUMN_INDEX = 0;
+
+	public static final int COMPANYID_COLUMN_INDEX = 1;
+
+	public static final int USERID_COLUMN_INDEX = 2;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 3;
+
+	public static final int PLATFORM_COLUMN_INDEX = 4;
+
+	public static final int TOKEN_COLUMN_INDEX = 5;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -359,6 +375,17 @@ public class PushNotificationsDeviceModelImpl
 
 	@Override
 	public void setPushNotificationsDeviceId(long pushNotificationsDeviceId) {
+		if ((_columnBitmask & PUSHNOTIFICATIONSDEVICEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PUSHNOTIFICATIONSDEVICEID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[PUSHNOTIFICATIONSDEVICEID_COLUMN_INDEX] =
+				_pushNotificationsDeviceId;
+		}
+
 		_pushNotificationsDeviceId = pushNotificationsDeviceId;
 	}
 
@@ -370,6 +397,16 @@ public class PushNotificationsDeviceModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -381,12 +418,14 @@ public class PushNotificationsDeviceModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
 
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
 
-			_originalUserId = _userId;
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
 		}
 
 		_userId = userId;
@@ -409,7 +448,15 @@ public class PushNotificationsDeviceModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		if (_originalValues != null) {
+			Object originalUserId = _originalValues[USERID_COLUMN_INDEX];
+
+			if (originalUserId != null) {
+				return (long)originalUserId;
+			}
+		}
+
+		return _userId;
 	}
 
 	@JSON
@@ -420,6 +467,16 @@ public class PushNotificationsDeviceModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -436,17 +493,29 @@ public class PushNotificationsDeviceModelImpl
 
 	@Override
 	public void setPlatform(String platform) {
-		_columnBitmask |= PLATFORM_COLUMN_BITMASK;
+		if ((_columnBitmask & PLATFORM_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PLATFORM_COLUMN_BITMASK;
 
-		if (_originalPlatform == null) {
-			_originalPlatform = _platform;
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[PLATFORM_COLUMN_INDEX] = _platform;
 		}
 
 		_platform = platform;
 	}
 
 	public String getOriginalPlatform() {
-		return GetterUtil.getString(_originalPlatform);
+		if (_originalValues != null) {
+			Object originalPlatform = _originalValues[PLATFORM_COLUMN_INDEX];
+
+			if (originalPlatform != null) {
+				return GetterUtil.getString((String)originalPlatform);
+			}
+		}
+
+		return GetterUtil.getString(_platform);
 	}
 
 	@JSON
@@ -462,17 +531,29 @@ public class PushNotificationsDeviceModelImpl
 
 	@Override
 	public void setToken(String token) {
-		_columnBitmask |= TOKEN_COLUMN_BITMASK;
+		if ((_columnBitmask & TOKEN_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TOKEN_COLUMN_BITMASK;
 
-		if (_originalToken == null) {
-			_originalToken = _token;
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[TOKEN_COLUMN_INDEX] = _token;
 		}
 
 		_token = token;
 	}
 
 	public String getOriginalToken() {
-		return GetterUtil.getString(_originalToken);
+		if (_originalValues != null) {
+			Object originalToken = _originalValues[TOKEN_COLUMN_INDEX];
+
+			if (originalToken != null) {
+				return GetterUtil.getString((String)originalToken);
+			}
+		}
+
+		return GetterUtil.getString(_token);
 	}
 
 	public long getColumnBitmask() {
@@ -581,21 +662,9 @@ public class PushNotificationsDeviceModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		PushNotificationsDeviceModelImpl pushNotificationsDeviceModelImpl =
-			this;
+		_columnBitmask = 0;
 
-		pushNotificationsDeviceModelImpl._originalUserId =
-			pushNotificationsDeviceModelImpl._userId;
-
-		pushNotificationsDeviceModelImpl._setOriginalUserId = false;
-
-		pushNotificationsDeviceModelImpl._originalPlatform =
-			pushNotificationsDeviceModelImpl._platform;
-
-		pushNotificationsDeviceModelImpl._originalToken =
-			pushNotificationsDeviceModelImpl._token;
-
-		pushNotificationsDeviceModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -718,14 +787,11 @@ public class PushNotificationsDeviceModelImpl
 	private long _pushNotificationsDeviceId;
 	private long _companyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private Date _createDate;
 	private String _platform;
-	private String _originalPlatform;
 	private String _token;
-	private String _originalToken;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private PushNotificationsDevice _escapedModel;
 
 }

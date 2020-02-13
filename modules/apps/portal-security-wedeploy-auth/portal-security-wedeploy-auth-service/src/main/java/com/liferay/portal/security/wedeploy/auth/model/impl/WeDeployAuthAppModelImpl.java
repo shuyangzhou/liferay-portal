@@ -113,13 +113,45 @@ public class WeDeployAuthAppModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long CLIENTID_COLUMN_BITMASK = 1L;
+	public static final long WEDEPLOYAUTHAPPID_COLUMN_BITMASK = 1L;
 
-	public static final long CLIENTSECRET_COLUMN_BITMASK = 2L;
+	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
-	public static final long REDIRECTURI_COLUMN_BITMASK = 4L;
+	public static final long USERID_COLUMN_BITMASK = 4L;
 
-	public static final long WEDEPLOYAUTHAPPID_COLUMN_BITMASK = 8L;
+	public static final long USERNAME_COLUMN_BITMASK = 8L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 16L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 32L;
+
+	public static final long NAME_COLUMN_BITMASK = 64L;
+
+	public static final long REDIRECTURI_COLUMN_BITMASK = 128L;
+
+	public static final long CLIENTID_COLUMN_BITMASK = 256L;
+
+	public static final long CLIENTSECRET_COLUMN_BITMASK = 512L;
+
+	public static final int WEDEPLOYAUTHAPPID_COLUMN_INDEX = 0;
+
+	public static final int COMPANYID_COLUMN_INDEX = 1;
+
+	public static final int USERID_COLUMN_INDEX = 2;
+
+	public static final int USERNAME_COLUMN_INDEX = 3;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 4;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 5;
+
+	public static final int NAME_COLUMN_INDEX = 6;
+
+	public static final int REDIRECTURI_COLUMN_INDEX = 7;
+
+	public static final int CLIENTID_COLUMN_INDEX = 8;
+
+	public static final int CLIENTSECRET_COLUMN_INDEX = 9;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -372,6 +404,17 @@ public class WeDeployAuthAppModelImpl
 
 	@Override
 	public void setWeDeployAuthAppId(long weDeployAuthAppId) {
+		if ((_columnBitmask & WEDEPLOYAUTHAPPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= WEDEPLOYAUTHAPPID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[WEDEPLOYAUTHAPPID_COLUMN_INDEX] =
+				_weDeployAuthAppId;
+		}
+
 		_weDeployAuthAppId = weDeployAuthAppId;
 	}
 
@@ -383,6 +426,16 @@ public class WeDeployAuthAppModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -394,6 +447,16 @@ public class WeDeployAuthAppModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -426,6 +489,16 @@ public class WeDeployAuthAppModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -437,6 +510,16 @@ public class WeDeployAuthAppModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -447,12 +530,20 @@ public class WeDeployAuthAppModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -470,6 +561,16 @@ public class WeDeployAuthAppModelImpl
 
 	@Override
 	public void setName(String name) {
+		if ((_columnBitmask & NAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= NAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[NAME_COLUMN_INDEX] = _name;
+		}
+
 		_name = name;
 	}
 
@@ -486,17 +587,30 @@ public class WeDeployAuthAppModelImpl
 
 	@Override
 	public void setRedirectURI(String redirectURI) {
-		_columnBitmask |= REDIRECTURI_COLUMN_BITMASK;
+		if ((_columnBitmask & REDIRECTURI_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= REDIRECTURI_COLUMN_BITMASK;
 
-		if (_originalRedirectURI == null) {
-			_originalRedirectURI = _redirectURI;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[REDIRECTURI_COLUMN_INDEX] = _redirectURI;
 		}
 
 		_redirectURI = redirectURI;
 	}
 
 	public String getOriginalRedirectURI() {
-		return GetterUtil.getString(_originalRedirectURI);
+		if (_originalValues != null) {
+			Object originalRedirectURI =
+				_originalValues[REDIRECTURI_COLUMN_INDEX];
+
+			if (originalRedirectURI != null) {
+				return GetterUtil.getString((String)originalRedirectURI);
+			}
+		}
+
+		return GetterUtil.getString(_redirectURI);
 	}
 
 	@JSON
@@ -512,17 +626,29 @@ public class WeDeployAuthAppModelImpl
 
 	@Override
 	public void setClientId(String clientId) {
-		_columnBitmask |= CLIENTID_COLUMN_BITMASK;
+		if ((_columnBitmask & CLIENTID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLIENTID_COLUMN_BITMASK;
 
-		if (_originalClientId == null) {
-			_originalClientId = _clientId;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[CLIENTID_COLUMN_INDEX] = _clientId;
 		}
 
 		_clientId = clientId;
 	}
 
 	public String getOriginalClientId() {
-		return GetterUtil.getString(_originalClientId);
+		if (_originalValues != null) {
+			Object originalClientId = _originalValues[CLIENTID_COLUMN_INDEX];
+
+			if (originalClientId != null) {
+				return GetterUtil.getString((String)originalClientId);
+			}
+		}
+
+		return GetterUtil.getString(_clientId);
 	}
 
 	@JSON
@@ -538,17 +664,30 @@ public class WeDeployAuthAppModelImpl
 
 	@Override
 	public void setClientSecret(String clientSecret) {
-		_columnBitmask |= CLIENTSECRET_COLUMN_BITMASK;
+		if ((_columnBitmask & CLIENTSECRET_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLIENTSECRET_COLUMN_BITMASK;
 
-		if (_originalClientSecret == null) {
-			_originalClientSecret = _clientSecret;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[CLIENTSECRET_COLUMN_INDEX] = _clientSecret;
 		}
 
 		_clientSecret = clientSecret;
 	}
 
 	public String getOriginalClientSecret() {
-		return GetterUtil.getString(_originalClientSecret);
+		if (_originalValues != null) {
+			Object originalClientSecret =
+				_originalValues[CLIENTSECRET_COLUMN_INDEX];
+
+			if (originalClientSecret != null) {
+				return GetterUtil.getString((String)originalClientSecret);
+			}
+		}
+
+		return GetterUtil.getString(_clientSecret);
 	}
 
 	public long getColumnBitmask() {
@@ -657,20 +796,9 @@ public class WeDeployAuthAppModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WeDeployAuthAppModelImpl weDeployAuthAppModelImpl = this;
+		_columnBitmask = 0;
 
-		weDeployAuthAppModelImpl._setModifiedDate = false;
-
-		weDeployAuthAppModelImpl._originalRedirectURI =
-			weDeployAuthAppModelImpl._redirectURI;
-
-		weDeployAuthAppModelImpl._originalClientId =
-			weDeployAuthAppModelImpl._clientId;
-
-		weDeployAuthAppModelImpl._originalClientSecret =
-			weDeployAuthAppModelImpl._clientSecret;
-
-		weDeployAuthAppModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -824,15 +952,12 @@ public class WeDeployAuthAppModelImpl
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private String _name;
 	private String _redirectURI;
-	private String _originalRedirectURI;
 	private String _clientId;
-	private String _originalClientId;
 	private String _clientSecret;
-	private String _originalClientSecret;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private WeDeployAuthApp _escapedModel;
 
 }

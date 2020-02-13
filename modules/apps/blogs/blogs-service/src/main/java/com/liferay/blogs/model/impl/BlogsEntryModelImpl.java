@@ -151,21 +151,125 @@ public class BlogsEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long DISPLAYDATE_COLUMN_BITMASK = 2L;
+	public static final long UUID_COLUMN_BITMASK = 2L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 4L;
+	public static final long ENTRYID_COLUMN_BITMASK = 4L;
 
-	public static final long STATUS_COLUMN_BITMASK = 8L;
+	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
-	public static final long URLTITLE_COLUMN_BITMASK = 16L;
+	public static final long COMPANYID_COLUMN_BITMASK = 16L;
 
 	public static final long USERID_COLUMN_BITMASK = 32L;
 
-	public static final long UUID_COLUMN_BITMASK = 64L;
+	public static final long USERNAME_COLUMN_BITMASK = 64L;
 
 	public static final long CREATEDATE_COLUMN_BITMASK = 128L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 256L;
+
+	public static final long TITLE_COLUMN_BITMASK = 512L;
+
+	public static final long SUBTITLE_COLUMN_BITMASK = 1024L;
+
+	public static final long URLTITLE_COLUMN_BITMASK = 2048L;
+
+	public static final long DESCRIPTION_COLUMN_BITMASK = 4096L;
+
+	public static final long CONTENT_COLUMN_BITMASK = 8192L;
+
+	public static final long DISPLAYDATE_COLUMN_BITMASK = 16384L;
+
+	public static final long ALLOWPINGBACKS_COLUMN_BITMASK = 32768L;
+
+	public static final long ALLOWTRACKBACKS_COLUMN_BITMASK = 65536L;
+
+	public static final long TRACKBACKS_COLUMN_BITMASK = 131072L;
+
+	public static final long COVERIMAGECAPTION_COLUMN_BITMASK = 262144L;
+
+	public static final long COVERIMAGEFILEENTRYID_COLUMN_BITMASK = 524288L;
+
+	public static final long COVERIMAGEURL_COLUMN_BITMASK = 1048576L;
+
+	public static final long SMALLIMAGE_COLUMN_BITMASK = 2097152L;
+
+	public static final long SMALLIMAGEFILEENTRYID_COLUMN_BITMASK = 4194304L;
+
+	public static final long SMALLIMAGEID_COLUMN_BITMASK = 8388608L;
+
+	public static final long SMALLIMAGEURL_COLUMN_BITMASK = 16777216L;
+
+	public static final long LASTPUBLISHDATE_COLUMN_BITMASK = 33554432L;
+
+	public static final long STATUS_COLUMN_BITMASK = 67108864L;
+
+	public static final long STATUSBYUSERID_COLUMN_BITMASK = 134217728L;
+
+	public static final long STATUSBYUSERNAME_COLUMN_BITMASK = 268435456L;
+
+	public static final long STATUSDATE_COLUMN_BITMASK = 536870912L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int UUID_COLUMN_INDEX = 1;
+
+	public static final int ENTRYID_COLUMN_INDEX = 2;
+
+	public static final int GROUPID_COLUMN_INDEX = 3;
+
+	public static final int COMPANYID_COLUMN_INDEX = 4;
+
+	public static final int USERID_COLUMN_INDEX = 5;
+
+	public static final int USERNAME_COLUMN_INDEX = 6;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 7;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 8;
+
+	public static final int TITLE_COLUMN_INDEX = 9;
+
+	public static final int SUBTITLE_COLUMN_INDEX = 10;
+
+	public static final int URLTITLE_COLUMN_INDEX = 11;
+
+	public static final int DESCRIPTION_COLUMN_INDEX = 12;
+
+	public static final int CONTENT_COLUMN_INDEX = 13;
+
+	public static final int DISPLAYDATE_COLUMN_INDEX = 14;
+
+	public static final int ALLOWPINGBACKS_COLUMN_INDEX = 15;
+
+	public static final int ALLOWTRACKBACKS_COLUMN_INDEX = 16;
+
+	public static final int TRACKBACKS_COLUMN_INDEX = 17;
+
+	public static final int COVERIMAGECAPTION_COLUMN_INDEX = 18;
+
+	public static final int COVERIMAGEFILEENTRYID_COLUMN_INDEX = 19;
+
+	public static final int COVERIMAGEURL_COLUMN_INDEX = 20;
+
+	public static final int SMALLIMAGE_COLUMN_INDEX = 21;
+
+	public static final int SMALLIMAGEFILEENTRYID_COLUMN_INDEX = 22;
+
+	public static final int SMALLIMAGEID_COLUMN_INDEX = 23;
+
+	public static final int SMALLIMAGEURL_COLUMN_INDEX = 24;
+
+	public static final int LASTPUBLISHDATE_COLUMN_INDEX = 25;
+
+	public static final int STATUS_COLUMN_INDEX = 26;
+
+	public static final int STATUSBYUSERID_COLUMN_INDEX = 27;
+
+	public static final int STATUSBYUSERNAME_COLUMN_INDEX = 28;
+
+	public static final int STATUSDATE_COLUMN_INDEX = 29;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -508,6 +612,16 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -524,17 +638,29 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		if ((_columnBitmask & UUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= UUID_COLUMN_BITMASK;
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
+
+			_originalValues[UUID_COLUMN_INDEX] = _uuid;
 		}
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		if (_originalValues != null) {
+			Object originalUuid = _originalValues[UUID_COLUMN_INDEX];
+
+			if (originalUuid != null) {
+				return GetterUtil.getString((String)originalUuid);
+			}
+		}
+
+		return GetterUtil.getString(_uuid);
 	}
 
 	@JSON
@@ -545,6 +671,16 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setEntryId(long entryId) {
+		if ((_columnBitmask & ENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ENTRYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
+
+			_originalValues[ENTRYID_COLUMN_INDEX] = _entryId;
+		}
+
 		_entryId = entryId;
 	}
 
@@ -556,19 +692,29 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@JSON
@@ -579,19 +725,29 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@JSON
@@ -602,12 +758,14 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
 
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
 
-			_originalUserId = _userId;
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
 		}
 
 		_userId = userId;
@@ -630,7 +788,15 @@ public class BlogsEntryModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		if (_originalValues != null) {
+			Object originalUserId = _originalValues[USERID_COLUMN_INDEX];
+
+			if (originalUserId != null) {
+				return (long)originalUserId;
+			}
+		}
+
+		return _userId;
 	}
 
 	@JSON
@@ -646,6 +812,16 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -657,7 +833,15 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
 
 		_createDate = createDate;
 	}
@@ -669,12 +853,20 @@ public class BlogsEntryModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -692,6 +884,16 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setTitle(String title) {
+		if ((_columnBitmask & TITLE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TITLE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
+
+			_originalValues[TITLE_COLUMN_INDEX] = _title;
+		}
+
 		_title = title;
 	}
 
@@ -708,6 +910,16 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setSubtitle(String subtitle) {
+		if ((_columnBitmask & SUBTITLE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SUBTITLE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
+
+			_originalValues[SUBTITLE_COLUMN_INDEX] = _subtitle;
+		}
+
 		_subtitle = subtitle;
 	}
 
@@ -724,17 +936,29 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setUrlTitle(String urlTitle) {
-		_columnBitmask |= URLTITLE_COLUMN_BITMASK;
+		if ((_columnBitmask & URLTITLE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= URLTITLE_COLUMN_BITMASK;
 
-		if (_originalUrlTitle == null) {
-			_originalUrlTitle = _urlTitle;
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
+
+			_originalValues[URLTITLE_COLUMN_INDEX] = _urlTitle;
 		}
 
 		_urlTitle = urlTitle;
 	}
 
 	public String getOriginalUrlTitle() {
-		return GetterUtil.getString(_originalUrlTitle);
+		if (_originalValues != null) {
+			Object originalUrlTitle = _originalValues[URLTITLE_COLUMN_INDEX];
+
+			if (originalUrlTitle != null) {
+				return GetterUtil.getString((String)originalUrlTitle);
+			}
+		}
+
+		return GetterUtil.getString(_urlTitle);
 	}
 
 	@JSON
@@ -750,6 +974,16 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		if ((_columnBitmask & DESCRIPTION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DESCRIPTION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
+
+			_originalValues[DESCRIPTION_COLUMN_INDEX] = _description;
+		}
+
 		_description = description;
 	}
 
@@ -766,6 +1000,16 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setContent(String content) {
+		if ((_columnBitmask & CONTENT_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CONTENT_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
+
+			_originalValues[CONTENT_COLUMN_INDEX] = _content;
+		}
+
 		_content = content;
 	}
 
@@ -777,17 +1021,30 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setDisplayDate(Date displayDate) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & DISPLAYDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DISPLAYDATE_COLUMN_BITMASK;
 
-		if (_originalDisplayDate == null) {
-			_originalDisplayDate = _displayDate;
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
+
+			_originalValues[DISPLAYDATE_COLUMN_INDEX] = _displayDate;
 		}
 
 		_displayDate = displayDate;
 	}
 
 	public Date getOriginalDisplayDate() {
-		return _originalDisplayDate;
+		if (_originalValues != null) {
+			Object originalDisplayDate =
+				_originalValues[DISPLAYDATE_COLUMN_INDEX];
+
+			if (originalDisplayDate != null) {
+				return (Date)originalDisplayDate;
+			}
+		}
+
+		return _displayDate;
 	}
 
 	@JSON
@@ -804,6 +1061,16 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setAllowPingbacks(boolean allowPingbacks) {
+		if ((_columnBitmask & ALLOWPINGBACKS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ALLOWPINGBACKS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
+
+			_originalValues[ALLOWPINGBACKS_COLUMN_INDEX] = _allowPingbacks;
+		}
+
 		_allowPingbacks = allowPingbacks;
 	}
 
@@ -821,6 +1088,16 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setAllowTrackbacks(boolean allowTrackbacks) {
+		if ((_columnBitmask & ALLOWTRACKBACKS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ALLOWTRACKBACKS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
+
+			_originalValues[ALLOWTRACKBACKS_COLUMN_INDEX] = _allowTrackbacks;
+		}
+
 		_allowTrackbacks = allowTrackbacks;
 	}
 
@@ -837,6 +1114,16 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setTrackbacks(String trackbacks) {
+		if ((_columnBitmask & TRACKBACKS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TRACKBACKS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
+
+			_originalValues[TRACKBACKS_COLUMN_INDEX] = _trackbacks;
+		}
+
 		_trackbacks = trackbacks;
 	}
 
@@ -853,6 +1140,17 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setCoverImageCaption(String coverImageCaption) {
+		if ((_columnBitmask & COVERIMAGECAPTION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COVERIMAGECAPTION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
+
+			_originalValues[COVERIMAGECAPTION_COLUMN_INDEX] =
+				_coverImageCaption;
+		}
+
 		_coverImageCaption = coverImageCaption;
 	}
 
@@ -864,6 +1162,17 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setCoverImageFileEntryId(long coverImageFileEntryId) {
+		if ((_columnBitmask & COVERIMAGEFILEENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COVERIMAGEFILEENTRYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
+
+			_originalValues[COVERIMAGEFILEENTRYID_COLUMN_INDEX] =
+				_coverImageFileEntryId;
+		}
+
 		_coverImageFileEntryId = coverImageFileEntryId;
 	}
 
@@ -880,6 +1189,16 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setCoverImageURL(String coverImageURL) {
+		if ((_columnBitmask & COVERIMAGEURL_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COVERIMAGEURL_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
+
+			_originalValues[COVERIMAGEURL_COLUMN_INDEX] = _coverImageURL;
+		}
+
 		_coverImageURL = coverImageURL;
 	}
 
@@ -897,6 +1216,16 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setSmallImage(boolean smallImage) {
+		if ((_columnBitmask & SMALLIMAGE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SMALLIMAGE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
+
+			_originalValues[SMALLIMAGE_COLUMN_INDEX] = _smallImage;
+		}
+
 		_smallImage = smallImage;
 	}
 
@@ -908,6 +1237,17 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setSmallImageFileEntryId(long smallImageFileEntryId) {
+		if ((_columnBitmask & SMALLIMAGEFILEENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SMALLIMAGEFILEENTRYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
+
+			_originalValues[SMALLIMAGEFILEENTRYID_COLUMN_INDEX] =
+				_smallImageFileEntryId;
+		}
+
 		_smallImageFileEntryId = smallImageFileEntryId;
 	}
 
@@ -919,6 +1259,16 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setSmallImageId(long smallImageId) {
+		if ((_columnBitmask & SMALLIMAGEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SMALLIMAGEID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
+
+			_originalValues[SMALLIMAGEID_COLUMN_INDEX] = _smallImageId;
+		}
+
 		_smallImageId = smallImageId;
 	}
 
@@ -935,6 +1285,16 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setSmallImageURL(String smallImageURL) {
+		if ((_columnBitmask & SMALLIMAGEURL_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SMALLIMAGEURL_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
+
+			_originalValues[SMALLIMAGEURL_COLUMN_INDEX] = _smallImageURL;
+		}
+
 		_smallImageURL = smallImageURL;
 	}
 
@@ -946,6 +1306,16 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		if ((_columnBitmask & LASTPUBLISHDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LASTPUBLISHDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
+
+			_originalValues[LASTPUBLISHDATE_COLUMN_INDEX] = _lastPublishDate;
+		}
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -957,19 +1327,29 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
+		if ((_columnBitmask & STATUS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUS_COLUMN_BITMASK;
 
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
 
-			_originalStatus = _status;
+			_originalValues[STATUS_COLUMN_INDEX] = _status;
 		}
 
 		_status = status;
 	}
 
 	public int getOriginalStatus() {
-		return _originalStatus;
+		if (_originalValues != null) {
+			Object originalStatus = _originalValues[STATUS_COLUMN_INDEX];
+
+			if (originalStatus != null) {
+				return (int)originalStatus;
+			}
+		}
+
+		return _status;
 	}
 
 	@JSON
@@ -980,6 +1360,16 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		if ((_columnBitmask & STATUSBYUSERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUSBYUSERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
+
+			_originalValues[STATUSBYUSERID_COLUMN_INDEX] = _statusByUserId;
+		}
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -1012,6 +1402,16 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		if ((_columnBitmask & STATUSBYUSERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUSBYUSERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
+
+			_originalValues[STATUSBYUSERNAME_COLUMN_INDEX] = _statusByUserName;
+		}
+
 		_statusByUserName = statusByUserName;
 	}
 
@@ -1023,6 +1423,16 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		if ((_columnBitmask & STATUSDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUSDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[30];
+			}
+
+			_originalValues[STATUSDATE_COLUMN_INDEX] = _statusDate;
+		}
+
 		_statusDate = statusDate;
 	}
 
@@ -1392,34 +1802,9 @@ public class BlogsEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		BlogsEntryModelImpl blogsEntryModelImpl = this;
+		_columnBitmask = 0;
 
-		blogsEntryModelImpl._originalUuid = blogsEntryModelImpl._uuid;
-
-		blogsEntryModelImpl._originalGroupId = blogsEntryModelImpl._groupId;
-
-		blogsEntryModelImpl._setOriginalGroupId = false;
-
-		blogsEntryModelImpl._originalCompanyId = blogsEntryModelImpl._companyId;
-
-		blogsEntryModelImpl._setOriginalCompanyId = false;
-
-		blogsEntryModelImpl._originalUserId = blogsEntryModelImpl._userId;
-
-		blogsEntryModelImpl._setOriginalUserId = false;
-
-		blogsEntryModelImpl._setModifiedDate = false;
-
-		blogsEntryModelImpl._originalUrlTitle = blogsEntryModelImpl._urlTitle;
-
-		blogsEntryModelImpl._originalDisplayDate =
-			blogsEntryModelImpl._displayDate;
-
-		blogsEntryModelImpl._originalStatus = blogsEntryModelImpl._status;
-
-		blogsEntryModelImpl._setOriginalStatus = false;
-
-		blogsEntryModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -1671,29 +2056,19 @@ public class BlogsEntryModelImpl
 
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _entryId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private String _title;
 	private String _subtitle;
 	private String _urlTitle;
-	private String _originalUrlTitle;
 	private String _description;
 	private String _content;
 	private Date _displayDate;
-	private Date _originalDisplayDate;
 	private boolean _allowPingbacks;
 	private boolean _allowTrackbacks;
 	private String _trackbacks;
@@ -1706,12 +2081,11 @@ public class BlogsEntryModelImpl
 	private String _smallImageURL;
 	private Date _lastPublishDate;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private BlogsEntry _escapedModel;
 
 }

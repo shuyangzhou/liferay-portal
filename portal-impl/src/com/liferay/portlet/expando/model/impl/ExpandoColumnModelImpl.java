@@ -116,9 +116,33 @@ public class ExpandoColumnModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.expando.kernel.model.ExpandoColumn"),
 		true);
 
-	public static final long NAME_COLUMN_BITMASK = 1L;
+	public static final long COLUMNID_COLUMN_BITMASK = 1L;
 
-	public static final long TABLEID_COLUMN_BITMASK = 2L;
+	public static final long COMPANYID_COLUMN_BITMASK = 2L;
+
+	public static final long TABLEID_COLUMN_BITMASK = 4L;
+
+	public static final long NAME_COLUMN_BITMASK = 8L;
+
+	public static final long TYPE_COLUMN_BITMASK = 16L;
+
+	public static final long DEFAULTDATA_COLUMN_BITMASK = 32L;
+
+	public static final long TYPESETTINGS_COLUMN_BITMASK = 64L;
+
+	public static final int COLUMNID_COLUMN_INDEX = 0;
+
+	public static final int COMPANYID_COLUMN_INDEX = 1;
+
+	public static final int TABLEID_COLUMN_INDEX = 2;
+
+	public static final int NAME_COLUMN_INDEX = 3;
+
+	public static final int TYPE_COLUMN_INDEX = 4;
+
+	public static final int DEFAULTDATA_COLUMN_INDEX = 5;
+
+	public static final int TYPESETTINGS_COLUMN_INDEX = 6;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -339,6 +363,16 @@ public class ExpandoColumnModelImpl
 
 	@Override
 	public void setColumnId(long columnId) {
+		if ((_columnBitmask & COLUMNID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COLUMNID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
+
+			_originalValues[COLUMNID_COLUMN_INDEX] = _columnId;
+		}
+
 		_columnId = columnId;
 	}
 
@@ -350,6 +384,16 @@ public class ExpandoColumnModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -361,19 +405,29 @@ public class ExpandoColumnModelImpl
 
 	@Override
 	public void setTableId(long tableId) {
-		_columnBitmask |= TABLEID_COLUMN_BITMASK;
+		if ((_columnBitmask & TABLEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TABLEID_COLUMN_BITMASK;
 
-		if (!_setOriginalTableId) {
-			_setOriginalTableId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
 
-			_originalTableId = _tableId;
+			_originalValues[TABLEID_COLUMN_INDEX] = _tableId;
 		}
 
 		_tableId = tableId;
 	}
 
 	public long getOriginalTableId() {
-		return _originalTableId;
+		if (_originalValues != null) {
+			Object originalTableId = _originalValues[TABLEID_COLUMN_INDEX];
+
+			if (originalTableId != null) {
+				return (long)originalTableId;
+			}
+		}
+
+		return _tableId;
 	}
 
 	@JSON
@@ -389,17 +443,29 @@ public class ExpandoColumnModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & NAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= NAME_COLUMN_BITMASK;
 
-		if (_originalName == null) {
-			_originalName = _name;
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
+
+			_originalValues[NAME_COLUMN_INDEX] = _name;
 		}
 
 		_name = name;
 	}
 
 	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
+		if (_originalValues != null) {
+			Object originalName = _originalValues[NAME_COLUMN_INDEX];
+
+			if (originalName != null) {
+				return GetterUtil.getString((String)originalName);
+			}
+		}
+
+		return GetterUtil.getString(_name);
 	}
 
 	@JSON
@@ -410,6 +476,16 @@ public class ExpandoColumnModelImpl
 
 	@Override
 	public void setType(int type) {
+		if ((_columnBitmask & TYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TYPE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
+
+			_originalValues[TYPE_COLUMN_INDEX] = _type;
+		}
+
 		_type = type;
 	}
 
@@ -426,6 +502,16 @@ public class ExpandoColumnModelImpl
 
 	@Override
 	public void setDefaultData(String defaultData) {
+		if ((_columnBitmask & DEFAULTDATA_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DEFAULTDATA_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
+
+			_originalValues[DEFAULTDATA_COLUMN_INDEX] = _defaultData;
+		}
+
 		_defaultData = defaultData;
 	}
 
@@ -442,6 +528,16 @@ public class ExpandoColumnModelImpl
 
 	@Override
 	public void setTypeSettings(String typeSettings) {
+		if ((_columnBitmask & TYPESETTINGS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TYPESETTINGS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
+
+			_originalValues[TYPESETTINGS_COLUMN_INDEX] = _typeSettings;
+		}
+
 		_typeSettings = typeSettings;
 	}
 
@@ -533,16 +629,9 @@ public class ExpandoColumnModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ExpandoColumnModelImpl expandoColumnModelImpl = this;
+		_columnBitmask = 0;
 
-		expandoColumnModelImpl._originalTableId =
-			expandoColumnModelImpl._tableId;
-
-		expandoColumnModelImpl._setOriginalTableId = false;
-
-		expandoColumnModelImpl._originalName = expandoColumnModelImpl._name;
-
-		expandoColumnModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -658,14 +747,12 @@ public class ExpandoColumnModelImpl
 	private long _columnId;
 	private long _companyId;
 	private long _tableId;
-	private long _originalTableId;
-	private boolean _setOriginalTableId;
 	private String _name;
-	private String _originalName;
 	private int _type;
 	private String _defaultData;
 	private String _typeSettings;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private ExpandoColumn _escapedModel;
 
 }

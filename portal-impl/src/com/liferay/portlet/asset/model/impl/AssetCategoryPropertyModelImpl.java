@@ -133,11 +133,49 @@ public class AssetCategoryPropertyModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.asset.kernel.model.AssetCategoryProperty"),
 		true);
 
-	public static final long CATEGORYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long COMPANYID_COLUMN_BITMASK = 2L;
+	public static final long CTCOLLECTIONID_COLUMN_BITMASK = 2L;
 
-	public static final long KEY_COLUMN_BITMASK = 4L;
+	public static final long CATEGORYPROPERTYID_COLUMN_BITMASK = 4L;
+
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
+
+	public static final long USERID_COLUMN_BITMASK = 16L;
+
+	public static final long USERNAME_COLUMN_BITMASK = 32L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 64L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 128L;
+
+	public static final long CATEGORYID_COLUMN_BITMASK = 256L;
+
+	public static final long KEY_COLUMN_BITMASK = 512L;
+
+	public static final long VALUE_COLUMN_BITMASK = 1024L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int CTCOLLECTIONID_COLUMN_INDEX = 1;
+
+	public static final int CATEGORYPROPERTYID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int USERID_COLUMN_INDEX = 4;
+
+	public static final int USERNAME_COLUMN_INDEX = 5;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 6;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 7;
+
+	public static final int CATEGORYID_COLUMN_INDEX = 8;
+
+	public static final int KEY_COLUMN_INDEX = 9;
+
+	public static final int VALUE_COLUMN_INDEX = 10;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -407,6 +445,16 @@ public class AssetCategoryPropertyModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -418,6 +466,16 @@ public class AssetCategoryPropertyModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		if ((_columnBitmask & CTCOLLECTIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CTCOLLECTIONID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[CTCOLLECTIONID_COLUMN_INDEX] = _ctCollectionId;
+		}
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -429,6 +487,17 @@ public class AssetCategoryPropertyModelImpl
 
 	@Override
 	public void setCategoryPropertyId(long categoryPropertyId) {
+		if ((_columnBitmask & CATEGORYPROPERTYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CATEGORYPROPERTYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[CATEGORYPROPERTYID_COLUMN_INDEX] =
+				_categoryPropertyId;
+		}
+
 		_categoryPropertyId = categoryPropertyId;
 	}
 
@@ -440,19 +509,29 @@ public class AssetCategoryPropertyModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@JSON
@@ -463,6 +542,16 @@ public class AssetCategoryPropertyModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -495,6 +584,16 @@ public class AssetCategoryPropertyModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -506,6 +605,16 @@ public class AssetCategoryPropertyModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -516,12 +625,20 @@ public class AssetCategoryPropertyModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -534,19 +651,30 @@ public class AssetCategoryPropertyModelImpl
 
 	@Override
 	public void setCategoryId(long categoryId) {
-		_columnBitmask |= CATEGORYID_COLUMN_BITMASK;
+		if ((_columnBitmask & CATEGORYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CATEGORYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCategoryId) {
-			_setOriginalCategoryId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
 
-			_originalCategoryId = _categoryId;
+			_originalValues[CATEGORYID_COLUMN_INDEX] = _categoryId;
 		}
 
 		_categoryId = categoryId;
 	}
 
 	public long getOriginalCategoryId() {
-		return _originalCategoryId;
+		if (_originalValues != null) {
+			Object originalCategoryId =
+				_originalValues[CATEGORYID_COLUMN_INDEX];
+
+			if (originalCategoryId != null) {
+				return (long)originalCategoryId;
+			}
+		}
+
+		return _categoryId;
 	}
 
 	@JSON
@@ -562,17 +690,29 @@ public class AssetCategoryPropertyModelImpl
 
 	@Override
 	public void setKey(String key) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & KEY_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= KEY_COLUMN_BITMASK;
 
-		if (_originalKey == null) {
-			_originalKey = _key;
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[KEY_COLUMN_INDEX] = _key;
 		}
 
 		_key = key;
 	}
 
 	public String getOriginalKey() {
-		return GetterUtil.getString(_originalKey);
+		if (_originalValues != null) {
+			Object originalKey = _originalValues[KEY_COLUMN_INDEX];
+
+			if (originalKey != null) {
+				return GetterUtil.getString((String)originalKey);
+			}
+		}
+
+		return GetterUtil.getString(_key);
 	}
 
 	@JSON
@@ -588,6 +728,16 @@ public class AssetCategoryPropertyModelImpl
 
 	@Override
 	public void setValue(String value) {
+		if ((_columnBitmask & VALUE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= VALUE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[VALUE_COLUMN_INDEX] = _value;
+		}
+
 		_value = value;
 	}
 
@@ -700,24 +850,9 @@ public class AssetCategoryPropertyModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AssetCategoryPropertyModelImpl assetCategoryPropertyModelImpl = this;
+		_columnBitmask = 0;
 
-		assetCategoryPropertyModelImpl._originalCompanyId =
-			assetCategoryPropertyModelImpl._companyId;
-
-		assetCategoryPropertyModelImpl._setOriginalCompanyId = false;
-
-		assetCategoryPropertyModelImpl._setModifiedDate = false;
-
-		assetCategoryPropertyModelImpl._originalCategoryId =
-			assetCategoryPropertyModelImpl._categoryId;
-
-		assetCategoryPropertyModelImpl._setOriginalCategoryId = false;
-
-		assetCategoryPropertyModelImpl._originalKey =
-			assetCategoryPropertyModelImpl._key;
-
-		assetCategoryPropertyModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -860,20 +995,15 @@ public class AssetCategoryPropertyModelImpl
 	private long _ctCollectionId;
 	private long _categoryPropertyId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _categoryId;
-	private long _originalCategoryId;
-	private boolean _setOriginalCategoryId;
 	private String _key;
-	private String _originalKey;
 	private String _value;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private AssetCategoryProperty _escapedModel;
 
 }

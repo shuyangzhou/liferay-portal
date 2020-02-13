@@ -107,13 +107,49 @@ public class CTEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long CTCOLLECTIONID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long MODELCLASSNAMEID_COLUMN_BITMASK = 2L;
+	public static final long CTENTRYID_COLUMN_BITMASK = 2L;
 
-	public static final long MODELCLASSPK_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
-	public static final long CTENTRYID_COLUMN_BITMASK = 8L;
+	public static final long USERID_COLUMN_BITMASK = 8L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 16L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 32L;
+
+	public static final long CTCOLLECTIONID_COLUMN_BITMASK = 64L;
+
+	public static final long MODELCLASSNAMEID_COLUMN_BITMASK = 128L;
+
+	public static final long MODELCLASSPK_COLUMN_BITMASK = 256L;
+
+	public static final long MODELMVCCVERSION_COLUMN_BITMASK = 512L;
+
+	public static final long CHANGETYPE_COLUMN_BITMASK = 1024L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int CTENTRYID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int USERID_COLUMN_INDEX = 3;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 4;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 5;
+
+	public static final int CTCOLLECTIONID_COLUMN_INDEX = 6;
+
+	public static final int MODELCLASSNAMEID_COLUMN_INDEX = 7;
+
+	public static final int MODELCLASSPK_COLUMN_INDEX = 8;
+
+	public static final int MODELMVCCVERSION_COLUMN_INDEX = 9;
+
+	public static final int CHANGETYPE_COLUMN_INDEX = 10;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -303,6 +339,16 @@ public class CTEntryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -313,6 +359,16 @@ public class CTEntryModelImpl
 
 	@Override
 	public void setCtEntryId(long ctEntryId) {
+		if ((_columnBitmask & CTENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CTENTRYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[CTENTRYID_COLUMN_INDEX] = _ctEntryId;
+		}
+
 		_ctEntryId = ctEntryId;
 	}
 
@@ -323,6 +379,16 @@ public class CTEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -333,6 +399,16 @@ public class CTEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -359,6 +435,16 @@ public class CTEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -368,12 +454,20 @@ public class CTEntryModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -385,19 +479,30 @@ public class CTEntryModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
-		_columnBitmask |= CTCOLLECTIONID_COLUMN_BITMASK;
+		if ((_columnBitmask & CTCOLLECTIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CTCOLLECTIONID_COLUMN_BITMASK;
 
-		if (!_setOriginalCtCollectionId) {
-			_setOriginalCtCollectionId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
 
-			_originalCtCollectionId = _ctCollectionId;
+			_originalValues[CTCOLLECTIONID_COLUMN_INDEX] = _ctCollectionId;
 		}
 
 		_ctCollectionId = ctCollectionId;
 	}
 
 	public long getOriginalCtCollectionId() {
-		return _originalCtCollectionId;
+		if (_originalValues != null) {
+			Object originalCtCollectionId =
+				_originalValues[CTCOLLECTIONID_COLUMN_INDEX];
+
+			if (originalCtCollectionId != null) {
+				return (long)originalCtCollectionId;
+			}
+		}
+
+		return _ctCollectionId;
 	}
 
 	@Override
@@ -407,19 +512,30 @@ public class CTEntryModelImpl
 
 	@Override
 	public void setModelClassNameId(long modelClassNameId) {
-		_columnBitmask |= MODELCLASSNAMEID_COLUMN_BITMASK;
+		if ((_columnBitmask & MODELCLASSNAMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODELCLASSNAMEID_COLUMN_BITMASK;
 
-		if (!_setOriginalModelClassNameId) {
-			_setOriginalModelClassNameId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
 
-			_originalModelClassNameId = _modelClassNameId;
+			_originalValues[MODELCLASSNAMEID_COLUMN_INDEX] = _modelClassNameId;
 		}
 
 		_modelClassNameId = modelClassNameId;
 	}
 
 	public long getOriginalModelClassNameId() {
-		return _originalModelClassNameId;
+		if (_originalValues != null) {
+			Object originalModelClassNameId =
+				_originalValues[MODELCLASSNAMEID_COLUMN_INDEX];
+
+			if (originalModelClassNameId != null) {
+				return (long)originalModelClassNameId;
+			}
+		}
+
+		return _modelClassNameId;
 	}
 
 	@Override
@@ -429,19 +545,30 @@ public class CTEntryModelImpl
 
 	@Override
 	public void setModelClassPK(long modelClassPK) {
-		_columnBitmask |= MODELCLASSPK_COLUMN_BITMASK;
+		if ((_columnBitmask & MODELCLASSPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODELCLASSPK_COLUMN_BITMASK;
 
-		if (!_setOriginalModelClassPK) {
-			_setOriginalModelClassPK = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
 
-			_originalModelClassPK = _modelClassPK;
+			_originalValues[MODELCLASSPK_COLUMN_INDEX] = _modelClassPK;
 		}
 
 		_modelClassPK = modelClassPK;
 	}
 
 	public long getOriginalModelClassPK() {
-		return _originalModelClassPK;
+		if (_originalValues != null) {
+			Object originalModelClassPK =
+				_originalValues[MODELCLASSPK_COLUMN_INDEX];
+
+			if (originalModelClassPK != null) {
+				return (long)originalModelClassPK;
+			}
+		}
+
+		return _modelClassPK;
 	}
 
 	@Override
@@ -451,6 +578,16 @@ public class CTEntryModelImpl
 
 	@Override
 	public void setModelMvccVersion(long modelMvccVersion) {
+		if ((_columnBitmask & MODELMVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODELMVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[MODELMVCCVERSION_COLUMN_INDEX] = _modelMvccVersion;
+		}
+
 		_modelMvccVersion = modelMvccVersion;
 	}
 
@@ -461,6 +598,16 @@ public class CTEntryModelImpl
 
 	@Override
 	public void setChangeType(int changeType) {
+		if ((_columnBitmask & CHANGETYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CHANGETYPE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[11];
+			}
+
+			_originalValues[CHANGETYPE_COLUMN_INDEX] = _changeType;
+		}
+
 		_changeType = changeType;
 	}
 
@@ -571,25 +718,9 @@ public class CTEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		CTEntryModelImpl ctEntryModelImpl = this;
+		_columnBitmask = 0;
 
-		ctEntryModelImpl._setModifiedDate = false;
-
-		ctEntryModelImpl._originalCtCollectionId =
-			ctEntryModelImpl._ctCollectionId;
-
-		ctEntryModelImpl._setOriginalCtCollectionId = false;
-
-		ctEntryModelImpl._originalModelClassNameId =
-			ctEntryModelImpl._modelClassNameId;
-
-		ctEntryModelImpl._setOriginalModelClassNameId = false;
-
-		ctEntryModelImpl._originalModelClassPK = ctEntryModelImpl._modelClassPK;
-
-		ctEntryModelImpl._setOriginalModelClassPK = false;
-
-		ctEntryModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -714,19 +845,13 @@ public class CTEntryModelImpl
 	private long _userId;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _ctCollectionId;
-	private long _originalCtCollectionId;
-	private boolean _setOriginalCtCollectionId;
 	private long _modelClassNameId;
-	private long _originalModelClassNameId;
-	private boolean _setOriginalModelClassNameId;
 	private long _modelClassPK;
-	private long _originalModelClassPK;
-	private boolean _setOriginalModelClassPK;
 	private long _modelMvccVersion;
 	private int _changeType;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private CTEntry _escapedModel;
 
 }

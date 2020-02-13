@@ -113,9 +113,29 @@ public class UserTrackerPathModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.UserTrackerPath"),
 		true);
 
-	public static final long USERTRACKERID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
 	public static final long USERTRACKERPATHID_COLUMN_BITMASK = 2L;
+
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
+
+	public static final long USERTRACKERID_COLUMN_BITMASK = 8L;
+
+	public static final long PATH_COLUMN_BITMASK = 16L;
+
+	public static final long PATHDATE_COLUMN_BITMASK = 32L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int USERTRACKERPATHID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int USERTRACKERID_COLUMN_INDEX = 3;
+
+	public static final int PATH_COLUMN_INDEX = 4;
+
+	public static final int PATHDATE_COLUMN_INDEX = 5;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -293,6 +313,16 @@ public class UserTrackerPathModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -303,6 +333,17 @@ public class UserTrackerPathModelImpl
 
 	@Override
 	public void setUserTrackerPathId(long userTrackerPathId) {
+		if ((_columnBitmask & USERTRACKERPATHID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERTRACKERPATHID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[USERTRACKERPATHID_COLUMN_INDEX] =
+				_userTrackerPathId;
+		}
+
 		_userTrackerPathId = userTrackerPathId;
 	}
 
@@ -313,6 +354,16 @@ public class UserTrackerPathModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -323,19 +374,30 @@ public class UserTrackerPathModelImpl
 
 	@Override
 	public void setUserTrackerId(long userTrackerId) {
-		_columnBitmask |= USERTRACKERID_COLUMN_BITMASK;
+		if ((_columnBitmask & USERTRACKERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERTRACKERID_COLUMN_BITMASK;
 
-		if (!_setOriginalUserTrackerId) {
-			_setOriginalUserTrackerId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
 
-			_originalUserTrackerId = _userTrackerId;
+			_originalValues[USERTRACKERID_COLUMN_INDEX] = _userTrackerId;
 		}
 
 		_userTrackerId = userTrackerId;
 	}
 
 	public long getOriginalUserTrackerId() {
-		return _originalUserTrackerId;
+		if (_originalValues != null) {
+			Object originalUserTrackerId =
+				_originalValues[USERTRACKERID_COLUMN_INDEX];
+
+			if (originalUserTrackerId != null) {
+				return (long)originalUserTrackerId;
+			}
+		}
+
+		return _userTrackerId;
 	}
 
 	@Override
@@ -350,6 +412,16 @@ public class UserTrackerPathModelImpl
 
 	@Override
 	public void setPath(String path) {
+		if ((_columnBitmask & PATH_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PATH_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[PATH_COLUMN_INDEX] = _path;
+		}
+
 		_path = path;
 	}
 
@@ -360,6 +432,16 @@ public class UserTrackerPathModelImpl
 
 	@Override
 	public void setPathDate(Date pathDate) {
+		if ((_columnBitmask & PATHDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PATHDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[6];
+			}
+
+			_originalValues[PATHDATE_COLUMN_INDEX] = _pathDate;
+		}
+
 		_pathDate = pathDate;
 	}
 
@@ -465,14 +547,9 @@ public class UserTrackerPathModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		UserTrackerPathModelImpl userTrackerPathModelImpl = this;
+		_columnBitmask = 0;
 
-		userTrackerPathModelImpl._originalUserTrackerId =
-			userTrackerPathModelImpl._userTrackerId;
-
-		userTrackerPathModelImpl._setOriginalUserTrackerId = false;
-
-		userTrackerPathModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -582,11 +659,10 @@ public class UserTrackerPathModelImpl
 	private long _userTrackerPathId;
 	private long _companyId;
 	private long _userTrackerId;
-	private long _originalUserTrackerId;
-	private boolean _setOriginalUserTrackerId;
 	private String _path;
 	private Date _pathDate;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private UserTrackerPath _escapedModel;
 
 }

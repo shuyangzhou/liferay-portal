@@ -133,23 +133,73 @@ public class SegmentsExperienceModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long ACTIVE_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long CLASSNAMEID_COLUMN_BITMASK = 2L;
+	public static final long UUID_COLUMN_BITMASK = 2L;
 
-	public static final long CLASSPK_COLUMN_BITMASK = 4L;
+	public static final long SEGMENTSEXPERIENCEID_COLUMN_BITMASK = 4L;
 
-	public static final long COMPANYID_COLUMN_BITMASK = 8L;
+	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 16L;
+	public static final long COMPANYID_COLUMN_BITMASK = 16L;
 
-	public static final long PRIORITY_COLUMN_BITMASK = 32L;
+	public static final long USERID_COLUMN_BITMASK = 32L;
 
-	public static final long SEGMENTSENTRYID_COLUMN_BITMASK = 64L;
+	public static final long USERNAME_COLUMN_BITMASK = 64L;
 
-	public static final long SEGMENTSEXPERIENCEKEY_COLUMN_BITMASK = 128L;
+	public static final long CREATEDATE_COLUMN_BITMASK = 128L;
 
-	public static final long UUID_COLUMN_BITMASK = 256L;
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 256L;
+
+	public static final long SEGMENTSENTRYID_COLUMN_BITMASK = 512L;
+
+	public static final long SEGMENTSEXPERIENCEKEY_COLUMN_BITMASK = 1024L;
+
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 2048L;
+
+	public static final long CLASSPK_COLUMN_BITMASK = 4096L;
+
+	public static final long NAME_COLUMN_BITMASK = 8192L;
+
+	public static final long PRIORITY_COLUMN_BITMASK = 16384L;
+
+	public static final long ACTIVE_COLUMN_BITMASK = 32768L;
+
+	public static final long LASTPUBLISHDATE_COLUMN_BITMASK = 65536L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int UUID_COLUMN_INDEX = 1;
+
+	public static final int SEGMENTSEXPERIENCEID_COLUMN_INDEX = 2;
+
+	public static final int GROUPID_COLUMN_INDEX = 3;
+
+	public static final int COMPANYID_COLUMN_INDEX = 4;
+
+	public static final int USERID_COLUMN_INDEX = 5;
+
+	public static final int USERNAME_COLUMN_INDEX = 6;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 7;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 8;
+
+	public static final int SEGMENTSENTRYID_COLUMN_INDEX = 9;
+
+	public static final int SEGMENTSEXPERIENCEKEY_COLUMN_INDEX = 10;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 11;
+
+	public static final int CLASSPK_COLUMN_INDEX = 12;
+
+	public static final int NAME_COLUMN_INDEX = 13;
+
+	public static final int PRIORITY_COLUMN_INDEX = 14;
+
+	public static final int ACTIVE_COLUMN_INDEX = 15;
+
+	public static final int LASTPUBLISHDATE_COLUMN_INDEX = 16;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -459,6 +509,16 @@ public class SegmentsExperienceModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -475,17 +535,29 @@ public class SegmentsExperienceModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		if ((_columnBitmask & UUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= UUID_COLUMN_BITMASK;
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[UUID_COLUMN_INDEX] = _uuid;
 		}
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		if (_originalValues != null) {
+			Object originalUuid = _originalValues[UUID_COLUMN_INDEX];
+
+			if (originalUuid != null) {
+				return GetterUtil.getString((String)originalUuid);
+			}
+		}
+
+		return GetterUtil.getString(_uuid);
 	}
 
 	@JSON
@@ -496,6 +568,17 @@ public class SegmentsExperienceModelImpl
 
 	@Override
 	public void setSegmentsExperienceId(long segmentsExperienceId) {
+		if ((_columnBitmask & SEGMENTSEXPERIENCEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SEGMENTSEXPERIENCEID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[SEGMENTSEXPERIENCEID_COLUMN_INDEX] =
+				_segmentsExperienceId;
+		}
+
 		_segmentsExperienceId = segmentsExperienceId;
 	}
 
@@ -507,19 +590,29 @@ public class SegmentsExperienceModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@JSON
@@ -530,19 +623,29 @@ public class SegmentsExperienceModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@JSON
@@ -553,6 +656,16 @@ public class SegmentsExperienceModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -585,6 +698,16 @@ public class SegmentsExperienceModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -596,6 +719,16 @@ public class SegmentsExperienceModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -606,12 +739,20 @@ public class SegmentsExperienceModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -624,19 +765,30 @@ public class SegmentsExperienceModelImpl
 
 	@Override
 	public void setSegmentsEntryId(long segmentsEntryId) {
-		_columnBitmask |= SEGMENTSENTRYID_COLUMN_BITMASK;
+		if ((_columnBitmask & SEGMENTSENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SEGMENTSENTRYID_COLUMN_BITMASK;
 
-		if (!_setOriginalSegmentsEntryId) {
-			_setOriginalSegmentsEntryId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
 
-			_originalSegmentsEntryId = _segmentsEntryId;
+			_originalValues[SEGMENTSENTRYID_COLUMN_INDEX] = _segmentsEntryId;
 		}
 
 		_segmentsEntryId = segmentsEntryId;
 	}
 
 	public long getOriginalSegmentsEntryId() {
-		return _originalSegmentsEntryId;
+		if (_originalValues != null) {
+			Object originalSegmentsEntryId =
+				_originalValues[SEGMENTSENTRYID_COLUMN_INDEX];
+
+			if (originalSegmentsEntryId != null) {
+				return (long)originalSegmentsEntryId;
+			}
+		}
+
+		return _segmentsEntryId;
 	}
 
 	@JSON
@@ -652,17 +804,32 @@ public class SegmentsExperienceModelImpl
 
 	@Override
 	public void setSegmentsExperienceKey(String segmentsExperienceKey) {
-		_columnBitmask |= SEGMENTSEXPERIENCEKEY_COLUMN_BITMASK;
+		if ((_columnBitmask & SEGMENTSEXPERIENCEKEY_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SEGMENTSEXPERIENCEKEY_COLUMN_BITMASK;
 
-		if (_originalSegmentsExperienceKey == null) {
-			_originalSegmentsExperienceKey = _segmentsExperienceKey;
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[SEGMENTSEXPERIENCEKEY_COLUMN_INDEX] =
+				_segmentsExperienceKey;
 		}
 
 		_segmentsExperienceKey = segmentsExperienceKey;
 	}
 
 	public String getOriginalSegmentsExperienceKey() {
-		return GetterUtil.getString(_originalSegmentsExperienceKey);
+		if (_originalValues != null) {
+			Object originalSegmentsExperienceKey =
+				_originalValues[SEGMENTSEXPERIENCEKEY_COLUMN_INDEX];
+
+			if (originalSegmentsExperienceKey != null) {
+				return GetterUtil.getString(
+					(String)originalSegmentsExperienceKey);
+			}
+		}
+
+		return GetterUtil.getString(_segmentsExperienceKey);
 	}
 
 	@Override
@@ -693,19 +860,30 @@ public class SegmentsExperienceModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSNAMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
 
-			_originalClassNameId = _classNameId;
+			_originalValues[CLASSNAMEID_COLUMN_INDEX] = _classNameId;
 		}
 
 		_classNameId = classNameId;
 	}
 
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		if (_originalValues != null) {
+			Object originalClassNameId =
+				_originalValues[CLASSNAMEID_COLUMN_INDEX];
+
+			if (originalClassNameId != null) {
+				return (long)originalClassNameId;
+			}
+		}
+
+		return _classNameId;
 	}
 
 	@JSON
@@ -716,19 +894,29 @@ public class SegmentsExperienceModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSPK_COLUMN_BITMASK;
 
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
 
-			_originalClassPK = _classPK;
+			_originalValues[CLASSPK_COLUMN_INDEX] = _classPK;
 		}
 
 		_classPK = classPK;
 	}
 
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		if (_originalValues != null) {
+			Object originalClassPK = _originalValues[CLASSPK_COLUMN_INDEX];
+
+			if (originalClassPK != null) {
+				return (long)originalClassPK;
+			}
+		}
+
+		return _classPK;
 	}
 
 	@JSON
@@ -787,6 +975,16 @@ public class SegmentsExperienceModelImpl
 
 	@Override
 	public void setName(String name) {
+		if ((_columnBitmask & NAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= NAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[NAME_COLUMN_INDEX] = _name;
+		}
+
 		_name = name;
 	}
 
@@ -842,19 +1040,29 @@ public class SegmentsExperienceModelImpl
 
 	@Override
 	public void setPriority(int priority) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & PRIORITY_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PRIORITY_COLUMN_BITMASK;
 
-		if (!_setOriginalPriority) {
-			_setOriginalPriority = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
 
-			_originalPriority = _priority;
+			_originalValues[PRIORITY_COLUMN_INDEX] = _priority;
 		}
 
 		_priority = priority;
 	}
 
 	public int getOriginalPriority() {
-		return _originalPriority;
+		if (_originalValues != null) {
+			Object originalPriority = _originalValues[PRIORITY_COLUMN_INDEX];
+
+			if (originalPriority != null) {
+				return (int)originalPriority;
+			}
+		}
+
+		return _priority;
 	}
 
 	@JSON
@@ -871,19 +1079,29 @@ public class SegmentsExperienceModelImpl
 
 	@Override
 	public void setActive(boolean active) {
-		_columnBitmask |= ACTIVE_COLUMN_BITMASK;
+		if ((_columnBitmask & ACTIVE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ACTIVE_COLUMN_BITMASK;
 
-		if (!_setOriginalActive) {
-			_setOriginalActive = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
 
-			_originalActive = _active;
+			_originalValues[ACTIVE_COLUMN_INDEX] = _active;
 		}
 
 		_active = active;
 	}
 
 	public boolean getOriginalActive() {
-		return _originalActive;
+		if (_originalValues != null) {
+			Object originalActive = _originalValues[ACTIVE_COLUMN_INDEX];
+
+			if (originalActive != null) {
+				return (boolean)originalActive;
+			}
+		}
+
+		return _active;
 	}
 
 	@JSON
@@ -894,6 +1112,16 @@ public class SegmentsExperienceModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		if ((_columnBitmask & LASTPUBLISHDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LASTPUBLISHDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[17];
+			}
+
+			_originalValues[LASTPUBLISHDATE_COLUMN_INDEX] = _lastPublishDate;
+		}
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -1095,52 +1323,9 @@ public class SegmentsExperienceModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SegmentsExperienceModelImpl segmentsExperienceModelImpl = this;
+		_columnBitmask = 0;
 
-		segmentsExperienceModelImpl._originalUuid =
-			segmentsExperienceModelImpl._uuid;
-
-		segmentsExperienceModelImpl._originalGroupId =
-			segmentsExperienceModelImpl._groupId;
-
-		segmentsExperienceModelImpl._setOriginalGroupId = false;
-
-		segmentsExperienceModelImpl._originalCompanyId =
-			segmentsExperienceModelImpl._companyId;
-
-		segmentsExperienceModelImpl._setOriginalCompanyId = false;
-
-		segmentsExperienceModelImpl._setModifiedDate = false;
-
-		segmentsExperienceModelImpl._originalSegmentsEntryId =
-			segmentsExperienceModelImpl._segmentsEntryId;
-
-		segmentsExperienceModelImpl._setOriginalSegmentsEntryId = false;
-
-		segmentsExperienceModelImpl._originalSegmentsExperienceKey =
-			segmentsExperienceModelImpl._segmentsExperienceKey;
-
-		segmentsExperienceModelImpl._originalClassNameId =
-			segmentsExperienceModelImpl._classNameId;
-
-		segmentsExperienceModelImpl._setOriginalClassNameId = false;
-
-		segmentsExperienceModelImpl._originalClassPK =
-			segmentsExperienceModelImpl._classPK;
-
-		segmentsExperienceModelImpl._setOriginalClassPK = false;
-
-		segmentsExperienceModelImpl._originalPriority =
-			segmentsExperienceModelImpl._priority;
-
-		segmentsExperienceModelImpl._setOriginalPriority = false;
-
-		segmentsExperienceModelImpl._originalActive =
-			segmentsExperienceModelImpl._active;
-
-		segmentsExperienceModelImpl._setOriginalActive = false;
-
-		segmentsExperienceModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -1311,40 +1496,24 @@ public class SegmentsExperienceModelImpl
 
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _segmentsExperienceId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _segmentsEntryId;
-	private long _originalSegmentsEntryId;
-	private boolean _setOriginalSegmentsEntryId;
 	private String _segmentsExperienceKey;
-	private String _originalSegmentsExperienceKey;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private String _name;
 	private String _nameCurrentLanguageId;
 	private int _priority;
-	private int _originalPriority;
-	private boolean _setOriginalPriority;
 	private boolean _active;
-	private boolean _originalActive;
-	private boolean _setOriginalActive;
 	private Date _lastPublishDate;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private SegmentsExperience _escapedModel;
 
 }

@@ -104,6 +104,14 @@ public class EagerBlobEntityModelImpl
 
 	public static final boolean FINDER_CACHE_ENABLED = false;
 
+	public static final int UUID_COLUMN_INDEX = 0;
+
+	public static final int EAGERBLOBENTITYID_COLUMN_INDEX = 1;
+
+	public static final int GROUPID_COLUMN_INDEX = 2;
+
+	public static final int BLOB_COLUMN_INDEX = 3;
+
 	/**
 	 * Converts the soap model instance into a normal model instance.
 	 *
@@ -319,15 +327,27 @@ public class EagerBlobEntityModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+		if (_originalValues == null) {
+			_originalValues = new Object[4];
+		}
+
+		if (_originalValues[UUID_COLUMN_INDEX] == null) {
+			_originalValues[UUID_COLUMN_INDEX] = _uuid;
 		}
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		if (_originalValues != null) {
+			Object originalUuid = _originalValues[UUID_COLUMN_INDEX];
+
+			if (originalUuid != null) {
+				return GetterUtil.getString((String)originalUuid);
+			}
+		}
+
+		return GetterUtil.getString(_uuid);
 	}
 
 	@JSON
@@ -338,6 +358,15 @@ public class EagerBlobEntityModelImpl
 
 	@Override
 	public void setEagerBlobEntityId(long eagerBlobEntityId) {
+		if (_originalValues == null) {
+			_originalValues = new Object[4];
+		}
+
+		if (_originalValues[EAGERBLOBENTITYID_COLUMN_INDEX] == null) {
+			_originalValues[EAGERBLOBENTITYID_COLUMN_INDEX] =
+				_eagerBlobEntityId;
+		}
+
 		_eagerBlobEntityId = eagerBlobEntityId;
 	}
 
@@ -349,17 +378,27 @@ public class EagerBlobEntityModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+		if (_originalValues == null) {
+			_originalValues = new Object[4];
+		}
 
-			_originalGroupId = _groupId;
+		if (_originalValues[GROUPID_COLUMN_INDEX] == null) {
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@JSON
@@ -370,6 +409,14 @@ public class EagerBlobEntityModelImpl
 
 	@Override
 	public void setBlob(Blob blob) {
+		if (_originalValues == null) {
+			_originalValues = new Object[4];
+		}
+
+		if (_originalValues[BLOB_COLUMN_INDEX] == null) {
+			_originalValues[BLOB_COLUMN_INDEX] = _blob;
+		}
+
 		_blob = blob;
 	}
 
@@ -468,14 +515,7 @@ public class EagerBlobEntityModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		EagerBlobEntityModelImpl eagerBlobEntityModelImpl = this;
-
-		eagerBlobEntityModelImpl._originalUuid = eagerBlobEntityModelImpl._uuid;
-
-		eagerBlobEntityModelImpl._originalGroupId =
-			eagerBlobEntityModelImpl._groupId;
-
-		eagerBlobEntityModelImpl._setOriginalGroupId = false;
+		_originalValues = null;
 	}
 
 	@Override
@@ -569,12 +609,10 @@ public class EagerBlobEntityModelImpl
 	}
 
 	private String _uuid;
-	private String _originalUuid;
 	private long _eagerBlobEntityId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private Blob _blob;
+	private Object[] _originalValues;
 	private EagerBlobEntity _escapedModel;
 
 }

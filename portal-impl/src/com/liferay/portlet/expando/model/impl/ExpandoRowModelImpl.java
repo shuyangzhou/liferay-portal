@@ -107,11 +107,25 @@ public class ExpandoRowModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.expando.kernel.model.ExpandoRow"),
 		true);
 
-	public static final long CLASSPK_COLUMN_BITMASK = 1L;
+	public static final long ROWID_COLUMN_BITMASK = 1L;
 
-	public static final long TABLEID_COLUMN_BITMASK = 2L;
+	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
-	public static final long ROWID_COLUMN_BITMASK = 4L;
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 4L;
+
+	public static final long TABLEID_COLUMN_BITMASK = 8L;
+
+	public static final long CLASSPK_COLUMN_BITMASK = 16L;
+
+	public static final int ROWID_COLUMN_INDEX = 0;
+
+	public static final int COMPANYID_COLUMN_INDEX = 1;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 2;
+
+	public static final int TABLEID_COLUMN_INDEX = 3;
+
+	public static final int CLASSPK_COLUMN_INDEX = 4;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -275,6 +289,16 @@ public class ExpandoRowModelImpl
 
 	@Override
 	public void setRowId(long rowId) {
+		if ((_columnBitmask & ROWID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ROWID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[ROWID_COLUMN_INDEX] = _rowId;
+		}
+
 		_rowId = rowId;
 	}
 
@@ -285,6 +309,16 @@ public class ExpandoRowModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -295,6 +329,16 @@ public class ExpandoRowModelImpl
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -305,19 +349,29 @@ public class ExpandoRowModelImpl
 
 	@Override
 	public void setTableId(long tableId) {
-		_columnBitmask |= TABLEID_COLUMN_BITMASK;
+		if ((_columnBitmask & TABLEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TABLEID_COLUMN_BITMASK;
 
-		if (!_setOriginalTableId) {
-			_setOriginalTableId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
 
-			_originalTableId = _tableId;
+			_originalValues[TABLEID_COLUMN_INDEX] = _tableId;
 		}
 
 		_tableId = tableId;
 	}
 
 	public long getOriginalTableId() {
-		return _originalTableId;
+		if (_originalValues != null) {
+			Object originalTableId = _originalValues[TABLEID_COLUMN_INDEX];
+
+			if (originalTableId != null) {
+				return (long)originalTableId;
+			}
+		}
+
+		return _tableId;
 	}
 
 	@Override
@@ -327,19 +381,29 @@ public class ExpandoRowModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSPK_COLUMN_BITMASK;
 
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
 
-			_originalClassPK = _classPK;
+			_originalValues[CLASSPK_COLUMN_INDEX] = _classPK;
 		}
 
 		_classPK = classPK;
 	}
 
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		if (_originalValues != null) {
+			Object originalClassPK = _originalValues[CLASSPK_COLUMN_INDEX];
+
+			if (originalClassPK != null) {
+				return (long)originalClassPK;
+			}
+		}
+
+		return _classPK;
 	}
 
 	public long getColumnBitmask() {
@@ -430,17 +494,9 @@ public class ExpandoRowModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ExpandoRowModelImpl expandoRowModelImpl = this;
+		_columnBitmask = 0;
 
-		expandoRowModelImpl._originalTableId = expandoRowModelImpl._tableId;
-
-		expandoRowModelImpl._setOriginalTableId = false;
-
-		expandoRowModelImpl._originalClassPK = expandoRowModelImpl._classPK;
-
-		expandoRowModelImpl._setOriginalClassPK = false;
-
-		expandoRowModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -541,12 +597,9 @@ public class ExpandoRowModelImpl
 	private long _companyId;
 	private Date _modifiedDate;
 	private long _tableId;
-	private long _originalTableId;
-	private boolean _setOriginalTableId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private ExpandoRow _escapedModel;
 
 }

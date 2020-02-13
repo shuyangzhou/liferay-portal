@@ -93,6 +93,22 @@ public class ViewCountEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
+	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 2L;
+
+	public static final long CLASSPK_COLUMN_BITMASK = 4L;
+
+	public static final long VIEWCOUNT_COLUMN_BITMASK = 8L;
+
+	public static final int COMPANYID_COLUMN_INDEX = 0;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 1;
+
+	public static final int CLASSPK_COLUMN_INDEX = 2;
+
+	public static final int VIEWCOUNT_COLUMN_INDEX = 3;
+
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
 	}
@@ -261,6 +277,16 @@ public class ViewCountEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[4];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -291,6 +317,16 @@ public class ViewCountEntryModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
+		if ((_columnBitmask & CLASSNAMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[4];
+			}
+
+			_originalValues[CLASSNAMEID_COLUMN_INDEX] = _classNameId;
+		}
+
 		_classNameId = classNameId;
 	}
 
@@ -301,6 +337,16 @@ public class ViewCountEntryModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
+		if ((_columnBitmask & CLASSPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSPK_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[4];
+			}
+
+			_originalValues[CLASSPK_COLUMN_INDEX] = _classPK;
+		}
+
 		_classPK = classPK;
 	}
 
@@ -311,7 +357,21 @@ public class ViewCountEntryModelImpl
 
 	@Override
 	public void setViewCount(long viewCount) {
+		if ((_columnBitmask & VIEWCOUNT_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= VIEWCOUNT_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[4];
+			}
+
+			_originalValues[VIEWCOUNT_COLUMN_INDEX] = _viewCount;
+		}
+
 		_viewCount = viewCount;
+	}
+
+	public long getColumnBitmask() {
+		return _columnBitmask;
 	}
 
 	@Override
@@ -389,6 +449,9 @@ public class ViewCountEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
+		_columnBitmask = 0;
+
+		_originalValues = null;
 	}
 
 	@Override
@@ -486,6 +549,8 @@ public class ViewCountEntryModelImpl
 	private long _classNameId;
 	private long _classPK;
 	private long _viewCount;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private ViewCountEntry _escapedModel;
 
 }

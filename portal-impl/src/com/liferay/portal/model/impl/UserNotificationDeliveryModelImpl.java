@@ -125,17 +125,41 @@ public class UserNotificationDeliveryModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.UserNotificationDelivery"),
 		true);
 
-	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long DELIVERYTYPE_COLUMN_BITMASK = 2L;
+	public static final long USERNOTIFICATIONDELIVERYID_COLUMN_BITMASK = 2L;
 
-	public static final long NOTIFICATIONTYPE_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
-	public static final long PORTLETID_COLUMN_BITMASK = 8L;
+	public static final long USERID_COLUMN_BITMASK = 8L;
 
-	public static final long USERID_COLUMN_BITMASK = 16L;
+	public static final long PORTLETID_COLUMN_BITMASK = 16L;
 
-	public static final long USERNOTIFICATIONDELIVERYID_COLUMN_BITMASK = 32L;
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 32L;
+
+	public static final long NOTIFICATIONTYPE_COLUMN_BITMASK = 64L;
+
+	public static final long DELIVERYTYPE_COLUMN_BITMASK = 128L;
+
+	public static final long DELIVER_COLUMN_BITMASK = 256L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int USERNOTIFICATIONDELIVERYID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int USERID_COLUMN_INDEX = 3;
+
+	public static final int PORTLETID_COLUMN_INDEX = 4;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 5;
+
+	public static final int NOTIFICATIONTYPE_COLUMN_INDEX = 6;
+
+	public static final int DELIVERYTYPE_COLUMN_INDEX = 7;
+
+	public static final int DELIVER_COLUMN_INDEX = 8;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -343,6 +367,16 @@ public class UserNotificationDeliveryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -353,6 +387,17 @@ public class UserNotificationDeliveryModelImpl
 
 	@Override
 	public void setUserNotificationDeliveryId(long userNotificationDeliveryId) {
+		if ((_columnBitmask & USERNOTIFICATIONDELIVERYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNOTIFICATIONDELIVERYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[USERNOTIFICATIONDELIVERYID_COLUMN_INDEX] =
+				_userNotificationDeliveryId;
+		}
+
 		_userNotificationDeliveryId = userNotificationDeliveryId;
 	}
 
@@ -363,6 +408,16 @@ public class UserNotificationDeliveryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -373,12 +428,14 @@ public class UserNotificationDeliveryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
 
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
 
-			_originalUserId = _userId;
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
 		}
 
 		_userId = userId;
@@ -401,7 +458,15 @@ public class UserNotificationDeliveryModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		if (_originalValues != null) {
+			Object originalUserId = _originalValues[USERID_COLUMN_INDEX];
+
+			if (originalUserId != null) {
+				return (long)originalUserId;
+			}
+		}
+
+		return _userId;
 	}
 
 	@Override
@@ -416,17 +481,29 @@ public class UserNotificationDeliveryModelImpl
 
 	@Override
 	public void setPortletId(String portletId) {
-		_columnBitmask |= PORTLETID_COLUMN_BITMASK;
+		if ((_columnBitmask & PORTLETID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PORTLETID_COLUMN_BITMASK;
 
-		if (_originalPortletId == null) {
-			_originalPortletId = _portletId;
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[PORTLETID_COLUMN_INDEX] = _portletId;
 		}
 
 		_portletId = portletId;
 	}
 
 	public String getOriginalPortletId() {
-		return GetterUtil.getString(_originalPortletId);
+		if (_originalValues != null) {
+			Object originalPortletId = _originalValues[PORTLETID_COLUMN_INDEX];
+
+			if (originalPortletId != null) {
+				return GetterUtil.getString((String)originalPortletId);
+			}
+		}
+
+		return GetterUtil.getString(_portletId);
 	}
 
 	@Override
@@ -456,19 +533,30 @@ public class UserNotificationDeliveryModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSNAMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
 
-			_originalClassNameId = _classNameId;
+			_originalValues[CLASSNAMEID_COLUMN_INDEX] = _classNameId;
 		}
 
 		_classNameId = classNameId;
 	}
 
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		if (_originalValues != null) {
+			Object originalClassNameId =
+				_originalValues[CLASSNAMEID_COLUMN_INDEX];
+
+			if (originalClassNameId != null) {
+				return (long)originalClassNameId;
+			}
+		}
+
+		return _classNameId;
 	}
 
 	@Override
@@ -478,19 +566,30 @@ public class UserNotificationDeliveryModelImpl
 
 	@Override
 	public void setNotificationType(int notificationType) {
-		_columnBitmask |= NOTIFICATIONTYPE_COLUMN_BITMASK;
+		if ((_columnBitmask & NOTIFICATIONTYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= NOTIFICATIONTYPE_COLUMN_BITMASK;
 
-		if (!_setOriginalNotificationType) {
-			_setOriginalNotificationType = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
 
-			_originalNotificationType = _notificationType;
+			_originalValues[NOTIFICATIONTYPE_COLUMN_INDEX] = _notificationType;
 		}
 
 		_notificationType = notificationType;
 	}
 
 	public int getOriginalNotificationType() {
-		return _originalNotificationType;
+		if (_originalValues != null) {
+			Object originalNotificationType =
+				_originalValues[NOTIFICATIONTYPE_COLUMN_INDEX];
+
+			if (originalNotificationType != null) {
+				return (int)originalNotificationType;
+			}
+		}
+
+		return _notificationType;
 	}
 
 	@Override
@@ -500,19 +599,30 @@ public class UserNotificationDeliveryModelImpl
 
 	@Override
 	public void setDeliveryType(int deliveryType) {
-		_columnBitmask |= DELIVERYTYPE_COLUMN_BITMASK;
+		if ((_columnBitmask & DELIVERYTYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DELIVERYTYPE_COLUMN_BITMASK;
 
-		if (!_setOriginalDeliveryType) {
-			_setOriginalDeliveryType = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
 
-			_originalDeliveryType = _deliveryType;
+			_originalValues[DELIVERYTYPE_COLUMN_INDEX] = _deliveryType;
 		}
 
 		_deliveryType = deliveryType;
 	}
 
 	public int getOriginalDeliveryType() {
-		return _originalDeliveryType;
+		if (_originalValues != null) {
+			Object originalDeliveryType =
+				_originalValues[DELIVERYTYPE_COLUMN_INDEX];
+
+			if (originalDeliveryType != null) {
+				return (int)originalDeliveryType;
+			}
+		}
+
+		return _deliveryType;
 	}
 
 	@Override
@@ -527,6 +637,16 @@ public class UserNotificationDeliveryModelImpl
 
 	@Override
 	public void setDeliver(boolean deliver) {
+		if ((_columnBitmask & DELIVER_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DELIVER_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[DELIVER_COLUMN_INDEX] = _deliver;
+		}
+
 		_deliver = deliver;
 	}
 
@@ -639,33 +759,9 @@ public class UserNotificationDeliveryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		UserNotificationDeliveryModelImpl userNotificationDeliveryModelImpl =
-			this;
+		_columnBitmask = 0;
 
-		userNotificationDeliveryModelImpl._originalUserId =
-			userNotificationDeliveryModelImpl._userId;
-
-		userNotificationDeliveryModelImpl._setOriginalUserId = false;
-
-		userNotificationDeliveryModelImpl._originalPortletId =
-			userNotificationDeliveryModelImpl._portletId;
-
-		userNotificationDeliveryModelImpl._originalClassNameId =
-			userNotificationDeliveryModelImpl._classNameId;
-
-		userNotificationDeliveryModelImpl._setOriginalClassNameId = false;
-
-		userNotificationDeliveryModelImpl._originalNotificationType =
-			userNotificationDeliveryModelImpl._notificationType;
-
-		userNotificationDeliveryModelImpl._setOriginalNotificationType = false;
-
-		userNotificationDeliveryModelImpl._originalDeliveryType =
-			userNotificationDeliveryModelImpl._deliveryType;
-
-		userNotificationDeliveryModelImpl._setOriginalDeliveryType = false;
-
-		userNotificationDeliveryModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -780,21 +876,13 @@ public class UserNotificationDeliveryModelImpl
 	private long _userNotificationDeliveryId;
 	private long _companyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _portletId;
-	private String _originalPortletId;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private int _notificationType;
-	private int _originalNotificationType;
-	private boolean _setOriginalNotificationType;
 	private int _deliveryType;
-	private int _originalDeliveryType;
-	private boolean _setOriginalDeliveryType;
 	private boolean _deliver;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private UserNotificationDelivery _escapedModel;
 
 }

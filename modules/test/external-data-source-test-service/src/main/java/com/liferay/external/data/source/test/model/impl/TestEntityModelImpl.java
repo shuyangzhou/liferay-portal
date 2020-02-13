@@ -99,7 +99,18 @@ public class TestEntityModelImpl
 			"value.object.finder.cache.enabled.com.liferay.external.data.source.test.model.TestEntity"),
 		true);
 
-	public static final boolean COLUMN_BITMASK_ENABLED = false;
+	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(
+		com.liferay.external.data.source.test.service.util.ServiceProps.get(
+			"value.object.column.bitmask.enabled.com.liferay.external.data.source.test.model.TestEntity"),
+		true);
+
+	public static final long ID_COLUMN_BITMASK = 1L;
+
+	public static final long DATA_COLUMN_BITMASK = 2L;
+
+	public static final int ID_COLUMN_INDEX = 0;
+
+	public static final int DATA_COLUMN_INDEX = 1;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.external.data.source.test.service.util.ServiceProps.get(
@@ -251,6 +262,16 @@ public class TestEntityModelImpl
 
 	@Override
 	public void setId(long id) {
+		if ((_columnBitmask & ID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[2];
+			}
+
+			_originalValues[ID_COLUMN_INDEX] = _id;
+		}
+
 		_id = id;
 	}
 
@@ -266,7 +287,21 @@ public class TestEntityModelImpl
 
 	@Override
 	public void setData(String data) {
+		if ((_columnBitmask & DATA_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DATA_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[2];
+			}
+
+			_originalValues[DATA_COLUMN_INDEX] = _data;
+		}
+
 		_data = data;
+	}
+
+	public long getColumnBitmask() {
+		return _columnBitmask;
 	}
 
 	@Override
@@ -363,6 +398,9 @@ public class TestEntityModelImpl
 
 	@Override
 	public void resetOriginalValues() {
+		_columnBitmask = 0;
+
+		_originalValues = null;
 	}
 
 	@Override
@@ -454,6 +492,8 @@ public class TestEntityModelImpl
 
 	private long _id;
 	private String _data;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private TestEntity _escapedModel;
 
 }

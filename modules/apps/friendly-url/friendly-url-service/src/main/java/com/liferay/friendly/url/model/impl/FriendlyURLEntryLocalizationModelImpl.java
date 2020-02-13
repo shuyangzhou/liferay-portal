@@ -107,18 +107,41 @@ public class FriendlyURLEntryLocalizationModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long FRIENDLYURLENTRYID_COLUMN_BITMASK = 2L;
+	public static final long FRIENDLYURLENTRYLOCALIZATIONID_COLUMN_BITMASK = 2L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
-	public static final long LANGUAGEID_COLUMN_BITMASK = 8L;
+	public static final long FRIENDLYURLENTRYID_COLUMN_BITMASK = 8L;
 
-	public static final long URLTITLE_COLUMN_BITMASK = 16L;
+	public static final long LANGUAGEID_COLUMN_BITMASK = 16L;
 
-	public static final long FRIENDLYURLENTRYLOCALIZATIONID_COLUMN_BITMASK =
-		32L;
+	public static final long URLTITLE_COLUMN_BITMASK = 32L;
+
+	public static final long GROUPID_COLUMN_BITMASK = 64L;
+
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 128L;
+
+	public static final long CLASSPK_COLUMN_BITMASK = 256L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int FRIENDLYURLENTRYLOCALIZATIONID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int FRIENDLYURLENTRYID_COLUMN_INDEX = 3;
+
+	public static final int LANGUAGEID_COLUMN_INDEX = 4;
+
+	public static final int URLTITLE_COLUMN_INDEX = 5;
+
+	public static final int GROUPID_COLUMN_INDEX = 6;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 7;
+
+	public static final int CLASSPK_COLUMN_INDEX = 8;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -334,6 +357,16 @@ public class FriendlyURLEntryLocalizationModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -346,6 +379,19 @@ public class FriendlyURLEntryLocalizationModelImpl
 	public void setFriendlyURLEntryLocalizationId(
 		long friendlyURLEntryLocalizationId) {
 
+		if ((_columnBitmask & FRIENDLYURLENTRYLOCALIZATIONID_COLUMN_BITMASK) ==
+				0) {
+
+			_columnBitmask |= FRIENDLYURLENTRYLOCALIZATIONID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[FRIENDLYURLENTRYLOCALIZATIONID_COLUMN_INDEX] =
+				_friendlyURLEntryLocalizationId;
+		}
+
 		_friendlyURLEntryLocalizationId = friendlyURLEntryLocalizationId;
 	}
 
@@ -356,6 +402,16 @@ public class FriendlyURLEntryLocalizationModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -366,19 +422,31 @@ public class FriendlyURLEntryLocalizationModelImpl
 
 	@Override
 	public void setFriendlyURLEntryId(long friendlyURLEntryId) {
-		_columnBitmask |= FRIENDLYURLENTRYID_COLUMN_BITMASK;
+		if ((_columnBitmask & FRIENDLYURLENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= FRIENDLYURLENTRYID_COLUMN_BITMASK;
 
-		if (!_setOriginalFriendlyURLEntryId) {
-			_setOriginalFriendlyURLEntryId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
 
-			_originalFriendlyURLEntryId = _friendlyURLEntryId;
+			_originalValues[FRIENDLYURLENTRYID_COLUMN_INDEX] =
+				_friendlyURLEntryId;
 		}
 
 		_friendlyURLEntryId = friendlyURLEntryId;
 	}
 
 	public long getOriginalFriendlyURLEntryId() {
-		return _originalFriendlyURLEntryId;
+		if (_originalValues != null) {
+			Object originalFriendlyURLEntryId =
+				_originalValues[FRIENDLYURLENTRYID_COLUMN_INDEX];
+
+			if (originalFriendlyURLEntryId != null) {
+				return (long)originalFriendlyURLEntryId;
+			}
+		}
+
+		return _friendlyURLEntryId;
 	}
 
 	@Override
@@ -393,17 +461,30 @@ public class FriendlyURLEntryLocalizationModelImpl
 
 	@Override
 	public void setLanguageId(String languageId) {
-		_columnBitmask |= LANGUAGEID_COLUMN_BITMASK;
+		if ((_columnBitmask & LANGUAGEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LANGUAGEID_COLUMN_BITMASK;
 
-		if (_originalLanguageId == null) {
-			_originalLanguageId = _languageId;
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[LANGUAGEID_COLUMN_INDEX] = _languageId;
 		}
 
 		_languageId = languageId;
 	}
 
 	public String getOriginalLanguageId() {
-		return GetterUtil.getString(_originalLanguageId);
+		if (_originalValues != null) {
+			Object originalLanguageId =
+				_originalValues[LANGUAGEID_COLUMN_INDEX];
+
+			if (originalLanguageId != null) {
+				return GetterUtil.getString((String)originalLanguageId);
+			}
+		}
+
+		return GetterUtil.getString(_languageId);
 	}
 
 	@Override
@@ -418,17 +499,29 @@ public class FriendlyURLEntryLocalizationModelImpl
 
 	@Override
 	public void setUrlTitle(String urlTitle) {
-		_columnBitmask |= URLTITLE_COLUMN_BITMASK;
+		if ((_columnBitmask & URLTITLE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= URLTITLE_COLUMN_BITMASK;
 
-		if (_originalUrlTitle == null) {
-			_originalUrlTitle = _urlTitle;
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[URLTITLE_COLUMN_INDEX] = _urlTitle;
 		}
 
 		_urlTitle = urlTitle;
 	}
 
 	public String getOriginalUrlTitle() {
-		return GetterUtil.getString(_originalUrlTitle);
+		if (_originalValues != null) {
+			Object originalUrlTitle = _originalValues[URLTITLE_COLUMN_INDEX];
+
+			if (originalUrlTitle != null) {
+				return GetterUtil.getString((String)originalUrlTitle);
+			}
+		}
+
+		return GetterUtil.getString(_urlTitle);
 	}
 
 	@Override
@@ -438,19 +531,29 @@ public class FriendlyURLEntryLocalizationModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@Override
@@ -480,19 +583,30 @@ public class FriendlyURLEntryLocalizationModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSNAMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
 
-			_originalClassNameId = _classNameId;
+			_originalValues[CLASSNAMEID_COLUMN_INDEX] = _classNameId;
 		}
 
 		_classNameId = classNameId;
 	}
 
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		if (_originalValues != null) {
+			Object originalClassNameId =
+				_originalValues[CLASSNAMEID_COLUMN_INDEX];
+
+			if (originalClassNameId != null) {
+				return (long)originalClassNameId;
+			}
+		}
+
+		return _classNameId;
 	}
 
 	@Override
@@ -502,6 +616,16 @@ public class FriendlyURLEntryLocalizationModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
+		if ((_columnBitmask & CLASSPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSPK_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[CLASSPK_COLUMN_INDEX] = _classPK;
+		}
+
 		_classPK = classPK;
 	}
 
@@ -617,32 +741,9 @@ public class FriendlyURLEntryLocalizationModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		FriendlyURLEntryLocalizationModelImpl
-			friendlyURLEntryLocalizationModelImpl = this;
+		_columnBitmask = 0;
 
-		friendlyURLEntryLocalizationModelImpl._originalFriendlyURLEntryId =
-			friendlyURLEntryLocalizationModelImpl._friendlyURLEntryId;
-
-		friendlyURLEntryLocalizationModelImpl._setOriginalFriendlyURLEntryId =
-			false;
-
-		friendlyURLEntryLocalizationModelImpl._originalLanguageId =
-			friendlyURLEntryLocalizationModelImpl._languageId;
-
-		friendlyURLEntryLocalizationModelImpl._originalUrlTitle =
-			friendlyURLEntryLocalizationModelImpl._urlTitle;
-
-		friendlyURLEntryLocalizationModelImpl._originalGroupId =
-			friendlyURLEntryLocalizationModelImpl._groupId;
-
-		friendlyURLEntryLocalizationModelImpl._setOriginalGroupId = false;
-
-		friendlyURLEntryLocalizationModelImpl._originalClassNameId =
-			friendlyURLEntryLocalizationModelImpl._classNameId;
-
-		friendlyURLEntryLocalizationModelImpl._setOriginalClassNameId = false;
-
-		friendlyURLEntryLocalizationModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -769,20 +870,13 @@ public class FriendlyURLEntryLocalizationModelImpl
 	private long _friendlyURLEntryLocalizationId;
 	private long _companyId;
 	private long _friendlyURLEntryId;
-	private long _originalFriendlyURLEntryId;
-	private boolean _setOriginalFriendlyURLEntryId;
 	private String _languageId;
-	private String _originalLanguageId;
 	private String _urlTitle;
-	private String _originalUrlTitle;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private FriendlyURLEntryLocalization _escapedModel;
 
 }

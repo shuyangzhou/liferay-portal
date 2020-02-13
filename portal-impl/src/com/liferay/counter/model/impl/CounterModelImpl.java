@@ -96,7 +96,18 @@ public class CounterModelImpl
 			"value.object.finder.cache.enabled.com.liferay.counter.kernel.model.Counter"),
 		false);
 
-	public static final boolean COLUMN_BITMASK_ENABLED = false;
+	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(
+		com.liferay.portal.util.PropsUtil.get(
+			"value.object.column.bitmask.enabled.com.liferay.counter.kernel.model.Counter"),
+		true);
+
+	public static final long NAME_COLUMN_BITMASK = 1L;
+
+	public static final long CURRENTID_COLUMN_BITMASK = 2L;
+
+	public static final int NAME_COLUMN_INDEX = 0;
+
+	public static final int CURRENTID_COLUMN_INDEX = 1;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -252,6 +263,16 @@ public class CounterModelImpl
 
 	@Override
 	public void setName(String name) {
+		if ((_columnBitmask & NAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= NAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[2];
+			}
+
+			_originalValues[NAME_COLUMN_INDEX] = _name;
+		}
+
 		_name = name;
 	}
 
@@ -262,7 +283,21 @@ public class CounterModelImpl
 
 	@Override
 	public void setCurrentId(long currentId) {
+		if ((_columnBitmask & CURRENTID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CURRENTID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[2];
+			}
+
+			_originalValues[CURRENTID_COLUMN_INDEX] = _currentId;
+		}
+
 		_currentId = currentId;
+	}
+
+	public long getColumnBitmask() {
+		return _columnBitmask;
 	}
 
 	@Override
@@ -338,6 +373,9 @@ public class CounterModelImpl
 
 	@Override
 	public void resetOriginalValues() {
+		_columnBitmask = 0;
+
+		_originalValues = null;
 	}
 
 	@Override
@@ -429,6 +467,8 @@ public class CounterModelImpl
 
 	private String _name;
 	private long _currentId;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private Counter _escapedModel;
 
 }

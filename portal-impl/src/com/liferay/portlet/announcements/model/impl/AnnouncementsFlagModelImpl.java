@@ -124,15 +124,33 @@ public class AnnouncementsFlagModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.announcements.kernel.model.AnnouncementsFlag"),
 		true);
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long ENTRYID_COLUMN_BITMASK = 2L;
+	public static final long FLAGID_COLUMN_BITMASK = 2L;
 
-	public static final long USERID_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
-	public static final long VALUE_COLUMN_BITMASK = 8L;
+	public static final long USERID_COLUMN_BITMASK = 8L;
 
 	public static final long CREATEDATE_COLUMN_BITMASK = 16L;
+
+	public static final long ENTRYID_COLUMN_BITMASK = 32L;
+
+	public static final long VALUE_COLUMN_BITMASK = 64L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int FLAGID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int USERID_COLUMN_INDEX = 3;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 4;
+
+	public static final int ENTRYID_COLUMN_INDEX = 5;
+
+	public static final int VALUE_COLUMN_INDEX = 6;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -365,6 +383,16 @@ public class AnnouncementsFlagModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -376,6 +404,16 @@ public class AnnouncementsFlagModelImpl
 
 	@Override
 	public void setFlagId(long flagId) {
+		if ((_columnBitmask & FLAGID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= FLAGID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
+
+			_originalValues[FLAGID_COLUMN_INDEX] = _flagId;
+		}
+
 		_flagId = flagId;
 	}
 
@@ -387,19 +425,29 @@ public class AnnouncementsFlagModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@JSON
@@ -410,12 +458,14 @@ public class AnnouncementsFlagModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
 
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
 
-			_originalUserId = _userId;
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
 		}
 
 		_userId = userId;
@@ -438,7 +488,15 @@ public class AnnouncementsFlagModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		if (_originalValues != null) {
+			Object originalUserId = _originalValues[USERID_COLUMN_INDEX];
+
+			if (originalUserId != null) {
+				return (long)originalUserId;
+			}
+		}
+
+		return _userId;
 	}
 
 	@JSON
@@ -449,7 +507,15 @@ public class AnnouncementsFlagModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
 
 		_createDate = createDate;
 	}
@@ -462,19 +528,29 @@ public class AnnouncementsFlagModelImpl
 
 	@Override
 	public void setEntryId(long entryId) {
-		_columnBitmask |= ENTRYID_COLUMN_BITMASK;
+		if ((_columnBitmask & ENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ENTRYID_COLUMN_BITMASK;
 
-		if (!_setOriginalEntryId) {
-			_setOriginalEntryId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
 
-			_originalEntryId = _entryId;
+			_originalValues[ENTRYID_COLUMN_INDEX] = _entryId;
 		}
 
 		_entryId = entryId;
 	}
 
 	public long getOriginalEntryId() {
-		return _originalEntryId;
+		if (_originalValues != null) {
+			Object originalEntryId = _originalValues[ENTRYID_COLUMN_INDEX];
+
+			if (originalEntryId != null) {
+				return (long)originalEntryId;
+			}
+		}
+
+		return _entryId;
 	}
 
 	@JSON
@@ -485,19 +561,29 @@ public class AnnouncementsFlagModelImpl
 
 	@Override
 	public void setValue(int value) {
-		_columnBitmask |= VALUE_COLUMN_BITMASK;
+		if ((_columnBitmask & VALUE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= VALUE_COLUMN_BITMASK;
 
-		if (!_setOriginalValue) {
-			_setOriginalValue = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
 
-			_originalValue = _value;
+			_originalValues[VALUE_COLUMN_INDEX] = _value;
 		}
 
 		_value = value;
 	}
 
 	public int getOriginalValue() {
-		return _originalValue;
+		if (_originalValues != null) {
+			Object originalValue = _originalValues[VALUE_COLUMN_INDEX];
+
+			if (originalValue != null) {
+				return (int)originalValue;
+			}
+		}
+
+		return _value;
 	}
 
 	public long getColumnBitmask() {
@@ -617,29 +703,9 @@ public class AnnouncementsFlagModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AnnouncementsFlagModelImpl announcementsFlagModelImpl = this;
+		_columnBitmask = 0;
 
-		announcementsFlagModelImpl._originalCompanyId =
-			announcementsFlagModelImpl._companyId;
-
-		announcementsFlagModelImpl._setOriginalCompanyId = false;
-
-		announcementsFlagModelImpl._originalUserId =
-			announcementsFlagModelImpl._userId;
-
-		announcementsFlagModelImpl._setOriginalUserId = false;
-
-		announcementsFlagModelImpl._originalEntryId =
-			announcementsFlagModelImpl._entryId;
-
-		announcementsFlagModelImpl._setOriginalEntryId = false;
-
-		announcementsFlagModelImpl._originalValue =
-			announcementsFlagModelImpl._value;
-
-		announcementsFlagModelImpl._setOriginalValue = false;
-
-		announcementsFlagModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -744,19 +810,12 @@ public class AnnouncementsFlagModelImpl
 	private long _mvccVersion;
 	private long _flagId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private Date _createDate;
 	private long _entryId;
-	private long _originalEntryId;
-	private boolean _setOriginalEntryId;
 	private int _value;
-	private int _originalValue;
-	private boolean _setOriginalValue;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private AnnouncementsFlag _escapedModel;
 
 }

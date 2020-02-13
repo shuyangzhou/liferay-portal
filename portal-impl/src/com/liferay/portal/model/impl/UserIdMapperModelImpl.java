@@ -117,13 +117,33 @@ public class UserIdMapperModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.UserIdMapper"),
 		true);
 
-	public static final long EXTERNALUSERID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long TYPE_COLUMN_BITMASK = 2L;
+	public static final long USERIDMAPPERID_COLUMN_BITMASK = 2L;
 
-	public static final long USERID_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
-	public static final long USERIDMAPPERID_COLUMN_BITMASK = 8L;
+	public static final long USERID_COLUMN_BITMASK = 8L;
+
+	public static final long TYPE_COLUMN_BITMASK = 16L;
+
+	public static final long DESCRIPTION_COLUMN_BITMASK = 32L;
+
+	public static final long EXTERNALUSERID_COLUMN_BITMASK = 64L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int USERIDMAPPERID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int USERID_COLUMN_INDEX = 3;
+
+	public static final int TYPE_COLUMN_INDEX = 4;
+
+	public static final int DESCRIPTION_COLUMN_INDEX = 5;
+
+	public static final int EXTERNALUSERID_COLUMN_INDEX = 6;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.util.PropsUtil.get(
@@ -300,6 +320,16 @@ public class UserIdMapperModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -310,6 +340,16 @@ public class UserIdMapperModelImpl
 
 	@Override
 	public void setUserIdMapperId(long userIdMapperId) {
+		if ((_columnBitmask & USERIDMAPPERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERIDMAPPERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
+
+			_originalValues[USERIDMAPPERID_COLUMN_INDEX] = _userIdMapperId;
+		}
+
 		_userIdMapperId = userIdMapperId;
 	}
 
@@ -320,6 +360,16 @@ public class UserIdMapperModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -330,12 +380,14 @@ public class UserIdMapperModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
 
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
 
-			_originalUserId = _userId;
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
 		}
 
 		_userId = userId;
@@ -358,7 +410,15 @@ public class UserIdMapperModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		if (_originalValues != null) {
+			Object originalUserId = _originalValues[USERID_COLUMN_INDEX];
+
+			if (originalUserId != null) {
+				return (long)originalUserId;
+			}
+		}
+
+		return _userId;
 	}
 
 	@Override
@@ -373,17 +433,29 @@ public class UserIdMapperModelImpl
 
 	@Override
 	public void setType(String type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
+		if ((_columnBitmask & TYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TYPE_COLUMN_BITMASK;
 
-		if (_originalType == null) {
-			_originalType = _type;
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
+
+			_originalValues[TYPE_COLUMN_INDEX] = _type;
 		}
 
 		_type = type;
 	}
 
 	public String getOriginalType() {
-		return GetterUtil.getString(_originalType);
+		if (_originalValues != null) {
+			Object originalType = _originalValues[TYPE_COLUMN_INDEX];
+
+			if (originalType != null) {
+				return GetterUtil.getString((String)originalType);
+			}
+		}
+
+		return GetterUtil.getString(_type);
 	}
 
 	@Override
@@ -398,6 +470,16 @@ public class UserIdMapperModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		if ((_columnBitmask & DESCRIPTION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DESCRIPTION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
+
+			_originalValues[DESCRIPTION_COLUMN_INDEX] = _description;
+		}
+
 		_description = description;
 	}
 
@@ -413,17 +495,30 @@ public class UserIdMapperModelImpl
 
 	@Override
 	public void setExternalUserId(String externalUserId) {
-		_columnBitmask |= EXTERNALUSERID_COLUMN_BITMASK;
+		if ((_columnBitmask & EXTERNALUSERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= EXTERNALUSERID_COLUMN_BITMASK;
 
-		if (_originalExternalUserId == null) {
-			_originalExternalUserId = _externalUserId;
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
+
+			_originalValues[EXTERNALUSERID_COLUMN_INDEX] = _externalUserId;
 		}
 
 		_externalUserId = externalUserId;
 	}
 
 	public String getOriginalExternalUserId() {
-		return GetterUtil.getString(_originalExternalUserId);
+		if (_originalValues != null) {
+			Object originalExternalUserId =
+				_originalValues[EXTERNALUSERID_COLUMN_INDEX];
+
+			if (originalExternalUserId != null) {
+				return GetterUtil.getString((String)originalExternalUserId);
+			}
+		}
+
+		return GetterUtil.getString(_externalUserId);
 	}
 
 	public long getColumnBitmask() {
@@ -529,18 +624,9 @@ public class UserIdMapperModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		UserIdMapperModelImpl userIdMapperModelImpl = this;
+		_columnBitmask = 0;
 
-		userIdMapperModelImpl._originalUserId = userIdMapperModelImpl._userId;
-
-		userIdMapperModelImpl._setOriginalUserId = false;
-
-		userIdMapperModelImpl._originalType = userIdMapperModelImpl._type;
-
-		userIdMapperModelImpl._originalExternalUserId =
-			userIdMapperModelImpl._externalUserId;
-
-		userIdMapperModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -657,14 +743,11 @@ public class UserIdMapperModelImpl
 	private long _userIdMapperId;
 	private long _companyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _type;
-	private String _originalType;
 	private String _description;
 	private String _externalUserId;
-	private String _originalExternalUserId;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private UserIdMapper _escapedModel;
 
 }

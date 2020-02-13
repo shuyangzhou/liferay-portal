@@ -106,15 +106,45 @@ public class CTSContentModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long PATH_COLUMN_BITMASK = 2L;
+	public static final long CTCOLLECTIONID_COLUMN_BITMASK = 2L;
 
-	public static final long REPOSITORYID_COLUMN_BITMASK = 4L;
+	public static final long CTSCONTENTID_COLUMN_BITMASK = 4L;
 
-	public static final long STORETYPE_COLUMN_BITMASK = 8L;
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
 
-	public static final long VERSION_COLUMN_BITMASK = 16L;
+	public static final long REPOSITORYID_COLUMN_BITMASK = 16L;
+
+	public static final long PATH_COLUMN_BITMASK = 32L;
+
+	public static final long VERSION_COLUMN_BITMASK = 64L;
+
+	public static final long DATA_COLUMN_BITMASK = 128L;
+
+	public static final long SIZE_COLUMN_BITMASK = 256L;
+
+	public static final long STORETYPE_COLUMN_BITMASK = 512L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int CTCOLLECTIONID_COLUMN_INDEX = 1;
+
+	public static final int CTSCONTENTID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int REPOSITORYID_COLUMN_INDEX = 4;
+
+	public static final int PATH_COLUMN_INDEX = 5;
+
+	public static final int VERSION_COLUMN_INDEX = 6;
+
+	public static final int DATA_COLUMN_INDEX = 7;
+
+	public static final int SIZE_COLUMN_INDEX = 8;
+
+	public static final int STORETYPE_COLUMN_INDEX = 9;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -303,6 +333,16 @@ public class CTSContentModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -313,6 +353,16 @@ public class CTSContentModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
+		if ((_columnBitmask & CTCOLLECTIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CTCOLLECTIONID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[CTCOLLECTIONID_COLUMN_INDEX] = _ctCollectionId;
+		}
+
 		_ctCollectionId = ctCollectionId;
 	}
 
@@ -323,6 +373,16 @@ public class CTSContentModelImpl
 
 	@Override
 	public void setCtsContentId(long ctsContentId) {
+		if ((_columnBitmask & CTSCONTENTID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CTSCONTENTID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[CTSCONTENTID_COLUMN_INDEX] = _ctsContentId;
+		}
+
 		_ctsContentId = ctsContentId;
 	}
 
@@ -333,19 +393,29 @@ public class CTSContentModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@Override
@@ -355,19 +425,30 @@ public class CTSContentModelImpl
 
 	@Override
 	public void setRepositoryId(long repositoryId) {
-		_columnBitmask |= REPOSITORYID_COLUMN_BITMASK;
+		if ((_columnBitmask & REPOSITORYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= REPOSITORYID_COLUMN_BITMASK;
 
-		if (!_setOriginalRepositoryId) {
-			_setOriginalRepositoryId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
 
-			_originalRepositoryId = _repositoryId;
+			_originalValues[REPOSITORYID_COLUMN_INDEX] = _repositoryId;
 		}
 
 		_repositoryId = repositoryId;
 	}
 
 	public long getOriginalRepositoryId() {
-		return _originalRepositoryId;
+		if (_originalValues != null) {
+			Object originalRepositoryId =
+				_originalValues[REPOSITORYID_COLUMN_INDEX];
+
+			if (originalRepositoryId != null) {
+				return (long)originalRepositoryId;
+			}
+		}
+
+		return _repositoryId;
 	}
 
 	@Override
@@ -382,17 +463,29 @@ public class CTSContentModelImpl
 
 	@Override
 	public void setPath(String path) {
-		_columnBitmask |= PATH_COLUMN_BITMASK;
+		if ((_columnBitmask & PATH_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PATH_COLUMN_BITMASK;
 
-		if (_originalPath == null) {
-			_originalPath = _path;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[PATH_COLUMN_INDEX] = _path;
 		}
 
 		_path = path;
 	}
 
 	public String getOriginalPath() {
-		return GetterUtil.getString(_originalPath);
+		if (_originalValues != null) {
+			Object originalPath = _originalValues[PATH_COLUMN_INDEX];
+
+			if (originalPath != null) {
+				return GetterUtil.getString((String)originalPath);
+			}
+		}
+
+		return GetterUtil.getString(_path);
 	}
 
 	@Override
@@ -407,17 +500,29 @@ public class CTSContentModelImpl
 
 	@Override
 	public void setVersion(String version) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & VERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= VERSION_COLUMN_BITMASK;
 
-		if (_originalVersion == null) {
-			_originalVersion = _version;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[VERSION_COLUMN_INDEX] = _version;
 		}
 
 		_version = version;
 	}
 
 	public String getOriginalVersion() {
-		return GetterUtil.getString(_originalVersion);
+		if (_originalValues != null) {
+			Object originalVersion = _originalValues[VERSION_COLUMN_INDEX];
+
+			if (originalVersion != null) {
+				return GetterUtil.getString((String)originalVersion);
+			}
+		}
+
+		return GetterUtil.getString(_version);
 	}
 
 	@Override
@@ -457,6 +562,16 @@ public class CTSContentModelImpl
 
 	@Override
 	public void setSize(long size) {
+		if ((_columnBitmask & SIZE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SIZE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[SIZE_COLUMN_INDEX] = _size;
+		}
+
 		_size = size;
 	}
 
@@ -472,17 +587,29 @@ public class CTSContentModelImpl
 
 	@Override
 	public void setStoreType(String storeType) {
-		_columnBitmask |= STORETYPE_COLUMN_BITMASK;
+		if ((_columnBitmask & STORETYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STORETYPE_COLUMN_BITMASK;
 
-		if (_originalStoreType == null) {
-			_originalStoreType = _storeType;
+			if (_originalValues == null) {
+				_originalValues = new Object[10];
+			}
+
+			_originalValues[STORETYPE_COLUMN_INDEX] = _storeType;
 		}
 
 		_storeType = storeType;
 	}
 
 	public String getOriginalStoreType() {
-		return GetterUtil.getString(_originalStoreType);
+		if (_originalValues != null) {
+			Object originalStoreType = _originalValues[STORETYPE_COLUMN_INDEX];
+
+			if (originalStoreType != null) {
+				return GetterUtil.getString((String)originalStoreType);
+			}
+		}
+
+		return GetterUtil.getString(_storeType);
 	}
 
 	public long getColumnBitmask() {
@@ -590,26 +717,11 @@ public class CTSContentModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		CTSContentModelImpl ctsContentModelImpl = this;
+		_dataBlobModel = null;
 
-		ctsContentModelImpl._originalCompanyId = ctsContentModelImpl._companyId;
+		_columnBitmask = 0;
 
-		ctsContentModelImpl._setOriginalCompanyId = false;
-
-		ctsContentModelImpl._originalRepositoryId =
-			ctsContentModelImpl._repositoryId;
-
-		ctsContentModelImpl._setOriginalRepositoryId = false;
-
-		ctsContentModelImpl._originalPath = ctsContentModelImpl._path;
-
-		ctsContentModelImpl._originalVersion = ctsContentModelImpl._version;
-
-		ctsContentModelImpl._dataBlobModel = null;
-
-		ctsContentModelImpl._originalStoreType = ctsContentModelImpl._storeType;
-
-		ctsContentModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -746,20 +858,14 @@ public class CTSContentModelImpl
 	private long _ctCollectionId;
 	private long _ctsContentId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _repositoryId;
-	private long _originalRepositoryId;
-	private boolean _setOriginalRepositoryId;
 	private String _path;
-	private String _originalPath;
 	private String _version;
-	private String _originalVersion;
 	private CTSContentDataBlobModel _dataBlobModel;
 	private long _size;
 	private String _storeType;
-	private String _originalStoreType;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private CTSContent _escapedModel;
 
 }

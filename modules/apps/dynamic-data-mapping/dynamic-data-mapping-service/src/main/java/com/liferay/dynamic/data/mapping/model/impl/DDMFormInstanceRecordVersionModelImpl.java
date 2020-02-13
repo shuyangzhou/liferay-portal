@@ -126,19 +126,69 @@ public class DDMFormInstanceRecordVersionModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long FORMINSTANCEID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long FORMINSTANCERECORDID_COLUMN_BITMASK = 2L;
+	public static final long FORMINSTANCERECORDVERSIONID_COLUMN_BITMASK = 2L;
 
-	public static final long FORMINSTANCEVERSION_COLUMN_BITMASK = 4L;
+	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
-	public static final long STATUS_COLUMN_BITMASK = 8L;
+	public static final long COMPANYID_COLUMN_BITMASK = 8L;
 
 	public static final long USERID_COLUMN_BITMASK = 16L;
 
-	public static final long VERSION_COLUMN_BITMASK = 32L;
+	public static final long USERNAME_COLUMN_BITMASK = 32L;
 
-	public static final long FORMINSTANCERECORDVERSIONID_COLUMN_BITMASK = 64L;
+	public static final long CREATEDATE_COLUMN_BITMASK = 64L;
+
+	public static final long FORMINSTANCEID_COLUMN_BITMASK = 128L;
+
+	public static final long FORMINSTANCEVERSION_COLUMN_BITMASK = 256L;
+
+	public static final long FORMINSTANCERECORDID_COLUMN_BITMASK = 512L;
+
+	public static final long VERSION_COLUMN_BITMASK = 1024L;
+
+	public static final long STORAGEID_COLUMN_BITMASK = 2048L;
+
+	public static final long STATUS_COLUMN_BITMASK = 4096L;
+
+	public static final long STATUSBYUSERID_COLUMN_BITMASK = 8192L;
+
+	public static final long STATUSBYUSERNAME_COLUMN_BITMASK = 16384L;
+
+	public static final long STATUSDATE_COLUMN_BITMASK = 32768L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int FORMINSTANCERECORDVERSIONID_COLUMN_INDEX = 1;
+
+	public static final int GROUPID_COLUMN_INDEX = 2;
+
+	public static final int COMPANYID_COLUMN_INDEX = 3;
+
+	public static final int USERID_COLUMN_INDEX = 4;
+
+	public static final int USERNAME_COLUMN_INDEX = 5;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 6;
+
+	public static final int FORMINSTANCEID_COLUMN_INDEX = 7;
+
+	public static final int FORMINSTANCEVERSION_COLUMN_INDEX = 8;
+
+	public static final int FORMINSTANCERECORDID_COLUMN_INDEX = 9;
+
+	public static final int VERSION_COLUMN_INDEX = 10;
+
+	public static final int STORAGEID_COLUMN_INDEX = 11;
+
+	public static final int STATUS_COLUMN_INDEX = 12;
+
+	public static final int STATUSBYUSERID_COLUMN_INDEX = 13;
+
+	public static final int STATUSBYUSERNAME_COLUMN_INDEX = 14;
+
+	public static final int STATUSDATE_COLUMN_INDEX = 15;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -458,6 +508,16 @@ public class DDMFormInstanceRecordVersionModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[16];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -471,6 +531,19 @@ public class DDMFormInstanceRecordVersionModelImpl
 	public void setFormInstanceRecordVersionId(
 		long formInstanceRecordVersionId) {
 
+		if ((_columnBitmask & FORMINSTANCERECORDVERSIONID_COLUMN_BITMASK) ==
+				0) {
+
+			_columnBitmask |= FORMINSTANCERECORDVERSIONID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[16];
+			}
+
+			_originalValues[FORMINSTANCERECORDVERSIONID_COLUMN_INDEX] =
+				_formInstanceRecordVersionId;
+		}
+
 		_formInstanceRecordVersionId = formInstanceRecordVersionId;
 	}
 
@@ -482,6 +555,16 @@ public class DDMFormInstanceRecordVersionModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[16];
+			}
+
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
+		}
+
 		_groupId = groupId;
 	}
 
@@ -493,6 +576,16 @@ public class DDMFormInstanceRecordVersionModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[16];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -504,12 +597,14 @@ public class DDMFormInstanceRecordVersionModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
 
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[16];
+			}
 
-			_originalUserId = _userId;
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
 		}
 
 		_userId = userId;
@@ -532,7 +627,15 @@ public class DDMFormInstanceRecordVersionModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		if (_originalValues != null) {
+			Object originalUserId = _originalValues[USERID_COLUMN_INDEX];
+
+			if (originalUserId != null) {
+				return (long)originalUserId;
+			}
+		}
+
+		return _userId;
 	}
 
 	@JSON
@@ -548,6 +651,16 @@ public class DDMFormInstanceRecordVersionModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[16];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -559,6 +672,16 @@ public class DDMFormInstanceRecordVersionModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[16];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -570,19 +693,30 @@ public class DDMFormInstanceRecordVersionModelImpl
 
 	@Override
 	public void setFormInstanceId(long formInstanceId) {
-		_columnBitmask |= FORMINSTANCEID_COLUMN_BITMASK;
+		if ((_columnBitmask & FORMINSTANCEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= FORMINSTANCEID_COLUMN_BITMASK;
 
-		if (!_setOriginalFormInstanceId) {
-			_setOriginalFormInstanceId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[16];
+			}
 
-			_originalFormInstanceId = _formInstanceId;
+			_originalValues[FORMINSTANCEID_COLUMN_INDEX] = _formInstanceId;
 		}
 
 		_formInstanceId = formInstanceId;
 	}
 
 	public long getOriginalFormInstanceId() {
-		return _originalFormInstanceId;
+		if (_originalValues != null) {
+			Object originalFormInstanceId =
+				_originalValues[FORMINSTANCEID_COLUMN_INDEX];
+
+			if (originalFormInstanceId != null) {
+				return (long)originalFormInstanceId;
+			}
+		}
+
+		return _formInstanceId;
 	}
 
 	@JSON
@@ -598,17 +732,32 @@ public class DDMFormInstanceRecordVersionModelImpl
 
 	@Override
 	public void setFormInstanceVersion(String formInstanceVersion) {
-		_columnBitmask |= FORMINSTANCEVERSION_COLUMN_BITMASK;
+		if ((_columnBitmask & FORMINSTANCEVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= FORMINSTANCEVERSION_COLUMN_BITMASK;
 
-		if (_originalFormInstanceVersion == null) {
-			_originalFormInstanceVersion = _formInstanceVersion;
+			if (_originalValues == null) {
+				_originalValues = new Object[16];
+			}
+
+			_originalValues[FORMINSTANCEVERSION_COLUMN_INDEX] =
+				_formInstanceVersion;
 		}
 
 		_formInstanceVersion = formInstanceVersion;
 	}
 
 	public String getOriginalFormInstanceVersion() {
-		return GetterUtil.getString(_originalFormInstanceVersion);
+		if (_originalValues != null) {
+			Object originalFormInstanceVersion =
+				_originalValues[FORMINSTANCEVERSION_COLUMN_INDEX];
+
+			if (originalFormInstanceVersion != null) {
+				return GetterUtil.getString(
+					(String)originalFormInstanceVersion);
+			}
+		}
+
+		return GetterUtil.getString(_formInstanceVersion);
 	}
 
 	@JSON
@@ -619,19 +768,31 @@ public class DDMFormInstanceRecordVersionModelImpl
 
 	@Override
 	public void setFormInstanceRecordId(long formInstanceRecordId) {
-		_columnBitmask |= FORMINSTANCERECORDID_COLUMN_BITMASK;
+		if ((_columnBitmask & FORMINSTANCERECORDID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= FORMINSTANCERECORDID_COLUMN_BITMASK;
 
-		if (!_setOriginalFormInstanceRecordId) {
-			_setOriginalFormInstanceRecordId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[16];
+			}
 
-			_originalFormInstanceRecordId = _formInstanceRecordId;
+			_originalValues[FORMINSTANCERECORDID_COLUMN_INDEX] =
+				_formInstanceRecordId;
 		}
 
 		_formInstanceRecordId = formInstanceRecordId;
 	}
 
 	public long getOriginalFormInstanceRecordId() {
-		return _originalFormInstanceRecordId;
+		if (_originalValues != null) {
+			Object originalFormInstanceRecordId =
+				_originalValues[FORMINSTANCERECORDID_COLUMN_INDEX];
+
+			if (originalFormInstanceRecordId != null) {
+				return (long)originalFormInstanceRecordId;
+			}
+		}
+
+		return _formInstanceRecordId;
 	}
 
 	@JSON
@@ -647,17 +808,29 @@ public class DDMFormInstanceRecordVersionModelImpl
 
 	@Override
 	public void setVersion(String version) {
-		_columnBitmask |= VERSION_COLUMN_BITMASK;
+		if ((_columnBitmask & VERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= VERSION_COLUMN_BITMASK;
 
-		if (_originalVersion == null) {
-			_originalVersion = _version;
+			if (_originalValues == null) {
+				_originalValues = new Object[16];
+			}
+
+			_originalValues[VERSION_COLUMN_INDEX] = _version;
 		}
 
 		_version = version;
 	}
 
 	public String getOriginalVersion() {
-		return GetterUtil.getString(_originalVersion);
+		if (_originalValues != null) {
+			Object originalVersion = _originalValues[VERSION_COLUMN_INDEX];
+
+			if (originalVersion != null) {
+				return GetterUtil.getString((String)originalVersion);
+			}
+		}
+
+		return GetterUtil.getString(_version);
 	}
 
 	@JSON
@@ -668,6 +841,16 @@ public class DDMFormInstanceRecordVersionModelImpl
 
 	@Override
 	public void setStorageId(long storageId) {
+		if ((_columnBitmask & STORAGEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STORAGEID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[16];
+			}
+
+			_originalValues[STORAGEID_COLUMN_INDEX] = _storageId;
+		}
+
 		_storageId = storageId;
 	}
 
@@ -679,19 +862,29 @@ public class DDMFormInstanceRecordVersionModelImpl
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
+		if ((_columnBitmask & STATUS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUS_COLUMN_BITMASK;
 
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[16];
+			}
 
-			_originalStatus = _status;
+			_originalValues[STATUS_COLUMN_INDEX] = _status;
 		}
 
 		_status = status;
 	}
 
 	public int getOriginalStatus() {
-		return _originalStatus;
+		if (_originalValues != null) {
+			Object originalStatus = _originalValues[STATUS_COLUMN_INDEX];
+
+			if (originalStatus != null) {
+				return (int)originalStatus;
+			}
+		}
+
+		return _status;
 	}
 
 	@JSON
@@ -702,6 +895,16 @@ public class DDMFormInstanceRecordVersionModelImpl
 
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
+		if ((_columnBitmask & STATUSBYUSERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUSBYUSERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[16];
+			}
+
+			_originalValues[STATUSBYUSERID_COLUMN_INDEX] = _statusByUserId;
+		}
+
 		_statusByUserId = statusByUserId;
 	}
 
@@ -734,6 +937,16 @@ public class DDMFormInstanceRecordVersionModelImpl
 
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
+		if ((_columnBitmask & STATUSBYUSERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUSBYUSERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[16];
+			}
+
+			_originalValues[STATUSBYUSERNAME_COLUMN_INDEX] = _statusByUserName;
+		}
+
 		_statusByUserName = statusByUserName;
 	}
 
@@ -745,6 +958,16 @@ public class DDMFormInstanceRecordVersionModelImpl
 
 	@Override
 	public void setStatusDate(Date statusDate) {
+		if ((_columnBitmask & STATUSDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUSDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[16];
+			}
+
+			_originalValues[STATUSDATE_COLUMN_INDEX] = _statusDate;
+		}
+
 		_statusDate = statusDate;
 	}
 
@@ -949,38 +1172,9 @@ public class DDMFormInstanceRecordVersionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DDMFormInstanceRecordVersionModelImpl
-			ddmFormInstanceRecordVersionModelImpl = this;
+		_columnBitmask = 0;
 
-		ddmFormInstanceRecordVersionModelImpl._originalUserId =
-			ddmFormInstanceRecordVersionModelImpl._userId;
-
-		ddmFormInstanceRecordVersionModelImpl._setOriginalUserId = false;
-
-		ddmFormInstanceRecordVersionModelImpl._originalFormInstanceId =
-			ddmFormInstanceRecordVersionModelImpl._formInstanceId;
-
-		ddmFormInstanceRecordVersionModelImpl._setOriginalFormInstanceId =
-			false;
-
-		ddmFormInstanceRecordVersionModelImpl._originalFormInstanceVersion =
-			ddmFormInstanceRecordVersionModelImpl._formInstanceVersion;
-
-		ddmFormInstanceRecordVersionModelImpl._originalFormInstanceRecordId =
-			ddmFormInstanceRecordVersionModelImpl._formInstanceRecordId;
-
-		ddmFormInstanceRecordVersionModelImpl._setOriginalFormInstanceRecordId =
-			false;
-
-		ddmFormInstanceRecordVersionModelImpl._originalVersion =
-			ddmFormInstanceRecordVersionModelImpl._version;
-
-		ddmFormInstanceRecordVersionModelImpl._originalStatus =
-			ddmFormInstanceRecordVersionModelImpl._status;
-
-		ddmFormInstanceRecordVersionModelImpl._setOriginalStatus = false;
-
-		ddmFormInstanceRecordVersionModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -1158,28 +1352,19 @@ public class DDMFormInstanceRecordVersionModelImpl
 	private long _groupId;
 	private long _companyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
 	private long _formInstanceId;
-	private long _originalFormInstanceId;
-	private boolean _setOriginalFormInstanceId;
 	private String _formInstanceVersion;
-	private String _originalFormInstanceVersion;
 	private long _formInstanceRecordId;
-	private long _originalFormInstanceRecordId;
-	private boolean _setOriginalFormInstanceRecordId;
 	private String _version;
-	private String _originalVersion;
 	private long _storageId;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private DDMFormInstanceRecordVersion _escapedModel;
 
 }

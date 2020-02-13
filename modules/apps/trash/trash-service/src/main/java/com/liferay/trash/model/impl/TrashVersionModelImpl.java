@@ -101,13 +101,37 @@ public class TrashVersionModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long CLASSPK_COLUMN_BITMASK = 2L;
+	public static final long VERSIONID_COLUMN_BITMASK = 2L;
 
-	public static final long ENTRYID_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
-	public static final long VERSIONID_COLUMN_BITMASK = 8L;
+	public static final long ENTRYID_COLUMN_BITMASK = 8L;
+
+	public static final long CLASSNAMEID_COLUMN_BITMASK = 16L;
+
+	public static final long CLASSPK_COLUMN_BITMASK = 32L;
+
+	public static final long TYPESETTINGS_COLUMN_BITMASK = 64L;
+
+	public static final long STATUS_COLUMN_BITMASK = 128L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int VERSIONID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int ENTRYID_COLUMN_INDEX = 3;
+
+	public static final int CLASSNAMEID_COLUMN_INDEX = 4;
+
+	public static final int CLASSPK_COLUMN_INDEX = 5;
+
+	public static final int TYPESETTINGS_COLUMN_INDEX = 6;
+
+	public static final int STATUS_COLUMN_INDEX = 7;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -293,6 +317,16 @@ public class TrashVersionModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -303,6 +337,16 @@ public class TrashVersionModelImpl
 
 	@Override
 	public void setVersionId(long versionId) {
+		if ((_columnBitmask & VERSIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= VERSIONID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
+
+			_originalValues[VERSIONID_COLUMN_INDEX] = _versionId;
+		}
+
 		_versionId = versionId;
 	}
 
@@ -313,6 +357,16 @@ public class TrashVersionModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -323,19 +377,29 @@ public class TrashVersionModelImpl
 
 	@Override
 	public void setEntryId(long entryId) {
-		_columnBitmask |= ENTRYID_COLUMN_BITMASK;
+		if ((_columnBitmask & ENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ENTRYID_COLUMN_BITMASK;
 
-		if (!_setOriginalEntryId) {
-			_setOriginalEntryId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
 
-			_originalEntryId = _entryId;
+			_originalValues[ENTRYID_COLUMN_INDEX] = _entryId;
 		}
 
 		_entryId = entryId;
 	}
 
 	public long getOriginalEntryId() {
-		return _originalEntryId;
+		if (_originalValues != null) {
+			Object originalEntryId = _originalValues[ENTRYID_COLUMN_INDEX];
+
+			if (originalEntryId != null) {
+				return (long)originalEntryId;
+			}
+		}
+
+		return _entryId;
 	}
 
 	@Override
@@ -365,19 +429,30 @@ public class TrashVersionModelImpl
 
 	@Override
 	public void setClassNameId(long classNameId) {
-		_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSNAMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
 
-		if (!_setOriginalClassNameId) {
-			_setOriginalClassNameId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
 
-			_originalClassNameId = _classNameId;
+			_originalValues[CLASSNAMEID_COLUMN_INDEX] = _classNameId;
 		}
 
 		_classNameId = classNameId;
 	}
 
 	public long getOriginalClassNameId() {
-		return _originalClassNameId;
+		if (_originalValues != null) {
+			Object originalClassNameId =
+				_originalValues[CLASSNAMEID_COLUMN_INDEX];
+
+			if (originalClassNameId != null) {
+				return (long)originalClassNameId;
+			}
+		}
+
+		return _classNameId;
 	}
 
 	@Override
@@ -387,19 +462,29 @@ public class TrashVersionModelImpl
 
 	@Override
 	public void setClassPK(long classPK) {
-		_columnBitmask |= CLASSPK_COLUMN_BITMASK;
+		if ((_columnBitmask & CLASSPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CLASSPK_COLUMN_BITMASK;
 
-		if (!_setOriginalClassPK) {
-			_setOriginalClassPK = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
 
-			_originalClassPK = _classPK;
+			_originalValues[CLASSPK_COLUMN_INDEX] = _classPK;
 		}
 
 		_classPK = classPK;
 	}
 
 	public long getOriginalClassPK() {
-		return _originalClassPK;
+		if (_originalValues != null) {
+			Object originalClassPK = _originalValues[CLASSPK_COLUMN_INDEX];
+
+			if (originalClassPK != null) {
+				return (long)originalClassPK;
+			}
+		}
+
+		return _classPK;
 	}
 
 	@Override
@@ -414,6 +499,16 @@ public class TrashVersionModelImpl
 
 	@Override
 	public void setTypeSettings(String typeSettings) {
+		if ((_columnBitmask & TYPESETTINGS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TYPESETTINGS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
+
+			_originalValues[TYPESETTINGS_COLUMN_INDEX] = _typeSettings;
+		}
+
 		_typeSettings = typeSettings;
 	}
 
@@ -424,6 +519,16 @@ public class TrashVersionModelImpl
 
 	@Override
 	public void setStatus(int status) {
+		if ((_columnBitmask & STATUS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[8];
+			}
+
+			_originalValues[STATUS_COLUMN_INDEX] = _status;
+		}
+
 		_status = status;
 	}
 
@@ -531,22 +636,9 @@ public class TrashVersionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		TrashVersionModelImpl trashVersionModelImpl = this;
+		_columnBitmask = 0;
 
-		trashVersionModelImpl._originalEntryId = trashVersionModelImpl._entryId;
-
-		trashVersionModelImpl._setOriginalEntryId = false;
-
-		trashVersionModelImpl._originalClassNameId =
-			trashVersionModelImpl._classNameId;
-
-		trashVersionModelImpl._setOriginalClassNameId = false;
-
-		trashVersionModelImpl._originalClassPK = trashVersionModelImpl._classPK;
-
-		trashVersionModelImpl._setOriginalClassPK = false;
-
-		trashVersionModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -656,17 +748,12 @@ public class TrashVersionModelImpl
 	private long _versionId;
 	private long _companyId;
 	private long _entryId;
-	private long _originalEntryId;
-	private boolean _setOriginalEntryId;
 	private long _classNameId;
-	private long _originalClassNameId;
-	private boolean _setOriginalClassNameId;
 	private long _classPK;
-	private long _originalClassPK;
-	private boolean _setOriginalClassPK;
 	private String _typeSettings;
 	private int _status;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private TrashVersion _escapedModel;
 
 }

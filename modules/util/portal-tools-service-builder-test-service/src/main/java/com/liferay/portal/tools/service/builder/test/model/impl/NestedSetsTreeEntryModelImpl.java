@@ -111,7 +111,31 @@ public class NestedSetsTreeEntryModelImpl
 				"value.object.finder.cache.enabled.com.liferay.portal.tools.service.builder.test.model.NestedSetsTreeEntry"),
 		true);
 
-	public static final boolean COLUMN_BITMASK_ENABLED = false;
+	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(
+		com.liferay.portal.tools.service.builder.test.service.util.ServiceProps.
+			get(
+				"value.object.column.bitmask.enabled.com.liferay.portal.tools.service.builder.test.model.NestedSetsTreeEntry"),
+		true);
+
+	public static final long NESTEDSETSTREEENTRYID_COLUMN_BITMASK = 1L;
+
+	public static final long GROUPID_COLUMN_BITMASK = 2L;
+
+	public static final long PARENTNESTEDSETSTREEENTRYID_COLUMN_BITMASK = 4L;
+
+	public static final long LEFTNESTEDSETSTREEENTRYID_COLUMN_BITMASK = 8L;
+
+	public static final long RIGHTNESTEDSETSTREEENTRYID_COLUMN_BITMASK = 16L;
+
+	public static final int NESTEDSETSTREEENTRYID_COLUMN_INDEX = 0;
+
+	public static final int GROUPID_COLUMN_INDEX = 1;
+
+	public static final int PARENTNESTEDSETSTREEENTRYID_COLUMN_INDEX = 2;
+
+	public static final int LEFTNESTEDSETSTREEENTRYID_COLUMN_INDEX = 3;
+
+	public static final int RIGHTNESTEDSETSTREEENTRYID_COLUMN_INDEX = 4;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.tools.service.builder.test.service.util.ServiceProps.
@@ -296,6 +320,17 @@ public class NestedSetsTreeEntryModelImpl
 
 	@Override
 	public void setNestedSetsTreeEntryId(long nestedSetsTreeEntryId) {
+		if ((_columnBitmask & NESTEDSETSTREEENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= NESTEDSETSTREEENTRYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[NESTEDSETSTREEENTRYID_COLUMN_INDEX] =
+				_nestedSetsTreeEntryId;
+		}
+
 		_nestedSetsTreeEntryId = nestedSetsTreeEntryId;
 	}
 
@@ -306,6 +341,16 @@ public class NestedSetsTreeEntryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
+		}
+
 		_groupId = groupId;
 	}
 
@@ -318,17 +363,33 @@ public class NestedSetsTreeEntryModelImpl
 	public void setParentNestedSetsTreeEntryId(
 		long parentNestedSetsTreeEntryId) {
 
-		if (!_setOriginalParentNestedSetsTreeEntryId) {
-			_setOriginalParentNestedSetsTreeEntryId = true;
+		if ((_columnBitmask & PARENTNESTEDSETSTREEENTRYID_COLUMN_BITMASK) ==
+				0) {
 
-			_originalParentNestedSetsTreeEntryId = _parentNestedSetsTreeEntryId;
+			_columnBitmask |= PARENTNESTEDSETSTREEENTRYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[PARENTNESTEDSETSTREEENTRYID_COLUMN_INDEX] =
+				_parentNestedSetsTreeEntryId;
 		}
 
 		_parentNestedSetsTreeEntryId = parentNestedSetsTreeEntryId;
 	}
 
 	public long getOriginalParentNestedSetsTreeEntryId() {
-		return _originalParentNestedSetsTreeEntryId;
+		if (_originalValues != null) {
+			Object originalParentNestedSetsTreeEntryId =
+				_originalValues[PARENTNESTEDSETSTREEENTRYID_COLUMN_INDEX];
+
+			if (originalParentNestedSetsTreeEntryId != null) {
+				return (long)originalParentNestedSetsTreeEntryId;
+			}
+		}
+
+		return _parentNestedSetsTreeEntryId;
 	}
 
 	@Override
@@ -338,6 +399,17 @@ public class NestedSetsTreeEntryModelImpl
 
 	@Override
 	public void setLeftNestedSetsTreeEntryId(long leftNestedSetsTreeEntryId) {
+		if ((_columnBitmask & LEFTNESTEDSETSTREEENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LEFTNESTEDSETSTREEENTRYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[LEFTNESTEDSETSTREEENTRYID_COLUMN_INDEX] =
+				_leftNestedSetsTreeEntryId;
+		}
+
 		_leftNestedSetsTreeEntryId = leftNestedSetsTreeEntryId;
 	}
 
@@ -348,6 +420,17 @@ public class NestedSetsTreeEntryModelImpl
 
 	@Override
 	public void setRightNestedSetsTreeEntryId(long rightNestedSetsTreeEntryId) {
+		if ((_columnBitmask & RIGHTNESTEDSETSTREEENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= RIGHTNESTEDSETSTREEENTRYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[5];
+			}
+
+			_originalValues[RIGHTNESTEDSETSTREEENTRYID_COLUMN_INDEX] =
+				_rightNestedSetsTreeEntryId;
+		}
+
 		_rightNestedSetsTreeEntryId = rightNestedSetsTreeEntryId;
 	}
 
@@ -369,6 +452,10 @@ public class NestedSetsTreeEntryModelImpl
 
 	public void setNestedSetsTreeNodeRight(long nestedSetsTreeNodeRight) {
 		_rightNestedSetsTreeEntryId = nestedSetsTreeNodeRight;
+	}
+
+	public long getColumnBitmask() {
+		return _columnBitmask;
 	}
 
 	@Override
@@ -473,13 +560,9 @@ public class NestedSetsTreeEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		NestedSetsTreeEntryModelImpl nestedSetsTreeEntryModelImpl = this;
+		_columnBitmask = 0;
 
-		nestedSetsTreeEntryModelImpl._originalParentNestedSetsTreeEntryId =
-			nestedSetsTreeEntryModelImpl._parentNestedSetsTreeEntryId;
-
-		nestedSetsTreeEntryModelImpl._setOriginalParentNestedSetsTreeEntryId =
-			false;
+		_originalValues = null;
 	}
 
 	@Override
@@ -577,10 +660,10 @@ public class NestedSetsTreeEntryModelImpl
 	private long _nestedSetsTreeEntryId;
 	private long _groupId;
 	private long _parentNestedSetsTreeEntryId;
-	private long _originalParentNestedSetsTreeEntryId;
-	private boolean _setOriginalParentNestedSetsTreeEntryId;
 	private long _leftNestedSetsTreeEntryId;
 	private long _rightNestedSetsTreeEntryId;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private NestedSetsTreeEntry _escapedModel;
 
 }

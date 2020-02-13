@@ -141,17 +141,90 @@ public class LayoutSEOEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 2L;
+	public static final long UUID_COLUMN_BITMASK = 2L;
 
-	public static final long LAYOUTID_COLUMN_BITMASK = 4L;
+	public static final long LAYOUTSEOENTRYID_COLUMN_BITMASK = 4L;
 
-	public static final long PRIVATELAYOUT_COLUMN_BITMASK = 8L;
+	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
-	public static final long UUID_COLUMN_BITMASK = 16L;
+	public static final long COMPANYID_COLUMN_BITMASK = 16L;
 
-	public static final long LAYOUTSEOENTRYID_COLUMN_BITMASK = 32L;
+	public static final long USERID_COLUMN_BITMASK = 32L;
+
+	public static final long USERNAME_COLUMN_BITMASK = 64L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 128L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 256L;
+
+	public static final long PRIVATELAYOUT_COLUMN_BITMASK = 512L;
+
+	public static final long LAYOUTID_COLUMN_BITMASK = 1024L;
+
+	public static final long CANONICALURL_COLUMN_BITMASK = 2048L;
+
+	public static final long CANONICALURLENABLED_COLUMN_BITMASK = 4096L;
+
+	public static final long DDMSTORAGEID_COLUMN_BITMASK = 8192L;
+
+	public static final long OPENGRAPHDESCRIPTION_COLUMN_BITMASK = 16384L;
+
+	public static final long OPENGRAPHDESCRIPTIONENABLED_COLUMN_BITMASK =
+		32768L;
+
+	public static final long OPENGRAPHIMAGEALT_COLUMN_BITMASK = 65536L;
+
+	public static final long OPENGRAPHIMAGEFILEENTRYID_COLUMN_BITMASK = 131072L;
+
+	public static final long OPENGRAPHTITLE_COLUMN_BITMASK = 262144L;
+
+	public static final long OPENGRAPHTITLEENABLED_COLUMN_BITMASK = 524288L;
+
+	public static final long LASTPUBLISHDATE_COLUMN_BITMASK = 1048576L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int UUID_COLUMN_INDEX = 1;
+
+	public static final int LAYOUTSEOENTRYID_COLUMN_INDEX = 2;
+
+	public static final int GROUPID_COLUMN_INDEX = 3;
+
+	public static final int COMPANYID_COLUMN_INDEX = 4;
+
+	public static final int USERID_COLUMN_INDEX = 5;
+
+	public static final int USERNAME_COLUMN_INDEX = 6;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 7;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 8;
+
+	public static final int PRIVATELAYOUT_COLUMN_INDEX = 9;
+
+	public static final int LAYOUTID_COLUMN_INDEX = 10;
+
+	public static final int CANONICALURL_COLUMN_INDEX = 11;
+
+	public static final int CANONICALURLENABLED_COLUMN_INDEX = 12;
+
+	public static final int DDMSTORAGEID_COLUMN_INDEX = 13;
+
+	public static final int OPENGRAPHDESCRIPTION_COLUMN_INDEX = 14;
+
+	public static final int OPENGRAPHDESCRIPTIONENABLED_COLUMN_INDEX = 15;
+
+	public static final int OPENGRAPHIMAGEALT_COLUMN_INDEX = 16;
+
+	public static final int OPENGRAPHIMAGEFILEENTRYID_COLUMN_INDEX = 17;
+
+	public static final int OPENGRAPHTITLE_COLUMN_INDEX = 18;
+
+	public static final int OPENGRAPHTITLEENABLED_COLUMN_INDEX = 19;
+
+	public static final int LASTPUBLISHDATE_COLUMN_INDEX = 20;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -478,6 +551,16 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[21];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -494,17 +577,29 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setUuid(String uuid) {
-		_columnBitmask |= UUID_COLUMN_BITMASK;
+		if ((_columnBitmask & UUID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= UUID_COLUMN_BITMASK;
 
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
+			if (_originalValues == null) {
+				_originalValues = new Object[21];
+			}
+
+			_originalValues[UUID_COLUMN_INDEX] = _uuid;
 		}
 
 		_uuid = uuid;
 	}
 
 	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
+		if (_originalValues != null) {
+			Object originalUuid = _originalValues[UUID_COLUMN_INDEX];
+
+			if (originalUuid != null) {
+				return GetterUtil.getString((String)originalUuid);
+			}
+		}
+
+		return GetterUtil.getString(_uuid);
 	}
 
 	@JSON
@@ -515,6 +610,16 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setLayoutSEOEntryId(long layoutSEOEntryId) {
+		if ((_columnBitmask & LAYOUTSEOENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LAYOUTSEOENTRYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[21];
+			}
+
+			_originalValues[LAYOUTSEOENTRYID_COLUMN_INDEX] = _layoutSEOEntryId;
+		}
+
 		_layoutSEOEntryId = layoutSEOEntryId;
 	}
 
@@ -526,19 +631,29 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
 
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[21];
+			}
 
-			_originalGroupId = _groupId;
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
 		}
 
 		_groupId = groupId;
 	}
 
 	public long getOriginalGroupId() {
-		return _originalGroupId;
+		if (_originalValues != null) {
+			Object originalGroupId = _originalValues[GROUPID_COLUMN_INDEX];
+
+			if (originalGroupId != null) {
+				return (long)originalGroupId;
+			}
+		}
+
+		return _groupId;
 	}
 
 	@JSON
@@ -549,19 +664,29 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[21];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@JSON
@@ -572,6 +697,16 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[21];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -604,6 +739,16 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[21];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -615,6 +760,16 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[21];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -625,12 +780,20 @@ public class LayoutSEOEntryModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[21];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -649,19 +812,30 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setPrivateLayout(boolean privateLayout) {
-		_columnBitmask |= PRIVATELAYOUT_COLUMN_BITMASK;
+		if ((_columnBitmask & PRIVATELAYOUT_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PRIVATELAYOUT_COLUMN_BITMASK;
 
-		if (!_setOriginalPrivateLayout) {
-			_setOriginalPrivateLayout = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[21];
+			}
 
-			_originalPrivateLayout = _privateLayout;
+			_originalValues[PRIVATELAYOUT_COLUMN_INDEX] = _privateLayout;
 		}
 
 		_privateLayout = privateLayout;
 	}
 
 	public boolean getOriginalPrivateLayout() {
-		return _originalPrivateLayout;
+		if (_originalValues != null) {
+			Object originalPrivateLayout =
+				_originalValues[PRIVATELAYOUT_COLUMN_INDEX];
+
+			if (originalPrivateLayout != null) {
+				return (boolean)originalPrivateLayout;
+			}
+		}
+
+		return _privateLayout;
 	}
 
 	@JSON
@@ -672,19 +846,29 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setLayoutId(long layoutId) {
-		_columnBitmask |= LAYOUTID_COLUMN_BITMASK;
+		if ((_columnBitmask & LAYOUTID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LAYOUTID_COLUMN_BITMASK;
 
-		if (!_setOriginalLayoutId) {
-			_setOriginalLayoutId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[21];
+			}
 
-			_originalLayoutId = _layoutId;
+			_originalValues[LAYOUTID_COLUMN_INDEX] = _layoutId;
 		}
 
 		_layoutId = layoutId;
 	}
 
 	public long getOriginalLayoutId() {
-		return _originalLayoutId;
+		if (_originalValues != null) {
+			Object originalLayoutId = _originalValues[LAYOUTID_COLUMN_INDEX];
+
+			if (originalLayoutId != null) {
+				return (long)originalLayoutId;
+			}
+		}
+
+		return _layoutId;
 	}
 
 	@JSON
@@ -743,6 +927,16 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setCanonicalURL(String canonicalURL) {
+		if ((_columnBitmask & CANONICALURL_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CANONICALURL_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[21];
+			}
+
+			_originalValues[CANONICALURL_COLUMN_INDEX] = _canonicalURL;
+		}
+
 		_canonicalURL = canonicalURL;
 	}
 
@@ -809,6 +1003,17 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setCanonicalURLEnabled(boolean canonicalURLEnabled) {
+		if ((_columnBitmask & CANONICALURLENABLED_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CANONICALURLENABLED_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[21];
+			}
+
+			_originalValues[CANONICALURLENABLED_COLUMN_INDEX] =
+				_canonicalURLEnabled;
+		}
+
 		_canonicalURLEnabled = canonicalURLEnabled;
 	}
 
@@ -820,6 +1025,16 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setDDMStorageId(long DDMStorageId) {
+		if ((_columnBitmask & DDMSTORAGEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DDMSTORAGEID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[21];
+			}
+
+			_originalValues[DDMSTORAGEID_COLUMN_INDEX] = _DDMStorageId;
+		}
+
 		_DDMStorageId = DDMStorageId;
 	}
 
@@ -882,6 +1097,17 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setOpenGraphDescription(String openGraphDescription) {
+		if ((_columnBitmask & OPENGRAPHDESCRIPTION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= OPENGRAPHDESCRIPTION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[21];
+			}
+
+			_originalValues[OPENGRAPHDESCRIPTION_COLUMN_INDEX] =
+				_openGraphDescription;
+		}
+
 		_openGraphDescription = openGraphDescription;
 	}
 
@@ -958,6 +1184,19 @@ public class LayoutSEOEntryModelImpl
 	public void setOpenGraphDescriptionEnabled(
 		boolean openGraphDescriptionEnabled) {
 
+		if ((_columnBitmask & OPENGRAPHDESCRIPTIONENABLED_COLUMN_BITMASK) ==
+				0) {
+
+			_columnBitmask |= OPENGRAPHDESCRIPTIONENABLED_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[21];
+			}
+
+			_originalValues[OPENGRAPHDESCRIPTIONENABLED_COLUMN_INDEX] =
+				_openGraphDescriptionEnabled;
+		}
+
 		_openGraphDescriptionEnabled = openGraphDescriptionEnabled;
 	}
 
@@ -1018,6 +1257,17 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setOpenGraphImageAlt(String openGraphImageAlt) {
+		if ((_columnBitmask & OPENGRAPHIMAGEALT_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= OPENGRAPHIMAGEALT_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[21];
+			}
+
+			_originalValues[OPENGRAPHIMAGEALT_COLUMN_INDEX] =
+				_openGraphImageAlt;
+		}
+
 		_openGraphImageAlt = openGraphImageAlt;
 	}
 
@@ -1082,6 +1332,17 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setOpenGraphImageFileEntryId(long openGraphImageFileEntryId) {
+		if ((_columnBitmask & OPENGRAPHIMAGEFILEENTRYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= OPENGRAPHIMAGEFILEENTRYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[21];
+			}
+
+			_originalValues[OPENGRAPHIMAGEFILEENTRYID_COLUMN_INDEX] =
+				_openGraphImageFileEntryId;
+		}
+
 		_openGraphImageFileEntryId = openGraphImageFileEntryId;
 	}
 
@@ -1142,6 +1403,16 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setOpenGraphTitle(String openGraphTitle) {
+		if ((_columnBitmask & OPENGRAPHTITLE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= OPENGRAPHTITLE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[21];
+			}
+
+			_originalValues[OPENGRAPHTITLE_COLUMN_INDEX] = _openGraphTitle;
+		}
+
 		_openGraphTitle = openGraphTitle;
 	}
 
@@ -1208,6 +1479,17 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setOpenGraphTitleEnabled(boolean openGraphTitleEnabled) {
+		if ((_columnBitmask & OPENGRAPHTITLEENABLED_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= OPENGRAPHTITLEENABLED_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[21];
+			}
+
+			_originalValues[OPENGRAPHTITLEENABLED_COLUMN_INDEX] =
+				_openGraphTitleEnabled;
+		}
+
 		_openGraphTitleEnabled = openGraphTitleEnabled;
 	}
 
@@ -1219,6 +1501,16 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
+		if ((_columnBitmask & LASTPUBLISHDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LASTPUBLISHDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[21];
+			}
+
+			_originalValues[LASTPUBLISHDATE_COLUMN_INDEX] = _lastPublishDate;
+		}
+
 		_lastPublishDate = lastPublishDate;
 	}
 
@@ -1488,33 +1780,9 @@ public class LayoutSEOEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LayoutSEOEntryModelImpl layoutSEOEntryModelImpl = this;
+		_columnBitmask = 0;
 
-		layoutSEOEntryModelImpl._originalUuid = layoutSEOEntryModelImpl._uuid;
-
-		layoutSEOEntryModelImpl._originalGroupId =
-			layoutSEOEntryModelImpl._groupId;
-
-		layoutSEOEntryModelImpl._setOriginalGroupId = false;
-
-		layoutSEOEntryModelImpl._originalCompanyId =
-			layoutSEOEntryModelImpl._companyId;
-
-		layoutSEOEntryModelImpl._setOriginalCompanyId = false;
-
-		layoutSEOEntryModelImpl._setModifiedDate = false;
-
-		layoutSEOEntryModelImpl._originalPrivateLayout =
-			layoutSEOEntryModelImpl._privateLayout;
-
-		layoutSEOEntryModelImpl._setOriginalPrivateLayout = false;
-
-		layoutSEOEntryModelImpl._originalLayoutId =
-			layoutSEOEntryModelImpl._layoutId;
-
-		layoutSEOEntryModelImpl._setOriginalLayoutId = false;
-
-		layoutSEOEntryModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -1707,25 +1975,15 @@ public class LayoutSEOEntryModelImpl
 
 	private long _mvccVersion;
 	private String _uuid;
-	private String _originalUuid;
 	private long _layoutSEOEntryId;
 	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private boolean _privateLayout;
-	private boolean _originalPrivateLayout;
-	private boolean _setOriginalPrivateLayout;
 	private long _layoutId;
-	private long _originalLayoutId;
-	private boolean _setOriginalLayoutId;
 	private String _canonicalURL;
 	private String _canonicalURLCurrentLanguageId;
 	private boolean _canonicalURLEnabled;
@@ -1740,7 +1998,8 @@ public class LayoutSEOEntryModelImpl
 	private String _openGraphTitleCurrentLanguageId;
 	private boolean _openGraphTitleEnabled;
 	private Date _lastPublishDate;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private LayoutSEOEntry _escapedModel;
 
 }

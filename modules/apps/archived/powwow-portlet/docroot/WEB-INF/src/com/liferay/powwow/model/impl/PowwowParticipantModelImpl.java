@@ -132,15 +132,57 @@ public class PowwowParticipantModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.powwow.model.PowwowParticipant"),
 		true);
 
-	public static final long EMAILADDRESS_COLUMN_BITMASK = 1L;
+	public static final long POWWOWPARTICIPANTID_COLUMN_BITMASK = 1L;
 
-	public static final long PARTICIPANTUSERID_COLUMN_BITMASK = 2L;
+	public static final long GROUPID_COLUMN_BITMASK = 2L;
 
-	public static final long POWWOWMEETINGID_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
 
-	public static final long TYPE_COLUMN_BITMASK = 8L;
+	public static final long USERID_COLUMN_BITMASK = 8L;
 
-	public static final long POWWOWPARTICIPANTID_COLUMN_BITMASK = 16L;
+	public static final long USERNAME_COLUMN_BITMASK = 16L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 32L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 64L;
+
+	public static final long POWWOWMEETINGID_COLUMN_BITMASK = 128L;
+
+	public static final long NAME_COLUMN_BITMASK = 256L;
+
+	public static final long PARTICIPANTUSERID_COLUMN_BITMASK = 512L;
+
+	public static final long EMAILADDRESS_COLUMN_BITMASK = 1024L;
+
+	public static final long TYPE_COLUMN_BITMASK = 2048L;
+
+	public static final long STATUS_COLUMN_BITMASK = 4096L;
+
+	public static final int POWWOWPARTICIPANTID_COLUMN_INDEX = 0;
+
+	public static final int GROUPID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int USERID_COLUMN_INDEX = 3;
+
+	public static final int USERNAME_COLUMN_INDEX = 4;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 5;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 6;
+
+	public static final int POWWOWMEETINGID_COLUMN_INDEX = 7;
+
+	public static final int NAME_COLUMN_INDEX = 8;
+
+	public static final int PARTICIPANTUSERID_COLUMN_INDEX = 9;
+
+	public static final int EMAILADDRESS_COLUMN_INDEX = 10;
+
+	public static final int TYPE_COLUMN_INDEX = 11;
+
+	public static final int STATUS_COLUMN_INDEX = 12;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -413,6 +455,17 @@ public class PowwowParticipantModelImpl
 
 	@Override
 	public void setPowwowParticipantId(long powwowParticipantId) {
+		if ((_columnBitmask & POWWOWPARTICIPANTID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= POWWOWPARTICIPANTID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[POWWOWPARTICIPANTID_COLUMN_INDEX] =
+				_powwowParticipantId;
+		}
+
 		_powwowParticipantId = powwowParticipantId;
 	}
 
@@ -424,6 +477,16 @@ public class PowwowParticipantModelImpl
 
 	@Override
 	public void setGroupId(long groupId) {
+		if ((_columnBitmask & GROUPID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= GROUPID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[GROUPID_COLUMN_INDEX] = _groupId;
+		}
+
 		_groupId = groupId;
 	}
 
@@ -435,6 +498,16 @@ public class PowwowParticipantModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -446,6 +519,16 @@ public class PowwowParticipantModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -478,6 +561,16 @@ public class PowwowParticipantModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -489,6 +582,16 @@ public class PowwowParticipantModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -499,12 +602,20 @@ public class PowwowParticipantModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -517,19 +628,30 @@ public class PowwowParticipantModelImpl
 
 	@Override
 	public void setPowwowMeetingId(long powwowMeetingId) {
-		_columnBitmask |= POWWOWMEETINGID_COLUMN_BITMASK;
+		if ((_columnBitmask & POWWOWMEETINGID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= POWWOWMEETINGID_COLUMN_BITMASK;
 
-		if (!_setOriginalPowwowMeetingId) {
-			_setOriginalPowwowMeetingId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalPowwowMeetingId = _powwowMeetingId;
+			_originalValues[POWWOWMEETINGID_COLUMN_INDEX] = _powwowMeetingId;
 		}
 
 		_powwowMeetingId = powwowMeetingId;
 	}
 
 	public long getOriginalPowwowMeetingId() {
-		return _originalPowwowMeetingId;
+		if (_originalValues != null) {
+			Object originalPowwowMeetingId =
+				_originalValues[POWWOWMEETINGID_COLUMN_INDEX];
+
+			if (originalPowwowMeetingId != null) {
+				return (long)originalPowwowMeetingId;
+			}
+		}
+
+		return _powwowMeetingId;
 	}
 
 	@JSON
@@ -545,6 +667,16 @@ public class PowwowParticipantModelImpl
 
 	@Override
 	public void setName(String name) {
+		if ((_columnBitmask & NAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= NAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[NAME_COLUMN_INDEX] = _name;
+		}
+
 		_name = name;
 	}
 
@@ -556,12 +688,15 @@ public class PowwowParticipantModelImpl
 
 	@Override
 	public void setParticipantUserId(long participantUserId) {
-		_columnBitmask |= PARTICIPANTUSERID_COLUMN_BITMASK;
+		if ((_columnBitmask & PARTICIPANTUSERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PARTICIPANTUSERID_COLUMN_BITMASK;
 
-		if (!_setOriginalParticipantUserId) {
-			_setOriginalParticipantUserId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalParticipantUserId = _participantUserId;
+			_originalValues[PARTICIPANTUSERID_COLUMN_INDEX] =
+				_participantUserId;
 		}
 
 		_participantUserId = participantUserId;
@@ -585,7 +720,16 @@ public class PowwowParticipantModelImpl
 	}
 
 	public long getOriginalParticipantUserId() {
-		return _originalParticipantUserId;
+		if (_originalValues != null) {
+			Object originalParticipantUserId =
+				_originalValues[PARTICIPANTUSERID_COLUMN_INDEX];
+
+			if (originalParticipantUserId != null) {
+				return (long)originalParticipantUserId;
+			}
+		}
+
+		return _participantUserId;
 	}
 
 	@JSON
@@ -601,17 +745,30 @@ public class PowwowParticipantModelImpl
 
 	@Override
 	public void setEmailAddress(String emailAddress) {
-		_columnBitmask |= EMAILADDRESS_COLUMN_BITMASK;
+		if ((_columnBitmask & EMAILADDRESS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= EMAILADDRESS_COLUMN_BITMASK;
 
-		if (_originalEmailAddress == null) {
-			_originalEmailAddress = _emailAddress;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[EMAILADDRESS_COLUMN_INDEX] = _emailAddress;
 		}
 
 		_emailAddress = emailAddress;
 	}
 
 	public String getOriginalEmailAddress() {
-		return GetterUtil.getString(_originalEmailAddress);
+		if (_originalValues != null) {
+			Object originalEmailAddress =
+				_originalValues[EMAILADDRESS_COLUMN_INDEX];
+
+			if (originalEmailAddress != null) {
+				return GetterUtil.getString((String)originalEmailAddress);
+			}
+		}
+
+		return GetterUtil.getString(_emailAddress);
 	}
 
 	@JSON
@@ -622,19 +779,29 @@ public class PowwowParticipantModelImpl
 
 	@Override
 	public void setType(int type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
+		if ((_columnBitmask & TYPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TYPE_COLUMN_BITMASK;
 
-		if (!_setOriginalType) {
-			_setOriginalType = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
 
-			_originalType = _type;
+			_originalValues[TYPE_COLUMN_INDEX] = _type;
 		}
 
 		_type = type;
 	}
 
 	public int getOriginalType() {
-		return _originalType;
+		if (_originalValues != null) {
+			Object originalType = _originalValues[TYPE_COLUMN_INDEX];
+
+			if (originalType != null) {
+				return (int)originalType;
+			}
+		}
+
+		return _type;
 	}
 
 	@JSON
@@ -645,6 +812,16 @@ public class PowwowParticipantModelImpl
 
 	@Override
 	public void setStatus(int status) {
+		if ((_columnBitmask & STATUS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= STATUS_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[13];
+			}
+
+			_originalValues[STATUS_COLUMN_INDEX] = _status;
+		}
+
 		_status = status;
 	}
 
@@ -758,29 +935,9 @@ public class PowwowParticipantModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		PowwowParticipantModelImpl powwowParticipantModelImpl = this;
+		_columnBitmask = 0;
 
-		powwowParticipantModelImpl._setModifiedDate = false;
-
-		powwowParticipantModelImpl._originalPowwowMeetingId =
-			powwowParticipantModelImpl._powwowMeetingId;
-
-		powwowParticipantModelImpl._setOriginalPowwowMeetingId = false;
-
-		powwowParticipantModelImpl._originalParticipantUserId =
-			powwowParticipantModelImpl._participantUserId;
-
-		powwowParticipantModelImpl._setOriginalParticipantUserId = false;
-
-		powwowParticipantModelImpl._originalEmailAddress =
-			powwowParticipantModelImpl._emailAddress;
-
-		powwowParticipantModelImpl._originalType =
-			powwowParticipantModelImpl._type;
-
-		powwowParticipantModelImpl._setOriginalType = false;
-
-		powwowParticipantModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -927,21 +1084,14 @@ public class PowwowParticipantModelImpl
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private long _powwowMeetingId;
-	private long _originalPowwowMeetingId;
-	private boolean _setOriginalPowwowMeetingId;
 	private String _name;
 	private long _participantUserId;
-	private long _originalParticipantUserId;
-	private boolean _setOriginalParticipantUserId;
 	private String _emailAddress;
-	private String _originalEmailAddress;
 	private int _type;
-	private int _originalType;
-	private boolean _setOriginalType;
 	private int _status;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private PowwowParticipant _escapedModel;
 
 }

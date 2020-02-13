@@ -100,18 +100,34 @@ public class OAuth2ScopeGrantModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long APPLICATIONNAME_COLUMN_BITMASK = 1L;
+	public static final long OAUTH2SCOPEGRANTID_COLUMN_BITMASK = 1L;
 
-	public static final long BUNDLESYMBOLICNAME_COLUMN_BITMASK = 2L;
-
-	public static final long COMPANYID_COLUMN_BITMASK = 4L;
+	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
 	public static final long OAUTH2APPLICATIONSCOPEALIASESID_COLUMN_BITMASK =
-		8L;
+		4L;
 
-	public static final long SCOPE_COLUMN_BITMASK = 16L;
+	public static final long APPLICATIONNAME_COLUMN_BITMASK = 8L;
 
-	public static final long OAUTH2SCOPEGRANTID_COLUMN_BITMASK = 32L;
+	public static final long BUNDLESYMBOLICNAME_COLUMN_BITMASK = 16L;
+
+	public static final long SCOPE_COLUMN_BITMASK = 32L;
+
+	public static final long SCOPEALIASES_COLUMN_BITMASK = 64L;
+
+	public static final int OAUTH2SCOPEGRANTID_COLUMN_INDEX = 0;
+
+	public static final int COMPANYID_COLUMN_INDEX = 1;
+
+	public static final int OAUTH2APPLICATIONSCOPEALIASESID_COLUMN_INDEX = 2;
+
+	public static final int APPLICATIONNAME_COLUMN_INDEX = 3;
+
+	public static final int BUNDLESYMBOLICNAME_COLUMN_INDEX = 4;
+
+	public static final int SCOPE_COLUMN_INDEX = 5;
+
+	public static final int SCOPEALIASES_COLUMN_INDEX = 6;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -318,6 +334,17 @@ public class OAuth2ScopeGrantModelImpl
 
 	@Override
 	public void setOAuth2ScopeGrantId(long oAuth2ScopeGrantId) {
+		if ((_columnBitmask & OAUTH2SCOPEGRANTID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= OAUTH2SCOPEGRANTID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
+
+			_originalValues[OAUTH2SCOPEGRANTID_COLUMN_INDEX] =
+				_oAuth2ScopeGrantId;
+		}
+
 		_oAuth2ScopeGrantId = oAuth2ScopeGrantId;
 	}
 
@@ -328,19 +355,29 @@ public class OAuth2ScopeGrantModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
 
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
 
-			_originalCompanyId = _companyId;
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
 		}
 
 		_companyId = companyId;
 	}
 
 	public long getOriginalCompanyId() {
-		return _originalCompanyId;
+		if (_originalValues != null) {
+			Object originalCompanyId = _originalValues[COMPANYID_COLUMN_INDEX];
+
+			if (originalCompanyId != null) {
+				return (long)originalCompanyId;
+			}
+		}
+
+		return _companyId;
 	}
 
 	@Override
@@ -352,12 +389,16 @@ public class OAuth2ScopeGrantModelImpl
 	public void setOAuth2ApplicationScopeAliasesId(
 		long oAuth2ApplicationScopeAliasesId) {
 
-		_columnBitmask |= OAUTH2APPLICATIONSCOPEALIASESID_COLUMN_BITMASK;
+		if ((_columnBitmask & OAUTH2APPLICATIONSCOPEALIASESID_COLUMN_BITMASK) ==
+				0) {
 
-		if (!_setOriginalOAuth2ApplicationScopeAliasesId) {
-			_setOriginalOAuth2ApplicationScopeAliasesId = true;
+			_columnBitmask |= OAUTH2APPLICATIONSCOPEALIASESID_COLUMN_BITMASK;
 
-			_originalOAuth2ApplicationScopeAliasesId =
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
+
+			_originalValues[OAUTH2APPLICATIONSCOPEALIASESID_COLUMN_INDEX] =
 				_oAuth2ApplicationScopeAliasesId;
 		}
 
@@ -365,7 +406,16 @@ public class OAuth2ScopeGrantModelImpl
 	}
 
 	public long getOriginalOAuth2ApplicationScopeAliasesId() {
-		return _originalOAuth2ApplicationScopeAliasesId;
+		if (_originalValues != null) {
+			Object originalOAuth2ApplicationScopeAliasesId =
+				_originalValues[OAUTH2APPLICATIONSCOPEALIASESID_COLUMN_INDEX];
+
+			if (originalOAuth2ApplicationScopeAliasesId != null) {
+				return (long)originalOAuth2ApplicationScopeAliasesId;
+			}
+		}
+
+		return _oAuth2ApplicationScopeAliasesId;
 	}
 
 	@Override
@@ -380,17 +430,30 @@ public class OAuth2ScopeGrantModelImpl
 
 	@Override
 	public void setApplicationName(String applicationName) {
-		_columnBitmask |= APPLICATIONNAME_COLUMN_BITMASK;
+		if ((_columnBitmask & APPLICATIONNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= APPLICATIONNAME_COLUMN_BITMASK;
 
-		if (_originalApplicationName == null) {
-			_originalApplicationName = _applicationName;
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
+
+			_originalValues[APPLICATIONNAME_COLUMN_INDEX] = _applicationName;
 		}
 
 		_applicationName = applicationName;
 	}
 
 	public String getOriginalApplicationName() {
-		return GetterUtil.getString(_originalApplicationName);
+		if (_originalValues != null) {
+			Object originalApplicationName =
+				_originalValues[APPLICATIONNAME_COLUMN_INDEX];
+
+			if (originalApplicationName != null) {
+				return GetterUtil.getString((String)originalApplicationName);
+			}
+		}
+
+		return GetterUtil.getString(_applicationName);
 	}
 
 	@Override
@@ -405,17 +468,31 @@ public class OAuth2ScopeGrantModelImpl
 
 	@Override
 	public void setBundleSymbolicName(String bundleSymbolicName) {
-		_columnBitmask |= BUNDLESYMBOLICNAME_COLUMN_BITMASK;
+		if ((_columnBitmask & BUNDLESYMBOLICNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= BUNDLESYMBOLICNAME_COLUMN_BITMASK;
 
-		if (_originalBundleSymbolicName == null) {
-			_originalBundleSymbolicName = _bundleSymbolicName;
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
+
+			_originalValues[BUNDLESYMBOLICNAME_COLUMN_INDEX] =
+				_bundleSymbolicName;
 		}
 
 		_bundleSymbolicName = bundleSymbolicName;
 	}
 
 	public String getOriginalBundleSymbolicName() {
-		return GetterUtil.getString(_originalBundleSymbolicName);
+		if (_originalValues != null) {
+			Object originalBundleSymbolicName =
+				_originalValues[BUNDLESYMBOLICNAME_COLUMN_INDEX];
+
+			if (originalBundleSymbolicName != null) {
+				return GetterUtil.getString((String)originalBundleSymbolicName);
+			}
+		}
+
+		return GetterUtil.getString(_bundleSymbolicName);
 	}
 
 	@Override
@@ -430,17 +507,29 @@ public class OAuth2ScopeGrantModelImpl
 
 	@Override
 	public void setScope(String scope) {
-		_columnBitmask |= SCOPE_COLUMN_BITMASK;
+		if ((_columnBitmask & SCOPE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SCOPE_COLUMN_BITMASK;
 
-		if (_originalScope == null) {
-			_originalScope = _scope;
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
+
+			_originalValues[SCOPE_COLUMN_INDEX] = _scope;
 		}
 
 		_scope = scope;
 	}
 
 	public String getOriginalScope() {
-		return GetterUtil.getString(_originalScope);
+		if (_originalValues != null) {
+			Object originalScope = _originalValues[SCOPE_COLUMN_INDEX];
+
+			if (originalScope != null) {
+				return GetterUtil.getString((String)originalScope);
+			}
+		}
+
+		return GetterUtil.getString(_scope);
 	}
 
 	@Override
@@ -455,6 +544,16 @@ public class OAuth2ScopeGrantModelImpl
 
 	@Override
 	public void setScopeAliases(String scopeAliases) {
+		if ((_columnBitmask & SCOPEALIASES_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SCOPEALIASES_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[7];
+			}
+
+			_originalValues[SCOPEALIASES_COLUMN_INDEX] = _scopeAliases;
+		}
+
 		_scopeAliases = scopeAliases;
 	}
 
@@ -562,29 +661,9 @@ public class OAuth2ScopeGrantModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		OAuth2ScopeGrantModelImpl oAuth2ScopeGrantModelImpl = this;
+		_columnBitmask = 0;
 
-		oAuth2ScopeGrantModelImpl._originalCompanyId =
-			oAuth2ScopeGrantModelImpl._companyId;
-
-		oAuth2ScopeGrantModelImpl._setOriginalCompanyId = false;
-
-		oAuth2ScopeGrantModelImpl._originalOAuth2ApplicationScopeAliasesId =
-			oAuth2ScopeGrantModelImpl._oAuth2ApplicationScopeAliasesId;
-
-		oAuth2ScopeGrantModelImpl._setOriginalOAuth2ApplicationScopeAliasesId =
-			false;
-
-		oAuth2ScopeGrantModelImpl._originalApplicationName =
-			oAuth2ScopeGrantModelImpl._applicationName;
-
-		oAuth2ScopeGrantModelImpl._originalBundleSymbolicName =
-			oAuth2ScopeGrantModelImpl._bundleSymbolicName;
-
-		oAuth2ScopeGrantModelImpl._originalScope =
-			oAuth2ScopeGrantModelImpl._scope;
-
-		oAuth2ScopeGrantModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -712,19 +791,13 @@ public class OAuth2ScopeGrantModelImpl
 
 	private long _oAuth2ScopeGrantId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _oAuth2ApplicationScopeAliasesId;
-	private long _originalOAuth2ApplicationScopeAliasesId;
-	private boolean _setOriginalOAuth2ApplicationScopeAliasesId;
 	private String _applicationName;
-	private String _originalApplicationName;
 	private String _bundleSymbolicName;
-	private String _originalBundleSymbolicName;
 	private String _scope;
-	private String _originalScope;
 	private String _scopeAliases;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private OAuth2ScopeGrant _escapedModel;
 
 }

@@ -130,9 +130,109 @@ public class AccountModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long ADDRESS_COLUMN_BITMASK = 1L;
+	public static final long ACCOUNTID_COLUMN_BITMASK = 1L;
 
-	public static final long USERID_COLUMN_BITMASK = 2L;
+	public static final long COMPANYID_COLUMN_BITMASK = 2L;
+
+	public static final long USERID_COLUMN_BITMASK = 4L;
+
+	public static final long USERNAME_COLUMN_BITMASK = 8L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 16L;
+
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 32L;
+
+	public static final long ADDRESS_COLUMN_BITMASK = 64L;
+
+	public static final long PERSONALNAME_COLUMN_BITMASK = 128L;
+
+	public static final long PROTOCOL_COLUMN_BITMASK = 256L;
+
+	public static final long INCOMINGHOSTNAME_COLUMN_BITMASK = 512L;
+
+	public static final long INCOMINGPORT_COLUMN_BITMASK = 1024L;
+
+	public static final long INCOMINGSECURE_COLUMN_BITMASK = 2048L;
+
+	public static final long OUTGOINGHOSTNAME_COLUMN_BITMASK = 4096L;
+
+	public static final long OUTGOINGPORT_COLUMN_BITMASK = 8192L;
+
+	public static final long OUTGOINGSECURE_COLUMN_BITMASK = 16384L;
+
+	public static final long LOGIN_COLUMN_BITMASK = 32768L;
+
+	public static final long PASSWORD_COLUMN_BITMASK = 65536L;
+
+	public static final long SAVEPASSWORD_COLUMN_BITMASK = 131072L;
+
+	public static final long SIGNATURE_COLUMN_BITMASK = 262144L;
+
+	public static final long USESIGNATURE_COLUMN_BITMASK = 524288L;
+
+	public static final long FOLDERPREFIX_COLUMN_BITMASK = 1048576L;
+
+	public static final long INBOXFOLDERID_COLUMN_BITMASK = 2097152L;
+
+	public static final long DRAFTFOLDERID_COLUMN_BITMASK = 4194304L;
+
+	public static final long SENTFOLDERID_COLUMN_BITMASK = 8388608L;
+
+	public static final long TRASHFOLDERID_COLUMN_BITMASK = 16777216L;
+
+	public static final long DEFAULTSENDER_COLUMN_BITMASK = 33554432L;
+
+	public static final int ACCOUNTID_COLUMN_INDEX = 0;
+
+	public static final int COMPANYID_COLUMN_INDEX = 1;
+
+	public static final int USERID_COLUMN_INDEX = 2;
+
+	public static final int USERNAME_COLUMN_INDEX = 3;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 4;
+
+	public static final int MODIFIEDDATE_COLUMN_INDEX = 5;
+
+	public static final int ADDRESS_COLUMN_INDEX = 6;
+
+	public static final int PERSONALNAME_COLUMN_INDEX = 7;
+
+	public static final int PROTOCOL_COLUMN_INDEX = 8;
+
+	public static final int INCOMINGHOSTNAME_COLUMN_INDEX = 9;
+
+	public static final int INCOMINGPORT_COLUMN_INDEX = 10;
+
+	public static final int INCOMINGSECURE_COLUMN_INDEX = 11;
+
+	public static final int OUTGOINGHOSTNAME_COLUMN_INDEX = 12;
+
+	public static final int OUTGOINGPORT_COLUMN_INDEX = 13;
+
+	public static final int OUTGOINGSECURE_COLUMN_INDEX = 14;
+
+	public static final int LOGIN_COLUMN_INDEX = 15;
+
+	public static final int PASSWORD_COLUMN_INDEX = 16;
+
+	public static final int SAVEPASSWORD_COLUMN_INDEX = 17;
+
+	public static final int SIGNATURE_COLUMN_INDEX = 18;
+
+	public static final int USESIGNATURE_COLUMN_INDEX = 19;
+
+	public static final int FOLDERPREFIX_COLUMN_INDEX = 20;
+
+	public static final int INBOXFOLDERID_COLUMN_INDEX = 21;
+
+	public static final int DRAFTFOLDERID_COLUMN_INDEX = 22;
+
+	public static final int SENTFOLDERID_COLUMN_INDEX = 23;
+
+	public static final int TRASHFOLDERID_COLUMN_INDEX = 24;
+
+	public static final int DEFAULTSENDER_COLUMN_INDEX = 25;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -383,6 +483,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setAccountId(long accountId) {
+		if ((_columnBitmask & ACCOUNTID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ACCOUNTID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[26];
+			}
+
+			_originalValues[ACCOUNTID_COLUMN_INDEX] = _accountId;
+		}
+
 		_accountId = accountId;
 	}
 
@@ -393,6 +503,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[26];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -403,12 +523,14 @@ public class AccountModelImpl
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
+		if ((_columnBitmask & USERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERID_COLUMN_BITMASK;
 
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[26];
+			}
 
-			_originalUserId = _userId;
+			_originalValues[USERID_COLUMN_INDEX] = _userId;
 		}
 
 		_userId = userId;
@@ -431,7 +553,15 @@ public class AccountModelImpl
 	}
 
 	public long getOriginalUserId() {
-		return _originalUserId;
+		if (_originalValues != null) {
+			Object originalUserId = _originalValues[USERID_COLUMN_INDEX];
+
+			if (originalUserId != null) {
+				return (long)originalUserId;
+			}
+		}
+
+		return _userId;
 	}
 
 	@Override
@@ -446,6 +576,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setUserName(String userName) {
+		if ((_columnBitmask & USERNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USERNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[26];
+			}
+
+			_originalValues[USERNAME_COLUMN_INDEX] = _userName;
+		}
+
 		_userName = userName;
 	}
 
@@ -456,6 +596,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[26];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
+
 		_createDate = createDate;
 	}
 
@@ -465,12 +615,20 @@ public class AccountModelImpl
 	}
 
 	public boolean hasSetModifiedDate() {
-		return _setModifiedDate;
+		return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 	}
 
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_setModifiedDate = true;
+		if ((_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[26];
+			}
+
+			_originalValues[MODIFIEDDATE_COLUMN_INDEX] = _modifiedDate;
+		}
 
 		_modifiedDate = modifiedDate;
 	}
@@ -487,17 +645,29 @@ public class AccountModelImpl
 
 	@Override
 	public void setAddress(String address) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & ADDRESS_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= ADDRESS_COLUMN_BITMASK;
 
-		if (_originalAddress == null) {
-			_originalAddress = _address;
+			if (_originalValues == null) {
+				_originalValues = new Object[26];
+			}
+
+			_originalValues[ADDRESS_COLUMN_INDEX] = _address;
 		}
 
 		_address = address;
 	}
 
 	public String getOriginalAddress() {
-		return GetterUtil.getString(_originalAddress);
+		if (_originalValues != null) {
+			Object originalAddress = _originalValues[ADDRESS_COLUMN_INDEX];
+
+			if (originalAddress != null) {
+				return GetterUtil.getString((String)originalAddress);
+			}
+		}
+
+		return GetterUtil.getString(_address);
 	}
 
 	@Override
@@ -512,6 +682,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setPersonalName(String personalName) {
+		if ((_columnBitmask & PERSONALNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PERSONALNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[26];
+			}
+
+			_originalValues[PERSONALNAME_COLUMN_INDEX] = _personalName;
+		}
+
 		_personalName = personalName;
 	}
 
@@ -527,6 +707,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setProtocol(String protocol) {
+		if ((_columnBitmask & PROTOCOL_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PROTOCOL_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[26];
+			}
+
+			_originalValues[PROTOCOL_COLUMN_INDEX] = _protocol;
+		}
+
 		_protocol = protocol;
 	}
 
@@ -542,6 +732,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setIncomingHostName(String incomingHostName) {
+		if ((_columnBitmask & INCOMINGHOSTNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= INCOMINGHOSTNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[26];
+			}
+
+			_originalValues[INCOMINGHOSTNAME_COLUMN_INDEX] = _incomingHostName;
+		}
+
 		_incomingHostName = incomingHostName;
 	}
 
@@ -552,6 +752,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setIncomingPort(int incomingPort) {
+		if ((_columnBitmask & INCOMINGPORT_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= INCOMINGPORT_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[26];
+			}
+
+			_originalValues[INCOMINGPORT_COLUMN_INDEX] = _incomingPort;
+		}
+
 		_incomingPort = incomingPort;
 	}
 
@@ -567,6 +777,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setIncomingSecure(boolean incomingSecure) {
+		if ((_columnBitmask & INCOMINGSECURE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= INCOMINGSECURE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[26];
+			}
+
+			_originalValues[INCOMINGSECURE_COLUMN_INDEX] = _incomingSecure;
+		}
+
 		_incomingSecure = incomingSecure;
 	}
 
@@ -582,6 +802,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setOutgoingHostName(String outgoingHostName) {
+		if ((_columnBitmask & OUTGOINGHOSTNAME_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= OUTGOINGHOSTNAME_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[26];
+			}
+
+			_originalValues[OUTGOINGHOSTNAME_COLUMN_INDEX] = _outgoingHostName;
+		}
+
 		_outgoingHostName = outgoingHostName;
 	}
 
@@ -592,6 +822,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setOutgoingPort(int outgoingPort) {
+		if ((_columnBitmask & OUTGOINGPORT_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= OUTGOINGPORT_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[26];
+			}
+
+			_originalValues[OUTGOINGPORT_COLUMN_INDEX] = _outgoingPort;
+		}
+
 		_outgoingPort = outgoingPort;
 	}
 
@@ -607,6 +847,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setOutgoingSecure(boolean outgoingSecure) {
+		if ((_columnBitmask & OUTGOINGSECURE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= OUTGOINGSECURE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[26];
+			}
+
+			_originalValues[OUTGOINGSECURE_COLUMN_INDEX] = _outgoingSecure;
+		}
+
 		_outgoingSecure = outgoingSecure;
 	}
 
@@ -622,6 +872,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setLogin(String login) {
+		if ((_columnBitmask & LOGIN_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= LOGIN_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[26];
+			}
+
+			_originalValues[LOGIN_COLUMN_INDEX] = _login;
+		}
+
 		_login = login;
 	}
 
@@ -637,6 +897,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setPassword(String password) {
+		if ((_columnBitmask & PASSWORD_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= PASSWORD_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[26];
+			}
+
+			_originalValues[PASSWORD_COLUMN_INDEX] = _password;
+		}
+
 		_password = password;
 	}
 
@@ -652,6 +922,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setSavePassword(boolean savePassword) {
+		if ((_columnBitmask & SAVEPASSWORD_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SAVEPASSWORD_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[26];
+			}
+
+			_originalValues[SAVEPASSWORD_COLUMN_INDEX] = _savePassword;
+		}
+
 		_savePassword = savePassword;
 	}
 
@@ -667,6 +947,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setSignature(String signature) {
+		if ((_columnBitmask & SIGNATURE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SIGNATURE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[26];
+			}
+
+			_originalValues[SIGNATURE_COLUMN_INDEX] = _signature;
+		}
+
 		_signature = signature;
 	}
 
@@ -682,6 +972,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setUseSignature(boolean useSignature) {
+		if ((_columnBitmask & USESIGNATURE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= USESIGNATURE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[26];
+			}
+
+			_originalValues[USESIGNATURE_COLUMN_INDEX] = _useSignature;
+		}
+
 		_useSignature = useSignature;
 	}
 
@@ -697,6 +997,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setFolderPrefix(String folderPrefix) {
+		if ((_columnBitmask & FOLDERPREFIX_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= FOLDERPREFIX_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[26];
+			}
+
+			_originalValues[FOLDERPREFIX_COLUMN_INDEX] = _folderPrefix;
+		}
+
 		_folderPrefix = folderPrefix;
 	}
 
@@ -707,6 +1017,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setInboxFolderId(long inboxFolderId) {
+		if ((_columnBitmask & INBOXFOLDERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= INBOXFOLDERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[26];
+			}
+
+			_originalValues[INBOXFOLDERID_COLUMN_INDEX] = _inboxFolderId;
+		}
+
 		_inboxFolderId = inboxFolderId;
 	}
 
@@ -717,6 +1037,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setDraftFolderId(long draftFolderId) {
+		if ((_columnBitmask & DRAFTFOLDERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DRAFTFOLDERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[26];
+			}
+
+			_originalValues[DRAFTFOLDERID_COLUMN_INDEX] = _draftFolderId;
+		}
+
 		_draftFolderId = draftFolderId;
 	}
 
@@ -727,6 +1057,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setSentFolderId(long sentFolderId) {
+		if ((_columnBitmask & SENTFOLDERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SENTFOLDERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[26];
+			}
+
+			_originalValues[SENTFOLDERID_COLUMN_INDEX] = _sentFolderId;
+		}
+
 		_sentFolderId = sentFolderId;
 	}
 
@@ -737,6 +1077,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setTrashFolderId(long trashFolderId) {
+		if ((_columnBitmask & TRASHFOLDERID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TRASHFOLDERID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[26];
+			}
+
+			_originalValues[TRASHFOLDERID_COLUMN_INDEX] = _trashFolderId;
+		}
+
 		_trashFolderId = trashFolderId;
 	}
 
@@ -752,6 +1102,16 @@ public class AccountModelImpl
 
 	@Override
 	public void setDefaultSender(boolean defaultSender) {
+		if ((_columnBitmask & DEFAULTSENDER_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= DEFAULTSENDER_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[26];
+			}
+
+			_originalValues[DEFAULTSENDER_COLUMN_INDEX] = _defaultSender;
+		}
+
 		_defaultSender = defaultSender;
 	}
 
@@ -875,17 +1235,9 @@ public class AccountModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AccountModelImpl accountModelImpl = this;
+		_columnBitmask = 0;
 
-		accountModelImpl._originalUserId = accountModelImpl._userId;
-
-		accountModelImpl._setOriginalUserId = false;
-
-		accountModelImpl._setModifiedDate = false;
-
-		accountModelImpl._originalAddress = accountModelImpl._address;
-
-		accountModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -1097,14 +1449,10 @@ public class AccountModelImpl
 	private long _accountId;
 	private long _companyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private boolean _setModifiedDate;
 	private String _address;
-	private String _originalAddress;
 	private String _personalName;
 	private String _protocol;
 	private String _incomingHostName;
@@ -1124,7 +1472,8 @@ public class AccountModelImpl
 	private long _sentFolderId;
 	private long _trashFolderId;
 	private boolean _defaultSender;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private Account _escapedModel;
 
 }

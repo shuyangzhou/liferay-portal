@@ -106,9 +106,41 @@ public class CTAutoResolutionInfoModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long CTCOLLECTIONID_COLUMN_BITMASK = 1L;
+	public static final long MVCCVERSION_COLUMN_BITMASK = 1L;
 
-	public static final long CREATEDATE_COLUMN_BITMASK = 2L;
+	public static final long CTAUTORESOLUTIONINFOID_COLUMN_BITMASK = 2L;
+
+	public static final long COMPANYID_COLUMN_BITMASK = 4L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 8L;
+
+	public static final long CTCOLLECTIONID_COLUMN_BITMASK = 16L;
+
+	public static final long MODELCLASSNAMEID_COLUMN_BITMASK = 32L;
+
+	public static final long SOURCEMODELCLASSPK_COLUMN_BITMASK = 64L;
+
+	public static final long TARGETMODELCLASSPK_COLUMN_BITMASK = 128L;
+
+	public static final long CONFLICTIDENTIFIER_COLUMN_BITMASK = 256L;
+
+	public static final int MVCCVERSION_COLUMN_INDEX = 0;
+
+	public static final int CTAUTORESOLUTIONINFOID_COLUMN_INDEX = 1;
+
+	public static final int COMPANYID_COLUMN_INDEX = 2;
+
+	public static final int CREATEDATE_COLUMN_INDEX = 3;
+
+	public static final int CTCOLLECTIONID_COLUMN_INDEX = 4;
+
+	public static final int MODELCLASSNAMEID_COLUMN_INDEX = 5;
+
+	public static final int SOURCEMODELCLASSPK_COLUMN_INDEX = 6;
+
+	public static final int TARGETMODELCLASSPK_COLUMN_INDEX = 7;
+
+	public static final int CONFLICTIDENTIFIER_COLUMN_INDEX = 8;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -318,6 +350,16 @@ public class CTAutoResolutionInfoModelImpl
 
 	@Override
 	public void setMvccVersion(long mvccVersion) {
+		if ((_columnBitmask & MVCCVERSION_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MVCCVERSION_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[MVCCVERSION_COLUMN_INDEX] = _mvccVersion;
+		}
+
 		_mvccVersion = mvccVersion;
 	}
 
@@ -328,6 +370,17 @@ public class CTAutoResolutionInfoModelImpl
 
 	@Override
 	public void setCtAutoResolutionInfoId(long ctAutoResolutionInfoId) {
+		if ((_columnBitmask & CTAUTORESOLUTIONINFOID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CTAUTORESOLUTIONINFOID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[CTAUTORESOLUTIONINFOID_COLUMN_INDEX] =
+				_ctAutoResolutionInfoId;
+		}
+
 		_ctAutoResolutionInfoId = ctAutoResolutionInfoId;
 	}
 
@@ -338,6 +391,16 @@ public class CTAutoResolutionInfoModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		if ((_columnBitmask & COMPANYID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[COMPANYID_COLUMN_INDEX] = _companyId;
+		}
+
 		_companyId = companyId;
 	}
 
@@ -348,7 +411,15 @@ public class CTAutoResolutionInfoModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
+		if ((_columnBitmask & CREATEDATE_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[CREATEDATE_COLUMN_INDEX] = _createDate;
+		}
 
 		_createDate = createDate;
 	}
@@ -360,19 +431,30 @@ public class CTAutoResolutionInfoModelImpl
 
 	@Override
 	public void setCtCollectionId(long ctCollectionId) {
-		_columnBitmask |= CTCOLLECTIONID_COLUMN_BITMASK;
+		if ((_columnBitmask & CTCOLLECTIONID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CTCOLLECTIONID_COLUMN_BITMASK;
 
-		if (!_setOriginalCtCollectionId) {
-			_setOriginalCtCollectionId = true;
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
 
-			_originalCtCollectionId = _ctCollectionId;
+			_originalValues[CTCOLLECTIONID_COLUMN_INDEX] = _ctCollectionId;
 		}
 
 		_ctCollectionId = ctCollectionId;
 	}
 
 	public long getOriginalCtCollectionId() {
-		return _originalCtCollectionId;
+		if (_originalValues != null) {
+			Object originalCtCollectionId =
+				_originalValues[CTCOLLECTIONID_COLUMN_INDEX];
+
+			if (originalCtCollectionId != null) {
+				return (long)originalCtCollectionId;
+			}
+		}
+
+		return _ctCollectionId;
 	}
 
 	@Override
@@ -382,6 +464,16 @@ public class CTAutoResolutionInfoModelImpl
 
 	@Override
 	public void setModelClassNameId(long modelClassNameId) {
+		if ((_columnBitmask & MODELCLASSNAMEID_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= MODELCLASSNAMEID_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[MODELCLASSNAMEID_COLUMN_INDEX] = _modelClassNameId;
+		}
+
 		_modelClassNameId = modelClassNameId;
 	}
 
@@ -392,6 +484,17 @@ public class CTAutoResolutionInfoModelImpl
 
 	@Override
 	public void setSourceModelClassPK(long sourceModelClassPK) {
+		if ((_columnBitmask & SOURCEMODELCLASSPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= SOURCEMODELCLASSPK_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[SOURCEMODELCLASSPK_COLUMN_INDEX] =
+				_sourceModelClassPK;
+		}
+
 		_sourceModelClassPK = sourceModelClassPK;
 	}
 
@@ -402,6 +505,17 @@ public class CTAutoResolutionInfoModelImpl
 
 	@Override
 	public void setTargetModelClassPK(long targetModelClassPK) {
+		if ((_columnBitmask & TARGETMODELCLASSPK_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= TARGETMODELCLASSPK_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[TARGETMODELCLASSPK_COLUMN_INDEX] =
+				_targetModelClassPK;
+		}
+
 		_targetModelClassPK = targetModelClassPK;
 	}
 
@@ -417,6 +531,17 @@ public class CTAutoResolutionInfoModelImpl
 
 	@Override
 	public void setConflictIdentifier(String conflictIdentifier) {
+		if ((_columnBitmask & CONFLICTIDENTIFIER_COLUMN_BITMASK) == 0) {
+			_columnBitmask |= CONFLICTIDENTIFIER_COLUMN_BITMASK;
+
+			if (_originalValues == null) {
+				_originalValues = new Object[9];
+			}
+
+			_originalValues[CONFLICTIDENTIFIER_COLUMN_INDEX] =
+				_conflictIdentifier;
+		}
+
 		_conflictIdentifier = conflictIdentifier;
 	}
 
@@ -527,14 +652,9 @@ public class CTAutoResolutionInfoModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		CTAutoResolutionInfoModelImpl ctAutoResolutionInfoModelImpl = this;
+		_columnBitmask = 0;
 
-		ctAutoResolutionInfoModelImpl._originalCtCollectionId =
-			ctAutoResolutionInfoModelImpl._ctCollectionId;
-
-		ctAutoResolutionInfoModelImpl._setOriginalCtCollectionId = false;
-
-		ctAutoResolutionInfoModelImpl._columnBitmask = 0;
+		_originalValues = null;
 	}
 
 	@Override
@@ -663,13 +783,12 @@ public class CTAutoResolutionInfoModelImpl
 	private long _companyId;
 	private Date _createDate;
 	private long _ctCollectionId;
-	private long _originalCtCollectionId;
-	private boolean _setOriginalCtCollectionId;
 	private long _modelClassNameId;
 	private long _sourceModelClassPK;
 	private long _targetModelClassPK;
 	private String _conflictIdentifier;
-	private long _columnBitmask;
+	private long _columnBitmask = -1;
+	private Object[] _originalValues;
 	private CTAutoResolutionInfo _escapedModel;
 
 }
