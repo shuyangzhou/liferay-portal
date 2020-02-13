@@ -249,18 +249,10 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 
 			<#assign columnBitmask = 1 />
 
-			<#list entity.finderEntityColumns as entityColumn>
+			<#list entity.databaseRegularEntityColumns as entityColumn>
 				public static final long ${entityColumn.name?upper_case}_COLUMN_BITMASK = ${columnBitmask}L;
 
 				<#assign columnBitmask = columnBitmask * 2 />
-			</#list>
-
-			<#list orderList as order>
-				<#if !entity.finderEntityColumns?seq_contains(order)>
-					public static final long ${order.name?upper_case}_COLUMN_BITMASK = ${columnBitmask}L;
-
-					<#assign columnBitmask = columnBitmask * 2 />
-				</#if>
 			</#list>
 		<#elseif !dependencyInjectorDS>
 			public static final boolean COLUMN_BITMASK_ENABLED = false;

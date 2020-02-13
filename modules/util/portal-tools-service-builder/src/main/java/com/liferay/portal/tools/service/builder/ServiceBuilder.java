@@ -2932,12 +2932,10 @@ public class ServiceBuilder {
 			columnBitmaskEnabled = false;
 		}
 		else {
-			List<EntityColumn> finderEntityColumns =
-				entity.getFinderEntityColumns();
+			List<EntityColumn> entityColumns =
+				entity.getDatabaseRegularEntityColumns();
 
-			if (finderEntityColumns.isEmpty() ||
-				(finderEntityColumns.size() > 64)) {
-
+			if (entityColumns.isEmpty() || (entityColumns.size() > 64)) {
 				columnBitmaskEnabled = false;
 			}
 		}
