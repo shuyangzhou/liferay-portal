@@ -640,11 +640,37 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 		}
 
 		public boolean getOriginalHead() {
-			return _getOriginalValue(HEAD_COLUMN_INDEX, _head);
+			if (_originalValues != null) {
+				Object originalHead = _originalValues[HEAD_COLUMN_INDEX];
+
+				if (originalHead != null) {
+					return (boolean)originalHead;
+				}
+			}
+
+			return _head;
 		}
 
 		public void setHead(boolean head) {
-			_setOriginalValue(HEAD_COLUMN_INDEX, _head);
+			<#if columnBitmaskEnabled>
+				if ((_columnBitmask & HEAD_COLUMN_BITMASK) == 0) {
+					_columnBitmask |= HEAD_COLUMN_BITMASK;
+
+					if (_originalValues == null) {
+						_originalValues = new Object[${entity.databaseRegularEntityColumns?size}];
+					}
+
+					_originalValues[HEAD_COLUMN_INDEX] = _head;
+				}
+			<#else>
+				if (_originalValues == null) {
+					_originalValues = new Object[${entity.databaseRegularEntityColumns?size}];
+				}
+
+				if (_originalValues[HEAD_COLUMN_INDEX] == null) {
+					_originalValues[HEAD_COLUMN_INDEX] = _head;
+				}
+			</#if>
 
 			_head = head;
 		}
@@ -816,7 +842,11 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 				<#if columnBitmaskEnabled>
 					return (_columnBitmask & MODIFIEDDATE_COLUMN_BITMASK) != 0;
 				<#else>
-					return (_getOriginalValue(MODIFIEDDATE_COLUMN_INDEX, _modifiedDate) != _modifiedDate);
+					if ((_originalValues != null) && (_originalValues[MODIFIEDDATE_COLUMN_INDEX] != null)) {
+						return true;
+					}
+
+					return false;
 				</#if>
 			}
 		</#if>
@@ -824,7 +854,25 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 		@Override
 		public void set${entityColumn.methodName}(${entityColumn.genericizedType} ${entityColumn.name}) {
 			<#if !stringUtil.equals(entityColumn.type, "Blob") || !entityColumn.lazy>
-				_setOriginalValue(${entityColumn.name?upper_case}_COLUMN_INDEX, _${entityColumn.name});
+				<#if columnBitmaskEnabled>
+					if ((_columnBitmask & ${entityColumn.name?upper_case}_COLUMN_BITMASK) == 0) {
+						_columnBitmask |= ${entityColumn.name?upper_case}_COLUMN_BITMASK;
+
+						if (_originalValues == null) {
+							_originalValues = new Object[${entity.databaseRegularEntityColumns?size}];
+						}
+
+						_originalValues[${entityColumn.name?upper_case}_COLUMN_INDEX] = _${entityColumn.name};
+					}
+				<#else>
+					if (_originalValues == null) {
+						_originalValues = new Object[${entity.databaseRegularEntityColumns?size}];
+					}
+
+					if (_originalValues[${entityColumn.name?upper_case}_COLUMN_INDEX] == null) {
+						_originalValues[${entityColumn.name?upper_case}_COLUMN_INDEX] = _${entityColumn.name};
+					}
+				</#if>
 			</#if>
 
 			<#if entity.versionEntity?? && stringUtil.equals(entityColumn.name, "headId")>
@@ -923,9 +971,25 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 		<#if entityColumn.isFinderPath() || (validator.isNotNull(parentPKColumn) && (parentPKColumn.name == entityColumn.name))>
 			public ${entityColumn.type} getOriginal${entityColumn.methodName}() {
 				<#if stringUtil.equals(entityColumn.type, "String") && entityColumn.isConvertNull()>
-					return GetterUtil.getString(_getOriginalValue(${entityColumn.name?upper_case}_COLUMN_INDEX, _${entityColumn.name}));
+					if (_originalValues != null) {
+						Object original${entityColumn.methodName} = _originalValues[${entityColumn.name?upper_case}_COLUMN_INDEX];
+
+						if (original${entityColumn.methodName} != null) {
+							return GetterUtil.getString((String)original${entityColumn.methodName});
+						}
+					}
+
+					return GetterUtil.getString(_${entityColumn.name});
 				<#else>
-					return _getOriginalValue(${entityColumn.name?upper_case}_COLUMN_INDEX, _${entityColumn.name});
+					if (_originalValues != null) {
+						Object original${entityColumn.methodName} = _originalValues[${entityColumn.name?upper_case}_COLUMN_INDEX];
+
+						if (original${entityColumn.methodName} != null) {
+							return (${entityColumn.type})original${entityColumn.methodName};
+						}
+					}
+
+					return _${entityColumn.name};
 				</#if>
 			}
 		</#if>
@@ -1707,40 +1771,6 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 		}
 	</#if>
 
-	<#if entity.databaseRegularEntityColumns?size != 0>
-		@SuppressWarnings("unchecked")
-		private <T> T _getOriginalValue(int columnIndex, T defaultValue) {
-			if ((_originalValues == _INITIAL_MARKER) || (_originalValues == null)) {
-				return defaultValue;
-			}
-
-			Object originalValue = _originalValues[columnIndex];
-
-			if (originalValue == null) {
-				return defaultValue;
-			}
-
-			return (T)originalValue;
-		}
-
-		private void _setOriginalValue(int columnIndex, Object value) {
-			if (_originalValues == _INITIAL_MARKER) {
-				return;
-			}
-
-			<#if columnBitmaskEnabled>
-				_columnBitmask |= (1L << columnIndex);
-			</#if>
-
-			if (_originalValues == null) {
-				_originalValues = new Object[${entity.databaseRegularEntityColumns?size}];
-			}
-
-			if (_originalValues[columnIndex] == null) {
-				_originalValues[columnIndex] = value;
-			}
-		}
-	</#if>
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, ${entity.name}> _escapedModelProxyProviderFunction = _getProxyProviderFunction();
@@ -1770,13 +1800,11 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 	</#list>
 
 	<#if columnBitmaskEnabled>
-		private long _columnBitmask;
+		private long _columnBitmask = -1;
 	</#if>
 
 	<#if entity.databaseRegularEntityColumns?size != 0>
-		private static final Object[] _INITIAL_MARKER = new Object[0];
-
-		private Object[] _originalValues = _INITIAL_MARKER;
+		private Object[] _originalValues;
 	</#if>
 
 	private ${entity.name} _escapedModel;
