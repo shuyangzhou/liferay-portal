@@ -21,12 +21,14 @@ import com.liferay.configuration.admin.web.internal.util.ConfigurationEntryRetri
 import com.liferay.configuration.admin.web.internal.util.ConfigurationModelIterator;
 import com.liferay.configuration.admin.web.internal.util.ConfigurationModelRetriever;
 import com.liferay.configuration.admin.web.internal.util.ResourceBundleLoaderProvider;
+import com.liferay.petra.lang.SafeClosable;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.messaging.proxy.ProxyModeThreadLocal;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.search.BaseIndexer;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
@@ -216,7 +218,11 @@ public class ConfigurationModelIndexer extends BaseIndexer<ConfigurationModel> {
 
 	@Deactivate
 	protected void deactivate() {
-		_bundleTracker.close();
+		try (SafeClosable safeClosable =
+				ProxyModeThreadLocal.setWithSafeClosable(true)) {
+
+			_bundleTracker.close();
+		}
 	}
 
 	@Override
@@ -456,9 +462,13 @@ public class ConfigurationModelIndexer extends BaseIndexer<ConfigurationModel> {
 				bundle.getSymbolicName(), configurationModels.values());
 		}
 
-		_configurationModelIndexer.reindex(configurationModelsList);
+		try (SafeClosable safeClosable =
+				ProxyModeThreadLocal.setWithSafeClosable(true)) {
 
-		_commit(_configurationModelIndexer);
+			_configurationModelIndexer.reindex(configurationModelsList);
+
+			_commit(_configurationModelIndexer);
+		}
 
 		_bundleTracker = new BundleTracker<>(
 			bundleContext, Bundle.ACTIVE,
