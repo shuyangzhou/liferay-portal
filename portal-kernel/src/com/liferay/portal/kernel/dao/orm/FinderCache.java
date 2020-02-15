@@ -14,12 +14,17 @@
 
 package com.liferay.portal.kernel.dao.orm;
 
+import com.liferay.portal.kernel.dao.orm.cache.FinderCacheListResult;
+import com.liferay.portal.kernel.dao.orm.cache.FinderCacheModelResult;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+
+import org.osgi.annotation.versioning.ProviderType;
 
 /**
  * @author Brian Wing Shun Chan
  */
+@ProviderType
 public interface FinderCache {
 
 	public void clearCache();
@@ -28,9 +33,15 @@ public interface FinderCache {
 
 	public void clearLocalCache();
 
+	public <T extends BaseModel<T>> FinderCacheModelResult<T> getResult(
+		FinderPath finderPath, Object[] args);
+
 	public Object getResult(
 		FinderPath finderPath, Object[] args,
 		BasePersistenceImpl<? extends BaseModel<?>> basePersistenceImpl);
+
+	public <T extends BaseModel<T>> FinderCacheListResult<T> getResults(
+		FinderPath finderPath, Object[] args);
 
 	public void invalidate();
 

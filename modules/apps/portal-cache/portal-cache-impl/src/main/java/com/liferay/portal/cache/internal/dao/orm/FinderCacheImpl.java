@@ -17,6 +17,10 @@ package com.liferay.portal.cache.internal.dao.orm;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.cache.internal.dao.orm.cache.FinderCacheDisableModelResult;
+import com.liferay.portal.cache.internal.dao.orm.cache.FinderCacheDisabledListResult;
+import com.liferay.portal.cache.internal.dao.orm.cache.FinderCacheListResultImpl;
+import com.liferay.portal.cache.internal.dao.orm.cache.FinderCacheModelResultImpl;
 import com.liferay.portal.kernel.cache.CacheRegistryItem;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.cache.MultiVMPool;
@@ -27,6 +31,8 @@ import com.liferay.portal.kernel.cache.PortalCacheManagerListener;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
+import com.liferay.portal.kernel.dao.orm.cache.FinderCacheListResult;
+import com.liferay.portal.kernel.dao.orm.cache.FinderCacheModelResult;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -44,6 +50,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Supplier;
 
 import org.apache.commons.collections.map.LRUMap;
 
@@ -95,6 +102,54 @@ public class FinderCacheImpl
 	@Override
 	public String getRegistryName() {
 		return FinderCache.class.getName();
+	}
+
+	@Override
+	public <T extends BaseModel<T>> FinderCacheModelResult<T> getResult(
+		FinderPath finderPath, Object[] args) {
+
+		if (!_valueObjectFinderCacheEnabled ||
+			!finderPath.isFinderCacheEnabled() ||
+			!CacheRegistryUtil.isActive()) {
+
+			return FinderCacheDisableModelResult.getInstance();
+		}
+
+		Serializable cacheKey = finderPath.encodeCacheKey(args);
+		Serializable cacheValue = null;
+		Map<Object, Serializable> localCache = null;
+		LocalCacheKey localCacheKey = null;
+		Supplier<PortalCache<Serializable, Serializable>> portalCacheSupplier;
+
+		if (_isLocalCacheEnabled()) {
+			localCache = _localCache.get();
+
+			localCacheKey = new LocalCacheKey(
+				finderPath.getCacheName(), cacheKey);
+
+			cacheValue = localCache.get(localCacheKey);
+		}
+
+		if (cacheValue == null) {
+			PortalCache<Serializable, Serializable> portalCache =
+				_getPortalCache(finderPath.getCacheName());
+
+			cacheValue = portalCache.get(cacheKey);
+
+			if ((cacheValue != null) && (localCache != null)) {
+				localCache.put(localCacheKey, cacheValue);
+			}
+
+			portalCacheSupplier = () -> portalCache;
+		}
+		else {
+			portalCacheSupplier = () -> _getPortalCache(
+				finderPath.getCacheName());
+		}
+
+		return new FinderCacheModelResultImpl<>(
+			cacheKey, cacheValue, localCache, localCacheKey,
+			portalCacheSupplier);
 	}
 
 	@Override
@@ -174,6 +229,54 @@ public class FinderCacheImpl
 		}
 
 		return cacheValue;
+	}
+
+	@Override
+	public <T extends BaseModel<T>> FinderCacheListResult<T> getResults(
+		FinderPath finderPath, Object[] args) {
+
+		if (!_valueObjectFinderCacheEnabled ||
+			!finderPath.isFinderCacheEnabled() ||
+			!CacheRegistryUtil.isActive()) {
+
+			return FinderCacheDisabledListResult.getInstance();
+		}
+
+		Serializable cacheKey = finderPath.encodeCacheKey(args);
+		Serializable cacheValue = null;
+		Map<Object, Serializable> localCache = null;
+		LocalCacheKey localCacheKey = null;
+		Supplier<PortalCache<Serializable, Serializable>> portalCacheSupplier;
+
+		if (_isLocalCacheEnabled()) {
+			localCache = _localCache.get();
+
+			localCacheKey = new LocalCacheKey(
+				finderPath.getCacheName(), cacheKey);
+
+			cacheValue = localCache.get(localCacheKey);
+		}
+
+		if (cacheValue == null) {
+			PortalCache<Serializable, Serializable> portalCache =
+				_getPortalCache(finderPath.getCacheName());
+
+			cacheValue = portalCache.get(cacheKey);
+
+			if ((cacheValue != null) && (localCache != null)) {
+				localCache.put(localCacheKey, cacheValue);
+			}
+
+			portalCacheSupplier = () -> portalCache;
+		}
+		else {
+			portalCacheSupplier = () -> _getPortalCache(
+				finderPath.getCacheName());
+		}
+
+		return new FinderCacheListResultImpl<>(
+			cacheKey, cacheValue, localCache, localCacheKey,
+			portalCacheSupplier, _valueObjectFinderCacheListThreshold);
 	}
 
 	@Override

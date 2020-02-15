@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.dao.orm;
 
+import com.liferay.portal.kernel.dao.orm.cache.FinderCacheListResult;
+import com.liferay.portal.kernel.dao.orm.cache.FinderCacheModelResult;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ServiceProxyFactory;
@@ -39,11 +41,23 @@ public class FinderCacheUtil {
 		return _finderCache;
 	}
 
+	public static <T extends BaseModel<T>> FinderCacheModelResult<T> getResult(
+		FinderPath finderPath, Object[] args) {
+
+		return _finderCache.getResult(finderPath, args);
+	}
+
 	public static Object getResult(
 		FinderPath finderPath, Object[] args,
 		BasePersistenceImpl<? extends BaseModel<?>> basePersistenceImpl) {
 
 		return _finderCache.getResult(finderPath, args, basePersistenceImpl);
+	}
+
+	public static <T extends BaseModel<T>> FinderCacheListResult<T> getResults(
+		FinderPath finderPath, Object[] args) {
+
+		return _finderCache.getResults(finderPath, args);
 	}
 
 	public static void invalidate() {
