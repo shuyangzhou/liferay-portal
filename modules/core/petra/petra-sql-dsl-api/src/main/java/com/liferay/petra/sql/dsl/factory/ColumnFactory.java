@@ -23,7 +23,6 @@ import com.liferay.petra.sql.dsl.base.BaseTable;
 public interface ColumnFactory {
 
 	public <T extends BaseTable<T>, C> Column<T, C> createColumn(
-		T table, String name, Class<C> javaType, int sqlType,
-		boolean nullAllowed);
+		T table, String name, Class<C> javaType, int sqlType, int flags);
 
 }

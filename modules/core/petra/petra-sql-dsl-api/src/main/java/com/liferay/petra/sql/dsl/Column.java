@@ -22,8 +22,18 @@ import com.liferay.petra.sql.dsl.expression.Expression;
  */
 public interface Column<T extends Table<T>, C> extends Expression<C> {
 
+	public static int DEFAULT_FLAGS = 0;
+
+	public static int NULL_ALLOWED = 1;
+
+	public static int NULL_NOT_ALLOWED = 2;
+
+	public static int PRIMARY_KEY = 4;
+
 	@Override
 	public ColumnAlias<T, C> as(String name);
+
+	public int getFlags();
 
 	public Class<C> getJavaType();
 
@@ -33,6 +43,28 @@ public interface Column<T extends Table<T>, C> extends Expression<C> {
 
 	public T getTable();
 
-	public boolean isNullAllowed();
+	public default boolean isNullAllowed() {
+		if ((getFlags() & NULL_ALLOWED) == 0) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public default boolean isNullNotAllowed() {
+		if ((getFlags() & NULL_NOT_ALLOWED) == 0) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public default boolean isPrimaryKey() {
+		if ((getFlags() & PRIMARY_KEY) == 0) {
+			return false;
+		}
+
+		return true;
+	}
 
 }
