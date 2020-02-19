@@ -123,12 +123,9 @@ dependencies {
 	testCompile group: "org.slf4j", name: "slf4j-api", version: "1.7.26"
 	testCompile project(":apps:portal-search:portal-search")
 	testCompile project(":apps:portal-search:portal-search-test-util")
-	testCompile project(":core:petra:petra-concurrent")
 	testCompile project(":core:petra:petra-lang")
 	testCompile project(":core:petra:petra-memory")
 	testCompile project(":core:petra:petra-nio")
-	testCompile project(":core:petra:petra-process")
-	testCompile project(":core:petra:petra-reflect")
 	testCompile project(":core:registry-api")
 }
 
