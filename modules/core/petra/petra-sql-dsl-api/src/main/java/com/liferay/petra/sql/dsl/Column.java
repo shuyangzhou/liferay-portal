@@ -33,4 +33,6 @@ public interface Column<T extends Table<T>, C> extends Expression<C> {
 
 	public T getTable();
 
+	public boolean isNullAllowed();
+
 }

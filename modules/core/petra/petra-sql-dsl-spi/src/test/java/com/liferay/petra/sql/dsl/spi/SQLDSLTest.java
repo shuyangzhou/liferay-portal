@@ -297,6 +297,13 @@ public class SQLDSLTest {
 		Assert.assertSame(
 			aliasMainExampleTable,
 			aliasMainExampleTable.mainExampleId.getTable());
+
+		Assert.assertFalse(
+			MainExampleTable.INSTANCE.mainExampleId.isNullAllowed());
+		Assert.assertFalse(aliasMainExampleTable.mainExampleId.isNullAllowed());
+
+		Assert.assertTrue(MainExampleTable.INSTANCE.name.isNullAllowed());
+		Assert.assertTrue(aliasMainExampleTable.name.isNullAllowed());
 	}
 
 	@Test
@@ -1343,13 +1350,13 @@ public class SQLDSLTest {
 		public static final MainExampleTable INSTANCE = new MainExampleTable();
 
 		public final Column<MainExampleTable, Clob> description = createColumn(
-			"description", Clob.class, Types.CLOB);
+			"description", Clob.class, Types.CLOB, true);
 		public final Column<MainExampleTable, Integer> flag = createColumn(
-			"flag", Integer.class, Types.INTEGER);
+			"flag", Integer.class, Types.INTEGER, true);
 		public final Column<MainExampleTable, Long> mainExampleId =
-			createColumn("mainExampleId", Long.class, Types.BIGINT);
+			createColumn("mainExampleId", Long.class, Types.BIGINT, false);
 		public final Column<MainExampleTable, String> name = createColumn(
-			"name", String.class, Types.VARCHAR);
+			"name", String.class, Types.VARCHAR, true);
 
 		private MainExampleTable() {
 			super("MainExample", MainExampleTable::new);
@@ -1364,11 +1371,11 @@ public class SQLDSLTest {
 			new ReferenceExampleTable();
 
 		public final Column<ReferenceExampleTable, Long> mainExampleId =
-			createColumn("mainExampleId", Long.class, Types.BIGINT);
+			createColumn("mainExampleId", Long.class, Types.BIGINT, true);
 		public final Column<ReferenceExampleTable, String> name = createColumn(
-			"name", String.class, Types.VARCHAR);
+			"name", String.class, Types.VARCHAR, true);
 		public final Column<ReferenceExampleTable, Long> referenceExampleId =
-			createColumn("referenceExampleId", Long.class, Types.BIGINT);
+			createColumn("referenceExampleId", Long.class, Types.BIGINT, false);
 
 		private ReferenceExampleTable() {
 			super("ReferenceExample", ReferenceExampleTable::new);

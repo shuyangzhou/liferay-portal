@@ -32,11 +32,15 @@ import java.util.function.Consumer;
 public class DefaultColumn<T extends BaseTable<T>, C>
 	extends BaseASTNode implements Column<T, C>, DefaultExpression<C> {
 
-	public DefaultColumn(T table, String name, Class<C> javaType, int sqlType) {
+	public DefaultColumn(
+		T table, String name, Class<C> javaType, int sqlType,
+		boolean nullAllowed) {
+
 		_table = Objects.requireNonNull(table);
 		_name = Objects.requireNonNull(name);
 		_javaType = Objects.requireNonNull(javaType);
 		_sqlType = sqlType;
+		_nullAllowed = nullAllowed;
 	}
 
 	@Override
@@ -97,6 +101,11 @@ public class DefaultColumn<T extends BaseTable<T>, C>
 	}
 
 	@Override
+	public boolean isNullAllowed() {
+		return _nullAllowed;
+	}
+
+	@Override
 	protected void doToSQL(
 		Consumer<String> consumer, ASTNodeListener astNodeListener) {
 
@@ -108,6 +117,7 @@ public class DefaultColumn<T extends BaseTable<T>, C>
 
 	private final Class<C> _javaType;
 	private final String _name;
+	private final boolean _nullAllowed;
 	private final int _sqlType;
 	private final T _table;
 
