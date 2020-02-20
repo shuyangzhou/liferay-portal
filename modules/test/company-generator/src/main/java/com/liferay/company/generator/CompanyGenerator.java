@@ -49,12 +49,6 @@ public class CompanyGenerator {
 		_companyGeneratorConfiguration = ConfigurableUtil.createConfigurable(
 			CompanyGeneratorConfiguration.class, properties);
 
-		if (_log.isInfoEnabled()) {
-			_log.info(
-				"Creating a company with virtualHostName = " +
-					_companyGeneratorConfiguration.virtualHostName());
-		}
-
 		try {
 			Company company = _companyLocalService.addCompany(
 				_companyGeneratorConfiguration.virtualHostName(),
@@ -68,8 +62,6 @@ public class CompanyGenerator {
 			_portalInstancesLocalService.synchronizePortalInstances();
 
 			if (_log.isInfoEnabled()) {
-				_log.info(company);
-
 				_log.info(
 					_companyGeneratorConfiguration.customActivationMessage());
 			}
@@ -80,34 +72,14 @@ public class CompanyGenerator {
 	}
 
 	@Deactivate
-	protected void deactivate(Map<String, Object> properties) {
-		if (_companyGeneratorConfiguration == null) {
-			_companyGeneratorConfiguration =
-				ConfigurableUtil.createConfigurable(
-					CompanyGeneratorConfiguration.class, properties);
-		}
-
-		if (_log.isInfoEnabled()) {
-			_log.info(
-				"Deleting company with virtualHostName = " +
-					_companyGeneratorConfiguration.virtualHostName());
-		}
-
+	protected void deactivate() {
 		Company company = _companyLocalService.fetchCompanyByVirtualHost(
 			_companyGeneratorConfiguration.virtualHostName());
-
-		if (company == null) {
-			return;
-		}
 
 		try {
 			_companyLocalService.deleteCompany(company);
 
 			_portalInstancesLocalService.synchronizePortalInstances();
-
-			if (_log.isInfoEnabled()) {
-				_log.info(company);
-			}
 		}
 		catch (PortalException portalException) {
 			_log.error(portalException, portalException);
