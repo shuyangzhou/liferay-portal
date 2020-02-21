@@ -309,6 +309,8 @@ public class ElasticsearchFixture implements ElasticsearchClientResolver {
 		embeddedElasticsearchConnection.activate(
 			bundleContext, _elasticsearchConfigurationProperties);
 
+		_embeddedElasticsearchConnection.connect();
+
 		return embeddedElasticsearchConnection;
 	}
 
