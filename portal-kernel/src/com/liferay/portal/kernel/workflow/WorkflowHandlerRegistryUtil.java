@@ -367,7 +367,9 @@ public class WorkflowHandlerRegistryUtil {
 			Stream<Queue<ComparableWorkflowHandlerWrapper>> stream =
 				workflowHandlers.stream();
 
-			return stream.map(
+			return stream.filter(
+				queue -> !queue.isEmpty()
+			).map(
 				queue -> _getWorkflowHandler(queue)
 			).collect(
 				Collectors.toList()
