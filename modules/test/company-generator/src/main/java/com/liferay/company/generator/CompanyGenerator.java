@@ -38,7 +38,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Kyle Miho
  */
 @Component(
-	configurationPid = "com.liferay.company.generator.CompanyGeneratorConfiguration",
+	configurationPid = "com.liferay.company.generator.configuration.CompanyGeneratorConfiguration",
 	configurationPolicy = ConfigurationPolicy.REQUIRE, immediate = true,
 	service = {}
 )

@@ -22,7 +22,9 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
  * @author Kyle Miho
  */
 @ExtendedObjectClassDefinition(generateUI = false)
-@Meta.OCD(id = "com.liferay.company.generator.CompanyGeneratorConfiguration")
+@Meta.OCD(
+	id = "com.liferay.company.generator.configuration.CompanyGeneratorConfiguration"
+)
 public interface CompanyGeneratorConfiguration {
 
 	@Meta.AD
