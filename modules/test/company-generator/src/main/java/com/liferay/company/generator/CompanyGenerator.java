@@ -22,17 +22,19 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.service.CompanyLocalService;
-import com.liferay.portal.kernel.util.ProxyFactory;
 
 import java.util.Map;
 
 import javax.servlet.ServletContext;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * @author Kyle Miho
@@ -56,8 +58,7 @@ public class CompanyGenerator {
 				false, 0, true);
 
 			_portalInstancesLocalService.initializePortalInstance(
-				ProxyFactory.newDummyInstance(ServletContext.class),
-				company.getWebId());
+				_serviceTracker.getService(), company.getWebId());
 
 			_portalInstancesLocalService.synchronizePortalInstances();
 
@@ -88,6 +89,21 @@ public class CompanyGenerator {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CompanyGenerator.class);
+
+	private static final ServiceTracker<ServletContext, ServletContext>
+		_serviceTracker;
+
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(CompanyGenerator.class);
+
+		ServiceTracker<ServletContext, ServletContext> serviceTracker =
+			new ServiceTracker<>(
+				bundle.getBundleContext(), ServletContext.class, null);
+
+		serviceTracker.open();
+
+		_serviceTracker = serviceTracker;
+	}
 
 	private CompanyGeneratorConfiguration _companyGeneratorConfiguration;
 
