@@ -85,10 +85,13 @@ public class SidecarElasticsearchConnectionManager {
 					_clusterMasterExecutor, _jsonFactory, _processExecutor,
 					_props);
 
-				_identifiableOSGiServiceserviceRegistration =
+				_clusterableSidecarsOSGiServiceserviceRegistration =
 					bundleContext.registerService(
-						IdentifiableOSGiService.class, clusterableSidecar,
-						null);
+						new String[] {
+							IdentifiableOSGiService.class.getName(),
+							ClusterableSidecar.class.getName()
+						},
+						clusterableSidecar, null);
 
 				elasticsearchConnection = new SidecarElasticsearchConnection(
 					clusterableSidecar);
@@ -116,22 +119,22 @@ public class SidecarElasticsearchConnectionManager {
 	protected void deactivate() {
 		_serviceRegistration.unregister();
 
-		if (_identifiableOSGiServiceserviceRegistration != null) {
-			_identifiableOSGiServiceserviceRegistration.unregister();
+		if (_clusterableSidecarsOSGiServiceserviceRegistration != null) {
+			_clusterableSidecarsOSGiServiceserviceRegistration.unregister();
 		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SidecarElasticsearchConnectionManager.class);
 
+	private ServiceRegistration<?>
+		_clusterableSidecarsOSGiServiceserviceRegistration;
+
 	@Reference
 	private ClusterExecutor _clusterExecutor;
 
 	@Reference
 	private ClusterMasterExecutor _clusterMasterExecutor;
-
-	private ServiceRegistration<IdentifiableOSGiService>
-		_identifiableOSGiServiceserviceRegistration;
 
 	@Reference
 	private JSONFactory _jsonFactory;

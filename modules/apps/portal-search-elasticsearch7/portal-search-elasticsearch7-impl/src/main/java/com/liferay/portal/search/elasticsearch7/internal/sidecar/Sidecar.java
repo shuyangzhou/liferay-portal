@@ -260,6 +260,14 @@ public class Sidecar {
 		}
 	}
 
+	protected ComponentContext getComponentContext() {
+		return _componentContext;
+	}
+
+	protected String getComponentName() {
+		return _componentName;
+	}
+
 	protected Path getDataHome() {
 		return _dataHome;
 	}
