@@ -14,11 +14,12 @@
 
 package com.liferay.gradle.plugins.css.builder;
 
-import com.liferay.css.builder.CSSBuilder;
 import com.liferay.css.builder.CSSBuilderArgs;
 import com.liferay.gradle.util.FileUtil;
 import com.liferay.gradle.util.GradleUtil;
 import com.liferay.gradle.util.Validator;
+import com.liferay.gradle.util.work.JavaMainWorkAction;
+import com.liferay.gradle.util.work.JavaMainWorkParameters;
 
 import java.io.File;
 
@@ -31,11 +32,18 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
+import javax.inject.Inject;
+
+import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.Project;
+import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.FileCollection;
+import org.gradle.api.provider.ListProperty;
+import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.InputFiles;
 import org.gradle.api.tasks.Optional;
@@ -45,6 +53,10 @@ import org.gradle.api.tasks.SkipWhenEmpty;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.util.CollectionUtils;
 import org.gradle.util.GUtil;
+import org.gradle.workers.ClassLoaderWorkerSpec;
+import org.gradle.workers.ProcessWorkerSpec;
+import org.gradle.workers.WorkQueue;
+import org.gradle.workers.WorkerExecutor;
 
 /**
  * @author Andrea Di Giorgi
@@ -52,17 +64,72 @@ import org.gradle.util.GUtil;
  */
 public class BuildCSSTask extends DefaultTask {
 
-	public BuildCSSTask() {
+	@Inject
+	public BuildCSSTask(WorkerExecutor workerExecutor) {
+		System.setProperty("file.encoding", StandardCharsets.UTF_8.name());
+		System.setProperty(
+			"sass.compiler.jni.clean.temp.dir", Boolean.TRUE.toString());
+
 		setDirNames("/");
-		System.setProperty("file.encoding", StandardCharsets.UTF_8.toString());
-		System.setProperty("sass.compiler.jni.clean.temp.dir", "true");
+
+		_workerExecutor = workerExecutor;
 	}
 
 	@TaskAction
-	public void buildCSS() throws Exception {
-		List<String> args = _getCompleteArgs();
+	public void buildCSS() {
+		WorkQueue workQueue = _workerExecutor.classLoaderIsolation(
+			new Action<ClassLoaderWorkerSpec>() {
 
-		CSSBuilder.main(args.toArray(new String[0]));
+				@Override
+				public void execute(
+					ClassLoaderWorkerSpec classLoaderWorkerSpec) {
+
+					ConfigurableFileCollection classpath =
+						classLoaderWorkerSpec.getClasspath();
+
+					classpath.from(getClasspath());
+				}
+
+			});
+
+		if (Objects.equals("ruby", getSassCompilerClassName())) {
+			workQueue = _workerExecutor.processIsolation(
+				new Action<ProcessWorkerSpec>() {
+
+					@Override
+					public void execute(ProcessWorkerSpec processWorkerSpec) {
+						ConfigurableFileCollection classpath =
+							processWorkerSpec.getClasspath();
+
+						classpath.from(getClasspath());
+
+						processWorkerSpec.forkOptions(
+							forkOptions -> forkOptions.jvmArgs("-Xss4096k"));
+					}
+
+				});
+		}
+
+		workQueue.submit(
+			JavaMainWorkAction.class,
+			new Action<JavaMainWorkParameters>() {
+
+				@Override
+				public void execute(
+					JavaMainWorkParameters javaMainWorkParameters) {
+
+					ListProperty<String> argsListProperty =
+						javaMainWorkParameters.getArgs();
+
+					argsListProperty.set(_getCompleteArgs());
+
+					Property<String> classNameProperty =
+						javaMainWorkParameters.getClassName();
+
+					classNameProperty.set("com.liferay.css.builder.CSSBuilder");
+				}
+
+			});
 	}
 
 	public BuildCSSTask dirNames(Iterable<Object> dirNames) {
@@ -85,8 +152,14 @@ public class BuildCSSTask extends DefaultTask {
 		return excludes(Arrays.asList(excludes));
 	}
 
+	@Input
 	public File getBaseDir() {
 		return GradleUtil.toFile(getProject(), _baseDir);
+	}
+
+	@InputFiles
+	public FileCollection getClasspath() {
+		return _classpath;
 	}
 
 	@InputFiles
@@ -130,6 +203,7 @@ public class BuildCSSTask extends DefaultTask {
 		return project.fileTree(args);
 	}
 
+	@Input
 	public List<String> getDirNames() {
 		return GradleUtil.toStringList(_dirNames);
 	}
@@ -248,6 +322,10 @@ public class BuildCSSTask extends DefaultTask {
 
 	public void setBaseDir(Object baseDir) {
 		_baseDir = baseDir;
+	}
+
+	public void setClasspath(FileCollection classpath) {
+		_classpath = classpath;
 	}
 
 	public void setDirNames(Iterable<Object> dirNames) {
@@ -412,6 +490,7 @@ public class BuildCSSTask extends DefaultTask {
 	private boolean _appendCssImportTimestamps =
 		CSSBuilderArgs.APPEND_CSS_IMPORT_TIMESTAMPS;
 	private Object _baseDir;
+	private FileCollection _classpath;
 	private final Set<Object> _dirNames = new LinkedHashSet<>();
 	private final Set<Object> _excludes = new LinkedHashSet<>(
 		Arrays.asList(CSSBuilderArgs.EXCLUDES));
@@ -421,5 +500,6 @@ public class BuildCSSTask extends DefaultTask {
 	private Object _precision = CSSBuilderArgs.PRECISION;
 	private final Set<Object> _rtlExcludedPathRegexps = new LinkedHashSet<>();
 	private Object _sassCompilerClassName;
+	private final WorkerExecutor _workerExecutor;
 
 }
