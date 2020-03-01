@@ -96,8 +96,11 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 			String className = entry.getKey();
 			TemplateHandler templateHandler = entry.getValue();
 
-			_classNameIdTemplateHandlers.put(
-				_portal.getClassNameId(className), templateHandler);
+			long classNameId = _portal.getClassNameId(className);
+
+			_classNameIdTemplateHandlers.put(classNameId, templateHandler);
+
+			_classNames.put(className, classNameId);
 
 			if (_serviceRegistrations.containsKey(className)) {
 				continue;
@@ -123,8 +126,11 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 			return;
 		}
 
-		_classNameIdTemplateHandlers.put(
-			_portal.getClassNameId(className), templateHandler);
+		long classNameId = _portal.getClassNameId(className);
+
+		_classNameIdTemplateHandlers.put(classNameId, templateHandler);
+
+		_classNames.put(className, classNameId);
 
 		registerPortalInstanceLifecycleListener(templateHandler);
 	}
@@ -175,8 +181,7 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 		_classNameTemplateHandlers.remove(className);
 
 		if (_portal != null) {
-			_classNameIdTemplateHandlers.remove(
-				_portal.getClassNameId(className));
+			_classNameIdTemplateHandlers.remove(_classNames.get(className));
 		}
 
 		ServiceRegistration<?> serviceRegistration =
@@ -216,6 +221,7 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 	private BundleContext _bundleContext;
 	private final Map<Long, TemplateHandler> _classNameIdTemplateHandlers =
 		new ConcurrentHashMap<>();
+	private final Map<String, Long> _classNames = new ConcurrentHashMap<>();
 	private final Map<String, TemplateHandler> _classNameTemplateHandlers =
 		new ConcurrentHashMap<>();
 
