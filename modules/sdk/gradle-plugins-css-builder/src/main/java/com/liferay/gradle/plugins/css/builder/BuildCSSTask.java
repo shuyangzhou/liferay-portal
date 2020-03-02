@@ -82,6 +82,7 @@ public class BuildCSSTask extends ExecuteJavaTask {
 		return excludes(Arrays.asList(excludes));
 	}
 
+	@Input
 	public File getBaseDir() {
 		return GradleUtil.toFile(getProject(), _baseDir);
 	}
@@ -133,6 +134,7 @@ public class BuildCSSTask extends ExecuteJavaTask {
 		return project.fileTree(args);
 	}
 
+	@Input
 	public List<String> getDirNames() {
 		return GradleUtil.toStringList(_dirNames);
 	}
