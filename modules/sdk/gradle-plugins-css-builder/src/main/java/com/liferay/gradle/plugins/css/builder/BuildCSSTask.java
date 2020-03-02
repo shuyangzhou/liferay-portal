@@ -57,9 +57,11 @@ public class BuildCSSTask extends ExecuteJavaTask {
 	public BuildCSSTask(WorkerExecutor workerExecutor) {
 		super(workerExecutor);
 
+		System.setProperty("file.encoding", StandardCharsets.UTF_8.name());
+		System.setProperty(
+			"sass.compiler.jni.clean.temp.dir", Boolean.TRUE.toString());
+
 		setDirNames("/");
-		System.setProperty("file.encoding", StandardCharsets.UTF_8.toString());
-		System.setProperty("sass.compiler.jni.clean.temp.dir", "true");
 	}
 
 	public BuildCSSTask dirNames(Iterable<Object> dirNames) {
