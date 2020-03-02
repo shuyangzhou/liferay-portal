@@ -319,20 +319,6 @@ public class BuildCSSTask extends ExecuteJavaTask {
 		_sassCompilerClassName = sassCompilerClassName;
 	}
 
-	private String _addTrailingSlash(String path) {
-		if (Validator.isNull(path)) {
-			return path;
-		}
-
-		path = path.replace('\\', '/');
-
-		if (path.charAt(path.length() - 1) != '/') {
-			path += '/';
-		}
-
-		return path;
-	}
-
 	@Override
 	protected List<String> getArgs() {
 		List<String> args = new ArrayList<>();
@@ -377,6 +363,20 @@ public class BuildCSSTask extends ExecuteJavaTask {
 	@Override
 	protected String getClassName() {
 		return "com.liferay.css.builder.CSSBuilder";
+	}
+
+	private String _addTrailingSlash(String path) {
+		if (Validator.isNull(path)) {
+			return path;
+		}
+
+		path = path.replace('\\', '/');
+
+		if (path.charAt(path.length() - 1) != '/') {
+			path += '/';
+		}
+
+		return path;
 	}
 
 	private String _getDirNamesArg() {
