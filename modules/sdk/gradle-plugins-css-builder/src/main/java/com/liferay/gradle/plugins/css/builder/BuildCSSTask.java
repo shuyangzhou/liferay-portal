@@ -90,6 +90,11 @@ public class BuildCSSTask extends DefaultTask {
 	}
 
 	@InputFiles
+	public FileCollection getClasspath() {
+		return _classpath;
+	}
+
+	@InputFiles
 	@SkipWhenEmpty
 	public FileCollection getCSSFiles() {
 		Project project = getProject();
@@ -248,6 +253,10 @@ public class BuildCSSTask extends DefaultTask {
 
 	public void setBaseDir(Object baseDir) {
 		_baseDir = baseDir;
+	}
+
+	public void setClasspath(FileCollection classpath) {
+		_classpath = classpath;
 	}
 
 	public void setDirNames(Iterable<Object> dirNames) {
@@ -412,6 +421,7 @@ public class BuildCSSTask extends DefaultTask {
 	private boolean _appendCssImportTimestamps =
 		CSSBuilderArgs.APPEND_CSS_IMPORT_TIMESTAMPS;
 	private Object _baseDir;
+	private FileCollection _classpath;
 	private final Set<Object> _dirNames = new LinkedHashSet<>();
 	private final Set<Object> _excludes = new LinkedHashSet<>(
 		Arrays.asList(CSSBuilderArgs.EXCLUDES));
