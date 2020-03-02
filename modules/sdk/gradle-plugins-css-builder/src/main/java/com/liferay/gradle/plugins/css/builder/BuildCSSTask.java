@@ -14,11 +14,11 @@
 
 package com.liferay.gradle.plugins.css.builder;
 
-import com.liferay.css.builder.CSSBuilder;
 import com.liferay.css.builder.CSSBuilderArgs;
 import com.liferay.gradle.util.FileUtil;
 import com.liferay.gradle.util.GradleUtil;
 import com.liferay.gradle.util.Validator;
+import com.liferay.gradle.util.tasks.ExecuteJavaTask;
 
 import java.io.File;
 
@@ -33,7 +33,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.gradle.api.DefaultTask;
+import javax.inject.Inject;
+
 import org.gradle.api.Project;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.tasks.Input;
@@ -42,27 +43,23 @@ import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.OutputDirectories;
 import org.gradle.api.tasks.OutputFiles;
 import org.gradle.api.tasks.SkipWhenEmpty;
-import org.gradle.api.tasks.TaskAction;
 import org.gradle.util.CollectionUtils;
 import org.gradle.util.GUtil;
+import org.gradle.workers.WorkerExecutor;
 
 /**
  * @author Andrea Di Giorgi
  * @author David Truong
  */
-public class BuildCSSTask extends DefaultTask {
+public class BuildCSSTask extends ExecuteJavaTask {
 
-	public BuildCSSTask() {
+	@Inject
+	public BuildCSSTask(WorkerExecutor workerExecutor) {
+		super(workerExecutor);
+
 		setDirNames("/");
 		System.setProperty("file.encoding", StandardCharsets.UTF_8.toString());
 		System.setProperty("sass.compiler.jni.clean.temp.dir", "true");
-	}
-
-	@TaskAction
-	public void buildCSS() throws Exception {
-		List<String> args = _getCompleteArgs();
-
-		CSSBuilder.main(args.toArray(new String[0]));
 	}
 
 	public BuildCSSTask dirNames(Iterable<Object> dirNames) {
@@ -90,6 +87,7 @@ public class BuildCSSTask extends DefaultTask {
 	}
 
 	@InputFiles
+	@Override
 	public FileCollection getClasspath() {
 		return _classpath;
 	}
@@ -331,7 +329,8 @@ public class BuildCSSTask extends DefaultTask {
 		return path;
 	}
 
-	private List<String> _getCompleteArgs() {
+	@Override
+	protected List<String> getArgs() {
 		List<String> args = new ArrayList<>();
 
 		args.add(
@@ -369,6 +368,11 @@ public class BuildCSSTask extends DefaultTask {
 		args.add("--rtl-excluded-path-regexps=" + rtlExcludedPathRegexps);
 
 		return args;
+	}
+
+	@Override
+	protected String getClassName() {
+		return "com.liferay.css.builder.CSSBuilder";
 	}
 
 	private String _getDirNamesArg() {
