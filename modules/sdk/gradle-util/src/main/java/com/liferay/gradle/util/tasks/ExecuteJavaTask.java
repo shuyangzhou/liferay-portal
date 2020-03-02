@@ -30,6 +30,7 @@ import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.FileCollection;
+import org.gradle.api.logging.Logger;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.TaskAction;
@@ -99,6 +100,7 @@ public abstract class ExecuteJavaTask extends DefaultTask {
 	private WorkQueue _createWorkQueue() {
 		final FileCollection classpath = getClasspath();
 		final List<String> jvmArgs = getJvmArgs();
+		final Logger logger = getLogger();
 
 		WorkerExecutor workerExecutor = getWorkerExecutor();
 
@@ -117,6 +119,21 @@ public abstract class ExecuteJavaTask extends DefaultTask {
 
 							processWorkerClasspath.from(classpath);
 						}
+
+						if (logger.isInfoEnabled()) {
+							StringBuilder sb = new StringBuilder();
+
+							sb.append("Running in process isolation with ");
+							sb.append("JVM arguments ");
+							sb.append(jvmArgs);
+
+							if ((classpath != null) && !classpath.isEmpty()) {
+								sb.append(" and classpath ");
+								sb.append(classpath.getAsPath());
+							}
+
+							logger.info(sb.toString());
+						}
 					}
 
 				});
@@ -134,6 +151,12 @@ public abstract class ExecuteJavaTask extends DefaultTask {
 							classLoaderWorkerSpec.getClasspath();
 
 						classLoaderWorkerClasspath.from(classpath);
+
+						if (logger.isInfoEnabled()) {
+							logger.info(
+								"Running in class loader isolation with {}",
+								classpath.getAsPath());
+						}
 					}
 
 				});
@@ -175,6 +198,14 @@ public abstract class ExecuteJavaTask extends DefaultTask {
 					String methodName = getMethodName();
 
 					methodNameProperty.set(methodName);
+
+					Logger logger = getLogger();
+
+					if (logger.isInfoEnabled()) {
+						logger.info(
+							"Running '{}#{}' with arguments '{}'", className,
+							methodName, args);
+					}
 				}
 
 			});
