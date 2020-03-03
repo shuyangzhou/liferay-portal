@@ -18,7 +18,11 @@ import groovy.lang.Closure;
 
 import java.io.File;
 
+import java.lang.reflect.Method;
+
+import java.net.URI;
 import java.net.URL;
+import java.net.URLClassLoader;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,6 +47,7 @@ import org.gradle.api.artifacts.ResolvableDependencies;
 import org.gradle.api.artifacts.dsl.DependencyHandler;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.FileTree;
+import org.gradle.api.logging.Logger;
 import org.gradle.api.plugins.Convention;
 import org.gradle.api.plugins.ExtensionAware;
 import org.gradle.api.plugins.ExtensionContainer;
@@ -442,6 +447,53 @@ public class GradleUtil {
 			if (ArrayUtil.contains(dependencyNotations, dependencyNotation)) {
 				iterator.remove();
 			}
+		}
+	}
+
+	public static void runWithClassPath(
+			Project project, String className, String classpath,
+			List<String> args)
+		throws Exception {
+
+		classpath =
+			System.getProperty("java.class.path") + File.pathSeparator +
+				classpath;
+
+		Logger logger = project.getLogger();
+
+		if (logger.isInfoEnabled()) {
+			logger.info("Running with classpath {}", classpath);
+		}
+
+		String[] files = classpath.split(File.pathSeparator);
+
+		URL[] urls = new URL[files.length];
+
+		for (int i = 0; i < files.length; i++) {
+			File file = new File(files[i]);
+
+			URI uri = file.toURI();
+
+			urls[i] = uri.toURL();
+		}
+
+		ClassLoader classLoader = new URLClassLoader(urls, null);
+
+		Class<?> clazz = classLoader.loadClass(className);
+
+		Method method = clazz.getMethod("main", String[].class);
+
+		Thread currentThread = Thread.currentThread();
+
+		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+		currentThread.setContextClassLoader(classLoader);
+
+		try {
+			method.invoke(null, (Object)args.toArray(new String[0]));
+		}
+		finally {
+			currentThread.setContextClassLoader(contextClassLoader);
 		}
 	}
 
