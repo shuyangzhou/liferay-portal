@@ -97,6 +97,10 @@ public abstract class ExecuteJavaTask extends DefaultTask {
 		return _workerExecutor;
 	}
 
+	protected boolean isAwait() {
+		return false;
+	}
+
 	private WorkQueue _createWorkQueue() {
 		final FileCollection classpath = getClasspath();
 		final List<String> jvmArgs = getJvmArgs();
@@ -209,6 +213,10 @@ public abstract class ExecuteJavaTask extends DefaultTask {
 				}
 
 			});
+
+		if (isAwait()) {
+			workQueue.await();
+		}
 	}
 
 	private final Set<Object> _jvmArgs = new HashSet<>();

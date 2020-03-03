@@ -228,6 +228,11 @@ public class BuildCSSTask extends ExecuteJavaTask {
 		return _appendCssImportTimestamps;
 	}
 
+	@Override
+	public boolean isAwait() {
+		return _await;
+	}
+
 	@Input
 	public boolean isGenerateSourceMap() {
 		return _generateSourceMap;
@@ -251,6 +256,10 @@ public class BuildCSSTask extends ExecuteJavaTask {
 		boolean appendCssImportTimestamps) {
 
 		_appendCssImportTimestamps = appendCssImportTimestamps;
+	}
+
+	public void setAwait(boolean await) {
+		_await = await;
 	}
 
 	public void setBaseDir(Object baseDir) {
@@ -428,6 +437,7 @@ public class BuildCSSTask extends ExecuteJavaTask {
 
 	private boolean _appendCssImportTimestamps =
 		CSSBuilderArgs.APPEND_CSS_IMPORT_TIMESTAMPS;
+	private boolean _await = true;
 	private Object _baseDir;
 	private FileCollection _classpath;
 	private final Set<Object> _dirNames = new LinkedHashSet<>();
