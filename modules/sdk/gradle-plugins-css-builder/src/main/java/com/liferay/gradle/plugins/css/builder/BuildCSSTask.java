@@ -64,7 +64,7 @@ public class BuildCSSTask extends DefaultTask {
 		FileCollection classpath = getClasspath();
 
 		GradleUtil.runWithClasspath(
-			getProject(), getClassName(), classpath.getAsPath(), getArgs());
+			getProject(), _getClassName(), classpath.getAsPath(), _getArgs());
 	}
 
 	public BuildCSSTask dirNames(Iterable<Object> dirNames) {
@@ -321,7 +321,21 @@ public class BuildCSSTask extends DefaultTask {
 		_sassCompilerClassName = sassCompilerClassName;
 	}
 
-	protected List<String> getArgs() {
+	private String _addTrailingSlash(String path) {
+		if (Validator.isNull(path)) {
+			return path;
+		}
+
+		path = path.replace('\\', '/');
+
+		if (path.charAt(path.length() - 1) != '/') {
+			path += '/';
+		}
+
+		return path;
+	}
+
+	private List<String> _getArgs() {
 		List<String> args = new ArrayList<>();
 
 		args.add(
@@ -361,22 +375,8 @@ public class BuildCSSTask extends DefaultTask {
 		return args;
 	}
 
-	protected String getClassName() {
+	private String _getClassName() {
 		return "com.liferay.css.builder.CSSBuilder";
-	}
-
-	private String _addTrailingSlash(String path) {
-		if (Validator.isNull(path)) {
-			return path;
-		}
-
-		path = path.replace('\\', '/');
-
-		if (path.charAt(path.length() - 1) != '/') {
-			path += '/';
-		}
-
-		return path;
 	}
 
 	private String _getDirNamesArg() {
