@@ -57,8 +57,8 @@ public class CSSBuilderPlugin implements Plugin<Project> {
 
 	@Override
 	public void apply(Project project) {
-		_addConfigurationCSSBuilder(project);
-
+		Configuration cssBuilderConfiguration = _addConfigurationCSSBuilder(
+			project);
 		Configuration portalCommonCSSConfiguration =
 			_addConfigurationPortalCommonCSS(project);
 
@@ -66,7 +66,8 @@ public class CSSBuilderPlugin implements Plugin<Project> {
 
 		BuildCSSTask buildCSSTask = _addTaskBuildCSS(project, copyCSSTask);
 
-		_configureTasksBuildCSS(project, portalCommonCSSConfiguration);
+		_configureTasksBuildCSS(
+			project, cssBuilderConfiguration, portalCommonCSSConfiguration);
 
 		PluginContainer pluginContainer = project.getPlugins();
 
@@ -225,6 +226,12 @@ public class CSSBuilderPlugin implements Plugin<Project> {
 		return copyCSSTask;
 	}
 
+	private void _configureTaskBuildCSSClasspath(
+		BuildCSSTask buildCSSTask, FileCollection classpath) {
+
+		buildCSSTask.setClasspath(classpath);
+	}
+
 	private void _configureTaskBuildCSSImportFile(
 		BuildCSSTask buildCSSTask,
 		final Configuration portalCommonCSSConfiguration) {
@@ -305,7 +312,8 @@ public class CSSBuilderPlugin implements Plugin<Project> {
 	}
 
 	private void _configureTasksBuildCSS(
-		Project project, final Configuration portalCommonCSSConfiguration) {
+		Project project, final Configuration cssBuilderConfiguration,
+		final Configuration portalCommonCSSConfiguration) {
 
 		TaskContainer taskContainer = project.getTasks();
 
@@ -315,6 +323,8 @@ public class CSSBuilderPlugin implements Plugin<Project> {
 
 				@Override
 				public void execute(BuildCSSTask buildCSSTask) {
+					_configureTaskBuildCSSClasspath(
+						buildCSSTask, cssBuilderConfiguration);
 					_configureTaskBuildCSSImportFile(
 						buildCSSTask, portalCommonCSSConfiguration);
 				}

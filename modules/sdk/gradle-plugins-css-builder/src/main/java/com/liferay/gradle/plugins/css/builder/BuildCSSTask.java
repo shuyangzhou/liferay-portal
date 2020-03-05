@@ -14,13 +14,18 @@
 
 package com.liferay.gradle.plugins.css.builder;
 
-import com.liferay.css.builder.CSSBuilder;
 import com.liferay.css.builder.CSSBuilderArgs;
 import com.liferay.gradle.util.FileUtil;
 import com.liferay.gradle.util.GradleUtil;
 import com.liferay.gradle.util.Validator;
 
 import java.io.File;
+
+import java.lang.reflect.Method;
+
+import java.net.URI;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 import java.nio.charset.StandardCharsets;
 
@@ -36,6 +41,7 @@ import java.util.Set;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.Project;
 import org.gradle.api.file.FileCollection;
+import org.gradle.api.logging.Logger;
 import org.gradle.api.tasks.CacheableTask;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.InputFiles;
@@ -57,16 +63,19 @@ import org.gradle.util.GUtil;
 public class BuildCSSTask extends DefaultTask {
 
 	public BuildCSSTask() {
+		System.setProperty("file.encoding", StandardCharsets.UTF_8.name());
+		System.setProperty(
+			"sass.compiler.jni.clean.temp.dir", Boolean.TRUE.toString());
+
 		setDirNames("/");
-		System.setProperty("file.encoding", StandardCharsets.UTF_8.toString());
-		System.setProperty("sass.compiler.jni.clean.temp.dir", "true");
 	}
 
 	@TaskAction
 	public void buildCSS() throws Exception {
-		List<String> args = _getCompleteArgs();
+		FileCollection classpath = getClasspath();
 
-		CSSBuilder.main(args.toArray(new String[0]));
+		_runWithClasspath(
+			getProject(), classpath.getAsPath(), _getCompleteArgs());
 	}
 
 	public BuildCSSTask dirNames(Iterable<Object> dirNames) {
@@ -91,6 +100,12 @@ public class BuildCSSTask extends DefaultTask {
 
 	public File getBaseDir() {
 		return GradleUtil.toFile(getProject(), _baseDir);
+	}
+
+	@InputFiles
+	@PathSensitive(PathSensitivity.RELATIVE)
+	public FileCollection getClasspath() {
+		return _classpath;
 	}
 
 	@InputFiles
@@ -256,6 +271,10 @@ public class BuildCSSTask extends DefaultTask {
 		_baseDir = baseDir;
 	}
 
+	public void setClasspath(FileCollection classpath) {
+		_classpath = classpath;
+	}
+
 	public void setDirNames(Iterable<Object> dirNames) {
 		_dirNames.clear();
 
@@ -415,9 +434,57 @@ public class BuildCSSTask extends DefaultTask {
 		return path;
 	}
 
+	private void _runWithClasspath(
+			Project project, String classpath, List<String> args)
+		throws Exception {
+
+		classpath =
+			System.getProperty("java.class.path") + File.pathSeparator +
+				classpath;
+
+		Logger logger = project.getLogger();
+
+		if (logger.isInfoEnabled()) {
+			logger.info("Running with classpath {}", classpath);
+		}
+
+		String[] files = classpath.split(File.pathSeparator);
+
+		URL[] urls = new URL[files.length];
+
+		for (int i = 0; i < files.length; i++) {
+			File file = new File(files[i]);
+
+			URI uri = file.toURI();
+
+			urls[i] = uri.toURL();
+		}
+
+		ClassLoader classLoader = new URLClassLoader(urls, null);
+
+		Class<?> clazz = classLoader.loadClass(
+			"com.liferay.css.builder.CSSBuilder");
+
+		Method method = clazz.getMethod("main", String[].class);
+
+		Thread currentThread = Thread.currentThread();
+
+		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+		currentThread.setContextClassLoader(classLoader);
+
+		try {
+			method.invoke(null, (Object)args.toArray(new String[0]));
+		}
+		finally {
+			currentThread.setContextClassLoader(contextClassLoader);
+		}
+	}
+
 	private boolean _appendCssImportTimestamps =
 		CSSBuilderArgs.APPEND_CSS_IMPORT_TIMESTAMPS;
 	private Object _baseDir;
+	private FileCollection _classpath;
 	private final Set<Object> _dirNames = new LinkedHashSet<>();
 	private final Set<Object> _excludes = new LinkedHashSet<>(
 		Arrays.asList(CSSBuilderArgs.EXCLUDES));
