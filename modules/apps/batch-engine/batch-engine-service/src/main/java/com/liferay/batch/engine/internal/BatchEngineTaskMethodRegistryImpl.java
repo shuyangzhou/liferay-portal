@@ -18,8 +18,11 @@ import com.liferay.batch.engine.BatchEngineTaskItemDelegate;
 import com.liferay.batch.engine.ItemClassRegistry;
 import com.liferay.batch.engine.internal.item.BatchEngineTaskItemDelegateExecutor;
 import com.liferay.batch.engine.internal.item.BatchEngineTaskItemDelegateExecutorCreator;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -47,10 +50,20 @@ public class BatchEngineTaskMethodRegistryImpl
 
 	@Override
 	public BatchEngineTaskItemDelegateExecutorCreator
-		getBatchEngineTaskItemDelegateExecutorCreator(String itemClassName) {
+		getBatchEngineTaskItemDelegateExecutorCreator(
+			String itemClassName, String taskItemDelegateName) {
 
-		return _batchEngineTaskItemDelegateExecutorCreators.get(
-			_itemClasses.get(itemClassName));
+		if (Validator.isNull(taskItemDelegateName)) {
+			taskItemDelegateName = "DEFAULT";
+		}
+
+		Map<String, BatchEngineTaskItemDelegateExecutorCreator>
+			batchEngineTaskItemDelegateExecutorCreatorMap =
+				_batchEngineTaskItemDelegateExecutorCreators.get(
+					_itemClasses.get(itemClassName));
+
+		return batchEngineTaskItemDelegateExecutorCreatorMap.get(
+			taskItemDelegateName);
 	}
 
 	@Override
@@ -81,9 +94,10 @@ public class BatchEngineTaskMethodRegistryImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		BatchEngineTaskMethodRegistryImpl.class);
 
-	private final Map<Class<?>, BatchEngineTaskItemDelegateExecutorCreator>
-		_batchEngineTaskItemDelegateExecutorCreators =
-			new ConcurrentHashMap<>();
+	private final Map
+		<Class<?>, Map<String, BatchEngineTaskItemDelegateExecutorCreator>>
+			_batchEngineTaskItemDelegateExecutorCreators =
+				new ConcurrentHashMap<>();
 	private final Map<String, Class<?>> _itemClasses =
 		new ConcurrentHashMap<>();
 	private ServiceTracker<BatchEngineTaskItemDelegate<Object>, Class<?>>
@@ -103,18 +117,27 @@ public class BatchEngineTaskMethodRegistryImpl
 
 			Class<?> itemClass = _getItemClass(batchEngineTaskItemDelegate);
 
-			if (_batchEngineTaskItemDelegateExecutorCreators.containsKey(
-					itemClass)) {
+			Map<String, BatchEngineTaskItemDelegateExecutorCreator>
+				batchEngineTaskItemDelegateExecutorCreatorMap =
+					_batchEngineTaskItemDelegateExecutorCreators.
+						computeIfAbsent(
+							itemClass, key -> new ConcurrentHashMap<>());
+
+			String batchEngineTaskItemDelegateName =
+				_getBatchEngineTaskItemDelegateName(serviceReference);
+
+			if (batchEngineTaskItemDelegateExecutorCreatorMap.containsKey(
+					batchEngineTaskItemDelegateName)) {
 
 				throw new IllegalStateException(
-					itemClass + " is already registered");
+					batchEngineTaskItemDelegateName + " is already registered");
 			}
 
 			ServiceObjects<BatchEngineTaskItemDelegate<Object>> serviceObjects =
 				_bundleContext.getServiceObjects(serviceReference);
 
-			_batchEngineTaskItemDelegateExecutorCreators.put(
-				itemClass,
+			batchEngineTaskItemDelegateExecutorCreatorMap.put(
+				batchEngineTaskItemDelegateName,
 				(company, expressionConvert, filterParserProvider, parameters,
 				 sortParserProvider, user) ->
 					new BatchEngineTaskItemDelegateExecutor(
@@ -125,8 +148,10 @@ public class BatchEngineTaskMethodRegistryImpl
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(
-					"Batch engine task item delegate registered for item " +
-						"class " + itemClass);
+					StringBundler.concat(
+						"Batch engine task item delegate registered for item ",
+						"class ", itemClass, " and delegate name ",
+						batchEngineTaskItemDelegateName));
 			}
 
 			return itemClass;
@@ -145,11 +170,23 @@ public class BatchEngineTaskMethodRegistryImpl
 				serviceReference,
 			Class<?> itemClass) {
 
-			_batchEngineTaskItemDelegateExecutorCreators.remove(itemClass);
+			Map<String, BatchEngineTaskItemDelegateExecutorCreator>
+				batchEngineTaskItemDelegateExecutorCreatorMap =
+					_batchEngineTaskItemDelegateExecutorCreators.get(itemClass);
+
+			String batchEngineTaskItemDelegateName =
+				_getBatchEngineTaskItemDelegateName(serviceReference);
+
+			batchEngineTaskItemDelegateExecutorCreatorMap.remove(
+				batchEngineTaskItemDelegateName);
+
+			if (batchEngineTaskItemDelegateExecutorCreatorMap.isEmpty()) {
+				_batchEngineTaskItemDelegateExecutorCreators.remove(itemClass);
+
+				_itemClasses.remove(itemClass.getName());
+			}
 
 			_bundleContext.ungetService(serviceReference);
-
-			_itemClasses.remove(itemClass.getName());
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(
@@ -162,6 +199,16 @@ public class BatchEngineTaskMethodRegistryImpl
 			BundleContext bundleContext) {
 
 			_bundleContext = bundleContext;
+		}
+
+		private String _getBatchEngineTaskItemDelegateName(
+			ServiceReference<BatchEngineTaskItemDelegate<Object>>
+				serviceReference) {
+
+			return GetterUtil.getString(
+				serviceReference.getProperty(
+					"batch.engine.task.item.delegate.name"),
+				"DEFAULT");
 		}
 
 		private Class<?> _getItemClass(

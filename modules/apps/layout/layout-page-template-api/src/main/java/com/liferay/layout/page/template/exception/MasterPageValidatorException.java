@@ -12,18 +12,21 @@
  * details.
  */
 
-package com.liferay.batch.engine.internal;
+package com.liferay.layout.page.template.exception;
 
-import com.liferay.batch.engine.ItemClassRegistry;
-import com.liferay.batch.engine.internal.item.BatchEngineTaskItemDelegateExecutorCreator;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
- * @author Ivica Cardic
+ * @author Rubén Pulido
  */
-public interface BatchEngineTaskMethodRegistry extends ItemClassRegistry {
+public class MasterPageValidatorException extends PortalException {
 
-	public BatchEngineTaskItemDelegateExecutorCreator
-		getBatchEngineTaskItemDelegateExecutorCreator(
-			String itemClassName, String taskItemDelegateName);
+	public MasterPageValidatorException(String msg, Throwable cause) {
+		super(msg, cause);
+	}
+
+	public MasterPageValidatorException(Throwable cause) {
+		super(cause);
+	}
 
 }
