@@ -3758,7 +3758,7 @@ definition {
 	@priority = "5"
 	test SubmitFormWithRequiredTextField {
 		property test.name.skip.portal.instance = "Forms#SubmitFormWithRequiredTextField";
-		property portal.acceptance = "true";
+		property portal.acceptance = "quarantine";
 		property testray.component.names = "Training";
 
 		Navigator.openURL();
