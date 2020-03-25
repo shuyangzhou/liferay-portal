@@ -75,8 +75,8 @@ public class LiferayDocumentTypeFactory implements TypeMappingsHelper {
 		CreateIndexRequestBuilder createIndexRequestBuilder, String mappings) {
 
 		createIndexRequestBuilder.addMapping(
-			LiferayTypeMappingsConstants.LIFERAY_DOCUMENT_TYPE, mappings,
-			XContentType.JSON);
+			LiferayTypeMappingsConstants.LIFERAY_DOCUMENT_TYPE,
+			_mergeOptionalDefaultTypeMappings(mappings), XContentType.JSON);
 	}
 
 	public void createOptionalDefaultTypeMappings(String indexName) {
@@ -159,7 +159,27 @@ public class LiferayDocumentTypeFactory implements TypeMappingsHelper {
 	protected String mergeDynamicTemplates(
 		String source, String indexName, String typeName) {
 
-		JSONObject sourceJSONObject = createJSONObject(source);
+		String mappings = getMappings(indexName, typeName);
+
+		return _mergeDynamicTemplatesJSON(source, mappings, typeName);
+	}
+
+	protected void putAll(Map<String, JSONObject> map, JSONArray jsonArray) {
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			JSONArray namesJSONArray = jsonObject.names();
+
+			String name = (String)namesJSONArray.get(0);
+
+			map.put(name, jsonObject);
+		}
+	}
+
+	private String _mergeDynamicTemplatesJSON(
+		String additionalMappings, String defaultMappings, String typeName) {
+
+		JSONObject sourceJSONObject = createJSONObject(additionalMappings);
 
 		JSONObject sourceTypeJSONObject = sourceJSONObject;
 
@@ -174,9 +194,7 @@ public class LiferayDocumentTypeFactory implements TypeMappingsHelper {
 			return sourceJSONObject.toString();
 		}
 
-		String mappings = getMappings(indexName, typeName);
-
-		JSONObject mappingsJSONObject = createJSONObject(mappings);
+		JSONObject mappingsJSONObject = createJSONObject(defaultMappings);
 
 		JSONObject typeJSONObject = mappingsJSONObject.getJSONObject(typeName);
 
@@ -190,16 +208,18 @@ public class LiferayDocumentTypeFactory implements TypeMappingsHelper {
 		return sourceJSONObject.toString();
 	}
 
-	protected void putAll(Map<String, JSONObject> map, JSONArray jsonArray) {
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
+	private String _mergeOptionalDefaultTypeMappings(String mappings) {
+		String name = StringUtil.replace(
+			LiferayTypeMappingsConstants.
+				LIFERAY_DOCUMENT_TYPE_MAPPING_FILE_NAME,
+			".json", "-optional-defaults.json");
 
-			JSONArray namesJSONArray = jsonObject.names();
+		String optionalDefaultTypeMappings = ResourceUtil.getResourceAsString(
+			getClass(), name);
 
-			String name = (String)namesJSONArray.get(0);
-
-			map.put(name, jsonObject);
-		}
+		return _mergeDynamicTemplatesJSON(
+			optionalDefaultTypeMappings, mappings,
+			LiferayTypeMappingsConstants.LIFERAY_DOCUMENT_TYPE);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
