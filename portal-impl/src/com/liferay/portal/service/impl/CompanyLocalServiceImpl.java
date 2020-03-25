@@ -240,7 +240,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 				return company;
 			}
 
-			return checkCompany(webId, mx);
+			return _checkCompany(company, mx);
 		}
 	}
 
@@ -280,106 +280,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		Company company = getCompanyByWebId(webId);
 
-		Locale localeThreadLocalDefaultLocale =
-			LocaleThreadLocal.getDefaultLocale();
-		Locale localeThreadSiteDefaultLocale =
-			LocaleThreadLocal.getSiteDefaultLocale();
-
-		try {
-			preregisterCompany(company.getCompanyId());
-
-			Locale companyDefaultLocale = LocaleUtil.fromLanguageId(
-				PropsValues.COMPANY_DEFAULT_LOCALE);
-
-			LocaleThreadLocal.setDefaultLocale(companyDefaultLocale);
-
-			LocaleThreadLocal.setSiteDefaultLocale(null);
-
-			// Key
-
-			checkCompanyKey(company.getCompanyId());
-
-			// Default user
-
-			User defaultUser = userPersistence.fetchByC_DU(
-				company.getCompanyId(), true);
-
-			if (defaultUser != null) {
-				if (!defaultUser.isAgreedToTermsOfUse()) {
-					defaultUser.setAgreedToTermsOfUse(true);
-
-					defaultUser = userPersistence.update(defaultUser);
-				}
-			}
-			else {
-				defaultUser = _addDefaultUser(company);
-			}
-
-			// System roles
-
-			roleLocalService.checkSystemRoles(company.getCompanyId());
-
-			// System groups
-
-			groupLocalService.checkSystemGroups(company.getCompanyId());
-
-			// Company group
-
-			groupLocalService.checkCompanyGroup(company.getCompanyId());
-
-			// Default password policy
-
-			passwordPolicyLocalService.checkDefaultPasswordPolicy(
-				company.getCompanyId());
-
-			// Default user must have the Guest role
-
-			Role guestRole = roleLocalService.getRole(
-				company.getCompanyId(), RoleConstants.GUEST);
-
-			roleLocalService.setUserRoles(
-				defaultUser.getUserId(), new long[] {guestRole.getRoleId()});
-
-			// Default admin
-
-			if (userPersistence.countByCompanyId(company.getCompanyId()) == 0) {
-				String emailAddress =
-					PropsValues.DEFAULT_ADMIN_EMAIL_ADDRESS_PREFIX + "@" + mx;
-
-				userLocalService.addDefaultAdminUser(
-					company.getCompanyId(),
-					PropsValues.DEFAULT_ADMIN_SCREEN_NAME, emailAddress,
-					defaultUser.getLocale(),
-					PropsValues.DEFAULT_ADMIN_FIRST_NAME,
-					PropsValues.DEFAULT_ADMIN_MIDDLE_NAME,
-					PropsValues.DEFAULT_ADMIN_LAST_NAME);
-			}
-
-			// Portlets
-
-			portletLocalService.checkPortlets(company.getCompanyId());
-
-			final Company finalCompany = company;
-
-			TransactionCommitCallbackUtil.registerCallback(
-				new Callable<Void>() {
-
-					@Override
-					public Void call() throws Exception {
-						registerCompany(finalCompany);
-
-						return null;
-					}
-
-				});
-		}
-		finally {
-			LocaleThreadLocal.setDefaultLocale(localeThreadLocalDefaultLocale);
-			LocaleThreadLocal.setSiteDefaultLocale(
-				localeThreadSiteDefaultLocale);
-		}
-
-		return company;
+		return _checkCompany(company, mx);
 	}
 
 	/**
@@ -1879,6 +1780,111 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		catch (PortletException portletException) {
 			throw new SystemException(portletException);
 		}
+	}
+
+	private Company _checkCompany(Company company, String mx)
+		throws PortalException {
+
+		Locale localeThreadLocalDefaultLocale =
+			LocaleThreadLocal.getDefaultLocale();
+		Locale localeThreadSiteDefaultLocale =
+			LocaleThreadLocal.getSiteDefaultLocale();
+
+		try {
+			preregisterCompany(company.getCompanyId());
+
+			Locale companyDefaultLocale = LocaleUtil.fromLanguageId(
+				PropsValues.COMPANY_DEFAULT_LOCALE);
+
+			LocaleThreadLocal.setDefaultLocale(companyDefaultLocale);
+
+			LocaleThreadLocal.setSiteDefaultLocale(null);
+
+			// Key
+
+			checkCompanyKey(company.getCompanyId());
+
+			// Default user
+
+			User defaultUser = userPersistence.fetchByC_DU(
+				company.getCompanyId(), true);
+
+			if (defaultUser != null) {
+				if (!defaultUser.isAgreedToTermsOfUse()) {
+					defaultUser.setAgreedToTermsOfUse(true);
+
+					defaultUser = userPersistence.update(defaultUser);
+				}
+			}
+			else {
+				defaultUser = _addDefaultUser(company);
+			}
+
+			// System roles
+
+			roleLocalService.checkSystemRoles(company.getCompanyId());
+
+			// System groups
+
+			groupLocalService.checkSystemGroups(company.getCompanyId());
+
+			// Company group
+
+			groupLocalService.checkCompanyGroup(company.getCompanyId());
+
+			// Default password policy
+
+			passwordPolicyLocalService.checkDefaultPasswordPolicy(
+				company.getCompanyId());
+
+			// Default user must have the Guest role
+
+			Role guestRole = roleLocalService.getRole(
+				company.getCompanyId(), RoleConstants.GUEST);
+
+			roleLocalService.setUserRoles(
+				defaultUser.getUserId(), new long[] {guestRole.getRoleId()});
+
+			// Default admin
+
+			if (userPersistence.countByCompanyId(company.getCompanyId()) == 0) {
+				String emailAddress =
+					PropsValues.DEFAULT_ADMIN_EMAIL_ADDRESS_PREFIX + "@" + mx;
+
+				userLocalService.addDefaultAdminUser(
+					company.getCompanyId(),
+					PropsValues.DEFAULT_ADMIN_SCREEN_NAME, emailAddress,
+					defaultUser.getLocale(),
+					PropsValues.DEFAULT_ADMIN_FIRST_NAME,
+					PropsValues.DEFAULT_ADMIN_MIDDLE_NAME,
+					PropsValues.DEFAULT_ADMIN_LAST_NAME);
+			}
+
+			// Portlets
+
+			portletLocalService.checkPortlets(company.getCompanyId());
+
+			final Company finalCompany = company;
+
+			TransactionCommitCallbackUtil.registerCallback(
+				new Callable<Void>() {
+
+					@Override
+					public Void call() throws Exception {
+						registerCompany(finalCompany);
+
+						return null;
+					}
+
+				});
+		}
+		finally {
+			LocaleThreadLocal.setDefaultLocale(localeThreadLocalDefaultLocale);
+			LocaleThreadLocal.setSiteDefaultLocale(
+				localeThreadSiteDefaultLocale);
+		}
+
+		return company;
 	}
 
 	private void _clearCompanyCache(long companyId) {
