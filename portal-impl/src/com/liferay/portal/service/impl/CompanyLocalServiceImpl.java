@@ -240,7 +240,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 				return company;
 			}
 
-			return checkCompany(webId, mx);
+			return _checkCompany(company, webId, mx);
 		}
 	}
 
@@ -279,6 +279,12 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		throws PortalException {
 
 		Company company = getCompanyByWebId(webId);
+
+		return _checkCompany(company, webId, mx);
+	}
+
+	private Company _checkCompany(Company company, String webId, String mx)
+		throws PortalException {
 
 		Locale localeThreadLocalDefaultLocale =
 			LocaleThreadLocal.getDefaultLocale();
