@@ -49,8 +49,6 @@ import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.template.TemplateHandler;
 import com.liferay.portal.kernel.template.TemplateHandlerRegistryUtil;
-import com.liferay.portal.kernel.template.TemplateManager;
-import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.templateparser.TransformerListener;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
@@ -415,22 +413,14 @@ public class JournalUtil {
 			String langType, boolean propagateException)
 		throws Exception {
 
-		TemplateManager templateManager =
-			TemplateManagerUtil.getTemplateManager(langType);
-
 		TemplateHandler templateHandler =
 			TemplateHandlerRegistryUtil.getTemplateHandler(
 				JournalArticle.class.getName());
 
-		Map<String, Object> contextObjects = new HashMap<>();
-
-		templateManager.addContextObjects(
-			contextObjects, templateHandler.getCustomContextObjects());
-
 		return _journalTransformer.transform(
-			themeDisplay, contextObjects, tokens, viewMode, languageId,
-			document, portletRequestModel, script, langType,
-			propagateException);
+			themeDisplay, templateHandler.getCustomContextObjects(), tokens,
+			viewMode, languageId, document, portletRequestModel, script,
+			langType, propagateException);
 	}
 
 	private static void _addElementOptions(
