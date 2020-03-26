@@ -46,7 +46,6 @@ import java.util.Set;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -119,12 +118,6 @@ public class MetricResourceTest extends BaseMetricResourceTestCase {
 		_testGetProcessMetric(
 			LocalDateTime.of(localDate.minusDays(1), LocalTime.MAX),
 			LocalDateTime.of(localDate.minusDays(1), LocalTime.MIDNIGHT));
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testGraphQLGetProcessMetric() throws Exception {
 	}
 
 	@Override
