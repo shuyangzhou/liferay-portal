@@ -227,15 +227,25 @@ public class AssigneeUserBulkSelectionSerDes {
 				String.valueOf(assigneeUserBulkSelection.getCompleted()));
 		}
 
-		map.put(
-			"dateEnd",
-			liferayToJSONDateFormat.format(
-				assigneeUserBulkSelection.getDateEnd()));
+		if (assigneeUserBulkSelection.getDateEnd() == null) {
+			map.put("dateEnd", null);
+		}
+		else {
+			map.put(
+				"dateEnd",
+				liferayToJSONDateFormat.format(
+					assigneeUserBulkSelection.getDateEnd()));
+		}
 
-		map.put(
-			"dateStart",
-			liferayToJSONDateFormat.format(
-				assigneeUserBulkSelection.getDateStart()));
+		if (assigneeUserBulkSelection.getDateStart() == null) {
+			map.put("dateStart", null);
+		}
+		else {
+			map.put(
+				"dateStart",
+				liferayToJSONDateFormat.format(
+					assigneeUserBulkSelection.getDateStart()));
+		}
 
 		if (assigneeUserBulkSelection.getInstanceIds() == null) {
 			map.put("instanceIds", null);

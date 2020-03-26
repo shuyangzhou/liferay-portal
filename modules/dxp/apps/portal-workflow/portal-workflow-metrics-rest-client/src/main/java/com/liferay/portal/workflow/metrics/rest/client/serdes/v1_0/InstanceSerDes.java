@@ -313,13 +313,23 @@ public class InstanceSerDes {
 			map.put("creatorUser", String.valueOf(instance.getCreatorUser()));
 		}
 
-		map.put(
-			"dateCompletion",
-			liferayToJSONDateFormat.format(instance.getDateCompletion()));
+		if (instance.getDateCompletion() == null) {
+			map.put("dateCompletion", null);
+		}
+		else {
+			map.put(
+				"dateCompletion",
+				liferayToJSONDateFormat.format(instance.getDateCompletion()));
+		}
 
-		map.put(
-			"dateCreated",
-			liferayToJSONDateFormat.format(instance.getDateCreated()));
+		if (instance.getDateCreated() == null) {
+			map.put("dateCreated", null);
+		}
+		else {
+			map.put(
+				"dateCreated",
+				liferayToJSONDateFormat.format(instance.getDateCreated()));
+		}
 
 		if (instance.getId() == null) {
 			map.put("id", null);
