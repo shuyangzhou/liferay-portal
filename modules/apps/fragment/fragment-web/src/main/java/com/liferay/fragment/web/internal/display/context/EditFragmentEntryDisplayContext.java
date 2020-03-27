@@ -49,9 +49,10 @@ import com.liferay.portal.template.soy.util.SoyContextFactoryUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.PortletRequest;
@@ -124,16 +125,20 @@ public class EditFragmentEntryDisplayContext {
 
 		template.prepare(_httpServletRequest);
 
-		Map<String, Object> taglibMap = new HashMap<>();
+		Set<String> oldKeys = new HashSet<>(template.keySet());
 
-		templateManager.addTaglibSupport(
-			taglibMap, _httpServletRequest,
+		template.prepareTaglib(
+			_httpServletRequest,
 			PortalUtil.getHttpServletResponse(_renderResponse));
+
+		Set<String> newKeys = new HashSet<>(template.keySet());
+
+		newKeys.removeAll(oldKeys);
 
 		List<String> freeMarkerTaglibs = new ArrayList<>();
 		List<String> freeMarkerVariables = new ArrayList<>();
 
-		freeMarkerTaglibs.addAll(taglibMap.keySet());
+		freeMarkerTaglibs.addAll(newKeys);
 		freeMarkerVariables.addAll(template.keySet());
 
 		freeMarkerVariables.add("configuration");
