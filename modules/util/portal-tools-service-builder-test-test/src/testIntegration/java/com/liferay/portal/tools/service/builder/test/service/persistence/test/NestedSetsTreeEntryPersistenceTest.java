@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.IntegerWrapper;
@@ -56,6 +57,7 @@ import org.junit.runner.RunWith;
 /**
  * @generated
  */
+@DataGuard
 @RunWith(Arquillian.class)
 public class NestedSetsTreeEntryPersistenceTest {
 
@@ -753,7 +755,7 @@ public class NestedSetsTreeEntryPersistenceTest {
 				parentNestedSetsTreeEntryId);
 		}
 
-		_persistence.update(nestedSetsTreeEntry);
+		_nestedSetsTreeEntries.add(_persistence.update(nestedSetsTreeEntry));
 
 		return nestedSetsTreeEntry;
 	}

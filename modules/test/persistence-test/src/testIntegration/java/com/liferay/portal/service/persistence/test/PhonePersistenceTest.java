@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.service.PhoneLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.PhonePersistence;
 import com.liferay.portal.kernel.service.persistence.PhoneUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.IntegerWrapper;
@@ -57,6 +58,7 @@ import org.junit.runner.RunWith;
 /**
  * @generated
  */
+@DataGuard
 @RunWith(Arquillian.class)
 public class PhonePersistenceTest {
 
