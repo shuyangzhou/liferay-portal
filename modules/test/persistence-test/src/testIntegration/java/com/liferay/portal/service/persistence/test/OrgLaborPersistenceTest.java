@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.service.OrgLaborLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.OrgLaborPersistence;
 import com.liferay.portal.kernel.service.persistence.OrgLaborUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.IntegerWrapper;
@@ -56,6 +57,7 @@ import org.junit.runner.RunWith;
 /**
  * @generated
  */
+@DataGuard
 @RunWith(Arquillian.class)
 public class OrgLaborPersistenceTest {
 
