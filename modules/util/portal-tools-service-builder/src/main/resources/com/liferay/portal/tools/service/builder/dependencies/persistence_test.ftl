@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.test.AssertUtils;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.IntegerWrapper;
@@ -89,6 +90,7 @@ import org.junit.runner.RunWith;
 	@Deprecated
 </#if>
 
+@DataGuard
 <#if osgiModule || serviceBuilder.isVersionGTE_7_2_0()>
 	@RunWith(Arquillian.class)
 </#if>
