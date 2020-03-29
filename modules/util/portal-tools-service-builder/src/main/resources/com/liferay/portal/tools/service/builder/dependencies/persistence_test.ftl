@@ -1398,7 +1398,7 @@ public class ${entity.name}PersistenceTest {
 				${entity.varName}.setParent${pkEntityColumn.methodName}(parent${pkEntityColumn.methodName});
 			}
 
-			_persistence.update(${entity.varName});
+			_${entity.pluralVarName}.add(_persistence.update(${entity.varName}));
 
 			return ${entity.varName};
 		}
