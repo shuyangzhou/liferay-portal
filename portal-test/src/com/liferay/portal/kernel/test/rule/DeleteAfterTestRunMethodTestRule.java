@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -247,8 +248,8 @@ public class DeleteAfterTestRunMethodTestRule extends MethodTestRule<Void> {
 						continue;
 					}
 
-					persistedModelLocalService.deletePersistedModel(
-						persistedModel);
+					_smartDelete(
+						persistedModelLocalService, fieldClass, persistedModel);
 				}
 			}
 			else if (Collection.class.isAssignableFrom(objectClass)) {
@@ -256,12 +257,13 @@ public class DeleteAfterTestRunMethodTestRule extends MethodTestRule<Void> {
 					(Collection<? extends PersistedModel>)object;
 
 				for (PersistedModel persistedModel : collection) {
-					persistedModelLocalService.deletePersistedModel(
-						persistedModel);
+					_smartDelete(
+						persistedModelLocalService, fieldClass, persistedModel);
 				}
 			}
 			else {
-				persistedModelLocalService.deletePersistedModel(
+				_smartDelete(
+					persistedModelLocalService, fieldClass,
 					(PersistedModel)object);
 			}
 
@@ -293,6 +295,44 @@ public class DeleteAfterTestRunMethodTestRule extends MethodTestRule<Void> {
 	}
 
 	private DeleteAfterTestRunMethodTestRule() {
+	}
+
+	private void _smartDelete(
+			PersistedModelLocalService persistedModelLocalService,
+			Class<?> fieldClass, PersistedModel persistedModel)
+		throws Exception {
+
+		Method deleteMethod = null;
+
+		Class<?> clazz = persistedModelLocalService.getClass();
+
+		Class<?>[] parameterTypes = new Class<?>[] {fieldClass};
+
+		for (Method method : clazz.getMethods()) {
+			String methodName = method.getName();
+
+			if (methodName.startsWith("delete") &&
+				Arrays.equals(method.getParameterTypes(), parameterTypes)) {
+
+				if (deleteMethod == null) {
+					deleteMethod = method;
+				}
+				else {
+					String deleteMethodName = deleteMethod.getName();
+
+					if (deleteMethodName.length() > methodName.length()) {
+						deleteMethod = method;
+					}
+				}
+			}
+		}
+
+		if (deleteMethod == null) {
+			persistedModelLocalService.deletePersistedModel(persistedModel);
+		}
+		else {
+			deleteMethod.invoke(persistedModelLocalService, persistedModel);
+		}
 	}
 
 	private static final Set<Class<?>> _orderedClasses = new LinkedHashSet<>(
