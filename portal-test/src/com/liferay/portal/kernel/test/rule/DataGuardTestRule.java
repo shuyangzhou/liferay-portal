@@ -21,6 +21,8 @@ import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.test.log.CaptureAppender;
+import com.liferay.portal.test.log.Log4JLoggerTestUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +30,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.log4j.Level;
 
 import org.junit.Assert;
 import org.junit.runner.Description;
@@ -141,12 +145,17 @@ public class DataGuardTestRule
 			DynamicQuery dynamicQuery = ReflectionTestUtil.invoke(
 				persistedModelLocalService, "dynamicQuery", new Class<?>[0]);
 
-			List<BaseModel<?>> baseModels = ReflectionTestUtil.invoke(
-				persistedModelLocalService, "dynamicQuery",
-				new Class<?>[] {DynamicQuery.class}, dynamicQuery);
+			try (CaptureAppender captureAppender =
+					Log4JLoggerTestUtil.configureLog4JLogger(
+						"com.liferay", Level.OFF)) {
 
-			if (!baseModels.isEmpty()) {
-				dataMap.put(entry.getKey(), baseModels);
+				List<BaseModel<?>> baseModels = ReflectionTestUtil.invoke(
+					persistedModelLocalService, "dynamicQuery",
+					new Class<?>[] {DynamicQuery.class}, dynamicQuery);
+
+				if (!baseModels.isEmpty()) {
+					dataMap.put(entry.getKey(), baseModels);
+				}
 			}
 		}
 
