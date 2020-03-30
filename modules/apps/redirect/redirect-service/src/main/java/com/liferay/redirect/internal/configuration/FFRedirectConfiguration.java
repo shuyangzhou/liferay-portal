@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.redirect.web.internal.configuration;
+package com.liferay.redirect.internal.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
@@ -23,12 +23,17 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
  */
 @ExtendedObjectClassDefinition(generateUI = false)
 @Meta.OCD(
-	id = "com.liferay.redirect.web.internal.configuration.FFRedirectConfiguration",
-	localization = "content/Language", name = "redirect-configuration-name"
+	id = "com.liferay.redirect.internal.configuration.FFRedirectConfiguration"
 )
 public interface FFRedirectConfiguration {
 
-	@Meta.AD(deflt = "false", name = "enabled", required = false)
+	@Meta.AD(deflt = "true", name = "enabled", required = false)
 	public boolean enabled();
+
+	@Meta.AD(
+		deflt = "30", name = "redirect-not-found-entry-max-age",
+		required = false
+	)
+	public int redirectNotFoundEntryMaxAge();
 
 }

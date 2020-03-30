@@ -28,10 +28,12 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.LayoutFriendlyURL;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.VirtualLayoutConstants;
 import com.liferay.portal.kernel.portlet.LayoutFriendlyURLSeparatorComposite;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutFriendlyURLLocalService;
@@ -40,6 +42,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.servlet.InactiveRequestHandler;
 import com.liferay.portal.kernel.servlet.PortalMessages;
 import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.servlet.SessionMessages;
@@ -126,7 +129,14 @@ public class FriendlyURLServlet extends HttpServlet {
 			}
 		}
 
-		if (group == null) {
+		if ((group == null) ||
+			(!group.isActive() &&
+			 !inactiveRequestHandler.isShowInactiveRequestMessage() &&
+			 !path.startsWith(GroupConstants.CONTROL_PANEL_FRIENDLY_URL) &&
+			 !path.startsWith(
+				 friendlyURL +
+					 VirtualLayoutConstants.CANONICAL_URL_SEPARATOR))) {
+
 			StringBundler sb = new StringBundler(5);
 
 			sb.append("{companyId=");
@@ -613,6 +623,9 @@ public class FriendlyURLServlet extends HttpServlet {
 	protected GroupLocalService groupLocalService;
 
 	@Reference
+	protected InactiveRequestHandler inactiveRequestHandler;
+
+	@Reference
 	protected LayoutFriendlyURLLocalService layoutFriendlyURLLocalService;
 
 	@Reference
@@ -669,7 +682,9 @@ public class FriendlyURLServlet extends HttpServlet {
 	}
 
 	private String _normalizeFriendlyURL(String friendlyURL) {
-		if (friendlyURL.startsWith(StringPool.SLASH)) {
+		if (Validator.isNotNull(friendlyURL) &&
+			friendlyURL.startsWith(StringPool.SLASH)) {
+
 			return friendlyURL.substring(1);
 		}
 

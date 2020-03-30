@@ -12,6 +12,7 @@
 import ClayButton from '@clayui/button';
 import ClayDropDown from '@clayui/drop-down';
 import ClayIcon from '@clayui/icon';
+import {ClayTooltipProvider} from '@clayui/tooltip';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
@@ -34,7 +35,7 @@ export default function Keywords({currentPage, languageTag}) {
 	);
 
 	return (
-		<table className="table-keywords">
+		<table className="table-autofit table-keywords">
 			<thead>
 				<tr>
 					<th>
@@ -48,7 +49,7 @@ export default function Keywords({currentPage, languageTag}) {
 							/>
 						</span>
 					</th>
-					<th>
+					<th className="text-right">
 						<ClayDropDown
 							active={isDropdownOpen}
 							onActiveChange={isActive =>
@@ -64,7 +65,7 @@ export default function Keywords({currentPage, languageTag}) {
 										<span className="pr-2">
 											{keywordValueType.label}
 										</span>
-										<ClayIcon symbol="angle-down" />
+										<ClayIcon symbol="caret-bottom" />
 									</span>
 								</ClayButton>
 							}
@@ -103,7 +104,19 @@ export default function Keywords({currentPage, languageTag}) {
 				{currentPage.data.keywords.map(keyword => {
 					return (
 						<tr key={keyword.title}>
-							<td>{keyword.title}</td>
+							<td className="table-cell-expand">
+								<ClayTooltipProvider>
+									<span
+										className="text-truncate-inline"
+										data-tooltip-align="top"
+										title={keyword.title}
+									>
+										<span className="text-truncate">
+											{keyword.title}
+										</span>
+									</span>
+								</ClayTooltipProvider>
+							</td>
 							<td align="right" className="text-secondary">
 								{numberFormat(
 									languageTag,

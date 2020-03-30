@@ -35,6 +35,8 @@ definition {
 	@description = "This ensures that a depot image can be used through Blogs on a connected site."
 	@priority = "5"
 	test AddImageViaBlogs {
+		property portal.upstream = "quarantine";
+
 		DepotNavigator.openDepotAdmin();
 
 		DepotNavigator.gotoDepot(
@@ -57,6 +59,8 @@ definition {
 		BlogsNavigator.openBlogsAdmin(siteURLKey = "site-name");
 
 		BlogsNavigator.gotoAddEntry();
+
+		Pause(locator1 = "3000");
 
 		BlogsNavigator.gotoSelectFile();
 

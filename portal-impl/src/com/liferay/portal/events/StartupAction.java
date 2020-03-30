@@ -140,8 +140,6 @@ public class StartupAction extends SimpleAction {
 			StartupHelperUtil.verifyRequiredSchemaVersion();
 		}
 
-		DLFileEntryTypeLocalServiceUtil.getBasicDocumentDLFileEntryType();
-
 		Registry registry = RegistryUtil.getRegistry();
 
 		Map<String, Object> properties = HashMapBuilder.<String, Object>put(
@@ -189,17 +187,15 @@ public class StartupAction extends SimpleAction {
 			_log.debug("Check resource actions");
 		}
 
-		if (StartupHelperUtil.isDBNew()) {
+		if (StartupHelperUtil.isDBNew() ||
+			PropsValues.UPGRADE_DATABASE_AUTO_RUN) {
+
 			StartupHelperUtil.initResourceActions();
+
+			DLFileEntryTypeLocalServiceUtil.getBasicDocumentDLFileEntryType();
 		}
 
 		ResourceActionLocalServiceUtil.checkResourceActions();
-
-		// Upgrade
-
-		if (PropsValues.UPGRADE_DATABASE_AUTO_RUN) {
-			DBUpgrader.upgrade();
-		}
 
 		// Verify
 

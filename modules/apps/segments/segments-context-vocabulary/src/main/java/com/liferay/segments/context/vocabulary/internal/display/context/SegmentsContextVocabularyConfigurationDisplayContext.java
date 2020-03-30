@@ -18,18 +18,26 @@ import com.liferay.configuration.admin.definition.ConfigurationFieldOptionsProvi
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.definitions.ExtendedObjectClassDefinition;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.segments.context.vocabulary.internal.configuration.SegmentsContextVocabularyConfiguration;
+import com.liferay.segments.context.vocabulary.internal.configuration.persistence.listener.DuplicatedSegmentsContextVocabularyConfigurationModelListenerException;
 
 import java.io.IOException;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionURL;
@@ -58,6 +66,12 @@ public class SegmentsContextVocabularyConfigurationDisplayContext {
 		_extendedObjectClassDefinition = extendedObjectClassDefinition;
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
+
+		_duplicated = SessionErrors.contains(
+			_renderRequest,
+			DuplicatedSegmentsContextVocabularyConfigurationModelListenerException.class);
+
+		_entityFields = _getEntityFields(getPid());
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)_renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -114,6 +128,22 @@ public class SegmentsContextVocabularyConfigurationDisplayContext {
 		);
 	}
 
+	public String getEntityFieldHelpMessage() {
+		ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
+			_locale, getClass());
+
+		if (_duplicated) {
+			return ResourceBundleUtil.getString(
+				resourceBundle,
+				"this-field-is-already-linked-to-one-vocabulary");
+		}
+
+		return ResourceBundleUtil.getString(
+			resourceBundle,
+			"segments-context-vocabulary-configuration-entity-field-" +
+				"description");
+	}
+
 	public List<ConfigurationFieldOptionsProvider.Option>
 		getEntityFieldOptions() {
 
@@ -152,6 +182,14 @@ public class SegmentsContextVocabularyConfigurationDisplayContext {
 		);
 	}
 
+	public boolean isDisabled(String entityField) {
+		return _entityFields.contains(entityField);
+	}
+
+	public boolean isDuplicated() {
+		return _duplicated;
+	}
+
 	private Configuration _getConfiguration() throws IOException {
 		String pid = getPid();
 
@@ -162,11 +200,41 @@ public class SegmentsContextVocabularyConfigurationDisplayContext {
 		return _configurationAdmin.getConfiguration(pid, StringPool.QUESTION);
 	}
 
+	private List<String> _getEntityFields(String pid) {
+		try {
+			return Stream.of(
+				Optional.ofNullable(
+					_configurationAdmin.listConfigurations(
+						StringBundler.concat(
+							"(", ConfigurationAdmin.SERVICE_FACTORYPID, "=",
+							SegmentsContextVocabularyConfiguration.class.
+								getCanonicalName(),
+							")"))
+				).orElse(
+					new Configuration[0]
+				)
+			).filter(
+				configuration -> !Objects.equals(pid, configuration.getPid())
+			).map(
+				Configuration::getProperties
+			).map(
+				properties -> String.valueOf(properties.get("entityField"))
+			).collect(
+				Collectors.toList()
+			);
+		}
+		catch (Exception exception) {
+			return Collections.emptyList();
+		}
+	}
+
 	private final List<ConfigurationFieldOptionsProvider.Option>
 		_assetVocabularyOptions;
 	private final ConfigurationAdmin _configurationAdmin;
+	private final boolean _duplicated;
 	private final List<ConfigurationFieldOptionsProvider.Option>
 		_entityFieldOptions;
+	private final List<String> _entityFields;
 	private final ExtendedObjectClassDefinition _extendedObjectClassDefinition;
 	private final Locale _locale;
 	private final RenderRequest _renderRequest;

@@ -25,17 +25,31 @@ import java.util.Dictionary;
  */
 public class RedirectTestUtil {
 
+	public static void withRedirectDisabled(
+			UnsafeRunnable<Exception> unsafeRunnable)
+		throws Exception {
+
+		_withRedirect(false, unsafeRunnable);
+	}
+
 	public static void withRedirectEnabled(
 			UnsafeRunnable<Exception> unsafeRunnable)
 		throws Exception {
 
+		_withRedirect(true, unsafeRunnable);
+	}
+
+	private static void _withRedirect(
+			boolean enabled, UnsafeRunnable<Exception> unsafeRunnable)
+		throws Exception {
+
 		Dictionary<String, Object> dictionary = new HashMapDictionary<>();
 
-		dictionary.put("enabled", true);
+		dictionary.put("enabled", enabled);
 
 		try (ConfigurationTemporarySwapper configurationTemporarySwapper =
 				new ConfigurationTemporarySwapper(
-					"com.liferay.redirect.web.internal.configuration." +
+					"com.liferay.redirect.internal.configuration." +
 						"FFRedirectConfiguration",
 					dictionary)) {
 

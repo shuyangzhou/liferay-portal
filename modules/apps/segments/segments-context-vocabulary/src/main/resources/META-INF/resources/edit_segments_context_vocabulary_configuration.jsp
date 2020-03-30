@@ -81,7 +81,7 @@ SegmentsContextVocabularyConfigurationDisplayContext segmentsContextVocabularyCo
 							for (ConfigurationFieldOptionsProvider.Option option : segmentsContextVocabularyConfigurationDisplayContext.getEntityFieldOptions()) {
 							%>
 
-								<aui:option label="<%= option.getLabel(locale) %>" selected="<%= Objects.equals(segmentsContextVocabularyConfigurationDisplayContext.getEntityField(), option.getValue()) %>" value="<%= option.getValue() %>" />
+								<aui:option disabled="<%= segmentsContextVocabularyConfigurationDisplayContext.isDisabled(option.getValue()) %>" label="<%= option.getLabel(locale) %>" selected="<%= Objects.equals(segmentsContextVocabularyConfigurationDisplayContext.getEntityField(), option.getValue()) %>" value="<%= option.getValue() %>" />
 
 							<%
 							}
@@ -89,7 +89,12 @@ SegmentsContextVocabularyConfigurationDisplayContext segmentsContextVocabularyCo
 
 						</aui:select>
 
-						<span class="form-text"><liferay-ui:message key="segments-context-vocabulary-configuration-entity-field-description" /></span>
+						<span class="form-text <%= segmentsContextVocabularyConfigurationDisplayContext.isDuplicated()? "text-danger" : "" %>">
+							<c:if test="<%= segmentsContextVocabularyConfigurationDisplayContext.isDuplicated() %>">
+								<aui:icon image="exclamation-full" markupView="lexicon" />
+							</c:if>
+
+						<%= segmentsContextVocabularyConfigurationDisplayContext.getEntityFieldHelpMessage() %></span>
 					</div>
 
 					<div class="form-group">

@@ -1751,7 +1751,7 @@ public class LayoutsAdminDisplayContext {
 			jsonObject.put("permissionsURL", getPermissionsURL(layout));
 		}
 
-		if (layout.isPending()) {
+		if (layout.isDenied() || layout.isPending()) {
 			jsonObject.put("previewLayoutURL", getViewLayoutURL(layout));
 		}
 		else {

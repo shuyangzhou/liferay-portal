@@ -17,19 +17,18 @@ package com.liferay.segments.context.vocabulary.internal.portlet.action;
 import com.liferay.configuration.admin.constants.ConfigurationAdminPortletKeys;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 import com.liferay.portal.configuration.persistence.listener.ConfigurationModelListenerException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.segments.context.vocabulary.internal.configuration.SegmentsContextVocabularyConfiguration;
+import com.liferay.segments.context.vocabulary.internal.configuration.persistence.listener.DuplicatedSegmentsContextVocabularyConfigurationModelListenerException;
 
 import java.io.File;
 import java.io.IOException;
@@ -60,7 +59,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	immediate = true,
 	property = {
-		"javax.portlet.name=" + ConfigurationAdminPortletKeys.INSTANCE_SETTINGS,
+		"javax.portlet.name=" + ConfigurationAdminPortletKeys.SYSTEM_SETTINGS,
 		"mvc.command.name=/update_segments_context_vocabulary_configuration"
 	},
 	service = MVCActionCommand.class
@@ -75,22 +74,44 @@ public class UpdateSegmentsContextVocabularyConfigurationMVCActionCommand
 
 		String pid = ParamUtil.getString(actionRequest, "pid");
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
+		try {
+			_updateConfiguration(
+				_getConfiguration(pid),
+				GetterUtil.get(
+					ParamUtil.getString(actionRequest, "entityField"),
+					StringPool.BLANK),
+				GetterUtil.get(
+					ParamUtil.getString(actionRequest, "assetVocabulary"),
+					StringPool.BLANK));
 
-		_updateConfiguration(
-			themeDisplay.getCompanyId(), _getConfiguration(pid),
-			GetterUtil.get(
-				ParamUtil.getString(actionRequest, "entityField"),
-				StringPool.BLANK),
-			GetterUtil.get(
-				ParamUtil.getString(actionRequest, "assetVocabulary"),
-				StringPool.BLANK));
+			String redirect = ParamUtil.getString(actionRequest, "redirect");
 
-		String redirect = ParamUtil.getString(actionRequest, "redirect");
+			if (Validator.isNotNull(redirect)) {
+				sendRedirect(actionRequest, actionResponse, redirect);
+			}
+		}
+		catch (DuplicatedSegmentsContextVocabularyConfigurationModelListenerException
+					duplicatedSegmentsContextVocabularyConfigurationModelListenerException) {
 
-		if (Validator.isNotNull(redirect)) {
-			sendRedirect(actionRequest, actionResponse, redirect);
+			SessionErrors.add(
+				actionRequest,
+				DuplicatedSegmentsContextVocabularyConfigurationModelListenerException.class,
+				duplicatedSegmentsContextVocabularyConfigurationModelListenerException);
+
+			actionResponse.setRenderParameter(
+				"mvcRenderCommandName",
+				"/edit_segments_context_vocabulary_configuration");
+		}
+		catch (ConfigurationModelListenerException
+					configurationModelListenerException) {
+
+			SessionErrors.add(
+				actionRequest, ConfigurationModelListenerException.class,
+				configurationModelListenerException);
+
+			actionResponse.setRenderParameter(
+				"mvcRenderCommandName",
+				"/edit_segments_context_vocabulary_configuration");
 		}
 	}
 
@@ -133,7 +154,7 @@ public class UpdateSegmentsContextVocabularyConfigurationMVCActionCommand
 	}
 
 	private void _updateConfiguration(
-			long companyId, Configuration configuration, String entityField,
+			Configuration configuration, String entityField,
 			String assetVocabulary)
 		throws ConfigurationModelListenerException, PortletException {
 
@@ -153,12 +174,6 @@ public class UpdateSegmentsContextVocabularyConfigurationMVCActionCommand
 					"Configuration properties: " +
 						configuration.getProperties());
 			}
-
-			ExtendedObjectClassDefinition.Scope scope =
-				ExtendedObjectClassDefinition.Scope.COMPANY;
-
-			configuredProperties.put(
-				scope.getPropertyKey(), String.valueOf(companyId));
 
 			configuredProperties.put("configuration.cleaner.ignore", "true");
 

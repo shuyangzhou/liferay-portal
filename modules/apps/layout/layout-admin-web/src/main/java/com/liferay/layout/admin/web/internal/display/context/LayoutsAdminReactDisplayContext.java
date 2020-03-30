@@ -454,7 +454,7 @@ public class LayoutsAdminReactDisplayContext
 				));
 		}
 
-		if (layout.isPending()) {
+		if (layout.isDenied() || layout.isPending()) {
 			jsonArray.put(
 				JSONUtil.put(
 					"id", "previewLayout"

@@ -17,10 +17,8 @@ package com.liferay.segments.context.vocabulary.internal.portal.settings.configu
 import com.liferay.configuration.admin.display.ConfigurationScreen;
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.segments.context.vocabulary.internal.configuration.SegmentsContextVocabularyConfiguration;
 import com.liferay.segments.context.vocabulary.internal.constants.SegmentsContextVocabularyWebKeys;
 
@@ -67,7 +65,7 @@ public class SegmentsContextVocabularyConfigurationScreen
 
 	@Override
 	public String getScope() {
-		return "company";
+		return ExtendedObjectClassDefinition.Scope.SYSTEM.getValue();
 	}
 
 	@Override
@@ -98,23 +96,14 @@ public class SegmentsContextVocabularyConfigurationScreen
 			HttpServletRequest httpServletRequest)
 		throws Exception {
 
-		ExtendedObjectClassDefinition.Scope scope =
-			ExtendedObjectClassDefinition.Scope.COMPANY;
-
-		ThemeDisplay themeDisplay =
-			(ThemeDisplay)httpServletRequest.getAttribute(
-				WebKeys.THEME_DISPLAY);
-
 		List<Configuration> configurations = Stream.of(
 			Optional.ofNullable(
 				_configurationAdmin.listConfigurations(
 					StringBundler.concat(
-						"(&(", scope.getPropertyKey(), "=",
-						String.valueOf(themeDisplay.getCompanyId()), ")(",
-						ConfigurationAdmin.SERVICE_FACTORYPID, "=",
+						"(", ConfigurationAdmin.SERVICE_FACTORYPID, "=",
 						SegmentsContextVocabularyConfiguration.class.
 							getCanonicalName(),
-						"))"))
+						")"))
 			).orElse(
 				new Configuration[0]
 			)

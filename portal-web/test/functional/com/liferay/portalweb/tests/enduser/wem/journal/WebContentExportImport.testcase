@@ -85,6 +85,7 @@ definition {
 	@description = "This is a use case for LPS-82492."
 	@priority = "5"
 	test AddWebContentFromImportedStructureAndTemplate {
+		property portal.upstream = "quarantine";
 		property testray.component.names = "Training";
 
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
