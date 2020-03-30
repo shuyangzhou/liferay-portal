@@ -12,13 +12,13 @@
  * details.
  */
 
-import moment from 'moment';
 import React from 'react';
 import {Link} from 'react-router-dom';
 
 import Button from '../../components/button/Button.es';
 import ListView from '../../components/list-view/ListView.es';
 import {confirmDelete} from '../../utils/client.es';
+import {fromNow} from '../../utils/time.es';
 
 const COLUMNS = [
 	{
@@ -85,8 +85,8 @@ export default ({
 		>
 			{item => ({
 				...item,
-				dateCreated: moment(item.dateCreated).fromNow(),
-				dateModified: moment(item.dateModified).fromNow(),
+				dateCreated: fromNow(item.dateCreated),
+				dateModified: fromNow(item.dateModified),
 				name: <Link to={`${url}/${item.id}`}>{item.name.en_US}</Link>,
 			})}
 		</ListView>

@@ -15,11 +15,11 @@
 import {ClayRadio, ClayRadioGroup} from '@clayui/form';
 import ClayTable from '@clayui/table';
 import classNames from 'classnames';
-import moment from 'moment';
 import React, {useContext} from 'react';
 
 import {withLoading} from '../../components/loading/Loading.es';
 import {withEmpty} from '../../components/table/EmptyState.es';
+import {fromNow} from '../../utils/time.es';
 import EditAppContext, {
 	UPDATE_DATA_LAYOUT_ID,
 	UPDATE_DATA_LIST_VIEW_ID,
@@ -85,8 +85,8 @@ const ListItems = ({itemType, items}) => {
 								onClick={() => onItemIdChange(id)}
 							>
 								<Cell align="left">{itemName}</Cell>
-								<Cell>{moment(dateCreated).fromNow()}</Cell>
-								<Cell>{moment(dateModified).fromNow()}</Cell>
+								<Cell>{fromNow(dateCreated)}</Cell>
+								<Cell>{fromNow(dateModified)}</Cell>
 								<Cell align={'right'}>
 									<ClayRadioGroup
 										inline

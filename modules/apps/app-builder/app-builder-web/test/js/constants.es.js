@@ -17,8 +17,8 @@ const createItems = size => {
 
 	for (let i = 0; i < size; i++) {
 		items.push({
-			dateCreated: '01/01/2019',
-			dateModified: '01/02/2019',
+			dateCreated: '2020-03-26T11:26:54.262Z',
+			dateModified: '2020-03-26T11:26:54.262Z',
 			id: i + 1,
 			name: `Name ${i + 1}`,
 		});

@@ -52,7 +52,7 @@ const Table = ({
 				</Head>
 				<Body>
 					{items.map(item => (
-						<Row data-testid="item" key={item.id}>
+						<Row key={item.id}>
 							{checkable && (
 								<Cell>
 									<ClayCheckbox

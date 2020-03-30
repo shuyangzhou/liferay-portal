@@ -12,7 +12,6 @@
  * details.
  */
 
-import moment from 'moment';
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {Link} from 'react-router-dom';
 
@@ -29,6 +28,7 @@ import {
 	getItem,
 	updateItem,
 } from '../../utils/client.es';
+import {fromNow} from '../../utils/time.es';
 import {ACTIONS} from '../entry/PermissionsContext.es';
 import CustomObjectPopover from './CustomObjectPopover.es';
 
@@ -242,8 +242,8 @@ export default ({history}) => {
 			>
 				{item => ({
 					...item,
-					dateCreated: moment(item.dateCreated).fromNow(),
-					dateModified: moment(item.dateModified).fromNow(),
+					dateCreated: fromNow(item.dateCreated),
+					dateModified: fromNow(item.dateModified),
 					name: (
 						<Link to={`/custom-object/${item.id}/form-views`}>
 							{item.name.en_US}

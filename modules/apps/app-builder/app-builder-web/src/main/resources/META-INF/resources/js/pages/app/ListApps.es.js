@@ -16,7 +16,6 @@ import ClayButton from '@clayui/button';
 import ClayLabel from '@clayui/label';
 import ClayList from '@clayui/list';
 import {Context} from '@clayui/modal';
-import moment from 'moment';
 import React, {useContext} from 'react';
 import {Link} from 'react-router-dom';
 
@@ -24,6 +23,7 @@ import {AppContext} from '../../AppContext.es';
 import Button from '../../components/button/Button.es';
 import ListView from '../../components/list-view/ListView.es';
 import {confirmDelete, updateItem} from '../../utils/client.es';
+import {fromNow} from '../../utils/time.es';
 
 const DEPLOYMENT_ACTION = {
 	deploy: Liferay.Language.get('deploy'),
@@ -241,8 +241,8 @@ export default ({
 		>
 			{item => ({
 				...item,
-				dateCreated: moment(item.dateCreated).fromNow(),
-				dateModified: moment(item.dateModified).fromNow(),
+				dateCreated: fromNow(item.dateCreated),
+				dateModified: fromNow(item.dateModified),
 				name: (
 					<Link
 						to={`/custom-object/${dataDefinitionId}/apps/${item.id}`}

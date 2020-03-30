@@ -60,7 +60,7 @@ describe('ListView', () => {
 	it('renders with 1 item', async () => {
 		fetch.mockResponse(JSON.stringify(RESPONSES.ONE_ITEM));
 
-		const {container, queryAllByTestId} = render(
+		const {container} = render(
 			<HashRouter>
 				<ListView
 					actions={ACTIONS}
@@ -77,14 +77,14 @@ describe('ListView', () => {
 			document.querySelector('span.loading-animation')
 		);
 
-		expect(queryAllByTestId('item').length).toBe(1);
+		expect(container.querySelectorAll('tbody tr').length).toBe(1);
 		expect(container.querySelectorAll('li.page-item').length).toBe(0);
 	});
 
 	it('renders with 21 items and 2 pages', async () => {
 		fetch.mockResponse(JSON.stringify(RESPONSES.TWENTY_ONE_ITEMS));
 
-		const {container, queryAllByTestId, queryAllByText} = render(
+		const {container, queryAllByText} = render(
 			<HashRouter>
 				<ListView
 					actions={ACTIONS}
@@ -101,7 +101,7 @@ describe('ListView', () => {
 			return document.querySelector('span.loading-animation');
 		});
 
-		expect(queryAllByTestId('item').length).toBe(20);
+		expect(container.querySelectorAll('tbody tr').length).toBe(20);
 		expect(container.querySelectorAll('li.page-item').length).toBe(4);
 		expect(
 			container.querySelector('li.page-item.active').firstElementChild
@@ -114,7 +114,7 @@ describe('ListView', () => {
 		const history = createMemoryHistory();
 		history.push('/test?page=2');
 		fetch.mockResponse(JSON.stringify(RESPONSES.ONE_ITEM));
-		const {container, queryAllByTestId} = render(
+		const {container} = render(
 			<Router history={history}>
 				<ListView
 					actions={ACTIONS}
@@ -132,7 +132,7 @@ describe('ListView', () => {
 			return document.querySelector('span.loading-animation');
 		});
 
-		expect(queryAllByTestId('item').length).toBe(1);
+		expect(container.querySelectorAll('tbody tr').length).toBe(1);
 		expect(container.querySelectorAll('li.page-item').length).toBe(0);
 	});
 

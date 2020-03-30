@@ -93,7 +93,7 @@ const CustomObjectPopover = ({
 						<ClayInput
 							className="form-control"
 							id="customObjectNameInput"
-							onInput={({currentTarget}) =>
+							onChange={({currentTarget}) =>
 								validate(currentTarget.value)
 							}
 							ref={nameInputRef}
