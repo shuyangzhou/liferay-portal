@@ -1759,6 +1759,9 @@ public class ServiceBuilder {
 				return false;
 			}
 		}
+		else if (methodName.equals("getBasePersistence")) {
+			return true;
+		}
 
 		JavaClass javaClass = method.getDeclaringClass();
 
