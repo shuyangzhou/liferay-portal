@@ -57,6 +57,18 @@ public class ViewCountEntryFinderImpl
 				session.save(viewCountEntry);
 
 				session.flush();
+
+				synchronized (System.out) {
+					System.out.println("####" + Thread.currentThread().getName() + ", " + Thread.currentThread().getId() + " is creating " + viewCountEntry);
+
+					new Exception().printStackTrace(System.out);
+				}
+
+				synchronized (System.err) {
+					System.err.println("----" + Thread.currentThread().getName() + ", " + Thread.currentThread().getId() + " is creating " + viewCountEntry);
+
+					new Exception().printStackTrace(System.err);
+				}
 			}
 			else {
 				viewCountEntry.setViewCount(
