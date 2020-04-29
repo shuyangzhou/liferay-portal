@@ -48,6 +48,11 @@ public class ClassNameLocalServiceImpl
 			className = classNamePersistence.update(className);
 		}
 
+		final ClassName callbackClassName = className;
+
+		TransactionCommitCallbackUtil.registerCallback(
+			() -> _classNames.put(value, callbackClassName));
+
 		return className;
 	}
 
@@ -111,11 +116,6 @@ public class ClassNameLocalServiceImpl
 		if (className == null) {
 			try {
 				className = classNameLocalService.addClassName(value);
-
-				final ClassName callbackClassName = className;
-
-				TransactionCommitCallbackUtil.registerCallback(
-					() -> _classNames.put(value, callbackClassName));
 			}
 			catch (Throwable t) {
 				className = classNameLocalService.fetchClassName(value);
