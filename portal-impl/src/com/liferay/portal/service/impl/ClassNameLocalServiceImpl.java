@@ -117,7 +117,9 @@ public class ClassNameLocalServiceImpl
 			return className;
 		}
 
-		synchronized (value.intern()) {
+		String uniqueValue = _CLASS_NAME_PREFIX.concat(value);
+
+		synchronized (uniqueValue.intern()) {
 			className = _classNames.get(value);
 
 			if (className == null) {
@@ -160,6 +162,8 @@ public class ClassNameLocalServiceImpl
 	public void invalidate() {
 		_classNames.clear();
 	}
+
+	private static final String _CLASS_NAME_PREFIX = "_CLASS_NAME_";
 
 	private static final Map<String, ClassName> _classNames =
 		new ConcurrentHashMap<>();

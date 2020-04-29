@@ -92,7 +92,9 @@ public class ResourceActionLocalServiceImpl
 	public void checkResourceActions(
 		String name, List<String> actionIds, boolean addDefaultActions) {
 
-		synchronized (name.intern()) {
+		String uniqueName = name.concat(_RESOURCE_ACTION_PREFIX);
+
+		synchronized (uniqueName.intern()) {
 			if ((actionIds.size() > Long.SIZE) ||
 				((actionIds.size() == Long.SIZE) &&
 				 !actionIds.contains(ActionKeys.VIEW))) {
@@ -342,6 +344,9 @@ public class ResourceActionLocalServiceImpl
 			actionId
 		);
 	}
+
+
+	private static final String _RESOURCE_ACTION_PREFIX = "_RESOURCE_ACTION_";
 
 	private static final Map<String, ResourceAction> _resourceActions =
 		new ConcurrentHashMap<>();
