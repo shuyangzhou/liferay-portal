@@ -113,15 +113,23 @@ public class ClassNameLocalServiceImpl
 
 		ClassName className = _classNames.get(value);
 
-		if (className == null) {
-			try {
-				className = classNameLocalService.addClassName(value);
-			}
-			catch (Throwable t) {
-				className = classNameLocalService.fetchClassName(value);
+		if (className != null) {
+			return className;
+		}
 
-				if (className == _nullClassName) {
-					throw t;
+		synchronized (value.intern()) {
+			className = _classNames.get(value);
+
+			if (className == null) {
+				try {
+					className = classNameLocalService.addClassName(value);
+				}
+				catch (Throwable t) {
+					className = classNameLocalService.fetchClassName(value);
+
+					if (className == _nullClassName) {
+						throw t;
+					}
 				}
 			}
 		}
