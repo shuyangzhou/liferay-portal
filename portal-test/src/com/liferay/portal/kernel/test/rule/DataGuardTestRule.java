@@ -485,12 +485,13 @@ public class DataGuardTestRule
 					() -> {
 						Session session = basePersistence.getCurrentSession();
 
-						try {
-							session.delete(persistedModel);
+						BaseModel<?> baseModel = (BaseModel<?>)persistedModel;
 
-							session.flush();
-						}
-						catch (ORMException ormException) {
+						Object refetched = session.get(
+							modelClass, baseModel.getPrimaryKeyObj());
+
+						if (refetched != null) {
+							session.delete(refetched);
 						}
 
 						return null;
