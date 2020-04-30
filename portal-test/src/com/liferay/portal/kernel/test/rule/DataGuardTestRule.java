@@ -505,7 +505,13 @@ public class DataGuardTestRule
 					() -> {
 						Session session = basePersistence.getCurrentSession();
 
-						session.delete(persistedModel);
+						try {
+							session.delete(persistedModel);
+
+							session.flush();
+						}
+						catch (ORMException ormException) {
+						}
 
 						return null;
 					});
