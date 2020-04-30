@@ -120,26 +120,6 @@ public class DataGuardTestRule
 
 			if (previsoutBaseModels != null) {
 				leftoverBaseModels.removeAll(previsoutBaseModels);
-
-				List<BaseModel<?>> overDeletedBaseModels = new ArrayList<>(
-					previsoutBaseModels);
-
-				overDeletedBaseModels.removeAll(currentBaseModels);
-
-				if (!overDeletedBaseModels.isEmpty()) {
-					sb.append(description.getClassName());
-					sb.append(" caused overdeleted data for class :");
-					sb.append(className);
-					sb.append(" with data : [\n");
-
-					for (BaseModel<?> baseModel : overDeletedBaseModels) {
-						sb.append(StringPool.TAB);
-						sb.append(baseModel);
-						sb.append(",\n");
-					}
-
-					sb.setStringAt("\n]\n", sb.index() - 1);
-				}
 			}
 
 			if (!leftoverBaseModels.isEmpty()) {
