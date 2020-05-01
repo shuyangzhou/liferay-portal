@@ -17,7 +17,6 @@ package com.liferay.alloy.mvc;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanPropertiesUtil;
-import com.liferay.portal.kernel.exception.NoSuchResourceActionException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -29,6 +28,8 @@ import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.StringUtil;
+
+import java.util.List;
 
 /**
  * @author Ethan Bustad
@@ -74,16 +75,10 @@ public class AlloyPermission {
 		PermissionChecker permissionChecker, long groupId, String name,
 		long primKey, String actionId, long ownerId) {
 
-		try {
-			ResourceActionsUtil.checkAction(name, actionId);
-		}
-		catch (NoSuchResourceActionException noSuchResourceActionException) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					noSuchResourceActionException,
-					noSuchResourceActionException);
-			}
+		List<String> resourceActions = ResourceActionsUtil.getResourceActions(
+			name);
 
+		if (!resourceActions.contains(actionId)) {
 			return true;
 		}
 
