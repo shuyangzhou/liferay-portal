@@ -34,6 +34,7 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerRegistryUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
+import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -150,6 +151,11 @@ public abstract class DLFolderLocalServiceBaseImpl
 	@Override
 	public DLFolder deleteDLFolder(DLFolder dlFolder) {
 		return dlFolderPersistence.remove(dlFolder);
+	}
+
+	@Override
+	public <T> T dslQuery(DSLQuery dslQuery) {
+		return dlFolderPersistence.dslQuery(dslQuery);
 	}
 
 	@Override

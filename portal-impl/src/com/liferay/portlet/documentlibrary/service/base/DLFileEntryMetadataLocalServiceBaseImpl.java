@@ -20,6 +20,7 @@ import com.liferay.document.library.kernel.service.persistence.DLFileEntryMetada
 import com.liferay.document.library.kernel.service.persistence.DLFileEntryMetadataPersistence;
 import com.liferay.document.library.kernel.service.persistence.DLFileEntryTypeFinder;
 import com.liferay.document.library.kernel.service.persistence.DLFileEntryTypePersistence;
+import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -130,6 +131,11 @@ public abstract class DLFileEntryMetadataLocalServiceBaseImpl
 		DLFileEntryMetadata dlFileEntryMetadata) {
 
 		return dlFileEntryMetadataPersistence.remove(dlFileEntryMetadata);
+	}
+
+	@Override
+	public <T> T dslQuery(DSLQuery dslQuery) {
+		return dlFileEntryMetadataPersistence.dslQuery(dslQuery);
 	}
 
 	@Override
