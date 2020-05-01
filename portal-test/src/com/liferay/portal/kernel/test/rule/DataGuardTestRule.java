@@ -27,7 +27,9 @@ import com.liferay.portal.kernel.dao.orm.SessionWrapper;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.kernel.service.ServiceWrapper;
@@ -419,6 +421,10 @@ public class DataGuardTestRule
 					_smartDelete(
 						persistedModelLocalService, modelClass,
 						(PersistedModel)leftoverBaseModel);
+
+					if (modelClass == ClassName.class) {
+						ClassNameLocalServiceUtil.invalidate();
+					}
 
 					deleted = true;
 				}
