@@ -35,7 +35,6 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -198,12 +197,6 @@ public class DataRecordCollectionResourceTest
 					0L, randomDataRecordCollection()));
 	}
 
-	@Ignore
-	@Override
-	@Test
-	public void testPutDataRecordCollectionPermission() throws Exception {
-	}
-
 	@Override
 	protected String[] getAdditionalAssertFieldNames() {
 		return new String[] {"dataDefinitionId", "name"};
@@ -302,6 +295,16 @@ public class DataRecordCollectionResourceTest
 	@Override
 	protected DataRecordCollection
 			testPutDataRecordCollection_addDataRecordCollection()
+		throws Exception {
+
+		return dataRecordCollectionResource.
+			postDataDefinitionDataRecordCollection(
+				_ddmStructure.getStructureId(), randomDataRecordCollection());
+	}
+
+	@Override
+	protected DataRecordCollection
+			testPutDataRecordCollectionPermission_addDataRecordCollection()
 		throws Exception {
 
 		return dataRecordCollectionResource.
