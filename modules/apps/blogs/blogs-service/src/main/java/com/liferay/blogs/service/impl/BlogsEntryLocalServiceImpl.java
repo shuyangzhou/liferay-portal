@@ -96,7 +96,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 import com.liferay.portal.linkback.LinkbackProducerUtil;
-import com.liferay.portal.util.LayoutURLUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.social.kernel.model.SocialActivityConstants;
 import com.liferay.subscription.service.SubscriptionLocalService;
@@ -1686,8 +1685,8 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 			BlogsEntry.class.getName(), PortletProvider.Action.VIEW);
 
 		if (Validator.isNotNull(portletId)) {
-			String layoutURL = LayoutURLUtil.getLayoutURL(
-				entry.getGroupId(), portletId, serviceContext);
+			String layoutURL = _portal.getLayoutFullURL(
+				entry.getGroupId(), portletId);
 
 			if (Validator.isNotNull(layoutURL)) {
 				return StringBundler.concat(

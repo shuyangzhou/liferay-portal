@@ -203,6 +203,70 @@ describe('liferay-kaleo-designer-xml-definition-serializer', () => {
 		expect(definition).toContain('<user');
 	});
 
+	it('serialize <screen-name> element if given.', () => {
+		const jsonDefinition = {
+			nodes: [
+				{
+					name: 'task1',
+					notifications: {
+						name: ['notification1'],
+						recipients: [
+							{
+								assignmentType: ['user'],
+								emailAddress: [null],
+								screenName: ['test'],
+								userId: [null],
+							},
+						],
+					},
+					xmlType: 'task',
+				},
+			],
+		};
+
+		const definition = serializeDefinition(
+			XML_NAMESPACE,
+			METADATA,
+			jsonDefinition
+		);
+
+		expect(definition).toContain('<screen-name>test</screen-name>');
+	});
+
+	it('serialize <email-address>, <screen-name> and <user-id> elements if given.', () => {
+		const jsonDefinition = {
+			nodes: [
+				{
+					name: 'task1',
+					notifications: {
+						name: ['notification1'],
+						recipients: [
+							{
+								assignmentType: ['user'],
+								emailAddress: ['test@liferay.com'],
+								screenName: ['test'],
+								userId: ['0'],
+							},
+						],
+					},
+					xmlType: 'task',
+				},
+			],
+		};
+
+		const definition = serializeDefinition(
+			XML_NAMESPACE,
+			METADATA,
+			jsonDefinition
+		);
+
+		expect(definition).toContain(
+			'<email-address>test@liferay.com</email-address>'
+		);
+		expect(definition).toContain('<screen-name>test</screen-name>');
+		expect(definition).toContain('<user-id>0</user-id>');
+	});
+
 	it('serializes <user> element even if empty.', () => {
 		const jsonDefinition = {
 			nodes: [

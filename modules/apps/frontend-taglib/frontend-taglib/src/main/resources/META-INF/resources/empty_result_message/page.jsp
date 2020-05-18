@@ -45,7 +45,7 @@
 						defaultEventHandler="<%= defaultEventHandler %>"
 						dropdownItems="<%= actionDropdownItems %>"
 						label='<%= LanguageUtil.get(request, "new") %>'
-						style="primary"
+						style="<%= buttonCssClass %>"
 						triggerCssClasses="btn-sm"
 					/>
 				</c:when>
@@ -58,7 +58,7 @@
 					<c:choose>
 						<c:when test='<%= Validator.isNotNull(actionDropdownItem.get("href")) %>'>
 							<clay:link
-								buttonStyle="primary"
+								buttonStyle="<%= buttonCssClass %>"
 								componentId="<%= componentId %>"
 								data='<%= (HashMap)actionDropdownItem.get("data") %>'
 								defaultEventHandler="<%= defaultEventHandler %>"
@@ -72,7 +72,7 @@
 								data='<%= (HashMap)actionDropdownItem.get("data") %>'
 								defaultEventHandler="<%= defaultEventHandler %>"
 								label='<%= String.valueOf(actionDropdownItem.get("label")) %>'
-								style="primary"
+								style="<%= buttonCssClass %>"
 							/>
 						</c:otherwise>
 					</c:choose>

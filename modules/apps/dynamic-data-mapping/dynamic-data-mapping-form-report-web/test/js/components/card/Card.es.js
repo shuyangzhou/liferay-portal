@@ -16,11 +16,15 @@ import {cleanup, render} from '@testing-library/react';
 import React from 'react';
 
 import Card from '../../../../src/main/resources/META-INF/resources/js/components/card/Card.es';
+import fieldTypes from '../../../../src/main/resources/META-INF/resources/js/utils/fieldTypes.es';
 
 const props = {
-	fieldName: 'name',
+	field: {
+		name: 'name',
+		type: 'radio',
+		...fieldTypes['radio'],
+	},
 	totalEntries: 10,
-	type: 'radio',
 };
 
 describe('Card', () => {

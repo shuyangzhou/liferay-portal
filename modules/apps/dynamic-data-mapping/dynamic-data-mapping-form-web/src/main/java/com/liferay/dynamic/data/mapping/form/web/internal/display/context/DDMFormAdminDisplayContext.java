@@ -70,6 +70,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItemListBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.ViewTypeItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.ViewTypeItemList;
+import com.liferay.frontend.taglib.servlet.taglib.util.EmptyResultMessageKeys;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -241,23 +242,7 @@ public class DDMFormAdminDisplayContext {
 		}
 
 		return CreationMenuBuilder.addPrimaryDropdownItem(
-			dropdownItem -> {
-				HttpServletRequest httpServletRequest =
-					formAdminRequestHelper.getRequest();
-
-				ThemeDisplay themeDisplay =
-					(ThemeDisplay)httpServletRequest.getAttribute(
-						WebKeys.THEME_DISPLAY);
-
-				dropdownItem.setHref(
-					renderResponse.createRenderURL(), "mvcRenderCommandName",
-					"/admin/edit_form_instance", "redirect",
-					PortalUtil.getCurrentURL(httpServletRequest), "groupId",
-					String.valueOf(themeDisplay.getScopeGroupId()));
-
-				dropdownItem.setLabel(
-					LanguageUtil.get(httpServletRequest, "new-form"));
-			}
+			getAddFormDropdownItem()
 		).build();
 	}
 
@@ -456,6 +441,51 @@ public class DDMFormAdminDisplayContext {
 					LanguageUtil.get(httpServletRequest, "builder"));
 			}
 		).build();
+	}
+
+	public List<DropdownItem> getEmptyResultMessageActionItemsDropdownItems() {
+		if (!_formInstancePermissionCheckerHelper.isShowAddButton() ||
+			isSearch()) {
+
+			return null;
+		}
+
+		return DropdownItemListBuilder.add(
+			getAddFormDropdownItem()
+		).build();
+	}
+
+	public EmptyResultMessageKeys.AnimationType
+		getEmptyResultMessageAnimationType() {
+
+		if (isSearch()) {
+			return EmptyResultMessageKeys.AnimationType.SUCCESS;
+		}
+
+		return EmptyResultMessageKeys.AnimationType.EMPTY;
+	}
+
+	public String getEmptyResultMessageDescription() {
+		if (isSearch()) {
+			return StringPool.BLANK;
+		}
+
+		HttpServletRequest httpServletRequest =
+			formAdminRequestHelper.getRequest();
+
+		return LanguageUtil.get(
+			httpServletRequest,
+			"click-on-the-plus-button-to-add-the-first-one");
+	}
+
+	public String getEmptyResultsMessage() {
+		SearchContainer<?> search = getSearch();
+
+		HttpServletRequest httpServletRequest =
+			formAdminRequestHelper.getRequest();
+
+		return LanguageUtil.get(
+			httpServletRequest, search.getEmptyResultsMessage());
 	}
 
 	public String getFieldSetDefinitionURL() throws PortalException {
@@ -942,6 +972,14 @@ public class DDMFormAdminDisplayContext {
 		};
 	}
 
+	public boolean hasResults() {
+		if (getTotalItems() > 0) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public boolean isDisabledManagementBar() {
 		if (hasResults()) {
 			return false;
@@ -1045,6 +1083,26 @@ public class DDMFormAdminDisplayContext {
 		}
 
 		return ddmForm;
+	}
+
+	protected UnsafeConsumer<DropdownItem, Exception> getAddFormDropdownItem() {
+		return dropdownItem -> {
+			HttpServletRequest httpServletRequest =
+				formAdminRequestHelper.getRequest();
+
+			ThemeDisplay themeDisplay =
+				(ThemeDisplay)httpServletRequest.getAttribute(
+					WebKeys.THEME_DISPLAY);
+
+			dropdownItem.setHref(
+				renderResponse.createRenderURL(), "mvcRenderCommandName",
+				"/admin/edit_form_instance", "redirect",
+				PortalUtil.getCurrentURL(httpServletRequest), "groupId",
+				String.valueOf(themeDisplay.getScopeGroupId()));
+
+			dropdownItem.setLabel(
+				LanguageUtil.get(httpServletRequest, "new-form"));
+		};
 	}
 
 	protected DDMForm getDDMForm() throws PortalException {
@@ -1320,14 +1378,6 @@ public class DDMFormAdminDisplayContext {
 		).add(
 			getOrderByDropdownItem("name")
 		).build();
-	}
-
-	protected boolean hasResults() {
-		if (getTotalItems() > 0) {
-			return true;
-		}
-
-		return false;
 	}
 
 	protected boolean isSearch() {

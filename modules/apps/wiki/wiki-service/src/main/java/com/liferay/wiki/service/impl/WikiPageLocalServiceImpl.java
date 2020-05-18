@@ -85,7 +85,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 import com.liferay.portal.kernel.workflow.WorkflowThreadLocal;
-import com.liferay.portal.util.LayoutURLUtil;
 import com.liferay.social.kernel.model.SocialActivityConstants;
 import com.liferay.subscription.service.SubscriptionLocalService;
 import com.liferay.trash.TrashHelper;
@@ -2358,8 +2357,8 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 			return StringPool.BLANK;
 		}
 
-		String layoutFullURL = LayoutURLUtil.getLayoutURL(
-			page.getGroupId(), WikiPortletKeys.WIKI, serviceContext);
+		String layoutFullURL = _portal.getLayoutFullURL(
+			page.getGroupId(), WikiPortletKeys.WIKI);
 
 		if (Validator.isNotNull(layoutFullURL)) {
 			return StringBundler.concat(

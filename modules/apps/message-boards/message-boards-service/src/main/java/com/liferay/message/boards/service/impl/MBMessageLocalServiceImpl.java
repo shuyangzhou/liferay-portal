@@ -115,7 +115,6 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 import com.liferay.portal.kernel.workflow.WorkflowThreadLocal;
 import com.liferay.portal.linkback.LinkbackProducerUtil;
-import com.liferay.portal.util.LayoutURLUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.social.kernel.model.SocialActivityConstants;
 import com.liferay.subscription.service.SubscriptionLocalService;
@@ -1889,8 +1888,8 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 		String portletId = PortletProviderUtil.getPortletId(
 			MBMessage.class.getName(), PortletProvider.Action.VIEW);
 
-		String layoutURL = LayoutURLUtil.getLayoutURL(
-			message.getGroupId(), portletId, serviceContext);
+		String layoutURL = _portal.getLayoutFullURL(
+			message.getGroupId(), portletId);
 
 		if (Validator.isNotNull(layoutURL)) {
 			return StringBundler.concat(

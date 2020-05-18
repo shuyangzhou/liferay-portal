@@ -19,7 +19,7 @@ import React from 'react';
 
 import EmptyState from '../empty-state/EmptyState.es';
 
-export default ({children, fieldName, totalEntries, type}) => (
+export default ({children, field: {icon, name, title}, totalEntries}) => (
 	<div className="col-md-8">
 		<div className="sheet">
 			<div className="col-md-12">
@@ -30,15 +30,15 @@ export default ({children, fieldName, totalEntries, type}) => (
 								className="aspect-ratio-item aspect-ratio-item-center-left aspect-ratio-item-fluid card-symbol card-type-asset-icon"
 								data-tooltip-align="bottom"
 								data-tooltip-delay={300}
-								title={`${type}-field-type-label`}
+								title={title}
 							>
-								<ClayIcon symbol={`${type}-button`} />
+								<ClayIcon symbol={icon} />
 							</div>
 						</ClayTooltipProvider>
 
 						<div className="field-info">
 							<ClayCard.Description displayType="title">
-								{fieldName}
+								{name}
 							</ClayCard.Description>
 
 							<ClayCard.Description

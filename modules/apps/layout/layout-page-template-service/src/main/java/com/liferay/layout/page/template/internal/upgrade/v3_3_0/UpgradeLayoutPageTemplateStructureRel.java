@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.PortletPreferences;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalService;
-import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -39,7 +38,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author Eudaldo Alonso
@@ -59,13 +62,38 @@ public class UpgradeLayoutPageTemplateStructureRel extends UpgradeProcess {
 		_upgradeLayoutPageTemplateStructureRel();
 	}
 
+	private List<PortletPreferences> _getPortletPreferencesByPlid(long plid) {
+		if (_portletPreferencesMap.containsKey(plid)) {
+			return _portletPreferencesMap.get(plid);
+		}
+
+		List<PortletPreferences> portletPreferencesList =
+			_portletPreferencesLocalService.getPortletPreferencesByPlid(plid);
+
+		Stream<PortletPreferences> stream = portletPreferencesList.stream();
+
+		portletPreferencesList = stream.filter(
+			portletPreferences -> {
+				String portletId = portletPreferences.getPortletId();
+
+				return portletId.contains(_INSTANCE_SEPARATOR) &&
+					   portletId.contains(_SEGMENTS_EXPERIENCE_SEPARATOR);
+			}
+		).collect(
+			Collectors.toList()
+		);
+
+		_portletPreferencesMap.put(plid, portletPreferencesList);
+
+		return _portletPreferencesMap.get(plid);
+	}
+
 	private void _updatePortletPreferences(
 		String newNamespace, String oldNamespace, long plid,
 		long segmentsExperienceId) {
 
 		List<PortletPreferences> portletPreferencesList =
-			PortletPreferencesLocalServiceUtil.getPortletPreferencesByPlid(
-				plid);
+			_getPortletPreferencesByPlid(plid);
 
 		for (PortletPreferences portletPreferences : portletPreferencesList) {
 			String portletId = portletPreferences.getPortletId();
@@ -213,11 +241,15 @@ public class UpgradeLayoutPageTemplateStructureRel extends UpgradeProcess {
 		}
 	}
 
+	private static final String _INSTANCE_SEPARATOR = "_INSTANCE_";
+
 	private static final String _SEGMENTS_EXPERIENCE_SEPARATOR =
 		"_SEGMENTS_EXPERIENCE_";
 
 	private final FragmentEntryLinkLocalService _fragmentEntryLinkLocalService;
 	private final PortletPreferencesLocalService
 		_portletPreferencesLocalService;
+	private final Map<Long, List<PortletPreferences>> _portletPreferencesMap =
+		new HashMap<>();
 
 }

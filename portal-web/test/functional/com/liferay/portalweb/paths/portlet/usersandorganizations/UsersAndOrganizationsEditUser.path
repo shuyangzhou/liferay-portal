@@ -139,6 +139,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>DEPOT_ROLES_SELECT_BUTTON</td>
+	<td>//button[contains(@data-rolename,'${roleTitle}')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>DEPOT_ROLES_SELECT_LINK</td>
 	<td>//a[contains(@id,'selectDepotRoleLink')]/span</td>
 	<td></td>
@@ -146,6 +151,11 @@
 <tr>
 	<td>DEPOT_ROLES_TITLE</td>
 	<td>//tr/td[normalize-space(text())='${key_roleTitle}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DEPOT_TABLE_NAME</td>
+	<td>//tr[contains(.,'${key_depotName}')]/td[1]</td>
 	<td></td>
 </tr>
 <tr>

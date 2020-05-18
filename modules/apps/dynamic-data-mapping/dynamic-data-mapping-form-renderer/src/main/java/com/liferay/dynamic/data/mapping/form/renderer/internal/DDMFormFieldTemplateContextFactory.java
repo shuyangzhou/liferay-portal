@@ -27,6 +27,7 @@ import com.liferay.dynamic.data.mapping.model.DDMFormFieldOptions;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldValidation;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldValidationExpression;
 import com.liferay.dynamic.data.mapping.model.DDMFormLayout;
+import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 import com.liferay.dynamic.data.mapping.model.Value;
 import com.liferay.dynamic.data.mapping.render.DDMFormFieldRenderingContext;
@@ -824,6 +825,13 @@ public class DDMFormFieldTemplateContextFactory {
 		return new DDMFormLayout();
 	}
 
+	private long _getDefaultDDMFormLayoutId(long ddmStructureId) {
+		DDMStructure ddmStructure = _ddmStructureLocalService.fetchDDMStructure(
+			ddmStructureId);
+
+		return ddmStructure.getDefaultDDMStructureLayoutId();
+	}
+
 	private Stream<Map<String, Object>> _getFieldsStream(
 		Map<String, Object> column) {
 
@@ -882,10 +890,7 @@ public class DDMFormFieldTemplateContextFactory {
 		DDMFormField ddmFormField,
 		DDMFormFieldRenderingContext ddmFormFieldRenderingContext) {
 
-		if (Validator.isNotNull(ddmFormField.getProperty("ddmStructureId")) &&
-			Validator.isNotNull(
-				ddmFormField.getProperty("ddmStructureLayoutId"))) {
-
+		if (Validator.isNotNull(ddmFormField.getProperty("ddmStructureId"))) {
 			DDMFormPagesTemplateContextFactory
 				ddmFormPagesTemplateContextFactory =
 					new DDMFormPagesTemplateContextFactory(
@@ -895,7 +900,11 @@ public class DDMFormFieldTemplateContextFactory {
 						_getDDMFormLayout(
 							GetterUtil.getLong(
 								ddmFormField.getProperty(
-									"ddmStructureLayoutId"))),
+									"ddmStructureLayoutId"),
+								_getDefaultDDMFormLayoutId(
+									GetterUtil.getLong(
+										ddmFormField.getProperty(
+											"ddmStructureId"))))),
 						_ddmFormRenderingContext,
 						_ddmStructureLayoutLocalService,
 						_ddmStructureLocalService);

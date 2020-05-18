@@ -86,6 +86,7 @@ DDMFormAdminDisplayContext ddmFormAdminDisplayContext = (DDMFormAdminDisplayCont
 
 String dataProviderInstanceParameterSettingsURL = ddmFormAdminDisplayContext.getDataProviderInstanceParameterSettingsURL();
 String dataProviderInstancesURL = ddmFormAdminDisplayContext.getDataProviderInstancesURL();
+String displayStyle = ddmFormAdminDisplayContext.getDisplayStyle();
 String functionsMetadata = ddmFormAdminDisplayContext.getFunctionsMetadata();
 String functionsURL = ddmFormAdminDisplayContext.getFunctionsURL();
 String mainRequire = ddmFormAdminDisplayContext.getMainRequire();

@@ -366,6 +366,11 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
+			<name>buttonCssClass</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
 			<name>componentId</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>

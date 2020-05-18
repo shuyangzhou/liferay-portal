@@ -53,14 +53,15 @@ public class CheckboxMultipleDDMFormFieldTypeReportProcessorTest
 		DDMFormFieldValue ddmFormFieldValue = mock(DDMFormFieldValue.class);
 
 		when(
-			ddmFormFieldValue.getType()
-		).thenReturn(
-			DDMFormFieldType.CHECKBOX_MULTIPLE
-		);
-		when(
 			ddmFormFieldValue.getName()
 		).thenReturn(
 			"field1"
+		);
+
+		when(
+			ddmFormFieldValue.getType()
+		).thenReturn(
+			DDMFormFieldType.CHECKBOX_MULTIPLE
 		);
 
 		Value value = new LocalizedValue();
@@ -102,15 +103,15 @@ public class CheckboxMultipleDDMFormFieldTypeReportProcessorTest
 		DDMFormFieldValue ddmFormFieldValue = mock(DDMFormFieldValue.class);
 
 		when(
-			ddmFormFieldValue.getType()
-		).thenReturn(
-			DDMFormFieldType.CHECKBOX_MULTIPLE
-		);
-
-		when(
 			ddmFormFieldValue.getName()
 		).thenReturn(
 			"field1"
+		);
+
+		when(
+			ddmFormFieldValue.getType()
+		).thenReturn(
+			DDMFormFieldType.CHECKBOX_MULTIPLE
 		);
 
 		Value value = new LocalizedValue();

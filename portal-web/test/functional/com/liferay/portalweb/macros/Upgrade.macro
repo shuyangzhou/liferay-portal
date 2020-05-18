@@ -247,9 +247,7 @@ definition {
 			panel = "Site Administration",
 			portlet = "Forms");
 
-		AssertTextEquals(
-			locator1 = "Message#EMPTY_INFO",
-			value1 = "There are no forms. Click on the plus button to add the first one.");
+		AssertElementPresent(locator1 = "Message#EMPTY_INFO_TAGLIB");
 
 		FormsAdminNavigator.gotoAddForm();
 
