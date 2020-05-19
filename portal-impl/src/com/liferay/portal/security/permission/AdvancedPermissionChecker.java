@@ -1060,12 +1060,12 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 			return false;
 		}
 
-		if (isOmniadmin()) {
-			return true;
-		}
-
 		if (groupId <= 0) {
 			return false;
+		}
+
+		if (isOmniadmin()) {
+			return true;
 		}
 
 		Group group = GroupLocalServiceUtil.getGroup(groupId);
