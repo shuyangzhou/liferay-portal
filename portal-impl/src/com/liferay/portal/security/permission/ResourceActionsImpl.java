@@ -370,6 +370,10 @@ public class ResourceActionsImpl implements ResourceActions {
 		return portletNames;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public List<String> getPortletResourceActions(Portlet portlet) {
 		Set<String> actions = new LinkedHashSet<>(
@@ -838,9 +842,7 @@ public class ResourceActionsImpl implements ResourceActions {
 		synchronized (this) {
 			portletActions = _getPortletMimeTypeActions(name, portlet);
 
-			if (!name.equals(PortletKeys.PORTAL)) {
-				_checkPortletActions(portlet, portletActions);
-			}
+			_checkPortletActions(portlet, portletActions);
 
 			_checkPortletGroupDefaultActions(
 				portletResourceActionsBag.getGroupDefaultActions());
@@ -1059,8 +1061,10 @@ public class ResourceActionsImpl implements ResourceActions {
 				Set<String> portletActions = _getPortletMimeTypeActions(
 					portletName, portlet);
 
-				if (!portletName.equals(PortletKeys.PORTAL)) {
-					_checkPortletActions(portlet, portletActions);
+				_checkPortletActions(portlet, portletActions);
+
+				if (portletName.equals(PortletKeys.PORTAL)) {
+					portletActions.add(ActionKeys.ACCESS_IN_CONTROL_PANEL);
 				}
 
 				_readResource(
