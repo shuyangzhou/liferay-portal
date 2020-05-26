@@ -103,7 +103,15 @@ public class ResourceActionsImpl implements ResourceActions {
 	public void check(Portlet portlet) {
 		String portletName = portlet.getPortletId();
 
-		_check(portletName, _getPortletResourceActions(portletName, portlet));
+		ResourceActionsBag portletResourceActionsBag = _getResourceActionsBag(
+			portletName);
+
+		_checkPortletResourceActionsBag(
+			portletName, portlet, portletResourceActionsBag);
+
+		_check(
+			portletName,
+			new ArrayList<>(portletResourceActionsBag.getSupportsActions()));
 	}
 
 	@Override
@@ -392,7 +400,13 @@ public class ResourceActionsImpl implements ResourceActions {
 
 		Portlet portlet = portletLocalService.getPortletById(name);
 
-		return _getPortletResourceActions(name, portlet);
+		ResourceActionsBag portletResourceActionsBag = _getResourceActionsBag(
+			name);
+
+		_checkPortletResourceActionsBag(
+			name, portlet, portletResourceActionsBag);
+
+		return new ArrayList<>(portletResourceActionsBag.getSupportsActions());
 	}
 
 	@Override
@@ -737,6 +751,31 @@ public class ResourceActionsImpl implements ResourceActions {
 		actions.add(ActionKeys.PERMISSIONS);
 		actions.add(ActionKeys.PREFERENCES);
 		actions.add(ActionKeys.VIEW);
+	}
+
+	private void _checkPortletResourceActionsBag(
+		String name, Portlet portlet, ResourceActionsBag resourceActionsBag) {
+
+		Set<String> portletActions = resourceActionsBag.getSupportsActions();
+
+		if (!portletActions.isEmpty()) {
+			return;
+		}
+
+		synchronized (this) {
+			portletActions.addAll(_getPortletMimeTypeActions(name, portlet));
+
+			_checkPortletActions(portlet, portletActions);
+
+			_checkPortletGroupDefaultActions(
+				resourceActionsBag.getGroupDefaultActions());
+
+			_checkPortletGuestDefaultActions(
+				resourceActionsBag.getGuestDefaultActions());
+
+			_checkPortletLayoutManagerActions(
+				resourceActionsBag.getLayoutManagerActions());
+		}
 	}
 
 	private String _getCompositeModelName(Element compositeModelNameElement) {
