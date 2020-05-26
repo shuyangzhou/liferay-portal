@@ -865,37 +865,6 @@ public class ResourceActionsImpl implements ResourceActions {
 		return actions;
 	}
 
-	private List<String> _getPortletResourceActions(
-		String name, Portlet portlet) {
-
-		ResourceActionsBag portletResourceActionsBag = _getResourceActionsBag(
-			name);
-
-		Set<String> portletActions =
-			portletResourceActionsBag.getSupportsActions();
-
-		if (!portletActions.isEmpty()) {
-			return new ArrayList<>(portletActions);
-		}
-
-		synchronized (this) {
-			portletActions.addAll(_getPortletMimeTypeActions(name, portlet));
-
-			_checkPortletActions(portlet, portletActions);
-
-			_checkPortletGroupDefaultActions(
-				portletResourceActionsBag.getGroupDefaultActions());
-
-			_checkPortletGuestDefaultActions(
-				portletResourceActionsBag.getGuestDefaultActions());
-
-			_checkPortletLayoutManagerActions(
-				portletResourceActionsBag.getLayoutManagerActions());
-		}
-
-		return new ArrayList<>(portletActions);
-	}
-
 	private ResourceActionsBag _getResourceActionsBag(String name) {
 		ResourceActionsBag resourceActionsBag = _resourceActionsBags.get(name);
 
