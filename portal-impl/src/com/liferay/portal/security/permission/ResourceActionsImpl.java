@@ -748,6 +748,8 @@ public class ResourceActionsImpl implements ResourceActions {
 
 			_checkPortletActions(portlet, portletActions);
 
+			portletActions.add(ActionKeys.ACCESS_IN_CONTROL_PANEL);
+
 			_checkPortletGroupDefaultActions(
 				resourceActionsBag.getGroupDefaultActions());
 
