@@ -21,6 +21,9 @@ import com.liferay.calendar.model.impl.CalendarBookingImpl;
 import com.liferay.calendar.model.impl.CalendarBookingModelImpl;
 import com.liferay.calendar.service.persistence.CalendarBookingPersistence;
 import com.liferay.calendar.service.persistence.impl.constants.CalendarPersistenceConstants;
+import com.liferay.calendar.util.TestUtil;
+import com.liferay.petra.io.unsync.UnsyncPrintWriter;
+import com.liferay.petra.io.unsync.UnsyncStringWriter;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
@@ -5780,6 +5783,18 @@ public class CalendarBookingPersistenceImpl
 
 	@Override
 	public CalendarBooking updateImpl(CalendarBooking calendarBooking) {
+		CalendarBooking finalCalendarBooking = calendarBooking;
+
+		TestUtil.appendMessage(calendarBooking.getCalendarBookingId(), () -> {
+			UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();
+
+			unsyncStringWriter.write("###Thread " + Thread.currentThread().getName() + " : " + Thread.currentThread().getId() + " is updating with : " + finalCalendarBooking + "\n");
+
+			new Exception().printStackTrace(new UnsyncPrintWriter(unsyncStringWriter));
+
+			return unsyncStringWriter.toString();
+		});
+
 		boolean isNew = calendarBooking.isNew();
 
 		if (!(calendarBooking instanceof CalendarBookingModelImpl)) {

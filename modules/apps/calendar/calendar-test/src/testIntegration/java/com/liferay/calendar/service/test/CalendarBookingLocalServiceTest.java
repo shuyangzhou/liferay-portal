@@ -25,6 +25,7 @@ import com.liferay.calendar.recurrence.RecurrenceSerializer;
 import com.liferay.calendar.service.CalendarBookingLocalService;
 import com.liferay.calendar.service.CalendarLocalService;
 import com.liferay.calendar.service.CalendarResourceLocalService;
+import com.liferay.calendar.service.persistence.CalendarBookingUtil;
 import com.liferay.calendar.test.util.CalendarBookingTestUtil;
 import com.liferay.calendar.test.util.CalendarNotificationTemplateTestUtil;
 import com.liferay.calendar.test.util.CalendarStagingTestUtil;
@@ -33,6 +34,7 @@ import com.liferay.calendar.test.util.CheckBookingsMessageListenerTestUtil;
 import com.liferay.calendar.test.util.RecurrenceTestUtil;
 import com.liferay.calendar.util.JCalendarUtil;
 import com.liferay.calendar.util.RecurrenceUtil;
+import com.liferay.calendar.util.TestUtil;
 import com.liferay.calendar.workflow.CalendarBookingWorkflowConstants;
 import com.liferay.petra.mail.MailEngine;
 import com.liferay.petra.string.StringBundler;
@@ -1350,15 +1352,31 @@ public class CalendarBookingLocalServiceTest {
 
 		assertStatus(calendarBooking, WorkflowConstants.STATUS_PENDING);
 
+		TestUtil.setId(childCalendarBooking.getCalendarBookingId());
+
 		_completeWorkflow(liveGroup);
 
 		childCalendarBooking =
 			_calendarBookingLocalService.fetchCalendarBooking(
 				childCalendarBooking.getCalendarBookingId());
 
-		assertStatus(
-			childCalendarBooking,
-			CalendarBookingWorkflowConstants.STATUS_MASTER_STAGING);
+		Thread.sleep(60000);
+
+		CalendarBooking refetchedChildCalendarBooking1 =
+			_calendarBookingLocalService.fetchCalendarBooking(
+				childCalendarBooking.getCalendarBookingId());
+
+		CalendarBookingUtil.clearCache();
+
+		CalendarBooking refetchedChildCalendarBooking2 =
+			_calendarBookingLocalService.fetchCalendarBooking(
+				childCalendarBooking.getCalendarBookingId());
+
+		Assert.assertEquals("Refeteched result1 : " + refetchedChildCalendarBooking1 + "\n" +
+			"refeteched result2 : " + refetchedChildCalendarBooking2 + "\n" +
+			TestUtil.captureMessage(),
+			CalendarBookingWorkflowConstants.STATUS_MASTER_STAGING,
+			childCalendarBooking.getStatus());
 
 		calendarBooking = childCalendarBooking.getParentCalendarBooking();
 
