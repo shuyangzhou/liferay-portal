@@ -121,7 +121,7 @@ public class CalendarBookingLocalServiceTest {
 		CalendarStagingTestUtil.cleanUp();
 	}
 
-	@Test
+//	@Test
 	public void testAddAllDayCalendarBooking() throws Exception {
 		ServiceContext serviceContext = createServiceContext();
 
@@ -147,7 +147,7 @@ public class CalendarBookingLocalServiceTest {
 		assertSameDay(nowJCalendar, endTimeJCalendar);
 	}
 
-	@Test
+//	@Test
 	public void testAddCalendarBooking() throws Exception {
 		Locale siteDefault = LocaleUtil.getSiteDefault();
 
@@ -167,7 +167,7 @@ public class CalendarBookingLocalServiceTest {
 			LocalizationUtil.getDefaultLanguageId(calendarBooking.getTitle()));
 	}
 
-	@Test
+//	@Test
 	public void testAddCalendarBookingDoesNotNotifyCreatorTwice()
 		throws Exception {
 
@@ -215,7 +215,7 @@ public class CalendarBookingLocalServiceTest {
 		assertMailSubjectCount(mailMessageSubject, 2);
 	}
 
-	@Test
+//	@Test
 	public void testAddCalendarBookingResourceRequested()
 		throws PortalException {
 
@@ -237,7 +237,7 @@ public class CalendarBookingLocalServiceTest {
 		Assert.assertTrue(secondChildCalendarBooking.isDenied());
 	}
 
-	@Test
+//	@Test
 	public void testAddCalendarBookingResourceRequestedEndOverlapsStart()
 		throws PortalException {
 
@@ -263,7 +263,7 @@ public class CalendarBookingLocalServiceTest {
 		Assert.assertTrue(secondChildCalendarBooking.isPending());
 	}
 
-	@Test
+//	@Test
 	public void testAddCalendarBookingResourceRequestedNotifiesDenial()
 		throws Exception {
 
@@ -287,7 +287,7 @@ public class CalendarBookingLocalServiceTest {
 			MailServiceTestUtil.lastMailMessageContains(messageBodySnippet));
 	}
 
-	@Test
+//	@Test
 	public void testAddCalendarBookingResourceRequestedNotifiesInvitees()
 		throws Exception {
 
@@ -320,7 +320,7 @@ public class CalendarBookingLocalServiceTest {
 		assertSentEmail(invitingUser.getEmailAddress());
 	}
 
-	@Test
+//	@Test
 	public void testAddCalendarBookingResourceRequestedOverlappingStart()
 		throws PortalException {
 
@@ -349,7 +349,7 @@ public class CalendarBookingLocalServiceTest {
 		Assert.assertTrue(secondChildCalendarBooking.isDenied());
 	}
 
-	@Test
+//	@Test
 	public void testAddCalendarBookingResourceRequestedStartOverlapsEnd()
 		throws PortalException {
 
@@ -375,7 +375,7 @@ public class CalendarBookingLocalServiceTest {
 		Assert.assertTrue(secondChildCalendarBooking.isPending());
 	}
 
-	@Test
+//	@Test
 	public void testAddCalendarBookingResourceReserved()
 		throws PortalException {
 
@@ -397,7 +397,7 @@ public class CalendarBookingLocalServiceTest {
 		Assert.assertTrue(secondChildCalendarBooking.isDenied());
 	}
 
-	@Test
+//	@Test
 	public void testAddCalendarBookingResourceReservedEndOverlapsStart()
 		throws PortalException {
 
@@ -422,7 +422,7 @@ public class CalendarBookingLocalServiceTest {
 		Assert.assertTrue(secondChildCalendarBooking.isPending());
 	}
 
-	@Test
+//	@Test
 	public void testAddCalendarBookingResourceReservedOverlappingEnd()
 		throws PortalException {
 
@@ -446,7 +446,7 @@ public class CalendarBookingLocalServiceTest {
 		Assert.assertTrue(secondChildCalendarBooking.isDenied());
 	}
 
-	@Test
+//	@Test
 	public void testAddCalendarBookingResourceReservedOverlappingStart()
 		throws PortalException {
 
@@ -470,7 +470,7 @@ public class CalendarBookingLocalServiceTest {
 		Assert.assertTrue(secondChildCalendarBooking.isDenied());
 	}
 
-	@Test
+//	@Test
 	public void testAddCalendarBookingResourceReservedStartOverlapsEnd()
 		throws PortalException {
 
@@ -495,7 +495,7 @@ public class CalendarBookingLocalServiceTest {
 		Assert.assertTrue(secondChildCalendarBooking.isPending());
 	}
 
-	@Test
+//	@Test
 	public void testAddCalendarBookingResourseRequestedOverlappingEnd()
 		throws PortalException {
 
@@ -524,7 +524,7 @@ public class CalendarBookingLocalServiceTest {
 		Assert.assertTrue(secondChildCalendarBooking.isDenied());
 	}
 
-	@Test
+//	@Test
 	public void testAddRecurringCalendarBookingAfterDeletingRecurringCalendarBookingInstance()
 		throws Exception {
 
@@ -571,7 +571,7 @@ public class CalendarBookingLocalServiceTest {
 			newCalendarBooking.getCalendarBookingId(), recurrenceCount);
 	}
 
-	@Test
+//	@Test
 	public void testAddRecurringCalendarBookingUntilStartTime()
 		throws Exception {
 
@@ -602,7 +602,7 @@ public class CalendarBookingLocalServiceTest {
 		assertCalendarBookingInstancesCount(calendarBookingId, 1);
 	}
 
-	@Test
+//	@Test
 	public void testDeleteCalendarBooking() throws Exception {
 		ServiceContext serviceContext = createServiceContext();
 
@@ -625,7 +625,7 @@ public class CalendarBookingLocalServiceTest {
 		Assert.assertEquals(titleMap, calendarBookingInstance.getTitleMap());
 	}
 
-	@Test
+//	@Test
 	public void testDeleteCalendarBookingRecurringInstanceNotifiesInvitees()
 		throws Exception {
 
@@ -688,7 +688,7 @@ public class CalendarBookingLocalServiceTest {
 		Assert.assertNull(calendarBooking);
 	}
 
-	@Test
+//	@Test
 	public void testDeleteCalendarBookingWithAllFollowingInstances()
 		throws Exception {
 
