@@ -1354,26 +1354,20 @@ public class CalendarBookingLocalServiceTest {
 
 		TestUtil.setId(childCalendarBooking.getCalendarBookingId());
 
+		List<WorkflowTask> workflowTasks = _getWorkflowTasks();
+
+		List<WorkflowTask> refetechedWorkflowTasks = _workflowTaskManager.getWorkflowTasksByUserRoles(
+				TestPropsValues.getCompanyId(), TestPropsValues.getUserId(),
+				false, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+
 		_completeWorkflow(liveGroup);
 
 		childCalendarBooking =
 			_calendarBookingLocalService.fetchCalendarBooking(
 				childCalendarBooking.getCalendarBookingId());
 
-		Thread.sleep(60000);
 
-		CalendarBooking refetchedChildCalendarBooking1 =
-			_calendarBookingLocalService.fetchCalendarBooking(
-				childCalendarBooking.getCalendarBookingId());
-
-		CalendarBookingUtil.clearCache();
-
-		CalendarBooking refetchedChildCalendarBooking2 =
-			_calendarBookingLocalService.fetchCalendarBooking(
-				childCalendarBooking.getCalendarBookingId());
-
-		Assert.assertEquals("Refeteched result1 : " + refetchedChildCalendarBooking1 + "\n" +
-			"refeteched result2 : " + refetchedChildCalendarBooking2 + "\n" +
+		Assert.assertEquals("Original " + workflowTasks + "\n" + " Refetched " + refetechedWorkflowTasks + "\n" +
 			TestUtil.captureMessage(),
 			CalendarBookingWorkflowConstants.STATUS_MASTER_STAGING,
 			childCalendarBooking.getStatus());
