@@ -717,7 +717,7 @@ public class CalendarBookingLocalServiceTest {
 			calendarBooking.getCalendarBookingId(), 1);
 	}
 
-	@Test
+//	@Test
 	public void testDeleteCalendarBookingWithAllRecurringInstances()
 		throws Exception {
 
@@ -743,7 +743,7 @@ public class CalendarBookingLocalServiceTest {
 		Assert.assertNull(calendarBookingInstance);
 	}
 
-	@Test
+//	@Test
 	public void testDeleteCalendarBookingWithoutAllRecurringInstances()
 		throws Exception {
 
@@ -769,7 +769,7 @@ public class CalendarBookingLocalServiceTest {
 		Assert.assertEquals(titleMap, calendarBookingInstance.getTitleMap());
 	}
 
-	@Test
+//	@Test
 	public void testDeleteLastCalendarBookingInstanceDeletesCalendarBooking()
 		throws Exception {
 
@@ -799,7 +799,7 @@ public class CalendarBookingLocalServiceTest {
 		Assert.assertNull(calendarBooking);
 	}
 
-	@Test
+//	@Test
 	public void testDeleteStagingCalendarBookingDeletesLiveCalendarBooking()
 		throws Exception {
 
@@ -834,7 +834,7 @@ public class CalendarBookingLocalServiceTest {
 		assertCalendarBookingsCount(stagingCalendar, 0);
 	}
 
-	@Test
+//	@Test
 	public void testGetRecurringCalendarBookings() throws Exception {
 		ServiceContext serviceContext = createServiceContext();
 
@@ -867,7 +867,7 @@ public class CalendarBookingLocalServiceTest {
 		}
 	}
 
-	@Test
+//	@Test
 	public void testGetRecurringCalendarBookingsSkipPastEvents()
 		throws Exception {
 
@@ -901,7 +901,7 @@ public class CalendarBookingLocalServiceTest {
 			instance.getStartTime());
 	}
 
-	@Test
+//	@Test
 	public void testInviteAndRemoveCalendar() throws Exception {
 		ServiceContext serviceContext = createServiceContext();
 
@@ -938,7 +938,7 @@ public class CalendarBookingLocalServiceTest {
 			childCalendarBookings.toString(), 2, childCalendarBookings.size());
 	}
 
-	@Test
+//	@Test
 	public void testInviteGroupCalendar() throws Exception {
 		ServiceContext serviceContext = createServiceContext();
 
@@ -957,7 +957,7 @@ public class CalendarBookingLocalServiceTest {
 		assertCalendar(childCalendarBooking, groupCalendar);
 	}
 
-	@Test
+//	@Test
 	public void testInviteGroupResourceCalendar() throws Exception {
 		ServiceContext serviceContext = createServiceContext();
 
@@ -976,7 +976,7 @@ public class CalendarBookingLocalServiceTest {
 		assertCalendar(childCalendarBooking, resourceCalendar);
 	}
 
-	@Test
+//	@Test
 	public void testInviteLiveSiteCalendarCreatesStagingSiteCalendarBooking()
 		throws Exception {
 
@@ -1006,7 +1006,7 @@ public class CalendarBookingLocalServiceTest {
 		assertCalendarBookingsCount(stagingCalendar, 1);
 	}
 
-	@Test
+//	@Test
 	public void testInviteLiveSiteCalendarWithDeletedStagingSiteCalendarCreatesNoCalendarBooking()
 		throws Exception {
 
@@ -1038,7 +1038,7 @@ public class CalendarBookingLocalServiceTest {
 		assertCalendarBookingsCount(stagingCalendar, 0);
 	}
 
-	@Test
+//	@Test
 	public void testInviteLiveSiteResourceCalendarCreatesStagingSiteResourceCalendarBooking()
 		throws Exception {
 
@@ -1069,7 +1069,7 @@ public class CalendarBookingLocalServiceTest {
 		assertCalendarBookingsCount(stagingCalendar, 1);
 	}
 
-	@Test
+//	@Test
 	public void testInviteLiveSiteResourceCalendarWithDeletedStagingSiteCalendarCreatesNoCalendarBooking()
 		throws Exception {
 
@@ -1103,7 +1103,7 @@ public class CalendarBookingLocalServiceTest {
 		assertCalendarBookingsCount(stagingCalendar, 0);
 	}
 
-	@Test
+//	@Test
 	public void testInviteNonstagedSiteCalendarCreatesLiveSiteCalendarBooking()
 		throws Exception {
 
@@ -1127,7 +1127,7 @@ public class CalendarBookingLocalServiceTest {
 		assertCalendar(childCalendarBooking, liveCalendar);
 	}
 
-	@Test
+//	@Test
 	public void testInviteNonstagedSiteResourceCalendarCreatesLiveSiteResourceCalendarBooking()
 		throws Exception {
 
@@ -1152,7 +1152,7 @@ public class CalendarBookingLocalServiceTest {
 		assertCalendar(childCalendarBooking, liveCalendar);
 	}
 
-	@Test
+//	@Test
 	public void testInviteStagingCalendarShouldNotCreatesPendingLiveCalendarBookingAfterPublish()
 		throws Exception {
 
@@ -1186,7 +1186,7 @@ public class CalendarBookingLocalServiceTest {
 		assertCalendarBookingsCount(stagingCalendar, 1);
 	}
 
-	@Test
+//	@Test
 	public void testInviteToDraftCalendarBookingResultsInMasterPendingChild()
 		throws Exception {
 
@@ -1214,7 +1214,7 @@ public class CalendarBookingLocalServiceTest {
 			CalendarBookingWorkflowConstants.STATUS_MASTER_PENDING);
 	}
 
-	@Test
+//	@Test
 	public void testInviteToPublishedCalendarBookingNotifiesInvitee()
 		throws Exception {
 
@@ -1237,7 +1237,7 @@ public class CalendarBookingLocalServiceTest {
 		assertMailSubjectCount(mailMessageSubject, 1);
 	}
 
-	@Test
+//	@Test
 	public void testInviteToPublishedCalendarBookingResultsInPendingChild()
 		throws Exception {
 
@@ -1263,7 +1263,7 @@ public class CalendarBookingLocalServiceTest {
 		assertStatus(childCalendarBooking, WorkflowConstants.STATUS_PENDING);
 	}
 
-	@Test
+//	@Test
 	public void testInviteToStagedCalendarBookingResultsInMasterStagedChild()
 		throws Exception {
 
@@ -1287,7 +1287,7 @@ public class CalendarBookingLocalServiceTest {
 			calendarBooking.getStatus());
 	}
 
-	@Test
+//	@Test
 	public void testInviteToStagedCalendarBookingResultsInPendingLiveChild()
 		throws Exception {
 
