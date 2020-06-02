@@ -64,7 +64,6 @@ import com.liferay.portal.kernel.util.TimeZoneUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowTask;
 import com.liferay.portal.kernel.workflow.WorkflowTaskManager;
-import com.liferay.portal.search.test.util.SearchTestRule;
 import com.liferay.portal.test.log.CaptureAppender;
 import com.liferay.portal.test.log.Log4JLoggerTestUtil;
 import com.liferay.portal.test.mail.MailMessage;
@@ -3065,9 +3064,6 @@ public class CalendarBookingLocalServiceTest {
 			titleMap.get(LocaleUtil.US),
 			invitedCalendarBooking.getTitle(LocaleUtil.US));
 	}
-
-	@Rule
-	public SearchTestRule searchTestRule = new SearchTestRule();
 
 	protected void assertCalendar(
 		CalendarBooking calendarBooking, Calendar calendar) {
