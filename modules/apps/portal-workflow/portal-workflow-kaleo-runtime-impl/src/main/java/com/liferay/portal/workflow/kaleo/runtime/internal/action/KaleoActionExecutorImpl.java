@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.TestUtil;
 import com.liferay.portal.workflow.kaleo.definition.ExecutionType;
 import com.liferay.portal.workflow.kaleo.model.KaleoAction;
 import com.liferay.portal.workflow.kaleo.model.KaleoInstanceToken;
@@ -52,6 +53,7 @@ public class KaleoActionExecutorImpl implements KaleoActionExecutor {
 				serviceContext.getCompanyId(), kaleoClassName, kaleoClassPK,
 				executionType.getValue());
 
+		TestUtil.appendMessage("In KaleoActionExecutorImpl with : " + kaleoActions);
 		for (KaleoAction kaleoAction : kaleoActions) {
 			long startTime = System.currentTimeMillis();
 

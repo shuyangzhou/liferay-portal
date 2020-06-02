@@ -16,6 +16,7 @@ package com.liferay.portal.workflow.kaleo.runtime.scripting.internal.util;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.scripting.Scripting;
+import com.liferay.portal.kernel.util.TestUtil;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
 import com.liferay.portal.workflow.kaleo.runtime.util.ScriptingContextBuilder;
 import com.liferay.portal.workflow.kaleo.runtime.util.WorkflowContextUtil;
@@ -54,6 +55,8 @@ public class KaleoScriptingEvaluator {
 
 		try {
 			currentThread.setContextClassLoader(classLoader);
+
+			TestUtil.appendMessage("In KaleoScriptingEvaluator executing : " + script);
 
 			results = _scripting.eval(
 				null, inputObjects, outputObjects, scriptLanguage, script);

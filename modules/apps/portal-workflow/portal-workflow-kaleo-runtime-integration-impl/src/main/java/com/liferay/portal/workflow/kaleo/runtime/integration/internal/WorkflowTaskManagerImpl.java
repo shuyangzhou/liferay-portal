@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.TestUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.comparator.UserScreenNameComparator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -200,14 +201,18 @@ public class WorkflowTaskManagerImpl implements WorkflowTaskManager {
 				kaleoInstanceToken, kaleoTaskInstanceToken, workflowContext,
 				serviceContext);
 
+			TestUtil.appendMessage(workflowTaskId, () -> "registering tx callback");
+
 			TransactionCommitCallbackUtil.registerCallback(
 				new Callable<Void>() {
 
 					@Override
 					public Void call() throws Exception {
 						try {
+							TestUtil.appendMessage(workflowTaskId, () -> "In tx callback, before signalExit");
 							_kaleoSignaler.signalExit(
 								transitionName, executionContext);
+							TestUtil.appendMessage(workflowTaskId, () -> "In tx callback, after signalExit");
 						}
 						catch (Exception exception) {
 							throw new WorkflowException(

@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.ClassUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.TestUtil;
 import com.liferay.portal.workflow.kaleo.definition.ScriptLanguage;
 import com.liferay.portal.workflow.kaleo.model.KaleoAction;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
@@ -55,6 +56,8 @@ public class ActionExecutorManagerImpl implements ActionExecutorManager {
 			throw new PortalException(
 				"No action executor for " + actionExecutorKey);
 		}
+
+		TestUtil.appendMessage("In ActionExecutorManagerImpl executing : " + kaleoAction);
 
 		actionExecutor.execute(kaleoAction, executionContext);
 	}

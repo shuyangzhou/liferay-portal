@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.calendar.util;
+package com.liferay.portal.kernel.util;
 
 import com.liferay.petra.string.StringBundler;
 import java.util.function.Supplier;
@@ -31,6 +31,11 @@ public class TestUtil {
 			_sb.append("\n");
 			_sb.append(messageSupplier.get());
 		}
+	}
+
+	public static synchronized void appendMessage(String message) {
+		_sb.append("\n");
+		_sb.append(message);
 	}
 
 	public static synchronized String captureMessage() {

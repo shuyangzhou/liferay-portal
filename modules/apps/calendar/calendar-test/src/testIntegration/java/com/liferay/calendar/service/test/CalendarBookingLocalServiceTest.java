@@ -34,7 +34,7 @@ import com.liferay.calendar.test.util.CheckBookingsMessageListenerTestUtil;
 import com.liferay.calendar.test.util.RecurrenceTestUtil;
 import com.liferay.calendar.util.JCalendarUtil;
 import com.liferay.calendar.util.RecurrenceUtil;
-import com.liferay.calendar.util.TestUtil;
+import com.liferay.portal.kernel.util.TestUtil;
 import com.liferay.calendar.workflow.CalendarBookingWorkflowConstants;
 import com.liferay.petra.mail.MailEngine;
 import com.liferay.petra.string.StringBundler;
@@ -1352,9 +1352,15 @@ public class CalendarBookingLocalServiceTest {
 
 		assertStatus(calendarBooking, WorkflowConstants.STATUS_PENDING);
 
-		TestUtil.setId(childCalendarBooking.getCalendarBookingId());
-
 		List<WorkflowTask> workflowTasks = _getWorkflowTasks();
+
+		Assert.assertEquals(workflowTasks.toString(), 1, workflowTasks.size());
+
+		WorkflowTask workflowTask = workflowTasks.get(0);
+
+		TestUtil.setId(workflowTask.getWorkflowTaskId());
+
+		TestUtil.appendMessage("###Starting dealing with " + workflowTask.getWorkflowTaskId());
 
 		List<WorkflowTask> refetechedWorkflowTasks = _workflowTaskManager.getWorkflowTasksByUserRoles(
 				TestPropsValues.getCompanyId(), TestPropsValues.getUserId(),
@@ -1377,7 +1383,7 @@ public class CalendarBookingLocalServiceTest {
 		assertStatus(calendarBooking, WorkflowConstants.STATUS_APPROVED);
 
 		CalendarStagingTestUtil.publishLayouts(liveGroup, true);
-
+		
 		List<CalendarBooking> childCalendarBookings =
 			_calendarBookingLocalService.getCalendarBookings(
 				invitedCalendar.getCalendarId(),
