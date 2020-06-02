@@ -16,41 +16,113 @@ package com.liferay.calendar.search.test;
 
 import com.liferay.calendar.model.Calendar;
 import com.liferay.calendar.model.CalendarBooking;
+import com.liferay.calendar.model.CalendarBookingConstants;
+import com.liferay.calendar.model.CalendarResource;
 import com.liferay.calendar.service.CalendarBookingLocalService;
 import com.liferay.calendar.service.CalendarLocalService;
+import com.liferay.calendar.util.CalendarResourceUtil;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.search.Document;
+import com.liferay.portal.kernel.search.Hits;
+import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistry;
+import com.liferay.portal.kernel.search.QueryConfig;
+import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchEngineHelper;
+import com.liferay.portal.kernel.search.SearchException;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
-import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.settings.LocalizedValuesMap;
+import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
+import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.test.util.UserTestUtil;
+import com.liferay.portal.kernel.util.DateUtil;
+import com.liferay.portal.kernel.util.Time;
+import com.liferay.portal.search.test.util.HitsAssert;
 import com.liferay.portal.search.test.util.IndexedFieldsFixture;
+import com.liferay.portal.search.test.util.SearchTestRule;
 import com.liferay.portal.test.rule.Inject;
+import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
+import com.liferay.portal.test.rule.SynchronousMailTestRule;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
+import java.util.Locale;
+import java.util.Objects;
 
 import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
 
 /**
  * @author Wade Cao
  */
 public abstract class BaseCalendarIndexerTestCase {
 
+	@ClassRule
+	@Rule
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(),
+			PermissionCheckerMethodTestRule.INSTANCE,
+			SynchronousMailTestRule.INSTANCE);
+
 	@Before
 	public void setUp() throws Exception {
-		calendarFixture = createCalendarFixture();
+		user = UserTestUtil.addUser();
+		group = GroupTestUtil.addGroup();
 
-		calendarFixture.setUp();
-
-		calendarSearchFixture = createSingleDocumentSearchFixture();
 		indexedFieldsFixture = createIndexedFieldsFixture();
+
+		UserTestUtil.setUser(TestPropsValues.getUser());
+
+		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
 	}
 
-	protected CalendarFixture createCalendarFixture() {
-		return new CalendarFixture(
-			_calendars, _calendarBookings, _groups, _users,
-			calendarLocalService, calendarBookingLocalService);
+	@Rule
+	public SearchTestRule searchTestRule = new SearchTestRule();
+
+	protected Calendar addCalendar(
+			LocalizedValuesMap nameLocalizedValuesMap,
+			LocalizedValuesMap descriptionLocalizedValuesMap,
+			ServiceContext serviceContext)
+		throws PortalException {
+
+		CalendarResource calendarResource =
+			CalendarResourceUtil.getGroupCalendarResource(
+				group.getGroupId(), serviceContext);
+
+		return calendarLocalService.addCalendar(
+			serviceContext.getUserId(), group.getGroupId(),
+			calendarResource.getCalendarResourceId(),
+			nameLocalizedValuesMap.getValues(),
+			descriptionLocalizedValuesMap.getValues(), StringPool.UTC,
+			RandomTestUtil.randomInt(0, 255), false, false, false,
+			serviceContext);
+	}
+
+	protected CalendarBooking addCalendarBooking(
+			LocalizedValuesMap titleLocalizedValuesMap, Calendar calendar,
+			ServiceContext serviceContext)
+		throws PortalException {
+
+		long startTime = DateUtil.newTime() + RandomTestUtil.randomInt();
+
+		long endTime = startTime + Time.HOUR;
+
+		return calendarBookingLocalService.addCalendarBooking(
+			serviceContext.getUserId(), calendar.getCalendarId(), new long[0],
+			CalendarBookingConstants.PARENT_CALENDAR_BOOKING_ID_DEFAULT, 0,
+			titleLocalizedValuesMap.getValues(), Collections.emptyMap(), null,
+			startTime, endTime, false, null, 0, "email", 0, "email",
+			serviceContext);
 	}
 
 	protected IndexedFieldsFixture createIndexedFieldsFixture() {
@@ -58,33 +130,58 @@ public abstract class BaseCalendarIndexerTestCase {
 			resourcePermissionLocalService, searchEngineHelper);
 	}
 
-	protected CalendarSearchFixture createSingleDocumentSearchFixture() {
-		return new CalendarSearchFixture(indexerRegistry);
+	protected SearchContext getSearchContext(String keywords, Locale locale) {
+		SearchContext searchContext = new SearchContext();
+
+		try {
+			searchContext.setCompanyId(TestPropsValues.getCompanyId());
+			searchContext.setUserId(TestPropsValues.getUserId());
+		}
+		catch (PortalException portalException) {
+			throw new RuntimeException(portalException);
+		}
+
+		searchContext.setGroupIds(new long[] {group.getGroupId()});
+		searchContext.setKeywords(keywords);
+		searchContext.setLocale(Objects.requireNonNull(locale));
+
+		QueryConfig queryConfig = searchContext.getQueryConfig();
+
+		queryConfig.setSelectedFieldNames(StringPool.STAR);
+
+		return searchContext;
 	}
 
-	protected void setGroup(Group group) {
-		calendarFixture.setGroup(group);
-		calendarSearchFixture.setGroup(group);
+	protected ServiceContext getServiceContext() throws PortalException {
+		return ServiceContextTestUtil.getServiceContext(
+			group.getGroupId(), TestPropsValues.getUserId());
+	}
+
+	protected Hits search(SearchContext searchContext) {
+		try {
+			return _indexer.search(searchContext);
+		}
+		catch (SearchException searchException) {
+			throw new RuntimeException(searchException);
+		}
+	}
+
+	protected Document searchOnlyOne(String keywords, Locale locale) {
+		return HitsAssert.assertOnlyOne(
+			search(getSearchContext(keywords, locale)));
 	}
 
 	protected void setIndexerClass(Class<?> clazz) {
-		calendarSearchFixture.setIndexerClass(clazz);
-	}
-
-	protected void setUser(User user) {
-		calendarFixture.setUser(user);
-		calendarSearchFixture.setUser(user);
+		_indexer = indexerRegistry.getIndexer(clazz);
 	}
 
 	@Inject
 	protected CalendarBookingLocalService calendarBookingLocalService;
 
-	protected CalendarFixture calendarFixture;
-
 	@Inject
 	protected CalendarLocalService calendarLocalService;
 
-	protected CalendarSearchFixture calendarSearchFixture;
+	protected Group group;
 	protected IndexedFieldsFixture indexedFieldsFixture;
 
 	@Inject
@@ -96,16 +193,8 @@ public abstract class BaseCalendarIndexerTestCase {
 	@Inject
 	protected SearchEngineHelper searchEngineHelper;
 
-	@DeleteAfterTestRun
-	private final List<CalendarBooking> _calendarBookings = new ArrayList<>(1);
+	protected User user;
 
-	@DeleteAfterTestRun
-	private final List<Calendar> _calendars = new ArrayList<>(1);
-
-	@DeleteAfterTestRun
-	private final List<Group> _groups = new ArrayList<>(1);
-
-	@DeleteAfterTestRun
-	private final List<User> _users = new ArrayList<>(1);
+	private Indexer<?> _indexer;
 
 }

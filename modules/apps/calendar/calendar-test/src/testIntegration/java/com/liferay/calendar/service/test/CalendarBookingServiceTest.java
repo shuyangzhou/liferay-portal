@@ -17,8 +17,8 @@ package com.liferay.calendar.service.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.calendar.model.Calendar;
 import com.liferay.calendar.model.CalendarBooking;
-import com.liferay.calendar.service.CalendarBookingLocalServiceUtil;
-import com.liferay.calendar.service.CalendarBookingServiceUtil;
+import com.liferay.calendar.service.CalendarBookingLocalService;
+import com.liferay.calendar.service.CalendarBookingService;
 import com.liferay.calendar.test.util.CalendarBookingTestUtil;
 import com.liferay.calendar.test.util.CalendarStagingTestUtil;
 import com.liferay.calendar.test.util.CalendarTestUtil;
@@ -31,16 +31,17 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
-import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
-import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
+import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
+import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.context.ContextUserReplace;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
+import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import com.liferay.portal.test.rule.SynchronousMailTestRule;
@@ -59,6 +60,7 @@ import org.junit.runner.RunWith;
 /**
  * @author Lino Alves
  */
+@DataGuard(scope = DataGuard.Scope.METHOD)
 @RunWith(Arquillian.class)
 public class CalendarBookingServiceTest {
 
@@ -101,7 +103,7 @@ public class CalendarBookingServiceTest {
 
 		calendarBooking.setStatus(WorkflowConstants.STATUS_PENDING);
 
-		CalendarBookingLocalServiceUtil.updateCalendarBooking(calendarBooking);
+		_calendarBookingLocalService.updateCalendarBooking(calendarBooking);
 
 		int[] statuses = {WorkflowConstants.STATUS_PENDING};
 
@@ -110,7 +112,7 @@ public class CalendarBookingServiceTest {
 		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
 				_omnidminUser)) {
 
-			calendarBookings = CalendarBookingServiceUtil.getCalendarBookings(
+			calendarBookings = _calendarBookingService.getCalendarBookings(
 				calendar.getCalendarId(), statuses);
 		}
 
@@ -132,7 +134,7 @@ public class CalendarBookingServiceTest {
 
 		calendarBooking.setStatus(WorkflowConstants.STATUS_PENDING);
 
-		CalendarBookingLocalServiceUtil.updateCalendarBooking(calendarBooking);
+		_calendarBookingLocalService.updateCalendarBooking(calendarBooking);
 
 		int[] statuses = {WorkflowConstants.STATUS_PENDING};
 
@@ -141,7 +143,7 @@ public class CalendarBookingServiceTest {
 		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
 				_user1)) {
 
-			calendarBookings = CalendarBookingServiceUtil.getCalendarBookings(
+			calendarBookings = _calendarBookingService.getCalendarBookings(
 				calendar.getCalendarId(), statuses);
 		}
 
@@ -150,7 +152,7 @@ public class CalendarBookingServiceTest {
 		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
 				_user2)) {
 
-			calendarBookings = CalendarBookingServiceUtil.getCalendarBookings(
+			calendarBookings = _calendarBookingService.getCalendarBookings(
 				calendar.getCalendarId(), statuses);
 		}
 
@@ -175,14 +177,14 @@ public class CalendarBookingServiceTest {
 				invitingCalendar, liveCalendar);
 
 		List<CalendarBooking> childCalendarBookings =
-			CalendarBookingServiceUtil.getChildCalendarBookings(
+			_calendarBookingService.getChildCalendarBookings(
 				childCalendarBooking.getParentCalendarBookingId(), true);
 
 		Assert.assertEquals(
 			childCalendarBookings.toString(), 2, childCalendarBookings.size());
 
 		childCalendarBookings =
-			CalendarBookingServiceUtil.getChildCalendarBookings(
+			_calendarBookingService.getChildCalendarBookings(
 				childCalendarBooking.getParentCalendarBookingId(), false);
 
 		Assert.assertEquals(
@@ -207,7 +209,7 @@ public class CalendarBookingServiceTest {
 		PermissionThreadLocal.setPermissionChecker(
 			PermissionCheckerFactoryUtil.create(_user2));
 
-		CalendarBookingServiceUtil.getCalendarBooking(
+		_calendarBookingService.getCalendarBooking(
 			calendarBooking.getCalendarBookingId());
 	}
 
@@ -223,37 +225,42 @@ public class CalendarBookingServiceTest {
 	protected void deleteGuestAndUserPermission(Calendar calendar)
 		throws Exception {
 
-		Role role = RoleLocalServiceUtil.getRole(
+		Role role = _roleLocalService.getRole(
 			TestPropsValues.getCompanyId(), RoleConstants.GUEST);
 
-		ResourcePermissionLocalServiceUtil.setResourcePermissions(
+		_resourcePermissionLocalService.setResourcePermissions(
 			TestPropsValues.getCompanyId(), Calendar.class.getName(),
 			ResourceConstants.SCOPE_INDIVIDUAL,
 			String.valueOf(calendar.getPrimaryKey()), role.getRoleId(),
 			new String[0]);
 
-		role = RoleLocalServiceUtil.getRole(
+		role = _roleLocalService.getRole(
 			TestPropsValues.getCompanyId(), RoleConstants.USER);
 
-		ResourcePermissionLocalServiceUtil.setResourcePermissions(
+		_resourcePermissionLocalService.setResourcePermissions(
 			TestPropsValues.getCompanyId(), Calendar.class.getName(),
 			ResourceConstants.SCOPE_INDIVIDUAL,
 			String.valueOf(calendar.getPrimaryKey()), role.getRoleId(),
 			new String[0]);
 	}
 
-	@DeleteAfterTestRun
+	@Inject
+	private CalendarBookingLocalService _calendarBookingLocalService;
+
+	@Inject
+	private CalendarBookingService _calendarBookingService;
+
 	private Group _liveGroup;
-
-	@DeleteAfterTestRun
 	private User _omnidminUser;
-
 	private PermissionChecker _permissionChecker;
 
-	@DeleteAfterTestRun
-	private User _user1;
+	@Inject
+	private ResourcePermissionLocalService _resourcePermissionLocalService;
 
-	@DeleteAfterTestRun
+	@Inject
+	private RoleLocalService _roleLocalService;
+
+	private User _user1;
 	private User _user2;
 
 }
