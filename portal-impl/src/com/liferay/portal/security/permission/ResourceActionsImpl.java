@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.ResourceActions;
+import com.liferay.portal.kernel.security.permission.ResourceActionsBag;
 import com.liferay.portal.kernel.service.GroupServiceUtil;
 import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
@@ -1279,55 +1280,6 @@ public class ResourceActionsImpl implements ResourceActions {
 		new ConcurrentHashMap<>();
 	private final Map<String, Set<String>> _resourceReferences =
 		new HashMap<>();
-
-	private static class ResourceActionsBag {
-
-		public ResourceActionsBag(
-			Set<String> resourceActions, Set<String> groupDefaultActions,
-			Set<String> guestDefaultActions,
-			Set<String> guestUnsupportedActions,
-			Set<String> layoutManagerActions, Set<String> ownerDefaultActions) {
-
-			_supportsActions = resourceActions;
-			_groupDefaultActions = groupDefaultActions;
-			_guestDefaultActions = guestDefaultActions;
-			_guestUnsupportedActions = guestUnsupportedActions;
-			_layoutManagerActions = layoutManagerActions;
-			_ownerDefaultActions = ownerDefaultActions;
-		}
-
-		public List<String> getGroupDefaultActions() {
-			return new ArrayList<>(_groupDefaultActions);
-		}
-
-		public List<String> getGuestDefaultActions() {
-			return new ArrayList<>(_guestDefaultActions);
-		}
-
-		public List<String> getGuestUnsupportedActions() {
-			return new ArrayList<>(_guestUnsupportedActions);
-		}
-
-		public List<String> getLayoutManagerActions() {
-			return new ArrayList<>(_layoutManagerActions);
-		}
-
-		public List<String> getOwnerDefaultActions() {
-			return new ArrayList<>(_ownerDefaultActions);
-		}
-
-		public List<String> getSupportsActions() {
-			return new ArrayList<>(_supportsActions);
-		}
-
-		private final Set<String> _groupDefaultActions;
-		private final Set<String> _guestDefaultActions;
-		private final Set<String> _guestUnsupportedActions;
-		private final Set<String> _layoutManagerActions;
-		private final Set<String> _ownerDefaultActions;
-		private final Set<String> _supportsActions;
-
-	}
 
 	private static class ResourceBundleLoaderListHolder {
 
