@@ -50,6 +50,8 @@ import org.apache.commons.lang.time.StopWatch;
 import org.apache.logging.log4j.LogManager;
 
 import org.elasticsearch.client.Client;
+import org.elasticsearch.cluster.service.ClusterService;
+import org.elasticsearch.cluster.service.MasterService;
 import org.elasticsearch.common.inject.Injector;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.node.Node;
@@ -313,6 +315,23 @@ public class EmbeddedElasticsearchConnection
 			throw new RuntimeException(nodeValidationException);
 		}
 
+		if (PortalRunMode.isTestMode()) {
+			Injector injector = _node.injector();
+
+			ClusterService clusterService = injector.getInstance(
+				ClusterService.class);
+
+			try {
+				_syncMasterService(clusterService);
+			}
+			catch (Exception exception) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Unable to sync Elasticsearch thread pools", exception);
+				}
+			}
+		}
+
 		Client client = _node.client();
 
 		if (_log.isDebugEnabled()) {
@@ -470,6 +489,27 @@ public class EmbeddedElasticsearchConnection
 
 	@Reference
 	protected Props props;
+
+	private void _syncMasterService(ClusterService clusterService)
+		throws Exception {
+
+		Field masterServiceField = ReflectionUtil.getDeclaredField(
+			ClusterService.class, "masterService");
+
+		MasterService masterService = (MasterService)masterServiceField.get(
+			clusterService);
+
+		Field threadPoolExecutorField = ReflectionUtil.getDeclaredField(
+			MasterService.class, "threadPoolExecutor");
+
+		ThreadPoolExecutor threadPoolExecutor =
+			(ThreadPoolExecutor)threadPoolExecutorField.get(masterService);
+
+		threadPoolExecutor.shutdown();
+
+		threadPoolExecutor.setRejectedExecutionHandler(
+			(runnable, executor) -> runnable.run());
+	}
 
 	private void _syncThreadPools(ThreadPool threadPool) throws Exception {
 		Field executorsField = ReflectionUtil.getDeclaredField(
