@@ -800,13 +800,9 @@ public class ResourceActionsImpl implements ResourceActions {
 	private ResourceActionsBag _getPortletResourceActionsBag(
 		String name, Portlet portlet) {
 
-		return _resourceActionsBags.compute(
+		return _resourceActionsBags.computeIfAbsent(
 			name,
-			(portletName, resourceActionsBag) -> {
-				if (resourceActionsBag != null) {
-					return resourceActionsBag;
-				}
-
+			portletName -> {
 				Set<String> portletActions = new HashSet<>();
 
 				if (portlet == null) {
@@ -831,9 +827,7 @@ public class ResourceActionsImpl implements ResourceActions {
 
 				_checkPortletGuestDefaultActions(guestDefaultActions);
 
-				Set<String> guestUnsupportedActions = new HashSet<>();
-
-				guestUnsupportedActions.addAll(
+				Set<String> guestUnsupportedActions = new HashSet<>(
 					_defaultPortletGuestUnsupportedActions);
 
 				_checkGuestUnsupportedActions(
@@ -1173,8 +1167,6 @@ public class ResourceActionsImpl implements ResourceActions {
 		}
 
 		if (groupDefaultsElement != null) {
-			groupDefaultActions.clear();
-
 			_readActionKeys(groupDefaultActions, groupDefaultsElement);
 		}
 
@@ -1184,26 +1176,20 @@ public class ResourceActionsImpl implements ResourceActions {
 			resourceElement, "guest-defaults");
 
 		if (guestDefaultsElement != null) {
-			guestDefaultActions.clear();
-
 			_readActionKeys(guestDefaultActions, guestDefaultsElement);
 		}
 
 		Set<String> guestUnsupportedActions = new HashSet<>();
 
-		guestUnsupportedActions.addAll(defaultGuestUnsupportedActions);
-
 		Element guestUnsupportedElement = _getPermissionsChildElement(
 			resourceElement, "guest-unsupported");
 
 		if (guestUnsupportedElement != null) {
-			guestUnsupportedActions.clear();
-
 			_readActionKeys(guestUnsupportedActions, guestUnsupportedElement);
 		}
-
-		_checkGuestUnsupportedActions(
-			guestUnsupportedActions, guestDefaultActions);
+		else {
+			guestUnsupportedActions.addAll(defaultGuestUnsupportedActions);
+		}
 
 		Set<String> ownerDefaultActions = new HashSet<>();
 
@@ -1223,8 +1209,6 @@ public class ResourceActionsImpl implements ResourceActions {
 			layoutManagerActions.addAll(resourceActions);
 		}
 		else {
-			layoutManagerActions.clear();
-
 			_readActionKeys(layoutManagerActions, layoutManagerElement);
 		}
 
@@ -1234,17 +1218,32 @@ public class ResourceActionsImpl implements ResourceActions {
 				if (resourceActionsBag != null) {
 					resourceActions.addAll(
 						resourceActionsBag.getSupportsActions());
-					groupDefaultActions.addAll(
-						resourceActionsBag.getGroupDefaultActions());
-					guestDefaultActions.addAll(
-						resourceActionsBag.getGuestDefaultActions());
-					guestUnsupportedActions.addAll(
-						resourceActionsBag.getGuestUnsupportedActions());
 					ownerDefaultActions.addAll(
 						resourceActionsBag.getOwnerDefaultActions());
-					layoutManagerActions.addAll(
-						resourceActionsBag.getLayoutManagerActions());
+
+					if (groupDefaultActions.isEmpty()) {
+						groupDefaultActions.addAll(
+							resourceActionsBag.getGroupDefaultActions());
+					}
+
+					if (guestDefaultActions.isEmpty()) {
+						guestDefaultActions.addAll(
+							resourceActionsBag.getGuestDefaultActions());
+					}
+
+					if (guestUnsupportedActions.isEmpty()) {
+						guestUnsupportedActions.addAll(
+							resourceActionsBag.getGuestUnsupportedActions());
+					}
+
+					if (layoutManagerActions.isEmpty()) {
+						layoutManagerActions.addAll(
+							resourceActionsBag.getLayoutManagerActions());
+					}
 				}
+
+				_checkGuestUnsupportedActions(
+					guestUnsupportedActions, guestDefaultActions);
 
 				return new ResourceActionsBag(
 					resourceActions, groupDefaultActions, guestDefaultActions,
