@@ -6039,10 +6039,6 @@ public class LVEntryVersionPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(LVEntryVersionImpl.class);
-
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -6059,36 +6055,21 @@ public class LVEntryVersionPersistenceImpl
 			LVEntryVersionImpl.class, lvEntryVersion.getPrimaryKey(),
 			lvEntryVersion, LVEntryVersionModelImpl.COLUMN_BITMASK_ENABLED,
 			((LVEntryVersionModelImpl)lvEntryVersion).getColumnBitmask());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((LVEntryVersionModelImpl)lvEntryVersion, true);
 	}
 
 	@Override
 	public void clearCache(List<LVEntryVersion> lvEntryVersions) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (LVEntryVersion lvEntryVersion : lvEntryVersions) {
 			entityCache.removeResult(
 				LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 				LVEntryVersionImpl.class, lvEntryVersion.getPrimaryKey(),
 				lvEntryVersion, LVEntryVersionModelImpl.COLUMN_BITMASK_ENABLED,
 				((LVEntryVersionModelImpl)lvEntryVersion).getColumnBitmask());
-
-			clearUniqueFindersCache(
-				(LVEntryVersionModelImpl)lvEntryVersion, true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
@@ -6133,80 +6114,6 @@ public class LVEntryVersionPersistenceImpl
 		finderCache.putResult(
 			_finderPathFetchByG_UGK_Version, args, lvEntryVersionModelImpl,
 			false);
-	}
-
-	protected void clearUniqueFindersCache(
-		LVEntryVersionModelImpl lvEntryVersionModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				lvEntryVersionModelImpl.getLvEntryId(),
-				lvEntryVersionModelImpl.getVersion()
-			};
-
-			finderCache.removeResult(_finderPathCountByLvEntryId_Version, args);
-			finderCache.removeResult(_finderPathFetchByLvEntryId_Version, args);
-		}
-
-		if ((lvEntryVersionModelImpl.getColumnBitmask() &
-			 _finderPathFetchByLvEntryId_Version.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				lvEntryVersionModelImpl.getOriginalLvEntryId(),
-				lvEntryVersionModelImpl.getOriginalVersion()
-			};
-
-			finderCache.removeResult(_finderPathCountByLvEntryId_Version, args);
-			finderCache.removeResult(_finderPathFetchByLvEntryId_Version, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				lvEntryVersionModelImpl.getUuid(),
-				lvEntryVersionModelImpl.getGroupId(),
-				lvEntryVersionModelImpl.getVersion()
-			};
-
-			finderCache.removeResult(_finderPathCountByUUID_G_Version, args);
-			finderCache.removeResult(_finderPathFetchByUUID_G_Version, args);
-		}
-
-		if ((lvEntryVersionModelImpl.getColumnBitmask() &
-			 _finderPathFetchByUUID_G_Version.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				lvEntryVersionModelImpl.getOriginalUuid(),
-				lvEntryVersionModelImpl.getOriginalGroupId(),
-				lvEntryVersionModelImpl.getOriginalVersion()
-			};
-
-			finderCache.removeResult(_finderPathCountByUUID_G_Version, args);
-			finderCache.removeResult(_finderPathFetchByUUID_G_Version, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				lvEntryVersionModelImpl.getGroupId(),
-				lvEntryVersionModelImpl.getUniqueGroupKey(),
-				lvEntryVersionModelImpl.getVersion()
-			};
-
-			finderCache.removeResult(_finderPathCountByG_UGK_Version, args);
-			finderCache.removeResult(_finderPathFetchByG_UGK_Version, args);
-		}
-
-		if ((lvEntryVersionModelImpl.getColumnBitmask() &
-			 _finderPathFetchByG_UGK_Version.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				lvEntryVersionModelImpl.getOriginalGroupId(),
-				lvEntryVersionModelImpl.getOriginalUniqueGroupKey(),
-				lvEntryVersionModelImpl.getOriginalVersion()
-			};
-
-			finderCache.removeResult(_finderPathCountByG_UGK_Version, args);
-			finderCache.removeResult(_finderPathFetchByG_UGK_Version, args);
-		}
 	}
 
 	/**
@@ -6362,294 +6269,6 @@ public class LVEntryVersionPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!LVEntryVersionModelImpl.COLUMN_BITMASK_ENABLED) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {
-				lvEntryVersionModelImpl.getLvEntryId()
-			};
-
-			finderCache.removeResult(_finderPathCountByLvEntryId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByLvEntryId, args);
-
-			args = new Object[] {lvEntryVersionModelImpl.getUuid()};
-
-			finderCache.removeResult(_finderPathCountByUuid, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid, args);
-
-			args = new Object[] {
-				lvEntryVersionModelImpl.getUuid(),
-				lvEntryVersionModelImpl.getVersion()
-			};
-
-			finderCache.removeResult(_finderPathCountByUuid_Version, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid_Version, args);
-
-			args = new Object[] {
-				lvEntryVersionModelImpl.getUuid(),
-				lvEntryVersionModelImpl.getGroupId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUUID_G, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUUID_G, args);
-
-			args = new Object[] {
-				lvEntryVersionModelImpl.getUuid(),
-				lvEntryVersionModelImpl.getCompanyId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUuid_C, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid_C, args);
-
-			args = new Object[] {
-				lvEntryVersionModelImpl.getUuid(),
-				lvEntryVersionModelImpl.getCompanyId(),
-				lvEntryVersionModelImpl.getVersion()
-			};
-
-			finderCache.removeResult(_finderPathCountByUuid_C_Version, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid_C_Version, args);
-
-			args = new Object[] {lvEntryVersionModelImpl.getGroupId()};
-
-			finderCache.removeResult(_finderPathCountByGroupId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByGroupId, args);
-
-			args = new Object[] {
-				lvEntryVersionModelImpl.getGroupId(),
-				lvEntryVersionModelImpl.getVersion()
-			};
-
-			finderCache.removeResult(_finderPathCountByGroupId_Version, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByGroupId_Version, args);
-
-			args = new Object[] {
-				lvEntryVersionModelImpl.getGroupId(),
-				lvEntryVersionModelImpl.getUniqueGroupKey()
-			};
-
-			finderCache.removeResult(_finderPathCountByG_UGK, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByG_UGK, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((lvEntryVersionModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByLvEntryId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					lvEntryVersionModelImpl.getOriginalLvEntryId()
-				};
-
-				finderCache.removeResult(_finderPathCountByLvEntryId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByLvEntryId, args);
-
-				args = new Object[] {lvEntryVersionModelImpl.getLvEntryId()};
-
-				finderCache.removeResult(_finderPathCountByLvEntryId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByLvEntryId, args);
-			}
-
-			if ((lvEntryVersionModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					lvEntryVersionModelImpl.getOriginalUuid()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-
-				args = new Object[] {lvEntryVersionModelImpl.getUuid()};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-			}
-
-			if ((lvEntryVersionModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid_Version.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					lvEntryVersionModelImpl.getOriginalUuid(),
-					lvEntryVersionModelImpl.getOriginalVersion()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_Version, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_Version, args);
-
-				args = new Object[] {
-					lvEntryVersionModelImpl.getUuid(),
-					lvEntryVersionModelImpl.getVersion()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_Version, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_Version, args);
-			}
-
-			if ((lvEntryVersionModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUUID_G.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					lvEntryVersionModelImpl.getOriginalUuid(),
-					lvEntryVersionModelImpl.getOriginalGroupId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUUID_G, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUUID_G, args);
-
-				args = new Object[] {
-					lvEntryVersionModelImpl.getUuid(),
-					lvEntryVersionModelImpl.getGroupId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUUID_G, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUUID_G, args);
-			}
-
-			if ((lvEntryVersionModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					lvEntryVersionModelImpl.getOriginalUuid(),
-					lvEntryVersionModelImpl.getOriginalCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-
-				args = new Object[] {
-					lvEntryVersionModelImpl.getUuid(),
-					lvEntryVersionModelImpl.getCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-			}
-
-			if ((lvEntryVersionModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid_C_Version.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					lvEntryVersionModelImpl.getOriginalUuid(),
-					lvEntryVersionModelImpl.getOriginalCompanyId(),
-					lvEntryVersionModelImpl.getOriginalVersion()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByUuid_C_Version, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C_Version, args);
-
-				args = new Object[] {
-					lvEntryVersionModelImpl.getUuid(),
-					lvEntryVersionModelImpl.getCompanyId(),
-					lvEntryVersionModelImpl.getVersion()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByUuid_C_Version, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C_Version, args);
-			}
-
-			if ((lvEntryVersionModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByGroupId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					lvEntryVersionModelImpl.getOriginalGroupId()
-				};
-
-				finderCache.removeResult(_finderPathCountByGroupId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-
-				args = new Object[] {lvEntryVersionModelImpl.getGroupId()};
-
-				finderCache.removeResult(_finderPathCountByGroupId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-			}
-
-			if ((lvEntryVersionModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByGroupId_Version.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					lvEntryVersionModelImpl.getOriginalGroupId(),
-					lvEntryVersionModelImpl.getOriginalVersion()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByGroupId_Version, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByGroupId_Version, args);
-
-				args = new Object[] {
-					lvEntryVersionModelImpl.getGroupId(),
-					lvEntryVersionModelImpl.getVersion()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByGroupId_Version, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByGroupId_Version, args);
-			}
-
-			if ((lvEntryVersionModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByG_UGK.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					lvEntryVersionModelImpl.getOriginalGroupId(),
-					lvEntryVersionModelImpl.getOriginalUniqueGroupKey()
-				};
-
-				finderCache.removeResult(_finderPathCountByG_UGK, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByG_UGK, args);
-
-				args = new Object[] {
-					lvEntryVersionModelImpl.getGroupId(),
-					lvEntryVersionModelImpl.getUniqueGroupKey()
-				};
-
-				finderCache.removeResult(_finderPathCountByG_UGK, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByG_UGK, args);
-			}
-		}
-
 		entityCache.putResult(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionImpl.class, lvEntryVersion.getPrimaryKey(),
@@ -6657,7 +6276,6 @@ public class LVEntryVersionPersistenceImpl
 			LVEntryVersionModelImpl.COLUMN_BITMASK_ENABLED,
 			((LVEntryVersionModelImpl)lvEntryVersion).getColumnBitmask());
 
-		clearUniqueFindersCache(lvEntryVersionModelImpl, false);
 		cacheUniqueFindersCache(lvEntryVersionModelImpl);
 
 		lvEntryVersion.resetOriginalValues();
@@ -7283,25 +6901,25 @@ public class LVEntryVersionPersistenceImpl
 				"BigDecimalEntries_LVEntries", "companyId", "lvEntryVersionId",
 				"bigDecimalEntryId", this, bigDecimalEntryPersistence);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED,
 			LVEntryVersionImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
 			"findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED,
 			LVEntryVersionImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findAll", new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByLvEntryId = new FinderPath(
+		_finderPathWithPaginationFindByLvEntryId = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED,
 			LVEntryVersionImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
@@ -7311,37 +6929,104 @@ public class LVEntryVersionPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByLvEntryId = new FinderPath(
+		_finderPathWithoutPaginationFindByLvEntryId = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED,
 			LVEntryVersionImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByLvEntryId", new String[] {Long.class.getName()},
 			LVEntryVersionModelImpl.LVENTRYID_COLUMN_BITMASK |
-			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK);
+			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK,
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
 
-		_finderPathCountByLvEntryId = new FinderPath(
+				return new Object[] {lvEntryVersionModelImpl.getLvEntryId()};
+			},
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
+
+				return new Object[] {
+					lvEntryVersionModelImpl.getOriginalLvEntryId()
+				};
+			});
+
+		_finderPathCountByLvEntryId = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByLvEntryId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			LVEntryVersionModelImpl.LVENTRYID_COLUMN_BITMASK,
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
 
-		_finderPathFetchByLvEntryId_Version = new FinderPath(
+				return new Object[] {lvEntryVersionModelImpl.getLvEntryId()};
+			},
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
+
+				return new Object[] {
+					lvEntryVersionModelImpl.getOriginalLvEntryId()
+				};
+			});
+
+		_finderPathFetchByLvEntryId_Version = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED,
 			LVEntryVersionImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByLvEntryId_Version",
 			new String[] {Long.class.getName(), Integer.class.getName()},
 			LVEntryVersionModelImpl.LVENTRYID_COLUMN_BITMASK |
-			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK);
+			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK,
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
 
-		_finderPathCountByLvEntryId_Version = new FinderPath(
+				return new Object[] {
+					lvEntryVersionModelImpl.getLvEntryId(),
+					lvEntryVersionModelImpl.getVersion()
+				};
+			},
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
+
+				return new Object[] {
+					lvEntryVersionModelImpl.getOriginalLvEntryId(),
+					lvEntryVersionModelImpl.getOriginalVersion()
+				};
+			});
+
+		_finderPathCountByLvEntryId_Version = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByLvEntryId_Version",
-			new String[] {Long.class.getName(), Integer.class.getName()});
+			new String[] {Long.class.getName(), Integer.class.getName()},
+			LVEntryVersionModelImpl.LVENTRYID_COLUMN_BITMASK |
+			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK,
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByUuid = new FinderPath(
+				return new Object[] {
+					lvEntryVersionModelImpl.getLvEntryId(),
+					lvEntryVersionModelImpl.getVersion()
+				};
+			},
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
+
+				return new Object[] {
+					lvEntryVersionModelImpl.getOriginalLvEntryId(),
+					lvEntryVersionModelImpl.getOriginalVersion()
+				};
+			});
+
+		_finderPathWithPaginationFindByUuid = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED,
 			LVEntryVersionImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
@@ -7351,21 +7036,46 @@ public class LVEntryVersionPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid = new FinderPath(
+		_finderPathWithoutPaginationFindByUuid = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED,
 			LVEntryVersionImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid", new String[] {String.class.getName()},
 			LVEntryVersionModelImpl.UUID_COLUMN_BITMASK |
-			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK);
+			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK,
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
 
-		_finderPathCountByUuid = new FinderPath(
+				return new Object[] {lvEntryVersionModelImpl.getUuid()};
+			},
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
+
+				return new Object[] {lvEntryVersionModelImpl.getOriginalUuid()};
+			});
+
+		_finderPathCountByUuid = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
-			new String[] {String.class.getName()});
+			new String[] {String.class.getName()},
+			LVEntryVersionModelImpl.UUID_COLUMN_BITMASK,
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByUuid_Version = new FinderPath(
+				return new Object[] {lvEntryVersionModelImpl.getUuid()};
+			},
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
+
+				return new Object[] {lvEntryVersionModelImpl.getOriginalUuid()};
+			});
+
+		_finderPathWithPaginationFindByUuid_Version = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED,
 			LVEntryVersionImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
@@ -7376,22 +7086,60 @@ public class LVEntryVersionPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid_Version = new FinderPath(
+		_finderPathWithoutPaginationFindByUuid_Version = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED,
 			LVEntryVersionImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByUuid_Version",
 			new String[] {String.class.getName(), Integer.class.getName()},
 			LVEntryVersionModelImpl.UUID_COLUMN_BITMASK |
-			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK);
+			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK,
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
 
-		_finderPathCountByUuid_Version = new FinderPath(
+				return new Object[] {
+					lvEntryVersionModelImpl.getUuid(),
+					lvEntryVersionModelImpl.getVersion()
+				};
+			},
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
+
+				return new Object[] {
+					lvEntryVersionModelImpl.getOriginalUuid(),
+					lvEntryVersionModelImpl.getOriginalVersion()
+				};
+			});
+
+		_finderPathCountByUuid_Version = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_Version",
-			new String[] {String.class.getName(), Integer.class.getName()});
+			new String[] {String.class.getName(), Integer.class.getName()},
+			LVEntryVersionModelImpl.UUID_COLUMN_BITMASK |
+			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK,
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByUUID_G = new FinderPath(
+				return new Object[] {
+					lvEntryVersionModelImpl.getUuid(),
+					lvEntryVersionModelImpl.getVersion()
+				};
+			},
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
+
+				return new Object[] {
+					lvEntryVersionModelImpl.getOriginalUuid(),
+					lvEntryVersionModelImpl.getOriginalVersion()
+				};
+			});
+
+		_finderPathWithPaginationFindByUUID_G = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED,
 			LVEntryVersionImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
@@ -7402,7 +7150,7 @@ public class LVEntryVersionPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUUID_G = new FinderPath(
+		_finderPathWithoutPaginationFindByUUID_G = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED,
 			LVEntryVersionImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -7410,15 +7158,53 @@ public class LVEntryVersionPersistenceImpl
 			new String[] {String.class.getName(), Long.class.getName()},
 			LVEntryVersionModelImpl.UUID_COLUMN_BITMASK |
 			LVEntryVersionModelImpl.GROUPID_COLUMN_BITMASK |
-			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK);
+			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK,
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
 
-		_finderPathCountByUUID_G = new FinderPath(
+				return new Object[] {
+					lvEntryVersionModelImpl.getUuid(),
+					lvEntryVersionModelImpl.getGroupId()
+				};
+			},
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
+
+				return new Object[] {
+					lvEntryVersionModelImpl.getOriginalUuid(),
+					lvEntryVersionModelImpl.getOriginalGroupId()
+				};
+			});
+
+		_finderPathCountByUUID_G = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUUID_G",
-			new String[] {String.class.getName(), Long.class.getName()});
+			new String[] {String.class.getName(), Long.class.getName()},
+			LVEntryVersionModelImpl.UUID_COLUMN_BITMASK |
+			LVEntryVersionModelImpl.GROUPID_COLUMN_BITMASK,
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
 
-		_finderPathFetchByUUID_G_Version = new FinderPath(
+				return new Object[] {
+					lvEntryVersionModelImpl.getUuid(),
+					lvEntryVersionModelImpl.getGroupId()
+				};
+			},
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
+
+				return new Object[] {
+					lvEntryVersionModelImpl.getOriginalUuid(),
+					lvEntryVersionModelImpl.getOriginalGroupId()
+				};
+			});
+
+		_finderPathFetchByUUID_G_Version = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED,
 			LVEntryVersionImpl.class, FINDER_CLASS_NAME_ENTITY,
@@ -7429,18 +7215,61 @@ public class LVEntryVersionPersistenceImpl
 			},
 			LVEntryVersionModelImpl.UUID_COLUMN_BITMASK |
 			LVEntryVersionModelImpl.GROUPID_COLUMN_BITMASK |
-			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK);
+			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK,
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
 
-		_finderPathCountByUUID_G_Version = new FinderPath(
+				return new Object[] {
+					lvEntryVersionModelImpl.getUuid(),
+					lvEntryVersionModelImpl.getGroupId(),
+					lvEntryVersionModelImpl.getVersion()
+				};
+			},
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
+
+				return new Object[] {
+					lvEntryVersionModelImpl.getOriginalUuid(),
+					lvEntryVersionModelImpl.getOriginalGroupId(),
+					lvEntryVersionModelImpl.getOriginalVersion()
+				};
+			});
+
+		_finderPathCountByUUID_G_Version = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUUID_G_Version",
 			new String[] {
 				String.class.getName(), Long.class.getName(),
 				Integer.class.getName()
+			},
+			LVEntryVersionModelImpl.UUID_COLUMN_BITMASK |
+			LVEntryVersionModelImpl.GROUPID_COLUMN_BITMASK |
+			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK,
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
+
+				return new Object[] {
+					lvEntryVersionModelImpl.getUuid(),
+					lvEntryVersionModelImpl.getGroupId(),
+					lvEntryVersionModelImpl.getVersion()
+				};
+			},
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
+
+				return new Object[] {
+					lvEntryVersionModelImpl.getOriginalUuid(),
+					lvEntryVersionModelImpl.getOriginalGroupId(),
+					lvEntryVersionModelImpl.getOriginalVersion()
+				};
 			});
 
-		_finderPathWithPaginationFindByUuid_C = new FinderPath(
+		_finderPathWithPaginationFindByUuid_C = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED,
 			LVEntryVersionImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
@@ -7451,7 +7280,7 @@ public class LVEntryVersionPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
+		_finderPathWithoutPaginationFindByUuid_C = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED,
 			LVEntryVersionImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -7459,15 +7288,53 @@ public class LVEntryVersionPersistenceImpl
 			new String[] {String.class.getName(), Long.class.getName()},
 			LVEntryVersionModelImpl.UUID_COLUMN_BITMASK |
 			LVEntryVersionModelImpl.COMPANYID_COLUMN_BITMASK |
-			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK);
+			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK,
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
 
-		_finderPathCountByUuid_C = new FinderPath(
+				return new Object[] {
+					lvEntryVersionModelImpl.getUuid(),
+					lvEntryVersionModelImpl.getCompanyId()
+				};
+			},
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
+
+				return new Object[] {
+					lvEntryVersionModelImpl.getOriginalUuid(),
+					lvEntryVersionModelImpl.getOriginalCompanyId()
+				};
+			});
+
+		_finderPathCountByUuid_C = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()});
+			new String[] {String.class.getName(), Long.class.getName()},
+			LVEntryVersionModelImpl.UUID_COLUMN_BITMASK |
+			LVEntryVersionModelImpl.COMPANYID_COLUMN_BITMASK,
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByUuid_C_Version = new FinderPath(
+				return new Object[] {
+					lvEntryVersionModelImpl.getUuid(),
+					lvEntryVersionModelImpl.getCompanyId()
+				};
+			},
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
+
+				return new Object[] {
+					lvEntryVersionModelImpl.getOriginalUuid(),
+					lvEntryVersionModelImpl.getOriginalCompanyId()
+				};
+			});
+
+		_finderPathWithPaginationFindByUuid_C_Version = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED,
 			LVEntryVersionImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
@@ -7478,7 +7345,7 @@ public class LVEntryVersionPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid_C_Version = new FinderPath(
+		_finderPathWithoutPaginationFindByUuid_C_Version = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED,
 			LVEntryVersionImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -7489,18 +7356,61 @@ public class LVEntryVersionPersistenceImpl
 			},
 			LVEntryVersionModelImpl.UUID_COLUMN_BITMASK |
 			LVEntryVersionModelImpl.COMPANYID_COLUMN_BITMASK |
-			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK);
+			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK,
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
 
-		_finderPathCountByUuid_C_Version = new FinderPath(
+				return new Object[] {
+					lvEntryVersionModelImpl.getUuid(),
+					lvEntryVersionModelImpl.getCompanyId(),
+					lvEntryVersionModelImpl.getVersion()
+				};
+			},
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
+
+				return new Object[] {
+					lvEntryVersionModelImpl.getOriginalUuid(),
+					lvEntryVersionModelImpl.getOriginalCompanyId(),
+					lvEntryVersionModelImpl.getOriginalVersion()
+				};
+			});
+
+		_finderPathCountByUuid_C_Version = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C_Version",
 			new String[] {
 				String.class.getName(), Long.class.getName(),
 				Integer.class.getName()
+			},
+			LVEntryVersionModelImpl.UUID_COLUMN_BITMASK |
+			LVEntryVersionModelImpl.COMPANYID_COLUMN_BITMASK |
+			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK,
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
+
+				return new Object[] {
+					lvEntryVersionModelImpl.getUuid(),
+					lvEntryVersionModelImpl.getCompanyId(),
+					lvEntryVersionModelImpl.getVersion()
+				};
+			},
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
+
+				return new Object[] {
+					lvEntryVersionModelImpl.getOriginalUuid(),
+					lvEntryVersionModelImpl.getOriginalCompanyId(),
+					lvEntryVersionModelImpl.getOriginalVersion()
+				};
 			});
 
-		_finderPathWithPaginationFindByGroupId = new FinderPath(
+		_finderPathWithPaginationFindByGroupId = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED,
 			LVEntryVersionImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
@@ -7510,21 +7420,50 @@ public class LVEntryVersionPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
+		_finderPathWithoutPaginationFindByGroupId = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED,
 			LVEntryVersionImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByGroupId", new String[] {Long.class.getName()},
 			LVEntryVersionModelImpl.GROUPID_COLUMN_BITMASK |
-			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK);
+			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK,
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
 
-		_finderPathCountByGroupId = new FinderPath(
+				return new Object[] {lvEntryVersionModelImpl.getGroupId()};
+			},
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
+
+				return new Object[] {
+					lvEntryVersionModelImpl.getOriginalGroupId()
+				};
+			});
+
+		_finderPathCountByGroupId = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			LVEntryVersionModelImpl.GROUPID_COLUMN_BITMASK,
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByGroupId_Version = new FinderPath(
+				return new Object[] {lvEntryVersionModelImpl.getGroupId()};
+			},
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
+
+				return new Object[] {
+					lvEntryVersionModelImpl.getOriginalGroupId()
+				};
+			});
+
+		_finderPathWithPaginationFindByGroupId_Version = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED,
 			LVEntryVersionImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
@@ -7535,22 +7474,60 @@ public class LVEntryVersionPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByGroupId_Version = new FinderPath(
+		_finderPathWithoutPaginationFindByGroupId_Version = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED,
 			LVEntryVersionImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByGroupId_Version",
 			new String[] {Long.class.getName(), Integer.class.getName()},
 			LVEntryVersionModelImpl.GROUPID_COLUMN_BITMASK |
-			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK);
+			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK,
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
 
-		_finderPathCountByGroupId_Version = new FinderPath(
+				return new Object[] {
+					lvEntryVersionModelImpl.getGroupId(),
+					lvEntryVersionModelImpl.getVersion()
+				};
+			},
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
+
+				return new Object[] {
+					lvEntryVersionModelImpl.getOriginalGroupId(),
+					lvEntryVersionModelImpl.getOriginalVersion()
+				};
+			});
+
+		_finderPathCountByGroupId_Version = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId_Version",
-			new String[] {Long.class.getName(), Integer.class.getName()});
+			new String[] {Long.class.getName(), Integer.class.getName()},
+			LVEntryVersionModelImpl.GROUPID_COLUMN_BITMASK |
+			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK,
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByG_UGK = new FinderPath(
+				return new Object[] {
+					lvEntryVersionModelImpl.getGroupId(),
+					lvEntryVersionModelImpl.getVersion()
+				};
+			},
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
+
+				return new Object[] {
+					lvEntryVersionModelImpl.getOriginalGroupId(),
+					lvEntryVersionModelImpl.getOriginalVersion()
+				};
+			});
+
+		_finderPathWithPaginationFindByG_UGK = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED,
 			LVEntryVersionImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
@@ -7561,7 +7538,7 @@ public class LVEntryVersionPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByG_UGK = new FinderPath(
+		_finderPathWithoutPaginationFindByG_UGK = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED,
 			LVEntryVersionImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -7569,15 +7546,53 @@ public class LVEntryVersionPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			LVEntryVersionModelImpl.GROUPID_COLUMN_BITMASK |
 			LVEntryVersionModelImpl.UNIQUEGROUPKEY_COLUMN_BITMASK |
-			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK);
+			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK,
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
 
-		_finderPathCountByG_UGK = new FinderPath(
+				return new Object[] {
+					lvEntryVersionModelImpl.getGroupId(),
+					lvEntryVersionModelImpl.getUniqueGroupKey()
+				};
+			},
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
+
+				return new Object[] {
+					lvEntryVersionModelImpl.getOriginalGroupId(),
+					lvEntryVersionModelImpl.getOriginalUniqueGroupKey()
+				};
+			});
+
+		_finderPathCountByG_UGK = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_UGK",
-			new String[] {Long.class.getName(), String.class.getName()});
+			new String[] {Long.class.getName(), String.class.getName()},
+			LVEntryVersionModelImpl.GROUPID_COLUMN_BITMASK |
+			LVEntryVersionModelImpl.UNIQUEGROUPKEY_COLUMN_BITMASK,
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
 
-		_finderPathFetchByG_UGK_Version = new FinderPath(
+				return new Object[] {
+					lvEntryVersionModelImpl.getGroupId(),
+					lvEntryVersionModelImpl.getUniqueGroupKey()
+				};
+			},
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
+
+				return new Object[] {
+					lvEntryVersionModelImpl.getOriginalGroupId(),
+					lvEntryVersionModelImpl.getOriginalUniqueGroupKey()
+				};
+			});
+
+		_finderPathFetchByG_UGK_Version = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED,
 			LVEntryVersionImpl.class, FINDER_CLASS_NAME_ENTITY,
@@ -7588,23 +7603,67 @@ public class LVEntryVersionPersistenceImpl
 			},
 			LVEntryVersionModelImpl.GROUPID_COLUMN_BITMASK |
 			LVEntryVersionModelImpl.UNIQUEGROUPKEY_COLUMN_BITMASK |
-			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK);
+			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK,
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
 
-		_finderPathCountByG_UGK_Version = new FinderPath(
+				return new Object[] {
+					lvEntryVersionModelImpl.getGroupId(),
+					lvEntryVersionModelImpl.getUniqueGroupKey(),
+					lvEntryVersionModelImpl.getVersion()
+				};
+			},
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
+
+				return new Object[] {
+					lvEntryVersionModelImpl.getOriginalGroupId(),
+					lvEntryVersionModelImpl.getOriginalUniqueGroupKey(),
+					lvEntryVersionModelImpl.getOriginalVersion()
+				};
+			});
+
+		_finderPathCountByG_UGK_Version = FinderPath.create(
 			LVEntryVersionModelImpl.ENTITY_CACHE_ENABLED,
 			LVEntryVersionModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_UGK_Version",
 			new String[] {
 				Long.class.getName(), String.class.getName(),
 				Integer.class.getName()
+			},
+			LVEntryVersionModelImpl.GROUPID_COLUMN_BITMASK |
+			LVEntryVersionModelImpl.UNIQUEGROUPKEY_COLUMN_BITMASK |
+			LVEntryVersionModelImpl.VERSION_COLUMN_BITMASK,
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
+
+				return new Object[] {
+					lvEntryVersionModelImpl.getGroupId(),
+					lvEntryVersionModelImpl.getUniqueGroupKey(),
+					lvEntryVersionModelImpl.getVersion()
+				};
+			},
+			baseModel -> {
+				LVEntryVersionModelImpl lvEntryVersionModelImpl =
+					(LVEntryVersionModelImpl)baseModel;
+
+				return new Object[] {
+					lvEntryVersionModelImpl.getOriginalGroupId(),
+					lvEntryVersionModelImpl.getOriginalUniqueGroupKey(),
+					lvEntryVersionModelImpl.getOriginalVersion()
+				};
 			});
 	}
 
 	public void destroy() {
 		entityCache.removeCache(LVEntryVersionImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		TableMapperFactory.removeTableMapper("BigDecimalEntries_LVEntries");
 	}

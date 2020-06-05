@@ -422,10 +422,6 @@ public class DDMFormInstanceReportPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DDMFormInstanceReportImpl.class);
-
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -443,19 +439,10 @@ public class DDMFormInstanceReportPersistenceImpl
 			_columnBitmaskEnabled,
 			((DDMFormInstanceReportModelImpl)ddmFormInstanceReport).
 				getColumnBitmask());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache(
-			(DDMFormInstanceReportModelImpl)ddmFormInstanceReport, true);
 	}
 
 	@Override
 	public void clearCache(List<DDMFormInstanceReport> ddmFormInstanceReports) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (DDMFormInstanceReport ddmFormInstanceReport :
 				ddmFormInstanceReports) {
 
@@ -465,18 +452,11 @@ public class DDMFormInstanceReportPersistenceImpl
 				_columnBitmaskEnabled,
 				((DDMFormInstanceReportModelImpl)ddmFormInstanceReport).
 					getColumnBitmask());
-
-			clearUniqueFindersCache(
-				(DDMFormInstanceReportModelImpl)ddmFormInstanceReport, true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				entityCacheEnabled, DDMFormInstanceReportImpl.class,
@@ -496,31 +476,6 @@ public class DDMFormInstanceReportPersistenceImpl
 		finderCache.putResult(
 			_finderPathFetchByFormInstanceId, args,
 			ddmFormInstanceReportModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		DDMFormInstanceReportModelImpl ddmFormInstanceReportModelImpl,
-		boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				ddmFormInstanceReportModelImpl.getFormInstanceId()
-			};
-
-			finderCache.removeResult(_finderPathCountByFormInstanceId, args);
-			finderCache.removeResult(_finderPathFetchByFormInstanceId, args);
-		}
-
-		if ((ddmFormInstanceReportModelImpl.getColumnBitmask() &
-			 _finderPathFetchByFormInstanceId.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				ddmFormInstanceReportModelImpl.getOriginalFormInstanceId()
-			};
-
-			finderCache.removeResult(_finderPathCountByFormInstanceId, args);
-			finderCache.removeResult(_finderPathFetchByFormInstanceId, args);
-		}
 	}
 
 	/**
@@ -727,17 +682,6 @@ public class DDMFormInstanceReportPersistenceImpl
 			return ddmFormInstanceReport;
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!_columnBitmaskEnabled) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-
 		entityCache.putResult(
 			entityCacheEnabled, DDMFormInstanceReportImpl.class,
 			ddmFormInstanceReport.getPrimaryKey(), ddmFormInstanceReport, false,
@@ -745,7 +689,6 @@ public class DDMFormInstanceReportPersistenceImpl
 			((DDMFormInstanceReportModelImpl)ddmFormInstanceReport).
 				getColumnBitmask());
 
-		clearUniqueFindersCache(ddmFormInstanceReportModelImpl, false);
 		cacheUniqueFindersCache(ddmFormInstanceReportModelImpl);
 
 		ddmFormInstanceReport.resetOriginalValues();
@@ -1211,40 +1154,74 @@ public class DDMFormInstanceReportPersistenceImpl
 		DDMFormInstanceReportModelImpl.setFinderCacheEnabled(
 			finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			DDMFormInstanceReportImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			DDMFormInstanceReportImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathFetchByFormInstanceId = new FinderPath(
+		_finderPathFetchByFormInstanceId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			DDMFormInstanceReportImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByFormInstanceId", new String[] {Long.class.getName()},
-			DDMFormInstanceReportModelImpl.FORMINSTANCEID_COLUMN_BITMASK);
+			DDMFormInstanceReportModelImpl.FORMINSTANCEID_COLUMN_BITMASK,
+			baseModel -> {
+				DDMFormInstanceReportModelImpl ddmFormInstanceReportModelImpl =
+					(DDMFormInstanceReportModelImpl)baseModel;
 
-		_finderPathCountByFormInstanceId = new FinderPath(
+				return new Object[] {
+					ddmFormInstanceReportModelImpl.getFormInstanceId()
+				};
+			},
+			baseModel -> {
+				DDMFormInstanceReportModelImpl ddmFormInstanceReportModelImpl =
+					(DDMFormInstanceReportModelImpl)baseModel;
+
+				return new Object[] {
+					ddmFormInstanceReportModelImpl.getOriginalFormInstanceId()
+				};
+			});
+
+		_finderPathCountByFormInstanceId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByFormInstanceId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			DDMFormInstanceReportModelImpl.FORMINSTANCEID_COLUMN_BITMASK,
+			baseModel -> {
+				DDMFormInstanceReportModelImpl ddmFormInstanceReportModelImpl =
+					(DDMFormInstanceReportModelImpl)baseModel;
+
+				return new Object[] {
+					ddmFormInstanceReportModelImpl.getFormInstanceId()
+				};
+			},
+			baseModel -> {
+				DDMFormInstanceReportModelImpl ddmFormInstanceReportModelImpl =
+					(DDMFormInstanceReportModelImpl)baseModel;
+
+				return new Object[] {
+					ddmFormInstanceReportModelImpl.getOriginalFormInstanceId()
+				};
+			});
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(DDMFormInstanceReportImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@Override

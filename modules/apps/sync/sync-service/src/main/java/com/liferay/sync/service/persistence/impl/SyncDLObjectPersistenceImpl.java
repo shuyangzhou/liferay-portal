@@ -6359,10 +6359,6 @@ public class SyncDLObjectPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(SyncDLObjectImpl.class);
-
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -6378,35 +6374,21 @@ public class SyncDLObjectPersistenceImpl
 			entityCacheEnabled, SyncDLObjectImpl.class,
 			syncDLObject.getPrimaryKey(), syncDLObject, _columnBitmaskEnabled,
 			((SyncDLObjectModelImpl)syncDLObject).getColumnBitmask());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((SyncDLObjectModelImpl)syncDLObject, true);
 	}
 
 	@Override
 	public void clearCache(List<SyncDLObject> syncDLObjects) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (SyncDLObject syncDLObject : syncDLObjects) {
 			entityCache.removeResult(
 				entityCacheEnabled, SyncDLObjectImpl.class,
 				syncDLObject.getPrimaryKey(), syncDLObject,
 				_columnBitmaskEnabled,
 				((SyncDLObjectModelImpl)syncDLObject).getColumnBitmask());
-
-			clearUniqueFindersCache((SyncDLObjectModelImpl)syncDLObject, true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				entityCacheEnabled, SyncDLObjectImpl.class, primaryKey);
@@ -6424,32 +6406,6 @@ public class SyncDLObjectPersistenceImpl
 			_finderPathCountByT_T, args, Long.valueOf(1), false);
 		finderCache.putResult(
 			_finderPathFetchByT_T, args, syncDLObjectModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		SyncDLObjectModelImpl syncDLObjectModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				syncDLObjectModelImpl.getType(),
-				syncDLObjectModelImpl.getTypePK()
-			};
-
-			finderCache.removeResult(_finderPathCountByT_T, args);
-			finderCache.removeResult(_finderPathFetchByT_T, args);
-		}
-
-		if ((syncDLObjectModelImpl.getColumnBitmask() &
-			 _finderPathFetchByT_T.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				syncDLObjectModelImpl.getOriginalType(),
-				syncDLObjectModelImpl.getOriginalTypePK()
-			};
-
-			finderCache.removeResult(_finderPathCountByT_T, args);
-			finderCache.removeResult(_finderPathFetchByT_T, args);
-		}
 	}
 
 	/**
@@ -6600,156 +6556,12 @@ public class SyncDLObjectPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!_columnBitmaskEnabled) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {
-				syncDLObjectModelImpl.getRepositoryId(),
-				syncDLObjectModelImpl.getParentFolderId()
-			};
-
-			finderCache.removeResult(_finderPathCountByR_P, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByR_P, args);
-
-			args = new Object[] {
-				syncDLObjectModelImpl.getRepositoryId(),
-				syncDLObjectModelImpl.getType()
-			};
-
-			finderCache.removeResult(_finderPathCountByR_T, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByR_T, args);
-
-			args = new Object[] {
-				syncDLObjectModelImpl.getVersion(),
-				syncDLObjectModelImpl.getType()
-			};
-
-			finderCache.removeResult(_finderPathCountByV_T, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByV_T, args);
-
-			args = new Object[] {
-				syncDLObjectModelImpl.getRepositoryId(),
-				syncDLObjectModelImpl.getParentFolderId(),
-				syncDLObjectModelImpl.getType()
-			};
-
-			finderCache.removeResult(_finderPathCountByR_P_T, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByR_P_T, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((syncDLObjectModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByR_P.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					syncDLObjectModelImpl.getOriginalRepositoryId(),
-					syncDLObjectModelImpl.getOriginalParentFolderId()
-				};
-
-				finderCache.removeResult(_finderPathCountByR_P, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByR_P, args);
-
-				args = new Object[] {
-					syncDLObjectModelImpl.getRepositoryId(),
-					syncDLObjectModelImpl.getParentFolderId()
-				};
-
-				finderCache.removeResult(_finderPathCountByR_P, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByR_P, args);
-			}
-
-			if ((syncDLObjectModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByR_T.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					syncDLObjectModelImpl.getOriginalRepositoryId(),
-					syncDLObjectModelImpl.getOriginalType()
-				};
-
-				finderCache.removeResult(_finderPathCountByR_T, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByR_T, args);
-
-				args = new Object[] {
-					syncDLObjectModelImpl.getRepositoryId(),
-					syncDLObjectModelImpl.getType()
-				};
-
-				finderCache.removeResult(_finderPathCountByR_T, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByR_T, args);
-			}
-
-			if ((syncDLObjectModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByV_T.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					syncDLObjectModelImpl.getOriginalVersion(),
-					syncDLObjectModelImpl.getOriginalType()
-				};
-
-				finderCache.removeResult(_finderPathCountByV_T, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByV_T, args);
-
-				args = new Object[] {
-					syncDLObjectModelImpl.getVersion(),
-					syncDLObjectModelImpl.getType()
-				};
-
-				finderCache.removeResult(_finderPathCountByV_T, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByV_T, args);
-			}
-
-			if ((syncDLObjectModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByR_P_T.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					syncDLObjectModelImpl.getOriginalRepositoryId(),
-					syncDLObjectModelImpl.getOriginalParentFolderId(),
-					syncDLObjectModelImpl.getOriginalType()
-				};
-
-				finderCache.removeResult(_finderPathCountByR_P_T, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByR_P_T, args);
-
-				args = new Object[] {
-					syncDLObjectModelImpl.getRepositoryId(),
-					syncDLObjectModelImpl.getParentFolderId(),
-					syncDLObjectModelImpl.getType()
-				};
-
-				finderCache.removeResult(_finderPathCountByR_P_T, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByR_P_T, args);
-			}
-		}
-
 		entityCache.putResult(
 			entityCacheEnabled, SyncDLObjectImpl.class,
 			syncDLObject.getPrimaryKey(), syncDLObject, false,
 			_columnBitmaskEnabled,
 			((SyncDLObjectModelImpl)syncDLObject).getColumnBitmask());
 
-		clearUniqueFindersCache(syncDLObjectModelImpl, false);
 		cacheUniqueFindersCache(syncDLObjectModelImpl);
 
 		syncDLObject.resetOriginalValues();
@@ -7026,21 +6838,21 @@ public class SyncDLObjectPersistenceImpl
 		SyncDLObjectModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		SyncDLObjectModelImpl.setFinderCacheEnabled(finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, SyncDLObjectImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, SyncDLObjectImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByTreePath = new FinderPath(
+		_finderPathWithPaginationFindByTreePath = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, SyncDLObjectImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByTreePath",
 			new String[] {
@@ -7048,12 +6860,12 @@ public class SyncDLObjectPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithPaginationCountByTreePath = new FinderPath(
+		_finderPathWithPaginationCountByTreePath = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByTreePath",
 			new String[] {String.class.getName()});
 
-		_finderPathWithPaginationFindByM_R = new FinderPath(
+		_finderPathWithPaginationFindByM_R = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, SyncDLObjectImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByM_R",
 			new String[] {
@@ -7062,12 +6874,12 @@ public class SyncDLObjectPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithPaginationCountByM_R = new FinderPath(
+		_finderPathWithPaginationCountByM_R = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByM_R",
 			new String[] {Long.class.getName(), Long.class.getName()});
 
-		_finderPathWithPaginationFindByR_P = new FinderPath(
+		_finderPathWithPaginationFindByR_P = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, SyncDLObjectImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByR_P",
 			new String[] {
@@ -7076,20 +6888,58 @@ public class SyncDLObjectPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByR_P = new FinderPath(
+		_finderPathWithoutPaginationFindByR_P = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, SyncDLObjectImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByR_P",
 			new String[] {Long.class.getName(), Long.class.getName()},
 			SyncDLObjectModelImpl.REPOSITORYID_COLUMN_BITMASK |
 			SyncDLObjectModelImpl.PARENTFOLDERID_COLUMN_BITMASK |
-			SyncDLObjectModelImpl.MODIFIEDTIME_COLUMN_BITMASK);
+			SyncDLObjectModelImpl.MODIFIEDTIME_COLUMN_BITMASK,
+			baseModel -> {
+				SyncDLObjectModelImpl syncDLObjectModelImpl =
+					(SyncDLObjectModelImpl)baseModel;
 
-		_finderPathCountByR_P = new FinderPath(
+				return new Object[] {
+					syncDLObjectModelImpl.getRepositoryId(),
+					syncDLObjectModelImpl.getParentFolderId()
+				};
+			},
+			baseModel -> {
+				SyncDLObjectModelImpl syncDLObjectModelImpl =
+					(SyncDLObjectModelImpl)baseModel;
+
+				return new Object[] {
+					syncDLObjectModelImpl.getOriginalRepositoryId(),
+					syncDLObjectModelImpl.getOriginalParentFolderId()
+				};
+			});
+
+		_finderPathCountByR_P = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByR_P",
-			new String[] {Long.class.getName(), Long.class.getName()});
+			new String[] {Long.class.getName(), Long.class.getName()},
+			SyncDLObjectModelImpl.REPOSITORYID_COLUMN_BITMASK |
+			SyncDLObjectModelImpl.PARENTFOLDERID_COLUMN_BITMASK,
+			baseModel -> {
+				SyncDLObjectModelImpl syncDLObjectModelImpl =
+					(SyncDLObjectModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByR_NotE = new FinderPath(
+				return new Object[] {
+					syncDLObjectModelImpl.getRepositoryId(),
+					syncDLObjectModelImpl.getParentFolderId()
+				};
+			},
+			baseModel -> {
+				SyncDLObjectModelImpl syncDLObjectModelImpl =
+					(SyncDLObjectModelImpl)baseModel;
+
+				return new Object[] {
+					syncDLObjectModelImpl.getOriginalRepositoryId(),
+					syncDLObjectModelImpl.getOriginalParentFolderId()
+				};
+			});
+
+		_finderPathWithPaginationFindByR_NotE = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, SyncDLObjectImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByR_NotE",
 			new String[] {
@@ -7098,12 +6948,12 @@ public class SyncDLObjectPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithPaginationCountByR_NotE = new FinderPath(
+		_finderPathWithPaginationCountByR_NotE = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByR_NotE",
 			new String[] {Long.class.getName(), String.class.getName()});
 
-		_finderPathWithPaginationFindByR_T = new FinderPath(
+		_finderPathWithPaginationFindByR_T = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, SyncDLObjectImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByR_T",
 			new String[] {
@@ -7112,20 +6962,58 @@ public class SyncDLObjectPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByR_T = new FinderPath(
+		_finderPathWithoutPaginationFindByR_T = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, SyncDLObjectImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByR_T",
 			new String[] {Long.class.getName(), String.class.getName()},
 			SyncDLObjectModelImpl.REPOSITORYID_COLUMN_BITMASK |
 			SyncDLObjectModelImpl.TYPE_COLUMN_BITMASK |
-			SyncDLObjectModelImpl.MODIFIEDTIME_COLUMN_BITMASK);
+			SyncDLObjectModelImpl.MODIFIEDTIME_COLUMN_BITMASK,
+			baseModel -> {
+				SyncDLObjectModelImpl syncDLObjectModelImpl =
+					(SyncDLObjectModelImpl)baseModel;
 
-		_finderPathCountByR_T = new FinderPath(
+				return new Object[] {
+					syncDLObjectModelImpl.getRepositoryId(),
+					syncDLObjectModelImpl.getType()
+				};
+			},
+			baseModel -> {
+				SyncDLObjectModelImpl syncDLObjectModelImpl =
+					(SyncDLObjectModelImpl)baseModel;
+
+				return new Object[] {
+					syncDLObjectModelImpl.getOriginalRepositoryId(),
+					syncDLObjectModelImpl.getOriginalType()
+				};
+			});
+
+		_finderPathCountByR_T = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByR_T",
-			new String[] {Long.class.getName(), String.class.getName()});
+			new String[] {Long.class.getName(), String.class.getName()},
+			SyncDLObjectModelImpl.REPOSITORYID_COLUMN_BITMASK |
+			SyncDLObjectModelImpl.TYPE_COLUMN_BITMASK,
+			baseModel -> {
+				SyncDLObjectModelImpl syncDLObjectModelImpl =
+					(SyncDLObjectModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByT_NotE = new FinderPath(
+				return new Object[] {
+					syncDLObjectModelImpl.getRepositoryId(),
+					syncDLObjectModelImpl.getType()
+				};
+			},
+			baseModel -> {
+				SyncDLObjectModelImpl syncDLObjectModelImpl =
+					(SyncDLObjectModelImpl)baseModel;
+
+				return new Object[] {
+					syncDLObjectModelImpl.getOriginalRepositoryId(),
+					syncDLObjectModelImpl.getOriginalType()
+				};
+			});
+
+		_finderPathWithPaginationFindByT_NotE = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, SyncDLObjectImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByT_NotE",
 			new String[] {
@@ -7134,12 +7022,12 @@ public class SyncDLObjectPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithPaginationCountByT_NotE = new FinderPath(
+		_finderPathWithPaginationCountByT_NotE = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByT_NotE",
 			new String[] {String.class.getName(), String.class.getName()});
 
-		_finderPathWithPaginationFindByV_T = new FinderPath(
+		_finderPathWithPaginationFindByV_T = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, SyncDLObjectImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByV_T",
 			new String[] {
@@ -7148,33 +7036,109 @@ public class SyncDLObjectPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByV_T = new FinderPath(
+		_finderPathWithoutPaginationFindByV_T = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, SyncDLObjectImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByV_T",
 			new String[] {String.class.getName(), String.class.getName()},
 			SyncDLObjectModelImpl.VERSION_COLUMN_BITMASK |
 			SyncDLObjectModelImpl.TYPE_COLUMN_BITMASK |
 			SyncDLObjectModelImpl.MODIFIEDTIME_COLUMN_BITMASK |
-			SyncDLObjectModelImpl.REPOSITORYID_COLUMN_BITMASK);
+			SyncDLObjectModelImpl.REPOSITORYID_COLUMN_BITMASK,
+			baseModel -> {
+				SyncDLObjectModelImpl syncDLObjectModelImpl =
+					(SyncDLObjectModelImpl)baseModel;
 
-		_finderPathCountByV_T = new FinderPath(
+				return new Object[] {
+					syncDLObjectModelImpl.getVersion(),
+					syncDLObjectModelImpl.getType()
+				};
+			},
+			baseModel -> {
+				SyncDLObjectModelImpl syncDLObjectModelImpl =
+					(SyncDLObjectModelImpl)baseModel;
+
+				return new Object[] {
+					syncDLObjectModelImpl.getOriginalVersion(),
+					syncDLObjectModelImpl.getOriginalType()
+				};
+			});
+
+		_finderPathCountByV_T = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByV_T",
-			new String[] {String.class.getName(), String.class.getName()});
+			new String[] {String.class.getName(), String.class.getName()},
+			SyncDLObjectModelImpl.VERSION_COLUMN_BITMASK |
+			SyncDLObjectModelImpl.TYPE_COLUMN_BITMASK,
+			baseModel -> {
+				SyncDLObjectModelImpl syncDLObjectModelImpl =
+					(SyncDLObjectModelImpl)baseModel;
 
-		_finderPathFetchByT_T = new FinderPath(
+				return new Object[] {
+					syncDLObjectModelImpl.getVersion(),
+					syncDLObjectModelImpl.getType()
+				};
+			},
+			baseModel -> {
+				SyncDLObjectModelImpl syncDLObjectModelImpl =
+					(SyncDLObjectModelImpl)baseModel;
+
+				return new Object[] {
+					syncDLObjectModelImpl.getOriginalVersion(),
+					syncDLObjectModelImpl.getOriginalType()
+				};
+			});
+
+		_finderPathFetchByT_T = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, SyncDLObjectImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByT_T",
 			new String[] {String.class.getName(), Long.class.getName()},
 			SyncDLObjectModelImpl.TYPE_COLUMN_BITMASK |
-			SyncDLObjectModelImpl.TYPEPK_COLUMN_BITMASK);
+			SyncDLObjectModelImpl.TYPEPK_COLUMN_BITMASK,
+			baseModel -> {
+				SyncDLObjectModelImpl syncDLObjectModelImpl =
+					(SyncDLObjectModelImpl)baseModel;
 
-		_finderPathCountByT_T = new FinderPath(
+				return new Object[] {
+					syncDLObjectModelImpl.getType(),
+					syncDLObjectModelImpl.getTypePK()
+				};
+			},
+			baseModel -> {
+				SyncDLObjectModelImpl syncDLObjectModelImpl =
+					(SyncDLObjectModelImpl)baseModel;
+
+				return new Object[] {
+					syncDLObjectModelImpl.getOriginalType(),
+					syncDLObjectModelImpl.getOriginalTypePK()
+				};
+			});
+
+		_finderPathCountByT_T = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByT_T",
-			new String[] {String.class.getName(), Long.class.getName()});
+			new String[] {String.class.getName(), Long.class.getName()},
+			SyncDLObjectModelImpl.TYPE_COLUMN_BITMASK |
+			SyncDLObjectModelImpl.TYPEPK_COLUMN_BITMASK,
+			baseModel -> {
+				SyncDLObjectModelImpl syncDLObjectModelImpl =
+					(SyncDLObjectModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByM_R_NotE = new FinderPath(
+				return new Object[] {
+					syncDLObjectModelImpl.getType(),
+					syncDLObjectModelImpl.getTypePK()
+				};
+			},
+			baseModel -> {
+				SyncDLObjectModelImpl syncDLObjectModelImpl =
+					(SyncDLObjectModelImpl)baseModel;
+
+				return new Object[] {
+					syncDLObjectModelImpl.getOriginalType(),
+					syncDLObjectModelImpl.getOriginalTypePK()
+				};
+			});
+
+		_finderPathWithPaginationFindByM_R_NotE = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, SyncDLObjectImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByM_R_NotE",
 			new String[] {
@@ -7183,7 +7147,7 @@ public class SyncDLObjectPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithPaginationCountByM_R_NotE = new FinderPath(
+		_finderPathWithPaginationCountByM_R_NotE = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByM_R_NotE",
 			new String[] {
@@ -7191,7 +7155,7 @@ public class SyncDLObjectPersistenceImpl
 				String.class.getName()
 			});
 
-		_finderPathWithPaginationFindByR_P_T = new FinderPath(
+		_finderPathWithPaginationFindByR_P_T = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, SyncDLObjectImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByR_P_T",
 			new String[] {
@@ -7200,7 +7164,7 @@ public class SyncDLObjectPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByR_P_T = new FinderPath(
+		_finderPathWithoutPaginationFindByR_P_T = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, SyncDLObjectImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByR_P_T",
 			new String[] {
@@ -7210,17 +7174,60 @@ public class SyncDLObjectPersistenceImpl
 			SyncDLObjectModelImpl.REPOSITORYID_COLUMN_BITMASK |
 			SyncDLObjectModelImpl.PARENTFOLDERID_COLUMN_BITMASK |
 			SyncDLObjectModelImpl.TYPE_COLUMN_BITMASK |
-			SyncDLObjectModelImpl.MODIFIEDTIME_COLUMN_BITMASK);
+			SyncDLObjectModelImpl.MODIFIEDTIME_COLUMN_BITMASK,
+			baseModel -> {
+				SyncDLObjectModelImpl syncDLObjectModelImpl =
+					(SyncDLObjectModelImpl)baseModel;
 
-		_finderPathCountByR_P_T = new FinderPath(
+				return new Object[] {
+					syncDLObjectModelImpl.getRepositoryId(),
+					syncDLObjectModelImpl.getParentFolderId(),
+					syncDLObjectModelImpl.getType()
+				};
+			},
+			baseModel -> {
+				SyncDLObjectModelImpl syncDLObjectModelImpl =
+					(SyncDLObjectModelImpl)baseModel;
+
+				return new Object[] {
+					syncDLObjectModelImpl.getOriginalRepositoryId(),
+					syncDLObjectModelImpl.getOriginalParentFolderId(),
+					syncDLObjectModelImpl.getOriginalType()
+				};
+			});
+
+		_finderPathCountByR_P_T = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByR_P_T",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
+			},
+			SyncDLObjectModelImpl.REPOSITORYID_COLUMN_BITMASK |
+			SyncDLObjectModelImpl.PARENTFOLDERID_COLUMN_BITMASK |
+			SyncDLObjectModelImpl.TYPE_COLUMN_BITMASK,
+			baseModel -> {
+				SyncDLObjectModelImpl syncDLObjectModelImpl =
+					(SyncDLObjectModelImpl)baseModel;
+
+				return new Object[] {
+					syncDLObjectModelImpl.getRepositoryId(),
+					syncDLObjectModelImpl.getParentFolderId(),
+					syncDLObjectModelImpl.getType()
+				};
+			},
+			baseModel -> {
+				SyncDLObjectModelImpl syncDLObjectModelImpl =
+					(SyncDLObjectModelImpl)baseModel;
+
+				return new Object[] {
+					syncDLObjectModelImpl.getOriginalRepositoryId(),
+					syncDLObjectModelImpl.getOriginalParentFolderId(),
+					syncDLObjectModelImpl.getOriginalType()
+				};
 			});
 
-		_finderPathWithPaginationCountByR_P_T = new FinderPath(
+		_finderPathWithPaginationCountByR_P_T = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByR_P_T",
 			new String[] {
@@ -7232,9 +7239,10 @@ public class SyncDLObjectPersistenceImpl
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(SyncDLObjectImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@Override

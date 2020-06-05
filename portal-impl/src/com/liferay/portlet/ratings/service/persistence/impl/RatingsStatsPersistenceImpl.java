@@ -779,10 +779,6 @@ public class RatingsStatsPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(RatingsStatsImpl.class);
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -799,35 +795,21 @@ public class RatingsStatsPersistenceImpl
 			ratingsStats.getPrimaryKey(), ratingsStats,
 			RatingsStatsModelImpl.COLUMN_BITMASK_ENABLED,
 			((RatingsStatsModelImpl)ratingsStats).getColumnBitmask());
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((RatingsStatsModelImpl)ratingsStats, true);
 	}
 
 	@Override
 	public void clearCache(List<RatingsStats> ratingsStatses) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (RatingsStats ratingsStats : ratingsStatses) {
 			EntityCacheUtil.removeResult(
 				RatingsStatsModelImpl.ENTITY_CACHE_ENABLED,
 				RatingsStatsImpl.class, ratingsStats.getPrimaryKey(),
 				ratingsStats, RatingsStatsModelImpl.COLUMN_BITMASK_ENABLED,
 				((RatingsStatsModelImpl)ratingsStats).getColumnBitmask());
-
-			clearUniqueFindersCache((RatingsStatsModelImpl)ratingsStats, true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				RatingsStatsModelImpl.ENTITY_CACHE_ENABLED,
@@ -847,32 +829,6 @@ public class RatingsStatsPersistenceImpl
 			_finderPathCountByC_C, args, Long.valueOf(1), false);
 		FinderCacheUtil.putResult(
 			_finderPathFetchByC_C, args, ratingsStatsModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		RatingsStatsModelImpl ratingsStatsModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				ratingsStatsModelImpl.getClassNameId(),
-				ratingsStatsModelImpl.getClassPK()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_C, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_C, args);
-		}
-
-		if ((ratingsStatsModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_C.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				ratingsStatsModelImpl.getOriginalClassNameId(),
-				ratingsStatsModelImpl.getOriginalClassPK()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_C, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_C, args);
-		}
 	}
 
 	/**
@@ -1065,59 +1021,12 @@ public class RatingsStatsPersistenceImpl
 			return ratingsStats;
 		}
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!RatingsStatsModelImpl.COLUMN_BITMASK_ENABLED) {
-			FinderCacheUtil.clearCache(
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {
-				ratingsStatsModelImpl.getClassNameId(),
-				ratingsStatsModelImpl.getClassPK()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_C, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByC_C, args);
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountAll, FINDER_ARGS_EMPTY);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((ratingsStatsModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					ratingsStatsModelImpl.getOriginalClassNameId(),
-					ratingsStatsModelImpl.getOriginalClassPK()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_C, args);
-
-				args = new Object[] {
-					ratingsStatsModelImpl.getClassNameId(),
-					ratingsStatsModelImpl.getClassPK()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_C, args);
-			}
-		}
-
 		EntityCacheUtil.putResult(
 			RatingsStatsModelImpl.ENTITY_CACHE_ENABLED, RatingsStatsImpl.class,
 			ratingsStats.getPrimaryKey(), ratingsStats, false,
 			RatingsStatsModelImpl.COLUMN_BITMASK_ENABLED,
 			((RatingsStatsModelImpl)ratingsStats).getColumnBitmask());
 
-		clearUniqueFindersCache(ratingsStatsModelImpl, false);
 		cacheUniqueFindersCache(ratingsStatsModelImpl);
 
 		ratingsStats.resetOriginalValues();
@@ -1566,24 +1475,24 @@ public class RatingsStatsPersistenceImpl
 	 * Initializes the ratings stats persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			RatingsStatsModelImpl.ENTITY_CACHE_ENABLED,
 			RatingsStatsModelImpl.FINDER_CACHE_ENABLED, RatingsStatsImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			RatingsStatsModelImpl.ENTITY_CACHE_ENABLED,
 			RatingsStatsModelImpl.FINDER_CACHE_ENABLED, RatingsStatsImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			RatingsStatsModelImpl.ENTITY_CACHE_ENABLED,
 			RatingsStatsModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByC_C = new FinderPath(
+		_finderPathWithPaginationFindByC_C = FinderPath.create(
 			RatingsStatsModelImpl.ENTITY_CACHE_ENABLED,
 			RatingsStatsModelImpl.FINDER_CACHE_ENABLED, RatingsStatsImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C",
@@ -1593,29 +1502,85 @@ public class RatingsStatsPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_C = new FinderPath(
+		_finderPathWithoutPaginationFindByC_C = FinderPath.create(
 			RatingsStatsModelImpl.ENTITY_CACHE_ENABLED,
 			RatingsStatsModelImpl.FINDER_CACHE_ENABLED, RatingsStatsImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
 			RatingsStatsModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			RatingsStatsModelImpl.CLASSPK_COLUMN_BITMASK);
+			RatingsStatsModelImpl.CLASSPK_COLUMN_BITMASK,
+			baseModel -> {
+				RatingsStatsModelImpl ratingsStatsModelImpl =
+					(RatingsStatsModelImpl)baseModel;
 
-		_finderPathFetchByC_C = new FinderPath(
+				return new Object[] {
+					ratingsStatsModelImpl.getClassNameId(),
+					ratingsStatsModelImpl.getClassPK()
+				};
+			},
+			baseModel -> {
+				RatingsStatsModelImpl ratingsStatsModelImpl =
+					(RatingsStatsModelImpl)baseModel;
+
+				return new Object[] {
+					ratingsStatsModelImpl.getOriginalClassNameId(),
+					ratingsStatsModelImpl.getOriginalClassPK()
+				};
+			});
+
+		_finderPathFetchByC_C = FinderPath.create(
 			RatingsStatsModelImpl.ENTITY_CACHE_ENABLED,
 			RatingsStatsModelImpl.FINDER_CACHE_ENABLED, RatingsStatsImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
 			RatingsStatsModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			RatingsStatsModelImpl.CLASSPK_COLUMN_BITMASK);
+			RatingsStatsModelImpl.CLASSPK_COLUMN_BITMASK,
+			baseModel -> {
+				RatingsStatsModelImpl ratingsStatsModelImpl =
+					(RatingsStatsModelImpl)baseModel;
 
-		_finderPathCountByC_C = new FinderPath(
+				return new Object[] {
+					ratingsStatsModelImpl.getClassNameId(),
+					ratingsStatsModelImpl.getClassPK()
+				};
+			},
+			baseModel -> {
+				RatingsStatsModelImpl ratingsStatsModelImpl =
+					(RatingsStatsModelImpl)baseModel;
+
+				return new Object[] {
+					ratingsStatsModelImpl.getOriginalClassNameId(),
+					ratingsStatsModelImpl.getOriginalClassPK()
+				};
+			});
+
+		_finderPathCountByC_C = FinderPath.create(
 			RatingsStatsModelImpl.ENTITY_CACHE_ENABLED,
 			RatingsStatsModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
-			new String[] {Long.class.getName(), Long.class.getName()});
+			new String[] {Long.class.getName(), Long.class.getName()},
+			RatingsStatsModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+			RatingsStatsModelImpl.CLASSPK_COLUMN_BITMASK,
+			baseModel -> {
+				RatingsStatsModelImpl ratingsStatsModelImpl =
+					(RatingsStatsModelImpl)baseModel;
 
-		_finderPathWithPaginationCountByC_C = new FinderPath(
+				return new Object[] {
+					ratingsStatsModelImpl.getClassNameId(),
+					ratingsStatsModelImpl.getClassPK()
+				};
+			},
+			baseModel -> {
+				RatingsStatsModelImpl ratingsStatsModelImpl =
+					(RatingsStatsModelImpl)baseModel;
+
+				return new Object[] {
+					ratingsStatsModelImpl.getOriginalClassNameId(),
+					ratingsStatsModelImpl.getOriginalClassPK()
+				};
+			});
+
+		_finderPathWithPaginationCountByC_C = FinderPath.create(
 			RatingsStatsModelImpl.ENTITY_CACHE_ENABLED,
 			RatingsStatsModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_C",
@@ -1624,9 +1589,10 @@ public class RatingsStatsPersistenceImpl
 
 	public void destroy() {
 		EntityCacheUtil.removeCache(RatingsStatsImpl.class.getName());
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	private static final String _SQL_SELECT_RATINGSSTATS =

@@ -1482,10 +1482,6 @@ public class AssetAutoTaggerEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(AssetAutoTaggerEntryImpl.class);
-
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -1503,19 +1499,10 @@ public class AssetAutoTaggerEntryPersistenceImpl
 			_columnBitmaskEnabled,
 			((AssetAutoTaggerEntryModelImpl)assetAutoTaggerEntry).
 				getColumnBitmask());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache(
-			(AssetAutoTaggerEntryModelImpl)assetAutoTaggerEntry, true);
 	}
 
 	@Override
 	public void clearCache(List<AssetAutoTaggerEntry> assetAutoTaggerEntries) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (AssetAutoTaggerEntry assetAutoTaggerEntry :
 				assetAutoTaggerEntries) {
 
@@ -1525,18 +1512,11 @@ public class AssetAutoTaggerEntryPersistenceImpl
 				_columnBitmaskEnabled,
 				((AssetAutoTaggerEntryModelImpl)assetAutoTaggerEntry).
 					getColumnBitmask());
-
-			clearUniqueFindersCache(
-				(AssetAutoTaggerEntryModelImpl)assetAutoTaggerEntry, true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				entityCacheEnabled, AssetAutoTaggerEntryImpl.class, primaryKey);
@@ -1555,33 +1535,6 @@ public class AssetAutoTaggerEntryPersistenceImpl
 			_finderPathCountByA_A, args, Long.valueOf(1), false);
 		finderCache.putResult(
 			_finderPathFetchByA_A, args, assetAutoTaggerEntryModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		AssetAutoTaggerEntryModelImpl assetAutoTaggerEntryModelImpl,
-		boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				assetAutoTaggerEntryModelImpl.getAssetEntryId(),
-				assetAutoTaggerEntryModelImpl.getAssetTagId()
-			};
-
-			finderCache.removeResult(_finderPathCountByA_A, args);
-			finderCache.removeResult(_finderPathFetchByA_A, args);
-		}
-
-		if ((assetAutoTaggerEntryModelImpl.getColumnBitmask() &
-			 _finderPathFetchByA_A.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				assetAutoTaggerEntryModelImpl.getOriginalAssetEntryId(),
-				assetAutoTaggerEntryModelImpl.getOriginalAssetTagId()
-			};
-
-			finderCache.removeResult(_finderPathCountByA_A, args);
-			finderCache.removeResult(_finderPathFetchByA_A, args);
-		}
 	}
 
 	/**
@@ -1786,74 +1739,6 @@ public class AssetAutoTaggerEntryPersistenceImpl
 			return assetAutoTaggerEntry;
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!_columnBitmaskEnabled) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {
-				assetAutoTaggerEntryModelImpl.getAssetEntryId()
-			};
-
-			finderCache.removeResult(_finderPathCountByAssetEntryId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByAssetEntryId, args);
-
-			args = new Object[] {assetAutoTaggerEntryModelImpl.getAssetTagId()};
-
-			finderCache.removeResult(_finderPathCountByAssetTagId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByAssetTagId, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((assetAutoTaggerEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByAssetEntryId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					assetAutoTaggerEntryModelImpl.getOriginalAssetEntryId()
-				};
-
-				finderCache.removeResult(_finderPathCountByAssetEntryId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByAssetEntryId, args);
-
-				args = new Object[] {
-					assetAutoTaggerEntryModelImpl.getAssetEntryId()
-				};
-
-				finderCache.removeResult(_finderPathCountByAssetEntryId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByAssetEntryId, args);
-			}
-
-			if ((assetAutoTaggerEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByAssetTagId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					assetAutoTaggerEntryModelImpl.getOriginalAssetTagId()
-				};
-
-				finderCache.removeResult(_finderPathCountByAssetTagId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByAssetTagId, args);
-
-				args = new Object[] {
-					assetAutoTaggerEntryModelImpl.getAssetTagId()
-				};
-
-				finderCache.removeResult(_finderPathCountByAssetTagId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByAssetTagId, args);
-			}
-		}
-
 		entityCache.putResult(
 			entityCacheEnabled, AssetAutoTaggerEntryImpl.class,
 			assetAutoTaggerEntry.getPrimaryKey(), assetAutoTaggerEntry, false,
@@ -1861,7 +1746,6 @@ public class AssetAutoTaggerEntryPersistenceImpl
 			((AssetAutoTaggerEntryModelImpl)assetAutoTaggerEntry).
 				getColumnBitmask());
 
-		clearUniqueFindersCache(assetAutoTaggerEntryModelImpl, false);
 		cacheUniqueFindersCache(assetAutoTaggerEntryModelImpl);
 
 		assetAutoTaggerEntry.resetOriginalValues();
@@ -2323,23 +2207,23 @@ public class AssetAutoTaggerEntryPersistenceImpl
 		AssetAutoTaggerEntryModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		AssetAutoTaggerEntryModelImpl.setFinderCacheEnabled(finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			AssetAutoTaggerEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			AssetAutoTaggerEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByAssetEntryId = new FinderPath(
+		_finderPathWithPaginationFindByAssetEntryId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			AssetAutoTaggerEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByAssetEntryId",
@@ -2348,20 +2232,53 @@ public class AssetAutoTaggerEntryPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByAssetEntryId = new FinderPath(
+		_finderPathWithoutPaginationFindByAssetEntryId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			AssetAutoTaggerEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByAssetEntryId",
 			new String[] {Long.class.getName()},
 			AssetAutoTaggerEntryModelImpl.ASSETENTRYID_COLUMN_BITMASK |
-			AssetAutoTaggerEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+			AssetAutoTaggerEntryModelImpl.CREATEDATE_COLUMN_BITMASK,
+			baseModel -> {
+				AssetAutoTaggerEntryModelImpl assetAutoTaggerEntryModelImpl =
+					(AssetAutoTaggerEntryModelImpl)baseModel;
 
-		_finderPathCountByAssetEntryId = new FinderPath(
+				return new Object[] {
+					assetAutoTaggerEntryModelImpl.getAssetEntryId()
+				};
+			},
+			baseModel -> {
+				AssetAutoTaggerEntryModelImpl assetAutoTaggerEntryModelImpl =
+					(AssetAutoTaggerEntryModelImpl)baseModel;
+
+				return new Object[] {
+					assetAutoTaggerEntryModelImpl.getOriginalAssetEntryId()
+				};
+			});
+
+		_finderPathCountByAssetEntryId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByAssetEntryId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			AssetAutoTaggerEntryModelImpl.ASSETENTRYID_COLUMN_BITMASK,
+			baseModel -> {
+				AssetAutoTaggerEntryModelImpl assetAutoTaggerEntryModelImpl =
+					(AssetAutoTaggerEntryModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByAssetTagId = new FinderPath(
+				return new Object[] {
+					assetAutoTaggerEntryModelImpl.getAssetEntryId()
+				};
+			},
+			baseModel -> {
+				AssetAutoTaggerEntryModelImpl assetAutoTaggerEntryModelImpl =
+					(AssetAutoTaggerEntryModelImpl)baseModel;
+
+				return new Object[] {
+					assetAutoTaggerEntryModelImpl.getOriginalAssetEntryId()
+				};
+			});
+
+		_finderPathWithPaginationFindByAssetTagId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			AssetAutoTaggerEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByAssetTagId",
@@ -2370,39 +2287,111 @@ public class AssetAutoTaggerEntryPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByAssetTagId = new FinderPath(
+		_finderPathWithoutPaginationFindByAssetTagId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			AssetAutoTaggerEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByAssetTagId",
 			new String[] {Long.class.getName()},
 			AssetAutoTaggerEntryModelImpl.ASSETTAGID_COLUMN_BITMASK |
-			AssetAutoTaggerEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
+			AssetAutoTaggerEntryModelImpl.CREATEDATE_COLUMN_BITMASK,
+			baseModel -> {
+				AssetAutoTaggerEntryModelImpl assetAutoTaggerEntryModelImpl =
+					(AssetAutoTaggerEntryModelImpl)baseModel;
 
-		_finderPathCountByAssetTagId = new FinderPath(
+				return new Object[] {
+					assetAutoTaggerEntryModelImpl.getAssetTagId()
+				};
+			},
+			baseModel -> {
+				AssetAutoTaggerEntryModelImpl assetAutoTaggerEntryModelImpl =
+					(AssetAutoTaggerEntryModelImpl)baseModel;
+
+				return new Object[] {
+					assetAutoTaggerEntryModelImpl.getOriginalAssetTagId()
+				};
+			});
+
+		_finderPathCountByAssetTagId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByAssetTagId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			AssetAutoTaggerEntryModelImpl.ASSETTAGID_COLUMN_BITMASK,
+			baseModel -> {
+				AssetAutoTaggerEntryModelImpl assetAutoTaggerEntryModelImpl =
+					(AssetAutoTaggerEntryModelImpl)baseModel;
 
-		_finderPathFetchByA_A = new FinderPath(
+				return new Object[] {
+					assetAutoTaggerEntryModelImpl.getAssetTagId()
+				};
+			},
+			baseModel -> {
+				AssetAutoTaggerEntryModelImpl assetAutoTaggerEntryModelImpl =
+					(AssetAutoTaggerEntryModelImpl)baseModel;
+
+				return new Object[] {
+					assetAutoTaggerEntryModelImpl.getOriginalAssetTagId()
+				};
+			});
+
+		_finderPathFetchByA_A = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			AssetAutoTaggerEntryImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByA_A",
 			new String[] {Long.class.getName(), Long.class.getName()},
 			AssetAutoTaggerEntryModelImpl.ASSETENTRYID_COLUMN_BITMASK |
-			AssetAutoTaggerEntryModelImpl.ASSETTAGID_COLUMN_BITMASK);
+			AssetAutoTaggerEntryModelImpl.ASSETTAGID_COLUMN_BITMASK,
+			baseModel -> {
+				AssetAutoTaggerEntryModelImpl assetAutoTaggerEntryModelImpl =
+					(AssetAutoTaggerEntryModelImpl)baseModel;
 
-		_finderPathCountByA_A = new FinderPath(
+				return new Object[] {
+					assetAutoTaggerEntryModelImpl.getAssetEntryId(),
+					assetAutoTaggerEntryModelImpl.getAssetTagId()
+				};
+			},
+			baseModel -> {
+				AssetAutoTaggerEntryModelImpl assetAutoTaggerEntryModelImpl =
+					(AssetAutoTaggerEntryModelImpl)baseModel;
+
+				return new Object[] {
+					assetAutoTaggerEntryModelImpl.getOriginalAssetEntryId(),
+					assetAutoTaggerEntryModelImpl.getOriginalAssetTagId()
+				};
+			});
+
+		_finderPathCountByA_A = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByA_A",
-			new String[] {Long.class.getName(), Long.class.getName()});
+			new String[] {Long.class.getName(), Long.class.getName()},
+			AssetAutoTaggerEntryModelImpl.ASSETENTRYID_COLUMN_BITMASK |
+			AssetAutoTaggerEntryModelImpl.ASSETTAGID_COLUMN_BITMASK,
+			baseModel -> {
+				AssetAutoTaggerEntryModelImpl assetAutoTaggerEntryModelImpl =
+					(AssetAutoTaggerEntryModelImpl)baseModel;
+
+				return new Object[] {
+					assetAutoTaggerEntryModelImpl.getAssetEntryId(),
+					assetAutoTaggerEntryModelImpl.getAssetTagId()
+				};
+			},
+			baseModel -> {
+				AssetAutoTaggerEntryModelImpl assetAutoTaggerEntryModelImpl =
+					(AssetAutoTaggerEntryModelImpl)baseModel;
+
+				return new Object[] {
+					assetAutoTaggerEntryModelImpl.getOriginalAssetEntryId(),
+					assetAutoTaggerEntryModelImpl.getOriginalAssetTagId()
+				};
+			});
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(AssetAutoTaggerEntryImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@Override

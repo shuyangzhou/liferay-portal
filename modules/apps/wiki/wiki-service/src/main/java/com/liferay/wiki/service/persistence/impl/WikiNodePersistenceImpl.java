@@ -4621,10 +4621,6 @@ public class WikiNodePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(WikiNodeImpl.class);
-
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -4640,34 +4636,20 @@ public class WikiNodePersistenceImpl
 			entityCacheEnabled, WikiNodeImpl.class, wikiNode.getPrimaryKey(),
 			wikiNode, _columnBitmaskEnabled,
 			((WikiNodeModelImpl)wikiNode).getColumnBitmask());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((WikiNodeModelImpl)wikiNode, true);
 	}
 
 	@Override
 	public void clearCache(List<WikiNode> wikiNodes) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (WikiNode wikiNode : wikiNodes) {
 			entityCache.removeResult(
 				entityCacheEnabled, WikiNodeImpl.class,
 				wikiNode.getPrimaryKey(), wikiNode, _columnBitmaskEnabled,
 				((WikiNodeModelImpl)wikiNode).getColumnBitmask());
-
-			clearUniqueFindersCache((WikiNodeModelImpl)wikiNode, true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				entityCacheEnabled, WikiNodeImpl.class, primaryKey);
@@ -4694,52 +4676,6 @@ public class WikiNodePersistenceImpl
 			_finderPathCountByG_N, args, Long.valueOf(1), false);
 		finderCache.putResult(
 			_finderPathFetchByG_N, args, wikiNodeModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		WikiNodeModelImpl wikiNodeModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				wikiNodeModelImpl.getUuid(), wikiNodeModelImpl.getGroupId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUUID_G, args);
-			finderCache.removeResult(_finderPathFetchByUUID_G, args);
-		}
-
-		if ((wikiNodeModelImpl.getColumnBitmask() &
-			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				wikiNodeModelImpl.getOriginalUuid(),
-				wikiNodeModelImpl.getOriginalGroupId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUUID_G, args);
-			finderCache.removeResult(_finderPathFetchByUUID_G, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				wikiNodeModelImpl.getGroupId(), wikiNodeModelImpl.getName()
-			};
-
-			finderCache.removeResult(_finderPathCountByG_N, args);
-			finderCache.removeResult(_finderPathFetchByG_N, args);
-		}
-
-		if ((wikiNodeModelImpl.getColumnBitmask() &
-			 _finderPathFetchByG_N.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				wikiNodeModelImpl.getOriginalGroupId(),
-				wikiNodeModelImpl.getOriginalName()
-			};
-
-			finderCache.removeResult(_finderPathCountByG_N, args);
-			finderCache.removeResult(_finderPathFetchByG_N, args);
-		}
 	}
 
 	/**
@@ -4917,192 +4853,11 @@ public class WikiNodePersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!_columnBitmaskEnabled) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {wikiNodeModelImpl.getUuid()};
-
-			finderCache.removeResult(_finderPathCountByUuid, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid, args);
-
-			args = new Object[] {
-				wikiNodeModelImpl.getUuid(), wikiNodeModelImpl.getCompanyId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUuid_C, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid_C, args);
-
-			args = new Object[] {wikiNodeModelImpl.getGroupId()};
-
-			finderCache.removeResult(_finderPathCountByGroupId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByGroupId, args);
-
-			args = new Object[] {wikiNodeModelImpl.getCompanyId()};
-
-			finderCache.removeResult(_finderPathCountByCompanyId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByCompanyId, args);
-
-			args = new Object[] {
-				wikiNodeModelImpl.getGroupId(), wikiNodeModelImpl.getStatus()
-			};
-
-			finderCache.removeResult(_finderPathCountByG_S, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByG_S, args);
-
-			args = new Object[] {
-				wikiNodeModelImpl.getCompanyId(), wikiNodeModelImpl.getStatus()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_S, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByC_S, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((wikiNodeModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					wikiNodeModelImpl.getOriginalUuid()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-
-				args = new Object[] {wikiNodeModelImpl.getUuid()};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-			}
-
-			if ((wikiNodeModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					wikiNodeModelImpl.getOriginalUuid(),
-					wikiNodeModelImpl.getOriginalCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-
-				args = new Object[] {
-					wikiNodeModelImpl.getUuid(),
-					wikiNodeModelImpl.getCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-			}
-
-			if ((wikiNodeModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByGroupId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					wikiNodeModelImpl.getOriginalGroupId()
-				};
-
-				finderCache.removeResult(_finderPathCountByGroupId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-
-				args = new Object[] {wikiNodeModelImpl.getGroupId()};
-
-				finderCache.removeResult(_finderPathCountByGroupId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-			}
-
-			if ((wikiNodeModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByCompanyId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					wikiNodeModelImpl.getOriginalCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByCompanyId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByCompanyId, args);
-
-				args = new Object[] {wikiNodeModelImpl.getCompanyId()};
-
-				finderCache.removeResult(_finderPathCountByCompanyId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByCompanyId, args);
-			}
-
-			if ((wikiNodeModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByG_S.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					wikiNodeModelImpl.getOriginalGroupId(),
-					wikiNodeModelImpl.getOriginalStatus()
-				};
-
-				finderCache.removeResult(_finderPathCountByG_S, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByG_S, args);
-
-				args = new Object[] {
-					wikiNodeModelImpl.getGroupId(),
-					wikiNodeModelImpl.getStatus()
-				};
-
-				finderCache.removeResult(_finderPathCountByG_S, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByG_S, args);
-			}
-
-			if ((wikiNodeModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_S.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					wikiNodeModelImpl.getOriginalCompanyId(),
-					wikiNodeModelImpl.getOriginalStatus()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_S, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_S, args);
-
-				args = new Object[] {
-					wikiNodeModelImpl.getCompanyId(),
-					wikiNodeModelImpl.getStatus()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_S, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_S, args);
-			}
-		}
-
 		entityCache.putResult(
 			entityCacheEnabled, WikiNodeImpl.class, wikiNode.getPrimaryKey(),
 			wikiNode, false, _columnBitmaskEnabled,
 			((WikiNodeModelImpl)wikiNode).getColumnBitmask());
 
-		clearUniqueFindersCache(wikiNodeModelImpl, false);
 		cacheUniqueFindersCache(wikiNodeModelImpl);
 
 		wikiNode.resetOriginalValues();
@@ -5377,21 +5132,21 @@ public class WikiNodePersistenceImpl
 		WikiNodeModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		WikiNodeModelImpl.setFinderCacheEnabled(finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, WikiNodeImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, WikiNodeImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByUuid = new FinderPath(
+		_finderPathWithPaginationFindByUuid = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, WikiNodeImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
 			new String[] {
@@ -5399,31 +5154,92 @@ public class WikiNodePersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid = new FinderPath(
+		_finderPathWithoutPaginationFindByUuid = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, WikiNodeImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
 			new String[] {String.class.getName()},
 			WikiNodeModelImpl.UUID_COLUMN_BITMASK |
-			WikiNodeModelImpl.NAME_COLUMN_BITMASK);
+			WikiNodeModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
 
-		_finderPathCountByUuid = new FinderPath(
+				return new Object[] {wikiNodeModelImpl.getUuid()};
+			},
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
+
+				return new Object[] {wikiNodeModelImpl.getOriginalUuid()};
+			});
+
+		_finderPathCountByUuid = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
-			new String[] {String.class.getName()});
+			new String[] {String.class.getName()},
+			WikiNodeModelImpl.UUID_COLUMN_BITMASK,
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
 
-		_finderPathFetchByUUID_G = new FinderPath(
+				return new Object[] {wikiNodeModelImpl.getUuid()};
+			},
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
+
+				return new Object[] {wikiNodeModelImpl.getOriginalUuid()};
+			});
+
+		_finderPathFetchByUUID_G = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, WikiNodeImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
 			WikiNodeModelImpl.UUID_COLUMN_BITMASK |
-			WikiNodeModelImpl.GROUPID_COLUMN_BITMASK);
+			WikiNodeModelImpl.GROUPID_COLUMN_BITMASK,
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
 
-		_finderPathCountByUUID_G = new FinderPath(
+				return new Object[] {
+					wikiNodeModelImpl.getUuid(), wikiNodeModelImpl.getGroupId()
+				};
+			},
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
+
+				return new Object[] {
+					wikiNodeModelImpl.getOriginalUuid(),
+					wikiNodeModelImpl.getOriginalGroupId()
+				};
+			});
+
+		_finderPathCountByUUID_G = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUUID_G",
-			new String[] {String.class.getName(), Long.class.getName()});
+			new String[] {String.class.getName(), Long.class.getName()},
+			WikiNodeModelImpl.UUID_COLUMN_BITMASK |
+			WikiNodeModelImpl.GROUPID_COLUMN_BITMASK,
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByUuid_C = new FinderPath(
+				return new Object[] {
+					wikiNodeModelImpl.getUuid(), wikiNodeModelImpl.getGroupId()
+				};
+			},
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
+
+				return new Object[] {
+					wikiNodeModelImpl.getOriginalUuid(),
+					wikiNodeModelImpl.getOriginalGroupId()
+				};
+			});
+
+		_finderPathWithPaginationFindByUuid_C = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, WikiNodeImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
 			new String[] {
@@ -5432,20 +5248,58 @@ public class WikiNodePersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
+		_finderPathWithoutPaginationFindByUuid_C = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, WikiNodeImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
 			WikiNodeModelImpl.UUID_COLUMN_BITMASK |
 			WikiNodeModelImpl.COMPANYID_COLUMN_BITMASK |
-			WikiNodeModelImpl.NAME_COLUMN_BITMASK);
+			WikiNodeModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
 
-		_finderPathCountByUuid_C = new FinderPath(
+				return new Object[] {
+					wikiNodeModelImpl.getUuid(),
+					wikiNodeModelImpl.getCompanyId()
+				};
+			},
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
+
+				return new Object[] {
+					wikiNodeModelImpl.getOriginalUuid(),
+					wikiNodeModelImpl.getOriginalCompanyId()
+				};
+			});
+
+		_finderPathCountByUuid_C = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()});
+			new String[] {String.class.getName(), Long.class.getName()},
+			WikiNodeModelImpl.UUID_COLUMN_BITMASK |
+			WikiNodeModelImpl.COMPANYID_COLUMN_BITMASK,
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByGroupId = new FinderPath(
+				return new Object[] {
+					wikiNodeModelImpl.getUuid(),
+					wikiNodeModelImpl.getCompanyId()
+				};
+			},
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
+
+				return new Object[] {
+					wikiNodeModelImpl.getOriginalUuid(),
+					wikiNodeModelImpl.getOriginalCompanyId()
+				};
+			});
+
+		_finderPathWithPaginationFindByGroupId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, WikiNodeImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGroupId",
 			new String[] {
@@ -5453,19 +5307,44 @@ public class WikiNodePersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
+		_finderPathWithoutPaginationFindByGroupId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, WikiNodeImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
 			new String[] {Long.class.getName()},
 			WikiNodeModelImpl.GROUPID_COLUMN_BITMASK |
-			WikiNodeModelImpl.NAME_COLUMN_BITMASK);
+			WikiNodeModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
 
-		_finderPathCountByGroupId = new FinderPath(
+				return new Object[] {wikiNodeModelImpl.getGroupId()};
+			},
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
+
+				return new Object[] {wikiNodeModelImpl.getOriginalGroupId()};
+			});
+
+		_finderPathCountByGroupId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			WikiNodeModelImpl.GROUPID_COLUMN_BITMASK,
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByCompanyId = new FinderPath(
+				return new Object[] {wikiNodeModelImpl.getGroupId()};
+			},
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
+
+				return new Object[] {wikiNodeModelImpl.getOriginalGroupId()};
+			});
+
+		_finderPathWithPaginationFindByCompanyId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, WikiNodeImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId",
 			new String[] {
@@ -5473,31 +5352,92 @@ public class WikiNodePersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
+		_finderPathWithoutPaginationFindByCompanyId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, WikiNodeImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
 			new String[] {Long.class.getName()},
 			WikiNodeModelImpl.COMPANYID_COLUMN_BITMASK |
-			WikiNodeModelImpl.NAME_COLUMN_BITMASK);
+			WikiNodeModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
 
-		_finderPathCountByCompanyId = new FinderPath(
+				return new Object[] {wikiNodeModelImpl.getCompanyId()};
+			},
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
+
+				return new Object[] {wikiNodeModelImpl.getOriginalCompanyId()};
+			});
+
+		_finderPathCountByCompanyId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			WikiNodeModelImpl.COMPANYID_COLUMN_BITMASK,
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
 
-		_finderPathFetchByG_N = new FinderPath(
+				return new Object[] {wikiNodeModelImpl.getCompanyId()};
+			},
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
+
+				return new Object[] {wikiNodeModelImpl.getOriginalCompanyId()};
+			});
+
+		_finderPathFetchByG_N = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, WikiNodeImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByG_N",
 			new String[] {Long.class.getName(), String.class.getName()},
 			WikiNodeModelImpl.GROUPID_COLUMN_BITMASK |
-			WikiNodeModelImpl.NAME_COLUMN_BITMASK);
+			WikiNodeModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
 
-		_finderPathCountByG_N = new FinderPath(
+				return new Object[] {
+					wikiNodeModelImpl.getGroupId(), wikiNodeModelImpl.getName()
+				};
+			},
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
+
+				return new Object[] {
+					wikiNodeModelImpl.getOriginalGroupId(),
+					wikiNodeModelImpl.getOriginalName()
+				};
+			});
+
+		_finderPathCountByG_N = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_N",
-			new String[] {Long.class.getName(), String.class.getName()});
+			new String[] {Long.class.getName(), String.class.getName()},
+			WikiNodeModelImpl.GROUPID_COLUMN_BITMASK |
+			WikiNodeModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByG_S = new FinderPath(
+				return new Object[] {
+					wikiNodeModelImpl.getGroupId(), wikiNodeModelImpl.getName()
+				};
+			},
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
+
+				return new Object[] {
+					wikiNodeModelImpl.getOriginalGroupId(),
+					wikiNodeModelImpl.getOriginalName()
+				};
+			});
+
+		_finderPathWithPaginationFindByG_S = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, WikiNodeImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_S",
 			new String[] {
@@ -5506,20 +5446,58 @@ public class WikiNodePersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByG_S = new FinderPath(
+		_finderPathWithoutPaginationFindByG_S = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, WikiNodeImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_S",
 			new String[] {Long.class.getName(), Integer.class.getName()},
 			WikiNodeModelImpl.GROUPID_COLUMN_BITMASK |
 			WikiNodeModelImpl.STATUS_COLUMN_BITMASK |
-			WikiNodeModelImpl.NAME_COLUMN_BITMASK);
+			WikiNodeModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
 
-		_finderPathCountByG_S = new FinderPath(
+				return new Object[] {
+					wikiNodeModelImpl.getGroupId(),
+					wikiNodeModelImpl.getStatus()
+				};
+			},
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
+
+				return new Object[] {
+					wikiNodeModelImpl.getOriginalGroupId(),
+					wikiNodeModelImpl.getOriginalStatus()
+				};
+			});
+
+		_finderPathCountByG_S = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_S",
-			new String[] {Long.class.getName(), Integer.class.getName()});
+			new String[] {Long.class.getName(), Integer.class.getName()},
+			WikiNodeModelImpl.GROUPID_COLUMN_BITMASK |
+			WikiNodeModelImpl.STATUS_COLUMN_BITMASK,
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByC_S = new FinderPath(
+				return new Object[] {
+					wikiNodeModelImpl.getGroupId(),
+					wikiNodeModelImpl.getStatus()
+				};
+			},
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
+
+				return new Object[] {
+					wikiNodeModelImpl.getOriginalGroupId(),
+					wikiNodeModelImpl.getOriginalStatus()
+				};
+			});
+
+		_finderPathWithPaginationFindByC_S = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, WikiNodeImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_S",
 			new String[] {
@@ -5528,26 +5506,65 @@ public class WikiNodePersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_S = new FinderPath(
+		_finderPathWithoutPaginationFindByC_S = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, WikiNodeImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_S",
 			new String[] {Long.class.getName(), Integer.class.getName()},
 			WikiNodeModelImpl.COMPANYID_COLUMN_BITMASK |
 			WikiNodeModelImpl.STATUS_COLUMN_BITMASK |
-			WikiNodeModelImpl.NAME_COLUMN_BITMASK);
+			WikiNodeModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
 
-		_finderPathCountByC_S = new FinderPath(
+				return new Object[] {
+					wikiNodeModelImpl.getCompanyId(),
+					wikiNodeModelImpl.getStatus()
+				};
+			},
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
+
+				return new Object[] {
+					wikiNodeModelImpl.getOriginalCompanyId(),
+					wikiNodeModelImpl.getOriginalStatus()
+				};
+			});
+
+		_finderPathCountByC_S = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_S",
-			new String[] {Long.class.getName(), Integer.class.getName()});
+			new String[] {Long.class.getName(), Integer.class.getName()},
+			WikiNodeModelImpl.COMPANYID_COLUMN_BITMASK |
+			WikiNodeModelImpl.STATUS_COLUMN_BITMASK,
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
+
+				return new Object[] {
+					wikiNodeModelImpl.getCompanyId(),
+					wikiNodeModelImpl.getStatus()
+				};
+			},
+			baseModel -> {
+				WikiNodeModelImpl wikiNodeModelImpl =
+					(WikiNodeModelImpl)baseModel;
+
+				return new Object[] {
+					wikiNodeModelImpl.getOriginalCompanyId(),
+					wikiNodeModelImpl.getOriginalStatus()
+				};
+			});
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(WikiNodeImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@Override

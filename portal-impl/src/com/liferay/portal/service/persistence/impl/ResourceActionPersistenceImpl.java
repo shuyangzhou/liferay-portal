@@ -961,10 +961,6 @@ public class ResourceActionPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(ResourceActionImpl.class);
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -981,36 +977,21 @@ public class ResourceActionPersistenceImpl
 			ResourceActionImpl.class, resourceAction.getPrimaryKey(),
 			resourceAction, ResourceActionModelImpl.COLUMN_BITMASK_ENABLED,
 			((ResourceActionModelImpl)resourceAction).getColumnBitmask());
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((ResourceActionModelImpl)resourceAction, true);
 	}
 
 	@Override
 	public void clearCache(List<ResourceAction> resourceActions) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (ResourceAction resourceAction : resourceActions) {
 			EntityCacheUtil.removeResult(
 				ResourceActionModelImpl.ENTITY_CACHE_ENABLED,
 				ResourceActionImpl.class, resourceAction.getPrimaryKey(),
 				resourceAction, ResourceActionModelImpl.COLUMN_BITMASK_ENABLED,
 				((ResourceActionModelImpl)resourceAction).getColumnBitmask());
-
-			clearUniqueFindersCache(
-				(ResourceActionModelImpl)resourceAction, true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				ResourceActionModelImpl.ENTITY_CACHE_ENABLED,
@@ -1030,32 +1011,6 @@ public class ResourceActionPersistenceImpl
 			_finderPathCountByN_A, args, Long.valueOf(1), false);
 		FinderCacheUtil.putResult(
 			_finderPathFetchByN_A, args, resourceActionModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		ResourceActionModelImpl resourceActionModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				resourceActionModelImpl.getName(),
-				resourceActionModelImpl.getActionId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByN_A, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByN_A, args);
-		}
-
-		if ((resourceActionModelImpl.getColumnBitmask() &
-			 _finderPathFetchByN_A.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				resourceActionModelImpl.getOriginalName(),
-				resourceActionModelImpl.getOriginalActionId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByN_A, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByN_A, args);
-		}
 	}
 
 	/**
@@ -1205,45 +1160,6 @@ public class ResourceActionPersistenceImpl
 			closeSession(session);
 		}
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!ResourceActionModelImpl.COLUMN_BITMASK_ENABLED) {
-			FinderCacheUtil.clearCache(
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {resourceActionModelImpl.getName()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByName, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByName, args);
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountAll, FINDER_ARGS_EMPTY);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((resourceActionModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByName.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					resourceActionModelImpl.getOriginalName()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByName, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByName, args);
-
-				args = new Object[] {resourceActionModelImpl.getName()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByName, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByName, args);
-			}
-		}
-
 		EntityCacheUtil.putResult(
 			ResourceActionModelImpl.ENTITY_CACHE_ENABLED,
 			ResourceActionImpl.class, resourceAction.getPrimaryKey(),
@@ -1251,7 +1167,6 @@ public class ResourceActionPersistenceImpl
 			ResourceActionModelImpl.COLUMN_BITMASK_ENABLED,
 			((ResourceActionModelImpl)resourceAction).getColumnBitmask());
 
-		clearUniqueFindersCache(resourceActionModelImpl, false);
 		cacheUniqueFindersCache(resourceActionModelImpl);
 
 		resourceAction.resetOriginalValues();
@@ -1520,25 +1435,25 @@ public class ResourceActionPersistenceImpl
 	 * Initializes the resource action persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			ResourceActionModelImpl.ENTITY_CACHE_ENABLED,
 			ResourceActionModelImpl.FINDER_CACHE_ENABLED,
 			ResourceActionImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
 			"findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			ResourceActionModelImpl.ENTITY_CACHE_ENABLED,
 			ResourceActionModelImpl.FINDER_CACHE_ENABLED,
 			ResourceActionImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findAll", new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			ResourceActionModelImpl.ENTITY_CACHE_ENABLED,
 			ResourceActionModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByName = new FinderPath(
+		_finderPathWithPaginationFindByName = FinderPath.create(
 			ResourceActionModelImpl.ENTITY_CACHE_ENABLED,
 			ResourceActionModelImpl.FINDER_CACHE_ENABLED,
 			ResourceActionImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
@@ -1548,40 +1463,104 @@ public class ResourceActionPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByName = new FinderPath(
+		_finderPathWithoutPaginationFindByName = FinderPath.create(
 			ResourceActionModelImpl.ENTITY_CACHE_ENABLED,
 			ResourceActionModelImpl.FINDER_CACHE_ENABLED,
 			ResourceActionImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByName", new String[] {String.class.getName()},
 			ResourceActionModelImpl.NAME_COLUMN_BITMASK |
-			ResourceActionModelImpl.BITWISEVALUE_COLUMN_BITMASK);
+			ResourceActionModelImpl.BITWISEVALUE_COLUMN_BITMASK,
+			baseModel -> {
+				ResourceActionModelImpl resourceActionModelImpl =
+					(ResourceActionModelImpl)baseModel;
 
-		_finderPathCountByName = new FinderPath(
+				return new Object[] {resourceActionModelImpl.getName()};
+			},
+			baseModel -> {
+				ResourceActionModelImpl resourceActionModelImpl =
+					(ResourceActionModelImpl)baseModel;
+
+				return new Object[] {resourceActionModelImpl.getOriginalName()};
+			});
+
+		_finderPathCountByName = FinderPath.create(
 			ResourceActionModelImpl.ENTITY_CACHE_ENABLED,
 			ResourceActionModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByName",
-			new String[] {String.class.getName()});
+			new String[] {String.class.getName()},
+			ResourceActionModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				ResourceActionModelImpl resourceActionModelImpl =
+					(ResourceActionModelImpl)baseModel;
 
-		_finderPathFetchByN_A = new FinderPath(
+				return new Object[] {resourceActionModelImpl.getName()};
+			},
+			baseModel -> {
+				ResourceActionModelImpl resourceActionModelImpl =
+					(ResourceActionModelImpl)baseModel;
+
+				return new Object[] {resourceActionModelImpl.getOriginalName()};
+			});
+
+		_finderPathFetchByN_A = FinderPath.create(
 			ResourceActionModelImpl.ENTITY_CACHE_ENABLED,
 			ResourceActionModelImpl.FINDER_CACHE_ENABLED,
 			ResourceActionImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByN_A",
 			new String[] {String.class.getName(), String.class.getName()},
 			ResourceActionModelImpl.NAME_COLUMN_BITMASK |
-			ResourceActionModelImpl.ACTIONID_COLUMN_BITMASK);
+			ResourceActionModelImpl.ACTIONID_COLUMN_BITMASK,
+			baseModel -> {
+				ResourceActionModelImpl resourceActionModelImpl =
+					(ResourceActionModelImpl)baseModel;
 
-		_finderPathCountByN_A = new FinderPath(
+				return new Object[] {
+					resourceActionModelImpl.getName(),
+					resourceActionModelImpl.getActionId()
+				};
+			},
+			baseModel -> {
+				ResourceActionModelImpl resourceActionModelImpl =
+					(ResourceActionModelImpl)baseModel;
+
+				return new Object[] {
+					resourceActionModelImpl.getOriginalName(),
+					resourceActionModelImpl.getOriginalActionId()
+				};
+			});
+
+		_finderPathCountByN_A = FinderPath.create(
 			ResourceActionModelImpl.ENTITY_CACHE_ENABLED,
 			ResourceActionModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByN_A",
-			new String[] {String.class.getName(), String.class.getName()});
+			new String[] {String.class.getName(), String.class.getName()},
+			ResourceActionModelImpl.NAME_COLUMN_BITMASK |
+			ResourceActionModelImpl.ACTIONID_COLUMN_BITMASK,
+			baseModel -> {
+				ResourceActionModelImpl resourceActionModelImpl =
+					(ResourceActionModelImpl)baseModel;
+
+				return new Object[] {
+					resourceActionModelImpl.getName(),
+					resourceActionModelImpl.getActionId()
+				};
+			},
+			baseModel -> {
+				ResourceActionModelImpl resourceActionModelImpl =
+					(ResourceActionModelImpl)baseModel;
+
+				return new Object[] {
+					resourceActionModelImpl.getOriginalName(),
+					resourceActionModelImpl.getOriginalActionId()
+				};
+			});
 	}
 
 	public void destroy() {
 		EntityCacheUtil.removeCache(ResourceActionImpl.class.getName());
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	private static final String _SQL_SELECT_RESOURCEACTION =

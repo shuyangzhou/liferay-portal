@@ -10137,10 +10137,6 @@ public class RolePersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(RoleImpl.class);
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -10156,35 +10152,21 @@ public class RolePersistenceImpl
 			RoleModelImpl.ENTITY_CACHE_ENABLED, RoleImpl.class,
 			role.getPrimaryKey(), role, RoleModelImpl.COLUMN_BITMASK_ENABLED,
 			((RoleModelImpl)role).getColumnBitmask());
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((RoleModelImpl)role, true);
 	}
 
 	@Override
 	public void clearCache(List<Role> roles) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Role role : roles) {
 			EntityCacheUtil.removeResult(
 				RoleModelImpl.ENTITY_CACHE_ENABLED, RoleImpl.class,
 				role.getPrimaryKey(), role,
 				RoleModelImpl.COLUMN_BITMASK_ENABLED,
 				((RoleModelImpl)role).getColumnBitmask());
-
-			clearUniqueFindersCache((RoleModelImpl)role, true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				RoleModelImpl.ENTITY_CACHE_ENABLED, RoleImpl.class, primaryKey);
@@ -10220,78 +10202,6 @@ public class RolePersistenceImpl
 			_finderPathCountByC_C_C_T, args, Long.valueOf(1), false);
 		FinderCacheUtil.putResult(
 			_finderPathFetchByC_C_C_T, args, roleModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		RoleModelImpl roleModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				roleModelImpl.getCompanyId(), roleModelImpl.getName()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_N, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_N, args);
-		}
-
-		if ((roleModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_N.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				roleModelImpl.getOriginalCompanyId(),
-				roleModelImpl.getOriginalName()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_N, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_N, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				roleModelImpl.getCompanyId(), roleModelImpl.getClassNameId(),
-				roleModelImpl.getClassPK()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_C_C, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_C_C, args);
-		}
-
-		if ((roleModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_C_C.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				roleModelImpl.getOriginalCompanyId(),
-				roleModelImpl.getOriginalClassNameId(),
-				roleModelImpl.getOriginalClassPK()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_C_C, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_C_C, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				roleModelImpl.getCompanyId(), roleModelImpl.getClassNameId(),
-				roleModelImpl.getClassPK(), roleModelImpl.getType()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_C_C_T, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_C_C_T, args);
-		}
-
-		if ((roleModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_C_C_T.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				roleModelImpl.getOriginalCompanyId(),
-				roleModelImpl.getOriginalClassNameId(),
-				roleModelImpl.getOriginalClassPK(),
-				roleModelImpl.getOriginalType()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_C_C_T, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_C_C_T, args);
-		}
 	}
 
 	/**
@@ -10493,304 +10403,12 @@ public class RolePersistenceImpl
 			return role;
 		}
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!RoleModelImpl.COLUMN_BITMASK_ENABLED) {
-			FinderCacheUtil.clearCache(
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {roleModelImpl.getUuid()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByUuid, args);
-
-			args = new Object[] {
-				roleModelImpl.getUuid(), roleModelImpl.getCompanyId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByUuid_C, args);
-
-			args = new Object[] {roleModelImpl.getCompanyId()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByCompanyId, args);
-
-			args = new Object[] {roleModelImpl.getName()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByName, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByName, args);
-
-			args = new Object[] {roleModelImpl.getType()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByType, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByType, args);
-
-			args = new Object[] {roleModelImpl.getSubtype()};
-
-			FinderCacheUtil.removeResult(_finderPathCountBySubtype, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindBySubtype, args);
-
-			args = new Object[] {
-				roleModelImpl.getCompanyId(), roleModelImpl.getType()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_T, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByC_T, args);
-
-			args = new Object[] {
-				roleModelImpl.getType(), roleModelImpl.getSubtype()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByT_S, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByT_S, args);
-
-			args = new Object[] {
-				roleModelImpl.getCompanyId(), roleModelImpl.getClassNameId(),
-				roleModelImpl.getClassPK()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_C_C, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByC_C_C, args);
-
-			args = new Object[] {
-				roleModelImpl.getCompanyId(), roleModelImpl.getClassNameId(),
-				roleModelImpl.getClassPK(), roleModelImpl.getType()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_C_C_T, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByC_C_C_T, args);
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountAll, FINDER_ARGS_EMPTY);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((roleModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {roleModelImpl.getOriginalUuid()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-
-				args = new Object[] {roleModelImpl.getUuid()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-			}
-
-			if ((roleModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					roleModelImpl.getOriginalUuid(),
-					roleModelImpl.getOriginalCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-
-				args = new Object[] {
-					roleModelImpl.getUuid(), roleModelImpl.getCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-			}
-
-			if ((roleModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByCompanyId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					roleModelImpl.getOriginalCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByCompanyId, args);
-
-				args = new Object[] {roleModelImpl.getCompanyId()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByCompanyId, args);
-			}
-
-			if ((roleModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByName.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {roleModelImpl.getOriginalName()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByName, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByName, args);
-
-				args = new Object[] {roleModelImpl.getName()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByName, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByName, args);
-			}
-
-			if ((roleModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByType.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {roleModelImpl.getOriginalType()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByType, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByType, args);
-
-				args = new Object[] {roleModelImpl.getType()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByType, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByType, args);
-			}
-
-			if ((roleModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindBySubtype.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					roleModelImpl.getOriginalSubtype()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountBySubtype, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindBySubtype, args);
-
-				args = new Object[] {roleModelImpl.getSubtype()};
-
-				FinderCacheUtil.removeResult(_finderPathCountBySubtype, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindBySubtype, args);
-			}
-
-			if ((roleModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_T.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					roleModelImpl.getOriginalCompanyId(),
-					roleModelImpl.getOriginalType()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_T, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_T, args);
-
-				args = new Object[] {
-					roleModelImpl.getCompanyId(), roleModelImpl.getType()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_T, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_T, args);
-			}
-
-			if ((roleModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByT_S.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					roleModelImpl.getOriginalType(),
-					roleModelImpl.getOriginalSubtype()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByT_S, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByT_S, args);
-
-				args = new Object[] {
-					roleModelImpl.getType(), roleModelImpl.getSubtype()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByT_S, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByT_S, args);
-			}
-
-			if ((roleModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_C_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					roleModelImpl.getOriginalCompanyId(),
-					roleModelImpl.getOriginalClassNameId(),
-					roleModelImpl.getOriginalClassPK()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_C_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_C_C, args);
-
-				args = new Object[] {
-					roleModelImpl.getCompanyId(),
-					roleModelImpl.getClassNameId(), roleModelImpl.getClassPK()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_C_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_C_C, args);
-			}
-
-			if ((roleModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_C_C_T.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					roleModelImpl.getOriginalCompanyId(),
-					roleModelImpl.getOriginalClassNameId(),
-					roleModelImpl.getOriginalClassPK(),
-					roleModelImpl.getOriginalType()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_C_C_T, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_C_C_T, args);
-
-				args = new Object[] {
-					roleModelImpl.getCompanyId(),
-					roleModelImpl.getClassNameId(), roleModelImpl.getClassPK(),
-					roleModelImpl.getType()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_C_C_T, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_C_C_T, args);
-			}
-		}
-
 		EntityCacheUtil.putResult(
 			RoleModelImpl.ENTITY_CACHE_ENABLED, RoleImpl.class,
 			role.getPrimaryKey(), role, false,
 			RoleModelImpl.COLUMN_BITMASK_ENABLED,
 			((RoleModelImpl)role).getColumnBitmask());
 
-		clearUniqueFindersCache(roleModelImpl, false);
 		cacheUniqueFindersCache(roleModelImpl);
 
 		role.resetOriginalValues();
@@ -11880,24 +11498,24 @@ public class RolePersistenceImpl
 			"Users_Roles", "companyId", "roleId", "userId", this,
 			userPersistence);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, RoleImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, RoleImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByUuid = new FinderPath(
+		_finderPathWithPaginationFindByUuid = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, RoleImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
@@ -11906,21 +11524,42 @@ public class RolePersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid = new FinderPath(
+		_finderPathWithoutPaginationFindByUuid = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, RoleImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
 			new String[] {String.class.getName()},
 			RoleModelImpl.UUID_COLUMN_BITMASK |
-			RoleModelImpl.NAME_COLUMN_BITMASK);
+			RoleModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
 
-		_finderPathCountByUuid = new FinderPath(
+				return new Object[] {roleModelImpl.getUuid()};
+			},
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
+
+				return new Object[] {roleModelImpl.getOriginalUuid()};
+			});
+
+		_finderPathCountByUuid = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
-			new String[] {String.class.getName()});
+			new String[] {String.class.getName()},
+			RoleModelImpl.UUID_COLUMN_BITMASK,
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByUuid_C = new FinderPath(
+				return new Object[] {roleModelImpl.getUuid()};
+			},
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
+
+				return new Object[] {roleModelImpl.getOriginalUuid()};
+			});
+
+		_finderPathWithPaginationFindByUuid_C = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, RoleImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
@@ -11930,22 +11569,54 @@ public class RolePersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
+		_finderPathWithoutPaginationFindByUuid_C = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, RoleImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
 			RoleModelImpl.UUID_COLUMN_BITMASK |
 			RoleModelImpl.COMPANYID_COLUMN_BITMASK |
-			RoleModelImpl.NAME_COLUMN_BITMASK);
+			RoleModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
 
-		_finderPathCountByUuid_C = new FinderPath(
+				return new Object[] {
+					roleModelImpl.getUuid(), roleModelImpl.getCompanyId()
+				};
+			},
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
+
+				return new Object[] {
+					roleModelImpl.getOriginalUuid(),
+					roleModelImpl.getOriginalCompanyId()
+				};
+			});
+
+		_finderPathCountByUuid_C = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()});
+			new String[] {String.class.getName(), Long.class.getName()},
+			RoleModelImpl.UUID_COLUMN_BITMASK |
+			RoleModelImpl.COMPANYID_COLUMN_BITMASK,
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByCompanyId = new FinderPath(
+				return new Object[] {
+					roleModelImpl.getUuid(), roleModelImpl.getCompanyId()
+				};
+			},
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
+
+				return new Object[] {
+					roleModelImpl.getOriginalUuid(),
+					roleModelImpl.getOriginalCompanyId()
+				};
+			});
+
+		_finderPathWithPaginationFindByCompanyId = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, RoleImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId",
@@ -11954,21 +11625,42 @@ public class RolePersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
+		_finderPathWithoutPaginationFindByCompanyId = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, RoleImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
 			new String[] {Long.class.getName()},
 			RoleModelImpl.COMPANYID_COLUMN_BITMASK |
-			RoleModelImpl.NAME_COLUMN_BITMASK);
+			RoleModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
 
-		_finderPathCountByCompanyId = new FinderPath(
+				return new Object[] {roleModelImpl.getCompanyId()};
+			},
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
+
+				return new Object[] {roleModelImpl.getOriginalCompanyId()};
+			});
+
+		_finderPathCountByCompanyId = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			RoleModelImpl.COMPANYID_COLUMN_BITMASK,
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByName = new FinderPath(
+				return new Object[] {roleModelImpl.getCompanyId()};
+			},
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
+
+				return new Object[] {roleModelImpl.getOriginalCompanyId()};
+			});
+
+		_finderPathWithPaginationFindByName = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, RoleImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByName",
@@ -11977,20 +11669,41 @@ public class RolePersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByName = new FinderPath(
+		_finderPathWithoutPaginationFindByName = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, RoleImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByName",
 			new String[] {String.class.getName()},
-			RoleModelImpl.NAME_COLUMN_BITMASK);
+			RoleModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
 
-		_finderPathCountByName = new FinderPath(
+				return new Object[] {roleModelImpl.getName()};
+			},
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
+
+				return new Object[] {roleModelImpl.getOriginalName()};
+			});
+
+		_finderPathCountByName = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByName",
-			new String[] {String.class.getName()});
+			new String[] {String.class.getName()},
+			RoleModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByType = new FinderPath(
+				return new Object[] {roleModelImpl.getName()};
+			},
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
+
+				return new Object[] {roleModelImpl.getOriginalName()};
+			});
+
+		_finderPathWithPaginationFindByType = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, RoleImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByType",
@@ -11999,21 +11712,42 @@ public class RolePersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByType = new FinderPath(
+		_finderPathWithoutPaginationFindByType = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, RoleImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByType",
 			new String[] {Integer.class.getName()},
 			RoleModelImpl.TYPE_COLUMN_BITMASK |
-			RoleModelImpl.NAME_COLUMN_BITMASK);
+			RoleModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
 
-		_finderPathCountByType = new FinderPath(
+				return new Object[] {roleModelImpl.getType()};
+			},
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
+
+				return new Object[] {roleModelImpl.getOriginalType()};
+			});
+
+		_finderPathCountByType = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByType",
-			new String[] {Integer.class.getName()});
+			new String[] {Integer.class.getName()},
+			RoleModelImpl.TYPE_COLUMN_BITMASK,
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
 
-		_finderPathWithPaginationFindBySubtype = new FinderPath(
+				return new Object[] {roleModelImpl.getType()};
+			},
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
+
+				return new Object[] {roleModelImpl.getOriginalType()};
+			});
+
+		_finderPathWithPaginationFindBySubtype = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, RoleImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findBySubtype",
@@ -12022,35 +11756,88 @@ public class RolePersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindBySubtype = new FinderPath(
+		_finderPathWithoutPaginationFindBySubtype = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, RoleImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findBySubtype",
 			new String[] {String.class.getName()},
 			RoleModelImpl.SUBTYPE_COLUMN_BITMASK |
-			RoleModelImpl.NAME_COLUMN_BITMASK);
+			RoleModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
 
-		_finderPathCountBySubtype = new FinderPath(
+				return new Object[] {roleModelImpl.getSubtype()};
+			},
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
+
+				return new Object[] {roleModelImpl.getOriginalSubtype()};
+			});
+
+		_finderPathCountBySubtype = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBySubtype",
-			new String[] {String.class.getName()});
+			new String[] {String.class.getName()},
+			RoleModelImpl.SUBTYPE_COLUMN_BITMASK,
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
 
-		_finderPathFetchByC_N = new FinderPath(
+				return new Object[] {roleModelImpl.getSubtype()};
+			},
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
+
+				return new Object[] {roleModelImpl.getOriginalSubtype()};
+			});
+
+		_finderPathFetchByC_N = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, RoleImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_N",
 			new String[] {Long.class.getName(), String.class.getName()},
 			RoleModelImpl.COMPANYID_COLUMN_BITMASK |
-			RoleModelImpl.NAME_COLUMN_BITMASK);
+			RoleModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
 
-		_finderPathCountByC_N = new FinderPath(
+				return new Object[] {
+					roleModelImpl.getCompanyId(), roleModelImpl.getName()
+				};
+			},
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
+
+				return new Object[] {
+					roleModelImpl.getOriginalCompanyId(),
+					roleModelImpl.getOriginalName()
+				};
+			});
+
+		_finderPathCountByC_N = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_N",
-			new String[] {Long.class.getName(), String.class.getName()});
+			new String[] {Long.class.getName(), String.class.getName()},
+			RoleModelImpl.COMPANYID_COLUMN_BITMASK |
+			RoleModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByC_T = new FinderPath(
+				return new Object[] {
+					roleModelImpl.getCompanyId(), roleModelImpl.getName()
+				};
+			},
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
+
+				return new Object[] {
+					roleModelImpl.getOriginalCompanyId(),
+					roleModelImpl.getOriginalName()
+				};
+			});
+
+		_finderPathWithPaginationFindByC_T = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, RoleImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_T",
@@ -12060,28 +11847,60 @@ public class RolePersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_T = new FinderPath(
+		_finderPathWithoutPaginationFindByC_T = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, RoleImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_T",
 			new String[] {Long.class.getName(), Integer.class.getName()},
 			RoleModelImpl.COMPANYID_COLUMN_BITMASK |
 			RoleModelImpl.TYPE_COLUMN_BITMASK |
-			RoleModelImpl.NAME_COLUMN_BITMASK);
+			RoleModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
 
-		_finderPathCountByC_T = new FinderPath(
+				return new Object[] {
+					roleModelImpl.getCompanyId(), roleModelImpl.getType()
+				};
+			},
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
+
+				return new Object[] {
+					roleModelImpl.getOriginalCompanyId(),
+					roleModelImpl.getOriginalType()
+				};
+			});
+
+		_finderPathCountByC_T = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_T",
-			new String[] {Long.class.getName(), Integer.class.getName()});
+			new String[] {Long.class.getName(), Integer.class.getName()},
+			RoleModelImpl.COMPANYID_COLUMN_BITMASK |
+			RoleModelImpl.TYPE_COLUMN_BITMASK,
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
 
-		_finderPathWithPaginationCountByC_T = new FinderPath(
+				return new Object[] {
+					roleModelImpl.getCompanyId(), roleModelImpl.getType()
+				};
+			},
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
+
+				return new Object[] {
+					roleModelImpl.getOriginalCompanyId(),
+					roleModelImpl.getOriginalType()
+				};
+			});
+
+		_finderPathWithPaginationCountByC_T = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_T",
 			new String[] {Long.class.getName(), Integer.class.getName()});
 
-		_finderPathWithPaginationFindByT_S = new FinderPath(
+		_finderPathWithPaginationFindByT_S = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, RoleImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByT_S",
@@ -12091,22 +11910,54 @@ public class RolePersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByT_S = new FinderPath(
+		_finderPathWithoutPaginationFindByT_S = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, RoleImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByT_S",
 			new String[] {Integer.class.getName(), String.class.getName()},
 			RoleModelImpl.TYPE_COLUMN_BITMASK |
 			RoleModelImpl.SUBTYPE_COLUMN_BITMASK |
-			RoleModelImpl.NAME_COLUMN_BITMASK);
+			RoleModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
 
-		_finderPathCountByT_S = new FinderPath(
+				return new Object[] {
+					roleModelImpl.getType(), roleModelImpl.getSubtype()
+				};
+			},
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
+
+				return new Object[] {
+					roleModelImpl.getOriginalType(),
+					roleModelImpl.getOriginalSubtype()
+				};
+			});
+
+		_finderPathCountByT_S = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByT_S",
-			new String[] {Integer.class.getName(), String.class.getName()});
+			new String[] {Integer.class.getName(), String.class.getName()},
+			RoleModelImpl.TYPE_COLUMN_BITMASK |
+			RoleModelImpl.SUBTYPE_COLUMN_BITMASK,
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByC_C_C = new FinderPath(
+				return new Object[] {
+					roleModelImpl.getType(), roleModelImpl.getSubtype()
+				};
+			},
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
+
+				return new Object[] {
+					roleModelImpl.getOriginalType(),
+					roleModelImpl.getOriginalSubtype()
+				};
+			});
+
+		_finderPathWithPaginationFindByC_C_C = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, RoleImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C_C",
@@ -12116,7 +11967,7 @@ public class RolePersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_C_C = new FinderPath(
+		_finderPathWithoutPaginationFindByC_C_C = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, RoleImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C_C",
@@ -12126,9 +11977,26 @@ public class RolePersistenceImpl
 			RoleModelImpl.COMPANYID_COLUMN_BITMASK |
 			RoleModelImpl.CLASSNAMEID_COLUMN_BITMASK |
 			RoleModelImpl.CLASSPK_COLUMN_BITMASK |
-			RoleModelImpl.NAME_COLUMN_BITMASK);
+			RoleModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
 
-		_finderPathFetchByC_C_C = new FinderPath(
+				return new Object[] {
+					roleModelImpl.getCompanyId(),
+					roleModelImpl.getClassNameId(), roleModelImpl.getClassPK()
+				};
+			},
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
+
+				return new Object[] {
+					roleModelImpl.getOriginalCompanyId(),
+					roleModelImpl.getOriginalClassNameId(),
+					roleModelImpl.getOriginalClassPK()
+				};
+			});
+
+		_finderPathFetchByC_C_C = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, RoleImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_C_C",
@@ -12137,17 +12005,54 @@ public class RolePersistenceImpl
 			},
 			RoleModelImpl.COMPANYID_COLUMN_BITMASK |
 			RoleModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			RoleModelImpl.CLASSPK_COLUMN_BITMASK);
+			RoleModelImpl.CLASSPK_COLUMN_BITMASK,
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
 
-		_finderPathCountByC_C_C = new FinderPath(
+				return new Object[] {
+					roleModelImpl.getCompanyId(),
+					roleModelImpl.getClassNameId(), roleModelImpl.getClassPK()
+				};
+			},
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
+
+				return new Object[] {
+					roleModelImpl.getOriginalCompanyId(),
+					roleModelImpl.getOriginalClassNameId(),
+					roleModelImpl.getOriginalClassPK()
+				};
+			});
+
+		_finderPathCountByC_C_C = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C_C",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
+			},
+			RoleModelImpl.COMPANYID_COLUMN_BITMASK |
+			RoleModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+			RoleModelImpl.CLASSPK_COLUMN_BITMASK,
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
+
+				return new Object[] {
+					roleModelImpl.getCompanyId(),
+					roleModelImpl.getClassNameId(), roleModelImpl.getClassPK()
+				};
+			},
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
+
+				return new Object[] {
+					roleModelImpl.getOriginalCompanyId(),
+					roleModelImpl.getOriginalClassNameId(),
+					roleModelImpl.getOriginalClassPK()
+				};
 			});
 
-		_finderPathWithPaginationCountByC_C_C = new FinderPath(
+		_finderPathWithPaginationCountByC_C_C = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_C_C",
@@ -12155,7 +12060,7 @@ public class RolePersistenceImpl
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			});
 
-		_finderPathWithPaginationFindByC_C_C_T = new FinderPath(
+		_finderPathWithPaginationFindByC_C_C_T = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, RoleImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C_C_T",
@@ -12166,7 +12071,7 @@ public class RolePersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_C_C_T = new FinderPath(
+		_finderPathWithoutPaginationFindByC_C_C_T = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, RoleImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C_C_T",
@@ -12178,9 +12083,28 @@ public class RolePersistenceImpl
 			RoleModelImpl.CLASSNAMEID_COLUMN_BITMASK |
 			RoleModelImpl.CLASSPK_COLUMN_BITMASK |
 			RoleModelImpl.TYPE_COLUMN_BITMASK |
-			RoleModelImpl.NAME_COLUMN_BITMASK);
+			RoleModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
 
-		_finderPathFetchByC_C_C_T = new FinderPath(
+				return new Object[] {
+					roleModelImpl.getCompanyId(),
+					roleModelImpl.getClassNameId(), roleModelImpl.getClassPK(),
+					roleModelImpl.getType()
+				};
+			},
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
+
+				return new Object[] {
+					roleModelImpl.getOriginalCompanyId(),
+					roleModelImpl.getOriginalClassNameId(),
+					roleModelImpl.getOriginalClassPK(),
+					roleModelImpl.getOriginalType()
+				};
+			});
+
+		_finderPathFetchByC_C_C_T = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, RoleImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_C_C_T",
@@ -12191,18 +12115,60 @@ public class RolePersistenceImpl
 			RoleModelImpl.COMPANYID_COLUMN_BITMASK |
 			RoleModelImpl.CLASSNAMEID_COLUMN_BITMASK |
 			RoleModelImpl.CLASSPK_COLUMN_BITMASK |
-			RoleModelImpl.TYPE_COLUMN_BITMASK);
+			RoleModelImpl.TYPE_COLUMN_BITMASK,
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
 
-		_finderPathCountByC_C_C_T = new FinderPath(
+				return new Object[] {
+					roleModelImpl.getCompanyId(),
+					roleModelImpl.getClassNameId(), roleModelImpl.getClassPK(),
+					roleModelImpl.getType()
+				};
+			},
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
+
+				return new Object[] {
+					roleModelImpl.getOriginalCompanyId(),
+					roleModelImpl.getOriginalClassNameId(),
+					roleModelImpl.getOriginalClassPK(),
+					roleModelImpl.getOriginalType()
+				};
+			});
+
+		_finderPathCountByC_C_C_T = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C_C_T",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Long.class.getName(), Integer.class.getName()
+			},
+			RoleModelImpl.COMPANYID_COLUMN_BITMASK |
+			RoleModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+			RoleModelImpl.CLASSPK_COLUMN_BITMASK |
+			RoleModelImpl.TYPE_COLUMN_BITMASK,
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
+
+				return new Object[] {
+					roleModelImpl.getCompanyId(),
+					roleModelImpl.getClassNameId(), roleModelImpl.getClassPK(),
+					roleModelImpl.getType()
+				};
+			},
+			baseModel -> {
+				RoleModelImpl roleModelImpl = (RoleModelImpl)baseModel;
+
+				return new Object[] {
+					roleModelImpl.getOriginalCompanyId(),
+					roleModelImpl.getOriginalClassNameId(),
+					roleModelImpl.getOriginalClassPK(),
+					roleModelImpl.getOriginalType()
+				};
 			});
 
-		_finderPathWithPaginationCountByC_C_C_T = new FinderPath(
+		_finderPathWithPaginationCountByC_C_C_T = FinderPath.create(
 			RoleModelImpl.ENTITY_CACHE_ENABLED,
 			RoleModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_C_C_T",
@@ -12214,9 +12180,10 @@ public class RolePersistenceImpl
 
 	public void destroy() {
 		EntityCacheUtil.removeCache(RoleImpl.class.getName());
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		TableMapperFactory.removeTableMapper("Groups_Roles");
 		TableMapperFactory.removeTableMapper("Users_Roles");

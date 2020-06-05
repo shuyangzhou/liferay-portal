@@ -3477,10 +3477,6 @@ public class FragmentCollectionPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(FragmentCollectionImpl.class);
-
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -3498,19 +3494,10 @@ public class FragmentCollectionPersistenceImpl
 			_columnBitmaskEnabled,
 			((FragmentCollectionModelImpl)fragmentCollection).
 				getColumnBitmask());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache(
-			(FragmentCollectionModelImpl)fragmentCollection, true);
 	}
 
 	@Override
 	public void clearCache(List<FragmentCollection> fragmentCollections) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (FragmentCollection fragmentCollection : fragmentCollections) {
 			entityCache.removeResult(
 				entityCacheEnabled, FragmentCollectionImpl.class,
@@ -3518,18 +3505,11 @@ public class FragmentCollectionPersistenceImpl
 				_columnBitmaskEnabled,
 				((FragmentCollectionModelImpl)fragmentCollection).
 					getColumnBitmask());
-
-			clearUniqueFindersCache(
-				(FragmentCollectionModelImpl)fragmentCollection, true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				entityCacheEnabled, FragmentCollectionImpl.class, primaryKey);
@@ -3558,55 +3538,6 @@ public class FragmentCollectionPersistenceImpl
 			_finderPathCountByG_FCK, args, Long.valueOf(1), false);
 		finderCache.putResult(
 			_finderPathFetchByG_FCK, args, fragmentCollectionModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		FragmentCollectionModelImpl fragmentCollectionModelImpl,
-		boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				fragmentCollectionModelImpl.getUuid(),
-				fragmentCollectionModelImpl.getGroupId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUUID_G, args);
-			finderCache.removeResult(_finderPathFetchByUUID_G, args);
-		}
-
-		if ((fragmentCollectionModelImpl.getColumnBitmask() &
-			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				fragmentCollectionModelImpl.getOriginalUuid(),
-				fragmentCollectionModelImpl.getOriginalGroupId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUUID_G, args);
-			finderCache.removeResult(_finderPathFetchByUUID_G, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				fragmentCollectionModelImpl.getGroupId(),
-				fragmentCollectionModelImpl.getFragmentCollectionKey()
-			};
-
-			finderCache.removeResult(_finderPathCountByG_FCK, args);
-			finderCache.removeResult(_finderPathFetchByG_FCK, args);
-		}
-
-		if ((fragmentCollectionModelImpl.getColumnBitmask() &
-			 _finderPathFetchByG_FCK.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				fragmentCollectionModelImpl.getOriginalGroupId(),
-				fragmentCollectionModelImpl.getOriginalFragmentCollectionKey()
-			};
-
-			finderCache.removeResult(_finderPathCountByG_FCK, args);
-			finderCache.removeResult(_finderPathFetchByG_FCK, args);
-		}
 	}
 
 	/**
@@ -3799,102 +3730,6 @@ public class FragmentCollectionPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!_columnBitmaskEnabled) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {
-				fragmentCollectionModelImpl.getUuid()
-			};
-
-			finderCache.removeResult(_finderPathCountByUuid, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid, args);
-
-			args = new Object[] {
-				fragmentCollectionModelImpl.getUuid(),
-				fragmentCollectionModelImpl.getCompanyId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUuid_C, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid_C, args);
-
-			args = new Object[] {fragmentCollectionModelImpl.getGroupId()};
-
-			finderCache.removeResult(_finderPathCountByGroupId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByGroupId, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((fragmentCollectionModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					fragmentCollectionModelImpl.getOriginalUuid()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-
-				args = new Object[] {fragmentCollectionModelImpl.getUuid()};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-			}
-
-			if ((fragmentCollectionModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					fragmentCollectionModelImpl.getOriginalUuid(),
-					fragmentCollectionModelImpl.getOriginalCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-
-				args = new Object[] {
-					fragmentCollectionModelImpl.getUuid(),
-					fragmentCollectionModelImpl.getCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-			}
-
-			if ((fragmentCollectionModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByGroupId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					fragmentCollectionModelImpl.getOriginalGroupId()
-				};
-
-				finderCache.removeResult(_finderPathCountByGroupId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-
-				args = new Object[] {fragmentCollectionModelImpl.getGroupId()};
-
-				finderCache.removeResult(_finderPathCountByGroupId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-			}
-		}
-
 		entityCache.putResult(
 			entityCacheEnabled, FragmentCollectionImpl.class,
 			fragmentCollection.getPrimaryKey(), fragmentCollection, false,
@@ -3902,7 +3737,6 @@ public class FragmentCollectionPersistenceImpl
 			((FragmentCollectionModelImpl)fragmentCollection).
 				getColumnBitmask());
 
-		clearUniqueFindersCache(fragmentCollectionModelImpl, false);
 		cacheUniqueFindersCache(fragmentCollectionModelImpl);
 
 		fragmentCollection.resetOriginalValues();
@@ -4182,23 +4016,23 @@ public class FragmentCollectionPersistenceImpl
 		FragmentCollectionModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		FragmentCollectionModelImpl.setFinderCacheEnabled(finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			FragmentCollectionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			FragmentCollectionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByUuid = new FinderPath(
+		_finderPathWithPaginationFindByUuid = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			FragmentCollectionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
@@ -4207,33 +4041,100 @@ public class FragmentCollectionPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid = new FinderPath(
+		_finderPathWithoutPaginationFindByUuid = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			FragmentCollectionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
 			new String[] {String.class.getName()},
 			FragmentCollectionModelImpl.UUID_COLUMN_BITMASK |
-			FragmentCollectionModelImpl.NAME_COLUMN_BITMASK);
+			FragmentCollectionModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				FragmentCollectionModelImpl fragmentCollectionModelImpl =
+					(FragmentCollectionModelImpl)baseModel;
 
-		_finderPathCountByUuid = new FinderPath(
+				return new Object[] {fragmentCollectionModelImpl.getUuid()};
+			},
+			baseModel -> {
+				FragmentCollectionModelImpl fragmentCollectionModelImpl =
+					(FragmentCollectionModelImpl)baseModel;
+
+				return new Object[] {
+					fragmentCollectionModelImpl.getOriginalUuid()
+				};
+			});
+
+		_finderPathCountByUuid = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
-			new String[] {String.class.getName()});
+			new String[] {String.class.getName()},
+			FragmentCollectionModelImpl.UUID_COLUMN_BITMASK,
+			baseModel -> {
+				FragmentCollectionModelImpl fragmentCollectionModelImpl =
+					(FragmentCollectionModelImpl)baseModel;
 
-		_finderPathFetchByUUID_G = new FinderPath(
+				return new Object[] {fragmentCollectionModelImpl.getUuid()};
+			},
+			baseModel -> {
+				FragmentCollectionModelImpl fragmentCollectionModelImpl =
+					(FragmentCollectionModelImpl)baseModel;
+
+				return new Object[] {
+					fragmentCollectionModelImpl.getOriginalUuid()
+				};
+			});
+
+		_finderPathFetchByUUID_G = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			FragmentCollectionImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
 			FragmentCollectionModelImpl.UUID_COLUMN_BITMASK |
-			FragmentCollectionModelImpl.GROUPID_COLUMN_BITMASK);
+			FragmentCollectionModelImpl.GROUPID_COLUMN_BITMASK,
+			baseModel -> {
+				FragmentCollectionModelImpl fragmentCollectionModelImpl =
+					(FragmentCollectionModelImpl)baseModel;
 
-		_finderPathCountByUUID_G = new FinderPath(
+				return new Object[] {
+					fragmentCollectionModelImpl.getUuid(),
+					fragmentCollectionModelImpl.getGroupId()
+				};
+			},
+			baseModel -> {
+				FragmentCollectionModelImpl fragmentCollectionModelImpl =
+					(FragmentCollectionModelImpl)baseModel;
+
+				return new Object[] {
+					fragmentCollectionModelImpl.getOriginalUuid(),
+					fragmentCollectionModelImpl.getOriginalGroupId()
+				};
+			});
+
+		_finderPathCountByUUID_G = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUUID_G",
-			new String[] {String.class.getName(), Long.class.getName()});
+			new String[] {String.class.getName(), Long.class.getName()},
+			FragmentCollectionModelImpl.UUID_COLUMN_BITMASK |
+			FragmentCollectionModelImpl.GROUPID_COLUMN_BITMASK,
+			baseModel -> {
+				FragmentCollectionModelImpl fragmentCollectionModelImpl =
+					(FragmentCollectionModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByUuid_C = new FinderPath(
+				return new Object[] {
+					fragmentCollectionModelImpl.getUuid(),
+					fragmentCollectionModelImpl.getGroupId()
+				};
+			},
+			baseModel -> {
+				FragmentCollectionModelImpl fragmentCollectionModelImpl =
+					(FragmentCollectionModelImpl)baseModel;
+
+				return new Object[] {
+					fragmentCollectionModelImpl.getOriginalUuid(),
+					fragmentCollectionModelImpl.getOriginalGroupId()
+				};
+			});
+
+		_finderPathWithPaginationFindByUuid_C = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			FragmentCollectionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
@@ -4243,21 +4144,59 @@ public class FragmentCollectionPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
+		_finderPathWithoutPaginationFindByUuid_C = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			FragmentCollectionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
 			FragmentCollectionModelImpl.UUID_COLUMN_BITMASK |
 			FragmentCollectionModelImpl.COMPANYID_COLUMN_BITMASK |
-			FragmentCollectionModelImpl.NAME_COLUMN_BITMASK);
+			FragmentCollectionModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				FragmentCollectionModelImpl fragmentCollectionModelImpl =
+					(FragmentCollectionModelImpl)baseModel;
 
-		_finderPathCountByUuid_C = new FinderPath(
+				return new Object[] {
+					fragmentCollectionModelImpl.getUuid(),
+					fragmentCollectionModelImpl.getCompanyId()
+				};
+			},
+			baseModel -> {
+				FragmentCollectionModelImpl fragmentCollectionModelImpl =
+					(FragmentCollectionModelImpl)baseModel;
+
+				return new Object[] {
+					fragmentCollectionModelImpl.getOriginalUuid(),
+					fragmentCollectionModelImpl.getOriginalCompanyId()
+				};
+			});
+
+		_finderPathCountByUuid_C = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()});
+			new String[] {String.class.getName(), Long.class.getName()},
+			FragmentCollectionModelImpl.UUID_COLUMN_BITMASK |
+			FragmentCollectionModelImpl.COMPANYID_COLUMN_BITMASK,
+			baseModel -> {
+				FragmentCollectionModelImpl fragmentCollectionModelImpl =
+					(FragmentCollectionModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByGroupId = new FinderPath(
+				return new Object[] {
+					fragmentCollectionModelImpl.getUuid(),
+					fragmentCollectionModelImpl.getCompanyId()
+				};
+			},
+			baseModel -> {
+				FragmentCollectionModelImpl fragmentCollectionModelImpl =
+					(FragmentCollectionModelImpl)baseModel;
+
+				return new Object[] {
+					fragmentCollectionModelImpl.getOriginalUuid(),
+					fragmentCollectionModelImpl.getOriginalCompanyId()
+				};
+			});
+
+		_finderPathWithPaginationFindByGroupId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			FragmentCollectionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGroupId",
@@ -4266,38 +4205,107 @@ public class FragmentCollectionPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
+		_finderPathWithoutPaginationFindByGroupId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			FragmentCollectionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
 			new String[] {Long.class.getName()},
 			FragmentCollectionModelImpl.GROUPID_COLUMN_BITMASK |
-			FragmentCollectionModelImpl.NAME_COLUMN_BITMASK);
+			FragmentCollectionModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				FragmentCollectionModelImpl fragmentCollectionModelImpl =
+					(FragmentCollectionModelImpl)baseModel;
 
-		_finderPathCountByGroupId = new FinderPath(
+				return new Object[] {fragmentCollectionModelImpl.getGroupId()};
+			},
+			baseModel -> {
+				FragmentCollectionModelImpl fragmentCollectionModelImpl =
+					(FragmentCollectionModelImpl)baseModel;
+
+				return new Object[] {
+					fragmentCollectionModelImpl.getOriginalGroupId()
+				};
+			});
+
+		_finderPathCountByGroupId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			FragmentCollectionModelImpl.GROUPID_COLUMN_BITMASK,
+			baseModel -> {
+				FragmentCollectionModelImpl fragmentCollectionModelImpl =
+					(FragmentCollectionModelImpl)baseModel;
 
-		_finderPathWithPaginationCountByGroupId = new FinderPath(
+				return new Object[] {fragmentCollectionModelImpl.getGroupId()};
+			},
+			baseModel -> {
+				FragmentCollectionModelImpl fragmentCollectionModelImpl =
+					(FragmentCollectionModelImpl)baseModel;
+
+				return new Object[] {
+					fragmentCollectionModelImpl.getOriginalGroupId()
+				};
+			});
+
+		_finderPathWithPaginationCountByGroupId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByGroupId",
 			new String[] {Long.class.getName()});
 
-		_finderPathFetchByG_FCK = new FinderPath(
+		_finderPathFetchByG_FCK = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			FragmentCollectionImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByG_FCK",
 			new String[] {Long.class.getName(), String.class.getName()},
 			FragmentCollectionModelImpl.GROUPID_COLUMN_BITMASK |
-			FragmentCollectionModelImpl.FRAGMENTCOLLECTIONKEY_COLUMN_BITMASK);
+			FragmentCollectionModelImpl.FRAGMENTCOLLECTIONKEY_COLUMN_BITMASK,
+			baseModel -> {
+				FragmentCollectionModelImpl fragmentCollectionModelImpl =
+					(FragmentCollectionModelImpl)baseModel;
 
-		_finderPathCountByG_FCK = new FinderPath(
+				return new Object[] {
+					fragmentCollectionModelImpl.getGroupId(),
+					fragmentCollectionModelImpl.getFragmentCollectionKey()
+				};
+			},
+			baseModel -> {
+				FragmentCollectionModelImpl fragmentCollectionModelImpl =
+					(FragmentCollectionModelImpl)baseModel;
+
+				return new Object[] {
+					fragmentCollectionModelImpl.getOriginalGroupId(),
+					fragmentCollectionModelImpl.
+						getOriginalFragmentCollectionKey()
+				};
+			});
+
+		_finderPathCountByG_FCK = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_FCK",
-			new String[] {Long.class.getName(), String.class.getName()});
+			new String[] {Long.class.getName(), String.class.getName()},
+			FragmentCollectionModelImpl.GROUPID_COLUMN_BITMASK |
+			FragmentCollectionModelImpl.FRAGMENTCOLLECTIONKEY_COLUMN_BITMASK,
+			baseModel -> {
+				FragmentCollectionModelImpl fragmentCollectionModelImpl =
+					(FragmentCollectionModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByG_LikeN = new FinderPath(
+				return new Object[] {
+					fragmentCollectionModelImpl.getGroupId(),
+					fragmentCollectionModelImpl.getFragmentCollectionKey()
+				};
+			},
+			baseModel -> {
+				FragmentCollectionModelImpl fragmentCollectionModelImpl =
+					(FragmentCollectionModelImpl)baseModel;
+
+				return new Object[] {
+					fragmentCollectionModelImpl.getOriginalGroupId(),
+					fragmentCollectionModelImpl.
+						getOriginalFragmentCollectionKey()
+				};
+			});
+
+		_finderPathWithPaginationFindByG_LikeN = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			FragmentCollectionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_LikeN",
@@ -4307,7 +4315,7 @@ public class FragmentCollectionPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithPaginationCountByG_LikeN = new FinderPath(
+		_finderPathWithPaginationCountByG_LikeN = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByG_LikeN",
 			new String[] {Long.class.getName(), String.class.getName()});
@@ -4316,9 +4324,10 @@ public class FragmentCollectionPersistenceImpl
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(FragmentCollectionImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@Override

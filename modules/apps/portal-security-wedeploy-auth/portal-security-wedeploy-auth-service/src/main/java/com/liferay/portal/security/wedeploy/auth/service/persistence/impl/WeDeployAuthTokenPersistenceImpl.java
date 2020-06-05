@@ -764,10 +764,6 @@ public class WeDeployAuthTokenPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(WeDeployAuthTokenImpl.class);
-
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -784,19 +780,10 @@ public class WeDeployAuthTokenPersistenceImpl
 			weDeployAuthToken.getPrimaryKey(), weDeployAuthToken,
 			_columnBitmaskEnabled,
 			((WeDeployAuthTokenModelImpl)weDeployAuthToken).getColumnBitmask());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache(
-			(WeDeployAuthTokenModelImpl)weDeployAuthToken, true);
 	}
 
 	@Override
 	public void clearCache(List<WeDeployAuthToken> weDeployAuthTokens) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (WeDeployAuthToken weDeployAuthToken : weDeployAuthTokens) {
 			entityCache.removeResult(
 				entityCacheEnabled, WeDeployAuthTokenImpl.class,
@@ -804,18 +791,11 @@ public class WeDeployAuthTokenPersistenceImpl
 				_columnBitmaskEnabled,
 				((WeDeployAuthTokenModelImpl)weDeployAuthToken).
 					getColumnBitmask());
-
-			clearUniqueFindersCache(
-				(WeDeployAuthTokenModelImpl)weDeployAuthToken, true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				entityCacheEnabled, WeDeployAuthTokenImpl.class, primaryKey);
@@ -845,57 +825,6 @@ public class WeDeployAuthTokenPersistenceImpl
 			_finderPathCountByCI_T_T, args, Long.valueOf(1), false);
 		finderCache.putResult(
 			_finderPathFetchByCI_T_T, args, weDeployAuthTokenModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		WeDeployAuthTokenModelImpl weDeployAuthTokenModelImpl,
-		boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				weDeployAuthTokenModelImpl.getToken(),
-				weDeployAuthTokenModelImpl.getType()
-			};
-
-			finderCache.removeResult(_finderPathCountByT_T, args);
-			finderCache.removeResult(_finderPathFetchByT_T, args);
-		}
-
-		if ((weDeployAuthTokenModelImpl.getColumnBitmask() &
-			 _finderPathFetchByT_T.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				weDeployAuthTokenModelImpl.getOriginalToken(),
-				weDeployAuthTokenModelImpl.getOriginalType()
-			};
-
-			finderCache.removeResult(_finderPathCountByT_T, args);
-			finderCache.removeResult(_finderPathFetchByT_T, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				weDeployAuthTokenModelImpl.getClientId(),
-				weDeployAuthTokenModelImpl.getToken(),
-				weDeployAuthTokenModelImpl.getType()
-			};
-
-			finderCache.removeResult(_finderPathCountByCI_T_T, args);
-			finderCache.removeResult(_finderPathFetchByCI_T_T, args);
-		}
-
-		if ((weDeployAuthTokenModelImpl.getColumnBitmask() &
-			 _finderPathFetchByCI_T_T.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				weDeployAuthTokenModelImpl.getOriginalClientId(),
-				weDeployAuthTokenModelImpl.getOriginalToken(),
-				weDeployAuthTokenModelImpl.getOriginalType()
-			};
-
-			finderCache.removeResult(_finderPathCountByCI_T_T, args);
-			finderCache.removeResult(_finderPathFetchByCI_T_T, args);
-		}
 	}
 
 	/**
@@ -1076,24 +1005,12 @@ public class WeDeployAuthTokenPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!_columnBitmaskEnabled) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-
 		entityCache.putResult(
 			entityCacheEnabled, WeDeployAuthTokenImpl.class,
 			weDeployAuthToken.getPrimaryKey(), weDeployAuthToken, false,
 			_columnBitmaskEnabled,
 			((WeDeployAuthTokenModelImpl)weDeployAuthToken).getColumnBitmask());
 
-		clearUniqueFindersCache(weDeployAuthTokenModelImpl, false);
 		cacheUniqueFindersCache(weDeployAuthTokenModelImpl);
 
 		weDeployAuthToken.resetOriginalValues();
@@ -1372,33 +1289,71 @@ public class WeDeployAuthTokenPersistenceImpl
 		WeDeployAuthTokenModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		WeDeployAuthTokenModelImpl.setFinderCacheEnabled(finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, WeDeployAuthTokenImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, WeDeployAuthTokenImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathFetchByT_T = new FinderPath(
+		_finderPathFetchByT_T = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, WeDeployAuthTokenImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByT_T",
 			new String[] {String.class.getName(), Integer.class.getName()},
 			WeDeployAuthTokenModelImpl.TOKEN_COLUMN_BITMASK |
-			WeDeployAuthTokenModelImpl.TYPE_COLUMN_BITMASK);
+			WeDeployAuthTokenModelImpl.TYPE_COLUMN_BITMASK,
+			baseModel -> {
+				WeDeployAuthTokenModelImpl weDeployAuthTokenModelImpl =
+					(WeDeployAuthTokenModelImpl)baseModel;
 
-		_finderPathCountByT_T = new FinderPath(
+				return new Object[] {
+					weDeployAuthTokenModelImpl.getToken(),
+					weDeployAuthTokenModelImpl.getType()
+				};
+			},
+			baseModel -> {
+				WeDeployAuthTokenModelImpl weDeployAuthTokenModelImpl =
+					(WeDeployAuthTokenModelImpl)baseModel;
+
+				return new Object[] {
+					weDeployAuthTokenModelImpl.getOriginalToken(),
+					weDeployAuthTokenModelImpl.getOriginalType()
+				};
+			});
+
+		_finderPathCountByT_T = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByT_T",
-			new String[] {String.class.getName(), Integer.class.getName()});
+			new String[] {String.class.getName(), Integer.class.getName()},
+			WeDeployAuthTokenModelImpl.TOKEN_COLUMN_BITMASK |
+			WeDeployAuthTokenModelImpl.TYPE_COLUMN_BITMASK,
+			baseModel -> {
+				WeDeployAuthTokenModelImpl weDeployAuthTokenModelImpl =
+					(WeDeployAuthTokenModelImpl)baseModel;
 
-		_finderPathFetchByCI_T_T = new FinderPath(
+				return new Object[] {
+					weDeployAuthTokenModelImpl.getToken(),
+					weDeployAuthTokenModelImpl.getType()
+				};
+			},
+			baseModel -> {
+				WeDeployAuthTokenModelImpl weDeployAuthTokenModelImpl =
+					(WeDeployAuthTokenModelImpl)baseModel;
+
+				return new Object[] {
+					weDeployAuthTokenModelImpl.getOriginalToken(),
+					weDeployAuthTokenModelImpl.getOriginalType()
+				};
+			});
+
+		_finderPathFetchByCI_T_T = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, WeDeployAuthTokenImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByCI_T_T",
 			new String[] {
@@ -1407,23 +1362,67 @@ public class WeDeployAuthTokenPersistenceImpl
 			},
 			WeDeployAuthTokenModelImpl.CLIENTID_COLUMN_BITMASK |
 			WeDeployAuthTokenModelImpl.TOKEN_COLUMN_BITMASK |
-			WeDeployAuthTokenModelImpl.TYPE_COLUMN_BITMASK);
+			WeDeployAuthTokenModelImpl.TYPE_COLUMN_BITMASK,
+			baseModel -> {
+				WeDeployAuthTokenModelImpl weDeployAuthTokenModelImpl =
+					(WeDeployAuthTokenModelImpl)baseModel;
 
-		_finderPathCountByCI_T_T = new FinderPath(
+				return new Object[] {
+					weDeployAuthTokenModelImpl.getClientId(),
+					weDeployAuthTokenModelImpl.getToken(),
+					weDeployAuthTokenModelImpl.getType()
+				};
+			},
+			baseModel -> {
+				WeDeployAuthTokenModelImpl weDeployAuthTokenModelImpl =
+					(WeDeployAuthTokenModelImpl)baseModel;
+
+				return new Object[] {
+					weDeployAuthTokenModelImpl.getOriginalClientId(),
+					weDeployAuthTokenModelImpl.getOriginalToken(),
+					weDeployAuthTokenModelImpl.getOriginalType()
+				};
+			});
+
+		_finderPathCountByCI_T_T = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCI_T_T",
 			new String[] {
 				String.class.getName(), String.class.getName(),
 				Integer.class.getName()
+			},
+			WeDeployAuthTokenModelImpl.CLIENTID_COLUMN_BITMASK |
+			WeDeployAuthTokenModelImpl.TOKEN_COLUMN_BITMASK |
+			WeDeployAuthTokenModelImpl.TYPE_COLUMN_BITMASK,
+			baseModel -> {
+				WeDeployAuthTokenModelImpl weDeployAuthTokenModelImpl =
+					(WeDeployAuthTokenModelImpl)baseModel;
+
+				return new Object[] {
+					weDeployAuthTokenModelImpl.getClientId(),
+					weDeployAuthTokenModelImpl.getToken(),
+					weDeployAuthTokenModelImpl.getType()
+				};
+			},
+			baseModel -> {
+				WeDeployAuthTokenModelImpl weDeployAuthTokenModelImpl =
+					(WeDeployAuthTokenModelImpl)baseModel;
+
+				return new Object[] {
+					weDeployAuthTokenModelImpl.getOriginalClientId(),
+					weDeployAuthTokenModelImpl.getOriginalToken(),
+					weDeployAuthTokenModelImpl.getOriginalType()
+				};
 			});
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(WeDeployAuthTokenImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@Override

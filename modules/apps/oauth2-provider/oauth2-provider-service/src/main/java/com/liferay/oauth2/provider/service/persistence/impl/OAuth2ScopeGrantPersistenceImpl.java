@@ -1127,10 +1127,6 @@ public class OAuth2ScopeGrantPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(OAuth2ScopeGrantImpl.class);
-
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -1147,19 +1143,10 @@ public class OAuth2ScopeGrantPersistenceImpl
 			oAuth2ScopeGrant.getPrimaryKey(), oAuth2ScopeGrant,
 			_columnBitmaskEnabled,
 			((OAuth2ScopeGrantModelImpl)oAuth2ScopeGrant).getColumnBitmask());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache(
-			(OAuth2ScopeGrantModelImpl)oAuth2ScopeGrant, true);
 	}
 
 	@Override
 	public void clearCache(List<OAuth2ScopeGrant> oAuth2ScopeGrants) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (OAuth2ScopeGrant oAuth2ScopeGrant : oAuth2ScopeGrants) {
 			entityCache.removeResult(
 				entityCacheEnabled, OAuth2ScopeGrantImpl.class,
@@ -1167,18 +1154,11 @@ public class OAuth2ScopeGrantPersistenceImpl
 				_columnBitmaskEnabled,
 				((OAuth2ScopeGrantModelImpl)oAuth2ScopeGrant).
 					getColumnBitmask());
-
-			clearUniqueFindersCache(
-				(OAuth2ScopeGrantModelImpl)oAuth2ScopeGrant, true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				entityCacheEnabled, OAuth2ScopeGrantImpl.class, primaryKey);
@@ -1201,40 +1181,6 @@ public class OAuth2ScopeGrantPersistenceImpl
 		finderCache.putResult(
 			_finderPathFetchByC_O_A_B_S, args, oAuth2ScopeGrantModelImpl,
 			false);
-	}
-
-	protected void clearUniqueFindersCache(
-		OAuth2ScopeGrantModelImpl oAuth2ScopeGrantModelImpl,
-		boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				oAuth2ScopeGrantModelImpl.getCompanyId(),
-				oAuth2ScopeGrantModelImpl.getOAuth2ApplicationScopeAliasesId(),
-				oAuth2ScopeGrantModelImpl.getApplicationName(),
-				oAuth2ScopeGrantModelImpl.getBundleSymbolicName(),
-				oAuth2ScopeGrantModelImpl.getScope()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_O_A_B_S, args);
-			finderCache.removeResult(_finderPathFetchByC_O_A_B_S, args);
-		}
-
-		if ((oAuth2ScopeGrantModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_O_A_B_S.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				oAuth2ScopeGrantModelImpl.getOriginalCompanyId(),
-				oAuth2ScopeGrantModelImpl.
-					getOriginalOAuth2ApplicationScopeAliasesId(),
-				oAuth2ScopeGrantModelImpl.getOriginalApplicationName(),
-				oAuth2ScopeGrantModelImpl.getOriginalBundleSymbolicName(),
-				oAuth2ScopeGrantModelImpl.getOriginalScope()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_O_A_B_S, args);
-			finderCache.removeResult(_finderPathFetchByC_O_A_B_S, args);
-		}
 	}
 
 	/**
@@ -1390,62 +1336,12 @@ public class OAuth2ScopeGrantPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!_columnBitmaskEnabled) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {
-				oAuth2ScopeGrantModelImpl.getOAuth2ApplicationScopeAliasesId()
-			};
-
-			finderCache.removeResult(
-				_finderPathCountByOAuth2ApplicationScopeAliasesId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByOAuth2ApplicationScopeAliasesId,
-				args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((oAuth2ScopeGrantModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByOAuth2ApplicationScopeAliasesId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					oAuth2ScopeGrantModelImpl.
-						getOriginalOAuth2ApplicationScopeAliasesId()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByOAuth2ApplicationScopeAliasesId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByOAuth2ApplicationScopeAliasesId,
-					args);
-
-				args = new Object[] {
-					oAuth2ScopeGrantModelImpl.
-						getOAuth2ApplicationScopeAliasesId()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByOAuth2ApplicationScopeAliasesId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByOAuth2ApplicationScopeAliasesId,
-					args);
-			}
-		}
-
 		entityCache.putResult(
 			entityCacheEnabled, OAuth2ScopeGrantImpl.class,
 			oAuth2ScopeGrant.getPrimaryKey(), oAuth2ScopeGrant, false,
 			_columnBitmaskEnabled,
 			((OAuth2ScopeGrantModelImpl)oAuth2ScopeGrant).getColumnBitmask());
 
-		clearUniqueFindersCache(oAuth2ScopeGrantModelImpl, false);
 		cacheUniqueFindersCache(oAuth2ScopeGrantModelImpl);
 
 		oAuth2ScopeGrant.resetOriginalValues();
@@ -2069,22 +1965,22 @@ public class OAuth2ScopeGrantPersistenceImpl
 				"OA2Auths_OA2ScopeGrants", "companyId", "oAuth2ScopeGrantId",
 				"oAuth2AuthorizationId", this, OAuth2Authorization.class);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, OAuth2ScopeGrantImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, OAuth2ScopeGrantImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
 		_finderPathWithPaginationFindByOAuth2ApplicationScopeAliasesId =
-			new FinderPath(
+			FinderPath.create(
 				entityCacheEnabled, finderCacheEnabled,
 				OAuth2ScopeGrantImpl.class,
 				FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
@@ -2095,22 +1991,60 @@ public class OAuth2ScopeGrantPersistenceImpl
 				});
 
 		_finderPathWithoutPaginationFindByOAuth2ApplicationScopeAliasesId =
-			new FinderPath(
+			FinderPath.create(
 				entityCacheEnabled, finderCacheEnabled,
 				OAuth2ScopeGrantImpl.class,
 				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 				"findByOAuth2ApplicationScopeAliasesId",
 				new String[] {Long.class.getName()},
 				OAuth2ScopeGrantModelImpl.
-					OAUTH2APPLICATIONSCOPEALIASESID_COLUMN_BITMASK);
+					OAUTH2APPLICATIONSCOPEALIASESID_COLUMN_BITMASK,
+				baseModel -> {
+					OAuth2ScopeGrantModelImpl oAuth2ScopeGrantModelImpl =
+						(OAuth2ScopeGrantModelImpl)baseModel;
 
-		_finderPathCountByOAuth2ApplicationScopeAliasesId = new FinderPath(
+					return new Object[] {
+						oAuth2ScopeGrantModelImpl.
+							getOAuth2ApplicationScopeAliasesId()
+					};
+				},
+				baseModel -> {
+					OAuth2ScopeGrantModelImpl oAuth2ScopeGrantModelImpl =
+						(OAuth2ScopeGrantModelImpl)baseModel;
+
+					return new Object[] {
+						oAuth2ScopeGrantModelImpl.
+							getOriginalOAuth2ApplicationScopeAliasesId()
+					};
+				});
+
+		_finderPathCountByOAuth2ApplicationScopeAliasesId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByOAuth2ApplicationScopeAliasesId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			OAuth2ScopeGrantModelImpl.
+				OAUTH2APPLICATIONSCOPEALIASESID_COLUMN_BITMASK,
+			baseModel -> {
+				OAuth2ScopeGrantModelImpl oAuth2ScopeGrantModelImpl =
+					(OAuth2ScopeGrantModelImpl)baseModel;
 
-		_finderPathFetchByC_O_A_B_S = new FinderPath(
+				return new Object[] {
+					oAuth2ScopeGrantModelImpl.
+						getOAuth2ApplicationScopeAliasesId()
+				};
+			},
+			baseModel -> {
+				OAuth2ScopeGrantModelImpl oAuth2ScopeGrantModelImpl =
+					(OAuth2ScopeGrantModelImpl)baseModel;
+
+				return new Object[] {
+					oAuth2ScopeGrantModelImpl.
+						getOriginalOAuth2ApplicationScopeAliasesId()
+				};
+			});
+
+		_finderPathFetchByC_O_A_B_S = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, OAuth2ScopeGrantImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_O_A_B_S",
 			new String[] {
@@ -2123,24 +2057,83 @@ public class OAuth2ScopeGrantPersistenceImpl
 				OAUTH2APPLICATIONSCOPEALIASESID_COLUMN_BITMASK |
 			OAuth2ScopeGrantModelImpl.APPLICATIONNAME_COLUMN_BITMASK |
 			OAuth2ScopeGrantModelImpl.BUNDLESYMBOLICNAME_COLUMN_BITMASK |
-			OAuth2ScopeGrantModelImpl.SCOPE_COLUMN_BITMASK);
+			OAuth2ScopeGrantModelImpl.SCOPE_COLUMN_BITMASK,
+			baseModel -> {
+				OAuth2ScopeGrantModelImpl oAuth2ScopeGrantModelImpl =
+					(OAuth2ScopeGrantModelImpl)baseModel;
 
-		_finderPathCountByC_O_A_B_S = new FinderPath(
+				return new Object[] {
+					oAuth2ScopeGrantModelImpl.getCompanyId(),
+					oAuth2ScopeGrantModelImpl.
+						getOAuth2ApplicationScopeAliasesId(),
+					oAuth2ScopeGrantModelImpl.getApplicationName(),
+					oAuth2ScopeGrantModelImpl.getBundleSymbolicName(),
+					oAuth2ScopeGrantModelImpl.getScope()
+				};
+			},
+			baseModel -> {
+				OAuth2ScopeGrantModelImpl oAuth2ScopeGrantModelImpl =
+					(OAuth2ScopeGrantModelImpl)baseModel;
+
+				return new Object[] {
+					oAuth2ScopeGrantModelImpl.getOriginalCompanyId(),
+					oAuth2ScopeGrantModelImpl.
+						getOriginalOAuth2ApplicationScopeAliasesId(),
+					oAuth2ScopeGrantModelImpl.getOriginalApplicationName(),
+					oAuth2ScopeGrantModelImpl.getOriginalBundleSymbolicName(),
+					oAuth2ScopeGrantModelImpl.getOriginalScope()
+				};
+			});
+
+		_finderPathCountByC_O_A_B_S = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_O_A_B_S",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName(), String.class.getName(),
 				String.class.getName()
+			},
+			OAuth2ScopeGrantModelImpl.COMPANYID_COLUMN_BITMASK |
+			OAuth2ScopeGrantModelImpl.
+				OAUTH2APPLICATIONSCOPEALIASESID_COLUMN_BITMASK |
+			OAuth2ScopeGrantModelImpl.APPLICATIONNAME_COLUMN_BITMASK |
+			OAuth2ScopeGrantModelImpl.BUNDLESYMBOLICNAME_COLUMN_BITMASK |
+			OAuth2ScopeGrantModelImpl.SCOPE_COLUMN_BITMASK,
+			baseModel -> {
+				OAuth2ScopeGrantModelImpl oAuth2ScopeGrantModelImpl =
+					(OAuth2ScopeGrantModelImpl)baseModel;
+
+				return new Object[] {
+					oAuth2ScopeGrantModelImpl.getCompanyId(),
+					oAuth2ScopeGrantModelImpl.
+						getOAuth2ApplicationScopeAliasesId(),
+					oAuth2ScopeGrantModelImpl.getApplicationName(),
+					oAuth2ScopeGrantModelImpl.getBundleSymbolicName(),
+					oAuth2ScopeGrantModelImpl.getScope()
+				};
+			},
+			baseModel -> {
+				OAuth2ScopeGrantModelImpl oAuth2ScopeGrantModelImpl =
+					(OAuth2ScopeGrantModelImpl)baseModel;
+
+				return new Object[] {
+					oAuth2ScopeGrantModelImpl.getOriginalCompanyId(),
+					oAuth2ScopeGrantModelImpl.
+						getOriginalOAuth2ApplicationScopeAliasesId(),
+					oAuth2ScopeGrantModelImpl.getOriginalApplicationName(),
+					oAuth2ScopeGrantModelImpl.getOriginalBundleSymbolicName(),
+					oAuth2ScopeGrantModelImpl.getOriginalScope()
+				};
 			});
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(OAuth2ScopeGrantImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		TableMapperFactory.removeTableMapper(
 			"OA2Auths_OA2ScopeGrants#oAuth2ScopeGrantId");

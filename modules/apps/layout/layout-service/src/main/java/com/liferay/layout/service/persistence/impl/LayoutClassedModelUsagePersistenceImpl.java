@@ -4359,10 +4359,6 @@ public class LayoutClassedModelUsagePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(LayoutClassedModelUsageImpl.class);
-
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -4380,20 +4376,11 @@ public class LayoutClassedModelUsagePersistenceImpl
 			_columnBitmaskEnabled,
 			((LayoutClassedModelUsageModelImpl)layoutClassedModelUsage).
 				getColumnBitmask());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache(
-			(LayoutClassedModelUsageModelImpl)layoutClassedModelUsage, true);
 	}
 
 	@Override
 	public void clearCache(
 		List<LayoutClassedModelUsage> layoutClassedModelUsages) {
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (LayoutClassedModelUsage layoutClassedModelUsage :
 				layoutClassedModelUsages) {
@@ -4404,19 +4391,11 @@ public class LayoutClassedModelUsagePersistenceImpl
 				layoutClassedModelUsage, _columnBitmaskEnabled,
 				((LayoutClassedModelUsageModelImpl)layoutClassedModelUsage).
 					getColumnBitmask());
-
-			clearUniqueFindersCache(
-				(LayoutClassedModelUsageModelImpl)layoutClassedModelUsage,
-				true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				entityCacheEnabled, LayoutClassedModelUsageImpl.class,
@@ -4451,61 +4430,6 @@ public class LayoutClassedModelUsagePersistenceImpl
 		finderCache.putResult(
 			_finderPathFetchByC_C_CK_CT_P, args,
 			layoutClassedModelUsageModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		LayoutClassedModelUsageModelImpl layoutClassedModelUsageModelImpl,
-		boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				layoutClassedModelUsageModelImpl.getUuid(),
-				layoutClassedModelUsageModelImpl.getGroupId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUUID_G, args);
-			finderCache.removeResult(_finderPathFetchByUUID_G, args);
-		}
-
-		if ((layoutClassedModelUsageModelImpl.getColumnBitmask() &
-			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				layoutClassedModelUsageModelImpl.getOriginalUuid(),
-				layoutClassedModelUsageModelImpl.getOriginalGroupId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUUID_G, args);
-			finderCache.removeResult(_finderPathFetchByUUID_G, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				layoutClassedModelUsageModelImpl.getClassNameId(),
-				layoutClassedModelUsageModelImpl.getClassPK(),
-				layoutClassedModelUsageModelImpl.getContainerKey(),
-				layoutClassedModelUsageModelImpl.getContainerType(),
-				layoutClassedModelUsageModelImpl.getPlid()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_C_CK_CT_P, args);
-			finderCache.removeResult(_finderPathFetchByC_C_CK_CT_P, args);
-		}
-
-		if ((layoutClassedModelUsageModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_C_CK_CT_P.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				layoutClassedModelUsageModelImpl.getOriginalClassNameId(),
-				layoutClassedModelUsageModelImpl.getOriginalClassPK(),
-				layoutClassedModelUsageModelImpl.getOriginalContainerKey(),
-				layoutClassedModelUsageModelImpl.getOriginalContainerType(),
-				layoutClassedModelUsageModelImpl.getOriginalPlid()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_C_CK_CT_P, args);
-			finderCache.removeResult(_finderPathFetchByC_C_CK_CT_P, args);
-		}
 	}
 
 	/**
@@ -4723,208 +4647,6 @@ public class LayoutClassedModelUsagePersistenceImpl
 			return layoutClassedModelUsage;
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!_columnBitmaskEnabled) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {
-				layoutClassedModelUsageModelImpl.getUuid()
-			};
-
-			finderCache.removeResult(_finderPathCountByUuid, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid, args);
-
-			args = new Object[] {
-				layoutClassedModelUsageModelImpl.getUuid(),
-				layoutClassedModelUsageModelImpl.getCompanyId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUuid_C, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid_C, args);
-
-			args = new Object[] {layoutClassedModelUsageModelImpl.getPlid()};
-
-			finderCache.removeResult(_finderPathCountByPlid, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByPlid, args);
-
-			args = new Object[] {
-				layoutClassedModelUsageModelImpl.getClassNameId(),
-				layoutClassedModelUsageModelImpl.getClassPK()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_C, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByC_C, args);
-
-			args = new Object[] {
-				layoutClassedModelUsageModelImpl.getClassNameId(),
-				layoutClassedModelUsageModelImpl.getClassPK(),
-				layoutClassedModelUsageModelImpl.getType()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_C_T, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByC_C_T, args);
-
-			args = new Object[] {
-				layoutClassedModelUsageModelImpl.getContainerKey(),
-				layoutClassedModelUsageModelImpl.getContainerType(),
-				layoutClassedModelUsageModelImpl.getPlid()
-			};
-
-			finderCache.removeResult(_finderPathCountByCK_CT_P, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByCK_CT_P, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((layoutClassedModelUsageModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					layoutClassedModelUsageModelImpl.getOriginalUuid()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-
-				args = new Object[] {
-					layoutClassedModelUsageModelImpl.getUuid()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-			}
-
-			if ((layoutClassedModelUsageModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					layoutClassedModelUsageModelImpl.getOriginalUuid(),
-					layoutClassedModelUsageModelImpl.getOriginalCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-
-				args = new Object[] {
-					layoutClassedModelUsageModelImpl.getUuid(),
-					layoutClassedModelUsageModelImpl.getCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-			}
-
-			if ((layoutClassedModelUsageModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByPlid.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					layoutClassedModelUsageModelImpl.getOriginalPlid()
-				};
-
-				finderCache.removeResult(_finderPathCountByPlid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByPlid, args);
-
-				args = new Object[] {
-					layoutClassedModelUsageModelImpl.getPlid()
-				};
-
-				finderCache.removeResult(_finderPathCountByPlid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByPlid, args);
-			}
-
-			if ((layoutClassedModelUsageModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					layoutClassedModelUsageModelImpl.getOriginalClassNameId(),
-					layoutClassedModelUsageModelImpl.getOriginalClassPK()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_C, args);
-
-				args = new Object[] {
-					layoutClassedModelUsageModelImpl.getClassNameId(),
-					layoutClassedModelUsageModelImpl.getClassPK()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_C, args);
-			}
-
-			if ((layoutClassedModelUsageModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_C_T.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					layoutClassedModelUsageModelImpl.getOriginalClassNameId(),
-					layoutClassedModelUsageModelImpl.getOriginalClassPK(),
-					layoutClassedModelUsageModelImpl.getOriginalType()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_C_T, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_C_T, args);
-
-				args = new Object[] {
-					layoutClassedModelUsageModelImpl.getClassNameId(),
-					layoutClassedModelUsageModelImpl.getClassPK(),
-					layoutClassedModelUsageModelImpl.getType()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_C_T, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_C_T, args);
-			}
-
-			if ((layoutClassedModelUsageModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByCK_CT_P.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					layoutClassedModelUsageModelImpl.getOriginalContainerKey(),
-					layoutClassedModelUsageModelImpl.getOriginalContainerType(),
-					layoutClassedModelUsageModelImpl.getOriginalPlid()
-				};
-
-				finderCache.removeResult(_finderPathCountByCK_CT_P, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByCK_CT_P, args);
-
-				args = new Object[] {
-					layoutClassedModelUsageModelImpl.getContainerKey(),
-					layoutClassedModelUsageModelImpl.getContainerType(),
-					layoutClassedModelUsageModelImpl.getPlid()
-				};
-
-				finderCache.removeResult(_finderPathCountByCK_CT_P, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByCK_CT_P, args);
-			}
-		}
-
 		entityCache.putResult(
 			entityCacheEnabled, LayoutClassedModelUsageImpl.class,
 			layoutClassedModelUsage.getPrimaryKey(), layoutClassedModelUsage,
@@ -4932,7 +4654,6 @@ public class LayoutClassedModelUsagePersistenceImpl
 			((LayoutClassedModelUsageModelImpl)layoutClassedModelUsage).
 				getColumnBitmask());
 
-		clearUniqueFindersCache(layoutClassedModelUsageModelImpl, false);
 		cacheUniqueFindersCache(layoutClassedModelUsageModelImpl);
 
 		layoutClassedModelUsage.resetOriginalValues();
@@ -5420,23 +5141,23 @@ public class LayoutClassedModelUsagePersistenceImpl
 		LayoutClassedModelUsageModelImpl.setFinderCacheEnabled(
 			finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			LayoutClassedModelUsageImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			LayoutClassedModelUsageImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByUuid = new FinderPath(
+		_finderPathWithPaginationFindByUuid = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			LayoutClassedModelUsageImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
@@ -5445,32 +5166,111 @@ public class LayoutClassedModelUsagePersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid = new FinderPath(
+		_finderPathWithoutPaginationFindByUuid = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			LayoutClassedModelUsageImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
 			new String[] {String.class.getName()},
-			LayoutClassedModelUsageModelImpl.UUID_COLUMN_BITMASK);
+			LayoutClassedModelUsageModelImpl.UUID_COLUMN_BITMASK,
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
 
-		_finderPathCountByUuid = new FinderPath(
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getUuid()
+				};
+			},
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
+
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getOriginalUuid()
+				};
+			});
+
+		_finderPathCountByUuid = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
-			new String[] {String.class.getName()});
+			new String[] {String.class.getName()},
+			LayoutClassedModelUsageModelImpl.UUID_COLUMN_BITMASK,
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
 
-		_finderPathFetchByUUID_G = new FinderPath(
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getUuid()
+				};
+			},
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
+
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getOriginalUuid()
+				};
+			});
+
+		_finderPathFetchByUUID_G = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			LayoutClassedModelUsageImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
 			LayoutClassedModelUsageModelImpl.UUID_COLUMN_BITMASK |
-			LayoutClassedModelUsageModelImpl.GROUPID_COLUMN_BITMASK);
+			LayoutClassedModelUsageModelImpl.GROUPID_COLUMN_BITMASK,
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
 
-		_finderPathCountByUUID_G = new FinderPath(
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getUuid(),
+					layoutClassedModelUsageModelImpl.getGroupId()
+				};
+			},
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
+
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getOriginalUuid(),
+					layoutClassedModelUsageModelImpl.getOriginalGroupId()
+				};
+			});
+
+		_finderPathCountByUUID_G = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUUID_G",
-			new String[] {String.class.getName(), Long.class.getName()});
+			new String[] {String.class.getName(), Long.class.getName()},
+			LayoutClassedModelUsageModelImpl.UUID_COLUMN_BITMASK |
+			LayoutClassedModelUsageModelImpl.GROUPID_COLUMN_BITMASK,
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByUuid_C = new FinderPath(
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getUuid(),
+					layoutClassedModelUsageModelImpl.getGroupId()
+				};
+			},
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
+
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getOriginalUuid(),
+					layoutClassedModelUsageModelImpl.getOriginalGroupId()
+				};
+			});
+
+		_finderPathWithPaginationFindByUuid_C = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			LayoutClassedModelUsageImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
@@ -5480,20 +5280,62 @@ public class LayoutClassedModelUsagePersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
+		_finderPathWithoutPaginationFindByUuid_C = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			LayoutClassedModelUsageImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
 			LayoutClassedModelUsageModelImpl.UUID_COLUMN_BITMASK |
-			LayoutClassedModelUsageModelImpl.COMPANYID_COLUMN_BITMASK);
+			LayoutClassedModelUsageModelImpl.COMPANYID_COLUMN_BITMASK,
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
 
-		_finderPathCountByUuid_C = new FinderPath(
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getUuid(),
+					layoutClassedModelUsageModelImpl.getCompanyId()
+				};
+			},
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
+
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getOriginalUuid(),
+					layoutClassedModelUsageModelImpl.getOriginalCompanyId()
+				};
+			});
+
+		_finderPathCountByUuid_C = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()});
+			new String[] {String.class.getName(), Long.class.getName()},
+			LayoutClassedModelUsageModelImpl.UUID_COLUMN_BITMASK |
+			LayoutClassedModelUsageModelImpl.COMPANYID_COLUMN_BITMASK,
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByPlid = new FinderPath(
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getUuid(),
+					layoutClassedModelUsageModelImpl.getCompanyId()
+				};
+			},
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
+
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getOriginalUuid(),
+					layoutClassedModelUsageModelImpl.getOriginalCompanyId()
+				};
+			});
+
+		_finderPathWithPaginationFindByPlid = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			LayoutClassedModelUsageImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByPlid",
@@ -5502,19 +5344,56 @@ public class LayoutClassedModelUsagePersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByPlid = new FinderPath(
+		_finderPathWithoutPaginationFindByPlid = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			LayoutClassedModelUsageImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByPlid",
 			new String[] {Long.class.getName()},
-			LayoutClassedModelUsageModelImpl.PLID_COLUMN_BITMASK);
+			LayoutClassedModelUsageModelImpl.PLID_COLUMN_BITMASK,
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
 
-		_finderPathCountByPlid = new FinderPath(
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getPlid()
+				};
+			},
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
+
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getOriginalPlid()
+				};
+			});
+
+		_finderPathCountByPlid = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByPlid",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			LayoutClassedModelUsageModelImpl.PLID_COLUMN_BITMASK,
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByC_C = new FinderPath(
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getPlid()
+				};
+			},
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
+
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getOriginalPlid()
+				};
+			});
+
+		_finderPathWithPaginationFindByC_C = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			LayoutClassedModelUsageImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C",
@@ -5524,20 +5403,62 @@ public class LayoutClassedModelUsagePersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_C = new FinderPath(
+		_finderPathWithoutPaginationFindByC_C = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			LayoutClassedModelUsageImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
 			LayoutClassedModelUsageModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			LayoutClassedModelUsageModelImpl.CLASSPK_COLUMN_BITMASK);
+			LayoutClassedModelUsageModelImpl.CLASSPK_COLUMN_BITMASK,
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
 
-		_finderPathCountByC_C = new FinderPath(
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getClassNameId(),
+					layoutClassedModelUsageModelImpl.getClassPK()
+				};
+			},
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
+
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getOriginalClassNameId(),
+					layoutClassedModelUsageModelImpl.getOriginalClassPK()
+				};
+			});
+
+		_finderPathCountByC_C = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
-			new String[] {Long.class.getName(), Long.class.getName()});
+			new String[] {Long.class.getName(), Long.class.getName()},
+			LayoutClassedModelUsageModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+			LayoutClassedModelUsageModelImpl.CLASSPK_COLUMN_BITMASK,
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByC_C_T = new FinderPath(
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getClassNameId(),
+					layoutClassedModelUsageModelImpl.getClassPK()
+				};
+			},
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
+
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getOriginalClassNameId(),
+					layoutClassedModelUsageModelImpl.getOriginalClassPK()
+				};
+			});
+
+		_finderPathWithPaginationFindByC_C_T = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			LayoutClassedModelUsageImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C_T",
@@ -5547,7 +5468,7 @@ public class LayoutClassedModelUsagePersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_C_T = new FinderPath(
+		_finderPathWithoutPaginationFindByC_C_T = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			LayoutClassedModelUsageImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C_T",
@@ -5557,17 +5478,64 @@ public class LayoutClassedModelUsagePersistenceImpl
 			},
 			LayoutClassedModelUsageModelImpl.CLASSNAMEID_COLUMN_BITMASK |
 			LayoutClassedModelUsageModelImpl.CLASSPK_COLUMN_BITMASK |
-			LayoutClassedModelUsageModelImpl.TYPE_COLUMN_BITMASK);
+			LayoutClassedModelUsageModelImpl.TYPE_COLUMN_BITMASK,
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
 
-		_finderPathCountByC_C_T = new FinderPath(
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getClassNameId(),
+					layoutClassedModelUsageModelImpl.getClassPK(),
+					layoutClassedModelUsageModelImpl.getType()
+				};
+			},
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
+
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getOriginalClassNameId(),
+					layoutClassedModelUsageModelImpl.getOriginalClassPK(),
+					layoutClassedModelUsageModelImpl.getOriginalType()
+				};
+			});
+
+		_finderPathCountByC_C_T = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C_T",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
+			},
+			LayoutClassedModelUsageModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+			LayoutClassedModelUsageModelImpl.CLASSPK_COLUMN_BITMASK |
+			LayoutClassedModelUsageModelImpl.TYPE_COLUMN_BITMASK,
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
+
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getClassNameId(),
+					layoutClassedModelUsageModelImpl.getClassPK(),
+					layoutClassedModelUsageModelImpl.getType()
+				};
+			},
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
+
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getOriginalClassNameId(),
+					layoutClassedModelUsageModelImpl.getOriginalClassPK(),
+					layoutClassedModelUsageModelImpl.getOriginalType()
+				};
 			});
 
-		_finderPathWithPaginationFindByCK_CT_P = new FinderPath(
+		_finderPathWithPaginationFindByCK_CT_P = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			LayoutClassedModelUsageImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCK_CT_P",
@@ -5577,7 +5545,7 @@ public class LayoutClassedModelUsagePersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByCK_CT_P = new FinderPath(
+		_finderPathWithoutPaginationFindByCK_CT_P = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			LayoutClassedModelUsageImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCK_CT_P",
@@ -5587,17 +5555,64 @@ public class LayoutClassedModelUsagePersistenceImpl
 			},
 			LayoutClassedModelUsageModelImpl.CONTAINERKEY_COLUMN_BITMASK |
 			LayoutClassedModelUsageModelImpl.CONTAINERTYPE_COLUMN_BITMASK |
-			LayoutClassedModelUsageModelImpl.PLID_COLUMN_BITMASK);
+			LayoutClassedModelUsageModelImpl.PLID_COLUMN_BITMASK,
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
 
-		_finderPathCountByCK_CT_P = new FinderPath(
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getContainerKey(),
+					layoutClassedModelUsageModelImpl.getContainerType(),
+					layoutClassedModelUsageModelImpl.getPlid()
+				};
+			},
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
+
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getOriginalContainerKey(),
+					layoutClassedModelUsageModelImpl.getOriginalContainerType(),
+					layoutClassedModelUsageModelImpl.getOriginalPlid()
+				};
+			});
+
+		_finderPathCountByCK_CT_P = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCK_CT_P",
 			new String[] {
 				String.class.getName(), Long.class.getName(),
 				Long.class.getName()
+			},
+			LayoutClassedModelUsageModelImpl.CONTAINERKEY_COLUMN_BITMASK |
+			LayoutClassedModelUsageModelImpl.CONTAINERTYPE_COLUMN_BITMASK |
+			LayoutClassedModelUsageModelImpl.PLID_COLUMN_BITMASK,
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
+
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getContainerKey(),
+					layoutClassedModelUsageModelImpl.getContainerType(),
+					layoutClassedModelUsageModelImpl.getPlid()
+				};
+			},
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
+
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getOriginalContainerKey(),
+					layoutClassedModelUsageModelImpl.getOriginalContainerType(),
+					layoutClassedModelUsageModelImpl.getOriginalPlid()
+				};
 			});
 
-		_finderPathFetchByC_C_CK_CT_P = new FinderPath(
+		_finderPathFetchByC_C_CK_CT_P = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			LayoutClassedModelUsageImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByC_C_CK_CT_P",
@@ -5610,24 +5625,82 @@ public class LayoutClassedModelUsagePersistenceImpl
 			LayoutClassedModelUsageModelImpl.CLASSPK_COLUMN_BITMASK |
 			LayoutClassedModelUsageModelImpl.CONTAINERKEY_COLUMN_BITMASK |
 			LayoutClassedModelUsageModelImpl.CONTAINERTYPE_COLUMN_BITMASK |
-			LayoutClassedModelUsageModelImpl.PLID_COLUMN_BITMASK);
+			LayoutClassedModelUsageModelImpl.PLID_COLUMN_BITMASK,
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
 
-		_finderPathCountByC_C_CK_CT_P = new FinderPath(
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getClassNameId(),
+					layoutClassedModelUsageModelImpl.getClassPK(),
+					layoutClassedModelUsageModelImpl.getContainerKey(),
+					layoutClassedModelUsageModelImpl.getContainerType(),
+					layoutClassedModelUsageModelImpl.getPlid()
+				};
+			},
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
+
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getOriginalClassNameId(),
+					layoutClassedModelUsageModelImpl.getOriginalClassPK(),
+					layoutClassedModelUsageModelImpl.getOriginalContainerKey(),
+					layoutClassedModelUsageModelImpl.getOriginalContainerType(),
+					layoutClassedModelUsageModelImpl.getOriginalPlid()
+				};
+			});
+
+		_finderPathCountByC_C_CK_CT_P = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C_CK_CT_P",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName(), Long.class.getName(),
 				Long.class.getName()
+			},
+			LayoutClassedModelUsageModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+			LayoutClassedModelUsageModelImpl.CLASSPK_COLUMN_BITMASK |
+			LayoutClassedModelUsageModelImpl.CONTAINERKEY_COLUMN_BITMASK |
+			LayoutClassedModelUsageModelImpl.CONTAINERTYPE_COLUMN_BITMASK |
+			LayoutClassedModelUsageModelImpl.PLID_COLUMN_BITMASK,
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
+
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getClassNameId(),
+					layoutClassedModelUsageModelImpl.getClassPK(),
+					layoutClassedModelUsageModelImpl.getContainerKey(),
+					layoutClassedModelUsageModelImpl.getContainerType(),
+					layoutClassedModelUsageModelImpl.getPlid()
+				};
+			},
+			baseModel -> {
+				LayoutClassedModelUsageModelImpl
+					layoutClassedModelUsageModelImpl =
+						(LayoutClassedModelUsageModelImpl)baseModel;
+
+				return new Object[] {
+					layoutClassedModelUsageModelImpl.getOriginalClassNameId(),
+					layoutClassedModelUsageModelImpl.getOriginalClassPK(),
+					layoutClassedModelUsageModelImpl.getOriginalContainerKey(),
+					layoutClassedModelUsageModelImpl.getOriginalContainerType(),
+					layoutClassedModelUsageModelImpl.getOriginalPlid()
+				};
 			});
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(LayoutClassedModelUsageImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@Override

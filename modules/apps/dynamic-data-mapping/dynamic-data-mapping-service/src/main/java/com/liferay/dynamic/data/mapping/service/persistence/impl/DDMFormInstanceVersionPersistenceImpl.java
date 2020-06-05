@@ -1563,10 +1563,6 @@ public class DDMFormInstanceVersionPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DDMFormInstanceVersionImpl.class);
-
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -1584,20 +1580,11 @@ public class DDMFormInstanceVersionPersistenceImpl
 			_columnBitmaskEnabled,
 			((DDMFormInstanceVersionModelImpl)ddmFormInstanceVersion).
 				getColumnBitmask());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache(
-			(DDMFormInstanceVersionModelImpl)ddmFormInstanceVersion, true);
 	}
 
 	@Override
 	public void clearCache(
 		List<DDMFormInstanceVersion> ddmFormInstanceVersions) {
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (DDMFormInstanceVersion ddmFormInstanceVersion :
 				ddmFormInstanceVersions) {
@@ -1608,18 +1595,11 @@ public class DDMFormInstanceVersionPersistenceImpl
 				_columnBitmaskEnabled,
 				((DDMFormInstanceVersionModelImpl)ddmFormInstanceVersion).
 					getColumnBitmask());
-
-			clearUniqueFindersCache(
-				(DDMFormInstanceVersionModelImpl)ddmFormInstanceVersion, true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				entityCacheEnabled, DDMFormInstanceVersionImpl.class,
@@ -1640,33 +1620,6 @@ public class DDMFormInstanceVersionPersistenceImpl
 		finderCache.putResult(
 			_finderPathFetchByF_V, args, ddmFormInstanceVersionModelImpl,
 			false);
-	}
-
-	protected void clearUniqueFindersCache(
-		DDMFormInstanceVersionModelImpl ddmFormInstanceVersionModelImpl,
-		boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				ddmFormInstanceVersionModelImpl.getFormInstanceId(),
-				ddmFormInstanceVersionModelImpl.getVersion()
-			};
-
-			finderCache.removeResult(_finderPathCountByF_V, args);
-			finderCache.removeResult(_finderPathFetchByF_V, args);
-		}
-
-		if ((ddmFormInstanceVersionModelImpl.getColumnBitmask() &
-			 _finderPathFetchByF_V.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				ddmFormInstanceVersionModelImpl.getOriginalFormInstanceId(),
-				ddmFormInstanceVersionModelImpl.getOriginalVersion()
-			};
-
-			finderCache.removeResult(_finderPathCountByF_V, args);
-			finderCache.removeResult(_finderPathFetchByF_V, args);
-		}
 	}
 
 	/**
@@ -1848,81 +1801,6 @@ public class DDMFormInstanceVersionPersistenceImpl
 			return ddmFormInstanceVersion;
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!_columnBitmaskEnabled) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {
-				ddmFormInstanceVersionModelImpl.getFormInstanceId()
-			};
-
-			finderCache.removeResult(_finderPathCountByFormInstanceId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByFormInstanceId, args);
-
-			args = new Object[] {
-				ddmFormInstanceVersionModelImpl.getFormInstanceId(),
-				ddmFormInstanceVersionModelImpl.getStatus()
-			};
-
-			finderCache.removeResult(_finderPathCountByF_S, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByF_S, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((ddmFormInstanceVersionModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByFormInstanceId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					ddmFormInstanceVersionModelImpl.getOriginalFormInstanceId()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByFormInstanceId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByFormInstanceId, args);
-
-				args = new Object[] {
-					ddmFormInstanceVersionModelImpl.getFormInstanceId()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByFormInstanceId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByFormInstanceId, args);
-			}
-
-			if ((ddmFormInstanceVersionModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByF_S.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					ddmFormInstanceVersionModelImpl.getOriginalFormInstanceId(),
-					ddmFormInstanceVersionModelImpl.getOriginalStatus()
-				};
-
-				finderCache.removeResult(_finderPathCountByF_S, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByF_S, args);
-
-				args = new Object[] {
-					ddmFormInstanceVersionModelImpl.getFormInstanceId(),
-					ddmFormInstanceVersionModelImpl.getStatus()
-				};
-
-				finderCache.removeResult(_finderPathCountByF_S, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByF_S, args);
-			}
-		}
-
 		entityCache.putResult(
 			entityCacheEnabled, DDMFormInstanceVersionImpl.class,
 			ddmFormInstanceVersion.getPrimaryKey(), ddmFormInstanceVersion,
@@ -1930,7 +1808,6 @@ public class DDMFormInstanceVersionPersistenceImpl
 			((DDMFormInstanceVersionModelImpl)ddmFormInstanceVersion).
 				getColumnBitmask());
 
-		clearUniqueFindersCache(ddmFormInstanceVersionModelImpl, false);
 		cacheUniqueFindersCache(ddmFormInstanceVersionModelImpl);
 
 		ddmFormInstanceVersion.resetOriginalValues();
@@ -2413,23 +2290,23 @@ public class DDMFormInstanceVersionPersistenceImpl
 		DDMFormInstanceVersionModelImpl.setFinderCacheEnabled(
 			finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			DDMFormInstanceVersionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			DDMFormInstanceVersionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByFormInstanceId = new FinderPath(
+		_finderPathWithPaginationFindByFormInstanceId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			DDMFormInstanceVersionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByFormInstanceId",
@@ -2438,32 +2315,111 @@ public class DDMFormInstanceVersionPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByFormInstanceId = new FinderPath(
+		_finderPathWithoutPaginationFindByFormInstanceId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			DDMFormInstanceVersionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByFormInstanceId",
 			new String[] {Long.class.getName()},
-			DDMFormInstanceVersionModelImpl.FORMINSTANCEID_COLUMN_BITMASK);
+			DDMFormInstanceVersionModelImpl.FORMINSTANCEID_COLUMN_BITMASK,
+			baseModel -> {
+				DDMFormInstanceVersionModelImpl
+					ddmFormInstanceVersionModelImpl =
+						(DDMFormInstanceVersionModelImpl)baseModel;
 
-		_finderPathCountByFormInstanceId = new FinderPath(
+				return new Object[] {
+					ddmFormInstanceVersionModelImpl.getFormInstanceId()
+				};
+			},
+			baseModel -> {
+				DDMFormInstanceVersionModelImpl
+					ddmFormInstanceVersionModelImpl =
+						(DDMFormInstanceVersionModelImpl)baseModel;
+
+				return new Object[] {
+					ddmFormInstanceVersionModelImpl.getOriginalFormInstanceId()
+				};
+			});
+
+		_finderPathCountByFormInstanceId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByFormInstanceId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			DDMFormInstanceVersionModelImpl.FORMINSTANCEID_COLUMN_BITMASK,
+			baseModel -> {
+				DDMFormInstanceVersionModelImpl
+					ddmFormInstanceVersionModelImpl =
+						(DDMFormInstanceVersionModelImpl)baseModel;
 
-		_finderPathFetchByF_V = new FinderPath(
+				return new Object[] {
+					ddmFormInstanceVersionModelImpl.getFormInstanceId()
+				};
+			},
+			baseModel -> {
+				DDMFormInstanceVersionModelImpl
+					ddmFormInstanceVersionModelImpl =
+						(DDMFormInstanceVersionModelImpl)baseModel;
+
+				return new Object[] {
+					ddmFormInstanceVersionModelImpl.getOriginalFormInstanceId()
+				};
+			});
+
+		_finderPathFetchByF_V = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			DDMFormInstanceVersionImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByF_V",
 			new String[] {Long.class.getName(), String.class.getName()},
 			DDMFormInstanceVersionModelImpl.FORMINSTANCEID_COLUMN_BITMASK |
-			DDMFormInstanceVersionModelImpl.VERSION_COLUMN_BITMASK);
+			DDMFormInstanceVersionModelImpl.VERSION_COLUMN_BITMASK,
+			baseModel -> {
+				DDMFormInstanceVersionModelImpl
+					ddmFormInstanceVersionModelImpl =
+						(DDMFormInstanceVersionModelImpl)baseModel;
 
-		_finderPathCountByF_V = new FinderPath(
+				return new Object[] {
+					ddmFormInstanceVersionModelImpl.getFormInstanceId(),
+					ddmFormInstanceVersionModelImpl.getVersion()
+				};
+			},
+			baseModel -> {
+				DDMFormInstanceVersionModelImpl
+					ddmFormInstanceVersionModelImpl =
+						(DDMFormInstanceVersionModelImpl)baseModel;
+
+				return new Object[] {
+					ddmFormInstanceVersionModelImpl.getOriginalFormInstanceId(),
+					ddmFormInstanceVersionModelImpl.getOriginalVersion()
+				};
+			});
+
+		_finderPathCountByF_V = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByF_V",
-			new String[] {Long.class.getName(), String.class.getName()});
+			new String[] {Long.class.getName(), String.class.getName()},
+			DDMFormInstanceVersionModelImpl.FORMINSTANCEID_COLUMN_BITMASK |
+			DDMFormInstanceVersionModelImpl.VERSION_COLUMN_BITMASK,
+			baseModel -> {
+				DDMFormInstanceVersionModelImpl
+					ddmFormInstanceVersionModelImpl =
+						(DDMFormInstanceVersionModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByF_S = new FinderPath(
+				return new Object[] {
+					ddmFormInstanceVersionModelImpl.getFormInstanceId(),
+					ddmFormInstanceVersionModelImpl.getVersion()
+				};
+			},
+			baseModel -> {
+				DDMFormInstanceVersionModelImpl
+					ddmFormInstanceVersionModelImpl =
+						(DDMFormInstanceVersionModelImpl)baseModel;
+
+				return new Object[] {
+					ddmFormInstanceVersionModelImpl.getOriginalFormInstanceId(),
+					ddmFormInstanceVersionModelImpl.getOriginalVersion()
+				};
+			});
+
+		_finderPathWithPaginationFindByF_S = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			DDMFormInstanceVersionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByF_S",
@@ -2473,26 +2429,69 @@ public class DDMFormInstanceVersionPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByF_S = new FinderPath(
+		_finderPathWithoutPaginationFindByF_S = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			DDMFormInstanceVersionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByF_S",
 			new String[] {Long.class.getName(), Integer.class.getName()},
 			DDMFormInstanceVersionModelImpl.FORMINSTANCEID_COLUMN_BITMASK |
-			DDMFormInstanceVersionModelImpl.STATUS_COLUMN_BITMASK);
+			DDMFormInstanceVersionModelImpl.STATUS_COLUMN_BITMASK,
+			baseModel -> {
+				DDMFormInstanceVersionModelImpl
+					ddmFormInstanceVersionModelImpl =
+						(DDMFormInstanceVersionModelImpl)baseModel;
 
-		_finderPathCountByF_S = new FinderPath(
+				return new Object[] {
+					ddmFormInstanceVersionModelImpl.getFormInstanceId(),
+					ddmFormInstanceVersionModelImpl.getStatus()
+				};
+			},
+			baseModel -> {
+				DDMFormInstanceVersionModelImpl
+					ddmFormInstanceVersionModelImpl =
+						(DDMFormInstanceVersionModelImpl)baseModel;
+
+				return new Object[] {
+					ddmFormInstanceVersionModelImpl.getOriginalFormInstanceId(),
+					ddmFormInstanceVersionModelImpl.getOriginalStatus()
+				};
+			});
+
+		_finderPathCountByF_S = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByF_S",
-			new String[] {Long.class.getName(), Integer.class.getName()});
+			new String[] {Long.class.getName(), Integer.class.getName()},
+			DDMFormInstanceVersionModelImpl.FORMINSTANCEID_COLUMN_BITMASK |
+			DDMFormInstanceVersionModelImpl.STATUS_COLUMN_BITMASK,
+			baseModel -> {
+				DDMFormInstanceVersionModelImpl
+					ddmFormInstanceVersionModelImpl =
+						(DDMFormInstanceVersionModelImpl)baseModel;
+
+				return new Object[] {
+					ddmFormInstanceVersionModelImpl.getFormInstanceId(),
+					ddmFormInstanceVersionModelImpl.getStatus()
+				};
+			},
+			baseModel -> {
+				DDMFormInstanceVersionModelImpl
+					ddmFormInstanceVersionModelImpl =
+						(DDMFormInstanceVersionModelImpl)baseModel;
+
+				return new Object[] {
+					ddmFormInstanceVersionModelImpl.getOriginalFormInstanceId(),
+					ddmFormInstanceVersionModelImpl.getOriginalStatus()
+				};
+			});
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(DDMFormInstanceVersionImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@Override

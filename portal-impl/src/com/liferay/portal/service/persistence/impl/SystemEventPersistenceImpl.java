@@ -2394,10 +2394,6 @@ public class SystemEventPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(SystemEventImpl.class);
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -2414,16 +2410,10 @@ public class SystemEventPersistenceImpl
 			systemEvent.getPrimaryKey(), systemEvent,
 			SystemEventModelImpl.COLUMN_BITMASK_ENABLED,
 			((SystemEventModelImpl)systemEvent).getColumnBitmask());
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@Override
 	public void clearCache(List<SystemEvent> systemEvents) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (SystemEvent systemEvent : systemEvents) {
 			EntityCacheUtil.removeResult(
 				SystemEventModelImpl.ENTITY_CACHE_ENABLED,
@@ -2435,10 +2425,6 @@ public class SystemEventPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				SystemEventModelImpl.ENTITY_CACHE_ENABLED,
@@ -2591,150 +2577,6 @@ public class SystemEventPersistenceImpl
 		}
 		finally {
 			closeSession(session);
-		}
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!SystemEventModelImpl.COLUMN_BITMASK_ENABLED) {
-			FinderCacheUtil.clearCache(
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {systemEventModelImpl.getGroupId()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByGroupId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByGroupId, args);
-
-			args = new Object[] {
-				systemEventModelImpl.getGroupId(),
-				systemEventModelImpl.getSystemEventSetKey()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByG_S, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByG_S, args);
-
-			args = new Object[] {
-				systemEventModelImpl.getGroupId(),
-				systemEventModelImpl.getClassNameId(),
-				systemEventModelImpl.getClassPK()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByG_C_C, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByG_C_C, args);
-
-			args = new Object[] {
-				systemEventModelImpl.getGroupId(),
-				systemEventModelImpl.getClassNameId(),
-				systemEventModelImpl.getClassPK(),
-				systemEventModelImpl.getType()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByG_C_C_T, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByG_C_C_T, args);
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountAll, FINDER_ARGS_EMPTY);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((systemEventModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByGroupId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					systemEventModelImpl.getOriginalGroupId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByGroupId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-
-				args = new Object[] {systemEventModelImpl.getGroupId()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByGroupId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-			}
-
-			if ((systemEventModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByG_S.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					systemEventModelImpl.getOriginalGroupId(),
-					systemEventModelImpl.getOriginalSystemEventSetKey()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByG_S, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByG_S, args);
-
-				args = new Object[] {
-					systemEventModelImpl.getGroupId(),
-					systemEventModelImpl.getSystemEventSetKey()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByG_S, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByG_S, args);
-			}
-
-			if ((systemEventModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByG_C_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					systemEventModelImpl.getOriginalGroupId(),
-					systemEventModelImpl.getOriginalClassNameId(),
-					systemEventModelImpl.getOriginalClassPK()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByG_C_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByG_C_C, args);
-
-				args = new Object[] {
-					systemEventModelImpl.getGroupId(),
-					systemEventModelImpl.getClassNameId(),
-					systemEventModelImpl.getClassPK()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByG_C_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByG_C_C, args);
-			}
-
-			if ((systemEventModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByG_C_C_T.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					systemEventModelImpl.getOriginalGroupId(),
-					systemEventModelImpl.getOriginalClassNameId(),
-					systemEventModelImpl.getOriginalClassPK(),
-					systemEventModelImpl.getOriginalType()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByG_C_C_T, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByG_C_C_T, args);
-
-				args = new Object[] {
-					systemEventModelImpl.getGroupId(),
-					systemEventModelImpl.getClassNameId(),
-					systemEventModelImpl.getClassPK(),
-					systemEventModelImpl.getType()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByG_C_C_T, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByG_C_C_T, args);
-			}
 		}
 
 		EntityCacheUtil.putResult(
@@ -3013,24 +2855,24 @@ public class SystemEventPersistenceImpl
 	 * Initializes the system event persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			SystemEventModelImpl.ENTITY_CACHE_ENABLED,
 			SystemEventModelImpl.FINDER_CACHE_ENABLED, SystemEventImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			SystemEventModelImpl.ENTITY_CACHE_ENABLED,
 			SystemEventModelImpl.FINDER_CACHE_ENABLED, SystemEventImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			SystemEventModelImpl.ENTITY_CACHE_ENABLED,
 			SystemEventModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByGroupId = new FinderPath(
+		_finderPathWithPaginationFindByGroupId = FinderPath.create(
 			SystemEventModelImpl.ENTITY_CACHE_ENABLED,
 			SystemEventModelImpl.FINDER_CACHE_ENABLED, SystemEventImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGroupId",
@@ -3039,21 +2881,46 @@ public class SystemEventPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
+		_finderPathWithoutPaginationFindByGroupId = FinderPath.create(
 			SystemEventModelImpl.ENTITY_CACHE_ENABLED,
 			SystemEventModelImpl.FINDER_CACHE_ENABLED, SystemEventImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
 			new String[] {Long.class.getName()},
 			SystemEventModelImpl.GROUPID_COLUMN_BITMASK |
-			SystemEventModelImpl.CREATEDATE_COLUMN_BITMASK);
+			SystemEventModelImpl.CREATEDATE_COLUMN_BITMASK,
+			baseModel -> {
+				SystemEventModelImpl systemEventModelImpl =
+					(SystemEventModelImpl)baseModel;
 
-		_finderPathCountByGroupId = new FinderPath(
+				return new Object[] {systemEventModelImpl.getGroupId()};
+			},
+			baseModel -> {
+				SystemEventModelImpl systemEventModelImpl =
+					(SystemEventModelImpl)baseModel;
+
+				return new Object[] {systemEventModelImpl.getOriginalGroupId()};
+			});
+
+		_finderPathCountByGroupId = FinderPath.create(
 			SystemEventModelImpl.ENTITY_CACHE_ENABLED,
 			SystemEventModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			SystemEventModelImpl.GROUPID_COLUMN_BITMASK,
+			baseModel -> {
+				SystemEventModelImpl systemEventModelImpl =
+					(SystemEventModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByG_S = new FinderPath(
+				return new Object[] {systemEventModelImpl.getGroupId()};
+			},
+			baseModel -> {
+				SystemEventModelImpl systemEventModelImpl =
+					(SystemEventModelImpl)baseModel;
+
+				return new Object[] {systemEventModelImpl.getOriginalGroupId()};
+			});
+
+		_finderPathWithPaginationFindByG_S = FinderPath.create(
 			SystemEventModelImpl.ENTITY_CACHE_ENABLED,
 			SystemEventModelImpl.FINDER_CACHE_ENABLED, SystemEventImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_S",
@@ -3063,22 +2930,60 @@ public class SystemEventPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByG_S = new FinderPath(
+		_finderPathWithoutPaginationFindByG_S = FinderPath.create(
 			SystemEventModelImpl.ENTITY_CACHE_ENABLED,
 			SystemEventModelImpl.FINDER_CACHE_ENABLED, SystemEventImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_S",
 			new String[] {Long.class.getName(), Long.class.getName()},
 			SystemEventModelImpl.GROUPID_COLUMN_BITMASK |
 			SystemEventModelImpl.SYSTEMEVENTSETKEY_COLUMN_BITMASK |
-			SystemEventModelImpl.CREATEDATE_COLUMN_BITMASK);
+			SystemEventModelImpl.CREATEDATE_COLUMN_BITMASK,
+			baseModel -> {
+				SystemEventModelImpl systemEventModelImpl =
+					(SystemEventModelImpl)baseModel;
 
-		_finderPathCountByG_S = new FinderPath(
+				return new Object[] {
+					systemEventModelImpl.getGroupId(),
+					systemEventModelImpl.getSystemEventSetKey()
+				};
+			},
+			baseModel -> {
+				SystemEventModelImpl systemEventModelImpl =
+					(SystemEventModelImpl)baseModel;
+
+				return new Object[] {
+					systemEventModelImpl.getOriginalGroupId(),
+					systemEventModelImpl.getOriginalSystemEventSetKey()
+				};
+			});
+
+		_finderPathCountByG_S = FinderPath.create(
 			SystemEventModelImpl.ENTITY_CACHE_ENABLED,
 			SystemEventModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_S",
-			new String[] {Long.class.getName(), Long.class.getName()});
+			new String[] {Long.class.getName(), Long.class.getName()},
+			SystemEventModelImpl.GROUPID_COLUMN_BITMASK |
+			SystemEventModelImpl.SYSTEMEVENTSETKEY_COLUMN_BITMASK,
+			baseModel -> {
+				SystemEventModelImpl systemEventModelImpl =
+					(SystemEventModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByG_C_C = new FinderPath(
+				return new Object[] {
+					systemEventModelImpl.getGroupId(),
+					systemEventModelImpl.getSystemEventSetKey()
+				};
+			},
+			baseModel -> {
+				SystemEventModelImpl systemEventModelImpl =
+					(SystemEventModelImpl)baseModel;
+
+				return new Object[] {
+					systemEventModelImpl.getOriginalGroupId(),
+					systemEventModelImpl.getOriginalSystemEventSetKey()
+				};
+			});
+
+		_finderPathWithPaginationFindByG_C_C = FinderPath.create(
 			SystemEventModelImpl.ENTITY_CACHE_ENABLED,
 			SystemEventModelImpl.FINDER_CACHE_ENABLED, SystemEventImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_C_C",
@@ -3088,7 +2993,7 @@ public class SystemEventPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByG_C_C = new FinderPath(
+		_finderPathWithoutPaginationFindByG_C_C = FinderPath.create(
 			SystemEventModelImpl.ENTITY_CACHE_ENABLED,
 			SystemEventModelImpl.FINDER_CACHE_ENABLED, SystemEventImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_C_C",
@@ -3098,17 +3003,60 @@ public class SystemEventPersistenceImpl
 			SystemEventModelImpl.GROUPID_COLUMN_BITMASK |
 			SystemEventModelImpl.CLASSNAMEID_COLUMN_BITMASK |
 			SystemEventModelImpl.CLASSPK_COLUMN_BITMASK |
-			SystemEventModelImpl.CREATEDATE_COLUMN_BITMASK);
+			SystemEventModelImpl.CREATEDATE_COLUMN_BITMASK,
+			baseModel -> {
+				SystemEventModelImpl systemEventModelImpl =
+					(SystemEventModelImpl)baseModel;
 
-		_finderPathCountByG_C_C = new FinderPath(
+				return new Object[] {
+					systemEventModelImpl.getGroupId(),
+					systemEventModelImpl.getClassNameId(),
+					systemEventModelImpl.getClassPK()
+				};
+			},
+			baseModel -> {
+				SystemEventModelImpl systemEventModelImpl =
+					(SystemEventModelImpl)baseModel;
+
+				return new Object[] {
+					systemEventModelImpl.getOriginalGroupId(),
+					systemEventModelImpl.getOriginalClassNameId(),
+					systemEventModelImpl.getOriginalClassPK()
+				};
+			});
+
+		_finderPathCountByG_C_C = FinderPath.create(
 			SystemEventModelImpl.ENTITY_CACHE_ENABLED,
 			SystemEventModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C_C",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
+			},
+			SystemEventModelImpl.GROUPID_COLUMN_BITMASK |
+			SystemEventModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+			SystemEventModelImpl.CLASSPK_COLUMN_BITMASK,
+			baseModel -> {
+				SystemEventModelImpl systemEventModelImpl =
+					(SystemEventModelImpl)baseModel;
+
+				return new Object[] {
+					systemEventModelImpl.getGroupId(),
+					systemEventModelImpl.getClassNameId(),
+					systemEventModelImpl.getClassPK()
+				};
+			},
+			baseModel -> {
+				SystemEventModelImpl systemEventModelImpl =
+					(SystemEventModelImpl)baseModel;
+
+				return new Object[] {
+					systemEventModelImpl.getOriginalGroupId(),
+					systemEventModelImpl.getOriginalClassNameId(),
+					systemEventModelImpl.getOriginalClassPK()
+				};
 			});
 
-		_finderPathWithPaginationFindByG_C_C_T = new FinderPath(
+		_finderPathWithPaginationFindByG_C_C_T = FinderPath.create(
 			SystemEventModelImpl.ENTITY_CACHE_ENABLED,
 			SystemEventModelImpl.FINDER_CACHE_ENABLED, SystemEventImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_C_C_T",
@@ -3119,7 +3067,7 @@ public class SystemEventPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByG_C_C_T = new FinderPath(
+		_finderPathWithoutPaginationFindByG_C_C_T = FinderPath.create(
 			SystemEventModelImpl.ENTITY_CACHE_ENABLED,
 			SystemEventModelImpl.FINDER_CACHE_ENABLED, SystemEventImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_C_C_T",
@@ -3131,23 +3079,72 @@ public class SystemEventPersistenceImpl
 			SystemEventModelImpl.CLASSNAMEID_COLUMN_BITMASK |
 			SystemEventModelImpl.CLASSPK_COLUMN_BITMASK |
 			SystemEventModelImpl.TYPE_COLUMN_BITMASK |
-			SystemEventModelImpl.CREATEDATE_COLUMN_BITMASK);
+			SystemEventModelImpl.CREATEDATE_COLUMN_BITMASK,
+			baseModel -> {
+				SystemEventModelImpl systemEventModelImpl =
+					(SystemEventModelImpl)baseModel;
 
-		_finderPathCountByG_C_C_T = new FinderPath(
+				return new Object[] {
+					systemEventModelImpl.getGroupId(),
+					systemEventModelImpl.getClassNameId(),
+					systemEventModelImpl.getClassPK(),
+					systemEventModelImpl.getType()
+				};
+			},
+			baseModel -> {
+				SystemEventModelImpl systemEventModelImpl =
+					(SystemEventModelImpl)baseModel;
+
+				return new Object[] {
+					systemEventModelImpl.getOriginalGroupId(),
+					systemEventModelImpl.getOriginalClassNameId(),
+					systemEventModelImpl.getOriginalClassPK(),
+					systemEventModelImpl.getOriginalType()
+				};
+			});
+
+		_finderPathCountByG_C_C_T = FinderPath.create(
 			SystemEventModelImpl.ENTITY_CACHE_ENABLED,
 			SystemEventModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C_C_T",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Long.class.getName(), Integer.class.getName()
+			},
+			SystemEventModelImpl.GROUPID_COLUMN_BITMASK |
+			SystemEventModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+			SystemEventModelImpl.CLASSPK_COLUMN_BITMASK |
+			SystemEventModelImpl.TYPE_COLUMN_BITMASK,
+			baseModel -> {
+				SystemEventModelImpl systemEventModelImpl =
+					(SystemEventModelImpl)baseModel;
+
+				return new Object[] {
+					systemEventModelImpl.getGroupId(),
+					systemEventModelImpl.getClassNameId(),
+					systemEventModelImpl.getClassPK(),
+					systemEventModelImpl.getType()
+				};
+			},
+			baseModel -> {
+				SystemEventModelImpl systemEventModelImpl =
+					(SystemEventModelImpl)baseModel;
+
+				return new Object[] {
+					systemEventModelImpl.getOriginalGroupId(),
+					systemEventModelImpl.getOriginalClassNameId(),
+					systemEventModelImpl.getOriginalClassPK(),
+					systemEventModelImpl.getOriginalType()
+				};
 			});
 	}
 
 	public void destroy() {
 		EntityCacheUtil.removeCache(SystemEventImpl.class.getName());
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	private static final String _SQL_SELECT_SYSTEMEVENT =

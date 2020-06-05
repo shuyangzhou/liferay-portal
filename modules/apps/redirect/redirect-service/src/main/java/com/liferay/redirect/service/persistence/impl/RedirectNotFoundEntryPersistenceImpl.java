@@ -929,10 +929,6 @@ public class RedirectNotFoundEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(RedirectNotFoundEntryImpl.class);
-
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -950,20 +946,11 @@ public class RedirectNotFoundEntryPersistenceImpl
 			_columnBitmaskEnabled,
 			((RedirectNotFoundEntryModelImpl)redirectNotFoundEntry).
 				getColumnBitmask());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache(
-			(RedirectNotFoundEntryModelImpl)redirectNotFoundEntry, true);
 	}
 
 	@Override
 	public void clearCache(
 		List<RedirectNotFoundEntry> redirectNotFoundEntries) {
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (RedirectNotFoundEntry redirectNotFoundEntry :
 				redirectNotFoundEntries) {
@@ -974,18 +961,11 @@ public class RedirectNotFoundEntryPersistenceImpl
 				_columnBitmaskEnabled,
 				((RedirectNotFoundEntryModelImpl)redirectNotFoundEntry).
 					getColumnBitmask());
-
-			clearUniqueFindersCache(
-				(RedirectNotFoundEntryModelImpl)redirectNotFoundEntry, true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				entityCacheEnabled, RedirectNotFoundEntryImpl.class,
@@ -1005,33 +985,6 @@ public class RedirectNotFoundEntryPersistenceImpl
 			_finderPathCountByG_U, args, Long.valueOf(1), false);
 		finderCache.putResult(
 			_finderPathFetchByG_U, args, redirectNotFoundEntryModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		RedirectNotFoundEntryModelImpl redirectNotFoundEntryModelImpl,
-		boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				redirectNotFoundEntryModelImpl.getGroupId(),
-				redirectNotFoundEntryModelImpl.getUrl()
-			};
-
-			finderCache.removeResult(_finderPathCountByG_U, args);
-			finderCache.removeResult(_finderPathFetchByG_U, args);
-		}
-
-		if ((redirectNotFoundEntryModelImpl.getColumnBitmask() &
-			 _finderPathFetchByG_U.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				redirectNotFoundEntryModelImpl.getOriginalGroupId(),
-				redirectNotFoundEntryModelImpl.getOriginalUrl()
-			};
-
-			finderCache.removeResult(_finderPathCountByG_U, args);
-			finderCache.removeResult(_finderPathFetchByG_U, args);
-		}
 	}
 
 	/**
@@ -1244,47 +1197,6 @@ public class RedirectNotFoundEntryPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!_columnBitmaskEnabled) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {
-				redirectNotFoundEntryModelImpl.getGroupId()
-			};
-
-			finderCache.removeResult(_finderPathCountByGroupId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByGroupId, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((redirectNotFoundEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByGroupId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					redirectNotFoundEntryModelImpl.getOriginalGroupId()
-				};
-
-				finderCache.removeResult(_finderPathCountByGroupId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-
-				args = new Object[] {
-					redirectNotFoundEntryModelImpl.getGroupId()
-				};
-
-				finderCache.removeResult(_finderPathCountByGroupId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-			}
-		}
-
 		entityCache.putResult(
 			entityCacheEnabled, RedirectNotFoundEntryImpl.class,
 			redirectNotFoundEntry.getPrimaryKey(), redirectNotFoundEntry, false,
@@ -1292,7 +1204,6 @@ public class RedirectNotFoundEntryPersistenceImpl
 			((RedirectNotFoundEntryModelImpl)redirectNotFoundEntry).
 				getColumnBitmask());
 
-		clearUniqueFindersCache(redirectNotFoundEntryModelImpl, false);
 		cacheUniqueFindersCache(redirectNotFoundEntryModelImpl);
 
 		redirectNotFoundEntry.resetOriginalValues();
@@ -1572,23 +1483,23 @@ public class RedirectNotFoundEntryPersistenceImpl
 		RedirectNotFoundEntryModelImpl.setFinderCacheEnabled(
 			finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			RedirectNotFoundEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			RedirectNotFoundEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByGroupId = new FinderPath(
+		_finderPathWithPaginationFindByGroupId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			RedirectNotFoundEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGroupId",
@@ -1597,38 +1508,110 @@ public class RedirectNotFoundEntryPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
+		_finderPathWithoutPaginationFindByGroupId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			RedirectNotFoundEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
 			new String[] {Long.class.getName()},
-			RedirectNotFoundEntryModelImpl.GROUPID_COLUMN_BITMASK);
+			RedirectNotFoundEntryModelImpl.GROUPID_COLUMN_BITMASK,
+			baseModel -> {
+				RedirectNotFoundEntryModelImpl redirectNotFoundEntryModelImpl =
+					(RedirectNotFoundEntryModelImpl)baseModel;
 
-		_finderPathCountByGroupId = new FinderPath(
+				return new Object[] {
+					redirectNotFoundEntryModelImpl.getGroupId()
+				};
+			},
+			baseModel -> {
+				RedirectNotFoundEntryModelImpl redirectNotFoundEntryModelImpl =
+					(RedirectNotFoundEntryModelImpl)baseModel;
+
+				return new Object[] {
+					redirectNotFoundEntryModelImpl.getOriginalGroupId()
+				};
+			});
+
+		_finderPathCountByGroupId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			RedirectNotFoundEntryModelImpl.GROUPID_COLUMN_BITMASK,
+			baseModel -> {
+				RedirectNotFoundEntryModelImpl redirectNotFoundEntryModelImpl =
+					(RedirectNotFoundEntryModelImpl)baseModel;
 
-		_finderPathFetchByG_U = new FinderPath(
+				return new Object[] {
+					redirectNotFoundEntryModelImpl.getGroupId()
+				};
+			},
+			baseModel -> {
+				RedirectNotFoundEntryModelImpl redirectNotFoundEntryModelImpl =
+					(RedirectNotFoundEntryModelImpl)baseModel;
+
+				return new Object[] {
+					redirectNotFoundEntryModelImpl.getOriginalGroupId()
+				};
+			});
+
+		_finderPathFetchByG_U = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			RedirectNotFoundEntryImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByG_U",
 			new String[] {Long.class.getName(), String.class.getName()},
 			RedirectNotFoundEntryModelImpl.GROUPID_COLUMN_BITMASK |
-			RedirectNotFoundEntryModelImpl.URL_COLUMN_BITMASK);
+			RedirectNotFoundEntryModelImpl.URL_COLUMN_BITMASK,
+			baseModel -> {
+				RedirectNotFoundEntryModelImpl redirectNotFoundEntryModelImpl =
+					(RedirectNotFoundEntryModelImpl)baseModel;
 
-		_finderPathCountByG_U = new FinderPath(
+				return new Object[] {
+					redirectNotFoundEntryModelImpl.getGroupId(),
+					redirectNotFoundEntryModelImpl.getUrl()
+				};
+			},
+			baseModel -> {
+				RedirectNotFoundEntryModelImpl redirectNotFoundEntryModelImpl =
+					(RedirectNotFoundEntryModelImpl)baseModel;
+
+				return new Object[] {
+					redirectNotFoundEntryModelImpl.getOriginalGroupId(),
+					redirectNotFoundEntryModelImpl.getOriginalUrl()
+				};
+			});
+
+		_finderPathCountByG_U = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_U",
-			new String[] {Long.class.getName(), String.class.getName()});
+			new String[] {Long.class.getName(), String.class.getName()},
+			RedirectNotFoundEntryModelImpl.GROUPID_COLUMN_BITMASK |
+			RedirectNotFoundEntryModelImpl.URL_COLUMN_BITMASK,
+			baseModel -> {
+				RedirectNotFoundEntryModelImpl redirectNotFoundEntryModelImpl =
+					(RedirectNotFoundEntryModelImpl)baseModel;
+
+				return new Object[] {
+					redirectNotFoundEntryModelImpl.getGroupId(),
+					redirectNotFoundEntryModelImpl.getUrl()
+				};
+			},
+			baseModel -> {
+				RedirectNotFoundEntryModelImpl redirectNotFoundEntryModelImpl =
+					(RedirectNotFoundEntryModelImpl)baseModel;
+
+				return new Object[] {
+					redirectNotFoundEntryModelImpl.getOriginalGroupId(),
+					redirectNotFoundEntryModelImpl.getOriginalUrl()
+				};
+			});
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(RedirectNotFoundEntryImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@Override

@@ -4456,10 +4456,6 @@ public class AMImageEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(AMImageEntryImpl.class);
-
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -4475,35 +4471,21 @@ public class AMImageEntryPersistenceImpl
 			entityCacheEnabled, AMImageEntryImpl.class,
 			amImageEntry.getPrimaryKey(), amImageEntry, _columnBitmaskEnabled,
 			((AMImageEntryModelImpl)amImageEntry).getColumnBitmask());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((AMImageEntryModelImpl)amImageEntry, true);
 	}
 
 	@Override
 	public void clearCache(List<AMImageEntry> amImageEntries) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (AMImageEntry amImageEntry : amImageEntries) {
 			entityCache.removeResult(
 				entityCacheEnabled, AMImageEntryImpl.class,
 				amImageEntry.getPrimaryKey(), amImageEntry,
 				_columnBitmaskEnabled,
 				((AMImageEntryModelImpl)amImageEntry).getColumnBitmask());
-
-			clearUniqueFindersCache((AMImageEntryModelImpl)amImageEntry, true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				entityCacheEnabled, AMImageEntryImpl.class, primaryKey);
@@ -4531,54 +4513,6 @@ public class AMImageEntryPersistenceImpl
 			_finderPathCountByC_F, args, Long.valueOf(1), false);
 		finderCache.putResult(
 			_finderPathFetchByC_F, args, amImageEntryModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		AMImageEntryModelImpl amImageEntryModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				amImageEntryModelImpl.getUuid(),
-				amImageEntryModelImpl.getGroupId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUUID_G, args);
-			finderCache.removeResult(_finderPathFetchByUUID_G, args);
-		}
-
-		if ((amImageEntryModelImpl.getColumnBitmask() &
-			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				amImageEntryModelImpl.getOriginalUuid(),
-				amImageEntryModelImpl.getOriginalGroupId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUUID_G, args);
-			finderCache.removeResult(_finderPathFetchByUUID_G, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				amImageEntryModelImpl.getConfigurationUuid(),
-				amImageEntryModelImpl.getFileVersionId()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_F, args);
-			finderCache.removeResult(_finderPathFetchByC_F, args);
-		}
-
-		if ((amImageEntryModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_F.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				amImageEntryModelImpl.getOriginalConfigurationUuid(),
-				amImageEntryModelImpl.getOriginalFileVersionId()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_F, args);
-			finderCache.removeResult(_finderPathFetchByC_F, args);
-		}
 	}
 
 	/**
@@ -4739,218 +4673,12 @@ public class AMImageEntryPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!_columnBitmaskEnabled) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {amImageEntryModelImpl.getUuid()};
-
-			finderCache.removeResult(_finderPathCountByUuid, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid, args);
-
-			args = new Object[] {
-				amImageEntryModelImpl.getUuid(),
-				amImageEntryModelImpl.getCompanyId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUuid_C, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid_C, args);
-
-			args = new Object[] {amImageEntryModelImpl.getGroupId()};
-
-			finderCache.removeResult(_finderPathCountByGroupId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByGroupId, args);
-
-			args = new Object[] {amImageEntryModelImpl.getCompanyId()};
-
-			finderCache.removeResult(_finderPathCountByCompanyId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByCompanyId, args);
-
-			args = new Object[] {amImageEntryModelImpl.getConfigurationUuid()};
-
-			finderCache.removeResult(_finderPathCountByConfigurationUuid, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByConfigurationUuid, args);
-
-			args = new Object[] {amImageEntryModelImpl.getFileVersionId()};
-
-			finderCache.removeResult(_finderPathCountByFileVersionId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByFileVersionId, args);
-
-			args = new Object[] {
-				amImageEntryModelImpl.getCompanyId(),
-				amImageEntryModelImpl.getConfigurationUuid()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_C, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByC_C, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((amImageEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					amImageEntryModelImpl.getOriginalUuid()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-
-				args = new Object[] {amImageEntryModelImpl.getUuid()};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-			}
-
-			if ((amImageEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					amImageEntryModelImpl.getOriginalUuid(),
-					amImageEntryModelImpl.getOriginalCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-
-				args = new Object[] {
-					amImageEntryModelImpl.getUuid(),
-					amImageEntryModelImpl.getCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-			}
-
-			if ((amImageEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByGroupId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					amImageEntryModelImpl.getOriginalGroupId()
-				};
-
-				finderCache.removeResult(_finderPathCountByGroupId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-
-				args = new Object[] {amImageEntryModelImpl.getGroupId()};
-
-				finderCache.removeResult(_finderPathCountByGroupId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-			}
-
-			if ((amImageEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByCompanyId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					amImageEntryModelImpl.getOriginalCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByCompanyId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByCompanyId, args);
-
-				args = new Object[] {amImageEntryModelImpl.getCompanyId()};
-
-				finderCache.removeResult(_finderPathCountByCompanyId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByCompanyId, args);
-			}
-
-			if ((amImageEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByConfigurationUuid.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					amImageEntryModelImpl.getOriginalConfigurationUuid()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByConfigurationUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByConfigurationUuid, args);
-
-				args = new Object[] {
-					amImageEntryModelImpl.getConfigurationUuid()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByConfigurationUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByConfigurationUuid, args);
-			}
-
-			if ((amImageEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByFileVersionId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					amImageEntryModelImpl.getOriginalFileVersionId()
-				};
-
-				finderCache.removeResult(_finderPathCountByFileVersionId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByFileVersionId, args);
-
-				args = new Object[] {amImageEntryModelImpl.getFileVersionId()};
-
-				finderCache.removeResult(_finderPathCountByFileVersionId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByFileVersionId, args);
-			}
-
-			if ((amImageEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					amImageEntryModelImpl.getOriginalCompanyId(),
-					amImageEntryModelImpl.getOriginalConfigurationUuid()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_C, args);
-
-				args = new Object[] {
-					amImageEntryModelImpl.getCompanyId(),
-					amImageEntryModelImpl.getConfigurationUuid()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_C, args);
-			}
-		}
-
 		entityCache.putResult(
 			entityCacheEnabled, AMImageEntryImpl.class,
 			amImageEntry.getPrimaryKey(), amImageEntry, false,
 			_columnBitmaskEnabled,
 			((AMImageEntryModelImpl)amImageEntry).getColumnBitmask());
 
-		clearUniqueFindersCache(amImageEntryModelImpl, false);
 		cacheUniqueFindersCache(amImageEntryModelImpl);
 
 		amImageEntry.resetOriginalValues();
@@ -5227,21 +4955,21 @@ public class AMImageEntryPersistenceImpl
 		AMImageEntryModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		AMImageEntryModelImpl.setFinderCacheEnabled(finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, AMImageEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, AMImageEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByUuid = new FinderPath(
+		_finderPathWithPaginationFindByUuid = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, AMImageEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
 			new String[] {
@@ -5249,30 +4977,93 @@ public class AMImageEntryPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid = new FinderPath(
+		_finderPathWithoutPaginationFindByUuid = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, AMImageEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
 			new String[] {String.class.getName()},
-			AMImageEntryModelImpl.UUID_COLUMN_BITMASK);
+			AMImageEntryModelImpl.UUID_COLUMN_BITMASK,
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
 
-		_finderPathCountByUuid = new FinderPath(
+				return new Object[] {amImageEntryModelImpl.getUuid()};
+			},
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
+
+				return new Object[] {amImageEntryModelImpl.getOriginalUuid()};
+			});
+
+		_finderPathCountByUuid = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
-			new String[] {String.class.getName()});
+			new String[] {String.class.getName()},
+			AMImageEntryModelImpl.UUID_COLUMN_BITMASK,
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
 
-		_finderPathFetchByUUID_G = new FinderPath(
+				return new Object[] {amImageEntryModelImpl.getUuid()};
+			},
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
+
+				return new Object[] {amImageEntryModelImpl.getOriginalUuid()};
+			});
+
+		_finderPathFetchByUUID_G = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, AMImageEntryImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
 			AMImageEntryModelImpl.UUID_COLUMN_BITMASK |
-			AMImageEntryModelImpl.GROUPID_COLUMN_BITMASK);
+			AMImageEntryModelImpl.GROUPID_COLUMN_BITMASK,
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
 
-		_finderPathCountByUUID_G = new FinderPath(
+				return new Object[] {
+					amImageEntryModelImpl.getUuid(),
+					amImageEntryModelImpl.getGroupId()
+				};
+			},
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
+
+				return new Object[] {
+					amImageEntryModelImpl.getOriginalUuid(),
+					amImageEntryModelImpl.getOriginalGroupId()
+				};
+			});
+
+		_finderPathCountByUUID_G = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUUID_G",
-			new String[] {String.class.getName(), Long.class.getName()});
+			new String[] {String.class.getName(), Long.class.getName()},
+			AMImageEntryModelImpl.UUID_COLUMN_BITMASK |
+			AMImageEntryModelImpl.GROUPID_COLUMN_BITMASK,
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByUuid_C = new FinderPath(
+				return new Object[] {
+					amImageEntryModelImpl.getUuid(),
+					amImageEntryModelImpl.getGroupId()
+				};
+			},
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
+
+				return new Object[] {
+					amImageEntryModelImpl.getOriginalUuid(),
+					amImageEntryModelImpl.getOriginalGroupId()
+				};
+			});
+
+		_finderPathWithPaginationFindByUuid_C = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, AMImageEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
 			new String[] {
@@ -5281,19 +5072,57 @@ public class AMImageEntryPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
+		_finderPathWithoutPaginationFindByUuid_C = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, AMImageEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
 			AMImageEntryModelImpl.UUID_COLUMN_BITMASK |
-			AMImageEntryModelImpl.COMPANYID_COLUMN_BITMASK);
+			AMImageEntryModelImpl.COMPANYID_COLUMN_BITMASK,
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
 
-		_finderPathCountByUuid_C = new FinderPath(
+				return new Object[] {
+					amImageEntryModelImpl.getUuid(),
+					amImageEntryModelImpl.getCompanyId()
+				};
+			},
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
+
+				return new Object[] {
+					amImageEntryModelImpl.getOriginalUuid(),
+					amImageEntryModelImpl.getOriginalCompanyId()
+				};
+			});
+
+		_finderPathCountByUuid_C = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()});
+			new String[] {String.class.getName(), Long.class.getName()},
+			AMImageEntryModelImpl.UUID_COLUMN_BITMASK |
+			AMImageEntryModelImpl.COMPANYID_COLUMN_BITMASK,
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByGroupId = new FinderPath(
+				return new Object[] {
+					amImageEntryModelImpl.getUuid(),
+					amImageEntryModelImpl.getCompanyId()
+				};
+			},
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
+
+				return new Object[] {
+					amImageEntryModelImpl.getOriginalUuid(),
+					amImageEntryModelImpl.getOriginalCompanyId()
+				};
+			});
+
+		_finderPathWithPaginationFindByGroupId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, AMImageEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGroupId",
 			new String[] {
@@ -5301,18 +5130,47 @@ public class AMImageEntryPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
+		_finderPathWithoutPaginationFindByGroupId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, AMImageEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
 			new String[] {Long.class.getName()},
-			AMImageEntryModelImpl.GROUPID_COLUMN_BITMASK);
+			AMImageEntryModelImpl.GROUPID_COLUMN_BITMASK,
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
 
-		_finderPathCountByGroupId = new FinderPath(
+				return new Object[] {amImageEntryModelImpl.getGroupId()};
+			},
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
+
+				return new Object[] {
+					amImageEntryModelImpl.getOriginalGroupId()
+				};
+			});
+
+		_finderPathCountByGroupId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			AMImageEntryModelImpl.GROUPID_COLUMN_BITMASK,
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByCompanyId = new FinderPath(
+				return new Object[] {amImageEntryModelImpl.getGroupId()};
+			},
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
+
+				return new Object[] {
+					amImageEntryModelImpl.getOriginalGroupId()
+				};
+			});
+
+		_finderPathWithPaginationFindByCompanyId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, AMImageEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId",
 			new String[] {
@@ -5320,18 +5178,47 @@ public class AMImageEntryPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
+		_finderPathWithoutPaginationFindByCompanyId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, AMImageEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
 			new String[] {Long.class.getName()},
-			AMImageEntryModelImpl.COMPANYID_COLUMN_BITMASK);
+			AMImageEntryModelImpl.COMPANYID_COLUMN_BITMASK,
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
 
-		_finderPathCountByCompanyId = new FinderPath(
+				return new Object[] {amImageEntryModelImpl.getCompanyId()};
+			},
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
+
+				return new Object[] {
+					amImageEntryModelImpl.getOriginalCompanyId()
+				};
+			});
+
+		_finderPathCountByCompanyId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			AMImageEntryModelImpl.COMPANYID_COLUMN_BITMASK,
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByConfigurationUuid = new FinderPath(
+				return new Object[] {amImageEntryModelImpl.getCompanyId()};
+			},
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
+
+				return new Object[] {
+					amImageEntryModelImpl.getOriginalCompanyId()
+				};
+			});
+
+		_finderPathWithPaginationFindByConfigurationUuid = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, AMImageEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByConfigurationUuid",
 			new String[] {
@@ -5339,18 +5226,51 @@ public class AMImageEntryPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByConfigurationUuid = new FinderPath(
+		_finderPathWithoutPaginationFindByConfigurationUuid = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, AMImageEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByConfigurationUuid", new String[] {String.class.getName()},
-			AMImageEntryModelImpl.CONFIGURATIONUUID_COLUMN_BITMASK);
+			AMImageEntryModelImpl.CONFIGURATIONUUID_COLUMN_BITMASK,
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
 
-		_finderPathCountByConfigurationUuid = new FinderPath(
+				return new Object[] {
+					amImageEntryModelImpl.getConfigurationUuid()
+				};
+			},
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
+
+				return new Object[] {
+					amImageEntryModelImpl.getOriginalConfigurationUuid()
+				};
+			});
+
+		_finderPathCountByConfigurationUuid = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByConfigurationUuid", new String[] {String.class.getName()});
+			"countByConfigurationUuid", new String[] {String.class.getName()},
+			AMImageEntryModelImpl.CONFIGURATIONUUID_COLUMN_BITMASK,
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByFileVersionId = new FinderPath(
+				return new Object[] {
+					amImageEntryModelImpl.getConfigurationUuid()
+				};
+			},
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
+
+				return new Object[] {
+					amImageEntryModelImpl.getOriginalConfigurationUuid()
+				};
+			});
+
+		_finderPathWithPaginationFindByFileVersionId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, AMImageEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByFileVersionId",
 			new String[] {
@@ -5358,18 +5278,47 @@ public class AMImageEntryPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByFileVersionId = new FinderPath(
+		_finderPathWithoutPaginationFindByFileVersionId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, AMImageEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByFileVersionId",
 			new String[] {Long.class.getName()},
-			AMImageEntryModelImpl.FILEVERSIONID_COLUMN_BITMASK);
+			AMImageEntryModelImpl.FILEVERSIONID_COLUMN_BITMASK,
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
 
-		_finderPathCountByFileVersionId = new FinderPath(
+				return new Object[] {amImageEntryModelImpl.getFileVersionId()};
+			},
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
+
+				return new Object[] {
+					amImageEntryModelImpl.getOriginalFileVersionId()
+				};
+			});
+
+		_finderPathCountByFileVersionId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByFileVersionId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			AMImageEntryModelImpl.FILEVERSIONID_COLUMN_BITMASK,
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByC_C = new FinderPath(
+				return new Object[] {amImageEntryModelImpl.getFileVersionId()};
+			},
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
+
+				return new Object[] {
+					amImageEntryModelImpl.getOriginalFileVersionId()
+				};
+			});
+
+		_finderPathWithPaginationFindByC_C = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, AMImageEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C",
 			new String[] {
@@ -5378,37 +5327,114 @@ public class AMImageEntryPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_C = new FinderPath(
+		_finderPathWithoutPaginationFindByC_C = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, AMImageEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C",
 			new String[] {Long.class.getName(), String.class.getName()},
 			AMImageEntryModelImpl.COMPANYID_COLUMN_BITMASK |
-			AMImageEntryModelImpl.CONFIGURATIONUUID_COLUMN_BITMASK);
+			AMImageEntryModelImpl.CONFIGURATIONUUID_COLUMN_BITMASK,
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
 
-		_finderPathCountByC_C = new FinderPath(
+				return new Object[] {
+					amImageEntryModelImpl.getCompanyId(),
+					amImageEntryModelImpl.getConfigurationUuid()
+				};
+			},
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
+
+				return new Object[] {
+					amImageEntryModelImpl.getOriginalCompanyId(),
+					amImageEntryModelImpl.getOriginalConfigurationUuid()
+				};
+			});
+
+		_finderPathCountByC_C = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
-			new String[] {Long.class.getName(), String.class.getName()});
+			new String[] {Long.class.getName(), String.class.getName()},
+			AMImageEntryModelImpl.COMPANYID_COLUMN_BITMASK |
+			AMImageEntryModelImpl.CONFIGURATIONUUID_COLUMN_BITMASK,
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
 
-		_finderPathFetchByC_F = new FinderPath(
+				return new Object[] {
+					amImageEntryModelImpl.getCompanyId(),
+					amImageEntryModelImpl.getConfigurationUuid()
+				};
+			},
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
+
+				return new Object[] {
+					amImageEntryModelImpl.getOriginalCompanyId(),
+					amImageEntryModelImpl.getOriginalConfigurationUuid()
+				};
+			});
+
+		_finderPathFetchByC_F = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, AMImageEntryImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_F",
 			new String[] {String.class.getName(), Long.class.getName()},
 			AMImageEntryModelImpl.CONFIGURATIONUUID_COLUMN_BITMASK |
-			AMImageEntryModelImpl.FILEVERSIONID_COLUMN_BITMASK);
+			AMImageEntryModelImpl.FILEVERSIONID_COLUMN_BITMASK,
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
 
-		_finderPathCountByC_F = new FinderPath(
+				return new Object[] {
+					amImageEntryModelImpl.getConfigurationUuid(),
+					amImageEntryModelImpl.getFileVersionId()
+				};
+			},
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
+
+				return new Object[] {
+					amImageEntryModelImpl.getOriginalConfigurationUuid(),
+					amImageEntryModelImpl.getOriginalFileVersionId()
+				};
+			});
+
+		_finderPathCountByC_F = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_F",
-			new String[] {String.class.getName(), Long.class.getName()});
+			new String[] {String.class.getName(), Long.class.getName()},
+			AMImageEntryModelImpl.CONFIGURATIONUUID_COLUMN_BITMASK |
+			AMImageEntryModelImpl.FILEVERSIONID_COLUMN_BITMASK,
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
+
+				return new Object[] {
+					amImageEntryModelImpl.getConfigurationUuid(),
+					amImageEntryModelImpl.getFileVersionId()
+				};
+			},
+			baseModel -> {
+				AMImageEntryModelImpl amImageEntryModelImpl =
+					(AMImageEntryModelImpl)baseModel;
+
+				return new Object[] {
+					amImageEntryModelImpl.getOriginalConfigurationUuid(),
+					amImageEntryModelImpl.getOriginalFileVersionId()
+				};
+			});
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(AMImageEntryImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@Override

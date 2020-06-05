@@ -1005,10 +1005,6 @@ public class SamlSpMessagePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(SamlSpMessageImpl.class);
-
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -1024,36 +1020,21 @@ public class SamlSpMessagePersistenceImpl
 			entityCacheEnabled, SamlSpMessageImpl.class,
 			samlSpMessage.getPrimaryKey(), samlSpMessage, _columnBitmaskEnabled,
 			((SamlSpMessageModelImpl)samlSpMessage).getColumnBitmask());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((SamlSpMessageModelImpl)samlSpMessage, true);
 	}
 
 	@Override
 	public void clearCache(List<SamlSpMessage> samlSpMessages) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (SamlSpMessage samlSpMessage : samlSpMessages) {
 			entityCache.removeResult(
 				entityCacheEnabled, SamlSpMessageImpl.class,
 				samlSpMessage.getPrimaryKey(), samlSpMessage,
 				_columnBitmaskEnabled,
 				((SamlSpMessageModelImpl)samlSpMessage).getColumnBitmask());
-
-			clearUniqueFindersCache(
-				(SamlSpMessageModelImpl)samlSpMessage, true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				entityCacheEnabled, SamlSpMessageImpl.class, primaryKey);
@@ -1072,32 +1053,6 @@ public class SamlSpMessagePersistenceImpl
 			_finderPathCountBySIEI_SIRK, args, Long.valueOf(1), false);
 		finderCache.putResult(
 			_finderPathFetchBySIEI_SIRK, args, samlSpMessageModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		SamlSpMessageModelImpl samlSpMessageModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				samlSpMessageModelImpl.getSamlIdpEntityId(),
-				samlSpMessageModelImpl.getSamlIdpResponseKey()
-			};
-
-			finderCache.removeResult(_finderPathCountBySIEI_SIRK, args);
-			finderCache.removeResult(_finderPathFetchBySIEI_SIRK, args);
-		}
-
-		if ((samlSpMessageModelImpl.getColumnBitmask() &
-			 _finderPathFetchBySIEI_SIRK.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				samlSpMessageModelImpl.getOriginalSamlIdpEntityId(),
-				samlSpMessageModelImpl.getOriginalSamlIdpResponseKey()
-			};
-
-			finderCache.removeResult(_finderPathCountBySIEI_SIRK, args);
-			finderCache.removeResult(_finderPathFetchBySIEI_SIRK, args);
-		}
 	}
 
 	/**
@@ -1248,24 +1203,12 @@ public class SamlSpMessagePersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!_columnBitmaskEnabled) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-
 		entityCache.putResult(
 			entityCacheEnabled, SamlSpMessageImpl.class,
 			samlSpMessage.getPrimaryKey(), samlSpMessage, false,
 			_columnBitmaskEnabled,
 			((SamlSpMessageModelImpl)samlSpMessage).getColumnBitmask());
 
-		clearUniqueFindersCache(samlSpMessageModelImpl, false);
 		cacheUniqueFindersCache(samlSpMessageModelImpl);
 
 		samlSpMessage.resetOriginalValues();
@@ -1538,21 +1481,21 @@ public class SamlSpMessagePersistenceImpl
 		SamlSpMessageModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		SamlSpMessageModelImpl.setFinderCacheEnabled(finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, SamlSpMessageImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, SamlSpMessageImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByExpirationDate = new FinderPath(
+		_finderPathWithPaginationFindByExpirationDate = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, SamlSpMessageImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByExpirationDate",
 			new String[] {
@@ -1560,30 +1503,69 @@ public class SamlSpMessagePersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithPaginationCountByExpirationDate = new FinderPath(
+		_finderPathWithPaginationCountByExpirationDate = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByExpirationDate",
 			new String[] {Date.class.getName()});
 
-		_finderPathFetchBySIEI_SIRK = new FinderPath(
+		_finderPathFetchBySIEI_SIRK = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, SamlSpMessageImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchBySIEI_SIRK",
 			new String[] {String.class.getName(), String.class.getName()},
 			SamlSpMessageModelImpl.SAMLIDPENTITYID_COLUMN_BITMASK |
-			SamlSpMessageModelImpl.SAMLIDPRESPONSEKEY_COLUMN_BITMASK);
+			SamlSpMessageModelImpl.SAMLIDPRESPONSEKEY_COLUMN_BITMASK,
+			baseModel -> {
+				SamlSpMessageModelImpl samlSpMessageModelImpl =
+					(SamlSpMessageModelImpl)baseModel;
 
-		_finderPathCountBySIEI_SIRK = new FinderPath(
+				return new Object[] {
+					samlSpMessageModelImpl.getSamlIdpEntityId(),
+					samlSpMessageModelImpl.getSamlIdpResponseKey()
+				};
+			},
+			baseModel -> {
+				SamlSpMessageModelImpl samlSpMessageModelImpl =
+					(SamlSpMessageModelImpl)baseModel;
+
+				return new Object[] {
+					samlSpMessageModelImpl.getOriginalSamlIdpEntityId(),
+					samlSpMessageModelImpl.getOriginalSamlIdpResponseKey()
+				};
+			});
+
+		_finderPathCountBySIEI_SIRK = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBySIEI_SIRK",
-			new String[] {String.class.getName(), String.class.getName()});
+			new String[] {String.class.getName(), String.class.getName()},
+			SamlSpMessageModelImpl.SAMLIDPENTITYID_COLUMN_BITMASK |
+			SamlSpMessageModelImpl.SAMLIDPRESPONSEKEY_COLUMN_BITMASK,
+			baseModel -> {
+				SamlSpMessageModelImpl samlSpMessageModelImpl =
+					(SamlSpMessageModelImpl)baseModel;
+
+				return new Object[] {
+					samlSpMessageModelImpl.getSamlIdpEntityId(),
+					samlSpMessageModelImpl.getSamlIdpResponseKey()
+				};
+			},
+			baseModel -> {
+				SamlSpMessageModelImpl samlSpMessageModelImpl =
+					(SamlSpMessageModelImpl)baseModel;
+
+				return new Object[] {
+					samlSpMessageModelImpl.getOriginalSamlIdpEntityId(),
+					samlSpMessageModelImpl.getOriginalSamlIdpResponseKey()
+				};
+			});
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(SamlSpMessageImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@Override

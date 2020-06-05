@@ -649,10 +649,6 @@ public class AttachmentPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(AttachmentImpl.class);
-
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -668,16 +664,10 @@ public class AttachmentPersistenceImpl
 			entityCacheEnabled, AttachmentImpl.class,
 			attachment.getPrimaryKey(), attachment, _columnBitmaskEnabled,
 			((AttachmentModelImpl)attachment).getColumnBitmask());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@Override
 	public void clearCache(List<Attachment> attachments) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Attachment attachment : attachments) {
 			entityCache.removeResult(
 				entityCacheEnabled, AttachmentImpl.class,
@@ -688,10 +678,6 @@ public class AttachmentPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				entityCacheEnabled, AttachmentImpl.class, primaryKey);
@@ -843,43 +829,6 @@ public class AttachmentPersistenceImpl
 		}
 		finally {
 			closeSession(session);
-		}
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!_columnBitmaskEnabled) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {attachmentModelImpl.getMessageId()};
-
-			finderCache.removeResult(_finderPathCountByMessageId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByMessageId, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((attachmentModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByMessageId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					attachmentModelImpl.getOriginalMessageId()
-				};
-
-				finderCache.removeResult(_finderPathCountByMessageId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByMessageId, args);
-
-				args = new Object[] {attachmentModelImpl.getMessageId()};
-
-				finderCache.removeResult(_finderPathCountByMessageId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByMessageId, args);
-			}
 		}
 
 		entityCache.putResult(
@@ -1162,21 +1111,21 @@ public class AttachmentPersistenceImpl
 		AttachmentModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		AttachmentModelImpl.setFinderCacheEnabled(finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, AttachmentImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, AttachmentImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByMessageId = new FinderPath(
+		_finderPathWithPaginationFindByMessageId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, AttachmentImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByMessageId",
 			new String[] {
@@ -1184,24 +1133,54 @@ public class AttachmentPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByMessageId = new FinderPath(
+		_finderPathWithoutPaginationFindByMessageId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, AttachmentImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByMessageId",
 			new String[] {Long.class.getName()},
-			AttachmentModelImpl.MESSAGEID_COLUMN_BITMASK);
+			AttachmentModelImpl.MESSAGEID_COLUMN_BITMASK,
+			baseModel -> {
+				AttachmentModelImpl attachmentModelImpl =
+					(AttachmentModelImpl)baseModel;
 
-		_finderPathCountByMessageId = new FinderPath(
+				return new Object[] {attachmentModelImpl.getMessageId()};
+			},
+			baseModel -> {
+				AttachmentModelImpl attachmentModelImpl =
+					(AttachmentModelImpl)baseModel;
+
+				return new Object[] {
+					attachmentModelImpl.getOriginalMessageId()
+				};
+			});
+
+		_finderPathCountByMessageId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByMessageId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			AttachmentModelImpl.MESSAGEID_COLUMN_BITMASK,
+			baseModel -> {
+				AttachmentModelImpl attachmentModelImpl =
+					(AttachmentModelImpl)baseModel;
+
+				return new Object[] {attachmentModelImpl.getMessageId()};
+			},
+			baseModel -> {
+				AttachmentModelImpl attachmentModelImpl =
+					(AttachmentModelImpl)baseModel;
+
+				return new Object[] {
+					attachmentModelImpl.getOriginalMessageId()
+				};
+			});
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(AttachmentImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@Override

@@ -2336,10 +2336,6 @@ public class RepositoryPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(RepositoryImpl.class);
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -2356,35 +2352,21 @@ public class RepositoryPersistenceImpl
 			repository.getPrimaryKey(), repository,
 			RepositoryModelImpl.COLUMN_BITMASK_ENABLED,
 			((RepositoryModelImpl)repository).getColumnBitmask());
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((RepositoryModelImpl)repository, true);
 	}
 
 	@Override
 	public void clearCache(List<Repository> repositories) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Repository repository : repositories) {
 			EntityCacheUtil.removeResult(
 				RepositoryModelImpl.ENTITY_CACHE_ENABLED, RepositoryImpl.class,
 				repository.getPrimaryKey(), repository,
 				RepositoryModelImpl.COLUMN_BITMASK_ENABLED,
 				((RepositoryModelImpl)repository).getColumnBitmask());
-
-			clearUniqueFindersCache((RepositoryModelImpl)repository, true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				RepositoryModelImpl.ENTITY_CACHE_ENABLED, RepositoryImpl.class,
@@ -2413,54 +2395,6 @@ public class RepositoryPersistenceImpl
 			_finderPathCountByG_N_P, args, Long.valueOf(1), false);
 		FinderCacheUtil.putResult(
 			_finderPathFetchByG_N_P, args, repositoryModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		RepositoryModelImpl repositoryModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				repositoryModelImpl.getUuid(), repositoryModelImpl.getGroupId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByUUID_G, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByUUID_G, args);
-		}
-
-		if ((repositoryModelImpl.getColumnBitmask() &
-			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				repositoryModelImpl.getOriginalUuid(),
-				repositoryModelImpl.getOriginalGroupId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByUUID_G, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByUUID_G, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				repositoryModelImpl.getGroupId(), repositoryModelImpl.getName(),
-				repositoryModelImpl.getPortletId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByG_N_P, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByG_N_P, args);
-		}
-
-		if ((repositoryModelImpl.getColumnBitmask() &
-			 _finderPathFetchByG_N_P.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				repositoryModelImpl.getOriginalGroupId(),
-				repositoryModelImpl.getOriginalName(),
-				repositoryModelImpl.getOriginalPortletId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByG_N_P, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByG_N_P, args);
-		}
 	}
 
 	/**
@@ -2643,109 +2577,12 @@ public class RepositoryPersistenceImpl
 			closeSession(session);
 		}
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!RepositoryModelImpl.COLUMN_BITMASK_ENABLED) {
-			FinderCacheUtil.clearCache(
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {repositoryModelImpl.getUuid()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByUuid, args);
-
-			args = new Object[] {
-				repositoryModelImpl.getUuid(),
-				repositoryModelImpl.getCompanyId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByUuid_C, args);
-
-			args = new Object[] {repositoryModelImpl.getGroupId()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByGroupId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByGroupId, args);
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountAll, FINDER_ARGS_EMPTY);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((repositoryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					repositoryModelImpl.getOriginalUuid()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-
-				args = new Object[] {repositoryModelImpl.getUuid()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-			}
-
-			if ((repositoryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					repositoryModelImpl.getOriginalUuid(),
-					repositoryModelImpl.getOriginalCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-
-				args = new Object[] {
-					repositoryModelImpl.getUuid(),
-					repositoryModelImpl.getCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-			}
-
-			if ((repositoryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByGroupId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					repositoryModelImpl.getOriginalGroupId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByGroupId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-
-				args = new Object[] {repositoryModelImpl.getGroupId()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByGroupId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-			}
-		}
-
 		EntityCacheUtil.putResult(
 			RepositoryModelImpl.ENTITY_CACHE_ENABLED, RepositoryImpl.class,
 			repository.getPrimaryKey(), repository, false,
 			RepositoryModelImpl.COLUMN_BITMASK_ENABLED,
 			((RepositoryModelImpl)repository).getColumnBitmask());
 
-		clearUniqueFindersCache(repositoryModelImpl, false);
 		cacheUniqueFindersCache(repositoryModelImpl);
 
 		repository.resetOriginalValues();
@@ -3018,24 +2855,24 @@ public class RepositoryPersistenceImpl
 	 * Initializes the repository persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			RepositoryModelImpl.ENTITY_CACHE_ENABLED,
 			RepositoryModelImpl.FINDER_CACHE_ENABLED, RepositoryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			RepositoryModelImpl.ENTITY_CACHE_ENABLED,
 			RepositoryModelImpl.FINDER_CACHE_ENABLED, RepositoryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			RepositoryModelImpl.ENTITY_CACHE_ENABLED,
 			RepositoryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByUuid = new FinderPath(
+		_finderPathWithPaginationFindByUuid = FinderPath.create(
 			RepositoryModelImpl.ENTITY_CACHE_ENABLED,
 			RepositoryModelImpl.FINDER_CACHE_ENABLED, RepositoryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
@@ -3044,34 +2881,97 @@ public class RepositoryPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid = new FinderPath(
+		_finderPathWithoutPaginationFindByUuid = FinderPath.create(
 			RepositoryModelImpl.ENTITY_CACHE_ENABLED,
 			RepositoryModelImpl.FINDER_CACHE_ENABLED, RepositoryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
 			new String[] {String.class.getName()},
-			RepositoryModelImpl.UUID_COLUMN_BITMASK);
+			RepositoryModelImpl.UUID_COLUMN_BITMASK,
+			baseModel -> {
+				RepositoryModelImpl repositoryModelImpl =
+					(RepositoryModelImpl)baseModel;
 
-		_finderPathCountByUuid = new FinderPath(
+				return new Object[] {repositoryModelImpl.getUuid()};
+			},
+			baseModel -> {
+				RepositoryModelImpl repositoryModelImpl =
+					(RepositoryModelImpl)baseModel;
+
+				return new Object[] {repositoryModelImpl.getOriginalUuid()};
+			});
+
+		_finderPathCountByUuid = FinderPath.create(
 			RepositoryModelImpl.ENTITY_CACHE_ENABLED,
 			RepositoryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
-			new String[] {String.class.getName()});
+			new String[] {String.class.getName()},
+			RepositoryModelImpl.UUID_COLUMN_BITMASK,
+			baseModel -> {
+				RepositoryModelImpl repositoryModelImpl =
+					(RepositoryModelImpl)baseModel;
 
-		_finderPathFetchByUUID_G = new FinderPath(
+				return new Object[] {repositoryModelImpl.getUuid()};
+			},
+			baseModel -> {
+				RepositoryModelImpl repositoryModelImpl =
+					(RepositoryModelImpl)baseModel;
+
+				return new Object[] {repositoryModelImpl.getOriginalUuid()};
+			});
+
+		_finderPathFetchByUUID_G = FinderPath.create(
 			RepositoryModelImpl.ENTITY_CACHE_ENABLED,
 			RepositoryModelImpl.FINDER_CACHE_ENABLED, RepositoryImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
 			RepositoryModelImpl.UUID_COLUMN_BITMASK |
-			RepositoryModelImpl.GROUPID_COLUMN_BITMASK);
+			RepositoryModelImpl.GROUPID_COLUMN_BITMASK,
+			baseModel -> {
+				RepositoryModelImpl repositoryModelImpl =
+					(RepositoryModelImpl)baseModel;
 
-		_finderPathCountByUUID_G = new FinderPath(
+				return new Object[] {
+					repositoryModelImpl.getUuid(),
+					repositoryModelImpl.getGroupId()
+				};
+			},
+			baseModel -> {
+				RepositoryModelImpl repositoryModelImpl =
+					(RepositoryModelImpl)baseModel;
+
+				return new Object[] {
+					repositoryModelImpl.getOriginalUuid(),
+					repositoryModelImpl.getOriginalGroupId()
+				};
+			});
+
+		_finderPathCountByUUID_G = FinderPath.create(
 			RepositoryModelImpl.ENTITY_CACHE_ENABLED,
 			RepositoryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUUID_G",
-			new String[] {String.class.getName(), Long.class.getName()});
+			new String[] {String.class.getName(), Long.class.getName()},
+			RepositoryModelImpl.UUID_COLUMN_BITMASK |
+			RepositoryModelImpl.GROUPID_COLUMN_BITMASK,
+			baseModel -> {
+				RepositoryModelImpl repositoryModelImpl =
+					(RepositoryModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByUuid_C = new FinderPath(
+				return new Object[] {
+					repositoryModelImpl.getUuid(),
+					repositoryModelImpl.getGroupId()
+				};
+			},
+			baseModel -> {
+				RepositoryModelImpl repositoryModelImpl =
+					(RepositoryModelImpl)baseModel;
+
+				return new Object[] {
+					repositoryModelImpl.getOriginalUuid(),
+					repositoryModelImpl.getOriginalGroupId()
+				};
+			});
+
+		_finderPathWithPaginationFindByUuid_C = FinderPath.create(
 			RepositoryModelImpl.ENTITY_CACHE_ENABLED,
 			RepositoryModelImpl.FINDER_CACHE_ENABLED, RepositoryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
@@ -3081,21 +2981,59 @@ public class RepositoryPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
+		_finderPathWithoutPaginationFindByUuid_C = FinderPath.create(
 			RepositoryModelImpl.ENTITY_CACHE_ENABLED,
 			RepositoryModelImpl.FINDER_CACHE_ENABLED, RepositoryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
 			RepositoryModelImpl.UUID_COLUMN_BITMASK |
-			RepositoryModelImpl.COMPANYID_COLUMN_BITMASK);
+			RepositoryModelImpl.COMPANYID_COLUMN_BITMASK,
+			baseModel -> {
+				RepositoryModelImpl repositoryModelImpl =
+					(RepositoryModelImpl)baseModel;
 
-		_finderPathCountByUuid_C = new FinderPath(
+				return new Object[] {
+					repositoryModelImpl.getUuid(),
+					repositoryModelImpl.getCompanyId()
+				};
+			},
+			baseModel -> {
+				RepositoryModelImpl repositoryModelImpl =
+					(RepositoryModelImpl)baseModel;
+
+				return new Object[] {
+					repositoryModelImpl.getOriginalUuid(),
+					repositoryModelImpl.getOriginalCompanyId()
+				};
+			});
+
+		_finderPathCountByUuid_C = FinderPath.create(
 			RepositoryModelImpl.ENTITY_CACHE_ENABLED,
 			RepositoryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()});
+			new String[] {String.class.getName(), Long.class.getName()},
+			RepositoryModelImpl.UUID_COLUMN_BITMASK |
+			RepositoryModelImpl.COMPANYID_COLUMN_BITMASK,
+			baseModel -> {
+				RepositoryModelImpl repositoryModelImpl =
+					(RepositoryModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByGroupId = new FinderPath(
+				return new Object[] {
+					repositoryModelImpl.getUuid(),
+					repositoryModelImpl.getCompanyId()
+				};
+			},
+			baseModel -> {
+				RepositoryModelImpl repositoryModelImpl =
+					(RepositoryModelImpl)baseModel;
+
+				return new Object[] {
+					repositoryModelImpl.getOriginalUuid(),
+					repositoryModelImpl.getOriginalCompanyId()
+				};
+			});
+
+		_finderPathWithPaginationFindByGroupId = FinderPath.create(
 			RepositoryModelImpl.ENTITY_CACHE_ENABLED,
 			RepositoryModelImpl.FINDER_CACHE_ENABLED, RepositoryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGroupId",
@@ -3104,20 +3042,45 @@ public class RepositoryPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
+		_finderPathWithoutPaginationFindByGroupId = FinderPath.create(
 			RepositoryModelImpl.ENTITY_CACHE_ENABLED,
 			RepositoryModelImpl.FINDER_CACHE_ENABLED, RepositoryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
 			new String[] {Long.class.getName()},
-			RepositoryModelImpl.GROUPID_COLUMN_BITMASK);
+			RepositoryModelImpl.GROUPID_COLUMN_BITMASK,
+			baseModel -> {
+				RepositoryModelImpl repositoryModelImpl =
+					(RepositoryModelImpl)baseModel;
 
-		_finderPathCountByGroupId = new FinderPath(
+				return new Object[] {repositoryModelImpl.getGroupId()};
+			},
+			baseModel -> {
+				RepositoryModelImpl repositoryModelImpl =
+					(RepositoryModelImpl)baseModel;
+
+				return new Object[] {repositoryModelImpl.getOriginalGroupId()};
+			});
+
+		_finderPathCountByGroupId = FinderPath.create(
 			RepositoryModelImpl.ENTITY_CACHE_ENABLED,
 			RepositoryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			RepositoryModelImpl.GROUPID_COLUMN_BITMASK,
+			baseModel -> {
+				RepositoryModelImpl repositoryModelImpl =
+					(RepositoryModelImpl)baseModel;
 
-		_finderPathFetchByG_N_P = new FinderPath(
+				return new Object[] {repositoryModelImpl.getGroupId()};
+			},
+			baseModel -> {
+				RepositoryModelImpl repositoryModelImpl =
+					(RepositoryModelImpl)baseModel;
+
+				return new Object[] {repositoryModelImpl.getOriginalGroupId()};
+			});
+
+		_finderPathFetchByG_N_P = FinderPath.create(
 			RepositoryModelImpl.ENTITY_CACHE_ENABLED,
 			RepositoryModelImpl.FINDER_CACHE_ENABLED, RepositoryImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByG_N_P",
@@ -3127,23 +3090,67 @@ public class RepositoryPersistenceImpl
 			},
 			RepositoryModelImpl.GROUPID_COLUMN_BITMASK |
 			RepositoryModelImpl.NAME_COLUMN_BITMASK |
-			RepositoryModelImpl.PORTLETID_COLUMN_BITMASK);
+			RepositoryModelImpl.PORTLETID_COLUMN_BITMASK,
+			baseModel -> {
+				RepositoryModelImpl repositoryModelImpl =
+					(RepositoryModelImpl)baseModel;
 
-		_finderPathCountByG_N_P = new FinderPath(
+				return new Object[] {
+					repositoryModelImpl.getGroupId(),
+					repositoryModelImpl.getName(),
+					repositoryModelImpl.getPortletId()
+				};
+			},
+			baseModel -> {
+				RepositoryModelImpl repositoryModelImpl =
+					(RepositoryModelImpl)baseModel;
+
+				return new Object[] {
+					repositoryModelImpl.getOriginalGroupId(),
+					repositoryModelImpl.getOriginalName(),
+					repositoryModelImpl.getOriginalPortletId()
+				};
+			});
+
+		_finderPathCountByG_N_P = FinderPath.create(
 			RepositoryModelImpl.ENTITY_CACHE_ENABLED,
 			RepositoryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_N_P",
 			new String[] {
 				Long.class.getName(), String.class.getName(),
 				String.class.getName()
+			},
+			RepositoryModelImpl.GROUPID_COLUMN_BITMASK |
+			RepositoryModelImpl.NAME_COLUMN_BITMASK |
+			RepositoryModelImpl.PORTLETID_COLUMN_BITMASK,
+			baseModel -> {
+				RepositoryModelImpl repositoryModelImpl =
+					(RepositoryModelImpl)baseModel;
+
+				return new Object[] {
+					repositoryModelImpl.getGroupId(),
+					repositoryModelImpl.getName(),
+					repositoryModelImpl.getPortletId()
+				};
+			},
+			baseModel -> {
+				RepositoryModelImpl repositoryModelImpl =
+					(RepositoryModelImpl)baseModel;
+
+				return new Object[] {
+					repositoryModelImpl.getOriginalGroupId(),
+					repositoryModelImpl.getOriginalName(),
+					repositoryModelImpl.getOriginalPortletId()
+				};
 			});
 	}
 
 	public void destroy() {
 		EntityCacheUtil.removeCache(RepositoryImpl.class.getName());
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	private static final String _SQL_SELECT_REPOSITORY =

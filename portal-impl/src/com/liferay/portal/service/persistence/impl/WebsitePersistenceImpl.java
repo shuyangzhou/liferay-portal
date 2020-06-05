@@ -4010,10 +4010,6 @@ public class WebsitePersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(WebsiteImpl.class);
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -4030,16 +4026,10 @@ public class WebsitePersistenceImpl
 			website.getPrimaryKey(), website,
 			WebsiteModelImpl.COLUMN_BITMASK_ENABLED,
 			((WebsiteModelImpl)website).getColumnBitmask());
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@Override
 	public void clearCache(List<Website> websites) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Website website : websites) {
 			EntityCacheUtil.removeResult(
 				WebsiteModelImpl.ENTITY_CACHE_ENABLED, WebsiteImpl.class,
@@ -4051,10 +4041,6 @@ public class WebsitePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				WebsiteModelImpl.ENTITY_CACHE_ENABLED, WebsiteImpl.class,
@@ -4237,227 +4223,6 @@ public class WebsitePersistenceImpl
 		}
 		finally {
 			closeSession(session);
-		}
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!WebsiteModelImpl.COLUMN_BITMASK_ENABLED) {
-			FinderCacheUtil.clearCache(
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {websiteModelImpl.getUuid()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByUuid, args);
-
-			args = new Object[] {
-				websiteModelImpl.getUuid(), websiteModelImpl.getCompanyId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByUuid_C, args);
-
-			args = new Object[] {websiteModelImpl.getCompanyId()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByCompanyId, args);
-
-			args = new Object[] {websiteModelImpl.getUserId()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByUserId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByUserId, args);
-
-			args = new Object[] {
-				websiteModelImpl.getCompanyId(),
-				websiteModelImpl.getClassNameId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_C, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByC_C, args);
-
-			args = new Object[] {
-				websiteModelImpl.getCompanyId(),
-				websiteModelImpl.getClassNameId(), websiteModelImpl.getClassPK()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_C_C, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByC_C_C, args);
-
-			args = new Object[] {
-				websiteModelImpl.getCompanyId(),
-				websiteModelImpl.getClassNameId(),
-				websiteModelImpl.getClassPK(), websiteModelImpl.isPrimary()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_C_C_P, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByC_C_C_P, args);
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountAll, FINDER_ARGS_EMPTY);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((websiteModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					websiteModelImpl.getOriginalUuid()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-
-				args = new Object[] {websiteModelImpl.getUuid()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-			}
-
-			if ((websiteModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					websiteModelImpl.getOriginalUuid(),
-					websiteModelImpl.getOriginalCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-
-				args = new Object[] {
-					websiteModelImpl.getUuid(), websiteModelImpl.getCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-			}
-
-			if ((websiteModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByCompanyId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					websiteModelImpl.getOriginalCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByCompanyId, args);
-
-				args = new Object[] {websiteModelImpl.getCompanyId()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByCompanyId, args);
-			}
-
-			if ((websiteModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUserId.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					websiteModelImpl.getOriginalUserId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUserId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUserId, args);
-
-				args = new Object[] {websiteModelImpl.getUserId()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUserId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUserId, args);
-			}
-
-			if ((websiteModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					websiteModelImpl.getOriginalCompanyId(),
-					websiteModelImpl.getOriginalClassNameId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_C, args);
-
-				args = new Object[] {
-					websiteModelImpl.getCompanyId(),
-					websiteModelImpl.getClassNameId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_C, args);
-			}
-
-			if ((websiteModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_C_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					websiteModelImpl.getOriginalCompanyId(),
-					websiteModelImpl.getOriginalClassNameId(),
-					websiteModelImpl.getOriginalClassPK()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_C_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_C_C, args);
-
-				args = new Object[] {
-					websiteModelImpl.getCompanyId(),
-					websiteModelImpl.getClassNameId(),
-					websiteModelImpl.getClassPK()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_C_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_C_C, args);
-			}
-
-			if ((websiteModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_C_C_P.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					websiteModelImpl.getOriginalCompanyId(),
-					websiteModelImpl.getOriginalClassNameId(),
-					websiteModelImpl.getOriginalClassPK(),
-					websiteModelImpl.getOriginalPrimary()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_C_C_P, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_C_C_P, args);
-
-				args = new Object[] {
-					websiteModelImpl.getCompanyId(),
-					websiteModelImpl.getClassNameId(),
-					websiteModelImpl.getClassPK(), websiteModelImpl.isPrimary()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_C_C_P, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_C_C_P, args);
-			}
 		}
 
 		EntityCacheUtil.putResult(
@@ -4736,24 +4501,24 @@ public class WebsitePersistenceImpl
 	 * Initializes the website persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			WebsiteModelImpl.ENTITY_CACHE_ENABLED,
 			WebsiteModelImpl.FINDER_CACHE_ENABLED, WebsiteImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			WebsiteModelImpl.ENTITY_CACHE_ENABLED,
 			WebsiteModelImpl.FINDER_CACHE_ENABLED, WebsiteImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			WebsiteModelImpl.ENTITY_CACHE_ENABLED,
 			WebsiteModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByUuid = new FinderPath(
+		_finderPathWithPaginationFindByUuid = FinderPath.create(
 			WebsiteModelImpl.ENTITY_CACHE_ENABLED,
 			WebsiteModelImpl.FINDER_CACHE_ENABLED, WebsiteImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
@@ -4762,21 +4527,42 @@ public class WebsitePersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid = new FinderPath(
+		_finderPathWithoutPaginationFindByUuid = FinderPath.create(
 			WebsiteModelImpl.ENTITY_CACHE_ENABLED,
 			WebsiteModelImpl.FINDER_CACHE_ENABLED, WebsiteImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
 			new String[] {String.class.getName()},
 			WebsiteModelImpl.UUID_COLUMN_BITMASK |
-			WebsiteModelImpl.CREATEDATE_COLUMN_BITMASK);
+			WebsiteModelImpl.CREATEDATE_COLUMN_BITMASK,
+			baseModel -> {
+				WebsiteModelImpl websiteModelImpl = (WebsiteModelImpl)baseModel;
 
-		_finderPathCountByUuid = new FinderPath(
+				return new Object[] {websiteModelImpl.getUuid()};
+			},
+			baseModel -> {
+				WebsiteModelImpl websiteModelImpl = (WebsiteModelImpl)baseModel;
+
+				return new Object[] {websiteModelImpl.getOriginalUuid()};
+			});
+
+		_finderPathCountByUuid = FinderPath.create(
 			WebsiteModelImpl.ENTITY_CACHE_ENABLED,
 			WebsiteModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
-			new String[] {String.class.getName()});
+			new String[] {String.class.getName()},
+			WebsiteModelImpl.UUID_COLUMN_BITMASK,
+			baseModel -> {
+				WebsiteModelImpl websiteModelImpl = (WebsiteModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByUuid_C = new FinderPath(
+				return new Object[] {websiteModelImpl.getUuid()};
+			},
+			baseModel -> {
+				WebsiteModelImpl websiteModelImpl = (WebsiteModelImpl)baseModel;
+
+				return new Object[] {websiteModelImpl.getOriginalUuid()};
+			});
+
+		_finderPathWithPaginationFindByUuid_C = FinderPath.create(
 			WebsiteModelImpl.ENTITY_CACHE_ENABLED,
 			WebsiteModelImpl.FINDER_CACHE_ENABLED, WebsiteImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
@@ -4786,22 +4572,54 @@ public class WebsitePersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
+		_finderPathWithoutPaginationFindByUuid_C = FinderPath.create(
 			WebsiteModelImpl.ENTITY_CACHE_ENABLED,
 			WebsiteModelImpl.FINDER_CACHE_ENABLED, WebsiteImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
 			WebsiteModelImpl.UUID_COLUMN_BITMASK |
 			WebsiteModelImpl.COMPANYID_COLUMN_BITMASK |
-			WebsiteModelImpl.CREATEDATE_COLUMN_BITMASK);
+			WebsiteModelImpl.CREATEDATE_COLUMN_BITMASK,
+			baseModel -> {
+				WebsiteModelImpl websiteModelImpl = (WebsiteModelImpl)baseModel;
 
-		_finderPathCountByUuid_C = new FinderPath(
+				return new Object[] {
+					websiteModelImpl.getUuid(), websiteModelImpl.getCompanyId()
+				};
+			},
+			baseModel -> {
+				WebsiteModelImpl websiteModelImpl = (WebsiteModelImpl)baseModel;
+
+				return new Object[] {
+					websiteModelImpl.getOriginalUuid(),
+					websiteModelImpl.getOriginalCompanyId()
+				};
+			});
+
+		_finderPathCountByUuid_C = FinderPath.create(
 			WebsiteModelImpl.ENTITY_CACHE_ENABLED,
 			WebsiteModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()});
+			new String[] {String.class.getName(), Long.class.getName()},
+			WebsiteModelImpl.UUID_COLUMN_BITMASK |
+			WebsiteModelImpl.COMPANYID_COLUMN_BITMASK,
+			baseModel -> {
+				WebsiteModelImpl websiteModelImpl = (WebsiteModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByCompanyId = new FinderPath(
+				return new Object[] {
+					websiteModelImpl.getUuid(), websiteModelImpl.getCompanyId()
+				};
+			},
+			baseModel -> {
+				WebsiteModelImpl websiteModelImpl = (WebsiteModelImpl)baseModel;
+
+				return new Object[] {
+					websiteModelImpl.getOriginalUuid(),
+					websiteModelImpl.getOriginalCompanyId()
+				};
+			});
+
+		_finderPathWithPaginationFindByCompanyId = FinderPath.create(
 			WebsiteModelImpl.ENTITY_CACHE_ENABLED,
 			WebsiteModelImpl.FINDER_CACHE_ENABLED, WebsiteImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId",
@@ -4810,21 +4628,42 @@ public class WebsitePersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
+		_finderPathWithoutPaginationFindByCompanyId = FinderPath.create(
 			WebsiteModelImpl.ENTITY_CACHE_ENABLED,
 			WebsiteModelImpl.FINDER_CACHE_ENABLED, WebsiteImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
 			new String[] {Long.class.getName()},
 			WebsiteModelImpl.COMPANYID_COLUMN_BITMASK |
-			WebsiteModelImpl.CREATEDATE_COLUMN_BITMASK);
+			WebsiteModelImpl.CREATEDATE_COLUMN_BITMASK,
+			baseModel -> {
+				WebsiteModelImpl websiteModelImpl = (WebsiteModelImpl)baseModel;
 
-		_finderPathCountByCompanyId = new FinderPath(
+				return new Object[] {websiteModelImpl.getCompanyId()};
+			},
+			baseModel -> {
+				WebsiteModelImpl websiteModelImpl = (WebsiteModelImpl)baseModel;
+
+				return new Object[] {websiteModelImpl.getOriginalCompanyId()};
+			});
+
+		_finderPathCountByCompanyId = FinderPath.create(
 			WebsiteModelImpl.ENTITY_CACHE_ENABLED,
 			WebsiteModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			WebsiteModelImpl.COMPANYID_COLUMN_BITMASK,
+			baseModel -> {
+				WebsiteModelImpl websiteModelImpl = (WebsiteModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByUserId = new FinderPath(
+				return new Object[] {websiteModelImpl.getCompanyId()};
+			},
+			baseModel -> {
+				WebsiteModelImpl websiteModelImpl = (WebsiteModelImpl)baseModel;
+
+				return new Object[] {websiteModelImpl.getOriginalCompanyId()};
+			});
+
+		_finderPathWithPaginationFindByUserId = FinderPath.create(
 			WebsiteModelImpl.ENTITY_CACHE_ENABLED,
 			WebsiteModelImpl.FINDER_CACHE_ENABLED, WebsiteImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUserId",
@@ -4833,21 +4672,42 @@ public class WebsitePersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUserId = new FinderPath(
+		_finderPathWithoutPaginationFindByUserId = FinderPath.create(
 			WebsiteModelImpl.ENTITY_CACHE_ENABLED,
 			WebsiteModelImpl.FINDER_CACHE_ENABLED, WebsiteImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUserId",
 			new String[] {Long.class.getName()},
 			WebsiteModelImpl.USERID_COLUMN_BITMASK |
-			WebsiteModelImpl.CREATEDATE_COLUMN_BITMASK);
+			WebsiteModelImpl.CREATEDATE_COLUMN_BITMASK,
+			baseModel -> {
+				WebsiteModelImpl websiteModelImpl = (WebsiteModelImpl)baseModel;
 
-		_finderPathCountByUserId = new FinderPath(
+				return new Object[] {websiteModelImpl.getUserId()};
+			},
+			baseModel -> {
+				WebsiteModelImpl websiteModelImpl = (WebsiteModelImpl)baseModel;
+
+				return new Object[] {websiteModelImpl.getOriginalUserId()};
+			});
+
+		_finderPathCountByUserId = FinderPath.create(
 			WebsiteModelImpl.ENTITY_CACHE_ENABLED,
 			WebsiteModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			WebsiteModelImpl.USERID_COLUMN_BITMASK,
+			baseModel -> {
+				WebsiteModelImpl websiteModelImpl = (WebsiteModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByC_C = new FinderPath(
+				return new Object[] {websiteModelImpl.getUserId()};
+			},
+			baseModel -> {
+				WebsiteModelImpl websiteModelImpl = (WebsiteModelImpl)baseModel;
+
+				return new Object[] {websiteModelImpl.getOriginalUserId()};
+			});
+
+		_finderPathWithPaginationFindByC_C = FinderPath.create(
 			WebsiteModelImpl.ENTITY_CACHE_ENABLED,
 			WebsiteModelImpl.FINDER_CACHE_ENABLED, WebsiteImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C",
@@ -4857,22 +4717,56 @@ public class WebsitePersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_C = new FinderPath(
+		_finderPathWithoutPaginationFindByC_C = FinderPath.create(
 			WebsiteModelImpl.ENTITY_CACHE_ENABLED,
 			WebsiteModelImpl.FINDER_CACHE_ENABLED, WebsiteImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
 			WebsiteModelImpl.COMPANYID_COLUMN_BITMASK |
 			WebsiteModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			WebsiteModelImpl.CREATEDATE_COLUMN_BITMASK);
+			WebsiteModelImpl.CREATEDATE_COLUMN_BITMASK,
+			baseModel -> {
+				WebsiteModelImpl websiteModelImpl = (WebsiteModelImpl)baseModel;
 
-		_finderPathCountByC_C = new FinderPath(
+				return new Object[] {
+					websiteModelImpl.getCompanyId(),
+					websiteModelImpl.getClassNameId()
+				};
+			},
+			baseModel -> {
+				WebsiteModelImpl websiteModelImpl = (WebsiteModelImpl)baseModel;
+
+				return new Object[] {
+					websiteModelImpl.getOriginalCompanyId(),
+					websiteModelImpl.getOriginalClassNameId()
+				};
+			});
+
+		_finderPathCountByC_C = FinderPath.create(
 			WebsiteModelImpl.ENTITY_CACHE_ENABLED,
 			WebsiteModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
-			new String[] {Long.class.getName(), Long.class.getName()});
+			new String[] {Long.class.getName(), Long.class.getName()},
+			WebsiteModelImpl.COMPANYID_COLUMN_BITMASK |
+			WebsiteModelImpl.CLASSNAMEID_COLUMN_BITMASK,
+			baseModel -> {
+				WebsiteModelImpl websiteModelImpl = (WebsiteModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByC_C_C = new FinderPath(
+				return new Object[] {
+					websiteModelImpl.getCompanyId(),
+					websiteModelImpl.getClassNameId()
+				};
+			},
+			baseModel -> {
+				WebsiteModelImpl websiteModelImpl = (WebsiteModelImpl)baseModel;
+
+				return new Object[] {
+					websiteModelImpl.getOriginalCompanyId(),
+					websiteModelImpl.getOriginalClassNameId()
+				};
+			});
+
+		_finderPathWithPaginationFindByC_C_C = FinderPath.create(
 			WebsiteModelImpl.ENTITY_CACHE_ENABLED,
 			WebsiteModelImpl.FINDER_CACHE_ENABLED, WebsiteImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C_C",
@@ -4882,7 +4776,7 @@ public class WebsitePersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_C_C = new FinderPath(
+		_finderPathWithoutPaginationFindByC_C_C = FinderPath.create(
 			WebsiteModelImpl.ENTITY_CACHE_ENABLED,
 			WebsiteModelImpl.FINDER_CACHE_ENABLED, WebsiteImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C_C",
@@ -4892,17 +4786,56 @@ public class WebsitePersistenceImpl
 			WebsiteModelImpl.COMPANYID_COLUMN_BITMASK |
 			WebsiteModelImpl.CLASSNAMEID_COLUMN_BITMASK |
 			WebsiteModelImpl.CLASSPK_COLUMN_BITMASK |
-			WebsiteModelImpl.CREATEDATE_COLUMN_BITMASK);
+			WebsiteModelImpl.CREATEDATE_COLUMN_BITMASK,
+			baseModel -> {
+				WebsiteModelImpl websiteModelImpl = (WebsiteModelImpl)baseModel;
 
-		_finderPathCountByC_C_C = new FinderPath(
+				return new Object[] {
+					websiteModelImpl.getCompanyId(),
+					websiteModelImpl.getClassNameId(),
+					websiteModelImpl.getClassPK()
+				};
+			},
+			baseModel -> {
+				WebsiteModelImpl websiteModelImpl = (WebsiteModelImpl)baseModel;
+
+				return new Object[] {
+					websiteModelImpl.getOriginalCompanyId(),
+					websiteModelImpl.getOriginalClassNameId(),
+					websiteModelImpl.getOriginalClassPK()
+				};
+			});
+
+		_finderPathCountByC_C_C = FinderPath.create(
 			WebsiteModelImpl.ENTITY_CACHE_ENABLED,
 			WebsiteModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C_C",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
+			},
+			WebsiteModelImpl.COMPANYID_COLUMN_BITMASK |
+			WebsiteModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+			WebsiteModelImpl.CLASSPK_COLUMN_BITMASK,
+			baseModel -> {
+				WebsiteModelImpl websiteModelImpl = (WebsiteModelImpl)baseModel;
+
+				return new Object[] {
+					websiteModelImpl.getCompanyId(),
+					websiteModelImpl.getClassNameId(),
+					websiteModelImpl.getClassPK()
+				};
+			},
+			baseModel -> {
+				WebsiteModelImpl websiteModelImpl = (WebsiteModelImpl)baseModel;
+
+				return new Object[] {
+					websiteModelImpl.getOriginalCompanyId(),
+					websiteModelImpl.getOriginalClassNameId(),
+					websiteModelImpl.getOriginalClassPK()
+				};
 			});
 
-		_finderPathWithPaginationFindByC_C_C_P = new FinderPath(
+		_finderPathWithPaginationFindByC_C_C_P = FinderPath.create(
 			WebsiteModelImpl.ENTITY_CACHE_ENABLED,
 			WebsiteModelImpl.FINDER_CACHE_ENABLED, WebsiteImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C_C_P",
@@ -4913,7 +4846,7 @@ public class WebsitePersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_C_C_P = new FinderPath(
+		_finderPathWithoutPaginationFindByC_C_C_P = FinderPath.create(
 			WebsiteModelImpl.ENTITY_CACHE_ENABLED,
 			WebsiteModelImpl.FINDER_CACHE_ENABLED, WebsiteImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C_C_P",
@@ -4925,23 +4858,66 @@ public class WebsitePersistenceImpl
 			WebsiteModelImpl.CLASSNAMEID_COLUMN_BITMASK |
 			WebsiteModelImpl.CLASSPK_COLUMN_BITMASK |
 			WebsiteModelImpl.PRIMARY_COLUMN_BITMASK |
-			WebsiteModelImpl.CREATEDATE_COLUMN_BITMASK);
+			WebsiteModelImpl.CREATEDATE_COLUMN_BITMASK,
+			baseModel -> {
+				WebsiteModelImpl websiteModelImpl = (WebsiteModelImpl)baseModel;
 
-		_finderPathCountByC_C_C_P = new FinderPath(
+				return new Object[] {
+					websiteModelImpl.getCompanyId(),
+					websiteModelImpl.getClassNameId(),
+					websiteModelImpl.getClassPK(), websiteModelImpl.isPrimary()
+				};
+			},
+			baseModel -> {
+				WebsiteModelImpl websiteModelImpl = (WebsiteModelImpl)baseModel;
+
+				return new Object[] {
+					websiteModelImpl.getOriginalCompanyId(),
+					websiteModelImpl.getOriginalClassNameId(),
+					websiteModelImpl.getOriginalClassPK(),
+					websiteModelImpl.getOriginalPrimary()
+				};
+			});
+
+		_finderPathCountByC_C_C_P = FinderPath.create(
 			WebsiteModelImpl.ENTITY_CACHE_ENABLED,
 			WebsiteModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C_C_P",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Long.class.getName(), Boolean.class.getName()
+			},
+			WebsiteModelImpl.COMPANYID_COLUMN_BITMASK |
+			WebsiteModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+			WebsiteModelImpl.CLASSPK_COLUMN_BITMASK |
+			WebsiteModelImpl.PRIMARY_COLUMN_BITMASK,
+			baseModel -> {
+				WebsiteModelImpl websiteModelImpl = (WebsiteModelImpl)baseModel;
+
+				return new Object[] {
+					websiteModelImpl.getCompanyId(),
+					websiteModelImpl.getClassNameId(),
+					websiteModelImpl.getClassPK(), websiteModelImpl.isPrimary()
+				};
+			},
+			baseModel -> {
+				WebsiteModelImpl websiteModelImpl = (WebsiteModelImpl)baseModel;
+
+				return new Object[] {
+					websiteModelImpl.getOriginalCompanyId(),
+					websiteModelImpl.getOriginalClassNameId(),
+					websiteModelImpl.getOriginalClassPK(),
+					websiteModelImpl.getOriginalPrimary()
+				};
 			});
 	}
 
 	public void destroy() {
 		EntityCacheUtil.removeCache(WebsiteImpl.class.getName());
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	private static final String _SQL_SELECT_WEBSITE =

@@ -8001,10 +8001,6 @@ public class AnnouncementsEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(AnnouncementsEntryImpl.class);
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -8023,16 +8019,10 @@ public class AnnouncementsEntryPersistenceImpl
 			AnnouncementsEntryModelImpl.COLUMN_BITMASK_ENABLED,
 			((AnnouncementsEntryModelImpl)announcementsEntry).
 				getColumnBitmask());
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@Override
 	public void clearCache(List<AnnouncementsEntry> announcementsEntries) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (AnnouncementsEntry announcementsEntry : announcementsEntries) {
 			EntityCacheUtil.removeResult(
 				AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
@@ -8046,10 +8036,6 @@ public class AnnouncementsEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
@@ -8269,271 +8255,6 @@ public class AnnouncementsEntryPersistenceImpl
 		}
 		finally {
 			closeSession(session);
-		}
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!AnnouncementsEntryModelImpl.COLUMN_BITMASK_ENABLED) {
-			FinderCacheUtil.clearCache(
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {
-				announcementsEntryModelImpl.getUuid()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByUuid, args);
-
-			args = new Object[] {
-				announcementsEntryModelImpl.getUuid(),
-				announcementsEntryModelImpl.getCompanyId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByUuid_C, args);
-
-			args = new Object[] {announcementsEntryModelImpl.getCompanyId()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByCompanyId, args);
-
-			args = new Object[] {announcementsEntryModelImpl.getUserId()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByUserId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByUserId, args);
-
-			args = new Object[] {
-				announcementsEntryModelImpl.getClassNameId(),
-				announcementsEntryModelImpl.getClassPK()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_C, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByC_C, args);
-
-			args = new Object[] {
-				announcementsEntryModelImpl.getCompanyId(),
-				announcementsEntryModelImpl.getClassNameId(),
-				announcementsEntryModelImpl.getClassPK()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_C_C, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByC_C_C, args);
-
-			args = new Object[] {
-				announcementsEntryModelImpl.getClassNameId(),
-				announcementsEntryModelImpl.getClassPK(),
-				announcementsEntryModelImpl.isAlert()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_C_A, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByC_C_A, args);
-
-			args = new Object[] {
-				announcementsEntryModelImpl.getCompanyId(),
-				announcementsEntryModelImpl.getClassNameId(),
-				announcementsEntryModelImpl.getClassPK(),
-				announcementsEntryModelImpl.isAlert()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_C_C_A, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByC_C_C_A, args);
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountAll, FINDER_ARGS_EMPTY);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((announcementsEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					announcementsEntryModelImpl.getOriginalUuid()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-
-				args = new Object[] {announcementsEntryModelImpl.getUuid()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-			}
-
-			if ((announcementsEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					announcementsEntryModelImpl.getOriginalUuid(),
-					announcementsEntryModelImpl.getOriginalCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-
-				args = new Object[] {
-					announcementsEntryModelImpl.getUuid(),
-					announcementsEntryModelImpl.getCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-			}
-
-			if ((announcementsEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByCompanyId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					announcementsEntryModelImpl.getOriginalCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByCompanyId, args);
-
-				args = new Object[] {
-					announcementsEntryModelImpl.getCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByCompanyId, args);
-			}
-
-			if ((announcementsEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUserId.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					announcementsEntryModelImpl.getOriginalUserId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUserId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUserId, args);
-
-				args = new Object[] {announcementsEntryModelImpl.getUserId()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUserId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUserId, args);
-			}
-
-			if ((announcementsEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					announcementsEntryModelImpl.getOriginalClassNameId(),
-					announcementsEntryModelImpl.getOriginalClassPK()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_C, args);
-
-				args = new Object[] {
-					announcementsEntryModelImpl.getClassNameId(),
-					announcementsEntryModelImpl.getClassPK()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_C, args);
-			}
-
-			if ((announcementsEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_C_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					announcementsEntryModelImpl.getOriginalCompanyId(),
-					announcementsEntryModelImpl.getOriginalClassNameId(),
-					announcementsEntryModelImpl.getOriginalClassPK()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_C_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_C_C, args);
-
-				args = new Object[] {
-					announcementsEntryModelImpl.getCompanyId(),
-					announcementsEntryModelImpl.getClassNameId(),
-					announcementsEntryModelImpl.getClassPK()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_C_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_C_C, args);
-			}
-
-			if ((announcementsEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_C_A.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					announcementsEntryModelImpl.getOriginalClassNameId(),
-					announcementsEntryModelImpl.getOriginalClassPK(),
-					announcementsEntryModelImpl.getOriginalAlert()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_C_A, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_C_A, args);
-
-				args = new Object[] {
-					announcementsEntryModelImpl.getClassNameId(),
-					announcementsEntryModelImpl.getClassPK(),
-					announcementsEntryModelImpl.isAlert()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_C_A, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_C_A, args);
-			}
-
-			if ((announcementsEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_C_C_A.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					announcementsEntryModelImpl.getOriginalCompanyId(),
-					announcementsEntryModelImpl.getOriginalClassNameId(),
-					announcementsEntryModelImpl.getOriginalClassPK(),
-					announcementsEntryModelImpl.getOriginalAlert()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_C_C_A, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_C_C_A, args);
-
-				args = new Object[] {
-					announcementsEntryModelImpl.getCompanyId(),
-					announcementsEntryModelImpl.getClassNameId(),
-					announcementsEntryModelImpl.getClassPK(),
-					announcementsEntryModelImpl.isAlert()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_C_C_A, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_C_C_A, args);
-			}
 		}
 
 		EntityCacheUtil.putResult(
@@ -8817,26 +8538,26 @@ public class AnnouncementsEntryPersistenceImpl
 	 * Initializes the announcements entry persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
 			AnnouncementsEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
 			AnnouncementsEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByUuid = new FinderPath(
+		_finderPathWithPaginationFindByUuid = FinderPath.create(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
 			AnnouncementsEntryImpl.class,
@@ -8846,7 +8567,7 @@ public class AnnouncementsEntryPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid = new FinderPath(
+		_finderPathWithoutPaginationFindByUuid = FinderPath.create(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
 			AnnouncementsEntryImpl.class,
@@ -8854,15 +8575,44 @@ public class AnnouncementsEntryPersistenceImpl
 			new String[] {String.class.getName()},
 			AnnouncementsEntryModelImpl.UUID_COLUMN_BITMASK |
 			AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK,
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
 
-		_finderPathCountByUuid = new FinderPath(
+				return new Object[] {announcementsEntryModelImpl.getUuid()};
+			},
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
+
+				return new Object[] {
+					announcementsEntryModelImpl.getOriginalUuid()
+				};
+			});
+
+		_finderPathCountByUuid = FinderPath.create(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
-			new String[] {String.class.getName()});
+			new String[] {String.class.getName()},
+			AnnouncementsEntryModelImpl.UUID_COLUMN_BITMASK,
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByUuid_C = new FinderPath(
+				return new Object[] {announcementsEntryModelImpl.getUuid()};
+			},
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
+
+				return new Object[] {
+					announcementsEntryModelImpl.getOriginalUuid()
+				};
+			});
+
+		_finderPathWithPaginationFindByUuid_C = FinderPath.create(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
 			AnnouncementsEntryImpl.class,
@@ -8873,7 +8623,7 @@ public class AnnouncementsEntryPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
+		_finderPathWithoutPaginationFindByUuid_C = FinderPath.create(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
 			AnnouncementsEntryImpl.class,
@@ -8882,15 +8632,53 @@ public class AnnouncementsEntryPersistenceImpl
 			AnnouncementsEntryModelImpl.UUID_COLUMN_BITMASK |
 			AnnouncementsEntryModelImpl.COMPANYID_COLUMN_BITMASK |
 			AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK,
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
 
-		_finderPathCountByUuid_C = new FinderPath(
+				return new Object[] {
+					announcementsEntryModelImpl.getUuid(),
+					announcementsEntryModelImpl.getCompanyId()
+				};
+			},
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
+
+				return new Object[] {
+					announcementsEntryModelImpl.getOriginalUuid(),
+					announcementsEntryModelImpl.getOriginalCompanyId()
+				};
+			});
+
+		_finderPathCountByUuid_C = FinderPath.create(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()});
+			new String[] {String.class.getName(), Long.class.getName()},
+			AnnouncementsEntryModelImpl.UUID_COLUMN_BITMASK |
+			AnnouncementsEntryModelImpl.COMPANYID_COLUMN_BITMASK,
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByCompanyId = new FinderPath(
+				return new Object[] {
+					announcementsEntryModelImpl.getUuid(),
+					announcementsEntryModelImpl.getCompanyId()
+				};
+			},
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
+
+				return new Object[] {
+					announcementsEntryModelImpl.getOriginalUuid(),
+					announcementsEntryModelImpl.getOriginalCompanyId()
+				};
+			});
+
+		_finderPathWithPaginationFindByCompanyId = FinderPath.create(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
 			AnnouncementsEntryImpl.class,
@@ -8900,7 +8688,7 @@ public class AnnouncementsEntryPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
+		_finderPathWithoutPaginationFindByCompanyId = FinderPath.create(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
 			AnnouncementsEntryImpl.class,
@@ -8908,15 +8696,48 @@ public class AnnouncementsEntryPersistenceImpl
 			new String[] {Long.class.getName()},
 			AnnouncementsEntryModelImpl.COMPANYID_COLUMN_BITMASK |
 			AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK,
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
 
-		_finderPathCountByCompanyId = new FinderPath(
+				return new Object[] {
+					announcementsEntryModelImpl.getCompanyId()
+				};
+			},
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
+
+				return new Object[] {
+					announcementsEntryModelImpl.getOriginalCompanyId()
+				};
+			});
+
+		_finderPathCountByCompanyId = FinderPath.create(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			AnnouncementsEntryModelImpl.COMPANYID_COLUMN_BITMASK,
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByUserId = new FinderPath(
+				return new Object[] {
+					announcementsEntryModelImpl.getCompanyId()
+				};
+			},
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
+
+				return new Object[] {
+					announcementsEntryModelImpl.getOriginalCompanyId()
+				};
+			});
+
+		_finderPathWithPaginationFindByUserId = FinderPath.create(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
 			AnnouncementsEntryImpl.class,
@@ -8926,7 +8747,7 @@ public class AnnouncementsEntryPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUserId = new FinderPath(
+		_finderPathWithoutPaginationFindByUserId = FinderPath.create(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
 			AnnouncementsEntryImpl.class,
@@ -8934,15 +8755,44 @@ public class AnnouncementsEntryPersistenceImpl
 			new String[] {Long.class.getName()},
 			AnnouncementsEntryModelImpl.USERID_COLUMN_BITMASK |
 			AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK,
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
 
-		_finderPathCountByUserId = new FinderPath(
+				return new Object[] {announcementsEntryModelImpl.getUserId()};
+			},
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
+
+				return new Object[] {
+					announcementsEntryModelImpl.getOriginalUserId()
+				};
+			});
+
+		_finderPathCountByUserId = FinderPath.create(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			AnnouncementsEntryModelImpl.USERID_COLUMN_BITMASK,
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByC_C = new FinderPath(
+				return new Object[] {announcementsEntryModelImpl.getUserId()};
+			},
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
+
+				return new Object[] {
+					announcementsEntryModelImpl.getOriginalUserId()
+				};
+			});
+
+		_finderPathWithPaginationFindByC_C = FinderPath.create(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
 			AnnouncementsEntryImpl.class,
@@ -8953,7 +8803,7 @@ public class AnnouncementsEntryPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_C = new FinderPath(
+		_finderPathWithoutPaginationFindByC_C = FinderPath.create(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
 			AnnouncementsEntryImpl.class,
@@ -8962,15 +8812,53 @@ public class AnnouncementsEntryPersistenceImpl
 			AnnouncementsEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
 			AnnouncementsEntryModelImpl.CLASSPK_COLUMN_BITMASK |
 			AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK,
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
 
-		_finderPathCountByC_C = new FinderPath(
+				return new Object[] {
+					announcementsEntryModelImpl.getClassNameId(),
+					announcementsEntryModelImpl.getClassPK()
+				};
+			},
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
+
+				return new Object[] {
+					announcementsEntryModelImpl.getOriginalClassNameId(),
+					announcementsEntryModelImpl.getOriginalClassPK()
+				};
+			});
+
+		_finderPathCountByC_C = FinderPath.create(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
-			new String[] {Long.class.getName(), Long.class.getName()});
+			new String[] {Long.class.getName(), Long.class.getName()},
+			AnnouncementsEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+			AnnouncementsEntryModelImpl.CLASSPK_COLUMN_BITMASK,
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByC_C_C = new FinderPath(
+				return new Object[] {
+					announcementsEntryModelImpl.getClassNameId(),
+					announcementsEntryModelImpl.getClassPK()
+				};
+			},
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
+
+				return new Object[] {
+					announcementsEntryModelImpl.getOriginalClassNameId(),
+					announcementsEntryModelImpl.getOriginalClassPK()
+				};
+			});
+
+		_finderPathWithPaginationFindByC_C_C = FinderPath.create(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
 			AnnouncementsEntryImpl.class,
@@ -8981,7 +8869,7 @@ public class AnnouncementsEntryPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_C_C = new FinderPath(
+		_finderPathWithoutPaginationFindByC_C_C = FinderPath.create(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
 			AnnouncementsEntryImpl.class,
@@ -8993,17 +8881,60 @@ public class AnnouncementsEntryPersistenceImpl
 			AnnouncementsEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
 			AnnouncementsEntryModelImpl.CLASSPK_COLUMN_BITMASK |
 			AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK,
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
 
-		_finderPathCountByC_C_C = new FinderPath(
+				return new Object[] {
+					announcementsEntryModelImpl.getCompanyId(),
+					announcementsEntryModelImpl.getClassNameId(),
+					announcementsEntryModelImpl.getClassPK()
+				};
+			},
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
+
+				return new Object[] {
+					announcementsEntryModelImpl.getOriginalCompanyId(),
+					announcementsEntryModelImpl.getOriginalClassNameId(),
+					announcementsEntryModelImpl.getOriginalClassPK()
+				};
+			});
+
+		_finderPathCountByC_C_C = FinderPath.create(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C_C",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
+			},
+			AnnouncementsEntryModelImpl.COMPANYID_COLUMN_BITMASK |
+			AnnouncementsEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+			AnnouncementsEntryModelImpl.CLASSPK_COLUMN_BITMASK,
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
+
+				return new Object[] {
+					announcementsEntryModelImpl.getCompanyId(),
+					announcementsEntryModelImpl.getClassNameId(),
+					announcementsEntryModelImpl.getClassPK()
+				};
+			},
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
+
+				return new Object[] {
+					announcementsEntryModelImpl.getOriginalCompanyId(),
+					announcementsEntryModelImpl.getOriginalClassNameId(),
+					announcementsEntryModelImpl.getOriginalClassPK()
+				};
 			});
 
-		_finderPathWithPaginationFindByC_C_A = new FinderPath(
+		_finderPathWithPaginationFindByC_C_A = FinderPath.create(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
 			AnnouncementsEntryImpl.class,
@@ -9014,7 +8945,7 @@ public class AnnouncementsEntryPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_C_A = new FinderPath(
+		_finderPathWithoutPaginationFindByC_C_A = FinderPath.create(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
 			AnnouncementsEntryImpl.class,
@@ -9027,18 +8958,61 @@ public class AnnouncementsEntryPersistenceImpl
 			AnnouncementsEntryModelImpl.CLASSPK_COLUMN_BITMASK |
 			AnnouncementsEntryModelImpl.ALERT_COLUMN_BITMASK |
 			AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK,
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
 
-		_finderPathCountByC_C_A = new FinderPath(
+				return new Object[] {
+					announcementsEntryModelImpl.getClassNameId(),
+					announcementsEntryModelImpl.getClassPK(),
+					announcementsEntryModelImpl.isAlert()
+				};
+			},
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
+
+				return new Object[] {
+					announcementsEntryModelImpl.getOriginalClassNameId(),
+					announcementsEntryModelImpl.getOriginalClassPK(),
+					announcementsEntryModelImpl.getOriginalAlert()
+				};
+			});
+
+		_finderPathCountByC_C_A = FinderPath.create(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C_A",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Boolean.class.getName()
+			},
+			AnnouncementsEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+			AnnouncementsEntryModelImpl.CLASSPK_COLUMN_BITMASK |
+			AnnouncementsEntryModelImpl.ALERT_COLUMN_BITMASK,
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
+
+				return new Object[] {
+					announcementsEntryModelImpl.getClassNameId(),
+					announcementsEntryModelImpl.getClassPK(),
+					announcementsEntryModelImpl.isAlert()
+				};
+			},
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
+
+				return new Object[] {
+					announcementsEntryModelImpl.getOriginalClassNameId(),
+					announcementsEntryModelImpl.getOriginalClassPK(),
+					announcementsEntryModelImpl.getOriginalAlert()
+				};
 			});
 
-		_finderPathWithPaginationFindByC_C_C_A = new FinderPath(
+		_finderPathWithPaginationFindByC_C_C_A = FinderPath.create(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
 			AnnouncementsEntryImpl.class,
@@ -9050,7 +9024,7 @@ public class AnnouncementsEntryPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_C_C_A = new FinderPath(
+		_finderPathWithoutPaginationFindByC_C_C_A = FinderPath.create(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED,
 			AnnouncementsEntryImpl.class,
@@ -9064,23 +9038,72 @@ public class AnnouncementsEntryPersistenceImpl
 			AnnouncementsEntryModelImpl.CLASSPK_COLUMN_BITMASK |
 			AnnouncementsEntryModelImpl.ALERT_COLUMN_BITMASK |
 			AnnouncementsEntryModelImpl.PRIORITY_COLUMN_BITMASK |
-			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			AnnouncementsEntryModelImpl.MODIFIEDDATE_COLUMN_BITMASK,
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
 
-		_finderPathCountByC_C_C_A = new FinderPath(
+				return new Object[] {
+					announcementsEntryModelImpl.getCompanyId(),
+					announcementsEntryModelImpl.getClassNameId(),
+					announcementsEntryModelImpl.getClassPK(),
+					announcementsEntryModelImpl.isAlert()
+				};
+			},
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
+
+				return new Object[] {
+					announcementsEntryModelImpl.getOriginalCompanyId(),
+					announcementsEntryModelImpl.getOriginalClassNameId(),
+					announcementsEntryModelImpl.getOriginalClassPK(),
+					announcementsEntryModelImpl.getOriginalAlert()
+				};
+			});
+
+		_finderPathCountByC_C_C_A = FinderPath.create(
 			AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C_C_A",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Long.class.getName(), Boolean.class.getName()
+			},
+			AnnouncementsEntryModelImpl.COMPANYID_COLUMN_BITMASK |
+			AnnouncementsEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+			AnnouncementsEntryModelImpl.CLASSPK_COLUMN_BITMASK |
+			AnnouncementsEntryModelImpl.ALERT_COLUMN_BITMASK,
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
+
+				return new Object[] {
+					announcementsEntryModelImpl.getCompanyId(),
+					announcementsEntryModelImpl.getClassNameId(),
+					announcementsEntryModelImpl.getClassPK(),
+					announcementsEntryModelImpl.isAlert()
+				};
+			},
+			baseModel -> {
+				AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+					(AnnouncementsEntryModelImpl)baseModel;
+
+				return new Object[] {
+					announcementsEntryModelImpl.getOriginalCompanyId(),
+					announcementsEntryModelImpl.getOriginalClassNameId(),
+					announcementsEntryModelImpl.getOriginalClassPK(),
+					announcementsEntryModelImpl.getOriginalAlert()
+				};
 			});
 	}
 
 	public void destroy() {
 		EntityCacheUtil.removeCache(AnnouncementsEntryImpl.class.getName());
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	private static final String _SQL_SELECT_ANNOUNCEMENTSENTRY =

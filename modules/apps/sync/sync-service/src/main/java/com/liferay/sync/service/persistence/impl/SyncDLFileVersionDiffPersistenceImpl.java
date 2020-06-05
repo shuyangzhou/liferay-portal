@@ -1488,10 +1488,6 @@ public class SyncDLFileVersionDiffPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(SyncDLFileVersionDiffImpl.class);
-
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -1509,19 +1505,10 @@ public class SyncDLFileVersionDiffPersistenceImpl
 			_columnBitmaskEnabled,
 			((SyncDLFileVersionDiffModelImpl)syncDLFileVersionDiff).
 				getColumnBitmask());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache(
-			(SyncDLFileVersionDiffModelImpl)syncDLFileVersionDiff, true);
 	}
 
 	@Override
 	public void clearCache(List<SyncDLFileVersionDiff> syncDLFileVersionDiffs) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (SyncDLFileVersionDiff syncDLFileVersionDiff :
 				syncDLFileVersionDiffs) {
 
@@ -1531,18 +1518,11 @@ public class SyncDLFileVersionDiffPersistenceImpl
 				_columnBitmaskEnabled,
 				((SyncDLFileVersionDiffModelImpl)syncDLFileVersionDiff).
 					getColumnBitmask());
-
-			clearUniqueFindersCache(
-				(SyncDLFileVersionDiffModelImpl)syncDLFileVersionDiff, true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				entityCacheEnabled, SyncDLFileVersionDiffImpl.class,
@@ -1564,35 +1544,6 @@ public class SyncDLFileVersionDiffPersistenceImpl
 		finderCache.putResult(
 			_finderPathFetchByF_S_T, args, syncDLFileVersionDiffModelImpl,
 			false);
-	}
-
-	protected void clearUniqueFindersCache(
-		SyncDLFileVersionDiffModelImpl syncDLFileVersionDiffModelImpl,
-		boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				syncDLFileVersionDiffModelImpl.getFileEntryId(),
-				syncDLFileVersionDiffModelImpl.getSourceFileVersionId(),
-				syncDLFileVersionDiffModelImpl.getTargetFileVersionId()
-			};
-
-			finderCache.removeResult(_finderPathCountByF_S_T, args);
-			finderCache.removeResult(_finderPathFetchByF_S_T, args);
-		}
-
-		if ((syncDLFileVersionDiffModelImpl.getColumnBitmask() &
-			 _finderPathFetchByF_S_T.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				syncDLFileVersionDiffModelImpl.getOriginalFileEntryId(),
-				syncDLFileVersionDiffModelImpl.getOriginalSourceFileVersionId(),
-				syncDLFileVersionDiffModelImpl.getOriginalTargetFileVersionId()
-			};
-
-			finderCache.removeResult(_finderPathCountByF_S_T, args);
-			finderCache.removeResult(_finderPathFetchByF_S_T, args);
-		}
 	}
 
 	/**
@@ -1753,47 +1704,6 @@ public class SyncDLFileVersionDiffPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!_columnBitmaskEnabled) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {
-				syncDLFileVersionDiffModelImpl.getFileEntryId()
-			};
-
-			finderCache.removeResult(_finderPathCountByFileEntryId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByFileEntryId, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((syncDLFileVersionDiffModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByFileEntryId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					syncDLFileVersionDiffModelImpl.getOriginalFileEntryId()
-				};
-
-				finderCache.removeResult(_finderPathCountByFileEntryId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByFileEntryId, args);
-
-				args = new Object[] {
-					syncDLFileVersionDiffModelImpl.getFileEntryId()
-				};
-
-				finderCache.removeResult(_finderPathCountByFileEntryId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByFileEntryId, args);
-			}
-		}
-
 		entityCache.putResult(
 			entityCacheEnabled, SyncDLFileVersionDiffImpl.class,
 			syncDLFileVersionDiff.getPrimaryKey(), syncDLFileVersionDiff, false,
@@ -1801,7 +1711,6 @@ public class SyncDLFileVersionDiffPersistenceImpl
 			((SyncDLFileVersionDiffModelImpl)syncDLFileVersionDiff).
 				getColumnBitmask());
 
-		clearUniqueFindersCache(syncDLFileVersionDiffModelImpl, false);
 		cacheUniqueFindersCache(syncDLFileVersionDiffModelImpl);
 
 		syncDLFileVersionDiff.resetOriginalValues();
@@ -2086,23 +1995,23 @@ public class SyncDLFileVersionDiffPersistenceImpl
 		SyncDLFileVersionDiffModelImpl.setFinderCacheEnabled(
 			finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			SyncDLFileVersionDiffImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			SyncDLFileVersionDiffImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByFileEntryId = new FinderPath(
+		_finderPathWithPaginationFindByFileEntryId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			SyncDLFileVersionDiffImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByFileEntryId",
@@ -2111,19 +2020,52 @@ public class SyncDLFileVersionDiffPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByFileEntryId = new FinderPath(
+		_finderPathWithoutPaginationFindByFileEntryId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			SyncDLFileVersionDiffImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByFileEntryId",
 			new String[] {Long.class.getName()},
-			SyncDLFileVersionDiffModelImpl.FILEENTRYID_COLUMN_BITMASK);
+			SyncDLFileVersionDiffModelImpl.FILEENTRYID_COLUMN_BITMASK,
+			baseModel -> {
+				SyncDLFileVersionDiffModelImpl syncDLFileVersionDiffModelImpl =
+					(SyncDLFileVersionDiffModelImpl)baseModel;
 
-		_finderPathCountByFileEntryId = new FinderPath(
+				return new Object[] {
+					syncDLFileVersionDiffModelImpl.getFileEntryId()
+				};
+			},
+			baseModel -> {
+				SyncDLFileVersionDiffModelImpl syncDLFileVersionDiffModelImpl =
+					(SyncDLFileVersionDiffModelImpl)baseModel;
+
+				return new Object[] {
+					syncDLFileVersionDiffModelImpl.getOriginalFileEntryId()
+				};
+			});
+
+		_finderPathCountByFileEntryId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByFileEntryId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			SyncDLFileVersionDiffModelImpl.FILEENTRYID_COLUMN_BITMASK,
+			baseModel -> {
+				SyncDLFileVersionDiffModelImpl syncDLFileVersionDiffModelImpl =
+					(SyncDLFileVersionDiffModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByExpirationDate = new FinderPath(
+				return new Object[] {
+					syncDLFileVersionDiffModelImpl.getFileEntryId()
+				};
+			},
+			baseModel -> {
+				SyncDLFileVersionDiffModelImpl syncDLFileVersionDiffModelImpl =
+					(SyncDLFileVersionDiffModelImpl)baseModel;
+
+				return new Object[] {
+					syncDLFileVersionDiffModelImpl.getOriginalFileEntryId()
+				};
+			});
+
+		_finderPathWithPaginationFindByExpirationDate = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			SyncDLFileVersionDiffImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByExpirationDate",
@@ -2132,12 +2074,12 @@ public class SyncDLFileVersionDiffPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithPaginationCountByExpirationDate = new FinderPath(
+		_finderPathWithPaginationCountByExpirationDate = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByExpirationDate",
 			new String[] {Date.class.getName()});
 
-		_finderPathFetchByF_S_T = new FinderPath(
+		_finderPathFetchByF_S_T = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			SyncDLFileVersionDiffImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByF_S_T",
@@ -2146,22 +2088,70 @@ public class SyncDLFileVersionDiffPersistenceImpl
 			},
 			SyncDLFileVersionDiffModelImpl.FILEENTRYID_COLUMN_BITMASK |
 			SyncDLFileVersionDiffModelImpl.SOURCEFILEVERSIONID_COLUMN_BITMASK |
-			SyncDLFileVersionDiffModelImpl.TARGETFILEVERSIONID_COLUMN_BITMASK);
+			SyncDLFileVersionDiffModelImpl.TARGETFILEVERSIONID_COLUMN_BITMASK,
+			baseModel -> {
+				SyncDLFileVersionDiffModelImpl syncDLFileVersionDiffModelImpl =
+					(SyncDLFileVersionDiffModelImpl)baseModel;
 
-		_finderPathCountByF_S_T = new FinderPath(
+				return new Object[] {
+					syncDLFileVersionDiffModelImpl.getFileEntryId(),
+					syncDLFileVersionDiffModelImpl.getSourceFileVersionId(),
+					syncDLFileVersionDiffModelImpl.getTargetFileVersionId()
+				};
+			},
+			baseModel -> {
+				SyncDLFileVersionDiffModelImpl syncDLFileVersionDiffModelImpl =
+					(SyncDLFileVersionDiffModelImpl)baseModel;
+
+				return new Object[] {
+					syncDLFileVersionDiffModelImpl.getOriginalFileEntryId(),
+					syncDLFileVersionDiffModelImpl.
+						getOriginalSourceFileVersionId(),
+					syncDLFileVersionDiffModelImpl.
+						getOriginalTargetFileVersionId()
+				};
+			});
+
+		_finderPathCountByF_S_T = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByF_S_T",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
+			},
+			SyncDLFileVersionDiffModelImpl.FILEENTRYID_COLUMN_BITMASK |
+			SyncDLFileVersionDiffModelImpl.SOURCEFILEVERSIONID_COLUMN_BITMASK |
+			SyncDLFileVersionDiffModelImpl.TARGETFILEVERSIONID_COLUMN_BITMASK,
+			baseModel -> {
+				SyncDLFileVersionDiffModelImpl syncDLFileVersionDiffModelImpl =
+					(SyncDLFileVersionDiffModelImpl)baseModel;
+
+				return new Object[] {
+					syncDLFileVersionDiffModelImpl.getFileEntryId(),
+					syncDLFileVersionDiffModelImpl.getSourceFileVersionId(),
+					syncDLFileVersionDiffModelImpl.getTargetFileVersionId()
+				};
+			},
+			baseModel -> {
+				SyncDLFileVersionDiffModelImpl syncDLFileVersionDiffModelImpl =
+					(SyncDLFileVersionDiffModelImpl)baseModel;
+
+				return new Object[] {
+					syncDLFileVersionDiffModelImpl.getOriginalFileEntryId(),
+					syncDLFileVersionDiffModelImpl.
+						getOriginalSourceFileVersionId(),
+					syncDLFileVersionDiffModelImpl.
+						getOriginalTargetFileVersionId()
+				};
 			});
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(SyncDLFileVersionDiffImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@Override

@@ -976,10 +976,6 @@ public class ListTypePersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(ListTypeImpl.class);
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -996,35 +992,21 @@ public class ListTypePersistenceImpl
 			listType.getPrimaryKey(), listType,
 			ListTypeModelImpl.COLUMN_BITMASK_ENABLED,
 			((ListTypeModelImpl)listType).getColumnBitmask());
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((ListTypeModelImpl)listType, true);
 	}
 
 	@Override
 	public void clearCache(List<ListType> listTypes) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (ListType listType : listTypes) {
 			EntityCacheUtil.removeResult(
 				ListTypeModelImpl.ENTITY_CACHE_ENABLED, ListTypeImpl.class,
 				listType.getPrimaryKey(), listType,
 				ListTypeModelImpl.COLUMN_BITMASK_ENABLED,
 				((ListTypeModelImpl)listType).getColumnBitmask());
-
-			clearUniqueFindersCache((ListTypeModelImpl)listType, true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				ListTypeModelImpl.ENTITY_CACHE_ENABLED, ListTypeImpl.class,
@@ -1043,31 +1025,6 @@ public class ListTypePersistenceImpl
 			_finderPathCountByN_T, args, Long.valueOf(1), false);
 		FinderCacheUtil.putResult(
 			_finderPathFetchByN_T, args, listTypeModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		ListTypeModelImpl listTypeModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				listTypeModelImpl.getName(), listTypeModelImpl.getType()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByN_T, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByN_T, args);
-		}
-
-		if ((listTypeModelImpl.getColumnBitmask() &
-			 _finderPathFetchByN_T.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				listTypeModelImpl.getOriginalName(),
-				listTypeModelImpl.getOriginalType()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByN_T, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByN_T, args);
-		}
 	}
 
 	/**
@@ -1212,52 +1169,12 @@ public class ListTypePersistenceImpl
 			closeSession(session);
 		}
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!ListTypeModelImpl.COLUMN_BITMASK_ENABLED) {
-			FinderCacheUtil.clearCache(
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {listTypeModelImpl.getType()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByType, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByType, args);
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountAll, FINDER_ARGS_EMPTY);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((listTypeModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByType.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					listTypeModelImpl.getOriginalType()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByType, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByType, args);
-
-				args = new Object[] {listTypeModelImpl.getType()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByType, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByType, args);
-			}
-		}
-
 		EntityCacheUtil.putResult(
 			ListTypeModelImpl.ENTITY_CACHE_ENABLED, ListTypeImpl.class,
 			listType.getPrimaryKey(), listType, false,
 			ListTypeModelImpl.COLUMN_BITMASK_ENABLED,
 			((ListTypeModelImpl)listType).getColumnBitmask());
 
-		clearUniqueFindersCache(listTypeModelImpl, false);
 		cacheUniqueFindersCache(listTypeModelImpl);
 
 		listType.resetOriginalValues();
@@ -1530,24 +1447,24 @@ public class ListTypePersistenceImpl
 	 * Initializes the list type persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			ListTypeModelImpl.ENTITY_CACHE_ENABLED,
 			ListTypeModelImpl.FINDER_CACHE_ENABLED, ListTypeImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			ListTypeModelImpl.ENTITY_CACHE_ENABLED,
 			ListTypeModelImpl.FINDER_CACHE_ENABLED, ListTypeImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			ListTypeModelImpl.ENTITY_CACHE_ENABLED,
 			ListTypeModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByType = new FinderPath(
+		_finderPathWithPaginationFindByType = FinderPath.create(
 			ListTypeModelImpl.ENTITY_CACHE_ENABLED,
 			ListTypeModelImpl.FINDER_CACHE_ENABLED, ListTypeImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByType",
@@ -1556,40 +1473,102 @@ public class ListTypePersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByType = new FinderPath(
+		_finderPathWithoutPaginationFindByType = FinderPath.create(
 			ListTypeModelImpl.ENTITY_CACHE_ENABLED,
 			ListTypeModelImpl.FINDER_CACHE_ENABLED, ListTypeImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByType",
 			new String[] {String.class.getName()},
 			ListTypeModelImpl.TYPE_COLUMN_BITMASK |
-			ListTypeModelImpl.NAME_COLUMN_BITMASK);
+			ListTypeModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				ListTypeModelImpl listTypeModelImpl =
+					(ListTypeModelImpl)baseModel;
 
-		_finderPathCountByType = new FinderPath(
+				return new Object[] {listTypeModelImpl.getType()};
+			},
+			baseModel -> {
+				ListTypeModelImpl listTypeModelImpl =
+					(ListTypeModelImpl)baseModel;
+
+				return new Object[] {listTypeModelImpl.getOriginalType()};
+			});
+
+		_finderPathCountByType = FinderPath.create(
 			ListTypeModelImpl.ENTITY_CACHE_ENABLED,
 			ListTypeModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByType",
-			new String[] {String.class.getName()});
+			new String[] {String.class.getName()},
+			ListTypeModelImpl.TYPE_COLUMN_BITMASK,
+			baseModel -> {
+				ListTypeModelImpl listTypeModelImpl =
+					(ListTypeModelImpl)baseModel;
 
-		_finderPathFetchByN_T = new FinderPath(
+				return new Object[] {listTypeModelImpl.getType()};
+			},
+			baseModel -> {
+				ListTypeModelImpl listTypeModelImpl =
+					(ListTypeModelImpl)baseModel;
+
+				return new Object[] {listTypeModelImpl.getOriginalType()};
+			});
+
+		_finderPathFetchByN_T = FinderPath.create(
 			ListTypeModelImpl.ENTITY_CACHE_ENABLED,
 			ListTypeModelImpl.FINDER_CACHE_ENABLED, ListTypeImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByN_T",
 			new String[] {String.class.getName(), String.class.getName()},
 			ListTypeModelImpl.NAME_COLUMN_BITMASK |
-			ListTypeModelImpl.TYPE_COLUMN_BITMASK);
+			ListTypeModelImpl.TYPE_COLUMN_BITMASK,
+			baseModel -> {
+				ListTypeModelImpl listTypeModelImpl =
+					(ListTypeModelImpl)baseModel;
 
-		_finderPathCountByN_T = new FinderPath(
+				return new Object[] {
+					listTypeModelImpl.getName(), listTypeModelImpl.getType()
+				};
+			},
+			baseModel -> {
+				ListTypeModelImpl listTypeModelImpl =
+					(ListTypeModelImpl)baseModel;
+
+				return new Object[] {
+					listTypeModelImpl.getOriginalName(),
+					listTypeModelImpl.getOriginalType()
+				};
+			});
+
+		_finderPathCountByN_T = FinderPath.create(
 			ListTypeModelImpl.ENTITY_CACHE_ENABLED,
 			ListTypeModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByN_T",
-			new String[] {String.class.getName(), String.class.getName()});
+			new String[] {String.class.getName(), String.class.getName()},
+			ListTypeModelImpl.NAME_COLUMN_BITMASK |
+			ListTypeModelImpl.TYPE_COLUMN_BITMASK,
+			baseModel -> {
+				ListTypeModelImpl listTypeModelImpl =
+					(ListTypeModelImpl)baseModel;
+
+				return new Object[] {
+					listTypeModelImpl.getName(), listTypeModelImpl.getType()
+				};
+			},
+			baseModel -> {
+				ListTypeModelImpl listTypeModelImpl =
+					(ListTypeModelImpl)baseModel;
+
+				return new Object[] {
+					listTypeModelImpl.getOriginalName(),
+					listTypeModelImpl.getOriginalType()
+				};
+			});
 	}
 
 	public void destroy() {
 		EntityCacheUtil.removeCache(ListTypeImpl.class.getName());
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	private static final String _SQL_SELECT_LISTTYPE =

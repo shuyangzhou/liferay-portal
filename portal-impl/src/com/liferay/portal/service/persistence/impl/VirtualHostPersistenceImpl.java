@@ -1274,10 +1274,6 @@ public class VirtualHostPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(VirtualHostImpl.class);
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -1294,35 +1290,21 @@ public class VirtualHostPersistenceImpl
 			virtualHost.getPrimaryKey(), virtualHost,
 			VirtualHostModelImpl.COLUMN_BITMASK_ENABLED,
 			((VirtualHostModelImpl)virtualHost).getColumnBitmask());
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((VirtualHostModelImpl)virtualHost, true);
 	}
 
 	@Override
 	public void clearCache(List<VirtualHost> virtualHosts) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (VirtualHost virtualHost : virtualHosts) {
 			EntityCacheUtil.removeResult(
 				VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
 				VirtualHostImpl.class, virtualHost.getPrimaryKey(), virtualHost,
 				VirtualHostModelImpl.COLUMN_BITMASK_ENABLED,
 				((VirtualHostModelImpl)virtualHost).getColumnBitmask());
-
-			clearUniqueFindersCache((VirtualHostModelImpl)virtualHost, true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
@@ -1350,52 +1332,6 @@ public class VirtualHostPersistenceImpl
 			_finderPathCountByC_L_D, args, Long.valueOf(1), false);
 		FinderCacheUtil.putResult(
 			_finderPathFetchByC_L_D, args, virtualHostModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		VirtualHostModelImpl virtualHostModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {virtualHostModelImpl.getHostname()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByHostname, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByHostname, args);
-		}
-
-		if ((virtualHostModelImpl.getColumnBitmask() &
-			 _finderPathFetchByHostname.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				virtualHostModelImpl.getOriginalHostname()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByHostname, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByHostname, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				virtualHostModelImpl.getCompanyId(),
-				virtualHostModelImpl.getLayoutSetId(),
-				virtualHostModelImpl.isDefaultVirtualHost()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_L_D, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_L_D, args);
-		}
-
-		if ((virtualHostModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_L_D.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				virtualHostModelImpl.getOriginalCompanyId(),
-				virtualHostModelImpl.getOriginalLayoutSetId(),
-				virtualHostModelImpl.getOriginalDefaultVirtualHost()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_L_D, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_L_D, args);
-		}
 	}
 
 	/**
@@ -1564,59 +1500,12 @@ public class VirtualHostPersistenceImpl
 			return virtualHost;
 		}
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!VirtualHostModelImpl.COLUMN_BITMASK_ENABLED) {
-			FinderCacheUtil.clearCache(
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {
-				virtualHostModelImpl.getCompanyId(),
-				virtualHostModelImpl.getLayoutSetId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_L, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByC_L, args);
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountAll, FINDER_ARGS_EMPTY);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((virtualHostModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_L.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					virtualHostModelImpl.getOriginalCompanyId(),
-					virtualHostModelImpl.getOriginalLayoutSetId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_L, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_L, args);
-
-				args = new Object[] {
-					virtualHostModelImpl.getCompanyId(),
-					virtualHostModelImpl.getLayoutSetId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_L, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_L, args);
-			}
-		}
-
 		EntityCacheUtil.putResult(
 			VirtualHostModelImpl.ENTITY_CACHE_ENABLED, VirtualHostImpl.class,
 			virtualHost.getPrimaryKey(), virtualHost, false,
 			VirtualHostModelImpl.COLUMN_BITMASK_ENABLED,
 			((VirtualHostModelImpl)virtualHost).getColumnBitmask());
 
-		clearUniqueFindersCache(virtualHostModelImpl, false);
 		cacheUniqueFindersCache(virtualHostModelImpl);
 
 		virtualHost.resetOriginalValues();
@@ -2062,37 +1951,66 @@ public class VirtualHostPersistenceImpl
 	 * Initializes the virtual host persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
 			VirtualHostModelImpl.FINDER_CACHE_ENABLED, VirtualHostImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
 			VirtualHostModelImpl.FINDER_CACHE_ENABLED, VirtualHostImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
 			VirtualHostModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathFetchByHostname = new FinderPath(
+		_finderPathFetchByHostname = FinderPath.create(
 			VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
 			VirtualHostModelImpl.FINDER_CACHE_ENABLED, VirtualHostImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByHostname",
 			new String[] {String.class.getName()},
-			VirtualHostModelImpl.HOSTNAME_COLUMN_BITMASK);
+			VirtualHostModelImpl.HOSTNAME_COLUMN_BITMASK,
+			baseModel -> {
+				VirtualHostModelImpl virtualHostModelImpl =
+					(VirtualHostModelImpl)baseModel;
 
-		_finderPathCountByHostname = new FinderPath(
+				return new Object[] {virtualHostModelImpl.getHostname()};
+			},
+			baseModel -> {
+				VirtualHostModelImpl virtualHostModelImpl =
+					(VirtualHostModelImpl)baseModel;
+
+				return new Object[] {
+					virtualHostModelImpl.getOriginalHostname()
+				};
+			});
+
+		_finderPathCountByHostname = FinderPath.create(
 			VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
 			VirtualHostModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByHostname",
-			new String[] {String.class.getName()});
+			new String[] {String.class.getName()},
+			VirtualHostModelImpl.HOSTNAME_COLUMN_BITMASK,
+			baseModel -> {
+				VirtualHostModelImpl virtualHostModelImpl =
+					(VirtualHostModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByC_L = new FinderPath(
+				return new Object[] {virtualHostModelImpl.getHostname()};
+			},
+			baseModel -> {
+				VirtualHostModelImpl virtualHostModelImpl =
+					(VirtualHostModelImpl)baseModel;
+
+				return new Object[] {
+					virtualHostModelImpl.getOriginalHostname()
+				};
+			});
+
+		_finderPathWithPaginationFindByC_L = FinderPath.create(
 			VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
 			VirtualHostModelImpl.FINDER_CACHE_ENABLED, VirtualHostImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_L",
@@ -2102,21 +2020,59 @@ public class VirtualHostPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_L = new FinderPath(
+		_finderPathWithoutPaginationFindByC_L = FinderPath.create(
 			VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
 			VirtualHostModelImpl.FINDER_CACHE_ENABLED, VirtualHostImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_L",
 			new String[] {Long.class.getName(), Long.class.getName()},
 			VirtualHostModelImpl.COMPANYID_COLUMN_BITMASK |
-			VirtualHostModelImpl.LAYOUTSETID_COLUMN_BITMASK);
+			VirtualHostModelImpl.LAYOUTSETID_COLUMN_BITMASK,
+			baseModel -> {
+				VirtualHostModelImpl virtualHostModelImpl =
+					(VirtualHostModelImpl)baseModel;
 
-		_finderPathCountByC_L = new FinderPath(
+				return new Object[] {
+					virtualHostModelImpl.getCompanyId(),
+					virtualHostModelImpl.getLayoutSetId()
+				};
+			},
+			baseModel -> {
+				VirtualHostModelImpl virtualHostModelImpl =
+					(VirtualHostModelImpl)baseModel;
+
+				return new Object[] {
+					virtualHostModelImpl.getOriginalCompanyId(),
+					virtualHostModelImpl.getOriginalLayoutSetId()
+				};
+			});
+
+		_finderPathCountByC_L = FinderPath.create(
 			VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
 			VirtualHostModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_L",
-			new String[] {Long.class.getName(), Long.class.getName()});
+			new String[] {Long.class.getName(), Long.class.getName()},
+			VirtualHostModelImpl.COMPANYID_COLUMN_BITMASK |
+			VirtualHostModelImpl.LAYOUTSETID_COLUMN_BITMASK,
+			baseModel -> {
+				VirtualHostModelImpl virtualHostModelImpl =
+					(VirtualHostModelImpl)baseModel;
 
-		_finderPathFetchByC_L_D = new FinderPath(
+				return new Object[] {
+					virtualHostModelImpl.getCompanyId(),
+					virtualHostModelImpl.getLayoutSetId()
+				};
+			},
+			baseModel -> {
+				VirtualHostModelImpl virtualHostModelImpl =
+					(VirtualHostModelImpl)baseModel;
+
+				return new Object[] {
+					virtualHostModelImpl.getOriginalCompanyId(),
+					virtualHostModelImpl.getOriginalLayoutSetId()
+				};
+			});
+
+		_finderPathFetchByC_L_D = FinderPath.create(
 			VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
 			VirtualHostModelImpl.FINDER_CACHE_ENABLED, VirtualHostImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_L_D",
@@ -2126,23 +2082,67 @@ public class VirtualHostPersistenceImpl
 			},
 			VirtualHostModelImpl.COMPANYID_COLUMN_BITMASK |
 			VirtualHostModelImpl.LAYOUTSETID_COLUMN_BITMASK |
-			VirtualHostModelImpl.DEFAULTVIRTUALHOST_COLUMN_BITMASK);
+			VirtualHostModelImpl.DEFAULTVIRTUALHOST_COLUMN_BITMASK,
+			baseModel -> {
+				VirtualHostModelImpl virtualHostModelImpl =
+					(VirtualHostModelImpl)baseModel;
 
-		_finderPathCountByC_L_D = new FinderPath(
+				return new Object[] {
+					virtualHostModelImpl.getCompanyId(),
+					virtualHostModelImpl.getLayoutSetId(),
+					virtualHostModelImpl.isDefaultVirtualHost()
+				};
+			},
+			baseModel -> {
+				VirtualHostModelImpl virtualHostModelImpl =
+					(VirtualHostModelImpl)baseModel;
+
+				return new Object[] {
+					virtualHostModelImpl.getOriginalCompanyId(),
+					virtualHostModelImpl.getOriginalLayoutSetId(),
+					virtualHostModelImpl.getOriginalDefaultVirtualHost()
+				};
+			});
+
+		_finderPathCountByC_L_D = FinderPath.create(
 			VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
 			VirtualHostModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_L_D",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Boolean.class.getName()
+			},
+			VirtualHostModelImpl.COMPANYID_COLUMN_BITMASK |
+			VirtualHostModelImpl.LAYOUTSETID_COLUMN_BITMASK |
+			VirtualHostModelImpl.DEFAULTVIRTUALHOST_COLUMN_BITMASK,
+			baseModel -> {
+				VirtualHostModelImpl virtualHostModelImpl =
+					(VirtualHostModelImpl)baseModel;
+
+				return new Object[] {
+					virtualHostModelImpl.getCompanyId(),
+					virtualHostModelImpl.getLayoutSetId(),
+					virtualHostModelImpl.isDefaultVirtualHost()
+				};
+			},
+			baseModel -> {
+				VirtualHostModelImpl virtualHostModelImpl =
+					(VirtualHostModelImpl)baseModel;
+
+				return new Object[] {
+					virtualHostModelImpl.getOriginalCompanyId(),
+					virtualHostModelImpl.getOriginalLayoutSetId(),
+					virtualHostModelImpl.getOriginalDefaultVirtualHost()
+				};
 			});
 	}
 
 	public void destroy() {
 		EntityCacheUtil.removeCache(VirtualHostImpl.class.getName());
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	private static final String _SQL_SELECT_VIRTUALHOST =

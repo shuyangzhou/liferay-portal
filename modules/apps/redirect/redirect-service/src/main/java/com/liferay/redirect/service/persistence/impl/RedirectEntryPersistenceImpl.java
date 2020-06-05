@@ -3719,10 +3719,6 @@ public class RedirectEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(RedirectEntryImpl.class);
-
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -3738,36 +3734,21 @@ public class RedirectEntryPersistenceImpl
 			entityCacheEnabled, RedirectEntryImpl.class,
 			redirectEntry.getPrimaryKey(), redirectEntry, _columnBitmaskEnabled,
 			((RedirectEntryModelImpl)redirectEntry).getColumnBitmask());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((RedirectEntryModelImpl)redirectEntry, true);
 	}
 
 	@Override
 	public void clearCache(List<RedirectEntry> redirectEntries) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (RedirectEntry redirectEntry : redirectEntries) {
 			entityCache.removeResult(
 				entityCacheEnabled, RedirectEntryImpl.class,
 				redirectEntry.getPrimaryKey(), redirectEntry,
 				_columnBitmaskEnabled,
 				((RedirectEntryModelImpl)redirectEntry).getColumnBitmask());
-
-			clearUniqueFindersCache(
-				(RedirectEntryModelImpl)redirectEntry, true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				entityCacheEnabled, RedirectEntryImpl.class, primaryKey);
@@ -3796,54 +3777,6 @@ public class RedirectEntryPersistenceImpl
 			_finderPathCountByG_S, args, Long.valueOf(1), false);
 		finderCache.putResult(
 			_finderPathFetchByG_S, args, redirectEntryModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		RedirectEntryModelImpl redirectEntryModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				redirectEntryModelImpl.getUuid(),
-				redirectEntryModelImpl.getGroupId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUUID_G, args);
-			finderCache.removeResult(_finderPathFetchByUUID_G, args);
-		}
-
-		if ((redirectEntryModelImpl.getColumnBitmask() &
-			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				redirectEntryModelImpl.getOriginalUuid(),
-				redirectEntryModelImpl.getOriginalGroupId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUUID_G, args);
-			finderCache.removeResult(_finderPathFetchByUUID_G, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				redirectEntryModelImpl.getGroupId(),
-				redirectEntryModelImpl.getSourceURL()
-			};
-
-			finderCache.removeResult(_finderPathCountByG_S, args);
-			finderCache.removeResult(_finderPathFetchByG_S, args);
-		}
-
-		if ((redirectEntryModelImpl.getColumnBitmask() &
-			 _finderPathFetchByG_S.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				redirectEntryModelImpl.getOriginalGroupId(),
-				redirectEntryModelImpl.getOriginalSourceURL()
-			};
-
-			finderCache.removeResult(_finderPathCountByG_S, args);
-			finderCache.removeResult(_finderPathFetchByG_S, args);
-		}
 	}
 
 	/**
@@ -4061,139 +3994,12 @@ public class RedirectEntryPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!_columnBitmaskEnabled) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {redirectEntryModelImpl.getUuid()};
-
-			finderCache.removeResult(_finderPathCountByUuid, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid, args);
-
-			args = new Object[] {
-				redirectEntryModelImpl.getUuid(),
-				redirectEntryModelImpl.getCompanyId()
-			};
-
-			finderCache.removeResult(_finderPathCountByUuid_C, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUuid_C, args);
-
-			args = new Object[] {redirectEntryModelImpl.getGroupId()};
-
-			finderCache.removeResult(_finderPathCountByGroupId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByGroupId, args);
-
-			args = new Object[] {
-				redirectEntryModelImpl.getGroupId(),
-				redirectEntryModelImpl.getDestinationURL()
-			};
-
-			finderCache.removeResult(_finderPathCountByG_D, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByG_D, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((redirectEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					redirectEntryModelImpl.getOriginalUuid()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-
-				args = new Object[] {redirectEntryModelImpl.getUuid()};
-
-				finderCache.removeResult(_finderPathCountByUuid, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-			}
-
-			if ((redirectEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					redirectEntryModelImpl.getOriginalUuid(),
-					redirectEntryModelImpl.getOriginalCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-
-				args = new Object[] {
-					redirectEntryModelImpl.getUuid(),
-					redirectEntryModelImpl.getCompanyId()
-				};
-
-				finderCache.removeResult(_finderPathCountByUuid_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-			}
-
-			if ((redirectEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByGroupId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					redirectEntryModelImpl.getOriginalGroupId()
-				};
-
-				finderCache.removeResult(_finderPathCountByGroupId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-
-				args = new Object[] {redirectEntryModelImpl.getGroupId()};
-
-				finderCache.removeResult(_finderPathCountByGroupId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-			}
-
-			if ((redirectEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByG_D.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					redirectEntryModelImpl.getOriginalGroupId(),
-					redirectEntryModelImpl.getOriginalDestinationURL()
-				};
-
-				finderCache.removeResult(_finderPathCountByG_D, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByG_D, args);
-
-				args = new Object[] {
-					redirectEntryModelImpl.getGroupId(),
-					redirectEntryModelImpl.getDestinationURL()
-				};
-
-				finderCache.removeResult(_finderPathCountByG_D, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByG_D, args);
-			}
-		}
-
 		entityCache.putResult(
 			entityCacheEnabled, RedirectEntryImpl.class,
 			redirectEntry.getPrimaryKey(), redirectEntry, false,
 			_columnBitmaskEnabled,
 			((RedirectEntryModelImpl)redirectEntry).getColumnBitmask());
 
-		clearUniqueFindersCache(redirectEntryModelImpl, false);
 		cacheUniqueFindersCache(redirectEntryModelImpl);
 
 		redirectEntry.resetOriginalValues();
@@ -4471,21 +4277,21 @@ public class RedirectEntryPersistenceImpl
 		RedirectEntryModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		RedirectEntryModelImpl.setFinderCacheEnabled(finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, RedirectEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, RedirectEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByUuid = new FinderPath(
+		_finderPathWithPaginationFindByUuid = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, RedirectEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
 			new String[] {
@@ -4493,30 +4299,93 @@ public class RedirectEntryPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid = new FinderPath(
+		_finderPathWithoutPaginationFindByUuid = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, RedirectEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
 			new String[] {String.class.getName()},
-			RedirectEntryModelImpl.UUID_COLUMN_BITMASK);
+			RedirectEntryModelImpl.UUID_COLUMN_BITMASK,
+			baseModel -> {
+				RedirectEntryModelImpl redirectEntryModelImpl =
+					(RedirectEntryModelImpl)baseModel;
 
-		_finderPathCountByUuid = new FinderPath(
+				return new Object[] {redirectEntryModelImpl.getUuid()};
+			},
+			baseModel -> {
+				RedirectEntryModelImpl redirectEntryModelImpl =
+					(RedirectEntryModelImpl)baseModel;
+
+				return new Object[] {redirectEntryModelImpl.getOriginalUuid()};
+			});
+
+		_finderPathCountByUuid = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
-			new String[] {String.class.getName()});
+			new String[] {String.class.getName()},
+			RedirectEntryModelImpl.UUID_COLUMN_BITMASK,
+			baseModel -> {
+				RedirectEntryModelImpl redirectEntryModelImpl =
+					(RedirectEntryModelImpl)baseModel;
 
-		_finderPathFetchByUUID_G = new FinderPath(
+				return new Object[] {redirectEntryModelImpl.getUuid()};
+			},
+			baseModel -> {
+				RedirectEntryModelImpl redirectEntryModelImpl =
+					(RedirectEntryModelImpl)baseModel;
+
+				return new Object[] {redirectEntryModelImpl.getOriginalUuid()};
+			});
+
+		_finderPathFetchByUUID_G = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, RedirectEntryImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
 			RedirectEntryModelImpl.UUID_COLUMN_BITMASK |
-			RedirectEntryModelImpl.GROUPID_COLUMN_BITMASK);
+			RedirectEntryModelImpl.GROUPID_COLUMN_BITMASK,
+			baseModel -> {
+				RedirectEntryModelImpl redirectEntryModelImpl =
+					(RedirectEntryModelImpl)baseModel;
 
-		_finderPathCountByUUID_G = new FinderPath(
+				return new Object[] {
+					redirectEntryModelImpl.getUuid(),
+					redirectEntryModelImpl.getGroupId()
+				};
+			},
+			baseModel -> {
+				RedirectEntryModelImpl redirectEntryModelImpl =
+					(RedirectEntryModelImpl)baseModel;
+
+				return new Object[] {
+					redirectEntryModelImpl.getOriginalUuid(),
+					redirectEntryModelImpl.getOriginalGroupId()
+				};
+			});
+
+		_finderPathCountByUUID_G = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUUID_G",
-			new String[] {String.class.getName(), Long.class.getName()});
+			new String[] {String.class.getName(), Long.class.getName()},
+			RedirectEntryModelImpl.UUID_COLUMN_BITMASK |
+			RedirectEntryModelImpl.GROUPID_COLUMN_BITMASK,
+			baseModel -> {
+				RedirectEntryModelImpl redirectEntryModelImpl =
+					(RedirectEntryModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByUuid_C = new FinderPath(
+				return new Object[] {
+					redirectEntryModelImpl.getUuid(),
+					redirectEntryModelImpl.getGroupId()
+				};
+			},
+			baseModel -> {
+				RedirectEntryModelImpl redirectEntryModelImpl =
+					(RedirectEntryModelImpl)baseModel;
+
+				return new Object[] {
+					redirectEntryModelImpl.getOriginalUuid(),
+					redirectEntryModelImpl.getOriginalGroupId()
+				};
+			});
+
+		_finderPathWithPaginationFindByUuid_C = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, RedirectEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
 			new String[] {
@@ -4525,19 +4394,57 @@ public class RedirectEntryPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
+		_finderPathWithoutPaginationFindByUuid_C = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, RedirectEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
 			RedirectEntryModelImpl.UUID_COLUMN_BITMASK |
-			RedirectEntryModelImpl.COMPANYID_COLUMN_BITMASK);
+			RedirectEntryModelImpl.COMPANYID_COLUMN_BITMASK,
+			baseModel -> {
+				RedirectEntryModelImpl redirectEntryModelImpl =
+					(RedirectEntryModelImpl)baseModel;
 
-		_finderPathCountByUuid_C = new FinderPath(
+				return new Object[] {
+					redirectEntryModelImpl.getUuid(),
+					redirectEntryModelImpl.getCompanyId()
+				};
+			},
+			baseModel -> {
+				RedirectEntryModelImpl redirectEntryModelImpl =
+					(RedirectEntryModelImpl)baseModel;
+
+				return new Object[] {
+					redirectEntryModelImpl.getOriginalUuid(),
+					redirectEntryModelImpl.getOriginalCompanyId()
+				};
+			});
+
+		_finderPathCountByUuid_C = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()});
+			new String[] {String.class.getName(), Long.class.getName()},
+			RedirectEntryModelImpl.UUID_COLUMN_BITMASK |
+			RedirectEntryModelImpl.COMPANYID_COLUMN_BITMASK,
+			baseModel -> {
+				RedirectEntryModelImpl redirectEntryModelImpl =
+					(RedirectEntryModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByGroupId = new FinderPath(
+				return new Object[] {
+					redirectEntryModelImpl.getUuid(),
+					redirectEntryModelImpl.getCompanyId()
+				};
+			},
+			baseModel -> {
+				RedirectEntryModelImpl redirectEntryModelImpl =
+					(RedirectEntryModelImpl)baseModel;
+
+				return new Object[] {
+					redirectEntryModelImpl.getOriginalUuid(),
+					redirectEntryModelImpl.getOriginalCompanyId()
+				};
+			});
+
+		_finderPathWithPaginationFindByGroupId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, RedirectEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGroupId",
 			new String[] {
@@ -4545,18 +4452,47 @@ public class RedirectEntryPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
+		_finderPathWithoutPaginationFindByGroupId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, RedirectEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
 			new String[] {Long.class.getName()},
-			RedirectEntryModelImpl.GROUPID_COLUMN_BITMASK);
+			RedirectEntryModelImpl.GROUPID_COLUMN_BITMASK,
+			baseModel -> {
+				RedirectEntryModelImpl redirectEntryModelImpl =
+					(RedirectEntryModelImpl)baseModel;
 
-		_finderPathCountByGroupId = new FinderPath(
+				return new Object[] {redirectEntryModelImpl.getGroupId()};
+			},
+			baseModel -> {
+				RedirectEntryModelImpl redirectEntryModelImpl =
+					(RedirectEntryModelImpl)baseModel;
+
+				return new Object[] {
+					redirectEntryModelImpl.getOriginalGroupId()
+				};
+			});
+
+		_finderPathCountByGroupId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			RedirectEntryModelImpl.GROUPID_COLUMN_BITMASK,
+			baseModel -> {
+				RedirectEntryModelImpl redirectEntryModelImpl =
+					(RedirectEntryModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByG_D = new FinderPath(
+				return new Object[] {redirectEntryModelImpl.getGroupId()};
+			},
+			baseModel -> {
+				RedirectEntryModelImpl redirectEntryModelImpl =
+					(RedirectEntryModelImpl)baseModel;
+
+				return new Object[] {
+					redirectEntryModelImpl.getOriginalGroupId()
+				};
+			});
+
+		_finderPathWithPaginationFindByG_D = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, RedirectEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_D",
 			new String[] {
@@ -4565,37 +4501,114 @@ public class RedirectEntryPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByG_D = new FinderPath(
+		_finderPathWithoutPaginationFindByG_D = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, RedirectEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_D",
 			new String[] {Long.class.getName(), String.class.getName()},
 			RedirectEntryModelImpl.GROUPID_COLUMN_BITMASK |
-			RedirectEntryModelImpl.DESTINATIONURL_COLUMN_BITMASK);
+			RedirectEntryModelImpl.DESTINATIONURL_COLUMN_BITMASK,
+			baseModel -> {
+				RedirectEntryModelImpl redirectEntryModelImpl =
+					(RedirectEntryModelImpl)baseModel;
 
-		_finderPathCountByG_D = new FinderPath(
+				return new Object[] {
+					redirectEntryModelImpl.getGroupId(),
+					redirectEntryModelImpl.getDestinationURL()
+				};
+			},
+			baseModel -> {
+				RedirectEntryModelImpl redirectEntryModelImpl =
+					(RedirectEntryModelImpl)baseModel;
+
+				return new Object[] {
+					redirectEntryModelImpl.getOriginalGroupId(),
+					redirectEntryModelImpl.getOriginalDestinationURL()
+				};
+			});
+
+		_finderPathCountByG_D = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_D",
-			new String[] {Long.class.getName(), String.class.getName()});
+			new String[] {Long.class.getName(), String.class.getName()},
+			RedirectEntryModelImpl.GROUPID_COLUMN_BITMASK |
+			RedirectEntryModelImpl.DESTINATIONURL_COLUMN_BITMASK,
+			baseModel -> {
+				RedirectEntryModelImpl redirectEntryModelImpl =
+					(RedirectEntryModelImpl)baseModel;
 
-		_finderPathFetchByG_S = new FinderPath(
+				return new Object[] {
+					redirectEntryModelImpl.getGroupId(),
+					redirectEntryModelImpl.getDestinationURL()
+				};
+			},
+			baseModel -> {
+				RedirectEntryModelImpl redirectEntryModelImpl =
+					(RedirectEntryModelImpl)baseModel;
+
+				return new Object[] {
+					redirectEntryModelImpl.getOriginalGroupId(),
+					redirectEntryModelImpl.getOriginalDestinationURL()
+				};
+			});
+
+		_finderPathFetchByG_S = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, RedirectEntryImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByG_S",
 			new String[] {Long.class.getName(), String.class.getName()},
 			RedirectEntryModelImpl.GROUPID_COLUMN_BITMASK |
-			RedirectEntryModelImpl.SOURCEURL_COLUMN_BITMASK);
+			RedirectEntryModelImpl.SOURCEURL_COLUMN_BITMASK,
+			baseModel -> {
+				RedirectEntryModelImpl redirectEntryModelImpl =
+					(RedirectEntryModelImpl)baseModel;
 
-		_finderPathCountByG_S = new FinderPath(
+				return new Object[] {
+					redirectEntryModelImpl.getGroupId(),
+					redirectEntryModelImpl.getSourceURL()
+				};
+			},
+			baseModel -> {
+				RedirectEntryModelImpl redirectEntryModelImpl =
+					(RedirectEntryModelImpl)baseModel;
+
+				return new Object[] {
+					redirectEntryModelImpl.getOriginalGroupId(),
+					redirectEntryModelImpl.getOriginalSourceURL()
+				};
+			});
+
+		_finderPathCountByG_S = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_S",
-			new String[] {Long.class.getName(), String.class.getName()});
+			new String[] {Long.class.getName(), String.class.getName()},
+			RedirectEntryModelImpl.GROUPID_COLUMN_BITMASK |
+			RedirectEntryModelImpl.SOURCEURL_COLUMN_BITMASK,
+			baseModel -> {
+				RedirectEntryModelImpl redirectEntryModelImpl =
+					(RedirectEntryModelImpl)baseModel;
+
+				return new Object[] {
+					redirectEntryModelImpl.getGroupId(),
+					redirectEntryModelImpl.getSourceURL()
+				};
+			},
+			baseModel -> {
+				RedirectEntryModelImpl redirectEntryModelImpl =
+					(RedirectEntryModelImpl)baseModel;
+
+				return new Object[] {
+					redirectEntryModelImpl.getOriginalGroupId(),
+					redirectEntryModelImpl.getOriginalSourceURL()
+				};
+			});
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(RedirectEntryImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@Override

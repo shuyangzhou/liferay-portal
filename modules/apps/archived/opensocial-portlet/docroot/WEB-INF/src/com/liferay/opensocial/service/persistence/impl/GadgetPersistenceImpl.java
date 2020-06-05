@@ -3235,10 +3235,6 @@ public class GadgetPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(GadgetImpl.class);
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -3255,35 +3251,21 @@ public class GadgetPersistenceImpl
 			gadget.getPrimaryKey(), gadget,
 			GadgetModelImpl.COLUMN_BITMASK_ENABLED,
 			((GadgetModelImpl)gadget).getColumnBitmask());
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((GadgetModelImpl)gadget, true);
 	}
 
 	@Override
 	public void clearCache(List<Gadget> gadgets) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Gadget gadget : gadgets) {
 			EntityCacheUtil.removeResult(
 				GadgetModelImpl.ENTITY_CACHE_ENABLED, GadgetImpl.class,
 				gadget.getPrimaryKey(), gadget,
 				GadgetModelImpl.COLUMN_BITMASK_ENABLED,
 				((GadgetModelImpl)gadget).getColumnBitmask());
-
-			clearUniqueFindersCache((GadgetModelImpl)gadget, true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				GadgetModelImpl.ENTITY_CACHE_ENABLED, GadgetImpl.class,
@@ -3300,31 +3282,6 @@ public class GadgetPersistenceImpl
 			_finderPathCountByC_U, args, Long.valueOf(1), false);
 		FinderCacheUtil.putResult(
 			_finderPathFetchByC_U, args, gadgetModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		GadgetModelImpl gadgetModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				gadgetModelImpl.getCompanyId(), gadgetModelImpl.getUrl()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_U, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_U, args);
-		}
-
-		if ((gadgetModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_U.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				gadgetModelImpl.getOriginalCompanyId(),
-				gadgetModelImpl.getOriginalUrl()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_U, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_U, args);
-		}
 	}
 
 	/**
@@ -3501,107 +3458,12 @@ public class GadgetPersistenceImpl
 			closeSession(session);
 		}
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!GadgetModelImpl.COLUMN_BITMASK_ENABLED) {
-			FinderCacheUtil.clearCache(
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {gadgetModelImpl.getUuid()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByUuid, args);
-
-			args = new Object[] {
-				gadgetModelImpl.getUuid(), gadgetModelImpl.getCompanyId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByUuid_C, args);
-
-			args = new Object[] {gadgetModelImpl.getCompanyId()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByCompanyId, args);
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountAll, FINDER_ARGS_EMPTY);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((gadgetModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					gadgetModelImpl.getOriginalUuid()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-
-				args = new Object[] {gadgetModelImpl.getUuid()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-			}
-
-			if ((gadgetModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					gadgetModelImpl.getOriginalUuid(),
-					gadgetModelImpl.getOriginalCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-
-				args = new Object[] {
-					gadgetModelImpl.getUuid(), gadgetModelImpl.getCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-			}
-
-			if ((gadgetModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByCompanyId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					gadgetModelImpl.getOriginalCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByCompanyId, args);
-
-				args = new Object[] {gadgetModelImpl.getCompanyId()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByCompanyId, args);
-			}
-		}
-
 		EntityCacheUtil.putResult(
 			GadgetModelImpl.ENTITY_CACHE_ENABLED, GadgetImpl.class,
 			gadget.getPrimaryKey(), gadget, false,
 			GadgetModelImpl.COLUMN_BITMASK_ENABLED,
 			((GadgetModelImpl)gadget).getColumnBitmask());
 
-		clearUniqueFindersCache(gadgetModelImpl, false);
 		cacheUniqueFindersCache(gadgetModelImpl);
 
 		gadget.resetOriginalValues();
@@ -3872,24 +3734,24 @@ public class GadgetPersistenceImpl
 	 * Initializes the gadget persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			GadgetModelImpl.ENTITY_CACHE_ENABLED,
 			GadgetModelImpl.FINDER_CACHE_ENABLED, GadgetImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			GadgetModelImpl.ENTITY_CACHE_ENABLED,
 			GadgetModelImpl.FINDER_CACHE_ENABLED, GadgetImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			GadgetModelImpl.ENTITY_CACHE_ENABLED,
 			GadgetModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByUuid = new FinderPath(
+		_finderPathWithPaginationFindByUuid = FinderPath.create(
 			GadgetModelImpl.ENTITY_CACHE_ENABLED,
 			GadgetModelImpl.FINDER_CACHE_ENABLED, GadgetImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
@@ -3898,21 +3760,42 @@ public class GadgetPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid = new FinderPath(
+		_finderPathWithoutPaginationFindByUuid = FinderPath.create(
 			GadgetModelImpl.ENTITY_CACHE_ENABLED,
 			GadgetModelImpl.FINDER_CACHE_ENABLED, GadgetImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
 			new String[] {String.class.getName()},
 			GadgetModelImpl.UUID_COLUMN_BITMASK |
-			GadgetModelImpl.NAME_COLUMN_BITMASK);
+			GadgetModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				GadgetModelImpl gadgetModelImpl = (GadgetModelImpl)baseModel;
 
-		_finderPathCountByUuid = new FinderPath(
+				return new Object[] {gadgetModelImpl.getUuid()};
+			},
+			baseModel -> {
+				GadgetModelImpl gadgetModelImpl = (GadgetModelImpl)baseModel;
+
+				return new Object[] {gadgetModelImpl.getOriginalUuid()};
+			});
+
+		_finderPathCountByUuid = FinderPath.create(
 			GadgetModelImpl.ENTITY_CACHE_ENABLED,
 			GadgetModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
-			new String[] {String.class.getName()});
+			new String[] {String.class.getName()},
+			GadgetModelImpl.UUID_COLUMN_BITMASK,
+			baseModel -> {
+				GadgetModelImpl gadgetModelImpl = (GadgetModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByUuid_C = new FinderPath(
+				return new Object[] {gadgetModelImpl.getUuid()};
+			},
+			baseModel -> {
+				GadgetModelImpl gadgetModelImpl = (GadgetModelImpl)baseModel;
+
+				return new Object[] {gadgetModelImpl.getOriginalUuid()};
+			});
+
+		_finderPathWithPaginationFindByUuid_C = FinderPath.create(
 			GadgetModelImpl.ENTITY_CACHE_ENABLED,
 			GadgetModelImpl.FINDER_CACHE_ENABLED, GadgetImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
@@ -3922,22 +3805,54 @@ public class GadgetPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
+		_finderPathWithoutPaginationFindByUuid_C = FinderPath.create(
 			GadgetModelImpl.ENTITY_CACHE_ENABLED,
 			GadgetModelImpl.FINDER_CACHE_ENABLED, GadgetImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
 			GadgetModelImpl.UUID_COLUMN_BITMASK |
 			GadgetModelImpl.COMPANYID_COLUMN_BITMASK |
-			GadgetModelImpl.NAME_COLUMN_BITMASK);
+			GadgetModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				GadgetModelImpl gadgetModelImpl = (GadgetModelImpl)baseModel;
 
-		_finderPathCountByUuid_C = new FinderPath(
+				return new Object[] {
+					gadgetModelImpl.getUuid(), gadgetModelImpl.getCompanyId()
+				};
+			},
+			baseModel -> {
+				GadgetModelImpl gadgetModelImpl = (GadgetModelImpl)baseModel;
+
+				return new Object[] {
+					gadgetModelImpl.getOriginalUuid(),
+					gadgetModelImpl.getOriginalCompanyId()
+				};
+			});
+
+		_finderPathCountByUuid_C = FinderPath.create(
 			GadgetModelImpl.ENTITY_CACHE_ENABLED,
 			GadgetModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()});
+			new String[] {String.class.getName(), Long.class.getName()},
+			GadgetModelImpl.UUID_COLUMN_BITMASK |
+			GadgetModelImpl.COMPANYID_COLUMN_BITMASK,
+			baseModel -> {
+				GadgetModelImpl gadgetModelImpl = (GadgetModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByCompanyId = new FinderPath(
+				return new Object[] {
+					gadgetModelImpl.getUuid(), gadgetModelImpl.getCompanyId()
+				};
+			},
+			baseModel -> {
+				GadgetModelImpl gadgetModelImpl = (GadgetModelImpl)baseModel;
+
+				return new Object[] {
+					gadgetModelImpl.getOriginalUuid(),
+					gadgetModelImpl.getOriginalCompanyId()
+				};
+			});
+
+		_finderPathWithPaginationFindByCompanyId = FinderPath.create(
 			GadgetModelImpl.ENTITY_CACHE_ENABLED,
 			GadgetModelImpl.FINDER_CACHE_ENABLED, GadgetImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId",
@@ -3946,40 +3861,94 @@ public class GadgetPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
+		_finderPathWithoutPaginationFindByCompanyId = FinderPath.create(
 			GadgetModelImpl.ENTITY_CACHE_ENABLED,
 			GadgetModelImpl.FINDER_CACHE_ENABLED, GadgetImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
 			new String[] {Long.class.getName()},
 			GadgetModelImpl.COMPANYID_COLUMN_BITMASK |
-			GadgetModelImpl.NAME_COLUMN_BITMASK);
+			GadgetModelImpl.NAME_COLUMN_BITMASK,
+			baseModel -> {
+				GadgetModelImpl gadgetModelImpl = (GadgetModelImpl)baseModel;
 
-		_finderPathCountByCompanyId = new FinderPath(
+				return new Object[] {gadgetModelImpl.getCompanyId()};
+			},
+			baseModel -> {
+				GadgetModelImpl gadgetModelImpl = (GadgetModelImpl)baseModel;
+
+				return new Object[] {gadgetModelImpl.getOriginalCompanyId()};
+			});
+
+		_finderPathCountByCompanyId = FinderPath.create(
 			GadgetModelImpl.ENTITY_CACHE_ENABLED,
 			GadgetModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			GadgetModelImpl.COMPANYID_COLUMN_BITMASK,
+			baseModel -> {
+				GadgetModelImpl gadgetModelImpl = (GadgetModelImpl)baseModel;
 
-		_finderPathFetchByC_U = new FinderPath(
+				return new Object[] {gadgetModelImpl.getCompanyId()};
+			},
+			baseModel -> {
+				GadgetModelImpl gadgetModelImpl = (GadgetModelImpl)baseModel;
+
+				return new Object[] {gadgetModelImpl.getOriginalCompanyId()};
+			});
+
+		_finderPathFetchByC_U = FinderPath.create(
 			GadgetModelImpl.ENTITY_CACHE_ENABLED,
 			GadgetModelImpl.FINDER_CACHE_ENABLED, GadgetImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_U",
 			new String[] {Long.class.getName(), String.class.getName()},
 			GadgetModelImpl.COMPANYID_COLUMN_BITMASK |
-			GadgetModelImpl.URL_COLUMN_BITMASK);
+			GadgetModelImpl.URL_COLUMN_BITMASK,
+			baseModel -> {
+				GadgetModelImpl gadgetModelImpl = (GadgetModelImpl)baseModel;
 
-		_finderPathCountByC_U = new FinderPath(
+				return new Object[] {
+					gadgetModelImpl.getCompanyId(), gadgetModelImpl.getUrl()
+				};
+			},
+			baseModel -> {
+				GadgetModelImpl gadgetModelImpl = (GadgetModelImpl)baseModel;
+
+				return new Object[] {
+					gadgetModelImpl.getOriginalCompanyId(),
+					gadgetModelImpl.getOriginalUrl()
+				};
+			});
+
+		_finderPathCountByC_U = FinderPath.create(
 			GadgetModelImpl.ENTITY_CACHE_ENABLED,
 			GadgetModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_U",
-			new String[] {Long.class.getName(), String.class.getName()});
+			new String[] {Long.class.getName(), String.class.getName()},
+			GadgetModelImpl.COMPANYID_COLUMN_BITMASK |
+			GadgetModelImpl.URL_COLUMN_BITMASK,
+			baseModel -> {
+				GadgetModelImpl gadgetModelImpl = (GadgetModelImpl)baseModel;
+
+				return new Object[] {
+					gadgetModelImpl.getCompanyId(), gadgetModelImpl.getUrl()
+				};
+			},
+			baseModel -> {
+				GadgetModelImpl gadgetModelImpl = (GadgetModelImpl)baseModel;
+
+				return new Object[] {
+					gadgetModelImpl.getOriginalCompanyId(),
+					gadgetModelImpl.getOriginalUrl()
+				};
+			});
 	}
 
 	public void destroy() {
 		EntityCacheUtil.removeCache(GadgetImpl.class.getName());
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	private static final String _SQL_SELECT_GADGET =

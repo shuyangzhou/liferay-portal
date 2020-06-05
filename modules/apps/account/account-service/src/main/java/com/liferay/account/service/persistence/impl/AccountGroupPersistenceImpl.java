@@ -434,10 +434,6 @@ public class AccountGroupPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(AccountGroupImpl.class);
-
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -453,35 +449,21 @@ public class AccountGroupPersistenceImpl
 			entityCacheEnabled, AccountGroupImpl.class,
 			accountGroup.getPrimaryKey(), accountGroup, _columnBitmaskEnabled,
 			((AccountGroupModelImpl)accountGroup).getColumnBitmask());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((AccountGroupModelImpl)accountGroup, true);
 	}
 
 	@Override
 	public void clearCache(List<AccountGroup> accountGroups) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (AccountGroup accountGroup : accountGroups) {
 			entityCache.removeResult(
 				entityCacheEnabled, AccountGroupImpl.class,
 				accountGroup.getPrimaryKey(), accountGroup,
 				_columnBitmaskEnabled,
 				((AccountGroupModelImpl)accountGroup).getColumnBitmask());
-
-			clearUniqueFindersCache((AccountGroupModelImpl)accountGroup, true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				entityCacheEnabled, AccountGroupImpl.class, primaryKey);
@@ -500,32 +482,6 @@ public class AccountGroupPersistenceImpl
 			_finderPathCountByC_ERC, args, Long.valueOf(1), false);
 		finderCache.putResult(
 			_finderPathFetchByC_ERC, args, accountGroupModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		AccountGroupModelImpl accountGroupModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				accountGroupModelImpl.getCompanyId(),
-				accountGroupModelImpl.getExternalReferenceCode()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_ERC, args);
-			finderCache.removeResult(_finderPathFetchByC_ERC, args);
-		}
-
-		if ((accountGroupModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_ERC.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				accountGroupModelImpl.getOriginalCompanyId(),
-				accountGroupModelImpl.getOriginalExternalReferenceCode()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_ERC, args);
-			finderCache.removeResult(_finderPathFetchByC_ERC, args);
-		}
 	}
 
 	/**
@@ -700,24 +656,12 @@ public class AccountGroupPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!_columnBitmaskEnabled) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-
 		entityCache.putResult(
 			entityCacheEnabled, AccountGroupImpl.class,
 			accountGroup.getPrimaryKey(), accountGroup, false,
 			_columnBitmaskEnabled,
 			((AccountGroupModelImpl)accountGroup).getColumnBitmask());
 
-		clearUniqueFindersCache(accountGroupModelImpl, false);
 		cacheUniqueFindersCache(accountGroupModelImpl);
 
 		accountGroup.resetOriginalValues();
@@ -989,39 +933,78 @@ public class AccountGroupPersistenceImpl
 		AccountGroupModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		AccountGroupModelImpl.setFinderCacheEnabled(finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, AccountGroupImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, AccountGroupImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathFetchByC_ERC = new FinderPath(
+		_finderPathFetchByC_ERC = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, AccountGroupImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_ERC",
 			new String[] {Long.class.getName(), String.class.getName()},
 			AccountGroupModelImpl.COMPANYID_COLUMN_BITMASK |
-			AccountGroupModelImpl.EXTERNALREFERENCECODE_COLUMN_BITMASK);
+			AccountGroupModelImpl.EXTERNALREFERENCECODE_COLUMN_BITMASK,
+			baseModel -> {
+				AccountGroupModelImpl accountGroupModelImpl =
+					(AccountGroupModelImpl)baseModel;
 
-		_finderPathCountByC_ERC = new FinderPath(
+				return new Object[] {
+					accountGroupModelImpl.getCompanyId(),
+					accountGroupModelImpl.getExternalReferenceCode()
+				};
+			},
+			baseModel -> {
+				AccountGroupModelImpl accountGroupModelImpl =
+					(AccountGroupModelImpl)baseModel;
+
+				return new Object[] {
+					accountGroupModelImpl.getOriginalCompanyId(),
+					accountGroupModelImpl.getOriginalExternalReferenceCode()
+				};
+			});
+
+		_finderPathCountByC_ERC = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_ERC",
-			new String[] {Long.class.getName(), String.class.getName()});
+			new String[] {Long.class.getName(), String.class.getName()},
+			AccountGroupModelImpl.COMPANYID_COLUMN_BITMASK |
+			AccountGroupModelImpl.EXTERNALREFERENCECODE_COLUMN_BITMASK,
+			baseModel -> {
+				AccountGroupModelImpl accountGroupModelImpl =
+					(AccountGroupModelImpl)baseModel;
+
+				return new Object[] {
+					accountGroupModelImpl.getCompanyId(),
+					accountGroupModelImpl.getExternalReferenceCode()
+				};
+			},
+			baseModel -> {
+				AccountGroupModelImpl accountGroupModelImpl =
+					(AccountGroupModelImpl)baseModel;
+
+				return new Object[] {
+					accountGroupModelImpl.getOriginalCompanyId(),
+					accountGroupModelImpl.getOriginalExternalReferenceCode()
+				};
+			});
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(AccountGroupImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@Override

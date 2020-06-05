@@ -1404,10 +1404,6 @@ public class CTPreferencesPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CTPreferencesImpl.class);
-
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -1423,36 +1419,21 @@ public class CTPreferencesPersistenceImpl
 			entityCacheEnabled, CTPreferencesImpl.class,
 			ctPreferences.getPrimaryKey(), ctPreferences, _columnBitmaskEnabled,
 			((CTPreferencesModelImpl)ctPreferences).getColumnBitmask());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((CTPreferencesModelImpl)ctPreferences, true);
 	}
 
 	@Override
 	public void clearCache(List<CTPreferences> ctPreferenceses) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (CTPreferences ctPreferences : ctPreferenceses) {
 			entityCache.removeResult(
 				entityCacheEnabled, CTPreferencesImpl.class,
 				ctPreferences.getPrimaryKey(), ctPreferences,
 				_columnBitmaskEnabled,
 				((CTPreferencesModelImpl)ctPreferences).getColumnBitmask());
-
-			clearUniqueFindersCache(
-				(CTPreferencesModelImpl)ctPreferences, true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				entityCacheEnabled, CTPreferencesImpl.class, primaryKey);
@@ -1471,32 +1452,6 @@ public class CTPreferencesPersistenceImpl
 			_finderPathCountByC_U, args, Long.valueOf(1), false);
 		finderCache.putResult(
 			_finderPathFetchByC_U, args, ctPreferencesModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		CTPreferencesModelImpl ctPreferencesModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				ctPreferencesModelImpl.getCompanyId(),
-				ctPreferencesModelImpl.getUserId()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_U, args);
-			finderCache.removeResult(_finderPathFetchByC_U, args);
-		}
-
-		if ((ctPreferencesModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_U.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				ctPreferencesModelImpl.getOriginalCompanyId(),
-				ctPreferencesModelImpl.getOriginalUserId()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_U, args);
-			finderCache.removeResult(_finderPathFetchByC_U, args);
-		}
 	}
 
 	/**
@@ -1647,88 +1602,12 @@ public class CTPreferencesPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!_columnBitmaskEnabled) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {
-				ctPreferencesModelImpl.getCtCollectionId()
-			};
-
-			finderCache.removeResult(_finderPathCountByCollectionId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByCollectionId, args);
-
-			args = new Object[] {
-				ctPreferencesModelImpl.getPreviousCtCollectionId()
-			};
-
-			finderCache.removeResult(
-				_finderPathCountByPreviousCollectionId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByPreviousCollectionId, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((ctPreferencesModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByCollectionId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					ctPreferencesModelImpl.getOriginalCtCollectionId()
-				};
-
-				finderCache.removeResult(_finderPathCountByCollectionId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByCollectionId, args);
-
-				args = new Object[] {
-					ctPreferencesModelImpl.getCtCollectionId()
-				};
-
-				finderCache.removeResult(_finderPathCountByCollectionId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByCollectionId, args);
-			}
-
-			if ((ctPreferencesModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByPreviousCollectionId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					ctPreferencesModelImpl.getOriginalPreviousCtCollectionId()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByPreviousCollectionId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByPreviousCollectionId,
-					args);
-
-				args = new Object[] {
-					ctPreferencesModelImpl.getPreviousCtCollectionId()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByPreviousCollectionId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByPreviousCollectionId,
-					args);
-			}
-		}
-
 		entityCache.putResult(
 			entityCacheEnabled, CTPreferencesImpl.class,
 			ctPreferences.getPrimaryKey(), ctPreferences, false,
 			_columnBitmaskEnabled,
 			((CTPreferencesModelImpl)ctPreferences).getColumnBitmask());
 
-		clearUniqueFindersCache(ctPreferencesModelImpl, false);
 		cacheUniqueFindersCache(ctPreferencesModelImpl);
 
 		ctPreferences.resetOriginalValues();
@@ -2001,21 +1880,21 @@ public class CTPreferencesPersistenceImpl
 		CTPreferencesModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		CTPreferencesModelImpl.setFinderCacheEnabled(finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, CTPreferencesImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, CTPreferencesImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByCollectionId = new FinderPath(
+		_finderPathWithPaginationFindByCollectionId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, CTPreferencesImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCollectionId",
 			new String[] {
@@ -2023,18 +1902,51 @@ public class CTPreferencesPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByCollectionId = new FinderPath(
+		_finderPathWithoutPaginationFindByCollectionId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, CTPreferencesImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCollectionId",
 			new String[] {Long.class.getName()},
-			CTPreferencesModelImpl.CTCOLLECTIONID_COLUMN_BITMASK);
+			CTPreferencesModelImpl.CTCOLLECTIONID_COLUMN_BITMASK,
+			baseModel -> {
+				CTPreferencesModelImpl ctPreferencesModelImpl =
+					(CTPreferencesModelImpl)baseModel;
 
-		_finderPathCountByCollectionId = new FinderPath(
+				return new Object[] {
+					ctPreferencesModelImpl.getCtCollectionId()
+				};
+			},
+			baseModel -> {
+				CTPreferencesModelImpl ctPreferencesModelImpl =
+					(CTPreferencesModelImpl)baseModel;
+
+				return new Object[] {
+					ctPreferencesModelImpl.getOriginalCtCollectionId()
+				};
+			});
+
+		_finderPathCountByCollectionId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCollectionId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			CTPreferencesModelImpl.CTCOLLECTIONID_COLUMN_BITMASK,
+			baseModel -> {
+				CTPreferencesModelImpl ctPreferencesModelImpl =
+					(CTPreferencesModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByPreviousCollectionId = new FinderPath(
+				return new Object[] {
+					ctPreferencesModelImpl.getCtCollectionId()
+				};
+			},
+			baseModel -> {
+				CTPreferencesModelImpl ctPreferencesModelImpl =
+					(CTPreferencesModelImpl)baseModel;
+
+				return new Object[] {
+					ctPreferencesModelImpl.getOriginalCtCollectionId()
+				};
+			});
+
+		_finderPathWithPaginationFindByPreviousCollectionId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, CTPreferencesImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
 			"findByPreviousCollectionId",
@@ -2043,36 +1955,111 @@ public class CTPreferencesPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByPreviousCollectionId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, CTPreferencesImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByPreviousCollectionId", new String[] {Long.class.getName()},
-			CTPreferencesModelImpl.PREVIOUSCTCOLLECTIONID_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindByPreviousCollectionId =
+			FinderPath.create(
+				entityCacheEnabled, finderCacheEnabled, CTPreferencesImpl.class,
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+				"findByPreviousCollectionId",
+				new String[] {Long.class.getName()},
+				CTPreferencesModelImpl.PREVIOUSCTCOLLECTIONID_COLUMN_BITMASK,
+				baseModel -> {
+					CTPreferencesModelImpl ctPreferencesModelImpl =
+						(CTPreferencesModelImpl)baseModel;
 
-		_finderPathCountByPreviousCollectionId = new FinderPath(
+					return new Object[] {
+						ctPreferencesModelImpl.getPreviousCtCollectionId()
+					};
+				},
+				baseModel -> {
+					CTPreferencesModelImpl ctPreferencesModelImpl =
+						(CTPreferencesModelImpl)baseModel;
+
+					return new Object[] {
+						ctPreferencesModelImpl.
+							getOriginalPreviousCtCollectionId()
+					};
+				});
+
+		_finderPathCountByPreviousCollectionId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByPreviousCollectionId", new String[] {Long.class.getName()});
+			"countByPreviousCollectionId", new String[] {Long.class.getName()},
+			CTPreferencesModelImpl.PREVIOUSCTCOLLECTIONID_COLUMN_BITMASK,
+			baseModel -> {
+				CTPreferencesModelImpl ctPreferencesModelImpl =
+					(CTPreferencesModelImpl)baseModel;
 
-		_finderPathFetchByC_U = new FinderPath(
+				return new Object[] {
+					ctPreferencesModelImpl.getPreviousCtCollectionId()
+				};
+			},
+			baseModel -> {
+				CTPreferencesModelImpl ctPreferencesModelImpl =
+					(CTPreferencesModelImpl)baseModel;
+
+				return new Object[] {
+					ctPreferencesModelImpl.getOriginalPreviousCtCollectionId()
+				};
+			});
+
+		_finderPathFetchByC_U = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, CTPreferencesImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_U",
 			new String[] {Long.class.getName(), Long.class.getName()},
 			CTPreferencesModelImpl.COMPANYID_COLUMN_BITMASK |
-			CTPreferencesModelImpl.USERID_COLUMN_BITMASK);
+			CTPreferencesModelImpl.USERID_COLUMN_BITMASK,
+			baseModel -> {
+				CTPreferencesModelImpl ctPreferencesModelImpl =
+					(CTPreferencesModelImpl)baseModel;
 
-		_finderPathCountByC_U = new FinderPath(
+				return new Object[] {
+					ctPreferencesModelImpl.getCompanyId(),
+					ctPreferencesModelImpl.getUserId()
+				};
+			},
+			baseModel -> {
+				CTPreferencesModelImpl ctPreferencesModelImpl =
+					(CTPreferencesModelImpl)baseModel;
+
+				return new Object[] {
+					ctPreferencesModelImpl.getOriginalCompanyId(),
+					ctPreferencesModelImpl.getOriginalUserId()
+				};
+			});
+
+		_finderPathCountByC_U = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_U",
-			new String[] {Long.class.getName(), Long.class.getName()});
+			new String[] {Long.class.getName(), Long.class.getName()},
+			CTPreferencesModelImpl.COMPANYID_COLUMN_BITMASK |
+			CTPreferencesModelImpl.USERID_COLUMN_BITMASK,
+			baseModel -> {
+				CTPreferencesModelImpl ctPreferencesModelImpl =
+					(CTPreferencesModelImpl)baseModel;
+
+				return new Object[] {
+					ctPreferencesModelImpl.getCompanyId(),
+					ctPreferencesModelImpl.getUserId()
+				};
+			},
+			baseModel -> {
+				CTPreferencesModelImpl ctPreferencesModelImpl =
+					(CTPreferencesModelImpl)baseModel;
+
+				return new Object[] {
+					ctPreferencesModelImpl.getOriginalCompanyId(),
+					ctPreferencesModelImpl.getOriginalUserId()
+				};
+			});
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(CTPreferencesImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@Override

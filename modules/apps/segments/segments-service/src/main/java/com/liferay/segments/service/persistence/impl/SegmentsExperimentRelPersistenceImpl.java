@@ -923,10 +923,6 @@ public class SegmentsExperimentRelPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(SegmentsExperimentRelImpl.class);
-
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -944,19 +940,10 @@ public class SegmentsExperimentRelPersistenceImpl
 			_columnBitmaskEnabled,
 			((SegmentsExperimentRelModelImpl)segmentsExperimentRel).
 				getColumnBitmask());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache(
-			(SegmentsExperimentRelModelImpl)segmentsExperimentRel, true);
 	}
 
 	@Override
 	public void clearCache(List<SegmentsExperimentRel> segmentsExperimentRels) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (SegmentsExperimentRel segmentsExperimentRel :
 				segmentsExperimentRels) {
 
@@ -966,18 +953,11 @@ public class SegmentsExperimentRelPersistenceImpl
 				_columnBitmaskEnabled,
 				((SegmentsExperimentRelModelImpl)segmentsExperimentRel).
 					getColumnBitmask());
-
-			clearUniqueFindersCache(
-				(SegmentsExperimentRelModelImpl)segmentsExperimentRel, true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				entityCacheEnabled, SegmentsExperimentRelImpl.class,
@@ -997,34 +977,6 @@ public class SegmentsExperimentRelPersistenceImpl
 			_finderPathCountByS_S, args, Long.valueOf(1), false);
 		finderCache.putResult(
 			_finderPathFetchByS_S, args, segmentsExperimentRelModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		SegmentsExperimentRelModelImpl segmentsExperimentRelModelImpl,
-		boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				segmentsExperimentRelModelImpl.getSegmentsExperimentId(),
-				segmentsExperimentRelModelImpl.getSegmentsExperienceId()
-			};
-
-			finderCache.removeResult(_finderPathCountByS_S, args);
-			finderCache.removeResult(_finderPathFetchByS_S, args);
-		}
-
-		if ((segmentsExperimentRelModelImpl.getColumnBitmask() &
-			 _finderPathFetchByS_S.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				segmentsExperimentRelModelImpl.
-					getOriginalSegmentsExperimentId(),
-				segmentsExperimentRelModelImpl.getOriginalSegmentsExperienceId()
-			};
-
-			finderCache.removeResult(_finderPathCountByS_S, args);
-			finderCache.removeResult(_finderPathFetchByS_S, args);
-		}
 	}
 
 	/**
@@ -1210,53 +1162,6 @@ public class SegmentsExperimentRelPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!_columnBitmaskEnabled) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {
-				segmentsExperimentRelModelImpl.getSegmentsExperimentId()
-			};
-
-			finderCache.removeResult(
-				_finderPathCountBySegmentsExperimentId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindBySegmentsExperimentId, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((segmentsExperimentRelModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindBySegmentsExperimentId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					segmentsExperimentRelModelImpl.
-						getOriginalSegmentsExperimentId()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountBySegmentsExperimentId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindBySegmentsExperimentId,
-					args);
-
-				args = new Object[] {
-					segmentsExperimentRelModelImpl.getSegmentsExperimentId()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountBySegmentsExperimentId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindBySegmentsExperimentId,
-					args);
-			}
-		}
-
 		entityCache.putResult(
 			entityCacheEnabled, SegmentsExperimentRelImpl.class,
 			segmentsExperimentRel.getPrimaryKey(), segmentsExperimentRel, false,
@@ -1264,7 +1169,6 @@ public class SegmentsExperimentRelPersistenceImpl
 			((SegmentsExperimentRelModelImpl)segmentsExperimentRel).
 				getColumnBitmask());
 
-		clearUniqueFindersCache(segmentsExperimentRelModelImpl, false);
 		cacheUniqueFindersCache(segmentsExperimentRelModelImpl);
 
 		segmentsExperimentRel.resetOriginalValues();
@@ -1544,23 +1448,23 @@ public class SegmentsExperimentRelPersistenceImpl
 		SegmentsExperimentRelModelImpl.setFinderCacheEnabled(
 			finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			SegmentsExperimentRelImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			SegmentsExperimentRelImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindBySegmentsExperimentId = new FinderPath(
+		_finderPathWithPaginationFindBySegmentsExperimentId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			SegmentsExperimentRelImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
@@ -1570,38 +1474,121 @@ public class SegmentsExperimentRelPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindBySegmentsExperimentId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled,
-			SegmentsExperimentRelImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findBySegmentsExperimentId", new String[] {Long.class.getName()},
-			SegmentsExperimentRelModelImpl.SEGMENTSEXPERIMENTID_COLUMN_BITMASK);
+		_finderPathWithoutPaginationFindBySegmentsExperimentId =
+			FinderPath.create(
+				entityCacheEnabled, finderCacheEnabled,
+				SegmentsExperimentRelImpl.class,
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+				"findBySegmentsExperimentId",
+				new String[] {Long.class.getName()},
+				SegmentsExperimentRelModelImpl.
+					SEGMENTSEXPERIMENTID_COLUMN_BITMASK,
+				baseModel -> {
+					SegmentsExperimentRelModelImpl
+						segmentsExperimentRelModelImpl =
+							(SegmentsExperimentRelModelImpl)baseModel;
 
-		_finderPathCountBySegmentsExperimentId = new FinderPath(
+					return new Object[] {
+						segmentsExperimentRelModelImpl.getSegmentsExperimentId()
+					};
+				},
+				baseModel -> {
+					SegmentsExperimentRelModelImpl
+						segmentsExperimentRelModelImpl =
+							(SegmentsExperimentRelModelImpl)baseModel;
+
+					return new Object[] {
+						segmentsExperimentRelModelImpl.
+							getOriginalSegmentsExperimentId()
+					};
+				});
+
+		_finderPathCountBySegmentsExperimentId = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countBySegmentsExperimentId", new String[] {Long.class.getName()});
+			"countBySegmentsExperimentId", new String[] {Long.class.getName()},
+			SegmentsExperimentRelModelImpl.SEGMENTSEXPERIMENTID_COLUMN_BITMASK,
+			baseModel -> {
+				SegmentsExperimentRelModelImpl segmentsExperimentRelModelImpl =
+					(SegmentsExperimentRelModelImpl)baseModel;
 
-		_finderPathFetchByS_S = new FinderPath(
+				return new Object[] {
+					segmentsExperimentRelModelImpl.getSegmentsExperimentId()
+				};
+			},
+			baseModel -> {
+				SegmentsExperimentRelModelImpl segmentsExperimentRelModelImpl =
+					(SegmentsExperimentRelModelImpl)baseModel;
+
+				return new Object[] {
+					segmentsExperimentRelModelImpl.
+						getOriginalSegmentsExperimentId()
+				};
+			});
+
+		_finderPathFetchByS_S = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			SegmentsExperimentRelImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByS_S",
 			new String[] {Long.class.getName(), Long.class.getName()},
 			SegmentsExperimentRelModelImpl.SEGMENTSEXPERIMENTID_COLUMN_BITMASK |
-			SegmentsExperimentRelModelImpl.SEGMENTSEXPERIENCEID_COLUMN_BITMASK);
+			SegmentsExperimentRelModelImpl.SEGMENTSEXPERIENCEID_COLUMN_BITMASK,
+			baseModel -> {
+				SegmentsExperimentRelModelImpl segmentsExperimentRelModelImpl =
+					(SegmentsExperimentRelModelImpl)baseModel;
 
-		_finderPathCountByS_S = new FinderPath(
+				return new Object[] {
+					segmentsExperimentRelModelImpl.getSegmentsExperimentId(),
+					segmentsExperimentRelModelImpl.getSegmentsExperienceId()
+				};
+			},
+			baseModel -> {
+				SegmentsExperimentRelModelImpl segmentsExperimentRelModelImpl =
+					(SegmentsExperimentRelModelImpl)baseModel;
+
+				return new Object[] {
+					segmentsExperimentRelModelImpl.
+						getOriginalSegmentsExperimentId(),
+					segmentsExperimentRelModelImpl.
+						getOriginalSegmentsExperienceId()
+				};
+			});
+
+		_finderPathCountByS_S = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByS_S",
-			new String[] {Long.class.getName(), Long.class.getName()});
+			new String[] {Long.class.getName(), Long.class.getName()},
+			SegmentsExperimentRelModelImpl.SEGMENTSEXPERIMENTID_COLUMN_BITMASK |
+			SegmentsExperimentRelModelImpl.SEGMENTSEXPERIENCEID_COLUMN_BITMASK,
+			baseModel -> {
+				SegmentsExperimentRelModelImpl segmentsExperimentRelModelImpl =
+					(SegmentsExperimentRelModelImpl)baseModel;
+
+				return new Object[] {
+					segmentsExperimentRelModelImpl.getSegmentsExperimentId(),
+					segmentsExperimentRelModelImpl.getSegmentsExperienceId()
+				};
+			},
+			baseModel -> {
+				SegmentsExperimentRelModelImpl segmentsExperimentRelModelImpl =
+					(SegmentsExperimentRelModelImpl)baseModel;
+
+				return new Object[] {
+					segmentsExperimentRelModelImpl.
+						getOriginalSegmentsExperimentId(),
+					segmentsExperimentRelModelImpl.
+						getOriginalSegmentsExperienceId()
+				};
+			});
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(SegmentsExperimentRelImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@Override

@@ -8488,10 +8488,6 @@ public class UserPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(UserImpl.class);
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -8507,35 +8503,21 @@ public class UserPersistenceImpl
 			UserModelImpl.ENTITY_CACHE_ENABLED, UserImpl.class,
 			user.getPrimaryKey(), user, UserModelImpl.COLUMN_BITMASK_ENABLED,
 			((UserModelImpl)user).getColumnBitmask());
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((UserModelImpl)user, true);
 	}
 
 	@Override
 	public void clearCache(List<User> users) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (User user : users) {
 			EntityCacheUtil.removeResult(
 				UserModelImpl.ENTITY_CACHE_ENABLED, UserImpl.class,
 				user.getPrimaryKey(), user,
 				UserModelImpl.COLUMN_BITMASK_ENABLED,
 				((UserModelImpl)user).getColumnBitmask());
-
-			clearUniqueFindersCache((UserModelImpl)user, true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				UserModelImpl.ENTITY_CACHE_ENABLED, UserImpl.class, primaryKey);
@@ -8629,213 +8611,6 @@ public class UserPersistenceImpl
 			_finderPathCountByC_ERC, args, Long.valueOf(1), false);
 		FinderCacheUtil.putResult(
 			_finderPathFetchByC_ERC, args, userModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		UserModelImpl userModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {userModelImpl.getContactId()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByContactId, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByContactId, args);
-		}
-
-		if ((userModelImpl.getColumnBitmask() &
-			 _finderPathFetchByContactId.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {userModelImpl.getOriginalContactId()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByContactId, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByContactId, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {userModelImpl.getPortraitId()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByPortraitId, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByPortraitId, args);
-		}
-
-		if ((userModelImpl.getColumnBitmask() &
-			 _finderPathFetchByPortraitId.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				userModelImpl.getOriginalPortraitId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByPortraitId, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByPortraitId, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				userModelImpl.getCompanyId(), userModelImpl.getUserId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_U, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_U, args);
-		}
-
-		if ((userModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_U.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				userModelImpl.getOriginalCompanyId(),
-				userModelImpl.getOriginalUserId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_U, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_U, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				userModelImpl.getCompanyId(), userModelImpl.isDefaultUser()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_DU, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_DU, args);
-		}
-
-		if ((userModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_DU.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				userModelImpl.getOriginalCompanyId(),
-				userModelImpl.getOriginalDefaultUser()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_DU, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_DU, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				userModelImpl.getCompanyId(), userModelImpl.getScreenName()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_SN, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_SN, args);
-		}
-
-		if ((userModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_SN.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				userModelImpl.getOriginalCompanyId(),
-				userModelImpl.getOriginalScreenName()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_SN, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_SN, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				userModelImpl.getCompanyId(), userModelImpl.getEmailAddress()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_EA, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_EA, args);
-		}
-
-		if ((userModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_EA.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				userModelImpl.getOriginalCompanyId(),
-				userModelImpl.getOriginalEmailAddress()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_EA, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_EA, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				userModelImpl.getCompanyId(), userModelImpl.getFacebookId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_FID, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_FID, args);
-		}
-
-		if ((userModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_FID.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				userModelImpl.getOriginalCompanyId(),
-				userModelImpl.getOriginalFacebookId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_FID, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_FID, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				userModelImpl.getCompanyId(), userModelImpl.getGoogleUserId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_GUID, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_GUID, args);
-		}
-
-		if ((userModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_GUID.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				userModelImpl.getOriginalCompanyId(),
-				userModelImpl.getOriginalGoogleUserId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_GUID, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_GUID, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				userModelImpl.getCompanyId(), userModelImpl.getOpenId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_O, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_O, args);
-		}
-
-		if ((userModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_O.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				userModelImpl.getOriginalCompanyId(),
-				userModelImpl.getOriginalOpenId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_O, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_O, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				userModelImpl.getCompanyId(),
-				userModelImpl.getExternalReferenceCode()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_ERC, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_ERC, args);
-		}
-
-		if ((userModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_ERC.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				userModelImpl.getOriginalCompanyId(),
-				userModelImpl.getOriginalExternalReferenceCode()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_ERC, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_ERC, args);
-		}
 	}
 
 	/**
@@ -9046,289 +8821,12 @@ public class UserPersistenceImpl
 			return user;
 		}
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!UserModelImpl.COLUMN_BITMASK_ENABLED) {
-			FinderCacheUtil.clearCache(
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {userModelImpl.getUuid()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByUuid, args);
-
-			args = new Object[] {
-				userModelImpl.getUuid(), userModelImpl.getCompanyId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByUuid_C, args);
-
-			args = new Object[] {userModelImpl.getCompanyId()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByCompanyId, args);
-
-			args = new Object[] {userModelImpl.getEmailAddress()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByEmailAddress, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByEmailAddress, args);
-
-			args = new Object[] {
-				userModelImpl.getCompanyId(), userModelImpl.getCreateDate()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_CD, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByC_CD, args);
-
-			args = new Object[] {
-				userModelImpl.getCompanyId(), userModelImpl.getModifiedDate()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_MD, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByC_MD, args);
-
-			args = new Object[] {
-				userModelImpl.getCompanyId(), userModelImpl.getStatus()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_S, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByC_S, args);
-
-			args = new Object[] {
-				userModelImpl.getCompanyId(), userModelImpl.getCreateDate(),
-				userModelImpl.getModifiedDate()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_CD_MD, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByC_CD_MD, args);
-
-			args = new Object[] {
-				userModelImpl.getCompanyId(), userModelImpl.isDefaultUser(),
-				userModelImpl.getStatus()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByC_DU_S, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByC_DU_S, args);
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountAll, FINDER_ARGS_EMPTY);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((userModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {userModelImpl.getOriginalUuid()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-
-				args = new Object[] {userModelImpl.getUuid()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid, args);
-			}
-
-			if ((userModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUuid_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					userModelImpl.getOriginalUuid(),
-					userModelImpl.getOriginalCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-
-				args = new Object[] {
-					userModelImpl.getUuid(), userModelImpl.getCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUuid_C, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUuid_C, args);
-			}
-
-			if ((userModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByCompanyId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					userModelImpl.getOriginalCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByCompanyId, args);
-
-				args = new Object[] {userModelImpl.getCompanyId()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByCompanyId, args);
-			}
-
-			if ((userModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByEmailAddress.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					userModelImpl.getOriginalEmailAddress()
-				};
-
-				FinderCacheUtil.removeResult(
-					_finderPathCountByEmailAddress, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByEmailAddress, args);
-
-				args = new Object[] {userModelImpl.getEmailAddress()};
-
-				FinderCacheUtil.removeResult(
-					_finderPathCountByEmailAddress, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByEmailAddress, args);
-			}
-
-			if ((userModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_CD.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					userModelImpl.getOriginalCompanyId(),
-					userModelImpl.getOriginalCreateDate()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_CD, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_CD, args);
-
-				args = new Object[] {
-					userModelImpl.getCompanyId(), userModelImpl.getCreateDate()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_CD, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_CD, args);
-			}
-
-			if ((userModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_MD.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					userModelImpl.getOriginalCompanyId(),
-					userModelImpl.getOriginalModifiedDate()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_MD, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_MD, args);
-
-				args = new Object[] {
-					userModelImpl.getCompanyId(),
-					userModelImpl.getModifiedDate()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_MD, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_MD, args);
-			}
-
-			if ((userModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_S.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					userModelImpl.getOriginalCompanyId(),
-					userModelImpl.getOriginalStatus()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_S, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_S, args);
-
-				args = new Object[] {
-					userModelImpl.getCompanyId(), userModelImpl.getStatus()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_S, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_S, args);
-			}
-
-			if ((userModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_CD_MD.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					userModelImpl.getOriginalCompanyId(),
-					userModelImpl.getOriginalCreateDate(),
-					userModelImpl.getOriginalModifiedDate()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_CD_MD, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_CD_MD, args);
-
-				args = new Object[] {
-					userModelImpl.getCompanyId(), userModelImpl.getCreateDate(),
-					userModelImpl.getModifiedDate()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_CD_MD, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_CD_MD, args);
-			}
-
-			if ((userModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_DU_S.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					userModelImpl.getOriginalCompanyId(),
-					userModelImpl.getOriginalDefaultUser(),
-					userModelImpl.getOriginalStatus()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_DU_S, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_DU_S, args);
-
-				args = new Object[] {
-					userModelImpl.getCompanyId(), userModelImpl.isDefaultUser(),
-					userModelImpl.getStatus()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByC_DU_S, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_DU_S, args);
-			}
-		}
-
 		EntityCacheUtil.putResult(
 			UserModelImpl.ENTITY_CACHE_ENABLED, UserImpl.class,
 			user.getPrimaryKey(), user, false,
 			UserModelImpl.COLUMN_BITMASK_ENABLED,
 			((UserModelImpl)user).getColumnBitmask());
 
-		clearUniqueFindersCache(userModelImpl, false);
 		cacheUniqueFindersCache(userModelImpl);
 
 		user.resetOriginalValues();
@@ -11415,24 +10913,24 @@ public class UserPersistenceImpl
 			"Users_UserGroups", "companyId", "userId", "userGroupId", this,
 			userGroupPersistence);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByUuid = new FinderPath(
+		_finderPathWithPaginationFindByUuid = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
@@ -11441,20 +10939,41 @@ public class UserPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid = new FinderPath(
+		_finderPathWithoutPaginationFindByUuid = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
 			new String[] {String.class.getName()},
-			UserModelImpl.UUID_COLUMN_BITMASK);
+			UserModelImpl.UUID_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathCountByUuid = new FinderPath(
+				return new Object[] {userModelImpl.getUuid()};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {userModelImpl.getOriginalUuid()};
+			});
+
+		_finderPathCountByUuid = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
-			new String[] {String.class.getName()});
+			new String[] {String.class.getName()},
+			UserModelImpl.UUID_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByUuid_C = new FinderPath(
+				return new Object[] {userModelImpl.getUuid()};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {userModelImpl.getOriginalUuid()};
+			});
+
+		_finderPathWithPaginationFindByUuid_C = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
@@ -11464,21 +10983,53 @@ public class UserPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
+		_finderPathWithoutPaginationFindByUuid_C = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
 			UserModelImpl.UUID_COLUMN_BITMASK |
-			UserModelImpl.COMPANYID_COLUMN_BITMASK);
+			UserModelImpl.COMPANYID_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathCountByUuid_C = new FinderPath(
+				return new Object[] {
+					userModelImpl.getUuid(), userModelImpl.getCompanyId()
+				};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getOriginalUuid(),
+					userModelImpl.getOriginalCompanyId()
+				};
+			});
+
+		_finderPathCountByUuid_C = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
-			new String[] {String.class.getName(), Long.class.getName()});
+			new String[] {String.class.getName(), Long.class.getName()},
+			UserModelImpl.UUID_COLUMN_BITMASK |
+			UserModelImpl.COMPANYID_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByCompanyId = new FinderPath(
+				return new Object[] {
+					userModelImpl.getUuid(), userModelImpl.getCompanyId()
+				};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getOriginalUuid(),
+					userModelImpl.getOriginalCompanyId()
+				};
+			});
+
+		_finderPathWithPaginationFindByCompanyId = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId",
@@ -11487,33 +11038,75 @@ public class UserPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
+		_finderPathWithoutPaginationFindByCompanyId = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
 			new String[] {Long.class.getName()},
-			UserModelImpl.COMPANYID_COLUMN_BITMASK);
+			UserModelImpl.COMPANYID_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathCountByCompanyId = new FinderPath(
+				return new Object[] {userModelImpl.getCompanyId()};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {userModelImpl.getOriginalCompanyId()};
+			});
+
+		_finderPathCountByCompanyId = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			UserModelImpl.COMPANYID_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathFetchByContactId = new FinderPath(
+				return new Object[] {userModelImpl.getCompanyId()};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {userModelImpl.getOriginalCompanyId()};
+			});
+
+		_finderPathFetchByContactId = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByContactId",
 			new String[] {Long.class.getName()},
-			UserModelImpl.CONTACTID_COLUMN_BITMASK);
+			UserModelImpl.CONTACTID_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathCountByContactId = new FinderPath(
+				return new Object[] {userModelImpl.getContactId()};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {userModelImpl.getOriginalContactId()};
+			});
+
+		_finderPathCountByContactId = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByContactId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			UserModelImpl.CONTACTID_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByEmailAddress = new FinderPath(
+				return new Object[] {userModelImpl.getContactId()};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {userModelImpl.getOriginalContactId()};
+			});
+
+		_finderPathWithPaginationFindByEmailAddress = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByEmailAddress",
@@ -11522,33 +11115,75 @@ public class UserPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByEmailAddress = new FinderPath(
+		_finderPathWithoutPaginationFindByEmailAddress = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByEmailAddress",
 			new String[] {String.class.getName()},
-			UserModelImpl.EMAILADDRESS_COLUMN_BITMASK);
+			UserModelImpl.EMAILADDRESS_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathCountByEmailAddress = new FinderPath(
+				return new Object[] {userModelImpl.getEmailAddress()};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {userModelImpl.getOriginalEmailAddress()};
+			});
+
+		_finderPathCountByEmailAddress = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByEmailAddress",
-			new String[] {String.class.getName()});
+			new String[] {String.class.getName()},
+			UserModelImpl.EMAILADDRESS_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathFetchByPortraitId = new FinderPath(
+				return new Object[] {userModelImpl.getEmailAddress()};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {userModelImpl.getOriginalEmailAddress()};
+			});
+
+		_finderPathFetchByPortraitId = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByPortraitId",
 			new String[] {Long.class.getName()},
-			UserModelImpl.PORTRAITID_COLUMN_BITMASK);
+			UserModelImpl.PORTRAITID_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathCountByPortraitId = new FinderPath(
+				return new Object[] {userModelImpl.getPortraitId()};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {userModelImpl.getOriginalPortraitId()};
+			});
+
+		_finderPathCountByPortraitId = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByPortraitId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			UserModelImpl.PORTRAITID_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByU_C = new FinderPath(
+				return new Object[] {userModelImpl.getPortraitId()};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {userModelImpl.getOriginalPortraitId()};
+			});
+
+		_finderPathWithPaginationFindByU_C = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByU_C",
@@ -11558,27 +11193,59 @@ public class UserPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithPaginationCountByU_C = new FinderPath(
+		_finderPathWithPaginationCountByU_C = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByU_C",
 			new String[] {Long.class.getName(), Long.class.getName()});
 
-		_finderPathFetchByC_U = new FinderPath(
+		_finderPathFetchByC_U = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_U",
 			new String[] {Long.class.getName(), Long.class.getName()},
 			UserModelImpl.COMPANYID_COLUMN_BITMASK |
-			UserModelImpl.USERID_COLUMN_BITMASK);
+			UserModelImpl.USERID_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathCountByC_U = new FinderPath(
+				return new Object[] {
+					userModelImpl.getCompanyId(), userModelImpl.getUserId()
+				};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getOriginalCompanyId(),
+					userModelImpl.getOriginalUserId()
+				};
+			});
+
+		_finderPathCountByC_U = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_U",
-			new String[] {Long.class.getName(), Long.class.getName()});
+			new String[] {Long.class.getName(), Long.class.getName()},
+			UserModelImpl.COMPANYID_COLUMN_BITMASK |
+			UserModelImpl.USERID_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByC_CD = new FinderPath(
+				return new Object[] {
+					userModelImpl.getCompanyId(), userModelImpl.getUserId()
+				};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getOriginalCompanyId(),
+					userModelImpl.getOriginalUserId()
+				};
+			});
+
+		_finderPathWithPaginationFindByC_CD = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_CD",
@@ -11588,21 +11255,53 @@ public class UserPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_CD = new FinderPath(
+		_finderPathWithoutPaginationFindByC_CD = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_CD",
 			new String[] {Long.class.getName(), Date.class.getName()},
 			UserModelImpl.COMPANYID_COLUMN_BITMASK |
-			UserModelImpl.CREATEDATE_COLUMN_BITMASK);
+			UserModelImpl.CREATEDATE_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathCountByC_CD = new FinderPath(
+				return new Object[] {
+					userModelImpl.getCompanyId(), userModelImpl.getCreateDate()
+				};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getOriginalCompanyId(),
+					userModelImpl.getOriginalCreateDate()
+				};
+			});
+
+		_finderPathCountByC_CD = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_CD",
-			new String[] {Long.class.getName(), Date.class.getName()});
+			new String[] {Long.class.getName(), Date.class.getName()},
+			UserModelImpl.COMPANYID_COLUMN_BITMASK |
+			UserModelImpl.CREATEDATE_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByC_MD = new FinderPath(
+				return new Object[] {
+					userModelImpl.getCompanyId(), userModelImpl.getCreateDate()
+				};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getOriginalCompanyId(),
+					userModelImpl.getOriginalCreateDate()
+				};
+			});
+
+		_finderPathWithPaginationFindByC_MD = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_MD",
@@ -11612,105 +11311,335 @@ public class UserPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_MD = new FinderPath(
+		_finderPathWithoutPaginationFindByC_MD = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_MD",
 			new String[] {Long.class.getName(), Date.class.getName()},
 			UserModelImpl.COMPANYID_COLUMN_BITMASK |
-			UserModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			UserModelImpl.MODIFIEDDATE_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathCountByC_MD = new FinderPath(
+				return new Object[] {
+					userModelImpl.getCompanyId(),
+					userModelImpl.getModifiedDate()
+				};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getOriginalCompanyId(),
+					userModelImpl.getOriginalModifiedDate()
+				};
+			});
+
+		_finderPathCountByC_MD = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_MD",
-			new String[] {Long.class.getName(), Date.class.getName()});
+			new String[] {Long.class.getName(), Date.class.getName()},
+			UserModelImpl.COMPANYID_COLUMN_BITMASK |
+			UserModelImpl.MODIFIEDDATE_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathFetchByC_DU = new FinderPath(
+				return new Object[] {
+					userModelImpl.getCompanyId(),
+					userModelImpl.getModifiedDate()
+				};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getOriginalCompanyId(),
+					userModelImpl.getOriginalModifiedDate()
+				};
+			});
+
+		_finderPathFetchByC_DU = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_DU",
 			new String[] {Long.class.getName(), Boolean.class.getName()},
 			UserModelImpl.COMPANYID_COLUMN_BITMASK |
-			UserModelImpl.DEFAULTUSER_COLUMN_BITMASK);
+			UserModelImpl.DEFAULTUSER_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathCountByC_DU = new FinderPath(
+				return new Object[] {
+					userModelImpl.getCompanyId(), userModelImpl.isDefaultUser()
+				};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getOriginalCompanyId(),
+					userModelImpl.getOriginalDefaultUser()
+				};
+			});
+
+		_finderPathCountByC_DU = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_DU",
-			new String[] {Long.class.getName(), Boolean.class.getName()});
+			new String[] {Long.class.getName(), Boolean.class.getName()},
+			UserModelImpl.COMPANYID_COLUMN_BITMASK |
+			UserModelImpl.DEFAULTUSER_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathFetchByC_SN = new FinderPath(
+				return new Object[] {
+					userModelImpl.getCompanyId(), userModelImpl.isDefaultUser()
+				};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getOriginalCompanyId(),
+					userModelImpl.getOriginalDefaultUser()
+				};
+			});
+
+		_finderPathFetchByC_SN = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_SN",
 			new String[] {Long.class.getName(), String.class.getName()},
 			UserModelImpl.COMPANYID_COLUMN_BITMASK |
-			UserModelImpl.SCREENNAME_COLUMN_BITMASK);
+			UserModelImpl.SCREENNAME_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathCountByC_SN = new FinderPath(
+				return new Object[] {
+					userModelImpl.getCompanyId(), userModelImpl.getScreenName()
+				};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getOriginalCompanyId(),
+					userModelImpl.getOriginalScreenName()
+				};
+			});
+
+		_finderPathCountByC_SN = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_SN",
-			new String[] {Long.class.getName(), String.class.getName()});
+			new String[] {Long.class.getName(), String.class.getName()},
+			UserModelImpl.COMPANYID_COLUMN_BITMASK |
+			UserModelImpl.SCREENNAME_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathFetchByC_EA = new FinderPath(
+				return new Object[] {
+					userModelImpl.getCompanyId(), userModelImpl.getScreenName()
+				};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getOriginalCompanyId(),
+					userModelImpl.getOriginalScreenName()
+				};
+			});
+
+		_finderPathFetchByC_EA = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_EA",
 			new String[] {Long.class.getName(), String.class.getName()},
 			UserModelImpl.COMPANYID_COLUMN_BITMASK |
-			UserModelImpl.EMAILADDRESS_COLUMN_BITMASK);
+			UserModelImpl.EMAILADDRESS_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathCountByC_EA = new FinderPath(
+				return new Object[] {
+					userModelImpl.getCompanyId(),
+					userModelImpl.getEmailAddress()
+				};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getOriginalCompanyId(),
+					userModelImpl.getOriginalEmailAddress()
+				};
+			});
+
+		_finderPathCountByC_EA = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_EA",
-			new String[] {Long.class.getName(), String.class.getName()});
+			new String[] {Long.class.getName(), String.class.getName()},
+			UserModelImpl.COMPANYID_COLUMN_BITMASK |
+			UserModelImpl.EMAILADDRESS_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathFetchByC_FID = new FinderPath(
+				return new Object[] {
+					userModelImpl.getCompanyId(),
+					userModelImpl.getEmailAddress()
+				};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getOriginalCompanyId(),
+					userModelImpl.getOriginalEmailAddress()
+				};
+			});
+
+		_finderPathFetchByC_FID = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_FID",
 			new String[] {Long.class.getName(), Long.class.getName()},
 			UserModelImpl.COMPANYID_COLUMN_BITMASK |
-			UserModelImpl.FACEBOOKID_COLUMN_BITMASK);
+			UserModelImpl.FACEBOOKID_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathCountByC_FID = new FinderPath(
+				return new Object[] {
+					userModelImpl.getCompanyId(), userModelImpl.getFacebookId()
+				};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getOriginalCompanyId(),
+					userModelImpl.getOriginalFacebookId()
+				};
+			});
+
+		_finderPathCountByC_FID = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_FID",
-			new String[] {Long.class.getName(), Long.class.getName()});
+			new String[] {Long.class.getName(), Long.class.getName()},
+			UserModelImpl.COMPANYID_COLUMN_BITMASK |
+			UserModelImpl.FACEBOOKID_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathFetchByC_GUID = new FinderPath(
+				return new Object[] {
+					userModelImpl.getCompanyId(), userModelImpl.getFacebookId()
+				};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getOriginalCompanyId(),
+					userModelImpl.getOriginalFacebookId()
+				};
+			});
+
+		_finderPathFetchByC_GUID = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_GUID",
 			new String[] {Long.class.getName(), String.class.getName()},
 			UserModelImpl.COMPANYID_COLUMN_BITMASK |
-			UserModelImpl.GOOGLEUSERID_COLUMN_BITMASK);
+			UserModelImpl.GOOGLEUSERID_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathCountByC_GUID = new FinderPath(
+				return new Object[] {
+					userModelImpl.getCompanyId(),
+					userModelImpl.getGoogleUserId()
+				};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getOriginalCompanyId(),
+					userModelImpl.getOriginalGoogleUserId()
+				};
+			});
+
+		_finderPathCountByC_GUID = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_GUID",
-			new String[] {Long.class.getName(), String.class.getName()});
+			new String[] {Long.class.getName(), String.class.getName()},
+			UserModelImpl.COMPANYID_COLUMN_BITMASK |
+			UserModelImpl.GOOGLEUSERID_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathFetchByC_O = new FinderPath(
+				return new Object[] {
+					userModelImpl.getCompanyId(),
+					userModelImpl.getGoogleUserId()
+				};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getOriginalCompanyId(),
+					userModelImpl.getOriginalGoogleUserId()
+				};
+			});
+
+		_finderPathFetchByC_O = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_O",
 			new String[] {Long.class.getName(), String.class.getName()},
 			UserModelImpl.COMPANYID_COLUMN_BITMASK |
-			UserModelImpl.OPENID_COLUMN_BITMASK);
+			UserModelImpl.OPENID_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathCountByC_O = new FinderPath(
+				return new Object[] {
+					userModelImpl.getCompanyId(), userModelImpl.getOpenId()
+				};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getOriginalCompanyId(),
+					userModelImpl.getOriginalOpenId()
+				};
+			});
+
+		_finderPathCountByC_O = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_O",
-			new String[] {Long.class.getName(), String.class.getName()});
+			new String[] {Long.class.getName(), String.class.getName()},
+			UserModelImpl.COMPANYID_COLUMN_BITMASK |
+			UserModelImpl.OPENID_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByC_S = new FinderPath(
+				return new Object[] {
+					userModelImpl.getCompanyId(), userModelImpl.getOpenId()
+				};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getOriginalCompanyId(),
+					userModelImpl.getOriginalOpenId()
+				};
+			});
+
+		_finderPathWithPaginationFindByC_S = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_S",
@@ -11720,21 +11649,53 @@ public class UserPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_S = new FinderPath(
+		_finderPathWithoutPaginationFindByC_S = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_S",
 			new String[] {Long.class.getName(), Integer.class.getName()},
 			UserModelImpl.COMPANYID_COLUMN_BITMASK |
-			UserModelImpl.STATUS_COLUMN_BITMASK);
+			UserModelImpl.STATUS_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathCountByC_S = new FinderPath(
+				return new Object[] {
+					userModelImpl.getCompanyId(), userModelImpl.getStatus()
+				};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getOriginalCompanyId(),
+					userModelImpl.getOriginalStatus()
+				};
+			});
+
+		_finderPathCountByC_S = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_S",
-			new String[] {Long.class.getName(), Integer.class.getName()});
+			new String[] {Long.class.getName(), Integer.class.getName()},
+			UserModelImpl.COMPANYID_COLUMN_BITMASK |
+			UserModelImpl.STATUS_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByC_CD_MD = new FinderPath(
+				return new Object[] {
+					userModelImpl.getCompanyId(), userModelImpl.getStatus()
+				};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getOriginalCompanyId(),
+					userModelImpl.getOriginalStatus()
+				};
+			});
+
+		_finderPathWithPaginationFindByC_CD_MD = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_CD_MD",
@@ -11744,7 +11705,7 @@ public class UserPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_CD_MD = new FinderPath(
+		_finderPathWithoutPaginationFindByC_CD_MD = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_CD_MD",
@@ -11753,17 +11714,54 @@ public class UserPersistenceImpl
 			},
 			UserModelImpl.COMPANYID_COLUMN_BITMASK |
 			UserModelImpl.CREATEDATE_COLUMN_BITMASK |
-			UserModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+			UserModelImpl.MODIFIEDDATE_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathCountByC_CD_MD = new FinderPath(
+				return new Object[] {
+					userModelImpl.getCompanyId(), userModelImpl.getCreateDate(),
+					userModelImpl.getModifiedDate()
+				};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getOriginalCompanyId(),
+					userModelImpl.getOriginalCreateDate(),
+					userModelImpl.getOriginalModifiedDate()
+				};
+			});
+
+		_finderPathCountByC_CD_MD = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_CD_MD",
 			new String[] {
 				Long.class.getName(), Date.class.getName(), Date.class.getName()
+			},
+			UserModelImpl.COMPANYID_COLUMN_BITMASK |
+			UserModelImpl.CREATEDATE_COLUMN_BITMASK |
+			UserModelImpl.MODIFIEDDATE_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getCompanyId(), userModelImpl.getCreateDate(),
+					userModelImpl.getModifiedDate()
+				};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getOriginalCompanyId(),
+					userModelImpl.getOriginalCreateDate(),
+					userModelImpl.getOriginalModifiedDate()
+				};
 			});
 
-		_finderPathWithPaginationFindByC_DU_S = new FinderPath(
+		_finderPathWithPaginationFindByC_DU_S = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_DU_S",
@@ -11773,7 +11771,7 @@ public class UserPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_DU_S = new FinderPath(
+		_finderPathWithoutPaginationFindByC_DU_S = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_DU_S",
@@ -11783,37 +11781,109 @@ public class UserPersistenceImpl
 			},
 			UserModelImpl.COMPANYID_COLUMN_BITMASK |
 			UserModelImpl.DEFAULTUSER_COLUMN_BITMASK |
-			UserModelImpl.STATUS_COLUMN_BITMASK);
+			UserModelImpl.STATUS_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathCountByC_DU_S = new FinderPath(
+				return new Object[] {
+					userModelImpl.getCompanyId(), userModelImpl.isDefaultUser(),
+					userModelImpl.getStatus()
+				};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getOriginalCompanyId(),
+					userModelImpl.getOriginalDefaultUser(),
+					userModelImpl.getOriginalStatus()
+				};
+			});
+
+		_finderPathCountByC_DU_S = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_DU_S",
 			new String[] {
 				Long.class.getName(), Boolean.class.getName(),
 				Integer.class.getName()
+			},
+			UserModelImpl.COMPANYID_COLUMN_BITMASK |
+			UserModelImpl.DEFAULTUSER_COLUMN_BITMASK |
+			UserModelImpl.STATUS_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getCompanyId(), userModelImpl.isDefaultUser(),
+					userModelImpl.getStatus()
+				};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getOriginalCompanyId(),
+					userModelImpl.getOriginalDefaultUser(),
+					userModelImpl.getOriginalStatus()
+				};
 			});
 
-		_finderPathFetchByC_ERC = new FinderPath(
+		_finderPathFetchByC_ERC = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, UserImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_ERC",
 			new String[] {Long.class.getName(), String.class.getName()},
 			UserModelImpl.COMPANYID_COLUMN_BITMASK |
-			UserModelImpl.EXTERNALREFERENCECODE_COLUMN_BITMASK);
+			UserModelImpl.EXTERNALREFERENCECODE_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
 
-		_finderPathCountByC_ERC = new FinderPath(
+				return new Object[] {
+					userModelImpl.getCompanyId(),
+					userModelImpl.getExternalReferenceCode()
+				};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getOriginalCompanyId(),
+					userModelImpl.getOriginalExternalReferenceCode()
+				};
+			});
+
+		_finderPathCountByC_ERC = FinderPath.create(
 			UserModelImpl.ENTITY_CACHE_ENABLED,
 			UserModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_ERC",
-			new String[] {Long.class.getName(), String.class.getName()});
+			new String[] {Long.class.getName(), String.class.getName()},
+			UserModelImpl.COMPANYID_COLUMN_BITMASK |
+			UserModelImpl.EXTERNALREFERENCECODE_COLUMN_BITMASK,
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getCompanyId(),
+					userModelImpl.getExternalReferenceCode()
+				};
+			},
+			baseModel -> {
+				UserModelImpl userModelImpl = (UserModelImpl)baseModel;
+
+				return new Object[] {
+					userModelImpl.getOriginalCompanyId(),
+					userModelImpl.getOriginalExternalReferenceCode()
+				};
+			});
 	}
 
 	public void destroy() {
 		EntityCacheUtil.removeCache(UserImpl.class.getName());
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		TableMapperFactory.removeTableMapper("Users_Groups");
 		TableMapperFactory.removeTableMapper("Users_Orgs");

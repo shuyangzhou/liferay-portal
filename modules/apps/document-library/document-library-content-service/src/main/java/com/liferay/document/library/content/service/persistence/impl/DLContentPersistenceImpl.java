@@ -2362,10 +2362,6 @@ public class DLContentPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DLContentImpl.class);
-
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -2381,34 +2377,20 @@ public class DLContentPersistenceImpl
 			entityCacheEnabled, DLContentImpl.class, dlContent.getPrimaryKey(),
 			dlContent, _columnBitmaskEnabled,
 			((DLContentModelImpl)dlContent).getColumnBitmask());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache((DLContentModelImpl)dlContent, true);
 	}
 
 	@Override
 	public void clearCache(List<DLContent> dlContents) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (DLContent dlContent : dlContents) {
 			entityCache.removeResult(
 				entityCacheEnabled, DLContentImpl.class,
 				dlContent.getPrimaryKey(), dlContent, _columnBitmaskEnabled,
 				((DLContentModelImpl)dlContent).getColumnBitmask());
-
-			clearUniqueFindersCache((DLContentModelImpl)dlContent, true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				entityCacheEnabled, DLContentImpl.class, primaryKey);
@@ -2428,35 +2410,6 @@ public class DLContentPersistenceImpl
 			_finderPathCountByC_R_P_V, args, Long.valueOf(1), false);
 		finderCache.putResult(
 			_finderPathFetchByC_R_P_V, args, dlContentModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		DLContentModelImpl dlContentModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				dlContentModelImpl.getCompanyId(),
-				dlContentModelImpl.getRepositoryId(),
-				dlContentModelImpl.getPath(), dlContentModelImpl.getVersion()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_R_P_V, args);
-			finderCache.removeResult(_finderPathFetchByC_R_P_V, args);
-		}
-
-		if ((dlContentModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_R_P_V.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				dlContentModelImpl.getOriginalCompanyId(),
-				dlContentModelImpl.getOriginalRepositoryId(),
-				dlContentModelImpl.getOriginalPath(),
-				dlContentModelImpl.getOriginalVersion()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_R_P_V, args);
-			finderCache.removeResult(_finderPathFetchByC_R_P_V, args);
-		}
 	}
 
 	/**
@@ -2626,91 +2579,11 @@ public class DLContentPersistenceImpl
 			return dlContent;
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!_columnBitmaskEnabled) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {
-				dlContentModelImpl.getCompanyId(),
-				dlContentModelImpl.getRepositoryId()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_R, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByC_R, args);
-
-			args = new Object[] {
-				dlContentModelImpl.getCompanyId(),
-				dlContentModelImpl.getRepositoryId(),
-				dlContentModelImpl.getPath()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_R_P, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByC_R_P, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((dlContentModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_R.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					dlContentModelImpl.getOriginalCompanyId(),
-					dlContentModelImpl.getOriginalRepositoryId()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_R, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_R, args);
-
-				args = new Object[] {
-					dlContentModelImpl.getCompanyId(),
-					dlContentModelImpl.getRepositoryId()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_R, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_R, args);
-			}
-
-			if ((dlContentModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_R_P.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					dlContentModelImpl.getOriginalCompanyId(),
-					dlContentModelImpl.getOriginalRepositoryId(),
-					dlContentModelImpl.getOriginalPath()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_R_P, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_R_P, args);
-
-				args = new Object[] {
-					dlContentModelImpl.getCompanyId(),
-					dlContentModelImpl.getRepositoryId(),
-					dlContentModelImpl.getPath()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_R_P, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_R_P, args);
-			}
-		}
-
 		entityCache.putResult(
 			entityCacheEnabled, DLContentImpl.class, dlContent.getPrimaryKey(),
 			dlContent, false, _columnBitmaskEnabled,
 			((DLContentModelImpl)dlContent).getColumnBitmask());
 
-		clearUniqueFindersCache(dlContentModelImpl, false);
 		cacheUniqueFindersCache(dlContentModelImpl);
 
 		dlContent.resetOriginalValues();
@@ -3167,21 +3040,21 @@ public class DLContentPersistenceImpl
 		DLContentModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		DLContentModelImpl.setFinderCacheEnabled(finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, DLContentImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, DLContentImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByC_R = new FinderPath(
+		_finderPathWithPaginationFindByC_R = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, DLContentImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_R",
 			new String[] {
@@ -3190,20 +3063,58 @@ public class DLContentPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_R = new FinderPath(
+		_finderPathWithoutPaginationFindByC_R = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, DLContentImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_R",
 			new String[] {Long.class.getName(), Long.class.getName()},
 			DLContentModelImpl.COMPANYID_COLUMN_BITMASK |
 			DLContentModelImpl.REPOSITORYID_COLUMN_BITMASK |
-			DLContentModelImpl.VERSION_COLUMN_BITMASK);
+			DLContentModelImpl.VERSION_COLUMN_BITMASK,
+			baseModel -> {
+				DLContentModelImpl dlContentModelImpl =
+					(DLContentModelImpl)baseModel;
 
-		_finderPathCountByC_R = new FinderPath(
+				return new Object[] {
+					dlContentModelImpl.getCompanyId(),
+					dlContentModelImpl.getRepositoryId()
+				};
+			},
+			baseModel -> {
+				DLContentModelImpl dlContentModelImpl =
+					(DLContentModelImpl)baseModel;
+
+				return new Object[] {
+					dlContentModelImpl.getOriginalCompanyId(),
+					dlContentModelImpl.getOriginalRepositoryId()
+				};
+			});
+
+		_finderPathCountByC_R = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_R",
-			new String[] {Long.class.getName(), Long.class.getName()});
+			new String[] {Long.class.getName(), Long.class.getName()},
+			DLContentModelImpl.COMPANYID_COLUMN_BITMASK |
+			DLContentModelImpl.REPOSITORYID_COLUMN_BITMASK,
+			baseModel -> {
+				DLContentModelImpl dlContentModelImpl =
+					(DLContentModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByC_R_P = new FinderPath(
+				return new Object[] {
+					dlContentModelImpl.getCompanyId(),
+					dlContentModelImpl.getRepositoryId()
+				};
+			},
+			baseModel -> {
+				DLContentModelImpl dlContentModelImpl =
+					(DLContentModelImpl)baseModel;
+
+				return new Object[] {
+					dlContentModelImpl.getOriginalCompanyId(),
+					dlContentModelImpl.getOriginalRepositoryId()
+				};
+			});
+
+		_finderPathWithPaginationFindByC_R_P = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, DLContentImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_R_P",
 			new String[] {
@@ -3212,7 +3123,7 @@ public class DLContentPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByC_R_P = new FinderPath(
+		_finderPathWithoutPaginationFindByC_R_P = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, DLContentImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_R_P",
 			new String[] {
@@ -3222,17 +3133,60 @@ public class DLContentPersistenceImpl
 			DLContentModelImpl.COMPANYID_COLUMN_BITMASK |
 			DLContentModelImpl.REPOSITORYID_COLUMN_BITMASK |
 			DLContentModelImpl.PATH_COLUMN_BITMASK |
-			DLContentModelImpl.VERSION_COLUMN_BITMASK);
+			DLContentModelImpl.VERSION_COLUMN_BITMASK,
+			baseModel -> {
+				DLContentModelImpl dlContentModelImpl =
+					(DLContentModelImpl)baseModel;
 
-		_finderPathCountByC_R_P = new FinderPath(
+				return new Object[] {
+					dlContentModelImpl.getCompanyId(),
+					dlContentModelImpl.getRepositoryId(),
+					dlContentModelImpl.getPath()
+				};
+			},
+			baseModel -> {
+				DLContentModelImpl dlContentModelImpl =
+					(DLContentModelImpl)baseModel;
+
+				return new Object[] {
+					dlContentModelImpl.getOriginalCompanyId(),
+					dlContentModelImpl.getOriginalRepositoryId(),
+					dlContentModelImpl.getOriginalPath()
+				};
+			});
+
+		_finderPathCountByC_R_P = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_R_P",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
+			},
+			DLContentModelImpl.COMPANYID_COLUMN_BITMASK |
+			DLContentModelImpl.REPOSITORYID_COLUMN_BITMASK |
+			DLContentModelImpl.PATH_COLUMN_BITMASK,
+			baseModel -> {
+				DLContentModelImpl dlContentModelImpl =
+					(DLContentModelImpl)baseModel;
+
+				return new Object[] {
+					dlContentModelImpl.getCompanyId(),
+					dlContentModelImpl.getRepositoryId(),
+					dlContentModelImpl.getPath()
+				};
+			},
+			baseModel -> {
+				DLContentModelImpl dlContentModelImpl =
+					(DLContentModelImpl)baseModel;
+
+				return new Object[] {
+					dlContentModelImpl.getOriginalCompanyId(),
+					dlContentModelImpl.getOriginalRepositoryId(),
+					dlContentModelImpl.getOriginalPath()
+				};
 			});
 
-		_finderPathWithPaginationFindByC_R_LikeP = new FinderPath(
+		_finderPathWithPaginationFindByC_R_LikeP = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, DLContentImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_R_LikeP",
 			new String[] {
@@ -3241,7 +3195,7 @@ public class DLContentPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithPaginationCountByC_R_LikeP = new FinderPath(
+		_finderPathWithPaginationCountByC_R_LikeP = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_R_LikeP",
 			new String[] {
@@ -3249,7 +3203,7 @@ public class DLContentPersistenceImpl
 				String.class.getName()
 			});
 
-		_finderPathFetchByC_R_P_V = new FinderPath(
+		_finderPathFetchByC_R_P_V = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, DLContentImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_R_P_V",
 			new String[] {
@@ -3259,23 +3213,72 @@ public class DLContentPersistenceImpl
 			DLContentModelImpl.COMPANYID_COLUMN_BITMASK |
 			DLContentModelImpl.REPOSITORYID_COLUMN_BITMASK |
 			DLContentModelImpl.PATH_COLUMN_BITMASK |
-			DLContentModelImpl.VERSION_COLUMN_BITMASK);
+			DLContentModelImpl.VERSION_COLUMN_BITMASK,
+			baseModel -> {
+				DLContentModelImpl dlContentModelImpl =
+					(DLContentModelImpl)baseModel;
 
-		_finderPathCountByC_R_P_V = new FinderPath(
+				return new Object[] {
+					dlContentModelImpl.getCompanyId(),
+					dlContentModelImpl.getRepositoryId(),
+					dlContentModelImpl.getPath(),
+					dlContentModelImpl.getVersion()
+				};
+			},
+			baseModel -> {
+				DLContentModelImpl dlContentModelImpl =
+					(DLContentModelImpl)baseModel;
+
+				return new Object[] {
+					dlContentModelImpl.getOriginalCompanyId(),
+					dlContentModelImpl.getOriginalRepositoryId(),
+					dlContentModelImpl.getOriginalPath(),
+					dlContentModelImpl.getOriginalVersion()
+				};
+			});
+
+		_finderPathCountByC_R_P_V = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_R_P_V",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName(), String.class.getName()
+			},
+			DLContentModelImpl.COMPANYID_COLUMN_BITMASK |
+			DLContentModelImpl.REPOSITORYID_COLUMN_BITMASK |
+			DLContentModelImpl.PATH_COLUMN_BITMASK |
+			DLContentModelImpl.VERSION_COLUMN_BITMASK,
+			baseModel -> {
+				DLContentModelImpl dlContentModelImpl =
+					(DLContentModelImpl)baseModel;
+
+				return new Object[] {
+					dlContentModelImpl.getCompanyId(),
+					dlContentModelImpl.getRepositoryId(),
+					dlContentModelImpl.getPath(),
+					dlContentModelImpl.getVersion()
+				};
+			},
+			baseModel -> {
+				DLContentModelImpl dlContentModelImpl =
+					(DLContentModelImpl)baseModel;
+
+				return new Object[] {
+					dlContentModelImpl.getOriginalCompanyId(),
+					dlContentModelImpl.getOriginalRepositoryId(),
+					dlContentModelImpl.getOriginalPath(),
+					dlContentModelImpl.getOriginalVersion()
+				};
 			});
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(DLContentImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@Override

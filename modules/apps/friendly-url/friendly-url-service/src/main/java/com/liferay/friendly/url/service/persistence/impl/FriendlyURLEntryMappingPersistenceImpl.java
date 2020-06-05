@@ -420,10 +420,6 @@ public class FriendlyURLEntryMappingPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(FriendlyURLEntryMappingImpl.class);
-
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -441,20 +437,11 @@ public class FriendlyURLEntryMappingPersistenceImpl
 			_columnBitmaskEnabled,
 			((FriendlyURLEntryMappingModelImpl)friendlyURLEntryMapping).
 				getColumnBitmask());
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache(
-			(FriendlyURLEntryMappingModelImpl)friendlyURLEntryMapping, true);
 	}
 
 	@Override
 	public void clearCache(
 		List<FriendlyURLEntryMapping> friendlyURLEntryMappings) {
-
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (FriendlyURLEntryMapping friendlyURLEntryMapping :
 				friendlyURLEntryMappings) {
@@ -465,19 +452,11 @@ public class FriendlyURLEntryMappingPersistenceImpl
 				friendlyURLEntryMapping, _columnBitmaskEnabled,
 				((FriendlyURLEntryMappingModelImpl)friendlyURLEntryMapping).
 					getColumnBitmask());
-
-			clearUniqueFindersCache(
-				(FriendlyURLEntryMappingModelImpl)friendlyURLEntryMapping,
-				true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				entityCacheEnabled, FriendlyURLEntryMappingImpl.class,
@@ -498,33 +477,6 @@ public class FriendlyURLEntryMappingPersistenceImpl
 		finderCache.putResult(
 			_finderPathFetchByC_C, args, friendlyURLEntryMappingModelImpl,
 			false);
-	}
-
-	protected void clearUniqueFindersCache(
-		FriendlyURLEntryMappingModelImpl friendlyURLEntryMappingModelImpl,
-		boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				friendlyURLEntryMappingModelImpl.getClassNameId(),
-				friendlyURLEntryMappingModelImpl.getClassPK()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_C, args);
-			finderCache.removeResult(_finderPathFetchByC_C, args);
-		}
-
-		if ((friendlyURLEntryMappingModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_C.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				friendlyURLEntryMappingModelImpl.getOriginalClassNameId(),
-				friendlyURLEntryMappingModelImpl.getOriginalClassPK()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_C, args);
-			finderCache.removeResult(_finderPathFetchByC_C, args);
-		}
 	}
 
 	/**
@@ -707,17 +659,6 @@ public class FriendlyURLEntryMappingPersistenceImpl
 			return friendlyURLEntryMapping;
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!_columnBitmaskEnabled) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-
 		entityCache.putResult(
 			entityCacheEnabled, FriendlyURLEntryMappingImpl.class,
 			friendlyURLEntryMapping.getPrimaryKey(), friendlyURLEntryMapping,
@@ -725,7 +666,6 @@ public class FriendlyURLEntryMappingPersistenceImpl
 			((FriendlyURLEntryMappingModelImpl)friendlyURLEntryMapping).
 				getColumnBitmask());
 
-		clearUniqueFindersCache(friendlyURLEntryMappingModelImpl, false);
 		cacheUniqueFindersCache(friendlyURLEntryMappingModelImpl);
 
 		friendlyURLEntryMapping.resetOriginalValues();
@@ -1194,42 +1134,85 @@ public class FriendlyURLEntryMappingPersistenceImpl
 		FriendlyURLEntryMappingModelImpl.setFinderCacheEnabled(
 			finderCacheEnabled);
 
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			FriendlyURLEntryMappingImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			FriendlyURLEntryMappingImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathFetchByC_C = new FinderPath(
+		_finderPathFetchByC_C = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled,
 			FriendlyURLEntryMappingImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
 			FriendlyURLEntryMappingModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			FriendlyURLEntryMappingModelImpl.CLASSPK_COLUMN_BITMASK);
+			FriendlyURLEntryMappingModelImpl.CLASSPK_COLUMN_BITMASK,
+			baseModel -> {
+				FriendlyURLEntryMappingModelImpl
+					friendlyURLEntryMappingModelImpl =
+						(FriendlyURLEntryMappingModelImpl)baseModel;
 
-		_finderPathCountByC_C = new FinderPath(
+				return new Object[] {
+					friendlyURLEntryMappingModelImpl.getClassNameId(),
+					friendlyURLEntryMappingModelImpl.getClassPK()
+				};
+			},
+			baseModel -> {
+				FriendlyURLEntryMappingModelImpl
+					friendlyURLEntryMappingModelImpl =
+						(FriendlyURLEntryMappingModelImpl)baseModel;
+
+				return new Object[] {
+					friendlyURLEntryMappingModelImpl.getOriginalClassNameId(),
+					friendlyURLEntryMappingModelImpl.getOriginalClassPK()
+				};
+			});
+
+		_finderPathCountByC_C = FinderPath.create(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
-			new String[] {Long.class.getName(), Long.class.getName()});
+			new String[] {Long.class.getName(), Long.class.getName()},
+			FriendlyURLEntryMappingModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+			FriendlyURLEntryMappingModelImpl.CLASSPK_COLUMN_BITMASK,
+			baseModel -> {
+				FriendlyURLEntryMappingModelImpl
+					friendlyURLEntryMappingModelImpl =
+						(FriendlyURLEntryMappingModelImpl)baseModel;
+
+				return new Object[] {
+					friendlyURLEntryMappingModelImpl.getClassNameId(),
+					friendlyURLEntryMappingModelImpl.getClassPK()
+				};
+			},
+			baseModel -> {
+				FriendlyURLEntryMappingModelImpl
+					friendlyURLEntryMappingModelImpl =
+						(FriendlyURLEntryMappingModelImpl)baseModel;
+
+				return new Object[] {
+					friendlyURLEntryMappingModelImpl.getOriginalClassNameId(),
+					friendlyURLEntryMappingModelImpl.getOriginalClassPK()
+				};
+			});
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(FriendlyURLEntryMappingImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@Override

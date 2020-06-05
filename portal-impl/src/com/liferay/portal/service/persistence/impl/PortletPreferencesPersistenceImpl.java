@@ -5889,10 +5889,6 @@ public class PortletPreferencesPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(PortletPreferencesImpl.class);
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
@@ -5911,19 +5907,10 @@ public class PortletPreferencesPersistenceImpl
 			PortletPreferencesModelImpl.COLUMN_BITMASK_ENABLED,
 			((PortletPreferencesModelImpl)portletPreferences).
 				getColumnBitmask());
-
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		clearUniqueFindersCache(
-			(PortletPreferencesModelImpl)portletPreferences, true);
 	}
 
 	@Override
 	public void clearCache(List<PortletPreferences> portletPreferenceses) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (PortletPreferences portletPreferences : portletPreferenceses) {
 			EntityCacheUtil.removeResult(
 				PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
@@ -5932,18 +5919,11 @@ public class PortletPreferencesPersistenceImpl
 				PortletPreferencesModelImpl.COLUMN_BITMASK_ENABLED,
 				((PortletPreferencesModelImpl)portletPreferences).
 					getColumnBitmask());
-
-			clearUniqueFindersCache(
-				(PortletPreferencesModelImpl)portletPreferences, true);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
@@ -5966,37 +5946,6 @@ public class PortletPreferencesPersistenceImpl
 		FinderCacheUtil.putResult(
 			_finderPathFetchByO_O_P_P, args, portletPreferencesModelImpl,
 			false);
-	}
-
-	protected void clearUniqueFindersCache(
-		PortletPreferencesModelImpl portletPreferencesModelImpl,
-		boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				portletPreferencesModelImpl.getOwnerId(),
-				portletPreferencesModelImpl.getOwnerType(),
-				portletPreferencesModelImpl.getPlid(),
-				portletPreferencesModelImpl.getPortletId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByO_O_P_P, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByO_O_P_P, args);
-		}
-
-		if ((portletPreferencesModelImpl.getColumnBitmask() &
-			 _finderPathFetchByO_O_P_P.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				portletPreferencesModelImpl.getOriginalOwnerId(),
-				portletPreferencesModelImpl.getOriginalOwnerType(),
-				portletPreferencesModelImpl.getOriginalPlid(),
-				portletPreferencesModelImpl.getOriginalPortletId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByO_O_P_P, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByO_O_P_P, args);
-		}
 	}
 
 	/**
@@ -6175,268 +6124,6 @@ public class PortletPreferencesPersistenceImpl
 			return portletPreferences;
 		}
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-		if (!PortletPreferencesModelImpl.COLUMN_BITMASK_ENABLED) {
-			FinderCacheUtil.clearCache(
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {
-				portletPreferencesModelImpl.getOwnerId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByOwnerId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByOwnerId, args);
-
-			args = new Object[] {portletPreferencesModelImpl.getPlid()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByPlid, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByPlid, args);
-
-			args = new Object[] {portletPreferencesModelImpl.getPortletId()};
-
-			FinderCacheUtil.removeResult(_finderPathCountByPortletId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByPortletId, args);
-
-			args = new Object[] {
-				portletPreferencesModelImpl.getOwnerType(),
-				portletPreferencesModelImpl.getPortletId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByO_P, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByO_P, args);
-
-			args = new Object[] {
-				portletPreferencesModelImpl.getPlid(),
-				portletPreferencesModelImpl.getPortletId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByP_P, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByP_P, args);
-
-			args = new Object[] {
-				portletPreferencesModelImpl.getOwnerId(),
-				portletPreferencesModelImpl.getOwnerType(),
-				portletPreferencesModelImpl.getPlid()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByO_O_P, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByO_O_P, args);
-
-			args = new Object[] {
-				portletPreferencesModelImpl.getOwnerId(),
-				portletPreferencesModelImpl.getOwnerType(),
-				portletPreferencesModelImpl.getPortletId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByO_O_PI, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByO_O_PI, args);
-
-			args = new Object[] {
-				portletPreferencesModelImpl.getOwnerType(),
-				portletPreferencesModelImpl.getPlid(),
-				portletPreferencesModelImpl.getPortletId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByO_P_P, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByO_P_P, args);
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountAll, FINDER_ARGS_EMPTY);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((portletPreferencesModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByOwnerId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					portletPreferencesModelImpl.getOriginalOwnerId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByOwnerId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByOwnerId, args);
-
-				args = new Object[] {portletPreferencesModelImpl.getOwnerId()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByOwnerId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByOwnerId, args);
-			}
-
-			if ((portletPreferencesModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByPlid.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					portletPreferencesModelImpl.getOriginalPlid()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByPlid, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByPlid, args);
-
-				args = new Object[] {portletPreferencesModelImpl.getPlid()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByPlid, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByPlid, args);
-			}
-
-			if ((portletPreferencesModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByPortletId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					portletPreferencesModelImpl.getOriginalPortletId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByPortletId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByPortletId, args);
-
-				args = new Object[] {
-					portletPreferencesModelImpl.getPortletId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByPortletId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByPortletId, args);
-			}
-
-			if ((portletPreferencesModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByO_P.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					portletPreferencesModelImpl.getOriginalOwnerType(),
-					portletPreferencesModelImpl.getOriginalPortletId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByO_P, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByO_P, args);
-
-				args = new Object[] {
-					portletPreferencesModelImpl.getOwnerType(),
-					portletPreferencesModelImpl.getPortletId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByO_P, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByO_P, args);
-			}
-
-			if ((portletPreferencesModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByP_P.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					portletPreferencesModelImpl.getOriginalPlid(),
-					portletPreferencesModelImpl.getOriginalPortletId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByP_P, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByP_P, args);
-
-				args = new Object[] {
-					portletPreferencesModelImpl.getPlid(),
-					portletPreferencesModelImpl.getPortletId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByP_P, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByP_P, args);
-			}
-
-			if ((portletPreferencesModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByO_O_P.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					portletPreferencesModelImpl.getOriginalOwnerId(),
-					portletPreferencesModelImpl.getOriginalOwnerType(),
-					portletPreferencesModelImpl.getOriginalPlid()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByO_O_P, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByO_O_P, args);
-
-				args = new Object[] {
-					portletPreferencesModelImpl.getOwnerId(),
-					portletPreferencesModelImpl.getOwnerType(),
-					portletPreferencesModelImpl.getPlid()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByO_O_P, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByO_O_P, args);
-			}
-
-			if ((portletPreferencesModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByO_O_PI.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					portletPreferencesModelImpl.getOriginalOwnerId(),
-					portletPreferencesModelImpl.getOriginalOwnerType(),
-					portletPreferencesModelImpl.getOriginalPortletId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByO_O_PI, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByO_O_PI, args);
-
-				args = new Object[] {
-					portletPreferencesModelImpl.getOwnerId(),
-					portletPreferencesModelImpl.getOwnerType(),
-					portletPreferencesModelImpl.getPortletId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByO_O_PI, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByO_O_PI, args);
-			}
-
-			if ((portletPreferencesModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByO_P_P.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					portletPreferencesModelImpl.getOriginalOwnerType(),
-					portletPreferencesModelImpl.getOriginalPlid(),
-					portletPreferencesModelImpl.getOriginalPortletId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByO_P_P, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByO_P_P, args);
-
-				args = new Object[] {
-					portletPreferencesModelImpl.getOwnerType(),
-					portletPreferencesModelImpl.getPlid(),
-					portletPreferencesModelImpl.getPortletId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByO_P_P, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByO_P_P, args);
-			}
-		}
-
 		EntityCacheUtil.putResult(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesImpl.class, portletPreferences.getPrimaryKey(),
@@ -6445,7 +6132,6 @@ public class PortletPreferencesPersistenceImpl
 			((PortletPreferencesModelImpl)portletPreferences).
 				getColumnBitmask());
 
-		clearUniqueFindersCache(portletPreferencesModelImpl, false);
 		cacheUniqueFindersCache(portletPreferencesModelImpl);
 
 		portletPreferences.resetOriginalValues();
@@ -6905,26 +6591,26 @@ public class PortletPreferencesPersistenceImpl
 	 * Initializes the portlet preferences persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
+		_finderPathWithPaginationFindAll = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED,
 			PortletPreferencesImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(
+		_finderPathWithoutPaginationFindAll = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED,
 			PortletPreferencesImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
 			new String[0]);
 
-		_finderPathCountAll = new FinderPath(
+		_finderPathCountAll = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByOwnerId = new FinderPath(
+		_finderPathWithPaginationFindByOwnerId = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED,
 			PortletPreferencesImpl.class,
@@ -6934,21 +6620,50 @@ public class PortletPreferencesPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByOwnerId = new FinderPath(
+		_finderPathWithoutPaginationFindByOwnerId = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED,
 			PortletPreferencesImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByOwnerId",
 			new String[] {Long.class.getName()},
-			PortletPreferencesModelImpl.OWNERID_COLUMN_BITMASK);
+			PortletPreferencesModelImpl.OWNERID_COLUMN_BITMASK,
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
 
-		_finderPathCountByOwnerId = new FinderPath(
+				return new Object[] {portletPreferencesModelImpl.getOwnerId()};
+			},
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
+
+				return new Object[] {
+					portletPreferencesModelImpl.getOriginalOwnerId()
+				};
+			});
+
+		_finderPathCountByOwnerId = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByOwnerId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			PortletPreferencesModelImpl.OWNERID_COLUMN_BITMASK,
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByPlid = new FinderPath(
+				return new Object[] {portletPreferencesModelImpl.getOwnerId()};
+			},
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
+
+				return new Object[] {
+					portletPreferencesModelImpl.getOriginalOwnerId()
+				};
+			});
+
+		_finderPathWithPaginationFindByPlid = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED,
 			PortletPreferencesImpl.class,
@@ -6958,21 +6673,50 @@ public class PortletPreferencesPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByPlid = new FinderPath(
+		_finderPathWithoutPaginationFindByPlid = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED,
 			PortletPreferencesImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByPlid",
 			new String[] {Long.class.getName()},
-			PortletPreferencesModelImpl.PLID_COLUMN_BITMASK);
+			PortletPreferencesModelImpl.PLID_COLUMN_BITMASK,
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
 
-		_finderPathCountByPlid = new FinderPath(
+				return new Object[] {portletPreferencesModelImpl.getPlid()};
+			},
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
+
+				return new Object[] {
+					portletPreferencesModelImpl.getOriginalPlid()
+				};
+			});
+
+		_finderPathCountByPlid = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByPlid",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()},
+			PortletPreferencesModelImpl.PLID_COLUMN_BITMASK,
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByPortletId = new FinderPath(
+				return new Object[] {portletPreferencesModelImpl.getPlid()};
+			},
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
+
+				return new Object[] {
+					portletPreferencesModelImpl.getOriginalPlid()
+				};
+			});
+
+		_finderPathWithPaginationFindByPortletId = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED,
 			PortletPreferencesImpl.class,
@@ -6982,21 +6726,54 @@ public class PortletPreferencesPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByPortletId = new FinderPath(
+		_finderPathWithoutPaginationFindByPortletId = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED,
 			PortletPreferencesImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByPortletId",
 			new String[] {String.class.getName()},
-			PortletPreferencesModelImpl.PORTLETID_COLUMN_BITMASK);
+			PortletPreferencesModelImpl.PORTLETID_COLUMN_BITMASK,
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
 
-		_finderPathCountByPortletId = new FinderPath(
+				return new Object[] {
+					portletPreferencesModelImpl.getPortletId()
+				};
+			},
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
+
+				return new Object[] {
+					portletPreferencesModelImpl.getOriginalPortletId()
+				};
+			});
+
+		_finderPathCountByPortletId = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByPortletId",
-			new String[] {String.class.getName()});
+			new String[] {String.class.getName()},
+			PortletPreferencesModelImpl.PORTLETID_COLUMN_BITMASK,
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByO_P = new FinderPath(
+				return new Object[] {
+					portletPreferencesModelImpl.getPortletId()
+				};
+			},
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
+
+				return new Object[] {
+					portletPreferencesModelImpl.getOriginalPortletId()
+				};
+			});
+
+		_finderPathWithPaginationFindByO_P = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED,
 			PortletPreferencesImpl.class,
@@ -7007,22 +6784,60 @@ public class PortletPreferencesPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByO_P = new FinderPath(
+		_finderPathWithoutPaginationFindByO_P = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED,
 			PortletPreferencesImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByO_P",
 			new String[] {Integer.class.getName(), String.class.getName()},
 			PortletPreferencesModelImpl.OWNERTYPE_COLUMN_BITMASK |
-			PortletPreferencesModelImpl.PORTLETID_COLUMN_BITMASK);
+			PortletPreferencesModelImpl.PORTLETID_COLUMN_BITMASK,
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
 
-		_finderPathCountByO_P = new FinderPath(
+				return new Object[] {
+					portletPreferencesModelImpl.getOwnerType(),
+					portletPreferencesModelImpl.getPortletId()
+				};
+			},
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
+
+				return new Object[] {
+					portletPreferencesModelImpl.getOriginalOwnerType(),
+					portletPreferencesModelImpl.getOriginalPortletId()
+				};
+			});
+
+		_finderPathCountByO_P = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByO_P",
-			new String[] {Integer.class.getName(), String.class.getName()});
+			new String[] {Integer.class.getName(), String.class.getName()},
+			PortletPreferencesModelImpl.OWNERTYPE_COLUMN_BITMASK |
+			PortletPreferencesModelImpl.PORTLETID_COLUMN_BITMASK,
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByP_P = new FinderPath(
+				return new Object[] {
+					portletPreferencesModelImpl.getOwnerType(),
+					portletPreferencesModelImpl.getPortletId()
+				};
+			},
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
+
+				return new Object[] {
+					portletPreferencesModelImpl.getOriginalOwnerType(),
+					portletPreferencesModelImpl.getOriginalPortletId()
+				};
+			});
+
+		_finderPathWithPaginationFindByP_P = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED,
 			PortletPreferencesImpl.class,
@@ -7033,22 +6848,60 @@ public class PortletPreferencesPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByP_P = new FinderPath(
+		_finderPathWithoutPaginationFindByP_P = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED,
 			PortletPreferencesImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByP_P",
 			new String[] {Long.class.getName(), String.class.getName()},
 			PortletPreferencesModelImpl.PLID_COLUMN_BITMASK |
-			PortletPreferencesModelImpl.PORTLETID_COLUMN_BITMASK);
+			PortletPreferencesModelImpl.PORTLETID_COLUMN_BITMASK,
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
 
-		_finderPathCountByP_P = new FinderPath(
+				return new Object[] {
+					portletPreferencesModelImpl.getPlid(),
+					portletPreferencesModelImpl.getPortletId()
+				};
+			},
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
+
+				return new Object[] {
+					portletPreferencesModelImpl.getOriginalPlid(),
+					portletPreferencesModelImpl.getOriginalPortletId()
+				};
+			});
+
+		_finderPathCountByP_P = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByP_P",
-			new String[] {Long.class.getName(), String.class.getName()});
+			new String[] {Long.class.getName(), String.class.getName()},
+			PortletPreferencesModelImpl.PLID_COLUMN_BITMASK |
+			PortletPreferencesModelImpl.PORTLETID_COLUMN_BITMASK,
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
 
-		_finderPathWithPaginationFindByO_O_P = new FinderPath(
+				return new Object[] {
+					portletPreferencesModelImpl.getPlid(),
+					portletPreferencesModelImpl.getPortletId()
+				};
+			},
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
+
+				return new Object[] {
+					portletPreferencesModelImpl.getOriginalPlid(),
+					portletPreferencesModelImpl.getOriginalPortletId()
+				};
+			});
+
+		_finderPathWithPaginationFindByO_O_P = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED,
 			PortletPreferencesImpl.class,
@@ -7059,7 +6912,7 @@ public class PortletPreferencesPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByO_O_P = new FinderPath(
+		_finderPathWithoutPaginationFindByO_O_P = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED,
 			PortletPreferencesImpl.class,
@@ -7070,18 +6923,61 @@ public class PortletPreferencesPersistenceImpl
 			},
 			PortletPreferencesModelImpl.OWNERID_COLUMN_BITMASK |
 			PortletPreferencesModelImpl.OWNERTYPE_COLUMN_BITMASK |
-			PortletPreferencesModelImpl.PLID_COLUMN_BITMASK);
+			PortletPreferencesModelImpl.PLID_COLUMN_BITMASK,
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
 
-		_finderPathCountByO_O_P = new FinderPath(
+				return new Object[] {
+					portletPreferencesModelImpl.getOwnerId(),
+					portletPreferencesModelImpl.getOwnerType(),
+					portletPreferencesModelImpl.getPlid()
+				};
+			},
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
+
+				return new Object[] {
+					portletPreferencesModelImpl.getOriginalOwnerId(),
+					portletPreferencesModelImpl.getOriginalOwnerType(),
+					portletPreferencesModelImpl.getOriginalPlid()
+				};
+			});
+
+		_finderPathCountByO_O_P = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByO_O_P",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Long.class.getName()
+			},
+			PortletPreferencesModelImpl.OWNERID_COLUMN_BITMASK |
+			PortletPreferencesModelImpl.OWNERTYPE_COLUMN_BITMASK |
+			PortletPreferencesModelImpl.PLID_COLUMN_BITMASK,
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
+
+				return new Object[] {
+					portletPreferencesModelImpl.getOwnerId(),
+					portletPreferencesModelImpl.getOwnerType(),
+					portletPreferencesModelImpl.getPlid()
+				};
+			},
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
+
+				return new Object[] {
+					portletPreferencesModelImpl.getOriginalOwnerId(),
+					portletPreferencesModelImpl.getOriginalOwnerType(),
+					portletPreferencesModelImpl.getOriginalPlid()
+				};
 			});
 
-		_finderPathWithPaginationFindByO_O_PI = new FinderPath(
+		_finderPathWithPaginationFindByO_O_PI = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED,
 			PortletPreferencesImpl.class,
@@ -7092,7 +6988,7 @@ public class PortletPreferencesPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByO_O_PI = new FinderPath(
+		_finderPathWithoutPaginationFindByO_O_PI = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED,
 			PortletPreferencesImpl.class,
@@ -7103,18 +6999,61 @@ public class PortletPreferencesPersistenceImpl
 			},
 			PortletPreferencesModelImpl.OWNERID_COLUMN_BITMASK |
 			PortletPreferencesModelImpl.OWNERTYPE_COLUMN_BITMASK |
-			PortletPreferencesModelImpl.PORTLETID_COLUMN_BITMASK);
+			PortletPreferencesModelImpl.PORTLETID_COLUMN_BITMASK,
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
 
-		_finderPathCountByO_O_PI = new FinderPath(
+				return new Object[] {
+					portletPreferencesModelImpl.getOwnerId(),
+					portletPreferencesModelImpl.getOwnerType(),
+					portletPreferencesModelImpl.getPortletId()
+				};
+			},
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
+
+				return new Object[] {
+					portletPreferencesModelImpl.getOriginalOwnerId(),
+					portletPreferencesModelImpl.getOriginalOwnerType(),
+					portletPreferencesModelImpl.getOriginalPortletId()
+				};
+			});
+
+		_finderPathCountByO_O_PI = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByO_O_PI",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				String.class.getName()
+			},
+			PortletPreferencesModelImpl.OWNERID_COLUMN_BITMASK |
+			PortletPreferencesModelImpl.OWNERTYPE_COLUMN_BITMASK |
+			PortletPreferencesModelImpl.PORTLETID_COLUMN_BITMASK,
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
+
+				return new Object[] {
+					portletPreferencesModelImpl.getOwnerId(),
+					portletPreferencesModelImpl.getOwnerType(),
+					portletPreferencesModelImpl.getPortletId()
+				};
+			},
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
+
+				return new Object[] {
+					portletPreferencesModelImpl.getOriginalOwnerId(),
+					portletPreferencesModelImpl.getOriginalOwnerType(),
+					portletPreferencesModelImpl.getOriginalPortletId()
+				};
 			});
 
-		_finderPathWithPaginationFindByO_P_P = new FinderPath(
+		_finderPathWithPaginationFindByO_P_P = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED,
 			PortletPreferencesImpl.class,
@@ -7125,7 +7064,7 @@ public class PortletPreferencesPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByO_P_P = new FinderPath(
+		_finderPathWithoutPaginationFindByO_P_P = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED,
 			PortletPreferencesImpl.class,
@@ -7136,18 +7075,61 @@ public class PortletPreferencesPersistenceImpl
 			},
 			PortletPreferencesModelImpl.OWNERTYPE_COLUMN_BITMASK |
 			PortletPreferencesModelImpl.PLID_COLUMN_BITMASK |
-			PortletPreferencesModelImpl.PORTLETID_COLUMN_BITMASK);
+			PortletPreferencesModelImpl.PORTLETID_COLUMN_BITMASK,
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
 
-		_finderPathCountByO_P_P = new FinderPath(
+				return new Object[] {
+					portletPreferencesModelImpl.getOwnerType(),
+					portletPreferencesModelImpl.getPlid(),
+					portletPreferencesModelImpl.getPortletId()
+				};
+			},
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
+
+				return new Object[] {
+					portletPreferencesModelImpl.getOriginalOwnerType(),
+					portletPreferencesModelImpl.getOriginalPlid(),
+					portletPreferencesModelImpl.getOriginalPortletId()
+				};
+			});
+
+		_finderPathCountByO_P_P = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByO_P_P",
 			new String[] {
 				Integer.class.getName(), Long.class.getName(),
 				String.class.getName()
+			},
+			PortletPreferencesModelImpl.OWNERTYPE_COLUMN_BITMASK |
+			PortletPreferencesModelImpl.PLID_COLUMN_BITMASK |
+			PortletPreferencesModelImpl.PORTLETID_COLUMN_BITMASK,
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
+
+				return new Object[] {
+					portletPreferencesModelImpl.getOwnerType(),
+					portletPreferencesModelImpl.getPlid(),
+					portletPreferencesModelImpl.getPortletId()
+				};
+			},
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
+
+				return new Object[] {
+					portletPreferencesModelImpl.getOriginalOwnerType(),
+					portletPreferencesModelImpl.getOriginalPlid(),
+					portletPreferencesModelImpl.getOriginalPortletId()
+				};
 			});
 
-		_finderPathWithPaginationFindByC_O_O_LikeP = new FinderPath(
+		_finderPathWithPaginationFindByC_O_O_LikeP = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED,
 			PortletPreferencesImpl.class,
@@ -7159,7 +7141,7 @@ public class PortletPreferencesPersistenceImpl
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithPaginationCountByC_O_O_LikeP = new FinderPath(
+		_finderPathWithPaginationCountByC_O_O_LikeP = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_O_O_LikeP",
@@ -7168,7 +7150,7 @@ public class PortletPreferencesPersistenceImpl
 				Integer.class.getName(), String.class.getName()
 			});
 
-		_finderPathFetchByO_O_P_P = new FinderPath(
+		_finderPathFetchByO_O_P_P = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED,
 			PortletPreferencesImpl.class, FINDER_CLASS_NAME_ENTITY,
@@ -7180,23 +7162,72 @@ public class PortletPreferencesPersistenceImpl
 			PortletPreferencesModelImpl.OWNERID_COLUMN_BITMASK |
 			PortletPreferencesModelImpl.OWNERTYPE_COLUMN_BITMASK |
 			PortletPreferencesModelImpl.PLID_COLUMN_BITMASK |
-			PortletPreferencesModelImpl.PORTLETID_COLUMN_BITMASK);
+			PortletPreferencesModelImpl.PORTLETID_COLUMN_BITMASK,
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
 
-		_finderPathCountByO_O_P_P = new FinderPath(
+				return new Object[] {
+					portletPreferencesModelImpl.getOwnerId(),
+					portletPreferencesModelImpl.getOwnerType(),
+					portletPreferencesModelImpl.getPlid(),
+					portletPreferencesModelImpl.getPortletId()
+				};
+			},
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
+
+				return new Object[] {
+					portletPreferencesModelImpl.getOriginalOwnerId(),
+					portletPreferencesModelImpl.getOriginalOwnerType(),
+					portletPreferencesModelImpl.getOriginalPlid(),
+					portletPreferencesModelImpl.getOriginalPortletId()
+				};
+			});
+
+		_finderPathCountByO_O_P_P = FinderPath.create(
 			PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
 			PortletPreferencesModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByO_O_P_P",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Long.class.getName(), String.class.getName()
+			},
+			PortletPreferencesModelImpl.OWNERID_COLUMN_BITMASK |
+			PortletPreferencesModelImpl.OWNERTYPE_COLUMN_BITMASK |
+			PortletPreferencesModelImpl.PLID_COLUMN_BITMASK |
+			PortletPreferencesModelImpl.PORTLETID_COLUMN_BITMASK,
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
+
+				return new Object[] {
+					portletPreferencesModelImpl.getOwnerId(),
+					portletPreferencesModelImpl.getOwnerType(),
+					portletPreferencesModelImpl.getPlid(),
+					portletPreferencesModelImpl.getPortletId()
+				};
+			},
+			baseModel -> {
+				PortletPreferencesModelImpl portletPreferencesModelImpl =
+					(PortletPreferencesModelImpl)baseModel;
+
+				return new Object[] {
+					portletPreferencesModelImpl.getOriginalOwnerId(),
+					portletPreferencesModelImpl.getOriginalOwnerType(),
+					portletPreferencesModelImpl.getOriginalPlid(),
+					portletPreferencesModelImpl.getOriginalPortletId()
+				};
 			});
 	}
 
 	public void destroy() {
 		EntityCacheUtil.removeCache(PortletPreferencesImpl.class.getName());
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		FinderPath.delete(FINDER_CLASS_NAME_ENTITY);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderPath.delete(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	private static final String _SQL_SELECT_PORTLETPREFERENCES =
