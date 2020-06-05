@@ -262,7 +262,7 @@ public class ResourceActionsImpl implements ResourceActions {
 
 	@Override
 	public List<String> getModelResourceActions(String name) {
-		ResourceActionsBag modelResourceActionsBag = _resourceActionsBags.get(
+		ResourceActionsBag modelResourceActionsBag = getResourceActionsBag(
 			name);
 
 		return modelResourceActionsBag.getSupportsActions();
@@ -270,7 +270,7 @@ public class ResourceActionsImpl implements ResourceActions {
 
 	@Override
 	public List<String> getModelResourceGroupDefaultActions(String name) {
-		ResourceActionsBag modelResourceActionsBag = _resourceActionsBags.get(
+		ResourceActionsBag modelResourceActionsBag = getResourceActionsBag(
 			name);
 
 		return modelResourceActionsBag.getGroupDefaultActions();
@@ -278,7 +278,7 @@ public class ResourceActionsImpl implements ResourceActions {
 
 	@Override
 	public List<String> getModelResourceGuestDefaultActions(String name) {
-		ResourceActionsBag modelResourceActionsBag = _resourceActionsBags.get(
+		ResourceActionsBag modelResourceActionsBag = getResourceActionsBag(
 			name);
 
 		return modelResourceActionsBag.getGuestDefaultActions();
@@ -286,7 +286,7 @@ public class ResourceActionsImpl implements ResourceActions {
 
 	@Override
 	public List<String> getModelResourceGuestUnsupportedActions(String name) {
-		ResourceActionsBag modelResourceActionsBag = _resourceActionsBags.get(
+		ResourceActionsBag modelResourceActionsBag = getResourceActionsBag(
 			name);
 
 		return modelResourceActionsBag.getGuestUnsupportedActions();
@@ -299,7 +299,7 @@ public class ResourceActionsImpl implements ResourceActions {
 
 	@Override
 	public List<String> getModelResourceOwnerDefaultActions(String name) {
-		ResourceActionsBag modelResourceActionsBag = _resourceActionsBags.get(
+		ResourceActionsBag modelResourceActionsBag = getResourceActionsBag(
 			name);
 
 		return modelResourceActionsBag.getOwnerDefaultActions();
@@ -471,7 +471,8 @@ public class ResourceActionsImpl implements ResourceActions {
 	@Override
 	public ResourceActionsBag getResourceActionsBag(String name) {
 		if (_isModelName(name)) {
-			return _resourceActionsBags.get(name);
+			return _resourceActionsBags.computeIfAbsent(
+				name, modelName -> _EMPTY_RESOURCE_ACTIONS_BAG);
 		}
 
 		name = PortletIdCodec.decodePortletName(name);
@@ -541,7 +542,7 @@ public class ResourceActionsImpl implements ResourceActions {
 	@Deprecated
 	@Override
 	public boolean hasModelResourceActions(String name) {
-		ResourceActionsBag modelResourceActionsBag = _resourceActionsBags.get(
+		ResourceActionsBag modelResourceActionsBag = getResourceActionsBag(
 			name);
 
 		List<String> modelActions =
@@ -1275,6 +1276,12 @@ public class ResourceActionsImpl implements ResourceActions {
 
 	private static final String _COMPOSITE_MODEL_NAME_SEPARATOR =
 		StringPool.DASH;
+
+	private static final ResourceActionsBag _EMPTY_RESOURCE_ACTIONS_BAG =
+		new ResourceActionsBag(
+			Collections.emptySet(), Collections.emptySet(),
+			Collections.emptySet(), Collections.emptySet(),
+			Collections.emptySet(), Collections.emptySet());
 
 	private static final String _MODEL_RESOURCE_NAME_PREFIX = "model.resource.";
 
